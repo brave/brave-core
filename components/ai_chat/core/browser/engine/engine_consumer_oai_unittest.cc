@@ -32,6 +32,7 @@
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -737,6 +738,50 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);
+}
+
+class MockOAIEngineConsumer : public EngineConsumerOAIRemote {
+ public:
+  using EngineConsumerOAIRemote::EngineConsumerOAIRemote;
+  ~MockOAIEngineConsumer() override = default;
+  MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
+};
+
+TEST_F(EngineConsumerOAIUnitTest,
+       GenerateAssistantResponse_CallsSanitizeInputOnPageContent) {
+  PageContent page_content_1("This is a page about The Mandalorian.", false);
+  PageContent page_content_2("This is a video about The Mandalorian.", true);
+
+  auto mock_engine_consumer = std::make_unique<MockOAIEngineConsumer>(
+      *model_->options->get_custom_model_options(), nullptr, nullptr);
+  mock_engine_consumer->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
+
+  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
+  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  history.push_back(mojom::ConversationTurn::New());
+  mock_engine_consumer->GenerateAssistantResponse(
+      {page_content_1, page_content_2}, history, "", {}, std::nullopt,
+      base::DoNothing(), base::DoNothing());
+  testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       GenerateQuestionSuggestions_CallsSanitizeInputOnPageContent) {
+  PageContent page_content_1("This is a page about The Mandalorian.", false);
+  PageContent page_content_2("This is a video about The Mandalorian.", true);
+
+  auto mock_engine_consumer = std::make_unique<MockOAIEngineConsumer>(
+      *model_->options->get_custom_model_options(), nullptr, nullptr);
+  mock_engine_consumer->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
+
+  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
+  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+
+  mock_engine_consumer->GenerateQuestionSuggestions(
+      {page_content_1, page_content_2}, "", base::DoNothing());
+  testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
 }
 
 }  // namespace ai_chat

@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -148,14 +149,14 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   std::vector<ConversationEvent> conversation;
-  int remaining_length = max_associated_content_length_;
+  uint32_t remaining_length = max_associated_content_length_;
   for (const auto& content : page_contents) {
     conversation.emplace_back(
         GetAssociatedContentConversationEvent(content, remaining_length));
-    remaining_length -= content.get().content.size();
-    if (remaining_length <= 0) {
+    if (content.get().content.size() > remaining_length) {
       break;
     }
+    remaining_length -= content.get().content.size();
   }
 
   conversation.emplace_back(ConversationEventRole::User,
@@ -419,9 +420,9 @@ bool EngineConsumerConversationAPI::SupportsDeltaTextResponses() const {
 ConversationEvent
 EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
     const PageContent& content,
-    int remaining_length) {
+    uint32_t remaining_length) {
   std::string truncated_page_content =
-      content.content.substr(0, std::max(0, remaining_length));
+      content.content.substr(0, remaining_length);
   SanitizeInput(truncated_page_content);
 
   ConversationEvent event;

@@ -245,8 +245,7 @@ void AssociatedContentManager::HasContentUpdated(
           for (size_t i = 0; i < cached_content.size(); ++i) {
             auto cached = cached_content[i];
             auto& new_content = new_contents[i].get();
-            if (cached.content != new_content.content ||
-                cached.is_video != new_content.is_video) {
+            if (cached != new_content) {
               changed = true;
               break;
             }
