@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "BraveCore Pre-actions"
-               scriptText = "sh &quot;${PROJECT_DIR}/../scripts/xcode_scheme_preaction.sh&quot;&#10;">
+               scriptText = "sh &quot;${PROJECT_DIR}/../scripts/xcode_scheme_preaction.sh&quot; --configuration Release&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
