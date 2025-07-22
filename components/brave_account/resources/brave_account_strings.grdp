@@ -95,6 +95,56 @@
     Reset your password
   </message>
 
+  <!-- 'Error' dialog: -->
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TITLE" translateable="false" desc="Title for the error dialog">
+    Something went wrong
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION" translateable="false" desc="Description for the error dialog">
+    We encountered an error while processing your request. Please try again.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DEFAULT_MESSAGE" translateable="false" desc="Default error message when no specific error is provided">
+    An error occurred while creating your account.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_BAD_REQUEST" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_BAD_REQUEST
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_UNAUTHORIZED" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_UNAUTHORIZED
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_FORBIDDEN" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_FORBIDDEN
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_INTERNAL_SERVER_ERROR" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_INTERNAL_SERVER_ERROR
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_UNKNOWN" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_UNKNOWN
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_UNEXPECTED" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INITIALIZE_UNEXPECTED
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_BAD_REQUEST" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_BAD_REQUEST
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_UNAUTHORIZED" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_UNAUTHORIZED
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_FORBIDDEN" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_FORBIDDEN
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_NOT_FOUND" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_NOT_FOUND
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_INTERNAL_SERVER_ERROR" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_INTERNAL_SERVER_ERROR
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_UNKNOWN" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_UNKNOWN
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_UNEXPECTED" translateable="false" desc="">
+    IDS_BRAVE_ACCOUNT_ERROR_DIALOG_FINALIZE_UNEXPECTED
+  </message>
+
   <!-- Common: -->
   <message name="IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL" translateable="false" desc="Label for the back button">
     Go back

@@ -176,8 +176,9 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
         this.email,
       )
       await this.browserProxy.handler.registerFinalize(verificationToken, serializedRecord)
-    } catch (e) {
-      console.error('onCreateAccountButtonClicked():', e)
+      this.browserProxy.closeDialog()
+    } catch (error) {
+      this.fire('error-occurred', { error })
     }
   }
 
