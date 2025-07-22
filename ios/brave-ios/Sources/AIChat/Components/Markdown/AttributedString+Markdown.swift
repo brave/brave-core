@@ -20,7 +20,7 @@ extension AttributedString {
     return result
   }
 
-  init(markdown: String, preferredFont: Font) throws {
+  init(markdown: String, preferredFont: Font, allowedURLs: [URL]) throws {
     var result = try AttributedString(
       markdown: markdown,
       options: AttributedString.options,
@@ -140,6 +140,18 @@ extension AttributedString {
 
         if range.lowerBound != result.startIndex {
           result.characters.insert(contentsOf: "\n", at: range.lowerBound)
+        }
+      }
+
+    result.runs[LinkAttribute.self]
+      .reversed()
+      .forEach { (url, range) in
+        guard let url = url else {
+          return
+        }
+
+        if !allowedURLs.contains(url) {
+          result[range].link = nil
         }
       }
 

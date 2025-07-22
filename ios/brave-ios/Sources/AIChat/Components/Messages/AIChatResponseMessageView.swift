@@ -74,6 +74,13 @@ struct AIChatResponseMessageView: View {
       .joined(separator: "")
   }
 
+  private var allowedURLs: [URL] {
+    guard let events = turn.events else { return [] }
+    return events.flatMap {
+      $0.sourcesEvent?.sources.compactMap(\.url) ?? []
+    }
+  }
+
   var body: some View {
     if isEditingMessage {
       AIChatEditingMessageView(
@@ -146,7 +153,8 @@ struct AIChatResponseMessageView: View {
       string: text,
       preferredFont: .preferredFont(forTextStyle: .subheadline),
       useHLJS: true,
-      isDarkTheme: true
+      isDarkTheme: true,
+      allowedURLs: allowedURLs
     ) {
       ForEach(textBlocks, id: \.self) { block in
         // Render Code Block
