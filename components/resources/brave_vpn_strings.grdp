@@ -370,7 +370,7 @@ Let's get you connected!
     Settings
   </message>
   <message name="IDS_BRAVE_VPN_MAIN_PANEL_SESSION_EXPIRED_PART_CONTENT" desc="Content text for session expired panel">
-    Please log in to your <ph name="BRAVE_ACCOUNT_BEGIN">$1</ph>Brave Account<ph name="BRAVE_ACCOUNT_END">$2</ph> to refresh your VPN session.
+    Please log in to your <ph name="BRAVE_ACCOUNT_BEGIN">$1</ph>Brave Account<ph name="BRAVE_ACCOUNT_END">/$1</ph> to refresh your VPN session.
   </message>
   <if expr="is_win">
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED" desc="Message to be displayed as tooltip for the system tray icon in disconnected state.">

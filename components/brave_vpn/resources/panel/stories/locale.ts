@@ -81,7 +81,7 @@ provideStrings({
     'VPN connection failed. Please try connecting again, and be sure to click "Allow" to enable Brave\'s VPN configuration.',
   braveVpnSessionExpiredTitle: 'Session expired',
   braveVpnSessionExpiredContent:
-    'Please log in to your $1Brave Account$2 to refresh your VPN session.',
+    'Please log in to your $1Brave Account/$1 to refresh your VPN session.',
   braveVpnWidgetTitle: 'Brave VPN',
   braveVpnWidgetFeature3: 'Protect every app on your device',
   braveVpnOptimal: 'Optimal',
