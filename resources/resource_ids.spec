@@ -219,7 +219,7 @@
     "includes": [34780],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/components/brave_account/resources/resources.grd": {
-    "META": {"sizes": {"includes": [25]}},
+    "META": {"sizes": {"includes": [27]}},
     "includes": [34810],
   },
   # WARNING: The upstream ChromeOS/Ash strings currently run through 36930. We
