@@ -15,11 +15,6 @@
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
-@interface BraveShieldsUtilsIOS () {
-}
-
-@end
-
 @implementation BraveShieldsUtilsIOS {
   raw_ptr<ProfileIOS> _profile;  // NOT OWNED
 }
@@ -82,9 +77,8 @@
 
   if (controlTypeCosmetic == brave_shields::ControlType::BLOCK) {
     return BraveShieldsAdBlockModeAggressive;
-  } else {
-    return BraveShieldsAdBlockModeStandard;
   }
+  return BraveShieldsAdBlockModeStandard;
 }
 
 - (void)setDefaultAdBlockMode:(BraveShieldsAdBlockMode)adBlockMode {
@@ -124,7 +118,9 @@
   HostContentSettingsMap* map =
       [self hostContentSettingsMapForPrivate:isPrivate];
   auto* localState = GetApplicationContext()->GetLocalState();
-  auto* profilePrefs = _profile->GetPrefs();
+  auto* profilePrefs = isPrivate
+                           ? _profile->GetOffTheRecordProfile()->GetPrefs()
+                           : _profile->GetPrefs();
 
   brave_shields::SetAdControlType(map, controlTypeAd, gurl, localState);
 
@@ -148,11 +144,7 @@
   brave_shields::ControlType controlType =
       brave_shields::GetNoScriptControlType(map, gurl);
 
-  if (controlType == brave_shields::ControlType::ALLOW) {
-    return false;
-  }
-
-  return true;
+  return controlType != brave_shields::ControlType::ALLOW;
 }
 
 - (void)setBlockScriptsEnabledByDefault:(bool)isEnabled {
@@ -199,13 +191,7 @@
   brave_shields::ControlType controlType =
       brave_shields::GetFingerprintingControlType(map, gurl);
 
-  if (controlType == brave_shields::ControlType::ALLOW) {
-    return false;
-  } else if (controlType == brave_shields::ControlType::BLOCK) {
-    return true;
-  } else {  // brave_shields::ControlType::DEFAULT
-    return true;
-  }
+  return controlType != brave_shields::ControlType::ALLOW;
 }
 
 - (void)setBlockFingerprintingEnabledByDefault:(bool)isEnabled {
@@ -236,7 +222,9 @@
   HostContentSettingsMap* map =
       [self hostContentSettingsMapForPrivate:isPrivate];
   auto* localState = GetApplicationContext()->GetLocalState();
-  auto* profilePrefs = _profile->GetPrefs();
+  auto* profilePrefs = isPrivate
+                           ? _profile->GetOffTheRecordProfile()->GetPrefs()
+                           : _profile->GetPrefs();
   brave_shields::SetFingerprintingControlType(map, controlType, gurl,
                                               localState, profilePrefs);
 }
