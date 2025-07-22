@@ -11,7 +11,6 @@ const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
 const getAffectedTests = require('./getAffectedTests')
-const { writeFile } = require('fs')
 
 const getTestBinary = (suite) => {
   let testBinary = suite
@@ -144,7 +143,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   // Clear previous results file
   deleteFile(allResultsFilePath)
-  writeFile(allResultsFilePath, '')
+  await fs.writeFile(allResultsFilePath, '')
 
   let braveArgs = []
 
