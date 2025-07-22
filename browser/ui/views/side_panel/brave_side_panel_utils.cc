@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -12,8 +13,8 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/widget/widget.h"
 
 using SidePanelWebUIViewT_AIChatUI = SidePanelWebUIViewT<AIChatUI>;
 BEGIN_TEMPLATE_METADATA(SidePanelWebUIViewT_AIChatUI, SidePanelWebUIViewT)
@@ -21,17 +22,62 @@ END_METADATA
 
 namespace {
 
+class InitiallyFocusedWebView : public SidePanelWebUIViewT<AIChatUI> {
+ public:
+  InitiallyFocusedWebView(
+      SidePanelEntryScope& scope,
+      std::unique_ptr<WebUIContentsWrapperT<AIChatUI>> contents_wrapper)
+      : SidePanelWebUIViewT<AIChatUI>(
+            scope,
+            base::BindRepeating(&InitiallyFocusedWebView::OnShow,
+                                base::Unretained(this)),
+            base::RepeatingClosure(),
+            std::move(contents_wrapper)) {}
+
+  ~InitiallyFocusedWebView() override = default;
+
+  // views::View:
+  void ViewHierarchyChanged(
+      const views::ViewHierarchyChangedDetails& details) override {
+    SidePanelWebUIViewT<AIChatUI>::ViewHierarchyChanged(details);
+    if (details.is_add && details.child == this) {
+      CHECK(IsDrawn() && IsFocusable());
+      MaybeRequestFocus();
+    }
+  }
+
+ private:
+  void OnShow() {
+    should_focus_ = true;
+    MaybeRequestFocus();
+  }
+
+  void MaybeRequestFocus() {
+    if (should_focus_ && IsFocusable()) {
+      auto* widget = GetWidget();
+      CHECK(widget);
+      // There's a bug in focus handling. We should clear focus before setting
+      // side panel focused. Otherwise, focus won't be forwarded to the
+      // web contents properly.
+      widget->GetFocusManager()->ClearFocus();
+      RequestFocus();
+      should_focus_ = false;
+    }
+  }
+
+  bool should_focus_ = false;
+};
+
 std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
     base::WeakPtr<Profile> profile,
     SidePanelEntryScope& scope) {
   CHECK(profile);
 
-  auto web_view = std::make_unique<SidePanelWebUIViewT<AIChatUI>>(
-      scope, base::RepeatingClosure(), base::RepeatingClosure(),
-      std::make_unique<WebUIContentsWrapperT<AIChatUI>>(
-          ai_chat::TabAssociatedConversationUrl(), profile.get(),
-          IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
-          /*esc_closes_ui=*/false));
+  auto web_view = std::make_unique<InitiallyFocusedWebView>(
+      scope, std::make_unique<WebUIContentsWrapperT<AIChatUI>>(
+                 ai_chat::TabAssociatedConversationUrl(), profile.get(),
+                 IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
+                 /*esc_closes_ui=*/false));
   web_view->ShowUI();
   return web_view;
 }
