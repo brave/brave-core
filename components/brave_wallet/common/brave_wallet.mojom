@@ -209,7 +209,7 @@ interface CardanoProvider {
   IsEnabled() => (bool enabled);
 
   GetNetworkId() =>
-    (int32? network_id, CardanoProviderErrorBundle? error);
+    (int32 network_id, CardanoProviderErrorBundle? error);
   GetUsedAddresses() =>
     (array<string>? used_addresses, CardanoProviderErrorBundle? error);
   GetUnusedAddresses() =>

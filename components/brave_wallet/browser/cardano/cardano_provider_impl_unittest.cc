@@ -160,8 +160,7 @@ TEST_F(CardanoProviderImplUnitTest, GetNetworkId) {
                 {added_account->account_id->unique_key});
           });
 
-  TestFuture<std::optional<int32_t>, mojom::CardanoProviderErrorBundlePtr>
-      future;
+  TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr> future;
 
   provider()->GetNetworkId(future.GetCallback());
 
@@ -475,11 +474,10 @@ TEST_F(CardanoProviderImplUnitTest, MethodReturnsError_WhenNoPermission) {
   EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(0);
 
   {
-    TestFuture<std::optional<int32_t>, mojom::CardanoProviderErrorBundlePtr>
-        future;
+    TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr> future;
     provider()->GetNetworkId(future.GetCallback());
     auto [networkId, error] = future.Take();
-    EXPECT_FALSE(networkId);
+    EXPECT_EQ(networkId, 0);
     EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
@@ -603,8 +601,7 @@ TEST_F(CardanoProviderImplUnitTest, MethodReturnsSuccess_WhenHasPermission) {
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    TestFuture<std::optional<int32_t>, mojom::CardanoProviderErrorBundlePtr>
-        future;
+    TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr> future;
     provider()->GetNetworkId(future.GetCallback());
     auto [networkId, error] = future.Take();
     EXPECT_NE(error, GetAccountNotConnectedError());

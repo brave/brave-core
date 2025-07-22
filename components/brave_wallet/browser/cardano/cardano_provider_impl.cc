@@ -124,9 +124,8 @@ void CardanoProviderImpl::GetNetworkId(GetNetworkIdCallback callback) {
   auto account_id = GetAllowedSelectedAccount();
   if (!account_id) {
     std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
+        0, mojom::CardanoProviderErrorBundle::New(
+               kAPIErrorRefused, kAccountNotConnectedError, nullptr));
     return;
   }
 

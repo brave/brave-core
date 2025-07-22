@@ -73,7 +73,7 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
   void OnGetNetworkId(v8::Global<v8::Context> global_context,
                       v8::Global<v8::Promise::Resolver> promise_resolver,
                       v8::Isolate* isolate,
-                      std::optional<int32_t> network,
+                      int32_t network,
                       mojom::CardanoProviderErrorBundlePtr error_message);
 
   v8::Local<v8::Promise> GetUsedAddresses(v8::Isolate* isolate);

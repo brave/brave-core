@@ -214,7 +214,7 @@ void JSCardanoWalletApi::OnGetNetworkId(
     v8::Global<v8::Context> global_context,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
-    std::optional<int32_t> network,
+    int32_t network,
     mojom::CardanoProviderErrorBundlePtr error) {
   if (!render_frame()) {
     return;
@@ -226,8 +226,8 @@ void JSCardanoWalletApi::OnGetNetworkId(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  if (network) {
-    std::ignore = resolver->Resolve(context, v8::Int32::New(isolate, *network));
+  if (!error) {
+    std::ignore = resolver->Resolve(context, v8::Int32::New(isolate, network));
   } else {
     std::ignore = resolver->Reject(
         context, ConvertError(context->GetIsolate(), context, error));
