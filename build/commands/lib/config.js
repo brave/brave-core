@@ -1222,18 +1222,6 @@ Config.prototype.getCachePath = function () {
   return this.git_cache_path || process.env.GIT_CACHE_PATH
 }
 
-Config.prototype.isIOS = function () {
-  return this.targetOS === 'ios'
-}
-
-Config.prototype.isAndroid = function () {
-  return this.targetOS === 'android'
-}
-
-Config.prototype.isMobile = function () {
-  return this.isIOS() || this.isAndroid()
-}
-
 Object.defineProperty(Config.prototype, 'defaultOptions', {
   get: function () {
     let env = Object.assign({}, process.env)
