@@ -235,6 +235,8 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       (analysis?.affectedTests || []).map((x) => x.split(':').at(1)),
     )
 
+    // const skippableTestSuites = process.env.ENABLE_TEST_SKIPPING === '1'
+
     getTestsToRun(config, suite).every((testSuite) => {
       console.log(testSuite)
       let runArgs = braveArgs.slice()
@@ -259,18 +261,23 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
         }
       }
 
+      
       const filterAffected = filterFilePaths.find((filter) =>
         affectedFiles.has(filter),
       )
       if (
         analysis
+        && skippableTestSuites.has(testSuite)
         && !affectedTestExecutables.has(testSuite)
         && !filterAffected
       ) {
         console.log(
           `SKIPPED: "${testSuite}" didn't change since ${targetCommit}`,
         )
-        return
+
+        // FAKE a test run
+        runArgs.push(`--gtest_filter=SKIP_ALL_TESTS`)
+        //return
       }
 
       let convertJSONToXML = false
