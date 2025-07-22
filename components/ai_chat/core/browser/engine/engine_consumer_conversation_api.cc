@@ -245,11 +245,11 @@ EngineConsumerConversationAPI::GetUserMemoryEvent() const {
     return std::nullopt;
   }
 
-  return std::optional<ConversationEvent>(ConversationEvent(
-      ConversationEventRole::User, ConversationEventType::UserMemory,
-      std::vector<std::string>(),  // Empty content
-      "",                          // Empty topic
-      std::move(user_memory)));
+  return ConversationEvent(ConversationEventRole::User,
+                           ConversationEventType::UserMemory,
+                           std::vector<std::string>(),  // Empty content
+                           "",                          // Empty topic
+                           std::move(user_memory));
 }
 
 void EngineConsumerConversationAPI::GenerateAssistantResponse(

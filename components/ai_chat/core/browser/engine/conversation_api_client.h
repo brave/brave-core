@@ -109,8 +109,8 @@ class ConversationAPIClient {
     // Only in a role=User type=GetFocusTabsForTopic event
     std::string topic;
 
-    std::optional<base::Value::Dict> user_memory =
-        std::nullopt;  // Used in UserMemory event.
+    // Only in a role=User type=UserMemory event.
+    std::optional<base::Value::Dict> user_memory;
 
     // Only for a role=Assistant type=ChatMessage event. Contains the calls
     // the assistant wants to make to provided tools.
