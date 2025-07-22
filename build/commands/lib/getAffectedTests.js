@@ -42,7 +42,7 @@ async function getReferenceCommit() {
   ]).then((x) => x.stdout)
 
   if (currentBranch !== 'master') {
-    return 'master'
+    return 'origin/master'
   }
 
   // bail: we don't know the last succesful test run
