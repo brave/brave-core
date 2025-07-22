@@ -143,7 +143,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   // Clear previous results file
   deleteFile(allResultsFilePath)
-  await fs.writeFile(allResultsFilePath, '')
+  await fs.writeFile(allResultsFilePath, '', 'utf-8')
 
   let braveArgs = []
 
@@ -223,7 +223,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
 
     // Run the tests
 
-    const analysis = null; // await getAffectedTests(config.outputDir)
+    const analysis = await getAffectedTests(config.outputDir)
 
     const targetCommit = analysis?.targetCommit
     const affectedFiles = new Set(
