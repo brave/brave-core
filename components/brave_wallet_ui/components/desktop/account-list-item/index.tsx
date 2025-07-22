@@ -126,7 +126,7 @@ export const AccountListItem = ({
 
   // selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // redux
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
@@ -447,7 +447,7 @@ export const AccountListItem = ({
 
             {!isDisconnectedRewardsAccount && (
               <Row width='unset'>
-                {!isAndroid && !isPanel && !accountsFiatValue.isZero() ? (
+                {!isMobile && !isPanel && !accountsFiatValue.isZero() ? (
                   tokensWithBalances.length ? (
                     <TokenIconsStack tokens={tokensWithBalances} />
                   ) : (

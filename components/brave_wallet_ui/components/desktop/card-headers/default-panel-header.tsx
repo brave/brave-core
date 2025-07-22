@@ -42,7 +42,7 @@ export const DefaultPanelHeader = (props: Props) => {
   const { title, expandRoute } = props
 
   // UI Selectors (safe)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // State
   const [showSettingsMenu, setShowSettingsMenu] = React.useState<boolean>(false)
@@ -75,13 +75,13 @@ export const DefaultPanelHeader = (props: Props) => {
         width='unset'
         justifyContent='flex-start'
       >
-        {!isAndroid && expandRoute && (
+        {!isMobile && expandRoute && (
           <Button onClick={onClickExpand}>
             <ButtonIcon name='expand' />
           </Button>
         )}
       </LeftRightContainer>
-      <HeaderTitle isAndroidOrPanel={true}>{title}</HeaderTitle>
+      <HeaderTitle isMobileOrPanel={true}>{title}</HeaderTitle>
       <LeftRightContainer
         width='unset'
         justifyContent='flex-end'
