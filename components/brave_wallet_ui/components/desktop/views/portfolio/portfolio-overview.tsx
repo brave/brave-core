@@ -143,8 +143,8 @@ export const PortfolioOverview = () => {
 
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isMobile || isPanel
 
   // custom hooks
   const {
@@ -549,13 +549,13 @@ export const PortfolioOverview = () => {
       wrapContentInBox={true}
       noCardPadding={true}
       cardHeader={<PortfolioOverviewHeader />}
-      useDarkBackground={isAndroidOrPanel}
+      useDarkBackground={isMobileOrPanel}
       isPortfolio={true}
     >
       <DefaultPageWrapper>
         <Column
           fullWidth={true}
-          padding={isAndroidOrPanel ? '0px' : '20px 20px 0px 20px'}
+          padding={isMobileOrPanel ? '0px' : '20px 20px 0px 20px'}
         >
           <Banners />
         </Column>
@@ -681,7 +681,7 @@ export const PortfolioOverview = () => {
               fullWidth={true}
               fullHeight={true}
               justifyContent='flex-start'
-              isAndroidOrPanel={isAndroidOrPanel}
+              isMobileOrPanel={isMobileOrPanel}
             >
               <TransactionsScreen isPortfolio={true} />
             </ActivityWrapper>

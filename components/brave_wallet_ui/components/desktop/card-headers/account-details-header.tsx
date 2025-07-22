@@ -89,9 +89,9 @@ export const AccountDetailsHeader = (props: Props) => {
   const { account, onClickMenuOption, tokenBalancesRegistry } = props
 
   // UI Selectors (safe)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobileOrPanel = isMobile || isPanel
 
   // routing
   const history = useHistory()
@@ -221,11 +221,11 @@ export const AccountDetailsHeader = (props: Props) => {
   }, [account])
 
   const headerPadding = React.useMemo(() => {
-    if (isAndroidOrPanel) {
+    if (isMobileOrPanel) {
       return '16px'
     }
     return '24px 0px'
-  }, [isAndroidOrPanel])
+  }, [isMobileOrPanel])
 
   // Methods
   const goBack = React.useCallback(() => {
@@ -239,7 +239,7 @@ export const AccountDetailsHeader = (props: Props) => {
       data-key='account-details-header'
     >
       <Row width='unset'>
-        {isAndroidOrPanel ? (
+        {isMobileOrPanel ? (
           <Row
             width='unset'
             margin='0px 12px 0px 0px'
@@ -290,7 +290,7 @@ export const AccountDetailsHeader = (props: Props) => {
       </Row>
 
       <Row width='unset'>
-        {!isAndroidOrPanel && (
+        {!isMobileOrPanel && (
           <>
             <Column
               alignItems='flex-end'
@@ -316,7 +316,7 @@ export const AccountDetailsHeader = (props: Props) => {
           </>
         )}
         <MenuWrapper ref={accountDetailsMenuRef}>
-          {isAndroidOrPanel ? (
+          {isMobileOrPanel ? (
             <Button onClick={() => setShowAccountDetailsMenu((prev) => !prev)}>
               <ButtonIcon name='more-vertical' />
             </Button>
