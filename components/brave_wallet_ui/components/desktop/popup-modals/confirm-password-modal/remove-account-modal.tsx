@@ -41,7 +41,7 @@ export const RemoveAccountModal = () => {
   const dispatch = useDispatch()
 
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // accounts tab state
   const accountToRemove = useSelector(
@@ -173,7 +173,7 @@ export const RemoveAccountModal = () => {
           </Row>
         </Column>
 
-        {isAndroid || isPanel ? (
+        {isMobile || isPanel ? (
           <Row gap='4px'>
             <LeoSquaredButton
               onClick={() =>

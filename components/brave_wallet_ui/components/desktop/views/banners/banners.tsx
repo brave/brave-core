@@ -32,7 +32,7 @@ import {
 export const Banners = () => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // Queries
   const {
@@ -79,7 +79,7 @@ export const Banners = () => {
 
   // Methods
   const onShowBackup = React.useCallback(() => {
-    if (isAndroid) {
+    if (isMobile) {
       getWalletPageApiProxy().pageHandler.showWalletBackupUI()
       return
     }
@@ -100,7 +100,7 @@ export const Banners = () => {
       return
     }
     history.push(WalletRoutes.Backup)
-  }, [isAndroid, isPanel, history])
+  }, [isMobile, isPanel, history])
 
   return (
     <>
