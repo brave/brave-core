@@ -38,7 +38,7 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
   ~AIChatSidePanelWebView() override = default;
 
  private:
-  // This callback is invoked multipole times, so we need to ensure that
+  // This callback is invoked multiple times, so we need to ensure that
   // focus is set only once with `should_focus_`.
   void OnShow() {
     if (!should_focus_) {
