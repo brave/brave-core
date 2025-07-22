@@ -2188,7 +2188,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, account_id.Clone(),
+      origin_info.Clone(), 0, account_id.Clone(),
       mojom::SignDataUnion::NewEthStandardSignData(
           mojom::EthStandardSignData::New(message)),
       mojom::CoinType::ETH, mojom::kMainnetChainId);
@@ -2205,16 +2205,16 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
   service_->NotifySignMessageRequestProcessed(
-      true, 1, expected_signature.Clone(), std::nullopt);
+      true, 0, expected_signature.Clone(), std::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   service_->NotifySignMessageRequestProcessed(
-      true, 1, expected_signature.Clone(), std::nullopt);
+      true, 0, expected_signature.Clone(), std::nullopt);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, account_id.Clone(),
+      origin_info.Clone(), 0, account_id.Clone(),
       mojom::SignDataUnion::NewEthStandardSignData(
           mojom::EthStandardSignData::New(message)),
       mojom::CoinType::ETH, mojom::kMainnetChainId);
@@ -2231,7 +2231,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
   service_->NotifySignMessageRequestProcessed(
-      false, 2, expected_signature.Clone(), expected_error);
+      false, 1, expected_signature.Clone(), expected_error);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
 }
@@ -2246,7 +2246,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, account_id.Clone(),
+      origin_info.Clone(), 0, account_id.Clone(),
       mojom::SignDataUnion::NewEthStandardSignData(
           mojom::EthStandardSignData::New(message)),
       mojom::CoinType::ETH, mojom::kMainnetChainId);
@@ -2262,15 +2262,15 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
         callback_is_called = true;
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
-  service_->NotifySignMessageRequestProcessed(true, 1, nullptr, std::nullopt);
+  service_->NotifySignMessageRequestProcessed(true, 0, nullptr, std::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
-  service_->NotifySignMessageRequestProcessed(true, 1, nullptr, std::nullopt);
+  service_->NotifySignMessageRequestProcessed(true, 0, nullptr, std::nullopt);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, account_id.Clone(),
+      origin_info.Clone(), 0, account_id.Clone(),
       mojom::SignDataUnion::NewEthStandardSignData(
           mojom::EthStandardSignData::New(message)),
       mojom::CoinType::ETH, mojom::kMainnetChainId);
@@ -2285,7 +2285,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
         callback_is_called = true;
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
-  service_->NotifySignMessageRequestProcessed(false, 2, nullptr, std::nullopt);
+  service_->NotifySignMessageRequestProcessed(false, 1, nullptr, std::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
 }
@@ -2447,7 +2447,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, account_id.Clone(),
+      origin_info.Clone(), 0, account_id.Clone(),
       mojom::SignDataUnion::NewEthStandardSignData(
           mojom::EthStandardSignData::New(message)),
       mojom::CoinType::ETH, mojom::kMainnetChainId);

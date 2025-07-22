@@ -315,6 +315,17 @@ std::vector<mojom::CardanoAddressPtr> CardanoWalletService::GetUnusedAddresses(
   return {};
 }
 
+mojom::CardanoAddressPtr CardanoWalletService::GetChangeAddress(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(IsCardanoAccount(account_id));
+
+  // We always have one address for a cardano account which is a change address
+  // also.
+  return keyring_service().GetCardanoAddress(
+      account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+}
+
 cardano_rpc::CardanoRpc* CardanoWalletService::GetCardanoRpc(
     const std::string& chain_id) {
   if (chain_id == mojom::kCardanoMainnet) {

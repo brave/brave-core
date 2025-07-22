@@ -526,7 +526,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUsedAddresses) {
   ON_CALL(*provider, GetUsedAddresses(_))
       .WillByDefault(::testing::Invoke(
           [&](TestCardanoProvider::GetUsedAddressesCallback callback) {
-            std::move(callback).Run({"1", "2"}, nullptr);
+            std::vector<std::string> result{"1", "2"};
+            std::move(callback).Run(result, nullptr);
           }));
   auto result =
       EvalJs(web_contents(browser()),
@@ -575,7 +576,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUnusedAddresses) {
   ON_CALL(*provider, GetUnusedAddresses(_))
       .WillByDefault(::testing::Invoke(
           [&](TestCardanoProvider::GetUnusedAddressesCallback callback) {
-            std::move(callback).Run({"1", "2"}, nullptr);
+            std::vector<std::string> result{"1", "2"};
+            std::move(callback).Run(result, nullptr);
           }));
   auto result =
       EvalJs(web_contents(browser()),
@@ -718,7 +720,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetRewardAddresses) {
   ON_CALL(*provider, GetRewardAddresses(_))
       .WillByDefault(::testing::Invoke(
           [&](TestCardanoProvider::GetRewardAddressesCallback callback) {
-            std::move(callback).Run({"1", "2"}, nullptr);
+            std::vector<std::string> result{"1", "2"};
+            std::move(callback).Run(result, nullptr);
           }));
 
   auto result =

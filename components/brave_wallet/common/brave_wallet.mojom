@@ -209,25 +209,25 @@ interface CardanoProvider {
   IsEnabled() => (bool enabled);
 
   GetNetworkId() =>
-    (int32 network_id, CardanoProviderErrorBundle? error);
+    (int32? network_id, CardanoProviderErrorBundle? error);
   GetUsedAddresses() =>
-    (array<string> used_addresses, CardanoProviderErrorBundle? error);
+    (array<string>? used_addresses, CardanoProviderErrorBundle? error);
   GetUnusedAddresses() =>
-    (array<string> unused_addresses, CardanoProviderErrorBundle? error);
+    (array<string>? unused_addresses, CardanoProviderErrorBundle? error);
   GetChangeAddress() =>
-    (string change_address, CardanoProviderErrorBundle? error);
+    (string? change_address, CardanoProviderErrorBundle? error);
   GetRewardAddresses() =>
-    (array<string> reward_addresses, CardanoProviderErrorBundle? error);
+    (array<string>? reward_addresses, CardanoProviderErrorBundle? error);
   GetBalance() =>
-    (string cbor_balance, CardanoProviderErrorBundle? error_message);
+    (string? cbor_balance, CardanoProviderErrorBundle? error_message);
   GetUtxos(string? amount, CardanoProviderPagination? paginate) =>
     (array<string>? utxos, CardanoProviderErrorBundle? error);
   SignTx(string tx_cbor, bool partial_sign) =>
-    (string signed_tx_cbor, CardanoProviderErrorBundle? error);
+    (string? signed_tx_cbor, CardanoProviderErrorBundle? error);
   SubmitTx(string signed_tx_cbor) =>
-    (string tx_hash, CardanoProviderErrorBundle? error);
+    (string? tx_hash, CardanoProviderErrorBundle? error);
   SignData(string address, string payload_hex) =>
-    (mojo_base.mojom.DictionaryValue signature,
+    (mojo_base.mojom.DictionaryValue? signature,
       CardanoProviderErrorBundle? error);
   GetCollateral(string amount) => (array<string>? utxos,
       CardanoProviderErrorBundle? error);

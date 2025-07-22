@@ -1335,9 +1335,8 @@ void BraveWalletService::AddSignMessageRequest(
     SignMessageRequestCallback callback) {
   DCHECK(CoinSupportsDapps(request->coin));
 
-  if (request->id < 0) {
-    request->id = sign_message_id_++;
-  }
+  DCHECK_EQ(request->id, 0);
+  request->id = sign_message_id_++;
   sign_message_requests_.emplace_back(std::move(request), std::move(callback));
 
   sign_message_added_callback_list_.Notify();

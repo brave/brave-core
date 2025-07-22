@@ -167,6 +167,14 @@ TEST_F(CardanoWalletServiceUnitTest, GetUnusedAddresses) {
             cardano_wallet_service_->GetUnusedAddresses(account_id()).size());
 }
 
+TEST_F(CardanoWalletServiceUnitTest, GetChangeAddress) {
+  SetupCardanoAccount();
+  auto address = cardano_wallet_service_->GetChangeAddress(account_id());
+  EXPECT_EQ(address->address_string,
+            "addr1q9gn9ra9l2mz35uc0ww0qkgf5mugczqyxvr5wegdacxa724hwphl5wrg6u8s8"
+            "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8");
+}
+
 TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
   // TODO(https://github.com/brave/brave-browser/issues/45278): needs more tests
   // for all corner cases.
