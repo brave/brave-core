@@ -56,9 +56,12 @@ struct TabGridView: View {
   @Environment(\.colorScheme) private var colorScheme
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
+  @ObservedObject private var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
+
   private enum DestinationSheet: Int, Identifiable, Hashable {
     case syncedTabs
     case history
+    case privateTabsSettings
 
     var id: Int {
       rawValue
@@ -203,6 +206,11 @@ struct TabGridView: View {
         if let historyModel = viewModel.historyModel {
           HistoryView(model: historyModel)
         }
+      case .privateTabsSettings:
+        TabGridPrivateTabsSettings(viewModel: viewModel)
+          .presentationDetents([.medium])
+          .colorScheme(.dark)
+          .preferredColorScheme(.dark)
       }
     }
     .alert(
@@ -342,6 +350,15 @@ struct TabGridView: View {
           viewModel.closeAllTabs()
         } label: {
           Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
+        }
+        if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
+          Section {
+            Button {
+              destinationSheet = .privateTabsSettings
+            } label: {
+              Label(Strings.TabGrid.privateTabsSettingsTitle, braveSystemImage: "leo.settings")
+            }
+          }
         }
       } label: {
         Text(Strings.TabGrid.moreMenuButtonTitle)
