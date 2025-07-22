@@ -14,13 +14,12 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
 namespace brave_wallet {
 
 WalletHandler::WalletHandler(
     mojo::PendingReceiver<mojom::WalletHandler> receiver,
-    ChromeBrowserState* browser_state)
+    ProfileIOS* browser_state)
     : receiver_(this, std::move(receiver)),
       brave_wallet_service_(
           BraveWalletServiceFactory::GetServiceForState(browser_state)) {}
@@ -40,8 +39,10 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
   std::move(callback).Run(mojom::WalletInfo::New(
       keyring_service->IsWalletCreatedSync(), keyring_service->IsLockedSync(),
       keyring_service->IsWalletBackedUpSync(), IsBitcoinEnabled(),
-      IsBitcoinImportEnabled(), IsZCashEnabled(), IsAnkrBalancesEnabled(),
-      IsTransactionSimulationsEnabled()));
+      IsBitcoinImportEnabled(), IsBitcoinLedgerEnabled(), IsZCashEnabled(),
+      IsAnkrBalancesEnabled(), IsTransactionSimulationsEnabled(),
+      IsZCashShieldedTransactionsEnabled(), IsCardanoEnabled(),
+      GetEnabledCoins(), IsCardanoDAppSupportEnabled()));
 }
 
 }  // namespace brave_wallet
