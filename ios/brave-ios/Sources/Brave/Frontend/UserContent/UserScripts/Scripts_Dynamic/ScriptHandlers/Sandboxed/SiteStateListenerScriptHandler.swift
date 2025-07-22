@@ -63,8 +63,12 @@ class SiteStateListenerScriptHandler: TabContentScript {
 
       Task { @MainActor in
         if let pageData = tab.currentPageData {
-          let domain = pageData.domain(persistent: !tab.isPrivate)
-          guard domain.globalBlockAdsAndTrackingLevel.isEnabled,
+          guard let braveShieldsHelper = tab.braveShieldsHelper,
+            case let shieldLevel = braveShieldsHelper.shieldLevel(
+              for: pageData.mainFrameURL,
+              considerAllShieldsOption: true
+            ),
+            shieldLevel.isEnabled,
             pageData.mainFrameURL.isWebPage(includeDataURIs: false)
           else {
             return
@@ -72,7 +76,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
 
           let models = await AdBlockGroupsManager.shared.cosmeticFilterModels(
             forFrameURL: frameURL,
-            domain: domain
+            isAdBlockEnabled: shieldLevel.isEnabled
           )
 
           var cachedStandardSelectors: Set<String> = .init()
@@ -85,7 +89,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
           }
           let setup = UserScriptType.ContentCosmeticSetup.makeSetup(
             from: models,
-            isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
+            isAggressive: shieldLevel.isAggressive,
             cachedStandardSelectors: cachedStandardSelectors,
             cachedAggressiveSelectors: cachedAggressiveSelectors
           )

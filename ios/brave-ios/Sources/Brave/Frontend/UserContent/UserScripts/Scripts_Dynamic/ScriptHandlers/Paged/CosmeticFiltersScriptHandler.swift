@@ -52,11 +52,12 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       }
 
       Task { @MainActor in
-        let domain = Domain.getOrCreate(
-          forUrl: frameURL,
-          persistent: !tab.isPrivate
+        let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(
+          isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
+            for: frameURL,
+            considerAllShieldsOption: true
+          ).isEnabled ?? true
         )
-        let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(for: domain)
 
         let selectorArrays = await cachedEngines.asyncCompactMap {
           cachedEngine -> (selectors: Set<String>, isAlwaysAggressive: Bool)? in
