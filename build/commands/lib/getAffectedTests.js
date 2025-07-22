@@ -7,6 +7,7 @@ const { promisify } = require('util')
 const { readFile, writeFile } = require('fs/promises')
 const exec = promisify(require('child_process').execFile)
 const path = require('path')
+const config = require('../lib/config')
 
 const getTestTargets = (outDir, filters = ['//*']) =>
   exec('./vendor/depot_tools/gn', [
