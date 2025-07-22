@@ -260,7 +260,8 @@ TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
   EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[1].GetDict().Find("content"),
             "This is a video "
-            "transcript:\n\n\u003Ctranscript>\nThi\n\u003C/transcript>\n\n");
+            "transcript:\n\n\u003Ctranscript>\nThis is content 2 "
+            "an\n\u003C/transcript>\n\n");
 }
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
@@ -740,15 +741,14 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
-class MockOAIEngineConsumer : public EngineConsumerOAIRemote {
- public:
-  using EngineConsumerOAIRemote::EngineConsumerOAIRemote;
-  ~MockOAIEngineConsumer() override = default;
-  MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
-};
+TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
+  class MockOAIEngineConsumer : public EngineConsumerOAIRemote {
+   public:
+    using EngineConsumerOAIRemote::EngineConsumerOAIRemote;
+    ~MockOAIEngineConsumer() override = default;
+    MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
+  };
 
-TEST_F(EngineConsumerOAIUnitTest,
-       GenerateAssistantResponse_CallsSanitizeInputOnPageContent) {
   PageContent page_content_1("This is a page about The Mandalorian.", false);
   PageContent page_content_2("This is a video about The Mandalorian.", true);
 
@@ -756,32 +756,28 @@ TEST_F(EngineConsumerOAIUnitTest,
       *model_->options->get_custom_model_options(), nullptr, nullptr);
   mock_engine_consumer->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
 
-  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
-  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+  // Calling GenerateAssistantResponse should call SanitizeInput
+  {
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
 
-  std::vector<mojom::ConversationTurnPtr> history;
-  history.push_back(mojom::ConversationTurn::New());
-  mock_engine_consumer->GenerateAssistantResponse(
-      {page_content_1, page_content_2}, history, "", {}, std::nullopt,
-      base::DoNothing(), base::DoNothing());
-  testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
-}
+    std::vector<mojom::ConversationTurnPtr> history;
+    history.push_back(mojom::ConversationTurn::New());
+    mock_engine_consumer->GenerateAssistantResponse(
+        {page_content_1, page_content_2}, history, "", {}, std::nullopt,
+        base::DoNothing(), base::DoNothing());
+    testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
+  }
 
-TEST_F(EngineConsumerOAIUnitTest,
-       GenerateQuestionSuggestions_CallsSanitizeInputOnPageContent) {
-  PageContent page_content_1("This is a page about The Mandalorian.", false);
-  PageContent page_content_2("This is a video about The Mandalorian.", true);
+  // Calling GenerateQuestionSuggestions should call SanitizeInput
+  {
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
 
-  auto mock_engine_consumer = std::make_unique<MockOAIEngineConsumer>(
-      *model_->options->get_custom_model_options(), nullptr, nullptr);
-  mock_engine_consumer->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
-
-  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
-  EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
-
-  mock_engine_consumer->GenerateQuestionSuggestions(
-      {page_content_1, page_content_2}, "", base::DoNothing());
-  testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
+    mock_engine_consumer->GenerateQuestionSuggestions(
+        {page_content_1, page_content_2}, "", base::DoNothing());
+    testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
+  }
 }
 
 }  // namespace ai_chat
