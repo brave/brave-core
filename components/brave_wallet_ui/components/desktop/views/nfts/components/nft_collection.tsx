@@ -130,9 +130,9 @@ export const NftCollection = ({ networks, accounts }: Props) => {
   )
 
   // UI Selectors (safe)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobileOrPanel = isMobile || isPanel
 
   // local-storage
   const [hideUnownedNfts] = useSyncedLocalStorage<boolean>(
@@ -376,9 +376,9 @@ export const NftCollection = ({ networks, accounts }: Props) => {
     >
       <ContentWrapper
         fullWidth={true}
-        fullHeight={isAndroidOrPanel}
+        fullHeight={isMobileOrPanel}
         justifyContent='flex-start'
-        isAndroidOrPanel={isAndroidOrPanel}
+        isMobileOrPanel={isMobileOrPanel}
       >
         <NFTListWrapper
           ref={listScrollContainerRef}

@@ -27,9 +27,9 @@ import { Row } from '../../shared/style'
 export const ExploreWeb3Header = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
-  return isPanel || isAndroid ? (
+  return isPanel || isMobile ? (
     <DefaultPanelHeader
       title={getLocale('braveWalletTopNavExplore')}
       expandRoute={WalletRoutes.Explore}
