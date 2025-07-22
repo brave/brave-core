@@ -9,8 +9,7 @@ import styled from 'styled-components'
 import * as S from './style'
 import Icon from '@brave/leo/react/icon'
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { getLocale } from '$web-common/locale'
-import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
+import { getLocale, formatLocale } from '$web-common/locale'
 import SelectRegionList from '../select-region-list'
 import PanelBox from '../panel-box'
 import Toggle from '../toggle'
@@ -58,7 +57,6 @@ const RegionServerLabel = styled.span`
 
 function SessionExpiredContent() {
   const productUrls = useSelector((state) => state.productUrls)
-  const message = getLocale('braveVpnSessionExpiredContent')
 
   const handleClick = (intent: ManageURLType) => {
     if (!productUrls) return
@@ -67,18 +65,15 @@ function SessionExpiredContent() {
 
   return (
     <span>
-      {formatMessage(message, {
-        tags: {
-          $1: (content) => (
-            <a
-              href='#'
-              key='recoverAccount'
-              onClick={() => handleClick(ManageURLType.MANAGE)}
-            >
-              {content}
-            </a>
-          )
-        }
+      {formatLocale('braveVpnSessionExpiredContent', {
+        $1: (content) => (
+          <a
+            href='#'
+            onClick={() => handleClick(ManageURLType.MANAGE)}
+          >
+            {content}
+          </a>
+        )
       })}
     </span>
   )
