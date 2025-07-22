@@ -222,7 +222,8 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
 
     // Run the tests
 
-    const analysis = await getAffectedTests(config.outputDir)
+    const analysis = await getAffectedTests(config.outputDir);
+    const targetCommit = analysis.targetCommit;
     const affectedFiles = new Set(
       analysis.files.map((x) =>
         path.join(config.braveCoreDir, x.replace('//brave', '')),
@@ -261,7 +262,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       )
       if (!affectedTestExecutables.has(testSuite) && !filterAffected) {
         console.log(
-          `SKIPPED: "${testSuite}" as it didn't change since ${analysis.targetCommit}`,
+          `SKIPPED: "${testSuite}" didn't change since ${targetCommit}`,
         )
         return
       }

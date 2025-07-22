@@ -11,7 +11,7 @@ const path = require('path')
 const getTestTargets = (outDir, filters = ['//*']) =>
   exec('./vendor/depot_tools/gn', [
     'ls',
-    '../' + outDir,
+    outDir,
     '--type=executable',
     '--testonly=true',
     filters,
@@ -42,6 +42,9 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   const targetCommit = ciLastSuccessfulCommit || 'HEAD^'
   // const baseCommit = process.argv[3];
 
+  outDir = (outDir.startsWith('..') || outDir.startsWith('/')) 
+    ? outDir 
+    : '../'+outDir
   const testTargets = await getTestTargets(outDir, filters)
   const files = await getModifiedFiles(targetCommit)
 
