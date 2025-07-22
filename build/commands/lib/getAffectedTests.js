@@ -94,7 +94,6 @@ async function getAffectedTests(outDir, filters = ['//*']) {
     outDir,
     filters,
     ...toAnalyze,
-    // baseCommit,
     targetCommit,
     affectedTests: output.test_targets,
   }
