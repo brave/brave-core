@@ -40,6 +40,10 @@ class ChromeWebUIController: UIViewController, BraveWebViewUIDelegate {
 
   // MARK: - CWVUIDelegate
 
+  func webViewDidClose(_ webView: CWVWebView) {
+    dismiss(animated: true)
+  }
+
   func webView(
     _ webView: CWVWebView,
     runJavaScriptAlertPanelWithMessage message: String,
