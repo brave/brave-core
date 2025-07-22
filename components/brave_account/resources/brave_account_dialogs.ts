@@ -10,14 +10,29 @@ import {
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_dialogs.html.js'
+import { RegisterFailureReason } from './brave_account.mojom-webui.js'
 
-export enum Dialog {
-  NONE,
-  CREATE,
-  ENTRY,
-  FORGOT_PASSWORD,
-  SIGN_IN,
-}
+export const DialogType = {
+  NONE: 'NONE',
+  CREATE: 'CREATE',
+  ENTRY: 'ENTRY',
+  FORGOT_PASSWORD: 'FORGOT_PASSWORD',
+  SIGN_IN: 'SIGN_IN',
+  ERROR: 'ERROR',
+} as const
+
+export type DialogType = typeof DialogType[keyof typeof DialogType]
+
+export type TaggedFailureReason =
+  | { kind: 'register'; reason: RegisterFailureReason }
+
+export type Dialog =
+  | { type: typeof DialogType.NONE }
+  | { type: typeof DialogType.CREATE }
+  | { type: typeof DialogType.ENTRY }
+  | { type: typeof DialogType.FORGOT_PASSWORD }
+  | { type: typeof DialogType.SIGN_IN }
+  | { type: typeof DialogType.ERROR; failure: TaggedFailureReason }
 
 export class BraveAccountDialogs extends CrLitElement {
   static get is() {
@@ -30,23 +45,18 @@ export class BraveAccountDialogs extends CrLitElement {
 
   static override get properties() {
     return {
-      dialog: { type: Dialog },
+      dialog: { type: Object },
       signedIn: { type: Boolean, reflect: true },
     }
   }
 
   protected onBackButtonClicked() {
-    switch (this.dialog) {
-      case Dialog.CREATE:
-        this.dialog = Dialog.ENTRY
-        break
-      case Dialog.FORGOT_PASSWORD:
-        this.dialog = Dialog.SIGN_IN
-        break
-      case Dialog.SIGN_IN:
-        this.dialog = Dialog.ENTRY
-        break
-    }
+    const { type } = this.dialog;
+  
+    this.dialog =
+      type === 'FORGOT_PASSWORD'
+        ? { type: 'SIGN_IN' }
+        : { type: 'ENTRY' }
   }
 
   protected onCloseButtonClicked() {
@@ -56,7 +66,7 @@ export class BraveAccountDialogs extends CrLitElement {
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
-  protected accessor dialog: Dialog = Dialog.ENTRY
+  protected accessor dialog: Dialog = { type: 'ENTRY' }
   protected accessor signedIn: boolean = false
 }
 
