@@ -35,14 +35,18 @@ async function getReferenceCommit() {
     return process.env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
   }
 
-  const currentBranch = await exec('git', ['rev-parse', '--abbrev-ref', 'HEAD'])
-    .then(x => x.stdout)
-  
-  if (currentBranch != 'master') {
+  const currentBranch = await exec('git', [
+    'rev-parse',
+    '--abbrev-ref',
+    'HEAD',
+  ]).then((x) => x.stdout)
+
+  if (currentBranch !== 'master') {
     return 'master'
   }
 
-  return 'HEAD~'
+  // bail: we don't know the last succesful test run
+  return null
 }
 
 async function getAffectedTests(outDir, filters = ['//*']) {
@@ -50,15 +54,16 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   // TODO: find TeamCity equivalent.
   // TODO: we can optimize further by getting the last failure commit
   const targetCommit = await getReferenceCommit()
-  if (targetCommit) {
-    console.log('analyzing tests based on', targetCommit)
+  if (!targetCommit) {
+    return null
   }
 
+  console.log('analyzing tests based on', targetCommit)
 
   const root = path.resolve(process.cwd(), '../')
-  outDir = 
+  outDir =
     outDir.startsWith('..') || outDir.startsWith('/')
-      ? outDir 
+      ? outDir
       : `${root}/${outDir}`
   const testTargets = await getTestTargets(outDir, filters)
   const files = await getModifiedFiles(targetCommit)

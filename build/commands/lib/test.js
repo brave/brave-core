@@ -225,14 +225,15 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
     // Run the tests
 
     const analysis = await getAffectedTests(config.outputDir)
-    const {targetCommit} = analysis
+
+    const targetCommit = analysis?.targetCommit
     const affectedFiles = new Set(
-      analysis.files.map((x) =>
+      (analysis?.files || []).map((x) =>
         path.join(config.braveCoreDir, x.replace('//brave', '')),
       ),
     )
     const affectedTestExecutables = new Set(
-      analysis.affectedTests.map((x) => x.split(':').at(1)),
+      (analysis?.affectedTests || []).map((x) => x.split(':').at(1)),
     )
 
     getTestsToRun(config, suite).every((testSuite) => {
@@ -262,7 +263,11 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
       const filterAffected = filterFilePaths.find((filter) =>
         affectedFiles.has(filter),
       )
-      if (!affectedTestExecutables.has(testSuite) && !filterAffected) {
+      if (
+        analysis
+        && !affectedTestExecutables.has(testSuite)
+        && !filterAffected
+      ) {
         console.log(
           `SKIPPED: "${testSuite}" didn't change since ${targetCommit}`,
         )
