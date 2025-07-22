@@ -243,6 +243,73 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateEvents_BasicMessage_MultiAssociatedTruncates) {
+  size_t content_length = kTestingMaxAssociatedContentLength / 2 + 10;
+  PageContent page_content_1(std::string(content_length, 'a'), false);
+  PageContent page_content_2(std::string(content_length, 'b'), false);
+  std::string expected_page_content_1(content_length, 'a');
+
+  // Second content should be truncated to the remaining available space
+  std::string expected_page_content_2(
+      kTestingMaxAssociatedContentLength - content_length, 'b');
+  std::string expected_user_message_content =
+      "Tell the user which show is this about?";
+  std::string expected_events = R"([
+    {"role": "user", "type": "pageText", "content": ")" +
+                                expected_page_content_1 + R"("},
+    {"role": "user", "type": "pageText", "content": ")" +
+                                expected_page_content_2 + R"("},
+    {"role": "user", "type": "chatMessage", "content": ")" +
+                                expected_user_message_content + R"("}
+  ])";
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // Some structured EXPECT calls to catch nicer errors first
+        EXPECT_EQ(conversation.size(), 3u);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[1].type, ConversationAPIClient::PageText);
+        EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
+                  expected_page_content_1);
+        EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
+                  expected_page_content_2);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
+        // Match entire structure
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->text = "Which show is this about?";
+  turn->prompt = "Tell the user which show is this about?";
+  history.push_back(std::move(turn));
+
+  engine_->GenerateAssistantResponse(
+      {page_content_1, page_content_2}, history, "", {}, std::nullopt,
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
   PageContent page_content("This is a page about The Mandalorian.", false);
   std::string expected_events = R"([
@@ -1013,7 +1080,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
       std::nullopt /* model_key */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse(PageContentses(), history, "", {},
+  engine_->GenerateAssistantResponse(PageContents(), history, "", {},
                                      std::nullopt, base::DoNothing(),
                                      future.GetCallback());
   EXPECT_EQ(future.Take(),
@@ -1712,7 +1779,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetStrArrFromResponse) {
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   PageContent page_content("Sample page content.", false);
   PageContent video_content("Sample video content.", true);
-  PageContentses page_contents{page_content, video_content};
+  PageContents page_contents{page_content, video_content};
 
   std::string selected_language = "en-US";
 
@@ -1898,7 +1965,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   base::RunLoop run_loop;
   PageContent page_content("This is a test page content.", false);
-  PageContentses page_contents;
+  PageContents page_contents;
   page_contents.push_back(page_content);
 
   engine_->GenerateAssistantResponse(

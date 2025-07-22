@@ -465,7 +465,7 @@ TEST_P(AIChatServiceUnitTest,
   base::OnceClosure resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(
-          [&resolve](PageContentses page_contents,
+          [&resolve](PageContents page_contents,
                      const std::vector<mojom::ConversationTurnPtr>& history,
                      const std::string& selected_language,
                      const std::vector<base::WeakPtr<Tool>>& tools,
@@ -1324,7 +1324,7 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
 
     base::RunLoop run_loop_2;
     data[i].conversation_handler->GeneratePageContentInternal(
-        base::BindLambdaForTesting([&](PageContentses page_contents) {
+        base::BindLambdaForTesting([&](PageContents page_contents) {
           if (i == 1) {
             EXPECT_TRUE(page_contents.empty()) << i << " content was not empty";
           } else {

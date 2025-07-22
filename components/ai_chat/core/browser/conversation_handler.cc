@@ -8,7 +8,6 @@
 #include <stddef.h>
 
 #include <algorithm>
-#include <functional>
 #include <iterator>
 #include <memory>
 #include <optional>
@@ -297,7 +296,7 @@ void ConversationHandler::InitEngine() {
   // When the model changes, the content truncation might be different,
   // and the UI needs to know.
   if (associated_content_manager_ &&
-      !associated_content_manager_->GetCachedContent().empty()) {
+      !associated_content_manager_->GetCachedContents().empty()) {
     OnAssociatedContentUpdated();
   }
 }
@@ -844,7 +843,7 @@ void ConversationHandler::GenerateQuestions() {
 }
 
 void ConversationHandler::PerformQuestionGeneration(
-    PageContentses page_contents) {
+    PageContents page_contents) {
   engine_->GenerateQuestionSuggestions(
       std::move(page_contents), selected_language_,
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
@@ -1058,7 +1057,7 @@ void ConversationHandler::PerformAssistantGenerationWithPossibleContent() {
 }
 
 void ConversationHandler::PerformAssistantGeneration(
-    PageContentses page_contents) {
+    PageContents page_contents) {
   if (chat_history_.empty()) {
     DLOG(ERROR) << "Cannot generate assistant response without any history";
     return;
@@ -1347,7 +1346,7 @@ void ConversationHandler::OnGeneratePageContentComplete(
   // Keep is_content_different_ as true if it's the initial state
   is_content_different_ = is_content_different_ || content_changed;
 
-  std::move(callback).Run(associated_content_manager_->GetCachedContent());
+  std::move(callback).Run(associated_content_manager_->GetCachedContents());
 
   // Content-used percentage and is_video might have changed in addition to
   // content_type.
@@ -1493,10 +1492,10 @@ void ConversationHandler::OnConversationEntryAdded(
     OnHistoryUpdate(nullptr);
     return;
   }
-  std::optional<PageContentses> associated_content_value;
+  std::optional<PageContents> associated_content_value;
   if (is_content_different_ &&
       associated_content_manager_->HasAssociatedContent()) {
-    associated_content_value = associated_content_manager_->GetCachedContent();
+    associated_content_value = associated_content_manager_->GetCachedContents();
     is_content_different_ = false;
   }
   // If this is the first entry that isn't staged, notify about all previous

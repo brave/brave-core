@@ -24,8 +24,8 @@ namespace ai_chat {
 
 class ConversationHandler;
 
-using PageContentses = std::vector<std::reference_wrapper<const PageContent>>;
-using GetAllContentCallback = base::OnceCallback<void(PageContentses)>;
+using PageContents = std::vector<std::reference_wrapper<const PageContent>>;
+using GetAllContentCallback = base::OnceCallback<void(PageContents)>;
 
 // This class is responsible for managing the content associated with a
 // conversation. This includes:
@@ -79,7 +79,7 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
 
   std::vector<mojom::AssociatedContentPtr> GetAssociatedContent() const;
 
-  PageContentses GetCachedContent() const;
+  PageContents GetCachedContents() const;
 
   bool HasOpenAIChatPermission() const;
   bool HasNonArchiveContent() const;

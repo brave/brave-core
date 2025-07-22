@@ -33,7 +33,7 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
               OnConversationEntryAdded,
               (ConversationHandler*,
                mojom::ConversationTurnPtr&,
-               std::optional<PageContentses>),
+               std::optional<PageContents>),
               (override));
 
   MOCK_METHOD(void,

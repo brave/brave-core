@@ -108,7 +108,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
                            ParseSearchQuerySummaryResponse);
 
   void OnGeneratePageContentComplete(int64_t navigation_id,
-                                     std::string content,
+                                     std::string contents_text,
                                      bool is_video,
                                      std::string invalidation_token);
   void OnExistingGeneratePageContentComplete(GetPageContentCallback callback,
@@ -131,7 +131,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
 
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;
   PageContent cached_page_content_;
-  std::string invalidation_token_;
+  std::string content_invalidation_token_;
 
   // Store the unique ID for each "page" so that
   // we can ignore API async responses against any navigated-away-from

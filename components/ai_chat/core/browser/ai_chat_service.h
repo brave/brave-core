@@ -97,7 +97,7 @@ class AIChatService : public KeyedService,
   void OnConversationEntryAdded(
       ConversationHandler* handler,
       mojom::ConversationTurnPtr& entry,
-      std::optional<PageContentses> maybe_associated_content) override;
+      std::optional<PageContents> maybe_associated_content) override;
   void OnConversationEntryRemoved(ConversationHandler* handler,
                                   std::string entry_uuid) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;

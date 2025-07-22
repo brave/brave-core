@@ -32,8 +32,6 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -79,7 +77,7 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnConversationEntryAdded(
         ConversationHandler* handler,
         mojom::ConversationTurnPtr& entry,
-        std::optional<PageContentses> associated_content_value) {}
+        std::optional<PageContents> associated_content_value) {}
     virtual void OnConversationEntryRemoved(ConversationHandler* handler,
                                             std::string turn_uuid) {}
 
@@ -297,15 +295,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   void UpdateAssociatedContentInfo();
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
-  void PerformAssistantGenerationWithPossibleContent();
-  void PerformAssistantGeneration(std::string page_content = "",
-                                  bool is_video = false,
-                                  std::string invalidation_token = "");
+  void PerformAssistantGeneration(PageContents page_contents);
   void SetAPIError(const mojom::APIError& error);
   void UpdateOrCreateLastAssistantEntry(
       EngineConsumer::GenerationResultData result);
   void MaybeSeedOrClearSuggestions();
-  void PerformQuestionGeneration(PageContentses page_contents);
+  void PerformQuestionGeneration(PageContents page_contents);
 
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);

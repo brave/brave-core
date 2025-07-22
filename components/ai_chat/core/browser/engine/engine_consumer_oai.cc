@@ -48,7 +48,6 @@ base::Value::List BuildMessages(
     const mojom::CustomModelOptions& model_options,
     base::Value::List page_content_messages,
     const std::optional<std::string>& selected_text,
-    int max_associated_content_length,
     const EngineConsumer::ConversationHistory& conversation_history) {
   base::Value::List messages;
 
@@ -183,19 +182,21 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
-  const std::string& truncated_text =
-      text.substr(0, max_associated_content_length_);
+  std::string truncated_text =
+      text.size() > max_associated_content_length_
+          ? text.substr(0, max_associated_content_length_)
+          : text;
   std::string rewrite_prompt = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
-      {truncated_text, question}, nullptr);
+      {std::move(truncated_text), question}, nullptr);
 
   base::Value::List messages;
 
   {
     base::Value::Dict message;
     message.Set("role", "user");
-    message.Set("content", rewrite_prompt);
+    message.Set("content", std::move(rewrite_prompt));
     messages.Append(std::move(message));
   }
 
@@ -205,7 +206,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
 }
 
 void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
-    PageContentses page_contents,
+    PageContents page_contents,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   base::Value::List messages;
@@ -280,7 +281,7 @@ void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
 }
 
 void EngineConsumerOAIRemote::GenerateAssistantResponse(
-    PageContentses page_contents,
+    PageContents page_contents,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     const std::vector<base::WeakPtr<Tool>>& tools,
@@ -304,9 +305,9 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
       max_associated_content_length_ - selected_text.value_or("").size(),
       IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
       IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
-  base::Value::List messages = BuildMessages(
-      model_options_, std::move(page_content_messages), selected_text,
-      max_associated_content_length_, conversation_history);
+  base::Value::List messages =
+      BuildMessages(model_options_, std::move(page_content_messages),
+                    selected_text, conversation_history);
   api_->PerformRequest(model_options_, std::move(messages),
                        std::move(data_received_callback),
                        std::move(completed_callback));
@@ -327,7 +328,7 @@ void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
 }
 
 base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
-    const PageContentses& page_contents,
+    const PageContents& page_contents,
     int max_associated_content_length,
     int video_message_id,
     int page_message_id) {

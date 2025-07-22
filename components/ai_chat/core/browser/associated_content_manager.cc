@@ -229,7 +229,7 @@ void AssociatedContentManager::HasContentUpdated(
   DVLOG(1) << __func__;
 
   std::vector<PageContent> cached_content;
-  std::ranges::copy(GetCachedContent(), std::back_inserter(cached_content));
+  std::ranges::copy(GetCachedContents(), std::back_inserter(cached_content));
 
   GetContent(base::BindOnce(
       [](base::WeakPtr<AssociatedContentManager> self,
@@ -239,7 +239,7 @@ void AssociatedContentManager::HasContentUpdated(
           return;
         }
 
-        auto new_contents = self->GetCachedContent();
+        auto new_contents = self->GetCachedContents();
         bool changed = cached_content.size() != new_contents.size();
         if (!changed) {
           for (size_t i = 0; i < cached_content.size(); ++i) {
@@ -348,9 +348,9 @@ void AssociatedContentManager::GetStagedEntriesFromContent(
   content_delegates_[0]->GetStagedEntriesFromContent(std::move(callback));
 }
 
-PageContentses AssociatedContentManager::GetCachedContent() const {
+PageContents AssociatedContentManager::GetCachedContents() const {
   DVLOG(1) << __func__;
-  PageContentses result;
+  PageContents result;
   for (auto* delegate : content_delegates_) {
     result.push_back(delegate->GetCachedPageContent());
   }
