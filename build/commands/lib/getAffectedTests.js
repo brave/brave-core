@@ -30,21 +30,34 @@ async function getModifiedFiles(target = 'HEAD~', base = null) {
   )
 }
 
+async function getReferenceCommit() {
+  if (process.env.GIT_PREVIOUS_SUCCESSFUL_COMMIT) {
+    return process.env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+  }
+
+  const currentBranch = await exec('git', ['rev-parse', '--abbrev-ref', 'HEAD'])
+    .then(x => x.stdout)
+  
+  if (currentBranch != 'master') {
+    return 'master'
+  }
+
+  return 'HEAD~'
+}
+
 async function getAffectedTests(outDir, filters = ['//*']) {
   // JENKINS sets GIT_PREVIOUS_SUCCESSFUL_COMMIT
   // TODO: find TeamCity equivalent.
   // TODO: we can optimize further by getting the last failure commit
-  const ciLastSuccessfulCommit = process.env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-  if (ciLastSuccessfulCommit) {
-    console.log('Last Successful Commit', ciLastSuccessfulCommit)
+  const targetCommit = await getReferenceCommit()
+  if (targetCommit) {
+    console.log('analyzing tests based on', targetCommit)
   }
 
-  const targetCommit = ciLastSuccessfulCommit || 'HEAD^'
-  // const baseCommit = process.argv[3];
 
   const root = path.resolve(process.cwd(), '../')
   outDir = 
-    (outDir.startsWith('..') || outDir.startsWith('/')) 
+    outDir.startsWith('..') || outDir.startsWith('/')
       ? outDir 
       : `${root}/${outDir}`
   const testTargets = await getTestTargets(outDir, filters)

@@ -144,7 +144,7 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   // Clear previous results file
   deleteFile(allResultsFilePath)
-  writeFile(allResultsFilePath, '');
+  writeFile(allResultsFilePath, '')
 
   let braveArgs = []
 
