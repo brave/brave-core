@@ -22,7 +22,7 @@ import {
 } from '../../../common/constants/mocks'
 
 interface RenderComponentProps {
-  isAndroid: boolean
+  isMobile: boolean
   isPanel: boolean
 }
 
@@ -30,7 +30,7 @@ describe('AccountDetailsHeader', () => {
   const renderComponent = (props: RenderComponentProps) => {
     const store = createMockStore({
       uiStateOverride: {
-        isAndroid: props.isAndroid,
+        isMobile: props.isMobile,
         isPanel: props.isPanel,
       },
     })
@@ -50,7 +50,7 @@ describe('AccountDetailsHeader', () => {
 
   it('renders account details header desktop', async () => {
     const { container } = renderComponent({
-      isAndroid: false,
+      isMobile: false,
       isPanel: false,
     })
     // Wait for all async operations to complete
@@ -78,7 +78,7 @@ describe('AccountDetailsHeader', () => {
 
   it('renders account details header panel', async () => {
     const { container } = renderComponent({
-      isAndroid: false,
+      isMobile: false,
       isPanel: true,
     })
 
@@ -99,7 +99,7 @@ describe('AccountDetailsHeader', () => {
 
   it('renders account details header android', async () => {
     const { container } = renderComponent({
-      isAndroid: true,
+      isMobile: true,
       isPanel: false,
     })
 

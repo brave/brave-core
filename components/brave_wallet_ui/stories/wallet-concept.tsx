@@ -15,7 +15,7 @@ import {
 
 type StorybookWalletConceptArgs = {
   isPanel: boolean
-  isAndroid: boolean
+  isMobile: boolean
 }
 
 const panelViewport = {
@@ -41,7 +41,7 @@ export default {
     isPanel: { control: { type: 'boolean', onboard: false } },
     onboarding: { control: { type: 'boolean', onboard: false } },
     locked: { control: { type: 'boolean', lock: false } },
-    isAndroid: { control: { type: 'boolean', android: false } },
+    isMobile: { control: { type: 'boolean', android: false } },
   },
   parameters: {
     viewport: {
@@ -55,7 +55,7 @@ export default {
 export const _DesktopWalletConcept = {
   render: (args: StorybookWalletConceptArgs) => {
     // Props
-    const { isPanel, isAndroid } = args
+    const { isPanel, isMobile } = args
 
     return (
       <WalletPageStory
@@ -67,7 +67,7 @@ export const _DesktopWalletConcept = {
         }}
         uiStateOverride={{
           isPanel: isPanel,
-          isAndroid: isAndroid,
+          isMobile: isMobile,
         }}
         apiOverrides={{
           selectedAccountId: mockAccount.accountId,
