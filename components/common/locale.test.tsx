@@ -53,12 +53,15 @@ describe('formatString', () => {
     }))
   })
 
-  it('should fail when a range overlaps with another range', () => {
-    assert.throws(() => formatString('$1 in $2nz$1 say $2', {
+  it('should not fail if a replacement does not exist if noErrorOnMissingReplacement is true', () => {
+    expect(formatString('$1 in $2nz$2 say $3', {
       $1: 'People',
       $2: (content) => content.toUpperCase(),
-      $3: 'Kiora'
-    }))
+      $3: 'Kiora',
+      $4: 'MISSING!'
+    }, {
+      noErrorOnMissingReplacement: true
+    })).toBe('People in NZ say Kiora')
   })
 
   it('should not change text with no replacements', () => {
@@ -105,6 +108,33 @@ describe('formatString', () => {
     }), <>
       <span>Shields are UP</span> for {"brave.com"} (count: <span>over 9000</span>) {"NZ"}
     </>)
+  })
+
+  it('should be possible to have a placeholder in a tag', () => {
+    assert.deepEqual(formatString('Hello $1and goodbye $2$1', {
+      $1: (content) => <span>{content}</span>,
+      $2: <b>world</b>
+    }), <>Hello <span><>and goodbye <b>world</b></></span></>)
+  })
+
+  it('should not break for Czech shields', () => {
+    assert.deepEqual(formatString('$1Štíty pro $2 jsou zapnuty$1', {
+      $1: content => <b>{content}</b>,
+      $2: 'brave.com'
+    }), <><b>Štíty pro brave.com jsou zapnuty</b></>)
+
+    assert.deepEqual(formatString('$1Štíty pro $2 jsou vypnuty$1', {
+      $1: content => <b>{content}</b>,
+      $2: 'brave.com'
+    }), <><b>Štíty pro brave.com jsou vypnuty</b></>)
+  })
+
+  it('should be possible to nest tags', () => {
+    assert.deepEqual(formatString('Hello $1and $3goodbye $2$3$1', {
+      $1: (content) => <span>{content}</span>,
+      $3: content => <i>{content}</i>,
+      $2: <b>world</b>
+    }), <>Hello <span><>and <i><>goodbye <b>world</b></></i></></span></>)
   })
 })
 
