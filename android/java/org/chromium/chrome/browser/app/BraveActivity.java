@@ -57,7 +57,6 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
-import org.chromium.content_public.browser.MediaSession;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -221,6 +220,7 @@ import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -511,13 +511,15 @@ public abstract class BraveActivity extends ChromeActivity
     public void onPictureInPictureModeChanged(boolean inPicture, Configuration newConfig) {
         super.onPictureInPictureModeChanged(inPicture, newConfig);
 
-        if (!inPicture && getCurrentWebContents() != null &&
-                BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(getCurrentWebContents())) {
+        if (!inPicture
+                && getCurrentWebContents() != null
+                && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
+                        getCurrentWebContents())) {
             // PiP has been dismissed when watching a YT video, then pause it.
-           MediaSession mediaSession = MediaSession.fromWebContents(getCurrentWebContents());
-           if (mediaSession != null) {
-               mediaSession.suspend();
-           }
+            MediaSession mediaSession = MediaSession.fromWebContents(getCurrentWebContents());
+            if (mediaSession != null) {
+                mediaSession.suspend();
+            }
         }
     }
 
