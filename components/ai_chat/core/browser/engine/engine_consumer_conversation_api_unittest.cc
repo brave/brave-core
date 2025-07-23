@@ -1938,11 +1938,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // Test with user customization enabled
   {
     prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationName, "John Doe");
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationJob,
-                     "Software Engineer");
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationTone, "Professional");
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationOther, "Loves coding");
+
+    base::Value::Dict customizations_dict;
+    customizations_dict.Set("name", "John Doe");
+    customizations_dict.Set("job", "Software Engineer");
+    customizations_dict.Set("tone", "Professional");
+    customizations_dict.Set("other", "Loves coding");
+    prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                   std::move(customizations_dict));
+
     prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
 
     std::string expected_events = R"([
@@ -2062,10 +2066,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   {
     prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
     prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationName, "Alice");
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationJob, "Designer");
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationTone, "");
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationOther, "");
+
+    base::Value::Dict customizations_dict;
+    customizations_dict.Set("name", "Alice");
+    customizations_dict.Set("job", "Designer");
+    prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                   std::move(customizations_dict));
 
     base::Value::List memories;
     memories.Append("I like creative solutions");
@@ -2175,10 +2181,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   {
     prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
     prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationName, "");
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationJob, "");
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationTone, "");
-    prefs_.SetString(prefs::kBraveAIChatUserCustomizationOther, "");
+
+    // Set empty customizations dict
+    base::Value::Dict empty_customizations_dict;
+    prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                   std::move(empty_customizations_dict));
 
     std::string expected_events = R"([
       {"role": "user", "type": "pageText",
@@ -2284,10 +2291,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // Reset prefs
   prefs_.ClearPref(prefs::kBraveAIChatUserCustomizationEnabled);
   prefs_.ClearPref(prefs::kBraveAIChatUserMemoryEnabled);
-  prefs_.ClearPref(prefs::kBraveAIChatUserCustomizationName);
-  prefs_.ClearPref(prefs::kBraveAIChatUserCustomizationJob);
-  prefs_.ClearPref(prefs::kBraveAIChatUserCustomizationTone);
-  prefs_.ClearPref(prefs::kBraveAIChatUserCustomizationOther);
+  prefs_.ClearPref(prefs::kBraveAIChatUserCustomizations);
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest,

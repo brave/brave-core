@@ -110,14 +110,6 @@ inline constexpr char kBraveAIChatUserCustomizationEnabled[] =
     "brave.ai_chat.user_customization_enabled";
 inline constexpr char kBraveAIChatUserCustomizations[] =
     "brave.ai_chat.user_customizations";
-inline constexpr char kBraveAIChatUserCustomizationName[] =
-    "brave.ai_chat.user_customization_name";
-inline constexpr char kBraveAIChatUserCustomizationJob[] =
-    "brave.ai_chat.user_customization_job";
-inline constexpr char kBraveAIChatUserCustomizationTone[] =
-    "brave.ai_chat.user_customization_tone";
-inline constexpr char kBraveAIChatUserCustomizationOther[] =
-    "brave.ai_chat.user_customization_other";
 inline constexpr char kBraveAIChatUserMemoryEnabled[] =
     "brave.ai_chat.user_memory_enabled";
 inline constexpr char kBraveAIChatUserMemories[] =

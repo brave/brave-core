@@ -1701,20 +1701,8 @@ Leo AI. This action can't be undone.
   <message name="IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_RESET_BUTTON" desc="Label for the reset to default button in Leo customization">
     Reset to default
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_NAME_ERROR" desc="Error message shown when the name input exceeds the maximum length">
-    Name must be 64 characters or less
-  </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_JOB_ERROR" desc="Error message shown when the job input exceeds the maximum length">
-    Job description must be 256 characters or less
-  </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_TONE_ERROR" desc="Error message shown when the tone input exceeds the maximum length">
-    Tone description must be 256 characters or less
-  </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_OTHER_ERROR" desc="Error message shown when the other input exceeds the maximum length">
-    Additional information must be 256 characters or less
-  </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_MEMORY_INPUT_ERROR" desc="Error message shown when the memory input exceeds the maximum length">
-    Memory must be 512 characters or less
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_LENGTH_ERROR" desc="General error message shown when any input exceeds the maximum length">
+    Input is too long
   </message>
 
   <!-- Leo Assistant Memory Section -->

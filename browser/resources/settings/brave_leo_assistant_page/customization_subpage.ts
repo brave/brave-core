@@ -3,17 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {PrefsMixin, PrefsMixinInterface} from
-  '/shared/settings/prefs/prefs_mixin.js';
-import {I18nMixin, I18nMixinInterface} from
+import { I18nMixin, I18nMixinInterface } from
   'chrome://resources/cr_elements/i18n_mixin.js'
-import {PolymerElement} from
+import { PolymerElement } from
   'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import {BaseMixin, BaseMixinInterface} from '../base_mixin.js'
+import { PrefsMixin, PrefsMixinInterface } from
+  '/shared/settings/prefs/prefs_mixin.js'
+import { BaseMixin, BaseMixinInterface } from '../base_mixin.js'
+import {
+  Customizations,
+  CustomizationOperationError,
+  MAX_RECORD_LENGTH
+} from '../customization_settings.mojom-webui.js'
+import {
+  BraveLeoAssistantBrowserProxy,
+  BraveLeoAssistantBrowserProxyImpl
+} from './brave_leo_assistant_browser_proxy.js'
+import { getTemplate } from './customization_subpage.html.js'
 import './memory_section.js'
-
-import {getTemplate} from './customization_subpage.html.js'
 
 const BraveLeoCustomizationSubpageBase =
     PrefsMixin(I18nMixin(BaseMixin(PolymerElement))) as {
@@ -32,26 +40,6 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
 
   static get properties() {
     return {
-      name_: {
-        type: String,
-        computed:
-          'computePrefValue_(prefs.brave.ai_chat.user_customization_name)',
-      },
-      job_: {
-        type: String,
-        computed:
-          'computePrefValue_(prefs.brave.ai_chat.user_customization_job)',
-      },
-      tone_: {
-        type: String,
-        computed:
-          'computePrefValue_(prefs.brave.ai_chat.user_customization_tone)',
-      },
-      other_: {
-        type: String,
-        computed:
-          'computePrefValue_(prefs.brave.ai_chat.user_customization_other)',
-      },
       // Local properties for user input
       nameInput_: {
         type: String,
@@ -69,128 +57,116 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
         type: String,
         value: '',
       },
-      nameInputError_: {
-        type: Boolean,
-        value: false,
-      },
-      jobInputError_: {
-        type: Boolean,
-        value: false,
-      },
-      toneInputError_: {
-        type: Boolean,
-        value: false,
-      },
-      otherInputError_: {
-        type: Boolean,
-        value: false,
-      },
       isSaveDisabled_: {
         type: Boolean,
-        computed:
-          'computeIsSaveDisabled_(nameInputError_, jobInputError_, ' +
-          'toneInputError_, otherInputError_)',
+        computed: 'computeIsSaveDisabled_(nameInput_, jobInput_, toneInput_, ' +
+          'otherInput_)',
       },
     }
   }
 
-  static get observers() {
-    return [
-      'prefsChanged_(prefs.brave.ai_chat.user_customization_name, ' +
-        'prefs.brave.ai_chat.user_customization_job, ' +
-        'prefs.brave.ai_chat.user_customization_tone, ' +
-        'prefs.brave.ai_chat.user_customization_other)',
-    ]
-  }
-
-  declare name_: string;
-  declare job_: string;
-  declare tone_: string;
-  declare other_: string;
+  browserProxy_: BraveLeoAssistantBrowserProxy =
+    BraveLeoAssistantBrowserProxyImpl.getInstance()
 
   // Local input properties
-  declare nameInput_: string;
-  declare jobInput_: string;
-  declare toneInput_: string;
-  declare otherInput_: string;
-  declare nameInputError_: boolean;
-  declare jobInputError_: boolean;
-  declare toneInputError_: boolean;
-  declare otherInputError_: boolean;
-  declare isSaveDisabled_: boolean;
+  declare nameInput_: string
+  declare jobInput_: string
+  declare toneInput_: string
+  declare otherInput_: string
+  declare isSaveDisabled_: boolean
 
   override ready() {
     super.ready()
-    // Initialize input values when prefs are ready
-    this.initializeInputValues_()
+    this.setupCallbacks_()
+    this.loadCustomizations_()
   }
 
-  private prefsChanged_() {
-    // When prefs become available, initialize the input values
-    if (this.prefs) {
-      this.initializeInputValues_()
-    }
+  setupCallbacks_() {
+    const callbackRouter =
+      this.browserProxy_.getCustomizationSettingsCallbackRouter()
+    callbackRouter.onCustomizationsChanged.addListener(
+      (customizations: Customizations) => {
+        this.updateInputValues_(customizations)
+      })
   }
 
-  private initializeInputValues_() {
-    // Initialize input values from computed properties
-    this.nameInput_ = this.name_
-    this.jobInput_ = this.job_
-    this.toneInput_ = this.tone_
-    this.otherInput_ = this.other_
+  loadCustomizations_() {
+    const handler = this.browserProxy_.getCustomizationSettingsHandler()
+
+    handler.getCustomizations().then(
+      (result: { customizations: Customizations }) => {
+        this.updateInputValues_(result.customizations)
+      })
+  }
+
+  updateInputValues_(customizations: Customizations) {
+    this.nameInput_ = customizations.name
+    this.jobInput_ = customizations.job
+    this.toneInput_ = customizations.tone
+    this.otherInput_ = customizations.other
   }
 
   onSave() {
-    // Store the current input values to preferences
-    this.setPrefValue('brave.ai_chat.user_customization_name',
-      this.nameInput_)
-    this.setPrefValue('brave.ai_chat.user_customization_job',
-      this.jobInput_)
-    this.setPrefValue('brave.ai_chat.user_customization_tone',
-      this.toneInput_)
-    this.setPrefValue('brave.ai_chat.user_customization_other',
-      this.otherInput_)
-  }
+    const handler = this.browserProxy_.getCustomizationSettingsHandler()
 
-  private computePrefValue_(pref: any): string {
-    // Prefs might not be available yet
-    if (!pref || !pref.value) {
-      return ''
+    // Reset the value to null if the input is empty string.
+    const customizations = {
+      name: this.nameInput_,
+      job: this.jobInput_,
+      tone: this.toneInput_,
+      other: this.otherInput_,
     }
-    return pref.value
+
+    handler.setCustomizations(customizations).then(
+      (result: { error: CustomizationOperationError | null }) => {
+        if (result.error) {
+          this.handleCustomizationError_(result.error)
+        }
+      })
   }
 
-  private onNameInputChanged_(event: any) {
-    const trimmedValue = event.value.trim()
-    this.nameInput_ = trimmedValue
-    this.nameInputError_ = trimmedValue.length > 64
+  handleCustomizationError_(error: CustomizationOperationError) {
+    // Handle different error types
+    switch (error) {
+      // This is unlikely to happen since we have a length limit in frontend
+      // for immediate feedback.
+      case CustomizationOperationError.kInvalidLength:
+        console.error('Customization input exceeds length limit')
+        break
+      default:
+        console.error('Unknown customization error:', error)
+        break
+    }
   }
 
-  private onJobInputChanged_(event: any) {
-    const trimmedValue = event.value.trim()
-    this.jobInput_ = trimmedValue
-    this.jobInputError_ = trimmedValue.length > 256
+  private isTooLong(text: string): boolean {
+    return text.trim().length > MAX_RECORD_LENGTH
   }
 
-  private onToneInputChanged_(event: any) {
-    const trimmedValue = event.value.trim()
-    this.toneInput_ = trimmedValue
-    this.toneInputError_ = trimmedValue.length > 256
+  private onNameInputChanged_(event: { value: string }) {
+    this.nameInput_ = event.value
+  }
+  private onJobInputChanged_(event: { value: string }) {
+    this.jobInput_ = event.value
+  }
+  private onToneInputChanged_(event: { value: string }) {
+    this.toneInput_ = event.value
   }
 
-  private onOtherInputChanged_(event: any) {
-    const trimmedValue = event.value.trim()
-    this.otherInput_ = trimmedValue
-    this.otherInputError_ = trimmedValue.length > 256
+  private onOtherInputChanged_(event: { value: string }) {
+    this.otherInput_ = event.value
   }
 
   private computeIsSaveDisabled_(
-    nameInputError: boolean,
-    jobInputError: boolean,
-    toneInputError: boolean,
-    otherInputError: boolean
+    nameInput: string,
+    jobInput: string,
+    toneInput: string,
+    otherInput: string
   ): boolean {
-    return nameInputError || jobInputError || toneInputError || otherInputError
+    return this.isTooLong(nameInput) ||
+           this.isTooLong(jobInput) ||
+           this.isTooLong(toneInput) ||
+           this.isTooLong(otherInput)
   }
 }
 

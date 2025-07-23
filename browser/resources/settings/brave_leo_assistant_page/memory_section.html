@@ -262,12 +262,12 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     <div slot="body">
       <leo-input required id="memoryInput" type="text"
         value="[[editingMemory_]]" on-input="onDialogInput_"
-        showErrors$="[[isMemoryInputError_]]"
+        showErrors$="[[isTooLong(editingMemory_)]]"
         placeholder="$i18n{braveLeoAssistantMemoryInputPlaceholder}"
         style="width:100%">
-        <div slot="errors" class="error-message" hidden$="[[!isMemoryInputError_]]">
+        <div slot="errors" class="error-message" hidden$="[[!isTooLong(editingMemory_)]]">
           <leo-icon name="warning-triangle-filled"></leo-icon>
-          <span>$i18n{braveLeoAssistantMemoryInputError}</span>
+          <span>$i18n{braveLeoAssistantInputLengthError}</span>
         </div>
       </leo-input>
     </div>

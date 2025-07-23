@@ -5,8 +5,11 @@
 
  import {sendWithPromise} from 'chrome://resources/js/cr.js';
  import * as mojom from '../settings_helper.mojom-webui.js'
+ import * as mojomCustomizationSettings from
+   '../customization_settings.mojom-webui.js'
  export * from '../ai_chat.mojom-webui.js'
  export * from '../settings_helper.mojom-webui.js'
+ export * from '../customization_settings.mojom-webui.js'
 
  export interface BraveLeoAssistantBrowserProxy {
   resetLeoData(): void
@@ -14,10 +17,18 @@
   toggleLeoIcon(): void
   getSettingsHelper(): mojom.AIChatSettingsHelperRemote
   getCallbackRouter(): mojom.SettingsPageCallbackRouter
+  getCustomizationSettingsHandler():
+    mojomCustomizationSettings.CustomizationSettingsHandlerRemote
+  getCustomizationSettingsCallbackRouter():
+    mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
  }
 
  let settingsHelper: mojom.AIChatSettingsHelperRemote
  let callbackRouter: mojom.SettingsPageCallbackRouter
+ let customizationSettingsHandler:
+   mojomCustomizationSettings.CustomizationSettingsHandlerRemote
+ let customizationSettingsCallbackRouter:
+   mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
 
  export class BraveLeoAssistantBrowserProxyImpl
     implements BraveLeoAssistantBrowserProxy {
@@ -27,6 +38,16 @@
       settingsHelper = mojom.AIChatSettingsHelper.getRemote()
       callbackRouter = new mojom.SettingsPageCallbackRouter()
       settingsHelper.setClientPage(callbackRouter.$.bindNewPipeAndPassRemote())
+    }
+
+    if (customizationSettingsHandler === undefined &&
+        customizationSettingsCallbackRouter === undefined) {
+      customizationSettingsHandler =
+        mojomCustomizationSettings.CustomizationSettingsHandler.getRemote()
+      customizationSettingsCallbackRouter =
+        new mojomCustomizationSettings.CustomizationSettingsUICallbackRouter()
+      customizationSettingsHandler.bindUI(
+        customizationSettingsCallbackRouter.$.bindNewPipeAndPassRemote())
     }
 
      return instance || (instance = new BraveLeoAssistantBrowserProxyImpl())
@@ -50,6 +71,14 @@
 
   getCallbackRouter() {
     return callbackRouter
+  }
+
+  getCustomizationSettingsHandler() {
+    return customizationSettingsHandler
+  }
+
+  getCustomizationSettingsCallbackRouter() {
+    return customizationSettingsCallbackRouter
   }
  }
 

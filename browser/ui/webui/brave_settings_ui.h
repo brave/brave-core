@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
@@ -56,6 +57,9 @@ class BraveSettingsUI : public settings::SettingsUI {
       mojo::PendingReceiver<commands::mojom::CommandsService> pending_receiver);
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
                          pending_receiver);
+  void BindInterface(
+      mojo::PendingReceiver<ai_chat::mojom::CustomizationSettingsHandler>
+          pending_receiver);
   void BindInterface(
       mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>
           pending_receiver);

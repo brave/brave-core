@@ -13,6 +13,8 @@ component("common") {
     "features.h",
     "pref_names.cc",
     "pref_names.h",
+    "prefs.cc",
+    "prefs.h",
     "proto_conversion.cc",
     "proto_conversion.h",
     "utils.cc",
@@ -67,6 +69,7 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "pref_names_unittest.cc",
+    "prefs_unittest.cc",
     "proto_conversion_unittest.cc",
     "utils_unittest.cc",
     "yt_util_unittest.cc",

@@ -3,23 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import './customization_subpage.js'
-
-import '//resources/cr_elements/md_select.css.js'
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
 import { assert } from 'chrome://resources/js/assert.js';
-import { BaseMixin } from '../base_mixin.js'
-import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
 import { PolymerElement } from
   'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
-import { Router } from '../router.js'
 
+import '//resources/cr_elements/md_select.css.js'
+
+import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
+
+import { BaseMixin } from '../base_mixin.js'
+import { SettingsToggleButtonElement } from
+  '../controls/settings_toggle_button.js'
+import { Router } from '../router.js'
 import { loadTimeData } from '../i18n_setup.js'
-import { getTemplate } from './personalization.html.js'
 import {
   BraveLeoAssistantBrowserProxy,
   BraveLeoAssistantBrowserProxyImpl,
@@ -29,6 +29,8 @@ import {
   ModelAccess,
   Model
 } from './brave_leo_assistant_browser_proxy.js'
+import './customization_subpage.js'
+import { getTemplate } from './personalization.html.js'
 
 const BraveLeoPersonalizationBase =
   PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
@@ -46,7 +48,8 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
     return {
       selectedModelDisplayName_: {
         type: String,
-        computed: 'computeDisplayName_(models_, defaultModelKeyPrefValue_)'
+        computed: 'computeDisplayName_(models_, ' +
+          'defaultModelKeyPrefValue_)'
       },
       isPremiumUser_: {
         type: Boolean,
@@ -60,7 +63,8 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
       },
       isHistoryFeatureEnabled_: {
         type: Boolean,
-        value: () => loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
+        value: () => loadTimeData.getBoolean(
+          'isLeoAssistantHistoryAllowed')
       },
     }
   }
@@ -92,8 +96,8 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
         this.defaultModelKeyPrefValue_ = newKey
       })
 
-    // To avoid having a seperate event for modelWithSubtitles changing, we
-    // can listen to the modelListChanged event.
+    // To avoid having a seperate event for modelWithSubtitles changing,
+    // we can listen to the modelListChanged event.
     this.browserProxy_
       .getCallbackRouter()
       .onModelListChanged.addListener(() => {
@@ -101,8 +105,9 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
       })
 
     // Since there is no server-side event for premium status changing,
-    // we should check often. And since purchase or login is performed in
-    // a separate WebContents, we can check when focus is returned here.
+    // we should check often. And since purchase or login is performed
+    // in a separate WebContents, we can check when focus is returned
+    // here.
     window.addEventListener('focus', () => {
       this.updateCurrentPremiumStatus()
     })

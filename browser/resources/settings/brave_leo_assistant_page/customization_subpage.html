@@ -95,12 +95,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     </div>
     <leo-input
       placeholder="$i18n{braveLeoAssistantCustomizationNamePlaceholder}"
-      value="[[nameInput_]]"
-      on-change="onNameInputChanged_"
-      showErrors$="[[nameInputError_]]">
-      <div slot="errors" class="error-message" hidden$="[[!nameInputError_]]">
+      value="[[nameInput_]]" on-change="onNameInputChanged_"
+      showErrors$="[[isTooLong(nameInput_)]]">
+      <div slot="errors" class="error-message" hidden$="[[!isTooLong(nameInput_)]]">
         <leo-icon name="warning-triangle-filled"></leo-icon>
-        <span>$i18n{braveLeoAssistantCustomizationNameError}</span>
+        <span>$i18n{braveLeoAssistantInputLengthError}</span>
       </div>
     </leo-input>
   </div>
@@ -112,12 +111,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     </div>
     <leo-input
       placeholder="$i18n{braveLeoAssistantCustomizationJobPlaceholder}"
-      value="[[jobInput_]]"
-      on-change="onJobInputChanged_"
-      showErrors$="[[jobInputError_]]">
-      <div slot="errors" class="error-message" hidden$="[[!jobInputError_]]">
+      value="[[jobInput_]]" on-change="onJobInputChanged_"
+      showErrors$="[[isTooLong(jobInput_)]]">
+      <div slot="errors" class="error-message" hidden$="[[!isTooLong(jobInput_)]]">
         <leo-icon name="warning-triangle-filled"></leo-icon>
-        <span>$i18n{braveLeoAssistantCustomizationJobError}</span>
+        <span>$i18n{braveLeoAssistantInputLengthError}</span>
       </div>
     </leo-input>
   </div>
@@ -129,12 +127,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     </div>
     <leo-input
       placeholder="$i18n{braveLeoAssistantCustomizationTonePlaceholder}"
-      value="[[toneInput_]]"
-      on-change="onToneInputChanged_"
-      showErrors$="[[toneInputError_]]">
-      <div slot="errors" class="error-message" hidden$="[[!toneInputError_]]">
+      value="[[toneInput_]]" on-change="onToneInputChanged_"
+      showErrors$="[[isTooLong(toneInput_)]]">
+      <div slot="errors" class="error-message" hidden$="[[!isTooLong(toneInput_)]]">
         <leo-icon name="warning-triangle-filled"></leo-icon>
-        <span>$i18n{braveLeoAssistantCustomizationToneError}</span>
+        <span>$i18n{braveLeoAssistantInputLengthError}</span>
       </div>
     </leo-input>
   </div>
@@ -146,12 +143,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     </div>
     <leo-input
       placeholder="$i18n{braveLeoAssistantCustomizationOtherPlaceholder}"
-      value="[[otherInput_]]"
-      on-change="onOtherInputChanged_"
-      showErrors$="[[otherInputError_]]">
-      <div slot="errors" class="error-message" hidden$="[[!otherInputError_]]">
+      value="[[otherInput_]]" on-change="onOtherInputChanged_"
+      showErrors$="[[isTooLong(otherInput_)]]">
+      <div slot="errors" class="error-message" hidden$="[[!isTooLong(otherInput_)]]">
         <leo-icon name="warning-triangle-filled"></leo-icon>
-        <span>$i18n{braveLeoAssistantCustomizationOtherError}</span>
+        <span>$i18n{braveLeoAssistantInputLengthError}</span>
       </div>
     </leo-input>
   </div>

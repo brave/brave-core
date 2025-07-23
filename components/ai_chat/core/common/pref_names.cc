@@ -36,10 +36,6 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterBooleanPref(kBraveAIChatTabOrganizationEnabled, true);
     registry->RegisterBooleanPref(kBraveAIChatUserCustomizationEnabled, true);
     registry->RegisterBooleanPref(kBraveAIChatUserMemoryEnabled, true);
-    registry->RegisterStringPref(kBraveAIChatUserCustomizationName, "");
-    registry->RegisterStringPref(kBraveAIChatUserCustomizationJob, "");
-    registry->RegisterStringPref(kBraveAIChatUserCustomizationTone, "");
-    registry->RegisterStringPref(kBraveAIChatUserCustomizationOther, "");
     registry->RegisterDictionaryPref(kBraveAIChatUserCustomizations);
     registry->RegisterListPref(kBraveAIChatUserMemories);
   }

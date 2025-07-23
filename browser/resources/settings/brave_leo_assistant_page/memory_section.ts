@@ -8,20 +8,23 @@ import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
 import 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
-import { PrefsMixin, PrefsMixinInterface } from
-  '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin, I18nMixinInterface } from
   'chrome://resources/cr_elements/i18n_mixin.js'
 import { PolymerElement } from
   'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+
+import { PrefsMixin, PrefsMixinInterface } from
+  '/shared/settings/prefs/prefs_mixin.js'
 import { BaseMixin, BaseMixinInterface } from '../base_mixin.js'
-import { getTemplate } from './memory_section.html.js'
+import {
+  CustomizationOperationError,
+  MAX_RECORD_LENGTH
+} from '../customization_settings.mojom-webui.js'
 import {
   BraveLeoAssistantBrowserProxy,
   BraveLeoAssistantBrowserProxyImpl
 } from './brave_leo_assistant_browser_proxy.js'
-
-const USER_MEMORIES_PREF_KEY = 'brave.ai_chat.user_memories'
+import { getTemplate } from './memory_section.html.js'
 
 const MemorySectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement))) as {
   new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
@@ -59,10 +62,6 @@ class MemorySection extends MemorySectionBase {
         type: Boolean,
         computed: 'computeMemoryInputValid_(editingMemory_)'
       },
-      isMemoryInputError_: {
-        type: Boolean,
-        value: false
-      },
       showDeleteDialog_: {
         type: Boolean,
         value: false
@@ -78,12 +77,6 @@ class MemorySection extends MemorySectionBase {
     }
   }
 
-  static get observers() {
-    return [
-      'loadMemories_(prefs.brave.ai_chat.user_memories.value)',
-    ]
-  }
-
   browserProxy_: BraveLeoAssistantBrowserProxy =
     BraveLeoAssistantBrowserProxyImpl.getInstance()
   declare memoriesList_: string[]
@@ -91,86 +84,111 @@ class MemorySection extends MemorySectionBase {
   declare showMemoryDialog_: boolean
   declare editingMemory_: string
   declare isMemoryInputValid_: boolean
-  declare isMemoryInputError_: boolean
   declare showDeleteDialog_: boolean
   declare deleteMemoryItem_: string | null
   declare showDeleteAllDialog_: boolean
 
   override ready() {
     super.ready()
-    this.loadMemories_();
+    this.loadMemories_()
+    this.setupCallbacks_()
+  }
+
+  setupCallbacks_() {
+    const callbackRouter =
+      this.browserProxy_.getCustomizationSettingsCallbackRouter()
+    callbackRouter.onMemoriesChanged.addListener((memories: string[]) => {
+      this.memoriesList_ = [...memories]
+    })
   }
 
   loadMemories_() {
-    // Check if prefs and the specific pref are available before accessing
-    if (this.prefs?.brave?.ai_chat?.user_memories?.value) {
-      this.memoriesList_ = [...this.prefs.brave.ai_chat.user_memories.value];
-    }
+    const handler = this.browserProxy_.getCustomizationSettingsHandler()
+    handler.getMemories().then((result: { memories: string[] }) => {
+      this.memoriesList_ = [...result.memories]
+    })
   }
 
   saveMemory_(memoryItem: string, oldItem: string | null) {
+    const handler = this.browserProxy_.getCustomizationSettingsHandler()
+
     if (!oldItem) {
-      this.appendPrefListItem(USER_MEMORIES_PREF_KEY, memoryItem);
-      // Manually reload memories immediately
-      this.loadMemories_();
+      // Adding new memory
+      handler.addMemory(memoryItem).then(
+        (result: { error: CustomizationOperationError | null }) => {
+          if (result.error) {
+            this.handleMemoryError_(result.error)
+          }
+        })
     } else {
-      this.updatePrefListItem(USER_MEMORIES_PREF_KEY, oldItem, memoryItem);
-      // Manually reload memories immediately
-      this.loadMemories_();
+      // Editing existing memory
+      handler.editMemory(oldItem, memoryItem).then(
+        (result: { error: CustomizationOperationError | null }) => {
+          if (result.error) {
+            this.handleMemoryError_(result.error)
+          }
+        })
     }
   }
 
-  onMemoryDialogSave_(e: { detail: { memoryItem: string } }) {
-    this.showMemoryDialog_ = false
-    this.saveMemory_(e.detail.memoryItem, this.editingMemoryItem_);
-    this.editingMemoryItem_ = null;
-  }
-
-  onMemoryDialogClose_() {
-    this.editingMemoryItem_ = null;
-    this.showMemoryDialog_ = false;
+  handleMemoryError_(error: CustomizationOperationError) {
+    // Handle different error types
+    switch (error) {
+      // This is unlikely to happen since we have a length limit in frontend
+      // too.
+      case CustomizationOperationError.kInvalidLength:
+        console.error('Memory input exceeds length limit')
+        break
+      // Should be rare, in theory it might happen if memory changes during
+      // edit.
+      case CustomizationOperationError.kNotFound:
+        console.error('Can\'t find the target memory to edit')
+        break
+    }
   }
 
   handleDelete_(e: { model: { item: string | null }}) {
-    this.deleteMemoryItem_ = e.model.item;
-    this.showDeleteDialog_ = true;
+    this.deleteMemoryItem_ = e.model.item
+    this.showDeleteDialog_ = true
   }
 
   onDeleteDialogCancel_() {
-    this.showDeleteDialog_ = false;
-    this.deleteMemoryItem_ = null;
+    this.showDeleteDialog_ = false
+    this.deleteMemoryItem_ = null
   }
 
   onDeleteDialogConfirm_() {
     if (this.deleteMemoryItem_) {
-      this.deletePrefListItem(USER_MEMORIES_PREF_KEY, this.deleteMemoryItem_);
-      this.loadMemories_();
+      const handler = this.browserProxy_.getCustomizationSettingsHandler()
+      handler.deleteMemory(this.deleteMemoryItem_)
     }
-    this.showDeleteDialog_ = false;
-    this.deleteMemoryItem_ = null;
+    this.showDeleteDialog_ = false
+    this.deleteMemoryItem_ = null
   }
 
   handleEdit_(e: { model: { item: string | null }}) {
-    this.editingMemoryItem_ = e.model.item;
-    this.editingMemory_ = e.model.item || '';
-    this.showMemoryDialog_ = true;
+    this.editingMemoryItem_ = e.model.item
+    this.editingMemory_ = e.model.item || ''
+    this.showMemoryDialog_ = true
   }
 
   handleAddNewMemory_() {
-    this.editingMemoryItem_ = null;
-    this.editingMemory_ = '';
-    this.showMemoryDialog_ = true;
+    this.editingMemoryItem_ = null
+    this.editingMemory_ = ''
+    this.showMemoryDialog_ = true
+  }
+
+  private isTooLong(text: string) : boolean {
+    return text.trim().length > MAX_RECORD_LENGTH
   }
 
   onDialogInput_(e: { value: string }) {
-    const trimmedValue = e.value.trim()
-    this.editingMemory_ = trimmedValue
-    this.isMemoryInputError_ = trimmedValue.length > 512
+    this.editingMemory_ = e.value
   }
 
   computeMemoryInputValid_(editingMemory: string): boolean {
     const trimmedMemory = editingMemory.trim()
-    return trimmedMemory.length > 0 && trimmedMemory.length <= 512
+    return trimmedMemory.length > 0 && !this.isTooLong(trimmedMemory)
   }
 
   hasMemories_(memoriesList: string[]): boolean {
@@ -178,16 +196,17 @@ class MemorySection extends MemorySectionBase {
   }
 
   onDialogSave_() {
-    this.saveMemory_(this.editingMemory_, this.editingMemoryItem_);
-    this.showMemoryDialog_ = false;
-    this.editingMemoryItem_ = null;
-    this.editingMemory_ = '';
+    const trimmedMemory = this.editingMemory_.trim()
+    this.saveMemory_(trimmedMemory, this.editingMemoryItem_)
+    this.showMemoryDialog_ = false
+    this.editingMemoryItem_ = null
+    this.editingMemory_ = ''
   }
 
   onDialogCancel_() {
-    this.showMemoryDialog_ = false;
-    this.editingMemoryItem_ = null;
-    this.editingMemory_ = '';
+    this.showMemoryDialog_ = false
+    this.editingMemoryItem_ = null
+    this.editingMemory_ = ''
   }
 
   private getDialogTitle_(editingMemoryItem: string | null) {
@@ -197,17 +216,17 @@ class MemorySection extends MemorySectionBase {
   }
 
   handleDeleteAllMemories_() {
-    this.showDeleteAllDialog_ = true;
+    this.showDeleteAllDialog_ = true
   }
 
   onDeleteAllDialogCancel_() {
-    this.showDeleteAllDialog_ = false;
+    this.showDeleteAllDialog_ = false
   }
 
   onDeleteAllDialogConfirm_() {
-    this.setPrefValue(USER_MEMORIES_PREF_KEY, []);
-    this.loadMemories_();
-    this.showDeleteAllDialog_ = false;
+    const handler = this.browserProxy_.getCustomizationSettingsHandler()
+    handler.deleteAllMemories()
+    this.showDeleteAllDialog_ = false
   }
 }
 
