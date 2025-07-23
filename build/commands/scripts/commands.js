@@ -456,7 +456,11 @@ program
   .option('-C [build_dir]', 'build config (out/Debug, out/Release)')
   .option('--target_arch [target_arch]', 'target architecture')
   .option('--strip', 'print only labels')
-  .action(async (_positional, args) => {
+  .option(
+    '--since [targetCommit]',
+    'use a this commit as reference for change detection',
+  )
+  .action(async (_, args) => {
     const result = await printAffectedTests(args)
     console.log(result)
   })

@@ -15,7 +15,7 @@ const getTestTargets = (outDir, filters = ['//*']) =>
   exec(
     'gn',
     ['ls', outDir, '--type=executable', '--testonly=true', ...filters],
-    { env: config.defaultOptions.env },
+    { env: config.defaultOptions.env, shell: config.defaultOptions.shell },
   ).then((x) => x.stdout.trim().split('\n'))
 
 // set base = HEAD if you want to ignore the current workspace changes
@@ -50,11 +50,11 @@ async function getReferenceCommit() {
   return null
 }
 
-async function getAffectedTests(outDir, filters = ['//*']) {
+async function getAffectedTests(outDir, { filters = ['//*'], since = null }) {
   // JENKINS sets GIT_PREVIOUS_SUCCESSFUL_COMMIT
   // TODO: find TeamCity equivalent.
   // TODO: we can optimize further by getting the last failure commit
-  const targetCommit = await getReferenceCommit()
+  const targetCommit = since ?? (await getReferenceCommit())
   if (!targetCommit) {
     return null
   }
@@ -111,7 +111,7 @@ async function printAffectedTests(args) {
   const { strip, ...options } = args
   config.update(options)
 
-  const analysis = await getAffectedTests(config.outputDir)
+  const analysis = await getAffectedTests(config.outputDir, options)
   const affected = args.strip
     ? analysis.affectedTests.map((x) => x.split(':')[1])
     : analysis.affectedTests
