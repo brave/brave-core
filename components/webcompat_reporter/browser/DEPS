@@ -3,6 +3,7 @@ include_rules = [
   "+components/component_updater",
   "+components/keyed_service",
   "+components/prefs",
+  "+net",
   "+services/network/public",
   "+services/network/test",
 ]

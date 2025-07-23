@@ -13,6 +13,7 @@ include_rules = [
   "+content/public/test",
   "+extensions/buildflags",
   "+extensions/common",
+  "+net",
   "+services/data_decoder/public",
   "+services/network/public",
   "+ui/base",

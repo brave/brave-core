@@ -6,6 +6,7 @@ include_rules = [
   "+components/version_info",
   "+content/public/browser",
   "+content/public/test",
+  "+net",
   "+services/data_decoder/public",
   "+services/network/public/cpp",
   "+services/network/test",

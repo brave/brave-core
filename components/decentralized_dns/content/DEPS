@@ -6,4 +6,5 @@ include_rules = [
   "+components/user_prefs",
   "+content/public/browser",
   "+brave/net/decentralized_dns",
+  "+net",
 ]

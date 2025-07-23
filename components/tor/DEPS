@@ -8,6 +8,7 @@ include_rules = [
   "+content/public/common",
   "+content/public/test",
   "+extensions/common",
+  "+net",
   "+services/data_decoder/public",
   "+services/network/public",
   "+third_party/re2",
