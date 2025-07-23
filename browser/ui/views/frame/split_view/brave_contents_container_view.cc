@@ -52,7 +52,7 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
                                                         bool show_scrim) {
   // We don't show scrim view always.
-  GetScrimView()->SetVisible(false);
+  GetInactiveSplitScrimView()->SetVisible(false);
 
   // We have our own secondary toolbar.
   GetMiniToolbar()->SetVisible(false);
