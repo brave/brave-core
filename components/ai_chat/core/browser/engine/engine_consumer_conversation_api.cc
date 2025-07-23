@@ -15,6 +15,7 @@
 
 #include "base/barrier_callback.h"
 #include "base/check.h"
+#include "base/containers/adapters.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -152,7 +153,7 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
     SuggestedQuestionsCallback callback) {
   std::vector<ConversationEvent> conversation;
   uint32_t remaining_length = max_associated_content_length_;
-  for (const auto& content : page_contents) {
+  for (const auto& content : base::Reversed(page_contents)) {
     conversation.emplace_back(
         GetAssociatedContentConversationEvent(content, remaining_length));
     if (content.get().content.size() > remaining_length) {
@@ -213,7 +214,7 @@ EngineConsumerConversationAPI::GetUserMemoryEvent() const {
 }
 
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
-    PageContents page_contents,
+    PageContentsMap page_contents,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     const std::vector<base::WeakPtr<Tool>>& tools,
@@ -226,22 +227,17 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   }
 
   std::vector<ConversationEvent> conversation;
-  int remaining_length = max_associated_content_length_;
 
   // user memory
   if (auto event = GetUserMemoryEvent()) {
     conversation.push_back(std::move(*event));
   }
 
-  // associated content
-  for (const auto& content : page_contents) {
-    conversation.push_back(
-        GetAssociatedContentConversationEvent(content, remaining_length));
-    remaining_length -= content.get().content.size();
-    if (remaining_length <= 0) {
-      break;
-    }
-  }
+  uint32_t remaining_length = max_associated_content_length_;
+
+
+  base::flat_map<std::string, std::vector<ConversationEvent>>
+      page_contents_messages;
 
   // We're going to iterate over the conversation entries and
   // build a list of events for the remote API.
@@ -254,14 +250,31 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   // approach: first identify which large tool results to keep, then build the
   // conversation in chronological order.
 
-  // Step 1: First pass - identify large tool results and remember which ones to
-  // remove.
+  // Step 1:
+  //   - identify large tool results and remember which ones to remove.
+  //   - generate events for the page content which we're going to keep.
   absl::flat_hash_set<std::pair<size_t, size_t>> large_tool_result_remove_set;
   size_t large_tool_count = 0;
 
   for (size_t message_index = conversation_history.size(); message_index > 0;
        --message_index) {
     const auto& message = conversation_history[message_index - 1];
+
+    // If we have page content for this turn, generate an event for it.
+    auto page_content_it = page_contents.find(message->uuid.value());
+    if (page_content_it != page_contents.end() && remaining_length != 0) {
+      auto& events = page_contents_messages[message->uuid.value()];
+      for (const auto& content : page_content_it->second) {
+        events.push_back(
+            GetAssociatedContentConversationEvent(content, remaining_length));
+        if (content.get().content.size() > remaining_length) {
+          remaining_length = 0;
+          break;
+        }
+        remaining_length -= content.get().content.size();
+      }
+    }
+
     if (message->character_type == mojom::CharacterType::ASSISTANT &&
         message->events.has_value() && !message->events->empty()) {
       for (size_t event_index = message->events->size(); event_index > 0;
@@ -307,6 +320,14 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   for (size_t message_index = 0; message_index < conversation_history.size();
        ++message_index) {
     const auto& message = conversation_history[message_index];
+
+    // Append associated content for the message (if any).
+    auto page_content_it = page_contents_messages.find(message->uuid.value());
+    if (page_content_it != page_contents_messages.end()) {
+      for (auto& event : page_content_it->second) {
+        conversation.emplace_back(std::move(event));
+      }
+    }
 
     // Events that come before the main message
     if (message->uploaded_files) {

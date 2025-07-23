@@ -302,6 +302,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
   void PerformAssistantGenerationWithPossibleContent();
 
+  // TODO(fallaciousreasoning): This shouldn't take a PageContents.
   void PerformAssistantGeneration(PageContents page_contents);
   void SetAPIError(const mojom::APIError& error);
   void UpdateOrCreateLastAssistantEntry(
