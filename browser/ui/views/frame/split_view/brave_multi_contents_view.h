@@ -25,8 +25,6 @@ class BraveMultiContentsView : public MultiContentsView,
   METADATA_HEADER(BraveMultiContentsView, MultiContentsView)
 
  public:
-  static constexpr int kBorderThickness = 2;
-
   static BraveMultiContentsView* From(MultiContentsView* view);
 
   BraveMultiContentsView(BrowserView* browser_view,
@@ -42,13 +40,10 @@ class BraveMultiContentsView : public MultiContentsView,
                            BraveMultiContentsViewTest);
 
   // MultiContentsView:
-  void UpdateContentsBorderAndOverlay() override;
   void Layout(PassKey) override;
 
   // SplitViewSeparatorDelegate:
   void OnDoubleClicked() override;
-
-  float GetCornerRadius(bool for_border) const;
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
       const {
