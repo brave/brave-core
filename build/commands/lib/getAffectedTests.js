@@ -59,7 +59,7 @@ async function getAffectedTests(outDir, filters = ['//*']) {
 
   const root = path.resolve(process.cwd(), '../')
   outDir =
-    outDir.startsWith('..') || outDir.startsWith('/')
+    path.isAbsolute(outDir)
       ? outDir
       : `${root}/${outDir}`
   const testTargets = await getTestTargets(outDir, filters)
