@@ -578,14 +578,6 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   task_environment_.RunUntilIdle();
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/47827)
-#if BUILDFLAG(IS_IOS)
-#define MAYBE_ConversationLifecycle_WithContent \
-  DISABLED_ConversationLifecycle_WithContent
-#else
-#define MAYBE_ConversationLifecycle_WithContent \
-  ConversationLifecycle_WithContent
-#endif
 TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
   NiceMock<MockAssociatedContent> associated_content{};
   ON_CALL(associated_content, GetURL())
@@ -789,13 +781,7 @@ TEST_P(AIChatServiceUnitTest,
   run_loop.Run();
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/47827)
-#if BUILDFLAG(IS_IOS)
-#define MAYBE_GetConversation_AfterRestart DISABLED_GetConversation_AfterRestart
-#else
-#define MAYBE_GetConversation_AfterRestart GetConversation_AfterRestart
-#endif
-TEST_P(AIChatServiceUnitTest, MAYBE_GetConversation_AfterRestart) {
+TEST_P(AIChatServiceUnitTest, GetConversation_AfterRestart) {
   auto history = CreateSampleChatHistory(1u);
   std::string uuid;
   {

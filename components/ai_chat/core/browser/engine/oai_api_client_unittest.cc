@@ -214,16 +214,8 @@ class OAIAPIInvalidResponseTest
     : public OAIAPIUnitTest,
       public ::testing::WithParamInterface<std::string> {};
 
-// TODO(https://github.com/brave/brave-browser/issues/47827)
-#if BUILDFLAG(IS_IOS)
-#define MAYBE_InvalidResponse_NoCallbacksTriggeredOrEmptyCompletion \
-  DISABLED_InvalidResponse_NoCallbacksTriggeredOrEmptyCompletion
-#else
-#define MAYBE_InvalidResponse_NoCallbacksTriggeredOrEmptyCompletion \
-  InvalidResponse_NoCallbacksTriggeredOrEmptyCompletion
-#endif
 TEST_P(OAIAPIInvalidResponseTest,
-       MAYBE_InvalidResponse_NoCallbacksTriggeredOrEmptyCompletion) {
+       InvalidResponse_NoCallbacksTriggeredOrEmptyCompletion) {
   mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
       "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
       "test_model");
