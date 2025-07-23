@@ -100,9 +100,9 @@ TEST_F(CustomizeToolbarHandlerUnitTest, YourChromeLabelShouldBeBraveMenu) {
             side_panel::customize_chrome::mojom::CategoryId::kYourChrome,
             [](const auto& category) { return category->id; });
         ASSERT_NE(your_chrome_it, categories.end());
-        EXPECT_EQ((*your_chrome_it)->display_name,
-                  l10n_util::GetStringUTF8(
-                      IDS_CUSTOMIZE_TOOLBAR_CATEGORY_BRAVE_MENU));
+        EXPECT_EQ(
+            (*your_chrome_it)->display_name,
+            l10n_util::GetStringUTF8(IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR));
       }));
 }
 
