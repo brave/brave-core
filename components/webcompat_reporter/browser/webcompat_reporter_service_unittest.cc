@@ -154,7 +154,6 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
   void TestRetrievingWebcompatCategories(
       const std::vector<mojom::WebcompatCategory>& required_categories,
       const std::vector<mojom::WebcompatCategory>& excluded_categories,
-      const size_t expected_categories_count,
       const std::vector<ComponentInfo>& component_infos) {
     EXPECT_CALL(*delegate_, GetComponentInfos)
         .Times(1)
@@ -166,7 +165,7 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
         .Times(1)
         .WillRepeatedly([&](std::vector<mojom::WebcompatCategoryItemPtr>
                                 categories) {
-          EXPECT_EQ(categories.size(), expected_categories_count);
+          EXPECT_EQ(categories.size(), required_categories.size());
           EXPECT_TRUE(std::ranges::all_of(required_categories, [&](auto item) {
             return std::ranges::find_if(
                        categories,
@@ -283,38 +282,54 @@ TEST_F(WebcompatReporterServiceUnitTest, RetrievingWebcompatCategories) {
     TestRetrievingWebcompatCategories(
         {mojom::WebcompatCategory::kAds, mojom::WebcompatCategory::kBlank,
          mojom::WebcompatCategory::kScroll, mojom::WebcompatCategory::kForm,
+         mojom::WebcompatCategory::kAntiAdblock,
+         mojom::WebcompatCategory::kTracking, mojom::WebcompatCategory::kOther},
+        {mojom::WebcompatCategory::kCookieNotice,
+         mojom::WebcompatCategory::kNewsletter,
+         mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat},
+        component_infos);
+  }
+  {
+    std::vector<ComponentInfo> component_infos{
+        {"adcocjohghhfpidemphmcmlmhnfgikei", "name", "1.234"},
+        // In this component is present, WebcompatCategory::kCookieNotice must
+        // be shown
+        {"cdbbhgbmjhfnhnmgeddbliobbofkgdhe", "name1", "2.234"},
+        // In this component is present, WebcompatCategory::kNewsletter must be
+        // shown
+        {"kdddfellohomdnfkdhombbddhojklibj", "name2", "3.234"},
+        // In this component is present, WebcompatCategory::kSocial must be
+        // shown
+        {"nbkknaieglghmocpollinelcggiehfco", "name3", "4.234"},
+        // In this component is present, WebcompatCategory::kChat must be
+        // shown
+        {"cjoooeeofnfjohnalnghhmdlalopplja", "name4", "5.234"}};
+    TestRetrievingWebcompatCategories(
+        {mojom::WebcompatCategory::kAds, mojom::WebcompatCategory::kBlank,
+         mojom::WebcompatCategory::kScroll, mojom::WebcompatCategory::kForm,
          mojom::WebcompatCategory::kCookieNotice,
          mojom::WebcompatCategory::kAntiAdblock,
          mojom::WebcompatCategory::kTracking,
          mojom::WebcompatCategory::kNewsletter,
          mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat,
          mojom::WebcompatCategory::kOther},
-        {}, 11, component_infos);
+        {}, component_infos);
   }
   {
     std::vector<ComponentInfo> component_infos{
         {"adcocjohghhfpidemphmcmlmhnfgikei", "name", "1.234"},
         // In this component is present, WebcompatCategory::kCookieNotice must
-        // be excluded
-        {"cdbbhgbmjhfnhnmgeddbliobbofkgdhe", "name1", "2.234"},
-        // In this component is present, WebcompatCategory::kNewsletter must be
-        // excluded
-        {"kdddfellohomdnfkdhombbddhojklibj", "name2", "3.234"},
-        // In this component is present, WebcompatCategory::kSocial must be
-        // excluded
-        {"nbkknaieglghmocpollinelcggiehfco", "name3", "4.234"},
-        // In this component is present, WebcompatCategory::kChat must be
-        // excluded
-        {"cjoooeeofnfjohnalnghhmdlalopplja", "name4", "5.234"}};
+        // be shown
+        {"cdbbhgbmjhfnhnmgeddbliobbofkgdhe", "name1", "2.234"}};
     TestRetrievingWebcompatCategories(
         {mojom::WebcompatCategory::kAds, mojom::WebcompatCategory::kBlank,
          mojom::WebcompatCategory::kScroll, mojom::WebcompatCategory::kForm,
+         mojom::WebcompatCategory::kCookieNotice,
          mojom::WebcompatCategory::kAntiAdblock,
          mojom::WebcompatCategory::kTracking, mojom::WebcompatCategory::kOther},
-        {mojom::WebcompatCategory::kCookieNotice,
-         mojom::WebcompatCategory::kNewsletter,
+        {mojom::WebcompatCategory::kNewsletter,
          mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat},
-        7, component_infos);
+        component_infos);
   }
 }
 

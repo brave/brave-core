@@ -177,22 +177,22 @@ constexpr char kHideChatCategorForComponentId[] =
 bool HideIssueCategory(const std::vector<std::string>& component_ids,
                        const WebcompatCategory category) {
   if (category == WebcompatCategory::kCookieNotice &&
-      base::Contains(component_ids, kHideCookieNoticeCategorForComponentId)) {
+      !base::Contains(component_ids, kHideCookieNoticeCategorForComponentId)) {
     return true;
   }
 
   if (category == WebcompatCategory::kNewsletter &&
-      base::Contains(component_ids, kHideNewsletterCategorForComponentId)) {
+      !base::Contains(component_ids, kHideNewsletterCategorForComponentId)) {
     return true;
   }
 
   if (category == WebcompatCategory::kSocial &&
-      base::Contains(component_ids, kHideSocialCategorForComponentId)) {
+      !base::Contains(component_ids, kHideSocialCategorForComponentId)) {
     return true;
   }
 
   if (category == WebcompatCategory::kChat &&
-      base::Contains(component_ids, kHideChatCategorForComponentId)) {
+      !base::Contains(component_ids, kHideChatCategorForComponentId)) {
     return true;
   }
 
