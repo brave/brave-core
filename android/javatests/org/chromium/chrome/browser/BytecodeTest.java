@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.view.Window;
 import android.widget.RadioGroup;
 
@@ -668,12 +667,6 @@ public class BytecodeTest {
                         "get",
                         MethodModifier.STATIC,
                         VariationsSeedFetcher.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
-                        "updateTilePlaceholderVisibility",
-                        MethodModifier.REGULAR,
-                        void.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1532,7 +1525,6 @@ public class BytecodeTest {
                         Resources.class,
                         UiConfig.class,
                         MostVisitedTilesLayout.class,
-                        ViewStub.class,
                         TileRenderer.class,
                         PropertyModel.class,
                         boolean.class,
