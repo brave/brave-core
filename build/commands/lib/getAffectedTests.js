@@ -27,7 +27,8 @@ async function getModifiedFiles(target = 'HEAD~', base = null) {
       .trim()
       .split('\n')
       .filter((x) => x)
-      .map((x) => '//brave/' + x),
+      .map((x) => '//brave/' + x)
+      .map((x) => x.replace('brave/chromium_src', '')),
   )
 }
 
