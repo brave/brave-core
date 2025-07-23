@@ -83,10 +83,11 @@ async function getAffectedTests(outDir, filters = ['//*']) {
     'utf-8',
   )
 
+  const { env, shell } = config.defaultOptions
   await exec(
     gnPath(),
     ['analyze', outDir, `${root}/out/analyze.json`, `${root}/out/out.json`],
-    { env: config.defaultOptions.env },
+    { env, shell },
   )
 
   const output = await readFile(`${root}/out/out.json`, 'utf-8').then(
