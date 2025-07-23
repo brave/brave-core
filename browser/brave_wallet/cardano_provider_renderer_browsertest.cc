@@ -333,7 +333,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, Properties) {
 
   {
     auto result = EvalJs(web_contents(browser()), "window.cardano.brave.icon");
-    EXPECT_EQ(base::Value(""), result.value);
+    EXPECT_TRUE(result.value.GetString().starts_with("data:image/png;base64,"));
   }
 }
 
@@ -647,8 +647,9 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetBalance_Error) {
   ON_CALL(*provider, GetBalance(_))
       .WillByDefault(::testing::Invoke(
           [&](TestCardanoProvider::GetBalanceCallback callback) {
-            std::move(callback).Run("", mojom::CardanoProviderErrorBundle::New(
-                                            -2, "Internal", nullptr));
+            std::move(callback).Run(std::nullopt,
+                                    mojom::CardanoProviderErrorBundle::New(
+                                        -2, "Internal", nullptr));
           }));
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try { return await (await "
@@ -694,8 +695,9 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetChangeAddress_Error) {
   ON_CALL(*provider, GetChangeAddress(_))
       .WillByDefault(::testing::Invoke(
           [&](TestCardanoProvider::GetChangeAddressCallback callback) {
-            std::move(callback).Run("", mojom::CardanoProviderErrorBundle::New(
-                                            -2, "Internal", nullptr));
+            std::move(callback).Run(std::nullopt,
+                                    mojom::CardanoProviderErrorBundle::New(
+                                        -2, "Internal", nullptr));
           }));
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try{ return await (await "
@@ -950,8 +952,9 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignTx_Error) {
                                 TestCardanoProvider::SignTxCallback callback) {
             EXPECT_EQ(partial_sign, true);
             EXPECT_EQ(tx, "tx");
-            std::move(callback).Run("", mojom::CardanoProviderErrorBundle::New(
-                                            1, "Proof error", nullptr));
+            std::move(callback).Run(std::nullopt,
+                                    mojom::CardanoProviderErrorBundle::New(
+                                        1, "Proof error", nullptr));
           }));
 
   auto result = EvalJs(web_contents(browser()),
@@ -1144,7 +1147,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_Error) {
               TestCardanoProvider::SignDataCallback callback) {
             EXPECT_EQ("addr", address);
             EXPECT_EQ("data", data);
-            std::move(callback).Run(base::Value::Dict(),
+            std::move(callback).Run(std::nullopt,
                                     mojom::CardanoProviderErrorBundle::New(
                                         2, "Data sign error", nullptr));
           }));
@@ -1174,7 +1177,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SubmitTx_Error) {
           [&](const std::string& tx,
               TestCardanoProvider::SubmitTxCallback callback) {
             std::move(callback).Run(
-                "hash",
+                std::nullopt,
                 mojom::CardanoProviderErrorBundle::New(1, "Refused", nullptr));
           }));
 
