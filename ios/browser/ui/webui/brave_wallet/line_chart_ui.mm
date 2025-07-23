@@ -19,23 +19,24 @@
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/webui/webui_util.h"
 #include "ui/webui/resources/grit/webui_resources.h"
+#include "ui/webui/webui_util.h"
 
 namespace line_chart {
 
-UntrustedLineChartUI::UntrustedLineChartUI(web::WebUIIOS* web_ui, const GURL& url)
+UntrustedLineChartUI::UntrustedLineChartUI(web::WebUIIOS* web_ui,
+                                           const GURL& url)
     : web::WebUIIOSController(web_ui, url.host()) {
   BraveWebUIIOSDataSource* untrusted_source =
-      brave::CreateAndAddWebUIDataSource(web_ui, url.host(),
-                                         kLineChartDisplayGenerated,
-                                         IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML);
+      brave::CreateAndAddWebUIDataSource(
+          web_ui, url.host(), kLineChartDisplayGenerated,
+          IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML);
 
   untrusted_source->AddLocalizedStrings(brave_wallet::kLocalizedStrings);
 
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
-  
+
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       std::string("script-src 'self' chrome-untrusted://resources "
