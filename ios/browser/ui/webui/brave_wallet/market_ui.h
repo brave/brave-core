@@ -14,7 +14,7 @@
 namespace market {
 
 class UntrustedMarketUI : public web::WebUIIOSController {
-public:
+ public:
   explicit UntrustedMarketUI(web::WebUIIOS* web_ui, const GURL& url);
   UntrustedMarketUI(const UntrustedMarketUI&) = delete;
   UntrustedMarketUI& operator=(const UntrustedMarketUI&) = delete;
@@ -24,4 +24,3 @@ public:
 }  // namespace market
 
 #endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_MARKET_UI_H_
-

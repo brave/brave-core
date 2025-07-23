@@ -7,12 +7,12 @@
 
 #include <string>
 
-#include "brave/ios/web/webui/untrusted_sanitized_image_source.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/market_display/resources/grit/market_display_generated_map.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
+#include "brave/ios/web/webui/untrusted_sanitized_image_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
@@ -20,8 +20,8 @@
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/webui/webui_util.h"
 #include "ui/webui/resources/grit/webui_resources.h"
+#include "ui/webui/webui_util.h"
 
 namespace market {
 
@@ -33,7 +33,7 @@ UntrustedMarketUI::UntrustedMarketUI(web::WebUIIOS* web_ui, const GURL& url)
                                          IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML);
 
   untrusted_source->AddLocalizedStrings(brave_wallet::kLocalizedStrings);
-  
+
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
 
@@ -68,8 +68,8 @@ UntrustedMarketUI::UntrustedMarketUI(web::WebUIIOS* web_ui, const GURL& url)
                               kUntrustedMarketURL);
 
   auto* profile = ProfileIOS::FromWebUIIOS(web_ui);
-  web::URLDataSourceIOS::Add(
-      profile, new UntrustedSanitizedImageSource(profile));
+  web::URLDataSourceIOS::Add(profile,
+                             new UntrustedSanitizedImageSource(profile));
 }
 
 UntrustedMarketUI::~UntrustedMarketUI() = default;
