@@ -5,19 +5,15 @@
 
 #include "brave/components/constants/brave_services_key_helper.h"
 
+#include "base/strings/pattern.h"
 #include "brave/components/constants/network_constants.h"
-#include "extensions/common/url_pattern.h"
 #include "url/gurl.h"
 
 namespace brave {
 
 bool ShouldAddBraveServicesKeyHeader(const GURL& url) {
-  static URLPattern brave_proxy_pattern(URLPattern::SCHEME_HTTPS,
-                                        kBraveProxyPattern);
-  static URLPattern bravesoftware_proxy_pattern(URLPattern::SCHEME_HTTPS,
-                                                kBraveSoftwareProxyPattern);
-  return brave_proxy_pattern.MatchesURL(url) ||
-         bravesoftware_proxy_pattern.MatchesURL(url);
+  return base::MatchPattern(url.spec(), kBraveProxyPattern) ||
+         base::MatchPattern(url.spec(), kBraveSoftwareProxyPattern);
 }
 
 }  // namespace brave

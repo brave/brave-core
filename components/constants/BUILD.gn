@@ -44,7 +44,7 @@ source_set("brave_service_key_helper") {
 
   deps = [
     ":constants",
-    "//brave/extensions:common",  # instead of //extensions/common, for iOS
+    "//base",
     "//url",
   ]
 }
