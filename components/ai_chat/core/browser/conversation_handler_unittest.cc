@@ -16,6 +16,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
@@ -38,6 +39,7 @@
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -123,6 +125,37 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
  private:
   mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
   mojo::Remote<mojom::ConversationHandler> conversation_handler_;
+};
+
+class MockUntrustedConversationHandlerClient
+    : public mojom::UntrustedConversationUI {
+ public:
+  explicit MockUntrustedConversationHandlerClient(ConversationHandler* driver) {
+    driver->BindUntrustedConversationUI(
+        conversation_ui_receiver_.BindNewPipeAndPassRemote(),
+        base::DoNothing());
+  }
+
+  ~MockUntrustedConversationHandlerClient() override = default;
+
+  void Disconnect() { conversation_ui_receiver_.reset(); }
+
+  MOCK_METHOD(void,
+              OnConversationHistoryUpdate,
+              (mojom::ConversationTurnPtr),
+              (override));
+  MOCK_METHOD(void,
+              OnEntriesUIStateChanged,
+              (mojom::ConversationEntriesStatePtr),
+              (override));
+  MOCK_METHOD(void,
+              AssociatedContentChanged,
+              (std::vector<mojom::AssociatedContentPtr>),
+              (override));
+
+ private:
+  mojo::Receiver<mojom::UntrustedConversationUI> conversation_ui_receiver_{
+      this};
 };
 
 class MockAIChatFeedbackAPI : public AIChatFeedbackAPI {
@@ -302,6 +335,10 @@ class ConversationHandlerUnitTest_NoAssociatedContent
     has_associated_content_ = false;
   }
 };
+
+MATCHER_P(ConversationEntriesStateIsGenerating, expected_is_generating, "") {
+  return arg->is_generating == expected_is_generating;
+}
 
 MATCHER_P(LastTurnHasText, expected_text, "") {
   if (arg.empty()) {
@@ -1228,7 +1265,8 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   observer.Observe(conversation_handler_.get());
 
   // Make a first edit
-  conversation_handler_->ModifyConversation(0, "prompt2");
+  conversation_handler_->ModifyConversation(history[0]->uuid.value(),
+                                            "prompt2");
   testing::Mock::VerifyAndClearExpectations(&observer);
 
   // Create the entries events in the way we're expecting to look
@@ -1277,7 +1315,8 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
                       mojom::CompletionEvent::New("")),
                   "chat-basic" /* model_key */)))));
 
-  conversation_handler_->ModifyConversation(0, "prompt3");
+  conversation_handler_->ModifyConversation(
+      conversation_history[0]->uuid.value(), "prompt3");
 
   auto second_edit_expected_history = CloneHistory(first_edit_expected_history);
   auto second_edit = first_edit->Clone();
@@ -1299,7 +1338,8 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   // Engine should not be called for an assistant edit
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
       .Times(0);
-  conversation_handler_->ModifyConversation(1, " answer2 ");
+  conversation_handler_->ModifyConversation(
+      conversation_history[1]->uuid.value(), " answer2 ");
 
   auto third_edit_expected_history = CloneHistory(second_edit_expected_history);
 
@@ -2486,6 +2526,602 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
     // Verify no rating ID was returned
     EXPECT_FALSE(future_rating_id.Take().has_value());
   }
+}
+
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Mock engine to return partial tool use events
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          // First send a tool use event with a name
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("test_tool", "id1",
+                                                 "{\"param\":", std::nullopt)),
+                    std::nullopt));
+              }),
+          // Then send a partial tool use event with no name
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("", "", "\"value\"}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          // Then send another tool use event with a name
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("test_tool2", "id2",
+                                                 "{\"other\":true}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          // Complete the request
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.Quit();
+              })));
+
+  // Submit a human entry to trigger the mocked response
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify the conversation history
+  const std::vector<mojom::ConversationTurnPtr>& history =
+      conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 2u);
+
+  auto& assistant_entry = history.back();
+  ASSERT_TRUE(assistant_entry->events.has_value());
+  auto& events = assistant_entry->events.value();
+  EXPECT_EQ(events.size(), 2u);  // combined event + separate event
+
+  // First event should have combined arguments
+  EXPECT_TRUE(events[0]->is_tool_use_event());
+  EXPECT_EQ(events[0]->get_tool_use_event()->tool_name, "test_tool");
+  EXPECT_EQ(events[0]->get_tool_use_event()->arguments_json,
+            "{\"param\":\"value\"}");
+
+  // Second event should be separate
+  EXPECT_TRUE(events[1]->is_tool_use_event());
+  EXPECT_EQ(events[1]->get_tool_use_event()->tool_name, "test_tool2");
+  EXPECT_EQ(events[1]->get_tool_use_event()->arguments_json,
+            "{\"other\":true}");
+}
+
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
+  // Setup multiple tools with only 1 being called
+  auto tool1 =
+      std::make_unique<NiceMock<MockTool>>("weather_tool", "Get weather");
+  auto tool2 = std::make_unique<NiceMock<MockTool>>("calculator", "Do math");
+
+  auto* tool1_ptr = tool1.get();
+  auto* tool2_ptr = tool2.get();
+
+  tool1->set_requires_user_interaction_before_handling(false);
+  tool2->set_requires_user_interaction_before_handling(false);
+
+  std::vector<std::unique_ptr<Tool>> tools;
+  tools.push_back(std::move(tool1));
+  tools.push_back(std::move(tool2));
+  conversation_handler_->SetToolsForTesting(std::move(tools));
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
+      conversation_handler_.get());
+
+  base::RunLoop run_loop;
+  testing::Sequence seq;
+  bool second_generation_started = false;
+
+  // First call to engine mocks the use tool requests
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
+                                                 "{\"location\":\"New York\"}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // We will still be "in progress" whilst any automatic tools are being called
+  EXPECT_CALL(untrusted_client, OnEntriesUIStateChanged(
+                                    ConversationEntriesStateIsGenerating(true)))
+      .Times(testing::AtLeast(1));
+
+  // Only the weather_tool UseTool should be called
+  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"New York\"}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Weather in New York: 72°F")));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  // Second call to engine receives the tool output and provides the next
+  // assistant response iteration.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::InvokeWithoutArgs(
+              [&]() { second_generation_started = true; }),
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(
+                            "Based on the weather data, it's 72F")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.Quit();
+              })));
+
+  // We should see the final "generation in progress" change to false
+  EXPECT_CALL(
+      untrusted_client,
+      OnEntriesUIStateChanged(ConversationEntriesStateIsGenerating(false)))
+      .WillRepeatedly(testing::InvokeWithoutArgs([&]() {
+        // This should only be called after the second generation has started
+        EXPECT_TRUE(second_generation_started);
+      }));
+
+  EXPECT_CALL(*tool2_ptr, UseTool).Times(0);
+
+  // Submit a human entry to trigger the tool use
+  conversation_handler_->SubmitHumanConversationEntry(
+      "What's the weather in New York?", std::nullopt);
+
+  run_loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  // human entry + assistant entry with tool + assistant entry with response
+  ASSERT_EQ(history.size(), 3u);
+  auto& assistant_entry = history[1];
+  ASSERT_TRUE(assistant_entry->events.has_value());
+  auto& events = assistant_entry->events.value();
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_TRUE(events[0]->is_tool_use_event());
+  auto& tool_event = events[0]->get_tool_use_event();
+  EXPECT_TRUE(tool_event->output.has_value());
+  EXPECT_EQ(tool_event->output->size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_event->output->at(0),
+      mojom::ContentBlock::NewTextContentBlock(
+          mojom::TextContentBlock::New("Weather in New York: 72°F")));
+}
+
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // Setup multiple tools with both being called
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  auto tool2 =
+      std::make_unique<NiceMock<MockTool>>("test_tool2", "Test tool 2");
+  auto* tool1_ptr = tool1.get();
+  auto* tool2_ptr = tool2.get();
+
+  tool1->set_requires_user_interaction_before_handling(false);
+  tool2->set_requires_user_interaction_before_handling(false);
+
+  std::vector<std::unique_ptr<Tool>> tools;
+  tools.push_back(std::move(tool1));
+  tools.push_back(std::move(tool2));
+  conversation_handler_->SetToolsForTesting(std::move(tools));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Expect two calls to GenerateAssistantResponse:
+  // 1. First call returns tool use event
+  // 2. Second call (after tool completes) returns final response
+
+  base::RunLoop run_loop;
+
+  testing::Sequence seq;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
+                                                 "{\"location\":\"NYC\"}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("test_tool2", "tool_id_2",
+                                                 "{\"input1\":\"val1\"}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // Setup tool use results
+  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"NYC\"}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Result from tool1")));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  EXPECT_CALL(*tool2_ptr, UseTool(StrEq("{\"input1\":\"val1\"}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Result from tool2")));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(
+                            "Based on the weather data, it's 72F")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.Quit();
+              })));
+
+  // Submit human entry to start the flow
+  conversation_handler_->SubmitHumanConversationEntry("What's the weather?",
+                                                      std::nullopt);
+
+  run_loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  // human entry + assistant entry with tool + assistant entry with response
+  EXPECT_EQ(history.size(), 3u);
+
+  // Check the final response
+  EXPECT_EQ(history.back()->text, "Based on the weather data, it's 72F");
+
+  // Check that all tool use events have the correct input and output
+  auto& assistant_entry = history[1];
+  ASSERT_TRUE(assistant_entry->events.has_value());
+  auto& events = assistant_entry->events.value();
+  ASSERT_EQ(events.size(), 2u);
+  EXPECT_TRUE(events[0]->is_tool_use_event());
+  auto& tool_event = events[0]->get_tool_use_event();
+  EXPECT_TRUE(events[1]->is_tool_use_event());
+  auto& tool_event2 = events[1]->get_tool_use_event();
+  EXPECT_TRUE(tool_event->output.has_value());
+  EXPECT_EQ(tool_event->tool_name, "test_tool");
+  EXPECT_EQ(tool_event->id, "tool_id_1");
+  EXPECT_EQ(tool_event->arguments_json, "{\"location\":\"NYC\"}");
+  EXPECT_EQ(tool_event->output->size(), 1u);
+  EXPECT_MOJOM_EQ(tool_event->output->at(0),
+                  mojom::ContentBlock::NewTextContentBlock(
+                      mojom::TextContentBlock::New("Result from tool1")));
+  EXPECT_TRUE(tool_event2->output.has_value());
+  EXPECT_EQ(tool_event2->tool_name, "test_tool2");
+  EXPECT_EQ(tool_event2->id, "tool_id_2");
+  EXPECT_EQ(tool_event2->arguments_json, "{\"input1\":\"val1\"}");
+  EXPECT_EQ(tool_event2->output->size(), 1u);
+  EXPECT_MOJOM_EQ(tool_event2->output->at(0),
+                  mojom::ContentBlock::NewTextContentBlock(
+                      mojom::TextContentBlock::New("Result from tool2")));
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       ToolUseEvents_RequiresUserInteractionBeforeHandling) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // Setup a tool that requires user interaction before handling
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  auto* tool1_ptr = tool1.get();
+  tool1->set_requires_user_interaction_before_handling(true);
+
+  std::vector<std::unique_ptr<Tool>> tools;
+  tools.push_back(std::move(tool1));
+  conversation_handler_->SetToolsForTesting(std::move(tools));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Expect first GenerateAssistantResponse to return tool use event
+  base::RunLoop first_generation_loop;
+  testing::Sequence seq;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
+                                                 "{\"param\":\"value\"}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                first_generation_loop.Quit();
+              })));
+
+  // Tool should not be called since there is no explicit call via user
+  // interaction.
+  EXPECT_CALL(*tool1_ptr, UseTool).Times(0);
+
+  // When the user instead decides to send a new human entry, before the tool
+  // use request is handled, the tool use request should be discarded.
+  base::RunLoop second_generation_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Here's a new response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                second_generation_loop.Quit();
+              })));
+
+  // Submit first human entry to get tool use event
+  conversation_handler_->SubmitHumanConversationEntry("First question",
+                                                      std::nullopt);
+  first_generation_loop.Run();
+
+  // Verify the tool use event exists and has no output
+  const auto& history_before = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history_before.size(), 2u);  // human + assistant with tool
+  auto& assistant_before = history_before.back();
+  ASSERT_TRUE(assistant_before->events.has_value());
+  auto& events_before = assistant_before->events.value();
+  ASSERT_EQ(events_before.size(), 1u);
+  EXPECT_TRUE(events_before[0]->is_tool_use_event());
+  EXPECT_FALSE(events_before[0]->get_tool_use_event()->output.has_value());
+
+  // Submit a new human entry which should cancel the pending tool use event
+  conversation_handler_->SubmitHumanConversationEntry("New question",
+                                                      std::nullopt);
+  second_generation_loop.Run();
+
+  // Verify the pending tool use event was removed
+  const auto& history_after = conversation_handler_->GetConversationHistory();
+  // original human + assistant (with tools removed) + new human + new assistant
+  EXPECT_EQ(history_after.size(), 4u);
+
+  // Check that the first assistant entry no longer has the pending tool use
+  // event
+  auto& assistant_after = history_after[1];
+  ASSERT_TRUE(assistant_after->events.has_value());
+  auto& events_after = assistant_after->events.value();
+  EXPECT_TRUE(events_after.empty());  // Tool use event should be removed
+}
+
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // Setup multiple tools
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("tool1", "First tool");
+  auto tool2 = std::make_unique<NiceMock<MockTool>>("tool2", "Second tool");
+
+  auto* tool1_ptr = tool1.get();
+  auto* tool2_ptr = tool2.get();
+
+  tool1->set_requires_user_interaction_before_handling(false);
+  tool2->set_requires_user_interaction_before_handling(false);
+
+  std::vector<std::unique_ptr<Tool>> tools;
+  tools.push_back(std::move(tool1));
+  tools.push_back(std::move(tool2));
+  conversation_handler_->SetToolsForTesting(std::move(tools));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Expect three calls to GenerateAssistantResponse:
+  // 1. First call returns first tool use event
+  // 2. Second call returns second tool use event response
+  // 3. Third call returns final response
+  base::RunLoop run_loop;
+
+  testing::Sequence seq;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("tool1", "tool_id_1",
+                                                 "{\"param1\":\"value1\"}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"param1\":\"value1\"}"), _))
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Result from tool1")));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  EXPECT_CALL(*tool2_ptr, UseTool(StrEq("{\"param2\":\"value2\"}"), _))
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Result from tool2")));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  // Second assistant response should ask for the second tool to be run
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("tool2", "tool_id_2",
+                                                 "{\"param2\":\"value2\"}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // Third assistant response should return the final response
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(
+                            "Final response after tools")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.Quit();
+              })));
+
+  // Submit human entry to start the flow
+  conversation_handler_->SubmitHumanConversationEntry("Use multiple tools",
+                                                      std::nullopt);
+
+  // Wait for the final response to complete
+  run_loop.Run();
+
+  // Verify both tools have output and we have a final response
+  const auto& history = conversation_handler_->GetConversationHistory();
+  // human + assistant with tool1 + assistant with tool2 + assistant with final
+  // response
+  EXPECT_EQ(history.size(), 4u);
+
+  auto& assistant_with_tool1 = history[1];
+  ASSERT_TRUE(assistant_with_tool1->events.has_value());
+  auto& events = assistant_with_tool1->events.value();
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_TRUE(events[0]->is_tool_use_event());
+  EXPECT_TRUE(events[0]->get_tool_use_event()->output.has_value());
+  EXPECT_EQ(events[0]->get_tool_use_event()->tool_name, "tool1");
+  EXPECT_EQ(events[0]->get_tool_use_event()->id, "tool_id_1");
+  EXPECT_EQ(events[0]->get_tool_use_event()->arguments_json,
+            "{\"param1\":\"value1\"}");
+  EXPECT_EQ(events[0]->get_tool_use_event()->output->size(), 1u);
+  EXPECT_MOJOM_EQ(events[0]->get_tool_use_event()->output->at(0),
+                  mojom::ContentBlock::NewTextContentBlock(
+                      mojom::TextContentBlock::New("Result from tool1")));
+
+  auto& assistant_with_tool2 = history[2];
+  ASSERT_TRUE(assistant_with_tool2->events.has_value());
+  auto& events2 = assistant_with_tool2->events.value();
+  ASSERT_EQ(events2.size(), 1u);
+  EXPECT_TRUE(events2[0]->is_tool_use_event());
+  EXPECT_TRUE(events2[0]->get_tool_use_event()->output.has_value());
+  EXPECT_EQ(events2[0]->get_tool_use_event()->tool_name, "tool2");
+  EXPECT_EQ(events2[0]->get_tool_use_event()->id, "tool_id_2");
+  EXPECT_EQ(events2[0]->get_tool_use_event()->arguments_json,
+            "{\"param2\":\"value2\"}");
+  EXPECT_EQ(events2[0]->get_tool_use_event()->output->size(), 1u);
+  EXPECT_MOJOM_EQ(events2[0]->get_tool_use_event()->output->at(0),
+                  mojom::ContentBlock::NewTextContentBlock(
+                      mojom::TextContentBlock::New("Result from tool2")));
+
+  // Final response should be present
+  EXPECT_EQ(history.back()->text, "Final response after tools");
 }
 
 }  // namespace ai_chat

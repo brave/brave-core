@@ -228,8 +228,8 @@
                                       sendPageUrl, base::BindOnce(completion));
 }
 
-- (void)modifyConversation:(NSUInteger)turnId newText:(NSString*)newText {
-  current_conversation_->ModifyConversation(turnId,
+- (void)modifyConversation:(NSString*)turnId newText:(NSString*)newText {
+  current_conversation_->ModifyConversation(base::SysNSStringToUTF8(turnId),
                                             base::SysNSStringToUTF8(newText));
 }
 
