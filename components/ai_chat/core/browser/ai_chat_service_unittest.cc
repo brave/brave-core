@@ -580,9 +580,11 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
 
 // TODO(https://github.com/brave/brave-browser/issues/47827)
 #if BUILDFLAG(IS_IOS)
-#define MAYBE_ConversationLifecycle_WithContent FLAKY_ConversationLifecycle_WithContent
+#define MAYBE_ConversationLifecycle_WithContent \
+  FLAKY_ConversationLifecycle_WithContent
 #else
-#define MAYBE_ConversationLifecycle_WithContent ConversationLifecycle_WithContent
+#define MAYBE_ConversationLifecycle_WithContent \
+  ConversationLifecycle_WithContent
 #endif
 TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
   NiceMock<MockAssociatedContent> associated_content{};
