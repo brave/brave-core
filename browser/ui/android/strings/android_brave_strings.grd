@@ -156,6 +156,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CONTEXTMENU_COPY_CLEAN_LINK"  desc="Text for Copy clean link">
         Copy clean link
       </message>
+      <message name="IDS_CONTEXTMENU_OPEN_IN_EXTERNAL_APPLICATION"  desc="Open external application in context menu">
+        Open in external application
+      </message>
       <message name="IDS_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Notifications are disabled">
         Notifications are disabled
       </message>

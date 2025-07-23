@@ -1,25 +1,44 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 7f181e4183159d6c4f5b8e757bca18fce2b34bbb..c38f15e989b6a0be0be35a4e64f6fef02fea5749 100644
+index 7f181e4183159d6c4f5b8e757bca18fce2b34bbb..589e6af518a1b12531f0043aa3d96c20181ee3a2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -207,6 +207,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.contextmenu.ChromeContextMenuItem.Item;
+ import org.chromium.chrome.browser.download.DownloadUtils;
+ import org.chromium.chrome.browser.enterprise.util.DataProtectionBridge;
+ import org.chromium.chrome.browser.ephemeraltab.EphemeralTabCoordinator;
++import org.chromium.chrome.browser.externalnav.BraveExternalNavigationUtils;
+ import org.chromium.chrome.browser.feature_engagement.TrackerFactory;
+ import org.chromium.chrome.browser.firstrun.FirstRunStatus;
+ import org.chromium.chrome.browser.flags.ChromeFeatureList;
+@@ -207,6 +208,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.PRINT_PAGE,
              Action.INSPECT_ELEMENT,
              Action.SHOW_INTEREST_IN_ELEMENT,
 +            Action.COPY_CLEAN_LINK,
++            Action.OPEN_IN_EXTERNAL_APPLICATION,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -259,7 +260,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -259,7 +262,9 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              // int RELOAD = 46;  Deprecated since 05/2025.
              int INSPECT_ELEMENT = 47;
              int SHOW_INTEREST_IN_ELEMENT = 48;
 -            int NUM_ENTRIES = 49;
-+            int COPY_CLEAN_LINK = 49;int NUM_ENTRIES = 50;
++            int COPY_CLEAN_LINK = 49;
++            int OPEN_IN_EXTERNAL_APPLICATION = 50;
++            int NUM_ENTRIES = 51;
          }
  
          // LINT.ThenChange(/tools/metrics/histograms/enums.xml:ContextMenuOptionAndroid)
-@@ -433,6 +434,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -429,10 +434,15 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+                         mShowEphemeralTabNewLabel = showNewLabel;
+                     }
+                 }
++
++                if (BraveExternalNavigationUtils.canResolveUrl(mParams.getLinkUrl(), mContext)) {
++                    linkGroup.add(createListItem(Item.OPEN_IN_EXTERNAL_APPLICATION));
++                }
+             }
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));
