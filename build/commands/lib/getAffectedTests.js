@@ -9,15 +9,9 @@ const exec = promisify(require('child_process').execFile)
 const path = require('path')
 const config = require('./config')
 
-const gnPath = () => {
-  const ext = process.platform === 'win32' ? '.bat' : ''
-
-  return `./vendor/depot_tools/gn${ext}`
-}
-
 const getTestTargets = (outDir, filters = ['//*']) =>
   exec(
-    gnPath(),
+    'gn',
     ['ls', outDir, '--type=executable', '--testonly=true', ...filters],
     { env: config.defaultOptions.env },
   ).then((x) => x.stdout.trim().split('\n'))
@@ -85,7 +79,7 @@ async function getAffectedTests(outDir, filters = ['//*']) {
 
   const { env, shell } = config.defaultOptions
   await exec(
-    gnPath(),
+    'gn',
     ['analyze', outDir, `${root}/out/analyze.json`, `${root}/out/out.json`],
     { env, shell },
   )
