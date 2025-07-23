@@ -63,7 +63,7 @@ namespace ai_chat {
 namespace {
 
 using FetchPageContentCallback =
-    AIChatTabHelper::PageContentFetcherDelegate::FetchPageContentCallback;
+    AssociatedContentDriver::FetchPageContentCallback;
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 // Hosts to use for screenshot based text retrieval

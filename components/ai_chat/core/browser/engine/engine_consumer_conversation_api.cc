@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -26,6 +27,7 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -143,13 +145,20 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
 }
 
 void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
-    const bool& is_video,
-    const std::string& page_content,
+    PageContents page_contents,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   std::vector<ConversationEvent> conversation;
-  conversation.emplace_back(
-      GetAssociatedContentConversationEvent(page_content, is_video));
+  uint32_t remaining_length = max_associated_content_length_;
+  for (const auto& content : page_contents) {
+    conversation.emplace_back(
+        GetAssociatedContentConversationEvent(content, remaining_length));
+    if (content.get().content.size() > remaining_length) {
+      break;
+    }
+    remaining_length -= content.get().content.size();
+  }
+
   conversation.emplace_back(ConversationEventRole::User,
                             ConversationEventType::RequestSuggestedActions,
                             std::vector<std::string>{""});
@@ -188,8 +197,7 @@ void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
 }
 
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
-    const bool& is_video,
-    const std::string& page_content,
+    PageContents page_contents,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     const std::vector<base::WeakPtr<Tool>>& tools,
@@ -202,10 +210,15 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   }
 
   std::vector<ConversationEvent> conversation;
+  int remaining_length = max_associated_content_length_;
   // associated content
-  if (!page_content.empty()) {
+  for (const auto& content : page_contents) {
     conversation.push_back(
-        GetAssociatedContentConversationEvent(page_content, is_video));
+        GetAssociatedContentConversationEvent(content, remaining_length));
+    remaining_length -= content.get().content.size();
+    if (remaining_length <= 0) {
+      break;
+    }
   }
 
   // We're going to iterate over the conversation entries and
@@ -406,17 +419,18 @@ bool EngineConsumerConversationAPI::SupportsDeltaTextResponses() const {
 
 ConversationEvent
 EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
-    const std::string& content,
-    const bool is_video) {
-  const std::string& truncated_page_content =
-      content.substr(0, max_associated_content_length_);
+    const PageContent& content,
+    uint32_t remaining_length) {
+  std::string truncated_page_content =
+      content.content.substr(0, remaining_length);
+  SanitizeInput(truncated_page_content);
 
   ConversationEvent event;
   event.role = ConversationEventRole::User;
-  event.content = std::vector<std::string>{truncated_page_content};
+  event.content = std::vector<std::string>{std::move(truncated_page_content)};
   // TODO(petemill): Differentiate video transcript / XML / VTT
-  event.type = is_video ? ConversationEventType::VideoTranscript
-                        : ConversationEventType::PageText;
+  event.type = content.is_video ? ConversationEventType::VideoTranscript
+                                : ConversationEventType::PageText;
   return event;
 }
 

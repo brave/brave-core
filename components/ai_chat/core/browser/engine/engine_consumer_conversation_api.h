@@ -49,13 +49,11 @@ class EngineConsumerConversationAPI : public EngineConsumer {
 
   // EngineConsumer
   void GenerateQuestionSuggestions(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContents page_contents,
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContents page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       const std::vector<base::WeakPtr<Tool>>& tools,
@@ -120,8 +118,8 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       GenerationResult result);
 
   ConversationAPIClient::ConversationEvent
-  GetAssociatedContentConversationEvent(const std::string& content,
-                                        const bool is_video);
+  GetAssociatedContentConversationEvent(const PageContent& content,
+                                        uint32_t remaining_length);
 
   std::unique_ptr<ConversationAPIClient> api_ = nullptr;
   base::WeakPtrFactory<EngineConsumerConversationAPI> weak_ptr_factory_{this};

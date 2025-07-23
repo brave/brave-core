@@ -40,7 +40,7 @@ GURL AssociatedContentDriverIOS::GetPageURL() const {
 }
 
 void AssociatedContentDriverIOS::GetPageContent(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     std::string_view invalidation_token) {
   [bridge_
       getPageContentWithCompletion:[callback =

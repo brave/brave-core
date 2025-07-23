@@ -94,10 +94,10 @@ class AIChatService : public KeyedService,
   // ConversationHandler::Observer
   void OnRequestInProgressChanged(ConversationHandler* handler,
                                   bool in_progress) override;
-  void OnConversationEntryAdded(ConversationHandler* handler,
-                                mojom::ConversationTurnPtr& entry,
-                                std::optional<std::vector<std::string_view>>
-                                    maybe_associated_content) override;
+  void OnConversationEntryAdded(
+      ConversationHandler* handler,
+      mojom::ConversationTurnPtr& entry,
+      std::optional<PageContents> maybe_associated_content) override;
   void OnConversationEntryRemoved(ConversationHandler* handler,
                                   std::string entry_uuid) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
