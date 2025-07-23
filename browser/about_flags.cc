@@ -334,9 +334,19 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
+#define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                        \
+  EXPAND_FEATURE_ENTRIES({                                              \
+      "adaptive-button-in-toolbar",                                     \
+      "Adaptive Button In Toolbar (quick shortcut)",                    \
+      "Show quick shortcut button in toolbar. ",                        \
+      kOsAndroid,                                                       \
+      FEATURE_VALUE_TYPE(                                               \
+          chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2), \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
+#define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -1093,14 +1103,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsAll,                                                              \
           ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
           kBraveSyncImplLink,                                                  \
-      },                                                                       \
-      {                                                                        \
-          "adaptive-button-in-toolbar",                                        \
-          "Adaptive Button In Toolbar (quick shortcut)",                       \
-          "Show quick shortcut button in toolbar. ",                           \
-          kOsAndroid,                                                          \
-          FEATURE_VALUE_TYPE(                                                  \
-              chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2),    \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
@@ -1113,6 +1115,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   CONTAINERS_FEATURE_ENTRIES                                                   \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
+  BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
