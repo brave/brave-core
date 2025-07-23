@@ -31,7 +31,7 @@
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/psst/common/features.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -97,6 +97,10 @@
 
 #if BUILDFLAG(ENABLE_OMAHA4)
 #include "brave/browser/updater/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/common/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -269,6 +273,16 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
               kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
               FEATURE_VALUE_TYPE(playlist::features::kPlaylistFakeUA), \
           }))
+
+#define PSST_FEATURE_ENTRIES                                           \
+  IF_BUILDFLAG(ENABLE_PSST,                                            \
+               EXPAND_FEATURE_ENTRIES({                                \
+                   "enable-psst",                                      \
+                   "Enable PSST (Privacy Site Settings Tool) feature", \
+                   "Enable PSST feature",                              \
+                   kOsAll,                                             \
+                   FEATURE_VALUE_TYPE(psst::features::kEnablePsst),    \
+               }))
 
 #if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_COMMANDS_FEATURE_ENTRIES                                      \
@@ -788,13 +802,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               brave_shields::features::kBraveLocalhostAccessPermission),       \
       },                                                                       \
       {                                                                        \
-          "brave-psst",                                                        \
-          "Enable PSST (Privacy Site Settings Tool) feature",                  \
-          "Enable PSST feature",                                               \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(psst::features::kBravePsst),                      \
-      },                                                                       \
-      {                                                                        \
           "brave-extension-network-blocking",                                  \
           "Enable extension network blocking",                                 \
           "Enable blocking for network requests initiated by extensions",      \
@@ -1123,6 +1130,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                              \
   BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
+  PSST_FEATURE_ENTRIES                                                         \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

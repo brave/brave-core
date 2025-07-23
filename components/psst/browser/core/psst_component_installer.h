@@ -14,6 +14,18 @@ class ComponentUpdateService;
 
 namespace psst {
 
+inline constexpr char kPsstComponentName[] =
+    "Brave Privacy Settings Selection for Sites Tool (PSST) Files";
+inline constexpr char kPsstComponentId[] = "lhhcaamjbmbijmjbnnodjaknblkiagon";
+inline constexpr char kPsstComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAphUFFHyK+"
+    "qUOXSw3OJXRQwKs79bt7zqnmkeFp/szXmmhj6/"
+    "i4fmNiXVaxFuVOryM9OiaVxBIGHjN1BWYCQdylgbmgVTqLWpJAy/AAKEH9/"
+    "Q68yWfQnN5sg1miNir+0I1SpCiT/Dx2N7s28WNnzD2e6/"
+    "7Umx+zRXkRtoPX0xAecgUeyOZcrpZXJ4CG8dTJInhv7Fly/U8V/KZhm6ydKlibwsh2CB588/"
+    "FlvQUzi5ZykXnPfzlsNLyyQ8fy6/+8hzSE5x4HTW5fy3TIRvmDi/"
+    "7HmW+evvuMIPl1gtVe4HKOZ7G8UaznjXBfspszHU1fqTiZWeCPb53uemo1a+rdnSHXwIDAQAB";
+
 // Registers the PSST component with the component updater.
 COMPONENT_EXPORT(PSST_BROWSER_CORE)
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus);
