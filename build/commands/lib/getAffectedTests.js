@@ -60,10 +60,7 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   }
 
   const root = path.resolve(process.cwd(), '../')
-  outDir =
-    path.isAbsolute(outDir)
-      ? outDir
-      : `${root}/${outDir}`
+  outDir = path.isAbsolute(outDir) ? outDir : `${root}/${outDir}`
   const testTargets = await getTestTargets(outDir, filters)
   const files = await getModifiedFiles(targetCommit)
 
@@ -72,7 +69,7 @@ async function getAffectedTests(outDir, filters = ['//*']) {
     test_targets: testTargets,
   }
 
-  const uuid = randomUUID();
+  const uuid = randomUUID()
   // paths are relative to package.json
   await writeFile(
     `${root}/out/analyze-${uuid}.json`,
@@ -83,18 +80,23 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   const { env, shell } = config.defaultOptions
   await exec(
     'gn',
-    ['analyze', outDir, `${root}/out/analyze-${uuid}.json`, `${root}/out/out-${uuid}.json`],
+    [
+      'analyze',
+      outDir,
+      `${root}/out/analyze-${uuid}.json`,
+      `${root}/out/out-${uuid}.json`,
+    ],
     { env, shell },
   )
 
   const output = await readFile(`${root}/out/out-${uuid}.json`, 'utf-8').then(
-    JSON.parse
+    JSON.parse,
   )
 
   await Promise.all([
     unlink(`${root}/out/analyze-${uuid}.json`),
-    unlink(`${root}/out/out-${uuid}.json`)
-  ]);
+    unlink(`${root}/out/out-${uuid}.json`),
+  ])
 
   return {
     outDir,
@@ -105,4 +107,19 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   }
 }
 
-module.exports = getAffectedTests
+async function printAffectedTests(args) {
+  const { strip, ...options } = args
+  config.update(options)
+
+  const analysis = await getAffectedTests(config.outputDir)
+  const affected = args.strip
+    ? analysis.affectedTests.map((x) => x.split(':')[1])
+    : analysis.affectedTests
+
+  return affected
+}
+
+module.exports = {
+  getAffectedTests,
+  printAffectedTests,
+}

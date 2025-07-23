@@ -25,6 +25,7 @@ const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
 const perfTests = require('../lib/perfTests')
+const { printAffectedTests } = require('../lib/getAffectedTests')
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -449,5 +450,15 @@ program
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program.command('docs').action(util.launchDocs)
+
+program
+  .command('affected')
+  .option('-C [build_dir]', 'build config (out/Debug, out/Release)')
+  .option('--target_arch [target_arch]', 'target architecture')
+  .option('--strip', 'print only labels')
+  .action(async (_positional, args) => {
+    const result = await printAffectedTests(args)
+    console.log(result)
+  })
 
 program.parse(process.argv)
