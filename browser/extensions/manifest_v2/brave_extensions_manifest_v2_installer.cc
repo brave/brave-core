@@ -14,6 +14,7 @@
 #include "base/strings/escape.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/brave_services_key_helper.h"
 #include "brave/components/constants/network_constants.h"
@@ -94,10 +95,6 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
 }
 
 }  // namespace
-
-bool IsKnownMV2Extension(const extensions::ExtensionId& id) {
-  return kPreconfiguredManifestV2Extensions.contains(id);
-}
 
 ExtensionManifestV2Installer::ExtensionManifestV2Installer(
     const std::string& extension_id,

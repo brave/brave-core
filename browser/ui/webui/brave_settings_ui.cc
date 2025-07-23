@@ -89,6 +89,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/extensions/manifest_v2/features.h"
 #include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
 #endif
@@ -123,7 +124,8 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   web_ui->AddMessageHandler(
       std::make_unique<BraveTorSnowflakeExtensionHandler>());
-  if (base::FeatureList::IsEnabled(kExtensionsManifestV2)) {
+  if (base::FeatureList::IsEnabled(
+          extensions_mv2::features::kExtensionsManifestV2)) {
     web_ui->AddMessageHandler(
         std::make_unique<BraveExtensionsManifestV2Handler>());
   }
@@ -203,7 +205,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("enable_extensions", BUILDFLAG(ENABLE_EXTENSIONS));
 
   html_source->AddBoolean("extensionsManifestV2Feature",
-                          base::FeatureList::IsEnabled(kExtensionsManifestV2));
+                          base::FeatureList::IsEnabled(
+                              extensions_mv2::features::kExtensionsManifestV2));
 
   html_source->AddBoolean("isLeoAssistantAllowed",
                           ai_chat::IsAIChatEnabled(profile->GetPrefs()));
