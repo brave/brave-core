@@ -7,6 +7,7 @@ const { promisify } = require('util')
 const { readFile, writeFile } = require('fs/promises')
 const exec = promisify(require('child_process').execFile)
 const path = require('path')
+const config = require('./config')
 
 const gnPath = () => {
   const ext = process.platform === 'win32' ? '.bat' : ''
@@ -15,13 +16,11 @@ const gnPath = () => {
 }
 
 const getTestTargets = (outDir, filters = ['//*']) =>
-  exec(gnPath(), [
-    'ls',
-    outDir,
-    '--type=executable',
-    '--testonly=true',
-    ...filters,
-  ]).then((x) => x.stdout.trim().split('\n'))
+  exec(
+    gnPath(),
+    ['ls', outDir, '--type=executable', '--testonly=true', ...filters],
+    { env: config.defaultOptions.env },
+  ).then((x) => x.stdout.trim().split('\n'))
 
 // set base = HEAD if you want to ignore the current workspace changes
 async function getModifiedFiles(target = 'HEAD~', base = null) {
@@ -84,12 +83,11 @@ async function getAffectedTests(outDir, filters = ['//*']) {
     'utf-8',
   )
 
-  await exec(gnPath(), [
-    'analyze',
-    outDir,
-    `${root}/out/analyze.json`,
-    `${root}/out/out.json`,
-  ])
+  await exec(
+    gnPath(),
+    ['analyze', outDir, `${root}/out/analyze.json`, `${root}/out/out.json`],
+    { env: config.defaultOptions.env },
+  )
 
   const output = await readFile(`${root}/out/out.json`, 'utf-8').then(
     JSON.parse,

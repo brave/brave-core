@@ -116,7 +116,7 @@ const test = async (
   if (shouldBail) {
     console.log('cannot skip tests because gni? or patch file was touched')
   } else if (canBeSkipped.length) {
-    console.log('SKIPPABLE:', canBeSkipped, chosenTests)
+    console.log('SKIPPABLE:', { chosenTests, canBeSkipped })
   } else {
     console.log('No test can be skipped')
   }
