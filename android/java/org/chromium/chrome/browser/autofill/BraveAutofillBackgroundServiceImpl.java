@@ -149,7 +149,7 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
         PersonalDataManager personalDataManager =
                 PersonalDataManagerFactory.getForProfile(
                         ProfileManager.getLastUsedRegularProfile());
-        ArrayList<AutofillProfile> profileList = personalDataManager.getProfilesToSuggest(true);
+        ArrayList<AutofillProfile> profileList = personalDataManager.getProfilesToSuggest();
         FillResponse.Builder fillResponse = new FillResponse.Builder();
         if (profileList != null && !profileList.isEmpty()) {
             for (AutofillProfile profile : profileList) {
