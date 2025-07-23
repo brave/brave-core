@@ -1052,7 +1052,8 @@ void ConversationHandler::PerformAssistantGenerationWithPossibleContent() {
 
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
-    PerformAssistantGeneration();
+    PerformAssistantGeneration(
+        associated_content_manager_->GetCachedContents());
   }
 }
 
@@ -1070,8 +1071,8 @@ void ConversationHandler::PerformAssistantGeneration(
   needs_new_entry_ = true;
 
   engine_->GenerateAssistantResponse(
-      std::move(page_contents), chat_history_, selected_language_,
-      GetTools(), std::nullopt /* preferred_tool_name */,
+      std::move(page_contents), chat_history_, selected_language_, GetTools(),
+      std::nullopt /* preferred_tool_name */,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
