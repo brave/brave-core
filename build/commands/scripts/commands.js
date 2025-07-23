@@ -21,7 +21,7 @@ const updatePatches = require('./updatePatches')
 const pullL10n = require('../lib/pullL10n')
 const pushL10n = require('../lib/pushL10n')
 const chromiumRebaseL10n = require('../lib/chromiumRebaseL10n')
-const test = require('../lib/test')
+const { test } = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
 const perfTests = require('../lib/perfTests')
@@ -455,14 +455,14 @@ program
   .command('affected')
   .option('-C [build_dir]', 'build config (out/Debug, out/Release)')
   .option('--target_arch [target_arch]', 'target architecture')
-  .option('--strip', 'print only labels')
+  .option('--suite [suite]', 'filter by a test suite group')
   .option(
     '--since [targetCommit]',
     'use a this commit as reference for change detection',
   )
-  .action(async (_, args) => {
-    const result = await printAffectedTests(args)
-    console.log(result)
+  .action(async (x) => {
+    const result = await printAffectedTests(x)
+    console.log(result.join(' '))
   })
 
 program.parse(process.argv)

@@ -10,7 +10,7 @@ const config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
-const { getAffectedTests } = require('./getAffectedTests')
+// const { getAffectedTests } = require('./getAffectedTests')
 
 const getTestBinary = (suite) => {
   let testBinary = suite
@@ -101,25 +101,6 @@ const test = async (
 ) => {
   config.buildConfig = buildConfig
   config.update(options)
-
-  const chosenTests = getTestsToRun(config, suite)
-
-  const analysis = await getAffectedTests(config.outputDir)
-  const affected = new Set(analysis?.affectedTests?.map((x) => x.split(':')[1]))
-  const needsRunning = new Set(chosenTests?.filter((t) => affected.has(t)))
-  const canBeSkipped = chosenTests?.filter((t) => !needsRunning.has(t))
-
-  console.log('analyzing tests based on', analysis?.targetCommit)
-
-  const shouldBail = analysis?.files?.find((x) => x.match(/\.(gni?|patch)$/))
-
-  if (shouldBail) {
-    console.log('cannot skip tests because gni? or patch file was touched')
-  } else if (canBeSkipped.length) {
-    console.log('SKIPPABLE:', { chosenTests, canBeSkipped })
-  } else {
-    console.log('No test can be skipped')
-  }
 
   await buildTests(suite, buildConfig, options)
   runTests(passthroughArgs, suite, buildConfig, options)
@@ -470,4 +451,8 @@ const checkTeamcityReporterOutput = (outputLines, expectedTeamcityLines) => {
   }
 }
 
-module.exports = test
+module.exports = {
+  test,
+  getTestsToRun,
+  getApplicableFilters,
+}

@@ -10,6 +10,7 @@ const path = require('path')
 const config = require('./config')
 const { unlink } = require('fs-extra')
 const { randomUUID } = require('crypto')
+const { getApplicableFilters, getTestsToRun } = require('./test')
 
 const getTestTargets = (outDir, filters = ['//*']) =>
   exec(
@@ -28,7 +29,7 @@ async function getModifiedFiles(target = 'HEAD~', base = null) {
       .split('\n')
       .filter((x) => x)
       .map((x) => '//brave/' + x)
-      .map((x) => x.replace('brave/chromium_src', '')),
+      .map((x) => x.replace('brave/chromium_src/', '')),
   )
 }
 
@@ -111,16 +112,43 @@ async function getAffectedTests(
   }
 }
 
-async function printAffectedTests(args) {
-  const { strip, ...options } = args
+function createTestFilter(config, suite) {
+  if (!suite) {
+    return () => true
+  }
+
+  const tests = new Set(getTestsToRun(config, suite))
+
+  return (x) => tests.has(x.split(':')[1])
+}
+
+async function printAffectedTests(args = {}) {
+  const { suite,  ...options } = args
   config.update(options)
 
   const analysis = await getAffectedTests(config.outputDir, options)
-  const affected = args.strip
-    ? analysis.affectedTests.map((x) => x.split(':')[1])
-    : analysis.affectedTests
+  const affectedTests = analysis.affectedTests.filter(
+    createTestFilter(config, suite),
+  )
 
-  return affected
+  const modified = new Set(analysis.files)
+
+  const additionalTests = analysis.test_targets
+    .map((x) => x.split(':')[1])
+    .flatMap((t) =>
+      getApplicableFilters(t).map((filter) => ({ test: t, filter })),
+    )
+    .filter(({ filter }) =>
+      modified.has('//brave/' + filter.replace(process.cwd() + '/', '')),
+    )
+    .map((x) => x.test)
+
+  return [
+    ...new Set([
+      ...affectedTests.map((x) => x.split(':')[1]),
+      ...additionalTests,
+    ]),
+  ]
 }
 
 module.exports = {
