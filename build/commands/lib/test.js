@@ -106,11 +106,20 @@ const test = async (
   const chosenTests = getTestsToRun(config, suite);
 
   const analysis = await getAffectedTests(config.outputDir);
-  const affected = new Set(analysis.affectedTests.map(x=> x.split(':')[1]));
-  const needsRunning = new Set(chosenTests.filter(t => affected.has(t)));
-  const canBeSkipped = chosenTests.filter(t => needsRunning.has(t));
-  if (canBeSkipped.length) {
-    console.log('SKIPPABLE:', canBeSkipped)
+  const affected = new Set(analysis?.affectedTests?.map(x=> x.split(':')[1]));
+  const needsRunning = new Set(chosenTests?.filter(t => affected.has(t)));
+  const canBeSkipped = chosenTests?.filter(t => !needsRunning.has(t));
+
+  console.log('analyzing tests based on', analysis?.targetCommit)
+
+  const shouldBail = affected.files.find(x => /(gni?|patch)/.match(x) );
+
+  if (shouldBail) {
+    console.log('cannot skip tests because gni? or patch file was touched');
+  } else if (canBeSkipped.length) {
+    console.log('SKIPPABLE:', canBeSkipped, chosenTests)
+  } else {
+    console.log('No test can be skipped');
   }
   
   await buildTests(suite, buildConfig, options)

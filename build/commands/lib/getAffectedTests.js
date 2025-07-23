@@ -58,8 +58,6 @@ async function getAffectedTests(outDir, filters = ['//*']) {
     return null
   }
 
-  console.log('analyzing tests based on', targetCommit)
-
   const root = path.resolve(process.cwd(), '../')
   outDir =
     outDir.startsWith('..') || outDir.startsWith('/')
@@ -89,6 +87,7 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   const output = await readFile(`${root}/out/out.json`, 'utf-8').then(
     JSON.parse,
   )
+
 
   return {
     outDir,
