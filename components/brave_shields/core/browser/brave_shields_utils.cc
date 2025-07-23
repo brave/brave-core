@@ -921,4 +921,45 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
   return token;
 }
 
+void SetAutoShredType(HostContentSettingsMap* map,
+                      AutoShredType type,
+                      const GURL& url) {
+  auto primary_pattern = content_settings::CreateDomainPattern(url);
+
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  switch (type) {
+    case AutoShredType::NEVER:
+      map->SetContentSettingCustomScope(
+          primary_pattern, ContentSettingsPattern::Wildcard(),
+          ContentSettingsType::BRAVE_AUTO_SHRED, CONTENT_SETTING_DEFAULT);
+      break;
+    case AutoShredType::TAB_CLOSE:
+      map->SetContentSettingCustomScope(
+          primary_pattern, ContentSettingsPattern::Wildcard(),
+          ContentSettingsType::BRAVE_AUTO_SHRED, CONTENT_SETTING_BLOCK);
+      break;
+    case AutoShredType::APP_EXIT:
+      map->SetContentSettingCustomScope(
+          primary_pattern, ContentSettingsPattern::Wildcard(),
+          ContentSettingsType::BRAVE_AUTO_SHRED, CONTENT_SETTING_SESSION_ONLY);
+      break;
+  }
+}
+
+AutoShredType GetAutoShredType(HostContentSettingsMap* map, const GURL& url) {
+  ContentSetting setting = map->GetContentSetting(
+      url, GURL(), ContentSettingsType::BRAVE_AUTO_SHRED);
+
+  if (setting == CONTENT_SETTING_SESSION_ONLY) {
+    return AutoShredType::APP_EXIT;
+  } else if (setting == CONTENT_SETTING_BLOCK) {
+    return AutoShredType::TAB_CLOSE;
+  } else {  // CONTENT_SETTING_DEFAULT
+    return AutoShredType::NEVER;
+  }
+}
+
 }  // namespace brave_shields

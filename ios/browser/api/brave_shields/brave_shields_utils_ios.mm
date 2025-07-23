@@ -229,4 +229,44 @@
                                               localState, profilePrefs);
 }
 
+- (BraveShieldsAutoShredMode)getAutoShredModeForURL:(NSURL*)url
+                                          isPrivate:(bool)isPrivate {
+  HostContentSettingsMap* map =
+      [self hostContentSettingsMapForPrivate:isPrivate];
+  GURL gurl = net::GURLWithNSURL(url);
+  brave_shields::AutoShredType auto_shred_type =
+      brave_shields::GetAutoShredType(map, gurl);
+
+  if (auto_shred_type == brave_shields::AutoShredType::APP_EXIT) {
+    return BraveShieldsAutoShredModeAppExit;
+  } else if (auto_shred_type == brave_shields::AutoShredType::TAB_CLOSE) {
+    return BraveShieldsAutoShredModeTabClose;
+  } else {
+    return BraveShieldsAutoShredModeNever;
+  }
+}
+
+- (void)setAutoShredMode:(BraveShieldsAutoShredMode)mode
+                  forURL:(NSURL*)url
+               isPrivate:(BOOL)isPrivate {
+  brave_shields::AutoShredType auto_shred_type;
+  switch (mode) {
+    case BraveShieldsAutoShredModeAppExit:
+      auto_shred_type = brave_shields::AutoShredType::APP_EXIT;
+      break;
+    case BraveShieldsAutoShredModeTabClose:
+      auto_shred_type = brave_shields::AutoShredType::TAB_CLOSE;
+      break;
+    case BraveShieldsAutoShredModeNever:
+      auto_shred_type = brave_shields::AutoShredType::NEVER;
+      break;
+  }
+
+  HostContentSettingsMap* map =
+      [self hostContentSettingsMapForPrivate:isPrivate];
+  GURL gurl = net::GURLWithNSURL(url);
+
+  brave_shields::SetAutoShredType(map, auto_shred_type, gurl);
+}
+
 @end

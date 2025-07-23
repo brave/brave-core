@@ -50,6 +50,13 @@ OBJC_EXPORT
                                forURL:(NSURL*)url
                             isPrivate:(BOOL)isPrivate;
 
+- (BraveShieldsAutoShredMode)getAutoShredModeForURL:(NSURL*)url
+                                          isPrivate:(BOOL)isPrivate
+    NS_SWIFT_NAME(autoShredMode(for:isPrivate:));
+- (void)setAutoShredMode:(BraveShieldsAutoShredMode)mode
+                  forURL:(NSURL*)url
+               isPrivate:(BOOL)isPrivate;
+
 @end
 
 NS_ASSUME_NONNULL_END
