@@ -34,6 +34,7 @@
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
   {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, "localhostAccess"},   \
   {ContentSettingsType::BRAVE_OPEN_AI_CHAT, "braveOpenAIChat"},       \
+  {ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE, brave_shields::kBraveShieldsAdBlockOnlyMode}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, nullptr}, \
@@ -127,6 +128,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
     return true;
   }
   if (type == ContentSettingsType::BRAVE_SHIELDS) {
+    return true;
+  }
+  if (type == ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE) {
     return true;
   }
   return HasRegisteredGroupName_ChromiumImpl(type);
