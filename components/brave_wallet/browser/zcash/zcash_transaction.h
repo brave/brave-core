@@ -33,7 +33,7 @@ class ZCashTransaction {
     base::Value::Dict ToValue() const;
     static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
 
-    std::array<uint8_t, 32> txid;
+    std::array<uint8_t, 32> txid{};
     uint32_t index = 0;
   };
 
