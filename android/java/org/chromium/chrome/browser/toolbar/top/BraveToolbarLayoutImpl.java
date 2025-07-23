@@ -102,6 +102,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
+import org.chromium.chrome.browser.toolbar.extensions.ExtensionToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
@@ -1583,7 +1584,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             ToolbarProgressBar progressBar,
             @Nullable ReloadButtonCoordinator reloadButtonCoordinator,
             @Nullable BackButtonCoordinator backButtonCoordinator,
-            HomeButtonDisplay homeButtonDisplay) {
+            @Nullable HomeButtonDisplay homeButtonDisplay,
+            @Nullable ExtensionToolbarCoordinator extensionToolbarCoordinator) {
         super.initialize(
                 toolbarDataProvider,
                 tabController,
@@ -1595,7 +1597,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 progressBar,
                 reloadButtonCoordinator,
                 backButtonCoordinator,
-                homeButtonDisplay);
+                homeButtonDisplay,
+                extensionToolbarCoordinator);
 
         BraveMenuButtonCoordinator.setMenuFromBottom(
                 isMenuButtonOnBottomControls()
