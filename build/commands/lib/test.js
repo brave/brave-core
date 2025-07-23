@@ -1,4 +1,4 @@
-// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// Copyright (c) 2018 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -10,7 +10,6 @@ const config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
-// const getAffectedTests = require('./getAffectedTests')
 
 const getTestBinary = (suite) => {
   let testBinary = suite
@@ -100,7 +99,7 @@ const test = async (
   options = {},
 ) => {
   await buildTests(suite, buildConfig, options)
-  await runTests(passthroughArgs, suite, buildConfig, options)
+  runTests(passthroughArgs, suite, buildConfig, options)
 }
 
 const buildTests = async (
@@ -129,14 +128,20 @@ const buildTests = async (
   await util.buildTargets()
 }
 
-const runTests = async (passthroughArgs, suite, buildConfig, options) => {
+const deleteFile = (filePath) => {
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath)
+  }
+}
+
+const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
   const isJunitTestSuite = suite.endsWith('_junit_tests')
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   // Clear previous results file
-  await fs.writeFile(allResultsFilePath, '', 'utf-8')
+  deleteFile(allResultsFilePath)
 
   let braveArgs = []
 
@@ -215,32 +220,13 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
     ]
 
     // Run the tests
-
-    const analysis = null
-    // await getAffectedTests(config.outputDir)
-
-    const targetCommit = analysis?.targetCommit
-    const affectedFiles = new Set(
-      (analysis?.files || []).map((x) =>
-        path.join(config.braveCoreDir, x.replace('//brave', '')),
-      ),
-    )
-    const affectedTestExecutables = new Set(
-      (analysis?.affectedTests || []).map((x) => x.split(':').at(1)),
-    )
-
-    // const skippableTestSuites = process.env.ENABLE_TEST_SKIPPING === '1'
-
     getTestsToRun(config, suite).every((testSuite) => {
-      console.log(testSuite)
       let runArgs = braveArgs.slice()
       let runOptions = config.defaultOptions
 
       // Filter out upstream tests that are known to fail for Brave
-      let filterFilePaths = []
       if (upstreamTestSuites.includes(testSuite)) {
-        filterFilePaths = getApplicableFilters(testSuite)
-        console.log({ testSuite, filterFilePaths })
+        const filterFilePaths = getApplicableFilters(testSuite)
         if (filterFilePaths.length > 0) {
           runArgs.push(
             `--test-launcher-filter-file=${filterFilePaths.join(';')}`,
@@ -253,24 +239,6 @@ const runTests = async (passthroughArgs, suite, buildConfig, options) => {
             runArgs.push(ignorePreliminaryFailures)
           }
         }
-      }
-
-      const filterAffected = filterFilePaths.find((filter) =>
-        affectedFiles.has(filter),
-      )
-      if (
-        analysis
-        // && skippableTestSuites.has(testSuite)
-        && !affectedTestExecutables.has(testSuite)
-        && !filterAffected
-      ) {
-        console.log(
-          `SKIPPED: "${testSuite}" didn't change since ${targetCommit}`,
-        )
-
-        // FAKE a test run
-        runArgs.push(`--gtest_filter=SKIP_ALL_TESTS`)
-        // return
       }
 
       let convertJSONToXML = false
