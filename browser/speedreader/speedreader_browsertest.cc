@@ -22,6 +22,8 @@
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/split_view/split_view.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
@@ -1080,17 +1082,18 @@ class SpeedReaderWithSplitViewBrowserTest
     return static_cast<BraveBrowserView*>(browser()->window());
   }
 
+  // Don't cache as it changes whenever active tab changes.
   ReaderModeToolbarView* GetPrimaryToolbar() {
-    if (IsSideBySideEnabled()) {
-      return nullptr;
-    }
-
     return brave_browser_view()->reader_mode_toolbar();
   }
 
+  // Don't cache as it changes whenever active tab changes.
   ReaderModeToolbarView* GetSecondaryToolbar() {
     if (IsSideBySideEnabled()) {
-      return nullptr;
+      return brave_browser_view()
+          ->GetBraveMultiContentsView()
+          ->GetInactiveContentsContainerView()
+          ->reader_mode_toolbar();
     }
 
     return brave_browser_view()->split_view()->secondary_reader_mode_toolbar();
@@ -1098,7 +1101,9 @@ class SpeedReaderWithSplitViewBrowserTest
 
   views::Widget* GetSecondaryLocationBarWidget() {
     if (IsSideBySideEnabled()) {
-      return nullptr;
+      return brave_browser_view()
+          ->GetBraveMultiContentsView()
+          ->secondary_location_bar_widget_.get();
     }
 
     return brave_browser_view()
@@ -1108,7 +1113,9 @@ class SpeedReaderWithSplitViewBrowserTest
 
   views::View* GetSecondaryContentsContainer() {
     if (IsSideBySideEnabled()) {
-      return nullptr;
+      return brave_browser_view()
+          ->GetBraveMultiContentsView()
+          ->GetInactiveContentsContainerView();
     }
 
     return brave_browser_view()->split_view()->secondary_contents_container();
@@ -1124,89 +1131,82 @@ IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitView) {
   ToggleSpeedreader();
 
   NewSplitTab();
-
-  auto* toolbar = GetPrimaryToolbar();
-  auto* secondary_toolbar = GetSecondaryToolbar();
-  ASSERT_TRUE(toolbar && secondary_toolbar);
+  ASSERT_TRUE(GetPrimaryToolbar() && GetSecondaryToolbar());
   auto* secondary_location_bar_widget = GetSecondaryLocationBarWidget();
-  auto* secondary_contents_container = GetSecondaryContentsContainer();
 
   // No toolbars.
-  EXPECT_FALSE(toolbar->GetVisible());
-  EXPECT_FALSE(secondary_toolbar->GetVisible());
+  EXPECT_FALSE(GetPrimaryToolbar()->GetVisible());
+  EXPECT_FALSE(GetSecondaryToolbar()->GetVisible());
 
   // Load a distillabe page in first tab.
   browser()->tab_strip_model()->ActivateTabAt(0);
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
 
-  WaitToolbarVisibility(toolbar, true);
-  WaitToolbarVisibility(secondary_toolbar, false);
+  WaitToolbarVisibility(GetPrimaryToolbar(), true);
+  WaitToolbarVisibility(GetSecondaryToolbar(), false);
 
-  const auto get_target_secondary_location_bar_origin =
-      [&secondary_contents_container]() {
-        gfx::Point target_secondary_location_bar_origin =
-            secondary_contents_container->GetLocalBounds().origin();
-        target_secondary_location_bar_origin =
-            views::View::ConvertPointToScreen(
-                secondary_contents_container,
-                target_secondary_location_bar_origin);
-        target_secondary_location_bar_origin.Offset(
-            SplitView::kInactiveBorderThickness,
-            SplitView::kInactiveBorderThickness);
-        return target_secondary_location_bar_origin;
-      };
+  const auto get_target_secondary_location_bar_origin = [&]() {
+    gfx::Point target_secondary_location_bar_origin =
+        GetSecondaryContentsContainer()->GetLocalBounds().origin();
+    target_secondary_location_bar_origin = views::View::ConvertPointToScreen(
+        GetSecondaryContentsContainer(), target_secondary_location_bar_origin);
+    target_secondary_location_bar_origin.Offset(
+        SplitView::kInactiveBorderThickness,
+        SplitView::kInactiveBorderThickness);
+    return target_secondary_location_bar_origin;
+  };
 
   // Change the active tab.
   browser()->tab_strip_model()->ActivateTabAt(1);
-  WaitToolbarVisibility(toolbar, false);
-  WaitToolbarVisibility(secondary_toolbar, true);
+  WaitToolbarVisibility(GetPrimaryToolbar(), false);
+  WaitToolbarVisibility(GetSecondaryToolbar(), true);
   EXPECT_EQ(get_target_secondary_location_bar_origin(),
             secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
 
   // Load a distillabe page in second tab.
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
-  WaitToolbarVisibility(toolbar, true);
-  WaitToolbarVisibility(secondary_toolbar, true);
+  WaitToolbarVisibility(GetPrimaryToolbar(), true);
+  WaitToolbarVisibility(GetSecondaryToolbar(), true);
 
   // Check secondary location bar position when changing active tab
   // between non split view tab and split view tab.
   // Secondary location bar should have same origin with secondary
   // contents container.
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  WaitToolbarVisibility(toolbar, false);
-  WaitToolbarVisibility(secondary_toolbar, false);
+  WaitToolbarVisibility(GetPrimaryToolbar(), false);
+  WaitToolbarVisibility(GetSecondaryToolbar(), false);
 
   browser()->tab_strip_model()->ActivateTabAt(0);
-  WaitToolbarVisibility(toolbar, true);
-  WaitToolbarVisibility(secondary_toolbar, true);
+  WaitToolbarVisibility(GetPrimaryToolbar(), true);
+  WaitToolbarVisibility(GetSecondaryToolbar(), true);
   EXPECT_EQ(get_target_secondary_location_bar_origin(),
             secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
 
   browser()->tab_strip_model()->ActivateTabAt(2);
-  WaitToolbarVisibility(toolbar, false);
-  WaitToolbarVisibility(secondary_toolbar, false);
+  WaitToolbarVisibility(GetPrimaryToolbar(), false);
+  WaitToolbarVisibility(GetSecondaryToolbar(), false);
 
   browser()->tab_strip_model()->ActivateTabAt(0);
-  WaitToolbarVisibility(toolbar, true);
-  WaitToolbarVisibility(secondary_toolbar, true);
+  WaitToolbarVisibility(GetPrimaryToolbar(), true);
+  WaitToolbarVisibility(GetSecondaryToolbar(), true);
   EXPECT_EQ(get_target_secondary_location_bar_origin(),
             secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
 
   // Second tab is active. Show original content.
   browser()->tab_strip_model()->ActivateTabAt(1);
   ClickReaderButton();
-  WaitToolbarVisibility(toolbar, false);
-  WaitToolbarVisibility(secondary_toolbar, true);
+  WaitToolbarVisibility(GetPrimaryToolbar(), false);
+  WaitToolbarVisibility(GetSecondaryToolbar(), true);
 
   browser()->tab_strip_model()->ActivateTabAt(0);
   // First tab is active. Show original content.
   ClickReaderButton();
 
   // There are no distilled pages.
-  WaitToolbarVisibility(toolbar, false);
-  WaitToolbarVisibility(secondary_toolbar, false);
+  WaitToolbarVisibility(GetPrimaryToolbar(), false);
+  WaitToolbarVisibility(GetSecondaryToolbar(), false);
 }
 
 IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitViewClicking) {
@@ -1214,13 +1214,11 @@ IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitViewClicking) {
 
   NewSplitTab();
 
-  auto* toolbar = GetPrimaryToolbar();
-  auto* secondary_toolbar = GetSecondaryToolbar();
-  ASSERT_TRUE(toolbar && secondary_toolbar);
+  ASSERT_TRUE(GetPrimaryToolbar() && GetSecondaryToolbar());
 
   // No toolbars.
-  EXPECT_FALSE(toolbar->GetVisible());
-  EXPECT_FALSE(secondary_toolbar->GetVisible());
+  EXPECT_FALSE(GetPrimaryToolbar()->GetVisible());
+  EXPECT_FALSE(GetSecondaryToolbar()->GetVisible());
 
   // Load a distillabe page in first tab.
   browser()->tab_strip_model()->ActivateTabAt(0);
@@ -1231,23 +1229,23 @@ IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitViewClicking) {
   // Check clicking view makes its tab activate.
   browser()->tab_strip_model()->ActivateTabAt(1);
   EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  WaitToolbarVisibility(toolbar, false);
-  WaitToolbarVisibility(secondary_toolbar, true);
+  WaitToolbarVisibility(GetPrimaryToolbar(), false);
+  WaitToolbarVisibility(GetSecondaryToolbar(), true);
 
-  ClickInView(secondary_toolbar);
-  WaitToolbarVisibility(toolbar, true);
-  WaitToolbarVisibility(secondary_toolbar, false);
+  ClickInView(GetSecondaryToolbar());
+  WaitToolbarVisibility(GetPrimaryToolbar(), true);
+  WaitToolbarVisibility(GetSecondaryToolbar(), false);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 
   browser()->tab_strip_model()->ActivateTabAt(1);
   EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  WaitToolbarVisibility(toolbar, false);
-  WaitToolbarVisibility(secondary_toolbar, true);
+  WaitToolbarVisibility(GetPrimaryToolbar(), false);
+  WaitToolbarVisibility(GetSecondaryToolbar(), true);
 
   // Check click event from webview makes its tab activate.
-  ClickInWebContents(secondary_toolbar->GetWebContentsForTesting());
-  WaitToolbarVisibility(toolbar, true);
-  WaitToolbarVisibility(secondary_toolbar, false);
+  ClickInWebContents(GetSecondaryToolbar()->GetWebContentsForTesting());
+  WaitToolbarVisibility(GetPrimaryToolbar(), true);
+  WaitToolbarVisibility(GetSecondaryToolbar(), false);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 }
 
