@@ -14,7 +14,7 @@
 namespace line_chart {
 
 class UntrustedLineChartUI : public web::WebUIIOSController {
-public:
+ public:
   explicit UntrustedLineChartUI(web::WebUIIOS* web_ui, const GURL& url);
   UntrustedLineChartUI(const UntrustedLineChartUI&) = delete;
   UntrustedLineChartUI& operator=(const UntrustedLineChartUI&) = delete;
