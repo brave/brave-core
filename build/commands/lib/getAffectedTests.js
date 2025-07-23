@@ -123,7 +123,7 @@ function createTestFilter(config, suite) {
 }
 
 async function printAffectedTests(args = {}) {
-  const { suite,  ...options } = args
+  const { suite, ...options } = args
   config.update(options)
 
   const analysis = await getAffectedTests(config.outputDir, options)
