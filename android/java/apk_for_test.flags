@@ -58,7 +58,6 @@
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
     *** mTileGroup;
     public <init>(...);
-    *** updateTilePlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesMediator {
