@@ -10,7 +10,7 @@ const config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
-const getAffectedTests = require('./getAffectedTests')
+// const getAffectedTests = require('./getAffectedTests')
 
 const getTestBinary = (suite) => {
   let testBinary = suite
