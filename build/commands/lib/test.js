@@ -309,10 +309,7 @@ const runTests = (passthroughArgs, suite, config, options) => {
       runArgs.push('--xctest')
       runArgs.push('--xcode-build-version', xcodeBuildVersion)
       if (config.targetEnvironment === 'simulator') {
-        runArgs.push(
-          '--platform',
-          options.ios_simulator_platform,
-        )
+        runArgs.push('--platform', options.ios_simulator_platform)
         runArgs.push('--version', options.ios_simulator_version)
       } else if (config.targetEnvironment === 'device') {
         // TODO(bridiver)
