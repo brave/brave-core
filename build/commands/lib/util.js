@@ -635,6 +635,11 @@ const util = {
     // Setting `AUTONINJA_BUILD_ID` allows tracing remote execution which helps
     // with debugging issues (e.g., slowness or remote-failures).
     options.env.AUTONINJA_BUILD_ID = buildId
+    
+    if (options.lerc) {
+      options.env.RBE_exec_strategy = 'local';
+      options.env.RBE_racing_bias = '1';
+    }
 
     // Collect build statistics into this variable to display in a separate TC
     // block.

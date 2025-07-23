@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/test/actions/caching.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -91,4 +92,10 @@ repack("components_tests_pak") {
     "//brave/components/resources",
     "//brave/components/resources:strings",
   ]
+}
+
+hash_runtime("brave_components_unittests.hash.json") {
+  testonly = true
+  deps = [ ":brave_components_unittests" ]
+  binary = "$root_out_dir/brave_components_unittests"
 }
