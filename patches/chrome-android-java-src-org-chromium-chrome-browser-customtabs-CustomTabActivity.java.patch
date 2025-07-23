@@ -1,0 +1,32 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabActivity.java
+index 5fe46247a49ac4c83b25d477c8ed93217a5e15c7..47d0bb5510de5b8b824b93dbc0214b4eff253e7d 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabActivity.java
+@@ -32,6 +32,7 @@ import androidx.browser.customtabs.CustomTabsIntent;
+ 
+ import org.chromium.base.ActivityState;
+ import org.chromium.base.ApplicationStatus;
++import org.chromium.base.ContextUtils;
+ import org.chromium.base.IntentUtils;
+ import org.chromium.base.Log;
+ import org.chromium.base.TimeUtils;
+@@ -53,6 +54,7 @@ import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabProvid
+ import org.chromium.chrome.browser.customtabs.features.CustomTabNavigationBarController;
+ import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabHistoryIphController;
+ import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
++import org.chromium.chrome.browser.externalnav.BraveExternalNavigationUtils;
+ import org.chromium.chrome.browser.firstrun.FirstRunSignInProcessor;
+ import org.chromium.chrome.browser.flags.ChromeFeatureList;
+ import org.chromium.chrome.browser.history.HistoryManager;
+@@ -369,6 +371,11 @@ public class CustomTabActivity extends BaseCustomTabActivity {
+                 historyIph.notifyUserEngaged();
+             }
+             return true;
++        } else if (id == R.id.brave_open_in_external_application) {
++            Tab tab = getTabModelSelector().getCurrentTab();
++            if (tab == null || tab.getUrl() == null) return false;
++            BraveExternalNavigationUtils.openUrl(tab.getUrl(), ContextUtils.getApplicationContext());
++            return true;
+         }
+         return super.onMenuOrKeyboardAction(id, fromMenu, triggeringMotion);
+     }
