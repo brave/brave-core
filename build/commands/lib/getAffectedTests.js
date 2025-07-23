@@ -50,7 +50,7 @@ async function getReferenceCommit() {
   return null
 }
 
-async function getAffectedTests(outDir, { filters = ['//*'], since = null }) {
+async function getAffectedTests(outDir, { filters = ['//*'], since = null } = {}) {
   // JENKINS sets GIT_PREVIOUS_SUCCESSFUL_COMMIT
   // TODO: find TeamCity equivalent.
   // TODO: we can optimize further by getting the last failure commit
