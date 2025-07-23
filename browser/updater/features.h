@@ -14,6 +14,10 @@ BASE_DECLARE_FEATURE(kBraveUseOmaha4Alpha);
 
 bool ShouldUseOmaha4();
 
+// For tests:
+int GetBuildAgeInDays();
+bool ShouldUseOmaha4(int build_age_days);
+
 }  // namespace brave_updater
 
 #endif  // BRAVE_BROWSER_UPDATER_FEATURES_H_
