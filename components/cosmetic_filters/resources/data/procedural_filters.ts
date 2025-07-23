@@ -392,7 +392,13 @@ const operatorMatchesCSS = (beforeOrAfter: string | null,
     // trivially doesn't match then.
     return []
   }
-  return expectedVal === styleValue ? [element] : []
+  let matched
+  if (expectedVal.startsWith('/') && expectedVal.endsWith('/')) {
+    matched = styleValue.match(_compileRegEx(expectedVal)) !== null
+  } else {
+    matched = expectedVal === styleValue
+  }
+  return matched ? [element] : []
 }
 
 // Implementation of ":matches-media" rule
