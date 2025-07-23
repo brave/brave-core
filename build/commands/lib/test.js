@@ -111,7 +111,7 @@ const test = async (
 
   console.log('analyzing tests based on', analysis?.targetCommit)
 
-  const shouldBail = analysis?.files?.find((x) => /(gni?|patch)/.match(x))
+  const shouldBail = analysis?.files?.find((x) => x.match(/\.(gni?|patch)$/))
 
   if (shouldBail) {
     console.log('cannot skip tests because gni? or patch file was touched')
