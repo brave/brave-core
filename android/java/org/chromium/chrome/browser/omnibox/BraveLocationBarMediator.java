@@ -58,13 +58,11 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             @NonNull WindowAndroid windowAndroid,
             boolean isTablet,
             @NonNull LensController lensController,
-            @NonNull SaveOfflineButtonState saveOfflineButtonState,
             @NonNull OmniboxUma omniboxUma,
             @NonNull BooleanSupplier isToolbarMicEnabledSupplier,
             @NonNull OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            @Nullable BrowserControlsStateProvider browserControlsStateProvider,
-            @NonNull LocationBarCoordinator.OfflineDownloader offlineDownloader) {
+            @Nullable BrowserControlsStateProvider browserControlsStateProvider) {
         super(
                 context,
                 locationBarLayout,
@@ -78,21 +76,15 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 windowAndroid,
                 isTablet,
                 lensController,
-                saveOfflineButtonState,
                 omniboxUma,
                 isToolbarMicEnabledSupplier,
                 dropdownEmbedder,
                 tabModelSelectorSupplier,
-                browserControlsStateProvider,
-                offlineDownloader);
+                browserControlsStateProvider);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
         return OmniboxUma.class;
-    }
-
-    public static Class<SaveOfflineButtonState> getSaveOfflineButtonStateClass() {
-        return SaveOfflineButtonState.class;
     }
 
     public static Class<LensController> getLensControllerClass() {
