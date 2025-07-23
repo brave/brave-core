@@ -79,7 +79,7 @@ export function withPlaceholderIcon<
     const isNonFungibleToken = asset?.isNft || asset?.isErc721
 
     const tokenImageURL =
-      isRemoteURL || isNonFungibleToken || isNative
+      isRemoteURL || isNonFungibleToken || isNative || isStorybook
         ? initialTokenImageURL
         : `chrome://erc-token-images/${encodeURIComponent(
             initialTokenImageURL,

@@ -67,6 +67,7 @@ import {
   LoadingIcon,
   Row,
   LeoSquaredButton,
+  LoadingRing,
 } from '../../../components/shared/style'
 import { Description, Title } from '../onboarding/onboarding.style'
 import {
@@ -79,9 +80,6 @@ import {
   SelectAssetWrapper,
   SearchAndDropdownWrapper,
 } from './fund-wallet.style'
-import {
-  LoadingRing, //
-} from '../../../components/extension/add-suggested-token-panel/style'
 import {
   FilterTokenRow, //
 } from '../../../components/desktop/views/portfolio/style'

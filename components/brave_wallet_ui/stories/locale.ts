@@ -521,6 +521,7 @@ provideStrings({
   braveWalletAccountSettings: 'Account settings',
   braveWalletPasswordIsRequiredToTakeThisAction:
     'Password is required to take this action.',
+  braveWalletAddToken: 'Add token',
 
   // Empty Token List State
   braveWalletNoAvailableAssets: 'No available assets',
