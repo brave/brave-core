@@ -887,16 +887,16 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   auto metadata = mojom::Conversation::New();
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "1", mojom::ContentType::PageContent, "Content 1", 1,
-      GURL("https://one.com"), 100));
+      GURL("https://one.com"), 100, "turn-1"));
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "2", mojom::ContentType::PageContent, "Content 2", 2,
-      GURL("https://two.com"), 100));
+      GURL("https://two.com"), 100, "turn-1"));
 
   auto conversation_archive = mojom::ConversationArchive::New();
   conversation_archive->associated_content.push_back(
-      mojom::ContentArchive::New("1", "The content of one"));
+      mojom::ContentArchive::New("1", "The content of one", "turn-1"));
   conversation_archive->associated_content.push_back(
-      mojom::ContentArchive::New("1", "The content of two"));
+      mojom::ContentArchive::New("2", "The content of two", "turn-1"));
 
   conversation_handler_->associated_content_manager()->LoadArchivedContent(
       metadata.get(), conversation_archive);
@@ -1831,7 +1831,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   constexpr char kTestPrompt[] = "What is this?";
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillRepeatedly(testing::Invoke(
-          [](PageContents page_contents,
+          [](PageContentsMap page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language,
              const std::vector<base::WeakPtr<Tool>>& tools,

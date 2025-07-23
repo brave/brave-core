@@ -1058,7 +1058,8 @@ void ConversationHandler::PerformAssistantGeneration(
   needs_new_entry_ = true;
 
   engine_->GenerateAssistantResponse(
-      std::move(page_contents), chat_history_, selected_language_, GetTools(),
+      associated_content_manager_->GetCachedContentsMap(), chat_history_,
+      selected_language_, GetTools(),
       std::nullopt /* preferred_tool_name */,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
