@@ -16,6 +16,8 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/line_chart_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/market_ui.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/nft_ui.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
@@ -76,7 +78,11 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   } else if (url_host == kWalletPageHost) {
     return &NewWebUIIOS<WalletPageUI>;
   } else if (url_host == kUntrustedNftHost) {
-    return &NewWebUIIOS<UntrustedNftUI>;
+    return &NewWebUIIOS<nft::UntrustedNftUI>;
+  } else if (url_host == kUntrustedMarketHost) {
+    return &NewWebUIIOS<market::UntrustedMarketUI>;
+  } else if (url_host == kUntrustedLineChartHost) {
+    return &NewWebUIIOS<line_chart::UntrustedLineChartUI>;
   }
   return nullptr;
 }

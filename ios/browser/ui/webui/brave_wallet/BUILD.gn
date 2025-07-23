@@ -11,6 +11,10 @@ source_set("brave_wallet") {
   sources = [
     "blockchain_images_source.h",
     "blockchain_images_source.mm",
+    "line_chart_ui.h",
+    "line_chart_ui.mm",
+    "market_ui.h",
+    "market_ui.mm",
     "nft_ui.mm",
     "ntf_ui.h",
     "wallet_common_ui.h",
@@ -26,6 +30,8 @@ source_set("brave_wallet") {
   deps = [
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet_ui/line_chart:line_chart_display_generated",
+    "//brave/components/brave_wallet_ui/market:market_display_generated",
     "//brave/components/brave_wallet_ui/nft:nft_display_generated",
     "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
     "//ios/web",
