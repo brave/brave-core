@@ -111,6 +111,7 @@ import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
+import org.chromium.chrome.browser.brave_leo.BraveLeoVoiceRecognitionHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
@@ -395,6 +396,8 @@ public abstract class BraveActivity extends ChromeActivity
                                 }
                             });
         }
+        // Executes Leo voice prompt if it was triggered from quick search app widget
+        maybeExecuteLeoVoicePrompt();
     }
 
     @Override
@@ -2644,6 +2647,25 @@ public abstract class BraveActivity extends ChromeActivity
             WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
             windowManager.removeView(mQuickSearchEnginesView);
             mQuickSearchEnginesView = null;
+        }
+    }
+
+    private void maybeExecuteLeoVoicePrompt() {
+        Intent intent = getIntent();
+        WebContents webContents = getCurrentWebContents();
+        if (intent != null
+                && IntentUtils.safeGetBooleanExtra(
+                        intent, IntentHandler.EXTRA_INVOKED_FROM_APP_WIDGET, false)
+                && IntentUtils.safeGetBooleanExtra(
+                        intent, BraveIntentHandler.EXTRA_INVOKED_FROM_APP_WIDGET_LEO, false)
+                && !IntentUtils.safeGetBooleanExtra(
+                        intent, BraveIntentHandler.EXTRA_LEO_VOICE_PROMPT_INVOKED, false)
+                && webContents != null) {
+            // Marks that Leo prompt was invoked to avoid re-invoke on resume
+            intent.putExtra(BraveIntentHandler.EXTRA_LEO_VOICE_PROMPT_INVOKED, true);
+            new BraveLeoVoiceRecognitionHandler(
+                            webContents.getTopLevelNativeWindow(), webContents, "")
+                    .startVoiceRecognition();
         }
     }
 

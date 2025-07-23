@@ -50,3 +50,13 @@ android_library("brave_test_java_org.chromium.chrome.browser.site_settings") {
 
   deps = [ ":brave_test_java_helper" ]
 }
+
+android_library(
+    "brave_test_java_org.chromium.chrome.browser.widget.quickactionsearchandbookmark") {
+  sources = [ "org/chromium/chrome/browser/quickactionsearchandbookmark/QuickActionSearchAndBookmarkWidgetProviderTest.java" ]
+
+  deps = [
+    ":brave_test_java_helper",
+    "//base:base_java",
+  ]
+}
