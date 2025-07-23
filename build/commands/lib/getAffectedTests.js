@@ -88,7 +88,6 @@ async function getAffectedTests(outDir, filters = ['//*']) {
     JSON.parse,
   )
 
-
   return {
     outDir,
     filters,
