@@ -8,17 +8,14 @@
 #include <optional>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/containers/checked_iterators.h"
-#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -29,10 +26,9 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -235,10 +231,10 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
 TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages) {
   PageContent page_content("This is content 1", false);
   PageContent video_content("This is content 2 and a video", true);
-
+  PageContents page_contents = {page_content, video_content};
+  uint32_t remaining_length = 100;
   auto message = engine_->BuildPageContentMessages(
-      {page_content, video_content}, 100,
-      IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
       IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
 
   EXPECT_EQ(message.size(), 2u);
@@ -255,10 +251,11 @@ TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages) {
 TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
   PageContent page_content("This is content 1", false);
   PageContent video_content("This is content 2 and a video", true);
+  PageContents page_contents = {page_content, video_content};
 
+  uint32_t remaining_length = 20;
   auto message = engine_->BuildPageContentMessages(
-      {page_content, video_content}, 20,
-      IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+      page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
       IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
 
   EXPECT_EQ(message.size(), 2u);
@@ -478,7 +475,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Initiate the test
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      {{{history.back()->uuid.value_or(""), {page_content}}}}, history, "", {},
+      std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &assistant_response](
                                      EngineConsumer::GenerationResult result) {
         EXPECT_EQ(result.value(),
@@ -1038,7 +1036,8 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   PageContent page_content("This is a page.", false);
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      {{{"turn-1", {page_content}}}}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -1068,10 +1067,12 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
     EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
 
     std::vector<mojom::ConversationTurnPtr> history;
-    history.push_back(mojom::ConversationTurn::New());
+    auto turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
+    history.push_back(std::move(turn));
     mock_engine_consumer->GenerateAssistantResponse(
-        {page_content_1, page_content_2}, history, "", {}, std::nullopt,
-        base::DoNothing(), base::DoNothing());
+        {{{history.back()->uuid.value(), {page_content_1, page_content_2}}}},
+        history, "", {}, std::nullopt, base::DoNothing(), base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 

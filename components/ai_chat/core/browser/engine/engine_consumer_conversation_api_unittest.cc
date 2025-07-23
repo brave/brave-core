@@ -9,16 +9,12 @@
 #include <optional>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <vector>
 
 #include "base/base64.h"
-#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/to_string.h"
@@ -245,7 +241,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      {{{history.back()->uuid.value_or(""), {page_content}}}}, history, "", {},
+      std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -305,14 +302,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   std::vector<mojom::ConversationTurnPtr> history;
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->uuid = "turn-1";
   turn->character_type = mojom::CharacterType::HUMAN;
   turn->text = "Which show is this about?";
   turn->prompt = "Tell the user which show is this about?";
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {page_content_1, page_content_2}, history, "", {}, std::nullopt,
-      base::DoNothing(),
+      {{{history.back()->uuid.value(), {page_content_1, page_content_2}}}},
+      history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -361,7 +359,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      {{{history.back()->uuid.value_or(""), {page_content}}}}, history, "", {},
+      std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -424,7 +423,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::move(completion_event), std::nullopt)));
       });
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      {{{history.back()->uuid.value_or(""), {page_content}}}}, history, "", {},
+      std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -986,7 +986,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
             std::move(completion_event), std::nullopt)));
       });
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      {{{history.back()->uuid.value_or(""), {page_content}}}}, history, "", {},
+      std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1026,7 +1027,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   history.push_back(std::move(turn));
   PageContent page_content("This is a sample page content.", false);
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      {{{history.back()->uuid.value_or(""), {page_content}}}}, history, "", {},
+      std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1089,7 +1091,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
       std::nullopt /* model_key */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse(PageContents(), history, "", {},
+  engine_->GenerateAssistantResponse(PageContentsMap(), history, "", {},
                                      std::nullopt, base::DoNothing(),
                                      future.GetCallback());
   EXPECT_EQ(future.Take(),
@@ -2343,6 +2345,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   std::vector<mojom::ConversationTurnPtr> history;
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->uuid = "turn-1";
   turn->character_type = mojom::CharacterType::HUMAN;
   turn->text = "What is this about?";
   turn->model_key = kModelKey;
@@ -2350,8 +2353,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   base::RunLoop run_loop;
   PageContent page_content("This is a test page content.", false);
-  PageContents page_contents;
-  page_contents.push_back(page_content);
+  PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   engine_->GenerateAssistantResponse(
       std::move(page_contents), std::move(history), "", {}, std::nullopt,
@@ -2467,10 +2469,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
 
     std::vector<mojom::ConversationTurnPtr> history;
-    history.push_back(mojom::ConversationTurn::New());
+    auto turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
+    history.push_back(std::move(turn));
     mock_engine_consumer->GenerateAssistantResponse(
-        {page_content_1, page_content_2}, history, "", {}, std::nullopt,
-        base::DoNothing(), base::DoNothing());
+        {{{history.back()->uuid.value(), {page_content_1, page_content_2}}}},
+        history, "", {}, std::nullopt, base::DoNothing(), base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 

@@ -465,7 +465,7 @@ TEST_P(AIChatServiceUnitTest,
   base::OnceClosure resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(
-          [&resolve](PageContents page_contents,
+          [&resolve](PageContentsMap page_contents,
                      const std::vector<mojom::ConversationTurnPtr>& history,
                      const std::string& selected_language,
                      const std::vector<base::WeakPtr<Tool>>& tools,

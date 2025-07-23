@@ -15,8 +15,8 @@
 #include "base/barrier_callback.h"
 #include "base/barrier_closure.h"
 #include "base/check.h"
-#include "base/functional/bind.h"
 #include "base/containers/contains.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
@@ -388,6 +388,24 @@ PageContents AssociatedContentManager::GetCachedContents() const {
   PageContents result;
   for (auto* delegate : content_delegates_) {
     result.push_back(delegate->cached_page_content());
+  }
+
+  return result;
+}
+
+PageContentsMap
+AssociatedContentManager::GetCachedContentsMap() const {
+  DVLOG(1) << __func__;
+  PageContentsMap result;
+
+  auto contents = GetCachedContents();
+  auto meta = GetAssociatedContent();
+
+  for (size_t i = 0; i < contents.size(); ++i) {
+    CHECK(meta[i]->conversation_turn_uuid.has_value())
+        << "This method should only be called when all content has been "
+           "associated with a turn";
+    result[meta[i]->conversation_turn_uuid.value()].push_back(contents[i]);
   }
 
   return result;
