@@ -1,0 +1,59 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate.java b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate.java
+index 9d1206707dfd0a3b367d6f45e2fe3bfeb55cdaf8..82e301c51eb2a5347939a19cce330de5bb69be57 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate.java
+@@ -6,6 +6,7 @@ package org.chromium.chrome.browser.customtabs;
+ 
+ import android.content.Context;
+ import android.os.Bundle;
++import android.text.TextUtils;
+ import android.view.View;
+ import android.widget.TextView;
+ 
+@@ -24,6 +25,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+ import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
+ import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider.CustomTabsUiType;
+ import org.chromium.chrome.browser.browserservices.ui.controller.Verifier;
++import org.chromium.chrome.browser.externalnav.BraveExternalNavigationUtils;
+ import org.chromium.chrome.browser.firstrun.FirstRunStatus;
+ import org.chromium.chrome.browser.flags.ChromeFeatureList;
+ import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+@@ -380,6 +382,10 @@ public class CustomTabAppMenuPropertiesDelegate extends AppMenuPropertiesDelegat
+             modelList.add(buildOpenWithItem(currentTab, false));
+         }
+ 
++        if (shouldShowOpenInExternalApplicationItem(currentTab)) {
++            modelList.add(buildOpenInExternalApplicationItem());
++        }
++
+         // --- Open in Browser ---
+         if (openInChromeItemVisible && !showOpenInBrowserAtTop) {
+             addOpenInChrome(modelList, /* showIcon= */ false);
+@@ -458,4 +464,27 @@ public class CustomTabAppMenuPropertiesDelegate extends AppMenuPropertiesDelegat
+     void setHasClientPackageForTesting(boolean hasClientPackage) {
+         mHasClientPackage = hasClientPackage;
+     }
++
++    private boolean shouldShowOpenInExternalApplicationItem(Tab currentTab) {
++        if (currentTab == null) return false;
++        try {
++            GURL url = currentTab.getUrl();
++            if (url == null || TextUtils.isEmpty(url.getSpec())) {
++                return false;
++            }
++            return BraveExternalNavigationUtils.canResolveUrl(url, mContext);
++        } catch (Exception e) {
++            return false;
++        }
++    }
++
++    private MVCListAdapter.ListItem buildOpenInExternalApplicationItem() {
++        return new MVCListAdapter.ListItem(
++            AppMenuHandler.AppMenuItemType.STANDARD,
++            buildModelForStandardMenuItem(
++                R.id.brave_open_in_external_application,
++                R.string.menu_open_in_external_application,
++                shouldShowIconBeforeItem()
++                        ? R.drawable.ic_info : 0));
++    }
+ }
