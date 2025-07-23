@@ -477,6 +477,8 @@ public abstract class BraveActivity extends ChromeActivity
             enableSpeedreaderMode();
         } else if (id == R.id.brave_leo_id) {
             openBraveLeo();
+        } else if (id == R.id.brave_open_in_external_application) {
+
         } else {
             return false;
         }
