@@ -182,6 +182,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private TextView mViewScreenshot;
     private byte[] mScreenshotBytes;
 
+    private String mSelectedWebcompatCategory;
     private Spinner mIssueCategorySpinner;
     private ArrayAdapter<CategorySpinnerItem> mIssueCategorySpinnerAdapter;
 
@@ -1001,10 +1002,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                                 ? R.drawable.orange_rounded_button
                                                 : R.drawable.set_default_rounded_button_disabled,
                                         /* theme= */ null));
-                        final CategorySpinnerItem firstItem =
-                                (CategorySpinnerItem) mIssueCategorySpinnerAdapter.getItem(0);
-                        if (isIssueCategorySelected && firstItem.isPlaceholder()) {
-                            mIssueCategorySpinnerAdapter.remove(firstItem);
+                        if (isIssueCategorySelected) {
+                            mSelectedWebcompatCategory = item.getValue();
                         }
                     }
 
@@ -1021,7 +1020,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         reportInfo.braveVersion = BraveVersionConstants.VERSION;
         reportInfo.reportUrl = siteUrl;
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
-        reportInfo.category = "";
+        reportInfo.category = mSelectedWebcompatCategory;
         reportInfo.details = mEditTextDetails.getText().toString();
         reportInfo.contact = mEditTextContact.getText().toString();
         return reportInfo;
