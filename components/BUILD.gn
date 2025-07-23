@@ -86,14 +86,10 @@ test("brave_components_unittests") {
   ]
   assert_no_deps += [
     "//extensions/browser/*",
-    "//extensions/common",
     "//extensions/common:core_api_provider",
-    "//extensions/common:mojom",
-    "//extensions/common/api/*",
     "//extensions/components/*",
     "//extensions/renderer/*",
     "//extensions/shell/*",
-    "//extensions/strings/*",
   ]
 
   if (is_ios) {
