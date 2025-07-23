@@ -73,6 +73,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
+#include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/components/commander/common/features.h"
@@ -1092,6 +1093,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsAll,                                                              \
           ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
           kBraveSyncImplLink,                                                  \
+      },                                                                       \
+      {                                                                        \
+          "adaptive-button-in-toolbar",                                        \
+          "Adaptive Button In Toolbar (quick shortcut)",                       \
+          "Show quick shortcut button in toolbar. ",                           \
+          kOsAndroid,                                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2),    \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
