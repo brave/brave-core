@@ -165,13 +165,13 @@ std::vector<std::string> GetInstalledComponentIds(
 
 using WebcompatCategory = webcompat_reporter::mojom::WebcompatCategory;
 
-constexpr char kHideCookieNoticeCategorForComponentId[] =
+constexpr char kHideCookieNoticeCategoryForComponentId[] =
     "cdbbhgbmjhfnhnmgeddbliobbofkgdhe";
-constexpr char kHideNewsletterCategorForComponentId[] =
+constexpr char kHideNewsletterCategoryForComponentId[] =
     "kdddfellohomdnfkdhombbddhojklibj";
-constexpr char kHideSocialCategorForComponentId[] =
+constexpr char kHideSocialCategoryForComponentId[] =
     "nbkknaieglghmocpollinelcggiehfco";
-constexpr char kHideChatCategorForComponentId[] =
+constexpr char kHideChatCategoryForComponentId[] =
     "cjoooeeofnfjohnalnghhmdlalopplja";
 
 bool HideIssueCategory(const std::vector<std::string>& component_ids,
