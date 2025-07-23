@@ -8,6 +8,8 @@ const { readFile, writeFile } = require('fs/promises')
 const exec = promisify(require('child_process').execFile)
 const path = require('path')
 const config = require('./config')
+const { unlink } = require('fs-extra')
+const { randomUUID } = require('crypto')
 
 const getTestTargets = (outDir, filters = ['//*']) =>
   exec(
@@ -70,9 +72,10 @@ async function getAffectedTests(outDir, filters = ['//*']) {
     test_targets: testTargets,
   }
 
+  const uuid = randomUUID();
   // paths are relative to package.json
   await writeFile(
-    `${root}/out/analyze.json`,
+    `${root}/out/analyze-${uuid}.json`,
     JSON.stringify(toAnalyze, null, 2),
     'utf-8',
   )
@@ -80,13 +83,18 @@ async function getAffectedTests(outDir, filters = ['//*']) {
   const { env, shell } = config.defaultOptions
   await exec(
     'gn',
-    ['analyze', outDir, `${root}/out/analyze.json`, `${root}/out/out.json`],
+    ['analyze', outDir, `${root}/out/analyze-${uuid}.json`, `${root}/out/out-${uuid}.json`],
     { env, shell },
   )
 
-  const output = await readFile(`${root}/out/out.json`, 'utf-8').then(
-    JSON.parse,
+  const output = await readFile(`${root}/out/out-${uuid}.json`, 'utf-8').then(
+    JSON.parse
   )
+
+  await Promise.all([
+    unlink(`${root}/out/analyze-${uuid}.json`),
+    unlink(`${root}/out/out-${uuid}.json`)
+  ]);
 
   return {
     outDir,
