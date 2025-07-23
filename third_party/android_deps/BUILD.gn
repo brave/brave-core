@@ -132,17 +132,3 @@ android_aar_prebuilt("com_google_android_play_integrity_java") {
     "//third_party/android_deps:google_play_services_tasks_java",
   ]
 }
-
-# Starting from revision 6e0b8108cad22d3f2bc0d8f99ac48868860faf2d
-# upstream does not use gson for Android.
-# The file is still speified at
-# //third_party/android_deps:com_google_code_gson_gson_java without supports_android atribute.
-# Use the last gson-2.9.0.jar from 132.0.6834.111 which had supports_android attribute.
-# Attempt to use the jar file from //third_party/android_deps:com_google_code_gson_gson_java
-# causes crash at the release build, probably because of 2.8.0 version.
-java_prebuilt("com_google_code_gson_gson_java") {
-  jar_path = "libs/com_google_code_gson_gson/gson-2.9.0.jar"
-  output_name = "com_google_code_gson_gson"
-  supports_android = true
-  enable_bytecode_checks = false
-}
