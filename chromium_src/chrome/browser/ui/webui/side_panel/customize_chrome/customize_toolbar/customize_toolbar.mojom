@@ -7,8 +7,17 @@ module side_panel.customize_chrome.mojom;
 
 [BraveExtend]
 enum ActionId {
+  // Actions in the navigation category.
   kShowWallet,
   kShowAIChat,
   kShowVPN,
   kShowSidePanel,
+
+  // Actions in the url bar category.
+  kShowReward,
+};
+
+[BraveExtend]
+enum CategoryId {
+  kUrlBar,
 };

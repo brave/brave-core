@@ -8,6 +8,10 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
 
+#define ListCategories                                     \
+  ListCategoriesChromium(ListCategoriesCallback callback); \
+  void ListCategories
+
 #define ListActions                                  \
   ListActionsChromium(ListActionsCallback callback); \
   void ListActions
@@ -24,5 +28,6 @@
 
 #undef PinAction
 #undef ListActions
+#undef ListCategories
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_TOOLBAR_CUSTOMIZE_TOOLBAR_HANDLER_H_

@@ -16,6 +16,14 @@ class WebContents;
 
 namespace customize_chrome {
 
+// Append Brave-specific categories to the list of categories.
+//  * We have our own "Url Bar" category that contains actions like
+//    `kShowReward`.
+std::vector<side_panel::customize_chrome::mojom::CategoryPtr>
+AppendBraveSpecificCategories(
+    content::WebContents& web_contents,
+    std::vector<side_panel::customize_chrome::mojom::CategoryPtr> categories);
+
 // Removes unsupported Chromium actions from the list of actions.
 std::vector<side_panel::customize_chrome::mojom::ActionPtr>
 FilterUnsupportedChromiumActions(
@@ -32,6 +40,8 @@ FilterUnsupportedChromiumActions(
 // 3. Adds Brave-specific actions.
 //   e.g. In 'Navigation' category:
 //        `kShowSidePanel`, `kShowWallet`, `kShowAIChat`, `kShowVPN`.
+//        In 'Url Bar' category:
+//        `kShowReward`.
 std::vector<side_panel::customize_chrome::mojom::ActionPtr>
 ApplyBraveSpecificModifications(
     content::WebContents& web_contents,
