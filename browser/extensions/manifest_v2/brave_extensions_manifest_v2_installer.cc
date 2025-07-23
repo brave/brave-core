@@ -105,7 +105,7 @@ ExtensionManifestV2Installer::ExtensionManifestV2Installer(
       web_contents_(web_contents->GetWeakPtr()),
       url_loader_factory_(std::move(url_loader_factory)),
       callback_(std::move(callback)) {
-  CHECK(IsKnownMV2Extension(extension_id));
+  CHECK(IsKnownBraveHostedExtension(extension_id));
 }
 
 ExtensionManifestV2Installer::~ExtensionManifestV2Installer() = default;

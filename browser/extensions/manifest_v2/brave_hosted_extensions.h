@@ -19,29 +19,31 @@ inline constexpr char kUBlockId[] = "jcokkipkhhgiakinbnnplhkdbjbgcgpe";
 inline constexpr char kUMatrixId[] = "fplfeajmkijmaeldaknocljmmoebdgmk";
 inline constexpr char kAdGuardId[] = "ejoelgckfgogkoppbgkklbbjdkjdbmen";
 
-inline constexpr char kCwsNoScriptId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
-inline constexpr char kCwsUBlockId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
-inline constexpr char kCwsUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
-inline constexpr char kCwsAdGuardId[] = "gfggjaccafhcbfogfkogggoepomehbjl";
+inline constexpr char kWebStoreNoScriptId[] =
+    "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
+inline constexpr char kWebStoreUBlockId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
+inline constexpr char kWebStoreUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
+inline constexpr char kWebStoreAdGuardId[] = "gfggjaccafhcbfogfkogggoepomehbjl";
 
 inline constexpr auto kBraveHosted =
     base::MakeFixedFlatMap<std::string_view, std::string_view>(
-        {{kNoScriptId, kCwsNoScriptId},
-         {kUBlockId, kCwsUBlockId},
-         {kUMatrixId, kCwsUMatrixId},
-         {kAdGuardId, kCwsAdGuardId}});
+        {{kNoScriptId, kWebStoreNoScriptId},
+         {kUBlockId, kWebStoreUBlockId},
+         {kUMatrixId, kWebStoreUMatrixId},
+         {kAdGuardId, kWebStoreAdGuardId}});
 
-inline constexpr auto kCwsHosted =
+inline constexpr auto kWebStoreHosted =
     base::MakeFixedFlatMap<std::string_view, std::string_view>(
-        {{kCwsNoScriptId, kNoScriptId},
-         {kCwsUBlockId, kUBlockId},
-         {kCwsUMatrixId, kUMatrixId},
-         {kCwsAdGuardId, kAdGuardId}});
+        {{kWebStoreNoScriptId, kNoScriptId},
+         {kWebStoreUBlockId, kUBlockId},
+         {kWebStoreUMatrixId, kUMatrixId},
+         {kWebStoreAdGuardId, kAdGuardId}});
 
 // In future there can be more brave-hosted mv2 extensions than published on
-// CWS.
-static_assert(kBraveHosted.size() >= kCwsHosted.size());
+// WebStore.
+static_assert(kBraveHosted.size() >= kWebStoreHosted.size());
 
+namespace internal {
 consteval std::array<std::string_view, kBraveHosted.size()>
 GetPreconfiguredManifestV2Extensions() {
   // This can be made more idiomatic once Chromium style allows
@@ -51,19 +53,24 @@ GetPreconfiguredManifestV2Extensions() {
                          [](const auto& p) { return p.first; });
   return result;
 }
+}  // namespace internal
 
 inline constexpr auto kPreconfiguredManifestV2Extensions =
-    GetPreconfiguredManifestV2Extensions();
+    internal::GetPreconfiguredManifestV2Extensions();
 
 static_assert(kPreconfiguredManifestV2Extensions.size() == kBraveHosted.size());
 
-bool IsKnownMV2Extension(const extensions::ExtensionId& id);
-bool IsKnownCwsMV2Extension(const extensions::ExtensionId& id);
+bool IsKnownBraveHostedExtension(const extensions::ExtensionId& id);
+bool IsKnownWebStoreHostedExtensionExtension(const extensions::ExtensionId& id);
 
+// Returns the Brave-hosted extension id for a given WebStore-hosted.
+// In case if the given id is unknown returns nullopt.
 std::optional<extensions::ExtensionId> GetBraveHostedExtensionId(
-    const extensions::ExtensionId& cws_extension_id);
+    const extensions::ExtensionId& webstore_extension_id);
 
-std::optional<extensions::ExtensionId> GetCwsExtensionId(
+// Returns the WebStore-hosted extension id for a given Brave-hosted.
+// In case if the given id is unknown returns nullopt.
+std::optional<extensions::ExtensionId> GetWebStoreHostedExtensionId(
     const extensions::ExtensionId& brave_hosted_extension_id);
 }  // namespace extensions_mv2
 

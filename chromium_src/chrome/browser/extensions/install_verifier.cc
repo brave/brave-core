@@ -54,7 +54,7 @@
 
 #define IsUnpackedLocation(...)      \
   IsUnpackedLocation(__VA_ARGS__) || \
-      extensions_mv2::IsKnownMV2Extension(extension->id())
+      extensions_mv2::IsKnownBraveHostedExtension(extension->id())
 
 #include "src/chrome/browser/extensions/install_verifier.cc"
 

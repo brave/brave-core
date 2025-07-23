@@ -5,19 +5,27 @@
 
 #include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 
+#include "base/containers/map_util.h"
+
 namespace extensions_mv2 {
 
 namespace {
+
+// Checks kBraveHosted and kWebStoreHosted maps are in consistent state at
+// compile time. Keys of one map should be the values of another.
 consteval bool CheckExtensionMaps() {
-  for (const auto& [bh_key, bh_value] : kBraveHosted) {
-    if (bh_value.empty()) {
-      // skip Brave-hosted extension which doesn't have the cws counterpart.
+  for (const auto& [brave_hosted_key, brave_hosted_value] : kBraveHosted) {
+    if (brave_hosted_value.empty()) {
+      // skip Brave-hosted extension which doesn't have the WebStore
+      // counterpart.
       continue;
     }
 
     bool ok = false;
-    for (const auto& [cws_key, cws_value] : kCwsHosted) {
-      if (bh_value == cws_key && bh_key == cws_value) {
+    for (const auto& [webstore_hosted_key, webstore_hosted_value] :
+         kWebStoreHosted) {
+      if (brave_hosted_value == webstore_hosted_key &&
+          brave_hosted_key == webstore_hosted_value) {
         ok = true;
         break;
       }
@@ -30,30 +38,31 @@ consteval bool CheckExtensionMaps() {
 }
 
 static_assert(CheckExtensionMaps(),
-              "kBraveHostedToCws & kCwsToBraveHosted aren't consistent");
+              "kBraveHosted & kWebStoreHosted aren't consistent");
 }  // namespace
 
-bool IsKnownMV2Extension(const extensions::ExtensionId& id) {
+bool IsKnownBraveHostedExtension(const extensions::ExtensionId& id) {
   return kBraveHosted.contains(id);
 }
 
-bool IsKnownCwsMV2Extension(const extensions::ExtensionId& id) {
-  return kCwsHosted.contains(id);
+bool IsKnownWebStoreHostedExtension(const extensions::ExtensionId& id) {
+  return kWebStoreHosted.contains(id);
 }
 
 std::optional<extensions::ExtensionId> GetBraveHostedExtensionId(
-    const extensions::ExtensionId& cws_extension_id) {
-  if (auto fnd = kCwsHosted.find(cws_extension_id); fnd != kCwsHosted.end()) {
-    return extensions::ExtensionId(fnd->second);
+    const extensions::ExtensionId& webstore_extension_id) {
+  if (const auto* fnd =
+          base::FindOrNull(kWebStoreHosted, webstore_extension_id)) {
+    return extensions::ExtensionId(*fnd);
   }
   return std::nullopt;
 }
 
-std::optional<extensions::ExtensionId> GetCwsExtensionId(
+std::optional<extensions::ExtensionId> GetWebStoreHostedExtensionId(
     const extensions::ExtensionId& brave_hosted_extension_id) {
-  if (auto fnd = kBraveHosted.find(brave_hosted_extension_id);
-      fnd != kBraveHosted.end()) {
-    return extensions::ExtensionId(fnd->second);
+  if (const auto* fnd =
+          base::FindOrNull(kBraveHosted, brave_hosted_extension_id)) {
+    return extensions::ExtensionId(*fnd);
   }
   return std::nullopt;
 }
