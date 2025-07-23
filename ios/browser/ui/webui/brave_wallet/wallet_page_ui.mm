@@ -6,6 +6,7 @@
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/command_line.h"
@@ -44,6 +45,22 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
 
+namespace {
+// Content-Security-Policy: frame-src chrome-untrusted://trezor-bridge/
+// chrome-untrusted://ledger-bridge/ chrome-untrusted://nft-display/
+// chrome-untrusted://line-chart-display/ chrome-untrusted://market-display/;
+// fails to work unless I remove all the trailing slashes from each policy.
+// For some reason, on Desktop, the trailing slashes don't seem to matter???
+// So for iOS, this function will strip the trailing slashes so the CSPs apply
+// correctly
+std::string StripTrailingSlash(std::string_view url) {
+  if (!url.empty() && url.back() == '/') {
+    return std::string(url.substr(0, url.size() - 1));
+  }
+  return std::string(url);
+}
+}  // namespace
+
 WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
     : web::WebUIIOSController(web_ui, url.host()) {
   // Create a URLDataSource and add resources.
@@ -64,9 +81,11 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      std::string("frame-src ") + kUntrustedTrezorURL + " " +
-          kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
+      std::string("frame-src ") + StripTrailingSlash(kUntrustedTrezorURL) +
+          " " + StripTrailingSlash(kUntrustedLedgerURL) + " " +
+          StripTrailingSlash(kUntrustedNftURL) + " " +
+          StripTrailingSlash(kUntrustedLineChartURL) + " " +
+          StripTrailingSlash(kUntrustedMarketURL) + ";");
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
