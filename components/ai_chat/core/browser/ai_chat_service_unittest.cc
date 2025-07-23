@@ -581,7 +581,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
 // TODO(https://github.com/brave/brave-browser/issues/47827)
 #if BUILDFLAG(IS_IOS)
 #define MAYBE_ConversationLifecycle_WithContent \
-  FLAKY_ConversationLifecycle_WithContent
+  DISABLED_ConversationLifecycle_WithContent
 #else
 #define MAYBE_ConversationLifecycle_WithContent \
   ConversationLifecycle_WithContent
@@ -791,7 +791,7 @@ TEST_P(AIChatServiceUnitTest,
 
 // TODO(https://github.com/brave/brave-browser/issues/47827)
 #if BUILDFLAG(IS_IOS)
-#define MAYBE_GetConversation_AfterRestart FLAKY_GetConversation_AfterRestart
+#define MAYBE_GetConversation_AfterRestart DISABLED_GetConversation_AfterRestart
 #else
 #define MAYBE_GetConversation_AfterRestart GetConversation_AfterRestart
 #endif
