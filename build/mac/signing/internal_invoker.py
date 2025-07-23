@@ -31,21 +31,34 @@ class Invoker(standard_invoker.Invoker):
 
 def stub_out_signing_in_upstream():
     run_command_orig = commands.run_command
+    run_command_all_output_async_orig = commands.run_command_all_output_async
 
-    def run_command(args, **kwargs):
+    def scrub_signing_args(args):
         if args[0] == 'codesign':
             # Even non-signing commands such as `codesign --verify` or
             # `codesign --display` fail when signing is skipped. So don't invoke
             # codesign at all:
-            return
+            return None  # Indicates the command should not be run
         if args[0] == 'productbuild':
             try:
                 sign_index = args.index('--sign')
+                # Remove '--sign' and the following argument
+                del args[sign_index:sign_index + 2]
             except ValueError:
                 pass
-            else:
-                for _ in range(2):
-                    args.pop(sign_index)
-        run_command_orig(args, **kwargs)
+        return args
+
+    def run_command(args, **kwargs):
+        scrubbed = scrub_signing_args(args.copy())
+        if scrubbed is not None:
+            return run_command_orig(scrubbed, **kwargs)
+        return None
+
+    async def run_command_all_output_async(args, **kwargs):
+        scrubbed = scrub_signing_args(args.copy())
+        if scrubbed is not None:
+            return await run_command_all_output_async_orig(scrubbed, **kwargs)
+        return ('%s' % args, 0, '', '')
 
     commands.run_command = run_command
+    commands.run_command_all_output_async = run_command_all_output_async
