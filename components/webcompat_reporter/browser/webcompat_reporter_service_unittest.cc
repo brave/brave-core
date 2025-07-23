@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/strings/string_util.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
@@ -150,6 +151,45 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
   }
 
+  void TestRetrievingWebcompatCategories(
+      const std::vector<mojom::WebcompatCategory>& required_categories,
+      const std::vector<mojom::WebcompatCategory>& excluded_categories,
+      const size_t expected_categories_count,
+      const std::vector<ComponentInfo>& component_infos) {
+    EXPECT_CALL(*delegate_, GetComponentInfos)
+        .Times(1)
+        .WillOnce(testing::Return(component_infos));
+    base::RunLoop run_loop;
+    base::MockCallback<WebcompatReporterService::GetWebcompatCategoriesCallback>
+        mock_callback;
+    EXPECT_CALL(mock_callback, Run)
+        .Times(1)
+        .WillRepeatedly([&](std::vector<mojom::WebcompatCategoryItemPtr>
+                                categories) {
+          EXPECT_EQ(categories.size(), expected_categories_count);
+          EXPECT_TRUE(std::ranges::all_of(required_categories, [&](auto item) {
+            return std::ranges::find_if(
+                       categories,
+                       [&item](
+                           const mojom::WebcompatCategoryItemPtr& category) {
+                         return category->category == item;
+                       }) != categories.end();
+          }));
+          EXPECT_TRUE(std::ranges::none_of(excluded_categories, [&](auto item) {
+            return std::ranges::find_if(
+                       categories,
+                       [&item](
+                           const mojom::WebcompatCategoryItemPtr& category) {
+                         return category->category == item;
+                       }) != categories.end();
+          }));
+          run_loop.Quit();
+        });
+    webcompat_reporter_service_->GetWebcompatCategories(mock_callback.Get());
+
+    run_loop.Run();
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
@@ -234,6 +274,48 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
       .WillOnce(testing::Return(kGetScriptBlockingFlagMockedValue));
 
   webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
+}
+
+TEST_F(WebcompatReporterServiceUnitTest, RetrievingWebcompatCategories) {
+  {
+    std::vector<ComponentInfo> component_infos{
+        {"adcocjohghhfpidemphmcmlmhnfgikei", "name", "1.234"}};
+    TestRetrievingWebcompatCategories(
+        {mojom::WebcompatCategory::kAds, mojom::WebcompatCategory::kBlank,
+         mojom::WebcompatCategory::kScroll, mojom::WebcompatCategory::kForm,
+         mojom::WebcompatCategory::kCookieNotice,
+         mojom::WebcompatCategory::kAntiAdblock,
+         mojom::WebcompatCategory::kTracking,
+         mojom::WebcompatCategory::kNewsletter,
+         mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat,
+         mojom::WebcompatCategory::kOther},
+        {}, 11, component_infos);
+  }
+  {
+    std::vector<ComponentInfo> component_infos{
+        {"adcocjohghhfpidemphmcmlmhnfgikei", "name", "1.234"},
+        // In this component is present, WebcompatCategory::kCookieNotice must
+        // be excluded
+        {"cdbbhgbmjhfnhnmgeddbliobbofkgdhe", "name1", "2.234"},
+        // In this component is present, WebcompatCategory::kNewsletter must be
+        // excluded
+        {"kdddfellohomdnfkdhombbddhojklibj", "name2", "3.234"},
+        // In this component is present, WebcompatCategory::kSocial must be
+        // excluded
+        {"nbkknaieglghmocpollinelcggiehfco", "name3", "4.234"},
+        // In this component is present, WebcompatCategory::kChat must be
+        // excluded
+        {"cjoooeeofnfjohnalnghhmdlalopplja", "name4", "5.234"}};
+    TestRetrievingWebcompatCategories(
+        {mojom::WebcompatCategory::kAds, mojom::WebcompatCategory::kBlank,
+         mojom::WebcompatCategory::kScroll, mojom::WebcompatCategory::kForm,
+         mojom::WebcompatCategory::kAntiAdblock,
+         mojom::WebcompatCategory::kTracking, mojom::WebcompatCategory::kOther},
+        {mojom::WebcompatCategory::kCookieNotice,
+         mojom::WebcompatCategory::kNewsletter,
+         mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat},
+        7, component_infos);
+  }
 }
 
 }  // namespace webcompat_reporter
