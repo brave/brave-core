@@ -228,29 +228,16 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
 }
 
 bool BraveShieldsTabHelper::GetBraveShieldsAdBlockOnlyModeEnabled() {
-  // TODO(tmancey): See `brave_shields::GetBraveShieldsEnabled` as we need to
-  // decide if we also need the `base::FeatureList::IsEnabled` check.
-  if (GetCurrentSiteURL().is_valid() &&
-      !GetCurrentSiteURL().SchemeIsHTTPOrHTTPS()) {
-    return false;
-  }
-
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
-  return profile_prefs->GetBoolean(kShieldsAdBlockOnlyModeEnabled);
+  return brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(
     bool is_enabled) {
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
-  profile_prefs->SetBoolean(kShieldsAdBlockOnlyModeEnabled, is_enabled);
-
-  for (Observer& obs : observer_list_) {
-    obs.OnShieldsAdBlockOnlyModeEnabledChanged();
-  }
+  auto* map = GetHostContentSettingsMap(web_contents());
+  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
+      map, is_enabled, GetCurrentSiteURL(), g_browser_process->local_state());
+  ReloadWebContents();
 }
 
 GURL BraveShieldsTabHelper::GetCurrentSiteURL() {

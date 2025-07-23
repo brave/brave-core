@@ -267,6 +267,78 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
   return setting == CONTENT_SETTING_BLOCK ? false : true;
 }
 
+void SetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
+                                           bool enable,
+                                           const GURL& url,
+                                           PrefService* local_state) {
+  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  if (url.is_empty()) {
+    LOG(ERROR) << "url for shields ad block only mode setting cannot be blank";
+    return;
+  }
+
+  auto primary_pattern = GetPatternFromURL(url);
+
+  if (primary_pattern.MatchesAllHosts()) {
+    LOG(ERROR) << "Url for shields ad block only mode setting cannot be blank "
+                  "or result in a wildcard content setting.";
+
+#if DCHECK_IS_ON()
+    NOTREACHED();
+#else
+    base::debug::DumpWithoutCrashing();
+    return;
+#endif
+  }
+
+  if (!primary_pattern.IsValid()) {
+    DLOG(ERROR) << "Invalid primary pattern for Url: "
+                << url.possibly_invalid_spec();
+    return;
+  }
+
+  // this is 'allow_brave_shields_ad_block_only_mode' so 'enable' == 'allow'
+  const auto setting = enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
+  if (map->IsOffTheRecord() ||
+      setting !=
+          map->GetDefaultContentSetting(
+              ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE, nullptr)) {
+    map->SetContentSettingCustomScope(
+        primary_pattern, ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE, setting);
+
+    if (!map->IsOffTheRecord()) {
+      RecordShieldsToggled(local_state);
+    }
+  } else {
+    map->SetContentSettingCustomScope(
+        primary_pattern, ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE,
+        CONTENT_SETTING_DEFAULT);
+  }
+}
+
+bool GetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
+                                           const GURL& url) {
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
+      url.SchemeIs(kChromeExtensionScheme)) {
+    return true;
+  }
+  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
+    return false;
+  }
+
+  ContentSetting setting = map->GetContentSetting(
+      url, GURL(), ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE);
+
+  // see EnableBraveShieldsAdBlockingOnlyMode - allow and default == false
+  return setting == CONTENT_SETTING_BLOCK ? true : false;
+}
+
 void SetAdControlType(HostContentSettingsMap* map,
                       ControlType type,
                       const GURL& url,
@@ -428,6 +500,13 @@ DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
   // Don't block if feature is disabled
   if (!base::FeatureList::IsEnabled(
           brave_shields::features::kBraveDomainBlock)) {
+    return DomainBlockingType::kNone;
+  }
+
+  // Don't block if Brave Shields ad block only mode is enabled.
+  if (brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+    // TODO(tmancey): ...
+    DCHECK(false) << "Checking that this is hit";
     return DomainBlockingType::kNone;
   }
 
