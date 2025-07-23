@@ -168,7 +168,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, AIModePrefTest) {
   EXPECT_EQ(-1, chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
                     ::omnibox::kAIModeSettings));
-  EXPECT_FALSE(omnibox::IsMiaAllowedByPolicy(
+  EXPECT_FALSE(omnibox::IsAimAllowedByPolicy(
       chrome_test_utils::GetProfile(this)->GetPrefs()));
 }
 
