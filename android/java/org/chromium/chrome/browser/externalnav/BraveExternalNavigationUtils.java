@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.url.GURL;
 
@@ -27,6 +28,9 @@ public class BraveExternalNavigationUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url.getSpec()));
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Log.i(TAG, "Creating intent for URL: " + url.getSpec());
+        Log.i(TAG, "Intent: " + intent.toString());
         return intent;
     }
 
@@ -34,13 +38,19 @@ public class BraveExternalNavigationUtils {
         return resolveInfo != null
                 && resolveInfo.activityInfo != null
                 && resolveInfo.activityInfo.name != null
-                && resolveInfo.activityInfo.applicationInfo.packageName != null;
+                && resolveInfo.activityInfo.applicationInfo.packageName != null
+                // ResolveInfo may return browser itself (due to default browser settings), so filter this out.
+                && !resolveInfo.activityInfo.applicationInfo.packageName
+                        .equals(ContextUtils.getApplicationContext().getPackageName());
     }
 
     public static ResolveInfo resolveUrl(GURL url, Context context) {
         try {
             Intent intent = createViewIntentFromUrl(url);
-            return context.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            Log.i(TAG, "Resolved URL: " + url.getSpec());
+            Log.i(TAG, "ResolveInfo: " + (resolveInfo != null ? resolveInfo.toString() : "null"));
+            return resolveInfo;
         } catch (Exception e) {
             Log.e(TAG, "Error resolving URI: " + e.getMessage());
             return null;
@@ -65,6 +75,7 @@ public class BraveExternalNavigationUtils {
             }
             Intent intent = createViewIntentFromUrl(url);
             intent.setClassName(resolveInfo.activityInfo.applicationInfo.packageName, resolveInfo.activityInfo.name);
+            Log.i(TAG, "Opening URL: " + url.getSpec() + " with intent: " + intent.toString());
             context.startActivity(intent);
             return true;
         } catch (Exception e) {

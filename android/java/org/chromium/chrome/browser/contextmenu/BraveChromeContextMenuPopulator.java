@@ -7,8 +7,10 @@ package org.chromium.chrome.browser.contextmenu;
 
 import android.content.Context;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.externalnav.BraveExternalNavigationUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.shields.UrlSanitizerServiceFactory;

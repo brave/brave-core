@@ -7,7 +7,7 @@ index 122f6c3e696ff520b157d4fec8e5c86433cb9c48..7629413d0d06d1b201fd3448ec49fd6f
          Item.PRINT_PAGE,
          Item.INSPECT_ELEMENT,
 +        Item.COPY_CLEAN_LINK,
-+        Item.OPEN_IN_EXTERNAL_APPLICATION.
++        Item.OPEN_IN_EXTERNAL_APPLICATION,
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {

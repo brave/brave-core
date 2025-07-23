@@ -479,7 +479,7 @@ public abstract class BraveActivity extends ChromeActivity
         } else if (id == R.id.brave_leo_id) {
             openBraveLeo();
         } else if (id == R.id.brave_open_in_external_application) {
-            openInExternalApplication()
+            openInExternalApplication();
         } else {
             return false;
         }
@@ -2099,7 +2099,7 @@ public abstract class BraveActivity extends ChromeActivity
         // assert currentTab != null;
         BraveExternalNavigationUtils.openUrl(
             currentTab.getUrl(),
-            ContextUtils.getApplicationContext()
+            getApplicationContext()
         );
     }
 
