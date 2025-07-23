@@ -184,7 +184,7 @@ final class AdBlockGroupsManagerTests: XCTestCase {
       frameURL: URL(string: "https://dev-pages.bravesoftware.com/filtering/scriptlets.html")!,
       isMainFrame: true,
       isDeAmpEnabled: false,
-      domain: domain
+      isAdBlockEnabled: true
     )
     XCTAssertTrue(
       scriptTypes.contains(where: { scriptType in
@@ -201,7 +201,7 @@ final class AdBlockGroupsManagerTests: XCTestCase {
     // Should return some filter models
     let cosmeticFilterModels = await groupsManager.cosmeticFilterModels(
       forFrameURL: mainFrameURL,
-      domain: domain
+      isAdBlockEnabled: true
     )
     XCTAssertFalse(cosmeticFilterModels.isEmpty)
 
@@ -216,7 +216,8 @@ final class AdBlockGroupsManagerTests: XCTestCase {
       requestURL: requestURL,
       sourceURL: sourceURL,
       resourceType: .image,
-      domain: domain
+      isAdBlockEnabled: true,
+      isAdBlockModeAggressive: false
     )
     XCTAssertTrue(blockResult)
 
@@ -228,7 +229,8 @@ final class AdBlockGroupsManagerTests: XCTestCase {
       requestURL: requestURL2,
       sourceURL: sourceURL,
       resourceType: .image,
-      domain: domain
+      isAdBlockEnabled: true,
+      isAdBlockModeAggressive: false
     )
     XCTAssertFalse(blockResult)
 
@@ -243,7 +245,8 @@ final class AdBlockGroupsManagerTests: XCTestCase {
       requestURL: requestURL2,
       sourceURL: sourceURL,
       resourceType: .image,
-      domain: domain
+      isAdBlockEnabled: true,
+      isAdBlockModeAggressive: false
     )
     XCTAssertTrue(blockResult)
   }

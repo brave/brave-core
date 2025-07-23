@@ -135,7 +135,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   // Store the unique ID for each "page" so that
   // we can ignore API async responses against any navigated-away-from
   // documents.
-  int64_t current_navigation_id_;
+  int64_t current_navigation_id_{0};
 
   base::WeakPtrFactory<AssociatedContentDriver> weak_ptr_factory_{this};
 };
