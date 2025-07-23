@@ -1222,7 +1222,13 @@ TEST_F(ConversationHandlerUnitTest,
   }
 }
 
-TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
+// TODO(https://github.com/brave/brave-browser/issues/47838)
+#if BUILDFLAG(IS_IOS)
+#define MAYBE_ModifyConversation DISABLED_ModifyConversation
+#else
+#define MAYBE_ModifyConversation ModifyConversation
+#endif  // BUILDFLAG(IS_IOS)
+TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   conversation_handler_->MaybeUnlinkAssociatedContent();
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
