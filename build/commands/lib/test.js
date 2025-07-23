@@ -311,9 +311,9 @@ const runTests = (passthroughArgs, suite, config, options) => {
       if (config.targetEnvironment === 'simulator') {
         runArgs.push(
           '--platform',
-          options.ios_simulator_platform || 'iPhone 16',
-        ) // update as needed for version
-        runArgs.push('--version', options.ios_simulator_version || '18.4') // should match ios_deployment_target
+          options.ios_simulator_platform,
+        )
+        runArgs.push('--version', options.ios_simulator_version)
       } else if (config.targetEnvironment === 'device') {
         // TODO(bridiver)
         // runArgs.push('--xcodebuild-device-runner')
