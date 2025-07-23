@@ -22,7 +22,6 @@ import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsV
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarMediator.OmniboxUma;
-import org.chromium.chrome.browser.omnibox.LocationBarMediator.SaveOfflineButtonState;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
@@ -75,7 +74,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             BackKeyBehaviorDelegate backKeyBehavior,
             @NonNull PageInfoAction pageInfoAction,
             @NonNull Callback<Tab> bringTabToFrontCallback,
-            @NonNull SaveOfflineButtonState saveOfflineButtonState,
             @NonNull OmniboxUma omniboxUma,
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
             @NonNull BookmarkState bookmarkState,
@@ -95,8 +93,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             Supplier<Integer> bottomWindowPaddingSupplier,
             @Nullable OnLongClickListener onLongClickListener,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
-            boolean isToolbarPositionCustomizationEnabled,
-            @NonNull OfflineDownloader offlineDownloader) {
+            boolean isToolbarPositionCustomizationEnabled) {
         super(
                 locationBarLayout,
                 autocompleteAnchorView,
@@ -113,7 +110,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 backKeyBehavior,
                 pageInfoAction,
                 bringTabToFrontCallback,
-                saveOfflineButtonState,
                 omniboxUma,
                 tabWindowManagerSupplier,
                 bookmarkState,
@@ -133,8 +129,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                                         : 0),
                 onLongClickListener,
                 browserControlsStateProvider,
-                isToolbarPositionCustomizationEnabled,
-                offlineDownloader);
+                isToolbarPositionCustomizationEnabled);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);

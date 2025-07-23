@@ -97,7 +97,6 @@ import org.chromium.chrome.browser.ntp.NewTabPageCreationTracker;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
 import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
-import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
@@ -1578,7 +1577,6 @@ public class BytecodeTest {
                         BackKeyBehaviorDelegate.class,
                         PageInfoAction.class,
                         Callback.class,
-                        BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
                         BraveLocationBarMediator.getOmniboxUmaClass(),
                         Supplier.class,
                         BookmarkState.class,
@@ -1594,8 +1592,7 @@ public class BytecodeTest {
                         Supplier.class,
                         OnLongClickListener.class,
                         BrowserControlsStateProvider.class,
-                        boolean.class,
-                        LocationBarCoordinator.OfflineDownloader.class));
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1612,13 +1609,11 @@ public class BytecodeTest {
                         WindowAndroid.class,
                         boolean.class,
                         BraveLocationBarMediator.getLensControllerClass(),
-                        BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
                         BraveLocationBarMediator.getOmniboxUmaClass(),
                         BooleanSupplier.class,
                         BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
                         ObservableSupplier.class,
-                        BrowserControlsStateProvider.class,
-                        LocationBarCoordinator.OfflineDownloader.class));
+                        BrowserControlsStateProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
