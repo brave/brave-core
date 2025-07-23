@@ -8,8 +8,14 @@ const { readFile, writeFile } = require('fs/promises')
 const exec = promisify(require('child_process').execFile)
 const path = require('path')
 
+const gnPath = () => {
+  const ext = process.platform === 'win32' ? '.bat' : ''
+
+  return `./vendor/depot_tools/gn${ext}`
+}
+
 const getTestTargets = (outDir, filters = ['//*']) =>
-  exec('./vendor/depot_tools/gn', [
+  exec(gnPath(), [
     'ls',
     outDir,
     '--type=executable',
@@ -77,7 +83,8 @@ async function getAffectedTests(outDir, filters = ['//*']) {
     JSON.stringify(toAnalyze, null, 2),
     'utf-8',
   )
-  await exec('./vendor/depot_tools/gn', [
+
+  await exec(gnPath(), [
     'analyze',
     outDir,
     `${root}/out/analyze.json`,
