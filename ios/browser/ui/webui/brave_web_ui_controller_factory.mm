@@ -16,6 +16,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/nft_ui.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
@@ -74,6 +75,8 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return &NewWebUIIOS<SkusInternalsUI>;
   } else if (url_host == kWalletPageHost) {
     return &NewWebUIIOS<WalletPageUI>;
+  } else if (url_host == kUntrustedNftHost) {
+    return &NewWebUIIOS<UntrustedNftUI>;
   }
   return nullptr;
 }
