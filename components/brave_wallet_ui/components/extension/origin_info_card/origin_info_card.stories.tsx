@@ -7,7 +7,8 @@ import * as React from 'react'
 
 // Mocks
 import {
-  mockUniswapOriginInfo, //
+  mockUniswapOriginInfo,
+  mockOriginInfo, //
 } from '../../../stories/mock-data/mock-origin-info'
 
 // Components
@@ -19,9 +20,15 @@ import {
 // Styled Components
 import { Column } from '../../shared/style'
 
-export const _OriginInfoCard = {
+export const _OriginInfoCardVerified = {
   render: () => {
     return <OriginInfoCard origin={mockUniswapOriginInfo} />
+  },
+}
+
+export const _OriginInfoCardNotVerified = {
+  render: () => {
+    return <OriginInfoCard origin={mockOriginInfo} />
   },
 }
 
