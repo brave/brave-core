@@ -46,8 +46,7 @@ class BraveTabStyle : public TabStyle {
 
   int GetPinnedWidth(const bool is_split) const override {
     // We can ignore |is_split| because we're always using same width.
-    return brave_tabs::GetHorizontalTabHeight() +
-           brave_tabs::kHorizontalTabInset * 2;
+    return TabStyle::GetPinnedWidth(false);
   }
 
   int GetDragHandleExtension(int height) const override {
