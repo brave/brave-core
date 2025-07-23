@@ -1,8 +1,8 @@
 diff --git a/base/allocator/partition_alloc_features.cc b/base/allocator/partition_alloc_features.cc
-index 240c8266a3205a79c541c7897b0f05ea049fcaf1..6478ff45bfb757bec5d212e73c91ea5e1a53323f 100644
+index b2942fc2bdac0a0b464f0f78f6d380b9ff12f11c..359eb202d2555c3d4acdf5563f15ac3f89aeb52c 100644
 --- a/base/allocator/partition_alloc_features.cc
 +++ b/base/allocator/partition_alloc_features.cc
-@@ -490,7 +490,7 @@ BASE_FEATURE(kPartitionAllocAdjustSizeWhenInForeground,
+@@ -488,7 +488,7 @@ BASE_FEATURE(kPartitionAllocUseSmallSingleSlotSpans,
  BASE_FEATURE(kPartitionAllocShadowMetadata,
               "PartitionAllocShadowMetadata",
  #if BUILDFLAG(IS_LINUX)
