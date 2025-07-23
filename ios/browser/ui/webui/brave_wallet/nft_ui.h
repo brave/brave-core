@@ -9,6 +9,8 @@
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"
 
+namespace nft {
+
 class UntrustedNftUI : public web::WebUIIOSController {
  public:
   explicit UntrustedNftUI(web::WebUIIOS* web_ui, const GURL& url);
@@ -16,5 +18,7 @@ class UntrustedNftUI : public web::WebUIIOSController {
   UntrustedNftUI& operator=(const UntrustedNftUI&) = delete;
   ~UntrustedNftUI() override;
 };
+
+}  // namespace nft
 
 #endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_NFT_UI_H_
