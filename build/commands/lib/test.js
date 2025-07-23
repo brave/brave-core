@@ -10,6 +10,7 @@ const config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
+const getAffectedTests = require('./getAffectedTests')
 
 const getTestBinary = (suite) => {
   let testBinary = suite
@@ -98,6 +99,20 @@ const test = async (
   buildConfig = config.defaultBuildConfig,
   options = {},
 ) => {
+
+  config.buildConfig = buildConfig
+  config.update(options)
+
+  const chosenTests = getTestsToRun(config, suite);
+
+  const analysis = await getAffectedTests(config.outputDir);
+  const affected = new Set(analysis.affectedTests.map(x=> x.split(':')[1]));
+  const needsRunning = new Set(chosenTests.filter(t => affected.has(t)));
+  const canBeSkipped = chosenTests.filter(t => needsRunning.has(t));
+  if (canBeSkipped.length) {
+    console.log('SKIPPABLE:', canBeSkipped)
+  }
+  
   await buildTests(suite, buildConfig, options)
   runTests(passthroughArgs, suite, buildConfig, options)
 }
