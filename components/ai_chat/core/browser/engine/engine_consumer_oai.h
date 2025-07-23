@@ -14,6 +14,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -49,7 +50,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
-      PageContents page_contents,
+      PageContentsMap page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       const std::vector<base::WeakPtr<Tool>>& tools,
@@ -83,10 +84,16 @@ class EngineConsumerOAIRemote : public EngineConsumer {
                            BuildPageContentMessages_Truncates);
 
   base::Value::List BuildPageContentMessages(
-      const PageContents& page_contents,
-      uint32_t max_associated_content_length,
+      PageContents& page_contents,
+      uint32_t& max_associated_content_length,
       int video_message_id,
       int page_message_id);
+  base::Value::List BuildMessages(
+      const mojom::CustomModelOptions& model_options,
+      PageContentsMap& page_contents,
+      const std::optional<std::string>& selected_text,
+      const EngineConsumer::ConversationHistory& conversation_history);
+
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);

@@ -83,7 +83,7 @@ class EngineConsumer {
       SuggestedQuestionsCallback callback) = 0;
 
   virtual void GenerateAssistantResponse(
-      PageContents page_contents,
+      PageContentsMap page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       const std::vector<base::WeakPtr<Tool>>& tools,

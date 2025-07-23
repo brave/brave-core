@@ -991,8 +991,9 @@ void ConversationHandler::PerformAssistantGeneration(
   }
 
   engine_->GenerateAssistantResponse(
-      std::move(page_contents), chat_history_, selected_language_,
-      {} /* tools */, std::nullopt /* preferred_tool_name */,
+      associated_content_manager_->GetCachedContentsMap(), chat_history_,
+      selected_language_, {} /* tools */,
+      std::nullopt /* preferred_tool_name */,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
