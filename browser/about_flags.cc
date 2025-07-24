@@ -747,6 +747,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               brave_shields::features::kBraveAdblockScriptletDebugLogs),       \
       },                                                                       \
       {                                                                        \
+          "brave-adblock-show-hidden-components",                              \
+          "Show hidden adblock filter list components",                        \
+          "Reveals adblock filter list components in "                         \
+          "brave://settings/shields/filters that would normally be hidden.",   \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockShowHiddenComponents),     \
+      },                                                                       \
+      {                                                                        \
           "brave-dark-mode-block",                                             \
           "Enable dark mode blocking fingerprinting protection",               \
           "Always report light mode when fingerprinting protections set to "   \
