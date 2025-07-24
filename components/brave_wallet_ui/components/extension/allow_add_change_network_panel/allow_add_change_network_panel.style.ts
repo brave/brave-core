@@ -19,11 +19,6 @@ export const HeaderText = styled(Text)`
   letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
-export const OriginText = styled(Text)`
-  font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
-`
-
 export const Title = styled(Text)`
   font: ${leo.font.heading.h3};
   letter-spacing: ${leo.typography.letterSpacing.headings};
@@ -35,7 +30,7 @@ export const Description = styled(Text)`
 `
 
 export const NetworkInfoBox = styled(Column)`
-  background-color: ${leo.color.container.background};
+  background-color: ${leo.color.container.highlight};
   border-radius: ${leo.radius.xl};
 `
 
@@ -47,13 +42,6 @@ export const NetworkInfoLabel = styled(Text)`
 export const NetworkInfoText = styled(Text)`
   font: ${leo.font.default.semibold};
   letter-spacing: ${leo.typography.letterSpacing.default};
-`
-
-export const FavIcon = styled.img`
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  background-color: ${leo.color.container.background};
 `
 
 export const DividerWrapper = styled(Row)`
@@ -96,4 +84,11 @@ export const DetailsButton = styled(WalletButton)`
 export const LearnMoreButton = styled(DetailsButton)`
   font: ${leo.font.default.semibold};
   letter-spacing: ${leo.typography.letterSpacing.default};
+`
+
+export const Card = styled(Column)`
+  background-color: ${leo.color.container.background};
+  border-radius: ${leo.radius.xl};
+  box-shadow: ${leo.effect.elevation['01']};
+  overflow: hidden;
 `
