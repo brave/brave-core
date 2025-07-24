@@ -135,7 +135,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         public boolean isSubmitAllowed(String additionalInfoText) {
             return !isPlaceholder()
                     && (mId != WebcompatCategory.OTHER
-                            || mId == WebcompatCategory.OTHER && !additionalInfoText.isEmpty());
+                            || (mId == WebcompatCategory.OTHER && !additionalInfoText.isEmpty()));
         }
 
         @Override
