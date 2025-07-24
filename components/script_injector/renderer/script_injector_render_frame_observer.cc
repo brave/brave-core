@@ -6,7 +6,6 @@
 #include "brave/components/script_injector/renderer/script_injector_render_frame_observer.h"
 
 #include <optional>
-#include <string>
 #include <utility>
 
 #include "content/public/renderer/render_frame.h"
