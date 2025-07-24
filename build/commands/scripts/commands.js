@@ -21,11 +21,11 @@ const updatePatches = require('./updatePatches')
 const pullL10n = require('../lib/pullL10n')
 const pushL10n = require('../lib/pushL10n')
 const chromiumRebaseL10n = require('../lib/chromiumRebaseL10n')
-const { test } = require('../lib/test')
+const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
 const perfTests = require('../lib/perfTests')
-const { printAffectedTests } = require('../lib/getAffectedTests')
+const { getAffectedTests } = require('../lib/getAffectedTests')
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -360,6 +360,10 @@ program
   .option('--filter <filter>', 'set test filter')
   .option('--no_gn_gen', 'Use args.gn as default values')
   .option(
+    '--since [targetCommit]',
+    'use a this commit as reference for change detection',
+  )
+  .option(
     '--output_xml',
     'indicates if test results xml output file(s) should be generated. '
       + '<suite>.txt file will contain the list of xml files with results. '
@@ -474,8 +478,9 @@ program
     '--since [targetCommit]',
     'use a this commit as reference for change detection',
   )
-  .action(async (x) => {
-    const result = await printAffectedTests(x)
+  .action(async (args) => {
+    config.update(args)
+    const result = await getAffectedTests(args)
     console.log(result.join(' '))
   })
 

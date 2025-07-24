@@ -10,101 +10,13 @@ const Config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
-// const { getAffectedTests } = require('./getAffectedTests')
-
-const getTestBinary = (config, suite) => {
-  let testBinary = suite
-  if (testBinary === 'brave_java_unit_tests') {
-    testBinary = path.join('bin', 'run_brave_java_unit_tests')
-  } else if (testBinary === 'brave_junit_tests') {
-    testBinary = path.join('bin', 'run_brave_junit_tests')
-  }
-
-  if (config.isIOS()) {
-    testBinary = path.join(`${testBinary}.app`)
-  }
-
-  if (process.platform === 'win32') {
-    testBinary = path.join(`${testBinary}.exe`)
-  }
-  return path.join(config.outputDir, testBinary)
-}
-
-const getChromiumUnitTestsSuites = () => {
-  return [
-    'base_unittests',
-    'components_unittests',
-    'content_unittests',
-    'net_unittests',
-    'unit_tests',
-  ]
-}
-
-const getBraveUnitTestsSuites = (config) => {
-  let tests = []
-  if (config.isIOS()) {
-    tests.push('ios_brave_unit_tests')
-  } else {
-    tests.push('brave_unit_tests')
-  }
-  tests.push('brave_components_unittests')
-
-  if (!config.isMobile()) {
-    tests.push('brave_installer_unittests')
-  }
-
-  return tests
-}
-
-const getTestsToRun = (config, suite) => {
-  let testsToRun = []
-  if (suite === 'brave_all_unit_tests') {
-    testsToRun = [...getBraveUnitTestsSuites(config)]
-  } else if (suite === 'chromium_unit_tests') {
-    testsToRun = getChromiumUnitTestsSuites()
-  } else {
-    testsToRun = [suite]
-  }
-  return testsToRun
-}
-
-// Returns a list of paths to files containing all the filters that would apply
-// to the current test suite, as long as such files exist in the filesystem.
-//
-// For instance, for Windows 64-bit and assuming all the filters files exist
-// in the filesystem, this method would return paths to the following files:
-//   - unit-tests.filter              -> Base filters
-//   - unit_tests-windows.filters:    -> Platform specific
-//   - unit_tests-windows-x86.filters -> Platform & Architecture specific
-const getApplicableFilters = (config, suite) => {
-  let filterFilePaths = []
-
-  let targetPlatform = process.platform
-  if (targetPlatform === 'win32') {
-    targetPlatform = 'windows'
-  } else if (targetPlatform === 'darwin') {
-    targetPlatform = 'macos'
-  }
-
-  let possibleFilters = [
-    suite,
-    [suite, targetPlatform].join('-'),
-    [suite, targetPlatform, config.targetArch].join('-'),
-  ]
-  possibleFilters.forEach((filterName) => {
-    let filterFilePath = path.join(
-      config.braveCoreDir,
-      'test',
-      'filters',
-      `${filterName}.filter`,
-    )
-    if (fs.existsSync(filterFilePath)) {
-      filterFilePaths.push(filterFilePath)
-    }
-  })
-
-  return filterFilePaths
-}
+const { getAffectedTests } = require('./getAffectedTests')
+const {
+  getTestBinary,
+  getTestsToRun,
+  getApplicableFilters,
+  getChromiumUnitTestsSuites,
+} = require('./testUtils')
 
 const test = async (
   passthroughArgs,
@@ -120,41 +32,34 @@ const test = async (
     process.exit(1)
   }
 
-  await buildTests(suite, Config, options)
-  await runTests(passthroughArgs, suite, Config, options)
+  const testsToRun = passthroughArgs.since
+    ? await getAffectedTests({ ...passthroughArgs, suite })
+    : getTestsToRun(Config, suite)
+
+  await buildTests(testsToRun, Config, options)
+  await runTests(passthroughArgs, { suite, testsToRun }, Config, options)
 }
 
-const buildTests = async (suite, config, options = {}) => {
-  let testSuites = [
-    'brave_browser_tests',
-    'brave_java_unit_tests',
-    'brave_junit_tests',
-    'brave_network_audit_tests',
-  ]
-  if (testSuites.includes(suite)) {
-    config.buildTargets = ['brave/test:' + suite]
-  } else if (suite === 'chromium_unit_tests') {
-    config.buildTargets = getChromiumUnitTestsSuites()
-  } else {
-    config.buildTargets = [suite]
-  }
-  util.touchOverriddenFiles()
-  util.touchGsutilChangeLogFile()
+const buildTests = async (testsToRun, config) => {
+  config.buildTargets = testsToRun
+  if (testsToRun.length > 0) {
+    util.touchOverriddenFiles()
+    util.touchGsutilChangeLogFile()
 
-  await util.buildTargets(config.buildTargets, config.defaultOptions)
-}
-
-const deleteFile = (filePath) => {
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath)
+    await util.buildTargets(config.buildTargets, config.defaultOptions)
   }
 }
 
-const runTests = (passthroughArgs, suite, config, options) => {
+const runTests = async (
+  passthroughArgs,
+  { suite, testsToRun },
+  config,
+  options,
+) => {
   const isJunitTestSuite = suite.endsWith('_junit_tests')
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   // Clear previous results file
-  deleteFile(allResultsFilePath)
+  await fs.writeFile(allResultsFilePath, '')
 
   let braveArgs = []
 
@@ -217,7 +122,7 @@ const runTests = (passthroughArgs, suite, config, options) => {
   const upstreamTestSuites = ['browser_tests', ...getChromiumUnitTestsSuites()]
 
   // Run the tests
-  getTestsToRun(Config, suite).every((testSuite) => {
+  testsToRun.every((testSuite) => {
     let runArgs = braveArgs.slice()
     let runOptions = config.defaultOptions
 
@@ -510,8 +415,4 @@ const checkTeamcityReporterOutput = (outputLines, expectedTeamcityLines) => {
   }
 }
 
-module.exports = {
-  test,
-  getTestsToRun,
-  getApplicableFilters,
-}
+module.exports = test

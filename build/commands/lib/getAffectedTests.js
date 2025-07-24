@@ -10,7 +10,7 @@ const path = require('path')
 const config = require('./config')
 const { unlink } = require('fs-extra')
 const { randomUUID } = require('crypto')
-const { getApplicableFilters, getTestsToRun } = require('./test')
+const { getApplicableFilters, getTestsToRun } = require('./testUtils')
 
 const getTestTargets = (outDir, filters = ['//*']) =>
   exec(
@@ -48,21 +48,19 @@ async function getReferenceCommit() {
     return 'origin/master'
   }
 
-  // bail: we don't know the last succesfull test run
-  return null
+  // compare with previous commit
+  return 'HEAD~'
 }
 
-async function getAffectedTests(
+async function analyzeAffectedTests(
   outDir,
   { filters = ['//*'], since = null } = {},
 ) {
   // JENKINS sets GIT_PREVIOUS_SUCCESSFUL_COMMIT
   // TODO: find TeamCity equivalent.
   // TODO: we can optimize further by getting the last failure commit
-  const targetCommit = since ?? (await getReferenceCommit())
-  if (!targetCommit) {
-    return null
-  }
+  const targetCommit =
+    !since || since === true ? await getReferenceCommit() : since
 
   const root = path.resolve(process.cwd(), '../')
   outDir = path.isAbsolute(outDir) ? outDir : `${root}/${outDir}`
@@ -122,11 +120,11 @@ function createTestFilter(config, suite) {
   return (x) => tests.has(x.split(':')[1])
 }
 
-async function printAffectedTests(args = {}) {
-  const { suite, ...options } = args
-  config.update(options)
+async function getAffectedTests(args = {}) {
+  const { suite } = args
+  const cwd = process.cwd()
 
-  const analysis = await getAffectedTests(config.outputDir, options)
+  const analysis = await analyzeAffectedTests(config.outputDir, args)
   const affectedTests = analysis.affectedTests.filter(
     createTestFilter(config, suite),
   )
@@ -135,13 +133,13 @@ async function printAffectedTests(args = {}) {
 
   const additionalTests = analysis.test_targets
     .map((x) => x.split(':')[1])
-    .flatMap((t) =>
-      getApplicableFilters(t).map((filter) => ({ test: t, filter })),
+    .flatMap((test) =>
+      getApplicableFilters(config, test).map((filter) => ({ test, filter })),
     )
     .filter(({ filter }) =>
-      modified.has('//brave/' + filter.replace(process.cwd() + '/', '')),
+      modified.has('//brave/' + filter.replace(cwd + '/', '')),
     )
-    .map((x) => x.test)
+    .map(({ test }) => test)
 
   return [
     ...new Set([
@@ -152,6 +150,6 @@ async function printAffectedTests(args = {}) {
 }
 
 module.exports = {
+  analyzeAffectedTests,
   getAffectedTests,
-  printAffectedTests,
 }
