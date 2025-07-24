@@ -56,7 +56,7 @@ class MockPageContentFetcher
 
   MOCK_METHOD(void,
               FetchPageContent,
-              (std::string_view, FetchPageContentCallback),
+              (std::string_view, AIChatTabHelper::FetchPageContentCallback),
               (override));
   MOCK_METHOD(void,
               GetSearchSummarizerKey,
@@ -147,7 +147,7 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
     helper_->DidFinishLoad(main_rfh(), helper_->GetPageURL());
   }
 
-  void GetPageContent(GetPageContentCallback callback,
+  void GetPageContent(AIChatTabHelper::FetchPageContentCallback callback,
                       std::string_view invalidation_token) {
     helper_->GetPageContent(std::move(callback), invalidation_token);
   }
@@ -162,12 +162,12 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
 
 #if BUILDFLAG(ENABLE_PDF)
   void OnAllPDFPagesTextReceived(
-      GetPageContentCallback callback,
+      AIChatTabHelper::FetchPageContentCallback callback,
       const std::vector<std::pair<size_t, std::string>>& page_texts) {
     helper_->OnAllPDFPagesTextReceived(std::move(callback), page_texts);
   }
 
-  void OnGetPDFPageCount(GetPageContentCallback callback,
+  void OnGetPDFPageCount(AIChatTabHelper::FetchPageContentCallback callback,
                          pdf::mojom::PdfListener::GetPdfBytesStatus status,
                          const std::vector<uint8_t>& bytes,
                          uint32_t page_count) {
@@ -247,7 +247,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_HasContent) {
     // Fallback won't initiate if we already have content
     EXPECT_CALL(*print_preview_extractor_, Extract).Times(0);
   }
-  base::MockCallback<GetPageContentCallback> callback;
+  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
   EXPECT_CALL(callback, Run(kExpectedText, false, ""));
   GetPageContent(callback.Get(), "");
 }
@@ -263,7 +263,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_FallbackPrintPreview) {
     EXPECT_CALL(*print_preview_extractor_, Extract)
         .WillOnce(base::test::RunOnceCallback<0>(base::ok(kExpectedText)));
   }
-  base::MockCallback<GetPageContentCallback> callback;
+  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
   EXPECT_CALL(callback,
               Run(print_preview_extractor_ ? kExpectedText : "", false, ""));
   GetPageContent(callback.Get(), "");
@@ -281,7 +281,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_OnlyWhitespace) {
     EXPECT_CALL(*print_preview_extractor_, Extract)
         .WillOnce(base::test::RunOnceCallback<0>(base::ok(kExpectedText)));
   }
-  base::MockCallback<GetPageContentCallback> callback;
+  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
   EXPECT_CALL(callback,
               Run(print_preview_extractor_ ? kExpectedText : "", false, ""));
   GetPageContent(callback.Get(), "");
@@ -297,7 +297,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_FallbackPrintPreviewFailed) {
     EXPECT_CALL(*print_preview_extractor_, Extract)
         .WillOnce(base::test::RunOnceCallback<0>(base::unexpected("")));
   }
-  base::MockCallback<GetPageContentCallback> callback;
+  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
   EXPECT_CALL(callback, Run("", false, ""));
   GetPageContent(callback.Get(), "");
 }
@@ -311,13 +311,13 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_VideoContent) {
     // Fallback won't initiate for video content.
     EXPECT_CALL(*print_preview_extractor_, Extract).Times(0);
   }
-  base::MockCallback<GetPageContentCallback> callback;
+  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
   EXPECT_CALL(callback, Run("", true, ""));
   GetPageContent(callback.Get(), "");
 }
 
 TEST_P(AIChatTabHelperUnitTest, GetPageContent_PrintPreviewTriggeringURL) {
-  base::MockCallback<GetPageContentCallback> callback;
+  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
   constexpr char kExpectedText[] = "This is the way.";
   // A url that does by itself trigger print preview extraction.
   for (const auto& host : kPrintPreviewRetrievalHosts) {
@@ -349,7 +349,7 @@ TEST_P(AIChatTabHelperUnitTest,
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
         .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
   }
-  base::MockCallback<GetPageContentCallback> callback;
+  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
   EXPECT_CALL(callback, Run("", false, ""));
   GetPageContent(callback.Get(), "");
 }
@@ -358,7 +358,7 @@ TEST_P(AIChatTabHelperUnitTest,
        GetPageContent_PrintPreviewTriggeringUrlWaitForLoad) {
   // A url that does by itself trigger print preview extraction.
   NavigateTo(GURL("https://docs.google.com"), /*keep_loading=*/true);
-  base::MockCallback<GetPageContentCallback> callback;
+  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
   // Not epecting callback to be run until page load.
   EXPECT_CALL(callback, Run).Times(0);
   if (is_print_preview_supported_) {
@@ -403,7 +403,7 @@ TEST_P(AIChatTabHelperUnitTest,
 TEST_P(AIChatTabHelperUnitTest, GetPageContent_RetryAfterLoad) {
   // A url that does not by itself trigger print preview extraction.
   NavigateTo(GURL("https://www.example.com"), /*keep_loading=*/true);
-  base::MockCallback<GetPageContentCallback> callback;
+  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
 
   // FetchPageContent will not wait for page load. Let's test that the
   // re-try will wait for page load.
@@ -454,7 +454,7 @@ TEST_P(AIChatTabHelperUnitTest,
     SCOPED_TRACE(testing::Message() << "Same document: " << is_same_document);
     NavigateTo(initial_url,
                /*keep_loading=*/true);
-    base::MockCallback<GetPageContentCallback> callback;
+    base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
     EXPECT_CALL(callback, Run).Times(0);
     if (!is_print_preview_supported_) {
       EXPECT_CALL(*page_content_fetcher_, FetchPageContent)

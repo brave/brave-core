@@ -5,12 +5,20 @@
 
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 
-#include <memory>
 #include <utility>
 
 #include "base/uuid.h"
 
 namespace ai_chat {
+
+PageContent::PageContent(const PageContent&) = default;
+PageContent::PageContent(PageContent&&) = default;
+PageContent& PageContent::operator=(const PageContent&) = default;
+PageContent& PageContent::operator=(PageContent&&) = default;
+
+PageContent::PageContent() = default;
+PageContent::PageContent(std::string content, bool is_video)
+    : content(std::move(content)), is_video(is_video) {}
 
 AssociatedContentDelegate::AssociatedContentDelegate()
     : uuid_(base::Uuid::GenerateRandomV4().AsLowercaseString()) {}

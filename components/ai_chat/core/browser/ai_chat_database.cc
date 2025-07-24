@@ -912,8 +912,7 @@ bool AIChatDatabase::AddConversationEntry(
 
           store::ToolUseEventProto proto_event;
           if (!SerializeToolUseEvent(event->get_tool_use_event(),
-                                     &proto_event) ||
-              proto_event.tool_name().empty() || proto_event.id().empty()) {
+                                     &proto_event)) {
             // If we failed to parse the event, we can ignore the event
             // for now. Perhaps we're persisting the entry whilst it's still
             // partial.
@@ -980,6 +979,42 @@ bool AIChatDatabase::AddConversationEntry(
   }
 
   return true;
+}
+
+bool AIChatDatabase::UpdateToolUseEvent(std::string_view entry_uuid,
+                                        size_t event_order,
+                                        mojom::ToolUseEventPtr tool_use_event) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DVLOG(4) << __func__ << " for entry_uuid " << entry_uuid
+           << " and event_order " << event_order << " and tool_use_event "
+           << tool_use_event->id;
+  if (!LazyInit()) {
+    return false;
+  }
+
+  static constexpr char kUpdateToolUseEventQuery[] =
+      "UPDATE conversation_entry_event_tool_use"
+      " SET tool_use_serialized=?"
+      " WHERE conversation_entry_uuid=? AND event_order=?";
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateToolUseEventQuery));
+  CHECK(statement.is_valid());
+
+  store::ToolUseEventProto proto_event;
+  if (!SerializeToolUseEvent(tool_use_event, &proto_event)) {
+    // If we failed to parse the event, we can ignore the event
+    // for now. Perhaps we're persisting the entry whilst it's still
+    // partial.
+    DLOG(ERROR) << "Invalid ToolUseEvent found for persistence";
+    return false;
+  }
+
+  if (!BindAndEncryptString(statement, 0, proto_event.SerializeAsString())) {
+    return false;
+  }
+  statement.BindString(1, entry_uuid);
+  statement.BindInt(2, static_cast<int>(event_order));
+  return statement.Run();
 }
 
 bool AIChatDatabase::UpdateConversationTitle(std::string_view conversation_uuid,

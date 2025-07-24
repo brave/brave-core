@@ -26,7 +26,7 @@
 // resource ID.
 #undef IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME
 #define IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME \
-  IDS_CUSTOMIZE_TOOLBAR_CATEGORY_BRAVE_MENU
+  IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR
 
 #include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc"
 

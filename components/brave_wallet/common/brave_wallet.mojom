@@ -186,11 +186,6 @@ interface EthereumProvider {
   IsLocked() => (bool isLocked);
 };
 
-struct CardanoProviderSignatureResult {
-  string key;
-  string signature;
-};
-
 struct CardanoProviderPagination {
   uint32 page;
   uint32 limit;
@@ -216,23 +211,23 @@ interface CardanoProvider {
   GetNetworkId() =>
     (int32 network_id, CardanoProviderErrorBundle? error);
   GetUsedAddresses() =>
-    (array<string> used_addresses, CardanoProviderErrorBundle? error);
+    (array<string>? used_addresses, CardanoProviderErrorBundle? error);
   GetUnusedAddresses() =>
-    (array<string> unused_addresses, CardanoProviderErrorBundle? error);
+    (array<string>? unused_addresses, CardanoProviderErrorBundle? error);
   GetChangeAddress() =>
-    (string change_address, CardanoProviderErrorBundle? error);
+    (string? change_address, CardanoProviderErrorBundle? error);
   GetRewardAddresses() =>
-    (array<string> reward_addresses, CardanoProviderErrorBundle? error);
+    (array<string>? reward_addresses, CardanoProviderErrorBundle? error);
   GetBalance() =>
-    (string cbor_balance, CardanoProviderErrorBundle? error_message);
+    (string? cbor_balance, CardanoProviderErrorBundle? error_message);
   GetUtxos(string? amount, CardanoProviderPagination? paginate) =>
     (array<string>? utxos, CardanoProviderErrorBundle? error);
   SignTx(string tx_cbor, bool partial_sign) =>
-    (string signed_tx_cbor, CardanoProviderErrorBundle? error);
+    (string? signed_tx_cbor, CardanoProviderErrorBundle? error);
   SubmitTx(string signed_tx_cbor) =>
-    (string tx_hash, CardanoProviderErrorBundle? error);
+    (string? tx_hash, CardanoProviderErrorBundle? error);
   SignData(string address, string payload_hex) =>
-    (CardanoProviderSignatureResult? result,
+    (mojo_base.mojom.DictionaryValue? signature,
       CardanoProviderErrorBundle? error);
   GetCollateral(string amount) => (array<string>? utxos,
       CardanoProviderErrorBundle? error);
@@ -2532,11 +2527,17 @@ struct SolanaSignData {
   array<uint8>? message_bytes;
 };
 
+struct CardanoSignData {
+  // message for display
+  string message;
+};
+
 union SignDataUnion {
   EthStandardSignData eth_standard_sign_data;
   EthSignTypedData eth_sign_typed_data;
   SIWEMessage eth_siwe_data;
   SolanaSignData solana_sign_data;
+  CardanoSignData cardano_sign_data;
 };
 
 struct SignMessageRequest {
@@ -2544,7 +2545,7 @@ struct SignMessageRequest {
   int32 id;
   AccountId account_id;
   SignDataUnion sign_data;
-  CoinType coin;  // ETH or SOL.
+  CoinType coin;  // ETH or SOL or ADA.
   string chain_id;
 };
 

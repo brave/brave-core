@@ -34,6 +34,7 @@ export interface WalletPanelStoryProps {
   panelStateOverride?: Partial<PanelState>
   uiStateOverride?: Partial<UIState>
   walletApiDataOverrides?: WalletApiDataOverrides
+  dontWrapInPanelFrame?: boolean
 }
 
 export const WalletPanelStory: React.FC<
@@ -44,6 +45,7 @@ export const WalletPanelStory: React.FC<
   walletStateOverride,
   uiStateOverride,
   walletApiDataOverrides,
+  dontWrapInPanelFrame,
 }) => {
   // redux
   const store = React.useMemo(() => {
@@ -75,7 +77,11 @@ export const WalletPanelStory: React.FC<
     >
       <MemoryRouter initialEntries={['/']}>
         <Provider store={store}>
-          <PanelWrapper>{children}</PanelWrapper>
+          {dontWrapInPanelFrame ? (
+            children
+          ) : (
+            <PanelWrapper>{children}</PanelWrapper>
+          )}
         </Provider>
       </MemoryRouter>
     </LightDarkThemeProvider>

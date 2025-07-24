@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <message name="IDS_UTILITY_PROCESS_REWARDS_NAME" desc="The utility process running rewards">
+    Bat Rewards Service
+  </message>
+
   <!-- Rewards Reset -->
   <message name="IDS_BRAVE_UI_RESET" desc="">
     Reset

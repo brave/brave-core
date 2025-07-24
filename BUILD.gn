@@ -45,11 +45,26 @@ declare_args() {
   audit_dev_deps = true
 }
 
+group("brave_all_unit_tests") {
+  testonly = true
+
+  data_deps = [ "//brave/components:brave_components_unittests" ]
+  if (!is_ios) {
+    data_deps += [ "//brave/test:brave_unit_tests" ]
+  } else {
+    data_deps += [ "//brave/ios/testing:ios_brave_unit_tests" ]
+  }
+  if (!is_ios && !is_android) {
+    data_deps += [ "//brave/test:brave_installer_unittests" ]
+  }
+}
+
 # This target serves as a canonical place to define all code that has to be
 # buildable in all platforms in a single build run.
 group("all") {
   testonly = true
   deps = [
+    ":brave_all_unit_tests",
     "//base:base_unittests",
     "//brave",
   ]
@@ -71,11 +86,7 @@ group("all") {
   }
 
   if (!is_ios) {
-    deps += [
-      "//brave/components:brave_components_unittests",
-      "//brave/test:brave_browser_tests",
-      "//brave/test:brave_unit_tests",
-    ]
+    deps += [ "//brave/test:brave_browser_tests" ]
   }
 
   if (is_android) {

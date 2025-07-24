@@ -6,21 +6,28 @@
 const fs = require('fs-extra')
 const path = require('path')
 
-const config = require('../lib/config')
+const Config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
 // const { getAffectedTests } = require('./getAffectedTests')
 
-const getTestBinary = (suite) => {
+const getTestBinary = (config, suite) => {
   let testBinary = suite
   if (testBinary === 'brave_java_unit_tests') {
     testBinary = path.join('bin', 'run_brave_java_unit_tests')
   } else if (testBinary === 'brave_junit_tests') {
     testBinary = path.join('bin', 'run_brave_junit_tests')
   }
-  testBinary = path.join(config.outputDir, testBinary)
-  return process.platform === 'win32' ? `${testBinary}.exe` : testBinary
+
+  if (config.isIOS()) {
+    testBinary = path.join(`${testBinary}.app`)
+  }
+
+  if (process.platform === 'win32') {
+    testBinary = path.join(`${testBinary}.exe`)
+  }
+  return path.join(config.outputDir, testBinary)
 }
 
 const getChromiumUnitTestsSuites = () => {
@@ -34,9 +41,15 @@ const getChromiumUnitTestsSuites = () => {
 }
 
 const getBraveUnitTestsSuites = (config) => {
-  let tests = ['brave_unit_tests', 'brave_components_unittests']
+  let tests = []
+  if (config.isIOS()) {
+    tests.push('ios_brave_unit_tests')
+  } else {
+    tests.push('brave_unit_tests')
+  }
+  tests.push('brave_components_unittests')
 
-  if (config.targetOS !== 'android') {
+  if (!config.isMobile()) {
     tests.push('brave_installer_unittests')
   }
 
@@ -63,7 +76,7 @@ const getTestsToRun = (config, suite) => {
 //   - unit-tests.filter              -> Base filters
 //   - unit_tests-windows.filters:    -> Platform specific
 //   - unit_tests-windows-x86.filters -> Platform & Architecture specific
-const getApplicableFilters = (suite) => {
+const getApplicableFilters = (config, suite) => {
   let filterFilePaths = []
 
   let targetPlatform = process.platform
@@ -96,24 +109,22 @@ const getApplicableFilters = (suite) => {
 const test = async (
   passthroughArgs,
   suite,
-  buildConfig = config.defaultBuildConfig,
+  buildConfig = Config.defaultBuildConfig,
   options = {},
 ) => {
   config.buildConfig = buildConfig
   config.update(options)
 
-  await buildTests(suite, buildConfig, options)
-  runTests(passthroughArgs, suite, buildConfig, options)
+  if (Config.isIOS() && Config.targetEnvironment === 'device') {
+    Log.error('Running ios tests on a device is not yet supported')
+    process.exit(1)
+  }
+  
+  await buildTests(suite, Config, options)
+  await runTests(passthroughArgs, suite, Config, options)
 }
 
-const buildTests = async (
-  suite,
-  buildConfig = config.defaultBuildConfig,
-  options = {},
-) => {
-  config.buildConfig = buildConfig
-  config.update(options)
-
+const buildTests = async (suite, config, options = {}) => {
   let testSuites = [
     'brave_browser_tests',
     'brave_java_unit_tests',
@@ -129,7 +140,8 @@ const buildTests = async (
   }
   util.touchOverriddenFiles()
   util.touchGsutilChangeLogFile()
-  await util.buildTargets()
+
+  await util.buildTargets(config.buildTargets, config.defaultOptions)
 }
 
 const deleteFile = (filePath) => {
@@ -138,10 +150,7 @@ const deleteFile = (filePath) => {
   }
 }
 
-const runTests = (passthroughArgs, suite, buildConfig, options) => {
-  config.buildConfig = buildConfig
-  config.update(options)
-
+const runTests = (passthroughArgs, suite, config, options) => {
   const isJunitTestSuite = suite.endsWith('_junit_tests')
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   // Clear previous results file
@@ -153,8 +162,8 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     braveArgs.push('--enable-logging=stderr')
   }
 
-  // Android doesn't support --v
-  if (config.targetOS !== 'android') {
+  // Android and ios don't support --v
+  if (!config.isMobile()) {
     braveArgs.push('--v=' + options.v)
 
     if (options.vmodule) {
@@ -167,22 +176,29 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   }
 
   if (options.run_disabled_tests) {
-    braveArgs.push('--gtest_also_run_disabled_tests')
+    if (config.isIOS()) {
+      braveArgs.push('--gtest_also_run_disabled_tests')
+    } else {
+      braveArgs.push('--output-disabled-tests')
+    }
   }
 
-  if (options.disable_brave_extension) {
+  if (options.disable_brave_extension && !config.isIOS()) {
     braveArgs.push('--disable-brave-extension')
   }
 
-  if (options.single_process) {
+  if (options.single_process && !config.isIOS()) {
     braveArgs.push('--single_process')
   }
 
-  if (!isJunitTestSuite && options.test_launcher_jobs) {
-    braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
-  }
-
   if (!isJunitTestSuite) {
+    if (
+      options.test_launcher_jobs != null
+      // --clones doesn't produce any test results and fails with AppLaunchError
+      && !config.isIOS()
+    ) {
+      braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
+    }
     braveArgs = braveArgs.concat(passthroughArgs)
   } else {
     // Retain --json-results-file for junit tests.
@@ -194,110 +210,153 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     }
   }
 
-  if (
-    suite === 'brave_unit_tests'
-    && config.isTeamcity
-    && config.targetOS !== 'android'
-    && config.targetOS !== 'ios'
-  ) {
-    runChromiumTestLauncherTeamcityReporterIntegrationTests()
+  if (suite === 'brave_unit_tests' && config.isTeamcity && !config.isMobile()) {
+    runChromiumTestLauncherTeamcityReporterIntegrationTests(Config)
   }
 
-  if (config.targetOS === 'ios') {
-    util.run(
-      path.join(config.outputDir, 'iossim'),
-      [
-        '-d',
-        '"iPhone 16"',
-        path.join(config.outputDir, `${suite}.app`),
-        path.join(
-          config.outputDir,
-          `${suite}.app/PlugIns/${suite}_module.xctest`,
-        ),
-      ],
-      config.defaultOptions,
-    )
-  } else {
-    const upstreamTestSuites = [
-      'browser_tests',
-      ...getChromiumUnitTestsSuites(),
-    ]
+  const upstreamTestSuites = ['browser_tests', ...getChromiumUnitTestsSuites()]
 
-    // Run the tests
-    getTestsToRun(config, suite).every((testSuite) => {
-      let runArgs = braveArgs.slice()
-      let runOptions = config.defaultOptions
+  // Run the tests
+  getTestsToRun(Config, suite).every((testSuite) => {
+    let runArgs = braveArgs.slice()
+    let runOptions = config.defaultOptions
 
-      // Filter out upstream tests that are known to fail for Brave
-      if (upstreamTestSuites.includes(testSuite)) {
-        const filterFilePaths = getApplicableFilters(testSuite)
-        if (filterFilePaths.length > 0) {
-          runArgs.push(
-            `--test-launcher-filter-file=${filterFilePaths.join(';')}`,
-          )
-        }
-        if (config.isTeamcity) {
-          const ignorePreliminaryFailures =
-            '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
-          if (!runArgs.includes(ignorePreliminaryFailures)) {
-            runArgs.push(ignorePreliminaryFailures)
-          }
+    // Filter out upstream tests that are known to fail for Brave
+    if (upstreamTestSuites.includes(testSuite)) {
+      const filterFilePaths = getApplicableFilters(Config, testSuite)
+      if (filterFilePaths.length > 0) {
+        runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
+      }
+      if (config.isTeamcity && !config.isIOS()) {
+        const ignorePreliminaryFailures =
+          '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
+        if (!runArgs.includes(ignorePreliminaryFailures)) {
+          runArgs.push(ignorePreliminaryFailures)
         }
       }
+    }
 
-      let convertJSONToXML = false
-      let outputFilename = path.join(config.srcDir, testSuite)
+    let convertJSONToXML = false
+    let outputFilename = path.join(config.srcDir, testSuite)
 
-      if (config.isCI) {
-        // When test results are saved to a file, callers (such as CI) generate
-        // and analyze test reports as a next step. These callers are typically
-        // not interested in the exit code of running the tests, because they
-        // get the information about test success or failure from the output
-        // file. On the other hand, callers are interested in errors that
-        // produce an exit code, such as test compilation failures. By ignoring
-        // the test exit code here, we give callers a chance to distinguish test
-        // failures (by looking at the output file) from compilation errors.
-        runOptions.continueOnFail = true
+    if (config.isCI || options.output_xml) {
+      // When test results are saved to a file, callers (such as CI) generate
+      // and analyze test reports as a next step. These callers are typically
+      // not interested in the exit code of running the tests, because they
+      // get the information about test success or failure from the output
+      // file. On the other hand, callers are interested in errors that
+      // produce an exit code, such as test compilation failures. By ignoring
+      // the test exit code here, we give callers a chance to distinguish test
+      // failures (by looking at the output file) from compilation errors.
+      runOptions.continueOnFail = true
+    }
+
+    if (options.output_xml) {
+      // Add filename of xml output of each test suite into the results file
+      if (config.isAndroid()) {
+        // android only supports json output so use that here and convert
+        // to xml afterwards
+        runArgs.push(`--json-results-file=${outputFilename}.json`)
+        convertJSONToXML = true
+      } else if (!config.isIOS()) {
+        runArgs.push(`--gtest_output=xml:${outputFilename}.xml`)
       }
+      fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
+    }
+
+    if (config.isAndroid() && !isJunitTestSuite) {
+      assert(
+        config.targetArch === 'x86'
+          || config.targetArch === 'x64'
+          || options.manual_android_test_device,
+        'Only x86 and x64 builds can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.',
+      )
+
+      if (!options.manual_android_test_device) {
+        runArgs.push(
+          `--avd-config=tools/android/avd/proto/${options.android_test_emulator_name}.textpb`,
+        )
+      }
+    }
+
+    if (config.isTeamcity) {
+      // Stdout and stderr must be separate for a test launcher.
+      runOptions.stdio = 'inherit'
+    }
+
+    let progStatus = 0
+
+    if (config.isIOS()) {
+      const outputDir = path.join(config.outputDir, `run_${testSuite}_out`)
+      if (fs.existsSync(outputDir)) {
+        fs.rmSync(outputDir, { recursive: true })
+      }
+      fs.mkdirSync(path.join(outputDir, 'iossim'), { recursive: true })
+      fs.mkdirSync(path.join(outputDir, 'output'), { recursive: true })
+
+      let xcodeBuildVersion = options.ios_xcode_build_version
+      if (xcodeBuildVersion == null) {
+        xcodeBuildVersion = util
+          .run('xcodebuild', ['-version'], { skipLogging: true })
+          .stdout.toString()
+          .trim()
+          .split(' ')
+          .pop()
+      }
+
+      runArgs.push('--app', getTestBinary(Config, testSuite))
+      runArgs.push('--runtime-cache-prefix', `${outputDir}/Runtime-ios-`)
+      runArgs.push('--iossim', `${outputDir}/iossim`)
+      runArgs.push('--out-dir', `${outputDir}/output`)
+      runArgs.push('--xctest')
+      runArgs.push('--xcode-build-version', xcodeBuildVersion)
+      if (config.targetEnvironment === 'simulator') {
+        runArgs.push('--platform', options.ios_simulator_platform)
+        runArgs.push('--version', options.ios_simulator_version)
+      } else if (config.targetEnvironment === 'device') {
+        // TODO(bridiver)
+        // runArgs.push('--xcodebuild-device-runner')
+      }
+      let iosRunOptions = Object.assign({}, runOptions)
+      // run.py doesn't like it when you mess with PYTHONPATH
+      delete iosRunOptions.env.PYTHONPATH
+      progStatus = util.run(
+        path.join(config.srcDir, 'ios/build/bots/scripts/run.py'),
+        runArgs,
+        iosRunOptions,
+      ).status
 
       if (options.output_xml) {
-        // Add filename of xml output of each test suite into the results file
-        if (config.targetOS === 'android') {
-          // android only supports json output so use that here and convert
-          // to xml afterwards
-          runArgs.push(`--json-results-file=${outputFilename}.json`)
-          convertJSONToXML = true
-        } else {
-          runArgs.push(`--gtest_output=xml:${outputFilename}.xml`)
-        }
-        fs.appendFileSync(allResultsFilePath, `${testSuite}.xml\n`)
-      }
-
-      if (config.targetOS === 'android' && !isJunitTestSuite) {
-        assert(
-          config.targetArch === 'x86'
-            || config.targetArch === 'x64'
-            || options.manual_android_test_device,
-          'Only x86 and x64 builds can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.',
+        util.run(
+          'python3',
+          [
+            path.join('tools', 'test', 'chromium_to_junit_converter.py'),
+            path.join(outputDir, 'output', 'summary.json'),
+            '-o',
+            `${outputFilename}.xml`,
+            '--format',
+            'summary',
+          ],
+          {
+            ...config.defaultOptions,
+            cwd: config.braveCoreDir,
+          },
         )
-
-        if (!options.manual_android_test_device) {
-          runArgs.push(
-            `--avd-config=tools/android/avd/proto/${options.android_test_emulator_name}.textpb`,
-          )
-        }
       }
+    } else {
+      progStatus = util.run(
+        getTestBinary(Config, testSuite),
+        runArgs,
+        runOptions,
+      ).status
+    }
 
-      if (config.isTeamcity) {
-        // Stdout and stderr must be separate for a test launcher.
-        runOptions.stdio = 'inherit'
-      }
-
-      let prog = util.run(getTestBinary(testSuite), runArgs, runOptions)
-
-      // convert json results to xml
-      if (convertJSONToXML) {
-        prog = util.run('vpython3', [path.join('script', 'json2xunit.py')], {
+    // convert json results to xml
+    if (convertJSONToXML) {
+      progStatus = util.run(
+        'vpython3',
+        [path.join('script', 'json2xunit.py')],
+        {
           ...config.defaultOptions,
           cwd: config.braveCoreDir,
           stdio: [
@@ -305,17 +364,17 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
             fs.openSync(`${outputFilename}.xml`, 'w'),
             'inherit',
           ],
-        })
-      }
-      // If we output results into an xml file (CI), then we want to run all
-      // suites to get all potential failures. Otherwise, for example, if
-      // running locally, it makes sense to stop once one suite has failures.
-      return options.output_xml || prog.status === 0
-    })
-  }
+        },
+      ).status
+    }
+    // If we output results into an xml file (CI), then we want to run all
+    // suites to get all potential failures. Otherwise, for example, if
+    // running locally, it makes sense to stop once one suite has failures.
+    return options.output_xml || progStatus === 0
+  })
 }
 
-const runChromiumTestLauncherTeamcityReporterIntegrationTests = () => {
+const runChromiumTestLauncherTeamcityReporterIntegrationTests = (config) => {
   const generalTestCase = {
     args: [
       '--test-launcher-bot-mode',

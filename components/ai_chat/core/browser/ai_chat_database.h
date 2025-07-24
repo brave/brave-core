@@ -62,6 +62,10 @@ class AIChatDatabase {
       mojom::ConversationTurnPtr entry,
       std::optional<std::string> editing_id = std::nullopt);
 
+  virtual bool UpdateToolUseEvent(std::string_view entry_uuid,
+                                  size_t event_order,
+                                  mojom::ToolUseEventPtr tool_use_event);
+
   // Updates the title of the conversation with the provided UUID
   virtual bool UpdateConversationTitle(std::string_view conversation_uuid,
                                        std::string_view title);

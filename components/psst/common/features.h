@@ -11,7 +11,7 @@
 
 namespace psst::features {
 
-COMPONENT_EXPORT(PSST_COMMON) BASE_DECLARE_FEATURE(kBravePsst);
+COMPONENT_EXPORT(PSST_COMMON) BASE_DECLARE_FEATURE(kEnablePsst);
 
 }  // namespace psst::features
 

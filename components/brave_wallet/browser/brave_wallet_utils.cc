@@ -793,6 +793,10 @@ std::string WalletInsufficientBalanceErrorMessage() {
   return l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE);
 }
 
+std::string WalletUserRejectedRequestErrorMessage() {
+  return l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST);
+}
+
 mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id) {
   auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::BTC);
   CHECK(network);

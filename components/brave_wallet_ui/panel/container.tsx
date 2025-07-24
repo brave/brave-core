@@ -23,7 +23,7 @@ import {
 } from '../components/extension/connect-hardware-wallet-panel/index'
 import {
   AddSuggestedTokenPanel, //
-} from '../components/extension/add-suggested-token-panel/index'
+} from '../components/extension/add_suggested_token_panel/add_suggested_token_panel'
 import {
   ProvidePubKeyPanel,
   DecryptRequestPanel,
@@ -272,10 +272,11 @@ function Container() {
 
   if (addTokenRequests.length) {
     return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <AddSuggestedTokenPanel />
-        </StyledExtensionWrapper>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <AddSuggestedTokenPanel />
       </PanelWrapper>
     )
   }

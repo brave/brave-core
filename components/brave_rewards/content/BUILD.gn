@@ -30,7 +30,6 @@ static_library("content") {
 
   deps = [
     "//base",
-    "//brave/app:brave_generated_resources_grit",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
@@ -42,6 +41,7 @@ static_library("content") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a_utils",
     "//brave/components/resources",
+    "//brave/components/resources:strings_grit",
     "//brave/components/services/bat_rewards/public/interfaces",
     "//brave/components/services/brave_wallet/public/mojom",
     "//brave/components/time_period_storage",

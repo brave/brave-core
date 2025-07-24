@@ -10,6 +10,8 @@ import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/repack.gni")
 import("//ui/base/ui_features.gni")
 
+assert(!is_ios)
+
 # Generates a rule to repack a set of resources, substituting a given string
 # in for the percentage (e.g. "100", "200"). It generates the repacked files in
 # the "gen" directory, and then introduces a copy rule to copy it to the root

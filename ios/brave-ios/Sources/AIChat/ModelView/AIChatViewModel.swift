@@ -241,7 +241,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   @MainActor
-  func modifyConversation(turnId: UInt, newText: String) {
+  func modifyConversation(turnId: String, newText: String) {
     api.modifyConversation(turnId, newText: newText)
   }
 }

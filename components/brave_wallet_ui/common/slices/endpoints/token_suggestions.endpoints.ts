@@ -11,7 +11,6 @@ import {
   getHasPendingRequests,
   handleEndpointError,
 } from '../../../utils/api-utils'
-import { isRemoteImageURL } from '../../../utils/string-utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 export const tokenSuggestionsEndpoints = ({
@@ -28,20 +27,6 @@ export const tokenSuggestionsEndpoints = ({
           const { data: api } = baseQuery(undefined)
           const { requests } =
             await api.braveWalletService.getPendingAddSuggestTokenRequests()
-          for (const request of requests) {
-            const logo = request.token.logo
-            if (logo !== '' && !isRemoteImageURL(logo)) {
-              try {
-                // attempt property reassignment
-                request.token.logo = `chrome://image/?url=${encodeURIComponent(logo)}&staticEncode=true`
-              } catch {
-                request.token = {
-                  ...request.token,
-                  logo: `chrome://image/?url=${encodeURIComponent(logo)}&staticEncode=true`,
-                }
-              }
-            }
-          }
           return {
             data: requests,
           }

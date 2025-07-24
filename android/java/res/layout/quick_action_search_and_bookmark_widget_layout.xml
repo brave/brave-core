@@ -70,6 +70,13 @@
             android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_button_horizontal_margin"
             android:contentDescription="@string/button_new_incognito_tab"
             android:src="@drawable/brave_menu_new_private_tab"/>
+
+        <ImageButton
+            android:id="@+id/ibLeo"
+            style="@style/QuickActionSearchWidgetSmallButton"
+            android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_button_horizontal_margin"
+            android:contentDescription="@string/ask_leo_auto_suggestion"
+            android:src="@drawable/ic_brave_ai"/>
     </LinearLayout>
 
     <LinearLayout

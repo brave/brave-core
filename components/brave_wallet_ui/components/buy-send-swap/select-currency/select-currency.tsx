@@ -24,8 +24,7 @@ import {
 // Styled Components
 import { SelectScrollSearchContainer } from '../shared-styles'
 import { SelectCurrencyWrapper } from './select-currency.style'
-import { VerticalSpace } from '../../shared/style'
-import { LoadingRing } from '../../extension/add-suggested-token-panel/style'
+import { VerticalSpace, LoadingRing } from '../../shared/style'
 
 export interface Props {
   onSelectCurrency: (currency: BraveWallet.OnRampCurrency) => void

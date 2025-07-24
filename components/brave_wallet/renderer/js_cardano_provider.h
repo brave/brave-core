@@ -56,6 +56,7 @@ class JSCardanoProvider final : public gin::Wrappable<JSCardanoProvider>,
   std::vector<std::string> GetSupportedExtensions();
   std::string GetName();
   std::string GetIcon();
+  std::string GetApiVersion();
 
   void OnDestruct() override;
 

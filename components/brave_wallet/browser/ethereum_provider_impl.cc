@@ -731,7 +731,7 @@ void EthereumProviderImpl::SignMessageInternal(
   CHECK(sign_data);
   bool is_eip712 = sign_data->is_eth_sign_typed_data();
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account_id.Clone(),
+      MakeOriginInfo(delegate_->GetOrigin()), 0, account_id.Clone(),
       std::move(sign_data), mojom::CoinType::ETH,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
                                         delegate_->GetOrigin()));
