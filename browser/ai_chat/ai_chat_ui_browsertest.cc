@@ -407,3 +407,20 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PdfScreenshot) {
   EXPECT_TRUE(std::ranges::any_of(
       result.value(), [](const auto& entry) { return !entry->data.empty(); }));
 }
+
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, WebContentsShouldBeFocused) {
+  auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
+  side_panel_ui->Show(SidePanelEntryId::kChatUI);
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* side_panel = browser_view->unified_side_panel();
+  auto* ai_chat_side_panel = static_cast<views::WebView*>(
+      side_panel->GetViewByID(SidePanelWebUIView::kSidePanelWebViewId));
+  ASSERT_TRUE(ai_chat_side_panel);
+
+  auto* side_panel_web_contents = ai_chat_side_panel->web_contents();
+  ASSERT_TRUE(side_panel_web_contents);
+
+  const auto has_focus = content::EvalJs(
+      side_panel_web_contents->GetPrimaryMainFrame(), "document.hasFocus()");
+  EXPECT_TRUE(has_focus.ExtractBool());
+}
