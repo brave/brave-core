@@ -15,9 +15,9 @@ inline constexpr char kBraveProxyPattern[] = "*.brave.com";
 inline constexpr char kBraveSoftwareProxyPattern[] = "*.bravesoftware.com";
 
 bool ShouldAddBraveServicesKeyHeader(const GURL& url) {
-  return url.scheme_piece() == url::kHttpScheme &&
-         (base::MatchPattern(url.host_piece(), kBraveProxyPattern) ||
-          base::MatchPattern(url.host_piece(), kBraveSoftwareProxyPattern));
+  return url.SchemeIs(url::kHttpScheme) &&
+         (base::MatchPattern(url.host(), kBraveProxyPattern) ||
+          base::MatchPattern(url.host(), kBraveSoftwareProxyPattern));
 }
 
 }  // namespace brave
