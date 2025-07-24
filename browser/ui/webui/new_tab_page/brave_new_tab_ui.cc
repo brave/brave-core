@@ -181,8 +181,7 @@ void BraveNewTabUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
-  if (profile->GetPrefs()->GetBoolean(
-          brave_news::prefs::kBraveNewsDisabledByPolicy)) {
+  if (brave_news::IsEnabled(profile->GetPrefs())) {
     return;
   }
   // Wire up JS mojom to service
