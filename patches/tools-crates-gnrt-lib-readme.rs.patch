@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index 353bbb12703b07f86d3fecc695ca4caf14d86ad0..bc33286da31dd0b558fa735b5449fad42c7f2a75 100644
+index 793a590b1094873cbd05856b7ad82db3a26a2d8b..16e9d87aece640112c151d275dcdf318fbb5becc 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
 @@ -127,6 +127,7 @@ fn readme_file_from_package<'a>(
@@ -19,30 +19,30 @@ index 353bbb12703b07f86d3fecc695ca4caf14d86ad0..bc33286da31dd0b558fa735b5449fad4
          bail!(
              r#"License file not found for crate `{name}-{version}`.
  
-@@ -234,6 +235,9 @@ enum LicenseKind {
+@@ -240,6 +241,9 @@ enum LicenseKind {
  
-     /// https://spdx.org/licenses/Unicode-3.0.html
-     Unicode3,
+     /// https://spdx.org/licenses/BSL-1.0.html
+     BSL,
 +    UnicodeDfs2016,
 +    BSD2,
 +    Mozzila2,
  }
  
  impl Display for LicenseKind {
-@@ -249,6 +253,9 @@ impl Display for LicenseKind {
-             LicenseKind::ISC => write!(f, "ISC"),
+@@ -257,6 +261,9 @@ impl Display for LicenseKind {
              LicenseKind::Zlib => write!(f, "Zlib"),
              LicenseKind::Unicode3 => write!(f, "Unicode-3.0"),
+             LicenseKind::BSL => write!(f, "BSL-1.0"),
 +            LicenseKind::UnicodeDfs2016 => write!(f, "Unicode-DFS-2016"),
 +            LicenseKind::BSD2 => write!(f, "BSD-2-Clause"),
 +            LicenseKind::Mozzila2 => write!(f, "Mozilla-Public-License-2.0"),
          }
      }
  }
-@@ -292,6 +299,11 @@ static LICENSE_STRING_TO_LICENSE_KIND: LazyLock<HashMap<&'static str, Vec<Licens
-             ("BSD-2-Clause OR Apache-2.0 OR MIT", vec![LicenseKind::Apache2]),
+@@ -305,6 +312,11 @@ static LICENSE_STRING_TO_LICENSE_KIND: LazyLock<HashMap<&'static str, Vec<Licens
              ("Unicode-3.0", vec![LicenseKind::Unicode3]),
              ("Zlib", vec![LicenseKind::Zlib]),
+             ("BSL-1.0", vec![LicenseKind::BSL]),
 +            ("CC0-1.0 OR MIT-0 OR Apache-2.0", vec![LicenseKind::Apache2]),
 +            ("MIT OR Apache-2.0 OR BSD-1-Clause", vec![LicenseKind::Apache2]),
 +            ("BSD-2-Clause", vec![LicenseKind::BSD2]),
