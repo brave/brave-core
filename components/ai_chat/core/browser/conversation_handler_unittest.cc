@@ -2611,7 +2611,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
                         mojom::CompletionEvent::New("Ok, going to check...")),
                     std::nullopt));
               }),
-          testing::WithArg<6>(
+          testing::WithArg<5>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
