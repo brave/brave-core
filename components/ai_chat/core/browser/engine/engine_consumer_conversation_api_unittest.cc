@@ -1993,8 +1993,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {},
-        std::nullopt, base::DoNothing(),
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2058,8 +2058,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {},
-        std::nullopt, base::DoNothing(),
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2125,8 +2125,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {},
-        std::nullopt, base::DoNothing(),
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2179,8 +2179,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {},
-        std::nullopt, base::DoNothing(),
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2238,8 +2238,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {},
-        std::nullopt, base::DoNothing(),
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2296,8 +2296,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {},
-        std::nullopt, base::DoNothing(),
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
