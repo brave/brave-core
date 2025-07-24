@@ -14,7 +14,6 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "components/prefs/pref_observer.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
