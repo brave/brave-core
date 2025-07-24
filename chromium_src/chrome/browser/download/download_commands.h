@@ -6,12 +6,35 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_COMMANDS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_COMMANDS_H_
 
+// Make methods overridable for BraveDownloadCommands class.
+#define IsCommandEnabled virtual IsCommandEnabled
+#define ExecuteCommand                \
+  ExecuteCommand_Unused() {}          \
+  friend class BraveDownloadCommands; \
+  virtual void ExecuteCommand
+
+// Extend the Command enum to include Brave-specific commands.
+// Note that we keep Command::kMaxValue as the last value of Chromium's max
+// value as it's used for histogramming purposes. We don't want our commands to
+// be counted in.
+#define OPEN_WITH_MEDIA_APP                                             \
+  /* Removes the download item from the list. The actual file is not */ \
+  /* deleted. Used by download shelf view. */                           \
+  REMOVE_FROM_LIST = 23,                                                       \
+  /* Remove downloaded file from disk and and remove the download item from */ \
+  /* the list. Used by download bubble view. */                                \
+  DELETE_LOCAL_FILE = 24,                                                      \
+  OPEN_WITH_MEDIA_APP
+
 #include "src/chrome/browser/download/download_commands.h"  // IWYU pragma: export
 
-// Create brave specific commands set instead of appending to
-// DownloadCommands::Command to avoid many upstream changes.
-enum class BraveDownloadCommands {
-  REMOVE_FROM_LIST = DownloadCommands::Command::kMaxValue + 1
-};
+#undef OPEN_WITH_MEDIA_APP
+#undef ExecuteCommand
+#undef IsCommandEnabled
+
+static_assert(DownloadCommands::Command::kMaxValue ==
+                  DownloadCommands::Command::EDIT_WITH_MEDIA_APP,
+              "We should update kRemoveFromList and kDeleteLocalFile values if "
+              "we change the max value of DownloadCommands::Command");
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_COMMANDS_H_
