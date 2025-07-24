@@ -119,7 +119,7 @@ const test = async (
     Log.error('Running ios tests on a device is not yet supported')
     process.exit(1)
   }
-  
+
   await buildTests(suite, Config, options)
   await runTests(passthroughArgs, suite, Config, options)
 }
