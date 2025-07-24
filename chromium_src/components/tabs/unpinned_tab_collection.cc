@@ -6,12 +6,12 @@
 #include "components/tabs/public/tab_collection.h"
 
 // Add TREE_NODE type to supported child collections in init list.
-#if BUILDFLAG(IS_ANDROID)
-#define SPLIT SPLIT
-#else
+#if !BUILDFLAG(IS_ANDROID)
 #define SPLIT SPLIT, TabCollection::Type::TREE_NODE
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #include "src/components/tabs/unpinned_tab_collection.cc"
 
+#if !BUILDFLAG(IS_ANDROID)
 #undef SPLIT
+#endif  // !BUILDFLAG(IS_ANDROID)

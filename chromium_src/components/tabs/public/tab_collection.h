@@ -9,14 +9,14 @@
 #include "build/build_config.h"
 
 // Add new collection Type enum value for Tree tab feature on Desktop.
-#if BUILDFLAG(IS_ANDROID)
-#define SPLIT SPLIT
-#else
+#if !BUILDFLAG(IS_ANDROID)
 #define SPLIT SPLIT, TREE_NODE
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #include "src/components/tabs/public/tab_collection.h"  // IWYU pragma: export
 
+#if !BUILDFLAG(IS_ANDROID)
 #undef SPLIT
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_COLLECTION_H_
