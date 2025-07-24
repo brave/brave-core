@@ -18,6 +18,8 @@ component("renderer") {
     "//brave/components/script_injector/common/mojom",
     "//content/public/renderer",
     "//third_party/blink/public:blink",
+    "//third_party/blink/public:blink_headers",
+    "//third_party/blink/public/common",
   ]
 }
 
@@ -25,8 +27,11 @@ source_set("unit_tests") {
   testonly = true
   sources = [ "script_injector_unittest.cc" ]
   deps = [
+    ":renderer",
     "//base/test:test_support",
-    "//brave/components/script_injector/renderer:renderer",
-    "//components/prefs:test_support",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public:blink_headers",
+    "//third_party/blink/public/common",
+    "//v8:cppgc_headers",
   ]
 }
