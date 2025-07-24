@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
+import org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -55,6 +56,7 @@ import java.util.HashMap;
 public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     // sections
+    private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
     private static final String PREF_FEATURES_SECTION = "features_section";
     private static final String PREF_DISPLAY_SECTION = "display_section";
     private static final String PREF_GENERAL_SECTION = "general_section";
@@ -64,7 +66,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_ABOUT_SECTION = "about_section";
 
     // prefs
-
+    private static final String PREF_GET_STARTED = "get_started";
     private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
     private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE =
             "closing_all_tabs_closes_brave";
@@ -265,6 +267,14 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 mVpnCalloutPreference.setOrder(firstSectionOrder);
                 getPreferenceScreen().addPreference(mVpnCalloutPreference);
             }
+        }
+
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ACCOUNT)) {
+            setPreferenceOrder(PREF_BRAVE_ACCOUNT_SECTION, ++firstSectionOrder);
+            setPreferenceOrder(PREF_GET_STARTED, ++firstSectionOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_ACCOUNT_SECTION);
+            removePreferenceIfPresent(PREF_GET_STARTED);
         }
 
         setPreferenceOrder(PREF_FEATURES_SECTION, ++firstSectionOrder);
@@ -485,6 +495,18 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         @Override
                         public boolean onPreferenceClick(Preference preference) {
                             BraveSearchWidgetUtils.requestPinAppWidget();
+                            return true;
+                        }
+                    });
+        }
+
+        Preference getStartedPreference = findPreference(PREF_GET_STARTED);
+        if (getStartedPreference != null) {
+            getStartedPreference.setOnPreferenceClickListener(
+                    new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            BraveAccountCustomTabActivity.show(getActivity());
                             return true;
                         }
                     });

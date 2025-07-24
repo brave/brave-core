@@ -314,6 +314,10 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="BraveAccountTheme" parent="Theme.Chromium.Activity.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/BottomSheetAnimation</item>
+    </style>
+
     <style name="BraveWalletDAppNotificationDialogTop" parent="@android:style/Theme.Dialog">
         <item name="android:windowMinWidthMajor">98%</item>
         <item name="android:windowMinWidthMinor">98%</item>

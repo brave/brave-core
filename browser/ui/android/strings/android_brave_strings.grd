@@ -477,6 +477,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_SECTION_FEATURES" desc="Title for Brave-specific features section">
         Features
       </message>
+      <message name="IDS_PREFS_SECTION_BRAVE_ACCOUNT" desc="Title for Brave Account section">
+        Brave Account
+      </message>
+      <message name="IDS_GET_STARTED" desc="Title for Get started button">
+        Get started
+      </message>
       <message name="IDS_BRAVE_SHIELDS_AND_PRIVACY" desc="Label for the settings related to shields and privacy">
         Brave Shields &amp; privacy
       </message>
