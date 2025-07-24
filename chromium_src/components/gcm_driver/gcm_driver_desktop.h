@@ -22,7 +22,7 @@ class BraveGCMDriverDesktop : public GCMDriverDesktop {
   GCMClient::Result EnsureStarted(GCMClient::StartMode start_mode) override;
 
  private:
-  bool enabled_;
+  bool enabled_ = false;
 };
 
 }  // namespace gcm
