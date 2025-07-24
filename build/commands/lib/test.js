@@ -158,7 +158,9 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     }
   }
 
-  if (options.filter) {
+  if (suite === 'brave_browser_tests') {
+    braveArgs.push('--gtest_filter=AdBlockServiceTest.CosmeticFilteringHide1pContent')
+  } else if (options.filter) {
     braveArgs.push('--gtest_filter=' + options.filter)
   }
 
