@@ -7,13 +7,20 @@
 
 #include "chrome/browser/ui/views/page_info/page_info_main_view.h"
 
-#define PageInfoCookiesContentView PageInfoCookiesContentView_ChromiumImpl
+#define SetCookieInfo SetCookieInfo_ChromiumImpl
 #include <chrome/browser/ui/views/page_info/page_info_cookies_content_view.cc>
-#undef PageInfoCookiesContentView
+#undef SetCookieInfo
 
 void PageInfoCookiesContentView::SetCookieInfo(
     const CookiesNewInfo& cookie_info) {
-  PageInfoCookiesContentView_ChromiumImpl::SetCookieInfo(cookie_info);
+  // We need to call SetCookieInfo with controls_state = kHidden, or the layout
+  // will DCHECK since we hide the cookie container. We can't copy the existing
+  // struct when doing this because its copy constructor is implicitly deleted,
+  // so we just copy over the only other setting that's relevant for us.
+  CookiesNewInfo mutable_cookie_info;
+  mutable_cookie_info.allowed_sites_count = cookie_info.allowed_sites_count;
+  mutable_cookie_info.controls_state = CookieControlsState::kHidden;
+  SetCookieInfo_ChromiumImpl(mutable_cookie_info);
 
   // Hide cookies description and link to settings.
   cookies_description_label_->SetVisible(false);
@@ -30,16 +37,4 @@ void PageInfoCookiesContentView::SetCookieInfo(
     }
   }
   PreferredSizeChanged();
-}
-
-void PageInfoCookiesContentView::SetThirdPartyCookiesInfo(
-    CookieControlsState controls_state,
-    CookieControlsEnforcement enforcement,
-    CookieBlocking3pcdStatus blocking_status,
-    base::Time expiration) {
-  // Passing `kHidden` always to make sure we hide the third-party cookies, but
-  // also avoid a CHECK down the line, due to having set other controls as
-  // not visible.
-  PageInfoCookiesContentView_ChromiumImpl::SetThirdPartyCookiesInfo(
-      CookieControlsState::kHidden, enforcement, blocking_status, expiration);
 }
