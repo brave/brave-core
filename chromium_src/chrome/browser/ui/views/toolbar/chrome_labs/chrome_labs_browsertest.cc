@@ -8,7 +8,5 @@
 using ChromeLabsModelBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(ChromeLabsModelBrowserTest, NoChromeLabsModel) {
-  EXPECT_FALSE(BrowserView::GetBrowserViewForBrowser(browser())
-                   ->toolbar()
-                   ->chrome_labs_model());
+  EXPECT_FALSE(ChromeLabsModel::GetInstance());
 }
