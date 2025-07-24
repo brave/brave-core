@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/component_export.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 
 namespace psst {
@@ -17,7 +16,7 @@ namespace psst {
 class RuleDataReader;
 
 // Represents the loaded PSST data for PsstRule matched by the URL.
-class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
+class MatchedRule {
  public:
   ~MatchedRule();
   MatchedRule(const MatchedRule&) = delete;
