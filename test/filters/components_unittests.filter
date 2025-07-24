@@ -31,6 +31,9 @@
 # https://github.com/brave/brave-browser/issues/47218
 -OmniboxTextUtilTest.AdjustTextForCopy
 
+# This test fails because we disable @aimode search keyword
+-FeaturedSearchProviderTest.StarterPack
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
