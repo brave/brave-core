@@ -1029,11 +1029,11 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
       (*vertical_tab_on_right_ ? bounds_in_screen.right() - cursor_position
                                : cursor_position - bounds_in_screen.x()) -
       *resize_offset_ - GetInsets().width();
-  // Passed |true| but it doesn't have any meaning becuase we always use same
+  // Passed |false| but it doesn't have any meaning becuase we always use same
   // width.
   dest_width =
-      std::clamp(dest_width, tab_style_->GetPinnedWidth(/*is_split*/ true) * 3,
-                 tab_style_->GetStandardWidth(/*is_split*/ true) * 2);
+      std::clamp(dest_width, tab_style_->GetPinnedWidth(/*is_split*/ false) * 3,
+                 tab_style_->GetStandardWidth(/*is_split*/ false) * 2);
   if (done_resizing) {
     resize_offset_ = std::nullopt;
   }
