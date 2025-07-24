@@ -19,6 +19,9 @@ const getTestTargets = (outDir, filters = ['//*']) =>
     { env: config.defaultOptions.env, shell: config.defaultOptions.shell },
   ).then((x) => x.stdout.trim().split('\n'))
 
+const asGnTarget = (file) =>
+  ('//brave/' + file).replace('brave/chromium_src/', '')
+
 // set base = HEAD if you want to ignore the current workspace changes
 async function getModifiedFiles(target = 'HEAD~', base = null) {
   const args = ['diff', '--name-only', target, base].filter((x) => x)
@@ -27,9 +30,7 @@ async function getModifiedFiles(target = 'HEAD~', base = null) {
     x.stdout
       .trim()
       .split('\n')
-      .filter((x) => x)
-      .map((x) => '//brave/' + x)
-      .map((x) => x.replace('brave/chromium_src/', '')),
+      .filter((x) => x),
   )
 }
 
@@ -54,7 +55,7 @@ async function getReferenceCommit() {
 
 async function analyzeAffectedTests(
   outDir,
-  { filters = ['//*'], since = null } = {},
+  { filters = ['//*'], files = [], since = null } = {},
 ) {
   // JENKINS sets GIT_PREVIOUS_SUCCESSFUL_COMMIT
   // TODO: find TeamCity equivalent.
@@ -65,10 +66,13 @@ async function analyzeAffectedTests(
   const root = path.resolve(process.cwd(), '../')
   outDir = path.isAbsolute(outDir) ? outDir : `${root}/${outDir}`
   const testTargets = await getTestTargets(outDir, filters)
-  const files = await getModifiedFiles(targetCommit)
+  const modifiedFiles = [
+    ...(await getModifiedFiles(targetCommit)),
+    ...files,
+  ].map(asGnTarget)
 
   const toAnalyze = {
-    files,
+    files: modifiedFiles,
     test_targets: testTargets,
   }
 

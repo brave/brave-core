@@ -475,13 +475,23 @@ program
   .option('--target_arch [target_arch]', 'target architecture')
   .option('--suite [suite]', 'filter by a test suite group')
   .option(
+    '--filters [filters...]',
+    'filter tests by a gn target pattern. eg. //brave/*. Make sure you put the list of filters in quotes. defaults to //*',
+  )
+  .option(
     '--since [targetCommit]',
     'use this commit as reference for change detection',
   )
+  .option(
+    '--files [files...]',
+    'add additional files to be considered as modified analyze. You need to quote the list You can use this to test what impact a file change would have',
+  )
   .action(async (args) => {
     config.update(args)
-    const result = await getAffectedTests(args)
-    console.log(result.join(' '))
+    const files = args.files?.split(' ') || []
+    const filters = args.filters?.split(' ') || ['//*']
+    const result = await getAffectedTests({ ...args, files, filters })
+    console.log(result.join(' ').trim())
   })
 
 program.parse(process.argv)
