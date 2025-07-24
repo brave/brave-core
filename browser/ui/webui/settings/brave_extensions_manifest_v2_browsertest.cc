@@ -8,8 +8,9 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
+#include "brave/browser/extensions/manifest_v2/features.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
-#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/chrome_content_verifier_delegate.h"
 #include "chrome/browser/extensions/crx_installer.h"
@@ -25,6 +26,8 @@
 #include "extensions/browser/crx_file_info.h"
 #include "extensions/browser/disable_reason.h"
 #include "extensions/browser/extension_dialog_auto_confirm.h"
+#include "extensions/browser/extension_file_task_runner.h"
+#include "extensions/browser/extension_registrar.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_builder.h"
@@ -82,7 +85,8 @@ std::string GupdateResponse() {
           {
             "appid": "bgkmgpgeempochogfoddiobpbhdfgkdi",
             "updatecheck": {
-              "codebase": "https://a.test/manifest_v2/bgkmgpgeempochogfoddiobpbhdfgkdi.crx"
+              "codebase": "https://a.test/manifest_v2/bgkmgpgeempochogfoddiobpbhdfgkdi.crx",
+              "version": "1.0.0"
             }
           }
         ]
@@ -96,7 +100,8 @@ std::string GupdateResponse() {
 class BraveExtensionsManifestV2BrowserTest : public InProcessBrowserTest {
  public:
   BraveExtensionsManifestV2BrowserTest() {
-    feature_list_.InitAndEnableFeature(kExtensionsManifestV2);
+    feature_list_.InitAndEnableFeature(
+        extensions_mv2::features::kExtensionsManifestV2);
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
   }
 
@@ -366,4 +371,51 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
   EXPECT_TRUE(base::PathExists(extension->path()
                                    .AppendASCII("_metadata")
                                    .AppendASCII("computed_hashes.json")));
+}
+
+class BraveExtensionsManifestV2ReplaceBrowserTest
+    : public BraveExtensionsManifestV2InstallerBrowserTest {
+ public:
+  BraveExtensionsManifestV2ReplaceBrowserTest() {
+    feature_list_.InitAndEnableFeatureWithParameters(
+        extensions_mv2::features::kExtensionsManifestV2,
+        {{extensions_mv2::features::kExtensionsManifestV2BackupSettings.name,
+          "true"},
+         {extensions_mv2::features::
+              kExtensionsManifestV2BImportSettingsOnInstall.name,
+          "true"},
+         {extensions_mv2::features::kExtensionsManifestV2AutoInstallBraveHosted
+              .name,
+          "true"}});
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2ReplaceBrowserTest,
+                       ReplaceWithBraveHosted) {
+  auto extension =
+      extensions::ExtensionBuilder("test")
+          .SetID(extensions_mv2::kCwsNoScriptId)
+          .SetVersion("1.0.0")
+          .AddFlags(extensions::Extension::FROM_WEBSTORE)
+          .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
+          .Build();
+
+  auto* registrar = extensions::ExtensionRegistrar::Get(browser()->profile());
+  registrar->AddExtension(extension);
+  extensions::ExtensionPrefs::Get(browser()->profile())
+      ->UpdateExtensionPref(extensions_mv2::kCwsNoScriptId, "manifest.version",
+                            base::Value("1.0.0"));
+  extensions::ExtensionRegistry::Get(browser()->profile())
+      ->TriggerOnInstalled(extension.get(), false);
+  registrar->DisableExtension(
+      extensions_mv2::kCwsNoScriptId,
+      {extensions::disable_reason::DISABLE_UNSUPPORTED_MANIFEST_VERSION});
+  WaitExtensionInstalled();
+
+  auto* registry = extensions::ExtensionRegistry::Get(browser()->profile());
+  EXPECT_FALSE(registry->GetInstalledExtension(extensions_mv2::kCwsNoScriptId));
+  EXPECT_TRUE(registry->GetInstalledExtension(extensions_mv2::kNoScriptId));
 }

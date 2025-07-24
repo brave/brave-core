@@ -84,7 +84,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
+#include "brave/browser/extensions/manifest_v2/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
@@ -560,15 +560,16 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(history::kHistoryMoreSearchResults),             \
       })
 
-#define BRAVE_EXTENSIONS_MANIFEST_V2                                        \
-  IF_BUILDFLAG(ENABLE_EXTENSIONS,                                           \
-               EXPAND_FEATURE_ENTRIES({                                     \
-                   "brave-extensions-manifest-v2",                          \
-                   "Brave Extensions manifest V2",                          \
-                   "Enables Brave support for some manifest V2 extensions", \
-                   kOsDesktop,                                              \
-                   FEATURE_VALUE_TYPE(kExtensionsManifestV2),               \
-               }))
+#define BRAVE_EXTENSIONS_MANIFEST_V2                                           \
+  IF_BUILDFLAG(                                                                \
+      ENABLE_EXTENSIONS,                                                       \
+      EXPAND_FEATURE_ENTRIES({                                                 \
+          "brave-extensions-manifest-v2",                                      \
+          "Brave Extensions manifest V2",                                      \
+          "Enables Brave support for some manifest V2 extensions",             \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(extensions_mv2::features::kExtensionsManifestV2), \
+      }))
 
 #define BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                 \
   EXPAND_FEATURE_ENTRIES({                                              \
