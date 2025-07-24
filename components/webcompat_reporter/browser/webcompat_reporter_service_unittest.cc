@@ -11,11 +11,10 @@
 #include <vector>
 
 #include "base/strings/string_util.h"
-#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
-#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom-forward.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
@@ -158,35 +157,26 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     EXPECT_CALL(*delegate_, GetComponentInfos)
         .Times(1)
         .WillOnce(testing::Return(component_infos));
-    base::RunLoop run_loop;
-    base::MockCallback<WebcompatReporterService::GetWebcompatCategoriesCallback>
-        mock_callback;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillRepeatedly([&](std::vector<mojom::WebcompatCategoryItemPtr>
-                                categories) {
-          EXPECT_EQ(categories.size(), required_categories.size());
-          EXPECT_TRUE(std::ranges::all_of(required_categories, [&](auto item) {
-            return std::ranges::find_if(
-                       categories,
-                       [&item](
-                           const mojom::WebcompatCategoryItemPtr& category) {
-                         return category->category == item;
-                       }) != categories.end();
-          }));
-          EXPECT_TRUE(std::ranges::none_of(excluded_categories, [&](auto item) {
-            return std::ranges::find_if(
-                       categories,
-                       [&item](
-                           const mojom::WebcompatCategoryItemPtr& category) {
-                         return category->category == item;
-                       }) != categories.end();
-          }));
-          run_loop.Quit();
-        });
-    webcompat_reporter_service_->GetWebcompatCategories(mock_callback.Get());
 
-    run_loop.Run();
+    base::test::TestFuture<std::vector<mojom::WebcompatCategoryItemPtr>> future;
+    webcompat_reporter_service_->GetWebcompatCategories(future.GetCallback());
+
+    auto categories = future.Take();
+    EXPECT_EQ(categories.size(), required_categories.size());
+    EXPECT_TRUE(std::ranges::all_of(required_categories, [&](auto item) {
+      return std::ranges::find_if(
+                 categories,
+                 [&item](const mojom::WebcompatCategoryItemPtr& category) {
+                   return category->category == item;
+                 }) != categories.end();
+    }));
+    EXPECT_TRUE(std::ranges::none_of(excluded_categories, [&](auto item) {
+      return std::ranges::find_if(
+                 categories,
+                 [&item](const mojom::WebcompatCategoryItemPtr& category) {
+                   return category->category == item;
+                 }) != categories.end();
+    }));
   }
 
  protected:
