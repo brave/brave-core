@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 99c0a05a0fa13a97c7a6b8889d7c50adfd6c0691..cb2c009ecc47ddb27435a779777d93d77162e2c5 100644
+index bc848c390ce648fe2729adb4bb0050ff7dd49375..a091796957cae020bbb847ff6ed7e33ce178cff6 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -261,6 +261,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
-     {ContentSettingsType::SUSPICIOUS_NOTIFICATION_IDS, nullptr},
+@@ -262,6 +262,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
      // TODO(crbug.com/430494524): Implement the WebUI
      {ContentSettingsType::GEOLOCATION_WITH_OPTIONS, nullptr},
+     {ContentSettingsType::DEVICE_ATTRIBUTES, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  });
  
  static_assert(
-@@ -535,6 +536,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -536,6 +537,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -18,7 +18,7 @@ index 99c0a05a0fa13a97c7a6b8889d7c50adfd6c0691..cb2c009ecc47ddb27435a779777d93d7
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -549,6 +551,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -550,6 +552,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -26,7 +26,7 @@ index 99c0a05a0fa13a97c7a6b8889d7c50adfd6c0691..cb2c009ecc47ddb27435a779777d93d7
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -728,6 +731,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -729,6 +732,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -34,7 +34,7 @@ index 99c0a05a0fa13a97c7a6b8889d7c50adfd6c0691..cb2c009ecc47ddb27435a779777d93d7
      case ProviderType::kWebuiAllowlistProvider:
      case ProviderType::kComponentExtensionProvider:
        return SiteSettingSource::kAllowlist;
-@@ -755,6 +759,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -756,6 +760,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  
  std::string ProviderToDefaultSettingSourceString(const ProviderType provider) {
    switch (provider) {
@@ -42,7 +42,7 @@ index 99c0a05a0fa13a97c7a6b8889d7c50adfd6c0691..cb2c009ecc47ddb27435a779777d93d7
      case ProviderType::kPolicyProvider:
        return "policy";
      case ProviderType::kSupervisedProvider:
-@@ -881,6 +886,7 @@ base::Value::Dict GetExceptionForPage(
+@@ -882,6 +887,7 @@ base::Value::Dict GetExceptionForPage(
    exception.Set(kSource, SiteSettingSourceToString(source));
    exception.Set(kIncognito, incognito);
    exception.Set(kIsEmbargoed, is_embargoed);

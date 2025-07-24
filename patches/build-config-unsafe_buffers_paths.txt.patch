@@ -1,11 +1,12 @@
 diff --git a/build/config/unsafe_buffers_paths.txt b/build/config/unsafe_buffers_paths.txt
-index 29db2f99577c66c1a7e5b2daae53523923e2af87..49fa8948c242bba7730cf0f06836cdcdf23637ce 100644
+index 94ce1c647dfed13b6ad2c8e602affc1b3dc18b18..346512aab8e816a991be44f8afa7e10c79638bb9 100644
 --- a/build/config/unsafe_buffers_paths.txt
 +++ b/build/config/unsafe_buffers_paths.txt
-@@ -31,3 +31,8 @@
+@@ -28,3 +28,9 @@
+ -ui/gl/  # Unsafe generated files.
  -url/third_party/
  -v8/
- 
++
 +-brave/third_party/bip39wally-core-native/
 +-brave/vendor/bat-native-tweetnacl/
 +-brave/third_party/bitcoin-core/
