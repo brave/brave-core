@@ -381,6 +381,159 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/signin/profile_picker/profile_card.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/signin/profile_picker/profile_card.html.ts
++++ gen/chrome/browser/resources/signin/profile_picker/preprocessed/profile_card.html.ts
+@@ -5,53 +5,37 @@
+ 
+ export function getHtml(this: ProfileCardElement) {
+   return html\`<!--_html_template_start_-->
+ <div id=\\"profileCardContainer\\">
+-  <cr-button id=\\"profileCardButton\\" @click=\\"\${this.onProfileClick_}\\"
+-      aria-label=\\"\${this.profileState.profileCardButtonLabel}\\">
++  <cr-button id=\\"profileCardButton\\" @click=\\"\${this.onProfileClick_}\\" aria-label=\\"\${this.profileState.profileCardButtonLabel}\\" class=\\"plain\\">
+     <div id=\\"avatarContainer\\">
+       <img class=\\"profile-avatar\\" alt=\\"\\" .src=\\"\${this.profileState.avatarIcon}\\">
+-      <div id=\\"iconContainer\\"
+-          ?hidden=\\"\${!this.profileState.avatarBadge.length}\\">
++      <div id=\\"iconContainer\\" ?hidden=\\"\${!this.profileState.avatarBadge.length}\\">
+         <cr-icon icon=\\"\${this.profileState.avatarBadge}\\"></cr-icon>
+       </div>
+     </div>
+-    <div id=\\"gaiaName\\" class=\\"profile-card-info secondary-text\\"
+-        ?hidden=\\"\${this.profileState.needsSignin}\\">
++    <div id=\\"gaiaName\\" class=\\"profile-card-info secondary-text\\" ?hidden=\\"\${this.profileState.needsSignin}\\">
+       \${this.profileState.gaiaName}
+     </div>
+-    <div id=\\"forceSigninContainer\\" class=\\"profile-card-info secondary-text\\"
+-        ?hidden=\\"\${!this.profileState.needsSignin}\\">
++    <div id=\\"forceSigninContainer\\" class=\\"profile-card-info secondary-text\\" ?hidden=\\"\${!this.profileState.needsSignin}\\">
+       <div>$i18n{needsSigninPrompt}</div>
+       <cr-icon id=\\"forceSigninIcon\\" icon=\\"profiles:lock\\"></cr-icon>
+     </div>
+   </cr-button>
+   <div id=\\"profileNameInputWrapper\\">
+-    <cr-input class=\\"profile-card-info prominent-text\\" id=\\"nameInput\\"
+-        aria-label=\\"$i18n{profileCardInputLabel}\\"
+-        .value=\\"\${this.profileState.localProfileName}\\"
+-        @change=\\"\${this.onProfileNameChanged_}\\"
+-        @keydown=\\"\${this.onProfileNameKeydown_}\\"
+-        @blur=\\"\${this.onProfileNameInputBlur_}\\" pattern=\\"\${this.pattern_}\\"
+-        auto-validate spellcheck=\\"false\\"
+-        @pointerenter=\\"\${this.onNameInputPointerEnter_}\\"
+-        @pointerleave=\\"\${this.onNameInputPointerLeave_}\\"
+-        ?disabled=\\"\${
+-      isGlicVersion() || this.profileState.hasEnterpriseLabel}\\" required>
++    <cr-input class=\\"profile-card-info prominent-text\\" id=\\"nameInput\\" aria-label=\\"$i18n{profileCardInputLabel}\\" .value=\\"\${this.profileState.localProfileName}\\" @change=\\"\${this.onProfileNameChanged_}\\" @keydown=\\"\${this.onProfileNameKeydown_}\\" @blur=\\"\${this.onProfileNameInputBlur_}\\" pattern=\\"\${this.pattern_}\\" auto-validate=\\"\\" spellcheck=\\"false\\" @pointerenter=\\"\${this.onNameInputPointerEnter_}\\" @pointerleave=\\"\${this.onNameInputPointerLeave_}\\" ?disabled=\\"\${
++      isGlicVersion() || this.profileState.hasEnterpriseLabel}\\" required=\\"\\">
+     </cr-input>
+     <div id=\\"hoverUnderline\\" ?hidden=\\"\${
+       isGlicVersion() || this.profileState.hasEnterpriseLabel}\\"></div>
+   </div>
+-  <profile-card-menu .profileState=\\"\${this.profileState}\\"
+-      ?hidden=\\"\${isGlicVersion()}\\">
++  <profile-card-menu .profilestate=\\"\${this.profileState}\\" ?hidden=\\"\${isGlicVersion()}\\">
+   </profile-card-menu>
+ </div>
+-<cr-tooltip id=\\"gaiaNameTooltip\\" for=\\"gaiaName\\" manual-mode offset=\\"0\\"
+-    position=\\"bottom\\" aria-hidden=\\"true\\">
++<cr-tooltip id=\\"gaiaNameTooltip\\" for=\\"gaiaName\\" manual-mode=\\"\\" offset=\\"0\\" position=\\"bottom\\" aria-hidden=\\"true\\">
+   \${this.profileState.gaiaName}
+ </cr-tooltip>
+-<cr-tooltip id=\\"tooltip\\" for=\\"nameInput\\" manual-mode offset=\\"-10\\"
+-    aria-hidden=\\"true\\">
++<cr-tooltip id=\\"tooltip\\" for=\\"nameInput\\" manual-mode=\\"\\" offset=\\"-10\\" aria-hidden=\\"true\\">
+   \${this.getNameInputTooltipText()}
+ </cr-tooltip>
+ <!--_html_template_end_-->\`;
+ }
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
++++ gen/chrome/browser/resources/signin/profile_picker/preprocessed/profile_picker_main_view.html.ts
+@@ -14,49 +14,35 @@
+     }
+   }()}
+ <div class=\\"flex-container\\">
+   <div class=\\"title-container\\">
+-    <img id=\\"picker-logo\\" @click=\\"\${this.onProductLogoClick_}\\"
+-        src=\\"picker_logo.svg\\" role=\\"presentation\\">
+-    <h1 class=\\"title\\" .innerHTML=\\"\${this.getTitle_()}\\"></h1>
+-    <div class=\\"subtitle\\" .innerHTML=\\"\${this.getSubtitle_()}\\"></div>
++    <img id=\\"picker-logo\\" @click=\\"\${this.onProductLogoClick_}\\" src=\\"picker_logo.svg\\" role=\\"presentation\\">
++    <h1 class=\\"title\\" .innerhtml=\\"\${this.getTitle_()}\\"></h1>
++    <div class=\\"subtitle\\" .innerhtml=\\"\${this.getSubtitle_()}\\"></div>
+   </div>
+   <div id=\\"profilesWrapper\\" ?hidden=\\"\${(this.shouldHideProfilesWrapper_())}\\">
+     <div id=\\"profilesContainer\\" class=\\"custom-scrollbar\\">
+       \${this.profilesList_.map((item, index) => html\`
+         <profile-card class=\\"profile-item\\" .profileState=\\"\${item}\\"
+             data-index=\\"\${index}\\">
+         </profile-card>
+       \`)}
+-      <cr-button id=\\"addProfile\\" class=\\"profile-item\\"
+-          @click=\\"\${this.onAddProfileClick_}\\"
+-          ?hidden=\\"\${!this.profileCreationAllowed_}\\"
+-          aria-labelledby=\\"addProfileButtonLabel\\">
+-        <div id=\\"addProfileButtonLabel\\"
+-            class=\\"profile-card-info prominent-text\\">
++      <cr-button id=\\"addProfile\\" class=\\"profile-item plain\\" @click=\\"\${this.onAddProfileClick_}\\" ?hidden=\\"\${!this.profileCreationAllowed_}\\" aria-labelledby=\\"addProfileButtonLabel\\">
++        <div id=\\"addProfileButtonLabel\\" class=\\"profile-card-info prominent-text\\">
+           $i18n{addSpaceButton}
+         </div>
+         <cr-icon icon=\\"profiles:add\\"></cr-icon>
+       </cr-button>
+     </div>
+   </div>
+-<if expr=\\"enable_glic\\">
+-  <div id=\\"footer-text\\" class=\\"subtitle\\"
+-      ?hidden=\\"\${this.shouldHideFooterText_()}\\">
+-    $i18nRaw{glicAddProfileHelper}
+-  </div>
+-</if>
++
+ </div>
+ <div class=\\"footer\\">
+-  <cr-button id=\\"browseAsGuestButton\\"
+-      @click=\\"\${this.onLaunchGuestProfileClick_}\\"
+-      ?hidden=\\"\${!this.guestModeEnabled_}\\">
++  <cr-button id=\\"browseAsGuestButton\\" @click=\\"\${this.onLaunchGuestProfileClick_}\\" ?hidden=\\"\${!this.guestModeEnabled_}\\">
+     <cr-icon icon=\\"profiles:account-circle\\" slot=\\"prefix-icon\\"></cr-icon>
+     $i18n{browseAsGuestButton}
+   </cr-button>
+-  <cr-checkbox id=\\"askOnStartup\\" ?checked=\\"\${this.askOnStartup_}\\"
+-      @checked-changed=\\"\${this.onAskOnStartupChangedByUser_}\\"
+-      ?hidden=\\"\${this.hideAskOnStartup_}\\">
++  <cr-checkbox id=\\"askOnStartup\\" ?checked=\\"\${this.askOnStartup_}\\" @checked-changed=\\"\${this.onAskOnStartupChangedByUser_}\\" ?hidden=\\"\${this.hideAskOnStartup_}\\">
+     $i18n{askOnStartupCheckboxText}
+   </cr-checkbox>
+ </div>
+ 
+@@ -66,15 +52,12 @@
+   <div slot=\\"body\\" id=\\"dialog-body\\" class=\\"warning-message\\">
+     \${this.forceSigninErrorDialogBody_}
+   </div>
+   <div slot=\\"button-container\\" class=\\"button-container\\">
+-    <cr-button id=\\"cancel-button\\"
+-        @click=\\"\${this.onForceSigninErrorDialogOkButtonClicked_}\\">
++    <cr-button id=\\"cancel-button\\" @click=\\"\${this.onForceSigninErrorDialogOkButtonClicked_}\\">
+       $i18n{ok}
+     </cr-button>
+-    <cr-button id=\\"button-sign-in\\" class=\\"action-button\\"
+-        @click=\\"\${this.onReauthClicked_}\\"
+-        ?hidden=\\"\${!this.shouldShownSigninButton_}\\">
++    <cr-button id=\\"button-sign-in\\" class=\\"action-button\\" @click=\\"\${this.onReauthClicked_}\\" ?hidden=\\"\${!this.shouldShownSigninButton_}\\">
+       $i18n{needsSigninPrompt}
+     </cr-button>
+   </div>
+ </cr-dialog>
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/components/webui/chrome_urls/resources/app.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../components/webui/chrome_urls/resources/app.html.ts

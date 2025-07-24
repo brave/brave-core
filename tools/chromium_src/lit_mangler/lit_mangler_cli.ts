@@ -44,7 +44,7 @@ const runTypecheck = (genDir: string, files: string[]) => {
     const result = childProcess.spawnSync('tsc', ['-p', getTsConfigForFiles(genDir, files)])
     // Note: tsc in Windows doesn't return a status code on success (i.e. status === null).
     if (result.status ?? 0 !== 0) {
-        console.error('Typechecking failed:\n', result.stderr?.toString())
+        console.error('Typechecking failed:\n', result.stdout?.toString(), result.stderr?.toString())
         process.exit(1)
     }
 }
