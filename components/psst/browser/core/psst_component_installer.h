@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_COMPONENT_INSTALLER_H_
 
-#include "base/component_export.h"
-
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
@@ -27,7 +25,6 @@ inline constexpr char kPsstComponentBase64PublicKey[] =
     "7HmW+evvuMIPl1gtVe4HKOZ7G8UaznjXBfspszHU1fqTiZWeCPb53uemo1a+rdnSHXwIDAQAB";
 
 // Registers the PSST component with the component updater.
-COMPONENT_EXPORT(PSST_BROWSER_CORE)
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus);
 
 }  // namespace psst
