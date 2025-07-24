@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_AVATAR_ICON_UTIL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_AVATAR_ICON_UTIL_H_
 
-#include "build/build_config.h"
+#include <chrome/browser/profiles/profile_avatar_icon_util.h>  // IWYU pragma: export
 
-#include "src/chrome/browser/profiles/profile_avatar_icon_util.h"  // IWYU pragma: export
+#include "build/build_config.h"
 
 namespace profiles {
 

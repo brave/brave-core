@@ -26,7 +26,7 @@
       const CookieSettings& cookie_settings) const;                   \
   void RemoveChangeListener
 
-#include "src/services/network/restricted_cookie_manager.h"  // IWYU pragma: export
+#include <services/network/restricted_cookie_manager.h>  // IWYU pragma: export
 
 #undef RemoveChangeListener
 

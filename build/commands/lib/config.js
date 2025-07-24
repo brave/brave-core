@@ -298,8 +298,6 @@ const Config = function () {
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
-  // Make sure "src/" is a part of RBE "exec_root" to allow "src/" files as inputs.
-  this.rbeExecRoot = this.rootDir
   this.realRewrapperDir =
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
   this.braveStatsApiKey = getEnvConfig(['brave_stats_api_key']) || ''
@@ -625,7 +623,6 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.useRemoteExec) {
-    args.rbe_exec_root = this.rbeExecRoot
     args.reclient_bin_dir = path.join(this.nativeRedirectCCDir)
   } else {
     args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')

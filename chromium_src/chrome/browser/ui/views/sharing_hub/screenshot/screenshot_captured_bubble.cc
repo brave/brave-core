@@ -27,6 +27,6 @@ std::u16string GetBraveFilenameForURL(const GURL& url) {
   set_suggested_name(           \
       GetBraveFilenameForURL(web_contents_->GetLastCommittedURL()))
 
-#include "src/chrome/browser/ui/views/sharing_hub/screenshot/screenshot_captured_bubble.cc"
+#include <chrome/browser/ui/views/sharing_hub/screenshot/screenshot_captured_bubble.cc>
 
 #undef set_suggested_name

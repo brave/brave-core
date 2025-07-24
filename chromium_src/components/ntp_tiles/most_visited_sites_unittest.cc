@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/ntp_tiles/most_visited_sites_unittest.cc"
+#include <components/ntp_tiles/most_visited_sites_unittest.cc>
 
 namespace ntp_tiles {
 

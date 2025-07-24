@@ -15,7 +15,7 @@
 
 #define DownloadShelfContextMenuView DownloadShelfContextMenuViewChromium
 
-#include "src/chrome/browser/ui/views/download/download_shelf_context_menu_view.cc"
+#include <chrome/browser/ui/views/download/download_shelf_context_menu_view.cc>
 
 #undef DownloadShelfContextMenuView
 

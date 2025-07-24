@@ -7,5 +7,5 @@
 // the right side of the frame), regardless of platform.
 #define BRAVE_GET_DEFAULT_TAB_SEARCH_RIGHT_ALIGNED \
   return true;
-#include "src/chrome/browser/ui/tabs/tab_strip_prefs.cc"
+#include <chrome/browser/ui/tabs/tab_strip_prefs.cc>
 #undef BRAVE_GET_DEFAULT_TAB_SEARCH_RIGHT_ALIGNED

@@ -9,6 +9,6 @@
 
 #define ReadingListPageHandler BraveReadingListPageHandler
 
-#include "src/chrome/browser/ui/webui/side_panel/reading_list/reading_list_ui.cc"
+#include <chrome/browser/ui/webui/side_panel/reading_list/reading_list_ui.cc>
 
 #undef ReadingListPageHandler

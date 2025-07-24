@@ -9,6 +9,6 @@
 
 #define ContentsContainerView BraveContentsContainerView
 
-#include "src/chrome/browser/ui/views/frame/multi_contents_view.cc"
+#include <chrome/browser/ui/views/frame/multi_contents_view.cc>
 
 #undef ContentsContainerView

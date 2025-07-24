@@ -7,7 +7,7 @@
 
 #define ChromeBrowserFieldTrials ChromeBrowserFieldTrialsChromium
 
-#include "src/chrome/browser/chrome_browser_field_trials.cc"
+#include <chrome/browser/chrome_browser_field_trials.cc>
 
 #undef ChromeBrowserFieldTrials
 

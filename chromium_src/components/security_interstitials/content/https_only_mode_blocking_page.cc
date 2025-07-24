@@ -20,6 +20,6 @@ constexpr char kBraveLearnMoreLink[] =
 #define OpenUrlInNewForegroundTab(...) \
   OpenUrlInNewForegroundTab(GURL(kBraveLearnMoreLink))
 
-#include "src/components/security_interstitials/content/https_only_mode_blocking_page.cc"
+#include <components/security_interstitials/content/https_only_mode_blocking_page.cc>
 
 #undef OpenUrlInNewForegroundTab

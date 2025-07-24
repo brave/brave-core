@@ -35,6 +35,6 @@ String GetEphemeralBroadcastChannelName(LocalDOMWindow* window, String name) {
       &name_, GetEphemeralBroadcastChannelName(window, name_)); \
   frame->GetRemoteNavigationAssociatedInterfaces
 
-#include "src/third_party/blink/renderer/modules/broadcastchannel/broadcast_channel.cc"
+#include <third_party/blink/renderer/modules/broadcastchannel/broadcast_channel.cc>
 
 #undef GetRemoteNavigationAssociatedInterfaces

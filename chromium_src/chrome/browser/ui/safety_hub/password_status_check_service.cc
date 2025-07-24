@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/safety_hub/password_status_check_service.h"
 
 #define GetPasswordCardData GetPasswordCardData_ChromiumImpl
-#include "src/chrome/browser/ui/safety_hub/password_status_check_service.cc"
+#include <chrome/browser/ui/safety_hub/password_status_check_service.cc>
 #undef GetPasswordCardData
 
 // We hide the password card in brave://settings/safetyCheck, so we don't want

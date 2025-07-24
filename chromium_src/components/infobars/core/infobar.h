@@ -12,7 +12,7 @@
   BraveSetTargetHeight(int height); \
   void SetTargetHeight
 
-#include "src/components/infobars/core/infobar.h"  // IWYU pragma: export
+#include <components/infobars/core/infobar.h>  // IWYU pragma: export
 
 #undef SetTargetHeight
 

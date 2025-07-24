@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/chrome/browser/ui/safety_hub/password_status_check_service_unittest.cc"
+#include <chrome/browser/ui/safety_hub/password_status_check_service_unittest.cc>
 
 TEST_P(PasswordStatusCheckServiceParameterizedCardTest,
        PasswordCardDataIsMarkedSafe) {

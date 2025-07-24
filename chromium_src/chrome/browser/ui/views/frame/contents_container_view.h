@@ -8,7 +8,7 @@
 
 #define UpdateBorderAndOverlay virtual UpdateBorderAndOverlay
 
-#include "src/chrome/browser/ui/views/frame/contents_container_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/contents_container_view.h>  // IWYU pragma: export
 
 #undef UpdateBorderAndOverlay
 

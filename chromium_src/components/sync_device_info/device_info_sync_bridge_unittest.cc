@@ -36,7 +36,7 @@ class TaskEnvironmentOptionalMockTime : public TaskEnvironment {
 #define ShouldReuploadOnceAfterLocalDeviceInfoTombstone \
   DISABLED_ShouldReuploadOnceAfterLocalDeviceInfoTombstone
 
-#include "src/components/sync_device_info/device_info_sync_bridge_unittest.cc"
+#include <components/sync_device_info/device_info_sync_bridge_unittest.cc>
 
 #undef TaskEnvironment
 #undef ShouldReuploadOnceAfterLocalDeviceInfoTombstone

@@ -26,7 +26,7 @@
   DELETE_LOCAL_FILE = 24,                                                      \
   OPEN_WITH_MEDIA_APP
 
-#include "src/chrome/browser/download/download_commands.h"  // IWYU pragma: export
+#include <chrome/browser/download/download_commands.h>  // IWYU pragma: export
 
 #undef OPEN_WITH_MEDIA_APP
 #undef ExecuteCommand

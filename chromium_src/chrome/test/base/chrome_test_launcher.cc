@@ -10,6 +10,6 @@
 
 #define ChromeContentUtilityClient BraveContentUtilityClient
 #define ChromeMainDelegate BraveMainDelegate
-#include "src/chrome/test/base/chrome_test_launcher.cc"
+#include <chrome/test/base/chrome_test_launcher.cc>
 #undef ChromeMainDelegate
 #undef ChromeContentUtilityClient

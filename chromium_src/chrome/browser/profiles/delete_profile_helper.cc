@@ -60,7 +60,7 @@ bool StopSyncIfActive(Profile* profile, const char* func_name) {
 #define HasPrimaryAccount(LEVEL) \
   HasPrimaryAccount(LEVEL) && StopSyncIfActive(profile, __func__)
 
-#include "src/chrome/browser/profiles/delete_profile_helper.cc"
+#include <chrome/browser/profiles/delete_profile_helper.cc>
 
 #undef HasPrimaryAccount
 #undef IdentityManager

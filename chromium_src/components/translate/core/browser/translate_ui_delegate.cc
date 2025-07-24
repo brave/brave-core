@@ -8,7 +8,7 @@
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
 #define TranslateUIDelegate TranslateUIDelegate_ChromiumImpl
-#include "src/components/translate/core/browser/translate_ui_delegate.cc"
+#include <components/translate/core/browser/translate_ui_delegate.cc>
 #undef TranslateUIDelegate
 
 namespace translate {

@@ -9,6 +9,6 @@
 #define Contains(...) \
   Contains(__VA_ARGS__) || extensions_mv2::IsKnownMV2Extension(extension_id)
 
-#include "src/chrome/browser/extensions/mv2_deprecation_impact_checker.cc"
+#include <chrome/browser/extensions/mv2_deprecation_impact_checker.cc>
 
 #undef Contains

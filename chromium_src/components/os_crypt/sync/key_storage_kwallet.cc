@@ -28,7 +28,7 @@ void Dummy(const int handle,
   handle_, GetFolderName(), app_name_, &has_folder); \
   if (false) Dummy(
 
-#include "src/components/os_crypt/sync/key_storage_kwallet.cc"
+#include <components/os_crypt/sync/key_storage_kwallet.cc>
 #undef BRAVE_KEY_STORAGE_KWALLET_INIT_FOLDER
 #undef BRAVE_KEY_STORAGE_KWALLET_GET_KEY_IMPL
 

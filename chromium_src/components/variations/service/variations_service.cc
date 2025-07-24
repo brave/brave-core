@@ -18,6 +18,6 @@
     }                                                                   \
   }
 
-#include "src/components/variations/service/variations_service.cc"
+#include <components/variations/service/variations_service.cc>
 
 #undef GetDateValue

@@ -10,7 +10,7 @@
 #include "content/public/common/url_constants.h"
 
 #define SetupWebUIDataSource SetupWebUIDataSource_ChromiumImpl
-#include "src/ui/webui/webui_util.cc"
+#include <ui/webui/webui_util.cc>
 #undef SetupWebUIDataSource
 
 namespace webui {

@@ -17,7 +17,7 @@
   should_patch_module_filename_ = false; \
   bool configured_
 
-#include "src/sandbox/win/src/sandbox_policy_base.h"  // IWYU pragma: export
+#include <sandbox/win/src/sandbox_policy_base.h>  // IWYU pragma: export
 
 #undef IsConfigured
 #undef configured_

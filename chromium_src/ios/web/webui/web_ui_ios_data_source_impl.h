@@ -25,7 +25,7 @@ class BraveWebUIIOSDataSource;
   explicit WebUIIOSDataSourceImpl(const std::string& source_name, \
                                   URLDataSourceIOS* source)
 
-#include "src/ios/web/webui/web_ui_ios_data_source_impl.h"  // IWYU pragma: export
+#include <ios/web/webui/web_ui_ios_data_source_impl.h>  // IWYU pragma: export
 
 #undef WebUIIOSDataSourceTest
 

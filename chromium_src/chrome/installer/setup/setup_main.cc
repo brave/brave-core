@@ -44,5 +44,5 @@ void SavePromoCode(installer::InstallStatus install_status) {
 #define DoLegacyCleanups         \
   SavePromoCode(install_status); \
   DoLegacyCleanups
-#include "src/chrome/installer/setup/setup_main.cc"
+#include <chrome/installer/setup/setup_main.cc>
 #undef DoLegacyCleanups

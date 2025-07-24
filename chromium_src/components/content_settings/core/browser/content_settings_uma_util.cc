@@ -74,7 +74,7 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
   return "RemoteListProvider"; \
   case ProviderType::kDefaultProvider
 
-#include "src/components/content_settings/core/browser/content_settings_uma_util.cc"
+#include <components/content_settings/core/browser/content_settings_uma_util.cc>
 
 #undef BRAVE_HISTOGRAM_VALUE_LIST
 #undef kDefaultProvider

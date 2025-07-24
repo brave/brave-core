@@ -14,6 +14,6 @@
     submenu_arrow_image_view_->SetImage(ui::ImageModel::FromVectorIcon( \
         vector_icons::kSubmenuArrowChromeRefreshIcon
 
-#include "src/ui/views/controls/menu/menu_item_view.cc"
+#include <ui/views/controls/menu/menu_item_view.cc>
 
 #undef kSubmenuArrowChromeRefreshIcon

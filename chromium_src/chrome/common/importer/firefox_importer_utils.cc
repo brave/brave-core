@@ -16,4 +16,4 @@ base::FilePath GetProfilesINI() {
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 // Comment to keep clang format from moving this include in between headers.
-#include "src/chrome/common/importer/firefox_importer_utils.cc"
+#include <chrome/common/importer/firefox_importer_utils.cc>

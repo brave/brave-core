@@ -15,6 +15,6 @@
 #define BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR
 #endif
 
-#include "src/chrome/browser/themes/theme_service_factory.cc"
+#include <chrome/browser/themes/theme_service_factory.cc>
 
 #undef BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR

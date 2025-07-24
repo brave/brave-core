@@ -11,7 +11,7 @@
 #include "content/public/browser/render_process_host.h"
 
 #define CheckRenderFrameType(...) CheckRenderFrameType_ChromiumImpl(__VA_ARGS__)
-#include "src/chrome/browser/speech/chrome_speech_recognition_manager_delegate.cc"
+#include <chrome/browser/speech/chrome_speech_recognition_manager_delegate.cc>
 #undef CheckRenderFrameType
 
 namespace speech {

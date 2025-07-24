@@ -12,7 +12,7 @@
   ProcessDownloadButtonPress_ChromiumImpl(__VA_ARGS__); \
   void ProcessDownloadButtonPress(__VA_ARGS__)
 
-#include "src/chrome/browser/download/bubble/download_bubble_ui_controller.h"  // IWYU pragma: export
+#include <chrome/browser/download/bubble/download_bubble_ui_controller.h>  // IWYU pragma: export
 
 #undef ProcessDownloadButtonPress
 

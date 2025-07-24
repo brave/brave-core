@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "src/third_party/blink/renderer/core/page/chrome_client_impl.cc"
-
 #include <array>
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
@@ -15,6 +13,8 @@
 #include "ui/display/screen_info.h"
 #include "ui/display/screen_infos.h"
 #include "ui/gfx/geometry/rect.h"
+
+#include <third_party/blink/renderer/core/page/chrome_client_impl.cc>
 
 namespace blink {
 

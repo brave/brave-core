@@ -12,7 +12,7 @@
 #endif
 
 #define CreatePermissionPrompt CreatePermissionPrompt_ChromiumImpl
-#include "src/chrome/browser/ui/views/permissions/permission_prompt_factory.cc"
+#include <chrome/browser/ui/views/permissions/permission_prompt_factory.cc>
 #undef CreatePermissionPrompt
 
 std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(

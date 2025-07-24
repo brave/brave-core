@@ -33,7 +33,7 @@
   }                                                                        \
   int MediaValues::CalculateDeviceHeight_ChromiumImpl(__VA_ARGS__)
 
-#include "src/third_party/blink/renderer/core/css/media_values.cc"
+#include <third_party/blink/renderer/core/css/media_values.cc>
 
 #undef CalculateDeviceWidth
 #undef CalculateDeviceHeight

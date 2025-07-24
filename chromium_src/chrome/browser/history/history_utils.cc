@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define CanAddURLToHistory CanAddURLToHistory_ChromiumImpl
-#include "src/chrome/browser/history/history_utils.cc"
+#include <chrome/browser/history/history_utils.cc>
 #undef CanAddURLToHistory
 
 #include "brave/components/constants/url_constants.h"

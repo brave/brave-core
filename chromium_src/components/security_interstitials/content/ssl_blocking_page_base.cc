@@ -10,5 +10,5 @@
 #define IsSafeBrowsingPolicyManaged(PREF_SERVICE) \
   IsSafeBrowsingPolicyManaged(PREF_SERVICE);      \
   return false;
-#include "src/components/security_interstitials/content/ssl_blocking_page_base.cc"
+#include <components/security_interstitials/content/ssl_blocking_page_base.cc>
 #undef IsSafeBrowsingPolicyManaged

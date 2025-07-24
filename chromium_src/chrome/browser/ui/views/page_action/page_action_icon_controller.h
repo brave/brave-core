@@ -15,7 +15,7 @@
  public:                                                            \
   PageActionIconView* GetPlaylistActionIconView
 
-#include "src/chrome/browser/ui/views/page_action/page_action_icon_controller.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/page_action/page_action_icon_controller.h>  // IWYU pragma: export
 #undef UpdateAll
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_ICON_CONTROLLER_H_

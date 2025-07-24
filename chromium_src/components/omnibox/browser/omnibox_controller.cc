@@ -25,7 +25,7 @@ bool IsAutocompleteEnabled(const PrefService* prefs) {
   kGemini || (turl && turl->starter_pack_id() == \
                           template_url_starter_pack_data::kAiMode)
 
-#include "src/components/omnibox/browser/omnibox_controller.cc"
+#include <components/omnibox/browser/omnibox_controller.cc>
 #undef kGemini
 #undef StartAutocomplete
 

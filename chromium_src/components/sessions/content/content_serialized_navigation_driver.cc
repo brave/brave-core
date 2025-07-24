@@ -13,7 +13,7 @@
 
 #define GetSanitizedPageStateForPickle \
   GetSanitizedPageStateForPickle_ChromiumImpl
-#include "src/components/sessions/content/content_serialized_navigation_driver.cc"
+#include <components/sessions/content/content_serialized_navigation_driver.cc>
 #undef GetSanitizedPageStateForPickle
 
 namespace sessions {

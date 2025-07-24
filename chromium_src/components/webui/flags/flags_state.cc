@@ -12,7 +12,7 @@
 #include "base/check_op.h"
 #include "base/strings/strcat.h"
 
-#include "src/components/webui/flags/flags_state.cc"
+#include <components/webui/flags/flags_state.cc>
 
 namespace flags_ui {
 namespace {

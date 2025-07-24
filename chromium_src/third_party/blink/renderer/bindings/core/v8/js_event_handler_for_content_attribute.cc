@@ -15,6 +15,6 @@
         &event_target, function_name_, script_body_, compiled_function); \
   });
 
-#include "src/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc"
+#include <third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc>
 
 #undef SetCompiledHandler

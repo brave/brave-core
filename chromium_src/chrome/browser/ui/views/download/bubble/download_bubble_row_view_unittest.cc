@@ -30,7 +30,7 @@ const base::FilePath kTestFilePath(FILE_PATH_LITERAL("foo/bar.cc"));
         }()                                                                  \
       : row_view()->info().quick_actions()
 
-#include "src/chrome/browser/ui/views/download/bubble/download_bubble_row_view_unittest.cc"
+#include <chrome/browser/ui/views/download/bubble/download_bubble_row_view_unittest.cc>
 
 #undef quick_actions
 #undef SetInputProtectorForTesting

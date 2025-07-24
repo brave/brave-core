@@ -8,7 +8,7 @@
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 
 #define ShouldShowForState ShouldShowForState_UnUsed
-#include "src/chrome/browser/ui/webui/whats_new/whats_new_util.cc"
+#include <chrome/browser/ui/webui/whats_new/whats_new_util.cc>
 #undef ShouldShowForState
 
 namespace whats_new {

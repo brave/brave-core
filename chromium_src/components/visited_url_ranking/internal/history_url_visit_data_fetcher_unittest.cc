@@ -20,5 +20,5 @@ class BraveDeviceInfoTracker : public syncer::DeviceInfoTracker {
 }  // namespace syncer
 
 #define DeviceInfoTracker BraveDeviceInfoTracker
-#include "src/components/visited_url_ranking/internal/history_url_visit_data_fetcher_unittest.cc"
+#include <components/visited_url_ranking/internal/history_url_visit_data_fetcher_unittest.cc>
 #undef DeviceInfoTracker

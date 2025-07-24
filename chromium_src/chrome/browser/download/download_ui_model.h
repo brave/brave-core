@@ -12,7 +12,7 @@
   virtual void DeleteLocalFile() {}    \
   virtual void OpenUsingPlatformHandler(__VA_ARGS__)
 
-#include "src/chrome/browser/download/download_ui_model.h"  // IWYU pragma: export
+#include <chrome/browser/download/download_ui_model.h>  // IWYU pragma: export
 
 #undef OpenUsingPlatformHandler
 

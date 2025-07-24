@@ -11,7 +11,7 @@
 #define GetIncognitoPersistentPrefsAllowlist \
   GetIncognitoPersistentPrefsAllowlist_ChromiumImpl
 #define kShowBookmarkBar kShowBookmarkBar, kAlwaysShowBookmarkBarOnNTP
-#include "src/chrome/browser/prefs/pref_service_incognito_allowlist.cc"
+#include <chrome/browser/prefs/pref_service_incognito_allowlist.cc>
 #undef kShowBookmarkBar
 #undef GetIncognitoPersistentPrefsAllowlist
 

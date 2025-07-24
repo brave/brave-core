@@ -10,7 +10,7 @@
 
 #define CookieOptions CookieOptions_ChromiumImpl
 
-#include "src/services/network/public/cpp/cookie_manager_mojom_traits.cc"
+#include <services/network/public/cpp/cookie_manager_mojom_traits.cc>
 
 #undef CookieOptions
 

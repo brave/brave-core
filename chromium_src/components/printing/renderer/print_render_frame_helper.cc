@@ -6,7 +6,7 @@
 #include "components/printing/renderer/print_render_frame_helper.h"
 
 #define PrintRenderFrameHelper PrintRenderFrameHelper_ChromiumImpl
-#include "src/components/printing/renderer/print_render_frame_helper.cc"
+#include <components/printing/renderer/print_render_frame_helper.cc>
 #undef PrintRenderFrameHelper
 
 namespace printing {

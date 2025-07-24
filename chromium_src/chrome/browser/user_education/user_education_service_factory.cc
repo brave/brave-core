@@ -20,6 +20,6 @@
                 ? SELECTION                                                \
                 : ProfileSelection::kNone)
 
-#include "src/chrome/browser/user_education/user_education_service_factory.cc"
+#include <chrome/browser/user_education/user_education_service_factory.cc>
 #undef WithGuest
 #undef WithRegular

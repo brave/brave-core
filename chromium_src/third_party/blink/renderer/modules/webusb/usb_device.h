@@ -10,7 +10,7 @@
   serialNumber() const; \
   String serialNumber_ChromiumImpl
 
-#include "src/third_party/blink/renderer/modules/webusb/usb_device.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/modules/webusb/usb_device.h>  // IWYU pragma: export
 
 #undef serialNumber
 

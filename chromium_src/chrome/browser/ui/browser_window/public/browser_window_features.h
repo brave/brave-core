@@ -17,7 +17,7 @@
 #define TearDownPreBrowserWindowDestruction \
   virtual TearDownPreBrowserWindowDestruction
 
-#include "src/chrome/browser/ui/browser_window/public/browser_window_features.h"  // IWYU pragma: export
+#include <chrome/browser/ui/browser_window/public/browser_window_features.h>  // IWYU pragma: export
 
 #undef InitPostWindowConstruction
 #undef InitPostBrowserViewConstruction

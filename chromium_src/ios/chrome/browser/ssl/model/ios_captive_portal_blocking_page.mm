@@ -56,5 +56,5 @@ class BraveCaptivePortalTabHelper
 };
 
 #define CaptivePortalTabHelper BraveCaptivePortalTabHelper
-#include "src/ios/chrome/browser/ssl/model/ios_captive_portal_blocking_page.mm"
+#include <ios/chrome/browser/ssl/model/ios_captive_portal_blocking_page.mm>
 #undef CaptivePortalTabHelper

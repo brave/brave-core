@@ -16,7 +16,7 @@
             GetBraveTabStrip() -> IsVerticalTabsFloating())                    \
       : CalculateTabBounds
 
-#include "src/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc"
+#include <chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc>
 
 #undef CalculateTabBounds
 

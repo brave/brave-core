@@ -37,7 +37,7 @@ class BraveBubbleDialogDelegateView;
   friend class ::views::BraveBubbleDialogDelegateView; \
   static BddvPassKey CreatePassKey
 
-#include "src/ui/views/bubble/bubble_dialog_delegate_view.h"  // IWYU pragma: export
+#include <ui/views/bubble/bubble_dialog_delegate_view.h>  // IWYU pragma: export
 
 #undef CreatePassKey
 
