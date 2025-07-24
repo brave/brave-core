@@ -13,10 +13,54 @@
 #include "content/public/common/url_constants.h"
 #include "ui/webui/webui_util.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include <memory>
+
+#include "base/values.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_message_handler.h"
+
+namespace {
+class BraveAccountUIMessageHandler : public content::WebUIMessageHandler {
+ public:
+  BraveAccountUIMessageHandler() = default;
+
+  BraveAccountUIMessageHandler(const BraveAccountUIMessageHandler&) = delete;
+  BraveAccountUIMessageHandler& operator=(const BraveAccountUIMessageHandler&) =
+      delete;
+
+  ~BraveAccountUIMessageHandler() override = default;
+
+ private:
+  // WebUIMessageHandler:
+  void RegisterMessages() override;
+
+  void OnDialogCloseMessage(const base::Value::List& args);
+};
+
+void BraveAccountUIMessageHandler::RegisterMessages() {
+  web_ui()->RegisterMessageCallback(
+      "dialogClose",
+      base::BindRepeating(&BraveAccountUIMessageHandler::OnDialogCloseMessage,
+                          base::Unretained(this)));
+}
+
+void BraveAccountUIMessageHandler::OnDialogCloseMessage(
+    const base::Value::List& args) {
+  web_ui()->GetWebContents()->Close();
+}
+}  // namespace
+#endif
+
 BraveAccountUI::BraveAccountUI(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
                          base::BindOnce(&webui::SetupWebUIDataSource)),
-      ConstrainedWebDialogUI(web_ui) {}
+      ConstrainedWebDialogUI(web_ui) {
+#if BUILDFLAG(IS_ANDROID)
+  web_ui->AddMessageHandler(std::make_unique<BraveAccountUIMessageHandler>());
+#endif
+}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUI)
 

@@ -23,6 +23,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
+import org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
@@ -55,6 +56,7 @@ import java.util.HashMap;
 public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     // sections
+    private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
     private static final String PREF_FEATURES_SECTION = "features_section";
     private static final String PREF_DISPLAY_SECTION = "display_section";
     private static final String PREF_GENERAL_SECTION = "general_section";
@@ -64,8 +66,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_ABOUT_SECTION = "about_section";
 
     // prefs
-
     private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
+    private static final String PREF_GET_STARTED = "get_started";
     private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE =
             "closing_all_tabs_closes_brave";
     private static final String PREF_PRIVACY = "privacy";
@@ -108,9 +110,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         // Add brave's additional preferences here because |onCreatePreference| is not called
         // by subclass (MainPreference::onCreatePreferences()).
-        // But, calling here has same effect because |onCreatePreferences()| is called by onCreate().
+        // But, calling here has same effect because |onCreatePreferences()| is called by
+        // onCreate().
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_main_preferences);
 
+        initBraveAccount();
         overrideChromiumPreferences();
         initRateBrave();
         setPreferenceListeners();
@@ -267,19 +271,29 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             }
         }
 
-        setPreferenceOrder(PREF_FEATURES_SECTION, ++firstSectionOrder);
+        int braveAccountSectionOrder = firstSectionOrder;
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ACCOUNT)) {
+            setPreferenceOrder(PREF_BRAVE_ACCOUNT_SECTION, ++braveAccountSectionOrder);
+            setPreferenceOrder(PREF_GET_STARTED, ++braveAccountSectionOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_ACCOUNT_SECTION);
+            removePreferenceIfPresent(PREF_GET_STARTED);
+        }
 
-        setPreferenceOrder(PREF_SHIELDS_AND_PRIVACY, ++firstSectionOrder);
-        setPreferenceOrder(PREF_BRAVE_NEWS_V2, ++firstSectionOrder);
+        int featuresSectionOrder = braveAccountSectionOrder;
+        setPreferenceOrder(PREF_FEATURES_SECTION, ++featuresSectionOrder);
+
+        setPreferenceOrder(PREF_SHIELDS_AND_PRIVACY, ++featuresSectionOrder);
+        setPreferenceOrder(PREF_BRAVE_NEWS_V2, ++featuresSectionOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
-            setPreferenceOrder(PREF_BRAVE_WALLET, ++firstSectionOrder);
+            setPreferenceOrder(PREF_BRAVE_WALLET, ++featuresSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_WALLET);
         }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
-            setPreferenceOrder(PREF_BRAVE_PLAYLIST, ++firstSectionOrder);
+            setPreferenceOrder(PREF_BRAVE_PLAYLIST, ++featuresSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
         }
@@ -287,18 +301,18 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (getActivity() != null
                 && !getActivity().isFinishing()
                 && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
-            setPreferenceOrder(PREF_BRAVE_VPN, ++firstSectionOrder);
+            setPreferenceOrder(PREF_BRAVE_VPN, ++featuresSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_VPN);
         }
 
         if (BraveLeoPrefUtils.isLeoEnabled()) {
-            setPreferenceOrder(PREF_BRAVE_LEO, ++firstSectionOrder);
+            setPreferenceOrder(PREF_BRAVE_LEO, ++featuresSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_LEO);
         }
 
-        int generalOrder = firstSectionOrder;
+        int generalOrder = featuresSectionOrder;
         setPreferenceOrder(PREF_GENERAL_SECTION, ++generalOrder);
 
         setPreferenceOrder(PREF_BRAVE_SEARCH_ENGINES, ++generalOrder);
@@ -442,6 +456,20 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private void updateSummaries() {
         updateSummary(PREF_BRAVE_STATS, BraveStatsPreferences.getPreferenceSummary());
+    }
+
+    private void initBraveAccount() {
+        Preference getStartedPreference = findPreference(PREF_GET_STARTED);
+        if (getStartedPreference != null) {
+            getStartedPreference.setOnPreferenceClickListener(
+                    new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            BraveAccountCustomTabActivity.show(getActivity());
+                            return true;
+                        }
+                    });
+        }
     }
 
     private void overrideChromiumPreferences() {
