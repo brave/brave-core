@@ -34,7 +34,7 @@ public class AppState {
 
   public let braveCore: BraveCoreMain
   public let migration: Migration
-  public let profile: Profile
+  public let profile: LegacyBrowserProfile
   public let newsFeedDataSource: FeedDataSource
   public let uptimeMonitor = UptimeMonitor()
   private var didBecomeActive = false
@@ -94,7 +94,7 @@ public class AppState {
     }
 
     // Setup Profile
-    profile = BrowserProfile()
+    profile = LegacyBrowserProfile()
 
     // Setup Migrations
     migration = Migration()
