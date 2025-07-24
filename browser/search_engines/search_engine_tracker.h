@@ -35,6 +35,8 @@ inline constexpr char kWebDiscoveryEnabledMetric[] =
     "Brave.Search.WebDiscoveryEnabled";
 inline constexpr char kWebDiscoveryAndAdsMetric[] =
     "Brave.Search.WebDiscoveryAndAds";
+inline constexpr char kWebDiscoveryDefaultEngineMetric[] =
+    "Brave.Search.WebDiscoveryDefaultEngine";
 
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
