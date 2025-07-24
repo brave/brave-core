@@ -23,7 +23,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     align-items: flex-start;
     gap: var(--leo-spacing-2xl);
     align-self: stretch;
-    padding: var(--leo-spacing-m) 0 0 0;
+    padding: var(--leo-spacing-m) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
   }
   .leo-customization-form .actions {
     display: flex;
@@ -48,13 +48,9 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     font-weight: 600;
   }
   .leo-customization-padding {
-    padding: var(--leo-spacing-m) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
   }
   settings-toggle-button {
-    margin-left: 0 !important;
-    padding-left: 0 !important;
-    margin-right: 0 !important;
-    padding-right: 0 !important;
+    padding: var(--leo-spacing-l) var(--leo-spacing-2xl);
   }
   .error-message {
     display: flex;
@@ -78,15 +74,13 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   </div>
 </div>
 
-<div class="leo-customization-padding">
-  <settings-toggle-button id="customizationEnabled"
+<settings-toggle-button id="customizationEnabled"
     icon="tune"
     pref="{{prefs.brave.ai_chat.user_customization_enabled}}"
     label="$i18n{braveLeoAssistantCustomizationEnabledLabel}">
-  </settings-toggle-button>
-</div>
+</settings-toggle-button>
 
-<div class="leo-customization-form leo-customization-padding">
+<div class="leo-customization-form">
   <div class="input-container">
     <div class="custom-label">
       <div class="label-text">
