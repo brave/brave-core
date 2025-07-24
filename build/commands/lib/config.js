@@ -336,6 +336,7 @@ const Config = function () {
   this.braveVariationsServerUrl = getEnvConfig(['brave_variations_server_url'])
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.useRemoteExec = getEnvConfig(['use_remoteexec']) || false
+  this.useSiso = this.useRemoteExec && this.hostOS === 'linux'
   this.offline = getEnvConfig(['offline']) || false
   this.use_libfuzzer = false
   this.androidAabToApk = false
@@ -518,7 +519,7 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_remoteexec: this.useRemoteExec,
     use_reclient: this.useRemoteExec,
-    use_siso: false,
+    use_siso: this.useSiso,
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
     brave_services_production_domain: this.braveServicesProductionDomain,

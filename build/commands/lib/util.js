@@ -474,7 +474,7 @@ const util = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
       use_remoteexec: config.useRemoteExec,
       use_reclient: config.useRemoteExec,
-      use_siso: false,
+      use_siso: config.useSiso,
       reclient_bin_dir: config.realRewrapperDir,
       real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
@@ -525,6 +525,15 @@ const util = {
           ['gen', outputDir, ...extraGnGenOpts, ...internalOpts],
           options,
         )
+      }
+
+      // Workaround until this change appears in Brave.
+      // https://chromium.googlesource.com/chromium/src/+/add31462297022cbd6c61462329c780b3ad82731
+      if (config.useSiso) {
+        const cargoPkgRepository = path.join(config.outputDir, 'CARGO_PKG_REPOSITORY')
+        if (!fs.existsSync(cargoPkgRepository)) {
+          fs.writeFileSync(cargoPkgRepository, '')
+        }
       }
     })
   },

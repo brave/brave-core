@@ -1,0 +1,270 @@
+diff --git a/build/config/siso/main.star b/build/config/siso/main.star
+index 698c1fd86990ae0528de053cd0a1ad1dc9b2207b..5061d1eba70e5e5675b9da6db6af34f04780cf1b 100644
+--- a/build/config/siso/main.star
++++ b/build/config/siso/main.star
+@@ -7,7 +7,8 @@
+ load("@builtin//encoding.star", "json")
+ load("@builtin//lib/gn.star", "gn")
+ load("@builtin//runtime.star", "runtime")
+-load("@builtin//struct.star", "module")
++load("@builtin//struct.star", "module", "struct")
++load("@builtin//path.star", "path")
+ load("./backend_config/backend.star", "backend")
+ load("./blink_all.star", "blink_all")
+ load("./gn_logs.star", "gn_logs")
+@@ -55,6 +56,18 @@ def init(ctx):
+     step_config = mojo.step_config(ctx, step_config)
+     step_config = rust.step_config(ctx, step_config)
+     step_config = simple.step_config(ctx, step_config)
++
++    # print('platform.python_bin', platform.python_bin)
++    # step_config["rules"].extend([
++    #     {
++    #         "name": "brave/transpile-web-ui",
++    #         "command_prefix": platform.python_bin + " ../../brave/script/transpile-web-ui.py",
++    #         "remote": False,
++    #         "output_local": True,
++    #         "debug": True,
++    #     }
++    # ])
++
+     if reproxy.enabled(ctx):
+         step_config = reproxy.step_config(ctx, step_config)
+ 
+@@ -93,6 +106,236 @@ def init(ctx):
+     handlers.update(simple.handlers)
+     handlers.update(reproxy.handlers)
+ 
++    def __redirect_cc(ctx, cmd):
++        source_file_idx = None
++        for i, arg in enumerate(cmd.args):
++            if arg in ['-c', '/c']:
++                source_file_idx = i + 1
++                break
++
++        if source_file_idx == None or source_file_idx >= len(cmd.args):
++            return cmd
++
++        source_file = cmd.args[source_file_idx]
++        print('__redirect_cc: source_file:', source_file)
++
++        override_file = None
++        if source_file.startswith('../../'):
++            override_file = source_file.replace('../../', '../../brave/chromium_src/')
++        elif source_file.startswith('gen/'):
++            override_file = source_file.replace('gen/', '../../brave/chromium_src/')
++        else:
++            source_file_parts = source_file.split('/')
++            if len(source_file_parts) > 1 and source_file_parts[1] == 'gen':
++                override_file = '../../brave/chromium_src/' + '/'.join(source_file_parts[2:])
++            else:
++                return cmd
++
++        print('__redirect_cc: override_file:', override_file)
++        print('__redirect_cc: ctx.fs.canonpath(override_file):', ctx.fs.canonpath(override_file))
++        print('__redirect_cc: ctx.fs.exists(ctx.fs.canonpath(override_file)):', ctx.fs.exists(ctx.fs.canonpath(override_file)))
++
++        if override_file and ctx.fs.exists(ctx.fs.canonpath(override_file)):
++            args = list(cmd.args)
++            args[source_file_idx] = override_file
++
++            new_cmd = {}
++            for key in dir(cmd):
++                new_cmd[key] = getattr(cmd, key)
++            new_cmd["args"] = tuple(args)
++            new_cmd_struct = struct(**new_cmd)
++
++            ctx.actions.fix(args = args)
++            return new_cmd_struct
++
++        return cmd
++
++
++    brave_chromium_src_files = (
++        '.css',
++        '.html',
++        '.icon',
++        '.json',
++        '.mojom',
++        '.pdl',
++        '.py',
++        '.ts',
++        '.xml',
++    )
++    def __brave_chromium_utils(ctx, cmd, inputs):
++        new_cmd = {}
++        for key in dir(cmd):
++            new_cmd[key] = getattr(cmd, key)
++
++        new_inputs = cmd.inputs + inputs
++        chromium_output_mapping = {}
++        for input in cmd.inputs:
++            if input.endswith(brave_chromium_src_files):
++                override_file = "brave/chromium_src/" + input
++                if ctx.fs.exists(override_file):
++                    new_inputs.append(override_file)
++                dot_idx = input.rfind('.')
++                if dot_idx != -1:
++                    override_file = input[:dot_idx] + '-chromium.' + input[dot_idx + 1:]
++                    if ctx.fs.exists(override_file):
++                        new_inputs.append(override_file)
++                        chromium_output_mapping[path.base(input).replace('.ts', '.js')] = path.base(override_file).replace('.ts', '.js')
++                        chromium_output_mapping[path.base(input).replace('.ts', '.d.ts')] = path.base(override_file).replace('.ts', '.d.ts')
++                    dot_idx = input.rfind('.', 0, dot_idx)
++                    if dot_idx != -1:
++                        override_file = input[:dot_idx] + '-chromium.' + input[dot_idx + 1:]
++                        if ctx.fs.exists(override_file):
++                            new_inputs.append(override_file)
++                            chromium_output_mapping[path.base(input).replace('.ts', '.js')] = path.base(override_file).replace('.ts', '.js')
++                            chromium_output_mapping[path.base(input).replace('.ts', '.d.ts')] = path.base(override_file).replace('.ts', '.d.ts')
++
++        # Need additional output handling for -chromium files.
++        new_outputs = cmd.outputs + []
++        for output in cmd.outputs:
++            output_filename = path.base(output)
++            chromium_filename = chromium_output_mapping.get(output_filename)
++            if chromium_filename:
++                chromium_output = output[:len(output) - len(output_filename)] + chromium_filename
++                new_outputs.append(chromium_output)
++                print('added to output:', output, 'chromium file:', chromium_output)
++
++        new_cmd["inputs"] = new_inputs
++        new_cmd["outputs"] = new_outputs
++        print('new_inputs:', new_inputs)
++        print('new_outputs:', new_outputs)
++        new_cmd_struct = struct(**new_cmd)
++
++        ctx.actions.fix(inputs = new_inputs, outputs = new_outputs)
++
++        return new_cmd_struct
++
++    handlers["redirect_cc"] = __redirect_cc
++
++    def adjust_python_rule(rule, input_files):
++        reproxy_config = rule.get("reproxy_config")
++        if not reproxy_config:
++            return
++
++        reproxy_config["remote_wrapper"] = "../../buildtools/reclient_cfgs/python/python_remote_wrapper"
++
++        handler_name = rule.get("handler")
++        if not handler_name:
++            new_handler_name = rule["name"] + "_chromium_src"
++        else:
++            new_handler_name = handler_name + "_chromium_src"
++        if new_handler_name not in handlers:
++            def create_handler(inputs):
++                captured_orig_handler = handlers.get(handler_name)
++
++                def __brave_chromium_utils_wrapper(ctx, cmd):
++                    cmd = __brave_chromium_utils(ctx, cmd, inputs)
++                    if captured_orig_handler:
++                        return captured_orig_handler(ctx, cmd)
++
++                return __brave_chromium_utils_wrapper
++
++            handlers[new_handler_name] = create_handler([
++                "brave/script/brave_chromium_utils.py",
++                "brave/script/override_utils.py",
++            ] + input_files)
++
++        rule["handler"] = new_handler_name
++
++    for rule in step_config["rules"]:
++        rule_name = rule["name"]
++        if rule_name == "mojo/mojom_parser":
++            adjust_python_rule(rule, [])
++            continue
++
++        if rule_name == "typescript/ts_library":
++            # adjust_python_rule(rule, [])
++            # Disable for now. Too much additional inputs/outputs to handle.
++            rule.pop("reproxy_config", None)
++            continue
++
++        if rule_name == "blink/generate_bindings":
++            # Timeouts currently on RBE.
++            # rule["remote"] = False
++            # rule.pop("reproxy_config", None)
++            reproxy_config = rule.get("reproxy_config")
++            if reproxy_config:
++                reproxy_config["exec_timeout"] = "10m"
++                reproxy_config["reclient_timeout"] = "10m"
++
++            adjust_python_rule(rule, [
++                "brave/script/brave_task_queue_helper.py",
++                "build/gn_helpers.py",
++                ctx.fs.canonpath("./args.gn"),
++                ctx.fs.canonpath("./args_generated.gni"),
++            ])
++            continue
++
++            # reproxy_config = rule.get("reproxy_config")
++            # if not reproxy_config:
++            #     continue
++
++            # reproxy_config["remote_wrapper"] = "../../buildtools/reclient_cfgs/python/python_remote_wrapper"
++
++            # handler_name = rule.get("handler")
++            # if not handler_name:
++            #     new_handler_name = rule["name"] + "_chromium_src"
++            # else:
++            #     new_handler_name = handler_name + "_chromium_src"
++            # if new_handler_name not in handlers:
++            #     def create_handler(inputs):
++            #         captured_orig_handler = handlers.get(handler_name)
++
++            #         def __brave_chromium_utils_wrapper(ctx, cmd):
++            #             cmd = __brave_chromium_utils(ctx, cmd, inputs)
++            #             if captured_orig_handler:
++            #                 return captured_orig_handler(ctx, cmd)
++
++            #         return __brave_chromium_utils_wrapper
++
++            #     handlers[new_handler_name] = create_handler([
++            #         "brave/script/brave_chromium_utils.py",
++            #         "brave/script/override_utils.py",
++            #         "brave/chromium_src/mojo/public/tools/mojom/mojom_parser.py"
++            #     ])
++
++            # rule["handler"] = new_handler_name
++            # continue
++
++        # Disable remote for some rules.
++        # if rule["name"].startswith(("mojo", "typescript", "blink/generate_bindings")):
++        #     rule["remote"] = False
++        #     rule.pop("reproxy_config", None)
++        #     continue
++
++        # Redirect cc for clang rules.
++        if rule["name"].startswith("clang"):
++            handler_name = rule.get("handler")
++            if handler_name == "rewrite_rewrapper_large":
++                handler_name = "rewrite_rewrapper"
++            if not handler_name:
++                rule["handler"] = "redirect_cc"
++            else:
++                orig_handler = handlers[handler_name]
++                new_handler_name = handler_name + "_redirect_cc"
++                if new_handler_name not in handlers:
++                    def create_handler():
++                        captured_orig_handler = orig_handler
++
++                        def __redirect_cc_wrapper(ctx, cmd):
++                            cmd = __redirect_cc(ctx, cmd)
++                            return captured_orig_handler(ctx, cmd)
++
++                        return __redirect_cc_wrapper
++
++                    handlers[new_handler_name] = create_handler()
++
++                rule["handler"] = new_handler_name
++
++    # Remove action_default and action_large labels from platforms.
++    for platform_properties in step_config["platforms"].values():
++        platform_properties.pop('label:action_default', None)
++        platform_properties.pop('label:action_large', None)
++
+     return module(
+         "config",
+         step_config = json.encode(step_config),
