@@ -76,6 +76,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.ui.base.Clipboard;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.widget.Toast;
 
@@ -150,15 +151,19 @@ public class Utils {
             final Context context,
             final String textToCopy,
             @StringRes final int textToShow,
-            final boolean scheduleClear) {
-        ClipboardManager clipboard =
-                (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("", textToCopy);
-        clipboard.setPrimaryClip(clip);
-        if (textToShow != -1) {
+            final boolean treatAsPasword) {
+        if (treatAsPasword) {
+            Clipboard.getInstance().setPassword(textToCopy);
+        } else {
+            Clipboard.getInstance().setText("" /* label */, textToCopy, false);
+        }
+
+        // Similar to ClipboardImpl.showToastIfNeeded
+        // Conditionally show a toast to avoid duplicate notifications in Android 13+
+        if (textToShow != -1 && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
             Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
         }
-        if (!scheduleClear) {
+        if (!treatAsPasword) {
             return;
         }
 
@@ -662,6 +667,8 @@ public class Utils {
                 });
     }
 
+    // Class Paint does not have setTextAppearance method
+    @SuppressWarnings("checkstyle:SetTextColorAndSetTextSizeCheck")
     public static Bitmap drawTextToBitmap(
             Bitmap bitmap, String text, float scale, float scaleDown) {
         Canvas canvas = new Canvas(bitmap);
