@@ -202,4 +202,18 @@ TEST_F(BraveShieldsUtilProfilesTest, SetForgetFirstPartyStorageEnabled) {
   RunTest<bool>(kExpects, std::move(set), std::move(get));
 }
 
+TEST_F(BraveShieldsUtilProfilesTest, SetAutoShredType) {
+  constexpr std::pair<AutoShredType, AutoShredType> kExpects[] = {
+      {NEVER, NEVER}, {TAB_CLOSE, TAB_CLOSE}, {APP_EXIT, APP_EXIT}};
+
+  auto set = [this](HostContentSettingsMap* map, AutoShredType value) {
+    SetAutoShredType(map, value, kTestUrl);
+  };
+  auto get = [this](HostContentSettingsMap* map) {
+    return GetAutoShredType(map, kTestUrl);
+  };
+
+  RunTest<AutoShredType>(kExpects, std::move(set), std::move(get));
+}
+
 }  // namespace brave_shields
