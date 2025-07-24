@@ -14,8 +14,7 @@ deprecated_visibility_allowed = [
   "//brave/components/url_sanitizer/browser",
   "//brave/components/debounce/core/browser",
   "//brave/components/ntp_background_images/browser",
-  "//brave/components/psst/browser/core:headers",
-  "//brave/components/psst/browser/core:core_impl",
+  "//brave/components/psst/browser/core",
   "//brave/components/request_otr/browser",
   "//chrome/browser",
 ]
