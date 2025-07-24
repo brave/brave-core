@@ -13,7 +13,7 @@
 #define SPLIT SPLIT, TREE_NODE
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#include "src/components/tabs/public/tab_collection.h"  // IWYU pragma: export
+#include <components/tabs/public/tab_collection.h>  // IWYU pragma: export
 
 #if !BUILDFLAG(IS_ANDROID)
 #undef SPLIT

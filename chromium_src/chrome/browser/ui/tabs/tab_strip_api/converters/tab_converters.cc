@@ -14,6 +14,6 @@
     tab_collection->collection_type =        \
         tabs_api::mojom::TabCollection::CollectionType::kTreeNode
 
-#include "src/chrome/browser/ui/tabs/tab_strip_api/converters/tab_converters.cc"
+#include <chrome/browser/ui/tabs/tab_strip_api/converters/tab_converters.cc>
 
 #undef kSplitTab

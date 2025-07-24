@@ -10,6 +10,6 @@
   UNPINNED:      \
   case TabCollection::Type::TREE_NODE
 
-#include "src/chrome/browser/ui/tabs/tab_model.cc"
+#include <chrome/browser/ui/tabs/tab_model.cc>
 
 #undef UNPINNED
