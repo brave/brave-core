@@ -12,7 +12,6 @@ brave_browser_debounce_deps = [
   "//base",
   "//brave/components/debounce/core/browser",
   "//brave/components/debounce/core/common",
-  "//brave/extensions:common",
   "//chrome/common",
   "//components/keyed_service/content",
 ]
