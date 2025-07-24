@@ -871,9 +871,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #if !BUILDFLAG(IS_ANDROID)
     content::RegisterWebUIControllerInterfaceBinder<
         ai_chat::mojom::AIChatSettingsHelper, BraveSettingsUI>(map);
-#endif
     content::RegisterWebUIControllerInterfaceBinder<
         ai_chat::mojom::CustomizationSettingsHandler, BraveSettingsUI>(map);
+#endif
   }
 #if BUILDFLAG(IS_ANDROID)
   if (ai_chat::IsAIChatEnabled(prefs)) {
