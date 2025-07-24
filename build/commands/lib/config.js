@@ -255,7 +255,7 @@ const Config = function () {
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
 }
 
-Config.prototype.FORWARD_ENV_VARS_TO_GN = [
+Config.prototype.FORWARD_ENV_ARGS_TO_GN = [
   'bitflyer_production_client_id',
   'bitflyer_production_client_secret',
   'bitflyer_production_fee_address',
@@ -439,7 +439,7 @@ Config.prototype.buildArgs = function () {
     generate_about_credits: true,
   }
 
-  for (const key of this.FORWARD_ENV_VARS_TO_GN) {
+  for (const key of this.FORWARD_ENV_ARGS_TO_GN) {
     args[key] = getEnvConfig([key])
   }
 
