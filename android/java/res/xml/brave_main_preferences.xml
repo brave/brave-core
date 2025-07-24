@@ -7,8 +7,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:orderingFromXml="false">
     <PreferenceCategory
-        android:key="features_section"
+        android:key="brave_account_section"
         android:order="1"
+        android:title="@string/prefs_section_brave_account"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="get_started"
+        android:order="1"
+        android:icon="@drawable/ic_brave"
+        android:title="@string/get_started"/>
+    <PreferenceCategory
+        android:key="features_section"
+        android:order="2"
         android:title="@string/prefs_section_features"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.privacy.BravePrivacySettings"
