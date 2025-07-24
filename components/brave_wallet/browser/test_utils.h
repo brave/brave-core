@@ -13,7 +13,9 @@
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/value_store/test_value_store_factory.h"
@@ -166,6 +168,23 @@ scoped_refptr<value_store::TestValueStoreFactory> GetTestValueStoreFactory(
 std::unique_ptr<TxStorageDelegateImpl> GetTxStorageDelegateForTest(
     PrefService* prefs,
     scoped_refptr<value_store::ValueStoreFactory> store_factory);
+
+// Helper class to mock BraveWalletService::AddSignMessageRequest and
+// BraveWalletService::NotifySignMessageRequestProcessed methods.
+class SignMessageRequestWaiter {
+ public:
+  explicit SignMessageRequestWaiter(BraveWalletService* brave_wallet_service);
+  ~SignMessageRequestWaiter();
+
+  void WaitAndProcess(bool approved);
+
+ private:
+  void OnSignMessageRequestAdded();
+
+  raw_ptr<BraveWalletService> brave_wallet_service_;
+  base::CallbackListSubscription subscription_;
+  base::test::TestFuture<int> future_;
+};
 
 }  // namespace brave_wallet
 

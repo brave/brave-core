@@ -638,39 +638,20 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   size_t GetSignMessageQueueSize() const {
-    size_t request_queue_size =
-        brave_wallet_service_->sign_message_requests_.size();
-    EXPECT_EQ(brave_wallet_service_->sign_message_callbacks_.size(),
-              request_queue_size);
-    return request_queue_size;
+    return brave_wallet_service_->sign_message_requests_.size();
   }
 
-  const mojom::SignMessageRequestPtr& GetSignMessageQueueFront() const {
-    return brave_wallet_service_->sign_message_requests_.front();
+  mojom::SignMessageRequestPtr GetSignMessageQueueFront() const {
+    return brave_wallet_service_->GetPendingSignMessageRequestsSync()
+        .front()
+        .Clone();
   }
   const mojom::SignMessageErrorPtr& GetSignMessageErrorQueueFront() const {
     return brave_wallet_service_->sign_message_errors_.front();
   }
 
   std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequests() {
-    base::RunLoop run_loop;
-    std::vector<mojom::SignMessageRequestPtr> requests_out;
-    brave_wallet_service_->GetPendingSignMessageRequests(
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::SignMessageRequestPtr> requests) {
-              for (const auto& request : requests) {
-                ASSERT_TRUE(request->sign_data->is_eth_standard_sign_data());
-                SCOPED_TRACE(
-                    request->sign_data->get_eth_standard_sign_data()->message);
-                EXPECT_EQ(request->chain_id,
-                          json_rpc_service()->GetChainIdSync(
-                              mojom::CoinType::ETH, GetOrigin()));
-                requests_out.push_back(request.Clone());
-              }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    return requests_out;
+    return brave_wallet_service_->GetPendingSignMessageRequestsSync();
   }
 
   std::vector<mojom::GetEncryptionPublicKeyRequestPtr>

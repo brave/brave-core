@@ -9,31 +9,31 @@
 #include <optional>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/test/browser_task_environment.h"
-#include "content/public/test/browser_test_utils.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
+using base::test::TestFuture;
 using testing::_;
 
 namespace brave_wallet {
@@ -69,14 +69,16 @@ class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
   MOCK_METHOD1(IsSolanaAccountConnected, bool(const std::string& account));
 };
 
+mojom::CardanoProviderErrorBundlePtr GetAccountNotConnectedError() {
+  return mojom::CardanoProviderErrorBundle::New(-3, "Account not connected",
+                                                nullptr);
+}
+
 }  // namespace
 
 class CardanoProviderImplUnitTest : public testing::Test {
  public:
-  CardanoProviderImplUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+  CardanoProviderImplUnitTest() = default;
   ~CardanoProviderImplUnitTest() override = default;
 
   void SetUp() override {
@@ -84,8 +86,8 @@ class CardanoProviderImplUnitTest : public testing::Test {
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),
-        &prefs_, &local_state_);
+        url_loader_factory_.GetSafeWeakWrapper(),
+        TestBraveWalletServiceDelegate::Create(), &prefs_, &local_state_);
     provider_ = std::make_unique<CardanoProviderImpl>(
         *brave_wallet_service_,
         std::make_unique<testing::NiceMock<MockBraveWalletProviderDelegate>>());
@@ -93,7 +95,7 @@ class CardanoProviderImplUnitTest : public testing::Test {
 
   void CreateWallet() {
     AccountUtils(keyring_service())
-        .CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+        .CreateWallet(kMnemonicAbandonAbandon, kTestWalletPassword);
   }
 
   mojom::AccountInfoPtr AddAccount() {
@@ -118,24 +120,233 @@ class CardanoProviderImplUnitTest : public testing::Test {
         provider()->delegate());
   }
 
+  BraveWalletService* brave_wallet_service() {
+    return brave_wallet_service_.get();
+  }
+
   KeyringService* keyring_service() {
     return brave_wallet_service_->keyring_service();
+  }
+
+  CardanoWalletService* cardano_wallet_service() {
+    return brave_wallet_service_->GetCardanoWalletService();
   }
 
  private:
   base::test::ScopedFeatureList feature_list_{
       features::kBraveWalletCardanoFeature};
 
-  base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
 
   std::unique_ptr<CardanoProviderImpl> provider_;
+  base::test::TaskEnvironment task_environment_;
 };
+
+TEST_F(CardanoProviderImplUnitTest, GetNetworkId) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr> future;
+
+  provider()->GetNetworkId(future.GetCallback());
+
+  auto& network_id = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(network_id, 1);
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoProviderImplUnitTest, GetUsedAddresses) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  TestFuture<const std::optional<std::vector<std::string>>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->GetUsedAddresses(future.GetCallback());
+
+  auto& addresses = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(addresses,
+            std::vector<std::string>{
+                "010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e557"
+                "890352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176"});
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoProviderImplUnitTest, GetUnusedAddresses) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  TestFuture<const std::optional<std::vector<std::string>>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->GetUnusedAddresses(future.GetCallback());
+
+  auto& addresses = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(addresses, std::vector<std::string>{});
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoProviderImplUnitTest, GetChangeAddress) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  TestFuture<const std::optional<std::string>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->GetChangeAddress(future.GetCallback());
+
+  auto& address = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(address,
+            "010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e5578903"
+            "52095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176");
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoProviderImplUnitTest, SignData_Approved) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  SignMessageRequestWaiter waiter(brave_wallet_service());
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->SignData(address->address_string, base::HexEncode("message"),
+                       future.GetCallback());
+
+  waiter.WaitAndProcess(true);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  base::Value::Dict expected_signature;
+  expected_signature.Set(
+      "key",
+      "a50101025839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e5"
+      "57890352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176032720062158207ea0"
+      "9a34aebb13c9841c71397b1cabfec5ddf950405293dee496cac2f437480a");
+  expected_signature.Set(
+      "signature",
+      "845882a30127045839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948ef"
+      "bf42e557890352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176676164647265"
+      "73735839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e55789"
+      "0352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176a166686173686564f4476d"
+      "657373616765584082b878be1769641643040d851379d8dacf398377133edd1a5022751b"
+      "d24bc5d769aa720d83faf653953865b3c104c766da9273f164e831cdf76bc1370c4f5d0"
+      "c");
+
+  EXPECT_EQ(signature, expected_signature);
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoProviderImplUnitTest, SignData_Rejected) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  SignMessageRequestWaiter waiter(brave_wallet_service());
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->SignData(address->address_string, base::HexEncode("message"),
+                       future.GetCallback());
+
+  waiter.WaitAndProcess(false);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(signature, std::nullopt);
+  EXPECT_EQ(error,
+            mojom::CardanoProviderErrorBundle::New(
+                3, l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
+                nullptr));
+}
 
 TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
   CreateWallet();
@@ -164,7 +375,7 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
 
   {
     // Request will be rejected because it is still waiting for wallet unlock.
-    base::test::TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+    TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
     provider()->Enable(future.GetCallback());
     auto error = future.Take();
     EXPECT_TRUE(error);
@@ -218,7 +429,7 @@ TEST_F(CardanoProviderImplUnitTest,
                                     std::vector<std::string>());
           });
 
-  base::test::TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
   provider()->Enable(future.GetCallback());
   auto error = future.Take();
   EXPECT_TRUE(error);
@@ -240,7 +451,7 @@ TEST_F(CardanoProviderImplUnitTest, EnableFails_OnWalletUnlock_TabNotActive) {
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return false; });
 
-  base::test::TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
   provider()->Enable(future.GetCallback());
   auto error = future.Take();
   EXPECT_TRUE(error);
@@ -263,124 +474,112 @@ TEST_F(CardanoProviderImplUnitTest, MethodReturnsError_WhenNoPermission) {
   EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(0);
 
   {
-    base::test::TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr>
-        future;
+    TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr> future;
     provider()->GetNetworkId(future.GetCallback());
     auto [networkId, error] = future.Take();
-    EXPECT_EQ(0, networkId);
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_EQ(networkId, 0);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
   {
-    base::test::TestFuture<const std::vector<std::string>&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::vector<std::string>>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetUsedAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
-    EXPECT_TRUE(addrs.empty());
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_FALSE(addrs);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
   {
-    base::test::TestFuture<const std::vector<std::string>&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::vector<std::string>>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetUnusedAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
-    EXPECT_TRUE(addrs.empty());
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_FALSE(addrs);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
   {
-    base::test::TestFuture<const std::string&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::string>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetChangeAddress(future.GetCallback());
     auto [addr, error] = future.Take();
-    EXPECT_EQ(addr, "");
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_FALSE(addr);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
   {
-    base::test::TestFuture<const std::vector<std::string>&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::vector<std::string>>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetRewardAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
-    EXPECT_TRUE(addrs.empty());
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_FALSE(addrs);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
   {
-    base::test::TestFuture<const std::string&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::string>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
 
     provider()->GetBalance(future.GetCallback());
     auto [balance, error] = future.Take();
-    EXPECT_TRUE(balance.empty());
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_FALSE(balance);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
   {
-    base::test::TestFuture<const std::optional<std::vector<std::string>>&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::vector<std::string>>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetUtxos(std::nullopt, nullptr, future.GetCallback());
     auto [utxos, error] = future.Take();
     EXPECT_FALSE(utxos);
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
   {
-    base::test::TestFuture<const std::string&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::string>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->SignTx("", false, future.GetCallback());
     auto [tx, error] = future.Take();
-    EXPECT_EQ("", tx);
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_FALSE(tx);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
   {
-    base::test::TestFuture<const std::string&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::string>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->SubmitTx("", future.GetCallback());
     auto [tx_hash, error] = future.Take();
-    EXPECT_EQ("", tx_hash);
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_FALSE(tx_hash);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
   {
-    base::test::TestFuture<mojom::CardanoProviderSignatureResultPtr,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<std::optional<base::Value::Dict>,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->SignData("", "", future.GetCallback());
     auto [data, error] = future.Take();
-    EXPECT_FALSE(data);
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_EQ(data, std::nullopt);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 
   {
-    base::test::TestFuture<const std::optional<std::vector<std::string>>&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::vector<std::string>>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetCollateral("", future.GetCallback());
     auto [result, error] = future.Take();
     EXPECT_FALSE(result);
-    EXPECT_EQ(error->code, -3);
-    EXPECT_FALSE(error->pagination_error_payload);
+    EXPECT_EQ(error, GetAccountNotConnectedError());
   }
 }
 
@@ -402,122 +601,121 @@ TEST_F(CardanoProviderImplUnitTest, MethodReturnsSuccess_WhenHasPermission) {
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr>
-        future;
+    TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr> future;
     provider()->GetNetworkId(future.GetCallback());
     auto [networkId, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<const std::vector<std::string>&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::vector<std::string>>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetUsedAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<const std::vector<std::string>&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::vector<std::string>>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetUnusedAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<const std::string&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::string>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetChangeAddress(future.GetCallback());
     auto [addr, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<const std::vector<std::string>&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::vector<std::string>>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetRewardAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<const std::string&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::string>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
 
     provider()->GetBalance(future.GetCallback());
     auto [balance, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<const std::optional<std::vector<std::string>>&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::vector<std::string>>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetUtxos(std::nullopt, nullptr, future.GetCallback());
     auto [utxos, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<const std::string&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::string>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->SignTx("", false, future.GetCallback());
     auto [tx, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<const std::string&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::string>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->SubmitTx("", future.GetCallback());
     auto [tx_hash, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<mojom::CardanoProviderSignatureResultPtr,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<std::optional<base::Value::Dict>,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->SignData("", "", future.GetCallback());
     auto [data, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<const std::optional<std::vector<std::string>>&,
-                           mojom::CardanoProviderErrorBundlePtr>
+    TestFuture<const std::optional<std::vector<std::string>>&,
+               mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetCollateral("", future.GetCallback());
     auto [result, error] = future.Take();
-    EXPECT_FALSE(error);
+    EXPECT_NE(error, GetAccountNotConnectedError());
   }
 }
 
