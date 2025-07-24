@@ -43,7 +43,7 @@ extension BrowserViewController: TabObserver {
       URLPartinessScriptHandler(),
       FaviconScriptHandler(),
       Web3NameServiceScriptHandler(),
-      YoutubeQualityScriptHandler(tab: tab),
+      YoutubeQualityScriptHandler(),
       BraveLeoScriptHandler(),
       BraveSkusScriptHandler(),
       RequestBlockingContentScriptHandler(),
