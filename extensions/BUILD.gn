@@ -29,6 +29,7 @@ if (enable_extensions) {
     visibility =
         deprecated_visibility_allowed + [ "//brave/ios/browser/api/url" ]
     sources = [
+      "//extensions/common/error_utils.cc",
       "//extensions/common/url_pattern.cc",
       "//extensions/common/url_pattern.h",
       "//extensions/common/url_pattern_set.cc",
@@ -37,7 +38,6 @@ if (enable_extensions) {
 
     inputs = [
       "//extensions/common/constants.h",
-      "//extensions/common/error_utils.cc",
       "//extensions/common/error_utils.h",
     ]
 
