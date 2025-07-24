@@ -21,7 +21,6 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "components/prefs/pref_observer.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
