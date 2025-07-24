@@ -999,7 +999,7 @@ void ConversationHandler::RespondToToolUseRequest(
 
   tool_use->output = std::move(output);
 
-  OnToolUseEventOutput(chat_history_.back().get(), tool_use);
+  OnHistoryUpdate(chat_history_.back()->Clone());
 
   // Only perform generation if there are no pending tools left to run from
   // the last entry.
@@ -1472,30 +1472,6 @@ void ConversationHandler::OnHistoryUpdate(mojom::ConversationTurnPtr entry) {
   }
   for (auto& client : untrusted_conversation_ui_handlers_) {
     client->OnConversationHistoryUpdate(entry ? entry.Clone() : nullptr);
-  }
-}
-
-void ConversationHandler::OnToolUseEventOutput(mojom::ConversationTurn* entry,
-                                               mojom::ToolUseEvent* tool_use) {
-  CHECK(entry->uuid.has_value()) << "Cannot update tool use event for entry "
-                                    "without uuid";
-  for (auto& client : untrusted_conversation_ui_handlers_) {
-    client->OnToolUseEventOutput(entry->uuid.value(), tool_use->Clone());
-  }
-
-  CHECK(entry->events.has_value()) << "Cannot update tool use event for entry "
-                                      "without events";
-  auto event_order =
-      std::ranges::find_if(entry->events.value(),
-                           [tool_use](const auto& event) {
-                             return event->is_tool_use_event() &&
-                                    event->get_tool_use_event()->id ==
-                                        tool_use->id;
-                           }) -
-      entry->events->begin();
-  for (auto& observer : observers_) {
-    observer.OnToolUseEventOutput(this, entry->uuid.value(), event_order,
-                                  tool_use->Clone());
   }
 }
 

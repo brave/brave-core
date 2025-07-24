@@ -40,7 +40,6 @@
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
-#include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -144,10 +143,6 @@ class MockUntrustedConversationHandlerClient
   MOCK_METHOD(void,
               OnConversationHistoryUpdate,
               (mojom::ConversationTurnPtr),
-              (override));
-  MOCK_METHOD(void,
-              OnToolUseEventOutput,
-              (const std::string& entry_uuid, mojom::ToolUseEventPtr tool_use),
               (override));
   MOCK_METHOD(void,
               OnEntriesUIStateChanged,
@@ -2593,8 +2588,6 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
       conversation_handler_.get());
-  testing::NiceMock<MockConversationHandlerObserver> observer;
-  observer.Observe(conversation_handler_.get());
 
   base::RunLoop run_loop;
   testing::Sequence seq;
@@ -2605,13 +2598,6 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
       .InSequence(seq)
       .WillOnce(testing::DoAll(
           testing::WithArg<5>(
-              [](EngineConsumer::GenerationDataCallback callback) {
-                callback.Run(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("Ok, going to check...")),
-                    std::nullopt));
-              }),
-          testing::WithArg<6>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -2633,22 +2619,6 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   EXPECT_CALL(untrusted_client, OnEntriesUIStateChanged(
                                     ConversationEntriesStateIsGenerating(true)))
       .Times(testing::AtLeast(1));
-
-  // Client and observer should be given the tool use event output when it's
-  // available.
-  auto expected_tool_use_event = mojom::ToolUseEvent::New(
-      "weather_tool", "tool_id_1", "{\"location\":\"New York\"}",
-      CreateContentBlocksForText("Weather in New York: 72°F"));
-
-  EXPECT_CALL(untrusted_client, OnToolUseEventOutput)
-      .WillOnce(testing::WithArg<1>([&](mojom::ToolUseEventPtr tool_use_event) {
-        EXPECT_MOJOM_EQ(*tool_use_event, *expected_tool_use_event);
-      }));
-
-  EXPECT_CALL(observer, OnToolUseEventOutput(_, _, 1, _))
-      .WillOnce(testing::WithArg<3>([&](mojom::ToolUseEventPtr tool_use_event) {
-        EXPECT_MOJOM_EQ(*tool_use_event, *expected_tool_use_event);
-      }));
 
   // Only the weather_tool UseTool should be called
   EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"New York\"}"), _))
@@ -2682,8 +2652,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
                         mojom::ConversationEntryEvent::NewCompletionEvent(
                             mojom::CompletionEvent::New("")),
                         std::nullopt)));
-                // Wait for async mojom events to be completed
-                run_loop.QuitWhenIdle();
+                run_loop.Quit();
               })));
 
   // We should see the final "generation in progress" change to false
@@ -2709,9 +2678,9 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   auto& assistant_entry = history[1];
   ASSERT_TRUE(assistant_entry->events.has_value());
   auto& events = assistant_entry->events.value();
-  ASSERT_EQ(events.size(), 2u);
-  EXPECT_TRUE(events[1]->is_tool_use_event());
-  auto& tool_event = events[1]->get_tool_use_event();
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_TRUE(events[0]->is_tool_use_event());
+  auto& tool_event = events[0]->get_tool_use_event();
   EXPECT_TRUE(tool_event->output.has_value());
   EXPECT_EQ(tool_event->output->size(), 1u);
   EXPECT_MOJOM_EQ(

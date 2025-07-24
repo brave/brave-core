@@ -100,10 +100,6 @@ class AIChatService : public KeyedService,
       std::optional<PageContents> maybe_associated_content) override;
   void OnConversationEntryRemoved(ConversationHandler* handler,
                                   std::string entry_uuid) override;
-  void OnToolUseEventOutput(ConversationHandler* handler,
-                            std::string_view entry_uuid,
-                            size_t event_order,
-                            mojom::ToolUseEventPtr tool_use) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
   void OnConversationTitleChanged(const std::string& conversation_uuid,
                                   const std::string& title) override;

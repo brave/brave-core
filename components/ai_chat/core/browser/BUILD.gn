@@ -60,8 +60,6 @@ static_library("browser") {
     "tools/tool.h",
     "tools/tool_input_properties.cc",
     "tools/tool_input_properties.h",
-    "tools/tool_utils.cc",
-    "tools/tool_utils.h",
     "types.h",
     "utils.cc",
     "utils.h",
