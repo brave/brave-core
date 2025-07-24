@@ -20,7 +20,7 @@ extension AttributedString {
     return result
   }
 
-  init(markdown: String, preferredFont: Font, allowedURLs: [URL]) throws {
+  init(markdown: String, preferredFont: Font, allowedURLs: Set<URL>) throws {
     var result = try AttributedString(
       markdown: markdown,
       options: AttributedString.options,

@@ -29,7 +29,7 @@ public class MarkdownParser {
     preferredFont: UIFont,
     useHLJS: Bool,
     isDarkTheme: Bool,
-    allowedURLs: [URL]
+    allowedURLs: Set<URL>
   ) -> [StringBlock]? {
     guard
       let string = try? AttributedString(
