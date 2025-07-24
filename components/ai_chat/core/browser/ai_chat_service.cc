@@ -902,6 +902,18 @@ void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
   }
 }
 
+void AIChatService::OnToolUseEventOutput(ConversationHandler* handler,
+                                         std::string_view entry_uuid,
+                                         size_t event_order,
+                                         mojom::ToolUseEventPtr tool_use) {
+  // Persist the tool use event
+  if (ai_chat_db_ && !handler->GetIsTemporary()) {
+    ai_chat_db_
+        .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateToolUseEvent))
+        .WithArgs(entry_uuid, event_order, std::move(tool_use));
+  }
+}
+
 void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
   DVLOG(4) << "Client connection changed for conversation "
            << handler->get_conversation_uuid();

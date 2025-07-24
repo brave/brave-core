@@ -108,10 +108,16 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
   CHECK(mojom_event);
   CHECK(proto_event);
 
-  // Id is the only field with required content for serialization as
-  // otherwise it won't be able to be stitched together or responded to.
+  // Since this is only used for storage, we enforce required fields for tool
+  // use and identification.
   if (mojom_event->id.empty()) {
     DLOG(ERROR) << "Invalid ToolUseEvent found for persistence, with empty id";
+    return false;
+  }
+
+  if (mojom_event->tool_name.empty()) {
+    DLOG(ERROR)
+        << "Invalid ToolUseEvent found for persistence, with empty tool name";
     return false;
   }
 

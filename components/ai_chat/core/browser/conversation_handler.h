@@ -81,6 +81,11 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnConversationEntryRemoved(ConversationHandler* handler,
                                             std::string turn_uuid) {}
 
+    virtual void OnToolUseEventOutput(ConversationHandler* handler,
+                                      std::string_view entry_uuid,
+                                      size_t event_order,
+                                      mojom::ToolUseEventPtr tool_use) {}
+
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
     virtual void OnConversationTitleChanged(
@@ -322,6 +327,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnModelDataChanged();
   void OnConversationDeleted();
   void OnHistoryUpdate(mojom::ConversationTurnPtr entry);
+  void OnToolUseEventOutput(mojom::ConversationTurn* entry,
+                            mojom::ToolUseEvent* tool_use);
   void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
   void OnConversationEntryRemoved(std::optional<std::string> turn_id);
   void OnSuggestedQuestionsChanged();
