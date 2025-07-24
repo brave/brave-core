@@ -704,8 +704,12 @@ if (!is_android) {
       "//brave/base/test:test_vendor_is_brave",
       "//brave/browser/brave_rewards",
       "//brave/browser/ui/sidebar",
+      "//brave/components/ai_chat/core/common",
       "//brave/components/brave_ads/core/public:headers",
       "//brave/components/brave_rewards/content",
+      "//brave/components/brave_vpn/common/buildflags",
+      "//brave/components/constants",
+      "//brave/components/p3a",
       "//chrome:packed_resources",
       "//chrome:resources",
       "//chrome:strings",
@@ -725,6 +729,34 @@ if (!is_android) {
     ]
 
     data = [ "//brave/test/data/" ]
+
+    if (is_win || is_mac || is_linux) {
+      deps += [
+        "//brave/components/brave_news/common",
+        "//brave/components/brave_rewards/core",
+        "//brave/components/brave_wallet/common",
+        "//brave/components/brave_wallet/common:pref_names",
+      ]
+    }
+
+    if (enable_brave_vpn) {
+      deps += [ "//brave/components/brave_vpn/common" ]
+    }
+
+    if (enable_speedreader) {
+      deps += [ "//brave/components/speedreader" ]
+    }
+
+    if (enable_web_discovery_native) {
+      deps += [ "//brave/components/web_discovery/common" ]
+    }
+
+    if (enable_tor) {
+      deps += [
+        "//brave/components/tor",
+        "//brave/components/tor:pref_names",
+      ]
+    }
 
     if (toolkit_views) {
       deps += [ "//brave/components/sidebar/browser" ]
