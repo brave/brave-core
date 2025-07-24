@@ -79,7 +79,7 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
 
   void OnSignMessageRequestProcessed(const mojom::AccountIdPtr& account_id,
                                      const mojom::CardanoKeyIdPtr& key_id,
-                                     std::vector<uint8_t> message,
+                                     const std::vector<uint8_t>& message,
                                      SignDataCallback callback,
                                      bool approved,
                                      mojom::EthereumSignatureBytesPtr signature,
