@@ -24,8 +24,11 @@ inline constexpr auto kAllowedUrlProtocols =
         "blob",
     });
 
-// Before adding to this list, get approval from the security team.
-inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
+// Before adding to the lists below, get approval from the security team.
+
+// List of URL prefixes that are used in functionality not controlled via
+// admin policies.
+inline constexpr auto kBaseAllowedUrlPrefixes = std::to_array<std::string_view>({
     // allowed because it 307's to https://componentupdater.brave.com
     "https://componentupdater.brave.com/service/update2",
     "https://crxdownload.brave.com/crx/blobs/",
@@ -33,17 +36,17 @@ inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
     // Omaha/Sparkle
     "https://updates.bravesoftware.com/",
 
-    // stats/referrals
-    "https://usage-ping.brave.com/",
-
     // needed for DoH on Mac build machines
     "https://dns.google/dns-query",
 
     // needed for DoH on Mac build machines
     "https://chrome.cloudflare-dns.com/dns-query",
 
-    // for fetching tor client updater component
-    "https://tor.bravesoftware.com/",
+    // brave A/B testing
+    "https://variations.brave.com/seed",
+
+    // Brave's Privacy-focused CDN
+    "https://pcdn.brave.com/",
 
     // brave sync v2 production
     "https://sync-v2.brave.com/v2",
@@ -54,18 +57,6 @@ inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
     // brave sync v2 dev
     "https://sync-v2.brave.software/v2",
 
-    // brave A/B testing
-    "https://variations.brave.com/seed",
-
-    // Brave News (production)
-    "https://brave-today-cdn.brave.com/",
-
-    // Brave's Privacy-focused CDN
-    "https://pcdn.brave.com/",
-
-    // p3a
-    "https://star-randsrv.bsg.brave.com/",
-
     // Other
     "https://brave-core-ext.s3.brave.com/",
     "https://dict.brave.com/",
@@ -74,6 +65,30 @@ inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
     "https://safebrowsing.brave.com/",
     "https://static.brave.com/",
     "https://static1.brave.com/",
+});
+
+// List of URL prefixes that are used in functionality controlled via
+// admin policies. A test that uses this list should also check URLs against
+// the base list above.
+inline constexpr auto kOtherAllowedUrlPrefixes = std::to_array<std::string_view>({
+    // stats/referrals
+    "https://usage-ping.brave.com/",
+    "https://usage-ping.bravesoftware.com/",
+
+    // for fetching tor client updater component
+    "https://tor.bravesoftware.com/",
+
+    // Brave News (production)
+    "https://brave-today-cdn.brave.com/",
+
+    // p3a
+    "https://star-randsrv.bsg.brave.com/",
+    "https://collector.bsg.brave.com/",
+
+    // web discovery
+    "https://collector.wdp.brave.com/",
+    "https://quorum.wdp.brave.com/",
+    "https://patterns.wdp.brave.com/",
 });
 
 }  // namespace brave
