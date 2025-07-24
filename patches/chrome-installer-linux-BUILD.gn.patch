@@ -1,8 +1,16 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index ddfe9309107e57f50b4a62a918744a17769186c0..06937d81ba2d9c2b25b1dfcf8ef1cf0c50a4ef63 100644
+index ddfe9309107e57f50b4a62a918744a17769186c0..d3ef72d6bb67fc14c9ce4cc824966db87004aa6a 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -63,6 +63,7 @@ if (build_with_internal_optimization_guide) {
+@@ -16,6 +16,7 @@ import("//third_party/angle/gni/angle.gni")
+ import("//third_party/widevine/cdm/widevine.gni")
+ import("//ui/gl/features.gni")
+ import("//ui/qt/qt.gni")
++import("//brave/build/config.gni")
+ 
+ if (bundle_widevine_cdm) {
+   import("//media/cdm/library_cdm/cdm_paths.gni")
+@@ -63,6 +64,7 @@ if (build_with_internal_optimization_guide) {
        [ "$root_out_dir/liboptimization_guide_internal.so" ]
  }
  
@@ -10,7 +18,7 @@ index ddfe9309107e57f50b4a62a918744a17769186c0..06937d81ba2d9c2b25b1dfcf8ef1cf0c
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
  
  # TODO(mmoss) Any convenient way to get all the relevant build files?
-@@ -171,6 +172,7 @@ action("merge_rpm_dependencies") {
+@@ -171,6 +173,7 @@ action("merge_rpm_dependencies") {
  strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    deps = [ "//chrome" ]
@@ -18,7 +26,7 @@ index ddfe9309107e57f50b4a62a918744a17769186c0..06937d81ba2d9c2b25b1dfcf8ef1cf0c
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -186,6 +188,7 @@ strip_binary("strip_chrome_management_service") {
+@@ -186,6 +189,7 @@ strip_binary("strip_chrome_management_service") {
  strip_binary("strip_chrome_sandbox") {
    binary_input = "$root_out_dir/chrome_sandbox"
    deps = [ "//sandbox/linux:chrome_sandbox" ]
@@ -26,7 +34,7 @@ index ddfe9309107e57f50b4a62a918744a17769186c0..06937d81ba2d9c2b25b1dfcf8ef1cf0c
  }
  
  strip_binary("strip_libEGL_shlib") {
-@@ -275,6 +278,7 @@ copy("common_packaging_files") {
+@@ -275,6 +279,7 @@ copy("common_packaging_files") {
    }
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
@@ -34,7 +42,7 @@ index ddfe9309107e57f50b4a62a918744a17769186c0..06937d81ba2d9c2b25b1dfcf8ef1cf0c
  }
  
  copy("deb_packaging_files") {
-@@ -381,6 +385,7 @@ group("installer_deps") {
+@@ -381,6 +386,7 @@ group("installer_deps") {
      "//components/privacy_sandbox/privacy_sandbox_attestations/preload:component",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -42,7 +50,7 @@ index ddfe9309107e57f50b4a62a918744a17769186c0..06937d81ba2d9c2b25b1dfcf8ef1cf0c
    if (bundle_widevine_cdm) {
      public_deps += [ "//third_party/widevine/cdm" ]
    }
-@@ -435,6 +440,9 @@ group("installer_deps") {
+@@ -435,11 +441,14 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -52,7 +60,22 @@ index ddfe9309107e57f50b4a62a918744a17769186c0..06937d81ba2d9c2b25b1dfcf8ef1cf0c
  
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -567,3 +575,6 @@ linux_package("unstable") {
+   } else {
+-    package = "chromium-browser"
++    package = "brave-browser" chrome_version_full = brave_version
+   }
+ 
+   deb_target_name = "${target_name}_deb"
+@@ -468,7 +477,7 @@ template("linux_package") {
+     }
+ 
+     inputs = packaging_files
+-    outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}-1_${deb_arch}.deb" ]
++    outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}_${deb_arch}.deb" ]
+ 
+     args = [
+       rebase_path("$root_out_dir/installer/debian/build.sh", root_build_dir),
+@@ -567,3 +576,6 @@ linux_package("unstable") {
  linux_package("canary") {
    channel = "canary"
  }

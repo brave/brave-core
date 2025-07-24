@@ -430,7 +430,7 @@ Config.prototype.buildArgs = function () {
     skip_signing: !this.shouldSign(),
     use_remoteexec: this.useRemoteExec,
     use_reclient: this.useRemoteExec,
-    use_siso: false,
+    use_siso: this.useSiso,
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
     generate_about_credits: true,
@@ -532,10 +532,12 @@ Config.prototype.buildArgs = function () {
     args.enable_precompiled_headers = false
   }
 
-  if (this.useRemoteExec) {
-    args.reclient_bin_dir = path.join(this.nativeRedirectCCDir)
-  } else {
-    args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
+  if (!this.useSiso) {
+    if (this.useRemoteExec) {
+      args.reclient_bin_dir = path.join(this.nativeRedirectCCDir)
+    } else {
+      args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
+    }
   }
 
   // Adjust symbol_level in Linux builds:
@@ -1328,6 +1330,13 @@ Object.defineProperty(Config.prototype, 'outputDir', {
   },
   set: function (outputDir) {
     return (this.__outputDir = outputDir)
+  },
+})
+
+Object.defineProperty(Config.prototype, 'useSiso', {
+  get: function () {
+    // Android fails with multiple reasons currently. Disable it for now.
+    return this.useRemoteExec && this.hostOS === 'linux' && !this.isAndroid()
   },
 })
 

@@ -77,6 +77,15 @@ hooks = [
                '--custom_py=third_party/reclient_configs/brave_custom/brave_custom.py'],
   },
   {
+    'name': 'hardlink_brave_siso_config',
+    'pattern': '.',
+    'action': [
+      'python3', 'build/hardlink_file.py',
+      'build/config/siso/brave_siso_config.star',
+      '../build/config/siso/brave_siso_config.star'
+    ],
+  },
+  {
     'name': 'download_sparkle',
     'pattern': '.',
     'condition': 'checkout_mac and download_prebuilt_sparkle',
