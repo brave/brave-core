@@ -234,7 +234,6 @@
     "elliptic": "6.6.1",
     "esbuild": "0.25.0",
     "prismjs": "1.30.0",
-    "tiny-secp256k1": "1.1.7",
-    "stylus": "0.0.1-security"
+    "tiny-secp256k1": "1.1.7"
   }
 }
