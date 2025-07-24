@@ -75,7 +75,7 @@ inline constexpr BraveAction kShowReward = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowReward,
     .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_REWARD,
     .anchor = side_panel::customize_chrome::mojom::ActionId::
-        kShowReward,  // Append to the end of the list
+        kShowReward,  // assign id of itself to append to the end of the list
     .category = side_panel::customize_chrome::mojom::CategoryId::kUrlBar,
     .pref_name = brave_rewards::prefs::kShowLocationBarButton,
     .icon = kLeoProductBatOutlineIcon};

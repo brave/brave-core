@@ -14,9 +14,9 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 
-#define ListCategories ListCategoriesChromium
-#define ListActions ListActionsChromium
-#define PinAction PinActionChromium
+#define ListCategories ListCategories_ChromiumImpl
+#define ListActions ListActions_ChromiumImpl
+#define PinAction PinAction_ChromiumImpl
 
 // pref_change_registrar_.Init() in constructor
 #define Init(...)    \
@@ -39,7 +39,7 @@
 #undef ListCategories
 
 void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
-  ListCategoriesChromium(
+  ListCategories_ChromiumImpl(
       base::BindOnce(
           &customize_chrome::AppendBraveSpecificCategories,
           base::Unretained(base::raw_ref<content::WebContents>(*web_contents_)))
@@ -47,7 +47,7 @@ void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
 }
 
 void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
-  ListActionsChromium(
+  ListActions_ChromiumImpl(
       base::BindOnce(&customize_chrome::FilterUnsupportedChromiumActions)
           .Then(base::BindOnce(
               &customize_chrome::ApplyBraveSpecificModifications,
@@ -67,7 +67,7 @@ void CustomizeToolbarHandler::PinAction(
     return;
   }
 
-  PinActionChromium(action_id, pin);
+  PinAction_ChromiumImpl(action_id, pin);
 }
 
 void CustomizeToolbarHandler::ObserveBraveActions() {
