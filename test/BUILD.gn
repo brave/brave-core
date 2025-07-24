@@ -1193,6 +1193,7 @@ test("brave_browser_tests") {
     ]
     deps += [
       "//brave/browser/extensions/api/identity/test:browsertests",
+      "//brave/browser/extensions/manifest_v2",
       "//brave/browser/importer:browser_tests",
     ]
   }

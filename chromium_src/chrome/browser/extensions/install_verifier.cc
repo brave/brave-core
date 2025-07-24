@@ -2,6 +2,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "chrome/browser/extensions/install_verifier.h"
 
 #include <algorithm>
@@ -43,7 +44,7 @@
 // All above headers copied from original install_verifier.cc are
 // included to prevent below GOOGLE_CHROME_BUILD affect them.
 
-#include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
+#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 
 // `VerifyStatus::ENFORCE` is only defaulted for google chrome.
 #if defined(OFFICIAL_BUILD)
@@ -53,7 +54,7 @@
 
 #define IsUnpackedLocation(...)      \
   IsUnpackedLocation(__VA_ARGS__) || \
-      extensions_mv2::IsKnownMV2Extension(extension->id())
+      extensions_mv2::IsKnownBraveHostedExtension(extension->id())
 
 #include <chrome/browser/extensions/install_verifier.cc>
 
