@@ -41,4 +41,5 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_INCOGNITO_SCREENSHOT = "incognito-screenshot";
     public static final String BRAVE_NTP_BRANDED_WALLPAPER_SURVEY_PANELIST =
             "BraveNTPBrandedWallpaperSurveyPanelist";
+    public static final String BRAVE_ACCOUNT = "BraveAccount";
 }
