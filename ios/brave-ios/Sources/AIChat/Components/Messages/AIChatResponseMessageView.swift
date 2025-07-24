@@ -75,7 +75,7 @@ struct AIChatResponseMessageView: View {
   }
 
   private var allowedURLs: Set<URL> {
-    guard let events = turn.events else { return [] }
+    let events = (turn.edits?.last ?? turn)?.events ?? []
     return Set(
       events.flatMap {
         $0.sourcesEvent?.sources.compactMap(\.url) ?? []
