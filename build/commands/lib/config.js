@@ -251,7 +251,6 @@ const Config = function () {
   this.braveIOSDeveloperOptionsCode = getEnvConfig([
     'brave_ios_developer_options_code',
   ])
-  this.service_key_stt = getEnvConfig(['service_key_stt'])
   this.skip_download_rust_toolchain_aux =
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
 }
@@ -373,7 +372,6 @@ Config.prototype.buildArgs = function () {
     use_siso: false,
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
-    service_key_stt: this.service_key_stt,
     generate_about_credits: true,
   }
 
@@ -414,6 +412,7 @@ Config.prototype.buildArgs = function () {
     'rewards_grant_staging_endpoint',
     'safebrowsing_api_endpoint',
     'service_key_aichat',
+    'service_key_stt',
     'sparkle_dsa_private_key_file',
     'sparkle_eddsa_private_key',
     'sparkle_eddsa_public_key',
