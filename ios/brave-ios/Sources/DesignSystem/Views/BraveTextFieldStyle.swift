@@ -13,11 +13,33 @@ import SwiftUI
 ///            non-private version of this API). Should be checked at each major OS release. If it breaks,
 ///            change to a regular `ViewModifier`
 public struct BraveTextFieldStyle: TextFieldStyle {
-  public init() {}
+  var strokeColor: Color?
+  var lineWidthFactor: CGFloat?
+  var backgroundColor: Color?
+  var cornerRadius: CGFloat?
+
+  public init(
+    strokeColor: Color? = nil,
+    lineWidthFactor: CGFloat? = nil,
+    backgroundColor: Color? = nil,
+    cornerRadius: CGFloat? = nil
+  ) {
+    self.strokeColor = strokeColor
+    self.lineWidthFactor = lineWidthFactor
+    self.backgroundColor = backgroundColor
+    self.cornerRadius = cornerRadius
+  }
 
   public func _body(configuration: TextField<_Label>) -> some View {
     configuration
-      .modifier(BraveTextInputStyleModifier())
+      .modifier(
+        BraveInputStyleModifier(
+          strokeColor: strokeColor,
+          lineWidthFactor: lineWidthFactor,
+          backgroundColor: backgroundColor,
+          cornerRadius: cornerRadius
+        )
+      )
   }
 }
 
@@ -56,7 +78,7 @@ public struct BraveValidatedTextFieldStyle<Failure: LocalizedError & Equatable>:
     VStack(alignment: .leading) {
       configuration
         .modifier(
-          BraveTextInputStyleModifier(
+          BraveInputStyleModifier(
             strokeColor: error != nil ? Color(.braveErrorBorder) : nil,
             lineWidthFactor: error != nil ? 2 : nil,
             backgroundColor: error != nil ? Color(.braveErrorBackground) : nil
