@@ -45,41 +45,41 @@ declare_args() {
   audit_dev_deps = true
 }
 
-chromium_unit_tests_list = [
+chromium_unit_tests_deps = [
   "//base:base_unittests",
   "//components:components_unittests",
   "//net:net_unittests",
 ]
 if (!is_ios) {
-  chromium_unit_tests_list += [ "//chrome/test:unit_tests" ]
+  chromium_unit_tests_deps += [ "//chrome/test:unit_tests" ]
 }
 if (use_blink) {
-  chromium_unit_tests_list += [ "//content/test:content_unittests" ]
+  chromium_unit_tests_deps += [ "//content/test:content_unittests" ]
 }
 
 group("chromium_unit_tests") {
   testonly = true
-  data_deps = chromium_unit_tests_list
+  data_deps = chromium_unit_tests_deps
 
   write_file("$root_out_dir/chromium_unit_tests.json",
-             chromium_unit_tests_list,
+             chromium_unit_tests_deps,
              "json")
 }
 
-brave_all_unit_tests_list = [ "//brave/components:brave_components_unittests" ]
+brave_all_unit_tests_deps = [ "//brave/components:brave_components_unittests" ]
 if (!is_ios) {
-  brave_all_unit_tests_list += [ "//brave/test:brave_unit_tests" ]
+  brave_all_unit_tests_deps += [ "//brave/test:brave_unit_tests" ]
 } else {
-  brave_all_unit_tests_list += [ "//brave/ios/testing:ios_brave_unit_tests" ]
+  brave_all_unit_tests_deps += [ "//brave/ios/testing:ios_brave_unit_tests" ]
 }
 if (!is_ios && !is_android) {
-  brave_all_unit_tests_list += [ "//brave/test:brave_installer_unittests" ]
+  brave_all_unit_tests_deps += [ "//brave/test:brave_installer_unittests" ]
 }
 group("brave_all_unit_tests") {
   testonly = true
-  data_deps = brave_all_unit_tests_list
+  data_deps = brave_all_unit_tests_deps
   write_file("$root_out_dir/brave_all_unit_tests.json",
-             brave_all_unit_tests_list,
+             brave_all_unit_tests_deps,
              "json")
 }
 
