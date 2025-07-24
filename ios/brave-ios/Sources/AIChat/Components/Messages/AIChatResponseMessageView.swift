@@ -74,11 +74,13 @@ struct AIChatResponseMessageView: View {
       .joined(separator: "")
   }
 
-  private var allowedURLs: [URL] {
+  private var allowedURLs: Set<URL> {
     guard let events = turn.events else { return [] }
-    return events.flatMap {
-      $0.sourcesEvent?.sources.compactMap(\.url) ?? []
-    }
+    return Set(
+      events.flatMap {
+        $0.sourcesEvent?.sources.compactMap(\.url) ?? []
+      }
+    )
   }
 
   var body: some View {
