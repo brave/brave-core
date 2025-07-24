@@ -27,6 +27,7 @@
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
@@ -180,6 +181,10 @@ void BraveNewTabUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
+  if (profile->GetPrefs()->GetBoolean(
+          brave_news::prefs::kBraveNewsDisabledByPolicy)) {
+    return;
+  }
   // Wire up JS mojom to service
   auto* brave_news_controller =
       brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile);
