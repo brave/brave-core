@@ -299,6 +299,10 @@ inline constexpr char kInsecureDownloadBlockingLearnMoreUrl[] =
 inline constexpr char16_t kMyActivityUrlInClearBrowsingData[] =
     u"https://support.brave.com/";
 
+// The URL for "Your Gemini Apps Activity" page.
+inline constexpr char16_t kMyActivityGeminiAppsUrl[] =
+    u"https://support.brave.com/";
+
 // Help URL for the Omnibox setting.
 inline constexpr char16_t kOmniboxLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/"
