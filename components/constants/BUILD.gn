@@ -43,7 +43,6 @@ source_set("brave_service_key_helper") {
   ]
 
   deps = [
-    ":constants",
     "//base",
     "//url",
   ]

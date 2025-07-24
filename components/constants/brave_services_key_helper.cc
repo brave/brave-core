@@ -6,14 +6,18 @@
 #include "brave/components/constants/brave_services_key_helper.h"
 
 #include "base/strings/pattern.h"
-#include "brave/components/constants/network_constants.h"
 #include "url/gurl.h"
+#include "url/url_constants.h"
 
 namespace brave {
 
+inline constexpr char kBraveProxyPattern[] = "*.brave.com";
+inline constexpr char kBraveSoftwareProxyPattern[] = "*.bravesoftware.com";
+
 bool ShouldAddBraveServicesKeyHeader(const GURL& url) {
-  return base::MatchPattern(url.spec(), kBraveProxyPattern) ||
-         base::MatchPattern(url.spec(), kBraveSoftwareProxyPattern);
+  return url.scheme_piece() == url::kHttpScheme &&
+         (base::MatchPattern(url.host_piece(), kBraveProxyPattern) ||
+          base::MatchPattern(url.host_piece(), kBraveSoftwareProxyPattern));
 }
 
 }  // namespace brave
