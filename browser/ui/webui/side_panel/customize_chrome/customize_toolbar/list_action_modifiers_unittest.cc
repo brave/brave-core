@@ -341,17 +341,16 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories) {
   categories = customize_chrome::AppendBraveSpecificCategories(
       *web_contents_, std::move(categories));
 
-  // Verify Url Bar category is added with expected
-  // actions
+  // Verify "Address bar" category is added with expected actions
   ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
       Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
   auto it = std::ranges::find(
-      categories, side_panel::customize_chrome::mojom::CategoryId::kUrlBar,
+      categories, side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
       &side_panel::customize_chrome::mojom::Category::id);
   EXPECT_NE(it, categories.end());
 
-  // When Brave Rewards isn't supported, the Url Bar
-  // category should not be added
+  // When Brave Rewards isn't supported, the Address bar category should not be
+  // added
   prefs()->SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
                           base::Value(true));
   ASSERT_TRUE(
@@ -363,7 +362,7 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories) {
   categories = customize_chrome::AppendBraveSpecificCategories(
       *web_contents_, std::move(categories));
   it = std::ranges::find(
-      categories, side_panel::customize_chrome::mojom::CategoryId::kUrlBar,
+      categories, side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
       &side_panel::customize_chrome::mojom::Category::id);
   EXPECT_EQ(it, categories.end());
 }

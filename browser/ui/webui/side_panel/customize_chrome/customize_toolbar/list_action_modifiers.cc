@@ -36,8 +36,8 @@ namespace customize_chrome {
 
 namespace {
 
-void AddActionsForUrlCategory(Profile* profile,
-                              std::vector<BraveAction>& brave_actions) {
+void AddActionsForAddressBarCategory(Profile* profile,
+                                     std::vector<BraveAction>& brave_actions) {
   if (brave_rewards::IsSupportedForProfile(profile)) {
     brave_actions.push_back(kShowReward);
   }
@@ -54,20 +54,20 @@ using side_panel::customize_chrome::mojom::CategoryPtr;
 std::vector<CategoryPtr> AppendBraveSpecificCategories(
     content::WebContents& web_contents,
     std::vector<CategoryPtr> categories) {
-  // Add a new "Url Bar" category.
+  // Add a new "Address bar" category.
   std::vector<BraveAction> brave_actions;
-  AddActionsForUrlCategory(
+  AddActionsForAddressBarCategory(
       Profile::FromBrowserContext(web_contents.GetBrowserContext()),
       brave_actions);
   if (brave_actions.empty()) {
-    // In case we don't have any Brave actions for Url Bar category, we don't
-    // need to add the category.
+    // In case we don't have any Brave actions for Address bar category, we
+    // don't need to add the category.
     return categories;
   }
 
   categories.push_back(Category::New(
-      CategoryId::kUrlBar,
-      l10n_util::GetStringUTF8(IDS_CUSTOMIZE_TOOLBAR_CATEGORY_URL_BAR)));
+      CategoryId::kAddressBar,
+      l10n_util::GetStringUTF8(IDS_CUSTOMIZE_TOOLBAR_CATEGORY_ADDRESS_BAR)));
   return categories;
 }
 
@@ -145,7 +145,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   //   kShowWallet,
   //   kShowAIChat,
   //   kShowVPN,
-  // Url Bar
+  // Address bar
   //   kShowReward
   auto* prefs = user_prefs::UserPrefs::Get(web_contents.GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
@@ -169,7 +169,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
     brave_actions.push_back(kShowWalletAction);
   }
 
-  AddActionsForUrlCategory(
+  AddActionsForAddressBarCategory(
       Profile::FromBrowserContext(web_contents.GetBrowserContext()),
       brave_actions);
 
