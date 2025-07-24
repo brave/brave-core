@@ -17,7 +17,9 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.StyleSpan;
@@ -66,6 +68,7 @@ import org.chromium.components.browser_ui.widget.ChromeDialog;
 import org.chromium.components.version_info.BraveVersionConstants;
 import org.chromium.ui.widget.ChromeImageButton;
 import org.chromium.webcompat_reporter.mojom.ReportInfo;
+import org.chromium.webcompat_reporter.mojom.WebcompatCategory;
 import org.chromium.webcompat_reporter.mojom.WebcompatCategoryItem;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
@@ -127,6 +130,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         public boolean isPlaceholder() {
             return mId == -1;
+        }
+
+        public boolean isSubmitAllowed(String additionalInfoText) {
+            return !isPlaceholder()
+                    && (mId != WebcompatCategory.OTHER
+                            || mId == WebcompatCategory.OTHER && !additionalInfoText.isEmpty());
         }
 
         @Override
@@ -959,6 +968,30 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
 
         mEditTextDetails = mReportBrokenSiteLayout.findViewById(R.id.details_info_text);
+        mEditTextDetails.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                    @Override
+                    public void afterTextChanged(Editable newValue) {
+                        int position = mIssueCategorySpinner.getSelectedItemPosition();
+                        AdapterView.OnItemSelectedListener listener =
+                                mIssueCategorySpinner.getOnItemSelectedListener();
+                        if (listener != null) {
+                            listener.onItemSelected(
+                                    mIssueCategorySpinner,
+                                    mIssueCategorySpinner.getSelectedView(),
+                                    position,
+                                    mIssueCategorySpinner.getItemIdAtPosition(position));
+                        }
+                    }
+                });
+
         mEditTextContact = mReportBrokenSiteLayout.findViewById(R.id.contact_info_text);
         mTextContactInfoApopup =
                 mReportBrokenSiteLayout.findViewById(R.id.contact_info_apopup_label);
@@ -993,16 +1026,17 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                         final CategorySpinnerItem item =
                                 (CategorySpinnerItem) parent.getItemAtPosition(position);
 
-                        final boolean isIssueCategorySelected = item.getId() != -1;
-                        mSubmitButton.setEnabled(isIssueCategorySelected);
+                        final boolean isSubmitAllowed =
+                                item.isSubmitAllowed(mEditTextDetails.getText().toString());
+                        mSubmitButton.setEnabled(isSubmitAllowed);
                         mSubmitButton.setBackground(
                                 ResourcesCompat.getDrawable(
                                         mContext.getResources(),
-                                        isIssueCategorySelected
+                                        isSubmitAllowed
                                                 ? R.drawable.orange_rounded_button
                                                 : R.drawable.set_default_rounded_button_disabled,
                                         /* theme= */ null));
-                        if (isIssueCategorySelected) {
+                        if (isSubmitAllowed) {
                             mSelectedWebcompatCategory = item.getValue();
                         }
                     }
