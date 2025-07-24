@@ -360,8 +360,21 @@ program
   .option('--filter <filter>', 'set test filter')
   .option('--no_gn_gen', 'Use args.gn as default values')
   .option(
+    '--filters [filters...]',
+    'filter tests by a gn target pattern. eg. //brave/*. '
+      + 'Make sure you put the list of filters in quotes. defaults to //*',
+    (x) => x.split(' '),
+  )
+  .option(
     '--since [targetCommit]',
     'use this commit as reference for change detection',
+  )
+  .option(
+    '--files [files...]',
+    'add additional files to be considered as modified analyze.'
+      + 'You need to quote the list. '
+      + 'You can use this to test what impact a file change would have',
+    (x) => x.split(' '),
   )
   .option(
     '--output_xml',
@@ -476,7 +489,9 @@ program
   .option('--suite [suite]', 'filter by a test suite group')
   .option(
     '--filters [filters...]',
-    'filter tests by a gn target pattern. eg. //brave/*. Make sure you put the list of filters in quotes. defaults to //*',
+    'filter tests by a gn target pattern. eg. //brave/*. '
+      + 'Make sure you put the list of filters in quotes. defaults to //*',
+    (x) => x.split(' '),
   )
   .option(
     '--since [targetCommit]',
@@ -484,13 +499,14 @@ program
   )
   .option(
     '--files [files...]',
-    'add additional files to be considered as modified analyze. You need to quote the list You can use this to test what impact a file change would have',
+    'add additional files to be considered as modified analyze.'
+      + 'You need to quote the list. '
+      + 'You can use this to test what impact a file change would have',
+    (x) => x.split(' '),
   )
   .action(async (args) => {
     config.update(args)
-    const files = args.files?.split(' ') || []
-    const filters = args.filters?.split(' ') || ['//*']
-    const result = await getAffectedTests({ ...args, files, filters })
+    const result = await getAffectedTests({ ...args })
     console.log(result.join(' ').trim())
   })
 
