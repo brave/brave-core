@@ -1989,8 +1989,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        false, "This is a test page content.", std::move(history), "", {},
+        std::move(page_contents), std::move(history), "", {},
         std::nullopt, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2051,8 +2054,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        false, "This is a test page content.", std::move(history), "", {},
+        std::move(page_contents), std::move(history), "", {},
         std::nullopt, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2115,8 +2121,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        false, "This is a test page content.", std::move(history), "", {},
+        std::move(page_contents), std::move(history), "", {},
         std::nullopt, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2166,8 +2175,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        false, "This is a test page content.", std::move(history), "", {},
+        std::move(page_contents), std::move(history), "", {},
         std::nullopt, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2222,8 +2234,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        false, "This is a test page content.", std::move(history), "", {},
+        std::move(page_contents), std::move(history), "", {},
         std::nullopt, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2277,8 +2292,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        false, "This is a test page content.", std::move(history), "", {},
+        std::move(page_contents), std::move(history), "", {},
         std::nullopt, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2434,7 +2452,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   auto mock_engine_consumer =
       std::make_unique<MockConversationAPIEngineConsumer>(
           *model_->options->get_leo_model_options(), nullptr, nullptr,
-          model_service_.get());
+          model_service_.get(), &prefs_);
   mock_engine_consumer->SetAPIForTesting(
       std::make_unique<MockConversationAPIClient>(
           model_->options->get_leo_model_options()->name));
