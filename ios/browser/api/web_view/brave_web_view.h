@@ -102,6 +102,13 @@ CWV_EXPORT
 // This web view's UI delegate.
 @property(nonatomic, weak, nullable) id<BraveWebViewUIDelegate> UIDelegate;
 
+/// Allows customizing the underlying WKWebView input views (see UIResponder),
+/// alongside `inputAccessoryView` which is already exposed by CWVWebView
+@property(nonatomic, nullable) UIView* inputView;
+@property(nonatomic, nullable) UIInputViewController* inputViewController;
+@property(nonatomic, nullable)
+    UIInputViewController* inputAccessoryViewController;
+
 @end
 
 NS_ASSUME_NONNULL_END
