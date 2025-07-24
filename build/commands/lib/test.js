@@ -112,16 +112,16 @@ const test = async (
   buildConfig = Config.defaultBuildConfig,
   options = {},
 ) => {
-  config.buildConfig = buildConfig
-  config.update(options)
+  Config.buildConfig = buildConfig
+  Config.update(options)
 
-  if (Ccnfig.isIOS() && config.targetEnvironment === 'device') {
+  if (Config.isIOS() && Config.targetEnvironment === 'device') {
     Log.error('Running ios tests on a device is not yet supported')
     process.exit(1)
   }
 
-  await buildTests(suite, config, options)
-  await runTests(passthroughArgs, suite, config, options)
+  await buildTests(suite, Config, options)
+  await runTests(passthroughArgs, suite, Config, options)
 }
 
 const buildTests = async (suite, config, options = {}) => {
