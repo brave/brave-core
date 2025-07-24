@@ -11,7 +11,10 @@ static_library("public") {
     "public/tree_tab_node_id.h",
   ]
 
-  deps = [ "//components/tabs:public" ]
+  deps = [
+    "//components/tab_groups",
+    "//components/tabs:public",
+  ]
 }
 
 static_library("tabs") {

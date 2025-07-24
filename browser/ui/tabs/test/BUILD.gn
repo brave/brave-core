@@ -52,6 +52,7 @@ source_set("unit_tests") {
     sources += [ "tree_tab_node_unittest.cc" ]
     deps += [
       "//brave/browser/ui/tabs:tabs_public",
+      "//brave/components/tabs",
       "//brave/components/tabs:public",
       "//chrome/test:test_support",
       "//components/tabs:test_support",
