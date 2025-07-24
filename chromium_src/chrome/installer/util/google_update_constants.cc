@@ -13,7 +13,7 @@
 #define kRegPathClientStateMedium kRegPathClientStateMedium_Unused
 #define kRegPathGoogleUpdate kRegPathGoogleUpdate_Unused
 
-#include "src/chrome/installer/util/google_update_constants.cc"
+#include <chrome/installer/util/google_update_constants.cc>
 
 #undef kChromeUpgradeCode
 #undef kGoogleUpdateUpgradeCode

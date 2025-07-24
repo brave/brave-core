@@ -14,7 +14,7 @@
   Create_Unused(__VA_ARGS__); \
   static std::optional<AggregatableTriggerConfig> Create(__VA_ARGS__)
 
-#include "src/components/attribution_reporting/aggregatable_trigger_config.h"  // IWYU pragma: export
+#include <components/attribution_reporting/aggregatable_trigger_config.h>  // IWYU pragma: export
 
 #undef Create
 

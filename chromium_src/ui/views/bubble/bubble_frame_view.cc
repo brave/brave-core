@@ -14,6 +14,6 @@
 #define kNone \
   kNone) && !dialog_delegate->should_ignore_snapping(
 
-#include "src/ui/views/bubble/bubble_frame_view.cc"
+#include <ui/views/bubble/bubble_frame_view.cc>
 
 #undef kNone

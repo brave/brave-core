@@ -22,6 +22,6 @@ bool WebContentsImpl::GetShouldDoLearningForTesting() {
 
 #define ShouldDoLearning(...) ShouldDoLearning_ChromiumImpl(__VA_ARGS__)
 
-#include "src/content/browser/web_contents/web_contents_impl.cc"
+#include <content/browser/web_contents/web_contents_impl.cc>
 
 #undef ShouldDoLearning

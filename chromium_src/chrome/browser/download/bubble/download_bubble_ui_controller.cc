@@ -9,7 +9,7 @@
 
 #define ProcessDownloadButtonPress ProcessDownloadButtonPress_ChromiumImpl
 
-#include "src/chrome/browser/download/bubble/download_bubble_ui_controller.cc"
+#include <chrome/browser/download/bubble/download_bubble_ui_controller.cc>
 
 #undef ProcessDownloadButtonPress
 

@@ -11,7 +11,7 @@
 #define PrintForSystemDialog                        \
   SetIsPrintPreviewExtraction(bool value) override; \
   void PrintForSystemDialog
-#include "src/chrome/browser/ui/webui/print_preview/fake_print_render_frame.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/print_preview/fake_print_render_frame.h>  // IWYU pragma: export
 #undef PrintForSystemDialog
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_PRINT_PREVIEW_FAKE_PRINT_RENDER_FRAME_H_

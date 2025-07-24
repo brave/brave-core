@@ -14,7 +14,7 @@
 #define AttemptRestart AttemptRestart_ChromiumImpl
 #define RelaunchIgnoreUnloadHandlers RelaunchIgnoreUnloadHandlers_ChromiumImpl
 
-#include "src/chrome/browser/lifetime/application_lifetime_desktop.cc"
+#include <chrome/browser/lifetime/application_lifetime_desktop.cc>
 
 #undef RelaunchIgnoreUnloadHandlers
 #undef AttemptRestart
@@ -36,5 +36,5 @@ void RelaunchIgnoreUnloadHandlers() {
 }  // namespace chrome
 
 #else
-#include "src/chrome/browser/lifetime/application_lifetime_desktop.cc"
+#include <chrome/browser/lifetime/application_lifetime_desktop.cc>
 #endif  // BUILDFLAG(ENABLE_SPARKLE)

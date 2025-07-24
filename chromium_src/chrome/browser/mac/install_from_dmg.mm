@@ -15,6 +15,6 @@
                                     synchronous:YES];                    \
   dock::AddIcon
 
-#include "src/chrome/browser/mac/install_from_dmg.mm"
+#include <chrome/browser/mac/install_from_dmg.mm>
 
 #undef AddIcon

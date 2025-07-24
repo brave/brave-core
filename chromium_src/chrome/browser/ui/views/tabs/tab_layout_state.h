@@ -27,7 +27,7 @@ enum class TabTiledState { kNone, kFirst, kSecond };
  public:                                             \
   bool IsClosed
 
-#include "src/chrome/browser/ui/views/tabs/tab_layout_state.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab_layout_state.h>  // IWYU pragma: export
 
 #undef IsClosed
 

@@ -14,7 +14,7 @@
   DoRename_ChromiumImpl(__VA_ARGS__); \
   void DoRename(__VA_ARGS__)
 
-#include "src/content/browser/file_system_access/file_system_access_handle_base.h"  // IWYU pragma: export
+#include <content/browser/file_system_access/file_system_access_handle_base.h>  // IWYU pragma: export
 #undef DoRename
 #undef DoMove
 

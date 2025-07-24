@@ -26,6 +26,6 @@ bool AwWebContentsDelegate::CheckMediaAccessPermission(
 
 #define CheckMediaAccessPermission CheckMediaAccessPermission_ChromiumImpl
 
-#include "src/android_webview/browser/aw_web_contents_delegate.cc"
+#include <android_webview/browser/aw_web_contents_delegate.cc>
 
 #undef CheckMediaAccessPermission

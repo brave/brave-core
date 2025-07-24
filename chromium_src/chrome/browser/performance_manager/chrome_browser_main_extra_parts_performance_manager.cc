@@ -40,7 +40,7 @@ class FakeMetricsProviderDesktop {
 #define PageResourceMonitor StubGraphOwnedDefaultImpl
 #define MetricsProviderDesktop FakeMetricsProviderDesktop
 #endif  // !BUILDFLAG(IS_ANDROID)
-#include "src/chrome/browser/performance_manager/chrome_browser_main_extra_parts_performance_manager.cc"
+#include <chrome/browser/performance_manager/chrome_browser_main_extra_parts_performance_manager.cc>
 #if !BUILDFLAG(IS_ANDROID)
 #undef MetricsProviderDesktop
 #undef PageResourceMonitor

@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SEARCH_ENGINES_SEARCH_ENGINES_PREF_NAMES_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SEARCH_ENGINES_SEARCH_ENGINES_PREF_NAMES_H_
 
-#include "brave/components/search_engines/brave_search_engines_pref_names.h"
+#include <components/search_engines/search_engines_pref_names.h>  // IWYU pragma: export
 
-#include "src/components/search_engines/search_engines_pref_names.h"  // IWYU pragma: export
+#include "brave/components/search_engines/brave_search_engines_pref_names.h"
 
 namespace prefs {
 

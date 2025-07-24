@@ -27,7 +27,7 @@ void EmptyColorMixer(ui::ColorProvider* provider,
 #define AddMaterialSidePanelColorMixer EmptyColorMixer
 #define AddMaterialTabStripColorMixer EmptyColorMixer
 
-#include "src/chrome/browser/ui/color/chrome_color_mixers.cc"
+#include <chrome/browser/ui/color/chrome_color_mixers.cc>
 
 #undef AddMaterialTabStripColorMixer
 #undef AddMaterialSidePanelColorMixer

@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/component_export.h"
 #include "base/functional/callback.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
@@ -22,7 +21,7 @@ namespace psst {
 // It allows to load the all items from the psst.json file and match them
 // against the URL. For matched rules, it loads rule data (the user.js and
 // policy.js script contents) with using of rule data reader.
-class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
+class PsstRuleRegistry {
  public:
   using OnLoadCallback = base::OnceCallback<void(const std::string&,
                                                  const std::vector<PsstRule>&)>;

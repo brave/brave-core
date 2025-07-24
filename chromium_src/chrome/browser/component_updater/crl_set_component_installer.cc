@@ -6,7 +6,7 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 
 #define RegisterCRLSetComponent RegisterCRLSetComponent_ChromiumImpl
-#include "src/chrome/browser/component_updater/crl_set_component_installer.cc"
+#include <chrome/browser/component_updater/crl_set_component_installer.cc>
 #undef RegisterCRLSetComponent
 
 #include "chrome/browser/browser_process.h"

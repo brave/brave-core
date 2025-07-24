@@ -24,7 +24,7 @@
  private:                                                  \
   network::mojom::URLResponseHeadPtr response_
 
-#include "src/ios/web/webui/url_fetcher_block_adapter.h"  // IWYU pragma: export
+#include <ios/web/webui/url_fetcher_block_adapter.h>  // IWYU pragma: export
 
 #undef completion_handler_
 

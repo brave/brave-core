@@ -7,33 +7,16 @@ import("//brave/components/psst/buildflags/buildflags.gni")
 
 assert(enable_psst)
 
-component("core") {
-  output_name = "psst_browser_core"
-
-  public_deps = [ ":headers" ]
-  deps = [ ":core_impl" ]
-}
-
-source_set("headers") {
-  visibility = [ ":*" ]
-  defines = [ "IS_PSST_BROWSER_CORE_IMPL" ]
-  sources = [
+static_library("core") {
+  public = [
     "matched_rule.h",
     "psst_component_installer.h",
     "psst_rule.h",
     "psst_rule_registry.h",
   ]
 
-  deps = [
-    "//base",
-    "//brave/extensions:common",
-    "//url",
-  ]
-}
+  friend = [ ":unit_tests" ]
 
-source_set("core_impl") {
-  visibility = [ ":*" ]
-  defines = [ "IS_PSST_BROWSER_CORE_IMPL" ]
   sources = [
     "matched_rule.cc",
     "psst_component_installer.cc",
@@ -45,7 +28,6 @@ source_set("core_impl") {
   ]
 
   public_deps = [
-    ":headers",
     "//base",
     "//url",
   ]
@@ -64,8 +46,6 @@ source_set("core_impl") {
 source_set("unit_tests") {
   testonly = true
 
-  defines = [ "IS_PSST_BROWSER_CORE_IMPL" ]
-
   sources = [
     "matched_rule_unittest.cc",
     "psst_rule_registry_unittest.cc",
@@ -74,8 +54,7 @@ source_set("unit_tests") {
   ]
 
   deps = [
-    ":core_impl",
-    ":headers",
+    ":core",
     "//base/test:test_support",
     "//brave/components/psst/common",
     "//testing/gmock",

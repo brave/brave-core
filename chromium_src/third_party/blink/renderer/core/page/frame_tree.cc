@@ -7,7 +7,7 @@
 
 #define ExperimentalSetNulledName ExperimentalSetNulledName_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/page/frame_tree.cc"
+#include <third_party/blink/renderer/core/page/frame_tree.cc>
 
 #undef ExperimentalSetNulledName
 

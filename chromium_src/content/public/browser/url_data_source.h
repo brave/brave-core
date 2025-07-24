@@ -35,7 +35,7 @@
                                                                           \
   virtual void StartDataRequest
 
-#include "src/content/public/browser/url_data_source.h"  // IWYU pragma: export
+#include <content/public/browser/url_data_source.h>  // IWYU pragma: export
 
 #undef StartDataRequest
 

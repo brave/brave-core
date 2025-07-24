@@ -40,7 +40,7 @@ bool BraveTabRequestedOffTheRecord(content::WebContents* web_contents) {
 
 #endif
 
-#include "src/chrome/browser/history/history_tab_helper.cc"
+#include <chrome/browser/history/history_tab_helper.cc>
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #undef IsOffTheRecord

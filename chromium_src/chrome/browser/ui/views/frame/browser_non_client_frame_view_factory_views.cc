@@ -25,7 +25,7 @@
 #define BrowserFrameViewLinuxNative BraveBrowserFrameViewLinuxNative
 #endif  // BUILDFLAG(IS_LINUX)
 
-#include "src/chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc"
+#include <chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc>
 
 #if BUILDFLAG(IS_LINUX)
 #undef BrowserFrameViewLinuxNative

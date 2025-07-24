@@ -10,7 +10,7 @@
 #include "net/cookies/cookie_monster.h"
 
 #define CookieMonster ChromiumCookieMonster
-#include "src/net/cookies/cookie_monster.cc"
+#include <net/cookies/cookie_monster.cc>
 #undef CookieMonster
 
 namespace net {

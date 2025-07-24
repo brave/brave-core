@@ -21,7 +21,7 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
-#include "src/chrome/browser/ui/webui/tab_search/tab_search_page_handler_unittest.cc"
+#include <chrome/browser/ui/webui/tab_search/tab_search_page_handler_unittest.cc>
 
 namespace {
 

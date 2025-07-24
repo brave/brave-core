@@ -10,7 +10,7 @@
   ProcessJavaScriptUrl_ChromiumImpl(__VA_ARGS__); \
   void ProcessJavaScriptUrl(__VA_ARGS__)
 
-#include "src/third_party/blink/renderer/core/dom/document.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/dom/document.h>  // IWYU pragma: export
 
 #undef ProcessJavaScriptUrl
 

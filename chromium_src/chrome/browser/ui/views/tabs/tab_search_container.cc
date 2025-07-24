@@ -8,6 +8,6 @@
 
 #define TabSearchButton BraveTabSearchButton
 
-#include "src/chrome/browser/ui/views/tabs/tab_search_container.cc"
+#include <chrome/browser/ui/views/tabs/tab_search_container.cc>
 
 #undef TabSearchButton

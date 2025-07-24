@@ -29,7 +29,7 @@ class BraveWalletPermissionContextUnitTest;
   friend permissions::BraveWalletPermissionContextUnitTest; \
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext
 
-#include "src/chrome/browser/permissions/permission_manager_factory.h"  // IWYU pragma: export
+#include <chrome/browser/permissions/permission_manager_factory.h>  // IWYU pragma: export
 #undef BuildServiceInstanceForBrowserContext
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PERMISSIONS_PERMISSION_MANAGER_FACTORY_H_

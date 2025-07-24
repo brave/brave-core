@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define IsFormMixedContent IsFormMixedContent_ChromiumImpl
-#include "src/components/autofill/core/browser/autofill_browser_util.cc"
+#include <components/autofill/core/browser/autofill_browser_util.cc>
 #undef IsFormMixedContent
 
 #include "net/base/url_util.h"

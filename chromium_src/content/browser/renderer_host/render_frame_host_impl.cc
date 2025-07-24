@@ -28,7 +28,7 @@
 
 #define BindTrustTokenQueryAnswerer BindTrustTokenQueryAnswerer_ChromiumImpl
 
-#include "src/content/browser/renderer_host/render_frame_host_impl.cc"
+#include <content/browser/renderer_host/render_frame_host_impl.cc>
 
 #undef BindTrustTokenQueryAnswerer
 #undef BRAVE_RENDER_FRAME_HOST_IMPL_CREATE_NEW_WINDOW

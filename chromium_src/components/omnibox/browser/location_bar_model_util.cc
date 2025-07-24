@@ -12,7 +12,7 @@
 
 #define GetSecurityVectorIcon GetSecurityVectorIcon_Chromium
 
-#include "src/components/omnibox/browser/location_bar_model_util.cc"
+#include <components/omnibox/browser/location_bar_model_util.cc>
 
 #undef GetSecurityVectorIcon
 

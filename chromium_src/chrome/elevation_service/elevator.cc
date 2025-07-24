@@ -24,7 +24,7 @@
 #endif
 #endif
 
-#include "src/chrome/elevation_service/elevator.cc"
+#include <chrome/elevation_service/elevator.cc>
 
 namespace elevation_service {
 

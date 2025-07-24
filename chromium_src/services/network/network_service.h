@@ -17,7 +17,7 @@
                            base::Time update_time);    \
   void UpdateKeyPinsList
 
-#include "src/services/network/network_service.h"  // IWYU pragma: export
+#include <services/network/network_service.h>  // IWYU pragma: export
 
 #undef UpdateKeyPinsList
 #undef DisableQuic

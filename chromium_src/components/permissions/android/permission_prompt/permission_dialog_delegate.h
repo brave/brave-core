@@ -28,7 +28,7 @@ class PermissionPromptAndroid_ChromiumImpl;
          PermissionPromptAndroid_ChromiumImpl* permission_prompt); \
   static std::unique_ptr<PermissionDialogDelegate> Create
 
-#include "src/components/permissions/android/permission_prompt/permission_dialog_delegate.h"  // IWYU pragma: export
+#include <components/permissions/android/permission_prompt/permission_dialog_delegate.h>  // IWYU pragma: export
 
 #undef Create
 

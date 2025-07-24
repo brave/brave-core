@@ -19,7 +19,9 @@ using PageInfoCookiesContentView_BraveImpl = PageInfoCookiesContentView;
 #define SetThirdPartyCookiesInfo virtual SetThirdPartyCookiesInfo
 
 #define PageInfoCookiesContentView PageInfoCookiesContentView_ChromiumImpl
-#include "src/chrome/browser/ui/views/page_info/page_info_cookies_content_view.h"  // IWYU pragma: export
+
+#include <chrome/browser/ui/views/page_info/page_info_cookies_content_view.h>  // IWYU pragma: export
+
 #undef PageInfoCookiesContentView
 #undef SetThirdPartyCookiesInfo
 #undef InitCookiesDialogButton

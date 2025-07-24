@@ -17,6 +17,6 @@
       l10n_util::GetStringUTF16(IDS_DOWNLOAD_BUBBLE_DELETE),   \
       &kLeoTrashIcon
 
-#include "src/chrome/browser/ui/download/download_bubble_info_utils.cc"
+#include <chrome/browser/ui/download/download_bubble_info_utils.cc>
 
 #undef kLaunchChromeRefreshIcon

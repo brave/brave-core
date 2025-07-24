@@ -34,7 +34,7 @@
       session->IsControllable();                                \
   window_->SetSeekerEnabled(media_session_action_seek_to_handled_)
 
-#include "src/content/browser/picture_in_picture/video_picture_in_picture_window_controller_impl.cc"
+#include <content/browser/picture_in_picture/video_picture_in_picture_window_controller_impl.cc>
 
 #undef SetSkipAdButtonVisibility
 #undef SetPlaybackState

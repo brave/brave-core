@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/component_export.h"
 #include "base/files/file_path.h"
 #include "base/json/json_value_converter.h"
 #include "extensions/common/url_pattern_set.h"
@@ -37,7 +36,7 @@ namespace psst {
 // relative to the component under scripts/<name>/, NOT script contents.
 
 // This class describes a single rule in the psst.json file.
-class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRule {
+class PsstRule {
  public:
   ~PsstRule();
   PsstRule(const PsstRule& other);  // needed for std::vector<PsstRule>

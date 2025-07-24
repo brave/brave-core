@@ -9,7 +9,7 @@
 #define ShowActionEphemerallyInToolbar \
   ShowActionEphemerallyInToolbar_ChromiumImpl
 
-#include "src/chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.cc"
+#include <chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.cc>
 #undef ShowActionEphemerallyInToolbar
 #undef UpdateActionState
 

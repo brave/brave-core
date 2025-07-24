@@ -23,10 +23,10 @@ import {
 } from '../../../common/slices/api.slice.extra'
 
 // Components
-import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 import { CreateNetworkIcon } from '../../shared/create-network-icon'
 import { BottomSheet } from '../../shared/bottom_sheet/bottom_sheet'
 import { NetworkInfo } from '../network_info/network_info'
+import { OriginInfoCard } from '../origin_info_card/origin_info_card'
 
 // Styled Components
 import {
@@ -34,16 +34,15 @@ import {
   HeaderText,
   Title,
   Description,
-  OriginText,
   DetailsButton,
   LearnMoreButton,
-  FavIcon,
   NetworkInfoBox,
   NetworkInfoLabel,
   NetworkInfoText,
   DividerWrapper,
   ArrowIconWrapper,
   ArrowIcon,
+  Card,
 } from './allow_add_change_network_panel.style'
 import { Column, Row, VerticalDivider } from '../../shared/style'
 
@@ -157,219 +156,222 @@ export function AllowAddChangeNetworkPanel(props: Props) {
       width='100%'
       height='100%'
     >
-      <Column width='100%'>
-        <Row padding='18px'>
-          <HeaderText textColor='primary'>
-            {switchChainRequest
-              ? getLocale('braveWalletAllowChangeNetworkButton')
-              : getLocale('braveWalletAddNetwork')}
-          </HeaderText>
-        </Row>
-        <Column
-          padding='16px 24px 24px 24px'
-          gap='8px'
-        >
-          <FavIcon
-            src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
-              originInfo.originSpec,
-            )}`}
-          />
-          <OriginText textColor='tertiary'>
-            <CreateSiteOrigin
-              originSpec={originInfo.originSpec}
-              eTldPlusOne={originInfo.eTldPlusOne}
-            />
-          </OriginText>
-          <Title textColor='primary'>
-            {switchChainRequest
-              ? getLocale('braveWalletAllowChangeNetworkTitle')
-              : getLocale('braveWalletAllowAddNetworkTitle')}
-          </Title>
-          <Description textColor='tertiary'>
-            {switchChainRequest
-              ? getLocale('braveWalletAllowChangeNetworkDescription')
-              : getLocale('braveWalletAllowAddNetworkDescription')}{' '}
-            {addChainRequest && (
-              <LearnMoreButton onClick={onLearnMore}>
-                {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
-              </LearnMoreButton>
-            )}
-          </Description>
-        </Column>
-        <Column
-          padding='0 24px'
+      <Row padding='18px'>
+        <HeaderText textColor='primary'>
+          {switchChainRequest
+            ? getLocale('braveWalletAllowChangeNetworkButton')
+            : getLocale('braveWalletAddNetwork')}
+        </HeaderText>
+      </Row>
+      <VerticalDivider />
+      <Column
+        padding='8px'
+        width='100%'
+        height='100%'
+      >
+        <Card
           width='100%'
-          gap='16px'
+          height='100%'
+          justifyContent='space-between'
         >
-          {switchChainRequest && (
-            <NetworkInfoBox
-              alignItems='flex-start'
-              justifyContent='flex-start'
-              padding='16px'
-              gap='22px'
-              width='100%'
-            >
-              <Column
+          {originInfo && <OriginInfoCard origin={originInfo} />}
+          <Column
+            padding='0px 16px'
+            gap='8px'
+          >
+            <Title textColor='primary'>
+              {switchChainRequest
+                ? getLocale('braveWalletAllowChangeNetworkTitle')
+                : getLocale('braveWalletAllowAddNetworkTitle')}
+            </Title>
+            <Description textColor='tertiary'>
+              {switchChainRequest
+                ? getLocale('braveWalletAllowChangeNetworkDescription')
+                : getLocale('braveWalletAllowAddNetworkDescription')}{' '}
+              {addChainRequest && (
+                <LearnMoreButton onClick={onLearnMore}>
+                  {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+                </LearnMoreButton>
+              )}
+            </Description>
+          </Column>
+          <Column
+            padding='0px 10px'
+            width='100%'
+            gap='16px'
+          >
+            {switchChainRequest && (
+              <NetworkInfoBox
                 alignItems='flex-start'
                 justifyContent='flex-start'
-              >
-                <NetworkInfoLabel textColor='secondary'>
-                  {getLocale('braveWalletFrom')}:
-                </NetworkInfoLabel>
-                <Row
-                  gap='8px'
-                  justifyContent='flex-start'
-                >
-                  <CreateNetworkIcon
-                    size='huge'
-                    network={selectedNetwork}
-                  />
-                  <Column
-                    alignItems='flex-start'
-                    justifyContent='flex-start'
-                  >
-                    <NetworkInfoText
-                      textColor='primary'
-                      textAlign='left'
-                    >
-                      {selectedNetwork?.chainName ?? ''}
-                    </NetworkInfoText>
-                    <NetworkInfoLabel
-                      textColor='secondary'
-                      textAlign='left'
-                    >
-                      {selectedNetwork?.rpcEndpoints[
-                        selectedNetwork?.activeRpcEndpointIndex
-                      ]?.url ?? ''}
-                    </NetworkInfoLabel>
-                  </Column>
-                </Row>
-              </Column>
-              <DividerWrapper>
-                <ArrowIconWrapper>
-                  <ArrowIcon />
-                </ArrowIconWrapper>
-                <VerticalDivider />
-              </DividerWrapper>
-              <Column
-                alignItems='flex-start'
-                justifyContent='flex-start'
+                padding='16px'
+                gap='22px'
                 width='100%'
               >
-                <NetworkInfoLabel textColor='secondary'>
-                  {getLocale('braveWalletSwapTo')}:
-                </NetworkInfoLabel>
-                <Row
-                  gap='8px'
+                <Column
+                  alignItems='flex-start'
                   justifyContent='flex-start'
                 >
-                  <CreateNetworkIcon
-                    size='huge'
-                    network={switchChainRequestNetwork}
-                  />
-                  <Column
-                    alignItems='flex-start'
+                  <NetworkInfoLabel textColor='secondary'>
+                    {getLocale('braveWalletFrom')}:
+                  </NetworkInfoLabel>
+                  <Row
+                    gap='8px'
                     justifyContent='flex-start'
-                    width='100%'
                   >
-                    <Row
-                      justifyContent='space-between'
-                      alignItems='center'
+                    <CreateNetworkIcon
+                      size='huge'
+                      network={selectedNetwork}
+                    />
+                    <Column
+                      alignItems='flex-start'
+                      justifyContent='flex-start'
                     >
                       <NetworkInfoText
                         textColor='primary'
                         textAlign='left'
                       >
-                        {switchChainRequestNetwork?.chainName ?? ''}
+                        {selectedNetwork?.chainName ?? ''}
                       </NetworkInfoText>
-                      <DetailsButton
-                        onClick={() => setShowNetworkDetails(true)}
+                      <NetworkInfoLabel
+                        textColor='secondary'
+                        textAlign='left'
                       >
-                        {getLocale('braveWalletDetails')}
-                      </DetailsButton>
-                    </Row>
-                    <NetworkInfoLabel
-                      textColor='secondary'
-                      textAlign='left'
+                        {selectedNetwork?.rpcEndpoints[
+                          selectedNetwork?.activeRpcEndpointIndex
+                        ]?.url ?? ''}
+                      </NetworkInfoLabel>
+                    </Column>
+                  </Row>
+                </Column>
+                <DividerWrapper>
+                  <ArrowIconWrapper>
+                    <ArrowIcon />
+                  </ArrowIconWrapper>
+                  <VerticalDivider />
+                </DividerWrapper>
+                <Column
+                  alignItems='flex-start'
+                  justifyContent='flex-start'
+                  width='100%'
+                >
+                  <NetworkInfoLabel textColor='secondary'>
+                    {getLocale('braveWalletSwapTo')}:
+                  </NetworkInfoLabel>
+                  <Row
+                    gap='8px'
+                    justifyContent='flex-start'
+                  >
+                    <CreateNetworkIcon
+                      size='huge'
+                      network={switchChainRequestNetwork}
+                    />
+                    <Column
+                      alignItems='flex-start'
+                      justifyContent='flex-start'
+                      width='100%'
                     >
-                      {switchChainRequestNetwork?.rpcEndpoints[
-                        switchChainRequestNetwork?.activeRpcEndpointIndex
-                      ]?.url || ''}
-                    </NetworkInfoLabel>
-                  </Column>
-                </Row>
-              </Column>
-            </NetworkInfoBox>
-          )}
-          {addChainRequest && (
-            <NetworkInfoBox
-              alignItems='flex-start'
-              justifyContent='flex-start'
-              padding='16px'
-              gap='16px'
-              width='100%'
-            >
-              <Column
+                      <Row
+                        justifyContent='space-between'
+                        alignItems='center'
+                      >
+                        <NetworkInfoText
+                          textColor='primary'
+                          textAlign='left'
+                        >
+                          {switchChainRequestNetwork?.chainName ?? ''}
+                        </NetworkInfoText>
+                        <DetailsButton
+                          onClick={() => setShowNetworkDetails(true)}
+                        >
+                          {getLocale('braveWalletDetails')}
+                        </DetailsButton>
+                      </Row>
+                      <NetworkInfoLabel
+                        textColor='secondary'
+                        textAlign='left'
+                      >
+                        {switchChainRequestNetwork?.rpcEndpoints[
+                          switchChainRequestNetwork?.activeRpcEndpointIndex
+                        ]?.url || ''}
+                      </NetworkInfoLabel>
+                    </Column>
+                  </Row>
+                </Column>
+              </NetworkInfoBox>
+            )}
+            {addChainRequest && (
+              <NetworkInfoBox
                 alignItems='flex-start'
                 justifyContent='flex-start'
+                padding='16px'
+                gap='16px'
+                width='100%'
               >
-                <NetworkInfoLabel textColor='secondary'>
-                  {getLocale('braveWalletAllowAddNetworkName')}
-                </NetworkInfoLabel>
-                <NetworkInfoText textColor='primary'>
-                  {addChainRequestNetwork?.chainName ?? ''}
-                </NetworkInfoText>
-              </Column>
-              <VerticalDivider />
-              <Column
-                alignItems='flex-start'
-                justifyContent='flex-start'
+                <Column
+                  alignItems='flex-start'
+                  justifyContent='flex-start'
+                >
+                  <NetworkInfoLabel textColor='secondary'>
+                    {getLocale('braveWalletAllowAddNetworkName')}
+                  </NetworkInfoLabel>
+                  <NetworkInfoText textColor='primary'>
+                    {addChainRequestNetwork?.chainName ?? ''}
+                  </NetworkInfoText>
+                </Column>
+                <VerticalDivider />
+                <Column
+                  alignItems='flex-start'
+                  justifyContent='flex-start'
+                >
+                  <NetworkInfoLabel textColor='secondary'>
+                    {getLocale('braveWalletAllowAddNetworkUrl')}
+                  </NetworkInfoLabel>
+                  <NetworkInfoText textColor='primary'>
+                    {addChainRequestNetwork?.rpcEndpoints[
+                      addChainRequestNetwork?.activeRpcEndpointIndex
+                    ]?.url || ''}
+                  </NetworkInfoText>
+                </Column>
+              </NetworkInfoBox>
+            )}
+            {addChainRequest && (
+              <Button
+                kind='plain'
+                size='medium'
+                onClick={() => setShowNetworkDetails(true)}
               >
-                <NetworkInfoLabel textColor='secondary'>
-                  {getLocale('braveWalletAllowAddNetworkUrl')}
-                </NetworkInfoLabel>
-                <NetworkInfoText textColor='primary'>
-                  {addChainRequestNetwork?.rpcEndpoints[
-                    addChainRequestNetwork?.activeRpcEndpointIndex
-                  ]?.url || ''}
-                </NetworkInfoText>
-              </Column>
-            </NetworkInfoBox>
-          )}
-          {addChainRequest && (
+                {getLocale('braveWalletAllowAddNetworkDetailsButton')}
+              </Button>
+            )}
+          </Column>
+          <Row
+            padding='16px'
+            gap='8px'
+          >
             <Button
-              kind='plain'
+              kind='outline'
               size='medium'
-              onClick={() => setShowNetworkDetails(true)}
+              onClick={
+                addChainRequest ? onCancelAddNetwork : onCancelChangeNetwork
+              }
             >
-              {getLocale('braveWalletAllowAddNetworkDetailsButton')}
+              {getLocale('braveWalletButtonCancel')}
             </Button>
-          )}
-        </Column>
+            <Button
+              kind='filled'
+              size='medium'
+              onClick={
+                addChainRequest ? onApproveAddNetwork : onApproveChangeNetwork
+              }
+            >
+              {switchChainRequest
+                ? getLocale('braveWalletAllowChangeNetworkButton')
+                : getLocale('braveWalletAllowAddNetworkButton')}
+            </Button>
+          </Row>
+        </Card>
       </Column>
-      <Row
-        padding='16px'
-        gap='8px'
-      >
-        <Button
-          kind='outline'
-          size='medium'
-          onClick={addChainRequest ? onCancelAddNetwork : onCancelChangeNetwork}
-        >
-          {getLocale('braveWalletButtonCancel')}
-        </Button>
-        <Button
-          kind='filled'
-          size='medium'
-          onClick={
-            addChainRequest ? onApproveAddNetwork : onApproveChangeNetwork
-          }
-        >
-          {switchChainRequest
-            ? getLocale('braveWalletAllowChangeNetworkButton')
-            : getLocale('braveWalletAllowAddNetworkButton')}
-        </Button>
-      </Row>
       <BottomSheet
         isOpen={showNetworkDetails}
         onClose={() => setShowNetworkDetails(false)}

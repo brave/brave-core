@@ -9,7 +9,7 @@
 
 #define AddMaterialSidePanelColorMixer \
   AddMaterialSidePanelColorMixer_ChromiumImpl
-#include "src/chrome/browser/ui/color/material_side_panel_color_mixer.cc"
+#include <chrome/browser/ui/color/material_side_panel_color_mixer.cc>
 #undef AddMaterialSidePanelColorMixer
 
 void AddMaterialSidePanelColorMixer(ui::ColorProvider* provider,

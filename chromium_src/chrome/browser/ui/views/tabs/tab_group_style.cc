@@ -13,7 +13,7 @@
 #define TabGroupUnderline BraveTabGroupUnderline
 #define TabGroupStyle TabGroupStyle_ChromiumImpl
 
-#include "src/chrome/browser/ui/views/tabs/tab_group_style.cc"
+#include <chrome/browser/ui/views/tabs/tab_group_style.cc>
 
 #undef TabGroupStyle
 #undef TabGroupUnderline

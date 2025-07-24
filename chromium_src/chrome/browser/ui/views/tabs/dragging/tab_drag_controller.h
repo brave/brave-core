@@ -36,7 +36,7 @@ using TabDragControllerBrave = TabDragController;
 #define ContinueDragging virtual ContinueDragging
 #define StartDraggingTabsSession virtual StartDraggingTabsSession
 
-#include "src/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h>  // IWYU pragma: export
 
 #undef StartDraggingTabsSession
 #undef ContinueDragging

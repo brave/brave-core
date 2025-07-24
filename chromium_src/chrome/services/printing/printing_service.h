@@ -14,7 +14,7 @@
   BindPdfToBitmapConverter(                                                  \
       mojo::PendingReceiver<mojom::PdfToBitmapConverter> receiver) override; \
   void BindPdfNupConverter
-#include "src/chrome/services/printing/printing_service.h"  // IWYU pragma: export
+#include <chrome/services/printing/printing_service.h>  // IWYU pragma: export
 #undef BindPdfNupConverter
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_SERVICES_PRINTING_PRINTING_SERVICE_H_

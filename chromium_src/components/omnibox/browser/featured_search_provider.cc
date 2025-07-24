@@ -12,5 +12,5 @@
   (turl->starter_pack_id() == template_url_starter_pack_data::kAiMode && \
   !OmniboxFieldTrial::IsStarterPackExpansionEnabled
 
-#include "src/components/omnibox/browser/featured_search_provider.cc"
+#include <components/omnibox/browser/featured_search_provider.cc>
 #undef IsStarterPackExpansionEnabled

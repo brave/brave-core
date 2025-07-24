@@ -64,7 +64,7 @@ IDS_IDC_COMMANDER).command_id(IDC_COMMANDER)                     \
 #define IDC_SHOW_GOOGLE_LENS_SHORTCUT \
   kShowGoogleLensShortcut).remove_if(true
 
-#include "src/chrome/browser/ui/cocoa/main_menu_builder.mm"
+#include <chrome/browser/ui/cocoa/main_menu_builder.mm>
 
 #undef IDC_SHOW_GOOGLE_LENS_SHORTCUT
 #undef IDS_MEDIA_ROUTER_MENU_ITEM_TITLE

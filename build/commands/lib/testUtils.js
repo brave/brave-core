@@ -53,7 +53,7 @@ const getBraveUnitTestsSuites = (config) => {
 const getTestsToRun = (config, suite) => {
   let testsToRun = []
   if (suite === 'brave_all_unit_tests') {
-    testsToRun = getBraveUnitTestsSuites(config)
+    testsToRun = [...getBraveUnitTestsSuites(config)]
   } else if (suite === 'chromium_unit_tests') {
     testsToRun = getChromiumUnitTestsSuites()
   } else {
@@ -85,6 +85,13 @@ const getApplicableFilters = (config, suite) => {
     [suite, targetPlatform].join('-'),
     [suite, targetPlatform, config.targetArch].join('-'),
   ]
+
+  if (config.is_ubsan) {
+    possibleFilters.push(
+      [suite, targetPlatform, config.targetArch, 'ubsan'].join('-'),
+    )
+  }
+
   possibleFilters.forEach((filterName) => {
     let filterFilePath = path.join(
       config.braveCoreDir,

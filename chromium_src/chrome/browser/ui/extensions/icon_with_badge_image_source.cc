@@ -17,7 +17,7 @@
 
 #include <optional>
 
-#include "src/chrome/browser/ui/extensions/icon_with_badge_image_source.cc"
+#include <chrome/browser/ui/extensions/icon_with_badge_image_source.cc>
 #undef BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_DRAW_2
 #undef BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_DRAW_1
 

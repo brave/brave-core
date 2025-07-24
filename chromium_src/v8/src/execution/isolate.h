@@ -31,7 +31,7 @@
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/v8/src/execution/isolate.h"  // IWYU pragma: export
+#include <v8/src/execution/isolate.h>  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef api_interrupts_queue_

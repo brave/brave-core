@@ -6,7 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_APP_CHROME_COMMAND_IDS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_APP_CHROME_COMMAND_IDS_H_
 
+#include <chrome/app/chrome_command_ids.h>  // IWYU pragma: export
+
 #include "brave/app/brave_command_ids.h"
-#include "src/chrome/app/chrome_command_ids.h"  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_APP_CHROME_COMMAND_IDS_H_

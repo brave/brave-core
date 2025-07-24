@@ -68,7 +68,7 @@
 #define IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_LABEL \
   IDS_SETTINGS_BRAVE_BLOCK_COOKIES_LINK_ROW_LABEL
 
-#include "src/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc"
+#include <chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc>
 #undef IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_LABEL
 #undef IDS_SETTINGS_UI_FEATURE_ALIGN_RIGHT
 #undef IDS_SETTINGS_UI_FEATURE_ALIGN_LEFT

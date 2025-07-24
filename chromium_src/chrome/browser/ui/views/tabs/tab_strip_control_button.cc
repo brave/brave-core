@@ -9,7 +9,7 @@
 
 #define TabStripControlButton TabStripControlButton_ChromiumImpl
 
-#include "src/chrome/browser/ui/views/tabs/tab_strip_control_button.cc"
+#include <chrome/browser/ui/views/tabs/tab_strip_control_button.cc>
 
 #undef TabStripControlButton
 

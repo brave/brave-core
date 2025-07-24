@@ -8,7 +8,7 @@
 #define StartClosingBrowsers StartClosingBrowsers_ChromiumImpl
 #define CancelBrowserClose CancelBrowserClose_ChromiumImpl
 
-#include "src/chrome/browser/lifetime/browser_close_manager.cc"
+#include <chrome/browser/lifetime/browser_close_manager.cc>
 
 #undef CancelBrowserClose
 #undef StartClosingBrowsers

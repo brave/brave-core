@@ -9,5 +9,5 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 
 #define SidePanel BraveSidePanel
-#include "src/chrome/browser/ui/lens/lens_overlay_controller_browsertest.cc"
+#include <chrome/browser/ui/lens/lens_overlay_controller_browsertest.cc>
 #undef SidePanel

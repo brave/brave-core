@@ -8,7 +8,7 @@
 #define MonotonicTimeToZeroBasedDocumentTime \
   MonotonicTimeToZeroBasedDocumentTime_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/loader/document_load_timing.cc"
+#include <third_party/blink/renderer/core/loader/document_load_timing.cc>
 
 #undef MonotonicTimeToZeroBasedDocumentTime
 

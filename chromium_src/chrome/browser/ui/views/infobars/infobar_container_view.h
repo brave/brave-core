@@ -13,7 +13,7 @@
   friend class BraveInfoBarContainerView;   \
   void PlatformSpecificRemoveInfoBar
 
-#include "src/chrome/browser/ui/views/infobars/infobar_container_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/infobars/infobar_container_view.h>  // IWYU pragma: export
 
 #undef PlatformSpecificRemoveInfoBar
 

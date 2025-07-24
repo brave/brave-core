@@ -56,5 +56,5 @@ std::u16string GetAutoplayIndicatorTitle() {
           ? GetAutoplayIndicatorTitle()                                     \
           : GetIndicatorTitle(indicator_model))
 
-#include "src/chrome/browser/ui/views/permissions/chip/permission_dashboard_controller.cc"
+#include <chrome/browser/ui/views/permissions/chip/permission_dashboard_controller.cc>
 #undef SetMessage

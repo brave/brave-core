@@ -12,7 +12,7 @@
   UnUsed() {}                     \
   friend class BraveNewTabButton; \
   virtual void PaintFill
-#include "src/chrome/browser/ui/views/tabs/new_tab_button.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/new_tab_button.h>  // IWYU pragma: export
 #undef PaintFill
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_NEW_TAB_BUTTON_H_

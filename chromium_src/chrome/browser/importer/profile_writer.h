@@ -16,7 +16,7 @@
                 const std::string& origin);                  \
   virtual void AddAutocompleteFormDataEntries
 
-#include "src/chrome/browser/importer/profile_writer.h"  // IWYU pragma: export
+#include <chrome/browser/importer/profile_writer.h>  // IWYU pragma: export
 
 #undef AddAutocompleteFormDataEntries
 

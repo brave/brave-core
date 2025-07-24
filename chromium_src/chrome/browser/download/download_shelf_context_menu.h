@@ -17,7 +17,7 @@
   }                  \
   virtual ui::SimpleMenuModel* GetMenuModel
 
-#include "src/chrome/browser/download/download_shelf_context_menu.h"  // IWYU pragma: export
+#include <chrome/browser/download/download_shelf_context_menu.h>  // IWYU pragma: export
 
 #undef GetMenuModel
 #undef RecordCommandsEnabled

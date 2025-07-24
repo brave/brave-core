@@ -14,7 +14,7 @@
 #define AllowScript() AllowScript(const KURL& url)
 #define ScriptEnabled() ScriptEnabled(url)
 
-#include "src/third_party/blink/renderer/core/loader/frame_fetch_context.cc"
+#include <third_party/blink/renderer/core/loader/frame_fetch_context.cc>
 #undef AllowScript
 #undef ScriptEnabled
 #undef BRAVE_FRAME_FETCH_CONTEXT_ADD_CLIENT_HINTS_IF_NECESSARY

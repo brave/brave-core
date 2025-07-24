@@ -10,7 +10,7 @@
   AddComponentExtension(const Extension* extension); \
   void AddComponentExtension_ChromiumImpl
 
-#include "src/extensions/browser/extension_registrar.h"  // IWYU pragma: export
+#include <extensions/browser/extension_registrar.h>  // IWYU pragma: export
 
 #undef AddComponentExtension
 

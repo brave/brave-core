@@ -6,7 +6,7 @@
 #include "components/affiliations/core/browser/affiliation_service_impl.h"
 
 #define AffiliationServiceImpl AffiliationServiceImpl_ChromiumImpl
-#include "src/components/affiliations/core/browser/affiliation_service_impl.cc"
+#include <components/affiliations/core/browser/affiliation_service_impl.cc>
 #undef AffiliationServiceImpl
 
 namespace affiliations {

@@ -6,7 +6,7 @@
 #define IsInsecureFormActionOnSecureSource \
   IsInsecureFormActionOnSecureSource_ChromiumImpl
 
-#include "src/components/security_interstitials/core/insecure_form_util.cc"
+#include <components/security_interstitials/core/insecure_form_util.cc>
 #undef IsInsecureFormActionOnSecureSource
 
 #include "net/base/url_util.h"

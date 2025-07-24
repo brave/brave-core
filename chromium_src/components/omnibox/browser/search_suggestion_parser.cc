@@ -13,7 +13,7 @@
 
 #define ParseSuggestResults ParseSuggestResults_Chromium
 
-#include "src/components/omnibox/browser/search_suggestion_parser.cc"
+#include <components/omnibox/browser/search_suggestion_parser.cc>
 
 #undef ParseSuggestResults
 

@@ -26,7 +26,7 @@
                                  ImageDataSettings*, ExceptionState&);         \
   virtual ImageData* getImageDataInternal_Unused
 
-#include "src/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h>  // IWYU pragma: export
 #undef getImageDataInternal
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_CANVAS_CANVAS2D_BASE_RENDERING_CONTEXT_2D_H_
