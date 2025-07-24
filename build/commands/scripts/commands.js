@@ -361,7 +361,7 @@ program
   .option('--no_gn_gen', 'Use args.gn as default values')
   .option(
     '--since [targetCommit]',
-    'use a this commit as reference for change detection',
+    'use this commit as reference for change detection',
   )
   .option(
     '--output_xml',
@@ -476,7 +476,7 @@ program
   .option('--suite [suite]', 'filter by a test suite group')
   .option(
     '--since [targetCommit]',
-    'use a this commit as reference for change detection',
+    'use this commit as reference for change detection',
   )
   .action(async (args) => {
     config.update(args)

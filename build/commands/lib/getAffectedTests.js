@@ -137,7 +137,7 @@ async function getAffectedTests(args = {}) {
       getApplicableFilters(config, test).map((filter) => ({ test, filter })),
     )
     .filter(({ filter }) =>
-      modified.has('//brave/' + filter.replace(cwd + '/', '')),
+      modified.has('//brave/' + path.relative(cwd, filter)),
     )
     .map(({ test }) => test)
 
