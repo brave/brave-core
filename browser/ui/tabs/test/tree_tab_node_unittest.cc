@@ -5,6 +5,7 @@
 
 #include "brave/components/tabs/public/tree_tab_node.h"
 
+#include "base/test/task_environment.h"
 #include "chrome/browser/ui/tabs/tab_group_desktop.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/tabs/public/mock_tab_interface.h"
@@ -21,7 +22,7 @@ class TreeTabNodeUnitTest : public testing::Test {
   TestingProfile* profile() { return testing_profile_.get(); }
 
  private:
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> testing_profile_;
 };
 
