@@ -105,7 +105,7 @@ class MemorySection extends MemorySectionBase {
   loadMemories_() {
     const handler = this.browserProxy_.getCustomizationSettingsHandler()
     handler.getMemories().then((result: { memories: string[] }) => {
-      this.memoriesList_ = [...result.memories]
+      this.memoriesList_ = result.memories
     })
   }
 

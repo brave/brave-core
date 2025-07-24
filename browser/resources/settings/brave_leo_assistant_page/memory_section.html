@@ -68,15 +68,9 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     align-self: stretch;
     border-radius: var(--leo-radius-m);
     border: 1px solid var(--leo-color-divider-subtle);
-  }
-
-  .empty-memories-empty-state {
-    display: flex;
     width: 100%;
     padding: var(--leo-spacing-4xl) 0px;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
   }
 
   .empty-memories-title {
@@ -125,44 +119,22 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     flex: 0 0 auto !important;
   }
 
-  leo-button.delete-all-button:not([isDisabled]) {
+  .delete-button {
     --leo-button-color: var(--leo-color-systemfeedback-error-text);
-    --primary-color: var(--leo-color-systemfeedback-error-background);
-    --bg: var(--leo-color-systemfeedback-error-background);
-  }
-
-  leo-button.delete-all-button[isDisabled] {
-    position: relative;
-    opacity: 0.65;
-    --leo-button-color: var(--leo-color-text-disabled);
-    border-radius: var(--leo-radius-full);
-  }
-
-  leo-button.delete-all-button[isDisabled]::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--leo-color-icon-default);
-    opacity: 0.07;
-    border-radius: inherit;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .dialog-delete-button {
-    --leo-button-color: var(--leo-color-systemfeedback-error-text);
-    --primary-color: var(--leo-color-systemfeedback-error-background);
   }
 
   .error-message {
+    --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
+
     display: flex;
     align-items: center;
     gap: var(--leo-spacing-s);
     color: var(--leo-color-systemfeedback-error-text);
     font: var(--leo-font-small-regular);
   }
-  .error-message leo-icon {
-    color: var(--leo-color-systemfeedback-error-icon);
+
+  .memory-input {
+    width: 100%;
   }
 </style>
 
@@ -187,11 +159,9 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     if="[[!hasMemories_(memoriesList_)]]"
   >
     <div class="empty-memories-table">
-      <div class="empty-memories-empty-state">
-        <div class="empty-memories-title">$i18n{braveLeoAssistantMemoryListEmptyTitle}</div>
-        <div class="empty-memories-desc">
-          $i18n{braveLeoAssistantMemoryListEmptyDescription}
-        </div>
+      <div class="empty-memories-title">$i18n{braveLeoAssistantMemoryListEmptyTitle}</div>
+      <div class="empty-memories-desc">
+        $i18n{braveLeoAssistantMemoryListEmptyDescription}
       </div>
     </div>
   </template>
@@ -239,7 +209,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   <leo-button
     on-click="handleDeleteAllMemories_"
     kind="plain"
-    class="action-button delete-all-button"
+    class="delete-button"
     isDisabled$="[[!hasMemories_(memoriesList_)]]">
     $i18n{braveLeoAssistantDeleteAllMemoriesConfirmationTitle}
   </leo-button>
@@ -253,11 +223,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   <cr-dialog id="memoryDialog" show-on-attach show-close-button on-close="onDialogCancel_">
     <div slot="title">[[getDialogTitle_(editingMemoryItem_)]]</div>
     <div slot="body">
-      <leo-input required id="memoryInput" type="text"
+      <leo-input required type="text"
         value="[[editingMemory_]]" on-input="onDialogInput_"
         showErrors$="[[isTooLong(editingMemory_)]]"
         placeholder="$i18n{braveLeoAssistantMemoryInputPlaceholder}"
-        style="width:100%">
+        class="memory-input">
         <div slot="errors" class="error-message" hidden$="[[!isTooLong(editingMemory_)]]">
           <leo-icon name="warning-triangle-filled"></leo-icon>
           <span>$i18n{braveLeoAssistantInputLengthError}</span>
@@ -272,14 +242,14 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 </template>
 
 <template is="dom-if" if="[[showDeleteDialog_]]" restamp>
-  <cr-dialog id="deleteDialog" show-on-attach show-close-button on-close="onDeleteDialogCancel_">
+  <cr-dialog show-on-attach show-close-button on-close="onDeleteDialogCancel_">
     <div slot="title">$i18n{braveLeoAssistantDeleteMemoryConfirmationTitle}</div>
     <div slot="body">
       $i18n{braveLeoAssistantDeleteMemoryConfirmation}
     </div>
     <div slot="button-container">
       <leo-button kind="plain-faint" on-click="onDeleteDialogCancel_">$i18n{cancel}</leo-button>
-      <leo-button class="action-button dialog-delete-button" on-click="onDeleteDialogConfirm_">
+      <leo-button class="delete-button" on-click="onDeleteDialogConfirm_">
         $i18n{delete}
       </leo-button>
     </div>
@@ -294,7 +264,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     </div>
     <div slot="button-container">
       <leo-button kind="plain-faint" on-click="onDeleteAllDialogCancel_">$i18n{cancel}</leo-button>
-      <leo-button class="action-button dialog-delete-button" on-click="onDeleteAllDialogConfirm_">
+      <leo-button class="delete-button" on-click="onDeleteAllDialogConfirm_">
         $i18n{delete}
       </leo-button>
     </div>

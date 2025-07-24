@@ -17,20 +17,16 @@ namespace ai_chat::prefs {
 mojom::CustomizationsPtr GetCustomizationsFromPrefs(const PrefService& prefs) {
   const base::Value::Dict& customizations_dict =
       prefs.GetDict(prefs::kBraveAIChatUserCustomizations);
-  auto customizations =
-      mojom::Customizations::New(customizations_dict.FindString("name")
-                                     ? *customizations_dict.FindString("name")
-                                     : "",
-                                 customizations_dict.FindString("job")
-                                     ? *customizations_dict.FindString("job")
-                                     : "",
-                                 customizations_dict.FindString("tone")
-                                     ? *customizations_dict.FindString("tone")
-                                     : "",
-                                 customizations_dict.FindString("other")
-                                     ? *customizations_dict.FindString("other")
-                                     : "");
-  return customizations;
+
+  auto get_string_or_empty =
+      [&customizations_dict](const std::string& key) -> std::string {
+    auto* string_value = customizations_dict.FindString(key);
+    return string_value ? *string_value : "";
+  };
+
+  return mojom::Customizations::New(
+      get_string_or_empty("name"), get_string_or_empty("job"),
+      get_string_or_empty("tone"), get_string_or_empty("other"));
 }
 
 void SetCustomizationsToPrefs(const mojom::CustomizationsPtr& customizations,
