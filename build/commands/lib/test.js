@@ -90,6 +90,13 @@ const getApplicableFilters = (config, suite) => {
     [suite, targetPlatform].join('-'),
     [suite, targetPlatform, config.targetArch].join('-'),
   ]
+
+  if (config.is_ubsan) {
+    possibleFilters.push(
+      [suite, targetPlatform, config.targetArch, 'ubsan'].join('-'),
+    )
+  }
+
   possibleFilters.forEach((filterName) => {
     let filterFilePath = path.join(
       config.braveCoreDir,
