@@ -536,9 +536,7 @@ Config.prototype.buildArgs = function () {
     args.enable_updater = true
   }
 
-  if (getEnvConfig(['use_prebuilt_omaha4']) !== undefined) {
-    args.use_prebuilt_omaha4 = getEnvConfig(['use_prebuilt_omaha4'])
-  }
+  args.use_prebuilt_omaha4 = getEnvConfig(['use_prebuilt_omaha4'])
 
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
