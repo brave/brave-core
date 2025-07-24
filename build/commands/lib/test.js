@@ -30,19 +30,15 @@ const getTestBinary = (config, suite) => {
 }
 
 const getTestsToRun = (config, suite) => {
-  let suiteNames = []
-
   const testDepFile = path.join(config.outputDir, `${suite}.json`)
   if (fs.existsSync(testDepFile)) {
     suiteDepNames = JSON.parse(
       fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
     )
-    for (const dep of suiteDepNames) {
-      suiteNames.push(dep.split(':').pop())
-    }
+    return suiteDepNames.map(x => x.split(':').at(-1))
   }
 
-  return suiteNames
+  return [suite]
 }
 
 // Returns a list of paths to files containing all the filters that would apply
@@ -271,7 +267,7 @@ const runTests = (passthroughArgs, suite, config, options) => {
           .stdout.toString()
           .trim()
           .split(' ')
-          .pop()
+          .at(-1)
       }
 
       runArgs.push('--app', getTestBinary(Config, testSuite))
