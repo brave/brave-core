@@ -62,7 +62,7 @@ class WalletProvider {
 
   [[nodiscard]] bool SetWallet(mojom::ExternalWalletPtr wallet);
 
-  [[nodiscard]] bool LogOutWallet(const std::string& notification = "");
+  [[nodiscard]] bool LogOutWallet();
 
  protected:
   void OnFetchBalance(base::OnceCallback<void(mojom::Result, double)> callback,

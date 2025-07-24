@@ -34,9 +34,7 @@ mojom::ExternalWalletPtr TransitionWallet(
 mojom::ExternalWalletPtr MaybeCreateWallet(RewardsEngine& engine,
                                            const std::string& wallet_type);
 
-bool LogOutWallet(RewardsEngine& engine,
-                  const std::string& wallet_type,
-                  const std::string& notification = "");
+bool LogOutWallet(RewardsEngine& engine, const std::string& wallet_type);
 
 }  // namespace wallet
 }  // namespace brave_rewards::internal

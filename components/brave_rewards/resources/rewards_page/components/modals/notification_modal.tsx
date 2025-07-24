@@ -7,6 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
+import { Notification, OpenLinkNotificationAction } from '../../lib/app_state'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
@@ -14,12 +15,10 @@ import { Modal } from '../common/modal'
 
 import {
   getNotificationView,
-  Notification,
   NotificationActionViewProps,
   NotificationBodyProps,
-  NotificationTitleProps,
-  OpenLinkAction
-} from '../../../shared/components/notifications'
+  NotificationTitleProps
+} from '../notifications'
 
 import { style } from './notification_modal.style'
 
@@ -55,7 +54,7 @@ function Action(props: NotificationActionViewProps) {
     if (props.action) {
       switch (props.action.type) {
         case 'open-link':
-          tabOpener.openTab((props.action as OpenLinkAction).url)
+          tabOpener.openTab((props.action as OpenLinkNotificationAction).url)
           break
         case 'reconnect-external-wallet':
           if (externalWallet && !externalWallet.authenticated) {

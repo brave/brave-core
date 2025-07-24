@@ -215,8 +215,8 @@ bool WalletProvider::SetWallet(mojom::ExternalWalletPtr wallet) {
   return wallet::SetWallet(*engine_, std::move(wallet));
 }
 
-bool WalletProvider::LogOutWallet(const std::string& notification) {
-  return wallet::LogOutWallet(*engine_, WalletType(), notification);
+bool WalletProvider::LogOutWallet() {
+  return wallet::LogOutWallet(*engine_, WalletType());
 }
 
 void WalletProvider::RemoveTransferFee(const std::string& contribution_id) {
