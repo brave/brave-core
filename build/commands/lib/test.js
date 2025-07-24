@@ -35,7 +35,7 @@ const getTestsToRun = (config, suite) => {
     suiteDepNames = JSON.parse(
       fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
     )
-    return suiteDepNames.map(x => x.split(':').at(-1))
+    return suiteDepNames.map((x) => x.split(':').at(-1))
   }
 
   return [suite]
