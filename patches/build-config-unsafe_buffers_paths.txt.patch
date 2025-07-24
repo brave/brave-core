@@ -1,0 +1,13 @@
+diff --git a/build/config/unsafe_buffers_paths.txt b/build/config/unsafe_buffers_paths.txt
+index 29db2f99577c66c1a7e5b2daae53523923e2af87..49fa8948c242bba7730cf0f06836cdcdf23637ce 100644
+--- a/build/config/unsafe_buffers_paths.txt
++++ b/build/config/unsafe_buffers_paths.txt
+@@ -31,3 +31,8 @@
+ -url/third_party/
+ -v8/
+ 
++-brave/third_party/bip39wally-core-native/
++-brave/vendor/bat-native-tweetnacl/
++-brave/third_party/bitcoin-core/
++-brave/third_party/ethash/
++-brave/third_party/argon2/

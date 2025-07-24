@@ -433,7 +433,6 @@ Config.prototype.buildArgs = function () {
     disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
     root_extra_deps: ['//brave'],
-    clang_unsafe_buffers_paths: '//brave/build/config/unsafe_buffers_paths.txt',
     // TODO: Re-enable when chromium_src overrides work for files in relative
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
