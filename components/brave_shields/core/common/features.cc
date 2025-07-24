@@ -54,6 +54,9 @@ BASE_FEATURE(kBraveAdblockScriptletDebugLogs,
 BASE_FEATURE(kBraveAdblockCspRules,
              "BraveAdblockCspRules",
              base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAdblockShowHiddenComponents,
+             "BraveAdblockShowHiddenComponents",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will enable "Fanboy's Mobile Notifications List" by
 // default unless overridden by a locally set preference.
 BASE_FEATURE(kBraveAdblockMobileNotificationsListDefault,
