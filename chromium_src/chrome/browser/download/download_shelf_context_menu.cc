@@ -3,7 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "chrome/browser/download/download_shelf_context_menu.h"
+
 #include "chrome/browser/download/download_commands.h"
+
+#define RecordCommandsEnabled RecordCommandsEnabled_Unused
 
 // Add switch-case handling for Brave-specific commands.
 // These cases are not used by the DownloadShelfContextMenu, so just fall
@@ -16,3 +20,4 @@
 #include "src/chrome/browser/download/download_shelf_context_menu.cc"
 
 #undef EDIT_WITH_MEDIA_APP
+#undef RecordCommandsEnabled
