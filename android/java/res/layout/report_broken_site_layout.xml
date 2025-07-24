@@ -56,6 +56,27 @@
         android:layout_marginTop="16dp"
         android:layout_gravity="end">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/default_icon_color_tint_list"
+        android:text="@string/issue_category_spinner_text"/>
+
+    <Spinner
+        android:id="@+id/issue_category_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:textSize="14sp"
+        android:textColor="@color/wallet_text_color"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/country_spinner_background"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"/>
+
     <EditText
         android:id="@+id/details_info_text"
         android:layout_width="match_parent"

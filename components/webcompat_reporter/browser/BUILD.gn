@@ -35,6 +35,7 @@ static_library("browser") {
     "//components/prefs:prefs",
     "//net",
     "//services/network/public/cpp",
+    "//ui/base",
   ]
 
   if (!is_ios) {
