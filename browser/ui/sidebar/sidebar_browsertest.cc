@@ -614,8 +614,10 @@ class SidebarBrowserWithSplitViewTest
   ~SidebarBrowserWithSplitViewTest() override = default;
 
   void NewSplitTab() {
-    IsSideBySideEnabled() ? chrome::NewSplitTab(browser())
-                          : brave::NewSplitViewForTab(browser());
+    IsSideBySideEnabled()
+        ? chrome::NewSplitTab(
+              browser(), split_tabs::SplitTabCreatedSource::kTabContextMenu)
+        : brave::NewSplitViewForTab(browser());
   }
 
   // Use this when left split view is active.
