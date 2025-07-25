@@ -350,7 +350,7 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
 }
 
 WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
-                                                    wtf_size_t length) {
+                                                    blink::wtf_size_t length) {
   uint8_t key[32];
   crypto::HMAC h(crypto::HMAC::SHA256);
   const auto farbling_token_bytes =
