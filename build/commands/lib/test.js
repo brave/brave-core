@@ -15,7 +15,7 @@ const { getAffectedTests } = require('./getAffectedTests')
 const {
   getTestBinary,
   getTestsToRun,
-  getApplicableFilters
+  getApplicableFilters,
 } = require('./testUtils')
 
 const test = async (
@@ -39,7 +39,6 @@ const test = async (
   await buildTests(testsToRun, Config, options)
   await runTests(passthroughArgs, { suite, testsToRun }, Config, options)
 }
-
 
 const buildTests = async (testsToRun, config) => {
   config.buildTargets = testsToRun
