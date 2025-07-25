@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_view_layout_delegate.h"
@@ -48,6 +49,7 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     InfoBarContainerView* infobar_container,
     views::View* contents_container,
     MultiContentsView* multi_contents_view,
+    views::View* vertical_tab_strip_container,
     views::View* left_aligned_side_panel_separator,
     views::View* unified_side_panel,
     views::View* right_aligned_side_panel_separator,
@@ -67,6 +69,7 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
           (browser_view ? browser_view->GetContentsContainerForLayoutManager()
                         : browser_view),
           multi_contents_view,
+          vertical_tab_strip_container,
           left_aligned_side_panel_separator,
           unified_side_panel,
           right_aligned_side_panel_separator,
@@ -204,16 +207,16 @@ void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
 }
 
 void BraveBrowserViewLayout::LayoutContentsContainerView(
-    int top,
-    int bottom,
-    const gfx::Rect& browser_view_bounds) {
-  auto new_rect = browser_view_bounds;
-  if (vertical_tab_strip_host_) {
-    new_rect.Inset(GetInsetsConsideringVerticalTabHost());
+    const gfx::Rect& available_bounds) {
+  gfx::Rect contents_container_bounds = available_bounds;
+  contents_container_bounds.set_height(available_bounds.height() -
+                                       available_bounds.y());
+  int vertical_tab_offset = 0;
+  if (tabs::AreVerticalTabsEnabled()) {
+    vertical_tab_offset = BrowserView::kVerticalTabStripWidth;
+    contents_container_bounds.set_width(available_bounds.width() -
+                                        vertical_tab_offset);
   }
-
-  gfx::Rect contents_container_bounds(new_rect.x(), top, new_rect.width(),
-                                      std::max(0, bottom - top));
   if (webui_tab_strip_ && webui_tab_strip_->GetVisible()) {
     // The WebUI tab strip container should "push" the tab contents down without
     // resizing it.
