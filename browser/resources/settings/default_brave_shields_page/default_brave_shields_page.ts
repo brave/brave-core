@@ -159,6 +159,10 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           type: chrome.settingsPrivate.PrefType.BOOLEAN,
           value: true,
         }
+      },
+      isAdBlockOnlyModeEnabled_: {
+        type: Boolean,
+        value: false,
       }
     }
   }
@@ -180,6 +184,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare isHttpsByDefaultEnabled_: boolean
   private declare showStrictFingerprintingMode_: boolean
   private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
+  private declare isAdBlockOnlyModeEnabled_: boolean
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
     DefaultBraveShieldsBrowserProxyImpl.getInstance()
@@ -200,7 +205,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   onTurnOffAdBlockOnlyMode_() {
-    this.setPrefValue('brave.shields.ad_block_only_mode_enabled', false)
+    this.browserProxy_.setAdBlockOnlyModeEnabled(false)
   }
 
   onAdblockPageClick_() {
@@ -273,6 +278,9 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         type: chrome.settingsPrivate.PrefType.BOOLEAN,
         value: value.contactInfoSaveFlag,
       }
+    })
+    this.browserProxy_.getAdBlockOnlyModeEnabled().then(value => {
+      this.isAdBlockOnlyModeEnabled_ = value
     })
   }
 

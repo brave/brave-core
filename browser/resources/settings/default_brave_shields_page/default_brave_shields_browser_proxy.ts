@@ -26,6 +26,9 @@ export interface DefaultBraveShieldsBrowserProxy {
   getFingerprintingBlockEnabled: () => Promise<boolean>
   setFingerprintingBlockEnabled: (value: boolean) => void
 
+  getAdBlockOnlyModeEnabled: () => Promise<boolean>
+  setAdBlockOnlyModeEnabled: (value: boolean) => void
+
   getHttpsUpgradeControlType: () => Promise<string>
   setHttpsUpgradeControlType: (value: string) => void
 
@@ -80,6 +83,14 @@ implements DefaultBraveShieldsBrowserProxy {
 
   setFingerprintingBlockEnabled (value: boolean) {
     chrome.send('setFingerprintingBlockEnabled', [value])
+  }
+
+  getAdBlockOnlyModeEnabled () {
+    return sendWithPromise('getAdBlockOnlyModeEnabled')
+  }
+
+  setAdBlockOnlyModeEnabled (value: boolean) {
+    chrome.send('setAdBlockOnlyModeEnabled', [value])
   }
 
   getHttpsUpgradeControlType () {
