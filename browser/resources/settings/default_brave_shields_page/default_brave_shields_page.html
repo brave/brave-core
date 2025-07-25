@@ -58,7 +58,7 @@
         <p>$i18n{braveShieldsDefaultsSectionDescription2}</p>
       </div>
       <div class="shields-options-disabled-container">
-        <template is="dom-if" if="[[prefs.brave.shields.ad_block_only_mode_enabled.value]]">
+        <template is="dom-if" if="[[isAdBlockOnlyModeEnabled_]]">
           <leo-alert type="info" hideIcon="true" has-actions="false">
             <div class="shields-options-disabled-alert-title">Shields options are currently disabled</div>
             <div class="shields-options-disabled-alert-content">Ad block only mode only enables ad blocking rules to prevent

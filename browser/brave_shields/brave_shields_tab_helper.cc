@@ -122,6 +122,8 @@ void BraveShieldsTabHelper::OnContentSettingChanged(
   if ((content_type_set.ContainsAllTypes() ||
        content_type_set.GetType() == ContentSettingsType::BRAVE_SHIELDS) &&
       primary_pattern.Matches(GetCurrentSiteURL())) {
+
+    // TODO(aseren): Check if we inform observers if the ad block only mode value changes
     for (Observer& obs : observer_list_) {
       obs.OnShieldsEnabledChanged();
     }

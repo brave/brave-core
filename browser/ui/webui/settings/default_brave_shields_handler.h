@@ -58,6 +58,8 @@ class DefaultBraveShieldsHandler
   void GetFingerprintingBlockEnabled(const base::Value::List& args);
   void SetHttpsUpgradeControlType(const base::Value::List& args);
   void GetHttpsUpgradeControlType(const base::Value::List& args);
+  void SetAdBlockOnlyModeEnabled(const base::Value::List& args);
+  void GetAdBlockOnlyModeEnabled(const base::Value::List& args);
   void SetNoScriptControlType(const base::Value::List& args);
   void GetNoScriptControlType(const base::Value::List& args);
   void SetForgetFirstPartyStorageEnabled(const base::Value::List& args);

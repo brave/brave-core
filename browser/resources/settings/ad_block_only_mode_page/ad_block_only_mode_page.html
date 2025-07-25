@@ -18,6 +18,7 @@
 </div>
 <settings-toggle-button id="adBlockOnlyModeEmbedControlType"
     class="cr-row"
-    pref="{{prefs.brave.shields.ad_block_only_mode_enabled}}"
+    pref="[[isAdBlockOnlyModeEnabled_]]"
+    on-settings-boolean-control-change="onAdBlockOnlyModeChange_"
     label="$i18n{adBlockOnlyModeLabel}">
 </settings-toggle-button>

@@ -275,31 +275,7 @@ void SetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
     return;
   }
 
-  if (url.is_empty()) {
-    LOG(ERROR) << "url for shields ad block only mode setting cannot be blank";
-    return;
-  }
-
-  auto primary_pattern = GetPatternFromURL(url);
-
-  if (primary_pattern.MatchesAllHosts()) {
-    LOG(ERROR) << "Url for shields ad block only mode setting cannot be blank "
-                  "or result in a wildcard content setting.";
-
-#if DCHECK_IS_ON()
-    NOTREACHED();
-#else
-    base::debug::DumpWithoutCrashing();
-    return;
-#endif
-  }
-
-  if (!primary_pattern.IsValid()) {
-    DLOG(ERROR) << "Invalid primary pattern for Url: "
-                << url.possibly_invalid_spec();
-    return;
-  }
-
+  // TODO(aseren): Fix default value for BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE
   // this is 'allow_brave_shields_ad_block_only_mode' so 'enable' == 'allow'
   const auto setting = enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
   if (map->IsOffTheRecord() ||
@@ -307,7 +283,7 @@ void SetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
           map->GetDefaultContentSetting(
               ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE, nullptr)) {
     map->SetContentSettingCustomScope(
-        primary_pattern, ContentSettingsPattern::Wildcard(),
+        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
         ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE, setting);
 
     if (!map->IsOffTheRecord()) {
@@ -315,7 +291,7 @@ void SetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
     }
   } else {
     map->SetContentSettingCustomScope(
-        primary_pattern, ContentSettingsPattern::Wildcard(),
+        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
         ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE,
         CONTENT_SETTING_DEFAULT);
   }
@@ -326,8 +302,10 @@ bool GetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
   if (base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
       url.SchemeIs(kChromeExtensionScheme)) {
+    // TODO(aseren): Should we return false for extension requests?
     return true;
   }
+
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
     return false;
   }
@@ -336,7 +314,8 @@ bool GetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
       url, GURL(), ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE);
 
   // see EnableBraveShieldsAdBlockingOnlyMode - allow and default == false
-  return setting == CONTENT_SETTING_BLOCK ? true : false;
+  // TODO(aseren): Fix default value for BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE
+  return setting == CONTENT_SETTING_BLOCK ? false : true;
 }
 
 void SetAdControlType(HostContentSettingsMap* map,
@@ -506,7 +485,7 @@ DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
   // Don't block if Brave Shields ad block only mode is enabled.
   if (brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
     // TODO(tmancey): ...
-    DCHECK(false) << "Checking that this is hit";
+    // DCHECK(false) << "Checking that this is hit";
     return DomainBlockingType::kNone;
   }
 
@@ -709,6 +688,11 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
 
   ContentSetting fp_setting =
       GetBraveFPContentSettingFromRules(fingerprinting_rules, url);
+
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+    LOG(ERROR) << "FOOBAR.GetFingerprintingControlType.1";
+    return ControlType::ALLOW;
+  }
 
   if (fp_setting == CONTENT_SETTING_ASK ||
       fp_setting == CONTENT_SETTING_DEFAULT ||
@@ -960,6 +944,15 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
   if (!shields_up) {
     return brave_shields::mojom::FarblingLevel::OFF;
   }
+
+  LOG(ERROR) << "FOOBAR.GetFarblingLevel.0";
+
+  // if (GetBraveShieldsAdBlockOnlyModeEnabled(map, primary_url)) {
+  //   LOG(ERROR) << "FOOBAR.GetFarblingLevel.1";
+  //   return brave_shields::mojom::FarblingLevel::OFF;
+  // }
+
+  LOG(ERROR) << "FOOBAR.GetFarblingLevel.2";
 
   auto fingerprinting_type = GetFingerprintingControlType(map, primary_url);
   switch (fingerprinting_type) {
