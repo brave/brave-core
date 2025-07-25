@@ -729,6 +729,107 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
       base::test::RunUntil([&]() { return IsWebModalDialogVisibleAt(1); }));
 }
 
+namespace {
+
+class LoadObserver : public content::WebContentsObserver {
+ public:
+  explicit LoadObserver(content::WebContents* web_contents)
+      : WebContentsObserver(web_contents) {}
+
+  void DidStopLoading() override { did_load_ = true; }
+
+  bool did_load() const { return did_load_; }
+
+ private:
+  bool did_load_ = false;
+};
+
+}  // namespace
+
+IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest, SplitViewReloadTest) {
+  NewSplitTab();
+  content::WaitForLoadStop(GetWebContentsAt(0));
+  content::WaitForLoadStop(GetWebContentsAt(1));
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Check only active split tab(at 1) is loaded when split tab is active.
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+
+    EXPECT_FALSE(observer_0.did_load());
+    EXPECT_TRUE(observer_1.did_load());
+  }
+
+  // Create another active tab.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  content::WaitForLoadStop(GetWebContentsAt(2));
+  EXPECT_EQ(2, tab_strip_model->active_index());
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_FALSE(IsSplitTabAt(2));
+
+  // Check only non-split active tab is loaded.
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+    LoadObserver observer_2(GetWebContentsAt(2));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+    content::WaitForLoadStop(GetWebContentsAt(2));
+
+    EXPECT_FALSE(observer_0.did_load());
+    EXPECT_FALSE(observer_1.did_load());
+    EXPECT_TRUE(observer_2.did_load());
+  }
+
+  // Activate split tab at 0 and check only active split tab is loaded.
+  tab_strip_model->ActivateTabAt(0);
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+    LoadObserver observer_2(GetWebContentsAt(2));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+    content::WaitForLoadStop(GetWebContentsAt(2));
+
+    EXPECT_TRUE(observer_0.did_load());
+    EXPECT_FALSE(observer_1.did_load());
+    EXPECT_FALSE(observer_2.did_load());
+  }
+
+  // Select all tabs and check all tabs(split & normal tabs) are reloaded
+  // as we only filter inactive split tab when reloading if only one pair
+  // of split tab is selected.
+  tab_strip_model->ExtendSelectionTo(2);
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+    LoadObserver observer_2(GetWebContentsAt(2));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+    content::WaitForLoadStop(GetWebContentsAt(2));
+
+    EXPECT_TRUE(observer_0.did_load());
+    EXPECT_TRUE(observer_1.did_load());
+    EXPECT_TRUE(observer_2.did_load());
+  }
+}
+
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SplitViewWithTabDialogBrowserTest,
