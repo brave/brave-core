@@ -5,6 +5,7 @@
 
 #import <Security/Security.h>
 
+#include "base/containers/span.h"
 #import "brave/ios/browser/api/net/certificate_utility.h"
 #include "net/http/transport_security_state.h"
 #include "net/net_buildflags.h"
@@ -73,17 +74,15 @@ TEST_F(CertificateTest, LoadingCertificate) {
 }
 
 TEST_F(CertificateTest, AcceptableCertificates) {
-  std::size_t acceptable_certs_count =
-      sizeof(net::kBraveAcceptableCerts) /
-          sizeof(net::kBraveAcceptableCerts[0]) -
-      1;
+  std::size_t acceptable_certs_count = sizeof(net::kBraveAcceptableCerts) /
+                                       sizeof(net::kBraveAcceptableCerts[0]);
 
   NSArray<NSData*>* certs = [BraveCertificateUtility acceptableSPKIHashes];
 
   EXPECT_TRUE([certs count] > 3);
   EXPECT_EQ([certs count], acceptable_certs_count);
 
-  std::string test_cert = std::string(net::kBraveAcceptableCerts[0]);
+  auto test_cert = base::as_byte_span(*net::kBraveAcceptableCerts[0]);
   if (test_cert.size() > 0) {
     NSData* data = [NSData dataWithBytes:&test_cert[0] length:test_cert.size()];
     EXPECT_NE(data, nil);
@@ -93,8 +92,8 @@ TEST_F(CertificateTest, AcceptableCertificates) {
 }
 
 TEST_F(CertificateTest, HashCertificateSPKI) {
-  std::string amazon_root_ca1_spki_hash =
-      std::string(net::kSPKIHash_AmazonRootCA1);
+  auto amazon_root_ca1_spki_hash =
+      base::as_byte_span(net::kSPKIHash_AmazonRootCA1);
   EXPECT_TRUE(amazon_root_ca1_spki_hash.size() > 0);
 
   NSData* amzn_spki_hash_data =
