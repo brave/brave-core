@@ -84,7 +84,7 @@ class CORE_EXPORT BraveSessionCache final
       ContentSettingsType webcompat_settings_type);
   void FarbleAudioChannel(base::span<float> dst);
   void PerturbPixels(base::span<uint8_t> data);
-  WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
+  WTF::String GenerateRandomString(std::string seed, blink::wtf_size_t length);
   WTF::String FarbledUserAgent(WTF::String real_user_agent);
   int FarbledInteger(FarbleKey key,
                      int spoof_value,
