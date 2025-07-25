@@ -44,6 +44,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -3302,6 +3303,12 @@ class ConversationHandlerUnitTest_AutoScreenshot
 // empty/whitespace-only
 TEST_P(ConversationHandlerUnitTest_AutoScreenshot,
        AutoScreenshotOnEmptyContent) {
+#if BUILDFLAG(IS_IOS)
+  // Set a vision support model to prevent model switching
+  // Remove this model switch once iOS set automatic as default
+  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
+      kClaudeHaikuModelKey);
+#endif
   const EmptyContentTestData& test_data = GetParam();
 
   // Mock associated content to return the test content
@@ -3459,6 +3466,12 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
 
 // Test that screenshots are appended to existing uploaded files
 TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
+#if BUILDFLAG(IS_IOS)
+  // Set a vision support model to prevent model switching
+  // Remove this model switch once iOS set automatic as default
+  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
+      kClaudeHaikuModelKey);
+#endif
   // Mock associated content to return empty text content
   EXPECT_CALL(*associated_content_, GetTextContent)
       .WillRepeatedly(testing::Return(""));
