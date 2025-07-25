@@ -12,7 +12,6 @@ namespace blink::features {
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     // Upgrade all mixed content
     {kMixedContentAutoupgrade, base::FEATURE_ENABLED_BY_DEFAULT},
-    {kPrefetchPrivacyChanges, base::FEATURE_ENABLED_BY_DEFAULT},
     {kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT},
     {kUACHOverrideBlank, base::FEATURE_ENABLED_BY_DEFAULT},
 
