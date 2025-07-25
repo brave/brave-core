@@ -185,8 +185,6 @@ const Config = function () {
   this.targetEnvironment = getEnvConfig(['target_environment'])
   this.gypTargetArch = 'x64'
   this.targetAndroidBase = 'classic'
-  this.sardineClientId = getEnvConfig(['sardine_client_id'])
-  this.sardineClientSecret = getEnvConfig(['sardine_client_secret'])
   this.ignorePatchVersionNumber =
     !this.isBraveReleaseBuild()
     && getEnvConfig(['ignore_patch_version_number'], !this.isCI)
@@ -290,6 +288,8 @@ const Config = function () {
     'rewards_grant_prod_endpoint',
     'rewards_grant_staging_endpoint',
     'safebrowsing_api_endpoint',
+    'sardine_client_id',
+    'sardine_client_secret',
     'service_key_aichat',
     'service_key_stt',
     'sparkle_dsa_private_key_file',
@@ -391,8 +391,6 @@ Config.prototype.buildArgs = function () {
   versionParts = versionParts.split('.')
 
   let args = {
-    sardine_client_id: this.sardineClientId,
-    sardine_client_secret: this.sardineClientSecret,
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
@@ -884,14 +882,6 @@ Config.prototype.getProjectRef = function (
 }
 
 Config.prototype.updateInternal = function (options) {
-  if (options.sardine_client_secret) {
-    this.sardineClientSecret = options.sardine_client_secret
-  }
-
-  if (options.sardine_client_id) {
-    this.sardineClientId = options.sardine_client_id
-  }
-
   if (options.universal) {
     this.targetArch = 'arm64'
     this.isUniversalBinary = true
