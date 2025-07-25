@@ -135,6 +135,10 @@ class TabGridViewModel {
     tabManager.shredData(for: url, in: tab)
   }
 
+  func shredAllTabs() {
+    tabManager.shredAllTabsForCurrentMode()
+  }
+
   func selectTab(_ tab: any TabState) {
     withAnimation {
       tabManager.selectTab(tab)
