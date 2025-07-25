@@ -49,7 +49,7 @@
     *** mLogoCoordinator;
     *** mInitialTileNum;
     *** mProfile;
-    *** insertSiteSectionView(...);
+    *** initializeSiteSectionView(...);
     *** setSearchProviderTopMargin(...);
     *** setSearchProviderBottomMargin(...);
     *** getLogoMargin(...);
@@ -58,7 +58,6 @@
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
     *** mTileGroup;
     public <init>(...);
-    *** updateTilePlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesMediator {
@@ -73,7 +72,7 @@
     *** mToolbarSupplier;
     *** mBottomSheetController;
     *** mTabStripHeightSupplier;
-    *** updateSearchProviderHasLogo(...);
+    *** updateSearchProvider(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
@@ -190,6 +189,10 @@
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabmodel.RedirectTabCreator {
     public <init>(...);
 }
 
@@ -911,7 +914,6 @@
     *** mToolbarCoordinator;
     *** mTabController;
     *** mMinimizationManagerHolder;
-    *** mCustomTabFeatureOverridesManager;
     *** getAppHeaderCoordinator(...);
     *** getBrowserServicesThemeColorProvider(...);
     public <init>(...);

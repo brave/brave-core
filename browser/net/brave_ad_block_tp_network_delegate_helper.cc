@@ -117,8 +117,9 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
           content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
       if (!web_contents) {
         start_time_ = base::TimeTicks::Now();
-        this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(), std::nullopt,
-                         std::nullopt);
+        this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(),
+                         net::AddressList(),
+                         net::HostResolverEndpointResults());
         return;
       }
 
@@ -137,20 +138,20 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     receiver_.set_disconnect_handler(base::BindOnce(
         &AdblockCnameResolveHostClient::OnComplete, base::Unretained(this),
         net::ERR_NAME_NOT_RESOLVED, net::ResolveErrorInfo(net::ERR_FAILED),
-        std::nullopt, std::nullopt));
+        net::AddressList(), net::HostResolverEndpointResults()));
   }
 
-  void OnComplete(int32_t result,
-                  const net::ResolveErrorInfo& resolve_error_info,
-                  const std::optional<net::AddressList>& resolved_addresses,
-                  const std::optional<net::HostResolverEndpointResults>&
-                      endpoint_results_with_metadata) override {
+  void OnComplete(
+      int result,
+      const net::ResolveErrorInfo& resolve_error_info,
+      const net::AddressList& resolved_addresses,
+      const net::HostResolverEndpointResults& alternative_endpoints) override {
     UMA_HISTOGRAM_TIMES("Brave.ShieldsCNAMEBlocking.TotalResolutionTime",
                         base::TimeTicks::Now() - start_time_);
-    if (result == net::OK && resolved_addresses) {
-      DCHECK(resolved_addresses.has_value() && !resolved_addresses->empty());
+    if (result == net::OK) {
+      DCHECK(!resolved_addresses.empty());
       std::move(cb_).Run(std::optional<std::string>(
-          GetCanonicalName(resolved_addresses.value().dns_aliases())));
+          GetCanonicalName(resolved_addresses.dns_aliases())));
     } else {
       std::move(cb_).Run(std::nullopt);
     }

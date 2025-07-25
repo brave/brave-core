@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/frame/multi_contents_view.cc b/chrome/browser/ui/views/frame/multi_contents_view.cc
+index 31c94f5e8deb8c2103a96f5b9c899f8f21293964..8b6c2e077c6181ea0a29ebc13820ca0fdec4de0a 100644
+--- a/chrome/browser/ui/views/frame/multi_contents_view.cc
++++ b/chrome/browser/ui/views/frame/multi_contents_view.cc
+@@ -56,7 +56,7 @@ MultiContentsView::MultiContentsView(
+ 
+   SetLayoutManager(std::make_unique<views::DelegatingLayoutManager>(this));
+   contents_container_views_.push_back(
+-      AddChildView(std::make_unique<ContentsContainerView>(browser_view_)));
++      AddChildView(std::make_unique<BraveContentsContainerView>(browser_view_)));
+   contents_container_views_[0]
+       ->GetContentsView()
+       ->set_is_primary_web_contents_for_window(true);
+@@ -67,7 +67,7 @@ MultiContentsView::MultiContentsView(
+   resize_area_->SetVisible(false);
+ 
+   contents_container_views_.push_back(
+-      AddChildView(std::make_unique<ContentsContainerView>(browser_view_)));
++      AddChildView(std::make_unique<BraveContentsContainerView>(browser_view_)));
+   contents_container_views_[1]->SetVisible(false);
+   contents_container_views_[1]->GetInactiveSplitScrimView()->SetProperty(
+       views::kElementIdentifierKey, kEndContainerViewScrimElementId);

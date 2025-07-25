@@ -81,6 +81,7 @@
 -PrefetchProxyBrowserTest.*
 -PrefetchProxyWithDecoyRequestsBrowserTest.*
 -PrefetchProxyWithNSPBrowserTest.*
+-PrefHashBrowserTestAccountValueUntrustedAddition.AccountValueUntrustedAddition
 -PrintBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.Hsts/*
 -ProbingAndNSPEnabledPrefetchProxyBrowserTest.*

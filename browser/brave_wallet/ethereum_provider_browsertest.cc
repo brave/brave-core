@@ -125,7 +125,7 @@ IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, InactiveTabRequest) {
 
   auto result_first =
       EvalJs(first_tab_web_contents, CheckForEventScript("inactiveTabError"));
-  EXPECT_EQ(base::Value(true), result_first.value);
+  EXPECT_EQ(base::Value(true), result_first);
 }
 
 // This test is flaky on MacOS CI, but mostly works locally.
@@ -157,7 +157,7 @@ IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, MAYBE_ActiveTabRequest) {
 
   auto result_first =
       EvalJs(web_contents(), CheckForEventScript("!inactiveTabError"));
-  EXPECT_EQ(base::Value(true), result_first.value);
+  EXPECT_EQ(base::Value(true), result_first);
 }
 
 IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest,

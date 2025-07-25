@@ -10,7 +10,7 @@
 
 namespace brave_page_graph {
 
-NodeAdFilter::NodeAdFilter(GraphItemContext* context, const String& rule)
+NodeAdFilter::NodeAdFilter(GraphItemContext* context, const blink::String& rule)
     : NodeFilter(context), rule_(rule) {}
 
 NodeAdFilter::~NodeAdFilter() = default;
@@ -20,7 +20,7 @@ ItemName NodeAdFilter::GetItemName() const {
 }
 
 ItemDesc NodeAdFilter::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeFilter::GetItemDesc();
   if (!rule_.empty()) {
     ts << " [" << rule_ << "]";

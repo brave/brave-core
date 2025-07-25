@@ -363,7 +363,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
   ASSERT_TRUE(content::ExecJs(
       web_contents(), "window.open('notsensitive.b.com/simple.html');"));
-  ASSERT_NE(content::EvalJs(web_contents(), "window.opener"), nullptr);
+  ASSERT_NE(content::EvalJs(web_contents(), "window.opener"), base::Value());
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
@@ -371,7 +371,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
   ASSERT_TRUE(
       content::ExecJs(web_contents(), "window.open('a.com/simple.html');"));
-  ASSERT_NE(content::EvalJs(web_contents(), "window.opener"), nullptr);
+  ASSERT_NE(content::EvalJs(web_contents(), "window.opener"), base::Value());
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
@@ -384,7 +384,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
   ASSERT_TRUE(content::ExecJs(
       web_contents(), "window.open('notsensitive.b.com/simple.html');"));
-  ASSERT_EQ(content::EvalJs(web_contents(), "window.opener"), nullptr);
+  ASSERT_EQ(content::EvalJs(web_contents(), "window.opener"), base::Value());
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
@@ -397,7 +397,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
   ASSERT_TRUE(
       content::ExecJs(web_contents(), "window.open('a.com/simple.html');"));
-  ASSERT_EQ(content::EvalJs(web_contents(), "window.opener"), nullptr);
+  ASSERT_EQ(content::EvalJs(web_contents(), "window.opener"), base::Value());
 }
 
 // Define a subclass that disables the feature so we can ensure that nothing
