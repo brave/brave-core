@@ -290,7 +290,7 @@ void BackgroundFacade::OnCustomBackgroundsSaved(
     std::vector<base::FilePath> paths) {
   auto bg_prefs = GetBackgroundPrefs(pref_service_);
 
-  constexpr int kMaxCustomImageBackgrounds = 24;
+  constexpr int kMaxCustomImageBackgrounds = 48;
   auto can_add_image = [&bg_prefs] {
     return bg_prefs.GetCustomImageList().size() < kMaxCustomImageBackgrounds;
   };
