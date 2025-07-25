@@ -318,6 +318,10 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnGeneratePageContentComplete(GetAllContentCallback callback,
                                      bool content_changed);
+  void OnScreenshotsTaken(
+      GetAllContentCallback callback,
+      std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
+
   void OnEngineCompletionDataReceived(
       EngineConsumer::GenerationResultData result);
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
@@ -350,6 +354,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Instead, we build a list from all the available tool sources, given
   // the current conversation state.
   std::vector<base::WeakPtr<Tool>> GetTools();
+
+  // Helper method to switch to vision model if needed
+  void MaybeSwitchToVisionModel(
+      const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files);
 
   std::unique_ptr<AssociatedContentManager> associated_content_manager_;
 
