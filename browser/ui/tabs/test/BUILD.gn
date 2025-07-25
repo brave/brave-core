@@ -53,7 +53,6 @@ source_set("unit_tests") {
     deps += [
       "//brave/browser/ui/tabs:tabs_public",
       "//brave/components/tabs",
-      "//brave/components/tabs:public",
       "//chrome/test:test_support",
       "//components/tabs:test_support",
       "//content/test:test_support",

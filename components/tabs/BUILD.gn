@@ -5,23 +5,15 @@
 
 assert(!is_android)
 
-static_library("public") {
+static_library("tabs") {
   sources = [
     "public/tree_tab_node.h",
     "public/tree_tab_node_id.h",
+    "tree_tab_node.cc",
   ]
 
   deps = [
     "//components/tab_groups",
-    "//components/tabs:public",
-  ]
-}
-
-static_library("tabs") {
-  sources = [ "tree_tab_node.cc" ]
-
-  deps = [
-    ":public",
     "//components/tabs:public",
   ]
 }
