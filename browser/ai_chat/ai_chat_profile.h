@@ -1,0 +1,37 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_BROWSER_AI_CHAT_AI_CHAT_PROFILE_H_
+#define BRAVE_BROWSER_AI_CHAT_AI_CHAT_PROFILE_H_
+
+#include "base/files/file_path.h"
+
+class Profile;
+
+namespace ai_chat {
+
+base::FilePath GetAIChatAgentProfileDir();
+
+// Creates or loads a profile for the purposes of experimental AI content agent
+// features. This "AI Chat Agent Profile" will have all the features of a
+// regular profile: persistance and history but remain isolated from any regular
+// user profiles. It provides a space for the user to collaborate with the AI on
+// browsing activities. Whilst the user can open the profile, configure it via
+// the AI Chat UI, and perform navigations in the profile themselves, efforts
+// are made to ensure the profile does not become the default profile, e.g. not
+// showing the profile picker dialog at browser startup just because we have
+// created this profile.
+void OpenBrowserWindowForAIChatAgentProfile();
+
+// Returns true if the profile is the semi-built-in AI Chat Agent profile.
+bool IsAIChatContentAgentProfile(Profile* profile);
+
+// Returns true if the full profile path is the semi-built-in AI Chat Agent
+// profile.
+bool IsAIChatContentAgentProfile(const base::FilePath& profile_dir);
+
+}  // namespace ai_chat
+
+#endif  // BRAVE_BROWSER_AI_CHAT_AI_CHAT_PROFILE_H_

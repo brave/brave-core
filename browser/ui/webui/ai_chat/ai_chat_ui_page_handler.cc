@@ -50,6 +50,10 @@
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/ai_chat/ai_chat_profile.h"
+#endif
+
 namespace {
 constexpr char kURLRefreshPremiumSession[] =
     "https://account.brave.com/?intent=recover&product=leo";
@@ -255,6 +259,13 @@ void AIChatUIPageHandler::OpenConversationFullPage(
           false,
       },
       {});
+}
+
+void AIChatUIPageHandler::OpenAIChatAgenticProfile() {
+  CHECK(ai_chat::features::IsAIChatAgenticProfileEnabled());
+#if defined(TOOLKIT_VIEWS)
+  ai_chat::OpenBrowserWindowForAIChatAgentProfile();
+#endif
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {

@@ -75,6 +75,14 @@ bool IsToolsEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatTools);
 }
 
+BASE_FEATURE(kAIChatAgenticProfile,
+             "AIChatAgenticProfile",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatAgenticProfileEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatAgenticProfile);
+}
+
 BASE_FEATURE(kCustomSiteDistillerScripts,
              "CustomSiteDistillerScripts",
              base::FEATURE_ENABLED_BY_DEFAULT);

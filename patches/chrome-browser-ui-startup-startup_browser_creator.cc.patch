@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/startup/startup_browser_creator.cc b/chrome/browser/ui/startup/startup_browser_creator.cc
+index f6f46c4dc501f9f8b0cc72267e78a611452d97cd..20b39b7c23832d67a88e454e2bd979f45130f391 100644
+--- a/chrome/browser/ui/startup/startup_browser_creator.cc
++++ b/chrome/browser/ui/startup/startup_browser_creator.cc
+@@ -33,6 +33,7 @@
+ #include "base/task/thread_pool.h"
+ #include "base/threading/scoped_blocking_call.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/browser/ai_chat/ai_chat_profile.h"
+ #include "build/branding_buildflags.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/app_mode/app_mode_utils.h"
+@@ -289,6 +290,7 @@ void DumpBrowserHistograms(const base::FilePath& output_file) {
+ // Returns whether |profile_info.profile| can be opened during Chrome startup
+ // without explicit user action.
+ bool CanOpenProfileOnStartup(StartupProfileInfo profile_info) {
++BRAVE_CAN_OPEN_PROFILE_ON_STARTUP
+ #if BUILDFLAG(IS_CHROMEOS)
+   // On ChromeOS, the user has already chosen and logged into the profile before
+   // Chrome starts up.

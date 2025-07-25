@@ -5,6 +5,7 @@
 
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import Tooltip from '@brave/leo/react/tooltip'
 import * as React from 'react'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
@@ -43,7 +44,7 @@ type Props = Pick<
   | 'associateDefaultContent'
   | 'setShowAttachments'
 > &
-  Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement' | 'getPluralString' | 'tabs'>
+  Pick<AIChatContext, 'isMobile' | 'isContentAgentFeatureEnabled' | 'isContentAgentSupportedInCurrentProfile' | 'hasAcceptedAgreement' | 'getPluralString' | 'tabs' | 'openAIChatAgenticProfile'>
 
 export interface InputBoxProps {
   context: Props
@@ -134,6 +135,10 @@ function InputBox(props: InputBoxProps) {
     props.conversationStarted,
     props.context.getPluralString
   )
+
+  const handleContentAgentToggle = () => {
+    props.context.openAIChatAgenticProfile()
+  }
 
   const showImageAttachments = props.context.pendingMessageImages.length > 0 || props.context.isUploadingFiles
   const showPageAttachments = props.context.associatedContentInfo.length > 0
@@ -249,6 +254,26 @@ function InputBox(props: InputBoxProps) {
             tabs={props.context.tabs}
             setShowAttachments={props.context.setShowAttachments}
           />
+          {props.context.hasAcceptedAgreement &&
+            props.context.isContentAgentFeatureEnabled &&
+            !props.context.isContentAgentSupportedInCurrentProfile && (
+            <Button
+              fab
+              kind='plain-faint'
+              onClick={handleContentAgentToggle}
+              title={'Open Leo AI Content Agent Window'}
+            >
+              <Icon name='leo-cursor' />
+            </Button>
+          )}
+          {props.context.isContentAgentFeatureEnabled &&
+            props.context.isContentAgentSupportedInCurrentProfile && (
+            <Tooltip
+              text={getLocale(S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL)}
+            >
+              <Icon className={styles.contentAgentButtonEnabled} name='leo-cursor' />
+            </Tooltip>
+          )}
         </div>
         <div>
           {props.context.isGenerating ? (

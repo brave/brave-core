@@ -155,6 +155,10 @@
   --leo-icon-color: var(--leo-color-icon-disabled);
 }
 
+.contentAgentButtonEnabled {
+  --leo-icon-color: var(--leo-color-icon-interactive);
+}
+
 .streamingButton {
   --leo-button-color:
     color-mix(in srgb, var(--leo-color-button-background) 5%, transparent);
