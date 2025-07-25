@@ -1,0 +1,13 @@
+diff --git a/tools/crates/gnrt/lib/condition.rs b/tools/crates/gnrt/lib/condition.rs
+index 512c46f7613002e7ea0d49142c65f94d3b141f48..3e2ba32ccf1a4dff86e7fd3584930715c5605af0 100644
+--- a/tools/crates/gnrt/lib/condition.rs
++++ b/tools/crates/gnrt/lib/condition.rs
+@@ -281,7 +281,7 @@ mod format_as_gn_expr {
+             RustTargetArch::Arm => "current_cpu == \"arm\"",
+             RustTargetArch::Riscv64 => "current_cpu == \"riscv64\"",
+             RustTargetArch::X86 => "current_cpu == \"x86\"",
+-            RustTargetArch::X8664 => "current_cpu == \"x64\"",
++            RustTargetArch::X8664 => "target_cpu == \"x64\"",
+             RustTargetArch::Powerpc64 => "(current_cpu == \"ppc64le\")",
+             RustTargetArch::S390x => "(current_cpu == \"s390x\")",
+             RustTargetArch::Loongarch64 => "(current_cpu == \"loong64\")",
