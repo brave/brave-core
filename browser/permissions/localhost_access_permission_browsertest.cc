@@ -52,9 +52,11 @@ constexpr char kSimplePage[] = "/simple.html";
 class LocalhostAccessBrowserTest : public InProcessBrowserTest {
  public:
   LocalhostAccessBrowserTest() {
-    feature_list_.InitAndEnableFeatureWithParameters(
-        network::features::kLocalNetworkAccessChecks,
-        {{"LocalNetworkAccessChecksWarn", "false"}});
+    feature_list_.InitWithFeaturesAndParameters(
+        {{network::features::kLocalNetworkAccessChecksWebSockets, {}},
+         {network::features::kLocalNetworkAccessChecks,
+          {{"LocalNetworkAccessChecksWarn", "false"}}}},
+        {});
     // Embedding website server
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
