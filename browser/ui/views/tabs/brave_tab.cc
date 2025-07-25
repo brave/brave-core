@@ -6,10 +6,14 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
 #include <algorithm>
+#include <memory>
 #include <optional>
+#include <string>
 #include <utility>
 
 #include "base/check.h"
+#include "base/feature_list.h"
+#include "base/notimplemented.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -27,7 +31,38 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/view_class_properties.h"
 
+BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+    return;
+  }
+  rename_textfield_ = AddChildView(std::make_unique<views::Textfield>());
+  rename_textfield_->SetVisible(false);
+  rename_textfield_->set_controller(this);
+}
+
 BraveTab::~BraveTab() = default;
+
+void BraveTab::EnterRenameMode() {
+  if (!rename_textfield_) {
+    return;
+  }
+
+  if (rename_mode_) {
+    return;  // Already in rename mode.
+  }
+
+  rename_mode_ = true;
+  // Fill the textfield with the current title of the tab and select all text.
+  if (rename_textfield_->GetText().empty()) {
+    rename_textfield_->SetText(data_.title);
+  }
+  rename_textfield_->SetText(data_.title);
+  rename_textfield_->SetSelectedRange(gfx::Range(0, data_.title.length()));
+  rename_textfield_->SetBoundsRect(title_->bounds());
+  rename_textfield_->SetVisible(true);
+  title_->SetVisible(false);
+  rename_textfield_->RequestFocus();
+}
 
 std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
   auto* browser = controller_->GetBrowser();
@@ -114,6 +149,12 @@ void BraveTab::Layout(PassKey) {
       ink_drop->HostSizeChanged(close_button_->size());
     }
   }
+
+  if (rename_textfield_ && rename_mode_) {
+    rename_textfield_->SetBoundsRect(title_->bounds());
+    rename_textfield_->SetVisible(true);
+    title_->SetVisible(false);
+  }
 }
 
 gfx::Insets BraveTab::GetInsets() const {
@@ -173,4 +214,42 @@ bool BraveTab::IsActive() const {
   // When SideBySide is enabled, chromium gives true if tab is in split tab even
   // it's not active. We want to give true only for current active tab.
   return controller_->IsActiveTab(this);
+}
+
+bool BraveTab::HandleKeyEvent(views::Textfield* sender,
+                              const ui::KeyEvent& key_event) {
+  if (key_event.type() != ui::EventType::kKeyPressed) {
+    return false;
+  }
+
+  switch (key_event.key_code()) {
+    case ui::VKEY_ESCAPE:
+      // Cancel the rename on Escape key press.
+      ExitRenameMode();
+      return true;
+    case ui::VKEY_RETURN:
+      // Commit the rename on Enter key press.
+      CommitRename();
+      return true;
+    default:
+      break;
+  }
+
+  return false;
+}
+
+void BraveTab::CommitRename() {
+  controller_->SetCustomTitleForTab(
+      this, std::u16string(rename_textfield_->GetText()));
+  ExitRenameMode();
+}
+
+void BraveTab::ExitRenameMode() {
+  CHECK(rename_mode_);
+
+  rename_textfield_->SetVisible(false);
+  title_->SetVisible(true);
+
+  rename_textfield_->SetText(std::u16string());
+  rename_mode_ = false;
 }
