@@ -16,8 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.base.test.util.Batch;
-import org.chromium.base.test.util.Features.DisableFeatures;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
@@ -26,7 +24,6 @@ import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 // appeared in this section .
 @Batch(Batch.PER_CLASS)
 @RunWith(ChromeJUnit4ClassRunner.class)
-@DisableFeatures(ChromeFeatureList.LOGIN_DB_DEPRECATION_ANDROID)
 public class BraveSafetyCheckSettingsFragmentTest {
     private static final String PASSWORDS_LOCAL = "passwords_local";
     private static final String PASSWORDS_ACCOUNT = "passwords_account";
