@@ -30,5 +30,6 @@ source_set("unit_tests") {
     "//brave/components/script_injector/renderer:renderer",
     "//components/prefs:test_support",
     "//content/public/renderer",
+    "//v8:cppgc_headers",
   ]
 }
