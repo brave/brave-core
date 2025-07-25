@@ -28,9 +28,11 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         deleteField(sBraveNewTabPageLayoutClassName, "mProfile");
         makeProtectedField(sNewTabPageLayoutClassName, "mProfile");
 
-        makePublicMethod(sNewTabPageLayoutClassName, "insertSiteSectionView");
+        makePublicMethod(sNewTabPageLayoutClassName, "initializeSiteSectionView");
         addMethodAnnotation(
-                sBraveNewTabPageLayoutClassName, "insertSiteSectionView", "Ljava/lang/Override;");
+                sBraveNewTabPageLayoutClassName,
+                "initializeSiteSectionView",
+                "Ljava/lang/Override;");
 
         makePublicMethod(sNewTabPageLayoutClassName, "setSearchProviderTopMargin");
         addMethodAnnotation(
