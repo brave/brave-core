@@ -249,6 +249,7 @@ class ChromiumTabState: TabState, TabStateImpl {
     webView.navigationDelegate = navigationHandler
     webView.uiDelegate = uiHandler
     webView.allowsBackForwardNavigationGestures = true
+    webView.allowsLinkPreview = true
 
     self.webView = webView
 
