@@ -14,6 +14,9 @@
   <message name="IDS_SETTINGS_MORE_ACTIONS" desc="Tooltip text (shows on hover or for screenreaders) for a button that shows a menu with more actions when clicked or tapped">
     More actions
   </message>
+  <message name="IDS_SETTINGS_MORE_ACTIONS_BUTTON_ARIA_LABEL" desc="Aria (accessibility) label for a button that shows a menu with more actions when clicked or tapped">
+    More actions for <ph name="BUTTON_TITLE">$1</ph>
+  </message>
   <message name="IDS_SETTINGS_OPENS_IN_NEW_TAB" desc="ARIA (accessibility) label describing a link which opens in a new tab.">
     Opens in new tab
   </message>
@@ -183,7 +186,7 @@
       Select the More Gestures tab, then turn on Swipe between pages to navigate back and forward
     </message>
   </if>
-  <if expr="not chromeos_ash">
+  <if expr="not is_chromeos">
     <message name="IDS_SETTINGS_ACCESSIBILITY_TOAST_FREQUENCY_TITLE" desc="Title for a setting that allows you to change what type of feedback messages you receive.">
       Copied to clipboard confirmations
     </message>
@@ -238,8 +241,16 @@
   <message name="IDS_SETTINGS_RESET_TO_DEFAULT" desc="Name of the control which resets a browser setting back to the default value">
     Reset to default
   </message>
+  <if expr="not is_linux">
+    <message name="IDS_SETTINGS_RESET_TO_DEFAULT_THEME" desc="Accessibility label of the button which resets the browser theme back to the default value">
+      Reset to default theme
+    </message>
+  </if>
   <message name="IDS_SETTINGS_CUSTOMIZE_TOOLBAR" desc="Text of the button which allows you to customize your toolbar.">
     Customize your toolbar
+  </message>
+  <message name="IDS_SETTINGS_RESET_TOOLBAR_TO_DEFAULT" desc="Accessibility label of the button which resets toolbar customizations to default settings">
+    Reset toolbar to default settings
   </message>
   <message name="IDS_SETTINGS_CHROME_COLORS" desc="Text of the label describing 'Brave Colors' theme.">
     Brave Colors
@@ -722,6 +733,28 @@
     Hide password for <ph name="USERNAME">$1<ex>example@gmail.com</ex></ph> on <ph name="DOMAIN">$2<ex>www.google.com</ex></ph>
   </message>
 
+  <message name="IDS_SETTINGS_HOME_AND_WORK_ADDRESS_EDIT" desc="Label for a context menu item that provides the edit option for the selected home and work address.">
+    Edit in Brave sync chain
+  </message>
+  <message name="IDS_SETTINGS_HOME_AND_WORK_ADDRESS_REMOVE" desc="Label for a context menu item that removes the selected home and work address from Brave.">
+    Remove from Brave
+  </message>
+  <message name="IDS_SETTINGS_HOME_ADDRESS_REMOVE_CONFIRMATION_DIALOG_TITLE" desc="Title for the dialog that asks for confirmation to remove the selected home address from Brave.">
+    Remove your home address from Brave?
+  </message>
+  <message name="IDS_SETTINGS_WORK_ADDRESS_REMOVE_CONFIRMATION_DIALOG_TITLE" desc="Title for the dialog that asks for confirmation to remove the selected work address from Brave.">
+    Remove your work address from Brave?
+  </message>
+  <message name="IDS_SETTINGS_HOME_ADDRESS_REMOVE_CONFIRMATION_DIALOG_NOTICE" desc="Body for the dialog that asks for confirmation to remove the selected home address from Brave.">
+    Your home address can help you get things done across Brave services, like more relevant Search results and directions in Brave Maps. You can edit or delete your address in your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave sync chain <ph name="USERNAME">$2<ex>example@gmail.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_WORK_ADDRESS_REMOVE_CONFIRMATION_DIALOG_NOTICE" desc="Body for the dialog that asks for confirmation to remove the selected work address from Brave.">
+    Your work address can help you get things done across Brave services, like more relevant Search results and directions in Brave Maps. You can edit or delete your address in your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave sync chain <ph name="USERNAME">$2<ex>example@gmail.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_HOME_AND_WORK_ADDRESS_REMOVE_CONFIRMATION_DIALOG_ACTION_OK" desc="Okay action for the dialog that asks for confirmation to remove the selected home and work address from Brave.">
+    Remove
+  </message>
+
   <!-- Default Browser Page -->
   <if expr="not is_chromeos">
     <message name="IDS_SETTINGS_DEFAULT_BROWSER" desc="Name of the Default Browser page, which allows users to set which browser will open .html files within the OS.">
@@ -835,6 +868,13 @@
   <message name="IDS_SETTINGS_MANAGE_IN_YOUR_GOOGLE_ACCOUNT" desc="Description for the MyActivity and Search History linkouts in the 'Other Brave Data' subpage inside the 'Delete browsing data' dialog. This lets users know that this data can be managed and deleted in their Brave account.">
     Manage in your Brave sync chain
   </message>
+  <message name="IDS_SETTINGS_MANAGE_IN_YOUR_GEMINI_APPS_ACTIVITY" desc="Description for the Gemini Apps Activity linkout.">
+    Manage your Gemini Apps activity
+</message>
+<message name="IDS_SETTINGS_GEMINI_APPS_ACTIVITY" desc="Title for the Gemini Apps Activity section in Other Data.">
+    Gemini Apps activity
+</message>
+
   <message name="IDS_SETTINGS_PASSWORDS_AND_PASSKEYS" desc="Label for the 'Passwords and Passkeys' linkout in the 'Other Brave Data' subpage inside the 'Delete browsing data' dialog, where the user can see and manage data that is stored outside of Brave. This linkout is specifically for passwords and passkeys stored in Brave password manager.">
     Passwords and passkeys
   </message>
@@ -2114,6 +2154,9 @@
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_EDIT_SEARCH_ENGINE" desc="Title for a dialog that allows editing an existing search engine.">
     Edit search engine
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_VIEW_SEARCH_ENGINE" desc="Title for a dialog that allows viewing details of an existing search engine.">
+    Search engine
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_EDIT_SITE_SEARCH" desc="Title for a dialog that allows editing an existing site search engine.">
     Edit site search
@@ -3622,6 +3665,21 @@
     <message name="IDS_SETTINGS_CREATE_SHORTCUT_SUBTITLE" desc="Subtitle of create shortcut section on the manage profile page.">
       Create a desktop shortcut on your device to access directly to this profile
     </message>
+    <message name="IDS_SETTINGS_ACCOUNT_PAGE_TITLE" desc="Name of the settings page which manages the signed in account.">
+      Your account
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_DATATYPES_HEADING" desc="Heading of the section in the account settings page for managing data types.">
+      In your Brave sync chain
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_BODY" desc="Description of the section in the account settings page for managing data types.">
+      When on, data is saved in your Brave sync chain and can be used on all your devices. When off, data is saved only to this device.
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_SYNC_DISABLED" desc="Section in the account settings page informing the user when the toggles to save a specific data type to the user's Brave sync chain are disabled as per an Enterprise policy.">
+      Managed by your administrator
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_HISTORY_TOGGLE" desc="Title of the merged toggle in the account settings page combining the data types history, tabs, and saved tab groups. Shown on next to the toggle that controls whether these data types should be saved in the Brave sync chain and synced across devices.">
+      History and tabs
+    </message>
   </if>
 
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing for non-managed profiles.">
@@ -3767,10 +3825,10 @@
     As you browse sites, their page contents are encrypted and saved to your device
   </message>
   <message name="IDS_SETTINGS_HISTORY_SEARCH_SUBLABEL_ON" desc="This string is the subheading of a setting for ‘History search, powered by AI’. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-    On • Use everyday language to search your browsing history and find sites you visited
+    Use everyday language to search your browsing history and find sites you visited. This setting is on.
   </message>
   <message name="IDS_SETTINGS_HISTORY_SEARCH_SUBLABEL_OFF" desc="This string is the subheading of a setting for ‘History search, powered by AI’. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-    Off • Use everyday language to search your browsing history and find sites you visited
+    Use everyday language to search your browsing history and find sites you visited. This setting is off.
   </message>
   <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_SETTING_SUBLABEL_V2" desc="Sublabel of the setting that enables history search, powered by AI, with answers enabled.">
     Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history
@@ -3788,10 +3846,10 @@
     AI-powered history search results and answers may become outdated if site content has changed since your last visit
   </message>
   <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_SUBLABEL_ON" desc="This string is the subheading of a setting for ‘History search, powered by AI’ when answers are available. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-    On • Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history
+    Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history. This setting is on.
   </message>
   <message name="IDS_SETTINGS_HISTORY_SEARCH_WITH_ANSWERS_SUBLABEL_OFF" desc="This string is the subheading of a setting for ‘History search, powered by AI’ when answers are available. This subheading notes that the setting is currently turned on. Then, it summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
-    Off • Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history
+    Use everyday language to search your browsing history and find sites you visited. You can also ask questions and get answers based on your browsing history. The setting is off.
   </message>
 
   <!-- Web Content -->
@@ -4385,14 +4443,14 @@
   </message>
 
     <!-- Experimental settings - Password Change -->
-  <message name="IDS_SETTINGS_PASSWORD_CHANGE_LABEL" desc="Primary label for password change entry in settings.">
+  <message name="IDS_SETTINGS_PASSWORD_CHANGE_LABEL" desc="Primary label for password change entry in settings. The user is in settings and this string represents the name of the feature. We were careful to choose “automated” and not “automatic” because we don’t want to give the user the impression that this will happen without their knowledge. There is an ‘automated’ process that the user initiates, but the process isn’t ‘automatic’ in the sense that it might be happening behind the scenes without the user’s knowledge.">
     Automated Password Change
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_CHANGE_SUBLABEL" desc="Sublabel for password change entry in settings.">
-    When Brave finds one of your passwords in a data breach, it can offer to change your password for you when you sign in
+  <message name="IDS_SETTINGS_PASSWORD_CHANGE_SUBLABEL" desc="Sublabel for password change entry in settings. The description of the feature beneath the “Automated password change” feature title. This and the bullets beneath this paragraph represent the full description of the feature. * “public” does two things: 1) it provides distance between “Brave” and “data breach”, because we don’t want users to associate the breach with Brave (Brave didn’t have a data leak, 2) and related, it might reassure the user to know that Brave is using public information to establish these lists of compromised passwords. * “Brave Password Manager can offer…”: The user has to agree to have this feature update their password for them each time. So Brave Password Manager is ‘offering’ to do something for the user.">
+    If Brave finds one of your passwords in a data breach, Brave Password Manager can offer to change your password for you if you're signed in.
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_CHANGE_DATA_BREACH" desc="One of the bullet points explaining what happens when the feature is used.">
-    When one of your passwords is found in a data breach, Brave Password Manager asks if you want it changed to a strong password
+  <message name="IDS_SETTINGS_PASSWORD_CHANGE_DATA_BREACH" desc="Bullet 1 of 2 that appears beneath the “When used” subtitle. This string is repetitive of the feature description, but we want to have a complete description of what happens when the feature is used. * “Brave Password Manager asks…”: This part is similar to the general feature description above, but it’s written as if the feature is being used by the user, so we use “asks” and not “can offer”. * “Strong password”: As an existing autofill feature, Brave Password Manager can offer to generate and save passwords for the user. These passwords are typically stronger than passwords the user might create on their own">
+    If one of your passwords is found in a data breach, Brave Password Manager asks if you want it changed to a strong password
   </message>
   <message name="IDS_SETTINGS_PASSWORD_CHANGE_WHERE_SAVED" desc="One of the bullet points explaining what happens when the feature is used.">
     You don't need to remember the password because it gets saved for you in Brave Password Manager
