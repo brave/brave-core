@@ -22,6 +22,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
@@ -258,6 +259,16 @@ bool BraveTabStrip::IsFirstTabInTile(const Tab* tab) const {
   return browser->tab_strip_model()->GetIndexOfTab(tile->first.Get()) == *index;
 }
 
+void BraveTabStrip::SetCustomTitleForTab(Tab* tab,
+                                         const std::u16string& title) {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
+  auto index = GetModelIndexOf(tab);
+  CHECK(index);
+
+  static_cast<BraveBrowserTabStripController*>(controller_.get())
+      ->SetCustomTitleForTab(*index, title);
+}
+
 TabTiledState BraveTabStrip::GetTiledStateForTab(int index) const {
   auto* tab = tab_at(index);
   if (!IsTabTiled(tab)) {
@@ -265,6 +276,13 @@ TabTiledState BraveTabStrip::GetTiledStateForTab(int index) const {
   }
 
   return IsFirstTabInTile(tab) ? TabTiledState::kFirst : TabTiledState::kSecond;
+}
+
+void BraveTabStrip::EnterTabRenameModeAt(int index) {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
+  auto* tab = tab_at(index);
+  CHECK(tab);
+  static_cast<BraveTab*>(tab)->EnterRenameMode();
 }
 
 std::optional<TabTile> BraveTabStrip::GetTileForTab(const Tab* tab) const {

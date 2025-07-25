@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_H_
 
+#include <string>
+
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/browser.h"
 
@@ -57,6 +59,9 @@ class BraveBrowser : public Browser {
   void RunFileChooser(content::RenderFrameHost* render_frame_host,
                       scoped_refptr<content::FileSelectListener> listener,
                       const blink::mojom::FileChooserParams& params) override;
+
+  void TabCustomTitleChanged(content::WebContents* contents,
+                             const std::string& custom_title) override;
 
   // Returns true when we should ask browser closing to users before handling
   // any warning/onbeforeunload handlers.
