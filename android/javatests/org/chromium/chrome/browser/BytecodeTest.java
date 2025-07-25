@@ -992,6 +992,12 @@ public class BytecodeTest {
                         int.class,
                         boolean.class,
                         MotionEventInfo.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarPrefs",
+                        "getCustomizationSetting",
+                        MethodModifier.STATIC,
+                        int.class));
     }
 
     @Test
