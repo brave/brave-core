@@ -1372,8 +1372,9 @@ void ConversationHandler::OnEngineCompletionComplete(
       UpdateOrCreateLastAssistantEntry(std::move(*result));
       OnConversationEntryAdded(chat_history_.back());
     } else {
-      auto& last_entry = chat_history_.back();
-      if (last_entry->character_type != mojom::CharacterType::ASSISTANT) {
+      // This is a workaround for any occasions where the engine returns
+      // a success but there was no new entry.
+      if (needs_new_entry_) {
         SetAPIError(mojom::APIError::ConnectionIssue);
       } else {
         OnConversationEntryAdded(chat_history_.back());

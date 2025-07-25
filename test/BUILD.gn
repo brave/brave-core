@@ -272,7 +272,6 @@ test("brave_unit_tests") {
     "//brave/components/webcompat/content/browser",
     "//brave/components/webcompat/core/common",
     "//brave/components/webcompat_reporter/browser:unittests",
-    "//brave/extensions:common",
     "//brave/mojo/brave_ast_patcher:unit_tests",
     "//brave/net:unit_tests",
     "//brave/third_party/blink/renderer:renderer",
@@ -456,6 +455,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/bookmark:unittest",
       "//brave/browser/ui/color:unit_tests",
       "//brave/browser/ui/commands:unit_tests",
+      "//brave/browser/ui/tabs/test:unit_tests",
       "//brave/browser/ui/toolbar:brave_app_menu_unit_test",
       "//brave/browser/ui/views/download/bubble:unit_tests",
       "//brave/browser/ui/views/split_view:unit_tests",
@@ -1066,6 +1066,7 @@ test("brave_browser_tests") {
   if (enable_speedreader && toolkit_views) {
     sources += [ "//brave/browser/speedreader/speedreader_browsertest.cc" ]
     deps += [
+      "//brave/browser/ui/views/frame/split_view/",
       "//brave/browser/ui/views/split_view/",
       "//brave/components/ai_chat/core/common",
       "//brave/components/speedreader",

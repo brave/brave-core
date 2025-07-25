@@ -219,7 +219,7 @@ describe('conversation entries', () => {
     )
 
     // One for the text, one for the tooltip
-    expect(screen.queryAllByText('Associated Content').length).toBe(2)
+    expect(screen.queryAllByText('Associated Content').length).toBe(1)
     expect(
       Array.from(container.querySelectorAll('img[src*="//favicon2"]')).length
     ).toBe(1)

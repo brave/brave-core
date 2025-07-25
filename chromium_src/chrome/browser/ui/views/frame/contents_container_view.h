@@ -6,7 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_CONTENTS_CONTAINER_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_CONTENTS_CONTAINER_VIEW_H_
 
-#define UpdateBorderAndOverlay virtual UpdateBorderAndOverlay
+#define UpdateBorderAndOverlay             \
+  UnUsed() {}                              \
+  friend class BraveContentsContainerView; \
+  virtual void UpdateBorderAndOverlay
 
 #include <chrome/browser/ui/views/frame/contents_container_view.h>  // IWYU pragma: export
 

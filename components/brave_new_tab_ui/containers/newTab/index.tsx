@@ -150,6 +150,18 @@ function GetShouldShowBrandedWallpaperNotification (props: Props) {
     !props.newTabData.isBrandedWallpaperNotificationDismissed
 }
 
+interface NewsProviderProps {
+  disabled: boolean
+  children: React.ReactNode
+}
+
+function NewsProvider(props: NewsProviderProps) {
+  if (props.disabled) {
+    return <>{props.children}</>
+  }
+  return <BraveNewsContextProvider>{props.children}</BraveNewsContextProvider>
+}
+
 class NewTabPage extends React.Component<Props, State> {
   state: State = {
     showSettingsMenu: false,
@@ -701,7 +713,7 @@ class NewTabPage extends React.Component<Props, State> {
         hasSponsoredRichMediaBackground={hasSponsoredRichMediaBackground}
         data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews && !defaultState.featureFlagBraveNewsFeedV2Enabled) ? true : undefined}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
-        <BraveNewsContextProvider>
+        <NewsProvider disabled={newTabData.isBraveNewsDisabledByPolicy}>
         <EngineContextProvider>
 
         {
@@ -901,7 +913,7 @@ class NewTabPage extends React.Component<Props, State> {
         }
         <BraveNewsModal/>
         </EngineContextProvider>
-        </BraveNewsContextProvider>
+        </NewsProvider>
       </Page.App>
     )
   }

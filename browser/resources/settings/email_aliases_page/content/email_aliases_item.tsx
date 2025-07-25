@@ -70,10 +70,12 @@ const CopyToast = ({ text, tabIndex, children }:
     data-testid="copy-toast"
     onKeyDown={onEnterKeyForDiv(copy)}
     onClick={copy}>
-    <Tooltip text={copied ? getLocale('emailAliasesCopiedToClipboard') : ''}
-             mode="mini" visible={copied}>
-      {children}
-    </Tooltip>
+    {copied ?
+      <Tooltip text={getLocale('emailAliasesCopiedToClipboard')}
+        mode="mini">
+        {children}
+      </Tooltip>
+      : children}
   </div>
 }
 

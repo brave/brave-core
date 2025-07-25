@@ -345,6 +345,10 @@ MATCHER_P(ConversationEntriesStateIsGenerating, expected_is_generating, "") {
   return arg->is_generating == expected_is_generating;
 }
 
+MATCHER_P(TurnHasText, expected_text, "") {
+  return arg->prompt.value_or(arg->text) == expected_text;
+}
+
 MATCHER_P(LastTurnHasText, expected_text, "") {
   if (arg.empty()) {
     return false;
@@ -2491,6 +2495,159 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
     // Verify no rating ID was returned
     EXPECT_FALSE(future_rating_id.Take().has_value());
   }
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_NoNewEntrySubmitHuman) {
+  // Tests what happens when the engine returns a success but there was no new
+  // entry. We should avoid re-adding the most recent entry.
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  // We should only add a new entry for the human entry
+  EXPECT_CALL(observer,
+              OnConversationEntryAdded(_, TurnHasText("Test question"), _))
+      .Times(1);
+
+  // Mock engine to return no new entry
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          // Complete the request
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.QuitWhenIdle();
+              })));
+
+  // Submit a human entry to trigger the mocked response
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify the conversation history doens't have an extra entry
+  const auto& current_history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(current_history.size(), 1u);
+
+  EXPECT_EQ(conversation_handler_->current_error(),
+            mojom::APIError::ConnectionIssue);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_NoNewEntryToolUse) {
+  // Tests what happens when the engine returns a success but there was no new
+  // entry after a tool use response.
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  auto tool1 =
+      std::make_unique<NiceMock<MockTool>>("weather_tool", "Get weather");
+  auto* tool1_ptr = tool1.get();
+  tool1->set_requires_user_interaction_before_handling(false);
+  std::vector<std::unique_ptr<Tool>> tools;
+  tools.push_back(std::move(tool1));
+  conversation_handler_->SetToolsForTesting(std::move(tools));
+
+  bool tool_response_generation_started = false;
+
+  // We should only add the initial human entry and the first assistant response
+  // but no further human or assistant entries.
+  // Verify it's never called after the tool response generation has started.
+  EXPECT_CALL(observer, OnConversationEntryAdded)
+      .Times(2)
+      .WillRepeatedly(testing::InvokeWithoutArgs(
+          [&]() { EXPECT_FALSE(tool_response_generation_started); }));
+
+  base::RunLoop run_loop;
+  testing::Sequence seq;
+
+  // First call to engine mocks the use tool request
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Ok, going to check...")),
+                    std::nullopt));
+              }),
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
+                                                 "{\"location\":\"New York\"}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"New York\"}"), _))
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Weather in New York: 72°F")));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  // Mock engine to return no new entry after the tool is used
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(
+          // Complete the request
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                tool_response_generation_started = true;
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.Quit();
+              }));
+
+  // Submit a human entry to trigger the mocked response
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify the conversation history doens't have an extra entry
+  const auto& current_history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(current_history.size(), 2u);
+  EXPECT_EQ(current_history[0]->character_type, mojom::CharacterType::HUMAN);
+  EXPECT_EQ(current_history[1]->character_type,
+            mojom::CharacterType::ASSISTANT);
+  EXPECT_EQ(current_history[0]->text, "Test question");
+  auto& response_events = current_history[1]->events.value();
+  EXPECT_EQ(response_events.size(), 2u);
+  EXPECT_EQ(response_events[0]->get_completion_event()->completion,
+            "Ok, going to check...");
+  EXPECT_EQ(response_events[1]->get_tool_use_event()->tool_name,
+            "weather_tool");
+  EXPECT_EQ(response_events[1]->get_tool_use_event()->arguments_json,
+            "{\"location\":\"New York\"}");
+
+  EXPECT_EQ(conversation_handler_->current_error(),
+            mojom::APIError::ConnectionIssue);
 }
 
 TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {

@@ -433,7 +433,6 @@ Config.prototype.buildArgs = function () {
     disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
     root_extra_deps: ['//brave'],
-    clang_unsafe_buffers_paths: '//brave/build/config/unsafe_buffers_paths.txt',
     // TODO: Re-enable when chromium_src overrides work for files in relative
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
@@ -774,6 +773,11 @@ Config.prototype.buildArgs = function () {
       // It will be turned off for the official builds
       // (src/build/config/android/config.gni)
       args.android_static_analysis = 'on'
+    }
+
+    // Align DCHECKs with Java asserts
+    if (args.dcheck_always_on === false) {
+      args.enable_java_asserts = false
     }
 
     // These do not exist on android

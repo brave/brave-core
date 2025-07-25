@@ -226,6 +226,11 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
           last_default_engine == SearchEngineP3A::kBrave) {
         brave_search_conversion::p3a::RecordDefaultEngineChurn(local_state_);
       }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+      // Update web discovery default engine metric when search engine changes
+      RecordWebDiscoveryEnabledP3A();
+#endif
     }
     RecordSwitchP3A(url);
   }
@@ -239,6 +244,14 @@ void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
       kWebDiscoveryAndAdsMetric,
       enabled && profile_prefs_->GetBoolean(
                      brave_ads::prefs::kOptedInToNotificationAds));
+
+  // Record web discovery default engine metric
+  int answer = INT_MAX - 1;
+  if (enabled) {
+    answer = static_cast<int>(current_default_engine_);
+  }
+  UMA_HISTOGRAM_EXACT_LINEAR(kWebDiscoveryDefaultEngineMetric, answer,
+                             static_cast<int>(SearchEngineP3A::kMaxValue) + 1);
 }
 #endif
 

@@ -1682,6 +1682,12 @@ Are you sure you want to do this?
       <message name="IDS_THANK_YOU_TEXT" desc="Text for thank you UI for shields.">
         Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!
       </message>
+      <message name="IDS_ISSUE_CATEGORY_SPINNER_TEXT" desc="Label for a dropdown containing categories of issues on a webpage">
+        What's the main issue you're seeing?
+      </message>
+      <message name="IDS_ISSUE_CATEGORY_PLACEHOLDER" desc="Placeholder text that instructs the user to select one of the following categories of issues on a webpage">
+        Select one option
+      </message>
       <message name="IDS_ADVANCED_CONTROLS" desc="Title for toggle section.">
         Advanced controls
       </message>

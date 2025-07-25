@@ -13,7 +13,6 @@ brave_chrome_common_sources = [
 brave_chrome_common_deps = [
   "//base",
   "//brave/common:mojo_bindings",
-  "//brave/extensions:common",
   "//components/version_info:channel",
   "//extensions/buildflags",
   "//services/service_manager",

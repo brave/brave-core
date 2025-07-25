@@ -6,6 +6,7 @@
 const fs = require('fs-extra')
 const path = require('path')
 
+
 const getTestBinary = (config, suite) => {
   let testBinary = suite
   if (testBinary === 'brave_java_unit_tests') {
@@ -24,42 +25,20 @@ const getTestBinary = (config, suite) => {
   return path.join(config.outputDir, testBinary)
 }
 
-const getChromiumUnitTestsSuites = () => {
-  return [
-    'base_unittests',
-    'components_unittests',
-    'content_unittests',
-    'net_unittests',
-    'unit_tests',
-  ]
-}
-
-const getBraveUnitTestsSuites = (config) => {
-  let tests = []
-  if (config.isIOS()) {
-    tests.push('ios_brave_unit_tests')
-  } else {
-    tests.push('brave_unit_tests')
-  }
-  tests.push('brave_components_unittests')
-
-  if (!config.isMobile()) {
-    tests.push('brave_installer_unittests')
-  }
-
-  return tests
+const getChromiumTestsSuites = (config) => {
+  return getTestsToRun(config, 'chromium_unit_tests').concat(['browser_tests'])
 }
 
 const getTestsToRun = (config, suite) => {
-  let testsToRun = []
-  if (suite === 'brave_all_unit_tests') {
-    testsToRun = [...getBraveUnitTestsSuites(config)]
-  } else if (suite === 'chromium_unit_tests') {
-    testsToRun = getChromiumUnitTestsSuites()
-  } else {
-    testsToRun = [suite]
+  const testDepFile = path.join(config.outputDir, `${suite}.json`)
+  if (fs.existsSync(testDepFile)) {
+    suiteDepNames = JSON.parse(
+      fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
+    )
+    return suiteDepNames.map((x) => x.split(':').at(-1))
   }
-  return testsToRun
+
+  return [suite]
 }
 
 // Returns a list of paths to files containing all the filters that would apply
@@ -107,9 +86,10 @@ const getApplicableFilters = (config, suite) => {
   return filterFilePaths
 }
 
+
 module.exports = {
   getTestBinary,
   getTestsToRun,
   getApplicableFilters,
-  getChromiumUnitTestsSuites,
+  getChromiumTestsSuites
 }

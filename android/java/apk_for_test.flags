@@ -1011,3 +1011,7 @@
 -keep class org.chromium.components.minidump_uploader.util.BraveHttpURLConnectionFactoryImpl {
     <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarPrefs {
+    *** getCustomizationSetting(...);
+}

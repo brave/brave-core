@@ -10,12 +10,12 @@ const Config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
+
 const { getAffectedTests } = require('./getAffectedTests')
 const {
   getTestBinary,
   getTestsToRun,
-  getApplicableFilters,
-  getChromiumUnitTestsSuites,
+  getApplicableFilters
 } = require('./testUtils')
 
 const test = async (
@@ -39,6 +39,7 @@ const test = async (
   await buildTests(testsToRun, Config, options)
   await runTests(passthroughArgs, { suite, testsToRun }, Config, options)
 }
+
 
 const buildTests = async (testsToRun, config) => {
   config.buildTargets = testsToRun
@@ -119,7 +120,7 @@ const runTests = async (
     runChromiumTestLauncherTeamcityReporterIntegrationTests(Config)
   }
 
-  const upstreamTestSuites = ['browser_tests', ...getChromiumUnitTestsSuites()]
+  const upstreamTestSuites = getChromiumTestsSuites(config)
 
   // Run the tests
   testsToRun.every((testSuite) => {
@@ -127,12 +128,12 @@ const runTests = async (
     let runOptions = config.defaultOptions
 
     // Filter out upstream tests that are known to fail for Brave
-    if (upstreamTestSuites.includes(testSuite)) {
-      const filterFilePaths = getApplicableFilters(Config, testSuite)
-      if (filterFilePaths.length > 0) {
-        runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
-      }
-      if (config.isTeamcity && !config.isIOS()) {
+    const filterFilePaths = getApplicableFilters(Config, testSuite)
+    if (filterFilePaths.length > 0) {
+      runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
+    }
+    if (config.isTeamcity && !config.isIOS()) {
+      if (upstreamTestSuites.includes(testSuite)) {
         const ignorePreliminaryFailures =
           '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
         if (!runArgs.includes(ignorePreliminaryFailures)) {
@@ -206,7 +207,7 @@ const runTests = async (
           .stdout.toString()
           .trim()
           .split(' ')
-          .pop()
+          .at(-1)
       }
 
       runArgs.push('--app', getTestBinary(Config, testSuite))
@@ -249,28 +250,37 @@ const runTests = async (
         )
       }
     } else {
-      progStatus = util.run(
-        getTestBinary(Config, testSuite),
-        runArgs,
-        runOptions,
-      ).status
+      const testRunner = getTestBinary(config, testSuite)
+      if (!fs.existsSync(testRunner)) {
+        console.error(`Missing test runner executable ${testRunner}`)
+        progStatus = 1
+      } else {
+        progStatus = util.run(testRunner, runArgs, runOptions).status
+      }
     }
 
     // convert json results to xml
     if (convertJSONToXML) {
-      progStatus = util.run(
-        'vpython3',
-        [path.join('script', 'json2xunit.py')],
-        {
-          ...config.defaultOptions,
-          cwd: config.braveCoreDir,
-          stdio: [
-            fs.openSync(`${outputFilename}.json`, 'r'),
-            fs.openSync(`${outputFilename}.xml`, 'w'),
-            'inherit',
-          ],
-        },
-      ).status
+      const inputFilename = `${outputFilename}.json`
+      if (fs.existsSync(inputFilename)) {
+        progStatus = util.run(
+          'vpython3',
+          [path.join('script', 'json2xunit.py')],
+          {
+            ...config.defaultOptions,
+            cwd: config.braveCoreDir,
+            stdio: [
+              fs.openSync(inputFilename, 'r'),
+              fs.openSync(`${outputFilename}.xml`, 'w'),
+              'inherit',
+            ],
+          },
+        ).status
+      } else {
+        console.error(
+          `Missing json input file to convert to xml ${inputFilename}`,
+        )
+      }
     }
     // If we output results into an xml file (CI), then we want to run all
     // suites to get all potential failures. Otherwise, for example, if
