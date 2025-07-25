@@ -1076,8 +1076,10 @@ class SpeedReaderWithSplitViewBrowserTest
   ~SpeedReaderWithSplitViewBrowserTest() override = default;
 
   void NewSplitTab() {
-    IsSideBySideEnabled() ? chrome::NewSplitTab(browser())
-                          : brave::NewSplitViewForTab(browser());
+    IsSideBySideEnabled()
+        ? chrome::NewSplitTab(
+              browser(), split_tabs::SplitTabCreatedSource::kTabContextMenu)
+        : brave::NewSplitViewForTab(browser());
   }
 
   BraveBrowserView* brave_browser_view() {
