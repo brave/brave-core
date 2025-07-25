@@ -61,7 +61,7 @@ BraveTabMenuModel::BraveTabMenuModel(
       indices.begin(), indices.end(), [&tab_strip_model](int index) {
         return tab_strip_model->GetWebContentsAt(index)->IsAudioMuted();
       });
-  Build(browser, tab_strip_model, indices);
+  Build(browser, tab_strip_model, index, indices);
 }
 
 BraveTabMenuModel::~BraveTabMenuModel() = default;
@@ -108,6 +108,7 @@ std::u16string BraveTabMenuModel::GetLabelAt(size_t index) const {
 
 void BraveTabMenuModel::Build(Browser* browser,
                               TabStripModel* tab_strip_model,
+                              int selected_index,
                               const std::vector<int>& indices) {
   auto selected_tab_count = indices.size();
 
@@ -147,6 +148,10 @@ void BraveTabMenuModel::Build(Browser* browser,
                            containers_menu_model_delegate_.get(), indices);
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+    BuildItemForCustomization(tab_strip_model, selected_index);
+  }
 }
 
 void BraveTabMenuModel::BuildItemsForSplitView(
@@ -203,3 +208,16 @@ void BraveTabMenuModel::BuildItemForContainers(
                               containers_submenu_.get());
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+void BraveTabMenuModel::BuildItemForCustomization(
+    TabStripModel* tab_strip_model,
+    int tab_index) {
+  if (tab_strip_model->IsTabPinned(tab_index)) {
+    // In case of pinned tabs, we don't show titles at all, so we don't need to
+    // show the rename option.
+    return;
+  }
+
+  const auto index = *GetIndexOfCommandId(TabStripModel::CommandReload) + 1;
+  InsertItemWithStringIdAt(index, CommandRenameTab, IDS_TAB_CXMENU_RENAME_TAB);
+}
