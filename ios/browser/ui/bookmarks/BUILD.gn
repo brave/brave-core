@@ -6,7 +6,7 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("bookmarks") {
+source_set("features") {
   sources = [
     "features.h",
     "features.mm",
