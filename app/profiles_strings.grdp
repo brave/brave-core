@@ -125,6 +125,9 @@
   <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_DESCRIPTION" desc="Text for the sign-in promo in the profile menu when the used is signed out, describing the benefits of signing in.">
     Sign in to get your passwords and more on all your devices
   </message>
+  <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_DESCRIPTION_WITH_BOOKMARKS" desc="Text for the sign-in promo in the profile menu when the used is signed out, describing the benefits of signing in, mentioning bookmarks.">
+    Sign in to get your passwords, bookmarks, and more on all your devices
+  </message>
   <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_SEPARATOR" desc="The user name and profile name are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
     <ph name="USER_NAME">$1<ex>John</ex></ph> • <ph name="PROFILE_NAME">$2<ex>Work</ex></ph>
   </message>
@@ -608,12 +611,6 @@
     <message name="IDS_ENTERPRISE_PROFILE_WELCOME_DEVICE_MANAGED" desc="Subtitle of the enterprise profile welcome screen, informing that the device is managed.">
       Your device is managed by your organization
     </message>
-    <message name="IDS_ENTERPRISE_PROFILE_WELCOME_MANAGED_DESCRIPTION_WITH_SYNC" desc="Disclaimer when creating a profile with a managed account (when sync is enabled by the administrator).">
-      You’re adding a managed profile to this browser. Your administrator has control over the profile and can access its data. Bookmarks, history, passwords, and other settings can be synced to your account and managed by your administrator.
-    </message>
-    <message name="IDS_ENTERPRISE_PROFILE_WELCOME_MANAGED_DESCRIPTION_WITHOUT_SYNC" desc="Disclaimer when creating a profile with a managed account (when sync is disabled by the administrator).">
-      You’re adding a managed profile to this browser. Your administrator has control over the profile and can access its data.
-    </message>
     <message name="IDS_ENTERPRISE_WELCOME_PROFILE_REQUIRED_TITLE" desc="Title of the enterprise profile welcome screen when a profile is required. It is shown after a user signs into a managed account outside of the profile creation flow.">
       Your organization requires a profile
     </message>
@@ -638,10 +635,13 @@
     <message name="IDS_ENTERPRISE_WELCOME_PROFILE_OIDC_DISCLOSURE_TITLE" desc="Title of the dialog disclaiming information about the profile they are about to create.">
       Set up a new profile
     </message>
-    <message name="IDS_ENTERPRISE_WELCOME_PROFILE_DISCLOSURE_TURN_SYNC_ON_TITLE" desc="Title the dialog disclaiming information about the profile they are about to create, this is shown when the user was already signed into a profile.">
-      This profile will now be managed
+    <message name="IDS_ENTERPRISE_WELCOME_PROFILE_DISCLOSURE_ALREADY_SIGNED_IN_TITLE" desc="Title the dialog disclaiming information about the profile they are about to create, this is shown when the user was already signed into a profile.">
+      This profile will be managed
     </message>
-    <message name="IDS_ENTERPRISE_WELCOME_PROFILE_DISCLOSURE_TURN_SYNC_ON_SUBTITLE" desc="Subtitle the dialog disclaiming information about the profile they are about to create, this is shown when the user was already signed into a profile.">
+    <message name="IDS_ENTERPRISE_WELCOME_PROFILE_DISCLOSURE_ALREADY_SIGNED_IN_ENFORCED_SUBTITLE" desc="Subtitle the dialog disclaiming information about the profile they are about to create, this is shown when the user was already signed into a profile.">
+      Your organization, <ph name="ACCOUNT_MANAGER">$1<ex>example.com</ex></ph>, requires a managed profile and will be able to view some information, including
+    </message>
+    <message name="IDS_ENTERPRISE_WELCOME_PROFILE_DISCLOSURE_ALREADY_SIGNED_IN_SUBTITLE" desc="Subtitle the dialog disclaiming information about the profile they are about to create, this is shown when the user was already signed into a profile.">
       Your organization, <ph name="ACCOUNT_MANAGER">$1<ex>example.com</ex></ph>, will be able to view some information, including
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_PROFILE_DISCLOSURE_SUBTITLE" desc="Subtitle of the dialog disclaiming information about the profile they are about to create.">
@@ -698,6 +698,9 @@
     <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_CONSUMER_SUBTITLE" desc="Subtitle the value proposition dialog for creating an enterprise profile.">
       Sign in to get your passwords and more on all your devices
     </message>
+    <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_CONSUMER_SUBTITLE_WITH_BOOKMARKS" desc="Subtitle the value proposition dialog for creating an enterprise profile.">
+      Sign in to get your passwords, bookmarks, and more on all your devices
+    </message>
     <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_SCHOOL_SUBTITLE" desc="Subtitle the value proposition dialog for creating an enterprise profile for school.">
       Set up a school profile to save and use your passwords and more in your account
     </message>
@@ -710,7 +713,7 @@
     <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_SCHOOL_TITLE" desc="Title of the dialog that asks the user to either keep their browsing data in the school profile they will create or keep it separate.">
       Do you want to create a new profile for school?
     </message>
-    <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_TURN_SYNC_ON_TITLE" desc="Title of the dialog that asks the user to either keep their browsing data in the managed profile they will create or keep it separate, this is shown when the user was already signed into a profile.">
+    <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_ALREADY_SIGNED_IN_TITLE" desc="Title of the dialog that asks the user to either keep their browsing data in the managed profile they will create or keep it separate, this is shown when the user was already signed into a profile.">
       What would you like to do with your existing profile data?
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_CONSUMER_TITLE" desc="Title of the dialog that asks the user to either keep their browsing data in the new profile they will create or keep it separate.">
@@ -722,8 +725,8 @@
     <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_DATA_WORK_CHOICE" desc="Label of a radio button option that lets the user separate their existing data from a newly created work profile.">
       Yes, keep my data separate from work (recommended)
     </message>
-    <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_TURN_SYNC_ON_CHOICE" desc="Label of a radio button option that lets the user separate their existing data from a newly created work profile, this is shown when the user was already signed into a profile.">
-      Create a new profile for work and keep my existing data separate
+    <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_ALREADY_SIGNED_IN_CHOICE" desc="Label of a radio button option that lets the user separate their existing data from a newly created work profile, this is shown when the user was already signed into a profile.">
+      Create a new profile for work without my existing data
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_DATA_CHOICE_SCHOOL_NOT_RECOMMENDED" desc="Label of a radio button option that lets the user separate their existing data from a newly created work profile.">
       Yes, keep my data separate from school
@@ -734,8 +737,8 @@
     <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_DATA_CHOICE_DETAILS" desc="Additional information of a radio button option that lets the user separate their existing data from a newly created managed profile.">
       Data that is saved only on this device will remain in the existing profile
     </message>
-    <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_DATA_CHOICE_TURN_SYNC_ON_DETAILS" desc="Additional information of a radio button option that lets the user separate their existing data from a newly created managed profile, this is shown when the user was already signed into a profile.">
-      Data that is saved only on this device will remain in the existing profile. It will not sync to <ph name="EMAIL">$1<ex>example.com</ex></ph>
+    <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_DATA_CHOICE_ALREADY_SIGNED_IN_DETAILS" desc="Additional information of a radio button option that lets the user separate their existing data from a newly created managed profile, this is shown when the user was already signed into a profile.">
+      Your organization, <ph name="ACCOUNT_MANAGER">$1<ex>example.com</ex></ph>, will not be able to see or manage this data. It will remain in the existing profile.
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_MERGE_BROWSING_DATA_WORK_CHOICE" desc="Label of a radio button option that lets the user add their existing data from a newly created work profile.">
       No, continue to work in this profile
@@ -743,8 +746,8 @@
     <message name="IDS_ENTERPRISE_WELCOME_MERGE_BROWSING_DATA_SCHOOL_CHOICE" desc="Label of a radio button option that lets the user add their existing data from a newly created school profile.">
       No, continue to use for school in this profile
     </message>
-    <message name="IDS_ENTERPRISE_WELCOME_MERGE_BROWSING_DATA_TURN_SYNC_ON_CHOICE" desc="Label of a radio button option that lets the user add their existing data from a newly created managed profile, this is shown when the user was already signed into a profile">
-      Continue to sync with this profile and merge the data
+    <message name="IDS_ENTERPRISE_WELCOME_MERGE_BROWSING_DATA_ALREADY_SIGNED_IN_CHOICE" desc="Label of a radio button option that lets the user add their existing data from a newly created managed profile, this is shown when the user was already signed into a profile">
+      Continue to work in this profile
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_MERGE_BROWSING_DATA_CHOICE_DETAILS" desc="Additional information of a radio button option that lets the user add their existing data from a newly created work profile.">
       Your organization will be able to see and manage any existing browsing data, such as passwords and more
@@ -765,13 +768,13 @@
         other {# extensions}}
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_MERGE_BROWSING_DATA_WITH_THREE_COUNTS_CHOICE_DETAILS" desc="Additional information of a radio button option that lets the user add their existing data from a newly created work profile.">
-      You currently have <ph name="NUMBERED_ITEM_1">$1<ex>10 bookmarks</ex></ph>, <ph name="NUMBERED_ITEM_2">$2<ex>10 extensions</ex></ph>, <ph name="NUMBERED_ITEM_3">$3<ex>your browsing history of 5 sites</ex></ph>, and more. Your organization will be able to see and manage this data
+      You currently have <ph name="NUMBERED_ITEM_1">$1<ex>10 bookmarks</ex></ph>, <ph name="NUMBERED_ITEM_2">$2<ex>10 extensions</ex></ph>, <ph name="NUMBERED_ITEM_3">$3<ex>your browsing history of 5 sites</ex></ph>, and more. Your organization, <ph name="ACCOUNT_MANAGER">$4<ex>example.com</ex></ph>, will be able to see and manage this data.
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_MERGE_BROWSING_DATA_WITH_TWO_COUNTS_CHOICE_DETAILS" desc="Additional information of a radio button option that lets the user add their existing data from a newly created work profile.">
-      You currently have <ph name="NUMBERED_ITEM_1">$1<ex>10 bookmarks</ex></ph>, <ph name="NUMBERED_ITEM_2">$2<ex>10 extensions</ex></ph>, and more. Your organization will be able to see and manage this data
+      You currently have <ph name="NUMBERED_ITEM_1">$1<ex>10 bookmarks</ex></ph>, <ph name="NUMBERED_ITEM_2">$2<ex>10 extensions</ex></ph>, and more. Your organization, <ph name="ACCOUNT_MANAGER">$3<ex>example.com</ex></ph>, will be able to see and manage this data.
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_MERGE_BROWSING_DATA_WITH_ONE_COUNT_CHOICE_DETAILS" desc="Additional information of a radio button option that lets the user add their existing data from a newly created work profile.">
-      You currently have <ph name="NUMBERED_ITEM">$1<ex>10 bookmarks</ex></ph>, and more. Your organization will be able to see and manage this data
+      You currently have <ph name="NUMBERED_ITEM">$1<ex>10 bookmarks</ex></ph>, and more. Your organization, <ph name="ACCOUNT_MANAGER">$2<ex>example.com</ex></ph>, will be able to see and manage this data.
     </message>
 
     <!-- Supervised user profile signin IPH -->
@@ -931,6 +934,8 @@
     </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE_UNO" desc="Profile picker profile type choice subtitle"> Sign in to get your passwords and more on all your devices
     </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE_UNO_BOOKMARKS" desc="Profile picker profile type choice subtitle"> Sign in to get your passwords, bookmarks, and more on all your devices
+    </message>
 
     <!-- First Run Experience strings -->
     <message name="IDS_FRE_SIGN_IN_SUBTITLE_0" desc="This is the subtitle on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. These features are also described in the cards below as 'All your devices', 'Stronger security', and 'Back up data'. The tone should be inviting and alluring.">
@@ -956,6 +961,9 @@
     </message>
     <message name="IDS_UNO_FRE_BACKUP_CARD_DESCRIPTION" desc="This is the body text in one of three cards that represent the top benefits for why a user should sign in to Brave with a Brave sync chain. The cards appear on a full-page screen when the user launches Brave for the first time. The body is preceded by the headline 'Back up data'. This card's body means that users can back up their data (like bookmarks, history, settings) so that the data can't get lost if a device malfunctions. Translate 'bookmarks' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c31bb . Translate 'and more' so that it conveys that there are additional similar items that are not listed. The tone should be informative.">
       Save your bookmarks and more with sync
+    </message>
+    <message name="IDS_UNO_FRE_BACKUP_CARD_DESCRIPTION_WITH_PASSWORDS" desc="This is the body text in one of three cards that represent the top benefits for why a user should sign in to Brave with a Brave sync chain. The cards appear on a full-page screen when the user launches Brave for the first time. The body is preceded by the headline 'Back up data'. This card's body means that users can back up their data (like bookmarks, history, settings) so that the data can't get lost if a device malfunctions. Translate 'bookmarks' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c31bb . Translate 'and more' so that it conveys that there are additional similar items that are not listed. The tone should be informative.">
+      Store your passwords, bookmarks, and more
     </message>
     <if expr="not use_titlecase">
       <message name="IDS_FRE_DECLINE_SIGN_IN_BUTTON_TITLE" desc="The title of the button giving the users the choice not to sign in to Brave">
@@ -1132,7 +1140,7 @@
       You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
     </message>
     <message translateable="false" name="IDS_HISTORY_SYNC_OPT_IN_ACCEPT_BUTTON" desc="">
-      Yes, I 'm in
+      Yes, I'm in
     </message>
     <message translateable="false" name="IDS_HISTORY_SYNC_OPT_IN_REJECT_BUTTON" desc="">
       No thanks
