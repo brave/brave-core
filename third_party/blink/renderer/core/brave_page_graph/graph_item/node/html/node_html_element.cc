@@ -109,13 +109,13 @@ void NodeHTMLElement::PlaceChildNodeAfterSiblingNode(NodeHTML* child,
 
   // Otherwise, figure out where the sibling is in the child node set.
   const auto sib_pos = child_nodes_.Find(sibling);
-  CHECK_NE(sib_pos, WTF::kNotFound);
+  CHECK_NE(sib_pos, blink::kNotFound);
   child_nodes_.insert(sib_pos + 1, child);
 }
 
 void NodeHTMLElement::RemoveChildNode(NodeHTML* child_node) {
   const auto child_pos = child_nodes_.Find(child_node);
-  CHECK_NE(child_pos, WTF::kNotFound);
+  CHECK_NE(child_pos, blink::kNotFound);
   child_nodes_.EraseAt(child_pos);
 }
 
