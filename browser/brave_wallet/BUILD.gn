@@ -36,8 +36,8 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//chrome/browser:browser_process",
+    "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/prefs",
@@ -73,7 +73,7 @@ source_set("brave_wallet_delegate") {
     "//chrome/browser/profiles:profile",
     "//components/content_settings/core/common",
     "//components/permissions",
-    "//components/permissions:permissions",
+    "//components/permissions",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
   ]
@@ -85,7 +85,7 @@ source_set("brave_wallet_delegate") {
     ]
     deps += [
       "//brave/build/android:jni_headers",
-      "//chrome/browser/ui:ui",
+      "//chrome/browser/ui",
       "//chrome/browser/ui/android/tab_model",
       "//chrome/browser/ui/android/tab_model:enums_java",
     ]
@@ -97,6 +97,7 @@ source_set("brave_wallet_delegate") {
     ]
     deps += [
       "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_tab_strip",
       "//chrome/browser/ui/tabs:tab_strip",
     ]
     if (enable_extensions) {
@@ -115,7 +116,7 @@ source_set("external_wallets_importer") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/third_party/argon2",
-    "//components/value_store:value_store",
+    "//components/value_store",
   ]
   if (enable_extensions) {
     deps += [
@@ -134,16 +135,16 @@ source_set("tab_helper") {
   ]
 
   deps = [
-    "//brave/browser/brave_wallet:brave_wallet",
+    "//brave/browser/brave_wallet",
     "//brave/common",
-    "//brave/components/brave_wallet/browser:browser",
+    "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:permission_utils",
     "//brave/components/brave_wallet/browser:utils",
     "//chrome/browser/content_settings:content_settings_factory",
     "//components/permissions",
     "//components/sessions",
-    "//components/user_prefs:user_prefs",
+    "//components/user_prefs",
     "//content/public/browser",
   ]
 
@@ -232,8 +233,8 @@ source_set("browser_tests") {
       "//chrome/test:test_support_ui",
       "//components/policy/core/browser",
       "//components/policy/core/common:test_support",
-      "//components/prefs:prefs",
-      "//components/user_prefs:user_prefs",
+      "//components/prefs",
+      "//components/user_prefs",
       "//content/test:test_support",
       "//testing/gtest",
       "//url",
