@@ -27,7 +27,7 @@ source_set("unit_tests") {
   sources = [ "script_injector_unittest.cc" ]
   deps = [
     "//base/test:test_support",
-    "//brave/components/script_injector/renderer:renderer",
+    "//brave/components/script_injector/renderer",
     "//components/prefs:test_support",
     "//content/public/renderer",
     "//v8:cppgc_headers",
