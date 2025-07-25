@@ -719,6 +719,8 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
       return kCardanoPrefKey;
     case mojom::CoinType::DOT:
       return kPolkadotPrefKey;
+    case mojom::CoinType::XEC:
+      return kECashPrefKey;
   }
   NOTREACHED() << coin;
 }

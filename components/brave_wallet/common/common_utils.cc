@@ -289,6 +289,7 @@ bool IsPolkadotKeyring(mojom::KeyringId keyring_id) {
          keyring_id == mojom::KeyringId::kPolkadotTestnet;
 }
 
+<<<<<<< HEAD
 bool IsPolkadotNetwork(std::string_view network_id) {
   return network_id == mojom::kPolkadotMainnet ||
          network_id == mojom::kPolkadotTestnet;
@@ -313,6 +314,19 @@ std::string GetNetworkForPolkadotAccount(
     const mojom::AccountIdPtr& account_id) {
   CHECK(IsPolkadotAccount(account_id));
   return GetNetworkForPolkadotKeyring(account_id->keyring_id);
+=======
+bool IsECashKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kECashMainnet ||
+         keyring_id == mojom::KeyringId::kECashTestnet;
+}
+
+bool IsECashMainnetKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kECashMainnet;
+}
+
+bool IsECashTestnetKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kECashTestnet;
+>>>>>>> 758db1d55ca (implement ECashKeyring)
 }
 
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
@@ -342,6 +356,10 @@ mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
 
   if (IsPolkadotKeyring(keyring_id)) {
     return mojom::CoinType::DOT;
+  }
+
+  if (IsECashKeyring(keyring_id)) {
+    return mojom::CoinType::XEC;
   }
 
   NOTREACHED() << "Unknown keyring: " << keyring_id;
@@ -484,10 +502,19 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
       } else {
         return {mojom::KeyringId::kCardanoTestnet};
       }
+<<<<<<< HEAD
     case mojom::CoinType::DOT:
       return {(chain_id == mojom::kPolkadotMainnet
                    ? mojom::KeyringId::kPolkadotMainnet
                    : mojom::KeyringId::kPolkadotTestnet)};
+=======
+    case mojom::CoinType::XEC:
+      if (chain_id == mojom::kECashMainnet) {
+        return {mojom::KeyringId::kECashMainnet};
+      } else {
+        return {mojom::KeyringId::kECashTestnet};
+      }
+>>>>>>> 758db1d55ca (implement ECashKeyring)
   }
   NOTREACHED();
 }
