@@ -241,10 +241,13 @@ AssociatedContentDriver::ParseSearchQuerySummaryResponse(
 void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
   // Reset state for next navigated Page
   current_navigation_id_ = navigation_id;
-  cached_page_content_ = PageContent();
   api_request_helper_.reset();
 
   AssociatedContentDelegate::OnNewPage(navigation_id);
+
+  // Don't reset cached page content until after observers are notified.
+  // Otherwise they won't be able to take a snapshot of the content.
+  cached_page_content_ = PageContent();
 }
 
 }  // namespace ai_chat
