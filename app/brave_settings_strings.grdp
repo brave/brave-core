@@ -1663,7 +1663,7 @@ Leo AI. This action can't be undone.
     About you
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_DESCRIPTION" desc="The description for Leo Assistant customization section">
-    Tell Leo about yourself to get more personalized answers.
+    Tell Leo about yourself to get more personalized answers. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_ENABLED_LABEL" desc="The label for enabling Leo Assistant customization">
     Enable Leo Customization
@@ -1710,10 +1710,7 @@ Leo AI. This action can't be undone.
     Memories
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_YOUR_MEMORIES_DESC" desc="The description for Leo Assistant memory section">
-    All the things that Leo learned about you and won't forget about.
-  </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_MEMORY_LEARN_MORE" desc="The learn more link for Leo Assistant user customization and memory features">
-    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    All the things that Leo learned about you and won't forget about. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_MEMORY_LIST_EMPTY_TITLE" desc="The title shown when the memory list is empty">
     No memories created yet

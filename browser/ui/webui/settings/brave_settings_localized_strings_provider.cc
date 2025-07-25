@@ -583,8 +583,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       // Leo Customization
       {"braveLeoAssistantCustomizationTitle",
        IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_TITLE},
-      {"braveLeoAssistantCustomizationDescription",
-       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_DESCRIPTION},
       {"braveLeoAssistantCustomizationPageTitle",
        IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_PAGE_TITLE},
       {"braveLeoAssistantCustomizationEnabledLabel",
@@ -1042,8 +1040,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                                  kLeoPrivacyPolicyURL));
 
   html_source->AddString(
-      "braveLeoAssistantMemoryLearnMore",
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_MEMORY_LEARN_MORE,
+      "braveLeoAssistantCustomizationDescription",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_DESCRIPTION,
+          kLeoMemoryLearnMoreURL));
+
+  html_source->AddString(
+      "braveLeoAssistantYourMemoriesDesc",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_YOUR_MEMORIES_DESC,
                                  kLeoMemoryLearnMoreURL));
 
   html_source->AddString("braveSurveyPanelistLearnMoreURL",
