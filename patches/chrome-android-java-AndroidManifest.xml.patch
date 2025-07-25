@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index a5e6f0bd3c80ba00fb60ecf798f1225ddee6e0ae..d16fea6ee460811c2f33887a98de44a79967175b 100644
+index c586a7f699cbe1d5a2ae439ba00c5a2b6381f769..88cc78c83f64b7370b0f4ae64ca9b248a66526c3 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -110,7 +110,7 @@ index a5e6f0bd3c80ba00fb60ecf798f1225ddee6e0ae..d16fea6ee460811c2f33887a98de44a7
              {% endif %}
              android:exported="false"/>
          <service android:name="org.chromium.chrome.browser.media.ui.ChromeMediaNotificationControllerServices$PlaybackListenerService"
-@@ -1226,6 +1244,7 @@ by a child template that "extends" this file.
+@@ -1236,6 +1254,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

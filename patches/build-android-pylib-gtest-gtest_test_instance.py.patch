@@ -1,8 +1,8 @@
 diff --git a/build/android/pylib/gtest/gtest_test_instance.py b/build/android/pylib/gtest/gtest_test_instance.py
-index c70205ddce797296249ab64f85bd1abab7f8d905..8ff189577c5f2d42473695256c34349a111084b2 100644
+index 08dd957335dc34e25ca2d9243818968788ac883e..a7be201eb09b0306f3d4b110f30be41ec59e3338 100644
 --- a/build/android/pylib/gtest/gtest_test_instance.py
 +++ b/build/android/pylib/gtest/gtest_test_instance.py
-@@ -709,3 +709,4 @@ class GtestTestInstance(test_instance.TestInstance):
+@@ -707,3 +707,4 @@ class GtestTestInstance(test_instance.TestInstance):
    #override
    def TearDown(self):
      """Do nothing."""
