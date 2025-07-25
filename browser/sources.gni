@@ -217,7 +217,6 @@ brave_chrome_browser_deps = [
   "//brave/components/password_strength_meter:mojom",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
-  "//brave/components/psst/buildflags",
   "//brave/components/request_otr/common/buildflags",
   "//brave/components/resources",
   "//brave/components/skus/browser",
@@ -551,6 +550,7 @@ brave_chrome_browser_public_deps = [
   "//brave/browser:browser_process",
   "//brave/common/importer:interfaces",
   "//brave/components/brave_sync:constants",
+  "//brave/components/psst/buildflags",
   "//brave/components/variations",
 ]
 
