@@ -27,11 +27,6 @@ ui::SimpleMenuModel* DownloadUiContextMenuView::GetMenuModel() {
     return nullptr;
   }
 
-  // Only add "Remove item from list" entry to download bubble.
-  if (!download::IsDownloadBubbleEnabled()) {
-    return model;
-  }
-
   auto* download = GetDownload();
   if (download->GetDownloadItem() == nullptr) {
     return model;
