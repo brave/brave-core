@@ -29,7 +29,7 @@
 .br-toolbar {
     --toolbar-background: var(--leo-color-page-background);
     background: var(--leo-color-page-background);
-    color: var(--leo-text-tertiary);
+    color: var(--leo-color-text-tertiary);
     height: 56px;
     position: relative;
 }
@@ -49,7 +49,7 @@
 
 .nav-item {
     align-items: center;
-    color: var(--leo-text-tertiary);
+    color: var(--leo-color-text-tertiary);
     cursor: pointer;
     display: flex;
     /* update cr_toolbar.js font-load detection
@@ -91,7 +91,7 @@
 
 .nav-item-icon {
     align-items: center;
-    color: var(--leo-icon-secondary);
+    color: var(--leo-color-icon-secondary);
     display: flex;
 }
 
