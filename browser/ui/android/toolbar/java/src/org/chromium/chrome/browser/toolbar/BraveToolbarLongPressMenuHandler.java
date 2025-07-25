@@ -15,6 +15,7 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.listmenu.ListMenuItemProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 import org.chromium.ui.widget.ViewRectProvider;
+import org.chromium.url.GURL;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -29,7 +30,7 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
             BooleanSupplier suppressLongPressSupplier,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             WindowAndroid windowAndroid,
-            Supplier<String> urlBarTextSupplier,
+            Supplier<GURL> urlSupplier,
             Supplier<ViewRectProvider> urlBarViewRectProviderSupplier) {
         super(
                 context,
@@ -38,7 +39,7 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
                 suppressLongPressSupplier,
                 lifecycleDispatcher,
                 windowAndroid,
-                urlBarTextSupplier,
+                urlSupplier,
                 urlBarViewRectProviderSupplier);
     }
 
