@@ -135,8 +135,8 @@ ConversationHandler::ConversationHandler(
     mojom::ConversationArchivePtr conversation_data =
         std::move(initial_state.value());
     if (!conversation_data->associated_content.empty()) {
-      associated_content_manager_->LoadArchivedContent(metadata_,
-                                                       conversation_data);
+      associated_content_manager_->LoadContentSnapshots(metadata_,
+                                                        conversation_data);
     }
     DVLOG(1) << "Restoring associated content for conversation "
              << metadata_->uuid << " with "
@@ -194,8 +194,8 @@ void ConversationHandler::BindUntrustedConversationUI(
 void ConversationHandler::OnArchiveContentUpdated(
     mojom::ConversationArchivePtr conversation_data) {
   UpdateAssociatedContentInfo();
-  associated_content_manager_->LoadArchivedContent(metadata_,
-                                                   conversation_data);
+  associated_content_manager_->LoadContentSnapshots(metadata_,
+                                                    conversation_data);
 }
 
 void ConversationHandler::OnAssociatedContentUpdated() {
@@ -239,7 +239,7 @@ bool ConversationHandler::IsRequestInProgress() {
 }
 
 bool ConversationHandler::IsAssociatedContentAlive() {
-  return associated_content_manager_->HasNonArchiveContent();
+  return associated_content_manager_->HasLiveContent();
 }
 
 void ConversationHandler::OnConversationDeleted() {

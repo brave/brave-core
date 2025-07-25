@@ -107,7 +107,7 @@ class AIChatDatabase {
 
   std::vector<mojom::ConversationTurnPtr> GetConversationEntries(
       std::string_view conversation_id);
-  std::vector<mojom::ContentArchivePtr> GetArchiveContentsForConversation(
+  std::vector<mojom::ContentSnapshotPtr> GetArchiveContentsForConversation(
       std::string_view conversation_uuid);
 
   std::string DecryptColumnToString(sql::Statement& statement, int index);

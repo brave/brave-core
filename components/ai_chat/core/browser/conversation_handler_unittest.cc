@@ -33,8 +33,8 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/associated_content_snapshot.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
@@ -636,8 +636,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       1u);
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
+  EXPECT_TRUE(conversation->associated_content_manager()->HasLiveContent());
 
   conversation->associated_content_manager()->AddContent(&associated_content2);
   EXPECT_EQ(
@@ -645,8 +644,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       2u);
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
+  EXPECT_TRUE(conversation->associated_content_manager()->HasLiveContent());
 
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
   auto cached_content =
@@ -670,8 +668,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       1u);
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
+  EXPECT_TRUE(conversation->associated_content_manager()->HasLiveContent());
 
   conversation->associated_content_manager()->AddContent(&associated_content1);
   EXPECT_EQ(
@@ -679,8 +676,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       1u);
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
+  EXPECT_TRUE(conversation->associated_content_manager()->HasLiveContent());
 
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
   auto cached_content =
@@ -709,8 +705,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
             1u);
   EXPECT_TRUE(conversation_handler_->associated_content_manager()
                   ->HasAssociatedContent());
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->HasNonArchiveContent());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
 
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content2);
@@ -720,8 +716,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
             2u);
   EXPECT_TRUE(conversation_handler_->associated_content_manager()
                   ->HasAssociatedContent());
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->HasNonArchiveContent());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
 
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
@@ -739,8 +735,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
             1u);
   EXPECT_TRUE(conversation_handler_->associated_content_manager()
                   ->HasAssociatedContent());
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->HasNonArchiveContent());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   cached_content =
@@ -772,7 +768,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
                 .get()
                 .content,
             "Content 1");
-  conversation_handler_->associated_content_manager()->SetArchiveContent(
+  conversation_handler_->associated_content_manager()->SetContentSnapshot(
       associated_content1.uuid(), "Content 1", false);
 
   // Should not be able to remove the content via
@@ -862,8 +858,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content2);
 
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->HasNonArchiveContent());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   auto cached_content =
@@ -874,8 +870,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 
   conversation_handler_->associated_content_manager()->OnNavigated(
       &associated_content1);
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->HasNonArchiveContent());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   cached_content =
@@ -887,8 +883,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   conversation_handler_->associated_content_manager()->OnNavigated(
       &associated_content2);
   // Everything should be archived now
-  EXPECT_FALSE(conversation_handler_->associated_content_manager()
-                   ->HasNonArchiveContent());
+  EXPECT_FALSE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   cached_content =
@@ -899,7 +895,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 }
 
 TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
-       MultiContentConversation_LoadArchivedContent) {
+       MultiContentConversation_LoadContentSnapshots) {
   auto metadata = mojom::Conversation::New();
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "1", mojom::ContentType::PageContent, "Content 1", 1,
@@ -910,11 +906,11 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 
   auto conversation_archive = mojom::ConversationArchive::New();
   conversation_archive->associated_content.push_back(
-      mojom::ContentArchive::New("1", "The content of one"));
+      mojom::ContentSnapshot::New("1", "The content of one"));
   conversation_archive->associated_content.push_back(
-      mojom::ContentArchive::New("1", "The content of two"));
+      mojom::ContentSnapshot::New("1", "The content of two"));
 
-  conversation_handler_->associated_content_manager()->LoadArchivedContent(
+  conversation_handler_->associated_content_manager()->LoadContentSnapshots(
       metadata.get(), conversation_archive);
 
   EXPECT_EQ(conversation_handler_->associated_content_manager()
@@ -2254,7 +2250,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
   testing::NiceMock<MockConversationHandlerObserver> observer;
   observer.Observe(conversation_handler_.get());
 
-  auto delegate = std::make_unique<AssociatedArchiveContent>(
+  auto delegate = std::make_unique<AssociatedContentSnapshot>(
       GURL("https://example.com"), "This is the way - page contents",
       u"The way",
       /*is_video=*/false, "my-uuid");

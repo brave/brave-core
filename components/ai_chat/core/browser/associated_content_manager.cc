@@ -21,8 +21,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/associated_content_snapshot.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -40,16 +40,16 @@ AssociatedContentManager::~AssociatedContentManager() {
   DetachContent();
 }
 
-void AssociatedContentManager::LoadArchivedContent(
+void AssociatedContentManager::LoadContentSnapshots(
     const mojom::Conversation* metadata,
     const mojom::ConversationArchivePtr& archive) {
   DVLOG(2) << __func__
            << " metadata size: " << metadata->associated_content.size()
-           << ", archive size: " << archive->associated_content.size();
+           << ", snapshot size: " << archive->associated_content.size();
 
   // Remove all archived content - its been reloaded from the DB.
-  for (int i = archive_content_.size() - 1; i >= 0; --i) {
-    RemoveContent(archive_content_[i].get(), /*notify_updated=*/false);
+  for (int i = content_snapshots_.size() - 1; i >= 0; --i) {
+    RemoveContent(content_snapshots_[i].get(), /*notify_updated=*/false);
   }
 
   for (size_t i = 0; i < archive->associated_content.size(); ++i) {
@@ -65,18 +65,18 @@ void AssociatedContentManager::LoadArchivedContent(
     auto* content = content_it->get();
     bool is_video =
         (content->content_type == mojom::ContentType::VideoTranscript);
-    archive_content_.push_back(std::make_unique<AssociatedArchiveContent>(
+    content_snapshots_.push_back(std::make_unique<AssociatedContentSnapshot>(
         content->url, archive_content->content,
         base::UTF8ToUTF16(content->title), is_video, content->uuid));
-    AddContent(archive_content_.back().get(), /*notify_updated=*/false);
+    AddContent(content_snapshots_.back().get(), /*notify_updated=*/false);
   }
 
   conversation_->OnAssociatedContentUpdated();
 }
 
-void AssociatedContentManager::SetArchiveContent(std::string content_uuid,
-                                                 std::string text_content,
-                                                 bool is_video) {
+void AssociatedContentManager::SetContentSnapshot(std::string content_uuid,
+                                                  std::string text_content,
+                                                  bool is_video) {
   DVLOG(1) << __func__;
 
   auto it = std::ranges::find(content_delegates_, content_uuid,
@@ -86,12 +86,12 @@ void AssociatedContentManager::SetArchiveContent(std::string content_uuid,
   auto* delegate = *it;
   content_observations_.RemoveObservation(delegate);
 
-  // Construct a "content archive" implementation of AssociatedContentDelegate
+  // Construct a "content snapshot" implementation of AssociatedContentDelegate
   // with a duplicate of the article text.
-  archive_content_.emplace_back(std::make_unique<AssociatedArchiveContent>(
+  content_snapshots_.emplace_back(std::make_unique<AssociatedContentSnapshot>(
       delegate->GetURL(), std::move(text_content), delegate->GetTitle(),
       is_video, delegate->uuid()));
-  *it = archive_content_.back().get();
+  *it = content_snapshots_.back().get();
   content_observations_.AddObservation(*it);
 
   conversation_->OnAssociatedContentUpdated();
@@ -141,12 +141,12 @@ void AssociatedContentManager::RemoveContent(
     content_delegates_.erase(it);
   }
 
-  // If this is archived content, delete it.
+  // If this is snapshotted content, delete it.
   auto archive_it = std::ranges::find_if(
-      archive_content_,
+      content_snapshots_,
       [delegate](const auto& content) { return content.get() == delegate; });
-  if (archive_it != archive_content_.end()) {
-    archive_content_.erase(archive_it);
+  if (archive_it != content_snapshots_.end()) {
+    content_snapshots_.erase(archive_it);
   }
 
   if (notify_updated) {
@@ -364,10 +364,10 @@ bool AssociatedContentManager::HasOpenAIChatPermission() const {
          content_delegates_[0]->HasOpenAIChatPermission();
 }
 
-bool AssociatedContentManager::HasNonArchiveContent() const {
+bool AssociatedContentManager::HasLiveContent() const {
   DVLOG(1) << __func__;
 
-  return archive_content_.size() < content_delegates_.size();
+  return content_snapshots_.size() < content_delegates_.size();
 }
 
 bool AssociatedContentManager::HasAssociatedContent() const {
@@ -388,8 +388,8 @@ void AssociatedContentManager::OnNavigated(
   DVLOG(1) << __func__;
 
   auto page_content = delegate->GetCachedPageContent();
-  SetArchiveContent(delegate->uuid(), page_content.content,
-                    page_content.is_video);
+  SetContentSnapshot(delegate->uuid(), page_content.content,
+                     page_content.is_video);
 
   // Note: We don't call conversation_->OnAssociatedContentUpdated() here
   // because the content should not have changed.
@@ -407,7 +407,7 @@ void AssociatedContentManager::DetachContent() {
 
   content_observations_.RemoveAllObservations();
   content_delegates_.clear();
-  archive_content_.clear();
+  content_snapshots_.clear();
 }
 
 }  // namespace ai_chat

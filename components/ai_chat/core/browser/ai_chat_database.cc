@@ -561,7 +561,7 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
   return history;
 }
 
-std::vector<mojom::ContentArchivePtr>
+std::vector<mojom::ContentSnapshotPtr>
 AIChatDatabase::GetArchiveContentsForConversation(
     std::string_view conversation_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -575,10 +575,10 @@ AIChatDatabase::GetArchiveContentsForConversation(
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
   statement.BindString(0, conversation_uuid);
-  std::vector<mojom::ContentArchivePtr> archive_contents;
+  std::vector<mojom::ContentSnapshotPtr> archive_contents;
 
   while (statement.Step()) {
-    auto content = mojom::ContentArchive::New(
+    auto content = mojom::ContentSnapshot::New(
         statement.ColumnString(0), DecryptColumnToString(statement, 1));
     archive_contents.emplace_back(std::move(content));
   }
