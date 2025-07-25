@@ -30,7 +30,7 @@ const getTestBinary = (config, suite) => {
 }
 
 const getChromiumTestsSuites = (config) => {
-  return getTestsToRun(config, 'chromium_unit_tests').push('browser_tests')
+  return getTestsToRun(config, 'chromium_unit_tests').concat(['browser_tests'])
 }
 
 const getTestsToRun = (config, suite) => {
@@ -197,7 +197,7 @@ const runTests = (passthroughArgs, suite, config, options) => {
       runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
     }
     if (config.isTeamcity && !config.isIOS()) {
-      if (upstreamTestSuites.includes(suite)) {
+      if (upstreamTestSuites.includes(testSuite)) {
         const ignorePreliminaryFailures =
           '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
         if (!runArgs.includes(ignorePreliminaryFailures)) {
