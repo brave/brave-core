@@ -23,63 +23,60 @@
     mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
  }
 
- let settingsHelper: mojom.AIChatSettingsHelperRemote
- let callbackRouter: mojom.SettingsPageCallbackRouter
- let customizationSettingsHandler:
-   mojomCustomizationSettings.CustomizationSettingsHandlerRemote
- let customizationSettingsCallbackRouter:
-   mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
-
  export class BraveLeoAssistantBrowserProxyImpl
     implements BraveLeoAssistantBrowserProxy {
+   settingsHelper: mojom.AIChatSettingsHelperRemote
+   callbackRouter: mojom.SettingsPageCallbackRouter
+   customizationSettingsHandler:
+     mojomCustomizationSettings.CustomizationSettingsHandlerRemote
+   customizationSettingsCallbackRouter:
+     mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
+
+   private constructor() {
+      this.settingsHelper = mojom.AIChatSettingsHelper.getRemote()
+      this.callbackRouter = new mojom.SettingsPageCallbackRouter()
+      this.settingsHelper.setClientPage(
+        this.callbackRouter.$.bindNewPipeAndPassRemote())
+
+      this.customizationSettingsHandler =
+        mojomCustomizationSettings.CustomizationSettingsHandler.getRemote()
+      this.customizationSettingsCallbackRouter =
+        new mojomCustomizationSettings.CustomizationSettingsUICallbackRouter()
+      this.customizationSettingsHandler.bindUI(
+        this.customizationSettingsCallbackRouter.$.bindNewPipeAndPassRemote())
+   }
 
    static getInstance(): BraveLeoAssistantBrowserProxyImpl {
-    if (settingsHelper === undefined && callbackRouter === undefined) {
-      settingsHelper = mojom.AIChatSettingsHelper.getRemote()
-      callbackRouter = new mojom.SettingsPageCallbackRouter()
-      settingsHelper.setClientPage(callbackRouter.$.bindNewPipeAndPassRemote())
-    }
-
-    if (customizationSettingsHandler === undefined &&
-        customizationSettingsCallbackRouter === undefined) {
-      customizationSettingsHandler =
-        mojomCustomizationSettings.CustomizationSettingsHandler.getRemote()
-      customizationSettingsCallbackRouter =
-        new mojomCustomizationSettings.CustomizationSettingsUICallbackRouter()
-      customizationSettingsHandler.bindUI(
-        customizationSettingsCallbackRouter.$.bindNewPipeAndPassRemote())
-    }
-
      return instance || (instance = new BraveLeoAssistantBrowserProxyImpl())
    }
 
-  getLeoIconVisibility() {
-    return sendWithPromise('getLeoIconVisibility')
-  }
+   getLeoIconVisibility() {
+     return sendWithPromise('getLeoIconVisibility')
+   }
 
-  toggleLeoIcon() {
-    chrome.send('toggleLeoIcon')
-  }
+   toggleLeoIcon() {
+     chrome.send('toggleLeoIcon')
+   }
 
-  resetLeoData() {
-    chrome.send('resetLeoData')
-  }
+   resetLeoData() {
+     chrome.send('resetLeoData')
+   }
 
-  getSettingsHelper() {
-    return settingsHelper
-  }
+   getSettingsHelper() {
+     return this.settingsHelper
+   }
 
-  getCallbackRouter() {
-    return callbackRouter
-  }
+   getCallbackRouter() {
+     return this.callbackRouter
+   }
 
-  getCustomizationSettingsHandler() {
-    return customizationSettingsHandler
-  }
+   getCustomizationSettingsHandler() {
+     return this.customizationSettingsHandler
+   }
 
-  getCustomizationSettingsCallbackRouter() {
-    return customizationSettingsCallbackRouter
-  }
+   getCustomizationSettingsCallbackRouter() {
+     return this.customizationSettingsCallbackRouter
+   }
  }
 
  let instance: BraveLeoAssistantBrowserProxyImpl|null = null
