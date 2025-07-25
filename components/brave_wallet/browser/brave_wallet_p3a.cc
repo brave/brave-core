@@ -256,6 +256,9 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
     case mojom::CoinType::DOT:
       // TODO(https://github.com/brave/brave-browser/issues/49536): Polkadot P3A
       return;
+    case mojom::CoinType::XEC:
+      // TODO(https://github.com/brave/brave-browser/issues/49844): eCash P3A
+      return;
   }
 
   CHECK(histogram_name);
@@ -311,6 +314,10 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
       return;
     case mojom::CoinType::DOT:
       // TODO(https://github.com/brave/brave-browser/issues/49536): Polkadot P3A
+      return;
+      // TODO(apaymyshev): Cardano P3A
+    case mojom::CoinType::XEC:
+      // TODO(https://github.com/brave/brave-browser/issues/49844): eCash P3A
       return;
   }
 

@@ -76,6 +76,10 @@ bool IsPolkadotNetwork(std::string_view network_id);
 std::string GetNetworkForPolkadotKeyring(const mojom::KeyringId& keyring_id);
 std::string GetNetworkForPolkadotAccount(const mojom::AccountIdPtr& account_id);
 
+bool IsECashKeyring(mojom::KeyringId keyring_id);
+bool IsECashMainnetKeyring(mojom::KeyringId keyring_id);
+bool IsECashTestnetKeyring(mojom::KeyringId keyring_id);
+
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
 
 mojom::CoinType GetCoinTypeFromTxDataUnion(
