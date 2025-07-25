@@ -207,8 +207,6 @@ const Config = function () {
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
   this.realRewrapperDir =
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
-  this.braveStatsApiKey = getEnvConfig(['brave_stats_api_key']) || ''
-  this.braveStatsUpdaterUrl = getEnvConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = false
   this.enable_pseudolocales = false
@@ -270,6 +268,8 @@ const Config = function () {
     'brave_services_key_id',
     'brave_services_production_domain',
     'brave_services_staging_domain',
+    'brave_stats_api_key',
+    'brave_stats_updater_url',
     'brave_sync_endpoint',
     'brave_variations_server_url',
     'gemini_production_api_url',
@@ -423,8 +423,6 @@ Config.prototype.buildArgs = function () {
     brave_version_minor: versionParts[1],
     brave_version_build: versionParts[2],
     chrome_version_string: this.chromeVersion,
-    brave_stats_api_key: this.braveStatsApiKey,
-    brave_stats_updater_url: this.braveStatsUpdaterUrl,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     enable_pseudolocales: this.enable_pseudolocales,
