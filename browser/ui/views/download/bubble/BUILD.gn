@@ -12,6 +12,7 @@ source_set("unit_tests") {
     "//base",
     "//chrome/browser",
     "//chrome/browser/download",
+    "//chrome/browser/ui/download",
     "//chrome/browser/ui/views/download",
     "//chrome/test:test_support",
     "//components/download/public/common:test_support",
