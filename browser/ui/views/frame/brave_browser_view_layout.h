@@ -26,6 +26,7 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
                          InfoBarContainerView* infobar_container,
                          views::View* contents_container,
                          MultiContentsView* multi_contents_view,
+                         views::View* vertical_tab_strip_container,
                          views::View* left_aligned_side_panel_separator,
                          views::View* unified_side_panel,
                          views::View* right_aligned_side_panel_separator,
@@ -62,10 +63,7 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   void LayoutBookmarkAndInfoBars(gfx::Rect& available_bounds,
                                  int browser_view_y) override;
   void LayoutInfoBar(gfx::Rect& available_bounds) override;
-  void LayoutContentsContainerView(
-      int top,
-      int bottom,
-      const gfx::Rect& browser_view_bounds) override;
+  void LayoutContentsContainerView(const gfx::Rect& available_bounds) override;
   void UpdateSplitViewInsets() override;
 
  private:
