@@ -172,7 +172,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ((BraveToolbarLayoutImpl) mBraveToolbarLayout)
                     .onBottomControlsVisibilityChanged(isVisible);
         }
-        mOptionalButtonController.updateButtonVisibility();
+        if (mOptionalButtonController != null) {
+            mOptionalButtonController.updateButtonVisibility();
+        }
     }
 
     public boolean isToolbarPhone() {
