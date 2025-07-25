@@ -249,6 +249,9 @@ build_script_outputs = [ "generated.rs", "named_entities.rs", ]
 [crate.match_token]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
+[crate.merlin]
+license_files = ['LICENSE.txt']
+
 [crate.num-bigint]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { raw_gn = '''
