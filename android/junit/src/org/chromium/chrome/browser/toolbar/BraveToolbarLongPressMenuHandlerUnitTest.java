@@ -41,6 +41,7 @@ import org.chromium.ui.display.DisplayAndroid;
 import org.chromium.ui.listmenu.ListMenuItemProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 import org.chromium.ui.widget.ViewRectProvider;
+import org.chromium.url.GURL;
 
 import java.util.function.BooleanSupplier;
 
@@ -66,7 +67,7 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
     private Activity mActivity;
     private boolean mShouldSuppress;
     private final BooleanSupplier mSuppressSupplier = () -> mShouldSuppress;
-    private String mUrlString;
+    private GURL mUrl;
 
     @Before
     public void setUp() throws Exception {
@@ -88,7 +89,7 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
                         mSuppressSupplier,
                         mActivityLifecycleDispatcher,
                         mWindowAndroid,
-                        () -> mUrlString,
+                        () -> mUrl,
                         () -> mViewRectProvider);
 
         verify(mActivityLifecycleDispatcher).register(mToolbarLongPressMenuHandler);
