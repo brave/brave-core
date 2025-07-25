@@ -5,15 +5,20 @@
 
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 
+#include <memory>
+
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_delegate.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
@@ -21,9 +26,25 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/views/border.h"
 
+// static
+BraveContentsContainerView* BraveContentsContainerView::From(
+    ContentsContainerView* view) {
+  CHECK(view);
+  return static_cast<BraveContentsContainerView*>(view);
+}
+
 BraveContentsContainerView::BraveContentsContainerView(
     BrowserView* browser_view)
-    : ContentsContainerView(browser_view), browser_view_(*browser_view) {}
+    : ContentsContainerView(browser_view), browser_view_(*browser_view) {
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  auto* browser = browser_view_->browser();
+  const bool use_rounded_corners =
+      BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser);
+  reader_mode_toolbar_ = AddChildView(std::make_unique<ReaderModeToolbarView>(
+      browser->profile(), use_rounded_corners));
+  reader_mode_toolbar_->SetDelegate(this);
+#endif
+}
 
 BraveContentsContainerView::~BraveContentsContainerView() = default;
 
@@ -67,6 +88,52 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
         gfx::Insets(kBorderThickness)));
   }
 }
+
+views::ProposedLayout BraveContentsContainerView::CalculateProposedLayout(
+    const views::SizeBounds& size_bounds) const {
+  views::ProposedLayout layouts;
+  if (!size_bounds.is_fully_bounded()) {
+    return layouts;
+  }
+
+  layouts = ContentsContainerView::CalculateProposedLayout(size_bounds);
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  auto* contents_layout = layouts.GetLayoutFor(contents_view_);
+  if (reader_mode_toolbar_->GetVisible()) {
+    gfx::Rect toolbar_bounds = contents_layout->bounds;
+    toolbar_bounds.set_height(
+        reader_mode_toolbar_->GetPreferredSize().height());
+    contents_layout->bounds.Inset(
+        gfx::Insets::TLBR(toolbar_bounds.height(), 0, 0, 0));
+
+    layouts.child_layouts.emplace_back(
+        reader_mode_toolbar_.get(), /*visible=*/true,
+        GetMirroredRect(toolbar_bounds), views::SizeBounds(layouts.host_size));
+  } else {
+    layouts.child_layouts.emplace_back(
+        reader_mode_toolbar_.get(), /*visible=*/false,
+        GetMirroredRect(gfx::Rect()), views::SizeBounds(layouts.host_size));
+  }
+#endif
+
+  return layouts;
+}
+
+void BraveContentsContainerView::ChildVisibilityChanged(views::View* child) {
+  ContentsContainerView::ChildVisibilityChanged(child);
+  InvalidateLayout();
+}
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+void BraveContentsContainerView::OnReaderModeToolbarActivate(
+    ReaderModeToolbarView* toolbar) {
+  CHECK_EQ(reader_mode_toolbar_, toolbar);
+  auto* web_contents = contents_view_->web_contents();
+  CHECK(web_contents && web_contents->GetDelegate());
+  web_contents->GetDelegate()->ActivateContents(web_contents);
+}
+#endif
 
 float BraveContentsContainerView::GetCornerRadius(bool for_border) const {
   auto* exclusive_access_manager =

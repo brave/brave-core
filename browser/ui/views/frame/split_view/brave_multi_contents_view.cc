@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
@@ -87,6 +88,18 @@ void BraveMultiContentsView::UpdateSecondaryLocationBar() {
   auto* separator = static_cast<SplitViewSeparator*>(resize_area_);
   CHECK(separator);
   separator->ShowMenuButtonWidget();
+}
+
+BraveContentsContainerView*
+BraveMultiContentsView::GetActiveContentsContainerView() {
+  return BraveContentsContainerView::From(
+      contents_container_views_[active_index_]);
+}
+
+BraveContentsContainerView*
+BraveMultiContentsView::GetInactiveContentsContainerView() {
+  return BraveContentsContainerView::From(
+      contents_container_views_[GetInactiveIndex()]);
 }
 
 BEGIN_METADATA(BraveMultiContentsView)

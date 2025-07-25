@@ -19,6 +19,7 @@ class Widget;
 }  // namespace views
 
 class SplitViewLocationBar;
+class BraveContentsContainerView;
 
 class BraveMultiContentsView : public MultiContentsView,
                                public SplitViewSeparatorDelegate {
@@ -33,9 +34,13 @@ class BraveMultiContentsView : public MultiContentsView,
 
   void UpdateSecondaryLocationBar();
 
+  BraveContentsContainerView* GetActiveContentsContainerView();
+  BraveContentsContainerView* GetInactiveContentsContainerView();
+
  private:
   friend class SplitViewLocationBarBrowserTest;
   friend class SideBySideEnabledBrowserTest;
+  friend class SpeedReaderWithSplitViewBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
 

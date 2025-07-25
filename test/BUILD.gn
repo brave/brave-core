@@ -1065,6 +1065,7 @@ test("brave_browser_tests") {
   if (enable_speedreader && toolkit_views) {
     sources += [ "//brave/browser/speedreader/speedreader_browsertest.cc" ]
     deps += [
+      "//brave/browser/ui/views/frame/split_view/",
       "//brave/browser/ui/views/split_view/",
       "//brave/components/ai_chat/core/common",
       "//brave/components/speedreader",
