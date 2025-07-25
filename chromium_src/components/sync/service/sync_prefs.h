@@ -6,14 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_SYNC_PREFS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_SYNC_PREFS_H_
 
-void SetPasswordSyncAllowed(bool allowed);
-
-#define SetPasswordSyncAllowed                       \
-  SetPasswordSyncAllowed_ChromiumImpl(bool allowed); \
-  void SetPasswordSyncAllowed
+#define GetSelectedTypesForAccount(...)                       \
+  GetSelectedTypesForAccount_ChromiumImpl(__VA_ARGS__) const; \
+  UserSelectableTypeSet GetSelectedTypesForAccount(__VA_ARGS__)
+#define GetSelectedTypesForSyncingUser(...)                       \
+  GetSelectedTypesForSyncingUser_ChromiumImpl(__VA_ARGS__) const; \
+  UserSelectableTypeSet GetSelectedTypesForSyncingUser(__VA_ARGS__)
 
 #include <components/sync/service/sync_prefs.h>  // IWYU pragma: export
 
-#undef SetPasswordSyncAllowed
+#undef GetSelectedTypesForAccount
+#undef GetSelectedTypesForSyncingUser
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_SYNC_PREFS_H_
