@@ -99,8 +99,12 @@ void BraveOriginHandler::RegisterMessages() {
       base::BindRepeating(&BraveOriginHandler::HandleGetInitialState,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "toggleValue", base::BindRepeating(&BraveOriginHandler::ToggleValue,
+      "toggleValue", base::BindRepeating(&BraveOriginHandler::HandleToggleValue,
                                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "resetToDefaults",
+      base::BindRepeating(&BraveOriginHandler::HandleResetToDefaults,
+                          base::Unretained(this)));
 }
 
 void BraveOriginHandler::HandleGetInitialState(const base::Value::List& args) {
@@ -140,7 +144,7 @@ void BraveOriginHandler::HandleGetInitialState(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], initial_state);
 }
 
-void BraveOriginHandler::ToggleValue(const base::Value::List& args) {
+void BraveOriginHandler::HandleToggleValue(const base::Value::List& args) {
   CHECK_EQ(args.size(), 2U);
   std::string pref_name = args[0].GetString();
   bool enabled = args[1].GetBool();
@@ -173,6 +177,10 @@ void BraveOriginHandler::ToggleValue(const base::Value::List& args) {
 
   // handle regular ones here
   LOG(ERROR) << "BSC]] NOT FOUND: " << pref_name;
+}
+
+void BraveOriginHandler::HandleResetToDefaults(const base::Value::List& args) {
+  LOG(ERROR) << "BSC]] HandleResetToDefaults";
 }
 
 void BraveOriginHandler::OnValueChanged(const std::string& pref_name) {
@@ -234,6 +242,7 @@ bool BraveOriginHandler::IsRestartNeeded() {
       was_wallet_enabled_ ==
       prefs->GetBoolean(brave_wallet::prefs::kDisabledByPolicy);
 
+  // TODO: put the P3A check here too
   if (rewards_changed || ai_changed || news_changed || vpn_changed ||
       tor_changed || wallet_changed) {
     return true;

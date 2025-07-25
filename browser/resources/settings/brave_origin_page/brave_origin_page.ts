@@ -183,6 +183,10 @@ export class SettingsBraveOriginPageElement
     console.log('toggleWeb3Domains_', this.$.toggleWeb3DomainsButton.checked)
   }
 
+  private resetToDefaults_ () {
+    this.browserProxy_.resetToDefaults()
+  }
+
   restartBrowser_(e: Event) {
     e.stopPropagation()
     window.open("chrome://restart", "_self")

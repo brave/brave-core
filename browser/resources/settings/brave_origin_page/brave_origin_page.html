@@ -183,7 +183,11 @@
       icon="web3">
   </settings-toggle-button>
 
-  <div class="cr-row">$i18n{braveOriginResetToDefaultsTitle}</div>
+  <cr-link-row class="hr"
+    label="$i18n{braveOriginResetToDefaultsTitle}"
+    on-click="resetToDefaults_"
+    start-icon="refresh">
+  </cr-link-row>
 
   <template is="dom-if" if="{{ showRestartToast_ }}">
     <div id="needsRestart">

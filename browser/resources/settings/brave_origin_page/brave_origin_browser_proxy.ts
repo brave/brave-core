@@ -11,6 +11,7 @@ export interface BraveOriginBrowserProxy {
   // <if expr="enable_tor">
   setTorEnabled(value: boolean): void
   // </if>
+  resetToDefaults(): void
 }
 
 export class BraveOriginBrowserProxyImpl implements BraveOriginBrowserProxy {
@@ -27,6 +28,10 @@ export class BraveOriginBrowserProxyImpl implements BraveOriginBrowserProxy {
     chrome.send('toggleValue', ['tor', value])
   }
   // </if>
+
+  resetToDefaults() {
+    chrome.send('resetToDefaults')
+  }
 
   static getInstance(): BraveOriginBrowserProxy {
     return instance || (instance = new BraveOriginBrowserProxyImpl())

@@ -30,7 +30,8 @@ class BraveOriginHandler : public settings::SettingsPageUIHandler {
   void RegisterMessages() override;
 
   void HandleGetInitialState(const base::Value::List& args);
-  void ToggleValue(const base::Value::List& args);
+  void HandleToggleValue(const base::Value::List& args);
+  void HandleResetToDefaults(const base::Value::List& args);
   void OnValueChanged(const std::string& pref_name);
   void OnRestartNeededChanged();
   bool IsRestartNeeded();
