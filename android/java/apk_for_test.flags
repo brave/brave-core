@@ -49,7 +49,7 @@
     *** mLogoCoordinator;
     *** mInitialTileNum;
     *** mProfile;
-    *** insertSiteSectionView(...);
+    *** initializeSiteSectionView(...);
     *** setSearchProviderTopMargin(...);
     *** setSearchProviderBottomMargin(...);
     *** getLogoMargin(...);
