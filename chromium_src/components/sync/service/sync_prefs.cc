@@ -5,14 +5,30 @@
 
 #include "components/sync/service/sync_prefs.h"
 
-#define SetPasswordSyncAllowed SetPasswordSyncAllowed_ChromiumImpl
+#define GetSelectedTypesForAccount GetSelectedTypesForAccount_ChromiumImpl
+#define GetSelectedTypesForSyncingUser \
+  GetSelectedTypesForSyncingUser_ChromiumImpl
 
 #include <components/sync/service/sync_prefs.cc>
 
-#undef SetPasswordSyncAllowed
+#undef GetSelectedTypesForAccount
+#undef GetSelectedTypesForSyncingUser
 
 namespace syncer {
 
-void SyncPrefs::SetPasswordSyncAllowed(bool allowed) {}
+UserSelectableTypeSet SyncPrefs::GetSelectedTypesForAccount(
+    const GaiaId& gaia_id) const {
+  UserSelectableTypeSet selected_types =
+      GetSelectedTypesForAccount_ChromiumImpl(gaia_id);
+  selected_types.Remove(UserSelectableType::kPasswords);
+  return selected_types;
+}
+
+UserSelectableTypeSet SyncPrefs::GetSelectedTypesForSyncingUser() const {
+  UserSelectableTypeSet selected_types =
+      GetSelectedTypesForSyncingUser_ChromiumImpl();
+  selected_types.Remove(UserSelectableType::kPasswords);
+  return selected_types;
+}
 
 }  // namespace syncer
