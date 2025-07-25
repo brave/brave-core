@@ -437,7 +437,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                        "insertSiteSectionView",
+                        "initializeSiteSectionView",
                         MethodModifier.REGULAR,
                         void.class));
         Assert.assertTrue(
