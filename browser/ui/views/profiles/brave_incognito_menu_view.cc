@@ -99,7 +99,7 @@ std::u16string BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
 
 void BraveIncognitoMenuView::OnExitButtonClicked() {
   if (profile().IsTor()) {
-    RecordClick(ActionableItem::kExitProfileButton);
+    OnActionableItemClicked(ActionableItem::kExitProfileButton);
     TorProfileManager::CloseTorProfileWindows(&profile());
   } else {
     IncognitoMenuView::OnExitButtonClicked();
