@@ -133,8 +133,7 @@ base::Version BackupExtensionSettingsOnFileThread(
     const extensions::ExtensionId& webstore_extension_id,
     const base::Version& version,
     const base::FilePath& profile_dir) {
-  CHECK(extensions_mv2::IsKnownWebStoreHostedExtensionExtension(
-      webstore_extension_id));
+  CHECK(extensions_mv2::IsKnownWebStoreHostedExtension(webstore_extension_id));
 
   const auto backup_path = profile_dir.Append(kExtensionMV2BackupDir)
                                .AppendASCII(webstore_extension_id);
@@ -187,10 +186,24 @@ void ClearExtensionSettingsOnFileThread(
 
 void ImportExtensionSettingsOnFileThread(
     const extensions::ExtensionId& brave_hosted_extension_id,
+    const base::Version& brave_hosted_extension_version,
     const base::FilePath& profile_dir) {
   if (!IsBackupAvailableFor(brave_hosted_extension_id, profile_dir)) {
     return;
   }
+
+  const auto webstore_extension_id =
+      *extensions_mv2::GetWebStoreHostedExtensionId(brave_hosted_extension_id);
+
+  const auto webstore_extension_version =
+      GetBackupVersion(webstore_extension_id, profile_dir);
+
+  if (webstore_extension_version > brave_hosted_extension_version) {
+    // Webstore extension is newer than brave-hosted, can't import settings.
+    return;
+  }
+  // Brave-hosted extension is newer, so it can load an old settings
+  // as it does while updating.
 
   ClearExtensionSettingsOnFileThread(brave_hosted_extension_id, profile_dir);
 
@@ -202,9 +215,6 @@ void ImportExtensionSettingsOnFileThread(
         profile_dir.Append(extensions::kLocalExtensionSettingsDirectoryName)
             .AppendASCII(brave_hosted_extension_id));
   }
-
-  const auto webstore_extension_id =
-      *extensions_mv2::GetWebStoreHostedExtensionId(brave_hosted_extension_id);
 
   GetIndexedSettingsForImport(brave_hosted_extension_id, profile_dir)
       .ForEach([&profile_dir, &brave_hosted_extension_id,
@@ -259,7 +269,7 @@ void ExtensionsManifectV2Migrator::OnExtensionDisableReasonsChanged(
     const extensions::ExtensionId& extension_id,
     extensions::DisableReasonSet disabled_reasons) {
   if (!features::IsSettingsBackupEnabled() ||
-      !IsKnownWebStoreHostedExtensionExtension(extension_id) ||
+      !IsKnownWebStoreHostedExtension(extension_id) ||
       !disabled_reasons.contains(
           extensions::disable_reason::DISABLE_UNSUPPORTED_MANIFEST_VERSION)) {
     return;
@@ -285,8 +295,9 @@ void ExtensionsManifectV2Migrator::OnExtensionInstalled(
     return;
   }
   extensions::GetExtensionFileTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&ImportExtensionSettingsOnFileThread,
-                                extension->id(), profile_->GetPath()));
+      FROM_HERE,
+      base::BindOnce(&ImportExtensionSettingsOnFileThread, extension->id(),
+                     extension->version(), profile_->GetPath()));
 }
 
 void ExtensionsManifectV2Migrator::BackupExtensionSettings(
@@ -300,8 +311,7 @@ void ExtensionsManifectV2Migrator::BackupExtensionSettings(
       base::BindOnce(&BackupExtensionSettingsOnFileThread,
                      webstore_extension_id, webstore_extension_version,
                      profile_->GetPath()),
-      base::BindOnce(&ExtensionsManifectV2Migrator::OnBackupSettingsCompleted,
-                     weak_factory_.GetWeakPtr(), webstore_extension_id));
+      base::BindOnce([](const base::Version&) {}));
 }
 
 //-----------------------------------------------------------------------------
