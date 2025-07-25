@@ -153,67 +153,69 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     label="$i18n{braveLeoAssistantUserMemoryEnabledLabel}">
 </settings-toggle-button>
 
-<div class="list-container">
-  <template
-    is="dom-if"
-    if="[[!hasMemories_(memoriesList_)]]"
-  >
-    <div class="empty-memories-table">
-      <div class="empty-memories-title">$i18n{braveLeoAssistantMemoryListEmptyTitle}</div>
-      <div class="empty-memories-desc">
-        $i18n{braveLeoAssistantMemoryListEmptyDescription}
-      </div>
-    </div>
-  </template>
-
-  <template
-    is="dom-if"
-    if="[[hasMemories_(memoriesList_)]]"
-  >
-    <div class="list">
-      <template
-        is="dom-repeat"
-        items="[[memoriesList_]]"
-      >
-        <div class="memory">
-          <div class="memory-info">
-            <div class="label">[[item]]</div>
-          </div>
-          <div class="memory-actions">
-            <leo-button
-              kind="plain-faint"
-              fab size="medium"
-              on-click="handleEdit_">
-              <leo-icon name="edit-pencil"></leo-icon>
-            </leo-button>
-            <leo-button
-              kind="plain-faint"
-              fab size="medium"
-              on-click="handleDelete_">
-              <leo-icon name="trash"></leo-icon>
-            </leo-button>
-          </div>
+<template is="dom-if" if="[[prefs.brave.ai_chat.user_memory_enabled.value]]" restamp>
+  <div class="list-container">
+    <template
+      is="dom-if"
+      if="[[!hasMemories_(memoriesList_)]]"
+    >
+      <div class="empty-memories-table">
+        <div class="empty-memories-title">$i18n{braveLeoAssistantMemoryListEmptyTitle}</div>
+        <div class="empty-memories-desc">
+          $i18n{braveLeoAssistantMemoryListEmptyDescription}
         </div>
-      </template>
-    </div>
-  </template>
-</div>
+      </div>
+    </template>
 
-<div class="action-box">
-  <leo-button
-    on-click="handleAddNewMemory_"
-    kind="outline"
-    class="action-button">
-    $i18n{braveLeoAssistantAddNewMemoryButtonLabel}
-  </leo-button>
-  <leo-button
-    on-click="handleDeleteAllMemories_"
-    kind="plain"
-    class="delete-button"
-    isDisabled$="[[!hasMemories_(memoriesList_)]]">
-    $i18n{braveLeoAssistantDeleteAllMemoriesConfirmationTitle}
-  </leo-button>
-</div>
+    <template
+      is="dom-if"
+      if="[[hasMemories_(memoriesList_)]]"
+    >
+      <div class="list">
+        <template
+          is="dom-repeat"
+          items="[[memoriesList_]]"
+        >
+          <div class="memory">
+            <div class="memory-info">
+              <div class="label">[[item]]</div>
+            </div>
+            <div class="memory-actions">
+              <leo-button
+                kind="plain-faint"
+                fab size="medium"
+                on-click="handleEdit_">
+                <leo-icon name="edit-pencil"></leo-icon>
+              </leo-button>
+              <leo-button
+                kind="plain-faint"
+                fab size="medium"
+                on-click="handleDelete_">
+                <leo-icon name="trash"></leo-icon>
+              </leo-button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </template>
+  </div>
+
+  <div class="action-box">
+    <leo-button
+      on-click="handleAddNewMemory_"
+      kind="outline"
+      class="action-button">
+      $i18n{braveLeoAssistantAddNewMemoryButtonLabel}
+    </leo-button>
+    <leo-button
+      on-click="handleDeleteAllMemories_"
+      kind="plain"
+      class="delete-button"
+      isDisabled$="[[!hasMemories_(memoriesList_)]]">
+      $i18n{braveLeoAssistantDeleteAllMemoriesConfirmationTitle}
+    </leo-button>
+  </div>
+</template>
 
 <template
   is="dom-if"
