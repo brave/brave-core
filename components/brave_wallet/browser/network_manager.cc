@@ -743,6 +743,8 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
       return kSolanaPrefKey;
     case mojom::CoinType::ADA:
       return kCardanoPrefKey;
+    case mojom::CoinType::XEC:
+      return kECashPrefKey;
   }
   NOTREACHED() << coin;
 }
@@ -1248,6 +1250,8 @@ std::string NetworkManager::GetCurrentChainId(
       return mojom::kZCashMainnet;
     case mojom::CoinType::ADA:
       return mojom::kCardanoMainnet;
+    case mojom::CoinType::XEC:
+      return mojom::kECashMainnet;
   }
   NOTREACHED() << coin;
 }
