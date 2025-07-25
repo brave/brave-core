@@ -280,6 +280,20 @@ std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id) {
   return GetNetworkForCardanoKeyring(account_id->keyring_id);
 }
 
+bool IsECashKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kECashMainnet ||
+         keyring_id == mojom::KeyringId::kECashTestnet;
+}
+
+bool IsECashMainnetKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kECashMainnet;
+}
+
+bool IsECashTestnetKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kECashTestnet;
+}
+
+
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
   if (IsEthereumKeyring(keyring_id)) {
     return mojom::CoinType::ETH;
@@ -303,6 +317,10 @@ mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
 
   if (IsCardanoKeyring(keyring_id)) {
     return mojom::CoinType::ADA;
+  }
+
+  if (IsECashKeyring(keyring_id)) {
+    return mojom::CoinType::XEC;
   }
 
   NOTREACHED() << "Unknown keyring: " << keyring_id;
@@ -432,6 +450,12 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
         return {mojom::KeyringId::kCardanoMainnet};
       } else {
         return {mojom::KeyringId::kCardanoTestnet};
+      }
+    case mojom::CoinType::XEC:
+      if (chain_id == mojom::kECashMainnet) {
+        return {mojom::KeyringId::kECashMainnet};
+      } else {
+        return {mojom::KeyringId::kECashTestnet};
       }
   }
   NOTREACHED();
