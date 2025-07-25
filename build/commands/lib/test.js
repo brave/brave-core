@@ -29,6 +29,10 @@ const getTestBinary = (config, suite) => {
   return path.join(config.outputDir, testBinary)
 }
 
+const getChromiumTestsSuites = (config) => {
+  return getTestsToRun(config, 'chromium_unit_tests').push('browser_tests')
+}
+
 const getTestsToRun = (config, suite) => {
   const testDepFile = path.join(config.outputDir, `${suite}.json`)
   if (fs.existsSync(testDepFile)) {
@@ -180,6 +184,8 @@ const runTests = (passthroughArgs, suite, config, options) => {
     runChromiumTestLauncherTeamcityReporterIntegrationTests(Config)
   }
 
+  const upstreamTestSuites = getChromiumTestsSuites(config)
+
   // Run the tests
   getTestsToRun(config, suite).every((testSuite) => {
     let runArgs = braveArgs.slice()
@@ -191,10 +197,12 @@ const runTests = (passthroughArgs, suite, config, options) => {
       runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
     }
     if (config.isTeamcity && !config.isIOS()) {
-      const ignorePreliminaryFailures =
-        '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
-      if (!runArgs.includes(ignorePreliminaryFailures)) {
-        runArgs.push(ignorePreliminaryFailures)
+      if (upstreamTestSuites.includes(suite)) {
+        const ignorePreliminaryFailures =
+          '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
+        if (!runArgs.includes(ignorePreliminaryFailures)) {
+          runArgs.push(ignorePreliminaryFailures)
+        }
       }
     }
 
