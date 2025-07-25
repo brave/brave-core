@@ -20,11 +20,11 @@ import {getTemplate} from './brave_origin_page.html.js'
 
 export interface SettingsBraveOriginPageElement {
   $: {
+    toggleP3aStatsCrashButton: SettingsToggleButtonElement,
     toggleTorWindowsButton: SettingsToggleButtonElement,
     // TODO: implement ...
     toggleSearchAdsButton: SettingsToggleButtonElement,
     toggleEmailAliasButton: SettingsToggleButtonElement,
-    toggleP3ACrashReportButton: SettingsToggleButtonElement,
     toggleSidebarButton: SettingsToggleButtonElement,
     toggleWeb3DomainsButton: SettingsToggleButtonElement
   }
@@ -60,6 +60,10 @@ export class SettingsBraveOriginPageElement
         type: Boolean,
         value: false,
       },
+      p3aStatsCrashEnabledPref_: {
+        type: Object,
+        value() { return {} }
+      },
       // <if expr="enable_tor">
       torEnabledPref_: {
         type: Object,
@@ -67,25 +71,21 @@ export class SettingsBraveOriginPageElement
       },
       // </if>
       showRestartToast_: Boolean,
-      toggleSearchAds_: {
-        type: Boolean,
-        value: false
+      searchAdsEnabledPref_: {
+        type: Object,
+        value() { return {} }
       },
-      toggleEmailAlias_: {
-        type: Boolean,
-        value: false
+      emailAliasEnabledPref_: {
+        type: Object,
+        value() { return {} }
       },
-      toggleP3ACrashReport_: {
-        type: Boolean,
-        value: false
+      sidebarEnabledPref_: {
+        type: Object,
+        value() { return {} }
       },
-      toggleSidebar_: {
-        type: Boolean,
-        value: false
-      },
-      toggleWeb3Domains_: {
-        type: Boolean,
-        value: false
+      web3DomainsEnabledPref_: {
+        type: Object,
+        value() { return {} }
       }
     }
   }
@@ -93,18 +93,16 @@ export class SettingsBraveOriginPageElement
   private browserProxy_: BraveOriginBrowserProxy =
     BraveOriginBrowserProxyImpl.getInstance();
   declare braveOriginEnabled_: boolean
+  declare showRestartToast_: boolean
+  declare searchAdsEnabledPref_: chrome.settingsPrivate.PrefObject
+  declare emailAliasEnabledPref_: chrome.settingsPrivate.PrefObject
+  declare p3aStatsCrashEnabledPref_: chrome.settingsPrivate.PrefObject
+  declare sidebarEnabledPref_: chrome.settingsPrivate.PrefObject
   // <if expr="enable_tor">
   declare torEnabledPref_: chrome.settingsPrivate.PrefObject
   declare torManaged_: boolean
   // </if>
-  declare showRestartToast_: boolean
-  declare toggleSearchAds_: boolean
-  declare toggleEmailAlias_: boolean
-  declare toggleLeoAi_: boolean
-  declare toggleP3ACrashReport_: boolean
-  declare toggleSidebar_: boolean
-  declare toggleTorWindows_: boolean
-  declare toggleWeb3Domains_: boolean
+  declare web3DomainsEnabledPref_: chrome.settingsPrivate.PrefObject
 
   override ready() {
     super.ready()
@@ -122,6 +120,7 @@ export class SettingsBraveOriginPageElement
 
   private onGetInitialState(initial_state: any) {
     this.braveOriginEnabled_ = initial_state.enabled;
+    this.setP3aStatsCrashEnabledPref_(initial_state.p3a_stats_crash);
     // <if expr="enable_tor">
     if (initial_state.torManaged) {
       this.torManaged_ = true;
@@ -129,12 +128,16 @@ export class SettingsBraveOriginPageElement
     this.setTorEnabledPref_(initial_state.tor);
     // </if>
 
-    // TODO: implement
-    this.toggleSearchAds_ = initial_state.search_ads;
-    this.toggleEmailAlias_ = initial_state.toggle_email_alias;
-    this.toggleP3ACrashReport_ = initial_state.toggle_p3a_crash_report;
-    this.toggleSidebar_ = initial_state.toggle_sidebar;
-    this.toggleWeb3Domains_ = initial_state.toggle_web3domains;
+    // TODO: implement others
+  }
+
+  setP3aStatsCrashEnabledPref_(enabled: boolean) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    }
+    this.p3aStatsCrashEnabledPref_ = pref
   }
 
   // <if expr="enable_tor">
@@ -154,6 +157,10 @@ export class SettingsBraveOriginPageElement
   }
   // </if>
 
+  private toggleP3aStatsCrashChange_ () {
+    this.browserProxy_.setP3aStatsCrashEnabled(this.$.toggleP3aStatsCrashButton.checked)
+  }
+
   // <if expr="enable_tor">
   private toggleTorWindowsButtonChange_ () {
     this.browserProxy_.setTorEnabled(this.$.toggleTorWindowsButton.checked)
@@ -166,10 +173,6 @@ export class SettingsBraveOriginPageElement
 
   private toggleEmailAliasChange_ () {
     console.log('toggleEmailAlias_', this.$.toggleEmailAliasButton.checked)
-  }
-
-  private toggleP3ACrashReportChange_ () {
-    console.log('toggleP3ACrashReport_', this.$.toggleP3ACrashReportButton.checked)
   }
 
   private toggleSidebarChange_ () {

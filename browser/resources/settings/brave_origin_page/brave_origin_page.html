@@ -109,7 +109,7 @@
   </settings-toggle-button>
 
   <settings-toggle-button id="toggleSearchAdsButton"
-      pref="[[toggleSearchAds_]]"
+      pref="[[searchAdsEnabledPref_]]"
       label="$i18n{braveOriginSearchAdsToggleTitle}"
       on-settings-boolean-control-change="toggleSearchAdsButtonChange_"
       icon="brave-icon-search">
@@ -118,7 +118,7 @@
   <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
 
   <settings-toggle-button id="toggleEmailAliasButton"
-      pref="[[toggleEmailAlias_]]"
+      pref="[[emailAliasEnabledPref_]]"
       label="$i18n{braveOriginEmailAliasToggleTitle}"
       on-settings-boolean-control-change="toggleEmailAliasChange_"
       icon="email-shield">
@@ -137,15 +137,15 @@
       inverted>
   </settings-toggle-button>
 
-  <settings-toggle-button id="toggleP3ACrashReportButton"
-      pref="[[toggleP3ACrashReport_]]"
+  <settings-toggle-button id="toggleP3aStatsCrashButton"
+      pref="[[p3aStatsCrashEnabledPref_]]"
       label="$i18n{braveOriginP3ACrashReportToggleTitle}"
-      on-settings-boolean-control-change="toggleP3ACrashReportChange_"
+      on-settings-boolean-control-change="toggleP3aStatsCrashChange_"
       icon="bar-chart">
   </settings-toggle-button>
 
   <settings-toggle-button id="toggleSidebarButton"
-      pref="[[toggleSidebar_]]"
+      pref="[[sidebarEnabledPref_]]"
       label="$i18n{braveOriginSidebarToggleTitle}"
       on-settings-boolean-control-change="toggleSidebarChange_"
       icon="browser-sidebar-right">
@@ -177,7 +177,7 @@
   </settings-toggle-button>
 
   <settings-toggle-button id="toggleWeb3DomainsButton"
-      pref="[[toggleWeb3Domains_]]"
+      pref="[[web3DomainsEnabledPref_]]"
       label="$i18n{braveOriginWeb3DomainsToggleTitle}"
       on-settings-boolean-control-change="toggleWeb3DomainsChange_"
       icon="web3">

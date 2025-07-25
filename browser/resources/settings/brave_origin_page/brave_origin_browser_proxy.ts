@@ -7,6 +7,7 @@ import {sendWithPromise} from 'chrome://resources/js/cr.js';
 
 export interface BraveOriginBrowserProxy {
   getInitialState(): Promise<any>
+  setP3aStatsCrashEnabled(value: boolean): void
   // <if expr="enable_tor">
   setTorEnabled(value: boolean): void
   // </if>
@@ -15,6 +16,10 @@ export interface BraveOriginBrowserProxy {
 export class BraveOriginBrowserProxyImpl implements BraveOriginBrowserProxy {
   getInitialState () {
     return sendWithPromise('getInitialState');
+  }
+
+  setP3aStatsCrashEnabled(value: boolean) {
+    chrome.send('toggleValue', ['p3a_stats_crash', value])
   }
 
   // <if expr="enable_tor">

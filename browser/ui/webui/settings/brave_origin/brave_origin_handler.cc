@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -59,6 +60,10 @@ BraveOriginHandler::BraveOriginHandler(Profile* profile) : profile_(profile) {
 
   // Local state (spans all profiles)
   local_state_change_registrar_.Init(g_browser_process->local_state());
+  local_state_change_registrar_.Add(
+      metrics::prefs::kMetricsReportingEnabled,
+      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
+                          base::Unretained(this)));
 #if BUILDFLAG(ENABLE_TOR)
   local_state_change_registrar_.Add(
       tor::prefs::kTorDisabled,
@@ -105,9 +110,9 @@ void BraveOriginHandler::HandleGetInitialState(const base::Value::List& args) {
   initial_state.Set("enabled",
                     BraveOriginState::GetInstance()->IsBraveOriginUser());
 
-  // We only need to capture values which are no accessible by preference.
+  // We only need to capture values which are not accessible by preference.
   // Note that any preference bound will need an entry in:
-  // brave/browser/extensions/api/settings_private/brave_prefs_util.cc
+  // `brave/browser/extensions/api/settings_private/brave_prefs_util.cc`
   // in order to be picked up in the polymer code.
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -120,12 +125,17 @@ void BraveOriginHandler::HandleGetInitialState(const base::Value::List& args) {
   }
 #endif
 
-  // TODO(bsclifton): look at real preference values.
-  initial_state.Set("search_ads", false);
-  initial_state.Set("email_alias", false);
-  initial_state.Set("p3a_crash_report", false);
-  initial_state.Set("sidebar", false);
-  initial_state.Set("web3domains", false);
+  // TODO(bsclifton): OR this against the other two
+  // waiting for https://github.com/brave/brave-core/pull/30022
+  initial_state.Set("p3a_stats_crash",
+                    g_browser_process->local_state()->GetBoolean(
+                        metrics::prefs::kMetricsReportingEnabled));
+
+  // TODO(bsclifton): implement the rest.
+  // search ads
+  // email alias
+  // sidebar
+  // web3domains
 
   ResolveJavascriptCallback(args[0], initial_state);
 }
@@ -135,15 +145,26 @@ void BraveOriginHandler::ToggleValue(const base::Value::List& args) {
   std::string pref_name = args[0].GetString();
   bool enabled = args[1].GetBool();
 
-  static constexpr auto negated_local_state =
+  if (pref_name == "p3a_stats_crash") {
+    std::vector<std::string> p3a_stats_crash_prefs = {
+        // TODO (bsclifton): add 2 preferences from here:
+        // https://github.com/brave/brave-core/pull/30022
+        metrics::prefs::kMetricsReportingEnabled};
+    for (const std::string& sub_pref : p3a_stats_crash_prefs) {
+      g_browser_process->local_state()->SetBoolean(sub_pref, enabled);
+    }
+    return;
+  }
+
+  static constexpr auto inverted_local_state =
       base::MakeFixedFlatMap<std::string_view, std::string_view>({
 #if BUILDFLAG(ENABLE_TOR)
           {"tor", tor::prefs::kTorDisabled}
 #endif
       });
 
-  const auto it = negated_local_state.find(pref_name);
-  if (it != negated_local_state.end()) {
+  const auto it = inverted_local_state.find(pref_name);
+  if (it != inverted_local_state.end()) {
     LOG(ERROR) << "BSC]] local:" << pref_name << " | " << enabled;
     g_browser_process->local_state()->SetBoolean(it->second, !enabled);
     AllowJavascript();
@@ -156,15 +177,15 @@ void BraveOriginHandler::ToggleValue(const base::Value::List& args) {
 
 void BraveOriginHandler::OnValueChanged(const std::string& pref_name) {
   if (IsJavascriptAllowed()) {
-    static constexpr auto negated_local_state =
+    static constexpr auto inverted_local_state =
         base::MakeFixedFlatMap<std::string_view, std::string_view>({
 #if BUILDFLAG(ENABLE_TOR)
             {tor::prefs::kTorDisabled, "tor-enabled-changed"},
 #endif
         });
 
-    const auto it = negated_local_state.find(pref_name);
-    if (it != negated_local_state.end()) {
+    const auto it = inverted_local_state.find(pref_name);
+    if (it != inverted_local_state.end()) {
       LOG(ERROR) << "BSC]] local_state; " << it->first << " | " << it->second;
       FireWebUIListener(
           it->second, base::Value(!g_browser_process->local_state()->GetBoolean(
