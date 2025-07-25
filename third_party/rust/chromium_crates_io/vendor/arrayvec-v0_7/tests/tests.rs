@@ -695,20 +695,6 @@ fn test_default() {
     assert_eq!(v.len(), 0);
 }
 
-#[cfg(feature="array-sizes-33-128")]
-#[test]
-fn test_sizes_33_128() {
-    ArrayVec::from([0u8; 52]);
-    ArrayVec::from([0u8; 127]);
-}
-
-#[cfg(feature="array-sizes-129-255")]
-#[test]
-fn test_sizes_129_255() {
-    ArrayVec::from([0u8; 237]);
-    ArrayVec::from([0u8; 255]);
-}
-
 #[test]
 fn test_extend_zst() {
     let mut range = 0..10;
