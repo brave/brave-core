@@ -1304,6 +1304,20 @@ extension Strings {
       value: "Shred Tabs",
       comment: "Accessibility label for a button that allows users to shred their tabs (erase them & associated data)"
     )
+    public static let shredSelectedTabButtonTitle = NSLocalizedString(
+      "tabGrid.shredSelectedTabButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Shred Selected Tab",
+      comment: "A button title that when tapped allows users to shred the currently selected tab"
+    )
+    public static let shredAllTabsButtonTitle = NSLocalizedString(
+      "tabGrid.shredAllTabsButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Shred All Tabs",
+      comment: "A button title that when tapped allows users to shred all of their tabs"
+    )
     public static let viewHistoryAccessibilityLabel = NSLocalizedString(
       "tabGrid.viewHistoryAccessibilityLabel",
       tableName: "BraveShared",
