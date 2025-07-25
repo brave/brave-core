@@ -180,25 +180,21 @@ const runTests = (passthroughArgs, suite, config, options) => {
     runChromiumTestLauncherTeamcityReporterIntegrationTests(Config)
   }
 
-  const upstreamTestSuites = ['browser_tests', 'chromium_unit_tests']
-
   // Run the tests
   getTestsToRun(config, suite).every((testSuite) => {
     let runArgs = braveArgs.slice()
     let runOptions = config.defaultOptions
 
     // Filter out upstream tests that are known to fail for Brave
-    if (upstreamTestSuites.includes(testSuite)) {
-      const filterFilePaths = getApplicableFilters(Config, testSuite)
-      if (filterFilePaths.length > 0) {
-        runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
-      }
-      if (config.isTeamcity && !config.isIOS()) {
-        const ignorePreliminaryFailures =
-          '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
-        if (!runArgs.includes(ignorePreliminaryFailures)) {
-          runArgs.push(ignorePreliminaryFailures)
-        }
+    const filterFilePaths = getApplicableFilters(Config, testSuite)
+    if (filterFilePaths.length > 0) {
+      runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
+    }
+    if (config.isTeamcity && !config.isIOS()) {
+      const ignorePreliminaryFailures =
+        '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
+      if (!runArgs.includes(ignorePreliminaryFailures)) {
+        runArgs.push(ignorePreliminaryFailures)
       }
     }
 
