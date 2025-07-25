@@ -452,6 +452,9 @@ interface AIChatUIHandler {
   // so that we can use [EnableIfNot=is_android] here.
   OpenConversationFullPage(string conversation_uuid);
 
+  // Open the AIChat Agentic profile
+  OpenAIChatAgenticProfile();
+
   OpenURL(url.mojom.Url url);
   OpenStorageSupportUrl();
 
