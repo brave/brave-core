@@ -13,6 +13,8 @@
 
 class ProfileIOS;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// An implementation that houses a Chrome ProfileIOS to implement the
 /// required ProfileBridge methods
 @interface ProfileBridgeImpl : NSObject <ProfileBridge>
@@ -21,5 +23,7 @@ class ProfileIOS;
 - (instancetype)initWithProfile:(raw_ptr<ProfileIOS>)profile
     NS_DESIGNATED_INITIALIZER;
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_PROFILE_PROFILE_BRIDGE_IMPL_H_

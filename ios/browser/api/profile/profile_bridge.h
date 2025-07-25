@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// A bridge to a Chromium Profile
 NS_SWIFT_NAME(Profile)
 @protocol ProfileBridge
@@ -21,5 +23,7 @@ NS_SWIFT_NAME(Profile)
 /// exist.
 @property(readonly) id<ProfileBridge> offTheRecordProfile;
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_PROFILE_PROFILE_BRIDGE_H_
