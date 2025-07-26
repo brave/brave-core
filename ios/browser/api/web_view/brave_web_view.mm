@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/web_view/brave_web_view.h"
 
 #include "base/notreached.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/brave_wallet_communication_tab_helper+private.h"
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
@@ -169,6 +170,10 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 - (CWVTranslationController*)translationController {
   NOTREACHED();
   return nil;
+}
+
+- (BraveWalletCommunicationController*)walletController {
+  return [BraveWalletCommunicationController fromWebState:self.webState];
 }
 
 #pragma mark - CRWWebStateDelegate

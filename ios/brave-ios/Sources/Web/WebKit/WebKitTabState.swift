@@ -596,6 +596,7 @@ class WebKitTabState: TabState, TabStateImpl {
 
   weak var delegate: TabDelegate?
   weak var downloadDelegate: TabDownloadDelegate?
+  weak var webUIDelegate: TabWebUIDelegate?
   var observers: OrderedSet<AnyTabObserver> = []
   var policyDeciders: OrderedSet<AnyTabPolicyDecider> = []
 }

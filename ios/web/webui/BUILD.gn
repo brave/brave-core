@@ -15,6 +15,8 @@ source_set("webui") {
     "brave_web_ui_ios_data_source.mm",
     "brave_webui_utils.h",
     "brave_webui_utils.mm",
+    "plural_string_handler.h",
+    "plural_string_handler.mm",
   ]
 
   deps = [

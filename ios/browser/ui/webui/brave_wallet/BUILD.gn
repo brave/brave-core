@@ -28,12 +28,14 @@ source_set("brave_wallet") {
   ]
 
   deps = [
+    ":webui_communication",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet_ui/line_chart:line_chart_display_generated",
     "//brave/components/brave_wallet_ui/market:market_display_generated",
     "//brave/components/brave_wallet_ui/nft:nft_display_generated",
     "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
+    "//brave/ios/browser/ui/webui:data_sources",
     "//ios/web",
     "//ios/web:resources",
     "//ios/web/public",
@@ -43,5 +45,18 @@ source_set("brave_wallet") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/js:resources",
     "//ui/base",
+  ]
+}
+
+source_set("webui_communication") {
+  sources = [
+    "brave_wallet_communication_tab_helper+private.h",
+    "brave_wallet_communication_tab_helper.h",
+    "brave_wallet_communication_tab_helper.mm",
+  ]
+
+  deps = [
+    "//ios/web/public",
+    "//ios/web/public:web_state_observer",
   ]
 }

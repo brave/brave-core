@@ -55,6 +55,11 @@ public class AnyTabState: TabState {
     set { tab.downloadDelegate = newValue }
   }
 
+  public var webUIDelegate: (any TabWebUIDelegate)? {
+    get { tab.webUIDelegate }
+    set { tab.webUIDelegate = newValue }
+  }
+
   public func addPolicyDecider(_ policyDecider: some TabPolicyDecider) {
     tab.addPolicyDecider(policyDecider)
   }

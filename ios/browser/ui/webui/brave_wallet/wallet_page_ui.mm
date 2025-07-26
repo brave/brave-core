@@ -31,9 +31,10 @@
 #include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_common_ui.h"
+#include "brave/ios/browser/ui/webui/sanitized_image_source.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
-#include "brave/ios/web/webui/sanitized_image_source.h"
+#include "brave/ios/web/webui/plural_string_handler.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -94,6 +95,14 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
                         base::StrCat({"data:", ";"})},
                        " "));
 
+  auto plural_string_handler = std::make_unique<PluralStringHandler>();
+  plural_string_handler->AddLocalizedString(
+      "braveWalletExchangeNamePlusSteps",
+      IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS);
+  plural_string_handler->AddLocalizedString(
+      "braveWalletPendingTransactions", IDS_BRAVE_WALLET_PENDING_TRANSACTIONS);
+  web_ui->AddMessageHandler(std::move(plural_string_handler));
+
   auto* profile = ProfileIOS::FromWebUIIOS(web_ui);
   web::URLDataSourceIOS::Add(profile, new SanitizedImageSource(profile));
 
@@ -150,7 +159,8 @@ void WalletPageUI::CreatePageHandler(
   auto* profile = ProfileIOS::FromWebUIIOS(web_ui());
   DCHECK(profile);
 
-  page_handler_ = std::make_unique<WalletPageHandler>(std::move(page_receiver));
+  page_handler_ = std::make_unique<WalletPageHandler>(web_ui()->GetWebState(),
+                                                      std::move(page_receiver));
 
   wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
       std::move(wallet_receiver), profile);
@@ -186,6 +196,11 @@ void WalletPageUI::CreatePageHandler(
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
 
-  // TODO: Fix...
-  //  brave_wallet::WalletInteractionDetected(web_ui()->GetWebState());
+  if (auto* tab_helper =
+          BraveWebUIMessagingTabHelper::FromWebState(web_ui()->GetWebState())) {
+    if (id<BraveWebUIMessagingTabHelperDelegate> delegate =
+            tab_helper->GetBridgingDelegate()) {
+      [delegate webUIUnlockWallet];
+    }
+  }
 }
