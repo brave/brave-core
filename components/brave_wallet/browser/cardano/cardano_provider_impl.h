@@ -20,40 +20,23 @@
 
 namespace brave_wallet {
 
-class BraveWalletProviderDelegate;
-
 class CardanoProviderImpl final : public mojom::CardanoProvider,
                                   public KeyringServiceObserverBase {
  public:
+  using BraveWalletProviderDelegateFactory =
+      base::RepeatingCallback<std::unique_ptr<BraveWalletProviderDelegate>()>;
+
   CardanoProviderImpl(const CardanoProviderImpl&) = delete;
   CardanoProviderImpl& operator=(const CardanoProviderImpl&) = delete;
   CardanoProviderImpl(BraveWalletService& brave_wallet_service,
-                      std::unique_ptr<BraveWalletProviderDelegate> delegate);
+                      BraveWalletProviderDelegateFactory delegate_factory);
   ~CardanoProviderImpl() override;
 
   // mojom::CardanoProvider
-  void Enable(EnableCallback callback) override;
+  void Enable(mojo::PendingReceiver<mojom::CardanoApi> incoming_connection,
+              EnableCallback callback) override;
   void IsEnabled(IsEnabledCallback callback) override;
 
-  void GetNetworkId(GetNetworkIdCallback callback) override;
-  void GetUsedAddresses(GetUsedAddressesCallback callback) override;
-  void GetUnusedAddresses(GetUnusedAddressesCallback callback) override;
-  void GetChangeAddress(GetChangeAddressCallback callback) override;
-  void GetRewardAddresses(GetRewardAddressesCallback callback) override;
-  void GetBalance(GetBalanceCallback callback) override;
-  void GetUtxos(const std::optional<std::string>& amount,
-                mojom::CardanoProviderPaginationPtr paginate,
-                GetUtxosCallback callback) override;
-  void SignTx(const std::string& tx_cbor,
-              bool partial_sign,
-              SignTxCallback callback) override;
-  void SubmitTx(const std::string& signed_tx_cbor,
-                SubmitTxCallback callback) override;
-  void SignData(const std::string& address,
-                const std::string& payload_hex,
-                SignDataCallback callback) override;
-  void GetCollateral(const std::string& amount,
-                     GetCollateralCallback callback) override;
 
  private:
   friend class CardanoProviderImplUnitTest;
@@ -68,28 +51,24 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
   void SelectedDappAccountChanged(mojom::CoinType coin,
                                   mojom::AccountInfoPtr account) override;
 
-  void RequestCardanoPermissions(EnableCallback callback,
-                                 const url::Origin& origin);
+  void RequestCardanoPermissions(
+      mojo::PendingReceiver<mojom::CardanoApi> incoming_connection,
+      EnableCallback callback,
+      const url::Origin& origin);
 
   void OnRequestCardanoPermissions(
+      mojo::PendingReceiver<mojom::CardanoApi> incoming_connection,
       EnableCallback callback,
       const url::Origin& origin,
       mojom::RequestPermissionsError error,
       const std::optional<std::vector<std::string>>& allowed_accounts);
 
-  void OnSignMessageRequestProcessed(const mojom::AccountIdPtr& account_id,
-                                     const mojom::CardanoKeyIdPtr& key_id,
-                                     const std::vector<uint8_t>& message,
-                                     SignDataCallback callback,
-                                     bool approved,
-                                     mojom::EthereumSignatureBytesPtr signature,
-                                     const std::optional<std::string>& error);
-
   raw_ref<BraveWalletService> brave_wallet_service_;
+  BraveWalletProviderDelegateFactory delegate_factory_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
 
   std::optional<EnableCallback> pending_request_cardano_permissions_callback_;
-
+  mojo::PendingReceiver<mojom::CardanoApi> pending_incoming_connection_;
   url::Origin pending_request_cardano_permissions_origin_;
   bool wallet_onboarding_shown_ = false;
 

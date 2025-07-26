@@ -30,7 +30,7 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
  public:
   explicit BraveWalletProviderDelegateImpl(
       content::WebContents* web_contents,
-      content::RenderFrameHost* const render_frame_host);
+      content::GlobalRenderFrameHostId render_frame_host_id);
   BraveWalletProviderDelegateImpl(const BraveWalletProviderDelegateImpl&) =
       delete;
   BraveWalletProviderDelegateImpl& operator=(
