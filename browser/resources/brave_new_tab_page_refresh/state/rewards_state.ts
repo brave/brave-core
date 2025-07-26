@@ -14,6 +14,7 @@ export interface RewardsState {
   rewardsBalance: number | null
   rewardsExchangeRate: number
   rewardsAdsViewed: number | null
+  tosUpdateRequired: boolean
 }
 
 export function defaultRewardsState(): RewardsState {
@@ -25,7 +26,8 @@ export function defaultRewardsState(): RewardsState {
     rewardsExternalWallet: null,
     rewardsBalance: null,
     rewardsExchangeRate: 0,
-    rewardsAdsViewed: null
+    rewardsAdsViewed: null,
+    tosUpdateRequired: false
   }
 }
 
