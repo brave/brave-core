@@ -29,6 +29,7 @@ class ChromiumTabState: TabState, TabStateImpl {
     }
     self.navigationHandler = .init(tab: self)
     self.uiHandler = .init(tab: self)
+    self.webUiHandler = .init(tab: self)
   }
 
   var webView: BraveWebView?
@@ -37,6 +38,7 @@ class ChromiumTabState: TabState, TabStateImpl {
   private var containerView: CWVContainerView = .init()
   private var navigationHandler: TabCWVNavigationHandler?
   private var uiHandler: TabCWVUIHandler?
+  private var webUiHandler: TabWebUIHandler?
   private var webViewObservations: [AnyCancellable] = []
   private var virtualURL: URL?
 
@@ -248,6 +250,7 @@ class ChromiumTabState: TabState, TabStateImpl {
     )
     webView.navigationDelegate = navigationHandler
     webView.uiDelegate = uiHandler
+    webView.webUIDelegate = webUiHandler
     webView.allowsBackForwardNavigationGestures = true
     webView.allowsLinkPreview = true
 
@@ -281,6 +284,11 @@ class ChromiumTabState: TabState, TabStateImpl {
 
   weak var delegate: TabDelegate?
   weak var downloadDelegate: TabDownloadDelegate?
+  weak var webUIDelegate: TabWebUIDelegate? {
+    didSet {
+      webUiHandler?.delegate = webUIDelegate
+    }
+  }
 
   var visibleSecureContentState: SecureContentState {
     guard let lastCommittedURL = lastCommittedURL else { return .unknown }
