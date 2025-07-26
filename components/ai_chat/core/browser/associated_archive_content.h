@@ -37,24 +37,9 @@ class AssociatedArchiveContent : public AssociatedContentDelegate {
   AssociatedArchiveContent(const AssociatedArchiveContent&) = delete;
   AssociatedArchiveContent& operator=(const AssociatedArchiveContent&) = delete;
 
-  // Occassionally even an archive is updated, such as when content is deleted
-  // for privacy reasons.
-  void SetMetadata(GURL url, std::u16string title, bool is_video);
-  void SetContent(std::string text_content);
-
-  int GetContentId() const override;
-  GURL GetURL() const override;
-  std::u16string GetTitle() const override;
-
   void GetContent(GetPageContentCallback callback) override;
-  const PageContent& GetCachedPageContent() const override;
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr();
-
- private:
-  GURL url_;
-  std::u16string title_;
-  PageContent cached_page_content_;
 };
 
 }  // namespace ai_chat

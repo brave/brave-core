@@ -119,7 +119,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
                       print_preview_extraction_delegate);
 
   // content::WebContentsObserver
-  void WebContentsDestroyed() override;
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
@@ -127,10 +126,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
                      const GURL& validated_url) override;
 
   // ai_chat::AssociatedContentDriver
-  GURL GetPageURL() const override;
   void GetPageContent(FetchPageContentCallback callback,
                       std::string_view invalidation_token) override;
-  std::u16string GetPageTitle() const override;
   void OnNewPage(int64_t navigation_id) override;
 
   // Called when an event of significance occurs that, if the page is a

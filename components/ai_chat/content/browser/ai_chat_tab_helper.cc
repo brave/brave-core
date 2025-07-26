@@ -18,7 +18,6 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_ostream_operators.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
@@ -64,12 +63,6 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
 
 AIChatTabHelper::~AIChatTabHelper() = default;
 
-// content::WebContentsObserver
-
-void AIChatTabHelper::WebContentsDestroyed() {
-  OnNewPage(-1);
-}
-
 void AIChatTabHelper::NavigationEntryCommitted(
     const content::LoadCommittedDetails& load_details) {
   if (!load_details.is_main_frame) {
@@ -81,7 +74,7 @@ void AIChatTabHelper::NavigationEntryCommitted(
   pending_navigation_id_ = pending_navigation_id;
   DVLOG(2) << __func__ << " id: " << pending_navigation_id_
            << "\n url: " << load_details.entry->GetVirtualURL()
-           << "\n current page title: " << GetPageTitle()
+           << "\n current page title: " << load_details.entry->GetTitle()
            << "\n previous page title: " << previous_page_title_
            << "\n same document? " << load_details.is_same_document;
 
@@ -101,33 +94,30 @@ void AIChatTabHelper::NavigationEntryCommitted(
   if (!is_same_document_navigation_) {
     is_page_loaded_ = false;
   }
-  if (!is_same_document_navigation_ || previous_page_title_ != GetPageTitle()) {
+  if (!is_same_document_navigation_ ||
+      previous_page_title_ != load_details.entry->GetTitle()) {
     OnNewPage(pending_navigation_id_);
   }
-  previous_page_title_ = GetPageTitle();
+  previous_page_title_ = load_details.entry->GetTitle();
 }
 
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
   DVLOG(2) << __func__ << ": id=" << entry->GetUniqueID()
            << " title=" << entry->GetTitle();
   MaybeSameDocumentIsNewPage();
-  previous_page_title_ = GetPageTitle();
-  OnTitleChanged();
+  previous_page_title_ = entry->GetTitle();
+  SetTitle(entry->GetTitle());
 }
 
 void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
                                     const GURL& validated_url) {
   DVLOG(4) << __func__ << ": " << validated_url.spec();
-  if (validated_url == GetPageURL()) {
+  if (validated_url == web_contents()->GetLastCommittedURL()) {
     is_page_loaded_ = true;
     if (pending_get_page_content_callback_) {
       GetPageContent(std::move(pending_get_page_content_callback_), "");
     }
   }
-}
-
-GURL AIChatTabHelper::GetPageURL() const {
-  return web_contents()->GetLastCommittedURL();
 }
 
 void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
@@ -152,7 +142,8 @@ void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
     pdf_helper_not_available = true;
 #endif  // BUILDFLAG(ENABLE_PDF)
   }
-  if (kPrintPreviewRetrievalHosts.contains(GetPageURL().host_piece()) ||
+  if (kPrintPreviewRetrievalHosts.contains(
+          web_contents()->GetLastCommittedURL().host_piece()) ||
       pdf_helper_not_available) {
     // Get content using a printing / OCR mechanism, instead of
     // directly from the source, if available.
@@ -223,13 +214,11 @@ void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
   }
 }
 
-std::u16string AIChatTabHelper::GetPageTitle() const {
-  return web_contents()->GetTitle();
-}
-
 void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
   DVLOG(3) << __func__ << " id: " << navigation_id;
   AssociatedContentDriver::OnNewPage(navigation_id);
+  set_url(web_contents()->GetLastCommittedURL());
+  SetTitle(web_contents()->GetTitle());
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }
@@ -325,7 +314,7 @@ void AIChatTabHelper::OnAllPDFPagesTextReceived(
 
 void AIChatTabHelper::GetSearchSummarizerKey(
     GetSearchSummarizerKeyCallback callback) {
-  if (!IsBraveSearchSERP(GetPageURL())) {
+  if (!IsBraveSearchSERP(web_contents()->GetLastCommittedURL())) {
     std::move(callback).Run(std::nullopt);
     return;
   }
