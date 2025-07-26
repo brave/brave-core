@@ -7,8 +7,10 @@ package org.chromium.chrome.browser.contextmenu;
 
 import android.content.Context;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.externalnav.BraveExternalNavigationUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.shields.UrlSanitizerServiceFactory;
@@ -36,23 +38,33 @@ public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator 
 
     @Override
     public boolean onItemSelected(int itemId) {
-        if (itemId != R.id.contextmenu_copy_clean_link) {
-            return super.onItemSelected(itemId);
-        }
-        UrlSanitizerService urlSanitizerService =
+        if (itemId == R.id.contextmenu_copy_clean_link) {
+            UrlSanitizerService urlSanitizerService =
                 UrlSanitizerServiceFactory.getInstance()
                         .getUrlSanitizerAndroidService(getProfile(), null);
-        if (urlSanitizerService != null) {
-            urlSanitizerService.sanitizeUrl(
-                    mParams.getUnfilteredLinkUrl().getSpec(),
-                    result -> {
-                        mItemDelegate.onSaveToClipboard(
-                                result, ContextMenuItemDelegate.ClipboardType.LINK_URL);
-                        urlSanitizerService.close();
-                    });
+            if (urlSanitizerService != null) {
+                urlSanitizerService.sanitizeUrl(
+                        mParams.getUnfilteredLinkUrl().getSpec(),
+                        result -> {
+                            mItemDelegate.onSaveToClipboard(
+                                    result, ContextMenuItemDelegate.ClipboardType.LINK_URL);
+                            urlSanitizerService.close();
+                        });
+            }
+            return true;
         }
 
-        return true;
+        if (itemId == R.id.contextmenu_open_in_external_application) {
+            // Open the URL in an external application.
+            BraveExternalNavigationUtils.openUrl(
+                mParams.getUrl(),
+                ContextUtils.getApplicationContext()
+            );
+            return true;
+        }
+        
+
+        return super.onItemSelected(itemId);
     }
 
     private Profile getProfile() {
