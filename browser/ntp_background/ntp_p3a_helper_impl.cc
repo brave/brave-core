@@ -111,14 +111,9 @@ NTPP3AHelperImpl::NTPP3AHelperImpl(
       p3a_service->RegisterRotationCallback(base::BindRepeating(
           &NTPP3AHelperImpl::OnP3ARotation, base::Unretained(this)));
   if (ntp_background_images_service) {
-    if (const auto* sr_data =
-            ntp_background_images_service->GetSponsoredImagesData(
-                /*super_referral=*/true, /*supports_rich_media=*/true)) {
-      CheckLoadedCampaigns(*sr_data);
-    }
     if (const auto* si_data =
             ntp_background_images_service->GetSponsoredImagesData(
-                /*super_referral=*/false, /*supports_rich_media=*/true)) {
+                /*supports_rich_media=*/true)) {
       CheckLoadedCampaigns(*si_data);
     }
     ntp_background_images_service_observation_.Observe(

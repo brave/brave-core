@@ -32,10 +32,6 @@ void NTPBackgroundImagesServiceWaiter::WaitForOnSponsoredContentDidUpdate() {
   on_sponsored_content_did_update_run_loop_.Run();
 }
 
-void NTPBackgroundImagesServiceWaiter::WaitForOnSuperReferralEnded() {
-  on_super_referral_campaign_did_end_run_loop_.Run();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void NTPBackgroundImagesServiceWaiter::OnBackgroundImagesDataDidUpdate(
@@ -51,10 +47,6 @@ void NTPBackgroundImagesServiceWaiter::OnSponsoredImagesDataDidUpdate(
 void NTPBackgroundImagesServiceWaiter::OnSponsoredContentDidUpdate(
     const base::Value::Dict& /*dict*/) {
   on_sponsored_content_did_update_run_loop_.Quit();
-}
-
-void NTPBackgroundImagesServiceWaiter::OnSuperReferralCampaignDidEnd() {
-  on_super_referral_campaign_did_end_run_loop_.Quit();
 }
 
 }  // namespace ntp_background_images
