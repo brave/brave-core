@@ -29,7 +29,6 @@
 .br-toolbar {
     --toolbar-background: var(--leo-color-page-background);
     background: var(--leo-color-page-background);
-    color: var(--leo-color-text-tertiary);
     height: 56px;
     position: relative;
 }
@@ -91,7 +90,6 @@
 
 .nav-item-icon {
     align-items: center;
-    color: var(--leo-color-icon-secondary);
     display: flex;
 }
 
