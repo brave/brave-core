@@ -32,6 +32,8 @@
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
+#include "brave/ios/web/webui/brave_webui_messaging_tab_helper.h"
+#include "brave/ios/web/webui/brave_webui_messaging_tab_helper_delegate.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
 #include "brave/ios/web/webui/sanitized_image_source.h"
 #include "components/grit/brave_components_resources.h"
@@ -186,6 +188,11 @@ void WalletPageUI::CreatePageHandler(
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
 
-  // TODO: Fix...
-  //  brave_wallet::WalletInteractionDetected(web_ui()->GetWebState());
+  if (auto* tab_helper =
+          BraveWebUIMessagingTabHelper::FromWebState(web_ui()->GetWebState())) {
+    if (id<BraveWebUIMessagingTabHelperDelegate> delegate =
+            tab_helper->GetBridgingDelegate()) {
+      [delegate webUIUnlockWallet];
+    }
+  }
 }
