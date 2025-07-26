@@ -13,9 +13,14 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+namespace web {
+class WebState;
+}  // namespace web
+
 class WalletPageHandler : public brave_wallet::mojom::PageHandler {
  public:
   WalletPageHandler(
+      web::WebState* web_state,
       mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver);
 
   WalletPageHandler(const WalletPageHandler&) = delete;
@@ -28,6 +33,7 @@ class WalletPageHandler : public brave_wallet::mojom::PageHandler {
   void UnlockWalletUI() override;
 
  private:
+  raw_ptr<web::WebState> web_state_;
   mojo::Receiver<brave_wallet::mojom::PageHandler> receiver_;
   base::WeakPtrFactory<WalletPageHandler> weak_ptr_factory_{this};
 };
