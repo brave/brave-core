@@ -79,6 +79,11 @@ public class AppState {
       case .backgrounded:
         break
       case .terminating:
+        braveCore.profileController?.syncAPI.removeAllObservers()
+        break
+      case .profileLoaded:
+        // Setup BraveCore
+        braveCore.scheduleLowPriorityStartupTasks()
         break
       }
     }
@@ -88,10 +93,8 @@ public class AppState {
     // Setup Constants
     AppState.setupConstants()
 
-    // Setup BraveCore
-    braveCore = AppState.setupBraveCore().then {
-      $0.scheduleLowPriorityStartupTasks()
-    }
+    // Setup Brave-Core
+    braveCore = AppState.setupBraveCore()
 
     // Setup Profile
     profile = BrowserProfile()
@@ -113,6 +116,7 @@ public class AppState {
     case active
     case backgrounded
     case terminating
+    case profileLoaded
   }
 
   private static func setupConstants() {

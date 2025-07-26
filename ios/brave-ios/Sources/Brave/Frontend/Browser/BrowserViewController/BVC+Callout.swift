@@ -72,7 +72,7 @@ extension BrowserViewController {
           linkDescription: Strings.Callout.p3aCalloutLinkTitle,
           primaryButtonTitle: Strings.P3A.continueButton,
           toggleAction: { [weak self] isOn in
-            self?.braveCore.p3aUtils.isP3AEnabled = isOn
+            self?.p3aUtils.isP3AEnabled = isOn
           },
           linkAction: { [unowned onboardingP3ACalloutController] url in
             let p3aLearnMoreController = SFSafariViewController(
@@ -94,14 +94,14 @@ extension BrowserViewController {
 
       onboardingP3ACalloutController.setLayoutState(state: state)
 
-      braveCore.p3aUtils.isNoticeAcknowledged = true
+      p3aUtils.isNoticeAcknowledged = true
       present(onboardingP3ACalloutController, animated: false)
       return
     }
 
     let controller = OnboardingController(
       environment: .init(
-        p3aUtils: braveCore.p3aUtils,
+        p3aUtils: p3aUtils,
         attributionManager: attributionManager
       ),
       steps: [.p3aOptIn],
@@ -174,7 +174,7 @@ extension BrowserViewController {
             }
           )
         ),
-        p3aUtilities: braveCore.p3aUtils,
+        p3aUtilities: p3aUtils,
         attributionManager: attributionManager
       )
       present(onboardingController, animated: true)
@@ -191,7 +191,7 @@ extension BrowserViewController {
 
     let defaultBrowserCallout = OnboardingController(
       environment: .init(
-        p3aUtils: braveCore.p3aUtils,
+        p3aUtils: p3aUtils,
         attributionManager: attributionManager
       ),
       steps: [.defaultBrowsing],

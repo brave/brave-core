@@ -242,7 +242,7 @@ extension BrowserViewController: TabPolicyDecider {
     // before loading any ad-block scripts
     // await the preparation of the ad-block services
     await LaunchHelper.shared.prepareAdBlockServices(
-      adBlockService: self.braveCore.adblockService
+      adBlockService: self.braveCore.adblockService!
     )
 
     if let mainDocumentURL = request.mainDocumentURL {
@@ -680,7 +680,7 @@ extension BrowserViewController {
     case .standard:
       // Upgrade for Standard HTTPS upgrade if host is not on the exceptions list and not previously allowed by user.
       shouldUpgrade =
-        braveCore.httpsUpgradeExceptionsService.canUpgradeToHTTPS(for: url)
+        braveCore.httpsUpgradeExceptionsService?.canUpgradeToHTTPS(for: url) == true
         && !isInUserAllowList
     case .disabled:
       shouldUpgrade = false
