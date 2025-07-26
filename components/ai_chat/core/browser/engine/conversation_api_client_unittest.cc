@@ -101,6 +101,13 @@ GetMockEventsAndExpectedEventsBody() {
 
   std::vector<ConversationAPIClient::ConversationEvent> events;
   events.emplace_back(
+      ConversationEventRole::User, ConversationAPIClient::UserMemory,
+      std::vector<std::string>{}, "",
+      base::Value::Dict()
+          .Set("name", "Jane")
+          .Set("memories",
+               base::Value::List().Append("memory1").Append("memory2")));
+  events.emplace_back(
       ConversationEventRole::User, ConversationAPIClient::PageText,
       std::vector<std::string>{"This is a page about The Mandalorian."});
   events.emplace_back(ConversationEventRole::User,
@@ -113,7 +120,7 @@ GetMockEventsAndExpectedEventsBody() {
   // Two tool use requests from the assistant
   events.emplace_back(
       ConversationEventRole::Assistant, ConversationAPIClient::ChatMessage,
-      std::vector<std::string>{"Going to use a tool..."}, "",
+      std::vector<std::string>{"Going to use a tool..."}, "", std::nullopt,
       MakeToolUseEvents(
           {mojom::ToolUseEvent::New("get_weather", "123",
                                     "{\"location\":\"New York\"}",
@@ -131,7 +138,7 @@ GetMockEventsAndExpectedEventsBody() {
            mojom::ContentBlock::NewTextContentBlock(
                mojom::TextContentBlock::New(
                    "The wind in New York is 5 mph from the SW."))}),
-      "", MakeToolUseEvents({}), "123");
+      "", std::nullopt, MakeToolUseEvents({}), "123");
 
   // Second answer from a tool
   events.emplace_back(
@@ -140,7 +147,7 @@ GetMockEventsAndExpectedEventsBody() {
           mojom::ImageContentBlock::New(
               GURL("data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
                    "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")))}),
-      "", MakeToolUseEvents({}), "456");
+      "", std::nullopt, MakeToolUseEvents({}), "456");
 
   events.emplace_back(
       ConversationEventRole::User,
@@ -160,6 +167,12 @@ GetMockEventsAndExpectedEventsBody() {
                                "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"});
 
   const std::string expected_events_body = R"([
+    {
+      "role": "user",
+      "type": "userMemory",
+      "content": "",
+      "memory": {"name": "Jane", "memories": ["memory1", "memory2"]}
+    },
     {
       "role": "user",
       "type": "pageText",

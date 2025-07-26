@@ -5,12 +5,10 @@
 
 import '//resources/cr_elements/md_select.css.js'
 import 'chrome://resources/brave/leo.bundle.js'
-import {assert} from 'chrome://resources/js/assert.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
-import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
 import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {routes} from '../route.js';
@@ -41,19 +39,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           value: false,
           notify: true,
         },
-        selectedModelDisplayName_: {
-          type: String,
-          computed: 'computeDisplayName_(models_, defaultModelKeyPrefValue_)'
-        },
         isPremiumUser_: {
           type: Boolean,
           value: false,
           computed: 'computeIsPremiumUser_(premiumStatus_)'
-        },
-        defaultModelKeyPrefValue_: String,
-        models_: {
-          readOnly: true,
-          type: Array,
         },
         isHistoryFeatureEnabled_: {
           type: Boolean,
@@ -66,9 +55,6 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     declare isHistoryFeatureEnabled_: boolean
     declare leoAssistantShowOnToolbarPref_: boolean
-    declare selectedModelDisplayName_: string
-    declare defaultModelKeyPrefValue_: string
-    declare models_: ModelWithSubtitle[]
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
     browserProxy_: BraveLeoAssistantBrowserProxy =
       BraveLeoAssistantBrowserProxyImpl.getInstance()
@@ -87,7 +73,6 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
       this.updateShowLeoAssistantIcon_()
       this.updateCurrentPremiumStatus()
-      this.fetchModelsWithSubtitles_()
 
       this.addWebUiListener('settings-brave-leo-assistant-changed',
       (isLeoVisible: boolean) => {
@@ -99,38 +84,12 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           this.manageUrl_ = value.url
         })
 
-      this.browserProxy_.getSettingsHelper().getDefaultModelKey()
-        .then((value: { key: string }) => {
-          this.defaultModelKeyPrefValue_ = value.key
-        })
-
-      this.browserProxy_
-        .getCallbackRouter()
-        .onDefaultModelChanged.addListener((newKey: string) => {
-          this.defaultModelKeyPrefValue_ = newKey
-        })
-
-      // To avoid having a seperate event for modelWithSubtitles changing, we
-      // can listen to the modelListChanged event.
-      this.browserProxy_
-        .getCallbackRouter()
-        .onModelListChanged.addListener(() => {
-          this.fetchModelsWithSubtitles_()
-        })
-
       // Since there is no server-side event for premium status changing,
       // we should check often. And since purchase or login is performed in
       // a separate WebContents, we can check when focus is returned here.
       window.addEventListener('focus', () => {
         this.updateCurrentPremiumStatus()
       })
-    }
-
-    private fetchModelsWithSubtitles_() {
-      this.browserProxy_.getSettingsHelper().getModelsWithSubtitles()
-        .then((value: { models: ModelWithSubtitle[]; }) => {
-          this.models_ = value.models
-        })
     }
 
     itemPref_(enabled: boolean) {
@@ -141,19 +100,6 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       }
     }
 
-    computeDisplayName_() {
-      const foundEntry = this.models_?.find(
-        (entry) => {
-          return entry.model.key === this.defaultModelKeyPrefValue_
-        }
-      )
-
-      return foundEntry?.model.displayName
-    }
-
-    onModelSelectionChange_(e: any) {
-      this.browserProxy_.getSettingsHelper().setDefaultModelKey(e.value)
-    }
 
     private updateShowLeoAssistantIcon_() {
       this.browserProxy_.getLeoIconVisibility().then((result) => {
@@ -165,10 +111,6 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       this.browserProxy_.getSettingsHelper().getPremiumStatus().then((value: { status: PremiumStatus; info: PremiumInfo | null; }) => {
         this.premiumStatus_ = value.status
       })
-    }
-
-    private isLeoModel_(model: Model) {
-      return model.options.leoModelOptions !== undefined
     }
 
     onLeoAssistantShowOnToolbarChange_(e: any) {
@@ -188,10 +130,6 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       return false
     }
 
-    shouldShowModelPremiumLabel_(modelAccess: ModelAccess) {
-      return (modelAccess === ModelAccess.PREMIUM && !this.isPremiumUser_)
-    }
-
     openManageAccountPage_() {
       window.open(this.manageUrl_, "_self", "noopener noreferrer")
     }
@@ -200,16 +138,9 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       window.open(loadTimeData.getString('braveLeoAssistantTabOrganizationLearnMoreURL'), "_blank", "noopener noreferrer")
     }
 
-    private onStorageEnabledChange_(event: Event) {
-      const target = event.target
-      assert(target instanceof SettingsToggleButtonElement);
-      // Confirm that the user knows conversation history will be permanently
-      // deleted.
-      if (!target?.checked) {
-        if (!confirm(this.i18n('braveLeoAssistantHistoryPreferenceConfirm'))) {
-          target.checked = !target.checked
-        }
-      }
+    openCustomizationPage_() {
+      const router = Router.getInstance();
+      router.navigateTo(router.getRoutes().BRAVE_LEO_CUSTOMIZATION);
     }
 }
 

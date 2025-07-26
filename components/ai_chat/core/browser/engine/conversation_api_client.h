@@ -80,6 +80,7 @@ class ConversationAPIClient {
     GetFocusTabsForTopic,
     PageScreenshot,
     ToolUse,
+    UserMemory,
     // TODO(petemill):
     // - Search in-progress?
     // - Sources?
@@ -108,6 +109,9 @@ class ConversationAPIClient {
     // Only in a role=User type=GetFocusTabsForTopic event
     std::string topic;
 
+    // Only in a role=User type=UserMemory event.
+    std::optional<base::Value::Dict> user_memory;
+
     // Only for a role=Assistant type=ChatMessage event. Contains the calls
     // the assistant wants to make to provided tools.
     // ToolUseEvent::output is ignored (see tool_call_id).
@@ -121,6 +125,7 @@ class ConversationAPIClient {
                       ConversationEventType,
                       Content,
                       const std::string& topic = "",
+                      std::optional<base::Value::Dict> memory = std::nullopt,
                       std::vector<mojom::ToolUseEventPtr> tool_calls = {},
                       const std::string& tool_call_id = "");
     ConversationEvent();

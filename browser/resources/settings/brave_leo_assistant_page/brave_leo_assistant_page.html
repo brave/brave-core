@@ -10,30 +10,6 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       color: red;
   }
 
-  .menu-item-with-icon {
-    --leo-icon-size: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 22px;
-  }
-
-  .model-subtitle {
-    font: var(--leo-font-small-regular);
-    color: var(--leo-color-text-tertiary);
-    padding: 0;
-    margin: 0;
-  }
-
-  .menu-section-title {
-    background-color: var(--leo-color-page-background);
-    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-    color: var(--leo-color-text-tertiary);
-    font: var(--leo-font-components-label);
-    text-transform: uppercase;
-  }
-
   .header {
     padding: var(--leo-spacing-2xl);
   }
@@ -41,114 +17,58 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   .main-header {
     font: var(--leo-font-heading-h4);
   }
-
-  leo-dropdown {
-    min-width: 240px;
-  }
-
-  leo-option {
-    padding: var(--leo-spacing-m);
-  }
 </style>
 
-<div class="settings-box header">
-  <div class="flex">
-    <div class="main-header">$i18n{braveLeoAssistantAboutLeoLabel}</div>
-    <div class="label secondary">
-      <p>$i18n{braveLeoAssistantAboutLeoDesc1}</p>
-      <p>$i18nRaw{braveLeoAssistantAboutLeoDesc2}</p>
-    </div>
-  </div>
-</div>
-
-<settings-toggle-button class="cr-row hr"
-  pref="[[itemPref_(leoAssistantShowOnToolbarPref_)]]"
-  label="$i18n{braveLeoAssistantShowIconOnToolbarLabel}"
-  on-settings-boolean-control-change="onLeoAssistantShowOnToolbarChange_">
-</settings-toggle-button>
-<settings-toggle-button class="cr-row hr"
-  pref="{{prefs.brave.ai_chat.context_menu_enabled}}"
-  label="$i18n{braveLeoAssistantShowInContextMenuLabel}"
-  sub-label="$i18n{braveLeoAssistantShowInContextMenuDesc}">
-</settings-toggle-button>
-<settings-toggle-button class="cr-row hr"
-  pref="{{prefs.brave.ai_chat.tab_organization_enabled}}"
-  label="$i18n{braveLeoAssistantTabOrganizationLabel}"
-  sub-label-with-link="$i18n{braveLeoAssistantTabOrganizationDesc}"
-  on-sub-label-link-clicked="openTabOrganizationLearnMore_">
-</settings-toggle-button>
-<div class="settings-box">
-  <div class="flex cr-padded-text">
-    <div>$i18n{braveLeoAssistantModelSelectionLabel}</div>
-  </div>
-  <leo-dropdown
-    class="cr-padded-text"
-    value="[[defaultModelKeyPrefValue_]]"
-    on-change="onModelSelectionChange_"
-  >
-    <div slot="value">[[selectedModelDisplayName_]]</div>
-    <div class="menu-section-title">
-      <span>$i18n{braveLeoModelSectionTitle}</span>
-    </div>
-    <template
-      is="dom-repeat"
-      items="[[models_]]"
-    >
-      <leo-option value$="[[item.model.key]]">
-        <div class="menu-item-with-icon">
-          <div>
-            <div>[[item.model.displayName]]</div>
-            <template
-              is="dom-if"
-              if="[[isLeoModel_(item.model)]]"
-            >
-              <p class="model-subtitle">[[item.subtitle]]</p>
-            </template>
-            <template
-              is="dom-if"
-              if="[[!isLeoModel_(item.model)]]"
-            >
-              <p class="model-subtitle">
-                [[item.model.options.customModelOptions.modelRequestName]]
-              </p>
-            </template>
-          </div>
-          <template
-            is="dom-if"
-            if="[[isLeoModel_(item.model)]]"
-          >
-            <template
-              is="dom-if"
-              if="[[shouldShowModelPremiumLabel_(item.model.options.leoModelOptions.access)]]"
-            >
-              <leo-label
-                mode="outline"
-                color="blue"
-                >$i18n{braveLeoPremiumLabelNonPremium}</leo-label
-              >
-            </template>
-          </template>
+<settings-animated-pages id="pages" section="leoAssistant">
+  <div route-path="default">
+    <div class="settings-box header">
+      <div class="flex">
+        <div class="main-header">$i18n{braveLeoAssistantAboutLeoLabel}</div>
+        <div class="label secondary">
+          <p>$i18n{braveLeoAssistantAboutLeoDesc1}</p>
+          <p>$i18nRaw{braveLeoAssistantAboutLeoDesc2}</p>
         </div>
-      </leo-option>
-    </template>
-  </leo-dropdown>
-</div>
-<cr-link-row class="hr"
-  label="$i18n{braveLeoAssistantAutocompleteLink}"
-  on-click="openAutocompleteSetting_">
-</cr-link-row>
-<template is="dom-if" if="[[isPremium_]]">
-  <cr-link-row on-click="openManageAccountPage_" external="true" class="hr" label="$i18n{braveLeoAssistantManageUrlLabel}"></cr-link-row>
-</template>
-<template is="dom-if" if="[[isHistoryFeatureEnabled_]]">
-  <settings-toggle-button class="cr-row hr"
-    pref="{{prefs.brave.ai_chat.storage_enabled}}"
-    label="$i18n{braveLeoAssistantHistoryPreferenceLabel}"
-    on-settings-boolean-control-change="onStorageEnabledChange_">
-  </settings-toggle-button>
-  <div class="settings-box " on-click="onResetAssistantData_">
-    <div class="flex cr-padded-text reset-leo">
-      <div>$i18n{braveLeoAssistantResetAndClearDataLabel}</div>
+      </div>
     </div>
+
+    <settings-toggle-button class="cr-row hr"
+      pref="[[itemPref_(leoAssistantShowOnToolbarPref_)]]"
+      label="$i18n{braveLeoAssistantShowIconOnToolbarLabel}"
+      on-settings-boolean-control-change="onLeoAssistantShowOnToolbarChange_">
+    </settings-toggle-button>
+    <settings-toggle-button class="cr-row hr"
+      pref="{{prefs.brave.ai_chat.context_menu_enabled}}"
+      label="$i18n{braveLeoAssistantShowInContextMenuLabel}"
+      sub-label="$i18n{braveLeoAssistantShowInContextMenuDesc}">
+    </settings-toggle-button>
+    <settings-toggle-button class="cr-row hr"
+      pref="{{prefs.brave.ai_chat.tab_organization_enabled}}"
+      label="$i18n{braveLeoAssistantTabOrganizationLabel}"
+      sub-label-with-link="$i18n{braveLeoAssistantTabOrganizationDesc}"
+      on-sub-label-link-clicked="openTabOrganizationLearnMore_">
+    </settings-toggle-button>
+    <cr-link-row class="hr"
+      label="$i18n{braveLeoAssistantAutocompleteLink}"
+      on-click="openAutocompleteSetting_">
+    </cr-link-row>
+    <template is="dom-if" if="[[isPremiumUser_]]">
+      <cr-link-row on-click="openManageAccountPage_" external="true" class="hr" label="$i18n{braveLeoAssistantManageUrlLabel}"></cr-link-row>
+    </template>
+    <template is="dom-if" if="[[isHistoryFeatureEnabled_]]">
+      <div class="settings-box " on-click="onResetAssistantData_">
+        <div class="flex cr-padded-text reset-leo">
+          <div>$i18n{braveLeoAssistantResetAndClearDataLabel}</div>
+        </div>
+      </div>
+    </template>
   </div>
-</template>
+
+  <template is="dom-if" route-path="/leo-ai/customization" no-search>
+    <settings-subpage
+      class="multi-card"
+      associated-control="[[$$('#manageCustomization')]]"
+      page-title="$i18n{braveLeoAssistantCustomizationPageTitle}">
+        <leo-customization-subpage prefs="{{prefs}}"></leo-customization-subpage>
+    </settings-subpage>
+  </template>
+</settings-animated-pages>
