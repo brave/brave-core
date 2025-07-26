@@ -6,6 +6,7 @@
 // Types
 import {
   BraveWallet,
+  MaxPriorityFeeOptionType,
   SerializableTransactionInfo,
   StorybookCoinTypes,
   StorybookTransactionTypes,
@@ -626,3 +627,22 @@ export const getPostConfirmationStatusMockTransaction = (
       : undefined,
   } as SerializableTransactionInfo
 }
+
+export const mockSuggestedMaxPriorityFeeOptions: MaxPriorityFeeOptionType[] = [
+  {
+    id: 'slow',
+    fee: '0x2171aa3351',
+    duration: '28 min',
+  },
+  {
+    id: 'average',
+    fee: '0x8171aa3357',
+    duration: '7 min',
+  },
+
+  {
+    id: 'fast',
+    fee: '0x1270aa33510',
+    duration: '1 min',
+  },
+]
