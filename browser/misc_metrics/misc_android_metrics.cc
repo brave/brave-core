@@ -59,6 +59,9 @@ void MiscAndroidMetrics::RecordBrowserUsageDuration(base::TimeDelta duration) {
 
 void MiscAndroidMetrics::RecordSetAsDefault(bool is_default) {
   UMA_HISTOGRAM_BOOLEAN(kBraveCoreIsDefaultHistogramName, is_default);
+  int express_answer = is_default ? 1 : INT_MAX - 1;
+  UMA_HISTOGRAM_EXACT_LINEAR(kBraveCoreIsDefaultDailyHistogramName,
+                             express_answer, 2);
 }
 
 }  // namespace misc_metrics
