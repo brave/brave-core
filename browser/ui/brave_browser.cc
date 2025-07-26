@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
 
 #include "base/check.h"
@@ -25,6 +26,8 @@
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
+#include "chrome/browser/sessions/session_service.h"
+#include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -37,6 +40,7 @@
 #include "chrome/common/webui_url_constants.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/sessions/content/session_tab_helper.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_entry.h"
@@ -81,7 +85,6 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
 }
 
 BraveBrowser::~BraveBrowser() = default;
-
 
 void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
                                     unsigned changed_flags) {
@@ -168,6 +171,23 @@ void BraveBrowser::RunFileChooser(
   }
   Browser::RunFileChooser(render_frame_host, listener, *new_params);
 #endif
+}
+
+void BraveBrowser::TabCustomTitleChanged(content::WebContents* contents,
+                                         const std::string& custom_title) {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
+
+  SessionService* session_service =
+      SessionServiceFactory::GetForProfileIfExisting(profile());
+  if (session_service) {
+    // This makes sure that the custom title is stored in the session service
+    // so that it can be restored even after browser restarts.
+    sessions::SessionTabHelper* session_tab_helper =
+        sessions::SessionTabHelper::FromWebContents(contents);
+    session_service->AddTabExtraData(session_id(),
+                                     session_tab_helper->session_id(),
+                                     "tab_custom_title", custom_title);
+  }
 }
 
 bool BraveBrowser::ShouldDisplayFavicon(
