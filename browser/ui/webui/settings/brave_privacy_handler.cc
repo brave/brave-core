@@ -45,7 +45,15 @@ BravePrivacyHandler::BravePrivacyHandler() {
       base::BindRepeating(&BravePrivacyHandler::OnStatsUsagePingEnabledChanged,
                           base::Unretained(this)));
   local_state_change_registrar_.Add(
+      kStatsReportingDisabledByPolicy,
+      base::BindRepeating(&BravePrivacyHandler::OnStatsUsagePingEnabledChanged,
+                          base::Unretained(this)));
+  local_state_change_registrar_.Add(
       p3a::kP3AEnabled,
+      base::BindRepeating(&BravePrivacyHandler::OnP3AEnabledChanged,
+                          base::Unretained(this)));
+  local_state_change_registrar_.Add(
+      p3a::kP3ADisabledByPolicy,
       base::BindRepeating(&BravePrivacyHandler::OnP3AEnabledChanged,
                           base::Unretained(this)));
 #if BUILDFLAG(IS_WIN)
@@ -131,6 +139,13 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isOpenAIChatFromBraveSearchEnabled",
       ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
           ai_chat::features::IsOpenAIChatFromBraveSearchEnabled());
+  auto* local_state = g_browser_process->local_state();
+  data_source->AddBoolean("isP3ADisabledByPolicy",
+                          local_state->GetBoolean(p3a::kP3ADisabledByPolicy));
+  data_source->AddBoolean(
+      "isStatsReportingDisabledByPolicy",
+      local_state->GetBoolean(kStatsReportingDisabledByPolicy));
+
 #if BUILDFLAG(IS_WIN)
   {
     data_source->AddBoolean("isWindowsRecallAvailable",
@@ -182,9 +197,12 @@ void BravePrivacyHandler::GetStatsUsagePingEnabled(
 void BravePrivacyHandler::OnStatsUsagePingEnabledChanged() {
   if (IsJavascriptAllowed()) {
     PrefService* local_state = g_browser_process->local_state();
-    bool enabled = local_state->GetBoolean(kStatsReportingEnabled);
+    bool user_enabled = local_state->GetBoolean(kStatsReportingEnabled);
+    bool policy_disabled =
+        local_state->GetBoolean(kStatsReportingDisabledByPolicy);
 
-    FireWebUIListener("stats-usage-ping-enabled-changed", base::Value(enabled));
+    FireWebUIListener("stats-usage-ping-enabled-changed", user_enabled,
+                      policy_disabled);
   }
 }
 
@@ -199,9 +217,10 @@ void BravePrivacyHandler::GetP3AEnabled(const base::Value::List& args) {
 void BravePrivacyHandler::OnP3AEnabledChanged() {
   if (IsJavascriptAllowed()) {
     PrefService* local_state = g_browser_process->local_state();
-    bool enabled = local_state->GetBoolean(p3a::kP3AEnabled);
+    bool user_enabled = local_state->GetBoolean(p3a::kP3AEnabled);
+    bool policy_disabled = local_state->GetBoolean(p3a::kP3ADisabledByPolicy);
 
-    FireWebUIListener("p3a-enabled-changed", base::Value(enabled));
+    FireWebUIListener("p3a-enabled-changed", user_enabled, policy_disabled);
   }
 }
 

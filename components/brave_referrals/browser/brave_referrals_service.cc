@@ -22,6 +22,7 @@
 #include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/vendor/brave_base/random.h"
@@ -412,7 +413,7 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
     return;
 
   bool stats_reporting_enabled =
-      pref_service_->GetBoolean(kStatsReportingEnabled);
+      brave_stats::IsStatsReportingEnabled(*pref_service_);
   // Only check for referral finalization 30 times, with a 24-hour
   // wait between checks or if stats reporting is disabled.
   base::Time timestamp = pref_service_->GetTime(kReferralAttemptTimestamp);
@@ -473,7 +474,7 @@ std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
 }
 
 void BraveReferralsService::InitReferral() {
-  if (!pref_service_->GetBoolean(kStatsReportingEnabled)) {
+  if (!brave_stats::IsStatsReportingEnabled(*pref_service_)) {
     pref_service_->SetBoolean(kReferralInitialization, true);
     if (g_testing_referral_initialized_callback) {
       g_testing_referral_initialized_callback->Run(std::string());
