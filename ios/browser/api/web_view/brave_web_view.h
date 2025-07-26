@@ -19,6 +19,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BraveWalletCommunicationController;
+
 CWV_EXPORT
 @interface BraveNavigationAction : CWVNavigationAction
 /// YES if the navigation target frame is the main frame.
@@ -101,6 +103,9 @@ CWV_EXPORT
 
 // This web view's UI delegate.
 @property(nonatomic, weak, nullable) id<BraveWebViewUIDelegate> UIDelegate;
+
+@property(nonatomic, readonly, nullable)
+    BraveWalletCommunicationController* walletController;
 
 @end
 

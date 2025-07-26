@@ -92,7 +92,12 @@ WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
 WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   // This will get called a lot to check all URLs, so do a quick check of other
   // schemes to filter out most URLs.
-  if (!url.SchemeIs(kChromeUIScheme)) {
+  if (!url.SchemeIs(kChromeUIScheme) &&
+      !url.SchemeIs(kChromeUIUntrustedScheme)) {
+    return nullptr;
+  }
+
+  if (url.SchemeIs(kChromeUIUntrustedScheme)) {
     return GetUntrustedWebUIIOSFactoryFunction(url);
   }
 

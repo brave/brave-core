@@ -5,14 +5,44 @@
 
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler.h"
 
-#include <utility>
+#include "brave/ios/browser/ui/webui/brave_wallet/brave_wallet_communication_tab_helper+private.h"
+#include "ios/web/public/web_state.h"
+
+namespace {
+id<BraveWalletCommunicationProtocol> GetNativeInterface(
+    web::WebState* web_state) {
+  if (auto* tab_helper =
+          [BraveWalletCommunicationController fromWebState:web_state]) {
+    if (id<BraveWalletCommunicationProtocol> delegate = [tab_helper delegate]) {
+      return delegate;
+    }
+  }
+
+  return nullptr;
+}
+}  // namespace
 
 WalletPageHandler::WalletPageHandler(
+    web::WebState* web_state,
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver)
-    : receiver_(this, std::move(receiver)) {}
+    : web_state_(web_state), receiver_(this, std::move(receiver)) {}
 
 WalletPageHandler::~WalletPageHandler() = default;
 
-void WalletPageHandler::ShowApprovePanelUI() {}
-void WalletPageHandler::ShowWalletBackupUI() {}
-void WalletPageHandler::UnlockWalletUI() {}
+void WalletPageHandler::ShowApprovePanelUI() {
+  if (auto delegate = GetNativeInterface(web_state_)) {
+    [delegate webUIShowWalletApprovePanelUI];
+  }
+}
+
+void WalletPageHandler::ShowWalletBackupUI() {
+  if (auto delegate = GetNativeInterface(web_state_)) {
+    [delegate webUIShowWalletBackupUI];
+  }
+}
+
+void WalletPageHandler::UnlockWalletUI() {
+  if (auto delegate = GetNativeInterface(web_state_)) {
+    [delegate webUIUnlockWallet];
+  }
+}

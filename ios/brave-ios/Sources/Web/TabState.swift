@@ -113,6 +113,8 @@ public protocol TabState: AnyObject {
   var delegate: TabDelegate? { get set }
   /// The delegate that will handle downloading files from the web
   var downloadDelegate: TabDownloadDelegate? { get set }
+  /// The delegate that will handle WebUI requests
+  var webUIDelegate: TabWebUIDelegate? { get set }
   /// Adds a policy decider to this TabState
   func addPolicyDecider(_ policyDecider: some TabPolicyDecider)
   /// Removes a policy decider that was previously added to this TabState
