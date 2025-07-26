@@ -25,6 +25,7 @@ const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
 const perfTests = require('../lib/perfTests')
+const { getAffectedTests } = require('../lib/getAffectedTests')
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -359,6 +360,23 @@ program
   .option('--filter <filter>', 'set test filter')
   .option('--no_gn_gen', 'Use args.gn as default values')
   .option(
+    '--filters [filters...]',
+    'filter tests by a gn target pattern. eg. //brave/*. '
+      + 'Make sure you put the list of filters in quotes. defaults to //*',
+    (x) => x.split(' '),
+  )
+  .option(
+    '--since [targetCommit]',
+    'use this commit as reference for change detection',
+  )
+  .option(
+    '--files [files...]',
+    'add additional files to be considered as modified analyze.'
+      + 'You need to quote the list. '
+      + 'You can use this to test what impact a file change would have',
+    (x) => x.split(' '),
+  )
+  .option(
     '--output_xml',
     'indicates if test results xml output file(s) should be generated. '
       + '<suite>.txt file will contain the list of xml files with results. '
@@ -463,5 +481,33 @@ program
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program.command('docs').action(util.launchDocs)
+
+program
+  .command('affected')
+  .option('-C [build_dir]', 'build config (out/Debug, out/Release)')
+  .option('--target_arch [target_arch]', 'target architecture')
+  .option('--suite [suite]', 'filter by a test suite group')
+  .option(
+    '--filters [filters...]',
+    'filter tests by a gn target pattern. eg. //brave/*. '
+      + 'Make sure you put the list of filters in quotes. defaults to //*',
+    (x) => x.split(' '),
+  )
+  .option(
+    '--since [targetCommit]',
+    'use this commit as reference for change detection',
+  )
+  .option(
+    '--files [files...]',
+    'add additional files to be considered as modified analyze.'
+      + 'You need to quote the list. '
+      + 'You can use this to test what impact a file change would have',
+    (x) => x.split(' '),
+  )
+  .action(async (args) => {
+    config.update(args)
+    const result = await getAffectedTests({ ...args })
+    console.log(result.join(' ').trim())
+  })
 
 program.parse(process.argv)
