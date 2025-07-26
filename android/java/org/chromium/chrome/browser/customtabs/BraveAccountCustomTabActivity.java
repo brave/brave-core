@@ -50,6 +50,12 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
     private static final int TITLE_MARGIN = 16;
 
     @Override
+    public void onStartWithNative() {
+        super.onStartWithNative();
+        WindowCompat.enableEdgeToEdge(getWindow());
+    }
+
+    @Override
     public void performPostInflationStartup() {
         super.performPostInflationStartup();
 
@@ -67,6 +73,13 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
         header.setLayoutParams(headerParams);
         int headerColor = SemanticColorUtils.getColorSurfaceContainer(this);
         header.setBackgroundColor(headerColor);
+        
+        // Apply system bar insets as padding to the header to account for status bar height
+        ViewCompat.setOnApplyWindowInsetsListener(header, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), insets.top, v.getPaddingRight(), v.getPaddingBottom());
+            return WindowInsetsCompat.CONSUMED;
+        });
 
         // Title
         TextView titleText = new TextView(this);
@@ -99,10 +112,15 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
         header.addView(closeImg);
         super.getContentView().addView(header);
         
-        // Also set it in a post callback to ensure it's not overridden
-        header.post(() -> {
-            getWindow().setStatusBarColor(headerColor);
-        });
+        // Add top margin to the web content to position it below the header
+        View webContent = findViewById(R.id.coordinator);
+        if (webContent != null) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) webContent.getLayoutParams();
+            if (params != null) {
+                params.topMargin = dpToPx(64); // Match header height
+                webContent.setLayoutParams(params);
+            }
+        }
     }
 
     private int dpToPx(int dp) {
