@@ -18,6 +18,21 @@ import { useIsDAppVerified } from './use_is_dapp_verified'
 import { mockUniswapOriginInfo } from '../../stories/mock-data/mock-origin-info'
 import { mockEthMainnet } from '../../stories/mock-data/mock-networks'
 
+// Mock the useGetTopDappsQuery hook
+jest.mock('../slices/api.slice', () => ({
+  ...jest.requireActual('../slices/api.slice'),
+  useGetTopDappsQuery: () => ({
+    data: [
+      {
+        id: 4096,
+        name: 'Uniswap V2',
+        website: 'https://app.uniswap.org/',
+        chains: ['ethereum'],
+      },
+    ],
+  }),
+}))
+
 describe('useIsDAppVerified hook', () => {
   it('should return true when origin exists.', async () => {
     // setup
@@ -42,7 +57,8 @@ describe('useIsDAppVerified hook', () => {
       expect(result.current).toBeDefined()
     })
 
-    expect(result.current).toBe(true)
+    expect(result.current.isDAppVerified).toBe(true)
+    expect(result.current.dapp?.name).toBe('Uniswap V2')
   })
 
   it('should return false when origin does not exist.', async () => {
@@ -69,6 +85,7 @@ describe('useIsDAppVerified hook', () => {
       expect(result.current).toBeDefined()
     })
 
-    expect(result.current).toBe(false)
+    expect(result.current.isDAppVerified).toBe(false)
+    expect(result.current.dapp).toBeUndefined()
   })
 })
