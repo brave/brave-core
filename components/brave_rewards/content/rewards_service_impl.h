@@ -51,7 +51,9 @@ class FaviconService;
 namespace network {
 class SimpleURLLoader;
 }  // namespace network
-
+namespace regional_capabilities {
+class RegionalCapabilitiesService;
+}  // namespace regional_capabilities
 namespace brave_wallet {
 class BraveWalletService;
 }
@@ -86,7 +88,9 @@ class RewardsServiceImpl final : public RewardsService,
                      RequestImageCallback request_image_callback,
                      CancelImageRequestCallback cancel_image_request_callback,
                      content::StoragePartition* storage_partition,
-                     brave_wallet::BraveWalletService* brave_wallet_service);
+                     brave_wallet::BraveWalletService* brave_wallet_service,
+                     regional_capabilities::RegionalCapabilitiesService*
+                         regional_capabilities_service);
 
   RewardsServiceImpl(const RewardsServiceImpl&) = delete;
   RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
@@ -446,6 +450,8 @@ class RewardsServiceImpl final : public RewardsService,
   const CancelImageRequestCallback cancel_image_request_callback_;
   raw_ptr<content::StoragePartition> storage_partition_;  // NOT OWNED
   raw_ptr<brave_wallet::BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<regional_capabilities::RegionalCapabilitiesService>
+      regional_capabilities_service_ = nullptr;
   mojo::AssociatedReceiver<mojom::RewardsEngineClient> receiver_;
   mojo::AssociatedRemote<mojom::RewardsEngine> engine_;
   mojo::Remote<mojom::RewardsEngineFactory> engine_factory_;
