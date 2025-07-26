@@ -67,6 +67,7 @@ static_library("misc_metrics_impl") {
 
   if (!is_android) {
     sources += [
+      "//brave/browser/misc_metrics/default_browser_monitor.h",
       "//brave/browser/misc_metrics/theme_metrics.cc",
       "//brave/browser/misc_metrics/theme_metrics.h",
       "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
@@ -127,6 +128,7 @@ source_set("unit_tests") {
 
   if (!is_android) {
     sources += [
+      "default_browser_monitor_unittest.cc",
       "profile_new_tab_metrics_unittest.cc",
       "theme_metrics_unittest.cc",
       "usage_clock_unittest.cc",
