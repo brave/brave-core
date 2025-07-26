@@ -76,6 +76,13 @@ void BraveStartupBrowserCreatorImpl::Launch(
                                     restore_tabbed_browser);
 }
 
+#define BRAVE_CAN_OPEN_PROFILE_ON_STARTUP                           \
+  if (profile_info.profile &&                                       \
+      ai_chat::IsAIChatContentAgentProfile(profile_info.profile)) { \
+    return false;                                                   \
+  }
+
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl
 #include <chrome/browser/ui/startup/startup_browser_creator.cc>
 #undef StartupBrowserCreatorImpl
+#undef BRAVE_CAN_OPEN_PROFILE_ON_STARTUP

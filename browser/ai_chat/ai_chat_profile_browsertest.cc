@@ -1,178 +1,224 @@
-/* Copyright (c) 2024 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include <algorithm>
+#include "brave/browser/ai_chat/ai_chat_profile.h"
 
-#include "base/notreached.h"
-#include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "brave/browser/ui/sidebar/sidebar_model.h"
-#include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/sidebar/browser/sidebar_item.h"
-#include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/ai_chat/ai_chat_profile.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_test_util.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "chrome/browser/ui/location_bar/location_bar.h"
-#include "chrome/browser/ui/tabs/public/tab_features.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
+#include "chrome/browser/ui/profiles/profile_picker.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/omnibox/browser/autocomplete_controller.h"
-#include "components/omnibox/browser/omnibox_controller.h"
-#include "components/omnibox/browser/omnibox_view.h"
-#include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace {
+namespace ai_chat {
 
-using ui_test_utils::BrowserChangeObserver;
-
-enum class ProfileType { kRegular, kGuest, kPrivate, kTor };
-
-const char* GetProfileTypeString(ProfileType type) {
-  switch (type) {
-    case ProfileType::kRegular:
-      return "Regular";
-    case ProfileType::kGuest:
-      return "Guest";
-    case ProfileType::kPrivate:
-      return "Private";
-    case ProfileType::kTor:
-      return "Tor";
-  }
-  NOTREACHED();
-}
-}  // namespace
-
-class AIChatProfileTest : public InProcessBrowserTest,
-                          public ::testing::WithParamInterface<ProfileType> {
+class AIChatProfileBrowserTest : public InProcessBrowserTest {
  public:
-  AIChatProfileTest() = default;
-  ~AIChatProfileTest() override = default;
-
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-    browser_ = CreateBrowser();
-    ASSERT_TRUE(browser_);
+  AIChatProfileBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        ai_chat::features::kAIChatAgenticProfile);
   }
-
-  Browser* CreateBrowser() {
-    switch (GetParam()) {
-      case ProfileType::kRegular:
-        return browser();
-      case ProfileType::kGuest:
-        profiles::SwitchToGuestProfile();
-        return ui_test_utils::WaitForBrowserToOpen();
-        ;
-      case ProfileType::kPrivate:
-        return CreateIncognitoBrowser();
-      case ProfileType::kTor: {
-        BrowserChangeObserver observer(
-            nullptr, BrowserChangeObserver::ChangeType::kAdded);
-        brave::NewOffTheRecordWindowTor(browser());
-        return observer.Wait();
-      }
-    }
-    NOTREACHED();
-  }
-
-  bool IsAIChatEnabled() { return GetParam() == ProfileType::kRegular; }
-
-  content::WebContents* web_contents() const {
-    return browser_->tab_strip_model()->GetActiveWebContents();
-  }
+  AIChatProfileBrowserTest(const AIChatProfileBrowserTest&) = delete;
+  AIChatProfileBrowserTest& operator=(const AIChatProfileBrowserTest&) = delete;
 
  protected:
-  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    // Browser should never launch with the AI Chat profile
+    ASSERT_FALSE(IsAIChatContentAgentProfile(browser()->profile()));
+  }
+
+  void DisableFeature() {
+    scoped_feature_list_.Reset();
+    scoped_feature_list_.InitAndDisableFeature(
+        ai_chat::features::kAIChatAgenticProfile);
+  }
+
+  bool IsAIChatSidePanelShowing(Browser* browser) {
+    auto* side_panel_coordinator =
+        browser->GetFeatures().side_panel_coordinator();
+    if (!side_panel_coordinator) {
+      LOG(ERROR) << "side_panel_coordinator is null";
+      return false;
+    }
+
+    auto* side_panel_web_contents =
+        side_panel_coordinator->GetWebContentsForTest(
+            SidePanelEntry::Id::kChatUI);
+    if (!side_panel_web_contents) {
+      LOG(ERROR) << "side_panel_web_contents is null";
+      return false;
+    }
+    auto* web_ui = side_panel_web_contents->GetWebUI();
+    if (!web_ui) {
+      LOG(ERROR) << "web_ui is null";
+      return false;
+    }
+    auto* ai_chat_ui = web_ui->GetController()->GetAs<AIChatUI>();
+    if (!ai_chat_ui) {
+      LOG(ERROR) << "ai_chat_ui is null";
+      return false;
+    }
+    content::WaitForLoadStop(side_panel_web_contents);
+    return true;
+  }
+
+  Browser* FindAIChatBrowser() {
+    for (Browser* browser : *BrowserList::GetInstance()) {
+      if (IsAIChatContentAgentProfile(browser->profile())) {
+        return browser;
+      }
+    }
+    return nullptr;
+  }
+
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SidebarCheck) {
-  auto* sidebar_model = browser_->GetFeatures().sidebar_controller()->model();
+// Test that OpenBrowserWindowForAIChatAgentProfile creates a browser window
+IN_PROC_BROWSER_TEST_F(AIChatProfileBrowserTest,
+                       OpenBrowserWindowForAIChatAgentProfile) {
+  // Keep track of initial browser count
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
 
-  bool is_in_sidebar = std::ranges::any_of(
-      sidebar_model->GetAllSidebarItems(), [](const auto& item) {
-        return item.built_in_item_type ==
-               sidebar::SidebarItem::BuiltInItemType::kChatUI;
-      });
-  if (IsAIChatEnabled()) {
-    EXPECT_TRUE(is_in_sidebar);
-  } else {
-    EXPECT_FALSE(is_in_sidebar);
-  }
+  // Open AI Chat Agent Profile browser window
+  OpenBrowserWindowForAIChatAgentProfile();
+
+  // Wait for the AI Chat browser to be created
+  ui_test_utils::WaitForBrowserToOpen();
+
+  // Verify that a new browser window was opened
+  EXPECT_EQ(2u, chrome::GetTotalBrowserCount());
+
+  // Find the AI Chat browser
+  Browser* ai_chat_browser = FindAIChatBrowser();
+  ASSERT_TRUE(ai_chat_browser);
+  EXPECT_TRUE(IsAIChatContentAgentProfile(ai_chat_browser->profile()));
+
+  // Verify the AI Chat browser has the side panel opened to Chat UI
+  EXPECT_TRUE(IsAIChatSidePanelShowing(ai_chat_browser));
+
+  // Verify the profile path matches the AI Chat profile path
+  EXPECT_EQ(GetAIChatAgentProfileDir(), ai_chat_browser->profile()->GetPath());
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatProfileTest, Autocomplete) {
-  auto* autocomplete_controller = browser_->window()
-                                      ->GetLocationBar()
-                                      ->GetOmniboxView()
-                                      ->controller()
-                                      ->autocomplete_controller();
-  const auto& providers = autocomplete_controller->providers();
-  bool is_in_providers =
-      std::ranges::any_of(providers, [](const auto& provider) {
-        return provider->type() == AutocompleteProvider::TYPE_BRAVE_LEO;
-      });
-  if (IsAIChatEnabled()) {
-    EXPECT_TRUE(is_in_providers);
-  } else {
-    EXPECT_FALSE(is_in_providers);
-  }
+// Test that the AI Chat profile is correctly identified
+IN_PROC_BROWSER_TEST_F(AIChatProfileBrowserTest, IsAIChatContentAgentProfile) {
+  // Make sure regular profile path reports as so
+  base::FilePath regular_profile_path = browser()->profile()->GetPath();
+  EXPECT_FALSE(IsAIChatContentAgentProfile(regular_profile_path));
+
+  // Open AI Chat profile
+  OpenBrowserWindowForAIChatAgentProfile();
+  ui_test_utils::WaitForBrowserToOpen();
+
+  Browser* ai_chat_browser = FindAIChatBrowser();
+  ASSERT_TRUE(ai_chat_browser);
+
+  // Test with AI Chat profile
+  EXPECT_TRUE(IsAIChatContentAgentProfile(ai_chat_browser->profile()));
+
+  // Test with AI Chat profile path
+  base::FilePath ai_chat_profile_path = ai_chat_browser->profile()->GetPath();
+  EXPECT_TRUE(IsAIChatContentAgentProfile(ai_chat_profile_path));
+
+  // Verify the path contains the expected directory name
+  EXPECT_TRUE(ai_chat_profile_path.BaseName().value() ==
+              FILE_PATH_LITERAL("ai_chat_agent_profile"));
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatProfileTest, ContextMenu) {
-  content::ContextMenuParams params;
-  params.is_editable = false;
-  params.page_url = GURL("http://test.page/");
-  params.selection_text = u"brave";
-  TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
-                                 params);
-  menu.Init();
-  std::optional<size_t> ai_chat_index =
-      menu.menu_model().GetIndexOfCommandId(IDC_AI_CHAT_CONTEXT_LEO_TOOLS);
-  if (IsAIChatEnabled()) {
-    EXPECT_TRUE(ai_chat_index.has_value());
-  } else {
-    EXPECT_FALSE(ai_chat_index.has_value());
+// Test that multiple calls to OpenBrowserWindowForAIChatAgentProfile work
+// correctly
+IN_PROC_BROWSER_TEST_F(AIChatProfileBrowserTest,
+                       OpenBrowserWindowForAIChatAgentProfile_MultipleOpens) {
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+
+  // First call to open AI Chat profile
+  OpenBrowserWindowForAIChatAgentProfile();
+  ui_test_utils::WaitForBrowserToOpen();
+  EXPECT_EQ(2u, chrome::GetTotalBrowserCount());
+
+  Browser* first_ai_chat_browser = FindAIChatBrowser();
+  ASSERT_TRUE(first_ai_chat_browser);
+
+  // Second call should not open a new one
+  OpenBrowserWindowForAIChatAgentProfile();
+  EXPECT_EQ(2u, chrome::GetTotalBrowserCount());
+  EXPECT_TRUE(IsAIChatSidePanelShowing(first_ai_chat_browser));
+
+  // Close browser
+  CloseBrowserSynchronously(first_ai_chat_browser);
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+
+  // Subsequent call to open should open a new browser
+  OpenBrowserWindowForAIChatAgentProfile();
+  if (chrome::GetTotalBrowserCount() == 1u) {
+    ui_test_utils::WaitForBrowserToOpen();
   }
+  EXPECT_EQ(2u, chrome::GetTotalBrowserCount());
+
+  // Find the AI Chat browser
+  if (chrome::GetTotalBrowserCount() == 1u) {
+    ui_test_utils::WaitForBrowserToOpen();
+  }
+  Browser* second_ai_chat_browser = FindAIChatBrowser();
+  ASSERT_TRUE(second_ai_chat_browser);
+  EXPECT_TRUE(IsAIChatSidePanelShowing(second_ai_chat_browser));
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SidePanelRegistry) {
-  auto* registry = browser_->GetActiveTabInterface()
-                       ->GetTabFeatures()
-                       ->side_panel_registry();
-  auto* entry = registry->GetEntryForKey(
-      SidePanelEntry::Key(SidePanelEntry::Id::kChatUI));
-  if (IsAIChatEnabled()) {
-    EXPECT_TRUE(entry);
-  } else {
-    EXPECT_FALSE(entry);
+// // Tests for AI Chat Agent Profile startup behavior
+class AIChatProfileStartupBrowserTest : public AIChatProfileBrowserTest {
+ public:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    // This test configures command line params carefully. Make sure
+    // InProcessBrowserTest does _not_ add about:blank as a startup URL.
+    set_open_about_blank_on_browser_launch(false);
   }
+};
+
+IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+                       PRE_AIChatProfileDoesNotAffectStartup) {
+  // Create AI Chat Agent profile and browser window
+  OpenBrowserWindowForAIChatAgentProfile();
+  if (chrome::GetTotalBrowserCount() == 1u) {
+    ui_test_utils::WaitForBrowserToOpen();
+  }
+  // Verify that a new browser window was opened
+  EXPECT_EQ(2u, chrome::GetTotalBrowserCount());
+  EXPECT_TRUE(IsAIChatSidePanelShowing(FindAIChatBrowser()));
+
+  // Need to close the browser window manually so that the real test does not
+  // treat it as session restore.
+  CloseAllBrowsers();
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SpeedreaderToolbar) {
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser_, GURL(base::StrCat({content::kChromeUIScheme, "://",
-                                   kSpeedreaderPanelHost}))));
-  auto result =
-      content::EvalJs(web_contents(), "loadTimeData.data_.aiChatFeatureEnabled")
-          .ExtractBool();
-  if (IsAIChatEnabled()) {
-    EXPECT_EQ(result, true);
-  } else {
-    EXPECT_EQ(result, false);
-  }
+// Verify that on restart, the profile picker is not shown and the original
+// profile is used
+IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+                       AIChatProfileDoesNotAffectStartup) {
+  EXPECT_FALSE(ProfilePicker::IsOpen());
+  // If the profile picker is open then there are no browser open,
+  // so make sure we have a default browser open.
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(nullptr, FindAIChatBrowser());
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    All,
-    AIChatProfileTest,
-    testing::ValuesIn({ProfileType::kRegular, ProfileType::kGuest,
-                       ProfileType::kPrivate, ProfileType::kTor}),
-    [](const testing::TestParamInfo<AIChatProfileTest::ParamType>& info) {
-      return GetProfileTypeString(info.param);
-    });
+}  // namespace ai_chat
