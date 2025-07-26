@@ -2480,6 +2480,12 @@ extension BrowserViewController: TabMiscDelegate {
 }
 
 extension BrowserViewController: TabWebUIDelegate {
+  public func unlockWallet(_ tab: some TabState) {
+    fatalError("NOT IMPLEMENTED YET - UNLOCK WALLET")
+  }
+}
+
+extension BrowserViewController: TabWebUIDelegate {
   public func showWalletApprovePanelUI(_ tab: some TabState) {
     guard
       let origin = tab.browserData?.getOrigin(),
