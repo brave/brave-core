@@ -13,8 +13,17 @@ source_set("webui") {
     "brave_url_data_source_ios.mm",
     "brave_web_ui_ios_data_source.h",
     "brave_web_ui_ios_data_source.mm",
+    "brave_webui_messaging_tab_helper.h",
+    "brave_webui_messaging_tab_helper.mm",
+    "brave_webui_messaging_tab_helper_delegate.h",
     "brave_webui_utils.h",
     "brave_webui_utils.mm",
+    "favicon_source.h",
+    "favicon_source.mm",
+    "sanitized_image_source.h",
+    "sanitized_image_source.mm",
+    "untrusted_sanitized_image_source.h",
+    "untrusted_sanitized_image_source.mm",
   ]
 
   deps = [
@@ -28,6 +37,7 @@ source_set("webui") {
     "//ios/web/public",
     "//ios/web/public/webui",
     "//ios/web/webui",
+    "//services/data_decoder/public/cpp",
     "//services/network/public/mojom:mojom_content_security_policy",
     "//ui/base",
   ]
