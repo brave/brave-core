@@ -38,6 +38,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.browser_ui.styles.SemanticColorUtils;
 import org.chromium.ui.util.ColorUtils;
 
@@ -47,12 +48,6 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
     private static final int CLOSE_BUTTON_TOP_BOTTOM_MARGIN = 20;
     private static final int CLOSE_BUTTON_SIZE = 24;
     private static final int TITLE_MARGIN = 16;
-
-    @Override
-    public void onStartWithNative() {
-        super.onStartWithNative();
-        WindowCompat.enableEdgeToEdge(getWindow());
-    }
 
     @Override
     public void performPostInflationStartup() {
@@ -70,12 +65,8 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         headerParams.gravity = Gravity.TOP;
         header.setLayoutParams(headerParams);
-        header.setBackgroundColor(SemanticColorUtils.getColorSurfaceContainer(this));
-        ViewCompat.setOnApplyWindowInsetsListener(header, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(v.getPaddingLeft(), insets.top, v.getPaddingRight(), v.getPaddingBottom());
-            return WindowInsetsCompat.CONSUMED;
-        });
+        int headerColor = SemanticColorUtils.getColorSurfaceContainer(this);
+        header.setBackgroundColor(headerColor);
 
         // Title
         TextView titleText = new TextView(this);
@@ -106,8 +97,12 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
 
         header.addView(titleText);
         header.addView(closeImg);
-        ViewGroup content = findViewById(android.R.id.content);
-        content.addView(header);
+        super.getContentView().addView(header);
+        
+        // Also set it in a post callback to ensure it's not overridden
+        header.post(() -> {
+            getWindow().setStatusBarColor(headerColor);
+        });
     }
 
     private int dpToPx(int dp) {
