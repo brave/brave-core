@@ -52,44 +52,42 @@ function onCommitted (details: chrome.webNavigation.WebNavigationTransitionCallb
 
 if (!chrome.extension.inIncognitoContext) {
   const WEB_DISCOVERY_PREF_KEY = 'brave.web_discovery_enabled'
+  const WEB_DISCOVERY_DISABLED_BY_POLICY_KEY = 'brave.web_discovery_disabled_by_policy'
 
-  const toggleWebDiscovery = (pref?: chrome.settingsPrivate.PrefObject) => {
-    if (pref && pref.type === chrome.settingsPrivate.PrefType.BOOLEAN) {
-      const enable = pref.value
-      if (enable) {
-        // enable
-        startWDP()
-          .then(
-            () => {
-              // Dynamically inject WDP content script so that users with the pref disabled
-              // don't need to pay the loading cost on each page.
-              chrome.webNavigation.onCommitted.addListener(onCommitted)
-            },
-            (err) => { console.error('[web-discovery]', err) }
-          )
-      } else {
-        // Stop injecting dynamic content scripts
-        if (chrome.webNavigation.onCommitted.hasListener(onCommitted)) {
-          chrome.webNavigation.onCommitted.removeListener(onCommitted)
-        }
-
-        // disable
-        stopWDP()
+  const toggleWebDiscovery = (enabled: boolean) => {
+    if (enabled) {
+      // enable
+      startWDP()
+        .then(
+          () => {
+            // Dynamically inject WDP content script so that users with the pref disabled
+            // don't need to pay the loading cost on each page.
+            chrome.webNavigation.onCommitted.addListener(onCommitted)
+          },
+          (err) => { console.error('[web-discovery]', err) }
+        )
+    } else {
+      // Stop injecting dynamic content scripts
+      if (chrome.webNavigation.onCommitted.hasListener(onCommitted)) {
+        chrome.webNavigation.onCommitted.removeListener(onCommitted)
       }
+
+       // disable
+      stopWDP()
     }
   }
 
-  chrome.webDiscovery.isWebDiscoveryNativeEnabled((nativeEnabled) => {
-    if (nativeEnabled) {
-      return
-    }
-    chrome.settingsPrivate.onPrefsChanged.addListener((prefs: chrome.settingsPrivate.PrefObject[]) => {
-      const pref = prefs.find(p => p.key === WEB_DISCOVERY_PREF_KEY)
-      toggleWebDiscovery(pref)
+  const checkWebDiscoveryEnabled = () => {
+    chrome.webDiscovery.isWebDiscoveryExtensionEnabled((extensionEnabled: boolean) => {
+      toggleWebDiscovery(extensionEnabled)
     })
+  }
 
-    chrome.settingsPrivate.getPref(WEB_DISCOVERY_PREF_KEY, (pref: chrome.settingsPrivate.PrefObject) => {
-      toggleWebDiscovery(pref)
-    })
+  chrome.settingsPrivate.onPrefsChanged.addListener((prefs: chrome.settingsPrivate.PrefObject[]) => {
+    const pref = prefs.find(p => p.key === WEB_DISCOVERY_PREF_KEY || p.key === WEB_DISCOVERY_DISABLED_BY_POLICY_KEY)
+    if (!pref) return;
+    checkWebDiscoveryEnabled()
   })
+
+  checkWebDiscoveryEnabled()
 }

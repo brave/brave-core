@@ -68,6 +68,7 @@ include_rules += [
   "-brave/components/speedreader/renderer",
   "+brave/components/web_discovery/browser",
   "+brave/components/web_discovery/buildflags",
+  "+brave/components/web_discovery/common",
   "+brave/components/webcompat/content/browser",
   "+brave/components/webcompat/core/common",
   "+brave/components/brave_vpn/browser",

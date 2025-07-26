@@ -10,6 +10,7 @@
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
+#include "brave/components/web_discovery/common/util.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "extensions/browser/extension_function.h"
@@ -34,7 +35,7 @@ WebDiscoveryRetrieveBackupResultsFunction::
 ExtensionFunction::ResponseAction
 WebDiscoveryRetrieveBackupResultsFunction::Run() {
   auto* user_prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!user_prefs || !user_prefs->GetBoolean(kWebDiscoveryEnabled)) {
+  if (!user_prefs || !web_discovery::IsWebDiscoveryEnabled(*user_prefs)) {
     return RespondNow(Error("web discovery is not enabled"));
   }
   EXTENSION_FUNCTION_VALIDATE(has_args() && !args().empty());
@@ -68,16 +69,21 @@ void WebDiscoveryRetrieveBackupResultsFunction::HandleBackupResults(
   Respond(WithArguments(base::Value(std::move(result_dict))));
 }
 
-WebDiscoveryIsWebDiscoveryNativeEnabledFunction::
-    ~WebDiscoveryIsWebDiscoveryNativeEnabledFunction() = default;
+WebDiscoveryIsWebDiscoveryExtensionEnabledFunction::
+    ~WebDiscoveryIsWebDiscoveryExtensionEnabledFunction() = default;
 
 ExtensionFunction::ResponseAction
-WebDiscoveryIsWebDiscoveryNativeEnabledFunction::Run() {
-  bool result = false;
+WebDiscoveryIsWebDiscoveryExtensionEnabledFunction::Run() {
+  bool native_enabled = false;
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  result = base::FeatureList::IsEnabled(
+  native_enabled = base::FeatureList::IsEnabled(
       web_discovery::features::kBraveWebDiscoveryNative);
 #endif
+
+  auto* user_prefs = user_prefs::UserPrefs::Get(browser_context());
+  bool result = !native_enabled && user_prefs &&
+                web_discovery::IsWebDiscoveryEnabled(*user_prefs);
+
   return RespondNow(WithArguments(result));
 }
 

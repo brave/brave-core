@@ -17,6 +17,7 @@
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/web_discovery/common/util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -238,7 +239,7 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
-  bool enabled = profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
+  bool enabled = web_discovery::IsWebDiscoveryEnabled(*profile_prefs_);
   UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric, enabled);
   UMA_HISTOGRAM_BOOLEAN(
       kWebDiscoveryAndAdsMetric,
