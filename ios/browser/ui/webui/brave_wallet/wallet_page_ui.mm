@@ -152,7 +152,8 @@ void WalletPageUI::CreatePageHandler(
   auto* profile = ProfileIOS::FromWebUIIOS(web_ui());
   DCHECK(profile);
 
-  page_handler_ = std::make_unique<WalletPageHandler>(std::move(page_receiver));
+  page_handler_ = std::make_unique<WalletPageHandler>(web_ui()->GetWebState(),
+                                                      std::move(page_receiver));
 
   wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
       std::move(wallet_receiver), profile);
