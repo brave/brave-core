@@ -683,16 +683,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               brave_shields::features::kBraveAdblockCookieListDefault),        \
       },                                                                       \
       {                                                                        \
-          "brave-adblock-cookie-list-opt-in",                                  \
-          "Show an opt-in bubble for the 'Easylist-Cookie List' filter",       \
-          "When enabled, a bubble will be displayed inviting the user to "     \
-          "enable the 'Easylist-Cookie List' filter for blocking cookie "      \
-          "consent dialogs",                                                   \
-          kOsDesktop | kOsAndroid,                                             \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_shields::features::kBraveAdblockCookieListOptIn),          \
-      },                                                                       \
-      {                                                                        \
           "brave-adblock-cosmetic-filtering",                                  \
           "Enable cosmetic filtering",                                         \
           "Enable support for cosmetic filtering",                             \

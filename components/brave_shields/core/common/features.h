@@ -17,7 +17,6 @@ BASE_DECLARE_FEATURE(kAdBlockDefaultResourceUpdateInterval);
 BASE_DECLARE_FEATURE(kBraveAdblockCnameUncloaking);
 BASE_DECLARE_FEATURE(kBraveAdblockCollapseBlockedElements);
 BASE_DECLARE_FEATURE(kBraveAdblockCookieListDefault);
-BASE_DECLARE_FEATURE(kBraveAdblockCookieListOptIn);
 BASE_DECLARE_FEATURE(kBraveAdblockCosmeticFiltering);
 BASE_DECLARE_FEATURE(kBraveAdblockProceduralFiltering);
 BASE_DECLARE_FEATURE(kBraveAdblockCspRules);
