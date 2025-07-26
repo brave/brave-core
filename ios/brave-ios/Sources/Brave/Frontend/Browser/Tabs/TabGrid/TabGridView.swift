@@ -68,10 +68,16 @@ struct TabGridView: View {
     }
   }
 
+  private enum ActiveShredMode: Equatable {
+    case selectedTab
+    case allTabs
+  }
+
   @State private var insets: EdgeInsets = .zero
   @State private var destinationSheet: DestinationSheet?
   @State private var isSyncSettingsPresented: Bool = false
   @State private var isShredAlertPresented: Bool = false
+  @State private var activeShredMode: ActiveShredMode?
   @State private var isShredAnimationVisible: Bool = false
 
   var browserColors: BrowserColors {
@@ -216,7 +222,8 @@ struct TabGridView: View {
     .alert(
       Strings.Shields.shredSiteDataConfirmationTitle,
       isPresented: $isShredAlertPresented,
-      actions: {
+      presenting: activeShredMode,
+      actions: { _ in
         Button(role: .destructive) {
           isShredAnimationVisible = true
         } label: {
@@ -224,12 +231,16 @@ struct TabGridView: View {
         }
         .keyboardShortcut(.defaultAction)
       },
-      message: {
-        Text(Strings.Shields.shredSiteDataConfirmationMessage)
+      message: { shredMode in
+        Text(
+          shredMode == .allTabs
+            ? Strings.Shields.shredSiteAllTabsConfirmationMessage
+            : Strings.Shields.shredSiteDataConfirmationMessage
+        )
       }
     )
     .overlay {
-      if isShredAnimationVisible {
+      if isShredAnimationVisible, let shredMode = activeShredMode {
         LottieView(animation: .named("shred", bundle: .module))
           .configure { view in
             // resizable modifier below doesn't actually adjust the fill mode so we need to
@@ -239,10 +250,16 @@ struct TabGridView: View {
           .resizable()
           .playing(loopMode: .playOnce)
           .animationDidFinish { _ in
-            let dismissAfterShred = viewModel.tabs.count == 1
-            viewModel.shredSelectedTab()
+            let dismissAfterShred = viewModel.tabs.count == 1 || shredMode == .allTabs
+            switch shredMode {
+            case .selectedTab:
+              viewModel.shredSelectedTab()
+            case .allTabs:
+              viewModel.shredAllTabs()
+            }
             withAnimation {
               isShredAnimationVisible = false
+              activeShredMode = nil
             }
             if dismissAfterShred {
               dismiss()
@@ -313,8 +330,20 @@ struct TabGridView: View {
       PrivateBrowsingPicker(isPrivateBrowsing: $viewModel.isPrivateBrowsing)
       Spacer()
       HStack(spacing: 20) {
-        Button {
-          isShredAlertPresented = true
+        Menu {
+          Button {
+            isShredAlertPresented = true
+            activeShredMode = .selectedTab
+          } label: {
+            Text(Strings.TabGrid.shredSelectedTabButtonTitle)
+          }
+          .disabled(viewModel.selectedTab == nil)
+          Button(role: .destructive) {
+            isShredAlertPresented = true
+            activeShredMode = .allTabs
+          } label: {
+            Text(Strings.TabGrid.shredAllTabsButtonTitle)
+          }
         } label: {
           Label(Strings.TabGrid.shredTabsAccessibilityLabel, braveSystemImage: "leo.shred.data")
         }
