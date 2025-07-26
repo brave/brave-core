@@ -95,7 +95,8 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     const isCardanoDappSupportFeatureEnabled =
       loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
-    if (isNativeBraveWalletFeatureEnabled) {
+    const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
+    if (isNativeBraveWalletFeatureEnabled && isBraveWalletAllowed) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')
       r.SITE_SETTINGS_SOLANA = r.SITE_SETTINGS.createChild('solana')
       if (isCardanoDappSupportFeatureEnabled) {
