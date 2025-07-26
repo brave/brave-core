@@ -35,7 +35,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
-#include "components/regional_capabilities/regional_capabilities_prefs.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "content/public/browser/gpu_data_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -121,17 +121,17 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
                                                              // browser
 
   Profile* profile = Profile::FromWebUI(web_ui);
-  // added to allow front end to read/modify default search engine
-  web_ui->AddMessageHandler(std::make_unique<
-                            settings::BraveSearchEnginesHandler>(
-      profile,
+  auto* regional_capabilities_service =
       regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
-          profile)));
+          profile);
+  // added to allow front end to read/modify default search engine
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::BraveSearchEnginesHandler>(
+          profile, regional_capabilities_service));
 
   // Open additional page in Japanese region
   country_codes::CountryId country_id =
-      country_codes::CountryId::Deserialize(profile->GetPrefs()->GetInteger(
-          regional_capabilities::prefs::kCountryIDAtInstall));
+      regional_capabilities_service->GetCountryId().GetCountryCode();
   const bool is_jpn = country_id == country_codes::CountryId("JP");
   if (!profile->GetPrefs()->GetBoolean(
           brave::welcome_ui::prefs::kHasSeenBraveWelcomePage)) {

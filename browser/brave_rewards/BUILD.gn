@@ -46,6 +46,7 @@ source_set("brave_rewards_impl") {
     "//chrome/browser/bitmap_fetcher",
     "//chrome/browser/favicon",
     "//chrome/browser/profiles",
+    "//chrome/browser/regional_capabilities",
     "//chrome/browser/ui",
     "//components/keyed_service/content",
     "//components/prefs",
