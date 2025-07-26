@@ -2479,6 +2479,12 @@ extension BrowserViewController: TabMiscDelegate {
   }
 }
 
+extension BrowserViewController: TabWebUIDelegate {
+  public func unlockWallet(_ tab: some TabState) {
+    fatalError("NOT IMPLEMENTED YET - UNLOCK WALLET")
+  }
+}
+
 extension BrowserViewController: SearchViewControllerDelegate {
   func searchViewController(
     _ searchViewController: SearchViewController,
