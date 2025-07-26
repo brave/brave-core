@@ -55,7 +55,7 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
 {
   fileprivate let cellIdentifier = "CellIdentifier"
   fileprivate let headerIdentifier = "HeaderIdentifier"
-  var profile: Profile! {
+  var profile: LegacyBrowserProfile! {
     didSet {
       reloadData()
     }

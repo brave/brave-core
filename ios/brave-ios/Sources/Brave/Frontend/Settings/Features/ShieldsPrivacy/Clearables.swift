@@ -131,8 +131,8 @@ class HistoryClearable: Clearable {
 
 // Clear all stored passwords. This will clear the system shared credential storage.
 class PasswordsClearable: Clearable {
-  let profile: Profile
-  init(profile: Profile) {
+  let profile: LegacyBrowserProfile
+  init(profile: LegacyBrowserProfile) {
     self.profile = profile
   }
 

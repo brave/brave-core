@@ -167,7 +167,7 @@ public class BrowserViewController: UIViewController {
   var customSearchBarButtonItemGroup: UIBarButtonItemGroup?
 
   public let windowId: UUID
-  let profile: Profile
+  let profile: LegacyBrowserProfile
   let attributionManager: AttributionManager
   let braveCore: BraveCoreMain
   let profileController: BraveProfileController
@@ -276,7 +276,7 @@ public class BrowserViewController: UIViewController {
 
   public init(
     windowId: UUID,
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     attributionManager: AttributionManager,
     braveCore: BraveCoreMain,
     profileController: BraveProfileController,

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol ProfileBridge;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// A wrapper to obtain a Brave or Chromium keyed service based on the current
@@ -29,6 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// the service you requested does not support private browsing.
 + (nullable ResultType)getForPrivateMode:(bool)isPrivateBrowsing
     NS_SWIFT_NAME(get(privateMode:)) NS_REQUIRES_SUPER NS_SWIFT_UI_ACTOR;
+
+/// Obtain the desired service based on the profile
+///
+/// Depending on the type of service you are requesting, you may receive
+/// the same service regardless of private mode, or you may receive `nil` if
+/// the service you requested does not support private browsing.
++ (nullable ResultType)getForProfile:(id<ProfileBridge>)profile
+    NS_SWIFT_NAME(get(profile:)) NS_REQUIRES_SUPER NS_SWIFT_UI_ACTOR;
 
 - (instancetype)init NS_UNAVAILABLE;
 

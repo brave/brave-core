@@ -36,7 +36,7 @@ class SearchQuickEnginesViewController: UITableViewController {
   }
 
   private var searchEngines: SearchEngines
-  private let profile: Profile
+  private let profile: LegacyBrowserProfile
   private let isPrivateBrowsing: Bool
   weak var delegate: SearchQuickEnginesViewControllerDelegate?
 
@@ -56,7 +56,7 @@ class SearchQuickEnginesViewController: UITableViewController {
 
   // MARK: Lifecycle
 
-  init(profile: Profile, isPrivateBrowsing: Bool) {
+  init(profile: LegacyBrowserProfile, isPrivateBrowsing: Bool) {
     self.profile = profile
     self.isPrivateBrowsing = isPrivateBrowsing
     self.searchEngines = profile.searchEngines

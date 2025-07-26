@@ -12,12 +12,12 @@ import WebKit
 import os.log
 
 class LoginsScriptHandler: TabContentScript {
-  private let profile: Profile
+  private let profile: LegacyBrowserProfile
   private let passwordAPI: BravePasswordAPI
 
   private var snackBar: SnackBar?
 
-  required init(profile: Profile, passwordAPI: BravePasswordAPI) {
+  required init(profile: LegacyBrowserProfile, passwordAPI: BravePasswordAPI) {
     self.profile = profile
     self.passwordAPI = passwordAPI
   }

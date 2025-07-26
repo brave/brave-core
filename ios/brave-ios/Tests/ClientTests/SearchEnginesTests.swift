@@ -229,23 +229,27 @@ class SearchEnginesTests: XCTestCase {
   func testSearchEngineParamsNewUser() async {
     Preferences.General.isFirstLaunch.value = true
 
-    let profile = MockProfile()
-    await profile.searchEngines.loadSearchEngines()
+    let searchEngines = SearchEngines()
+    await searchEngines.loadSearchEngines()
 
-    expectddgClientName(locales: ["de-DE"], expectedClientName: "bravened", profile: profile)
+    expectddgClientName(
+      locales: ["de-DE"],
+      expectedClientName: "bravened",
+      searchEngines: searchEngines
+    )
     expectddgClientName(
       locales: ["en-IE", "en-AU", "en-NZ"],
       expectedClientName: "braveed",
-      profile: profile
+      searchEngines: searchEngines
     )
     expectddgClientName(
       locales: ["en-US, pl-PL"],
       expectedClientName: OpenSearchEngine.defaultSearchClientName,
-      profile: profile
+      searchEngines: searchEngines
     )
 
     XCTAssert(
-      getQwant(profile: profile).searchURLForQuery("test")!.absoluteString.contains(
+      getQwant(searchEngines: searchEngines).searchURLForQuery("test")!.absoluteString.contains(
         "client=brz-brave"
       )
     )
@@ -254,31 +258,38 @@ class SearchEnginesTests: XCTestCase {
   func testSearchEngineParamsExistingUser() async {
     Preferences.General.isFirstLaunch.value = false
 
-    let profile = MockProfile()
-    await profile.searchEngines.loadSearchEngines()
-    expectddgClientName(locales: ["de-DE"], expectedClientName: "bravened", profile: profile)
+    let searchEngines = SearchEngines()
+    await searchEngines.loadSearchEngines()
+    expectddgClientName(
+      locales: ["de-DE"],
+      expectedClientName: "bravened",
+      searchEngines: searchEngines
+    )
     expectddgClientName(
       locales: ["en-IE", "en-AU", "en-NZ"],
       expectedClientName: "braveed",
-      profile: profile
+      searchEngines: searchEngines
     )
     expectddgClientName(
       locales: ["en-US, pl-PL"],
       expectedClientName: OpenSearchEngine.defaultSearchClientName,
-      profile: profile
+      searchEngines: searchEngines
     )
 
     XCTAssert(
-      getQwant(profile: profile).searchURLForQuery("test")!.absoluteString.contains(
+      getQwant(searchEngines: searchEngines).searchURLForQuery("test")!.absoluteString.contains(
         "client=brz-brave"
       )
     )
   }
 
-  private func expectddgClientName(locales: [String], expectedClientName: String, profile: Profile)
-  {
+  private func expectddgClientName(
+    locales: [String],
+    expectedClientName: String,
+    searchEngines: SearchEngines
+  ) {
     locales.forEach {
-      let ddg = getDdg(profile: profile)
+      let ddg = getDdg(searchEngines: searchEngines)
       let locale = Locale(identifier: $0)
       print(ddg.searchURLForQuery("test", locale: locale)!)
 
@@ -293,14 +304,14 @@ class SearchEnginesTests: XCTestCase {
     }
   }
 
-  private func getDdg(profile: Profile) -> OpenSearchEngine {
-    profile.searchEngines.orderedEngines.first(where: {
+  private func getDdg(searchEngines: SearchEngines) -> OpenSearchEngine {
+    searchEngines.orderedEngines.first(where: {
       $0.shortName == OpenSearchEngine.EngineNames.duckDuckGo
     })!
   }
 
-  private func getQwant(profile: Profile) -> OpenSearchEngine {
-    return profile.searchEngines.orderedEngines.first(where: {
+  private func getQwant(searchEngines: SearchEngines) -> OpenSearchEngine {
+    searchEngines.orderedEngines.first(where: {
       $0.shortName == OpenSearchEngine.EngineNames.qwant
     })!
   }

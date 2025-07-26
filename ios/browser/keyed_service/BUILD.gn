@@ -16,6 +16,7 @@ source_set("keyed_service") {
   ]
   deps = [
     "//base",
+    "//brave/ios/browser/api/profile",
     "//components/keyed_service/ios:ios",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",

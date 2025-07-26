@@ -113,7 +113,7 @@ import os
   let tabManager: TabManager
 
   init(
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
     debounceService: DebounceService?,

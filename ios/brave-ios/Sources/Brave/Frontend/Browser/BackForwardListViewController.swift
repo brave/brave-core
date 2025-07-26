@@ -22,7 +22,7 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
   weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
 
   private let cellIdentifier = "BackForwardListViewController"
-  private var profile: Profile
+  private var profile: LegacyBrowserProfile
   private lazy var sites = [String: Site]()
   private var dismissing = false
   private var currentRow = 0
@@ -76,7 +76,7 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
     return tabManager?.privateBrowsingManager.isPrivateBrowsing ?? false
   }
 
-  init(profile: Profile, backForwardList: BackForwardListProxy) {
+  init(profile: LegacyBrowserProfile, backForwardList: BackForwardListProxy) {
     self.profile = profile
     super.init(nibName: nil, bundle: nil)
 

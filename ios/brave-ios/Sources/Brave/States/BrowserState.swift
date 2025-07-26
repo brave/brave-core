@@ -10,9 +10,9 @@ public class BrowserState {
   public static let sceneId = "com.brave.ios.browser-scene"
 
   let window: UIWindow
-  let profile: Profile
+  let profile: LegacyBrowserProfile
 
-  init(window: UIWindow, profile: Profile) {
+  init(window: UIWindow, profile: LegacyBrowserProfile) {
     self.window = window
     self.profile = profile
   }

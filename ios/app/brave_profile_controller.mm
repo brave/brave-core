@@ -23,6 +23,7 @@
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
+#include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
@@ -74,6 +75,7 @@
 @interface BraveProfileController () {
   ScopedProfileKeepAliveIOS _profileKeepAlive;
   raw_ptr<ProfileIOS> _profile;
+  ProfileBridgeImpl* _profileBridge;
   std::unique_ptr<Browser> _browser;
   std::unique_ptr<Browser> _otr_browser;
   raw_ptr<BrowserList> _browserList;
@@ -106,6 +108,7 @@
   if ((self = [super init])) {
     _profileKeepAlive = std::move(profileKeepAlive);
     _profile = _profileKeepAlive.profile();
+    _profileBridge = [[ProfileBridgeImpl alloc] initWithProfile:_profile];
 
     // Disable Safe-Browsing via Prefs
     _profile->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled, false);
@@ -182,6 +185,10 @@
                                 /*fallback_to_google_server=*/false));
 }
 #endif
+
+- (id<ProfileBridge>)profile {
+  return _profileBridge;
+}
 
 - (BraveBookmarksAPI*)bookmarksAPI {
   if (!_bookmarksAPI) {

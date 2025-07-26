@@ -12,13 +12,7 @@ import Shared
 import Storage
 import os.log
 
-/// A Profile manages access to the user's data.
-public protocol Profile: AnyObject {
-  var searchEngines: SearchEngines { get }
-  var certStore: CertStore { get }
-}
-
-open class BrowserProfile: Profile {
+open class LegacyBrowserProfile {
   public lazy var searchEngines: SearchEngines = {
     return SearchEngines()
   }()
