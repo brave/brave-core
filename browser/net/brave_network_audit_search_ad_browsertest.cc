@@ -123,7 +123,8 @@ class BraveNetworkAuditSearchAdTest : public InProcessBrowserTest {
         "https://search.brave.com:%s/";
     allowed_prefixes.push_back(
         base::StringPrintf(kAllowedBraveSearchTemplate, port.c_str()));
-    VerifyNetworkAuditLog(net_log_path_, audit_results_path_, allowed_prefixes);
+    VerifyNetworkAuditLog(net_log_path_, audit_results_path_, false,
+                          allowed_prefixes);
   }
 
   Profile* profile() { return browser()->profile(); }
