@@ -9,8 +9,10 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -71,6 +73,12 @@ class ListActionModifiersUnitTest : public testing::Test {
     tab_search_action->category =
         side_panel::customize_chrome::mojom::CategoryId::kTools;
     actions.push_back(std::move(tab_search_action));
+
+    auto dev_tools_action = side_panel::customize_chrome::mojom::Action::New();
+    dev_tools_action->id = ActionId::kDevTools;
+    dev_tools_action->category =
+        side_panel::customize_chrome::mojom::CategoryId::kTools;
+    actions.push_back(std::move(dev_tools_action));
 
     return actions;
   }
@@ -276,12 +284,41 @@ TEST_F(ListActionModifiersUnitTest,
 }
 
 TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_RewardsShouldNotBeAddedWhenDisabled) {
+  // Rewards should be added by default(Rewards enabled by default)
+  ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
+      Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      *web_contents_, GetBasicActions());
+  auto rewards_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowReward,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(rewards_action_it, modified_actions.end());
+
+  // Disable Rewards using managed pref
+  prefs()->SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                          base::Value(true));
+  ASSERT_TRUE(
+      prefs()->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy));
+
+  modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      *web_contents_, GetBasicActions());
+  rewards_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowReward,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  // Show Rewards action should not be present
+  EXPECT_EQ(rewards_action_it, modified_actions.end());
+}
+
+TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_ComprehensiveOrderTest) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   ASSERT_TRUE(brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
   ASSERT_TRUE(ai_chat::IsAIChatEnabled(prefs()));
   ASSERT_TRUE(brave_wallet::IsNativeWalletEnabled());
+  ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
+      Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
 
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       *web_contents_, GetBasicActions());
@@ -289,10 +326,43 @@ TEST_F(ListActionModifiersUnitTest,
               testing::ElementsAre(
                   EqId(ActionId::kNewIncognitoWindow),
                   EqId(ActionId::kShowSidePanel), EqId(ActionId::kTabSearch),
-                  EqId(ActionId::kShowWallet), EqId(ActionId::kShowAIChat)
+                  EqId(ActionId::kShowWallet), EqId(ActionId::kShowAIChat),
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-                                                   ,
-                  EqId(ActionId::kShowVPN)
+                  EqId(ActionId::kShowVPN),
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-                      ));
+                  EqId(ActionId::kDevTools), EqId(ActionId::kShowReward)));
+}
+
+TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories) {
+  // Create a vector of categories
+  std::vector<side_panel::customize_chrome::mojom::CategoryPtr> categories;
+
+  // Append Brave specific categories
+  categories = customize_chrome::AppendBraveSpecificCategories(
+      *web_contents_, std::move(categories));
+
+  // Verify "Address bar" category is added with expected actions
+  ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
+      Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+  auto it = std::ranges::find(
+      categories, side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
+      &side_panel::customize_chrome::mojom::Category::id);
+  EXPECT_NE(it, categories.end());
+
+  // When Brave Rewards isn't supported, the Address bar category should not be
+  // added
+  prefs()->SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                          base::Value(true));
+  ASSERT_TRUE(
+      prefs()->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy));
+  ASSERT_FALSE(brave_rewards::IsSupportedForProfile(
+      Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+
+  categories.clear();
+  categories = customize_chrome::AppendBraveSpecificCategories(
+      *web_contents_, std::move(categories));
+  it = std::ranges::find(
+      categories, side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
+      &side_panel::customize_chrome::mojom::Category::id);
+  EXPECT_EQ(it, categories.end());
 }

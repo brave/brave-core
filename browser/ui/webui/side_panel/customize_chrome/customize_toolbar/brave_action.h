@@ -8,6 +8,7 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
@@ -70,6 +71,15 @@ inline constexpr BraveAction kShowVPNAction = {
     .icon = kLeoProductVpnIcon};
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
+inline constexpr BraveAction kShowReward = {
+    .id = side_panel::customize_chrome::mojom::ActionId::kShowReward,
+    .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_REWARD,
+    .anchor = side_panel::customize_chrome::mojom::ActionId::
+        kShowReward,  // assign id of itself to append to the end of the list
+    .category = side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
+    .pref_name = brave_rewards::prefs::kShowLocationBarButton,
+    .icon = kLeoProductBatOutlineIcon};
+
 inline constexpr auto kBraveActions =
     base::MakeFixedFlatMap<side_panel::customize_chrome::mojom::ActionId,
                            const BraveAction*>({
@@ -79,6 +89,7 @@ inline constexpr auto kBraveActions =
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
         {kShowVPNAction.id, &kShowVPNAction},
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+        {kShowReward.id, &kShowReward},
     });
 
 }  // namespace customize_chrome

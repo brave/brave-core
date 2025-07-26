@@ -14,14 +14,17 @@ source_set("customize_chrome") {
 
   deps = [
     "//base",
+    "//brave/browser/brave_rewards:util",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
+    "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/common",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
+    "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/webui/side_panel/customize_chrome:mojo_bindings",
     "//chrome/browser/ui/webui/util",
     "//components/prefs",
@@ -61,8 +64,10 @@ source_set("unit_tests") {
   deps = [
     ":customize_chrome",
     "//base",
+    "//brave/browser/brave_rewards:util",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
+    "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common",
     "//brave/components/vector_icons",
