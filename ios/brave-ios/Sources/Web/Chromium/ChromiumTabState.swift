@@ -354,6 +354,7 @@ class ChromiumTabState: TabState, TabStateImpl {
       let coder = try NSKeyedUnarchiver(forReadingFrom: sessionData)
       coder.requiresSecureCoding = false
       webView.decodeRestorableState(with: coder)
+      webView.webUIDelegate = webUiHandler
     } catch {
       Logger.module.error("Failed to restore web view with session data: \(error)")
     }
