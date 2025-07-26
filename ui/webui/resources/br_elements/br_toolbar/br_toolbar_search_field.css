@@ -68,7 +68,7 @@
 }
 
 .page-search_box {
-    background: var(--leo-color-page-background);
+    background: var(--leo-color-container-background);
     transition: opacity var(--animation-duration) ease-in-out 0s;
     opacity: 0;
     position: absolute;

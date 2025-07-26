@@ -27,8 +27,8 @@
 }
 
 .br-toolbar {
-    --toolbar-background: var(--leo-color-page-background);
-    background: var(--leo-color-page-background);
+    --toolbar-background: var(--leo-color-container-background);
+    background: var(--leo-color-container-background);
     height: 56px;
     position: relative;
 }
@@ -68,21 +68,23 @@
 }
 
 .nav-item:hover {
-   background: var(--leo-color-container-highlight);
+   background: var(--leo-color-page-background);
+   color: var(--leo-color-text-secondary);
 }
 
 .nav-item:focus {
-    background: var(--leo-color-container-background);
+    background: var(--leo-color-page-background);
+    color: var(--leo-color-text-secondary);
 }
 
 .nav-item:active {
-    background: var(--leo-color-container-background);
+    background: var(--leo-color-container-interactive);
     box-shadow: var(--leo-effect-elevation-01);
     color: var(--leo-color-text-interactive);
 }
 
 .nav-item.-selected {
-    background: var(--leo-color-container-background);
+    background: var(--leo-color-container-interactive);
     box-shadow: var(--leo-effect-elevation-01);
     cursor: default;
     color: var(--leo-color-text-interactive);
