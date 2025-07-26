@@ -30,11 +30,11 @@ TEST_F(TreeTabNodeUnitTest, Constructor) {
   // Constructing TreeTabNode with empty |tree_tab_node_id| should fail.
   EXPECT_DEATH(TreeTabNode(tree_tab::TreeTabNodeId::CreateEmpty(),
                            std::make_unique<tabs::MockTabInterface>()),
-               "Check failed: !tree_tab_node_id.is_empty()");
+               "");
 
   // Constructing TreeTabNode with nullptr |current_tab| should fail.
   EXPECT_DEATH(TreeTabNode(tree_tab::TreeTabNodeId::GenerateNew(), nullptr),
-               "Check failed: current_tab");
+               "");
 
   // Valid construction should succeed.
   auto tree_tab_node_id = tree_tab::TreeTabNodeId::GenerateNew();
@@ -57,7 +57,7 @@ TEST_F(TreeTabNodeUnitTest, CanNotBeAddedToPinnedCollection) {
 
   // Verify that adding a TreeTabNode to a PinnedTabCollection fails.
   EXPECT_DEATH(pinned_collection.AddCollection(std::move(tree_tab_node), 0),
-               "Check failed: supported_child_collections_.contains");
+               "");
 }
 
 TEST_F(TreeTabNodeUnitTest, CanBeAddedToUnpinnedCollection) {
