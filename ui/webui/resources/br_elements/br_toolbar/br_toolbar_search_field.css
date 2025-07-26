@@ -68,7 +68,7 @@
 }
 
 .page-search_box {
-    background-image: var(--toolbar-background);
+    background: var(--leo-color-container-background);
     transition: opacity var(--animation-duration) ease-in-out 0s;
     opacity: 0;
     position: absolute;
@@ -102,8 +102,7 @@
     border: none;
     background: none;
     color: inherit;
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
+    font: var(--leo-font-large-regular);
 }
 
 .page-search_text::placeholder {

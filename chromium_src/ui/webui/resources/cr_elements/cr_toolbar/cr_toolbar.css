@@ -27,9 +27,8 @@
 }
 
 .br-toolbar {
-    --toolbar-background: var(--leo-gradient-toolbar-background);
-    background: var(--leo-gradient-toolbar-background);
-    color: var(--leo-color-white);
+    --toolbar-background: var(--leo-color-container-background);
+    background: var(--leo-color-container-background);
     height: 56px;
     position: relative;
 }
@@ -49,7 +48,7 @@
 
 .nav-item {
     align-items: center;
-    color: var(--leo-color-white);
+    color: var(--leo-color-text-tertiary);
     cursor: pointer;
     display: flex;
     /* update cr_toolbar.js font-load detection
@@ -61,7 +60,7 @@
     text-decoration: none;
     transition: background 100ms ease-out;
     height: 44px;
-    border-radius: var(--leo-radius-l);
+    border-radius: var(--leo-radius-full);
 }
 
 .fonts-loaded .nav-item {
@@ -69,25 +68,30 @@
 }
 
 .nav-item:hover {
-    background: rgba(0, 0, 0, 0.1);
+   background: var(--leo-color-page-background);
+   color: var(--leo-color-text-secondary);
+   box-shadow: var(--leo-effect-elevation-01);
 }
 
 .nav-item:focus {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--leo-color-page-background);
+    color: var(--leo-color-text-secondary);
+    box-shadow: var(--leo-effect-elevation-01);
 }
 
 .nav-item:active {
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--leo-color-container-interactive);
+    color: var(--leo-color-text-interactive);
 }
 
 .nav-item.-selected {
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--leo-color-container-interactive);
     cursor: default;
+    color: var(--leo-color-text-interactive);
 }
 
 .nav-item-icon {
     align-items: center;
-    color: inherit;
     display: flex;
 }
 

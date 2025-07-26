@@ -12,7 +12,7 @@ import "brave/components/ntp_background_images/browser/mojom/ntp_background_imag
 const string kRandomSolidColorValue = "solid";
 const string kRandomGradientColorValue = "gradient";
 
-const int8 kMaxCustomImageBackgrounds = 24;
+const int8 kMaxCustomImageBackgrounds = 48;
 
 struct BraveBackground {
   string name;
