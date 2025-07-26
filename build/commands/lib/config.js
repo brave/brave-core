@@ -529,9 +529,11 @@ Config.prototype.buildArgs = function () {
     generate_about_credits: true,
   }
 
-  if (this.isOfficialBuild()) {
+  if (this.isOfficialBuild() || getEnvConfig(['enable_updater'])) {
     args.enable_updater = true
   }
+
+  args.use_prebuilt_omaha4 = getEnvConfig(['use_prebuilt_omaha4'])
 
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
