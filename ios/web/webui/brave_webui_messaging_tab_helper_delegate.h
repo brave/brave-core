@@ -11,6 +11,8 @@
 OBJC_EXPORT
 @protocol BraveWebUIMessagingTabHelperDelegate
 
+#pragma mark :- Wallet WebUI
+- (void)webUIUnlockWallet;
 @end
 
 #endif  // BRAVE_IOS_WEB_WEBUI_BRAVE_WEBUI_MESSAGING_TAB_HELPER_DELEGATE_H_

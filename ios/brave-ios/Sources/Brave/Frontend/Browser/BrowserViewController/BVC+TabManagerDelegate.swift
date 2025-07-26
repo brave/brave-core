@@ -21,6 +21,7 @@ extension BrowserViewController: TabManagerDelegate {
   func attachTabHelpers(to tab: some TabState) {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: profileController.tabGeneratorAPI)
     tab.browserData?.miscDelegate = self
+    tab.webUIDelegate = self
     tab.pullToRefresh = .init(tab: tab)
     tab.playlist = .init(tab: tab)
     tab.youtubeQualityTabHelper = .init(tab: tab)
