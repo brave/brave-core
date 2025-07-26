@@ -529,6 +529,14 @@ Config.prototype.buildArgs = function () {
     generate_about_credits: true,
   }
 
+  if (this.targetOS === 'linux') {
+    args.dcheck_always_on = false
+    args.is_component_build = false
+    args.is_debug = false
+    args.is_msan = true
+    args.msan_track_origins = 2
+  }
+
   if (this.isOfficialBuild()) {
     args.enable_updater = true
   }
