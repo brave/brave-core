@@ -606,8 +606,17 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_AUTOFILL_OPTIONS_RESTART_PROMPT_TITLE" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
         Restart Brave?
       </message>
+      <message name="IDS_AUTOFILL_OPTIONS_CHANGE_AUTOFILL_SERVICE_TITLE" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
+        Change autofill service?
+      </message>
       <message name="IDS_AUTOFILL_OPTIONS_RESTART_PROMPT_TEXT" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
         To finish setting up autofill, restart Brave now. Your tabs will automatically reopen.
+      </message>
+      <message name="IDS_AUTOFILL_OPTIONS_RESTART_PROMPT_PARAGRAPH_1_TEXT" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
+        After Brave restarts, your info saved from your new provider will be used to autofill passwords, passkeys, addresses, payment methods, and other info.
+      </message>
+      <message name="IDS_AUTOFILL_OPTIONS_RESTART_PROMPT_PARAGRAPH_2_TEXT" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
+        Restart Brave to finish this change. Tabs automatically reopen when you restart.
       </message>
       <message name="IDS_AUTOFILL_OPTIONS_UNDO_TOGGLE_CHANGE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
         Cancel
@@ -840,56 +849,14 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_PASSWORDS_NOT_SECURE_FILLING_DETAILS" desc="The message of the dialog which is shown when the user attempts to enter obfuscated text to a regular text field.">
         To protect your privacy, Brave will not autofill your password in this field.
       </message>
-      <message name="IDS_PWD_ACCESS_LOSS_WARNING_NO_GMS_CORE_TITLE" desc="The title of the password access loss warning sheet when there is no GMS Core." formatter_data="android_java">
-        Brave Password Manager will stop working on this device
-      </message>
-      <message name="IDS_PWD_ACCESS_LOSS_WARNING_NO_GMS_CORE_TEXT" desc="The text of the password access loss warning sheet when there is no GMS Core." formatter_data="android_java">
-        Passwords will stop working soon because Google Play services isn’t available. You can make a copy of your saved passwords before they stop working. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
-      <message name="IDS_PWD_ACCESS_LOSS_WARNING_NO_GMS_CORE_BUTTON_TEXT" desc="The button text of the password access loss warning sheet when there is no GMS Core." formatter_data="android_java">
-        Export passwords
-      </message>
-      <message name="IDS_PWD_ACCESS_LOSS_WARNING_MANUAL_MIGRATION_TITLE" desc="The title of the password access loss warning sheet when the automatic password migration failed." formatter_data="android_java">
-        Fix problem with saved passwords
-      </message>
-      <message name="IDS_PWD_ACCESS_LOSS_WARNING_MANUAL_MIGRATION_TEXT" desc="The text of the password access loss warning sheet when the automatic password migration failed." formatter_data="android_java">
-        Some passwords on this device will stop working soon. You can move these passwords to Brave Password Manager.
-      </message>
-      <message name="IDS_PWD_ACCESS_LOSS_WARNING_MANUAL_MIGRATION_BUTTON_TEXT" desc="The button text of the password access loss warning sheet when the automatic password migration failed." formatter_data="android_java">
-        Help me fix this
-      </message>
-      <message name="IDS_PWD_ACCESS_LOSS_WARNING_UPDATE_GMS_CORE_TITLE" desc="The title of the password access loss warning sheet when the GMS Core version doesn't support local passwords." formatter_data="android_java">
-        Update Google Play services
-      </message>
-      <message name="IDS_PWD_ACCESS_LOSS_WARNING_UPDATE_GMS_CORE_TEXT" desc="The text of the password access loss warning sheet when the GMS Core version doesn't support local passwords." formatter_data="android_java">
-        Passwords may stop working soon on this device. To keep using your passwords, update Google Play services. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
-      <message name="IDS_PWD_ACCESS_LOSS_WARNING_NO_UPM_TEXT" desc="The text of the password access loss warning sheet when the device doesn't have Google Play Services.">
-        Passwords will stop working soon on this device. To keep using your passwords, update Google Play services. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
       <message name="IDS_PWD_ACCESS_LOSS_WARNING_UPDATE_GMS_CORE_BUTTON_TEXT" desc="The button text of the password access loss warning sheet when the GMS Core version doesn't support local passwords." formatter_data="android_java">
         Update
-      </message>
-      <message name="IDS_PWD_ACCESS_LOSS_NOTIFICATION_NO_GMS_CORE_TEXT" desc="The text of the password access loss notification when there is no GMS Core." formatter_data="android_java">
-        Passwords will stop working soon because Google Play services isn’t available. You can make a copy of your saved passwords before they stop working.
-      </message>
-      <message name="IDS_PWD_ACCESS_LOSS_NOTIFICATION_UPDATE_GMS_CORE_TEXT" desc="The text of the password access loss notification when the GMS Core version doesn't support local passwords." formatter_data="android_java">
-        Passwords may stop working soon on this device. To keep using your passwords, update Google Play services.
       </message>
       <message name="IDS_SOME_PASSWORDS_ARE_NOT_ACCESSIBLE_SUBTITLE" desc="Subtitle shown under the Brave Password Manager entry point, when the password manager is available for the user, but they have unmigrated passwords left behind in Brave.">
         Some of your passwords aren’t accessible
       </message>
       <message name="IDS_GPM_STOPPED_WORKING_SUBTITLE" desc="Subtitle shown under the Brave Password Manager entry point, when the password manager is not available for the user. Among other reasons, this can happen when Google Play services is not updated.">
         Stopped working on this device
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_ACKNOWLEDGE" desc="The text on the button that acknowledges the password migration warning.">
-        Got it
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_CONTENT_DESCRIPTION" desc="Accessibility string read when the password migration warning sheet opens." formatter_data="android_java">
-        Brave Password Manager update
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_CLOSED" desc="Accessibility string read when the password migration warning sheet closes." formatter_data="android_java">
-        Update about password merge is closed
       </message>
       <message name="IDS_PWD_ACCESS_LOSS_WARNING_CONTENT_DESCRIPTION" desc="Accessibility string read when the password access loss warning sheet opens.">
         Brave Password Manager update opened
@@ -930,95 +897,11 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_CSV_DOWNLOAD_DIALOG_POSITIVE_BUTTON_TEXT" desc="The text for the dialog button through which users can initiate password export. The dilog is shown to users who have unmigrated passwords left over in Brave after Brave's storage has been deprecated.">
         Export passwords
       </message>
-      <message name="IDS_POST_PASSWORD_MIGRATION_SHEET_TITLE_ABOUT_LOCAL_PWD" desc="The title of the post password migration sheet that informs the user that the migration happened. It means that passwords that the user has saved locally on their device are going to be affected by a change Brave is making. 'passwords on this device' is important. It indicates that the change affects passwords saved on the device only. This is different to passwords that are saved and synced to the user's Brave sync chain. Please try to keep this distinction as clear as possible." formatter_data="android_java">
-        We changed how passwords on this device are saved
-      </message>
-      <message name="IDS_POST_PWD_MIGRATION_SHEET_SUBTITLE_ABOUT_LOCAL_PWD" desc="The subtitle of the post password migration sheet that emphasises on merging local passwords." formatter_data="android_java">
-        All passwords saved only to this device for Brave and <ph name="CHROME_CHANNEL">%1$s<ex>Brave Dev</ex></ph> were merged. You can autofill all your saved passwords on both apps.
-      </message>
-      <message name="IDS_EXPORTED_PASSWORDS_DELETION_IN_PROGRESS_TITLE" desc="The title of the progress bar that is visible while the passwords are being deleted." formatter_data="android_java">
-        Deleting
-      </message>
       <message name="IDS_PASSWORDS_EXPORT_IN_PROGRESS_TITLE" desc="The title of the progress bar that is visible while the passwords are being exported." formatter_data="android_java">
         Exporting
       </message>
-      <message name="IDS_CHROME_CHANNEL_NAME_CANARY" desc="The Brave channel name for canary channel">
-        Brave Canary
-      </message>
-      <message name="IDS_CHROME_CHANNEL_NAME_DEV" desc="The Brave channel name for dev channel">
-        Brave Dev
-      </message>
-      <message name="IDS_CHROME_CHANNEL_NAME_BETA" desc="The Brave channel name for beta channel">
-        Brave Beta
-      </message>
       <message name="IDS_ACCESS_LOSS_UPDATE_GMS_TITLE" desc="The title of the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings having an outdated Goggle Play Services.">
         Update Google Play services
-      </message>
-      <message name="IDS_ACCESS_LOSS_UPDATE_GMS_DESC" desc="The message in the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings having an outdated Goggle Play Services.">
-        Passwords may stop working soon on this device. To keep using your passwords, update Google Play services.
-      </message>
-      <message name="IDS_ACCESS_LOSS_NO_UPM_DESC" desc="The message in the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings having an outdated Goggle Play Services.">
-        Passwords will stop working soon on this device. To keep using your passwords, update Google Play services.
-      </message>
-      <message name="IDS_ACCESS_LOSS_FIX_PROBLEM_TITLE" desc="The title of the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings after failed local passwords migration to Google Play Services">
-        Fix problem with saved passwords
-      </message>
-      <message name="IDS_ACCESS_LOSS_FIX_PROBLEM_DESC" desc="The message in the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings after failed local passwords migration to Google Play Services">
-        Some passwords on this device will stop working soon. You can move these passwords to Brave Password Manager.
-      </message>
-      <message name="IDS_ACCESS_LOSS_FIX_PROBLEM_POSITIVE_BUTTON_TEXT" desc="If the user has local passwords migration failed to Google Play services, they see the warning proposing them to fix this problem. This string is the agreement button text in the warning.">
-        Fix now
-      </message>
-      <message name="IDS_ACCESS_LOSS_NO_GMS_TITLE" desc="The title of the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings if no Google Play Services is installed on the phone.">
-        Brave Password Manager will stop working on this device
-      </message>
-      <message name="IDS_ACCESS_LOSS_NO_GMS_DESC" desc="The message in the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings if no Google Play Services is installed on the phone.">
-        Passwords will stop working soon because Google Play services isn’t available. You can make a copy of your saved passwords before they stop working.
-      </message>
-      <message name="IDS_ACCESS_LOSS_NO_GMS_POSITIVE_BUTTON_TEXT" desc="If the user has no Google Play services installed on the phone, they see the modal dialog warning them that passwords will stop working soon and proposing them to export their paswords before that. This string is the agreement button text in the warning.">
-        Export passwords
-      </message>
-      <message name="IDS_ACCESS_LOSS_EXPORT_DIALOG_TITLE" desc="The title of the modal dialog proposing the user to export their passwords from Brave and remove them from Brave's database (to later import them in Google Play Services).">
-        First, export and delete the passwords from Brave
-      </message>
-      <message name="IDS_ACCESS_LOSS_EXPORT_DIALOG_TITLE_NO_GMS" desc="The title of the modal dialog proposing the user to export their passwords from Brave and remove them from Brave's database.">
-        Export and delete the passwords
-      </message>
-      <message name="IDS_ACCESS_LOSS_EXPORT_DIALOG_MESSAGE" desc="The message of the modal dialog proposing the user to export their passwords from Brave and remove them from Brave's database (to later import them in Google Play Services).">
-        Your passwords will be downloaded as a CSV file. They will be visible to anyone who can access the file, including apps. Exported passwords will be deleted from Brave.
-      </message>
-      <message name="IDS_ACCESS_LOSS_EXPORT_DIALOG_POSITIVE_BUTTON_TEXT" desc="The text on the button, confirming the user's agreement to export passwords and remove them from Brave's database.">
-        Export and delete
-      </message>
-      <message name="IDS_ACCESS_LOSS_IMPORT_DIALOG_TITLE" desc="The title of the dialog instructing the user to import passwords into Brave Password Manager.">
-        Next, import the passwords
-      </message>
-      <message name="IDS_ACCESS_LOSS_IMPORT_DIALOG_DESC" desc="The message of the dialog instructing the user to import passwords into Brave Password Manager.">
-        Open Brave Password Manager and go to settings. Select “Import“ and add the CSV file that contains your exported passwords.
-      </message>
-      <message name="IDS_ACCESS_LOSS_IMPORT_DIALOG_POSITIVE_BUTTON_TEXT" desc="The positive button text in the dialog instructing the user to import passwords into Brave Password Manager.">
-        Take me there
-      </message>
-      <message name="IDS_ACCESS_LOSS_PREF_DESC_NO_UPM" desc="The subtitle of the Brave Password Manager item in Brave main settings when the GMS core version on the device is too outdated to support UPM. Displayed only if the UPM is not functioning properly.">
-        Passwords will stop working soon
-      </message>
-      <message name="IDS_ACCESS_LOSS_PREF_DESC_MIGRATION_FAILED" desc="The subtitle of the Brave Password Manager item in Brave main settings when the automatic migration to UPM failed. Displayed only if the UPM is not functioning properly.">
-        Some passwords will stop working soon
-      </message>
-      <message name="IDS_ACCESS_LOSS_PREF_DESC_NO_GMS_CORE" desc="The subtitle of the Brave Password Manager item in Brave main settings when there is no GMS Core on the device. Displayed only if the UPM is not functioning properly.">
-        Passwords will stop working on this device
-      </message>
-      <message name="IDS_ACCESS_LOSS_PREF_DESC_ONLY_ACCOUNT_UPM" desc="The subtitle of the Brave Password Manager item in Brave main settings when GMS Core version on the device supports only account passwords. Displayed only if the UPM is not functioning properly.">
-        Passwords may stop working soon
-      </message>
-      <message name="IDS_ACCESS_LOSS_PREF_DESC_NO_PWDS" desc="The subtitle of the Brave Password Manager item in Brave main settings when there is no GMS Core on the device and there are no local passwords saved in Brave. Displayed only if the UPM is not functioning properly.">
-        Passwords will stop working on this device
-      </message>
-      <message name="IDS_ACCESS_LOSS_NO_GMS_NO_PASSWORDS_TITLE" desc="The title of the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings if no Google Play Services is installed on the phone and there are no passwords saved in the profile store.">
-        Brave Password Manager will stop working soon on this device
-      </message>
-      <message name="IDS_ACCESS_LOSS_NO_GMS_NO_PASSWORDS_DESC" desc="The message in the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings if no Google Play Services is installed on the phone and there are no passwords saved in the profile store.">
-        Passwords will stop working soon because Google Play services isn’t available. To use passwords saved in your Brave sync chain, sign in using another device, or go to passwords.google.com.
       </message>
       <!-- Acknowledge grouped credential bottom sheet -->
       <message name="IDS_ACK_GROUPED_CRED_SHEET_OPENED" desc="The accessibility string to be announced by TalkBack right after the bottom sheet is opened.">
@@ -1079,7 +962,7 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_THEME_SETTINGS" desc="Title for the Theme settings. [CHAR_LIMIT=32]">
         Theme
       </message>
-      <message name="IDS_THEMES_SYSTEM_DEFAULT_TITLE" desc="Title for the System Default option. [CHAR_LIMIT=32]">
+      <message name="IDS_THEMES_SYSTEM_DEFAULT_TITLE" desc="Title for the System       Default option. [CHAR_LIMIT=32]" meaning="default theme">
         System default
       </message>
       <message name="IDS_THEMES_SYSTEM_DEFAULT_SUMMARY" desc="Summary for the System Default option.">
@@ -1135,11 +1018,8 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_CONTEXTUAL_SEARCH_SEE_BETTER_RESULTS_SUMMARY" desc="Summary for the see better results switch in Contextual Search preference.">
         By including more of a page’s text, you might see better results
       </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_CALLOUT_TEXT" desc="The text for a button, which when pressed opens the latest search results for the currently selected text.">
-        Latest results
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_CALLOUT_TEXT_VARIANT" desc="The text for a button, which when pressed allows the user to see more information about the currently selected text.">
-        See more
+      <message name="IDS_CONTEXTUAL_SEARCH_CALLOUT_IPH" desc="Text shown on in-product-help bubble to inform a user that dragging up on the panel will expand it, opening the latest search results for the currently selected text.">
+        Drag up to see search results
       </message>
       <message name="IDS_DO_NOT_TRACK_TITLE" desc="Title for the 'Do Not Track' preference. Please leave the 'Do Not Track' part in English according to the glossary.">
         Send a “Do Not Track” request
@@ -1973,7 +1853,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         =1 {Unsubscribed from one unused site}
         other {Unsubscribed from # unused sites}}
       </message>
-      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_MESSAGE" desc="Message for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed.">
+      <message name="IDS_SAFETY_HUB_UNSUBSCRIBED_NOTIFICATIONS_NOTIFICATION_MESSAGE" desc="Message for the notification sent from Safety Hub for telling the user that some notifications have been unsubscribed." meaning="This message informs about notification permissions having been revoked from one or more sites and explains that the user can review and manage [those notification permission revocations] by either clicking on this message or on the Review button below it.">
         {NUM_REVOKED_PERMISSIONS, plural,
         =1 {Brave stopped notifications from this site. You can review and manage.}
         other {Brave stopped notifications from these sites. You can review and manage.}}
@@ -2199,10 +2079,16 @@ Your Brave account may have other forms of browsing history like searches and ac
         Download anyway
       </message>
       <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TEXT" desc="Warning message shown on a dialog to ask user to validate the download of a dangerous file.">
-        Do you want to download <ph name="FILE_NAME">%1$s<ex>malware.exe</ex></ph> anyway?
+        Do you want to download "<ph name="FILE_NAME">^1<ex>malware.exe</ex></ph>" anyway?
+      </message>
+      <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TEXT_WITH_DOMAIN" desc="Warning message shown on a dialog to ask user to validate the download of a dangerous file, including the domain of the download.">
+        Do you want to download "<ph name="FILE_NAME">^1<ex>malware.exe</ex></ph>" from <ph name="DOWNLOAD_DOMAIN">^2<ex>badsite.com</ex></ph> anyway?
       </message>
       <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TEXT_WITH_SIZE" desc="Warning message shown on a dialog to ask user to validate the download of a dangerous file, with size information.">
-        Do you want to download <ph name="FILE_NAME">%1$s<ex>malware.exe</ex></ph> (<ph name="FILE_SIZE">%2$s<ex>100MB</ex></ph>) anyway?
+        Do you want to download "<ph name="FILE_NAME">^1<ex>malware.exe</ex></ph>" (<ph name="FILE_SIZE">^2<ex>100MB</ex></ph>) anyway?
+      </message>
+      <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TEXT_WITH_SIZE_AND_DOMAIN" desc="Warning message shown on a dialog to ask user to validate the download of a dangerous file, with size information and the domain of the download.">
+        Do you want to download "<ph name="FILE_NAME">^1<ex>malware.exe</ex></ph>" (<ph name="FILE_SIZE">^2<ex>100MB</ex></ph>) from <ph name="DOWNLOAD_DOMAIN">^3<ex>badsite.com</ex></ph> anyway?
       </message>
       <message name="IDS_DANGEROUS_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog for asking user to confirm a dangerous download">
         File might be harmful
@@ -2516,9 +2402,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SIGNOUT_MESSAGE" desc="The text is displayed as the message of a dialog to confirm whether the user wants to sign out of Brave. The dialog is titled ‘Sign out of Brave?’. The user can cancel and stay signed in, or confirm and sign out.">
         Some Brave features won\u2019t be available anymore
       </message>
-      <message name="IDS_TURN_OFF_SYNC_AND_SIGNOUT_MESSAGE" desc="Message to display in 'Sign out and turn off sync?' dialog">
-        Your bookmarks, history, passwords, and other Brave data will no longer be synced to your Brave sync chain
-      </message>
       <message name="IDS_TURN_OFF_SYNC_AND_SIGNOUT_MESSAGE_WITHOUT_PASSWORDS" desc="Message to display in 'Sign out and turn off sync?' dialog, without explicitly mentioning passwords. Similar to IDS_TURN_OFF_SYNC_AND_SIGNOUT_MESSAGE">
         Your bookmarks, history, and other Brave data will no longer be synced to your Brave sync chain
       </message>
@@ -2596,6 +2479,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_BOOKMARKS" desc="Title for preference which enables sync'ing of bookmarks. [CHAR_LIMIT=32]">
         Bookmarks
       </message>
+      <message name="IDS_SYNC_EXTENSIONS" desc="Title for preference which enables sync'ing of Brave browser extensions. [CHAR_LIMIT=32]">
+        Extensions
+      </message>
       <message name="IDS_SYNC_HISTORY" desc="Title for preference which enables sync'ing of history data. [CHAR_LIMIT=32]">
         History
       </message>
@@ -2634,6 +2520,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_ACCOUNT_SECTION_BOOKMARKS_TOGGLE" desc="Bookmarks, one of the data types that we allow syncing. Shown on next to the toggle that controls whether bookmarks should be saved in the Brave sync chain and synced across devices.">
         Bookmarks
+      </message>
+      <message name="IDS_ACCOUNT_SECTION_EXTENSIONS_TOGGLE" desc="Brave browser extensions, one of the data types that we allow syncing. Shown on next to the toggle that controls whether extensions should be saved in the Brave sync chain and synced across devices.">
+        Extensions
       </message>
       <message name="IDS_ACCOUNT_SECTION_READING_LIST_TOGGLE" desc="Reading List, one of the data types that we allow syncing. Shown on next to the toggle that controls whether reading list should be saved in the Brave sync chain and synced across devices.">
         Reading list
@@ -2818,24 +2707,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_SYNC_LOADING" desc="Preference title to let the user change their encryption password. [CHAR_LIMIT=20]">
         Loading…
-      </message>
-      <message name="IDS_SYNC_IMPORT_DATA_PROMPT" desc="Prompt for the user to choose how they want to handle their existing sync data">
-         You have bookmarks, history, passwords, and other settings from <ph name="FROM_ACCOUNT">%1$s<ex>johndoe@old.com</ex></ph>.
-      </message>
-      <message name="IDS_SYNC_IMPORT_DATA_PROMPT_WITHOUT_PASSWORDS" desc="Prompt for the user to choose how they want to handle their existing sync data. Similar to IDS_SYNC_IMPORT_DATA_PROMPT but without mentioning passwords.">
-         You have bookmarks, history, and other settings from <ph name="FROM_ACCOUNT">%1$s<ex>johndoe@old.com</ex></ph>.
-      </message>
-      <message name="IDS_SYNC_IMPORT_EXISTING_DATA" desc="Option to import existing data to the newly selected sync account">
-        Combine my data
-      </message>
-      <message name="IDS_SYNC_IMPORT_EXISTING_DATA_SUBTEXT" desc="Subtext describing what happens if the user elects to import existing data to the newly selected sync account">
-        Add existing data to <ph name="TO_ACCOUNT">%1$s<ex>johndoe@new.com</ex></ph>.
-      </message>
-      <message name="IDS_SYNC_KEEP_EXISTING_DATA_SEPARATE" desc="Option to keep the existing data separate from the newly selected sync account">
-        Keep my data separate
-      </message>
-      <message name="IDS_SYNC_KEEP_EXISTING_DATA_SEPARATE_SUBTEXT_EXISTING_DATA" desc="Subtext describing what happens if the user elects to keep the existing data separate signing into a new account after have previously being signed into a different account then signed out.">
-        Delete existing data.
       </message>
 
       <!-- Hint of sync error solution strings -->
@@ -3411,13 +3282,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Manage
       </message>
       <message name="IDS_NOTIFICATION_WARNING_TITLE" desc="Title of a warning notification informing the user that the notification may be suspicious.">
-        Possible spam
+        {NUM_SUSPICIOUS_NOTIFICATIONS, plural,
+          =1 {Possible spam}
+          other {Possible spam (#)}}
       </message>
       <message name="IDS_NOTIFICATION_WARNING_BODY" desc="Body text of a warning notification informing the user that the notification from the domain may be suspicious.">
         Brave detected possible spam from <ph name="DOMAIN">%1$s<ex>example.com</ex></ph>.
       </message>
       <message name="IDS_NOTIFICATION_SHOW_ORIGINAL_BUTTON" desc="Text of a button shown on suspicious notifications, allowing the user to see the contents of the original notification instead of the warning.">
-        Show notification
+        {NUM_SUSPICIOUS_NOTIFICATIONS, plural,
+          =1 {Show notification}
+          other {Show notifications}}
       </message>
       <message name="IDS_NOTIFICATION_ALWAYS_ALLOW_BUTTON" desc="Text of a button shown on original notifications that were displayed after the warning notifications. Clicking the button allows the user to always receive notifications from their origin without warning notifications.">
         Always allow
@@ -3769,9 +3644,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_FRE_DISMISS_BUTTON" desc="Button on the very first screen of Brave to continue without signing into Brave. Ensure consistency with OneBrave strings while still omitting “Brave” (see e.g. TC ID 5336438894576002929).">
         Use without an account
       </message>
-      <message name="IDS_SIGNIN_FRE_FOOTER" desc="The text is displayed in a footer on the very first screen of Brave. The link ‘Terms of Service’ opens the Brave Terms of Service. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy). Separate the first and the second part through a line break.">
-        By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph>.\nTo help improve the app, Brave sends usage and crash data to Brave. <ph name="BEGIN_UMA_LINK">&lt;UMA_LINK&gt;</ph>Manage<ph name="END_UMA_LINK">&lt;/UMA_LINK&gt;</ph>
-      </message>
       <message name="IDS_SIGNIN_FRE_FOOTER_TOS" desc="The text is displayed in a footer on the very first screen of Brave. The link ‘Terms of Service’ opens the Brave Terms of Service.">
         By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph>.
       </message>
@@ -4013,12 +3885,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_RECENT_TABS" desc="Text for button to show 'Recent tabs', i.e. recently closed tabs and tabs that are open on other devices [CHAR_LIMIT=20]">
         Recent tabs
-      </message>
-      <message name="IDS_MOST_VISITED_PLACEHOLDER_TITLE" desc="Header text shown on the new tab page when there are no most visited tiles yet.">
-        Nothing to see here… yet
-      </message>
-      <message name="IDS_MOST_VISITED_PLACEHOLDER_SUMMARY" desc="Explanation text shown on the new tab page when there are no most visited tiles yet.">
-        Your most visited pages will appear here
       </message>
       <message name="IDS_MOST_VISITED_ITEM_REMOVED" desc="Text shown when the user removes one of the most visited websites on the new tab page.">
         Item removed
@@ -4387,6 +4253,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_NEW_WINDOW" desc="Menu item for opening a new window. [CHAR_LIMIT=27]">
         New window
       </message>
+      <message name="IDS_MENU_NEW_INCOGNITO_WINDOW" desc="Menu item for opening a new private window. [CHAR_LIMIT=27]">
+        New private window
+      </message>
       <message name="IDS_MENU_MOVE_TO_OTHER_WINDOW" desc="Menu item for moving the current tab into the other window. [CHAR_LIMIT=27]">
         Move to other window
       </message>
@@ -4489,11 +4358,29 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_READER_MODE_PREFS" desc="Menu item to show reader mode preferences pane, which allows users to change the appearance (font size, theme, etc.) of the page. [CHAR_LIMIT=27]">
         Appearance
       </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_TITLE" desc="Title of the Reading Mode bottom sheet. [CHAR_LIMIT=27]">
+        Reading mode
+      </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet.">
+        Reading mode bottom sheet
+      </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_CLOSED_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when closed.">
+        Reading mode bottom sheet closed
+      </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_HALF_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when opened at half height.">
+        Reading mode bottom sheet opened at half height
+      </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_FULL_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when opened at full height.">
+        Reading mode bottom sheet opened at full height
+      </message>
       <message name="IDS_MENU_SETTINGS" desc="Menu item for opening browser settings. [CHAR_LIMIT=27]">
         Settings
       </message>
       <message name="IDS_MENU_NTP_CUSTOMIZATION" desc="Option in item menu. User can click the 'Customize new tab page' option to open the 'Customize your new tab page' bottom sheet. [CHAR_LIMIT=27]">
         Customize new tab page
+      </message>
+      <message name="IDS_MENU_LISTEN_TO_FEED" desc="Menu item for listening to the feed. [CHAR_LIMIT=27]">
+        Listen to the feed
       </message>
       <message name="IDS_MENU_SETTINGS_ACCOUNT_ERROR" desc="Accessibility string for settings menu item with a badge on the icon in case of sync/identity error.">
         Settings, Brave sync chain error
@@ -4539,6 +4426,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_PIN_TAB" desc="Menu item for pinning a tab.">
         Pin tab
+      </message>
+      <message name="IDS_MENU_UNPIN_TAB" desc="Menu item for unpinning a tab.">
+        Unpin tab
       </message>
       <message name="IDS_MENU_ITEM_CONTENT_FILTER_HELP_CENTER_LINK" desc="Menu item to explain that the content filter is on and to direct the user to the help center article about content filters. Only available when the content filter is on.">
         Content filter is on
@@ -5087,6 +4977,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Previous
       </message>
 
+      <if expr="enable_extensions_core">
+        <message name="IDS_ACCESSIBILITY_BTN_EXTENSIONS" desc="Content description for the extension button.">
+          Extensions
+        </message>
+      </if>
+
       <!-- Accessibility strings for tablet tab strip -->
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_STANDARD" desc="Content description for the Private tabs toggle button when viewing standard tabs.">
         Enter Private mode
@@ -5339,10 +5235,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> windows.
       </message>
       <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_V2_ACTIVE_TAB" desc="Message to notify the user that a new window cannot be created because the total number of persisted instances exceeds the window limit.">
-        You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> total windows. To open a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%2$d</ph> or fewer.
+        To open a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer.
       </message>
       <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_V2_INACTIVE_TAB" desc="Message to notify the user thata window cannot be restored because the total number of persisted instances exceeds the window limit.">
-        You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> total windows. To restore a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%2$d</ph> or fewer. Inactive windows are deleted after 6 months.
+        To restore a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer. Inactive windows are deleted after 6 months.
       </message>
       <message name="IDS_TAB_DROPPED_DIFFERENT_MODEL" desc="Toast that appears when a tab is dropped into tab strip with a different profile (regular v.s. private).">
         You can find all open tabs in the tab switcher
@@ -5754,23 +5650,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Unable to install <ph name="module">%1$s<ex>augmented reality</ex></ph> for Brave
       </message>
 
-      <!-- Custom Context Menu Informations -->
-      <message name="IDS_CONTEXTMENU_PAGE_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to the page.">
-        PAGE
-      </message>
-      <message name="IDS_CONTEXTMENU_IMAGE_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to the image.">
-        IMAGE
-      </message>
-      <message name="IDS_CONTEXTMENU_LINK_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to the link.">
-        LINK
-      </message>
-      <message name="IDS_CONTEXTMENU_VIDEO_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to a video.">
-        VIDEO
-      </message>
-      <message name="IDS_CONTEXTMENU_DEVELOPER_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to tools for developers.">
-        DEVELOPER
-      </message>
-
       <!-- Multi-instance Switcher Dialog strings -->
       <message name="IDS_INSTANCE_SWITCHER_HEADER" desc="The header of multi-instance switcher dialog.">
         Manage windows
@@ -5828,6 +5707,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ONE" desc="The phrase used in the message when there is a single tab to delete.">
         The tab <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> will be closed
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_ONE_V2" desc="The phrase used in the message when there is a single tab to delete.">
+        <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph> will be closed
       </message>
       <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_TABS_MANY" desc="The phrase used in the message when there are multiple tabs to delete.">
         {TAB_COUNT, plural,
@@ -5902,6 +5784,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_IPH_ANDROID_TAB_DECLUTTER_TEXT" desc="The in-product-help text for the android tab declutter feature.">
         Review your inactive tabs here
+      </message>
+      <message name="IDS_IPH_ANDROID_TAB_DECLUTTER_TEXT_WITH_TAB_GROUPS" desc="The in-product-help text for the android tab declutter feature.">
+        Review your inactive tabs and groups here
       </message>
       <message name="IDS_IPH_ANDROID_TAB_DECLUTTER_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text for the android tab declutter feature.">
         To open tabs and visit different pages at the same time, tap the open tabs button
@@ -6512,6 +6397,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_CUSTOM_TAB_CANT_PERFORM_ACTION_TOAST" desc="Toast displayed when the URL currently being displayed in the Custom Tab cannot be opened in the regular browser.">
         Something went wrong. Try again.
+      </message>
+      <message name="IDS_ACCESSIBILITY_CUSTOM_TAB_MENU_WITH_DOT" desc="Content description for the menu with a dot indicating the fallback UI for contextual page action is highlighted.">
+        Customize and control Brave with a highlighted item
+      </message>
+      <message name="IDS_ACCESSIBILITY_CUSTOM_TAB_MENU_ITEM_HIGHLIGHT" desc="Announcement made when the overflow menu has a highlighted item for a recommended contextual page action.">
+        <ph name="MENU_NAME">%1$s<ex>Price Tracking</ex></ph> menu is highlighted.
       </message>
 
       <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials.">
@@ -7159,21 +7050,29 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Tab declutter -->
-      <message name="IDS_ARCHIVED_TAB_CARD_TITLE" desc="Shown in the tab switcher to prompt the user to review their inactive tabs. Indicates how many tabs are inactive.">
+      <message name="IDS_ARCHIVED_TAB_CARD_TITLE" desc="Shown in the tab switcher to prompt the user to review their inactive tabs and tab groups. Indicates how many tabs and tab groups are inactive.">
         {ARCHIVED_TAB_COUNT, plural,
-          =1 {Inactive tab (1)}
-          other {Inactive tabs (#)}}
+          =1 {(1) inactive item}
+          other {(#) inactive items}}
       </message>
-      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE" desc="Shown in the tab switcher to inform the user how long the relevant tabs have been in active for.">
+      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE" desc="Shown in the tab switcher to inform the user how long the relevant tabs have been inactive for.">
         {INACTIVE_TIME_DAYS, plural,
           =1 {Not used for 1 day or more}
           other {Not used for # days or more}}
       </message>
+      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="Shown in the tab switcher to inform the user how long the relevant tabs and tab groups have been inactive for.">
+        {INACTIVE_TIME_DAYS, plural,
+          =1 {Tabs and groups not used for 1 day or more}
+          other {Tabs and groups not used for # days or more}}
+      </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE" desc="In product help shown as a message in the archived tabs dialog.">
-        Tabs you haven’t used for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and deleted after 60 days</ex></ph>. You can change this anytime in <ph name="SETTINGS_TITLE">%3$s<ex>Settings</ex></ph>.
+        Tabs you haven’t used for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and deleted after 3 months</ex></ph>. You can change this anytime in <ph name="SETTINGS_TITLE">%3$s<ex>Settings</ex></ph>.
+      </message>
+      <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="In product help shown as a message in the archived tabs dialog.">
+        Tabs and tab groups you haven’t used for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and deleted after 3 months</ex></ph>. You can change this anytime in <ph name="SETTINGS_TITLE">%3$s<ex>Settings</ex></ph>.
       </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_AUTODELETE_SECTION" desc="A section describing auto-delete, shown if it's enabled.">
-        \u0020and closed after <ph name="DAYS_ARCHIVED">%1$d<ex>60</ex></ph> days
+        \u0020and closed after <ph name="MONTHS_ARCHIVED">%1$d<ex>3</ex></ph> months
       </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_SETTINGS_TITLE" desc="The word for settings, used in IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE.">
         Settings
@@ -7188,6 +7087,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_HUB_SEARCH_STATUS_VIEW_BACK_BUTTON_ICON_DESCRIPTION" desc="Accessibility string describing the back icon in the search box to exit hub search.">
         Back
+      </message>
+      <message name="IDS_ACCESSIBILITY_SEARCH_LOUPE_TOOLTIP_TEXT" desc="Content description for opening up the tab search window, which allows users to search their tabs.">
+        Open tab search
       </message>
 
       <!-- Default browser promo -->

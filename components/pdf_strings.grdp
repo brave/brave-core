@@ -193,7 +193,7 @@
     <message name="IDS_PDF_THUMBNAIL_PAGE_ARIA_LABEL" desc="aria-label describing a thumbnail by its corresponding PDF page number">
       Thumbnail for page <ph name="THUMBNAIL_PAGE"><ex>1</ex>$1</ph>
     </message>
-    <if expr="chromeos_ash or enable_pdf_ink2">
+    <if expr="is_chromeos or enable_pdf_ink2">
       <message name="IDS_PDF_ANNOTATION_ANNOTATE" desc="Button tooltip for entering the 'Annotation mode' which allows writing, drawing and highlighting of the PDF document">
         Annotate
       </message>
@@ -496,6 +496,11 @@
     <message name="IDS_AX_ROLE_DESCRIPTION_PDF_POPUP_NOTE" desc="Accessibility role description for popup note annotation associated with a PDF highlight">
       Note
     </message>
+    <if expr="enable_pdf_save_to_drive">
+      <message name="IDS_PDF_TOOLTIP_SAVE_TO_DRIVE" desc="Button tooltip for saving a PDF document to Google Drive">
+        Save to Google Drive
+      </message>
+    </if>
   </if>
   <if expr="enable_screen_ai_service">
     <message name="IDS_PDF_OCR_FEATURE_ALERT" is_accessibility_with_no_ui="true" desc="Notification of the PDF OCR feature when the user encounters an inaccessible PDF.">

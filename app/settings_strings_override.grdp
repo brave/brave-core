@@ -31,7 +31,7 @@
     </if>
   <if expr="is_macosx">
     </if>
-  <if expr="not chromeos_ash">
+  <if expr="not is_chromeos">
     </if>
 
   <if expr="is_chromeos">
@@ -39,6 +39,8 @@
   <if expr="not is_chromeos">
     </if>
   <if expr="is_linux">
+    </if>
+  <if expr="not is_linux">
     </if>
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
     Show bookmarks
