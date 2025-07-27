@@ -24,7 +24,9 @@ export interface HTMLTemplateTags {
 let nextId = 1
 let isHTML = false
 
-// Properties a camelCase but will be converted to lowercase by the HTML parser.
+// Properties are camelCase but will be converted to lowercase by the HTML
+// parser. We need to keep track of the proper casing so we don't break setting
+// properties.
 const propertyRegex = /\s\.(\w+)/gm
 const propertyCases: Record<string, string> = {}
 
