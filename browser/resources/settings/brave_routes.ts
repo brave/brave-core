@@ -138,4 +138,11 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (r.SITE_SETTINGS_STORAGE_ACCESS) {
     delete r.SITE_SETTINGS_STORAGE_ACCESS
   }
+  if (r.SYNC) {
+    delete r.SYNC
+  }
+  // Delete /syncSetup/advanced
+  if (r.SYNC_ADVANCED) {
+    delete r.SYNC_ADVANCED
+  }
 }

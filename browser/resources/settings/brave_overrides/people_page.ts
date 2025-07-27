@@ -3,8 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  RegisterPolymerTemplateModifications,
+  RegisterStyleOverride
+} from 'chrome://resources/brave/polymer_overriding.js'
+import {
+  html
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 RegisterStyleOverride(
   'settings-people-page',
@@ -22,8 +27,8 @@ RegisterPolymerTemplateModifications({
   'settings-people-page': (templateContent) => {
     // People page needs to think it's in the getStarted section, since it is
     // (we remove the People section as a separate section).
-    const page = templateContent.querySelector('settings-animated-pages[section=people]')
-    page.setAttribute('section', 'getStarted')
+//    const page = templateContent.querySelector('settings-animated-pages[section=people]')
+//    page.setAttribute('section', 'getStarted')
     // The 'Manage profile' button is inside the "signin-allowed" conditional template.
     // We don't allow Google Sign-in, but we do allow local profile editing, so we have to turn
     // the template back on and remove the google signin prompt.
@@ -37,18 +42,6 @@ RegisterPolymerTemplateModifications({
       syncSetupLink.remove()
     } else {
       console.error('[Brave Settings Overrides] People Page cannot find sync-setup link')
-    }
-    const syncSetup = templateContent.querySelector('template[is=dom-if][route-path="/syncSetup"]')
-    if (syncSetup) {
-      syncSetup.remove()
-    } else {
-      console.error('[Brave Settings Overrides] People Page cannot find syncSetup template')
-    }
-    const syncSetupAdvanced = templateContent.querySelector('template[is=dom-if][route-path="/syncSetup/advanced"]')
-    if (syncSetupAdvanced) {
-      syncSetupAdvanced.remove()
-    } else {
-      console.error('[Brave Settings Overrides] People Page cannot find syncSetup/advanced template')
     }
     // always show the template content
     signinTemplate.setAttribute('if', 'true')

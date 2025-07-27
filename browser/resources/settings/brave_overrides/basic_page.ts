@@ -117,21 +117,16 @@ RegisterStyleOverride(
 RegisterPolymerTemplateModifications({
   'settings-basic-page': (templateContent) => {
     // Add 'Getting Started' section
-    // Entire content is wrapped in another conditional template
-    const actualTemplate = templateContent.querySelector('template')
-    if (!actualTemplate) {
-      console.error('[Brave Settings Overrides] Could not find basic-page template')
-      return
-    }
-    const basicPageEl = actualTemplate.content.querySelector('#basicPage')
+    const basicPageEl = templateContent.querySelector('#basicPage')
     if (!basicPageEl) {
-      console.error('[Brave Settings Overrides] Could not find basicPage element to insert Getting Started section')
+      throw new Error('[Settings] Could not find basicPage element')
     } else {
-      const privacyGuidePromoSection = actualTemplate.content.querySelector('#privacyGuidePromoSection')
-      if (!privacyGuidePromoSection) {
-        console.error('[Brave Settings Overrides] Could not find privacyGuidePromoSection element to hide')
+      const privacyGuidePromoTemplate = templateContent.
+        querySelector('template[is=dom-if][if="[[isPrivacyGuideAvailable]]"]')
+      if (privacyGuidePromoTemplate) {
+        privacyGuidePromoTemplate.remove()
       } else {
-        privacyGuidePromoSection.remove()
+        throw new Error('[Settings] Could not find privacyGuidePromoTemplate')
       }
       const sectionGetStarted = document.createElement('template')
       sectionGetStarted.setAttribute('is', 'dom-if')
@@ -425,7 +420,7 @@ RegisterPolymerTemplateModifications({
       // Insert nested Social Blocking under shields
       last = last.insertAdjacentElement('afterend', sectionSocialBlocking)
       // Move privacy section to after shields
-      const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
+      const sectionPrivacy = getSectionElement(templateContent, 'privacy')
       last = last.insertAdjacentElement('afterend', sectionPrivacy)
       // Insert sync
       last = last.insertAdjacentElement('afterend', sectionSync)
