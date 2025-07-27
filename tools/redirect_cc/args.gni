@@ -9,3 +9,4 @@ is_component_build = false
 dcheck_always_on = false
 enable_stripping = true
 symbol_level = 0
+use_siso = false
