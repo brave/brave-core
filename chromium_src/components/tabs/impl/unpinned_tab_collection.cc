@@ -10,7 +10,7 @@
 #define SPLIT SPLIT, TabCollection::Type::TREE_NODE
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#include <components/tabs/unpinned_tab_collection.cc>
+#include <components/tabs/impl/unpinned_tab_collection.cc>
 
 #if !BUILDFLAG(IS_ANDROID)
 #undef SPLIT
