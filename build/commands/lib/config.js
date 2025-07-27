@@ -262,6 +262,8 @@ const Config = function () {
     'bitflyer_sandbox_client_secret',
     'bitflyer_sandbox_fee_address',
     'bitflyer_sandbox_url',
+    'brave_account_api_endpoint',
+    'brave_account_api_key',
     'brave_android_developer_options_code',
     'brave_google_api_endpoint',
     'brave_google_api_key',
@@ -737,6 +739,8 @@ Config.prototype.buildArgs = function () {
     delete args.enable_glic
     delete args.enable_widevine
     delete args.enable_hangout_services_extension
+    delete args.brave_account_api_endpoint
+    delete args.brave_account_api_key
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
     delete args.brave_stats_updater_url
