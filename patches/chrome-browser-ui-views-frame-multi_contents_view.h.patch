@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/multi_contents_view.h b/chrome/browser/ui/views/frame/multi_contents_view.h
-index e9ce0c6055508f1210ee078a6ddbcef51382b203..6ae2127f29a6dd66d25d8733abf8e6d2c30aa408 100644
+index 30fe420f8c382964c9d5cd8f078b9fa8d960758f..48ed7022b199f4b665f6512da0faa8a7fcb27a2f 100644
 --- a/chrome/browser/ui/views/frame/multi_contents_view.h
 +++ b/chrome/browser/ui/views/frame/multi_contents_view.h
 @@ -20,7 +20,7 @@

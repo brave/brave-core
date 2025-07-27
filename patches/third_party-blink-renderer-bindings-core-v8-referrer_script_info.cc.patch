@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc b/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc
-index 7eed34ecff15925f178d1123466456f326f92e44..c4f6f079dbeacf99d43f3d125636af50b2e7c48d 100644
+index 1b797783987255622735047bd78ca0e8bb635d5e..fcfdb95c9c03239e9ddb46ce094a3efe2e47e3ed 100644
 --- a/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc
 @@ -56,6 +56,7 @@ bool ReferrerScriptInfo::IsDefaultValue(

@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index a73784f6fd79916e470314dc1a443dc2a4c94483..4f2dcb136800032b1719e4dea6895a5f4baf15e4 100644
+index 78e4d9ad976fd8f4a9bb282a7325d797dd9e2a74..e393416f2fd01d4e50fa0345fe94899dffd8af06 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -691,6 +691,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index a73784f6fd79916e470314dc1a443dc2a4c94483..4f2dcb136800032b1719e4dea6895a5f
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1114,6 +1115,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1124,6 +1125,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 std::string());
    registry->RegisterInt64Pref(kOptGuideModelFetcherLastFetchAttempt, 0);
    registry->RegisterInt64Pref(kOptGuideModelFetcherLastFetchSuccess, 0);

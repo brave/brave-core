@@ -1,5 +1,5 @@
 diff --git a/content/common/BUILD.gn b/content/common/BUILD.gn
-index af1e2cc289018a8e632bb8a2417a85c115986b9f..0c06d7182e08b6b1224b1e0c0ba217e5947c87bc 100644
+index 86da823ffba50c0428e4bd0c763b077beb1268b7..0e4bba20f4c76cea9881896e0f8e16fab3ff25ba 100644
 --- a/content/common/BUILD.gn
 +++ b/content/common/BUILD.gn
 @@ -64,6 +64,7 @@ source_set("common") {
@@ -7,6 +7,6 @@ index af1e2cc289018a8e632bb8a2417a85c115986b9f..0c06d7182e08b6b1224b1e0c0ba217e5
    # build.
    visibility = [ "//content/*" ]
 +  visibility += [ "//brave/content/*" ]
-
+ 
    sources = [
      "background_fetch/background_fetch_types.cc",

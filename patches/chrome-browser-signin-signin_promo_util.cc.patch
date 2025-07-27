@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/signin/signin_promo_util.cc b/chrome/browser/signin/signin_promo_util.cc
-index 496968eb7525eb143c925197144e5afdaa997135..71f2b658daf4c79319839a92de121673edf855ec 100644
+index 2b35ad6e74dc87228a383fd3c27ac33a3f67d6eb..1721ad390f4454f305739bfa2f93dd2b7c23919c 100644
 --- a/chrome/browser/signin/signin_promo_util.cc
 +++ b/chrome/browser/signin/signin_promo_util.cc
 @@ -119,6 +119,7 @@ bool ShouldShowPromoBasedOnImpressionOrDismissalCount(Profile& profile,

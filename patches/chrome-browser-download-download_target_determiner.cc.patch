@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/download/download_target_determiner.cc b/chrome/browser/download/download_target_determiner.cc
-index 592ae5be7f9268b0116effccddbca181e06d0e31..7db18ea110f9c0779b1af7847fa3f0d16708bebc 100644
+index cae68c5f52fd1e794f11e44ff6c92dec23b5567d..b7f1c8e0ff219df72f7f4a65d40cdcab067b3515 100644
 --- a/chrome/browser/download/download_target_determiner.cc
 +++ b/chrome/browser/download/download_target_determiner.cc
 @@ -1323,6 +1323,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/public/tab_features.h b/chrome/browser/ui/tabs/public/tab_features.h
-index e20edfd974a55826c99df701efc09a67290adf76..51d4f64350950532dcff59f72d17b3461e85ae7b 100644
+index 002ad719f026f73143841af914fc2dd587bb9e43..e674909e440e4c5c2c836b4401ed14b212930ef8 100644
 --- a/chrome/browser/ui/tabs/public/tab_features.h
 +++ b/chrome/browser/ui/tabs/public/tab_features.h
-@@ -117,7 +117,7 @@ class InactiveWindowMouseEventController;
+@@ -118,7 +118,7 @@ class TabCreationMetricsController;
  class TabFeatures {
   public:
    TabFeatures();
