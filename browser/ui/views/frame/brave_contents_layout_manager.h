@@ -16,8 +16,8 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
                              views::View* devtools_scrim_view,
                              views::View* contents_view,
                              views::View* lens_overlay_view,
-                             views::View* border_view,
                              views::View* watermark_view,
+                             views::View* actor_overlay_view,
                              views::View* reader_mode_toolbar,
                              views::View* scrim_view = nullptr);
   ~BraveContentsLayoutManager() override;
