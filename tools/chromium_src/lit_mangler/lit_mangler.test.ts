@@ -148,6 +148,34 @@ describe('Attribute handling', () => {
     })
 });
 
+describe('Property handling', () => {
+    it('property names should roundtrip through the mangler', () => {
+        const template: HTMLTemplateTags = { text: `<div .fooBar="\${this.foo}" .baz="1" .hElLo="2">Hello</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+        utilsForTest.cachePropertyCasesFromText(template.text)
+
+        utilsForTest.mangle(e => {
+            // don't do anything, we're just checking the output is sane
+        }, template)
+
+        const output = utilsForTest.restorePropertyCases(template.text)
+        expect(output).toBe(`<div .fooBar="\${this.foo}" .baz="1" .hElLo="2">Hello</div>`)
+    })
+
+    it('should still lowercase attributes', () => {
+        const template: HTMLTemplateTags = { text: `<div .fooBar="\${this.foo}" .baz="1" .hElLo="2" BAZ="7" ?hiDDen="true">Hello</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+        utilsForTest.cachePropertyCasesFromText(template.text)
+
+        utilsForTest.mangle(e => {
+            // don't do anything, we're just checking the output is sane
+        }, template)
+
+        const output = utilsForTest.restorePropertyCases(template.text)
+        expect(output).toBe(`<div .fooBar="\${this.foo}" .baz="1" .hElLo="2" baz="7" ?hidden="true">Hello</div>`)
+    })
+})
+
 describe('Escaping', () => {
     it('should escape quotes', () => {
         const template: HTMLTemplateTags = { text: `<div attr=\${"foo"}>"\${this.foo}"</div>`, children: [], id: 0 }
