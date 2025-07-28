@@ -71,15 +71,14 @@ IN_PROC_BROWSER_TEST_P(FileSystemAccessBrowserTest, FilePicker) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   if (IsFileSystemAccessAPIEnabled()) {
-    auto result =
-        content::EvalJs(primary_main_frame(), "typeof self.showOpenFilePicker");
-    EXPECT_EQ(result.ExtractString(), "function");
+    EXPECT_EQ(
+        content::EvalJs(primary_main_frame(), "typeof self.showOpenFilePicker"),
+        base::Value("function"));
   } else {
-    auto result =
-        content::EvalJs(primary_main_frame(), "self.showOpenFilePicker()");
-    EXPECT_TRUE(base::Contains(result.error,
-                               "self.showOpenFilePicker is not a function"))
-        << result.error;
+    EXPECT_THAT(
+        content::EvalJs(primary_main_frame(), "self.showOpenFilePicker()"),
+        content::EvalJsResult::ErrorIs(
+            testing::HasSubstr("self.showOpenFilePicker is not a function")));
   }
 }
 
