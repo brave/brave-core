@@ -41,6 +41,10 @@ program
     '--with_issue_44921',
     'Do not pass --revision to gclient to avoid process hanging on jenkins. https://github.com/brave/brave-browser/issues/44921',
   )
+  .option(
+    '--checkout_clangd',
+    'check out a clangd that exactly matches the version of Clang used by Chromium',
+  )
 
 function syncBrave(program) {
   let args = ['sync', '--nohooks']
