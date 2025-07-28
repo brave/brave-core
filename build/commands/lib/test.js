@@ -70,9 +70,7 @@ const getApplicableFilters = (config, suite) => {
   ]
 
   if (config.is_ubsan) {
-    possibleFilters.push(
-      [suite, targetPlatform, config.targetArch, 'ubsan'].join('-'),
-    )
+    possibleFilters.push([suite, targetPlatform, 'ubsan'].join('-'))
   }
 
   possibleFilters.forEach((filterName) => {
