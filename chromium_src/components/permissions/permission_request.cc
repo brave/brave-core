@@ -40,16 +40,16 @@
 
 // For permission strings that we also need on Android, we need to use
 // a string that has a placeholder ($1) in it.
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP                \
-  BRAVE_ENUM_ITEMS_FOR_SWITCH                              \
-  case RequestType::kBraveGoogleSignInPermission:          \
-    message_id = IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT;   \
-    break;                                                 \
-  case RequestType::kBraveLocalhostAccessPermission:       \
-    message_id = IDS_LOCALHOST_ACCESS_PERMISSION_FRAGMENT; \
-    break;                                                 \
-  case RequestType::kBraveOpenAIChat:                      \
-    message_id = IDS_OPEN_AI_CHAT_PERMISSION_FRAGMENT;     \
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP              \
+  BRAVE_ENUM_ITEMS_FOR_SWITCH                            \
+  case RequestType::kBraveGoogleSignInPermission:        \
+    message_id = IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT; \
+    break;                                               \
+  case RequestType::kBraveLocalhostAccessPermission:     \
+    NOTREACHED();                                        \
+    break;                                               \
+  case RequestType::kBraveOpenAIChat:                    \
+    message_id = IDS_OPEN_AI_CHAT_PERMISSION_FRAGMENT;   \
     break;
 
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID          \
@@ -58,7 +58,7 @@
     message_id = IDS_GOOGLE_SIGN_IN_INFOBAR_TEXT;    \
     break;                                           \
   case RequestType::kBraveLocalhostAccessPermission: \
-    message_id = IDS_LOCALHOST_ACCESS_INFOBAR_TEXT;  \
+    NOTREACHED();                                    \
     break;                                           \
   case RequestType::kBraveOpenAIChat:                \
     message_id = IDS_OPEN_AI_CHAT_INFOBAR_TEXT;      \
