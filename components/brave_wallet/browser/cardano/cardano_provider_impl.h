@@ -33,7 +33,7 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
   ~CardanoProviderImpl() override;
 
   // mojom::CardanoProvider
-  void Enable(mojo::PendingReceiver<mojom::CardanoApi> incoming_connection,
+  void Enable(mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
               EnableCallback callback) override;
   void IsEnabled(IsEnabledCallback callback) override;
 
@@ -52,12 +52,12 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
                                   mojom::AccountInfoPtr account) override;
 
   void RequestCardanoPermissions(
-      mojo::PendingReceiver<mojom::CardanoApi> incoming_connection,
+      mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
       EnableCallback callback,
       const url::Origin& origin);
 
   void OnRequestCardanoPermissions(
-      mojo::PendingReceiver<mojom::CardanoApi> incoming_connection,
+      mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
       EnableCallback callback,
       const url::Origin& origin,
       mojom::RequestPermissionsError error,
@@ -68,7 +68,7 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
 
   std::optional<EnableCallback> pending_request_cardano_permissions_callback_;
-  mojo::PendingReceiver<mojom::CardanoApi> pending_incoming_connection_;
+  mojo::PendingReceiver<mojom::CardanoApi> pending_cardano_api_;
   url::Origin pending_request_cardano_permissions_origin_;
   bool wallet_onboarding_shown_ = false;
 

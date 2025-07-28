@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
@@ -56,7 +55,7 @@ void CardanoProviderImpl::IsEnabled(IsEnabledCallback callback) {
 }
 
 void CardanoProviderImpl::Enable(
-    mojo::PendingReceiver<mojom::CardanoApi> incoming_connection,
+    mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
     EnableCallback callback) {
   if (!delegate_->IsTabVisible()) {
     std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
@@ -66,18 +65,18 @@ void CardanoProviderImpl::Enable(
 
   delegate_->WalletInteractionDetected();
 
-  RequestCardanoPermissions(std::move(incoming_connection), std::move(callback),
+  RequestCardanoPermissions(std::move(cardano_api), std::move(callback),
                             delegate_->GetOrigin());
 }
 
 void CardanoProviderImpl::RequestCardanoPermissions(
-    mojo::PendingReceiver<mojom::CardanoApi> incoming_connection,
+    mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
     EnableCallback callback,
     const url::Origin& origin) {
   if (delegate_->IsPermissionDenied(mojom::CoinType::ADA)) {
-    OnRequestCardanoPermissions(
-        std::move(incoming_connection), std::move(callback), origin,
-        mojom::RequestPermissionsError::kNone, std::vector<std::string>());
+    OnRequestCardanoPermissions(std::move(cardano_api), std::move(callback),
+                                origin, mojom::RequestPermissionsError::kNone,
+                                std::vector<std::string>());
     return;
   }
 
@@ -90,7 +89,7 @@ void CardanoProviderImpl::RequestCardanoPermissions(
       wallet_onboarding_shown_ = true;
     }
     OnRequestCardanoPermissions(
-        std::move(incoming_connection), std::move(callback), origin,
+        std::move(cardano_api), std::move(callback), origin,
         mojom::RequestPermissionsError::kInternal, std::nullopt);
     return;
   }
@@ -98,11 +97,11 @@ void CardanoProviderImpl::RequestCardanoPermissions(
   if (brave_wallet_service_->keyring_service()->IsLockedSync()) {
     if (pending_request_cardano_permissions_callback_) {
       OnRequestCardanoPermissions(
-          std::move(incoming_connection), std::move(callback), origin,
+          std::move(cardano_api), std::move(callback), origin,
           mojom::RequestPermissionsError::kRequestInProgress, std::nullopt);
       return;
     }
-    pending_incoming_connection_ = std::move(incoming_connection);
+    pending_cardano_api_ = std::move(cardano_api);
     pending_request_cardano_permissions_callback_ = std::move(callback);
     pending_request_cardano_permissions_origin_ = origin;
 
@@ -117,28 +116,27 @@ void CardanoProviderImpl::RequestCardanoPermissions(
 
   if (!success) {
     OnRequestCardanoPermissions(
-        std::move(incoming_connection), std::move(callback), origin,
+        std::move(cardano_api), std::move(callback), origin,
         mojom::RequestPermissionsError::kInternal, std::nullopt);
     return;
   }
 
   if (success && !allowed_accounts->empty()) {
-    OnRequestCardanoPermissions(
-        std::move(incoming_connection), std::move(callback), origin,
-        mojom::RequestPermissionsError::kNone, allowed_accounts);
+    OnRequestCardanoPermissions(std::move(cardano_api), std::move(callback),
+                                origin, mojom::RequestPermissionsError::kNone,
+                                allowed_accounts);
   } else {
     // Request accounts if no accounts are connected.
     delegate_->RequestPermissions(
         mojom::CoinType::ADA, cardano_account_ids,
         base::BindOnce(&CardanoProviderImpl::OnRequestCardanoPermissions,
-                       weak_ptr_factory_.GetWeakPtr(),
-                       std::move(incoming_connection), std::move(callback),
-                       origin));
+                       weak_ptr_factory_.GetWeakPtr(), std::move(cardano_api),
+                       std::move(callback), origin));
   }
 }
 
 void CardanoProviderImpl::OnRequestCardanoPermissions(
-    mojo::PendingReceiver<mojom::CardanoApi> incoming_connection,
+    mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
     EnableCallback callback,
     const url::Origin& origin,
     mojom::RequestPermissionsError error,
@@ -179,8 +177,7 @@ void CardanoProviderImpl::OnRequestCardanoPermissions(
     auto api_impl = std::make_unique<CardanoApiImpl>(
         brave_wallet_service_.get(), delegate_factory_.Run(),
         account_id.Clone());
-    mojo::MakeSelfOwnedReceiver(std::move(api_impl),
-                                std::move(incoming_connection));
+    mojo::MakeSelfOwnedReceiver(std::move(api_impl), std::move(cardano_api));
   }
 
   std::move(callback).Run(std::move(error_bundle));
@@ -195,7 +192,7 @@ void CardanoProviderImpl::Locked() {}
 void CardanoProviderImpl::Unlocked() {
   if (pending_request_cardano_permissions_callback_) {
     RequestCardanoPermissions(
-        std::move(pending_incoming_connection_),
+        std::move(pending_cardano_api_),
         std::move(pending_request_cardano_permissions_callback_.value()),
         std::move(pending_request_cardano_permissions_origin_));
   }
@@ -204,7 +201,7 @@ void CardanoProviderImpl::Unlocked() {
 void CardanoProviderImpl::SelectedDappAccountChanged(
     mojom::CoinType coin,
     mojom::AccountInfoPtr account) {
-  // We have only one possible selected account for Cardano.
+  // CardanoApiImpl will handle this case itself
 }
 
 }  // namespace brave_wallet
