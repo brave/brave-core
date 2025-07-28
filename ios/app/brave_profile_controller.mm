@@ -109,10 +109,6 @@
   ProfileIOS* profile = browser->GetProfile();
   SessionRestorationServiceFactory::GetForProfile(profile)->SetSessionID(
       browser, identifier);
-
-  // Load the session
-  SessionRestorationServiceFactory::GetForProfile(profile)->LoadSession(
-      browser);
 }
 
 - (instancetype)initWithProfileKeepAlive:
