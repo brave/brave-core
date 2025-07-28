@@ -56,8 +56,11 @@ class BraveTab : public Tab, public views::TextfieldController {
   void CommitRename();
   void ExitRenameMode();
 
+  bool in_renaming_mode() const {
+    return rename_textfield_ && rename_textfield_->GetVisible();
+  }
+
   raw_ptr<views::Textfield> rename_textfield_ = nullptr;
-  bool rename_mode_ = false;
 
   static constexpr int kExtraLeftPadding = 4;
 };
