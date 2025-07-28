@@ -40,6 +40,7 @@
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/split_tab_visual_data.h"
@@ -560,9 +561,10 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
   EXPECT_EQ(BookmarkBar::HIDDEN,
             BookmarkBarController::From(browser())->bookmark_bar_state());
 
-  // Check bookmarks is shown only on NTP split tab.
+  // With SideBySide, bookmarks bar is shown always if one of split tab is NTP.
+  // Otherwise, it's shown only when active split tab is NTP.
   brave::SetBookmarkState(brave::BookmarkBarState::kNtp, prefs);
-  EXPECT_EQ(BookmarkBar::HIDDEN,
+  EXPECT_EQ(IsSideBySideEnabled() ? BookmarkBar::SHOW : BookmarkBar::HIDDEN,
             BookmarkBarController::From(browser())->bookmark_bar_state());
   tab_strip_model->ActivateTabAt(1);
   EXPECT_EQ(BookmarkBar::SHOW,
@@ -575,6 +577,22 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
   tab_strip_model->ActivateTabAt(0);
   EXPECT_EQ(BookmarkBar::SHOW,
             BookmarkBarController::From(browser())->bookmark_bar_state());
+
+// Upstream's window fullscreen test is disabled on macOS.
+// See the comment of SideBySideBrowserTest at browser_browsertest.cc.
+#if !BUILDFLAG(IS_MAC)
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  EXPECT_TRUE(browser()->window()->IsFullscreen());
+
+  // Same reason with above for having different result with SideBySide
+  // enabled state.
+  EXPECT_EQ(IsSideBySideEnabled() ? BookmarkBar::SHOW : BookmarkBar::HIDDEN,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+#endif
 }
 
 IN_PROC_BROWSER_TEST_P(
