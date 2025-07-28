@@ -6,7 +6,6 @@
 const fs = require('fs-extra')
 const path = require('path')
 
-
 const getTestBinary = (config, suite) => {
   let testBinary = suite
   if (testBinary === 'brave_java_unit_tests') {
