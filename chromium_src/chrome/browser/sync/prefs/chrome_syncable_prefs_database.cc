@@ -48,7 +48,8 @@ enum {
   kProfileContentSettingsPartitionedExceptionsBraveSpeedreader = 300029,
   kProfileContentSettingsExceptionsBraveShieldsAdBlockOnlyMode = 300030,
   kProfileDefaultContentSettingValuesBraveShieldsAdBlockOnlyMode = 300031,
-  kProfileContentSettingsPartitionedExceptionsBraveShieldsAdBlockOnlyMode = 300032,
+  kProfileContentSettingsPartitionedExceptionsBraveShieldsAdBlockOnlyMode =
+      300032,
 };
 }  // namespace brave_syncable_prefs_ids
 
@@ -59,11 +60,12 @@ const auto& BraveSyncablePreferences() {
        {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsBraveShields,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
         sync_preferences::MergeBehavior::kMergeableDict}},
-        {"profile.content_settings.exceptions.braveShieldsAdBlockOnlyMode",
-          {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsBraveShieldsAdBlockOnlyMode,
-           syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-           sync_preferences::MergeBehavior::kMergeableDict}},
-         {"profile.content_settings.exceptions.braveSpeedreader",
+      {"profile.content_settings.exceptions.braveShieldsAdBlockOnlyMode",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsExceptionsBraveShieldsAdBlockOnlyMode,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.braveSpeedreader",
        {brave_syncable_prefs_ids::
             kProfileContentSettingsExceptionsBraveSpeedreader,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
@@ -110,12 +112,12 @@ const auto& BraveSyncablePreferences() {
             kProfileDefaultContentSettingValuesBraveShields,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
         sync_preferences::MergeBehavior::kNone}},
-        {"profile.default_content_setting_values.braveShieldsAdBlockOnlyMode",
-          {brave_syncable_prefs_ids::
-               kProfileDefaultContentSettingValuesBraveShieldsAdBlockOnlyMode,
-           syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-           sync_preferences::MergeBehavior::kNone}},
-         {"profile.default_content_setting_values.braveSpeedreader",
+      {"profile.default_content_setting_values.braveShieldsAdBlockOnlyMode",
+       {brave_syncable_prefs_ids::
+            kProfileDefaultContentSettingValuesBraveShieldsAdBlockOnlyMode,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.braveSpeedreader",
        {brave_syncable_prefs_ids::
             kProfileDefaultContentSettingValuesBraveSpeedreader,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
@@ -162,12 +164,13 @@ const auto& BraveSyncablePreferences() {
             kProfileContentSettingsPartitionedExceptionsBraveShields,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
         sync_preferences::MergeBehavior::kMergeableDict}},
-        {"profile.content_settings.partitioned_exceptions.braveShieldsAdBlockOnlyMode",
-          {brave_syncable_prefs_ids::
-               kProfileContentSettingsPartitionedExceptionsBraveShieldsAdBlockOnlyMode,
-           syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
-           sync_preferences::MergeBehavior::kMergeableDict}},
-         {"profile.content_settings.partitioned_exceptions.braveSpeedreader",
+      {"profile.content_settings.partitioned_exceptions."
+       "braveShieldsAdBlockOnlyMode",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsBraveShieldsAdBlockOnlyMode,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.partitioned_exceptions.braveSpeedreader",
        {brave_syncable_prefs_ids::
             kProfileContentSettingsPartitionedExceptionsBraveSpeedreader,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,

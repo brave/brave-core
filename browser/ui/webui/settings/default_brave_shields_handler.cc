@@ -314,26 +314,26 @@ void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
 }
 
 void DefaultBraveShieldsHandler::GetAdBlockOnlyModeEnabled(
-  const base::Value::List& args) {
-CHECK_EQ(args.size(), 1U);
-CHECK(profile_);
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
 
-const bool enabled = brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
-    HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
-AllowJavascript();
-ResolveJavascriptCallback(args[0], base::Value(enabled));
+  const bool enabled = brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(enabled));
 }
 
 void DefaultBraveShieldsHandler::SetAdBlockOnlyModeEnabled(
-  const base::Value::List& args) {
-CHECK_EQ(args.size(), 1U);
-CHECK(profile_);
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
 
-const bool enabled = args[0].GetBool();
-brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
-    HostContentSettingsMapFactory::GetForProfile(profile_),
-    enabled ? ControlType::DEFAULT : ControlType::ALLOW, GURL(),
-    g_browser_process->local_state());
+  const bool enabled = args[0].GetBool();
+  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      enabled ? ControlType::DEFAULT : ControlType::ALLOW, GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(

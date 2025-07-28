@@ -432,9 +432,15 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
   return type == ControlType::BLOCK;
 }
 
-bool IsReduceLanguageEnabledForProfile(PrefService* pref_service) {
+bool IsReduceLanguageEnabledForProfile(HostContentSettingsMap* map,
+                                       const GURL& url,
+                                       PrefService* pref_service) {
   // Don't reduce language if feature is disabled
   if (!base::FeatureList::IsEnabled(features::kBraveReduceLanguage)) {
+    return false;
+  }
+
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
     return false;
   }
 
@@ -449,7 +455,7 @@ bool IsReduceLanguageEnabledForProfile(PrefService* pref_service) {
 bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
                             const GURL& url,
                             PrefService* pref_service) {
-  if (!IsReduceLanguageEnabledForProfile(pref_service)) {
+  if (!IsReduceLanguageEnabledForProfile(map, url, pref_service)) {
     return false;
   }
 
@@ -618,6 +624,10 @@ ControlType GetCookieControlType(
   DCHECK(map);
   DCHECK(cookie_settings);
 
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+    return ControlType::ALLOW;
+  }
+
   auto result = BraveCookieRules::Get(map, url);
   if (result.HasDefault()) {
     const auto default_rules = BraveCookieRules::GetDefault(cookie_settings);
@@ -683,16 +693,15 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
 
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                          const GURL& url) {
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+    return ControlType::ALLOW;
+  }
+
   ContentSettingsForOneType fingerprinting_rules =
       map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
 
   ContentSetting fp_setting =
       GetBraveFPContentSettingFromRules(fingerprinting_rules, url);
-
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
-    LOG(ERROR) << "FOOBAR.GetFingerprintingControlType.1";
-    return ControlType::ALLOW;
-  }
 
   if (fp_setting == CONTENT_SETTING_ASK ||
       fp_setting == CONTENT_SETTING_DEFAULT ||
@@ -850,6 +859,10 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url) {
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+    return ControlType::ALLOW;
+  }
+
   ContentSetting setting =
       map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT);
 
@@ -944,15 +957,6 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
   if (!shields_up) {
     return brave_shields::mojom::FarblingLevel::OFF;
   }
-
-  LOG(ERROR) << "FOOBAR.GetFarblingLevel.0";
-
-  // if (GetBraveShieldsAdBlockOnlyModeEnabled(map, primary_url)) {
-  //   LOG(ERROR) << "FOOBAR.GetFarblingLevel.1";
-  //   return brave_shields::mojom::FarblingLevel::OFF;
-  // }
-
-  LOG(ERROR) << "FOOBAR.GetFarblingLevel.2";
 
   auto fingerprinting_type = GetFingerprintingControlType(map, primary_url);
   switch (fingerprinting_type) {

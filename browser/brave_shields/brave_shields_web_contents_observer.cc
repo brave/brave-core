@@ -313,7 +313,8 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&agent);
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, allowed_scripts_,
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service)));
+      brave_shields::IsReduceLanguageEnabledForProfile(
+          host_content_settings_map, primary_url, pref_service)));
 }
 
 void BraveShieldsWebContentsObserver::BindReceiver(

@@ -23,6 +23,7 @@ bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url);
 
 bool MaybeChangeReferrer(bool allow_referrers,
                          bool shields_up,
+                         bool shields_ad_block_only_mode_enabled,
                          const GURL& current_referrer,
                          const GURL& target_url,
                          content::Referrer* output_referrer);
