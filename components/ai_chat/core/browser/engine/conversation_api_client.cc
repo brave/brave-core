@@ -120,10 +120,11 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::GetFocusTabsForTopic, "classifyTabs"},
            {ConversationEventType::UploadImage, "uploadImage"},
            {ConversationEventType::PageScreenshot, "pageScreenshot"},
-           {ConversationEventType::ToolUse, "toolUse"}});
+           {ConversationEventType::ToolUse, "toolUse"},
+           {ConversationEventType::UserMemory, "userMemory"}});
 
   base::Value::List events;
-  for (const auto& event : conversation) {
+  for (auto& event : conversation) {
     base::Value::Dict event_dict;
 
     // Set role
@@ -167,6 +168,10 @@ base::Value::List ConversationEventsToList(
       event_dict.Set("topic", event.topic);
     }
 
+    if (event.type == ConversationEventType::UserMemory && event.user_memory) {
+      event_dict.Set("memory", std::move(*event.user_memory));
+    }
+
     events.Append(std::move(event_dict));
   }
   return events;
@@ -206,12 +211,14 @@ ConversationAPIClient::ConversationEvent::ConversationEvent(
     ConversationEventType type,
     Content content,
     const std::string& topic,
+    std::optional<base::Value::Dict> user_memory,
     std::vector<mojom::ToolUseEventPtr> tool_calls,
     const std::string& tool_call_id)
     : role(role),
       type(type),
       content(std::move(content)),
       topic(topic),
+      user_memory(std::move(user_memory)),
       tool_calls(std::move(tool_calls)),
       tool_call_id(tool_call_id) {}
 

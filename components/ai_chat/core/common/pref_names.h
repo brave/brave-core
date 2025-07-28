@@ -106,6 +106,15 @@ inline constexpr char kObseleteBraveChatAutoGenerateQuestions[] =
 inline constexpr char kBraveAIChatTabOrganizationEnabled[] =
     "brave.ai_chat.tab_organization_enabled";
 
+inline constexpr char kBraveAIChatUserCustomizationEnabled[] =
+    "brave.ai_chat.user_customization_enabled";
+inline constexpr char kBraveAIChatUserCustomizations[] =
+    "brave.ai_chat.user_customizations";
+inline constexpr char kBraveAIChatUserMemoryEnabled[] =
+    "brave.ai_chat.user_memory_enabled";
+inline constexpr char kBraveAIChatUserMemories[] =
+    "brave.ai_chat.user_memories";
+
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 

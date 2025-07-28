@@ -18,7 +18,7 @@ RegisterStyleOverride(
         background-color: var(--leo-color-page-background) !important;
         box-shadow: none !important;
     }
-    :host(:not([id=safetyHub])) slot {
+    :host(:not(.multi-card):not([id=safetyHub])) slot {
         box-shadow: var(--leo-effect-elevation-01) !important;
         background-color: var(--leo-color-container-background) !important;
         border-radius: var(--leo-radius-m) !important;

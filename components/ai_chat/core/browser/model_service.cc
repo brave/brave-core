@@ -731,7 +731,8 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     auto& leo_model_opts = model->options->get_leo_model_options();
     DVLOG(1) << "Started AI engine: conversation api";
     engine = std::make_unique<EngineConsumerConversationAPI>(
-        *leo_model_opts, url_loader_factory, credential_manager, this);
+        *leo_model_opts, url_loader_factory, credential_manager, this,
+        pref_service_);
   } else if (model->options->is_custom_model_options()) {
     auto& custom_model_opts = model->options->get_custom_model_options();
     DVLOG(1) << "Started AI engine: custom";
