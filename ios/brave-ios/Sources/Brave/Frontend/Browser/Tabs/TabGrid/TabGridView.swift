@@ -338,7 +338,7 @@ struct TabGridView: View {
             } label: {
               Text(Strings.TabGrid.shredSelectedTabButtonTitle)
             }
-            .disabled(!viewModel.isSingleTabShredAvailable)
+            .disabled(!viewModel.isSelectedTabShredAvailable)
             Button(role: .destructive) {
               isShredAlertPresented = true
               activeShredMode = .allTabs
