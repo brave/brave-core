@@ -34,6 +34,7 @@
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
   {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, "localhostAccess"},   \
   {ContentSettingsType::BRAVE_OPEN_AI_CHAT, "braveOpenAIChat"},       \
+  {ContentSettingsType::BRAVE_AUTO_SHRED, "braveAutoShred"},          \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, nullptr}, \

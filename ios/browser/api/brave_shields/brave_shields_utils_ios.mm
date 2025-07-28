@@ -229,4 +229,62 @@
                                               localState, profilePrefs);
 }
 
+- (BraveShieldsAutoShredMode)defaultAutoShredMode {
+  return [self autoShredModeForGURL:GURL() isPrivate:false];
+}
+
+- (BraveShieldsAutoShredMode)autoShredModeForURL:(NSURL*)url
+                                       isPrivate:(bool)isPrivate {
+  GURL gurl = net::GURLWithNSURL(url);
+  return [self autoShredModeForGURL:gurl isPrivate:isPrivate];
+}
+
+- (BraveShieldsAutoShredMode)autoShredModeForGURL:(GURL)gurl
+                                        isPrivate:(bool)isPrivate {
+  HostContentSettingsMap* map =
+      [self hostContentSettingsMapForPrivate:isPrivate];
+  brave_shields::AutoShredType autoShredType =
+      brave_shields::GetAutoShredType(map, gurl);
+
+  if (autoShredType == brave_shields::AutoShredType::APP_EXIT) {
+    return BraveShieldsAutoShredModeAppExit;
+  } else if (autoShredType == brave_shields::AutoShredType::TAB_CLOSE) {
+    return BraveShieldsAutoShredModeTabClose;
+  }
+  return BraveShieldsAutoShredModeNever;
+}
+
+- (void)setDefaultAutoShredMode:(BraveShieldsAutoShredMode)autoShredMode {
+  [self setAutoShredMode:autoShredMode forGURL:GURL() isPrivate:false];
+}
+
+- (void)setAutoShredMode:(BraveShieldsAutoShredMode)autoShredMode
+                  forURL:(NSURL*)url
+               isPrivate:(bool)isPrivate {
+  GURL gurl = net::GURLWithNSURL(url);
+  [self setAutoShredMode:autoShredMode forGURL:gurl isPrivate:isPrivate];
+}
+
+- (void)setAutoShredMode:(BraveShieldsAutoShredMode)autoShredMode
+                 forGURL:(GURL)gurl
+               isPrivate:(bool)isPrivate {
+  brave_shields::AutoShredType autoShredType;
+  switch (autoShredMode) {
+    case BraveShieldsAutoShredModeAppExit:
+      autoShredType = brave_shields::AutoShredType::APP_EXIT;
+      break;
+    case BraveShieldsAutoShredModeTabClose:
+      autoShredType = brave_shields::AutoShredType::TAB_CLOSE;
+      break;
+    case BraveShieldsAutoShredModeNever:
+      autoShredType = brave_shields::AutoShredType::NEVER;
+      break;
+  }
+
+  HostContentSettingsMap* map =
+      [self hostContentSettingsMapForPrivate:isPrivate];
+
+  brave_shields::SetAutoShredType(map, autoShredType, gurl);
+}
+
 @end
