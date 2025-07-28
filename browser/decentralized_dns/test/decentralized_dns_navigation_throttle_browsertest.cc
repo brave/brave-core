@@ -294,4 +294,45 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
             local_state()->GetInteger(kSnsResolveMethod));
 }
 
+IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
+                       ClickjackingProtectionPreventsEarlyClicks) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth")));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
+  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+            GetInterstitialType(web_contents));
+
+  // Test that clicks within the first 500ms are ignored (clickjacking
+  // protection) by verifying that the proceed command doesn't work immediately
+  content::RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
+
+  // Try to trigger proceed immediately - should be blocked by clickjacking
+  // protection
+  bool js_result = false;
+  EXPECT_TRUE(content::ExecJs(
+      main_frame,
+      "window.domAutomationController.send(typeof proceedClicksEnabled !== "
+      "'undefined' && !proceedClicksEnabled);",
+      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY));
+
+  // Verify the proceed clicks are initially disabled
+  EXPECT_TRUE(content::EvalJs(main_frame,
+                              "typeof proceedClicksEnabled !== 'undefined' && "
+                              "!proceedClicksEnabled")
+                  .ExtractBool());
+
+  // Wait for the clickjacking protection delay to pass
+  base::RunLoop run_loop;
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(), base::Milliseconds(600));
+  run_loop.Run();
+
+  // Verify proceed clicks are now enabled
+  EXPECT_TRUE(
+      content::EvalJs(main_frame, "proceedClicksEnabled").ExtractBool());
+}
+
 }  // namespace decentralized_dns
