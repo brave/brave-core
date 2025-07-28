@@ -8,6 +8,7 @@
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/public/constants.h"
 #include "chrome/browser/ui/tab_ui_helper.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
@@ -30,7 +31,7 @@ std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab(
   auto* tab_ui_helper = tab_interface->GetTabFeatures()->tab_ui_helper();
   CHECK(tab_ui_helper);
   if (tab_ui_helper->has_custom_title()) {
-    extra_data["tab_custom_title"] =
+    extra_data[tabs::kBraveTabCustomTitleExtraDataKey] =
         base::UTF16ToUTF8(tab_ui_helper->GetTitle());
   }
 

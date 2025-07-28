@@ -22,6 +22,7 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -184,9 +185,9 @@ void BraveBrowser::TabCustomTitleChanged(content::WebContents* contents,
     // so that it can be restored even after browser restarts.
     sessions::SessionTabHelper* session_tab_helper =
         sessions::SessionTabHelper::FromWebContents(contents);
-    session_service->AddTabExtraData(session_id(),
-                                     session_tab_helper->session_id(),
-                                     "tab_custom_title", custom_title);
+    session_service->AddTabExtraData(
+        session_id(), session_tab_helper->session_id(),
+        tabs::kBraveTabCustomTitleExtraDataKey, custom_title);
   }
 }
 

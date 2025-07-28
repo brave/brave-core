@@ -8,6 +8,7 @@
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
@@ -178,7 +179,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
 
   auto extra_data = browser()->live_tab_context()->GetExtraDataForTab(0);
 
-  auto custom_tab_it = extra_data.find("tab_custom_title");
+  auto custom_tab_it = extra_data.find(tabs::kBraveTabCustomTitleExtraDataKey);
   ASSERT_NE(custom_tab_it, extra_data.end());
   EXPECT_EQ(custom_tab_it->second, "Custom Title");
 }
