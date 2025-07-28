@@ -12,7 +12,7 @@ import WebKit
 import os.log
 
 class BraveSearchScriptHandler: TabContentScript {
-  private let profile: Profile
+  private let profile: LegacyBrowserProfile
   private weak var rewards: BraveRewards?
 
   /// Tracks how many in current browsing session the user has been prompted to set Brave Search as a default
@@ -23,7 +23,7 @@ class BraveSearchScriptHandler: TabContentScript {
   /// How many times user is shown the default browser prompt in total, this does not reset between app launches.
   private let maxCountOfDefaultBrowserPromptsTotal = 10
 
-  required init(profile: Profile, rewards: BraveRewards) {
+  required init(profile: LegacyBrowserProfile, rewards: BraveRewards) {
     self.profile = profile
     self.rewards = rewards
   }
