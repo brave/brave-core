@@ -2489,7 +2489,7 @@ extension BrowserViewController: TabWebUIDelegate {
   }
 
   public func unlockWallet(_ tab: some TabState) {
-    print("UNLOCKING WALLET")
+    presentWallet()
   }
 }
 
