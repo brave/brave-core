@@ -422,6 +422,7 @@ Config.prototype.buildArgs = function () {
   versionParts = versionParts.split('.')
 
   let args = {
+    'import("//brave/build/brave_defaults.gni")': null,
     sardine_client_id: this.sardineClientId,
     sardine_client_secret: this.sardineClientSecret,
     is_asan: this.isAsan(),
@@ -430,22 +431,12 @@ Config.prototype.buildArgs = function () {
     is_ubsan: this.is_ubsan,
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
-    disable_fieldtrial_testing_config: true,
-    safe_browsing_mode: 1,
-    root_extra_deps: ['//brave'],
     // TODO: Re-enable when chromium_src overrides work for files in relative
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
     is_component_build: this.isComponentBuild(),
     is_universal_binary: this.isUniversalBinary,
-    proprietary_codecs: true,
-    ffmpeg_branding: 'Chrome',
-    branding_path_component: 'brave',
-    branding_path_product: 'brave',
-    enable_glic: false,
-    enable_widevine: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
-    ignore_missing_widevine_signing_cert: false,
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild(),
     is_debug: this.isDebug(),
@@ -517,7 +508,6 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_remoteexec: this.useRemoteExec,
     use_reclient: this.useRemoteExec,
-    use_siso: false,
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
     brave_services_production_domain: this.braveServicesProductionDomain,
@@ -526,7 +516,6 @@ Config.prototype.buildArgs = function () {
     brave_services_key_id: this.brave_services_key_id,
     service_key_aichat: this.service_key_aichat,
     service_key_stt: this.service_key_stt,
-    generate_about_credits: true,
   }
 
   if (this.isOfficialBuild()) {
@@ -835,12 +824,6 @@ Config.prototype.buildArgs = function () {
 
     delete args.safebrowsing_api_endpoint
     delete args.safe_browsing_mode
-    delete args.proprietary_codecs
-    delete args.ffmpeg_branding
-    delete args.branding_path_component
-    delete args.branding_path_product
-    delete args.enable_glic
-    delete args.enable_widevine
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key

@@ -1,0 +1,27 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This file contains strict overrides for gn values in chromium which we always
+# override in Brave builds.
+
+# Please provide a reason if you are adding new overrides to this file.
+
+disable_fieldtrial_testing_config = true
+root_extra_deps = [ "//brave" ]
+proprietary_codecs = true
+ffmpeg_branding = "Chrome"
+branding_path_component = "brave"
+branding_path_product = "brave"
+enable_glic = false
+enable_widevine = true
+use_siso = false
+generate_about_credits = true
+
+# This value is false by default, but it normally gets set to true by
+# release builds.
+ignore_missing_widevine_signing_cert = false
+
+# This value normally gets set to 2 on android builds.
+safe_browsing_mode = 1
