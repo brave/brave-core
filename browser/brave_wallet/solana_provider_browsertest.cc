@@ -840,7 +840,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectRequestInProgress) {
     }
   })()
   )");
-  ASSERT_TRUE(result.error.empty());
+  ASSERT_TRUE(result.is_ok());
   ASSERT_TRUE(result.is_dict());
   base::Value::Dict dict = result.ExtractDict();
   EXPECT_EQ(*dict.FindInt("code"),
