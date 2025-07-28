@@ -565,9 +565,10 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
   EXPECT_EQ(BookmarkBar::HIDDEN,
             BookmarkBarController::From(browser())->bookmark_bar_state());
 
-  // Check bookmarks is shown only on NTP split tab.
+  // With SideBySide, bookmarks bar is shown always if one of split tab is NTP.
+  // Otherwise, it's shown only when active split tab is NTP.
   brave::SetBookmarkState(brave::BookmarkBarState::kNtp, prefs);
-  EXPECT_EQ(BookmarkBar::HIDDEN,
+  EXPECT_EQ(IsSideBySideEnabled() ? BookmarkBar::SHOW : BookmarkBar::HIDDEN,
             BookmarkBarController::From(browser())->bookmark_bar_state());
   tab_strip_model->ActivateTabAt(1);
   EXPECT_EQ(BookmarkBar::SHOW,
@@ -580,6 +581,22 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
   tab_strip_model->ActivateTabAt(0);
   EXPECT_EQ(BookmarkBar::SHOW,
             BookmarkBarController::From(browser())->bookmark_bar_state());
+
+// Upstream's window fullscreen test is disabled on macOS.
+// See the comment of SideBySideBrowserTest at browser_browsertest.cc.
+#if !BUILDFLAG(IS_MAC)
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  EXPECT_TRUE(browser()->window()->IsFullscreen());
+
+  // Same reason with above for having different result with SideBySide
+  // enabled state.
+  EXPECT_EQ(IsSideBySideEnabled() ? BookmarkBar::SHOW : BookmarkBar::HIDDEN,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+#endif
 }
 
 IN_PROC_BROWSER_TEST_P(
