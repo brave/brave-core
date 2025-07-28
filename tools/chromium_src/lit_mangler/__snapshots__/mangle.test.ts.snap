@@ -433,7 +433,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    </div>
 -  <profile-card-menu .profileState=\\"\${this.profileState}\\"
 -      ?hidden=\\"\${isGlicVersion()}\\">
-+  <profile-card-menu .profilestate=\\"\${this.profileState}\\" ?hidden=\\"\${isGlicVersion()}\\">
++  <profile-card-menu .profileState=\\"\${this.profileState}\\" ?hidden=\\"\${isGlicVersion()}\\">
    </profile-card-menu>
  </div>
 -<cr-tooltip id=\\"gaiaNameTooltip\\" for=\\"gaiaName\\" manual-mode offset=\\"0\\"
@@ -455,22 +455,19 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 +++ gen/chrome/browser/resources/signin/profile_picker/preprocessed/profile_picker_main_view.html.ts
-@@ -14,49 +14,35 @@
+@@ -14,10 +14,9 @@
      }
    }()}
  <div class=\\"flex-container\\">
    <div class=\\"title-container\\">
 -    <img id=\\"picker-logo\\" @click=\\"\${this.onProductLogoClick_}\\"
 -        src=\\"picker_logo.svg\\" role=\\"presentation\\">
--    <h1 class=\\"title\\" .innerHTML=\\"\${this.getTitle_()}\\"></h1>
--    <div class=\\"subtitle\\" .innerHTML=\\"\${this.getSubtitle_()}\\"></div>
 +    <img id=\\"picker-logo\\" @click=\\"\${this.onProductLogoClick_}\\" src=\\"picker_logo.svg\\" role=\\"presentation\\">
-+    <h1 class=\\"title\\" .innerhtml=\\"\${this.getTitle_()}\\"></h1>
-+    <div class=\\"subtitle\\" .innerhtml=\\"\${this.getSubtitle_()}\\"></div>
+     <h1 class=\\"title\\" .innerHTML=\\"\${this.getTitle_()}\\"></h1>
+     <div class=\\"subtitle\\" .innerHTML=\\"\${this.getSubtitle_()}\\"></div>
    </div>
    <div id=\\"profilesWrapper\\" ?hidden=\\"\${(this.shouldHideProfilesWrapper_())}\\">
-     <div id=\\"profilesContainer\\" class=\\"custom-scrollbar\\">
-       \${this.profilesList_.map((item, index) => html\`
+@@ -26,37 +25,24 @@
          <profile-card class=\\"profile-item\\" .profileState=\\"\${item}\\"
              data-index=\\"\${index}\\">
          </profile-card>

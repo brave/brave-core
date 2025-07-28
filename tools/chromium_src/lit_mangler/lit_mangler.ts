@@ -23,8 +23,15 @@ export interface HTMLTemplateTags {
 
 let nextId = 1
 
+// Properties are camelCase but will be converted to lowercase by the HTML
+// parser. We need to keep track of the proper casing so we don't break setting
+// properties.
+const propertyRegex = /\s\.(\w+)/gm
+const propertyCases: Record<string, string> = {}
+
 const loadRaw = (filepath: string) => {
     const text = readFileSync(filepath, 'utf-8')
+    cachePropertyCasesFromText(text)
     const tsFile = ts.createSourceFile(path.basename(filepath), text, ts.ScriptTarget.Latest)
 
     return tsFile
@@ -56,6 +63,30 @@ const getTemplateLiterals = (source: ts.SourceFile, node: ts.Node, templateTags:
     node.forEachChild(n => {
         getTemplateLiterals(source, n, templateTags)
     })
+}
+
+/**
+ * Stores the property cases from the source text in |propertyCases|. They need
+ * to be restored when we save the file.
+ * @param text The source text of the file
+ */
+const cachePropertyCasesFromText = (text: string) => {
+    const matches = text.matchAll(propertyRegex)
+    for (const match of matches) {
+        propertyCases[match[0].toLocaleLowerCase()] = match[0]
+    }
+}
+
+/**
+ * Restores the property cases from |propertyCases| in the source text.
+ * @param text The source text of the file
+ * @returns The source text with the property cases restored
+ */
+const restorePropertyCases = (text: string) => {
+    for (const [key, value] of Object.entries(propertyCases)) {
+        text = text.replaceAll(key, value)
+    }
+    return text
 }
 
 /**
@@ -183,7 +214,7 @@ export const write = (file: string) => {
         throw new Error('This should only be called after load')
     }
 
-    const text = replacePlaceholders(result)
+    const text = restorePropertyCases(replacePlaceholders(result))
     writeFileSync(file, text)
 }
 
@@ -288,5 +319,7 @@ export const utilsForTest = {
     setResult: (r: HTMLTemplateTags) => {
         result = r
     },
-    resetTemplateId: () => nextId = 1
+    resetTemplateId: () => nextId = 1,
+    cachePropertyCasesFromText,
+    restorePropertyCases
 }
