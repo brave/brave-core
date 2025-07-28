@@ -100,6 +100,8 @@ source_set("app") {
     "//ios/chrome/browser/main/model",
     "//ios/chrome/browser/passwords/model:store_factory",
     "//ios/chrome/browser/providers/ui_utils:chromium_ui_utils",
+    "//ios/chrome/browser/sessions/model:session_restoration_service",
+    "//ios/chrome/browser/sessions/model:session_restoration_service_factory",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/paths",
     "//ios/chrome/browser/shared/model/prefs:pref_names",
