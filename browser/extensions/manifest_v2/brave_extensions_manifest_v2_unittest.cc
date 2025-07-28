@@ -147,22 +147,22 @@ class BraveExtensionsManifestV2SettingsBackupTest
   void CopyTestIndexedDB(const extensions::ExtensionId& cws_id) {
     const auto test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
-    base::CopyDirectory(test_data_dir.AppendASCII("extensions")
-                            .AppendASCII("mv2")
-                            .AppendASCII(cws_id)
-                            .AppendASCII("IndexedDB"),
-                        profile()->GetPath(), true);
+    ASSERT_TRUE(base::CopyDirectory(test_data_dir.AppendASCII("extensions")
+                                        .AppendASCII("mv2")
+                                        .AppendASCII(cws_id)
+                                        .AppendASCII("IndexedDB"),
+                                    profile()->GetPath(), true));
   }
 
   void CopyTestLocalSettings(const extensions::ExtensionId& cws_id) {
     const auto test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
-    base::CopyDirectory(
+    ASSERT_TRUE(base::CopyDirectory(
         test_data_dir.AppendASCII("extensions")
             .AppendASCII("mv2")
             .AppendASCII(cws_id)
             .Append(extensions::kLocalExtensionSettingsDirectoryName),
-        profile()->GetPath(), true);
+        profile()->GetPath(), true));
   }
 
   base::FilePath GetRelative(const base::FilePath& prefix,
@@ -237,6 +237,9 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
             .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
             .Build();
     registrar()->AddExtension(extension);
+    extensions::ExtensionPrefs::Get(profile())->UpdateExtensionPref(
+        extensions_mv2::kWebStoreUBlockId, "manifest.version",
+        base::Value("1.65.0"));
     CopyTestIndexedDB(extensions_mv2::kWebStoreUBlockId);
     CopyTestLocalSettings(extensions_mv2::kWebStoreUBlockId);
 
@@ -248,6 +251,14 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
     WaitForExtensionsFileOperations();
 
     if (GetParam().backup_enabled) {
+      std::string version;
+      base::ReadFileToString(profile()
+                                 ->GetPath()
+                                 .AppendASCII("ExtensionsMV2Backup")
+                                 .AppendASCII(extensions_mv2::kWebStoreUBlockId)
+                                 .AppendASCII("version"),
+                             &version);
+      EXPECT_EQ("1.65.0", version);
       // Check extensions settings are saved in the backup dir.
       EXPECT_TRUE(AreDirectoriesEqual(
           profile()->GetPath().AppendASCII("IndexedDB"),
@@ -280,9 +291,11 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
             .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
             .Build();
     registrar()->AddExtension(extension);
+    extensions::ExtensionPrefs::Get(profile())->UpdateExtensionPref(
+        extensions_mv2::kUBlockId, "manifest.version", base::Value("1.65.0"));
+    // It triggers the migrator to import settings from backup.
     registry()->TriggerOnInstalled(extension.get(), false);
 
-    // It triggers the migrator to import settings from backup.
     WaitForExtensionsFileOperations();
 
     if (GetParam().import_enabled || !GetParam().backup_enabled) {
