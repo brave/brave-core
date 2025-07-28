@@ -8,11 +8,14 @@ import("//brave/components/psst/buildflags/buildflags.gni")
 assert(enable_psst)
 
 static_library("content") {
+  public = [ "psst_tab_web_contents_observer.h" ]
+
+  friend = [ ":unit_tests" ]
+
   sources = [
     "psst_scripts_handler_impl.cc",
     "psst_scripts_handler_impl.h",
     "psst_tab_web_contents_observer.cc",
-    "psst_tab_web_contents_observer.h",
   ]
 
   public_deps = [
