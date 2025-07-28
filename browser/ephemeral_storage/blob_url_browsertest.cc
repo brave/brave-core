@@ -98,7 +98,9 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
       EXPECT_EQ(fetch_result,
                 std::move(fetch_via_webworker_result).TakeValue());
     } else {
-      EXPECT_EQ(fetch_result.error, fetch_via_webworker_result.error);
+      EXPECT_THAT(fetch_result,
+                  content::EvalJsResult::ErrorIs(
+                      testing::Eq(fetch_via_webworker_result.ExtractError())));
     }
     return fetch_result;
   }

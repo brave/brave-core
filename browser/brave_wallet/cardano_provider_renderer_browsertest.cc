@@ -282,8 +282,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, Incognito) {
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, ExtensionWallet) {
   ReloadAndWaitForLoadStop(browser());
   // Add a new wallet along with the brave one
-  EXPECT_EQ(content::EvalJs(web_contents(browser()), kExtensionWallet).error,
-            "");
+  EXPECT_TRUE(
+      content::EvalJs(web_contents(browser()), kExtensionWallet).is_ok());
   auto result = EvalJs(web_contents(browser()), kCheckExtensionWallet);
   EXPECT_EQ(base::Value(true), result);
 }
@@ -291,9 +291,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, ExtensionWallet) {
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, ExtensionOverwriteCardano) {
   ReloadAndWaitForLoadStop(browser());
   // can't be overwritten
-  EXPECT_EQ(
-      content::EvalJs(web_contents(browser()), kOverwriteCardanoScript).error,
-      "");
+  EXPECT_TRUE(content::EvalJs(web_contents(browser()), kOverwriteCardanoScript)
+                  .is_ok());
   auto result = EvalJs(web_contents(browser()), kCheckCardanoProviderScript);
   EXPECT_EQ(base::Value(true), result);
 }
@@ -302,10 +301,9 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
                        ExtensionOverwriteCardanoBrave) {
   ReloadAndWaitForLoadStop(browser());
   // can't be overwritten
-  EXPECT_EQ(
+  EXPECT_TRUE(
       content::EvalJs(web_contents(browser()), kOverwriteCardanoBraveScript)
-          .error,
-      "");
+          .is_ok());
   {
     auto result = EvalJs(web_contents(browser()), kCheckCardanoProviderScript);
     EXPECT_EQ(base::Value(true), result);
@@ -362,14 +360,14 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, NonWritableCardanoBrave) {
   {
     auto result = EvalJs(web_contents(browser()),
                          NonWriteableScriptMethod("cardano.brave", "enable"));
-    EXPECT_EQ(base::Value(true), result) << result.error;
+    EXPECT_EQ(base::Value(true), result) << result;
   }
 
   {
     auto result =
         EvalJs(web_contents(browser()),
                NonWriteableScriptMethod("cardano.brave", "isEnabled"));
-    EXPECT_EQ(base::Value(true), result) << result.error;
+    EXPECT_EQ(base::Value(true), result) << result;
   }
 
   // window.cardano.brave.* (properties)
@@ -377,7 +375,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, NonWritableCardanoBrave) {
     SCOPED_TRACE(property);
     auto result =
         EvalJs(web_contents(browser()), NonWriteableScriptProperty(property));
-    EXPECT_EQ(base::Value(true), result) << result.error;
+    EXPECT_EQ(base::Value(true), result) << result;
   }
 }
 
@@ -397,7 +395,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
     SCOPED_TRACE(method);
     auto result =
         EvalJs(web_contents(browser()), NonWriteableScriptApiMethod(method));
-    EXPECT_EQ(base::Value(true), result) << result.error;
+    EXPECT_EQ(base::Value(true), result) << result;
   }
 }
 
@@ -877,7 +875,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongArguments) {
     auto result = EvalJs(web_contents(browser()),
                          "(async () => { return await (await "
                          "window.cardano.brave.enable()).getUtxos(1, 2) })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 }
 
@@ -1015,7 +1013,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignTx_WrongArguments) {
         EvalJs(web_contents(browser()),
                "(async () => { return await (await "
                "window.cardano.brave.enable()).signTx(\"tx\", 1) })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 
   {
@@ -1023,7 +1021,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignTx_WrongArguments) {
         EvalJs(web_contents(browser()),
                "(async () => { return await (await "
                "window.cardano.brave.enable()).signTx(\"tx\", \"\") })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 
   {
@@ -1031,21 +1029,21 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignTx_WrongArguments) {
         EvalJs(web_contents(browser()),
                "(async () => { return await (await "
                "window.cardano.brave.enable()).signTx(\"tx\", 1) })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 
   {
     auto result = EvalJs(web_contents(browser()),
                          "(async () => { return await (await "
                          "window.cardano.brave.enable()).signTx(1) })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 
   {
     auto result = EvalJs(web_contents(browser()),
                          "(async () => { return await (await "
                          "window.cardano.brave.enable()).signTx() })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 }
 
@@ -1106,14 +1104,14 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_WrongArguments) {
         EvalJs(web_contents(browser()),
                "(async () => { return await (await "
                "window.cardano.brave.enable()).signData(\"addr\") })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 
   {
     auto result = EvalJs(web_contents(browser()),
                          "(async () => { return await (await "
                          "window.cardano.brave.enable()).signData() })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 
   {
@@ -1121,7 +1119,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_WrongArguments) {
         EvalJs(web_contents(browser()),
                "(async () => { return await (await "
                "window.cardano.brave.enable()).signData(\"\", 1) })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 
   {
@@ -1129,7 +1127,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_WrongArguments) {
         web_contents(browser()),
         "(async () => { return await (await "
         "window.cardano.brave.enable()).signData(\"\", \"\", \"\") })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 }
 
@@ -1235,7 +1233,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SubmitTx_WrongArguments) {
                          "(async () => { return await (await "
                          "window.cardano.brave.enable()).submitTx(1) })();");
 
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 
   {
@@ -1243,7 +1241,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SubmitTx_WrongArguments) {
                          "(async () => { return await (await "
                          "window.cardano.brave.enable()).submitTx() })();");
 
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 
   {
@@ -1252,7 +1250,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SubmitTx_WrongArguments) {
                "(async () => { return await (await "
                "window.cardano.brave.enable()).submitTx(\"1\", \"2\") })();");
 
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 }
 
@@ -1322,7 +1320,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
         EvalJs(web_contents(browser()),
                "(async () => { return await (await "
                "window.cardano.brave.enable()).getCollateral(1) })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 
   {
@@ -1330,7 +1328,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
         web_contents(browser()),
         "(async () => { return await (await "
         "window.cardano.brave.enable()).getCollateral({amount: 1}) })();");
-    EXPECT_FALSE(result.error.empty());
+    EXPECT_FALSE(result.is_ok());
   }
 }
 
