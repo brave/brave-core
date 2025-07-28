@@ -249,6 +249,7 @@ const Config = function () {
   ])
   this.skip_download_rust_toolchain_aux =
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
+  this.is_ubsan = getEnvConfig(['is_ubsan'])
 
   this.forwardEnvArgsToGn = [
     'bitflyer_production_client_id',
@@ -940,7 +941,9 @@ Config.prototype.updateInternal = function (options) {
     this.is_asan = false
   }
 
-  this.is_ubsan = options.is_ubsan || false
+  if (options.is_ubsan) {
+    this.is_ubsan = true
+  }
 
   if (options.use_remoteexec !== undefined) {
     this.useRemoteExec = options.use_remoteexec
