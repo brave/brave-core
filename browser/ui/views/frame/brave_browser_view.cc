@@ -297,11 +297,11 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   }
 
   if (tabs::features::IsBraveSplitViewEnabled() && browser_->is_type_normal()) {
-    //   split_view_ =
-    //        contents_container_->parent()->AddChildView(std::make_unique<SplitView>(
-    //            *browser_, contents_container_,
-    //            contents_container_view_->GetContentsView()));
-    //    set_contents_view(split_view_);
+    split_view_ =
+        contents_container_->parent()->AddChildView(std::make_unique<SplitView>(
+            *browser_, contents_container_,
+            contents_container_view_->GetContentsView()));
+    set_contents_view(split_view_);
   }
 
   const bool supports_vertical_tabs =
