@@ -6,6 +6,21 @@
 import { utilsForTest, HTMLTemplateTags } from './lit_mangler'
 import ts from 'typescript'
 
+const loadTextForTesting = (text: string) => {
+    const sourceFile = ts.createSourceFile('test.ts', text, ts.ScriptTarget.Latest)
+    const template: HTMLTemplateTags = { id: 0, text, children: [] }
+    utilsForTest.resetTemplateId()
+    utilsForTest.cachePropertyCasesFromText(text)
+    utilsForTest.setResult(template)
+    utilsForTest.getTemplateLiterals(sourceFile, sourceFile, template)
+    utilsForTest.injectPlaceholders(template)
+    return template
+}
+
+const getOutputForTesting = (template: HTMLTemplateTags) => {
+    return utilsForTest.restorePropertyCases(utilsForTest.replacePlaceholders(template))
+}
+
 describe('Attribute handling', () => {
     it('should not break when attributes are unquoted', () => {
         const template: HTMLTemplateTags = { text: '<div ?hidden=${this.foo}>Hello</div>', children: [], id: 0 }
@@ -131,7 +146,7 @@ describe('Attribute handling', () => {
         const template: HTMLTemplateTags = { text: `<meta name="viewport" content="width=device-width, initial-scale=\${this.scale}">`, children: [], id: 0 }
         utilsForTest.setResult(template)
 
-        utilsForTest.mangle(() => {}, template)
+        utilsForTest.mangle(() => { }, template)
         expect(template.text).toBe(`<meta name="viewport" content="width=device-width, initial-scale=\${this.scale}">`)
     })
 
@@ -148,6 +163,64 @@ describe('Attribute handling', () => {
     })
 });
 
+describe('Property handling', () => {
+    it('property names should roundtrip through the mangler', () => {
+        const original = `<div .fooBar="\${this.foo}" .baz="1" .hElLo="2">Hello</div>`
+        const template = loadTextForTesting(original)
+
+        utilsForTest.mangleAll(e => {
+            // don't do anything, we're just checking the output is sane
+        }, () => true)
+
+        expect(getOutputForTesting(template)).toBe(`<div .fooBar="\${this.foo}" .baz="1" .hElLo="2">Hello</div>`)
+    })
+
+    it('should still lowercase attributes', () => {
+        const original = `<div .fooBar="\${this.foo}" .baz="1" .hElLo="2" BAZ="7" ?hiDDen="true">Hello</div>`
+        const template = loadTextForTesting(original)
+
+        utilsForTest.mangleAll(e => {
+            // don't do anything, we're just checking the output is sane
+        }, () => true)
+
+        expect(getOutputForTesting(template)).toBe(original)
+    })
+
+    it('should handle camelCase properties in children', () => {
+        const original = `<div .fooBar="\${this.foo}" .baz="1" .hElLo="2">
+                <span .propertyName="Hello">World</span>
+            </div>`
+        const template = loadTextForTesting(original)
+        utilsForTest.mangle(e => {
+            // don't do anything, we're just checking the output is sane
+        }, template)
+
+        expect(getOutputForTesting(template)).toBe(original)
+    })
+
+    it('should handle camelCase properties in nested templates', () => {
+        const original = `<div .fooBar="\${this.foo}" .baz="1" .hElLo="2">
+                \${items.map(item => html\`<span .propertyName="\${item.value}">World</span>\`)}
+            </div>`
+        const template = loadTextForTesting(original)
+
+        // Run a mangler over all templates
+        utilsForTest.mangleAll(e => {
+            // don't do anything, we're just checking the output is sane
+        }, () => true)
+
+        expect(getOutputForTesting(template)).toBe(original)
+    })
+
+    it('not running any manglers should not change the output', () => {
+        const original = `<div .fooBar="\${this.foo}" .baz="1" .hElLo="2">
+                \${items.map(item => html\`<span .propertyName="\${item.value}">World</span>\`)}
+            </div>`
+        const template = loadTextForTesting(original)
+        expect(getOutputForTesting(template)).toBe(original)
+    })
+})
+
 describe('Escaping', () => {
     it('should escape quotes', () => {
         const template: HTMLTemplateTags = { text: `<div attr=\${"foo"}>"\${this.foo}"</div>`, children: [], id: 0 }
@@ -163,7 +236,7 @@ describe('Escaping', () => {
 
         utilsForTest.mangle(t => {
             expect(t.querySelector('script')).toBeNull()
-         }, template)
+        }, template)
         expect(template.text).toBe(`<div>\${"<script>alert('pwnd')</script>"}</div>`)
     })
 
@@ -173,56 +246,56 @@ describe('Escaping', () => {
 
         utilsForTest.mangle(t => {
             expect(t.querySelector('h1')).toBeNull()
-         }, template)
+        }, template)
         expect(template.text).toBe(`<div>\${"<h1>Jay</h1>"}</div>`)
     })
 
     it('should be fine with escaped HTML entities', () => {
         const template: HTMLTemplateTags = { text: `<div>&lt;script&gt;alert('hahaha')&lt;script&gt;</div>`, children: [], id: 0 }
         utilsForTest.setResult(template)
-        utilsForTest.mangle(t => {}, template)
+        utilsForTest.mangle(t => { }, template)
         expect(template.text).toBe(`<div>&lt;script&gt;alert('hahaha')&lt;script&gt;</div>`)
     })
 
     it('should be fine with escaped HTML entities in interpolated strings', () => {
         const template: HTMLTemplateTags = { text: `<div>\${"&lt;script&gt;alert('hahaha')&lt;script&gt;"}</div>`, children: [], id: 0 }
         utilsForTest.setResult(template)
-        utilsForTest.mangle(t => {}, template)
+        utilsForTest.mangle(t => { }, template)
         expect(template.text).toBe(`<div>\${"&lt;script&gt;alert('hahaha')&lt;script&gt;"}</div>`)
     })
 
     it('should be fine with escaped HTML entities in interpolated strings', () => {
         const template: HTMLTemplateTags = { text: `<div>\${"&lt;script&gt;alert('hahaha')&lt;script&gt;"}</div>`, children: [], id: 0 }
         utilsForTest.setResult(template)
-        utilsForTest.mangle(t => {}, template)
+        utilsForTest.mangle(t => { }, template)
         expect(template.text).toBe(`<div>\${"&lt;script&gt;alert('hahaha')&lt;script&gt;"}</div>`)
     })
 
     it('should be fine with unescaped HTML entities in interpolated strings', () => {
         const template: HTMLTemplateTags = { text: `<div>\${"<foo&"}</div>`, children: [], id: 0 }
         utilsForTest.setResult(template)
-        utilsForTest.mangle(t => {}, template)
+        utilsForTest.mangle(t => { }, template)
         expect(template.text).toBe(`<div>\${"<foo&"}</div>`)
     })
 
     it('should be fine with unescaped tags in interpolated strings', () => {
         const template: HTMLTemplateTags = { text: `<div>\${"<script>alert('pwnd')</script>"}</div>`, children: [], id: 0 }
         utilsForTest.setResult(template)
-        utilsForTest.mangle(t => {}, template)
+        utilsForTest.mangle(t => { }, template)
         expect(template.text).toBe(`<div>\${"<script>alert('pwnd')</script>"}</div>`)
     })
 
     it('should be fine with unescaped tags and entities in interpolated strings', () => {
         const template: HTMLTemplateTags = { text: `<div>\${"$lt;<script$gt;>alert('pwnd')&lt;</script&gt;>"}</div>`, children: [], id: 0 }
         utilsForTest.setResult(template)
-        utilsForTest.mangle(t => {}, template)
+        utilsForTest.mangle(t => { }, template)
         expect(template.text).toBe(`<div>\${"$lt;<script$gt;>alert('pwnd')&lt;</script&gt;>"}</div>`)
     })
 
     it('should be fine with quotes in attributes', () => {
         const template: HTMLTemplateTags = { text: `<img src=\${"foo onload='javascript:alert(\`pwnd\`)'"}>`, children: [], id: 0 }
         utilsForTest.setResult(template)
-        utilsForTest.mangle(t => {}, template)
+        utilsForTest.mangle(t => { }, template)
         expect(template.text).toBe(`<img src="\${"foo onload='javascript:alert(\`pwnd\`)'"}">`)
     })
 })
@@ -407,10 +480,12 @@ export function getList(this: string[]) {
     })
 
     it('should be possible to mangle all matching templates', () => {
-        const result: HTMLTemplateTags = { id: 0, text: exampleHtml, children: [
-            { id: 1, text: '<div>Hello</div>', children: [] },
-            { id: 2, text: '<div>Hello</div>', children: [] },
-        ] }
+        const result: HTMLTemplateTags = {
+            id: 0, text: exampleHtml, children: [
+                { id: 1, text: '<div>Hello</div>', children: [] },
+                { id: 2, text: '<div>Hello</div>', children: [] },
+            ]
+        }
         utilsForTest.resetTemplateId()
         utilsForTest.getTemplateLiterals(sourceFile, sourceFile, result)
         utilsForTest.injectPlaceholders(result)
