@@ -139,8 +139,9 @@ TEST_F(BraveSyncPrefsTest, LeaveChainDetailsMaxLenIOS) {
 }
 
 #if BUILDFLAG(IS_ANDROID)
-// This test is a modified upstream's
-// SyncPrefsTest.PasswordSyncAllowed_ExplicitValue
+// Upstream used to have SyncPrefs::SetPasswordSyncAllowed
+// commit: 558ee269a65b72e02fd3e6f27cc0eed6836b9cae
+// This ensures we can set passwords as a selected to sync type
 TEST_F(BraveSyncPrefsTest, PasswordSyncAllowedExplicitValue) {
   using syncer::UserSelectableType;
   using syncer::UserSelectableTypeSet;
@@ -150,8 +151,6 @@ TEST_F(BraveSyncPrefsTest, PasswordSyncAllowedExplicitValue) {
       /*keep_everything_synced=*/false,
       /*registered_types=*/UserSelectableTypeSet::All(),
       /*selected_types=*/{UserSelectableType::kPasswords});
-
-  sync_prefs_->SetPasswordSyncAllowed(false);
 
   EXPECT_TRUE(sync_prefs_->GetSelectedTypesForSyncingUser().Has(
       UserSelectableType::kPasswords));
