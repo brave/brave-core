@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -22,8 +21,7 @@ namespace psst {
 class MatchedRule;
 class PsstRuleRegistry;
 
-class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
-    : public content::WebContentsObserver {
+class PsstTabWebContentsObserver : public content::WebContentsObserver {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
   class ScriptsHandler {
