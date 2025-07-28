@@ -1294,6 +1294,30 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     EXPECT_EQ(data->associated_content.size(), 1u);
     EXPECT_EQ(data->associated_content[0]->content, "Hello world!");
   }
+
+  // V7 Specific Migration checks
+  {
+    if (version() == 6) {
+      ASSERT_TRUE(
+          db_->GetConversationData("1ae484fe-ab33-4f42-8813-14080e4addc1"));
+      ASSERT_TRUE(
+          db_->GetConversationData("1ae484fe-ab33-4f42-8813-14080e4addc2"));
+    }
+
+    auto conversation_data_1 =
+        db_->GetConversationData("1ae484fe-ab33-4f42-8813-14080e4addc1");
+    ASSERT_TRUE(conversation_data_1);
+    EXPECT_EQ(
+        conversation_data_1->associated_content[0]->conversation_turn_uuid,
+        conversation_data_1->entries[0]->uuid.value());
+
+    auto conversation_data_2 =
+        db_->GetConversationData("1ae484fe-ab33-4f42-8813-14080e4addc2");
+    ASSERT_TRUE(conversation_data_2);
+    EXPECT_EQ(
+        conversation_data_2->associated_content[0]->conversation_turn_uuid,
+        conversation_data_2->entries[0]->uuid.value());
+  }
 }
 
 }  // namespace ai_chat

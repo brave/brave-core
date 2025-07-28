@@ -1995,6 +1995,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     std::vector<mojom::ConversationTurnPtr> history;
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
     turn->character_type = mojom::CharacterType::HUMAN;
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
@@ -2004,7 +2005,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        {{"turn-1", {page_content}}}, std::move(history), "", {}, std::nullopt,
         base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2060,6 +2061,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     std::vector<mojom::ConversationTurnPtr> history;
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
     turn->character_type = mojom::CharacterType::HUMAN;
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
@@ -2069,7 +2071,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        {{"turn-1", {page_content}}}, std::move(history), "", {}, std::nullopt,
         base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2127,6 +2129,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     std::vector<mojom::ConversationTurnPtr> history;
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
     turn->character_type = mojom::CharacterType::HUMAN;
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
@@ -2136,7 +2139,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        {{"turn-1", {page_content}}}, std::move(history), "", {}, std::nullopt,
         base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2181,6 +2184,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     std::vector<mojom::ConversationTurnPtr> history;
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
     turn->character_type = mojom::CharacterType::HUMAN;
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
@@ -2190,7 +2194,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        {{"turn-1", {page_content}}}, std::move(history), "", {}, std::nullopt,
         base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2240,6 +2244,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     std::vector<mojom::ConversationTurnPtr> history;
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
     turn->character_type = mojom::CharacterType::HUMAN;
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
@@ -2249,7 +2254,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        {{"turn-1", {page_content}}}, std::move(history), "", {}, std::nullopt,
         base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2298,6 +2303,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     std::vector<mojom::ConversationTurnPtr> history;
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    std::string id = "turn-1";
+    turn->uuid = id;
     turn->character_type = mojom::CharacterType::HUMAN;
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
@@ -2307,7 +2314,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        {{id, {page_content}}}, std::move(history), "", {}, std::nullopt,
         base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {

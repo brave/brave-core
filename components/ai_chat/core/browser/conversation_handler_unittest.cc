@@ -3562,7 +3562,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
   // Mock engine response
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillRepeatedly(testing::Invoke(
-          [](PageContents page_contents,
+          [](PageContentsMap page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language,
              const std::vector<base::WeakPtr<Tool>>& tools,
