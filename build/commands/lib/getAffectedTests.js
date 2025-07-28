@@ -78,34 +78,19 @@ async function analyzeAffectedTests(
 
   const uuid = randomUUID()
   const tmpDir = await tmpdir()
-  // paths are relative to package.json
-  await writeFile(
-    `${tmpDir}/analyze-${uuid}.json`,
-    JSON.stringify(toAnalyze, null, 2),
-    'utf-8',
-  )
+  const analyzeJson = `${tmpDir}/analyze-${uuid}.json`
+  const analyzeOutJson = `${tmpDir}/analyze-out-${uuid}.json`
+  await writeFile(analyzeJson, JSON.stringify(toAnalyze, null, 2), 'utf-8')
 
   const { env, shell } = config.defaultOptions
-  await exec(
-    'gn',
-    [
-      'analyze',
-      outDir,
-      `${tmpDir}/analyze-${uuid}.json`,
-      `${tmpDir}/analyze-out-${uuid}.json`,
-    ],
-    { env, shell },
-  )
+  await exec('gn', ['analyze', outDir, analyzeJson, analyzeOutJson], {
+    env,
+    shell,
+  })
 
-  const output = await readFile(
-    `${tmpDir}/analyze-out-${uuid}.json`,
-    'utf-8',
-  ).then(JSON.parse)
+  const output = await readFile(analyzeOutJson, 'utf-8').then(JSON.parse)
 
-  await Promise.all([
-    unlink(`${tmpDir}/analyze-${uuid}.json`),
-    unlink(`${tmpDir}/analyze-out-${uuid}.json`),
-  ])
+  await Promise.all([unlink(analyzeJson), unlink(analyzeOutJson)])
 
   return {
     outDir,
