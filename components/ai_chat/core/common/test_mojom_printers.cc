@@ -26,6 +26,8 @@ void PrintTo(const AssociatedContent& content, std::ostream* os) {
   *os << "  content_used_percentage: " << content.content_used_percentage
       << "\n";
   *os << "  content_type: " << static_cast<int>(content.content_type) << "\n";
+  *os << "  conversation_turn_uuid: "
+      << content.conversation_turn_uuid.value_or("<nullopt>") << "\n";
 }
 
 void PrintTo(const Conversation& conversation, std::ostream* os) {

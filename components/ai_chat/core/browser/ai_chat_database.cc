@@ -56,6 +56,7 @@ void BindOptionalString(sql::Statement& statement,
 }
 
 bool MigrateFrom1To2(sql::Database* db) {
+  DVLOG(1) << __func__;
   // Add a new column to the associated_content table to store the content type.
   static constexpr char kAddPromptColumnQuery[] =
       "ALTER TABLE conversation_entry ADD COLUMN prompt BLOB";
@@ -65,6 +66,7 @@ bool MigrateFrom1To2(sql::Database* db) {
 }
 
 bool MigrateFrom2To3(sql::Database* db) {
+  DVLOG(1) << __func__;
   static constexpr char kAddTotalTokenColumnQuery[] =
       "ALTER TABLE conversation ADD COLUMN total_tokens INTEGER DEFAULT 0";
   static constexpr char kAddTrimmedTokenColumnQuery[] =
@@ -79,6 +81,7 @@ bool MigrateFrom2To3(sql::Database* db) {
 }
 
 bool MigrateFrom3to4(sql::Database* db) {
+  DVLOG(1) << __func__;
   // Check if column exists first
   static constexpr char kCheckColumnQuery[] =
       "PRAGMA table_info(conversation_entry_uploaded_files)";
@@ -100,6 +103,7 @@ bool MigrateFrom3to4(sql::Database* db) {
 }
 
 bool MigrateFrom4to5(sql::Database* db) {
+  DVLOG(1) << __func__;
   static constexpr char kAddModelKeyColumnQuery[] =
       "ALTER TABLE conversation_entry ADD COLUMN model_key TEXT DEFAULT NULL";
   sql::Statement statement(db->GetUniqueStatement(kAddModelKeyColumnQuery));
@@ -108,6 +112,7 @@ bool MigrateFrom4to5(sql::Database* db) {
 }
 
 bool MigrateFrom5to6(sql::Database* db) {
+  DVLOG(1) << __func__;
   static constexpr char kRemoveIsContentRefinedColumnQuery[] =
       "ALTER TABLE associated_content DROP COLUMN is_content_refined";
   sql::Statement statement(
@@ -117,16 +122,31 @@ bool MigrateFrom5to6(sql::Database* db) {
 }
 
 bool MigrateFrom6to7(sql::Database* db) {
-  // TODO(fallaciousreasoning): This migration should set the
-  // conversation_entry_uuid to the first message in the conversation for all
-  // associated content.
-  static constexpr char kAddConversationEntryUuidColumnQuery[] =
+  DVLOG(1) << __func__;
+  // Step 1: Add the column with a default value of the empty string.
+  // We use the empty string as a default value because SQLite doesn't support
+  // easily altering columns.
+  sql::Statement add_column_statement(db->GetUniqueStatement(
       "ALTER TABLE associated_content ADD COLUMN conversation_entry_uuid TEXT "
-      "NOT NULL";
-  sql::Statement statement(
-      db->GetUniqueStatement(kAddConversationEntryUuidColumnQuery));
+      "NOT NULL DEFAULT ''"));
+  if (!add_column_statement.is_valid() || !add_column_statement.Run()) {
+    LOG(ERROR) << "Bailed! " << add_column_statement.is_valid();
+    return false;
+  }
 
-  return statement.is_valid() && statement.Run();
+  // Step 2: Set the conversation_entry_uuid to the first message in the
+  // conversation for all associated content.
+  sql::Statement update_statement(
+      db->GetUniqueStatement("UPDATE associated_content SET "
+                             "conversation_entry_uuid = "
+                             "  (SELECT uuid "
+                             "FROM conversation_entry "
+                             "WHERE conversation_entry.conversation_uuid = "
+                             "  associated_content.conversation_uuid "
+                             "ORDER BY conversation_entry.date ASC LIMIT 1) "
+                             "WHERE conversation_entry_uuid=''"));
+
+  return update_statement.is_valid() && update_statement.Run();
 }
 
 }  // namespace
@@ -293,7 +313,8 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
       "  last_activity_date.date,"
       "  associated_content.uuid, associated_content.title,"
       "  associated_content.url, associated_content.content_type,"
-      "  associated_content.content_used_percentage"
+      "  associated_content.content_used_percentage,"
+      "  associated_content.conversation_entry_uuid"
       " FROM conversation"
       " LEFT JOIN associated_content"
       " ON conversation.uuid = associated_content.conversation_uuid"
@@ -349,6 +370,8 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
           static_cast<mojom::ContentType>(statement.ColumnInt(index++));
       associated_content->content_used_percentage =
           statement.ColumnInt(index++);
+      associated_content->conversation_turn_uuid =
+          statement.ColumnString(index++);
 
       conversation->associated_content.push_back(std::move(associated_content));
     }
@@ -602,7 +625,6 @@ AIChatDatabase::GetArchiveContentsForConversation(
   std::vector<mojom::ContentArchivePtr> archive_contents;
 
   while (statement.Step()) {
-    // TODO(fallaciousreasoning): Add conversation_entry_uuid to the database.
     auto content = mojom::ContentArchive::New(
         statement.ColumnString(0), DecryptColumnToString(statement, 1),
         statement.ColumnString(2));
@@ -700,9 +722,13 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
 
   CHECK(!conversation_uuid.empty());
   CHECK(!associated_content.empty());
-  CHECK(std::ranges::all_of(associated_content, [](const auto& content) {
-    return content->conversation_turn_uuid.has_value();
-  })) << "Tried to save associated content which was not associated with a turn";
+  CHECK(
+      std::ranges::all_of(associated_content,
+                          [](const auto& content) {
+                            return content->conversation_turn_uuid.has_value();
+                          }))
+      << "Tried to save associated content which was not associated with a "
+         "turn";
 
   // Check which content ids already exist for this conversation.
   base::flat_set<std::string> existing_ids_set;
@@ -747,14 +773,16 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
                << conversation_uuid;
       static constexpr char kInsertAssociatedContentQuery[] =
           "INSERT INTO associated_content(title, url,"
-          " content_type, last_contents, content_used_percentage, conversation_entry_uuid,"
+          " content_type, last_contents, content_used_percentage, "
+          "conversation_entry_uuid,"
           " uuid, conversation_uuid)"
           " VALUES(?, ?, ?, ?, ?, ?, ?, ?) ";
       insert_or_update_statement.Assign(
           GetDB().GetUniqueStatement(kInsertAssociatedContentQuery));
     }
 
-    CHECK(insert_or_update_statement.is_valid()) << insert_or_update_statement.GetSQLStatement();
+    CHECK(insert_or_update_statement.is_valid())
+        << insert_or_update_statement.GetSQLStatement();
     int index = 0;
     BindAndEncryptOptionalString(insert_or_update_statement, index++,
                                  content->title);
@@ -766,7 +794,8 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
                                  content_text);
     insert_or_update_statement.BindInt(index++,
                                        content->content_used_percentage);
-    insert_or_update_statement.BindString(index++, content->conversation_turn_uuid.value());
+    insert_or_update_statement.BindString(
+        index++, content->conversation_turn_uuid.value());
     insert_or_update_statement.BindString(index++, content->uuid);
     insert_or_update_statement.BindString(index, conversation_uuid);
 
