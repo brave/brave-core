@@ -1694,8 +1694,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onEnterFullscreen(Tab tab, FullscreenOptions options) {
         final WebContents webContents = tab.getWebContents();
-        if (webContents != null && BraveYouTubeScriptInjectorNativeHelper.hasFullscreenBeenRequested(
-                webContents)) {
+        if (webContents != null
+                && BraveYouTubeScriptInjectorNativeHelper.hasFullscreenBeenRequested(webContents)) {
             MediaSession mediaSession = MediaSession.fromWebContents(webContents);
             if (mediaSession != null) {
                 mediaSession.resume();

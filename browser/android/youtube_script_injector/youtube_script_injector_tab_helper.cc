@@ -236,7 +236,7 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
   // Mark fullscreen as requested for this page
   SetFullscreenRequested(true);
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-    if (!script_injector_remote_.is_bound()) {
+  if (!script_injector_remote_.is_bound()) {
     rfh->GetRemoteAssociatedInterfaces()->GetInterface(
         &script_injector_remote_);
   }
@@ -245,8 +245,9 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
       ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeFullscreen,
       blink::mojom::UserActivationOption::kActivate,
       blink::mojom::PromiseResultOption::kAwait,
-      base::BindOnce(&YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete,
-                     weak_factory_.GetWeakPtr(), rfh->GetGlobalFrameToken()));
+      base::BindOnce(
+          &YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete,
+          weak_factory_.GetWeakPtr(), rfh->GetGlobalFrameToken()));
 }
 
 bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(bool mobileOnly) const {
