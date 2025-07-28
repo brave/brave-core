@@ -704,21 +704,21 @@ brave_shields::mojom::ShieldsSettingsPtr
 BraveContentBrowserClient::WorkerGetBraveShieldSettings(
     const GURL& url,
     content::BrowserContext* browser_context) {
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(browser_context);
   const brave_shields::mojom::FarblingLevel farbling_level =
-      brave_shields::GetFarblingLevel(
-          HostContentSettingsMapFactory::GetForProfile(browser_context), url);
+      brave_shields::GetFarblingLevel(host_content_settings_map, url);
   const base::Token farbling_token =
       farbling_level != brave_shields::mojom::FarblingLevel::OFF
-          ? brave_shields::GetFarblingToken(
-                HostContentSettingsMapFactory::GetForProfile(browser_context),
-                url)
+          ? brave_shields::GetFarblingToken(host_content_settings_map, url)
           : base::Token();
 
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
+      brave_shields::IsReduceLanguageEnabledForProfile(
+          host_content_settings_map, url, pref_service));
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult
@@ -999,7 +999,9 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 
     if (isMainFrame) {
       // De-AMP
-      auto handler = de_amp::DeAmpBodyHandler::Create(request, wc_getter);
+      auto handler = de_amp::DeAmpBodyHandler::Create(
+          request, wc_getter,
+          HostContentSettingsMapFactory::GetForProfile(browser_context));
       if (handler) {
         body_sniffer_throttle->AddHandler(std::move(handler));
       }
@@ -1091,11 +1093,14 @@ void BraveContentBrowserClient::MaybeHideReferrer(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);
   const bool shields_up = brave_shields::GetBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);
+  const bool shields_ad_block_only_mode_enabled =
+      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+          HostContentSettingsMapFactory::GetForProfile(profile), document_url);
 
   content::Referrer new_referrer;
-  if (brave_shields::MaybeChangeReferrer(allow_referrers, shields_up,
-                                         (*referrer)->url, request_url,
-                                         &new_referrer)) {
+  if (brave_shields::MaybeChangeReferrer(
+          allow_referrers, shields_up, shields_ad_block_only_mode_enabled,
+          (*referrer)->url, request_url, &new_referrer)) {
     (*referrer)->url = new_referrer.url;
     (*referrer)->policy = new_referrer.policy;
   }

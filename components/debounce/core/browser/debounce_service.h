@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -21,7 +22,8 @@ class DebounceComponentInstaller;
 class DebounceService : public KeyedService {
  public:
   explicit DebounceService(DebounceComponentInstaller* component_installer,
-                           PrefService* prefs);
+                           PrefService* prefs,
+                           HostContentSettingsMap* host_content_settings_map);
   DebounceService(const DebounceService&) = delete;
   DebounceService& operator=(const DebounceService&) = delete;
   ~DebounceService() override;
@@ -33,6 +35,7 @@ class DebounceService : public KeyedService {
  private:
   const raw_ptr<DebounceComponentInstaller> component_installer_;
   raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   base::WeakPtrFactory<DebounceService> weak_factory_{this};
 };
 

@@ -26,23 +26,24 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
 
   const GURL& top_frame_url = top_frame_rfh->GetLastCommittedURL();
 
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
+
   content::BrowserContext* browser_context = rfh->GetBrowserContext();
   const brave_shields::mojom::FarblingLevel farbling_level =
-      brave_shields::GetFarblingLevel(
-          HostContentSettingsMapFactory::GetForProfile(browser_context),
-          top_frame_url);
+      brave_shields::GetFarblingLevel(host_content_settings_map, top_frame_url);
   const base::Token farbling_token =
       farbling_level != brave_shields::mojom::FarblingLevel::OFF
-          ? brave_shields::GetFarblingToken(
-                HostContentSettingsMapFactory::GetForProfile(browser_context),
-                top_frame_url)
+          ? brave_shields::GetFarblingToken(host_content_settings_map,
+                                            top_frame_url)
           : base::Token();
 
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
+      brave_shields::IsReduceLanguageEnabledForProfile(
+          host_content_settings_map, top_frame_url, pref_service));
 }
 
 }  // namespace
