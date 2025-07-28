@@ -47,17 +47,16 @@ void BraveTab::EnterRenameMode() {
     return;
   }
 
-  if (rename_mode_) {
+  if (in_renaming_mode()) {
     return;  // Already in rename mode.
   }
 
-  rename_mode_ = true;
   // Fill the textfield with the current title of the tab and select all text.
   if (rename_textfield_->GetText().empty()) {
     rename_textfield_->SetText(data_.title);
   }
   rename_textfield_->SetText(data_.title);
-  rename_textfield_->SetSelectedRange(gfx::Range(0, data_.title.length()));
+  rename_textfield_->SelectAll(/*reversed=*/false);
   rename_textfield_->SetBoundsRect(title_->bounds());
   rename_textfield_->SetVisible(true);
   title_->SetVisible(false);
@@ -150,7 +149,7 @@ void BraveTab::Layout(PassKey) {
     }
   }
 
-  if (rename_textfield_ && rename_mode_) {
+  if (rename_textfield_ && in_renaming_mode()) {
     rename_textfield_->SetBoundsRect(title_->bounds());
     rename_textfield_->SetVisible(true);
     title_->SetVisible(false);
@@ -245,11 +244,10 @@ void BraveTab::CommitRename() {
 }
 
 void BraveTab::ExitRenameMode() {
-  CHECK(rename_mode_);
+  CHECK(in_renaming_mode());
 
   rename_textfield_->SetVisible(false);
   title_->SetVisible(true);
 
   rename_textfield_->SetText(std::u16string());
-  rename_mode_ = false;
 }
