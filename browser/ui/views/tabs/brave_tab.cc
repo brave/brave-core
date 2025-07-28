@@ -149,9 +149,8 @@ void BraveTab::Layout(PassKey) {
     }
   }
 
-  if (rename_textfield_ && in_renaming_mode()) {
+  if (in_renaming_mode()) {
     rename_textfield_->SetBoundsRect(title_->bounds());
-    rename_textfield_->SetVisible(true);
     title_->SetVisible(false);
   }
 }
