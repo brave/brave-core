@@ -345,7 +345,7 @@ void DragAndDrop(content::WebContents* context,
     return;
   }
 
-  const std::string js_code = base::StringPrintf(
+  const std::string js_code = absl::StrFormat(
       R"(
         var triggerDragAndDrop = function (selectorDrag, selectorDrop) {
 
@@ -401,7 +401,7 @@ void DragAndDrop(content::WebContents* context,
           '%s',
           '%s')
       )",
-      drag_selector.c_str(), drop_selector.c_str());
+      drag_selector, drop_selector);
   content::EvalJsResult jsResult =
       EvalJs(context, js_code, content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES,
              content::ISOLATED_WORLD_ID_CONTENT_END);

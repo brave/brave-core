@@ -155,7 +155,7 @@ BraveNewTabUI::BraveNewTabUI(
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::StringPrintf("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
+      absl::StrFormat("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
   source->AddString("ntpNewTabTakeoverRichMediaUrl",
                     kNTPNewTabTakeoverRichMediaUrl);
 

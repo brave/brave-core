@@ -201,8 +201,8 @@ void CustomBackgroundFileManager::SaveImageAsPNG(
 
         base::FilePath modified_path = target_path;
         for (int i = 1; base::PathExists(modified_path); ++i) {
-          modified_path = target_path.InsertBeforeExtensionASCII(
-              base::StringPrintf("-%d", i));
+          modified_path =
+              target_path.InsertBeforeExtensionASCII(absl::StrFormat("-%d", i));
         }
 
         if (!base::WriteFile(modified_path, *encoded)) {

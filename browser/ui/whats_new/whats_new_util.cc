@@ -44,10 +44,9 @@ double g_testing_major_version = 0;
 std::optional<double> GetBraveMajorVersionAsDouble(
     const base::Version& version) {
   double brave_major_version;
-  CHECK(
-      base::StringToDouble(base::StringPrintf("%d.%d", version.components()[1],
-                                              version.components()[2]),
-                           &brave_major_version));
+  CHECK(base::StringToDouble(absl::StrFormat("%d.%d", version.components()[1],
+                                             version.components()[2]),
+                             &brave_major_version));
   return brave_major_version;
 }
 

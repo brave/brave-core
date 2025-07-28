@@ -90,10 +90,10 @@ std::string EnableScript() {
 }
 
 std::string NonWriteableScriptProperty(const std::string& property) {
-  return base::StringPrintf(
+  return absl::StrFormat(
       R"(window.cardano.brave.%s = "brave";
          !(window.cardano.brave.%s === "brave");)",
-      property.c_str(), property.c_str());
+      property, property);
 }
 
 class TestCardanoProvider : public brave_wallet::mojom::CardanoProvider {

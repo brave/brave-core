@@ -150,15 +150,15 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   bool IsReportingDarkMode() {
     bool light_mode_result =
         content::EvalJs(contents(),
-                        base::StringPrintf(kMatchDarkModeFormatString, "light"))
+                        absl::StrFormat(kMatchDarkModeFormatString, "light"))
             .ExtractBool();
 
     if (!light_mode_result) {
       // Sanity check to make sure that 'dark' is reported for
       // prefers-color-scheme when 'light' was not found before.
-      EXPECT_EQ(true, content::EvalJs(contents(),
-                                      base::StringPrintf(
-                                          kMatchDarkModeFormatString, "dark")));
+      EXPECT_EQ(true, content::EvalJs(
+                          contents(),
+                          absl::StrFormat(kMatchDarkModeFormatString, "dark")));
 
       // Report dark mode.
       return true;
