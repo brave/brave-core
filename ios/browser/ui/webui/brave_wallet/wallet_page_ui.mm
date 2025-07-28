@@ -195,12 +195,4 @@ void WalletPageUI::CreatePageHandler(
           brave_wallet::BlockchainRegistry::GetInstance()) {
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
-
-  if (auto* tab_helper =
-          BraveWebUIMessagingTabHelper::FromWebState(web_ui()->GetWebState())) {
-    if (id<BraveWebUIMessagingTabHelperDelegate> delegate =
-            tab_helper->GetBridgingDelegate()) {
-      [delegate webUIUnlockWallet];
-    }
-  }
 }

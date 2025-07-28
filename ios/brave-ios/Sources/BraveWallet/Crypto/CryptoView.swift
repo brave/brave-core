@@ -74,183 +74,187 @@ public struct CryptoView: View {
     ZStack {
       switch visibleScreen {
       case .crypto:
-        if let store = walletStore.cryptoStore {
-          Group {
-            switch presentingContext {
-            case .`default`(let selectedTab):
-              CryptoContainerView(
-                keyringStore: keyringStore,
-                cryptoStore: store,
-                toolbarDismissContent: dismissButtonToolbarContents,
-                selectedTab: selectedTab
-              )
-            case .pendingRequests:
-              RequestContainerView(
-                keyringStore: keyringStore,
-                cryptoStore: store,
-                toolbarDismissContent: dismissButtonToolbarContents,
-                onDismiss: {
-                  dismissAction()
-                },
-                onViewInActivity: {
-                  store.selectedTab = .activity
-                }
-              )
-              .onDisappear {
-                // onDisappear allows us to catch all cases (swipe, cancel, confirm/approve/sign)
-                store.isPresentingPendingRequest = false
-                store.prepare()
-              }
-            case .requestPermissions(let request, let onPermittedAccountsUpdated):
-              NewSiteConnectionView(
-                origin: request.requestingOrigin,
-                accounts: request.requestingAccounts,
-                coin: request.coinType,
-                keyringStore: keyringStore,
-                onConnect: {
-                  request.decisionHandler(.granted(accounts: $0))
-                  onPermittedAccountsUpdated($0)
-                  dismissAction()
-                },
-                onDismiss: {
-                  request.decisionHandler(.rejected)
-                  onPermittedAccountsUpdated([])
-                  dismissAction()
-                }
-              )
-            case .panelUnlockOrSetup:
-              EmptyView()
-            case .accountSelection:
-              NavigationView {
-                AccountSelectionView(
+        if FeatureList.kBraveWalletWebUIIOS.enabled {
+          EmptyView()
+        } else {
+          if let store = walletStore.cryptoStore {
+            Group {
+              switch presentingContext {
+              case .`default`(let selectedTab):
+                CryptoContainerView(
                   keyringStore: keyringStore,
-                  networkStore: store.networkStore,
+                  cryptoStore: store,
+                  toolbarDismissContent: dismissButtonToolbarContents,
+                  selectedTab: selectedTab
+                )
+              case .pendingRequests:
+                RequestContainerView(
+                  keyringStore: keyringStore,
+                  cryptoStore: store,
+                  toolbarDismissContent: dismissButtonToolbarContents,
                   onDismiss: {
                     dismissAction()
+                  },
+                  onViewInActivity: {
+                    store.selectedTab = .activity
                   }
-                )
-              }
-              .navigationViewStyle(.stack)
-            case .transactionHistory:
-              NavigationView {
-                AccountTransactionListView(
-                  activityStore: store.accountActivityStore(
-                    for: walletStore.keyringStore.selectedAccount,
-                    isWalletPanel: true
-                  ),
-                  networkStore: store.networkStore
                 )
                 .onDisappear {
-                  store.closeAccountActivityStore(for: walletStore.keyringStore.selectedAccount)
+                  // onDisappear allows us to catch all cases (swipe, cancel, confirm/approve/sign)
+                  store.isPresentingPendingRequest = false
+                  store.prepare()
                 }
-                .toolbar {
-                  dismissButtonToolbarContents
-                }
-              }
-              .navigationViewStyle(.stack)
-            case .walletAction(let destination):
-              switch destination.kind {
-              case .buy:
-                BuyTokenView(
+              case .requestPermissions(let request, let onPermittedAccountsUpdated):
+                NewSiteConnectionView(
+                  origin: request.requestingOrigin,
+                  accounts: request.requestingAccounts,
+                  coin: request.coinType,
                   keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  buyTokenStore: store.openBuyTokenStore(destination.initialToken),
+                  onConnect: {
+                    request.decisionHandler(.granted(accounts: $0))
+                    onPermittedAccountsUpdated($0)
+                    dismissAction()
+                  },
                   onDismiss: {
-                    store.closeWalletActionStores()
+                    request.decisionHandler(.rejected)
+                    onPermittedAccountsUpdated([])
                     dismissAction()
                   }
                 )
-              case .send:
-                SendTokenView(
-                  keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  sendTokenStore: store.openSendTokenStore(destination.initialToken),
-                  completion: { success in
-                    if success {
+              case .panelUnlockOrSetup:
+                EmptyView()
+              case .accountSelection:
+                NavigationView {
+                  AccountSelectionView(
+                    keyringStore: keyringStore,
+                    networkStore: store.networkStore,
+                    onDismiss: {
+                      dismissAction()
+                    }
+                  )
+                }
+                .navigationViewStyle(.stack)
+              case .transactionHistory:
+                NavigationView {
+                  AccountTransactionListView(
+                    activityStore: store.accountActivityStore(
+                      for: walletStore.keyringStore.selectedAccount,
+                      isWalletPanel: true
+                    ),
+                    networkStore: store.networkStore
+                  )
+                  .onDisappear {
+                    store.closeAccountActivityStore(for: walletStore.keyringStore.selectedAccount)
+                  }
+                  .toolbar {
+                    dismissButtonToolbarContents
+                  }
+                }
+                .navigationViewStyle(.stack)
+              case .walletAction(let destination):
+                switch destination.kind {
+                case .buy:
+                  BuyTokenView(
+                    keyringStore: keyringStore,
+                    networkStore: store.networkStore,
+                    buyTokenStore: store.openBuyTokenStore(destination.initialToken),
+                    onDismiss: {
                       store.closeWalletActionStores()
                       dismissAction()
                     }
-                  },
-                  onDismiss: {
-                    store.closeWalletActionStores()
-                    dismissAction()
-                  }
-                )
-              case .swap:
-                SwapCryptoView(
-                  keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  swapTokensStore: store.openSwapTokenStore(destination.initialToken),
-                  completion: { success in
-                    if success {
+                  )
+                case .send:
+                  SendTokenView(
+                    keyringStore: keyringStore,
+                    networkStore: store.networkStore,
+                    sendTokenStore: store.openSendTokenStore(destination.initialToken),
+                    completion: { success in
+                      if success {
+                        store.closeWalletActionStores()
+                        dismissAction()
+                      }
+                    },
+                    onDismiss: {
                       store.closeWalletActionStores()
                       dismissAction()
                     }
-                  },
-                  onDismiss: {
-                    store.closeWalletActionStores()
-                    dismissAction()
-                  }
-                )
-              case .deposit(let query):
-                DepositTokenView(
-                  keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  depositTokenStore: store.openDepositTokenStore(
-                    prefilledToken: destination.initialToken,
-                    prefilledAccount: destination.initialAccount
-                  ),
-                  prefilledQuery: query,
-                  onDismiss: {
-                    store.closeWalletActionStores()
-                    dismissAction()
-                  }
-                )
-              }
-            case .settings:
-              NavigationView {
-                Web3SettingsView(
-                  settingsStore: store.settingsStore,
-                  networkStore: store.networkStore,
-                  keyringStore: keyringStore
-                )
-                .toolbar {
-                  dismissButtonToolbarContents
+                  )
+                case .swap:
+                  SwapCryptoView(
+                    keyringStore: keyringStore,
+                    networkStore: store.networkStore,
+                    swapTokensStore: store.openSwapTokenStore(destination.initialToken),
+                    completion: { success in
+                      if success {
+                        store.closeWalletActionStores()
+                        dismissAction()
+                      }
+                    },
+                    onDismiss: {
+                      store.closeWalletActionStores()
+                      dismissAction()
+                    }
+                  )
+                case .deposit(let query):
+                  DepositTokenView(
+                    keyringStore: keyringStore,
+                    networkStore: store.networkStore,
+                    depositTokenStore: store.openDepositTokenStore(
+                      prefilledToken: destination.initialToken,
+                      prefilledAccount: destination.initialAccount
+                    ),
+                    prefilledQuery: query,
+                    onDismiss: {
+                      store.closeWalletActionStores()
+                      dismissAction()
+                    }
+                  )
                 }
-              }
-              .navigationViewStyle(.stack)
-            case .editSiteConnection(let origin, let handler):
-              EditSiteConnectionView(
-                keyringStore: keyringStore,
-                origin: origin,
-                coin: keyringStore.selectedAccount.coin,
-                onDismiss: { accounts in
-                  handler(accounts)
-                  dismissAction()
+              case .settings:
+                NavigationView {
+                  Web3SettingsView(
+                    settingsStore: store.settingsStore,
+                    networkStore: store.networkStore,
+                    keyringStore: keyringStore
+                  )
+                  .toolbar {
+                    dismissButtonToolbarContents
+                  }
                 }
-              )
-            case .createAccount(let request):
-              NavigationView {
-                AddAccountView(
+                .navigationViewStyle(.stack)
+              case .editSiteConnection(let origin, let handler):
+                EditSiteConnectionView(
                   keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  preSelectedCoin: request.coinType,
-                  onCreate: {
-                    // request is fullfilled.
-                    request.responseHandler(.created)
-                    dismissAction()
-                  },
-                  onDismiss: {
-                    // request get declined by clicking `Cancel`
-                    request.responseHandler(.rejected)
+                  origin: origin,
+                  coin: keyringStore.selectedAccount.coin,
+                  onDismiss: { accounts in
+                    handler(accounts)
                     dismissAction()
                   }
                 )
+              case .createAccount(let request):
+                NavigationView {
+                  AddAccountView(
+                    keyringStore: keyringStore,
+                    networkStore: store.networkStore,
+                    preSelectedCoin: request.coinType,
+                    onCreate: {
+                      // request is fullfilled.
+                      request.responseHandler(.created)
+                      dismissAction()
+                    },
+                    onDismiss: {
+                      // request get declined by clicking `Cancel`
+                      request.responseHandler(.rejected)
+                      dismissAction()
+                    }
+                  )
+                }
+                .navigationViewStyle(.stack)
               }
-              .navigationViewStyle(.stack)
             }
+            .transition(.asymmetric(insertion: .identity, removal: .opacity))
           }
-          .transition(.asymmetric(insertion: .identity, removal: .opacity))
         }
       case .unlock:
         UIKitNavigationView {
@@ -305,6 +309,12 @@ public struct CryptoView: View {
     .environment(\.webImageDownloader, webImageDownloader)
     .onChange(of: visibleScreen) { newValue in
       if case .panelUnlockOrSetup = presentingContext, newValue == .crypto {
+        dismissAction()
+      } else if case .default = presentingContext,
+        newValue == .crypto,
+        FeatureList.kBraveWalletWebUIIOS.enabled
+      {
+        // wallet page will reload automatically
         dismissAction()
       }
     }
