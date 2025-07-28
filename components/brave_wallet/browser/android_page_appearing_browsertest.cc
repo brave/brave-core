@@ -336,13 +336,11 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
         << "Expected URL " << expected_url << " but observed "
         << web_contents->GetLastCommittedURL();
 
-    auto result = content::EvalJs(
+    EXPECT_TRUE(content::ExecJs(
         web_contents,
         base::ReplaceStringPlaceholders(kPrintConsoleMarkerScript,
                                         {kConsoleMarker}, nullptr),
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1);
-    EXPECT_TRUE(result.error.empty())
-        << "Could not execute script: " << result.error;
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1));
 
     EXPECT_TRUE(console_observer.Wait());
     VerifyConsoleOutputNoErrors(console_observer,
