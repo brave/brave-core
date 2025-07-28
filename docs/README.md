@@ -49,3 +49,5 @@ This is only an estimate. The **github** view may differ.
     file to all clients via component updater.
 *   [Git Configuration](git_configuration.md) - General recommendations for
     setting up and optimizing your Git environment.
+*   [CodeHealth Rotation](codehealth_rotation.md) - General instructions and
+    recommendations for taking part on CodeHealth rotations.
