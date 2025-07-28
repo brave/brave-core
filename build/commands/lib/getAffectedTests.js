@@ -22,8 +22,11 @@ const getTestTargets = (outDir, filters = ['//*']) => {
   ).then((x) => x.stdout.trim().split('\n'))
 }
 
-const asGnTarget = (file) =>
-  ('//brave/' + file).replace('brave/chromium_src/', '')
+const asGnTarget = (file) => {
+  const gnAbsolutePath = file.startsWith('//') ? file : '//brave/' + file
+
+  return gnAbsolutePath.replace('brave/chromium_src/', '')
+}
 
 async function getModifiedFiles(target = 'HEAD~', base = null) {
   const args = ['diff', '--name-only', target, base].filter((x) => x)
@@ -37,11 +40,6 @@ async function getModifiedFiles(target = 'HEAD~', base = null) {
 }
 
 async function getReferenceCommit() {
-  // JENKINS sets GIT_PREVIOUS_SUCCESSFUL_COMMIT
-  if (process.env.GIT_PREVIOUS_SUCCESSFUL_COMMIT) {
-    return process.env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
-  }
-
   const currentBranch = await exec('git', [
     'rev-parse',
     '--abbrev-ref',
@@ -74,6 +72,19 @@ async function analyzeAffectedTests(
   const toAnalyze = {
     files: modifiedFiles,
     test_targets: testTargets,
+  }
+
+  // We currently don't reason about patches
+  // Let's just assume that everything needs to re-run if they are changed
+  // TODO: analyze impact of patch files
+  if (modifiedFiles.find((x) => x.startsWith('//brave/patches'))) {
+    return {
+      outDir,
+      filters,
+      ...toAnalyze,
+      targetCommit,
+      affectedTests: testTargets,
+    }
   }
 
   const uuid = randomUUID()
