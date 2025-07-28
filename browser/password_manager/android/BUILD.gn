@@ -5,15 +5,19 @@
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_password_manager_android_util_unittest.cc" ]
+  sources = [
+    "//chrome/browser/password_manager/android/mock_password_manager_util_bridge.cc",
+    "//chrome/browser/password_manager/android/mock_password_manager_util_bridge.h",
+    "brave_password_manager_android_util_unittest.cc",
+  ]
 
   deps = [
+    "//base",
     "//base/test:test_support",
     "//chrome/browser/password_manager/android:utils",
     "//components/password_manager/core/browser",
-    "//components/password_manager/core/browser/features:password_features",
+    "//components/password_manager/core/browser:password_manager_buildflags",
     "//components/prefs:test_support",
-    "//testing/gmock",
-    "//testing/gtest",
+    "//components/sync/base",
   ]
 }
