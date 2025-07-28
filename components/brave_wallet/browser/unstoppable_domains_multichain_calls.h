@@ -64,8 +64,6 @@ class MultichainCalls {
   MultichainCalls() = default;
   ~MultichainCalls() = default;
 
-  std::vector<std::string> GetChains() const;
-
   bool HasCall(const KeyType& key);
   void AddCallback(const KeyType& key, CallbackType callback);
   void SetNoResult(const KeyType& key, const std::string& chain_id);
