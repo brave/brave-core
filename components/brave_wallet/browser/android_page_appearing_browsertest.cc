@@ -341,8 +341,8 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
         base::ReplaceStringPlaceholders(kPrintConsoleMarkerScript,
                                         {kConsoleMarker}, nullptr),
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1);
-    EXPECT_TRUE(result.error.empty())
-        << "Could not execute script: " << result.error;
+    EXPECT_TRUE(result.is_ok())
+        << "Could not execute script: " << result.ExtractError();
 
     EXPECT_TRUE(console_observer.Wait());
     VerifyConsoleOutputNoErrors(console_observer,
