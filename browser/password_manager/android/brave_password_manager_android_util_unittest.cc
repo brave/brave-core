@@ -20,10 +20,12 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using password_manager::GetLocalUpmMinGmsVersion;
-using password_manager::prefs::kPasswordsUseUPMLocalAndSeparateStores;
-using password_manager::prefs::UseUpmLocalAndSeparateStoresState;
-using password_manager::prefs::UseUpmLocalAndSeparateStoresState::kOff;
-using password_manager::prefs::UseUpmLocalAndSeparateStoresState::kOn;
+// TODO(alexeybarabash): disabled to unblock tests compilation
+// Related upstream commit: 5794e9a0461497b7b810e9366c1c53eab711b6f2
+// using password_manager::prefs::kPasswordsUseUPMLocalAndSeparateStores;
+// using password_manager::prefs::UseUpmLocalAndSeparateStoresState;
+// using password_manager::prefs::UseUpmLocalAndSeparateStoresState::kOff;
+// using password_manager::prefs::UseUpmLocalAndSeparateStoresState::kOn;
 
 namespace password_manager_android_util {
 namespace {
@@ -31,21 +33,21 @@ namespace {
 class BravePasswordManagerAndroidUtilTest : public testing::Test {
  public:
   BravePasswordManagerAndroidUtilTest() {
-    pref_service_.registry()->RegisterBooleanPref(
-        password_manager::prefs::kUnenrolledFromGoogleMobileServicesDueToErrors,
-        false);
-    pref_service_.registry()->RegisterIntegerPref(
-        password_manager::prefs::kCurrentMigrationVersionToGoogleMobileServices,
-        0);
-    pref_service_.registry()->RegisterIntegerPref(
-        password_manager::prefs::kPasswordsUseUPMLocalAndSeparateStores,
-        base::to_underlying(kOff));
+    // pref_service_.registry()->RegisterBooleanPref(
+    // password_manager::prefs::kUnenrolledFromGoogleMobileServicesDueToErrors,
+    //     false);
+    // pref_service_.registry()->RegisterIntegerPref(
+    // password_manager::prefs::kCurrentMigrationVersionToGoogleMobileServices,
+    //     0);
+    // pref_service_.registry()->RegisterIntegerPref(
+    //     password_manager::prefs::kPasswordsUseUPMLocalAndSeparateStores,
+    //     base::to_underlying(kOff));
     pref_service_.registry()->RegisterBooleanPref(
         password_manager::prefs::kCredentialsEnableService, false);
     pref_service_.registry()->RegisterBooleanPref(
         password_manager::prefs::kCredentialsEnableAutosignin, false);
-    pref_service_.registry()->RegisterBooleanPref(
-        password_manager::prefs::kEmptyProfileStoreLoginDatabase, false);
+    // pref_service_.registry()->RegisterBooleanPref(
+    //     password_manager::prefs::kEmptyProfileStoreLoginDatabase, false);
     pref_service_.registry()->RegisterBooleanPref(
         syncer::prefs::internal::kSyncInitialSyncFeatureSetupComplete, false);
     pref_service_.registry()->RegisterBooleanPref(
@@ -56,8 +58,8 @@ class BravePasswordManagerAndroidUtilTest : public testing::Test {
                  kSyncDataTypeStatusForSyncToSigninMigrationPrefix,
              ".", syncer::DataTypeToStableLowerCaseString(syncer::PASSWORDS)}),
         false);
-    pref_service_.registry()->RegisterBooleanPref(
-        password_manager::prefs::kSettingsMigratedToUPMLocal, false);
+    // pref_service_.registry()->RegisterBooleanPref(
+    //     password_manager::prefs::kSettingsMigratedToUPMLocal, false);
 
     base::WriteFile(login_db_directory_.Append(
                         password_manager::kLoginDataForProfileFileName),
@@ -83,45 +85,50 @@ class BravePasswordManagerAndroidUtilTest : public testing::Test {
 // We don't migrate and don't delete passwords DB.
 TEST_F(BravePasswordManagerAndroidUtilTest,
        SetUsesSplitStoresAndUPMForLocal_DeletesLoginDataFilesForMigratedUsers) {
-  // This is a state of a local user that has just been migrated.
-  pref_service()->SetInteger(kPasswordsUseUPMLocalAndSeparateStores,
-                             base::to_underlying(kOn));
-  pref_service()->SetBoolean(
-      password_manager::prefs::kEmptyProfileStoreLoginDatabase, false);
+  // TODO(alexeybarabash): disabled to unblock tests compilation
+  // Related upstream commit: 5794e9a0461497b7b810e9366c1c53eab711b6f2
+  EXPECT_TRUE(false);
+  //   // This is a state of a local user that has just been migrated.
+  //   pref_service()->SetInteger(kPasswordsUseUPMLocalAndSeparateStores,
+  //                              base::to_underlying(kOn));
+  //   pref_service()->SetBoolean(
+  //       password_manager::prefs::kEmptyProfileStoreLoginDatabase, false);
 
-  // Creating the login data files for testing.
-  base::FilePath profile_db_path = login_db_directory().Append(
-      password_manager::kLoginDataForProfileFileName);
-  base::FilePath account_db_path = login_db_directory().Append(
-      password_manager::kLoginDataForAccountFileName);
-  base::FilePath profile_db_journal_path = login_db_directory().Append(
-      password_manager::kLoginDataJournalForProfileFileName);
-  base::FilePath account_db_journal_path = login_db_directory().Append(
-      password_manager::kLoginDataJournalForAccountFileName);
+  //   // Creating the login data files for testing.
+  //   base::FilePath profile_db_path = login_db_directory().Append(
+  //       password_manager::kLoginDataForProfileFileName);
+  //   base::FilePath account_db_path = login_db_directory().Append(
+  //       password_manager::kLoginDataForAccountFileName);
+  //   base::FilePath profile_db_journal_path = login_db_directory().Append(
+  //       password_manager::kLoginDataJournalForProfileFileName);
+  //   base::FilePath account_db_journal_path = login_db_directory().Append(
+  //       password_manager::kLoginDataJournalForAccountFileName);
 
-  base::WriteFile(profile_db_path, "Test content");
-  base::WriteFile(account_db_path, "Test content");
-  base::WriteFile(profile_db_journal_path, "Test content");
-  base::WriteFile(account_db_journal_path, "Test content");
+  //   base::WriteFile(profile_db_path, "Test content");
+  //   base::WriteFile(account_db_path, "Test content");
+  //   base::WriteFile(profile_db_journal_path, "Test content");
+  //   base::WriteFile(account_db_journal_path, "Test content");
 
-  EXPECT_TRUE(PathExists(profile_db_path));
-  EXPECT_TRUE(PathExists(account_db_path));
-  EXPECT_TRUE(PathExists(profile_db_journal_path));
-  EXPECT_TRUE(PathExists(account_db_journal_path));
+  //   EXPECT_TRUE(PathExists(profile_db_path));
+  //   EXPECT_TRUE(PathExists(account_db_path));
+  //   EXPECT_TRUE(PathExists(profile_db_journal_path));
+  //   EXPECT_TRUE(PathExists(account_db_journal_path));
 
-  SetUsesSplitStoresAndUPMForLocal(pref_service(), login_db_directory(),
-                                   nullptr);
+  //   SetUsesSplitStoresAndUPMForLocal(pref_service(), login_db_directory(),
+  //                                    nullptr);
 
-  // Pref should be kOff, as we want keep using profile store instead of the
-  // account store, so the paswords will be synced from Android to Desktop
-  EXPECT_EQ(pref_service()->GetInteger(kPasswordsUseUPMLocalAndSeparateStores),
-            base::to_underlying(kOff));
+  //   // Pref should be kOff, as we want keep using profile store instead of
+  //   the
+  //   // account store, so the paswords will be synced from Android to Desktop
+  //   EXPECT_EQ(pref_service()->GetInteger(
+  //             kPasswordsUseUPMLocalAndSeparateStores),
+  //             base::to_underlying(kOff));
 
-  // SetUsesSplitStoresAndUPMForLocal must not delete DB on Brave
-  EXPECT_TRUE(PathExists(profile_db_path));
-  EXPECT_TRUE(PathExists(account_db_path));
-  EXPECT_TRUE(PathExists(profile_db_journal_path));
-  EXPECT_TRUE(PathExists(account_db_journal_path));
+  //   // SetUsesSplitStoresAndUPMForLocal must not delete DB on Brave
+  //   EXPECT_TRUE(PathExists(profile_db_path));
+  //   EXPECT_TRUE(PathExists(account_db_path));
+  //   EXPECT_TRUE(PathExists(profile_db_journal_path));
+  //   EXPECT_TRUE(PathExists(account_db_journal_path));
 }
 
 }  // namespace
