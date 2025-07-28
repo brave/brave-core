@@ -630,8 +630,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   ReloadAndWaitForLoadStop(browser());
   // can't be overwritten
-  EXPECT_EQ(content::EvalJs(web_contents(browser()), OverwriteScript).error,
-            "");
+  EXPECT_TRUE(
+      content::EvalJs(web_contents(browser()), OverwriteScript).is_ok());
   ASSERT_TRUE(
       content::EvalJs(web_contents(browser()), "window.solana.isPhantom")
           .ExtractBool());
@@ -687,7 +687,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
       SCOPED_TRACE(method);
       auto result = EvalJs(web_contents(browser()),
                            NonWriteableScriptMethod(provider, method));
-      EXPECT_EQ(base::Value(true), result) << result.error;
+      EXPECT_EQ(base::Value(true), result) << result;
     }
     // window.braveSolana.* and window.solana.* (properties)
     for (const std::string& property :
@@ -695,7 +695,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
       SCOPED_TRACE(property);
       auto result = EvalJs(web_contents(browser()),
                            NonWriteableScriptProperty(provider, property));
-      EXPECT_EQ(base::Value(true), result) << result.error;
+      EXPECT_EQ(base::Value(true), result) << result;
     }
   }
 }

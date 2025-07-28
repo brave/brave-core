@@ -282,7 +282,8 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   const std::string widevine_js = content::JsReplace(drm_js,
                                                      "com.widevine.alpha");
 
-  EXPECT_EQ(js_error, content::EvalJs(active_contents(), widevine_js).error);
+  EXPECT_THAT(content::EvalJs(active_contents(), widevine_js),
+              content::EvalJsResult::ErrorIs(testing::Eq(js_error)));
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(IsPermissionBubbleShown());
   ResetBubbleState();
@@ -303,16 +304,16 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   ResetBubbleState();
 
   // Check that non-widevine DRM is ignored.
-  EXPECT_EQ(js_error,
-            content::EvalJs(active_contents(),
-                            content::JsReplace(drm_js, "org.w3.clearkey"))
-                .error);
+  EXPECT_THAT(content::EvalJs(active_contents(),
+                              content::JsReplace(drm_js, "org.w3.clearkey")),
+              content::EvalJsResult::ErrorIs(testing::Eq(js_error)));
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(IsPermissionBubbleShown());
   ResetBubbleState();
 
   // Finally check the widevine request.
-  EXPECT_EQ(js_error, content::EvalJs(active_contents(), widevine_js).error);
+  EXPECT_THAT(content::EvalJs(active_contents(), widevine_js),
+              content::EvalJsResult::ErrorIs(testing::Eq(js_error)));
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(IsPermissionBubbleShown());
 }
