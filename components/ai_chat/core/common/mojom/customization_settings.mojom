@@ -1,0 +1,69 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+// Maximum length for customization and memory records.
+const int32 kMaxRecordLength = 512;
+
+// Supported customization fields, each field can be empty as it might not be
+// set.
+struct Customizations {
+  string name;
+  string job;
+  string tone;
+  string other;
+};
+
+enum CustomizationOperationError {
+  // Exceed the limit of a single customization or memory, or empty.
+  kInvalidLength,
+  // When a memory is not found, could happen when editing.
+  kNotFound,
+};
+
+// Interface for settings UI -> browser communication. This interface allows
+// managing user customization and memories.
+interface CustomizationSettingsHandler {
+  // Establishes a connection with the UI for browser -> UI notifications. This
+  // creates a 1-to-1 connection between the handler and the settings UI.
+  BindUI(pending_remote<CustomizationSettingsUI> ui);
+
+  // Set customization values, note that all fields in Customization will be
+  // updated to the provided value, old values should be provided if unchanged.
+  // Each field can be set to empty if user intends to reset the field.
+  SetCustomizations(Customizations customizations) =>
+    (CustomizationOperationError? error);
+
+  // Get all stored customization values.
+  GetCustomizations() => (Customizations customizations);
+
+  // Add a new memory if it is not existed yet. No duplicate would be added
+  // if already exists.
+  AddMemory(string memory) => (CustomizationOperationError? error);
+
+  // Edit a specific memory. kNotFound would be returned if old_memory is not
+  // found.
+  EditMemory(string old_memory, string new_memory) =>
+    (CustomizationOperationError? error);
+
+  // Return all stored memories.
+  GetMemories() => (array<string> memories);
+
+  // Delete a specific memory.
+  DeleteMemory(string memory);
+
+  // Delete all stored memories.
+  DeleteAllMemories();
+};
+
+// Interface for browser -> settings UI communication. This interface allows
+// the browser process to notify the settings UI about changes to user
+// customization and memories to ensures the UI stays in sync with the
+// underline preference states.
+interface CustomizationSettingsUI {
+  OnCustomizationsChanged(Customizations customizations);
+  OnMemoriesChanged(array<string> memories);
+};

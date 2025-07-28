@@ -18,4 +18,5 @@ export const PanelWrapper = styled.div`
   box-shadow: ${leo.effect.elevation['02']};
   border: 1px solid ${leo.color.divider.subtle};
   overflow: hidden;
+  contain: layout;
 `

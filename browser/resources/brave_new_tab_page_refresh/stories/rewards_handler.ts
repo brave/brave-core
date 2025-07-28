@@ -26,6 +26,7 @@ export function createRewardsHandler(
       name: 'Joe',
       url: 'https://brave.com'
     },
+    tosUpdateRequired: false,
     rewardsAdsViewed: 1
   })
 

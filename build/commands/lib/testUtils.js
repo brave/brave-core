@@ -6,6 +6,7 @@
 const fs = require('fs-extra')
 const path = require('path')
 
+
 const getTestBinary = (config, suite) => {
   let testBinary = suite
   if (testBinary === 'brave_java_unit_tests') {
@@ -65,9 +66,7 @@ const getApplicableFilters = (config, suite) => {
   ]
 
   if (config.is_ubsan) {
-    possibleFilters.push(
-      [suite, targetPlatform, config.targetArch, 'ubsan'].join('-'),
-    )
+    possibleFilters.push([suite, targetPlatform, 'ubsan'].join('-'))
   }
 
   possibleFilters.forEach((filterName) => {

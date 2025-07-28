@@ -96,6 +96,10 @@ constexpr char16_t kTabOrganizationLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/"
     u"35200007195917-How-to-use-Tab-Focus-Mode";
 
+constexpr char16_t kLeoMemoryLearnMoreURL[] =
+    u"https://github.com/brave/brave-browser/wiki/"
+    u"Brave-Leo#user-customization-and-memory-features";
+
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
 
@@ -493,6 +497,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM},
       {"braveLeoAssistantModelSelectionLabel",
        IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL},
+      {"braveLeoAssistantPersonalizationLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_PERSONALIZATION_LABEL},
+      {"braveLeoAssistantCustomizationLinkLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_LINK_LABEL},
       {"braveLeoModelSubtitle-chat-basic", IDS_CHAT_UI_CHAT_BASIC_SUBTITLE},
       {"braveLeoModelSubtitle-chat-claude-instant",
        IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE},
@@ -573,6 +581,62 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveLeoAssistantModelSystemPromptDesc",
        IDS_SETTINGS_LEO_ASSISTANT_MODEL_SYSTEM_PROMPT_DESC},
       {"braveLeoAssistantTokensCount", IDS_SETTINGS_LEO_ASSISTANT_TOKENS_COUNT},
+
+      // Leo Customization
+      {"braveLeoAssistantCustomizationTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_TITLE},
+      {"braveLeoAssistantCustomizationPageTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_PAGE_TITLE},
+      {"braveLeoAssistantCustomizationEnabledLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_ENABLED_LABEL},
+      {"braveLeoAssistantUserMemoryEnabledLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_USER_MEMORY_ENABLED_LABEL},
+      {"braveLeoAssistantCustomizationNameLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_NAME_LABEL},
+      {"braveLeoAssistantCustomizationNamePlaceholder",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_NAME_PLACEHOLDER},
+      {"braveLeoAssistantCustomizationJobLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_JOB_LABEL},
+      {"braveLeoAssistantCustomizationJobPlaceholder",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_JOB_PLACEHOLDER},
+      {"braveLeoAssistantCustomizationToneLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_TONE_LABEL},
+      {"braveLeoAssistantCustomizationTonePlaceholder",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_TONE_PLACEHOLDER},
+      {"braveLeoAssistantCustomizationOtherLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_OTHER_LABEL},
+      {"braveLeoAssistantCustomizationOtherPlaceholder",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_OTHER_PLACEHOLDER},
+      {"braveLeoAssistantCustomizationSaveButton",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_SAVE_BUTTON},
+      {"braveLeoAssistantInputLengthError",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_LENGTH_ERROR},
+
+      // Leo Assistant Memory Section
+      {"braveLeoAssistantYourMemoriesTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_YOUR_MEMORIES_TITLE},
+      {"braveLeoAssistantYourMemoriesDesc",
+       IDS_SETTINGS_LEO_ASSISTANT_YOUR_MEMORIES_DESC},
+      {"braveLeoAssistantMemoryListEmptyTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_MEMORY_LIST_EMPTY_TITLE},
+      {"braveLeoAssistantMemoryListEmptyDescription",
+       IDS_SETTINGS_LEO_ASSISTANT_MEMORY_LIST_EMPTY_DESCRIPTION},
+      {"braveLeoAssistantAddNewMemoryButtonLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_ADD_NEW_MEMORY_BUTTON_LABEL},
+      {"braveLeoAssistantEditMemoryDialogTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_EDIT_MEMORY_DIALOG_TITLE},
+      {"braveLeoAssistantCreateMemoryDialogTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_CREATE_MEMORY_DIALOG_TITLE},
+      {"braveLeoAssistantMemoryInputPlaceholder",
+       IDS_SETTINGS_LEO_ASSISTANT_MEMORY_INPUT_PLACEHOLDER},
+      {"braveLeoAssistantDeleteMemoryConfirmation",
+       IDS_SETTINGS_LEO_ASSISTANT_DELETE_MEMORY_CONFIRMATION},
+      {"braveLeoAssistantDeleteMemoryConfirmationTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_DELETE_MEMORY_CONFIRMATION_TITLE},
+      {"braveLeoAssistantDeleteAllMemoriesConfirmation",
+       IDS_SETTINGS_LEO_ASSISTANT_DELETE_ALL_MEMORIES_CONFIRMATION},
+      {"braveLeoAssistantDeleteAllMemoriesConfirmationTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_DELETE_ALL_MEMORIES_CONFIRMATION_TITLE},
 
       // Survey Panelist Page
       {"surveyPanelist", IDS_SETTINGS_SURVEY_PANELIST},
@@ -974,6 +1038,17 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "braveLeoAssistantAboutLeoDesc2",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_2,
                                  kLeoPrivacyPolicyURL));
+
+  html_source->AddString(
+      "braveLeoAssistantCustomizationDescription",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_DESCRIPTION,
+          kLeoMemoryLearnMoreURL));
+
+  html_source->AddString(
+      "braveLeoAssistantYourMemoriesDesc",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_YOUR_MEMORIES_DESC,
+                                 kLeoMemoryLearnMoreURL));
 
   html_source->AddString("braveSurveyPanelistLearnMoreURL",
                          kSurveyPanelistLearnMoreURL);

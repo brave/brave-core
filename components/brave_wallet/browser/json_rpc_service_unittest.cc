@@ -3206,27 +3206,33 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
     JsonRpcServiceUnitTest::SetUp();
     eth_mainnet_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         NetworkManager::GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
-    eth_mainnet_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
-        EthAddress::FromHex(GetUnstoppableDomainsProxyReaderContractAddress(
-            mojom::kMainnetChainId)));
+    eth_mainnet_getmany_call_handler_ =
+        std::make_unique<UDGetManyCallHandler>(EthAddress::FromHex(
+            JsonRpcService::
+                GetUnstoppableDomainsProxyReaderContractAddressForTesting(
+                    mojom::kMainnetChainId)));
     eth_mainnet_endpoint_handler_->AddEthCallHandler(
         eth_mainnet_getmany_call_handler_.get());
 
     polygon_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         NetworkManager::GetUnstoppableDomainsRpcUrl(
             mojom::kPolygonMainnetChainId));
-    polygon_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
-        EthAddress::FromHex(GetUnstoppableDomainsProxyReaderContractAddress(
-            mojom::kPolygonMainnetChainId)));
+    polygon_getmany_call_handler_ =
+        std::make_unique<UDGetManyCallHandler>(EthAddress::FromHex(
+            JsonRpcService::
+                GetUnstoppableDomainsProxyReaderContractAddressForTesting(
+                    mojom::kPolygonMainnetChainId)));
     polygon_endpoint_handler_->AddEthCallHandler(
         polygon_getmany_call_handler_.get());
 
     base_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         NetworkManager::GetUnstoppableDomainsRpcUrl(
             mojom::kBaseMainnetChainId));
-    base_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
-        EthAddress::FromHex(GetUnstoppableDomainsProxyReaderContractAddress(
-            mojom::kBaseMainnetChainId)));
+    base_getmany_call_handler_ =
+        std::make_unique<UDGetManyCallHandler>(EthAddress::FromHex(
+            JsonRpcService::
+                GetUnstoppableDomainsProxyReaderContractAddressForTesting(
+                    mojom::kBaseMainnetChainId)));
     base_endpoint_handler_->AddEthCallHandler(base_getmany_call_handler_.get());
 
     url_loader_factory_.SetInterceptor(base::BindRepeating(
