@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import '../brave_appearance_page/super_referral.js'
+import '../brave_appearance_page/toolbar.js'
 
 import {
   html,
@@ -177,6 +178,18 @@ RegisterPolymerTemplateModifications({
       console.error(`[Settings] Couldn't find sidePanelPosition`)
     } else if (sidePanelPosition.parentNode) {
       sidePanelPosition.parentNode.setAttribute('hidden', 'true')
+    }
+
+    // Append toolbar related items to the 'Appearance'pages
+    const pages = templateContent.querySelector('#pages > div')
+    if (!pages) {
+      console.error(`[Settings] Couldn't find appearance page #pages > div`)
+    } else {
+      pages.appendChild(html`
+          <settings-brave-appearance-toolbar
+            prefs="{{prefs}}">
+          </settings-brave-appearance-toolbar>
+        `)
     }
   }
 })

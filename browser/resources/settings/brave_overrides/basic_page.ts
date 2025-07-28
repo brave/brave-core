@@ -5,7 +5,6 @@
 
 import '../brave_appearance_page/sidebar.js'
 import '../brave_appearance_page/tabs.js'
-import '../brave_appearance_page/toolbar.js'
 import '../brave_content_page/content.js'
 import '../brave_content_page/playlist.js'
 import '../brave_content_page/speedreader.js'
@@ -141,19 +140,6 @@ RegisterPolymerTemplateModifications({
         'getStarted',
         'braveGetStartedTitle',
         'brave-settings-getting-started',
-        {
-          prefs: '{{prefs}}',
-        }
-      ))
-      const sectionToolbar = document.createElement('template')
-      sectionToolbar.setAttribute('is', 'dom-if')
-      sectionToolbar.setAttribute('restamp', 'true')
-      sectionToolbar.setAttribute('if', '[[showPage_(pageVisibility_.appearance)]]')
-      sectionToolbar.content.appendChild(createNestedSectionElement(
-        'toolbar',
-        'appearance',
-        'appearanceSettingsToolbarSection',
-        'settings-brave-appearance-toolbar',
         {
           prefs: '{{prefs}}',
         }
@@ -422,8 +408,7 @@ RegisterPolymerTemplateModifications({
       const sectionAppearance = getSectionElement(actualTemplate.content,
         'appearance')
       last = last.insertAdjacentElement('afterend', sectionAppearance)
-      // Insert nested Toolbar, Tabs, Sidebar under 'Appearance' menu
-      last = last.insertAdjacentElement('afterend', sectionToolbar)
+      // Insert nested Tabs, Sidebar under 'Appearance' menu
       last = last.insertAdjacentElement('afterend', sectionTabs)
       last = last.insertAdjacentElement('afterend', sectionSidebar)
       // Insert nested Content, Containers, Playlist, Speedreader under
