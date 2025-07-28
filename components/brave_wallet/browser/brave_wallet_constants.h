@@ -220,6 +220,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEnableTransactionSimulation",
      IDS_BRAVE_WALLET_ENABLE_TRANSACTION_SIMULATION},
     {"braveWalletNetworkFees", IDS_BRAVE_WALLET_NETWORK_FEES},
+    {"braveWalletNetworkFee", IDS_BRAVE_WALLET_NETWORK_FEE},
     {"braveWalletSolanaSysvarRentProgram",
      IDS_BRAVE_WALLET_SOLANA_SYSVAR_RENT_PROGRAM},
     {"braveWalletSolanaMetaDataProgram",
