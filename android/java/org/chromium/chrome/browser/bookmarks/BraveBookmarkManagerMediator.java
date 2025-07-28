@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
 import org.chromium.base.Log;
+import org.chromium.base.PathUtils;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -222,29 +223,66 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
-                    File downloadDir =
-                            Environment.getExternalStoragePublicDirectory(
-                                    Environment.DIRECTORY_DOWNLOADS);
-                    int num = 1;
-                    String exportFileName = "bookmarks.html";
-                    File file = new File(downloadDir, exportFileName);
-                    while (file.exists()) {
-                        exportFileName = "bookmarks (" + num++ + ").html";
-                        file = new File(downloadDir, exportFileName);
-                    }
-                    doExportBookmarksOnUI(file);
+                    doExportBookmarksOnUI(getUniqueFile(getDownloadDir()));
                 });
     }
 
-    private void doExportBookmarksOnUI(File file) {
-        ((AppCompatActivity) mWindowAndroid.getContext().get()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mBookmarkModel instanceof BraveBookmarkModel) {
-                    ((BraveBookmarkModel) mBookmarkModel)
-                            .exportBookmarks(mWindowAndroid, file.getPath());
-                }
+    private File getUniqueFile(File downloadDir) {
+        int num = 1;
+        String exportFileName = "bookmarks.html";
+        File file = new File(downloadDir, exportFileName);
+        boolean filePublicExist = false;
+        File filePublic;
+        // We check for file existence on both Public Downloads storage
+        // and internal Downloads storage on Android 10
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+            filePublic =
+                    new File(
+                            Environment.getExternalStoragePublicDirectory(
+                                    Environment.DIRECTORY_DOWNLOADS),
+                            exportFileName);
+            filePublicExist = filePublic.exists();
+        }
+        while (file.exists() || filePublicExist) {
+            exportFileName = "bookmarks (" + num++ + ").html";
+            file = new File(downloadDir, exportFileName);
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                filePublic =
+                        new File(
+                                Environment.getExternalStoragePublicDirectory(
+                                        Environment.DIRECTORY_DOWNLOADS),
+                                exportFileName);
+                filePublicExist = filePublic.exists();
             }
-        });
+        }
+
+        return file;
+    }
+
+    private File getDownloadDir() {
+        // Android 10 apps may encounter issues when trying to write to the
+        // public Downloads directory because the scoped storage model is not
+        // fully enforced. On Android 11 and above, apps can write to the
+        // public Downloads directory. On Android below 10 the scoped storage
+        // model hasn't been introduced yet.
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+            return new File(PathUtils.getDownloadsDirectory());
+        }
+
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    }
+
+    private void doExportBookmarksOnUI(File file) {
+        ((AppCompatActivity) mWindowAndroid.getContext().get())
+                .runOnUiThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mBookmarkModel instanceof BraveBookmarkModel) {
+                                    ((BraveBookmarkModel) mBookmarkModel)
+                                            .exportBookmarks(mWindowAndroid, file.getPath());
+                                }
+                            }
+                        });
     }
 }
