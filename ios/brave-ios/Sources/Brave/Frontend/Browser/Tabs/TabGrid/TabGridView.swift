@@ -330,24 +330,25 @@ struct TabGridView: View {
       PrivateBrowsingPicker(isPrivateBrowsing: $viewModel.isPrivateBrowsing)
       Spacer()
       HStack(spacing: 20) {
-        Menu {
-          Button {
-            isShredAlertPresented = true
-            activeShredMode = .selectedTab
+        if viewModel.isShredMenuVisible {
+          Menu {
+            Button {
+              isShredAlertPresented = true
+              activeShredMode = .selectedTab
+            } label: {
+              Text(Strings.TabGrid.shredSelectedTabButtonTitle)
+            }
+            .disabled(!viewModel.isSingleTabShredAvailable)
+            Button(role: .destructive) {
+              isShredAlertPresented = true
+              activeShredMode = .allTabs
+            } label: {
+              Text(Strings.TabGrid.shredAllTabsButtonTitle)
+            }
           } label: {
-            Text(Strings.TabGrid.shredSelectedTabButtonTitle)
+            Label(Strings.TabGrid.shredTabsAccessibilityLabel, braveSystemImage: "leo.shred.data")
           }
-          .disabled(viewModel.selectedTab == nil)
-          Button(role: .destructive) {
-            isShredAlertPresented = true
-            activeShredMode = .allTabs
-          } label: {
-            Text(Strings.TabGrid.shredAllTabsButtonTitle)
-          }
-        } label: {
-          Label(Strings.TabGrid.shredTabsAccessibilityLabel, braveSystemImage: "leo.shred.data")
         }
-        .disabled(viewModel.tabs.isEmpty)
         Button {
           destinationSheet = .history
         } label: {
