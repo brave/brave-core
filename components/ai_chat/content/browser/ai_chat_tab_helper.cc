@@ -174,20 +174,11 @@ void AIChatTabHelper::OnFetchPageContentComplete(
     std::string invalidation_token) {
   base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
   // If content is empty, and page was not loaded yet, wait for page load.
-  // Once page load is complete, try again. If it's still empty, fallback
-  // to print preview extraction.
-  if (content.empty() && !is_video) {
-    // When page isn't loaded yet, wait until DidFinishLoad
-    DVLOG(1) << __func__ << " empty content, will attempt fallback";
-    if (MaybePrintPreviewExtract(callback)) {
-      return;
-    } else if (!is_page_loaded_) {
-      DVLOG(1) << "page was not loaded yet, will try again after load";
-      SetPendingGetContentCallback(std::move(callback));
-      return;
-    }
-    // When print preview extraction isn't available, return empty content
-    DVLOG(1) << "no fallback available";
+  // Once page load is complete, try again.
+  if (content.empty() && !is_video && !is_page_loaded_) {
+    DVLOG(1) << "page was not loaded yet, will try again after load";
+    SetPendingGetContentCallback(std::move(callback));
+    return;
   }
   std::move(callback).Run(std::move(content), is_video,
                           std::move(invalidation_token));

@@ -1738,7 +1738,8 @@ public class BytecodeTest {
                         BookmarkUiPrefs.class,
                         BookmarkOpener.class,
                         BookmarkManagerOpener.class,
-                        PriceDropNotificationManager.class));
+                        PriceDropNotificationManager.class,
+                        Function.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",

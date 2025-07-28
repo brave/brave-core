@@ -486,22 +486,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
 
-  if (uploaded_files && !uploaded_files->empty() &&
-      std::ranges::any_of(
-          uploaded_files.value(), [](const mojom::UploadedFilePtr& file) {
-            return file->type == mojom::UploadedFileType::kImage ||
-                   file->type == mojom::UploadedFileType::kScreenshot;
-          })) {
-    auto* current_model =
-        model_service_->GetModel(metadata_->model_key.value_or("").empty()
-                                     ? model_service_->GetDefaultModelKey()
-                                     : metadata_->model_key.value());
-    if (!current_model->vision_support) {
-      ChangeModel(ai_chat_service_->IsPremiumStatus()
-                      ? features::kAIModelsPremiumVisionDefaultKey.Get()
-                      : features::kAIModelsVisionDefaultKey.Get());
-    }
-  }
+  // Auto-switch to vision model if needed
+  MaybeSwitchToVisionModel(uploaded_files);
+
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
@@ -1347,6 +1334,37 @@ void ConversationHandler::OnGeneratePageContentComplete(
   // Keep is_content_different_ as true if it's the initial state
   is_content_different_ = is_content_different_ || content_changed;
 
+  // Check if content is empty and take screenshots if needed
+  if (std::ranges::all_of(associated_content_manager_->GetCachedContents(),
+                          [](const auto& page_content_ref) {
+                            auto page_content = page_content_ref.get();
+                            base::TrimWhitespaceASCII(page_content.content,
+                                                      base::TRIM_ALL,
+                                                      &page_content.content);
+                            return page_content.content.empty();
+                          }) &&
+      associated_content_manager_->HasAssociatedContent()) {
+    // Check if the conversation already has screenshots
+    bool has_screenshots = std::ranges::any_of(
+        chat_history_, [](const mojom::ConversationTurnPtr& turn) {
+          return turn->uploaded_files &&
+                 std::ranges::any_of(
+                     *turn->uploaded_files,
+                     [](const mojom::UploadedFilePtr& file) {
+                       return file->type ==
+                              mojom::UploadedFileType::kScreenshot;
+                     });
+        });
+
+    // Only take screenshots if no screenshots have been taken yet
+    if (!has_screenshots) {
+      associated_content_manager_->GetScreenshots(
+          base::BindOnce(&ConversationHandler::OnScreenshotsTaken,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      return;
+    }
+  }
+
   std::move(callback).Run(associated_content_manager_->GetCachedContents());
 
   // Content-used percentage and is_video might have changed in addition to
@@ -1764,6 +1782,56 @@ void ConversationHandler::SetTemporary(bool temporary) {
   }
 
   metadata_->temporary = temporary;
+}
+
+void ConversationHandler::MaybeSwitchToVisionModel(
+    const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files) {
+  if (uploaded_files && !uploaded_files->empty() &&
+      std::ranges::any_of(
+          uploaded_files.value(), [](const mojom::UploadedFilePtr& file) {
+            return file->type == mojom::UploadedFileType::kImage ||
+                   file->type == mojom::UploadedFileType::kScreenshot;
+          })) {
+    auto* current_model =
+        model_service_->GetModel(metadata_->model_key.value_or("").empty()
+                                     ? model_service_->GetDefaultModelKey()
+                                     : metadata_->model_key.value());
+    if (!current_model->vision_support) {
+      ChangeModel(ai_chat_service_->IsPremiumStatus()
+                      ? features::kAIModelsPremiumVisionDefaultKey.Get()
+                      : features::kAIModelsVisionDefaultKey.Get());
+    }
+  }
+}
+
+void ConversationHandler::OnScreenshotsTaken(
+    GetAllContentCallback callback,
+    std::optional<std::vector<mojom::UploadedFilePtr>> screenshots) {
+  // Screenshots have been taken and are already in UploadedFile format
+  // Update the existing conversation turn with these uploaded files
+
+  if (screenshots && !screenshots->empty()) {
+    // Auto-switch to vision model if needed
+    MaybeSwitchToVisionModel(screenshots);
+
+    // Update the last conversation turn with the uploaded files
+    if (!chat_history_.empty() &&
+        chat_history_.back()->character_type == mojom::CharacterType::HUMAN) {
+      // Append screenshots to existing uploaded files instead of replacing them
+      if (!chat_history_.back()->uploaded_files) {
+        chat_history_.back()->uploaded_files.emplace();
+      }
+      chat_history_.back()->uploaded_files->insert(
+          chat_history_.back()->uploaded_files->end(),
+          std::make_move_iterator(screenshots->begin()),
+          std::make_move_iterator(screenshots->end()));
+      // Notify UI about the updated conversation turn
+      OnHistoryUpdate(chat_history_.back().Clone());
+    }
+  }
+
+  // Continue with the original callback
+  std::move(callback).Run(associated_content_manager_->GetCachedContents());
 }
 
 }  // namespace ai_chat
