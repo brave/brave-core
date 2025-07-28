@@ -7,20 +7,26 @@
 
 #include "brave/components/constants/pref_names.h"
 
-// We have one more option for bookmarks bar visibility.
-// It's "only show bookmarks bar on NTP". And it's patched to prevent
-// checking split view. Chromium shows bookmarks bar if active tab is
-// in split tabs and split tabs includes NTP. But, we don't want to show
-// bookmarks bar if that active tab is not NTP.
-// It's inevitable to copy some upstream code when overriding this method.
-// Also added this before checking bookmarks/tab groups existence.
-// We show bookmarks bar on NTP if there is no bookmarks/tab groups.
-#define BRAVE_BOOKMARK_BAR_CONTROLLER_SHOULD_SHOW_BOOKMARK_BAR \
-  if (const tabs::TabInterface* active_tab =                   \
-          tab_strip_model_->GetActiveTab()) {                  \
-    return active_tab->GetContents() &&                        \
-           IsShowingNTP(active_tab->GetContents()) &&          \
-           prefs->GetBoolean(kAlwaysShowBookmarkBarOnNTP);     \
+// We have three bookmarks bar options - Always, Never, Always only on NTP.
+// Always only on NTP is our own option.
+// As upstream doesn't show bookmarks on NTP when bookmarks bar empty we need
+// to patch below code before checking bookmark model's emptiness.
+//
+// Also, bookmarks bar on NTP should be shown when "Always" and "Always only on
+// NTP". With SideBySide, bookmarks bar is shown when one of split tab is NTP.
+#define BRAVE_BOOKMARK_BAR_CONTROLLER_SHOULD_SHOW_BOOKMARK_BAR              \
+  if (const tabs::TabInterface* active_tab =                                \
+          tab_strip_model_->GetActiveTab()) {                               \
+    if (active_tab->GetContents() &&                                        \
+        active_tab->GetContents()->IsFullscreen()) {                        \
+      return false;                                                         \
+    }                                                                       \
+    return std::any_of(                                                     \
+        tabs.begin(), tabs.end(), [&prefs](const tabs::TabInterface* tab) { \
+          return tab->GetContents() && IsShowingNTP(tab->GetContents()) &&  \
+                 (prefs->GetBoolean(kAlwaysShowBookmarkBarOnNTP) ||         \
+                  prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar));   \
+        });                                                                 \
   }
 
 #include <chrome/browser/ui/bookmarks/bookmark_bar_controller.cc>
