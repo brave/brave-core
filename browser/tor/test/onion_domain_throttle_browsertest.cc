@@ -117,7 +117,7 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
       content::WebContents* contents =
           test_case.browser->tab_strip_model()->GetActiveWebContents();
       auto loaded = EvalJs(contents, image_script(test_case.src));
-      ASSERT_TRUE(loaded.error.empty());
+      ASSERT_TRUE(loaded.is_ok());
       EXPECT_EQ(base::Value(test_case.result), loaded);
     }
   }
