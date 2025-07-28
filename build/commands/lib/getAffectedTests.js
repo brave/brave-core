@@ -11,22 +11,24 @@ const config = require('./config')
 const { unlink } = require('fs-extra')
 const { randomUUID } = require('crypto')
 const { getApplicableFilters, getTestsToRun } = require('./testUtils')
+const { tmpdir } = require('os')
 
-const getTestTargets = (outDir, filters = ['//*']) =>
-  exec(
+const getTestTargets = (outDir, filters = ['//*']) => {
+  const { env, shell } = config.defaultOptions
+  return exec(
     'gn',
     ['ls', outDir, '--type=executable', '--testonly=true', ...filters],
-    { env: config.defaultOptions.env, shell: config.defaultOptions.shell },
+    { env, shell },
   ).then((x) => x.stdout.trim().split('\n'))
+}
 
 const asGnTarget = (file) =>
   ('//brave/' + file).replace('brave/chromium_src/', '')
 
-// set base = HEAD if you want to ignore the current workspace changes
 async function getModifiedFiles(target = 'HEAD~', base = null) {
   const args = ['diff', '--name-only', target, base].filter((x) => x)
-
-  return exec('git', args, { maxBuffer: 1024 * 1024 * 50 }).then((x) =>
+  const maxBuffer = 1024 * 1024 * 5
+  return exec('git', args, { maxBuffer }).then((x) =>
     x.stdout
       .trim()
       .split('\n')
@@ -35,6 +37,7 @@ async function getModifiedFiles(target = 'HEAD~', base = null) {
 }
 
 async function getReferenceCommit() {
+  // JENKINS sets GIT_PREVIOUS_SUCCESSFUL_COMMIT
   if (process.env.GIT_PREVIOUS_SUCCESSFUL_COMMIT) {
     return process.env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
   }
@@ -57,9 +60,6 @@ async function analyzeAffectedTests(
   outDir,
   { filters = ['//*'], files = [], since = null } = {},
 ) {
-  // JENKINS sets GIT_PREVIOUS_SUCCESSFUL_COMMIT
-  // TODO: find TeamCity equivalent.
-  // TODO: we can optimize further by getting the last failure commit
   const targetCommit =
     !since || since === true ? await getReferenceCommit() : since
 
@@ -77,9 +77,10 @@ async function analyzeAffectedTests(
   }
 
   const uuid = randomUUID()
+  const tmpDir = await tmpdir()
   // paths are relative to package.json
   await writeFile(
-    `${root}/out/analyze-${uuid}.json`,
+    `${tmpDir}/analyze-${uuid}.json`,
     JSON.stringify(toAnalyze, null, 2),
     'utf-8',
   )
@@ -90,19 +91,20 @@ async function analyzeAffectedTests(
     [
       'analyze',
       outDir,
-      `${root}/out/analyze-${uuid}.json`,
-      `${root}/out/out-${uuid}.json`,
+      `${tmpDir}/analyze-${uuid}.json`,
+      `${tmpDir}/analyze-out-${uuid}.json`,
     ],
     { env, shell },
   )
 
-  const output = await readFile(`${root}/out/out-${uuid}.json`, 'utf-8').then(
-    JSON.parse,
-  )
+  const output = await readFile(
+    `${tmpDir}/analyze-out-${uuid}.json`,
+    'utf-8',
+  ).then(JSON.parse)
 
   await Promise.all([
-    unlink(`${root}/out/analyze-${uuid}.json`),
-    unlink(`${root}/out/out-${uuid}.json`),
+    unlink(`${tmpDir}/analyze-${uuid}.json`),
+    unlink(`${tmpDir}/analyze-out-${uuid}.json`),
   ])
 
   return {
