@@ -1963,6 +1963,7 @@ void BraveWalletService::SetTransactionSimulationOptInStatus(
 
 void BraveWalletService::WriteToClipboard(const std::string& text,
                                           bool is_sensitive) {
+#if !BUILDFLAG(IS_IOS)
   ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
   std::u16string out;
   base::UTF8ToUTF16(text.data(), text.size(), &out);
@@ -1970,6 +1971,9 @@ void BraveWalletService::WriteToClipboard(const std::string& text,
   if (is_sensitive) {
     scw.MarkAsConfidential();
   }
+#else
+  NOTREACHED();
+#endif
 }
 
 base::CallbackListSubscription
