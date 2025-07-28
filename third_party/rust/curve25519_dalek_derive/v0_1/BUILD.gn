@@ -33,6 +33,7 @@ cargo_crate("lib") {
   }
   rustenv = []
   rustflags = []
+  enabled = true
 
   #####################################################################
   # Tweaking which GN `config`s apply to this target.

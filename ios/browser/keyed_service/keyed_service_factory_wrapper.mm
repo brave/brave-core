@@ -5,7 +5,9 @@
 
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h"
 
+#include "base/apple/foundation_util.h"
 #include "base/notimplemented.h"
+#include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
@@ -27,6 +29,13 @@
     last_used_profile = last_used_profile->GetOffTheRecordProfile();
   }
   return [self serviceForProfile:last_used_profile];
+}
+
++ (nullable id)getForProfile:(id<ProfileBridge>)profile {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  ProfileBridgeImpl* holder =
+      base::apple::ObjCCastStrict<ProfileBridgeImpl>(profile);
+  return [self serviceForProfile:holder.profile];
 }
 
 + (nullable id)serviceForProfile:(ProfileIOS*)profile {

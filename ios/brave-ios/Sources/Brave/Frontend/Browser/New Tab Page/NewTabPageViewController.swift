@@ -169,7 +169,7 @@ class NewTabPageViewController: UIViewController {
 
   init(
     tab: some TabState,
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards,

@@ -185,6 +185,7 @@ extra_input_roots = [ "../docs", "../README.md" ]
 
 [crate.curve25519-dalek-derive]
 extra_input_roots = [ "../README.md" ]
+extra_kv = { raw_gn = 'enabled = true' }
 
 [crate.dtoa-short]
 license_files = ['LICENSE']
