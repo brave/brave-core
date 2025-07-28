@@ -130,8 +130,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     base::Base64UrlEncode(destination_url.spec(),
                           base::Base64UrlEncodePolicy::OMIT_PADDING,
                           &encoded_destination);
-    const std::string query =
-        base::StringPrintf("url=%s", encoded_destination.c_str());
+    const std::string query = absl::StrFormat("url=%s", encoded_destination);
     GURL::Replacements replacement;
     replacement.SetQueryStr(query);
     return navigation_url.ReplaceComponents(replacement);

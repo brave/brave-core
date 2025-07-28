@@ -107,7 +107,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       "font-src 'self' chrome://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
-      base::StringPrintf("child-src %s;", kAIChatUntrustedConversationUIURL));
+      absl::StrFormat("child-src %s;", kAIChatUntrustedConversationUIURL));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");

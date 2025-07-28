@@ -397,7 +397,7 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     ASSERT_TRUE(print_preview_ui_id);
     EXPECT_EQ(
         print_render_frame->GetSettings(),
-        base::test::ParseJsonDict(base::StringPrintf(
+        base::test::ParseJsonDict(absl::StrFormat(
             kSettingTemplate,
             static_cast<int>(printing::mojom::MarginType::kDefaultMargins),
             static_cast<int>(printing::mojom::ColorModel::kColor),
@@ -407,7 +407,7 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
             static_cast<int>(printing::ScalingType::DEFAULT),
             *print_preview_ui_id, request_id,
             base::UTF16ToUTF8(web_contents()->GetTitle()),
-            expect_preview_modifiable ? "true" : "false",
+            base::ToString(expect_preview_modifiable),
             web_contents()->GetLastCommittedURL().spec())));
   }
 

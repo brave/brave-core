@@ -66,7 +66,7 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* test_server() { return https_server_.get(); }
 
   std::string image_script(const std::string& src) {
-    return base::StringPrintf(R"(
+    return absl::StrFormat(R"(
         new Promise(resolve => {
           let img = document.createElement('img');
           img.src = '%s';
@@ -78,7 +78,7 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
           };
         });
     )",
-                              src.c_str());
+                           src);
   }
 
   Browser* OpenTorWindow() {

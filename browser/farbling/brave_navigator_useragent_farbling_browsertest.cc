@@ -178,7 +178,7 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_->port()));
+        absl::StrFormat("MAP *:443 127.0.0.1:%d", https_server_->port()));
 #if BUILDFLAG(ENABLE_EXTENSIONS)
     command_line->AppendSwitch(extensions::switches::kOffscreenDocumentTesting);
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)

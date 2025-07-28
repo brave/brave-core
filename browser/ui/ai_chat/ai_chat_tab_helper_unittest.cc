@@ -190,8 +190,8 @@ INSTANTIATE_TEST_SUITE_P(
     AIChatTabHelperUnitTest,
     ::testing::Bool(),
     [](const testing::TestParamInfo<AIChatTabHelperUnitTest::ParamType>& info) {
-      return base::StringPrintf("PrintPreview_%s",
-                                info.param ? "Enabled" : "Disabled");
+      return absl::StrFormat("PrintPreview_%s",
+                             info.param ? "Enabled" : "Disabled");
     });
 
 TEST_P(AIChatTabHelperUnitTest, OnNewPage) {

@@ -120,8 +120,8 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
         custom_file_manager().GetCustomBackgroundDirectory().AppendASCII(
             kTestImageName);
     if (i > 0) {
-      expected_path = expected_path.InsertBeforeExtensionASCII(
-          base::StringPrintf("-%d", i));
+      expected_path =
+          expected_path.InsertBeforeExtensionASCII(absl::StrFormat("-%d", i));
     }
 
     auto check_res =
