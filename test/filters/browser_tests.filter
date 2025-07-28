@@ -2356,10 +2356,6 @@
 -ChromeLabsBrowserTest.ClosesWithoutCrashing
 -ChromeLabsModelBrowserTest.NoChromeLabsModel
 
-# This test fails because it expects to hide the bookmarks bar when a split view
-# tab is in fullscreen mode
--SideBySideBrowserTest.BrowserFullscreenShowBookmarkBarSplitView
-
 # These tests are flakey in cr140 at the moment due to
 # https://issues.chromium.org/issues/430608016
 -MultiContentsViewWebContentsReLayoutBrowserTest.*
