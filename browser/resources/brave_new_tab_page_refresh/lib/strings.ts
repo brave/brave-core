@@ -44,6 +44,9 @@ export type StringKey =
   'rewardsLoginTitle' |
   'rewardsOnboardingButtonLabel' |
   'rewardsOnboardingLink' |
+  'rewardsTosUpdateButtonLabel' |
+  'rewardsTosUpdateText' |
+  'rewardsTosUpdateTitle' |
   'rewardsWidgetTitle' |
   'saveChangesButtonLabel' |
   'searchAskLeoDescription' |
