@@ -212,6 +212,7 @@ YouTubeScriptInjectorTabHelper::YouTubeScriptInjectorTabHelper(
 YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
 void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
+  SetFullscreenRequested(false);
   content::WebContents* contents = web_contents();
   // Filter only YouTube videos.
   if (!IsYouTubeVideo()) {
@@ -246,7 +247,6 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
 
   // Mark fullscreen as requested for this page
   SetFullscreenRequested(true);
-
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
     if (!script_injector_remote_.is_bound()) {
     rfh->GetRemoteAssociatedInterfaces()->GetInterface(
