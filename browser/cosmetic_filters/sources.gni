@@ -12,6 +12,7 @@ brave_browser_cosmetic_filters_deps = [
   "//base",
   "//brave/components/cosmetic_filters/common:mojom",
   "//chrome/browser/ui",
+  "//chrome/browser/ui/browser_window",
   "//third_party/blink/public/common",
 ]
 
