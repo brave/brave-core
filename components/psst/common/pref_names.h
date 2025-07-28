@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_PSST_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_PSST_COMMON_PREF_NAMES_H_
 
-#include "base/component_export.h"
 #include "components/prefs/pref_service.h"
 
 class PrefRegistrySimple;
@@ -17,7 +16,6 @@ namespace prefs {
 inline constexpr char kPsstEnabled[] = "brave.psst.settings.enable_psst";
 }  // namespace prefs
 
-COMPONENT_EXPORT(PSST_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace psst
