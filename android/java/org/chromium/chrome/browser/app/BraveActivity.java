@@ -57,6 +57,7 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -519,6 +520,10 @@ public abstract class BraveActivity extends ChromeActivity
             MediaSession mediaSession = MediaSession.fromWebContents(getCurrentWebContents());
             if (mediaSession != null) {
                 mediaSession.suspend();
+            }
+            FullscreenManager fullscreenManager = getFullscreenManager();
+            if (fullscreenManager.getPersistentFullscreenMode()) {
+                fullscreenManager.exitPersistentFullscreenMode();
             }
         }
     }
