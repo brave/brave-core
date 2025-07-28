@@ -114,7 +114,9 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.feature_engagement.Tracker;
+import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.NavigationHandle;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistItem;
@@ -1691,8 +1693,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     // FullscreenManager.Observer method.
     @Override
     public void onEnterFullscreen(Tab tab, FullscreenOptions options) {
-        if (BraveYouTubeScriptInjectorNativeHelper.hasFullscreenBeenRequested(
-                tab.getWebContents())) {
+        final WebContents webContents = tab.getWebContents();
+        if (webContents != null && BraveYouTubeScriptInjectorNativeHelper.hasFullscreenBeenRequested(
+                webContents)) {
+            MediaSession mediaSession = MediaSession.fromWebContents(webContents);
+            if (mediaSession != null) {
+                mediaSession.resume();
+            }
             Activity activity = tab.getWindowAndroid().getActivity().get();
             if (activity != null) {
                 try {
