@@ -92,7 +92,8 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     suggestion.allowedToBeDefaultMatch(),
                     suggestion.getInlineAutocompletion(),
                     suggestion.getAdditionalText(),
-                    suggestion.getTabGroupUuid());
+                    suggestion.getTabGroupUuid(),
+                    /* serializedSuggestTemplate */ null);
         }
         return suggestion;
     }
