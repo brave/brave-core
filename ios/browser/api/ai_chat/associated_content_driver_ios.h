@@ -24,8 +24,8 @@ class AssociatedContentDriverIOS : public AssociatedContentDriver {
   ~AssociatedContentDriverIOS() override;
 
  protected:
-  std::u16string GetPageTitle() const override;
-  GURL GetPageURL() const override;
+  std::u16string GetPageTitle() const;
+  GURL GetPageURL() const;
   void GetPageContent(FetchPageContentCallback callback,
                       std::string_view invalidation_token) override;
   void GetSearchSummarizerKey(GetSearchSummarizerKeyCallback callback) override;

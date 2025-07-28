@@ -125,7 +125,7 @@ class AssociatedContentDelegate {
   std::string uuid_;
   base::ObserverList<Observer> observers_;
 
-  std::u16string title_ = u"";
+  std::u16string title_;
   GURL url_;
   PageContent cached_page_content_;
 
