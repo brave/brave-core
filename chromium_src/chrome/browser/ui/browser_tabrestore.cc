@@ -8,6 +8,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/public/constants.h"
 #include "chrome/browser/ui/tab_ui_helper.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
@@ -31,13 +32,14 @@ void MaybeRestoreCustomTitleForTab(
     return;
   }
 
-  if (!extra_data.contains("tab_custom_title") ||
-      extra_data.at("tab_custom_title").empty()) {
+  if (!extra_data.contains(tabs::kBraveTabCustomTitleExtraDataKey) ||
+      extra_data.at(tabs::kBraveTabCustomTitleExtraDataKey).empty()) {
     return;
   }
 
   model->SetCustomTitleForTab(
-      tab_index, base::UTF8ToUTF16(extra_data.at("tab_custom_title")));
+      tab_index,
+      base::UTF8ToUTF16(extra_data.at(tabs::kBraveTabCustomTitleExtraDataKey)));
 }
 
 }  // namespace
