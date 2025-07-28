@@ -57,6 +57,7 @@ ios_objc_mojom_wrappers("wallet_mojom_wrappers") {
   ]
   generate_namespace = false
   exclude_types = [
+    "CardanoProvider",
     "PageHandlerFactory",
     "PanelHandlerFactory",
   ]
