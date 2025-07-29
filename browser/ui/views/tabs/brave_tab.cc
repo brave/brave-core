@@ -38,6 +38,8 @@ BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {
   rename_textfield_ = AddChildView(std::make_unique<views::Textfield>());
   rename_textfield_->SetVisible(false);
   rename_textfield_->set_controller(this);
+  rename_textfield_->SetBorder(nullptr);
+  rename_textfield_->SetBackgroundEnabled(false);
 }
 
 BraveTab::~BraveTab() = default;
@@ -57,7 +59,7 @@ void BraveTab::EnterRenameMode() {
   }
   rename_textfield_->SetText(data_.title);
   rename_textfield_->SelectAll(/*reversed=*/false);
-  rename_textfield_->SetBoundsRect(title_->bounds());
+  UpdateRenameTextfieldBounds();
   rename_textfield_->SetVisible(true);
   title_->SetVisible(false);
   rename_textfield_->RequestFocus();
@@ -150,7 +152,7 @@ void BraveTab::Layout(PassKey) {
   }
 
   if (in_renaming_mode()) {
-    rename_textfield_->SetBoundsRect(title_->bounds());
+    UpdateRenameTextfieldBounds();
     title_->SetVisible(false);
   }
 }
@@ -249,4 +251,14 @@ void BraveTab::ExitRenameMode() {
   title_->SetVisible(true);
 
   rename_textfield_->SetText(std::u16string());
+}
+
+void BraveTab::UpdateRenameTextfieldBounds() {
+  int constexpr kHeight = 18;
+
+  // Update the bounds of the rename textfield to match the title bounds.
+  auto bounds = title_->bounds();
+  bounds.set_y(bounds.CenterPoint().y() - kHeight / 2);
+  bounds.set_height(kHeight);
+  rename_textfield_->SetBoundsRect(bounds);
 }
