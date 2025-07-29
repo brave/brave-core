@@ -6,7 +6,10 @@
 #ifndef BRAVE_BROWSER_UPDATER_FEATURES_H_
 #define BRAVE_BROWSER_UPDATER_FEATURES_H_
 
+#include <optional>
+
 #include "base/feature_list.h"
+#include "base/time/time.h"
 
 namespace brave_updater {
 
@@ -15,9 +18,7 @@ BASE_DECLARE_FEATURE(kBraveUseOmaha4Alpha);
 bool ShouldUseOmaha4();
 
 // For tests:
-int GetBuildAgeInDays();
-bool ShouldUseOmaha4(int build_age_days);
-void ResetShouldUseOmaha4();
+bool ShouldUseOmaha4(base::Time now, std::optional<bool>& state);
 
 }  // namespace brave_updater
 
