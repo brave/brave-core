@@ -157,8 +157,6 @@ struct SendTokenView: View {
       Form {
         Section(
           header: WalletListHeaderView {
-            // User doesn't need from BTC/ZEC account receive address in Send
-            // Can either use Deposit or Select Token modal
             CopyAddressHeader(
               displayText:
                 "\(Strings.Wallet.sendCryptoFromTitle): \(keyringStore.selectedAccount.accountNameDisplay)",

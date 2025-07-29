@@ -36,16 +36,6 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     let bitcoinAccountInfo: BraveWallet.BitcoinAccountInfo?
     let zcashAccountInfo: BraveWallet.ZCashAccountInfo?
     let tokenBalances: [TokenBalance]
-
-    var copyAddress: String {
-      if let bitcoinAccountInfo {
-        return bitcoinAccountInfo.nextReceiveAddress.addressString
-      } else if let zcashAccountInfo {
-        return zcashAccountInfo.nextTransparentChangeAddress.addressString
-      } else {
-        return account.address
-      }
-    }
   }
 
   /// The networks to filter the tokens/accounts by.

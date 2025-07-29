@@ -9,8 +9,6 @@ import Strings
 import SwiftUI
 
 /// List header for displaying text with `...` menu to copy address.
-/// Bitcoin accounts will only display `...` menu when `btcAccountInfo`
-/// is populated, allowing copy of `nextReceiveAddress`.
 struct CopyAddressHeader: View {
 
   let displayText: String
@@ -28,7 +26,9 @@ struct CopyAddressHeader: View {
     HStack {
       Text(displayText)
       Spacer()
-      addressMenu(for: address)
+      if !address.isEmpty {
+        addressMenu(for: address)
+      }
     }
   }
 
