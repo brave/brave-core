@@ -151,7 +151,12 @@ extension AttributedString {
         }
 
         if !allowedURLs.contains(url) {
-          result[range].link = nil
+          // If the string is [Click Here](scheme://host),
+          // it will replace the entire thing with just the url in plain text
+          result[range].link = nil  // Remove the LinkAttribute highlighting
+
+          // Replace the "[Click Here]" with the link's text
+          result.characters.replaceSubrange(range, with: url.absoluteString)
         }
       }
 
