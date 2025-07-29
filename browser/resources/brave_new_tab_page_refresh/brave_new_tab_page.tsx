@@ -14,6 +14,7 @@ import { TopSitesProvider } from './context/top_sites_context'
 import { VpnProvider } from './context/vpn_context'
 import { RewardsProvider } from './context/rewards_context'
 import { NewsProvider } from './context/news_context'
+import { AIChatProvider } from './context/ai_chat_context'
 
 import { App } from './components/app'
 
@@ -28,7 +29,9 @@ function AppProvider(props: { children: React.ReactNode }) {
             <VpnProvider name='vpn'>
               <RewardsProvider name='rewards'>
                 <NewsProvider>
-                  {props.children}
+                  <AIChatProvider>
+                    {props.children}
+                  </AIChatProvider>
                 </NewsProvider>
               </RewardsProvider>
             </VpnProvider>

@@ -18,6 +18,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -155,6 +156,7 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 #endif
   source_->AddBoolean("vpnFeatureEnabled", vpn_feature_enabled);
 
+  // Required by Brave News UI.
   source_->AddBoolean("featureFlagBraveNewsFeedV2Enabled", true);
 
   source_->AddBoolean(
@@ -162,6 +164,19 @@ void NewTabPageInitializer::AddLoadTimeValues() {
       !prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
   source_->AddBoolean("talkFeatureEnabled",
                       !prefs->GetBoolean(kBraveTalkDisabledByPolicy));
+
+  bool ai_chat_input_enabled =
+      ai_chat::features::IsAIChatEnabled() &&
+      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled();
+
+  source_->AddBoolean("aiChatInputEnabled", ai_chat_input_enabled);
+
+  // Required by Brave AI Chat UI.
+  source_->AddBoolean("isMobile", false);
+  source_->AddBoolean("isHistoryEnabled", false);
+  source_->AddBoolean("isAIChatAgentProfileFeatureEnabled",
+                      ai_chat::features::IsAIChatAgentProfileEnabled());
+  source_->AddBoolean("isAIChatAgentProfile", profile->IsAIChatAgent());
 }
 
 void NewTabPageInitializer::AddStrings() {
@@ -296,6 +311,7 @@ void NewTabPageInitializer::AddStrings() {
 
   source_->AddLocalizedStrings(kStrings);
   source_->AddLocalizedStrings(webui::kBraveNewsStrings);
+  source_->AddLocalizedStrings(webui::kAiChatStrings);
 }
 
 void NewTabPageInitializer::AddPluralStrings() {
