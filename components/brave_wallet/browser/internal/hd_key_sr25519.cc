@@ -5,14 +5,15 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 
+#include <memory>
 #include <utility>
 
-#include "base/memory/ptr_util.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot/rust/sr25519.h"
 
 namespace brave_wallet {
 
-HDKeySr25519::HDKeySr25519(polkadot::SchnorrkelKeyPair skp)
+HDKeySr25519::HDKeySr25519(base::PassKey<HDKeySr25519>,
+                           polkadot::SchnorrkelKeyPair skp)
     : schnorrkel_key_pair_(std::move(skp)) {}
 
 HDKeySr25519::~HDKeySr25519() = default;
@@ -23,7 +24,8 @@ std::unique_ptr<HDKeySr25519> HDKeySr25519::GenerateFromSeed(
   if (!skp) {
     return nullptr;
   }
-  return base::WrapUnique(new HDKeySr25519(std::move(*skp)));
+  return std::make_unique<HDKeySr25519>(base::PassKey<HDKeySr25519>{},
+                                        std::move(*skp));
 }
 
 polkadot::SR25519PublicKey HDKeySr25519::GetPublicKey() {
@@ -42,8 +44,9 @@ bool HDKeySr25519::VerifyMessage(polkadot::SR25519Signature const& sig,
 
 std::unique_ptr<HDKeySr25519> HDKeySr25519::DeriveHard(
     base::span<const uint8_t> derive_junction) {
-  return base::WrapUnique(
-      new HDKeySr25519(schnorrkel_key_pair_.DeriveHard(derive_junction)));
+  return std::make_unique<HDKeySr25519>(
+      base::PassKey<HDKeySr25519>{},
+      schnorrkel_key_pair_.DeriveHard(derive_junction));
 }
 
 }  // namespace brave_wallet

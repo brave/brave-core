@@ -9,15 +9,18 @@
 #include <memory>
 
 #include "base/containers/span.h"
+#include "base/types/pass_key.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot/rust/sr25519.h"
 
 namespace brave_wallet {
 
 class HDKeySr25519 {
  public:
-  HDKeySr25519(const HDKeySr25519&) = delete;
-  HDKeySr25519& operator=(const HDKeySr25519&) = delete;
+  HDKeySr25519(base::PassKey<HDKeySr25519>, polkadot::SchnorrkelKeyPair skp);
 
+  HDKeySr25519(const HDKeySr25519&) = delete;
+
+  HDKeySr25519& operator=(const HDKeySr25519&) = delete;
   ~HDKeySr25519();
 
   static std::unique_ptr<HDKeySr25519> GenerateFromSeed(
@@ -33,8 +36,6 @@ class HDKeySr25519 {
       base::span<const uint8_t> derive_junction);
 
  private:
-  explicit HDKeySr25519(polkadot::SchnorrkelKeyPair key);
-
   polkadot::SchnorrkelKeyPair schnorrkel_key_pair_;
 };
 
