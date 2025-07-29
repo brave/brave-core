@@ -18,6 +18,7 @@ export function createNewTabHandler(
   store.update({
     newsFeatureEnabled: loadTimeData.getBoolean('newsFeatureEnabled'),
     talkFeatureEnabled: loadTimeData.getBoolean('talkFeatureEnabled'),
+    aiChatInputEnabled: loadTimeData.getBoolean('aiChatInputEnabled'),
   })
 
   async function updateClockPrefs() {
