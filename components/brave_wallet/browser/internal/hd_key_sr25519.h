@@ -13,10 +13,6 @@
 
 namespace brave_wallet {
 
-namespace polkadot {
-class SchnorrkelKeyPair;
-}
-
 class HDKeySr25519 {
  public:
   HDKeySr25519(const HDKeySr25519&) = delete;
@@ -37,8 +33,9 @@ class HDKeySr25519 {
       base::span<const uint8_t> derive_junction);
 
  private:
-  explicit HDKeySr25519(std::unique_ptr<polkadot::SchnorrkelKeyPair> key);
-  std::unique_ptr<polkadot::SchnorrkelKeyPair> schnorrkel_key_pair_;
+  explicit HDKeySr25519(polkadot::SchnorrkelKeyPair key);
+
+  polkadot::SchnorrkelKeyPair schnorrkel_key_pair_;
 };
 
 }  // namespace brave_wallet
