@@ -123,6 +123,7 @@ source_set("extensions") {
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:pref_names",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/de_amp/common",

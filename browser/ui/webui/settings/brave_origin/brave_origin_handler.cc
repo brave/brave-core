@@ -19,12 +19,22 @@
 #include "brave/components/brave_origin/brave_origin_state.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -49,6 +59,22 @@ BraveOriginHandler::BraveOriginHandler(Profile* profile) : profile_(profile) {
       brave_news::prefs::kBraveNewsDisabledByPolicy,
       base::BindRepeating(&BraveOriginHandler::OnValueChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kBraveTalkDisabledByPolicy,
+      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
+                          base::Unretained(this)));
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  pref_change_registrar_.Add(
+      speedreader::kSpeedreaderDisabledByPolicy,
+      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
+                          base::Unretained(this)));
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  pref_change_registrar_.Add(
+      kBraveWaybackMachineDisabledByPolicy,
+      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
+                          base::Unretained(this)));
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_change_registrar_.Add(
       brave_vpn::prefs::kManagedBraveVPNDisabled,
@@ -313,6 +339,8 @@ bool BraveOriginHandler::IsRestartNeeded() {
       was_wallet_enabled_ ==
       prefs->GetBoolean(brave_wallet::prefs::kDisabledByPolicy);
 
+  // TODO: also do Brave Talk, speedreader, waybackmachine
+  // once there's a cleaner way to do this.
   if (rewards_changed || ai_changed || news_changed || p3a_changed ||
       stats_reporting_changed || crash_reporting_changed || vpn_changed ||
       tor_changed || wallet_changed) {
