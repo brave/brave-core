@@ -25,7 +25,7 @@ const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
 const perfTests = require('../lib/perfTests')
-const registerAffectedCommand = require('./affected')
+const registerListAffectedTestsCommand = require('./listAffectedTests')
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -469,6 +469,6 @@ program
 
 program.command('docs').action(util.launchDocs)
 
-registerAffectedCommand(program)
+registerListAffectedTestsCommand(program)
 
 program.parse(process.argv)
