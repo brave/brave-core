@@ -17,6 +17,7 @@ bool ShouldUseOmaha4();
 // For tests:
 int GetBuildAgeInDays();
 bool ShouldUseOmaha4(int build_age_days);
+void ResetShouldUseOmaha4();
 
 }  // namespace brave_updater
 

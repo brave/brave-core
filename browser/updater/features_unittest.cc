@@ -26,44 +26,44 @@ TEST_F(GetBuildAgeInDaysTest, IncreasesAsTimePasses) {
 
 class ShouldUseOmaha4Test : public testing::Test {
  protected:
+  void TearDown() override { ResetShouldUseOmaha4(); }
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 TEST_F(ShouldUseOmaha4Test, ReturnsFalseWhenFeatureDisabled) {
   scoped_feature_list_.InitAndDisableFeature(kBraveUseOmaha4Alpha);
-
-  for (int day = 0; day < 1000; day++) {
-    EXPECT_FALSE(ShouldUseOmaha4(day))
-        << "ShouldUseOmaha4(" << day
-        << ") should return false when kBraveUseOmaha4Alpha is disabled";
-  }
+  EXPECT_FALSE(ShouldUseOmaha4(0));
 }
 
 TEST_F(ShouldUseOmaha4Test, ReturnsTrueWhenFeatureEnabled) {
   scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4Alpha);
+  EXPECT_TRUE(ShouldUseOmaha4(0));
+}
 
-  for (int day = 0; day < 4; day++) {
-    EXPECT_TRUE(ShouldUseOmaha4(day))
-        << "ShouldUseOmaha4(" << day
-        << ") should return true for the first 4 days when "
-           "kBraveUseOmaha4Alpha is enabled";
+TEST_F(ShouldUseOmaha4Test, LetsLegacyImplRunEvenWhenFeatureEnabled) {
+  scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4Alpha);
+  EXPECT_FALSE(ShouldUseOmaha4(4));
+}
+
+TEST_F(ShouldUseOmaha4Test, StaysConstantWhenFeatureDisabled) {
+  scoped_feature_list_.InitAndDisableFeature(kBraveUseOmaha4Alpha);
+  for (int day = 0; day < 1000; day++) {
+    EXPECT_FALSE(ShouldUseOmaha4(day));
   }
 }
 
-TEST_F(ShouldUseOmaha4Test, ReturnsFalseOnEveryFifthDayWhenFeatureEnabled) {
+TEST_F(ShouldUseOmaha4Test, StaysConstantWhenFeatureEnabled) {
   scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4Alpha);
-
-  int num_false_days = 0;
-
   for (int day = 0; day < 1000; day++) {
-    if (!ShouldUseOmaha4(day)) {
-      num_false_days++;
-    }
+    EXPECT_TRUE(ShouldUseOmaha4(day));
   }
+}
 
-  EXPECT_EQ(num_false_days, 200)
-      << "ShouldUseOmaha4() should return false on 20% of days even when "
-         "kBraveUseOmaha4Alpha is enabled";
+TEST_F(ShouldUseOmaha4Test, StaysConstantWhenLegacyImplRuns) {
+  scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4Alpha);
+  for (int day = 4; day < 1000; day++) {
+    EXPECT_FALSE(ShouldUseOmaha4(day));
+  }
 }
 
 }  // namespace brave_updater
