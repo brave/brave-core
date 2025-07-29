@@ -37,11 +37,15 @@ struct AIChatResponseMessageView: View {
   let lastEdited: Date?
   let isEditingMessage: Bool
   var focusedField: FocusState<AIChatView.Field?>.Binding
+  var isContentAssociated: Bool
   let cancelEditing: () -> Void
   let submitEditedText: (String) -> Void
 
   @Environment(\.colorScheme)
   private var colorScheme
+
+  @Environment(\.openURL)
+  private var openURL
 
   private var options: AttributedString.MarkdownParsingOptions {
     var result = AttributedString.MarkdownParsingOptions()
@@ -108,10 +112,12 @@ struct AIChatResponseMessageView: View {
             .environment(
               \.openURL,
               OpenURLAction { url in
-                if !allowedURLs.contains(url) {
+                if isContentAssociated && !allowedURLs.contains(url) {
                   return .discarded
                 }
-                return .systemAction
+
+                openURL(url)
+                return .handled
               }
             )
         } else if event.tag == .searchStatusEvent && isEntryInProgress && !hasCompletionStarted {
@@ -363,6 +369,7 @@ struct AIChatResponseMessageView_Previews: PreviewProvider {
       lastEdited: Date(),
       isEditingMessage: false,
       focusedField: $focusedField,
+      isContentAssociated: false,
       cancelEditing: {},
       submitEditedText: { _ in }
     )

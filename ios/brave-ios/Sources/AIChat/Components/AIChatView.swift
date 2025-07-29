@@ -220,6 +220,7 @@ public struct AIChatView: View {
                             lastEdited: turn.edits?.last?.createdTime,
                             isEditingMessage: editingTurnIndex == index,
                             focusedField: $focusedField,
+                            isContentAssociated: model.shouldSendPageContents,
                             cancelEditing: {
                               self.focusedField = nil
                               self.editingTurnIndex = nil
@@ -876,6 +877,7 @@ struct AIChatView_Preview: PreviewProvider {
               lastEdited: nil,
               isEditingMessage: false,
               focusedField: $focusedField,
+              isContentAssociated: false,
               cancelEditing: {},
               submitEditedText: { _ in }
             )
