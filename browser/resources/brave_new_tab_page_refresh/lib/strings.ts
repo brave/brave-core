@@ -59,6 +59,7 @@ export type StringKey =
   'rewardsTosUpdateTitle' |
   'rewardsWidgetTitle' |
   'saveChangesButtonLabel' |
+  'searchAndChatSettingsTitle' |
   'searchAskLeoDescription' |
   'searchBoxPlaceholderText' |
   'searchBoxPlaceholderTextBrave' |
@@ -70,6 +71,7 @@ export type StringKey =
   'searchSuggestionsPromptTitle' |
   'settingsTitle' |
   'showBackgroundsLabel' |
+  'showChatInputLabel' |
   'showClockLabel' |
   'showRewardsWidgetLabel' |
   'showSearchBoxLabel' |

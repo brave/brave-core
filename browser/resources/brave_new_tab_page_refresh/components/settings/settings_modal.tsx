@@ -39,6 +39,7 @@ interface Props {
 export function SettingsModal(props: Props) {
   const braveNews = useBraveNews()
   const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
+  const aiChatInputEnabled = useNewTabState((s) => s.aiChatInputEnabled)
   const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
 
   const [currentView, setCurrentView] =
@@ -80,7 +81,9 @@ export function SettingsModal(props: Props) {
   function getNavItemText(view: SettingsView) {
     switch (view) {
       case 'background': return getString('backgroundSettingsTitle')
-      case 'search': return getString('searchSettingsTitle')
+      case 'search': return aiChatInputEnabled ?
+        getString('searchAndChatSettingsTitle') :
+        getString('searchSettingsTitle')
       case 'top-sites': return getString('topSitesSettingsTitle')
       case 'news': return getString('newsSettingsTitle')
       case 'clock': return getString('clockSettingsTitle')

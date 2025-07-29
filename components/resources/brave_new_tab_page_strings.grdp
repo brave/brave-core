@@ -161,6 +161,10 @@
     Save changes
   </message>
 
+  <message name="IDS_NEW_TAB_SEARCH_AND_CHAT_SETTINGS_TITLE" desc="Title for search and AI chat settings">
+    Search and AI
+  </message>
+
   <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT" desc="Placeholder text for when Brave is not the selected search engine">
     Search the web
   </message>
@@ -195,6 +199,10 @@
 
   <message name="IDS_NEW_TAB_SETTINGS_TITLE" desc="Title for settings dialog">
     Customize New Tab Page
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_CHAT_INPUT_LABEL" desc="Label for enabling the Leo AI chat input on the NTP">
+    Show Leo AI widget in new tabs
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL" desc="Text for settings background option">
