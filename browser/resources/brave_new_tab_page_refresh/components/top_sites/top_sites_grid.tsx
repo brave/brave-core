@@ -28,6 +28,7 @@ import {
 
 interface Props {
   expanded: boolean
+  collapsedTileColumnCount?: number
   canAddSite: boolean
   canReorderSites: boolean
   onAddTopSite: () => void
@@ -37,8 +38,10 @@ interface Props {
 export function TopSitesGrid(props: Props) {
   const actions = useTopSitesActions()
   const topSites = useTopSitesState((s) => s.topSites)
+  const collapsedColumnCount =
+    props.collapsedTileColumnCount ?? collapsedTileColumnCount
   const columnsPerPage = useColumnsPerPage(
-    props.expanded ? maxTileColumnCount : collapsedTileColumnCount)
+    props.expanded ? maxTileColumnCount : collapsedColumnCount)
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
   const [scrollPage, setScrollPage] =

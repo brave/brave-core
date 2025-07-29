@@ -7,6 +7,8 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
+import { loadTimeData } from '$web-common/loadTimeData'
+
 import { NewTabProvider } from './context/new_tab_context'
 import { BackgroundProvider } from './context/background_context'
 import { SearchProvider } from './context/search_context'
@@ -16,6 +18,9 @@ import { RewardsProvider } from './context/rewards_context'
 import { NewsProvider } from './context/news_context'
 
 import { App } from './components/app'
+
+const AIChatProvider = React.lazy(() => import('./context/ai_chat_context'))
+const AskApp = React.lazy(() => import('./components/ask/ask_app'))
 
 setIconBasePath('chrome://resources/brave-icons')
 
@@ -41,6 +46,12 @@ function AppProvider(props: { children: React.ReactNode }) {
 
 createRoot(document.getElementById('root')!).render(
   <AppProvider>
-    <App />
+    {
+      loadTimeData.getBoolean('aiChatInputEnabled')
+        ? <AIChatProvider>
+            <AskApp />
+          </AIChatProvider>
+        : <App />
+    }
   </AppProvider>
 )

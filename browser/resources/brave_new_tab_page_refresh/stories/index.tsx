@@ -60,6 +60,6 @@ export const NewTabPage: StoryObj<typeof StorybookApp> = {
     sponsoredBackgroundType: {
       control: 'select',
       options: ['none', 'image', 'rich'],
-    },
+    }
   },
 }

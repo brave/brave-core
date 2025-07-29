@@ -7,8 +7,9 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
-    position: fixed;
-    inset: 0;
+    position: var(--ntp-background-position, fixed);
+    inset: var(--ntp-background-inset, 0);
+    height: var(--ntp-background-height, unset);
     z-index: 0;
     display: flex;
     animation-name: background-fade-in;

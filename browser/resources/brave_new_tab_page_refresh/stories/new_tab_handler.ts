@@ -23,7 +23,8 @@ export function createNewTabHandler(
     },
     showTalkWidget: true,
     talkFeatureEnabled: true,
-    newsFeatureEnabled: false
+    newsFeatureEnabled: false,
+    aiChatInputEnabled: false
   })
 
   return {

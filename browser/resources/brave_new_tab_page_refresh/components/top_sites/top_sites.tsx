@@ -17,7 +17,11 @@ import { Popover } from '../common/popover'
 
 import { style, collapsedTileColumnCount } from './top_sites.style'
 
-export function TopSites() {
+interface Props {
+  collapsedTileColumnCount?: number
+}
+
+export function TopSites(props: Props) {
   const actions = useTopSitesActions()
 
   const showTopSites = useTopSitesState((s) => s.showTopSites)
@@ -47,6 +51,8 @@ export function TopSites() {
 
   const showAddButton = listKind === TopSitesListKind.kCustom
   const tileCount = topSites.length + (showAddButton ? 1 : 0)
+  const collapsedColumnCount =
+    props.collapsedTileColumnCount ?? collapsedTileColumnCount
 
   function onTopSiteContextMenu(topSite: TopSite, event: React.MouseEvent) {
     setContextMenuSite(topSite)
@@ -80,6 +86,7 @@ export function TopSites() {
         <div className='left-spacer' />
         <TopSitesGrid
           expanded={expanded}
+          collapsedTileColumnCount={props.collapsedTileColumnCount}
           canAddSite={showAddButton}
           canReorderSites={listKind === TopSitesListKind.kCustom}
           onAddTopSite={onAddTopSite}
@@ -105,7 +112,7 @@ export function TopSites() {
                 </button>
             }
             {
-              tileCount > collapsedTileColumnCount &&
+              tileCount > collapsedColumnCount &&
                 <button onClick={topSitesMenuAction(() => {
                   setExpanded(!expanded)
                 })}>
