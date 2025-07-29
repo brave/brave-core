@@ -11,8 +11,13 @@ import {
 RegisterPolymerTemplateModifications({
   'settings-main': (templateContent) => {
     // Always show settings-basic-page
+    const templatePrivacy = templateContent.querySelector(
+      'template[is=dom-if][if="[[showPage_(pageVisibility_.privacy)]]"]')
+    if (!templatePrivacy) {
+      throw new Error('[Settings] Missing template for privacy')
+    }
     const templateSettingsBasicPage =
-      templateContent.querySelector('#old template')
+      templatePrivacy.content.querySelector('#privacy template')
     if (templateSettingsBasicPage) {
       templateSettingsBasicPage.setAttribute('if', 'true')
     } else {
