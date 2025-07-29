@@ -8,6 +8,7 @@ import styled from 'styled-components'
 
 import * as S from './style'
 import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/leo/react/tooltip'
 import { color, font } from '@brave/leo/tokens/css/variables'
 import { getLocale, formatLocale } from '$web-common/locale'
 import SelectRegionList from '../select-region-list'
@@ -222,8 +223,12 @@ function MainPanel() {
               <RegionLabelBox>
                 <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
                 {smartProxyRoutingEnabled && currentRegion.smartRoutingProxyState === 'all' && (
-                  <SmartProxyIcon name='smart-proxy-routing' />
-                )
+                  <Tooltip mode='mini'>
+                    <SmartProxyIcon name='smart-proxy-routing' />
+                    <div slot='content'>
+                      {getLocale('braveVpnSmartProxyRoutingIconTooltip')}
+                    </div>
+                  </Tooltip>)
                 }
               </RegionLabelBox>
               <RegionServerLabel>{regionServerLabel}</RegionServerLabel>
