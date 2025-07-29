@@ -274,8 +274,9 @@ void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
   }
 }
 
-bool SpeedreaderToolbarDataHandlerImpl::ShouldTrackBrowser(Browser* browser) {
-  return browser_ == browser;
+bool SpeedreaderToolbarDataHandlerImpl::ShouldTrackBrowser(
+    BrowserWindowInterface* browser) {
+  return browser_ == browser->GetBrowserForMigrationOnly();
 }
 
 void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
