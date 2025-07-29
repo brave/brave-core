@@ -545,6 +545,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "when the conversation is created.",                                 \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kPageContextEnabledInitially), \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-show-on-new-tab-page",                                \
+          "Show AI Chat on the New Tab Page",                                  \
+          "Show a Brave AI chat input on the New Tab Page.",                   \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(ai_chat::features::kShowAIChatOnNewTabPage),      \
       })
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)

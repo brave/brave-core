@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { SearchBox } from './search/search_box'
+import { QueryBox } from './query_box/query_box'
 import { Background } from './background/background'
 import { BackgroundClickRegion } from './background/background_click_region'
 import { BackgroundCaption } from './background/background_caption'
@@ -66,7 +66,7 @@ export function App() {
         <div className='searchbox-container'>
           {
             searchLayoutReady &&
-              <SearchBox showSearchSettings={() => setSettingsView('search')} />
+              <QueryBox showSearchSettings={() => setSettingsView('search')} />
           }
         </div>
         <div className='spacer allow-background-pointer-events'>
