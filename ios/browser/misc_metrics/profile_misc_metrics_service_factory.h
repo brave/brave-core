@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_MISC_METRICS_PROFILE_MISC_METRICS_SERVICE_FACTORY_H_
-#define BRAVE_BROWSER_MISC_METRICS_PROFILE_MISC_METRICS_SERVICE_FACTORY_H_
+#ifndef BRAVE_IOS_BROWSER_MISC_METRICS_PROFILE_MISC_METRICS_SERVICE_FACTORY_H_
+#define BRAVE_IOS_BROWSER_MISC_METRICS_PROFILE_MISC_METRICS_SERVICE_FACTORY_H_
 
 #include <memory>
 
@@ -44,4 +44,4 @@ class ProfileMiscMetricsServiceFactory : public ProfileKeyedServiceFactoryIOS {
 
 }  // namespace misc_metrics
 
-#endif  // BRAVE_BROWSER_MISC_METRICS_PROFILE_MISC_METRICS_SERVICE_FACTORY_H_
+#endif  // BRAVE_IOS_BROWSER_MISC_METRICS_PROFILE_MISC_METRICS_SERVICE_FACTORY_H_

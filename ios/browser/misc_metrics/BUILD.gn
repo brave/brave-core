@@ -1,7 +1,7 @@
 # Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("misc_metrics") {
   sources = [
@@ -12,8 +12,11 @@ source_set("misc_metrics") {
   ]
 
   deps = [
+    "//brave/components/ai_chat/core/browser",
     "//components/keyed_service/core",
+    "//components/keyed_service/ios",
     "//components/prefs",
+    "//components/user_prefs",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser",
     "//ios/chrome/browser/shared/model/profile",
