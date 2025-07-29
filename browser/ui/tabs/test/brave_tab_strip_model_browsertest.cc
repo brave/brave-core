@@ -159,14 +159,20 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
       static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
   ASSERT_EQ(TabRendererData::FromTabInModel(tab_strip_model, 0).title,
             u"about:blank");
+  ASSERT_FALSE(
+      TabRendererData::FromTabInModel(tab_strip_model, 0).is_custom_title);
 
   tab_strip_model->SetCustomTitleForTab(0, u"Custom Title");
   EXPECT_EQ(TabRendererData::FromTabInModel(tab_strip_model, 0).title,
             u"Custom Title");
+  EXPECT_TRUE(
+      TabRendererData::FromTabInModel(tab_strip_model, 0).is_custom_title);
 
   tab_strip_model->SetCustomTitleForTab(0, u"");
   EXPECT_EQ(TabRendererData::FromTabInModel(tab_strip_model, 0).title,
             u"about:blank");
+  EXPECT_FALSE(
+      TabRendererData::FromTabInModel(tab_strip_model, 0).is_custom_title);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
