@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/span_rust.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot/rust/lib.rs.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
@@ -20,7 +21,7 @@ SchnorrkelKeyPair::SchnorrkelKeyPair(rust::Box<CxxSchnorrkelKeyPair> impl)
 
 std::optional<SchnorrkelKeyPair> SchnorrkelKeyPair::GenerateFromSeed(
     base::span<const uint8_t> seed) {
-  rust::Slice<const uint8_t> bytes{seed.data(), seed.size()};
+  auto bytes = base::SpanToRustSlice(seed);
   auto mk = generate_sr25519_keypair_from_seed(bytes);
   if (!mk->is_ok()) {
     return std::nullopt;
@@ -33,22 +34,21 @@ SR25519PublicKey SchnorrkelKeyPair::GetPublicKey() {
 }
 
 SR25519Signature SchnorrkelKeyPair::SignMessage(base::span<const uint8_t> msg) {
-  rust::Slice<const uint8_t> bytes{msg.data(), msg.size()};
+  auto bytes = base::SpanToRustSlice(msg);
   return impl_->sign_message(bytes);
 }
 
 bool SchnorrkelKeyPair::VerifyMessage(SR25519Signature const& sig,
                                       base::span<const uint8_t> msg) {
-  rust::Slice<const uint8_t> sig_bytes{sig.data(), sig.size()};
-  rust::Slice<const uint8_t> bytes{msg.data(), msg.size()};
+  auto sig_bytes = base::SpanToRustSlice(sig);
+  auto bytes = base::SpanToRustSlice(msg);
   return impl_->verify_message(sig_bytes, bytes);
 }
 
 SchnorrkelKeyPair SchnorrkelKeyPair::DeriveHard(
     base::span<const uint8_t> derive_junction) {
-  rust::Slice<const uint8_t> bytes{derive_junction.data(),
-                                   derive_junction.size()};
-  return SchnorrkelKeyPair(impl_->derive_hard(bytes));
+  return SchnorrkelKeyPair(
+      impl_->derive_hard(base::SpanToRustSlice(derive_junction)));
 }
 
 }  // namespace brave_wallet::polkadot
