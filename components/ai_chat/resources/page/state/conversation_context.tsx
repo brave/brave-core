@@ -19,6 +19,8 @@ import {
   updateConversationHistory, getImageFiles
 } from '../../common/conversation_history_utils'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
+import { useIframeDragHandling } from '../hooks/useIframeDragHandling'
+import { useIsDragging } from '../hooks/useIsDragging'
 
 const MAX_INPUT_CHAR = 20000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -51,6 +53,9 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   isToolsMenuOpen: boolean
   isCurrentModelLeo: boolean
   generatedUrlToBeOpened: Url | undefined
+  isDragActive: boolean
+  isDragOver: boolean
+  clearDragState: () => void
   setCurrentModel: (model: Mojom.Model) => void
   switchToBasicModel: () => void
   generateSuggestedQuestions: () => void
@@ -79,6 +84,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   pendingMessageImages: Mojom.UploadedFile[]
   isUploadingFiles: boolean
   setTemporary: (temporary: boolean) => void
+  processDroppedImages: (images: Mojom.UploadedFile[]) => void
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -105,6 +111,9 @@ export const defaultContext: ConversationContext = {
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
   generatedUrlToBeOpened: undefined,
+  isDragActive: false,
+  isDragOver: false,
+  clearDragState: () => { },
   setCurrentModel: () => { },
   switchToBasicModel: () => { },
   generateSuggestedQuestions: () => { },
@@ -129,6 +138,7 @@ export const defaultContext: ConversationContext = {
   pendingMessageImages: [],
   isUploadingFiles: false,
   setTemporary: (temporary: boolean) => { },
+  processDroppedImages: (images: Mojom.UploadedFile[]) => { },
   ...defaultSendFeedbackState,
   ...defaultCharCountContext
 }
@@ -175,6 +185,20 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       ...partialContext
     }))
   }
+
+  // Drag state handlers
+  const setDragActive = React.useCallback((isDragActive: boolean) =>
+    setPartialContext({ isDragActive }), [])
+  const setDragOver = React.useCallback((isDragOver: boolean) =>
+    setPartialContext({ isDragOver }), [])
+  const clearDragState = React.useCallback(() =>
+    setPartialContext({ isDragActive: false, isDragOver: false }), [])
+
+  // Document-level drag handling
+  useIsDragging({ setDragActive, setDragOver, clearDragState })
+
+  // Iframe drag handling
+  useIframeDragHandling({ setDragActive, setDragOver })
 
   const getModelContext = (
     currentModelKey: string,
@@ -505,6 +529,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         pendingMessageImages:
           [...context.pendingMessageImages, ...newImages]
       })
+    } else {
+      setPartialContext({
+        isUploadingFiles: false
+      })
     }
   }
 
@@ -657,7 +685,14 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       (url?: Url) => setPartialContext({ generatedUrlToBeOpened: url }),
     setIgnoreExternalLinkWarning,
     disassociateContent,
-    associateDefaultContent,
+          associateDefaultContent,
+      processDroppedImages: (images: Mojom.UploadedFile[]) => {
+        setPartialContext({
+          isUploadingFiles: true
+        })
+        processUploadedImage(images)
+      },
+      clearDragState
   }
 
   return (

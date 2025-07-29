@@ -9,13 +9,20 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
 import ConversationEntries from './components/conversation_entries'
-import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
+import {
+  UntrustedConversationContextProvider
+} from './untrusted_conversation_context'
+import {
+  useUntrustedFrameDragHandling
+} from './hooks/useUntrustedFrameDragHandling'
 
 import '../common/strings'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 function App() {
+  useUntrustedFrameDragHandling()
+
   return (
     <UntrustedConversationContextProvider>
       <ConversationEntries />

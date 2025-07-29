@@ -30,6 +30,11 @@ interface ParentUIFrame {
   // then deals with whether to display the modal or to continue opening
   // the link.
   UserRequestedOpenGeneratedUrl(url.mojom.Url url);
+
+  // Drag events from the untrusted iframe to the parent frame.
+  // This allows the parent to handle drag UI states while the iframe
+  // detects the drag event.
+  DragStart();
 };
 
 // Browser-side handler for untrusted frame that handles rendering of

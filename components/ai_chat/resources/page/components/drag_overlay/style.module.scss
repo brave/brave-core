@@ -1,0 +1,59 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.dragDetectionOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 9999; // Higher than iframe to catch drag events
+  pointer-events: auto; // Allow drag events
+}
+
+.dragOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+.dragOverlayContent {
+  background: var(--leo-color-container-background);
+  border-radius: var(--leo-radius-xl);
+  padding: var(--leo-spacing-3xl);
+  box-shadow: var(--leo-effect-elevation-03);
+  text-align: center;
+  width: min(320px, calc(100vw - 2rem));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--leo-spacing-l);
+  margin: 0 auto;
+}
+
+.dragIcon {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  background-image: url('chrome://resources/brave-icons/file-upload.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.dragTitle {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+  font-weight: 600;
+}
+
+.dragDescription {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+  line-height: 1.4;
+}

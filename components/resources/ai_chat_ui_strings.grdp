@@ -39,6 +39,12 @@
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service" formatter_data="webui=AiChat">
     Ask follow up
   </message>
+  <message name="IDS_CHAT_UI_DROP_IMAGES_HERE_LABEL" desc="Text shown when dragging images over the input area" formatter_data="webui=AiChat">
+    Drop files here
+  </message>
+  <message name="IDS_CHAT_UI_DROP_FILES_DESCRIPTION" desc="Descriptive text shown when dragging files over the page" formatter_data="webui=AiChat">
+    Drop any files here to add them to the conversation
+  </message>
   <message name="IDS_CHAT_UI_SUGGEST_QUESTIONS_LABEL" desc="Button label to ask the AI Chat to suggest some related questions" formatter_data="webui=AiChat">
     Suggest questions…
   </message>

@@ -10,6 +10,7 @@ import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
+import DragOverlay from '../drag_overlay'
 import * as Mojom from '../../../common/mojom'
 import { useConversation, useIsNewConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
@@ -43,6 +44,7 @@ import { useIsElementSmall } from '../../hooks/useIsElementSmall'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/tabs_menu'
+import { isImageFile } from '../../constants/file_types'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -56,11 +58,37 @@ const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
   Mojom.SuggestionGenerationStatus.IsGenerating
 ])
 
+// Utility function to convert File objects to UploadedFile format
+const convertFileToUploadedFile = (file: File): Promise<Mojom.UploadedFile> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const arrayBuffer = e.target?.result as ArrayBuffer
+      if (!arrayBuffer) {
+        reject(new Error('Failed to read file'))
+        return
+      }
+
+      const uint8Array = new Uint8Array(arrayBuffer)
+      const uploadedFile: Mojom.UploadedFile = {
+        filename: file.name,
+        filesize: file.size,
+        data: Array.from(uint8Array),
+        type: Mojom.UploadedFileType.kImage
+      }
+      resolve(uploadedFile)
+    }
+    reader.onerror = () => reject(new Error('Failed to read file'))
+    reader.readAsArrayBuffer(file)
+  })
+}
+
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
   const [isContentReady, setIsContentReady] = React.useState(false)
+  const { isDragActive, isDragOver, clearDragState } = conversationContext
 
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
@@ -185,16 +213,49 @@ function Main() {
     triggerCharacter: '/',
   })
 
+
+  const handleOverlayDrop = async (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    clearDragState()
+
+    const files = Array.from(e.dataTransfer?.files || []).filter(isImageFile)
+
+    if (files.length === 0) {
+      return
+    }
+
+    try {
+      const uploadedFiles = await Promise.all(
+        files.map(file => convertFileToUploadedFile(file))
+      )
+      conversationContext.processDroppedImages(uploadedFiles)
+    } catch (error) {
+      // Silently fail - error will be handled by the upload system
+    }
+  }
+
+  const handleOverlayDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+  }
+
   return (
     <main
       data-testid='main'
       className={classnames({
         [styles.main]: true,
         [styles.mainPanel]: !aiChatContext.isStandalone,
-        [styles.mainMobile]: aiChatContext.isMobile
+        [styles.mainMobile]: aiChatContext.isMobile,
+        [styles.dragOver]: isDragOver
       })}
       ref={setMainElement}
     >
+      <DragOverlay
+        isDragActive={isDragActive}
+        isDragOver={isDragOver}
+        onDragOver={handleOverlayDragOver}
+        onDrop={handleOverlayDrop}
+      />
       {isConversationListOpen && !aiChatContext.isStandalone && (
         <div className={styles.conversationsList}>
           <div
@@ -248,7 +309,10 @@ function Main() {
                 )}
 
                 <div
-                  className={styles.aichatIframeContainer}
+                  className={classnames({
+                    [styles.aichatIframeContainer]: true,
+                    [styles.dragActive]: isDragActive
+                  })}
                   ref={scrollAnchor}
                 >
                   {!!conversationContext.conversationUuid &&

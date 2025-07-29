@@ -15,6 +15,7 @@
   overflow: hidden;
 }
 
+
 .mainPanel {
   --conversation-content-margin: var(--leo-spacing-2xl);
 }
@@ -242,4 +243,8 @@
   // added to the iframe.
   // See https://github.com/brave/brave-browser/issues/46042
   margin-bottom: calc(-1 * var(--iframe-additional-margin-for-menus));
+}
+
+.aichatIframeContainer.dragActive {
+  pointer-events: none; // Disable iframe interaction during drag operations
 }

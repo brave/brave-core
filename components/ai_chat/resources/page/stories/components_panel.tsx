@@ -659,6 +659,8 @@ type CustomArgs = {
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
   isTemporaryChat: boolean
+  isDragActive: boolean
+  isDragOver: boolean
 }
 
 const args: CustomArgs = {
@@ -696,7 +698,9 @@ const args: CustomArgs = {
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
   ratingTurnUuid: undefined,
-  isTemporaryChat: false
+  isTemporaryChat: false,
+  isDragActive: false,
+  isDragOver: false
 }
 
 const meta: Meta<CustomArgs> = {
@@ -909,7 +913,11 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     setTemporary: (temporary: boolean) => {
       setArgs({ isTemporaryChat: temporary })
     },
-    disassociateContent: () => {}
+    disassociateContent: () => {},
+    isDragActive: options.args.isDragActive,
+    isDragOver: options.args.isDragOver,
+    clearDragState: () => {},
+    processDroppedImages: (images: Mojom.UploadedFile[]) => {}
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
