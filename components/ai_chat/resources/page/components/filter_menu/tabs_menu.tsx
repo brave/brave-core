@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { TabData } from "components/ai_chat/resources/common/mojom";
-import FilterMenu from "./filter_menu";
+import FilterMenu, { Props } from "./filter_menu";
 import styles from "./style.module.scss";
 import * as React from "react";
 import { useExtractedQuery, matches } from "./query";
@@ -16,7 +16,9 @@ function matchesQuery(query: string, entry: TabData) {
   return matches(query, entry.title) || matches(query, entry.url.url)
 }
 
-export default function TabsMenu() {
+type TabMenuProps = Pick<Props<TabData>, 'placement'>
+
+export default function TabsMenu(props: TabMenuProps) {
   const aiChat = useAIChat()
   const conversation = useConversation()
 
@@ -55,6 +57,7 @@ export default function TabsMenu() {
     matchesQuery={matchesQuery}
     header={<div className={styles.tabsMenuHeader}>{getLocale(S.CHAT_UI_TABS_MENU_TITLE)}</div>}
     noMatchesMessage={<div className={styles.tabNoMatches}>{getLocale(S.CHAT_UI_TABS_MENU_NO_MATCHING_TABS)}</div>}
+    placement={props.placement}
   >
     {(item) => <leo-menu-item
       class={styles.tabMenuItem}

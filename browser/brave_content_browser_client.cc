@@ -636,6 +636,13 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     ntp_registration.Add<searchbox::mojom::PageHandler>();
   }
 
+  if (ai_chat::features::IsAIChatEnabled() &&
+      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled()) {
+    ntp_refresh_registration.Add<ai_chat::mojom::AIChatUIHandler>()
+        .Add<ai_chat::mojom::Service>()
+        .Add<ai_chat::mojom::TabTrackerService>();
+  }
+
   if (base::FeatureList::IsEnabled(
           brave_news::features::kBraveNewsFeedUpdate)) {
     registry.ForWebUI<BraveNewsInternalsUI>()
