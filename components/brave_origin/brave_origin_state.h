@@ -14,9 +14,9 @@ class BraveOriginState {
   BraveOriginState();
   static BraveOriginState* GetInstance();
 
-  // Initialize the Brave Origin state by checking the user data directory.
+  // Initialize the Brave Origin state.
   // Should be called once during browser startup.
-  void Initialize(const base::FilePath& user_data_dir);
+  void Initialize();
 
   // Returns true if the user is considered a Brave Origin user.
   // Must be called after Initialize().
@@ -24,7 +24,6 @@ class BraveOriginState {
 
  private:
   ~BraveOriginState();
-  bool LoadStateFromJsonFile(const base::FilePath& user_data_dir);
 
   bool is_brave_origin_user_;
   bool initialized_;

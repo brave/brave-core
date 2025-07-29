@@ -153,9 +153,7 @@ void BraveBrowserProcessImpl::Init() {
   // Initialize the Brave Origin state once in the browser process only
   // This must be done early but only in the browser process, not child
   // processes
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-  BraveOriginState::GetInstance()->Initialize(user_data_dir);
+  BraveOriginState::GetInstance()->Initialize();
 
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(

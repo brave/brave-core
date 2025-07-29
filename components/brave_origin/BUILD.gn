@@ -7,6 +7,8 @@ source_set("brave_origin") {
   sources = [
     "brave_origin_state.cc",
     "brave_origin_state.h",
+    "features.cc",
+    "features.h",
   ]
 
   public_deps = [ "//base" ]
