@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { Meta } from '@storybook/react'
 
 import './storybook_locale'
 
@@ -25,34 +26,52 @@ import { createVpnHandler } from './vpn_handler'
 
 import { App } from '../components/app'
 
-export default {
-  title: 'New Tab/Refresh'
+interface StorybookArgs {
+  aiChatInputEnabled: boolean
 }
 
-function StorybookAppProvider(props: { children: React.ReactNode }) {
+function StorybookAppProvider(
+  props: { args: StorybookArgs, children: React.ReactNode }
+) {
   return (
-    <NewTabProvider createHandler={createNewTabHandler}>
+    <NewTabProvider
+      createHandler={createNewTabHandler}
+      stateOverrides={{ aiChatInputEnabled: props.args.aiChatInputEnabled }}
+    >
       <BackgroundProvider createHandler={createBackgroundHandler}>
-          <SearchProvider createHandler={createSearchHandler}>
-            <TopSitesProvider createHandler={createTopSitesHandler}>
-              <VpnProvider createHandler={createVpnHandler}>
-                <RewardsProvider createHandler={createRewardsHandler}>
-                  {props.children}
-                </RewardsProvider>
-              </VpnProvider>
-            </TopSitesProvider>
-          </SearchProvider>
+        <SearchProvider createHandler={createSearchHandler}>
+          <TopSitesProvider createHandler={createTopSitesHandler}>
+            <VpnProvider createHandler={createVpnHandler}>
+              <RewardsProvider createHandler={createRewardsHandler}>
+                {props.children}
+              </RewardsProvider>
+            </VpnProvider>
+          </TopSitesProvider>
+        </SearchProvider>
       </BackgroundProvider>
     </NewTabProvider>
   )
 }
 
-export function NTPRefresh() {
-  return (
-    <StorybookAppProvider>
-      <div style={{ position: 'absolute', inset: 0 }}>
-        <App />
-      </div>
-    </StorybookAppProvider>
-  )
+const meta: Meta<StorybookArgs> = {
+  title: 'New Tab/Refresh',
+  argTypes: {
+    aiChatInputEnabled: {
+      control: 'boolean',
+      name: 'AI Chat input enabled'
+    }
+  },
+  render: (args) => {
+    return (
+      <StorybookAppProvider args={args}>
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <App />
+        </div>
+      </StorybookAppProvider>
+    )
+  }
 }
+
+export default meta
+
+export const NTPRefresh = {}

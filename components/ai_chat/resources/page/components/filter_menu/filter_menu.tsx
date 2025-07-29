@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
+import ButtonMenu, { ButtonMenuProps } from '@brave/leo/react/buttonMenu'
 import classnames from '$web-common/classnames'
 import styles from './style.module.scss'
 import { useMemo } from 'react'
@@ -17,6 +17,7 @@ export interface Props<T> {
 
   header?: React.ReactNode,
   noMatchesMessage?: React.ReactNode
+  placement?: ButtonMenuProps['placement']
 
   matchesQuery: (query: string, entry: T, category?: string) => boolean | undefined
 
@@ -93,7 +94,7 @@ export default function FilterMenu<T>(props: Props<T>) {
         setTimeout(() => props.setIsOpen(false))
         return false
       }}
-      placement="top"
+      placement={props.placement ?? 'top'}
     >
       {props.header}
       {filtered.map((category) => {

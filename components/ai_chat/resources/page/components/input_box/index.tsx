@@ -60,6 +60,7 @@ export interface InputBoxProps {
   context: Props
   conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
+  renderInputControls?: () => React.ReactNode
 }
 
 function usePlaceholderText(attachmentsCount: number, conversationStarted: boolean, getter: AIChatContext['getPluralString']) {
@@ -314,6 +315,7 @@ function InputBox(props: InputBoxProps) {
             </div>
           )}
         </div>
+        {props.renderInputControls && props.renderInputControls()}
         <div>
           {props.context.isGenerating ? (
             <Button

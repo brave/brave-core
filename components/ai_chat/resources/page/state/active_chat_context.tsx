@@ -46,7 +46,7 @@ export function ActiveChatProviderFromUrl(props: React.PropsWithChildren) {
 
 export const useActiveChat = () => React.useContext(ActiveChatContext)
 
-function ActiveChatProvider({ children, selectedConversationId, updateSelectedConversationId }: React.PropsWithChildren<{
+export function ActiveChatProvider({ children, selectedConversationId, updateSelectedConversationId }: React.PropsWithChildren<{
   selectedConversationId: string | undefined
   updateSelectedConversationId: (selectedId: string | undefined) => void,
 }>) {
