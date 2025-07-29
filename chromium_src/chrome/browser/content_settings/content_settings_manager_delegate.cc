@@ -43,7 +43,9 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(
-          host_content_settings_map, top_frame_url, pref_service));
+          host_content_settings_map, top_frame_url, pref_service),
+      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+          host_content_settings_map, top_frame_url));
 }
 
 }  // namespace

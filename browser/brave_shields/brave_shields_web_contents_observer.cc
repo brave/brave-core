@@ -314,7 +314,9 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, allowed_scripts_,
       brave_shields::IsReduceLanguageEnabledForProfile(
-          host_content_settings_map, primary_url, pref_service)));
+          host_content_settings_map, primary_url, pref_service),
+      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+          host_content_settings_map, primary_url)));
 }
 
 void BraveShieldsWebContentsObserver::BindReceiver(
