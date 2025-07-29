@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/internal/polkadot/rust/sr25519.h"
 
-#include <memory>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/internal/polkadot/rust/lib.rs.h"
@@ -14,61 +13,42 @@
 namespace brave_wallet::polkadot {
 
 SchnorrkelKeyPair::~SchnorrkelKeyPair() = default;
+SchnorrkelKeyPair::SchnorrkelKeyPair(SchnorrkelKeyPair&&) = default;
 
-class SchnorrkelKeyPairImpl : public SchnorrkelKeyPair {
- public:
-  explicit SchnorrkelKeyPairImpl(rust::Box<CxxSchnorrkelKeyPair> impl);
-
-  ~SchnorrkelKeyPairImpl() override;
-  SR25519PublicKey GetPublicKey() override;
-  SR25519Signature SignMessage(base::span<const uint8_t> msg) override;
-  bool VerifyMessage(SR25519Signature const& sig,
-                     base::span<const uint8_t> msg) override;
-  std::unique_ptr<SchnorrkelKeyPair> DeriveHard(
-      base::span<const uint8_t> derive_junction) override;
-
- private:
-  rust::Box<CxxSchnorrkelKeyPair> impl_;
-};
-
-SchnorrkelKeyPairImpl::~SchnorrkelKeyPairImpl() = default;
-
-SchnorrkelKeyPairImpl::SchnorrkelKeyPairImpl(
-    rust::Box<CxxSchnorrkelKeyPair> impl)
+SchnorrkelKeyPair::SchnorrkelKeyPair(rust::Box<CxxSchnorrkelKeyPair> impl)
     : impl_(std::move(impl)) {}
 
-std::unique_ptr<SchnorrkelKeyPair> SchnorrkelKeyPair::GenerateFromSeed(
+std::optional<SchnorrkelKeyPair> SchnorrkelKeyPair::GenerateFromSeed(
     base::span<const uint8_t> seed) {
   rust::Slice<const uint8_t> bytes{seed.data(), seed.size()};
   auto mk = generate_sr25519_keypair_from_seed(bytes);
-  if (mk->is_ok()) {
-    return std::make_unique<SchnorrkelKeyPairImpl>(mk->unwrap());
+  if (!mk->is_ok()) {
+    return std::nullopt;
   }
-  return nullptr;
+  return SchnorrkelKeyPair(mk->unwrap());
 }
 
-SR25519PublicKey SchnorrkelKeyPairImpl::GetPublicKey() {
+SR25519PublicKey SchnorrkelKeyPair::GetPublicKey() {
   return impl_->get_public_key();
 }
 
-SR25519Signature SchnorrkelKeyPairImpl::SignMessage(
-    base::span<const uint8_t> msg) {
+SR25519Signature SchnorrkelKeyPair::SignMessage(base::span<const uint8_t> msg) {
   rust::Slice<const uint8_t> bytes{msg.data(), msg.size()};
   return impl_->sign_message(bytes);
 }
 
-bool SchnorrkelKeyPairImpl::VerifyMessage(SR25519Signature const& sig,
-                                          base::span<const uint8_t> msg) {
+bool SchnorrkelKeyPair::VerifyMessage(SR25519Signature const& sig,
+                                      base::span<const uint8_t> msg) {
   rust::Slice<const uint8_t> sig_bytes{sig.data(), sig.size()};
   rust::Slice<const uint8_t> bytes{msg.data(), msg.size()};
   return impl_->verify_message(sig_bytes, bytes);
 }
 
-std::unique_ptr<SchnorrkelKeyPair> SchnorrkelKeyPairImpl::DeriveHard(
+SchnorrkelKeyPair SchnorrkelKeyPair::DeriveHard(
     base::span<const uint8_t> derive_junction) {
   rust::Slice<const uint8_t> bytes{derive_junction.data(),
                                    derive_junction.size()};
-  return std::make_unique<SchnorrkelKeyPairImpl>(impl_->derive_hard(bytes));
+  return SchnorrkelKeyPair(impl_->derive_hard(bytes));
 }
 
 }  // namespace brave_wallet::polkadot

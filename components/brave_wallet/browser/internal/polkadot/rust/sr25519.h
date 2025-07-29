@@ -7,28 +7,36 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_POLKADOT_RUST_SR25519_H_
 
 #include <array>
-#include <memory>
+#include <optional>
 
 #include "base/containers/span.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet::polkadot {
 
 using SR25519PublicKey = std::array<uint8_t, 32>;
 using SR25519Signature = std::array<uint8_t, 64>;
 
+struct CxxSchnorrkelKeyPair;
+
 class SchnorrkelKeyPair {
  public:
-  virtual ~SchnorrkelKeyPair();
+  ~SchnorrkelKeyPair();
+  SchnorrkelKeyPair(SchnorrkelKeyPair&&);
 
-  static std::unique_ptr<SchnorrkelKeyPair> GenerateFromSeed(
+  static std::optional<SchnorrkelKeyPair> GenerateFromSeed(
       base::span<const uint8_t> seed);
 
-  virtual SR25519PublicKey GetPublicKey() = 0;
-  virtual SR25519Signature SignMessage(base::span<const uint8_t> msg) = 0;
-  virtual bool VerifyMessage(SR25519Signature const& sig,
-                             base::span<const uint8_t> msg) = 0;
-  virtual std::unique_ptr<SchnorrkelKeyPair> DeriveHard(
-      base::span<const uint8_t> derive_junction) = 0;
+  SR25519PublicKey GetPublicKey();
+  SR25519Signature SignMessage(base::span<const uint8_t> msg);
+  bool VerifyMessage(SR25519Signature const& sig,
+                     base::span<const uint8_t> msg);
+  SchnorrkelKeyPair DeriveHard(base::span<const uint8_t> derive_junction);
+
+ private:
+  explicit SchnorrkelKeyPair(rust::Box<CxxSchnorrkelKeyPair> impl);
+
+  rust::Box<CxxSchnorrkelKeyPair> impl_;
 };
 
 }  // namespace brave_wallet::polkadot
