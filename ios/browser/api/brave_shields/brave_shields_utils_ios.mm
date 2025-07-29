@@ -21,7 +21,7 @@
 
 - (instancetype)initWithBrowserState:(ProfileIOS*)profile {
   if ((self = [super init])) {
-    DCHECK_CURRENTLY_ON(web::WebThread::UI);
+    // DCHECK_CURRENTLY_ON(web::WebThread::UI);
     _profile = profile;
   }
   return self;

@@ -43,9 +43,7 @@ AIChatServiceFactory::AIChatServiceFactory()
       // If this constraint changes, the following issue
       // must be addressed first:
       // https://github.com/brave/brave-browser/issues/45459
-      ai_chat_metrics_(std::make_unique<AIChatMetrics>(
-          GetApplicationContext()->GetLocalState(),
-          nullptr)) {}
+      ai_chat_metrics_(nullptr) {}
 
 AIChatServiceFactory::~AIChatServiceFactory() {}
 

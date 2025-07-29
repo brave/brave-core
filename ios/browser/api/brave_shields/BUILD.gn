@@ -9,8 +9,13 @@ config("mojom_header_config") {
   visibility = [
     ":*",
     "//brave/ios/app",
+    "//brave/ios/testing/brave_shields:*",
   ]
-  include_dirs = [ "$root_gen_dir/brave/ios/browser/api/brave_shields" ]
+  include_dirs = [
+    "$root_gen_dir/brave/ios/browser/api/brave_shields",
+    "//brave/build/ios/mojom/public/base",
+    "//brave/ios/browser/api/url",
+  ]
 }
 
 source_set("brave_shields") {
@@ -28,8 +33,8 @@ source_set("brave_shields") {
     "brave_shields_utils_ios.h",
     "brave_shields_utils_ios.mm",
   ]
+  public_deps = [ ":brave_shields_mojom_wrappers" ]
   deps = [
-    ":brave_shields_mojom_wrappers",
     "//base",
     "//brave/base/mac",
     "//brave/components/brave_component_updater/browser",
