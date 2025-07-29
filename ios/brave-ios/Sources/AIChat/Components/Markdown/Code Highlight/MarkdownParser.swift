@@ -28,14 +28,12 @@ public class MarkdownParser {
     string: String,
     preferredFont: UIFont,
     useHLJS: Bool,
-    isDarkTheme: Bool,
-    allowedURLs: Set<URL>
+    isDarkTheme: Bool
   ) -> [StringBlock]? {
     guard
       let string = try? AttributedString(
         markdown: string,
-        preferredFont: .init(preferredFont),
-        allowedURLs: allowedURLs
+        preferredFont: .init(preferredFont)
       )
     else {
       return nil

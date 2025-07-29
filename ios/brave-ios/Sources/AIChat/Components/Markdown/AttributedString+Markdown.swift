@@ -20,7 +20,7 @@ extension AttributedString {
     return result
   }
 
-  init(markdown: String, preferredFont: Font, allowedURLs: Set<URL>) throws {
+  init(markdown: String, preferredFont: Font) throws {
     var result = try AttributedString(
       markdown: markdown,
       options: AttributedString.options,
@@ -140,23 +140,6 @@ extension AttributedString {
 
         if range.lowerBound != result.startIndex {
           result.characters.insert(contentsOf: "\n", at: range.lowerBound)
-        }
-      }
-
-    result.runs[LinkAttribute.self]
-      .reversed()
-      .forEach { (url, range) in
-        guard let url = url else {
-          return
-        }
-
-        if !allowedURLs.contains(url) {
-          // If the string is [Click Here](scheme://host),
-          // it will replace the entire thing with just the url in plain text
-          result[range].link = nil  // Remove the LinkAttribute highlighting
-
-          // Replace the "[Click Here]" with the link's text
-          result.characters.replaceSubrange(range, with: url.absoluteString)
         }
       }
 

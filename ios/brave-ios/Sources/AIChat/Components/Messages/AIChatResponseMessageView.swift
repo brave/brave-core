@@ -105,6 +105,15 @@ struct AIChatResponseMessageView: View {
       ForEach((turn.edits?.last ?? turn)?.events ?? [], id: \.self) { event in
         if event.tag == .completionEvent {
           renderMarkdown(text: event.completionEvent?.completion ?? "")
+            .environment(
+              \.openURL,
+              OpenURLAction { url in
+                if !allowedURLs.contains(url) {
+                  return .discarded
+                }
+                return .systemAction
+              }
+            )
         } else if event.tag == .searchStatusEvent && isEntryInProgress && !hasCompletionStarted {
           HStack {
             ProgressView()
@@ -155,8 +164,7 @@ struct AIChatResponseMessageView: View {
       string: text,
       preferredFont: .preferredFont(forTextStyle: .subheadline),
       useHLJS: true,
-      isDarkTheme: true,
-      allowedURLs: allowedURLs
+      isDarkTheme: true
     ) {
       ForEach(textBlocks, id: \.self) { block in
         // Render Code Block

@@ -100,32 +100,6 @@ final class AIChatTest: XCTestCase {
     )
   }
 
-  func testAttributedStringLinkDecomposition() throws {
-    typealias LinkAttribute = AttributeScopes.FoundationAttributes.LinkAttribute
-
-    var string = try AttributedString(
-      markdown: "[Click Here](https://brave.com)",
-      options: .init(
-        allowsExtendedAttributes: true,
-        interpretedSyntax: .full,
-        failurePolicy: .returnPartiallyParsedIfPossible,
-        languageCode: nil
-      )
-    )
-
-    string.runs[LinkAttribute.self]
-      .forEach { (url, range) in
-        guard let url = url else {
-          return
-        }
-
-        string[range].link = nil
-        string.characters.replaceSubrange(range, with: url.absoluteString)
-      }
-
-    XCTAssertEqual(String(string.characters), "https://brave.com")
-  }
-
   func testMarkdown() async throws {
     let response =
       """
@@ -146,8 +120,7 @@ final class AIChatTest: XCTestCase {
         string: response,
         preferredFont: .systemFont(ofSize: 13.0),
         useHLJS: false,
-        isDarkTheme: true,
-        allowedURLs: []
+        isDarkTheme: true
       )
     else {
       XCTFail()
@@ -193,8 +166,7 @@ final class AIChatTest: XCTestCase {
         string: response,
         preferredFont: .systemFont(ofSize: 13.0),
         useHLJS: true,
-        isDarkTheme: true,
-        allowedURLs: []
+        isDarkTheme: true
       )
     else {
       XCTFail()
