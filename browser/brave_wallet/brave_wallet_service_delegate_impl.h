@@ -69,7 +69,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
                     TabChangeType change_type) override;
 
   // BrowserTabStripTrackerDelegate:
-  bool ShouldTrackBrowser(Browser* browser) override;
+  bool ShouldTrackBrowser(BrowserWindowInterface* browser) override;
 
  private:
   friend class BraveWalletServiceDelegateImplUnitTest;
