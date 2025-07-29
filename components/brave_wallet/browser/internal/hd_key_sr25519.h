@@ -15,7 +15,7 @@ namespace brave_wallet {
 
 namespace polkadot {
 class SchnorrkelKeyPair;
-}  // namespace polkadot
+}
 
 class HDKeySr25519 {
  public:
