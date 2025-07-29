@@ -130,9 +130,22 @@ class TabGridViewModel {
     }
   }
 
+  var isShredMenuVisible: Bool {
+    isSelectedTabShredAvailable
+      || tabManager.tabsForCurrentMode.contains(where: { $0.visibleURL?.isShredAvailable == true })
+  }
+
+  var isSelectedTabShredAvailable: Bool {
+    tabManager.selectedTab?.visibleURL?.isShredAvailable == true
+  }
+
   func shredSelectedTab() {
     guard let tab = tabManager.selectedTab, let url = tab.visibleURL else { return }
     tabManager.shredData(for: url, in: tab)
+  }
+
+  func shredAllTabs() {
+    tabManager.shredAllTabsForCurrentMode()
   }
 
   func selectTab(_ tab: any TabState) {
