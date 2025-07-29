@@ -27,16 +27,26 @@ BASE_FEATURE(kBraveUseOmaha4Alpha,
              "BraveUseOmaha4Alpha",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE_PARAM(int,
+                   kLegacyFallbackIntervalDays,
+                   &kBraveUseOmaha4Alpha,
+                   "legacy-fallback-interval-days",
+                   5);
+
 bool ShouldUseOmaha4(base::Time now, std::optional<bool>& state) {
   if (!state.has_value()) {
-    int days_since_null = (now - base::Time()).InDays();
     // Whether Omaha 4 should be used is mostly determined by the feature flag.
     // However, we also want to give the legacy implementation a chance to run
-    // every 5 days. This lets us recover from a situation where updates with
+    // every X days. This lets us recover from a situation where updates with
     // Omaha 4 are broken because of a bug. Once Omaha 4 is stable, we can
     // remove the periodic fallback.
-    state = base::FeatureList::IsEnabled(kBraveUseOmaha4Alpha) &&
-            days_since_null % 5;
+    int days_since_null = (now - base::Time()).InDays();
+    int legacy_fallback_interval_days = kLegacyFallbackIntervalDays.Get();
+    if (days_since_null % legacy_fallback_interval_days == 0) {
+      state = false;
+    } else {
+      state = base::FeatureList::IsEnabled(kBraveUseOmaha4Alpha);
+    }
     VLOG(1) << "Using Omaha 4: " << state.value();
   }
   return state.value();

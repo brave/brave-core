@@ -9,11 +9,13 @@
 #include <optional>
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 
 namespace brave_updater {
 
 BASE_DECLARE_FEATURE(kBraveUseOmaha4Alpha);
+BASE_DECLARE_FEATURE_PARAM(int, kLegacyFallbackIntervalDays);
 
 bool ShouldUseOmaha4();
 
