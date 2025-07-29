@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
+import org.chromium.chrome.browser.ntp_customization.edge_to_edge.TopInsetCoordinator;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -78,6 +79,7 @@ public class BraveNewTabPage extends NewTabPage {
             ObservableSupplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
             ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            ObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
             StartupMetricsTracker startupMetricsTracker) {
         super(
                 activity,
@@ -102,6 +104,7 @@ public class BraveNewTabPage extends NewTabPage {
                 tabStripHeightSupplier,
                 moduleRegistrySupplier,
                 edgeToEdgeControllerSupplier,
+                topInsetCoordinatorSupplier,
                 startupMetricsTracker);
 
         mJankTracker = jankTracker;
