@@ -61,7 +61,7 @@ OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
 
 void SortByBlockId(std::vector<OrchardNote>& vec);
 
-std::vector<zcash::mojom::ZCashUtxoPtr> GetZCashUtxo(size_t seed);
+std::vector<zcash::mojom::ZCashUtxoPtr> GetZCashUtxo(uint64_t amount);
 
 }  // namespace brave_wallet
 

@@ -85,7 +85,6 @@ void ZCashCreateTransparentToOrchardTransactionTask::WorkOnTask() {
 
 void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
   CHECK(utxo_map_);
-
   ZCashTransaction zcash_transaction;
 
   // Pick transparent inputs
@@ -116,9 +115,13 @@ void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
   // Create shielded output
   OrchardOutput& orchard_output =
       zcash_transaction.orchard_part().outputs.emplace_back();
-  orchard_output.value = zcash_transaction.TotalInputsAmount() -
-                         zcash_transaction.fee() -
-                         pick_transparent_inputs_result->change;
+
+  base::CheckedNumeric<uint64_t> value =
+      base::CheckSub(zcash_transaction.TotalInputsAmount(),
+                     base::CheckAdd(pick_transparent_inputs_result->fee,
+                                    pick_transparent_inputs_result->change));
+
+  orchard_output.value = value.ValueOrDie();
   orchard_output.addr = receiver_;
   orchard_output.memo = memo_;
   zcash_transaction.orchard_part().anchor_block_height =

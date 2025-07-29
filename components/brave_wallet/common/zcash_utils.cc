@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
-#include <algorithm>
 #include <array>
 #include <string>
 #include <string_view>
@@ -187,7 +186,7 @@ std::optional<OrchardNote> OrchardNote::FromValue(
     return std::nullopt;
   }
 
-  if (!ReadUint32StringTo(value, "amount", result.amount)) {
+  if (!ReadUint64StringTo(value, "amount", result.amount)) {
     return std::nullopt;
   }
 
@@ -281,7 +280,7 @@ std::optional<OrchardOutput> OrchardOutput::FromValue(
     return std::nullopt;
   }
 
-  if (!ReadUint32StringTo(value, "amount", result.value)) {
+  if (!ReadUint64StringTo(value, "amount", result.value)) {
     return std::nullopt;
   }
 
@@ -310,13 +309,16 @@ bool OutputZCashTransparentAddressSupported(const std::string& address,
 }
 
 // https://zips.z.cash/zip-0317
-uint64_t CalculateZCashTxFee(const uint32_t tx_input_count,
-                             const uint32_t orchard_actions_count) {
+base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
+    const uint32_t tx_input_count,
+    const uint32_t orchard_actions_count) {
   // Use simplified calculation fee form since we don't support p2psh
   // and shielded addresses
-  auto actions_count = std::max(tx_input_count + orchard_actions_count,
-                                kDefaultTransparentOutputsCount);
-  return kMarginalFee * std::max(kGraceActionsCount, actions_count);
+  auto actions_count = base::CheckMax(
+      base::CheckAdd<uint32_t>(tx_input_count, orchard_actions_count),
+      kDefaultTransparentOutputsCount);
+  return base::CheckMul(kMarginalFee,
+                        base::CheckMax(kGraceActionsCount, actions_count));
 }
 
 bool IsUnifiedAddress(const std::string& address) {

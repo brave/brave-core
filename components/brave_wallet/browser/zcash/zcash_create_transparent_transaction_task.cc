@@ -99,9 +99,9 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
 
   base::Extend(transaction_.transparent_part().inputs,
                pick_inputs_result->inputs);
-  base::CheckedNumeric<uint32_t> value =
-      base::CheckSub(transaction_.TotalInputsAmount(),
-                     pick_inputs_result->fee + pick_inputs_result->change);
+  base::CheckedNumeric<uint64_t> value = base::CheckSub(
+      transaction_.TotalInputsAmount(),
+      base::CheckAdd(pick_inputs_result->fee, pick_inputs_result->change));
   transaction_.set_fee(pick_inputs_result->fee);
   // value is calculated from the PickZCashTransparentInputs result
   // and it shouldn't be less than 0.
@@ -167,10 +167,10 @@ bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
   target_output.script_pubkey =
       ZCashAddressToScriptPubkey(target_output.address, IsTestnet());
 
-  CHECK_GE(transaction_.TotalInputsAmount(),
-           transaction_.amount() + transaction_.fee());
-  uint64_t change_amount = transaction_.TotalInputsAmount() -
-                           transaction_.amount() - transaction_.fee();
+  uint64_t change_amount =
+      base::CheckSub(transaction_.TotalInputsAmount(),
+                     base::CheckAdd(transaction_.amount(), transaction_.fee()))
+          .ValueOrDie();
   if (change_amount == 0) {
     return true;
   }

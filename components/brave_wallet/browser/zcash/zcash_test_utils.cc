@@ -62,10 +62,10 @@ void SortByBlockId(std::vector<OrchardNote>& vec) {
   });
 }
 
-std::vector<zcash::mojom::ZCashUtxoPtr> GetZCashUtxo(size_t seed) {
+std::vector<zcash::mojom::ZCashUtxoPtr> GetZCashUtxo(uint64_t amount) {
   auto utxo = zcash::mojom::ZCashUtxo::New();
-  utxo->address = base::NumberToString(seed);
-  utxo->value_zat = seed;
+  utxo->address = base::NumberToString(amount);
+  utxo->value_zat = amount;
   utxo->tx_id = std::vector<uint8_t>(32u, 1u);
   std::vector<zcash::mojom::ZCashUtxoPtr> result;
   result.push_back(std::move(utxo));

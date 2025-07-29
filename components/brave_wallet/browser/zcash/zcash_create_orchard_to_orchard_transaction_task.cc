@@ -142,9 +142,9 @@ void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   // Create shielded output
   OrchardOutput& orchard_output =
       zcash_transaction.orchard_part().outputs.emplace_back();
-  base::CheckedNumeric<uint32_t> value =
-      base::CheckSub(zcash_transaction.TotalInputsAmount(),
-                     zcash_transaction.fee() + pick_result->change);
+  base::CheckedNumeric<uint64_t> value = base::CheckSub(
+      zcash_transaction.TotalInputsAmount(),
+      base::CheckAdd(zcash_transaction.fee(), pick_result->change));
   orchard_output.value = value.ValueOrDie();
   orchard_output.addr = receiver_;
   orchard_output.memo = memo_;
