@@ -10,9 +10,10 @@
 #include "ui/views/focus/external_focus_tracker.h"
 #include "ui/views/view.h"
 
-#define CloseButtonPressed          \
-  CloseButtonPressed_Unused() {}    \
-  friend class BraveConfirmInfoBar; \
+#define CloseButtonPressed              \
+  CloseButtonPressed_Unused() {}        \
+  friend class BraveConfirmInfoBar;     \
+  friend class WebDiscoveryInfoBarView; \
   virtual void CloseButtonPressed
 
 #include "src/chrome/browser/ui/views/infobars/infobar_view.h"  // IWYU pragma: export
