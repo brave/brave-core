@@ -10,7 +10,6 @@
 
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 
@@ -37,7 +36,6 @@ class ProfileMiscMetricsService : public KeyedService {
 
  private:
   raw_ptr<PrefService> profile_prefs_;
-  PrefChangeRegistrar pref_change_registrar_;
 
   std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;
 };

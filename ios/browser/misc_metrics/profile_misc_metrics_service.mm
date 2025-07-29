@@ -19,12 +19,9 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
     web::BrowserState* browser_state) {
   profile_prefs_ = user_prefs::UserPrefs::Get(browser_state);
   auto* local_state = GetApplicationContext()->GetLocalState();
-  if (profile_prefs_) {
-    pref_change_registrar_.Init(profile_prefs_);
-    if (local_state) {
-      ai_chat_metrics_ =
-          std::make_unique<ai_chat::AIChatMetrics>(local_state, profile_prefs_);
-    }
+  if (profile_prefs_ && local_state) {
+    ai_chat_metrics_ =
+        std::make_unique<ai_chat::AIChatMetrics>(local_state, profile_prefs_);
   }
 }
 
