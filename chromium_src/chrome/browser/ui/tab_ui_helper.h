@@ -16,9 +16,11 @@
   bool has_custom_title() const {                   \
     return custom_title_.has_value();               \
   }                                                 \
+  void UpdateLastOrigin();                          \
                                                     \
  private:                                           \
   std::optional<std::u16string> custom_title_;      \
+  url::Origin last_origin_;                         \
                                                     \
  public:                                            \
   std::u16string GetTitle(__VA_ARGS__)

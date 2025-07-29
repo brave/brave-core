@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -46,6 +47,18 @@ void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
   } else {
     TabStripModel::SelectRelativeTab(direction, detail);
   }
+}
+
+void BraveTabStripModel::UpdateWebContentsStateAt(int index,
+                                                  TabChangeType change_type) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+    TabStripModel::UpdateWebContentsStateAt(index, change_type);
+    return;
+  }
+
+  // Make sure that the tab's last origin is updated when the url changes.
+  GetTabAtIndex(index)->GetTabFeatures()->tab_ui_helper()->UpdateLastOrigin();
+  TabStripModel::UpdateWebContentsStateAt(index, change_type);
 }
 
 void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
