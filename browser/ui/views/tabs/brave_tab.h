@@ -55,6 +55,7 @@ class BraveTab : public Tab, public views::TextfieldController {
 
   void CommitRename();
   void ExitRenameMode();
+  void UpdateRenameTextfieldBounds();
 
   bool in_renaming_mode() const {
     return rename_textfield_ && rename_textfield_->GetVisible();
