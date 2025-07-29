@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 
