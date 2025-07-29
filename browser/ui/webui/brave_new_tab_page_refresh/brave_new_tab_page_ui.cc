@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
@@ -23,6 +25,8 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -142,5 +146,29 @@ void BraveNewTabPageUI::BindInterface(
   }
 }
 #endif
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
+  ai_chat_page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
+      web_ui()->GetWebContents(), nullptr, Profile::FromWebUI(web_ui()),
+      std::move(receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::Service> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* service = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile);
+  CHECK(service);
+  service->Bind(std::move(receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::TabTrackerService> pending_receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* service =
+      ai_chat::TabTrackerServiceFactory::GetForBrowserContext(profile);
+  CHECK(service);
+  service->Bind(std::move(pending_receiver));
+}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabPageUI)
