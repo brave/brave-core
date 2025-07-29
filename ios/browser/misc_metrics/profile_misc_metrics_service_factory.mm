@@ -31,7 +31,7 @@ ProfileMiscMetricsService* ProfileMiscMetricsServiceFactory::GetForProfile(
 ProfileMiscMetricsServiceFactory::ProfileMiscMetricsServiceFactory()
     : ProfileKeyedServiceFactoryIOS("ProfileMiscMetricsService",
                                     ProfileSelection::kRedirectedInIncognito,
-                                    ServiceCreation::kCreateLazily,
+                                    ServiceCreation::kCreateWithProfile,
                                     TestingCreation::kNoServiceForTests) {}
 
 ProfileMiscMetricsServiceFactory::~ProfileMiscMetricsServiceFactory() = default;
