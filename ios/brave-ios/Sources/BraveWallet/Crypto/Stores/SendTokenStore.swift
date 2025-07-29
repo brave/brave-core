@@ -1029,10 +1029,16 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       inputs: [],
       outputs: []
     )
-    self.txService.addUnapprovedTransaction(
-      txDataUnion: BraveWallet.TxDataUnion(zecTxData: zecTxData),
-      chainId: token.chainId,
-      from: fromAccountId
+    self.txService.addUnapprovedZCashTransaction(
+      params: .init(
+        chainId: token.chainId,
+        from: fromAccountId,
+        to: sendAddress,
+        amount: amountInSatoshi,
+        sendingMaxAmount: isSendingMaxValue,
+        memo: nil,
+        useShieldedPool: false
+      )
     ) { success, txMetaId, errorMessage in
       self.isMakingTx = false
       completion(success, errorMessage)
