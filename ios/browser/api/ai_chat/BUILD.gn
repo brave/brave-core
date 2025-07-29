@@ -44,6 +44,7 @@ source_set("ai_chat") {
     "//brave/components/brave_stats/browser",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
+    "//brave/ios/browser/misc_metrics",
     "//brave/ios/browser/skus",
     "//components/prefs",
     "//components/user_prefs",

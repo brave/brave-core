@@ -1,0 +1,22 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("misc_metrics") {
+  sources = [
+    "profile_misc_metrics_service.h",
+    "profile_misc_metrics_service.mm",
+    "profile_misc_metrics_service_factory.h",
+    "profile_misc_metrics_service_factory.mm",
+  ]
+
+  deps = [
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+  ]
+}

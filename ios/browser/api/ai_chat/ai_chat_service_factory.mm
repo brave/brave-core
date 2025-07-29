@@ -12,6 +12,8 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/ios/browser/api/ai_chat/model_service_factory.h"
+#include "brave/ios/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "components/user_prefs/user_prefs.h"
 #include "components/version_info/channel.h"
@@ -37,15 +39,7 @@ AIChatServiceFactory::AIChatServiceFactory()
     : ProfileKeyedServiceFactoryIOS("AIChatService",
                                     ProfileSelection::kRedirectedInIncognito,
                                     ServiceCreation::kCreateLazily,
-                                    TestingCreation::kNoServiceForTests),
-      // NOTE: Currently, there are no iOS AIChat metrics that depend on profile
-      // prefs, so passing nullptr is acceptable here.
-      // If this constraint changes, the following issue
-      // must be addressed first:
-      // https://github.com/brave/brave-browser/issues/45459
-      ai_chat_metrics_(std::make_unique<AIChatMetrics>(
-          GetApplicationContext()->GetLocalState(),
-          nullptr)) {}
+                                    TestingCreation::kNoServiceForTests) {}
 
 AIChatServiceFactory::~AIChatServiceFactory() {}
 
@@ -54,6 +48,7 @@ std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
   if (!features::IsAIChatEnabled()) {
     return nullptr;
   }
+
   auto* profile = ProfileIOS::FromBrowserState(context);
   if (profile->IsOffTheRecord()) {
     return nullptr;
@@ -64,13 +59,19 @@ std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
         return skus::SkusServiceFactory::GetForProfile(profile);
       },
       base::Unretained(profile));
+
   auto credential_manager = std::make_unique<AIChatCredentialManager>(
       std::move(skus_service_getter), GetApplicationContext()->GetLocalState());
-  ModelService* model_service = ModelServiceFactory::GetForProfile(profile);
+
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetForProfile(profile);
+
   return std::make_unique<AIChatService>(
-      model_service, nullptr /* tab_tracker_service */,
-      std::move(credential_manager), user_prefs::UserPrefs::Get(context),
-      ai_chat_metrics_.get(), GetApplicationContext()->GetOSCryptAsync(),
+      ModelServiceFactory::GetForProfile(profile),
+      nullptr /* tab_tracker_service */, std::move(credential_manager),
+      user_prefs::UserPrefs::Get(context),
+      profile_metrics ? profile_metrics->GetAIChatMetrics() : nullptr,
+      GetApplicationContext()->GetOSCryptAsync(),
       context->GetSharedURLLoaderFactory(),
       version_info::GetChannelString(::GetChannel()), profile->GetStatePath());
 }

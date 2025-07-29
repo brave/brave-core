@@ -18,12 +18,14 @@
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/debounce/debounce_service_factory+private.h"
 #include "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
+#include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory+private.h"
 
 namespace brave {
 
 void EnsureProfileKeyedServiceFactoriesBuilt() {
+  misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
   ai_chat::ModelServiceFactory::GetInstance();
   ai_chat::AIChatServiceFactory::GetInstance();
   if (brave_account::features::IsBraveAccountEnabled()) {
