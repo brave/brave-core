@@ -76,9 +76,7 @@ mojom::SponsoredImageBackgroundPtr ReadSponsoredImageData(
     if (auto* image_url = logo_dict->FindString(kImageKey)) {
       logo->image_url = *image_url;
     }
-    if (!logo->image_url.empty()) {
-      background->logo = std::move(logo);
-    }
+    background->logo = std::move(logo);
   }
 
   if (auto fallback_to_p3a =

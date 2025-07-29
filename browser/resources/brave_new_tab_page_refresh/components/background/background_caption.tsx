@@ -58,7 +58,7 @@ interface SponsoredBackgroundLogoProps {
 function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
   const actions = useBackgroundActions()
   const { logo } = props.background
-  if (!logo) {
+  if (!logo || !logo.imageUrl) {
     return null
   }
   return (
