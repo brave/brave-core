@@ -39,6 +39,7 @@ if (!is_android) {
       "//chrome/test:test_support_ui",
       "//components/permissions",
       "//content/test:test_support",
+      "//services/network/public/cpp:ip_address_space_overrides_test_utils",
     ]
 
     if (enable_brave_wallet) {
