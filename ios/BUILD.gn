@@ -47,6 +47,7 @@ import("//brave/ios/browser/api/web_view/headers.gni")
 import("//brave/ios/browser/api/webcompat_reporter/headers.gni")
 import("//brave/ios/browser/debounce/headers.gni")
 import("//brave/ios/browser/url_sanitizer/headers.gni")
+import("//brave/ios/browser/ui/webui/ai_chat/headers.gni")
 import("//brave/ios/web_view/headers.gni")
 import("//build/apple/tweak_info_plist.gni")
 import("//build/config/compiler/compiler.gni")
@@ -139,6 +140,7 @@ brave_core_public_headers += browser_api_unicode_public_headers
 brave_core_public_headers += browser_api_unzip_public_headers
 brave_core_public_headers += brave_web_view_public_headers
 brave_core_public_headers += browser_api_profile_public_headers
+brave_core_public_headers += brave_ios_browser_ui_ai_chat_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"
