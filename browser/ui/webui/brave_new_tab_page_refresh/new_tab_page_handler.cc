@@ -189,6 +189,18 @@ void NewTabPageHandler::SetShowSearchBox(bool show_search_box,
   std::move(callback).Run();
 }
 
+void NewTabPageHandler::GetShowChatInput(GetShowChatInputCallback callback) {
+  std::move(callback).Run(pref_service_->GetBoolean(
+      brave_search_conversion::prefs::kShowNTPChatInput));
+}
+
+void NewTabPageHandler::SetShowChatInput(bool show_chat_input,
+                                         SetShowChatInputCallback callback) {
+  pref_service_->SetBoolean(brave_search_conversion::prefs::kShowNTPChatInput,
+                            show_chat_input);
+  std::move(callback).Run();
+}
+
 void NewTabPageHandler::GetSearchSuggestionsEnabled(
     GetSearchSuggestionsEnabledCallback callback) {
   std::move(callback).Run(

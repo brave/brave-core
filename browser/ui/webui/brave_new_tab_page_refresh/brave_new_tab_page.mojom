@@ -140,6 +140,10 @@ interface NewTabPageHandler {
   GetShowSearchBox() => (bool show_search_box);
   SetShowSearchBox(bool show_search_box) => ();
 
+  // Gets or sets whether the AI chat input is displayed on the NTP.
+  GetShowChatInput() => (bool show_chat_input);
+  SetShowChatInput(bool show_chat_input) => ();
+
   // Gets or sets whether search suggestions are enabled.
   GetSearchSuggestionsEnabled() => (bool enabled);
   SetSearchSuggestionsEnabled(bool enabled) => ();

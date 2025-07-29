@@ -9,9 +9,17 @@
 #include <memory>
 
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/history.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -23,6 +31,14 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+namespace ai_chat {
+class AIChatUIPageHandler;
+class BookmarksPageHandler;
+class HistoryUIHandler;
+}  // namespace ai_chat
 #endif
 
 namespace ntp_background_images {
@@ -75,6 +91,22 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
   contextual_search::ContextualSearchSessionHandle*
   GetContextualSessionHandle();
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  void BindInterface(
+      mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver);
+
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::Service> receiver);
+
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::TabTrackerService>
+                         pending_receiver);
+
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler>
+                         pending_receiver);
+
+  void BindInterface(
+      mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> pending_receiver);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
  private:
   // Must outlive `realbox_handler_`.
   std::unique_ptr<contextual_search::ContextualSearchSessionHandle>
@@ -86,6 +118,11 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
       rich_media_ad_event_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
   std::unique_ptr<brave_rewards::RewardsPageHandler> rewards_page_handler_;
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  std::unique_ptr<ai_chat::AIChatUIPageHandler> ai_chat_page_handler_;
+  std::unique_ptr<ai_chat::BookmarksPageHandler> bookmarks_page_handler_;
+  std::unique_ptr<ai_chat::HistoryUIHandler> history_ui_handler_;
+#endif
   bool was_restored_ = false;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
