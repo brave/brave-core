@@ -317,6 +317,8 @@ source_set("ui") {
       "//brave/common",
       "//brave/components/brave_account:features",
       "//brave/components/brave_account/mojom",
+      "//brave/components/brave_origin",
+      "//brave/components/brave_wallet/common:pref_names",
       "//brave/components/constants",
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:mojom",
