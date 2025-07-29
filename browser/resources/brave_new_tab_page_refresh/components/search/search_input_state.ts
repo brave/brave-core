@@ -197,6 +197,9 @@ export function useSearchInputState(inputKey: string) {
 // also contain a URL match if the user typed in what appears to be a URL.
 function getResultOptions(query: string, matches: AutocompleteMatch[]) {
   const options: ResultOption[] = []
+  if (!query) {
+    return options
+  }
   const inputURL = urlFromInput(query)
   if (inputURL) {
     let url = inputURL.toString()

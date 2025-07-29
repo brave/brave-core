@@ -18,6 +18,7 @@ export function createNewTabStore() {
     showTalkWidget: true,
     talkFeatureEnabled: true,
     newsFeatureEnabled: false,
+    aiChatInputEnabled: false,
   })
 
   const actions: NewTabActions = {

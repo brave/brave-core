@@ -163,7 +163,6 @@ export default function FilterMenu<T>(props: Props<T>) {
         setTimeout(() => props.setIsOpen(false))
         return false
       }}
-      placement='top-start'
       widthIsMaxWidth
     >
       {props.header}
