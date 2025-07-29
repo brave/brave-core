@@ -79,6 +79,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   pendingMessageImages: Mojom.UploadedFile[]
   isUploadingFiles: boolean
   setTemporary: (temporary: boolean) => void
+  processDroppedImages: (images: Mojom.UploadedFile[]) => void
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -129,6 +130,7 @@ export const defaultContext: ConversationContext = {
   pendingMessageImages: [],
   isUploadingFiles: false,
   setTemporary: (temporary: boolean) => { },
+  processDroppedImages: (images: Mojom.UploadedFile[]) => { },
   ...defaultSendFeedbackState,
   ...defaultCharCountContext
 }
@@ -657,7 +659,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       (url?: Url) => setPartialContext({ generatedUrlToBeOpened: url }),
     setIgnoreExternalLinkWarning,
     disassociateContent,
-    associateDefaultContent,
+          associateDefaultContent,
+      processDroppedImages: (images: Mojom.UploadedFile[]) => {
+        setPartialContext({
+          isUploadingFiles: true
+        })
+        processUploadedImage(images)
+      }
   }
 
   return (

@@ -43,6 +43,7 @@ import { useIsElementSmall } from '../../hooks/useIsElementSmall'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/tabs_menu'
+import { isImageFile } from '../../constants/file_types'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -56,11 +57,38 @@ const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
   Mojom.SuggestionGenerationStatus.IsGenerating
 ])
 
+// Utility function to convert File objects to UploadedFile format
+const convertFileToUploadedFile = (file: File): Promise<Mojom.UploadedFile> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const arrayBuffer = e.target?.result as ArrayBuffer
+      if (!arrayBuffer) {
+        reject(new Error('Failed to read file'))
+        return
+      }
+
+      const uint8Array = new Uint8Array(arrayBuffer)
+      const uploadedFile: Mojom.UploadedFile = {
+        filename: file.name,
+        filesize: file.size,
+        data: Array.from(uint8Array),
+        type: Mojom.UploadedFileType.kImage
+      }
+      resolve(uploadedFile)
+    }
+    reader.onerror = () => reject(new Error('Failed to read file'))
+    reader.readAsArrayBuffer(file)
+  })
+}
+
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
   const [isContentReady, setIsContentReady] = React.useState(false)
+  const [isDragOver, setIsDragOver] = React.useState(false)
+  const [isDragActive, setIsDragActive] = React.useState(false)
 
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
@@ -185,12 +213,191 @@ function Main() {
     triggerCharacter: '/',
   })
 
+  React.useEffect(() => {
+    let dragCounter = 0
+    let dragTimeoutId: number | null = null
+
+    const clearDragState = () => {
+      dragCounter = 0
+      setIsDragOver(false)
+      setIsDragActive(false)
+      if (dragTimeoutId) {
+        clearTimeout(dragTimeoutId)
+        dragTimeoutId = null
+      }
+    }
+
+    const handleDragEnter = (e: DragEvent) => {
+      e.preventDefault()
+      dragCounter++
+
+      if (e.dataTransfer?.types?.includes('Files')) {
+        setIsDragActive(true)
+        setIsDragOver(true)
+
+        // Set a timeout to clear drag state if no activity for 1 second
+        if (dragTimeoutId) {
+          clearTimeout(dragTimeoutId)
+        }
+        dragTimeoutId = window.setTimeout(() => {
+          clearDragState()
+        }, 1000)
+      }
+    }
+
+    const handleDragLeave = (e: DragEvent) => {
+      e.preventDefault()
+      dragCounter--
+
+      if (dragCounter === 0) {
+        clearDragState()
+      }
+    }
+
+    const handleDragOver = (e: DragEvent) => {
+      e.preventDefault()
+      // Reset timeout on any drag activity
+      if (dragTimeoutId && e.dataTransfer?.types?.includes('Files')) {
+        clearTimeout(dragTimeoutId)
+        dragTimeoutId = window.setTimeout(() => {
+          clearDragState()
+        }, 1000)
+      }
+    }
+
+    // Handle drag operation end or interruption
+    const handleDragEnd = (e: DragEvent) => {
+      clearDragState()
+    }
+
+    // Handle window focus loss (Alt+Tab, etc.)
+    const handleWindowBlur = () => {
+      clearDragState()
+    }
+
+    // Handle page visibility change
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        clearDragState()
+      }
+    }
+
+    // Handle mouse leaving the window (for overlapping windows)
+    const handleMouseLeave = (e: MouseEvent) => {
+      // Only clear if mouse actually leaves the window area
+      const rect = document.documentElement.getBoundingClientRect()
+      if (e.clientX < rect.left || e.clientX > rect.right ||
+          e.clientY < rect.top || e.clientY > rect.bottom) {
+        clearDragState()
+      }
+    }
+
+
+    const handleDocumentFocusOut = (e: FocusEvent) => {
+      // Clear drag state when focus leaves the document
+      if (!document.hasFocus()) {
+        clearDragState()
+      }
+    }
+
+    document.addEventListener('dragenter', handleDragEnter)
+    document.addEventListener('dragleave', handleDragLeave)
+    document.addEventListener('dragover', handleDragOver)
+    document.addEventListener('dragend', handleDragEnd)
+    document.addEventListener('mouseleave', handleMouseLeave)
+    document.addEventListener('focusout', handleDocumentFocusOut)
+    window.addEventListener('blur', handleWindowBlur)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      if (dragTimeoutId) {
+        clearTimeout(dragTimeoutId)
+      }
+      document.removeEventListener('dragenter', handleDragEnter)
+      document.removeEventListener('dragleave', handleDragLeave)
+      document.removeEventListener('dragover', handleDragOver)
+      document.removeEventListener('dragend', handleDragEnd)
+      document.removeEventListener('mouseleave', handleMouseLeave)
+      document.removeEventListener('focusout', handleDocumentFocusOut)
+      window.removeEventListener('blur', handleWindowBlur)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [])
+
+  // Listen for iframe drag notifications
+  React.useEffect(() => {
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.data?.type === 'IFRAME_DRAG_START') {
+        setIsDragActive(true)
+        setIsDragOver(true)
+      } else if (event.data?.type === 'IFRAME_DRAG_END') {
+        setIsDragActive(false)
+        setIsDragOver(false)
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [conversationContext])
+
+  const handleOverlayDrop = async (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragActive(false)
+    setIsDragOver(false)
+
+    const files = Array.from(e.dataTransfer?.files || []).filter(isImageFile)
+
+    if (files.length === 0) {
+      return
+    }
+
+    try {
+      const uploadedFiles = await Promise.all(
+        files.map(file => convertFileToUploadedFile(file))
+      )
+      conversationContext.processDroppedImages(uploadedFiles)
+    } catch (error) {
+      // Silently fail - error will be handled by the upload system
+    }
+  }
+
+  const handleOverlayDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+  }
+
   return (
-    <main className={classnames({
+    <main
+      className={classnames({
       [styles.main]: true,
       [styles.mainPanel]: !aiChatContext.isStandalone,
-      [styles.mainMobile]: aiChatContext.isMobile
-    })} ref={setMainElement}>
+      [styles.mainMobile]: aiChatContext.isMobile,
+      [styles.dragOver]: isDragOver
+    })}
+      ref={setMainElement}
+    >
+      {/* Transparent overlay that captures drag events over iframe */}
+      {isDragActive && (
+        <div
+          className={styles.dragDetectionOverlay}
+          onDragOver={handleOverlayDragOver}
+          onDrop={handleOverlayDrop}
+        />
+      )}
+
+      {isDragOver && (
+        <div className={styles.dragOverlay}>
+          <div className={styles.dragOverlayContent}>
+            <div className={styles.dragIcon}></div>
+            <div className={styles.dragTitle}>
+              {getLocale(S.CHAT_UI_DROP_IMAGES_HERE_LABEL)}
+            </div>
+            <div className={styles.dragDescription}>
+              {getLocale(S.CHAT_UI_DROP_FILES_DESCRIPTION)}
+            </div>
+          </div>
+        </div>
+      )}
       {isConversationListOpen && !aiChatContext.isStandalone && (
         <div className={styles.conversationsList}>
           <div
@@ -244,7 +451,10 @@ function Main() {
                 )}
 
                 <div
-                  className={styles.aichatIframeContainer}
+                  className={classnames({
+                    [styles.aichatIframeContainer]: true,
+                    [styles.dragActive]: isDragActive
+                  })}
                   ref={scrollAnchor}
                 >
                   {!!conversationContext.conversationUuid &&
