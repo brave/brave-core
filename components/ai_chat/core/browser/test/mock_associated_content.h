@@ -24,9 +24,11 @@ class MockAssociatedContent : public AssociatedContentDelegate {
 
   void SetUrl(GURL url) { url_ = std::move(url); }
 
-  void SetCachedPageContent(PageContent page_content) {
-    cached_page_content_ = std::move(page_content);
+  void SetTextContent(std::string text_content) {
+    text_content_ = std::move(text_content);
   }
+
+  void SetIsVideo(bool is_video) { is_video_ = is_video; }
 
   void SetTitle(std::u16string title);
 
@@ -49,6 +51,9 @@ class MockAssociatedContent : public AssociatedContentDelegate {
   }
 
  private:
+  std::string text_content_;
+  bool is_video_ = false;
+
   base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
 };
 

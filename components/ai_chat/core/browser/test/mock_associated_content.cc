@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+
 namespace ai_chat {
 
 MockAssociatedContent::MockAssociatedContent() = default;
@@ -19,6 +21,7 @@ void MockAssociatedContent::OnNewPage(int64_t navigation_id) {
 }
 
 void MockAssociatedContent::GetContent(GetPageContentCallback callback) {
+  set_cached_page_content(PageContent(text_content_, is_video_));
   std::move(callback).Run(cached_page_content_);
 }
 

@@ -51,7 +51,7 @@ TEST(AssociatedContentDelegateTest, OnNewPage) {
   delegate.SetContentId(5);
   delegate.SetUrl(GURL("https://www.brave.com"));
   delegate.SetTitle(u"Brave");
-  delegate.SetCachedPageContent(PageContent("Content 1", false));
+  delegate.SetTextContent("Content 1");
 
   AssociatedContentSnapShotObserver observer;
   EXPECT_CALL(observer, OnRequestArchive(&delegate))
@@ -109,7 +109,7 @@ TEST(AssociatedContentDelegateTest, DestroyNotificationShouldBeAbleToSnapshot) {
     delegate.SetContentId(5);
     delegate.SetUrl(GURL("https://www.brave.com"));
     delegate.SetTitle(u"Brave");
-    delegate.SetCachedPageContent(PageContent("Content 1", false));
+    delegate.SetTextContent("Content 1");
 
     observer.Observe(&delegate);
   }

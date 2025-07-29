@@ -1238,8 +1238,7 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
   for (int i = 0; i < 3; i++) {
     data[i].associated_content.SetUrl(content_url);
     data[i].associated_content.SetTitle(page_title);
-    data[i].associated_content.SetCachedPageContent(
-        PageContent(page_content, false));
+    data[i].associated_content.SetTextContent(page_content);
     data[i].associated_content.SetContentId(i);
 
     data[i].conversation_handler =

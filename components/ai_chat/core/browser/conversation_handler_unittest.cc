@@ -551,7 +551,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
                   std::nullopt /* model_key */)))));
 
   associated_content_->SetUrl(GURL("https://www.brave.com"));
-  associated_content_->SetCachedPageContent(PageContent(page_content, false));
+  associated_content_->SetTextContent(page_content);
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
       [&](std::vector<mojom::AssociatedContentPtr> site_info) {
         ASSERT_EQ(site_info.size(), 1u);
@@ -618,11 +618,11 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
        MultiContentConversation_AddContent) {
   NiceMock<MockAssociatedContent> associated_content1{};
   associated_content1.SetContentId(1);
-  associated_content1.SetCachedPageContent(PageContent("Content 1", false));
+  associated_content1.SetTextContent("Content 1");
 
   NiceMock<MockAssociatedContent> associated_content2{};
   associated_content2.SetContentId(2);
-  associated_content2.SetCachedPageContent(PageContent("Content 2", false));
+  associated_content2.SetTextContent("Content 2");
 
   ConversationHandler* conversation = ai_chat_service_->CreateConversation();
   conversation->associated_content_manager()->AddContent(&associated_content1);
@@ -655,7 +655,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
        MultiContentConversation_AddingContentMultipleTimesDoesNotCrash) {
   NiceMock<MockAssociatedContent> associated_content1{};
   associated_content1.SetContentId(1);
-  associated_content1.SetCachedPageContent(PageContent("Content 1", false));
+  associated_content1.SetTextContent("Content 1");
 
   ConversationHandler* conversation = ai_chat_service_->CreateConversation();
   conversation->associated_content_manager()->AddContent(&associated_content1);
@@ -687,11 +687,11 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
        MultiContentConversation_RemoveContent) {
   NiceMock<MockAssociatedContent> associated_content1{};
   associated_content1.SetContentId(1);
-  associated_content1.SetCachedPageContent(PageContent("Content 1", false));
+  associated_content1.SetTextContent("Content 1");
 
   NiceMock<MockAssociatedContent> associated_content2{};
   associated_content2.SetContentId(2);
-  associated_content2.SetCachedPageContent(PageContent("Content 2", false));
+  associated_content2.SetTextContent("Content 2");
 
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content1);
@@ -745,7 +745,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
        MultiContentConversation_RemoveArchivedContent) {
   NiceMock<MockAssociatedContent> associated_content1{};
   associated_content1.SetContentId(1);
-  associated_content1.SetCachedPageContent(PageContent("Content 1", false));
+  associated_content1.SetTextContent("Content 1");
 
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content1);
@@ -788,11 +788,11 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
        MultiContentConversation_AddingContentSetsShouldSend) {
   NiceMock<MockAssociatedContent> associated_content1{};
   associated_content1.SetContentId(1);
-  associated_content1.SetCachedPageContent(PageContent("Content 1", false));
+  associated_content1.SetTextContent("Content 1");
 
   NiceMock<MockAssociatedContent> associated_content2{};
   associated_content2.SetContentId(2);
-  associated_content2.SetCachedPageContent(PageContent("Content 2", false));
+  associated_content2.SetTextContent("Content 2");
 
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content1);
@@ -810,11 +810,11 @@ TEST_F(
     MultiContentConversation_RemovingContentShouldSetShouldSendIfHasAssociatedContent) {
   NiceMock<MockAssociatedContent> associated_content1{};
   associated_content1.SetContentId(1);
-  associated_content1.SetCachedPageContent(PageContent("Content 1", false));
+  associated_content1.SetTextContent("Content 1");
 
   NiceMock<MockAssociatedContent> associated_content2{};
   associated_content2.SetContentId(2);
-  associated_content2.SetCachedPageContent(PageContent("Content 2", false));
+  associated_content2.SetTextContent("Content 2");
 
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content1);
@@ -836,11 +836,11 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
        MultiContentConversation_ArchiveContent) {
   NiceMock<MockAssociatedContent> associated_content1{};
   associated_content1.SetContentId(1);
-  associated_content1.SetCachedPageContent(PageContent("Content 1", false));
+  associated_content1.SetTextContent("Content 1");
 
   NiceMock<MockAssociatedContent> associated_content2{};
   associated_content2.SetContentId(2);
-  associated_content2.SetCachedPageContent(PageContent("Content 2", false));
+  associated_content2.SetTextContent("Content 2");
 
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content1);
@@ -1595,7 +1595,7 @@ TEST_F(ConversationHandlerUnitTest,
   // Modify an entry for the first time.
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
-  associated_content_->SetCachedPageContent(PageContent("page content", false));
+  associated_content_->SetTextContent("page content");
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
@@ -1976,7 +1976,7 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
   EXPECT_TRUE(conversation_handler_->associated_content_manager()
                   ->HasAssociatedContent());
   associated_content_->SetUrl(GURL("https://www.example.com"));
-  associated_content_->SetCachedPageContent(PageContent(page_content, false));
+  associated_content_->SetTextContent(page_content);
 
   // Mock engine response
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
@@ -2009,7 +2009,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSuggestion) {
   // content. When there is associated content, only the submitted suggestion
   // should be removed.
   associated_content_->SetUrl(GURL("https://www.example.com"));
-  associated_content_->SetCachedPageContent(PageContent("content", false));
+  associated_content_->SetTextContent("content");
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
@@ -2055,7 +2055,7 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions_DisableSendPageContent) {
         EXPECT_TRUE(site_info.empty());
       }));
   associated_content_->SetUrl(GURL("https://www.example.com"));
-  associated_content_->SetCachedPageContent(PageContent("content", false));
+  associated_content_->SetTextContent("content");
 
   // Mock engine response
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
@@ -3290,8 +3290,7 @@ TEST_P(ConversationHandlerUnitTest_AutoScreenshot,
   const EmptyContentTestData& test_data = GetParam();
 
   // Mock associated content to return the test content
-  EXPECT_CALL(*associated_content_, GetTextContent)
-      .WillRepeatedly(testing::Return(test_data.content));
+  associated_content_->SetTextContent(test_data.content);
 
   // Mock GetScreenshots to return sample screenshots
   std::vector<mojom::UploadedFilePtr> mock_screenshots =
@@ -3349,8 +3348,7 @@ INSTANTIATE_TEST_SUITE_P(
 // Test that screenshots are NOT taken when page content exists
 TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenContentExists) {
   // Mock associated content to return non-empty text content
-  EXPECT_CALL(*associated_content_, GetTextContent)
-      .WillRepeatedly(testing::Return("Some page content"));
+  associated_content_->SetTextContent("Some page content");
 
   // GetScreenshots should NOT be called
   EXPECT_CALL(*associated_content_, GetScreenshots).Times(0);
@@ -3391,8 +3389,7 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenContentExists) {
 // conversation
 TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
   // Mock associated content to return empty text content
-  EXPECT_CALL(*associated_content_, GetTextContent)
-      .WillRepeatedly(testing::Return(""));
+  associated_content_->SetTextContent("");
 
   // Add existing screenshots to conversation history
   std::vector<mojom::ConversationTurnPtr> history;
@@ -3451,8 +3448,7 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
       kClaudeHaikuModelKey);
 #endif
   // Mock associated content to return empty text content
-  EXPECT_CALL(*associated_content_, GetTextContent)
-      .WillRepeatedly(testing::Return(""));
+  associated_content_->SetTextContent("");
 
   // Mock GetScreenshots to return sample screenshots
   std::vector<mojom::UploadedFilePtr> mock_screenshots =
@@ -3524,8 +3520,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
   EXPECT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
 
   // Mock associated content to return empty text content
-  EXPECT_CALL(*associated_content_, GetTextContent)
-      .WillRepeatedly(testing::Return(""));
+  associated_content_->SetTextContent("");
 
   // Mock GetScreenshots to return sample screenshots
   std::vector<mojom::UploadedFilePtr> mock_screenshots =
