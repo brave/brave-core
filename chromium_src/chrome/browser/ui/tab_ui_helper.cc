@@ -37,3 +37,17 @@ std::u16string TabUIHelper::GetTitle() const {
 
   return custom_title_.value_or(GetTitle_ChromiumImpl());
 }
+
+void TabUIHelper::UpdateLastOrigin() {
+  // If the origin has changed since the last time we got the title, reset the
+  // custom title. This is to ensure that the custom title is not stale.
+  const auto origin =
+      url::Origin::Create(web_contents()->GetLastCommittedURL());
+  if ((last_origin_.opaque() && origin.opaque()) ||
+      last_origin_.IsSameOriginWith(origin)) {
+    return;
+  }
+
+  custom_title_.reset();
+  last_origin_ = origin;
+}
