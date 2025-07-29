@@ -36,10 +36,9 @@ class ProfileMiscMetricsService : public KeyedService {
   ai_chat::AIChatMetrics* GetAIChatMetrics();
 
  private:
-
   raw_ptr<PrefService> profile_prefs_;
   PrefChangeRegistrar pref_change_registrar_;
-  
+
   std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;
 };
 

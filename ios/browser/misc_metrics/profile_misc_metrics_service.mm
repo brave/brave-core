@@ -8,10 +8,10 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
-#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace misc_metrics {
 

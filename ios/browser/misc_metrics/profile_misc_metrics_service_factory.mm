@@ -9,8 +9,8 @@
 
 #include "base/no_destructor.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service.h"
-#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace misc_metrics {
 
@@ -22,20 +22,17 @@ ProfileMiscMetricsServiceFactory::GetInstance() {
 }
 
 // static
-ProfileMiscMetricsService*
-ProfileMiscMetricsServiceFactory::GetForProfile(
+ProfileMiscMetricsService* ProfileMiscMetricsServiceFactory::GetForProfile(
     ProfileIOS* profile) {
-  return GetInstance()->GetServiceForProfileAs<ProfileMiscMetricsService>(profile, true);
+  return GetInstance()->GetServiceForProfileAs<ProfileMiscMetricsService>(
+      profile, true);
 }
 
 ProfileMiscMetricsServiceFactory::ProfileMiscMetricsServiceFactory()
-    : ProfileKeyedServiceFactoryIOS(
-          "ProfileMiscMetricsService",
-          ProfileSelection::kRedirectedInIncognito,
-          ServiceCreation::kCreateLazily,
-          TestingCreation::kNoServiceForTests) {
-    
-}
+    : ProfileKeyedServiceFactoryIOS("ProfileMiscMetricsService",
+                                    ProfileSelection::kRedirectedInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kNoServiceForTests) {}
 
 ProfileMiscMetricsServiceFactory::~ProfileMiscMetricsServiceFactory() = default;
 

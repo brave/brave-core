@@ -8,8 +8,8 @@
 
 #include <memory>
 
-#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 
@@ -22,11 +22,9 @@ namespace misc_metrics {
 
 class ProfileMiscMetricsService;
 
-class ProfileMiscMetricsServiceFactory
-    : public ProfileKeyedServiceFactoryIOS {
+class ProfileMiscMetricsServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
-  static ProfileMiscMetricsService* GetForProfile(
-      ProfileIOS* profile);
+  static ProfileMiscMetricsService* GetForProfile(ProfileIOS* profile);
   static ProfileMiscMetricsServiceFactory* GetInstance();
 
   ProfileMiscMetricsServiceFactory(const ProfileMiscMetricsServiceFactory&) =
