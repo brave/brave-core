@@ -19,7 +19,7 @@
 #include "brave/components/brave_news/common/p3a_pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -44,6 +44,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -66,7 +67,7 @@
 #define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
 #define MigrateObsoleteLocalStatePrefs \
   MigrateObsoleteLocalStatePrefs_ChromiumImpl
-#include "src/chrome/browser/prefs/browser_prefs.cc"
+#include <chrome/browser/prefs/browser_prefs.cc>
 #undef MigrateObsoleteProfilePrefs
 #undef MigrateObsoleteLocalStatePrefs
 
@@ -93,6 +94,13 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // to Brave pref.
   gcm::MigrateGCMPrefs(profile_prefs);
 #endif
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Added 06/2025.
+  // Must be called before ChromiumImpl because it's migrating a Chromium pref
+  // to Brave pref.
+  brave::welcome_ui::prefs::MigratePrefs(profile_prefs);
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs, profile_path);
 

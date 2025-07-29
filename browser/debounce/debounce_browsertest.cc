@@ -12,9 +12,9 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/test/engine_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/debounce/core/common/pref_names.h"
@@ -143,8 +143,7 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     base::Base64UrlEncode(landing_url.spec(),
                           base::Base64UrlEncodePolicy::OMIT_PADDING,
                           &encoded_destination);
-    const std::string query =
-        base::StringPrintf("url=%s", encoded_destination.c_str());
+    const std::string query = absl::StrFormat("url=%s", encoded_destination);
     GURL::Replacements replacement;
     replacement.SetQueryStr(query);
     return original_url.ReplaceComponents(replacement);

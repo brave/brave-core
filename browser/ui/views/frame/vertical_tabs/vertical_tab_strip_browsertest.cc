@@ -100,8 +100,9 @@ class FullscreenNotificationObserver : public FullscreenObserver {
 
 FullscreenNotificationObserver::FullscreenNotificationObserver(
     Browser* browser) {
-  observation_.Observe(
-      browser->exclusive_access_manager()->fullscreen_controller());
+  observation_.Observe(browser->GetFeatures()
+                           .exclusive_access_manager()
+                           ->fullscreen_controller());
 }
 
 FullscreenNotificationObserver::~FullscreenNotificationObserver() = default;
@@ -764,44 +765,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, OriginalTabSearchButton) {
-  auto* widget_delegate_view =
-      browser_view()->vertical_tab_strip_widget_delegate_view();
-  ASSERT_TRUE(widget_delegate_view);
-
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
-  ASSERT_TRUE(region_view);
-
-  auto* original_tab_search_button =
-      region_view->original_region_view_->GetTabSearchButton();
-  if (!original_tab_search_button) {
-    // On Windows 10, the button is on the window frame and vertical tab strip
-    // does nothing to it.
-    return;
-  }
-
-  ASSERT_TRUE(original_tab_search_button->GetVisible());
-
-  // The button should be hidden when using vertical tab strip
-  ToggleVerticalTabStrip();
-  EXPECT_FALSE(original_tab_search_button->GetVisible());
-
-  // The button should reappear when getting back to horizontal tab strip.
-  ToggleVerticalTabStrip();
-  EXPECT_TRUE(original_tab_search_button->GetVisible());
-
-  // Turn off the button with a preference.
-  browser()->profile()->GetPrefs()->SetBoolean(kTabsSearchShow, false);
-  EXPECT_FALSE(original_tab_search_button->GetVisible());
-
-  // Turn on and off vertical tab strip
-  ToggleVerticalTabStrip();
-  ToggleVerticalTabStrip();
-
-  // the original tab search button should stay hidden
-  EXPECT_FALSE(original_tab_search_button->GetVisible());
-}
-
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
   // Regression check for https://github.com/brave/brave-browser/issues/40201
   ToggleVerticalTabStrip();
@@ -904,13 +867,9 @@ class VerticalTabStripDragAndDropBrowserTest
   }
 };
 
-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
-// TODO(sko) On Linux test environment, the test doesn't work well
-// TODO(sko) On Windows CI, SendMouse() doesn't work.
+// Before we have our own interactive ui tests, we need to disable this test as
+// it's flaky when running test suits.
 #define MAYBE_DragTabToReorder DISABLED_DragTabToReorder
-#else
-#define MAYBE_DragTabToReorder DragTabToReorder
-#endif
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                        MAYBE_DragTabToReorder) {
@@ -962,14 +921,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
   }
 }
 
-// TODO(sko) On Linux test environment, the test doesn't work well
-// TODO(sko) On Windows CI, SendMouse() doesn't work.
-// TODO(sko) As of Dec, 2023 this test is flaky on Mac CI.
-#if BUILDFLAG(IS_WIN)
-#define MAYBE_DragTabToDetach DragTabToDetach
-#else
+// Before we have our own interactive ui tests, we need to disable this test as
+// it's flaky when running test suits.
 #define MAYBE_DragTabToDetach DISABLED_DragTabToDetach
-#endif
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                        MAYBE_DragTabToDetach) {
@@ -1005,13 +959,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
       }));
 }
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-// TODO(sko) On Linux test environment, the test doesn't work well
-// TODO(sko) On Windows CI, SendMouse() doesn't work.
+// Before we have our own interactive ui tests, we need to disable this test as
+// it's flaky when running test suits.
 #define MAYBE_DragURL DISABLED_DragURL
-#else
-#define MAYBE_DragURL DragURL
-#endif
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest, MAYBE_DragURL) {
   // Pre-conditions ------------------------------------------------------------
@@ -1177,4 +1127,34 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripScrollBarFlagTest, MigrationTest) {
   // Check if pref is set to true when user turned on the feature flag.
   EXPECT_FALSE(pref->IsDefaultValue());
   EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
+}
+
+class VerticalTabStripHideCompletelyTest : public VerticalTabStripBrowserTest {
+ public:
+  VerticalTabStripHideCompletelyTest()
+      : feature_list_(tabs::features::kBraveVerticalTabHideCompletely) {}
+
+  ~VerticalTabStripHideCompletelyTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
+  // Given vertical tab strip is enabled and collapsed with the flag is on
+  ToggleVerticalTabStrip();
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+
+  region_view->ToggleState();
+  ASSERT_EQ(VerticalTabStripRegionView::State::kCollapsed,
+            region_view->state());
+
+  // The minimum width of the region view should be 4px, which is narrower than
+  // it used to be.
+  EXPECT_EQ(4, region_view->GetMinimumSize().width());
 }

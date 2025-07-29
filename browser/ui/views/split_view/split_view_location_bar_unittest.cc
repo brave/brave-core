@@ -65,7 +65,8 @@ class TestLocationBarModelDelegate : public LocationBarModelDelegate {
 
  private:
   GURL url_;
-  security_state::SecurityLevel security_level_;
+  security_state::SecurityLevel security_level_{
+      security_state::SecurityLevel::NONE};
   net::CertStatus cert_status_ = 0;
   bool should_prevent_elision_ = false;
 };

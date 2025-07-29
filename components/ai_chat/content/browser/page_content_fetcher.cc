@@ -63,7 +63,7 @@ namespace ai_chat {
 namespace {
 
 using FetchPageContentCallback =
-    AIChatTabHelper::PageContentFetcherDelegate::FetchPageContentCallback;
+    AssociatedContentDriver::FetchPageContentCallback;
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 // Hosts to use for screenshot based text retrieval
@@ -255,9 +255,9 @@ class PageContentFetcherInternal {
       const auto& config = data->content->get_youtube_inner_tube_config();
       DVLOG(1) << "Making InnerTube API request for video " << config->video_id;
 
-      auto url = GURL(base::StringPrintf(
-          "https://www.youtube.com/youtubei/v1/player?key=%s",
-          base::EscapeQueryParamValue(config->api_key, true).c_str()));
+      auto url = GURL(
+          absl::StrFormat("https://www.youtube.com/youtubei/v1/player?key=%s",
+                          base::EscapeQueryParamValue(config->api_key, true)));
       auto new_invalidation_token = url.spec();
       if (new_invalidation_token == invalidation_token) {
         VLOG(2) << "Not fetching content since invalidation token matches: "

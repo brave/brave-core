@@ -13,7 +13,7 @@
   friend class BraveTabSearchButton; \
   int GetCornerRadius
 
-#include "src/chrome/browser/ui/views/tabs/tab_search_button.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab_search_button.h>  // IWYU pragma: export
 
 #undef GetCornerRadius
 

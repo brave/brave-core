@@ -3,14 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-component("common") {
-  output_name = "psst_common"
-  defines = [ "IS_PSST_COMMON_IMPL" ]
-
+static_library("common") {
   sources = [
     "features.cc",
     "features.h",
+    "pref_names.cc",
+    "pref_names.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//components/pref_registry",
+    "//components/prefs",
+  ]
 }

@@ -55,13 +55,6 @@ class ShareExtensionHelper {
       applicationActivities: applicationActivities
     )
 
-    // Hide 'Add to Reading List' which currently uses Safari.
-    // We would also hide View Later, if possible, but the exclusion list doesn't currently support
-    // third-party activity types (rdar://19430419).
-    activityViewController.excludedActivityTypes = [
-      UIActivity.ActivityType.addToReadingList
-    ]
-
     return activityViewController
   }
 }

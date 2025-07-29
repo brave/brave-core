@@ -12,9 +12,9 @@
 
 #include "base/strings/string_util.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
-#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom-forward.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
@@ -55,10 +55,7 @@ class MockWebCompatServiceDelegate : public WebCompatServiceDelegate {
               (),
               (const));
   MOCK_METHOD(std::optional<std::string>, GetChannelName, (), (const));
-  MOCK_METHOD(std::optional<std::vector<ComponentInfo>>,
-              GetComponentInfos,
-              (),
-              (const));
+  MOCK_METHOD(std::vector<ComponentInfo>, GetComponentInfos, (), (const));
   MOCK_METHOD(std::optional<std::string>,
               GetCookiePolicy,
               (const std::optional<std::string>& current_url),
@@ -109,8 +106,8 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     auto report_info = webcompat_reporter::mojom::ReportInfo::New(
         "channel", "brave_version", "https://abc.url/p1/p2", "true",
         "ad_block_setting", "fp_block_setting", "ad_block_list_names",
-        "languages", "true", "true", "details", contact, "block", "true",
-        std::move(components), screenshot, webcompat_errors);
+        "languages", "true", "true", "category", "details", contact, "block",
+        "true", std::move(components), screenshot, webcompat_errors);
     EXPECT_CALL(*GetMockWebcompatReportUploader(), SubmitReport(_))
         .Times(1)
         .WillOnce([&](webcompat_reporter::mojom::ReportInfoPtr report) {
@@ -127,6 +124,7 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
           EXPECT_EQ(report->cookie_policy, "block");
           EXPECT_EQ(report->block_scripts, "true");
 
+          EXPECT_EQ(report->category, "category");
           EXPECT_EQ(report->details, "details");
           EXPECT_EQ(report->contact, contact);
 
@@ -150,6 +148,35 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     EXPECT_CALL(*delegate_, GetScriptBlockingFlag).Times(0);
 
     webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
+  }
+
+  void TestRetrievingWebcompatCategories(
+      const std::vector<mojom::WebcompatCategory>& required_categories,
+      const std::vector<mojom::WebcompatCategory>& excluded_categories,
+      const std::vector<ComponentInfo>& component_infos) {
+    EXPECT_CALL(*delegate_, GetComponentInfos)
+        .Times(1)
+        .WillOnce(testing::Return(component_infos));
+
+    base::test::TestFuture<std::vector<mojom::WebcompatCategoryItemPtr>> future;
+    webcompat_reporter_service_->GetWebcompatCategories(future.GetCallback());
+
+    auto categories = future.Take();
+    EXPECT_EQ(categories.size(), required_categories.size());
+    EXPECT_TRUE(std::ranges::all_of(required_categories, [&](auto item) {
+      return std::ranges::find_if(
+                 categories,
+                 [&item](const mojom::WebcompatCategoryItemPtr& category) {
+                   return category->category == item;
+                 }) != categories.end();
+    }));
+    EXPECT_TRUE(std::ranges::none_of(excluded_categories, [&](auto item) {
+      return std::ranges::find_if(
+                 categories,
+                 [&item](const mojom::WebcompatCategoryItemPtr& category) {
+                   return category->category == item;
+                 }) != categories.end();
+    }));
   }
 
  protected:
@@ -207,6 +234,7 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
         // check values, which we pass to the service
         EXPECT_FALSE(report->report_url);
         EXPECT_FALSE(report->shields_enabled);
+        EXPECT_FALSE(report->category);
         EXPECT_FALSE(report->details);
         EXPECT_FALSE(report->contact);
         EXPECT_EQ(report->cookie_policy.value(), kCookiePolicyMockedValue);
@@ -235,6 +263,64 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
       .WillOnce(testing::Return(kGetScriptBlockingFlagMockedValue));
 
   webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
+}
+
+TEST_F(WebcompatReporterServiceUnitTest, RetrievingWebcompatCategories) {
+  {
+    std::vector<ComponentInfo> component_infos{
+        {"adcocjohghhfpidemphmcmlmhnfgikei", "name", "1.234"}};
+    TestRetrievingWebcompatCategories(
+        {mojom::WebcompatCategory::kAds, mojom::WebcompatCategory::kBlank,
+         mojom::WebcompatCategory::kScroll, mojom::WebcompatCategory::kForm,
+         mojom::WebcompatCategory::kAntiAdblock,
+         mojom::WebcompatCategory::kTracking, mojom::WebcompatCategory::kOther},
+        {mojom::WebcompatCategory::kCookieNotice,
+         mojom::WebcompatCategory::kNewsletter,
+         mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat},
+        component_infos);
+  }
+  {
+    std::vector<ComponentInfo> component_infos{
+        {"adcocjohghhfpidemphmcmlmhnfgikei", "name", "1.234"},
+        // In this component is present, WebcompatCategory::kCookieNotice must
+        // be shown
+        {"cdbbhgbmjhfnhnmgeddbliobbofkgdhe", "name1", "2.234"},
+        // In this component is present, WebcompatCategory::kNewsletter must be
+        // shown
+        {"kdddfellohomdnfkdhombbddhojklibj", "name2", "3.234"},
+        // In this component is present, WebcompatCategory::kSocial must be
+        // shown
+        {"nbkknaieglghmocpollinelcggiehfco", "name3", "4.234"},
+        // In this component is present, WebcompatCategory::kChat must be
+        // shown
+        {"cjoooeeofnfjohnalnghhmdlalopplja", "name4", "5.234"}};
+    TestRetrievingWebcompatCategories(
+        {mojom::WebcompatCategory::kAds, mojom::WebcompatCategory::kBlank,
+         mojom::WebcompatCategory::kScroll, mojom::WebcompatCategory::kForm,
+         mojom::WebcompatCategory::kCookieNotice,
+         mojom::WebcompatCategory::kAntiAdblock,
+         mojom::WebcompatCategory::kTracking,
+         mojom::WebcompatCategory::kNewsletter,
+         mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat,
+         mojom::WebcompatCategory::kOther},
+        {}, component_infos);
+  }
+  {
+    std::vector<ComponentInfo> component_infos{
+        {"adcocjohghhfpidemphmcmlmhnfgikei", "name", "1.234"},
+        // In this component is present, WebcompatCategory::kCookieNotice must
+        // be shown
+        {"cdbbhgbmjhfnhnmgeddbliobbofkgdhe", "name1", "2.234"}};
+    TestRetrievingWebcompatCategories(
+        {mojom::WebcompatCategory::kAds, mojom::WebcompatCategory::kBlank,
+         mojom::WebcompatCategory::kScroll, mojom::WebcompatCategory::kForm,
+         mojom::WebcompatCategory::kCookieNotice,
+         mojom::WebcompatCategory::kAntiAdblock,
+         mojom::WebcompatCategory::kTracking, mojom::WebcompatCategory::kOther},
+        {mojom::WebcompatCategory::kNewsletter,
+         mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat},
+        component_infos);
+  }
 }
 
 }  // namespace webcompat_reporter

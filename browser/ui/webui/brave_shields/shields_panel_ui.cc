@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_localized_strings.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/resources/panel/grit/brave_shields_panel_generated_map.h"
@@ -25,6 +25,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/url_constants.h"
 #include "net/base/features.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"

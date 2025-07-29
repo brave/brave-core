@@ -28,6 +28,8 @@ class MockContainerMenuModelDelegate
               (override const));
 
   MOCK_METHOD(Browser*, GetBrowserToOpenSettings, (), (override));
+
+  MOCK_METHOD(float, GetScaleFactor, (), (override));
 };
 
 #endif  // BRAVE_BROWSER_UI_CONTAINERS_MOCK_CONTAINERS_MENU_MODEL_DELEGATE_H_

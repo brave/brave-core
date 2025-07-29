@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/chrome_omnibox_client.h b/chrome/browser/ui/omnibox/chrome_omnibox_client.h
-index 11560326ab3802ae276328902ab119cd82d18415..71a88fcfa70c7f28e430478bf844108c402fad44 100644
+index 5fc63d210dcfd0943d0374061ce057fac60aed61..9fec62d89b5bf7af8f83dcef1c98af6e583df37d 100644
 --- a/chrome/browser/ui/omnibox/chrome_omnibox_client.h
 +++ b/chrome/browser/ui/omnibox/chrome_omnibox_client.h
 @@ -23,7 +23,7 @@ class GURL;

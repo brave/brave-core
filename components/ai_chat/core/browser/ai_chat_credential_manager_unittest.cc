@@ -20,6 +20,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -30,7 +31,6 @@
 #include "brave/components/skus/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
-#include "content/public/test/browser_task_environment.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -134,7 +134,7 @@ std::string formatSkusStateValue(const base::Time start_time,
     base::Time incremented_time = shifted_start_time + base::Days(i);
     base::Time::Exploded exploded;
     incremented_time.UTCExplode(&exploded);
-    std::string formatted_time = base::StringPrintf(
+    std::string formatted_time = absl::StrFormat(
         "%04d-%02d-%02dT%02d:%02d:%02d", exploded.year, exploded.month,
         exploded.day_of_month, exploded.hour, exploded.minute, exploded.second);
 
@@ -247,7 +247,7 @@ class AIChatCredentialManagerUnitTest : public testing::Test {
   PrefService* prefs() { return &prefs_service_; }
 
  protected:
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple prefs_service_;
   base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;

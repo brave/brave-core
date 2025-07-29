@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/color/material_tab_strip_color_mixer.h"
 
 #define AddMaterialTabStripColorMixer AddMaterialTabStripColorMixer_ChromiumImpl
-#include "src/chrome/browser/ui/color/material_tab_strip_color_mixer.cc"
+#include <chrome/browser/ui/color/material_tab_strip_color_mixer.cc>
 #undef AddMaterialTabStripColorMixer
 
 void AddMaterialTabStripColorMixer(ui::ColorProvider* provider,

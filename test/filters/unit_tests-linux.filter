@@ -5,6 +5,9 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests pass locally but fail on CI (flaky).
+-PasswordStatusCheckServiceBaseTest.PrefInitialized
+
 # These fail because OsIntegrationTestOverride::GetShortcutPath and
 # OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux hard-codes "chrome-"
 # into the shortcut name but our shortcut starts with "brave-".

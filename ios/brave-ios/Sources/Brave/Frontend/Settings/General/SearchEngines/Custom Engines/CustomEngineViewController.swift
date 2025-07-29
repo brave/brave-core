@@ -48,7 +48,7 @@ class CustomEngineViewController: UIViewController {
 
   // MARK: Properties
 
-  var profile: Profile
+  var profile: LegacyBrowserProfile
   var isPrivateBrowsing: Bool
   var onAddSucceed: (() -> Void)?
 
@@ -108,7 +108,7 @@ class CustomEngineViewController: UIViewController {
   // MARK: Lifecycle
 
   init(
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     isPrivateBrowsing: Bool,
     engineToBeEdited: OpenSearchEngine? = nil
   ) {

@@ -13,7 +13,7 @@
 #include "base/version.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
@@ -178,7 +178,7 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_->port()));
+        absl::StrFormat("MAP *:443 127.0.0.1:%d", https_server_->port()));
 #if BUILDFLAG(ENABLE_EXTENSIONS)
     command_line->AppendSwitch(extensions::switches::kOffscreenDocumentTesting);
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)

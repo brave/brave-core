@@ -21,4 +21,7 @@ export const _TransactionCriticalWarningPopup = {
   },
 }
 
-export default { component: CriticalWarningPopup }
+export default {
+  title: 'Wallet/Panel/Components',
+  component: CriticalWarningPopup,
+}

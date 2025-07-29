@@ -41,8 +41,8 @@ std::u16string ToString(base::TimeDelta time) {
   const int seconds = (time_in_seconds % 60);
 
   return base::ASCIIToUTF16(
-      hours ? base::StringPrintf("%02d:%02d:%02d", hours, minutes, seconds)
-            : base::StringPrintf("%02d:%02d", minutes, seconds));
+      hours ? absl::StrFormat("%02d:%02d:%02d", hours, minutes, seconds)
+            : absl::StrFormat("%02d:%02d", minutes, seconds));
 }
 
 std::u16string ToString(const media_session::MediaPosition& position) {

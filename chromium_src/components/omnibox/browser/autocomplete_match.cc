@@ -24,6 +24,6 @@ const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
 #define GetVectorIcon GetVectorIcon_Chromium
 #endif
 
-#include "src/components/omnibox/browser/autocomplete_match.cc"  // IWYU pragma: export
+#include <components/omnibox/browser/autocomplete_match.cc>  // IWYU pragma: export
 
 #undef GetVectorIcon

@@ -14,7 +14,7 @@
 #define GlobalValueMap BraveGlobalValueMap
 #endif
 
-#include "src/components/supervised_user/core/browser/supervised_user_content_settings_provider.h"  // IWYU pragma: export
+#include <components/supervised_user/core/browser/supervised_user_content_settings_provider.h>  // IWYU pragma: export
 #if !BUILDFLAG(IS_IOS)
 #undef GlobalValueMap
 #endif

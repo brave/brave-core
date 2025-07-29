@@ -33,7 +33,7 @@ class BraveRenderViewContextMenu;
   static void RegisterMenuShownCallbackForTesting_unused
 #define AppendReadingModeItem virtual AppendReadingModeItem
 #define AppendDeveloperItems virtual AppendDeveloperItems
-#include "src/chrome/browser/renderer_context_menu/render_view_context_menu.h"  // IWYU pragma: export
+#include <chrome/browser/renderer_context_menu/render_view_context_menu.h>  // IWYU pragma: export
 #undef AppendDeveloperItems
 #undef AppendReadingModeItem
 #undef RegisterMenuShownCallbackForTesting
@@ -73,6 +73,7 @@ class BraveRenderViewContextMenu
       const containers::mojom::ContainerPtr& container) override;
   base::flat_set<std::string> GetCurrentContainerIds() override;
   Browser* GetBrowserToOpenSettings() override;
+  float GetScaleFactor() override;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   void SetAIEngineForTesting(

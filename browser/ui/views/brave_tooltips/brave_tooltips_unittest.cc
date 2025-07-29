@@ -82,6 +82,9 @@ TEST_F(BraveTooltipsTest, OkButtonPressed) {
 
   mock_tooltip_delegate_.WaitForWidgetDestroyedNotification();
 
+  // Reset the widget so that no UX objects leak. This will also delete the
+  // popup, so we need to release the pointer.
+  tooltip_popup->widget_.reset();
   tooltip_popup.release();
 }
 
@@ -102,5 +105,8 @@ TEST_F(BraveTooltipsTest, CancelButtonPressed) {
 
   mock_tooltip_delegate_.WaitForWidgetDestroyedNotification();
 
+  // Reset the widget so that no UX objects leak. This will also delete the
+  // popup, so we need to release the pointer.
+  tooltip_popup->widget_.reset();
   tooltip_popup.release();
 }

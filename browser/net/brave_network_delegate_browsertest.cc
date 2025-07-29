@@ -6,7 +6,7 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
@@ -37,11 +37,11 @@ namespace {
 bool NavigateRenderFrameToURL(content::RenderFrameHost* frame,
                               std::string iframe_id,
                               const GURL& url) {
-  std::string script = base::StringPrintf(
+  std::string script = absl::StrFormat(
       "setTimeout(\""
       "var iframes = document.getElementById('%s');iframes.src='%s';"
       "\",0)",
-      iframe_id.c_str(), url.spec().c_str());
+      iframe_id, url.spec());
 
   content::TestNavigationManager navigation_manager(
       content::WebContents::FromRenderFrameHost(frame), url);

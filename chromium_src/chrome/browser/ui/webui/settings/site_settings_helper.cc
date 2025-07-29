@@ -93,7 +93,7 @@ void BraveGetExceptionForPage(ContentSettingsType type,
                               base::Value::Dict& exception);
 }  // namespace
 
-#include "src/chrome/browser/ui/webui/settings/site_settings_helper.cc"
+#include <chrome/browser/ui/webui/settings/site_settings_helper.cc>
 
 #undef kNumSources
 #undef BRAVE_PROVIDER_TYPE_TO_SITE_SETTINGS_SOURCE

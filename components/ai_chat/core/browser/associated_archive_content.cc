@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 
-#include <string_view>
 #include <utility>
 
 #include "base/logging.h"
@@ -19,10 +18,7 @@ AssociatedArchiveContent::AssociatedArchiveContent(GURL url,
                                                    std::u16string title,
                                                    bool is_video,
                                                    std::string uuid)
-    : url_(url),
-      text_content_(text_content),
-      title_(title),
-      is_video_(is_video) {
+    : url_(url), title_(title), cached_page_content_(text_content, is_video) {
   DVLOG(1) << "Made archive for content at: " << url.spec() << "\n"
            << "title: " << title << "text: " << text_content;
   set_uuid(std::move(uuid));
@@ -35,11 +31,11 @@ void AssociatedArchiveContent::SetMetadata(GURL url,
                                            bool is_video) {
   url_ = url;
   title_ = title;
-  is_video_ = is_video;
+  cached_page_content_.is_video = is_video;
 }
 
 void AssociatedArchiveContent::SetContent(std::string text_content) {
-  text_content_ = text_content;
+  cached_page_content_.content = text_content;
 }
 
 int AssociatedArchiveContent::GetContentId() const {
@@ -55,15 +51,11 @@ std::u16string AssociatedArchiveContent::GetTitle() const {
 }
 
 void AssociatedArchiveContent::GetContent(GetPageContentCallback callback) {
-  std::move(callback).Run(text_content_, is_video_, "");
+  std::move(callback).Run(cached_page_content_);
 }
 
-std::string_view AssociatedArchiveContent::GetCachedTextContent() const {
-  return text_content_;
-}
-
-bool AssociatedArchiveContent::GetCachedIsVideo() const {
-  return is_video_;
+const PageContent& AssociatedArchiveContent::GetCachedPageContent() const {
+  return cached_page_content_;
 }
 
 }  // namespace ai_chat

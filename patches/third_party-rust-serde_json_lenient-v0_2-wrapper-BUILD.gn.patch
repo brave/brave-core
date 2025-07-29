@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/serde_json_lenient/v0_2/wrapper/BUILD.gn b/third_party/rust/serde_json_lenient/v0_2/wrapper/BUILD.gn
+index c1642f6b2d12e9aa0cb4661f6c4b9581e2ad4650..46eed9552f2489fd35c07348db7c5c8b9c06b90f 100644
+--- a/third_party/rust/serde_json_lenient/v0_2/wrapper/BUILD.gn
++++ b/third_party/rust/serde_json_lenient/v0_2/wrapper/BUILD.gn
+@@ -19,6 +19,7 @@ rust_static_library("wrapper") {
+     "//third_party/rust/serde/v1:lib",
+     "//third_party/rust/serde_json_lenient/v0_2:lib",
+   ]
++  import("//brave/components/json/buildflags/features.gni") public_deps += [ "//brave/components/json/buildflags" ] if (enable_json_64bit_int_support) { features = [ "json_64bit_int_support" ] } sources += [ "//brave/chromium_src/third_party/rust/serde_json_lenient/v0_2/wrapper/large_integers.rs" ] cxx_bindings += [ "//brave/chromium_src/third_party/rust/serde_json_lenient/v0_2/wrapper/large_integers.rs" ]
+ }
+ 
+ source_set("wrapper_functions") {

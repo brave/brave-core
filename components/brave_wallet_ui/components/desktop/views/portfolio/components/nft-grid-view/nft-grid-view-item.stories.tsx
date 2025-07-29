@@ -52,5 +52,6 @@ export const _JunkAndWatchOnlyNftGridViewItem = {
   },
 }
 export default {
+  title: 'Wallet/Desktop/Components/NFTs',
   component: NFTGridViewItem,
 }

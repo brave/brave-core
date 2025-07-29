@@ -9,7 +9,7 @@
 
 #define KeepAccountSettingsPrefsOnlyForUsers \
   KeepAccountSettingsPrefsOnlyForUsers_Unused
-#include "src/components/sync/android/sync_service_android_bridge.cc"
+#include <components/sync/android/sync_service_android_bridge.cc>
 #undef KeepAccountSettingsPrefsOnlyForUsers
 
 namespace syncer {

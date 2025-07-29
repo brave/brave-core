@@ -9,7 +9,7 @@
 
 #define BlobURLStoreImpl BlobURLStoreImpl_ChromiumImpl
 
-#include "src/storage/browser/blob/blob_url_store_impl.cc"
+#include <storage/browser/blob/blob_url_store_impl.cc>
 
 #undef BlobURLStoreImpl
 
@@ -20,6 +20,7 @@ void BlobURLStoreImpl::ResolveAsURLLoaderFactory(
     mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
     ResolveAsURLLoaderFactoryCallback callback) {
   if (!IsBlobResolvable(url)) {
+    BlobURLLoaderFactory::Create(mojo::NullRemote(), url, std::move(receiver));
     std::move(callback).Run(std::nullopt, std::nullopt);
     return;
   }

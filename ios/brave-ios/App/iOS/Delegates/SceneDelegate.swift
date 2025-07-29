@@ -683,7 +683,7 @@ extension SceneDelegate {
     scene: UIWindowScene,
     braveCore: BraveCoreMain,
     profileController: BraveProfileController,
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     attributionManager: AttributionManager,
     rewards: Brave.BraveRewards,
     newsFeedDataSource: BraveNews.FeedDataSource,

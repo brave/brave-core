@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { loadTimeData } from '$web-common/loadTimeData'
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounce } from '$web-common/debounce'
@@ -13,6 +14,11 @@ export function createNewTabHandler(
 ): NewTabActions {
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
+
+  store.update({
+    newsFeatureEnabled: loadTimeData.getBoolean('newsFeatureEnabled'),
+    talkFeatureEnabled: loadTimeData.getBoolean('talkFeatureEnabled')
+  })
 
   async function updateClockPrefs() {
     const [
@@ -55,6 +61,8 @@ export function createNewTabHandler(
       updateShieldsStats(),
       updateTalkPrefs()
     ])
+
+    store.update({ initialized: true })
   }
 
   loadData()

@@ -47,17 +47,20 @@
 #include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
+#include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -87,6 +90,7 @@
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 #include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
@@ -237,7 +241,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
-#include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -270,6 +274,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/components/windows_recall/windows_recall.h"
+#endif
+
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/brave_browser_main_extra_parts_p3a.h"
 #endif
 
 namespace {
@@ -464,6 +472,10 @@ BraveContentBrowserClient::CreateBrowserMainParts(bool is_integration_test) {
   ChromeBrowserMainParts* chrome_main_parts =
       static_cast<ChromeBrowserMainParts*>(main_parts.get());
   chrome_main_parts->AddParts(std::make_unique<BraveBrowserMainExtraParts>());
+#if BUILDFLAG(ENABLE_OMAHA4)
+  chrome_main_parts->AddParts(
+      std::make_unique<BraveBrowserMainExtraPartsP3A>());
+#endif
   return main_parts;
 }
 
@@ -636,8 +648,10 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-  registry.ForWebUI<BraveAccountUI>()
-      .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    registry.ForWebUI<BraveAccountUI>()
+        .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  }
 }
 
 std::optional<base::UnguessableToken>
@@ -834,8 +848,16 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(map);
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(
+        map);
+  }
+
+  if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
+  }
 #endif
 
   auto* prefs =
@@ -849,6 +871,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #if !BUILDFLAG(IS_ANDROID)
     content::RegisterWebUIControllerInterfaceBinder<
         ai_chat::mojom::AIChatSettingsHelper, BraveSettingsUI>(map);
+    content::RegisterWebUIControllerInterfaceBinder<
+        ai_chat::mojom::CustomizationSettingsHandler, BraveSettingsUI>(map);
 #endif
   }
 #if BUILDFLAG(IS_ANDROID)
@@ -959,6 +983,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       auto* speedreader_service =
           speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
               browser_context);
+      CHECK(speedreader_service);
 
       auto producer =
           speedreader::SpeedreaderDistilledPageProducer::MaybeCreate(

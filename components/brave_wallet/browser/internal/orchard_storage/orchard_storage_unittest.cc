@@ -12,18 +12,15 @@
 #include "base/files/scoped_temp_dir.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
 class OrchardStorageTest : public testing::Test {
  public:
-  OrchardStorageTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+  OrchardStorageTest() = default;
   void SetUp() override;
 
-  base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   std::unique_ptr<OrchardStorage> orchard_storage_;
 };
@@ -559,7 +556,7 @@ TEST_F(OrchardStorageTest, InsertShards) {
   EXPECT_EQ(new_shard, orchard_storage_->LastShard(account_id, 1).value());
 }
 
-TEST_F(OrchardStorageTest, RemoveChekpoint) {
+TEST_F(OrchardStorageTest, RemoveCheckpoint) {
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                             mojom::KeyringId::kZCashMainnet,
                                             mojom::AccountKind::kDerived, 0);
@@ -828,7 +825,7 @@ TEST_F(OrchardStorageTest, AddSameCheckpoint) {
   }
 }
 
-TEST_F(OrchardStorageTest, AddChekpoint_ErrorOnConflict) {
+TEST_F(OrchardStorageTest, AddCheckpoint_ErrorOnConflict) {
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                             mojom::KeyringId::kZCashMainnet,
                                             mojom::AccountKind::kDerived, 0);

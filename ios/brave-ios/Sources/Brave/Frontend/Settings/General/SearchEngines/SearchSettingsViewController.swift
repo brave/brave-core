@@ -63,7 +63,7 @@ class SearchSettingsViewController: UITableViewController {
   }
 
   private var searchEngines: SearchEngines
-  private let profile: Profile
+  private let profile: LegacyBrowserProfile
   private var showDeletion = false
   private var privateBrowsingManager: PrivateBrowsingManager
 
@@ -104,7 +104,7 @@ class SearchSettingsViewController: UITableViewController {
 
   // MARK: Lifecycle
 
-  init(profile: Profile, privateBrowsingManager: PrivateBrowsingManager) {
+  init(profile: LegacyBrowserProfile, privateBrowsingManager: PrivateBrowsingManager) {
     self.profile = profile
     self.privateBrowsingManager = privateBrowsingManager
     self.searchEngines = profile.searchEngines

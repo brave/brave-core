@@ -9,7 +9,6 @@ import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrap
 import OnboardingDisclosures from './disclosures'
 
 export const _OnboardingDisclosures = {
-  title: 'Disclosures',
   render: () => {
     return (
       <WalletPageStory>
@@ -19,4 +18,7 @@ export const _OnboardingDisclosures = {
   },
 }
 
-export default { component: OnboardingDisclosures }
+export default {
+  title: 'Wallet/Desktop/Screens/Onboarding',
+  component: OnboardingDisclosures,
+}

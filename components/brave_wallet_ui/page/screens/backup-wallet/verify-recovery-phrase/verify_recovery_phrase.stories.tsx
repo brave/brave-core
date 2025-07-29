@@ -20,4 +20,7 @@ export const _VerifyRecoveryPhrase = {
   },
 }
 
-export default { component: VerifyRecoveryPhrase }
+export default {
+  title: 'Wallet/Desktop/Screens/Backup Wallet',
+  component: VerifyRecoveryPhrase,
+}

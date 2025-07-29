@@ -30,6 +30,33 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   associatedContent: []
 }
 
+// Updates a tool use event for a conversation entry in the history.
+// when its data has changed (e.g. output).
+export function updateToolUseEventInHistory(
+  history: Readonly<Mojom.ConversationTurn[]>,
+  entryUuid: string,
+  toolUse: Mojom.ToolUseEvent
+) {
+  const updatedHistory = [...history]
+  const index = history.findIndex(entry => entry.uuid === entryUuid)
+  if (index !== -1) {
+    updatedHistory[index] = {
+      ...updatedHistory[index],
+      events: updatedHistory[index].events?.map(event => event)
+    }
+    const eventIndex = updatedHistory[index].events?.findIndex(
+      event => event.toolUseEvent?.id === toolUse.id
+    )
+    if (eventIndex !== undefined && eventIndex !== -1) {
+      updatedHistory[index].events![eventIndex] = {
+        toolUseEvent: toolUse
+      } as Mojom.ConversationEntryEvent
+      return updatedHistory
+    }
+  }
+  return null
+}
+
 // Define how to get the initial data and update the state from events
 export default class UntrustedConversationFrameAPI extends API<ConversationEntriesUIState> {
   public conversationHandler: Mojom.UntrustedConversationHandlerRemote
@@ -77,6 +104,15 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
           const { conversationHistory } =
             await this.conversationHandler.getConversationHistory()
           this.setPartialState({ conversationHistory })
+        }
+      }
+    )
+
+    this.conversationObserver.onToolUseEventOutput.addListener(
+      (entryUuid: string, toolUse: Mojom.ToolUseEvent) => {
+        const updatedHistory = updateToolUseEventInHistory(this.state.conversationHistory, entryUuid, toolUse)
+        if (updatedHistory) {
+          this.setPartialState({ conversationHistory: updatedHistory })
         }
       }
     )

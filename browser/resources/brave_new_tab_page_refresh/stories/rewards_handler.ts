@@ -14,17 +14,20 @@ export function createRewardsHandler(
   store: Store<RewardsState>
 ): RewardsActions {
   store.update({
+    initialized: true,
     rewardsFeatureEnabled: true,
     rewardsEnabled: true,
     showRewardsWidget: true,
     rewardsBalance: 1.204,
     rewardsExchangeRate: 1,
     rewardsExternalWallet: {
-      provider: 'uphold',
+      provider: 'gemini',
       authenticated: true,
       name: 'Joe',
       url: 'https://brave.com'
-    }
+    },
+    tosUpdateRequired: false,
+    rewardsAdsViewed: 1
   })
 
   return {

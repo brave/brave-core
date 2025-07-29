@@ -16,6 +16,11 @@ import Web
 
 extension BrowserViewController: TabDelegate {
   public func tabWebViewDidClose(_ tab: some TabState) {
+    if tab.browserData?.isInternalRedirect == true, tab.lastCommittedURL == nil {
+      // Avoid closing the tab if we cancelled the initial navigation to perform a redirect since
+      // we are now performing a new request that may not cancel without user interaction.
+      return
+    }
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
   }
@@ -332,11 +337,11 @@ extension BrowserViewController: TabDelegate {
   public func tab(_ tab: some TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
   {
     guard let documentTargetURL = request.mainDocumentURL else { return false }
-    let domainForShields = Domain.getOrCreate(
-      forUrl: documentTargetURL,
-      persistent: !tab.isPrivate
-    )
-    return domainForShields.isShieldExpected(.noScript, considerAllShieldsOption: true)
+    return tab.braveShieldsHelper?.isShieldExpected(
+      for: documentTargetURL,
+      shield: .noScript,
+      considerAllShieldsOption: true
+    ) ?? false
   }
 
   public func tab(
@@ -624,7 +629,7 @@ extension BrowserViewController {
     request: URLRequest
   ) -> String? {
     let isBraveAllowedInUA =
-      request.url.flatMap {
+      request.mainDocumentURL.flatMap {
         tab.braveUserAgentExceptions?.canShowBrave($0)
       } ?? true
     let mobile = isBraveAllowedInUA ? UserAgent.mobile : UserAgent.mobileMasked

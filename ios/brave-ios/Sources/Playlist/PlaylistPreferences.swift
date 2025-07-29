@@ -8,13 +8,6 @@ import Preferences
 import Shared
 import UIKit
 
-// MARK: - PlayListSide
-
-public enum PlayListSide: String, CaseIterable {
-  case left
-  case right
-}
-
 // MARK: - PlayListDownloadType
 
 public enum PlayListDownloadType: String, CaseIterable {
@@ -25,11 +18,6 @@ public enum PlayListDownloadType: String, CaseIterable {
 
 extension Preferences {
   final public class Playlist {
-    /// The Option to show video list left or right side
-    public static let listViewSide = Option<String>(
-      key: "playlist.listViewSide",
-      default: PlayListSide.left.rawValue
-    )
     /// The count of how many times  Add to Playlist URL-Bar onboarding has been shown
     public static let addToPlaylistURLBarOnboardingCount = Option<Int>(
       key: "playlist.addToPlaylistURLBarOnboardingCount",
@@ -55,9 +43,6 @@ extension Preferences {
     /// The option to disable long-press-to-add-to-playlist gesture.
     public static let enableLongPressAddToPlaylist =
       Option<Bool>(key: "playlist.longPressAddToPlaylist", default: true)
-    /// The option to enable or disable the 3-dot menu badge for playlist
-    public static let enablePlaylistMenuBadge =
-      Option<Bool>(key: "playlist.enablePlaylistMenuBadge", default: true)
     /// The option to enable or disable the URL-Bar button for playlist
     public static let enablePlaylistURLBarButton =
       Option<Bool>(key: "playlist.enablePlaylistURLBarButton", default: true)
@@ -67,11 +52,13 @@ extension Preferences {
     /// The last time all playlist folders were synced
     public static let lastPlaylistFoldersSyncTime =
       Option<Date?>(key: "playlist.lastPlaylistFoldersSyncTime", default: nil)
-    /// Sync shared folders automatically preference
-    public static let syncSharedFoldersAutomatically =
-      Option<Bool>(key: "playlist.syncSharedFoldersAutomatically", default: true)
     /// The date of the last cached data cleanup for dangling playlist items
     public static let lastCacheDataCleanupDate =
       Option<Date?>(key: "playlist.lastCacheDataCleanupDate", default: nil)
+    /// Whether or not shuffle mode is enabled
+    public static let isShuffleEnabled =
+      Option<Bool>(key: "playlist.isShuffleEnabled", default: false)
+    /// The last used repeat mode the user had set
+    public static let repeatMode = Option<Int>(key: "playlist.repeatMode", default: 0)
   }
 }

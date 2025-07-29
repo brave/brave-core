@@ -9,6 +9,9 @@
 
 namespace ai_chat {
 
+Tool::Tool() = default;
+Tool::~Tool() = default;
+
 std::string_view Tool::Type() const {
   return "function";
 }
@@ -40,6 +43,11 @@ bool Tool::RequiresUserInteractionBeforeHandling() const {
 
 std::optional<base::Value::Dict> Tool::ExtraParams() const {
   return std::nullopt;
+}
+
+void Tool::UseTool(const std::string& input_json,
+                   Tool::UseToolCallback callback) {
+  CHECK(false) << "UseTool called but not implemented";
 }
 
 }  // namespace ai_chat

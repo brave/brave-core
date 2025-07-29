@@ -3,7 +3,39 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-export const getReasoningText = (text: string) => {
+import * as Mojom from '../../../common/mojom'
+
+/**
+ * Groups consecutive assistant entries. Other entries will form a group each
+ * with only a single entry.
+ * @param allEntries Flat list of conversation entries
+ */
+export function groupConversationEntries(
+  allEntries: Mojom.ConversationTurn[],
+): Mojom.ConversationTurn[][] {
+  const groupedEntries: Mojom.ConversationTurn[][] = []
+  for (const entry of allEntries) {
+    const latestGroup = groupedEntries[groupedEntries.length - 1]
+    if (
+      !latestGroup?.length
+      || entry.characterType !== Mojom.CharacterType.ASSISTANT
+      || latestGroup[0]?.characterType !== Mojom.CharacterType.ASSISTANT
+    ) {
+      groupedEntries.push([entry])
+      continue
+    }
+    if (
+      entry.characterType === Mojom.CharacterType.ASSISTANT
+      && latestGroup[0]?.characterType === Mojom.CharacterType.ASSISTANT
+    ) {
+      latestGroup.push(entry)
+      continue
+    }
+  }
+  return groupedEntries
+}
+
+export function getReasoningText(text: string) {
   const startTag = '<think>'
   const endTag = '</think>'
   let result = ''
@@ -53,4 +85,15 @@ export const removeReasoning = (text: string) => {
   return text.includes('<think>') && text.includes('</think>')
     ? text.split('</think>')[1]
     : text
+}
+
+export const removeCitationsWithMissingLinks = (
+  text: string,
+  citationLinks: string[],
+) => {
+  return text.replace(/\[(\d+)\]/g, (match, citationNumber) => {
+    // Convert to 0-based index
+    const index = parseInt(citationNumber) - 1
+    return index >= 0 && index < citationLinks.length ? match : ''
+  })
 }

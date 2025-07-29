@@ -28,5 +28,6 @@ export const _ZCashSyncModal = {
 }
 
 export default {
+  title: 'Wallet/Desktop/Components/Popup Modals',
   component: ZCashSyncModal,
 }

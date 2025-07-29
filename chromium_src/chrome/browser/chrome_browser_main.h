@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_CHROME_BROWSER_MAIN_H_
 
 #define ChromeBrowserMainParts ChromeBrowserMainParts_ChromiumImpl
-#include "src/chrome/browser/chrome_browser_main.h"  // IWYU pragma: export
+#include <chrome/browser/chrome_browser_main.h>  // IWYU pragma: export
 #undef ChromeBrowserMainParts
 
 class ChromeBrowserMainParts : public ChromeBrowserMainParts_ChromiumImpl {

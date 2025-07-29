@@ -12,6 +12,8 @@ source_set("containers") {
   sources = [
     "container_model.cc",
     "container_model.h",
+    "containers_icon_generator.cc",
+    "containers_icon_generator.h",
     "containers_menu_model.cc",
     "containers_menu_model.h",
   ]
@@ -23,6 +25,7 @@ source_set("containers") {
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
     "//brave/components/containers/core/mojom:mojom",
+    "//brave/components/vector_icons",
     "//chrome/app:generated_resources",
     "//ui/base",
     "//ui/menus",
@@ -33,6 +36,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "containers_icon_generator_unittest.cc",
     "containers_menu_model_test_api.cc",
     "containers_menu_model_test_api.h",
     "containers_menu_model_unittest.cc",
@@ -45,6 +49,8 @@ source_set("unit_tests") {
     "//base",
     "//base/allocator/partition_allocator/src/partition_alloc:test_support",
     "//brave/app:command_ids",
+    "//brave/components/containers/core/mojom",
+    "//brave/components/vector_icons",
     "//testing/gmock",
     "//testing/gtest",
   ]

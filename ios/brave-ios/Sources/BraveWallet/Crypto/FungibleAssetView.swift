@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Preferences
 import SwiftUI
-import BraveCore
 
 // View used to display `FungibleAssetView` as a button.
 struct FungibleAssetButton: View {
@@ -16,7 +16,7 @@ struct FungibleAssetButton: View {
   let currencyFormatter: NumberFormatter
   @Binding var bitcoinBalanceDetails: BitcoinBalanceDetails?
   let action: (BraveWallet.BlockchainToken) -> Void
-  
+
   private var showUnavailableBTCBalanceBanner: Bool {
     guard asset.token.coin == .btc else {
       return false
@@ -26,13 +26,13 @@ struct FungibleAssetButton: View {
       .reduce(0.0, +)
     return sumOfPendingBalances != 0
   }
-  
+
   var body: some View {
     // Avoid button inside a button for `UnavailableBTCBalanceView`
     if showUnavailableBTCBalanceBanner {
       VStack(spacing: 0) {
         assetViewButton
-        
+
         UnavailableBTCBalanceView(
           btcBalances: asset.btcBalances,
           btcPrice: Double(asset.price) ?? 0,
@@ -52,7 +52,7 @@ struct FungibleAssetButton: View {
         .padding(.horizontal)
     }
   }
-  
+
   private var assetViewButton: some View {
     Button {
       action(asset.token)
@@ -60,6 +60,7 @@ struct FungibleAssetButton: View {
       FungibleAssetView(
         image: AssetIconView(
           token: asset.token,
+          meldCryptoCurrency: nil,
           network: asset.network,
           shouldShowNetworkIcon: true
         ),
@@ -72,6 +73,7 @@ struct FungibleAssetButton: View {
         btcBalances: asset.btcBalances
       )
     }
+    .modifier(WalletButtonStyleModifier())
   }
 }
 
@@ -139,7 +141,11 @@ struct FungibleAssetView: View {
 struct FungibleAssetView_Previews: PreviewProvider {
   static var previews: some View {
     FungibleAssetView(
-      image: AssetIconView(token: .previewToken, network: .mockMainnet),
+      image: AssetIconView(
+        token: .previewToken,
+        meldCryptoCurrency: nil,
+        network: .mockMainnet
+      ),
       title: "Basic Attention Token",
       symbol: "BAT",
       networkName: "Ethereum Mainnet Beta",

@@ -9,10 +9,10 @@ module brave.mojom;
 struct DynamicParams {
   bool install_window_brave_ethereum_provider = false;
   bool install_window_ethereum_provider = false;
+  bool install_window_brave_cardano_provider = false;
   bool allow_overwrite_window_ethereum_provider = true;
   bool brave_use_native_solana_wallet = false;
   bool allow_overwrite_window_solana_provider = true;
-  bool install_window_brave_cardano_provider = false;
   bool de_amp_enabled = true;
   bool onion_only_in_tor_windows = true;
   bool widevine_enabled = false;

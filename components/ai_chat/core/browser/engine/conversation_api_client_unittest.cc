@@ -19,18 +19,21 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/no_destructor.h"
 #include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -68,7 +71,28 @@ using ResponseConversionCallback =
 
 namespace ai_chat {
 
+using ConversationEventRole = ConversationAPIClient::ConversationEventRole;
+
 namespace {
+
+// Use an initializer list to construct a vector of mojom::ToolUseEventPtr
+std::vector<mojom::ToolUseEventPtr> MakeToolUseEvents(
+    std::initializer_list<mojom::ToolUseEventPtr> tool_calls) {
+  std::vector<mojom::ToolUseEventPtr> tool_use_events;
+  for (const auto& tool_call : tool_calls) {
+    tool_use_events.emplace_back(tool_call->Clone());
+  }
+  return tool_use_events;
+}
+
+ConversationAPIClient::Content MakeContentBlocks(
+    std::initializer_list<mojom::ContentBlockPtr> blocks) {
+  std::vector<mojom::ContentBlockPtr> content_blocks;
+  for (const auto& block : blocks) {
+    content_blocks.emplace_back(block->Clone());
+  }
+  return content_blocks;
+}
 
 std::pair<std::vector<ConversationAPIClient::ConversationEvent>, std::string>
 GetMockEventsAndExpectedEventsBody() {
@@ -77,43 +101,169 @@ GetMockEventsAndExpectedEventsBody() {
 
   std::vector<ConversationAPIClient::ConversationEvent> events;
   events.emplace_back(
-      mojom::CharacterType::HUMAN, ConversationAPIClient::PageText,
+      ConversationEventRole::User, ConversationAPIClient::UserMemory,
+      std::vector<std::string>{}, "",
+      base::Value::Dict()
+          .Set("name", "Jane")
+          .Set("memories",
+               base::Value::List().Append("memory1").Append("memory2")));
+  events.emplace_back(
+      ConversationEventRole::User, ConversationAPIClient::PageText,
       std::vector<std::string>{"This is a page about The Mandalorian."});
-  events.emplace_back(mojom::CharacterType::HUMAN,
+  events.emplace_back(ConversationEventRole::User,
                       ConversationAPIClient::PageExcerpt,
                       std::vector<std::string>{"The Mandalorian"});
   events.emplace_back(
-      mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
+      ConversationEventRole::User, ConversationAPIClient::ChatMessage,
       std::vector<std::string>{"Est-ce lié à une série plus large?"});
+
+  // Two tool use requests from the assistant
   events.emplace_back(
-      mojom::CharacterType::HUMAN,
+      ConversationEventRole::Assistant, ConversationAPIClient::ChatMessage,
+      std::vector<std::string>{"Going to use a tool..."}, "", std::nullopt,
+      MakeToolUseEvents(
+          {mojom::ToolUseEvent::New("get_weather", "123",
+                                    "{\"location\":\"New York\"}",
+                                    std::nullopt),
+           mojom::ToolUseEvent::New("get_screenshot", "456",
+                                    "{\"type\":\"tab\"}", std::nullopt)}));
+
+  // First answer from a tool
+  events.emplace_back(
+      ConversationEventRole::Tool, ConversationAPIClient::ToolUse,
+      MakeContentBlocks(
+          {mojom::ContentBlock::NewTextContentBlock(
+               mojom::TextContentBlock::New(
+                   "The temperature in New York is 60 degrees.")),
+           mojom::ContentBlock::NewTextContentBlock(
+               mojom::TextContentBlock::New(
+                   "The wind in New York is 5 mph from the SW."))}),
+      "", std::nullopt, MakeToolUseEvents({}), "123");
+
+  // Second answer from a tool
+  events.emplace_back(
+      ConversationEventRole::Tool, ConversationAPIClient::ToolUse,
+      MakeContentBlocks({mojom::ContentBlock::NewImageContentBlock(
+          mojom::ImageContentBlock::New(
+              GURL("data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+                   "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")))}),
+      "", std::nullopt, MakeToolUseEvents({}), "456");
+
+  events.emplace_back(
+      ConversationEventRole::User,
       ConversationAPIClient::GetSuggestedTopicsForFocusTabs,
       std::vector<std::string>{"GetSuggestedTopicsForFocusTabs"});
-  events.emplace_back(mojom::CharacterType::HUMAN,
+  events.emplace_back(ConversationEventRole::User,
                       ConversationAPIClient::DedupeTopics,
                       std::vector<std::string>{"DedupeTopics"});
-  events.emplace_back(mojom::CharacterType::HUMAN,
+  events.emplace_back(ConversationEventRole::User,
                       ConversationAPIClient::GetFocusTabsForTopic,
                       std::vector<std::string>{"GetFocusTabsForTopics"}, "C++");
   events.emplace_back(
-      mojom::CharacterType::HUMAN, ConversationAPIClient::UploadImage,
+      ConversationEventRole::User, ConversationAPIClient::UploadImage,
       std::vector<std::string>{"data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
                                "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
                                "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
                                "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"});
 
   const std::string expected_events_body = R"([
-      {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
-      {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
-      {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"},
-      {"role": "user", "type": "suggestFocusTopics", "content": "GetSuggestedTopicsForFocusTabs"},
-      {"role": "user", "type": "dedupeFocusTopics", "content": "DedupeTopics"},
-      {"role": "user", "type": "classifyTabs", "content": "GetFocusTabsForTopics", "topic": "C++"},
-      {"role": "user", "type": "uploadImage",
-       "content": ["data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                   "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"]
-      }
-    ])";
+    {
+      "role": "user",
+      "type": "userMemory",
+      "content": "",
+      "memory": {"name": "Jane", "memories": ["memory1", "memory2"]}
+    },
+    {
+      "role": "user",
+      "type": "pageText",
+      "content": "This is a page about The Mandalorian."
+    },
+    {
+      "role": "user",
+      "type": "pageExcerpt",
+      "content": "The Mandalorian"
+    },
+    {
+      "role": "user",
+      "type": "chatMessage",
+      "content": "Est-ce lié à une série plus large?"
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "Going to use a tool...",
+      "tool_calls": [
+        {
+          "id": "123",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"location\":\"New York\"}"
+          }
+        },
+        {
+          "id": "456",
+          "type": "function",
+          "function": {
+            "name": "get_screenshot",
+            "arguments": "{\"type\":\"tab\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "content": [
+        {
+          "type": "text",
+          "text": "The temperature in New York is 60 degrees."
+        },
+        {
+          "type": "text",
+          "text": "The wind in New York is 5 mph from the SW."
+        }
+      ],
+      "tool_call_id": "123"
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "content": [
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          }
+        }
+      ],
+      "tool_call_id": "456"
+    },
+    {
+      "role": "user",
+      "type": "suggestFocusTopics",
+      "content": "GetSuggestedTopicsForFocusTabs"
+    },
+    {
+      "role": "user",
+      "type": "dedupeFocusTopics",
+      "content": "DedupeTopics"
+    },
+    {
+      "role": "user",
+      "type": "classifyTabs",
+      "content": "GetFocusTabsForTopics",
+      "topic": "C++"
+    },
+    {
+      "role": "user",
+      "type": "uploadImage",
+      "content": [
+        "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+      ]
+    }
+  ])";
 
   return std::make_pair(std::move(events), expected_events_body);
 }
@@ -211,15 +361,12 @@ class ConversationAPIUnitTest : public testing::Test {
 
   void TearDown() override {}
 
-  std::string GetEventsJson(std::string_view body_json) {
+  base::Value::List GetEvents(std::string_view body_json) {
     auto dict = base::JSONReader::ReadDict(body_json);
     EXPECT_TRUE(dict.has_value());
     base::Value::List* events = dict->FindList("events");
     EXPECT_TRUE(events);
-    std::string events_json;
-    base::JSONWriter::WriteWithOptions(
-        *events, base::JSONWriter::OPTIONS_PRETTY_PRINT, &events_json);
-    return events_json;
+    return std::move(*events);
   }
 
   // Returns a pair of system_language and selected_langauge
@@ -245,15 +392,6 @@ class ConversationAPIUnitTest : public testing::Test {
     } else {
       return {*system_language, std::nullopt};
     }
-  }
-
-  std::string FormatComparableEventsJson(std::string_view formatted_json) {
-    auto events = base::JSONReader::Read(formatted_json);
-    EXPECT_TRUE(events.has_value()) << "Verify that the string is valid JSON!";
-    std::string events_json;
-    base::JSONWriter::WriteWithOptions(
-        events.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &events_json);
-    return events_json;
   }
 
  protected:
@@ -310,8 +448,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_NE(headers.find("x-brave-key"), headers.end());
 
         // Verify input body contains input events in expected json format
-        EXPECT_EQ(GetEventsJson(body),
-                  FormatComparableEventsJson(expected_events_body));
+        EXPECT_THAT(expected_events_body, base::test::IsJson(GetEvents(body)));
 
         // Verify body contains the language
         auto [system_language, selected_language] = GetLanguage(body);
@@ -471,7 +608,9 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
 
   // Begin request
   client_->PerformRequest(
-      std::move(events), "",
+      std::move(events), "" /* selected_language */,
+      std::nullopt, /* oai_tool_definitions */
+      std::nullopt, /* preferred_tool_name */
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -523,8 +662,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
         EXPECT_NE(headers.find("x-brave-key"), headers.end());
 
         // Verify body contains events in expected json format
-        EXPECT_EQ(GetEventsJson(body),
-                  FormatComparableEventsJson(expected_events_body));
+        EXPECT_THAT(expected_events_body, base::test::IsJson(GetEvents(body)));
 
         // Verify body contains the language
         auto [system_language, selected_language] = GetLanguage(body);
@@ -591,7 +729,9 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
 
   // Begin request
   client_->PerformRequest(
-      std::move(events), "",
+      std::move(events), "" /* selected_language */,
+      std::nullopt, /* oai_tool_definitions */
+      std::nullopt, /* preferred_tool_name */
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -601,6 +741,117 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
   testing::Mock::VerifyAndClearExpectations(client_.get());
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
+}
+
+TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
+  // Tests that we interpret tool use reponses. For more variants
+  // see tests for `ToolUseEventFromToolCallsResponse`.
+  std::vector<ConversationAPIClient::ConversationEvent> events =
+      GetMockEventsAndExpectedEventsBody().first;
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Intercept API Request Helper call and verify the request is as expected.
+  // Tool use is only supported for streaming requests since the completion
+  // callback only supports a single event.
+  EXPECT_CALL(*mock_request_helper, RequestSSE)
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        {
+          base::Value result(base::Value::Type::DICT);
+          result.GetDict().Set("type", "completion");
+          result.GetDict().Set("model", "model-1");
+          result.GetDict().Set("completion", "This is a test completion");
+          result.GetDict().Set("tool_calls", base::test::ParseJsonList(R"([
+              {
+                "id": "call_123",
+                "type": "function",
+                "function": {
+                  "name": "get_weather",
+                  "arguments": "{\"location\":\"New York\"}"
+                }
+              },
+              {
+                "id": "call_456",
+                "type": "function",
+                "function": {
+                  "name": "search_web",
+                  "arguments": "{\"query\":\"Hello, world!\"}"
+                }
+              }
+            ])"));
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
+
+        // Complete the request
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                      GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  Sequence seq;
+  EXPECT_CALL(mock_callbacks, OnDataReceived)
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
+                  "This is a test completion");
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived)
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_tool_use_event());
+        EXPECT_MOJOM_EQ(result.event->get_tool_use_event(),
+                        mojom::ToolUseEvent::New("get_weather", "call_123",
+                                                 "{\"location\":\"New York\"}",
+                                                 std::nullopt));
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived)
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_tool_use_event());
+        EXPECT_MOJOM_EQ(result.event->get_tool_use_event(),
+                        mojom::ToolUseEvent::New(
+                            "search_web", "call_456",
+                            "{\"query\":\"Hello, world!\"}", std::nullopt));
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](const EngineConsumer::GenerationResult& result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion, "");
+        EXPECT_FALSE(result->model_key.has_value());
+      });
+
+  // The payload of the request is not important for this test
+  client_->PerformRequest(
+      std::move(events), "" /* selected_language */,
+      std::nullopt, /* oai_tool_definitions */
+      std::nullopt, /* preferred_tool_name */
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
 }
 
 TEST_F(ConversationAPIUnitTest,
@@ -666,7 +917,9 @@ TEST_F(ConversationAPIUnitTest,
 
   // Begin request with model override
   client_->PerformRequest(
-      std::move(events), "",
+      std::move(events), "" /* selected_language */,
+      std::nullopt, /* oai_tool_definitions */
+      std::nullopt, /* preferred_tool_name */
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -734,7 +987,10 @@ TEST_F(ConversationAPIUnitTest,
       });
 
   // Begin request with model override but NULL data_received_callback
-  client_->PerformRequest(std::move(events), "", base::NullCallback(),
+  client_->PerformRequest(std::move(events), "" /* selected_language */,
+                          std::nullopt, /* oai_tool_definitions */
+                          std::nullopt, /* preferred_tool_name */
+                          base::NullCallback(),
                           base::BindOnce(&MockCallbacks::OnCompleted,
                                          base::Unretained(&mock_callbacks)),
                           override_model_name);
@@ -765,7 +1021,9 @@ TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
 
   // Begin request
   client_->PerformRequest(
-      std::move(events), "",
+      std::move(events), "" /* selected_language */,
+      std::nullopt, /* oai_tool_definitions */
+      std::nullopt, /* preferred_tool_name */
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,

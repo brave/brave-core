@@ -324,8 +324,8 @@
   <message name="IDS_BRAVE_WALLET_ICON_URL" desc="Visible assets modal Icon URL label">Icon URL</message>
   <message name="IDS_BRAVE_WALLET_ADD_ASSET" desc="Asset Panel add asset button">Add asset</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DISCLAIMER" desc="Account settings modal warning">WARNING: Never share your private key. Anyone with this private key can take your assets forever.</message>
-  <message name="IDS_BRAVE_WALLET_FIL_EXPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key is provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">$1</ph>.</message>
-  <message name="IDS_BRAVE_WALLET_FIL_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key must be provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">$1</ph>.</message>
+  <message name="IDS_BRAVE_WALLET_FIL_EXPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key is provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">/$1</ph>.</message>
+  <message name="IDS_BRAVE_WALLET_FIL_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key must be provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">/$1</ph>.</message>
   <message name="IDS_BRAVE_WALLET_BTC_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Bitcoin private key input format description">NOTE: Only <ph name="FORMAT"><ex>zprv</ex>$1</ph> extended keys are supported.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EXPORT" desc="Account list item Export button">Export</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT" desc="Account list item Deposit button">Deposit</message>
@@ -394,7 +394,8 @@
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL" desc="Add network panel symbol label">Currency symbol</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_EXPLORER" desc="Add network explorer label">Block explorer URL</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_PANEL_TITLE" desc="Add network, network panel title">Network</message>
-  <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_TITLE" desc="Change network panel title">Allow this site to switch the network?</message>
+  <message name="IDS_BRAVE_WALLET_ADD_NETWORK" desc="Add network title">Add network</message>
+  <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_TITLE" desc="Change network panel title">Allow this site to switch networks?</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_DESCRIPTION" desc="Change network panel description">This will switch the network to a previously added network.</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">Switch network</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL" desc="Confirm transaction panel total label">Total</message>
@@ -635,7 +636,7 @@
   <message name="IDS_BRAVE_WALLET_BUY_DISCLAIMER" desc="Brave disclaimer text in buy screen">Financial and transaction data is processed by our onramp partners. Brave does not collect or have access to such data.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTIONS_PARTNER" desc="Transactions partner modal title">Transactions partner</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PARTNER_CONSENT" desc="Meld consent description">Brave Wallet uses Meld.io to help aggregate and surface various crypto providers for your region. We will share information with Meld.io to complete the transaction, including your wallet address and country code. For more information please read Meld’s terms of use.</message>
-  <message name="IDS_BRAVE_WALLET_MELD_TERMS_OF_USE" desc="Meld terms of use checkbox label">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Meld's Terms of use<ph name="LINK_AFTER">$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_MELD_TERMS_OF_USE" desc="Meld terms of use checkbox label">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Meld's Terms of use<ph name="LINK_AFTER">/$1</ph></message>
   <message name="IDS_BRAVE_WALLET_BEST_OPTION" desc="Best option label for buy option">Best Option</message>
   <message name="IDS_BRAVE_WALLET_EXCHANGE_RATE_WITH_FEES" desc="Buy exchange rate with fees label">Exchange rate with fees</message>
   <message name="IDS_BRAVE_WALLET_FEES" desc="Buy fees label">Fees</message>
@@ -923,7 +924,7 @@
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_TITLE" desc="Title text for Wallet Disclosures page">Before we begin</message>
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_DESCRIPTION" desc="Description text for Wallet Disclosures page">We require that you acknowledge the items below</message>
   <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand that this is a self-custody wallet, and that I am solely responsible for any associated funds, assets, or accounts, and for taking any appropriate action to secure, protect, and back up my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.</message>
-  <message name="IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT" desc="Wallet Terms of use acknowledgement text">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Terms of use<ph name="LINK_AFTER">$1</ph>.</message>
+  <message name="IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT" desc="Wallet Terms of use acknowledgement text">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Terms of use<ph name="LINK_AFTER">/$1</ph>.</message>
   <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON" desc="Buy crypto button text">Buy crypto</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON" desc="Deposit Crypto button text">Deposit</message>
   <message name="IDS_BRAVE_WALLET_CHECKING_INSTALLED_EXTENSIONS" desc="Loading text while checking for installed crypto wallet extensions">Checking for wallet extensions...</message>
@@ -1077,15 +1078,16 @@
   <message name="IDS_BRAVE_WALLET_REMOVE_NFT_MODAL_CONFIRM" desc="Remove NFT modal confirm action">Remove</message>
   <message name="IDS_BRAVE_WALLET_EDIT_NFT_MODAL_TITLE" desc="NFT Import NFT modal title">Edit NFT</message>
   <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_HEADER" desc="Enable NFT auto-discovery modal header">Want your NFTs displayed automatically?</message>
-  <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION" desc="Enable NFT auto-discovery modal description">Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with <ph name="BEFORE_UNDERLINE">$1</ph>SimpleHash<ph name="AFTER_UNDERLINE">$1</ph> to provide this service. <ph name="BEFORE_URL">$2</ph>Learn more.<ph name="AFTER_URL">$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION" desc="Enable NFT auto-discovery modal description">Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with <ph name="BEFORE_UNDERLINE">$1</ph>SimpleHash<ph name="AFTER_UNDERLINE">/$1</ph> to provide this service. <ph name="BEFORE_URL">$2</ph>Learn more.<ph name="AFTER_URL">/$2</ph></message>
   <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CONFIRM" desc="Enable NFT auto-discovery modal confirm button text">Yes, proceed</message>
   <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CANCEL" desc="Enable NFT auto-discovery modal cancel button text">No thanks, I’ll do it manually</message>
   <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_HEADING" desc="NFTs tab empty state heading when auto discovery is enabled">No NFTs to display</message>
   <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_SUB_HEADING" desc="NFTs tab empty state sub heading when auto discovery is enabled">Once an NFT is detected, it’ll be displayed here.</message>
   <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_FOOTER" desc="NFTs tab empty state footer when auto discovery is enabled">Can’t see your NFTs?</message>
-  <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_ACTIONS" desc="NFTs tab empty state action button text when auto discovery is enabled"><ph name="REFRESH_START">$1</ph>Refresh<ph name="REFRESH_END">$1</ph> or <ph name="IMPORT_START">$2</ph>Import Manually<ph name="IMPORT_END">$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_ACTIONS" desc="NFTs tab empty state action button text when auto discovery is enabled"><ph name="REFRESH_START">$1</ph>Refresh<ph name="REFRESH_END">/$1</ph> or <ph name="IMPORT_START">$2</ph>Import Manually<ph name="IMPORT_END">/$2</ph></message>
   <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_REFRESH" desc="NFTs tab empty state refreshing text">Refreshing</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FEES" desc="Label for blockchain network fees">Network fees</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_FEE" desc="Label for blockchain network fee">Network fee</message>
   <message name="IDS_WALLET_EIP6963_PROVIDER_NAME" desc="Provider name which will be return when announce ethereum provider">Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_RECEIVE" desc="Receive asset event title">Receive</message>
   <message name="IDS_BRAVE_WALLET_FROM" desc="From address label">From</message>
@@ -1120,7 +1122,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_DETECT_PHISHING" desc="Bullet point for transaction-simulation feature (detect phishing attempts)">Help detect phishing attempts</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_NO_THANKS" desc="Button text for declining an action">No thanks</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_ENABLE" desc="Button text for enabling a feature">Enable</message>
-  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_TERMS" desc="Explanation of terms of service for transaction simulations">This service is provided by <ph name="BOLD_BEFORE">$1</ph>Blowfish.xyz<ph name="BOLD_AFTER">$1</ph> and is subject to their <ph name="TERMS_LINK_BEFORE">$2</ph>Terms of Service<ph name="TERMS_LINK_AFTER">$2</ph> and <ph name="PRIVACY_POLICY_LINK_BEFORE">$3</ph>Privacy Policy<ph name="PRIVACY_POLICY_LINK_AFTER">$3</ph></message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_TERMS" desc="Explanation of terms of service for transaction simulations">This service is provided by <ph name="BOLD_BEFORE">$1</ph>Blowfish.xyz<ph name="BOLD_AFTER">/$1</ph> and is subject to their <ph name="TERMS_LINK_BEFORE">$2</ph>Terms of Service<ph name="TERMS_LINK_AFTER">/$2</ph> and <ph name="PRIVACY_POLICY_LINK_BEFORE">$3</ph>Privacy Policy<ph name="PRIVACY_POLICY_LINK_AFTER">/$3</ph></message>
   <message name="IDS_BRAVE_WALLET_AVAILABLE" desc="Available balance label">Available</message>
   <message name="IDS_BRAVE_WALLET_AVAILABLE_BALANCE_DESCRIPTION" desc="Available balance tooltip description">Funds available for you to use.</message>
   <message name="IDS_BRAVE_WALLET_PENDING" desc="Pending balance label">Pending</message>
@@ -1246,4 +1248,6 @@
   <message name="IDS_BRAVE_WALLET_PAGE_NOT_FOUND_TITLE" desc="Page not found title">We can’t find the page you’re looking for right now.</message>
   <message name="IDS_BRAVE_WALLET_PAGE_NOT_FOUND_DESCRIPTION" desc="Page not found description">It may have moved to a different place or the URL may contain a typo.</message>
   <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO" desc="Go to portfolio button text">Go to Portfolio</message>
+  <message name="IDS_BRAVE_WALLET_ADD_TOKEN" desc="Add token button text">Add token</message>
+  <message name="IDS_BRAVE_WALLET_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The display name (in the system task manager, etc) of the service process used for running wallet utils">Brave Wallet Utility Service</message>
 </grit-part>

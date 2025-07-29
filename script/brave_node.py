@@ -15,7 +15,7 @@ def PathInNodeModules(*args):
     return os.path.join(NODE_MODULES, *args)
 
 
-def RunNode(cmd_parts):
+def RunNode(cmd_parts, include_command_in_error=True):
     cmd = ['node'] + cmd_parts
     process = subprocess.Popen(cmd,
                                cwd=os.getcwd(),
@@ -26,8 +26,8 @@ def RunNode(cmd_parts):
 
     if process.returncode != 0:
         err = stderr if len(stderr) > 0 else stdout
-        raise RuntimeError('Command \'%s\' failed\n%s' % (' '.join(cmd), err),
-                           err)
+        raise RuntimeError(f"Command '{' '.join(cmd)}' failed\n{err}"
+                           if include_command_in_error else err)
 
     return stdout
 

@@ -230,7 +230,7 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
     return;
 
   const bool reporting_enabled =
-      pref_service_->GetBoolean(kStatsReportingEnabled);
+      brave_stats::IsStatsReportingEnabled(*pref_service_);
   if (!reporting_enabled) {
     if (g_testing_stats_updated_callback)
       g_testing_stats_updated_callback->Run(GURL(kInvalidUrl));
@@ -353,6 +353,7 @@ void BraveStatsUpdater::SendServerPing() {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kFirstCheckMade, false);
   registry->RegisterBooleanPref(kStatsReportingEnabled, true);
+  registry->RegisterBooleanPref(kStatsReportingDisabledByPolicy, false);
   registry->RegisterIntegerPref(kLastCheckWOY, 0);
   registry->RegisterIntegerPref(kLastCheckMonth, 0);
   registry->RegisterStringPref(kLastCheckYMD, std::string());

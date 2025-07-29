@@ -20,6 +20,7 @@
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated.h"
 #include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
+#include "components/application_locale_storage/application_locale_storage.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -127,7 +128,7 @@ void AdBlockResourceObserver::OnResourcesLoaded(
     _serviceManager =
         std::make_unique<brave_shields::AdBlockComponentServiceManager>(
             GetApplicationContext()->GetLocalState(),
-            GetApplicationContext()->GetApplicationLocale(), _cus,
+            GetApplicationContext()->GetApplicationLocaleStorage()->Get(), _cus,
             _catalogProvider.get(), _adblockListP3A.get());
     _resourceProvider =
         std::make_unique<brave_shields::AdBlockDefaultResourceProvider>(_cus);

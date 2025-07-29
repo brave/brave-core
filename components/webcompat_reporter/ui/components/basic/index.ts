@@ -25,5 +25,6 @@ export {
   TextArea,
   InputLabel,
   ScreenshotLink,
-  CloseIcon
+  CloseIcon,
+  Dropdown
 } from './display'

@@ -44,7 +44,7 @@ std::string BuildModelInfo() {
 
 #define BuildModelInfo BuildModelInfo_ChromiumImpl
 
-#include "src/components/embedder_support/user_agent_utils.cc"
+#include <components/embedder_support/user_agent_utils.cc>
 #undef BRAVE_BRAND_VERSION_OVERRIDE_FOR_FULL_BRAND_VERSION_TYPE
 #undef BRAVE_GET_USER_AGENT_BRAND_LIST
 #undef BuildModelInfo

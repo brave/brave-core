@@ -23,7 +23,7 @@ class CustomizeChromeUI;
  public:                                                             \
   void ClosePanel
 
-#include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.h>  // IWYU pragma: export
 
 #undef UpdateNtpManagedByName
 

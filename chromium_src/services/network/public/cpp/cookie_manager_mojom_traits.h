@@ -17,7 +17,7 @@
 
 #define CookieOptions CookieOptions_ChromiumImpl
 
-#include "src/services/network/public/cpp/cookie_manager_mojom_traits.h"  // IWYU pragma: export
+#include <services/network/public/cpp/cookie_manager_mojom_traits.h>  // IWYU pragma: export
 
 #undef CookieOptions
 

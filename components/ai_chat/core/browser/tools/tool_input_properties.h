@@ -9,6 +9,7 @@
 #include <initializer_list>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/values.h"
@@ -45,6 +46,10 @@ base::Value::Dict NumberProperty(const std::string& description);
 
 // Create a property for integer (non floating-point) values
 base::Value::Dict IntegerProperty(const std::string& description);
+
+base::Value::Dict CreateInputProperties(
+    std::initializer_list<std::pair<const std::string, base::Value::Dict>>
+        properties);
 
 }  // namespace ai_chat
 

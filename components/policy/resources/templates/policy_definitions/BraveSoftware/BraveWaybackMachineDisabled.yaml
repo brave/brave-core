@@ -1,0 +1,36 @@
+caption: Disable Wayback Machine Integration
+default: null
+desc: |-
+  Disable Wayback Machine integration in Brave.
+
+  Wayback Machine integration is a feature that provides access to archived versions of web pages when encountering 404 errors or other unavailable content.
+
+            If this policy is set to true, Wayback Machine integration will always be disabled and all related UI elements (including the URL bar icon and settings) will be hidden.
+
+            If this policy is set to false, Wayback Machine integration will always be enabled.
+
+            If you set this policy, users cannot change or override it.
+
+            If this policy is left unset, Wayback Machine integration will be enabled by default (subject to user preferences).
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Enable Wayback Machine Integration
+  value: false
+- caption: Disable Wayback Machine Integration
+  value: true
+- caption: Allow the user to decide
+  value: null
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:138-
+tags: []
+type: main 

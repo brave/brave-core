@@ -9,8 +9,7 @@ import {
   BackgroundState,
   BackgroundActions,
   SponsoredImageBackground,
-  SelectedBackgroundType,
-  getCurrentBackground } from '../state/background_state'
+  SelectedBackgroundType } from '../state/background_state'
 
 function delay(ms: number) {
   return new Promise((resolve) => {
@@ -19,7 +18,7 @@ function delay(ms: number) {
 }
 
 const sampleBackground =
-    'https://brave.com/static-assets/images/brave-logo-sans-text.svg'
+    'https://brave.com/static-assets/images/coding-background-texture.jpg'
 
 const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
   image: {
@@ -57,6 +56,7 @@ export function createBackgroundHandler(
   store: Store<BackgroundState>
 ): BackgroundActions {
   store.update({
+    initialized: true,
     braveBackgrounds: [
       {
         author: 'John Doe',
@@ -64,11 +64,11 @@ export function createBackgroundHandler(
         link: 'https://brave.com'
       }
     ],
+    backgroundRandomValue: Math.random(),
     sponsoredImageBackground: sponsoredBackgrounds.none
   })
 
   store.update({
-    currentBackground: getCurrentBackground(store.getState()),
     sponsoredRichMediaBaseUrl: 'https://brave.com'
   })
 
@@ -76,9 +76,6 @@ export function createBackgroundHandler(
 
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })
-      store.update({
-        currentBackground: getCurrentBackground(store.getState())
-      })
     },
 
     setSponsoredImagesEnabled(enabled) {
@@ -87,10 +84,8 @@ export function createBackgroundHandler(
 
     selectBackground(type, value) {
       store.update({
-        selectedBackground: { type, value }
-      })
-      store.update({
-        currentBackground: getCurrentBackground(store.getState())
+        selectedBackground: { type, value },
+        backgroundRandomValue: Math.random()
       })
     },
 
@@ -103,9 +98,6 @@ export function createBackgroundHandler(
             value: sampleBackground
           }
         }))
-        store.update({
-          currentBackground: getCurrentBackground(store.getState())
-        })
       })
 
       return true

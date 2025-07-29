@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/ntp_tiles/most_visited_sites_unittest.cc"
+#include <components/ntp_tiles/most_visited_sites_unittest.cc>
 
 namespace ntp_tiles {
 
@@ -16,11 +16,12 @@ TEST_F(MostVisitedSitesTest,
           MostVisitedURLList{MakeMostVisitedURL(u"Site 1", "http://site1/")}));
 
   InSequence seq;
-  EXPECT_CALL(mock_observer_,
-              OnURLsAvailable(Contains(
-                  Pair(SectionType::PERSONALIZED,
-                       ElementsAre(MatchesTile(u"Site 1", "http://site1/",
-                                               TileSource::TOP_SITES))))));
+  EXPECT_CALL(
+      mock_observer_,
+      OnURLsAvailable(
+          _, Contains(Pair(SectionType::PERSONALIZED,
+                           ElementsAre(MatchesTile(u"Site 1", "http://site1/",
+                                                   TileSource::TOP_SITES))))));
   EXPECT_CALL(*mock_top_sites_, SyncWithHistory());
 
   most_visited_sites_->AddMostVisitedURLsObserver(&mock_observer_,
@@ -32,7 +33,7 @@ TEST_F(MostVisitedSitesTest,
   EXPECT_CALL(*mock_top_sites_, GetMostVisitedURLs(_))
       .WillOnce(base::test::RunOnceCallback<0>(
           MostVisitedURLList{MakeMostVisitedURL(u"Site 2", "http://site2/")}));
-  EXPECT_CALL(mock_observer_, OnURLsAvailable(_));
+  EXPECT_CALL(mock_observer_, OnURLsAvailable(_, _));
   mock_top_sites_->NotifyTopSitesChanged(
       history::TopSitesObserver::ChangeReason::MOST_VISITED);
   base::RunLoop().RunUntilIdle();
@@ -50,8 +51,8 @@ TEST_F(MostVisitedSitesTest,
               MakeMostVisitedURL(u"Google", "http://www.google.com/")}));
   EXPECT_CALL(*mock_top_sites_, SyncWithHistory());
   std::map<SectionType, NTPTilesVector> sections;
-  EXPECT_CALL(mock_observer_, OnURLsAvailable(_))
-      .WillOnce(SaveArg<0>(&sections));
+  EXPECT_CALL(mock_observer_, OnURLsAvailable(_, _))
+      .WillOnce(SaveArg<1>(&sections));
 
   most_visited_sites_->AddMostVisitedURLsObserver(&mock_observer_,
                                                   /*max_num_sites=*/6);

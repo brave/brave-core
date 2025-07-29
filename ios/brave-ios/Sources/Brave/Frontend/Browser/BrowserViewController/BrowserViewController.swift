@@ -166,12 +166,8 @@ public class BrowserViewController: UIViewController {
 
   var customSearchBarButtonItemGroup: UIBarButtonItemGroup?
 
-  // popover rotation handling
-  var displayedPopoverController: UIViewController?
-  var updateDisplayedPopoverProperties: (() -> Void)?
-
   public let windowId: UUID
-  let profile: Profile
+  let profile: LegacyBrowserProfile
   let attributionManager: AttributionManager
   let braveCore: BraveCoreMain
   let profileController: BraveProfileController
@@ -280,7 +276,7 @@ public class BrowserViewController: UIViewController {
 
   public init(
     windowId: UUID,
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     attributionManager: AttributionManager,
     braveCore: BraveCoreMain,
     profileController: BraveProfileController,
@@ -377,13 +373,19 @@ public class BrowserViewController: UIViewController {
       }
     )
 
+    // Update the preference based on the underlying Chromium prefs
+    // Remove this when the pref is deleted: https://github.com/brave/brave-browser/issues/47487
+    Preferences.Chromium.syncEnabled.value = profileController.syncAPI.isInSyncGroup
+
     // Observer watching state change in sync chain
     syncServiceStateListener = profileController.syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
-      // Observe Sync State in order to determine if the sync chain is deleted
-      // from another device - Clean local sync chain
-      if self.profileController.syncAPI.shouldLeaveSyncGroup {
-        self.profileController.syncAPI.leaveSyncGroup()
+      DispatchQueue.main.async {
+        // Observe Sync State in order to determine if the sync chain is deleted
+        // from another device - Clean local sync chain
+        if self.profileController.syncAPI.shouldLeaveSyncGroup {
+          self.profileController.syncAPI.leaveSyncGroup()
+        }
       }
     }
 
@@ -435,14 +437,8 @@ public class BrowserViewController: UIViewController {
   ) {
     super.viewWillTransition(to: size, with: coordinator)
 
-    dismissVisibleMenus()
-
     coordinator.animate(
       alongsideTransition: { context in
-        if let popover = self.displayedPopoverController {
-          self.updateDisplayedPopoverProperties?()
-          self.present(popover, animated: true, completion: nil)
-        }
         #if canImport(BraveTalk)
         self.braveTalkJitsiCoordinator.resetPictureInPictureBounds(.init(size: size))
         #endif
@@ -481,9 +477,7 @@ public class BrowserViewController: UIViewController {
     Preferences.Privacy.blockAllCookies.observe(from: self)
     Preferences.Rewards.hideRewardsIcon.observe(from: self)
     Preferences.Rewards.rewardsToggledOnce.observe(from: self)
-    Preferences.Playlist.enablePlaylistMenuBadge.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
-    Preferences.Playlist.syncSharedFoldersAutomatically.observe(from: self)
     Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
     ShieldPreferences.blockAdsAndTrackingLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
@@ -515,6 +509,7 @@ public class BrowserViewController: UIViewController {
     Preferences.PrivacyReports.captureShieldsData.observe(from: self)
     Preferences.PrivacyReports.captureVPNAlerts.observe(from: self)
     Preferences.Wallet.defaultEthWallet.observe(from: self)
+    Preferences.Wallet.defaultSolWallet.observe(from: self)
 
     if rewards.rewardsAPI != nil {
       // Ledger was started immediately due to user having ads enabled
@@ -707,7 +702,6 @@ public class BrowserViewController: UIViewController {
       updateToolbarStateForTraitCollection(newCollection, withTransitionCoordinator: coordinator)
     }
 
-    displayedPopoverController?.dismiss(animated: true, completion: nil)
     coordinator.animate(
       alongsideTransition: { context in
         if self.isViewLoaded {
@@ -717,21 +711,6 @@ public class BrowserViewController: UIViewController {
         }
       }
     )
-  }
-
-  func dismissVisibleMenus() {
-    displayedPopoverController?.dismiss(animated: true)
-  }
-
-  @objc func sceneDidEnterBackgroundNotification(_ notification: NSNotification) {
-    guard let scene = notification.object as? UIScene, scene == currentScene else {
-      return
-    }
-
-    displayedPopoverController?.dismiss(animated: false) {
-      self.updateDisplayedPopoverProperties = nil
-      self.displayedPopoverController = nil
-    }
   }
 
   @objc func appWillTerminateNotification() {
@@ -762,12 +741,6 @@ public class BrowserViewController: UIViewController {
     }
 
     tabManager.saveAllTabs()
-
-    // Dismiss any popovers that might be visible
-    displayedPopoverController?.dismiss(animated: false) {
-      self.updateDisplayedPopoverProperties = nil
-      self.displayedPopoverController = nil
-    }
 
     // If we are displaying a private tab, hide any elements in the tab that we wouldn't want shown
     // when the app is in the home switcher
@@ -908,12 +881,6 @@ public class BrowserViewController: UIViewController {
         self,
         selector: #selector(sceneDidBecomeActiveNotification(_:)),
         name: UIScene.didActivateNotification,
-        object: nil
-      )
-      $0.addObserver(
-        self,
-        selector: #selector(sceneDidEnterBackgroundNotification),
-        name: UIScene.didEnterBackgroundNotification,
         object: nil
       )
       $0.addObserver(
@@ -1067,7 +1034,6 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    syncPlaylistFolders()
     checkCrashRestorationOrSetupTabs()
   }
 
@@ -1173,6 +1139,7 @@ public class BrowserViewController: UIViewController {
         }
       }
       setupTasksCompleted = true
+      postSetupTasks.removeAll()
     }
   }
 
@@ -1563,22 +1530,9 @@ public class BrowserViewController: UIViewController {
         $0.edges.equalTo(pageOverlayLayoutGuide)
       }
       ntpController.view.layoutIfNeeded()
-      ntpController.view.alpha = 0
 
-      // We have to run this animation, even if the view is already showing because there may be a hide animation running
-      // and we want to be sure to override its results.
-      let animator = UIViewPropertyAnimator(
-        duration: 0.2,
-        curve: .easeInOut,
-        animations: {
-          ntpController.view.alpha = 1
-        }
-      )
-      animator.addCompletion { _ in
-        self.webViewContainer.accessibilityElementsHidden = true
-        UIAccessibility.post(notification: .screenChanged, argument: nil)
-      }
-      animator.startAnimation()
+      self.webViewContainer.accessibilityElementsHidden = true
+      UIAccessibility.post(notification: .screenChanged, argument: nil)
     }
   }
 
@@ -1587,36 +1541,26 @@ public class BrowserViewController: UIViewController {
   fileprivate func hideActiveNewTabPageController(_ isReaderModeURL: Bool = false) {
     guard let controller = activeNewTabPageViewController else { return }
 
-    let animator = UIViewPropertyAnimator(
-      duration: 0.2,
-      curve: .easeInOut,
-      animations: {
-        controller.view.alpha = 0.0
-      }
-    )
-    animator.addCompletion { _ in
-      controller.willMove(toParent: nil)
-      controller.view.removeFromSuperview()
-      controller.removeFromParent()
-      controller.view.alpha = 1
-      self.webViewContainer.accessibilityElementsHidden = false
-      UIAccessibility.post(notification: .screenChanged, argument: nil)
+    controller.willMove(toParent: nil)
+    controller.view.removeFromSuperview()
+    controller.removeFromParent()
+    controller.view.alpha = 1
+    self.webViewContainer.accessibilityElementsHidden = false
+    UIAccessibility.post(notification: .screenChanged, argument: nil)
 
-      // Refresh the reading view toolbar since the article record may have changed
-      if let tab = self.tabManager.selectedTab,
-        let readerMode = tab.browserData?.getContentScript(
-          name: ReaderModeScriptHandler.scriptName
-        )
-          as? ReaderModeScriptHandler,
-        readerMode.state == .active,
-        isReaderModeURL,
-        let state = tab.playlistItemState
-      {
-        self.showReaderModeBar(animated: false)
-        self.updatePlaylistURLBar(tab: tab, state: state, item: tab.playlistItem)
-      }
+    // Refresh the reading view toolbar since the article record may have changed
+    if let tab = self.tabManager.selectedTab,
+      let readerMode = tab.browserData?.getContentScript(
+        name: ReaderModeScriptHandler.scriptName
+      )
+        as? ReaderModeScriptHandler,
+      readerMode.state == .active,
+      isReaderModeURL,
+      let state = tab.playlistItemState
+    {
+      self.showReaderModeBar(animated: false)
+      self.updatePlaylistURLBar(tab: tab, state: state, item: tab.playlistItem)
     }
-    animator.startAnimation()
   }
 
   func updateInContentHomePanel(_ url: URL?) {
@@ -2636,15 +2580,6 @@ extension BrowserViewController: SearchViewControllerDelegate {
 
 // MARK: - UIPopoverPresentationControllerDelegate
 
-extension BrowserViewController: UIPopoverPresentationControllerDelegate {
-  public func popoverPresentationControllerDidDismissPopover(
-    _ popoverPresentationController: UIPopoverPresentationController
-  ) {
-    displayedPopoverController = nil
-    updateDisplayedPopoverProperties = nil
-  }
-}
-
 extension BrowserViewController: UIAdaptivePresentationControllerDelegate {
   // Returning None here makes sure that the Popover is actually presented as a Popover and
   // not as a full-screen modal, which is the default on compact device classes.
@@ -2958,14 +2893,11 @@ extension BrowserViewController: PreferencesObserver {
       ])
       tabManager.reloadSelectedTab()
     case Preferences.General.youtubeHighQuality.key:
+      let status = Reachability.shared.status
       tabManager.allTabs.forEach {
-        YoutubeQualityScriptHandler.setEnabled(
-          option: Preferences.General.youtubeHighQuality,
-          for: $0
-        )
+        $0.youtubeQualityTabHelper?.setHighQuality(networkStatus: status)
       }
-    case Preferences.Playlist.enablePlaylistMenuBadge.key,
-      Preferences.Playlist.enablePlaylistURLBarButton.key:
+    case Preferences.Playlist.enablePlaylistURLBarButton.key:
       let selectedTab = tabManager.selectedTab
       updatePlaylistURLBar(
         tab: selectedTab,
@@ -3009,8 +2941,6 @@ extension BrowserViewController: PreferencesObserver {
         cryptoStore.rejectAllPendingWebpageRequests()
       }
       updateURLBarWalletButton()
-    case Preferences.Playlist.syncSharedFoldersAutomatically.key:
-      syncPlaylistFolders()
     case Preferences.NewTabPage.backgroundMediaTypeRaw.key:
       recordAdsUsageType()
     case Preferences.Privacy.screenTimeEnabled.key:

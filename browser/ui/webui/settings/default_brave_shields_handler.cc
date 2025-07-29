@@ -6,13 +6,14 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
@@ -368,14 +369,15 @@ void DefaultBraveShieldsHandler::GetContactInfo(const base::Value::List& args) {
     return;
   }
 
-  webcompat_reporter_service->GetContactInfo(
+  webcompat_reporter_service->GetBrowserParams(
       base::BindOnce(&DefaultBraveShieldsHandler::OnGetContactInfo,
                      weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
 }
 void DefaultBraveShieldsHandler::OnGetContactInfo(
     base::Value javascript_callback,
     const std::optional<std::string>& contact_info,
-    const bool contact_info_save_flag) {
+    const bool contact_info_save_flag,
+    const std::vector<std::string>& components) {
   base::Value::Dict params_dict;
   params_dict.Set("contactInfo", contact_info.value_or(""));
   params_dict.Set("contactInfoSaveFlag", contact_info_save_flag);

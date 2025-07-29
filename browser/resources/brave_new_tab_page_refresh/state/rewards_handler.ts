@@ -15,6 +15,7 @@ export function createRewardsHandler(
   store: Store<RewardsState>
 ): RewardsActions {
   if (!loadTimeData.getBoolean('rewardsFeatureEnabled')) {
+    store.update({ initialized: true })
     return defaultRewardsActions()
   }
 
@@ -56,18 +57,44 @@ export function createRewardsHandler(
     store.update({ rewardsBalance: balance })
   }
 
+  async function updateAdsViewed() {
+    const { statement } = await rewardsHandler.getAdsStatement()
+    if (statement) {
+      let rewardsAdsViewed = 0
+      Object.values(statement.adTypeSummaryThisMonth).map((value) => {
+        if (typeof value === 'number') {
+          rewardsAdsViewed += value
+        }
+      })
+      store.update({ rewardsAdsViewed })
+    } else {
+      store.update({ rewardsAdsViewed: null })
+    }
+  }
+
+  async function updateTosUpdateRequired() {
+    const { updateRequired } =
+      await rewardsHandler.getTermsOfServiceUpdateRequired()
+    store.update({ tosUpdateRequired: updateRequired })
+  }
+
   async function loadData() {
     await Promise.all([
       updatePrefs(),
       updateRewardsEnabled(),
       updateExternalWallet(),
       updateParameters(),
-      updateBalance()
+      updateTosUpdateRequired()
     ])
+
+    store.update({ initialized: true })
+
+    updateBalance()
+    updateAdsViewed()
   }
 
   newTabProxy.addListeners({
-    onRewardsStateUpdated: debounce(updatePrefs, 10)
+    onRewardsStateUpdated: debounce(loadData, 10)
   })
 
   rewardsProxy.callbackRouter.onRewardsStateUpdated.addListener(loadData)

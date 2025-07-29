@@ -10,7 +10,7 @@
 #define SetUsesSplitStoresAndUPMForLocal \
   SetUsesSplitStoresAndUPMForLocal_ChromiumImpl
 
-#include "src/chrome/browser/password_manager/android/password_manager_android_util.cc"
+#include <chrome/browser/password_manager/android/password_manager_android_util.cc>
 
 #undef SetUsesSplitStoresAndUPMForLocal
 

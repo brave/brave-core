@@ -25,4 +25,7 @@ export const _EthSignTypedData = {
   },
 }
 
-export default { component: EthSignTypedData }
+export default {
+  title: 'Wallet/Panel/Panels/Sign Transaction',
+  component: EthSignTypedData,
+}

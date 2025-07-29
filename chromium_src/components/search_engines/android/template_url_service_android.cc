@@ -8,7 +8,7 @@
 #define DoesDefaultSearchEngineHaveLogo \
   DoesDefaultSearchEngineHaveLogo_ChromiumImpl
 
-#include "src/components/search_engines/android/template_url_service_android.cc"
+#include <components/search_engines/android/template_url_service_android.cc>
 
 #undef DoesDefaultSearchEngineHaveLogo
 

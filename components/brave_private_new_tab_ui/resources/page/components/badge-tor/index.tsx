@@ -5,7 +5,7 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import getPageHandlerInstance, { ConnectionStatus } from '../../api/brave_page_handler'
 
 interface BoxProps {
@@ -144,7 +144,7 @@ function BadgeTor (props: Props) {
     helpElement = getLocale('torStatusConnectionSlowDesc')
     iconElement = <LoaderIcon />
   } else if (isLoading) {
-    textElement = getLocale('torStatusInitializing', { percentage: props.progress })
+    textElement = formatLocale('torStatusInitializing', { $1: props.progress })
     helpElement = props.message
     iconElement = <LoaderIcon />
   }

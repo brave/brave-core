@@ -39,7 +39,7 @@ struct ImportedBookmarkEntry;
       const base::android::JavaParamRef<jstring>& export_file_path);     \
   void SetReadStatus
 
-#include "src/chrome/browser/bookmarks/android/bookmark_bridge.h"  // IWYU pragma: export
+#include <chrome/browser/bookmarks/android/bookmark_bridge.h>  // IWYU pragma: export
 #undef SetReadStatus
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BOOKMARKS_ANDROID_BOOKMARK_BRIDGE_H_

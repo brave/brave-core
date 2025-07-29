@@ -22,8 +22,8 @@ brave_android_manifest_includes = [
 
 brave_chrome_java_deps = [
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
+  "//brave/browser/android/youtube_script_injector:java",
   "//brave/browser/download/android:java",
-  "//brave/browser/download/internal/android:java",
   "//brave/browser/notifications/android:brave_java",
   "//brave/browser/notifications/android:java",
   "//brave/browser/quick_search_engines/android:java",
@@ -33,6 +33,7 @@ brave_chrome_java_deps = [
   "//brave/browser/ui/android/logo:java",
   "//brave/browser/ui/android/omnibox:java",
   "//brave/browser/ui/android/theme:java",
+  "//brave/browser/ui/android/toolbar:java",
   "//brave/components/ai_chat/core/common/mojom:mojom_java",
   "//brave/components/brave_news/common:mojom_java",
   "//brave/components/brave_rewards/core/mojom:mojom_java",
@@ -49,7 +50,6 @@ brave_chrome_java_deps = [
   "//brave/components/variations/android:java",
   "//brave/components/version_info/android:java",
   "//brave/components/webcompat_reporter/common:mojom_java",
-  "//brave/third_party/android_deps:com_airbnb_android_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:com_github_bumptech_glide_java",
   "//brave/third_party/android_deps:com_google_android_play_integrity_java",
@@ -74,6 +74,7 @@ brave_chrome_java_deps += brave_app_playlist_deps
 
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
+  "//brave/browser/download/internal/android:java",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
 ]
 
@@ -92,7 +93,6 @@ brave_chrome_java_srcjar_deps = [
 brave_chrome_app_java_resources_deps = [
   "//brave/browser/quick_search_engines/android:java_resources",
   "//brave/build/android:android_brave_strings_grd",
-  "//brave/build/android:brave_java_xml_preprocess_resources",
 ]
 
 brave_resources_exclusion_exceptions =

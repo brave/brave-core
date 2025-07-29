@@ -16,10 +16,6 @@
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 
-#if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/autofill_ai/chrome_autofill_ai_client.h"
-#endif  // !BUILDFLAG(IS_ANDROID)
-
 namespace autofill {
 
 namespace {
@@ -76,7 +72,7 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
 
 #define WrapUnique WrapUnique(new autofill::BraveChromeAutofillClient(web_contents))); \
   if (0) std::unique_ptr<autofill::ChromeAutofillClient> dummy(
-#include "src/chrome/browser/ui/autofill/chrome_autofill_client.cc"
+#include <chrome/browser/ui/autofill/chrome_autofill_client.cc>
 #undef WrapUnique
 
 namespace autofill {

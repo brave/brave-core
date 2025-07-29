@@ -382,7 +382,7 @@ export const MarketAsset = () => {
           src={`chrome-untrusted://line-chart-display${
             isLoadingGraphData ? '' : `?${encodedPriceData}`
           }`}
-          sandbox='allow-scripts'
+          sandbox='allow-scripts allow-same-origin'
         />
         <Row padding='0px 20px'>
           <ButtonRow>

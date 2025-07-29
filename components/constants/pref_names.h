@@ -35,6 +35,9 @@ inline constexpr char kThresholdCheckMade[] =
 // Anonymous usage pings enabled
 inline constexpr char kStatsReportingEnabled[] =
     "brave.stats.reporting_enabled";
+// Used to enable/disable stats reporting via a policy.
+inline constexpr char kStatsReportingDisabledByPolicy[] =
+    "brave.stats.reporting_disabled_by_policy";
 // Serialized query for to send to the stats-updater server. Needs to be saved
 // in the case that the user sends the standard usage ping, stops the browser,
 // meets the threshold requirements, and then starts the browser before the
@@ -73,6 +76,9 @@ inline constexpr char kNewTabPageShowRewards[] =
     "brave.new_tab_page.show_rewards";
 inline constexpr char kNewTabPageShowBraveTalk[] =
     "brave.new_tab_page.show_together";
+// Used to enable/disable Brave Talk via a policy.
+inline constexpr char kBraveTalkDisabledByPolicy[] =
+    "brave.talk.disabled_by_policy";
 inline constexpr char kNewTabPageShowBraveVPN[] =
     "brave.new_tab_page.show_brave_vpn";
 inline constexpr char kNewTabPageHideAllWidgets[] =
@@ -91,6 +97,9 @@ inline constexpr char kDefaultBrowserPromptEnabled[] =
 
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 inline constexpr char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
+// Used to enable/disable web discovery via a policy.
+inline constexpr char kWebDiscoveryDisabledByPolicy[] =
+    "brave.web_discovery_disabled_by_policy";
 #endif
 inline constexpr char kWebDiscoveryCTAState[] = "brave.web_discovery.cta_state";
 inline constexpr char kDontAskEnableWebDiscovery[] =

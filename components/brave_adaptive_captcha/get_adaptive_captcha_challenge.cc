@@ -28,7 +28,7 @@ GetAdaptiveCaptchaChallenge::~GetAdaptiveCaptchaChallenge() = default;
 
 std::string GetAdaptiveCaptchaChallenge::GetUrl(const std::string& payment_id) {
   const std::string path =
-      base::StringPrintf("/v3/captcha/challenge/%s", payment_id.c_str());
+      absl::StrFormat("/v3/captcha/challenge/%s", payment_id);
   return ServerUtil::GetInstance()->GetServerUrl(path);
 }
 

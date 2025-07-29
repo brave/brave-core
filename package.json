@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.82.58",
+  "version": "1.82.125",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -72,7 +72,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "138.0.7204.97",
+        "tag": "139.0.7258.52",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -186,7 +186,7 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.6",
-    "@brave/leo": "github:brave/leo#99f624799f6247f1b915e37f360028051746ead537981c7",
+    "@brave/leo": "github:brave/leo#99f6247f1b915e37f360028051746ead537981c7",
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#8685eec0851afa96d23dd424cd152854476e585d",
     "@brave/wallet-standard-brave": "0.0.16",
     "@dnd-kit/core": "6.0.5",
@@ -223,6 +223,7 @@
     "redux-act": "^1.8.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "remark-gfm": "4.0.1",
     "throttleit": "^1.0.0",
     "webext-redux": "^2.1.4"
   },

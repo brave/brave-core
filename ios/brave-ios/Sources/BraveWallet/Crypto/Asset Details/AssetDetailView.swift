@@ -126,11 +126,24 @@ struct AssetDetailView: View {
   @ViewBuilder private func coinMarketInfoView(_ coinMarket: BraveWallet.CoinMarket) -> some View {
     VStack(spacing: 16) {
       HStack(alignment: .top, spacing: 40) {
-        if case .coinMarket(let coinMarket) = assetDetailStore.assetDetailType,
-          assetDetailStore.convertCoinMarketToDepositableToken(
-            symbol: coinMarket.symbol
-          ) != nil
-        {
+        if assetDetailStore.isBuySupported {
+          PortfolioHeaderButton(style: .buy) {
+            Task { @MainActor in
+              let destination = WalletActionDestination(
+                kind: .buy,
+                initialToken: assetDetailStore.assetDetailToken
+              )
+              if await assetDetailStore.accountCreationNeededForBuy() {
+                onAccountCreationNeeded(destination)
+              } else {
+                walletActionDestination = destination
+              }
+            }
+          }
+        }
+        if assetDetailStore.convertCoinMarketToDepositableToken(
+          symbol: assetDetailStore.assetDetailToken.symbol
+        ) != nil {
           PortfolioHeaderButton(style: .deposit) {
             let destination = WalletActionDestination(
               kind: .deposit(query: coinMarket.symbol)
@@ -224,14 +237,16 @@ struct AssetDetailView: View {
     HStack(alignment: .top, spacing: 40) {
       if assetDetailStore.isBuySupported {
         PortfolioHeaderButton(style: .buy) {
-          let destination = WalletActionDestination(
-            kind: .buy,
-            initialToken: assetDetailStore.assetDetailToken
-          )
-          if assetDetailStore.allAccountsForToken.isEmpty {
-            onAccountCreationNeeded(destination)
-          } else {
-            walletActionDestination = destination
+          Task { @MainActor in
+            let destination = WalletActionDestination(
+              kind: .buy,
+              initialToken: assetDetailStore.assetDetailToken
+            )
+            if await assetDetailStore.accountCreationNeededForBuy() {
+              onAccountCreationNeeded(destination)
+            } else {
+              walletActionDestination = destination
+            }
           }
         }
       }
@@ -529,7 +544,10 @@ struct AssetDetailView: View {
     .addAccount(
       keyringStore: keyringStore,
       networkStore: networkStore,
-      accountNetwork: networkStore.network(for: assetDetailStore.assetDetailToken),
+      preselectedAccountCoin: assetDetailStore.assetDetailToken.coin,
+      preselectedAccountNetwork: networkStore.network(
+        for: assetDetailStore.assetDetailToken.chainId
+      ),
       isShowingConfirmation: $isPresentingAddAccountConfirmation,
       isShowingAddAccount: $isPresentingAddAccount,
       onConfirmAddAccount: { isPresentingAddAccount = true },

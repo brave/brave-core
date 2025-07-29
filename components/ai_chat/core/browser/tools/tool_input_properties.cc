@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 
 #include <string>
+#include <utility>
 
 #include "base/values.h"
 
@@ -90,6 +91,16 @@ base::Value::Dict IntegerProperty(const std::string& description) {
   }
 
   return property;
+}
+
+base::Value::Dict CreateInputProperties(
+    std::initializer_list<std::pair<const std::string, base::Value::Dict>>
+        properties) {
+  base::Value::Dict input_properties;
+  for (auto& [key, value] : properties) {
+    input_properties.Set(key, value.Clone());
+  }
+  return input_properties;
 }
 
 }  // namespace ai_chat

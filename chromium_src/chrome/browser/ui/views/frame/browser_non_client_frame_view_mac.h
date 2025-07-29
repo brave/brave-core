@@ -11,7 +11,7 @@
   friend class BraveBrowserNonClientFrameViewMac; \
   void LayoutWindowControlsOverlay
 
-#include "src/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.h>  // IWYU pragma: export
 
 #undef LayoutWindowControlsOverlay
 

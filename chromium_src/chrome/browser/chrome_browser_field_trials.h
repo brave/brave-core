@@ -8,7 +8,7 @@
 
 #define ChromeBrowserFieldTrials ChromeBrowserFieldTrialsChromium
 
-#include "src/chrome/browser/chrome_browser_field_trials.h"  // IWYU pragma: export
+#include <chrome/browser/chrome_browser_field_trials.h>  // IWYU pragma: export
 
 #undef ChromeBrowserFieldTrials
 

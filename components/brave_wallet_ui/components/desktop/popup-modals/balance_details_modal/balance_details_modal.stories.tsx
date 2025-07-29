@@ -29,4 +29,6 @@ export const _BalanceDetailsModal = {
   },
 }
 
-export default { title: 'Balance Details' }
+export default {
+  title: 'Wallet/Desktop/Components/Popup Modals',
+}

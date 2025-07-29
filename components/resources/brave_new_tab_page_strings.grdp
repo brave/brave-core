@@ -101,6 +101,18 @@
     Ready to start earning?
   </message>
 
+  <message name="IDS_NEW_TAB_REWARDS_LOGIN_BUTTON_LABEL" desc="Label for button allowing users to reconnect to their account">
+    Log in
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_LOGIN_TEXT" desc="Text describing action needed to reconnect a Rewards account">
+    Log in to your <ph name="PROVIDER">$1</ph> account to see your balance
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_LOGIN_TITLE" desc="Title for action needed to reconnect a Rewards account">
+    Log in to see your balance
+  </message>
+
   <message name="IDS_NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL" desc="Label for the Rewards onboarding button">
     Start using Brave Rewards
   </message>
@@ -259,6 +271,14 @@
 
   <message name="IDS_NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL" desc="Label for button that switches top sites to favorites mode">
     Show favorites
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_LESS_LABEL" desc="Label for button collapses the top sites component">
+    Show fewer items
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MORE_LABEL" desc="Label for button that expands the top sites component">
+    Show more items
   </message>
 
   <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL" desc="Label for button that switches top sites to most visited mode">

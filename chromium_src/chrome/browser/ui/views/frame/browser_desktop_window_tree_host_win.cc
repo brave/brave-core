@@ -19,7 +19,7 @@
 #define CreateBrowserDesktopWindowTreeHost \
   CreateBrowserDesktopWindowTreeHost_Unused
 
-#include "src/chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.cc"
+#include <chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.cc>
 
 #undef BrowserDesktopWindowTreeHostWin
 #undef CreateBrowserDesktopWindowTreeHost

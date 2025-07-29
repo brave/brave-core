@@ -43,7 +43,7 @@ class P3AServiceTest : public testing::Test {
     ASSERT_TRUE(base::Time::FromString("2049-01-01", &install_time));
     p3a_service_ = scoped_refptr(
         new P3AService(local_state_, "release", install_time, {}));
-    p3a_service_->Init(shared_url_loader_factory_);
+    p3a_service_->Init(shared_url_loader_factory_, nullptr);
   }
 
   void TriggerRemoteConfigLoad() {
@@ -71,6 +71,16 @@ TEST_F(P3AServiceTest, MessageManagerStartedWhenP3AEnabled) {
 
 TEST_F(P3AServiceTest, MessageManagerNotStartedWhenP3ADisabled) {
   local_state_.SetBoolean(kP3AEnabled, false);
+  CreateP3AService();
+
+  EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
+
+  TriggerRemoteConfigLoad();
+  EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
+}
+
+TEST_F(P3AServiceTest, MessageManagerNotStartedWhenP3ADisabledByPolicy) {
+  local_state_.SetBoolean(kP3ADisabledByPolicy, true);
   CreateP3AService();
 
   EXPECT_FALSE(p3a_service_->message_manager_->IsActive());

@@ -8,20 +8,26 @@ import { ShieldsStats, ClockFormat } from 'gen/brave/browser/ui/webui/brave_new_
 export { ShieldsStats, ClockFormat }
 
 export interface NewTabState {
+  initialized: boolean
   showClock: boolean
   clockFormat: ClockFormat
   showShieldsStats: boolean
   shieldsStats: ShieldsStats | null
   showTalkWidget: boolean
+  talkFeatureEnabled: boolean
+  newsFeatureEnabled: boolean
 }
 
 export function defaultNewTabState(): NewTabState {
   return {
+    initialized: false,
     showClock: false,
     clockFormat: ClockFormat.kAuto,
     showShieldsStats: false,
     shieldsStats: null,
-    showTalkWidget: true
+    showTalkWidget: false,
+    talkFeatureEnabled: false,
+    newsFeatureEnabled: false
   }
 }
 

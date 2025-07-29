@@ -32,14 +32,21 @@ export type StringKey =
   'photoCreditsText' |
   'randomizeBackgroundLabel' |
   'removeTopSiteLabel' |
+  'rewardsAdsViewedTooltip' |
   'rewardsBalanceTitle' |
   'rewardsConnectButtonLabel' |
   'rewardsConnectText' |
   'rewardsConnectTitle' |
   'rewardsFeatureText1' |
   'rewardsFeatureText2' |
+  'rewardsLoginButtonLabel' |
+  'rewardsLoginText' |
+  'rewardsLoginTitle' |
   'rewardsOnboardingButtonLabel' |
   'rewardsOnboardingLink' |
+  'rewardsTosUpdateButtonLabel' |
+  'rewardsTosUpdateText' |
+  'rewardsTosUpdateTitle' |
   'rewardsWidgetTitle' |
   'saveChangesButtonLabel' |
   'searchAskLeoDescription' |
@@ -80,6 +87,8 @@ export type StringKey =
   'topSitesMostVisitedOptionTitle' |
   'topSitesSettingsTitle' |
   'topSitesShowCustomLabel' |
+  'topSitesShowLessLabel' |
+  'topSitesShowMoreLabel' |
   'topSitesShowMostVisitedLabel' |
   'topSitesTitleLabel' |
   'topSitesURLLabel' |

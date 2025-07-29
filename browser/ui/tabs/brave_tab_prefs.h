@@ -31,6 +31,7 @@ inline constexpr char kVerticalTabsOnRight[] =
     "brave.tabs.vertical_tabs_on_right";
 inline constexpr char kVerticalTabsShowScrollbar[] =
     "brave.tabs.vertical_tabs_show_scrollbar";
+inline constexpr char kTreeTabsEnabled[] = "brave.tabs.tree_tabs_enabled";
 
 inline constexpr char kSharedPinnedTab[] = "brave.tabs.shared_pinned_tab";
 

@@ -121,6 +121,75 @@ class PatchfileTest(unittest.TestCase):
         self.assertTrue(applied.patch.source_from_git)
         self.assertEqual(applied.patch.source_from_git, test_idl.as_posix())
 
+    def test_apply_conflict_with_whitespace_error(self):
+        """Tests the behavior when applying a patch with whitespace errors."""
+
+        test_idl = Path('chrome/common/extensions/api/developer_private.idl')
+        self.fake_chromium_src.write_and_stage_file(
+            test_idl, """
+                enum ExtensionType {
+                    HOSTED_APP,
+                    PLATFORM_APP,
+                    LEGACY_PACKAGED_APP,
+                    EXTENSION,
+                    THEME,
+                    SHARED_MODULE
+                  };
+
+                  enum Location {
+                    FROM_STORE,
+                    UNPACKED,
+                    THIRD_PARTY,
+                    INSTALLED_BY_DEFAULT,
+                    UNKNOWN
+                  };
+                """, self.fake_chromium_src.chromium)
+
+        self.fake_chromium_src.commit('Add developer_private.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Let's create a patch for it
+        target_file = self.fake_chromium_src.chromium / test_idl
+        target_file.write_text(target_file.read_text().replace(
+            'FROM_STORE', 'FROM_STORE,\n    FROM_BRAVE_STORE'))
+
+        # Let's create a patch with trailing spaces
+        target_file.write_text(target_file.read_text().replace(
+            'UNKNOWN', 'UNKNOWN,\n    ANOTHER '))
+
+        self.fake_chromium_src.run_update_patches()
+        # clearing out our custom change so we can have upstream changes
+        # piling to this file
+        self.fake_chromium_src._run_git_command(
+            ["checkout", "."], self.fake_chromium_src.chromium)
+        self.assertFalse('FROM_BRAVE_STORE' in target_file.read_text())
+
+        # Adding an upstream chromium change that should conflict with our
+        # patch
+        self.fake_chromium_src.write_and_stage_file(
+            test_idl,
+            target_file.read_text().replace('FROM_STORE',
+                                            'FROM_STORE,\n    DELETED'),
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit(
+            'Added DELETED to developer_private.idl Location',
+            self.fake_chromium_src.chromium)
+
+        self.assertFalse('FROM_BRAVE_STORE' in target_file.read_text())
+        patchfile = Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                self.fake_chromium_src.chromium, test_idl))
+        applied = patchfile.apply()
+        self.assertEqual(applied.status, Patchfile.ApplyStatus.CONFLICT)
+
+        # Check that in the case of conflict it returns an updated patchfile
+        # instance with an updated source from git.
+        self.assertTrue(applied.patch)
+        self.assertEqual(applied.patch.path, patchfile.path)
+        self.assertFalse(patchfile.source_from_git)
+        self.assertTrue(applied.patch.source_from_git)
+        self.assertEqual(applied.patch.source_from_git, test_idl.as_posix())
+
     def test_apply_clean(self):
         test_idl = Path('chrome/common/extensions/api/developer_private.idl')
         self.fake_chromium_src.write_and_stage_file(

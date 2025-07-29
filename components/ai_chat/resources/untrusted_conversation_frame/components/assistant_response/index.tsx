@@ -6,16 +6,27 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
-import formatMessage from '$web-common/formatMessage'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
+import ToolEvent from './tool_event'
 import WebSourcesEvent from './web_sources_event'
 import styles from './style.module.scss'
 import {
-  removeReasoning //
+  removeReasoning,
+  removeCitationsWithMissingLinks
 } from '../conversation_entries/conversation_entries_utils'
+
+interface BaseProps {
+  // Whether data is currently being received (generated)
+  isEntryInProgress: boolean,
+  // Whether it's possible to interact with the entry's tool use requests
+  isEntryInteractivityAllowed: boolean,
+  // Only these urls should be rendered as links
+  allowedLinks: string[],
+  isLeoModel: boolean
+}
 
 function SearchSummary (props: { searchQueries: string[] }) {
   const context = useUntrustedConversationContext()
@@ -29,8 +40,7 @@ function SearchSummary (props: { searchQueries: string[] }) {
     context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
   }
 
-  const message = formatMessage(getLocale(S.CHAT_UI_SEARCH_QUERIES), {
-    placeholders: {
+  const message = formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
       $1: props.searchQueries.map((query, i, a) => (
         <React.Fragment key={i}>
           "<a className={styles.searchQueryLink} href='#' onClick={(e) => handleOpenSearchQuery(e, query)}>
@@ -38,7 +48,6 @@ function SearchSummary (props: { searchQueries: string[] }) {
           </a>"{(i < a.length-1) ? ', ' : null}
         </React.Fragment>
       ))
-    }
   })
 
   return (
@@ -51,12 +60,9 @@ function SearchSummary (props: { searchQueries: string[] }) {
   )
 }
 
-function AssistantEvent(props: {
+function AssistantEvent(props: BaseProps & {
   event: Mojom.ConversationEntryEvent,
   hasCompletionStarted: boolean,
-  isEntryInProgress: boolean,
-  allowedLinks: string[],
-  isLeoModel: boolean
 }) {
   const { allowedLinks, event, isEntryInProgress, isLeoModel } = props;
 
@@ -67,10 +73,18 @@ function AssistantEvent(props: {
                            `[${index + 1}]: ${url}`).join('\n') + '\n\n'
         : '';
 
+    // Remove citations with missing links
+    const filteredOutCitationsWithMissingLinks =
+      removeCitationsWithMissingLinks(
+        event.completionEvent.completion,
+        allowedLinks
+      )
+
     // Replaces 2 consecutive citations with a separator and also
     // adds a space before the citation and the text.
-     const completion =
-       event.completionEvent.completion.replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
+    const completion =
+      filteredOutCitationsWithMissingLinks
+        .replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
 
     const fullText = `${numberedLinks}${removeReasoning(completion)}`;
 
@@ -88,6 +102,10 @@ function AssistantEvent(props: {
       <div className={styles.actionInProgress}><ProgressRing />Improving answer with Brave Search…</div>
     )
   }
+  if (props.event.toolUseEvent) {
+    return <ToolEvent toolUseEvent={props.event.toolUseEvent} isEntryActive={props.isEntryInteractivityAllowed} />
+  }
+
   // TODO(petemill): Consider displaying in-progress queries if the API
   // timing improves (or worsens for the completion events).
   // if (event.searchQueriesEvent && props.isEntryInProgress) {
@@ -100,27 +118,27 @@ function AssistantEvent(props: {
   return null
 }
 
-export default function AssistantResponse(props: {
-  entry: Mojom.ConversationTurn,
-  isEntryInProgress: boolean,
-  allowedLinks: string[],
-  isLeoModel: boolean
-}) {
+export type AssistantResponseProps = BaseProps & {
+  events: Mojom.ConversationEntryEvent[]
+}
+
+export default function AssistantResponse(props: AssistantResponseProps) {
   // Extract certain events which need to render at specific locations (e.g. end of the events)
-  const searchQueriesEvent = props.entry.events?.find(event => event.searchQueriesEvent)?.searchQueriesEvent
-  const sourcesEvent = props.entry.events?.find(event => !!event.sourcesEvent)?.sourcesEvent
+  const searchQueriesEvent = props.events?.find(event => event.searchQueriesEvent)?.searchQueriesEvent
+  const sourcesEvent = props.events?.find(event => !!event.sourcesEvent)?.sourcesEvent
 
   const hasCompletionStarted = !props.isEntryInProgress ||
-    (props.entry.events?.some(event => event.completionEvent) ?? false)
+    (props.events?.some(event => event.completionEvent) ?? false)
 
   return (<>
   {
-    props.entry.events?.map((event, i) =>
+    props.events?.map((event, i) =>
       <AssistantEvent
         key={i}
         event={event}
         hasCompletionStarted={hasCompletionStarted}
         isEntryInProgress={props.isEntryInProgress}
+        isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
         allowedLinks={props.allowedLinks}
         isLeoModel={props.isLeoModel}
       />

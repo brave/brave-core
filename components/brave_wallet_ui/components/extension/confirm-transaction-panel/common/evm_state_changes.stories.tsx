@@ -166,5 +166,5 @@ export const _Erc721TokenApprovalForAll = {
 }
 
 export default {
-  title: 'Evm State Changes',
+  title: 'Wallet/Panel/Components/Transaction',
 }

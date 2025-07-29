@@ -14,13 +14,16 @@ export function createNewTabHandler(
   store: Store<NewTabState>
 ): NewTabActions {
   store.update({
+    initialized: true,
     showClock: true,
     showShieldsStats: true,
     shieldsStats: {
       adsBlocked: 3245,
       bandwidthSavedBytes: 1024 * 1024
     },
-    showTalkWidget: true
+    showTalkWidget: true,
+    talkFeatureEnabled: true,
+    newsFeatureEnabled: false
   })
 
   return {

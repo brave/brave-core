@@ -7,14 +7,15 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../lib/scoped_css'
 
 export const narrowBreakpoint = '900px'
-export const threeColumnBreakpoint = '1420px'
+export const threeColumnBreakpoint = '1275px'
+export const horizontalContentPadding = 24
 
 export const style = scoped.css`
   & {
     --search-transition-duration: 120ms;
   }
 
-  @keyframes scroll-fade {
+  @keyframes background-scroll-fade {
     from {
       background: rgba(0, 0, 0, 0);
       backdrop-filter: blur(0);
@@ -33,7 +34,7 @@ export const style = scoped.css`
     inset: 0;
     z-index: 1;
 
-    animation: linear scroll-fade both;
+    animation: linear background-scroll-fade both;
     animation-timeline: scroll();
     animation-range: 0px 100vh;
   }
@@ -88,6 +89,7 @@ export const style = scoped.css`
 
   main {
     container-type: inline-size;
+    view-timeline-name: --ntp-main-view-timeline;
     position: relative;
     z-index: 1;
     display: flex;
@@ -95,7 +97,7 @@ export const style = scoped.css`
     align-items: center;
     min-height: 100vh;
     gap: 16px;
-    padding: 16px 24px;
+    padding: 16px ${horizontalContentPadding}px;
 
     > * {
       transition:
@@ -164,53 +166,39 @@ export const style = scoped.css`
     --widget-height: 128px;
     --widget-min-width: 380px;
     --widget-max-width: 512px;
-    --widget-count: 0;
     --widget-gap: 16px;
-    --widget-gap-total:
-      calc((var(--widget-count) - 1) * var(--widget-gap));
-    --widget-available-width: calc(
-      100cqi / var(--widget-count) -
-      var(--widget-gap-total) / var(--widget-count));
-    --widget-flex-basis: max(
-      var(--widget-min-width),
-      min(var(--widget-max-width), var(--widget-available-width)));
 
     anchor-name: --ntp-widget-container;
 
-    align-self: stretch;
-    flex: 0 0 var(--widget-height);
+    flex: 0 0 auto;
+    min-height: var(--widget-height);
 
-    display: flex;
+    display: grid;
+    grid-auto-columns: minmax(var(--widget-min-width), var(--widget-max-width));
+    grid-auto-rows: minmax(var(--widget-height), auto);
+    grid-auto-flow: column;
     justify-content: center;
     align-items: stretch;
     gap: var(--widget-gap);
 
     &:empty {
-      flex-basis: 0;
-    }
-
-    &:has(> :nth-child(1)) {
-      --widget-count: 1;
-    }
-
-    &:has(> :nth-child(2)) {
-      --widget-count: 2;
-      justify-content: space-between;
-    }
-
-    &:has(> :nth-child(3)) {
-      --widget-count: 3;
+      min-height: 0;
     }
 
     @container (width <= ${narrowBreakpoint}) {
-      --widget-flex-basis: var(--widget-height);
+      grid-auto-flow: row;
+    }
 
-      width: 100cqi;
-      min-width: var(--widget-min-width);
-      max-width: var(--widget-max-width);
-      align-self: center;
-      flex-basis: auto;
-      flex-direction: column-reverse;
+    @container (width > ${narrowBreakpoint}) {
+      &:has(> :nth-child(2)) {
+        justify-content: space-between;
+        align-self: stretch;
+      }
+
+      &:has(> :nth-child(3)) {
+        justify-content: center;
+        align-self: center;
+      }
     }
   }
 

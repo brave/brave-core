@@ -46,6 +46,6 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
       common_params_->url, GetTopDocumentGURL(frame_tree_node_),      \
       &common_params_->referrer);
 
-#include "src/content/browser/renderer_host/navigation_request.cc"
+#include <content/browser/renderer_host/navigation_request.cc>
 #undef BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER
 #undef BRAVE_ONREQUESTREDIRECTED_MAYBEHIDEREFERRER

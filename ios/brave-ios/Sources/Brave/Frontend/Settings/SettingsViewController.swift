@@ -57,7 +57,7 @@ protocol SettingsDelegate: AnyObject {
 class SettingsViewController: TableViewController {
   weak var settingsDelegate: SettingsDelegate?
 
-  private let profile: Profile
+  private let profile: LegacyBrowserProfile
   private let tabManager: TabManager
   private let rewards: BraveRewards?
   private let feedDataSource: FeedDataSource
@@ -84,7 +84,7 @@ class SettingsViewController: TableViewController {
   private var cancellables: Set<AnyCancellable> = []
 
   init(
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards? = nil,
@@ -473,7 +473,7 @@ class SettingsViewController: TableViewController {
           text: Strings.Sync.syncTitle,
           selection: { [unowned self] in
             if syncAPI.isInSyncGroup {
-              if !DeviceInfo.hasConnectivity() {
+              if Reachability.shared.status.connectionType == .offline {
                 self.present(SyncAlerts.noConnection, animated: true)
                 return
               }

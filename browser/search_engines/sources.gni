@@ -16,6 +16,7 @@ brave_browser_search_engines_deps = [
   "//base",
   "//brave/components/brave_search_conversion",
   "//brave/components/time_period_storage",
+  "//brave/components/web_discovery/common:util",
   "//chrome/browser/profiles:profile",
   "//components/keyed_service/content",
   "//components/keyed_service/core",

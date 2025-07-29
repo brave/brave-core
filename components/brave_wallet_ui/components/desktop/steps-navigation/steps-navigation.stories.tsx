@@ -8,7 +8,7 @@ import { MemoryRouter as Router, Route } from 'react-router'
 
 import { StepsNavigation } from './steps-navigation'
 
-export const Nav = {
+export const _StepsNavigation = {
   render: () => (
     <Router>
       <Route path={'/:currentStep'}>
@@ -24,7 +24,7 @@ export const Nav = {
   ),
 }
 
-export const NavWithSkip = {
+export const _StepsNavigationWithSkip = {
   render: () => (
     <Router>
       <Route path={'/:currentStep'}>
@@ -42,5 +42,5 @@ export const NavWithSkip = {
 }
 
 export default {
-  title: 'Steps Navigation',
+  title: 'Wallet/Desktop/Components/Navigation',
 }

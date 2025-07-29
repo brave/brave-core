@@ -12,6 +12,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/notimplemented.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -134,7 +135,7 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
 #define RegisterMenuShownCallbackForTesting \
   RegisterMenuShownCallbackForTesting_unused
 
-#include "src/chrome/browser/renderer_context_menu/render_view_context_menu.cc"
+#include <chrome/browser/renderer_context_menu/render_view_context_menu.cc>
 
 #undef SpellingOptionsSubMenuObserver
 #undef RegisterMenuShownCallbackForTesting
@@ -717,6 +718,14 @@ void BraveRenderViewContextMenu::BuildContainersMenu() {
 
 Browser* BraveRenderViewContextMenu::GetBrowserToOpenSettings() {
   return GetBrowser();
+}
+
+float BraveRenderViewContextMenu::GetScaleFactor() {
+  auto* render_frame_host = GetRenderFrameHost();
+  CHECK(render_frame_host);
+  auto* render_view = render_frame_host->GetView();
+  CHECK(render_view);
+  return render_view->GetDeviceScaleFactor();
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

@@ -8,7 +8,7 @@
 #define RegisterTrustTokenKeyCommitmentsComponentIfTrustTokensEnabled \
   RegisterTrustTokenKeyCommitmentsComponentIfTrustTokensEnabled_ChromiumImpl
 
-#include "src/chrome/browser/component_updater/trust_token_key_commitments_component_installer.cc"
+#include <chrome/browser/component_updater/trust_token_key_commitments_component_installer.cc>
 #undef RegisterTrustTokenKeyCommitmentsComponentIfTrustTokensEnabled
 
 namespace component_updater {

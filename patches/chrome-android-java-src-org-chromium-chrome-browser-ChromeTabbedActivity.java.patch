@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+index cdc5657b0dc63661e4e255e3082f2d0ec793a943..33aff13c99040d39d6dfdeb0f9cedadfa4606709 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+@@ -778,6 +778,7 @@ public class ChromeTabbedActivity extends ChromeActivity {
+                         private void closeIfNoTabsAndHomepageEnabled(
+                                 boolean isPendingClosure, boolean shouldRemoveWindowWithZeroTabs) {
+                             if (getTabModelSelector().getTotalTabCount() == 0) {
++                                shouldRemoveWindowWithZeroTabs = shouldRemoveWindowWithZeroTabs && org.chromium.chrome.browser.partnercustomizations.CloseBraveManager.shouldCloseAppWithZeroTabs();
+                                 if (shouldRemoveWindowWithZeroTabs) {
+                                     finishAndRemoveTask();
+                                 } else if (HomepageManager.getInstance()

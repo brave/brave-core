@@ -53,10 +53,12 @@ namespace brave_wallet {
 
 namespace {
 
+#if BUILDFLAG(ENABLE_ORCHARD)
 constexpr char kGateJuniorMnemonic[] =
     "gate junior chunk maple cage select orange circle price air tortoise "
     "jelly art frequent fence middle ice moral wage toddler attitude sign "
     "lesson grain";
+#endif
 
 std::array<uint8_t, 32> GetTxId(const std::string& hex_string) {
   std::vector<uint8_t> vec;
@@ -120,6 +122,7 @@ class MockZCashRPC : public ZCashRpc {
                     GetLightdInfoCallback callback));
 };
 
+#if BUILDFLAG(ENABLE_ORCHARD)
 class MockOrchardSyncState : public OrchardSyncState {
  public:
   explicit MockOrchardSyncState(const base::FilePath& path_to_database)
@@ -172,6 +175,7 @@ class MockOrchardSyncStateProxy : public OrchardSyncState {
  private:
   raw_ptr<OrchardSyncState> instance_;
 };
+#endif
 
 }  // namespace
 

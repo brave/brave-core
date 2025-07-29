@@ -42,31 +42,40 @@ const AccountRow = styled(Row)`
 `
 
 export const MainEmailDisplay = ({ email, emailAliasesService }:
-  { email: string, emailAliasesService: EmailAliasesServiceInterface }) =>
-  <Card>
-    <AccountRow>
-      <Row>
-        <BraveIconCircle name='social-brave-release-favicon-fullheight-color' />
-        <MainEmailTextContainer>
-          <MainEmail>
-            {email === ''
-              ? getLocale('emailAliasesConnectingToBraveAccount')
-              : email}
-          </MainEmail>
-          <MainEmailDescription>
-            {getLocale('emailAliasesBraveAccount')}
-          </MainEmailDescription>
-        </MainEmailTextContainer>
-      </Row>
-      <Button
-        kind='plain-faint'
-        title={getLocale('emailAliasesSignOutTitle')}
-        size='small'
-        onClick={() => {
-          emailAliasesService.cancelAuthenticationOrLogout()
-        }}>
-        <Icon slot='icon-before' name="outside" />
-        <span>{getLocale('emailAliasesSignOut')}</span>
-      </Button>
-    </AccountRow>
-  </Card>
+  { email: string, emailAliasesService: EmailAliasesServiceInterface }) => {
+  const [cancelAuthenticationOrLogoutPending,
+    setCancelAuthenticationOrLogoutPending] = React.useState(false)
+  return (
+    <Card>
+      <AccountRow>
+        <Row>
+          <BraveIconCircle
+            name='social-brave-release-favicon-fullheight-color' />
+          <MainEmailTextContainer>
+            <MainEmail>
+              {email === ''
+                ? getLocale('emailAliasesConnectingToBraveAccount')
+                : email}
+            </MainEmail>
+            <MainEmailDescription>
+              {getLocale('emailAliasesBraveAccount')}
+            </MainEmailDescription>
+          </MainEmailTextContainer>
+        </Row>
+        <Button
+          kind='plain-faint'
+          title={getLocale('emailAliasesSignOutTitle')}
+          size='small'
+          disabled={cancelAuthenticationOrLogoutPending}
+          onClick={async () => {
+            setCancelAuthenticationOrLogoutPending(true)
+            await emailAliasesService.cancelAuthenticationOrLogout()
+            setCancelAuthenticationOrLogoutPending(false)
+          }}>
+          <Icon slot='icon-before' name="outside" />
+          <span>{getLocale('emailAliasesSignOut')}</span>
+        </Button>
+      </AccountRow>
+    </Card>
+  )
+}

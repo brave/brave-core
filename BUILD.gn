@@ -6,6 +6,7 @@
 import(
     "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/allowlist.gni")
 import("//brave/build/config.gni")
+import("//brave/build/redirect_cc.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/tools/crates/config.gni")
 import("//build/config/locales.gni")
@@ -44,29 +45,67 @@ declare_args() {
   audit_dev_deps = true
 }
 
+chromium_unit_tests_deps = [
+  "//base:base_unittests",
+  "//components:components_unittests",
+  "//net:net_unittests",
+]
+if (!is_ios) {
+  chromium_unit_tests_deps += [ "//chrome/test:unit_tests" ]
+}
+if (use_blink) {
+  chromium_unit_tests_deps += [ "//content/test:content_unittests" ]
+}
+
+group("chromium_unit_tests") {
+  testonly = true
+  data_deps = chromium_unit_tests_deps
+
+  write_file("$root_out_dir/chromium_unit_tests.json",
+             chromium_unit_tests_deps,
+             "json")
+}
+
+brave_all_unit_tests_deps = [ "//brave/components:brave_components_unittests" ]
+if (!is_ios) {
+  brave_all_unit_tests_deps += [ "//brave/test:brave_unit_tests" ]
+} else {
+  brave_all_unit_tests_deps += [ "//brave/ios/testing:ios_brave_unit_tests" ]
+}
+if (!is_ios && !is_android) {
+  brave_all_unit_tests_deps += [ "//brave/test:brave_installer_unittests" ]
+}
+group("brave_all_unit_tests") {
+  testonly = true
+  data_deps = brave_all_unit_tests_deps
+  write_file("$root_out_dir/brave_all_unit_tests.json",
+             brave_all_unit_tests_deps,
+             "json")
+}
+
 # This target serves as a canonical place to define all code that has to be
 # buildable in all platforms in a single build run.
 group("all") {
   testonly = true
-  deps = [ "//brave" ]
+  deps = [
+    ":brave_all_unit_tests",
+    ":chromium_unit_tests",
+    "//brave",
+  ]
 
   if (!is_android && !is_ios) {
     deps += [
-      "//brave/test:brave_installer_unittests",
       "//brave/test:brave_network_audit_tests",
       "//chrome/test:browser_tests",
-      "//chrome/test:unit_tests",
-      "//components:components_unittests",
-      "//content/test:content_unittests",
-      "//net:net_unittests",
     ]
   }
 
+  if (toolkit_views) {
+    deps += [ "//ui/views/examples:views_examples" ]
+  }
+
   if (!is_ios) {
-    deps += [
-      "//brave/test:brave_browser_tests",
-      "//brave/test:brave_unit_tests",
-    ]
+    deps += [ "//brave/test:brave_browser_tests" ]
   }
 
   if (is_android) {

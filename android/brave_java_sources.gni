@@ -49,7 +49,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/accessibility/settings/BraveAccessibilitySettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/appmenu/AppMenuIconRowFooter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/bookmarks/BraveBookmarkActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/CryptoModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/CryptoSharedActions.java",
@@ -63,7 +62,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/app/shimmer/Shimmer.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/shimmer/ShimmerDrawable.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/shimmer/ShimmerFrameLayout.java",
-  "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/autofill/BraveAutofillBackgroundServiceImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/autofill/BraveAutofillService.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge.java",
@@ -412,6 +410,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BraveManageSyncSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BravePasswordAccessReauthenticationHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/tab/BraveTabHelpers.java",
+  "../../brave/android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java",
@@ -524,6 +523,8 @@ brave_browser_ui_android_default_browser_promo_java_sources = [
 
 brave_browser_ui_android_toolbar_sources = [
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/BraveToolbarPositionController.java",
+  "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarPrefs.java",
+  "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/settings/BraveRadioButtonGroupAdaptiveToolbarPreference.java",
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator.java",
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BottomTabSwitcherActionMenuCoordinator.java",
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",

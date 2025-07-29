@@ -6,7 +6,7 @@
 #include <string_view>
 
 #include "base/path_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -20,7 +20,8 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "extensions/buildflags/buildflags.h"
 #include "net/dns/mock_host_resolver.h"
-#include "net/test/spawned_test_server/spawned_test_server.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/install_default_websocket_handlers.h"
 #include "net/test/test_data_directory.h"
 #include "third_party/blink/public/common/features.h"
 #include "url/gurl.h"
@@ -108,11 +109,13 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
     content::SetupCrossSiteRedirector(&https_server_);
     ASSERT_TRUE(https_server_.Start());
 
-    ws_server_ = std::make_unique<net::SpawnedTestServer>(
-        net::SpawnedTestServer::TYPE_WSS, net::GetWebSocketTestDataDirectory());
+    ws_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::EmbeddedTestServer::TYPE_HTTPS);
+    net::test_server::InstallDefaultWebSocketHandlers(ws_server_.get());
     ASSERT_TRUE(ws_server_->Start());
 
-    ws_url_ = ws_server_->GetURL("a.com", "echo-with-no-extension");
+    ws_url_ = net::test_server::GetWebSocketURL(*ws_server_, "a.com",
+                                                "/echo-with-no-extension");
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -179,8 +182,7 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
                        std::string_view script_template,
                        int count) {
     for (int i = 0; i < count; ++i) {
-      EXPECT_EQ("close",
-                content::EvalJs(rfh, content::JsReplace(script_template, i)));
+      EXPECT_TRUE(content::ExecJs(rfh, content::JsReplace(script_template, i)));
     }
   }
 
@@ -195,7 +197,7 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_{
       net::test_server::EmbeddedTestServer::TYPE_HTTPS};
-  std::unique_ptr<net::SpawnedTestServer> ws_server_;
+  std::unique_ptr<net::EmbeddedTestServer> ws_server_;
   GURL ws_url_;
 
  private:
@@ -366,7 +368,7 @@ IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
   extensions::ChromeTestExtensionLoader extension_loader(browser()->profile());
   scoped_refptr<const extensions::Extension> extension =
       extension_loader.LoadExtension(test_extension_dir.UnpackedPath());
-  const GURL url = extension->GetResourceURL("/empty.html");
+  const GURL url = extension->ResolveExtensionURL("/empty.html");
   auto* extension_rfh = ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);

@@ -5,7 +5,7 @@
 
 #include "content/public/test/fake_local_frame.h"
 
-#include "src/content/public/test/fake_local_frame.cc"
+#include <content/public/test/fake_local_frame.cc>
 
 namespace content {
 

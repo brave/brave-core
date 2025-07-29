@@ -151,7 +151,6 @@ const svmSimulationResponse: BraveWallet.SolanaSimulationResponse = {
     .concat(mockSolStakingChangeSimulation.expectedStateChanges[0]),
 }
 export const _ConfirmSimulatedEvmTransactionPanel = {
-  title: 'Confirm Simulated EVM Transaction Panel',
   render: () => {
     return (
       <WalletPanelStory
@@ -189,7 +188,6 @@ export const _ConfirmSimulatedEvmTransactionPanel = {
 }
 
 export const _ConfirmSimulatedSvmTransactionPanel = {
-  title: 'Confirm Simulated SVM Transaction Panel',
   render: () => {
     return (
       <WalletPanelStory
@@ -223,5 +221,5 @@ export const _ConfirmSimulatedSvmTransactionPanel = {
 }
 
 export default {
-  title: 'Confirm Simulated Transaction Panel',
+  title: 'Wallet/Panel/Panels/Transaction Simulations',
 }

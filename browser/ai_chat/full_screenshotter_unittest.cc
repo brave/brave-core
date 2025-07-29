@@ -367,7 +367,7 @@ TEST_F(FullScreenshotterTest, CaptureFailedAllErrorStates) {
     auto result = CaptureScreenshots(web_contents());
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(),
-              base::StringPrintf(
+              absl::StrFormat(
                   "Failed to capture a screenshot (CaptureStatus=%d)",
                   static_cast<int>(paint_preview::PaintPreviewBaseService::
                                        CaptureStatus::kCaptureFailed)));
@@ -507,8 +507,8 @@ TEST_F(FullScreenshotterTest, BitmapForMainFrameFailed) {
     auto result = CaptureScreenshots(web_contents());
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(),
-              base::StringPrintf("Failed to get bitmap (BitmapStatus=%d)",
-                                 static_cast<int>(status)));
+              absl::StrFormat("Failed to get bitmap (BitmapStatus=%d)",
+                              static_cast<int>(status)));
   }
 }
 

@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/leo/react/tooltip'
 
 import { formatMessage } from '../../../shared/lib/locale_context'
 import { useAppState } from '../../lib/app_model_context'
@@ -84,6 +85,7 @@ export function EarningCard() {
                   $1: (content) => (
                     <div key='value' className='counter-value'>
                       {content}
+                      {renderAdsViewedTooltip()}
                     </div>
                   )
                 }
@@ -115,6 +117,15 @@ export function EarningCard() {
     )
   }
 
+  function renderAdsViewedTooltip() {
+    return (
+      <Tooltip mode='default' className='info'>
+        <Icon name='info-outline' />
+        <div slot='content'>{getString('adsViewedTooltip')}</div>
+      </Tooltip>
+    )
+  }
+
   function renderEarningsCounter() {
     if (!adsInfo) {
       return
@@ -124,6 +135,7 @@ export function EarningCard() {
         $1: (content) => (
           <div key='value' className='counter-value'>
             {content}
+            {renderAdsViewedTooltip()}
           </div>
         )
       }

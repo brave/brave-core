@@ -11,4 +11,4 @@
 inline constexpr char kWidevineKeySystem[] = "com.widevine.alpha";
 #endif  // !BUILDFLAG(ENABLE_WIDEVINE)
 
-#include "src/chrome/renderer/media/chrome_key_systems.cc"
+#include <chrome/renderer/media/chrome_key_systems.cc>

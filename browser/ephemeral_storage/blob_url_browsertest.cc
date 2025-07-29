@@ -9,7 +9,7 @@
 #include "base/strings/pattern.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
@@ -259,7 +259,7 @@ IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
   extensions::ChromeTestExtensionLoader extension_loader(browser()->profile());
   scoped_refptr<const extensions::Extension> extension =
       extension_loader.LoadExtension(test_extension_dir.UnpackedPath());
-  const GURL url = extension->GetResourceURL("/empty.html");
+  const GURL url = extension->ResolveExtensionURL("/empty.html");
   auto* extension_rfh = ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);

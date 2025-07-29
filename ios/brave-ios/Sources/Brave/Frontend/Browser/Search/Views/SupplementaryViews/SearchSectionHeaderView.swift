@@ -10,6 +10,12 @@ import UIKit
 class SearchSectionHeaderView: UICollectionReusableView, CollectionViewReusable {
   private let label = UILabel()
 
+  var isPrivateBrowsing: Bool = false {
+    didSet {
+      setTheme()
+    }
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -33,7 +39,7 @@ class SearchSectionHeaderView: UICollectionReusableView, CollectionViewReusable 
 
   private func setTheme() {
     label.do {
-      $0.textColor = UIColor(braveSystemName: .textPrimary)
+      $0.textColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .textPrimary)
 
       var sizeCategory = UIApplication.shared.preferredContentSizeCategory
       if sizeCategory.isAccessibilityCategory {

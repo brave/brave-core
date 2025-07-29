@@ -22,18 +22,10 @@ import {
 } from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
 import { WelcomePanel } from '../components/extension/welcome-panel/index'
 import {
-  AddSuggestedTokenPanel, //
-} from '../components/extension/add-suggested-token-panel/index'
-import {
   DecryptRequestPanel, //
 } from '../components/extension/encryption-key-panel/index'
 
-import {
-  StyledExtensionWrapperLonger,
-  StyledExtensionWrapper,
-  StyledWelcomPanel,
-} from './style'
-import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
+import { StyledExtensionWrapperLonger, StyledWelcomPanel } from './style'
 
 // mocks
 import {
@@ -48,7 +40,7 @@ import { deserializeTransaction } from '../utils/model-serialization-utils'
 import { WalletApiDataOverrides } from '../constants/testing_types'
 
 export default {
-  title: 'Wallet/Extension/Panels',
+  title: 'Wallet/Panel/Panels',
   parameters: {
     layout: 'centered',
   },
@@ -462,18 +454,6 @@ export const _SetupWallet = {
       <StyledWelcomPanel>
         <WelcomePanel />
       </StyledWelcomPanel>
-    )
-  },
-}
-
-export const _AddSuggestedToken = {
-  render: () => {
-    return (
-      <StyledExtensionWrapper>
-        <WalletPanelStory>
-          <AddSuggestedTokenPanel />
-        </WalletPanelStory>
-      </StyledExtensionWrapper>
     )
   },
 }

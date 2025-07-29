@@ -54,8 +54,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(IS_MAC)
   registry->RegisterBooleanPref(prefs::kBraveVPNOnDemandEnabled, false);
 #endif
-  registry->RegisterBooleanPref(prefs::kBraveVPNSmartProxyRoutingEnabled,
-                                false);
+  registry->RegisterBooleanPref(prefs::kBraveVPNSmartProxyRoutingEnabled, true);
   registry->RegisterListPref(prefs::kBraveVPNWidgetUsageWeeklyStorage);
   registry->RegisterListPref(prefs::kBraveVPNConnectedMinutesWeeklyStorage);
 }
@@ -159,6 +158,10 @@ GURL GetManageURLForUIType(mojom::ManageURLType type, const GURL& manage_url) {
       return GURL(brave_vpn::kAboutUrl);
     case mojom::ManageURLType::MANAGE:
       return manage_url;
+    case mojom::ManageURLType::ABOUT_SMART_PROXY:
+      return GURL(
+          "https://support.brave.app/hc/en-us/articles/"
+          "32105253704333-What-is-Smart-Proxy-Routing");
     default:
       break;
   }

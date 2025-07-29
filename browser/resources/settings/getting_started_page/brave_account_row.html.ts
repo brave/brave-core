@@ -5,10 +5,11 @@
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
+import { loadTimeData } from '//resources/js/load_time_data.js'
 import { SettingsBraveAccountRow } from './brave_account_row.js'
 
 export function getHtml(this: SettingsBraveAccountRow) {
-  return html`<!--_html_template_start_-->
+  return html`
     <div class="row">
       <div class="circle">
         <leo-icon name="social-brave-release-favicon-fullheight-color">
@@ -18,22 +19,21 @@ export function getHtml(this: SettingsBraveAccountRow) {
         <div class="title">
           ${this.signedIn
             ? 'John Doe'
-            : '$i18n{braveAccountRowTitle}'}
+            : loadTimeData.getString('braveAccountRowTitle')}
         </div>
         <div class="description">
           ${this.signedIn
             ? 'johndoe@gmail.com'
-            : '$i18n{braveAccountRowDescription}'}
+            : loadTimeData.getString('braveAccountRowDescription')}
         </div>
       </div>
       <leo-button kind=${this.signedIn ? 'outline' : 'filled'}
                   size="small"
                   @click=${this.onButtonClicked}>
         ${this.signedIn
-          ? '$i18n{braveAccountManageAccountButtonLabel}'
-          : '$i18n{braveAccountGetStartedButtonLabel}'
+          ? loadTimeData.getString('braveAccountManageAccountButtonLabel')
+          : loadTimeData.getString('braveAccountGetStartedButtonLabel')
         }
       </leo-button>
-    </div>
-  <!--_html_template_end_-->`
+    </div>`
 }

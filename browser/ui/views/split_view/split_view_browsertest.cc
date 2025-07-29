@@ -16,6 +16,7 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
@@ -107,7 +108,7 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
 
   BraveMultiContentsView* brave_multi_contents_view() const {
     return static_cast<BraveMultiContentsView*>(
-        brave_browser_view()->multi_contents_view_for_testing());
+        brave_browser_view()->multi_contents_view());
   }
 
   BrowserNonClientFrameView* browser_non_client_frame_view() {
@@ -209,11 +210,20 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   // Check corner radius.
   auto* multi_contents_view = brave_multi_contents_view();
   ASSERT_TRUE(multi_contents_view);
+  auto* start_contents_container_view =
+      static_cast<BraveContentsContainerView*>(
+          multi_contents_view->contents_container_views_for_testing()[0]);
+  auto* end_contents_container_view = static_cast<BraveContentsContainerView*>(
+      multi_contents_view->contents_container_views_for_testing()[1]);
+  ASSERT_TRUE(start_contents_container_view);
+  ASSERT_TRUE(end_contents_container_view);
 
-  FullscreenController* fullscreen_controller =
-      browser()->exclusive_access_manager()->fullscreen_controller();
+  FullscreenController* fullscreen_controller = browser()
+                                                    ->GetFeatures()
+                                                    .exclusive_access_manager()
+                                                    ->fullscreen_controller();
   fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
-  EXPECT_EQ(0, multi_contents_view->GetCornerRadius(true));
+  EXPECT_EQ(0, start_contents_container_view->GetCornerRadius(true));
   fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
 
   auto* start_contents_web_view =
@@ -223,18 +233,16 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   ASSERT_TRUE(start_contents_web_view);
   ASSERT_TRUE(end_contents_web_view);
   EXPECT_EQ(start_contents_web_view->layer()->rounded_corner_radii(),
-            gfx::RoundedCornersF(multi_contents_view->GetCornerRadius(false)));
+            gfx::RoundedCornersF(
+                start_contents_container_view->GetCornerRadius(false)));
   EXPECT_EQ(end_contents_web_view->layer()->rounded_corner_radii(),
-            gfx::RoundedCornersF(multi_contents_view->GetCornerRadius(false)));
+            gfx::RoundedCornersF(
+                end_contents_container_view->GetCornerRadius(false)));
 
   // Check borders.
-  auto start_contents_container_view =
-      multi_contents_view->contents_container_views_for_testing()[0];
-  auto end_contents_container_view =
-      multi_contents_view->contents_container_views_for_testing()[1];
-  EXPECT_EQ(gfx::Insets(BraveMultiContentsView::kBorderThickness),
+  EXPECT_EQ(gfx::Insets(BraveContentsContainerView::kBorderThickness),
             start_contents_container_view->GetBorder()->GetInsets());
-  EXPECT_EQ(gfx::Insets(BraveMultiContentsView::kBorderThickness),
+  EXPECT_EQ(gfx::Insets(BraveContentsContainerView::kBorderThickness),
             end_contents_container_view->GetBorder()->GetInsets());
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
@@ -721,6 +729,107 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
       base::test::RunUntil([&]() { return IsWebModalDialogVisibleAt(1); }));
 }
 
+namespace {
+
+class LoadObserver : public content::WebContentsObserver {
+ public:
+  explicit LoadObserver(content::WebContents* web_contents)
+      : WebContentsObserver(web_contents) {}
+
+  void DidStopLoading() override { did_load_ = true; }
+
+  bool did_load() const { return did_load_; }
+
+ private:
+  bool did_load_ = false;
+};
+
+}  // namespace
+
+IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest, SplitViewReloadTest) {
+  NewSplitTab();
+  content::WaitForLoadStop(GetWebContentsAt(0));
+  content::WaitForLoadStop(GetWebContentsAt(1));
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Check only active split tab(at 1) is loaded when split tab is active.
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+
+    EXPECT_FALSE(observer_0.did_load());
+    EXPECT_TRUE(observer_1.did_load());
+  }
+
+  // Create another active tab.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  content::WaitForLoadStop(GetWebContentsAt(2));
+  EXPECT_EQ(2, tab_strip_model->active_index());
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_FALSE(IsSplitTabAt(2));
+
+  // Check only non-split active tab is loaded.
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+    LoadObserver observer_2(GetWebContentsAt(2));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+    content::WaitForLoadStop(GetWebContentsAt(2));
+
+    EXPECT_FALSE(observer_0.did_load());
+    EXPECT_FALSE(observer_1.did_load());
+    EXPECT_TRUE(observer_2.did_load());
+  }
+
+  // Activate split tab at 0 and check only active split tab is loaded.
+  tab_strip_model->ActivateTabAt(0);
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+    LoadObserver observer_2(GetWebContentsAt(2));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+    content::WaitForLoadStop(GetWebContentsAt(2));
+
+    EXPECT_TRUE(observer_0.did_load());
+    EXPECT_FALSE(observer_1.did_load());
+    EXPECT_FALSE(observer_2.did_load());
+  }
+
+  // Select all tabs and check all tabs(split & normal tabs) are reloaded
+  // as we only filter inactive split tab when reloading if only one pair
+  // of split tab is selected.
+  tab_strip_model->ExtendSelectionTo(2);
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+    LoadObserver observer_2(GetWebContentsAt(2));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+    content::WaitForLoadStop(GetWebContentsAt(2));
+
+    EXPECT_TRUE(observer_0.did_load());
+    EXPECT_TRUE(observer_1.did_load());
+    EXPECT_TRUE(observer_2.did_load());
+  }
+}
+
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SplitViewWithTabDialogBrowserTest,
@@ -783,7 +892,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
 
   // MultiContentsView is not initialized if we don't enable
   // features::kSideBySide.
-  EXPECT_FALSE(browser_view().multi_contents_view_for_testing());
+  EXPECT_FALSE(browser_view().multi_contents_view());
 }
 
 // MacOS does not need views window scrim. We use sheet to show window modals
@@ -1034,8 +1143,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewFullscreenTest) {
   EXPECT_TRUE(secondary_contents_container().GetBorder());
 
   // Simulate tab-fullscreen state change.
-  FullscreenController* fullscreen_controller =
-      browser()->exclusive_access_manager()->fullscreen_controller();
+  FullscreenController* fullscreen_controller = browser()
+                                                    ->GetFeatures()
+                                                    .exclusive_access_manager()
+                                                    ->fullscreen_controller();
   fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
   split_view().OnFullscreenStateChanged();
 

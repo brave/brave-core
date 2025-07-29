@@ -10,7 +10,7 @@
   OnTabActiveStateChanged();      \
   void BrowserActiveStateChanged
 
-#include "src/components/javascript_dialogs/tab_modal_dialog_manager.h"  // IWYU pragma: export
+#include <components/javascript_dialogs/tab_modal_dialog_manager.h>  // IWYU pragma: export
 
 #undef BrowserActiveStateChanged
 

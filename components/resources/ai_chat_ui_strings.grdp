@@ -19,13 +19,13 @@
     About Leo
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="Outlining the functioning of AIChat (paragraph 1 of 3)" formatter_data="webui=AiChat">
-    Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model will change from time to time. See the <ph name="LINK_BEFORE">$1</ph>Brave Help Center<ph name="LINK_AFTER">$2</ph> for more details.
+    Brave Leo is a private AI smart assistant that enhances your use of the web. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model will change from time to time. See the <ph name="LINK_BEFORE">$1</ph>Brave Help Center<ph name="LINK_AFTER">/$1</ph> for more details.
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_2" desc="Outlining the functioning of AIChat (paragraph 2 of 3)" formatter_data="webui=AiChat">
-    By default, when you ask Leo a question it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.
+    By default, when you ask Leo a question about a website or page you are viewing, the content of the webpage you are viewing or any text you highlight on a page, as well as your search query will be sent to Brave servers in order for Leo to provide a response. In some cases, Leo will send queries derived from your input to Brave Search and use the search results to better answer your question. Brave does not guarantee the accuracy of responses, and responses may include inaccurate, misleading, or false information. Don't submit sensitive or private information to Brave Leo, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_3" desc="Outlining the functioning of AIChat (paragraph 3 of 3)" formatter_data="webui=AiChat">
-    Leo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the <ph name="LINK_BEFORE">$1</ph>privacy policy<ph name="LINK_AFTER">$2</ph> for more information.
+    Leo does not collect identifiers such as your IP address that can be linked to you. We do not train our models based on your data, including your search queries or Brave Leo’s responses. No personal data is stored on our servers, or retained by Brave. See the <ph name="LINK_BEFORE">$1</ph>privacy policy<ph name="LINK_AFTER">/$1</ph> for more information.
   </message>
   <message name="IDS_CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL" desc="Placeholder text for when there are attached pages in the input box" formatter_data="webui=AiChat">
     {PAGE_COUNT, plural,
@@ -85,28 +85,25 @@
      Configure
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_AUTOMATIC" desc="AI Chat intro message for the default model" formatter_data="webui=AiChat">
-    Model changes dynamically to use the best one for the task.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Model changes dynamically to use the best one for the task.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_BASIC" desc="AI Chat intro message for the basic model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. Llama is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. Llama is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_QWEN" desc="AI Chat intro message for the qwen model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Qwen 14B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Qwen 14B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEEPSEEK_R1" desc="AI Chat intro message for the deepseek-r1 model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by DeepSeek R1, a model created by DeepSeek to perform deep reasoning tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by DeepSeek R1, a model created by DeepSeek to perform deep reasoning tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_HAIKU" desc="AI Chat intro message for the Claude Haiku model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm proxied by Brave and powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Hi, I'm Leo. I'm proxied by Brave and powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm proxied by Brave and powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
-  </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_VISION_BASIC" desc="AI Chat intro message for the default vision model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama Vision, a model created by Meta to be performant and applicable to many use cases. Llama Vision is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Hi, I'm Leo. I'm proxied by Brave and powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that an AI Chat model is a premium model" formatter_data="webui=AiChat">
     Premium
@@ -238,7 +235,7 @@
     Provide feedback here
   </message>
   <message name="IDS_CHAT_UI_FEEDBACK_PREMIUM_NOTE" desc="Note about the benefits of a premium subscription" formatter_data="webui=AiChat">
-    Leo Premium provides access to an expanded set of language models for even greater answer nuance. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Leo Premium provides access to an expanded set of language models for even greater answer nuance. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_SUBMIT_BUTTON_LABEL" desc="Button label to submit data/form" formatter_data="webui=AiChat">
     Submit
@@ -346,7 +343,7 @@
     Response Feedback
   </message>
   <message name="IDS_CHAT_UI_RATE_MESSAGE_PRIVACY_MODAL_DESCRIPTION" desc="A description for the rate message privacy modal" formatter_data="webui=AiChat">
-    Liking or disliking an answer will send rating, conversation, model, language, version, and premium status to Brave in order to improve Leo. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$1</ph>
+    Liking or disliking an answer will send rating, conversation, model, language, version, and premium status to Brave in order to improve Leo. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="A button label for sending a chat message" formatter_data="webui=AiChat">
     Send message to Leo
@@ -431,9 +428,6 @@
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_SUBTITLE" desc="A description for qwen model" formatter_data="webui=AiChat">
       General purpose chat, coding, and more
-  </message>
-  <message name="IDS_CHAT_UI_CHAT_VISION_BASIC_SUBTITLE" desc="A description for llama vision model" formatter_data="webui=AiChat">
-    General purpose vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE" desc="A description for deepseek-r1 model" formatter_data="webui=AiChat">
     Reasoning model

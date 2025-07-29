@@ -21,5 +21,5 @@ export const NftGroupSelector = {
 }
 
 export default {
-  title: 'Nft Dropdown',
+  title: 'Wallet/Desktop/Components/NFTs',
 }

@@ -16,6 +16,6 @@
 #define SetBackgroundColor(color) \
   SetBackgroundColor(desktop_window_tree_host_->GetBackgroundColor(color))
 
-#include "src/ui/views/widget/desktop_aura/desktop_native_widget_aura.cc"
+#include <ui/views/widget/desktop_aura/desktop_native_widget_aura.cc>
 
 #undef SetBackgroundColor

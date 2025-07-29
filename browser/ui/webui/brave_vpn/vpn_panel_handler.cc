@@ -24,6 +24,7 @@ namespace {
 bool ShouldOpenSingletonTab(brave_vpn::mojom::ManageURLType type) {
   return type == brave_vpn::mojom::ManageURLType::MANAGE ||
          type == brave_vpn::mojom::ManageURLType::PRIVACY ||
+         type == brave_vpn::mojom::ManageURLType::ABOUT_SMART_PROXY ||
          type == brave_vpn::mojom::ManageURLType::ABOUT;
 }
 

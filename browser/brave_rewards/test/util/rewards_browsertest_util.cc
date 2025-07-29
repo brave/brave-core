@@ -161,7 +161,7 @@ void ActivateTabAtIndex(Browser* browser, const int32_t index) {
 }
 
 std::string BalanceDoubleToString(double amount) {
-  return base::StringPrintf("%.3f", amount);
+  return absl::StrFormat("%.3f", amount);
 }
 
 std::string GetUpholdExternalAddress() {

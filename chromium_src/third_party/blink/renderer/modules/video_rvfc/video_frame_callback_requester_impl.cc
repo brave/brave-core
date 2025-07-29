@@ -14,7 +14,7 @@
 
 #define kCoarseResolutionMicroseconds kCoarseResolutionMicroseconds_ChromiumImpl
 
-#include "src/third_party/blink/renderer/modules/video_rvfc/video_frame_callback_requester_impl.cc"
+#include <third_party/blink/renderer/modules/video_rvfc/video_frame_callback_requester_impl.cc>
 
 #undef FloorToMultiple
 #undef kCoarseResolutionMicroseconds

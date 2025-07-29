@@ -7,7 +7,7 @@
 
 #include <optional>
 
-#include "src/components/content_settings/browser/content_settings_manager_impl.cc"
+#include <components/content_settings/browser/content_settings_manager_impl.cc>
 
 namespace content_settings {
 

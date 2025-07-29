@@ -17,7 +17,7 @@
 
 #define UpdateToolbarButtonState virtual UpdateToolbarButtonState
 
-#include "src/chrome/browser/download/bubble/download_display_controller.h"  // IWYU pragma: export
+#include <chrome/browser/download/bubble/download_display_controller.h>  // IWYU pragma: export
 
 #undef UpdateToolbarButtonState
 #undef DownloadDisplayControllerTest

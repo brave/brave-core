@@ -20,8 +20,13 @@ const observer = {
   onConnectionStateChanged: (connectionStatus: ConnectionState) => {
     store.dispatch(Actions.connectionStateChanged({ connectionStatus }))
   },
+
   onSelectedRegionChanged: (region: Region) => {
     store.dispatch(Actions.selectedRegionChanged({ region }))
+  },
+
+  onSmartProxyRoutingStateChanged: (enabled: boolean) => {
+    store.dispatch(Actions.smartProxyRoutingStateChanged(enabled))
   },
 
   onPurchasedStateChanged: (state: PurchasedState, description: string) => {

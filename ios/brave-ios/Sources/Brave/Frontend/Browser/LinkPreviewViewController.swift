@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShields
 import Data
 import Shared
 import UIKit
@@ -41,6 +42,9 @@ class LinkPreviewViewController: UIViewController {
     tab.miscDelegate = browserController
     tab.createWebView()
     tab.addPolicyDecider(browserController)
+    let braveShieldsTabHelper: BraveShieldsTabHelper = .init(tab: tab)
+    tab.braveShieldsHelper = braveShieldsTabHelper
+    tab.addPolicyDecider(braveShieldsTabHelper)
     tab.delegate = browserController
     tab.downloadDelegate = browserController
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
@@ -52,10 +56,13 @@ class LinkPreviewViewController: UIViewController {
     }
 
     // Add rule lists for this page
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !currentTab.isPrivate)
-
     Task(priority: .userInitiated) {
-      let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domain)
+      let isBraveShieldsEnabled = braveShieldsTabHelper.isBraveShieldsEnabled(for: url)
+      let shieldLevel = braveShieldsTabHelper.shieldLevel(for: url, considerAllShieldsOption: true)
+      let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
+        isBraveShieldsEnabled: isBraveShieldsEnabled,
+        shieldLevel: shieldLevel
+      )
       for ruleList in ruleLists {
         currentTab.configuration.userContentController.add(ruleList)
       }

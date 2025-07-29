@@ -5,6 +5,12 @@
 
 import * as React from 'react'
 
+// Selectors
+import {
+  useSafeUISelector, //
+} from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+
 // Types
 import { WalletRoutes } from '../../../constants/types'
 
@@ -34,6 +40,9 @@ interface Props {
 
 export const DefaultPanelHeader = (props: Props) => {
   const { title, expandRoute } = props
+
+  // UI Selectors (safe)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // State
   const [showSettingsMenu, setShowSettingsMenu] = React.useState<boolean>(false)
@@ -66,13 +75,13 @@ export const DefaultPanelHeader = (props: Props) => {
         width='unset'
         justifyContent='flex-start'
       >
-        {expandRoute && (
+        {!isAndroid && expandRoute && (
           <Button onClick={onClickExpand}>
             <ButtonIcon name='expand' />
           </Button>
         )}
       </LeftRightContainer>
-      <HeaderTitle isPanel={true}>{title}</HeaderTitle>
+      <HeaderTitle isAndroidOrPanel={true}>{title}</HeaderTitle>
       <LeftRightContainer
         width='unset'
         justifyContent='flex-end'

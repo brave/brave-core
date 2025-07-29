@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/third_party/boringssl/src/include/openssl/curve25519.h"  // IWYU pragma: export
+#include <third_party/boringssl/src/include/openssl/curve25519.h>  // IWYU pragma: export
 
 #if defined(__cplusplus)
 extern "C" {

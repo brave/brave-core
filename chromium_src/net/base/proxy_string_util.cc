@@ -88,7 +88,7 @@ std::string ProxyServerToPacResultElement_ChromiumImpl(
   else                                                                         \
     return CreateProxyServerWithAuthInfo(scheme, host_and_port);
 
-#include "src/net/base/proxy_string_util.cc"
+#include <net/base/proxy_string_util.cc>
 
 #undef ParseAuthority
 #undef ProxyServerToPacResultElement

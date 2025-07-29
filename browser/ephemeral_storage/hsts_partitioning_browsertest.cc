@@ -8,7 +8,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -76,10 +76,9 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
     mock_cert_verifier_.SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        base::StringPrintf("MAP *:80 127.0.0.1:%d,"
-                           "MAP *:443 127.0.0.1:%d",
-                           embedded_test_server()->port(),
-                           https_server_.port()));
+        absl::StrFormat("MAP *:80 127.0.0.1:%d,"
+                        "MAP *:443 127.0.0.1:%d",
+                        embedded_test_server()->port(), https_server_.port()));
   }
 
   void SetUpOnMainThread() override {

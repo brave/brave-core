@@ -31,9 +31,9 @@ def add_chromium_src_include_categories_rule(data):
     else:
         raise RuntimeError("Couldn't find the '.*' rule in IncludeCategories")
 
-    # Create chromium_src rule with a lower priority than the wildcard rule.
+    # Create ../gen rule with a lower priority than the wildcard rule.
     chromium_src_rule = {
-        'Regex': '^"(src\/|..\/gen\/).*',
+        'Regex': r'^"..\/gen\/.*',
         'Priority': wildcard_rule_priority + 1,
     }
 

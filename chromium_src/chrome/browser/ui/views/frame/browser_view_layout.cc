@@ -16,8 +16,7 @@
   SupportsWindowFeature(FEATURE) && (FEATURE != Browser::FEATURE_TABSTRIP || \
                                      delegate_->ShouldDrawTabStrip());
 
-
-#include "src/chrome/browser/ui/views/frame/browser_view_layout.cc"
+#include <chrome/browser/ui/views/frame/browser_view_layout.cc>
 #undef SupportsWindowFeature
 
 void BrowserViewLayout::NotifyDialogPositionRequiresUpdate() {

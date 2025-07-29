@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
+index 62380119545c936ee3b517b390212fec31c96356..cf0c03b8b8a715d3fa01d2d840cc7c7465947493 100644
+--- a/chrome/browser/ui/browser_commands.cc
++++ b/chrome/browser/ui/browser_commands.cc
+@@ -489,6 +489,7 @@ void ReloadInternal(Browser* browser,
+     selected_tabs.push_back(
+         browser->tab_strip_model()->GetWebContentsAt(selected_index));
+   }
++  BRAVE_RELOAD_INTERNAL
+ 
+   base::UmaHistogramCounts100("TabStrip.Tab.ReloadCount", selected_tabs.size());
+ 

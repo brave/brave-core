@@ -124,7 +124,7 @@ std::string GetUpholdUser() {
 
 std::string GetUpholdCard(const std::string& balance,
                           const std::string& address) {
-  return base::StringPrintf(
+  return absl::StrFormat(
       R"({
         "available": "%s",
         "balance": "%s",
@@ -138,14 +138,14 @@ std::string GetUpholdCard(const std::string& balance,
           "starred": false
         }
       })",
-      balance.c_str(), balance.c_str(), address.c_str());
+      balance, balance, address);
 }
 
 std::string GetOrderCreateResponse(mojom::SKUOrderPtr sku_order) {
   DCHECK(sku_order);
   std::string items;
   for (const auto& item : sku_order->items) {
-    items.append(base::StringPrintf(
+    items.append(absl::StrFormat(
         R"({
         "id": "%s",
         "orderId": "%s",
@@ -157,11 +157,11 @@ std::string GetOrderCreateResponse(mojom::SKUOrderPtr sku_order) {
         "price": "%g",
         "description": "%s"
       })",
-        item->order_item_id.c_str(), sku_order->order_id.c_str(),
-        item->quantity, item->price, item->description.c_str()));
+        item->order_item_id, sku_order->order_id, item->quantity, item->price,
+        item->description));
   }
 
-  return base::StringPrintf(
+  return absl::StrFormat(
       R"({
         "id": "%s",
         "createdAt": "2020-04-08T08:22:26.288974Z",
@@ -172,7 +172,7 @@ std::string GetOrderCreateResponse(mojom::SKUOrderPtr sku_order) {
         "status": "pending",
         "items": [%s]
       })",
-      sku_order->order_id.c_str(), sku_order->total_amount, items.c_str());
+      sku_order->order_id, sku_order->total_amount, items);
 }
 
 }  // namespace brave_rewards::test_util

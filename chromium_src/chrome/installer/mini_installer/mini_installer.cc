@@ -30,7 +30,7 @@
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif  // defined(OFFICIAL_BUILD)
 
-#include "src/chrome/installer/mini_installer/mini_installer.cc"
+#include <chrome/installer/mini_installer/mini_installer.cc>
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif  // defined(OFFICIAL_BUILD)

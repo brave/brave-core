@@ -30,11 +30,11 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/test/engine_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -56,6 +56,8 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/install_default_websocket_handlers.h"
 #include "net/test/test_data_directory.h"
 #include "services/network/host_resolver.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -709,15 +711,16 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_WebSocketBlocking) {
   UpdateAdBlockInstanceWithRules("*$websocket");
 
-  net::SpawnedTestServer ws_server(net::SpawnedTestServer::TYPE_WS,
-                                   net::GetWebSocketTestDataDirectory());
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
   ASSERT_TRUE(ws_server.Start());
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   NavigateToURL(url);
   content::WebContents* contents = web_contents();
 
-  GURL ws_url = ws_server.GetURL("echo-with-no-extension");
+  GURL ws_url =
+      net::test_server::GetWebSocketURL(ws_server, "/echo-with-no-extension");
 
   EXPECT_EQ(false,
             EvalJs(contents, content::JsReplace("checkWebsocketConnection($1)",
@@ -2834,6 +2837,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // Test `matches-attr` procedural filters
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesAttr) {
   UpdateAdBlockInstanceWithRules(
+      "a.com##:matches-attr(\"testing\")\n"
       "a.com##:matches-attr(\"test-attr\"=\"test-value\")\n"
       "a.com##:matches-attr(\"/test-y.{2}-attr/\"=\"/test-y[a-z]s-value/\")");
 
@@ -2864,6 +2868,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesAttr) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesCss) {
   UpdateAdBlockInstanceWithRules(
       "a.com##:matches-css(opacity: 0.9)\n"
+      "a.com##:matches-css(clear: /t$/)\n"
       "a.com##:matches-css-before(display: inline-block)\n"
       "a.com##:matches-css-before(content:\"advertisement\")");
 

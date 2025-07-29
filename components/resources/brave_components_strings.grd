@@ -235,7 +235,7 @@
         Customize list
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_BRAVE_PLACEHOLDER" desc="Placeholder text for when Brave is the selected search engine">
-        Search the web privately
+        Search the web privately with AI
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_NON_BRAVE_PLACEHOLDER" desc="Placeholder text for when Brave is not the selected search engine">
         Search the web
@@ -433,7 +433,9 @@
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW" desc="">Still connecting...</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW_DESC" desc="">There's some slowness in the Tor network</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_FAILED" desc="">Tor connection failed</message>
-        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING" desc="">Tor is connecting... [[percentage]]%</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING" desc="">
+          Tor is connecting... <ph name="PERCENTAGE">$1<ex>50</ex></ph>%
+        </message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING" desc="">Having problems connecting? Try <ph name="BEGIN_LINK">$1</ph>turning off<ph name="END_LINK">$2</ph> Private Window with Tor and back on again in settings.</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_REENABLE" desc="">Open <ph name="BEGIN_LINK">$1</ph>Brave Settings<ph name="END_LINK">$2</ph>, disable Private Window with Tor, then re-enable.</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_BRIDGES" desc=""><ph name="BEGIN_BOLD">$1</ph>Still having trouble?<ph name="END_BOLD">$2</ph> Try using <ph name="BEGIN_BRIDGES_LINK">$3</ph>bridges<ph name="END_BRIDGES_LINK">$4</ph> or <ph name="BEGIN_SUPPORT_LINK">$5</ph>contact support<ph name="END_SUPPORT_LINK">$6</ph>.</message>
@@ -463,14 +465,16 @@
       <!-- WebUI webcompat reporter resources -->
       <if expr="not is_android">
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE" desc="Title for broken website report dialog window">Report a broken site</message>
-        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION" desc="Label for a website's URL indicating that it will be reported for compatibility issues">Let Brave's developers know that this site doesn't work properly with Shields:</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION" desc="Label for a website's URL indicating that it will be reported for compatibility issues">Let Brave's developers know that this site isn't working as expected:</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_NON_HTTP_EXPLANATION" desc="Notifies the user that non-HTTP/HTTPS browser pages cannot be reported">This page cannot be reported because it was not served over HTTP/HTTPS.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_LOCAL_EXPLANATION" desc="Notifies the user that local pages (i.e. via localhost) cannot be reported">This page is a local web page and is not eligible for reporting.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_ERROR_PAGE_EXPLANATION" desc="Notifies the user that the error page cannot be reported">This is an error page. It cannot be reported as a broken site.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_INFO_APOPUP_EXPL" desc="Informs user about auto populating of the contact information.">If you provide contact info it will be stored for future reports.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER2" desc="Thanks the user for sending the report, and informs them that relevant website information will be reported to Brave servers.">Thank you for helping make Brave better for all. This report will only contain information necessary for us to fix this site.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_INFO_LINK" desc="Text for link to webcompat report wiki page.">Learn more.</message>
-        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS" desc="Placeholder text for the optional details field in the broken website report">Additional details (optional)</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_PLACEHOLDER" desc="Placeholder text that instructs the user to select one of the following categories of issues on a webpage">Select one option</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS" desc="Placeholder text for the details field in the broken website report">Additional details</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_OPTIONAL_FIELD" desc="Appended to a field label in the broken website report if it is not required to be filled out">(optional)</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">Contact me at: (optional)</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">Email, Twitter, etc.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_ATTACH_SCREENSHOT_LABEL" desc="Label for the checkbox for attaching a screenshot with the broken website report">Include screenshot of the current page</message>
@@ -481,6 +485,18 @@
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_THANK_YOU" desc="Thanks the user for submitting a report of a broken website">Thank you!</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_CONFIRMATION_NOTICE" desc="Assures the user that a problem with a website reported as broken will be fixed soon">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</message>
       </if>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_LABEL" desc="Label for a dropdown containing categories of issues on a webpage">What's the main issue you're seeing?</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ADS" desc="Category of website problems relating to visible advertisements">Ads are still visible</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_BLANK" desc="Category of website problems relating to blank pages or missing content">Blank page or missing content</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SCROLL" desc="Category of website problems relating to inability to scroll on the page">Can't scroll</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_FORM" desc="Category of website problems relating to form entry elements not working">Can't enter text in a form</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_COOKIE" desc="Category of website problems relating to visible cookie notices">Visible cookie-consent notice</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ANTIADBLOCK" desc="Category of website problems relating to appeals to disable the user's adblocker">There's an anti-adblock measure</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_TRACKING" desc="Category of website problems relating to unblocked tracking or analytics scripts">Unblocked tracking/analytics script</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_NEWSLETTER" desc="Category of website problems relating to visible newsletter popups">Newsletter popup</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SOCIAL" desc="Category of website problems relating to visible social media icons or sharing requests">Social widget</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_CHAT" desc="Category of website problems relating to visible chatbot or customer service chat buttons">Chat widget</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_OTHER" desc="Category of miscellaneous website problems">Other</message>
 
       <!-- WebUI rewards resources -->
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Manage Brave Ads</message>

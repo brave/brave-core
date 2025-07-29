@@ -104,7 +104,8 @@ class BraveBrowserView : public BrowserView,
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  ReaderModeToolbarView* reader_mode_toolbar() { return reader_mode_toolbar_; }
+  // Give active tab's reader mode toolbar.
+  ReaderModeToolbarView* reader_mode_toolbar();
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
       speedreader::SpeedreaderBubbleLocation location) override;
@@ -116,7 +117,6 @@ class BraveBrowserView : public BrowserView,
 #endif
   bool ShouldShowWindowTitle() const override;
   void OnThemeChanged() override;
-  TabSearchBubbleHost* GetTabSearchBubbleHost() override;
   void OnActiveTabChanged(content::WebContents* old_contents,
                           content::WebContents* new_contents,
                           int index,
@@ -166,6 +166,7 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest, GetMinimumWidth);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 

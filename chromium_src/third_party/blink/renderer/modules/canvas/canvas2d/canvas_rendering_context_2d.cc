@@ -8,7 +8,7 @@
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 
 #define getImageDataInternal getImageDataInternal_Unused
-#include "src/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc"
+#include <third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc>
 #undef getImageDataInternal
 
 namespace blink {

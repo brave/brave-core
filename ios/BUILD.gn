@@ -31,6 +31,7 @@ import("//brave/ios/browser/api/ntp_background_images/headers.gni")
 import("//brave/ios/browser/api/omnibox/headers.gni")
 import("//brave/ios/browser/api/opentabs/headers.gni")
 import("//brave/ios/browser/api/p3a/headers.gni")
+import("//brave/ios/browser/api/profile/headers.gni")
 import("//brave/ios/browser/api/qr_code/headers.gni")
 import("//brave/ios/browser/api/query_filter/headers.gni")
 import("//brave/ios/browser/api/session_restore/headers.gni")
@@ -69,11 +70,6 @@ group("brave_ios") {
     ":material_components_xcframework",
     ":nala_assets_xcframework",
   ]
-}
-
-group("brave_ios_tests") {
-  testonly = true
-  public_deps = [ "testing:brave_core_ios_tests" ]
 }
 
 brave_core_public_headers = [
@@ -142,6 +138,7 @@ brave_core_public_headers += browser_api_translate_public_headers
 brave_core_public_headers += browser_api_unicode_public_headers
 brave_core_public_headers += browser_api_unzip_public_headers
 brave_core_public_headers += brave_web_view_public_headers
+brave_core_public_headers += browser_api_profile_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"

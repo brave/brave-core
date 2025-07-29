@@ -15,6 +15,7 @@ export function createVpnHandler(
   store: Store<VpnState>
 ): VpnActions {
   store.update({
+    initialized: true,
     vpnFeatureEnabled: true,
     showVpnWidget: true,
     vpnPurchased: true,
@@ -29,6 +30,7 @@ export function createVpnHandler(
       longitude: 0,
       serverCount: 0,
       isAutomatic: false,
+      smartRoutingProxyState: 'none',
       country: 'Brazil',
       namePretty: 'Rio de Janeiro'
     }

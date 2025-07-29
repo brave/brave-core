@@ -8,8 +8,11 @@
 #include "brave/test/base/testing_brave_browser_process.h"
 
 #define TestingBrowserProcess TestingBrowserProcess_ChromiumImpl
-#include "src/chrome/test/base/testing_browser_process.cc"
+#include <chrome/test/base/testing_browser_process.cc>
 #undef TestingBrowserProcess
+
+TestingBrowserProcess::TestingBrowserProcess() = default;
+TestingBrowserProcess::~TestingBrowserProcess() = default;
 
 // static
 void TestingBrowserProcess::CreateInstance() {

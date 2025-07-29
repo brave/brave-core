@@ -36,7 +36,7 @@ std::optional<std::string> HttpStatusCodeClassToString(
     return std::nullopt;
   }
 
-  return base::StringPrintf("%dxx", http_status_code_class);
+  return absl::StrFormat("%dxx", http_status_code_class);
 }
 
 }  // namespace

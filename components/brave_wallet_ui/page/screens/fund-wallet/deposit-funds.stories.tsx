@@ -19,4 +19,7 @@ export const _DepositFundsScreen = {
   name: 'Deposit Funds Screen',
 }
 
-export default { component: DepositFundsScreen }
+export default {
+  title: 'Wallet/Desktop/Screens',
+  component: DepositFundsScreen,
+}

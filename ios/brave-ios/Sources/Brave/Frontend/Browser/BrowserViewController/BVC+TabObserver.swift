@@ -43,16 +43,14 @@ extension BrowserViewController: TabObserver {
       URLPartinessScriptHandler(),
       FaviconScriptHandler(),
       Web3NameServiceScriptHandler(),
-      YoutubeQualityScriptHandler(tab: tab),
+      YoutubeQualityScriptHandler(),
       BraveLeoScriptHandler(),
       BraveSkusScriptHandler(),
+      RequestBlockingContentScriptHandler(),
     ]
 
     if let contentBlocker = tab.contentBlocker {
       injectedScripts.append(contentBlocker)
-    }
-    if let requestBlockingContentHelper = tab.requestBlockingContentHelper {
-      injectedScripts.append(requestBlockingContentHelper)
     }
 
     #if canImport(BraveTalk)

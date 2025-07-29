@@ -704,6 +704,10 @@ void BraveTabContainer::OnSwapTabsInTile(const TabTile& tile) {
   UpdateTabsBorderInTile(tile);
 }
 
+void BraveTabContainer::OnWillDeleteBrowserData() {
+  split_view_data_observation_.Reset();
+}
+
 gfx::Rect BraveTabContainer::GetDropBounds(int drop_index,
                                            bool drop_before,
                                            bool drop_in_group,

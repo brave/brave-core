@@ -10,7 +10,7 @@
 #include "build/build_config.h"
 
 #define Register Register_ChromiumImpl
-#include "src/components/component_updater/component_installer.cc"
+#include <components/component_updater/component_installer.cc>
 #undef Register
 
 #include "base/containers/fixed_flat_set.h"
@@ -46,6 +46,8 @@ void ComponentInstaller::Register(
           "gonpemdgkjcecdgbnaabipppbmgfggbe",  // First Party Sets
           "dhlpobdgcjafebgbbhjdnapejmpkgiie",  // Desktop Sharing Hub
           "ldfkbgjbencjpgjfleiooeldhjdapggh",  // Probabilistic Reveal Tokens
+          "hajigopbbjhghbfimgkfmpenfkclmohk",  // Amount Extraction Heuristic
+                                               // Regexes
 #if BUILDFLAG(IS_ANDROID)
           "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
           "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest

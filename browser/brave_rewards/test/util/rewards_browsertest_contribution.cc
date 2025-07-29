@@ -133,7 +133,7 @@ void RewardsBrowserTestContribution::TipPublisher(
         site_banner_contents.get())[selection];
 
     // Select the tip amount (default is 1.000 BAT)
-    std::string amount_selector = base::StringPrintf(
+    std::string amount_selector = absl::StrFormat(
         "[data-test-id=tip-amount-options] [data-option-index='%u']",
         selection);
 
@@ -197,7 +197,7 @@ void RewardsBrowserTestContribution::VerifyTip(const double amount,
                                    : "[data-test-id=rewards-summary-one-time]";
 
   test_util::WaitForElementToContain(contents(), selector,
-                                     base::StringPrintf("%.2f BAT", amount));
+                                     absl::StrFormat("%.2f BAT", amount));
 }
 
 void RewardsBrowserTestContribution::IsBalanceCorrect() {

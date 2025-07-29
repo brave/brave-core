@@ -8,6 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "chrome/app/chrome_command_ids.h"
 
 static_assert(__OBJC__);
@@ -71,7 +72,10 @@ std::u16string VerticalTabStripRegionView::GetShortcutTextForNewTabButton(
 
   NSMenuItem* item =
       findMenuItemWithCommandRecursively([NSApp mainMenu], IDC_NEW_TAB);
-  DCHECK(item);
+  if (!item) {
+    CHECK_IS_TEST() << "Could be null in unittest with browser view";
+    return u"";
+  }
 
   return base::SysNSStringToUTF16(keyCombinationForMenuItem(item));
 }

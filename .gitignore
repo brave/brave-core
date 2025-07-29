@@ -82,5 +82,5 @@ xcuserdata
 # A file that may be left behind in the CI after running presubmits
 .presubmit_results.json
 
-# buffer exclusion file generated locally during sync
-build/config/unsafe_buffers_paths.txt
+# Claude LLM settings
+.claude

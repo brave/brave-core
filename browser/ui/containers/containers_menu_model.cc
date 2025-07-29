@@ -14,16 +14,18 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/grit/generated_resources.h"
+#include "ui/base/models/image_model.h"
 
 namespace containers {
 
 namespace {
 
 std::vector<ContainerModel> GetContainerModelsFromPrefs(
-    const PrefService& prefs) {
+    const PrefService& prefs,
+    float scale_factor) {
   std::vector<ContainerModel> containers;
   for (auto& container : GetContainersFromPrefs(prefs)) {
-    containers.emplace_back(std::move(container));
+    containers.emplace_back(std::move(container), scale_factor);
   }
   return containers;
 }
@@ -32,7 +34,9 @@ std::vector<ContainerModel> GetContainerModelsFromPrefs(
 
 ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
                                          const PrefService& prefs)
-    : ContainersMenuModel(delegate, GetContainerModelsFromPrefs(prefs)) {}
+    : ContainersMenuModel(
+          delegate,
+          GetContainerModelsFromPrefs(prefs, delegate.GetScaleFactor())) {}
 
 ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
                                          std::vector<ContainerModel> items)
@@ -50,7 +54,19 @@ ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
   int index = 0;
   for (const auto& item : items_) {
     AddCheckItem(ItemIndexToCommandId(index), base::UTF8ToUTF16(item.name()));
-    SetIcon(index, item.icon());
+    SetIcon(index,
+#if BUILDFLAG(IS_MAC)
+            // On macOS, vector icon version of menu items are not supported.
+            // For the reference, we tried fix this with adhoc patch in
+            // https://github.com/brave/brave-core/pull/21835/files but was
+            // imperfect in some cases.
+            // So we just rasterize the icon right away and convert it to
+            // ImageSkia version model.
+            ui::ImageModel::FromImageSkia(
+                item.icon().Rasterize(/*color_provider=*/nullptr)));
+#else
+            item.icon());
+#endif
     index++;
   }
 

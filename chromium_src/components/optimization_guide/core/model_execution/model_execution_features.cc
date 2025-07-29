@@ -6,7 +6,7 @@
 #define GetOptimizationTargetForCapability \
   GetOptimizationTargetForCapability_ChromiumImpl
 
-#include "src/components/optimization_guide/core/model_execution/model_execution_features.cc"
+#include <components/optimization_guide/core/model_execution/model_execution_features.cc>
 #undef GetOptimizationTargetForCapability
 
 namespace optimization_guide::features::internal {

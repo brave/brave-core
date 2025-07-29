@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
@@ -44,16 +45,14 @@ class EngineConsumerOAIRemote : public EngineConsumer {
 
   // EngineConsumer
   void GenerateQuestionSuggestions(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContents page_contents,
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContents page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
-      const std::vector<base::WeakPtr<Tool>>&,
+      const std::vector<base::WeakPtr<Tool>>& tools,
       std::optional<std::string_view> preferred_tool_name,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) override;
@@ -79,6 +78,15 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void UpdateModelOptions(const mojom::ModelOptions& options) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest, BuildPageContentMessages);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildPageContentMessages_Truncates);
+
+  base::Value::List BuildPageContentMessages(
+      const PageContents& page_contents,
+      uint32_t max_associated_content_length,
+      int video_message_id,
+      int page_message_id);
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);

@@ -19,6 +19,8 @@ export const style = scoped.css`
 
     display: flex;
     flex-direction: column;
+    border-radius: 16px 0 0 16px;
+    overflow: clip;
 
     > * {
       background: rgba(255, 255, 255, 0.10);
@@ -37,9 +39,6 @@ export const style = scoped.css`
   .widget {
     flex: 1 1 auto;
     padding: 16px;
-    max-height: var(--widget-height, unset);
-    overflow-y: auto;
-    scrollbar-width: none;
     display: flex;
     flex-direction: column;
   }

@@ -12,6 +12,7 @@ import Foundation
 import Preferences
 import Shared
 import SwiftUI
+import Then
 import UIKit
 import os.log
 
@@ -642,7 +643,8 @@ public class PlaylistManager: NSObject {
     )
 
     // Only download when the preference is on OR when the preference is on Wifi
-    return downloadType == .on || downloadType == .wifi && DeviceInfo.hasWifiConnection()
+    return downloadType == .on
+      || downloadType == .wifi && Reachability.shared.status.connectionType == .wifi
   }
 
   public func autoDownload(item: PlaylistInfo) {
@@ -854,11 +856,8 @@ extension PlaylistManager {
       }
     }
 
-    switch Reach().connectionStatus() {
-    case .offline, .unknown:
+    if Reachability.shared.status.connectionType == .offline {
       return item.duration  // Return the database duration
-    case .online:
-      break
     }
 
     assetInformation.append(PlaylistAssetFetcher(itemId: item.tagId, asset: asset))

@@ -35,8 +35,6 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
       { status, email, errorMessage })
   }
 
-  removeObserver() { }
-
   generateAlias = jest.fn()
   updateAlias = jest.fn()
   deleteAlias = jest.fn()

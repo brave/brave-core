@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
+import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
@@ -84,6 +85,7 @@ import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
+import org.chromium.chrome.browser.ui.extensions.ExtensionService;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -170,6 +172,7 @@ public class BraveToolbarManager extends ToolbarManager
             ActivityTabProvider tabProvider,
             ScrimManager scrimManager,
             ToolbarActionModeCallback toolbarActionModeCallback,
+            @Nullable ExtensionService extensionService,
             FindToolbarManager findToolbarManager,
             ObservableSupplier<Profile> profileSupplier,
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
@@ -200,7 +203,10 @@ public class BraveToolbarManager extends ToolbarManager
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             @Nullable MultiInstanceManager multiInstanceManager,
-            @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier) {
+            @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
+            @Nullable MenuButtonCoordinator.VisibilityDelegate menuButtonVisibilityDelegate,
+            TopControlsStacker topControlsStacker,
+            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -217,6 +223,7 @@ public class BraveToolbarManager extends ToolbarManager
                 tabProvider,
                 scrimManager,
                 toolbarActionModeCallback,
+                extensionService,
                 findToolbarManager,
                 profileSupplier,
                 bookmarkModelSupplier,
@@ -245,7 +252,10 @@ public class BraveToolbarManager extends ToolbarManager
                 readAloudControllerSupplier,
                 desktopWindowStateManager,
                 multiInstanceManager,
-                tabBookmarkerSupplier);
+                tabBookmarkerSupplier,
+                menuButtonVisibilityDelegate,
+                topControlsStacker,
+                xrSpaceModeObservableSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -451,8 +461,10 @@ public class BraveToolbarManager extends ToolbarManager
         assert toolbarLayout instanceof BraveToolbarLayoutImpl
                 : "Something has changed in the upstream!";
         if (toolbarLayout instanceof BraveToolbarLayoutImpl) {
-            ((BraveToolbarLayoutImpl) toolbarLayout)
-                    .setTabModelSelector(mTabModelSelectorSupplier.get());
+            final BraveToolbarLayoutImpl braveToolbarLayout =
+                    (BraveToolbarLayoutImpl) toolbarLayout;
+            braveToolbarLayout.setFullscreenManager(mFullscreenManager);
+            braveToolbarLayout.setTabModelSelector(mTabModelSelectorSupplier.get());
         }
     }
 

@@ -6,10 +6,15 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/leo/react/tooltip'
 
 import { getString } from '../../lib/strings'
 import { useRewardsState } from '../../context/rewards_context'
+import { usePluralString } from '../../lib/plural_string'
 import { Link, openLink } from '../common/link'
+import { WalletProviderIcon } from '../../../../../components/brave_rewards/resources/shared/components/icons/wallet_provider_icon'
+import { getExternalWalletProviderName } from '../../../../../components/brave_rewards/resources/shared/lib/external_wallet'
+import formatMessage from '$web-common/formatMessage'
 
 import * as urls from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'
 
@@ -30,6 +35,10 @@ export function RewardsWidget() {
   const externalWallet = useRewardsState((s) => s.rewardsExternalWallet)
   const balance = useRewardsState((s) => s.rewardsBalance)
   const exchangeRate = useRewardsState((s) => s.rewardsExchangeRate)
+  const tosUpdateRequired = useRewardsState((s) => s.tosUpdateRequired)
+  const adsViewed = useRewardsState((s) => s.rewardsAdsViewed)
+  const adsViewedString =
+    usePluralString('rewardsConnectedAdsViewedText', adsViewed ?? 0)
 
   function renderOnboarding() {
     return (
@@ -93,12 +102,87 @@ export function RewardsWidget() {
     )
   }
 
+  function renderLogin() {
+    if (!externalWallet) {
+      return null
+    }
+    return (
+      <div data-css-scope={style.scope} className='login'>
+        <div className='title'>
+          {getString('rewardsWidgetTitle')}
+        </div>
+        <div className='content'>
+          <Icon name='bat-color' />
+          <div className='text'>
+            <div className='header'>
+              {getString('rewardsLoginTitle')}
+            </div>
+            <div>
+              {
+                formatMessage(getString('rewardsLoginText'), [
+                  getExternalWalletProviderName(externalWallet.provider)
+                ])
+              }
+            </div>
+          </div>
+          <div className='actions'>
+            <Button
+              size='small'
+              onClick={() => openLink(urls.reconnectURL)}
+            >
+              <span slot='icon-before'>
+                <WalletProviderIcon provider={externalWallet.provider} />
+              </span>
+              {getString('rewardsLoginButtonLabel')}
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  function renderTosUpdateNotice() {
+    return (
+      <div data-css-scope={style.scope} className='login'>
+        <div className='title'>
+          {getString('rewardsWidgetTitle')}
+        </div>
+        <div className='content'>
+          <div className='text'>
+            <div className='header'>
+              {getString('rewardsTosUpdateTitle')}
+            </div>
+            <div>
+              {getString('rewardsTosUpdateText')}
+            </div>
+          </div>
+          <div className='actions'>
+            <Button
+              size='small'
+              onClick={() => openLink(urls.settingsURL)}
+            >
+              {getString('rewardsTosUpdateButtonLabel')}
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (!rewardsEnabled) {
     return renderOnboarding()
   }
 
+  if (tosUpdateRequired) {
+    return renderTosUpdateNotice()
+  }
+
   if (!externalWallet) {
     return renderUnconnected()
+  }
+
+  if (!externalWallet.authenticated) {
+    return renderLogin()
   }
 
   return (
@@ -119,15 +203,39 @@ export function RewardsWidget() {
                   {batAmountFormatter.format(balance)}
                 </span>
                 <span className='bat-label'>BAT</span>
-                <span className='exchange'>
-                  ≈ {
-                    exchangeAmountFormatter.format(
-                        balance * exchangeRate)
-                  } USD
-                </span>
+                {
+                  exchangeRate &&
+                    <span className='exchange'>
+                      ≈ {
+                      exchangeAmountFormatter.format(balance * exchangeRate)
+                      } USD
+                    </span>
+                }
               </>
             }
           </div>
+          {
+            adsViewed !== null &&
+              <div className='ads-viewed'>
+                {
+                  formatMessage(adsViewedString, {
+                    tags: {
+                      $1: (content) => (
+                        <span key='ad-count' className='ad-count'>
+                          {content}
+                        </span>
+                      )
+                    }
+                  })
+                }
+                <Tooltip mode='default'>
+                  <Icon name='info-outline' />
+                  <div slot='content'>
+                    {getString('rewardsAdsViewedTooltip')}
+                  </div>
+                </Tooltip>
+              </div>
+          }
         </div>
       </div>
     </div>

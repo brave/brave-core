@@ -130,7 +130,7 @@ GURL AIChatTabHelper::GetPageURL() const {
   return web_contents()->GetLastCommittedURL();
 }
 
-void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
+void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
                                      std::string_view invalidation_token) {
   bool is_pdf = IsPdf(web_contents());
   bool pdf_helper_not_available = false;
@@ -168,33 +168,24 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
 }
 
 void AIChatTabHelper::OnFetchPageContentComplete(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     std::string content,
     bool is_video,
     std::string invalidation_token) {
   base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
   // If content is empty, and page was not loaded yet, wait for page load.
-  // Once page load is complete, try again. If it's still empty, fallback
-  // to print preview extraction.
-  if (content.empty() && !is_video) {
-    // When page isn't loaded yet, wait until DidFinishLoad
-    DVLOG(1) << __func__ << " empty content, will attempt fallback";
-    if (MaybePrintPreviewExtract(callback)) {
-      return;
-    } else if (!is_page_loaded_) {
-      DVLOG(1) << "page was not loaded yet, will try again after load";
-      SetPendingGetContentCallback(std::move(callback));
-      return;
-    }
-    // When print preview extraction isn't available, return empty content
-    DVLOG(1) << "no fallback available";
+  // Once page load is complete, try again.
+  if (content.empty() && !is_video && !is_page_loaded_) {
+    DVLOG(1) << "page was not loaded yet, will try again after load";
+    SetPendingGetContentCallback(std::move(callback));
+    return;
   }
   std::move(callback).Run(std::move(content), is_video,
                           std::move(invalidation_token));
 }
 
 void AIChatTabHelper::SetPendingGetContentCallback(
-    GetPageContentCallback callback) {
+    FetchPageContentCallback callback) {
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }
@@ -202,7 +193,7 @@ void AIChatTabHelper::SetPendingGetContentCallback(
 }
 
 bool AIChatTabHelper::MaybePrintPreviewExtract(
-    GetPageContentCallback& callback) {
+    FetchPageContentCallback& callback) {
   if (print_preview_extraction_delegate_ == nullptr) {
     DVLOG(1) << "print preview extraction not supported";
     return false;
@@ -221,7 +212,7 @@ bool AIChatTabHelper::MaybePrintPreviewExtract(
 }
 
 void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     base::expected<std::string, std::string> result) {
   // Invalidation token not applicable for print preview OCR
   if (result.has_value()) {
@@ -260,7 +251,7 @@ void AIChatTabHelper::MaybeSameDocumentIsNewPage() {
 
 #if BUILDFLAG(ENABLE_PDF)
 void AIChatTabHelper::OnPDFDocumentLoadComplete(
-    GetPageContentCallback callback) {
+    FetchPageContentCallback callback) {
   auto* pdf_helper =
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
   if (!pdf_helper) {
@@ -276,7 +267,7 @@ void AIChatTabHelper::OnPDFDocumentLoadComplete(
 }
 
 void AIChatTabHelper::OnGetPDFPageCount(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     pdf::mojom::PdfListener::GetPdfBytesStatus status,
     const std::vector<uint8_t>& bytes,
     uint32_t page_count) {
@@ -310,7 +301,7 @@ void AIChatTabHelper::OnGetPDFPageCount(
 }
 
 void AIChatTabHelper::OnAllPDFPagesTextReceived(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     const std::vector<std::pair<size_t, std::string>>& page_texts) {
   // Pre-size vector to hold all texts in order
   std::vector<std::string> ordered_texts(page_texts.size());
@@ -384,7 +375,7 @@ void AIChatTabHelper::OnScreenshotsCaptured(
     for (auto& screenshot : result.value()) {
       size_t screenshot_size = screenshot.size();
       screenshots.push_back(mojom::UploadedFile::New(
-          base::StringPrintf("fullscreenshot_%i.png", screenshot_index++),
+          absl::StrFormat("fullscreenshot_%i.png", screenshot_index++),
           screenshot_size, std::move(screenshot),
           mojom::UploadedFileType::kScreenshot));
     }

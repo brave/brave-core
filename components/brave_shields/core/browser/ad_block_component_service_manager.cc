@@ -333,8 +333,11 @@ base::Value::List AdBlockComponentServiceManager::GetRegionalLists() {
   DCHECK(local_state_);
 
   base::Value::List list;
+  const bool show_hidden = base::FeatureList::IsEnabled(
+      brave_shields::features::kBraveAdblockShowHiddenComponents);
   for (const auto& region_list : filter_list_catalog_) {
-    if (region_list.hidden || !region_list.SupportsCurrentPlatform()) {
+    if ((!show_hidden && region_list.hidden) ||
+        !region_list.SupportsCurrentPlatform()) {
       continue;
     }
     // Most settings come directly from the regional catalog from

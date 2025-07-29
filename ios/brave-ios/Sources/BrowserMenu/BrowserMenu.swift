@@ -7,6 +7,7 @@ import BraveShared
 import BraveUI
 import DesignSystem
 import GuardianConnect
+import Preferences
 import Strings
 import SwiftUI
 
@@ -15,11 +16,9 @@ public struct BrowserMenu: View {
   var handlePresentation: (BrowserMenuPresentation) -> Void
   var onShowAllActions: (() -> Void)?
 
+  @ObservedObject private var numberOfQuickActions = Preferences.BrowserMenu.numberOfQuickActions
   @State private var isEditMenuPresented = false
 
-  /// Whether or not we may be viewing on a device that doesn't have as much horizontal space
-  /// available (such as when Display Zoom is enabled)
-  @State private var isHorizontalSpaceRestricted: Bool = false
   @State private var activeActionHandlers: [Action.ID: Task<Void, Never>] = [:]
   @State private var isAdditionalActionsVisible: Bool = false
 
@@ -49,22 +48,12 @@ public struct BrowserMenu: View {
     activeActionHandlers[id] = actionTask
   }
 
-  private var numberOfQuickActions: Int {
-    if model.visibleActions.count < 4 {
-      return model.visibleActions.count
-    }
-    if dynamicTypeSize.isAccessibilitySize || isHorizontalSpaceRestricted {
-      return 4
-    }
-    return 5
-  }
-
   private var quickActions: Binding<[Action]> {
     Binding(
-      get: { Array(model.visibleActions.prefix(numberOfQuickActions)) },
+      get: { Array(model.visibleActions.prefix(numberOfQuickActions.value)) },
       set: {
         model.visibleActions.replaceSubrange(
-          0..<min(numberOfQuickActions, model.visibleActions.count),
+          0..<min(numberOfQuickActions.value, model.visibleActions.count),
           with: $0
         )
       }
@@ -74,14 +63,14 @@ public struct BrowserMenu: View {
   private var listedActions: Binding<[Action]> {
     Binding(
       get: {
-        if model.visibleActions.count < numberOfQuickActions {
+        if model.visibleActions.count < numberOfQuickActions.value {
           return []
         }
-        return Array(model.visibleActions[numberOfQuickActions...])
+        return Array(model.visibleActions[numberOfQuickActions.value...])
       },
       set: {
-        if model.visibleActions.count > numberOfQuickActions {
-          model.visibleActions.replaceSubrange(numberOfQuickActions..., with: $0)
+        if model.visibleActions.count > numberOfQuickActions.value {
+          model.visibleActions.replaceSubrange(numberOfQuickActions.value..., with: $0)
         }
       }
     )
@@ -102,10 +91,8 @@ public struct BrowserMenu: View {
               Text(Strings.BrowserMenu.editButtonTitle)
                 .font(.caption.weight(.semibold))
                 .padding(.vertical, 4)
-                .padding(.horizontal, 12)
-                .background(Color(braveSystemName: .iosBrowserContainerHighlightIos), in: .capsule)
+                .padding(.horizontal, 8)
             }
-            .buttonStyle(.plain)
           }
           .foregroundStyle(Color(braveSystemName: .textTertiary))
           QuickActionsView(actions: quickActions) { $action in
@@ -137,7 +124,7 @@ public struct BrowserMenu: View {
             }
           }
           .modifier(MenuRowButtonStyleModifier())
-          .background(Color(braveSystemName: .iosBrowserContainerHighlightIos))
+          .background(Color(braveSystemName: .schemesSurfaceBright))
           .clipShape(.rect(cornerRadius: 14, style: .continuous))
           .transition(.blurReplace())
         }
@@ -147,12 +134,12 @@ public struct BrowserMenu: View {
           Label(Strings.BrowserMenu.allSettingsButtonTitle, braveSystemImage: "leo.settings")
         }
         .modifier(MenuRowButtonStyleModifier())
-        .background(Color(braveSystemName: .iosBrowserContainerHighlightIos))
+        .background(Color(braveSystemName: .schemesSurfaceBright))
         .clipShape(.rect(cornerRadius: 14, style: .continuous))
       }
       .padding()
     }
-    .background(Material.thick)
+    .background(Color(braveSystemName: .iosBrowserChromeBackgroundIos))
     .dynamicTypeSize(DynamicTypeSize.xSmall..<DynamicTypeSize.accessibility3)
     .osAvailabilityModifiers { content in
       // "Designed for iPad" VisionOS - FB16385402
@@ -177,14 +164,7 @@ public struct BrowserMenu: View {
           }
       }
     }
-    .onGeometryChange(
-      for: Bool.self,
-      of: { $0.size.width <= 320 },
-      action: { newValue in
-        isHorizontalSpaceRestricted = newValue
-      }
-    )
-    .onChange(of: isAdditionalActionsVisible) { newValue in
+    .onChange(of: isAdditionalActionsVisible) { _, newValue in
       if newValue {
         onShowAllActions?()
       }
@@ -197,21 +177,21 @@ private struct QuickActionsView: View {
   var handler: (Binding<Action>) -> Void
 
   var body: some View {
-    HStack(alignment: .top, spacing: 12) {
+    LazyVGrid(
+      columns: .init(repeating: .init(.flexible(), spacing: 12, alignment: .top), count: 4),
+      spacing: 12
+    ) {
       ForEach($actions) { $action in
-        let imageOverride: Image? = action.state.map {
-          Image(braveSystemName: $0 ? "leo.toggle.on" : "leo.toggle.off")
-        }
         Button {
           handler($action)
         } label: {
           Label {
             Text(action.title)
           } icon: {
-            imageOverride ?? Image(braveSystemName: action.image)
+            Image(braveSystemName: action.image)
           }
         }
-        .modifier(ButtonStyleViewModifier(traits: action.traits))
+        .modifier(ButtonStyleViewModifier(state: action.state, traits: action.traits))
         .disabled(action.attributes.contains(.disabled))
         .transition(.blurReplace())
         .id(action)
@@ -220,13 +200,14 @@ private struct QuickActionsView: View {
   }
 
   private struct ButtonStyleViewModifier: ViewModifier {
+    var state: Bool?
     var traits: Action.Traits
 
     func body(content: Content) -> some View {
       if #available(iOS 18, *) {
-        content.buttonStyle(_OS18ButtonStyle(traits: traits))
+        content.buttonStyle(_OS18ButtonStyle(state: state, traits: traits))
       } else {
-        content.buttonStyle(_StandardButtonStyle(traits: traits))
+        content.buttonStyle(_StandardButtonStyle(state: state, traits: traits))
       }
     }
 
@@ -245,6 +226,7 @@ private struct QuickActionsView: View {
         """
     )
     private struct _OS18ButtonStyle: PrimitiveButtonStyle {
+      var state: Bool?
       var traits: Action.Traits
 
       @GestureState private var isPressed: Bool = false
@@ -262,17 +244,18 @@ private struct QuickActionsView: View {
               configuration.trigger()
             }
           )
-          .labelStyle(_LabelStyle(isPressed: isPressed, traits: traits))
+          .labelStyle(_LabelStyle(isPressed: isPressed, state: state, traits: traits))
           .animation(isPressed ? nil : .default, value: isPressed)
       }
     }
 
     private struct _StandardButtonStyle: ButtonStyle {
+      var state: Bool?
       var traits: Action.Traits
 
       func makeBody(configuration: Configuration) -> some View {
         configuration.label
-          .labelStyle(_LabelStyle(isPressed: configuration.isPressed, traits: traits))
+          .labelStyle(_LabelStyle(isPressed: configuration.isPressed, state: state, traits: traits))
       }
     }
 
@@ -284,6 +267,7 @@ private struct QuickActionsView: View {
     @ScaledMetric private var iconFontSize = 18
     @ScaledMetric private var badgeRadius = 8
     var isPressed: Bool
+    var state: Bool?
     var traits: Action.Traits
 
     func makeBody(configuration: Configuration) -> some View {
@@ -293,20 +277,22 @@ private struct QuickActionsView: View {
           .padding(.vertical, 12)
           .font(.system(size: iconFontSize))
           .foregroundStyle(
-            isEnabled
-              ? Color(braveSystemName: .iconDefault)
-              // There's a SwiftUI bug on iPads where the items don't animate correctly due to using
-              // material hierarchical foreground styles so for this we fall back to the design
-              // system colors. This is also applied to the menu row label styles.
-              : (UIDevice.current.userInterfaceIdiom == .pad
-                ? Color(braveSystemName: .iconSecondary) : .secondary)
+            state == true
+              ? Color(braveSystemName: .schemesOnPrimary)
+              : isEnabled
+                ? Color(braveSystemName: .iconDefault)
+                : Color(braveSystemName: .iconDisabled)
           )
           .frame(maxWidth: .infinity)
           .background {
-            Color(braveSystemName: .iosBrowserContainerHighlightIos)
+            Color(braveSystemName: state == true ? .schemesPrimary : .schemesSurfaceBright)
               .overlay(
-                Color(braveSystemName: .iosBrowserContainerHighlightIos).opacity(isPressed ? 1 : 0)
+                Color(
+                  braveSystemName: state == true
+                    ? .schemesPrimary : .iosBrowserContainerHighlightIos
+                ).opacity(isPressed ? 1 : 0)
               )
+              .opacity(state == true && isPressed ? 0.5 : 1)
               .clipShape(.rect(cornerRadius: 14, style: .continuous))
               .hoverEffect()
           }
@@ -315,6 +301,10 @@ private struct QuickActionsView: View {
               Circle()
                 .fill(Color(uiColor: badgeColor))
                 .frame(width: badgeRadius, height: badgeRadius)
+                .overlay {
+                  Circle()
+                    .stroke(Color(braveSystemName: .iosBrowserChromeBackgroundIos), lineWidth: 1)
+                }
                 .allowsHitTesting(false)
             }
           }
@@ -324,8 +314,7 @@ private struct QuickActionsView: View {
           .foregroundStyle(
             isEnabled
               ? Color(braveSystemName: .textPrimary)
-              : (UIDevice.current.userInterfaceIdiom == .pad
-                ? Color(braveSystemName: .textSecondary) : .secondary)
+              : Color(braveSystemName: .textDisabled)
           )
           .multilineTextAlignment(.center)
       }
@@ -461,7 +450,7 @@ private struct ActionsList: View {
         }
       }
     }
-    .background(Color(braveSystemName: .iosBrowserContainerHighlightIos))
+    .background(Color(braveSystemName: .schemesSurfaceBright))
     .clipShape(.rect(cornerRadius: 14, style: .continuous))
   }
 }
@@ -527,7 +516,7 @@ private struct MenuRowButtonStyleModifier: ViewModifier {
         .contentShape(.rect)
         .hoverEffect()
         .background(
-          Color(braveSystemName: .iosBrowserContainerHighlightIos).opacity(
+          Color(braveSystemName: .schemesSurfaceBright).opacity(
             configuration.isPressed ? 1 : 0
           )
         )
@@ -548,16 +537,14 @@ private struct MenuRowButtonStyleModifier: ViewModifier {
           .foregroundStyle(
             isEnabled
               ? Color(braveSystemName: .iconDefault)
-              : (UIDevice.current.userInterfaceIdiom == .pad
-                ? Color(braveSystemName: .iconSecondary) : .secondary)
+              : Color(braveSystemName: .iconDisabled)
           )
         configuration.title
           .font(.body)
           .foregroundStyle(
             isEnabled
               ? Color(braveSystemName: .textPrimary)
-              : (UIDevice.current.userInterfaceIdiom == .pad
-                ? Color(braveSystemName: .textSecondary) : .secondary)
+              : Color(braveSystemName: .textDisabled)
           )
       }
       .padding(.vertical, 12)

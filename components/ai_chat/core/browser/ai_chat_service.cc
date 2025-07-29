@@ -278,10 +278,8 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
   }
   if (!conversation) {
     // New conversation needed
-    conversation = CreateConversation();
-    // Provide the content delegate, if allowed
-    MaybeAssociateContent(conversation, associated_content_id,
-                          associated_content);
+    conversation = CreateConversationHandlerForContent(associated_content_id,
+                                                       associated_content);
   }
 
   return conversation;
@@ -291,9 +289,12 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
     int associated_content_id,
     base::WeakPtr<AssociatedContentDelegate> associated_content) {
   ConversationHandler* conversation = CreateConversation();
-  // Provide the content delegate, if allowed
-  MaybeAssociateContent(conversation, associated_content_id,
-                        associated_content);
+  // Provide the content delegate, if allowed. If we aren't initially enabling
+  // the context we still need to call MaybeAssociateContent so the conversation
+  // knows what the current tab is.
+  MaybeAssociateContent(
+      conversation, associated_content_id,
+      features::IsPageContextEnabledInitially() ? associated_content : nullptr);
 
   return conversation;
 }
@@ -359,9 +360,8 @@ void AIChatService::MaybeInitStorage() {
   if (IsAIChatHistoryEnabled()) {
     if (!ai_chat_db_) {
       DVLOG(0) << "Initializing OS Crypt Async";
-      encryptor_ready_subscription_ = os_crypt_async_->GetInstance(
-          base::BindOnce(&AIChatService::OnOsCryptAsyncReady,
-                         weak_ptr_factory_.GetWeakPtr()));
+      os_crypt_async_->GetInstance(base::BindOnce(
+          &AIChatService::OnOsCryptAsyncReady, weak_ptr_factory_.GetWeakPtr()));
       // Don't init DB until oscrypt is ready - we don't want to use the DB
       // if we can't use encryption.
     }
@@ -379,13 +379,8 @@ void AIChatService::MaybeInitStorage() {
   OnStateChanged();
 }
 
-void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor,
-                                        bool success) {
+void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor) {
   CHECK(features::IsAIChatHistoryEnabled());
-  if (!success) {
-    LOG(ERROR) << "Failed to initialize AIChat DB due to OSCrypt failure";
-    return;
-  }
   // Pref might have changed since we started this process
   if (!profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled)) {
     return;
@@ -409,7 +404,7 @@ void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
     all_conversation_handlers.push_back(conversation_handler.get());
   }
   for (auto* conversation_handler : all_conversation_handlers) {
-    MaybeUnloadConversation(conversation_handler);
+    QueueMaybeUnloadConversation(conversation_handler);
   }
   // Remove any conversation metadata that isn't connected to a still-alive
   // handler.
@@ -653,15 +648,11 @@ void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
   std::move(callback).Run(status, std::move(info));
 }
 
-void AIChatService::MaybeUnloadConversation(
-    ConversationHandler* conversation_handler) {
+bool AIChatService::CanUnloadConversation(ConversationHandler* conversation) {
   // Don't unload if there is active UI for the conversation
-  if (conversation_handler->IsAnyClientConnected()) {
-    return;
+  if (conversation->IsAnyClientConnected()) {
+    return false;
   }
-
-  bool has_history = conversation_handler->HasAnyHistory();
-  bool is_temporary = conversation_handler->GetIsTemporary();
 
   // We can keep a conversation with history in memory until there is no active
   // content unless it is a temporary chat which we remove it if no active UI.
@@ -669,9 +660,10 @@ void AIChatService::MaybeUnloadConversation(
   // there is no request in progress). However, we can only do this when
   // GetOrCreateConversationHandlerForContent allows a callback so that it
   // can provide an answer after loading the conversation content from storage.
-  if (!is_temporary && conversation_handler->IsAssociatedContentAlive() &&
-      has_history) {
-    return;
+  if (!conversation->GetIsTemporary() &&
+      conversation->IsAssociatedContentAlive() &&
+      conversation->HasAnyHistory()) {
+    return false;
   }
 
   // Don't unload conversations that are in the middle of a request (they will
@@ -693,12 +685,45 @@ void AIChatService::MaybeUnloadConversation(
   // 1. History is enabled: We'll reload the conversation from storage.
   // 2. History is disabled: We'll show a blank conversation.
 
-  if (conversation_handler->IsRequestInProgress()) {
+  if (conversation->IsRequestInProgress()) {
+    return false;
+  }
+
+  return true;
+}
+
+void AIChatService::QueueMaybeUnloadConversation(
+    ConversationHandler* conversation_handler) {
+  // Only queue the MaybeUnload if we can unload the conversation now.
+  if (!CanUnloadConversation(conversation_handler)) {
     return;
   }
 
+  constexpr base::TimeDelta kUnloadDelay = base::Seconds(5);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&AIChatService::MaybeUnloadConversation,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     conversation_handler->GetWeakPtr()),
+      kUnloadDelay);
+}
+
+void AIChatService::MaybeUnloadConversation(
+    base::WeakPtr<ConversationHandler> conversation_handler) {
+  // If the conversation has already been destroyed there's nothing to do.
+  if (!conversation_handler) {
+    return;
+  }
+
+  if (!CanUnloadConversation(conversation_handler.get())) {
+    return;
+  }
+
+  bool has_history = conversation_handler->HasAnyHistory();
+  bool is_temporary = conversation_handler->GetIsTemporary();
+
   auto uuid = conversation_handler->get_conversation_uuid();
-  conversation_observations_.RemoveObservation(conversation_handler);
+  conversation_observations_.RemoveObservation(conversation_handler.get());
   conversation_handlers_.erase(uuid);
 
   DVLOG(1) << "Unloaded conversation (" << uuid << ") from memory. Now have "
@@ -765,23 +790,24 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
   // We don't unload a conversation if it has a request in progress, so check
   // again when that changes.
   if (!in_progress) {
-    MaybeUnloadConversation(handler);
+    QueueMaybeUnloadConversation(handler);
   }
 }
 
 void AIChatService::OnConversationEntryAdded(
     ConversationHandler* handler,
     mojom::ConversationTurnPtr& entry,
-    std::optional<std::vector<std::string_view>> maybe_associated_content) {
+    std::optional<PageContents> maybe_associated_content) {
   auto conversation_it = conversations_.find(handler->get_conversation_uuid());
   CHECK(conversation_it != conversations_.end());
   mojom::ConversationPtr& conversation = conversation_it->second;
   std::optional<std::vector<std::string>> associated_content;
   if (maybe_associated_content.has_value()) {
     associated_content = std::vector<std::string>();
-    std::ranges::transform(maybe_associated_content.value(),
-                           std::back_inserter(associated_content.value()),
-                           [](const auto& view) { return std::string(view); });
+    std::ranges::transform(
+        maybe_associated_content.value(),
+        std::back_inserter(associated_content.value()),
+        [](const auto& page_content) { return page_content.get().content; });
   }
 
   if (!conversation->has_content) {
@@ -876,6 +902,18 @@ void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
   }
 }
 
+void AIChatService::OnToolUseEventOutput(ConversationHandler* handler,
+                                         std::string_view entry_uuid,
+                                         size_t event_order,
+                                         mojom::ToolUseEventPtr tool_use) {
+  // Persist the tool use event
+  if (ai_chat_db_ && !handler->GetIsTemporary()) {
+    ai_chat_db_
+        .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateToolUseEvent))
+        .WithArgs(entry_uuid, event_order, std::move(tool_use));
+  }
+}
+
 void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
   DVLOG(4) << "Client connection changed for conversation "
            << handler->get_conversation_uuid();
@@ -883,7 +921,7 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     ai_chat_metrics_->RecordConversationUnload(
         handler->get_conversation_uuid());
   }
-  MaybeUnloadConversation(handler);
+  QueueMaybeUnloadConversation(handler);
 }
 
 void AIChatService::OnConversationTitleChanged(
@@ -937,7 +975,7 @@ void AIChatService::OnAssociatedContentUpdated(ConversationHandler* handler) {
   if (handler->associated_content_manager()->HasAssociatedContent()) {
     return;
   }
-  MaybeUnloadConversation(handler);
+  QueueMaybeUnloadConversation(handler);
 }
 
 void AIChatService::GetConversations(GetConversationsCallback callback) {
@@ -1069,22 +1107,20 @@ void AIChatService::MaybeAssociateContent(
                         content->GetWeakPtr());
 }
 
-void AIChatService::DisassociateContent(AssociatedContentDelegate* content,
-                                        const std::string& conversation_uuid) {
-  CHECK(content);
-
+void AIChatService::DisassociateContent(
+    const mojom::AssociatedContentPtr& content,
+    const std::string& conversation_uuid) {
   // Note: This will only work if the conversation is already loaded.
   auto* conversation = GetConversation(conversation_uuid);
   if (!conversation) {
     return;
   }
-
-  conversation->associated_content_manager()->RemoveContent(content);
+  conversation->associated_content_manager()->RemoveContent(content->uuid);
 
   // If this conversation is the most recent one for the content, remove it from
   // content_conversations_.
-  if (content_conversations_[content->GetContentId()] == conversation_uuid) {
-    content_conversations_.erase(content->GetContentId());
+  if (content_conversations_[content->content_id] == conversation_uuid) {
+    content_conversations_.erase(content->content_id);
   }
 }
 

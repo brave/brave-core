@@ -13,19 +13,6 @@ import Static
 import UIKit
 import Web
 
-// MARK: - PlayListSide
-
-extension PlayListSide: RepresentableOptionType {
-  public var displayString: String {
-    switch self {
-    case .left:
-      return Strings.PlayList.playlistSidebarLocationOptionLeft
-    case .right:
-      return Strings.PlayList.playlistSidebarLocationOptionRight
-    }
-  }
-}
-
 // MARK: - PlayListDownloadType
 
 extension PlayListDownloadType: RepresentableOptionType {
@@ -70,15 +57,6 @@ class PlaylistSettingsViewController: TableViewController {
           )
         ],
         footer: .title(Strings.PlayList.urlBarButtonOptionFooter)
-      ),
-      Section(
-        rows: [
-          .boolRow(
-            title: Strings.PlayList.menuBadgeOptionTitle,
-            option: Preferences.Playlist.enablePlaylistMenuBadge
-          )
-        ],
-        footer: .title(Strings.PlayList.menuBadgeOptionFooterText)
       ),
       Section(
         rows: [
@@ -149,51 +127,6 @@ class PlaylistSettingsViewController: TableViewController {
       )
     )
 
-    if UIDevice.current.userInterfaceIdiom == .pad, !FeatureList.kNewPlaylistUI.enabled {
-      var sideSelectionSection = Section(rows: [])
-      var row = Row(
-        text: Strings.PlayList.playlistSidebarLocationTitle,
-        detailText: PlayListSide(rawValue: Preferences.Playlist.listViewSide.value)?.displayString,
-        accessory: .disclosureIndicator,
-        cellClass: MultilineSubtitleCell.self
-      )
-
-      row.selection = { [unowned self] in
-        let optionsViewController = OptionSelectionViewController<PlayListSide>(
-          options: PlayListSide.allCases,
-          selectedOption: PlayListSide(rawValue: Preferences.Playlist.listViewSide.value),
-          optionChanged: { [unowned self] _, option in
-            Preferences.Playlist.listViewSide.value = option.rawValue
-
-            self.dataSource.reloadCell(
-              row: row,
-              section: sideSelectionSection,
-              displayText: option.displayString
-            )
-          }
-        )
-        optionsViewController.title = Strings.PlayList.playlistSidebarLocationTitle
-        optionsViewController.footerText = Strings.PlayList.playlistSidebarLocationFooterText
-
-        self.navigationController?.pushViewController(optionsViewController, animated: true)
-      }
-
-      sideSelectionSection.rows.append(row)
-      dataSource.sections.append(sideSelectionSection)
-    }
-
-    dataSource.sections.append(
-      Section(
-        rows: [
-          .boolRow(
-            title: Strings.PlaylistFolderSharing.sharedFolderSyncAutomaticallyTitle,
-            option: Preferences.Playlist.syncSharedFoldersAutomatically
-          )
-        ],
-        footer: .title(Strings.PlaylistFolderSharing.sharedFolderSyncAutomaticallyDescription)
-      )
-    )
-
     dataSource.sections.append(
       Section(
         rows: [
@@ -213,7 +146,6 @@ class PlaylistSettingsViewController: TableViewController {
                   title: Strings.PlayList.playlistResetAlertTitle,
                   style: .default,
                   handler: { _ in
-                    PlaylistCoordinator.shared.destroyPiP()
                     Task {
                       await PlaylistManager.shared.deleteAllItems(cacheOnly: false)
                     }

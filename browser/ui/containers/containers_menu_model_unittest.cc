@@ -22,20 +22,25 @@ class ContainersMenuModelUnitTest : public testing::Test {
   std::vector<ContainerModel> GetContainers() const {
     std::vector<ContainerModel> containers;
     for (const auto& model : containers_) {
-      containers.emplace_back(ContainerModel(model.container()->Clone()));
+      containers.emplace_back(model.container()->Clone(),
+                              /*scale_factor=*/1.0f);
     }
     return containers;
   }
 
   void SetUp() override {
-    containers_.emplace_back(ContainerModel(
+    containers_.emplace_back(
         mojom::Container::New("ExampleContainer1", "Example 1",
-                              mojom::Icon::kPersonal, SK_ColorWHITE)));
-    containers_.emplace_back(ContainerModel(mojom::Container::New(
-        "ExampleContainer2", "Example 2", mojom::Icon::kWork, SK_ColorBLACK)));
-    containers_.emplace_back(ContainerModel(
+                              mojom::Icon::kPersonal, SK_ColorWHITE),
+        /*scale_factor=*/1.0f);
+    containers_.emplace_back(
+        mojom::Container::New("ExampleContainer2", "Example 2",
+                              mojom::Icon::kWork, SK_ColorBLACK),
+        /*scale_factor=*/1.0f);
+    containers_.emplace_back(
         mojom::Container::New("ExampleContainer3", "Example 3",
-                              mojom::Icon::kPersonal, SK_ColorWHITE)));
+                              mojom::Icon::kPersonal, SK_ColorWHITE),
+        /*scale_factor=*/1.0f);
   }
 
   void TearDown() override { containers_.clear(); }

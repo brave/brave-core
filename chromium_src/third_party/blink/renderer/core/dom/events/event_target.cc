@@ -21,7 +21,7 @@
 
 #define SetAttributeEventListener SetAttributeEventListener_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/dom/events/event_target.cc"
+#include <third_party/blink/renderer/core/dom/events/event_target.cc>
 
 #undef SetAttributeEventListener
 #undef BRAVE_EVENT_TARGET_REMOVE_EVENT_LISTENER_INTERNAL

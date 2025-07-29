@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_SANDBOX_WIN_SRC_INTERCEPTORS_64_H_
 #define BRAVE_CHROMIUM_SRC_SANDBOX_WIN_SRC_INTERCEPTORS_64_H_
 
-#include "src/sandbox/win/src/interceptors_64.h"  // IWYU pragma: export
+#include <sandbox/win/src/interceptors_64.h>  // IWYU pragma: export
 
 #if !defined(PSAPI_VERSION)
 #error <Psapi.h> should be included.

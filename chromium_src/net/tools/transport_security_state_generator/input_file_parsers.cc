@@ -7,7 +7,7 @@
 
 #define ParseJSON ParseJSON_ChromiumImpl
 #define ParseCertificatesFile ParseCertificatesFile_ChromiumImpl
-#include "src/net/tools/transport_security_state_generator/input_file_parsers.cc"
+#include <net/tools/transport_security_state_generator/input_file_parsers.cc>
 #undef ParseCertificatesFile
 #undef ParseJSON
 
@@ -67,13 +67,6 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
 
     // P2A/P3A
     { "name": "collector.bsg.brave.com", "pins": "brave"},
-    { "name": "p2a.brave.com", "pins": "brave"},
-    { "name": "p2a-json.brave.com", "pins": "brave"},
-    { "name": "p3a.brave.com", "pins": "brave"},
-    { "name": "p3a-creative.brave.com", "pins": "brave"},
-    { "name": "p3a-json.brave.com", "pins": "brave"},
-    { "name": "p3a.bravesoftware.com", "pins": "brave"},
-    { "name": "p3a-dev.bravesoftware.com", "pins": "brave"},
     { "name": "star-randsrv.bsg.brave.com", "pins": "brave"},
 
     // Creators
@@ -216,41 +209,6 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
       "name": "go-updater.brave.com",
       "mode": "force-https",
       "policy": "custom"
-    },
-    {
-      "name": "p2a.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "p2a-json.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "p3a.brave.com",
-      "policy": "custom",
-      "mode": "force-https"
-    },
-    {
-      "name": "p3a-creative.brave.com",
-      "policy": "custom",
-      "mode": "force-https"
-    },
-    {
-      "name": "p3a-json.brave.com",
-      "policy": "custom",
-      "mode": "force-https"
-    },
-    {
-      "name": "p3a.bravesoftware.com",
-      "policy": "custom",
-      "mode": "force-https"
-    },
-    {
-      "name": "p3a-dev.bravesoftware.com",
-      "policy": "custom",
-      "mode": "force-https"
     },
     {
       "name": "pcdn.brave.com",
@@ -546,9 +504,9 @@ bool ParseCertificatesFile(std::string_view certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
   constexpr std::string_view brave_certs = R"brave_certs(
-# Last updated: Mon Jun 30 18:02:44 2025
+# Last updated: Wed Jul 23 16:53:20 2025
 PinsListTimestamp
-1751320964
+1753304000
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/

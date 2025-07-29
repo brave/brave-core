@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import Button from '$web-components/button'
+import Button from '@brave/leo/react/button'
 
 export const SideBySideButtons = styled('div')<{}>`
   box-sizing: border-box;

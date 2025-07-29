@@ -39,6 +39,7 @@ import org.chromium.base.library_loader.ProcessInitException;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.browserservices.intents.WebappConstants;
 import org.chromium.chrome.browser.document.ChromeLauncherActivity;
@@ -292,8 +293,12 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
             setDefaultSearchEngineString(views);
-            setSearchBarPendingIntent(context, views);
-            setTopTiles(context, views, widgetTileList);
+            // Request code should be unique. By using distinct request codes,
+            // we allow the system to differentiate between the intents,
+            // ensuring that each button triggers its respective action.
+            int requestCode = -1;
+            requestCode = setSearchBarPendingIntent(context, views, requestCode);
+            setTopTiles(context, views, widgetTileList, requestCode);
             setRowsVisibility(views, widgetTileList.size(), minHeight);
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
@@ -314,7 +319,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static void setTopTiles(
-            Context context, RemoteViews views, List<WidgetTile> widgetTileList) {
+            Context context, RemoteViews views, List<WidgetTile> widgetTileList, int requestCode) {
         int tilesSize = widgetTileList.size();
         int i = 0;
         int j = 0;
@@ -329,7 +334,8 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
             int tileTextViewId = tileViewsIdArray[row][j][1];
 
             views.setViewVisibility(tileLayoutId, View.VISIBLE);
-            views.setOnClickPendingIntent(tileLayoutId, createIntent(context, tile.getUrl()));
+            views.setOnClickPendingIntent(
+                    tileLayoutId, createIntent(context, tile.getUrl(), ++requestCode));
             views.setTextViewText(tileTextViewId, tile.getTitle());
             views.setInt(tileImageViewId, "setColorFilter", 0);
             fetchGurlIcon(tileImageViewId, tile.getGURL());
@@ -365,9 +371,11 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                             int fallbackColor,
                             boolean isFallbackColorDefault,
                             @IconType int iconType) {
-                        if (icon == null)
+                        if (icon == null) {
                             updateTileIcon(imageViewId, getTileIconFromColor(gurl, fallbackColor));
-                        else updateTileIcon(imageViewId, getRoundedTileIconFromBitmap(icon));
+                        } else {
+                            updateTileIcon(imageViewId, getRoundedTileIconFromBitmap(icon));
+                        }
                     }
                 };
         largeIconBridge.getLargeIconForUrl(gurl, DESIRED_ICON_SIZE, callback);
@@ -389,10 +397,18 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         return mIconGenerator.generateIconForUrl(gurl);
     }
 
-    private static void setSearchBarPendingIntent(Context context, RemoteViews views) {
-        views.setOnClickPendingIntent(R.id.ivIncognito, createIncognitoIntent(context));
-        views.setOnClickPendingIntent(R.id.layoutSearchWithBrave, createIntent(context, false));
-        views.setOnClickPendingIntent(R.id.ivVoiceSearch, createIntent(context, true));
+    private static int setSearchBarPendingIntent(
+            Context context, RemoteViews views, int requestCode) {
+        views.setOnClickPendingIntent(
+                R.id.ivIncognito, createIncognitoIntent(context, ++requestCode));
+        views.setOnClickPendingIntent(
+                R.id.layoutSearchWithBrave, createIntent(context, false, ++requestCode));
+        views.setOnClickPendingIntent(
+                R.id.ivVoiceSearch, createIntent(context, true, ++requestCode));
+        views.setOnClickPendingIntent(
+                R.id.ibLeo, createPendingIntent(context, createLeoIntent(context), ++requestCode));
+
+        return requestCode;
     }
 
     private static Bitmap getBitmap(@Nullable Drawable drawable) {
@@ -427,17 +443,20 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                         : View.GONE);
     }
 
-    private static PendingIntent createIntent(@NonNull Context context, @NonNull String url) {
-        Intent intent = new Intent(
-                Intent.ACTION_VIEW, Uri.parse(url), context, ChromeLauncherActivity.class);
+    private static PendingIntent createIntent(
+            @NonNull Context context, @NonNull String url, int requestCode) {
+        Intent intent =
+                new Intent(
+                        Intent.ACTION_VIEW, Uri.parse(url), context, ChromeLauncherActivity.class);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(WebappConstants.EXTRA_SOURCE, ShortcutSource.BOOKMARK_NAVIGATOR_WIDGET);
         intent.putExtra(WebappConstants.REUSE_URL_MATCHING_TAB_ELSE_NEW_TAB, true);
-        return createPendingIntent(context, intent);
+        return createPendingIntent(context, intent, requestCode);
     }
 
-    private static PendingIntent createIntent(@NonNull Context context, boolean startVoiceSearch) {
+    private static PendingIntent createIntent(
+            @NonNull Context context, boolean startVoiceSearch, int requestCode) {
         SearchActivityClient client =
                 new SearchActivityClientImpl(context, IntentOrigin.SEARCH_WIDGET);
 
@@ -449,21 +468,36 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         searchIntent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
         searchIntent.setComponent(new ComponentName(context, SearchActivity.class));
         searchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return createPendingIntent(context, searchIntent);
+        return createPendingIntent(context, searchIntent, requestCode);
     }
 
-    private static PendingIntent createIncognitoIntent(Context context) {
+    private static PendingIntent createIncognitoIntent(Context context, int requestCode) {
         Intent trustedIncognitoIntent =
-                IntentHandler.createTrustedOpenNewTabIntent(context, /*incognito=*/true);
+                IntentHandler.createTrustedOpenNewTabIntent(context, /* incognito= */ true);
         trustedIncognitoIntent.putExtra(IntentHandler.EXTRA_INVOKED_FROM_APP_WIDGET, true);
         trustedIncognitoIntent.addFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         trustedIncognitoIntent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
-        return createPendingIntent(context, trustedIncognitoIntent);
+        return createPendingIntent(context, trustedIncognitoIntent, requestCode);
     }
 
-    private static PendingIntent createPendingIntent(Context context, Intent intent) {
-        return PendingIntent.getActivity(context, 0, intent,
+    public static Intent createLeoIntent(Context context) {
+        Intent trustedIncognitoIntent =
+                IntentHandler.createTrustedOpenNewTabIntent(context, /* incognito= */ false);
+        trustedIncognitoIntent.putExtra(IntentHandler.EXTRA_INVOKED_FROM_APP_WIDGET, true);
+        trustedIncognitoIntent.putExtra(BraveIntentHandler.EXTRA_INVOKED_FROM_APP_WIDGET_LEO, true);
+        trustedIncognitoIntent.addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        trustedIncognitoIntent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
+        return trustedIncognitoIntent;
+    }
+
+    private static PendingIntent createPendingIntent(
+            Context context, Intent intent, int requestCode) {
+        return PendingIntent.getActivity(
+                context,
+                requestCode,
+                intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
                         | IntentUtils.getPendingIntentMutabilityFlag(false));
     }

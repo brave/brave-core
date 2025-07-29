@@ -22,7 +22,7 @@
   GetFactoryInstance(__VA_ARGS__); \
   friend struct OnCookieChangeExposeForTesting
 
-#include "src/chrome/browser/extensions/api/cookies/cookies_api.h"  // IWYU pragma: export
+#include <chrome/browser/extensions/api/cookies/cookies_api.h>  // IWYU pragma: export
 
 namespace extensions {
 struct OnCookieChangeExposeForTesting {

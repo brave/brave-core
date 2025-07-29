@@ -92,6 +92,12 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     }
   }
 
+  var isPrivateBrowsing: Bool = false {
+    didSet {
+      setTheme()
+    }
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -154,7 +160,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     let traitCollection = UITraitCollection(preferredContentSizeCategory: sizeCategory)
 
     titleLabel.do {
-      $0.textColor = UIColor(braveSystemName: .textPrimary)
+      $0.textColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .textPrimary)
       $0.lineBreakMode = .byTruncatingTail
 
       let font = UIFont.preferredFont(
@@ -166,7 +172,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     }
 
     subtitleLabel.do {
-      $0.textColor = UIColor(braveSystemName: .textSecondary)
+      $0.textColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .textSecondary)
       $0.lineBreakMode = .byTruncatingTail
 
       let font = UIFont.preferredFont(
@@ -179,11 +185,11 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
 
     badgeImageView.do {
       $0.contentMode = .scaleAspectFit
-      $0.tintColor = UIColor(braveSystemName: .iconSecondary)
+      $0.tintColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .iconSecondary)
     }
   }
 
-  func setSite(_ site: Site, isPrivateBrowsing: Bool) {
+  func setSite(_ site: Site) {
     siteImageView.loadFavicon(
       for: site.tileURL,
       isPrivateBrowsing: isPrivateBrowsing
@@ -200,7 +206,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
           string: Strings.searchSuggestionOpenTabActionTitle,
           attributes: [
             .font: DynamicFontHelper.defaultHelper.smallSizeBoldWeightAS,
-            .foregroundColor: UIColor(braveSystemName: .textSecondary),
+            .foregroundColor: isPrivateBrowsing ? .white : UIColor(braveSystemName: .textSecondary),
           ]
         )
       )
@@ -209,7 +215,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
           string: " · \(site.url)",
           attributes: [
             .font: DynamicFontHelper.defaultHelper.smallSizeRegularWeightAS,
-            .foregroundColor: UIColor(braveSystemName: .textSecondary),
+            .foregroundColor: isPrivateBrowsing ? .white : UIColor(braveSystemName: .textSecondary),
           ]
         )
       )
@@ -250,7 +256,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
         string: Strings.searchSuggestionOpenPlaylistActionTitle,
         attributes: [
           .font: DynamicFontHelper.defaultHelper.smallSizeBoldWeightAS,
-          .foregroundColor: UIColor(braveSystemName: .textSecondary),
+          .foregroundColor: isPrivateBrowsing ? .white : UIColor(braveSystemName: .textSecondary),
         ]
       )
     )
@@ -260,7 +266,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
           string: " · \(Duration.seconds(item.duration).formatted(.timestamp))",
           attributes: [
             .font: DynamicFontHelper.defaultHelper.smallSizeRegularWeightAS,
-            .foregroundColor: UIColor(braveSystemName: .textSecondary),
+            .foregroundColor: isPrivateBrowsing ? .white : UIColor(braveSystemName: .textSecondary),
           ]
         )
       )

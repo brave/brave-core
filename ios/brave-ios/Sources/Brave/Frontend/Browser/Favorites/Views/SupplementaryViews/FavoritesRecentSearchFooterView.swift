@@ -8,7 +8,13 @@ import Shared
 import UIKit
 
 class FavoritesRecentSearchFooterView: UICollectionReusableView {
-  let label = UILabel()
+  private let label = UILabel()
+
+  var isPrivateBrowsing: Bool = false {
+    didSet {
+      setTheme()
+    }
+  }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -35,7 +41,7 @@ class FavoritesRecentSearchFooterView: UICollectionReusableView {
   private func setTheme() {
     label.do {
       $0.text = Strings.recentShowMore
-      $0.textColor = UIColor(braveSystemName: .textInteractive)
+      $0.textColor = isPrivateBrowsing ? .white : UIColor(braveSystemName: .textInteractive)
 
       var sizeCategory = UIApplication.shared.preferredContentSizeCategory
       if sizeCategory.isAccessibilityCategory {

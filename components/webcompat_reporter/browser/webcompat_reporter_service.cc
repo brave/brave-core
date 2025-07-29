@@ -5,16 +5,23 @@
 
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
+#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -53,18 +60,34 @@ struct ReportFiller {
       return *this;
     }
 
-    auto component_infos = service_delegate->GetComponentInfos();
-    if (!component_infos) {
+    auto all_components = service_delegate->GetComponentInfos();
+    std::vector<
+        webcompat_reporter::WebcompatReporterService::Delegate::ComponentInfo>
+        components_to_send = {};
+    std::copy_if(
+        all_components.begin(), all_components.end(),
+        std::back_inserter(components_to_send),
+        [](webcompat_reporter::WebcompatReporterService::Delegate::ComponentInfo
+               ci) {
+          return webcompat_reporter::SendComponentVersionInReport(ci.id);
+        });
+    std::vector<webcompat_reporter::mojom::ComponentInfoPtr>
+        mojom_components_to_send = {};
+    std::transform(
+        components_to_send.begin(), components_to_send.end(),
+        std::back_inserter(mojom_components_to_send),
+        [](webcompat_reporter::WebcompatReporterService::Delegate::ComponentInfo
+               ci) {
+          return webcompat_reporter::mojom::ComponentInfo::New(ci.name, ci.id,
+                                                               ci.version);
+        });
+
+    if (components_to_send.empty()) {
       return *this;
     }
 
-    std::vector<webcompat_reporter::mojom::ComponentInfoPtr> components_list;
-    for (const auto& component : component_infos.value()) {
-      components_list.emplace_back(
-          webcompat_reporter::mojom::ComponentInfo::New(
-              component.name, component.id, component.version));
-    }
-    (*report_info)->ad_block_components_version = std::move(components_list);
+    (*report_info)->ad_block_components_version =
+        std::move(mojom_components_to_send);
     return *this;
   }
 
@@ -123,6 +146,59 @@ void ProcessContactInfo(
           : "");
 }
 
+std::vector<std::string> GetInstalledComponentIds(
+    webcompat_reporter::WebcompatReporterService::Delegate const*
+        service_delegate) {
+  std::vector<std::string> component_ids;
+  if (!service_delegate) {
+    return component_ids;
+  }
+
+  const auto components = service_delegate->GetComponentInfos();
+  component_ids.resize(components.size());
+
+  std::transform(components.begin(), components.end(), component_ids.begin(),
+                 [](auto c) { return c.id; });
+
+  return component_ids;
+}
+
+using WebcompatCategory = webcompat_reporter::mojom::WebcompatCategory;
+
+constexpr char kHideCookieNoticeCategoryForComponentId[] =
+    "cdbbhgbmjhfnhnmgeddbliobbofkgdhe";
+constexpr char kHideNewsletterCategoryForComponentId[] =
+    "kdddfellohomdnfkdhombbddhojklibj";
+constexpr char kHideSocialCategoryForComponentId[] =
+    "nbkknaieglghmocpollinelcggiehfco";
+constexpr char kHideChatCategoryForComponentId[] =
+    "cjoooeeofnfjohnalnghhmdlalopplja";
+
+bool HideIssueCategory(const std::vector<std::string>& component_ids,
+                       const WebcompatCategory category) {
+  if (category == WebcompatCategory::kCookieNotice &&
+      !base::Contains(component_ids, kHideCookieNoticeCategoryForComponentId)) {
+    return true;
+  }
+
+  if (category == WebcompatCategory::kNewsletter &&
+      !base::Contains(component_ids, kHideNewsletterCategoryForComponentId)) {
+    return true;
+  }
+
+  if (category == WebcompatCategory::kSocial &&
+      !base::Contains(component_ids, kHideSocialCategoryForComponentId)) {
+    return true;
+  }
+
+  if (category == WebcompatCategory::kChat &&
+      !base::Contains(component_ids, kHideChatCategoryForComponentId)) {
+    return true;
+  }
+
+  return false;
+}
+
 }  // namespace
 
 namespace webcompat_reporter {
@@ -175,24 +251,109 @@ void WebcompatReporterService::SetContactInfoSaveFlag(bool value) {
   profile_prefs_->SetBoolean(prefs::kContactInfoSaveFlagPrefs, value);
 }
 
-void WebcompatReporterService::GetContactInfo(GetContactInfoCallback callback) {
+void WebcompatReporterService::GetBrowserParams(
+    GetBrowserParamsCallback callback) {
+  std::vector<std::string> component_ids(GetInstalledComponentIds(
+      service_delegate_ ? service_delegate_.get() : nullptr));
+
   if (!profile_prefs_) {
-    std::move(callback).Run(std::nullopt, false);
+    std::move(callback).Run(std::nullopt, false, std::move(component_ids));
     return;
   }
   auto save_flag_value =
       profile_prefs_->GetBoolean(prefs::kContactInfoSaveFlagPrefs);
   if (!save_flag_value) {
-    std::move(callback).Run(std::nullopt, save_flag_value);
+    std::move(callback).Run(std::nullopt, save_flag_value,
+                            std::move(component_ids));
     return;
   }
 
   auto contact_value = profile_prefs_->GetString(prefs::kContactInfoPrefs);
-  std::move(callback).Run(std::move(contact_value), save_flag_value);
+  std::move(callback).Run(std::move(contact_value), save_flag_value,
+                          std::move(component_ids));
 }
 
 void WebcompatReporterService::SetPrefServiceTest(PrefService* pref_service) {
   profile_prefs_ = pref_service;
+}
+
+void WebcompatReporterService::GetWebcompatCategories(
+    GetWebcompatCategoriesCallback callback) {
+  std::vector<std::string> component_ids(GetInstalledComponentIds(
+      service_delegate_ ? service_delegate_.get() : nullptr));
+
+  std::vector<mojom::WebcompatCategoryItemPtr> categories;
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kAds,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ADS)),
+      "ads"));
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kBlank,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_BLANK)),
+      "blank"));
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kScroll,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SCROLL)),
+      "scroll"));
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kForm,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_FORM)),
+      "form"));
+
+  if (!HideIssueCategory(component_ids, WebcompatCategory::kCookieNotice)) {
+    categories.emplace_back(mojom::WebcompatCategoryItem::New(
+        WebcompatCategory::kCookieNotice,
+        base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+            IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_COOKIE)),
+        "cookie notice"));
+  }
+
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kAntiAdblock,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ANTIADBLOCK)),
+      "anti adblock"));
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kTracking,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_TRACKING)),
+      "tracking"));
+
+  if (!HideIssueCategory(component_ids, WebcompatCategory::kNewsletter)) {
+    categories.emplace_back(mojom::WebcompatCategoryItem::New(
+        WebcompatCategory::kNewsletter,
+        base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+            IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_NEWSLETTER)),
+        "newsletter"));
+  }
+
+  if (!HideIssueCategory(component_ids, WebcompatCategory::kSocial)) {
+    categories.emplace_back(mojom::WebcompatCategoryItem::New(
+        WebcompatCategory::kSocial,
+        base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+            IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SOCIAL)),
+        "social"));
+  }
+
+  if (!HideIssueCategory(component_ids, WebcompatCategory::kChat)) {
+    categories.emplace_back(mojom::WebcompatCategoryItem::New(
+        WebcompatCategory::kChat,
+        base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+            IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_CHAT)),
+        "chat"));
+  }
+
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kOther,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_OTHER)),
+      "other"));
+
+  std::move(callback).Run(std::move(categories));
 }
 
 }  // namespace webcompat_reporter

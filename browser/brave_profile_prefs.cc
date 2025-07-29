@@ -32,7 +32,7 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -47,6 +47,7 @@
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -62,6 +63,7 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -100,6 +102,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #include "chrome/browser/ui/webui/bookmarks/bookmark_prefs.h"
 #include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom.h"
@@ -126,11 +129,118 @@ using extensions::FeatureSwitch;
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/common/pref_names.h"
+#endif
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/prefs.h"
 #endif
 
 namespace brave {
+
+namespace {
+
+void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
+#if BUILDFLAG(IS_ANDROID)
+  // Clear default popular sites
+  registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
+                                base::Value(base::Value::Type::LIST));
+  // Disable NTP suggestions
+  // On Android we want to have enable_feed_v2 parameter enabled to
+  // provide linking with feed::FetchRssLinks at
+  // BraveNewsTabHelper::DOMContentLoaded, but kEnableSnippets and
+  // kArticlesListVisible must be defaulted to false to avoid failed assertion
+  // at BraveNewTabPage.initializeMainView. So override
+  // feed::prefs::RegisterFeedSharedProfilePrefs for Android only. Related
+  // Chromium's commit: d3500b942cde04737bc13021173b6ffa11aaf1b9.
+  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippets,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippetsByDse,
+                                base::Value(false));
+
+  // Explicitly disable safe browsing extended reporting by default in case they
+  // change it in upstream.
+  registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
+                                base::Value(false));
+#else
+  // Turn on most visited mode on NTP by default.
+  // We can turn customization mode on when we have add-shortcut feature.
+  registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,
+                                base::Value(true));
+
+  registry->SetDefaultPrefValue(
+      bookmarks_webui::prefs::kBookmarksViewType,
+      base::Value(static_cast<int>(side_panel::mojom::ViewType::kCompact)));
+#endif  // BUILDFLAG(IS_ANDROID)
+
+  // Restore last profile on restart
+  registry->SetDefaultPrefValue(
+      prefs::kRestoreOnStartup,
+      base::Value(SessionStartupPref::kPrefValueLast));
+
+  // Show download prompt by default
+  registry->SetDefaultPrefValue(prefs::kPromptForDownload, base::Value(true));
+
+  // Not using chrome's web service for resolving navigation errors
+  registry->SetDefaultPrefValue(embedder_support::kAlternateErrorPagesEnabled,
+                                base::Value(false));
+
+  // Disable safebrowsing reporting
+  registry->SetDefaultPrefValue(
+      prefs::kSafeBrowsingExtendedReportingOptInAllowed, base::Value(false));
+
+#if defined(TOOLKIT_VIEWS)
+  // Disable side search by default.
+  // Copied from side_search_prefs.cc because it's not exported.
+  constexpr char kSideSearchEnabled[] = "side_search.enabled";
+  registry->SetDefaultPrefValue(kSideSearchEnabled, base::Value(false));
+#endif
+
+  // Disable search suggestion
+  registry->SetDefaultPrefValue(prefs::kSearchSuggestEnabled,
+                                base::Value(false));
+
+  // Disable "Use a prediction service to load pages more quickly"
+  registry->SetDefaultPrefValue(
+      prefetch::prefs::kNetworkPredictionOptions,
+      base::Value(
+          static_cast<int>(prefetch::NetworkPredictionOptions::kDisabled)));
+
+  // Disable cloud print
+  // Cloud Print: Don't allow this browser to act as Cloud Print server
+  registry->SetDefaultPrefValue(prefs::kCloudPrintProxyEnabled,
+                                base::Value(false));
+
+  // Disable default webstore icons in topsites or apps.
+  registry->SetDefaultPrefValue(policy::policy_prefs::kHideWebStoreIcon,
+                                base::Value(true));
+
+  // Do not mark Password Manager app menu item as new
+  registry->SetDefaultPrefValue(
+      password_manager::prefs::kPasswordsPrefWithNewLabelUsed,
+      base::Value(true));
+
+  // Password leak detection should be disabled
+  registry->SetDefaultPrefValue(
+      password_manager::prefs::kPasswordLeakDetectionEnabled,
+      base::Value(false));
+  registry->SetDefaultPrefValue(syncer::prefs::internal::kSyncPayments,
+                                base::Value(false));
+
+  // Enabled by default after fixing
+  // https://github.com/brave/brave-browser/issues/18017
+  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(true));
+
+  // Disable @aimode search keyword
+  // Currently, upstream only defines an int kAIModeAllowed = 0 value and check
+  // against it (see components/omnibox/browser/omnibox_prefs.cc).
+  registry->SetDefaultPrefValue(omnibox::kAIModeSettings, base::Value(-1));
+}
+
+}  // namespace
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
@@ -264,6 +374,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
+  registry->RegisterBooleanPref(kBraveWaybackMachineDisabledByPolicy, false);
 #endif
 
   brave_adaptive_captcha::BraveAdaptiveCaptchaService::RegisterProfilePrefs(
@@ -275,71 +386,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kBackgroundVideoPlaybackEnabled, true);
   registry->RegisterBooleanPref(kSafetynetCheckFailed, false);
   registry->RegisterStringPref(kSafetynetStatus, "");
-  // clear default popular sites
-  registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
-                                base::Value(base::Value::Type::LIST));
-  // Disable NTP suggestions
-  // On Android we want to have enable_feed_v2 parameter enabled to
-  // provide linking with feed::FetchRssLinks at
-  // BraveNewsTabHelper::DOMContentLoaded, but kEnableSnippets and
-  // kArticlesListVisible must be defaulted to false to avoid failed assertion
-  // at BraveNewTabPage.initializeMainView. So override
-  // feed::prefs::RegisterFeedSharedProfilePrefs for Android only. Related
-  // Chromium's commit: d3500b942cde04737bc13021173b6ffa11aaf1b9.
-  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippets,
-                                base::Value(false));
-  registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,
-                                base::Value(false));
-  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippetsByDse,
-                                base::Value(false));
-
-  // Explicitly disable safe browsing extended reporting by default in case they
-  // change it in upstream.
-  registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
-                                base::Value(false));
 #endif
-
-  // Restore last profile on restart
-  registry->SetDefaultPrefValue(
-      prefs::kRestoreOnStartup,
-      base::Value(SessionStartupPref::kPrefValueLast));
-
-  // Show download prompt by default
-  registry->SetDefaultPrefValue(prefs::kPromptForDownload, base::Value(true));
-
-  // Not using chrome's web service for resolving navigation errors
-  registry->SetDefaultPrefValue(embedder_support::kAlternateErrorPagesEnabled,
-                                base::Value(false));
-
-  // Disable safebrowsing reporting
-  registry->SetDefaultPrefValue(
-      prefs::kSafeBrowsingExtendedReportingOptInAllowed, base::Value(false));
-
-#if defined(TOOLKIT_VIEWS)
-  // Disable side search by default.
-  // Copied from side_search_prefs.cc because it's not exported.
-  constexpr char kSideSearchEnabled[] = "side_search.enabled";
-  registry->SetDefaultPrefValue(kSideSearchEnabled, base::Value(false));
-#endif
-
-  // Disable search suggestion
-  registry->SetDefaultPrefValue(prefs::kSearchSuggestEnabled,
-                                base::Value(false));
-
-  // Disable "Use a prediction service to load pages more quickly"
-  registry->SetDefaultPrefValue(
-      prefetch::prefs::kNetworkPredictionOptions,
-      base::Value(
-          static_cast<int>(prefetch::NetworkPredictionOptions::kDisabled)));
-
-  // Disable cloud print
-  // Cloud Print: Don't allow this browser to act as Cloud Print server
-  registry->SetDefaultPrefValue(prefs::kCloudPrintProxyEnabled,
-                                base::Value(false));
-
-  // Disable default webstore icons in topsites or apps.
-  registry->SetDefaultPrefValue(policy::policy_prefs::kHideWebStoreIcon,
-                                base::Value(true));
 
   // Importer: selected data types
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
@@ -351,6 +398,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, true);
+  registry->RegisterBooleanPref(kBraveTalkDisabledByPolicy, false);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -373,6 +421,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Brave Wallet
   brave_wallet::RegisterProfilePrefs(registry);
 
+#if BUILDFLAG(ENABLE_PSST)
+  psst::RegisterProfilePrefs(registry);
+#endif
+
   // Brave Search
   if (brave_search::IsDefaultAPIEnabled()) {
     brave_search::BraveSearchDefaultHost::RegisterProfilePrefs(registry);
@@ -390,18 +442,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   omnibox::RegisterBraveProfilePrefs(registry);
 
-  // Do not mark Password Manager app menu item as new
-  registry->SetDefaultPrefValue(
-      password_manager::prefs::kPasswordsPrefWithNewLabelUsed,
-      base::Value(true));
-
-  // Password leak detection should be disabled
-  registry->SetDefaultPrefValue(
-      password_manager::prefs::kPasswordLeakDetectionEnabled,
-      base::Value(false));
-  registry->SetDefaultPrefValue(syncer::prefs::internal::kSyncPayments,
-                                base::Value(false));
-
   // Default search engine version
   registry->RegisterIntegerPref(
       prefs::kBraveDefaultSearchVersion,
@@ -409,6 +449,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   registry->RegisterBooleanPref(kWebDiscoveryEnabled, false);
+  registry->RegisterBooleanPref(kWebDiscoveryDisabledByPolicy, false);
   registry->RegisterDictionaryPref(kWebDiscoveryCTAState);
 #endif
 
@@ -426,30 +467,21 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   BraveOmniboxClientImpl::RegisterProfilePrefs(registry);
 
-  // Turn on most visited mode on NTP by default.
-  // We can turn customization mode on when we have add-shortcut feature.
-  registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,
-                                base::Value(true));
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
   registry->RegisterBooleanPref(kShowFullscreenReminder, true);
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
 
-  registry->SetDefaultPrefValue(
-      bookmarks_webui::prefs::kBookmarksViewType,
-      base::Value(static_cast<int>(side_panel::mojom::ViewType::kCompact)));
-#endif
+  welcome_ui::prefs::RegisterProfilePrefs(registry);
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   ai_chat::prefs::RegisterProfilePrefs(registry);
   ai_chat::ModelService::RegisterProfilePrefs(registry);
 
   brave_search_conversion::RegisterPrefs(registry);
 
-  // Enabled by default after fixing
-  // https://github.com/brave/brave-browser/issues/18017
   // kEnableMediaRouterOnRestart is used to remember the user's choice.
-  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(true));
   registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, true);
 
   BraveFarblingService::RegisterProfilePrefs(registry);
@@ -469,9 +501,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_ads::RegisterProfilePrefs(registry);
   brave_rewards::RegisterProfilePrefs(registry);
 
-  registry->SetDefaultPrefValue(prefs::kSearchSuggestEnabled,
-                                base::Value(false));
-
   webcompat_reporter::prefs::RegisterProfilePrefs(registry);
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
@@ -481,6 +510,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   containers::RegisterProfilePrefs(registry);
 #endif
+
+  OverrideDefaultPrefValues(registry);
 }
 
 }  // namespace brave

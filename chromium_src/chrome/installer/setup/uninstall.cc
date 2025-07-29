@@ -26,7 +26,7 @@
 #endif
 #define UninstallProduct UninstallProduct_ChromiumImpl
 
-#include "src/chrome/installer/setup/uninstall.cc"
+#include <chrome/installer/setup/uninstall.cc>
 
 #undef UninstallProduct
 

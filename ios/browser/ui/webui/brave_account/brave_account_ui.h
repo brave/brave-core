@@ -7,7 +7,7 @@
 #define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_
 
 #include "brave/components/brave_account/brave_account_ui_base.h"
-#include "brave/ios/browser/ui/webui/brave_web_ui_ios_data_source.h"
+#include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"
 
 class GURL;

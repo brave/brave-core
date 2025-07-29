@@ -52,6 +52,8 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (pageVisibility.leoAssistant) {
     r.BRAVE_LEO_ASSISTANT =
       r.BASIC.createSection('/leo-ai', 'leoAssistant')
+    r.BRAVE_LEO_CUSTOMIZATION = r.BRAVE_LEO_ASSISTANT
+      .createChild('/leo-ai/customization')
   }
   if (pageVisibility.content) {
     r.BRAVE_CONTENT = r.BASIC.createSection('/braveContent', 'content')
@@ -125,6 +127,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   } else if (!isGuest) {
     console.error(
       '[Settings] Could not move autofill route to advanced route', r)
+  }
+  if (loadTimeData.getBoolean('isEmailAliasesEnabled') && r.AUTOFILL) {
+    r.EMAIL_ALIASES = r.AUTOFILL.createChild('/email-aliases')
   }
   // Delete performance menu - system menu includes it instead.
   if (r.PERFORMANCE) {

@@ -16,7 +16,7 @@
   OnHovercardImagesEnabledChanged_Unused(); \
   virtual void OnHovercardImagesEnabledChanged
 
-#include "src/chrome/browser/ui/views/tabs/tab_hover_card_controller.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/tab_hover_card_controller.h>  // IWYU pragma: export
 
 #undef OnHovercardImagesEnabledChanged
 #undef CreateHoverCard

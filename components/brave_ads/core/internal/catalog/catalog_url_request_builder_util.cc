@@ -11,7 +11,7 @@
 namespace brave_ads {
 
 std::string BuildCatalogUrlPath() {
-  return base::StringPrintf("/v%d/catalog", kCatalogVersion);
+  return absl::StrFormat("/v%d/catalog", kCatalogVersion);
 }
 
 }  // namespace brave_ads

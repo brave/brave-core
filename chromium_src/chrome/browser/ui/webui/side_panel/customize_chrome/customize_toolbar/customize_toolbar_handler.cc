@@ -11,23 +11,43 @@
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/list_action_modifiers.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/grit/generated_resources.h"
+#include "components/grit/brave_components_strings.h"
 
-#define ListActions ListActionsChromium
-#define PinAction PinActionChromium
+#define ListCategories ListCategories_ChromiumImpl
+#define ListActions ListActions_ChromiumImpl
+#define PinAction PinAction_ChromiumImpl
 
 // pref_change_registrar_.Init() in constructor
 #define Init(...)    \
   Init(__VA_ARGS__); \
   ObserveBraveActions()
 
-#include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc"
+// Replace the resource ID for the "Your Chrome" category with "Brave Menu"
+// resource ID.
+#undef IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME
+#define IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME \
+  IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR
+
+#include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc>
+
+#undef IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME
 
 #undef Init
 #undef PinAction
 #undef ListActions
+#undef ListCategories
+
+void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
+  ListCategories_ChromiumImpl(
+      base::BindOnce(
+          &customize_chrome::AppendBraveSpecificCategories,
+          base::Unretained(base::raw_ref<content::WebContents>(*web_contents_)))
+          .Then(std::move(callback)));
+}
 
 void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
-  ListActionsChromium(
+  ListActions_ChromiumImpl(
       base::BindOnce(&customize_chrome::FilterUnsupportedChromiumActions)
           .Then(base::BindOnce(
               &customize_chrome::ApplyBraveSpecificModifications,
@@ -47,7 +67,7 @@ void CustomizeToolbarHandler::PinAction(
     return;
   }
 
-  PinActionChromium(action_id, pin);
+  PinAction_ChromiumImpl(action_id, pin);
 }
 
 void CustomizeToolbarHandler::ObserveBraveActions() {

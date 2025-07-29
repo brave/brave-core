@@ -11,7 +11,7 @@
   friend class BraveTabSearchBubbleHost; \
   virtual bool ShowTabSearchBubble
 
-#include "src/chrome/browser/ui/views/tab_search_bubble_host.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/tab_search_bubble_host.h>  // IWYU pragma: export
 
 #undef ShowTabSearchBubble
 

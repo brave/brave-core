@@ -129,6 +129,8 @@ export function createSearchHandler(
       updateSearchEngines(),
       updatePrefs()
     ])
+
+    store.update({ initialized: true })
   }
 
   loadData()

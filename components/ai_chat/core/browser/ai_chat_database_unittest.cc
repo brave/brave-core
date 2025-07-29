@@ -22,13 +22,11 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
@@ -48,17 +46,9 @@ class AIChatDatabaseTest : public testing::Test,
     os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
         /*is_sync_for_unittests=*/true);
 
-    // Create database when os_crypt is ready
-    base::RunLoop run_loop;
-    encryptor_ready_subscription_ =
-        os_crypt_->GetInstance(base::BindLambdaForTesting(
-            [&](os_crypt_async::Encryptor encryptor, bool success) {
-              ASSERT_TRUE(success);
-              db_ = std::make_unique<AIChatDatabase>(db_file_path(),
-                                                     std::move(encryptor));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    os_crypt_->GetInstance(future.GetCallback());
+    db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
 
     if (GetParam()) {
       db_->DeleteAllData();
@@ -88,7 +78,6 @@ class AIChatDatabaseTest : public testing::Test,
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::ScopedTempDir temp_directory_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
-  base::CallbackListSubscription encryptor_ready_subscription_;
   std::unique_ptr<AIChatDatabase> db_;
 };
 
@@ -100,8 +89,7 @@ INSTANTIATE_TEST_SUITE_P(
     // and no tables are missing or different.
     ::testing::Bool(),
     [](const testing::TestParamInfo<AIChatDatabaseTest::ParamType>& info) {
-      return base::StringPrintf("DropTablesFirst_%s",
-                                info.param ? "Yes" : "No");
+      return absl::StrFormat("DropTablesFirst_%s", info.param ? "Yes" : "No");
     });
 
 // Functions tested:
@@ -302,6 +290,7 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
 }
 
 TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
+  // More invalid cases are tested in ../common/proto_conversion_unittest.cc
   const std::string uuid = "first";
   const GURL page_url = GURL("https://example.com/page");
   mojom::ConversationPtr metadata = mojom::Conversation::New(
@@ -353,6 +342,285 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
 
   mojom::ConversationArchivePtr conversation_data =
       db_->GetConversationData(uuid);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+}
+
+TEST_P(AIChatDatabaseTest, ToolUseEvent) {
+  const std::string uuid = "first";
+  const GURL page_url = GURL("https://example.com/page");
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, false, std::vector<mojom::AssociatedContentPtr>());
+
+  // Test 2 entries to verify they are recorded against different entries
+  auto history = CreateSampleChatHistory(2u);
+  {
+    auto tool_event_first =
+        mojom::ToolUseEvent::New("test_tool", "tool_id_123", R"({
+      "param1": "value1",
+      "param2": 42,
+      "param3": true
+    })",
+                                 std::vector<mojom::ContentBlockPtr>());
+
+    tool_event_first->output->emplace_back(
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("This is a text response")));
+    tool_event_first->output->emplace_back(
+        mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
+            GURL("data:image/"
+                 "png;base64,"
+                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+"
+                 "A8AAQUBAScY42YAAAAASUVORK5CYII="))));
+
+    auto tool_event_second =
+        mojom::ToolUseEvent::New("test_tool_2", "tool_id_456", R"({
+      "param1": "value2",
+      "param2": 43,
+      "param3": false
+    })",
+                                 std::vector<mojom::ContentBlockPtr>());
+
+    tool_event_second->output->emplace_back(
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("This is a second text response")));
+    tool_event_second->output->emplace_back(
+        mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
+            GURL("data:image/"
+                 "png;base64,"
+                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+"
+                 "A8AAQUBAScY42YAAAAASUVORK5CYII="))));
+
+    auto tool_event_third =
+        mojom::ToolUseEvent::New("test_tool_3", "tool_id_789", R"({
+      "param1": "value3",
+      "param2": 44,
+      "param3": true
+    })",
+                                 std::vector<mojom::ContentBlockPtr>());
+
+    tool_event_third->output->emplace_back(
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("This is a third text response")));
+    tool_event_third->output->emplace_back(
+        mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
+            GURL("data:image/"
+                 "png;base64,"
+                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+"
+                 "A8AAQUBAScY42YAAAAASUVORK5CYII="))));
+
+    history[1]->events->clear();
+    history[1]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            std::move(tool_event_first)));
+    history[1]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            std::move(tool_event_second)));
+
+    history[3]->events->clear();
+    history[3]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            std::move(tool_event_third)));
+  }
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
+  mojom::ConversationArchivePtr conversation_data =
+      db_->GetConversationData(uuid);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+}
+
+TEST_P(AIChatDatabaseTest, ToolUseEvent_Invalid) {
+  const std::string uuid = "first";
+  const GURL page_url = GURL("https://example.com/page");
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, false, std::vector<mojom::AssociatedContentPtr>());
+
+  // Test 2 entries to verify they are recorded against different entries. Make
+  // some entries invalid to verify they are not persisted.
+  // Test an additional entry with a sources even but no items.
+  auto history = CreateSampleChatHistory(1u);
+  {
+    // Invalid, no id
+    auto tool_event_first =
+        mojom::ToolUseEvent::New("test_tool", "", R"({
+      "param1": "value1",
+      "param2": 42,
+      "param3": true
+    })",
+                                 std::vector<mojom::ContentBlockPtr>());
+
+    tool_event_first->output->emplace_back(
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("This is a text response")));
+    tool_event_first->output->emplace_back(
+        mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
+            GURL("data:image/"
+                 "png;base64,"
+                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+"
+                 "A8AAQUBAScY42YAAAAASUVORK5CYII="))));
+
+    // Invalid, no tool name
+    auto tool_event_second =
+        mojom::ToolUseEvent::New("", "tool_id_456", R"({
+      "param1": "value2",
+      "param2": 43,
+      "param3": false
+    })",
+                                 std::vector<mojom::ContentBlockPtr>());
+
+    tool_event_second->output->emplace_back(
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("This is a text response")));
+    tool_event_second->output->emplace_back(
+        mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
+            GURL("data:image/"
+                 "png;base64,"
+                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+"
+                 "A8AAQUBAScY42YAAAAASUVORK5CYII="))));
+
+    // Valid, and no output
+    auto tool_event_third =
+        mojom::ToolUseEvent::New("valid_tool_call", "tool_id_456", R"({
+      "param1": "value2",
+      "param2": 43,
+      "param3": false
+    })",
+                                 std::nullopt);
+
+    history[1]->events->clear();
+    history[1]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            std::move(tool_event_first)));
+    history[1]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            std::move(tool_event_second)));
+    history[1]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            std::move(tool_event_third)));
+  }
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+
+  // Remove the first 2 invalid events from history[1]
+  history[1]->events->erase(history[1]->events->begin(),
+                            history[1]->events->begin() + 2);
+
+  mojom::ConversationArchivePtr conversation_data =
+      db_->GetConversationData(uuid);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+}
+
+TEST_P(AIChatDatabaseTest, MixedEvents) {
+  const std::string uuid = "first";
+  const GURL page_url = GURL("https://example.com/page");
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, false, std::vector<mojom::AssociatedContentPtr>());
+
+  // Test a mix of completion, sources, and tool use events
+  // and verify the order is
+  auto history = CreateSampleChatHistory(2u);
+
+  std::vector<mojom::WebSourcePtr> sources_first;
+  sources_first.emplace_back(
+      mojom::WebSource::New("title1", GURL("https://example.com/source1"),
+                            GURL("https://www.example.com/source1favicon")));
+  sources_first.emplace_back(
+      mojom::WebSource::New("title2", GURL("https://example.com/source2"),
+                            GURL("https://www.example.com/source2favicon")));
+
+  std::vector<mojom::WebSourcePtr> sources_second;
+  sources_second.emplace_back(
+      mojom::WebSource::New("2title1", GURL("https://2example.com/source1"),
+                            GURL("https://www.2example.com/source1favicon")));
+  sources_second.emplace_back(
+      mojom::WebSource::New("2title2", GURL("https://2example.com/source2"),
+                            GURL("https://www.2example.com/source2favicon")));
+
+  auto tool_event_first =
+      mojom::ToolUseEvent::New("test_tool", "tool_id_123", R"({
+  "param1": "value1",
+  "param2": 42,
+  "param3": true
+})",
+                               std::nullopt);
+
+  auto tool_event_second =
+      mojom::ToolUseEvent::New("test_tool_2", "tool_id_456",
+                               R"({
+  "param1": "value2",
+  "param2": 43,
+  "param3": false,
+  "nested": {
+    "param1": "value2",
+    "param2": 43
+  }
+})",
+                               std::vector<mojom::ContentBlockPtr>());
+  tool_event_second->output->emplace_back(
+      mojom::ContentBlock::NewTextContentBlock(
+          mojom::TextContentBlock::New("This is a second text response")));
+
+  history[1]->events->clear();
+  history[1]->events->emplace_back(
+      mojom::ConversationEntryEvent::NewSourcesEvent(
+          mojom::WebSourcesEvent::New(std::move(sources_first))));
+  history[1]->events->emplace_back(
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("This is a completion event")));
+  auto& tool_event_first_event = history[1]->events->emplace_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(
+          std::move(tool_event_first)));
+  history[1]->events->emplace_back(
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("This is a second completion event")));
+
+  history[3]->events->clear();
+  history[3]->events->emplace_back(
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("This is a third completion event")));
+  history[3]->events->emplace_back(
+      mojom::ConversationEntryEvent::NewSourcesEvent(
+          mojom::WebSourcesEvent::New(std::move(sources_second))));
+  history[3]->events->emplace_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(
+          std::move(tool_event_second)));
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
+  mojom::ConversationArchivePtr conversation_data =
+      db_->GetConversationData(uuid);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+
+  // Add ouptut for the first tool use event and verify it is persisted
+  // on the correct event.
+  auto& tool_event_first_output =
+      tool_event_first_event->get_tool_use_event()->output;
+  tool_event_first_output = std::vector<mojom::ContentBlockPtr>();
+  tool_event_first_output->emplace_back(
+      mojom::ContentBlock::NewTextContentBlock(
+          mojom::TextContentBlock::New("This is a text response")));
+  tool_event_first_output->emplace_back(
+      mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
+          GURL("data:image/"
+               "png;base64,"
+               "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+"
+               "A8AAQUBAScY42YAAAAASUVORK5CYII="))));
+  EXPECT_TRUE(db_->UpdateToolUseEvent(
+      history[1]->uuid.value(), 2,
+      tool_event_first_event->get_tool_use_event()->Clone()));
+  conversation_data = db_->GetConversationData(uuid);
   ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
                                   history);
 }
@@ -751,18 +1019,11 @@ class AIChatDatabaseMigrationTest : public testing::Test,
         /*is_sync_for_unittests=*/true);
 
     // Create database when os_crypt is ready
-    base::RunLoop run_loop;
-    encryptor_ready_subscription_ =
-        os_crypt_->GetInstance(base::BindLambdaForTesting(
-            [&](os_crypt_async::Encryptor encryptor, bool success) {
-              ASSERT_TRUE(success);
-              CreateDatabase(base::StringPrintf(
-                  "aichat_database_dump_version_%d.sql", version()));
-              db_ = std::make_unique<AIChatDatabase>(db_file_path(),
-                                                     std::move(encryptor));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    os_crypt_->GetInstance(future.GetCallback());
+    CreateDatabase(
+        absl::StrFormat("aichat_database_dump_version_%d.sql", version()));
+    db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
   }
 
   void TearDown() override {
@@ -814,7 +1075,6 @@ class AIChatDatabaseMigrationTest : public testing::Test,
   base::FilePath database_dump_location_;
   base::ScopedTempDir temp_directory_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
-  base::CallbackListSubscription encryptor_ready_subscription_;
   std::unique_ptr<AIChatDatabase> db_;
 };
 
@@ -824,8 +1084,8 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Range(kLowestSupportedDatabaseVersion, kCurrentDatabaseVersion),
     [](const testing::TestParamInfo<AIChatDatabaseMigrationTest::ParamType>&
            info) {
-      return base::StringPrintf("From_v%d_to_v%d", info.param,
-                                kCurrentDatabaseVersion);
+      return absl::StrFormat("From_v%d_to_v%d", info.param,
+                             kCurrentDatabaseVersion);
     });
 
 // Tests the migration of the database from version() to kCurrentVersionNumber

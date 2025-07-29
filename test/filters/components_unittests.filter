@@ -11,6 +11,32 @@
 # This test fails because we use a different sync server endpoint.
 -HistoryNoticeUtilsTest.WebHistoryStates
 
+# These tests fail because we default to saving bookmarks in the "Bookmarks"
+# folder, not in "Other bookmarks"
+-BookmarkModelTest.ParentForNewNodesWithEmptyModel
+-BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_DefaultOrderWithAccountBookmarks
+-BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_DefaultOrderWithoutAccountBookmarks
+-BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_DefinedModifiedOrderWithCustomLocalFolders
+-BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_LocalFolderModifiedAfterAccountFoldersAdded
+-BookmarkUtilsTest.GetMostRecentlyModifiedUserFolders_LocalFolderModifiedBeforeAccountFoldersAdded
+-BookmarkUtilsTest.GetParentForNewNodes_ClientOverride
+
+# This test fails because we disable Amount Extraction Heuristic Regexes and
+# disalow component installation.
+-AmountExtractionHeuristicRegexesInstallerPolicyTest.ComponentRegistered
+
+# This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
+-DocumentProviderTest.CachingForSyncMatches
+-DocumentProviderTest.IsDocumentProviderAllowed
+-DocumentProviderTest.MaxMatches
+
+# This test crashes due to sequence check in BraveSearchProvider::DoHistoryQuery
+# https://github.com/brave/brave-browser/issues/47218
+-OmniboxTextUtilTest.AdjustTextForCopy
+
+# This test fails because we disable @aimode search keyword
+-FeaturedSearchProviderTest.StarterPack
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*

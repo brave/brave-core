@@ -21,6 +21,7 @@
 #include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/to_string.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -28,10 +29,13 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
+#include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
@@ -82,6 +86,7 @@ GetMockTabsAndExpectedTabsJsonString(size_t num_tabs) {
 }  // namespace
 
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
+using ConversationEventRole = ConversationAPIClient::ConversationEventRole;
 
 class MockConversationAPIClient : public ConversationAPIClient {
  public:
@@ -93,14 +98,16 @@ class MockConversationAPIClient : public ConversationAPIClient {
               PerformRequest,
               (std::vector<ConversationEvent>,
                const std::string& selected_language,
+               std::optional<base::Value::List> oai_tool_definitions,
+               const std::optional<std::string>& preferred_tool_name,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback,
                const std::optional<std::string>& model_name),
               (override));
 
   std::string GetEventsJson(std::vector<ConversationEvent> conversation) {
-    auto body =
-        CreateJSONRequestBody(std::move(conversation), "", std::nullopt, true);
+    auto body = CreateJSONRequestBody(std::move(conversation), "", std::nullopt,
+                                      std::nullopt, std::nullopt, true);
     auto dict = base::test::ParseJsonDict(body);
     base::Value::List* events = dict.FindList("events");
     EXPECT_TRUE(events);
@@ -137,7 +144,7 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
 
     engine_ = std::make_unique<EngineConsumerConversationAPI>(
         *model_->options->get_leo_model_options(), nullptr, nullptr,
-        model_service_.get());
+        model_service_.get(), &prefs_);
     engine_->SetAPIForTesting(std::make_unique<MockConversationAPIClient>(
         model_->options->get_leo_model_options()->name));
   }
@@ -154,6 +161,14 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
     base::JSONWriter::WriteWithOptions(
         events, base::JSONWriter::OPTIONS_PRETTY_PRINT, &events_json);
     return events_json;
+  }
+
+  std::vector<std::string> GetContentStrings(
+      ConversationAPIClient::Content& content) {
+    auto* content_strings = std::get_if<std::vector<std::string>>(&content);
+
+    EXPECT_TRUE(content_strings);
+    return *content_strings;
   }
 
  protected:
@@ -174,7 +189,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   // ConversationEvent to JSON. It's convenient to test both here but more
   // exhaustive tests of  ConversationAPIClient are performed in its own
   // unit test suite.
-  std::string page_content(kTestingMaxAssociatedContentLength + 1, 'a');
+  PageContent page_content(
+      std::string(kTestingMaxAssociatedContentLength + 1, 'a'), false);
   std::string expected_page_content(kTestingMaxAssociatedContentLength, 'a');
   std::string expected_user_message_content =
       "Tell the user which show is this about?";
@@ -189,16 +205,19 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 2u);
-        EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
-        // Page content should be truncated
-        EXPECT_EQ(conversation[0].content[0], expected_page_content);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-        EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
+        // Page content should be truncated
+        EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
+                  expected_page_content);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
         // Match entire structure
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events));
@@ -217,7 +236,74 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      false, page_content, history, "", {}, std::nullopt, base::DoNothing(),
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateEvents_BasicMessage_MultiAssociatedTruncates) {
+  size_t content_length = kTestingMaxAssociatedContentLength / 2 + 10;
+  PageContent page_content_1(std::string(content_length, 'a'), false);
+  PageContent page_content_2(std::string(content_length, 'b'), false);
+  std::string expected_page_content_1(content_length, 'a');
+
+  // Second content should be truncated to the remaining available space
+  std::string expected_page_content_2(
+      kTestingMaxAssociatedContentLength - content_length, 'b');
+  std::string expected_user_message_content =
+      "Tell the user which show is this about?";
+  std::string expected_events = R"([
+    {"role": "user", "type": "pageText", "content": ")" +
+                                expected_page_content_1 + R"("},
+    {"role": "user", "type": "pageText", "content": ")" +
+                                expected_page_content_2 + R"("},
+    {"role": "user", "type": "chatMessage", "content": ")" +
+                                expected_user_message_content + R"("}
+  ])";
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // Some structured EXPECT calls to catch nicer errors first
+        EXPECT_EQ(conversation.size(), 3u);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[1].type, ConversationAPIClient::PageText);
+        EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
+                  expected_page_content_1);
+        EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
+                  expected_page_content_2);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
+        // Match entire structure
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->text = "Which show is this about?";
+  turn->prompt = "Tell the user which show is this about?";
+  history.push_back(std::move(turn));
+
+  engine_->GenerateAssistantResponse(
+      {page_content_1, page_content_2}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -225,6 +311,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
+  PageContent page_content("This is a page about The Mandalorian.", false);
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
     {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
@@ -235,16 +322,18 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 3u);
-        EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-        EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
         EXPECT_EQ(conversation[1].type, ConversationAPIClient::PageExcerpt);
-        EXPECT_EQ(conversation[2].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
         // Match entire structure
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events));
@@ -263,8 +352,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      false, "This is a page about The Mandalorian.", history, "", {},
-      std::nullopt, base::DoNothing(),
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -273,6 +361,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_HistoryWithSelectedText) {
+  PageContent page_content("This is my page. I have spoken.", false);
   // Tests events building from history with selected text and new query without
   // selected text but with page association.
   EngineConsumer::ConversationHistory history;
@@ -303,17 +392,19 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 5u);
-        EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-        EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
-        EXPECT_EQ(conversation[2].role, mojom::CharacterType::HUMAN);
-        EXPECT_EQ(conversation[3].role, mojom::CharacterType::ASSISTANT);
-        EXPECT_EQ(conversation[4].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[3].role, ConversationEventRole::Assistant);
+        EXPECT_EQ(conversation[4].role, ConversationEventRole::User);
         // Match entire JSON
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events));
@@ -324,8 +415,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::move(completion_event), std::nullopt)));
       });
   engine_->GenerateAssistantResponse(
-      false, "This is my page. I have spoken.", history, "", {}, std::nullopt,
-      base::DoNothing(),
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -342,6 +432,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -363,9 +455,454 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      false, std::nullopt /* model_key */));
+
+  std::vector<mojom::ContentBlockPtr> tool_output_content_blocks;
+  tool_output_content_blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("{ \"temperature\":\"75F\" }")));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("First I'll look up the weather...")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
+          std::move(tool_output_content_blocks))));
+
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, "First I'll look up the weather...",
+      std::nullopt /* prompt */, std::nullopt, std::move(response_events),
+      base::Time::Now(), std::nullopt, std::nullopt, false,
+      std::nullopt /* model_key */));
+
+  std::string expected_events = R"([
+    {
+      "role": "user",
+      "type": "chatMessage",
+      "content": "What is the weather in Santa Barbara?"
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "First I'll look up the weather...",
+      "tool_calls": [
+        {
+          "id": "call_123",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"location\":\"Santa Barbara\"}",
+          }
+        },
+      ],
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "tool_call_id": "call_123",
+      "content": [{"type": "text", "text": "{ \"temperature\":\"75F\" }"}],
+    },
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIClient();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // One user turn, one assistant turn, one tool turn
+        EXPECT_EQ(conversation.size(), 3u);
+        EXPECT_THAT(mock_api_client->GetEventsJson(std::move(conversation)),
+                    base::test::IsJson(base::test::ParseJson(expected_events)));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
+  // Responses can contain multiple tool use events
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      false, std::nullopt /* model_key */));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("First I'll look up the weather...")));
+
+  std::vector<mojom::ContentBlockPtr> temperature_tool_output_content_blocks;
+  temperature_tool_output_content_blocks.push_back(
+      mojom::ContentBlock::NewTextContentBlock(
+          mojom::TextContentBlock::New("{ \"temperature\":\"75F\" }")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_temperature", "call_123", "{\"location\":\"Santa Barbara\"}",
+          std::move(temperature_tool_output_content_blocks))));
+
+  std::vector<mojom::ContentBlockPtr> wind_tool_output_content_blocks;
+  wind_tool_output_content_blocks.push_back(
+      mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+          "{ \"speed\":\"25mph\", \"direction\":\"NW\" }")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_wind", "call_1234", "{\"location\":\"Santa Barbara\"}",
+          std::move(wind_tool_output_content_blocks))));
+
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, "First I'll look up the weather...",
+      std::nullopt /* prompt */, std::nullopt, std::move(response_events),
+      base::Time::Now(), std::nullopt, std::nullopt, false,
+      std::nullopt /* model_key */));
+
+  std::string expected_events = R"([
+    {
+      "role": "user",
+      "type": "chatMessage",
+      "content": "What is the weather in Santa Barbara?"
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "First I'll look up the weather...",
+      "tool_calls": [
+        {
+          "id": "call_123",
+          "type": "function",
+          "function": {
+            "name": "get_temperature",
+            "arguments": "{\"location\":\"Santa Barbara\"}",
+          }
+        },
+        {
+          "id": "call_1234",
+          "type": "function",
+          "function": {
+            "name": "get_wind",
+            "arguments": "{\"location\":\"Santa Barbara\"}",
+          }
+        },
+      ],
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "tool_call_id": "call_123",
+      "content": [{"type": "text", "text": "{ \"temperature\":\"75F\" }"}],
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "tool_call_id": "call_1234",
+      "content": [
+        {
+          "type": "text",
+          "text": "{ \"speed\":\"25mph\", \"direction\":\"NW\" }"
+        }
+      ],
+    },
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIClient();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // One user turn, one assistant turn, two tool turns
+        EXPECT_EQ(conversation.size(), 4u);
+        EXPECT_THAT(base::test::ParseJson(mock_api_client->GetEventsJson(
+                        std::move(conversation))),
+                    base::test::IsJson(expected_events));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateEvents_MultipleToolUseWithLargeContent) {
+  EngineConsumer::ConversationHistory history;
+
+  // Generate 3 tool use requests and the first one should be removed
+  // since kMaxCountLargeToolUseEvents is 2.
+  // Content considered as "large" is any image, or text if its size is > 1000,
+  // so we'll include both those types.
+  // This test also covers multiple tool use events and different content types,
+  // ensuring the order of calls is preserved as well as accompanying completion
+  // text.
+  std::string large_text_content(1500, 'a');
+  std::string image_url = "data:image/png;base64,ABC=";
+  for (int i = 0; i < 3; ++i) {
+    history.push_back(mojom::ConversationTurn::New(
+        std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+        "What is this web page about?", std::nullopt /* prompt */, std::nullopt,
+        std::nullopt, base::Time::Now(), std::nullopt, std::nullopt, false,
+        std::nullopt /* model_key */));
+    std::vector<mojom::ContentBlockPtr> tool_output_content_blocks;
+    if (i == 0 || i == 2) {
+      tool_output_content_blocks.push_back(
+          mojom::ContentBlock::NewImageContentBlock(
+              mojom::ImageContentBlock::New(GURL(image_url))));
+    } else {
+      tool_output_content_blocks.push_back(
+          mojom::ContentBlock::NewTextContentBlock(
+              mojom::TextContentBlock::New(large_text_content)));
+    }
+    std::vector<mojom::ConversationEntryEventPtr> response_events;
+    response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("First I'll look up the page...")));
+    response_events.push_back(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "get_page_content", base::StrCat({"call_123", base::ToString(i)}),
+            "{}", std::move(tool_output_content_blocks))));
+    history.push_back(mojom::ConversationTurn::New(
+        std::nullopt, mojom::CharacterType::ASSISTANT,
+        mojom::ActionType::RESPONSE, "First I'll look up the page...",
+        std::nullopt /* prompt */, std::nullopt, std::move(response_events),
+        base::Time::Now(), std::nullopt, std::nullopt, false,
+        std::nullopt /* model_key */));
+    history.push_back(mojom::ConversationTurn::New(
+        std::nullopt, mojom::CharacterType::ASSISTANT,
+        mojom::ActionType::RESPONSE, "The page has some great content",
+        std::nullopt /* prompt */, std::nullopt, std::nullopt,
+        base::Time::Now(), std::nullopt, std::nullopt, false,
+        std::nullopt /* model_key */));
+  }
+
+  std::string expected_events = R"([
+    {
+      "role": "user",
+      "type": "chatMessage",
+      "content": "What is this web page about?"
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "First I'll look up the page...",
+      "tool_calls": [
+        {
+          "id": "call_1230",
+          "type": "function",
+          "function": {
+            "name": "get_page_content",
+            "arguments": "{}",
+          }
+        },
+      ],
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "tool_call_id": "call_1230",
+      "content": "[Large result removed to save space for subsequent results]",
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "The page has some great content"
+    },
+
+    {
+      "role": "user",
+      "type": "chatMessage",
+      "content": "What is this web page about?"
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "First I'll look up the page...",
+      "tool_calls": [
+        {
+          "id": "call_1231",
+          "type": "function",
+          "function": {
+            "name": "get_page_content",
+            "arguments": "{}",
+          }
+        },
+      ],
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "tool_call_id": "call_1231",
+      "content": [{"type": "text", "text": ")" +
+                                large_text_content + R"("}],
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "The page has some great content"
+    },
+
+    {
+      "role": "user",
+      "type": "chatMessage",
+      "content": "What is this web page about?"
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "First I'll look up the page...",
+      "tool_calls": [
+        {
+          "id": "call_1232",
+          "type": "function",
+          "function": {
+            "name": "get_page_content",
+            "arguments": "{}",
+          }
+        },
+      ],
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "tool_call_id": "call_1232",
+      "content": [
+        { "type": "image_url",
+          "image_url": { "url": "data:image/png;base64,ABC=" } }
+      ],
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "The page has some great content"
+    },
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIClient();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_THAT(base::test::ParseJson(mock_api_client->GetEventsJson(
+                        std::move(conversation))),
+                    base::test::IsJson(expected_events));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      false, std::nullopt /* model_key */));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("First I'll look up the weather...")));
+  response_events.push_back(
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
+          std::nullopt)));
+
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, "First I'll look up the weather...",
+      std::nullopt /* prompt */, std::nullopt, std::move(response_events),
+      base::Time::Now(), std::nullopt, std::nullopt, false,
+      std::nullopt /* model_key */));
+
+  // If somehow the conversation is sent without the tool output, the
+  // request should not include the tool request, since most LLM APIs will fail
+  // in that scenario. This should be prevented by the callers.
+  std::string expected_events = R"([
+    {
+      "role": "user",
+      "type": "chatMessage",
+      "content": "What is the weather in Santa Barbara?"
+    },
+    {
+      "role": "assistant",
+      "type": "chatMessage",
+      "content": "First I'll look up the weather..."
+    }
+  ])";
+  base::RunLoop run_loop;
+  auto* mock_api_client = GetMockConversationAPIClient();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 2u);
+        EXPECT_THAT(mock_api_client->GetEventsJson(std::move(conversation)),
+                    base::test::IsJson(base::test::ParseJson(expected_events)));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   // Tests events building from history with modified agent reply.
   EngineConsumer::ConversationHistory history;
+  PageContent page_content("I have spoken.", false);
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Which show is 'This is the way' from?", std::nullopt /* prompt */,
@@ -418,16 +955,18 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         // Some structured EXPECT calls to catch nicer errors first
         ASSERT_EQ(conversation.size(), 4u);
-        EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-        EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
-        EXPECT_EQ(conversation[2].role, mojom::CharacterType::ASSISTANT);
-        EXPECT_EQ(conversation[3].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::Assistant);
+        EXPECT_EQ(conversation[3].role, ConversationEventRole::User);
         // Match entire JSON
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events));
@@ -438,47 +977,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
             std::move(completion_event), std::nullopt)));
       });
   engine_->GenerateAssistantResponse(
-      false, "I have spoken.", history, "", {}, std::nullopt, base::DoNothing(),
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
-  testing::Mock::VerifyAndClearExpectations(mock_api_client);
-}
-
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_EarlyReturn) {
-  EngineConsumer::ConversationHistory history;
-  auto* mock_api_client = GetMockConversationAPIClient();
-  auto run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _)).Times(0);
-  engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "", {}, std::nullopt,
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult result) {
-            run_loop->Quit();
-          }));
-  run_loop->Run();
-  testing::Mock::VerifyAndClearExpectations(mock_api_client);
-
-  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "", std::nullopt /* prompt */, std::nullopt,
-      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, std::nullopt, false, std::nullopt /* model_key */);
-  entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("Me")));
-  history.push_back(std::move(entry));
-
-  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _, _)).Times(0);
-  run_loop = std::make_unique<base::RunLoop>();
-  engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "", {}, std::nullopt,
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult result) {
-            run_loop->Quit();
-          }));
-  run_loop->Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -492,6 +994,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -511,9 +1015,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   turn->text =
       "Summarize the content of this page.";  // This text should be ignored
   history.push_back(std::move(turn));
+  PageContent page_content("This is a sample page content.", false);
   engine_->GenerateAssistantResponse(
-      false, "This is a sample page content.", history, "", {}, std::nullopt,
-      base::DoNothing(),
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -537,27 +1041,29 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         ASSERT_EQ(conversation.size(), 3u);
-        EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
         for (size_t i = 0; i < 3; ++i) {
           EXPECT_EQ(
-              conversation[0].content[i],
+              GetContentStrings(conversation[0].content)[i],
               base::StrCat({"data:image/png;base64,",
                             base::Base64Encode(uploaded_images[i]->data)}));
         }
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::UploadImage);
         for (size_t i = 3; i < uploaded_images.size(); ++i) {
           EXPECT_EQ(
-              conversation[1].content[i - 3],
+              GetContentStrings(conversation[1].content)[i - 3],
               base::StrCat({"data:image/png;base64,",
                             base::Base64Encode(uploaded_images[i]->data)}));
         }
         EXPECT_EQ(conversation[1].type, ConversationAPIClient::PageScreenshot);
-        EXPECT_EQ(conversation[2].role, mojom::CharacterType::HUMAN);
-        EXPECT_EQ(conversation[2].content[0], kTestPrompt);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
+        EXPECT_EQ(GetContentStrings(conversation[2].content)[0], kTestPrompt);
         EXPECT_EQ(conversation[2].type, ConversationAPIClient::ChatMessage);
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -574,8 +1080,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
       std::nullopt /* model_key */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse(false, "", history, "", {}, std::nullopt,
-                                     base::DoNothing(), future.GetCallback());
+  engine_->GenerateAssistantResponse(PageContents(), history, "", {},
+                                     std::nullopt, base::DoNothing(),
+                                     future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -604,6 +1111,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .Times(3)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -620,6 +1129,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -636,6 +1147,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -669,6 +1182,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .Times(2)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -685,6 +1200,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -707,6 +1224,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .Times(3)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -723,6 +1242,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -739,6 +1260,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -764,6 +1287,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .Times(3)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -780,6 +1305,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -794,6 +1321,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -824,6 +1353,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .Times(3)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -840,6 +1371,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -856,6 +1389,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -883,6 +1418,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
       .Times(2)
       .WillRepeatedly([&](std::vector<ConversationEvent> conversation,
                           const std::string& selected_language,
+                          std::optional<base::Value::List> oai_tool_definitions,
+                          const std::optional<std::string>& preferred_tool_name,
                           EngineConsumer::GenerationDataCallback data_callback,
                           EngineConsumer::GenerationCompletedCallback callback,
                           const std::optional<std::string>& model_name) {
@@ -919,6 +1456,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   EXPECT_CALL(*mock_api_client, PerformRequest)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -966,6 +1505,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .Times(2)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -981,6 +1522,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1024,6 +1567,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .Times(2)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1039,6 +1584,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1068,6 +1615,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .Times(2)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1080,6 +1629,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1101,6 +1652,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       .Times(2)
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1113,6 +1666,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       })
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1222,12 +1777,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetStrArrFromResponse) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
-  std::string page_content = "Sample page content.";
-  bool is_video = false;
+  PageContent page_content("Sample page content.", false);
+  PageContent video_content("Sample video content.", true);
+  PageContents page_contents{page_content, video_content};
+
   std::string selected_language = "en-US";
 
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "Sample page content."},
+    {"role": "user", "type": "videoTranscript", "content": "Sample video content."},
     {"role": "user", "type": "requestSuggestedActions", "content": ""}
   ])";
 
@@ -1238,10 +1796,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       const std::string& language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
-          EXPECT_EQ(conversation.size(), 2u);
+          EXPECT_EQ(conversation.size(), 3u);
           EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
@@ -1252,7 +1812,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        is_video, page_content, selected_language,
+        page_contents, selected_language,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_TRUE(result.has_value());
@@ -1269,6 +1829,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       const std::string& language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -1277,7 +1839,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        is_video, page_content, selected_language,
+        page_contents, selected_language,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -1292,6 +1854,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       const std::string& language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -1303,7 +1867,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        is_video, page_content, selected_language,
+        page_contents, selected_language,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -1318,6 +1882,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       const std::string& language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -1326,7 +1892,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        is_video, page_content, selected_language,
+        page_contents, selected_language,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -1341,6 +1907,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
     EXPECT_CALL(*mock_api_client, PerformRequest)
         .WillOnce([&](std::vector<ConversationEvent> conversation,
                       const std::string& language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -1352,7 +1920,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
         });
 
     engine_->GenerateQuestionSuggestions(
-        is_video, page_content, selected_language,
+        page_contents, selected_language,
         base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
                                                       mojom::APIError> result) {
           ASSERT_FALSE(result.has_value());
@@ -1364,6 +1932,387 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateAssistantResponse_WithMemoryEvent) {
+  auto* mock_api_client = GetMockConversationAPIClient();
+
+  // Test with user customization enabled
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+
+    base::Value::Dict customizations_dict;
+    customizations_dict.Set("name", "John Doe");
+    customizations_dict.Set("job", "Software Engineer");
+    customizations_dict.Set("tone", "Professional");
+    customizations_dict.Set("other", "Loves coding");
+    prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                   std::move(customizations_dict));
+
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+    std::string expected_events = R"([
+      {"content": "", "memory": {"name": "John Doe", "job": "Software Engineer",
+       "tone": "Professional", "other": "Loves coding"}, "role": "user",
+       "type": "userMemory"},
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 3u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[0].type, ConversationAPIClient::UserMemory);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[1].type, ConversationAPIClient::PageText);
+          EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[2].type, ConversationAPIClient::ChatMessage);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
+    engine_->GenerateAssistantResponse(
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test with user memory enabled
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+
+    base::Value::List memories;
+    memories.Append("I prefer concise explanations");
+    memories.Append("I work in the tech industry");
+    prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+    std::string expected_events = R"([
+      {"content": "",
+       "memory":{
+         "memories": [
+           "I prefer concise explanations",
+           "I work in the tech industry"
+         ]
+       },
+       "role": "user", "type": "userMemory"},
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 3u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[0].type, ConversationAPIClient::UserMemory);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
+    engine_->GenerateAssistantResponse(
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test with both customization and memory enabled
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+
+    base::Value::Dict customizations_dict;
+    customizations_dict.Set("name", "Alice");
+    customizations_dict.Set("job", "Designer");
+    prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                   std::move(customizations_dict));
+
+    base::Value::List memories;
+    memories.Append("I like creative solutions");
+    prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+    std::string expected_events = R"([
+      {"content": "",
+       "memory": {
+         "name": "Alice", "job": "Designer",
+         "memories": ["I like creative solutions"]},
+         "role": "user", "type": "userMemory"},
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 3u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[0].type, ConversationAPIClient::UserMemory);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
+    engine_->GenerateAssistantResponse(
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test with both customization and memory disabled
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+    std::string expected_events = R"([
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 2u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[1].type, ConversationAPIClient::ChatMessage);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
+    engine_->GenerateAssistantResponse(
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test with customization enabled but empty values
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+    // Set empty customizations dict
+    base::Value::Dict empty_customizations_dict;
+    prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                   std::move(empty_customizations_dict));
+
+    std::string expected_events = R"([
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 2u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[1].type, ConversationAPIClient::ChatMessage);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
+    engine_->GenerateAssistantResponse(
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test with memory enabled but empty values
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+
+    // Set empty memories list
+    base::Value::List empty_memories;
+    prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(empty_memories));
+
+    std::string expected_events = R"([
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 2u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
+          EXPECT_EQ(conversation[1].type, ConversationAPIClient::ChatMessage);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    PageContents page_contents;
+    page_contents.push_back(page_content);
+    engine_->GenerateAssistantResponse(
+        std::move(page_contents), std::move(history), "", {}, std::nullopt,
+        base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Reset prefs
+  prefs_.ClearPref(prefs::kBraveAIChatUserCustomizationEnabled);
+  prefs_.ClearPref(prefs::kBraveAIChatUserMemoryEnabled);
+  prefs_.ClearPref(prefs::kBraveAIChatUserCustomizations);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_WithModelKeyOverride) {
   auto* mock_api_client = GetMockConversationAPIClient();
   constexpr char kModelKey[] = "chat-basic";
@@ -1371,11 +2320,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // Expect PerformRequest with the overridden model name
   EXPECT_CALL(
       *mock_api_client,
-      PerformRequest(_, _, _, _,
+      PerformRequest(_, _, _, _, _, _,
                      testing::Eq(std::optional<std::string>(
                          model_service_->GetLeoModelNameByKey(kModelKey)))))
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1394,13 +2345,140 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   base::RunLoop run_loop;
+  PageContent page_content("This is a test page content.", false);
+  PageContents page_contents;
+  page_contents.push_back(page_content);
+
   engine_->GenerateAssistantResponse(
-      false, "This is a test page content.", std::move(history), "", {},
-      std::nullopt, base::DoNothing(),
+      std::move(page_contents), std::move(history), "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateAssistantResponse_WithEmptyToolDefinitions) {
+  // Verify we're not passing tools if we don't have any
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_api_client,
+              PerformRequest(_, _, testing::Eq(std::nullopt), _, _, _, _))
+      .WillOnce([&]() { run_loop.Quit(); });
+
+  auto history = CreateSampleChatHistory(2);
+
+  engine_->GenerateAssistantResponse(
+      {}, std::move(history), "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateAssistantResponse_WithToolDefinitions) {
+  // Verify we're passing json-converted tool definitions.
+  // For more variation tests, see oai_parsing_unittest.cc
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+
+  base::Value::Dict properties;
+  properties.Set("location", StringProperty("The location to get weather for"));
+  properties.Set("units", StringProperty("Temperature units"));
+
+  std::vector<std::string> required_props = {"location"};
+  auto mock_tool = std::make_unique<MockTool>(
+      "weather_tool", "Get weather", "", std::move(properties), required_props);
+
+  std::string expected_tools_json = R"([
+    {
+      "type": "function",
+      "function": {
+        "description": "Get weather",
+        "name": "weather_tool",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "description": "The location to get weather for"
+            },
+            "units": {
+              "type": "string",
+              "description": "Temperature units"
+            }
+          },
+          "required": ["location"]
+        }
+      }
+    }
+  ])";
+
+  EXPECT_CALL(
+      *mock_api_client,
+      PerformRequest(_, _,
+                     testing::Optional(base::test::IsJson(expected_tools_json)),
+                     _, _, _, _))
+      .WillOnce([&]() { run_loop.Quit(); });
+
+  auto history = CreateSampleChatHistory(2);
+
+  engine_->GenerateAssistantResponse(
+      {}, std::move(history), "", {mock_tool->GetWeakPtr()}, std::nullopt,
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       ShouldCallSanitizeInputOnPageContent) {
+  class MockConversationAPIEngineConsumer
+      : public EngineConsumerConversationAPI {
+   public:
+    using EngineConsumerConversationAPI::EngineConsumerConversationAPI;
+    ~MockConversationAPIEngineConsumer() override = default;
+
+    MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
+  };
+
+  PageContent page_content_1("This is a page about The Mandalorian.", false);
+  PageContent page_content_2("This is a video about The Mandalorian.", true);
+
+  auto mock_engine_consumer =
+      std::make_unique<MockConversationAPIEngineConsumer>(
+          *model_->options->get_leo_model_options(), nullptr, nullptr,
+          model_service_.get(), &prefs_);
+  mock_engine_consumer->SetAPIForTesting(
+      std::make_unique<MockConversationAPIClient>(
+          model_->options->get_leo_model_options()->name));
+
+  // Calling GenerateAssistantResponse should call SanitizeInput
+  {
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    history.push_back(mojom::ConversationTurn::New());
+    mock_engine_consumer->GenerateAssistantResponse(
+        {page_content_1, page_content_2}, history, "", {}, std::nullopt,
+        base::DoNothing(), base::DoNothing());
+    testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
+  }
+
+  // Calling GenerateQuestionSuggestions should call SanitizeInput
+  {
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+
+    mock_engine_consumer->GenerateQuestionSuggestions(
+        {page_content_1, page_content_2}, "", base::DoNothing());
+    testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
+  }
 }
 
 }  // namespace ai_chat

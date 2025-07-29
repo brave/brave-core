@@ -33,6 +33,14 @@ cargo_crate("lib") {
   }
   rustenv = []
   rustflags = []
+  enabled = true
+  if (current_cpu != "x64") {
+    deps = [
+      "//brave/third_party/rust/proc_macro2/v1:lib",
+      "//brave/third_party/rust/quote/v1:lib",
+      "//brave/third_party/rust/syn/v2:lib",
+    ]
+  }
 
   #####################################################################
   # Tweaking which GN `config`s apply to this target.

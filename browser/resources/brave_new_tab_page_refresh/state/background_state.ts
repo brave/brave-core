@@ -26,13 +26,15 @@ export type Background =
     & SponsoredImageBackground
 
 export interface BackgroundState {
+  initialized: boolean
   backgroundsEnabled: boolean
   backgroundsCustomizable: boolean
   sponsoredImagesEnabled: boolean
   braveBackgrounds: BraveBackground[]
   customBackgrounds: string[]
   selectedBackground: SelectedBackground
-  currentBackground: Background | null
+  backgroundRotateIndex: number
+  backgroundRandomValue: number
   sponsoredImageBackground: SponsoredImageBackground | null
   sponsoredRichMediaBaseUrl: string
 }
@@ -65,6 +67,7 @@ export const gradientPreviewBackground = gradientBackgrounds[0]
 
 export function defaultBackgroundState(): BackgroundState {
   return {
+    initialized: false,
     backgroundsEnabled: true,
     backgroundsCustomizable: true,
     sponsoredImagesEnabled: true,
@@ -74,7 +77,8 @@ export function defaultBackgroundState(): BackgroundState {
       type: SelectedBackgroundType.kGradient,
       value: gradientPreviewBackground
     },
-    currentBackground: null,
+    backgroundRotateIndex: 0,
+    backgroundRandomValue: 0,
     sponsoredImageBackground: null,
     sponsoredRichMediaBaseUrl: ''
   }
@@ -91,11 +95,18 @@ export interface BackgroundActions {
   notifySponsoredRichMediaEvent: (type: NewTabPageAdEventType) => void
 }
 
-function chooseRandom<T>(list: T[]): T | null {
+function chooseRandom<T>(list: T[], randomValue: number): T | null {
   if (list.length === 0) {
     return null
   }
-  return list[Math.floor(Math.random() * list.length)]
+  return list[Math.floor(randomValue * list.length)]
+}
+
+function chooseIndex<T>(list: T[], index: number): T | null {
+  if (list.length === 0) {
+    return null
+  }
+  return list[index % list.length]
 }
 
 const defaultBackground: Background = {
@@ -107,12 +118,18 @@ export function getCurrentBackground(
   state: BackgroundState
 ) : Background | null {
   const {
+    initialized,
     backgroundsEnabled,
     braveBackgrounds,
     customBackgrounds,
     selectedBackground,
-    currentBackground,
+    backgroundRandomValue: randomValue,
+    backgroundRotateIndex: rotateIndex,
     sponsoredImageBackground } = state
+
+  if (!initialized) {
+    return null
+  }
 
   if (!backgroundsEnabled) {
     return defaultBackground
@@ -130,22 +147,19 @@ export function getCurrentBackground(
 
   switch (type) {
     case SelectedBackgroundType.kBrave: {
-      if (currentBackground?.type === 'brave') {
-        return currentBackground
-      }
-      const braveBackground = chooseRandom(braveBackgrounds)
+      const braveBackground = chooseIndex(braveBackgrounds, rotateIndex)
       return braveBackground ? { type: 'brave', ...braveBackground } : null
     }
     case SelectedBackgroundType.kCustom: {
-      const imageUrl = value || chooseRandom(customBackgrounds)
+      const imageUrl = value || chooseIndex(customBackgrounds, rotateIndex)
       return imageUrl ? { type: 'custom', imageUrl } : null
     }
     case SelectedBackgroundType.kSolid: {
-      const cssValue = value || chooseRandom(solidBackgrounds)
+      const cssValue = value || chooseRandom(solidBackgrounds, randomValue)
       return cssValue ? { type: 'color', cssValue } : null
     }
     case SelectedBackgroundType.kGradient: {
-      const cssValue = value || chooseRandom(gradientBackgrounds)
+      const cssValue = value || chooseRandom(gradientBackgrounds, randomValue)
       return cssValue ? { type: 'color', cssValue } : null
     }
     default: {

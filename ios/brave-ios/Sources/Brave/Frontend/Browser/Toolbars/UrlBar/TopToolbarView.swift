@@ -43,6 +43,7 @@ protocol TopToolbarDelegate: AnyObject {
   func topToolbarDidPressQrCodeButton(_ urlBar: TopToolbarView)
   func topToolbarDidTapWalletButton(_ urlBar: TopToolbarView)
   func topToolbarDidTapSecureContentState(_ urlBar: TopToolbarView)
+  func topToolbarIsShieldsEnabled(_ topToolbar: TopToolbarView, for url: URL?) -> Bool
 }
 
 class TopToolbarView: UIView, ToolbarProtocol {
@@ -803,29 +804,24 @@ class TopToolbarView: UIView, ToolbarProtocol {
   }
 
   private func updateViewsForOverlayModeAndToolbarChanges() {
-    // UIStackView bug:
-    // Don't set `isHidden` to the same value on a view that adjusts layout of a UIStackView
-    // inside of a UIView.animate() block, otherwise on occasion the view will render but
-    // `isHidden` will still be true
-    if cancelButton.isHidden == inOverlayMode {
-      cancelButton.isHidden = !inOverlayMode
-    }
-    backButton.isHidden = toolbarIsShowing || inOverlayMode
-    forwardButton.isHidden = toolbarIsShowing || inOverlayMode
-    shareButton.isHidden = toolbarIsShowing || inOverlayMode
-    trailingItemsStackView.isHidden = toolbarIsShowing || inOverlayMode
-    locationView.contentView.isHidden = inOverlayMode
-    shieldsRewardsStack.isHidden = inOverlayMode
+    cancelButton.stackViewAnimationSafeIsHidden = !inOverlayMode
+    backButton.stackViewAnimationSafeIsHidden = toolbarIsShowing || inOverlayMode
+    forwardButton.stackViewAnimationSafeIsHidden = toolbarIsShowing || inOverlayMode
+    shareButton.stackViewAnimationSafeIsHidden = toolbarIsShowing || inOverlayMode
+    trailingItemsStackView.stackViewAnimationSafeIsHidden = toolbarIsShowing || inOverlayMode
+    locationView.contentView.stackViewAnimationSafeIsHidden = inOverlayMode
+    shieldsRewardsStack.stackViewAnimationSafeIsHidden = inOverlayMode
 
     let selectedShortcut: WidgetShortcut? = Preferences.General.toolbarShortcutButton.value.flatMap(
       WidgetShortcut.init
     )
-    shortcutButton.isHidden = selectedShortcut != nil ? inOverlayMode : true
+    shortcutButton.stackViewAnimationSafeIsHidden = selectedShortcut != nil ? inOverlayMode : true
     if let selectedShortcut {
       shortcutButton.setImage(selectedShortcut.image, for: .normal)
       shortcutButton.accessibilityLabel = selectedShortcut.displayString
     }
-    leadingItemsStackView.isHidden = leadingItemsStackView.arrangedSubviews.allSatisfy(\.isHidden)
+    leadingItemsStackView.stackViewAnimationSafeIsHidden = leadingItemsStackView.arrangedSubviews
+      .allSatisfy(\.isHidden)
   }
 
   private func animateToOverlayState(overlayMode overlay: Bool, didCancel cancel: Bool = false) {
@@ -875,9 +871,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
     var shieldIcon = "brave.logo"
     let shieldsOffIcon = "brave.logo.greyscale"
     if let currentURL = currentURL, currentURL.isWebPage(includeDataURIs: false) {
-      let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-      let domain = Domain.getOrCreate(forUrl: currentURL, persistent: !isPrivateBrowsing)
-      if domain.areAllShieldsOff {
+      let isShieldsEnabled =
+        delegate?.topToolbarIsShieldsEnabled(self, for: currentURL) ?? true
+      if !isShieldsEnabled {
         shieldIcon = shieldsOffIcon
       }
       if currentURL.isLocal || currentURL.isLocalUtility {
@@ -1074,5 +1070,20 @@ extension TopToolbarView: UIDragInteractionDelegate {
 
   func dragInteraction(_ interaction: UIDragInteraction, sessionWillBegin session: UIDragSession) {
     delegate?.topToolbarDidBeginDragInteraction(self)
+  }
+}
+
+extension UIView {
+  // UIStackView bug:
+  // Don't set `isHidden` to the same value on a view that adjusts layout of a UIStackView
+  // inside of a UIView.animate() block, otherwise on occasion the view will render but
+  // `isHidden` will still be true
+  fileprivate var stackViewAnimationSafeIsHidden: Bool {
+    get { isHidden }
+    set {
+      if isHidden != newValue {
+        isHidden = newValue
+      }
+    }
   }
 }

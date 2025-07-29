@@ -6,7 +6,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
 
-#include "src/extensions/common/constants.h"  // IWYU pragma: export
+#include "build/build_config.h"
+
+#if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
+// ios and android cannot include extensions deps
+namespace extensions {
+inline constexpr char kExtensionScheme[] = "chrome-extension";
+}
+#else
+#include <extensions/common/constants.h>  // IWYU pragma: export
 
 inline constexpr int kBraveActionLeftMarginExtra = -2;
 
@@ -16,5 +24,6 @@ inline constexpr char crl_set_extension_id[] =
 
 inline constexpr char google_translate_extension_id[] =
     "aapbdbdomjkkjkaonfhkkikfgjllcleb";
+#endif
 
 #endif  // BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_

@@ -52,6 +52,7 @@
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -2604,8 +2605,8 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH),
                  "eth_blockNumber", "true", expected_response);
   json_rpc_service_->Request(
-      mojom::kLocalhostChainId, request, true, base::Value(),
-      mojom::CoinType::ETH,
+      mojom::kLocalhostChainId,
+      *ParseJsonRpcRequest(base::test::ParseJson(request)),
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
                      result));
   task_environment_.RunUntilIdle();
@@ -2622,8 +2623,8 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH),
                  "eth_getBlockByNumber", "0x5BAD55,true", expected_response);
   json_rpc_service_->Request(
-      mojom::kLocalhostChainId, request, true, base::Value(),
-      mojom::CoinType::ETH,
+      mojom::kLocalhostChainId,
+      *ParseJsonRpcRequest(base::test::ParseJson(request)),
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
                      result));
   task_environment_.RunUntilIdle();
@@ -2632,8 +2633,8 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->Request(
-      mojom::kLocalhostChainId, request, true, base::Value(),
-      mojom::CoinType::ETH,
+      mojom::kLocalhostChainId,
+      *ParseJsonRpcRequest(base::test::ParseJson(request)),
       base::BindOnce(&OnRequestResponse, &callback_called, false /* success */,
                      ""));
   task_environment_.RunUntilIdle();
@@ -2656,8 +2657,8 @@ TEST_F(JsonRpcServiceUnitTest, Request_BadHeaderValues) {
                  "", mock_response);
   bool callback_called = false;
   json_rpc_service_->Request(
-      mojom::kLocalhostChainId, request, true, base::Value(),
-      mojom::CoinType::ETH,
+      mojom::kLocalhostChainId,
+      *ParseJsonRpcRequest(base::test::ParseJson(request)),
       base::BindOnce(&OnRequestResponse, &callback_called, false, ""));
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -3205,27 +3206,33 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
     JsonRpcServiceUnitTest::SetUp();
     eth_mainnet_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         NetworkManager::GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
-    eth_mainnet_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
-        EthAddress::FromHex(GetUnstoppableDomainsProxyReaderContractAddress(
-            mojom::kMainnetChainId)));
+    eth_mainnet_getmany_call_handler_ =
+        std::make_unique<UDGetManyCallHandler>(EthAddress::FromHex(
+            JsonRpcService::
+                GetUnstoppableDomainsProxyReaderContractAddressForTesting(
+                    mojom::kMainnetChainId)));
     eth_mainnet_endpoint_handler_->AddEthCallHandler(
         eth_mainnet_getmany_call_handler_.get());
 
     polygon_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         NetworkManager::GetUnstoppableDomainsRpcUrl(
             mojom::kPolygonMainnetChainId));
-    polygon_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
-        EthAddress::FromHex(GetUnstoppableDomainsProxyReaderContractAddress(
-            mojom::kPolygonMainnetChainId)));
+    polygon_getmany_call_handler_ =
+        std::make_unique<UDGetManyCallHandler>(EthAddress::FromHex(
+            JsonRpcService::
+                GetUnstoppableDomainsProxyReaderContractAddressForTesting(
+                    mojom::kPolygonMainnetChainId)));
     polygon_endpoint_handler_->AddEthCallHandler(
         polygon_getmany_call_handler_.get());
 
     base_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
         NetworkManager::GetUnstoppableDomainsRpcUrl(
             mojom::kBaseMainnetChainId));
-    base_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
-        EthAddress::FromHex(GetUnstoppableDomainsProxyReaderContractAddress(
-            mojom::kBaseMainnetChainId)));
+    base_getmany_call_handler_ =
+        std::make_unique<UDGetManyCallHandler>(EthAddress::FromHex(
+            JsonRpcService::
+                GetUnstoppableDomainsProxyReaderContractAddressForTesting(
+                    mojom::kBaseMainnetChainId)));
     base_endpoint_handler_->AddEthCallHandler(base_getmany_call_handler_.get());
 
     url_loader_factory_.SetInterceptor(base::BindRepeating(

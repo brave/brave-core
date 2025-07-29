@@ -20,7 +20,7 @@ base::flat_map<mojom::AdType, int32_t> GetAdsSummaryForDateRange(
     if (transaction.confirmation_type ==
             mojom::ConfirmationType::kViewedImpression &&
         transaction.created_at >= from_time &&
-        transaction.created_at <= to_time) {
+        transaction.created_at <= to_time && transaction.value > 0) {
       ++ads_summary[transaction.ad_type];
     }
   }

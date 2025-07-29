@@ -22,4 +22,7 @@ export const _ProvidePublicEncryptionKeyPanel = {
   },
 }
 
-export default { component: ProvidePubKeyPanel }
+export default {
+  title: 'Wallet/Panel/Panels',
+  component: ProvidePubKeyPanel,
+}

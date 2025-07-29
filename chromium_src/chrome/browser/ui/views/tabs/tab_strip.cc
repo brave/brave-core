@@ -52,7 +52,7 @@
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
-#include "src/chrome/browser/ui/views/tabs/tab_strip.cc"
+#include <chrome/browser/ui/views/tabs/tab_strip.cc>
 
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
@@ -67,4 +67,8 @@ bool TabStrip::IsTabTiled(const Tab* tab) const {
 
 bool TabStrip::IsFirstTabInTile(const Tab* tab) const {
   return false;
+}
+
+const Browser* TabStrip::GetBrowser() const {
+  return controller_->GetBrowser();
 }

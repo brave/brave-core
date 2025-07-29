@@ -32,11 +32,11 @@ extension WidgetShortcut {
     case .downloads:
       return Strings.downloadsMenuItem
     case .playlist:
-      return Strings.OptionsMenu.bravePlaylistItemTitle
+      return Strings.bravePlaylistItemTitle
     case .wallet:
       return Strings.Wallet.wallet
     case .braveNews:
-      return Strings.OptionsMenu.braveNewsItemTitle
+      return Strings.braveNewsItemTitle
     case .braveLeo:
       return Strings.leoMenuItem
     default:

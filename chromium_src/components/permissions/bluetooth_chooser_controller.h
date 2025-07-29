@@ -14,7 +14,7 @@
   GetThrobberLabelAndTooltip(__VA_ARGS__) const override; \
   std::optional<ChooserControllerType> GetType()
 
-#include "src/components/permissions/bluetooth_chooser_controller.h"  // IWYU pragma: export
+#include <components/permissions/bluetooth_chooser_controller.h>  // IWYU pragma: export
 
 #undef GetThrobberLabelAndTooltip
 

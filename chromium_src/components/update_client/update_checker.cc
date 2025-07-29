@@ -12,7 +12,7 @@
 #include "base/logging.h"
 #include "components/update_client/update_client.h"
 
-#include "src/components/update_client/update_checker.cc"
+#include <components/update_client/update_checker.cc>
 
 namespace update_client {
 

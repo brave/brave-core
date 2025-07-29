@@ -20,7 +20,7 @@ bool BraveEnableOnHeadDeviceForAnyProvider(
 #define DefaultSearchProviderIsGoogle(...) \
   BraveEnableOnHeadDeviceForAnyProvider(__VA_ARGS__)
 
-#include "src/components/omnibox/browser/on_device_head_provider.cc"
+#include <components/omnibox/browser/on_device_head_provider.cc>
 
 #undef DefaultSearchProviderIsGoogle
 #undef SearchSuggestEnabled

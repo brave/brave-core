@@ -26,7 +26,9 @@ const observer = {
 
   onPurchasedStateChanged: (state: PurchasedState, description: string) => {
     store.dispatch(Actions.purchasedStateChanged(state))
-  }
+  },
+
+  onSmartProxyRoutingStateChanged: (enabled: boolean) => {}
 }
 
 const handler = new AsyncActionHandler()

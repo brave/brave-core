@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/hub/internal/BUILD.gn b/chrome/browser/hub/internal/BUILD.gn
-index 879d4258d12dacdc592743707d5d1c466e420d25..955a6a0994ab272ddf78b7ef67d169247c1be12c 100644
+index 09ecd3a1d6d65e8ceac34b4c683adacd7b7b6a1f..236bf42e3ea4d6ab5f1e1d62677f35efed05dcbe 100644
 --- a/chrome/browser/hub/internal/BUILD.gn
 +++ b/chrome/browser/hub/internal/BUILD.gn
-@@ -51,6 +51,7 @@ android_library("java") {
+@@ -53,6 +53,7 @@ android_library("java") {
      "android/java/src/org/chromium/chrome/browser/hub/TranslateHubLayoutAnimationFactory.java",
      "android/java/src/org/chromium/chrome/browser/hub/TranslateHubLayoutAnimationFactoryImpl.java",
    ]

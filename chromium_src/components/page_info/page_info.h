@@ -14,7 +14,7 @@
  protected:                                \
   virtual std::set<net::SchemefulSite> GetTwoSitePermissionRequesters
 
-#include "src/components/page_info/page_info.h"  // IWYU pragma: export
+#include <components/page_info/page_info.h>  // IWYU pragma: export
 #undef GetTwoSitePermissionRequesters
 #undef PageInfo
 

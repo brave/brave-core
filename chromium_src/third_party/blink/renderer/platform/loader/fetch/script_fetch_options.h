@@ -13,7 +13,7 @@
 #define CreateFetchParameters                                           \
   CreateFetchParameters_ChromiumImpl(                                   \
       const KURL&, const SecurityOrigin*, const DOMWrapperWorld* world, \
-      CrossOriginAttributeValue, const WTF::TextEncoding&,              \
+      CrossOriginAttributeValue, const TextEncoding&,                   \
       FetchParameters::DeferOption, const FeatureContext*) const;       \
   void SetDOMNodeId(DOMNodeId dom_node_id);                             \
   DOMNodeId GetDOMNodeId() const;                                       \
@@ -28,7 +28,7 @@
   FetchParameters CreateFetchParameters
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h>  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef CreateFetchParameters

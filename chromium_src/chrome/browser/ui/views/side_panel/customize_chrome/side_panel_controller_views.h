@@ -14,7 +14,7 @@
     this                                                             \
   }
 
-#include "src/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.h>  // IWYU pragma: export
 
 #undef will_discard_contents_callback_subscription_
 

@@ -7,337 +7,308 @@ import BraveCore
 import Combine
 import Foundation
 import OrderedCollections
+import Preferences
+import os.log
 
 /// A store contains data for buying tokens
-public class BuyTokenStore: ObservableObject, WalletObserverStore {
+public class BuyTokenStore: ObservableObject {
   /// The current selected token to buy. Default with nil value.
-  @Published var selectedBuyToken: BraveWallet.BlockchainToken?
-  /// The supported currencies for purchasing
-  @Published var supportedCurrencies: [BraveWallet.OnRampCurrency] = []
-  /// A boolean indicates if the current selected network supports `Buy`
-  @Published var isSelectedNetworkSupported: Bool = false
-  /// The amount user wishes to purchase
-  @Published var buyAmount: String = ""
-  /// The currency user wishes to purchase with
-  @Published var selectedCurrency: BraveWallet.OnRampCurrency = .init()
-
-  /// A map of list of available tokens to a certain on ramp provider
-  var buyTokens: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]]
-  /// A list of all available tokens for all providers
-  var allTokens: [BraveWallet.BlockchainToken] = []
-
-  /// The supported `OnRampProvider`s for the currently selected currency and device locale.
-  var supportedProviders: OrderedSet<BraveWallet.OnRampProvider> {
-    return OrderedSet(
-      orderedSupportedBuyOptions
-        .filter { provider in
-          guard let tokens = buyTokens[provider],
-            let selectedBuyToken = selectedBuyToken
-          else { return false }
-          // verify selected currency code is supported for this provider
-          guard
-            supportedCurrencies.contains(where: { supportedOnRampCurrency in
-              guard
-                supportedOnRampCurrency.providers.contains(.init(integerLiteral: provider.rawValue))
-              else {
-                return false
-              }
-              let selectedCurrencyCode = selectedCurrency.currencyCode
-              return supportedOnRampCurrency.currencyCode.caseInsensitiveCompare(
-                selectedCurrencyCode
-              ) == .orderedSame
-            })
-          else {
-            return false
-          }
-          // verify selected token is supported for this provider
-          return tokens.includes(selectedBuyToken)
+  @Published var selectedBuyToken: BraveWallet.MeldCryptoCurrency = WalletConstants.defaultBuyToken
+  {
+    didSet {
+      if selectedBuyToken.coin != selectedAccount?.coin {
+        if let matchedAccount = allAccounts.first(where: { $0.coin == selectedBuyToken.coin }) {
+          selectedAccount = matchedAccount
         }
-    )
+      }
+    }
   }
+  @Published var selectedAccount: BraveWallet.AccountInfo? {
+    didSet {
+      if oldValue != selectedAccount {
+        Task { @MainActor in
+          await updateSelectedAccountAddress()
+        }
+      }
+    }
+  }
+  @Published private(set) var selectedAccountAddress: String = ""
+  /// The country input to get available service provider from Meld
+  @Published var selectedCountry: BraveWallet.MeldCountry = .init(
+    countryCode: "US",
+    name: "United States",
+    flagImageUrl: nil,
+    regions: nil
+  )
+  /// The currency user wishes to purchase with
+  @Published var selectedFiatCurrency: BraveWallet.MeldFiatCurrency = WalletConstants
+    .defaultFiatCurrency
+  /// The amount user wishes to purchase
+  @Published var buyAmount: String = "100"
+  /// The payment type user wishes to use
+  @Published var selectedPaymentType: BraveWallet.MeldPaymentMethod = WalletConstants
+    .defaultPaymentMethod
+  /// Supported service provider for user selected account, crypto currency, fiat currency, country
+  @Published var supportedServiceProviders: [BraveWallet.MeldServiceProvider] = []
+  /// The supported crypto currencies for purchasing
+  @Published var supportedCryptoCurrencies: [BraveWallet.MeldCryptoCurrency] = []
+  /// The supported fiat currencies for purchasing
+  @Published var supportedFiatCurrencies: [BraveWallet.MeldFiatCurrency] = []
+  /// The supported countries for purchasing
+  @Published var supportedCountries: [BraveWallet.MeldCountry] = []
+  /// The supported payment types  for purchasing
+  @Published var supportedPaymentTypes: [BraveWallet.MeldPaymentMethod] = []
+  /// Meld API error
+  @Published var encounterMeldAPIError: Bool = false
+  /// Indicating fetching service providers
+  @Published var isFetchingServiceProviders: Bool = false
+  /// Indicating fetching prefilled token
+  @Published var isFetchingPrefilledToken: Bool = false
 
-  private let blockchainRegistry: BraveWalletBlockchainRegistry
+  var allAccounts: [BraveWallet.AccountInfo] = []
+
+  private var savedBuyTokenAndAccount:
+    (token: BraveWallet.MeldCryptoCurrency, account: BraveWallet.AccountInfo)?
+
   private let keyringService: BraveWalletKeyringService
-  private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
-  private let assetRatioService: BraveWalletAssetRatioService
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let zcashWalletService: BraveWalletZCashWalletService
-  private var selectedNetwork: BraveWallet.NetworkInfo = .init()
-  private(set) var orderedSupportedBuyOptions: OrderedSet<BraveWallet.OnRampProvider> = []
+  private let meldIntegrationService: BraveWalletMeldIntegrationService
   private var prefilledToken: BraveWallet.BlockchainToken?
-  private var rpcServiceObserver: JsonRpcServiceObserver?
   private var keyringServiceObserver: KeyringServiceObserver?
 
-  /// A map between chain id and gas token's symbol
-  static let gasTokens: [String: [String]] = [
-    BraveWallet.MainnetChainId: ["eth"],
-    BraveWallet.OptimismMainnetChainId: ["eth"],
-    BraveWallet.AuroraMainnetChainId: ["eth"],
-    BraveWallet.PolygonMainnetChainId: ["matic"],
-    BraveWallet.FantomMainnetChainId: ["ftm"],
-    BraveWallet.CeloMainnetChainId: ["celo"],
-    BraveWallet.BnbSmartChainMainnetChainId: ["bnb"],
-    BraveWallet.SolanaMainnet: ["sol"],
-    BraveWallet.FilecoinMainnet: ["fil"],
-    BraveWallet.AvalancheMainnetChainId: ["avax", "avaxc"],
-  ]
-
   var isObserving: Bool {
-    rpcServiceObserver != nil && keyringServiceObserver != nil
+    keyringServiceObserver != nil
   }
 
   public init(
-    blockchainRegistry: BraveWalletBlockchainRegistry,
     keyringService: BraveWalletKeyringService,
-    rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
-    assetRatioService: BraveWalletAssetRatioService,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
+    meldIntegrationService: BraveWalletMeldIntegrationService,
     prefilledToken: BraveWallet.BlockchainToken?
   ) {
-    self.blockchainRegistry = blockchainRegistry
     self.keyringService = keyringService
-    self.rpcService = rpcService
     self.walletService = walletService
-    self.assetRatioService = assetRatioService
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
+    self.meldIntegrationService = meldIntegrationService
     self.prefilledToken = prefilledToken
-    self.buyTokens = WalletConstants.supportedOnRampProviders.reduce(
-      into: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]]()
-    ) {
-      $0[$1] = []
-    }
-
-    self.setupObservers()
 
     Task {
-      await updateInfo()
-    }
-  }
-
-  func tearDown() {
-    rpcServiceObserver = nil
-    keyringServiceObserver = nil
-  }
-
-  func setupObservers() {
-    guard !isObserving else { return }
-    self.rpcServiceObserver = JsonRpcServiceObserver(
-      rpcService: rpcService,
-      _chainChangedEvent: { [weak self] _, _, _ in
-        Task { [self] in
-          await self?.updateInfo()
-        }
-      }
-    )
-    self.keyringServiceObserver = KeyringServiceObserver(
-      keyringService: keyringService,
-      _selectedWalletAccountChanged: { [weak self] _ in
-        Task { @MainActor [self] in
-          await self?.updateInfo()
-        }
-      }
-    )
-  }
-
-  @MainActor private func validatePrefilledToken(on network: BraveWallet.NetworkInfo) async {
-    guard let prefilledToken = self.prefilledToken else {
-      return
-    }
-    if prefilledToken.coin == network.coin && prefilledToken.chainId == network.chainId {
-      // valid for current network
-      self.selectedBuyToken = prefilledToken
-    } else {
-      // need to try and select correct network.
-      let allNetworksForTokenCoin = await rpcService.allNetworks()
-      guard
-        let networkForToken = allNetworksForTokenCoin.first(where: {
-          $0.coin == prefilledToken.coin && $0.chainId == prefilledToken.chainId
-        })
-      else {
-        // don't set prefilled token if it belongs to a network we don't know
-        return
-      }
-      let success = await rpcService.setNetwork(
-        chainId: networkForToken.chainId,
-        coin: networkForToken.coin,
-        origin: nil
-      )
-      if success {
-        self.selectedNetwork = networkForToken
-        self.selectedBuyToken = prefilledToken
+      await updateSelectedAccount()
+      if Preferences.Wallet.meldAPIAgreementShownAndAgreed.value {
+        await updateInfo()
       }
     }
-    self.prefilledToken = nil
   }
 
   @MainActor
   func fetchBuyUrl(
-    provider: BraveWallet.OnRampProvider,
-    account: BraveWallet.AccountInfo
+    provider: BraveWallet.MeldServiceProvider
   ) async -> URL? {
-    guard let token = selectedBuyToken else { return nil }
+    guard !selectedAccountAddress.isEmpty else { return nil }
 
-    let symbol: String
-    let currencyCode: String
-    switch provider {
-    case .ramp:
-      symbol = token.rampNetworkSymbol
-      currencyCode = selectedCurrency.currencyCode
-    case .stripe:
-      symbol = token.symbol.lowercased()
-      currencyCode = selectedCurrency.currencyCode.lowercased()
-    default:
-      symbol = token.symbol
-      currencyCode = selectedCurrency.currencyCode
-    }
-
-    var accountAddress = account.address
-    if account.coin == .btc,
-      let bitcoinAccountInfo =
-        await bitcoinWalletService.bitcoinAccountInfo(accountId: account.accountId)
-    {
-      accountAddress = bitcoinAccountInfo.nextChangeAddress.addressString
-    } else if account.coin == .zec,
-      let zcashAccountInfo =
-        await zcashWalletService.zCashAccountInfo(accountId: account.accountId)
-    {
-      accountAddress = zcashAccountInfo.nextTransparentChangeAddress.addressString
-    }
-    let (urlString, error) = await assetRatioService.buyUrlV1(
-      provider: provider,
-      chainId: selectedNetwork.chainId,
-      address: accountAddress,
-      symbol: symbol,
-      amount: buyAmount,
-      currencyCode: currencyCode
+    let (widget, error) = await meldIntegrationService.cryptoBuyWidgetCreate(
+      sessionData: .init(
+        countryCode: selectedCountry.countryCode,
+        destinationCurrencyCode: selectedBuyToken.currencyCode,
+        lockFields: nil,
+        paymentMethodType: selectedPaymentType.paymentType,
+        redirectUrl: nil,
+        serviceProvider: provider.serviceProvider,
+        sourceAmount: buyAmount,
+        sourceCurrencyCode: selectedFiatCurrency.currencyCode,
+        walletAddress: selectedAccountAddress,
+        walletTag: nil
+      ),
+      customerData: nil
     )
 
-    guard error == nil, let url = URL(string: urlString) else {
-      return nil
-    }
-
-    return url
+    guard let widget, error == nil else { return nil }
+    return URL(string: widget.widgetUrl)
   }
 
   @MainActor
-  private func fetchBuyTokens(network: BraveWallet.NetworkInfo) async {
-    allTokens = []
-    for provider in buyTokens.keys {
-      let tokens = await blockchainRegistry.buyTokens(provider: provider, chainId: network.chainId)
-      let sortedTokenList = tokens.sorted(by: {
-        if $0.isGasToken, !$1.isGasToken {
-          return true
-        } else if !$0.isGasToken, $1.isGasToken {
-          return false
-        } else if $0.isBatToken, !$1.isBatToken {
-          return true
-        } else if !$0.isBatToken, $1.isBatToken {
-          return false
-        } else {
-          return $0.symbol < $1.symbol
-        }
-      })
-      buyTokens[provider] = sortedTokenList
+  func updateSelectedAccountAddress() async {
+    guard let selectedAccount else { return }
+    selectedAccountAddress = selectedAccount.address
+    if selectedAccount.coin == .btc,
+      let bitcoinAccountInfo = await bitcoinWalletService.bitcoinAccountInfo(
+        accountId: selectedAccount.accountId
+      )
+    {
+      selectedAccountAddress = bitcoinAccountInfo.nextChangeAddress.addressString
+    } else if selectedAccount.coin == .zec,
+      let zcashAccountInfo = await zcashWalletService.zCashAccountInfo(
+        accountId: selectedAccount.accountId
+      )
+    {
+      selectedAccountAddress = zcashAccountInfo.nextTransparentChangeAddress.addressString
     }
+  }
 
-    for provider in orderedSupportedBuyOptions {
-      if let tokens = buyTokens[provider] {
-        for token in tokens where !allTokens.includes(token) {
-          allTokens.append(token)
-        }
-      }
-    }
-
-    if selectedBuyToken == nil || selectedBuyToken?.chainId != network.chainId {
-      selectedBuyToken = allTokens.first
-    }
+  @MainActor
+  func updateSelectedAccount() async {
+    allAccounts = await keyringService.allAccounts().accounts
+    selectedAccount = allAccounts.first(where: { accountInfo in
+      accountInfo.coin == selectedBuyToken.coin
+    })
+    savedBuyTokenAndAccount = nil
   }
 
   @MainActor
   func updateInfo() async {
-    orderedSupportedBuyOptions = BraveWallet.OnRampProvider.allSupportedOnRampProviders
+    isFetchingPrefilledToken = prefilledToken != nil
 
-    guard let selectedAccount = await keyringService.allAccounts().selectedAccount else {
-      assertionFailure("selectedAccount should never be nil.")
+    if let prefilledToken {
+      let (matchedCryptoCurrency, allMeldSupportedCryptoCurrencies) =
+        await meldIntegrationService.convertToMeldCryptoCurrency(for: prefilledToken)
+      guard let allMeldSupportedCryptoCurrencies else {
+        encounterMeldAPIError = true
+        Logger.module.debug("Meld - Error getting crypto currencies")
+        return
+      }
+      supportedCryptoCurrencies = allMeldSupportedCryptoCurrencies
+      if let matchedCryptoCurrency {
+        selectedBuyToken = matchedCryptoCurrency
+      }
+      isFetchingPrefilledToken = false
+    } else {
+      // get all crypto currencies
+      let (cryptoCurrencies, _) = await meldIntegrationService.cryptoCurrencies(
+        filter: .init(
+          countries: nil,
+          fiatCurrencies: nil,
+          cryptoCurrencies: nil,
+          cryptoChains: WalletConstants.supportedChainsForMeld.joined(separator: ","),
+          serviceProviders: nil,
+          paymentMethodTypes: nil,
+          statuses: nil
+        )
+      )
+      guard let cryptoCurrencies else {
+        encounterMeldAPIError = true
+        Logger.module.debug("Meld - Error getting crypto currencies")
+        return
+      }
+      supportedCryptoCurrencies = cryptoCurrencies
+    }
+
+    // get all fiat currencies
+    let (fiatCurrencies, _) = await meldIntegrationService.fiatCurrencies(filter: .init())
+    guard let fiatCurrencies else {
+      encounterMeldAPIError = true
+      Logger.module.debug("Meld - Error getting fiat currencies")
       return
     }
-    selectedNetwork = await rpcService.network(coin: selectedAccount.coin, origin: nil)
-    await validatePrefilledToken(on: selectedNetwork)  // selectedNetwork may change
-    await fetchBuyTokens(network: selectedNetwork)
+    supportedFiatCurrencies = fiatCurrencies
 
-    // check if current selected network supports buy
-    if WalletConstants.supportedTestNetworkChainIds.contains(selectedNetwork.chainId) {
-      isSelectedNetworkSupported = false
-    } else {
-      isSelectedNetworkSupported = allTokens.contains(where: { token in
-        return token.chainId.caseInsensitiveCompare(selectedNetwork.chainId) == .orderedSame
-      })
+    // get all countries
+    let (countries, _) = await meldIntegrationService.countries(filter: .init())
+    guard let countries else {
+      encounterMeldAPIError = true
+      Logger.module.debug("Meld - Error getting countries")
+      return
     }
+    supportedCountries = countries
 
-    // fetch all available currencies for on ramp providers
-    supportedCurrencies = await blockchainRegistry.onRampCurrencies()
-    if let usdCurrency = supportedCurrencies.first(where: {
-      $0.currencyCode.caseInsensitiveCompare(CurrencyCode.usd.code) == .orderedSame
-    }) {
-      selectedCurrency = usdCurrency
-    } else if let firstCurrency = supportedCurrencies.first {
-      selectedCurrency = firstCurrency
+    // get all payment types
+    let (paymentTypes, _) = await meldIntegrationService.paymentMethods(
+      filter: .init(
+        countries: selectedCountry.countryCode,
+        fiatCurrencies: selectedFiatCurrency.currencyCode,
+        cryptoCurrencies: nil,
+        cryptoChains: nil,
+        serviceProviders: nil,
+        paymentMethodTypes: nil,
+        statuses: nil
+      )
+    )
+    guard let paymentTypes else {
+      encounterMeldAPIError = true
+      Logger.module.debug("Meld - Error getting payment types")
+      return
     }
-  }
-}
-
-extension BraveWallet.BlockchainToken {
-  fileprivate var isGasToken: Bool {
-    guard let gasTokensByChain = BuyTokenStore.gasTokens[chainId] else { return false }
-    return gasTokensByChain.contains { $0.caseInsensitiveCompare(symbol) == .orderedSame }
+    supportedPaymentTypes = paymentTypes
   }
 
-  fileprivate var isBatToken: Bool {
-    // BAT/wormhole BAT/Avalanche C-Chain BAT
-    return symbol.caseInsensitiveCompare("bat") == .orderedSame
-      || symbol.caseInsensitiveCompare("wbat") == .orderedSame
-      || symbol.caseInsensitiveCompare("bat.e") == .orderedSame
-  }
-
-  // a special symbol to fetch correct ramp.network buy url
-  fileprivate var rampNetworkSymbol: String {
-    if symbol.caseInsensitiveCompare("bat") == .orderedSame
-      && chainId.caseInsensitiveCompare(BraveWallet.MainnetChainId) == .orderedSame
-    {
-      // BAT is the only token on Ethereum Mainnet with a prefix on Ramp.Network
-      return "ETH_BAT"
-    } else if chainId.caseInsensitiveCompare(BraveWallet.AvalancheMainnetChainId) == .orderedSame
-      && contractAddress.isEmpty
-    {
-      // AVAX native token has no prefix
-      return symbol
-    } else {
-      let rampNetworkPrefix: String
-      switch chainId.lowercased() {
-      case BraveWallet.MainnetChainId.lowercased(),
-        BraveWallet.CeloMainnetChainId.lowercased():
-        rampNetworkPrefix = ""
-      case BraveWallet.AvalancheMainnetChainId.lowercased():
-        rampNetworkPrefix = "AVAXC"
-      case BraveWallet.BnbSmartChainMainnetChainId.lowercased():
-        rampNetworkPrefix = "BSC"
-      case BraveWallet.PolygonMainnetChainId.lowercased():
-        rampNetworkPrefix = "MATIC"
-      case BraveWallet.SolanaMainnet.lowercased():
-        rampNetworkPrefix = "SOLANA"
-      case BraveWallet.OptimismMainnetChainId.lowercased():
-        rampNetworkPrefix = "OPTIMISM"
-      case BraveWallet.FilecoinMainnet.lowercased():
-        rampNetworkPrefix = "FILECOIN"
-      default:
-        rampNetworkPrefix = ""
+  @MainActor
+  func fetchProviders() async -> ([BraveWallet.MeldCryptoQuote], [BraveWallet.MeldServiceProvider])
+  {
+    guard let selectedAccount else { return ([], []) }
+    isFetchingServiceProviders = true
+    let (quotes, _) = await meldIntegrationService.cryptoQuotes(
+      country: selectedCountry.countryCode,
+      sourceCurrencyCode: selectedFiatCurrency.currencyCode,
+      destinationCurrencyCode: selectedBuyToken.currencyCode,
+      sourceAmount: Double(buyAmount) ?? 0,
+      account: selectedAccount.address,
+      paymentMethod: selectedPaymentType.paymentType
+    )
+    let sortedQuotes = quotes?.sorted { left, right in
+      if let leftDestinationAmount = left.destinationAmount,
+        let rightDestinationAmount = right.destinationAmount,
+        let leftAmount = Double(leftDestinationAmount),
+        let rightAmount = Double(rightDestinationAmount)
+      {
+        return leftAmount > rightAmount
       }
+      return false
+    }
+    let providerNames =
+      sortedQuotes?.compactMap { quote in
+        quote.serviceProvider
+      } ?? []
+    let (providers, _) = await meldIntegrationService.serviceProviders(
+      filter: .init(
+        countries: nil,
+        fiatCurrencies: nil,
+        cryptoCurrencies: nil,
+        cryptoChains: nil,
+        serviceProviders: providerNames.joined(separator: ","),
+        paymentMethodTypes: nil,
+        statuses: "LIVE"
+      )
+    )
+    isFetchingServiceProviders = false
+    return (sortedQuotes ?? [], providers ?? [])
+  }
 
-      return rampNetworkPrefix.isEmpty ? symbol : "\(rampNetworkPrefix)_\(symbol.uppercased())"
+  func availableAccountsForSelectedBuyToken() -> [BraveWallet.AccountInfo] {
+    return allAccounts.filter {
+      let selectedTokenCoin = selectedBuyToken.coin
+      return $0.coin == selectedTokenCoin
+    }
+  }
+
+  @MainActor func handleDismissAddAccount(
+    selectingToken: BraveWallet.MeldCryptoCurrency
+  ) async -> Bool {
+    if await keyringService.isAccountAvailable(
+      for: selectingToken.coin
+    ) {
+      self.selectedBuyToken = selectingToken
+      await self.updateSelectedAccount()
+      return true
+    } else {
+      return false
+    }
+  }
+
+  func handleCancelAddAccount() {
+    if let savedBuyTokenAndAccount {
+      selectedBuyToken = savedBuyTokenAndAccount.token
+      selectedAccount = savedBuyTokenAndAccount.account
+      self.savedBuyTokenAndAccount = nil
+    }
+  }
+
+  func hasMatchedCoinTypeAccount(for asset: BraveWallet.MeldCryptoCurrency) -> Bool {
+    return allAccounts.contains { account in
+      account.coin == asset.coin
     }
   }
 }

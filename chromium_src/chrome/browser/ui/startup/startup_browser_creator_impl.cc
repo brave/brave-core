@@ -9,6 +9,6 @@
 
 #define StartupTabProviderImpl BraveStartupTabProviderImpl
 
-#include "src/chrome/browser/ui/startup/startup_browser_creator_impl.cc"
+#include <chrome/browser/ui/startup/startup_browser_creator_impl.cc>
 
 #undef StartupTabProviderImpl

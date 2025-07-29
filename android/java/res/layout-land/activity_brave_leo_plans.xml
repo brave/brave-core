@@ -415,7 +415,7 @@
                         android:layout_marginBottom="8dp"
                         android:text="@string/already_purchased"
                         android:textAlignment="center"
-                        android:textColor="@color/primitive_primary_20" />
+                        android:textColor="@color/text_color_20" />
 
                     <TextView
                         android:id="@+id/refresh_credentials_button"

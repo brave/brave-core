@@ -1,0 +1,15 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# `PathService.Get` fails in CI with `DIR_ONE_DRIVE`, as the Windows install
+# flavour in our infra does not produce this path.
+-PathServiceTest.Get

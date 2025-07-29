@@ -25,6 +25,7 @@ source_set("component_loader") {
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_extension:static_resources",
+    "//brave/components/web_discovery/common:util",
     "//chrome/browser:browser_process",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",
@@ -33,6 +34,10 @@ source_set("component_loader") {
     "//extensions/browser",
     "//extensions/common",
   ]
+
+  if (enable_web_discovery_native) {
+    deps += [ "//brave/components/web_discovery/common" ]
+  }
 }
 
 # This is split out from extensions and the rest of brave_prefs_util because it
@@ -46,7 +51,7 @@ source_set("brave_prefs_util_impl") {
   sources = [ "api/settings_private/brave_prefs_util_impl.cc" ]
 
   deps = [
-    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles:profile",
@@ -133,6 +138,7 @@ source_set("extensions") {
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
     "//brave/components/web_discovery/buildflags",
+    "//brave/components/web_discovery/common:util",
     "//brave/components/webcompat_reporter/common",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",

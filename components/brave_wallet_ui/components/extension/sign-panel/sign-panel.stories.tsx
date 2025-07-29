@@ -54,6 +54,7 @@ const signMessageData: BraveWallet.SignMessageRequest = {
       },
     },
     ethStandardSignData: undefined,
+    cardanoSignData: undefined,
   },
 }
 
@@ -112,6 +113,7 @@ export const _SignData = {
           },
           ethSiweData: undefined,
           solanaSignData: undefined,
+          cardanoSignData: undefined,
         },
       },
     ]
@@ -131,4 +133,7 @@ export const _SignData = {
   },
 }
 
-export default { component: SignPanel }
+export default {
+  title: 'Wallet/Panel/Panels/Sign Transaction',
+  component: SignPanel,
+}

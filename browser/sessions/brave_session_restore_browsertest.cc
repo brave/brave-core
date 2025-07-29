@@ -129,8 +129,8 @@ class SessionCookiesCleanupOnSessionRestoreBrowserTest
     ASSERT_TRUE(embedded_test_server()->Start());
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        base::StringPrintf("MAP *:80 127.0.0.1:%d",
-                           embedded_test_server()->port()));
+        absl::StrFormat("MAP *:80 127.0.0.1:%d",
+                        embedded_test_server()->port()));
   }
 
   void SetUpOnMainThread() override {

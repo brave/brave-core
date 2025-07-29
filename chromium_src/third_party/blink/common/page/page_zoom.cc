@@ -8,7 +8,7 @@
 #define kPresetBrowserZoomFactorsArray \
   kPresetBrowserZoomFactorsArray_ChromiumImpl
 #define kPresetBrowserZoomFactors kPresetBrowserZoomFactors_ChromiumImpl
-#include "src/third_party/blink/common/page/page_zoom.cc"
+#include <third_party/blink/common/page/page_zoom.cc>
 #undef kPresetBrowserZoomFactorsArray
 #undef kPresetBrowserZoomFactors
 

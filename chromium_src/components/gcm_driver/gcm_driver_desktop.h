@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_GCM_DRIVER_GCM_DRIVER_DESKTOP_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_GCM_DRIVER_GCM_DRIVER_DESKTOP_H_
 
-#include "src/components/gcm_driver/gcm_driver_desktop.h"  // IWYU pragma: export
+#include <components/gcm_driver/gcm_driver_desktop.h>  // IWYU pragma: export
 
 namespace gcm {
 
@@ -22,7 +22,7 @@ class BraveGCMDriverDesktop : public GCMDriverDesktop {
   GCMClient::Result EnsureStarted(GCMClient::StartMode start_mode) override;
 
  private:
-  bool enabled_;
+  bool enabled_ = false;
 };
 
 }  // namespace gcm

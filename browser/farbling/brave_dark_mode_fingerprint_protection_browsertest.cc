@@ -12,7 +12,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
@@ -150,15 +150,15 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   bool IsReportingDarkMode() {
     bool light_mode_result =
         content::EvalJs(contents(),
-                        base::StringPrintf(kMatchDarkModeFormatString, "light"))
+                        absl::StrFormat(kMatchDarkModeFormatString, "light"))
             .ExtractBool();
 
     if (!light_mode_result) {
       // Sanity check to make sure that 'dark' is reported for
       // prefers-color-scheme when 'light' was not found before.
-      EXPECT_EQ(true, content::EvalJs(contents(),
-                                      base::StringPrintf(
-                                          kMatchDarkModeFormatString, "dark")));
+      EXPECT_EQ(true, content::EvalJs(
+                          contents(),
+                          absl::StrFormat(kMatchDarkModeFormatString, "dark")));
 
       // Report dark mode.
       return true;

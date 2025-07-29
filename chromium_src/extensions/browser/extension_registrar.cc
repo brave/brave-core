@@ -8,7 +8,7 @@
 #include "extensions/browser/api/content_settings/content_settings_service.h"
 
 #define AddComponentExtension AddComponentExtension_ChromiumImpl
-#include "src/extensions/browser/extension_registrar.cc"
+#include <extensions/browser/extension_registrar.cc>
 #undef AddComponentExtension
 
 namespace extensions {

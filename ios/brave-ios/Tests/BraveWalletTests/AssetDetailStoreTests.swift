@@ -12,8 +12,28 @@ import XCTest
 class AssetDetailStoreTests: XCTestCase {
   private var cancellables: Set<AnyCancellable> = .init()
 
+  let mockCryptoCurrencies: [BraveWallet.MeldCryptoCurrency] = [
+    .init(
+      currencyCode: "ETH",
+      name: "Ethereum",
+      chainCode: "ETH",
+      chainName: "Ethereum",
+      chainId: "0x1",
+      contractAddress: nil,
+      symbolImageUrl: "https://images-currency.meld.io/crypto/ETH/symbol.png"
+    ),
+    .init(
+      currencyCode: "SOL",
+      name: "Solana",
+      chainCode: "SOLANA",
+      chainName: "Solana",
+      chainId: "0x65",
+      contractAddress: nil,
+      symbolImageUrl: "https://images-currency.meld.io/crypto/SOL/symbol.png"
+    ),
+  ]
+
   func testUpdateWithBlockchainToken() {
-    let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
     let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
@@ -97,6 +117,10 @@ class AssetDetailStoreTests: XCTestCase {
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
     let zcashWalletService = BraveWallet.TestZCashWalletService()
+    let meldIntegrationService = BraveWallet.TestMeldIntegrationService()
+    meldIntegrationService._cryptoCurrencies = { _, completion in
+      completion(self.mockCryptoCurrencies, nil)
+    }
 
     // setup store
     let store = AssetDetailStore(
@@ -111,6 +135,7 @@ class AssetDetailStoreTests: XCTestCase {
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       userAssetManager: mockAssetManager,
       assetDetailType: .blockchainToken(.previewToken)
     )
@@ -124,11 +149,11 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertEqual(network, .mockMainnet)
       }
       .store(in: &cancellables)
-    store.$isBuySupported
+    store.$meldCryptoCurrency
       .dropFirst()
       .sink {
         defer { assetDetailException.fulfill() }
-        XCTAssertTrue($0)
+        XCTAssertNotNil($0)
       }
       .store(in: &cancellables)
     store.$isSendSupported
@@ -237,10 +262,10 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailException], timeout: 1)
+    XCTAssertTrue(store.isBuySupported)
   }
 
   func testUpdateWithBlockchainTokenBitcoin() {
-    let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
     let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 8))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
@@ -322,6 +347,10 @@ class AssetDetailStoreTests: XCTestCase {
       )
     }
     let zcashWalletService = BraveWallet.TestZCashWalletService()
+    let meldIntegrationService = BraveWallet.TestMeldIntegrationService()
+    meldIntegrationService._cryptoCurrencies = { _, completion in
+      completion(self.mockCryptoCurrencies, nil)
+    }
 
     // setup store
     let store = AssetDetailStore(
@@ -336,6 +365,7 @@ class AssetDetailStoreTests: XCTestCase {
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       userAssetManager: mockAssetManager,
       assetDetailType: .blockchainToken(.mockBTCToken)
     )
@@ -349,11 +379,11 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertEqual(network, .mockBitcoinMainnet)
       }
       .store(in: &cancellables)
-    store.$isBuySupported
+    store.$meldCryptoCurrency
       .dropFirst()
       .sink {
         defer { assetDetailException.fulfill() }
-        XCTAssertTrue($0)
+        XCTAssertNil($0)
       }
       .store(in: &cancellables)
     store.$isSendSupported
@@ -445,6 +475,7 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailException], timeout: 1)
+    XCTAssertFalse(store.isBuySupported)
   }
 
   func testUpdateWithCoinMarket() {
@@ -513,6 +544,10 @@ class AssetDetailStoreTests: XCTestCase {
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
     let zcashWalletService = BraveWallet.TestZCashWalletService()
+    let meldIntegrationService = BraveWallet.TestMeldIntegrationService()
+    meldIntegrationService._cryptoCurrencies = { _, completion in
+      completion(self.mockCryptoCurrencies, nil)
+    }
 
     // setup store
     var store = AssetDetailStore(
@@ -527,17 +562,18 @@ class AssetDetailStoreTests: XCTestCase {
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketBitcoin)
     )
 
     let assetDetailBitcoinException = expectation(description: "update-coinMarket-bitcoin")
     assetDetailBitcoinException.expectedFulfillmentCount = 10
-    store.$isBuySupported
+    store.$meldCryptoCurrency
       .dropFirst()
       .sink {
         defer { assetDetailBitcoinException.fulfill() }
-        XCTAssertFalse($0)
+        XCTAssertNil($0)
       }
       .store(in: &cancellables)
     store.$isSendSupported
@@ -625,6 +661,7 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailBitcoinException], timeout: 1)
+    XCTAssertFalse(store.isBuySupported)
     cancellables.removeAll()
 
     // setup store
@@ -640,16 +677,17 @@ class AssetDetailStoreTests: XCTestCase {
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
+      meldIntegrationService: meldIntegrationService,
       userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketEth)
     )
     let assetDetailNonBitcoinException = expectation(description: "update-coinMarket-non-bitcoin")
     assetDetailNonBitcoinException.expectedFulfillmentCount = 10
-    store.$isBuySupported
+    store.$meldCryptoCurrency
       .dropFirst()
       .sink {
         defer { assetDetailNonBitcoinException.fulfill() }
-        XCTAssertTrue($0)
+        XCTAssertNotNil($0)
       }
       .store(in: &cancellables)
     store.$isSendSupported
@@ -743,5 +781,6 @@ class AssetDetailStoreTests: XCTestCase {
 
     store.update()
     wait(for: [assetDetailNonBitcoinException], timeout: 1)
+    XCTAssertTrue(store.isBuySupported)
   }
 }

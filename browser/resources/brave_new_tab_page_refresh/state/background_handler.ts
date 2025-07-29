@@ -8,7 +8,7 @@ import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_backg
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounce } from '$web-common/debounce'
-import { BackgroundState, BackgroundActions, getCurrentBackground } from './background_state'
+import { BackgroundState, BackgroundActions } from './background_state'
 
 export function createBackgroundHandler(
   store: Store<BackgroundState>
@@ -19,17 +19,13 @@ export function createBackgroundHandler(
       SponsoredRichMediaAdEventHandler.getRemote()
 
   store.update({
+    backgroundRandomValue: Math.random(),
+    backgroundRotateIndex: nextRotateIndex(),
     backgroundsCustomizable:
         loadTimeData.getBoolean('customBackgroundFeatureEnabled'),
     sponsoredRichMediaBaseUrl:
         loadTimeData.getString('sponsoredRichMediaBaseUrl')
   })
-
-  function updateCurrentBackground() {
-    store.update({
-      currentBackground: getCurrentBackground(store.getState())
-    })
-  }
 
   async function updateBackgroundsEnabled() {
     const { enabled } = await handler.getBackgroundsEnabled()
@@ -69,7 +65,6 @@ export function createBackgroundHandler(
         updateCustomBackgrounds(),
         updateSelectedBackground(),
       ])
-      updateCurrentBackground()
     }, 10)
   })
 
@@ -83,7 +78,7 @@ export function createBackgroundHandler(
       updateSponsoredImageBackground()
     ])
 
-    updateCurrentBackground()
+    store.update({ initialized: true })
   }
 
   loadData()
@@ -102,6 +97,9 @@ export function createBackgroundHandler(
 
     selectBackground(type, value) {
       store.update({ selectedBackground: { type, value } })
+      if (!value) {
+        store.update({ backgroundRandomValue: Math.random() })
+      }
       handler.selectBackground({ type, value })
     },
 
@@ -117,7 +115,6 @@ export function createBackgroundHandler(
     notifySponsoredImageLoadError() {
       console.error('Sponsored image failed to load')
       store.update({ sponsoredImageBackground: null })
-      updateCurrentBackground()
     },
 
     notifySponsoredImageLogoClicked() {
@@ -143,4 +140,11 @@ export function createBackgroundHandler(
         type);
     }
   }
+}
+
+function nextRotateIndex() {
+  const rotateIndexKey = 'ntp-background-index'
+  const index = parseInt(localStorage.getItem(rotateIndexKey) ?? '0') || 0
+  localStorage.setItem(rotateIndexKey, String((index + 1) % (2 ** 32)))
+  return index
 }

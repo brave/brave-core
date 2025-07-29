@@ -21,7 +21,8 @@ import {
   TextArea,
   FieldCtr,
   InputLabel,
-  ScreenshotLink
+  ScreenshotLink,
+  Dropdown
 } from './basic'
 
 // Localization data
@@ -39,11 +40,14 @@ interface Props {
   isErrorPage: boolean
   isHttpPage: boolean
   isLocalPage: boolean
-  onSubmitReport: (details: string, contact: string, attachScreenshot: boolean) => void
+  components: string[]
+  onSubmitReport: (category: string, details: string, contact: string,
+                   attachScreenshot: boolean) => void
   onClose: () => void
 }
 
 interface State {
+  category: string
   details: string
   contact: string
   attachScreenshot: boolean
@@ -59,6 +63,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
+      category: '',
       details: '',
       contact: props.contactInfo,
       attachScreenshot: false,
@@ -73,6 +78,10 @@ export default class ReportView extends React.PureComponent<Props, State> {
     if (e.key === 'Escape') {
       onClose();
     }
+  }
+
+  handleCategoryChange = async (ev: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ category: ev.target.value })
   }
 
   handleContactInfoChange = async (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,6 +137,20 @@ export default class ReportView extends React.PureComponent<Props, State> {
     document.removeEventListener('keydown', this.handleKeyPress);
   }
 
+  /**
+   * Only reports with a selected category (or in the case of `Other`, a filled
+   * in description) can be submitted.
+   */
+  canSubmitReport() {
+    if (this.state.category === '') {
+      return false;
+    }
+    if (this.state.category === 'other' && this.state.details === '') {
+      return false;
+    }
+    return true;
+  }
+
   render () {
     const {
       siteUrl,
@@ -136,9 +159,10 @@ export default class ReportView extends React.PureComponent<Props, State> {
       isHttpPage,
       isLocalPage,
       onSubmitReport,
-      onClose
+      onClose,
+      components
     } = this.props
-    const { details, contact, attachScreenshot } = this.state
+    const { category, details, contact, attachScreenshot } = this.state
 
     const isIneligiblePage = !isHttpPage || isLocalPage || isErrorPage
 
@@ -149,6 +173,11 @@ export default class ReportView extends React.PureComponent<Props, State> {
       infoTextKey = 'reportLocalExplanation'
     } else if (isErrorPage) {
       infoTextKey = 'reportErrorPageExplanation'
+    }
+
+    /** Apply `hidden` CSS class unless the given component ID is present */
+    const hideUnlessHas = (componentId: string) => {
+      return components.includes(componentId) ? '' : 'hidden'
     }
 
     return (
@@ -162,9 +191,59 @@ export default class ReportView extends React.PureComponent<Props, State> {
         {!isIneligiblePage &&
           <>
             <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
+            <InputLabel htmlFor='issue-category'>
+              {getLocale('issueCategoryLabel')}
+            </InputLabel>
+            <Dropdown
+              onChange={this.handleCategoryChange}
+              value={category}
+              id='issue-category'
+              required={true}
+            >
+              <option value='' disabled hidden>
+                {getLocale('issueCategoryPlaceholder')}
+              </option>
+              <option value='ads'>{getLocale('issueCategoryAds')}</option>
+              <option value='blank'>{getLocale('issueCategoryBlank')}</option>
+              <option value='scroll'>{getLocale('issueCategoryScroll')}</option>
+              <option value='form'>{getLocale('issueCategoryForm')}</option>
+              <option
+                value='cookie notice'
+                className={hideUnlessHas('cdbbhgbmjhfnhnmgeddbliobbofkgdhe')}
+              >
+                {getLocale('issueCategoryCookie')}
+              </option>
+              <option value='anti adblock'>
+                {getLocale('issueCategoryAntiadblock')}
+              </option>
+              <option value='tracking'>
+                {getLocale('issueCategoryTracking')}
+              </option>
+              <option
+                value='newsletter'
+                className={hideUnlessHas('kdddfellohomdnfkdhombbddhojklibj')}
+              >
+                {getLocale('issueCategoryNewsletter')}
+              </option>
+              <option
+                value='social'
+                className={hideUnlessHas('nbkknaieglghmocpollinelcggiehfco')}
+              >
+                {getLocale('issueCategorySocial')}
+              </option>
+              <option
+                value='chat'
+                className={hideUnlessHas('cjoooeeofnfjohnalnghhmdlalopplja')}
+              >
+                {getLocale('issueCategoryChat')}
+              </option>
+              <option value='other'>{getLocale('issueCategoryOther')}</option>
+            </Dropdown>
             <FieldCtr>
               <TextArea
-                placeholder={getLocale('reportDetails')}
+                placeholder={getLocale('reportDetails') +
+                  (category !== 'other' ? ` ${getLocale('optionalField')}` : '')
+                }
                 onChange={(ev) => this.setState({ details: ev.target.value })}
                 rows={7}
                 maxLength={2000}
@@ -221,27 +300,26 @@ export default class ReportView extends React.PureComponent<Props, State> {
           {!isIneligiblePage ?
           <>
             <PaddedButton
-              isTertiary
-              isCallToAction
-              scale='small'
+              kind="plain-faint"
+              size="small"
               onClick={onClose}
             >
               {getLocale('cancel')}
             </PaddedButton>
             <PaddedButton
-              isPrimary
-              isCallToAction
-              scale='small'
-              onClick={() => onSubmitReport(details, contact, attachScreenshot)}
+              kind="filled"
+              size='small'
+              isDisabled={!this.canSubmitReport()}
+              onClick={() => onSubmitReport(category, details, contact,
+                                            attachScreenshot)}
             >
               {getLocale('submit')}
             </PaddedButton>
           </>
         :
           <PaddedButton
-            isPrimary
-            isCallToAction
-            scale='small'
+            kind="filled"
+            size="small"
             onClick={onClose}
           >
             {getLocale('close')}

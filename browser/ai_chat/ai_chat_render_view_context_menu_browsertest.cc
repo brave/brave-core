@@ -55,6 +55,53 @@ void ExecuteRewriteCommand(RenderViewContextMenu* context_menu) {
   context_menu->Cancel();
 }
 
+class MockConversationHandlerClient : public mojom::ConversationUI {
+ public:
+  explicit MockConversationHandlerClient(ConversationHandler* driver) {
+    driver->Bind(conversation_handler_.BindNewPipeAndPassReceiver(),
+                 conversation_ui_receiver_.BindNewPipeAndPassRemote());
+  }
+
+  ~MockConversationHandlerClient() override = default;
+
+  void Disconnect() {
+    conversation_handler_.reset();
+    conversation_ui_receiver_.reset();
+  }
+
+  MOCK_METHOD(void,
+              OnConversationHistoryUpdate,
+              (const mojom::ConversationTurnPtr),
+              (override));
+
+  MOCK_METHOD(void, OnAPIRequestInProgress, (bool), (override));
+
+  MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError), (override));
+
+  MOCK_METHOD(void,
+              OnModelDataChanged,
+              (const std::string& conversation_model_key,
+               std::vector<mojom::ModelPtr> all_models),
+              (override));
+
+  MOCK_METHOD(void,
+              OnSuggestedQuestionsChanged,
+              (const std::vector<std::string>&,
+               mojom::SuggestionGenerationStatus),
+              (override));
+
+  MOCK_METHOD(void,
+              OnAssociatedContentInfoChanged,
+              (std::vector<mojom::AssociatedContentPtr>),
+              (override));
+
+  MOCK_METHOD(void, OnConversationDeleted, (), (override));
+
+ private:
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
+  mojo::Remote<mojom::ConversationHandler> conversation_handler_;
+};
+
 }  // namespace
 
 class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
@@ -220,6 +267,9 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
           ->GetForBrowserContext(browser()->profile())
           ->GetOrCreateConversationHandlerForContent(helper->GetContentId(),
                                                      helper->GetWeakPtr());
+  // Keep the ConversationHandler alive until the test is done.
+  testing::NiceMock<MockConversationHandlerClient> client(conversation_handler);
+
   ASSERT_TRUE(conversation_handler);
 
   // Test rewriting textarea value and verify that the response tag is ignored

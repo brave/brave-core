@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/sandbox/win/src/interceptors_64.cc"
-
 #include "base/compiler_specific.h"
 #include "brave/sandbox/win/src/module_file_name_interception.h"
+
+#include <sandbox/win/src/interceptors_64.cc>
 
 namespace sandbox {
 

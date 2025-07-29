@@ -3,7 +3,85 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { getReasoningText, removeReasoning } from './conversation_entries_utils'
+import {
+  getReasoningText,
+  removeReasoning,
+  removeCitationsWithMissingLinks,
+  groupConversationEntries,
+} from './conversation_entries_utils'
+import * as Mojom from '../../../common/mojom'
+
+describe('groupConversationEntries', () => {
+  it('should group consecutive assistant entries', () => {
+    const turn1 = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        { completionEvent: { completion: 'Response 1' } },
+        {
+          sourcesEvent: {
+            sources: [{ url: { url: 'https://a.com' }, title: 'Title 1', faviconUrl: { url: 'https://a.com/favicon.ico' } }]
+        }
+      }
+    ]
+  }
+
+    const turn2 = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        { completionEvent: { completion: 'Response 2' } },
+        {
+          sourcesEvent: {
+            sources: [{ url: { url: 'https://b.com' }, title: 'Title 2', faviconUrl: { url: 'https://b.com/favicon.ico' } }]
+        }
+      }
+    ]
+  }
+
+    const groupedEntries = groupConversationEntries([turn1, turn2] as any)
+
+    expect(groupedEntries).toHaveLength(1)
+    expect(groupedEntries[0]).toHaveLength(2)
+    expect(groupedEntries[0]).toEqual([turn1, turn2])
+  })
+
+  it('should not group non-consecutive assistant entries', () => {
+    const assistantTurn1 = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        { completionEvent: { completion: 'Response 1' } },
+        {
+          sourcesEvent: {
+            sources: [{ url: { url: 'https://a.com' }, title: 'Title 1', faviconUrl: { url: 'https://a.com/favicon.ico' } }]
+          }
+        }
+      ]
+    }
+
+    const humanTurn1: Partial<Mojom.ConversationTurn> = {
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'Question 1',
+    }
+
+    const assistantTurn2 = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        { completionEvent: { completion: 'Response 2' } },
+        {
+          sourcesEvent: {
+            sources: [{ url: { url: 'https://b.com' }, title: 'Title 2', faviconUrl: { url: 'https://b.com/favicon.ico' } }]
+          }
+        }
+      ]
+    }
+
+    const groupedEntries = groupConversationEntries([assistantTurn1, humanTurn1, assistantTurn2] as any)
+
+    expect(groupedEntries).toHaveLength(3)
+    expect(groupedEntries[0]).toEqual([assistantTurn1])
+    expect(groupedEntries[1]).toEqual([humanTurn1])
+    expect(groupedEntries[2]).toEqual([assistantTurn2])
+  })
+})
 
 describe('getReasoningText', () => {
   it('Should extract reasoning text between start and end tags', () => {
@@ -57,5 +135,18 @@ describe('removeReasoning', () => {
   it('should not fail if there is not starting tag', () => {
     const input = 'Reasoning text here.</think>'
     expect(removeReasoning(input)).toBe('Reasoning text here.</think>')
+  })
+})
+
+describe('removeCitationsWithMissingLinks', () => {
+  it('should remove citations with missing links', () => {
+    const input = 'Citation [1] and [2] thats it[3].'
+    const citationLinks = [
+      'https://example.com/link1',
+      'https://example.com/link2',
+    ]
+    expect(removeCitationsWithMissingLinks(input, citationLinks)).toBe(
+      'Citation [1] and [2] thats it.',
+    )
   })
 })
