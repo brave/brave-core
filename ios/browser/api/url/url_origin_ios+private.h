@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#include "brave/ios/browser/api/url/url_origin_ios.h"
+
 namespace url {
 
 class Origin;
