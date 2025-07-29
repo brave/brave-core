@@ -152,6 +152,7 @@ function IframeBackground(props: IframeBackgroundProps) {
 
   return (
     <iframe
+      ref={iframeRef}
       className={contentLoaded ? '' : 'loading'}
       src={props.url}
       sandbox='allow-scripts allow-same-origin'
