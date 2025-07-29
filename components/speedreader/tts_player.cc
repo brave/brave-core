@@ -22,6 +22,32 @@ constexpr const char kParagraphsKey[] = "paragraphs";
 
 namespace speedreader {
 
+class TtsPlayer::Controller::Delegate : public content::UtteranceEventDelegate {
+ public:
+  explicit Delegate(base::WeakPtr<TtsPlayer::Controller> handler)
+      : handler_(handler) {}
+  ~Delegate() override = default;
+
+  using PassKey = base::PassKey<Delegate>;
+
+  // content::UtteranceEventDelegate:
+  void OnTtsEvent(content::TtsUtterance* utterance,
+                  content::TtsEventType event_type,
+                  int char_index,
+                  int length,
+                  const std::string& error_message) override {
+    if (!handler_) {
+      return;
+    }
+
+    handler_->OnTtsEvent(PassKey(), utterance, event_type, char_index, length,
+                         error_message);
+  }
+
+ private:
+  base::WeakPtr<TtsPlayer::Controller> handler_;
+};
+
 TtsPlayer::TtsPlayer() = default;
 
 TtsPlayer::~TtsPlayer() = default;
@@ -188,7 +214,9 @@ void TtsPlayer::Controller::Resume(bool recreate_utterance) {
     utterance->SetText(base::UTF16ToUTF8(
         GetParagraphToRead().substr(reading_start_position_)));
     utterance->SetShouldClearQueue(true);
-    utterance->SetEventDelegate(this);
+    utterance->SetEventDelegate(
+        std::make_unique<TtsPlayer::Controller::Delegate>(
+            weak_factory_.GetWeakPtr()));
     utterance->SetVoiceName(current_voice_);
     const auto& params = utterance->GetContinuousParameters();
     utterance->SetContinuousParameters(current_speed_, params.pitch,
@@ -235,7 +263,8 @@ void TtsPlayer::Controller::WebContentsDestroyed() {
   Stop();
 }
 
-void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
+void TtsPlayer::Controller::OnTtsEvent(base::PassKey<Delegate>,
+                                       content::TtsUtterance* utterance,
                                        content::TtsEventType event_type,
                                        int char_index,
                                        int length,
