@@ -78,8 +78,9 @@ void BraveWalletServiceDelegateImpl::RemoveObserver(
   observer_list_.RemoveObserver(observer);
 }
 
-bool BraveWalletServiceDelegateImpl::ShouldTrackBrowser(Browser* browser) {
-  return browser->profile() == Profile::FromBrowserContext(context_);
+bool BraveWalletServiceDelegateImpl::ShouldTrackBrowser(
+    BrowserWindowInterface* browser) {
+  return browser->GetProfile() == Profile::FromBrowserContext(context_);
 }
 
 void BraveWalletServiceDelegateImpl::IsExternalWalletInstalled(
