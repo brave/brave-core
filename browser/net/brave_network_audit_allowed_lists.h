@@ -68,8 +68,7 @@ inline constexpr auto kBaseAllowedUrlPrefixes = std::to_array<std::string_view>(
 });
 
 // List of URL prefixes that are used in functionality controlled via
-// admin policies. A test that uses this list should also check URLs against
-// the base list above.
+// admin policies.
 inline constexpr auto kOtherAllowedUrlPrefixes = std::to_array<std::string_view>({
     // stats/referrals
     "https://usage-ping.brave.com/",
@@ -84,7 +83,10 @@ inline constexpr auto kOtherAllowedUrlPrefixes = std::to_array<std::string_view>
     // p3a
     "https://star-randsrv.bsg.brave.com/",
     "https://collector.bsg.brave.com/",
+});
 
+// List of URL prefixes that are used in opt-in telemetry functionality.
+inline constexpr auto kOptInTelemetryAllowedUrlPrefixes = std::to_array<std::string_view>({
     // web discovery
     "https://collector.wdp.brave.com/",
     "https://quorum.wdp.brave.com/",

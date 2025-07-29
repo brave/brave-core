@@ -703,6 +703,7 @@ if (!is_android) {
       "//base",
       "//brave/base/test:test_vendor_is_brave",
       "//brave/browser/brave_rewards",
+      "//brave/browser/brave_stats",
       "//brave/browser/ui/sidebar",
       "//brave/components/ai_chat/core/common",
       "//brave/components/brave_ads/core/public:headers",

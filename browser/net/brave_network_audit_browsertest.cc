@@ -19,6 +19,7 @@
 #include "base/test/test_timeouts.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_stats/switches.h"
 #include "brave/browser/net/brave_network_audit_test_helper.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -153,11 +154,13 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
                                    net_log_path_);
     command_line->AppendSwitchASCII(network::switches::kNetLogCaptureMode,
                                     "Everything");
+    command_line->AppendSwitchASCII(
+        brave_stats::switches::kBraveStatsStartupDelay, "15");
   }
 
   void TearDownInProcessBrowserTestFixture() override {
-    VerifyNetworkAuditLog(net_log_path_, audit_results_path_,
-                          use_base_prefixes_only_, std::vector<std::string>());
+    VerifyNetworkAuditLog(net_log_path_, audit_results_path_, allow_list_level_,
+                          std::vector<std::string>());
   }
 
   Profile* profile() { return browser()->profile(); }
@@ -169,7 +172,9 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
         ->SetIsLoadedForTesting(true);
     g_brave_browser_process->p3a_service()->OnRemoteConfigLoaded();
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE) || BUILDFLAG(ENABLE_EXTENSIONS)
-    profile()->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
+    if (enable_web_discovery_) {
+      profile()->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
+    }
 #endif
 
     // Load the Welcome page.
@@ -227,7 +232,8 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
 #endif
   }
 
-  bool use_base_prefixes_only_ = false;
+  bool enable_web_discovery_ = false;
+  AllowListLevel allow_list_level_ = AllowListLevel::kBaseAndOther;
   base::FilePath audit_results_path_;
 
  private:
@@ -240,14 +246,21 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
 // Loads brave://welcome first to simulate a first run and then loads another
 // URL, waiting some time after each load to allow gathering network requests.
 IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
-  use_base_prefixes_only_ = false;
+  allow_list_level_ = AllowListLevel::kFullWithoutOptInTelemetry;
+  RunTestTasks();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTestsWithOptInTelemetry) {
+  enable_web_discovery_ = true;
+  allow_list_level_ = AllowListLevel::kFull;
   RunTestTasks();
 }
 
 // Ensures that network logs are reduced when Brave Origin is enabled.
 IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest,
                        BasicTestsWithAdminPoliciesEnabled) {
-  use_base_prefixes_only_ = true;
+  enable_web_discovery_ = true;
+  allow_list_level_ = AllowListLevel::kBase;
   audit_results_path_ = audit_results_path_.DirName().AppendASCII(
       "network_audit_origin_results.json");
 

@@ -90,7 +90,7 @@ class BraveRewardsNetworkAuditTest : public InProcessBrowserTest {
   void TearDownInProcessBrowserTestFixture() override {
     // Before adding to this list, get approval from the security team.
     VerifyNetworkAuditLog(
-        net_log_path_, audit_results_path_, false,
+        net_log_path_, audit_results_path_, AllowListLevel::kBaseAndOther,
         /*extra_allowed_prefixes=*/
         {
             // Brave Rewards production.
