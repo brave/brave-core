@@ -124,7 +124,7 @@ function createTestFilter(config, suite) {
   return (x) => tests.has(x.split(':')[1])
 }
 
-async function getAffectedTests(args = {}) {
+async function listAffectedTests(args = {}) {
   const { suite } = args
   const cwd = process.cwd()
 
@@ -155,5 +155,5 @@ async function getAffectedTests(args = {}) {
 
 module.exports = {
   analyzeAffectedTests,
-  getAffectedTests,
+  listAffectedTests,
 }
