@@ -90,6 +90,7 @@ source_set("app") {
     "//components/sync/base",
     "//components/sync/service",
     "//components/variations",
+    "//components/variations/service",
     "//ios/chrome/app:app_internal",
     "//ios/chrome/app:tests_fake_hook",
     "//ios/chrome/app/startup:startup",
