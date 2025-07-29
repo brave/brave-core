@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const { listAffectedTests } = require('../lib/listAffectedTests')
+const { getAffectedTests } = require('../lib/affectedTests')
 const config = require('../lib/config')
 
 module.exports = (program) =>
@@ -32,6 +32,6 @@ module.exports = (program) =>
     )
     .action(async (args) => {
       config.update(args)
-      const result = await listAffectedTests({ ...args })
+      const result = await getAffectedTests({ ...args })
       console.log(result.join(' ').trim())
     })

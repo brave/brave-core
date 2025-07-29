@@ -11,7 +11,7 @@ const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
 
-const { listAffectedTests } = require('./listAffectedTests')
+const { getAffectedTests } = require('./affectedTests')
 const {
   getTestBinary,
   getTestsToRun,
@@ -34,7 +34,7 @@ const test = async (
   }
 
   const testsToRun = passthroughArgs.since
-    ? await listAffectedTests({ ...passthroughArgs, suite })
+    ? await getAffectedTests({ ...passthroughArgs, suite })
     : getTestsToRun(Config, suite)
 
   await buildTests(testsToRun, Config, options)
