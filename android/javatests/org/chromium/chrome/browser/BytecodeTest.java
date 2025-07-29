@@ -1394,6 +1394,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         OneshotSupplier.class,
                         ObservableSupplier.class,
+                        ObservableSupplier.class,
                         StartupMetricsTracker.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1681,6 +1682,7 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         Supplier.class,
+                        ObservableSupplierImpl.class,
                         ObservableSupplierImpl.class,
                         OneshotSupplierImpl.class,
                         int.class,
