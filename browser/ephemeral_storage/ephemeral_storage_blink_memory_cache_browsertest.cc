@@ -46,9 +46,9 @@ class EphemeralStorageBlinkMemoryCacheBrowserTestBase
     auto* rfh = ui_test_utils::NavigateToURLWithDisposition(
         browser, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-    EXPECT_TRUE(content::ExecJs(
-        content::ChildFrameAt(rfh, 0),
-        base::StringPrintf(kLoadImgAsync, img_url.spec().c_str())));
+    EXPECT_TRUE(
+        content::ExecJs(content::ChildFrameAt(rfh, 0),
+                        absl::StrFormat(kLoadImgAsync, img_url.spec())));
   }
 
   void ClearHttpCache() {

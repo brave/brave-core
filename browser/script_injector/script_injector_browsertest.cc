@@ -108,7 +108,7 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectScriptAwaitPromise) {
     EXPECT_TRUE(value.GetBool());
     run_loop.Quit();
   });
-  auto script = base::StringPrintf(kScript, "true");
+  auto script = absl::StrFormat(kScript, "true");
   const GURL url = https_server_.GetURL("a.com", "/");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
@@ -133,7 +133,7 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectedScriptReturnsDict) {
     EXPECT_TRUE(*val);
     run_loop.Quit();
   });
-  auto script = base::StringPrintf(kScript, "{ok: true}");
+  auto script = absl::StrFormat(kScript, "{ok: true}");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
   remote->RequestAsyncExecuteScript(
@@ -150,7 +150,7 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest,
                        InjectScriptDoNotAwaitPromise) {
   const GURL url = https_server_.GetURL("a.com", "/");
   auto cb = base::BindOnce([](base::Value value) { FAIL(); });
-  auto script = base::StringPrintf(kScript, "true");
+  auto script = absl::StrFormat(kScript, "true");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
   remote->RequestAsyncExecuteScript(

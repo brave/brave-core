@@ -76,10 +76,9 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
     mock_cert_verifier_.SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        base::StringPrintf("MAP *:80 127.0.0.1:%d,"
-                           "MAP *:443 127.0.0.1:%d",
-                           embedded_test_server()->port(),
-                           https_server_.port()));
+        absl::StrFormat("MAP *:80 127.0.0.1:%d,"
+                        "MAP *:443 127.0.0.1:%d",
+                        embedded_test_server()->port(), https_server_.port()));
   }
 
   void SetUpOnMainThread() override {

@@ -18,6 +18,7 @@ static_library("browser") {
   deps = [
     ":buildflags",
     "//base",
+    "//brave/components/constants",
     "//components/prefs",
   ]
 }

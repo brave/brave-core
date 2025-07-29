@@ -7,16 +7,15 @@ import("//brave/components/psst/buildflags/buildflags.gni")
 
 assert(enable_psst)
 
-component("content") {
-  output_name = "psst_browser_content"
+static_library("content") {
+  public = [ "psst_tab_web_contents_observer.h" ]
 
-  defines = [ "IS_PSST_BROWSER_CONTENT_IMPL" ]
+  friend = [ ":unit_tests" ]
 
   sources = [
     "psst_scripts_handler_impl.cc",
     "psst_scripts_handler_impl.h",
     "psst_tab_web_contents_observer.cc",
-    "psst_tab_web_contents_observer.h",
   ]
 
   public_deps = [

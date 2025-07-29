@@ -299,6 +299,6 @@ INSTANTIATE_TEST_SUITE_P(
     ClientHintsBrowserTest,
     ::testing::Bool(),
     [](const testing::TestParamInfo<ClientHintsBrowserTest::ParamType>& info) {
-      return base::StringPrintf("ChromiumCHFeatures_%s",
-                                info.param ? "Enabled" : "Disabled");
+      return absl::StrFormat("ChromiumCHFeatures_%s",
+                             info.param ? "Enabled" : "Disabled");
     });

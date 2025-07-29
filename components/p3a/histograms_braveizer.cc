@@ -21,7 +21,6 @@ namespace {
 // Please keep this list sorted and synced with |DoHistogramBravezation|.
 // clang-format off
 constexpr auto kBravezationHistograms = std::to_array<std::string_view>({
-    "DefaultBrowser.State",
     "Extensions.LoadExtension",
     "Tabs.TabCount",
     "Tabs.TabCountPerLoad",
@@ -59,21 +58,6 @@ void HistogramsBraveizer::DoHistogramBravetization(
     std::string_view histogram_name,
     uint64_t name_hash,
     base::HistogramBase::Sample32 sample) {
-  if ("DefaultBrowser.State" == histogram_name) {
-    int typical_answer = 0;
-    int express_answer = INT_MAX - 1;
-    if (sample == 1 || sample == 3) {
-      // 'Enabled' or 'Other' answer should be reported as 'Yes'
-      typical_answer = 1;
-      express_answer = 1;
-    } else if (sample > 3) {
-      // Unknown answer, do not report.
-      return;
-    }
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.IsDefault", typical_answer, 2);
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.IsDefaultDaily", express_answer, 2);
-  }
-
   if ("Extensions.LoadExtension" == histogram_name) {
     int answer = 0;
     if (sample == 1)

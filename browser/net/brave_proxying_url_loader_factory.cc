@@ -286,11 +286,11 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
   network::mojom::URLResponseHeadPtr head =
       network::mojom::URLResponseHead::New();
-  std::string headers = base::StringPrintf(
+  std::string headers = absl::StrFormat(
       "HTTP/1.1 %i Internal Redirect\n"
       "Location: %s\n"
       "Non-Authoritative-Reason: WebRequest API\n\n",
-      kInternalRedirectStatusCode, redirect_url_.spec().c_str());
+      kInternalRedirectStatusCode, redirect_url_.spec());
 
   // Cross-origin requests need to modify the Origin header to 'null'. Since
   // CorsURLLoader sets |request_initiator| to the Origin request header in
