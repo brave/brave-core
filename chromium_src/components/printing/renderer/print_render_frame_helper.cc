@@ -52,6 +52,13 @@ void PrintRenderFrameHelper::InitiatePrintPreview(
     print_preview_context_.InitWithFrame(frame);
     print_preview_context_.DispatchBeforePrintEvent(
         weak_ptr_factory_.GetWeakPtr());
+
+    // Note: |DispatchBeforePrintEvent| and |DispatchAfterPrintEvent| must be
+    // called in pairs.
+    // They're intended to be called before and after the `print` event is
+    // dispatched, but we just call |DispatchAfterPrintEvent| here to avoid a
+    // DCHECK next time we call |DispatchBeforePrintEvent|.
+    print_preview_context_.DispatchAfterPrintEvent();
   }
   // Print Preview resets `print_in_progress_` when the dialog closes.
 }
