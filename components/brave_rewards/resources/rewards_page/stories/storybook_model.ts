@@ -70,6 +70,7 @@ export function createModel(): AppModel {
     externalWalletProviders: ['uphold', 'gemini', 'solana'],
     balance: optional(4.123),
     tosUpdateRequired: false,
+    selfCustodyProviderInvites: ['solana'],
     selfCustodyInviteDismissed: false,
     recurringContributions: [
       {
