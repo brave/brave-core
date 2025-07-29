@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/logging.h"
 #include "base/time/time.h"
 
 namespace {
@@ -36,6 +37,7 @@ bool ShouldUseOmaha4(base::Time now, std::optional<bool>& state) {
     // remove the periodic fallback.
     state = base::FeatureList::IsEnabled(kBraveUseOmaha4Alpha) &&
             days_since_null % 5;
+    VLOG(1) << "Using Omaha 4: " << state.value();
   }
   return state.value();
 }
