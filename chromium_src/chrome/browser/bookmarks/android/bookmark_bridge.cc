@@ -137,8 +137,7 @@ user_data_importer::BookmarkParser::BookmarkParsingResult
 BookmarkBridge::ImportBookmarksReader(std::u16string import_file_path) {
   user_data_importer::BookmarkParser::BookmarkParsingResult returned_result;
 
-  user_data_importer::ContentBookmarkParser bookmark_parser;
-  bookmark_parser.Parse(
+  user_data_importer::MakeBookmarkParser()->Parse(
       base::FilePath::FromUTF16Unsafe(import_file_path),
       base::BindOnce(
           [](user_data_importer::BookmarkParser::BookmarkParsingResult*
