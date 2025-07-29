@@ -95,7 +95,7 @@ class SpeedreaderToolbarDataHandlerImpl
       const TabStripSelectionChange& selection) override;
 
   // BrowserTabStripTrackerDelegate:
-  bool ShouldTrackBrowser(Browser* browser) override;
+  bool ShouldTrackBrowser(BrowserWindowInterface* browser) override;
 
   // ThemeServiceObserver:.
   void OnThemeChanged() override;
