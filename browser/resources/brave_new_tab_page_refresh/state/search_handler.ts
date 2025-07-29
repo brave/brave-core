@@ -92,11 +92,13 @@ export function createSearchHandler(
   async function updatePrefs() {
     let [
       { showSearchBox },
+      { showChatInput },
       { enabled: searchSuggestionsEnabled },
       { dismissed: searchSuggestionsPromptDismissed },
       { engine: lastUsedSearchEngine }
     ] = await Promise.all([
       newTabProxy.handler.getShowSearchBox(),
+      newTabProxy.handler.getShowChatInput(),
       newTabProxy.handler.getSearchSuggestionsEnabled(),
       newTabProxy.handler.getSearchSuggestionsPromptDismissed(),
       newTabProxy.handler.getLastUsedSearchEngine()
@@ -106,6 +108,7 @@ export function createSearchHandler(
     }
     store.update({
       showSearchBox,
+      showChatInput,
       searchSuggestionsEnabled,
       searchSuggestionsPromptDismissed,
       lastUsedSearchEngine
@@ -150,6 +153,11 @@ export function createSearchHandler(
     setShowSearchBox(showSearchBox) {
       store.update({ showSearchBox })
       newTabProxy.handler.setShowSearchBox(showSearchBox)
+    },
+
+    setShowChatInput(showChatInput) {
+      store.update({ showChatInput })
+      newTabProxy.handler.setShowChatInput(showChatInput)
     },
 
     setSearchSuggestionsEnabled(enabled) {
