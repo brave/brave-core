@@ -147,6 +147,13 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
   return shields_settings_->reduce_language;
 }
 
+bool BraveContentSettingsAgentImpl::IsShieldsAdBlockOnlyModeEnabled() {
+  if (!shields_settings_) {
+    return false;
+  }
+  return shields_settings_->ad_block_only_mode;
+}
+
 void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(
     const GURL& resource_url) {
   // This will be called for all resources on a page, we want to notify only
@@ -400,7 +407,9 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
                           HasContentSettingsRules());
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
-        farbling_level, base::Token(), std::vector<std::string>(), false);
+        farbling_level, base::Token(), std::vector<std::string>(),
+        /*brave_shields_enabled=*/false,
+        /*ad_block_only_mode=*/false);
   }
 }
 

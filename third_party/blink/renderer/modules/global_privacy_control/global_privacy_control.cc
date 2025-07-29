@@ -7,11 +7,31 @@
 
 #include "base/feature_list.h"
 #include "third_party/blink/public/common/features.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
+#include "third_party/blink/renderer/platform/wtf/casting.h"
 
 namespace blink {
 
+namespace {
+
+bool IsShieldsAdBlockOnlyModeEnabled(ExecutionContext* context) {
+  if (!context) {
+    return false;
+  }
+  LocalFrame* local_frame = To<LocalDOMWindow>(context)->GetFrame();
+  if (!local_frame || !local_frame->GetContentSettingsClient()) {
+    return false;
+  }
+  return local_frame->GetContentSettingsClient()
+      ->IsShieldsAdBlockOnlyModeEnabled();
+}
+
+}  // namespace
+
 bool GlobalPrivacyControl::globalPrivacyControl(NavigatorBase& navigator) {
-  return base::FeatureList::IsEnabled(features::kBraveGlobalPrivacyControl);
+  return base::FeatureList::IsEnabled(features::kBraveGlobalPrivacyControl) &&
+         !IsShieldsAdBlockOnlyModeEnabled(navigator.GetExecutionContext());
 }
 
 }  // namespace blink

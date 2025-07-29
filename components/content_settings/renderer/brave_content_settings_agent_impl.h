@@ -73,6 +73,8 @@ class BraveContentSettingsAgentImpl
 
   bool IsReduceLanguageEnabled() override;
 
+  bool IsShieldsAdBlockOnlyModeEnabled() override;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveContentSettingsAgentImplAutoplayBrowserTest,
                            AutoplayBlockedByDefault);
