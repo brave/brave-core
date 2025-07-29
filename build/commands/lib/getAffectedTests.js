@@ -56,10 +56,10 @@ async function getReferenceCommit() {
 
 async function analyzeAffectedTests(
   outDir,
-  { filters = ['//*'], files = [], since = null } = {},
+  { filters = ['//*'], files = [], since_commit = null } = {},
 ) {
   const targetCommit =
-    !since || since === true ? await getReferenceCommit() : since
+    !since_commit || since_commit === true ? await getReferenceCommit() : since_commit
 
   const root = path.resolve(process.cwd(), '../')
   outDir = path.isAbsolute(outDir) ? outDir : `${root}/${outDir}`

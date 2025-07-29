@@ -8,7 +8,7 @@ const config = require('../lib/config')
 
 module.exports = (program) =>
   program
-    .command('affected')
+    .command('list_affected_tests')
     .description('prints the tests that need to be run given the file changes')
     .option('-C [build_dir]', 'build config (out/Debug, out/Release)')
     .option('--target_arch [target_arch]', 'target architecture')
@@ -20,7 +20,7 @@ module.exports = (program) =>
       (x) => x.split(' '),
     )
     .option(
-      '--since [targetCommit]',
+      '--since_commit [targetCommit]',
       'use this commit as reference for change detection',
     )
     .option(

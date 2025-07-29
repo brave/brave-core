@@ -29,7 +29,7 @@
     "mass_rename": "node ./build/commands/scripts/commands.js mass_rename",
     "docs": "node ./build/commands/scripts/commands.js docs",
     "test": "node ./build/commands/scripts/commands.js test",
-    "affected": "node ./build/commands/scripts/commands.js affected",
+    "list_affected_tests": "node ./build/commands/scripts/commands.js list_affected_tests",
     "test:scripts": "cross-env NODE_OPTIONS=--no-experimental-fetch jest build/commands/lib build/commands/scripts",
     "tslint": "npm run eslint",
     "eslint": "eslint ./components ./build",
