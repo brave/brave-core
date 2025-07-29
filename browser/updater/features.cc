@@ -33,7 +33,7 @@ BASE_FEATURE_PARAM(int,
                    "legacy-fallback-interval-days",
                    5);
 
-bool ShouldUseOmaha4(base::Time now, std::optional<bool>& state) {
+bool ShouldUseOmaha4Impl(base::Time now, std::optional<bool>& state) {
   if (!state.has_value()) {
     // Whether Omaha 4 should be used is mostly determined by the feature flag.
     // However, we also want to give the legacy implementation a chance to run
@@ -53,7 +53,7 @@ bool ShouldUseOmaha4(base::Time now, std::optional<bool>& state) {
 }
 
 bool ShouldUseOmaha4() {
-  return ShouldUseOmaha4(base::Time::Now(), g_use_omaha4);
+  return ShouldUseOmaha4Impl(base::Time::Now(), g_use_omaha4);
 }
 
 }  // namespace brave_updater

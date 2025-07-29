@@ -19,8 +19,8 @@ BASE_DECLARE_FEATURE_PARAM(int, kLegacyFallbackIntervalDays);
 
 bool ShouldUseOmaha4();
 
-// For tests:
-bool ShouldUseOmaha4(base::Time now, std::optional<bool>& state);
+// Exposed here for easier testing.
+bool ShouldUseOmaha4Impl(base::Time now, std::optional<bool>& state);
 
 }  // namespace brave_updater
 
