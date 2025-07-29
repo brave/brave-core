@@ -14,7 +14,9 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/types/pass_key.h"
 #include "base/values.h"
 #include "content/public/browser/tts_utterance.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -55,8 +57,7 @@ class TtsPlayer {
   // Provides tts control fucntions for specified WebContents (provided by
   // TtsPlayer::GetControllerFor). Controller is a part of TtsPlayer and has
   // same lifetime.
-  class Controller : public content::WebContentsObserver,
-                     public content::UtteranceEventDelegate {
+  class Controller : public content::WebContentsObserver {
    public:
     bool IsPlaying() const;
     bool IsPlayingRequestedWebContents(
@@ -68,6 +69,15 @@ class TtsPlayer {
     void Stop();
     void Forward();
     void Rewind();
+
+    class Delegate;
+
+    void OnTtsEvent(base::PassKey<Delegate>,
+                    content::TtsUtterance* utterance,
+                    content::TtsEventType event_type,
+                    int char_index,
+                    int length,
+                    const std::string& error_message);
 
    private:
     explicit Controller(TtsPlayer* owner);
@@ -85,13 +95,6 @@ class TtsPlayer {
     // content::WebContentsObserver:
     void DidStartNavigation(content::NavigationHandle* handle) override;
     void WebContentsDestroyed() override;
-
-    // content::UtteranceEventDelegate:
-    void OnTtsEvent(content::TtsUtterance* utterance,
-                    content::TtsEventType event_type,
-                    int char_index,
-                    int length,
-                    const std::string& error_message) override;
 
     void OnContentReady(content::WebContents* web_contents,
                         std::optional<int> paragraph_index,
@@ -113,6 +116,7 @@ class TtsPlayer {
     std::string current_voice_;
 
     bool continue_next_paragraph_ = false;
+    base::WeakPtrFactory<Controller> weak_factory_{this};
   };
 
   ~TtsPlayer();
