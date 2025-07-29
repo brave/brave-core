@@ -29,8 +29,8 @@ class HDKeySr25519 {
 
   polkadot::SR25519PublicKey GetPublicKey();
   polkadot::SR25519Signature SignMessage(base::span<const uint8_t> msg);
-  bool VerifyMessage(polkadot::SR25519Signature const& sig,
-                     base::span<const uint8_t> msg);
+  [[nodiscard]] bool VerifyMessage(polkadot::SR25519Signature const& sig,
+                                   base::span<const uint8_t> msg);
 
   // derive_junction should be a SCALE-encoded segment from the derivation path
   std::unique_ptr<HDKeySr25519> DeriveHard(
