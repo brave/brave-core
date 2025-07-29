@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/functional/callback_forward.h"
 #include "base/notimplemented.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -29,13 +30,83 @@
 #include "ui/gfx/favicon_size.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/mouse_watcher.h"
 #include "ui/views/view_class_properties.h"
+
+namespace {
+
+class RenameTextfield : public views::Textfield,
+                        public views::MouseWatcherListener {
+  METADATA_HEADER(RenameTextfield, views::Textfield)
+ public:
+  explicit RenameTextfield(base::RepeatingClosure on_click_outside_callback)
+      : on_click_outside_callback_(std::move(on_click_outside_callback)),
+        mouse_watcher_(std::make_unique<ClickWatcherHost>(*this), this) {
+    SetBorder(nullptr);
+    SetBackgroundEnabled(false);
+  }
+
+  ~RenameTextfield() override = default;
+
+  // views::Textfield:
+  void VisibilityChanged(views::View* starting_from, bool is_visible) override {
+    if (starting_from != this) {
+      return;
+    }
+
+    if (is_visible) {
+      mouse_watcher_.Start(GetWidget()->GetNativeWindow());
+    } else {
+      mouse_watcher_.Stop();
+    }
+  }
+
+  // views::MouseWatcherListener:
+  void MouseMovedOutOfHost() override {
+    CHECK(on_click_outside_callback_);
+    on_click_outside_callback_.Run();
+  }
+
+ private:
+  class ClickWatcherHost : public views::MouseWatcherHost {
+   public:
+    explicit ClickWatcherHost(RenameTextfield& textfield)
+        : textfield_(textfield) {}
+    ~ClickWatcherHost() override = default;
+
+    bool Contains(const gfx::Point& screen_point, EventType type) override {
+      if (type != EventType::kPress) {
+        // We only tracks mouse press events
+        return true;
+      }
+
+      auto bounds = textfield_->GetLocalBounds();
+      views::View::ConvertRectToScreen(base::to_address(textfield_), &bounds);
+      return bounds.Contains(screen_point);
+    }
+
+   private:
+    raw_ref<RenameTextfield> textfield_;
+  };
+
+  base::RepeatingClosure on_click_outside_callback_;
+  views::MouseWatcher mouse_watcher_;
+};
+
+}  // namespace
+
+BEGIN_METADATA(RenameTextfield)
+END_METADATA
 
 BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
     return;
   }
-  rename_textfield_ = AddChildView(std::make_unique<views::Textfield>());
+  rename_textfield_ =
+      AddChildView(std::make_unique<RenameTextfield>(base::BindRepeating(
+          // This is safe to pass base::Unretained(this), as BraveTab is the
+          // owner of RenameTextfield and outlives it.
+          &BraveTab::CommitRename, base::Unretained(this))));
   rename_textfield_->SetVisible(false);
   rename_textfield_->set_controller(this);
   rename_textfield_->SetBorder(nullptr);
