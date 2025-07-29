@@ -20,9 +20,11 @@ test("ios_brave_unit_tests") {
 
   deps = [
     "//base",
-    "//base/test:run_all_unittests",
-    "//base/test:test_support",
+    "//brave/ios/app",
+    "//brave/ios/browser",
     "//brave/ios/browser/api/net",
+    "//ios/chrome/test:run_all_unittests",
+    "//ios/chrome/test:test_support",
     "//net",
     "//net/http:generate_transport_security_state",
     "//testing/gtest",
