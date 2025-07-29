@@ -12,7 +12,7 @@ source_set("content") {
   ]
 
   deps = [
-    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/resources:strings",
     "//brave/components/services/brave_wallet/public/mojom",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
