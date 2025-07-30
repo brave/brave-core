@@ -4,6 +4,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# Example usage:
+# vpython3 tools/perf/trace_compare.py compare system_health.common_desktop load_site_example_2023 /tmp/v1.82.124 /tmp/v1.82.125
+
 import argparse
 import os
 import re
@@ -87,7 +90,7 @@ class Stats:
             '''
             result = tp.query(query)
             for row in result:
-                thread_name = re.sub(r'\d+$', '', row.thread_name)
+                thread_name = re.sub(r'\d+$', '', row.thread_name or 'Unknown')
                 thread_dur = row.thread_dur / 1000 / 1000  # Convert to ms
                 is_top_level = row.parent_id is None
 
@@ -259,11 +262,27 @@ def analyze_stats(stats: Stats, args):
     differences.sort(key=lambda x: -x[0])
     return differences
 
+def get_trace_files(folder_or_url: str, pattern: str) -> List[str]:
+    if folder_or_url.startswith('http'):
+        assert False, 'Not implemented yet'
+
+    if not os.path.isdir(folder_or_url):
+        raise Exception(f'{folder_or_url} is not a directory')
+
+    trace_files = glob.glob(os.path.join(folder_or_url, pattern), recursive=True)
+    if len(trace_files) == 0:
+      print(f"No trace files found in {folder_or_url} with pattern {pattern}")
+      exit(1)
+
+    return trace_files
+
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Compare trace files.')
-    parser.add_argument('mode', type=str, choices=['compare', 'analyze'], help='Compare or analyze traces')
-    parser.add_argument('folder1', type=str, help='First folder containing trace files')
-    parser.add_argument('folder2', nargs='?', type=str, help='Second folder containing trace files')
+    parser = argparse.ArgumentParser(description='Compare or analyze perf tests results')
+    parser.add_argument('mode', type=str, choices=['compare', 'analyze'], help='Use "compare" to compare two runs, "analyze" to analyze a single run')
+    parser.add_argument('benchmark_name', type=str, help='Benchmark name (i.e. speedometer3)')
+    parser.add_argument('story_name', type=str, help='Store name (i.e. load_site_example_2023)')
+    parser.add_argument('folder_or_url1', type=str, help='First folder or URL containing trace files')
+    parser.add_argument('folder_or_url2', nargs='?', type=str, help='Second folder or URL containing trace files')
     parser.add_argument('--min-p-value', type=float, default=0.05, help='Minimum p-value')
     parser.add_argument('--min-abs-diff', type=float, default=10, help='Minimum absolute difference in ms')
     parser.add_argument('--min-rel-diff', type=float, default=0.05, help='Minimum relative difference in %')
@@ -273,14 +292,9 @@ if __name__ == '__main__':
     parser.add_argument('--threads', action='store_true', help='Compare threads instead of events')
     args = parser.parse_args()
 
-    pattern = '**/*.pb.gz'
-    f1 = os.path.join(args.folder1, pattern)
-    trace_files1 = glob.glob(f1, recursive=True)
+    pattern = f'results/{args.benchmark_name}/*/artifacts/run_*/{args.story_name}_*/trace/traceEvents/*.pb.gz'
 
-    if len(trace_files1) == 0:
-        print(f"No trace files found in {args.folder1}")
-        exit(1)
-
+    trace_files1 = get_trace_files(args.folder_or_url1, pattern)
 
     trace_processor_shell_path = binary_deps_manager.FetchHostBinary(
             'trace_processor_shell')
@@ -296,11 +310,7 @@ if __name__ == '__main__':
     print(f"trace_processor_url: {trace_processor_url}")
 
     if args.mode == 'compare':
-      f2 = os.path.join(args.folder2, pattern)
-      trace_files2 = glob.glob(f2, recursive=True)
-      if len(trace_files2) == 0:
-          print(f"No trace files found in {args.folder2}")
-          exit(1)
+      trace_files2 = get_trace_files(args.folder_or_url2, pattern)
 
       print(f"Comparing {len(trace_files1)} traces with {len(trace_files2)} traces")
 
