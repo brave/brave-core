@@ -6,6 +6,8 @@
 const fs = require('fs-extra')
 const path = require('path')
 
+const targetToExecutable = (str) => str.split(':').at(-1).split('(')[0]
+
 const getTestBinary = (config, suite) => {
   let testBinary = suite
   if (testBinary === 'brave_java_unit_tests') {
@@ -34,7 +36,7 @@ const getTestsToRun = (config, suite) => {
     suiteDepNames = JSON.parse(
       fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
     )
-    return suiteDepNames.map((x) => x.split(':').at(-1))
+    return suiteDepNames.map(targetToExecutable)
   }
 
   return [suite]
@@ -84,6 +86,7 @@ const getApplicableFilters = (config, suite) => {
 }
 
 module.exports = {
+  targetToExecutable,
   getTestBinary,
   getTestsToRun,
   getApplicableFilters,

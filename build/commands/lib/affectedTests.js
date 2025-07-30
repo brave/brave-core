@@ -10,7 +10,11 @@ const path = require('path')
 const config = require('./config')
 const { unlink } = require('fs-extra')
 const { randomUUID } = require('crypto')
-const { getApplicableFilters, getTestsToRun } = require('./testUtils')
+const {
+  getApplicableFilters,
+  getTestsToRun,
+  targetToExecutable,
+} = require('./testUtils')
 const { tmpdir } = require('os')
 
 const getTestTargets = (outDir, filters = ['//*']) => {
@@ -56,14 +60,18 @@ async function getReferenceCommit() {
 
 async function analyzeAffectedTests(
   outDir,
-  { filters = ['//*'], files = [], since_commit: sinceCommit } = {},
+  { filters = ['//*'], files = [], since_commit: sinceCommit, quiet } = {},
 ) {
+  if (!quiet) {
+    console.warn('using analyzeAffectedTests is experimental')
+  }
+
   const targetCommit =
     !sinceCommit || sinceCommit === true
       ? await getReferenceCommit()
       : sinceCommit
 
-  const root = path.resolve(process.cwd(), '../')
+  const root = path.resolve(config.srcDir, '../')
   outDir = path.isAbsolute(outDir) ? outDir : `${root}/${outDir}`
   const testTargets = await getTestTargets(outDir, filters)
   const modifiedFiles = [
@@ -80,6 +88,11 @@ async function analyzeAffectedTests(
   // Let's just assume that everything needs to re-run if they are changed
   // TODO: analyze impact of patch files
   if (modifiedFiles.find((x) => x.startsWith('//brave/patches'))) {
+    if (!quiet) {
+      console.warn(
+        'a patch file has been modified! assuming all tests need to run',
+      )
+    }
     return {
       outDir,
       filters,
@@ -126,7 +139,6 @@ function createTestFilter(config, suite) {
 
 async function getAffectedTests(args = {}) {
   const { suite } = args
-  const cwd = process.cwd()
 
   const analysis = await analyzeAffectedTests(config.outputDir, args)
   const affectedTests = analysis.affectedTests.filter(
@@ -136,20 +148,17 @@ async function getAffectedTests(args = {}) {
   const modified = new Set(analysis.files)
 
   const additionalTests = analysis.test_targets
-    .map((x) => x.split(':')[1])
+    .map(targetToExecutable)
     .flatMap((test) =>
       getApplicableFilters(config, test).map((filter) => ({ test, filter })),
     )
     .filter(({ filter }) =>
-      modified.has('//brave/' + path.relative(cwd, filter)),
+      modified.has('//brave/' + path.relative(config.srcDir, filter)),
     )
     .map(({ test }) => test)
 
   return [
-    ...new Set([
-      ...affectedTests.map((x) => x.split(':')[1]),
-      ...additionalTests,
-    ]),
+    ...new Set([...affectedTests.map(targetToExecutable), ...additionalTests]),
   ]
 }
 

@@ -11,7 +11,13 @@ module.exports = (program) =>
     .command('list_affected_tests')
     .description('prints the tests that need to be run given the file changes')
     .option('-C [build_dir]', 'build config (out/Debug, out/Release)')
+    .option(`-q, --quiet don't emit any warning`)
     .option('--target_arch [target_arch]', 'target architecture')
+    .option('--target_os <target_os>', 'target OS')
+    .option(
+      '--target_environment <target_environment>',
+      'target environment (device, catalyst, simulator)',
+    )
     .option('--suite [suite]', 'filter by a test suite group')
     .option(
       '--filters [filters...]',
@@ -20,8 +26,8 @@ module.exports = (program) =>
       (x) => x.split(' '),
     )
     .option(
-      '--since_commit [targetCommit]',
-      'use this commit as reference for change detection',
+      '--since_commit [targetCommitRef]',
+      'use this commit/tag/branch as reference for change detection',
     )
     .option(
       '--files [files...]',
@@ -32,6 +38,9 @@ module.exports = (program) =>
     )
     .action(async (args) => {
       config.update(args)
+      if (!args.quiet) {
+        console.warn('using list_affected_tests is experimental')
+      }
       const result = await getAffectedTests({ ...args })
       console.log(result.join(' ').trim())
     })
