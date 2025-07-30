@@ -24,12 +24,12 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/ios/browser/tab_data_web_state_observer.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webui/webui_resources.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
-#include "brave/ios/browser/api/ai_chat/tab_data_web_state_observer.h"
-#include "brave/ios/browser/api/ai_chat/tab_tracker_service_factory.h"
+#include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
@@ -50,6 +50,7 @@
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
 #include "ios/web/public/webui/web_ui_ios_message_handler.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
 #include "ui/base/webui/web_ui_util.h"
@@ -105,7 +106,7 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
       "font-src 'self' chrome://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
-      base::StringPrintf("child-src %s;", kAIChatUntrustedConversationUIURL));
+      absl::StrFormat("child-src %s;", kAIChatUntrustedConversationUIURL));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");

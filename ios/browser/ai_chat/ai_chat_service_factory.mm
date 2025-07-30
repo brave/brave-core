@@ -12,9 +12,9 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/ios/browser/ai_chat/model_service_factory.h"
+#include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
-#include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "components/user_prefs/user_prefs.h"
 #include "components/version_info/channel.h"
@@ -71,8 +71,8 @@ std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
 
   return std::make_unique<AIChatService>(
       ModelServiceFactory::GetForProfile(profile),
-      TabTrackerServiceFactory::GetForProfile(profile), std::move(credential_manager),
-      user_prefs::UserPrefs::Get(context),
+      TabTrackerServiceFactory::GetForProfile(profile),
+      std::move(credential_manager), user_prefs::UserPrefs::Get(context),
       profile_metrics ? profile_metrics->GetAIChatMetrics() : nullptr,
       GetApplicationContext()->GetOSCryptAsync(),
       context->GetSharedURLLoaderFactory(),

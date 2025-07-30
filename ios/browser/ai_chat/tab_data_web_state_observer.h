@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_API_AI_CHAT_TAB_DATA_WEB_STATE_OBSERVER_H_
-#define BRAVE_IOS_BROWSER_API_AI_CHAT_TAB_DATA_WEB_STATE_OBSERVER_H_
+#ifndef BRAVE_IOS_BROWSER_AI_CHAT_TAB_DATA_WEB_STATE_OBSERVER_H_
+#define BRAVE_IOS_BROWSER_AI_CHAT_TAB_DATA_WEB_STATE_OBSERVER_H_
 
 #include <vector>
 
@@ -101,4 +101,4 @@ class TabDataWebStateObserver
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_IOS_BROWSER_API_AI_CHAT_TAB_DATA_WEB_STATE_OBSERVER_H_
+#endif  // BRAVE_IOS_BROWSER_AI_CHAT_TAB_DATA_WEB_STATE_OBSERVER_H_

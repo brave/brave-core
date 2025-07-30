@@ -19,9 +19,9 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
+#include "brave/components/ai_chat/ios/browser/tab_data_web_state_observer.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
-#include "brave/ios/browser/api/ai_chat/tab_data_web_state_observer.h"
+#include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_communication_tab_helper+private.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -164,8 +164,8 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
 
 void AIChatUIPageHandler::ShowSoftKeyboard() {}
 
-void AIChatUIPageHandler::UploadImage(bool use_media_capture,
-                                      UploadImageCallback callback) {
+void AIChatUIPageHandler::UploadFile(bool use_media_capture,
+                                     UploadFileCallback callback) {
   auto* web_state_to_navigate = (active_chat_tab_helper_)
                                     ? active_chat_tab_helper_->web_state()
                                     : owner_web_state_.get();
@@ -217,6 +217,10 @@ void AIChatUIPageHandler::OpenConversationFullPage(
       ui::PAGE_TRANSITION_TYPED,
       false,
   });
+}
+
+void AIChatUIPageHandler::OpenAIChatAgentProfile() {
+  CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
@@ -279,6 +283,18 @@ void AIChatUIPageHandler::HandleWebStateDestroyed() {
   chat_context_observer_.reset();
 }
 
+void AIChatUIPageHandler::OnRequestArchive(
+    AssociatedContentDelegate* delegate) {
+  chat_ui_->OnNewDefaultConversation(
+      active_chat_tab_helper_
+          ? std::make_optional(active_chat_tab_helper_->content_id())
+          : std::nullopt);
+}
+
+// void AIChatUIPageHandler::OnFilesSelected() {
+//   chat_ui_->OnUploadFilesSelected();
+// }
+
 void AIChatUIPageHandler::CloseUI() {
   // TODO: Somehow figure out which WebView to close??? Maybe easier to call
   // `window.close()` in Javascript???
@@ -300,6 +316,11 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                                     SetChatUICallback callback) {
   chat_ui_.Bind(std::move(chat_ui));
   std::move(callback).Run(active_chat_tab_helper_ == nullptr);
+
+  chat_ui_->OnNewDefaultConversation(
+      active_chat_tab_helper_
+          ? std::make_optional(active_chat_tab_helper_->content_id())
+          : std::nullopt);
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
@@ -315,7 +336,7 @@ void AIChatUIPageHandler::BindRelatedConversation(
   ConversationHandler* conversation =
       AIChatServiceFactory::GetForProfile(profile_)
           ->GetOrCreateConversationHandlerForContent(
-              active_chat_tab_helper_->GetContentId(),
+              active_chat_tab_helper_->content_id(),
               active_chat_tab_helper_->GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
@@ -360,7 +381,7 @@ void AIChatUIPageHandler::NewConversation(
   if (active_chat_tab_helper_) {
     conversation = AIChatServiceFactory::GetForProfile(profile_)
                        ->CreateConversationHandlerForContent(
-                           active_chat_tab_helper_->GetContentId(),
+                           active_chat_tab_helper_->content_id(),
                            active_chat_tab_helper_->GetWeakPtr());
   } else {
     conversation =

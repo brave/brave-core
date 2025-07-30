@@ -18,6 +18,7 @@ source_set("web_view") {
   ]
   deps = [
     "//base",
+    "//brave/ios/browser/ui/webui/ai_chat:webui_communication",
     "//brave/ios/web_view",
     "//ios/chrome/browser/tabs/model",
     "//ios/web/common",
