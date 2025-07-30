@@ -67,9 +67,7 @@ async function analyzeAffectedTests(
   }
 
   const targetCommit =
-    !base || base === true
-      ? await getReferenceCommit()
-      : base
+    !base || base === true ? await getReferenceCommit() : base
 
   const testTargets = await getTestTargets(outDir, filters)
   const modifiedFiles = [
