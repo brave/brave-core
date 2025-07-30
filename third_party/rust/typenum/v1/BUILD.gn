@@ -48,8 +48,12 @@ cargo_crate("lib") {
     "op.rs",
   ]
   rustenv = [
-    "TYPENUM_BUILD_CONSTS=" + rebase_path(target_gen_dir) + "/lib/consts.rs",
-    "TYPENUM_BUILD_OP=" + rebase_path(target_gen_dir) + "/lib/op.rs",
+    "TYPENUM_BUILD_CONSTS=" +
+        rebase_path(target_gen_dir, get_path_info(crate_root, "dir")) +
+        "/lib/consts.rs",
+    "TYPENUM_BUILD_OP=" +
+        rebase_path(target_gen_dir, get_path_info(crate_root, "dir")) +
+        "/lib/op.rs",
   ]
   rustflags = []
 
