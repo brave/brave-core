@@ -10,6 +10,7 @@ import("//brave/build/mac/tweak_info_plist.gni")
 import("//brave/components/ai_chat/ios/browser/headers.gni")
 import("//brave/components/brave_shields/ios/browser/headers.gni")
 import("//brave/components/debounce/ios/browser/headers.gni")
+import("//brave/components/url_sanitizer/ios/browser/headers.gni")
 import("//brave/ios/browser/api/ads/headers.gni")
 import("//brave/ios/browser/api/brave_domains/headers.gni")
 import("//brave/ios/browser/api/brave_rewards/headers.gni")
@@ -42,7 +43,6 @@ import("//brave/ios/browser/api/translate/headers.gni")
 import("//brave/ios/browser/api/unicode/headers.gni")
 import("//brave/ios/browser/api/unzip/headers.gni")
 import("//brave/ios/browser/api/url/headers.gni")
-import("//brave/ios/browser/api/url_sanitizer/headers.gni")
 import("//brave/ios/browser/api/web/web_state/headers.gni")
 import("//brave/ios/browser/api/web_view/headers.gni")
 import("//brave/ios/browser/api/webcompat_reporter/headers.gni")
@@ -120,7 +120,7 @@ brave_core_public_headers += brave_domains_public_headers
 brave_core_public_headers += brave_shields_public_headers
 brave_core_public_headers += brave_shields_api_public_headers
 brave_core_public_headers += brave_shields_component_public_headers
-brave_core_public_headers += browser_api_url_sanitizer_public_headers
+brave_core_public_headers += url_sanitizer_component_public_headers
 brave_core_public_headers += browser_url_sanitizer_public_headers
 brave_core_public_headers += browser_api_de_amp_public_headers
 brave_core_public_headers += debounce_component_public_headers

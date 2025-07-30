@@ -1205,7 +1205,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
         image: UIImage(braveSystemNamed: "leo.copy.clean"),
         handler: UIAction.deferredActionHandler { _ in
           let service = URLSanitizerServiceFactory.get(privateMode: tab?.isPrivate ?? true)
-          let cleanedURL = service?.sanitizeURL(url) ?? url
+          let cleanedURL = service?.sanitize(url: url) ?? url
           UIPasteboard.general.url = cleanedURL
         }
       ),

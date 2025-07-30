@@ -344,7 +344,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
         privateMode: privateBrowsingManager.isPrivateBrowsing
       )
     {
-      let cleanedURL = service.sanitizeURL(match.destinationURL) ?? match.destinationURL
+      let cleanedURL = service.sanitize(url: match.destinationURL) ?? match.destinationURL
       let copyCleanLinkAction = UIAction(
         title: Strings.copyCleanLink,
         image: UIImage(braveSystemNamed: "leo.copy.clean"),
