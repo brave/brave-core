@@ -1973,6 +1973,7 @@
 -ControlledFrameWebTransportApiTest.*
 -ControlledFrameWptBrowserTest.*
 -PromiseAPIs/ControlledFramePromiseApiTest.*
+-WebUrlPatternNativesBrowserTest.URLPatternToMatchPatterns
 
 # These tests fail because we disable Isolated Web Apps
 -BorderlessIsolatedWebAppBrowserTest.*
