@@ -161,7 +161,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private final DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
-    private final Context mContext;
     private ImageButton mBraveWalletButton;
     private ImageButton mBraveShieldsButton;
     private ImageButton mBraveRewardsButton;
@@ -218,8 +217,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        mContext = context;
     }
 
     @Override
@@ -1722,7 +1719,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return false;
         }
         // In overview mode the menu is on top.
-        if (mContext instanceof BraveActivity && ((BraveActivity) mContext).isInOverviewMode()) {
+        Context context = getContext();
+        if (context instanceof BraveActivity && ((BraveActivity) context).isInOverviewMode()) {
             return false;
         }
         return true;
