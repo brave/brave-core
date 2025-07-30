@@ -45,7 +45,7 @@ ReferrerScriptInfo ReferrerScriptInfo::FromV8HostDefinedOptions(
     v8::Local<v8::PrimitiveArray> host_defined_options =
         v8::Local<v8::PrimitiveArray>::Cast(raw_host_defined_options);
     if (host_defined_options->Length()) {
-      v8::Isolate* isolate = context->GetIsolate();
+      v8::Isolate* isolate = v8::Isolate::GetCurrent();
 
       v8::Local<v8::Primitive> dom_node_id_value = host_defined_options->Get(
           isolate, HostDefinedOptionsIndex::kDomNodeId);

@@ -140,8 +140,8 @@ void PlaylistRenderFrameObserver::Inject(
       context, v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Script> script =
-      v8::Script::Compile(context,
-                          gin::StringToV8(context->GetIsolate(), script_text))
+      v8::Script::Compile(
+          context, gin::StringToV8(v8::Isolate::GetCurrent(), script_text))
           .ToLocalChecked();
   v8::Local<v8::Function> function =
       v8::Local<v8::Function>::Cast(script->Run(context).ToLocalChecked());
