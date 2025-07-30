@@ -17,7 +17,7 @@ All CodeHealth tasks can be found in this [Slack list linked here](https://brave
 Most of these tasks are simple enough, and they usually cover things that are
 detected at random as needing improvements. If you see something that may be
 eligible to the rotation, add it to the backlog, which helps to keep arecord of
-things that may need improving. In a lot of case, these items will be mistakes
+things that may need improving. In a lot of cases, these items will be mistakes
 that go past code review but have since been identified, changes in Chromium
 that need to be reflected in Brave, or even updating the codebase to use modern
 language features.
