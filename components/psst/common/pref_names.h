@@ -13,6 +13,7 @@ class PrefRegistrySimple;
 namespace psst {
 
 namespace prefs {
+inline constexpr char kPsstSettingsPref[] = "brave.psst.settings";
 inline constexpr char kPsstEnabled[] = "brave.psst.settings.enable_psst";
 }  // namespace prefs
 
