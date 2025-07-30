@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 
+#include <cstddef>
 #include <functional>
 #include <memory>
 #include <string>
@@ -91,6 +92,9 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   // Deprecated: Instead use the |type| field on the associated content.
   // TODO(fallaciousreasoning): Remove this method.
   bool IsVideo() const;
+
+  // The number of content delegates.
+  size_t Count() const;
 
   // AssociatedContentDelegate::Observer:
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
