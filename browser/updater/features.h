@@ -6,13 +6,22 @@
 #ifndef BRAVE_BROWSER_UPDATER_FEATURES_H_
 #define BRAVE_BROWSER_UPDATER_FEATURES_H_
 
+#include <optional>
+
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 
 namespace brave_updater {
 
 BASE_DECLARE_FEATURE(kBraveUseOmaha4Alpha);
+BASE_DECLARE_FEATURE_PARAM(int, kLegacyFallbackIntervalDays);
 
 bool ShouldUseOmaha4();
+
+// For tests. The "ForTesting" suffix makes PRESUBMIT.py check that the function
+// is not used in production code.
+bool ShouldUseOmaha4ForTesting(base::Time now, std::optional<bool>& state);
 
 }  // namespace brave_updater
 
