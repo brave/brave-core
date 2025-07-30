@@ -24,6 +24,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "addchain"
   cargo_pkg_description = "Generate addition chains"
+  cargo_pkg_repository = "https://github.com/str4d/addchain"
   cargo_pkg_version = "0.2.0"
 
   deps = [

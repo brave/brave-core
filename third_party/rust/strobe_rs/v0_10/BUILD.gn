@@ -28,6 +28,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "strobe-rs"
   cargo_pkg_description =
       "An implementation of the Strobe protocol framework in pure Rust"
+  cargo_pkg_repository = "https://github.com/rozbb/strobe-rs"
   cargo_pkg_version = "0.10.0"
 
   deps = [

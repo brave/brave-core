@@ -29,6 +29,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "futures-core"
   cargo_pkg_description =
       "The core traits and types in for the `futures` library."
+  cargo_pkg_repository = "https://github.com/rust-lang/futures-rs"
   cargo_pkg_version = "0.3.31"
 
   features = [

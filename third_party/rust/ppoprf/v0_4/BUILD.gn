@@ -28,6 +28,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "ppoprf"
   cargo_pkg_description =
       "Puncturable Partially-Oblivious Pseudo-Random Function"
+  cargo_pkg_repository = "https://github.com/brave/sta-rs"
   cargo_pkg_version = "0.4.2"
 
   deps = [

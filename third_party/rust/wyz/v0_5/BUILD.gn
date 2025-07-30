@@ -30,6 +30,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "myrrlyn <self@myrrlyn.dev>"
   cargo_pkg_name = "wyz"
   cargo_pkg_description = "myrrlyn’s utility collection"
+  cargo_pkg_repository = "https://github.com/myrrlyn/wyz"
   cargo_pkg_version = "0.5.1"
 
   deps = [ "//brave/third_party/rust/tap/v1:lib" ]
