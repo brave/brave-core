@@ -14,9 +14,8 @@ const {
   getTestBinary,
   getChromiumTestsSuites,
   getTestsToRun,
-  getApplicableFilters
+  getApplicableFilters,
 } = require('./testUtils')
-
 
 const test = async (
   passthroughArgs,

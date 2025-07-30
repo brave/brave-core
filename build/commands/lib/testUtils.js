@@ -82,10 +82,9 @@ const getApplicableFilters = (config, suite) => {
   return filterFilePaths
 }
 
-
 module.exports = {
   getTestBinary,
   getChromiumTestsSuites,
   getTestsToRun,
-  getApplicableFilters
+  getApplicableFilters,
 }
