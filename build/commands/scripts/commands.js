@@ -360,8 +360,8 @@ program
   .option('--filter <filter>', 'set test filter')
   .option('--no_gn_gen', 'Use args.gn as default values')
   .option(
-    '--since_commit [targetCommit]',
-    'use this commit as reference for change detection',
+    '--base [targetCommitRef]',
+    'use this commit/branch/tag as reference for change detection',
   )
   .option(
     '--output_xml',

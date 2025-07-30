@@ -26,8 +26,8 @@ module.exports = (program) =>
       (x) => x.split(' '),
     )
     .option(
-      '--since_commit [targetCommitRef]',
-      'use this commit/tag/branch as reference for change detection',
+      '--base [targetCommitRef]',
+      'use this commit/branch/tag as reference for change detection',
     )
     .option(
       '--files [files...]',
@@ -38,9 +38,6 @@ module.exports = (program) =>
     )
     .action(async (args) => {
       config.update(args)
-      if (!args.quiet) {
-        console.warn('using list_affected_tests is experimental')
-      }
       const result = await getAffectedTests({ ...args })
       console.log(result.join(' ').trim())
     })

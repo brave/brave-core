@@ -60,19 +60,17 @@ async function getReferenceCommit() {
 
 async function analyzeAffectedTests(
   outDir,
-  { filters = ['//*'], files = [], since_commit: sinceCommit, quiet } = {},
+  { filters = ['//*'], files = [], base, quiet } = {},
 ) {
   if (!quiet) {
     console.warn('using analyzeAffectedTests is experimental')
   }
 
   const targetCommit =
-    !sinceCommit || sinceCommit === true
+    !base || base === true
       ? await getReferenceCommit()
-      : sinceCommit
+      : base
 
-  const root = config.srcDir
-  outDir = path.isAbsolute(outDir) ? outDir : `${root}/${outDir}`
   const testTargets = await getTestTargets(outDir, filters)
   const modifiedFiles = [
     ...(await getModifiedFiles(targetCommit)),
