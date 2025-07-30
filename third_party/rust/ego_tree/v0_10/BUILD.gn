@@ -27,6 +27,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "June McEnroe <june@causal.agency>, Carlo Federico Vescovo <vescovocarlofederico@gmail.com>"
   cargo_pkg_name = "ego-tree"
   cargo_pkg_description = "Vec-backed ID-tree"
+  cargo_pkg_repository = "https://github.com/rust-scraper/ego-tree"
   cargo_pkg_version = "0.10.0"
 
   rustenv = []

@@ -26,6 +26,7 @@ cargo_crate("lib") {
       "Nika Layzell <nika@thelayzells.com>, myrrlyn <self@myrrlyn.dev>"
   cargo_pkg_name = "radium"
   cargo_pkg_description = "Portable interfaces for maybe-atomic types"
+  cargo_pkg_repository = "https://github.com/bitvecto-rs/radium"
   cargo_pkg_version = "0.7.0"
 
   build_root =

@@ -27,6 +27,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Friedel Ziegelmayer <dignifiedquire@gmail.com>"
   cargo_pkg_name = "multibase"
   cargo_pkg_description = "multibase in rust"
+  cargo_pkg_repository = "https://github.com/multiformats/rust-multibase"
   cargo_pkg_version = "0.9.1"
 
   deps = [

@@ -26,6 +26,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Evgeny Safronov <division494@gmail.com>"
   cargo_pkg_name = "rmp-serde"
   cargo_pkg_description = "Serde bindings for RMP"
+  cargo_pkg_repository = "https://github.com/3Hren/msgpack-rust"
   cargo_pkg_version = "0.15.5"
 
   deps = [

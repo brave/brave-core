@@ -21,6 +21,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Matt Brubeck <mbrubeck@limpet.net>, Jonathan Reem <jonathan.reem@gmail.com>"
   cargo_pkg_name = "new_debug_unreachable"
   cargo_pkg_description = "panic in debug, intrinsics::unreachable() in release (fork of debug_unreachable)"
+  cargo_pkg_repository = "https://github.com/mbrubeck/rust-debug-unreachable"
   cargo_pkg_version = "1.0.4"
 
   rustenv = []

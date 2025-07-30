@@ -24,6 +24,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Andrew Kubera"
   cargo_pkg_name = "bigdecimal"
   cargo_pkg_description = "Arbitrary percision decimal numbers"
+  cargo_pkg_repository = "https://github.com/akubera/bigdecimal-rs"
   cargo_pkg_version = "0.1.2"
 
   deps = [
