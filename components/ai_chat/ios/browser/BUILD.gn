@@ -1,0 +1,51 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+config("mojom_header_config") {
+  visibility = [
+    ":*",
+    "//brave/ios/app",
+  ]
+  include_dirs =
+      [ "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios" ]
+}
+
+source_set("browser") {
+  sources = [
+    "ai_chat+private.h",
+    "ai_chat.h",
+    "ai_chat.mm",
+    "ai_chat_delegate.h",
+    "associated_content_driver_ios.h",
+    "associated_content_driver_ios.mm",
+    "conversation_client.h",
+    "conversation_client.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/base/mac",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/ios/common:mojom",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//brave/ios/browser/misc_metrics",
+    "//brave/ios/browser/skus",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//components/version_info",
+    "//ios/web/public/thread",
+    "//net/traffic_annotation",
+    "//services/data_decoder/public/cpp",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//ui/base",
+    "//url",
+  ]
+  configs += [ ":mojom_header_config" ]
+  frameworks = [ "Foundation.framework" ]
+}

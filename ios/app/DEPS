@@ -8,6 +8,7 @@ include_rules += [
   "+brave/ios/app",
   "+brave/ios/browser",
 
+  "+brave/components/ai_chat",
   "+brave/components/brave_component_updater",
   "+brave/components/brave_sync/buildflags.h",
   "+brave/components/brave_user_agent/browser",

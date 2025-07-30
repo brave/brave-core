@@ -3,20 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/api/ai_chat/associated_content_driver_ios.h"
+#include "brave/components/ai_chat/ios/browser/associated_content_driver_ios.h"
 
-#import "ai_chat.mojom.objc+private.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ios/ai_chat.mojom.objc+private.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat_delegate.h"
-#include "components/user_prefs/user_prefs.h"
-#include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_delegate.h"
 #include "net/base/apple/url_conversions.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"

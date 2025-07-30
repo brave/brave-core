@@ -1,0 +1,33 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+
+ios_objc_mojom_wrappers("mojom") {
+  mojom_target = "//brave/components/ai_chat/core/common/mojom"
+  sources = [
+    "//brave/components/ai_chat/core/common/mojom/ai_chat.mojom",
+    "//brave/components/ai_chat/core/common/mojom/tab_tracker.mojom",
+    "//brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom",
+  ]
+  output_dir = "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios"
+  generate_namespace = false
+
+  # These types have pending_receiver arguments which aren't
+  # supported in objc_mojom_wrappers, but should be refactored to support
+  # binding to them for iOS.
+  exclude_types = [
+    "AIChatUIHandler",
+    "ChatUI",
+    "ConversationEntriesState",
+    "ParentUIFrame",
+    "Service",
+    "TabTrackerService",
+    "TabDataObserver",
+    "UntrustedConversationHandler",
+    "UntrustedConversationUI",
+    "UntrustedUIHandler",
+  ]
+}

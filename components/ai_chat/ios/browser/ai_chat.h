@@ -3,10 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_API_AI_CHAT_AI_CHAT_H_
-#define BRAVE_IOS_BROWSER_API_AI_CHAT_AI_CHAT_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_AI_CHAT_H_
+#define BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_AI_CHAT_H_
 
 #import <Foundation/Foundation.h>
+
 #import "ai_chat.mojom.objc.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -71,4 +72,4 @@ OBJC_EXPORT
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_IOS_BROWSER_API_AI_CHAT_AI_CHAT_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_AI_CHAT_H_
