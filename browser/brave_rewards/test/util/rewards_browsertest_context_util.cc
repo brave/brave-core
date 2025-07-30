@@ -414,8 +414,9 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
   }
 
   WaitForElementToAppear(context, "[data-test-id=tip-amount-options]");
-  auto options = content::EvalJs(context,
-                                 R"(
+  content::EvalJsResult options =
+      content::EvalJs(context,
+                      R"(
           const delay = t => new Promise(resolve => setTimeout(resolve, t));
           delay(500).then(() => Array.from(
             document.querySelectorAll(
@@ -423,12 +424,11 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
             )
           ).map(node => parseFloat(node.dataset.optionValue)))
       )",
-                                 content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                 content::ISOLATED_WORLD_ID_CONTENT_END)
-                     .ExtractList();
+                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                      content::ISOLATED_WORLD_ID_CONTENT_END);
 
   std::vector<double> result;
-  for (const auto& value : options) {
+  for (const auto& value : options.ExtractList()) {
     result.push_back(value.GetDouble());
   }
   return result;

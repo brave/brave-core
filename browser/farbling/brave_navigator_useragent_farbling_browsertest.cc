@@ -481,7 +481,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   ASSERT_TRUE(result.is_dict());
 
   // Check brands versions
-  base::Value::Dict values = result.ExtractDict();
+  const base::Value::Dict& values = result.ExtractDict();
   const base::Value::List* brands_list = values.FindList("brands");
   ASSERT_NE(nullptr, brands_list);
 
