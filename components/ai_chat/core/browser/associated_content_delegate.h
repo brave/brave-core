@@ -58,28 +58,21 @@ class AssociatedContentDelegate {
   class Observer : public base::CheckedObserver {
    public:
     ~Observer() override {}
-    virtual void OnNavigated(AssociatedContentDelegate* delegate) {}
+    // Note: This is called from the destructor of the AssociatedContentDelegate
+    // so it is not safe to call any virtual methods.
+    virtual void OnDestroyed(AssociatedContentDelegate* delegate) {}
+    virtual void OnRequestArchive(AssociatedContentDelegate* delegate) {}
     virtual void OnTitleChanged(AssociatedContentDelegate* delegate) {}
   };
 
   AssociatedContentDelegate();
   virtual ~AssociatedContentDelegate();
 
-  // Unique ID for the content. For browser Tab content, this should be
-  // a navigation ID that's re-used during back navigations.
-  virtual int GetContentId() const = 0;
-  // Get metadata about the current page
-  virtual GURL GetURL() const = 0;
-  virtual std::u16string GetTitle() const = 0;
-
   // Implementer should fetch content from the "page" associated with this
   // conversation.
   // |is_video| lets the conversation know that the content is focused on
   // video content so that various UI language can be adapted.
   virtual void GetContent(GetPageContentCallback callback) = 0;
-  // Get current cache of content, if available. Do not perform any fresh
-  // fetch for the content.
-  virtual const PageContent& GetCachedPageContent() const = 0;
 
   // Get summarizer-key meta tag content from Brave Search SERP if exists and
   // use it to fetch search query and summary from Brave search chatllm
@@ -95,21 +88,46 @@ class AssociatedContentDelegate {
     return weak_ptr_factory_.GetWeakPtr();
   }
 
-  virtual void OnTitleChanged();
-
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  // Unique ID for the content. For browser Tab content, this should be
+  // a navigation ID that's re-used during back navigations.
+  int content_id() const { return content_id_; }
   const std::string& uuid() const { return uuid_; }
-  void set_uuid(std::string uuid) { uuid_ = uuid; }
+
+  const std::u16string& title() const { return title_; }
+  const GURL& url() const { return url_; }
+
+  // Get current cache of content, if available. Do not perform any fresh
+  // fetch for the content.
+  const PageContent& cached_page_content() const {
+    return cached_page_content_;
+  }
 
  protected:
   // Content has navigated
   virtual void OnNewPage(int64_t navigation_id);
 
+  void set_uuid(std::string uuid) { uuid_ = std::move(uuid); }
+  void set_url(GURL url) { url_ = std::move(url); }
+  void SetTitle(std::u16string title);
+  void set_cached_page_content(PageContent page_content) {
+    cached_page_content_ = std::move(page_content);
+  }
+
  private:
+  friend class MockAssociatedContent;
+  friend class MockAssociatedContentDriver;
+
+  int content_id_ = -1;
+
   std::string uuid_;
   base::ObserverList<Observer> observers_;
+
+  std::u16string title_;
+  GURL url_;
+  PageContent cached_page_content_;
 
   base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
 };

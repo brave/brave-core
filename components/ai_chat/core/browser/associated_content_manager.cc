@@ -25,8 +25,6 @@
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
 
@@ -74,10 +72,12 @@ void AssociatedContentManager::LoadArchivedContent(
   conversation_->OnAssociatedContentUpdated();
 }
 
-void AssociatedContentManager::SetArchiveContent(std::string content_uuid,
-                                                 std::string text_content,
-                                                 bool is_video) {
+void AssociatedContentManager::CreateArchiveContent(
+    AssociatedContentDelegate* to_archive) {
   DVLOG(1) << __func__;
+  auto content_uuid = to_archive->uuid();
+  auto text_content = to_archive->cached_page_content().content;
+  auto is_video = to_archive->cached_page_content().is_video;
 
   auto it = std::ranges::find(content_delegates_, content_uuid,
                               [](const auto& ptr) { return ptr->uuid(); });
@@ -89,8 +89,8 @@ void AssociatedContentManager::SetArchiveContent(std::string content_uuid,
   // Construct a "content archive" implementation of AssociatedContentDelegate
   // with a duplicate of the article text.
   archive_content_.emplace_back(std::make_unique<AssociatedArchiveContent>(
-      delegate->GetURL(), std::move(text_content), delegate->GetTitle(),
-      is_video, delegate->uuid()));
+      delegate->url(), std::move(text_content), delegate->title(), is_video,
+      delegate->uuid()));
   *it = archive_content_.back().get();
   content_observations_.AddObservation(*it);
 
@@ -191,12 +191,12 @@ AssociatedContentManager::GetAssociatedContent() const {
 
   std::vector<mojom::AssociatedContentPtr> result;
   for (auto* delegate : content_delegates_) {
-    auto cached_page_content = delegate->GetCachedPageContent();
+    auto cached_page_content = delegate->cached_page_content();
     mojom::AssociatedContentPtr content = mojom::AssociatedContent::New();
     content->uuid = delegate->uuid();
-    content->content_id = delegate->GetContentId();
-    content->url = delegate->GetURL();
-    content->title = base::UTF16ToUTF8(delegate->GetTitle());
+    content->content_id = delegate->content_id();
+    content->url = delegate->url();
+    content->title = base::UTF16ToUTF8(delegate->title());
     content->content_type = cached_page_content.is_video
                                 ? mojom::ContentType::VideoTranscript
                                 : mojom::ContentType::PageContent;
@@ -351,7 +351,7 @@ PageContents AssociatedContentManager::GetCachedContents() const {
   DVLOG(1) << __func__;
   PageContents result;
   for (auto* delegate : content_delegates_) {
-    result.push_back(delegate->GetCachedPageContent());
+    result.push_back(delegate->cached_page_content());
   }
 
   return result;
@@ -380,19 +380,23 @@ bool AssociatedContentManager::IsVideo() const {
   DVLOG(1) << __func__;
 
   return content_delegates_.size() == 1 &&
-         content_delegates_[0]->GetCachedPageContent().is_video;
+         content_delegates_[0]->cached_page_content().is_video;
 }
 
-void AssociatedContentManager::OnNavigated(
+void AssociatedContentManager::OnDestroyed(
     AssociatedContentDelegate* delegate) {
   DVLOG(1) << __func__;
 
-  auto page_content = delegate->GetCachedPageContent();
-  SetArchiveContent(delegate->uuid(), page_content.content,
-                    page_content.is_video);
+  // Note: creating an archive removes the reference to |delegate| from
+  // |content_delegates_| and replaces it with an archive.
+  CreateArchiveContent(delegate);
+}
 
-  // Note: We don't call conversation_->OnAssociatedContentUpdated() here
-  // because the content should not have changed.
+void AssociatedContentManager::OnRequestArchive(
+    AssociatedContentDelegate* delegate) {
+  DVLOG(1) << __func__;
+
+  CreateArchiveContent(delegate);
 }
 
 void AssociatedContentManager::OnTitleChanged(

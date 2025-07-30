@@ -84,7 +84,7 @@
 
 - (void)createNewConversation {
   current_conversation_ = service_->CreateConversationHandlerForContent(
-      current_content_->GetContentId(), current_content_->GetWeakPtr());
+      current_content_->content_id(), current_content_->GetWeakPtr());
   conversation_client_->ChangeConversation(current_conversation_.get());
 }
 

@@ -265,7 +265,7 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
   ConversationHandler* conversation_handler =
       ai_chat::AIChatServiceFactory::GetInstance()
           ->GetForBrowserContext(browser()->profile())
-          ->GetOrCreateConversationHandlerForContent(helper->GetContentId(),
+          ->GetOrCreateConversationHandlerForContent(helper->content_id(),
                                                      helper->GetWeakPtr());
   // Keep the ConversationHandler alive until the test is done.
   testing::NiceMock<MockConversationHandlerClient> client(conversation_handler);

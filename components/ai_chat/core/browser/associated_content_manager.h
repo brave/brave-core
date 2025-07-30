@@ -44,9 +44,7 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
       const mojom::ConversationArchivePtr& conversation_archive);
 
   // Replaces |content_uuid| with some archived content.
-  void SetArchiveContent(std::string content_uuid,
-                         std::string text_content,
-                         bool is_video);
+  void CreateArchiveContent(AssociatedContentDelegate* delegate);
 
   // Adds a content delegate to the list of content delegates.
   // If |notify_updated| is true, the conversation will be notified that the
@@ -91,7 +89,8 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   bool IsVideo() const;
 
   // AssociatedContentDelegate::Observer:
-  void OnNavigated(AssociatedContentDelegate* delegate) override;
+  void OnRequestArchive(AssociatedContentDelegate* delegate) override;
+  void OnDestroyed(AssociatedContentDelegate* delegate) override;
   void OnTitleChanged(AssociatedContentDelegate* delegate) override;
 
   std::vector<AssociatedContentDelegate*> GetContentDelegatesForTesting() {

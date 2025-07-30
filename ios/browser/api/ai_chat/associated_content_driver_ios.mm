@@ -26,7 +26,10 @@ namespace ai_chat {
 AssociatedContentDriverIOS::AssociatedContentDriverIOS(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     id<AIChatDelegate> delegate)
-    : AssociatedContentDriver(url_loader_factory), bridge_(delegate) {}
+    : AssociatedContentDriver(url_loader_factory), bridge_(delegate) {
+  SetTitle(GetPageTitle());
+  set_url(GetPageURL());
+}
 
 AssociatedContentDriverIOS::~AssociatedContentDriverIOS() = default;
 
@@ -42,6 +45,9 @@ GURL AssociatedContentDriverIOS::GetPageURL() const {
 void AssociatedContentDriverIOS::GetPageContent(
     FetchPageContentCallback callback,
     std::string_view invalidation_token) {
+  SetTitle(GetPageTitle());
+  set_url(GetPageURL());
+
   [bridge_
       getPageContentWithCompletion:[callback =
                                         std::make_shared<decltype(callback)>(
