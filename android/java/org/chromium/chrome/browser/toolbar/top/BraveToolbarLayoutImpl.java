@@ -1520,9 +1520,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 homeButtonDisplay);
 
         BraveMenuButtonCoordinator.setMenuFromBottom(
-                isMenuButtonOnBottomControls()
-                        || (isToolbarPhone()
-                                && BottomToolbarConfiguration.isToolbarBottomAnchored()));
+                isMenuButtonOnBottomControls() || isMenuOnBottomWithBottomAddressBar());
     }
 
     public void updateWalletBadgeVisibility(boolean visible) {
@@ -1534,8 +1532,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             BraveMenuButtonCoordinator.setMenuFromBottom(mIsBottomControlsVisible);
         } else {
-            BraveMenuButtonCoordinator.setMenuFromBottom(
-                    isToolbarPhone() && BottomToolbarConfiguration.isToolbarBottomAnchored());
+            BraveMenuButtonCoordinator.setMenuFromBottom(isMenuOnBottomWithBottomAddressBar());
         }
     }
 
@@ -1595,7 +1592,20 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    private boolean isToolbarPhone() {
-        return BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class);
+    private boolean isMenuOnBottomWithBottomAddressBar() {
+        // If address bar is not on bottom, then menu is not on bottom too.
+        if (!BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+            return false;
+        }
+        // Menu can be on bottom only with ToolbarPhone.
+        if (!BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)) {
+            return false;
+        }
+        // In overview mode the menu is on top.
+        Context context = getContext();
+        if (context instanceof BraveActivity && ((BraveActivity) context).isInOverviewMode()) {
+            return false;
+        }
+        return true;
     }
 }
