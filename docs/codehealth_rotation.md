@@ -103,4 +103,4 @@ description/commit message, to raise reviewer confidence.
 
 AI tooling for CodeHealth work is still lacking. We have `#ai-dev-tips` in
 Slack. Any generalised tooling that can be submitted to our repository to assist
-on CodeHealh work will be welcome.
+on CodeHealth work will be welcome.
