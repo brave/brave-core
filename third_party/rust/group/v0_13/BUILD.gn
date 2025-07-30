@@ -28,6 +28,7 @@ cargo_crate("lib") {
       "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <jack@z.cash>"
   cargo_pkg_name = "group"
   cargo_pkg_description = "Elliptic curve group traits and utilities"
+  cargo_pkg_repository = "https://github.com/zkcrypto/group"
   cargo_pkg_version = "0.13.0"
 
   deps = [

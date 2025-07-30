@@ -203,6 +203,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "futures-util"
   cargo_pkg_description =
       "Common utilities and extension traits for the futures-rs library."
+  cargo_pkg_repository = "https://github.com/rust-lang/futures-rs"
   cargo_pkg_version = "0.3.31"
 
   deps = [

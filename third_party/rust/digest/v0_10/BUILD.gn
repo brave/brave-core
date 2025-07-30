@@ -37,6 +37,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "digest"
   cargo_pkg_description =
       "Traits for cryptographic hash functions and message authentication codes"
+  cargo_pkg_repository = "https://github.com/RustCrypto/traits"
   cargo_pkg_version = "0.10.7"
 
   deps = [
