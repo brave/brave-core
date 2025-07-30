@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_API_AI_CHAT_AI_CHAT_TAB_HELPER_H_
-#define BRAVE_IOS_BROWSER_API_AI_CHAT_AI_CHAT_TAB_HELPER_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_AI_CHAT_TAB_HELPER_H_
+#define BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_AI_CHAT_TAB_HELPER_H_
 
 #include <cstdint>
 #include <memory>
@@ -18,7 +18,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "brave/ios/browser/api/ai_chat/associated_content_driver_ios.h"
+#include "brave/components/ai_chat/ios/browser/associated_content_driver_ios.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_observer.h"
 #include "ios/web/public/web_state_user_data.h"
@@ -34,8 +34,6 @@ class AIChatTabHelper : public web::WebStateObserver,
                         public web::WebStateUserData<AIChatTabHelper>,
                         public AssociatedContentDriverIOS {
  public:
-  using GetPageContentCallback = GetPageContentCallback;
-
   AIChatTabHelper(const AIChatTabHelper&) = delete;
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
@@ -88,10 +86,8 @@ class AIChatTabHelper : public web::WebStateObserver,
   void TitleWasSet(web::WebState* web_state) override;
 
   // ai_chat::AssociatedContentDriver
-  GURL GetPageURL() const override;
   void GetPageContent(FetchPageContentCallback callback,
                       std::string_view invalidation_token) override;
-  std::u16string GetPageTitle() const override;
   void OnNewPage(int64_t navigation_id) override;
 
   // Called when an event of significance occurs that, if the page is a
@@ -102,6 +98,13 @@ class AIChatTabHelper : public web::WebStateObserver,
   void GetSearchSummarizerKey(GetSearchSummarizerKeyCallback callback) override;
 
   bool HasOpenAIChatPermission() const override;
+
+  void GetScreenshots(
+      mojom::ConversationHandler::GetScreenshotsCallback callback) override;
+
+  void OnScreenshotsCaptured(
+      mojom::ConversationHandler::GetScreenshotsCallback callback,
+      base::expected<std::vector<std::vector<uint8_t>>, std::string>);
 
   void OnFetchPageContentComplete(FetchPageContentCallback callback,
                                   std::string content,
@@ -129,4 +132,4 @@ class AIChatTabHelper : public web::WebStateObserver,
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_IOS_BROWSER_API_AI_CHAT_AI_CHAT_TAB_HELPER_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_AI_CHAT_TAB_HELPER_H_

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_API_AI_CHAT_PAGE_CONTENT_FETCHER_H_
-#define BRAVE_IOS_BROWSER_API_AI_CHAT_PAGE_CONTENT_FETCHER_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_PAGE_CONTENT_FETCHER_H_
+#define BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_PAGE_CONTENT_FETCHER_H_
 
 #include <string>
 #include <string_view>
@@ -14,7 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_observer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -57,4 +57,4 @@ class PageContentFetcher : public AIChatTabHelper::PageContentFetcherDelegate {
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_IOS_BROWSER_API_AI_CHAT_PAGE_CONTENT_FETCHER_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_PAGE_CONTENT_FETCHER_H_
