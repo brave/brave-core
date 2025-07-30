@@ -222,7 +222,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, TransactionCreated) {
 }
 
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
-       TransactionCreated_OverflowCheck) {
+       TransactionCreated_u64Check) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
       .WillByDefault(
           ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
@@ -291,6 +291,110 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
             change_addr.value());
   EXPECT_EQ(tx_result.value().orchard_part().outputs[1].addr,
             orchard_part.value());
+}
+
+TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
+       TransactionCreated_OverflowCheck_FullAmount) {
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
+      .WillByDefault(
+          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
+                                const OrchardAddrRawPart& addr) {
+            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+            {
+              OrchardNote note;
+              note.block_id = 1u;
+              note.amount = 0xFFFFFFFFFFFFFFFFu;
+              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+            }
+
+            {
+              OrchardNote note;
+              note.block_id = 2u;
+              note.amount = 0x2222222222222222u;
+              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+            }
+            spendable_notes_bundle.anchor_block_id = 10u;
+
+            return spendable_notes_bundle;
+          }));
+
+  base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
+
+  auto orchard_part = GetOrchardRawBytes(
+      "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzua"
+      "p43ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9yp"
+      "kss572ut324nmxke666jm8lhkpt85gzq58d50rfnd7wufke8jjhc3lhswxrdr57ah42xck"
+      "h2j",
+      false);
+
+  std::unique_ptr<ZCashCreateOrchardToOrchardTransactionTask> task =
+      std::make_unique<ZCashCreateOrchardToOrchardTransactionTask>(
+          pass_key(), zcash_wallet_service(), action_context(), *orchard_part,
+          std::nullopt, kZCashFullAmount);
+
+  base::expected<ZCashTransaction, std::string> tx_result;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(::testing::DoAll(
+          SaveArg<0>(&tx_result),
+          base::test::RunOnceClosure(task_environment().QuitClosure())));
+
+  task->Start(callback.Get());
+
+  task_environment().RunUntilQuit();
+
+  EXPECT_FALSE(tx_result.has_value());
+}
+
+TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
+       TransactionCreated_OverflowCheck_CustomAmount) {
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
+      .WillByDefault(
+          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
+                                const OrchardAddrRawPart& addr) {
+            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+            {
+              OrchardNote note;
+              note.block_id = 1u;
+              note.amount = 0xFFFFFFFFFFFFFFFFu;
+              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+            }
+
+            {
+              OrchardNote note;
+              note.block_id = 2u;
+              note.amount = 0x2222222222222222u;
+              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+            }
+            spendable_notes_bundle.anchor_block_id = 10u;
+
+            return spendable_notes_bundle;
+          }));
+
+  base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
+
+  auto orchard_part = GetOrchardRawBytes(
+      "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzua"
+      "p43ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9yp"
+      "kss572ut324nmxke666jm8lhkpt85gzq58d50rfnd7wufke8jjhc3lhswxrdr57ah42xck"
+      "h2j",
+      false);
+
+  std::unique_ptr<ZCashCreateOrchardToOrchardTransactionTask> task =
+      std::make_unique<ZCashCreateOrchardToOrchardTransactionTask>(
+          pass_key(), zcash_wallet_service(), action_context(), *orchard_part,
+          std::nullopt, 0x2222222222222222u);
+
+  base::expected<ZCashTransaction, std::string> tx_result;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(::testing::DoAll(
+          SaveArg<0>(&tx_result),
+          base::test::RunOnceClosure(task_environment().QuitClosure())));
+
+  task->Start(callback.Get());
+
+  task_environment().RunUntilQuit();
+
+  EXPECT_FALSE(tx_result.has_value());
 }
 
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,

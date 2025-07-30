@@ -56,6 +56,14 @@ OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
                      {}};
 }
 
+OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
+                                    uint32_t block_id,
+                                    uint8_t seed,
+                                    uint64_t value) {
+  return OrchardNote{
+      {}, block_id, GenerateMockNullifier(account_id, seed), value, 0, {}, {}};
+}
+
 void SortByBlockId(std::vector<OrchardNote>& vec) {
   std::sort(vec.begin(), vec.end(), [](OrchardNote& a, OrchardNote& b) {
     return (a.block_id < b.block_id);

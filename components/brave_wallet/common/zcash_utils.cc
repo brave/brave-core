@@ -317,8 +317,8 @@ base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
   auto actions_count = base::CheckMax(
       base::CheckAdd<uint32_t>(tx_input_count, orchard_actions_count),
       kDefaultTransparentOutputsCount);
-  return base::CheckMul(kMarginalFee,
-                        base::CheckMax(kGraceActionsCount, actions_count));
+  return base::CheckMul<uint64_t>(
+      kMarginalFee, base::CheckMax(kGraceActionsCount, actions_count));
 }
 
 bool IsUnifiedAddress(const std::string& address) {

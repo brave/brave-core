@@ -142,9 +142,15 @@ void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   // Create shielded output
   OrchardOutput& orchard_output =
       zcash_transaction.orchard_part().outputs.emplace_back();
-  base::CheckedNumeric<uint64_t> value = base::CheckSub(
-      zcash_transaction.TotalInputsAmount(),
-      base::CheckAdd(zcash_transaction.fee(), pick_result->change));
+  auto value =
+      base::CheckSub<uint64_t>(zcash_transaction.TotalInputsAmount(),
+                               zcash_transaction.fee(), pick_result->change);
+  if (!value.AssignIfValid(&orchard_output.value)) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    ScheduleWorkOnTask();
+    return;
+  }
+
   orchard_output.value = value.ValueOrDie();
   orchard_output.addr = receiver_;
   orchard_output.memo = memo_;

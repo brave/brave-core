@@ -37,10 +37,30 @@ constexpr int kCurrentVersionNumber = 2;
 
 std::optional<uint32_t> ReadUint32(sql::Statement& statement, size_t index) {
   auto v = statement.ColumnInt64(index);
-  if (!base::IsValueInRangeForNumericType<uint32_t>(v)) {
+  auto casted = base::MakeCheckedNum(v).Cast<uint32_t>();
+  if (!casted.IsValid()) {
     return std::nullopt;
   }
-  return static_cast<uint32_t>(v);
+  return casted.ValueOrDie();
+}
+
+// SQLite doesn't support uint64 natively so we restore it from int64 bytes.
+// We also check that value matches int64 positive range.
+std::optional<uint64_t> ReadUint64(sql::Statement& statement, size_t index) {
+  auto v = statement.ColumnInt64(index);
+  auto casted = base::MakeCheckedNum(v).Cast<uint64_t>();
+  if (!casted.IsValid()) {
+    return std::nullopt;
+  }
+  return casted.ValueOrDie();
+}
+
+std::optional<int64_t> ToInt64(uint64_t value) {
+  auto casted = base::MakeCheckedNum(value).Cast<int64_t>();
+  if (!casted.IsValid()) {
+    return std::nullopt;
+  }
+  return casted.ValueOrDie();
 }
 
 base::expected<CheckpointTreeState, std::string> ReadCheckpointTreeState(
@@ -509,7 +529,9 @@ OrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
     OrchardNote note;
     auto block_id = ReadUint32(resolve_unspent_notes, 0);
     auto commitment_tree_position = ReadUint32(resolve_unspent_notes, 1);
-    auto amount = ReadUint32(resolve_unspent_notes, 2);
+    // Amount should be in the range from 0 to 2^63-1 so we can use int64
+    // positive subrange.
+    auto amount = ReadUint64(resolve_unspent_notes, 2);
     if (!block_id || !amount || !commitment_tree_position) {
       return base::unexpected(
           Error{ErrorCode::kConsistencyError, "Wrong database format"});
@@ -527,7 +549,7 @@ OrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
     }
 
     note.block_id = block_id.value();
-    note.amount = amount.value();
+    note.amount = *amount;
     note.orchard_commitment_tree_position = commitment_tree_position.value();
     note.rho = **rho;
     note.seed = **rseed;
@@ -565,7 +587,14 @@ OrchardStorage::UpdateNotes(const mojom::AccountIdPtr& account_id,
   for (const auto& note : found_notes) {
     statement_populate_notes.Reset(true);
     statement_populate_notes.BindString(0, account_id->unique_key);
-    statement_populate_notes.BindInt64(1, note.amount);
+    // Amount should be in the range from 0 to 2^63-1 so we can use int64
+    // positive subrange.
+    auto amount = ToInt64(note.amount);
+    if (!amount) {
+      return base::unexpected(
+          Error{ErrorCode::kFailedToExecuteStatement, "Wrong amount value"});
+    }
+    statement_populate_notes.BindInt64(1, amount.value());
     statement_populate_notes.BindInt64(2, note.block_id);
     statement_populate_notes.BindInt64(3,
                                        note.orchard_commitment_tree_position);

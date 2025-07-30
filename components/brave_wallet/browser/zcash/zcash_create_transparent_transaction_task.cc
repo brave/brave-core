@@ -99,9 +99,15 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
 
   base::Extend(transaction_.transparent_part().inputs,
                pick_inputs_result->inputs);
-  base::CheckedNumeric<uint64_t> value = base::CheckSub(
-      transaction_.TotalInputsAmount(),
-      base::CheckAdd(pick_inputs_result->fee, pick_inputs_result->change));
+  auto value = base::CheckSub<uint64_t>(transaction_.TotalInputsAmount(),
+                                        pick_inputs_result->fee,
+                                        pick_inputs_result->change);
+  if (!value.IsValid()) {
+    SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    WorkOnTask();
+    return;
+  }
+
   transaction_.set_fee(pick_inputs_result->fee);
   // value is calculated from the PickZCashTransparentInputs result
   // and it shouldn't be less than 0.
@@ -156,6 +162,7 @@ void ZCashCreateTransparentTransactionTask::OnGetUtxos(
 }
 
 bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
+  // Add main output
   auto& target_output = transaction_.transparent_part().outputs.emplace_back();
   target_output.address = transaction_.to();
   if (!OutputZCashTransparentAddressSupported(target_output.address,
@@ -167,14 +174,18 @@ bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
   target_output.script_pubkey =
       ZCashAddressToScriptPubkey(target_output.address, IsTestnet());
 
-  uint64_t change_amount =
-      base::CheckSub(transaction_.TotalInputsAmount(),
-                     base::CheckAdd(transaction_.amount(), transaction_.fee()))
-          .ValueOrDie();
-  if (change_amount == 0) {
+  auto change_amount =
+      base::CheckSub<uint64_t>(transaction_.TotalInputsAmount(),
+                               transaction_.amount(), transaction_.fee());
+  if (!change_amount.IsValid()) {
+    return false;
+  }
+
+  if (change_amount.ValueOrDie() == 0) {
     return true;
   }
 
+  // Add change output
   const auto& change_address = change_address_;
   if (!change_address) {
     return false;
@@ -184,7 +195,7 @@ bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
                                                IsTestnet()));
   auto& change_output = transaction_.transparent_part().outputs.emplace_back();
   change_output.address = change_address_->address_string;
-  change_output.amount = change_amount;
+  change_output.amount = change_amount.ValueOrDie();
   change_output.script_pubkey =
       ZCashAddressToScriptPubkey(change_output.address, IsTestnet());
   return true;

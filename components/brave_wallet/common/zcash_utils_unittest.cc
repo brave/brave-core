@@ -427,6 +427,8 @@ TEST(ZCashUtilsUnitTest, CalculateZCashTxFee) {
   EXPECT_EQ(10000u, CalculateZCashTxFee(0, 1).ValueOrDie());
   EXPECT_EQ(50000u, CalculateZCashTxFee(5, 5).ValueOrDie());
   EXPECT_EQ(10000u, CalculateZCashTxFee(1, 1).ValueOrDie());
+  EXPECT_FALSE(CalculateZCashTxFee(0xFFFFFFFF, 0xFFFFFFFF).IsValid());
+  EXPECT_FALSE(CalculateZCashTxFee(0x88888888, 0x88888888).IsValid());
 }
 
 TEST(ZCashUtilsUnitTest, OutputZCashTransparentAddressSupported) {

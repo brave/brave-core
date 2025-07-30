@@ -58,6 +58,10 @@ OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
 OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
                                     uint32_t block_id,
                                     uint8_t seed);
+OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
+                                    uint32_t block_id,
+                                    uint8_t seed,
+                                    uint64_t value);
 
 void SortByBlockId(std::vector<OrchardNote>& vec);
 
