@@ -82,8 +82,8 @@ TEST(HDKeySr25519, HardDerive) {
   auto derived2 = kpresult->DeriveHard(path2);
   auto derived3 = kpresult->DeriveHard(path1);
 
-  EXPECT_EQ(derived1->GetPublicKey(), derived3->GetPublicKey());
-  EXPECT_NE(derived1->GetPublicKey(), derived2->GetPublicKey());
+  EXPECT_EQ(derived1.GetPublicKey(), derived3.GetPublicKey());
+  EXPECT_NE(derived1.GetPublicKey(), derived2.GetPublicKey());
 
   auto kpresult2 = HDKeySr25519::GenerateFromSeed(
       {250, 199, 149, 157, 191, 231, 47,  5,   46,  90,  12,
@@ -94,12 +94,12 @@ TEST(HDKeySr25519, HardDerive) {
   auto derived4 = kpresult2->DeriveHard(path1);
   auto derived5 = kpresult2->DeriveHard(path2);
 
-  EXPECT_NE(derived4->GetPublicKey(), derived1->GetPublicKey());
-  EXPECT_NE(derived5->GetPublicKey(), derived2->GetPublicKey());
+  EXPECT_NE(derived4.GetPublicKey(), derived1.GetPublicKey());
+  EXPECT_NE(derived5.GetPublicKey(), derived2.GetPublicKey());
 
-  auto grandchild = derived1->DeriveHard(path2);
-  EXPECT_NE(grandchild->GetPublicKey(), derived1->GetPublicKey());
-  EXPECT_NE(grandchild->GetPublicKey(), derived2->GetPublicKey());
+  auto grandchild = derived1.DeriveHard(path2);
+  EXPECT_NE(grandchild.GetPublicKey(), derived1.GetPublicKey());
+  EXPECT_NE(grandchild.GetPublicKey(), derived2.GetPublicKey());
 }
 
 TEST(HDKeySr25519, HardDeriveSignAndVerify) {
@@ -115,10 +115,10 @@ TEST(HDKeySr25519, HardDeriveSignAndVerify) {
   auto derived3 = kpresult->DeriveHard(path1);
 
   unsigned char const message[] = {1, 2, 3, 4, 5, 6};
-  auto signature = derived1->SignMessage(message);
+  auto signature = derived1.SignMessage(message);
 
-  EXPECT_FALSE(derived2->VerifyMessage(signature, message));
-  EXPECT_TRUE(derived3->VerifyMessage(signature, message));
+  EXPECT_FALSE(derived2.VerifyMessage(signature, message));
+  EXPECT_TRUE(derived3.VerifyMessage(signature, message));
 }
 
 TEST(HDKeySr25519, PolkadotSDKTestVector1) {
@@ -146,7 +146,7 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
       &expected);
 
   auto derived = kpresult->DeriveHard(path);
-  auto pkey = derived->GetPublicKey();
+  auto pkey = derived.GetPublicKey();
   EXPECT_EQ(base::span{pkey}, base::span{expected});
 
   // Now test the blake2 hashing portion given a sufficiently long derive
@@ -176,7 +176,7 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
                                104, 78,  97,  109, 101, 84,  111, 84,  114, 105,
                                103, 103, 101, 114, 66,  108, 97,  107, 101, 50};
   derived = kpresult->DeriveHard(long_path);
-  pkey = derived->GetPublicKey();
+  pkey = derived.GetPublicKey();
   EXPECT_EQ(base::span{pkey}, base::span{expected});
 }
 

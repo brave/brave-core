@@ -24,6 +24,8 @@ class SchnorrkelKeyPair {
   ~SchnorrkelKeyPair();
   SchnorrkelKeyPair(SchnorrkelKeyPair&&);
 
+  SchnorrkelKeyPair& operator=(SchnorrkelKeyPair&&) = default;
+
   static std::optional<SchnorrkelKeyPair> GenerateFromSeed(
       base::span<const uint8_t> seed);
 
