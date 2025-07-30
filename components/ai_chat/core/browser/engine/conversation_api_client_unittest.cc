@@ -190,7 +190,7 @@ GetMockEventsAndExpectedEventsBody() {
     },
     {
       "role": "assistant",
-      "type": "chatMessage",
+      "type": "toolCalls",
       "content": "Going to use a tool...",
       "tool_calls": [
         {

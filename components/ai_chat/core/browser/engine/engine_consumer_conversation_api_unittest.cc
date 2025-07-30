@@ -490,7 +490,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
     },
     {
       "role": "assistant",
-      "type": "chatMessage",
+      "type": "toolCalls",
       "content": "First I'll look up the weather...",
       "tool_calls": [
         {
@@ -585,7 +585,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
     },
     {
       "role": "assistant",
-      "type": "chatMessage",
+      "type": "toolCalls",
       "content": "First I'll look up the weather...",
       "tool_calls": [
         {
@@ -712,7 +712,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     },
     {
       "role": "assistant",
-      "type": "chatMessage",
+      "type": "toolCalls",
       "content": "First I'll look up the page...",
       "tool_calls": [
         {
@@ -744,7 +744,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     },
     {
       "role": "assistant",
-      "type": "chatMessage",
+      "type": "toolCalls",
       "content": "First I'll look up the page...",
       "tool_calls": [
         {
@@ -777,7 +777,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     },
     {
       "role": "assistant",
-      "type": "chatMessage",
+      "type": "toolCalls",
       "content": "First I'll look up the page...",
       "tool_calls": [
         {

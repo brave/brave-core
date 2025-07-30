@@ -142,6 +142,9 @@ base::Value::List ConversationEventsToList(
 
     // Tool calls
     if (!event.tool_calls.empty()) {
+      // For some reason the server currently expects chat messages that contain
+      // tool calls as well as regular content to have a different type.
+      event_dict.Set("type", "toolCalls");
       base::Value::List tool_call_dicts;
       for (const auto& tool_event : event.tool_calls) {
         base::Value::Dict tool_call_dict;
