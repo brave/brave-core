@@ -178,7 +178,7 @@ CORE_EXPORT std::string StorageLocationToString(const StorageLocation location);
 
 template <typename KeyArg, typename MappedArg>
 using ZeroBasedHashMap =
-    blink::HashMap<KeyArg, MappedArg, WTF::IntWithZeroKeyHashTraits<KeyArg>>;
+    blink::HashMap<KeyArg, MappedArg, blink::IntWithZeroKeyHashTraits<KeyArg>>;
 
 }  // namespace brave_page_graph
 
