@@ -477,11 +477,9 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   const content::EvalJsResult result =
       EvalJs(contents(), kGetHighEntropyValuesScript);
-  EXPECT_TRUE(result.is_ok());
-  ASSERT_TRUE(result.is_dict());
 
   // Check brands versions
-  base::Value::Dict values = result.ExtractDict();
+  const base::Value::Dict& values = result.ExtractDict();
   const base::Value::List* brands_list = values.FindList("brands");
   ASSERT_NE(nullptr, brands_list);
 
