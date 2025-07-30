@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
 #include "components/webui/flags/pref_service_flags_storage.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
