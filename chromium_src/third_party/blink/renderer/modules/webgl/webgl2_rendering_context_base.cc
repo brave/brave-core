@@ -63,7 +63,7 @@ ScriptValue FarbleGLInt64Parameter(WebGL2RenderingContextBase* owner,
   if (!brave::AllowFingerprinting(                      \
           ExecutionContext::From(script_state),         \
           ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2)) \
-    return ScriptValue::CreateNull(script_state->GetIsolate());
+    return ScriptValue::CreateNull(v8::Isolate::GetCurrent());
 
 #define BRAVE_WEBGL2_RENDERING_CONTEXT_BASE_GETPARAMETER                       \
   switch (brave::GetBraveFarblingLevelFor(                                     \
@@ -91,7 +91,7 @@ ScriptValue FarbleGLInt64Parameter(WebGL2RenderingContextBase* owner,
         case GL_MAX_COMBINED_UNIFORM_BLOCKS:                                   \
         case GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS:                        \
         case GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS:                      \
-          return ScriptValue::CreateNull(script_state->GetIsolate());          \
+          return ScriptValue::CreateNull(v8::Isolate::GetCurrent());           \
       }                                                                        \
       break;                                                                   \
     }                                                                          \

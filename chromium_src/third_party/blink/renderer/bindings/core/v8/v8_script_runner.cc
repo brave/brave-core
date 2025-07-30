@@ -25,7 +25,7 @@ v8::MaybeLocal<v8::Script> V8ScriptRunner::CompileScript(
     v8::Local<v8::Script> script;
     if (result.ToLocal(&script)) {
       const auto referrer_info = ReferrerScriptInfo::FromV8HostDefinedOptions(
-          script_state->GetIsolate()->GetCurrentContext(),
+          v8::Isolate::GetCurrent()->GetCurrentContext(),
           origin.GetHostDefinedOptions(), classic_script.SourceUrl());
       probe::RegisterPageGraphScriptCompilation(
           ExecutionContext::From(script_state), referrer_info, classic_script,

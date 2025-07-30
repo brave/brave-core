@@ -118,10 +118,10 @@ void JSCardanoWalletApi::HandleStringResult(
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   if (result) {
     std::ignore = resolver->Resolve(
-        context, gin::StringToV8(context->GetIsolate(), *result));
+        context, gin::StringToV8(v8::Isolate::GetCurrent(), *result));
   } else {
     std::ignore = resolver->Reject(
-        context, ConvertError(context->GetIsolate(), context, error));
+        context, ConvertError(v8::Isolate::GetCurrent(), context, error));
   }
 }
 
@@ -147,7 +147,7 @@ void JSCardanoWalletApi::HandleStringVecResult(
                      base::ToValueList(*result), context));
   } else {
     std::ignore = resolver->Reject(
-        context, ConvertError(context->GetIsolate(), context, error));
+        context, ConvertError(v8::Isolate::GetCurrent(), context, error));
   }
 }
 
@@ -173,7 +173,7 @@ void JSCardanoWalletApi::HandleUtxoVecResult(
                      base::ToValueList(*result), context));
   } else {
     std::ignore = resolver->Reject(
-        context, ConvertError(context->GetIsolate(), context, error));
+        context, ConvertError(v8::Isolate::GetCurrent(), context, error));
   }
 }
 
@@ -219,7 +219,7 @@ void JSCardanoWalletApi::OnGetNetworkId(
     std::ignore = resolver->Resolve(context, v8::Int32::New(isolate, network));
   } else {
     std::ignore = resolver->Reject(
-        context, ConvertError(context->GetIsolate(), context, error));
+        context, ConvertError(v8::Isolate::GetCurrent(), context, error));
   }
 }
 
@@ -520,7 +520,7 @@ void JSCardanoWalletApi::OnSignData(
                      *result, isolate->GetCurrentContext()));
   } else {
     std::ignore = resolver->Reject(
-        context, ConvertError(context->GetIsolate(), context, error));
+        context, ConvertError(v8::Isolate::GetCurrent(), context, error));
   }
 }
 

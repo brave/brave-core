@@ -197,7 +197,7 @@ base::Value ToPageGraphValue(ScriptState* script_state,
                              const ScriptPromise<T>& script_promise) {
   return ToPageGraphValue(
       script_state,
-      ScriptValue(script_state->GetIsolate(), script_promise.V8Promise()));
+      ScriptValue(v8::Isolate::GetCurrent(), script_promise.V8Promise()));
 }
 
 // Convert v8::Value.

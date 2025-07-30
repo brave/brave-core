@@ -211,7 +211,7 @@ v8::Maybe<bool> CreateDataProperty(v8::Local<v8::Context> context,
                                    std::string_view name,
                                    v8::Local<v8::Value> value) {
   const v8::Local<v8::String> name_str =
-      gin::StringToV8(context->GetIsolate(), name);
+      gin::StringToV8(v8::Isolate::GetCurrent(), name);
 
   return object->CreateDataProperty(context, name_str, value);
 }

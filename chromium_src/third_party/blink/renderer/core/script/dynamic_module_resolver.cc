@@ -7,15 +7,14 @@
 #include "brave/v8/include/v8-isolate-page-graph-utils.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 
-#define BRAVE_DYNAMIC_MODULE_RESOLVER_RESOLVE_DYNAMICALLY            \
-  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                            \
-    if (CoreProbeSink::HasAgentsGlobal(CoreProbeSink::kPageGraph)) { \
-      options.SetDOMNodeId(referrer_info.GetDOMNodeId());            \
-      options.SetParentScriptId(                                     \
-          v8::page_graph::GetExecutingScript(                        \
-              modulator_->GetScriptState()->GetIsolate())            \
-              .script_id);                                           \
-    }                                                                \
+#define BRAVE_DYNAMIC_MODULE_RESOLVER_RESOLVE_DYNAMICALLY               \
+  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                               \
+    if (CoreProbeSink::HasAgentsGlobal(CoreProbeSink::kPageGraph)) {    \
+      options.SetDOMNodeId(referrer_info.GetDOMNodeId());               \
+      options.SetParentScriptId(                                        \
+          v8::page_graph::GetExecutingScript(v8::Isolate::GetCurrent()) \
+              .script_id);                                              \
+    }                                                                   \
   })
 
 #include <third_party/blink/renderer/core/script/dynamic_module_resolver.cc>

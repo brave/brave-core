@@ -17,7 +17,7 @@ LocalFrame* DOMWindow::GetDisconnectedFrame() const {
     return nullptr;
   }
 
-  v8::Isolate* isolate = window_proxy_manager_->GetIsolate();
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
   LocalDOMWindow* accessing_window = IncumbentDOMWindow(isolate);
   LocalFrame* accessing_frame = accessing_window->GetFrame();
   return accessing_frame;
