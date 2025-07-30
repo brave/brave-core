@@ -58,8 +58,6 @@ inline constexpr char kReferralAndroidFirstRunTimestamp[] =
 inline constexpr char kNoScriptControlType[] = "brave.no_script_default";
 inline constexpr char kShieldsAdvancedViewEnabled[] =
     "brave.shields.advanced_view_enabled";
-inline constexpr char kShieldsAdBlockOnlyModeEnabled[] =
-    "brave.shields.ad_block_only_mode_enabled";
 inline constexpr char kShieldsStatsBadgeVisible[] =
     "brave.shields.stats_badge_visible";
 inline constexpr char kAdControlType[] = "brave.ad_default";
