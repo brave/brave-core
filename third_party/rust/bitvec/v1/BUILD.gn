@@ -251,6 +251,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "bitvec"
   cargo_pkg_description =
       "Addresses memory by bits, for packed collections and bitfields"
+  cargo_pkg_repository = "https://github.com/bitvecto-rs/bitvec"
   cargo_pkg_version = "1.0.1"
 
   deps = [

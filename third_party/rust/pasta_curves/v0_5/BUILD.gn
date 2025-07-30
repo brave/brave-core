@@ -36,6 +36,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "pasta_curves"
   cargo_pkg_description =
       "Implementation of the Pallas and Vesta (Pasta) curve cycle"
+  cargo_pkg_repository = "https://github.com/zcash/pasta_curves"
   cargo_pkg_version = "0.5.1"
 
   deps = [

@@ -24,6 +24,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "hkdf"
   cargo_pkg_description =
       "HMAC-based Extract-and-Expand Key Derivation Function (HKDF)"
+  cargo_pkg_repository = "https://github.com/RustCrypto/KDFs/"
   cargo_pkg_version = "0.11.0"
 
   deps = [
