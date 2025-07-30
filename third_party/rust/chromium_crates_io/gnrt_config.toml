@@ -185,16 +185,6 @@ extra_input_roots = [ "../docs", "../README.md" ]
 
 [crate.curve25519-dalek-derive]
 extra_input_roots = [ "../README.md" ]
-extra_kv = { raw_gn = '''
-enabled = true
-if (current_cpu != "x64") {
-  deps = [
-    "//brave/third_party/rust/proc_macro2/v1:lib",
-    "//brave/third_party/rust/quote/v1:lib",
-    "//brave/third_party/rust/syn/v2:lib",
-  ]
-}
-''' }
 
 [crate.dtoa-short]
 license_files = ['LICENSE']
