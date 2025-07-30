@@ -3,6 +3,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+static_library("psst") {
+  public = [ "psst_dialog_delegate_impl.h" ]
+
+  sources = [ "psst_dialog_delegate_impl.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/psst/browser/content",
+    "//content/public/browser",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

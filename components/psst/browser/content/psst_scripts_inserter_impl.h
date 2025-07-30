@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_HANDLER_IMPL_H_
-#define BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_HANDLER_IMPL_H_
+#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_INSERTER_IMPL_H_
+#define BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_INSERTER_IMPL_H_
 
 #include <string>
 
@@ -15,19 +15,27 @@
 
 namespace psst {
 
-class PsstScriptsHandlerImpl
-    : public PsstTabWebContentsObserver::ScriptsHandler {
+class PsstScriptsInserterImpl
+    : public PsstTabWebContentsObserver::ScriptsInserter {
  public:
-  explicit PsstScriptsHandlerImpl(content::WebContents* web_contents,
-                                  const int32_t world_id);
-  ~PsstScriptsHandlerImpl() override;
+  explicit PsstScriptsInserterImpl(
+      content::WebContents* web_contents,
+      content::RenderFrameHost* const render_frame_host,
+      const int32_t world_id);
+  ~PsstScriptsInserterImpl() override;
 
   // PsstScriptsHandler overrides
   void InsertScriptInPage(
       const std::string& script,
+      std::optional<base::Value> value,
       PsstTabWebContentsObserver::InsertScriptInPageCallback cb) override;
 
  private:
+  //   Get the remote used to send the script to the renderer.
+  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
+      content::RenderFrameHost* rfh);
+
+  const content::GlobalRenderFrameHostId render_frame_host_id_;
   raw_ptr<content::WebContents> web_contents_;
   const int32_t world_id_;
 
@@ -37,4 +45,4 @@ class PsstScriptsHandlerImpl
 
 }  // namespace psst
 
-#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_HANDLER_IMPL_H_
+#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_INSERTER_IMPL_H_
