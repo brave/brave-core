@@ -40,7 +40,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/https_upgrade_exceptions/core/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/histograms_braveizer.h"

@@ -44,7 +44,7 @@ static_library("browser") {
     "//brave/components/brave_shields/core/common:mojom",
     "//brave/components/constants",
     "//brave/components/content_settings/core/common",
-    "//brave/components/https_upgrade_exceptions/browser",
+    "//brave/components/https_upgrade_exceptions/core/browser",
     "//brave/components/p3a",
     "//brave/components/p3a_utils",
     "//brave/components/webcompat/core/common",

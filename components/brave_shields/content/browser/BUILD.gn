@@ -56,7 +56,7 @@ static_library("browser") {
     "//brave/components/constants",
     "//brave/components/content_settings/core/common",
     "//brave/components/ephemeral_storage",
-    "//brave/components/https_upgrade_exceptions/browser",
+    "//brave/components/https_upgrade_exceptions/core/browser",
     "//brave/components/p3a",
     "//brave/components/p3a_utils",
     "//brave/components/resources:static_resources_grit",

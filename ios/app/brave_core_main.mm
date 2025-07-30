@@ -26,6 +26,9 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
+#include "brave/components/https_upgrade_exceptions/core/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/https_upgrade_exceptions/ios/browser/https_upgrade_exceptions_service_bridge_impl.h"
+#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/component_installer.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -35,7 +38,6 @@
 #include "brave/ios/app/brave_profile_controller.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_user_agent/brave_user_agent_exceptions_ios+private.h"
-#include "brave/ios/browser/api/https_upgrade_exceptions/https_upgrade_exceptions_service+private.h"
 #include "brave/ios/browser/api/p3a/brave_p3a_utils+private.h"
 #include "brave/ios/browser/api/p3a/brave_p3a_utils.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
@@ -82,8 +84,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 @property(nonatomic) BraveProfileController* profileController;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
-@property(nonatomic)
-    HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
+@property(nonatomic) id<HTTPSUpgradeExceptionsServiceBridge>
+    httpsUpgradeExceptionsService;
 @property(nonatomic) BraveUserAgentExceptionsIOS* braveUserAgentExceptions;
 @end
 
@@ -285,10 +287,14 @@ static bool CustomLogHandler(int severity,
 
 #pragma mark -
 
-- (HTTPSUpgradeExceptionsService*)httpsUpgradeExceptionsService {
+- (id<HTTPSUpgradeExceptionsServiceBridge>)httpsUpgradeExceptionsService {
   if (!_httpsUpgradeExceptionsService) {
+    BraveApplicationContextImpl* braveContext =
+        static_cast<BraveApplicationContextImpl*>(GetApplicationContext());
+    auto* service = braveContext->https_upgrade_exceptions_service();
     _httpsUpgradeExceptionsService =
-        [[HTTPSUpgradeExceptionsService alloc] init];
+        [[HTTPSUpgradeExceptionsServiceBridgeImpl alloc]
+            initWithHTTPSUpgradeExceptionsService:service];
   }
   return _httpsUpgradeExceptionsService;
 }

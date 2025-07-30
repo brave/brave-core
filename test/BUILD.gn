@@ -913,7 +913,7 @@ test("brave_browser_tests") {
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/browser",
     "//brave/components/debounce/core/common",
-    "//brave/components/https_upgrade_exceptions/browser",
+    "//brave/components/https_upgrade_exceptions/core/browser",
     "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
     "//brave/components/ntp_background_images/buildflags",
