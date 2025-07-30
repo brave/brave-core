@@ -43,6 +43,8 @@ static_library("browser") {
     "pref_names.h",
     "type_converter.cc",
     "type_converter.h",
+    "util.cc",
+    "util.h",
   ]
 
   public_deps = [ "//brave/components/playlist/common" ]

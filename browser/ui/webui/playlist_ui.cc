@@ -21,6 +21,7 @@
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/resources/grit/playlist_generated_map.h"
+#include "brave/components/playlist/browser/util.h"
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -144,8 +145,8 @@ bool PlaylistUI::ShouldBlockPlaylistWebUI(
   }
 
   return !PlaylistServiceFactory::GetForBrowserContext(browser_context) ||
-         !user_prefs::UserPrefs::Get(browser_context)
-              ->GetBoolean(playlist::kPlaylistEnabledPref);
+         !playlist::IsPlaylistEnabled(
+             *user_prefs::UserPrefs::Get(browser_context));
 }
 
 PlaylistUI::PlaylistUI(content::WebUI* web_ui)
