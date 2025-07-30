@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
@@ -62,6 +63,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             List<ButtonDataProvider> buttonDataProviders,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ThemeColorProvider normalThemeColorProvider,
+            IncognitoStateProvider incognitoStateProvider,
             MenuButtonCoordinator browsingModeMenuButtonCoordinator,
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
             ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
@@ -95,6 +97,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 buttonDataProviders,
                 layoutStateProviderSupplier,
                 normalThemeColorProvider,
+                incognitoStateProvider,
                 browsingModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier,
                 tabSwitcherButtonCoordinator,
