@@ -10,11 +10,11 @@
 
 #include "keyed_service_factory_wrapper.h"  // NOLINT
 
-@class DebounceService;
+@protocol DebounceServiceBridge;
 
 OBJC_EXPORT
 @interface DebounceServiceFactory
-    : KeyedServiceFactoryWrapper <DebounceService*>
+    : KeyedServiceFactoryWrapper <id <DebounceServiceBridge>>
 @end
 
 #endif  // BRAVE_IOS_BROWSER_DEBOUNCE_DEBOUNCE_SERVICE_FACTORY_H_
