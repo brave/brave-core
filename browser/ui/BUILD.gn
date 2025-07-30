@@ -456,6 +456,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/commander:fuzzy_finder",
       "//brave/components/commander/browser",
+      "//chrome/browser/ui/location_bar",
     ]
   }
 
