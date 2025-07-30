@@ -10,13 +10,12 @@ import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 import static org.chromium.components.browser_ui.widget.ListItemBuilder.buildSimpleMenuItem;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -313,15 +312,26 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                     };
             networkViewHolder.setMenuButtonDelegate(
                     () -> {
-                        View contentView =
-                                LayoutInflater.from(mContext)
-                                        .inflate(
-                                                R.layout.app_menu_layout,
-                                                networkViewHolder.mItem,
-                                                false);
-                        ListView listView = contentView.findViewById(R.id.app_menu_list);
+                        // TODO(alexeybarabash): this change requires to be rechecked
+                        // Related upstream commit:
+                        // 9d9b0aabaf648e9e829f80396801a9b125e06a72
+                        //
+                        // View contentView =
+                        //         LayoutInflater.from(mContext)
+                        //                 .inflate(
+                        //                         R.layout.app_menu_layout,
+                        //                         networkViewHolder.mItem,
+                        //                         false);
+                        // ListView listView = contentView.findViewById(R.id.app_menu_list);
+                        // return new BasicListMenu(
+                        //         mContext, menuItems, contentView, listView, delegate, 0);
                         return new BasicListMenu(
-                                mContext, menuItems, contentView, listView, delegate, 0);
+                                mContext,
+                                menuItems,
+                                delegate,
+                                /* backgroundDrawable= */ Resources.ID_NULL,
+                                /* backgroundTintColor= */ Resources.ID_NULL,
+                                /* bottomHairlineColor= */ null);
                     });
         } else {
             final LabelViewHolder labelViewHolder = (LabelViewHolder) viewHolder;
@@ -443,7 +453,11 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     static class NetworkViewHolder extends ViewHolder {
         private final TextView mTitle;
         private final TextView mDescription;
-        private final LinearLayout mItem;
+
+        // TODO(alexeybarabash): this change requires to be rechecked
+        // Related upstream commit:
+        // 9d9b0aabaf648e9e829f80396801a9b125e06a72
+        // private final LinearLayout mItem;
         private final ImageView mShowHideNetwork;
 
         private final ListMenuButton mMoreButton;
@@ -455,7 +469,10 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             mDescription = view.findViewById(R.id.description);
             mShowHideNetwork = view.findViewById(R.id.show_hide_network);
             mMoreButton = view.findViewById(R.id.more);
-            mItem = view.findViewById(R.id.network_item);
+            // TODO(alexeybarabash): this change requires to be rechecked
+            // Related upstream commit:
+            // 9d9b0aabaf648e9e829f80396801a9b125e06a72
+            // mItem = view.findViewById(R.id.network_item);
         }
 
         /**
