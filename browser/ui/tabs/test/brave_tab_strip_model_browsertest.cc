@@ -6,6 +6,7 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 
 #include "base/run_loop.h"
+#include "base/task/current_thread.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -235,7 +236,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
-                       CustomTitleShouldBeResetWhenOriginChanges) {
+                       CustomTitleShouldBeResetWhenOriginChanges_FromBrowser) {
   BraveTabStripModel* tab_strip_model =
       static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
   ASSERT_FALSE(
@@ -262,4 +263,32 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
 
   EXPECT_FALSE(
       TabRendererData::FromTabInModel(tab_strip_model, 0).is_custom_title);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
+                       CustomTitleShouldBeResetWhenOriginChanges_FromRenderer) {
+  BraveTabStripModel* tab_strip_model =
+      static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
+  ASSERT_FALSE(
+      TabRendererData::FromTabInModel(tab_strip_model, 0).is_custom_title);
+  auto* web_contents = tab_strip_model->GetWebContentsAt(0);
+  ASSERT_EQ(web_contents->GetLastCommittedURL(), "about:blank");
+  ASSERT_FALSE(
+      TabRendererData::FromTabInModel(tab_strip_model, 0).is_custom_title);
+
+  tab_strip_model->SetCustomTitleForTab(0, u"Custom Title");
+  ASSERT_EQ(TabRendererData::FromTabInModel(tab_strip_model, 0).title,
+            u"Custom Title");
+  ASSERT_TRUE(
+      TabRendererData::FromTabInModel(tab_strip_model, 0).is_custom_title);
+
+  // When navigating to a different origin, the custom title should be reset
+  // to the default title.
+  auto target_url = embedded_test_server()->GetURL("/");
+  ASSERT_TRUE(
+      content::ExecJs(web_contents->GetPrimaryMainFrame(),
+                      "window.location.href = '" + target_url.spec() + "';"));
+  base::test::RunUntil([&]() {
+    return !TabRendererData::FromTabInModel(tab_strip_model, 0).is_custom_title;
+  });
 }
