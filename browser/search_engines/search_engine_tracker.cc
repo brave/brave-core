@@ -58,12 +58,11 @@ SearchEngineP3A GetSearchEngineProvider(const GURL& search_engine_url,
     result = SearchEngineP3A::kYahooJP;
   } else if (type == SEARCH_ENGINE_BRAVE) {
     result = SearchEngineP3A::kBrave;
+  } else if (type == SEARCH_ENGINE_STARTPAGE) {
+    result = SearchEngineP3A::kStartpage;
   } else if (type == SEARCH_ENGINE_OTHER) {
-    if (base::EndsWith(search_engine_url.host(), "startpage.com",
+    if (base::EndsWith(search_engine_url.host(), "brave.com",
                        base::CompareCase::INSENSITIVE_ASCII)) {
-      result = SearchEngineP3A::kStartpage;
-    } else if (base::EndsWith(search_engine_url.host(), "brave.com",
-                              base::CompareCase::INSENSITIVE_ASCII)) {
       result = SearchEngineP3A::kBrave;
     }
   }
