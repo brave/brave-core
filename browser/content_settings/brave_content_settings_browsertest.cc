@@ -83,12 +83,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsBrowserTest,
     const ContentSettingsType type = info->website_settings_info()->type();
     SCOPED_TRACE(testing::Message()
                  << "ContentSettingsType=" << static_cast<int>(type));
-    // Ignore unusual settings and settings that use CONTENT_SETTING_DEFAULT as
-    // a default value (it DCHECKs as invalid default value).
+    // Ignore unusual settings and settings that have no default value.
     if (!info->IsSettingValid(CONTENT_SETTING_ALLOW) ||
         !info->IsSettingValid(CONTENT_SETTING_BLOCK) ||
-        info->website_settings_info()->initial_default_value().GetInt() ==
-            CONTENT_SETTING_DEFAULT) {
+        info->website_settings_info()->initial_default_value().is_none()) {
       continue;
     }
 
