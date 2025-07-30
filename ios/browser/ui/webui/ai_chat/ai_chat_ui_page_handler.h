@@ -13,8 +13,9 @@
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/ai_chat/upload_file_helper.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 #include "ios/web/public/web_state_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -25,7 +26,7 @@ class ProfileIOS;
 
 namespace ai_chat {
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
-                            public AIChatTabHelper::Observer {
+                            public AssociatedContentDelegate::Observer {
  public:
   AIChatUIPageHandler(
       web::WebState* owner_web_state,
@@ -41,6 +42,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   // mojom::AIChatUIHandler
   void OpenAIChatSettings() override;
   void OpenConversationFullPage(const std::string& conversation_uuid) override;
+  void OpenAIChatAgentProfile() override;
   void OpenURL(const GURL& url) override;
   void OpenStorageSupportUrl() override;
   void OpenModelSupportUrl() override;
@@ -49,8 +51,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ManagePremium() override;
   void HandleVoiceRecognition(const std::string& conversation_uuid) override;
   void ShowSoftKeyboard() override;
-  void UploadImage(bool use_media_capture,
-                   UploadImageCallback callback) override;
+  void UploadFile(bool use_media_capture, UploadFileCallback callback) override;
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
@@ -90,14 +91,18 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   void HandleWebStateDestroyed();
 
+  // AssociatedContentDelegate::Observer
+  void OnRequestArchive(AssociatedContentDelegate* delegate) override;
+
   // AIChatTabHelper::Observer
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   raw_ptr<web::WebState> owner_web_state_ = nullptr;
   raw_ptr<ProfileIOS> profile_ = nullptr;
-  std::unique_ptr<AIChatMetrics> ai_chat_metrics_;
+  raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
-  base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>
-      chat_tab_helper_observation_{this};
+  base::ScopedObservation<AssociatedContentDelegate,
+                          AssociatedContentDelegate::Observer>
+      associated_content_delegate_observation_{this};
   std::unique_ptr<ChatContextObserver> chat_context_observer_;
 
   std::unique_ptr<UploadFileHelper> upload_file_helper_;

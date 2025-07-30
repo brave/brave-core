@@ -9,10 +9,14 @@ source_set("browser") {
     "ai_chat.h",
     "ai_chat.mm",
     "ai_chat_delegate.h",
+    "ai_chat_tab_helper.h",
+    "ai_chat_tab_helper.mm",
     "associated_content_driver_ios.h",
     "associated_content_driver_ios.mm",
     "conversation_client.h",
     "conversation_client.mm",
+    "page_content_fetcher.h",
+    "page_content_fetcher.mm",
   ]
   deps = [
     "//base",
@@ -21,8 +25,17 @@ source_set("browser") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/ios/common:mojom",
     "//components/prefs",
+    "//components/strings:components_strings",
+    "//components/strings:components_strings_grit",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+    "//ios/web/public/permissions",
     "//ios/web/public/thread",
+    "//services/data_decoder/public/cpp",
+    "//services/data_decoder/public/mojom",
     "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
     "//url",
   ]
   frameworks = [ "Foundation.framework" ]
