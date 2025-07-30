@@ -1,6 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import argparse
-from math import nan
 import os
 import re
 import glob
@@ -14,9 +18,11 @@ from perfetto.trace_processor import TraceProcessor,TraceProcessorConfig
 from perfetto.trace_processor.shell import load_shell
 from perfetto.trace_processor.platform import PlatformDelegate
 
-# TODO(atuchin): install scipy via vpython3 config
-# vpython3 -m pip install scipy
 from scipy.stats import ttest_ind
+
+import components.path_util as path_util
+with path_util.SysPath(path_util.GetChromiumPerfDir()):
+    from core.perfetto_binary_roller import binary_deps_manager
 
 _DIFF_NEW = 1000000
 
@@ -276,7 +282,8 @@ if __name__ == '__main__':
         exit(1)
 
 
-    # TODO(atuchin): fetch trace_processor_shell
+    trace_processor_shell_path = binary_deps_manager.FetchHostBinary(
+            'trace_processor_shell')
     trace_processor_shell_path = "../tools/perf/core/perfetto_binary_roller/bin/trace_processor_shell"
     config = TraceProcessorConfig(bin_path=trace_processor_shell_path)
     trace_processor_url, subprocess = load_shell(config.bin_path,
