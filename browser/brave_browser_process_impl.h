@@ -16,7 +16,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
