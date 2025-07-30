@@ -339,7 +339,6 @@ bool BraveOriginHandler::IsRestartNeeded() {
       was_wallet_enabled_ ==
       prefs->GetBoolean(brave_wallet::prefs::kDisabledByPolicy);
 
-
   // TODO: also do Brave Talk, speedreader, waybackmachine
   // once there's a cleaner way to do this.
   if (rewards_changed || ai_changed || news_changed || p3a_changed ||
