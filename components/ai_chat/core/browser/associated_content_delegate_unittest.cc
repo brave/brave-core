@@ -52,6 +52,7 @@ TEST(AssociatedContentDelegateTest, OnNewPage) {
   delegate.SetUrl(GURL("https://www.brave.com"));
   delegate.SetTitle(u"Brave");
   delegate.SetTextContent("Content 1");
+  delegate.GetContent(base::DoNothing());
 
   AssociatedContentSnapShotObserver observer;
   EXPECT_CALL(observer, OnRequestArchive(&delegate))
@@ -110,6 +111,7 @@ TEST(AssociatedContentDelegateTest, DestroyNotificationShouldBeAbleToSnapshot) {
     delegate.SetUrl(GURL("https://www.brave.com"));
     delegate.SetTitle(u"Brave");
     delegate.SetTextContent("Content 1");
+    delegate.GetContent(base::DoNothing());
 
     observer.Observe(&delegate);
   }
