@@ -20,9 +20,9 @@
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_streaming.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
+#include "brave/components/playlist/browser/util.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/prefs/pref_member.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -97,6 +97,8 @@ class PlaylistService : public KeyedService,
     virtual content::WebContents* GetActiveWebContents() = 0;
 
     virtual void EnabledStateChanged(bool enabled) = 0;
+
+    virtual void UpdateSidebarState(bool enabled) = 0;
   };
 
   using PlaylistId = base::StrongAlias<class PlaylistIdTag, std::string>;
@@ -211,8 +213,6 @@ class PlaylistService : public KeyedService,
   void OnResponseStarted(const std::string& url, const int64_t content_length);
   void OnDataReceived(api_request_helper::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
-
-  bool playlist_enabled() const { return *enabled_pref_; }
 
   const std::string& GetMediaSourceAPISuppressorScript() const;
   std::string GetMediaDetectorScript(const GURL& url) const;
@@ -342,7 +342,7 @@ class PlaylistService : public KeyedService,
           PlaylistMediaFileDownloadManager::DownloadResult,
           PlaylistMediaFileDownloadManager::DownloadFailureReason>& result);
 
-  void OnEnabledPrefChanged();
+  void OnEnabledChanged();
 
   // KeyedService overrides:
   void Shutdown() override;
@@ -384,7 +384,8 @@ class PlaylistService : public KeyedService,
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;
 
-  BooleanPrefMember enabled_pref_;
+  bool enabled_ = false;
+  PlaylistEnabledChangeRegistrar enabled_registrar_;
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;

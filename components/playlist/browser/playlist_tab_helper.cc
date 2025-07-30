@@ -44,14 +44,18 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
     : WebContentsUserData(*contents), service_(service) {
   CHECK(service_);
 
-  Observe(contents);
-  service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
-
-  playlist_enabled_.Init(
-      kPlaylistEnabledPref,
-      user_prefs::UserPrefs::Get(contents->GetBrowserContext()),
-      base::BindRepeating(&PlaylistTabHelper::OnPlaylistEnabledPrefChanged,
+  profile_prefs_ = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
+  playlist_enabled_registrar_.Init(
+      profile_prefs_,
+      base::BindRepeating(&PlaylistTabHelper::OnPlaylistEnabledChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+
+  playlist_enabled_ = playlist::IsPlaylistEnabled(*profile_prefs_);
+
+  if (playlist_enabled_) {
+    Observe(contents);
+  }
+  service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 PlaylistTabHelper::~PlaylistTabHelper() {
@@ -69,7 +73,7 @@ void PlaylistTabHelper::RemoveObserver(PlaylistTabHelperObserver* observer) {
 }
 
 void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
-  CHECK(*playlist_enabled_);
+  CHECK(playlist_enabled_);
   DCHECK(!is_adding_items_);
   DCHECK(items.size());
   is_adding_items_ = true;
@@ -82,7 +86,7 @@ void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
 }
 
 void PlaylistTabHelper::RemoveItems(std::vector<mojom::PlaylistItemPtr> items) {
-  CHECK(*playlist_enabled_);
+  CHECK(playlist_enabled_);
   CHECK(service_);
   DCHECK(!items.empty());
 
@@ -96,7 +100,7 @@ void PlaylistTabHelper::RemoveItems(std::vector<mojom::PlaylistItemPtr> items) {
 
 void PlaylistTabHelper::MoveItems(std::vector<mojom::PlaylistItemPtr> items,
                                   mojom::PlaylistPtr target_playlist) {
-  CHECK(*playlist_enabled_);
+  CHECK(playlist_enabled_);
   for (const auto& item : items) {
     CHECK_EQ(item->parents.size(), 1u)
         << "In case an item belongs to the multiple parent playlists, this "
@@ -109,7 +113,7 @@ void PlaylistTabHelper::MoveItems(std::vector<mojom::PlaylistItemPtr> items,
 void PlaylistTabHelper::MoveItemsToNewPlaylist(
     std::vector<mojom::PlaylistItemPtr> items,
     const std::string& new_playlist_name) {
-  CHECK(*playlist_enabled_);
+  CHECK(playlist_enabled_);
 
   auto new_playlist = mojom::Playlist::New();
   new_playlist->name = new_playlist_name;
@@ -235,7 +239,7 @@ void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
 void PlaylistTabHelper::OnMediaFilesUpdated(
     const GURL& url,
     std::vector<mojom::PlaylistItemPtr> items) {
-  if (!*playlist_enabled_) {
+  if (!playlist_enabled_) {
     return;
   }
 
@@ -314,7 +318,7 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
 }
 
 std::vector<mojom::PlaylistItemPtr> PlaylistTabHelper::GetUnsavedItems() const {
-  CHECK(*playlist_enabled_);
+  CHECK(playlist_enabled_);
   if (found_items_.empty()) {
     return {};
   }
@@ -339,7 +343,7 @@ std::vector<mojom::PlaylistPtr> PlaylistTabHelper::GetAllPlaylists() const {
 
 void PlaylistTabHelper::OnAddedItems(
     std::vector<mojom::PlaylistItemPtr> items) {
-  if (!*playlist_enabled_) {
+  if (!playlist_enabled_) {
     return;
   }
 
@@ -358,8 +362,10 @@ void PlaylistTabHelper::OnAddedItems(
   is_adding_items_ = false;
 }
 
-void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
-  if (*playlist_enabled_) {
+void PlaylistTabHelper::OnPlaylistEnabledChanged() {
+  playlist_enabled_ = playlist::IsPlaylistEnabled(*profile_prefs_);
+
+  if (playlist_enabled_) {
     // It's okay to call Observe() repeatedly.
     Observe(&GetWebContents());
   } else {

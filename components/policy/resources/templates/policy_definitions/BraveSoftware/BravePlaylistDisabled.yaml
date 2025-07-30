@@ -1,0 +1,37 @@
+caption: Disable Brave Playlist
+default: null
+desc: |-
+  Disable Brave Playlist functionality.
+
+  Brave Playlist allows users to save videos and audio from web pages to play later offline or in the background.
+
+            If this policy is set to true, Playlist will always be disabled and all related UI elements will be hidden.
+
+            If this policy is set to false or unset, Playlist will be enabled by default.
+
+            If you set this policy, users cannot change or override it.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Allow the user to decide (enabled by default)
+  value: false
+- caption: Disable Playlist functionality
+  value: true
+- caption: Allow the user to decide (enabled by default)
+  value: null
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+- dandries@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:139-
+future_on:
+- android
+tags: []
+type: main 

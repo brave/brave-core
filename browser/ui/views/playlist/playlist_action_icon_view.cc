@@ -28,10 +28,10 @@ PlaylistActionIconView::PlaylistActionIconView(
                          icon_label_bubble_delegate,
                          page_action_icon_delegate,
                          "PlaylistActionIconView",
-                         /*ephemeral=*/false) {
-  playlist_enabled_.Init(
-      playlist::kPlaylistEnabledPref,
-      user_prefs::UserPrefs::Get(browser->profile()),
+                         /*ephemeral=*/false),
+      browser_(browser) {
+  playlist_enabled_registrar_.Init(
+      browser_->profile()->GetPrefs(),
       base::BindRepeating(&PlaylistActionIconView::UpdateState,
                           weak_ptr_factory_.GetWeakPtr()));
   SetVisible(false);
@@ -53,7 +53,9 @@ base::WeakPtr<PlaylistActionIconView> PlaylistActionIconView::AsWeakPtr() {
 }
 
 void PlaylistActionIconView::SetVisible(bool visible) {
-  PageActionIconView::SetVisible(visible && *playlist_enabled_);
+  bool playlist_enabled =
+      playlist::IsPlaylistEnabled(*browser_->profile()->GetPrefs());
+  PageActionIconView::SetVisible(visible && playlist_enabled);
 }
 
 views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {

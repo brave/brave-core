@@ -124,7 +124,13 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
 
       side_panel_ui->Close();
     }
+#endif  // !BUILDFLAG(IS_ANDROID)
 
+    UpdateSidebarState(enabled);
+  }
+
+  void UpdateSidebarState(bool enabled) override {
+#if !BUILDFLAG(IS_ANDROID)
     auto* service =
         sidebar::SidebarServiceFactory::GetForProfile(profile_.get());
     if (enabled) {
@@ -256,6 +262,7 @@ void PlaylistServiceFactory::RegisterProfilePrefs(
 
   registry->RegisterDictionaryPref(kPlaylistItemsPref);
   registry->RegisterBooleanPref(kPlaylistEnabledPref, true);
+  registry->RegisterBooleanPref(kPlaylistDisabledByPolicy, false);
   registry->RegisterBooleanPref(kPlaylistCacheByDefault, true);
   registry->RegisterStringPref(kPlaylistDefaultSaveTargetListID,
                                kDefaultPlaylistID);
@@ -264,7 +271,9 @@ void PlaylistServiceFactory::RegisterProfilePrefs(
 PlaylistServiceFactory::PlaylistServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "PlaylistService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(sidebar::SidebarServiceFactory::GetInstance());
+}
 
 PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 

@@ -98,6 +98,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/features.h"
 #endif
 
@@ -215,11 +216,12 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
                                   kBraveNTPBrandedWallpaperSurveyPanelist));
-
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
       "isPlaylistAllowed",
-      base::FeatureList::IsEnabled(playlist::features::kPlaylist));
+      base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
+          !profile->GetPrefs()->GetBoolean(
+              playlist::kPlaylistDisabledByPolicy));
 #else
   html_source->AddBoolean("isPlaylistAllowed", false);
 #endif
