@@ -1,5 +1,8 @@
 include_rules = [
   "+components/prefs",
+  "+components/strings/grit",
   "+ios/web/public",
+  "+services/data_decoder/public",
   "+services/network/public",
+  "+services/service_manager/public",
 ]

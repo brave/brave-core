@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/api/ai_chat/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 
 #include <array>
 #include <cstdint>
@@ -33,8 +33,8 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "brave/ios/browser/api/ai_chat/associated_content_driver_ios.h"
-#include "brave/ios/browser/api/ai_chat/page_content_fetcher.h"
+#include "brave/components/ai_chat/ios/browser/associated_content_driver_ios.h"
+#include "brave/components/ai_chat/ios/browser/page_content_fetcher.h"
 #include "components/strings/grit/components_strings.h"
 #include "ios/web/public/browser_state.h"
 #include "ios/web/public/navigation/navigation_context.h"
@@ -52,9 +52,13 @@ AIChatTabHelper::AIChatTabHelper(web::WebState* web_state)
       page_content_fetcher_delegate_(
           std::make_unique<PageContentFetcher>(web_state)) {
   previous_page_title_ = web_state->GetTitle();
+
+  web_state->AddObserver(this);
 }
 
-AIChatTabHelper::~AIChatTabHelper() = default;
+AIChatTabHelper::~AIChatTabHelper() {
+  web_state_->RemoveObserver(this);
+}
 
 void AIChatTabHelper::GetOpenAIChatButtonNonce(
     mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
@@ -64,6 +68,10 @@ void AIChatTabHelper::GetOpenAIChatButtonNonce(
 void AIChatTabHelper::DidFinishNavigation(
     web::WebState* web_state,
     web::NavigationContext* navigation_context) {
+  if (!navigation_context->HasCommitted()) {
+    return;
+  }
+
   pending_navigation_id_ = navigation_context->GetNavigationId();
 
   is_same_document_navigation_ = navigation_context->IsSameDocument();
@@ -73,17 +81,18 @@ void AIChatTabHelper::DidFinishNavigation(
     is_page_loaded_ = false;
   }
 
-  if (!is_same_document_navigation_ || previous_page_title_ != GetPageTitle()) {
+  if (!is_same_document_navigation_ ||
+      previous_page_title_ != web_state->GetTitle()) {
     OnNewPage(pending_navigation_id_);
   }
 
-  previous_page_title_ = GetPageTitle();
+  previous_page_title_ = web_state->GetTitle();
 }
 
 void AIChatTabHelper::PageLoaded(
     web::WebState* web_state,
     web::PageLoadCompletionStatus load_completion_status) {
-  if (web_state->GetVisibleURL() == GetPageURL()) {
+  if (web_state->GetLastCommittedURL().is_valid()) {
     is_page_loaded_ = true;
     if (pending_get_page_content_callback_) {
       GetPageContent(std::move(pending_get_page_content_callback_), "");
@@ -93,12 +102,8 @@ void AIChatTabHelper::PageLoaded(
 
 void AIChatTabHelper::TitleWasSet(web::WebState* web_state) {
   MaybeSameDocumentIsNewPage();
-  previous_page_title_ = GetPageTitle();
-  OnTitleChanged();
-}
-
-GURL AIChatTabHelper::GetPageURL() const {
-  return web_state_->GetLastCommittedURL();
+  previous_page_title_ = web_state->GetTitle();
+  SetTitle(web_state->GetTitle());
 }
 
 void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
@@ -109,27 +114,9 @@ void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-std::u16string AIChatTabHelper::GetPageTitle() const {
-  return web_state_->GetTitle();
-}
-
-void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
-  AssociatedContentDriver::OnNewPage(navigation_id);
-  if (pending_get_page_content_callback_) {
-    std::move(pending_get_page_content_callback_).Run("", false, "");
-  }
-}
-
-void AIChatTabHelper::MaybeSameDocumentIsNewPage() {
-  if (is_same_document_navigation_) {
-    OnNewPage(pending_navigation_id_);
-    is_same_document_navigation_ = false;
-  }
-}
-
 void AIChatTabHelper::GetSearchSummarizerKey(
     GetSearchSummarizerKeyCallback callback) {
-  //  if (!IsBraveSearchSERP(GetPageURL())) {
+  //  if (!IsBraveSearchSERP(web_state()->GetLastCommittedURL())) {
   //    std::move(callback).Run(std::nullopt);
   //    return;
   //  }
@@ -138,7 +125,18 @@ void AIChatTabHelper::GetSearchSummarizerKey(
 }
 
 bool AIChatTabHelper::HasOpenAIChatPermission() const {
-  return false;  // No idea
+  return false;
+}
+
+void AIChatTabHelper::GetScreenshots(
+    mojom::ConversationHandler::GetScreenshotsCallback callback) {
+  std::move(callback).Run(std::nullopt);
+}
+
+void AIChatTabHelper::OnScreenshotsCaptured(
+    mojom::ConversationHandler::GetScreenshotsCallback callback,
+    base::expected<std::vector<std::vector<uint8_t>>, std::string>) {
+  std::move(callback).Run(std::nullopt);
 }
 
 void AIChatTabHelper::OnFetchPageContentComplete(
@@ -147,11 +145,9 @@ void AIChatTabHelper::OnFetchPageContentComplete(
     bool is_video,
     std::string invalidation_token) {
   base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
-  if (content.empty() && !is_video) {
-    if (!is_page_loaded_) {
-      SetPendingGetContentCallback(std::move(callback));
-      return;
-    }
+  if (content.empty() && !is_video && !is_page_loaded_) {
+    SetPendingGetContentCallback(std::move(callback));
+    return;
   }
   std::move(callback).Run(std::move(content), is_video,
                           std::move(invalidation_token));
@@ -163,6 +159,23 @@ void AIChatTabHelper::SetPendingGetContentCallback(
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }
   pending_get_page_content_callback_ = std::move(callback);
+}
+
+void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
+  AssociatedContentDriver::OnNewPage(navigation_id);
+  set_url(web_state()->GetLastCommittedURL());
+  SetTitle(web_state()->GetTitle());
+
+  if (pending_get_page_content_callback_) {
+    std::move(pending_get_page_content_callback_).Run("", false, "");
+  }
+}
+
+void AIChatTabHelper::MaybeSameDocumentIsNewPage() {
+  if (is_same_document_navigation_) {
+    OnNewPage(pending_navigation_id_);
+    is_same_document_navigation_ = false;
+  }
 }
 
 }  // namespace ai_chat

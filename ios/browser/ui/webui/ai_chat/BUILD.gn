@@ -10,9 +10,6 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 source_set("ai_chat") {
   sources = [
-    "ai_chat_communication_tab_helper+private.h",
-    "ai_chat_communication_tab_helper.h",
-    "ai_chat_communication_tab_helper.mm",
     "ai_chat_ui.h",
     "ai_chat_ui.mm",
     "ai_chat_ui_page_handler.h",
@@ -22,16 +19,20 @@ source_set("ai_chat") {
   ]
 
   deps = [
-    "//brave/components/ai_chat/core/browser:browser",
+    ":webui_communication",
+    "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/ai_chat/ios/browser",
     "//brave/components/ai_chat/resources",
     "//brave/components/constants",
     "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings_grit",
     "//brave/components/webui",
-    "//brave/ios/browser/api/ai_chat",
+    "//brave/ios/browser/ai_chat",
+    "//brave/ios/browser/misc_metrics",
+    "//brave/ios/browser/ui/webui:data_sources",
     "//brave/ios/web/webui",
     "//components/favicon/core",
     "//components/favicon_base",
@@ -54,5 +55,18 @@ source_set("ai_chat") {
     "//mojo/public/cpp/bindings",
     "//mojo/public/js:resources",
     "//ui/base",
+  ]
+}
+
+source_set("webui_communication") {
+  sources = [
+    "ai_chat_communication_tab_helper+private.h",
+    "ai_chat_communication_tab_helper.h",
+    "ai_chat_communication_tab_helper.mm",
+  ]
+
+  deps = [
+    "//ios/web/public",
+    "//ios/web/public:web_state_observer",
   ]
 }

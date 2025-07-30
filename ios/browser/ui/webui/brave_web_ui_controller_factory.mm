@@ -41,27 +41,34 @@ std::unique_ptr<WebUIIOSController> NewWebUIIOS(WebUIIOS* web_ui,
   return std::make_unique<T>(web_ui, url);
 }
 
-// Returns a function that can be used to create the right type of WebUIIOS for
-// a tab, based on its URL. Returns nullptr if the URL doesn't have WebUIIOS
-// associated with it.
-WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
-  const char kChromeUIUntrustedScheme[] = "chrome-untrusted";
-
-  // This will get called a lot to check all URLs, so do a quick check of other
-  // schemes to filter out most URLs.
-  if (!url.SchemeIs(kBraveUIScheme) && !url.SchemeIs(kChromeUIScheme) &&
-      !url.SchemeIs(kChromeUIUntrustedScheme)) {
+WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
+  if (!url.SchemeIs(kChromeUIUntrustedScheme)) {
     return nullptr;
   }
 
   const std::string url_host = url.host();
 
-  if (url.SchemeIs(kChromeUIUntrustedScheme)) {
-    if (url_host == kAIChatUntrustedConversationUIHost) {
-      return &NewWebUIIOS<AIChatUntrustedConversationUI>;
-    }
+  if (url_host == kAIChatUntrustedConversationUIHost) {
+    return &NewWebUIIOS<AIChatUntrustedConversationUI>;
+  }
+
+  return nullptr;
+}
+
+// Returns a function that can be used to create the right type of WebUIIOS for
+// a tab, based on its URL. Returns nullptr if the URL doesn't have WebUIIOS
+// associated with it.
+WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
+  if (!url.SchemeIs(kChromeUIScheme) &&
+      !url.SchemeIs(kChromeUIUntrustedScheme)) {
     return nullptr;
   }
+
+  if (url.SchemeIs(kChromeUIUntrustedScheme)) {
+    return GetUntrustedWebUIIOSFactoryFunction(url);
+  }
+
+  const std::string url_host = url.host();
 
   if (url_host == kAdsInternalsHost) {
     return &NewWebUIIOS<AdsInternalsUI>;
@@ -70,7 +77,7 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return &NewWebUIIOS<BraveAccountUI>;
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
-  } else if (url_host == "leo-ai") {
+  } else if (url_host == kAIChatUIHost) {
     return &NewWebUIIOS<AIChatUI>;
   }
   return nullptr;

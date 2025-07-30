@@ -14,6 +14,10 @@ source_set("ai_chat") {
     "ai_chat_utils.mm",
     "model_service_factory.h",
     "model_service_factory.mm",
+    "tab_data_web_state_observer.h",
+    "tab_data_web_state_observer.mm",
+    "tab_tracker_service_factory.h",
+    "tab_tracker_service_factory.mm",
   ]
 
   deps = [
@@ -25,12 +29,18 @@ source_set("ai_chat") {
     "//brave/ios/browser/misc_metrics",
     "//brave/ios/browser/skus",
     "//brave/ios/components/prefs",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//components/version_info",
     "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+    "//ios/chrome/browser/shared/model/web_state_list",
     "//ios/chrome/common",
+    "//ios/web/public",
+    "//ios/web/public/favicon",
+    "//ios/web/public/navigation",
   ]
 
   frameworks = [ "Foundation.framework" ]

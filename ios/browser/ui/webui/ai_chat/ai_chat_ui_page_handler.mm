@@ -20,8 +20,10 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
-#include "brave/ios/browser/api/ai_chat/tab_data_web_state_observer.h"
+#include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
+#include "brave/ios/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_communication_tab_helper+private.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -32,6 +34,7 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/web/public/navigation/navigation_context.h"
+#include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_id.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -91,12 +94,9 @@ void EnsureWebStateLoaded(
   }
 
   // Deletes when the load completes or the WebContents is destroyed
-  new WaitForCommit(
-      web_state,
-      std::move(
-          on_loaded));  // Maybe we should use WebStateObserver::DidStartLoading
-                        // to determine when the load has finished :S
-  //  contents->GetController().LoadIfNecessary();   // Can't be done on iOS???
+  new WaitForCommit(web_state, std::move(on_loaded));
+
+  web_state->GetNavigationManager()->LoadIfNecessary();
 }
 
 web::WebState* GetTabFromId(ProfileIOS* profile, int tab_id) {
@@ -128,18 +128,22 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver)
     : owner_web_state_(owner_web_state),
       profile_(profile),
-      ai_chat_metrics_(std::make_unique<AIChatMetrics>(
-          GetApplicationContext()->GetLocalState(),
-          nullptr)),
       receiver_(this, std::move(receiver)) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_state is nullptr in that case
   const bool is_standalone = chat_context_web_state == nullptr;
 
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetForProfile(profile);
+
+  if (profile_metrics) {
+    ai_chat_metrics_ = profile_metrics->GetAIChatMetrics();
+  }
+
   if (!is_standalone) {
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebState(chat_context_web_state);
-    chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
+    associated_content_delegate_observation_.Observe(active_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_state, *this);
   }
@@ -164,8 +168,8 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
 
 void AIChatUIPageHandler::ShowSoftKeyboard() {}
 
-void AIChatUIPageHandler::UploadImage(bool use_media_capture,
-                                      UploadImageCallback callback) {
+void AIChatUIPageHandler::UploadFile(bool use_media_capture,
+                                     UploadFileCallback callback) {
   auto* web_state_to_navigate = (active_chat_tab_helper_)
                                     ? active_chat_tab_helper_->web_state()
                                     : owner_web_state_.get();
@@ -217,6 +221,10 @@ void AIChatUIPageHandler::OpenConversationFullPage(
       ui::PAGE_TRANSITION_TYPED,
       false,
   });
+}
+
+void AIChatUIPageHandler::OpenAIChatAgentProfile() {
+  CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
@@ -275,9 +283,21 @@ void AIChatUIPageHandler::ChatContextObserver::WebStateDestroyed(
 
 void AIChatUIPageHandler::HandleWebStateDestroyed() {
   active_chat_tab_helper_ = nullptr;
-  chat_tab_helper_observation_.Reset();
+  associated_content_delegate_observation_.Reset();
   chat_context_observer_.reset();
 }
+
+void AIChatUIPageHandler::OnRequestArchive(
+    AssociatedContentDelegate* delegate) {
+  chat_ui_->OnNewDefaultConversation(
+      active_chat_tab_helper_
+          ? std::make_optional(active_chat_tab_helper_->content_id())
+          : std::nullopt);
+}
+
+// void AIChatUIPageHandler::OnFilesSelected() {
+//   chat_ui_->OnUploadFilesSelected();
+// }
 
 void AIChatUIPageHandler::CloseUI() {
   // TODO: Somehow figure out which WebView to close??? Maybe easier to call
@@ -300,6 +320,11 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                                     SetChatUICallback callback) {
   chat_ui_.Bind(std::move(chat_ui));
   std::move(callback).Run(active_chat_tab_helper_ == nullptr);
+
+  chat_ui_->OnNewDefaultConversation(
+      active_chat_tab_helper_
+          ? std::make_optional(active_chat_tab_helper_->content_id())
+          : std::nullopt);
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
@@ -315,7 +340,7 @@ void AIChatUIPageHandler::BindRelatedConversation(
   ConversationHandler* conversation =
       AIChatServiceFactory::GetForProfile(profile_)
           ->GetOrCreateConversationHandlerForContent(
-              active_chat_tab_helper_->GetContentId(),
+              active_chat_tab_helper_->content_id(),
               active_chat_tab_helper_->GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
@@ -360,7 +385,7 @@ void AIChatUIPageHandler::NewConversation(
   if (active_chat_tab_helper_) {
     conversation = AIChatServiceFactory::GetForProfile(profile_)
                        ->CreateConversationHandlerForContent(
-                           active_chat_tab_helper_->GetContentId(),
+                           active_chat_tab_helper_->content_id(),
                            active_chat_tab_helper_->GetWeakPtr());
   } else {
     conversation =

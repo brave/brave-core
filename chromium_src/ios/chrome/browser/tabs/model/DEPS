@@ -1,3 +1,4 @@
 include_rules = [
-  "+brave/ios/browser/api/ai_chat"
+  "+brave/ios/browser/ai_chat",
+  "+brave/ios/browser/ui/webui/ai_chat",
 ]

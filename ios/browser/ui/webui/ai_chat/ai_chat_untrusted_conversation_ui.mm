@@ -18,13 +18,13 @@
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/ios/browser/ui/webui/favicon_source.h"
+#include "brave/ios/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/ios/web/webui/brave_url_data_source_ios.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
-#include "brave/ios/web/webui/favicon_source.h"
-#include "brave/ios/web/webui/untrusted_sanitized_image_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -35,6 +35,7 @@
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
 #include "ios/web/web_state/web_state_impl.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 #include "url/url_constants.h"
@@ -140,13 +141,13 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' blob: chrome-untrusted://resources "
-      "chrome-untrusted://image;");
+      "chrome-untrusted://image chrome-untrusted://favicon2;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       "font-src 'self' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameAncestors,
-      base::StringPrintf("frame-ancestors %s;", kAIChatUIURL));
+      absl::StrFormat("frame-ancestors %s;", kAIChatUIURL));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 
