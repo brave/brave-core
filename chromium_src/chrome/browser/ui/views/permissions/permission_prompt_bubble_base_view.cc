@@ -49,6 +49,7 @@
 #include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/style/typography.h"
+#include "ui/views/widget/widget.h"
 #include "ui/views/window/dialog_client_view.h"
 #include "ui/views/window/dialog_delegate.h"
 
@@ -433,5 +434,15 @@ void AddFootnoteViewIfNeeded(
   }                                                                       \
   AddGeolocationDescriptionIfNeeded(this, delegate_.get(), browser());
 
+// Sets the zorder for permission prompt bubble to kSecuritySurface, so that it
+// appears above other UI elements even they are floating on top.For example,
+// Picture-in-Picture window is on top of other widgets, but permission prompt
+// bubble should still be on top of it.
+#define SetZOrderSublevel(...)    \
+  SetZOrderSublevel(__VA_ARGS__); \
+  widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
+
 #include <chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc>
+
+#undef SetZOrderSublevel
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW
