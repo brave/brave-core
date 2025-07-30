@@ -27,6 +27,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"
   cargo_pkg_name = "paste"
   cargo_pkg_description = "Macros for all your token pasting needs"
+  cargo_pkg_repository = "https://github.com/dtolnay/paste"
   cargo_pkg_version = "1.0.12"
 
   build_root =

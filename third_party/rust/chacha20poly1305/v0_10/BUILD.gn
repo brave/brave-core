@@ -24,6 +24,8 @@ cargo_crate("lib") {
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "chacha20poly1305"
   cargo_pkg_description = "Pure Rust implementation of the ChaCha20Poly1305 Authenticated Encryption with Additional Data Cipher (RFC 8439) with optional architecture-specific hardware acceleration. Also contains implementations of the XChaCha20Poly1305 extended nonce variant of ChaCha20Poly1305, and the reduced-round ChaCha8Poly1305 and ChaCha12Poly1305 lightweight variants."
+  cargo_pkg_repository =
+      "https://github.com/RustCrypto/AEADs/tree/master/chacha20poly1305"
   cargo_pkg_version = "0.10.1"
 
   deps = [

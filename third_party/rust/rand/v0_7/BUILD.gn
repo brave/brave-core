@@ -59,6 +59,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "rand"
   cargo_pkg_description =
       "Random number generators and other randomness functionality."
+  cargo_pkg_repository = "https://github.com/rust-random/rand"
   cargo_pkg_version = "0.7.3"
 
   deps = [

@@ -32,6 +32,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Brave Authors, Ralph Giles <rgiles@brave.com>, Simon Sapin <simon.sapin@exyr.org>"
   cargo_pkg_name = "kuchikiki"
   cargo_pkg_description = "(口利き) HTML tree manipulation library"
+  cargo_pkg_repository = "https://github.com/brave/kuchikiki"
   cargo_pkg_version = "0.8.8-speedreader"
 
   deps = [

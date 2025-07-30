@@ -25,6 +25,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "eV <ev@7pr.xyz>, Alex Davidson <coela@alxdavids.xyz>"
   cargo_pkg_name = "adss"
   cargo_pkg_description = "Adept Secret Sharing framework"
+  cargo_pkg_repository = "https://github.com/brave/sta-rs"
   cargo_pkg_version = "0.2.3"
 
   deps = [

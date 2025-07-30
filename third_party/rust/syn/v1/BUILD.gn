@@ -75,6 +75,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"
   cargo_pkg_name = "syn"
   cargo_pkg_description = "Parser for Rust source code"
+  cargo_pkg_repository = "https://github.com/dtolnay/syn"
   cargo_pkg_version = "1.0.109"
 
   deps = [
@@ -212,6 +213,7 @@ cargo_crate("buildrs_support") {
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"
   cargo_pkg_name = "syn"
   cargo_pkg_description = "Parser for Rust source code"
+  cargo_pkg_repository = "https://github.com/dtolnay/syn"
   cargo_pkg_version = "1.0.109"
 
   deps = [

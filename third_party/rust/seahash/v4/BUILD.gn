@@ -30,6 +30,7 @@ cargo_crate("lib") {
       "ticki <ticki@users.noreply.github.com>, Tom Almeida <tom@tommoa.me>"
   cargo_pkg_name = "seahash"
   cargo_pkg_description = "A blazingly fast, portable hash function with proven statistical guarantees."
+  cargo_pkg_repository = "https://gitlab.redox-os.org/redox-os/seahash"
   cargo_pkg_version = "4.1.0"
 
   features = [ "default" ]

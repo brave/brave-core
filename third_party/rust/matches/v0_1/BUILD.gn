@@ -29,6 +29,7 @@ cargo_crate("lib") {
   edition = "2015"
   cargo_pkg_name = "matches"
   cargo_pkg_description = "A macro to evaluate, as a boolean, whether an expression matches a pattern."
+  cargo_pkg_repository = "https://github.com/SimonSapin/rust-std-candidates"
   cargo_pkg_version = "0.1.10"
 
   rustenv = []

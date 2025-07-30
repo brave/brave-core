@@ -25,6 +25,7 @@ cargo_crate("lib") {
       "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "ff_derive"
   cargo_pkg_description = "Procedural macro library used to build custom prime field implementations"
+  cargo_pkg_repository = "https://github.com/zkcrypto/ff"
   cargo_pkg_version = "0.13.0"
 
   deps = [

@@ -61,6 +61,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Jack Grigg <jack@electriccoin.co>, Daira-Emma Hopwood <daira@jacaranda.org>, Ying Tong Lai, Kris Nuttycombe <kris@electriccoin.co>"
   cargo_pkg_name = "orchard"
   cargo_pkg_description = "The Orchard shielded transaction protocol"
+  cargo_pkg_repository = "https://github.com/zcash/orchard"
   cargo_pkg_version = "0.8.0"
 
   deps = [
