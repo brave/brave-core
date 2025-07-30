@@ -842,7 +842,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectRequestInProgress) {
   )");
   ASSERT_TRUE(result.is_ok());
   ASSERT_TRUE(result.is_dict());
-  base::Value::Dict dict = result.ExtractDict();
+  const base::Value::Dict& dict = result.ExtractDict();
   EXPECT_EQ(*dict.FindInt("code"),
             static_cast<int>(mojom::SolanaProviderError::kResourceUnavailable));
   EXPECT_EQ(*dict.FindString("message"),
