@@ -53,7 +53,7 @@ valuable.
 ## GitHub Workflow
 
 All Code Health work must be tracked in GitHub, and should attain to the
-following detais.
+following details.
 
 1.  **Labeling**: Issues should have the label `code-health` and `dev-concern`
     applied, and all PRs/commit messages must have the label `[CodeHealth]`
