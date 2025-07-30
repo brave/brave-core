@@ -10,12 +10,6 @@
 #include "base/logging.h"
 #include "base/time/time.h"
 
-namespace {
-// We cache the result of ShouldUseOmaha4() to ensure that it stays constant
-// across multiple calls.
-std::optional<bool> g_use_omaha4;
-}  // namespace
-
 namespace brave_updater {
 
 // DO NOT TURN THIS FEATURE ON IN PRODUCTION. As of this writing, it only
@@ -32,6 +26,12 @@ BASE_FEATURE_PARAM(int,
                    &kBraveUseOmaha4Alpha,
                    "legacy-fallback-interval-days",
                    5);
+
+namespace {
+
+// We cache the result of ShouldUseOmaha4() to ensure that it stays constant
+// across multiple calls.
+std::optional<bool> g_use_omaha4;
 
 bool ShouldUseOmaha4Impl(base::Time now, std::optional<bool>& state) {
   if (!state.has_value()) {
@@ -52,8 +52,14 @@ bool ShouldUseOmaha4Impl(base::Time now, std::optional<bool>& state) {
   return state.value();
 }
 
+}  // namespace
+
 bool ShouldUseOmaha4() {
   return ShouldUseOmaha4Impl(base::Time::Now(), g_use_omaha4);
+}
+
+bool ShouldUseOmaha4ForTesting(base::Time now, std::optional<bool>& state) {
+  return ShouldUseOmaha4Impl(now, state);
 }
 
 }  // namespace brave_updater

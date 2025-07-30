@@ -19,8 +19,9 @@ BASE_DECLARE_FEATURE_PARAM(int, kLegacyFallbackIntervalDays);
 
 bool ShouldUseOmaha4();
 
-// Exposed here for easier testing.
-bool ShouldUseOmaha4Impl(base::Time now, std::optional<bool>& state);
+// For tests. The "ForTesting" suffix makes PRESUBMIT.py check that the function
+// is not used in production code.
+bool ShouldUseOmaha4ForTesting(base::Time now, std::optional<bool>& state);
 
 }  // namespace brave_updater
 

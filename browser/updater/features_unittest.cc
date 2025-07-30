@@ -17,7 +17,7 @@ class ShouldUseOmaha4Test : public testing::Test {
  protected:
   bool ShouldUseOmaha4(int on_day) {
     base::Time now = base::Time() + base::Days(on_day);
-    return ShouldUseOmaha4Impl(now, state_);
+    return ShouldUseOmaha4ForTesting(now, state_);
   }
   void TearDown() override { state_.reset(); }
   base::test::ScopedFeatureList scoped_feature_list_;
