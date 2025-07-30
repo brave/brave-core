@@ -71,7 +71,7 @@ async function analyzeAffectedTests(
       ? await getReferenceCommit()
       : sinceCommit
 
-  const root = path.resolve(config.srcDir, '../')
+  const root = config.srcDir
   outDir = path.isAbsolute(outDir) ? outDir : `${root}/${outDir}`
   const testTargets = await getTestTargets(outDir, filters)
   const modifiedFiles = [
