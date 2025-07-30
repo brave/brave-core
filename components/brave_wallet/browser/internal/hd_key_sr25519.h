@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_SR25519_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_SR25519_H_
 
-#include <memory>
+#include <optional>
 
 #include "base/containers/span.h"
 #include "base/types/pass_key.h"
@@ -19,11 +19,14 @@ class HDKeySr25519 {
   HDKeySr25519(base::PassKey<HDKeySr25519>, polkadot::SchnorrkelKeyPair skp);
 
   HDKeySr25519(const HDKeySr25519&) = delete;
-
   HDKeySr25519& operator=(const HDKeySr25519&) = delete;
+
+  HDKeySr25519(HDKeySr25519&&) = default;
+  HDKeySr25519& operator=(HDKeySr25519&&) = default;
+
   ~HDKeySr25519();
 
-  static std::unique_ptr<HDKeySr25519> GenerateFromSeed(
+  static std::optional<HDKeySr25519> GenerateFromSeed(
       base::span<const uint8_t> seed);
 
   polkadot::SR25519PublicKey GetPublicKey();
@@ -32,8 +35,7 @@ class HDKeySr25519 {
                                    base::span<const uint8_t> msg);
 
   // derive_junction should be a SCALE-encoded segment from the derivation path
-  std::unique_ptr<HDKeySr25519> DeriveHard(
-      base::span<const uint8_t> derive_junction);
+  HDKeySr25519 DeriveHard(base::span<const uint8_t> derive_junction);
 
  private:
   polkadot::SchnorrkelKeyPair schnorrkel_key_pair_;
