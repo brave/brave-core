@@ -98,7 +98,7 @@ gh issue create --repo brave/brave-browser \
 
 Automated or "mechanical" changes are strongly encouraged with CodeHealth tasks.
 When python scripts, `sed`/`awk`, or other shell commands are used to generate
-changes, these tools and commands should be documented, preferrably in the PR
+changes, these tools and commands should be documented, preferably in the PR
 description/commit message, to raise reviewer confidence.
 
 AI tooling for CodeHealth work is still lacking. We have `#ai-dev-tips` in
