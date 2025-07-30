@@ -36,6 +36,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "sha2"
   cargo_pkg_description = "Pure Rust implementation of the SHA-2 hash function family including SHA-224, SHA-256, SHA-384, and SHA-512."
+  cargo_pkg_repository = "https://github.com/RustCrypto/hashes"
   cargo_pkg_version = "0.10.8"
 
   deps = [

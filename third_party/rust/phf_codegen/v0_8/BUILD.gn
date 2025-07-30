@@ -21,6 +21,7 @@ cargo_crate("buildrs_support") {
   cargo_pkg_authors = "Steven Fackler <sfackler@gmail.com>"
   cargo_pkg_name = "phf_codegen"
   cargo_pkg_description = "Codegen library for PHF types"
+  cargo_pkg_repository = "https://github.com/sfackler/rust-phf"
   cargo_pkg_version = "0.8.0"
 
   deps = [

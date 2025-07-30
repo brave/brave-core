@@ -25,6 +25,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Sean Bowe <ewillbefull@gmail.com>, Eirik Ogilvie-Wigley <eowigley@gmail.com>, Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "jubjub"
   cargo_pkg_description = "Implementation of the Jubjub elliptic curve group"
+  cargo_pkg_repository = "https://github.com/zkcrypto/jubjub"
   cargo_pkg_version = "0.10.0"
 
   deps = [
