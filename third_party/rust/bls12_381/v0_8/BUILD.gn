@@ -47,6 +47,7 @@ cargo_crate("lib") {
       "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "bls12_381"
   cargo_pkg_description = "Implementation of the BLS12-381 pairing-friendly elliptic curve construction"
+  cargo_pkg_repository = "https://github.com/zkcrypto/bls12_381"
   cargo_pkg_version = "0.8.0"
 
   deps = [

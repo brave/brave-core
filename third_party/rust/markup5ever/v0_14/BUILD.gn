@@ -34,6 +34,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "The html5ever Project Developers"
   cargo_pkg_name = "markup5ever"
   cargo_pkg_description = "Common code for xml5ever and html5ever"
+  cargo_pkg_repository = "https://github.com/servo/html5ever"
   cargo_pkg_version = "0.14.1"
 
   deps = [

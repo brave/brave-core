@@ -21,6 +21,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Zack Slayton <zack.slayton@gmail.com>"
   cargo_pkg_name = "lifeguard"
   cargo_pkg_description = "An object pool manager in Rust."
+  cargo_pkg_repository = "https://github.com/zslayton/lifeguard"
   cargo_pkg_version = "0.6.1"
 
   rustenv = []
