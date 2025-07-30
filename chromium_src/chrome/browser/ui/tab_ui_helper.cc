@@ -43,8 +43,7 @@ void TabUIHelper::UpdateLastOrigin() {
   // custom title. This is to ensure that the custom title is not stale.
   const auto origin =
       url::Origin::Create(web_contents()->GetLastCommittedURL());
-  if ((last_origin_.opaque() && origin.opaque()) ||
-      last_origin_.IsSameOriginWith(origin)) {
+  if (last_origin_.IsSameOriginWith(origin)) {
     return;
   }
 
