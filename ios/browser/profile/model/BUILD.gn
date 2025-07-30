@@ -21,6 +21,7 @@ source_set("model") {
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/debounce",
     "//brave/ios/browser/favicon",
+    "//brave/ios/browser/misc_metrics",
     "//brave/ios/browser/skus",
     "//brave/ios/browser/url_sanitizer",
   ]
