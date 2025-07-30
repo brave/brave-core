@@ -1689,7 +1689,7 @@ public class BytecodeTest {
                         Supplier.class,
                         AppMenuDelegate.class,
                         StatusBarColorProvider.class,
-                        OneshotSupplierImpl.class,
+                        ObservableSupplierImpl.class,
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
