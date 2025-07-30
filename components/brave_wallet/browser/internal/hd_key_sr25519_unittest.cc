@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 
+#include <type_traits>
+#include <utility>
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
@@ -46,6 +48,36 @@ TEST(HDKeySr25519, GetPublicKey) {
   ASSERT_TRUE(kpresult2);
 
   EXPECT_EQ(kpresult->GetPublicKey(), kpresult2->GetPublicKey());
+}
+
+TEST(HDKeySr25519, MoveSemantics) {
+  EXPECT_TRUE(std::is_nothrow_move_constructible_v<HDKeySr25519>);
+  EXPECT_TRUE(std::is_nothrow_move_assignable_v<HDKeySr25519>);
+
+  auto kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  ASSERT_TRUE(kpresult);
+
+  HDKeySr25519 keypair(std::move(*kpresult));
+  auto public_key = keypair.GetPublicKey();
+  EXPECT_EQ(public_key.size(), std::size_t{32});
+
+  // prove that self-move-assign doesn't segfaultf
+  auto& ref = keypair;
+  keypair = std::move(ref);
+  public_key = keypair.GetPublicKey();
+  EXPECT_EQ(public_key.size(), std::size_t{32});
+
+  auto kpresult2 = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  ASSERT_TRUE(kpresult2);
+
+  HDKeySr25519 keypair2(std::move(*kpresult2));
+
+  keypair2 = std::move(keypair);
+  public_key = keypair2.GetPublicKey();
+  EXPECT_EQ(public_key.size(), std::size_t{32});
+
+  // test moving from a moved-from object
+  HDKeySr25519 keypair3(std::move(keypair));
 }
 
 TEST(HDKeySr25519, SignAndVerify) {
