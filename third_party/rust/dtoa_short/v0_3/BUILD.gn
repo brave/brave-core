@@ -22,6 +22,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "dtoa-short"
   cargo_pkg_description =
       "Serialize float number and truncate to certain precision"
+  cargo_pkg_repository = "https://github.com/upsuper/dtoa-short"
   cargo_pkg_version = "0.3.3"
 
   deps = [ "//brave/third_party/rust/dtoa/v0_4:lib" ]

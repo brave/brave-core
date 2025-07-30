@@ -77,6 +77,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Jack Grigg <jack@electriccoin.co>, Daira Hopwood <daira@jacaranda.org>, Ying Tong Lai <yingtong@electriccoin.co>, Kris Nuttycombe <kris@electriccoin.co>"
   cargo_pkg_name = "halo2_gadgets"
   cargo_pkg_description = "Reusable gadgets and chip implementations for Halo 2"
+  cargo_pkg_repository = "https://github.com/zcash/halo2"
   cargo_pkg_version = "0.3.0"
 
   deps = [

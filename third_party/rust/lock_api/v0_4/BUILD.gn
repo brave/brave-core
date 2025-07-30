@@ -26,6 +26,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"
   cargo_pkg_name = "lock_api"
   cargo_pkg_description = "Wrappers to create fully-featured Mutex and RwLock types. Compatible with no_std."
+  cargo_pkg_repository = "https://github.com/Amanieu/parking_lot"
   cargo_pkg_version = "0.4.9"
 
   deps = [ "//brave/third_party/rust/scopeguard/v1:lib" ]

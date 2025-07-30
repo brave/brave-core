@@ -21,6 +21,7 @@ cargo_crate("buildrs_support") {
   cargo_pkg_name = "rustc_version"
   cargo_pkg_description =
       "A library for querying the version of a installed rustc compiler"
+  cargo_pkg_repository = "https://github.com/djc/rustc-version-rs"
   cargo_pkg_version = "0.4.1"
 
   deps = [ "//brave/third_party/rust/semver/v1:lib" ]

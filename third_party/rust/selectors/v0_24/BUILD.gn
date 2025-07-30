@@ -38,6 +38,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "The Servo Project Developers"
   cargo_pkg_name = "selectors"
   cargo_pkg_description = "CSS Selectors matching for Rust"
+  cargo_pkg_repository = "https://github.com/servo/servo"
   cargo_pkg_version = "0.24.0"
 
   deps = [

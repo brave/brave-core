@@ -32,6 +32,7 @@ cargo_crate("lib") {
       "Eliza Weisman <eliza@buoyant.io>, Tokio Contributors <team@tokio.rs>"
   cargo_pkg_name = "tracing"
   cargo_pkg_description = "Application-level tracing for Rust."
+  cargo_pkg_repository = "https://github.com/tokio-rs/tracing"
   cargo_pkg_version = "0.1.41"
 
   deps = [

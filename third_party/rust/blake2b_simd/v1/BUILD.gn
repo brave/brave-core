@@ -30,6 +30,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Jack O'Connor"
   cargo_pkg_name = "blake2b_simd"
   cargo_pkg_description = "a pure Rust BLAKE2b implementation with dynamic SIMD"
+  cargo_pkg_repository = "https://github.com/oconnor663/blake2_simd"
   cargo_pkg_version = "1.0.1"
 
   deps = [

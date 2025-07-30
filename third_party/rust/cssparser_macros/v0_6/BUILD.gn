@@ -24,6 +24,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Simon Sapin <simon.sapin@exyr.org>"
   cargo_pkg_name = "cssparser-macros"
   cargo_pkg_description = "Procedural macros for cssparser"
+  cargo_pkg_repository = "https://github.com/servo/rust-cssparser"
   cargo_pkg_version = "0.6.1"
 
   deps = [

@@ -27,6 +27,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "dignifiedquire <dignifiedquire@gmail.com>, David Craven <david@craven.ch>, Volker Mische <volker.mische@gmail.com>"
   cargo_pkg_name = "multihash"
   cargo_pkg_description = "Implementation of the multihash format"
+  cargo_pkg_repository = "https://github.com/multiformats/rust-multihash"
   cargo_pkg_version = "0.19.2"
 
   deps = [

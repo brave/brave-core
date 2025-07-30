@@ -48,6 +48,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "reddsa"
   cargo_pkg_description =
       "A standalone implementation of the RedDSA signature scheme."
+  cargo_pkg_repository = "https://github.com/ZcashFoundation/reddsa"
   cargo_pkg_version = "0.5.1"
 
   deps = [

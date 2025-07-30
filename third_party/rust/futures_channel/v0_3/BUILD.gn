@@ -28,6 +28,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "futures-channel"
   cargo_pkg_description =
       "Channels for asynchronous communication using futures-rs."
+  cargo_pkg_repository = "https://github.com/rust-lang/futures-rs"
   cargo_pkg_version = "0.3.31"
 
   deps = [

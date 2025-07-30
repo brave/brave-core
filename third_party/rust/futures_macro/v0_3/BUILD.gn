@@ -26,6 +26,7 @@ cargo_crate("lib") {
   edition = "2018"
   cargo_pkg_name = "futures-macro"
   cargo_pkg_description = "The futures-rs procedural macro implementations."
+  cargo_pkg_repository = "https://github.com/rust-lang/futures-rs"
   cargo_pkg_version = "0.3.31"
 
   deps = [

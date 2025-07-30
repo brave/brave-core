@@ -21,6 +21,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "crypto-common"
   cargo_pkg_description = "Common cryptographic traits"
+  cargo_pkg_repository = "https://github.com/RustCrypto/traits"
   cargo_pkg_version = "0.1.6"
 
   deps = [
