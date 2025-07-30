@@ -773,12 +773,14 @@ extension BrowserViewController {
 
     var alertTitle = Strings.openExternalAppURLGenericTitle
 
-    if case let origin = URLOrigin(url: url), !origin.isOpaque {
-      let displayHost =
-        "\(origin.scheme)://\(origin.host):\(origin.port)"
-      alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
-    } else if let displayHost = tab.visibleURL?.withoutWWW.host {
-      alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
+    if requestInfo.isMainFrame {
+      if case let origin = URLOrigin(url: url), !origin.isOpaque {
+        let displayHost =
+          "\(origin.scheme)://\(origin.host):\(origin.port)"
+        alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
+      } else if let displayHost = tab.visibleURL?.withoutWWW.host {
+        alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
+      }
     }
 
     // Handling condition when Tab is empty when handling an external URL we should remove the tab once the user decides

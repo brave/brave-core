@@ -16,7 +16,7 @@ const {
   getTestBinary,
   getTestsToRun,
   getApplicableFilters,
-  getChromiumTestsSuites,
+  getChromiumTestsSuites
 } = require('./testUtils')
 
 const test = async (

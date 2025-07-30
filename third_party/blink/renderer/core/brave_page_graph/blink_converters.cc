@@ -51,12 +51,12 @@ base::Value ToPageGraphValue(ScriptState* script_state,
   if (arg.IsEmpty()) {
     return base::Value();
   }
-  v8::String::Utf8Value utf8_string(script_state->GetIsolate(), arg);
+  v8::String::Utf8Value utf8_string(v8::Isolate::GetCurrent(), arg);
   std::string_view result(*utf8_string, utf8_string.length());
   // If the value is converted to string as [object something], we need to
   // serialize it using the inspector protocol.
   if (result.starts_with("[object ")) {
-    return V8ValueToPageGraphValue(script_state->GetIsolate(), arg);
+    return V8ValueToPageGraphValue(v8::Isolate::GetCurrent(), arg);
   }
   return base::Value(result);
 }
@@ -64,7 +64,7 @@ base::Value ToPageGraphValue(ScriptState* script_state,
 template <>
 base::Value ToPageGraphValue(ScriptState* script_state,
                              const v8::Local<v8::Object>& arg) {
-  return V8ValueToPageGraphValue(script_state->GetIsolate(), arg);
+  return V8ValueToPageGraphValue(v8::Isolate::GetCurrent(), arg);
 }
 
 template <>

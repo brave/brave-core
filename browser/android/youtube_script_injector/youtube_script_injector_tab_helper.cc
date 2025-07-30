@@ -12,7 +12,6 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
@@ -20,7 +19,6 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "url/gurl.h"
@@ -114,9 +112,6 @@ constexpr char16_t kYoutubeFullscreen[] =
     const fullscreenButtonSelector = "button.fullscreen-icon";
 
     function triggerFullscreen() {
-      // Always play video before entering fullscreen mode.
-      document.querySelector(videoPlaySelector)?.play();
-
       // Check if the video is not in fullscreen mode already.
       if (!document.fullscreenElement) {
         let observerTimeout;
@@ -124,24 +119,23 @@ constexpr char16_t kYoutubeFullscreen[] =
         const observer = new MutationObserver((_mutationsList, observer) => {
           var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
           var videoPlayer = document.querySelector(videoPlaySelector);
-          if (fullscreenBtn && videoPlayer) {
+          if (fullscreenBtn && videoPlayer && videoPlayer.readyState >= 3) {
             clearTimeout(observerTimeout);
             observer.disconnect()
-            delayedPlayAndClick(fullscreenBtn, videoPlayer, resolve);
+            requestFullscreen(fullscreenBtn, resolve);
           }
         });
 
         var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
         var videoPlayer = document.querySelector(videoPlaySelector);
         // Check if fullscreen button and video are available.
-        if (fullscreenBtn && videoPlayer) {
-         delayedPlayAndClick(fullscreenBtn, videoPlayer, resolve);
+        if (fullscreenBtn && videoPlayer && videoPlayer.readyState >= 3) {
+         requestFullscreen(fullscreenBtn, resolve);
         } else {
           // When fullscreen button is not available
           // clicking the movie player resume the UI.
-          var moviePlayer = document.getElementById("movie_player");
           var playerContainer = document.getElementById("player-container-id");
-          if (moviePlayer && playerContainer) {
+          if (videoPlayer && playerContainer) {
             // Auto-disconnect the observer after 30 seconds,
             // a reasonable duration picked after some testing.
             observerTimeout = setTimeout(() => {
@@ -153,7 +147,7 @@ constexpr char16_t kYoutubeFullscreen[] =
               childList: true, subtree: true
             });
             // Make sure the player is in focus or responsive.
-            moviePlayer.click();
+            videoPlayer.click();
           } else {
             // No fullscreen elements found, resolve immediately
             resolve('no_elements');
@@ -165,23 +159,15 @@ constexpr char16_t kYoutubeFullscreen[] =
       }
     }
 
-    // Click the fullscreen button and play the video and after a delay
-    // to ensure the video is ready.
-    // This is necessary because sometimes (rarely) when switching to fullscreen
-    // mode a video might be paused automatically from the backend if the buffer
-    // was not ready.
-    // The delay allows the video to load properly before attempting to play it.
-    // This is especially important for high quality videos, which may require
-    // some time to buffer before they can be played.
-    // The delay is set to 500 milliseconds, which is a reasonable delay for
-    // the videos to be ready for playback.
-    function delayedPlayAndClick(fullscreenBtn, videoPlayer, resolve) {
-      setTimeout(() => {
-        videoPlayer.play();
-      }, 500);
-      fullscreenBtn.click();
-      // Resolve after clicking fullscreen button
-      resolve('fullscreen_triggered');
+    // Attempts to request fullscreen mode for the given movie player element.
+    // Resolves with 'fullscreen_triggered' if successful, or
+    // 'requestFullscreen_failed' if the request fails.
+    function requestFullscreen(fullscreenBtn, resolve) {
+      fullscreenBtn.click().then(() => {
+        resolve('fullscreen_triggered');
+      }).catch(() => {
+        resolve('requestFullscreen_failed');
+      });
     }
 
     if (document.readyState === "loading") {
@@ -214,6 +200,7 @@ YouTubeScriptInjectorTabHelper::YouTubeScriptInjectorTabHelper(
 YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
 void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
+  SetFullscreenRequested(false);
   content::WebContents* contents = web_contents();
   // Filter only YouTube videos.
   if (!IsYouTubeVideo()) {
@@ -248,13 +235,13 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
 
   // Mark fullscreen as requested for this page
   SetFullscreenRequested(true);
-
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
-      script_injector_remote;
-  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote);
+  if (!script_injector_remote_.is_bound()) {
+    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
+        &script_injector_remote_);
+  }
 
-  script_injector_remote->RequestAsyncExecuteScript(
+  script_injector_remote_->RequestAsyncExecuteScript(
       ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeFullscreen,
       blink::mojom::UserActivationOption::kActivate,
       blink::mojom::PromiseResultOption::kAwait,

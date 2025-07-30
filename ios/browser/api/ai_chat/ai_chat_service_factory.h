@@ -22,7 +22,6 @@ class NoDestructor;
 
 namespace ai_chat {
 
-class AIChatMetrics;
 class AIChatService;
 
 class AIChatServiceFactory : public ProfileKeyedServiceFactoryIOS {
@@ -42,8 +41,6 @@ class AIChatServiceFactory : public ProfileKeyedServiceFactoryIOS {
   // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       web::BrowserState* context) const override;
-
-  std::unique_ptr<AIChatMetrics> ai_chat_metrics_;
 };
 }  // namespace ai_chat
 

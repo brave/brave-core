@@ -128,25 +128,6 @@ public class AppState {
         return true
       }
 
-      if severity == .fatal {
-        let filename = URL(fileURLWithPath: file).lastPathComponent
-        #if DEBUG
-        // Prints a special runtime warning instead of crashing.
-        os_log(
-          .fault,
-          dso: os_rw.dso,
-          log: os_rw.log(category: "BraveCore"),
-          "[%@:%ld] > %@",
-          filename,
-          line,
-          message
-        )
-        return true
-        #else
-        fatalError("Fatal BraveCore Error at \(filename):\(line).\n\(message)")
-        #endif
-      }
-
       let isLoggingAccessible =
         !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value
 

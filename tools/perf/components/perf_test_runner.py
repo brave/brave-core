@@ -226,14 +226,6 @@ class RunableConfiguration:
       assert bench_out_dir
       return custom_handler(bench_out_dir)
 
-    # Optimize redownloading trace_processor_shell: if the file exists use it.
-    is_win = sys.platform == 'win32'
-    trace_processor_path = os.path.join(
-        path_util.GetChromiumPerfDir(), 'core', 'perfetto_binary_roller', 'bin',
-        'trace_processor_shell' + ('.exe' if is_win else ''))
-    if os.path.isfile(trace_processor_path):
-      args.append(f'--trace-processor-path={trace_processor_path}')
-
     if self.common_options.verbose:
       args.extend(['--show-stdout', '--verbose'])
 

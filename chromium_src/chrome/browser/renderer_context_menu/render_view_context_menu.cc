@@ -330,7 +330,7 @@ void OnRewriteSuggestionCompleted(
     }
     ai_chat::ConversationHandler* conversation =
         ai_chat_service->GetOrCreateConversationHandlerForContent(
-            helper->GetContentId(), helper->GetWeakPtr());
+            helper->content_id(), helper->GetWeakPtr());
     if (!conversation) {
       return;
     }
@@ -604,7 +604,7 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     ai_chat::ConversationHandler* conversation =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(
             source_web_contents_->GetBrowserContext())
-            ->GetOrCreateConversationHandlerForContent(helper->GetContentId(),
+            ->GetOrCreateConversationHandlerForContent(helper->content_id(),
                                                        helper->GetWeakPtr());
     // Before trying to activate the panel, unlink page content if needed.
     // This needs to be called before activating the panel to check against the

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { useAppState } from './app_model_context'
-import { isSelfCustodyProvider, isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
+import { isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
 
 export function useShouldShowSelfCustodyInvite() {
   return useAppState((state) => {
@@ -23,12 +23,10 @@ export function useShouldShowSelfCustodyInvite() {
     const { countryCode } = state
     const { walletProviderRegions } = state.rewardsParameters
 
-    for (const provider of state.externalWalletProviders) {
-      if (isSelfCustodyProvider(provider)) {
-        const regionInfo = walletProviderRegions[provider] || null
-        if (isExternalWalletProviderAllowed(countryCode, regionInfo)) {
-          return true
-        }
+    for (const provider of state.selfCustodyProviderInvites) {
+      const regionInfo = walletProviderRegions[provider] || null
+      if (isExternalWalletProviderAllowed(countryCode, regionInfo)) {
+        return true
       }
     }
 

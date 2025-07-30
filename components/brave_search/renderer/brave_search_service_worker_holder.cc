@@ -102,7 +102,7 @@ void JsHandlersForCurrentThread::RemoveContext(
       js_handlers_,
       [&v8_context](
           const std::unique_ptr<BraveSearchFallbackJSHandler>& js_handler) {
-        v8::HandleScope handle_scope(js_handler->GetIsolate());
+        v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
         v8::Context::Scope context_scope(js_handler->Context());
         return js_handler->Context() == v8_context;
       });

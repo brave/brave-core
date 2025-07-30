@@ -5,6 +5,11 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests fail because we override RegionalCapabilitiesServiceClientLinux::
+# FetchCountryId to get locale from device instead of the variations service.
+-RegionalCapabilitiesServiceClientLinuxTest.FetchCountryId
+-RegionalCapabilitiesServiceClientLinuxTest.FetchCountryIdWithDisabledUseFinchPermanentCountryForFetchCountryId
+
 # These tests pass locally but fail on CI (flaky).
 -PasswordStatusCheckServiceBaseTest.PrefInitialized
 

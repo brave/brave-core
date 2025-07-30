@@ -264,7 +264,7 @@ class V8PageGraphDelegate : public v8::page_graph::PageGraphDelegate {
                      const std::string* result) override {
     blink::ExecutionContext* receiver_execution_context =
         blink::ToExecutionContext(receiver_context);
-    v8::Isolate* isolate = receiver_context->GetIsolate();
+    v8::Isolate* isolate = v8::Isolate::GetCurrent();
 
     if (auto* page_graph = GetPageGraphFromIsolate(isolate)) {
       blink::PageGraphValues arguments;
@@ -314,8 +314,7 @@ static int GetListenerScriptId(blink::EventTarget* event_target,
     return 0;
   }
 
-  v8::HandleScope handle_scope(
-      event_target->GetExecutionContext()->GetIsolate());
+  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
   v8::Local<v8::Value> maybe_listener_function =
       js_listener->GetEffectiveFunction(*event_target);
   if (!maybe_listener_function->IsFunction()) {
@@ -1307,7 +1306,7 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
           << ", is frame attached: " << is_frame_attached
           << ", frame id: " << frame_id;
 
-  v8::Isolate* const isolate = execution_context->GetIsolate();
+  v8::Isolate* const isolate = v8::Isolate::GetCurrent();
   if (isolate) {
     static base::NoDestructor<V8PageGraphDelegate> page_graph_delegate;
     v8::page_graph::SetPageGraphDelegate(isolate, page_graph_delegate.get());
@@ -1490,7 +1489,7 @@ void PageGraph::RegisterEventListenerAdd(blink::Node* node,
   FrameId frame_id = GetFrameId(node);
   AddEdge<EdgeEventListenerAdd>(
       acting_node, element_node, frame_id, event_type, listener_id,
-      script_tracker_.GetScriptNode(node->GetExecutionContext()->GetIsolate(),
+      script_tracker_.GetScriptNode(v8::Isolate::GetCurrent(),
                                     listener_script_id));
 }
 
@@ -1510,7 +1509,7 @@ void PageGraph::RegisterEventListenerRemove(blink::Node* node,
   FrameId frame_id = GetFrameId(node);
   AddEdge<EdgeEventListenerRemove>(
       acting_node, element_node, frame_id, event_type, listener_id,
-      script_tracker_.GetScriptNode(node->GetExecutionContext()->GetIsolate(),
+      script_tracker_.GetScriptNode(v8::Isolate::GetCurrent(),
                                     listener_script_id));
 }
 
@@ -1637,7 +1636,7 @@ void PageGraph::RegisterRequestStartFromScript(
           << " request id: " << request_id << ", url: " << url
           << ", type: " << resource_type;
   NodeActor* const acting_node =
-      script_tracker_.GetScriptNode(execution_context->GetIsolate(), script_id);
+      script_tracker_.GetScriptNode(v8::Isolate::GetCurrent(), script_id);
   FrameId frame_id = GetFrameId(execution_context);
   DoRegisterRequestStart(request_id, acting_node, frame_id, url, resource_type);
 }
@@ -1773,7 +1772,7 @@ void PageGraph::RegisterScriptCompilation(
     const ScriptId script_id,
     const ScriptData& script_data) {
   FrameId frame_id = GetFrameId(execution_context);
-  v8::Isolate* isolate = execution_context->GetIsolate();
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
   VLOG(1) << "RegisterScriptCompilation) script id: " << script_id
           << ", frame id: " << frame_id << ", location: "
           << static_cast<int>(script_data.source.location_type)
@@ -1835,7 +1834,7 @@ void PageGraph::RegisterScriptCompilationFromAttr(
           << ", node id: " << script_data.source.dom_node_id
           << ", attr name: " << attr_name;
   NodeScript* const code_node = script_tracker_.AddScriptNode(
-      execution_context->GetIsolate(), script_id, script_data);
+      v8::Isolate::GetCurrent(), script_id, script_data);
   NodeHTMLElement* const html_node =
       GetHTMLElementNode(script_data.source.dom_node_id);
   AddEdge<EdgeExecuteAttr>(html_node, code_node, frame_id, attr_name);
@@ -2053,10 +2052,10 @@ void PageGraph::RegisterBindingEvent(blink::ExecutionContext* execution_context,
   NodeBinding* binding_node = nullptr;
   NodeBindingEvent* binding_event_node = nullptr;
 
-  for (const auto& executing_script : v8::page_graph::GetAllExecutingScripts(
-           execution_context->GetIsolate())) {
+  for (const auto& executing_script :
+       v8::page_graph::GetAllExecutingScripts(v8::Isolate::GetCurrent())) {
     NodeScriptLocal* const script_node = script_tracker_.GetScriptNode(
-        execution_context->GetIsolate(), executing_script.script_id);
+        v8::Isolate::GetCurrent(), executing_script.script_id);
     const ScriptPosition script_position = executing_script.script_position;
     if (!binding_node) {
       binding_node = GetBindingNode(binding, binding_type);
@@ -2085,7 +2084,7 @@ NodeActor* PageGraph::GetCurrentActingNode(
   }
 
   if (current_script_id != 0) {
-    return script_tracker_.GetScriptNode(execution_context->GetIsolate(),
+    return script_tracker_.GetScriptNode(v8::Isolate::GetCurrent(),
                                          current_script_id);
   }
 
@@ -2097,7 +2096,7 @@ ScriptId PageGraph::GetExecutingScriptId(
     blink::ExecutionContext* execution_context,
     ScriptPosition* out_script_position) const {
   auto executing_script = v8::page_graph::GetExecutingScript(
-      execution_context->GetIsolate(), out_script_position != nullptr);
+      v8::Isolate::GetCurrent(), out_script_position != nullptr);
   if (out_script_position) {
     *out_script_position = executing_script.script_position;
   }

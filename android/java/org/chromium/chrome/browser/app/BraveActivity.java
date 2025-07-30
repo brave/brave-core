@@ -134,6 +134,7 @@ import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.lifetime.ApplicationLifetime;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErrorHandler;
@@ -522,6 +523,10 @@ public abstract class BraveActivity extends ChromeActivity
             MediaSession mediaSession = MediaSession.fromWebContents(getCurrentWebContents());
             if (mediaSession != null) {
                 mediaSession.suspend();
+            }
+            FullscreenManager fullscreenManager = getFullscreenManager();
+            if (fullscreenManager.getPersistentFullscreenMode()) {
+                fullscreenManager.exitPersistentFullscreenMode();
             }
         }
     }

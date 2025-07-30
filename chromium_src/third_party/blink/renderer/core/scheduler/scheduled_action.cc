@@ -11,14 +11,14 @@
 #include "third_party/blink/renderer/core/script/classic_script.h"
 #include "third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h"
 
-#define BRAVE_SCHEDULED_ACTION_STRING_HANDLER_CONSTRUCTOR                \
-  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                                \
-    if (!code_.empty() &&                                                \
-        CoreProbeSink::HasAgentsGlobal(CoreProbeSink::kPageGraph)) {     \
-      parent_script_id_ =                                                \
-          v8::page_graph::GetExecutingScript(script_state->GetIsolate()) \
-              .script_id;                                                \
-    }                                                                    \
+#define BRAVE_SCHEDULED_ACTION_STRING_HANDLER_CONSTRUCTOR               \
+  IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                               \
+    if (!code_.empty() &&                                               \
+        CoreProbeSink::HasAgentsGlobal(CoreProbeSink::kPageGraph)) {    \
+      parent_script_id_ =                                               \
+          v8::page_graph::GetExecutingScript(v8::Isolate::GetCurrent()) \
+              .script_id;                                               \
+    }                                                                   \
   })
 
 #define ScriptFetchOptions GetScriptFetchOptions

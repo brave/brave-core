@@ -156,7 +156,7 @@ v8::Local<v8::Value> SerializeValue(v8::Local<v8::Context> context,
     return serialized_value;
   }
 
-  Isolate* isolate = context->GetIsolate();
+  Isolate* isolate = v8::Isolate::GetCurrent();
   serialized_value = Object::New(isolate);
 
   for (auto& mirror : properties.mirrors()) {
@@ -193,7 +193,7 @@ v8::Local<v8::Value> SerializeValue(v8::Local<v8::Context> context,
       }
 
       if (result->hasValue()) {
-        prop_value = ConvertProtocolValueToV8Value(context->GetIsolate(),
+        prop_value = ConvertProtocolValueToV8Value(v8::Isolate::GetCurrent(),
                                                    result->getValue(nullptr));
       } else if (result->hasUnserializableValue()) {
         prop_value = v8_inspector::toV8String(

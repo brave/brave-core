@@ -36,6 +36,7 @@ const getTestsToRun = (config, suite) => {
     suiteDepNames = JSON.parse(
       fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
     )
+
     return suiteDepNames.map(targetToExecutable)
   }
 

@@ -11,7 +11,7 @@
   [[nodiscard]] static v8::Local<v8::Value> ToV8(ScriptState* script_state,    \
                                                  const ContainerType* value) { \
     if (!value)                                                                \
-      return v8::Null(script_state->GetIsolate());                             \
+      return v8::Null(v8::Isolate::GetCurrent());                              \
     return ToV8Traits<IDLSequence<T>>::ToV8(script_state, *value);             \
   }
 

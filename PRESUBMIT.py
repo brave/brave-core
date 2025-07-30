@@ -102,9 +102,7 @@ def CheckWebDevStyle(input_api, output_api):
 
 
 def CheckChangeLintsClean(input_api, output_api):
-    return input_api.canned_checks.CheckChangeLintsClean(input_api,
-                                                         output_api,
-                                                         lint_filters=[])
+    return input_api.canned_checks.CheckChangeLintsClean(input_api, output_api)
 
 
 def CheckPylint(input_api, output_api):

@@ -23,14 +23,31 @@ PageContent::PageContent(std::string content, bool is_video)
 AssociatedContentDelegate::AssociatedContentDelegate()
     : uuid_(base::Uuid::GenerateRandomV4().AsLowercaseString()) {}
 
-AssociatedContentDelegate::~AssociatedContentDelegate() = default;
+AssociatedContentDelegate::~AssociatedContentDelegate() {
+  for (auto& observer : observers_) {
+    observer.OnDestroyed(this);
+  }
+}
 
 void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
-  DVLOG(1) << __func__;
+  DVLOG(1) << __func__ << " navigation_id: " << navigation_id;
 
+  // |content_id_| needs to be updated before we notify observers, so they know
+  // that they're associated with a different tab now.
+  content_id_ = navigation_id;
+
+  // Note: We should request the Archive before updating any of the page details
+  // so that the archive uses the old content.
   for (auto& observer : observers_) {
-    observer.OnNavigated(this);
+    observer.OnRequestArchive(this);
   }
+
+  // Page content is reset to empty when a new page is navigated to.
+  set_cached_page_content(PageContent());
+  set_url(GURL());
+
+  // Clear title directly so we don't notify observers.
+  title_.clear();
 }
 
 void AssociatedContentDelegate::GetStagedEntriesFromContent(
@@ -47,7 +64,9 @@ void AssociatedContentDelegate::GetScreenshots(
   std::move(callback).Run(std::nullopt);
 }
 
-void AssociatedContentDelegate::OnTitleChanged() {
+void AssociatedContentDelegate::SetTitle(std::u16string title) {
+  title_ = std::move(title);
+
   for (auto& observer : observers_) {
     observer.OnTitleChanged(this);
   }

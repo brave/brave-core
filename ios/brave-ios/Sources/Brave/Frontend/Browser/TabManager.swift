@@ -796,6 +796,16 @@ class TabManager: NSObject {
     }
   }
 
+  @MainActor func shredAllTabsForCurrentMode() {
+    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+    let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
+    let urlsToShred = Set(tabs(isPrivate: isPrivateBrowsing).compactMap(\.visibleURL))
+    Task {
+      removeAllTabsForPrivateMode(isPrivate: isPrivateBrowsing)
+      await forgetData(for: Array(urlsToShred), dataStore: configuration.websiteDataStore)
+    }
+  }
+
   @MainActor func shredData(for url: URL, in tab: some TabState) {
     guard let url = url.urlToShred,
       let baseDomain = url.baseDomain

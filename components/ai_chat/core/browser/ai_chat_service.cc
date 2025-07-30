@@ -549,7 +549,7 @@ void AIChatService::MaybeAssociateContent(
     int associated_content_id,
     base::WeakPtr<AssociatedContentDelegate> associated_content) {
   if (associated_content &&
-      kAllowedContentSchemes.contains(associated_content->GetURL().scheme())) {
+      kAllowedContentSchemes.contains(associated_content->url().scheme())) {
     conversation->associated_content_manager()->AddContent(
         associated_content.get(),
         /*notify_updated=*/true);
@@ -1080,7 +1080,7 @@ void AIChatService::OpenConversationWithStagedEntries(
   }
 
   ConversationHandler* conversation = GetOrCreateConversationHandlerForContent(
-      associated_content->GetContentId(), associated_content);
+      associated_content->content_id(), associated_content);
   CHECK(conversation);
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
@@ -1103,7 +1103,7 @@ void AIChatService::MaybeAssociateContent(
     return;
   }
 
-  MaybeAssociateContent(conversation, content->GetContentId(),
+  MaybeAssociateContent(conversation, content->content_id(),
                         content->GetWeakPtr());
 }
 
