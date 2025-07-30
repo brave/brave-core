@@ -8,71 +8,78 @@
 # vpython3 tools/perf/trace_compare.py compare system_health.common_desktop load_site_example_2023 /tmp/v1.82.124 /tmp/v1.82.125
 
 import argparse
+import hashlib
 import os
 import re
 import glob
 import gzip
+import tempfile
 import numpy as np
 
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 
-from perfetto.trace_processor import TraceProcessor,TraceProcessorConfig
+from perfetto.trace_processor import TraceProcessor, TraceProcessorConfig
 from perfetto.trace_processor.shell import load_shell
 from perfetto.trace_processor.platform import PlatformDelegate
 
 from scipy.stats import ttest_ind
 
 import components.path_util as path_util
+import components.perf_test_utils as perf_test_utils
+
 with path_util.SysPath(path_util.GetChromiumPerfDir()):
-    from core.perfetto_binary_roller import binary_deps_manager
+  from core.perfetto_binary_roller import binary_deps_manager
 
 _DIFF_NEW = 1000000
 
+
 @dataclass(frozen=True)
 class Slice:
-    name: str
-    category: str
-    mojo_interface_tag: str
-    thread_name: str
-    process_name: str
-    posted_from_function_name: str
-    posted_from_file_name: str
-    is_top_level: bool
-    slice_id: int
-    trace_file_idx: int
+  name: str
+  category: str
+  mojo_interface_tag: str
+  thread_name: str
+  process_name: str
+  posted_from_function_name: str
+  posted_from_file_name: str
+  is_top_level: bool
+  slice_id: int
+  trace_file_idx: int
 
-    # TODO: add trace_filename
-    def display_name(self, verbose = False, trace_filename: Optional[str] = None):
-        if verbose:
-            return self.__str__() + f" [{trace_filename or '??'}: id {self.slice_id}]"
-        if self.mojo_interface_tag:
-            return f"{self.name} ({self.mojo_interface_tag})"
-        if self.posted_from_function_name:
-            filename = self.posted_from_file_name.split('/')[-1] if self.posted_from_file_name else '??'
-            return f"{self.name} ({filename}:{self.posted_from_function_name})"
-        return self.name
+  # TODO: add trace_filename
+  def display_name(self, verbose=False, trace_filename: Optional[str] = None):
+    if verbose:
+      return self.__str__() + f" [{trace_filename or '??'}: id {self.slice_id}]"
+    if self.mojo_interface_tag:
+      return f"{self.name} ({self.mojo_interface_tag})"
+    if self.posted_from_function_name:
+      filename = self.posted_from_file_name.split(
+          '/')[-1] if self.posted_from_file_name else '??'
+      return f"{self.name} ({filename}:{self.posted_from_function_name})"
+    return self.name
 
 
 def ensure_len(l: List, length: int, default):
-    if len(l) < length:
-        l.extend([default] * (length - len(l)))
+  if len(l) < length:
+    l.extend([default] * (length - len(l)))
+
 
 @dataclass
 class Stats:
-    files: List[str] = field(default_factory=list)
-    slices: Dict[int, Slice] = field(default_factory=dict)
-    slice_thread_durations: Dict[int, List[float]] = field(default_factory=dict)
-    slice_count: Dict[int, List[int]] = field(default_factory=dict)
-    thread_total_durations: Dict[Tuple[str, str], List[float]] = field(default_factory=dict)
+  files: List[str] = field(default_factory=list)
+  slices: Dict[int, Slice] = field(default_factory=dict)
+  slice_thread_durations: Dict[int, List[float]] = field(default_factory=dict)
+  slice_count: Dict[int, List[int]] = field(default_factory=dict)
+  thread_total_durations: Dict[Tuple[str, str],
+                               List[float]] = field(default_factory=dict)
 
-
-    def process_file(self, filename: str, trace_processor_url: str):
-        trace_idx = len(self.files)
-        self.files.append(filename)
-        with gzip.open(filename, 'rb') as f:
-            tp = TraceProcessor(trace=f, addr=trace_processor_url)
-            query = '''
+  def process_file(self, filename: str, trace_processor_url: str):
+    trace_idx = len(self.files)
+    self.files.append(filename)
+    with gzip.open(filename, 'rb') as f:
+      tp = TraceProcessor(trace=f, addr=trace_processor_url)
+      query = '''
             SELECT slice.name, slice.id, slice.parent_id, category, thread_dur,
                    args_1.display_value as posted_from_function_name,
                    args_2.display_value as posted_from_file_name,
@@ -88,248 +95,302 @@ class Stats:
             LEFT JOIN process ON thread.upid = process.upid
             WHERE slice.thread_dur > 0
             '''
-            result = tp.query(query)
-            for row in result:
-                thread_name = re.sub(r'\d+$', '', row.thread_name or 'Unknown')
-                thread_dur = row.thread_dur / 1000 / 1000  # Convert to ms
-                is_top_level = row.parent_id is None
+      result = tp.query(query)
+      for row in result:
+        thread_name = re.sub(r'\d+$', '', row.thread_name or 'Unknown')
+        thread_dur = row.thread_dur / 1000 / 1000  # Convert to ms
+        is_top_level = row.parent_id is None
 
-                processed_filename = re.sub(r'../src/', '', row.posted_from_file_name) if row.posted_from_file_name else None
-                slice_hash = hash((row.name, row.mojo_interface_tag, processed_filename, row.posted_from_function_name))
+        processed_filename = re.sub(
+            r'../src/', '',
+            row.posted_from_file_name) if row.posted_from_file_name else None
+        slice_hash = hash((row.name, row.mojo_interface_tag, processed_filename,
+                           row.posted_from_function_name))
+
+        if slice_hash not in self.slices:
+          self.slices[slice_hash] = Slice(
+              name=row.name,
+              category=row.category,
+              mojo_interface_tag=row.mojo_interface_tag,
+              thread_name=thread_name,
+              process_name=row.process_name,
+              posted_from_function_name=row.posted_from_function_name,
+              posted_from_file_name=row.posted_from_file_name,
+              is_top_level=is_top_level,
+              slice_id=row.id,
+              trace_file_idx=trace_idx)
+
+        durations = self.slice_thread_durations.setdefault(slice_hash, [])
+        counts = self.slice_count.setdefault(slice_hash, [])
+
+        ensure_len(durations, trace_idx + 1, 0.0)
+        ensure_len(counts, trace_idx + 1, 0)
+        durations[trace_idx] += thread_dur
+        counts[trace_idx] += 1
+
+        if is_top_level:
+          thread_total_duration = self.thread_total_durations.setdefault(
+              (thread_name, row.process_name), [])
+          ensure_len(thread_total_duration, trace_idx + 1, 0.0)
+          thread_total_duration[trace_idx] += thread_dur
+
+  def default_thread_duration(self):
+    return [0.0] * len(self.files)
+
+  def get_thread_duration(self, slice_id: int):
+    index = self.slices.get(slice_id)
+    if index is None:
+      return self.default_thread_duration()
+    return self.slice_thread_durations.get(slice_id,
+                                           self.default_thread_duration())
+
+  def default_slice_count(self):
+    return [0] * len(self.files)
+
+  def get_slice_count(self, slice_id: int):
+    index = self.slices.get(slice_id)
+    if index is None:
+      return self.default_slice_count()
+    return self.slice_count.get(slice_id, self.default_slice_count())
 
 
-                if slice_hash not in self.slices:
-                    self.slices[slice_hash] = Slice(name = row.name,
-                              category = row.category,
-                              mojo_interface_tag = row.mojo_interface_tag,
-                              thread_name = thread_name,
-                              process_name = row.process_name,
-                              posted_from_function_name = row.posted_from_function_name,
-                              posted_from_file_name = row.posted_from_file_name,
-                              is_top_level = is_top_level,
-                              slice_id = row.id,
-                              trace_file_idx = trace_idx)
+def compare_values(before_data: List[float], after_data: List[float],
+                   display_name: str, verbose: bool,
+                   args) -> Tuple[Optional[float], str]:
+  before_dur = np.mean(before_data)
+  after_dur = np.mean(after_data)
 
-                durations = self.slice_thread_durations.setdefault(slice_hash, [])
-                counts = self.slice_count.setdefault(slice_hash, [])
+  if before_dur > 0 and after_dur > 0:
+    _, p_value = ttest_ind(before_data, after_data, equal_var=False)
+  else:
+    p_value = 0
 
-                ensure_len(durations, trace_idx + 1, 0.0)
-                ensure_len(counts, trace_idx + 1, 0)
-                durations[trace_idx] += thread_dur
-                counts[trace_idx] += 1
+  rel_diff = (after_dur - before_dur
+              ) / before_dur if before_dur > 0 else _DIFF_NEW + after_dur
 
-                if is_top_level:
-                    thread_total_duration = self.thread_total_durations.setdefault((thread_name, row.process_name), [])
-                    ensure_len(thread_total_duration, trace_idx + 1, 0.0)
-                    thread_total_duration[trace_idx] += thread_dur
+  if abs(before_dur -
+         after_dur) < args.min_abs_diff or abs(rel_diff) < args.min_rel_diff:
+    return None, ""  # skip small diff
 
-    def default_thread_duration(self):
-        return [0.0] * len(self.files)
+  if p_value > args.min_p_value:
+    return None, ""  # skip insignificant differences
 
-    def get_thread_duration(self, slice_id: int):
-        index = self.slices.get(slice_id)
-        if index is None:
-            return self.default_thread_duration()
-        return self.slice_thread_durations.get(slice_id, self.default_thread_duration())
+  sign = '+' if after_dur > before_dur else ''
+  if before_dur == 0 or np.isnan(before_dur):
+    before_data = [0]
+    diff_msg = "New"
+  elif after_dur == 0 or np.isnan(after_dur):
+    after_data = [0]
+    diff_msg = "Removed"
+  else:
+    diff_msg = f"{sign}{rel_diff * 100:.1f}%"
+  before_std = np.std(before_data)
+  after_std = np.std(after_data)
+  display_name = display_name
+  msg = f"{display_name}: {diff_msg}, " \
+        f"p-value={p_value:.3f}, "
+  if verbose:
+    msg += f" ({np.min(before_data):.1f} - {np.max(before_data):.1f} => " \
+           f"{np.min(after_data):.1f} - {np.max(after_data):.1f})"
+  else:
+    msg += f" ({before_dur:.1f}±{before_std:.1f} => {after_dur:.1f}±{after_std:.1f}ms)"
+  return rel_diff, msg
 
-    def default_slice_count(self):
-        return [0] * len(self.files)
-
-    def get_slice_count(self, slice_id: int):
-        index = self.slices.get(slice_id)
-        if index is None:
-            return self.default_slice_count()
-        return self.slice_count.get(slice_id, self.default_slice_count())
-
-
-def compare_values(before_data: List[float], after_data: List[float], display_name: str, verbose: bool, args) -> Tuple[Optional[float], str]:
-    before_dur = np.mean(before_data)
-    after_dur = np.mean(after_data)
-
-    if before_dur > 0 and after_dur > 0:
-      _, p_value = ttest_ind(before_data, after_data, equal_var=False)
-    else:
-      p_value = 0
-
-    rel_diff = (after_dur - before_dur) / before_dur if before_dur > 0 else _DIFF_NEW + after_dur
-
-    if abs(before_dur - after_dur) < args.min_abs_diff or abs(rel_diff) < args.min_rel_diff:
-        return None, "" # skip small diff
-
-    if p_value > args.min_p_value:
-        return None, "" # skip insignificant differences
-
-    sign = '+' if after_dur > before_dur else ''
-    if before_dur == 0 or np.isnan(before_dur):
-      before_data = [0]
-      diff_msg = "New"
-    elif after_dur == 0 or np.isnan(after_dur):
-      after_data = [0]
-      diff_msg = "Removed"
-    else:
-      diff_msg = f"{sign}{rel_diff * 100:.1f}%"
-    before_std = np.std(before_data)
-    after_std = np.std(after_data)
-    display_name = display_name
-    msg = f"{display_name}: {diff_msg}, " \
-          f"p-value={p_value:.3f}, "
-    if verbose:
-      msg += f" ({np.min(before_data):.1f} - {np.max(before_data):.1f} => " \
-             f"{np.min(after_data):.1f} - {np.max(after_data):.1f})"
-    else:
-      msg += f" ({before_dur:.1f}±{before_std:.1f} => {after_dur:.1f}±{after_std:.1f}ms)"
-    return rel_diff, msg
 
 def calc_stats(trace_files: List[str], trace_processor_url: str) -> Stats:
-    stats = Stats()
+  stats = Stats()
 
-    for trace_file in trace_files:
-        print(f"Processing {trace_file}")
-        stats.process_file(trace_file, trace_processor_url)
+  for trace_file in trace_files:
+    print(f"Processing {trace_file}")
+    stats.process_file(trace_file, trace_processor_url)
 
-    return stats
+  return stats
+
 
 def compare_threads(before: Stats, after: Stats, args):
-    differences: List[Tuple[float, str]] = []
+  differences: List[Tuple[float, str]] = []
 
-    all_threads = set(before.thread_total_durations.keys()).union(after.thread_total_durations.keys())
-    for (thread_name, process_name) in all_threads:
-        before_durations = before.thread_total_durations.get((thread_name, process_name), [])
-        after_durations = after.thread_total_durations.get((thread_name, process_name), [])
-        rel_diff, msg = compare_values(before_durations, after_durations, f'{process_name}-{thread_name}', args.slice_verbose, args)
-        if rel_diff is not None:
-            differences.append((rel_diff, msg))
-    differences.sort(key=lambda x: -x[0])
-    return differences
+  all_threads = set(before.thread_total_durations.keys()).union(
+      after.thread_total_durations.keys())
+  for (thread_name, process_name) in all_threads:
+    before_durations = before.thread_total_durations.get(
+        (thread_name, process_name), [])
+    after_durations = after.thread_total_durations.get(
+        (thread_name, process_name), [])
+    rel_diff, msg = compare_values(before_durations, after_durations,
+                                   f'{process_name}-{thread_name}',
+                                   args.slice_verbose, args)
+    if rel_diff is not None:
+      differences.append((rel_diff, msg))
+  differences.sort(key=lambda x: -x[0])
+  return differences
+
 
 def compare_events(before: Stats, after: Stats, args):
-    differences: List[Tuple[float, str]] = []
+  differences: List[Tuple[float, str]] = []
 
-    all_slices = set(before.slices.keys()).union(after.slices.keys())
-    for slice_id in all_slices:
-        slice = before.slices.get(slice_id) or after.slices.get(slice_id)
-        assert slice is not None
+  all_slices = set(before.slices.keys()).union(after.slices.keys())
+  for slice_id in all_slices:
+    slice = before.slices.get(slice_id) or after.slices.get(slice_id)
+    assert slice is not None
 
-        before_durations = before.get_thread_duration(slice_id)
-        after_durations = after.get_thread_duration(slice_id)
+    before_durations = before.get_thread_duration(slice_id)
+    after_durations = after.get_thread_duration(slice_id)
 
-        if args.thread_name and slice.thread_name != args.thread_name:
-            continue
+    if args.thread_name and slice.thread_name != args.thread_name:
+      continue
 
-        if args.process_name and slice.process_name != args.process_name:
-            continue
+    if args.process_name and slice.process_name != args.process_name:
+      continue
 
-        rel_diff, msg = compare_values(before_durations, after_durations, slice.display_name(args.slice_verbose), args.slice_verbose, args  )
+    rel_diff, msg = compare_values(before_durations, after_durations,
+                                   slice.display_name(args.slice_verbose),
+                                   args.slice_verbose, args)
 
-        if rel_diff is not None:
-          differences.append((rel_diff, msg))
+    if rel_diff is not None:
+      differences.append((rel_diff, msg))
 
-    differences.sort(key=lambda x: -x[0])
-    return differences
+  differences.sort(key=lambda x: -x[0])
+  return differences
+
 
 def analyze_stats(stats: Stats, args):
-    differences: List[Tuple[float, str]] = []
+  differences: List[Tuple[float, str]] = []
 
-    for slice_id, slice in stats.slices.items():
-        durations = stats.get_thread_duration(slice_id)
-        counts = stats.get_slice_count(slice_id)
-        min = np.min(durations)
-        max = np.max(durations)
-        std = np.std(durations)
-        mean = np.mean(durations)
-        if mean < args.min_abs_diff:
-            continue
-        rel_diff = (max - min) / (max + 0.0001)
-        if rel_diff < args.min_rel_diff:
-            continue
+  for slice_id, slice in stats.slices.items():
+    durations = stats.get_thread_duration(slice_id)
+    counts = stats.get_slice_count(slice_id)
+    min = np.min(durations)
+    max = np.max(durations)
+    std = np.std(durations)
+    mean = np.mean(durations)
+    if mean < args.min_abs_diff:
+      continue
+    rel_diff = (max - min) / (max + 0.0001)
+    if rel_diff < args.min_rel_diff:
+      continue
 
+    # TODO: move to load stage
+    if args.thread_name and slice.thread_name != args.thread_name:
+      continue
+    if args.process_name and slice.process_name != args.process_name:
+      continue
 
-        # TODO: move to load stage
-        if args.thread_name and slice.thread_name != args.thread_name:
-            continue
-        if args.process_name and slice.process_name != args.process_name:
-            continue
+    idx_max = -1
+    for i in range(len(durations)):
+      if durations[i] == max:
+        idx_max = i
+        break
 
+    differences.append((
+        std,
+        f'{ slice.display_name(args.slice_verbose)} ({mean:.1f}±{std:.1f}ms, min = {min:.1f}, max = {max:.1f} len_min = {np.min(counts)}, len_max = {np.max(counts)}), idx_max = {idx_max}'
+    ))
 
-        idx_max = -1
-        for i in range(len(durations)):
-            if durations[i] == max:
-                idx_max = i
-                break
+  differences.sort(key=lambda x: -x[0])
+  return differences
 
-        differences.append((std, f'{ slice.display_name(args.slice_verbose)} ({mean:.1f}±{std:.1f}ms, min = {min:.1f}, max = {max:.1f} len_min = {np.min(counts)}, len_max = {np.max(counts)}), idx_max = {idx_max}'))
-
-    differences.sort(key=lambda x: -x[0])
-    return differences
 
 def get_trace_files(folder_or_url: str, pattern: str) -> List[str]:
-    if folder_or_url.startswith('http'):
-        assert False, 'Not implemented yet'
+  if folder_or_url.startswith('http'):
+    hash = hashlib.sha1(folder_or_url.encode()).hexdigest()
+    folder_or_url = tempfile.mkdtemp(f'perf-artifacts-{hash}')
+    perf_test_utils.DownloadArchiveAndUnpack(folder_or_url, folder_or_url)
 
-    if not os.path.isdir(folder_or_url):
-        raise Exception(f'{folder_or_url} is not a directory')
+  if not os.path.isdir(folder_or_url):
+    raise Exception(f'{folder_or_url} is not a directory')
 
-    trace_files = glob.glob(os.path.join(folder_or_url, pattern), recursive=True)
-    if len(trace_files) == 0:
-      print(f"No trace files found in {folder_or_url} with pattern {pattern}")
-      exit(1)
+  trace_files = glob.glob(os.path.join(folder_or_url, pattern), recursive=True)
+  if len(trace_files) == 0:
+    print(f"No trace files found in {folder_or_url} with pattern {pattern}")
+    exit(1)
 
-    return trace_files
+  return trace_files
+
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Compare or analyze perf tests results')
-    parser.add_argument('mode', type=str, choices=['compare', 'analyze'], help='Use "compare" to compare two runs, "analyze" to analyze a single run')
-    parser.add_argument('benchmark_name', type=str, help='Benchmark name (i.e. speedometer3)')
-    parser.add_argument('story_name', type=str, help='Store name (i.e. load_site_example_2023)')
-    parser.add_argument('folder_or_url1', type=str, help='First folder or URL containing trace files')
-    parser.add_argument('folder_or_url2', nargs='?', type=str, help='Second folder or URL containing trace files')
-    parser.add_argument('--min-p-value', type=float, default=0.05, help='Minimum p-value')
-    parser.add_argument('--min-abs-diff', type=float, default=10, help='Minimum absolute difference in ms')
-    parser.add_argument('--min-rel-diff', type=float, default=0.05, help='Minimum relative difference in %')
-    parser.add_argument('--thread-name', type=str, help='Filter by thread name')
-    parser.add_argument('--process-name', type=str, help='Filter by process name')
-    parser.add_argument('--slice-verbose', action='store_true', help='Verbose slice output')
-    parser.add_argument('--threads', action='store_true', help='Compare threads instead of events')
-    args = parser.parse_args()
+  parser = argparse.ArgumentParser(
+      description='Compare or analyze perf tests results')
+  parser.add_argument(
+      'mode',
+      type=str,
+      choices=['compare', 'analyze'],
+      help='Use "compare" to compare two runs, "analyze" to analyze a single run'
+  )
+  parser.add_argument('benchmark_name',
+                      type=str,
+                      help='Benchmark name (i.e. speedometer3)')
+  parser.add_argument('story_name',
+                      type=str,
+                      help='Store name (i.e. load_site_example_2023)')
+  parser.add_argument('folder_or_url1',
+                      type=str,
+                      help='First folder or URL containing trace files')
+  parser.add_argument('folder_or_url2',
+                      nargs='?',
+                      type=str,
+                      help='Second folder or URL containing trace files')
+  parser.add_argument('--min-p-value',
+                      type=float,
+                      default=0.05,
+                      help='Minimum p-value')
+  parser.add_argument('--min-abs-diff',
+                      type=float,
+                      default=10,
+                      help='Minimum absolute difference in ms')
+  parser.add_argument('--min-rel-diff',
+                      type=float,
+                      default=0.05,
+                      help='Minimum relative difference in %')
+  parser.add_argument('--thread-name', type=str, help='Filter by thread name')
+  parser.add_argument('--process-name', type=str, help='Filter by process name')
+  parser.add_argument('--slice-verbose',
+                      action='store_true',
+                      help='Verbose slice output')
+  parser.add_argument('--threads',
+                      action='store_true',
+                      help='Compare threads instead of events')
+  args = parser.parse_args()
 
-    pattern = f'results/{args.benchmark_name}/*/artifacts/run_*/{args.story_name}_*/trace/traceEvents/*.pb.gz'
+  pattern = f'results/{args.benchmark_name}/*/artifacts/run_*/{args.story_name}_*/trace/traceEvents/*.pb.gz'
 
-    trace_files1 = get_trace_files(args.folder_or_url1, pattern)
+  trace_files1 = get_trace_files(args.folder_or_url1, pattern)
 
-    trace_processor_shell_path = binary_deps_manager.FetchHostBinary(
-            'trace_processor_shell')
-    trace_processor_shell_path = "../tools/perf/core/perfetto_binary_roller/bin/trace_processor_shell"
-    config = TraceProcessorConfig(bin_path=trace_processor_shell_path)
-    trace_processor_url, subprocess = load_shell(config.bin_path,
-                                  config.unique_port,
-                                  config.verbose,
-                                  config.ingest_ftrace_in_raw,
-                                  config.enable_dev_features,
-                                  PlatformDelegate())
-    trace_processor_url = 'http://' + trace_processor_url
-    print(f"trace_processor_url: {trace_processor_url}")
+  trace_processor_shell_path = binary_deps_manager.FetchHostBinary(
+      'trace_processor_shell')
+  trace_processor_shell_path = "../tools/perf/core/perfetto_binary_roller/bin/trace_processor_shell"
+  config = TraceProcessorConfig(bin_path=trace_processor_shell_path)
+  trace_processor_url, subprocess = load_shell(config.bin_path,
+                                               config.unique_port,
+                                               config.verbose,
+                                               config.ingest_ftrace_in_raw,
+                                               config.enable_dev_features,
+                                               PlatformDelegate())
+  trace_processor_url = 'http://' + trace_processor_url
+  print(f"trace_processor_url: {trace_processor_url}")
 
-    if args.mode == 'compare':
-      trace_files2 = get_trace_files(args.folder_or_url2, pattern)
+  if args.mode == 'compare':
+    trace_files2 = get_trace_files(args.folder_or_url2, pattern)
 
-      print(f"Comparing {len(trace_files1)} traces with {len(trace_files2)} traces")
+    print(
+        f"Comparing {len(trace_files1)} traces with {len(trace_files2)} traces")
 
-      stats_before = calc_stats(trace_files1, trace_processor_url)
-      stats_after = calc_stats(trace_files2, trace_processor_url)
-      if args.threads:
-          differences = compare_threads(stats_before, stats_after, args)
-      else:
-          differences = compare_events(stats_before, stats_after, args)
-      print("Significant differences between the two runs:")
-      for diff, message in differences:
-          print(f"{message}")
+    stats_before = calc_stats(trace_files1, trace_processor_url)
+    stats_after = calc_stats(trace_files2, trace_processor_url)
+    if args.threads:
+      differences = compare_threads(stats_before, stats_after, args)
+    else:
+      differences = compare_events(stats_before, stats_after, args)
+    print("Significant differences between the two runs:")
+    for diff, message in differences:
+      print(f"{message}")
 
-    if args.mode == 'analyze':
-        print("Analyzing traces")
-        stats = calc_stats(trace_files1, trace_processor_url)
-        differences = analyze_stats(stats, args)
-        for diff, message in differences:
-            print(f"{message}")
+  if args.mode == 'analyze':
+    print("Analyzing traces")
+    stats = calc_stats(trace_files1, trace_processor_url)
+    differences = analyze_stats(stats, args)
+    for diff, message in differences:
+      print(f"{message}")
 
-    subprocess.kill()
-    subprocess.wait()
+  subprocess.kill()
+  subprocess.wait()
