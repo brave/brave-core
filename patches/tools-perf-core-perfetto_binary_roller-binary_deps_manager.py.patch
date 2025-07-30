@@ -1,8 +1,8 @@
 diff --git a/tools/perf/core/perfetto_binary_roller/binary_deps_manager.py b/tools/perf/core/perfetto_binary_roller/binary_deps_manager.py
-index 1619dcb78a5262e9de6cefa6644012281eca136c..883ca4164eccd25bbacdd23da9eed038f778ceef 100644
+index 1619dcb78a5262e9de6cefa6644012281eca136c..8fb2b953ee2f529577a97a80a4e6db580d02a435 100644
 --- a/tools/perf/core/perfetto_binary_roller/binary_deps_manager.py
 +++ b/tools/perf/core/perfetto_binary_roller/binary_deps_manager.py
-@@ -229,14 +229,15 @@ def FetchHostBinary(binary_name):
+@@ -229,9 +229,11 @@ def FetchHostBinary(binary_name):
    expected_hash = config[binary_name][platform]['hash']
    filename = posixpath.basename(remote_path)
    local_path = os.path.join(LOCAL_STORAGE_FOLDER, filename)
