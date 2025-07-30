@@ -74,6 +74,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "halo2_proofs"
   cargo_pkg_description =
       "Fast PLONK-based zero-knowledge proving system with no trusted setup"
+  cargo_pkg_repository = "https://github.com/zcash/halo2"
   cargo_pkg_version = "0.3.0"
 
   deps = [

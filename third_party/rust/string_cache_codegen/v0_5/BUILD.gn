@@ -24,6 +24,7 @@ cargo_crate("buildrs_support") {
   cargo_pkg_authors = "The Servo Project Developers"
   cargo_pkg_name = "string_cache_codegen"
   cargo_pkg_description = "A codegen library for string-cache, developed as part of the Servo project."
+  cargo_pkg_repository = "https://github.com/servo/string-cache"
   cargo_pkg_version = "0.5.2"
 
   deps = [

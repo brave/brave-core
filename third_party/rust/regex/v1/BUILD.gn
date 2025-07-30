@@ -36,6 +36,7 @@ cargo_crate("lib") {
       "The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>"
   cargo_pkg_name = "regex"
   cargo_pkg_description = "An implementation of regular expressions for Rust. This implementation uses finite automata and guarantees linear time matching on all inputs."
+  cargo_pkg_repository = "https://github.com/rust-lang/regex"
   cargo_pkg_version = "1.11.1"
 
   deps = [
@@ -124,6 +125,7 @@ cargo_crate("buildrs_support") {
       "The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>"
   cargo_pkg_name = "regex"
   cargo_pkg_description = "An implementation of regular expressions for Rust. This implementation uses finite automata and guarantees linear time matching on all inputs."
+  cargo_pkg_repository = "https://github.com/rust-lang/regex"
   cargo_pkg_version = "1.11.1"
 
   deps = [

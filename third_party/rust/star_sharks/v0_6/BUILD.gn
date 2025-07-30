@@ -25,6 +25,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "star-sharks"
   cargo_pkg_description =
       "Shamir's Secret Sharing library for the STAR protocol"
+  cargo_pkg_repository = "https://github.com/brave/sta-rs"
   cargo_pkg_version = "0.6.1"
 
   deps = [
