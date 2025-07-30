@@ -1,10 +1,10 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_URL_SANITIZER_BROWSER_URL_SANITIZER_SERVICE_H_
-#define BRAVE_COMPONENTS_URL_SANITIZER_BROWSER_URL_SANITIZER_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_URL_SANITIZER_CORE_BROWSER_URL_SANITIZER_SERVICE_H_
+#define BRAVE_COMPONENTS_URL_SANITIZER_CORE_BROWSER_URL_SANITIZER_SERVICE_H_
 
 #include <string>
 #include <utility>
@@ -13,8 +13,8 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
-#include "brave/components/url_sanitizer/common/mojom/url_sanitizer.mojom.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
+#include "brave/components/url_sanitizer/core/common/mojom/url_sanitizer.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/common/url_pattern_set.h"
 #include "url/gurl.h"
@@ -102,4 +102,4 @@ class URLSanitizerService : public KeyedService,
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_URL_SANITIZER_BROWSER_URL_SANITIZER_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_URL_SANITIZER_CORE_BROWSER_URL_SANITIZER_SERVICE_H_
