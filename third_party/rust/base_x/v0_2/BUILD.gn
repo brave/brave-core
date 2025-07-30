@@ -27,6 +27,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Alex R. <alexei.rudenko@gmail.com>"
   cargo_pkg_name = "base-x"
   cargo_pkg_description = "Encode/decode any base"
+  cargo_pkg_repository = "https://github.com/OrKoN/base-x-rs"
   cargo_pkg_version = "0.2.11"
 
   rustenv = []

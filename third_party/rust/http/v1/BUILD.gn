@@ -45,6 +45,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "http"
   cargo_pkg_description =
       "A set of types for representing HTTP requests and responses."
+  cargo_pkg_repository = "https://github.com/hyperium/http"
   cargo_pkg_version = "1.0.0"
 
   deps = [
