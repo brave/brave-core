@@ -39,6 +39,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Zakarum <zaq.dev@icloud.com>"
   cargo_pkg_name = "allocator-api2"
   cargo_pkg_description = "Mirror of Rust's allocator API"
+  cargo_pkg_repository = "https://github.com/zakarumych/allocator-api2"
   cargo_pkg_version = "0.2.21"
 
   features = [ "alloc" ]
