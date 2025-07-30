@@ -13,6 +13,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -39,6 +40,10 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/browser/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
@@ -73,6 +78,10 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveP3ADisabled, p3a::kP3ADisabledByPolicy,
      base::Value::Type::BOOLEAN},
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    {policy::key::kBravePlaylistDisabled, playlist::kPlaylistDisabledByPolicy,
+     base::Value::Type::BOOLEAN},
+#endif
     {policy::key::kBraveStatsPingDisabled, kStatsReportingDisabledByPolicy,
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveWebDiscoveryDisabled, kWebDiscoveryDisabledByPolicy,

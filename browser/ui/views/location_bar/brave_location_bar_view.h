@@ -31,6 +31,7 @@ class OnionLocationView;
 
 namespace playlist {
 FORWARD_DECLARE_TEST(PlaylistBrowserTest, AddItemsToList);
+FORWARD_DECLARE_TEST(PlaylistBrowserTest, UIHiddenWhenDisabled);
 FORWARD_DECLARE_TEST(PlaylistBrowserTestWithSitesUsingMediaSource,
                      MediaShouldBeExtractedFromBackground_SucceedInExtracting);
 FORWARD_DECLARE_TEST(PlaylistBrowserTestWithSitesUsingMediaSource,
@@ -97,6 +98,7 @@ class BraveLocationBarView : public LocationBarView {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, AddItemsToList);
+  FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, UIHiddenWhenDisabled);
   FRIEND_TEST_ALL_PREFIXES(
       playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
       MediaShouldBeExtractedFromBackground_SucceedInExtracting);
