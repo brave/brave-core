@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 95f119be975406de3239ba0c27cb8f4c41696930..f18f9224ce86985dc8a3318c071d5d52584db568 100644
+index c6dabe9887f15e22fac5e1aeeeac0c8fe61603a0..1982696d735fe4da06bbdbac28724fc6300df162 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4859,6 +4859,7 @@ const FeatureEntry::Choice kDataSharingVersioningStateChoices[] = {
+@@ -4853,6 +4853,7 @@ constexpr char kWebiumFlag[] = "webium";
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
