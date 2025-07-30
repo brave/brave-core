@@ -111,3 +111,17 @@ enum HttpsUpgradeMode {
   STANDARD_MODE,
   DISABLED_MODE
 };
+
+interface BraveShieldsUtilsService {
+  SetIsBraveShieldsEnabled(bool is_enabled, url.mojom.Url url);
+  GetIsBraveShieldsEnabled(url.mojom.Url url) => (bool is_enabled);
+
+  SetAdBlockMode(AdBlockMode mode, url.mojom.Url url);
+  GetAdBlockMode(url.mojom.Url url) => (AdBlockMode mode);
+
+  SetIsBlockScriptsEnabled(bool is_enabled, url.mojom.Url url);
+  GetIsBlockScriptsEnabled(url.mojom.Url url) => (bool is_enabled);
+
+  SetFingerprintMode(FingerprintMode mode, url.mojom.Url url);
+  GetFingerprintMode(url.mojom.Url url) => (FingerprintMode mode);
+};

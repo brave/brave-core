@@ -31,6 +31,8 @@ static_library("browser") {
     "brave_shields_p3a.h",
     "brave_shields_utils.cc",
     "brave_shields_utils.h",
+    "brave_shields_utils_service_impl.cc",
+    "brave_shields_utils_service_impl.h",
     "filter_list_catalog_entry.cc",
     "filter_list_catalog_entry.h",
   ]
