@@ -5,41 +5,9 @@
 
 import("//build/rust/rust_static_library.gni")
 
-group("rust") {
+rust_static_library("rust_lib") {
   # This should only be used by internal wallet code
   visibility = [ "//brave/components/brave_wallet/browser/internal:*" ]
-
-  public_deps = [ ":polkadot_headers" ]
-
-  deps = [ ":polkadot_impl" ]
-}
-
-source_set("polkadot_headers") {
-  visibility = [ ":*" ]
-
-  sources = [ "sr25519.h" ]
-
-  public_deps = [
-    "//base",
-    "//brave/components/brave_wallet/common",
-  ]
-}
-
-source_set("polkadot_impl") {
-  visibility = [ ":rust" ]
-
-  sources = [ "sr25519.cc" ]
-
-  deps = [
-    ":polkadot_headers",
-    ":rust_lib",
-    "//brave/components/brave_wallet/common",
-    "//build/rust:cxx_cppdeps",
-  ]
-}
-
-rust_static_library("rust_lib") {
-  visibility = [ ":polkadot_impl" ]
 
   crate_name = "sr25519"
   crate_root = "lib.rs"

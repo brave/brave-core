@@ -6,39 +6,48 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_SR25519_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_SR25519_H_
 
+#include <array>
 #include <optional>
 
 #include "base/containers/span.h"
-#include "base/types/pass_key.h"
-#include "brave/components/brave_wallet/browser/internal/polkadot/rust/sr25519.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet {
 
+namespace polkadot {
+struct CxxSchnorrkelKeyPair;
+}
+
+inline constexpr size_t kSr25519PublicKeySize = 32;
+inline constexpr size_t kSr25519SignatureSize = 64;
+
 class HDKeySr25519 {
  public:
-  HDKeySr25519(base::PassKey<HDKeySr25519>, polkadot::SchnorrkelKeyPair skp);
-
   HDKeySr25519(const HDKeySr25519&) = delete;
   HDKeySr25519& operator=(const HDKeySr25519&) = delete;
 
-  HDKeySr25519(HDKeySr25519&&) = default;
-  HDKeySr25519& operator=(HDKeySr25519&&) = default;
+  HDKeySr25519(HDKeySr25519&&) noexcept;
+  HDKeySr25519& operator=(HDKeySr25519&&) noexcept;
 
   ~HDKeySr25519();
 
   static std::optional<HDKeySr25519> GenerateFromSeed(
       base::span<const uint8_t> seed);
 
-  polkadot::SR25519PublicKey GetPublicKey();
-  polkadot::SR25519Signature SignMessage(base::span<const uint8_t> msg);
-  [[nodiscard]] bool VerifyMessage(polkadot::SR25519Signature const& sig,
-                                   base::span<const uint8_t> msg);
+  std::array<uint8_t, kSr25519PublicKeySize> GetPublicKey();
+  std::array<uint8_t, kSr25519SignatureSize> SignMessage(
+      base::span<const uint8_t> msg);
+  [[nodiscard]] bool VerifyMessage(
+      std::array<uint8_t, kSr25519SignatureSize> const& sig,
+      base::span<const uint8_t> msg);
 
   // derive_junction should be a SCALE-encoded segment from the derivation path
   HDKeySr25519 DeriveHard(base::span<const uint8_t> derive_junction);
 
  private:
-  polkadot::SchnorrkelKeyPair schnorrkel_key_pair_;
+  explicit HDKeySr25519(rust::Box<polkadot::CxxSchnorrkelKeyPair> keypair);
+
+  rust::Box<polkadot::CxxSchnorrkelKeyPair> keypair_;
 };
 
 }  // namespace brave_wallet
