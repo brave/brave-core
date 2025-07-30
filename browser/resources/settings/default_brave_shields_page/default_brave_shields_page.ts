@@ -209,8 +209,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   onAdblockPageClick_() {
-    const adBlockOnlyPref = this.getPref('brave.shields.ad_block_only_mode_enabled')
-    if (adBlockOnlyPref?.value) {
+    if (this.isAdBlockOnlyModeEnabled_) {
       return
     }
     const router = Router.getInstance()
