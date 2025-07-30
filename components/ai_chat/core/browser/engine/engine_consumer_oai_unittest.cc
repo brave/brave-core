@@ -240,18 +240,18 @@ TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages) {
   EXPECT_EQ(message.size(), 2u);
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is the text of a web page:\n\u003Cpage>\nThis is content "
-            "1\n\u003C/page>\n\n");
-  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[1].GetDict().Find("content"),
             "This is a video transcript:\n\n\u003Ctranscript>\nThis is content "
             "2 and a video\n\u003C/transcript>\n\n");
+  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
+  EXPECT_EQ(*message[1].GetDict().Find("content"),
+            "This is the text of a web page:\n\u003Cpage>\nThis is content "
+            "1\n\u003C/page>\n\n");
 }
 
 TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
   PageContent page_content("This is content 1", false);
   PageContent video_content("This is content 2 and a video", true);
-  PageContents page_contents = {page_content, video_content};
+  PageContents page_contents = {video_content, page_content};
 
   uint32_t remaining_length = 20;
   auto message = engine_->BuildPageContentMessages(
@@ -428,7 +428,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Push a single user turn into the history.
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt,
+      "turn-1",
       mojom::CharacterType::HUMAN,     // Author is the user
       mojom::ActionType::UNSPECIFIED,  // No specific action
       human_input,                     // User message
@@ -475,8 +475,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Initiate the test
   engine_->GenerateAssistantResponse(
-      {{{history.back()->uuid.value_or(""), {page_content}}}}, history, "", {},
-      std::nullopt, base::DoNothing(),
+      {{{"turn-1", {page_content}}}}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &assistant_response](
                                      EngineConsumer::GenerationResult result) {
         EXPECT_EQ(result.value(),
@@ -504,16 +504,16 @@ TEST_F(EngineConsumerOAIUnitTest,
   std::string expected_system_message = "This is a custom system prompt.";
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN,
+      "turn-1", mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, human_input,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, false, std::nullopt /* model_key */));
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, assistant_input, std::nullopt /* prompt */,
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      false, std::nullopt /* model_key */));
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      assistant_input, std::nullopt /* prompt */, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false,
+      std::nullopt /* model_key */));
 
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -551,6 +551,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+    entry->uuid = "turn-3";
     entry->character_type = mojom::CharacterType::HUMAN;
     entry->text = "What's his name?";
     history.push_back(std::move(entry));
@@ -691,7 +692,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
           });
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "What are these images?", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_images), false,
       std::nullopt /* model_key */));
@@ -1029,6 +1030,7 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+    entry->uuid = "turn-1";
     entry->character_type = mojom::CharacterType::HUMAN;
     entry->text = "Tell me more about this page";
     history.push_back(std::move(entry));

@@ -193,13 +193,11 @@ void ConversationHandler::BindUntrustedConversationUI(
 
 void ConversationHandler::OnArchiveContentUpdated(
     mojom::ConversationArchivePtr conversation_data) {
-  UpdateAssociatedContentInfo();
   associated_content_manager_->LoadArchivedContent(metadata_,
                                                    conversation_data);
 }
 
 void ConversationHandler::OnAssociatedContentUpdated() {
-  UpdateAssociatedContentInfo();
   for (auto& client : conversation_ui_handlers_) {
     client->OnAssociatedContentInfoChanged(
         associated_content_manager_->GetAssociatedContent());
@@ -332,8 +330,6 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::transform(models.cbegin(), models.cend(), models_copy.begin(),
                  [](auto& model) { return model.Clone(); });
   auto model_key = GetCurrentModel().key;
-
-  UpdateAssociatedContentInfo();
 
   std::vector<std::string> suggestions;
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
@@ -839,7 +835,6 @@ void ConversationHandler::PerformQuestionGeneration(
 
 void ConversationHandler::GetAssociatedContentInfo(
     GetAssociatedContentInfoCallback callback) {
-  UpdateAssociatedContentInfo();
   std::move(callback).Run(associated_content_manager_->GetAssociatedContent());
 }
 
@@ -1059,8 +1054,7 @@ void ConversationHandler::PerformAssistantGeneration(
 
   engine_->GenerateAssistantResponse(
       associated_content_manager_->GetCachedContentsMap(), chat_history_,
-      selected_language_, GetTools(),
-      std::nullopt /* preferred_tool_name */,
+      selected_language_, GetTools(), std::nullopt /* preferred_tool_name */,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1243,7 +1237,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     // the number of associated content items changes.
     suggestions_[0].title =
         l10n_util::GetPluralStringFUTF8(IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
-                                        metadata_->associated_content.size());
+                                        associated_content_manager_->Count());
   }
   OnSuggestedQuestionsChanged();
 }
@@ -1294,6 +1288,8 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, true,
         std::nullopt /* model_key */));
+    associated_content_manager_->AssociateUnsentContentWithTurn(
+        chat_history_.back());
     OnConversationEntryAdded(chat_history_.back());
 
     std::vector<mojom::ConversationEntryEventPtr> events;
@@ -1569,11 +1565,6 @@ void ConversationHandler::OnConversationEntryAdded(
     observer.OnConversationEntryAdded(this, entry, associated_content_value);
   }
   OnHistoryUpdate(entry.Clone());
-}
-
-void ConversationHandler::UpdateAssociatedContentInfo() {
-  metadata_->associated_content =
-      associated_content_manager_->GetAssociatedContent();
 }
 
 mojom::ConversationEntriesStatePtr

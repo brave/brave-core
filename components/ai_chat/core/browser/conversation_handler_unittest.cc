@@ -290,7 +290,7 @@ class ConversationHandlerUnitTest : public testing::Test {
       }
 
       auto entry = mojom::ConversationTurn::New(
-          std::nullopt,
+          "turn-" + base::NumberToString(i),
           is_human ? mojom::CharacterType::HUMAN
                    : mojom::CharacterType::ASSISTANT,
           is_human ? mojom::ActionType::QUERY : mojom::ActionType::RESPONSE,
@@ -1489,16 +1489,16 @@ TEST_F(ConversationHandlerUnitTest,
   auto& history = conversation_handler_->GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> expected_history;
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "query", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, true, std::nullopt /* model_key */));
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "query",
+      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, true, std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary")));
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "summary", std::nullopt, std::nullopt,
-      std::move(events), base::Time::Now(), std::nullopt, std::nullopt, true,
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "summary", std::nullopt, std::nullopt, std::move(events),
+      base::Time::Now(), std::nullopt, std::nullopt, true,
       std::nullopt /* model_key */));
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
@@ -3403,7 +3403,7 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
   // Add existing screenshots to conversation history
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn_with_screenshots = mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "turn-screenshots", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Previous question", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt,
       CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot), false,

@@ -205,8 +205,6 @@ void AssociatedContentManager::AssociateUnsentContentWithTurn(
     }
     content_uuid_to_conversation_turns_[content->uuid()] = turn->uuid.value();
   }
-
-  conversation_->OnAssociatedContentUpdated();
 }
 
 std::vector<mojom::AssociatedContentPtr>
@@ -393,8 +391,7 @@ PageContents AssociatedContentManager::GetCachedContents() const {
   return result;
 }
 
-PageContentsMap
-AssociatedContentManager::GetCachedContentsMap() const {
+PageContentsMap AssociatedContentManager::GetCachedContentsMap() const {
   DVLOG(1) << __func__;
   PageContentsMap result;
 
@@ -435,6 +432,12 @@ bool AssociatedContentManager::IsVideo() const {
 
   return content_delegates_.size() == 1 &&
          content_delegates_[0]->cached_page_content().is_video;
+}
+
+size_t AssociatedContentManager::Count() const {
+  DVLOG(1) << __func__;
+
+  return content_delegates_.size();
 }
 
 void AssociatedContentManager::OnDestroyed(
