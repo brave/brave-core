@@ -6,23 +6,54 @@
 const util = require('../lib/util')
 const config = require('../lib/config')
 const path = require('path')
+const fs = require('fs')
 
-const runPerfTests = (passthroughArgs, perfConfig, targets) => {
+const runPerfTests = (passthroughArgs, perfConfig, targetBuildConfig) => {
   args = [
     path.join(config.braveCoreDir, 'tools', 'perf', 'run_perftests.py'),
     perfConfig,
   ]
 
-  if (targets !== undefined) {
+  if (['Static', 'Release', 'Component'].includes(targetBuildConfig)) {
+    config.buildConfig = targetBuildConfig
+    config.update({})
+
+    binaryPath = path.join(config.outputDir, 'brave')
     if (process.platform === 'win32') {
-      targets = '"' + targets + '"'
+      binaryPath += '.exe'
+    } else if (process.platform === 'darwin') {
+      binaryPath = fs
+        .readFileSync(binaryPath + '_helper')
+        .toString()
+        .trim()
+
+      // Convert "\ " to " ":
+      binaryPath = binaryPath.replace(/\\ /g, ' ')
     }
-    args.push(targets)
+    const braveCoreCommit = util.runGit(
+      config.braveCoreDir,
+      ['rev-parse', 'HEAD'],
+      true,
+    )
+    targetBuildConfig = `${braveCoreCommit}:${binaryPath}`
+  }
+
+  if (targetBuildConfig !== undefined) {
+    args.push(targetBuildConfig)
   }
 
   args.push(...passthroughArgs)
   console.log(args)
-  util.run('vpython3', args, config.defaultOptions)
+
+  let cmdOptions = {
+    ...config.defaultOptions,
+    shell: false,
+  }
+  if (process.platform === 'win32') {
+    util.run('cmd.exe', ['/c', 'vpython3.bat', ...args], cmdOptions)
+  } else {
+    util.run('vpython3', args, cmdOptions)
+  }
 }
 
 module.exports = { runPerfTests }
