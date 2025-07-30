@@ -20,15 +20,13 @@ BraveContentsLayoutManager::BraveContentsLayoutManager(
     views::View* contents_view,
     views::View* lens_overlay_view,
     views::View* watermark_view,
-    views::View* actor_overlay_view,
     views::View* reader_mode_toolbar,
     views::View* scrim_view)
     : ContentsLayoutManager(devtools_view,
                             devtools_scrim_view,
                             contents_view,
                             lens_overlay_view,
-                            watermark_view,
-                            actor_overlay_view),
+                            watermark_view),
       contents_view_(contents_view),
       reader_mode_toolbar_(reader_mode_toolbar),
       scrim_view_(scrim_view) {
