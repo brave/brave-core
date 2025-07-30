@@ -20,6 +20,7 @@ cargo_crate("lib") {
   edition = "2021"
   cargo_pkg_name = "match_token"
   cargo_pkg_description = "Procedural macro for html5ever."
+  cargo_pkg_repository = "https://github.com/servo/html5ever"
   cargo_pkg_version = "0.1.0"
 
   deps = [

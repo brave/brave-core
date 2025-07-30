@@ -26,6 +26,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "tracing-log"
   cargo_pkg_description =
       "Provides compatibility between `tracing` and the `log` crate."
+  cargo_pkg_repository = "https://github.com/tokio-rs/tracing"
   cargo_pkg_version = "0.2.0"
 
   deps = [

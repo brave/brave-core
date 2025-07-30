@@ -26,6 +26,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "tracing-attributes"
   cargo_pkg_description =
       "Procedural macro attributes for automatically instrumenting functions."
+  cargo_pkg_repository = "https://github.com/tokio-rs/tracing"
   cargo_pkg_version = "0.1.28"
 
   deps = [
