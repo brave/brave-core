@@ -241,7 +241,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         std::make_unique<BraveContentsLayoutManager>(
             devtools_web_view(), devtools_scrim_view(),
             contents_container_view_, lens_overlay_view_, watermark_view_.get(),
-            actor_overlay_view_, reader_mode_toolbar_,
+            reader_mode_toolbar_,
             /*scrim_view=*/nullptr));
   }
 #endif
