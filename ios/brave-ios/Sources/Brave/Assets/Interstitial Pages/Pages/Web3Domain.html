@@ -33,22 +33,37 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
     </div>
     
     <script type="text/javascript">
+      // Clickjacking protection: delay before accepting proceed clicks
+      var PROCEED_CLICK_DELAY_MS = 500;
+      var proceedClicksEnabled = false;
+      
       var disableButton = document.getElementById("disableWeb3Button")
       disableButton.addEventListener('click', function(e) {
         e.preventDefault();
+        // Don't proceed is always allowed (safer action)
         webkit.messageHandlers["%message_handler%"].postMessage({
           "button_type": "disable",
           "service_id": "%service_id%"
         });
       });
+      
       var proceedButton = document.getElementById("proceedWeb3Button")
       proceedButton.addEventListener('click', function(e) {
         e.preventDefault();
+        // Prevent clickjacking by requiring a delay before allowing proceed
+        if (!proceedClicksEnabled) {
+          return;
+        }
         webkit.messageHandlers["%message_handler%"].postMessage({
           "button_type": "proceed",
           "service_id": "%service_id%"
         });
       });
+      
+      // Enable proceed clicks after delay to prevent clickjacking
+      setTimeout(function() {
+        proceedClicksEnabled = true;
+      }, PROCEED_CLICK_DELAY_MS);
       
     </script>
   </div>
