@@ -235,7 +235,6 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
 
   uint32_t remaining_length = max_associated_content_length_;
 
-
   base::flat_map<std::string, std::vector<ConversationEvent>>
       page_contents_messages;
 

@@ -303,7 +303,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   };
 
   void InitEngine();
-  void UpdateAssociatedContentInfo();
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
   void PerformAssistantGenerationWithPossibleContent();

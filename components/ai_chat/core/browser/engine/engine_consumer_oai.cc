@@ -283,6 +283,7 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
   // content is preferred.
   for (size_t i = conversation_history.size(); i > 0; i--) {
     auto& turn = conversation_history[i - 1];
+    LOG(ERROR) << "Turn: " << turn->uuid.value_or("<nullopt>");
     auto page_content_it = page_contents.find(turn->uuid.value());
     if (page_content_it != page_contents.end()) {
       auto& messages = page_contents_messages[turn->uuid.value()];
