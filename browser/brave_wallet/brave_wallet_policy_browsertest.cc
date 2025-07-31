@@ -177,6 +177,67 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, WalletInSidebar) {
   }
 }
 
+// Verify that Web3 settings pages are not accessible when Brave Wallet is
+// disabled by policy.
+IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, Web3SettingsPagesAccess) {
+  std::vector<GURL> web3_urls = {
+      GURL("chrome://settings/content/ethereum"),
+      GURL("chrome://settings/content/solana"),
+      GURL("chrome://settings/web3"),
+  };
+
+  // Only test Cardano if it's enabled
+  if (brave_wallet::IsCardanoDAppSupportEnabled()) {
+    web3_urls.push_back(GURL("chrome://settings/content/cardano"));
+  }
+
+  for (const auto& url : web3_urls) {
+    auto* rfh = ui_test_utils::NavigateToURL(browser(), url);
+    EXPECT_TRUE(rfh);
+
+    if (IsBraveWalletDisabledTest()) {
+      // When wallet is disabled, these pages should redirect
+      EXPECT_TRUE(web_contents()->GetLastCommittedURL() != url);
+    } else {
+      // When wallet is enabled, these pages should be accessible
+      EXPECT_FALSE(rfh->IsErrorDocument());
+      EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+    }
+  }
+}
+
+// Verify that Web3 menu item is not available when Brave Wallet is disabled by
+// policy.
+IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, Web3MenuVisibility) {
+  // Navigate to the main settings page
+  const GURL settings_url("chrome://settings");
+  auto* rfh = ui_test_utils::NavigateToURL(browser(), settings_url);
+  EXPECT_TRUE(rfh);
+  EXPECT_FALSE(rfh->IsErrorDocument());
+
+  // Wait for the page to load completely
+  content::WaitForLoadStop(web_contents());
+
+  // Check the JavaScript values that control Web3 menu visibility
+  const std::string web3_script = R"(
+    (function() {
+      // The Web3 menu should be visible if isBraveWalletAllowed is true
+      return loadTimeData.getBoolean('isBraveWalletAllowed');
+    })();
+  )";
+
+  bool web3_menu_item_exists =
+      content::EvalJs(web_contents(), web3_script).ExtractBool();
+
+  if (IsBraveWalletDisabledTest()) {
+    // When wallet is disabled, Web3 menu item should not exist
+    EXPECT_FALSE(web3_menu_item_exists);
+  } else {
+    // When wallet is enabled, Web3 menu item should exist
+    EXPECT_TRUE(web3_menu_item_exists);
+  }
+}
+
 INSTANTIATE_TEST_SUITE_P(
     BraveWalletPolicyTest,
     BraveWalletPolicyTest,

@@ -117,11 +117,14 @@ RegisterPolymerTemplateModifications({
         }
         curChild++
       }
+
       const isNativeBraveWalletEnabled =
-        loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+          loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       const isCardanoDappSupportFeatureEnabled =
-        loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
-      if (isNativeBraveWalletEnabled) {
+          loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
+      const isBraveWalletAllowed =
+          loadTimeData.getBoolean('isBraveWalletAllowed')
+      if (isNativeBraveWalletEnabled && isBraveWalletAllowed) {
         insertBefore(firstPermissionItem, html`<site-details-permission
              category="[[contentSettingsTypesEnum_.ETHEREUM]]"
              icon="ethereum-on">

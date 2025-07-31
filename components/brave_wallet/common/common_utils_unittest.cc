@@ -7,8 +7,13 @@
 
 #include "base/test/gtest_util.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
+#include "build/build_config.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -814,6 +819,53 @@ TEST(CommonUtils, GetNetworkForBitcoinAccount) {
             GetNetworkForBitcoinAccount(MakeIndexBasedAccountId(
                 mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84Testnet,
                 mojom::AccountKind::kDerived, 123)));
+}
+
+class BraveWalletPolicyTest : public testing::Test {
+ public:
+  BraveWalletPolicyTest() {
+    prefs_.registry()->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
+  }
+
+ protected:
+  void BlockWalletByPolicy(bool value) {
+    prefs_.SetManagedPref(prefs::kDisabledByPolicy, base::Value(value));
+  }
+
+  TestingPrefServiceSimple prefs_;
+};
+
+TEST_F(BraveWalletPolicyTest, PolicyDisablesWallet) {
+  // Set policy to disable Brave Wallet
+  BlockWalletByPolicy(true);
+
+  // Test that the policy preference is set correctly
+  EXPECT_TRUE(prefs_.GetBoolean(prefs::kDisabledByPolicy));
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+  // On desktop platforms, policy should be enforced
+  EXPECT_FALSE(IsAllowed(&prefs_));
+#else
+  // On mobile platforms, policy is not enforced
+  EXPECT_TRUE(IsAllowed(&prefs_));
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+}
+
+TEST_F(BraveWalletPolicyTest, PolicyEnablesWallet) {
+  // Set policy to enable Brave Wallet
+  BlockWalletByPolicy(false);
+
+  // Test that the policy preference is set correctly
+  EXPECT_FALSE(prefs_.GetBoolean(prefs::kDisabledByPolicy));
+
+  // Test that IsAllowed returns true when policy enables it
+  // This should be true on all platforms
+  EXPECT_TRUE(IsAllowed(&prefs_));
+}
+
+TEST_F(BraveWalletPolicyTest, DefaultBehavior) {
+  // Test that IsAllowed returns true when no policy is set
+  EXPECT_TRUE(IsAllowed(&prefs_));
 }
 
 }  // namespace brave_wallet
