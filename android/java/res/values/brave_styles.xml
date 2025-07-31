@@ -308,6 +308,10 @@
         <item name="android:activityCloseExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
+    <style name="BraveAccountTheme" parent="Theme.Chromium.Activity.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/BottomSheetAnimation</item>
+    </style>
+
     <style name="BottomSheetActivityTheme" parent="Theme.Chromium.Activity.FakeTranslucent">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@style/BottomSheetAnimation</item>
