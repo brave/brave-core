@@ -67,8 +67,8 @@ group("chromium_unit_tests") {
              "json")
 }
 
-# Only add tests to this list if you want them to run by default on PR builder
-# and release builds.
+# Only add tests to this list if you want them to run by default for
+# brave_all_unit_tests.
 brave_all_unit_tests_deps = [ "//brave/components:brave_components_unittests" ]
 if (!is_ios) {
   brave_all_unit_tests_deps += [ "//brave/test:brave_unit_tests" ]
@@ -77,10 +77,6 @@ if (!is_ios) {
 }
 if (!is_ios && !is_android) {
   brave_all_unit_tests_deps += [ "//brave/test:brave_installer_unittests" ]
-}
-
-if (is_linux) {
-  brave_all_unit_tests_deps += [ "//components:components_unittests" ]
 }
 
 # This is a temporary workaround to prevent upstream component units from
@@ -92,6 +88,8 @@ if (is_linux) {
   ]
 }
 
+# This group is for unit tests that run as part of brave_all_unit_tests. Other
+# tests that you only want to build should be added directly to `all` group
 group("brave_all_unit_tests") {
   testonly = true
   data_deps = brave_all_unit_tests_deps
