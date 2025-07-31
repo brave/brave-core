@@ -33,12 +33,18 @@ const test = async (
     process.exit(1)
   }
 
-  const testsToRun = passthroughArgs.since
+  const testsToRun = passthroughArgs.base
     ? await getAffectedTests({ ...passthroughArgs, suite })
     : getTestsToRun(Config, suite)
 
   await buildTests(testsToRun, Config, options)
   await runTests(passthroughArgs, { suite, testsToRun }, Config, options)
+}
+
+const deleteFile = (filePath) => {
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath)
+  }
 }
 
 const buildTests = async (testsToRun, config) => {
@@ -60,7 +66,7 @@ const runTests = async (
   const isJunitTestSuite = suite.endsWith('_junit_tests')
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   // Clear previous results file
-  await fs.writeFile(allResultsFilePath, '')
+  deleteFile(allResultsFilePath)
 
   let braveArgs = []
 

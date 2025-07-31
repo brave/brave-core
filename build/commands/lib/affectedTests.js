@@ -13,7 +13,7 @@ const { randomUUID } = require('crypto')
 const {
   getApplicableFilters,
   getTestsToRun,
-  targetToExecutable,
+  gnTargetToExecutableName,
 } = require('./testUtils')
 const { tmpdir } = require('os')
 
@@ -144,7 +144,7 @@ async function getAffectedTests(args = {}) {
   const modified = new Set(analysis.files)
 
   const additionalTests = analysis.test_targets
-    .map(targetToExecutable)
+    .map(gnTargetToExecutableName)
     .flatMap((test) =>
       getApplicableFilters(config, test).map((filter) => ({ test, filter })),
     )
@@ -154,7 +154,7 @@ async function getAffectedTests(args = {}) {
     .map(({ test }) => test)
 
   return [
-    ...new Set([...affectedTests.map(targetToExecutable), ...additionalTests]),
+    ...new Set([...affectedTests.map(gnTargetToExecutableName), ...additionalTests]),
   ]
 }
 

@@ -6,7 +6,7 @@
 const fs = require('fs-extra')
 const path = require('path')
 
-const targetToExecutable = (str) => str.split(':').at(-1).split('(')[0]
+const gnTargetToExecutableName = (str) => str.split(':').at(-1).split('(')[0]
 
 const getTestBinary = (config, suite) => {
   let testBinary = suite
@@ -37,7 +37,7 @@ const getTestsToRun = (config, suite) => {
       fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
     )
 
-    return suiteDepNames.map(targetToExecutable)
+    return suiteDepNames.map(gnTargetToExecutableName)
   }
 
   return [suite]
@@ -87,7 +87,7 @@ const getApplicableFilters = (config, suite) => {
 }
 
 module.exports = {
-  targetToExecutable,
+  gnTargetToExecutableName,
   getTestBinary,
   getTestsToRun,
   getApplicableFilters,
