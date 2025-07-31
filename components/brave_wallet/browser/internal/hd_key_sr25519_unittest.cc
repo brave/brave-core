@@ -97,7 +97,33 @@ TEST(HDKeySr25519, SignAndVerify) {
 TEST(HDKeySr25519, HardDerive) {
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
 
-  // manually create a SCALE-encoded chaincode value
+  // Manually create a SCALE-encoded chaincode values for deriving child
+  // keypairs from a parent.
+  //
+  // When it comes to deriving chaincodes for deriving child keypairs from a
+  // path like `<mnemonic>//Alice`, the polkdadot-sdk does this:
+  //
+  // https://github.com/paritytech/polkadot-sdk/blob/7304295748b1d85eb9fc2b598eba43d9f7971f22/substrate/primitives/core/src/crypto.rs#L820
+  // https://github.com/paritytech/polkadot-sdk/blob/7304295748b1d85eb9fc2b598eba43d9f7971f22/substrate/primitives/core/src/crypto.rs#L185
+  // https://github.com/paritytech/polkadot-sdk/blob/7304295748b1d85eb9fc2b598eba43d9f7971f22/substrate/primitives/core/src/crypto.rs#L138-L151
+  //
+  // The important call is: index.using_encoded(|data| { ... })
+  //
+  // `index.using_encoded()` invokes the provided lambda with a SCALE-encoded
+  // version of the `index`. In our case, we simply prepend a length prefix
+  // manually that matches what the polkadot-sdk calculates. Someday we'll need
+  // to have our own SCALE routines.
+  //
+  // The encoding routines live here as a separate crate:
+  // https://github.com/paritytech/parity-scale-codec/blob/cbb20a746ef1db377f4c1df54ab89da6ebc316f4/src/codec.rs#L1105-L1115
+  //
+  // The routines work without explicit SCALE coding but it means our results
+  // will diverge if we update these to match test vectors from the polkadot-sdk
+  // from paritytech.
+  //
+  // See also:
+  // https://wiki.polkadot.com/learn/learn-account-advanced/#soft-and-hard-derivation
+  //
   unsigned char path1[] = {20, 'A', 'l', 'i', 'c', 'e'};
   unsigned char path2[] = {20, 'e', 'c', 'i', 'l', 'A'};
 
