@@ -18,23 +18,17 @@ namespace psst {
 class PsstScriptsInserterImpl
     : public PsstTabWebContentsObserver::ScriptsInserter {
  public:
-  explicit PsstScriptsInserterImpl(
-      content::WebContents* web_contents,
-      content::RenderFrameHost* const render_frame_host,
-      const int32_t world_id);
+  explicit PsstScriptsInserterImpl(content::WebContents* web_contents,
+                                   const int32_t world_id);
   ~PsstScriptsInserterImpl() override;
 
-  // PsstScriptsHandler overrides
+  // PsstScriptsInserterImpl overrides
   void InsertScriptInPage(
       const std::string& script,
       std::optional<base::Value> value,
       PsstTabWebContentsObserver::InsertScriptInPageCallback cb) override;
 
  private:
-  //   Get the remote used to send the script to the renderer.
-  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
-      content::RenderFrameHost* rfh);
-
   const content::GlobalRenderFrameHostId render_frame_host_id_;
   raw_ptr<content::WebContents> web_contents_;
   const int32_t world_id_;

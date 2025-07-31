@@ -82,8 +82,7 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
   return base::WrapUnique<PsstTabWebContentsObserver>(
       new PsstTabWebContentsObserver(
           contents, PsstRuleRegistry::GetInstance(), prefs,
-          std::make_unique<PsstScriptsInserterImpl>(
-              contents, contents->GetPrimaryMainFrame(), world_id),
+          std::make_unique<PsstScriptsInserterImpl>(contents, world_id),
           std::move(delegate)));
 }
 
