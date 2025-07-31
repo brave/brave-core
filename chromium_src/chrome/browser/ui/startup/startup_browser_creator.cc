@@ -7,6 +7,7 @@
 
 #include "base/command_line.h"
 #include "base/logging.h"
+#include "brave/browser/ai_chat/ai_chat_profile.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
@@ -76,10 +77,10 @@ void BraveStartupBrowserCreatorImpl::Launch(
                                     restore_tabbed_browser);
 }
 
-#define BRAVE_CAN_OPEN_PROFILE_ON_STARTUP                           \
-  if (profile_info.profile &&                                       \
-      ai_chat::IsAIChatContentAgentProfile(profile_info.profile)) { \
-    return false;                                                   \
+#define BRAVE_CAN_OPEN_PROFILE_ON_STARTUP                                      \
+  if (profile_info.profile &&                                                  \
+      ai_chat::IsAIChatContentAgentProfile(profile_info.profile->GetPath())) { \
+    return false;                                                              \
   }
 
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl

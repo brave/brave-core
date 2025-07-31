@@ -6,9 +6,20 @@
 #ifndef BRAVE_BROWSER_UI_AI_CHAT_AI_CHAT_PROFILE_H_
 #define BRAVE_BROWSER_UI_AI_CHAT_AI_CHAT_PROFILE_H_
 
+#include "chrome/browser/profiles/profile.h"
+
 namespace ai_chat {
 
-void OpenBrowserWindowForAIChatAgentProfile();
+// Creates or loads a profile for the purposes of experimental AI content agent
+// features. This "AI Chat Agent Profile" will have all the features of a
+// regular profile: persistance and history but remain isolated from any regular
+// user profiles. It provides a space for the user to collaborate with the AI on
+// browsing activities. Whilst the user can open the profile, configure it via
+// the AI Chat UI, and perform navigations in the profile themselves, efforts
+// are made to ensure the profile does not become the default profile, e.g. not
+// showing the profile picker dialog at browser startup just because we have
+// created this profile.
+void OpenBrowserWindowForAIChatAgentProfile(Profile* from_profile);
 
 }  // namespace ai_chat
 

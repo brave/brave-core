@@ -32,7 +32,7 @@ void SetupAndOpenAIChatAgentProfile(Profile* profile) {
   // Set theme
   auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
   theme_service->SetUserColor(kAIChatAgentProfileThemeColor);
-  // Assume user has opted-in in the owning profile in order to get
+  // Assume user has opted-in in some profile already in order to get
   // here, so we can copy that preference.
   ai_chat::SetUserOptedIn(profile->GetPrefs(), true);
   ProfileManager* profile_manager = g_browser_process->profile_manager();
@@ -54,10 +54,22 @@ void SetupAndOpenAIChatAgentProfile(Profile* profile) {
 
 }  // namespace
 
-void OpenBrowserWindowForAIChatAgentProfile() {
+void OpenBrowserWindowForAIChatAgentProfile(Profile* from_profile) {
+  CHECK(from_profile);
+  CHECK(IsAIChatEnabled(from_profile->GetPrefs()));
+  CHECK(!IsAIChatContentAgentProfile(from_profile->GetPath()));
+  // This should not be called if the feature is disabled
   if (!features::IsAIChatAgenticProfileEnabled()) {
+    DLOG(ERROR) << __func__ << " AI Chat Agentic Profile feature is disabled";
     return;
   }
+  // This should not be callable if the current profile has not yet opted-in to
+  // AI Chat.
+  if (!HasUserOptedIn(from_profile->GetPrefs())) {
+    DLOG(ERROR) << __func__ << " Existing profilehas not opted-in to AI Chat";
+    return;
+  }
+
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   // We don't provide a profile-init callback because we want to ensure
   // the prefs are up to date each time.

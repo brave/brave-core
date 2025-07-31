@@ -28,8 +28,4 @@ bool IsAIChatContentAgentProfile(const base::FilePath& profile_dir) {
   return profile_dir == GetAIChatAgentProfileDir();
 }
 
-bool IsAIChatContentAgentProfile(Profile* profile) {
-  return profile->GetPath() == GetAIChatAgentProfileDir();
-}
-
 }  // namespace ai_chat
