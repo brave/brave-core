@@ -3,51 +3,45 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/api/brave_shields/brave_shields_utils_ios.h"
+#include "brave/components/brave_shields/ios/browser/brave_shields_utils_ios.h"
 
 #include <Foundation/Foundation.h>
 
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
-#include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
-#include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/prefs/pref_service.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 @implementation BraveShieldsUtilsIOS {
-  raw_ptr<ProfileIOS> _profile;  // NOT OWNED
+  raw_ptr<HostContentSettingsMap> _map;
+  raw_ptr<PrefService> _localState;
+  raw_ptr<PrefService> _profilePrefs;
 }
 
-- (instancetype)initWithBrowserState:(ProfileIOS*)profile {
+- (instancetype)initWithHostContentSettingsMap:(HostContentSettingsMap*)map
+                                    localState:(PrefService*)localState
+                                  profilePrefs:(PrefService*)profilePrefs {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    _profile = profile;
+    _map = map;
+    _localState = localState;
+    _profilePrefs = profilePrefs;
   }
   return self;
 }
 
-- (HostContentSettingsMap*)hostContentSettingsMapForPrivate:(bool)isPrivate {
-  auto* profile =
-      isPrivate ? _profile->GetOffTheRecordProfile() : _profile.get();
-  return ios::HostContentSettingsMapFactory::GetForProfile(profile);
-}
-
 - (bool)braveShieldsEnabledFor:(NSURL*)url isPrivate:(bool)isPrivate {
-  HostContentSettingsMap* map =
-      [self hostContentSettingsMapForPrivate:isPrivate];
   GURL gurl = net::GURLWithNSURL(url);
-  return brave_shields::GetBraveShieldsEnabled(map, gurl);
+  return brave_shields::GetBraveShieldsEnabled(_map, gurl);
 }
 
 - (void)setBraveShieldsEnabled:(bool)isEnabled
                         forURL:(NSURL*)url
                      isPrivate:(bool)isPrivate {
-  HostContentSettingsMap* map =
-      [self hostContentSettingsMapForPrivate:isPrivate];
   GURL gurl = net::GURLWithNSURL(url);
-  auto* localState = GetApplicationContext()->GetLocalState();
-  brave_shields::SetBraveShieldsEnabled(map, isEnabled, gurl, localState);
+  brave_shields::SetBraveShieldsEnabled(_map, isEnabled, gurl, _localState);
 }
 
 - (BraveShieldsAdBlockMode)defaultAdBlockMode {
@@ -62,10 +56,8 @@
 
 - (BraveShieldsAdBlockMode)adBlockModeForGURL:(GURL)gurl
                                     isPrivate:(bool)isPrivate {
-  HostContentSettingsMap* map =
-      [self hostContentSettingsMapForPrivate:isPrivate];
   return static_cast<BraveShieldsAdBlockMode>(
-      brave_shields::GetAdBlockMode(map, gurl));
+      brave_shields::GetAdBlockMode(_map, gurl));
 }
 
 - (void)setDefaultAdBlockMode:(BraveShieldsAdBlockMode)adBlockMode {
@@ -82,15 +74,9 @@
 - (void)setAdBlockMode:(BraveShieldsAdBlockMode)adBlockMode
                forGURL:(GURL)gurl
              isPrivate:(bool)isPrivate {
-  HostContentSettingsMap* map =
-      [self hostContentSettingsMapForPrivate:isPrivate];
-  auto* localState = GetApplicationContext()->GetLocalState();
-  auto* profilePrefs = isPrivate
-                           ? _profile->GetOffTheRecordProfile()->GetPrefs()
-                           : _profile->GetPrefs();
   brave_shields::SetAdBlockMode(
-      map, static_cast<brave_shields::mojom::AdBlockMode>(adBlockMode), gurl,
-      localState, profilePrefs);
+      _map, static_cast<brave_shields::mojom::AdBlockMode>(adBlockMode), gurl,
+      _localState, _profilePrefs);
 }
 
 @dynamic blockScriptsEnabledByDefault;
@@ -104,9 +90,7 @@
 }
 
 - (bool)blockScriptsEnabledForGURL:(GURL)gurl isPrivate:(bool)isPrivate {
-  HostContentSettingsMap* map =
-      [self hostContentSettingsMapForPrivate:isPrivate];
-  return brave_shields::GetNoScriptEnabled(map, gurl);
+  return brave_shields::GetNoScriptEnabled(_map, gurl);
 }
 
 - (void)setBlockScriptsEnabledByDefault:(bool)isEnabled {
@@ -123,10 +107,7 @@
 - (void)setBlockScriptsEnabled:(bool)isEnabled
                        forGURL:(GURL)gurl
                      isPrivate:(bool)isPrivate {
-  HostContentSettingsMap* map =
-      [self hostContentSettingsMapForPrivate:isPrivate];
-  auto* localState = GetApplicationContext()->GetLocalState();
-  brave_shields::SetIsNoScriptEnabled(map, isEnabled, gurl, localState);
+  brave_shields::SetIsNoScriptEnabled(_map, isEnabled, gurl, _localState);
 }
 
 @dynamic blockFingerprintingEnabledByDefault;
@@ -140,10 +121,8 @@
 }
 
 - (bool)blockFingerprintingEnabledForGURL:(GURL)gurl isPrivate:(bool)isPrivate {
-  HostContentSettingsMap* map =
-      [self hostContentSettingsMapForPrivate:isPrivate];
   auto fingerprintMode = static_cast<BraveShieldsFingerprintMode>(
-      brave_shields::GetFingerprintMode(map, gurl));
+      brave_shields::GetFingerprintMode(_map, gurl));
   return fingerprintMode != BraveShieldsFingerprintModeAllowMode;
 }
 
@@ -163,18 +142,12 @@
 - (void)setBlockFingerprintingEnabled:(bool)isEnabled
                               forGURL:(GURL)gurl
                             isPrivate:(bool)isPrivate {
-  HostContentSettingsMap* map =
-      [self hostContentSettingsMapForPrivate:isPrivate];
-  auto* localState = GetApplicationContext()->GetLocalState();
-  auto* profilePrefs = isPrivate
-                           ? _profile->GetOffTheRecordProfile()->GetPrefs()
-                           : _profile->GetPrefs();
   // iOS only supports standard & allow FingerprintMode's.
   brave_shields::mojom::FingerprintMode fingerprintMode =
       isEnabled ? brave_shields::mojom::FingerprintMode::STANDARD_MODE
                 : brave_shields::mojom::FingerprintMode::ALLOW_MODE;
-  brave_shields::SetFingerprintMode(map, fingerprintMode, gurl, localState,
-                                    profilePrefs);
+  brave_shields::SetFingerprintMode(_map, fingerprintMode, gurl, _localState,
+                                    _profilePrefs);
 }
 
 @end
