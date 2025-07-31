@@ -14,6 +14,7 @@ const Log = require('./logging')
 const assert = require('assert')
 const updateChromeVersion = require('./updateChromeVersion')
 const ActionGuard = require('./actionGuard')
+const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes');
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
@@ -762,6 +763,9 @@ const util = {
       args.push('--verbose')
     }
     options.cwd = options.cwd || config.rootDir
+    const env = {}
+    dotenvPopulateWithIncludes(env, '.env')
+    options.env = {...env, ...options.env}
     options = util.mergeWithDefault(options)
     options.env.GCLIENT_FILE = gClientFile
     util.run('gclient', args, options)
