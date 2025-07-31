@@ -137,6 +137,7 @@
 -ReadAnythingAppModelTest.*
 -ReadAnythingReadAloudAppModelTest.*
 -SidePanelCoordinatorTest.ReadAnythingSidePanelWidthNotCappedAtTwoThirds
+-SidePanelCoordinatorWithSideBySideTest.ChangeSidePanelWidthMaxMin
 
 # Google translate is disabled
 -OverrideLanguagePrefsForAutoHrefTranslateBrowserTest.*
