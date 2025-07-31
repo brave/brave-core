@@ -39,6 +39,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
     PsstDialogDelegate();
     virtual ~PsstDialogDelegate();
 
+    virtual void SetProgress(const double value) {}
     virtual void SetCompleted() {}
     virtual void Show() {}
     virtual void Close() {}
