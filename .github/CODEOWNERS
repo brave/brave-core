@@ -9,6 +9,9 @@ script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 rewrite/ @brave/brave-core-owners
 
+# Layered Components
+/components/**/ios/ @brave/ios
+
 # Views
 # Do not add to BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
 chromium_src/ui/views/view.h @brave/brave-core-owners
