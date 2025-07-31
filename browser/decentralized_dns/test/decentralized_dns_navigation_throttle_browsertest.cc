@@ -294,4 +294,36 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
             local_state()->GetInteger(kSnsResolveMethod));
 }
 
+IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
+                       ClickjackingProtectionPreventsEarlyClicks) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth")));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
+  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+            GetInterstitialType(web_contents));
+
+  content::RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
+
+  EXPECT_TRUE(content::ExecJs(
+      main_frame,
+      "window.domAutomationController.send(typeof proceedClicksEnabled !== "
+      "'undefined' && !proceedClicksEnabled);"));
+
+  EXPECT_TRUE(content::EvalJs(main_frame,
+                              "typeof proceedClicksEnabled !== 'undefined' && "
+                              "!proceedClicksEnabled")
+                  .ExtractBool());
+
+  base::RunLoop run_loop;
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(), base::Milliseconds(600));
+  run_loop.Run();
+
+  EXPECT_TRUE(
+      content::EvalJs(main_frame, "proceedClicksEnabled").ExtractBool());
+}
+
 }  // namespace decentralized_dns
