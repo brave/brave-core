@@ -6,10 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BRAVE_SHIELDS_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BRAVE_SHIELDS_UTILS_H_
 
+#ifdef __cplusplus
+#include "brave/components/brave_shields/ios/browser/brave_shields_panel.mojom.objc.h"
+#else
 #import "brave_shields_panel.mojom.objc.h"
+#endif
 
 @protocol BraveShieldsUtils <NSObject>
-@optional
 
 - (BOOL)braveShieldsEnabledFor:(NSURL*)url
                      isPrivate:(BOOL)isPrivate

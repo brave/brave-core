@@ -5,16 +5,7 @@
 
 import("//brave/build/ios/mojom/mojom_wrappers.gni")
 
-config("mojom_header_config") {
-  visibility = [
-    ":*",
-    "//brave/ios/app",
-  ]
-  include_dirs = [ "$root_gen_dir/brave/components/brave_shields/ios/browser" ]
-}
-
 source_set("browser") {
-  configs += [ ":mojom_header_config" ]
   sources = [
     "brave_shields_utils.h",
     "brave_shields_utils_ios+private.h",

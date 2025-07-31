@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#include "brave/components/brave_shields/ios/browser/brave_shields_panel.mojom.objc.h"
 #include "brave/components/brave_shields/ios/browser/brave_shields_utils.h"
-#import "brave_shields_panel.mojom.objc.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

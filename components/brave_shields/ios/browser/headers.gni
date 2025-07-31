@@ -4,7 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 brave_shields_component_public_headers = [
-  "//brave/components/brave_shields/ios/browser/brave_shields_utils_ios.h",
+  "//brave/components/brave_shields/ios/browser/brave_shields_utils.h",
   "$root_gen_dir/brave/components/brave_shields/ios/browser/brave_shields_panel.mojom.objc.h",
 ]
 brave_shields_component_public_deps = [
