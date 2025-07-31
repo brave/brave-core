@@ -7,8 +7,4 @@ brave_shields_public_headers = [
   "//brave/ios/browser/api/brave_shields/adblock_engine.h",
   "//brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry.h",
   "//brave/ios/browser/api/brave_shields/adblock_service.h",
-  "//brave/ios/browser/api/brave_shields/brave_shields_utils_ios.h",
-  "$root_gen_dir/brave/ios/browser/api/brave_shields/brave_shields_panel.mojom.objc.h",
 ]
-brave_shields_public_deps =
-    [ "//brave/ios/browser/api/brave_shields:brave_shields_mojom_wrappers" ]
