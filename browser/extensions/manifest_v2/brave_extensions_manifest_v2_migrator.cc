@@ -231,7 +231,7 @@ void ImportExtensionSettingsOnFileThread(
 
 namespace extensions_mv2 {
 
-ExtensionsManifectV2Migrator::ExtensionsManifectV2Migrator(Profile* profile)
+ExtensionsManifestV2Migrator::ExtensionsManifestV2Migrator(Profile* profile)
     : profile_(profile) {
   auto* registry = extensions::ExtensionRegistry::Get(profile_);
   auto* extension_prefs = extensions::ExtensionPrefs::Get(profile_);
@@ -250,22 +250,22 @@ ExtensionsManifectV2Migrator::ExtensionsManifectV2Migrator(Profile* profile)
   }
 }
 
-ExtensionsManifectV2Migrator::~ExtensionsManifectV2Migrator() {
+ExtensionsManifestV2Migrator::~ExtensionsManifestV2Migrator() {
   CHECK(!prefs_observation_.IsObserving());
   CHECK(!registry_observation_.IsObserving());
 }
 
-void ExtensionsManifectV2Migrator::Shutdown() {
+void ExtensionsManifestV2Migrator::Shutdown() {
   prefs_observation_.Reset();
   registry_observation_.Reset();
 }
 
-void ExtensionsManifectV2Migrator::OnExtensionPrefsWillBeDestroyed(
+void ExtensionsManifestV2Migrator::OnExtensionPrefsWillBeDestroyed(
     extensions::ExtensionPrefs* prefs) {
   prefs_observation_.Reset();
 }
 
-void ExtensionsManifectV2Migrator::OnExtensionDisableReasonsChanged(
+void ExtensionsManifestV2Migrator::OnExtensionDisableReasonsChanged(
     const extensions::ExtensionId& extension_id,
     extensions::DisableReasonSet disabled_reasons) {
   if (!features::IsSettingsBackupEnabled() ||
@@ -278,12 +278,12 @@ void ExtensionsManifectV2Migrator::OnExtensionDisableReasonsChanged(
   BackupExtensionSettings(extension_id);
 }
 
-void ExtensionsManifectV2Migrator::OnShutdown(
+void ExtensionsManifestV2Migrator::OnShutdown(
     extensions::ExtensionRegistry* registry) {
   registry_observation_.Reset();
 }
 
-void ExtensionsManifectV2Migrator::OnExtensionInstalled(
+void ExtensionsManifestV2Migrator::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     bool is_updates) {
@@ -300,7 +300,7 @@ void ExtensionsManifectV2Migrator::OnExtensionInstalled(
                      extension->version(), profile_->GetPath()));
 }
 
-void ExtensionsManifectV2Migrator::BackupExtensionSettings(
+void ExtensionsManifestV2Migrator::BackupExtensionSettings(
     const extensions::ExtensionId& webstore_extension_id) {
   auto* prefs = extensions::ExtensionPrefs::Get(profile_);
   const base::Version webstore_extension_version(
@@ -316,7 +316,7 @@ void ExtensionsManifectV2Migrator::BackupExtensionSettings(
 
 //-----------------------------------------------------------------------------
 
-ExtensionsManifectV2MigratorFactory::ExtensionsManifectV2MigratorFactory()
+ExtensionsManifestV2MigratorFactory::ExtensionsManifestV2MigratorFactory()
     : ProfileKeyedServiceFactory("ExtensionsManifestV2Migrator",
                                  ProfileSelections::BuildForRegularProfile()) {
   DependsOn(extensions::ExtensionPrefsFactory::GetInstance());
@@ -324,41 +324,41 @@ ExtensionsManifectV2MigratorFactory::ExtensionsManifectV2MigratorFactory()
   DependsOn(extensions::ExtensionRegistrarFactory::GetInstance());
 }
 
-ExtensionsManifectV2MigratorFactory::~ExtensionsManifectV2MigratorFactory() =
+ExtensionsManifestV2MigratorFactory::~ExtensionsManifestV2MigratorFactory() =
     default;
 
 // static
-ExtensionsManifectV2MigratorFactory*
-ExtensionsManifectV2MigratorFactory::GetInstance() {
-  return base::Singleton<ExtensionsManifectV2MigratorFactory>::get();
+ExtensionsManifestV2MigratorFactory*
+ExtensionsManifestV2MigratorFactory::GetInstance() {
+  return base::Singleton<ExtensionsManifestV2MigratorFactory>::get();
 }
 
 //  static
-ExtensionsManifectV2Migrator*
-ExtensionsManifectV2MigratorFactory::GetForBrowserContextForTesting(
+ExtensionsManifestV2Migrator*
+ExtensionsManifestV2MigratorFactory::GetForBrowserContextForTesting(
     content::BrowserContext* context) {
-  return static_cast<ExtensionsManifectV2Migrator*>(
+  return static_cast<ExtensionsManifestV2Migrator*>(
       GetInstance()->GetServiceForBrowserContext(context, false));
 }
 
 std::unique_ptr<KeyedService>
-ExtensionsManifectV2MigratorFactory::BuildServiceInstanceForBrowserContext(
+ExtensionsManifestV2MigratorFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   if (!features::IsSettingsBackupEnabled() &&
       !features::IsSettingsImportEnabled() &&
       !features::IsExtensionReplacementEnabled()) {
     return nullptr;
   }
-  return std::make_unique<ExtensionsManifectV2Migrator>(
+  return std::make_unique<ExtensionsManifestV2Migrator>(
       Profile::FromBrowserContext(context));
 }
 
-bool ExtensionsManifectV2MigratorFactory::ServiceIsCreatedWithBrowserContext()
+bool ExtensionsManifestV2MigratorFactory::ServiceIsCreatedWithBrowserContext()
     const {
   return true;
 }
 
-bool ExtensionsManifectV2MigratorFactory::ServiceIsNULLWhileTesting() const {
+bool ExtensionsManifestV2MigratorFactory::ServiceIsNULLWhileTesting() const {
   return false;
 }
 
