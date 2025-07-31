@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -183,6 +184,8 @@ void BraveLeoAssistantHandler::HandleResetLeoData(
   service->DeleteConversations();
   if (profile_) {
     ai_chat::SetUserOptedIn(profile_->GetPrefs(), false);
+    ai_chat::prefs::DeleteAllMemoriesFromPrefs(*profile_->GetPrefs());
+    ai_chat::prefs::ResetCustomizationsPref(*profile_->GetPrefs());
   }
 
   AllowJavascript();
