@@ -62,14 +62,12 @@ async function analyzeAffectedTests(
   outDir,
   { filters = ['//*'], files = [], base, quiet } = {},
 ) {
-  if (!quiet) {
-    console.warn('using analyzeAffectedTests is experimental')
-  }
 
   const targetCommit =
     !base || base === true ? await getReferenceCommit() : base
 
   if (!quiet) {
+    console.warn('using analyzeAffectedTests is experimental')
     console.warn(`using ${targetCommit} for change detection`)
   }
 

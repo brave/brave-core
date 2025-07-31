@@ -33,7 +33,7 @@ const test = async (
     process.exit(1)
   }
 
-  const testsToRun = passthroughArgs.base
+  const testsToRun = passthroughArgs.includes('--base')
     ? await getAffectedTests({ ...passthroughArgs, suite })
     : getTestsToRun(Config, suite)
 
