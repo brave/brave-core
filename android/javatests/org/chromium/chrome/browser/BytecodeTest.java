@@ -278,9 +278,13 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/top/ToolbarPhone"));
-        Assert.assertTrue(
-                classExists(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
+        // TODO(alexeybarabash): PasswordSettings was removed at upstream,
+        // but we need to get it back
+        // Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
+        // Assert.assertTrue(
+        //         classExists(
+        //
+        // "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate")); // presubmit: ignore-long-line
@@ -2410,10 +2414,15 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
                         "android/widget/FrameLayout"));
-        Assert.assertTrue(
-                checkSuperName(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordSettings",
-                        "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase")); // presubmit: ignore-long-line
+        // TODO(alexeybarabash): PasswordSettings was removed at upstream,
+        // but we need to get it back
+        // Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
+        // Assert.assertTrue(
+        //         checkSuperName(
+        //                 "org/chromium/chrome/browser/password_manager/settings/PasswordSettings",
+        //
+        // "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase")); //
+        // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
