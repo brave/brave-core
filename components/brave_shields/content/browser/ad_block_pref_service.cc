@@ -10,8 +10,10 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/proxy_config/pref_proxy_config_tracker.h"
@@ -35,10 +37,14 @@ std::string GetTagFromPrefName(const std::string& pref_name) {
 
 }  // namespace
 
-AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
-                                       PrefService* prefs,
-                                       PrefService* local_state)
-    : ad_block_service_(ad_block_service), prefs_(prefs) {
+AdBlockPrefService::AdBlockPrefService(
+    AdBlockService* ad_block_service,
+    PrefService* prefs,
+    PrefService* local_state,
+    HostContentSettingsMap* host_content_settings_map)
+    : ad_block_service_(ad_block_service),
+      prefs_(prefs),
+      host_content_settings_map_(host_content_settings_map) {
   pref_change_registrar_.reset(new PrefChangeRegistrar());
   pref_change_registrar_->Init(prefs_);
   pref_change_registrar_->Add(
@@ -63,7 +69,21 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
       prefs::kAdBlockDeveloperMode,
       base::BindRepeating(&AdBlockPrefService::OnDeveloperModeChanged,
                           base::Unretained(this)));
+
+  // TODO(aseren): Currently we use both local state and content settings.
+  // Need to move to local state usage only.
+  if (local_state) {
+    SetBraveShieldsAdBlockOnlyModeEnabled(
+        host_content_settings_map_,
+        local_state->GetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled), GURL(),
+        local_state);
+  }
+
+  CHECK(host_content_settings_map_);
+  host_content_settings_map_->AddObserver(this);
+
   OnDeveloperModeChanged();
+  OnAdBlockOnlyModeChanged();
 }
 
 AdBlockPrefService::~AdBlockPrefService() = default;
@@ -123,11 +143,34 @@ void AdBlockPrefService::OnDeveloperModeChanged() {
   ad_block_service_->EnableDeveloperMode(enabled);
 }
 
+void AdBlockPrefService::OnAdBlockOnlyModeChanged() {
+  const bool enabled =
+      GetBraveShieldsAdBlockOnlyModeEnabled(host_content_settings_map_, GURL());
+  ad_block_service_->EnableAdBlockOnlyMode(enabled);
+}
+
 void AdBlockPrefService::OnProxyConfigChanged(
     const net::ProxyConfigWithAnnotation& config,
     net::ProxyConfigService::ConfigAvailability availability) {
   last_proxy_config_availability_ = availability;
   last_proxy_config_ = config;
+}
+
+void AdBlockPrefService::OnContentSettingChanged(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsTypeSet content_type_set) {
+  if (!content_type_set.Contains(
+          ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE)) {
+    return;
+  }
+
+  if (primary_pattern != ContentSettingsPattern::Wildcard() &&
+      secondary_pattern != ContentSettingsPattern::Wildcard()) {
+    return;
+  }
+
+  OnAdBlockOnlyModeChanged();
 }
 
 }  // namespace brave_shields

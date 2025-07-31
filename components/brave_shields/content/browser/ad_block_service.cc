@@ -380,6 +380,13 @@ void AdBlockService::EnableDeveloperMode(bool enabled) {
   }
 }
 
+void AdBlockService::EnableAdBlockOnlyMode(bool enabled) {
+  // TODO(aseren): Currently we use both local state and content settings.
+  // Need to move to local state usage only.
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  local_state_->SetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled, enabled);
+}
+
 void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Tags only need to be modified for the default engine.
@@ -454,6 +461,7 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedAllDefaultRegions, false);
+  registry->RegisterBooleanPref(prefs::kAdBlockAdblockOnlyModeEnabled, false);
 }
 
 AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {

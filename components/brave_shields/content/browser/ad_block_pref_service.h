@@ -10,11 +10,15 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/proxy_resolution/proxy_config_service.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 
+class ContentSettingsPattern;
+class ContentSettingsTypeSet;
+class HostContentSettingsMap;
 class PrefChangeRegistrar;
 class PrefService;
 class PrefProxyConfigTracker;
@@ -24,11 +28,14 @@ namespace brave_shields {
 class AdBlockService;
 
 class AdBlockPrefService : public KeyedService,
-                           public net::ProxyConfigService::Observer {
+                           public net::ProxyConfigService::Observer,
+                           public content_settings::Observer {
  public:
-  explicit AdBlockPrefService(AdBlockService* ad_block_service,
-                              PrefService* prefs,
-                              PrefService* local_state);
+  explicit AdBlockPrefService(
+      AdBlockService* ad_block_service,
+      PrefService* prefs,
+      PrefService* local_state,
+      HostContentSettingsMap* host_content_settings_map);
   ~AdBlockPrefService() override;
 
   void StartProxyTracker(
@@ -42,14 +49,23 @@ class AdBlockPrefService : public KeyedService,
 
   void OnPreferenceChanged(const std::string& pref_name);
   void OnDeveloperModeChanged();
+  void OnAdBlockOnlyModeChanged();
 
   // net::ProxyConfigService::Observer:
   void OnProxyConfigChanged(
       const net::ProxyConfigWithAnnotation& config,
       net::ProxyConfigService::ConfigAvailability availability) override;
 
+  // content_settings::Observer:
+  void OnContentSettingChanged(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsTypeSet content_type_set) override;
+
   raw_ptr<AdBlockService> ad_block_service_ = nullptr;  // not owned
   raw_ptr<PrefService> prefs_ = nullptr;                // not owned
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ =
+      nullptr;  // not owned
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
 
