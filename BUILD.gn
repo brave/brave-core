@@ -58,15 +58,24 @@ if (use_blink && !is_android) {
   chromium_unit_tests_deps += [ "//content/test:content_unittests" ]
 }
 
+if (!is_ios && !is_android) {
+  # TODO(https://github.com/brave/brave-browser/issues/48061): Fix this target
+  # for iOS.
+  # TODO(https://github.com/brave/brave-browser/issues/48062): Fix this target
+  # for android.
+  chromium_unit_tests_deps += [ "//components:components_unittests" ]
+}
+
 group("chromium_unit_tests") {
   testonly = true
   data_deps = chromium_unit_tests_deps
-
   write_file("$root_out_dir/chromium_unit_tests.json",
              chromium_unit_tests_deps,
              "json")
 }
 
+# Only add tests to this list if you want them to run by default for
+# brave_all_unit_tests.
 brave_all_unit_tests_deps = [ "//brave/components:brave_components_unittests" ]
 if (!is_ios) {
   brave_all_unit_tests_deps += [ "//brave/test:brave_unit_tests" ]
@@ -74,21 +83,22 @@ if (!is_ios) {
   brave_all_unit_tests_deps += [ "//brave/ios/testing:ios_brave_unit_tests" ]
 }
 if (!is_ios && !is_android) {
-  brave_all_unit_tests_deps += [
-    "//brave/test:brave_installer_unittests",
-
-    # TODO(https://github.com/brave/brave-browser/issues/48061): Fix this target
-    # for iOS.
-    # TODO(https://github.com/brave/brave-browser/issues/48062): Fix this target
-    # for android.
-    "//components:components_unittests",
-  ]
+  brave_all_unit_tests_deps += [ "//brave/test:brave_installer_unittests" ]
 }
+
+# This group is for unit tests that run as part of brave_all_unit_tests. Other
+# tests that you only want to build should be added directly to `all` group
 group("brave_all_unit_tests") {
   testonly = true
   data_deps = brave_all_unit_tests_deps
   write_file("$root_out_dir/brave_all_unit_tests.json",
              brave_all_unit_tests_deps,
+             "json")
+
+  # This is a workaround to prevent upstream component units from
+  # building or running by default for except on CI
+  write_file("$root_out_dir/brave_all_unit_tests_ci.json",
+             chromium_unit_tests_deps,
              "json")
 }
 

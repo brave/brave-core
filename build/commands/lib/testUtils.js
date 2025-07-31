@@ -28,16 +28,29 @@ const getChromiumTestsSuites = (config) => {
   return getTestsToRun(config, 'chromium_unit_tests').concat(['browser_tests'])
 }
 
-const getTestsToRun = (config, suite) => {
-  const testDepFile = path.join(config.outputDir, `${suite}.json`)
+const getTestGroupDeps = (testDepFile) => {
   if (fs.existsSync(testDepFile)) {
-    suiteDepNames = JSON.parse(
+    let suiteDepNames = JSON.parse(
       fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
     )
     return suiteDepNames.map((x) => x.split(':').at(-1))
+  } else {
+    return []
+  }
+}
+
+const getTestsToRun = (config, suite) => {
+  let testsToRun = getTestGroupDeps(
+    path.join(config.outputDir, `${suite}.json`),
+  )
+
+  if (config.isCI && config.targetOS === 'linux') {
+    testsToRun += getTestGroupDeps(
+      path.join(config.outputDir, `${suite}_ci.json`),
+    )
   }
 
-  return [suite]
+  return testsToRun.length > 0 ? testsToRun : [suite]
 }
 
 // Returns a list of paths to files containing all the filters that would apply
