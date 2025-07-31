@@ -71,6 +71,14 @@
     font-size: .875rem;
     padding: 14px 38px;
   }
+
+  /*
+  TODO(https://github.com/brave/brave-browser/issues/48142)
+
+  Need to fix the styling on several elements here.
+  See issue for more information.
+  */
+
 </style>
 <div hidden="[[!braveOriginEnabled_]]">
   <div class="settings-box first">
@@ -91,75 +99,80 @@
   <settings-toggle-button id="toggleRewardsButton"
       pref="{{prefs.brave.rewards.disabled_by_policy}}"
       label="$i18n{braveOriginRewardsToggleTitle}"
+      sub-label="[[rewardsEnabledSubLabel_]]"
+      on-settings-boolean-control-change="toggleButtonChange_"
       icon="product-bat-outline"
       inverted>
   </settings-toggle-button>
 
   <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
 
+  <settings-toggle-button id="toggleCrashReportingButton"
+      pref="[[crashReportingEnabledPref_]]"
+      label="$i18n{braveOriginCrashReportingToggleTitle}"
+      sub-label="[[crashReportingEnabledSubLabel_]]"
+      on-settings-boolean-control-change="toggleCrashReportingButtonChange_"
+      icon="bar-chart">
+  </settings-toggle-button>
+
   <settings-toggle-button id="toggleLeoAiButton"
       pref="{{prefs.brave.ai_chat.enabled_by_policy}}"
       label="$i18n{braveOriginLeoAiToggleTitle}"
+      sub-label="[[leoAiEnabledSubLabel_]]"
+      on-settings-boolean-control-change="toggleButtonChange_"
       icon="product-brave-leo">
   </settings-toggle-button>
 
   <settings-toggle-button id="toggleNewsButton"
       pref="{{prefs.brave.news.disabled_by_policy}}"
       label="$i18n{braveOriginNewsToggleTitle}"
+      sub-label="[[newsEnabledSubLabel_]]"
+      on-settings-boolean-control-change="toggleButtonChange_"
       icon="product-brave-news"
       inverted>
   </settings-toggle-button>
 
-  <settings-toggle-button id="toggleTalkButton"
-      pref="{{prefs.brave.talk.disabled_by_policy}}"
-      label="$i18n{braveOriginTalkToggleTitle}"
-      icon="product-brave-talk"
-      inverted>
+  <settings-toggle-button id="toggleP3AButton"
+      pref="[[p3aEnabledPref_]]"
+      label="$i18n{braveOriginP3AToggleTitle}"
+      sub-label="[[p3aEnabledSubLabel_]]"
+      on-settings-boolean-control-change="toggleP3AButtonChange_"
+      icon="bar-chart">
   </settings-toggle-button>
-
-  <if expr="enable_brave_wayback_machine">
-    <settings-toggle-button id="toggleWaybackMachineButton"
-        pref="{{prefs.brave.wayback_machine.disabled_by_policy}}"
-        label="$i18n{braveOriginWaybackMachineToggleTitle}"
-        icon="window-404"
-        inverted>
-    </settings-toggle-button>
-  </if>
 
   <if expr="enable_speedreader">
     <settings-toggle-button id="toggleSpeedreaderButton"
         pref="{{prefs.brave.speedreader.disabled_by_policy}}"
         label="$i18n{braveOriginSpeedReaderToggleTitle}"
+        sub-label="[[speedreaderEnabledSubLabel_]]"
+        on-settings-boolean-control-change="toggleButtonChange_"
         icon="product-speedreader"
         inverted>
     </settings-toggle-button>
   </if>
 
-  <settings-toggle-button id="toggleP3AButton"
-      pref="[[p3aEnabledPref_]]"
-      label="$i18n{braveOriginP3AToggleTitle}"
-      on-settings-boolean-control-change="toggleP3AButtonChange_"
-      icon="bar-chart">
-  </settings-toggle-button>
-
   <settings-toggle-button id="toggleStatsReportingButton"
       pref="[[statsReportingEnabledPref_]]"
       label="$i18n{braveOriginStatsReportingToggleTitle}"
+      sub-label="[[statsReportingEnabledSubLabel_]]"
       on-settings-boolean-control-change="toggleStatsReportingButtonChange_"
       icon="bar-chart">
   </settings-toggle-button>
 
-  <settings-toggle-button id="toggleCrashReportingButton"
-      pref="[[crashReportingEnabledPref_]]"
-      label="$i18n{braveOriginCrashReportingToggleTitle}"
-      on-settings-boolean-control-change="toggleCrashReportingButtonChange_"
-      icon="bar-chart">
+  <settings-toggle-button id="toggleTalkButton"
+      pref="{{prefs.brave.talk.disabled_by_policy}}"
+      label="$i18n{braveOriginTalkToggleTitle}"
+      sub-label="[[talkEnabledSubLabel_]]"
+      on-settings-boolean-control-change="toggleButtonChange_"
+      icon="product-brave-talk"
+      inverted>
   </settings-toggle-button>
 
   <if expr="enable_tor">
     <settings-toggle-button id="toggleTorWindowsButton"
         pref="[[torEnabledPref_]]"
         label="$i18n{braveOriginTorWindowsToggleTitle}"
+        sub-label="[[torEnabledSubLabel_]]"
         on-settings-boolean-control-change="toggleTorWindowsButtonChange_"
         icon="product-tor">
     </settings-toggle-button>
@@ -169,6 +182,8 @@
     <settings-toggle-button id="toggleVpnButton"
         pref="{{prefs.brave.brave_vpn.disabled_by_policy}}"
         label="$i18n{braveOriginVpnToggleTitle}"
+        sub-label="[[vpnEnabledSubLabel_]]"
+        on-settings-boolean-control-change="toggleButtonChange_"
         icon="product-vpn"
         inverted>
     </settings-toggle-button>
@@ -177,7 +192,29 @@
   <settings-toggle-button id="toggleWalletButton"
       pref="{{prefs.brave.wallet.disabled_by_policy}}"
       label="$i18n{braveOriginWalletToggleTitle}"
+      sub-label="[[walletEnabledSubLabel_]]"
+      on-settings-boolean-control-change="toggleButtonChange_"
       icon="product-brave-wallet"
+      inverted>
+  </settings-toggle-button>
+
+  <if expr="enable_brave_wayback_machine">
+    <settings-toggle-button id="toggleWaybackMachineButton"
+        pref="{{prefs.brave.wayback_machine.disabled_by_policy}}"
+        label="$i18n{braveOriginWaybackMachineToggleTitle}"
+        sub-label="[[waybackMachineEnabledSubLabel_]]"
+        on-settings-boolean-control-change="toggleButtonChange_"
+        icon="window-404"
+        inverted>
+    </settings-toggle-button>
+  </if>
+
+  <settings-toggle-button id="toggleWebDiscoveryProjectButton"
+      pref="{{prefs.brave.web_discovery_disabled_by_policy}}"
+      label="$i18n{braveOriginWebDiscoveryProjectToggleTitle}"
+      sub-label="[[webDiscoveryProjectEnabledSubLabel_]]"
+      on-settings-boolean-control-change="toggleButtonChange_"
+      icon="brave-icon-search"
       inverted>
   </settings-toggle-button>
 

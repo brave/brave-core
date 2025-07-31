@@ -25,7 +25,6 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
@@ -46,24 +45,25 @@
 
 namespace {
 
-// Configuration for profile preferences
-struct ProfilePrefConfig {
-  const char* pref_name;
-  bool inverted;
-  const char* ui_key;
-  const char* change_event;
-};
+// TODO(https://github.com/brave/brave-browser/issues/48157)
+// remove once //components/metrics/metrics_pref_names.h
+// converts the constants to a constexpr.
+inline constexpr char kMetricsReportingEnabled[] =
+    "user_experience_metrics.reporting_enabled";
 
-// Configuration for local state preferences
-struct LocalStatePrefConfig {
-  const char* pref_name;
+// Represents a profile preference or local state preference.
+struct PrefConfig {
+  std::string_view pref_name;
+  // Many of the preferences being used here are "___DisabledByPolicy".
+  // Because the UI is showing a toggle with true meaning enabled,
+  // those negative values need to be inverted.
   bool inverted;
-  const char* ui_key;
-  const char* change_event;
+  std::string_view ui_key;
+  std::string_view change_event;
 };
 
 // Profile preferences configuration
-constexpr ProfilePrefConfig kProfilePrefs[] = {
+constexpr PrefConfig kProfilePrefs[] = {
     {brave_rewards::prefs::kDisabledByPolicy, true, "rewards",
      "rewards-enabled-changed"},
     {ai_chat::prefs::kEnabledByPolicy, false, "ai", "ai-enabled-changed"},
@@ -84,14 +84,16 @@ constexpr ProfilePrefConfig kProfilePrefs[] = {
 #endif
     {brave_wallet::prefs::kDisabledByPolicy, true, "wallet",
      "wallet-enabled-changed"},
+    {kWebDiscoveryDisabledByPolicy, true, "webDiscovery",
+     "web-discovery-enabled-changed"},
 };
 
 // Local state preferences configuration
-constexpr LocalStatePrefConfig kLocalStatePrefs[] = {
+constexpr PrefConfig kLocalStatePrefs[] = {
     {p3a::kP3ADisabledByPolicy, true, "p3a", "p3a-enabled-changed"},
     {kStatsReportingDisabledByPolicy, true, "statsReporting",
      "statsReporting-enabled-changed"},
-    {metrics::prefs::kMetricsReportingEnabled, false, "crashReporting",
+    {kMetricsReportingEnabled, false, "crashReporting",
      "crashReporting-enabled-changed"},
 #if BUILDFLAG(ENABLE_TOR)
     {tor::prefs::kTorDisabled, true, "tor", "tor-enabled-changed"},
@@ -106,11 +108,11 @@ constexpr auto kToggleLocalStateMap =
 #endif
         {"p3a", p3a::kP3ADisabledByPolicy},
         {"statsReporting", kStatsReportingDisabledByPolicy},
-        {"crashReporting", "user_experience_metrics.reporting_enabled"}});
+        {"crashReporting", kMetricsReportingEnabled}});
 
 // Helper function to get preference value with inversion handling
 bool GetPrefValue(PrefService* prefs,
-                  const std::string& pref_name,
+                  std::string_view pref_name,
                   bool inverted) {
   bool value = prefs->GetBoolean(pref_name);
   bool actualValue = inverted ? !value : value;
@@ -119,7 +121,7 @@ bool GetPrefValue(PrefService* prefs,
 
 // Helper function to set preference value with inversion handling
 void SetPrefValue(PrefService* prefs,
-                  const std::string& pref_name,
+                  std::string_view pref_name,
                   bool enabled,
                   bool inverted) {
   bool value = inverted ? !enabled : enabled;
@@ -206,9 +208,10 @@ void BraveOriginHandler::HandleGetInitialState(const base::Value::List& args) {
     }
   }
 
-  // TODO(bsclifton): implement others:
-  // search ads
-  // email alias | https://github.com/brave/brave-core/pull/27127
+  // TODO(https://github.com/brave/brave-browser/issues/48144)
+  // implement others:
+  //
+  // email alias | https://github.com/brave/brave-core/pull/29700
   // sidebar
 
   ResolveJavascriptCallback(args[0], initial_state);

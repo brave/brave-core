@@ -49,6 +49,10 @@ void SetupBraveOriginProfilePrefs(Profile* profile) {
   if (BraveOriginState::GetInstance()->IsBraveOriginUser()) {
     PrefService* prefs = profile->GetPrefs();
 
+    // TODO(https://github.com/brave/brave-browser/issues/48145)
+    // Need to find out which features are actively being used.
+    // Those should be enabled / visible.
+
     // Profile prefs
     prefs->SetDefaultPrefValue(brave_rewards::prefs::kDisabledByPolicy,
                                base::Value(true));
@@ -71,6 +75,8 @@ void SetupBraveOriginProfilePrefs(Profile* profile) {
     prefs->SetDefaultPrefValue(kBraveWaybackMachineDisabledByPolicy,
                                base::Value(true));
 #endif
+    prefs->SetDefaultPrefValue(kWebDiscoveryDisabledByPolicy,
+                               base::Value(true));
 
     // Local state (spans all profiles)
     g_browser_process->local_state()->SetDefaultPrefValue(
