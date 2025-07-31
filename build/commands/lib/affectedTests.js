@@ -69,6 +69,10 @@ async function analyzeAffectedTests(
   const targetCommit =
     !base || base === true ? await getReferenceCommit() : base
 
+  if (!quiet) {
+    console.warn(`using ${targetCommit} for change detection`)
+  }
+
   const testTargets = await getTestTargets(outDir, filters)
   const modifiedFiles = [
     ...(await getModifiedFiles(targetCommit)),
@@ -130,21 +134,30 @@ function createTestFilter(config, suite) {
 
   const tests = new Set(getTestsToRun(config, suite))
 
-  return (x) => tests.has(x.split(':')[1])
+  return (test) => tests.has(test)
 }
 
 async function getAffectedTests(args = {}) {
   const { suite } = args
 
   const analysis = await analyzeAffectedTests(config.outputDir, args)
-  const affectedTests = analysis.affectedTests.filter(
-    createTestFilter(config, suite),
-  )
+
+  // test affected according to GN
+  const allAffectedTestExecutables = analysis
+    .test_targets
+    .map(gnTargetToExecutableName)
+
+  const affectedTests = 
+    allAffectedTestExecutables
+    .filter(
+      createTestFilter(config, suite),
+    )
 
   const modified = new Set(analysis.files)
 
-  const additionalTests = analysis.test_targets
-    .map(gnTargetToExecutableName)
+  // Changes in GTestFilters are currently not tracked by GN
+  const testAffectedDueModifiedFilterFiles = 
+    allAffectedTestExecutables
     .flatMap((test) =>
       getApplicableFilters(config, test).map((filter) => ({ test, filter })),
     )
@@ -155,8 +168,8 @@ async function getAffectedTests(args = {}) {
 
   return [
     ...new Set([
-      ...affectedTests.map(gnTargetToExecutableName),
-      ...additionalTests,
+      ...affectedTests,
+      ...testAffectedDueModifiedFilterFiles,
     ]),
   ]
 }
