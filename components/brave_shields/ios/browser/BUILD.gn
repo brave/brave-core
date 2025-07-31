@@ -1,0 +1,23 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+
+source_set("browser") {
+  sources = [
+    "brave_shields_utils.h",
+    "brave_shields_utils_impl.h",
+    "brave_shields_utils_impl.mm",
+  ]
+  deps = [
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/ios/common:mojom",
+    "//components/content_settings/core/browser",
+    "//components/prefs",
+    "//ios/web/public/thread",
+    "//net",
+    "//url",
+  ]
+}
