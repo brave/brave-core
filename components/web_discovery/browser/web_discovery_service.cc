@@ -257,8 +257,8 @@ bool WebDiscoveryService::UpdatePageCountStartTime() {
     return false;
   }
   current_page_count_hour_key_ =
-      base::StringPrintf("%04d%02d%02d%02d", exploded.year, exploded.month,
-                         exploded.day_of_month, exploded.hour);
+      absl::StrFormat("%04d%02d%02d%02d", exploded.year, exploded.month,
+                      exploded.day_of_month, exploded.hour);
   return true;
 }
 

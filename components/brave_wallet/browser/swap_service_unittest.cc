@@ -866,7 +866,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
                                   mojom::SwapProvider::kZeroEx),
         "85");
     EXPECT_EQ(url,
-              base::StringPrintf(
+              absl::StrFormat(
                   "https://api.0x.wallet.brave.com/swap/allowance-holder/price?"
                   "chainId=%s&"
                   "taker=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
@@ -877,7 +877,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
                   "swapFeeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
                   "swapFeeToken=ETH&"
                   "slippageBps=300",
-                  encoded_chain_id.c_str()));
+                  encoded_chain_id));
 
     // Ok: no fees
     url = swap_service_->GetZeroExQuoteURL(
@@ -886,7 +886,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
                                   mojom::SwapProvider::kZeroEx),
         "");
     EXPECT_EQ(url,
-              base::StringPrintf(
+              absl::StrFormat(
                   "https://api.0x.wallet.brave.com/swap/allowance-holder/price?"
                   "chainId=%s&"
                   "taker=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
@@ -894,7 +894,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
                   "buyToken=ETH&"
                   "sellToken=DAI&"
                   "slippageBps=300",
-                  encoded_chain_id.c_str()));
+                  encoded_chain_id));
   }
 
   // KO: unsupported network
@@ -929,7 +929,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
                                   mojom::SwapProvider::kZeroEx),
         "85");
     EXPECT_EQ(url,
-              base::StringPrintf(
+              absl::StrFormat(
                   "https://api.0x.wallet.brave.com/swap/allowance-holder/quote?"
                   "chainId=%s&"
                   "taker=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
@@ -940,7 +940,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
                   "swapFeeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
                   "swapFeeToken=ETH&"
                   "slippageBps=300",
-                  encoded_chain_id.c_str()));
+                  encoded_chain_id));
 
     // OK: no fees
     url = swap_service_->GetZeroExTransactionURL(
@@ -949,7 +949,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
                                   mojom::SwapProvider::kZeroEx),
         "");
     EXPECT_EQ(url,
-              base::StringPrintf(
+              absl::StrFormat(
                   "https://api.0x.wallet.brave.com/swap/allowance-holder/quote?"
                   "chainId=%s&"
                   "taker=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
@@ -957,7 +957,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
                   "buyToken=ETH&"
                   "sellToken=DAI&"
                   "slippageBps=300",
-                  encoded_chain_id.c_str()));
+                  encoded_chain_id));
   }
 
   // KO: unsupported network

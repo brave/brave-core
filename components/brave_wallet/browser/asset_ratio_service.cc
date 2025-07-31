@@ -205,11 +205,11 @@ GURL AssetRatioService::GetPriceURL(const std::vector<std::string>& from_assets,
                                     mojom::AssetPriceTimeframe timeframe) {
   std::string from = VectorToCommaSeparatedList(from_assets);
   std::string to = VectorToCommaSeparatedList(to_assets);
-  std::string spec = base::StringPrintf(
-      "%s/v2/relative/provider/coingecko/%s/%s/%s",
-      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL().c_str()
-                                    : base_url_for_test_.spec().c_str(),
-      from.c_str(), to.c_str(), TimeFrameKeyToString(timeframe).c_str());
+  std::string spec =
+      absl::StrFormat("%s/v2/relative/provider/coingecko/%s/%s/%s",
+                      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL()
+                                                    : base_url_for_test_.spec(),
+                      from, to, TimeFrameKeyToString(timeframe));
   return GURL(spec);
 }
 
@@ -218,11 +218,11 @@ GURL AssetRatioService::GetPriceHistoryURL(
     const std::string& asset,
     const std::string& vs_asset,
     mojom::AssetPriceTimeframe timeframe) {
-  std::string spec = base::StringPrintf(
-      "%s/v2/history/coingecko/%s/%s/%s",
-      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL().c_str()
-                                    : base_url_for_test_.spec().c_str(),
-      asset.c_str(), vs_asset.c_str(), TimeFrameKeyToString(timeframe).c_str());
+  std::string spec =
+      absl::StrFormat("%s/v2/history/coingecko/%s/%s/%s",
+                      base_url_for_test_.is_empty() ? GetAssetRatioBaseURL()
+                                                    : base_url_for_test_.spec(),
+                      asset, vs_asset, TimeFrameKeyToString(timeframe));
   return GURL(spec);
 }
 
@@ -260,12 +260,11 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     std::string payload;
     base::JSONWriter::Write(payload_value, &payload);
     base::flat_map<std::string, std::string> request_headers;
-    std::string credentials = base::StringPrintf(
-        "%s:%s", sardine_client_id.c_str(),  // username:password
-        sardine_client_secret.c_str());
+    std::string credentials =
+        absl::StrFormat("%s:%s", sardine_client_id,  // username:password
+                        sardine_client_secret);
     std::string base64_credentials = base::Base64Encode(credentials);
-    std::string header =
-        base::StringPrintf("Basic %s", base64_credentials.c_str());
+    std::string header = absl::StrFormat("Basic %s", base64_credentials);
     request_headers["Authorization"] = std::move(header);
     api_request_helper_->Request("POST", sardine_token_url, payload,
                                  "application/json",
@@ -435,10 +434,10 @@ void AssetRatioService::GetStripeBuyURL(
 
   const std::string json_payload = GetJSON(payload);
 
-  GURL url = GURL(base::StringPrintf("%s/v2/stripe/onramp_sessions",
-                                     base_url_for_test_.is_empty()
-                                         ? GetAssetRatioBaseURL().c_str()
-                                         : base_url_for_test_.spec().c_str()));
+  GURL url = GURL(absl::StrFormat("%s/v2/stripe/onramp_sessions",
+                                  base_url_for_test_.is_empty()
+                                      ? GetAssetRatioBaseURL()
+                                      : base_url_for_test_.spec()));
 
   auto internal_callback =
       base::BindOnce(&AssetRatioService::OnGetStripeBuyURL,
@@ -517,10 +516,10 @@ void AssetRatioService::OnGetPriceHistory(GetPriceHistoryCallback callback,
 // static
 GURL AssetRatioService::GetCoinMarketsURL(const std::string& vs_asset,
                                           const uint8_t limit) {
-  GURL url = GURL(base::StringPrintf("%s/v2/market/provider/coingecko",
-                                     base_url_for_test_.is_empty()
-                                         ? GetAssetRatioBaseURL().c_str()
-                                         : base_url_for_test_.spec().c_str()));
+  GURL url = GURL(absl::StrFormat("%s/v2/market/provider/coingecko",
+                                  base_url_for_test_.is_empty()
+                                      ? GetAssetRatioBaseURL()
+                                      : base_url_for_test_.spec()));
   url = net::AppendQueryParameter(url, "vsCurrency", vs_asset);
   url = net::AppendQueryParameter(url, "limit", base::NumberToString(limit));
   return url;

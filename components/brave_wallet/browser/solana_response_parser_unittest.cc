@@ -181,7 +181,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetSPLTokenBalances) {
   )";
 
   // OK: well-formed json
-  auto json = base::StringPrintf(kJsonFmt, "9");
+  auto json = absl::StrFormat(kJsonFmt, "9");
   auto result = ParseGetSPLTokenBalances(ParseJson(json));
   ASSERT_TRUE(result.has_value());
   ASSERT_EQ(result->size(), 2UL);
@@ -199,15 +199,15 @@ TEST(SolanaResponseParserUnitTest, ParseGetSPLTokenBalances) {
   EXPECT_EQ(result->at(1)->decimals, 6);
 
   // KO: decimals uint8_t overflow
-  json = base::StringPrintf(kJsonFmt, "256");
+  json = absl::StrFormat(kJsonFmt, "256");
   EXPECT_FALSE(ParseGetSPLTokenBalances(ParseJson(json)));
 
   // KO: decimals uint8_t underflow
-  json = base::StringPrintf(kJsonFmt, "-1");
+  json = absl::StrFormat(kJsonFmt, "-1");
   EXPECT_FALSE(ParseGetSPLTokenBalances(ParseJson(json)));
 
   // KO: decimals type mismatch
-  json = base::StringPrintf(kJsonFmt, "\"not a decimal\"");
+  json = absl::StrFormat(kJsonFmt, "\"not a decimal\"");
   EXPECT_FALSE(ParseGetSPLTokenBalances(ParseJson(json)));
 }
 

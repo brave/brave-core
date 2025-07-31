@@ -96,7 +96,7 @@ bool ParseAssetPrice(const base::Value& json_value,
       }
       asset_price->price = base::NumberToString(*to_price);
       std::string to_asset_timeframe_key =
-          base::StringPrintf("%s_timeframe_change", to_asset.c_str());
+          absl::StrFormat("%s_timeframe_change", to_asset);
       std::optional<double> to_timeframe_change =
           from_asset_dict->FindDoubleByDottedPath(to_asset_timeframe_key);
       if (!to_timeframe_change) {

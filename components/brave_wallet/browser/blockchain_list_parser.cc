@@ -524,7 +524,7 @@ bool ParseChainList(const std::string& json, ChainList* result) {
     if (!chain_id) {
       continue;
     }
-    network->chain_id = base::StringPrintf("0x%x", chain_id);
+    network->chain_id = absl::StrFormat("0x%x", chain_id);
 
     network->chain_name = EmptyIfNull(chain_item->FindString("name"));
     if (network->chain_name.empty()) {

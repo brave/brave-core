@@ -409,12 +409,12 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     std::string expiry_message;
     base::TimeDelta delta = (last_credential_expiry - base::Time::Now());
     if (delta.InHours() == 0) {
-      expiry_message = base::StringPrintf(
+      expiry_message = absl::StrFormat(
           "Out of credentials; check again in %d minutes.", delta.InMinutes());
     } else {
       int delta_hours = delta.InHours();
       base::TimeDelta delta_minutes = (delta - base::Hours(delta_hours));
-      expiry_message = base::StringPrintf(
+      expiry_message = absl::StrFormat(
           "Out of credentials; check again in %d hours %d minutes.",
           delta_hours, delta_minutes.InMinutes());
     }

@@ -970,7 +970,7 @@ TEST(SimulationResponseParserUnitTest, ParseEvmErc1155ApprovalForAll) {
     }
   )";
 
-  auto json_with_token_name = base::StringPrintf(kJson, "\"Sandbox ASSET\"");
+  auto json_with_token_name = absl::StrFormat(kJson, "\"Sandbox ASSET\"");
 
   auto simulation_response = evm::ParseSimulationResponse(
       ParseJson(json_with_token_name),
@@ -1021,22 +1021,22 @@ TEST(SimulationResponseParserUnitTest, ParseEvmErc1155ApprovalForAll) {
   EXPECT_EQ(state_change_raw_info->asset->price->dollar_value_per_token,
             "232.43");
 
-  json_with_token_name = base::StringPrintf(kJson, "null");
+  json_with_token_name = absl::StrFormat(kJson, "null");
   EXPECT_TRUE(evm::ParseSimulationResponse(
       ParseJson(json_with_token_name),
       "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"));
 
-  json_with_token_name = base::StringPrintf(kJson, "[]");
+  json_with_token_name = absl::StrFormat(kJson, "[]");
   EXPECT_FALSE(evm::ParseSimulationResponse(
       ParseJson(json_with_token_name),
       "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"));
 
-  json_with_token_name = base::StringPrintf(kJson, "{}");
+  json_with_token_name = absl::StrFormat(kJson, "{}");
   EXPECT_FALSE(evm::ParseSimulationResponse(
       ParseJson(json_with_token_name),
       "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"));
 
-  json_with_token_name = base::StringPrintf(kJson, "false");
+  json_with_token_name = absl::StrFormat(kJson, "false");
   EXPECT_FALSE(evm::ParseSimulationResponse(
       ParseJson(json_with_token_name),
       "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"));
@@ -1245,7 +1245,7 @@ TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
   )";
 
   {
-    auto json = base::StringPrintf(kJson, "null", "null", "null", "null");
+    auto json = absl::StrFormat(kJson, "null", "null", "null", "null");
     auto simulation_response = evm::ParseSimulationResponse(
         ParseJson(json), "0xd8da6bf26964af9d7eed9e03e53415d37aa96045");
 
@@ -1290,7 +1290,7 @@ TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
   }
 
   {
-    auto json = base::StringPrintf(kJson, "null", "null", "true", "null");
+    auto json = absl::StrFormat(kJson, "null", "null", "true", "null");
     // OK: invalid values for nullable field asset->imageUrl are treated as
     // null.
     auto simulation_response = evm::ParseSimulationResponse(
@@ -1304,7 +1304,7 @@ TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
   }
 
   {
-    auto json = base::StringPrintf(kJson, "null", "null", "null", "true");
+    auto json = absl::StrFormat(kJson, "null", "null", "null", "true");
     // OK: invalid values for nullable field asset->price are treated as
     // null.
     auto simulation_response = evm::ParseSimulationResponse(
@@ -1318,8 +1318,7 @@ TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
   }
 
   {
-    auto json =
-        base::StringPrintf(kJson, "null", "null", "null", "{\"foo\": 1}");
+    auto json = absl::StrFormat(kJson, "null", "null", "null", "{\"foo\": 1}");
     // OK: invalid dict for nullable field asset->price is treated as null.
     auto simulation_response = evm::ParseSimulationResponse(
         ParseJson(json), "0xd8da6bf26964af9d7eed9e03e53415d37aa96045");
@@ -1820,7 +1819,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaNullableFields) {
   )";
 
   {
-    auto json = base::StringPrintf(kJson, "null");
+    auto json = absl::StrFormat(kJson, "null");
     auto simulation_response = solana::ParseSimulationResponse(
         ParseJson(json), "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
 
@@ -1837,7 +1836,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaNullableFields) {
   }
 
   {
-    auto json = base::StringPrintf(kJson, "true");
+    auto json = absl::StrFormat(kJson, "true");
     auto simulation_response = solana::ParseSimulationResponse(
         ParseJson(json), "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
 
@@ -1855,7 +1854,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaNullableFields) {
   }
 
   {
-    auto json = base::StringPrintf(kJson, "{\"foo\": 1}");
+    auto json = absl::StrFormat(kJson, "{\"foo\": 1}");
     auto simulation_response = solana::ParseSimulationResponse(
         ParseJson(json), "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
 

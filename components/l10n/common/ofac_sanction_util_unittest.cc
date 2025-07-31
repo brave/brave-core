@@ -187,9 +187,8 @@ std::string TestParamToString(
           ? "WhenShouldSanctionUNM49CodesIsSetToTrue"
           : "WhenShouldSanctionUNM49CodesIsSetToFalse";
 
-  return base::StringPrintf("%s_%s_%s", is_ofac_sanctioned.c_str(),
-                            locale.c_str(),
-                            should_sanction_un_m49_codes.c_str());
+  return absl::StrFormat("%s_%s_%s", is_ofac_sanctioned, locale,
+                         should_sanction_un_m49_codes);
 }
 
 INSTANTIATE_TEST_SUITE_P(,

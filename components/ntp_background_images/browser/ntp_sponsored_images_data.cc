@@ -144,8 +144,8 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     return;
   }
 
-  url_prefix = base::StringPrintf("%s://%s/", content::kChromeUIScheme,
-                                  kBrandedWallpaperHost);
+  url_prefix = absl::StrFormat("%s://%s/", content::kChromeUIScheme,
+                               kBrandedWallpaperHost);
   if (const std::string* const name = dict.FindString(kThemeNameKey)) {
     theme_name = *name;
     url_prefix += kSuperReferralPath;

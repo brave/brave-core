@@ -44,8 +44,8 @@ void DoPostUninstallOperations(const base::Version& version,
   const base::win::OSInfo* os_info = base::win::OSInfo::GetInstance();
   base::win::OSInfo::VersionNumber version_number = os_info->version_number();
   const std::wstring os_version = base::ASCIIToWide(
-      base::StringPrintf("%d.%d.%d", version_number.major, version_number.minor,
-                         version_number.build));
+      absl::StrFormat("%d.%d.%d", version_number.major, version_number.minor,
+                      version_number.build));
 
   const std::wstring survey_url = std::wstring(kBraveUninstallSurveyUrl);
 #if DCHECK_IS_ON()

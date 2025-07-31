@@ -108,8 +108,8 @@ inline bool IsTrue(v8::Maybe<bool> maybe) {
 
 v8::Local<v8::Private> MakeKey(const char* name, v8::Isolate* isolate) {
   return v8::Private::ForApi(
-      isolate, ToV8StringUnsafe(
-                   isolate, base::StringPrintf("%s::%s", kClassName, name)));
+      isolate,
+      ToV8StringUnsafe(isolate, absl::StrFormat("%s::%s", kClassName, name)));
 }
 
 // GetProperty() family calls V8::Object::Get() and extracts a value from
