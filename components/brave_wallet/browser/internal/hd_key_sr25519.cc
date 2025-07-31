@@ -8,17 +8,17 @@
 #include <utility>
 
 #include "base/containers/span_rust.h"
-#include "brave/components/brave_wallet/browser/internal/polkadot/rust/lib.rs.h"
+#include "brave/components/brave_wallet/browser/internal/sr25519.rs.h"
 
 namespace brave_wallet {
 
 namespace {
-bool IsBoxNonNull(rust::Box<polkadot::CxxSchnorrkelKeyPair> const& keypair) {
+bool IsBoxNonNull(rust::Box<CxxSchnorrkelKeyPair> const& keypair) {
   return keypair.operator->();
 }
 }  // namespace
 
-HDKeySr25519::HDKeySr25519(rust::Box<polkadot::CxxSchnorrkelKeyPair> keypair)
+HDKeySr25519::HDKeySr25519(rust::Box<CxxSchnorrkelKeyPair> keypair)
     : keypair_(std::move(keypair)) {}
 
 HDKeySr25519::HDKeySr25519(HDKeySr25519&&) noexcept = default;
@@ -34,7 +34,7 @@ HDKeySr25519::~HDKeySr25519() = default;
 HDKeySr25519 HDKeySr25519::GenerateFromSeed(
     base::span<const uint8_t, kSr25519SeedSize> seed) {
   auto bytes = base::SpanToRustSlice(seed);
-  auto mk = polkadot::generate_sr25519_keypair_from_seed(bytes);
+  auto mk = generate_sr25519_keypair_from_seed(bytes);
   return HDKeySr25519(std::move(mk));
 }
 

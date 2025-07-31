@@ -11,7 +11,7 @@ use schnorrkel::Signature;
 
 #[allow(unused)]
 #[allow(unsafe_op_in_unsafe_fn)]
-#[cxx::bridge(namespace = brave_wallet::polkadot)]
+#[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
     extern "Rust" {
         type CxxSchnorrkelKeyPair;

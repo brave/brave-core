@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_wallet/common/config.gni")
+import("//build/rust/rust_static_library.gni")
 
 source_set("hd_key_common") {
   sources = [
@@ -55,9 +56,7 @@ source_set("hd_key") {
     "hd_key_sr25519.cc",
     "hd_key_sr25519.h",
   ]
-  deps += [
-    "//brave/components/brave_wallet/browser/internal/polkadot/rust:rust_lib",
-  ]
+  deps += [ "//brave/components/brave_wallet/browser/internal:sr25519_rs" ]
 }
 
 if (enable_orchard) {
@@ -89,4 +88,20 @@ if (enable_orchard) {
       "//brave/components/brave_wallet/browser/zcash/rust",
     ]
   }
+}
+
+rust_static_library("sr25519_rs") {
+  # This should only be used by internal wallet code
+  visibility = [ "//brave/components/brave_wallet/browser/internal:*" ]
+
+  crate_name = "sr25519"
+  crate_root = "sr25519.rs"
+  allow_unsafe = true
+  sources = [ "sr25519.rs" ]
+  cxx_bindings = [ "sr25519.rs" ]
+
+  deps = [
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/schnorrkel/v0_11:lib",
+  ]
 }
