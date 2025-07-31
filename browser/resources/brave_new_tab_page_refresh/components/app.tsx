@@ -69,7 +69,11 @@ export function App() {
               <SearchBox showSearchSettings={() => setSettingsView('search')} />
           }
         </div>
-        <div className='spacer allow-background-pointer-events'>
+        <div className='
+          spacer
+          sponsored-background-safe-area
+          allow-background-pointer-events'
+        >
           <BackgroundClickRegion />
         </div>
         <div className='caption-container'>
