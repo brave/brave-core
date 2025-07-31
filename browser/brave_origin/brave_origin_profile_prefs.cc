@@ -71,6 +71,8 @@ void SetupBraveOriginProfilePrefs(Profile* profile) {
     prefs->SetDefaultPrefValue(kBraveWaybackMachineDisabledByPolicy,
                                base::Value(true));
 #endif
+    prefs->SetDefaultPrefValue(kWebDiscoveryDisabledByPolicy,
+                               base::Value(true));
 
     // Local state (spans all profiles)
     g_browser_process->local_state()->SetDefaultPrefValue(

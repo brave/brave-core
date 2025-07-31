@@ -84,6 +84,8 @@ constexpr ProfilePrefConfig kProfilePrefs[] = {
 #endif
     {brave_wallet::prefs::kDisabledByPolicy, true, "wallet",
      "wallet-enabled-changed"},
+    {kWebDiscoveryDisabledByPolicy, true, "webDiscovery",
+     "web-discovery-enabled-changed"},
 };
 
 // Local state preferences configuration
@@ -106,6 +108,8 @@ constexpr auto kToggleLocalStateMap =
 #endif
         {"p3a", p3a::kP3ADisabledByPolicy},
         {"statsReporting", kStatsReportingDisabledByPolicy},
+        // TODO(bsclifton): use the real constant.
+        // {"crashReporting", metrics::prefs::kMetricsReportingEnabled}});
         {"crashReporting", "user_experience_metrics.reporting_enabled"}});
 
 // Helper function to get preference value with inversion handling
