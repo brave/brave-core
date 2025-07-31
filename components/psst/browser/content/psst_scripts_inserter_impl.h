@@ -29,7 +29,6 @@ class PsstScriptsInserterImpl
       PsstTabWebContentsObserver::InsertScriptInPageCallback cb) override;
 
  private:
-  const content::GlobalRenderFrameHostId render_frame_host_id_;
   raw_ptr<content::WebContents> web_contents_;
   const int32_t world_id_;
 

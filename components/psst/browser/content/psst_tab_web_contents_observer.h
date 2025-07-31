@@ -87,7 +87,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                           const std::string& user_id,
                           std::unique_ptr<MatchedRule> rule,
                           std::optional<base::Value> script_params,
-                          const prefs::ConsentStatus status,
+                          const ConsentStatus status,
                           std::optional<base::Value::List> disabled_checks);
 
   const raw_ptr<PsstRuleRegistry> registry_;

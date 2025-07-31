@@ -175,8 +175,8 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
 
   if (ShouldContinueSilently(*rule, *user_id)) {
     OnUserDialogAction(nav_entry_id, false, *user_id, std::move(rule),
-                       std::move(user_script_result),
-                       prefs::ConsentStatus::kAllow, std::move(urls_to_skip));
+                       std::move(user_script_result), ConsentStatus::kAllow,
+                       std::move(urls_to_skip));
     return;
   }
 
@@ -191,10 +191,9 @@ bool PsstTabWebContentsObserver::ShouldContinueSilently(
   const auto script_version =
       prefs::GetScriptVersion(rule.name(), user_id, *prefs_);
 
-  bool show_prompt =
-      !consent_status || consent_status == prefs::ConsentStatus::kAsk;
+  bool show_prompt = !consent_status || consent_status == ConsentStatus::kAsk;
   bool prompt_for_new_version =
-      consent_status && consent_status == prefs::ConsentStatus::kAllow &&
+      consent_status && consent_status == ConsentStatus::kAllow &&
       script_version && rule.version() > script_version;
 
   return !show_prompt && !prompt_for_new_version;
@@ -206,7 +205,7 @@ void PsstTabWebContentsObserver::OnUserDialogAction(
     const std::string& user_id,
     std::unique_ptr<MatchedRule> rule,
     std::optional<base::Value> script_params,
-    const prefs::ConsentStatus status,
+    const ConsentStatus status,
     std::optional<base::Value::List> disabled_checks) {
   if (!rule || !ShouldInsertScriptForPage(nav_entry_id)) {
     return;
@@ -215,12 +214,13 @@ void PsstTabWebContentsObserver::OnUserDialogAction(
   prefs::SetPsstSettings(rule->name(), user_id, status, rule->version(),
                          disabled_checks->Clone(), *prefs_);
 
-  if (status == prefs::ConsentStatus::kAllow) {
+  if (status == ConsentStatus::kAllow) {
     PrepareParametersForPolicyExecution(script_params, disabled_checks,
                                         is_initial);
 
+    const auto policy_script = rule->policy_script();
     script_inserter_->InsertScriptInPage(
-        rule->policy_script(), std::nullopt /* no params */,
+        policy_script, std::nullopt /* no params */,
         base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
                        weak_factory_.GetWeakPtr(), nav_entry_id,
                        std::move(rule)));
