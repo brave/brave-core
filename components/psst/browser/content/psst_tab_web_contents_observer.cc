@@ -21,10 +21,39 @@
 #include "content/public/browser/navigation_handle.h"
 
 namespace psst {
-
+namespace {
 const char kUserScriptResultUserPropName[] = "user";
+const char kUserScriptResultTasksPropName[] = "tasks";
+const char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
+const char kUserScriptResultTaskItemUrlPropName[] = "url";
+
+const char kPolicyScriptResultPsstPropName[] = "psst";
+const char kPolicyScriptResultProgressPropName[] = "progress";
 
 const char kShouldProcessKey[] = "should_process_key";
+
+void PrepareParametersForPolicyExecution(
+    std::optional<base::Value>& params,
+    std::optional<base::Value::List>& disabled_checks,
+    const bool is_initial) {
+  if (!params || !params->is_dict()) {
+    return;
+  }
+
+  if (auto* tasks =
+          params->GetDict().FindList(kUserScriptResultTasksPropName)) {
+    tasks->EraseIf([&](const base::Value& v) {
+      const auto& item_dict = v.GetDict();
+      const auto* url =
+          item_dict.FindString(kUserScriptResultTaskItemUrlPropName);
+      return url && disabled_checks->contains(*url);
+    });
+  }
+
+  params->GetDict().Set(kUserScriptResultInitialExecutionPropName, is_initial);
+}
+
+}  // namespace
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
  public:
@@ -132,8 +161,8 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     int nav_entry_id,
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result) {
-  if (!ShouldInsertScriptForPage(nav_entry_id) ||
-      rule->policy_script().empty() || !user_script_result.is_dict()) {
+  if (!rule || !ShouldInsertScriptForPage(nav_entry_id) ||
+      !user_script_result.is_dict()) {
     return;
   }
 
@@ -180,10 +209,17 @@ void PsstTabWebContentsObserver::OnUserDialogAction(
     std::optional<base::Value> script_params,
     const prefs::ConsentStatus status,
     std::optional<base::Value::List> disabled_checks) {
+  if (!rule || !ShouldInsertScriptForPage(nav_entry_id)) {
+    return;
+  }
+
   prefs::SetPsstSettings(rule->name(), user_id, status, rule->version(),
                          disabled_checks->Clone(), *prefs_);
 
   if (status == prefs::ConsentStatus::kAllow) {
+    PrepareParametersForPolicyExecution(script_params, disabled_checks,
+                                        is_initial);
+
     script_inserter_->InsertScriptInPage(
         rule->policy_script(), std::nullopt /* no params */,
         base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
@@ -196,6 +232,22 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
     int nav_entry_id,
     std::unique_ptr<MatchedRule> rule,
     base::Value script_result) {
+  if (!script_result.is_dict() || !rule || rule->policy_script().empty() ||
+      !ShouldInsertScriptForPage(nav_entry_id)) {
+    return;
+  }
+
+  const auto* psst =
+      script_result.GetDict().FindDict(kPolicyScriptResultPsstPropName);
+  if (!psst) {
+    return;
+  }
+
+  if (const auto percent =
+          psst->FindDouble(kPolicyScriptResultProgressPropName)) {
+    delegate_->SetProgress(*percent);
+  }
+
   delegate_->SetCompleted();
 }
 
