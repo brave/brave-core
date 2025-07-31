@@ -764,7 +764,10 @@ const util = {
     }
     options.cwd = options.cwd || config.rootDir
     const env = {}
-    dotenvPopulateWithIncludes(env, '.env')
+    const envPath = path.join(config.braveCoreDir, '.env')
+    if (!fs.existsSync(envPath)) {
+      dotenvPopulateWithIncludes(env, envPath)
+    }
     options.env = {...env, ...options.env}
     options = util.mergeWithDefault(options)
     options.env.GCLIENT_FILE = gClientFile
