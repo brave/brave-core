@@ -39,7 +39,6 @@ bool RendererContentSettingRules::IsRendererContentSetting(
          content_type == ContentSettingsType::BRAVE_COSMETIC_FILTERING ||
          content_type == ContentSettingsType::BRAVE_FINGERPRINTING_V2 ||
          content_type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN ||
-         content_type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS ||
          content_type == ContentSettingsType::BRAVE_SHIELDS;
 }
 

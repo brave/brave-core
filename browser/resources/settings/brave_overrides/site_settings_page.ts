@@ -123,21 +123,6 @@ RegisterPolymerComponentReplacement(
               lists.permissionsAdvanced.splice(currentIndex, 0,
                 googleSignInItem)
             }
-            const isLocalhostAccessFeatureEnabled =
-              loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
-            if (isLocalhostAccessFeatureEnabled) {
-              currentIndex++
-              const localhostAccessItem = {
-                route: routes.SITE_SETTINGS_LOCALHOST_ACCESS,
-                id: ContentSettingsTypes.LOCALHOST_ACCESS,
-                label: 'siteSettingsLocalhostAccess',
-                icon: 'smartphone-desktop',
-                enabledLabel: 'siteSettingsLocalhostAccessAsk',
-                disabledLabel: 'siteSettingsLocalhostAccessBlock'
-              }
-              lists.permissionsAdvanced.splice(currentIndex, 0,
-                localhostAccessItem)
-            }
             const isOpenAIChatFromBraveSearchEnabled =
               loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
             if (isOpenAIChatFromBraveSearchEnabled) {

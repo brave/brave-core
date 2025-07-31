@@ -35,6 +35,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "services/network/public/cpp/features.h"
 #include "url/origin.h"
 
 namespace brave_shields {
@@ -353,7 +354,9 @@ AdBlockService::AdBlockService(
       std::make_unique<AdBlockCustomFiltersProvider>(local_state_);
 
   if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission)) {
+          network::features::kLocalNetworkAccessChecks) &&
+      !network::features::kLocalNetworkAccessChecksWarn.Get()) {
+    // If LNA enabled and blocks request
     localhost_filters_provider_ =
         std::make_unique<AdBlockLocalhostFiltersProvider>();
   }

@@ -114,9 +114,6 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN) {
     return true;
   }
-  if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
-    return true;
-  }
   if (type == ContentSettingsType::BRAVE_ETHEREUM) {
     return true;
   }
@@ -140,7 +137,6 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
       ContentSettingsType::BRAVE_ETHEREUM,
       ContentSettingsType::BRAVE_SOLANA,
       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
-      ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
       ContentSettingsType::BRAVE_OPEN_AI_CHAT,
       ContentSettingsType::BRAVE_CARDANO,
   };
