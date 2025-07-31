@@ -220,7 +220,7 @@ void PsstTabWebContentsObserver::OnUserDialogAction(
 
     const auto policy_script = rule->policy_script();
     script_inserter_->InsertScriptInPage(
-        policy_script, std::nullopt /* no params */,
+        policy_script, std::move(script_params),
         base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
                        weak_factory_.GetWeakPtr(), nav_entry_id,
                        std::move(rule)));
