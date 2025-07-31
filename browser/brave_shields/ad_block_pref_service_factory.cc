@@ -12,6 +12,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/ad_block_pref_service.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/net/proxy_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -38,7 +39,9 @@ AdBlockPrefServiceFactory* AdBlockPrefServiceFactory::GetInstance() {
 AdBlockPrefServiceFactory::AdBlockPrefServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "AdBlockPrefService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(HostContentSettingsMapFactory::GetInstance());
+}
 
 AdBlockPrefServiceFactory::~AdBlockPrefServiceFactory() = default;
 
@@ -49,7 +52,8 @@ AdBlockPrefServiceFactory::BuildServiceInstanceForBrowserContext(
 
   auto service = std::make_unique<AdBlockPrefService>(
       g_brave_browser_process->ad_block_service(), profile->GetPrefs(),
-      g_browser_process->local_state());
+      g_browser_process->local_state(),
+      HostContentSettingsMapFactory::GetForProfile(profile));
 
   auto pref_proxy_config_tracker =
       ProxyServiceFactory::CreatePrefProxyConfigTrackerOfProfile(

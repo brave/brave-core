@@ -19,6 +19,8 @@ inline constexpr char kAdBlockCookieListSettingTouched[] =
     "brave.ad_block.cookie_list_setting_touched";
 inline constexpr char kAdBlockMobileNotificationsListSettingTouched[] =
     "brave.ad_block.mobile_notifications_list_setting_touched";
+inline constexpr char kAdBlockAdblockOnlyModeEnabled[] =
+    "brave.ad_block.adblock_only_mode_enabled";
 
 inline constexpr char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
 inline constexpr char kAdBlockRegionalFilters[] =
