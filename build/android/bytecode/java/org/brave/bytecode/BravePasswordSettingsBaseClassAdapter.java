@@ -8,20 +8,25 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BravePasswordSettingsBaseClassAdapter extends BraveClassVisitor {
-    static String sPasswordSettingsClassName =
-            "org/chromium/chrome/browser/password_manager/settings/PasswordSettings";
-    static String sBravePasswordSettingsBaseClassName =
-            "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase";
+    //     static String sPasswordSettingsClassName =
+    //             "org/chromium/chrome/browser/password_manager/settings/PasswordSettings";
+    //     static String sBravePasswordSettingsBaseClassName =
+    //
+    // "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase";
 
     public BravePasswordSettingsBaseClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeSuperName(sPasswordSettingsClassName, sBravePasswordSettingsBaseClassName);
+        // TODO(alexeybarabash): PasswordSettings was removed at upstream,
+        // but we need to get it back
+        // Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
 
-        changeMethodOwner(
-                sPasswordSettingsClassName,
-                "createCheckPasswords",
-                sBravePasswordSettingsBaseClassName);
-        deleteMethod(sPasswordSettingsClassName, "createCheckPasswords");
+        // changeSuperName(sPasswordSettingsClassName, sBravePasswordSettingsBaseClassName);
+
+        // changeMethodOwner(
+        //         sPasswordSettingsClassName,
+        //         "createCheckPasswords",
+        //         sBravePasswordSettingsBaseClassName);
+        // deleteMethod(sPasswordSettingsClassName, "createCheckPasswords");
     }
 }
