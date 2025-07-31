@@ -67,6 +67,8 @@ group("chromium_unit_tests") {
              "json")
 }
 
+# Only add tests to this list if you want them to run by default on PR builder
+# and release builds.
 brave_all_unit_tests_deps = [ "//brave/components:brave_components_unittests" ]
 if (!is_ios) {
   brave_all_unit_tests_deps += [ "//brave/test:brave_unit_tests" ]
@@ -74,16 +76,13 @@ if (!is_ios) {
   brave_all_unit_tests_deps += [ "//brave/ios/testing:ios_brave_unit_tests" ]
 }
 if (!is_ios && !is_android) {
-  brave_all_unit_tests_deps += [
-    "//brave/test:brave_installer_unittests",
-
-    # TODO(https://github.com/brave/brave-browser/issues/48061): Fix this target
-    # for iOS.
-    # TODO(https://github.com/brave/brave-browser/issues/48062): Fix this target
-    # for android.
-    "//components:components_unittests",
-  ]
+  brave_all_unit_tests_deps += [ "//brave/test:brave_installer_unittests" ]
 }
+
+if (is_linux) {
+  brave_all_unit_tests_deps += [ "//components:components_unittests" ]
+}
+
 group("brave_all_unit_tests") {
   testonly = true
   data_deps = brave_all_unit_tests_deps
@@ -115,6 +114,14 @@ group("all") {
 
   if (!is_ios) {
     deps += [ "//brave/test:brave_browser_tests" ]
+  }
+
+  if (!is_android) {
+    deps += [
+      # TODO(https://github.com/brave/brave-browser/issues/48062): Fix this
+      # target for android.
+      "//components:components_unittests",
+    ]
   }
 
   if (is_android) {
