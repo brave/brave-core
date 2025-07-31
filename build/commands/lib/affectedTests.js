@@ -154,7 +154,10 @@ async function getAffectedTests(args = {}) {
     .map(({ test }) => test)
 
   return [
-    ...new Set([...affectedTests.map(gnTargetToExecutableName), ...additionalTests]),
+    ...new Set([
+      ...affectedTests.map(gnTargetToExecutableName),
+      ...additionalTests,
+    ]),
   ]
 }
 
