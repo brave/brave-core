@@ -203,7 +203,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  extensions_mv2::ExtensionsManifectV2MigratorFactory::GetInstance();
+  extensions_mv2::ExtensionsManifestV2MigratorFactory::GetInstance();
 #endif
 }
 

@@ -221,7 +221,7 @@ INSTANTIATE_TEST_SUITE_P(,
 
 TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
   if (!GetParam().feature_enabled) {
-    EXPECT_FALSE(extensions_mv2::ExtensionsManifectV2MigratorFactory::
+    EXPECT_FALSE(extensions_mv2::ExtensionsManifestV2MigratorFactory::
                      GetForBrowserContextForTesting(profile()));
     return;
   }

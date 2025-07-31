@@ -22,17 +22,17 @@ class Profile;
 
 namespace extensions_mv2 {
 
-class ExtensionsManifectV2Migrator
+class ExtensionsManifestV2Migrator
     : public KeyedService,
       public extensions::ExtensionPrefsObserver,
       public extensions::ExtensionRegistryObserver {
  public:
-  explicit ExtensionsManifectV2Migrator(Profile* profile);
+  explicit ExtensionsManifestV2Migrator(Profile* profile);
 
-  ExtensionsManifectV2Migrator(const ExtensionsManifectV2Migrator&) = delete;
-  ExtensionsManifectV2Migrator& operator=(const ExtensionsManifectV2Migrator&) =
+  ExtensionsManifestV2Migrator(const ExtensionsManifestV2Migrator&) = delete;
+  ExtensionsManifestV2Migrator& operator=(const ExtensionsManifestV2Migrator&) =
       delete;
-  ~ExtensionsManifectV2Migrator() override;
+  ~ExtensionsManifestV2Migrator() override;
 
   void Shutdown() override;
 
@@ -64,26 +64,26 @@ class ExtensionsManifectV2Migrator
                           extensions::ExtensionRegistryObserver>
       registry_observation_{this};
 
-  base::WeakPtrFactory<ExtensionsManifectV2Migrator> weak_factory_{this};
+  base::WeakPtrFactory<ExtensionsManifestV2Migrator> weak_factory_{this};
 };
 
-class ExtensionsManifectV2MigratorFactory : public ProfileKeyedServiceFactory {
+class ExtensionsManifestV2MigratorFactory : public ProfileKeyedServiceFactory {
  public:
-  ExtensionsManifectV2MigratorFactory(
-      const ExtensionsManifectV2MigratorFactory&) = delete;
-  ExtensionsManifectV2MigratorFactory& operator=(
-      const ExtensionsManifectV2MigratorFactory&) = delete;
+  ExtensionsManifestV2MigratorFactory(
+      const ExtensionsManifestV2MigratorFactory&) = delete;
+  ExtensionsManifestV2MigratorFactory& operator=(
+      const ExtensionsManifestV2MigratorFactory&) = delete;
 
-  static ExtensionsManifectV2MigratorFactory* GetInstance();
-  static ExtensionsManifectV2Migrator* GetForBrowserContextForTesting(
+  static ExtensionsManifestV2MigratorFactory* GetInstance();
+  static ExtensionsManifestV2Migrator* GetForBrowserContextForTesting(
       content::BrowserContext* context);
 
  private:
   friend struct base::DefaultSingletonTraits<
-      ExtensionsManifectV2MigratorFactory>;
+      ExtensionsManifestV2MigratorFactory>;
 
-  ExtensionsManifectV2MigratorFactory();
-  ~ExtensionsManifectV2MigratorFactory() override;
+  ExtensionsManifestV2MigratorFactory();
+  ~ExtensionsManifestV2MigratorFactory() override;
 
   // BrowserContextKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
