@@ -47,13 +47,14 @@ declare_args() {
 
 chromium_unit_tests_deps = [
   "//base:base_unittests",
-  "//components:components_unittests",
   "//net:net_unittests",
 ]
 if (!is_ios) {
   chromium_unit_tests_deps += [ "//chrome/test:unit_tests" ]
 }
-if (use_blink) {
+if (use_blink && !is_android) {
+  # TODO(https://github.com/brave/brave-browser/issues/48062): Fix this target
+  # for android.
   chromium_unit_tests_deps += [ "//content/test:content_unittests" ]
 }
 
@@ -73,7 +74,15 @@ if (!is_ios) {
   brave_all_unit_tests_deps += [ "//brave/ios/testing:ios_brave_unit_tests" ]
 }
 if (!is_ios && !is_android) {
-  brave_all_unit_tests_deps += [ "//brave/test:brave_installer_unittests" ]
+  brave_all_unit_tests_deps += [
+    "//brave/test:brave_installer_unittests",
+
+    # TODO(https://github.com/brave/brave-browser/issues/48061): Fix this target
+    # for iOS.
+    # TODO(https://github.com/brave/brave-browser/issues/48062): Fix this target
+    # for android.
+    "//components:components_unittests",
+  ]
 }
 group("brave_all_unit_tests") {
   testonly = true
