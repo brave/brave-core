@@ -73,15 +73,15 @@ void SetupBraveOriginProfilePrefs(Profile* profile) {
 #endif
 
     // Local state (spans all profiles)
-    g_browser_process->local_state()->SetBoolean(p3a::kP3ADisabledByPolicy,
-                                                 true);
-    g_browser_process->local_state()->SetBoolean(
-        kStatsReportingDisabledByPolicy, true);
-    g_browser_process->local_state()->SetBoolean(
-        metrics::prefs::kMetricsReportingEnabled, false);
+    g_browser_process->local_state()->SetDefaultPrefValue(
+        p3a::kP3ADisabledByPolicy, base::Value(true));
+    g_browser_process->local_state()->SetDefaultPrefValue(
+        kStatsReportingDisabledByPolicy, base::Value(true));
+    g_browser_process->local_state()->SetDefaultPrefValue(
+        metrics::prefs::kMetricsReportingEnabled, base::Value(false));
 #if BUILDFLAG(ENABLE_TOR)
-    g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled,
-                                                 true);
+    g_browser_process->local_state()->SetDefaultPrefValue(
+        tor::prefs::kTorDisabled, base::Value(true));
 #endif
   }
 }

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ORIGIN_BRAVE_ORIGIN_HANDLER_H_
 
 #include <string>
+#include <unordered_map>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -33,6 +34,7 @@ class BraveOriginHandler : public settings::SettingsPageUIHandler {
   void OnValueChanged(const std::string& pref_name);
   void OnRestartNeededChanged();
   bool IsRestartNeeded();
+  void StoreInitialValues();
 
   // SettingsPageUIHandler implementation.
   void OnJavascriptAllowed() override {}
@@ -42,19 +44,10 @@ class BraveOriginHandler : public settings::SettingsPageUIHandler {
   PrefChangeRegistrar local_state_change_registrar_;
 
   const raw_ptr<Profile, DanglingUntriaged> profile_;
-  bool was_rewards_enabled_ = false;
-  bool was_news_enabled_ = false;
-  bool was_p3a_enabled_ = false;
-  bool was_stats_reporting_enabled_ = false;
-  bool was_crash_reporting_enabled_ = false;
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  bool was_vpn_enabled_ = false;
-#endif
-#if BUILDFLAG(ENABLE_TOR)
-  bool was_tor_enabled_ = false;
-#endif
-  bool was_ai_enabled_ = false;
-  bool was_wallet_enabled_ = false;
+
+  // Map to store initial preference values for restart detection
+  std::unordered_map<std::string, bool> initial_values_;
+
   base::WeakPtrFactory<BraveOriginHandler> weak_factory_{this};
 };
 
