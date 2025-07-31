@@ -12,7 +12,4 @@ specific_include_rules = {
   "hd_key_sr25519\.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
-  "hd_key_sr25519\.c": [
-    "+third_party/rust/cxx/v1/cxx.h",
-  ],
 }

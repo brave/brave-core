@@ -9,7 +9,6 @@
 
 #include "base/containers/span_rust.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot/rust/lib.rs.h"
-#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet {
 
@@ -32,14 +31,11 @@ HDKeySr25519& HDKeySr25519::operator=(HDKeySr25519&& rhs) noexcept {
 
 HDKeySr25519::~HDKeySr25519() = default;
 
-std::optional<HDKeySr25519> HDKeySr25519::GenerateFromSeed(
-    base::span<const uint8_t> seed) {
+HDKeySr25519 HDKeySr25519::GenerateFromSeed(
+    base::span<const uint8_t, kSr25519SeedSize> seed) {
   auto bytes = base::SpanToRustSlice(seed);
   auto mk = polkadot::generate_sr25519_keypair_from_seed(bytes);
-  if (!mk->is_ok()) {
-    return std::nullopt;
-  }
-  return HDKeySr25519(mk->unwrap());
+  return HDKeySr25519(std::move(mk));
 }
 
 std::array<uint8_t, kSr25519PublicKeySize> HDKeySr25519::GetPublicKey() {
