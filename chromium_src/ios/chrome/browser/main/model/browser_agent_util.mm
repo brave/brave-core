@@ -7,9 +7,11 @@
 
 #include "ios/chrome/browser/send_tab_to_self/model/send_tab_to_self_browser_agent.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/tab_insertion/model/tab_insertion_browser_agent.h"
 #include "ios/chrome/browser/tabs/model/synced_window_delegate_browser_agent.h"
 
 void AttachBrowserAgents(Browser* browser) {
+  TabInsertionBrowserAgent::CreateForBrowser(browser);
   SyncedWindowDelegateBrowserAgent::CreateForBrowser(browser);
 
   // Send Tab To Self is non-OTR only.

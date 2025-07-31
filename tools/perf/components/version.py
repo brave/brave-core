@@ -9,13 +9,15 @@ import json
 from typing import List
 import components.git_tools as git_tools
 
+CHROME_VERSION_RE_PATTERN = r'\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}'
+BRAVE_VERSION_RE_PATTERN = r'v\d{1,4}\.\d{1,4}\.\d{1,4}'
 
 class ChromiumVersion:
   _version: List[int]
 
   def __init__(self, v: str) -> None:
     super().__init__()
-    assert re.match(r'\d+\.\d+\.\d+\.\d+', v)
+    assert re.match(CHROME_VERSION_RE_PATTERN, v)
     self._version = list(map(int, v.split('.')))
 
   def to_string(self) -> str:
@@ -34,7 +36,7 @@ class BraveVersion:
   _chromium_version: ChromiumVersion
 
   def __init__(self, version_str: str) -> None:
-    m = re.match(r'v\d+\.\d+\.\d+', version_str)
+    m = re.match(BRAVE_VERSION_RE_PATTERN, version_str)
     if m is not None:  # Brave tag (v1.62.35)
       revision = f'refs/tags/{version_str}'
       self._is_tag = True

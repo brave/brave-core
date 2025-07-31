@@ -10,8 +10,10 @@
 #include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -20,13 +22,17 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "build/build_config.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -440,6 +446,69 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, SnsRedirectWork) {
   EXPECT_EQ(brave_request_info->new_url_spec, GURL("https://brave.com"));
 
   EXPECT_FALSE(brave_request_info->pending_error.has_value());
+}
+
+// Test that decentralized DNS is disabled when BraveWalletDisabled policy is
+// true
+TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
+       DisabledWhenBraveWalletDisabledByPolicy) {
+  // Set up the preferences to enable decentralized DNS methods
+  local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
+  local_state()->SetInteger(kENSResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
+  local_state()->SetInteger(kSnsResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
+
+  // Disable Brave Wallet by policy
+  auto* prefs = profile()->GetTestingPrefService();
+  prefs->SetManagedPref(brave_wallet::prefs::kDisabledByPolicy,
+                        base::Value(true));
+
+  // Create test request for an unstoppable domain
+  GURL url("http://test.crypto");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->browser_context = browser_context();
+
+  // Call the decentralized DNS helper
+  int result = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
+      base::DoNothing(), brave_request_info);
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+  // On desktop platforms, policy is enforced, so wallet is disabled
+  // Should return OK immediately (not pending) because wallet is disabled
+  EXPECT_EQ(net::OK, result);
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+#else
+  // On mobile platforms, policy is not enforced, so wallet is always enabled
+  // Should return ERR_IO_PENDING because it will try to resolve the domain
+  EXPECT_EQ(net::ERR_IO_PENDING, result);
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+}
+
+// Test that decentralized DNS works when BraveWalletDisabled policy is false
+TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
+       EnabledWhenBraveWalletEnabledByPolicy) {
+  // Set up the preferences to enable decentralized DNS methods
+  local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
+
+  // Enable Brave Wallet by policy (this is the default)
+  auto* prefs = profile()->GetTestingPrefService();
+  prefs->SetManagedPref(brave_wallet::prefs::kDisabledByPolicy,
+                        base::Value(false));
+
+  // Create test request for an unstoppable domain
+  GURL url("http://test.crypto");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->browser_context = browser_context();
+
+  // Call the decentralized DNS helper
+  int result = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
+      base::DoNothing(), brave_request_info);
+
+  // Should return ERR_IO_PENDING because it will try to resolve the domain
+  EXPECT_EQ(net::ERR_IO_PENDING, result);
 }
 
 }  // namespace decentralized_dns

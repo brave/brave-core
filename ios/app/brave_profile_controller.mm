@@ -47,6 +47,8 @@
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
+#include "ios/chrome/browser/sessions/model/session_restoration_service.h"
+#include "ios/chrome/browser/sessions/model/session_restoration_service_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list.h"
@@ -103,6 +105,14 @@
 
 @implementation BraveProfileController
 
+- (void)setSessionIDForBrowser:(Browser*)browser {
+  const std::string identifier = "{SyntheticIdentifier}";
+
+  ProfileIOS* profile = browser->GetProfile();
+  SessionRestorationServiceFactory::GetForProfile(profile)->SetSessionID(
+      browser, identifier);
+}
+
 - (instancetype)initWithProfileKeepAlive:
     (ScopedProfileKeepAliveIOS)profileKeepAlive {
   if ((self = [super init])) {
@@ -117,12 +127,14 @@
     _browserList = BrowserListFactory::GetForProfile(_profile);
     _browser = Browser::Create(_profile, {});
     _browserList->AddBrowser(_browser.get());
+    [self setSessionIDForBrowser:_browser.get()];
 
     // Setup otr browser
     ProfileIOS* otr_last_used_profile = _profile->GetOffTheRecordProfile();
     _otr_browserList = BrowserListFactory::GetForProfile(otr_last_used_profile);
     _otr_browser = Browser::Create(otr_last_used_profile, {});
     _otr_browserList->AddBrowser(_otr_browser.get());
+    [self setSessionIDForBrowser:_otr_browser.get()];
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
     [self performFaviconsCleanup];
@@ -159,6 +171,8 @@
       BrowserListFactory::GetForProfile(_otr_browser->GetProfile());
   [_otr_browser->GetCommandDispatcher() prepareForShutdown];
   _otr_browserList->RemoveBrowser(_otr_browser.get());
+  SessionRestorationServiceFactory::GetForProfile(_otr_browser->GetProfile())
+      ->Disconnect(_otr_browser.get());
   CloseAllWebStates(*_otr_browser->GetWebStateList(),
                     WebStateList::CLOSE_NO_FLAGS);
   _otr_browser.reset();
@@ -166,6 +180,8 @@
   _browserList = BrowserListFactory::GetForProfile(_browser->GetProfile());
   [_browser->GetCommandDispatcher() prepareForShutdown];
   _browserList->RemoveBrowser(_browser.get());
+  SessionRestorationServiceFactory::GetForProfile(_browser->GetProfile())
+      ->Disconnect(_browser.get());
   CloseAllWebStates(*_browser->GetWebStateList(), WebStateList::CLOSE_NO_FLAGS);
   _browser.reset();
 

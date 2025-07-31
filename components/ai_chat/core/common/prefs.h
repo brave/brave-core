@@ -23,6 +23,10 @@ mojom::CustomizationsPtr GetCustomizationsFromPrefs(const PrefService& prefs);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void SetCustomizationsToPrefs(const mojom::CustomizationsPtr& customizations,
                               PrefService& prefs);
+// Reset the customizations pref.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+void ResetCustomizationsPref(PrefService& prefs);
+
 // Returns the memories from the memories list in the pref.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 std::vector<std::string> GetMemoriesFromPrefs(const PrefService& prefs);
