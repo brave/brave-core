@@ -81,6 +81,14 @@ if (!is_ios && !is_android) {
 
 if (is_linux) {
   brave_all_unit_tests_deps += [ "//components:components_unittests" ]
+
+# This is a temporary workaround to prevent upstream component units from
+# running by default for Linux except on CI
+brave_extra_unit_tests_for_ci = []
+if (is_linux) {
+  brave_extra_unit_tests_for_ci += [
+    "//components:components_unittests",
+  ]
 }
 
 group("brave_all_unit_tests") {
@@ -88,6 +96,9 @@ group("brave_all_unit_tests") {
   data_deps = brave_all_unit_tests_deps
   write_file("$root_out_dir/brave_all_unit_tests.json",
              brave_all_unit_tests_deps,
+             "json")
+  write_file("$root_out_dir/brave_all_unit_tests_ci.json",
+             brave_extra_unit_tests_for_ci,
              "json")
 }
 
