@@ -8,14 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-#include "brave/ios/browser/api/brave_shields/brave_shields_utils_ios.h"
+#include "brave/components/brave_shields/ios/browser/brave_shields_utils_ios.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-class ProfileIOS;
+class HostContentSettingsMap;
+class PrefService;
 
 @interface BraveShieldsUtilsIOS (Private)
-- (instancetype)initWithBrowserState:(ProfileIOS*)profile;
+- (instancetype)initWithHostContentSettingsMap:(HostContentSettingsMap*)map
+                                    localState:(PrefService*)localState
+                                  profilePrefs:(PrefService*)profilePrefs;
 @end
 
 NS_ASSUME_NONNULL_END

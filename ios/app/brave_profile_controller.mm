@@ -9,11 +9,11 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat+private.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_delegate.h"
+#include "brave/components/brave_shields/ios/browser/brave_shields_utils_ios+private.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/model_service_factory.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
-#include "brave/ios/browser/api/brave_shields/brave_shields_utils_ios+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/content_settings/default_host_content_settings.h"
@@ -321,14 +321,6 @@
     _braveWalletAPI = [[BraveWalletAPI alloc] initWithBrowserState:_profile];
   }
   return _braveWalletAPI;
-}
-
-- (BraveShieldsUtilsIOS*)braveShieldsUtils {
-  if (!_braveShieldsUtils) {
-    _braveShieldsUtils =
-        [[BraveShieldsUtilsIOS alloc] initWithBrowserState:_profile];
-  }
-  return _braveShieldsUtils;
 }
 
 - (DeAmpPrefs*)deAmpPrefs {

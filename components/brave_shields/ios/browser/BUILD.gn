@@ -1,0 +1,52 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+
+config("mojom_header_config") {
+  visibility = [
+    ":*",
+    "//brave/ios/app",
+  ]
+  include_dirs = [ "$root_gen_dir/brave/components/brave_shields/ios/browser" ]
+}
+
+source_set("browser") {
+  configs += [ ":mojom_header_config" ]
+  sources = [
+    "brave_shields_utils.h",
+    "brave_shields_utils_ios+private.h",
+    "brave_shields_utils_ios.h",
+    "brave_shields_utils_ios.mm",
+  ]
+  deps = [
+    ":brave_shields_mojom_wrappers",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common:mojom",
+    "//components/content_settings/core/browser",
+    "//components/prefs",
+    "//ios/chrome/browser/content_settings/model",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public/thread",
+    "//net",
+    "//url",
+  ]
+}
+
+ios_objc_mojom_wrappers("brave_shields_mojom_wrappers") {
+  mojom_target = "//brave/components/brave_shields/core/common:mojom"
+  sources = [
+    "//brave/components/brave_shields/core/common/brave_shields_panel.mojom",
+  ]
+  exclude_types = [
+    "PanelHandlerFactory",
+    "PanelHandler",
+    "UIHandler",
+    "DataHandler",
+    "SiteBlockInfo",
+    "SiteSettings",
+  ]
+}
