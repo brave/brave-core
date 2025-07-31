@@ -43,37 +43,44 @@ namespace {
 constexpr char kUserId[] = "user12345";
 constexpr char kShareExperienceLink[] = "http://test.link/post=$1";
 constexpr char kName[] = "a";
-constexpr char kCorrectUserScriptResult[] = R"({
-    "user": "$1",
-    "share_experience_link": "$2",
-    "name": "$3",
-    "tasks": [
-        {
-            "url": "https://x.com/settings/ads_preferences",
-            "description": "Disable personalized ads"
-        }
-    ]
-})";
-constexpr char kPolicyScriptScriptResult[] = R"({
-   "psst": {
-      "applied": [ {
-         "description": "It should be failed",
-         "url": "https://x.com/settings/ads_preferences12345"
-      }, {
-         "description": "Disable attaching location information to posts",
-         "url": "https://x.com/settings/location"
-      } ],
-      "current_task": null,
-      "errors": {
-      },
-      "progress": $1,
-      "start_url": "https://x.com/home",
-      "state": "started",
-      "tasks_list": [  ]
-   },
-   "result": $2
-})";
 constexpr double kProgress{5};
+
+base::Value CreateUserScriptResult(const std::string& user_id,
+                                   const std::string& share_experience_link,
+                                   const std::string& name) {
+  return base::Value(
+      base::Value::Dict()
+          .Set("user", user_id)
+          .Set("share_experience_link", share_experience_link)
+          .Set("name", name)
+          .Set("tasks",
+               base::Value::List().Append(
+                   base::Value::Dict()
+                       .Set("url", "https://x.com/settings/ads_preferences")
+                       .Set("description", "Disable personalized ads"))));
+}
+
+base::Value CreatePolicyScriptResult(const double progress, const bool result) {
+  return base::Value(
+      base::Value::Dict()
+          .Set("psst",
+               base::Value::Dict()
+                   .Set("applied",
+                        base::Value::List().Append(
+                            base::Value::Dict()
+                                .Set("description",
+                                     "Disable attaching location information "
+                                     "to posts")
+                                .Set("url", "https://x.com/settings/location")))
+                   .Set("current_task", base::Value())
+                   .Set("errors", base::Value::Dict())
+                   .Set("progress", progress)
+                   .Set("start_url", "https://x.com/home")
+                   .Set("state", "started")
+                   .Set("tasks_list", base::Value::List()))
+          .Set("result", result));
+}
+
 }  // namespace
 
 class DocumentOnLoadObserver : public content::WebContentsObserver {
@@ -521,7 +528,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const GURL url("https://example1.com");
   const bool result{true};
 
-  prefs::SetPsstSettings(kName, kUserId, prefs::ConsentStatus::kAllow, 1,
+  prefs::SetPsstSettings(kName, kUserId, ConsentStatus::kAllow, 1,
                          base::Value::List(), *prefs());
 
   base::RunLoop check_loop;
@@ -533,16 +540,15 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::RunLoop user_script_insert_loop;
   base::RunLoop policy_script_insert_loop;
-  auto dict = ParseJson(base::ReplaceStringPlaceholders(
-      kCorrectUserScriptResult, {kUserId, kShareExperienceLink, kName},
-      nullptr));
-  auto value = ParseJson(base::ReplaceStringPlaceholders(
-      kPolicyScriptScriptResult,
-      {base::ToString(kProgress), base::ToString(result)}, nullptr));
+
+  base::Value user_script_result_dict =
+      CreateUserScriptResult(kUserId, kShareExperienceLink, kName);
+
+  auto value = CreatePolicyScriptResult(kProgress, result);
 
   EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
-                                           std::move(dict)));
+                                           std::move(user_script_result_dict)));
   EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
                                            std::move(value)));
@@ -596,13 +602,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShowDialog) {
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::RunLoop user_script_insert_loop;
-  auto dict = ParseJson(base::ReplaceStringPlaceholders(
-      kCorrectUserScriptResult, {kUserId, kShareExperienceLink, kName},
-      nullptr));
+
+  base::Value user_script_result_dict =
+      CreateUserScriptResult(kUserId, kShareExperienceLink, kName);
 
   EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
-                                           std::move(dict)));
+                                           std::move(user_script_result_dict)));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -625,12 +631,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::RunLoop user_script_insert_loop;
-  auto dict = ParseJson(base::ReplaceStringPlaceholders(
-      kCorrectUserScriptResult, {"", kShareExperienceLink, kName}, nullptr));
+
+  base::Value user_script_result_dict =
+      CreateUserScriptResult("", kShareExperienceLink, kName);
 
   EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
-                                           std::move(dict)));
+                                           std::move(user_script_result_dict)));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -647,7 +654,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
 
-  prefs::SetPsstSettings(kName, kUserId, prefs::ConsentStatus::kAllow, 1,
+  prefs::SetPsstSettings(kName, kUserId, ConsentStatus::kAllow, 1,
                          base::Value::List(), *prefs());
 
   base::RunLoop check_loop;
@@ -659,9 +666,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::RunLoop user_script_insert_loop;
   base::RunLoop policy_script_insert_loop;
-  auto user_script_result_dict = ParseJson(base::ReplaceStringPlaceholders(
-      kCorrectUserScriptResult, {kUserId, kShareExperienceLink, kName},
-      nullptr));
+  auto user_script_result_dict =
+      CreateUserScriptResult(kUserId, kShareExperienceLink, kName);
+
   auto policy_script_result_dict =
       user_script_result_dict
           .Clone();  // Use userscript result insted of policy script result

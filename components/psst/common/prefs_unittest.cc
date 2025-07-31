@@ -34,7 +34,7 @@ const char kPsstSettingsTemplate[] = R"({
 base::Value::Dict CreatePsstSettingsDict(
     const std::string& name,
     const std::string& user_id,
-    const prefs::ConsentStatus consent_status,
+    const ConsentStatus consent_status,
     const int script_version,
     const base::Value::List& urls_to_skip = {}) {
   std::string json_str = kPsstSettingsTemplate;
@@ -68,7 +68,7 @@ class PsstPrefsTest : public ::testing::Test {
 TEST_F(PsstPrefsTest, RetrievingPsstSettingsFromPrefs) {
   const std::string name = "linkedin";
   const std::string user_id = "test-user-id";
-  const prefs::ConsentStatus consent_status = prefs::ConsentStatus::kBlock;
+  const ConsentStatus consent_status = ConsentStatus::kBlock;
   const int script_version = 5;
   base::Value::List urls_to_skip;
   urls_to_skip.Append("https://example.com");
@@ -100,7 +100,7 @@ TEST_F(PsstPrefsTest, RetrievingPsstSettingsFromPrefs) {
 TEST_F(PsstPrefsTest, UpdatePsstSettingsFromPrefs) {
   const std::string name = "linkedin";
   const std::string user_id = "test-user-id";
-  const prefs::ConsentStatus consent_status = prefs::ConsentStatus::kBlock;
+  const ConsentStatus consent_status = ConsentStatus::kBlock;
   const int script_version = 5;
   base::Value::List urls_to_skip;
   urls_to_skip.Append("https://example.com");
