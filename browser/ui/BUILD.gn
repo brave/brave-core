@@ -346,6 +346,7 @@ source_set("ui") {
       "//components/google/core/common",
       "//components/keyed_service/content",
       "//components/keyed_service/core",
+      "//components/omnibox/browser:mojo_bindings",
       "//components/password_manager/core/browser/ui",
       "//components/pref_registry",
       "//components/prefs",
@@ -360,7 +361,6 @@ source_set("ui") {
       "//ui/actions:actions_headers",
       "//ui/color:color_headers",
       "//ui/color:mixers",
-      "//ui/webui/resources/cr_components/searchbox:mojo_bindings",
       "//url",
     ]
 
