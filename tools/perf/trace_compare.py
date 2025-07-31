@@ -4,7 +4,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# The tool to process multiple trace files for the same story and compare them.
+
 # Example usage:
+# vpython3 tools/perf/trace_compare.py analyze system_health.common_desktop load_site_example_2023 /tmp/v1.82.124
 # vpython3 tools/perf/trace_compare.py compare system_health.common_desktop load_site_example_2023 /tmp/v1.82.124 /tmp/v1.82.125
 
 import argparse
@@ -47,7 +50,6 @@ class Slice:
   slice_id: int
   trace_file_idx: int
 
-  # TODO: add trace_filename
   def display_name(self, verbose=False, trace_filename: Optional[str] = None):
     if verbose:
       return self.__str__() + f" [{trace_filename or '??'}: id {self.slice_id}]"
@@ -193,7 +195,8 @@ def compare_values(before_data: List[float], after_data: List[float],
     msg += f" ({np.min(before_data):.1f} - {np.max(before_data):.1f} => " \
            f"{np.min(after_data):.1f} - {np.max(after_data):.1f})"
   else:
-    msg += f" ({before_dur:.1f}±{before_std:.1f} => {after_dur:.1f}±{after_std:.1f}ms)"
+    msg += f" ({before_dur:.1f}±{before_std:.1f} => " \
+           f" {after_dur:.1f}±{after_std:.1f}ms)"
   return rel_diff, msg
 
 
@@ -270,7 +273,6 @@ def analyze_stats(stats: Stats, args):
     if rel_diff < args.min_rel_diff:
       continue
 
-    # TODO: move to load stage
     if args.thread_name and slice.thread_name != args.thread_name:
       continue
     if args.process_name and slice.process_name != args.process_name:
@@ -284,7 +286,10 @@ def analyze_stats(stats: Stats, args):
 
     differences.append((
         std,
-        f'{ slice.display_name(args.slice_verbose)} ({mean:.1f}±{std:.1f}ms, min = {min:.1f}, max = {max:.1f} len_min = {np.min(counts)}, len_max = {np.max(counts)}), idx_max = {idx_max}'
+        f'{ slice.display_name(args.slice_verbose)} ' \
+        f'({mean:.1f}±{std:.1f}ms, min = {min:.1f}, max = {max:.1f} ' \
+        f'len_min = {np.min(counts)}, len_max = {np.max(counts)}), ' \
+        f'idx_max = {idx_max}'
     ))
 
   differences.sort(key=lambda x: -x[0])
