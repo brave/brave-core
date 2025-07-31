@@ -20,10 +20,27 @@ import {getTemplate} from './brave_origin_page.html.js'
 
 export interface SettingsBraveOriginPageElement {
   $: {
-    toggleP3AButton: SettingsToggleButtonElement,
-    toggleStatsReportingButton: SettingsToggleButtonElement,
+    toggleRewardsButton: SettingsToggleButtonElement,
     toggleCrashReportingButton: SettingsToggleButtonElement,
-    toggleTorWindowsButton: SettingsToggleButtonElement
+    toggleLeoAiButton: SettingsToggleButtonElement,
+    toggleNewsButton: SettingsToggleButtonElement,
+    toggleP3AButton: SettingsToggleButtonElement,
+    // <if expr="enable_speedreader">
+    toggleSpeedreaderButton: SettingsToggleButtonElement,
+    // </if>
+    toggleStatsReportingButton: SettingsToggleButtonElement,
+    toggleTalkButton: SettingsToggleButtonElement,
+    // <if expr="enable_tor">
+    toggleTorWindowsButton: SettingsToggleButtonElement,
+    // </if>
+    // <if expr="enable_brave_vpn">
+    toggleVpnButton: SettingsToggleButtonElement,
+    // </if>
+    toggleWalletButton: SettingsToggleButtonElement,
+    // <if expr="enable_brave_wayback_machine">
+    toggleWaybackMachineButton: SettingsToggleButtonElement,
+    // </if>
+    toggleWebDiscoveryProjectButton: SettingsToggleButtonElement
   }
 }
 
@@ -57,24 +74,82 @@ export class SettingsBraveOriginPageElement
         type: Boolean,
         value: false,
       },
-      p3aEnabledPref_: {
-        type: Object,
-        value() { return {} }
-      },
-      statsReportingEnabledPref_: {
-        type: Object,
-        value() { return {} }
+      rewardsEnabledSubLabel_: {
+        type: String,
+        value: '',
       },
       crashReportingEnabledPref_: {
         type: Object,
         value() { return {} }
+      },
+      crashReportingEnabledSubLabel_: {
+        type: String,
+        value: '',
+      },
+      leoAiEnabledSubLabel_: {
+        type: String,
+        value: '',
+      },
+      newsEnabledSubLabel_ : {
+        type: String,
+        value: '',
+      },
+      p3aEnabledPref_: {
+        type: Object,
+        value() { return {} }
+      },
+      p3aEnabledSubLabel_: {
+        type: String,
+        value: '',
+      },
+      // <if expr="enable_speedreader">
+      speedreaderEnabledSubLabel_: {
+        type: String,
+        value: '',
+      },
+      // </if>
+      statsReportingEnabledPref_: {
+        type: Object,
+        value() { return {} }
+      },
+      statsReportingEnabledSubLabel_: {
+        type: String,
+        value: '',
+      },
+      talkEnabledSubLabel_: {
+        type: String,
+        value: '',
       },
       // <if expr="enable_tor">
       torEnabledPref_: {
         type: Object,
         value() { return {} }
       },
+      torEnabledSubLabel_: {
+        type: String,
+        value: '',
+      },
       // </if>
+      // <if expr="enable_brave_vpn">
+      vpnEnabledSubLabel_: {
+        type: String,
+        value: '',
+      },
+      // </if>
+      walletEnabledSubLabel_: {
+        type: String,
+        value: '',
+      },
+      // <if expr="enable_brave_wayback_machine">
+      waybackMachineEnabledSubLabel_: {
+        type: String,
+        value: '',
+      },
+      // </if>
+      webDiscoveryProjectEnabledSubLabel_: {
+        type: String,
+        value: '',
+      },
       showRestartToast_: Boolean
     }
   }
@@ -82,31 +157,50 @@ export class SettingsBraveOriginPageElement
   private browserProxy_: BraveOriginBrowserProxy =
     BraveOriginBrowserProxyImpl.getInstance();
   declare braveOriginEnabled_: boolean
-  declare showRestartToast_: boolean
-  declare p3aEnabledPref_: chrome.settingsPrivate.PrefObject
-  declare p3aManaged_: boolean
-  declare statsReportingEnabledPref_: chrome.settingsPrivate.PrefObject
-  declare statsReportingManaged_: boolean
+  declare rewardsEnabledSubLabel_: String
   declare crashReportingEnabledPref_: chrome.settingsPrivate.PrefObject
   declare crashReportingManaged_: boolean
+  declare crashReportingEnabledSubLabel_: String
+  declare leoAiEnabledSubLabel_: String
+  declare newsEnabledSubLabel_: String
+  declare p3aEnabledPref_: chrome.settingsPrivate.PrefObject
+  declare p3aManaged_: boolean
+  declare p3aEnabledSubLabel_: String
+  declare statsReportingEnabledPref_: chrome.settingsPrivate.PrefObject
+  declare statsReportingManaged_: boolean
+  declare statsReportingEnabledSubLabel_: String
+  // <if expr="enable_speedreader">
+  declare speedreaderEnabledSubLabel_: String
+  // </if>
+  declare talkEnabledSubLabel_: String
   // <if expr="enable_tor">
   declare torEnabledPref_: chrome.settingsPrivate.PrefObject
   declare torManaged_: boolean
+  declare torEnabledSubLabel_: String
   // </if>
+  // <if expr="enable_brave_vpn">
+  declare vpnEnabledSubLabel_: String
+  // </if>
+  declare walletEnabledSubLabel_: String
+  // <if expr="enable_brave_wayback_machine">
+  declare waybackMachineEnabledSubLabel_: String
+  // </if>
+  declare webDiscoveryProjectEnabledSubLabel_: String
+  declare showRestartToast_: boolean
 
   override ready() {
     super.ready()
     this.browserProxy_.getInitialState().then(
       this.onGetInitialState.bind(this))
     this.addWebUiListener(
+      'crashReporting-enabled-changed',
+      this.setCrashReportingEnabledPref_.bind(this))
+    this.addWebUiListener(
       'p3a-reporting-enabled-changed',
       this.setP3AReportingEnabledPref_.bind(this))
     this.addWebUiListener(
       'statsReporting-enabled-changed',
       this.setStatsReportingEnabledPref_.bind(this))
-    this.addWebUiListener(
-      'crashReporting-enabled-changed',
-      this.setCrashReportingEnabledPref_.bind(this))
     // <if expr="enable_tor">
     this.addWebUiListener(
       'tor-enabled-changed', this.setTorEnabledPref_.bind(this))
@@ -137,6 +231,8 @@ export class SettingsBraveOriginPageElement
     }
     this.setTorEnabledPref_(initial_state.tor);
     // </if>
+
+    this.maybeShowToggleDisclaimer()
   }
 
   setP3AReportingEnabledPref_(enabled: boolean) {
@@ -201,24 +297,79 @@ export class SettingsBraveOriginPageElement
   }
   // </if>
 
-  private toggleP3AButtonChange_ () {
-    this.browserProxy_.setP3AEnabled(
-        this.$.toggleP3AButton.checked)
+  private maybeShowToggleDisclaimer () {
+    const enabledText = this.i18n('braveOriginItemEnabledSubtitle')
+
+    this.rewardsEnabledSubLabel_ = this.$.toggleRewardsButton.checked ?
+        enabledText : ''
+    this.crashReportingEnabledSubLabel_ =
+        this.$.toggleCrashReportingButton.checked ?
+        enabledText : ''
+    this.leoAiEnabledSubLabel_ = this.$.toggleLeoAiButton.checked ?
+        enabledText : ''
+    this.newsEnabledSubLabel_ = this.$.toggleNewsButton.checked ?
+        enabledText : ''
+    this.p3aEnabledSubLabel_ = this.$.toggleP3AButton.checked ?
+        enabledText : ''
+    // <if expr="enable_speedreader">
+    this.speedreaderEnabledSubLabel_ = this.$.toggleSpeedreaderButton.checked ?
+        enabledText : ''
+    // </if>
+    this.statsReportingEnabledSubLabel_ =
+        this.$.toggleStatsReportingButton.checked ?
+        enabledText : ''
+    this.talkEnabledSubLabel_ = this.$.toggleTalkButton.checked ?
+        enabledText : ''
+    // <if expr="enable_tor">
+    this.torEnabledSubLabel_ = this.$.toggleTorWindowsButton.checked ?
+        enabledText : ''
+    // </if>
+    // <if expr="enable_brave_vpn">
+    this.vpnEnabledSubLabel_ = this.$.toggleVpnButton.checked ?
+        enabledText : ''
+    // </if>
+    this.walletEnabledSubLabel_ = this.$.toggleWalletButton.checked ?
+        enabledText : ''
+    // <if expr="enable_brave_wayback_machine">
+    this.waybackMachineEnabledSubLabel_ =
+        this.$.toggleWaybackMachineButton.checked ?
+        enabledText : ''
+    // </if>
+    this.webDiscoveryProjectEnabledSubLabel_ =
+        this.$.toggleWebDiscoveryProjectButton.checked ?
+        enabledText : ''
   }
 
-  private toggleStatsReportingButtonChange_ () {
-    this.browserProxy_.setStatsReportingEnabled(
-        this.$.toggleStatsReportingButton.checked)
+  private toggleRewardsButtonChange_ () {
+    this.maybeShowToggleDisclaimer()
   }
 
   private toggleCrashReportingButtonChange_ () {
     this.browserProxy_.setCrashReportingEnabled(
         this.$.toggleCrashReportingButton.checked)
+    this.maybeShowToggleDisclaimer()
+  }
+
+  private toggleButtonChange_ () {
+    this.maybeShowToggleDisclaimer()
+  }
+
+  private toggleP3AButtonChange_ () {
+    this.browserProxy_.setP3AEnabled(
+        this.$.toggleP3AButton.checked)
+    this.maybeShowToggleDisclaimer()
+  }
+
+  private toggleStatsReportingButtonChange_ () {
+    this.browserProxy_.setStatsReportingEnabled(
+        this.$.toggleStatsReportingButton.checked)
+    this.maybeShowToggleDisclaimer()
   }
 
   // <if expr="enable_tor">
   private toggleTorWindowsButtonChange_ () {
     this.browserProxy_.setTorEnabled(this.$.toggleTorWindowsButton.checked)
+    this.maybeShowToggleDisclaimer()
   }
   // </if>
 

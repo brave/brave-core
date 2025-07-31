@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
 source_set("brave_origin") {
   sources = [
     "brave_origin_state.cc",
@@ -13,10 +16,16 @@ source_set("brave_origin") {
 
   deps = [
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_wayback_machine",
-    "//brave/components/speedreader",
     "//brave/components/tor/buildflags",
   ]
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader" ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    deps += [ "//brave/components/brave_wayback_machine" ]
+  }
 
   public_deps = [ "//base" ]
 }

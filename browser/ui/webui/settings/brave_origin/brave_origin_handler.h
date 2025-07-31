@@ -46,7 +46,7 @@ class BraveOriginHandler : public settings::SettingsPageUIHandler {
   const raw_ptr<Profile, DanglingUntriaged> profile_;
 
   // Map to store initial preference values for restart detection
-  std::unordered_map<std::string, bool> initial_values_;
+  std::unordered_map<std::string_view, bool> initial_values_;
 
   base::WeakPtrFactory<BraveOriginHandler> weak_factory_{this};
 };

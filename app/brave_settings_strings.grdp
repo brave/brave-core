@@ -594,13 +594,16 @@
     Customize your browser while still supporting Brave
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION1" desc="The first paragraph of descriptive text inside the Brave Origin heading section in settings">
-    Brave Origin is a subscription-based way to disable Brave Ads and the revenue-generating features that otherwise support Brave as a business. Subscribers will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), while having features like Brave Ads, Leo, News, Rewards, Wallet, VPN, and Web3 domains disabled by default.
+    Brave Origin is a subscription-based way to disable revenue-generating features that otherwise support Brave as a business. Subscribers will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), while having features like Leo, News, Rewards, Wallet, VPN, Web3 domains, and more disabled by default.
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION2" desc="The second paragraph of descriptive text inside the Brave Origin heading section in settings">
     Subscribers will see a new control panel in the browser Settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION3" desc="The third paragraph of descriptive text inside the Brave Origin heading section in settings">
     Note: Brave Origin will not disable add-ons that you currently use, and will not affect Brave Search features.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ITEM_ENABLED_SUBTITLE" desc="The subtitle text for any toggle that a person enables on the Brave Origin in settings">
+    This feature is enabled because you opted-in to it
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_ADS_SECTION_TITLE" desc="The title for the 'ads' section of Brave Origin in settings">
     Ads
@@ -626,8 +629,11 @@
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_SPEED_READER_TOGGLE_TITLE" desc="The title for toggling the 'speedreader' feature on/off for Brave Origin">
     Speedreader
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE" desc="The title for toggling the 'web discovery project' feature on/off for Brave Origin">
+    Web Discovery Project
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_P3A_TOGGLE_TITLE" desc="The title for toggling the 'privacy preserving analytics' feature on/off for Brave Origin">
-    P3A
+    Privacy preserving analytics
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_STATS_REPORTING_TOGGLE_TITLE" desc="The title for toggling the 'statistics reporting' feature on/off for Brave Origin">
     Statistics reporting
