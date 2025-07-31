@@ -3,17 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/api/ai_chat/conversation_client.h"
+#include "brave/components/ai_chat/ios/browser/conversation_client.h"
 
-#include "ai_chat.mojom.objc+private.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat_delegate.h"
-#include "ios/chrome/common/channel_info.h"
+#include "brave/components/ai_chat/core/common/mojom/ios/ai_chat.mojom.objc+private.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_delegate.h"
 
 namespace ai_chat {
 
