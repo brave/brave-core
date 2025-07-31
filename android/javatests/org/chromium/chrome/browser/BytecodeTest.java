@@ -370,8 +370,6 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/multiwindow/MultiWindowUtils"));
         Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/password_manager/settings/ExportFlow"));
-        Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment")); // presubmit: ignore-long-line
         Assert.assertTrue(
@@ -1127,12 +1125,6 @@ public class BytecodeTest {
                         "isTabModelRestored",
                         MethodModifier.REGULAR,
                         boolean.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
-                        "runCreateFileOnDiskIntent",
-                        MethodModifier.REGULAR,
-                        void.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
