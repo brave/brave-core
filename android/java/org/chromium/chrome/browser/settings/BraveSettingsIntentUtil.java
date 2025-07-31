@@ -14,6 +14,9 @@ import androidx.annotation.Nullable;
 
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 
+// TODO(alexeybarabash): PasswordSettings was removed at upstream,
+// but we need to get it back
+// Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
 public class BraveSettingsIntentUtil {
     private static final String PASSWORD_SETTINGS_FRAGMENT =
             "org.chromium.chrome.browser.password_manager.settings.PasswordSettings";
