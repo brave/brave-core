@@ -264,7 +264,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
 void AIChatUIPageHandler::OpenAIChatAgenticProfile() {
   CHECK(ai_chat::features::IsAIChatAgenticProfileEnabled());
 #if defined(TOOLKIT_VIEWS)
-  ai_chat::OpenBrowserWindowForAIChatAgentProfile();
+  ai_chat::OpenBrowserWindowForAIChatAgentProfile(profile_);
 #endif
 }
 

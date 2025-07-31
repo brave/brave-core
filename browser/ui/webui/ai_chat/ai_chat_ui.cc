@@ -95,7 +95,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isContentAgentFeatureEnabled",
                      ai_chat::features::IsAIChatAgenticProfileEnabled());
   source->AddBoolean("isContentAgentSupportedInCurrentProfile",
-                     ai_chat::IsAIChatContentAgentProfile(profile_));
+                     ai_chat::IsAIChatContentAgentProfile(profile_->GetPath()));
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(
