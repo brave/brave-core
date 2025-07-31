@@ -15,15 +15,12 @@ use schnorrkel::Signature;
 mod ffi {
     extern "Rust" {
         type CxxSchnorrkelKeyPair;
-        type CxxSchnorrkelKeyPairResult;
 
-        fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPairResult>;
+        fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
         fn derive_hard(self: &CxxSchnorrkelKeyPair, junction: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
         fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32];
         fn sign_message(self: &CxxSchnorrkelKeyPair, msg: &[u8]) -> [u8; 64];
         fn verify_message(self: &CxxSchnorrkelKeyPair, sig_bytes: &[u8], msg: &[u8]) -> bool;
-        fn is_ok(self: &CxxSchnorrkelKeyPairResult) -> bool;
-        fn unwrap(self: &mut CxxSchnorrkelKeyPairResult) -> Box<CxxSchnorrkelKeyPair>;
     }
 }
 
@@ -35,21 +32,22 @@ pub enum Error {
 #[derive(Clone)]
 struct CxxSchnorrkelKeyPair(schnorrkel::Keypair);
 
-#[derive(Clone)]
-struct CxxSchnorrkelKeyPairResult(Result<Option<CxxSchnorrkelKeyPair>, Error>);
-
 const SIGNING_CTX: &'static [u8] = b"substrate";
 // equivalent to the chaincode len
 const JUNCTION_ID_LEN: usize = 32;
 
-fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPairResult> {
-    let kp = schnorrkel::MiniSecretKey::from_bytes(bytes)
-        .map(|kp| {
-            Some(CxxSchnorrkelKeyPair(kp.expand_to_keypair(schnorrkel::ExpansionMode::Ed25519)))
-        })
-        .map_err(|e| Error::Schnorrkel(e));
-
-    Box::new(CxxSchnorrkelKeyPairResult(kp))
+fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair> {
+    // from_bytes() only panics on length mismatch which we've now made
+    // (theoretically) impossible here on the C++ side by putting a fixed-sized span
+    // in the interface, so we can just unwrap() directly in the Rust
+    // code and pass back a keypair unconditionally to the C++.
+    // We don't use a fixed-size array reference here because cxxbridge treats
+    // `&[T; N]` as `const std::array<T, N>&` which has undesirable properties on
+    // the C++ side.
+    // This function remains memory safe and if other C++ incorrectly invokes this
+    // function, it will just simply panic which will mean it's easy to find.
+    let mini_key = schnorrkel::MiniSecretKey::from_bytes(bytes).unwrap();
+    Box::new(CxxSchnorrkelKeyPair(mini_key.expand_to_keypair(schnorrkel::ExpansionMode::Ed25519)))
 }
 
 impl CxxSchnorrkelKeyPair {
@@ -93,18 +91,5 @@ impl CxxSchnorrkelKeyPair {
                 .0
                 .expand_to_keypair(schnorrkel::ExpansionMode::Ed25519),
         ))
-    }
-}
-
-impl CxxSchnorrkelKeyPairResult {
-    fn is_ok(self: &CxxSchnorrkelKeyPairResult) -> bool {
-        match &self.0 {
-            Ok(_) => true,
-            _ => false,
-        }
-    }
-
-    fn unwrap(self: &mut CxxSchnorrkelKeyPairResult) -> Box<CxxSchnorrkelKeyPair> {
-        Box::new(self.0.as_mut().unwrap().take().unwrap())
     }
 }

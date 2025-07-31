@@ -21,110 +21,101 @@ inline constexpr uint8_t kSchnorrkelSeed[] = {
 };
 
 TEST(HDKeySr25519, GenerateFromSeed) {
-  auto kpresult = HDKeySr25519::GenerateFromSeed({});
-  EXPECT_FALSE(kpresult);
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
 
-  kpresult = HDKeySr25519::GenerateFromSeed({1, 2, 3, 4});
-  EXPECT_FALSE(kpresult);
-
-  kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  EXPECT_TRUE(kpresult);
-
-  kpresult = HDKeySr25519::GenerateFromSeed(std::array<uint8_t, 31>{});
-  EXPECT_FALSE(kpresult);
-
-  kpresult = HDKeySr25519::GenerateFromSeed(std::array<uint8_t, 33>{});
-  EXPECT_FALSE(kpresult);
+  std::array<uint8_t, kSr25519SeedSize> seed_bytes = {};
+  auto keypair2 = HDKeySr25519::GenerateFromSeed(seed_bytes);
 }
 
 TEST(HDKeySr25519, GetPublicKey) {
-  auto kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  ASSERT_TRUE(kpresult);
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
 
-  auto public_key = kpresult->GetPublicKey();
-  EXPECT_EQ(public_key.size(), std::size_t{32});
-
-  auto kpresult2 = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  ASSERT_TRUE(kpresult2);
-
-  EXPECT_EQ(kpresult->GetPublicKey(), kpresult2->GetPublicKey());
-}
-
-TEST(HDKeySr25519, MoveSemantics) {
-  EXPECT_TRUE(std::is_nothrow_move_constructible_v<HDKeySr25519>);
-  EXPECT_TRUE(std::is_nothrow_move_assignable_v<HDKeySr25519>);
-
-  auto kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  ASSERT_TRUE(kpresult);
-
-  HDKeySr25519 keypair(std::move(*kpresult));
   auto public_key = keypair.GetPublicKey();
   EXPECT_EQ(public_key.size(), std::size_t{32});
 
-  // prove that self-move-assign doesn't segfaultf
+  auto keypair2 = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  EXPECT_EQ(keypair.GetPublicKey(), keypair2.GetPublicKey());
+}
+
+TEST(HDKeySr25519, NoThrowMoveSemantics) {
+  EXPECT_TRUE(std::is_nothrow_move_constructible_v<HDKeySr25519>);
+  EXPECT_TRUE(std::is_nothrow_move_assignable_v<HDKeySr25519>);
+}
+
+TEST(HDKeySr25519, MoveConstruction) {
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+
+  HDKeySr25519 keypair2(std::move(keypair));
+  auto public_key = keypair2.GetPublicKey();
+  EXPECT_EQ(public_key.size(), std::size_t{32});
+}
+
+TEST(HDKeySr25519, SelfMoveAssign) {
+  // prove that self-move-assign doesn't segfault
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+
   auto& ref = keypair;
   keypair = std::move(ref);
-  public_key = keypair.GetPublicKey();
+  auto public_key = keypair.GetPublicKey();
   EXPECT_EQ(public_key.size(), std::size_t{32});
+}
 
-  auto kpresult2 = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  ASSERT_TRUE(kpresult2);
+TEST(HDKeySr25519, MoveAssignment) {
+  auto keypair1 = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  auto pubkey1 = keypair1.GetPublicKey();
 
-  HDKeySr25519 keypair2(std::move(*kpresult2));
+  std::array<uint8_t, kSr25519SeedSize> seed = {};
+  auto keypair2 = HDKeySr25519::GenerateFromSeed(seed);
 
-  keypair2 = std::move(keypair);
-  public_key = keypair2.GetPublicKey();
-  EXPECT_EQ(public_key.size(), std::size_t{32});
+  EXPECT_NE(pubkey1, keypair2.GetPublicKey());
 
-  // test moving from a moved-from object
-  HDKeySr25519 keypair3(std::move(keypair));
+  keypair2 = std::move(keypair1);
+  EXPECT_EQ(pubkey1, keypair2.GetPublicKey());
 }
 
 TEST(HDKeySr25519, SignAndVerify) {
-  auto kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  ASSERT_TRUE(kpresult);
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
 
-  auto public_key = kpresult->GetPublicKey();
+  auto public_key = keypair.GetPublicKey();
   EXPECT_EQ(public_key.size(), std::size_t{32});
 
   unsigned char const message[] = {1, 2, 3, 4, 5, 6};
-  auto sig = kpresult->SignMessage(message);
+  auto sig = keypair.SignMessage(message);
 
-  auto is_verified = kpresult->VerifyMessage(sig, message);
+  auto is_verified = keypair.VerifyMessage(sig, message);
   EXPECT_TRUE(is_verified);
 
   std::array<uint8_t, 64> bad_sig = {};
-  is_verified = kpresult->VerifyMessage(bad_sig, message);
+  is_verified = keypair.VerifyMessage(bad_sig, message);
   EXPECT_FALSE(is_verified);
 
   std::array<uint8_t, 64> bad_message = {};
-  is_verified = kpresult->VerifyMessage(sig, bad_message);
+  is_verified = keypair.VerifyMessage(sig, bad_message);
   EXPECT_FALSE(is_verified);
 }
 
 TEST(HDKeySr25519, HardDerive) {
-  auto kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  ASSERT_TRUE(kpresult);
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
 
   // manually create a SCALE-encoded chaincode value
   unsigned char path1[] = {20, 'A', 'l', 'i', 'c', 'e'};
   unsigned char path2[] = {20, 'e', 'c', 'i', 'l', 'A'};
 
-  auto derived1 = kpresult->DeriveHard(path1);
-  auto derived2 = kpresult->DeriveHard(path2);
-  auto derived3 = kpresult->DeriveHard(path1);
+  auto derived1 = keypair.DeriveHard(path1);
+  auto derived2 = keypair.DeriveHard(path2);
+  auto derived3 = keypair.DeriveHard(path1);
 
   EXPECT_EQ(derived1.GetPublicKey(), derived3.GetPublicKey());
   EXPECT_NE(derived1.GetPublicKey(), derived2.GetPublicKey());
 
-  auto kpresult2 = HDKeySr25519::GenerateFromSeed(
-      {250, 199, 149, 157, 191, 231, 47,  5,   46,  90,  12,
-       60,  141, 101, 48,  242, 2,   176, 47,  216, 249, 245,
-       202, 53,  128, 236, 141, 235, 119, 151, 71,  158});
-  ASSERT_TRUE(kpresult2);
+  auto keypair2 = HDKeySr25519::GenerateFromSeed(
+      base::span<const uint8_t, kSr25519SeedSize>{
+          250, 199, 149, 157, 191, 231, 47,  5,   46,  90,  12,
+          60,  141, 101, 48,  242, 2,   176, 47,  216, 249, 245,
+          202, 53,  128, 236, 141, 235, 119, 151, 71,  158});
 
-  auto derived4 = kpresult2->DeriveHard(path1);
-  auto derived5 = kpresult2->DeriveHard(path2);
+  auto derived4 = keypair2.DeriveHard(path1);
+  auto derived5 = keypair2.DeriveHard(path2);
 
   EXPECT_NE(derived4.GetPublicKey(), derived1.GetPublicKey());
   EXPECT_NE(derived5.GetPublicKey(), derived2.GetPublicKey());
@@ -135,16 +126,15 @@ TEST(HDKeySr25519, HardDerive) {
 }
 
 TEST(HDKeySr25519, HardDeriveSignAndVerify) {
-  auto kpresult = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  ASSERT_TRUE(kpresult);
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
 
   // manually create a SCALE-encoded chaincode value
   unsigned char path1[] = {20, 'A', 'l', 'i', 'c', 'e'};
   unsigned char path2[] = {20, 'e', 'c', 'i', 'l', 'A'};
 
-  auto derived1 = kpresult->DeriveHard(path1);
-  auto derived2 = kpresult->DeriveHard(path2);
-  auto derived3 = kpresult->DeriveHard(path1);
+  auto derived1 = keypair.DeriveHard(path1);
+  auto derived2 = keypair.DeriveHard(path2);
+  auto derived3 = keypair.DeriveHard(path1);
 
   unsigned char const message[] = {1, 2, 3, 4, 5, 6};
   auto signature = derived1.SignMessage(message);
@@ -163,11 +153,11 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
   // it.
   // https://github.com/paritytech/polkadot-sdk/blob/40e1a2a7c99c67fe5201145e473c87e1aea4bf05/substrate/utils/substrate-bip39/src/lib.rs#L52-L70
   // https://github.com/paritytech/polkadot-sdk/blob/40e1a2a7c99c67fe5201145e473c87e1aea4bf05/substrate/primitives/core/src/crypto.rs#L875
-  auto kpresult = HDKeySr25519::GenerateFromSeed(
-      {250, 199, 149, 157, 191, 231, 47,  5,   46,  90,  12,
-       60,  141, 101, 48,  242, 2,   176, 47,  216, 249, 245,
-       202, 53,  128, 236, 141, 235, 119, 151, 71,  158});
-  EXPECT_TRUE(kpresult);
+  auto keypair = HDKeySr25519::GenerateFromSeed(
+      base::span<const uint8_t, kSr25519SeedSize>{
+          250, 199, 149, 157, 191, 231, 47,  5,   46,  90,  12,
+          60,  141, 101, 48,  242, 2,   176, 47,  216, 249, 245,
+          202, 53,  128, 236, 141, 235, 119, 151, 71,  158});
 
   // manually create a SCALE-encoded chaincode value
   unsigned char path[] = {20, 'A', 'l', 'i', 'c', 'e'};
@@ -177,7 +167,7 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
       "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
       &expected);
 
-  auto derived = kpresult->DeriveHard(path);
+  auto derived = keypair.DeriveHard(path);
   auto pkey = derived.GetPublicKey();
   EXPECT_EQ(base::span{pkey}, base::span{expected});
 
@@ -207,7 +197,7 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
                                105, 118, 97,  116, 105, 111, 110, 80,  97,  116,
                                104, 78,  97,  109, 101, 84,  111, 84,  114, 105,
                                103, 103, 101, 114, 66,  108, 97,  107, 101, 50};
-  derived = kpresult->DeriveHard(long_path);
+  derived = keypair.DeriveHard(long_path);
   pkey = derived.GetPublicKey();
   EXPECT_EQ(base::span{pkey}, base::span{expected});
 }
@@ -220,10 +210,10 @@ TEST(HDKeySr25519, PolkadotSDKTestVector2) {
       "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
       &seed);
 
-  auto kpresult = HDKeySr25519::GenerateFromSeed(seed);
-  ASSERT_TRUE(kpresult);
+  auto keypair = HDKeySr25519::GenerateFromSeed(
+      base::span<const uint8_t, kSr25519SeedSize>(seed));
 
-  auto pkey = kpresult->GetPublicKey();
+  auto pkey = keypair.GetPublicKey();
 
   std::vector<uint8_t> expected_pkey;
   base::HexStringToBytes(

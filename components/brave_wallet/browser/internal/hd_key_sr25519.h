@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_SR25519_H_
 
 #include <array>
-#include <optional>
 
 #include "base/containers/span.h"
 #include "third_party/rust/cxx/v1/cxx.h"
@@ -18,6 +17,7 @@ namespace polkadot {
 struct CxxSchnorrkelKeyPair;
 }
 
+inline constexpr size_t kSr25519SeedSize = 32;
 inline constexpr size_t kSr25519PublicKeySize = 32;
 inline constexpr size_t kSr25519SignatureSize = 64;
 
@@ -31,8 +31,8 @@ class HDKeySr25519 {
 
   ~HDKeySr25519();
 
-  static std::optional<HDKeySr25519> GenerateFromSeed(
-      base::span<const uint8_t> seed);
+  static HDKeySr25519 GenerateFromSeed(
+      base::span<const uint8_t, kSr25519SeedSize> seed);
 
   std::array<uint8_t, kSr25519PublicKeySize> GetPublicKey();
   std::array<uint8_t, kSr25519SignatureSize> SignMessage(
