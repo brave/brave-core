@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
-#define BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
+#ifndef BRAVE_COMPONENTS_QUERY_FILTER_CORE_BROWSER_UTILS_H_
+#define BRAVE_COMPONENTS_QUERY_FILTER_CORE_BROWSER_UTILS_H_
 
 #include <map>
 #include <optional>
@@ -39,4 +39,4 @@ bool IsScopedTrackerForTesting(
     std::string_view spec,
     const std::map<std::string_view, std::vector<std::string_view>>& trackers);
 }  // namespace query_filter
-#endif  // BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_
+#endif  // BRAVE_COMPONENTS_QUERY_FILTER_CORE_BROWSER_UTILS_H_

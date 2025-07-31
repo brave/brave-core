@@ -826,7 +826,7 @@ source_set("ui") {
     "//brave/components/p3a",
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
-    "//brave/components/query_filter",
+    "//brave/components/query_filter/core/browser:query_utils",
     "//brave/components/resources:static_resources",
     "//brave/components/services/bat_ads/public/interfaces",
     "//brave/components/skus/browser",

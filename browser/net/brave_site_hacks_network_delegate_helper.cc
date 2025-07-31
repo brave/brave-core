@@ -12,7 +12,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/components/query_filter/utils.h"
+#include "brave/components/query_filter/core/browser/utils.h"
 #include "content/public/common/referrer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"

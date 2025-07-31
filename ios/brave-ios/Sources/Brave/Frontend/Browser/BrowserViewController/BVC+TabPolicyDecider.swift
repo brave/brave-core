@@ -930,14 +930,16 @@ extension URLRequest {
   fileprivate func stripQueryParams(
     initiatorURL: URL?,
     redirectSourceURL: URL?,
-    isInternalRedirect: Bool
+    isInternalRedirect: Bool,
+    queryFilterUtils: QueryFilterUtilProtocol.Type = QueryFilterUtil.self,
   ) -> URLRequest? {
     guard let requestURL = url,
       let requestMethod = httpMethod
     else { return nil }
 
     guard
-      let strippedURL = (requestURL as NSURL).applyingQueryFilter(
+      let strippedURL = queryFilterUtils.applyQueryStringFilter(
+        requestURL,
         initiatorURL: initiatorURL,
         redirectSourceURL: redirectSourceURL,
         requestMethod: requestMethod,

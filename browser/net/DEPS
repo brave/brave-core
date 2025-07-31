@@ -5,7 +5,7 @@ include_rules = [
   "+brave/components/brave_user_agent/common/features.h",
   "+brave/components/geolocation",
   "+brave/components/update_client/buildflags.h",
-  "+brave/components/query_filter",
+  "+brave/components/query_filter/core/browser",
   "+brave/components/brave_service_keys",
   "+brave/components/speech_to_text/buildflags.h",
   "+brave/components/speech_to_text/features.h",

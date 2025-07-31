@@ -3,15 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("query_filter") {
+source_set("browser") {
   sources = [
-    "utils.h",
-    "utils.mm",
+    "query_filter_utils.h",
+    "query_filter_utils.mm",
   ]
 
   deps = [
     "//base",
-    "//brave/components/query_filter",
+    "//brave/components/query_filter/core/browser:query_filter",
     "//net",
     "//url",
   ]
