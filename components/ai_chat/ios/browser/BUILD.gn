@@ -3,15 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-config("mojom_header_config") {
-  visibility = [
-    ":*",
-    "//brave/ios/app",
-  ]
-  include_dirs =
-      [ "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios" ]
-}
-
 source_set("browser") {
   sources = [
     "ai_chat+private.h",
@@ -46,6 +37,5 @@ source_set("browser") {
     "//ui/base",
     "//url",
   ]
-  configs += [ ":mojom_header_config" ]
   frameworks = [ "Foundation.framework" ]
 }

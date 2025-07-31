@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef __cplusplus
+#include "brave/components/ai_chat/core/common/mojom/ios/ai_chat.mojom.objc.h"
+#else
 #import "ai_chat.mojom.objc.h"
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
