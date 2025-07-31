@@ -10,16 +10,11 @@
 #include <string>
 
 #include "base/values.h"
+#include "brave/components/psst/common/psst_common.h"
 
 class PrefService;
 
 namespace psst::prefs {
-
-enum class ConsentStatus {
-  kAsk,    // show the popup dialog to ask user to apply privacy
-  kAllow,  // continue to apply privacy with no prompts
-  kBlock   // do not ask user any more
-};
 
 std::optional<ConsentStatus> GetConsentStatus(const std::string& name,
                                               const std::string& user_id,
