@@ -44,96 +44,131 @@
 #include "brave/components/tor/pref_names.h"
 #endif
 
-BraveOriginHandler::BraveOriginHandler(Profile* profile) : profile_(profile) {
-  // Profile prefs
-  pref_change_registrar_.Init(profile_->GetPrefs());
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kDisabledByPolicy,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      ai_chat::prefs::kEnabledByPolicy,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_news::prefs::kBraveNewsDisabledByPolicy,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      kBraveTalkDisabledByPolicy,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
+namespace {
+
+// Configuration for profile preferences
+struct ProfilePrefConfig {
+  const char* pref_name;
+  bool inverted;
+  const char* ui_key;
+  const char* change_event;
+};
+
+// Configuration for local state preferences
+struct LocalStatePrefConfig {
+  const char* pref_name;
+  bool inverted;
+  const char* ui_key;
+  const char* change_event;
+};
+
+// Profile preferences configuration
+constexpr ProfilePrefConfig kProfilePrefs[] = {
+    {brave_rewards::prefs::kDisabledByPolicy, true, "rewards",
+     "rewards-enabled-changed"},
+    {ai_chat::prefs::kEnabledByPolicy, false, "ai", "ai-enabled-changed"},
+    {brave_news::prefs::kBraveNewsDisabledByPolicy, true, "news",
+     "news-enabled-changed"},
+    {kBraveTalkDisabledByPolicy, true, "talk", "talk-enabled-changed"},
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  pref_change_registrar_.Add(
-      speedreader::kSpeedreaderDisabledByPolicy,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
+    {speedreader::kSpeedreaderDisabledByPolicy, true, "speedreader",
+     "speedreader-enabled-changed"},
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  pref_change_registrar_.Add(
-      kBraveWaybackMachineDisabledByPolicy,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
+    {kBraveWaybackMachineDisabledByPolicy, true, "wayback",
+     "wayback-enabled-changed"},
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  pref_change_registrar_.Add(
-      brave_vpn::prefs::kManagedBraveVPNDisabled,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
+    {brave_vpn::prefs::kManagedBraveVPNDisabled, true, "vpn",
+     "vpn-enabled-changed"},
 #endif
-  pref_change_registrar_.Add(
-      brave_wallet::prefs::kDisabledByPolicy,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
+    {brave_wallet::prefs::kDisabledByPolicy, true, "wallet",
+     "wallet-enabled-changed"},
+};
 
-  // Local state (spans all profiles)
+// Local state preferences configuration
+constexpr LocalStatePrefConfig kLocalStatePrefs[] = {
+    {p3a::kP3ADisabledByPolicy, true, "p3a", "p3a-enabled-changed"},
+    {kStatsReportingDisabledByPolicy, true, "statsReporting",
+     "statsReporting-enabled-changed"},
+    {metrics::prefs::kMetricsReportingEnabled, false, "crashReporting",
+     "crashReporting-enabled-changed"},
+#if BUILDFLAG(ENABLE_TOR)
+    {tor::prefs::kTorDisabled, true, "tor", "tor-enabled-changed"},
+#endif
+};
+
+// Map for handling toggle operations
+constexpr auto kToggleLocalStateMap =
+    base::MakeFixedFlatMap<std::string_view, std::string_view>({
+#if BUILDFLAG(ENABLE_TOR)
+        {"tor", tor::prefs::kTorDisabled},
+#endif
+        {"p3a", p3a::kP3ADisabledByPolicy},
+        {"statsReporting", kStatsReportingDisabledByPolicy},
+        {"crashReporting", "user_experience_metrics.reporting_enabled"}});
+
+// Helper function to get preference value with inversion handling
+bool GetPrefValue(PrefService* prefs,
+                  const std::string& pref_name,
+                  bool inverted) {
+  bool value = prefs->GetBoolean(pref_name);
+  bool actualValue = inverted ? !value : value;
+  return actualValue;
+}
+
+// Helper function to set preference value with inversion handling
+void SetPrefValue(PrefService* prefs,
+                  const std::string& pref_name,
+                  bool enabled,
+                  bool inverted) {
+  bool value = inverted ? !enabled : enabled;
+  g_browser_process->local_state()->SetBoolean(pref_name, value);
+}
+
+}  // namespace
+
+BraveOriginHandler::BraveOriginHandler(Profile* profile) : profile_(profile) {
+  // Register profile preference change listeners
+  pref_change_registrar_.Init(profile_->GetPrefs());
+  for (const auto& config : kProfilePrefs) {
+    pref_change_registrar_.Add(
+        config.pref_name,
+        base::BindRepeating(&BraveOriginHandler::OnValueChanged,
+                            base::Unretained(this)));
+  }
+
+  // Register local state preference change listeners
   local_state_change_registrar_.Init(g_browser_process->local_state());
-  local_state_change_registrar_.Add(
-      p3a::kP3ADisabledByPolicy,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
-  local_state_change_registrar_.Add(
-      kStatsReportingDisabledByPolicy,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
-  local_state_change_registrar_.Add(
-      metrics::prefs::kMetricsReportingEnabled,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
-#if BUILDFLAG(ENABLE_TOR)
-  local_state_change_registrar_.Add(
-      tor::prefs::kTorDisabled,
-      base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                          base::Unretained(this)));
-#endif
+  for (const auto& config : kLocalStatePrefs) {
+    local_state_change_registrar_.Add(
+        config.pref_name,
+        base::BindRepeating(&BraveOriginHandler::OnValueChanged,
+                            base::Unretained(this)));
+  }
 
-  // Store value at time webui is loaded.
-  // If the value changes we can show a restart toast.
-  auto* prefs = profile_->GetPrefs();
-  was_rewards_enabled_ =
-      !prefs->GetBoolean(brave_rewards::prefs::kDisabledByPolicy);
-  was_ai_enabled_ = !prefs->GetBoolean(ai_chat::prefs::kEnabledByPolicy);
-  was_news_enabled_ =
-      !prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy);
-  was_p3a_enabled_ =
-      !g_browser_process->local_state()->GetBoolean(p3a::kP3ADisabledByPolicy);
-  was_stats_reporting_enabled_ = !g_browser_process->local_state()->GetBoolean(
-      kStatsReportingDisabledByPolicy);
-  was_crash_reporting_enabled_ = g_browser_process->local_state()->GetBoolean(
-      metrics::prefs::kMetricsReportingEnabled);
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  was_vpn_enabled_ =
-      !prefs->GetBoolean(brave_vpn::prefs::kManagedBraveVPNDisabled);
-#endif
-#if BUILDFLAG(ENABLE_TOR)
-  was_tor_enabled_ =
-      !g_browser_process->local_state()->GetBoolean(tor::prefs::kTorDisabled);
-#endif
-  was_wallet_enabled_ =
-      !prefs->GetBoolean(brave_wallet::prefs::kDisabledByPolicy);
+  // Store initial values for restart detection
+  StoreInitialValues();
 }
 
 BraveOriginHandler::~BraveOriginHandler() = default;
+
+void BraveOriginHandler::StoreInitialValues() {
+  auto* prefs = profile_->GetPrefs();
+  auto* local_state = g_browser_process->local_state();
+
+  // Store profile preference initial values
+  for (const auto& config : kProfilePrefs) {
+    initial_values_[config.pref_name] =
+        GetPrefValue(prefs, config.pref_name, config.inverted);
+  }
+
+  // Store local state preference initial values
+  for (const auto& config : kLocalStatePrefs) {
+    initial_values_[config.pref_name] =
+        GetPrefValue(local_state, config.pref_name, config.inverted);
+  }
+}
 
 void BraveOriginHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
@@ -149,6 +184,8 @@ void BraveOriginHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
+// Make a dictionary w/ local state available to the UI.
+// The UI has access to the profile preferences already (bound as `prefs`).
 void BraveOriginHandler::HandleGetInitialState(const base::Value::List& args) {
   AllowJavascript();
 
@@ -156,43 +193,17 @@ void BraveOriginHandler::HandleGetInitialState(const base::Value::List& args) {
   initial_state.Set("enabled",
                     BraveOriginState::GetInstance()->IsBraveOriginUser());
 
-  // We only need to capture values which are not accessible by preference.
-  // Note that any preference bound will need an entry in:
-  // `brave/browser/extensions/api/settings_private/brave_prefs_util.cc`
-  // in order to be picked up in the polymer code.
+  auto* local_state = g_browser_process->local_state();
 
-#if BUILDFLAG(ENABLE_TOR)
-  bool tor_disabled =
-      g_browser_process->local_state()->GetBoolean(tor::prefs::kTorDisabled);
-  initial_state.Set("tor", !tor_disabled);
-  if (g_browser_process->local_state()->IsManagedPreference(
-          tor::prefs::kTorDisabled)) {
-    initial_state.Set("torManaged", true);
-  }
-#endif
+  // Add local state preferences to initial state
+  for (const auto& config : kLocalStatePrefs) {
+    bool value = GetPrefValue(local_state, config.pref_name, config.inverted);
+    initial_state.Set(config.ui_key, value);
 
-  bool p3a_disabled =
-      g_browser_process->local_state()->GetBoolean(p3a::kP3ADisabledByPolicy);
-  initial_state.Set("p3a", !p3a_disabled);
-  if (g_browser_process->local_state()->IsManagedPreference(
-          p3a::kP3ADisabledByPolicy)) {
-    initial_state.Set("p3aManaged", true);
-  }
-
-  bool stats_reporting_disabled = g_browser_process->local_state()->GetBoolean(
-      kStatsReportingDisabledByPolicy);
-  initial_state.Set("statsReporting", !stats_reporting_disabled);
-  if (g_browser_process->local_state()->IsManagedPreference(
-          kStatsReportingDisabledByPolicy)) {
-    initial_state.Set("statsReportingManaged", true);
-  }
-
-  initial_state.Set("crashReporting",
-                    g_browser_process->local_state()->GetBoolean(
-                        metrics::prefs::kMetricsReportingEnabled));
-  if (g_browser_process->local_state()->IsManagedPreference(
-          metrics::prefs::kMetricsReportingEnabled)) {
-    initial_state.Set("crashReportingManaged", true);
+    if (local_state->IsManagedPreference(config.pref_name)) {
+      std::string managed_key = std::string(config.ui_key) + "Managed";
+      initial_state.Set(managed_key, true);
+    }
   }
 
   // TODO(bsclifton): implement others:
@@ -210,35 +221,17 @@ void BraveOriginHandler::HandleToggleValue(const base::Value::List& args) {
 
   AllowJavascript();
 
-  // Although SettingsBooleanControlMixin  supports `inverted`, this does not
-  // work as expected for custom prefs; we need to track manually.
-  //
-  // Ideally, we would bind local_state along with profile prefs.
-  // I don't think it's possible to bind both.
-  static constexpr auto inverted_local_state =
-      base::MakeFixedFlatMap<std::string_view, std::string_view>({
-#if BUILDFLAG(ENABLE_TOR)
-          {"tor", tor::prefs::kTorDisabled},
-#endif
-          {"p3a", p3a::kP3ADisabledByPolicy},
-          {"statsReporting", kStatsReportingDisabledByPolicy}});
-  static constexpr auto local_state =
-      base::MakeFixedFlatMap<std::string_view, std::string_view>(
-          {{// TODO(bsclifton):
-            // for some reason `metrics::prefs::kMetricsReportingEnabled`
-            // is not constexpr. hardcoding the name for now.
-            "crashReporting", "user_experience_metrics.reporting_enabled"}});
-
-  const auto it_inverted = inverted_local_state.find(pref_name);
-  if (it_inverted != inverted_local_state.end()) {
-    g_browser_process->local_state()->SetBoolean(it_inverted->second, !enabled);
-    return;
-  }
-
-  const auto it = local_state.find(pref_name);
-  if (it != local_state.end()) {
-    g_browser_process->local_state()->SetBoolean(it->second, enabled);
-    return;
+  // Handle local state preferences
+  const auto it = kToggleLocalStateMap.find(pref_name);
+  if (it != kToggleLocalStateMap.end()) {
+    // Find the config for this preference
+    for (const auto& config : kLocalStatePrefs) {
+      if (std::string_view(config.pref_name) == it->second) {
+        SetPrefValue(g_browser_process->local_state(), config.pref_name,
+                     enabled, config.inverted);
+        return;
+      }
+    }
   }
 
   // handle regular ones here
@@ -253,44 +246,23 @@ void BraveOriginHandler::HandleResetToDefaults(const base::Value::List& args) {
 }
 
 void BraveOriginHandler::OnValueChanged(const std::string& pref_name) {
-  if (IsJavascriptAllowed()) {
-    static constexpr auto inverted_local_state =
-        base::MakeFixedFlatMap<std::string_view, std::string_view>({
-#if BUILDFLAG(ENABLE_TOR)
-            {tor::prefs::kTorDisabled, "tor-enabled-changed"},
-#endif
-            {p3a::kP3ADisabledByPolicy, "p3a-enabled-changed"},
-            {kStatsReportingDisabledByPolicy,
-             "statsReporting-enabled-changed"}});
-    static constexpr auto local_state =
-        base::MakeFixedFlatMap<std::string_view, std::string_view>(
-            {{// TODO(bsclifton):
-              // for some reason `metrics::prefs::kMetricsReportingEnabled`
-              // is not constexpr. hardcoding the name for now.
-              "user_experience_metrics.reporting_enabled",
-              "crashReporting-enabled-changed"}});
-
-    const auto it_inverted = inverted_local_state.find(pref_name);
-    if (it_inverted != inverted_local_state.end()) {
-      FireWebUIListener(
-          it_inverted->second,
-          base::Value(!g_browser_process->local_state()->GetBoolean(
-              it_inverted->first)));
-      OnRestartNeededChanged();
-      return;
-    }
-
-    const auto it = local_state.find(pref_name);
-    if (it != local_state.end()) {
-      FireWebUIListener(
-          it->second,
-          base::Value(g_browser_process->local_state()->GetBoolean(it->first)));
-      OnRestartNeededChanged();
-      return;
-    }
-
-    OnRestartNeededChanged();
+  if (!IsJavascriptAllowed()) {
+    return;
   }
+
+  auto* local_state = g_browser_process->local_state();
+
+  // Find and fire the appropriate change event
+  for (const auto& config : kLocalStatePrefs) {
+    if (config.pref_name == pref_name) {
+      bool value = GetPrefValue(local_state, config.pref_name, config.inverted);
+      FireWebUIListener(config.change_event, base::Value(value));
+      OnRestartNeededChanged();
+      return;
+    }
+  }
+
+  OnRestartNeededChanged();
 }
 
 void BraveOriginHandler::OnRestartNeededChanged() {
@@ -302,49 +274,30 @@ void BraveOriginHandler::OnRestartNeededChanged() {
 
 bool BraveOriginHandler::IsRestartNeeded() {
   auto* prefs = profile_->GetPrefs();
+  auto* local_state = g_browser_process->local_state();
 
-  // TODO(bsclifton): clean this up. this is horrible and i feel bad.
-  bool rewards_changed =
-      was_rewards_enabled_ ==
-      prefs->GetBoolean(brave_rewards::prefs::kDisabledByPolicy);
-  bool ai_changed =
-      was_ai_enabled_ != prefs->GetBoolean(ai_chat::prefs::kEnabledByPolicy);
-  bool news_changed =
-      was_news_enabled_ ==
-      prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy);
-  bool p3a_changed =
-      was_p3a_enabled_ ==
-      g_browser_process->local_state()->GetBoolean(p3a::kP3ADisabledByPolicy);
-  bool stats_reporting_changed = was_stats_reporting_enabled_ ==
-                                 g_browser_process->local_state()->GetBoolean(
-                                     kStatsReportingDisabledByPolicy);
-  bool crash_reporting_changed = was_crash_reporting_enabled_ !=
-                                 g_browser_process->local_state()->GetBoolean(
-                                     metrics::prefs::kMetricsReportingEnabled);
-  bool vpn_changed =
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-      was_vpn_enabled_ ==
-      prefs->GetBoolean(brave_vpn::prefs::kManagedBraveVPNDisabled);
-#else
-      false;
-#endif
-  bool tor_changed =
-#if BUILDFLAG(ENABLE_TOR)
-      was_tor_enabled_ ==
-      g_browser_process->local_state()->GetBoolean(tor::prefs::kTorDisabled);
-#else
-      false;
-#endif
-  bool wallet_changed =
-      was_wallet_enabled_ ==
-      prefs->GetBoolean(brave_wallet::prefs::kDisabledByPolicy);
-
-  // TODO: also do Brave Talk, speedreader, waybackmachine
-  // once there's a cleaner way to do this.
-  if (rewards_changed || ai_changed || news_changed || p3a_changed ||
-      stats_reporting_changed || crash_reporting_changed || vpn_changed ||
-      tor_changed || wallet_changed) {
-    return true;
+  // Check if any preference has changed from its initial value
+  for (const auto& config : kProfilePrefs) {
+    auto it = initial_values_.find(config.pref_name);
+    if (it != initial_values_.end()) {
+      bool current_value =
+          GetPrefValue(prefs, config.pref_name, config.inverted);
+      if (it->second != current_value) {
+        return true;
+      }
+    }
   }
+
+  for (const auto& config : kLocalStatePrefs) {
+    auto it = initial_values_.find(config.pref_name);
+    if (it != initial_values_.end()) {
+      bool current_value =
+          GetPrefValue(local_state, config.pref_name, config.inverted);
+      if (it->second != current_value) {
+        return true;
+      }
+    }
+  }
+
   return false;
 }
