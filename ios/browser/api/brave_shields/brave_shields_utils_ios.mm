@@ -64,21 +64,8 @@
                                     isPrivate:(bool)isPrivate {
   HostContentSettingsMap* map =
       [self hostContentSettingsMapForPrivate:isPrivate];
-
-  brave_shields::ControlType controlTypeAd =
-      brave_shields::GetAdControlType(map, gurl);
-
-  brave_shields::ControlType controlTypeCosmetic =
-      brave_shields::GetCosmeticFilteringControlType(map, gurl);
-
-  if (controlTypeAd == brave_shields::ControlType::ALLOW) {
-    return BraveShieldsAdBlockModeAllow;
-  }
-
-  if (controlTypeCosmetic == brave_shields::ControlType::BLOCK) {
-    return BraveShieldsAdBlockModeAggressive;
-  }
-  return BraveShieldsAdBlockModeStandard;
+  return static_cast<BraveShieldsAdBlockMode>(
+      brave_shields::GetAdBlockMode(map, gurl));
 }
 
 - (void)setDefaultAdBlockMode:(BraveShieldsAdBlockMode)adBlockMode {
@@ -95,37 +82,15 @@
 - (void)setAdBlockMode:(BraveShieldsAdBlockMode)adBlockMode
                forGURL:(GURL)gurl
              isPrivate:(bool)isPrivate {
-  brave_shields::ControlType controlTypeAd;
-  if (adBlockMode == BraveShieldsAdBlockModeAllow) {
-    controlTypeAd = brave_shields::ControlType::ALLOW;
-  } else {
-    controlTypeAd = brave_shields::ControlType::BLOCK;
-  }
-
-  brave_shields::ControlType controlTypeCosmetic;
-  switch (adBlockMode) {
-    case BraveShieldsAdBlockModeAggressive:
-      controlTypeCosmetic = brave_shields::ControlType::BLOCK;  // aggressive
-      break;
-    case BraveShieldsAdBlockModeStandard:
-      controlTypeCosmetic =
-          brave_shields::ControlType::BLOCK_THIRD_PARTY;  // standard
-      break;
-    case BraveShieldsAdBlockModeAllow:
-      controlTypeCosmetic = brave_shields::ControlType::ALLOW;  // allow
-      break;
-  }
   HostContentSettingsMap* map =
       [self hostContentSettingsMapForPrivate:isPrivate];
   auto* localState = GetApplicationContext()->GetLocalState();
   auto* profilePrefs = isPrivate
                            ? _profile->GetOffTheRecordProfile()->GetPrefs()
                            : _profile->GetPrefs();
-
-  brave_shields::SetAdControlType(map, controlTypeAd, gurl, localState);
-
-  brave_shields::SetCosmeticFilteringControlType(map, controlTypeCosmetic, gurl,
-                                                 localState, profilePrefs);
+  brave_shields::SetAdBlockMode(
+      map, static_cast<brave_shields::mojom::AdBlockMode>(adBlockMode), gurl,
+      localState, profilePrefs);
 }
 
 @dynamic blockScriptsEnabledByDefault;
@@ -141,10 +106,7 @@
 - (bool)blockScriptsEnabledForGURL:(GURL)gurl isPrivate:(bool)isPrivate {
   HostContentSettingsMap* map =
       [self hostContentSettingsMapForPrivate:isPrivate];
-  brave_shields::ControlType controlType =
-      brave_shields::GetNoScriptControlType(map, gurl);
-
-  return controlType != brave_shields::ControlType::ALLOW;
+  return brave_shields::GetNoScriptEnabled(map, gurl);
 }
 
 - (void)setBlockScriptsEnabledByDefault:(bool)isEnabled {
@@ -161,18 +123,10 @@
 - (void)setBlockScriptsEnabled:(bool)isEnabled
                        forGURL:(GURL)gurl
                      isPrivate:(bool)isPrivate {
-  brave_shields::ControlType controlType;
-
-  if (!isEnabled) {
-    controlType = brave_shields::ControlType::ALLOW;
-  } else {
-    controlType = brave_shields::ControlType::BLOCK;
-  }
   HostContentSettingsMap* map =
       [self hostContentSettingsMapForPrivate:isPrivate];
   auto* localState = GetApplicationContext()->GetLocalState();
-
-  brave_shields::SetNoScriptControlType(map, controlType, gurl, localState);
+  brave_shields::SetIsNoScriptEnabled(map, isEnabled, gurl, localState);
 }
 
 @dynamic blockFingerprintingEnabledByDefault;
@@ -188,10 +142,9 @@
 - (bool)blockFingerprintingEnabledForGURL:(GURL)gurl isPrivate:(bool)isPrivate {
   HostContentSettingsMap* map =
       [self hostContentSettingsMapForPrivate:isPrivate];
-  brave_shields::ControlType controlType =
-      brave_shields::GetFingerprintingControlType(map, gurl);
-
-  return controlType != brave_shields::ControlType::ALLOW;
+  auto fingerprintMode = static_cast<BraveShieldsFingerprintMode>(
+      brave_shields::GetFingerprintMode(map, gurl));
+  return fingerprintMode != BraveShieldsFingerprintModeAllowMode;
 }
 
 - (void)setBlockFingerprintingEnabledByDefault:(bool)isEnabled {
@@ -210,23 +163,18 @@
 - (void)setBlockFingerprintingEnabled:(bool)isEnabled
                               forGURL:(GURL)gurl
                             isPrivate:(bool)isPrivate {
-  brave_shields::ControlType controlType;
-
-  if (isEnabled) {
-    controlType = brave_shields::ControlType::DEFAULT;  // STANDARD_MODE
-  } else {
-    // ControlType::ALLOW to allow fingerprinting
-    controlType = brave_shields::ControlType::ALLOW;
-  }
-
   HostContentSettingsMap* map =
       [self hostContentSettingsMapForPrivate:isPrivate];
   auto* localState = GetApplicationContext()->GetLocalState();
   auto* profilePrefs = isPrivate
                            ? _profile->GetOffTheRecordProfile()->GetPrefs()
                            : _profile->GetPrefs();
-  brave_shields::SetFingerprintingControlType(map, controlType, gurl,
-                                              localState, profilePrefs);
+  // iOS only supports standard & allow FingerprintMode's.
+  brave_shields::mojom::FingerprintMode fingerprintMode =
+      isEnabled ? brave_shields::mojom::FingerprintMode::STANDARD_MODE
+                : brave_shields::mojom::FingerprintMode::ALLOW_MODE;
+  brave_shields::SetFingerprintMode(map, fingerprintMode, gurl, localState,
+                                    profilePrefs);
 }
 
 @end
