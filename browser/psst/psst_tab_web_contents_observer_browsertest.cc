@@ -81,6 +81,9 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
   const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/simple.html");
 
+  prefs::SetPsstSettings("a", "user1", prefs::ConsentStatus::kAllow, 1,
+                         base::Value::List(), *GetPrefs());
+
   std::u16string expected_title(u"a_user-a_policy");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
