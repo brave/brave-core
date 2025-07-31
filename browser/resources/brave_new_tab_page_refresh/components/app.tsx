@@ -70,7 +70,12 @@ export function App() {
               />
           }
         </div>
-        <div className='spacer allow-background-pointer-events' />
+        <div
+          className='
+            spacer
+            sponsored-background-safe-area
+            allow-background-pointer-events'
+        />
         <div className='caption-container'>
           <BackgroundCaption />
         </div>

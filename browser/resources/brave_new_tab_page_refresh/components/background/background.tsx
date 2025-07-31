@@ -8,6 +8,7 @@ import * as React from 'react'
 import { NewTabPageAdEventType, SponsoredImageBackground } from '../../state/background_state'
 import { openLink } from '../common/link'
 import { loadImage } from '../../lib/image_loader'
+import { useWidgetLayoutReady } from '../app_layout_ready'
 
 import {
   useBackgroundState,
@@ -89,11 +90,22 @@ function SponsoredRichMediaBackground(
   const actions = useBackgroundActions()
   const sponsoredRichMediaBaseUrl =
     useBackgroundState((s) => s.sponsoredRichMediaBaseUrl)
+  const widgetLayoutReady = useWidgetLayoutReady()
+  const [safeRect, setSafeRect] = React.useState<DOMRect | null>(null)
+
+  React.useEffect(() => {
+    const spacer = document.querySelector<HTMLDivElement>(
+      'div.sponsored-background-safe-area')
+    if (widgetLayoutReady && spacer) {
+      setSafeRect(spacer.getBoundingClientRect())
+    }
+  }, [])
 
   return (
     <IframeBackground
       url={props.background.imageUrl}
       expectedOrigin={new URL(sponsoredRichMediaBaseUrl).origin}
+      safeRect={safeRect}
       onMessage={(data) => {
         const eventType = getRichMediaEventType(data)
         if (eventType) {
@@ -128,6 +140,7 @@ function getRichMediaEventType(data: any): NewTabPageAdEventType | null {
 interface IframeBackgroundProps {
   url: string
   expectedOrigin: string
+  safeRect: DOMRect | null
   onMessage: (data: unknown) => void
 }
 
@@ -149,6 +162,18 @@ function IframeBackground(props: IframeBackgroundProps) {
     window.addEventListener('message', listener)
     return () => { window.removeEventListener('message', listener) }
   }, [props.expectedOrigin, props.onMessage])
+
+  React.useEffect(() => {
+    const rect = props.safeRect
+    if (!iframeRef.current || !rect) {
+      return
+    }
+    const data = {
+      type: 'richMediaSafeRect',
+      value: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
+    }
+    iframeRef.current.contentWindow?.postMessage(data, props.expectedOrigin)
+  }, [props.safeRect, props.expectedOrigin])
 
   return (
     <iframe
