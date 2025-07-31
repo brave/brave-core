@@ -62,7 +62,6 @@ async function analyzeAffectedTests(
   outDir,
   { filters = ['//*'], files = [], base, quiet } = {},
 ) {
-
   const targetCommit =
     !base || base === true ? await getReferenceCommit() : base
 
@@ -141,21 +140,18 @@ async function getAffectedTests(args = {}) {
   const analysis = await analyzeAffectedTests(config.outputDir, args)
 
   // test affected according to GN
-  const allAffectedTestExecutables = analysis
-    .test_targets
-    .map(gnTargetToExecutableName)
+  const allAffectedTestExecutables = analysis.test_targets.map(
+    gnTargetToExecutableName,
+  )
 
-  const affectedTests = 
-    allAffectedTestExecutables
-    .filter(
-      createTestFilter(config, suite),
-    )
+  const affectedTests = allAffectedTestExecutables.filter(
+    createTestFilter(config, suite),
+  )
 
   const modified = new Set(analysis.files)
 
   // Changes in GTestFilters are currently not tracked by GN
-  const testAffectedDueModifiedFilterFiles = 
-    allAffectedTestExecutables
+  const testAffectedDueModifiedFilterFiles = allAffectedTestExecutables
     .flatMap((test) =>
       getApplicableFilters(config, test).map((filter) => ({ test, filter })),
     )
@@ -164,12 +160,7 @@ async function getAffectedTests(args = {}) {
     )
     .map(({ test }) => test)
 
-  return [
-    ...new Set([
-      ...affectedTests,
-      ...testAffectedDueModifiedFilterFiles,
-    ]),
-  ]
+  return [...new Set([...affectedTests, ...testAffectedDueModifiedFilterFiles])]
 }
 
 module.exports = {

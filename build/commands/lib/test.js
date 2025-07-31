@@ -28,13 +28,14 @@ const test = async (
   Config.buildConfig = buildConfig
   Config.update(options)
 
+
   if (Config.isIOS() && Config.targetEnvironment === 'device') {
     Log.error('Running ios tests on a device is not yet supported')
     process.exit(1)
   }
 
-  const testsToRun = passthroughArgs.includes('--base')
-    ? await getAffectedTests({ ...passthroughArgs, suite })
+  const testsToRun = options.base
+    ? await getAffectedTests({ ...options, suite })
     : getTestsToRun(Config, suite)
 
   await buildTests(testsToRun, Config, options)
