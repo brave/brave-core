@@ -13,9 +13,7 @@
 
 namespace brave_wallet {
 
-namespace polkadot {
 struct CxxSchnorrkelKeyPair;
-}
 
 inline constexpr size_t kSr25519SeedSize = 32;
 inline constexpr size_t kSr25519PublicKeySize = 32;
@@ -45,9 +43,9 @@ class HDKeySr25519 {
   HDKeySr25519 DeriveHard(base::span<const uint8_t> derive_junction);
 
  private:
-  explicit HDKeySr25519(rust::Box<polkadot::CxxSchnorrkelKeyPair> keypair);
+  explicit HDKeySr25519(rust::Box<CxxSchnorrkelKeyPair> keypair);
 
-  rust::Box<polkadot::CxxSchnorrkelKeyPair> keypair_;
+  rust::Box<CxxSchnorrkelKeyPair> keypair_;
 };
 
 }  // namespace brave_wallet
