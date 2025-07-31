@@ -1517,14 +1517,11 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_HISTORY_PREFERENCE_CONFIRM" desc="The confirmation prompt about disabling the AI Chat history preference">
     Disabling conversation storage will permanently erase all previously stored conversations. This action can't be undone.
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL" desc="The button label for deleteing all AI Chat conversations">
-    Delete all Leo AI conversation data
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL" desc="The button label for resetting AI Chat data">
+    Clear Leo data
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_CONFIRMATION_LABEL" desc="The confirmation window message for reset option">
-    Resetting Leo AI will require you to opt-in to use Brave
-Leo AI in the future and will also clear your chat history. Clearing your
-chat history will delete all your previous conversations with Brave
-Leo AI. This action can't be undone.
+    Resetting Leo AI will require you to opt-in to use Brave Leo AI in the future and will also clear your chat history, customizations, and memories. Clearing your chat history will delete all your previous conversations with Brave Leo AI. This action can't be undone.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_AUTOCOMPLETE_LINK" desc="A label for a link to settings page to adjust autocomplete suggestion based on Leo">
     Adjust autocomplete suggestions

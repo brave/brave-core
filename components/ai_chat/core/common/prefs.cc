@@ -39,6 +39,10 @@ void SetCustomizationsToPrefs(const mojom::CustomizationsPtr& customizations,
   prefs.SetDict(prefs::kBraveAIChatUserCustomizations, std::move(dict));
 }
 
+void ResetCustomizationsPref(PrefService& prefs) {
+  prefs.ClearPref(prefs::kBraveAIChatUserCustomizations);
+}
+
 std::vector<std::string> GetMemoriesFromPrefs(const PrefService& prefs) {
   const base::Value::List& memories_list =
       prefs.GetList(prefs::kBraveAIChatUserMemories);
