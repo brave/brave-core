@@ -97,6 +97,13 @@
 
   <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
 
+  <settings-toggle-button id="toggleCrashReportingButton"
+      pref="[[crashReportingEnabledPref_]]"
+      label="$i18n{braveOriginCrashReportingToggleTitle}"
+      on-settings-boolean-control-change="toggleCrashReportingButtonChange_"
+      icon="bar-chart">
+  </settings-toggle-button>
+
   <settings-toggle-button id="toggleLeoAiButton"
       pref="{{prefs.brave.ai_chat.enabled_by_policy}}"
       label="$i18n{braveOriginLeoAiToggleTitle}"
@@ -110,21 +117,12 @@
       inverted>
   </settings-toggle-button>
 
-  <settings-toggle-button id="toggleTalkButton"
-      pref="{{prefs.brave.talk.disabled_by_policy}}"
-      label="$i18n{braveOriginTalkToggleTitle}"
-      icon="product-brave-talk"
-      inverted>
+  <settings-toggle-button id="toggleP3AButton"
+      pref="[[p3aEnabledPref_]]"
+      label="$i18n{braveOriginP3AToggleTitle}"
+      on-settings-boolean-control-change="toggleP3AButtonChange_"
+      icon="bar-chart">
   </settings-toggle-button>
-
-  <if expr="enable_brave_wayback_machine">
-    <settings-toggle-button id="toggleWaybackMachineButton"
-        pref="{{prefs.brave.wayback_machine.disabled_by_policy}}"
-        label="$i18n{braveOriginWaybackMachineToggleTitle}"
-        icon="window-404"
-        inverted>
-    </settings-toggle-button>
-  </if>
 
   <if expr="enable_speedreader">
     <settings-toggle-button id="toggleSpeedreaderButton"
@@ -135,20 +133,6 @@
     </settings-toggle-button>
   </if>
 
-  <settings-toggle-button id="toggleWebDiscoveryProjectButton"
-      pref="{{prefs.brave.web_discovery_disabled_by_policy}}"
-      label="$i18n{braveOriginWebDiscoveryProjectToggleTitle}"
-      icon="brave-icon-search"
-      inverted>
-  </settings-toggle-button>
-
-  <settings-toggle-button id="toggleP3AButton"
-      pref="[[p3aEnabledPref_]]"
-      label="$i18n{braveOriginP3AToggleTitle}"
-      on-settings-boolean-control-change="toggleP3AButtonChange_"
-      icon="bar-chart">
-  </settings-toggle-button>
-
   <settings-toggle-button id="toggleStatsReportingButton"
       pref="[[statsReportingEnabledPref_]]"
       label="$i18n{braveOriginStatsReportingToggleTitle}"
@@ -156,11 +140,11 @@
       icon="bar-chart">
   </settings-toggle-button>
 
-  <settings-toggle-button id="toggleCrashReportingButton"
-      pref="[[crashReportingEnabledPref_]]"
-      label="$i18n{braveOriginCrashReportingToggleTitle}"
-      on-settings-boolean-control-change="toggleCrashReportingButtonChange_"
-      icon="bar-chart">
+  <settings-toggle-button id="toggleTalkButton"
+      pref="{{prefs.brave.talk.disabled_by_policy}}"
+      label="$i18n{braveOriginTalkToggleTitle}"
+      icon="product-brave-talk"
+      inverted>
   </settings-toggle-button>
 
   <if expr="enable_tor">
@@ -185,6 +169,22 @@
       pref="{{prefs.brave.wallet.disabled_by_policy}}"
       label="$i18n{braveOriginWalletToggleTitle}"
       icon="product-brave-wallet"
+      inverted>
+  </settings-toggle-button>
+
+  <if expr="enable_brave_wayback_machine">
+    <settings-toggle-button id="toggleWaybackMachineButton"
+        pref="{{prefs.brave.wayback_machine.disabled_by_policy}}"
+        label="$i18n{braveOriginWaybackMachineToggleTitle}"
+        icon="window-404"
+        inverted>
+    </settings-toggle-button>
+  </if>
+
+  <settings-toggle-button id="toggleWebDiscoveryProjectButton"
+      pref="{{prefs.brave.web_discovery_disabled_by_policy}}"
+      label="$i18n{braveOriginWebDiscoveryProjectToggleTitle}"
+      icon="brave-icon-search"
       inverted>
   </settings-toggle-button>
 

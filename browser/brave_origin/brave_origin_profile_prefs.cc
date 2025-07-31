@@ -49,6 +49,9 @@ void SetupBraveOriginProfilePrefs(Profile* profile) {
   if (BraveOriginState::GetInstance()->IsBraveOriginUser()) {
     PrefService* prefs = profile->GetPrefs();
 
+    // TODO(bsclifton): need to find out which are actively being used.
+    // Don't disable those ones.
+
     // Profile prefs
     prefs->SetDefaultPrefValue(brave_rewards::prefs::kDisabledByPolicy,
                                base::Value(true));
