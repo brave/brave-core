@@ -179,6 +179,10 @@ class RunableConfiguration:
     args.extend(binary.get_run_benchmark_args())
     browser_args.extend(self.binary.get_browser_args())
 
+    # process the benchmark-specific args:
+    args.extend(benchmark_config.extra_benchmark_args)
+    browser_args.extend(benchmark_config.extra_browser_args)
+
     # process the extra args from json config:
     args.extend(self.config.extra_benchmark_args)
     browser_args.extend(self.config.extra_browser_args)
@@ -370,7 +374,7 @@ def SpawnConfigurationsFromTargetList(target_list: List[str],
     if not config.location:
       config.location = location
     if not config.version:
-      raise RuntimeError(f'Can get the version from target {target_string}')
+      raise RuntimeError(f'Can get the version from target "{target_string}"')
     if not config.label:
       config.label = config.version.to_string()
     configurations.append(config)
