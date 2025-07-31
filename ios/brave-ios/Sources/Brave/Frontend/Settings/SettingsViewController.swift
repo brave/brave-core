@@ -225,6 +225,10 @@ class SettingsViewController: TableViewController {
       aboutSection,
     ]
 
+    if FeatureList.kBraveAccount.enabled {
+      list.insert(braveAccountSection, at: 1)
+    }
+
     let shouldShowVPNSection = { () -> Bool in
       if !BraveVPNProductInfo.isComplete || Preferences.VPN.vpnSettingHeaderWasDismissed.value {
         return false
@@ -309,6 +313,35 @@ class SettingsViewController: TableViewController {
           },
           cellClass: MultilineButtonCell.self
         ),
+      ]
+    )
+
+    return section
+  }()
+
+  private lazy var braveAccountSection: Static.Section = {
+    var section = Static.Section(
+      header: .title(Strings.braveAccount),
+      rows: [
+        Row(
+          text: Strings.getStarted,
+          selection: { [unowned self] in
+            let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
+            let container = UINavigationController(rootViewController: controller)
+            controller.title = Strings.braveAccount
+            controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
+            controller.navigationItem.rightBarButtonItem = .init(
+              systemItem: .done,
+              primaryAction: .init { [unowned container] _ in
+                container.dismiss(animated: true)
+              }
+            )
+            present(container, animated: true)
+          },
+          image: UIImage(sharedNamed: "brave.logo"),
+          accessory: .disclosureIndicator,
+          cellClass: BraveAccountIconCell.self
+        )
       ]
     )
 
@@ -1501,6 +1534,19 @@ class SettingsViewController: TableViewController {
     if dataSource.sections.isEmpty { return }
     dataSource.sections[0] = Static.Section()
     Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
+  }
+}
+
+private class BraveAccountIconCell: UITableViewCell, Cell {
+  func configure(row: Row) {
+    var content = defaultContentConfiguration()
+    let scaledValue = UIFontMetrics.default.scaledValue(for: 26)
+    content.image = row.image?.preparingThumbnail(
+      of: .init(width: scaledValue, height: scaledValue)
+    )
+    content.text = row.text
+    contentConfiguration = content
+    accessoryType = .disclosureIndicator
   }
 }
 
