@@ -147,11 +147,10 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
   });
 
   std::vector<OrchardNote> selected_inputs;
-  base::CheckedNumeric<uint64_t> fee = 0;
   for (auto& input : mutable_notes) {
     selected_inputs.push_back(input);
     auto total_inputs_amount = CalculateInputsAmount(selected_inputs);
-    fee = CalculateZCashTxFee(0, selected_inputs.size() + 1);
+    auto fee = CalculateZCashTxFee(0, selected_inputs.size() + 1);
     if (!total_inputs_amount.IsValid() || !fee.IsValid()) {
       return std::nullopt;
     }

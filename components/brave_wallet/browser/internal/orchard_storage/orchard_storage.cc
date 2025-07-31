@@ -37,30 +37,30 @@ constexpr int kCurrentVersionNumber = 2;
 
 std::optional<uint32_t> ReadUint32(sql::Statement& statement, size_t index) {
   auto v = statement.ColumnInt64(index);
-  auto casted = base::MakeCheckedNum(v).Cast<uint32_t>();
-  if (!casted.IsValid()) {
+  auto checked_v = base::CheckedNumeric<uint32_t>(v);
+  if (!checked_v.IsValid()) {
     return std::nullopt;
   }
-  return casted.ValueOrDie();
+  return checked_v.ValueOrDie();
 }
 
 // SQLite doesn't support uint64 natively so we restore it from int64 bytes.
 // We also check that value matches int64 positive range.
-std::optional<uint64_t> ReadUint64(sql::Statement& statement, size_t index) {
+std::optional<uint64_t> ReadAmount(sql::Statement& statement, size_t index) {
   auto v = statement.ColumnInt64(index);
-  auto casted = base::MakeCheckedNum(v).Cast<uint64_t>();
-  if (!casted.IsValid()) {
+  auto checked_v = base::CheckedNumeric<uint64_t>(v);
+  if (!checked_v.IsValid()) {
     return std::nullopt;
   }
-  return casted.ValueOrDie();
+  return checked_v.ValueOrDie();
 }
 
-std::optional<int64_t> ToInt64(uint64_t value) {
-  auto casted = base::MakeCheckedNum(value).Cast<int64_t>();
-  if (!casted.IsValid()) {
+std::optional<int64_t> AmountToInt64(uint64_t value) {
+  auto checked_v = base::CheckedNumeric<int64_t>(value);
+  if (!checked_v.IsValid()) {
     return std::nullopt;
   }
-  return casted.ValueOrDie();
+  return checked_v.ValueOrDie();
 }
 
 base::expected<CheckpointTreeState, std::string> ReadCheckpointTreeState(
@@ -531,7 +531,7 @@ OrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
     auto commitment_tree_position = ReadUint32(resolve_unspent_notes, 1);
     // Amount should be in the range from 0 to 2^63-1 so we can use int64
     // positive subrange.
-    auto amount = ReadUint64(resolve_unspent_notes, 2);
+    auto amount = ReadAmount(resolve_unspent_notes, 2);
     if (!block_id || !amount || !commitment_tree_position) {
       return base::unexpected(
           Error{ErrorCode::kConsistencyError, "Wrong database format"});
@@ -589,12 +589,12 @@ OrchardStorage::UpdateNotes(const mojom::AccountIdPtr& account_id,
     statement_populate_notes.BindString(0, account_id->unique_key);
     // Amount should be in the range from 0 to 2^63-1 so we can use int64
     // positive subrange.
-    auto amount = ToInt64(note.amount);
-    if (!amount) {
+    auto amount_i64 = AmountToInt64(note.amount);
+    if (!amount_i64) {
       return base::unexpected(
           Error{ErrorCode::kFailedToExecuteStatement, "Wrong amount value"});
     }
-    statement_populate_notes.BindInt64(1, amount.value());
+    statement_populate_notes.BindInt64(1, amount_i64.value());
     statement_populate_notes.BindInt64(2, note.block_id);
     statement_populate_notes.BindInt64(3,
                                        note.orchard_commitment_tree_position);
