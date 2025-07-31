@@ -11,7 +11,6 @@ import("//ios/public/provider/chrome/browser/build_config.gni")
 source_set("app") {
   configs += [
     "//brave/ios/browser/api/webcompat_reporter:mojom_header_config",
-    "//brave/ios/browser/api/brave_shields:mojom_header_config",
     "//brave/ios/browser/api/brave_wallet:mojom_header_config",
     "//brave/ios/browser/api/skus:mojom_header_config",
   ]
@@ -34,6 +33,7 @@ source_set("app") {
     "//brave/components/ai_chat/ios/browser",
     "//brave/components/ai_chat/ios/common:mojom",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/ios/browser",
     "//brave/components/brave_sync:constants",
     "//brave/components/brave_user_agent/browser",
     "//brave/components/constants",
