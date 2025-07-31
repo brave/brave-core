@@ -8,8 +8,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/ai_chat/ai_chat_profile.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
@@ -82,13 +82,21 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileBrowserTest,
   // Verify a default profile is not reported as the AI Chat profile
   EXPECT_FALSE(IsAIChatContentAgentProfile(GetProfile()->GetPath()));
 
-  // Open AI Chat Agent Profile browser window
+  // First request to open AI Chat Agent Profile browser window
+  // should be a noop because this profile is not opted in to AI Chat.
   OpenBrowserWindowForAIChatAgentProfile(GetProfile());
 
   // Wait for the AI Chat browser to be created
   if (chrome::GetTotalBrowserCount() == 1u) {
     ui_test_utils::WaitForBrowserToOpen();
   }
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+
+  SetUserOptedIn(GetProfile()->GetPrefs(), true);
+
+  // Second request to open AI Chat Agent Profile browser window
+  // should open a new browser window
+  OpenBrowserWindowForAIChatAgentProfile(GetProfile());
 
   // Verify that a new browser window was opened
   EXPECT_EQ(2u, chrome::GetTotalBrowserCount());
@@ -116,6 +124,8 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileBrowserTest,
 // correctly
 IN_PROC_BROWSER_TEST_F(AIChatProfileBrowserTest,
                        OpenBrowserWindowForAIChatAgentProfile_MultipleOpens) {
+  SetUserOptedIn(GetProfile()->GetPrefs(), true);
+
   EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
 
   // First call to open AI Chat profile
@@ -163,6 +173,7 @@ class AIChatProfileStartupBrowserTest : public AIChatProfileBrowserTest {
 IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
                        PRE_AIChatProfileDoesNotAffectStartup) {
   // Create AI Chat Agent profile and browser window
+  SetUserOptedIn(GetProfile()->GetPrefs(), true);
   OpenBrowserWindowForAIChatAgentProfile(GetProfile());
   if (chrome::GetTotalBrowserCount() == 1u) {
     ui_test_utils::WaitForBrowserToOpen();
