@@ -30,7 +30,7 @@ const getChromiumTestsSuites = (config) => {
 
 const getTestGroupDeps = (testDepFile) => {
   if (fs.existsSync(testDepFile)) {
-    let suiteDepNames = JSON.parse(
+    const suiteDepNames = JSON.parse(
       fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
     )
     return suiteDepNames.map((x) => x.split(':').at(-1))
@@ -40,17 +40,26 @@ const getTestGroupDeps = (testDepFile) => {
 }
 
 const getTestsToRun = (config, suite) => {
-  let testsToRun = getTestGroupDeps(
+  const testGroupDeps = getTestGroupDeps(
     path.join(config.outputDir, `${suite}.json`),
   )
 
-  if (config.isCI && config.targetOS === 'linux') {
-    testsToRun.concat(
-      getTestGroupDeps(path.join(config.outputDir, `${suite}_ci.json`)),
-    )
+  const isLinuxCI = (config.isCI && config.targetOS === 'linux')
+
+  const ciTests = isLinuxCI
+    ? getTestGroupDeps(path.join(config.outputDir, `${suite}_ci.json`))
+    : []
+    
+  const testsToRun = [
+    ...testGroupDeps,
+    ...ciTests
+  ]
+
+  if (testsToRun.length === 0) {
+    return [suite]
   }
 
-  return testsToRun.length > 0 ? testsToRun : [suite]
+  return testsToRun
 }
 
 // Returns a list of paths to files containing all the filters that would apply
