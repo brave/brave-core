@@ -6,6 +6,11 @@
 const fs = require('fs-extra')
 const path = require('path')
 
+// HACK: determines the executable path from the gn target name
+// Alternative: gn desc <buildDir> <target> outputs --format=json
+// TODO(https://github.com/brave/brave-browser/issues/48118): is there a better way of doing this?
+const gnTargetToExecutableName = (str) => str.split(':').at(-1).split('(')[0]
+
 const getTestBinary = (config, suite) => {
   let testBinary = suite
   if (testBinary === 'brave_java_unit_tests') {
@@ -33,7 +38,7 @@ const getTestGroupDeps = (testDepFile) => {
     const suiteDepNames = JSON.parse(
       fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
     )
-    return suiteDepNames.map((x) => x.split(':').at(-1))
+    return suiteDepNames.map(gnTargetToExecutableName)
   } else {
     return []
   }
@@ -103,8 +108,9 @@ const getApplicableFilters = (config, suite) => {
 }
 
 module.exports = {
+  gnTargetToExecutableName,
   getTestBinary,
-  getChromiumTestsSuites,
   getTestsToRun,
   getApplicableFilters,
+  getChromiumTestsSuites,
 }
