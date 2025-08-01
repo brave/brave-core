@@ -19,6 +19,7 @@ namespace {
 
 constexpr base::TimeDelta kRegularCheckInterval = base::Hours(3);
 constexpr base::TimeDelta kFirstRunDelay = base::Minutes(5);
+constexpr base::TimeDelta kSubsequentStartupDelay = base::Minutes(1);
 
 bool GetDefaultBrowserAsBool() {
   shell_integration::DefaultWebClientState state =
@@ -40,15 +41,13 @@ DefaultBrowserMonitor::DefaultBrowserMonitor(PrefService* local_state)
 DefaultBrowserMonitor::~DefaultBrowserMonitor() = default;
 
 void DefaultBrowserMonitor::Start() {
-  if (brave_stats::IsFirstRun(local_state_)) {
-    // Delay reporting on first run to give user a chance to change default
-    timer_.Start(
-        FROM_HERE, base::Time::Now() + kFirstRunDelay,
-        base::BindOnce(&DefaultBrowserMonitor::CheckDefaultBrowserState,
-                       weak_factory_.GetWeakPtr()));
-  } else {
-    CheckDefaultBrowserState();
-  }
+  base::TimeDelta delay = brave_stats::IsFirstRun(local_state_)
+                              ? kFirstRunDelay
+                              : kSubsequentStartupDelay;
+
+  timer_.Start(FROM_HERE, base::Time::Now() + delay,
+               base::BindOnce(&DefaultBrowserMonitor::CheckDefaultBrowserState,
+                              base::Unretained(this)));
 }
 
 void DefaultBrowserMonitor::SetGetDefaultBrowserCallbackForTesting(
