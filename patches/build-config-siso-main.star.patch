@@ -1,0 +1,20 @@
+diff --git a/build/config/siso/main.star b/build/config/siso/main.star
+index 698c1fd86990ae0528de053cd0a1ad1dc9b2207b..e6df7195d50dec46578d0b36c1a6a21b7c35f3a7 100644
+--- a/build/config/siso/main.star
++++ b/build/config/siso/main.star
+@@ -19,6 +19,7 @@ load("./reproxy.star", "reproxy")
+ load("./rust.star", "rust")
+ load("./simple.star", "simple")
+ load("./windows.star", chromium_windows = "chromium")
++load("./brave_siso_config.star", "brave_siso_config")
+ 
+ def __disable_remote(ctx, step_config):
+     if gn.args(ctx).get("use_remoteexec") == "true":
+@@ -93,6 +94,7 @@ def init(ctx):
+     handlers.update(simple.handlers)
+     handlers.update(reproxy.handlers)
+ 
++    brave_siso_config.configure(ctx, step_config, handlers)
+     return module(
+         "config",
+         step_config = json.encode(step_config),
