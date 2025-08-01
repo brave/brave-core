@@ -29,9 +29,8 @@ v8::Local<v8::Value> ConvertError(
 // https://cips.cardano.org/cip/CIP-30
 // This class implements API object which is available after
 // cardano.brave.enable() is called.
-class JSCardanoWalletApi final
-    : public gin::DeprecatedWrappable<JSCardanoWalletApi>,
-      public content::RenderFrameObserver {
+class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
+                                 public content::RenderFrameObserver {
  public:
   JSCardanoWalletApi(base::PassKey<class JSCardanoProvider> pass_key,
                      v8::Local<v8::Context> context,
@@ -41,12 +40,13 @@ class JSCardanoWalletApi final
   JSCardanoWalletApi(const JSCardanoWalletApi&) = delete;
   JSCardanoWalletApi& operator=(const JSCardanoWalletApi&) = delete;
 
-  static gin::DeprecatedWrapperInfo kWrapperInfo;
+  static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
+                                                    gin::kCardanoWalletApi};
 
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
       v8::Isolate* isolate) override;
-  const char* GetTypeName() override;
+  const gin::WrapperInfo* wrapper_info() const override;
 
  private:
   bool EnsureConnected();
