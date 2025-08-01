@@ -13,10 +13,6 @@ import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
 import {
   useGetAccountInfosRegistryQuery,
   useGetNetworkQuery,
-  useGetSelectedAccountIdQuery,
-  useGetSelectedADAAccountIdQuery,
-  useGetSelectedSOLAccountIdQuery,
-  useGetSelectedETHAccountIdQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
@@ -87,58 +83,6 @@ export const useAccountFromAddressQuery = (
           : undefined,
     }),
   })
-}
-
-export const useSelectedAccountQuery = () => {
-  const { data: selectedAccountId, isFetching: isLoadingSelectedAccountId } =
-    useGetSelectedAccountIdQuery()
-
-  const { account: selectedAccount, isLoading: isLoadingAccount } =
-    useAccountQuery(selectedAccountId ?? skipToken)
-
-  return {
-    isLoading: isLoadingSelectedAccountId || isLoadingAccount,
-    data: selectedAccount,
-  }
-}
-
-export const useSelectedADAAccountQuery = () => {
-  const { data: selectedAccountId, isFetching: isLoadingSelectedADAAccountId } =
-    useGetSelectedADAAccountIdQuery()
-
-  const { account: selectedAccount, isLoading: isLoadingAccount } =
-    useAccountQuery(selectedAccountId ?? skipToken)
-
-  return {
-    isLoading: isLoadingSelectedADAAccountId || isLoadingAccount,
-    data: selectedAccount,
-  }
-}
-
-export const useSelectedSOLAccountQuery = () => {
-  const { data: selectedAccountId, isFetching: isLoadingSelectedSOLAccountId } =
-    useGetSelectedSOLAccountIdQuery()
-
-  const { account: selectedAccount, isLoading: isLoadingAccount } =
-    useAccountQuery(selectedAccountId ?? skipToken)
-
-  return {
-    isLoading: isLoadingSelectedSOLAccountId || isLoadingAccount,
-    data: selectedAccount,
-  }
-}
-
-export const useSelectedETHAccountQuery = () => {
-  const { data: selectedAccountId, isFetching: isLoadingSelectedETHAccountId } =
-    useGetSelectedETHAccountIdQuery()
-
-  const { account: selectedAccount, isLoading: isLoadingAccount } =
-    useAccountQuery(selectedAccountId ?? skipToken)
-
-  return {
-    isLoading: isLoadingSelectedETHAccountId || isLoadingAccount,
-    data: selectedAccount,
-  }
 }
 
 export const useGetCombinedTokensRegistryQuery = (
