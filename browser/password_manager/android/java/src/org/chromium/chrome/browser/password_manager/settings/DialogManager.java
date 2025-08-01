@@ -17,10 +17,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * This class manages a {@link DialogFragment}.
- * In particular, it ensures that the dialog stays visible for a minimum time period, so that
- * earlier calls to hide it are delayed appropriately. It also allows to override the delaying for
- * testing purposes.
+ * This class manages a {@link DialogFragment}. In particular, it ensures that the dialog stays
+ * visible for a minimum time period, so that earlier calls to hide it are delayed appropriately. It
+ * also allows to override the delaying for testing purposes.
  */
 @NullMarked
 public final class DialogManager {
@@ -51,7 +50,7 @@ public final class DialogManager {
      */
     private @Nullable SingleThreadBarrierClosure mBarrierClosure;
 
-    /** Callback to run after the dialog was hidden. Can be null if no hiding was requested.*/
+    /** Callback to run after the dialog was hidden. Can be null if no hiding was requested. */
     private @Nullable Runnable mCallback;
 
     private boolean mShowingRequested;
@@ -81,6 +80,7 @@ public final class DialogManager {
     /**
      * Constructs a DialogManager, optionally with a callback to report which action was taken on
      * hiding.
+     *
      * @param actionsConsumer The callback called everytime {@link #hide} is executed.
      */
     public DialogManager(@Nullable ActionsConsumer actionsConsumer) {
@@ -93,7 +93,7 @@ public final class DialogManager {
      * @param dialog to be shown.
      * @param fragmentManager needed to call {@link android.app.DialogFragment#show}.
      * @param delay the delay in ms after which the dialog will be displayed (if not canceled during
-     *         this delay).
+     *     this delay).
      */
     public void showWithDelay(DialogFragment dialog, FragmentManager fragmentManager, int delay) {
         mShowingRequested = true;
@@ -109,6 +109,7 @@ public final class DialogManager {
 
     /**
      * Shows the dialog.
+     *
      * @param dialog to be shown.
      * @param fragmentManager needed to call {@link android.app.DialogFragment#show}
      */
@@ -127,6 +128,7 @@ public final class DialogManager {
      * Hides the dialog as soon as possible, but not sooner than {@link MINIMUM_LIFE_SPAN_MILLIS}
      * milliseconds after it was shown. Attempts to hide the dialog when none is shown are
      * gracefully ignored but the callback is called in any case.
+     *
      * @param callback is asynchronously called as soon as the dialog is no longer visible.
      */
     public void hide(@Nullable Runnable callback) {
@@ -152,8 +154,8 @@ public final class DialogManager {
     }
 
     /**
-     * Synchronously hides the dialog without any delay. Attempts to hide the dialog when
-     * none is shown are gracefully ignored but |mCallback| is called in any case if present.
+     * Synchronously hides the dialog without any delay. Attempts to hide the dialog when none is
+     * shown are gracefully ignored but |mCallback| is called in any case if present.
      */
     private void hideImmediately() {
         if (mDialogFragment != null) mDialogFragment.dismiss();
@@ -163,7 +165,7 @@ public final class DialogManager {
         reset();
     }
 
-    /** Resets the dialog reference and metadata related to it.*/
+    /** Resets the dialog reference and metadata related to it. */
     private void reset() {
         mDialogFragment = null;
         mCallback = null;

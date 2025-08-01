@@ -57,7 +57,7 @@ public interface PasswordManagerHandler {
      *
      * @param targetPath is the file to which the serialized passwords should be written.
      * @param successCallback is called on successful completion, with the count of the serialized
-     * passwords and the path to the file containing them as argument.
+     *     passwords and the path to the file containing them as argument.
      * @param errorCallback is called on failure, with the error message as argument.
      */
     void serializePasswords(

@@ -84,7 +84,7 @@ public interface ExportFlowInterface {
      * Saves the passwords into the file (in the form of Uri) passed in.
      *
      * @param passwordsFile The file into which the passwords will be written (expected to be a file
-     *         Uri).
+     *     Uri).
      */
     void savePasswordsToDownloads(Uri passwordsFile);
 }

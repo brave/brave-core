@@ -304,16 +304,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     }
 
     void rebuildPasswordLists() {
-org.chromium.base.Log.e("TAG", "PasswordSettings.rebuildPasswordLists CR140 000");
-org.chromium.base.Log.e("[Sync]", "stack="+ org.chromium.base.Log.getStackTraceString(new Exception()));
-org.chromium.base.Log.e("[Sync]", "===================");
-/*
-MASTER
-    at org.chromium.chrome.browser.password_manager.settings.PasswordSettings.rebuildPasswordLists(PasswordSettings.java:319)
-    at org.chromium.chrome.browser.password_manager.settings.PasswordSettings.onStart(PasswordSettings.java:500)
-    at androidx.fragment.app.Fragment.performStart(Fragment.java:3139)
-*/
-
         mNoPasswords = false;
         mNoPasswordExceptions = false;
         getPreferenceScreen().removeAll();
@@ -353,6 +343,7 @@ MASTER
 
     /**
      * Removes the UI displaying the list of saved passwords or exceptions.
+     *
      * @param preferenceCategoryKey The key string identifying the PreferenceCategory to be removed.
      */
     private void resetList(String preferenceCategoryKey) {
@@ -437,8 +428,9 @@ MASTER
     }
 
     /**
-     * Returns true if there is a search query that requires the exclusion of an entry based on
-     * the passed url or name.
+     * Returns true if there is a search query that requires the exclusion of an entry based on the
+     * passed url or name.
+     *
      * @param url the visible URL of the entry to check. May be empty but must not be null.
      * @param name the visible user name of the entry to check. May be empty but must not be null.
      * @return Returns whether the entry with the passed url and name should be filtered.
@@ -488,21 +480,18 @@ MASTER
 
     @Override
     public void onStart() {
-org.chromium.base.Log.e("TAG", "PasswordSettings.onStart CR140 000");
         super.onStart();
         rebuildPasswordLists();
     }
 
     @Override
     public void onResume() {
-org.chromium.base.Log.e("TAG", "PasswordSettings.onResume CR140 000");
         super.onResume();
         mExportFlow.onResume();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-org.chromium.base.Log.e("TAG", "PasswordSettings.onActivityResult CR140 000");
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode != PASSWORD_EXPORT_INTENT_REQUEST_CODE) return;
         if (resultCode != Activity.RESULT_OK) return;
@@ -513,7 +502,6 @@ org.chromium.base.Log.e("TAG", "PasswordSettings.onActivityResult CR140 000");
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-org.chromium.base.Log.e("TAG", "PasswordSettings.onSaveInstanceState CR140 000");
         super.onSaveInstanceState(outState);
         mExportFlow.onSaveInstanceState(outState);
         if (mSearchQuery != null) {
@@ -524,7 +512,6 @@ org.chromium.base.Log.e("TAG", "PasswordSettings.onSaveInstanceState CR140 000")
 
     @Override
     public void onDestroy() {
-org.chromium.base.Log.e("TAG", "PasswordSettings.onDestroy CR140 000");
         super.onDestroy();
 
         if (SyncServiceFactory.getForProfile(getProfile()) != null) {
@@ -543,12 +530,11 @@ org.chromium.base.Log.e("TAG", "PasswordSettings.onDestroy CR140 000");
     }
 
     /**
-     *  Preference was clicked. Either navigate to manage account site or launch the PasswordEditor
-     *  depending on which preference it was.
+     * Preference was clicked. Either navigate to manage account site or launch the PasswordEditor
+     * depending on which preference it was.
      */
     @Override
     public boolean onPreferenceClick(Preference preference) {
-org.chromium.base.Log.e("TAG", "PasswordSettings.onPreferenceClick CR140 000");
         if (preference == mLinkPref) {
             Intent intent =
                     new Intent(
@@ -569,7 +555,6 @@ org.chromium.base.Log.e("TAG", "PasswordSettings.onPreferenceClick CR140 000");
     }
 
     private void createSavePasswordsSwitch() {
-org.chromium.base.Log.e("TAG", "PasswordSettings.createSavePasswordsSwitch CR140 000");
         ChromeSwitchPreference savePasswordsSwitch =
                 new ChromeSwitchPreference(getStyledContext(), null);
         savePasswordsSwitch.setKey(PREF_SAVE_PASSWORDS_SWITCH);
@@ -579,7 +564,6 @@ org.chromium.base.Log.e("TAG", "PasswordSettings.createSavePasswordsSwitch CR140
         savePasswordsSwitch.setSummaryOff(R.string.text_off);
         savePasswordsSwitch.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
-org.chromium.base.Log.e("TAG", "PasswordSettings.savePasswordsSwitch.setOnPreferenceChangeListener CR140 000");
                     getPrefService()
                             .setBoolean(Pref.CREDENTIALS_ENABLE_SERVICE, (boolean) newValue);
                     return true;
@@ -604,7 +588,6 @@ org.chromium.base.Log.e("TAG", "PasswordSettings.savePasswordsSwitch.setOnPrefer
     }
 
     private void createAutoSignInCheckbox() {
-org.chromium.base.Log.e("TAG", "PasswordSettings.createAutoSignInCheckbox CR140 000");
         ChromeSwitchPreference autoSignInSwitch =
                 new ChromeSwitchPreference(getStyledContext(), null);
         autoSignInSwitch.setKey(PREF_AUTOSIGNIN_SWITCH);
@@ -613,7 +596,6 @@ org.chromium.base.Log.e("TAG", "PasswordSettings.createAutoSignInCheckbox CR140 
         autoSignInSwitch.setSummary(R.string.passwords_auto_signin_description);
         autoSignInSwitch.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
-org.chromium.base.Log.e("TAG", "PasswordSettings.autoSignInSwitch.setOnPreferenceChangeListener CR140 000");
                     getPrefService()
                             .setBoolean(Pref.CREDENTIALS_ENABLE_AUTOSIGNIN, (boolean) newValue);
                     return true;
@@ -632,7 +614,6 @@ org.chromium.base.Log.e("TAG", "PasswordSettings.autoSignInSwitch.setOnPreferenc
     }
 
     private void createCheckPasswords() {
-org.chromium.base.Log.e("TAG", "PasswordSettings.createAutoSignInCheckbox CR140 000");
         ChromeBasePreference checkPasswords = new ChromeBasePreference(getStyledContext());
         checkPasswords.setKey(PREF_CHECK_PASSWORDS);
         checkPasswords.setTitle(R.string.passwords_check_title);
@@ -641,7 +622,6 @@ org.chromium.base.Log.e("TAG", "PasswordSettings.createAutoSignInCheckbox CR140 
         // Add a listener which launches a settings page for the leak password check
         checkPasswords.setOnPreferenceClickListener(
                 preference -> {
-org.chromium.base.Log.e("TAG", "PasswordSettings.checkPasswords.setOnPreferenceChangeListener CR140 000");
                     PasswordCheck passwordCheck = PasswordCheckFactory.getOrCreate();
                     passwordCheck.showUi(
                             getStyledContext(), PasswordCheckReferrer.PASSWORD_SETTINGS);
