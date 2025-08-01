@@ -5,11 +5,13 @@
 
 #import "brave/ios/browser/web/brave_web_client.h"
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/ios/ns_error_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_internal.h"
+#include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/web/brave_web_main_parts.h"
 #include "components/autofill/ios/browser/autofill_java_script_feature.h"
 #include "components/autofill/ios/browser/suggestion_controller_java_script_feature.h"
@@ -82,12 +84,15 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
   features.push_back(
       security_interstitials::IOSSecurityInterstitialJavaScriptFeature::
           GetInstance());
-  features.push_back(
-      password_manager::PasswordManagerJavaScriptFeature::GetInstance());
-  features.push_back(autofill::AutofillJavaScriptFeature::GetInstance());
-  features.push_back(autofill::FormHandlersJavaScriptFeature::GetInstance());
-  features.push_back(
-      autofill::SuggestionControllerJavaScriptFeature::GetInstance());
+  if (base::FeatureList::IsEnabled(
+          brave::features::kUseChromiumWebViewsAutofill)) {
+    features.push_back(
+        password_manager::PasswordManagerJavaScriptFeature::GetInstance());
+    features.push_back(autofill::AutofillJavaScriptFeature::GetInstance());
+    features.push_back(autofill::FormHandlersJavaScriptFeature::GetInstance());
+    features.push_back(
+        autofill::SuggestionControllerJavaScriptFeature::GetInstance());
+  }
   return features;
 }
 

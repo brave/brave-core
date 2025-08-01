@@ -10,6 +10,7 @@
 #include "base/notreached.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
+#include "brave/ios/browser/ui/web_view/features.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
 #include "components/autofill/ios/browser/autofill_agent.h"
@@ -193,6 +194,10 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 }
 
 - (CWVAutofillController*)newAutofillController {
+  if (!base::FeatureList::IsEnabled(
+          brave::features::kUseChromiumWebViewsAutofill)) {
+    return nil;
+  }
   if (!self.webState) {
     return nil;
   }

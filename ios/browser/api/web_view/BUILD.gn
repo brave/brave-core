@@ -25,6 +25,7 @@ source_set("web_view") {
   ]
   deps = [
     "//base",
+    "//brave/ios/browser/ui/web_view:features",
     "//brave/ios/web_view",
     "//components/application_locale_storage",
     "//ios/chrome/browser/autofill/model",
