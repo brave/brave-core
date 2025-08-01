@@ -163,6 +163,10 @@ const util = {
     if (!skipLogging) {
       Log.command(options.cwd, cmd, args)
     }
+    if (!options.shell && !fs.existsSync(cmd) && process.platform === 'win32') {
+      args = ['/c', cmd, ...args]
+      cmd = 'cmd.exe'
+    }
     return spawnSync(cmd, args, options)
   },
 
