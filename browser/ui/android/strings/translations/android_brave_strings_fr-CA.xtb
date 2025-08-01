@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Contribuez à améliorer la stabilité des produits de Brave en envoyant automatiquement des rapports de diagnostic lorsque le navigateur Brave plante ou se bloque.</translation>
 <translation id="7977176350719484850">Données\néconomisées</translation>
 <translation id="9008534313521214777">Temps gagné\nestimé</translation>
+<translation id="8347743943525229984">Autoriser les sondages Brave</translation>
+<translation id="6022939994702081659">Autorise Brave à afficher des liens vers des sondages privés sur la page du nouvel onglet. Ces sondages nous aident à développer de meilleures fonctionnalités et à mesurer l’efficacité des campagnes publicitaires dans le navigateur.</translation>
+<translation id="7746496306508543965">En savoir plus sur les sondages Brave</translation>
 <translation id="410351446219883937">Lecture automatique</translation>
 <translation id="7445411102860286510">Autoriser les sites à lire automatiquement des vidéos dont le son est désactivé (recommandé)</translation>
 <translation id="7837721118676387834">Autorisez la lecture automatique des vidéos dont le son est désactivé pour un site en particulier.</translation>
@@ -632,7 +635,6 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="3961126209136843111">Importer un portefeuille existant</translation>
 <translation id="4811736040444856406">Afficher la phrase de récupération</translation>
 <translation id="4359319875297001084">Importer depuis les portefeuilles cryptos Brave hérités?</translation>
-<translation id="3157931365184549694">Restaurer\n</translation>
 <translation id="5844138175312846408">Vous avez déjà un portefeuille?</translation>
 <translation id="2502258949541727762">Avant de commencer</translation>
 <translation id="4303748097351941030">Réseaux pris en charge</translation>
@@ -794,7 +796,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1426320910664514906">Limite de Gas</translation>
 <translation id="6389441740143786465">Désactiver le centre de partage</translation>
 <translation id="9065203028668620118">Modifier</translation>
-<translation id="473775607612524610">Mise à jour</translation>
 <translation id="479795390141144417">Échec de la mise à jour du compte.</translation>
 <translation id="8084782383392198011">Le nom du compte ne peut pas être vide.</translation>
 <translation id="5045550434625856497">Mot de passe incorrect</translation>

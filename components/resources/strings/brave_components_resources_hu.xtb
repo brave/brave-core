@@ -869,7 +869,7 @@
 <translation id="1939235910515558387">Kezdje meg a Brave-pénztárca használatát perceken belül.</translation>
 <translation id="5844138175312846408">Már rendelkezik pénztárcával?</translation>
 <translation id="772643556080081594">Csak figyelési pénztárcára van szükségem</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. A Brave és a Brave embléma a Brave Software, Inc. bejegyzett védjegyei. Más terméknevek és emblémák a megfelelő vállalatok védjegyei lehetnek. Minden jog fenntartva.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. A Brave és a Brave embléma a Brave Software, Inc. bejegyzett védjegyei. Más terméknevek és emblémák a megfelelő vállalatok védjegyei lehetnek. Minden jog fenntartva.</translation>
 <translation id="7501957181231305652">vagy</translation>
 <translation id="375882617301124395">Végezzen biztonsági mentést a kriptotárcájáról</translation>
 <translation id="5024543173656851695">Megértettem, hogy ha elvesztem a helyreállításhoz szükséges szavakat, akkor nem fogok tudni hozzáférni a kriptopénztárcámhoz.</translation>
@@ -1113,10 +1113,6 @@
 <translation id="4324239559624557455">24 óra</translation>
 <translation id="9139452553033760558">1 hét</translation>
 <translation id="1658834457013045127">Korlátlan ideig</translation>
-<translation id="2770851145415891830">Már meglévő kriptotárcákat észleltünk</translation>
-<translation id="2237759620789871865">Ha inkább kihagyná az importálást, és megtartaná a korábbi Crypto Wallets felhasználói élményt, csak navigáljon a Brave böngésző <ph name="LINK_BEFORE"/>beállításaira<ph name="LINK_AFTER"/> és állítsa vissza az alapértelmezett beállítást a Crypto Wallets-re. Importálásokat is végezhet, kipróbálhatja az új Brave Wallet alkalmazást, és bármikor visszaválthat.</translation>
-<translation id="5590175005414413980">Adja meg a már meglévő kriptotárcája jelszavát a Brave pénztárcába való importáláshoz. Élvezze, hogy gyorsabb és biztonságosabb módon kezelheti a kriptoeszközeit és léphet interakcióba Web3 decentralizált applikációkkal.</translation>
-<translation id="880619123281809987">Írja be a kriptotárca jelszavát</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> csatlakoztatva</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> csatlakozása megszakítva</translation>
 <translation id="5317781812114905957">Utasítások</translation>
@@ -1373,6 +1369,9 @@
 <translation id="5601436886921227795">DApp-interakció</translation>
 <translation id="9104177294757104789"><ph name="VALUE"/> elküldése</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/> cseréje a következőre: <ph name="TAKER"/></translation>
+<translation id="1748114617341025015">Kapcsolódó tokenfiók létrehozása</translation>
+<translation id="4418115887224983240">A kapcsolódó tokenfiók létrehozása sikertelen volt</translation>
+<translation id="7165697599360786670">Sikeresen létrehoztuk a kapcsolódó tokenfiókot</translation>
 <translation id="8613144770663526433">Bejelentkezés Brave pénztárcával</translation>
 <translation id="8813165409788097898">A következőbe jelentkezik be: <ph name="ORIGIN"/>. A Brave pénztárca meg fogja osztani a pénztárcája címét a következővel: <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Részletek megtekintése</translation>
@@ -1506,7 +1505,6 @@
 <translation id="396152018598329740">Hogyan lehet használni a kriptotárcákat?</translation>
 <translation id="7512061585041489067">Melyik a legjobb kriptotárca?</translation>
 <translation id="1342755158522323177">Mi az a kriptoböngésző?</translation>
-<translation id="4702762916247565868">Alapismeretek a kriptopénztárcákról</translation>
 <translation id="4674552515763857735">Mi a helyreállítási kifejezés?</translation>
 <translation id="7328255859839881981">Mik azok a DAppok?</translation>
 <translation id="3852489285890032403">Mi az a web 3?</translation>
@@ -1524,7 +1522,6 @@
 <translation id="7877416315564177070">Ellenőrizze a helyreállítási kifejezést, és próbálja újra.</translation>
 <translation id="6503538941917874992">Importálás a helyreállítási kifejezése használatával</translation>
 <translation id="782167880151571109">MetaMask-pénztárca észlelve!</translation>
-<translation id="3619071361843652814">Régebbi pénztárca észlelve!</translation>
 <translation id="4634124774493850572">Jelszó használata</translation>
 <translation id="7697478310235189459"><ph name="VALUE"/>. szó</translation>
 <translation id="5913194823092185468">Írja be a MetaMask 12-24 szavas helyreállítási kifejezését.</translation>
@@ -1537,7 +1534,6 @@
 <translation id="3604445540387095708">Elolvastam és elfogadom a <ph name="LINK_BEFORE"/>Használati feltételeket<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Kriptó vásárlása</translation>
 <translation id="3887541341068007345">Pénztárcabővítmények keresése...</translation>
-<translation id="3567994771568272606">Importálás régi Brave-kriptopénztárcákból</translation>
 <translation id="8407091560429310499">Válasszon eszközt</translation>
 <translation id="756590380936155533"><ph name="ASSET_TICKER"/>-vásárlásának befejezéséhez válassza ki valamelyik partnerünket</translation>
 <translation id="7880860489474966219">A befejezést követően az összeget átutaljuk a Brave-pénztárcájába.</translation>
@@ -1740,6 +1736,7 @@
 <translation id="4583937519241190398">DappRadar által ellenőrzött</translation>
 <translation id="8713438253026855351">Váltás védett fiókra</translation>
 <translation id="3526789880090101085">Védett fiók</translation>
+<translation id="3155166394760577549">Engedélyezze a védett módot a tranzakciók nagyobb adatvédelme érdekében.</translation>
 <translation id="2298396008562701154">Ez a fiók jelenleg nyilvános, ami azt jelenti, hogy a tranzakciók mindenki számára láthatóak a blokkláncban.</translation>
 <translation id="3987095760757102811">Ha védett fiókra vált, a feladó, a címzett és a tranzakciók összege rejtve marad.</translation>
 <translation id="3819528427777765709">Védett</translation>
@@ -1770,6 +1767,8 @@
 <translation id="99991973626409495">Védelem ellenőrzése</translation>
 <translation id="3114681061018999547">Védelem</translation>
 <translation id="8897189056319316783">ZEC védelem</translation>
+<translation id="3382275793825152362">Pénzeszközök védelme</translation>
+<translation id="8631765320256788981">Pénzt küld az átlátható számlájáról egy biztonságos számlára.</translation>
 <translation id="7144878232160441200">Újra</translation>
 <translation id="9094621390791852268">Nem sikerült megjeleníteni a tranzakció előnézetét.</translation>
 <translation id="4982713341035600933">Becsült egyenlegváltozás</translation>
@@ -1831,7 +1830,7 @@
 <translation id="7758665172236842395">Kövesse a kedvenc forrásait, egy csatornán. Csak nyisson meg egy lapot a Brave-ben, görgessen le, és tessék!</translation>
 <translation id="2376542729617592331">A Brave híreket teljesen privát és anonim hirdetések támogatják. <ph name="LINK_START"/>További információk<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">A Brave News bekapcsolása</translation>
-<translation id="5149018766422637336">Hírek és RSS</translation>
+<translation id="1772301834467143364">Brave News</translation>
 <translation id="6265592479622441247">Vissza az <ph name="BEGIN_BOLD"/>irányítópultra<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Felfedezés</translation>
 <translation id="8981973962043893066">Keresés oldalra, témára vagy RSS-csatornára</translation>
@@ -2102,10 +2101,18 @@
 <translation id="4885527781814382758">A Brave Leo egy MI-alapú intelligens asszisztens, amely tiszteletben tartja az Ön adatainak védelmét és javítja az internetfelhasználó élményt. A Leo korlátozott verzióban ingyenesen elérhető. A Brave Leo Prémium több modellt és nagyobb kapacitást kínál, és az előfizetőknek korai hozzáférést biztosít az új funkciókhoz. Az alapértelmezett modell változhat. További részletekért lásd a <ph name="LINK_BEFORE"/>Brave Súgóközpont<ph name="LINK_AFTER"/> .</translation>
 <translation id="7189603330209995455">Alapértelmezetten ha Ön feltesz egy kérdést a Leónak, akkor az elküldheti az Ön által megtekintett weboldal tartalmát, valamint az Ön által az oldalon kijelölt szövegeket a Brave Leónak a válaszadáshoz. A válaszok pontossága nem garantált; tartalmaz pontatlan, félrevezető vagy hamis adatokat. A Leo a Brave keresőmotorjának adatait használja a válaszok minőségének javításához. Ne adjon meg érzékeny vagy magánjellegű adatokat és legyen óvatos az egészséggel, pénzüggyel, személyes biztonsággal és hasonló témákkal kapcsolatos válaszokkal. A Leo beállításait bármikor módosíthatja a Beállításokban. Lépjen a Beállítások és Leo lehetőségre.</translation>
 <translation id="3038772045018370764">A Leo nem gyűjt olyan Önnel összeköthető egyedi azonosítókat, mint például az Ön IP-címe. Nem használunk adatokat az MI-modell kiképzésére és az MI-modelljeink semmilyen személyes adatot nem őriznek meg (kivéve az Anthropic-ot, ami 30 napig megőrzi azt adatokat, mielőtt törölné azokat). Tekintse meg <ph name="LINK_BEFORE"/>adatvédelmi szabályzatunkat<ph name="LINK_AFTER"/>, ha további információra van szüksége.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      one {}=1 {Kérdezzen az oldal tartalmáról}
+      other {Kérdezzen az oldalak tartalmáról}
+    }</translation>
 <translation id="6961721183181597848">Miben segíthetek ma?</translation>
 <translation id="2966135729673253768">Válasz kérése</translation>
 <translation id="4524675003624341892">Kérdések javasolása...</translation>
 <translation id="4567071417854988869">Videó összefoglalása</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      one {}=1 {Összefoglalja ezt az oldalt}
+      other {Összefoglalja ezeket az oldalakat}
+    }</translation>
 <translation id="7921782882718083488">Lap összefoglalása</translation>
 <translation id="7932221068776853847">Ha szeretné leállítani a tartalmak küldését a Leo számára, és új beszélgetést indítani, bontsa a kapcsolatot.</translation>
 <translation id="8743383817154663379">Hiba történt a kérés felfolgozásakor. Kérjük, próbálja újra.</translation>
@@ -2129,7 +2136,7 @@ A DeepSeek R1 motorral működöm, amelyet a DeepSeek fejlesztett ki összetette
 <translation id="6187065185557150870">Csevegés</translation>
 <translation id="4685048769603134644">Teljes oldal megnyitása</translation>
 <translation id="2961040541145689181">Új csevegés</translation>
-<translation id="7557539689487606886">Váltás Premiumra</translation>
+<translation id="7557539689487606886">Prémium előfizetés</translation>
 <translation id="1691256669639196606">Előfizetés kezelése</translation>
 <translation id="3840096463915153852">Beszélgetés előzményei</translation>
 <translation id="2304783958703511257">Speciális beállítások</translation>
@@ -2197,16 +2204,14 @@ A DeepSeek R1 motorral működöm, amelyet a DeepSeek fejlesztett ki összetette
 <translation id="8712637175834984815">Sikerült</translation>
 <translation id="1093419424466417703">Ez az oldal túl hosszú Leo számára. A kontextus egy része hiányozni fog a beszélgetésből. Leo ennyit tudott elolvasni az oldal tartalmából: <ph name="PERCENTAGE"/>.</translation>
 <translation id="4592293425457329338">Előfordulhat, hogy bizonyos információk hiányoznak a beszélgetésből. A Leónak sikerült elolvasnia <ph name="PERCENTAGE"/> a beszélgetéshez kapcsolódó oldal tartalmát.</translation>
-<translation id="2186990448773134544">Az oldal tartalma finomítva lett a legrelevánsabb információk kivonatolása révén, mert az oldal tartalma túl hosszú volt a Leo számára.</translation>
-<translation id="5140068729857132378">A weboldal releváns részeinek keresése...</translation>
 <translation id="4370698775470316661">Ez a beszélgetés túl hosszúra nyúlt, és nem folytatható. Más modellek alkalmazásával a Leo képes lehet megőrizni a pontosságát a hosszabb beszélgetések esetében.</translation>
 <translation id="5719170755629028558">Válasz kibővítése a Brave-kereséssel...</translation>
 <translation id="5794962229997281366">Továbbfejlesztett válaszkeresés a következőhöz: <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> és sok minden más…</translation>
 <translation id="8103700533980268469">Üzenet bezárása</translation>
 <translation id="3417835166382867856">Lapok közötti keresés</translation>
-<translation id="9090243919347147717">Mellékletek</translation>
-<translation id="4444978378117903684">Adja hozzá a böngésző lapjait, hogy több információval lássa el Leót a beszélgetéshez</translation>
+<translation id="1352836459737874921">Tartalom hozzáadása a többi lapról</translation>
+<translation id="3028258613451571431">Ossza meg a lap tartalmát, hogy Leo pontosabban tudjon segíteni</translation>
 <translation id="4300920590112551536">Böngésző lapok</translation>
 <translation id="2315654674554095762">A Leo mostantól emlékezni fog a beszélgetéseire, hogy visszatérhessen hozzájuk. A beszélgetések titkosítva tárolódnak a készülékén, és bármikor törölheti őket.</translation>
 <translation id="7821251979960635244">A beszélgetés előzményei itt jelennek meg, amint elkezd egy beszélgetést.</translation>
@@ -2229,8 +2234,8 @@ A DeepSeek R1 motorral működöm, amelyet a DeepSeek fejlesztett ki összetette
 <translation id="5642775487085641191">Csak csevegni szeretne?</translation>
 <translation id="8857222718794549840">Bármit kérdezhet! Az Ön által választott bármilyen témáról beszélgethetünk. Folyamatosan tanulok és fejlődöm, hogy jobb válaszokat adhassak.</translation>
 <translation id="9051226419897869406">Csevegjen privátban a Brave Leóval</translation>
-<translation id="637548538907281147">Alakítsa a válaszokat az oldal tartalma alapján</translation>
-<translation id="8599503173207256429">Kapcsolja be az oldallal kapcsolatos kérdésekhez. A tartalom továbbítva lesz a Brave Leónak az Ön üzeneteivel együtt.</translation>
+<translation id="2414904697165579184">A megnyitott lap(ok) tartalma segít személyre szabni a válaszokat</translation>
+<translation id="8258324391302611485">Az oldal tartalmát is továbbítjuk Leónak az üzenetével együtt.</translation>
 <translation id="318819763888864209">Minden előfizetés automatikus megújul, de a megújulás előtt bármikor lemondható.</translation>
 <translation id="5091223967610958">Az éppen felkeresett oldal kiszolgálónevének megosztása (<ph name="HOST_NAME"/>) a Leo továbbfejlesztéséhez.</translation>
 <translation id="8732450785281947197">Leo MI-eszközök</translation>
@@ -2261,11 +2266,14 @@ A DeepSeek R1 motorral működöm, amelyet a DeepSeek fejlesztett ki összetette
 <translation id="9088751620363630236">Kép készítése...</translation>
 <translation id="4250229828105606438">Képernyőkép</translation>
 <translation id="6332876390231524389">Aktuális lap tartalma</translation>
+<translation id="7742969455167760092">Aktív böngészőlapok...</translation>
 <translation id="49269513399674318">Mikrofon használata</translation>
 <translation id="3895031624234442305">Egyedi modellek</translation>
 <translation id="4572010449071015143">Új beszélgetés indítása</translation>
 <translation id="345901077335355561">Visszatérés az aktív beszélgetéshez</translation>
 <translation id="6287023598025162715">Új beszélgetés</translation>
+<translation id="7097822247923237815">Ideiglenes csevegés</translation>
+<translation id="7481750859362986254">Ez a beszélgetés nem lesz elmentve, és nem használja Leo testreszabását vagy memóriáját.</translation>
 <translation id="8370801182970639038">Automatikus (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Keresőmotorok aktiválva</translation>
 <translation id="5355776323718420036">A legnépszerűbb oldalak elrejtése</translation>
@@ -2382,6 +2390,7 @@ other {A Brave Pajzsok {BLOCKED_COUNT} követőt blokkolt itt: <ph name="SITE_UR
 <translation id="6821108091726602352">Segítsen nekünk helyrehozni a webet azzal, hogy részt vesz a Brave Web Discovery projektjében. Teljesen névtelen keresési jelek megosztásával segíthet a Brave-nek növelnie a keresési adatbázisát.</translation>
 <translation id="6764845498618413165">Tudjon meg többet.</translation>
 <translation id="7818938154803162778">Igen, segítek</translation>
+<translation id="7207456302801184289">Üdvözli önt a Brave</translation>
 <translation id="3486480638399578250">Tartsd privátan a személyes e-mail címedet</translation>
 <translation id="7765422154906712751">Hozz létre egyedi, véletlenszerű címeket, amelyek továbbítják a Brave fiókod emailjére, és bármikor törölhetők. Ne fedje fel a valódi e-mail címét a hirdetők számára.</translation>
 <translation id="5222676887888702881">Kijelentkezés</translation>
@@ -2398,6 +2407,7 @@ other {A Brave Pajzsok {BLOCKED_COUNT} követőt blokkolt itt: <ph name="SITE_UR
 <translation id="1104500750724567895">Új álnév</translation>
 <translation id="8072910658503112482">Javasoljon egy másik e-mail álnevet</translation>
 <translation id="7710361355427562228">Új álnév létrehozása...</translation>
+<translation id="8013913032858654337">Nem sikerült új e-mail címet létrehozni. Kérjük, ellenőrizze internetkapcsolatát, majd próbálja meg újra.</translation>
 <translation id="4253168017788158739">Megjegyzés</translation>
 <translation id="7596996548739923550">Adjon meg egy megjegyzést a címhez (opcionális)</translation>
 <translation id="3810973564298564668">Kezelés</translation>
@@ -2405,13 +2415,21 @@ other {A Brave Pajzsok {BLOCKED_COUNT} követőt blokkolt itt: <ph name="SITE_UR
 <translation id="3919357515365744684">Az e-mailek továbbításra kerülnek <ph name="MAIN_EMAIL"/> címre</translation>
 <translation id="6063403442924238501">E-mail álnév szerkesztése</translation>
 <translation id="8729265501883390499">Álnév létrehozása</translation>
+<translation id="7137645995703540578">Nem sikerült elmenteni az e-mail címet. Kérjük, ellenőrizze internetkapcsolatát, majd próbálja meg újra.</translation>
+<translation id="1765544689721905747">E-mail cím eltávolítása</translation>
+<translation id="646524615209870492">A <ph name="ALIAS"/> eltávolítása esetén többé nem fog tudni e-maileket fogadni ezen a címen.</translation>
+<translation id="8133100642915054515">Nem sikerült törölni az e-mail címet. Kérjük, ellenőrizze internetkapcsolatát, majd próbálja meg újra.</translation>
+<translation id="8465742443901727718">Ez a művelet nem visszavonható. Biztosan folytatni kívánja?</translation>
 <translation id="8662104432574824754">A kezdéshez jelentkezzen be vagy hozzon létre egy Brave fiókot</translation>
 <translation id="8069030342700068465">Adja meg e-mail címét, hogy biztonságos bejelentkezési linket kapjon. Ennek a linknek a megnyitása létrehozza vagy hozzáférést biztosít a Brave fiókkal és lehetővé teszi az ingyenes E-mail álnevek szolgáltatás használatát.</translation>
 <translation id="2133391407495495735">Bejelentkezési link kérése</translation>
+<translation id="2650906829817220223">Hitelesítési hiba. Ellenőrizze a kapcsolatot, és próbálja újra.</translation>
 <translation id="3699624789011381381">E-mail cím</translation>
 <translation id="8124939971041602970">Egy bejelentkezési e-mail úton van <ph name="MAIN_EMAIL"/> címre</translation>
 <translation id="8140361186431963982">Kattintson a biztonságos bejelentkezési linkre az e-mailben, hogy hozzáférjen az ön fiókjához.</translation>
-<translation id="6549775668256477823">Nem látja az e-mailt? Ellenőrizze a spam mappáját vagy <ph name="BEGIN_LINK"/>próbálja újra<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Nem látja az e-mailt? Ellenőrizze a spam mappáját vagy próbálja újra.</translation>
+<translation id="3397336197747843396">Nem sikerült a hitelesítés a Brave-fiókkal. Kérjük, próbálja meg újra.</translation>
+<translation id="1340795582009113055">Újrakezdés</translation>
 <translation id="958268166261124668">Brave VPN: csatlakozva</translation>
 <translation id="6021669293402055982">Brave VPN: kapcsolat bontva</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>

@@ -16,7 +16,7 @@
 <translation id="8294286161128352783">Samo na stranici nove kartice</translation>
 <translation id="6406506848690869874">Sinhronizuj</translation>
 <translation id="1544192797660353713">Novčanik</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Više…</translation>
 <translation id="1990886731975529483">Instaliraj i pokreni Google Widevine</translation>
 <translation id="8926389886865778422">Ne pitaj me ponovo</translation>
@@ -72,7 +72,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="7595540212376041331">Sakrij ikonu Brave novčanika</translation>
 <translation id="3893997535859323951">Sakrij ikonu Leo AI</translation>
 <translation id="6208515240323786457">Sakrij ikonu Leo AI</translation>
-<translation id="2361906291514218784">Leo AI</translation>
+<translation id="5385064007245738696">O asistentu Leo AI</translation>
 <translation id="4928988318462976765">Veb-prodavnica dodataka</translation>
 <translation id="9181207987584064303">Prikaži u veb-prodavnici dodataka</translation>
 <translation id="3161744659507801211">Upozorenje: Brave ne može da spreči dodatke da snimaju vašu istoriju pregledanja veba.</translation>
@@ -175,11 +175,6 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="4394049700291259645">Isključi</translation>
 <translation id="7142548388914389999">Dopusti analitiku proizvoda kojom se čuva privatnost (P3A)</translation>
 <translation id="2604698253988679506">Ovi privatni odgovori omogućavaju Brave-u da proceni ukupno korišćenje određenih funkcija i da ih učini boljim za vas.</translation>
-<translation id="1947672064022327074">Želite li da pokrenete kripto novčanike za podršku Ethereum-u?</translation>
-<translation id="7583735190612229830">Podesite kripto novčanike da biste imali interakciju sa ovom aplikacijom i drugim aplikacijama poput nje.</translation>
-<translation id="8731422418734770661">Podesite kripto novčanike</translation>
-<translation id="8199661191594897555">Pokrenite kripto novčanike i ponovo učitajte</translation>
-<translation id="8428213095426709021">Podešavanja</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Domeni Web3</translation>
 <translation id="5046066249040287308">Pomoćna usluga Brave novačanika</translation>
@@ -641,7 +636,6 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="2653659639078652383">Pošalji</translation>
 <translation id="1294350054292274934">Reši samo .onion adrese u prozorima Tor pregledača</translation>
 <translation id="601227612175911475">Onion usluge neće biti dostupne izvan prozora Tor pregledača.</translation>
-<translation id="2896916411183256228">Koristi WebTorrent da prikaže torente direktno u pregledaču. Podržava torent fajlove i matnetne linkove.</translation>
 <translation id="5249433283143453448">Koristite komponentu Widevine-ovog upravljanja digitalnim pravima (DRM) da vidite zaštićeni video striming i drugi sadržaj u pregledaču.</translation>
 <translation id="1314131187310290315">Dodaci za Manifest V2</translation>
 <translation id="2488433650767270565">Dodaci za Manifest V2 navedeni u nastavku biće uklonjeni iz Chrome veb-prodavnice, ali Brave će ih i dalje podržavati. Uključite da preuzmete i instalirate ili isključite da deinstalirate.</translation>
@@ -659,7 +653,6 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="7701023802820268122">Podrazumevani Solana novčanik</translation>
 <translation id="8488282162676695335">Brave novčanik</translation>
 <translation id="6942354363301686374">Dodaci (bez rezervne opcije)</translation>
-<translation id="1274962333945373242">Kripto novčanici (zastareli)</translation>
 <translation id="702381242110464396">Dodaci (rezervna opcija Brave novčanika)</translation>
 <translation id="4718664830805652430">Podrazumevana osnovna valuta</translation>
 <translation id="7992507032049865603">Podrazumevana osnovna kriptovaluta</translation>
@@ -720,6 +713,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="3095201688102519917">Upozori me pre zatvaranja prozora sa više kartica</translation>
 <translation id="7120553802660696133">Zatvori prozor kada se zatvori poslednja kartica</translation>
 <translation id="3394171693948989253">Prikaži podsetnik preko celog ekrana da se pritisne Esc pri izlasku</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Prikaži Leo ikonu na bočnoj traci</translation>
 <translation id="8055509865174199683">Prikaži asistenta Leo u kontekstualnom meniju na veb-sajtovima</translation>
 <translation id="1529674267267221673">Leo će se pojaviti u kontekstualnom meniju kada kliknete desnim tasterom miša na veb-sajt. Time će se poslati kontekst sa trenutne veb stranice na asistenta Leo.</translation>
@@ -732,7 +726,6 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="1335414530428321716">Za resetovanje asistenta Leo AI biće potrebno da aktivirate korišćenje asistenta Brave Leo AI u budućnosti i takođe će se izbrisati istorija ćaskanja. Brisanjem istorije ćaskanja izbrisaćete sve svoje prethodne razgovore sa asistentom Brave Leo AI. Ova radnja se ne može opozvati.</translation>
 <translation id="5574059574002819179">Prilagodite predloge za automatsko popunjavanje</translation>
 <translation id="7942415993090181327">Istorija ćaskanja</translation>
-<translation id="5385064007245738696">O asistentu Leo AI</translation>
 <translation id="5084498230659987096">Brave Leo pruža ćaskanje zasnovano na veštačkoj inteligenciji kojem je prioritet privatnost, kao i druge interfejse zasnovane na veštačkoj inteligenciji u pregledaču. Leo nikada ne uči iz vaših podataka niti ih koristi za obuku modela. Svi zahtevi se šalju preko anonimizujućeg servera.</translation>
 <translation id="6458721693611638005">Pročitajte više o tome kako Brave štiti vaše korišćenje veštačke inteligencije u Pravilima za zaštitu privatnosti u asistentu Leo. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Podrazumevani model za nove razgovore</translation>

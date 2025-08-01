@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Contribuisci ad aumentare la stabilità di Brave inviando automaticamente i rapporti di diagnostica quando il browser di Brave si arresta in modo anomalo o resta bloccato.</translation>
 <translation id="7977176350719484850">Dati\nrisparmiati</translation>
 <translation id="9008534313521214777">Tempo stimato\nrisparmiato</translation>
+<translation id="8347743943525229984">Permetti i sondaggi di Brave</translation>
+<translation id="6022939994702081659">Permette a Brave di mostrare link a sondaggi anonimi nelle nuove schede. I sondaggi ci aiutano a migliorare le funzionalità del nostro browser e ci permettono di misurare l'efficacia delle nostre campagne pubblicitarie basate sui browser.</translation>
+<translation id="7746496306508543965">Scopri di più sui sondaggi di Brave</translation>
 <translation id="410351446219883937">Riproduzione automatica</translation>
 <translation id="7445411102860286510">Consenti ai siti di riprodurre automaticamente i video con audio disattivato (opzione consigliata)</translation>
 <translation id="7837721118676387834">Consenti la riproduzione automatica dei video con audio disattivato in un sito specifico.</translation>
@@ -632,7 +635,6 @@ Confermi di voler procedere?</translation>
 <translation id="3961126209136843111">Importa un portafoglio esistente</translation>
 <translation id="4811736040444856406">Mostra la frase di recupero</translation>
 <translation id="4359319875297001084">Importare dai portafogli di criptovalute Brave legacy?</translation>
-<translation id="3157931365184549694">Ripristina</translation>
 <translation id="5844138175312846408">Hai già un portafoglio?</translation>
 <translation id="2502258949541727762">Prima di iniziare</translation>
 <translation id="4303748097351941030">Reti supportate</translation>
@@ -794,7 +796,6 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1426320910664514906">Gas Limite</translation>
 <translation id="6389441740143786465">Disattiva hub di condivisione</translation>
 <translation id="9065203028668620118">Modifica</translation>
-<translation id="473775607612524610">Aggiorna</translation>
 <translation id="479795390141144417">Aggiornamento dell'account non riuscito.</translation>
 <translation id="8084782383392198011">Il nome dell'account non può essere vuoto.</translation>
 <translation id="5045550434625856497">Password non corretta</translation>

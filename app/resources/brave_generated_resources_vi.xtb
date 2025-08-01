@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">Chỉ trên trang tab mới</translation>
 <translation id="6406506848690869874">Đồng bộ</translation>
 <translation id="1544192797660353713">Ví</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Nhiều hơn...</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {Đóng cửa sổ khách}
+          other {Đóng cửa sổ khách}
+        }</translation>
 <translation id="1990886731975529483">Cài đặt và chạy Google Widevine</translation>
 <translation id="8926389886865778422">Đừng hỏi lại</translation>
 <translation id="4900351245762303149">Cài đặt Google Widevine</translation>
@@ -76,13 +80,20 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2808103541110899519">Ẩn biểu tượng Ví Brave</translation>
 <translation id="7595540212376041331">Ẩn biểu tượng Ví Brave</translation>
 <translation id="3893997535859323951">Ẩn biểu tượng Leo AI</translation>
+<translation id="8832245978592881387">Mở Leo AI trong thẻ mới</translation>
+<translation id="4577675328803804820">Mở Leo AI trong thanh bên</translation>
+<translation id="564305948667173847">Quản lý cài đặt Leo AI</translation>
 <translation id="6208515240323786457">Ẩn biểu tượng Leo AI</translation>
-<translation id="2361906291514218784">Leo AI</translation>
+<translation id="2169338740411893745">Mở Leo AI trong thẻ mới</translation>
+<translation id="3295805221342028003">Mở Leo AI trong thanh bên</translation>
+<translation id="7400808612454224939">Quản lý cài đặt Leo AI</translation>
+<translation id="5385064007245738696">Về Leo AI</translation>
 <translation id="4928988318462976765">Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="9181207987584064303">Xem trong Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="3161744659507801211">Cảnh báo: Brave không thể chặn các tiện ích mở rộng ghi lại lịch sử duyệt web của bạn.</translation>
 <translation id="2162109630536601963">Nếu tiện ích mở rộng này đưa ra các yêu cầu nối mạng, chúng sẽ không sử dụng Tor hoặc chế độ riêng tư.</translation>
 <translation id="2725327089319971976">Để tắt tiện ích mở rộng này ở chế độ riêng tư và chế độ Tor, hãy bỏ chọn tùy chọn này.</translation>
+<translation id="438106944087726695">Do Brave lưu trữ</translation>
 <translation id="3371343170427636147">Các Ứng dụng Ban đêm của Trình duyệt Brave</translation>
 <translation id="4097979995947147464">Các Ứng dụng của Trình duyệt Brave Beta</translation>
 <translation id="8303432794159193481">Các Ứng dụng của Trình duyệt Brave Dev</translation>
@@ -181,11 +192,6 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4394049700291259645">Vô hiệu hóa</translation>
 <translation id="7142548388914389999">Cho phép phân tích sản phẩm bảo toàn quyền riêng tư (P3A)</translation>
 <translation id="2604698253988679506">Những phản hồi riêng tư này giúp Brave ước tính mức sử dụng tổng thể của một số tính năng nhất định và cải thiện các tính năng này cho bạn.</translation>
-<translation id="1947672064022327074">Bạn có muốn bắt đầu Ví tiền Điện tử để được hỗ trợ Ethereum không?</translation>
-<translation id="7583735190612229830">Thiết lập Crypto Wallets để tương tác với ứng dụng này và các ứng dụng khác giống như vậy.</translation>
-<translation id="8731422418734770661">Thiết lập Ví tiền Crypto</translation>
-<translation id="8199661191594897555">Bắt đầu Ví Tiền điện tử và tải lại</translation>
-<translation id="8428213095426709021">Cài đặt</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 Domains</translation>
 <translation id="5046066249040287308">Dịch vụ tiện ích Ví Brave</translation>
@@ -332,9 +338,10 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1533980864758658574">Cửa sổ mới đã được tạo cho <ph name="TOPIC"/></translation>
 <translation id="7985042437720138349">Tính năng này gửi dữ liệu về các thẻ đang mở của bạn đến Leo, trợ lý AI của trình duyệt Brave.</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
-<translation id="7557539689487606886">Lên Premium</translation>
+<translation id="7557539689487606886">Nâng cấp lên Premium</translation>
 <translation id="1035309871698658326">Khi mở, tính năng này sẽ tự động gửi tiêu đề và nguồn gốc của tất cả thẻ không riêng tư đến Leo để phân loại.</translation>
 <translation id="3435896845095436175">Bật</translation>
+<translation id="1940221956626514677">Tùy chỉnh thanh công cụ</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
 <translation id="1426410128494586442">Có</translation>
@@ -492,6 +499,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3540231253392253941">Sử dụng các dịch vụ của Google để nhắn tin đẩy</translation>
 <translation id="933652931229970927">Tự động gửi báo cáo chẩn đoán</translation>
 <translation id="4891600875049212418">Để chế độ ẩn danh khi truy cập các trang web nhạy cảm</translation>
+<translation id="509873765238158442">Chặn Microsoft Recall</translation>
+<translation id="4763421121695677716">Ngăn không để tính năng Recall tự động chụp ảnh màn hình của bất kỳ thẻ đang mở nào của trình duyệt Brave trên máy tính sử dụng Microsoft Windows.</translation>
 <translation id="1968895725257436430">Thu thập dữ liệu</translation>
 <translation id="4846154056248462491">Khi thoát</translation>
 <translation id="216468847346280584">Xóa dữ liệu Brave Quảng cáo...</translation>
@@ -653,10 +662,10 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2653659639078652383">Gửi</translation>
 <translation id="1294350054292274934">Chỉ giải quyết các địa chỉ .onion trong cửa sổ Tor</translation>
 <translation id="601227612175911475">Dịch vụ Onion sẽ không khả dụng bên ngoài cửa sổ Tor.</translation>
-<translation id="2896916411183256228">Sử dụng WebTorrent để hiển thị torrent trực tiếp trong trình duyệt. Hỗ trợ các tập tin torrent và liên kết nam châm (magnet).</translation>
 <translation id="5249433283143453448">Sử dụng thành phần quản lý bản quyền kỹ thuật số Widevine (DRM) để xem video phát trực tuyến được bảo vệ và nội dung khác trong trình duyệt.</translation>
 <translation id="1314131187310290315">Tiện ích mở rộng Manifest V2</translation>
 <translation id="2488433650767270565">Các tiện ích mở rộng Manifest V2 sau đây sẽ bị xóa khỏi Cửa hàng Chrome trực tuyến nhưng vẫn được hỗ trợ trong Brave. Chuyển đổi để tải xuống và cài đặt hoặc để gỡ cài đặt.</translation>
+<translation id="6918225713618473646">Brave lưu trữ các phần mở rộng Manifest V2 này trên máy chủ Brave, nhưng không xem xét hoặc xác minh nội dung, bảo mật hoặc hành vi của chúng. Vui lòng tham khảo trang web chính thức của từng phần mở rộng để được hỗ trợ. Bạn có thể xem các kế hoạch của Brave cho Manifest V2 <ph name="BEGIN_LINK"/>tại đây<ph name="END_LINK"/>.</translation>
 <translation id="578671172657727816">Bật NoScript™</translation>
 <translation id="9068475464170522036">NoScript là tiện ích mở rộng Manifest V2 cho phép bạn chặn và bỏ chặn các tập lệnh riêng lẻ đang chạy hoặc cố gắng chạy trên một trang nhất định.</translation>
 <translation id="1394592156621788100">Bật uBlock Origin™</translation>
@@ -671,7 +680,6 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7701023802820268122">Ví Solana mặc định</translation>
 <translation id="8488282162676695335">Ví Brave</translation>
 <translation id="6942354363301686374">Tiện ích mở rộng (không dự phòng)</translation>
-<translation id="1274962333945373242">Ví tiền mã hóa (Không còn dùng)</translation>
 <translation id="702381242110464396">Tiện ích mở rộng (Dự phòng Ví Brave)</translation>
 <translation id="4718664830805652430">Tiền tệ cơ sở mặc định</translation>
 <translation id="7992507032049865603">Tiền mã hóa cơ sở mặc định</translation>
@@ -736,6 +744,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3095201688102519917">Cảnh báo tôi trước khi đóng cửa sổ với nhiều tab</translation>
 <translation id="7120553802660696133">Đóng cửa sổ khi đóng tab cuối cùng</translation>
 <translation id="3394171693948989253">Hiển thị lời nhắc toàn màn hình để nhấn Esc khi thoát</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Hiển thị biểu tượng Leo trong thanh bên</translation>
 <translation id="8055509865174199683">Hiển thị Leo trong menu ngữ cảnh trên trang web</translation>
 <translation id="1529674267267221673">Leo sẽ xuất hiện trong menu ngữ cảnh khi bạn nhấp chuột phải vào trang web. Thao tác này sẽ gửi ngữ cảnh từ trang web hiện tại tới Leo.</translation>
@@ -751,7 +760,6 @@ trò chuyện của bạn sẽ xóa tất cả các cuộc trò chuyện trướ
 Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="5574059574002819179">Điều chỉnh đề xuất tự động hoàn thành</translation>
 <translation id="7942415993090181327">Lịch sử trò chuyện</translation>
-<translation id="5385064007245738696">Về Leo AI</translation>
 <translation id="5084498230659987096">Brave Leo cung cấp tính năng trò chuyện AI tôn trọng quyền riêng tư và các giao diện tích hợp AI khác trong trình duyệt. Leo không bao giờ học từ dữ liệu của bạn hoặc sử dụng dữ liệu đó để đào tạo mô hình. Tất cả yêu cầu đều được chuyển tiếp qua máy chủ ẩn danh.</translation>
 <translation id="6458721693611638005">Đọc thêm về cách Brave bảo vệ việc bạn sử dụng AI trong chính sách quyền riêng tư của Leo. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Mô hình mặc định cho các cuộc trò chuyện mới</translation>
@@ -788,6 +796,9 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="6304169450064541679">Prompt hệ thống</translation>
 <translation id="3081947790648024460">Hướng dẫn tùy chỉnh và/hoặc ngữ cảnh được cung cấp cho mô hình để hướng dẫn phản hồi của mô hình theo một hướng hoặc phong cách cụ thể. Sử dụng %datetime% khi bạn muốn chèn ngày và giờ hiện tại.</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> token</translation>
+<translation id="5985516785067818307">Người tham gia khảo sát</translation>
+<translation id="8347743943525229984">Cho phép Brave thực hiện khảo sát</translation>
+<translation id="3204080538332044581">Cho phép Brave hiển thị liên kết đến các khảo sát riêng tư trên trang thẻ mới của bạn. Khảo sát giúp chúng tôi phát triển các tính năng tốt hơn và đo lường hiệu quả của các chiến dịch quảng cáo trên trình duyệt. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Bật Danh sách phát</translation>
 <translation id="7903608716704052878">Tự động thêm tệp để xem ngoại tuyến</translation>
 <translation id="4193768184502613558">Tùy chọn này sẽ tự động lưu vào bộ đệm các tệp phương tiện để bạn có thể phát chúng mà không cần kết nối Internet.</translation>
