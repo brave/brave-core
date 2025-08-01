@@ -42,6 +42,8 @@ source_set("internal") {
     "hash_detection_matrix.h",
     "patterns.cc",
     "patterns.h",
+    "patterns_v2.cc",
+    "patterns_v2.h",
     "payload_generator.cc",
     "payload_generator.h",
     "pref_names.h",
@@ -49,6 +51,8 @@ source_set("internal") {
     "privacy_guard.h",
     "regex_util.cc",
     "regex_util.h",
+    "relevant_site.cc",
+    "relevant_site.h",
     "reporter.cc",
     "reporter.h",
     "request_queue.cc",
@@ -59,8 +63,12 @@ source_set("internal") {
     "server_config_loader.h",
     "signature_basename.cc",
     "signature_basename.h",
+    "url_extractor.cc",
+    "url_extractor.h",
     "util.cc",
     "util.h",
+    "value_transform.cc",
+    "value_transform.h",
   ]
 
   visibility = [
