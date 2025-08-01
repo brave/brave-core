@@ -9,6 +9,7 @@
 #include "base/compiler_specific.h"
 #include "base/containers/adapters.h"
 #include "base/containers/stack.h"
+#include "base/hash/hash.h"
 #include "base/memory/raw_ptr.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/sys_string_conversions.h"
@@ -34,7 +35,7 @@
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
-#import "net/base/apple/url_conversions.h"
+#include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -50,6 +51,26 @@
     _indentationLevel = indentationLevel;
   }
   return self;
+}
+
+- (BOOL)isEqual:(id)object {
+  if (self == object) {
+    return YES;
+  }
+
+  if (![object isKindOfClass:[BookmarkFolder class]]) {
+    return NO;
+  }
+
+  BookmarkFolder* other = (BookmarkFolder*)object;
+
+  return [self.bookmarkNode isEqual:other.bookmarkNode] &&
+         self.indentationLevel == other.indentationLevel;
+}
+
+- (NSUInteger)hash {
+  return base::HashCombine(0ull, [self.bookmarkNode hash],
+                           self.indentationLevel);
 }
 @end
 
@@ -160,13 +181,6 @@
   return node_->is_permanent_node();
 }
 
-- (void)setTitle:(NSString*)title {
-  DCHECK(node_);
-  DCHECK(model_);
-  model_->SetTitle(node_, base::SysNSStringToUTF16(title),
-                   bookmarks::metrics::BookmarkEditSource::kUser);
-}
-
 - (NSUInteger)nodeId {
   DCHECK(node_);
   return node_->id();
@@ -175,18 +189,6 @@
 - (NSString*)guid {
   DCHECK(node_);
   return base::SysUTF8ToNSString(node_->uuid().AsLowercaseString());
-}
-
-- (NSURL*)url {
-  DCHECK(node_);
-  return net::NSURLWithGURL(node_->url());
-}
-
-- (void)setUrl:(NSURL*)url {
-  DCHECK(node_);
-  DCHECK(model_);
-  model_->SetURL(node_, net::GURLWithNSURL(url),
-                 bookmarks::metrics::BookmarkEditSource::kUser);
 }
 
 - (NSURL*)iconUrl {
@@ -297,14 +299,28 @@
   return model_->DeleteNodeMetaInfo(node_, base::SysNSStringToUTF8(key));
 }
 
-- (NSString*)titleUrlNodeTitle {
+- (NSString*)title {
   DCHECK(node_);
-  return base::SysUTF16ToNSString(node_->GetTitledUrlNodeTitle());
+  return base::SysUTF16ToNSString(node_->GetTitle());
 }
 
-- (NSURL*)titleUrlNodeUrl {
+- (void)setTitle:(NSString*)title {
   DCHECK(node_);
-  return net::NSURLWithGURL(node_->GetTitledUrlNodeUrl());
+  DCHECK(model_);
+  model_->SetTitle(node_, base::SysNSStringToUTF16(title),
+                   bookmarks::metrics::BookmarkEditSource::kUser);
+}
+
+- (NSURL*)url {
+  DCHECK(node_);
+  return net::NSURLWithGURL(node_->url());
+}
+
+- (void)setUrl:(NSURL*)url {
+  DCHECK(node_);
+  DCHECK(model_);
+  model_->SetURL(node_, net::GURLWithNSURL(url),
+                 bookmarks::metrics::BookmarkEditSource::kUser);
 }
 
 - (IOSBookmarkNode*)parent {
@@ -339,6 +355,45 @@
 - (NSUInteger)totalCount {
   DCHECK(node_);
   return node_->GetTotalNodeCount() - 1;
+}
+
+- (NSUInteger)childUrlCount {
+  DCHECK(node_);
+
+  if (!node_->is_folder()) {
+    return 0;
+  }
+
+  std::size_t count = 0;
+  for (const auto& child : node_->children()) {
+    if (!child->is_folder()) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
+- (NSUInteger)totalUrlCount {
+  DCHECK(node_);
+
+  std::size_t count = 0;
+  base::stack<const bookmarks::BookmarkNode*> stack;
+  stack.emplace(node_);
+
+  while (!stack.empty()) {
+    const bookmarks::BookmarkNode* current = stack.top();
+    stack.pop();
+
+    if (current->is_folder()) {
+      for (const auto& child : current->children()) {
+        stack.push(child.get());
+      }
+    } else {
+      count += 1;  // Only count actual URL nodes
+    }
+  }
+
+  return count;
 }
 
 - (IOSBookmarkNode*)childAtIndex:(NSUInteger)index {
@@ -460,6 +515,27 @@
                  FROM_HERE);
   node_ = nil;
   model_ = nil;
+}
+
+- (BOOL)isEqual:(id)object {
+  if (self == object) {
+    return YES;
+  }
+
+  if (![object isKindOfClass:[IOSBookmarkNode class]]) {
+    return NO;
+  }
+
+  IOSBookmarkNode* other = (IOSBookmarkNode*)object;
+
+  return self.nodeId == other.nodeId &&
+         node_->uuid().AsLowercaseString() ==
+             [other getNode]->uuid().AsLowercaseString();
+}
+
+- (NSUInteger)hash {
+  return base::HashCombine(0ull, self.nodeId,
+                           node_->uuid().AsLowercaseString());
 }
 
 - (const bookmarks::BookmarkNode*)getNode {

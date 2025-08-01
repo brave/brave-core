@@ -49,7 +49,6 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) NSUInteger nodeId;
 @property(nonatomic, copy, readonly) NSString* guid;
-@property(nonatomic, nullable, copy) NSURL* url;
 @property(nonatomic, nullable, copy, readonly) NSURL* iconUrl;
 @property(nonatomic, nullable, copy, readonly) UIImage* icon;
 
@@ -64,21 +63,22 @@ OBJC_EXPORT
 @property(nonatomic, readonly) bool isVisible;
 @property(nonatomic, readonly) bool isValid;
 
-@property(nonatomic, readonly) NSString* titleUrlNodeTitle;
-@property(nonatomic, nullable, readonly) NSURL* titleUrlNodeUrl;
+@property(nonatomic, copy) NSString* title;
+@property(nonatomic, nullable, copy) NSURL* url;
 
 @property(nonatomic, nullable, readonly) IOSBookmarkNode* parent;
 @property(nonatomic, readonly) NSArray<IOSBookmarkNode*>* children;
 @property(nonatomic, readonly) NSArray<BookmarkFolder*>* nestedChildFolders;
 @property(nonatomic, readonly) NSUInteger childCount;
 @property(nonatomic, readonly) NSUInteger totalCount;
+@property(nonatomic, readonly) NSUInteger childUrlCount;
+@property(nonatomic, readonly) NSUInteger totalUrlCount;
 
 - (nullable IOSBookmarkNode*)childAtIndex:(NSUInteger)index;
 - (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:
                                           (BOOL(^)(BookmarkFolder*))included
                                   NS_SWIFT_NAME(nestedChildFolders(where:));
 
-- (void)setTitle:(NSString*)title;
 - (bool)getMetaInfo:(NSString*)key value:(NSString* _Nonnull* _Nullable)value;
 - (void)setMetaInfo:(NSString*)key value:(NSString*)value;
 - (void)deleteMetaInfo:(NSString*)key;

@@ -62,10 +62,10 @@ class FrequencyQuery {
         continuation.resume(
           returning: sites.map {
             Site(
-              url: $0.url ?? "",
-              title: $0.title ?? "",
+              url: $0.url?.absoluteString ?? "",
+              title: $0.title,
               siteType: .bookmark,
-              dateAdded: $0.bookmarkNode.dateAdded
+              dateAdded: $0.dateAdded
             )
           }
         )
