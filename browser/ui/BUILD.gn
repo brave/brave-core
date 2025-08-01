@@ -551,6 +551,8 @@ source_set("ui") {
       "views/side_panel/brave_side_panel_utils.cc",
       "views/side_panel/brave_side_panel_view_base.cc",
       "views/side_panel/brave_side_panel_view_base.h",
+      "views/side_panel/side_panel_web_ui_view_utils.cc",
+      "views/side_panel/side_panel_web_ui_view_utils.h",
       "views/split_view/split_view.cc",
       "views/split_view/split_view.h",
       "views/split_view/split_view_location_bar_model_delegate.cc",
@@ -1413,6 +1415,7 @@ source_set("unit_tests") {
       "brave_file_select_utils_unittest.cc",
       "brave_layout_constants_unittest.cc",
       "brave_scheme_utils_unittest.cc",
+      "views/side_panel/side_panel_web_ui_view_unittest.cc",
     ]
     deps = [
       "//base/test:test_support",
