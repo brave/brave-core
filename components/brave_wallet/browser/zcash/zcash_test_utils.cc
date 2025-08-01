@@ -56,16 +56,24 @@ OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
                      {}};
 }
 
+OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
+                                    uint32_t block_id,
+                                    uint8_t seed,
+                                    uint64_t value) {
+  return OrchardNote{
+      {}, block_id, GenerateMockNullifier(account_id, seed), value, 0, {}, {}};
+}
+
 void SortByBlockId(std::vector<OrchardNote>& vec) {
   std::sort(vec.begin(), vec.end(), [](OrchardNote& a, OrchardNote& b) {
     return (a.block_id < b.block_id);
   });
 }
 
-std::vector<zcash::mojom::ZCashUtxoPtr> GetZCashUtxo(size_t seed) {
+std::vector<zcash::mojom::ZCashUtxoPtr> GetZCashUtxo(uint64_t amount) {
   auto utxo = zcash::mojom::ZCashUtxo::New();
-  utxo->address = base::NumberToString(seed);
-  utxo->value_zat = seed;
+  utxo->address = base::NumberToString(amount);
+  utxo->value_zat = amount;
   utxo->tx_id = std::vector<uint8_t>(32u, 1u);
   std::vector<zcash::mojom::ZCashUtxoPtr> result;
   result.push_back(std::move(utxo));
