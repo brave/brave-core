@@ -19,10 +19,8 @@
 
 <activity
     android:name="org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity"
-    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize|uiMode|navigation"
+    android:configChanges="keyboardHidden|keyboard|mcc|mnc|screenLayout|smallestScreenSize|uiMode|navigation"
     android:theme="@style/BraveAccountTheme"
-    android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity,DiscouragedApi"
     android:exported="false"/>
 
 <activity
