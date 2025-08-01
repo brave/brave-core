@@ -9,6 +9,7 @@
 // clang-format off
 #define kTextInputControllerBindings  \
   kTextInputControllerBindings,       \
+  kCardanoWalletApi,                  \
   kCardanoProvider
 // clang-format on
 
