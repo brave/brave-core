@@ -13,6 +13,7 @@
   kEthereumProvider,                  \
   kMetaMask,                          \
   kSolanaProvider,                    \
+  kSkusBindings,                      \
   kCardanoProvider
 // clang-format on
 
