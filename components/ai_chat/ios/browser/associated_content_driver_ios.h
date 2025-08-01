@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_API_AI_CHAT_ASSOCIATED_CONTENT_DRIVER_IOS_H_
-#define BRAVE_IOS_BROWSER_API_AI_CHAT_ASSOCIATED_CONTENT_DRIVER_IOS_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_ASSOCIATED_CONTENT_DRIVER_IOS_H_
+#define BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_ASSOCIATED_CONTENT_DRIVER_IOS_H_
 
 #include <string>
 #include <string_view>
@@ -36,4 +36,4 @@ class AssociatedContentDriverIOS : public AssociatedContentDriver {
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_IOS_BROWSER_API_AI_CHAT_ASSOCIATED_CONTENT_DRIVER_IOS_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_ASSOCIATED_CONTENT_DRIVER_IOS_H_

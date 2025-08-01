@@ -87,6 +87,7 @@ GetMockTabsAndExpectedTabsJsonString(size_t num_tabs) {
 
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventRole = ConversationAPIClient::ConversationEventRole;
+using ConversationEventType = ConversationAPIClient::ConversationEventType;
 
 class MockConversationAPIClient : public ConversationAPIClient {
  public:
@@ -212,12 +213,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
                     const std::optional<std::string>& model_name) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 2u);
-        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-        EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
         // Page content should be truncated
         EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
                   expected_page_content);
-        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
         // Match entire structure
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events));
@@ -275,15 +276,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::optional<std::string>& model_name) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 3u);
-        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-        EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
-        EXPECT_EQ(conversation[1].type, ConversationAPIClient::PageText);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[1].type, ConversationEventType::kPageText);
         EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
                   expected_page_content_1);
         EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
                   expected_page_content_2);
-        EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
         // Match entire structure
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events));
@@ -329,11 +330,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
                     const std::optional<std::string>& model_name) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 3u);
-        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-        EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
-        EXPECT_EQ(conversation[1].type, ConversationAPIClient::PageExcerpt);
-        EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[1].type, ConversationEventType::kPageExcerpt);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
         // Match entire structure
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events));
@@ -399,12 +400,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::optional<std::string>& model_name) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 5u);
-        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-        EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
-        EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
-        EXPECT_EQ(conversation[3].role, ConversationEventRole::Assistant);
-        EXPECT_EQ(conversation[4].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[3].role, ConversationEventRole::kAssistant);
+        EXPECT_EQ(conversation[4].role, ConversationEventRole::kUser);
         // Match entire JSON
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events));
@@ -962,11 +963,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
                     const std::optional<std::string>& model_name) {
         // Some structured EXPECT calls to catch nicer errors first
         ASSERT_EQ(conversation.size(), 4u);
-        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-        EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-        EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
-        EXPECT_EQ(conversation[2].role, ConversationEventRole::Assistant);
-        EXPECT_EQ(conversation[3].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::kAssistant);
+        EXPECT_EQ(conversation[3].role, ConversationEventRole::kUser);
         // Match entire JSON
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events));
@@ -1047,24 +1048,24 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         ASSERT_EQ(conversation.size(), 3u);
-        EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
         for (size_t i = 0; i < 3; ++i) {
           EXPECT_EQ(
               GetContentStrings(conversation[0].content)[i],
               base::StrCat({"data:image/png;base64,",
                             base::Base64Encode(uploaded_images[i]->data)}));
         }
-        EXPECT_EQ(conversation[0].type, ConversationAPIClient::UploadImage);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kUploadImage);
         for (size_t i = 3; i < uploaded_images.size(); ++i) {
           EXPECT_EQ(
               GetContentStrings(conversation[1].content)[i - 3],
               base::StrCat({"data:image/png;base64,",
                             base::Base64Encode(uploaded_images[i]->data)}));
         }
-        EXPECT_EQ(conversation[1].type, ConversationAPIClient::PageScreenshot);
-        EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
+        EXPECT_EQ(conversation[1].type, ConversationEventType::kPageScreenshot);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
         EXPECT_EQ(GetContentStrings(conversation[2].content)[0], kTestPrompt);
-        EXPECT_EQ(conversation[2].type, ConversationAPIClient::ChatMessage);
+        EXPECT_EQ(conversation[2].type, ConversationEventType::kChatMessage);
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(kAssistantResponse));
@@ -1425,7 +1426,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                           const std::optional<std::string>& model_name) {
         ASSERT_EQ(conversation.size(), 1u);
         EXPECT_EQ(conversation[0].type,
-                  ConversationAPIClient::GetSuggestedTopicsForFocusTabs);
+                  ConversationEventType::kGetSuggestedTopicsForFocusTabs);
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New("\"topics\": []"));
@@ -1967,12 +1968,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
           EXPECT_EQ(conversation.size(), 3u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[0].type, ConversationAPIClient::UserMemory);
-          EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[1].type, ConversationAPIClient::PageText);
-          EXPECT_EQ(conversation[2].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[2].type, ConversationAPIClient::ChatMessage);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kUserMemory);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[1].type, ConversationEventType::kPageText);
+          EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[2].type, ConversationEventType::kChatMessage);
           EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
@@ -2036,8 +2037,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
           EXPECT_EQ(conversation.size(), 3u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[0].type, ConversationAPIClient::UserMemory);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kUserMemory);
           EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
@@ -2103,8 +2104,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
           EXPECT_EQ(conversation.size(), 3u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[0].type, ConversationAPIClient::UserMemory);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kUserMemory);
           EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
@@ -2155,10 +2156,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
           EXPECT_EQ(conversation.size(), 2u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-          EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[1].type, ConversationAPIClient::ChatMessage);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
           EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
@@ -2214,10 +2215,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
           EXPECT_EQ(conversation.size(), 2u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-          EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[1].type, ConversationAPIClient::ChatMessage);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
           EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
@@ -2272,10 +2273,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
           EXPECT_EQ(conversation.size(), 2u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
-          EXPECT_EQ(conversation[1].role, ConversationEventRole::User);
-          EXPECT_EQ(conversation[1].type, ConversationAPIClient::ChatMessage);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
           EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                     FormatComparableEventsJson(expected_events));
           auto completion_event =

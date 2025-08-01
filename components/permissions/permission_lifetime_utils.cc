@@ -43,7 +43,7 @@ std::optional<PermissionLifetimeOption> GetTestSecondsOption() {
     return std::nullopt;
   }
   return PermissionLifetimeOption(
-      base::UTF8ToUTF16(base::StringPrintf("%d seconds", *test_seconds)),
+      base::UTF8ToUTF16(absl::StrFormat("%d seconds", *test_seconds)),
       base::Seconds(*test_seconds));
 }
 

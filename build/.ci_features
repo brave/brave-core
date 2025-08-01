@@ -8,4 +8,6 @@ ios_output_xml
 
 # TODO(https://github.com/brave/brave-browser/issues/48001): Remove this CI
 # feature when `1.82.x` is retired.
-brave_all_build
+# TODO(https://github.com/brave/brave-browser/issues/48090): Re-enable this once
+# a solution to pass `concurrent_links` to the Windows CI is deployed.
+# brave_all_build

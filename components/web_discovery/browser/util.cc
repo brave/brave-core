@@ -71,8 +71,8 @@ std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url) {
 std::string FormatServerDate(const base::Time& date) {
   base::Time::Exploded exploded;
   date.UTCExplode(&exploded);
-  return base::StringPrintf("%04d%02d%02d", exploded.year, exploded.month,
-                            exploded.day_of_month);
+  return absl::StrFormat("%04d%02d%02d", exploded.year, exploded.month,
+                         exploded.day_of_month);
 }
 
 std::string DecodeURLComponent(const std::string_view value) {

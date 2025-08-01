@@ -1,0 +1,29 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("browser") {
+  sources = [
+    "ai_chat+private.h",
+    "ai_chat.h",
+    "ai_chat.mm",
+    "ai_chat_delegate.h",
+    "associated_content_driver_ios.h",
+    "associated_content_driver_ios.mm",
+    "conversation_client.h",
+    "conversation_client.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/base/mac",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/ios/common:mojom",
+    "//components/prefs",
+    "//ios/web/public/thread",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}

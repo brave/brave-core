@@ -37,6 +37,9 @@
 # This test fails because we disable @aimode search keyword
 -FeaturedSearchProviderTest.StarterPack
 
+# These tests pass locally but fail on CI (flaky).
+-SupervisedUserServiceTest.CantEnableFilteringUsingUserControls
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*

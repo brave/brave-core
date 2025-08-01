@@ -57,8 +57,8 @@ constexpr char kTestHost[] = "https://localhost:8443";
 std::string FormatUTCDateFromTime(const base::Time& time) {
   base::Time::Exploded exploded;
   time.UTCExplode(&exploded);
-  return base::StringPrintf("%d-%02d-%02d", exploded.year, exploded.month,
-                            exploded.day_of_month);
+  return absl::StrFormat("%d-%02d-%02d", exploded.year, exploded.month,
+                         exploded.day_of_month);
 }
 
 std::vector<std::string> SplitMessageLayers(const std::string& message) {

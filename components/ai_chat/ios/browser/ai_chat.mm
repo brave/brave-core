@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/api/ai_chat/ai_chat.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat.h"
 
-#include "ai_chat.mojom.objc+private.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
@@ -20,16 +19,11 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ios/ai_chat.mojom.objc+private.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
-#include "brave/ios/browser/api/ai_chat/associated_content_driver_ios.h"
-#include "brave/ios/browser/api/ai_chat/conversation_client.h"
-#include "brave/ios/browser/api/ai_chat/model_service_factory.h"
+#include "brave/components/ai_chat/ios/browser/associated_content_driver_ios.h"
+#include "brave/components/ai_chat/ios/browser/conversation_client.h"
 #include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
-#include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
-#include "ios/chrome/common/channel_info.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 
@@ -37,36 +31,41 @@
 @end
 
 @interface AIChat () {
-  raw_ptr<ProfileIOS> profile_;
-  raw_ptr<ai_chat::AIChatService> service_;
-  raw_ptr<ai_chat::ModelService> model_service_;
-  raw_ptr<ai_chat::ConversationHandler> current_conversation_;
+  raw_ptr<ai_chat::AIChatService> _service;
+  raw_ptr<ai_chat::ModelService> _modelService;
+  raw_ptr<ai_chat::ConversationHandler> _currentConversation;
+  raw_ptr<PrefService> _prefsService;
 
   // TODO(petemill): Pass the bindings to the UI ViewModel so we
   // can avoid simply proxying data and events through this class.
-  std::unique_ptr<ai_chat::ConversationClient> conversation_client_;
+  std::unique_ptr<ai_chat::ConversationClient> _conversationClient;
 
-  std::unique_ptr<ai_chat::AssociatedContentDriver> current_content_;
+  std::unique_ptr<ai_chat::AssociatedContentDriver> _currentContent;
 
-  __weak id<AIChatDelegate> delegate_;
+  __weak id<AIChatDelegate> _delegate;
 }
 @end
 
 @implementation AIChat
-- (instancetype)initWithProfileIOS:(ProfileIOS*)profile
-                          delegate:(id<AIChatDelegate>)delegate {
+- (instancetype)initWithAIChatService:(ai_chat::AIChatService*)service
+                         modelService:(ai_chat::ModelService*)modelService
+                         profilePrefs:(PrefService*)prefsService
+                sharedURLoaderFactory:
+                    (scoped_refptr<network::SharedURLLoaderFactory>)
+                        sharedURLoaderFactory
+                             delegate:(id<AIChatDelegate>)delegate {
   if ((self = [super init])) {
-    profile_ = profile;
-    delegate_ = delegate;
+    _delegate = delegate;
 
-    model_service_ = ai_chat::ModelServiceFactory::GetForProfile(profile_);
-    service_ = ai_chat::AIChatServiceFactory::GetForProfile(profile_);
+    _modelService = modelService;
+    _service = service;
+    _prefsService = prefsService;
 
-    current_content_ = std::make_unique<ai_chat::AssociatedContentDriverIOS>(
-        profile_->GetSharedURLLoaderFactory(), delegate);
+    _currentContent = std::make_unique<ai_chat::AssociatedContentDriverIOS>(
+        sharedURLoaderFactory, delegate);
 
-    conversation_client_ = std::make_unique<ai_chat::ConversationClient>(
-        service_.get(), delegate_);
+    _conversationClient = std::make_unique<ai_chat::ConversationClient>(
+        _service.get(), _delegate);
 
     [self createNewConversation];
   }
@@ -76,33 +75,33 @@
 - (void)dealloc {
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE, base::BindOnce(
-                     ^(decltype(current_content_) current_content) {
+                     ^(decltype(_currentContent) current_content) {
                        current_content.reset();
                      },
-                     std::move(current_content_)));
+                     std::move(_currentContent)));
 }
 
 - (void)createNewConversation {
-  current_conversation_ = service_->CreateConversationHandlerForContent(
-      current_content_->content_id(), current_content_->GetWeakPtr());
-  conversation_client_->ChangeConversation(current_conversation_.get());
+  _currentConversation = _service->CreateConversationHandlerForContent(
+      _currentContent->content_id(), _currentContent->GetWeakPtr());
+  _conversationClient->ChangeConversation(_currentConversation.get());
 }
 
 - (bool)isAgreementAccepted {
-  return service_->HasUserOptedIn();
+  return _service->HasUserOptedIn();
 }
 
 - (void)setIsAgreementAccepted:(bool)accepted {
-  ai_chat::SetUserOptedIn(user_prefs::UserPrefs::Get(profile_), accepted);
+  ai_chat::SetUserOptedIn(_prefsService, accepted);
 }
 
 - (void)changeModel:(NSString*)modelKey {
-  current_conversation_->ChangeModel(base::SysNSStringToUTF8(modelKey));
+  _currentConversation->ChangeModel(base::SysNSStringToUTF8(modelKey));
 }
 
 - (NSArray<AiChatConversationTurn*>*)conversationHistory {
   NSMutableArray* history = [[NSMutableArray alloc] init];
-  for (auto&& turn : current_conversation_->GetConversationHistory()) {
+  for (auto&& turn : _currentConversation->GetConversationHistory()) {
     [history addObject:[[AiChatConversationTurn alloc]
                            initWithConversationTurnPtr:turn->Clone()]];
   }
@@ -110,24 +109,24 @@
 }
 
 - (void)submitHumanConversationEntry:(NSString*)text {
-  current_conversation_->SubmitHumanConversationEntry(
+  _currentConversation->SubmitHumanConversationEntry(
       base::SysNSStringToUTF8(text), std::nullopt);
 }
 
 - (void)submitSuggestion:(NSString*)text {
-  current_conversation_->SubmitSuggestion(base::SysNSStringToUTF8(text));
+  _currentConversation->SubmitSuggestion(base::SysNSStringToUTF8(text));
 }
 
 - (void)submitSummarizationRequest {
-  current_conversation_->SubmitSummarizationRequest();
+  _currentConversation->SubmitSummarizationRequest();
 }
 
 - (void)retryAPIRequest {
-  current_conversation_->RetryAPIRequest();
+  _currentConversation->RetryAPIRequest();
 }
 
 - (void)generateQuestions {
-  current_conversation_->GenerateQuestions();
+  _currentConversation->GenerateQuestions();
 }
 
 - (NSArray<AiChatActionGroup*>*)slashActions {
@@ -140,26 +139,26 @@
 }
 
 - (NSString*)defaultModelKey {
-  return base::SysUTF8ToNSString(model_service_->GetDefaultModelKey());
+  return base::SysUTF8ToNSString(_modelService->GetDefaultModelKey());
 }
 
 - (void)setDefaultModelKey:(NSString*)modelKey {
-  model_service_->SetDefaultModelKey(base::SysNSStringToUTF8(modelKey));
+  _modelService->SetDefaultModelKey(base::SysNSStringToUTF8(modelKey));
 }
 
 - (void)setShouldSendPageContents:(bool)should_send {
   if (should_send) {
-    current_conversation_->associated_content_manager()->AddContent(
-        current_content_.get());
+    _currentConversation->associated_content_manager()->AddContent(
+        _currentContent.get());
   } else {
-    current_conversation_->associated_content_manager()->RemoveContent(
-        current_content_.get());
+    _currentConversation->associated_content_manager()->RemoveContent(
+        _currentContent.get());
   }
 }
 
 - (void)clearErrorAndGetFailedMessage:
     (void (^)(AiChatConversationTurn*))completion {
-  current_conversation_->ClearErrorAndGetFailedMessage(base::BindOnce(
+  _currentConversation->ClearErrorAndGetFailedMessage(base::BindOnce(
       [](void (^completion)(AiChatConversationTurn*),
          ai_chat::mojom::ConversationTurnPtr turn) {
         if (completion) {
@@ -171,7 +170,7 @@
 }
 
 - (void)getState:(void (^)(AiChatConversationState*))completion {
-  current_conversation_->GetState(base::BindOnce(
+  _currentConversation->GetState(base::BindOnce(
       [](void (^completion)(AiChatConversationState*),
          ai_chat::mojom::ConversationStatePtr state) {
         if (completion) {
@@ -183,7 +182,7 @@
 }
 
 - (void)getPremiumStatus:(void (^)(AiChatPremiumStatus))completion {
-  service_->GetPremiumStatus(base::BindOnce(
+  _service->GetPremiumStatus(base::BindOnce(
       [](void (^completion)(AiChatPremiumStatus),
          ai_chat::mojom::PremiumStatus status,
          ai_chat::mojom::PremiumInfoPtr info) {
@@ -196,7 +195,7 @@
 
 - (void)submitSelectedText:(NSString*)selectedText
                 actionType:(AiChatActionType)actionType {
-  current_conversation_->SubmitSelectedText(
+  _currentConversation->SubmitSelectedText(
       base::SysNSStringToUTF8(selectedText),
       static_cast<ai_chat::mojom::ActionType>(actionType));
 }
@@ -204,7 +203,7 @@
 - (void)rateMessage:(bool)isLiked
              turnId:(NSString*)turnId
          completion:(void (^)(NSString* identifier))completion {
-  current_conversation_->RateMessage(
+  _currentConversation->RateMessage(
       isLiked, base::SysNSStringToUTF8(turnId),
       base::BindOnce(
           [](void (^completion)(NSString*),
@@ -222,18 +221,18 @@
             ratingId:(NSString*)ratingId
          sendPageUrl:(bool)sendPageUrl
           completion:(void (^)(bool))completion {
-  current_conversation_->SendFeedback(base::SysNSStringToUTF8(category),
-                                      base::SysNSStringToUTF8(feedback),
-                                      base::SysNSStringToUTF8(ratingId),
-                                      sendPageUrl, base::BindOnce(completion));
+  _currentConversation->SendFeedback(base::SysNSStringToUTF8(category),
+                                     base::SysNSStringToUTF8(feedback),
+                                     base::SysNSStringToUTF8(ratingId),
+                                     sendPageUrl, base::BindOnce(completion));
 }
 
 - (void)modifyConversation:(NSString*)turnId newText:(NSString*)newText {
-  current_conversation_->ModifyConversation(base::SysNSStringToUTF8(turnId),
-                                            base::SysNSStringToUTF8(newText));
+  _currentConversation->ModifyConversation(base::SysNSStringToUTF8(turnId),
+                                           base::SysNSStringToUTF8(newText));
 }
 
 - (void)dismissPremiumPrompt {
-  service_->DismissPremiumPrompt();
+  _service->DismissPremiumPrompt();
 }
 @end

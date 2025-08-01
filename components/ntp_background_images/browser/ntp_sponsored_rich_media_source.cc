@@ -80,8 +80,8 @@ std::string NTPSponsoredRichMediaSource::GetContentSecurityPolicy(
     network::mojom::CSPDirectiveName directive) {
   switch (directive) {
     case network::mojom::CSPDirectiveName::FrameAncestors:
-      return base::StringPrintf("frame-ancestors %s %s;", kBraveUINewTabURL,
-                                kBraveUINewTabTakeoverURL);
+      return absl::StrFormat("frame-ancestors %s %s;", kBraveUINewTabURL,
+                             kBraveUINewTabTakeoverURL);
     case network::mojom::CSPDirectiveName::Sandbox:
       return "sandbox allow-scripts;";
     case network::mojom::CSPDirectiveName::DefaultSrc:

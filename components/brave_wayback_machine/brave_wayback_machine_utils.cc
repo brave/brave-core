@@ -63,8 +63,8 @@ GURL FixupWaybackQueryURL(const GURL& url) {
     if (decoded_key == kTimeStampKey || decoded_key == kCallbackKey)
       continue;
 
-    query_parts.push_back(base::StringPrintf(
-        "%s=%s", key.c_str(), std::string(it.GetValue()).c_str()));
+    query_parts.push_back(
+        absl::StrFormat("%s=%s", key, std::string(it.GetValue())));
   }
 
   std::string query = base::JoinString(query_parts, "&");

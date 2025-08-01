@@ -830,9 +830,9 @@ constexpr char kLiFiEvmToSolQuoteTemplate2[] = R"(
 }  // namespace
 
 TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
-  std::string json = base::StringPrintf(
-      kJupiterQuoteTemplate,
-      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");  // USDC
+  std::string json =
+      absl::StrFormat(kJupiterQuoteTemplate,
+                      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");  // USDC
   mojom::JupiterQuotePtr swap_quote =
       jupiter::ParseQuoteResponse(ParseJson(json));
   ASSERT_TRUE(swap_quote);

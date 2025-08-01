@@ -145,7 +145,7 @@ std::optional<std::string> EncodeTransactionParams(
 
   for (int i = 0; i < static_cast<int>(params.quote->route_plan.size()); i++) {
     result = json::convert_string_value_to_uint64(
-        base::StringPrintf("/quoteResponse/routePlan/%d/percent", i), result,
+        absl::StrFormat("/quoteResponse/routePlan/%d/percent", i), result,
         false);
   }
 

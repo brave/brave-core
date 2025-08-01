@@ -3,13 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_API_AI_CHAT_AI_CHAT_SERVICE_FACTORY_H_
-#define BRAVE_IOS_BROWSER_API_AI_CHAT_AI_CHAT_SERVICE_FACTORY_H_
+#ifndef BRAVE_IOS_BROWSER_AI_CHAT_MODEL_SERVICE_FACTORY_H_
+#define BRAVE_IOS_BROWSER_AI_CHAT_MODEL_SERVICE_FACTORY_H_
 
 #include <memory>
 
 #include "base/no_destructor.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
@@ -22,21 +21,22 @@ class NoDestructor;
 
 namespace ai_chat {
 
-class AIChatService;
+class ModelService;
 
-class AIChatServiceFactory : public ProfileKeyedServiceFactoryIOS {
+class ModelServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
-  static AIChatService* GetForProfile(ProfileIOS* profile);
-  static AIChatServiceFactory* GetInstance();
+  static ModelService* GetForProfile(ProfileIOS* profile);
+  static ModelService* GetForProfileIfExists(ProfileIOS* profile);
+  static ModelServiceFactory* GetInstance();
 
-  AIChatServiceFactory(const AIChatServiceFactory&) = delete;
-  AIChatServiceFactory& operator=(const AIChatServiceFactory&) = delete;
+  ModelServiceFactory(const ModelServiceFactory&) = delete;
+  ModelServiceFactory& operator=(const ModelServiceFactory&) = delete;
 
  private:
-  friend class base::NoDestructor<AIChatServiceFactory>;
+  friend class base::NoDestructor<ModelServiceFactory>;
 
-  AIChatServiceFactory();
-  ~AIChatServiceFactory() override;
+  ModelServiceFactory();
+  ~ModelServiceFactory() override;
 
   // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
@@ -44,4 +44,4 @@ class AIChatServiceFactory : public ProfileKeyedServiceFactoryIOS {
 };
 }  // namespace ai_chat
 
-#endif  // BRAVE_IOS_BROWSER_API_AI_CHAT_AI_CHAT_SERVICE_FACTORY_H_
+#endif  // BRAVE_IOS_BROWSER_AI_CHAT_MODEL_SERVICE_FACTORY_H_

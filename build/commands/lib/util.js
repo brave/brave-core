@@ -444,6 +444,11 @@ const util = {
   },
 
   buildNativeRedirectCC: async () => {
+    if (config.useSiso) {
+      // redirect_cc logic is handled by siso handler.
+      return
+    }
+
     // Expected path to redirect_cc.
     const redirectCC = path.join(
       config.nativeRedirectCCDir,
@@ -522,6 +527,15 @@ const util = {
           ['gen', outputDir, ...extraGnGenOpts, ...internalOpts],
           options,
         )
+      }
+
+      // Workaround until this change appears in Brave.
+      // https://chromium.googlesource.com/chromium/src/+/add31462297022cbd6c61462329c780b3ad82731
+      if (config.useSiso) {
+        const cargoPkgRepository = path.join(outputDir, 'CARGO_PKG_REPOSITORY')
+        if (!fs.existsSync(cargoPkgRepository)) {
+          fs.writeFileSync(cargoPkgRepository, '')
+        }
       }
     })
   },
@@ -646,7 +660,7 @@ const util = {
         }
         if (hasError) {
           Log.error(line)
-        } else if (buildStats || /^(RBE Stats:|metric\s+count)\s+/.test(line)) {
+        } else if (buildStats || /^(RBE Stats:|metric\s+count|build finished)\s+/.test(line)) {
           buildStats += line + '\n'
         } else {
           console.log(line)

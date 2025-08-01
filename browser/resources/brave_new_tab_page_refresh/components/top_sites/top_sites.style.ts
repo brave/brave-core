@@ -89,7 +89,7 @@ export const style = scoped.css`
     height: var(--self-tile-icon-size);
     padding: 12px;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(217, 217, 222, 0.56);
     backdrop-filter: blur(50px);
     display: flex;
     align-items: center;
@@ -122,14 +122,14 @@ export const style = scoped.css`
   }
 
   .top-site-tile:hover .top-site-icon {
-    background: rgba(255, 255, 255, .35);
+    background: rgba(217, 217, 222, 0.66);
   }
 
   .top-site-tile:focus-visible {
     outline: none;
 
     .top-site-icon {
-      background: rgba(255, 255, 255, .35);
+      background: rgba(217, 217, 222, 0.66);
     }
   }
 

@@ -147,6 +147,25 @@ class CommonOptions:
   @classmethod
   def from_args(cls, args) -> 'CommonOptions':
     options = CommonOptions()
+
+    options.verbose = args.verbose
+    options.ci_mode = args.ci_mode
+    options.chromium = args.chromium
+    options.machine_id = args.machine_id
+
+    if args.variations_repo_dir is not None:
+      options.variations_repo_dir = os.path.expanduser(args.variations_repo_dir)
+    if args.target_os is not None:
+      options.target_os = PerfBenchmark.FixupTargetOS(args.target_os)
+
+    if args.target_arch is not None:
+      options.target_arch = args.target_arch
+    else:
+      if options.target_os == 'android' or platform.processor() == 'arm':
+        options.target_arch = 'arm64'
+      else:
+        options.target_arch = 'x64'
+
     options.config = args.config
     if options.config == 'auto':  # Select the config by machine_id and chromium
       if options.machine_id is None:
@@ -181,24 +200,6 @@ class CommonOptions:
       options.mode = PerfMode.UPDATE_PROFILE
     elif args.mode == 'record-wpr':
       options.mode = PerfMode.RECORD_WPR
-
-    options.verbose = args.verbose
-    options.ci_mode = args.ci_mode
-    options.chromium = args.chromium
-    options.machine_id = args.machine_id
-
-    if args.variations_repo_dir is not None:
-      options.variations_repo_dir = os.path.expanduser(args.variations_repo_dir)
-    if args.target_os is not None:
-      options.target_os = PerfBenchmark.FixupTargetOS(args.target_os)
-
-    if args.target_arch is not None:
-      options.target_arch = args.target_arch
-    else:
-      if options.target_os == 'android' or platform.processor() == 'arm':
-        options.target_arch = 'arm64'
-      else:
-        options.target_arch = 'x64'
 
     options.reboot_android = args.reboot_android or args.ci_mode
 

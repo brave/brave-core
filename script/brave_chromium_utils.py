@@ -27,8 +27,9 @@ def get_src_dir() -> str:
     else:
         current_dir = os.getcwd()
     while True:
-        if os.path.basename(current_dir) == 'src' and os.path.isdir(
-                os.path.join(current_dir, 'brave')):
+        if os.path.exists(
+                os.path.join(current_dir,
+                             'brave/script/brave_chromium_utils.py')):
             return current_dir
         parent_dir = os.path.dirname(current_dir)
         if parent_dir == current_dir:

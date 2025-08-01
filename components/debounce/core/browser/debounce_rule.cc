@@ -362,8 +362,7 @@ bool DebounceRule::Apply(const GURL& original_url,
     std::string scheme = (prepend_scheme_ == kDebounceSchemePrependHttp)
                              ? url::kHttpScheme
                              : url::kHttpsScheme;
-    new_url_spec =
-        base::StringPrintf("%s://%s", scheme.c_str(), unescaped_value.c_str());
+    new_url_spec = absl::StrFormat("%s://%s", scheme, unescaped_value);
     new_url = GURL(new_url_spec);
     if (new_url.is_valid()) {
       DCHECK(new_url.scheme() == scheme);

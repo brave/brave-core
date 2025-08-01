@@ -31,7 +31,7 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     utxo_map["30000"] = GetZCashUtxo(30000);
     auto result = PickZCashTransparentInputs(utxo_map, kZCashFullAmount, 2);
     EXPECT_EQ(result->change, 0u);
-    EXPECT_EQ(result->fee, CalculateZCashTxFee(3, 2));
+    EXPECT_EQ(result->fee, CalculateZCashTxFee(3, 2).ValueOrDie());
     EXPECT_EQ(result->inputs[0].utxo_address, "10000");
     EXPECT_EQ(result->inputs[0].utxo_value, 10000u);
 
@@ -63,7 +63,7 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     auto result = PickZCashTransparentInputs(utxo_map, 30000, 0);
     EXPECT_TRUE(result);
     EXPECT_EQ(result->change, 15000u);
-    EXPECT_EQ(result->fee, CalculateZCashTxFee(3, 0));
+    EXPECT_EQ(result->fee, CalculateZCashTxFee(3, 0).ValueOrDie());
     EXPECT_EQ(result->inputs[0].utxo_address, "10000");
     EXPECT_EQ(result->inputs[0].utxo_value, 10000u);
 
@@ -133,6 +133,24 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Empty inputs
   {
     auto result = PickZCashOrchardInputs(std::vector<OrchardNote>(), 10000u);
+    EXPECT_FALSE(result.has_value());
+  }
+
+  // Inputs overflow
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 0xFFFFFFFFFFFFFFFF, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 2u, {}, 0xFFFFFFFFFFFFFFFF, 0, {}, {}});
+    auto result = PickZCashOrchardInputs(notes, kZCashFullAmount);
+    EXPECT_FALSE(result.has_value());
+  }
+
+  // Inputs overflow
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 0xAAAAAAAAAAAAAAAA, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 2u, {}, 0x8888888888888888, 0, {}, {}});
+    auto result = PickZCashOrchardInputs(notes, kZCashFullAmount);
     EXPECT_FALSE(result.has_value());
   }
 }

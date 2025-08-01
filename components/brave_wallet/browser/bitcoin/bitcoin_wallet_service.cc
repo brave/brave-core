@@ -70,11 +70,11 @@ std::string MakeHwPath(const mojom::AccountIdPtr& account,
                        const mojom::BitcoinKeyIdPtr& key_id) {
   CHECK(IsBitcoinHardwareKeyring(account->keyring_id));
   if (account->keyring_id == mojom::KeyringId::kBitcoinHardware) {
-    return base::StringPrintf("84'/0'/%d'/%d/%d", account->account_index,
-                              key_id->change, key_id->index);
+    return absl::StrFormat("84'/0'/%d'/%d/%d", account->account_index,
+                           key_id->change, key_id->index);
   } else if (account->keyring_id == mojom::KeyringId::kBitcoinHardwareTestnet) {
-    return base::StringPrintf("84'/1'/%d'/%d/%d", account->account_index,
-                              key_id->change, key_id->index);
+    return absl::StrFormat("84'/1'/%d'/%d/%d", account->account_index,
+                           key_id->change, key_id->index);
   }
   NOTREACHED();
 }
