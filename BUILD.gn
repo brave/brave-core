@@ -129,14 +129,6 @@ group("all") {
     deps += [ "//brave/test:brave_browser_tests" ]
   }
 
-  if (!is_android) {
-    deps += [
-      # TODO(https://github.com/brave/brave-browser/issues/48062): Fix this
-      # target for android.
-      "//components:components_unittests",
-    ]
-  }
-
   if (is_android) {
     deps += [
       "//brave/build/android:brave",
