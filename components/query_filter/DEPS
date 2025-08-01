@@ -1,1 +1,4 @@
-include_rules = [ "+third_party/re2/src/re2/re2.h" ]
+include_rules = [
+  "+net",
+  "+third_party/re2/src/re2/re2.h",
+]

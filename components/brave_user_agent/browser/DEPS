@@ -1,6 +1,7 @@
 include_rules = [
   "+components/component_updater",
   "+crypto",
+  "+net",
 ]
 
 specific_include_rules = {

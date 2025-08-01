@@ -1,6 +1,7 @@
 include_rules = [
   "+components/country_codes",
   "+components/prefs",
+  "+net",
 ]
 
 specific_include_rules = {

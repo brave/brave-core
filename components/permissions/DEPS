@@ -7,6 +7,7 @@ include_rules = [
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/browser",
+  "+net",
   "+services/preferences/public/cpp",
   "+third_party/blink/public",
 ]
