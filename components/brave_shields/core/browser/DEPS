@@ -2,6 +2,7 @@ include_rules = [
   "+components/component_updater",
   "+components/content_settings/core",
   "+components/prefs",
+  "+components/user_prefs",
   "+components/value_store",
   "+crypto",
 ]

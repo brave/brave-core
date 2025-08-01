@@ -11,11 +11,11 @@
 #include <vector>
 
 #include "base/rand_util.h"
-#include "base/strings/string_tokenizer.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filter_reset_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -45,14 +45,6 @@ AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
 }
 
 AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
-
-void AdBlockCustomFiltersProvider::EnableDeveloperMode(bool enabled) {
-  if (developer_mode_enabled_ == enabled) {
-    return;
-  }
-  developer_mode_enabled_ = enabled;
-  NotifyObservers(engine_is_default_);
-}
 
 void AdBlockCustomFiltersProvider::AddUserCosmeticFilter(
     const std::string& filter) {
@@ -117,8 +109,9 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
 }
 
 bool AdBlockCustomFiltersProvider::UpdateCustomFiltersFromSettings(
+    PrefService* profile_prefs,
     const std::string& custom_filters) {
-  if (!developer_mode_enabled_) {
+  if (!IsDeveloperModeEnabled(profile_prefs)) {
     return false;
   }
   return UpdateCustomFilters(custom_filters);

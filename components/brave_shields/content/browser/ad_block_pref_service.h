@@ -19,6 +19,10 @@ class PrefChangeRegistrar;
 class PrefService;
 class PrefProxyConfigTracker;
 
+namespace content {
+class BrowserContext;
+}
+
 namespace brave_shields {
 
 class AdBlockService;
