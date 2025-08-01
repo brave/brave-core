@@ -357,13 +357,13 @@ bool CanOpenSplitViewForWebContents(
 }
 
 void OpenLinkInSplitView(base::WeakPtr<content::WebContents> web_contents,
-                         const GURL& url) {
+                         content::OpenURLParams open_url_params) {
   if (!web_contents) {
     return;
   }
 
   Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
-  brave::NewSplitViewForTab(browser, std::nullopt, url);
+  brave::OpenLinkInSplitView(browser, std::move(open_url_params));
 }
 
 }  // namespace
@@ -499,10 +499,19 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           source_web_contents_, base::UTF16ToUTF8(params_.selection_text));
       break;
 #endif
-    case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
+    case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW: {
+      // Note that we must pass `initiator` so that cookies are not shared based
+      // on SameSite attributes.
+      // https://github.com/brave/brave-browser/issues/47642
+      auto open_url_params = GetOpenURLParamsWithExtraHeaders(
+          params_.link_url, /*referral=*/{}, params_.frame_origin,
+          WindowOpenDisposition::NEW_WINDOW, ui::PAGE_TRANSITION_LINK,
+          /*extra_headers=*/std::string(),
+          /*started_from_context_menu=*/true);
       ::OpenLinkInSplitView(source_web_contents_->GetWeakPtr(),
-                            params_.link_url);
+                            std::move(open_url_params));
       break;
+    }
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
           source_web_contents_);

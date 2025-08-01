@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/test/run_until.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
@@ -23,6 +24,7 @@
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -40,11 +42,13 @@
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
+#include "content/public/browser/context_menu_params.h"
 #include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -58,6 +62,7 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
+#include "url/origin.h"
 
 namespace {
 ui::MouseEvent GetDummyEvent() {
@@ -1163,4 +1168,110 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewFullscreenTest) {
   EXPECT_TRUE(browser_view().contents_container()->GetBorder());
   EXPECT_TRUE(secondary_contents_container().GetVisible());
   EXPECT_TRUE(secondary_contents_container().GetBorder());
+}
+
+class SplitViewCookieBrowserTest : public SplitViewBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    SplitViewBrowserTest::SetUpOnMainThread();
+    embedded_test_server()->RegisterRequestHandler(base::BindRepeating(
+        [](const net::test_server::HttpRequest& request)
+            -> std::unique_ptr<net::test_server::HttpResponse> {
+          auto response =
+              std::make_unique<net::test_server::BasicHttpResponse>();
+          response->set_content(request.headers.count("Cookie")
+                                    ? request.headers.at("Cookie")
+                                    : "NONE");
+          response->set_code(net::HTTP_OK);
+          return response;
+        }));
+
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
+  void TearDownOnMainThread() override {
+    ASSERT_TRUE(embedded_test_server()->ShutdownAndWaitUntilComplete());
+    SplitViewBrowserTest::TearDownOnMainThread();
+  }
+};
+
+class MockBraveRenderViewContextMenu : public BraveRenderViewContextMenu {
+ public:
+  MockBraveRenderViewContextMenu(content::RenderFrameHost& render_frame_host,
+                                 const content::ContextMenuParams& params)
+      : BraveRenderViewContextMenu(render_frame_host, params) {}
+  ~MockBraveRenderViewContextMenu() override = default;
+
+  void Show() override {}
+};
+
+IN_PROC_BROWSER_TEST_F(SplitViewCookieBrowserTest, CookieTest) {
+  // Navigate to a page and sets a cookie.
+  GURL target_url = embedded_test_server()->GetURL("/");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target_url));
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(
+      content::ExecJs(web_contents->GetPrimaryMainFrame(),
+                      "document.cookie = 'Strict=value1; SameSite=Strict;'"));
+  ASSERT_TRUE(content::ExecJs(web_contents->GetPrimaryMainFrame(),
+                              "document.cookie = 'Lax=value2; SameSite=Lax;'"));
+
+  // Navigate to a page that sub page to check cookies.
+  target_url = embedded_test_server()->GetURL("/sub");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target_url));
+  auto cookie =
+      content::EvalJs(web_contents->GetPrimaryMainFrame(), "document.cookie")
+          .ExtractString();
+  EXPECT_EQ(cookie, "Strict=value1; Lax=value2");
+
+  // Open up different site
+  chrome::AddTabAt(browser(), GURL("about:blank"), /*index*/ 1,
+                   /*foreground*/ true);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("about:blank")));
+
+  // Triggers "Open link in split view" context menu command.
+  auto* initiator_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  content::ContextMenuParams params;
+  params.page_url = initiator_contents->GetLastCommittedURL();
+  params.frame_url =
+      initiator_contents->GetPrimaryMainFrame()->GetLastCommittedURL();
+  params.frame_origin = url::Origin::Create(params.frame_url);
+  params.link_url = target_url;
+
+  auto menu = static_cast<std::unique_ptr<RenderViewContextMenuBase>>(
+      std::make_unique<MockBraveRenderViewContextMenu>(
+          *initiator_contents->GetPrimaryMainFrame(), params));
+  menu->Init();
+
+  ASSERT_TRUE(
+      menu->IsCommandIdEnabled(IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW));
+  menu->ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW, 0);
+
+  // Split view should be created with the target url
+  auto* split_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(brave::IsTabsTiled(
+      browser(), {tab_strip_model().GetIndexOfWebContents(split_contents)}));
+  ASSERT_EQ(3, browser()->tab_strip_model()->count());
+
+  // Getting cookies from client site should be same
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !split_contents->IsLoading(); }));
+  auto client_cookies =
+      content::EvalJs(split_contents->GetPrimaryMainFrame(), "document.cookie")
+          .ExtractString();
+  ASSERT_EQ(client_cookies, "Strict=value1; Lax=value2");
+
+  // But cookies that server has got must not contain Strict value as it was
+  // requested from different site
+  std::string cookies_server_got =
+      content::EvalJs(split_contents->GetPrimaryMainFrame(),
+                      "document.body.innerHTML")
+          .ExtractString();
+  EXPECT_FALSE(base::Contains(cookies_server_got, "Strict=value1"))
+      << cookies_server_got;
+  EXPECT_TRUE(base::Contains(cookies_server_got, "Lax=value2"))
+      << cookies_server_got;
 }

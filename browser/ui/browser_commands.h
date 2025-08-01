@@ -13,7 +13,9 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "content/public/browser/page_navigator.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 class Browser;
 class Profile;
@@ -120,8 +122,9 @@ bool CanOpenNewSplitViewForTab(
     Browser* browser,
     std::optional<tabs::TabHandle> tab = std::nullopt);
 void NewSplitViewForTab(Browser* browser,
-                        std::optional<tabs::TabHandle> tab = std::nullopt,
-                        const GURL& url = GURL());
+                        std::optional<tabs::TabHandle> tab = std::nullopt);
+void OpenLinkInSplitView(Browser* browser,
+                         content::OpenURLParams open_url_params);
 // In case |indices| empty, selected tabs will be used.
 void TileTabs(Browser* browser, const std::vector<int>& indices = {});
 void BreakTiles(Browser* browser, const std::vector<int>& indices = {});
