@@ -1963,6 +1963,11 @@ void BraveWalletService::SetTransactionSimulationOptInStatus(
 
 void BraveWalletService::WriteToClipboard(const std::string& text,
                                           bool is_sensitive) {
+  // We manually disable the iOS builds here because of an upstream bug in how
+  // Chromium is adding sources to the clipboard component. It only
+  // conditionally adds the iOS sources when use_blink=true, which unfortunately
+  // leads to a whole slew of unresolved symbols during linking.
+  // https://source.chromium.org/chromium/chromium/src/+/066b9c51bfb0a1eddcfefa7aa809348ea181f8ac:ui/base/clipboard/BUILD.gn;l=21-27
 #if !BUILDFLAG(IS_IOS)
   ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
   std::u16string out;
