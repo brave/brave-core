@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_GIN_PUBLIC_WRAPPABLE_POINTER_TAGS_H_
 
 #define kTextInputControllerBindings \
-  kTextInputControllerBindings, kCardanoProvider
+  kTextInputControllerBindings, kCardanoProvider, kCardanoWalletApi
 
 #include <gin/public/wrappable_pointer_tags.h>  // IWYU pragma: export
 
