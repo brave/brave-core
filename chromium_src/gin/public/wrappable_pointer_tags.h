@@ -10,6 +10,8 @@
 #define kTextInputControllerBindings  \
   kTextInputControllerBindings,       \
   kCardanoWalletApi,                  \
+  kEthereumProvider,                  \
+  kMetaMask,                          \
   kCardanoProvider
 // clang-format on
 
