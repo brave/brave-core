@@ -842,13 +842,13 @@ TEST_F(BraveWalletPolicyTest, PolicyDisablesWallet) {
   // Test that the policy preference is set correctly
   EXPECT_TRUE(prefs_.GetBoolean(prefs::kDisabledByPolicy));
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-  // On desktop platforms, policy should be enforced
-  EXPECT_FALSE(IsAllowed(&prefs_));
-#else
-  // On mobile platforms, policy is not enforced
+#if BUILDFLAG(IS_ANDROID)
+  // On android the policy is not enforced
   EXPECT_TRUE(IsAllowed(&prefs_));
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#else
+  // On other platforms, policy should be enforced
+  EXPECT_FALSE(IsAllowed(&prefs_));
+#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 TEST_F(BraveWalletPolicyTest, PolicyEnablesWallet) {
