@@ -31,6 +31,7 @@ class PerfMode(Enum):
   COMPARE = 2
   UPDATE_PROFILE = 3
   RECORD_WPR = 4
+  GENERATE_PGO = 5
 
 class CommonOptions:
   mode: PerfMode = PerfMode.RUN
@@ -74,7 +75,9 @@ class CommonOptions:
     parser.add_argument(
         '--mode',
         type=str,
-        choices=['run', 'compare', 'update-profile', 'record-wpr'],
+        choices=[
+            'run', 'compare', 'update-profile', 'record-wpr', 'generate-pgo'
+        ],
         help='The operating mode.' +
         '"run" is run the tests and report to the backend (the default).' +
         '"compare" is evaluate a few configurations with a local HTML output.' +
@@ -181,6 +184,8 @@ class CommonOptions:
       options.mode = PerfMode.UPDATE_PROFILE
     elif args.mode == 'record-wpr':
       options.mode = PerfMode.RECORD_WPR
+    elif args.mode == 'generate-pgo':
+      options.mode = PerfMode.GENERATE_PGO
 
     options.verbose = args.verbose
     options.ci_mode = args.ci_mode
