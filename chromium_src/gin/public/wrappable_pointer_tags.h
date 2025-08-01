@@ -14,6 +14,7 @@
   kMetaMask,                          \
   kSolanaProvider,                    \
   kSkusBindings,                      \
+  SpeedreaderBindings,                \
   kCardanoProvider
 // clang-format on
 
