@@ -37,8 +37,8 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
     ethTxData1559: {
       baseData: {
         nonce: '0x1',
-        gasPrice: '150',
-        gasLimit: '21000',
+        gasPrice: '100000000',
+        gasLimit: '122665', // wei
         to: '2',
         value: '0x15ddf09c97b0000',
         data: Array.from(new Uint8Array(24)),
@@ -46,8 +46,8 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
         signedTransaction: undefined,
       },
       chainId: '0x0',
-      maxPriorityFeePerGas: '1',
-      maxFeePerGas: '1',
+      maxPriorityFeePerGas: '80410000', // (0.08041 gwei)
+      maxFeePerGas: '3600000000', // (3.6 gwei)
       gasEstimation: undefined,
     },
     ethTxData: undefined,
