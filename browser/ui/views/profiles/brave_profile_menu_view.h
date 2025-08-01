@@ -19,6 +19,7 @@ class BraveProfileMenuView : public ProfileMenuView {
   using ProfileMenuView::ProfileMenuView;
 
   void BuildFeatureButtons() override;
+  void MaybeBuildCloseBrowsersButton() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_PROFILE_MENU_VIEW_H_
