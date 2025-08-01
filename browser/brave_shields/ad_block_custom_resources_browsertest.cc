@@ -13,8 +13,13 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_test_util.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -22,6 +27,20 @@
 #include "url/gurl.h"
 
 namespace {
+
+void AwaitRoot(content::WebContents* web_contents, const std::string& root) {
+  constexpr const char kScript[] = R"js(
+    (async () => {
+      let waiter = () => { return !window.testing && !window.testing[$1]; };
+      while (waiter()) {
+        await new Promise(r => setTimeout(r, 10));
+      }
+      return true;
+    })();
+  )js";
+  EXPECT_TRUE(content::EvalJs(web_contents, content::JsReplace(kScript, root))
+                  .ExtractBool());
+}
 
 void AwaitElement(content::WebContents* web_contents,
                   const std::string& root,
@@ -139,7 +158,7 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
   }
 
   ~AdblockCustomResourcesTest() override {
-    BraveSettingsUI::ShouldExposeElementsForTesting() = true;
+    BraveSettingsUI::ShouldExposeElementsForTesting() = false;
   }
 
   void SaveCustomScriptlet(const std::string& name, const std::string& value) {
@@ -298,4 +317,35 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameCases) {
 
   EXPECT_TRUE(EvalJs(web_contents(), "window.lower").ExtractBool());
   EXPECT_TRUE(EvalJs(web_contents(), "window.upper").ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, TwoProfiles) {
+  EnableDeveloperMode(true);
+  NavigateToURL(GURL("brave://settings/shields/filters"));
+
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  const base::FilePath& profile_path =
+      profile_manager->GenerateNextProfileDirectoryPath();
+  Profile& second_profile =
+      profiles::testing::CreateProfileSync(profile_manager, profile_path);
+  Browser* second_browser = CreateBrowser(&second_profile);
+
+  auto* second_web_contents =
+      second_browser->tab_strip_model()->GetActiveWebContents();
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      second_web_contents, GURL("brave://settings/shields/filters"), 1, true);
+
+  ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
+  SaveCustomScriptlet("user-1", "1");
+
+  ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
+  SaveCustomScriptlet("user-2", "2");
+
+  // Expect the second profile shows the same scriptlets even if developer mode
+  // is disabled.
+  EXPECT_FALSE(
+      brave_shields::IsDeveloperModeEnabled(second_profile.GetPrefs()));
+  AwaitRoot(second_web_contents, "adblockScriptletList");
+  AwaitElement(second_web_contents, "adblockScriptletList", "user-1.js");
+  AwaitElement(second_web_contents, "adblockScriptletList", "user-2.js");
 }
