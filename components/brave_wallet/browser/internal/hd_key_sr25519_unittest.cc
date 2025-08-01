@@ -10,15 +10,23 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
+// taken from:
+// https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/struct.MiniSecretKey.html#method.from_bytes
 inline constexpr uint8_t kSchnorrkelSeed[] = {
     157, 97,  177, 157, 239, 253, 90, 96,  186, 132, 74,
     244, 146, 236, 44,  196, 68,  73, 197, 105, 123, 50,
     105, 25,  112, 59,  172, 3,   28, 174, 127, 96,
 };
+
+// manually derived from the polkadot-sdk using
+// `polkadot_sdk::sp_core::sr25519::Pair`
+inline constexpr const char* kSchnorrkelPubKey =
+    "44A996BEB1EEF7BDCAB976AB6D2CA26104834164ECF28FB375600576FCC6EB0F";
 
 TEST(HDKeySr25519, GenerateFromSeed) {
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
@@ -29,12 +37,13 @@ TEST(HDKeySr25519, GenerateFromSeed) {
 
 TEST(HDKeySr25519, GetPublicKey) {
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  auto pubkey = base::HexEncode(keypair.GetPublicKey());
+  EXPECT_EQ(pubkey, kSchnorrkelPubKey);
 
-  auto public_key = keypair.GetPublicKey();
-  EXPECT_EQ(public_key.size(), std::size_t{32});
-
+  // prove idempotence
   auto keypair2 = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  EXPECT_EQ(keypair.GetPublicKey(), keypair2.GetPublicKey());
+  auto pubkey2 = base::HexEncode(keypair2.GetPublicKey());
+  EXPECT_EQ(pubkey2, kSchnorrkelPubKey);
 }
 
 TEST(HDKeySr25519, NoThrowMoveSemantics) {
@@ -46,8 +55,8 @@ TEST(HDKeySr25519, MoveConstruction) {
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
 
   HDKeySr25519 keypair2(std::move(keypair));
-  auto public_key = keypair2.GetPublicKey();
-  EXPECT_EQ(public_key.size(), std::size_t{32});
+  auto pubkey = base::HexEncode(keypair2.GetPublicKey());
+  EXPECT_EQ(pubkey, kSchnorrkelPubKey);
 }
 
 TEST(HDKeySr25519, SelfMoveAssign) {
@@ -56,33 +65,41 @@ TEST(HDKeySr25519, SelfMoveAssign) {
 
   auto& ref = keypair;
   keypair = std::move(ref);
-  auto public_key = keypair.GetPublicKey();
-  EXPECT_EQ(public_key.size(), std::size_t{32});
+  auto pubkey = base::HexEncode(keypair.GetPublicKey());
+  EXPECT_EQ(pubkey, kSchnorrkelPubKey);
 }
 
 TEST(HDKeySr25519, MoveAssignment) {
   auto keypair1 = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  auto pubkey1 = keypair1.GetPublicKey();
 
   std::array<uint8_t, kSr25519SeedSize> seed = {};
   auto keypair2 = HDKeySr25519::GenerateFromSeed(seed);
-
-  EXPECT_NE(pubkey1, keypair2.GetPublicKey());
+  constexpr const char* kEmptySeedPubKey =
+      "DEF12E42F3E487E9B14095AA8D5CC16A33491F1B50DADCF8811D1480F3FA8627";
+  EXPECT_EQ(base::HexEncode(keypair2.GetPublicKey()), kEmptySeedPubKey);
 
   keypair2 = std::move(keypair1);
-  EXPECT_EQ(pubkey1, keypair2.GetPublicKey());
+  EXPECT_EQ(base::HexEncode(keypair2.GetPublicKey()), kSchnorrkelPubKey);
 }
 
 TEST(HDKeySr25519, SignAndVerify) {
-  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  // Schnorr signatures and the schnorrkel crate use a randomized nonce when
+  // generating the signature so we can't test against any hard-coded vectors
+  // but can only prove that signatures won't match but they'll still verify the
+  // same message using the same keypair
 
-  auto public_key = keypair.GetPublicKey();
-  EXPECT_EQ(public_key.size(), std::size_t{32});
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  EXPECT_EQ(base::HexEncode(keypair.GetPublicKey()), kSchnorrkelPubKey);
 
   unsigned char const message[] = {1, 2, 3, 4, 5, 6};
-  auto sig = keypair.SignMessage(message);
+  auto signature = keypair.SignMessage(message);
 
-  auto is_verified = keypair.VerifyMessage(sig, message);
+  auto is_verified = keypair.VerifyMessage(signature, message);
+  EXPECT_TRUE(is_verified);
+
+  auto signature2 = keypair.SignMessage(message);
+  is_verified = keypair.VerifyMessage(signature2, message);
+  EXPECT_NE(base::HexEncode(signature2), base::HexEncode(signature));
   EXPECT_TRUE(is_verified);
 
   std::array<uint8_t, 64> bad_sig = {};
@@ -90,12 +107,13 @@ TEST(HDKeySr25519, SignAndVerify) {
   EXPECT_FALSE(is_verified);
 
   std::array<uint8_t, 64> bad_message = {};
-  is_verified = keypair.VerifyMessage(sig, bad_message);
+  is_verified = keypair.VerifyMessage(signature, bad_message);
   EXPECT_FALSE(is_verified);
 }
 
 TEST(HDKeySr25519, HardDerive) {
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  EXPECT_EQ(base::HexEncode(keypair.GetPublicKey()), kSchnorrkelPubKey);
 
   // Manually create a SCALE-encoded chaincode values for deriving child
   // keypairs from a parent.
@@ -131,8 +149,22 @@ TEST(HDKeySr25519, HardDerive) {
   auto derived2 = keypair.DeriveHard(path2);
   auto derived3 = keypair.DeriveHard(path1);
 
-  EXPECT_EQ(derived1.GetPublicKey(), derived3.GetPublicKey());
-  EXPECT_NE(derived1.GetPublicKey(), derived2.GetPublicKey());
+  // derived using the polkadot-sdk:
+  // let derived =
+  //   pair.derive(
+  //     Some(DeriveJunction::from("Alice").harden()).into_iter(),
+  //     None).unwrap().0;
+  constexpr const char* kPath1DerivedPubKey =
+      "382F0AD81E1820A654E5D461FF4B9FD35B7E714C217B2F1301784A159CE27378";
+
+  EXPECT_EQ(base::HexEncode(derived1.GetPublicKey()), kPath1DerivedPubKey);
+  EXPECT_EQ(base::HexEncode(derived3.GetPublicKey()), kPath1DerivedPubKey);
+
+  // derived similarly above using /ecilA
+  constexpr const char* kPath2DerivedPubKey =
+      "F0F4DC4A68BB4977FE41DAC5F6846260F0BAB780F60BDAADB8C37AD95DFBFD10";
+
+  EXPECT_EQ(base::HexEncode(derived2.GetPublicKey()), kPath2DerivedPubKey);
 
   auto keypair2 = HDKeySr25519::GenerateFromSeed(
       base::span<const uint8_t, kSr25519SeedSize>{
@@ -140,15 +172,23 @@ TEST(HDKeySr25519, HardDerive) {
           60,  141, 101, 48,  242, 2,   176, 47,  216, 249, 245,
           202, 53,  128, 236, 141, 235, 119, 151, 71,  158});
 
-  auto derived4 = keypair2.DeriveHard(path1);
-  auto derived5 = keypair2.DeriveHard(path2);
+  constexpr const char* kPath1Pair2DerivedPubKey =
+      "D43593C715FDD31C61141ABD04A99FD6822C8558854CCDE39A5684E7A56DA27D";
 
-  EXPECT_NE(derived4.GetPublicKey(), derived1.GetPublicKey());
-  EXPECT_NE(derived5.GetPublicKey(), derived2.GetPublicKey());
+  EXPECT_EQ(base::HexEncode(keypair2.DeriveHard(path1).GetPublicKey()),
+            kPath1Pair2DerivedPubKey);
+
+  constexpr const char* kPath2Pair2DerivedPubKey =
+      "0823945F7ED05A3FC0F1F4B24F110A8C3CA1260C325274C4A3A4E0AEE38EE12F";
+
+  EXPECT_EQ(base::HexEncode(keypair2.DeriveHard(path2).GetPublicKey()),
+            kPath2Pair2DerivedPubKey);
+
+  constexpr char const* kGrandchildPubKey =
+      "089A2E5523DEBAE16D260D452AF57E700703F3ADD47DBE62634AFB96C7E4315B";
 
   auto grandchild = derived1.DeriveHard(path2);
-  EXPECT_NE(grandchild.GetPublicKey(), derived1.GetPublicKey());
-  EXPECT_NE(grandchild.GetPublicKey(), derived2.GetPublicKey());
+  EXPECT_EQ(base::HexEncode(grandchild.GetPublicKey()), kGrandchildPubKey);
 }
 
 TEST(HDKeySr25519, HardDeriveSignAndVerify) {
@@ -188,14 +228,11 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
   // manually create a SCALE-encoded chaincode value
   unsigned char path[] = {20, 'A', 'l', 'i', 'c', 'e'};
 
-  std::vector<uint8_t> expected;
-  base::HexStringToBytes(
-      "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
-      &expected);
+  constexpr const char* kDerivedPubKey =
+      "D43593C715FDD31C61141ABD04A99FD6822C8558854CCDE39A5684E7A56DA27D";
 
   auto derived = keypair.DeriveHard(path);
-  auto pkey = derived.GetPublicKey();
-  EXPECT_EQ(base::span{pkey}, base::span{expected});
+  EXPECT_EQ(base::HexEncode(derived.GetPublicKey()), kDerivedPubKey);
 
   // Now test the blake2 hashing portion given a sufficiently long derive
   // junction.
@@ -211,10 +248,8 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
   //   hex_to_bytes("225ba704a8fb5acfadb790e41cda8c8f75698e6f1fd5a99a5bd2183b9b899857").unwrap();
   // assert_eq!(pair1.public().as_slice(), &expected);
 
-  expected.clear();
-  base::HexStringToBytes(
-      "225ba704a8fb5acfadb790e41cda8c8f75698e6f1fd5a99a5bd2183b9b899857",
-      &expected);
+  constexpr const char* kLongDerivedPubKey =
+      "225BA704A8FB5ACFADB790E41CDA8C8F75698E6F1FD5A99A5BD2183B9B899857";
 
   // Rotely copy the SCALE-encoded version of the string:
   // "AnIncrediblyLongDerivationPathNameToTriggerBlake2"
@@ -224,8 +259,7 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
                                104, 78,  97,  109, 101, 84,  111, 84,  114, 105,
                                103, 103, 101, 114, 66,  108, 97,  107, 101, 50};
   derived = keypair.DeriveHard(long_path);
-  pkey = derived.GetPublicKey();
-  EXPECT_EQ(base::span{pkey}, base::span{expected});
+  EXPECT_EQ(base::HexEncode(derived.GetPublicKey()), kLongDerivedPubKey);
 }
 
 TEST(HDKeySr25519, PolkadotSDKTestVector2) {
@@ -239,14 +273,10 @@ TEST(HDKeySr25519, PolkadotSDKTestVector2) {
   auto keypair = HDKeySr25519::GenerateFromSeed(
       base::span<const uint8_t, kSr25519SeedSize>(seed));
 
-  auto pkey = keypair.GetPublicKey();
+  constexpr const char* kExpectedPubKey =
+      "44A996BEB1EEF7BDCAB976AB6D2CA26104834164ECF28FB375600576FCC6EB0F";
 
-  std::vector<uint8_t> expected_pkey;
-  base::HexStringToBytes(
-      "44a996beb1eef7bdcab976ab6d2ca26104834164ecf28fb375600576fcc6eb0f",
-      &expected_pkey);
-
-  EXPECT_EQ(base::span{pkey}, base::span{expected_pkey});
+  EXPECT_EQ(base::HexEncode(keypair.GetPublicKey()), kExpectedPubKey);
 }
 
 }  // namespace brave_wallet
