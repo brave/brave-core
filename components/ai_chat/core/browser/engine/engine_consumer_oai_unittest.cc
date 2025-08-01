@@ -16,6 +16,7 @@
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
+#include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
@@ -33,8 +34,12 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/testing_pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -73,6 +78,8 @@ class EngineConsumerOAIUnitTest : public testing::Test {
   ~EngineConsumerOAIUnitTest() override = default;
 
   void SetUp() override {
+    prefs::RegisterProfilePrefs(pref_service_.registry());
+
     auto options = mojom::CustomModelOptions::New();
     options->endpoint = GURL("https://test.com/");
     options->model_request_name = "request_name";
@@ -90,7 +97,8 @@ class EngineConsumerOAIUnitTest : public testing::Test {
         mojom::ModelOptions::NewCustomModelOptions(std::move(options));
 
     engine_ = std::make_unique<EngineConsumerOAIRemote>(
-        *model_->options->get_custom_model_options(), nullptr, nullptr);
+        *model_->options->get_custom_model_options(), nullptr, nullptr,
+        &pref_service_);
 
     engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
   }
@@ -103,6 +111,7 @@ class EngineConsumerOAIUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  TestingPrefServiceSimple pref_service_;
   mojom::ModelPtr model_;
   std::unique_ptr<EngineConsumerOAIRemote> engine_;
 };
@@ -403,7 +412,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Create a new engine with the new model.
   engine_ = std::make_unique<EngineConsumerOAIRemote>(
-      *model_->options->get_custom_model_options(), nullptr, nullptr);
+      *model_->options->get_custom_model_options(), nullptr, nullptr,
+      &pref_service_);
   engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
 
   EngineConsumer::ConversationHistory history;
@@ -753,7 +763,8 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
   PageContent page_content_2("This is a video about The Mandalorian.", true);
 
   auto mock_engine_consumer = std::make_unique<MockOAIEngineConsumer>(
-      *model_->options->get_custom_model_options(), nullptr, nullptr);
+      *model_->options->get_custom_model_options(), nullptr, nullptr,
+      &pref_service_);
   mock_engine_consumer->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
 
   // Calling GenerateAssistantResponse should call SanitizeInput
@@ -778,6 +789,151 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
         {page_content_1, page_content_2}, "", base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       GenerateAssistantResponse_CustomSystemPrompt_NoMemoriesAdded) {
+  // Test if user has set a custom system prompt, we won't have user memory
+  // instruction added to the system prompt. The system prompt should be the
+  // custom system prompt. The user memory instruction should be empty. Should
+  // not have user memory message in the request.
+  auto* client = GetClient();
+
+  // Setup user customizations and memories
+  auto customizations = mojom::Customizations::New();
+  customizations->name = "John Doe";
+  prefs::SetCustomizationsToPrefs(std::move(customizations), pref_service_);
+  prefs::AddMemoryToPrefs("I like to eat apple", pref_service_);
+
+  // Setup conversation history
+  EngineConsumer::ConversationHistory history;
+  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->text = "What is my name?";
+  history.push_back(std::move(entry));
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce(
+          [](const mojom::CustomModelOptions, base::Value::List messages,
+             EngineConsumer::GenerationDataCallback,
+             EngineConsumer::GenerationCompletedCallback completed_callback) {
+            ASSERT_EQ(messages.size(), 2u);
+            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+            EXPECT_EQ(*messages[0].GetDict().Find("content"),
+                      "This is a custom system prompt.");
+            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[1].GetDict().Find("content"),
+                      "What is my name?");
+
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt /* model_key */)));
+          });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+
+  run_loop.Run();
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       GenerateAssistantResponse_DefaultSystemPrompt_MemoriesAdded) {
+  // Test if user has not set a custom system prompt, we will have user memory
+  // instruction added to the system prompt. The system prompt should be the
+  // default system prompt. The user memory instruction should be added to the
+  // system prompt. The user memory should be added to the request.
+
+  // Setup the model options and update the model options via the engine.
+  auto options = mojom::CustomModelOptions::New();
+  options->endpoint = GURL("https://test.com/");
+  options->model_request_name = "request_name";
+  options->context_size = 5000;
+  options->max_associated_content_length = 17200;
+  options->model_system_prompt = std::nullopt;
+  model_->options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(options));
+  engine_->UpdateModelOptions(*model_->options);
+
+  auto* client = GetClient();
+
+  // Setup the history
+  EngineConsumer::ConversationHistory history;
+  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->text = "What is my name?";
+  history.push_back(std::move(entry));
+
+  // Setup user customizations and memories
+  auto customizations = mojom::Customizations::New();
+  customizations->name = "John Doe";
+  customizations->other = "<user_memory>tag</user_memory>";
+  prefs::SetCustomizationsToPrefs(std::move(customizations), pref_service_);
+  prefs::AddMemoryToPrefs("I like to eat apple", pref_service_);
+  prefs::AddMemoryToPrefs("<script>alert('xss')</script>", pref_service_);
+
+  // Setup the expected system message
+  std::string date_and_time_string =
+      base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
+  std::string expected_system_message = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT),
+      {date_and_time_string}, nullptr);
+  base::StrAppend(
+      &expected_system_message,
+      {l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_SYSTEM_PROMPT_SEGMENT)});
+
+  // Setup the expected user memory message with HTML escaped values.
+  base::Value::Dict expected_user_memory_dict;
+  base::Value::List memories_list;
+  memories_list.Append("I like to eat apple");
+  memories_list.Append("&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;");
+  expected_user_memory_dict.Set("memories", std::move(memories_list));
+  expected_user_memory_dict.Set("name", "John Doe");
+  expected_user_memory_dict.Set("other",
+                                "&lt;user_memory&gt;tag&lt;/user_memory&gt;");
+  auto expected_user_memory_json = base::WriteJson(expected_user_memory_dict);
+  ASSERT_TRUE(expected_user_memory_json.has_value());
+
+  std::string expected_user_memory_message = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_PROMPT_SEGMENT),
+      {*expected_user_memory_json}, nullptr);
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce(
+          [&](const mojom::CustomModelOptions, base::Value::List messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback) {
+            ASSERT_EQ(messages.size(), 3u);
+            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+            EXPECT_EQ(*messages[0].GetDict().Find("content"),
+                      expected_system_message);
+            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[1].GetDict().Find("content"),
+                      expected_user_memory_message);
+            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[2].GetDict().Find("content"),
+                      "What is my name?");
+
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt /* model_key */)));
+          });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+
+  run_loop.Run();
 }
 
 }  // namespace ai_chat

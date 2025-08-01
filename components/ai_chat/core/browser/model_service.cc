@@ -758,7 +758,7 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     auto& custom_model_opts = model->options->get_custom_model_options();
     DVLOG(1) << "Started AI engine: custom";
     engine = std::make_unique<EngineConsumerOAIRemote>(
-        *custom_model_opts, url_loader_factory, this);
+        *custom_model_opts, url_loader_factory, this, pref_service_);
   }
 
   return engine;

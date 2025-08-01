@@ -2306,11 +2306,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     run_loop.Run();
     testing::Mock::VerifyAndClearExpectations(mock_api_client);
   }
-
-  // Reset prefs
-  prefs_.ClearPref(prefs::kBraveAIChatUserCustomizationEnabled);
-  prefs_.ClearPref(prefs::kBraveAIChatUserMemoryEnabled);
-  prefs_.ClearPref(prefs::kBraveAIChatUserCustomizations);
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
