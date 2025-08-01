@@ -1338,7 +1338,7 @@ Object.defineProperty(Config.prototype, 'useSiso', {
     return getEnvConfig(
       ['use_siso'],
       // Android fails with multiple reasons currently. Disable it for now.
-      this.useRemoteExec && this.hostOS === 'linux' && !this.isAndroid(),
+      this.hostOS === 'linux' && !this.isAndroid(),
     )
   },
 })
