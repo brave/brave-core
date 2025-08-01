@@ -37,6 +37,11 @@ const test = async (
     ? await getAffectedTests({ ...options, suite })
     : getTestsToRun(Config, suite)
 
+  if (!testsToRun.length === 0 && !options.quiet) {
+    console.warn('SKIP: No tests need to run')
+    return
+  }
+
   await buildTests(testsToRun, Config, options)
   await runTests(passthroughArgs, { suite, testsToRun }, Config, options)
 }
@@ -49,12 +54,10 @@ const deleteFile = (filePath) => {
 
 const buildTests = async (testsToRun, config) => {
   config.buildTargets = testsToRun
-  if (testsToRun.length > 0) {
-    util.touchOverriddenFiles()
-    util.touchGsutilChangeLogFile()
+  util.touchOverriddenFiles()
+  util.touchGsutilChangeLogFile()
 
-    await util.buildTargets(config.buildTargets, config.defaultOptions)
-  }
+  await util.buildTargets(config.buildTargets, config.defaultOptions)
 }
 
 const runTests = async (
