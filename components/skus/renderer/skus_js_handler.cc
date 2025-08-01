@@ -18,7 +18,6 @@
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
-#include "gin/handle.h"
 #include "gin/object_template_builder.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
@@ -28,15 +27,14 @@
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
+#include "v8/include/cppgc/allocation.h"
+#include "v8/include/v8-cppgc.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
 namespace skus {
-
-gin::DeprecatedWrapperInfo SkusJSHandler::kWrapperInfo = {
-    gin::kEmbedderNativeGin};
 
 SkusJSHandler::SkusJSHandler(content::RenderFrame* render_frame)
     : content::RenderFrameObserver(render_frame) {}
@@ -89,10 +87,10 @@ void SkusJSHandler::Install(content::RenderFrame* render_frame) {
   }
 
   // window.chrome.braveSkus
-  gin::Handle<SkusJSHandler> handler =
-      gin::CreateHandle(isolate, new SkusJSHandler(render_frame));
-  CHECK(!handler.IsEmpty());
-  v8::PropertyDescriptor skus_desc(handler.ToV8(), false);
+  SkusJSHandler* handler = cppgc::MakeGarbageCollected<SkusJSHandler>(
+      isolate->GetCppHeap()->GetAllocationHandle(), render_frame);
+  v8::PropertyDescriptor skus_desc(
+      handler->GetWrapper(isolate).ToLocalChecked(), false);
   skus_desc.set_configurable(false);
 
   chrome_obj
@@ -102,7 +100,6 @@ void SkusJSHandler::Install(content::RenderFrame* render_frame) {
 }
 
 void SkusJSHandler::OnDestruct() {
-  delete this;
 }
 
 // window.chrome.braveSkus.refresh_order
@@ -320,14 +317,17 @@ void SkusJSHandler::OnCredentialSummary(
 
 gin::ObjectTemplateBuilder SkusJSHandler::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
-  return gin::DeprecatedWrappable<SkusJSHandler>::GetObjectTemplateBuilder(
-             isolate)
+  return gin::Wrappable<SkusJSHandler>::GetObjectTemplateBuilder(isolate)
       .SetMethod("refresh_order", &SkusJSHandler::RefreshOrder)
       .SetMethod("fetch_order_credentials",
                  &SkusJSHandler::FetchOrderCredentials)
       .SetMethod("prepare_credentials_presentation",
                  &SkusJSHandler::PrepareCredentialsPresentation)
       .SetMethod("credential_summary", &SkusJSHandler::CredentialSummary);
+}
+
+const gin::WrapperInfo* SkusJSHandler::wrapper_info() const {
+  return &kWrapperInfo;
 }
 
 }  // namespace skus
