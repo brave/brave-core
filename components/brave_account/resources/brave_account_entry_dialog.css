@@ -11,6 +11,7 @@
   align-items: center;
   display: flex;
   gap: var(--leo-spacing-xl);
+  justify-content: space-between;
   padding: var(--leo-spacing-2xl);
 }
 
