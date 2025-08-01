@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_AUTOFILL_CWV_AUTOFILL_CONTROLLER_INTERNAL_H_
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_AUTOFILL_CWV_AUTOFILL_CONTROLLER_INTERNAL_H_
 
-#include "src/ios/web_view/internal/autofill/cwv_autofill_controller_internal.h"  // IWYU pragma: export
+#include <ios/web_view/internal/autofill/cwv_autofill_controller_internal.h>  // IWYU pragma: export
 
 using CreateAutofillClientCallback =
     base::RepeatingCallback<std::unique_ptr<autofill::WebViewAutofillClientIOS>(
