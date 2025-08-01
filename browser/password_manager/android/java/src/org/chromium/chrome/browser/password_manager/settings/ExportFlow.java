@@ -61,21 +61,21 @@ public class ExportFlow implements ExportFlowInterface {
     @Retention(RetentionPolicy.SOURCE)
     private @interface ExportState {
         /**
-         * INACTIVE: there is no currently running export. Either the user did not request
-         * one, or the last one completed (i.e., a share intent picker or an error message were
-         * displayed or the user cancelled it).
+         * INACTIVE: there is no currently running export. Either the user did not request one, or
+         * the last one completed (i.e., a share intent picker or an error message were displayed or
+         * the user cancelled it).
          */
         int INACTIVE = 0;
 
         /**
-         * REQUESTED: the user requested the export in the menu but did not authenticate
-         * and confirm it yet.
+         * REQUESTED: the user requested the export in the menu but did not authenticate and confirm
+         * it yet.
          */
         int REQUESTED = 1;
 
         /**
-         * CONFIRMED: the user confirmed the export and Chrome is still busy preparing the
-         * data for the share intent.
+         * CONFIRMED: the user confirmed the export and Chrome is still busy preparing the data for
+         * the share intent.
          */
         int CONFIRMED = 2;
     }
@@ -199,6 +199,7 @@ public class ExportFlow implements ExportFlowInterface {
     /**
      * Returns true if the export flow is in progress, i.e., when the user interacts with some of
      * its UI.
+     *
      * @return True if in progress, false otherwise.
      */
     public boolean isActive() {
@@ -209,8 +210,9 @@ public class ExportFlow implements ExportFlowInterface {
      * A helper method which processes the signal that serialized passwords have been stored in the
      * temporary file. It produces a sharing URI for that file, registers that file for deletion at
      * the shutdown of the Java VM, logs some metrics and continues the flow.
+     *
      * @param pathToPasswordsFile The filesystem path to the file containing the serialized
-     *                            passwords.
+     *     passwords.
      */
     private void shareSerializedPasswords(String pathToPasswordsFile) {
         // Don't display any UI if the user cancelled the export in the meantime.
@@ -586,6 +588,7 @@ public class ExportFlow implements ExportFlowInterface {
 
     /**
      * Returns whether the password export feature is ready to use.
+     *
      * @return Returns true if the Reauthentication Api is available.
      */
     public static boolean providesPasswordExport() {

@@ -19,6 +19,7 @@ public final class TimedCallbackDelayer implements CallbackDelayer {
 
     /**
      * Constructs a delayer which posts callbacks with a fixed time delay.
+     *
      * @param delayMillis The common delay of the callbacks, in milliseconds.
      */
     public TimedCallbackDelayer(long delayMillis) {

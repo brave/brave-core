@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef CHROME_BROWSER_PASSWORD_MANAGER_ANDROID_PASSWORD_UI_VIEW_ANDROID_H_
-#define CHROME_BROWSER_PASSWORD_MANAGER_ANDROID_PASSWORD_UI_VIEW_ANDROID_H_
+#ifndef BRAVE_BROWSER_PASSWORD_MANAGER_ANDROID_PASSWORD_UI_VIEW_ANDROID_H_
+#define BRAVE_BROWSER_PASSWORD_MANAGER_ANDROID_PASSWORD_UI_VIEW_ANDROID_H_
 
 #include <stddef.h>
 
@@ -58,21 +58,16 @@ class PasswordUiViewAndroid
   ~PasswordUiViewAndroid() override;
 
   // Calls from Java.
-  base::android::ScopedJavaLocalRef<jobject> GetSavedPasswordEntry(
-      JNIEnv* env,
-      int index);
-  std::string GetSavedPasswordException(JNIEnv* env,
-                                        int index);
+  base::android::ScopedJavaLocalRef<jobject> GetSavedPasswordEntry(JNIEnv* env,
+                                                                   int index);
+  std::string GetSavedPasswordException(JNIEnv* env, int index);
   void InsertPasswordEntryForTesting(JNIEnv* env,
                                      const std::u16string& origin,
                                      const std::u16string& username,
                                      const std::u16string& password);
   void UpdatePasswordLists(JNIEnv* env);
-  void HandleRemoveSavedPasswordEntry(JNIEnv* env,
-                                      int index);
-  void HandleRemoveSavedPasswordException(
-      JNIEnv* env,
-      int index);
+  void HandleRemoveSavedPasswordEntry(JNIEnv* env, int index);
+  void HandleRemoveSavedPasswordException(JNIEnv* env, int index);
   void HandleSerializePasswords(
       JNIEnv* env,
       const std::string& java_target_directory,
@@ -167,4 +162,4 @@ class PasswordUiViewAndroid
   std::unique_ptr<CredentialEditBridge> credential_edit_bridge_;
 };
 
-#endif  // CHROME_BROWSER_PASSWORD_MANAGER_ANDROID_PASSWORD_UI_VIEW_ANDROID_H_
+#endif  // BRAVE_BROWSER_PASSWORD_MANAGER_ANDROID_PASSWORD_UI_VIEW_ANDROID_H_

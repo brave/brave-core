@@ -16,12 +16,13 @@ public final class SingleThreadBarrierClosure implements Runnable {
     /** Counts the remaining number of runs. */
     private int mRemainingRuns;
 
-    /** The callback to be run when {@link #mRemainingRuns} reaches 0.*/
+    /** The callback to be run when {@link #mRemainingRuns} reaches 0. */
     private final Runnable mCallback;
 
     /**
      * Construct a {@link Runnable} such that the first {@code runsExpected-1} calls to {@link #run}
      * are a no-op and the last one runs {@code callback}.
+     *
      * @param runsExpected The number of total {@link #run} calls expected.
      * @param callback The callback to be run once called enough times.
      */
@@ -41,6 +42,7 @@ public final class SingleThreadBarrierClosure implements Runnable {
 
     /**
      * Whether the next call to {@link #run} runs {@link #mCallback}.
+     *
      * @return True if the next call to {@link #run} runs {@link #mCallback}, false otherwise.
      */
     public boolean isReady() {
