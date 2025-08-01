@@ -22,6 +22,8 @@ declare module '../page_visibility' {
     content?: boolean
     getStarted?: boolean
     leoAssistant?: boolean
+    leoPersonalization?: boolean
+    leoModels?: boolean
     newTab?: boolean
     playlist?: boolean
     shields?: boolean
@@ -53,6 +55,8 @@ function getPageVisibility () {
       content: false,
       getStarted: false,
       leoAssistant: false,
+      leoPersonalization: false,
+      leoModels: false,
       newTab: false,
       playlist: false,
       shields: true,
@@ -83,6 +87,8 @@ function getPageVisibility () {
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
     braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
     leoAssistant: loadTimeData.getBoolean('isLeoAssistantAllowed'),
+    leoPersonalization: loadTimeData.getBoolean('isLeoAssistantAllowed'),
+    leoModels: loadTimeData.getBoolean('isLeoAssistantAllowed'),
     surveyPanelist: loadTimeData.getBoolean('isSurveyPanelistAllowed'),
     // <if expr="enable_containers">
     containers: loadTimeData.getBoolean('isContainersEnabled'),

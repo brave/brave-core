@@ -8,6 +8,8 @@ import {
   RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
 
+import {loadTimeData} from '../i18n_setup.js'
+
 RegisterPolymerTemplateModifications({
   'settings-main': (templateContent) => {
     // Always show settings-basic-page
@@ -32,5 +34,210 @@ RegisterPolymerTemplateModifications({
     } else {
       throw new Error('[Settings] Missing template for performance page slot')
     }
+
+    // Grab the view manager
+    const switcher = templateContent.querySelector('#switcher')
+    if (!switcher) {
+      throw new Error('[Settings] Missing switcher on settings-basic-page')
+    }
+
+    // Insert the getStarted page into the view manager
+    switcher.appendChild(
+      html`
+        <template is="dom-if" if="[[showPage_(pageVisibility_.getStarted)]]">
+          <div slot="view" id="getStarted">
+            <template is="dom-if" if="true">
+              <brave-settings-getting-started
+                prefs="{{prefs}}"
+                in-search-mode="[[inSearchMode_]]">
+              </brave-settings-getting-started>
+            </template>
+            <template is="dom-if" if="[[showPage_(pageVisibility_.newTab)]]">
+              <template is="dom-if" if="true">
+                <settings-brave-new-tab-page
+                  prefs="{{prefs}}"
+                  in-search-mode="[[inSearchMode_]]">
+                </settings-brave-new-tab-page>
+              </template>
+            </template>
+          </div>
+        </template>
+      `)
+
+    const templateAppearance = templateContent.querySelector(
+      'template[is=dom-if][if="[[showPage_(pageVisibility_.appearance)]]"]')
+    if (!templateAppearance) {
+      throw new Error('[Settings] Missing template for appearance')
+    }
+    const appearanceSlot =
+      templateAppearance.content.querySelector('#appearance')
+    if (!appearanceSlot) {
+      throw new Error(
+        '[Settings] Missing appearance slot on settings-basic-page')
+    }
+
+    // Insert the tabs page into the view manager
+    if (appearanceSlot) {
+      appearanceSlot.appendChild(
+        html`
+          <template is="dom-if" if="[[showPage_(pageVisibility_.tabs)]]">
+            <template is="dom-if" if="true">
+              <settings-brave-appearance-tabs
+                prefs="{{prefs}}"
+                in-search-mode="[[inSearchMode_]]">
+              </settings-brave-appearance-tabs>
+            </template>
+          </template>
+          <template is="dom-if" if="[[showPage_(pageVisibility_.sidebar)]]">
+            <template is="dom-if" if="true">
+              <settings-brave-appearance-sidebar
+                prefs="{{prefs}}"
+                in-search-mode="[[inSearchMode_]]">
+              </settings-brave-appearance-sidebar>
+            </template>
+          </template>
+        `)
+    }
+
+    // Insert the content page into the view manager
+    switcher.appendChild(
+      html`
+        <template is="dom-if" if="[[showPage_(pageVisibility_.content)]]">
+          <div slot="view" id="content">
+            <template is="dom-if" if="true">
+              <settings-brave-content-content
+                prefs="{{prefs}}"
+                in-search-mode="[[inSearchMode_]]">
+              </settings-brave-content-content>
+            </template>
+            <template is="dom-if" if="[[showPage_(pageVisibility_.playlist)]]">
+              <template is="dom-if" if="true">
+                <settings-brave-content-playlist
+                  prefs="{{prefs}}"
+                  in-search-mode="[[inSearchMode_]]">
+                </settings-brave-content-playlist>
+              </template>
+            </template>
+            <template is="dom-if" if="[[showPage_(pageVisibility_.speedreader)]]">
+              <template is="dom-if" if="true">
+                <settings-brave-content-speedreader
+                  prefs="{{prefs}}"
+                  in-search-mode="[[inSearchMode_]]">
+                </settings-brave-content-speedreader>
+              </template>
+            </template>
+          </div>
+        </template>
+      `)
+
+    // Insert the shields page into the view manager
+    switcher.appendChild(
+      html`
+        <template is="dom-if" if="[[showPage_(pageVisibility_.shields)]]">
+          <div slot="view" id="shields">
+            <template is="dom-if" if="true">
+              <settings-default-brave-shields-page
+                prefs="{{prefs}}"
+                in-search-mode="[[inSearchMode_]]">
+              </settings-default-brave-shields-page>
+            </template>
+            <template is="dom-if" if="[[showPage_(pageVisibility_.socialBlocking)]]">
+              <template is="dom-if" if="true">
+                <settings-social-blocking-page
+                  prefs="{{prefs}}"
+                  in-search-mode="[[inSearchMode_]]">
+                </settings-social-blocking-page>
+              </template>
+            </template>
+          </div>
+        </template>
+      `)
+
+    // Insert the web3 page into the view manager
+    const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
+    if (isBraveWalletAllowed) {
+      switcher.appendChild(
+        html`
+          <template is="dom-if" if="[[showPage_(pageVisibility_.braveWallet)]]">
+            <div slot="view" id="web3">
+              <template is="dom-if" if="true">
+                <settings-brave-wallet-page
+                  prefs="{{prefs}}"
+                  in-search-mode="[[inSearchMode_]]">
+                </settings-brave-wallet-page>
+              </template>
+              <template is="dom-if" if="[[showPage_(pageVisibility_.braveWeb3Domains)]]">
+                <template is="dom-if" if="true">
+                  <settings-brave-web3-domains-page
+                    prefs="{{prefs}}"
+                    in-search-mode="[[inSearchMode_]]">
+                  </settings-brave-web3-domains-page>
+                </template>
+              </template>
+            </div>
+          </template>
+        `)
+    }
+
+    // Insert the leo page into the view manager
+    switcher.appendChild(
+      html`
+        <template is="dom-if" if="[[showPage_(pageVisibility_.leoAssistant)]]">
+          <div slot="view" id="leoAssistant">
+            <template is="dom-if" if="true">
+              <settings-brave-leo-assistant-page
+                prefs="{{prefs}}"
+                in-search-mode="[[inSearchMode_]]">
+              </settings-brave-leo-assistant-page>
+            </template>
+            <template is="dom-if" if="[[showPage_(pageVisibility_.leoPersonalization)]]">
+              <template is="dom-if" if="true">
+                <brave-leo-personalization
+                  prefs="{{prefs}}"
+                  in-search-mode="[[inSearchMode_]]">
+                </brave-leo-personalization>
+              </template>
+            </template>
+            <template is="dom-if" if="[[showPage_(pageVisibility_.leoModels)]]">
+              <template is="dom-if" if="true">
+                <model-list-section
+                  prefs="{{prefs}}"
+                  in-search-mode="[[inSearchMode_]]">
+                </model-list-section>
+              </template>
+            </template>
+          </div>
+        </template>
+      `)
+
+    // Insert the sync page into the view manager
+    switcher.appendChild(
+      html`
+        <template is="dom-if" if="[[showPage_(pageVisibility_.braveSync)]]">
+          <div slot="view" id="braveSync">
+            <template is="dom-if" if="true">
+              <settings-brave-sync-page
+                prefs="{{prefs}}"
+                in-search-mode="[[inSearchMode_]]">
+              </settings-brave-sync-page>
+            </template>
+          </div>
+        </template>
+      `)
+
+    // Insert the extensions page into the view manager
+    switcher.appendChild(
+      html`
+        <template is="dom-if" if="[[showPage_(pageVisibility_.extensions)]]">
+          <div slot="view" id="extensions">
+            <template is="dom-if" if="true">
+              <settings-brave-default-extensions-page
+                prefs="{{prefs}}"
+                in-search-mode="[[inSearchMode_]]">
+              </settings-brave-default-extensions-page>
+            </template>
+          </div>
+        </template>
+      `)
   }
 })
