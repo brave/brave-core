@@ -83,7 +83,7 @@ async function analyzeAffectedTests(
 
   // We currently don't reason about patches
   // Let's just assume that everything needs to re-run if they are changed
-  // TODO: analyze impact of patch files (https://github.com/brave/devops/issues/14212)
+  // TODO(https://github.com/brave/brave-browser/issues/48117): analyze impact of patch files
   if (modifiedFiles.find((x) => x.startsWith('//brave/patches'))) {
     if (!quiet) {
       console.warn(
