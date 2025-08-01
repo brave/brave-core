@@ -4103,6 +4103,58 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_LEARN_MORE_ABOUT_ORIGIN" desc="Brave Origin learn more about text">
       Learn more about Origin
     </message>
+    <!-- Password Manager backport -->
+    <message name="IDS_PASSWORD_SETTINGS_SAVE_PASSWORDS" desc="Title for the checkbox toggling whether passwords are saved or not. [CHAR_LIMIT=32]">
+      Save passwords
+    </message>
+    <message name="IDS_PASSWORDS_AUTO_SIGNIN_TITLE" desc="Title for checkbox to enable automatically signing the user in to websites">
+      Auto Sign-in
+    </message>
+    <message name="IDS_PASSWORDS_AUTO_SIGNIN_DESCRIPTION" desc="Text under 'Auto sign-in' checkbox">
+      Automatically sign in to websites using stored credentials. When the feature is off, you’ll be asked for verification every time before signing in to a website.
+    </message>
+    <message name="IDS_PASSWORDS_CHECK_DESCRIPTION" desc="Text explaining the benefits of checking the passwords, to be displayed under the Check Passwords button title.">
+      Keep your passwords safe from data breaches and other security issues
+    </message>
+    <message name="IDS_ANDROID_TRUSTED_VAULT_BANNER_LABEL" desc="Title for the on-device encryption banner in password settings.">
+      On-device encryption
+    </message>
+    <message name="IDS_ANDROID_TRUSTED_VAULT_BANNER_SUB_LABEL_OFFER_OPT_IN" desc="Sub-label for the on-device encryption banner when the user is offered to opt in.">
+      For added safety, encrypt passwords on your device before they‘re saved to Brave Password Manager
+    </message>
+    <message name="IDS_ANDROID_TRUSTED_VAULT_BANNER_SUB_LABEL_OPTED_IN" desc="Sub-label for the on-device encryption banner when the user is already opted in.">
+      Your passwords are encrypted on your device before they’re saved to Brave Password Manager
+    </message>
+    <message name="IDS_MANAGE_PASSWORDS_TEXT" desc="Text for link to manage passwords on Account Central.">
+      View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/link&gt;</ph>
+    </message>
+    <message name="IDS_SAVED_PASSWORDS_NONE_TEXT" desc="Text when there are no saved passwords/exceptions.">
+      Saved passwords will appear here.
+    </message>
+    <message name="IDS_PASSWORD_NO_RESULT" desc="Text when a password search returned no results.">
+      Can’t find that password. Check your spelling and try again.
+    </message>
+    <message name="IDS_PASSWORD_SETTINGS_EXPORT_ACTION_TITLE" desc="The title of a menu item to trigger exporting passwords from the password settings.">
+      Export passwords…
+    </message>
+    <message name="IDS_PASSWORD_SETTINGS_EXPORT_ACTION_DESCRIPTION" desc="The description of a menu item to trigger exporting passwords from the password settings.">
+      Export passwords stored with Brave
+    </message>
+    <message name="IDS_SETTINGS_PASSWORDS_PREPARING_EXPORT" desc="Text shown to the user above a progress bar, informing the user that passwords are being prepared for export.">
+      Preparing passwords…
+    </message>
+    <message name="IDS_PASSWORD_SETTINGS_EXPORT_LEARN_GOOGLE_DRIVE" desc="The label of a button in an error dialog after exporting passwords from the settings failed. The button takes the user to a help article about using Google Drive.">
+      Learn how to use Google Drive
+    </message>
+    <message name="IDS_PASSWORD_SETTINGS_EXPORT_NO_APP" desc="The explanation of the error when exporting passwords fails because the user has no Android app installed which could consume the exported data. The description is shown in the body of an alert dialog.">
+      Your device doesn’t have an app to store the passwords file.
+    </message>
+    <message name="IDS_PASSWORD_SETTINGS_EXPORT_ERROR_DETAILS" desc="A short prefix to introduce a technical error message passed to the user from Android after exporting passwords through a temporary file fails. Both the prefix and the error message are shown in the body of an alert dialog.">
+      Details: <ph name="ERROR_DESCRIPTION">%1$s<ex>IOException: No space left on device</ex></ph>
+    </message>
+    <message name="IDS_LOCKSCREEN_DESCRIPTION_EXPORT" desc="When a user attempts to export saved passwords in Brave's settings, Brave launches a lock screen to verify the user's identity and displays the following explanation.">
+      Unlock to export your passwords
+    </message>
   </messages>
   </release>
 </grit>

@@ -433,6 +433,8 @@ if (is_android) {
     "//chrome/browser/bookmarks/bookmark_html_writer.h",
     "//chrome/browser/importer/profile_writer.cc",
     "//chrome/browser/importer/profile_writer.h",
+    "//brave/browser/password_manager/android/password_ui_view_android.cc",
+    "//brave/browser/password_manager/android/password_ui_view_android.h",
   ]
 
   brave_chrome_browser_sources += brave_browser_brave_rewards_android_sources
