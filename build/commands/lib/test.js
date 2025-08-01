@@ -37,7 +37,7 @@ const test = async (
     ? await getAffectedTests({ ...options, suite })
     : getTestsToRun(Config, suite)
 
-  if (!testsToRun.length === 0 && !options.quiet) {
+  if (testsToRun.length === 0 && !options.quiet) {
     console.warn('SKIP: No tests need to run')
     return
   }
