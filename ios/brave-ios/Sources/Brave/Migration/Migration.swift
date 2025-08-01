@@ -55,6 +55,15 @@ public class BraveProfileMigrations {
     debounceService?.isEnabled = isDebounceEnabled
     Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
   }
+
+  @MainActor public func migrateShieldsToContentSettings() {
+    guard !Preferences.Migration.shieldsCoreDataToContentSettingsCompleted.value else {
+      return
+    }
+    defer { Preferences.Migration.shieldsCoreDataToContentSettingsCompleted.value = true }
+    let domainsToMigrate = Domain.allDomainsWithExlicitShieldSettings()
+    profileController.braveShieldsUtils.migrateShieldsToContentSettings(domainsToMigrate)
+  }
 }
 
 public class Migration {
@@ -251,6 +260,13 @@ extension Preferences {
     /// instead of a simple on/off `Bool` on the domain level
     static let domainAdBlockAndTrackingProtectionShieldLevelCompleted = Option<Bool>(
       key: "migration.domain-ad-block-and-tracking-protection-shield-level-completed",
+      default: false
+    )
+    
+    /// If shields have been migrated from Domain CoreData object to chromium
+    /// content settings.
+    static let shieldsCoreDataToContentSettingsCompleted = Option<Bool>(
+      key: "migration.shields-coredata-to-content-settings-completed",
       default: false
     )
 
