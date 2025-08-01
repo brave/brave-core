@@ -23,6 +23,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -187,7 +188,8 @@ void AdblockDOMHandler::HandleUpdateCustomFilters(
   std::string custom_filters = args[0].GetString();
   g_brave_browser_process->ad_block_service()
       ->custom_filters_provider()
-      ->UpdateCustomFiltersFromSettings(custom_filters);
+      ->UpdateCustomFiltersFromSettings(
+          Profile::FromWebUI(web_ui())->GetPrefs(), custom_filters);
 }
 
 void AdblockDOMHandler::HandleSubmitNewSubscription(

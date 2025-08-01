@@ -69,6 +69,15 @@ class AdblockScriptletList extends AdblockScriptletListBase {
     this.browserProxy_.getCustomScriptlets().then((scriptlets) => {
       this.customScriptletsList_ = scriptlets
     })
+
+    this.browserProxy_.addWebUiListener(
+      'brave_adblock.onCustomResourcesChanged',
+      () => {
+        this.browserProxy_.getCustomScriptlets().then((value: Scriptlet[]) => {
+          this.customScriptletsList_ = value
+        })
+      },
+    )
   }
 
   handleAdd_(_: any) {
