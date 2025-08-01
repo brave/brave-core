@@ -26,7 +26,6 @@
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/array_buffer.h"
 #include "gin/converter.h"
-#include "gin/handle.h"
 #include "gin/object_template_builder.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
@@ -37,6 +36,8 @@
 #include "third_party/blink/public/web/web_script_source.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "v8/include/cppgc/allocation.h"
+#include "v8/include/v8-cppgc.h"
 #include "v8/include/v8-microtask-queue.h"
 #include "v8/include/v8-proxy.h"
 #include "v8/include/v8-typed-array.h"
@@ -101,9 +102,6 @@ JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
 
 JSSolanaProvider::~JSSolanaProvider() = default;
 
-gin::DeprecatedWrapperInfo JSSolanaProvider::kWrapperInfo = {
-    gin::kEmbedderNativeGin};
-
 // static
 void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
                                content::RenderFrame* render_frame) {
@@ -130,14 +128,10 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   }
 
   // v8 will manage the lifetime of JSSolanaProvider
-  gin::Handle<JSSolanaProvider> provider =
-      gin::CreateHandle(isolate, new JSSolanaProvider(render_frame));
-  if (provider.IsEmpty()) {
-    return;
-  }
-  v8::Local<v8::Value> provider_value = provider.ToV8();
+  JSSolanaProvider* provider = cppgc::MakeGarbageCollected<JSSolanaProvider>(
+      isolate->GetCppHeap()->GetAllocationHandle(), render_frame);
   v8::Local<v8::Object> provider_object =
-      provider_value->ToObject(context).ToLocalChecked();
+      provider->GetWrapper(isolate).ToLocalChecked();
 
   // Create a proxy to the actual JSSolanaProvider object which will be
   // exposed via window.braveSolana and window.solana.
@@ -168,13 +162,12 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
         .Check();
   }
 
-  // Non-function properties are readonly guaranteed by gin::DeprecatedWrappable
+  // Non-function properties are readonly guaranteed by gin::Wrappable
   for (const std::string& method :
        {"connect", "disconnect", "signAndSendTransaction", "signMessage",
         "request", "signTransaction", "signAllTransactions",
         "walletStandardInit"}) {
-    SetOwnPropertyWritable(context,
-                           provider_value->ToObject(context).ToLocalChecked(),
+    SetOwnPropertyWritable(context, provider_object,
                            gin::StringToV8(isolate, method), false);
   }
 
@@ -189,8 +182,7 @@ gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   // Note: When adding a new method, you would need to update the list in
   // kSolanaProxyHandlerScript too otherwise the function call would fail.
-  return gin::DeprecatedWrappable<JSSolanaProvider>::GetObjectTemplateBuilder(
-             isolate)
+  return gin::Wrappable<JSSolanaProvider>::GetObjectTemplateBuilder(isolate)
       .SetProperty("isPhantom", &JSSolanaProvider::GetIsPhantom)
       .SetProperty("isBraveWallet", &JSSolanaProvider::GetIsBraveWallet)
       .SetProperty("isConnected", &JSSolanaProvider::GetIsConnected)
@@ -210,8 +202,8 @@ gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
       .SetMethod("walletStandardInit", &JSSolanaProvider::WalletStandardInit);
 }
 
-const char* JSSolanaProvider::GetTypeName() {
-  return "JSSolanaProvider";
+const gin::WrapperInfo* JSSolanaProvider::wrapper_info() const {
+  return &kWrapperInfo;
 }
 
 void JSSolanaProvider::AccountChangedEvent(
