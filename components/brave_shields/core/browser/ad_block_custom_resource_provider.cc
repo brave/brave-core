@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
@@ -119,10 +120,14 @@ AdBlockCustomResourceProvider::AdBlockCustomResourceProvider(
   CHECK(default_resource_provider_);
   auto factory =
       base::MakeRefCounted<value_store::ValueStoreFactoryImpl>(storage_root);
-  storage_ = std::make_unique<value_store::ValueStoreFrontend>(
-      std::move(factory), base::FilePath(kStorageName), kStorageUMA,
-      base::SequencedTaskRunner::GetCurrentDefault(),
-      value_store::GetValueStoreTaskRunner());
+  if (storage_root.IsAbsolute()) {
+    storage_ = std::make_unique<value_store::ValueStoreFrontend>(
+        std::move(factory), base::FilePath(kStorageName), kStorageUMA,
+        base::SequencedTaskRunner::GetCurrentDefault(),
+        value_store::GetValueStoreTaskRunner());
+  } else {
+    CHECK_IS_TEST();
+  }
   default_resource_provider_->AddObserver(this);
 }
 
@@ -132,6 +137,10 @@ AdBlockCustomResourceProvider::~AdBlockCustomResourceProvider() {
 
 void AdBlockCustomResourceProvider::GetCustomResources(
     base::OnceCallback<void(base::Value)> callback) {
+  if (!storage_) {
+    CHECK_IS_TEST();
+    return std::move(callback).Run(base::Value(base::Value::Type::LIST));
+  }
   storage_->Get(
       kStorageScriptletsKey,
       base::BindOnce(
@@ -265,6 +274,10 @@ void AdBlockCustomResourceProvider::RemoveResourceInternal(
 }
 
 void AdBlockCustomResourceProvider::SaveResources(base::Value resources) {
+  if (!storage_) {
+    CHECK_IS_TEST();
+    return;
+  }
   storage_->Set(kStorageScriptletsKey, std::move(resources));
 
   for (auto& observer : observers_) {
