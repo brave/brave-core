@@ -23,8 +23,6 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     case imageCredit(_ name: String)
     /// Displays a brands logo button
     case brandLogo(_ logo: NTPSponsoredImageLogo)
-    /// Displays a button with a little QR code image
-    case qrCode
   }
   /// A block executed when a user taps one of the active buttons.
   var tappedActiveButton: ((UIControl) -> Void)?
@@ -46,8 +44,6 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
           sponsorLogoButton.imageView.image = UIImage(contentsOfFile: logoImagePath)
         }
         activeView = sponsorLogoButton
-      case .qrCode:
-        activeView = qrCodeButton
       }
     }
   }
@@ -67,9 +63,6 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     $0.isHidden = true
   }
   private let sponsorLogoButton = SponsorLogoButton().then {
-    $0.isHidden = true
-  }
-  private let qrCodeButton = QRCodeButton().then {
     $0.isHidden = true
   }
   private let playButton = PlayButton().then {
@@ -103,7 +96,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
       self.safeAreaInsetsConstraint = $0.edges.equalTo(self).constraint
     }
 
-    for button in [imageCreditButton, sponsorLogoButton, qrCodeButton] {
+    for button in [imageCreditButton, sponsorLogoButton] {
       addSubview(button)
       button.addTarget(self, action: #selector(tappedButton(_:)), for: .touchUpInside)
     }
@@ -144,19 +137,6 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
 
       if isLandscape {
         $0.left.equalTo(collectionViewSafeAreaLayoutGuide.snp.left).offset(20)
-      } else {
-        $0.centerX.equalToSuperview()
-      }
-    }
-
-    qrCodeButton.snp.remakeConstraints {
-      $0.size.equalTo(48)
-      $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(
-        24 + (braveNewsVisible ? 30 : 0)
-      )
-
-      if isLandscape {
-        $0.left.equalTo(collectionViewSafeAreaLayoutGuide.snp.left).offset(48)
       } else {
         $0.centerX.equalToSuperview()
       }
@@ -256,33 +236,6 @@ extension NewTabPageBackgroundButtonsView {
       imageView.snp.makeConstraints {
         $0.edges.equalToSuperview()
       }
-    }
-  }
-  private class QRCodeButton: SpringButton {
-    let imageView = UIImageView(
-      image: UIImage(named: "qr_code_button", in: .module, compatibleWith: nil)!
-    )
-
-    override init(frame: CGRect) {
-      super.init(frame: frame)
-
-      contentMode = .scaleAspectFit
-      backgroundColor = .white
-      clipsToBounds = true
-      layer.shadowRadius = 1
-      layer.shadowOpacity = 0.5
-
-      addSubview(imageView)
-      imageView.snp.makeConstraints {
-        $0.center.equalToSuperview()
-      }
-    }
-
-    override func layoutSubviews() {
-      super.layoutSubviews()
-
-      layer.cornerRadius = bounds.height / 2.0
-      layer.shadowPath = UIBezierPath(ovalIn: bounds).cgPath
     }
   }
   private class PlayButton: SpringButton {

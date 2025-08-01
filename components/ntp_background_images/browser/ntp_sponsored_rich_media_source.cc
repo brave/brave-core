@@ -44,7 +44,6 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
 
   const NTPSponsoredImagesData* const images_data =
       background_images_service_->GetSponsoredImagesData(
-          /*super_referral=*/false,
           /*supports_rich_media=*/true);
   if (!images_data) {
     return DenyAccess(std::move(callback));

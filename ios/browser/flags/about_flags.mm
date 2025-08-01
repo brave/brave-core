@@ -211,14 +211,6 @@
           FEATURE_VALUE_TYPE(de_amp::features::kBraveDeAMP),                   \
       },                                                                       \
       {                                                                        \
-          "brave-super-referral",                                              \
-          "Enable Brave Super Referral",                                       \
-          "Use custom theme for Brave Super Referral",                         \
-          flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(ntp_background_images::features::                 \
-                                 kBraveNTPSuperReferralWallpaper),             \
-      },                                                                       \
-      {                                                                        \
           "brave-rewards-verbose-logging",                                     \
           "Enable Brave Rewards verbose logging",                              \
           "Enables detailed logging of Brave Rewards system events to a log "  \

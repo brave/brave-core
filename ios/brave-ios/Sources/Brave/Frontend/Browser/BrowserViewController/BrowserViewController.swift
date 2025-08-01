@@ -2798,22 +2798,6 @@ extension BrowserViewController: NewTabPageDelegate {
     }
   }
 
-  func tappedQRCodeButton(url: URL) {
-    let qrPopup = QRCodePopupView(url: url)
-    qrPopup.showWithType(showType: .flyUp)
-    qrPopup.qrCodeShareHandler = { [weak self] url in
-      guard let self = self else { return }
-
-      let viewRect = CGRect(origin: self.view.center, size: .zero)
-      self.presentActivityViewController(
-        url,
-        sourceView: self.view,
-        sourceRect: viewRect,
-        arrowDirection: .any
-      )
-    }
-  }
-
   func showNewTabTakeoverInfoBarIfNeeded() {
     if !rewards.ads.shouldDisplayNewTabTakeoverInfobar() {
       return

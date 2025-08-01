@@ -41,12 +41,6 @@ base::FilePath GetComponentPath() {
 class NTPSponsoredRichMediaSourceTest : public testing::Test {
  protected:
   void SetUp() override {
-    // Disable the super referral wallpaper feature, as it relies on referral
-    // codes that are not initialized. Note: Super Referrals are being
-    // deprecated, see https://github.com/brave/brave-browser/issues/44403.
-    feature_list_.InitAndDisableFeature(
-        features::kBraveNTPSuperReferralWallpaper);
-
     NTPBackgroundImagesService::RegisterLocalStatePrefs(
         pref_service_.registry());
 
