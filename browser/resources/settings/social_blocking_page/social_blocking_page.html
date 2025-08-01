@@ -1,26 +1,39 @@
 <link rel="import" href="chrome://resources/cr_elements/md_select.css.html">
+
 <style include="settings-shared md-select">
 </style>
-<template is="dom-if" if="[[!isGoogleSignInFeatureEnabled_]]">
-    <settings-toggle-button id="googleLoginControlType"
-        class="cr-row first"
-        pref="{{prefs.brave.google_login_default}}"
-        label="$i18n{googleLoginControlLabel}"
-        learn-more-url="$i18n{googleLoginLearnMoreURL}">
+
+<settings-section
+  id="socialBlocking"
+  page-title="$i18n{socialBlocking}"
+  class="cr-centered-card-container">
+
+  <template is="dom-if" if="[[!isGoogleSignInFeatureEnabled_]]">
+    <settings-toggle-button
+      id="googleLoginControlType"
+      class="cr-row first"
+      pref="{{prefs.brave.google_login_default}}"
+      label="$i18n{googleLoginControlLabel}"
+      learn-more-url="$i18n{googleLoginLearnMoreURL}">
     </settings-toggle-button>
-</template>
-<settings-toggle-button id="fbEmbedControlType"
+  </template>
+  <settings-toggle-button
+    id="fbEmbedControlType"
     class="cr-row"
     pref="{{prefs.brave.fb_embed_default}}"
     label="$i18n{fbEmbedControlLabel}">
-</settings-toggle-button>
-<settings-toggle-button id="twitterEmbedControlType"
+  </settings-toggle-button>
+  <settings-toggle-button
+    id="twitterEmbedControlType"
     class="cr-row"
     pref="{{prefs.brave.twitter_embed_default}}"
     label="$i18n{twitterEmbedControlLabel}">
-</settings-toggle-button>
-<settings-toggle-button id="linkedInEmbedControlType"
+  </settings-toggle-button>
+  <settings-toggle-button
+    id="linkedInEmbedControlType"
     class="cr-row"
     pref="{{prefs.brave.linkedin_embed_default}}"
     label="$i18n{linkedInEmbedControlLabel}">
-</settings-toggle-button>
+  </settings-toggle-button>
+
+</settings-section>
