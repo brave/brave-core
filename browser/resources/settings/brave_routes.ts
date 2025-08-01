@@ -16,11 +16,18 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (pageVisibility.getStarted) {
     r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
     // Bring back people's /manageProfile (now in getStarted)
-    r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile')
+    if (!r.MANAGE_PROFILE) {
+      r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile')
+      r.MANAGE_PROFILE.hasMigratedToPlugin = true
+      r.MANAGE_PROFILE.section = 'getStarted'
+    }
     // We re-section people page into getStarted section (see people_page Brave
     // override), so we need to adjust the route accordingly in order for the
     // direct navigation to brave://settings/importData to work.
-    if (r.IMPORT_DATA) {
+    if (!r.IMPORT_DATA) {
+      r.IMPORT_DATA = r.GET_STARTED.createChild('/importData')
+      r.IMPORT_DATA.isNavigableDialog = true
+      r.IMPORT_DATA.hasMigratedToPlugin = true
       r.IMPORT_DATA.section = 'getStarted'
     }
   }

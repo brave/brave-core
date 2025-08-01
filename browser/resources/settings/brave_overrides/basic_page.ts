@@ -198,127 +198,6 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
-      const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
-      let sectionWallet = undefined
-      if (isBraveWalletAllowed) {
-        sectionWallet = document.createElement('template')
-        sectionWallet.setAttribute('is', 'dom-if')
-        sectionWallet.setAttribute('restamp', 'true')
-        sectionWallet.setAttribute('if', '[[showPage_(pageVisibility_.braveWallet)]]')
-        sectionWallet.content.appendChild(createNestedSectionElement(
-          'wallet',
-          'web3',
-          'braveWallet',
-          'settings-brave-wallet-page',
-          {
-            prefs: '{{prefs}}'
-          }
-        ))
-      }
-      const sectionWeb3Domains = document.createElement('template')
-      sectionWeb3Domains.setAttribute('is', 'dom-if')
-      sectionWeb3Domains.setAttribute('restamp', 'true')
-      sectionWeb3Domains.setAttribute('if',
-        '[[showPage_(pageVisibility_.braveWallet)]]')
-      sectionWeb3Domains.content.appendChild(createNestedSectionElement(
-        'web3Domains',
-        'web3',
-        'braveWeb3Domains',
-        'settings-brave-web3-domains-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-      const sectionSync = document.createElement('template')
-      sectionSync.setAttribute('is', 'dom-if')
-      sectionSync.setAttribute('restamp', 'true')
-      sectionSync.setAttribute('if', '[[showPage_(pageVisibility_.braveSync)]]')
-      sectionSync.content.appendChild(createSectionElement(
-        'braveSync',
-        'braveSync',
-        'settings-brave-sync-page',
-        {}
-      ))
-      const sectionShields = document.createElement('template')
-      sectionShields.setAttribute('is', 'dom-if')
-      sectionShields.setAttribute('restamp', 'true')
-      sectionShields.setAttribute('if', '[[showPage_(pageVisibility_.shields)]]')
-      sectionShields.content.appendChild(createSectionElement(
-        'shields',
-        'braveShieldsTitle',
-        'settings-default-brave-shields-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-      const sectionSocialBlocking = document.createElement('template')
-      sectionSocialBlocking.setAttribute('is', 'dom-if')
-      sectionSocialBlocking.setAttribute('restamp', 'true')
-      sectionSocialBlocking.setAttribute('if', '[[showPage_(pageVisibility_.socialBlocking)]]')
-      sectionSocialBlocking.content.appendChild(createNestedSectionElement(
-        'socialBlocking',
-        'shields',
-        'socialBlocking',
-        'settings-social-blocking-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-      const sectionLeoAssist = document.createElement('template')
-      sectionLeoAssist.setAttribute('is', 'dom-if')
-      sectionLeoAssist.setAttribute('restamp', 'true')
-      sectionLeoAssist
-        .setAttribute('if', '[[showPage_(pageVisibility_.leoAssistant)]]')
-      sectionLeoAssist.content.appendChild(createSectionElement(
-        'leoAssistant',
-        'leoAssistant',
-        'settings-brave-leo-assistant-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-      const sectionLeoPersonalization = document.createElement('template')
-      sectionLeoPersonalization.setAttribute('is', 'dom-if')
-      sectionLeoPersonalization.setAttribute('restamp', 'true')
-      sectionLeoPersonalization
-        .setAttribute('if', '[[showPage_(pageVisibility_.leoAssistant)]]')
-      sectionLeoPersonalization.content.appendChild(createNestedSectionElement(
-        'leoAssistant',
-        'leoAssistant',
-        'braveLeoAssistantPersonalizationLabel',
-        'brave-leo-personalization',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-      const sectionLeoCustomModels = document.createElement('template')
-      sectionLeoCustomModels.setAttribute('is', 'dom-if')
-      sectionLeoCustomModels.setAttribute('restamp', 'true')
-      sectionLeoCustomModels
-        .setAttribute('if', '[[showPage_(pageVisibility_.leoAssistant)]]')
-      sectionLeoCustomModels.content.appendChild(createNestedSectionElement(
-        'leoAssistant',
-        'leoAssistant',
-        'braveLeoAssistantByomLabel',
-        'model-list-section',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-
-      const sectionContent = document.createElement('template')
-      sectionContent.setAttribute('is', 'dom-if')
-      sectionContent.setAttribute('restamp', 'true')
-      sectionContent.setAttribute('if', '[[showPage_(pageVisibility_.content)]]')
-      sectionContent.content.appendChild(createNestedSectionElement(
-        'content',
-        'content',
-        'contentSettingsContentSection',
-        'settings-brave-content-content',
-        {
-          prefs: '{{prefs}}',
-        }
-      ))
 
       const sectionSurveyPanelist = document.createElement('template')
       sectionSurveyPanelist.setAttribute('is', 'dom-if')
@@ -350,93 +229,16 @@ RegisterPolymerTemplateModifications({
       ))
       // </if>
 
-      const sectionPlaylist = document.createElement('template')
-      sectionPlaylist.setAttribute('is', 'dom-if')
-      sectionPlaylist.setAttribute('restamp', 'true')
-      sectionPlaylist.setAttribute('if', '[[showPage_(pageVisibility_.playlist)]]')
-      sectionPlaylist.content.appendChild(createNestedSectionElement(
-        'playlist',
-        'content',
-        'playlist',
-        'settings-brave-content-playlist',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
+      // Insert Tor
+      let last = basicPageEl.insertAdjacentElement('afterend', sectionTor)
+      // Insert Data collection
+      last = last.insertAdjacentElement('afterend', sectionDataCollection)
+      // Insert Surevy Panelist
+      last = last.insertAdjacentElement('afterend', sectionSurveyPanelist)
 
-      const sectionSpeedreader = document.createElement('template')
-      sectionSpeedreader.setAttribute('is', 'dom-if')
-      sectionSpeedreader.setAttribute('restamp', 'true')
-      sectionSpeedreader.setAttribute('if', '[[showPage_(pageVisibility_.speedreader)]]')
-      sectionSpeedreader.content.appendChild(createNestedSectionElement(
-        'speedreader',
-        'content',
-        'speedreaderSettingLabel',
-        'settings-brave-content-speedreader',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-
-      const sectionNewTab = document.createElement('template')
-      sectionNewTab.setAttribute('is', 'dom-if')
-      sectionNewTab.setAttribute('restamp', 'true')
-      sectionNewTab.setAttribute('if', '[[showPage_(pageVisibility_.newTab)]]')
-      sectionNewTab.content.appendChild(createNestedSectionElement(
-        'newTab',
-        'getStarted',
-        'braveNewTab',
-        'settings-brave-new-tab-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-
-      // Get Started at top
-      let last = basicPageEl.insertAdjacentElement('afterbegin',
-        sectionGetStarted)
-      // Insert New Tab
-      last = last.insertAdjacentElement('afterend', sectionNewTab)
-      // Insert nested Tabs, Sidebar under 'Appearance' menu
-      last = last.insertAdjacentElement('afterend', sectionTabs)
-      last = last.insertAdjacentElement('afterend', sectionSidebar)
-      // Insert nested Content, Containers, Playlist, Speedreader under
-      // 'Content' menu
-      last = last.insertAdjacentElement('afterend', sectionContent)
       // <if expr="enable_containers">
       last = last.insertAdjacentElement('afterend', sectionContainers)
       // </if>
-      last = last.insertAdjacentElement('afterend', sectionPlaylist)
-      last = last.insertAdjacentElement('afterend', sectionSpeedreader)
-      // Insert shields
-      last = last.insertAdjacentElement('afterend', sectionShields)
-      // Insert nested Social Blocking under shields
-      last = last.insertAdjacentElement('afterend', sectionSocialBlocking)
-      // Move privacy section to after shields
-      const sectionPrivacy = getSectionElement(templateContent, 'privacy')
-      last = last.insertAdjacentElement('afterend', sectionPrivacy)
-      // Insert sync
-      last = last.insertAdjacentElement('afterend', sectionSync)
-      // Insert extensions
-      last = last.insertAdjacentElement('afterend', sectionExtensions)
-      // Insert Wallet
-      if (sectionWallet) {
-        last = last.insertAdjacentElement('afterend', sectionWallet)
-      }
-      // Insert Web3 Domains
-      last = last.insertAdjacentElement('afterend', sectionWeb3Domains)
-      // Insert Tor
-      last = last.insertAdjacentElement('afterend', sectionTor)
-      // Insert Data collection
-      last = last.insertAdjacentElement('afterend', sectionDataCollection)
-      // Insert Leo Assistant
-      last = last.insertAdjacentElement('afterend', sectionLeoAssist)
-      // Insert Surevy Panelist
-      last = last.insertAdjacentElement('afterend', sectionSurveyPanelist)
-      // Insert Leo Personalization
-      last = last.insertAdjacentElement('afterend', sectionLeoPersonalization)
-      // Insert Custom Models List
-      last.insertAdjacentElement('afterend', sectionLeoCustomModels)
     }
   }
 })
