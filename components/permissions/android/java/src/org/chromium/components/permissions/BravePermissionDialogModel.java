@@ -42,7 +42,7 @@ import org.chromium.ui.util.ColorUtils;
 class BravePermissionDialogModel {
     // Link for Widevine
     private static final String URL_WIDEVINE_LEARN_MORE =
-            "https://support.brave.com/hc/en-us/articles/17428756610061";
+            "https://support.brave.app/hc/en-us/articles/17428756610061";
 
     public static PropertyModel getModel(
             ModalDialogProperties.Controller controller,

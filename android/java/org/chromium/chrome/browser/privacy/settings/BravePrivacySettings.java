@@ -60,7 +60,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String BLOCK_ALL_COOKIES_LEARN_MORE_LINK =
             "https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting";
     private static final String SURVEY_PANELIST_LEARN_MORE_LINK =
-            "https://support.brave.com/hc/en-us/articles/36550092449165";
+            "https://support.brave.app/hc/en-us/articles/36550092449165";
 
     // Chromium Prefs
     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
