@@ -3259,6 +3259,16 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   EXPECT_EQ(history.back()->text, "Final response after tools");
 }
 
+TEST_F(ConversationHandlerUnitTest, AssociatingContentTriggersGetContent) {
+  MockAssociatedContent content;
+  content.SetTextContent("content");
+
+  // We shouldn't have any content yet (because we haven't called |GetContent|).
+  EXPECT_EQ(content.cached_page_content().content, "");
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+  EXPECT_EQ(content.cached_page_content().content, "content");
+}
+
 struct EmptyContentTestData {
   std::string name;
   std::string content;

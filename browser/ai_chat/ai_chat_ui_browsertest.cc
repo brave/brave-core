@@ -174,18 +174,15 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
                         bool wait_for_callback = true) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
-    chat_tab_helper_->GetPageContent(
-        base::BindLambdaForTesting(
-            [&run_loop, expected_text, wait_for_callback](
-                std::string text, bool is_video,
-                std::string invalidation_token) {
-              EXPECT_FALSE(is_video);
-              EXPECT_EQ(text, expected_text);
-              if (wait_for_callback) {
-                run_loop.Quit();
-              }
-            }),
-        "");
+    chat_tab_helper_->GetContent(base::BindLambdaForTesting(
+        [&run_loop, expected_text,
+         wait_for_callback](ai_chat::PageContent content) {
+          EXPECT_FALSE(content.is_video);
+          EXPECT_EQ(content.content, expected_text);
+          if (wait_for_callback) {
+            run_loop.Quit();
+          }
+        }));
     if (wait_for_callback) {
       run_loop.Run();
     }

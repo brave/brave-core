@@ -123,7 +123,6 @@ void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
 void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
                                      std::string_view invalidation_token) {
   bool is_pdf = IsPdf(web_contents());
-  bool pdf_helper_not_available = false;
   if (is_pdf) {
 #if BUILDFLAG(ENABLE_PDF)
     auto* pdf_helper =
@@ -135,16 +134,15 @@ void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
           base::BindOnce(&AIChatTabHelper::OnFetchPageContentComplete,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
       return;
-    } else {
-      pdf_helper_not_available = true;
     }
-#else
-    pdf_helper_not_available = true;
 #endif  // BUILDFLAG(ENABLE_PDF)
+    // If we have a PDF but no PDFHelper there's no point running one of our
+    // other extractors - we'll just end up with empty content anyway.
+    std::move(callback).Run("", false, "");
+    return;
   }
   if (kPrintPreviewRetrievalHosts.contains(
-          web_contents()->GetLastCommittedURL().host_piece()) ||
-      pdf_helper_not_available) {
+          web_contents()->GetLastCommittedURL().host_piece())) {
     // Get content using a printing / OCR mechanism, instead of
     // directly from the source, if available.
     DVLOG(1) << __func__ << " print preview url";
