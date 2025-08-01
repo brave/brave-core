@@ -20,6 +20,7 @@ struct PreRelevantSiteDetails {
   bool is_search_engine;
   std::string_view regex_pattern;
   std::array<std::optional<std::string_view>, 2> query_params;
+  std::optional<std::string_view> prefix;
 };
 
 constexpr std::array<PreRelevantSiteDetails, 10> kPreRelevantSiteDetails = {{
@@ -27,45 +28,55 @@ constexpr std::array<PreRelevantSiteDetails, 10> kPreRelevantSiteDetails = {{
      true,
      "^https://[^/]*[.]google[.].*?[#?&;]((q=[^&]+&([^&]+&)*tbm=isch)|"
      "(tbm=isch&([^&]+&)*q=[^&]+))",
-     {"q"}},
+     {"q"},
+     "search?tbm=isch&gbv=1&q="},
     {web_discovery::RelevantSite::kGoogleVideos,
      true,
      "^https://[^/]*[.]google[.].*?[#?&;]((q=[^&]+&([^&]+&)*tbm=vid)|"
      "(tbm=vid&([^&]+&)*q=[^&]+))",
-     {"q"}},
+     {"q"},
+     "search?tbm=vid&gbv=1&q="},
     {web_discovery::RelevantSite::kGoogle,
      true,
      "^https://[^/]*[.]google[.].*?[#?&;]",
-     {"q"}},
+     {"q"},
+     "search?q="},
     {web_discovery::RelevantSite::kYahoo,
      true,
      "^https://[^/]*[.]search[.]yahoo[.].*?[#?&;][pq]=[^$&]+",
-     {"q", "p"}},
+     {"q", "p"},
+     "search?q="},
     {web_discovery::RelevantSite::kBingImages,
      true,
      "^https://[^/]*[.]bing[.][^/]+/images/search[?]q=[^$&]+",
-     {"q"}},
+     {"q"},
+     "images/search?q="},
     {web_discovery::RelevantSite::kBing,
      true,
      "^https://[^/]*[.]bing[.].*?[#?&;]q=[^$&]+",
-     {"q"}},
+     {"q"},
+     "search?q="},
     {web_discovery::RelevantSite::kAmazonSearch,
      false,
      "^https://[^/]*[.]amazon[.][^/]+/(s[?]k=[^$&]+|.*[?&]field-keywords="
      "[^$&]+)",
-     {"field-keywords", "k"}},
+     {"field-keywords", "k"},
+     "s/?field-keywords="},
     {web_discovery::RelevantSite::kAmazonProduct,
      false,
      "^https://[^/]*[.]amazon[.][^/]+/(/dp/|/gp/product/)",
-     {"keywords"}},
+     {"keywords"},
+     std::nullopt},
     {web_discovery::RelevantSite::kDuckDuckGo,
      true,
      "^https://duckduckgo.com/(?:html$|.*[?&]q=[^&]+.*&ia=web|[?]q=[^&]+$)",
-     {"q"}},
+     {"q"},
+     "?q="},
     {web_discovery::RelevantSite::kLinkedIn,
      false,
      "^https://[^/]*linkedin[.][^/]+/pub/dir+",
-     {}},
+     {},
+     std::nullopt},
 }};
 
 }  // namespace
@@ -84,11 +95,13 @@ RelevantSiteDetails::RelevantSiteDetails(
     RelevantSite site,
     bool is_search_engine,
     std::unique_ptr<re2::RE2>&& regex,
-    std::vector<std::string_view>&& query_params)
+    std::vector<std::string_view>&& query_params,
+    std::optional<std::string_view> prefix)
     : site(site),
       is_search_engine(is_search_engine),
       regex(std::move(regex)),
-      query_params(std::move(query_params)) {}
+      query_params(std::move(query_params)),
+      prefix(prefix) {}
 RelevantSiteDetails::~RelevantSiteDetails() = default;
 
 RelevantSiteDetails::RelevantSiteDetails(RelevantSiteDetails&&) = default;
@@ -116,7 +129,8 @@ void URLExtractor::InitializePatterns() {
     CHECK(regex->ok());
 
     site_details_.emplace_back(pattern_data.site, pattern_data.is_search_engine,
-                               std::move(regex), std::move(query_params));
+                               std::move(regex), std::move(query_params),
+                               pattern_data.prefix);
   }
 }
 

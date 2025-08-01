@@ -130,10 +130,9 @@ ParseSourceMapActionConfigs(const base::Value::Dict& configs_dict) {
 
 ParsedPatternsVariant NullPatternsVariant() {
   if (features::ShouldUseV2Patterns()) {
-    return ParsedPatternsVariant(
-        std::unique_ptr<PatternsV2PatternsGroup>(nullptr));
+    return ParsedPatternsVariant(std::unique_ptr<PatternsV2PatternsGroup>{});
   } else {
-    return ParsedPatternsVariant(std::unique_ptr<PatternsGroup>(nullptr));
+    return ParsedPatternsVariant(std::unique_ptr<PatternsGroup>{});
   }
 }
 
