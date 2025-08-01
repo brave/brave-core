@@ -21,6 +21,7 @@ constexpr char kCollectorHostPrefix[] = "collector.wdp";
 constexpr char kQuorumHostPrefix[] = "quorum.wdp";
 constexpr char kPatternsHostPrefix[] = "patterns.wdp";
 constexpr char kPatternsPath[] = "patterns.gz";
+constexpr char kV2PatternsPath[] = "patterns-v2.gz";
 }  // namespace
 
 std::string GetDirectHPNHost() {
@@ -50,7 +51,8 @@ GURL GetPatternsEndpoint() {
   } else {
     auto patterns_path = features::kPatternsPath.Get();
     if (patterns_path.empty()) {
-      patterns_path = kPatternsPath;
+      patterns_path =
+          features::ShouldUseV2Patterns() ? kV2PatternsPath : kPatternsPath;
     }
     patterns_url_str =
         base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,

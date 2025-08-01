@@ -17,6 +17,10 @@ namespace web_discovery::features {
 // If enabled, the Web Discovery component of the extension should be disabled.
 BASE_DECLARE_FEATURE(kBraveWebDiscoveryNative);
 extern const base::FeatureParam<std::string> kPatternsPath;
+extern const base::FeatureParam<int> kPatternsVersion;
+
+// Returns true if patterns version is 2 or above
+bool ShouldUseV2Patterns();
 
 }  // namespace web_discovery::features
 
