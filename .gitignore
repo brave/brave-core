@@ -44,6 +44,8 @@ patches/**/*.patchinfo
 *.VC.VC.opendb
 .vs/
 .vscode/
+/.claude/
+/.cursor/
 *.vcxproj
 *.vcxproj.user
 *.vcxproj.filters
