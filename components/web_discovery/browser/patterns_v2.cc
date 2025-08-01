@@ -16,24 +16,6 @@ namespace web_discovery {
 
 namespace {
 
-constexpr auto kTransformFunctionMap =
-    base::MakeFixedFlatMap<std::string_view, PatternsV2TransformFunction>({
-        {"trySplit", PatternsV2TransformFunction::kTrySplit},
-        {"decodeURIComponent",
-         PatternsV2TransformFunction::kDecodeURIComponent},
-        {"filterExact", PatternsV2TransformFunction::kFilterExact},
-        {"tryDecodeURIComponent",
-         PatternsV2TransformFunction::kTryDecodeURIComponent},
-        {"removeParams", PatternsV2TransformFunction::kRemoveParams},
-        {"maskU", PatternsV2TransformFunction::kMaskU},
-        {"split", PatternsV2TransformFunction::kSplit},
-        {"trim", PatternsV2TransformFunction::kTrim},
-        {"relaxedMaskU", PatternsV2TransformFunction::kRelaxedMaskU},
-        {"json", PatternsV2TransformFunction::kJson},
-        {"queryParam", PatternsV2TransformFunction::kQueryParam},
-        {"requireURL", PatternsV2TransformFunction::kRequireURL},
-    });
-
 constexpr auto kSelectorTypeMap =
     base::MakeFixedFlatMap<std::string_view, PatternsV2InputGroup::Type>({
         {"first", PatternsV2InputGroup::Type::kFirst},
@@ -51,37 +33,6 @@ constexpr std::string_view kSourceKey = "source";
 constexpr std::string_view kRequiredKeysKey = "requiredKeys";
 constexpr std::string_view kOptionalKey = "optional";
 constexpr std::string_view kFieldsKey = "fields";
-
-// Parses a transformation array
-std::optional<PatternsV2Transform> ParseTransform(
-    const base::Value::List& transform_list) {
-  if (transform_list.empty()) {
-    return std::nullopt;
-  }
-
-  PatternsV2Transform transform;
-
-  auto part_it = transform_list.begin();
-  // First element should be the function name
-  if (!part_it->is_string()) {
-    VLOG(1) << "Transform function name must be a string";
-    return std::nullopt;
-  }
-  const auto& function_name = part_it->GetString();
-  auto function_it = kTransformFunctionMap.find(function_name);
-  if (function_it == kTransformFunctionMap.end()) {
-    VLOG(1) << "Unknown transform function: " << function_name;
-    return std::nullopt;
-  }
-
-  transform.function = function_it->second;
-
-  for (part_it++; part_it != transform_list.end(); part_it++) {
-    transform.arguments.Append(part_it->Clone());
-  }
-
-  return transform;
-}
 
 // Parses an extraction rule object
 std::optional<PatternsV2ExtractionRule> ParseExtractionRule(
@@ -108,11 +59,12 @@ std::optional<PatternsV2ExtractionRule> ParseExtractionRule(
         VLOG(1) << "Transform value is not a list";
         return std::nullopt;
       }
-      auto transform = ParseTransform(transform_value.GetList());
+      auto transform = CreateValueTransform(transform_value.GetList());
       if (!transform) {
+        VLOG(1) << "Failed to create value transform";
         return std::nullopt;
       }
-      rule.transforms.emplace_back(std::move(*transform));
+      rule.transforms.emplace_back(std::move(transform));
     }
   }
 
@@ -280,13 +232,6 @@ std::optional<PatternsV2SitePattern> ParseSitePattern(
 }
 
 }  // namespace
-
-// PatternsV2Transform implementation
-PatternsV2Transform::PatternsV2Transform() = default;
-PatternsV2Transform::~PatternsV2Transform() = default;
-PatternsV2Transform::PatternsV2Transform(PatternsV2Transform&&) = default;
-PatternsV2Transform& PatternsV2Transform::operator=(PatternsV2Transform&&) =
-    default;
 
 // PatternsV2ExtractionRule implementation
 PatternsV2ExtractionRule::PatternsV2ExtractionRule() = default;
