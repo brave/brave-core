@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
-#include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/https_upgrade_exceptions/core/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "ios/chrome/browser/application_context/model/application_context_impl.h"
 
