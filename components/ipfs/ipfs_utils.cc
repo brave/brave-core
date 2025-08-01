@@ -107,9 +107,8 @@ bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain) {
       std::string new_host = gateway_url.host();
       std::string new_path = path;
       if (use_subdomain) {
-        new_host = base::StringPrintf("%s.%s.%s", cid.c_str(),
-                                      ipfs_scheme ? "ipfs" : "ipns",
-                                      gateway_url.host().c_str());
+        new_host = absl::StrFormat(
+            "%s.%s.%s", cid, ipfs_scheme ? "ipfs" : "ipns", gateway_url.host());
       } else {
         new_path = (ipfs_scheme ? "ipfs/" : "ipns/") + cid + path;
       }

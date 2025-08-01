@@ -61,17 +61,17 @@ constexpr char kTestEIP6963[] = R"(
     })();)";
 
 std::string NonWriteableScriptProperty(const std::string& property) {
-  return base::StringPrintf(
+  return absl::StrFormat(
       R"(window.ethereum.%s = "brave";
          !(window.ethereum.%s === "brave");)",
-      property.c_str(), property.c_str());
+      property, property);
 }
 std::string NonWriteableScriptMethod(const std::string& provider,
                                      const std::string& method) {
-  return base::StringPrintf(
+  return absl::StrFormat(
       R"(window.%s.%s = "brave";
          typeof window.%s.%s === "function";)",
-      provider.c_str(), method.c_str(), provider.c_str(), method.c_str());
+      provider, method, provider, method);
 }
 }  // namespace
 

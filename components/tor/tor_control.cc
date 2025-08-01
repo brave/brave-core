@@ -550,16 +550,14 @@ void TorControl::SetupPluggableTransport(
       "stun:stun.uls.co.za:3478,stun:stun.voipgate.com:3478,stun:stun.voys.nl:"
       "3478\"";
 
-  const std::string snowflake_setup = base::StringPrintf(
+  const std::string snowflake_setup = absl::StrFormat(
       kSnowflakeConfigCmd,
       snowflake_path.NormalizePathSeparatorsTo(FILE_PATH_LITERAL('/'))
-          .AsUTF8Unsafe()
-          .c_str());
-  const std::string obfs4_setup = base::StringPrintf(
+          .AsUTF8Unsafe());
+  const std::string obfs4_setup = absl::StrFormat(
       kObfs4ConfigCmd,
       obfs4_path.NormalizePathSeparatorsTo(FILE_PATH_LITERAL('/'))
-          .AsUTF8Unsafe()
-          .c_str());
+          .AsUTF8Unsafe());
 
   const std::string configure_pluggable_transport =
       base::StrCat({"SETCONF ", snowflake_setup, " ", obfs4_setup});

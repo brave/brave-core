@@ -55,7 +55,7 @@ std::optional<std::string> GetExportEncodedJSON(
   if (!protocol) {
     return std::nullopt;
   }
-  std::string json = base::StringPrintf(
+  std::string json = absl::StrFormat(
       "{\"Type\":\"%s\",\"PrivateKey\":\"%s\"}",
       protocol.value() == mojom::FilecoinAddressProtocol::BLS ? "bls"
                                                               : "secp256k1",

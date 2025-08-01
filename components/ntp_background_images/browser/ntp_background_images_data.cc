@@ -54,9 +54,9 @@ Background& Background::operator=(Background&& other) = default;
 Background::~Background() = default;
 
 NTPBackgroundImagesData::NTPBackgroundImagesData()
-    : url_prefix(base::StringPrintf("%s://%s/",
-                                    content::kChromeUIScheme,
-                                    kBackgroundWallpaperHost)) {}
+    : url_prefix(absl::StrFormat("%s://%s/",
+                                 content::kChromeUIScheme,
+                                 kBackgroundWallpaperHost)) {}
 
 NTPBackgroundImagesData::NTPBackgroundImagesData(
     const std::string& json_string,

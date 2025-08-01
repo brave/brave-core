@@ -674,7 +674,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
       }"
     ])";
 
-  std::string json = base::StringPrintf(kJson, R"({
+  std::string json = absl::StrFormat(kJson, R"({
     \"from\": {
       \"name\":\"Cow\",
       \"wallet\":\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"
@@ -769,7 +769,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   EXPECT_FALSE(eth_sign_typed_data->meta);
 
   // Test with extra fields in the message.
-  json = base::StringPrintf(kJson, R"({
+  json = absl::StrFormat(kJson, R"({
     \"from\": {
       \"name\":\"Cow\",
       \"wallet\":\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"
@@ -1154,7 +1154,7 @@ TEST(EthResponseHelperUnitTest, ParseEthSendRawTransaction) {
       "2dcba0b632c1a039d0379cdbfb54cfd1894de3bb5c0583a11bc79abf19b6961e948e2127"
       "f47bec";
 
-  std::string json = base::StringPrintf(
+  std::string json = absl::StrFormat(
       R"({
         "method": "eth_sendRawTransaction",
         "params": ["%s"]

@@ -250,7 +250,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   RegisterNTPSponsoredImagesComponent(
       component_update_service_, std::string(data->component_base64_public_key),
       std::string(data->component_id),
-      base::StringPrintf("NTP Sponsored Images (%s)", data->region.data()),
+      absl::StrFormat("NTP Sponsored Images (%s)", data->region),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
           weak_factory_.GetWeakPtr(), false));
@@ -415,7 +415,7 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
 
   RegisterNTPSponsoredImagesComponent(
       component_update_service_, public_key, id,
-      base::StringPrintf("NTP Super Referral (%s)", theme_name.c_str()),
+      absl::StrFormat("NTP Super Referral (%s)", theme_name),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
           weak_factory_.GetWeakPtr(), true));
