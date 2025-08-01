@@ -45,9 +45,9 @@ const getTestsToRun = (config, suite) => {
   )
 
   if (config.isCI && config.targetOS === 'linux') {
-    testsToRun += getTestGroupDeps(
+    testsToRun.concat(getTestGroupDeps(
       path.join(config.outputDir, `${suite}_ci.json`),
-    )
+    ))
   }
 
   return testsToRun.length > 0 ? testsToRun : [suite]
