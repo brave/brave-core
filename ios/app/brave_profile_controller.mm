@@ -9,7 +9,6 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat+private.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_delegate.h"
-#include "brave/components/brave_shields/ios/browser/brave_shields_utils_ios+private.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/model_service_factory.h"
@@ -98,7 +97,6 @@
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
-@property(nonatomic) BraveShieldsUtilsIOS* braveShieldsUtils;
 @property(nonatomic) DeAmpPrefs* deAmpPrefs;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @property(nonatomic) WebImageDownloader* webImageDownloader;

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/ios/browser/brave_shields_utils_ios.h"
+#include "brave/components/brave_shields/ios/browser/brave_shields_utils_impl.h"
 
 #include <Foundation/Foundation.h>
 
@@ -14,7 +14,7 @@
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
-@implementation BraveShieldsUtilsIOS {
+@implementation BraveShieldsUtilsImpl {
   raw_ptr<HostContentSettingsMap> _map;
   raw_ptr<PrefService> _localState;
   raw_ptr<PrefService> _profilePrefs;
@@ -79,7 +79,6 @@
       _localState, _profilePrefs);
 }
 
-@dynamic blockScriptsEnabledByDefault;
 - (bool)isBlockScriptsEnabledByDefault {
   return [self blockScriptsEnabledForGURL:GURL() isPrivate:false];
 }
@@ -110,7 +109,6 @@
   brave_shields::SetIsNoScriptEnabled(_map, isEnabled, gurl, _localState);
 }
 
-@dynamic blockFingerprintingEnabledByDefault;
 - (bool)isBlockFingerprintingEnabledByDefault {
   return [self blockFingerprintingEnabledForGURL:GURL() isPrivate:false];
 }

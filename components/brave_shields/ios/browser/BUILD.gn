@@ -8,36 +8,17 @@ import("//brave/build/ios/mojom/mojom_wrappers.gni")
 source_set("browser") {
   sources = [
     "brave_shields_utils.h",
-    "brave_shields_utils_ios+private.h",
-    "brave_shields_utils_ios.h",
-    "brave_shields_utils_ios.mm",
+    "brave_shields_utils_impl.h",
+    "brave_shields_utils_impl.mm",
   ]
   deps = [
-    ":brave_shields_mojom_wrappers",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common:mojom",
+    "//brave/components/brave_shields/ios/common:brave_shields_mojom_wrappers",
     "//components/content_settings/core/browser",
     "//components/prefs",
-    "//ios/chrome/browser/content_settings/model",
-    "//ios/chrome/browser/shared/model/application_context",
-    "//ios/chrome/browser/shared/model/profile",
     "//ios/web/public/thread",
     "//net",
     "//url",
-  ]
-}
-
-ios_objc_mojom_wrappers("brave_shields_mojom_wrappers") {
-  mojom_target = "//brave/components/brave_shields/core/common:mojom"
-  sources = [
-    "//brave/components/brave_shields/core/common/brave_shields_panel.mojom",
-  ]
-  exclude_types = [
-    "PanelHandlerFactory",
-    "PanelHandler",
-    "UIHandler",
-    "DataHandler",
-    "SiteBlockInfo",
-    "SiteSettings",
   ]
 }

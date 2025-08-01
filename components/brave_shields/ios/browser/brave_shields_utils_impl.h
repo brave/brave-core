@@ -3,19 +3,25 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_UTILS_IOS_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_UTILS_IOS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_UTILS_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_UTILS_IMPL_H_
 
 #import <Foundation/Foundation.h>
 
-#include "brave/components/brave_shields/ios/browser/brave_shields_panel.mojom.objc.h"
 #include "brave/components/brave_shields/ios/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/ios/common/brave_shields_panel.mojom.objc.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BraveShieldsUtilsIOS : NSObject <BraveShieldsUtils>
+class HostContentSettingsMap;
+class PrefService;
+
+@interface BraveShieldsUtilsImpl : NSObject <BraveShieldsUtils>
 
 - (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithHostContentSettingsMap:(HostContentSettingsMap*)map
+                                    localState:(PrefService*)localState
+                                  profilePrefs:(PrefService*)profilePrefs;
 
 - (BOOL)braveShieldsEnabledFor:(NSURL*)url isPrivate:(BOOL)isPrivate;
 - (void)setBraveShieldsEnabled:(BOOL)isEnabled
@@ -47,4 +53,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_UTILS_IOS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_UTILS_IMPL_H_

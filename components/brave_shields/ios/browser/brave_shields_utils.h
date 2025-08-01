@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_UTILS_H_
 
 #ifdef __cplusplus
-#include "brave/components/brave_shields/ios/browser/brave_shields_panel.mojom.objc.h"
+#include "brave/components/brave_shields/ios/common/brave_shields_panel.mojom.objc.h"
 #else
 #import "brave_shields_panel.mojom.objc.h"
 #endif
