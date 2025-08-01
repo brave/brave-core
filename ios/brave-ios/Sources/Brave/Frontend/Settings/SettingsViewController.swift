@@ -1454,7 +1454,7 @@ class SettingsViewController: TableViewController {
         $0.uuid == self.walletRowUUID.uuidString
       })
 
-      if walletRowIndex == nil {
+      if walletRowIndex == nil && braveCore.braveWalletAPI.isAllowed {
         let settingsStore = cryptoStore?.settingsStore
         copyOfSections[featureSectionIndex].rows.append(
           Row(

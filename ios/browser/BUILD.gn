@@ -48,6 +48,7 @@ group("browser") {
     "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/application_context",
     "//brave/ios/browser/brave_wallet",
+    "//brave/ios/browser/policy",
     "//brave/ios/browser/profile/model",
     "//brave/ios/browser/ui/webui",
     "//brave/ios/browser/web",
