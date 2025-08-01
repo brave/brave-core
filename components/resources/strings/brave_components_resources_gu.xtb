@@ -302,6 +302,7 @@
 <translation id="6277237872689140644">તે કદાચ બીજી જગ્યાએ ખસેડવામાં આવ્યું હોઈ શકે અથવા URLમાં ટાઇપિંગની ભૂલ હોઈ શકે છે.</translation>
 <translation id="2737084171727561244">પોર્ટફોલિયો પર જાઓ</translation>
 <translation id="3662406032239313663">લૉગ્સ</translation>
+<translation id="1772301834467143364">Brave News</translation>
 <translation id="3861486700625780712">અનફોલો કરો</translation>
 <translation id="4108314971463891922">ફોલો કરો</translation>
 <translation id="3225021799163709119">લોકપ્રિય</translation>
@@ -375,7 +376,6 @@
 <translation id="423209533815462685">શોધ સૂચનો સક્ષમ કરીએ?</translation>
 <translation id="167018310108390163">નવી ટેબ પેજ કસ્ટમાઇઝ કરો</translation>
 <translation id="8522669544471808198">બૅકગ્રાઉન્ડ ઇમેજ બતાવો</translation>
-<translation id="5149018766422637336">ન્યૂઝ અને RSS</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> સાથે, તમે નવા ટેબ પેજની જાહેરાતો જોઈને કમાઈ શકો છો.</translation>
 <translation id="4100520468072294616">નવા ટેબ પેજની જાહેરાતો બતાવો</translation>
 <translation id="8112367589167674370">Brave ટૉક</translation>
@@ -416,6 +416,7 @@
 <translation id="6821108091726602352">Braveના વેબ ડિસ્કવરી પ્રોજેક્ટમાં સહભાગી થઈને અમને વેબને સુધારવામાં મદદ કરો. સંપૂર્ણપણે અનામી સર્ચ સંકેતોને શેર કરીને, તમે Braveને સર્ચ ઇન્ડેક્સ વધારવામાં મદદ કરી શકો છો.</translation>
 <translation id="6764845498618413165">વધુ જાણો.</translation>
 <translation id="7818938154803162778">ચોક્કસ, હું મદદ કરીશ</translation>
+<translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="3486480638399578250">તમારા વ્યક્તિગત ઇમેઇલ એડ્રેસને ગુપ્ત રાખો</translation>
 <translation id="7765422154906712751">અનોખા, રેન્ડમ સરનામાંઓ બનાવો જે તમારા Brave અકાઉન્ટ ઇમેઇલ પર ફોરવર્ડ થઈ શકે છે અને તમારી ઇચ્છા પર ડિલીટ કરી શકાય છે. તમારા વાસ્તવિક ઇમેઇલ એડ્રેસને જાહેરાતકર્તાઓ સામે જાહેર થવાથી અથવા તેમના દ્વારા ઉપયોગ થવાથી બચાવો.</translation>
 <translation id="5222676887888702881">સાઇન આઉટ કરો</translation>
@@ -446,7 +447,7 @@
 <translation id="3699624789011381381">ઇમેઇલ એડ્રેસ</translation>
 <translation id="8124939971041602970">લૉગિન ઇમેઇલ <ph name="MAIN_EMAIL"/> પર મોકલાઈ રહ્યો છે</translation>
 <translation id="8140361186431963982">તમારા અકાઉન્ટમાં ઍક્સેસ કરવા માટે ઇમેઇલમાં સુરક્ષિત લૉગિન લિંક પર ક્લિક કરો.</translation>
-<translation id="6549775668256477823">ઇમેઇલ નથી દેખાઈ રહ્યોl? તમારું સ્પામ ફોલ્ડર તપાસો અથવા <ph name="BEGIN_LINK"/>ફરી પ્રયાસ કરો<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">ઇમેઇલ નથી દેખાઈ રહ્યોl? તમારું સ્પામ ફોલ્ડર તપાસો અથવા ફરી પ્રયાસ કરો.</translation>
 <translation id="5753795690521538679">7-દિવસની મફત અજમાયશ શરૂ કરો</translation>
 <translation id="3357036723290257445">Brave VPN પહેલાંથી જ ખરીદ્યું છે?</translation>
 <translation id="7805768142964895445">સ્થિતિ</translation>

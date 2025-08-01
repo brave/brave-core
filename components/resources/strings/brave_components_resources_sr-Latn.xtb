@@ -872,7 +872,7 @@
 <translation id="1939235910515558387">Podesite Brave novačanik za nekoliko minuta</translation>
 <translation id="5844138175312846408">Već imate novčanik?</translation>
 <translation id="772643556080081594">Treba mi novčanik samo za gledanje</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave i logotip Brave-a su registrovani žigovi kompanije Brave Software, Inc. Ostali nazivi proizvoda i logotipi mogu biti žigovi njihovih kompanija. Sva prava su zadržana.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave i logotip Brave-a su registrovani žigovi kompanije Brave Software, Inc. Ostali nazivi proizvoda i logotipi mogu biti žigovi njihovih kompanija. Sva prava su zadržana.</translation>
 <translation id="7501957181231305652">ili</translation>
 <translation id="375882617301124395">Napravite rezervnu kopiju svog kripto novčanika</translation>
 <translation id="5024543173656851695">Razumem da neću moći da pristupim svom kripto novčaniku ako izgubim reči za oporavak.</translation>
@@ -1114,10 +1114,6 @@
 <translation id="4324239559624557455">24 sata</translation>
 <translation id="9139452553033760558">Nedelju dana</translation>
 <translation id="1658834457013045127">Trajno</translation>
-<translation id="2770851145415891830">Otkriveni su postojeći kripto novčanici</translation>
-<translation id="2237759620789871865">Ako biste radije preskočili uvoz i zadržali stari način korišćenja kripto novčanika, samo idite do <ph name="LINK_BEFORE"/>podešavanja<ph name="LINK_AFTER"/> Brave pregledača i promenite podrazumevane vrednosti nazad na kripto novčanike. Takođe možete da uvezete, isprobate novi Brave novčanik i vratite se u bilo kom trenutku.</translation>
-<translation id="5590175005414413980">Unesite lozinku postojećeg kripto novčanika za uvoz u Brave novčanik. Uživajte u bržem i sigurnijem načinu upravljanja kripto imovinom i interakciji sa decentralizovanim aplikacijama Web3.</translation>
-<translation id="880619123281809987">Unesite lozinku za kripto novčanike</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> je povezan</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> nije povezan</translation>
 <translation id="5317781812114905957">Uputstva</translation>
@@ -1497,7 +1493,6 @@
 <translation id="396152018598329740">Kako se koristi kripto novčanik?</translation>
 <translation id="7512061585041489067">Koji je najbolji kripto novčanik?</translation>
 <translation id="1342755158522323177">Šta je kripto pregledač?</translation>
-<translation id="4702762916247565868">Osnove kripto novčanika</translation>
 <translation id="4674552515763857735">Šta je fraza za oporavak?</translation>
 <translation id="7328255859839881981">Šta su decentralizovane aplikacije (DApps)?</translation>
 <translation id="3852489285890032403">Šta je web 3?</translation>
@@ -1515,7 +1510,6 @@
 <translation id="7877416315564177070">Proverite frazu za oporava i probajte ponovo.</translation>
 <translation id="6503538941917874992">Uvezite pomoću fraze za oporavak</translation>
 <translation id="782167880151571109">Otkriven je Metamask novčanik!</translation>
-<translation id="3619071361843652814">Otkriven je zastareli novčanik!</translation>
 <translation id="4634124774493850572">Koristi lozinku</translation>
 <translation id="7697478310235189459">Reč <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Unesite frazu od 12–24 reči za oporavak MetaMask novčanika.</translation>
@@ -1528,7 +1522,6 @@
 <translation id="3604445540387095708">Pročitao/-la sam <ph name="LINK_BEFORE"/>Uslove korićenja<ph name="LINK_AFTER"/> i saglasan/-na sam sa njima</translation>
 <translation id="1422451606553326863">Kupi kriptovalute</translation>
 <translation id="3887541341068007345">Proveravamo dodatke za novčanik…</translation>
-<translation id="3567994771568272606">Uvezi iz zastarelih Brave kripto novčanika</translation>
 <translation id="8407091560429310499">Izaberite sredstvo</translation>
 <translation id="756590380936155533">Da biste završili kupovinu <ph name="ASSET_TICKER"/>, izaberite jednog od naših partnera</translation>
 <translation id="7880860489474966219">Po završetku, sredstva će vam biti prenesena u Brave novčanik</translation>
@@ -1817,6 +1810,7 @@
 <translation id="7758665172236842395">Pratite omiljene izvore u jednom fidu. Samo otvorite karticu u Brave-u, skrolujte nadole i to je to!</translation>
 <translation id="2376542729617592331">Brave vesti sadrže potpuno privatne i anonimizovane oglase. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Uključi Brave vesti</translation>
+<translation id="1772301834467143364">Brave vesti</translation>
 <translation id="6265592479622441247">Nazad na <ph name="BEGIN_BOLD"/>kontrolnu tablu<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">Pretražujte sajtove, teme ili RSS fidove</translation>
 <translation id="1498364270401875204">Kanali</translation>
@@ -2168,16 +2162,12 @@
 <translation id="8712637175834984815">Razumem</translation>
 <translation id="1093419424466417703">Stranica je predugačka za asistenta Leo. Neki kontekst bi mogao nedostajati u razgovoru. Leo je uspeo da pročita <ph name="PERCENTAGE"/> sadržaja stranice.</translation>
 <translation id="4592293425457329338">Određen deo konteksta bi mogao da nedostaje u razgovoru. Leo je uspeo da zadrži <ph name="PERCENTAGE"/> sadržaja povezanog sa razgovorom.</translation>
-<translation id="2186990448773134544">Sadržaj stranice je obrađen tako da budu izdvojene najrelevantnije informacije sa stranice jer je bila preduga za asistenta Leo.</translation>
-<translation id="5140068729857132378">Traže se relevantni delovi veb-stranice…</translation>
 <translation id="4370698775470316661">Ovaj razgovor je predugačak i ne može se nastaviti. Možda postoje drugi modeli pomoću kojih Leo može da održi tačnost u dužim razgovorima.</translation>
 <translation id="5719170755629028558">Poboljšavamo odgovor pomoću Brave pretrage...</translation>
 <translation id="5794962229997281366">Odgovor je poboljšan pomoću pretrage: <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> više…</translation>
 <translation id="8103700533980268469">Zatvori ovo obaveštenje</translation>
 <translation id="3417835166382867856">Pretraži kartice</translation>
-<translation id="9090243919347147717">Prilozi</translation>
-<translation id="4444978378117903684">Dodajte kartice pregledača da biste asistentu Leo dali više konteksta za razgovor</translation>
 <translation id="4300920590112551536">Kartice pregledača</translation>
 <translation id="2315654674554095762">Leo će sada pamtiti vaše razgovore kako biste im se mogli vratiti. Oni se čuvaju šifrovani na vašem uređaju i možete ih izbrisati u bilo kom trenutku.</translation>
 <translation id="7821251979960635244">Vaša istorija razgovora će se pojaviti ovde kada započnete razgovor.</translation>
@@ -2198,8 +2188,6 @@
 <translation id="5642775487085641191">Samo želite da ćaskate?</translation>
 <translation id="8857222718794549840">Pitajte me bilo šta! Možemo razgovarati o bilo kojoj temi koju želite. Uvek učim i usavršavam se da bih dao što bolje odgovore.</translation>
 <translation id="9051226419897869406">Ćaskajte privatno sa asistentom Brave Leo</translation>
-<translation id="637548538907281147">Oblikuj odgovore na osnovu sadržaja stranice</translation>
-<translation id="8599503173207256429">Uključite da biste postavili pitanja o ovoj stranici. Njegov sadržaj će biti poslat asistentu Brave Leo zajedno sa vašim porukama.</translation>
 <translation id="318819763888864209">Sve pretplate se automatski obnavljaju, ali mogu biti otkazane u bilo kom trenutku pre obnove.</translation>
 <translation id="5091223967610958">Podelite naziv hosta stranice na kojoj se nalazite (<ph name="HOST_NAME"/>) kako biste nam pobogli da poboljšamo asistenta Leo.</translation>
 <translation id="8732450785281947197">Leo AI alatke</translation>
@@ -2336,6 +2324,7 @@
 <translation id="6821108091726602352">Pomozite nam da ispravimo veb tako što ćete učestvovati u Brave-ovom projektu istraživanja veba. Ako podelite potpuno anonimne signale pretrage, pomoći ćete Brave-u da poveća indeks pretrage.</translation>
 <translation id="6764845498618413165">Saznajte više.</translation>
 <translation id="7818938154803162778">Naravno, pomoći ću</translation>
+<translation id="7207456302801184289">Dobro došli u Brave</translation>
 <translation id="958268166261124668">Brave VPN: Povezan</translation>
 <translation id="6021669293402055982">Brave VPN: Nije povezan</translation>
 <translation id="3541307549916475335">Korisnički interfejs panela Brave VPN-a</translation>

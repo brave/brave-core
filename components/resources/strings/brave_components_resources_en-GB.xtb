@@ -860,7 +860,7 @@
 <translation id="1939235910515558387">Get started with Brave Wallet in minutes.</translation>
 <translation id="5844138175312846408">Already have a wallet?</translation>
 <translation id="772643556080081594">I need a watch-only wallet</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</translation>
 <translation id="7501957181231305652">or</translation>
 <translation id="375882617301124395">Back up your crypto wallet</translation>
 <translation id="5024543173656851695">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</translation>
@@ -1096,10 +1096,6 @@
 <translation id="4324239559624557455">For 24 hours</translation>
 <translation id="9139452553033760558">For 1 week</translation>
 <translation id="1658834457013045127">Forever</translation>
-<translation id="2770851145415891830">Existing crypto wallets detected</translation>
-<translation id="2237759620789871865">If you'd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser <ph name="LINK_BEFORE"/>Settings<ph name="LINK_AFTER"/> and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet and change back at any time.</translation>
-<translation id="5590175005414413980">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</translation>
-<translation id="880619123281809987">Type Crypto wallets password</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> connected</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> disconnected</translation>
 <translation id="5317781812114905957">Instructions</translation>
@@ -1448,7 +1444,6 @@
 <translation id="396152018598329740">How to use a crypto wallet?</translation>
 <translation id="7512061585041489067">What’s the best crypto wallet?</translation>
 <translation id="1342755158522323177">What’s a crypto browser?</translation>
-<translation id="4702762916247565868">Crypto wallets 101</translation>
 <translation id="4674552515763857735">What’s a recovery phrase?</translation>
 <translation id="7328255859839881981">What are DApps?</translation>
 <translation id="3852489285890032403">What’s web 3?</translation>
@@ -1466,7 +1461,6 @@
 <translation id="7877416315564177070">Check your recovery phrase and try again.</translation>
 <translation id="6503538941917874992">Import using your recovery phrase</translation>
 <translation id="782167880151571109">Metamask wallet detected!</translation>
-<translation id="3619071361843652814">Legacy wallet detected!</translation>
 <translation id="4634124774493850572">Use password</translation>
 <translation id="7697478310235189459">Word <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Type your MetaMask 12 to 24-word recovery phrase.</translation>
@@ -1479,7 +1473,6 @@
 <translation id="3604445540387095708">I have read and agree to the <ph name="LINK_BEFORE"/>Terms of use<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Buy crypto</translation>
 <translation id="3887541341068007345">Checking for wallet extensions...</translation>
-<translation id="3567994771568272606">Import from legacy Brave crypto wallets</translation>
 <translation id="8407091560429310499">Select an asset</translation>
 <translation id="756590380936155533">To finish your <ph name="ASSET_TICKER"/> purchase, select one of our partners</translation>
 <translation id="7880860489474966219">On completion, your funds will be transferred to your Brave Wallet</translation>
@@ -1738,6 +1731,7 @@
 <translation id="7758665172236842395">Follow your favourite sources, in a single feed. Just open a tab in Brave, scroll down, and … voila!</translation>
 <translation id="2376542729617592331">Brave News is ad-supported with private, anonymised ads. <ph name="LINK_START"/>Learn more.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Turn on Brave News</translation>
+<translation id="1772301834467143364">Brave News</translation>
 <translation id="6265592479622441247">Back to <ph name="BEGIN_BOLD"/>dashboard<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">Search for site, topic or RSS feed</translation>
 <translation id="1498364270401875204">Channels</translation>
@@ -2055,8 +2049,6 @@
 <translation id="7494736170250048402">Send message to Leo</translation>
 <translation id="8712637175834984815">Got it</translation>
 <translation id="1093419424466417703">The page is too long for Leo. Some context could be missing from the conversation. Leo was able to read <ph name="PERCENTAGE"/> of the page's contents.</translation>
-<translation id="2186990448773134544">The page content has been refined through extracting the most relevant information from the page because it was too long for Leo.</translation>
-<translation id="5140068729857132378">Finding the relevant parts of the web page...</translation>
 <translation id="4370698775470316661">This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.</translation>
 <translation id="5719170755629028558">Improving your answer with Brave Search …</translation>
 <translation id="5794962229997281366">Improved answer searching for <ph name="SEARCH_TERMS"/>.</translation>
@@ -2073,8 +2065,6 @@
 <translation id="5642775487085641191">Just want to chat?</translation>
 <translation id="8857222718794549840">Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.</translation>
 <translation id="9051226419897869406">Chat Privately with Brave Leo</translation>
-<translation id="637548538907281147">Shape answers based on the page's contents</translation>
-<translation id="8599503173207256429">Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.</translation>
 <translation id="318819763888864209">All subscriptions are auto-renewed but can be cancelled at any time before renewal.</translation>
 <translation id="5091223967610958">Share the hostname of the page you are on (<ph name="HOST_NAME"/>) to help us make Leo better.</translation>
 <translation id="8732450785281947197">Leo AI tools</translation>
@@ -2191,6 +2181,7 @@
 <translation id="6821108091726602352">Help us fix the web by participating in Brave’s Web Discovery Project. By sharing completely anonymous search signals, you can help Brave grow the search index.</translation>
 <translation id="6764845498618413165">Learn more.</translation>
 <translation id="7818938154803162778">Sure, I'll help</translation>
+<translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="958268166261124668">Brave VPN: connected</translation>
 <translation id="6021669293402055982">Brave VPN: disconnected</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>

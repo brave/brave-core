@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Contribuiți la îmbunătățirea stabilității Brave prin trimiterea automată de rapoarte de diagnosticare când apar erori ale browserului Brave sau când acesta se blochează.</translation>
 <translation id="7977176350719484850">Date est.\neconomisite</translation>
 <translation id="9008534313521214777">Timp\neconomisit estimat</translation>
+<translation id="8347743943525229984">Permite sondaje Brave</translation>
+<translation id="6022939994702081659">Permite Brave să afișeze linkuri către sondaje private în pagina noii file. Sondajele ne ajută să creăm funcții mai bune și să măsurăm eficiența campaniilor publicitare bazate pe browser.</translation>
+<translation id="7746496306508543965">Află mai multe despre Brave Rewards</translation>
 <translation id="410351446219883937">Redare automată</translation>
 <translation id="7445411102860286510">Permite site-urilor să redea automat videoclipuri cu sunetul dezactivat (recomandat)</translation>
 <translation id="7837721118676387834">Permite unui anumit site să redea automat videoclipuri cu sunetul dezactivat.</translation>
@@ -632,7 +635,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3961126209136843111">Importați un portofel existent</translation>
 <translation id="4811736040444856406">Afișați expresia pentru recuperare</translation>
 <translation id="4359319875297001084">Importați din vechile portofele de criptomonede Brave?</translation>
-<translation id="3157931365184549694">Restabilește</translation>
 <translation id="5844138175312846408">Aveți deja un portofel?</translation>
 <translation id="2502258949541727762">Înainte să începem</translation>
 <translation id="4303748097351941030">Rețele compatibile</translation>
@@ -796,7 +798,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1426320910664514906">Limită gas</translation>
 <translation id="6389441740143786465">Dezactivați bara de distribuire</translation>
 <translation id="9065203028668620118">Editează</translation>
-<translation id="473775607612524610">Actualizează</translation>
 <translation id="479795390141144417">Eroare la actualizarea contului.</translation>
 <translation id="8084782383392198011">Câmpul pentru numele contului nu poate rămâne gol.</translation>
 <translation id="5045550434625856497">Parolă incorectă</translation>

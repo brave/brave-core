@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Pomozte vylepšit stabilitu produktu Brave/u2019s automatickým odesíláním diagnostických zpráv, když prohlížeč Brave spadne nebo zmrzne.</translation>
 <translation id="7977176350719484850">Odhadovaná uložená data</translation>
 <translation id="9008534313521214777">Odh. ušetřená\ndoba</translation>
+<translation id="8347743943525229984">Povolit průzkumy Brave</translation>
+<translation id="6022939994702081659">Umožňuje službě Brave zobrazovat na nové kartě odkazy na soukromé průzkumy. Průzkumy nám pomáhají vytvářet lepší funkce a měřit účinnost reklamních kampaní v prohlížeči.</translation>
+<translation id="7746496306508543965">Další informace o průzkumech Brave</translation>
 <translation id="410351446219883937">Automatické přehrávání</translation>
 <translation id="7445411102860286510">Povolit webům automaticky přehrávat ztlumená videa (doporučeno)</translation>
 <translation id="7837721118676387834">Povolit automatické přehrávání ztlumených videí na konkrétním webu.</translation>
@@ -632,7 +635,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3961126209136843111">Importovat existující peněženku</translation>
 <translation id="4811736040444856406">Zobrazit frázi pro obnovení</translation>
 <translation id="4359319875297001084">Chcete provést import ze starších kryptopeněženek Brave?</translation>
-<translation id="3157931365184549694">Restore</translation>
 <translation id="5844138175312846408">Už máte peněženku?</translation>
 <translation id="2502258949541727762">Než začneme</translation>
 <translation id="4303748097351941030">Podporované sítě</translation>
@@ -794,7 +796,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="1426320910664514906">Limit paliva</translation>
 <translation id="6389441740143786465">Zakázat centrum sdílení</translation>
 <translation id="9065203028668620118">Upravit</translation>
-<translation id="473775607612524610">Aktualizovat</translation>
 <translation id="479795390141144417">Aktualizace účtu se nezdařila.</translation>
 <translation id="8084782383392198011">Název účtu nesmí být prázdný.</translation>
 <translation id="5045550434625856497">Nesprávné heslo</translation>

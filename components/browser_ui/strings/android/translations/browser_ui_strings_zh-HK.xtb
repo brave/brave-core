@@ -25,6 +25,7 @@
 <translation id="129382876167171263">網站儲存的檔案會在這裡顯示</translation>
 <translation id="131112695174432497">系統將刪除會影響廣告個人化的資料</translation>
 <translation id="1317194122196776028">清除此網站的記錄資料</translation>
+<translation id="1323433172918577554">顯示更多</translation>
 <translation id="1333965224356556482">不允許網站查看您的位置</translation>
 <translation id="1343356790768851700">此網站會判斷您喜歡的內容，以便向其他網站建議廣告</translation>
 <translation id="1369915414381695676">已新增網站 <ph name="SITE_NAME"/></translation>
@@ -35,6 +36,7 @@
 <translation id="1409338233051621926">㩒一下 [應用程式] 同 [預設應用程式]</translation>
 <translation id="1415402041810619267">縮短咗網址</translation>
 <translation id="1741136041592162279">讓 Brave 與你的裝置分享最近使用的分頁，並在裝置應用程式清單和搜尋結果中顯示。你可以在 Brave 設定中開啟或關閉此功能。</translation>
+<translation id="1432650420699700107">網站可要求連線至區域網絡上的任何裝置</translation>
 <translation id="1448064542941920355">縮小</translation>
 <translation id="1464044141348608623">不允許網站偵測您使用裝置的時間</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> 個網站}other{<ph name="SITE_COUNT"/> 個網站}}</translation>
@@ -96,6 +98,7 @@
 <translation id="2182457891543959921">在允許網站建立您身處環境的 3D 地圖或追蹤攝錄機位置前先詢問您 (建議)</translation>
 <translation id="2185965788978862351">這會刪除網站或主畫面上的應用程式儲存的資料和 Cookie，共 <ph name="DATASIZE"/>。</translation>
 <translation id="2194856509914051091">考慮因素</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{昨天}other{<ph name="NUM_DAYS_MANY"/> 天前}}</translation>
 <translation id="2215727959747642672">檔案編輯</translation>
 <translation id="2218389616572918761">網站可以要求使用麥克風</translation>
 <translation id="2228071138934252756">如要讓 <ph name="APP_NAME"/> 存取您的相機，請一併在 <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>中開啟相機。</translation>
@@ -126,6 +129,7 @@
 <translation id="2490684707762498678">由 <ph name="APP_NAME"/> 管理</translation>
 <translation id="2498359688066513246">說明和意見反映</translation>
 <translation id="2501278716633472235">返回</translation>
+<translation id="2533138527374486328">開咗之後，網站可以要求連線至區域網絡上嘅任何裝置。閂咗之後，網站就唔可以連線至區域網絡上嘅裝置。</translation>
 <translation id="2546283357679194313">Cookie 和網站數據</translation>
 <translation id="2570922361219980984">此裝置的位置資訊存取權亦已關閉，請在「<ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>」中開啟。</translation>
 <translation id="257931822824936280">已展開 - 點擊即可收合。</translation>
@@ -182,6 +186,7 @@
 <translation id="3167868116600277716">探索動態消息</translation>
 <translation id="3198916472715691905">已使用 <ph name="STORAGE_AMOUNT"/> 儲存空間</translation>
 <translation id="321187648315454507">如要讓 <ph name="APP_NAME"/> 傳送通知，請一併在 <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>中開啟通知功能。</translation>
+<translation id="3223425961342298674">唔批准存取位置資料</translation>
 <translation id="3227137524299004712">麥克風</translation>
 <translation id="3232293466644486101">刪除瀏覽資料…</translation>
 <translation id="3242646949159196181">開咗之後，網站可以播放音效。閂咗之後，網站唔可以播放音效。</translation>
@@ -251,12 +256,14 @@
 <translation id="3955321697524543127">不允許網站連接 USB 裝置</translation>
 <translation id="3965467402665811906">網站可要求使用與你相關的既有資料</translation>
 <translation id="3967822245660637423">下載完成</translation>
+<translation id="3969869202926863008">區域網絡存取權</translation>
 <translation id="3981465354637804599">網站通常要顯示廣告，才能免費提供內容或服務。不過，部分網站會顯示滋擾性或誤導廣告。</translation>
 <translation id="3987993985790029246">複製連結</translation>
 <translation id="3991845972263764475">已下載：<ph name="BYTES_DOWNLOADED_WITH_UNITS"/>，總大小：不明</translation>
 <translation id="3992308058851451478"><ph name="SITE"/> 可在你瀏覽時使用你的資料</translation>
 <translation id="3992684624889376114">關於本頁</translation>
 <translation id="4002066346123236978">標題</translation>
+<translation id="4031179711345676612">已允許使用麥克風</translation>
 <translation id="4046123991198612571">下一首曲目</translation>
 <translation id="4077310749977440510">網站通常會讀取你的剪貼簿，以提供保留複製文字格式等功能</translation>
 <translation id="4149890623864272035">確定要刪除 Cookie 等所有本機資料，並重設此網站的所有權限嗎？</translation>
@@ -266,8 +273,10 @@
 <translation id="4169549551965910670">已連線至 USB 裝置</translation>
 <translation id="4194328954146351878">在允許網站查看和變更 NFC 裝置上的資料前先詢問您 (建議)</translation>
 <translation id="4200726100658658164">開啟位置設定</translation>
+<translation id="4203769790323223880">唔批准用攝錄機</translation>
 <translation id="421742575134139848">網站可能會需要音效權限，才能播放音樂、影片和其他媒體的音效</translation>
 <translation id="4217710972110098902">已連線至序列連接埠</translation>
+<translation id="4223404254440398437">唔批准用咪</translation>
 <translation id="4226663524361240545">裝置會在收到通知時震動</translation>
 <translation id="4259722352634471385">瀏覽網址被封鎖：<ph name="URL"/></translation>
 <translation id="4274673989874969668">在您離開網站後，網站通常會保持同步以完成工作，例如上載相片或傳送即時通訊訊息</translation>
@@ -299,6 +308,7 @@
 <translation id="4635969503923889910">不允許網站使用 NFC 裝置</translation>
 <translation id="4644713492825682049">刪除並重設</translation>
 <translation id="4645575059429386691">由您的家長管理</translation>
+<translation id="4663373278480897665">已允許使用相機</translation>
 <translation id="4670064810192446073">虛擬實境</translation>
 <translation id="5652778654712411580">㩒一下 [瀏覽器應用程式] 同 [Brave]</translation>
 <translation id="4676059169848868271">如要允許「<ph name="APP_NAME"/>」追蹤手勢，請同時在<ph name="BEGIN_LINK"/>系統設定<ph name="END_LINK"/>中開啟手勢追蹤功能。</translation>
@@ -320,6 +330,7 @@
 <translation id="4972737347717125191">網站可要求使用虛擬實境﻿裝置和資料</translation>
 <translation id="497421865427891073">往前</translation>
 <translation id="4976702386844183910">上次瀏覽日期：<ph name="DATE"/></translation>
+<translation id="4978178243417029856">進一步了解「探索」動態消息</translation>
 <translation id="4994033804516042629">找不到任何聯絡人</translation>
 <translation id="4996978546172906250">共用方式</translation>
 <translation id="5001526427543320409">第三方 Cookie</translation>
@@ -344,6 +355,7 @@
 <translation id="5216942107514965959">上次瀏覽時間：今天</translation>
 <translation id="5225463052809312700">開啟攝錄機</translation>
 <translation id="5234764350956374838">關閉</translation>
+<translation id="5239623327352565343">批准存取位置資料</translation>
 <translation id="5246825184569358663">此操作會刪除 Cookie 等所有本機資料，並重設 <ph name="DOMAIN"/> 和該網域中每個網站的所有權限</translation>
 <translation id="5264323282659631142">移除「<ph name="CHIP_LABEL"/>」</translation>
 <translation id="528192093759286357">由上而下拖曳，然後輕觸返回按鈕即可退出全螢幕。</translation>
@@ -386,7 +398,9 @@
 <translation id="6105125042109106861">已封鎖無痕模式中的第三方 Cookie</translation>
 <translation id="5740126560802162366">網站可在裝置上儲存資料</translation>
 <translation id="5743425052258407233">讓記錄同步到你的所有裝置，方便你繼續執行先前的工作</translation>
+<translation id="5749158352074143502">繼續使用此分頁</translation>
 <translation id="5750869797196646528">手部追蹤</translation>
+<translation id="5753570386948603678">從記錄中刪除</translation>
 <translation id="5771720122942595109">已封鎖「<ph name="PERMISSION_1"/>」</translation>
 <translation id="5804241973901381774">權限</translation>
 <translation id="5822675474983796325">自訂新分頁頁底面板宜家顯示喺成個畫面</translation>
@@ -412,6 +426,7 @@
 <translation id="5968921426641056619">輸入網址</translation>
 <translation id="5975083100439434680">縮小</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> - <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">打開「探索」動態消息</translation>
 <translation id="6015775454662021376">控制此網站對裝置的存取權</translation>
 <translation id="6040143037577758943">關閉</translation>
 <translation id="6042308850641462728">更多選項</translation>
@@ -421,7 +436,7 @@
 <translation id="6120483543004435978">開咗之後，網站可以要求偵測你有冇主動用緊裝置。閂咗之後，網站唔可以偵測你有冇主動用緊裝置。</translation>
 <translation id="6165508094623778733">瞭解更多資料</translation>
 <translation id="6171020522141473435">開咗之後，網站可以要求使用藍牙裝置。閂咗之後，網站唔可以使用藍牙裝置。</translation>
-<translation id="6177128806592000436">您與此網站的連線並非完全安全</translation>
+<translation id="6177128806592000436">你與此網站的連線並不安全</translation>
 <translation id="6181444274883918285">新增例外網站</translation>
 <translation id="6192792657125177640">例外</translation>
 <translation id="7938602278189860250">{DAYS,plural, =1{Brave 將於明天再次封鎖 Cookie}other{系統將於 # 天後再次封鎖 Cookie}}</translation>
@@ -447,11 +462,13 @@
 <translation id="6527303717912515753">分享</translation>
 <translation id="6530703012083415527">開咗之後，網站可以使用彈出式視窗同重新導向。閂咗之後，網站唔可以使用彈出式視窗同重新導向。</translation>
 <translation id="6540488083026747005">你已允許此網站使用第三方 Cookie</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> 星期前}other{<ph name="NUM_WEEKS_MANY"/> 星期前}}</translation>
 <translation id="6545864417968258051">藍牙掃瞄</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{已封鎖「<ph name="PERMISSION_1"/>」、「<ph name="PERMISSION_2"/>」和另外 <ph name="NUM_MORE"/> 項權限}other{已封鎖「<ph name="PERMISSION_1"/>」、「<ph name="PERMISSION_2"/>」和另外 <ph name="NUM_MORE"/> 項權限}}</translation>
 <translation id="6554732001434021288">上次瀏覽日期：<ph name="NUM_DAYS"/> 天前</translation>
 <translation id="656065428026159829">查看更多</translation>
 <translation id="6561560012278703671">使用靜態訊息功能 (免受通知提示干擾)</translation>
+<translation id="6565144332292237355">網站可使用此功能來搜尋和連線至區域網絡上的任何裝置</translation>
 <translation id="6593061639179217415">桌面版網站</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{已允許 <ph name="RWS_MEMBERS_COUNT"/> 個 <ph name="RWS_OWNER"/> 網站使用 Cookie}other{已允許 <ph name="RWS_MEMBERS_COUNT"/> 個 <ph name="RWS_OWNER"/> 網站使用 Cookie}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -485,6 +502,7 @@
 <translation id="6992289844737586249">允許網站使用麥克風前先詢問您 (建議)</translation>
 <translation id="7000754031042624318">已在「Android 設定」中關閉</translation>
 <translation id="8683151724374457021">此網站會判斷您喜歡的內容，以便向其他網站建議廣告。此網站亦會從 Brave 取得您的廣告主題，以便為您顯示更相關的廣告。</translation>
+<translation id="7044081119134178347">呢次批准用相機</translation>
 <translation id="7053983685419859001">封鎖</translation>
 <translation id="7055552182600664515">如要播放受版權保護的內容，網站可能需要使用內容保護服務。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{已選取 1 個項目}other{已選取 # 個項目}}</translation>
@@ -496,8 +514,10 @@
 <translation id="7188508872042490670">裝置上的網站資料</translation>
 <translation id="7201549776650881587">此操作會刪除 <ph name="ORIGIN"/> 底下所有網站或該網站在主畫面上的應用程式儲存的所有資料和 Cookie</translation>
 <translation id="7203150201908454328">已展開</translation>
+<translation id="7213166370492037743">不允許網站連線至區域網絡上的任何裝置</translation>
 <translation id="7219254577985949841">要刪除網站資料嗎？</translation>
 <translation id="723171743924126238">選取圖片</translation>
+<translation id="7243246278722455312">自訂新分頁頁底面板</translation>
 <translation id="7243308994586599757">您可在畫面底部附近找到選項</translation>
 <translation id="7250468141469952378">揀咗 <ph name="ITEM_COUNT"/> 個</translation>
 <translation id="7260727271532453612">已允許「<ph name="PERMISSION_1"/>」和「<ph name="PERMISSION_2"/>」</translation>
@@ -520,7 +540,9 @@
 <translation id="7554752735887601236">有網站正在使用您的麥克風</translation>
 <translation id="7561196759112975576">永遠使用</translation>
 <translation id="7573594921350120855">網站通常會使用攝錄機提供通訊功能，例如視像通訊</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> 個月前}other{<ph name="NUM_MONTHS_MANY"/> 個月前}}</translation>
 <translation id="757524316907819857">禁止網站播放受保護內容</translation>
+<translation id="7586676035079382730">唔批准通知</translation>
 <translation id="7594634374516752650">已連線至藍牙裝置</translation>
 <translation id="7617547684249261169">你可以刪除部分或全部記錄、Cookie、網站資料等</translation>
 <translation id="7649070708921625228">說明</translation>
@@ -533,15 +555,16 @@
 <translation id="7759147511335618829">MIDI 裝置控制和重新編程</translation>
 <translation id="7781829728241885113">昨天</translation>
 <translation id="7791543448312431591">新增</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{繼續使用此分頁}other{繼續使用這些分頁}}</translation>
 <translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="7804248752222191302">有網站正在使用您的相機</translation>
 <translation id="6720480757902085971">由 Brave 提供</translation>
+<translation id="7815680994978050279">已封鎖危險的下載項目</translation>
 <translation id="7835852323729233924">正在播放媒體</translation>
 <translation id="783819812427904514">將影片取消靜音</translation>
 <translation id="7846076177841592234">取消選取</translation>
 <translation id="2353409725922994861">Brave 會限制大部分網站使用第三方 Cookie。不過，由於此網站需要使用 Cookie 才能提供基本服務，因此獲允許使用第三方 Cookie。\n\n你可前往設定<ph name="BEGIN_LINK"/>管理第三方 Cookie 存取權<ph name="END_LINK"/>。</translation>
 <translation id="7882806643839505685">允許特定網站播放音效。</translation>
+<translation id="7891547341794213004">隱藏「繼續使用此分頁」資訊卡</translation>
 <translation id="1856888821396498049">在無痕模式中封鎖第三方 Cookie：</translation>
 <translation id="789722939441020330">不允許網站自動下載多個檔案</translation>
 <translation id="7940722705963108451">提醒我</translation>
@@ -550,7 +573,6 @@
 <translation id="7986741934819883144">選取聯絡人</translation>
 <translation id="7990211076305263060">開咗之後，網站可以要求使用麥克風。閂咗之後，網站唔可以使用麥克風。</translation>
 <translation id="8007176423574883786">已為這部裝置關閉</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{隱藏「繼續使用此分頁」資訊卡}other{隱藏「繼續使用這些分頁」資訊卡}}</translation>
 <translation id="802154636333426148">下載失敗</translation>
 <translation id="8042586301629853791">排序方式：</translation>
 <translation id="8051193500142930381">需要攝錄機的功能將無法運作</translation>
@@ -585,6 +607,7 @@
 <translation id="8380167699614421159">此網站顯示滋擾性或誤導廣告</translation>
 <translation id="8394832520002899662">輕按即可返回網站</translation>
 <translation id="8409345997656833551">在文章能以簡化檢視模式顯示時接收通知</translation>
+<translation id="8416874502399604126">呢次批准用咪</translation>
 <translation id="8423565414844018592">文字縮放比例已經設定咗做 <ph name="TEXT_SCALING"/></translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="8441146129660941386">向後回轉</translation>
@@ -652,12 +675,14 @@
 <translation id="9106233582039520022">要刪除 Cookie 嗎？</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{「<ph name="PERMISSION_1"/>」、「<ph name="PERMISSION_2"/>」和另外 <ph name="NUM_MORE"/> 項權限}other{「<ph name="PERMISSION_1"/>」、「<ph name="PERMISSION_2"/>」和另外 <ph name="NUM_MORE"/> 項權限}}</translation>
 <translation id="913657688200966289">請在 <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>中為 <ph name="APP_NAME"/> 啟用這些權限。</translation>
+<translation id="9138037198177304356">批准咗通知</translation>
 <translation id="9138217887606523162">宜家嘅縮放率係 <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">讓 Brave 在裝置應用程式清單和搜尋結果中顯示你最近使用的分頁。你可隨時在 Brave 設定中關閉此功能。</translation>
 <translation id="9162462602695099906">此頁面不安全</translation>
 <translation id="9182556968660520230">不允許網站播放受保護的內容</translation>
 <translation id="947156494302904893">您瀏覽的網站可驗證您是真人，而不是機器人</translation>
 <translation id="959682366969460160">讓所有內容變得井井有條</translation>
+<translation id="961930410699694996">呢次批准存取位置</translation>
 <translation id="967624055006145463">已儲存的資料</translation>
 <translation id="969975166333045662">禁止網站使用 V8 優化工具。</translation>
 </translationbundle>

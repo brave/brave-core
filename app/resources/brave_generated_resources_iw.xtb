@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">בדף הכרטיסייה החדשה בלבד</translation>
 <translation id="6406506848690869874">סנכרון</translation>
 <translation id="1544192797660353713">ארנק</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
 <translation id="8275068909952022340">עוד…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {סגירת חלון אורח}
+          other {סגירת חלונות אורחים}
+        }</translation>
 <translation id="1990886731975529483">התקינו והפעילו את Google Widevine</translation>
 <translation id="8926389886865778422">אל תשאל שוב</translation>
 <translation id="4900351245762303149">התקינו את Google Widevine</translation>
@@ -76,13 +80,20 @@
 <translation id="2808103541110899519">הסתרת האייקון של Brave Wallet</translation>
 <translation id="7595540212376041331">הסתרת האייקון של Brave Wallet</translation>
 <translation id="3893997535859323951">הסתר את סמל Leo המבוסס בינה מלאכותית</translation>
+<translation id="8832245978592881387">פתיחת Leo AI בכרטיסיה חדשה</translation>
+<translation id="4577675328803804820">פתיחת Leo AI בסרגל הצדי</translation>
+<translation id="564305948667173847">ניהול הגדרות Leo AI</translation>
 <translation id="6208515240323786457">הסתר את סמל Leo המבוסס בינה מלאכותית</translation>
-<translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
+<translation id="2169338740411893745">פתיחת Leo AI בכרטיסיה חדשה</translation>
+<translation id="3295805221342028003">פתיחת Leo AI בסרגל הצדי</translation>
+<translation id="7400808612454224939">ניהול הגדרות Leo AI</translation>
+<translation id="5385064007245738696">אודות Leo AI</translation>
 <translation id="4928988318462976765">חנות תוספי רשת</translation>
 <translation id="9181207987584064303">הצג בחנות תוספי רשת</translation>
 <translation id="3161744659507801211">אזהרה: Brave אינו יכול למנוע מתוספים לתעד את היסטוריית הגלישה שלכם.</translation>
 <translation id="2162109630536601963">אם תוסף זה שולח בקשות רשת, הן לא ישתמשו ב- Tor או במצב פרטי.</translation>
 <translation id="2725327089319971976">כדי להשבית תוסף זה במצב פרטי ובמצב Tor, יש לבטל הבחירה באפשרות זו.</translation>
+<translation id="438106944087726695">מנוהל על ידי Brave</translation>
 <translation id="3371343170427636147">יישומי לילה של דפדפן Brave</translation>
 <translation id="4097979995947147464">יישומי ביטא של דפדפן Brave</translation>
 <translation id="8303432794159193481">יישומי פיתוח של דפדפן Brave</translation>
@@ -181,11 +192,6 @@
 <translation id="4394049700291259645">השבת</translation>
 <translation id="7142548388914389999">אפשר ניתוח מוצרים השומר על פרטיות (P3A)</translation>
 <translation id="2604698253988679506">התגובות הפרטיות האלה מסייעות ל-Brave להעריך את השימוש הכולל בתכונות מסוימות ולשפר אותן עבורך.</translation>
-<translation id="1947672064022327074">רוצה לפתוח ארנקי קריפטו לקבלת תמיכה ל-Ethereum?</translation>
-<translation id="7583735190612229830">הגדר/י ארנקי קריפטו כדי לקיים אינטראקציה עם אפליקציה זו ואחרות כמוה.</translation>
-<translation id="8731422418734770661">הגדר ארנקי קריפטו</translation>
-<translation id="8199661191594897555">התחל ארנקי קריפטו וטען מחדש</translation>
-<translation id="8428213095426709021">הגדרות</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 Domains</translation>
 <translation id="5046066249040287308">שירותי ארנק Brave</translation>
@@ -331,9 +337,10 @@
 <translation id="1533980864758658574">חלון חדש נוצר עבור <ph name="TOPIC"/></translation>
 <translation id="7985042437720138349">הפיצ׳ר הזה שולח נתונים על הכרטיסיות הפתוחות שלך אל Leo, עוזר הדפדפן מבוסס ה-AI של Brave.</translation>
 <translation id="6165508094623778733">למידע נוסף</translation>
-<translation id="7557539689487606886">עבור לפרימיום</translation>
+<translation id="7557539689487606886">לעבור לפרימיום</translation>
 <translation id="1035309871698658326">כשהוא מופעל, זה ישלח אוטומטית את הכותרות ואת המקור של כל הכרטיסיות הלא-פרטיות אל Leo למטרת סיווג.</translation>
 <translation id="3435896845095436175">הפעל</translation>
+<translation id="1940221956626514677">התאמה אישית של סרגל הכלים</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="1426410128494586442">כן</translation>
@@ -491,6 +498,8 @@
 <translation id="3540231253392253941">השתמש בשירותי Google לצורך שליחת הודעות פוש</translation>
 <translation id="933652931229970927">שלחו דוחות באופן אוטומטי</translation>
 <translation id="4891600875049212418">עברו ל-Off-The-Record בעת ביקור באתרים רגישים</translation>
+<translation id="509873765238158442">חסימת Microsoft Recall</translation>
+<translation id="4763421121695677716">חסימה של הפיצ׳ר Recall במחשבי Microsoft Windows כך שהוא לא יצלם צילומי מסך אוטומטית בכרטיסיות פתוחות של Brave.</translation>
 <translation id="1968895725257436430">איסוף נתונים</translation>
 <translation id="4846154056248462491">ביציאה</translation>
 <translation id="216468847346280584">מחק נתוני Brave מודעות...</translation>
@@ -652,10 +661,10 @@
 <translation id="2653659639078652383">שלח</translation>
 <translation id="1294350054292274934">פתור כתובות .onion רק בחלונות Tor</translation>
 <translation id="601227612175911475">שירותי Onion לא יהיו זמינים מחוץ לחלונות Tor.</translation>
-<translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
 <translation id="5249433283143453448">השתמש/י ברכיב ניהול זכויות דיגיטלית (DRM) Widevine כדי לצפות בסרטון מוגן ובתכנים אחרים בדפדפן.</translation>
 <translation id="1314131187310290315">הרחבות V2 Manifest</translation>
 <translation id="2488433650767270565">ההרחבות הבאות של Manifest V2 יוסרו מחנות האינטרנט של Chrome, אך עדיין נתמכות ב-Brave. החלף כדי להוריד ולהתקין, או כדי להסיר את ההתקנה.</translation>
+<translation id="6918225713618473646">Brave מארחת את תוספי Manifest V2 אלה בשרתיה, אבל אינה בודקת או מאמתת את התוכן, האבטחה או ההתנהגות שלהם. לקבלת עזרה, יש לעיין בדף הרשמי של כל תוסף. אפשר לקרוא על התוכניות של Brave לגבי Manifest V2 <ph name="BEGIN_LINK"/>כאן<ph name="END_LINK"/>.</translation>
 <translation id="578671172657727816">לְאַפשֵׁר NoScript™</translation>
 <translation id="9068475464170522036">NoScript היא הרחבה Manifest V2 המאפשרת לך לחסום ולבטל חסימה של סקריפטים בודדים הפועלים או מנסים לפעול בדף נתון.</translation>
 <translation id="1394592156621788100">לְאַפשֵׁר uBlock Origin™</translation>
@@ -670,7 +679,6 @@
 <translation id="7701023802820268122">ארנק ברירת המחדל של Solana</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="6942354363301686374">הרחבות (ללא גיבוי)</translation>
-<translation id="1274962333945373242">ארנקי קריפטו (מבוטלת)</translation>
 <translation id="702381242110464396">הרחבות (החלפה של ארנק Brave)</translation>
 <translation id="4718664830805652430">ברירת המחדל של מטבע הבסיס</translation>
 <translation id="7992507032049865603">ברירת המחדל של מטבע קריפטו בסיסי</translation>
@@ -735,6 +743,7 @@
 <translation id="3095201688102519917">הזהר אותי לפני סגירת חלון שבו מספר כרטיסיות</translation>
 <translation id="7120553802660696133">סגור חלון בסגירת הכרטיסייה האחרונה</translation>
 <translation id="3394171693948989253">הצג תזכורת במסך מלא ללחוץ על Esc ליציאה</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">הצג את סמל Leo בסרגל הצד</translation>
 <translation id="8055509865174199683">הצג את ליאו בתפריט הקונטקסט באתרי אינטרנט</translation>
 <translation id="1529674267267221673">ליאו יוצג בתפריט הקונטקסט כשתלחץ על הלחצן הימני של העכבר באתר האינטרנט. הפעולה תשלח קונטקסט מדף האינטרנט הנוכחי אל ליאו.</translation>
@@ -747,7 +756,6 @@
 <translation id="1335414530428321716">איפוס Leo AI יחייב אותך להצטרף לשימוש ב-Leo AI בעתיד וגם ימחק את היסטוריית הצ׳אט שלך. ניקוי היסטוריית הצ׳אט ימחק את כל השיחות הקודמות שלך עם Brave Leo AI הפעולה הזו לא ניתנת לביטול.</translation>
 <translation id="5574059574002819179">התאם הצעות בהשלמה אוטומטית</translation>
 <translation id="7942415993090181327">היסטוריית צ׳אטים</translation>
-<translation id="5385064007245738696">אודות Leo AI</translation>
 <translation id="5084498230659987096">Brav Leo מספק צ׳אט AI וממשקים מבוססי AI אחרים ממוקדי פרטיות בדפדפן. Leo לעולם לא לומד מהנתונים שלך או משתמש בהם עבור אימון המודל. כל הבקשות נשלחות דרך שרת אנונימי.</translation>
 <translation id="6458721693611638005">אפשר לקרוא עוד על האופן שבו Brave מגן על השימוש שלך ב-AI במדיניות הפרטיות של Leo. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">מודל ברירת מחדל לשיחות חדשות</translation>
@@ -784,6 +792,9 @@
 <translation id="6304169450064541679">פרומפט מערכת</translation>
 <translation id="3081947790648024460">הוראות ו/או הקשר שניתנים למודל כדי להדריך את התגובות שלו בכיוון או סגנון ספציפי. אפשר להשתמש ב-%datetime% היכן שברצונך להכניס את התאריך והשעה.</translation>
 <translation id="5688878061573389791"><ph name="TOKENS_COUNT"/> אסימונים</translation>
+<translation id="5985516785067818307">משתתפ/ת בסקר</translation>
+<translation id="8347743943525229984">הפעלת סקרי Brave</translation>
+<translation id="3204080538332044581">מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">אפשר רשימת השמעה</translation>
 <translation id="7903608716704052878">הוסף אוטומטית קבצים לצפייה במצב לא מקוון</translation>
 <translation id="4193768184502613558">אפשרות זו תשמור באופן אוטומטי קבצי מדיה במטמון כך שניתן יהיה לנגן אותם ללא חיבור לאינטרנט.</translation>

@@ -878,7 +878,7 @@
 <translation id="1939235910515558387">Kom i gang med Brave Wallet på få minutter.</translation>
 <translation id="5844138175312846408">Har du allerede en wallet?</translation>
 <translation id="772643556080081594">Jeg har kun brug for en observationswallet</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave og Brave-logoet er registrerede varemærker tilhørende Brave Software, Inc. Andre produktnavne og -logoer kan være varemærker tilhørende de respektive virksomheder. Alle rettigheder forbeholdes.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave og Brave-logoet er registrerede varemærker tilhørende Brave Software, Inc. Andre produktnavne og -logoer kan være varemærker tilhørende de respektive virksomheder. Alle rettigheder forbeholdes.</translation>
 <translation id="7501957181231305652">eller</translation>
 <translation id="375882617301124395">Backup din crypto-wallet</translation>
 <translation id="5024543173656851695">Jeg er indforstået med, at hvis jeg mister mine gendannelsesord, vil jeg ikke kunne tilgå min kryptotegnebog.</translation>
@@ -1122,10 +1122,6 @@
 <translation id="4324239559624557455">I 24 timer</translation>
 <translation id="9139452553033760558">I 1 uge</translation>
 <translation id="1658834457013045127">For altid</translation>
-<translation id="2770851145415891830">Eksisterende crypto-wallets fundet</translation>
-<translation id="2237759620789871865">Hvis du hellere vil springe over importen og beholde den gamle Crypto Wallet-oplevelse, så gå til Brave Browser-<ph name="LINK_BEFORE"/>indstillingerne<ph name="LINK_AFTER"/>, og skift standarden tilbage til Crypto Wallets. Du kan også importere, prøve den nye Brave Wallet og dernæst skifte tilbage når som helst.</translation>
-<translation id="5590175005414413980">Indtast din eksisterende krypto wallet-adgangskode for at importere Brave-wallet. Nyd en hurtigere og mere sikker måde at håndtere krypto-aktiver og interagere med Web3 DApps.</translation>
-<translation id="880619123281809987">Indtast Crypto wallets adgangskode</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> forbundet</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> afbrudt</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
@@ -1382,6 +1378,9 @@
 <translation id="5601436886921227795">Dapp-interaktioner</translation>
 <translation id="9104177294757104789">Send <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Byt <ph name="MAKER"/> til <ph name="TAKER"/></translation>
+<translation id="1748114617341025015">Oprettelse af tilknyttet token-konto</translation>
+<translation id="4418115887224983240">Kunne ikke oprette tilknyttet token-konto</translation>
+<translation id="7165697599360786670">Tilknyttet token-konto oprettet</translation>
 <translation id="8613144770663526433">Log ind med Brave Wallet</translation>
 <translation id="8813165409788097898">Du er ved at logge ind på <ph name="ORIGIN"/>. Brave Wallet videregiver din wallet-adresse til <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Se detaljer</translation>
@@ -1515,7 +1514,6 @@
 <translation id="396152018598329740">Hvordan bruger man en kryptopung?</translation>
 <translation id="7512061585041489067">Hvad er den bedste kryptopung?</translation>
 <translation id="1342755158522323177">Hvad er en kryptobrowser?</translation>
-<translation id="4702762916247565868">Kryptopunge 101</translation>
 <translation id="4674552515763857735">Hvad er en gendannelsessætning?</translation>
 <translation id="7328255859839881981">Hvad er DApps?</translation>
 <translation id="3852489285890032403">Hvad er web 3?</translation>
@@ -1533,7 +1531,6 @@
 <translation id="7877416315564177070">Kontrollér din gendannelsessætning, og prøv igen</translation>
 <translation id="6503538941917874992">Importér ved hjælp af din gendannelsessætning</translation>
 <translation id="782167880151571109">MetaMask-wallet registreret!</translation>
-<translation id="3619071361843652814">Forældet wallet registreret!</translation>
 <translation id="4634124774493850572">Brug adgangskode</translation>
 <translation id="7697478310235189459">Ord <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Indtast din MetaMask 12-24-ords gendannelsessætning.</translation>
@@ -1546,7 +1543,6 @@
 <translation id="3604445540387095708">Jeg har læst og accepterer <ph name="LINK_BEFORE"/>vilkårene for brug<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Køb krypto</translation>
 <translation id="3887541341068007345">Kontrollerer for pungudvidelser ...</translation>
-<translation id="3567994771568272606">Importer fra ældre Brave-kryptopunge</translation>
 <translation id="8407091560429310499">Vælg et aktiv</translation>
 <translation id="756590380936155533">For at afslutte dit køb af <ph name="ASSET_TICKER"/> skal du vælge en af vores partnere</translation>
 <translation id="7880860489474966219">Når du er færdig, vil dine penge blive overført til din Brave Wallet</translation>
@@ -1749,6 +1745,7 @@
 <translation id="4583937519241190398">Verificeret af DappRadar</translation>
 <translation id="8713438253026855351">Skift til en afskærmet konto</translation>
 <translation id="3526789880090101085">Afskærmet konto</translation>
+<translation id="3155166394760577549">Aktivér afskærmning for at beskytte transaktionens bedre.</translation>
 <translation id="2298396008562701154">I øjeblikket understøtter denne konto gennemsigtige transaktioner, hvilket betyder, at de er synlige for alle på blockchainen.</translation>
 <translation id="3987095760757102811">Opgradering til en afskærmet konto betyder, at oplysninger om afsender, modtager og beløb skjules for disse transaktioner.</translation>
 <translation id="3819528427777765709">Afskærmet</translation>
@@ -1779,6 +1776,8 @@
 <translation id="99991973626409495">Gennemgå afskærmning</translation>
 <translation id="3114681061018999547">Afskærmer</translation>
 <translation id="8897189056319316783">Afskærm ZEC</translation>
+<translation id="3382275793825152362">Afskærm overførsler</translation>
+<translation id="8631765320256788981">Du sender penge fra din åbne konto til din afskærmede konto.</translation>
 <translation id="7144878232160441200">Prøv igen</translation>
 <translation id="9094621390791852268">Forhåndsvisning af transaktionen mislykkedes.</translation>
 <translation id="4982713341035600933">Anslået saldoændring</translation>
@@ -1840,7 +1839,7 @@
 <translation id="7758665172236842395">Følg dine yndlingskilder i et enkelt feed. Du skal bare åbne en fane i Brace, scrolle ned og ... værsgo!</translation>
 <translation id="2376542729617592331">Brave News er reklameunderstøttet med helt fortrolige og anonymiserede reklame. <ph name="LINK_START"/>Løs mere.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Aktivér Brave News</translation>
-<translation id="5149018766422637336">Nyheder og RSS</translation>
+<translation id="1772301834467143364">Brave News</translation>
 <translation id="6265592479622441247">Gå tilbage til <ph name="BEGIN_BOLD"/> dashboard<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Opdag</translation>
 <translation id="8981973962043893066">Søg efter sider, emner eller RSS-feed</translation>
@@ -2111,10 +2110,18 @@
 <translation id="4885527781814382758">Brave Leo er en privat AI-smartassistent, der forbedrer din brug af internettet. Leo er gratis at bruge med begrænset adgang. Brave Leo Premium tilbyder flere modeller, højere grænser og giver abonnenter tidlig adgang til nye funktioner. Standardmodellen vil ændre sig fra tid til anden. Se flere detaljer i <ph name="LINK_BEFORE"/>Braves hjælpecenter<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Når du stiller Leo et spørgsmål, kan den som udgangspunkt sende og bruge indholdet af den hjemmeside, du besøger, eller enhver tekst, du fremhæver på en side, for at give et svar. Nøjagtigheden af svar er ikke garanteret og kan inkludere unøjagtige, misvisende eller falske informationer. Leo bruger data fra Brave-søgning for at forbedre kvaliteten af svar. Brug ikke følsomme eller private oplysninger, og udvis påpasselighed, når det angår svar, der omhandler helbred, finans, personlig sikkerhed eller lignende emner. Du kan altid ændre på Leos opførsel under indstillinger. Gå til Indstillinger &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo indsamler ikke identifikatorer, som din IP-adresse, der kan tilbageføres til dig. Intet data bruges til at træne AI-modellerne, og ingen personlige oplysninger bibeholdes af AI-modellerne (bortset fra Anthropic, der bibeholder data i 30 dage, hvorefter det slettes). Se <ph name="LINK_BEFORE"/>privatlivspolitikken<ph name="LINK_AFTER"/> for mere information.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {Stil et spørgsmål om indholdet på denne side}
+      other {Stil et spørgsmål om indholdet på disse sider}
+    }</translation>
 <translation id="6961721183181597848">Hvordan kan jeg hjælpe dig i dag?</translation>
 <translation id="2966135729673253768">Stil uddybende spørgsmål</translation>
 <translation id="4524675003624341892">Foreslå spørgsmål...</translation>
 <translation id="4567071417854988869">Sammenfat denne video</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {Sammenfat denne side}
+      other {Sammenfat disse sider}
+    }</translation>
 <translation id="7921782882718083488">Sammenfat denne side</translation>
 <translation id="7932221068776853847">Afbryd for at holde op med at sende denne sides indhold til Leo, og start en ny samtale</translation>
 <translation id="8743383817154663379">Noget gik galt under behandlingen af din anmodning. Prøv venligst igen senere.</translation>
@@ -2205,16 +2212,14 @@
 <translation id="8712637175834984815">Forstået</translation>
 <translation id="1093419424466417703">Siden er for lang til Leo. Der kan mangle en sammenhæng i samtalen. Leo kunne læse <ph name="PERCENTAGE"/> af sidens indhold.</translation>
 <translation id="4592293425457329338">Der kan mangle noget kontekst i samtalen. Leo var i stand til at bevare <ph name="PERCENTAGE"/> af samtalens tilknyttede indhold.</translation>
-<translation id="2186990448773134544">Sidens indhold er blevet ændret ved at udtrække de mest relevante oplysninger, fordi den var for lang til Leo.</translation>
-<translation id="5140068729857132378">Finder de relevante dele af websitet...</translation>
 <translation id="4370698775470316661">Denne samtale er for lang og kan ikke fortsættes. Der findes muligvis andre modeller, som Leo kan bruge til at bibeholde nøjagtigheden i længere samtaler.</translation>
 <translation id="5719170755629028558">Forbedrer dit svar med Brave Search …</translation>
 <translation id="5794962229997281366">Søger efter forbedret svar på <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> mere …</translation>
 <translation id="8103700533980268469">Luk denne besked</translation>
 <translation id="3417835166382867856">Søg i faner</translation>
-<translation id="9090243919347147717">Vedhæftede filer</translation>
-<translation id="4444978378117903684">Tilføj dine browserfaner for at give Leo mere kontekst til samtalen</translation>
+<translation id="1352836459737874921">Vedhæft indhold fra andre faner</translation>
+<translation id="3028258613451571431">Send sideindhold fra dine browserfaner for at give Leo mere kontekst til samtalen</translation>
 <translation id="4300920590112551536">Browserfaner</translation>
 <translation id="2315654674554095762">Leo vil nu huske dine samtaler, så du kan gå tilbage til dem. De gemmes krypteret på din enhed, og du kan slette dem når som helst.</translation>
 <translation id="7821251979960635244">Din samtalehistorik vises her, når du starter en samtale.</translation>
@@ -2237,8 +2242,8 @@
 <translation id="5642775487085641191">Vil du bare chatte?</translation>
 <translation id="8857222718794549840">Spørg mig om hvad som helst! Vi kan tale om ethvert emne, du ønsker. Jeg lærer og forbedrer mig altid for at give bedre svar.</translation>
 <translation id="9051226419897869406">Chat privat med Brave Leo</translation>
-<translation id="637548538907281147">Form svar baseret på sidens indhold</translation>
-<translation id="8599503173207256429">Aktiver for at spørge om denne side. Dens indhold vil blive sendt til Brave Leo sammen med dine beskeder.</translation>
+<translation id="2414904697165579184">Udform svar baseret på fanens/fanernes indhold</translation>
+<translation id="8258324391302611485">Denne sides indhold vil blive sendt til Leo sammen med dine beskeder.</translation>
 <translation id="318819763888864209">Alle abonnementer bliver automatisk fornyet, men kan annulleres når som helst før næste fornyelse.</translation>
 <translation id="5091223967610958">Del værtsnavnet på den side, du er på (<ph name="HOST_NAME"/>) for at hjælpe os med at gøre Leo bedre..</translation>
 <translation id="8732450785281947197">Leo AI-redskaber</translation>
@@ -2269,11 +2274,14 @@
 <translation id="9088751620363630236">Tag et billede ...</translation>
 <translation id="4250229828105606438">Skærmbillede</translation>
 <translation id="6332876390231524389">Nuværende faneindhold</translation>
+<translation id="7742969455167760092">Åbne faner ...</translation>
 <translation id="49269513399674318">Brug mikrofon</translation>
 <translation id="3895031624234442305">Brugerdefinerede modeller</translation>
 <translation id="4572010449071015143">Start en ny samtale</translation>
 <translation id="345901077335355561">Gå tilbage til den aktive samtale</translation>
 <translation id="6287023598025162715">Ny samtale</translation>
+<translation id="7097822247923237815">Midlertidig chat</translation>
+<translation id="7481750859362986254">Denne chat vil ikke blive gemt i din historik eller bruge nogen af Leos tilpasninger eller minder.</translation>
 <translation id="8370801182970639038">Automatisk (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Aktiverede søgemaskiner</translation>
 <translation id="5355776323718420036">Skjul populære sider</translation>
@@ -2390,6 +2398,7 @@
 <translation id="6821108091726602352">Hjælp os med at ordne nettet ved at deltage i Braves Web Discovery Project. Ved at dele helt anonyme søgesignaler kan du hjælpe Brave med at vokse søgeindekset.</translation>
 <translation id="6764845498618413165">Lær mere.</translation>
 <translation id="7818938154803162778">Selvfølgelig vil jeg hjælpe.</translation>
+<translation id="7207456302801184289">Velkommen til Brave</translation>
 <translation id="3486480638399578250">Hold din private e-mailadresse privat</translation>
 <translation id="7765422154906712751">Opret unikke, tilfældige adresser, der videresender til din Brave konto-e-mail og kan slettes når som helst. Hold din reelle e-mailadresse fra at blive afsløret eller brugt af annoncører.</translation>
 <translation id="5222676887888702881">Log ud</translation>
@@ -2406,6 +2415,7 @@
 <translation id="1104500750724567895">Nyt alias</translation>
 <translation id="8072910658503112482">Foreslå et andet e-mail-alias</translation>
 <translation id="7710361355427562228">Genererer nyt alias ...</translation>
+<translation id="8013913032858654337">Fejl ved generering af alias. Tjek din internetforbindelse, og prøv igen.</translation>
 <translation id="4253168017788158739">Bemærk</translation>
 <translation id="7596996548739923550">Indtast en note til din adresse (valgfrit)</translation>
 <translation id="3810973564298564668">Administrer</translation>
@@ -2413,13 +2423,21 @@
 <translation id="3919357515365744684">E-mails vil blive videresendt til <ph name="MAIN_EMAIL"/></translation>
 <translation id="6063403442924238501">Rediger e-mail-alias</translation>
 <translation id="8729265501883390499">Opret alias</translation>
+<translation id="7137645995703540578">Fejl med at gemme alias. Tjek din internetforbindelse, og prøv igen.</translation>
+<translation id="1765544689721905747">Slet e-mail-alias</translation>
+<translation id="646524615209870492">Hvis du fjerner <ph name="ALIAS"/> som alias, mister du muligheden for at modtage e-mails.</translation>
+<translation id="8133100642915054515">Fejl ved sletning af alias. Tjek din internetforbindelse, og prøv igen.</translation>
+<translation id="8465742443901727718">Denne handling kan ikke fortrydes. Er du sikker på, at du vil fortsætte?</translation>
 <translation id="8662104432574824754">For at komme i gang skal du logge ind eller oprette en Brave-konto</translation>
 <translation id="8069030342700068465">Indtast din e-mail-adresse for at få tilsendt et sikkert login-link til din e-mail. Ved at klikke på dette link vil du enten oprette eller få adgang til en Brave-konto og bruge den gratis tjeneste med e-mail-aliaser.</translation>
 <translation id="2133391407495495735">Få login-link</translation>
+<translation id="2650906829817220223">Fejl ved anmodning om godkendelse. Tjek din internetforbindelse, og prøv igen.</translation>
 <translation id="3699624789011381381">E-mail-adresse</translation>
 <translation id="8124939971041602970">En login-e-mail er på vej til <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">Klik på det sikre login-link i e-mailen for at få adgang til din konto.</translation>
-<translation id="6549775668256477823">Kan du ikke se e-mailen? Tjek din spammappe eller <ph name="BEGIN_LINK"/>prøv igen<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Kan du ikke se e-mailen? Tjek din spammappe eller prøv igen.</translation>
+<translation id="3397336197747843396">Fejl ved godkendelse med Brave-konto. Prøv venligst igen.</translation>
+<translation id="1340795582009113055">Begynd forfra</translation>
 <translation id="958268166261124668">Brave VPN: Tilsluttet</translation>
 <translation id="6021669293402055982">Brave VPN: Frakoblet</translation>
 <translation id="3541307549916475335">Panel-interface for Brave VPN</translation>

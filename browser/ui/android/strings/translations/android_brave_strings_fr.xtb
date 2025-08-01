@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Contribuez à améliorer la stabilité des produits de Brave en envoyant automatiquement des rapports de diagnostic lorsque le navigateur Brave plante ou se bloque.</translation>
 <translation id="7977176350719484850">Données\néconomisées</translation>
 <translation id="9008534313521214777">Temps gagné</translation>
+<translation id="8347743943525229984">Autoriser les enquêtes Brave</translation>
+<translation id="6022939994702081659">Permet à Brave d'afficher des liens vers des enquêtes privées sur la page de nouvel onglet. Les enquêtes nous aident à développer de meilleures fonctionnalités et à mesurer l'efficacité des campagnes publicitaires dans le navigateur.</translation>
+<translation id="7746496306508543965">En savoir plus sur les enquêtes Brave</translation>
 <translation id="410351446219883937">Lecture automatique</translation>
 <translation id="7445411102860286510">Autoriser les sites à lire automatiquement des vidéos dont le son est coupé (recommandé)</translation>
 <translation id="7837721118676387834">Autorisez la lecture automatique des vidéos dont le son est coupé pour un site spécifique.</translation>
@@ -606,7 +609,7 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="5333225216561354793">Nous vous demandons de prendre acte des éléments ci-dessous</translation>
 <translation id="6937275455070754004">Choisissez quelles chaînes de blocs utiliser dans votre portefeuille.</translation>
-<translation id="1645800479814134195">Je comprends qu'il s'agit d'un portefeuille dont j'ai la garde, et que je suis le seul responsable des fonds, actifs ou comptes associés, et que je dois prendre les mesures appropriées pour sécuriser, protéger et sauvegarder mon portefeuille. Je comprends que Brave ne peut pas accéder à mon portefeuille ou inverser des transactions en mon nom, et que ma phrase de récupération est le SEUL moyen de retrouver l'accès en cas de perte du mot de passe, de vol de l'appareil ou de circonstances similaires.</translation>
+<translation id="1645800479814134195">Je comprends qu'il s'agit d'un portefeuille dont j'ai la garde, que je suis la seule personne responsable des fonds, actifs ou comptes associés, et que je dois prendre les mesures appropriées pour sécuriser, protéger et sauvegarder mon portefeuille. Je comprends que Brave ne peut pas accéder à mon portefeuille ou inverser des transactions en mon nom, et que ma phrase de récupération est le SEUL moyen de retrouver l'accès en cas de perte du mot de passe, de vol de l'appareil ou de circonstances similaires.</translation>
 <translation id="4565891212173086999">J'ai lu et j'accepte les <ph name="CLICK_START"/>conditions générales d'utilisation<ph name="CLICK_END"/>.</translation>
 <translation id="3259102562570606417">Enregistrez votre phrase de récupération</translation>
 <translation id="4339981001593889376">Votre phrase de récupération est la clé qui vous permet d'accéder à votre portefeuille en cas d'oubli de votre mot de passe ou de perte de votre appareil.</translation>
@@ -632,7 +635,6 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="3961126209136843111">Importer un portefeuille existant</translation>
 <translation id="4811736040444856406">Afficher la phrase de récupération</translation>
 <translation id="4359319875297001084">Importer depuis les portefeuilles cryptos Brave hérités ?</translation>
-<translation id="3157931365184549694">Restaurer</translation>
 <translation id="5844138175312846408">Vous avez déjà un portefeuille ?</translation>
 <translation id="2502258949541727762">Avant de commencer</translation>
 <translation id="4303748097351941030">Réseaux pris en charge</translation>
@@ -794,7 +796,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1426320910664514906">Limite de Gas</translation>
 <translation id="6389441740143786465">Désactiver le centre de partage</translation>
 <translation id="9065203028668620118">Édition</translation>
-<translation id="473775607612524610">Mettre à jour</translation>
 <translation id="479795390141144417">Échec de la mise à jour du compte.</translation>
 <translation id="8084782383392198011">Le nom du compte ne peut pas être vide.</translation>
 <translation id="5045550434625856497">Mot de passe incorrect</translation>
@@ -1016,7 +1017,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4635094429202343515">Essayez le widget du moteur de recherche Brave</translation>
 <translation id="4809681171446727314">Utilisez un moteur de recherche indépendant et protégeant de vie privée directement depuis votre écran d'accueil.</translation>
 <translation id="7751715172931488388">Ajouter le widget</translation>
-<translation id="7285167584112910782">Recherche rapide Brave</translation>
+<translation id="7285167584112910782">Accès rapide Brave</translation>
 <translation id="2326703104633309781">Utiliser l'outil de traduction Brave</translation>
 <translation id="5802752138057422257">Caractères non-ASCII détectés !</translation>
 <translation id="442709594176931966">Afficher le message original</translation>
@@ -1163,7 +1164,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4071849832011229600">Modèle par défaut</translation>
 <translation id="4185473179105062442">Recevez les BAT directement à une adresse de cryptomonnaie en garde autonome</translation>
 <translation id="5802986777701714573">Nous avons ajouté une nouvelle façon pour vous de recevoir vos récompenses mensuelles en BAT. Associez un compte de l'un de nos partenaires ou utilisez la nouvelle option de garde autonome pour commencer à gagner des BAT dès maintenant.</translation>
-<translation id="7557539689487606886">Passer à la version Premium</translation>
+<translation id="7557539689487606886">Passer à la version premium</translation>
 <translation id="5538904824395606812">Utilisez votre fournisseur de service actuel ou Quad9</translation>
 <translation id="6393423486818299209">Utilisez votre fournisseur de service actuel ou Wikimedia DNS</translation>
 <translation id="3401384982562827787">Utilisez votre fournisseur de service actuel ou Cloudflare</translation>

@@ -871,7 +871,7 @@
 <translation id="1939235910515558387">Starten Sie in nur wenigen Minuten mit der Brave-Wallet.</translation>
 <translation id="5844138175312846408">Haben Sie bereits eine Wallet?</translation>
 <translation id="772643556080081594">Ich brauche nur eine Watch-only-Wallet</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave und das Brave-Logo sind eingetragene Marken von Brave Software Inc. Andere Produktnamen und Logos können Marken der jeweiligen Unternehmen sein. Alle Rechte vorbehalten.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave und das Brave-Logo sind eingetragene Marken von Brave Software Inc. Andere Produktnamen und Logos können Marken der jeweiligen Unternehmen sein. Alle Rechte vorbehalten.</translation>
 <translation id="7501957181231305652">oder</translation>
 <translation id="375882617301124395">Sichern Sie Ihre Krypto-Wallet</translation>
 <translation id="5024543173656851695">Mir ist bewusst, dass ich keinen Zugriff auf mein Krypto-Wallet habe, wenn ich meine Wörter zur Wiederherstellung verliere.</translation>
@@ -1115,10 +1115,6 @@
 <translation id="4324239559624557455">Für 24 Stunden</translation>
 <translation id="9139452553033760558">Für eine Woche</translation>
 <translation id="1658834457013045127">Für immer</translation>
-<translation id="2770851145415891830">Vorhandene Krypto-Wallets erkannt</translation>
-<translation id="2237759620789871865">Wenn Sie den Import lieber überspringen möchten und die alte Krypto-Wallet-Erfahrung beibehalten möchten, navigieren Sie einfach zum Brave Browser <ph name="LINK_BEFORE"/>Settings<ph name="LINK_AFTER"/> und ändern Sie die Standardeinstellung zurück auf Krypto-Wallets. Sie können auch importieren und die neue Brave Wallet ausprobieren. Sie können jederzeit zurückwechseln.</translation>
-<translation id="5590175005414413980">Geben Sie Ihr bestehendes Krypto-Wallet-Passwort ein, um es in Brave Wallet zu importieren. Genießen Sie eine schnellere und sicherere Möglichkeit, Krypto-Assets zu verwalten und mit Web3 DApps zu interagieren.</translation>
-<translation id="880619123281809987">Geben Sie das Passwort für Krypto-Wallets ein</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> verbunden</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> getrennt</translation>
 <translation id="5317781812114905957">Anleitungen</translation>
@@ -1508,7 +1504,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="396152018598329740">Wie benutzt man eine Krypto-Wallet?</translation>
 <translation id="7512061585041489067">Welche ist die beste Krypto-Wallet?</translation>
 <translation id="1342755158522323177">Was ist ein Krypto-Browser?</translation>
-<translation id="4702762916247565868">Grundlagen der Krypto-Wallets</translation>
 <translation id="4674552515763857735">Was ist eine Wiederherstellungsphrase?</translation>
 <translation id="7328255859839881981">Was sind DApps?</translation>
 <translation id="3852489285890032403">Was ist Web3?</translation>
@@ -1526,7 +1521,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7877416315564177070">Überprüfen Sie Ihre Wiederherstellungsphrase und versuchen Sie es erneut.</translation>
 <translation id="6503538941917874992">Mithilfe Ihrer Wiederherstellungsphrase importieren</translation>
 <translation id="782167880151571109">Metamask-Wallet gefunden!</translation>
-<translation id="3619071361843652814">Legacy-Wallet gefunden!</translation>
 <translation id="4634124774493850572">Passwort verwenden</translation>
 <translation id="7697478310235189459">Wort <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Geben Sie Ihre MetaMask-Wiederherstellungsphrase bestehend aus 12–24 Wörtern ein.</translation>
@@ -1539,7 +1533,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="3604445540387095708">Ich habe die <ph name="LINK_BEFORE"/>Nutzungsbedingungen<ph name="LINK_AFTER"/> gelesen und stimme ihnen zu.</translation>
 <translation id="1422451606553326863">Kryptowährung kaufen</translation>
 <translation id="3887541341068007345">Suche nach Wallet-Erweiterungen …</translation>
-<translation id="3567994771568272606">Import aus alten Brave-Krypto-Wallets</translation>
 <translation id="8407091560429310499">Wählen Sie einen Asset aus</translation>
 <translation id="756590380936155533">Um Ihren <ph name="ASSET_TICKER"/>-Kauf abzuschließen, wählen Sie bitte einen unserer Partner aus</translation>
 <translation id="7880860489474966219">Nach Abschluss wird Ihr Geld auf Ihre Brave Wallet überwiesen</translation>
@@ -1833,7 +1826,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7758665172236842395">Folgen Sie Ihren Lieblingsquellen in einem einzigen Feed. Öffnen Sie einfach einen Tab in Brave, scrollen Sie nach unten und … voilà!</translation>
 <translation id="2376542729617592331">Brave-Nachrichten werden von privaten, anonymisierten Anzeigen finanziert. <ph name="LINK_START"/>Mehr erfahren.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Brave News aktivieren</translation>
-<translation id="5149018766422637336">News und RSS</translation>
+<translation id="1772301834467143364">Brave News</translation>
 <translation id="6265592479622441247">Zurück zum <ph name="BEGIN_BOLD"/>Dashboard<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Entdecken</translation>
 <translation id="8981973962043893066">Website, Thema oder RSS-Feed suchen</translation>
@@ -2198,16 +2191,12 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8712637175834984815">Alles klar</translation>
 <translation id="1093419424466417703">Diese Seite ist zu lang für Leo. Teile des Kontexts fehlen in der Unterhaltung möglicherweise. Leo konnte <ph name="PERCENTAGE"/> der Seiteninhalte lesen.</translation>
 <translation id="4592293425457329338">Einige Kontextinformationen könnten in der Unterhaltung fehlen. Leo konnte einen Teil <ph name="PERCENTAGE"/> des zugehörigen Inhalts der Unterhaltung speichern.</translation>
-<translation id="2186990448773134544">Der Inhalt der Seite wurde verfeinert, indem die wichtigsten Informationen aus der Seite extrahiert wurden, da sie für Leo zu lang war.</translation>
-<translation id="5140068729857132378">Die wichtigsten Inhalte der Website finden...</translation>
 <translation id="4370698775470316661">Diese Unterhaltung ist zu lang und kann nicht fortgesetzt werden. Möglicherweise gibt es andere Modelle, mit denen Leo auch über längere Unterhaltungen richtige Antworten geben kann.</translation>
 <translation id="5719170755629028558">Ihre Antworten werden mithilfe der Brave-Suche verbessert …</translation>
 <translation id="5794962229997281366">Es wird nach besseren Antworten für „<ph name="SEARCH_TERMS"/>“ gesucht</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> Mehr...</translation>
 <translation id="8103700533980268469">Diese Mitteilung schließen</translation>
 <translation id="3417835166382867856">Tabs durchsuchen</translation>
-<translation id="9090243919347147717">Anhänge</translation>
-<translation id="4444978378117903684">Füge deine Browser-Tabs hinzu, um Leo mehr Kontext für das Gespräch zu geben</translation>
 <translation id="4300920590112551536">Browser-Tabs</translation>
 <translation id="2315654674554095762">Leo merkt sich jetzt deine Unterhaltungen, damit du zu ihnen zurückkehren kannst. Sie werden verschlüsselt auf deinem Gerät gespeichert, und du kannst sie jederzeit löschen.</translation>
 <translation id="7821251979960635244">Dein Konversationsverlauf wird hier angezeigt, sobald du eine Konversation beginnst.</translation>
@@ -2230,8 +2219,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="5642775487085641191">Sie möchten nur chatten?</translation>
 <translation id="8857222718794549840">Fragen Sie mich, was Sie möchten. Wir können über jedes Thema sprechen, das Sie möchten. Ich lerne ständig dazu, um bessere Antworten geben zu können.</translation>
 <translation id="9051226419897869406">Chatten Sie privat mit Brave Leo</translation>
-<translation id="637548538907281147">Gestalten Sie Antworten, die auf dem Inhalt der Seite basieren</translation>
-<translation id="8599503173207256429">Aktivieren Sie diese Option, um Fragen zu dieser Seite zu stellen. Ihre Inhalte werden zusammen mit Ihren Nachrichten an Brave Leo gesendet.</translation>
 <translation id="318819763888864209">Alle Abonnements werden automatisch verlängert, können aber jederzeit vor der Erneuerung gekündigt werden.</translation>
 <translation id="5091223967610958">Teilen Sie den Hostnamen der Seite, auf der Sie sind (<ph name="HOST_NAME"/>), damit wir Leo noch weiter verbessern können.</translation>
 <translation id="8732450785281947197">Leo-KI-Tools</translation>
@@ -2382,6 +2369,7 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="6821108091726602352">Helfen Sie uns, das Internet zu reparieren, indem Sie beim Web Discovery Project von Brave mitmachen. Indem Sie komplett anonyme Suchsignale teilen, können Sie Brave helfen, den Suchindex zu vergrößern.</translation>
 <translation id="6764845498618413165">Mehr erfahren.</translation>
 <translation id="7818938154803162778">Klar, ich helfe gerne.</translation>
+<translation id="7207456302801184289">Willkommen bei Brave</translation>
 <translation id="3486480638399578250">Schütze deine private E-Mail-Adresse</translation>
 <translation id="7765422154906712751">Erstelle einzigartige, zufällige Adressen, die an deine Brave-Konto-E-Mail weitergeleitet werden und jederzeit gelöscht werden können. So bleibt deine echte E-Mail-Adresse vor Werbetreibenden verborgen und wird nicht weitergegeben.</translation>
 <translation id="5222676887888702881">Abmelden</translation>
@@ -2411,7 +2399,7 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="3699624789011381381">E-Mail-Adresse</translation>
 <translation id="8124939971041602970">Eine Login-E-Mail ist auf dem Weg zu <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">Klicke auf den sicheren Anmeldelink in der E-Mail, um auf dein Konto zuzugreifen.</translation>
-<translation id="6549775668256477823">Keine E-Mail erhalten? Überprüfe deinen Spam-Ordner oder <ph name="BEGIN_LINK"/>versuche es erneut<ph name="END_LINK"/></translation>
+<translation id="619122420105901711">Keine E-Mail erhalten? Überprüfe deinen Spam-Ordner oder versuche es erneut</translation>
 <translation id="958268166261124668">Brave VPN: Verbunden</translation>
 <translation id="6021669293402055982">Brave VPN: Verbindung unterbrochen</translation>
 <translation id="3541307549916475335">Benutzeroberfläche von Brave VPN Panel</translation>

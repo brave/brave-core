@@ -215,6 +215,7 @@
 <translation id="6277237872689140644">မည်သို့ရာမျှ သင်သတ်မှတ်ထားသော URL တွင် တခြားတစ်ခုက်နေပါသည်။</translation>
 <translation id="2737084171727561244">ပရိုဖိုင်သို့သွားသူ</translation>
 <translation id="3662406032239313663">မှတ်တမ်းများ</translation>
+<translation id="1772301834467143364">Brave သတင်း</translation>
 <translation id="8890516388109605451">အရင်းအမြစ်များ</translation>
 <translation id="3861486700625780712">နောက်သို့မလိုကျရ</translation>
 <translation id="4108314971463891922">လိုက်နာပါ</translation>
@@ -286,7 +287,6 @@
 <translation id="423209533815462685">ရှာဖွေမှု အကြံပေးချက်များကိုဖွင့်ရန်?</translation>
 <translation id="167018310108390163">ထပ်မံပြုလုပ်မည့်စာမျက်နှာ</translation>
 <translation id="8522669544471808198">နောက်ခံပုံများ ပြရန်</translation>
-<translation id="5149018766422637336">သတင်းများနှင့် RSS</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> အသုံးပြုပါလျှင် New Tab စာမျက်နှာ အကြော်အနွင်းကို ကြည့်ပြီး ပိုက်ဆံရှာနိုင်ပါသည်။</translation>
 <translation id="4100520468072294616">New Tab စာမျက်နှာ အကြော်အနွင်းတွေ ပြပါ။</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
@@ -329,6 +329,7 @@
 <translation id="6821108091726602352">Brave ၏ ဝက်ဘ်ရှာဖွေစူးစမ်းရေး ပရောဂျက်တွင် ပါဝင်ပြီး ဝက်ဘ်သုံးစွဲမှု ပိုကောင်းလာအောင် လုပ်ဆောင်ပေးရာ၌ အထောက်အကူပြုပေးပါ။ လုံးဝအမည်ဖော်၍မရသော ရှာဖွေရေး အချက်အလက်များကို မျှဝေပေးခြင်းဖြင့် Brave ၏ ရှာဖွေရေး အချက်အလက်စာရင်း ပိုကျယ်ပြန့်လာစေရန် ကူညီပေးနိုင်ပါသည်။</translation>
 <translation id="6764845498618413165">ပိုမိုလေ့လာရန်။</translation>
 <translation id="7818938154803162778">ကူညီပေးလိုပါသည်</translation>
+<translation id="7207456302801184289">Brave မှ ကြိုဆိုပါသည်</translation>
 <translation id="3486480638399578250">သင့် အီးမေးလ်လိပ်စာကို အပြင်မှ ပုခိုးထားပါ။</translation>
 <translation id="7765422154906712751">သင့် Brave စာအုပ်ထဲကို အီးမေးလ် လိပ်စာများကို ရန်တိုင်း ကြောင်းပေးဖို့ အကြောင်းမဲမဲ လက်ခံပြီး အန္တရာယ်ကင်းတဲက အီးမေးလ် လိပ်စာတွေ ဖန်တီးနိုင်ပါသည်။</translation>
 <translation id="5222676887888702881">ထွက်မည်</translation>
@@ -359,7 +360,6 @@
 <translation id="3699624789011381381">အီးမေးလ် လိပ်စာ</translation>
 <translation id="8124939971041602970">သင့် အီးမေးလ်မှ <ph name="MAIN_EMAIL"/> သို့ လာမည်</translation>
 <translation id="8140361186431963982">သင့် အကောင့် ဝင်ရန် လုံခြုံရေး အထောက်ခံမှု အကြောင်းကို နှိပ်ပါ။</translation>
-<translation id="6549775668256477823">အီးမေးလ်တွေကိုမတွေ့လျှင် Spam ဖိုင်ကို ကြည့်ပါ သို့မဟုတ် <ph name="BEGIN_LINK"/>ထပ်ကြိုးစားပါ<ph name="END_LINK"/></translation>
 <translation id="5753795690521538679">7 ရက် အခမဲ့ စမ်းသုံးရန်</translation>
 <translation id="3357036723290257445">Brave VPN ကို ဝယ်ပြီးပြီလား။</translation>
 <translation id="5747552184818312860">သက်တမ်းကုန်ဆုံးသည်</translation>

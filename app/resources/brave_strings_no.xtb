@@ -83,7 +83,6 @@
 <translation id="2126108037660393668">Kunne ikke bekrefte den nedlastede filen.</translation>
 <translation id="2137162749895930932">Lukk oversettelsesskjermen</translation>
 <translation id="5789330946301045610">Brave har blokkert denne nedlastingen fordi nettstedet ikke bruker en sikker tilkobling, så filen kan ha blitt tuklet med</translation>
-<translation id="5401976223298265794">Du kan åpne bokmerker, lesemodus med mer via Brave-menyen</translation>
 <translation id="142389341645668510">Tilpass Brave</translation>
 <translation id="2174917724755363426">Installasjonen er ikke fullført. Er du sikker på at du vil avbryte?</translation>
 <translation id="8745514854244955877">Brave – nettverkspålogging – <ph name="PAGE_TITLE"/></translation>
@@ -214,6 +213,7 @@
 <translation id="4256965182800026277">Passordene, betalingsmåtene og adressene du har lagret i Brave-kontoen din, blir fjernet fra denne enheten. For å bruke dem i Brave igjen, logg på igjen.</translation>
 <translation id="395904275706073188">Beskyttede sider kan ikke leses. Prøv en annen side.</translation>
 <translation id="4194619960643453552">Finn ut hvordan Brave holder deg trygg</translation>
+<translation id="1486377520191913768">Når du skriver i adressefeltet eller søkefeltet, sender Brave det du skriver, til organisasjonens søke-, AI- og agentverktøy for å få forslag.</translation>
 <translation id="1311808042904310985">Om &amp;Brave for testing</translation>
 <translation id="1152920704813762236">Om ChromeOS</translation>
 <translation id="3703994572283698466">ChromeOS er basert på <ph name="BEGIN_LINK_CROS_OSS"/>tilleggsprogramvare med åpen kildekode<ph name="END_LINK_CROS_OSS"/>, i likhet med <ph name="BEGIN_LINK_LINUX_OSS"/>Linux-utviklingsmiljøet<ph name="END_LINK_LINUX_OSS"/>.</translation>
@@ -239,6 +239,7 @@
 <translation id="4281844954008187215">Vilkår for bruk</translation>
 <translation id="7691786510374174420">Installeringen mislyktes på grunn av en uspesifisert feil. Lukk Brave hvis nettleseren kjører, og prøv på nytt.</translation>
 <translation id="4304713468139749426">Passordlagring</translation>
+<translation id="4334241893986177674">Søk i dette skjermbildet</translation>
 <translation id="4334294535648607276">Nedlastingen er fullført.</translation>
 <translation id="1068681683510904753"><ph name="MANAGER"/> krever at du leser og godtar følgende vilkår før du bruker denne enheten. Disse vilkårene verken utvider, endrer eller begrenser ChromeOS-vilkårene.</translation>
 <translation id="9183662282810237335">Vil du avslutte Brave likevel?</translation>
@@ -333,6 +334,7 @@
 <translation id="899523323751802352">Hvis du har glemt passordfrasen eller vil endre denne innstillingen, kan du <ph name="SETTINGS_LINK"/> Brave-dataene i kontoen din</translation>
 <translation id="82926023981336111">Tilpass og kontroller Brave. Angi Brave som standard.</translation>
 <translation id="5809516625706423866">Kan ikke koble til internett. HTTP 401 – uautorisert. Kontroller proxy-tjenerkonfigurasjonen.</translation>
+<translation id="95980832839683236">Gjør nettsteder raskere med V8-motoren i Brave, men gjør Brave litt mindre motstandsdyktig mot angrep. Denne innstillingen er slått av.</translation>
 <translation id="1224606669200461217">Oppdater Brave for å bruke og lagre Brave-data i Brave-kontoen din.</translation>
 <translation id="5824893331272123205">Kunne ikke laste inn dette panelet – prøv på nytt</translation>
 <translation id="7207456302801184289">Velkommen til Brave</translation>
@@ -349,7 +351,6 @@
 <translation id="3598551856834560515">Oppdater Brave for å starte synkroniseringen</translation>
 <translation id="5225261774087485064">Det er vanlig at nettsteder du besøker, husker ting du er interessert i, for å gi opplevelsen din personlig preg. Nettsteder kan også lagre informasjon om interessene dine i Brave.</translation>
 <translation id="6003112304606738118">Laster ned … <ph name="HOURS"/> time(r) igjen</translation>
-<translation id="1663358621471164569">Du kan åpne bokmerker, lesemodus med mer via Brave-menyen øverst til høyre</translation>
 <translation id="6040143037577758943">Lukk</translation>
 <translation id="700488072601322385">Du kan beskytte dataene dine ved å la Brave fjerne tillatelser fra nettsteder du ikke har besøkt nylig. Dette stopper ikke varsler.</translation>
 <translation id="9071554113102421877">&amp;Åpne i Brave</translation>
@@ -423,6 +424,7 @@ Det er mulig at enkelte funksjoner ikke er tilgjengelige. Angi en annen profilka
 <translation id="1505112054322049777">For å få personlig tilpasning og andre funksjoner må du inkludere Brave i Nett- og appaktivitet og tilknyttede Brave-tjenester</translation>
 <translation id="6666624454809779082">Brave er allerede installert for alle brukerne på datamaskinen din.</translation>
 <translation id="9136637081636160997">Du har ikke vært her i det siste. Brave har fjernet <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> og <ph name="COUNT"/> til</translation>
+<translation id="4020203987234748583">Gjør nettsteder raskere med V8-motoren i Brave, men gjør Brave litt mindre motstandsdyktig mot angrep. Denne innstillingen er på.</translation>
 <translation id="3136039682492230890">Brave anbefaler å skanne denne filen ettersom den kan være farlig.</translation>
 <translation id="1547295885616600893">ChromeOS er basert på <ph name="BEGIN_LINK_CROS_OSS"/>tilleggsprogramvare med åpen kildekode<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="6831043979455480757">Oversett</translation>
@@ -516,7 +518,6 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="8118331347066725040">Send tilbakemelding om søk med Lens</translation>
 <translation id="5334309298019785904">ChromeOS kunne ikke synkronisere dataene dine, ettersom synkronisering ikke er tilgjengelig for domenet ditt.</translation>
 <translation id="813913629614996137">Initialiserer …</translation>
-<translation id="7550680632761245819">Slå på ekstra beskyttelse i JavaScript- og WebAssembly-motoren i Brave</translation>
 <translation id="9067428552314418522">Denne filen er farlig, så Brave har blokkert den.</translation>
 <translation id="8177472873527554730">Finner ikke innhold på siden</translation>
 <translation id="6219250889396046657">Skriv inn passordfrasen din for å bruke og lagre Brave-data i kontoen din, <ph name="USER_EMAIL"/></translation>
@@ -561,6 +562,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="4100716194836114130">Dette er din Brave</translation>
 <translation id="1419543648228375718">Vil du logge på Brave?</translation>
 <translation id="8747073452963259673">nederst til venstre i søkefeltet: venstre <ph name="LEFT"/> %, nederst <ph name="BOTTOM"/> %</translation>
+<translation id="3562508460098852626">Passord kan bare slettes utenfor Brave</translation>
 <translation id="878572486461146056">Installasjonsfeil: Nettverksadministratoren din har aktivert en grupperegel som forhindrer installasjonen: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave trenger tilgang til kameraet ditt og mikrofonen din for dette nettstedet</translation>
 <translation id="64216977793816291">Vil du logge på Brave?</translation>
@@ -613,6 +615,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt.}=1{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt. Inkognitovinduet ditt blir ikke gjenåpnet.}other{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen}=1{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen. Inkognitovinduet ditt blir ikke gjenåpnet.}other{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering}=1{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering. Inkognitovinduet ditt blir ikke gjenåpnet.}other{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
+<translation id="5749154344207139683">Hjelp oss med å gjøre den private nettleseren vår bedre ved å svare på et par spørsmål.</translation>
 <translation id="79269250264141507">Når du skriver i adressefeltet eller søkefeltet, sender Brave det du skriver inn, til søkemotoren du har som standard, for å få opp bedre forslag. Dette er deaktivert i Privat modus.</translation>
 <translation id="2589970573128789862">Brave Privat</translation>
 <translation id="5994282802285556682">Når du surfer i Privat modus, advarer Brave deg før det lastes opp sider via usikre tilkoblinger</translation>

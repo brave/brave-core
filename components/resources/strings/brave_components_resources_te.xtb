@@ -326,7 +326,6 @@
 <translation id="423209533815462685">సెర్చ్ సూచనలను ప్రారంభించాలా?</translation>
 <translation id="167018310108390163">కొత్త టాబ్ పేజీ ని అనుకూలపరచు</translation>
 <translation id="8522669544471808198">బ్యాక్‌గ్రౌండ్ చిత్రాలను చూపించండి</translation>
-<translation id="5149018766422637336">న్యూస్ మరియు RSS</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>తో, మీరు కొత్త ట్యాబ్ పేజీ ప్రకటనలు చూసి మీరు సంపాదించవచ్చు</translation>
 <translation id="4100520468072294616">కొత్త ట్యాబ్ పేజీ ప్రకటనలు చూపించు</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
@@ -361,6 +360,7 @@
 <translation id="5657156137487675418">అన్ని కుక్కీలను అనుమతించు</translation>
 <translation id="6531019308847917584">Block fingerprinting</translation>
 <translation id="2453860139492968684">ముగించు</translation>
+<translation id="7207456302801184289">Braveకు స్వాగతం</translation>
 <translation id="3486480638399578250">మీ వ్యక్తిగత ఇమెయిల్ చిరునామాను అభిప్రాయం వద్ద ఉంచండి</translation>
 <translation id="7765422154906712751">మీ అనువర్తనం ఇమెయిల్కు దారితీసే ప్రత్యేక, యాదృచ్ఛిక చిరునామాలను సృష్టించండి మరియు ఎప్పుడైనా చెరిపేయవచ్చు. మీ అసలు ఇమెయిల్ చిరునామా ప్రకటనదారులచే ప్రదర్శించబడటానికి లేదా ఉపయోగించబడటానికి నివారించండి.</translation>
 <translation id="5222676887888702881">సైన్ అవుట్</translation>
@@ -391,7 +391,7 @@
 <translation id="3699624789011381381">ఇమెయిల్ చిరునామా</translation>
 <translation id="8124939971041602970">ఒక లాగిన్ ఇమెయిల్ <ph name="MAIN_EMAIL"/> కు పంపబడింది</translation>
 <translation id="8140361186431963982">మీ ఖాతాకు ఇచ్చిన సురక్షిత లాగిన్ లింక్‌ను క్లిక్ చేయండి.</translation>
-<translation id="6549775668256477823">ఇమెయిల్ కనిపించదు? మీ స్పామ్ ఫోల్డర్‌ను పరిశీలించండి లేదా <ph name="BEGIN_LINK"/>మళ్ళీ ప్రయత్నించండి<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">ఇమెయిల్ కనిపించదు? మీ స్పామ్ ఫోల్డర్‌ను పరిశీలించండి లేదా మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="7805768142964895445">స్థితి</translation>
 <translation id="5747552184818312860">గడువు ముగింపు</translation>
 <translation id="1691256669639196606">Manage subscription</translation>

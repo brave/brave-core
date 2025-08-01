@@ -881,7 +881,7 @@
 <translation id="1939235910515558387">ארנק Brave: מוכן לשימוש תוך דקות!</translation>
 <translation id="5844138175312846408">כבר יש ברשותך ארנק?</translation>
 <translation id="772643556080081594">אני צריך ארנק צפייה בלבד</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave והלוגו של Brave הם סימנים מסחריים רשומים של Brave Software, Inc. שמות וסמלי לוגו של מוצרים אחרים עשויים להיות סימנים מסחריים של החברות בהתאמה. כל הזכויות שמורות.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave והלוגו של Brave הם סימנים מסחריים רשומים של Brave Software, Inc. שמות וסמלי לוגו של מוצרים אחרים עשויים להיות סימנים מסחריים של החברות בהתאמה. כל הזכויות שמורות.</translation>
 <translation id="7501957181231305652">או</translation>
 <translation id="375882617301124395">גבה את ארנק הקריפטו שלך</translation>
 <translation id="5024543173656851695">אני מבינ/ה שאם אאבד את מילות השחזור שלי, לא אוכל לגשת לארנק הקריפטו שלי.</translation>
@@ -1125,10 +1125,6 @@
 <translation id="4324239559624557455">למשך 24 שעות</translation>
 <translation id="9139452553033760558">למשך שבוע</translation>
 <translation id="1658834457013045127">לנצח</translation>
-<translation id="2770851145415891830">זוהה ארנק קריפטו קיים</translation>
-<translation id="2237759620789871865">אם אתה מעדיף לדלג על הייבוא ולשמור על חוויית ה-Crypto Wallets הישנה, פשוט נווט להגדרות Brave Browser <ph name="LINK_BEFORE"/>ושנה את <ph name="LINK_AFTER"/>ברירת המחדל בחזרה ל-Crypto Wallets. תוכל גם לייבא, לנסות את ה-Brave Wallet החדש ולשנות בכל עת.</translation>
-<translation id="5590175005414413980">עליך להזין את סיסמת ארנק הקריפטו הנוכחית שלך כדי לייבא ארנק אל Brave Wallet, ולהנות מדרך מהירה ובטוחה יותר לנהל נכסי קריפטו ואינטראקציה עם DApps של Web3.</translation>
-<translation id="880619123281809987">הקלד את סיסמת ארנקי Crypto</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> מחובר</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> מנותק</translation>
 <translation id="5317781812114905957">הוראות</translation>
@@ -1389,6 +1385,9 @@
 <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">החלף <ph name="MAKER"/> ל-
 <ph name="TAKER"/></translation>
+<translation id="1748114617341025015">יוצרים חשבון טוקן משויך</translation>
+<translation id="4418115887224983240">יצירת חשבון טוקן משויך נכשלה</translation>
+<translation id="7165697599360786670">נוצר חשבון טוקן משויך</translation>
 <translation id="8613144770663526433">היכנס עם Brave Wallet</translation>
 <translation id="8813165409788097898">אתה נכנס ל- <ph name="ORIGIN"/>Brave Wallet   ישתף את כתובת הארנק שלך עם<ph name="ORIGIN"/> .</translation>
 <translation id="1028781062521375153">ראה פרטים</translation>
@@ -1522,7 +1521,6 @@
 <translation id="396152018598329740">כיצד להשתמש בארנק קריפטו?</translation>
 <translation id="7512061585041489067">מהו ארנק הקריפטו הטוב ביותר?</translation>
 <translation id="1342755158522323177">מהו דפדפן קריפטו?</translation>
-<translation id="4702762916247565868">ארנקי קריפטו 101</translation>
 <translation id="4674552515763857735">מהו ביטוי התאוששות?</translation>
 <translation id="7328255859839881981">מה הם DApps?</translation>
 <translation id="3852489285890032403">מה זה web 3?</translation>
@@ -1540,7 +1538,6 @@
 <translation id="7877416315564177070">בדוק את ביטוי השחזור שלך ונסה שוב.</translation>
 <translation id="6503538941917874992">ייבא באמצעות ביטוי השחזור שלך</translation>
 <translation id="782167880151571109">זוהה ארנק Metamask!</translation>
-<translation id="3619071361843652814">זוהה ארנק מדור קודם!</translation>
 <translation id="4634124774493850572">שימוש בסיסמה</translation>
 <translation id="7697478310235189459">מילה אחת <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">הקלידו את משפט השחזור MetaMask שלכם ב- 12-24 מילים.</translation>
@@ -1553,7 +1550,6 @@
 <translation id="3604445540387095708">קראתי ואני מסכים ל<ph name="LINK_BEFORE"/>תנאי שימוש<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">רכישת קריפטו</translation>
 <translation id="3887541341068007345">בודק תוספות ארנק...</translation>
-<translation id="3567994771568272606">יבוא מארנקי קריפטו של Brave מדור קודם</translation>
 <translation id="8407091560429310499">בחר נכס</translation>
 <translation id="756590380936155533">כדי לסיים את רכישת <ph name="ASSET_TICKER"/> שלך, בחר אחד מהשותפים שלנו</translation>
 <translation id="7880860489474966219">בסיום, הכספים שלך יועברו ל- Brave Wallet שלך</translation>
@@ -1760,6 +1756,7 @@ CoinGecko</translation>
 <translation id="4583937519241190398">אומת על ידי DappRadar</translation>
 <translation id="8713438253026855351">החלפה לחשבון מוגן</translation>
 <translation id="3526789880090101085">חשבון מוגן</translation>
+<translation id="3155166394760577549">כדאי להפעיל מיגון כדי לשפר את פרטיות העסקאות.</translation>
 <translation id="2298396008562701154">כרגע החשבון הזה תומך בעסקאות שקופות, מה שאומר שהן גלויות לכולם בבלוקצ׳יין.</translation>
 <translation id="3987095760757102811">שדרוג לחשבון מוגן אומר שהעסקאות האלה יסתירו את פרטי השולח, המקבל, והסכום.</translation>
 <translation id="3819528427777765709">מוגן</translation>
@@ -1790,6 +1787,8 @@ CoinGecko</translation>
 <translation id="99991973626409495">הצגת פרטי הגנה</translation>
 <translation id="3114681061018999547">בהגנה</translation>
 <translation id="8897189056319316783">הגנת ZEC</translation>
+<translation id="3382275793825152362">הגנה על כספים</translation>
+<translation id="8631765320256788981">את/ה מעביר/ה כספים מהחשבון השקוף שלך לחשבון המוגן שלך.</translation>
 <translation id="7144878232160441200">נסה שוב</translation>
 <translation id="9094621390791852268">תצוגה מקדימה של העסקה נכשלה.</translation>
 <translation id="4982713341035600933">שינוי יתרה משוער</translation>
@@ -1851,7 +1850,7 @@ CoinGecko</translation>
 <translation id="7758665172236842395">עקבו אחר המקורות המועדפים עליכם, בפיד יחיד. פשוט פותחים כרטיסייה ב-Brave, גוללים למטה ו... הנה!</translation>
 <translation id="2376542729617592331">Brave News ממומנת באמצעות מודעות פרטיות ואנונימיות. <ph name="LINK_START"/>לפרטים נוספים<ph name="LINK_END"/></translation>
 <translation id="1765217911817124376">הפעל את חדשות Brave</translation>
-<translation id="5149018766422637336">חדשות ו-RSS</translation>
+<translation id="1772301834467143364">חדשות Brave</translation>
 <translation id="6265592479622441247">חזרה ל-<ph name="BEGIN_BOLD"/>לוח המחוונים<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">גילוי</translation>
 <translation id="8981973962043893066">חפשו אתר, נושא או הזנת RSS</translation>
@@ -2124,10 +2123,18 @@ CoinGecko</translation>
 <translation id="4885527781814382758">Brave Leo הוא עוזר חכם אישי המופעל באמצעות בינה מלאכותית ומשפר את השימוש שלך באינטרנט. השימוש ב-Leo ניתן ללא עלות עם גישה מוגבלת. גרסת Brave Leo Premium מציעה מודלים נוספים, מגבלות רחבות יותר, ומאפשרת למנויים גישה מוקדמת לפיצ׳רים חדשים. מודל ברירת ישתנה מעת לעת. ניתן לבקר ב<ph name="LINK_BEFORE"/>מרכז העזרה של Brave<ph name="LINK_AFTER"/> לפרטים נוספים.</translation>
 <translation id="7189603330209995455">כברירת מחדל, כששואלים את Leo שאלה, הוא עשוי לשלוח את התוכן של דף הרשת שאתם צופים בו או של כל טקסט שאתם מדגישים בדף ל-Brave Leo ולעשות בהם שימוש. דיוק התגובה אינו מובטח ועשוי לכלול מידע לא מדויקף מטעה או לא נכון. Leo עושה שימוש בנתונים מחיפוש Brave כדי לשפר את איכות התגובה. אין לשלוח מידע רגיש או אישי ויש להתייחס לכל התשובות הקשורות לתחום הבריאות, הכלכלה, הבטיחות האישית או לתחומים דומים במשנה זהירות. באפשרותכם להתאים את אפשרויות Leo בהגדרות בכל עת. עברו אל 'הגדרות' ולאחר מכן אל 'Leo'.</translation>
 <translation id="3038772045018370764">Leo אינו אוסף מידע מזהה כגון כתובת IP שניתן לקשר אותה אליכם. לא נעשה שימוש בנתונים למקד את מודלי הבינה המלאכותית ונתונים אישיים אינם נשמרים על ידי מודלי הבינה המלאכותית (למעט Anthropic המחזיק בנתונים למשך 30 ימים לפני מחיקתם). יש לעיין <ph name="LINK_BEFORE"/>במדיניות הפרטיות<ph name="LINK_AFTER"/> למידע נוסף.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {שאילת שאלה על התוכן של העמוד הזה}
+      other {שאילת שאלה על התוכן של עמודים אלה}
+    }</translation>
 <translation id="6961721183181597848">איך אפשר לעזור לך היום?</translation>
 <translation id="2966135729673253768">בקשה למעקב</translation>
 <translation id="4524675003624341892">הצעת שאלות…</translation>
 <translation id="4567071417854988869">לסכם את הדף הזה</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {סיכום העמוד הזה}
+      other {סיכום העמודים האלה}
+    }</translation>
 <translation id="7921782882718083488">לסכם את הדף הזה</translation>
 <translation id="7932221068776853847">התנתק כדי להפסיק לשלוח את תוכן הדף הזה ל-Leo, ולהתחיל שיחה חדשה</translation>
 <translation id="8743383817154663379">משהו השתבש בעת עיבוד הבקשה שלך. יש לנסות שוב מאוחר יותר.</translation>
@@ -2150,7 +2157,7 @@ CoinGecko</translation>
 <translation id="6187065185557150870">לְשׂוֹחֵחַ</translation>
 <translation id="4685048769603134644">פתיחת דף מלא</translation>
 <translation id="2961040541145689181">שיחה חדשה</translation>
-<translation id="7557539689487606886">עבור לפרימיום</translation>
+<translation id="7557539689487606886">לעבור לפרימיום</translation>
 <translation id="1691256669639196606">ניהול מנוי</translation>
 <translation id="3840096463915153852">היסטוריית שיחה</translation>
 <translation id="2304783958703511257">הגדרות מתקדמות</translation>
@@ -2218,16 +2225,14 @@ CoinGecko</translation>
 <translation id="8712637175834984815">הבנתי</translation>
 <translation id="1093419424466417703">הדף ארוך מדי עבור ליאו. ייתכן שחלק מההקשר חסר מהשיחה. ליאו הצליח לקרוא <ph name="PERCENTAGE"/> מתוכן הדף.</translation>
 <translation id="4592293425457329338">יתכן שחסר הקשר מסוים מהשיחה. Leo הצליח לשמר <ph name="PERCENTAGE"/> מהתוכן המשויך לשיחה.</translation>
-<translation id="2186990448773134544">תוכן הדף משופר באמצעות חילוץ המידע הרלוונטי ביותר מהדף משום שהוא ארוך מדי עבור Leo.</translation>
-<translation id="5140068729857132378">מוצא את החלקים הרלוונטיים של דף האינטרנט...</translation>
 <translation id="4370698775470316661">השיחה הזו ארוכה מדי ואי אפשר להמשיך. ייתכן שקיימים דגמים אחרים שבהם ליאו מסוגל לשמור על דיוק לשיחות ארוכות יותר.</translation>
 <translation id="5719170755629028558">משפר את התשובה שלך עם חיפוש Brave...</translation>
 <translation id="5794962229997281366">תשובה משופרת לחיפוש טוב יותר של<ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949">עוד <ph name="COUNT"/>…</translation>
 <translation id="8103700533980268469">סגירת התראה זו</translation>
 <translation id="3417835166382867856">חיפוש בכרטיסיות</translation>
-<translation id="9090243919347147717">קבצים מצורפים</translation>
-<translation id="4444978378117903684">אפשר להוסיף את כרטיסיות הדפדפן שלך כדי לתת ל-Leo הקשר נוסף לשיחה</translation>
+<translation id="1352836459737874921">צירוף תוכן מכרטיסיות אחרות</translation>
+<translation id="3028258613451571431">שליחת תוכן דפים מכרטיסיות הדפדפן שלך כדי לתת ל-Leo הקשר נוסף לשיחה</translation>
 <translation id="4300920590112551536">כרטיסיות דפדפן</translation>
 <translation id="2315654674554095762">עכשיו Leo יזכור את השיחות שלך כך שתהיה לך אפשרות לחזור אליהן. הן מאוחסנות באופן מוצפן במכשיר שלך, ובאפשרותך למחוק אותן בכל עת.</translation>
 <translation id="7821251979960635244">היסטוריית השיחות שלך תופיע כאן ברגע שתתחיל/י שיחה.</translation>
@@ -2250,8 +2255,8 @@ CoinGecko</translation>
 <translation id="5642775487085641191">רק רוצה לשוחח?</translation>
 <translation id="8857222718794549840">ניתן לשאול אותי כל דבר! נוכל לדבר על כל נושא. אני תמיד לומד ומשתפר כדי לספק תשובות טובות יותר.</translation>
 <translation id="9051226419897869406">נהלו צ'טים בפרטיות עם Brave Leo</translation>
-<translation id="637548538907281147">עצבו את התשובות בהתאם לתכני הדף</translation>
-<translation id="8599503173207256429">הפעל כדי לשאול על דף זה. התוכן שלו יישלח לליאו של Brave יחד עם ההודעות שלך.</translation>
+<translation id="2414904697165579184">התאמת תשובות על סמך תוכן הכרטיסיות</translation>
+<translation id="8258324391302611485">תוכן הדף הזה יישלח ל-Leo יחד עם ההודעות שלך.</translation>
 <translation id="318819763888864209">כל המנויים מתחדשים באופן אוטומטי אך ניתן לבטלם בכל עת לפני החידוש.</translation>
 <translation id="5091223967610958">שתף את שם המארח של הדף שבו אתה נמצא (<ph name="HOST_NAME"/>) כדי לעזור לשפר את ליאו</translation>
 <translation id="8732450785281947197">כלי הבינה המלאכותית של ליאו</translation>
@@ -2282,11 +2287,14 @@ CoinGecko</translation>
 <translation id="9088751620363630236">צילום תמונה...</translation>
 <translation id="4250229828105606438">צילום מסך</translation>
 <translation id="6332876390231524389">תוכן כרטיסיה נוכחי</translation>
+<translation id="7742969455167760092">כרטיסיות פתוחות...</translation>
 <translation id="49269513399674318">השתמש במיקרופון</translation>
 <translation id="3895031624234442305">התאמים אישית מודלים</translation>
 <translation id="4572010449071015143">התחל שיחה חדשה</translation>
 <translation id="345901077335355561">חזרה לשיחה הפעילה</translation>
 <translation id="6287023598025162715">שיחה חדשה</translation>
+<translation id="7097822247923237815">צ'אט זמני</translation>
+<translation id="7481750859362986254">הצ'אט הזה לא יישמר בהיסטוריה שלך ולא ישתמש באף אחת מההגדרות או הזיכרונות של Leo.</translation>
 <translation id="8370801182970639038">אוטומטי (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">מנועי חיפושי מופעלים</translation>
 <translation id="5355776323718420036">הסתרת אתרים מובילים</translation>
@@ -2403,6 +2411,7 @@ CoinGecko</translation>
 <translation id="6821108091726602352">עזור לנו לתקן את הרשת על ידי השתתפות בפרויקט גילוי הרשת של Brave. על ידי שיתוף אותות חיפוש אנונימיים לחלוטין, תוכל לעזור ל-Brave לגדול את מפתח החיפוש.</translation>
 <translation id="6764845498618413165">למד עוד.</translation>
 <translation id="7818938154803162778">בטח, אעזור</translation>
+<translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
 <translation id="3486480638399578250">לשמור על כתובת המייל האישית שלך פרטית</translation>
 <translation id="7765422154906712751">יצירת כתובות ייחודיות ואקראיות המפנות לאימייל החשבון שלך ב-Brave וניתן למחוק אותן בכל עת. זה שומר על כתובת במייל האמיתית שלך מלהתגלות או להיות בשימוש על ידי מפרסמים.</translation>
 <translation id="5222676887888702881">התנתקות</translation>
@@ -2419,6 +2428,7 @@ CoinGecko</translation>
 <translation id="1104500750724567895">מייל בדוי חדש</translation>
 <translation id="8072910658503112482">הצעת מייל בדוי אחר</translation>
 <translation id="7710361355427562228">יוצר מייל בדוי חדש...</translation>
+<translation id="8013913032858654337">שגיאה ביצירת מייל בדוי. יש לבדוק את חיבור האינטרנט שלך ולנסות שוב.</translation>
 <translation id="4253168017788158739">הערה</translation>
 <translation id="7596996548739923550">הוספת הערה לכתובת שלך (אופציונלי)</translation>
 <translation id="3810973564298564668">ניהול</translation>
@@ -2426,13 +2436,21 @@ CoinGecko</translation>
 <translation id="3919357515365744684">האימיילים ינווטו אל <ph name="MAIN_EMAIL"/></translation>
 <translation id="6063403442924238501">עריכת מייל בדוי</translation>
 <translation id="8729265501883390499">יצירת מייל</translation>
+<translation id="7137645995703540578">שגיאה בשמירת מייל בדוי. יש לבדוק את חיבור האינטרנט שלך ולנסות שוב.</translation>
+<translation id="1765544689721905747">מחיקת מייל בדוי</translation>
+<translation id="646524615209870492">הסרת <ph name="ALIAS"/> כמייל בדוי תביא לאובדן היכולת שלך לקבל מיילים.</translation>
+<translation id="8133100642915054515">שגיאה במחיקת מייל בדוי. יש לבדוק את חיבור האינטרנט שלך ולנסות שוב.</translation>
+<translation id="8465742443901727718">פעולה זו היא בלתי הפיכה. בטוח שברצונך להמשיך?</translation>
 <translation id="8662104432574824754">כדי להתחיל, יש להתחבר או או ליצור חשבון Brave</translation>
 <translation id="8069030342700068465">יש להזין את כתובת האימייל שלך כדי לקבל לינק מאובטח לכניסה לאימייל שלך. לחיצה על הקישור תנווט אותך אל חשבון Brave קיים (אם יש כזה) או תיצור חשבון Brave חדש (אם אין), ותאפשר לך להשתמש בשירות המיילים הבדויים החינמי.</translation>
 <translation id="2133391407495495735">קבלת לינק כניסה</translation>
+<translation id="2650906829817220223">שגיאה בבקשת אימות. יש לבדוק את חיבור האינטרנט שלך ולנסות שוב.</translation>
 <translation id="3699624789011381381">כתובת אימייל</translation>
 <translation id="8124939971041602970">אימייל כניסה נמצא בדרך אל <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">יש ללחוץ על לינק הכניסה המאובטח באימייל כדי לגשת לחשבונך.</translation>
-<translation id="6549775668256477823">לא רואה את האימייל? כדאי לבדוק את תיקיית הספאם שלך או <ph name="BEGIN_LINK"/>לנסות שוב<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">לא רואה את האימייל? כדאי לבדוק את תיקיית הספאם שלך או לנסות שוב.</translation>
+<translation id="3397336197747843396">שגיאה באימות עם חשבון Brave. יש לנסות שוב.</translation>
+<translation id="1340795582009113055">התחלה מחדש</translation>
 <translation id="958268166261124668">Brave VPN: מחובר</translation>
 <translation id="6021669293402055982">Brave VPN: מנותק</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>

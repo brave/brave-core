@@ -875,7 +875,7 @@
 <translation id="1939235910515558387">Mulakan dengan Dompet Brave dalam masa beberapa minit.</translation>
 <translation id="5844138175312846408">Sudah memiliki dompet?</translation>
 <translation id="772643556080081594">Saya memerlukan dompet 'lihat sahaja'</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave dan logo Brave ialah tanda dagangan berdaftar Brave Software, Inc. Nama dan logo produk lain mungkin merupakan tanda dagangan syarikat masing-masing. Hak cipta terpelihara.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave dan logo Brave ialah tanda dagangan berdaftar Brave Software, Inc. Nama dan logo produk lain mungkin merupakan tanda dagangan syarikat masing-masing. Hak cipta terpelihara.</translation>
 <translation id="7501957181231305652">atau</translation>
 <translation id="375882617301124395">Sandarkan dompet kripto anda</translation>
 <translation id="5024543173656851695">Saya faham bahawa jika saya kehilangan perkataan pemulihan, saya tidak akan dapat mengakses dompet kripto saya.</translation>
@@ -1119,10 +1119,6 @@
 <translation id="4324239559624557455">Selama 24 jam</translation>
 <translation id="9139452553033760558">Selama 1 minggu</translation>
 <translation id="1658834457013045127">Selama-lamanya</translation>
-<translation id="2770851145415891830">Dompet kripto sedia ada dikesan</translation>
-<translation id="2237759620789871865">Sekiranya anda mahu melangkau import dan mengekalkan pengalaman Crypto Wallets yang terdahulu, hanya perlu navigasi ke Brave Browser <ph name="LINK_BEFORE"/>Tetapan<ph name="LINK_AFTER"/> dan tukar lalai kembali kepada Crypto Wallets. Anda juga boleh mengimport, mencuba Dompet Brave yang baharu, dan menukar kembali pada bila-bila masa.</translation>
-<translation id="5590175005414413980">Masukkan kata laluan dompet kripto anda yang sedia ada untuk mengimport ke Dompet Brave. Nikmati cara yang lebih pantas dan selamat untuk mengurus aset kripto dan berinteraksi melalui Web3 DApps.</translation>
-<translation id="880619123281809987">Taip kata laluan dompet Kripto</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> disambungkan</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> terputus sambungan</translation>
 <translation id="5317781812114905957">Arahan</translation>
@@ -1379,6 +1375,9 @@
 <translation id="5601436886921227795">Interaksi Dapp</translation>
 <translation id="9104177294757104789">Hantar <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Tukar <ph name="MAKER"/> kepada <ph name="TAKER"/></translation>
+<translation id="1748114617341025015">Sedang mencipta akaun token berkaitan</translation>
+<translation id="4418115887224983240">Gagal mencipta akaun token berkaitan</translation>
+<translation id="7165697599360786670">Akaun token berkaitan telah dicipta</translation>
 <translation id="8613144770663526433">Log masuk dengan Brave Wallet</translation>
 <translation id="8813165409788097898">Anda sedang mendaftar masuk ke <ph name="ORIGIN"/>. Dompet Brave akan berkongsi alamat dompet anda dengan <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Lihat butiran</translation>
@@ -1512,7 +1511,6 @@
 <translation id="396152018598329740">Bagaimanakah cara untuk menggunakan dompet kripto?</translation>
 <translation id="7512061585041489067">Apakah dompet kripto yang terbaik?</translation>
 <translation id="1342755158522323177">Apakah pelayar kripto?</translation>
-<translation id="4702762916247565868">Dompet kripto 101</translation>
 <translation id="4674552515763857735">Apakah frasa pemulihan?</translation>
 <translation id="7328255859839881981">Apakah DApps?</translation>
 <translation id="3852489285890032403">Apakah web 3?</translation>
@@ -1530,7 +1528,6 @@
 <translation id="7877416315564177070">Semak frasa pemulihan anda dan cuba semula.</translation>
 <translation id="6503538941917874992">Import menggunakan frasa pemulihan anda</translation>
 <translation id="782167880151571109">Dompet MetaMask dikesan!</translation>
-<translation id="3619071361843652814">Dompet Legasi dikesan!</translation>
 <translation id="4634124774493850572">Gunakan kata laluan</translation>
 <translation id="7697478310235189459">Perkataan <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Taip frasa pemulihan 12-24 perkataan MetaMask anda.</translation>
@@ -1543,7 +1540,6 @@
 <translation id="3604445540387095708">Saya telah membaca dan bersetuju dengan <ph name="LINK_BEFORE"/>Syarat penggunaan<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Beli kripto</translation>
 <translation id="3887541341068007345">Menyemak sambungan dompet...</translation>
-<translation id="3567994771568272606">Import daripada dompet kripto Brave legasi</translation>
 <translation id="8407091560429310499">Pilih aset</translation>
 <translation id="756590380936155533">Untuk menyelesaikan pembelian <ph name="ASSET_TICKER"/> anda, pilih salah satu daripada rakan kongsi kami</translation>
 <translation id="7880860489474966219">Setelah selesai, dana anda akan dipindahkan ke Dompet Brave anda</translation>
@@ -1746,6 +1742,7 @@
 <translation id="4583937519241190398">Disahkan oleh DappRadar</translation>
 <translation id="8713438253026855351">Tukar kepada akaun berperisai</translation>
 <translation id="3526789880090101085">Akaun perisai</translation>
+<translation id="3155166394760577549">Aktifkan perlindungan untuk meningkatkan privasi transaksi.</translation>
 <translation id="2298396008562701154">Buat masa ini, akaun ini menyokong transaksi telus yang bermakna ia boleh dilihat oleh semua orang di blockchain.</translation>
 <translation id="3987095760757102811">Menaik taraf kepada akaun berperisai bermakna transaksi ini akan menyembunyikan butiran penghantar, penerima, dan jumlah.</translation>
 <translation id="3819528427777765709">Berperisai</translation>
@@ -1776,6 +1773,8 @@
 <translation id="99991973626409495">Semak pelindung</translation>
 <translation id="3114681061018999547">Sedang melindung</translation>
 <translation id="8897189056319316783">Lindung ZEC</translation>
+<translation id="3382275793825152362">Lindungi dana</translation>
+<translation id="8631765320256788981">Anda sedang menghantar dana dari akaun telus ke akaun terlindung anda.</translation>
 <translation id="7144878232160441200">Cuba semula</translation>
 <translation id="9094621390791852268">Pratonton transaksi gagal.</translation>
 <translation id="4982713341035600933">Anggaran perubahan baki</translation>
@@ -1837,7 +1836,7 @@
 <translation id="7758665172236842395">Ikuti sumber kegemaran anda dalam suapan tunggal. Hanya buka tab dalam Brave, tatal ke bawah dan... lihatlah!</translation>
 <translation id="2376542729617592331">Berita Brave disokong iklan dengan iklan peribadi dan tanpa nama. <ph name="LINK_START"/>Ketahui lebih lanjut.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Hidupkan Berita Brave</translation>
-<translation id="5149018766422637336">Berita dan RSS</translation>
+<translation id="1772301834467143364">Berita Brave</translation>
 <translation id="6265592479622441247">Kembali ke <ph name="BEGIN_BOLD"/>Papan Pemuka<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Temui</translation>
 <translation id="8981973962043893066">Cari laman, topik atau suapan RSS</translation>
@@ -2108,10 +2107,18 @@
 <translation id="4885527781814382758">Brave Leo ialah pembantu AI pintar peribadi yang meningkatkan pengalaman penggunaan Internet anda. Leo boleh digunakan secara percuma dengan akses terhad. Brave Leo Premium menawarkan lebih banyak model, had yang lebih tinggi dan memberi pelanggan akses awal kepada ciri baharu. Model lalai akan berubah dari semasa ke semasa. Lihat <ph name="LINK_BEFORE"/>Pusat Bantuan Brave<ph name="LINK_AFTER"/> untuk maklumat lanjut.</translation>
 <translation id="7189603330209995455">Secara lalai, jika anda mengajukan soalan kepada Leo, ia boleh menghantar dan menggunakan kandungan laman web yang sedang anda layari atau sebarang teks yang anda serlahkan pada suatu halaman kepada Brave Leo untuk memberikan jawapan. Ketepatan jawapan tidak dapat dijamin, dan mungkin termasuk maklumat tidak tepat, mengelirukan atau palsu. Leo menggunakan data daripada Brave Search untuk meningkatkan kualiti jawapan. Jangan serahkan maklumat sensitif atau peribadi, dan berhati-hati dengan sebarang jawapan yang berkaitan dengan kesihatan, kewangan, keselamatan diri, atau seumpamanya. Anda boleh melaraskan pilihan Leo dalam Tetapan pada bila-bila masa. Layari Tetapan &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo tidak mengumpulkan pengecam seperti alamat IP anda yang boleh dikaitkan dengan anda. Tiada data digunakan untuk melatih model AI dan tiada data peribadi disimpan oleh model AI (kecuali untuk Anthropic yang menyimpan data selama 30 hari sebelum memadamnya). Lihat <ph name="LINK_BEFORE"/>dasar privasi<ph name="LINK_AFTER"/> untuk mendapatkan maklumat lanjut.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {Tanya soalan tentang kandungan halaman ini}
+      other {Tanya soalan tentang kandungan halaman ini}
+    }</translation>
 <translation id="6961721183181597848">Bagaimana saya boleh membantu anda hari ini?</translation>
 <translation id="2966135729673253768">Tanyakan soalan susulan</translation>
 <translation id="4524675003624341892">Cadangkan soalan...</translation>
 <translation id="4567071417854988869">Ringkaskan video ini</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {Ringkaskan halaman ini}
+      other {Ringkaskan halaman ini}
+    }</translation>
 <translation id="7921782882718083488">Ringkaskan halaman ini</translation>
 <translation id="7932221068776853847">Putuskan sambungan untuk berhenti menghantar kandungan halaman ini kepada Leo, dan mulakan perbualan baharu</translation>
 <translation id="8743383817154663379">Ada sesuatu yang tidak kena semasa memproses permintaan anda. Sila cuba lagi nanti.</translation>
@@ -2202,16 +2209,14 @@
 <translation id="8712637175834984815">Faham</translation>
 <translation id="1093419424466417703">Halaman ini terlalu panjang untuk Leo. Beberapa konteks mungkin hilang daripada perbualan. Leo dapat membaca <ph name="PERCENTAGE"/> daripada kandungan halaman.</translation>
 <translation id="4592293425457329338">Beberapa konteks mungkin hilang daripada perbualan. Leo dapat mengekalkan <ph name="PERCENTAGE"/> kandungan perbualan yang berkaitan.</translation>
-<translation id="2186990448773134544">Kandungan halaman telah ditapis secara menyari maklumat paling berkaitan daripada halaman tersebut kerana kandungan itu terlalu panjang bagi Leo.</translation>
-<translation id="5140068729857132378">Mendapatkan bahagian berkaitan daripada halaman web…</translation>
 <translation id="4370698775470316661">Perbualan ini terlalu panjang dan tidak boleh diteruskan. Mungkin terdapat model lain yang tersedia dengan ciri Leo yang mampu mengekalkan ketepatan untuk perbualan yang lebih panjang.</translation>
 <translation id="5719170755629028558">Meningkatkan jawapan anda dengan Carian Brave…</translation>
 <translation id="5794962229997281366">Pencarian jawapan yang ditingkatkan untuk <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> banyak lagi…</translation>
 <translation id="8103700533980268469">Tutup notis</translation>
 <translation id="3417835166382867856">Tab carian</translation>
-<translation id="9090243919347147717">Lampiran</translation>
-<translation id="4444978378117903684">Tambahkan tab penyemak imbas anda untuk memberi Leo konteks lanjut untuk perbualan</translation>
+<translation id="1352836459737874921">Lampirkan kandungan daripada tab lain</translation>
+<translation id="3028258613451571431">Hantar kandungan halaman dari tab pelayar anda untuk memberikan lebih konteks kepada Leo dalam perbualan</translation>
 <translation id="4300920590112551536">Tab penyemak imbas</translation>
 <translation id="2315654674554095762">Leo kini boleh menyimpan perbualan anda, membolehkan anda mengaksesnya semula. Perbualan ini disimpan secara terenkripsi pada peranti anda, dan anda boleh memadamkannya pada bila-bila masa.</translation>
 <translation id="7821251979960635244">Sejarah perbualan anda akan muncul di sini setelah anda memulakan perbualan.</translation>
@@ -2234,8 +2239,8 @@
 <translation id="5642775487085641191">Hanya mahu bersembang?</translation>
 <translation id="8857222718794549840">Tanya apa-apa sahaja! Kita boleh bercakap tentang sebarang topik yang anda mahukan. Saya sentiasa belajar dan menambah baik untuk memberikan jawapan yang lebih baik.</translation>
 <translation id="9051226419897869406">Bersembang secara Tertutup dengan Brave Leo</translation>
-<translation id="637548538907281147">Bentukkan jawapan berdasarkan kandungan halaman</translation>
-<translation id="8599503173207256429">Togol untuk bertanya tentang halaman ini. Kandungannya akan dihantar kepada Brave Leo bersama-sama dengan mesej anda.</translation>
+<translation id="2414904697165579184">Bentuk jawapan berdasarkan kandungan tab</translation>
+<translation id="8258324391302611485">Kandungan halaman ini akan dihantar kepada Leo bersama mesej anda.</translation>
 <translation id="318819763888864209">Semua langganan dibaharui secara automatik tetapi boleh dibatalkan pada bila-bila masa sebelum dibaharui.</translation>
 <translation id="5091223967610958">Kongsi nama hos laman yang anda berada (<ph name="HOST_NAME"/>) untuk membantu kami menjadikan Leo lebih baik.</translation>
 <translation id="8732450785281947197">Alatan Leo AI</translation>
@@ -2266,11 +2271,14 @@
 <translation id="9088751620363630236">Ambil gambar...</translation>
 <translation id="4250229828105606438">Tangkapan skrin</translation>
 <translation id="6332876390231524389">Kandungan tab semasa</translation>
+<translation id="7742969455167760092">Buka tab...</translation>
 <translation id="49269513399674318">Gunakan mikrofon</translation>
 <translation id="3895031624234442305">Model tersuai</translation>
 <translation id="4572010449071015143">Mulakan perbualan baharu</translation>
 <translation id="345901077335355561">Kembali ke perbualan aktif</translation>
 <translation id="6287023598025162715">Perbualan baru</translation>
+<translation id="7097822247923237815">Perbualan sementara</translation>
+<translation id="7481750859362986254">Sembang ini tidak akan disimpan dalam sejarah anda dan tidak akan menggunakan sebarang penyesuaian atau ingatan Leo.</translation>
 <translation id="8370801182970639038">Automatik (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Enjin carian yang diaktifkan</translation>
 <translation id="5355776323718420036">Sembunyikan laman utama</translation>
@@ -2387,6 +2395,7 @@
 <translation id="6821108091726602352">Bantu kami membetulkan web dengan mengambil bahagian dalam Projek Penemuan Web Brave. Dengan berkongsi isyarat carian tanpa nama sepenuhnya, anda boleh membantu Brave mengembangkan indeks carian.</translation>
 <translation id="6764845498618413165">Ketahui Lebih Lanjut.</translation>
 <translation id="7818938154803162778">Sudah tentu, saya akan membantu</translation>
+<translation id="7207456302801184289">Selamat Datang ke Brave</translation>
 <translation id="3486480638399578250">Lindungi alamat e-mel peribadi anda</translation>
 <translation id="7765422154906712751">Cipta alamat rawak dan unik yang dihantar terus ke e-mel akaun Brave anda, dan boleh dipadam bila-bila masa. Lindungi alamat e-mel sebenar anda daripada didedahkan atau digunakan oleh pengiklan.</translation>
 <translation id="5222676887888702881">Log keluar</translation>
@@ -2403,6 +2412,7 @@
 <translation id="1104500750724567895">Alias baharu</translation>
 <translation id="8072910658503112482">Cadangkan alias e-mel lain</translation>
 <translation id="7710361355427562228">Menjana alias baharu...</translation>
+<translation id="8013913032858654337">Ralat semasa menjana alias. Periksa sambungan internet anda dan cuba lagi.</translation>
 <translation id="4253168017788158739">Nota</translation>
 <translation id="7596996548739923550">Masukkan nota untuk alamat anda (pilihan)</translation>
 <translation id="3810973564298564668">Urus</translation>
@@ -2410,13 +2420,21 @@
 <translation id="3919357515365744684">Email akan dihantar ke <ph name="MAIN_EMAIL"/></translation>
 <translation id="6063403442924238501">Edit alias e-mel</translation>
 <translation id="8729265501883390499">Cipta alias</translation>
+<translation id="7137645995703540578">Ralat semasa menyimpan alias. Periksa sambungan internet anda dan cuba lagi.</translation>
+<translation id="1765544689721905747">Padam alias e-mel</translation>
+<translation id="646524615209870492">Mengalih keluar <ph name="ALIAS"/> sebagai alias akan menyebabkan anda tidak dapat menerima e-mel.</translation>
+<translation id="8133100642915054515">Ralat semasa memadam alias. Semak sambungan internet anda dan cuba lagi.</translation>
+<translation id="8465742443901727718">Tindakan ini tidak boleh dipulihkan. Adakah anda pasti mahu meneruskan?</translation>
 <translation id="8662104432574824754">Untuk memulakan, log masuk atau cipta akaun Brave</translation>
 <translation id="8069030342700068465">Masukkan alamat e-mel anda untuk menerima pautan log masuk yang selamat. Dengan mengklik pautan ini, anda akan mencipta atau mengakses Akaun Brave dan menggunakan perkhidmatan Alias E-mel percuma.</translation>
 <translation id="2133391407495495735">Dapatkan pautan log masuk</translation>
+<translation id="2650906829817220223">Ralat semasa meminta pengesahan. Periksa sambungan internet anda dan cuba lagi.</translation>
 <translation id="3699624789011381381">Alamat e-mel</translation>
 <translation id="8124939971041602970">E-mel log masuk sedang dihantar ke <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">Klik pada pautan log masuk selamat dalam e-mel untuk mengakses akaun anda.</translation>
-<translation id="6549775668256477823">Tidak nampak e-mel tersebut? Periksa folder spam anda atau <ph name="BEGIN_LINK"/>cuba lagi<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Tidak nampak e-mel tersebut? Periksa folder spam anda atau cuba lagi.</translation>
+<translation id="3397336197747843396">Ralat semasa mengesahkan Akaun Brave. Sila cuba lagi.</translation>
+<translation id="1340795582009113055">Mula semula</translation>
 <translation id="958268166261124668">VPN Brave: Disambungkan</translation>
 <translation id="6021669293402055982">VPN Brave: Diputuskan sambungan</translation>
 <translation id="3541307549916475335">UI Panel VPN Brave</translation>

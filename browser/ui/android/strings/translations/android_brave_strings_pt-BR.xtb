@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Ajude a melhorar a estabilidade do Brave enviando automaticamente relatórios de diagnóstico quando o navegador Brave apresentar falha ou congelar.</translation>
 <translation id="7977176350719484850">Est. de dados\neconomizados</translation>
 <translation id="9008534313521214777">Est. tempo\neconomizado</translation>
+<translation id="8347743943525229984">Autorizar pesquisas Brave</translation>
+<translation id="6022939994702081659">Permite que o Brave mostre links para pesquisas privadas na página da nova guia. As pesquisas nos ajudam a criar recursos melhores e a medir a eficácia das campanhas publicitárias baseadas no navegador.</translation>
+<translation id="7746496306508543965">Saiba mais sobre as Pesquisas Brave</translation>
 <translation id="410351446219883937">Reprodução automática</translation>
 <translation id="7445411102860286510">Permite que os sites mostrem vídeos sem som automaticamente (recomendado)</translation>
 <translation id="7837721118676387834">Permite que um determinado site mostre vídeos sem som automaticamente.</translation>
@@ -632,7 +635,6 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="3961126209136843111">Importar uma carteira existente</translation>
 <translation id="4811736040444856406">Mostrar frase de recuperação</translation>
 <translation id="4359319875297001084">Importar das carteiras de criptomoedas legadas do Brave?</translation>
-<translation id="3157931365184549694">Restaurar</translation>
 <translation id="5844138175312846408">Já tem uma carteira?</translation>
 <translation id="2502258949541727762">Antes de começarmos</translation>
 <translation id="4303748097351941030">Redes compatíveis</translation>
@@ -794,7 +796,6 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1426320910664514906">Limite de Gás</translation>
 <translation id="6389441740143786465">Desativar barra de compartilhamento</translation>
 <translation id="9065203028668620118">Editar</translation>
-<translation id="473775607612524610">Atualizar</translation>
 <translation id="479795390141144417">Houve uma falha ao atualizar a conta.</translation>
 <translation id="8084782383392198011">O nome da conta não pode ficar em branco.</translation>
 <translation id="5045550434625856497">Senha incorreta</translation>

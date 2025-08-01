@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Ayuda a mejorar la estabilidad de Brave enviando automáticamente informes de diagnóstico cuando el navegador falle o se bloquee.</translation>
 <translation id="7977176350719484850">Datos\nahorrados est.</translation>
 <translation id="9008534313521214777">Tiempo ahorrado estimado</translation>
+<translation id="8347743943525229984">Permitir las encuestas de Brave</translation>
+<translation id="6022939994702081659">Permite a Brave mostrar enlaces a encuestas privadas en la página de nueva pestaña. Las encuestas nos ayudan a desarrollar mejores características y medir la efectividad de las campañas publicitarias basadas en el navegador.</translation>
+<translation id="7746496306508543965">Más información sobre las encuestas de Brave</translation>
 <translation id="410351446219883937">Reproducción automática</translation>
 <translation id="7445411102860286510">Permitir que los sitios reproduzcan videos silenciados de forma automática (recomendado)</translation>
 <translation id="7837721118676387834">Permite la reproducción automática de videos silenciados para un sitio específico.</translation>
@@ -632,7 +635,6 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="3961126209136843111">Importar una billetera ya existente</translation>
 <translation id="4811736040444856406">Mostrar la frase de recuperación</translation>
 <translation id="4359319875297001084">¿Importar desde billeteras de criptomonedas Brave anteriores?</translation>
-<translation id="3157931365184549694">Restaurar</translation>
 <translation id="5844138175312846408">¿Ya tienes una billetera?</translation>
 <translation id="2502258949541727762">Antes de empezar</translation>
 <translation id="4303748097351941030">Redes compatibles</translation>
@@ -794,7 +796,6 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="1426320910664514906">Limite de gas</translation>
 <translation id="6389441740143786465">Desactivar centro de difusión</translation>
 <translation id="9065203028668620118">Editar</translation>
-<translation id="473775607612524610">Actualizar</translation>
 <translation id="479795390141144417">No se pudo actualizar la cuenta.</translation>
 <translation id="8084782383392198011">El nombre de la cuenta no puede estar vacío.</translation>
 <translation id="5045550434625856497">Contraseña incorrecta</translation>

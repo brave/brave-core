@@ -16,7 +16,7 @@
 <translation id="8294286161128352783">فقط على صفحة علامة التبويب الجديدة</translation>
 <translation id="6406506848690869874">مزامنة</translation>
 <translation id="1544192797660353713">المحفظة</translation>
-<translation id="6129027151000961048">ليو</translation>
+<translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
 <translation id="8275068909952022340">المزيد …</translation>
 <translation id="1990886731975529483">قم بتثبيت برنامج Google Widevine وتشغيله</translation>
 <translation id="8926389886865778422">عدم السؤال مرة أخرى</translation>
@@ -77,7 +77,7 @@
 <translation id="7595540212376041331">إخفاء أيقونة Brave Wallet</translation>
 <translation id="3893997535859323951">إخفاء أيقونة Leo AI</translation>
 <translation id="6208515240323786457">إخفاء أيقونة Leo AI</translation>
-<translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
+<translation id="5385064007245738696">نبذة عن Leo AI</translation>
 <translation id="4928988318462976765">متجر إضافات الويب</translation>
 <translation id="9181207987584064303">عرض في متجر إضافات الويب</translation>
 <translation id="3161744659507801211">تحذير: لا يستطيع Brave منع الامتدادات من تسجيل محفوظات الاستعراض الخاصة بك.</translation>
@@ -181,11 +181,6 @@
 <translation id="4394049700291259645">إيقاف</translation>
 <translation id="7142548388914389999">السماح بتحليلات المنتج التي تحافظ على الخصوصية (P3A)</translation>
 <translation id="2604698253988679506">تساعد هذه الاستجابات الخاصة متصفح Brave على تقدير الاستخدام العام لميزات معينة وجعلها أفضل بالنسبة لك.</translation>
-<translation id="1947672064022327074">هل ترغب في بدء استخدام المحافظ المشفرة (Crypto Wallets) للحصول على دعم إيثريوم ؟</translation>
-<translation id="7583735190612229830">قم بإعداد Crypto Wallets للتفاعل مع هذا التطبيق وما يماثله من التطبيقات الأخرى.</translation>
-<translation id="8731422418734770661">قم بإعداد المحافظ المشفرة</translation>
-<translation id="8199661191594897555">بدء تشغيل Crypto Wallets وإعادة التحميل</translation>
-<translation id="8428213095426709021">الإعدادات</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">نطاقات Web3</translation>
 <translation id="5046066249040287308">خدمة الأداة المساعدة لمحفظة Brave</translation>
@@ -654,7 +649,6 @@
 <translation id="2653659639078652383">إرسال</translation>
 <translation id="1294350054292274934">حل عناوين ‎.onion فقط في نوافذ متصفح Tor</translation>
 <translation id="601227612175911475">لن تكون خدمات Onion متاحة خارج نوافذ Tor.</translation>
-<translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="5249433283143453448">استخدم مكون Widevine لإدارة الحقوق الرقمية (DRM) لعرض دفق الفيديو المحمي والمحتويات الأخرى في المستعرض.</translation>
 <translation id="1314131187310290315">إضافات Manifest V2</translation>
 <translation id="2488433650767270565">ستتم إزالة إضافات Manifest V2 التالية من متجر Chrome على الويب، ولكنها ستظل مدعومة في Brave. قم بالتبديل لتنزيلها وتثبيتها أو لإلغاء التثبيت.</translation>
@@ -672,7 +666,6 @@
 <translation id="7701023802820268122">محفظة Solana الافتراضية</translation>
 <translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="6942354363301686374">الإضافات (لا يوجد بديل احتياطي)</translation>
-<translation id="1274962333945373242">محافظ العملات المشفرة (مهملة)</translation>
 <translation id="702381242110464396">الإضافات (بديل احتياطي لمحفظة Brave)</translation>
 <translation id="4718664830805652430">العملة الأساسية الافتراضية</translation>
 <translation id="7992507032049865603">العملة المشفرة الأساسية الافتراضية</translation>
@@ -737,6 +730,7 @@
 <translation id="3095201688102519917">تحذيري قبل إغلاق النافذة بعلامات تبويب متعددة</translation>
 <translation id="7120553802660696133">أغلق النافذة عند إغلاق آخر علامة تبويب</translation>
 <translation id="3394171693948989253">إظهار تذكير ملء الشاشة للضغط على Esc عند الخروج</translation>
+<translation id="6129027151000961048">ليو</translation>
 <translation id="2751872555001636931">إظهار رمز Leo في الشريط الجانبي</translation>
 <translation id="8055509865174199683">إظهار مساعد Leo في قائمة السياقات على مواقع الويب</translation>
 <translation id="1529674267267221673">سيظهر مساعد Leo في قائمة السياقات عندما تنقر بزر الماوس الأيمن على موقع الويب. وسيؤدي ذلك إلى إرسال السياق من صفحة الويب الحالية إلى مساعد Leo.</translation>
@@ -750,7 +744,6 @@
 Leo AI في المستقبل وستقوم أيضًا بمحو سجل الدردشة الخاص بك. وسيؤدي مسح سجل الدردشة الخاص بك إلى حذف جميع محادثاتك السابقة مع Brave Leo AI. ولا يمكن التراجع عن هذا الإجراء.</translation>
 <translation id="5574059574002819179">ضبط اقتراحات الإكمال التلقائي</translation>
 <translation id="7942415993090181327">سجل الدردشة</translation>
-<translation id="5385064007245738696">نبذة عن Leo AI</translation>
 <translation id="5084498230659987096">يوفّر Brave Leo دردشة مرتكزة على الخصوصية مدعومة بالذكاء الاصطناعي وواجهات أخرى مدعومة بالذكاء الاصطناعي في المتصفح. لا يتعلم Leo أبدًا من بياناتك ولا يستخدمها لتدريب النموذج. يتم إرسال جميع الطلبات بالوكالة من خلال خادم يُخفي الهوية.</translation>
 <translation id="6458721693611638005">اقرأ المزيد حول كيف يحمي Brave استخدامك للذكاء الاصطناعي في سياسة خصوصية Leo. <ph name="BEGIN_LINK"/>تعرف على المزيد<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">النموذج التلقائي للمحادثات الجديدة</translation>

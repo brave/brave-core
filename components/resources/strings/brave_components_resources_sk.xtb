@@ -871,7 +871,7 @@
 <translation id="1939235910515558387">Začnite s peňaženkou Brave v priebehu niekoľkých minút.</translation>
 <translation id="5844138175312846408">Už máte peňaženku?</translation>
 <translation id="772643556080081594">Potrebujem peňaženku iba na sledovanie hodnoty aktív</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave a logo Brave sú registrované ochranné známky spoločnosti Brave Software, Inc. Ostatné názvy produktov a logá môžu byť ochrannými známkami príslušných spoločností. Všetky práva vyhradené.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave a logo Brave sú registrované ochranné známky spoločnosti Brave Software, Inc. Ostatné názvy produktov a logá môžu byť ochrannými známkami príslušných spoločností. Všetky práva vyhradené.</translation>
 <translation id="7501957181231305652">nebo</translation>
 <translation id="375882617301124395">Zálohujte si svoju kryptopeňaženku</translation>
 <translation id="5024543173656851695">Chápem, že ak stratím slová na obnovenie, nebudem mať prístup do svojej krypto peňaženky.</translation>
@@ -1115,10 +1115,6 @@
 <translation id="4324239559624557455">Na 24 hodín</translation>
 <translation id="9139452553033760558">Na 1 týždeň</translation>
 <translation id="1658834457013045127">Navždy</translation>
-<translation id="2770851145415891830">Zistili sa existujúce kryptopeňaženky</translation>
-<translation id="2237759620789871865">Ak radšej chcete preskočiť import a ponechať si staré kryptopeňaženky, stačí prejsť na <ph name="LINK_BEFORE"/>Nastavenia<ph name="LINK_AFTER"/> prehliadača Brave a zmeniť predvolenú hodnotu späť na kryptopeňaženky. Taktiež môžete kedykoľvek vykonať import, skúsiť novú peňaženku Brave a vrátiť hodnotu späť.</translation>
-<translation id="5590175005414413980">Zadajte heslo k svojim existujúcim krypto peňaženkám na účely importu do peňaženky Brave. Užívajte si rýchlejší a bezpečnejší spôsob spravovania kryptoaktív a interagujte s aplikáciami Web3 DApps.</translation>
-<translation id="880619123281809987">Zadajte heslo krypto peňaženky</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> pripojené</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> odpojené</translation>
 <translation id="5317781812114905957">Pokyny</translation>
@@ -1508,7 +1504,6 @@
 <translation id="396152018598329740">Ako používať krypto peňaženku?</translation>
 <translation id="7512061585041489067">Aká je najlepšia kryptopeňaženka?</translation>
 <translation id="1342755158522323177">Čo je to kryptografický prehliadač?</translation>
-<translation id="4702762916247565868">Krypto peňaženky 101</translation>
 <translation id="4674552515763857735">Čo je to fráza na obnovenie?</translation>
 <translation id="7328255859839881981">Čo sú to DApps?</translation>
 <translation id="3852489285890032403">Čo je web 3?</translation>
@@ -1526,7 +1521,6 @@
 <translation id="7877416315564177070">Skontrolujte si svoju frázu na obnovenie a skúste to znova.</translation>
 <translation id="6503538941917874992">Importovať pomocou frázy na obnovenie</translation>
 <translation id="782167880151571109">Bola rozpoznaná peňaženka MetaMask!</translation>
-<translation id="3619071361843652814">Bola rozpoznaná staršia peňaženka!</translation>
 <translation id="4634124774493850572">Použiť heslo</translation>
 <translation id="7697478310235189459">Slovo <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Zadajte svoju 12- až 24-slovnú frázu na obnovenie MetaMask.</translation>
@@ -1539,7 +1533,6 @@
 <translation id="3604445540387095708">Prečítal/-a som si <ph name="LINK_BEFORE"/>Podmienky používania<ph name="LINK_AFTER"/> a súhlasím s nimi</translation>
 <translation id="1422451606553326863">Kúpiť krypto</translation>
 <translation id="3887541341068007345">Kontrolujú sa rozšírenia peňaženky...</translation>
-<translation id="3567994771568272606">Importujte zo starších krypto peňaženiek Brave</translation>
 <translation id="8407091560429310499">Vyberte aktívum</translation>
 <translation id="756590380936155533">Ak chcete dokončiť nákup za <ph name="ASSET_TICKER"/>, vyberte si jedného z našich partnerov</translation>
 <translation id="7880860489474966219">Po dokončení budú vaše prostriedky prevedené do vašej peňaženky Brave</translation>
@@ -1833,7 +1826,7 @@
 <translation id="7758665172236842395">Sledujte svoje obľúbené zdroje v jednom kanáli. Stačí otvoriť kartu v prehliadači Brave, posunúť zobrazenie nadol a... hotovo!</translation>
 <translation id="2376542729617592331">Služba Brave News je podporovaná pomocou súkromných anonymných reklám. <ph name="LINK_START"/>Ďalšie informácie.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Zapnúť novinky Brave</translation>
-<translation id="5149018766422637336">Novinky a RSS</translation>
+<translation id="1772301834467143364">Novinky Brave</translation>
 <translation id="6265592479622441247">Späť na <ph name="BEGIN_BOLD"/>panel<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Objavujte</translation>
 <translation id="8981973962043893066">Vyhľadávanie stránok, tém alebo kanálov RSS</translation>
@@ -2199,16 +2192,12 @@
 <translation id="8712637175834984815">Dobre</translation>
 <translation id="1093419424466417703">Stránka je pre Lea príliš dlhá. V konverzácii môže chýbať určitý kontext. Z obsahu stránky prečítal Leo<ph name="PERCENTAGE"/>.</translation>
 <translation id="4592293425457329338">V rozhovore by mohli chýbať niektoré súvislosti. Leovi sa podarilo zachovať <ph name="PERCENTAGE"/> obsahu súvisiaceho s konverzáciou.</translation>
-<translation id="2186990448773134544">Obsah stránky bol vylepšený vyňatím najdôležitejších informácií zo stránky, pretože pre Lea bol príliš dlhý.</translation>
-<translation id="5140068729857132378">Vyhľadávajú sa príslušné časti z webovej stránky…</translation>
 <translation id="4370698775470316661">Táto konverzácia je príliš dlhá a nemôže pokračovať. Dostupné môžu byť aj iné modely, s ktorými je Leo schopný zachovať presnosť pri dlhších konverzáciách.</translation>
 <translation id="5719170755629028558">Zlepšite svoju odpoveď s vyhľadávaním Brave...</translation>
 <translation id="5794962229997281366">Vylepšené vyhľadávanie odpovedí na <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> ďalšie…</translation>
 <translation id="8103700533980268469">Zavrieť toto oznámenie</translation>
 <translation id="3417835166382867856">Prehľadávať karty</translation>
-<translation id="9090243919347147717">Prílohy</translation>
-<translation id="4444978378117903684">Pridajte otvorené karty prehliadača, aby ste Leovi poskytli viac kontextu pre konverzáciu</translation>
 <translation id="4300920590112551536">Karty prehliadača</translation>
 <translation id="2315654674554095762">Leo si teraz bude pamätať vaše konverzácie, aby ste sa k nim mohli vrátiť. Ukladajú sa zašifrované v zariadení a môžete ich kedykoľvek vymazať.</translation>
 <translation id="7821251979960635244">Tu sa po začatí konverzácie zobrazí história vašich konverzácií.</translation>
@@ -2231,8 +2220,6 @@
 <translation id="5642775487085641191">Chcete sa len porozprávať?</translation>
 <translation id="8857222718794549840">Spýtajte sa ma na čokoľvek! Môžeme sa porozprávať na akúkoľvek tému. Stále sa učím a zdokonaľujem, aby som vám mohol poskytnúť lepšie odpovede.</translation>
 <translation id="9051226419897869406">Chatovať súkromne s Brave Leo</translation>
-<translation id="637548538907281147">Tvarujte odpovede na základe obsahu stránky</translation>
-<translation id="8599503173207256429">Prepnutím do polohy „Povolené“ sa opýtate na túto stránku. Jej obsah bude odoslaný spoločnosti Brave Leo spolu s vašimi správami.</translation>
 <translation id="318819763888864209">Všetky typy predplatného sa automaticky obnovujú, ale je možné ich kedykoľvek pred obnovením zrušiť.</translation>
 <translation id="5091223967610958">Zdieľajte názov hostiteľa stránky, na ktorej sa nachádzate (<ph name="HOST_NAME"/>), aby ste nám pomohli vylepšiť Lea.</translation>
 <translation id="8732450785281947197">Nástroje Leo AI</translation>
@@ -2383,6 +2370,7 @@ other {Štíty Brave zablokovali {BLOCKED_COUNT} sledovacie zadiatenia na <ph na
 <translation id="6821108091726602352">Pomôžte nám opraviť web účasťou na projekte Brave’s Web Discovery Project. Zdieľaním úplne anonymných vyhľadávacích signálov môžete Brave pomôcť rozšíriť index vyhľadávania.</translation>
 <translation id="6764845498618413165">Zistiť viac.</translation>
 <translation id="7818938154803162778">Áno, chcem pomôcť</translation>
+<translation id="7207456302801184289">Vitajte v prehliadači Brave</translation>
 <translation id="3486480638399578250">Zachovajte svoju osobnú e-mailovú adresu súkromnú</translation>
 <translation id="7765422154906712751">Vytvorte jedinečné, náhodné adresy, ktoré preposielajú obsah na váš e-mail k účtu Brave a môžu byť kedykoľvek odstránené. Chráňte svoju skutočnú e-mailovu adresu pred odhalením alebo zneužitím inzerentmi.</translation>
 <translation id="5222676887888702881">Odhlásiť sa</translation>
@@ -2412,7 +2400,7 @@ other {Štíty Brave zablokovali {BLOCKED_COUNT} sledovacie zadiatenia na <ph na
 <translation id="3699624789011381381">Emailová adresa</translation>
 <translation id="8124939971041602970">Prihlasovací email je na ceste na adresu <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">Kliknite na bezpečný prihlasovací odkaz v emaile, aby ste sa dostali k svojmu účtu.</translation>
-<translation id="6549775668256477823">Nevidíte email? Skontrolujte priečinok so spamom alebo <ph name="BEGIN_LINK"/>to skúste znova<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Nevidíte email? Skontrolujte priečinok so spamom alebo to skúste znova.</translation>
 <translation id="958268166261124668">Brave VPN: pripojené</translation>
 <translation id="6021669293402055982">Brave VPN: odpojené</translation>
 <translation id="3541307549916475335">Používateľské rozhranie panela Brave VPN</translation>

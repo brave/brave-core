@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Brave 브라우저가 작동이 멎거나 프리징이 발생하면 진단 보고서를 자동 전송하여 Brave 제품 안정성 향상에 도움을 주세요.</translation>
 <translation id="7977176350719484850">절약 예상\n데이터량</translation>
 <translation id="9008534313521214777">예상\n절약 시간</translation>
+<translation id="8347743943525229984">Brave 설문조사 허용</translation>
+<translation id="6022939994702081659">새 탭 페이지에서 비공개 설문조사 링크를 표시할 수 있도록 허용합니다. 설문조사는 더 나은 기능을 개발하고, 브라우저 기반 광고 캠페인의 효과를 측정하는 데 도움이 됩니다.</translation>
+<translation id="7746496306508543965">Brave 설문조사에 대해 자세히 알아보기</translation>
 <translation id="410351446219883937">자동재생</translation>
 <translation id="7445411102860286510">사이트에서 음소거된 동영상을 자동재생하도록 허용(권장)</translation>
 <translation id="7837721118676387834">특정 사이트에서 음소거된 동영상이 자동재생되도록 허용합니다.</translation>
@@ -632,7 +635,6 @@
 <translation id="3961126209136843111">기존 월렛 가져오기</translation>
 <translation id="4811736040444856406">복구 문구 표시</translation>
 <translation id="4359319875297001084">레거시 Brave 암호화폐 월렛에서 가져오시겠습니까?</translation>
-<translation id="3157931365184549694">복구</translation>
 <translation id="5844138175312846408">이미 월렛이 있으십니까?</translation>
 <translation id="2502258949541727762">시작하기 전에</translation>
 <translation id="4303748097351941030">지원되는 네트워크</translation>
@@ -794,7 +796,6 @@
 <translation id="1426320910664514906">가스 한도</translation>
 <translation id="6389441740143786465">공유 허브 비활성화</translation>
 <translation id="9065203028668620118">수정</translation>
-<translation id="473775607612524610">업데이트</translation>
 <translation id="479795390141144417">계정 업데이트에 실패했습니다.</translation>
 <translation id="8084782383392198011">계정 이름은 비워 둘 수 없습니다.</translation>
 <translation id="5045550434625856497">비밀번호가 잘못되었습니다.</translation>
