@@ -13,8 +13,7 @@ source_set("browser") {
   ]
   deps = [
     "//brave/components/brave_shields/core/browser",
-    "//brave/components/brave_shields/core/common:mojom",
-    "//brave/components/brave_shields/ios/common:brave_shields_mojom_wrappers",
+    "//brave/components/brave_shields/ios/common:mojom",
     "//components/content_settings/core/browser",
     "//components/prefs",
     "//ios/web/public/thread",

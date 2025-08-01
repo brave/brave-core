@@ -15,7 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @interface BraveShieldsUtilsFactory : NSObject
-+ (id<BraveShieldsUtils>)getForProfile:(id<ProfileBridge>)profile;
++ (id<BraveShieldsUtils>)getForProfile:(id<ProfileBridge>)profile
+    NS_SWIFT_NAME(get(profile:));
 @end
 
 NS_ASSUME_NONNULL_END
