@@ -80,6 +80,7 @@ static_library("common") {
     ":generated_json_rpc_requests",
     ":pref_names",
     ":rust_lib",
+    "//brave/components/brave_origin",
     "//brave/net/base:utils",
     "//brave/third_party/argon2",
     "//brave/third_party/bitcoin-core",

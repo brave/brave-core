@@ -28,6 +28,7 @@
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_origin/brave_origin_state.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
@@ -148,6 +149,12 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
+
+  // Initialize the Brave Origin state once in the browser process only
+  // This must be done early but only in the browser process, not child
+  // processes
+  BraveOriginState::GetInstance()->Initialize();
+
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,
