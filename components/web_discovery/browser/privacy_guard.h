@@ -27,7 +27,7 @@ bool IsPrivateQueryLikely(const std::string& query);
 // to ensure that the user's profile is not involved in the query.
 GURL GeneratePrivateSearchURL(const GURL& original_url,
                               const std::string& query,
-                              const PatternsURLDetails& matching_url_details);
+                              std::optional<std::string_view> prefix);
 
 // Checks if a URL should be dropped due to its length or content.
 // Currently only used for determining whether to mask a URL

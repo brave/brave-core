@@ -74,6 +74,11 @@ class ContentScraper {
                                   std::unique_ptr<PageScrapeResult> prev_result,
                                   std::string html,
                                   PageScrapeResultCallback callback) = 0;
+
+  // For v2 patterns double fetch processing
+  virtual void ParseAndScrapePageV2(const GURL& url,
+                                    std::string response_body,
+                                    PageScrapeResultCallback callback) = 0;
 };
 
 }  // namespace web_discovery

@@ -10,6 +10,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/web_discovery/browser/patterns_v2.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 
 namespace web_discovery {
@@ -188,6 +189,14 @@ std::vector<base::Value::Dict> GenerateQueryPayloads(
     }
   }
   return payloads;
+}
+
+std::vector<base::Value::Dict> GenerateQueryPayloadsV2(
+    const ServerConfig& server_config,
+    const PatternsV2PatternsGroup& patterns_group,
+    std::unique_ptr<PageScrapeResult> scrape_result) {
+  // TODO(djandries): Implement v2 payload generation
+  return {};
 }
 
 base::Value::Dict GenerateAlivePayload(const ServerConfig& server_config,

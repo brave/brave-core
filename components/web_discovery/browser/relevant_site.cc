@@ -5,29 +5,65 @@
 
 #include "brave/components/web_discovery/browser/relevant_site.h"
 
+#include "base/containers/fixed_flat_map.h"
+
 namespace web_discovery {
 
+namespace {
+
+constexpr std::string_view kGoogleImagesID = "search-goi";
+constexpr std::string_view kGoogleVideosID = "search-gov";
+constexpr std::string_view kGoogleID = "search-go";
+constexpr std::string_view kYahooID = "search-ya";
+constexpr std::string_view kBingImagesID = "search-bii";
+constexpr std::string_view kBingID = "search-bi";
+constexpr std::string_view kAmazonSearchID = "search-am";
+constexpr std::string_view kAmazonProductID = "amp";
+constexpr std::string_view kDuckDuckGoID = "search-dd";
+constexpr std::string_view kLinkedInID = "li";
+
+constexpr auto kIDToSiteMap =
+    base::MakeFixedFlatMap<std::string_view, RelevantSite>({
+        {kGoogleImagesID, RelevantSite::kGoogleImages},
+        {kGoogleVideosID, RelevantSite::kGoogleVideos},
+        {kGoogleID, RelevantSite::kGoogle},
+        {kYahooID, RelevantSite::kYahoo},
+        {kBingImagesID, RelevantSite::kBingImages},
+        {kBingID, RelevantSite::kBing},
+        {kAmazonSearchID, RelevantSite::kAmazonSearch},
+        {kAmazonProductID, RelevantSite::kAmazonProduct},
+        {kDuckDuckGoID, RelevantSite::kDuckDuckGo},
+        {kLinkedInID, RelevantSite::kLinkedIn},
+    });
+
+constexpr auto kSiteToIDMap =
+    base::MakeFixedFlatMap<RelevantSite, std::string_view>({
+        {RelevantSite::kGoogleImages, kGoogleImagesID},
+        {RelevantSite::kGoogleVideos, kGoogleVideosID},
+        {RelevantSite::kGoogle, kGoogleID},
+        {RelevantSite::kYahoo, kYahooID},
+        {RelevantSite::kBingImages, kBingImagesID},
+        {RelevantSite::kBing, kBingID},
+        {RelevantSite::kAmazonSearch, kAmazonSearchID},
+        {RelevantSite::kAmazonProduct, kAmazonProductID},
+        {RelevantSite::kDuckDuckGo, kDuckDuckGoID},
+        {RelevantSite::kLinkedIn, kLinkedInID},
+    });
+
+}  // namespace
+
 std::optional<RelevantSite> RelevantSiteFromID(std::string_view text_id) {
-  if (text_id == "search-goi") {
-    return RelevantSite::kGoogleImages;
-  } else if (text_id == "search-gov") {
-    return RelevantSite::kGoogleVideos;
-  } else if (text_id == "search-go") {
-    return RelevantSite::kGoogle;
-  } else if (text_id == "search-ya") {
-    return RelevantSite::kYahoo;
-  } else if (text_id == "search-bii") {
-    return RelevantSite::kBingImages;
-  } else if (text_id == "search-bi") {
-    return RelevantSite::kBing;
-  } else if (text_id == "search-am") {
-    return RelevantSite::kAmazonSearch;
-  } else if (text_id == "amp") {
-    return RelevantSite::kAmazonProduct;
-  } else if (text_id == "search-dd") {
-    return RelevantSite::kDuckDuckGo;
-  } else if (text_id == "li") {
-    return RelevantSite::kLinkedIn;
+  auto it = kIDToSiteMap.find(text_id);
+  if (it != kIDToSiteMap.end()) {
+    return it->second;
+  }
+  return std::nullopt;
+}
+
+std::optional<std::string_view> RelevantSiteToID(RelevantSite site) {
+  auto it = kSiteToIDMap.find(site);
+  if (it != kSiteToIDMap.end()) {
+    return it->second;
   }
   return std::nullopt;
 }

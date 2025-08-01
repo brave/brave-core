@@ -185,6 +185,13 @@ class ContentScraperImpl : public ContentScraper {
                        std::move(interim_result), std::move(callback)));
   }
 
+  void ParseAndScrapePageV2(const GURL& url,
+                            std::string response_body,
+                            PageScrapeResultCallback callback) override {
+    // TODO(djandries): Implement v2 pattern scraping
+    std::move(callback).Run(nullptr);
+  }
+
  private:
   void ProcessStandardRule(const std::string& report_key,
                            const ScrapeRule& rule,

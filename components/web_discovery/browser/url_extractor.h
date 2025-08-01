@@ -22,7 +22,8 @@ struct RelevantSiteDetails {
   RelevantSiteDetails(RelevantSite site,
                       bool is_search_engine,
                       std::unique_ptr<re2::RE2>&& regex,
-                      std::vector<std::string_view>&& query_params);
+                      std::vector<std::string_view>&& query_params,
+                      std::optional<std::string_view> prefix);
   ~RelevantSiteDetails();
 
   RelevantSiteDetails(const RelevantSiteDetails&) = delete;
@@ -35,6 +36,7 @@ struct RelevantSiteDetails {
   bool is_search_engine;
   std::unique_ptr<re2::RE2> regex;
   std::vector<std::string_view> query_params;
+  std::optional<std::string_view> prefix;
 };
 
 // Result of URL identification

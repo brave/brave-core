@@ -27,6 +27,9 @@ enum class RelevantSite {
 // Converts an ID to the corresponding RelevantSite enum value
 std::optional<RelevantSite> RelevantSiteFromID(std::string_view id);
 
+// Converts a RelevantSite enum value to its corresponding ID
+std::optional<std::string_view> RelevantSiteToID(RelevantSite site);
+
 }  // namespace web_discovery
 
 #endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_RELEVANT_SITE_H_
