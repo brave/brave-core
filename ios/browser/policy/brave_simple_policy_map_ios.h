@@ -14,8 +14,11 @@
 namespace policy {
 
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
-    {policy::key::kBraveWalletDisabled, brave_wallet::prefs::kDisabledByPolicy,
-     base::Value::Type::BOOLEAN},
+    {
+        policy::key::kBraveWalletDisabled,
+        brave_wallet::prefs::kDisabledByPolicy,
+        base::Value::Type::BOOLEAN,
+    },
 };
 
 }  // namespace policy
