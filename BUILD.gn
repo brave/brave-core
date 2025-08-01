@@ -58,10 +58,15 @@ if (use_blink && !is_android) {
   chromium_unit_tests_deps += [ "//content/test:content_unittests" ]
 }
 
+if (!is_ios && !is_android) {
+  chromium_unit_tests_deps += [
+    "//components:components_unittests",
+  ]
+}
+
 group("chromium_unit_tests") {
   testonly = true
   data_deps = chromium_unit_tests_deps
-
   write_file("$root_out_dir/chromium_unit_tests.json",
              chromium_unit_tests_deps,
              "json")
@@ -81,12 +86,6 @@ if (!is_ios && !is_android) {
 
 # This is a temporary workaround to prevent upstream component units from
 # running by default for Linux except on CI
-brave_extra_unit_tests_for_ci = []
-if (is_linux) {
-  brave_extra_unit_tests_for_ci += [
-    "//components:components_unittests",
-  ]
-}
 
 # This group is for unit tests that run as part of brave_all_unit_tests. Other
 # tests that you only want to build should be added directly to `all` group
@@ -97,7 +96,7 @@ group("brave_all_unit_tests") {
              brave_all_unit_tests_deps,
              "json")
   write_file("$root_out_dir/brave_all_unit_tests_ci.json",
-             brave_extra_unit_tests_for_ci,
+             chromium_unit_tests_deps,
              "json")
 }
 
