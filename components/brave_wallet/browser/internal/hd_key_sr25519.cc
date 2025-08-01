@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/containers/span_rust.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/internal/sr25519.rs.h"
 
 namespace brave_wallet {
@@ -46,6 +47,7 @@ std::array<uint8_t, kSr25519PublicKeySize> HDKeySr25519::GetPublicKey() {
 std::array<uint8_t, kSr25519SignatureSize> HDKeySr25519::SignMessage(
     base::span<const uint8_t> msg) {
   CHECK(IsBoxNonNull(keypair_));
+  base::AssertLongCPUWorkAllowed();
   auto bytes = base::SpanToRustSlice(msg);
   return keypair_->sign_message(bytes);
 }
@@ -54,6 +56,7 @@ bool HDKeySr25519::VerifyMessage(
     std::array<uint8_t, kSr25519SignatureSize> const& sig,
     base::span<const uint8_t> msg) {
   CHECK(IsBoxNonNull(keypair_));
+  base::AssertLongCPUWorkAllowed();
   auto sig_bytes = base::SpanToRustSlice(sig);
   auto bytes = base::SpanToRustSlice(msg);
   return keypair_->verify_message(sig_bytes, bytes);
@@ -62,6 +65,7 @@ bool HDKeySr25519::VerifyMessage(
 HDKeySr25519 HDKeySr25519::DeriveHard(
     base::span<const uint8_t> derive_junction) {
   CHECK(IsBoxNonNull(keypair_));
+  base::AssertLongCPUWorkAllowed();
   return HDKeySr25519(
       keypair_->derive_hard(base::SpanToRustSlice(derive_junction)));
 }
