@@ -5,16 +5,15 @@
 
 (() => {
   const getUserId = () => {
-    return "user1"
-  }
-  return new Promise((resolve) => {
-    document.title = 'a_user-';
-    resolve({
-      "user": getUserId(),
-      "requests": [
-        {"name": "privacy setting #1"},
-        {"name": "privacy setting #2"},
-      ]
-    })
-  })
+    return "user1";
+  };
+
+  document.title = 'a_user-';
+  return {
+    user: getUserId(),
+    requests: [
+      { name: "privacy setting #1" },
+      { name: "privacy setting #2" },
+    ],
+  };
 })();

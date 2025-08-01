@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_HANDLER_IMPL_H_
-#define BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_HANDLER_IMPL_H_
+#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_INSERTER_IMPL_H_
+#define BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_INSERTER_IMPL_H_
 
 #include <string>
 
@@ -15,16 +15,17 @@
 
 namespace psst {
 
-class PsstScriptsHandlerImpl
-    : public PsstTabWebContentsObserver::ScriptsHandler {
+class PsstScriptsInserterImpl
+    : public PsstTabWebContentsObserver::ScriptsInserter {
  public:
-  explicit PsstScriptsHandlerImpl(content::WebContents* web_contents,
-                                  const int32_t world_id);
-  ~PsstScriptsHandlerImpl() override;
+  explicit PsstScriptsInserterImpl(content::WebContents* web_contents,
+                                   const int32_t world_id);
+  ~PsstScriptsInserterImpl() override;
 
-  // PsstScriptsHandler overrides
+  // PsstScriptsInserterImpl overrides
   void InsertScriptInPage(
       const std::string& script,
+      std::optional<base::Value> value,
       PsstTabWebContentsObserver::InsertScriptInPageCallback cb) override;
 
  private:
@@ -37,4 +38,4 @@ class PsstScriptsHandlerImpl
 
 }  // namespace psst
 
-#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_HANDLER_IMPL_H_
+#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_SCRIPTS_INSERTER_IMPL_H_
