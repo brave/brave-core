@@ -19,6 +19,8 @@
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "v8/include/cppgc/allocation.h"
+#include "v8/include/v8-cppgc.h"
 #include "v8/include/v8-microtask-queue.h"
 #include "v8/include/v8-proxy.h"
 
@@ -49,11 +51,10 @@ std::string JSCardanoProvider::GetApiVersion() {
   return "1";
 }
 
-// gin::DeprecatedWrappable<JSCardanoProvider>
+// gin::Wrappable<JSCardanoProvider>
 gin::ObjectTemplateBuilder JSCardanoProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
-  return gin::DeprecatedWrappable<JSCardanoProvider>::GetObjectTemplateBuilder(
-             isolate)
+  return gin::Wrappable<JSCardanoProvider>::GetObjectTemplateBuilder(isolate)
       .SetMethod("enable", &JSCardanoProvider::Enable)
       .SetMethod("isEnabled", &JSCardanoProvider::IsEnabled)
       .SetProperty("supportedExtensions",
@@ -62,14 +63,6 @@ gin::ObjectTemplateBuilder JSCardanoProvider::GetObjectTemplateBuilder(
       .SetProperty("apiVersion", &JSCardanoProvider::GetApiVersion)
       .SetProperty("icon", &JSCardanoProvider::GetIcon);
 }
-
-const char* JSCardanoProvider::GetTypeName() {
-  return "JSCardanoProvider";
-}
-
-// JSCardanoProvider
-gin::DeprecatedWrapperInfo JSCardanoProvider::kWrapperInfo = {
-    gin::kEmbedderNativeGin};
 
 JSCardanoProvider::~JSCardanoProvider() = default;
 
@@ -150,7 +143,7 @@ void JSCardanoProvider::OnEnableResponse(
     }
 
     // Non-function properties are readonly guaranteed by
-    // gin::DeprecatedWrappable
+    // gin::Wrappable
     for (const std::string& method :
          {"getNetworkId", "getUsedAddresses", "getUnusedAddresses",
           "getChangeAddress", "getRewardAddresses", "getUtxos", "getBalance",
@@ -208,6 +201,10 @@ void JSCardanoProvider::OnIsEnableResponse(
       resolver->Resolve(context, v8::Boolean::New(isolate, is_enabled));
 }
 
+const gin::WrapperInfo* JSCardanoProvider::wrapper_info() const {
+  return &kWrapperInfo;
+}
+
 // static
 void JSCardanoProvider::Install(content::RenderFrame* render_frame) {
   // TODO(https://github.com/brave/brave-browser/issues/46369): Add proxy object
@@ -240,18 +237,12 @@ void JSCardanoProvider::Install(content::RenderFrame* render_frame) {
                            gin::StringToV8(isolate, kCardano), true);
   }
 
-  gin::Handle<JSCardanoProvider> cardano_brave_provider =
-      gin::CreateHandle(isolate, new JSCardanoProvider(render_frame));
-  if (cardano_brave_provider.IsEmpty()) {
-    return;
-  }
-  v8::Local<v8::Value> cardano_brave_provider_value =
-      cardano_brave_provider.ToV8();
-  v8::Local<v8::Object> cardano_brave_provider_object;
-  if (!cardano_brave_provider_value->ToObject(context).ToLocal(
-          &cardano_brave_provider_object)) {
-    return;
-  }
+  JSCardanoProvider* cardano_brave_provider =
+      cppgc::MakeGarbageCollected<JSCardanoProvider>(
+          isolate->GetCppHeap()->GetAllocationHandle(), render_frame);
+
+  v8::Local<v8::Object> cardano_brave_provider_object =
+      cardano_brave_provider->GetWrapper(isolate).ToLocalChecked();
 
   v8::Local<v8::Object> cardano_root_object;
   if (!cardano_root->ToObject(context).ToLocal(&cardano_root_object)) {
@@ -263,7 +254,7 @@ void JSCardanoProvider::Install(content::RenderFrame* render_frame) {
                          cardano_brave_provider_object,
                          gin::StringToV8(isolate, kBrave), true);
 
-  // Non-function properties are readonly guaranteed by gin::DeprecatedWrappable
+  // Non-function properties are readonly guaranteed by gin::Wrappable
   for (const std::string& method : {"enable", "isEnabled"}) {
     SetOwnPropertyWritable(context, cardano_brave_provider_object,
                            gin::StringToV8(isolate, method), false);
