@@ -15,6 +15,7 @@
 #include "brave/components/web_discovery/browser/payload_generator.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
+#include "brave/components/web_discovery/browser/url_extractor.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -87,6 +88,9 @@ void WebDiscoveryService::Start() {
         profile_prefs_, shared_url_loader_factory_.get(),
         server_config_loader_.get());
   }
+  if (!url_extractor_) {
+    url_extractor_ = std::make_unique<URLExtractor>();
+  }
 }
 
 void WebDiscoveryService::Stop() {
@@ -96,6 +100,7 @@ void WebDiscoveryService::Stop() {
   content_scraper_ = nullptr;
   credential_manager_ = nullptr;
   server_config_loader_ = nullptr;
+  url_extractor_ = nullptr;
 }
 
 void WebDiscoveryService::ClearPrefs() {

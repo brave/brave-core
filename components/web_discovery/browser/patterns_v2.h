@@ -14,41 +14,9 @@
 #include "base/containers/flat_map.h"
 #include "base/values.h"
 #include "brave/components/web_discovery/browser/relevant_site.h"
+#include "brave/components/web_discovery/browser/value_transform.h"
 
 namespace web_discovery {
-
-// Enum for transformation function names used in v2 patterns
-enum class PatternsV2TransformFunction {
-  kTrySplit,
-  kDecodeURIComponent,
-  kFilterExact,
-  kTryDecodeURIComponent,
-  kRemoveParams,
-  kMaskU,
-  kSplit,
-  kTrim,
-  kRelaxedMaskU,
-  kJson,
-  kQueryParam,
-  kRequireURL,
-};
-
-// Represents a transformation function to be applied to extracted data
-struct PatternsV2Transform {
-  PatternsV2Transform();
-  ~PatternsV2Transform();
-
-  PatternsV2Transform(const PatternsV2Transform&) = delete;
-  PatternsV2Transform& operator=(const PatternsV2Transform&) = delete;
-
-  PatternsV2Transform(PatternsV2Transform&&);
-  PatternsV2Transform& operator=(PatternsV2Transform&&);
-
-  // The transformation function to apply
-  PatternsV2TransformFunction function;
-  // Function arguments
-  base::Value::List arguments;
-};
 
 // Represents a single extraction rule within a selector
 struct PatternsV2ExtractionRule {
@@ -66,7 +34,7 @@ struct PatternsV2ExtractionRule {
   // Attribute to extract (e.g., "textContent", "href")
   std::string attribute;
   // Transformation functions to apply to the extracted value
-  std::vector<PatternsV2Transform> transforms;
+  std::vector<std::unique_ptr<ValueTransform>> transforms;
 };
 
 // Represents an input group with its extraction rules
