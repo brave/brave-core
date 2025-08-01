@@ -582,7 +582,7 @@ extension BrowserViewController {
       let currentURL = tab.visibleURL,
       currentURL.baseDomain != requestURL.baseDomain
     {
-      if let redirectURL = debounceService.debounce(requestURL) {
+      if let redirectURL = debounceService.debounce(url: requestURL) {
         // For now we only allow the `Referer`. The browser will add other headers during navigation.
         var modifiedRequest = URLRequest(url: redirectURL)
 
