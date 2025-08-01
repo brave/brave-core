@@ -22,16 +22,17 @@
 
 namespace brave_wallet {
 
-class JSSolanaProvider final
-    : public gin::DeprecatedWrappable<JSSolanaProvider>,
-      public content::RenderFrameObserver,
-      public mojom::SolanaEventsListener {
+class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
+                               public content::RenderFrameObserver,
+                               public mojom::SolanaEventsListener {
  public:
+  explicit JSSolanaProvider(content::RenderFrame* render_frame);
   ~JSSolanaProvider() override;
   JSSolanaProvider(const JSSolanaProvider&) = delete;
   JSSolanaProvider& operator=(const JSSolanaProvider&) = delete;
 
-  static gin::DeprecatedWrapperInfo kWrapperInfo;
+  static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
+                                                    gin::kSolanaProvider};
 
   static void Install(bool allow_overwrite_window_solana,
                       content::RenderFrame* render_frame);
@@ -39,15 +40,13 @@ class JSSolanaProvider final
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
       v8::Isolate* isolate) override;
-  const char* GetTypeName() override;
+  const gin::WrapperInfo* wrapper_info() const override;
 
   // mojom::SolanaEventsListener
   void AccountChangedEvent(const std::optional<std::string>& account) override;
   void DisconnectEvent() override;
 
  private:
-  explicit JSSolanaProvider(content::RenderFrame* render_frame);
-
   // RenderFrameObserver implementation.
   void OnDestruct() override {}
   void WillReleaseScriptContext(v8::Local<v8::Context>,
