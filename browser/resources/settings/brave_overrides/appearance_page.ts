@@ -174,15 +174,15 @@ RegisterPolymerTemplateModifications({
     }
 
     // Append toolbar related items to the 'Appearance'pages
-    const pages = templateContent.querySelector('#pages > div')
-    if (!pages) {
-      console.error(`[Settings] Couldn't find appearance page #pages > div`)
-    } else {
-      pages.appendChild(html`
-          <settings-brave-appearance-toolbar
-            prefs="{{prefs}}">
-          </settings-brave-appearance-toolbar>
-        `)
-    }
+//    const pages = templateContent.querySelector('#pages > div')
+//    if (!pages) {
+//      console.error(`[Settings] Couldn't find appearance page #pages > div`)
+//    } else {
+//      pages.appendChild(html`
+//          <settings-brave-appearance-toolbar
+//            prefs="{{prefs}}">
+//          </settings-brave-appearance-toolbar>
+//        `)
+//    }
   }
 })
