@@ -56,6 +56,10 @@
   }
 </style>
 
+<settings-section
+  id="extensions"
+  page-title="$i18n{braveDefaultExtensions}"
+  class="cr-centered-card-container">
 <div hidden="[[isExtensionsManifestV2Routed_]]">
   <settings-toggle-button id="googleLoginForExtensions" class="cr-row first"
     pref="{{prefs.signin.allowed_on_next_startup}}" learn-more-url="$i18n{googleLoginLearnMoreURL}"
@@ -120,3 +124,4 @@
     </settings-subpage>
   </template>
 </settings-animated-pages>
+</settings-section>

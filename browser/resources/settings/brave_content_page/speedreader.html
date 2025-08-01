@@ -3,21 +3,30 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<settings-toggle-button
+<style include="cr-shared-style settings-shared md-select"></style>
+
+<settings-section
+  id="speedreader"
+  page-title="$i18n{speedreaderSettingLabel}"
+  class="cr-centered-card-container">
+
+  <settings-toggle-button
     class="cr-row first"
     id="speedreaderFeature"
     pref="{{prefs.brave.speedreader.feature_enabled}}"
     label="$i18n{speedreaderFeatureLabel}"
     sub-label="$i18n{speedreaderFeatureSubLabel}"
     learn-more-url="$i18n{speedreaderLearnMoreURL}">
-</settings-toggle-button>
+  </settings-toggle-button>
 
-<template is="dom-if" if="[[prefs.brave.speedreader.feature_enabled.value]]">
-  <settings-toggle-button
+  <template is="dom-if" if="[[prefs.brave.speedreader.feature_enabled.value]]">
+    <settings-toggle-button
       class="cr-row continuation"
       id="speedreaderEnabledForAllSites"
       pref="{{prefs.brave.speedreader.enabled_for_all_sites}}"
       label="$i18n{speedreaderEnabledForAllSitesLabel}"
       sub-label="$i18n{speedreaderEnabledForAllSitesSubLabel}">
-  </settings-toggle-button>
-</template>
+    </settings-toggle-button>
+  </template>
+
+</settings-section>
