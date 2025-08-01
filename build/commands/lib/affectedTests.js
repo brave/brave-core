@@ -140,7 +140,7 @@ async function getAffectedTests(args = {}) {
   const analysis = await analyzeAffectedTests(config.outputDir, args)
 
   // test affected according to GN
-  const allAffectedTestExecutables = analysis.test_targets.map(
+  const allAffectedTestExecutables = analysis.affectedTests.map(
     gnTargetToExecutableName,
   )
 
@@ -150,8 +150,12 @@ async function getAffectedTests(args = {}) {
 
   const modified = new Set(analysis.files)
 
+  const allTestExecutablesToConsider = analysis.test_targets.map(
+    gnTargetToExecutableName,
+  )
+
   // Changes in GTestFilters are currently not tracked by GN
-  const testAffectedDueModifiedFilterFiles = allAffectedTestExecutables
+  const testAffectedDueModifiedFilterFiles = allTestExecutablesToConsider
     .flatMap((test) =>
       getApplicableFilters(config, test).map((filter) => ({ test, filter })),
     )
