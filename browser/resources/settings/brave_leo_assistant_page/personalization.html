@@ -107,9 +107,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     on-settings-boolean-control-change="onStorageEnabledChange_">
   </settings-toggle-button>
 </template>
-<div class="settings-row" id="manageCustomizationRow">
-  <cr-link-row id="manageCustomization"
-    label="$i18n{braveLeoAssistantCustomizationLinkLabel}"
-    on-click="openCustomizationPage_">
-  </cr-link-row>
-</div>
+<cr-link-row id="manageCustomization" class="cr-row hr"
+  label="$i18n{braveLeoAssistantCustomizationLinkLabel}"
+  on-click="openCustomizationPage_">
+</cr-link-row>

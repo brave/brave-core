@@ -97,8 +97,7 @@ constexpr char16_t kTabOrganizationLearnMoreURL[] =
     u"35200007195917-How-to-use-Tab-Focus-Mode";
 
 constexpr char16_t kLeoMemoryLearnMoreURL[] =
-    u"https://github.com/brave/brave-browser/wiki/"
-    u"Brave-Leo#user-customization-and-memory-features";
+    u"https://support.brave.app/hc/en-us/articles/38441287509261";
 
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
