@@ -82,9 +82,10 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
   media_detector_component_manager_ = manager;
 
-  enabled_pref_.Init(kPlaylistEnabledPref, prefs_.get(),
-                     base::BindRepeating(&PlaylistService::OnEnabledPrefChanged,
-                                         weak_factory_.GetWeakPtr()));
+  enabled_ = IsPlaylistEnabled(*prefs_);
+  enabled_registrar_.Init(
+      prefs_, base::BindRepeating(&PlaylistService::OnEnabledChanged,
+                                  weak_factory_.GetWeakPtr()));
 
   // This is for cleaning up malformed items during development. Once we
   // release Playlist feature officially, we should migrate items
@@ -92,6 +93,8 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   MigratePlaylistValues();
 
   CleanUpOrphanedPlaylistItemDirs();
+
+  delegate_->UpdateSidebarState(enabled_);
 }
 
 PlaylistService::~PlaylistService() = default;
@@ -113,7 +116,7 @@ void PlaylistService::AddMediaFilesFromContentsToPlaylist(
     content::WebContents* contents,
     bool cache,
     base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> callback) {
-  CHECK(*enabled_pref_) << "Playlist pref must be enabled";
+  CHECK(enabled_) << "Playlist pref must be enabled";
 
   DCHECK(contents);
   if (!contents->GetPrimaryMainFrame()) {
@@ -846,7 +849,7 @@ void PlaylistService::RecoverLocalDataForItem(
     const std::string& id,
     bool update_media_src_before_recovery,
     RecoverLocalDataForItemCallback callback) {
-  CHECK(*enabled_pref_) << "Playlist pref must be enabled";
+  CHECK(enabled_) << "Playlist pref must be enabled";
 
   const auto* item_value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   if (!item_value) {
@@ -1106,15 +1109,16 @@ void PlaylistService::OnMediaFileDownloadFinished(
   }
 }
 
-void PlaylistService::OnEnabledPrefChanged() {
-  if (!*enabled_pref_) {
+void PlaylistService::OnEnabledChanged() {
+  enabled_ = IsPlaylistEnabled(*prefs_);
+  if (!enabled_) {
     background_web_contentses_->Reset();
     thumbnail_downloader_->CancelAllDownloadRequests();
     media_file_download_manager_->CancelAllDownloadRequests();
   }
 
   if (delegate_) {
-    delegate_->EnabledStateChanged(*enabled_pref_);
+    delegate_->EnabledStateChanged(enabled_);
   }
 }
 
@@ -1134,7 +1138,7 @@ void PlaylistService::AddObserver(
 void PlaylistService::OnMediaDetected(
     GURL url,
     std::vector<mojom::PlaylistItemPtr> items) {
-  if (!*enabled_pref_) {
+  if (!enabled_) {
     return;
   }
 
