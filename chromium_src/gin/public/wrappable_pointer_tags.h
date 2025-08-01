@@ -8,7 +8,7 @@
 
 #define kTextInputControllerBindings                                 \
   kTextInputControllerBindings, kCardanoProvider, kCardanoWalletApi, \
-      kEthereumProvider, kSolanaProvider, kSkusBindings
+      kEthereumProvider, kSolanaProvider, kSkusBindings, SpeedreaderBindings
 
 #include <gin/public/wrappable_pointer_tags.h>  // IWYU pragma: export
 
