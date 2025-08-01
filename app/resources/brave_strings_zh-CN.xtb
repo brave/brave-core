@@ -82,7 +82,6 @@
 <translation id="2126108037660393668">所下载的文件未能顺利通过验证。</translation>
 <translation id="2137162749895930932">关闭翻译屏幕</translation>
 <translation id="5789330946301045610">Brave 阻止了此项下载操作，因为网站未使用安全连接，该文件可能已被篡改</translation>
-<translation id="5401976223298265794">您可以通过 Brave 菜单打开书签、阅读模式等</translation>
 <translation id="142389341645668510">自定义 Brave</translation>
 <translation id="2174917724755363426">尚未完成安装，确定要取消吗？</translation>
 <translation id="8745514854244955877">Brave - 网络登录 - <ph name="PAGE_TITLE"/></translation>
@@ -213,6 +212,7 @@
 <translation id="4256965182800026277">您在 Brave 账号中保存的密码、支付方式和地址将从此设备中移除。如需在 Brave 中重新使用这些数据，请重新登录。</translation>
 <translation id="395904275706073188">无法读取受保护的页面，请尝试其他页面。</translation>
 <translation id="4194619960643453552">了解 Brave 如何保障您的安全</translation>
+<translation id="1486377520191913768">当您在地址栏或搜索框中输入内容时，Brave 会将您输入的内容发送给组织的搜索、AI 和代理工具，以便获取建议。</translation>
 <translation id="1311808042904310985">关于 Brave for Testing(&amp;G)</translation>
 <translation id="1152920704813762236">关于 Brave 操作系统</translation>
 <translation id="3703994572283698466">与 <ph name="BEGIN_LINK_LINUX_OSS"/>Linux 开发环境<ph name="END_LINK_LINUX_OSS"/>一样，Brave 操作系统也是借助了其他<ph name="BEGIN_LINK_CROS_OSS"/>开源软件<ph name="END_LINK_CROS_OSS"/>才得以问世。</translation>
@@ -238,6 +238,7 @@
 <translation id="4281844954008187215">服务条款</translation>
 <translation id="7691786510374174420">未知错误导致安装失败。如果 Brave 正在运行，请将其关闭，然后重试。</translation>
 <translation id="4304713468139749426">密码管理工具</translation>
+<translation id="4334241893986177674">搜索此屏幕截图</translation>
 <translation id="4334294535648607276">下载完毕。</translation>
 <translation id="1068681683510904753">根据 <ph name="MANAGER"/> 的要求，您必须先阅读并接受以下《服务条款》才能使用此设备。这些条款不会扩展、修改或限制 Brave 操作系统条款。</translation>
 <translation id="9183662282810237335">仍要退出 Brave？</translation>
@@ -280,7 +281,7 @@
 <translation id="2899369907387169108">在不登录账号的情况下使用 Brave</translation>
 <translation id="1912973375560256099">Brave的入站规则，允许mDNS流量。</translation>
 <translation id="711601904575862069">重新启动以更新 Brave(&amp;C)</translation>
-<translation id="4918844574251943176">图片已复制</translation>
+<translation id="4918844574251943176">已复制图片</translation>
 <translation id="8797356639448065696">Brave处于后台运行模式。</translation>
 <translation id="1895567721497166950">点击即可关闭 Brave 登录对话框</translation>
 <translation id="2692971232706994729">借助 Brave 个人资料，您可将所有 Brave 内容分门别类。您可为朋友和家人创建专属资料，或者将工作和娱乐用资料分开。</translation>
@@ -332,6 +333,7 @@
 <translation id="899523323751802352">如果您忘记了口令或想更改此设置，请<ph name="SETTINGS_LINK"/>您账号中的 Brave 数据</translation>
 <translation id="82926023981336111">自定义和控制 Brave。将 Brave 设为默认浏览器。</translation>
 <translation id="5809516625706423866">无法连接到互联网。发生 HTTP 401 Unauthorized 错误，请检查您的代理配置。</translation>
+<translation id="95980832839683236">使用 Brave 的 V8 引擎加速网站，但 Brave 的防攻击能力会略微降低。此设置已关闭。</translation>
 <translation id="1224606669200461217">如要将 Brave 数据保存在 Brave 账号中并使用这些数据，请更新 Brave</translation>
 <translation id="5824893331272123205">无法加载此面板，请重试</translation>
 <translation id="7207456302801184289">欢迎使用 Brave</translation>
@@ -348,7 +350,6 @@
 <translation id="3598551856834560515">更新 Brave 以开始同步</translation>
 <translation id="5225261774087485064">您访问的网站经常会记住您感兴趣的内容，以便为您提供个性化体验。网站还可以将您的兴趣信息存储在 Brave 中。</translation>
 <translation id="6003112304606738118">正在下载…还需 <ph name="HOURS"/> 小时</translation>
-<translation id="1663358621471164569">您可以通过右上角的 Brave 菜单打开书签、阅读模式等</translation>
 <translation id="6040143037577758943">关闭</translation>
 <translation id="700488072601322385">为保护您的数据，对于您近期未访问的网站，请允许 Brave 移除网站权限。此操作不会停用通知功能。</translation>
 <translation id="9071554113102421877">在 Brave 中打开(&amp;O)</translation>
@@ -422,6 +423,7 @@
 <translation id="1505112054322049777">若要获得个性化体验和其他功能，请在“网络与应用活动记录”和关联的 Brave 服务中包含 Brave</translation>
 <translation id="6666624454809779082">已为您计算机上的所有用户都安装 Brave。</translation>
 <translation id="9136637081636160997">您近期未访问过该网站。Brave 移除了<ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>和另外 <ph name="COUNT"/> 项权限</translation>
+<translation id="4020203987234748583">使用 Brave 的 V8 引擎加速网站，但 Brave 的防攻击能力会略微降低。此设置已开启。</translation>
 <translation id="3136039682492230890">Brave 建议您扫描此文件，因为它可能包含危险因素。</translation>
 <translation id="1547295885616600893">Brave 操作系统是借助了其他<ph name="BEGIN_LINK_CROS_OSS"/>开源软件<ph name="END_LINK_CROS_OSS"/>才得以问世。</translation>
 <translation id="6831043979455480757">翻译</translation>
@@ -515,7 +517,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8118331347066725040">发送有关智能镜头搜索的反馈</translation>
 <translation id="5334309298019785904">由于您的网域不支持同步，Brave 操作系统无法同步您的数据。</translation>
 <translation id="813913629614996137">正在初始化…</translation>
-<translation id="7550680632761245819">开启 Brave 的 JavaScript 和 WebAssembly 引擎额外保护功能</translation>
 <translation id="9067428552314418522">此文件存在危险，因此 Brave 已将其拦截。</translation>
 <translation id="8177472873527554730">在页面中找不到内容</translation>
 <translation id="6219250889396046657">请输入您的口令，以便将 Brave 数据保存在您的账号 <ph name="USER_EMAIL"/> 中并使用这些数据</translation>
@@ -560,6 +561,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="4100716194836114130">这是您的专属Brave</translation>
 <translation id="1419543648228375718">登录 Brave？</translation>
 <translation id="8747073452963259673">搜索区域的左下角：左侧 <ph name="LEFT"/>%，底部 <ph name="BOTTOM"/>%</translation>
+<translation id="3562508460098852626">密码只能在 Brave 之外删除</translation>
 <translation id="878572486461146056">安装时出错：您的网络管理员所应用的一项群组政策阻止了安装进程：<ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave 需要获得相应权限，才能允许此网站使用您的摄像头和麦克风</translation>
 <translation id="64216977793816291">登录 Brave？</translation>
@@ -612,6 +614,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave 有一项新的可用更新；一旦您重新启动，系统即会应用这项更新。}=1{Brave 有一项新的可用更新；一旦您重新启动，系统即会应用这项更新。您的无痕式窗口不会重新打开。}other{Brave 有一项新的可用更新；一旦您重新启动，系统即会应用这项更新。您的 # 个无痕式窗口不会重新打开。}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{您的管理员要求您重新启动 Brave 以应用此项更新}=1{您的管理员要求您重新启动 Brave 以应用此项更新。您的无痕式窗口不会重新打开。}other{您的管理员要求您重新启动 Brave 以应用此项更新。您的 # 个无痕式窗口不会重新打开。}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{您的管理员要求您重新启动 Brave 以应用一项更新}=1{您的管理员要求您重新启动 Brave 以应用一项更新。您的无痕式窗口不会重新打开。}other{您的管理员要求您重新启动 Brave 以应用一项更新。您的 # 个无痕式窗口不会重新打开。}}</translation>
+<translation id="5749154344207139683">参与此次 1 分钟问卷调查，帮助我们优化隐私性。</translation>
 <translation id="79269250264141507">当您在地址栏或搜索框中输入时，Brave 会将您输入的内容发送到默认搜索引擎，以获得更好的建议。这是私密的。</translation>
 <translation id="2589970573128789862">Brave 隐私</translation>
 <translation id="5994282802285556682">在隐私模式下浏览时，Brave 会在使用不安全连接加载网站之前向您发出警告</translation>

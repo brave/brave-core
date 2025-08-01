@@ -875,7 +875,7 @@
 <translation id="1939235910515558387">只要幾分鐘即可開始使用 Brave 錢包。</translation>
 <translation id="5844138175312846408">已有錢包？</translation>
 <translation id="772643556080081594">我需要一個僅供檢視的錢包</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave 和 Brave 標誌是 Brave Software, Inc. 的註冊商標。其他產品名稱和標誌為各自公司的商標。保留一切權利。</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave 和 Brave 標誌是 Brave Software, Inc. 的註冊商標。其他產品名稱和標誌為各自公司的商標。保留一切權利。</translation>
 <translation id="7501957181231305652">或</translation>
 <translation id="375882617301124395">備份您的加密錢包</translation>
 <translation id="5024543173656851695">我明白，如果我遺失了我的備援單字，我將無法存取我的加密錢包。</translation>
@@ -1119,10 +1119,6 @@
 <translation id="4324239559624557455">24 小時</translation>
 <translation id="9139452553033760558">1 週</translation>
 <translation id="1658834457013045127">永久</translation>
-<translation id="2770851145415891830">偵測到現有加密幣錢包</translation>
-<translation id="2237759620789871865">如果您想跳過匯入，而保留舊的 Crypto Wallets 體驗，只需導覽到 Brave 瀏覽器的<ph name="LINK_BEFORE"/>設定<ph name="LINK_AFTER"/>，將預設值變更回 Crypto Wallets。您亦可匯入、嘗試新的 Brave 錢包，以及隨時變更回來。</translation>
-<translation id="5590175005414413980">輸入您現有的加密貨幣錢包密碼，以匯入 Brave 錢包。以更快速、更安全的方式管理加密貨幣資產，並與 Web3 DApps 互動。</translation>
-<translation id="880619123281809987">輸入加密貨幣錢包的密碼</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> 已連線</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> 已中斷連線</translation>
 <translation id="5317781812114905957">說明</translation>
@@ -1512,7 +1508,6 @@
 <translation id="396152018598329740">如何使用加密貨幣錢包？</translation>
 <translation id="7512061585041489067">什麼是最好的加密貨幣錢包？</translation>
 <translation id="1342755158522323177">什麼是加密貨幣瀏覽器？</translation>
-<translation id="4702762916247565868">加密貨幣錢包入門說明</translation>
 <translation id="4674552515763857735">什麼是復原詞句？</translation>
 <translation id="7328255859839881981">什麼是 DApp？</translation>
 <translation id="3852489285890032403">什麼是 web 3？</translation>
@@ -1530,7 +1525,6 @@
 <translation id="7877416315564177070">請檢查您的復原詞句並再試一次。</translation>
 <translation id="6503538941917874992">使用您的復原詞句匯入</translation>
 <translation id="782167880151571109">偵測到 Metamask 錢包！</translation>
-<translation id="3619071361843652814">偵測到舊版錢包！</translation>
 <translation id="4634124774493850572">使用密碼</translation>
 <translation id="7697478310235189459">字詞 <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">輸入 MetaMask 12 到 24 個字的復原詞句。</translation>
@@ -1543,7 +1537,6 @@
 <translation id="3604445540387095708">我已閱讀並同意<ph name="LINK_BEFORE"/>使用條款<ph name="LINK_AFTER"/>。</translation>
 <translation id="1422451606553326863">購買加密貨幣</translation>
 <translation id="3887541341068007345">正在檢查錢包外掛程式……</translation>
-<translation id="3567994771568272606">從舊版 Brave 加密貨幣錢包匯入</translation>
 <translation id="8407091560429310499">選擇資產</translation>
 <translation id="756590380936155533">若要完成您的 <ph name="ASSET_TICKER"/> 購買，請選擇我們其中一個合作夥伴</translation>
 <translation id="7880860489474966219">完成後，您的資金將轉入您的 Brave 錢包</translation>
@@ -1837,7 +1830,7 @@
 <translation id="7758665172236842395">透過單一摘要關注您喜愛的來源。只要在 Brave 中開啟分頁、向下捲動，一切搞定！</translation>
 <translation id="2376542729617592331">Brave News 可支援匿名投放私人廣告。<ph name="LINK_START"/>深入瞭解<ph name="LINK_END"/></translation>
 <translation id="1765217911817124376">開啟 Brave 新聞</translation>
-<translation id="5149018766422637336">新聞和 RSS</translation>
+<translation id="1772301834467143364">Brave 新聞</translation>
 <translation id="6265592479622441247">傳回 <ph name="BEGIN_BOLD"/>儀錶板<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">發現</translation>
 <translation id="8981973962043893066">搜尋網站、主題或 RSS 摘要</translation>
@@ -2202,16 +2195,12 @@
 <translation id="8712637175834984815">我瞭解了</translation>
 <translation id="1093419424466417703">對 Leo 而言，此頁面過於冗長。對話可能遺漏某些內容。因此 Leo 無法讀取該頁面內容的 <ph name="PERCENTAGE"/> 。</translation>
 <translation id="4592293425457329338">對話中可能遺漏了一些上下文。Leo 能夠保留 <ph name="PERCENTAGE"/> 對話的相關內容。</translation>
-<translation id="2186990448773134544">由於頁面對 Leo 來說過長，因此已從中擷取最相關的資訊，以精簡頁面內容。</translation>
-<translation id="5140068729857132378">正在尋找網頁的相關部分...…</translation>
 <translation id="4370698775470316661">此對話太長，無法繼續。 Leo 可能還可以使用其他模型，以維持更長時間對話的準確性。</translation>
 <translation id="5719170755629028558">正在改善您在 Brave Search 的搜尋結果…</translation>
 <translation id="5794962229997281366">已改善「<ph name="SEARCH_TERMS"/>」的搜尋結果。</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> 更多…</translation>
 <translation id="8103700533980268469">關閉本通知</translation>
 <translation id="3417835166382867856">搜尋標籤頁</translation>
-<translation id="9090243919347147717">附件</translation>
-<translation id="4444978378117903684">加入您的瀏覽器標籤頁，讓 Leo 進一步了解對話內容</translation>
 <translation id="4300920590112551536">瀏覽器標籤頁</translation>
 <translation id="2315654674554095762">現在，Leo 會記住您的對話，以便您可以重新返回。它們會加密儲存於您的裝置中，您可以隨時刪除它們。</translation>
 <translation id="7821251979960635244">開始對話後，您的對話紀錄就會出現在這裡。</translation>
@@ -2234,8 +2223,6 @@
 <translation id="5642775487085641191">只想聊天嗎？</translation>
 <translation id="8857222718794549840">您可以問我任何事！我們可以討論任何您想要的主題。我總是在學習和改進，以為您提供更好的答案。</translation>
 <translation id="9051226419897869406">與 Brave Leo 對話時保障隱私</translation>
-<translation id="637548538907281147">根據頁面内容產生回答</translation>
-<translation id="8599503173207256429">切換到開以詢問此頁面。其內容將與您的訊息一起傳送給 Brave Leo。</translation>
 <translation id="318819763888864209">所有訂閱方案都會自動續訂，不過您可以在續訂前隨時取消訂閱。</translation>
 <translation id="5091223967610958">請分享您所在頁面 (<ph name="HOST_NAME"/>) 的主機名稱，協助我們改善 Leo。</translation>
 <translation id="8732450785281947197">Leo AI 工具</translation>
@@ -2387,6 +2374,7 @@
 <translation id="6821108091726602352">藉由參與 Brave 的「Web 探索專案」協助我們修復 Web。只要分享完全匿名的搜尋訊號，您就可以協助 Brave 充實搜尋索引。</translation>
 <translation id="6764845498618413165">深入瞭解。</translation>
 <translation id="7818938154803162778">沒問題，我願意協助</translation>
+<translation id="7207456302801184289">歡迎使用 Brave</translation>
 <translation id="3486480638399578250">保持您的個人電子郵件地址私密</translation>
 <translation id="7765422154906712751">建立唯一且隨機的地址，這些地址會轉發到您的 Brave 帳戶電子郵件，並可以隨時刪除。防止實際電子郵件地址被揭露或被廣告商使用。</translation>
 <translation id="5222676887888702881">登出</translation>
@@ -2416,7 +2404,6 @@
 <translation id="3699624789011381381">電子郵件地址</translation>
 <translation id="8124939971041602970">登入郵件正發送到 <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">點擊郵件中的安全登入連結以存取您的帳戶。</translation>
-<translation id="6549775668256477823">看不到郵件？請檢查您的垃圾郵件文件夾或 <ph name="BEGIN_LINK"/>再試一次<ph name="END_LINK"/>。</translation>
 <translation id="958268166261124668">Brave VPN：已連線</translation>
 <translation id="6021669293402055982">Brave VPN：已中斷連線</translation>
 <translation id="3541307549916475335">Brave VPN 面板 UI</translation>

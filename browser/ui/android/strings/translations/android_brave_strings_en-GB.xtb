@@ -609,7 +609,6 @@ Are you sure you want to do this?</translation>
 <translation id="3961126209136843111">Import an existing wallet</translation>
 <translation id="4811736040444856406">Show recovery phrase</translation>
 <translation id="4359319875297001084">Import from legacy Brave crypto wallets?</translation>
-<translation id="3157931365184549694">Restore</translation>
 <translation id="5844138175312846408">Already have a wallet?</translation>
 <translation id="2502258949541727762">Before we begin</translation>
 <translation id="4303748097351941030">Supported networks</translation>
@@ -768,7 +767,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1426320910664514906">Gas Limit</translation>
 <translation id="6389441740143786465">Disable sharing hub</translation>
 <translation id="9065203028668620118">Edit</translation>
-<translation id="473775607612524610">Update</translation>
 <translation id="479795390141144417">Account update failed.</translation>
 <translation id="8084782383392198011">Account name can't be empty.</translation>
 <translation id="5045550434625856497">Incorrect password</translation>

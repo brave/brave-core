@@ -9,6 +9,7 @@
 <translation id="7630214457764713113">ક્લીન લિંક કૉપિ કરો</translation>
 <translation id="6406506848690869874">સમન્વયન</translation>
 <translation id="1544192797660353713">વૉલેટ</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="1990886731975529483">Google Widevine ઇન્સ્ટોલ કરો અને ચલાવો</translation>
 <translation id="8926389886865778422">ફરિથી પુછશો નહીં</translation>
 <translation id="4900351245762303149">Google Widevine ઇન્સ્ટોલ કરો</translation>
@@ -47,7 +48,6 @@
 <translation id="4877147287319222750">સાઇડબારમાં ઉમેરો</translation>
 <translation id="8712637175834984815">સમજાઈ ગયું</translation>
 <translation id="4394049700291259645">બંધ કરો</translation>
-<translation id="8428213095426709021">સેટિંગ્સ</translation>
 <translation id="4474155171896946103">બધા ટૅબ્સ બુકમાર્ક  કરો...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{ટૅબને મ્યૂટ કરો}one{ટૅબને મ્યૂટ કરો}other{ટૅબને મ્યૂટ કરો}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{ટૅબને અનમ્યૂટ કરો}one{ટૅબને અનમ્યૂટ કરો}other{ટૅબને અનમ્યૂટ કરો}}</translation>
@@ -161,7 +161,6 @@
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">મારી વાતચીતના ઇતિહાસને સ્ટોર કરો</translation>
 <translation id="6106701981952170121">તમામ Leo AI વાતચીત ડેટાને ડિલીટ કરો</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="614530507403667291">નવી વાતચીતો માટે ડિફોલ્ટ મોડેલ</translation>
 <translation id="1907126221851170941">મોડલ ઉમેરો</translation>
 <translation id="154702742922788359">ઓપન મોડ</translation>

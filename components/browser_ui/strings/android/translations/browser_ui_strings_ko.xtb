@@ -17,7 +17,7 @@
 <translation id="1181037720776840403">삭제</translation>
 <translation id="1192844206376121885"><ph name="ORIGIN"/>에서 저장한 모든 데이터와 쿠키가 삭제됩니다.</translation>
 <translation id="1201402288615127009">다음</translation>
-<translation id="3251315496493761426">Brave 사용 팁</translation>
+<translation id="3251315496493761426">Brave 도움말</translation>
 <translation id="1242008676835033345"><ph name="WEBSITE_URL"/>에 삽입됨</translation>
 <translation id="1263609676484797429">앱 &gt; 기본 앱을 탭합니다.</translation>
 <translation id="1272079795634619415">중지</translation>
@@ -25,6 +25,7 @@
 <translation id="129382876167171263">웹사이트에서 저장한 파일이 여기에 표시됩니다.</translation>
 <translation id="131112695174432497">광고 개인 최적화에 영향을 미치는 데이터가 삭제됨</translation>
 <translation id="1317194122196776028">사이트 삭제</translation>
+<translation id="1323433172918577554">더보기</translation>
 <translation id="1333965224356556482">사이트에서 내 위치를 확인하도록 허용하지 않음</translation>
 <translation id="1343356790768851700">이 사이트는 내 관심분야를 파악한 후 다른 사이트에 광고를 추천합니다.</translation>
 <translation id="1369915414381695676"><ph name="SITE_NAME"/> 사이트 추가됨</translation>
@@ -35,6 +36,7 @@
 <translation id="1409338233051621926">앱을 탭한 다음 기본 앱을 탭합니다</translation>
 <translation id="1415402041810619267">URL 잘림</translation>
 <translation id="1741136041592162279">Brave에서 내 기기와 최근 탭을 공유하도록 허용하면 기기의 앱 목록과 검색 결과에서 최근 탭을 볼 수 있습니다. 이 기능은 Brave 설정에서 사용 또는 사용 중지할 수 있습니다.</translation>
+<translation id="1432650420699700107">사이트에서 로컬 네트워크의 모든 기기에 연결하도록 요청할 수 있음</translation>
 <translation id="1448064542941920355">축소</translation>
 <translation id="1464044141348608623">사용자가 현재 기기를 사용 중인지 사이트에서 알 수 없도록 함</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> 사이트}other{<ph name="SITE_COUNT"/> 사이트}}</translation>
@@ -96,6 +98,7 @@
 <translation id="2182457891543959921">사이트에서 주변 환경의 3D 지도를 생성하거나 카메라 위치를 추적하도록 허용하기 전에 확인(권장)</translation>
 <translation id="2185965788978862351">이렇게 하면 사이트 또는 홈 화면의 앱에서 저장한 <ph name="DATASIZE"/>의 데이터 및 쿠키가 삭제됩니다.</translation>
 <translation id="2194856509914051091">고려사항</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{어제}other{<ph name="NUM_DAYS_MANY"/>일 전}}</translation>
 <translation id="2215727959747642672">파일 수정</translation>
 <translation id="2218389616572918761">사이트에서 마이크를 요청할 수 있음</translation>
 <translation id="2228071138934252756"><ph name="APP_NAME"/>에서 카메라에 액세스하도록 허용하려면 <ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서도 카메라를 사용 설정하세요.</translation>
@@ -125,6 +128,7 @@
 <translation id="2490684707762498678"><ph name="APP_NAME"/>에서 관리함</translation>
 <translation id="2498359688066513246">고객센터</translation>
 <translation id="2501278716633472235">뒤로 이동</translation>
+<translation id="2533138527374486328">사용 설정하면 사이트에서 로컬 네트워크의 모든 기기에 연결하도록 요청할 수 있습니다. 사용 중지하면 사이트에서 로컬 네트워크의 기기에 연결할 수 없습니다.</translation>
 <translation id="2546283357679194313">쿠키 및 사이트 데이터</translation>
 <translation id="2570922361219980984">이 기기의 위치 정보 액세스도 사용 중지되었습니다. <ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서 사용 설정하세요.</translation>
 <translation id="257931822824936280">펼쳐짐 - 접으려면 클릭</translation>
@@ -181,6 +185,7 @@
 <translation id="3167868116600277716">디스커버 피드</translation>
 <translation id="3198916472715691905">저장 데이터 <ph name="STORAGE_AMOUNT"/></translation>
 <translation id="321187648315454507"><ph name="APP_NAME"/>에서 알림을 전송하도록 허용하려면 <ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서도 알림을 사용 설정하세요.</translation>
+<translation id="3223425961342298674">위치가 허용되지 않음</translation>
 <translation id="3227137524299004712">마이크</translation>
 <translation id="3232293466644486101">인터넷 사용 기록 삭제…</translation>
 <translation id="3242646949159196181">사용 설정하면 사이트에서 소리를 재생할 수 있습니다. 사용 중지하면 사이트에서 소리를 재생할 수 없습니다.</translation>
@@ -247,12 +252,14 @@
 <translation id="3955321697524543127">사이트에서 USB 기기에 연결하도록 허용하지 않음</translation>
 <translation id="3965467402665811906">사이트에서 나에 관해 저장된 정보 사용을 요청할 수 있음</translation>
 <translation id="3967822245660637423">다운로드 완료</translation>
+<translation id="3969869202926863008">로컬 네트워크 액세스</translation>
 <translation id="3981465354637804599">사이트에서는 일반적으로 콘텐츠나 서비스를 무료로 제공하기 위해 광고를 표시합니다. 그러나 일부 사이트는 방해가 되거나 사용자를 현혹하는 광고를 표시하는 것으로 알려져 있습니다.</translation>
 <translation id="3987993985790029246">링크 복사</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/?</translation>
 <translation id="3992308058851451478"><ph name="SITE"/>에서 인터넷을 사용하는 동안 내 정보를 사용할 수 있음</translation>
 <translation id="3992684624889376114">이 페이지에 관한 정보</translation>
 <translation id="4002066346123236978">제목</translation>
+<translation id="4031179711345676612">마이크 허용됨</translation>
 <translation id="4046123991198612571">다음 트랙</translation>
 <translation id="4077310749977440510">사이트에서는 일반적으로 복사한 텍스트 서식 유지와 같은 기능을 사용하기 위해 클립보드를 읽습니다.</translation>
 <translation id="4149890623864272035">쿠키를 포함한 모든 로컬 데이터를 삭제하고 이 웹사이트에 대한 권한을 모두 재설정하시겠습니까?</translation>
@@ -262,8 +269,10 @@
 <translation id="4169549551965910670">USB 기기에 연결되었습니다.</translation>
 <translation id="4194328954146351878">사이트에서 NFC 기기의 정보를 보고 변경하도록 허용하기 전에 확인(권장)</translation>
 <translation id="4200726100658658164">위치 설정 열기</translation>
+<translation id="4203769790323223880">카메라가 허용되지 않음</translation>
 <translation id="421742575134139848">사이트에서는 음악, 동영상, 기타 미디어의 오디오를 제공하기 위해 소리를 재생할 수 있습니다.</translation>
 <translation id="4217710972110098902">직렬 포트에 연결됨</translation>
+<translation id="4223404254440398437">마이크가 허용되지 않음</translation>
 <translation id="4226663524361240545">알림이 있으면 진동이 울릴 수도 있습니다.</translation>
 <translation id="4259722352634471385">탐색이 차단됨: <ph name="URL"/></translation>
 <translation id="4274673989874969668">사이트에서 나간 후에도 사이트가 동기화를 계속하여 사진 업로드나 채팅 메시지 전송과 같은 작업을 마무리합니다.</translation>
@@ -294,6 +303,7 @@
 <translation id="4635969503923889910">사이트에서 NFC 기기를 사용할 수 없음</translation>
 <translation id="4644713492825682049">삭제 및 재설정</translation>
 <translation id="4645575059429386691">부모님이 관리합니다.</translation>
+<translation id="4663373278480897665">카메라 허용됨</translation>
 <translation id="4670064810192446073">가상 현실</translation>
 <translation id="5652778654712411580">브라우저 앱을 탭한 다음 Brave을 탭합니다</translation>
 <translation id="4676059169848868271"><ph name="APP_NAME"/>에서 손 추적을 사용하려면 <ph name="BEGIN_LINK"/>시스템 설정<ph name="END_LINK"/>에서도 손 추적을 사용 설정하세요.</translation>
@@ -315,6 +325,7 @@
 <translation id="4972737347717125191">사이트에서 가상 현실 기기 및 데이터의 사용을 요청할 수 있음</translation>
 <translation id="497421865427891073">앞으로 이동</translation>
 <translation id="4976702386844183910">최근 방문: <ph name="DATE"/></translation>
+<translation id="4978178243417029856">디스커버 피드에 대해 자세히 알아보기</translation>
 <translation id="4994033804516042629">연락처 없음</translation>
 <translation id="4996978546172906250">공유 방법</translation>
 <translation id="5001526427543320409">서드 파티 쿠키</translation>
@@ -337,6 +348,7 @@
 <translation id="5216942107514965959">최근 방문: 오늘</translation>
 <translation id="5225463052809312700">카메라 켜기</translation>
 <translation id="5234764350956374838">닫기</translation>
+<translation id="5239623327352565343">위치 허용됨</translation>
 <translation id="5246825184569358663">이 작업을 실행하면 쿠키를 포함한 모든 로컬 데이터가 삭제되고, <ph name="DOMAIN"/> 및 모든 하위 사이트에 대한 권한이 모두 재설정됩니다.</translation>
 <translation id="5264323282659631142">‘<ph name="CHIP_LABEL"/>’ 삭제</translation>
 <translation id="528192093759286357">전체화면을 종료하려면 상단에서 드래그하여 뒤로 버튼을 터치하세요.</translation>
@@ -378,7 +390,9 @@
 <translation id="571222594670061844">사이트에서 ID 서비스의 로그인 메시지를 표시할 수 있음</translation>
 <translation id="5740126560802162366">사이트에서 기기에 데이터를 저장할 수 있습니다.</translation>
 <translation id="5743425052258407233">모든 기기에서 방문 기록을 확인하면 중단한 부분부터 쉽게 다시 시작할 수 있습니다.</translation>
+<translation id="5749158352074143502">이 탭으로 계속</translation>
 <translation id="5750869797196646528">손 추적</translation>
+<translation id="5753570386948603678">기록에서 삭제</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> 차단됨</translation>
 <translation id="5804241973901381774">권한</translation>
 <translation id="5822675474983796325">새 탭 페이지 맞춤설정 하단 시트가 전체 높이로 열림</translation>
@@ -404,6 +418,7 @@
 <translation id="5968921426641056619">웹 주소 입력</translation>
 <translation id="5975083100439434680">축소</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> - <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">디스커버 피드 사용 설정</translation>
 <translation id="6015775454662021376">기기에 대한 이 사이트의 액세스를 제어합니다.</translation>
 <translation id="6040143037577758943">닫기</translation>
 <translation id="6042308850641462728">자세히</translation>
@@ -439,11 +454,13 @@
 <translation id="6527303717912515753">공유</translation>
 <translation id="6530703012083415527">사용 설정하면 사이트에서 팝업 및 리디렉션을 사용할 수 있습니다. 사용 중지하면 사이트에서 팝업 및 리디렉션을 사용할 수 없습니다.</translation>
 <translation id="6540488083026747005">이 사이트에서 서드 파티 쿠키를 허용했습니다</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/>주 전}other{<ph name="NUM_WEEKS_MANY"/>주 전}}</translation>
 <translation id="6545864417968258051">블루투스 검색</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> 외 <ph name="NUM_MORE"/>개 차단됨}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> 외 <ph name="NUM_MORE"/>개 차단됨}}</translation>
 <translation id="6554732001434021288">최근 방문: <ph name="NUM_DAYS"/>일 전</translation>
 <translation id="656065428026159829">더보기</translation>
 <translation id="6561560012278703671">조용한 메시지 사용(방해가 되지 않도록 알림 메시지 차단)</translation>
+<translation id="6565144332292237355">사이트에서 이 기능을 사용하여 로컬 네트워크의 기기를 찾고 연결할 수 있습니다.</translation>
 <translation id="6593061639179217415">데스크톱 사이트</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{<ph name="RWS_OWNER"/> 사이트 <ph name="RWS_MEMBERS_COUNT"/>개에 쿠키가 허용됨}other{<ph name="RWS_OWNER"/> 사이트 <ph name="RWS_MEMBERS_COUNT"/>개에 쿠키가 허용됨}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/>GB</translation>
@@ -477,6 +494,7 @@
 <translation id="6992289844737586249">사이트에서 마이크를 사용하기 전에 확인(권장)</translation>
 <translation id="7000754031042624318">Android 설정에서 사용 중지됨</translation>
 <translation id="8683151724374457021">이 사이트는 내 관심분야를 파악한 후 다른 사이트에 광고를 추천합니다. Brave에 저장된 내 광고 주제를 기반으로 더 관련성 있는 광고를 표시합니다.</translation>
+<translation id="7044081119134178347">현재 카메라 허용됨</translation>
 <translation id="7053983685419859001">차단</translation>
 <translation id="7055552182600664515">저작권으로 보호되는 콘텐츠를 재생하려면 사이트에서 콘텐츠 보호 서비스를 사용해야 할 수 있습니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1개 선택됨}other{#개 선택됨}}</translation>
@@ -488,8 +506,10 @@
 <translation id="7188508872042490670">기기 내 사이트 데이터</translation>
 <translation id="7201549776650881587">이 작업을 실행하면 <ph name="ORIGIN"/>의 모든 하위 사이트 또는 홈 화면에 있는 앱에서 저장한 데이터와 쿠키가 모두 삭제됩니다.</translation>
 <translation id="7203150201908454328">펼쳐짐</translation>
+<translation id="7213166370492037743">사이트에서 로컬 네트워크의 모든 기기에 연결하도록 허용하지 않음</translation>
 <translation id="7219254577985949841">사이트 데이터를 삭제하시겠습니까?</translation>
 <translation id="723171743924126238">이미지 선택</translation>
+<translation id="7243246278722455312">새 탭 페이지 맞춤설정 하단 시트</translation>
 <translation id="7243308994586599757">화면 하단에서 옵션 선택 가능</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/>개 선택됨</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> 및 <ph name="PERMISSION_2"/> 허용됨</translation>
@@ -512,7 +532,9 @@
 <translation id="7554752735887601236">사이트에서 마이크를 사용 중입니다.</translation>
 <translation id="7561196759112975576">항상</translation>
 <translation id="7573594921350120855">사이트에서는 일반적으로 영상 채팅과 같은 커뮤니케이션 기능에 동영상 카메라를 사용합니다.</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/>개월 전}other{<ph name="NUM_MONTHS_MANY"/>개월 전}}</translation>
 <translation id="757524316907819857">사이트에서 보호된 콘텐츠를 재생하지 못하도록 차단</translation>
+<translation id="7586676035079382730">알림이 허용되지 않음</translation>
 <translation id="7594634374516752650">블루투스 기기에 연결됨</translation>
 <translation id="7617547684249261169">방문 기록, 쿠키, 사이트 데이터 등을 일부 또는 모두 삭제할 수 있습니다.</translation>
 <translation id="7649070708921625228">도움말</translation>
@@ -525,15 +547,16 @@
 <translation id="7759147511335618829">MIDI 기기 제어 및 다시 프로그래밍</translation>
 <translation id="7781829728241885113">어제</translation>
 <translation id="7791543448312431591">추가</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{이 탭으로 계속}other{이 탭으로 계속}}</translation>
 <translation id="780301667611848630">나중에</translation>
 <translation id="7804248752222191302">사이트에서 카메라 사용 중</translation>
 <translation id="6720480757902085971">Brave 제공</translation>
+<translation id="7815680994978050279">위험한 다운로드가 차단됨</translation>
 <translation id="7835852323729233924">재생 중인 미디어</translation>
 <translation id="783819812427904514">동영상 음소거 해제</translation>
 <translation id="7846076177841592234">선택 취소</translation>
 <translation id="2353409725922994861">Brave은 대부분의 사이트에서 서드 파티 쿠키를 사용하지 못하도록 제한합니다. 하지만 이 사이트에서는 서드 파티 쿠키를 사용하여 기본 서비스를 제공하기 때문에 서드 파티 쿠키가 허용됩니다.\n\n설정으로 이동하여 <ph name="BEGIN_LINK"/>서드 파티 쿠키 액세스를 관리<ph name="END_LINK"/>하세요.</translation>
 <translation id="7882806643839505685">특정 사이트에서 소리를 재생하도록 허용합니다.</translation>
+<translation id="7891547341794213004">'이 탭 카드로 계속하기' 카드 숨기기</translation>
 <translation id="789722939441020330">사이트에서 여러 개의 파일을 자동으로 다운로드하도록 허용하지 않음</translation>
 <translation id="7940722705963108451">알림</translation>
 <translation id="7948081750384205628"><ph name="SETTING_TITLE"/>에 관해 자세히 알아보기</translation>
@@ -541,7 +564,6 @@
 <translation id="7986741934819883144">연락처 선택</translation>
 <translation id="7990211076305263060">사용 설정하면 사이트에서 마이크 사용을 요청할 수 있습니다. 사용 중지하면 사이트에서 마이크를 사용할 수 없습니다.</translation>
 <translation id="8007176423574883786">기기에 대해 사용 중지됨</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{이 탭으로 계속 숨기기 카드}other{이 탭으로 계속 숨기기 카드}}</translation>
 <translation id="802154636333426148">다운로드 실패</translation>
 <translation id="8042586301629853791">정렬 기준:</translation>
 <translation id="8051193500142930381">카메라가 필요한 기능이 작동하지 않음</translation>
@@ -576,6 +598,7 @@
 <translation id="8380167699614421159">이 사이트에서는 방해가 되거나 사용자를 현혹하는 광고를 표시합니다.</translation>
 <translation id="8394832520002899662">탭하여 사이트로 돌아가기</translation>
 <translation id="8409345997656833551">기사를 간단히 보기로 표시할 수 있을 때 알림 받기</translation>
+<translation id="8416874502399604126">현재 마이크 허용됨</translation>
 <translation id="8423565414844018592">텍스트 크기 조정이 <ph name="TEXT_SCALING"/>로 설정됩니다</translation>
 <translation id="8428213095426709021">설정</translation>
 <translation id="8441146129660941386">뒤로 탐색</translation>
@@ -643,12 +666,14 @@
 <translation id="9106233582039520022">쿠키를 삭제하시겠습니까?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> 외 <ph name="NUM_MORE"/>개}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> 외 <ph name="NUM_MORE"/>개}}</translation>
 <translation id="913657688200966289"><ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서 <ph name="APP_NAME"/> 관련 권한을 허용하세요.</translation>
+<translation id="9138037198177304356">알림 허용됨</translation>
 <translation id="9138217887606523162">현재 확대/축소 레벨은 <ph name="ZOOM_LEVEL"/>%%입니다</translation>
 <translation id="7359422048569205930">Brave에서 기기의 앱 목록과 검색 결과에 최근 탭을 표시하도록 허용합니다. 이 기능은 Brave 설정에서 언제든지 사용 중지할 수 있습니다.</translation>
 <translation id="9162462602695099906">위험한 페이지입니다.</translation>
 <translation id="9182556968660520230">사이트에서 보호된 콘텐츠를 재생하도록 허용하지 않음</translation>
 <translation id="947156494302904893">방문하는 사이트에서 내가 봇이 아니라 실제 사람인지 확인할 수 있습니다</translation>
 <translation id="959682366969460160">깔끔하게 정리하기</translation>
+<translation id="961930410699694996">현재 위치 허용됨</translation>
 <translation id="967624055006145463">저장된 데이터</translation>
 <translation id="969975166333045662">사이트에서 V8 옵티마이저를 사용하지 못하도록 차단합니다.</translation>
 <translation id="3110967157686007724">비공개 탭</translation>

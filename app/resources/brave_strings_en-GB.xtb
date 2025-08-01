@@ -5,6 +5,7 @@
 <translation id="7099479769133613710">Relaunch to update &amp;Chrome OS</translation>
 <translation id="2479110114759182442">Brave recommends that you review this extension</translation>
 <translation id="3814674848168165531">When a site asks to privately preload links on their page, Brave uses Brave servers. This hides your identity from the preloaded site, but Brave learns what sites get preloaded.</translation>
+<translation id="5749154344207139683">Help us improve Incognito by taking this 1-minute survey.</translation>
 <translation id="1065672644894730302">Your preferences cannot be read.
 
 Some features may be unavailable and changes to preferences won't be saved.</translation>
@@ -85,7 +86,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2126108037660393668">The downloaded file failed verification.</translation>
 <translation id="2137162749895930932">Close translate screen</translation>
 <translation id="5789330946301045610">Brave blocked this download because the site isn't using a secure connection and the file may have been tampered with</translation>
-<translation id="5401976223298265794">You can open bookmarks, reading mode and more from the Brave menu</translation>
 <translation id="142389341645668510">Customise Brave</translation>
 <translation id="2174917724755363426">Installation is not complete. Are you sure that you want to cancel?</translation>
 <translation id="8745514854244955877">Brave – Network sign-in – <ph name="PAGE_TITLE"/></translation>
@@ -216,6 +216,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="4256965182800026277">Your passwords, payment methods and addresses that you saved in your Brave sync chain will be removed from this device. To use them again in Brave, sign back in.</translation>
 <translation id="395904275706073188">Protected pages can't be read. Try a different page.</translation>
 <translation id="4194619960643453552">Learn how Brave keeps you safe</translation>
+<translation id="1486377520191913768">When you type in the address bar or search box, Brave sends what you type to your organisation's search, AI and agent tools to get suggestions.</translation>
 <translation id="1311808042904310985">About Brave for testing</translation>
 <translation id="1152920704813762236">About Chrome OS</translation>
 <translation id="3703994572283698466">Chrome OS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS"/>open-source software<ph name="END_LINK_CROS_OSS"/>, as is <ph name="BEGIN_LINK_LINUX_OSS"/>Linux development environment<ph name="END_LINK_LINUX_OSS"/>.</translation>
@@ -241,6 +242,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="4281844954008187215">Terms of Service</translation>
 <translation id="7691786510374174420">Installation failed due to unspecified error. If Brave is currently running, please close it and try again.</translation>
 <translation id="4304713468139749426">Password Manager</translation>
+<translation id="4334241893986177674">Search this screenshot</translation>
 <translation id="4334294535648607276">Download complete.</translation>
 <translation id="1068681683510904753"><ph name="MANAGER"/> requires that you read and accept the following Terms of Service before using this device. These terms do not expand, modify or limit the Chrome OS terms.</translation>
 <translation id="9183662282810237335">Exit Brave anyway?</translation>
@@ -335,6 +337,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="899523323751802352">If you forgot your passphrase or want to change this setting, <ph name="SETTINGS_LINK"/> the Brave data in your account</translation>
 <translation id="82926023981336111">Customise and control Brave. Set Brave as your default.</translation>
 <translation id="5809516625706423866">Unable to connect to the Internet. HTTP 401 Unauthorised. Please check your proxy configuration.</translation>
+<translation id="95980832839683236">Speeds up sites with Brave's V8 engine but makes Brave slightly less resistant to attacks. This setting is off.</translation>
 <translation id="1224606669200461217">To use and save Brave data in your Brave sync chain, update Brave</translation>
 <translation id="5824893331272123205">Couldn't load this panel, try again</translation>
 <translation id="7207456302801184289">Welcome to Brave</translation>
@@ -351,7 +354,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="3598551856834560515">Update Brave to start sync</translation>
 <translation id="5225261774087485064">It's common for sites that you visit to remember things that you're interested in, to personalise your experience. Sites can also store information with Brave about your interests.</translation>
 <translation id="6003112304606738118">Downloading… <ph name="HOURS"/> hour(s) remaining</translation>
-<translation id="1663358621471164569">You can open bookmarks, reading mode and more from the Brave menu at the top right</translation>
 <translation id="6040143037577758943">Close</translation>
 <translation id="700488072601322385">To protect your data, let Brave remove permissions from sites you haven't visited recently. Doesn't stop notifications.</translation>
 <translation id="9071554113102421877">&amp;Open in Brave</translation>
@@ -425,6 +427,7 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="1505112054322049777">To get personalisation and other features, include Brave in Web &amp; App Activity and linked Brave services</translation>
 <translation id="6666624454809779082">Brave is already installed for all users on your computer.</translation>
 <translation id="9136637081636160997">You haven't visited recently. Brave removed <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> and <ph name="COUNT"/> more</translation>
+<translation id="4020203987234748583">Speeds up sites with Brave's V8 engine but makes Brave slightly less resistant to attacks. This setting is on.</translation>
 <translation id="3136039682492230890">Brave recommends scanning this file because it may be dangerous.</translation>
 <translation id="1547295885616600893">Chrome OS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS"/>open-source software<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="6831043979455480757">Translate</translation>
@@ -518,7 +521,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="8118331347066725040">Send feedback for search with Lens</translation>
 <translation id="5334309298019785904">Chrome OS could not sync your data because sync is not available for your domain.</translation>
 <translation id="813913629614996137">Initialising...</translation>
-<translation id="7550680632761245819">Turn on additional protection in Brave’s JavaScript and WebAssembly engine</translation>
 <translation id="9067428552314418522">This file is dangerous, so Brave has blocked it.</translation>
 <translation id="8177472873527554730">Can't find content in page</translation>
 <translation id="6219250889396046657">Enter your passphrase to use and save Brave data in your account, <ph name="USER_EMAIL"/></translation>
@@ -563,6 +565,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="4100716194836114130">This is your Brave</translation>
 <translation id="1419543648228375718">Sign in to Brave?</translation>
 <translation id="8747073452963259673">bottom-left corner of search area: left <ph name="LEFT"/>%, bottom <ph name="BOTTOM"/>%</translation>
+<translation id="3562508460098852626">Passwords can only be deleted outside Brave</translation>
 <translation id="878572486461146056">Install error: Your network administrator has applied a Group Policy that prevents installation: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave needs permission to access your camera and microphone for this site</translation>
 <translation id="64216977793816291">Sign in to Brave?</translation>

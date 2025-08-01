@@ -16,7 +16,7 @@
 <translation id="8294286161128352783">නව පටිති පිටුවේ පමණි</translation>
 <translation id="6406506848690869874">සමමුහූර්තය</translation>
 <translation id="1544192797660353713">පසුම්බිය</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">තවත්…</translation>
 <translation id="1990886731975529483">ගූගල් වයිඩ්වයින් ස්ථාපනය කර ධාවනය කරන්න</translation>
 <translation id="8926389886865778422">නැවත අසන්න එපා</translation>
@@ -71,7 +71,7 @@
 <translation id="7595540212376041331">Brave පසුම්බියේ නිරූපකය සඟවන්න</translation>
 <translation id="3893997535859323951">Leo AI නිරූපකය සඟවන්න</translation>
 <translation id="6208515240323786457">Leo AI නිරූපකය සඟවන්න</translation>
-<translation id="2361906291514218784">Leo AI</translation>
+<translation id="5385064007245738696">ලියෝ AI ගැන</translation>
 <translation id="4928988318462976765">වියමන දිගු ගබඩාව</translation>
 <translation id="9181207987584064303">වියමන දිගු ගබඩාවේ බලන්න</translation>
 <translation id="3161744659507801211">අවවාදයයි: Brave මගින් දිගු ඔබගේ පිරික්සුම් ඉතිහාසය පටිගතය වැළැක්වීමට නොහැකිය.</translation>
@@ -175,11 +175,6 @@
 <translation id="4394049700291259645">අබල කරන්න</translation>
 <translation id="7142548388914389999">රහස්‍යතා ප්‍රරක්‍ෂණ නිෂ්පාදන විශ්ලේෂණ වලට ඉඩ දෙන්න (P3A)</translation>
 <translation id="2604698253988679506">මෙම පෞද්ගලික ප්‍රතිචාර සමහර බ්‍රේව් විශේෂාංග වල සමස්ත භාවිතය තක්සේරුවට සහ ඒවා හොඳින් සංවර්ධනයට උපකාරී වේ.</translation>
-<translation id="1947672064022327074">ඊතරම් සහාය සඳහා ඔබ ක්‍රිප්ටෝ පසුම්බියක් ආරම්භ කිරීමට කැමතිද?</translation>
-<translation id="7583735190612229830">මෙම යෙදුම සහ එයට කැමති වෙනත් අය සමඟ අන්තර් ක්‍රියා කිරීමට Crypto Wallets පිහිටුවන්න.</translation>
-<translation id="8731422418734770661">ක්‍රිප්ටෝ පසුම්බි සකසන්න</translation>
-<translation id="8199661191594897555">ක්‍රිප්ටෝ පසුම්බි ආරම්භ කර යළි පූරණය කරන්න</translation>
-<translation id="8428213095426709021">සැකසුම්</translation>
 <translation id="193368604235852218">වෙබ්3</translation>
 <translation id="4738583579791001083">වෙබ්3 වසම්</translation>
 <translation id="5046066249040287308">Brave පසුම්බි උපයෝගිතා සේවාව</translation>
@@ -643,7 +638,6 @@
 <translation id="2653659639078652383">යොමන්න</translation>
 <translation id="1294350054292274934">ටෝර් කවුළු වල .onion ලිපින පමණක් විසඳන්න</translation>
 <translation id="601227612175911475">ටෝර් කවුළු වලින් පිටත අනියන් සේවා නොතිබේ.</translation>
-<translation id="2896916411183256228">ටොරන්ට් කෙලින්ම බ්‍රවුසරයේ සංදර්ශන කිරීමට WebTorrent භාවිතා කරයි. ටොරන්ට් ගොනු සහ චුම්බක සබැඳි සඳහා සහය දක්වයි.</translation>
 <translation id="5249433283143453448">අතිරික්සුවෙන් ආරක්ෂිත ප්‍රචාර දෘශ්‍යක සහ වෙනත් අන්තර්ගත බැලීමට වයිඩ්වයින් සංඛ්‍යාංක හිමිකම් කළමනාකරණ (DRM) සංරචකය භාවිතා කරන්න.</translation>
 <translation id="1314131187310290315">මැනිෆෙස්ට් V2 දිගු</translation>
 <translation id="2488433650767270565">පහත Manifest V2 දිගු Chrome Web Store වෙතින් ඉවත් කරනු ඇත, නමුත් තවමත් Brave හි සහය දක්වයි. බාගැනීමට සහ ස්ථාපනය කිරීමට හෝ අස්ථාපනය කිරීමට ටොගල් කරන්න.</translation>
@@ -661,7 +655,6 @@
 <translation id="7701023802820268122">පෙරනිමි සොලානා පසුම්බිය</translation>
 <translation id="8488282162676695335">Brave පසුම්බිය</translation>
 <translation id="6942354363301686374">දිගු (පසු හැරීමක් නැත)</translation>
-<translation id="1274962333945373242">Crypto Wallets (අත් හරින ලද)</translation>
 <translation id="702381242110464396">දිගු (Brave Wallet Fallback)</translation>
 <translation id="4718664830805652430">පෙරනිමි පාදක මුදල</translation>
 <translation id="7992507032049865603">පෙරනිමි පාදක ගුප්තකේතන මුදල්</translation>
@@ -722,6 +715,7 @@
 <translation id="3095201688102519917">පටිති කිහිපයක් සහිත කවුළුවක් වසන විට අඟවන්න</translation>
 <translation id="7120553802660696133">අන්තිම පටිත්ත වසන විට කවුළුව වසන්න</translation>
 <translation id="3394171693948989253">පිටවීමේ දී Esc එබීමට පූර්ණ තිර සිහිකැඳවීම පෙන්වන්න</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">පැති තීරුවේ ලියෝ නිරූපකය පෙන්වන්න</translation>
 <translation id="8055509865174199683">අඩවි වල සන්දර්භ වට්ටෝරුවේ ලියෝ පෙන්වන්න</translation>
 <translation id="1529674267267221673">ඔබ අඩවියක් මත දකුණින් එබූ විට සන්දර්භ වට්ටෝරුවේ ලියෝ දිස්වනු ඇත. මෙය වත්මන් පිටුවෙන් ලියෝ වෙත සන්දර්භය යවනු ඇත.</translation>
@@ -734,7 +728,6 @@
 <translation id="1335414530428321716">ලියෝ සහායක යළි සැකසීමෙන් ඔබට අනාගතයේ දී Brave ලියෝ භාවිතය සඳහා තේරීමට සිදු වන අතර ඔබගේ කතාබස් ඉතිහාසය ද මකනු ඇත. ඔබගේ කතාබස් ඉතිහාසය මැකීමෙන් Brave ලියෝ සමඟ ඔබගේ පරණ සංවාද මැකෙනු ඇත. මෙම ක්‍රියාමාර්ගය අප්‍රතිවර්ත්‍යයි.</translation>
 <translation id="5574059574002819179">ස්වයං පිරවීමේ යෝජනා සකසන්න</translation>
 <translation id="7942415993090181327">කතාබස් ඉතිහාසය</translation>
-<translation id="5385064007245738696">ලියෝ AI ගැන</translation>
 <translation id="5084498230659987096">Brave Leo විසින් බ්‍රවුසරයේ පුද්ගලිකත්වය-පළමු AI කතාබස් සහ අනෙකුත් AI-බලගැන්වූ අතුරුමුහුණත් සපයයි. Leo කිසි විටෙකත් ඔබගේ දත්ත වලින් ඉගෙන නොගනී හෝ ආකෘති පුහුණුව සඳහා එය භාවිතා නොකරයි. සියලුම ඉල්ලීම් නිර්නාමික සේවාදායකයක් හරහා ප්‍රොක්සි කරනු ලැබේ.</translation>
 <translation id="6458721693611638005">ලියෝගේ රහස්‍යතා ප්‍රතිපත්තියේ Brave ඔබේ AI භාවිතය ආරක්ෂා කරන ආකාරය පිළිබඳ වැඩිදුර කියවන්න. <ph name="BEGIN_LINK"/>තව දැනගන්න<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">නව සංවාද සඳහා පෙරනිමි ආදර්ශකය</translation>

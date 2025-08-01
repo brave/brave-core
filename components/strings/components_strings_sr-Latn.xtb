@@ -70,7 +70,6 @@
 <translation id="1118429183611783760">Usisivači i nega podova</translation>
 <translation id="1122714970786750095">Elektronika i električni uređaji</translation>
 <translation id="1123753900084781868">Titl uživo trenutno nije dostupan</translation>
-<translation id="1125453215844207206">Neoznačena slika. Tekst se izdvaja, što omogućava Brave veštačka inteligencija</translation>
 <translation id="112840717907525620">Keš smernica je u redu</translation>
 <translation id="1131264053432022307">Kopirana slika</translation>
 <translation id="1138458427267715730">Dobijajte obaveštenja kada padne cena na bilo kom sajtu širom veba</translation>
@@ -230,7 +229,6 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="1380591466760231819">Presavijanje u obliku pisma</translation>
 <translation id="138218114945450791">Svetloplava</translation>
 <translation id="1382194467192730611">USB uređaj koji dozvoljava administrator</translation>
-<translation id="1382378825779654399">Dobijaćete obaveštenja imejlom ako se cena snizi na bilo kom sajtu. Ova stranica će biti sačuvana u aplikaciji <ph name="LAST_BOOKMARKS_FOLDER"/>.</translation>
 <translation id="1384725838384960382">Tabela za potvrdu akreditiva za bezbedno plaćanje</translation>
 <translation id="1386623374109090026">Napomene</translation>
 <translation id="138810468159004008">Dozvoli prilikom posete sajtu</translation>
@@ -277,7 +275,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="1458059624921545588">Ljudi i društvo</translation>
 <translation id="1458140305240870199">Donji veš</translation>
 <translation id="1459693405370120464">Vreme</translation>
-<translation id="1461041542809785877">Učinak</translation>
+<translation id="1461041542809785877">Performanse</translation>
 <translation id="1462245070427461050">JIS B9</translation>
 <translation id="1462951478840426066">Koristi fontove na računaru da biste mogli da pravite sadržaj visoke vernosti</translation>
 <translation id="1463793142714244641">Nekretnine za tajmšer i odmor</translation>
@@ -323,7 +321,6 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="1549470594296187301">JavaScript mora da bude omogućen da biste koristili ovu funkciju.</translation>
 <translation id="1553152622374372421">Zimski sportovi</translation>
 <translation id="1705567146636171298">Ažuriraj Brave</translation>
-<translation id="1554485704925237240">Kontrolišite čitače sa nazivom <ph name="READERNAME"/> i pametne kartice koje se koriste sa njima</translation>
 <translation id="1555130319947370107">Plava</translation>
 <translation id="1555191101192706055">Napadači na sajtu koji ste probali da posetite mogu da vas prevare da instalirate štetan softver koji utiče na način na koji pregledate – na primer, tako što će promeniti početnu stranicu ili vam prikazivati dodatne oglase na sajtovima koje posećujete.</translation>
 <translation id="1559231233244409191">Karton (trostruki sloj)</translation>
@@ -358,6 +355,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="1593359183944365958">270 stepeni</translation>
 <translation id="1594030484168838125">Odaberi</translation>
 <translation id="1597307423671074806">WebM video</translation>
+<translation id="6492710526857439641">Link za savet za Brave, pritisnite Enter da biste otvorili <ph name="IPH_LINK_FOCUSED_LINK_TEXT"/></translation>
 <translation id="1599199147673445968">Nova kartica? <ph name="BEGIN_LINK"/>Unesite podatke o kartici<ph name="END_LINK"/></translation>
 <translation id="1601786938618212857">Poštanski broj</translation>
 <translation id="1604192142734009334">Lepota i fitnes</translation>
@@ -419,6 +417,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="1706625117072057435">Nivoi zumiranja</translation>
 <translation id="1706922226983368260">Pristupni ključ • <ph name="PHONE_NAME"/></translation>
 <translation id="1706954506755087368">{1,plural, =1{Ovaj server ne može da dokaže da je <ph name="DOMAIN"/>; datum njegovog bezbednosnog sertifikata je navodno sutrašnji. Uzrok tome je možda pogrešna konfiguracija ili napadač koji je prekinuo vezu.}one{Ovaj server ne može da dokaže da je <ph name="DOMAIN"/>; njegov bezbednosni sertifikat je navodno datiran u budućnosti (za # dan). Uzrok tome je možda pogrešna konfiguracija ili napadač koji je prekinuo vezu.}few{Ovaj server ne može da dokaže da je <ph name="DOMAIN"/>; njegov bezbednosni sertifikat je navodno datiran u budućnosti (za # dana). Uzrok tome je možda pogrešna konfiguracija ili napadač koji je prekinuo vezu.}other{Ovaj server ne može da dokaže da je <ph name="DOMAIN"/>; njegov bezbednosni sertifikat je navodno datiran u budućnosti (za # dana). Uzrok tome je možda pogrešna konfiguracija ili napadač koji je prekinuo vezu.}}</translation>
+<translation id="1709711942721576168">Dugme za režim veštačke inteligencije, aktivirajte da biste upitali režim veštačke inteligencije</translation>
 <translation id="1710259589646384581">OS</translation>
 <translation id="1711234383449478798">Zanemareno jer <ph name="POLICY_NAME"/> nema vrednost <ph name="VALUE"/>.</translation>
 <translation id="1712552549805331520"><ph name="URL"/> želi trajno da skladišti podatke na lokalnom računaru</translation>
@@ -445,6 +444,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="1734878702283171397">Pokušajte da kontaktirate administratora sistema.</translation>
 <translation id="1736163675982669961"><ph name="CARD_NICKNAME"/>, <ph name="CARD_NETWORK_NAME"/>, <ph name="CARD_LAST_FOUR_DIGITS"/>, ističe <ph name="CARD_EXPIRATION"/></translation>
 <translation id="1736420071277903564">Računar</translation>
+<translation id="1741474054575634405">Upravljaj karticama lojalnosti…</translation>
 <translation id="1741613555002899862">Mora da se navede kao važeći niz kada je DnsOverHttpsMode <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="1743393865165844832">Posteljno rublje i posteljina</translation>
 <translation id="1743892871127720056">Naziv tabele za poređenje, izmenite tekst</translation>
@@ -485,6 +485,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="180757923930449935">(emulacija 64-bitne verzije)</translation>
 <translation id="180991881384371158">CVC je na poleđini kartice. To su poslednje 3 cifre u gornjem desnom uglu okvira za potpis.</translation>
 <translation id="1810391395243432441">Zaštitite lozinke pomoću zaključavanja ekrana</translation>
+<translation id="7568195494933907255">Plaćajte brže uz sačuvanu karticu. Podaci o kartici se čuvaju u Brave-u na uređaju.</translation>
 <translation id="1812527064848182527">vodoravno</translation>
 <translation id="1812975699435941848">Zdravstveno obrazovanje i medicinska obuka</translation>
 <translation id="1816436748874040213">Može da traži da skroluje i zumira deljene kartice</translation>
@@ -519,6 +520,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="1863257867908022953">12. fioka</translation>
 <translation id="1864927262126810325">Izvor: <ph name="SOURCE_NAME"/></translation>
 <translation id="186539747722034544">Dobavljači kablovskih i satelitskih usluga</translation>
+<translation id="1866757068250903512">Kontrolišite uređaje za potvrdu identiteta sa nazivom <ph name="READERNAME"/> i pametne kartice koje se koriste sa njima</translation>
 <translation id="1870473978371099486">Usluge privatnog podučavanja</translation>
 <translation id="1871208020102129563">Proksi je podešen da koristi fiksne proksi servere, a ne URL adresu .pac skripte.</translation>
 <translation id="1871284979644508959">Obavezno polje</translation>
@@ -528,6 +530,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="85321348617848915">Brave upitnici</translation>
 <translation id="5307141203158944981">Nemate nijednu sačuvanu adresu. Dodajte adresu da biste je koristili u Brave-u.</translation>
 <translation id="1876399092304384674">Prema datumu</translation>
+<translation id="5173820533850252773">Brave je zastareo</translation>
 <translation id="187918866476621466">Otvori početne stranice</translation>
 <translation id="8632214058523487060">Da biste sledeći put platili brže, sačuvajte karticu, šifrovani bezbednosni kôd i adresu za obračun na Brave nalogu</translation>
 <translation id="1883255238294161206">Skupi listu</translation>
@@ -687,6 +690,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="2157640075051554492">Obaveštenja o praćenju cena</translation>
 <translation id="21613918653299710">Onlajn galerije slika</translation>
 <translation id="2161656808144014275">Tekst</translation>
+<translation id="2162435186600002085">Primarni logotip u zaglavlju</translation>
 <translation id="2162620598375156287">Cena je sada <ph name="CURRENT_PRICE"/> na <ph name="SOURCE_WEBSITE"/></translation>
 <translation id="2164510882479075877">Uverite se da <ph name="HOST_NAME"/> ne sadrži slovne greške.</translation>
 <translation id="2166049586286450108">Potpuni administratorski pristup</translation>
@@ -717,6 +721,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="2212735316055980242">Smernice nisu pronađene</translation>
 <translation id="2213606439339815911">Preuzimanje unosa...</translation>
 <translation id="2213612003795704869">Stranica je odštampana</translation>
+<translation id="4680299265942129298">Ažurirajte Brave da biste nastavili da koristite deljene grupe kartica</translation>
 <translation id="4045100732984144870">Automatsko popunjavanje uz Brave</translation>
 <translation id="2215539479425228550">Alpinizam i planinarenje</translation>
 <translation id="2215727959747642672">Menjanje datoteka</translation>
@@ -793,6 +798,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="2328651992442742497">Dozvoljeno (podrazumevano)</translation>
 <translation id="2328955282645810595">Građevinski i električni alati</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, ističe <ph name="EXPIRATION_DATE_ABBR"/></translation>
+<translation id="2334327033751265975">Deljene grupe kartica su ponovo dostupne</translation>
 <translation id="2337852623177822836">Podešavanje kontroliše administrator</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> želi da se upari</translation>
 <translation id="2344529975040861103">Možete da popunite ovu karticu automatski jer je nalog povezan sa Google Pay-om</translation>
@@ -826,6 +832,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="5475992123321966556">Personalizujte alatke za pristupačnost u podešavanjima Brave-a</translation>
 <translation id="2384307209577226199">Podrazumevane smernice za preduzeće</translation>
 <translation id="238459632961158867">Veb-sajt</translation>
+<translation id="2384823392576123225">Pretraži obeleživače</translation>
 <translation id="5244533701344680487">Ažurirajte Brave pomoću podešavanja Brave-a</translation>
 <translation id="2386255080630008482">Sertifikat servera je opozvan.</translation>
 <translation id="2388828676877700238">Priprema i planiranje poreza</translation>
@@ -837,7 +844,9 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="2396249848217231973">&amp;Opozovi brisanje</translation>
 <translation id="4124760202519850347">Ovaj IBAN se čuva na Brave nalogu da biste mogli da ga koristite u svim Brave uslugama.</translation>
 <translation id="2400263725572336749">Dodajte pasoš</translation>
+<translation id="1258449952808226603">Upravljajte karticama lojalnosti u Brave novčaniku</translation>
 <translation id="2400600116338235695">Može da traži da se povezuje sa serijskim portovima</translation>
+<translation id="240450251994300576">Sekundarni logotip u zaglavlju</translation>
 <translation id="2404884497378469141">Probajte da ponovo kopirate fajlove</translation>
 <translation id="2413155254802890957">Staro</translation>
 <translation id="2413528052993050574">Ovaj server ne može da dokaže da je <ph name="DOMAIN"/>; njegov bezbednosni sertifikat će možda biti opozvan. Uzrok tome je možda pogrešna konfiguracija ili napadač koji je prekinuo vezu.</translation>
@@ -850,6 +859,8 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="2438874542388153331">Četvorostruko bušenje na desnoj strani</translation>
 <translation id="2441854154602066476">Načini plaćanja dostupni za unos dodirom. Tastatura je sakrivena.</translation>
 <translation id="2448295565072560657">Periferni uređaji priključeni na ovaj uređaj dok ste prijavljeni</translation>
+<translation id="7174054574169352743">Načini plaćanja i druge informacije iz Brave novčanika</translation>
+<translation id="2451201933352935301"><ph name="URL"/> želi da upravlja prozorima na svim ekranima</translation>
 <translation id="2451607499823206582">Prati se</translation>
 <translation id="2452098632681057184">Ekologija i životna sredina</translation>
 <translation id="2452837234288608067">Nismo uspeli da vam pomognemo s time. Probajte ponovo.</translation>
@@ -917,6 +928,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="2546283357679194313">Kolačići i podaci o sajtovima</translation>
 <translation id="254947805923345898">Vrednost smernica nije važeća.</translation>
 <translation id="2549836668759467704">Savetodavne usluge i izvođenje radova u građevinarstvu</translation>
+<translation id="2549919488151689436"><ph name="TOPIC_1"/>, <ph name="TOPIC_2"/> i drugo</translation>
 <translation id="255002559098805027">Host <ph name="HOST_NAME"/> je poslao nevažeći odgovor.</translation>
 <translation id="2551608178605132291">Adresa: <ph name="ADDRESS"/>.</translation>
 <translation id="2552246211866555379">Razglednica</translation>
@@ -935,6 +947,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="258135245577667916">Korisnik <ph name="USER_DISPLAY_NAME"/> je dodao karticu</translation>
 <translation id="2586657967955657006">Memorija</translation>
 <translation id="2587841377698384444">ID API-ja za direktorijume:</translation>
+<translation id="4847979153841887006">Brave logotip</translation>
 <translation id="2593272815202181319">Fiksne širine</translation>
 <translation id="2594318783181750337">Brzi veb-prikaz:</translation>
 <translation id="2595719060046994702">Ovim uređajem i nalogom ne upravlja kompanija niti druga organizacija.</translation>
@@ -955,6 +968,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="2627847595568876492">Tekst se izdvaja iz PDF-a…</translation>
 <translation id="2628224721443278970">Prijavi me na Microsoft OneDrive</translation>
 <translation id="2634124572758952069">Nismo uspeli da pronađemo IP adresu servera hosta <ph name="HOST_NAME"/>.</translation>
+<translation id="2638567100095052009">Unesite @ da biste pretražili <ph name="FEATURED_SEARCH_LIST"/></translation>
 <translation id="2639739919103226564">Status:</translation>
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2647086987482648627">Tkanina (polusjajna)</translation>
@@ -1010,6 +1024,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="2725492561136085792">Pritisnite Enter da biste aktivirali ovu radnju.</translation>
 <translation id="2725927759457695883">Unesi puno ime</translation>
 <translation id="2726001110728089263">Bočna fioka</translation>
+<translation id="272616190148046464">Sve kartice lojalnosti</translation>
 <translation id="2728127805433021124">Sertifikat servera je potpisan slabim algoritmom.</translation>
 <translation id="272937284275742856">Bezbedno se verifikuju informacije o plaćanju…</translation>
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>da pokrenete dijagnostiku veze<ph name="END_LINK"/></translation>
@@ -1023,6 +1038,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="2743934314332613923">Želite da ažurirate vozačku dozvolu?</translation>
 <translation id="2759299890026163685">Uverite se da imate stabilnu internet vezu pre nego što probate ponovo</translation>
 <translation id="2759825833388495838">unese lozinku na <ph name="APP_NAME"/></translation>
+<translation id="2760805590727089264">MM/GG</translation>
 <translation id="2764001903315068341">Stripovi</translation>
 <translation id="2765217105034171413">Mala</translation>
 <translation id="2768397283109119044">Pokušali ste da dođete do domena <ph name="DOMAIN"/>, ali je server poslao nevažeći sertifikat izdat na to ime. Naziv je rezervisana IP adresa ili interno ime hosta.</translation>
@@ -1203,6 +1219,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="3113930177999394798">Unesite @history da biste pretražili istoriju pregledanja koju omogućava veštačka inteligencija</translation>
 <translation id="3114040155724590991">Ažuriranje Android sistema
     Pokretanje aplikacije može da traje duže nego obično.</translation>
+<translation id="3114197119223448048">nova aktivnost</translation>
 <translation id="3115363211799416195">{0,plural, =1{Želite da preuzmete poverljiv fajl?}one{Želite da preuzmete poverljive fajlove?}few{Želite da preuzmete poverljive fajlove?}other{Želite da preuzmete poverljive fajlove?}}</translation>
 <translation id="3115874930288085374"><ph name="ENROLLMENT_DOMAIN"/> zahteva da napravite rezervnu kopiju podataka i da vratite ovaj <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="3116158981186517402">Laminiranje</translation>
@@ -1352,6 +1369,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="3362968246557010467">Ove smernice se automatski kopiraju iz zastarelih smernica <ph name="OLD_POLICY"/>. Umesto njih treba da koristite ove smernice.</translation>
 <translation id="3364869320075768271"><ph name="URL"/> želi da koristi uređaj i podatke virtuelne realnosti</translation>
 <translation id="3369192424181595722">Greška na satu</translation>
+<translation id="3370855919511944393">Podešavanja Novčanika</translation>
 <translation id="2273851479262317744">Podesi Brave kao podrazumevani pregledač</translation>
 <translation id="3371186787117738282">Dodato: <ph name="ATTRIBUTE_NAME"/></translation>
 <translation id="337363190475750230">Onemogućen je</translation>
@@ -1396,6 +1414,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="343474037147570563">Fajlovi koje otpremite ili priložite se šalju u Google Cloud ili trećim stranama na analizu. Na primer, možda će biti skenirani u potrazi za osetljivim podacima ili malverom i mogu da budu sačuvani na osnovu smernica preduzeća i vidljivi su administratoru.</translation>
 <translation id="3435557549311968410">Neprekidno (kratko)</translation>
 <translation id="3435738964857648380">Bezbednost</translation>
+<translation id="3436118221454753036">Režim Pitajte AI</translation>
 <translation id="3440783957068352691">kvadratna</translation>
 <translation id="3441653493275994384">Ekran</translation>
 <translation id="3443504041532578451">Optički disk (saten)</translation>
@@ -1409,6 +1428,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="3461266716147554923"><ph name="URL"/> želi da vidi tekst i slike koji su kopirani u privremenu memoriju</translation>
 <translation id="3461824795358126837">Alatka za isticanje</translation>
 <translation id="3462200631372590220">Sakrij napredno</translation>
+<translation id="6152501781902660923"><ph name="CONTEXTUAL_SEARCH_OPEN_LENS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pritisnite Enter da biste upitali Brave o ovoj stranici</translation>
 <translation id="3465972433695735758">Ne možete da pristupite ovom PDF-u. Tekst je izdvojen, omogućava Brave AI</translation>
 <translation id="346601286295919445">Hemija</translation>
 <translation id="3467081767799433066">Pomoću funkcije merenja oglasa ograničeni tipovi podataka se dele između sajtova radi merenja učinka oglasa, na primer, da li ste obavili kupovinu posle posete sajtu.</translation>
@@ -1523,6 +1543,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="3641116835972736297">Američki fudbal</translation>
 <translation id="3642196846309122856">Probajte da ponovo preuzmete fajlove</translation>
 <translation id="3642638418806704195">Aplikacija:</translation>
+<translation id="3644768007456662469">Ikona stavke za plaćanja</translation>
 <translation id="3646643500201740985">Merenje učinka oglasa</translation>
 <translation id="3647286794400715637">Unos svakog stringa URL-a mora da sadrži između 1 i 2 URL-a.</translation>
 <translation id="5085151248144746413">Dugme Odbaci savet za Brave, pritisnite Enter da biste odbacili, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
@@ -1587,7 +1608,6 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="2967969024210491578">Brave pregledač više neće zahtevati otisak prsta za automatsko popunjavanje lozinki</translation>
 <translation id="3736739313435669994">Blokirali ste sajtove da koriste kolačiće treće strane da bi vas pratili dok pregledate. Posetite Podešavanja da biste <ph name="LINK"/>.</translation>
 <translation id="3738166223076830879">Administrator upravlja pregledačem.</translation>
-<translation id="3738428049780661523">Napravljeno <ph name="DATE"/></translation>
 <translation id="3739842843727261045">Opcija Sviđa mi se šalje povratne informacije da vam se sviđaju ovi rezultati</translation>
 <translation id="3740447166056383374">Potreban je pregled pre kopiranja</translation>
 <translation id="374325029554577103">Tehnološki proizvodi za fitnes</translation>
@@ -1653,6 +1673,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="3839220096695873023">Vozila na hibridni i alternativni pogon</translation>
 <translation id="3841356782900714251">Čitači pametnih kartica</translation>
 <translation id="384315386171052386">Riba i morski plodovi</translation>
+<translation id="3843447501960446468">Upravljaj karticama lojalnosti…</translation>
 <translation id="3844725157150297127">RA1</translation>
 <translation id="5749930378398424146"><ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pritisnite Tab, pa Enter da biste brzo napravili nov Brave dokument</translation>
 <translation id="385051799172605136">Nazad</translation>
@@ -1710,7 +1731,6 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="3961148744525529027">Stranica obrađivača plaćanja je poluotvorena</translation>
 <translation id="3962859241508114581">Prethodna pesma</translation>
 <translation id="3963721102035795474">Režim čitaoca</translation>
-<translation id="3964661563329879394">{COUNT,plural, =0{None}=1{Sa 1 sajta }one{Sa # sajta }few{Sa # sajta }other{Sa # sajtova }}</translation>
 <translation id="3965672182149944205">Želite da sačuvate adresu?</translation>
 <translation id="3966044442021752214">Bezbednost proizvoda</translation>
 <translation id="3969869202926863008">Pristup lokalnoj mreži</translation>
@@ -1960,6 +1980,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="4372948949327679948">Očekivana vrednost je <ph name="VALUE_TYPE"/>.</translation>
 <translation id="437620492464254965">Vrata i prozori</translation>
 <translation id="4377125064752653719">Pokušali ste da kontaktirate <ph name="DOMAIN"/>, ali je izdavač opozvao sertifikat koji je server naveo. To znači da nikako ne treba imati poverenja u bezbednosne akreditive koje je server naveo. Moguće je da komunicirate sa napadačem.</translation>
+<translation id="4377869186417956230">Pređite na sve kartice lojalnosti u okviru ove stavke menija.</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="4382484599443659549">PDF</translation>
 <translation id="4382833368532556056">Od sada čuvajte fajlove u prostoru u klaudu</translation>
@@ -1991,6 +2012,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="444116852243722675">Otvori sve (<ph name="ITEMS"/>)</translation>
 <translation id="4441832193888514600">Ignoriše se jer smernice mogu da se podese samo kao smernice za korisnika u klaudu.</translation>
 <translation id="4445133368066241428">Popularne teme</translation>
+<translation id="4445694043187340808"><ph name="STARTER_PACK_TABS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pritisnite Enter da biste pretražili kartice</translation>
 <translation id="4445964943162061557">Ovo je eksperimentalna funkcija i neće uvek raditi kako treba.</translation>
 <translation id="7615139038297294584">Dugme Upravljaj podešavanjima sajta, aktivirajte ga da biste upravljali dozvolama i podacima sačuvanim na različitim sajtovima u podešavanjima Brave-a</translation>
 <translation id="4451135742916150903">Može da traži da se povezuje sa HID uređajima</translation>
@@ -2037,11 +2059,13 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="4530347922939905757">SMS</translation>
 <translation id="4531477351494678589">Broj virtuelne kartice:</translation>
 <translation id="4535523368173457420">Ovi pretraživači su popularni u vašem regionu i prikazuju se nasumičnim redosledom</translation>
+<translation id="4539931187424170595">{NUM_YEARS,plural, =1{Napravljeno je pre 1 godine}one{Napravljeno je pre {NUM_YEARS} godine}few{Napravljeno je pre {NUM_YEARS} godine}other{Napravljeno je pre {NUM_YEARS} godina}}</translation>
 <translation id="4541810033354695636">proširena realnost</translation>
 <translation id="4542971377163063093">6. fioka</translation>
 <translation id="563788859854213593">Da biste sledeći put platili brže, sačuvajte karticu i adresu za obračun na Brave nalogu</translation>
 <translation id="454441086898495030">Želite li da dodate u tabelu za poređenje <ph name="SET"/>?</translation>
 <translation id="4546730006268514143">Vreme za prenos je isteklo</translation>
+<translation id="4548974025982531828">{NUM_DAYS,plural, =1{Napravljeno je pre 1 dan}one{Napravljeno je pre {NUM_DAYS} dan}few{Napravljeno je pre {NUM_DAYS} dana}other{Napravljeno je pre {NUM_DAYS} dana}}</translation>
 <translation id="455113658016510503">A9</translation>
 <translation id="4556069465387849460">Koristite otključavanje ekrana za popunjavanje lozinki</translation>
 <translation id="4557573143631562971">Osiguranje doma</translation>
@@ -2079,6 +2103,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="4635278307999235413">Podaci se šalju u administratorsku konzolu</translation>
 <translation id="4636930964841734540">Informacije</translation>
 <translation id="4640225694041297329">Prikažite rezultate iz poslednjih 7 dana</translation>
+<translation id="1603927605650766014">Da biste se pridružili ovoj grupi kartica, ažurirajte Brave</translation>
 <translation id="464342062220857295">Funkcije pretrage</translation>
 <translation id="4644567637638438744">Fajlovi mogu da se otpreme samo ako ste prijavljeni na Microsoft OneDrive</translation>
 <translation id="4644670975240021822">Obrnutim redosledom sa odštampanom stranom nadole</translation>
@@ -2180,6 +2205,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="4811450222531576619">Saznajte više o njenom izvoru i temi</translation>
 <translation id="4813512666221746211">Greška na mreži</translation>
 <translation id="4814114628197290459">Izbrišite IBAN</translation>
+<translation id="4816341377198595747">Dugme Pretraži obeleživače, aktivirajte ga da biste pretraživali obeleživače</translation>
 <translation id="4816492930507672669">Uklopi u stranicu</translation>
 <translation id="4819347708020428563">Želite li da izmenite komentare u podrazumevanom prikazu?</translation>
 <translation id="4822493756793346865">Uobičajene cene se zasnivaju na informacijama iz prodavnica širom veba tokom poslednjih 90 dana.</translation>
@@ -2190,6 +2216,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="4827283332383516812">Izbrišite karticu</translation>
 <translation id="4830443836091007686">Izabrano: <ph name="ITEMS"/></translation>
 <translation id="4831993743164297314">Papir za štampanje slika</translation>
+<translation id="6907401036011007312">Da biste delili grupe kartica, ažurirajte Brave</translation>
 <translation id="483241715238664915">Uključi upozorenja</translation>
 <translation id="4832961164064927107">Roštilj</translation>
 <translation id="4834250788637067901">Načini plaćanja, ponude i adrese koji koriste Google Pay</translation>
@@ -2198,6 +2225,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="4844937814014739139">Skrolovanje i zumiranje deljenih kartica</translation>
 <translation id="484671803914931257">Ostvarite popust kod prodavca <ph name="MERCHANT_NAME"/> i drugih prodavaca</translation>
 <translation id="484988093836683706">Koristi otključavanje uređaja</translation>
+<translation id="4850669014075537160">Pomeranje</translation>
 <translation id="4850886885716139402">Prikaz</translation>
 <translation id="3418609161696289726">Brzo napravite novu belešku u Brave Keep-u</translation>
 <translation id="4855395119669662878">Administrator će početi da otprema fajlove u <ph name="CLOUD_PROVIDER"/> <ph name="DATE_TIME"/>. Neka uređaj bude povezan dok se otpremanje fajla ne završi. Tokom otpremanja moći ćete da čitate samo lokalne fajlove.</translation>
@@ -2308,6 +2336,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="6516968977334148048">Pratite cene pomoću Brave-a</translation>
 <translation id="5023310440958281426">Proverite smernice administratora</translation>
 <translation id="7993217516063481081">Plaćajte brže uz sačuvanu karticu. Detalji o kartici se šifruju na Brave nalogu.</translation>
+<translation id="5026466266082155886"><ph name="STARTER_PACK_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pritisnite Enter da biste pretražili istoriju</translation>
 <translation id="5030338702439866405">Izdao/la</translation>
 <translation id="503069730517007720">Osnovni sertifikat za softver „<ph name="SOFTWARE_NAME"/>“ je obavezan, ali nije instaliran. IT administrator treba da pregleda uputstva za konfiguraciju softvera „<ph name="SOFTWARE_NAME"/>“ da bi rešio ovaj problem. <ph name="FURTHER_EXPLANATION"/></translation>
 <translation id="5034930251282078640">Želite da dodate u poređenje?</translation>
@@ -2656,6 +2685,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="5619721953841297650">Zadata podešavanja</translation>
 <translation id="5624120631404540903">Upravljaj lozinkama</translation>
 <translation id="5629630648637658800">Učitavanje podešavanja smernica nije uspelo</translation>
+<translation id="3863024219771184526">Dugme Upitajte Brave o ovoj stranici, aktivirajte ga da biste upitali Brave o ovoj stranici</translation>
 <translation id="5631439013527180824">Nevažeći token za upravljanje uređajima</translation>
 <translation id="5632485077360054581">Pokaži mi kako</translation>
 <translation id="563324245173044180">Obmanjujući sadržaj je blokiran.</translation>
@@ -2755,6 +2785,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="5826507051599432481">Opšte ime (CN)</translation>
 <translation id="5830698870816298009">korišćenje i kretanje kamere</translation>
 <translation id="583281660410589416">Nepoznato</translation>
+<translation id="5832976493438355584">Zaključano</translation>
 <translation id="5837220895135257862">Oslobodite prostor u usluzi <ph name="CLOUD_PROVIDER"/> pre nego što probate ponovo</translation>
 <translation id="5838278095973806738">Nemojte da unosite osetljive informacije na ovom sajtu (na primer, lozinke ili kreditne kartice) jer napadači mogu da ih ukradu.</translation>
 <translation id="5838732667866024867">Promene cena na grafikonu možete da pregledate pomoću strelice nalevo i nadesno</translation>
@@ -2821,6 +2852,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="5938153366081463283">Dodajte virtuelnu karticu</translation>
 <translation id="5938793338444039872">Troy</translation>
 <translation id="6510801606541521204">Ove informacije potiču sa nezavisnih veb-sajtova za recenzije kao što su Trustpilot, ScamAdviser, Brave i drugi. Rezimee generiše veštačka inteligencija.</translation>
+<translation id="5943775258256265106">{NUM_MINS,plural, =1{Napravljeno je pre 1 minut}one{Napravljeno je pre {NUM_MINS} minut}few{Napravljeno je pre {NUM_MINS} minuta}other{Napravljeno je pre {NUM_MINS} minuta}}</translation>
 <translation id="5944297261866530437">Tkanina (visok sjaj)</translation>
 <translation id="5950901984834744590">Žileti i brijači</translation>
 <translation id="5951495562196540101">Registracija korisničkog naloga nije uspela (dostupna je licenca paketa).</translation>
@@ -2834,6 +2866,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="5967592137238574583">Izmenite kontakt informacije</translation>
 <translation id="5967867314010545767">Ukloni iz istorije</translation>
 <translation id="5968022600320704045">Nema rezultata pretrage</translation>
+<translation id="5968400720580217226">Režim veštačke inteligencije</translation>
 <translation id="5969199813874624822">Sačuvaj i prati cenu</translation>
 <translation id="5973514677932942122"><ph name="EXPIRATION_DATE"/> | <ph name="SECURITY_CODE"/></translation>
 <translation id="5974052231147553524">Šesti kotur</translation>
@@ -2884,6 +2917,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="6043357981274314628">Gotovo!</translation>
 <translation id="6044573915096792553">Veličina 12</translation>
 <translation id="6045164183059402045">Šablon rasporeda stranice</translation>
+<translation id="6046892054959167494">Unesite <ph name="SEARCH_AGGREGATOR_KEYWORD"/> da biste pretražili ili upitajte <ph name="SEARCH_AGGREGATOR_SHORT_NAME"/></translation>
 <translation id="6047927260846328439">Ovaj sadržaj će pokušati da vas prevari da instalirate softver ili otkrijete lične podatke. <ph name="BEGIN_LINK"/>Ipak prikaži<ph name="END_LINK"/></translation>
 <translation id="6049056807983403918">Koverta B4</translation>
 <translation id="6049488691372270142">Isporuka stranica</translation>
@@ -2928,6 +2962,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="6108849843016142864">Gmizavci i vodozemci</translation>
 <translation id="8233947174119245051">Brave nalog može da ima druge oblike istorije pregledanja na <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="1715537866439612181">Pretrage, najbolja podudaranja i sadržaj stranica šalju se Brave-u i osobe koje pregledaju mogu da ih vide radi poboljšanja ove funkcije.</translation>
+<translation id="6115793664998531464"><ph name="STARTER_PACK_AI_MODE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pritisnite Enter da biste upitali režim veštačke inteligencije</translation>
 <translation id="6116338172782435947">da vidi tekst i slike koji su kopirani u privremenu memoriju</translation>
 <translation id="6117833587752089929">Slika (saten)</translation>
 <translation id="6118782133429281336">Lista porekla je prazna.</translation>
@@ -2967,6 +3002,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="6177531123306197852">Koverta C2</translation>
 <translation id="6180316780098470077">Interval između ponovnih pokušaja</translation>
 <translation id="6182972682129119950">A4x5</translation>
+<translation id="6184099524311454384">Pretražite kartice</translation>
 <translation id="1713601041945301465">Brave automatski ograničava kolačiće treće strane</translation>
 <translation id="6190518157737269631">Zamena unosa nekih tastera na tastaturi, kao što je Esc</translation>
 <translation id="6194209731893739467">Pogledajte sve proizvode koje pratite ovde</translation>
@@ -3051,6 +3087,8 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="7962450223988560278">Podesite Brave kao podrazumevani pregledač sistema u podešavanjima iOS-a</translation>
 <translation id="6327065120806001832">pristup lokalnoj mreži</translation>
 <translation id="6328639280570009161">Pokušajte da onemogućite predviđanje mreže</translation>
+<translation id="6329815962353376655">&lt;Unesite pitanje&gt;</translation>
+<translation id="6334834493885103305">Sada možete da plaćate na rate uz Affirm, Zip ili Klarna</translation>
 <translation id="6335029926534404762">Sportska obuća</translation>
 <translation id="6336948221660696475">VR nije dozvoljen</translation>
 <translation id="6337133576188860026">Oslobađa manje od <ph name="SIZE"/>. Neki sajtovi će se možda sporije učitavati kad ih sledeći put posetite.</translation>
@@ -3214,6 +3252,7 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="6587893660316489419">Koverta B5</translation>
 <translation id="6587923378399804057">Link koji ste kopirali</translation>
 <translation id="6591833882275308647"><ph name="DEVICE_TYPE"/>-om se ne upravlja</translation>
+<translation id="1981901003428052480">Da biste izbrisali Brave kolačiće sa ovog uređaja, <ph name="BEGIN_LINK"/>odjavite se iz Brave-a<ph name="END_LINK"/>.</translation>
 <translation id="6596325263575161958">Opcije šifrovanja</translation>
 <translation id="6596573334527383067">Prikažite rezultate od juče</translation>
 <translation id="6597665340361269064">90 stepeni</translation>
@@ -3437,7 +3476,6 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="6979158407327259162">Brave disk</translation>
 <translation id="6979302985396162258">upravljali pristupom kolačićima treće strane</translation>
 <translation id="6979440798594660689">Isključen (podrazumevano)</translation>
-<translation id="6984270784814146224">Neoznačena slika. Tekst se izdvaja, što omogućava Brave veštačka inteligencija</translation>
 <translation id="6987806006823772670">Koverta (obložena)</translation>
 <translation id="6989256887001961296">Ovaj sadržaj je blokiran.</translation>
 <translation id="6989763994942163495">Prikaži napredna podešavanja...</translation>
@@ -3522,11 +3560,13 @@ To inače blokiraju podešavanja privatnosti. To omogućava da sadržaj sa koji
 <translation id="7130775116821607281">Otpremanje je blokirano</translation>
 <translation id="7132939140423847331">Administrator je zabranio kopiranje ovih podataka.</translation>
 <translation id="7135130955892390533">Prikaži status</translation>
+<translation id="7135814714616751706">Pretražite prečice</translation>
 <translation id="7138472120740807366">Način isporuke</translation>
 <translation id="7138678301420049075">Drugo</translation>
 <translation id="7139892792842608322">Primarna fioka</translation>
 <translation id="7140087718106278457">Lista načina plaćanja je zatvorena.</translation>
 <translation id="714064300541049402">Pomeranje slike 2. strane po X osi</translation>
+<translation id="7140922144008419614">Dugme Pretražite kartice, aktivirajte ga da biste pretražili kartice</translation>
 <translation id="7143682719845053166">PRC 32K</translation>
 <translation id="7144878232160441200">Probaj ponovo</translation>
 <translation id="7150146631451105528"><ph name="DATE"/></translation>
@@ -3751,11 +3791,13 @@ Dodatni detalji:
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="8552966873255887118">Možete da je koristite u svim Brave proizvodima</translation>
 <translation id="7523408071729642236">Proizvodnja</translation>
+<translation id="7524958309155133228">Pitajte <ph name="ENGINE"/></translation>
 <translation id="7525067979554623046">Napravi</translation>
 <translation id="7525804896095537619">Polje za naziv ne može da bude prazno</translation>
 <translation id="7526934274050461096">Veza sa ovim sajtom nije privatna</translation>
 <translation id="7529884293139707752">Školovanje kod kuće</translation>
 <translation id="7531464389616946220">Skeniraj karticu</translation>
+<translation id="7534473948927234329"><ph name="STARTER_PACK_BOOKMARKS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pritisnite Enter da biste pretražili obeleživače</translation>
 <translation id="7534987659046836932">Koverta C7</translation>
 <translation id="7535087603100972091">Vrednost</translation>
 <translation id="796823723482603597">Omogućava Brave</translation>
@@ -3904,6 +3946,7 @@ Dodatni detalji:
 <translation id="7761159795823346334">Želite li da dozvolite kameru?</translation>
 <translation id="7761701407923456692">Sertifikat servera se ne podudara sa URL adresom.</translation>
 <translation id="7764225426217299476">Dodajte adresu</translation>
+<translation id="7765158879357617694">Premesti</translation>
 <translation id="7766518757692125295">Obod</translation>
 <translation id="7767278989746220252">Terase, travnjaci i bašte</translation>
 <translation id="776749070095465053">Tkanina</translation>
@@ -3958,6 +4001,7 @@ Dodatni detalji:
 <translation id="7878562273885520351">Lozinka je možda kompromitovana</translation>
 <translation id="7881044256965445977">Potražite uređaje na lokalnoj mreži i povežite se sa njima</translation>
 <translation id="7882421473871500483">Braon</translation>
+<translation id="7885670691503039914">Dobijaćete upozorenja imejlom ako se cena snizi na bilo kom sajtu. Ova stranica će biti sačuvana u folderu obeleživača <ph name="LAST_BOOKMARKS_FOLDER"/>.</translation>
 <translation id="7886897188117641322">Odaberite široke kategorije tema koje mogu da se koriste za personalizaciju oglasa</translation>
 <translation id="7887683347370398519">Proverite CVC i pokušajte ponovo</translation>
 <translation id="7887885240995164102">Pokreni režim slike u slici</translation>
@@ -3968,6 +4012,7 @@ Dodatni detalji:
 <translation id="7894280532028510793">Ako nema grešaka, <ph name="BEGIN_LINK"/>pokrenite dijagnostiku mreže<ph name="END_LINK"/>.</translation>
 <translation id="7901831439558593470">Koverta 18×23 cm</translation>
 <translation id="4362225295386962644">Kada koristite lozinku, Brave vas upozorava ako je ona objavljena onlajn. Dok to radi, vaše lozinke i korisnička imena su šifrovani, pa niko ne može da ih pročita, uključujući Brave.</translation>
+<translation id="7906177144646315659">{NUM_HOURS,plural, =1{Napravljeno je pre 1 sat}one{Napravljeno je pre {NUM_HOURS} sat}few{Napravljeno je pre {NUM_HOURS} sata}other{Napravljeno je pre {NUM_HOURS} sati}}</translation>
 <translation id="7908648876066812348">Virtuelna kartica se uključuje</translation>
 <translation id="3733419689526948053"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pritisnite Tab, pa Enter da biste otišli na stranicu Brave provere bezbednosti u podešavanjima</translation>
 <translation id="791107458486222637">Rezultat se ponavlja</translation>
@@ -4084,6 +4129,7 @@ Dodatni detalji:
 <translation id="8092254339843485299">6×8 in</translation>
 <translation id="8092774999298748321">Tamnoljubičasta</translation>
 <translation id="8094917007353911263">Mreža koju koristite će možda zahtevati da posetite <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
+<translation id="809543534949702122">Istorija pretrage</translation>
 <translation id="8098855213644561659">A3 Extra</translation>
 <translation id="809898108652741896">A6</translation>
 <translation id="8103161714697287722">Način plaćanja</translation>
@@ -4102,6 +4148,7 @@ Dodatni detalji:
 <translation id="8134058435519644366">Zapošljavanje i izbor kadrova</translation>
 <translation id="8135546115396015134">levi taster</translation>
 <translation id="8137456439814903304">Proizvodnja i distribucija energije</translation>
+<translation id="814432316791813431">{NUM_MONTHS,plural, =1{Napravljeno je pre 1 mesec}one{Napravljeno je pre {NUM_MONTHS} mesec}few{Napravljeno je pre {NUM_MONTHS} meseca}other{Napravljeno je pre {NUM_MONTHS} meseci}}</translation>
 <translation id="8148608574971654810">PDF verzija:</translation>
 <translation id="8149426793427495338">Računar je prešao u režim spavanja.</translation>
 <translation id="8150722005171944719">Datoteka na adresi <ph name="URL"/> ne može da se čita. Možda je uklonjena ili premeštena ili dozvole za datoteke sprečavaju pristup.</translation>
@@ -4128,6 +4175,7 @@ Dodatni detalji:
 <translation id="8194412401381329820">Ne možete da koristite ovu stranicu sa naloga kojim se upravlja na ovom uređaju kojim se ne upravlja. Svi nalozi kojima se upravlja će biti zaključani ako koristite ovu stranicu, osim naloga kojima upravlja isti entitet kao ovaj uređaj (povezani nalozi).</translation>
 <translation id="8194797478851900357">&amp;Opozovi premeštanje</translation>
 <translation id="8194956568907463262">Pucačke igre</translation>
+<translation id="8198379961710069585">Dugme Istorija pretrage, aktivirajte ga da biste pretražili istoriju</translation>
 <translation id="8199437620497683918">Optički disk (sjajan)</translation>
 <translation id="8199730148066603000">Pregled URL-a koji nije HTTPS nije dozvoljen.</translation>
 <translation id="8200772114523450471">Nastavi</translation>
@@ -4232,6 +4280,7 @@ Dodatni detalji:
 <translation id="8364627913115013041">Nije podešeno.</translation>
 <translation id="8366057325711477500">Vesti iz sveta</translation>
 <translation id="836616551641291797">Saznajte više o tome kako se upravlja pregledačem</translation>
+<translation id="8367705492654390392">Pitajte bilo šta</translation>
 <translation id="8368001212524806591">Prati cenu</translation>
 <translation id="8368027906805972958">Nepoznat ili nepodržan uređaj (<ph name="DEVICE_ID"/>)</translation>
 <translation id="8368476060205742148">Google Play usluge</translation>
@@ -4542,6 +4591,7 @@ Dodatni detalji:
 <translation id="8926389886865778422">Ne pitaj me ponovo</translation>
 <translation id="8932102934695377596">Sat vam kasni</translation>
 <translation id="893332455753468063">Dodajte ime</translation>
+<translation id="8938242527120341116">Filteri sadržaja uređaja su blokirali <ph name="BLOCKED_URL"/></translation>
 <translation id="8942355029279167844">Administrator je dozvolio da <ph name="APP_NAME"/> prikuplja dijagnostičke podatke radi poboljšanja doživljaja proizvoda. Više informacija potražite na <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/>.</translation>
 <translation id="8943282376843390568">Jarkozelena</translation>
 <translation id="8949410982325929394">Ton</translation>
@@ -4577,6 +4627,7 @@ Dodatni detalji:
 <translation id="9004367719664099443">VR sesija je u toku</translation>
 <translation id="9005998258318286617">Učitavanje PDF dokumenta nije uspelo.</translation>
 <translation id="9008201768610948239">Ignoriši</translation>
+<translation id="9011281744469077577">{COUNT,plural, =0{Nijedan}=1{Sa 1 sajta}one{Sa # sajta}few{Sa # sajta}other{Sa # sajtova}}</translation>
 <translation id="9012194306129927220">Sada možete da plaćate na rate uz Affirm ili Zip</translation>
 <translation id="3490877224436695295">Sajtovi koje posećujete mogu da zatraže od Brave-a informacije koje im pomažu da izmere učinak oglasa. Brave omogućava sajtovima da prikupljaju ograničene tipove podataka, na primer, da li ste obavili kupovinu posle posete sajtu.</translation>
 <translation id="9018120810758822233">Unesite bezbednosni kôd za: <ph name="CREDIT_CARD"/></translation>
@@ -4599,6 +4650,7 @@ Dodatni detalji:
 <translation id="9042617223719777575">Veliki kapacitet</translation>
 <translation id="9042827002460091668">Proverite internet vezu i probajte ponovo</translation>
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> – <ph name="RESULT_PRODUCT_SOURCE"/></translation>
+<translation id="9046578823518542618"><ph name="URL"/> želi da traži uređaje na lokalnoj mreži i povezuje se sa njima</translation>
 <translation id="9046864189129893978">Mikrofoni (<ph name="MICS_COUNT"/>)</translation>
 <translation id="9048035366624198823">Ove radnje zahtevaju da smernice <ph name="POLICY_NAME"/> budu podešene na <ph name="POLICY_VALUE"/>: <ph name="ACTION_LIST"/>.</translation>
 <translation id="9048662076076074925">24×36 in</translation>
@@ -4708,7 +4760,6 @@ Dodatni detalji:
 <translation id="9207861905230894330">Dodavanje članka nije uspelo.</translation>
 <translation id="9209339767782560829">Došlo je do problema pri korišćenju sertifikata za prijavljivanje.</translation>
 <translation id="9210825002219699214">Vazdušni saobraćaj</translation>
-<translation id="9211461151375991073">Unesite @ da biste pretražili <ph name="FEATURED_SEARCH_LIST"/></translation>
 <translation id="9213433120051936369">Prilagodite izgled</translation>
 <translation id="2206050430829841793">Aplikacija onemogućava Brave-u da se bezbedno poveže sa ovim sajtom</translation>
 <translation id="92178312226016010">Pratite ovaj proizvod.</translation>
@@ -4716,6 +4767,8 @@ Dodatni detalji:
 <translation id="9219103736887031265">Slike</translation>
 <translation id="142389341645668510">Prilagodite Brave</translation>
 <translation id="9222403027701923763">Osnovno i srednje obrazovanje (K-12)</translation>
+<translation id="9222463428840654067">Broj kartice je nevažeći</translation>
+<translation id="922849469395748170">Kartice lojalnosti</translation>
 <translation id="93020190163435405">Stažiranje</translation>
 <translation id="931598121743515856">Iznos kupovine mora da bude iznad <ph name="CHECKOUT_AMOUNT_MINIMUM"/></translation>
 <translation id="933712198907837967">Diners Club</translation>
@@ -4746,6 +4799,7 @@ Dodatni detalji:
 <translation id="963837307749850257">Svi korisnici</translation>
 <translation id="964050462028070434">Upravljajte lozinkama i pristupnim kodovima…</translation>
 <translation id="969892804517981540">Zvanična verzija</translation>
+<translation id="97054401902912338">Saznajte više o filterima sadržaja</translation>
 <translation id="973788791897303708">Ova grupa kartica je puna</translation>
 <translation id="975560348586398090">{COUNT,plural, =0{None}=1{1 stavka}one{# stavka}few{# stavke}other{# stavki}}</translation>
 <translation id="976522784004777030">5×8 in</translation>

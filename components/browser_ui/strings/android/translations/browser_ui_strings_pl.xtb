@@ -25,6 +25,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="129382876167171263">W tym miejscu pojawiają się pliki zapisane przez witryny</translation>
 <translation id="131112695174432497">Dane, które mają wpływ na personalizację reklam, są usuwane</translation>
 <translation id="1317194122196776028">Zapomnij tę stronę</translation>
+<translation id="1323433172918577554">Pokaż więcej</translation>
 <translation id="1333965224356556482">Nie zezwalaj witrynom na wyświetlanie lokalizacji</translation>
 <translation id="1343356790768851700">Witryna określa Twoje zainteresowania, a potem sugeruje reklamy innym witrynom</translation>
 <translation id="1369915414381695676">Strona <ph name="SITE_NAME"/> została dodana</translation>
@@ -35,6 +36,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="1409338233051621926">Kliknij Aplikacje, a potem Aplikacje domyślne</translation>
 <translation id="1415402041810619267">URL obcięty</translation>
 <translation id="1741136041592162279">Pozwól Brave udostępniać ostatnie karty swojemu urządzeniu, aby były one widoczne na nim na liście aplikacji i w wynikach wyszukiwania. Tę funkcję możesz w każdej chwili włączyć lub wyłączyć w ustawieniach Brave.</translation>
+<translation id="1432650420699700107">Strony mogą prosić o zgodę na połączenie z dowolnym urządzeniem w sieci lokalnej</translation>
 <translation id="1448064542941920355">Zmniejsz powiększenie</translation>
 <translation id="1464044141348608623">Nie zezwalaj witrynom na sprawdzanie, kiedy używasz urządzenia</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> witryna}few{<ph name="SITE_COUNT"/> witryny}many{<ph name="SITE_COUNT"/> witryn}other{<ph name="SITE_COUNT"/> witryny}}</translation>
@@ -96,6 +98,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="2182457891543959921">Pytaj, zanim zezwolisz stronom na tworzenie mapy 3D Twojego otoczenia lub śledzenie pozycji kamery (zalecane)</translation>
 <translation id="2185965788978862351">Spowoduje to usunięcie <ph name="DATASIZE"/> danych i plików cookie zapisanych przez strony lub aplikacje na ekranie głównym.</translation>
 <translation id="2194856509914051091">Istotne kwestie</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{Wczoraj}few{<ph name="NUM_DAYS_MANY"/> dni temu}many{<ph name="NUM_DAYS_MANY"/> dni temu}other{<ph name="NUM_DAYS_MANY"/> dnia temu}}</translation>
 <translation id="2215727959747642672">Edytowanie pliku</translation>
 <translation id="2218389616572918761">Strony mogą prosić o dostęp do mikrofonu</translation>
 <translation id="2228071138934252756">Aby zezwolić aplikacji <ph name="APP_NAME"/> na dostęp do aparatu, musisz go też włączyć w <ph name="BEGIN_LINK"/>Ustawieniach Androida<ph name="END_LINK"/>.</translation>
@@ -125,6 +128,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="2490684707762498678">Zarządzane przez <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Pomoc i opinie</translation>
 <translation id="2501278716633472235">Wróć</translation>
+<translation id="2533138527374486328">Gdy ta opcja jest włączona, strony mogą prosić o zgodę na połączenie z dowolnym urządzeniem w Twojej sieci lokalnej. Gdy jest wyłączona, strony nie mogą łączyć się z urządzeniami w sieci lokalnej.</translation>
 <translation id="2546283357679194313">Pliki cookie i dane witryn</translation>
 <translation id="2570922361219980984">Dostęp do lokalizacji jest wyłączony też na tym urządzeniu. Włącz go w <ph name="BEGIN_LINK"/>Ustawieniach Androida<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Rozwinięty – kliknij, by zwinąć.</translation>
@@ -181,6 +185,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="3167868116600277716">Karty Discover</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> zapisanych danych</translation>
 <translation id="321187648315454507">Aby zezwolić aplikacji <ph name="APP_NAME"/> na wysyłanie do Ciebie powiadomień, musisz je też włączyć w <ph name="BEGIN_LINK"/>ustawieniach Androida<ph name="END_LINK"/>.</translation>
+<translation id="3223425961342298674">Lokalizacja nie jest dozwolona</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
 <translation id="3232293466644486101">Usuń dane przeglądania…</translation>
 <translation id="3242646949159196181">Gdy ta opcja jest włączona, strony internetowe mogą odtwarzać dźwięk. Gdy jest wyłączona, nie mogą tego robić.</translation>
@@ -247,12 +252,14 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="3955321697524543127">Nie zezwalaj witrynom na łączenie się z urządzeniami USB</translation>
 <translation id="3965467402665811906">Strony mogą prosić o zgodę na używanie zapisanych o Tobie informacji</translation>
 <translation id="3967822245660637423">Pobieranie zakończone</translation>
+<translation id="3969869202926863008">Dostęp przez sieć lokalną</translation>
 <translation id="3981465354637804599">Strony zwykle wyświetlają reklamy, aby mogły dostarczać treści i usługi bezpłatnie. Istnieją jednak strony, które wyświetlają reklamy uciążliwe lub wprowadzające w błąd.</translation>
 <translation id="3987993985790029246">Skopiuj link</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
 <translation id="3992308058851451478">Witryna <ph name="SITE"/> może używać Twoich danych podczas przeglądania przez Ciebie stron internetowych</translation>
 <translation id="3992684624889376114">Informacje o tej stronie</translation>
 <translation id="4002066346123236978">Tytuł</translation>
+<translation id="4031179711345676612">Zezwolono na dostęp do mikrofonu</translation>
 <translation id="4046123991198612571">Następny utwór</translation>
 <translation id="4077310749977440510">Strony zwykle odczytują zawartość schowka na przykład w celu zachowania formatowania kopiowanego tekstu</translation>
 <translation id="4149890623864272035">Czy na pewno chcesz usunąć wszystkie dane lokalne, w tym pliki cookie, i zresetować wszystkie uprawnienia tej witryny?</translation>
@@ -262,8 +269,10 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="4169549551965910670">Połączona z urządzeniem USB</translation>
 <translation id="4194328954146351878">Pytaj, zanim zezwolisz stronom na odczytywanie i zmienianie informacji na urządzeniach z funkcją NFC (zalecane)</translation>
 <translation id="4200726100658658164">Otwórz ustawienia lokalizacji</translation>
+<translation id="4203769790323223880">Kamera nie jest dozwolona</translation>
 <translation id="421742575134139848">Strony mogą odtwarzać dźwięk podczas słuchania muzyki, oglądania filmów i korzystania z innych multimediów</translation>
 <translation id="4217710972110098902">Połączono z portem szeregowym</translation>
+<translation id="4223404254440398437">Mikrofon nie jest dozwolony</translation>
 <translation id="4226663524361240545">Powiadomienia będą sygnalizowane wibracjami</translation>
 <translation id="4259722352634471385">Adres zablokowany: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Gdy zamkniesz witrynę, może ona kontynuować synchronizację, aby dokończyć zadania takie jak przesłanie zdjęć czy wysłanie wiadomości czatu</translation>
@@ -294,6 +303,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="4635969503923889910">Nie zezwalaj stronom na używanie urządzeń NFC</translation>
 <translation id="4644713492825682049">Usuń i zresetuj</translation>
 <translation id="4645575059429386691">Zarządzany przez Twojego rodzica</translation>
+<translation id="4663373278480897665">Zezwolono na dostęp do kamery</translation>
 <translation id="4670064810192446073">Rzeczywistość wirtualna</translation>
 <translation id="5652778654712411580">Kliknij Przeglądarka, a potem Brave</translation>
 <translation id="4676059169848868271">Aby umożliwić <ph name="APP_NAME"/> śledzenie rąk, włącz tę opcję w <ph name="BEGIN_LINK"/>ustawieniach systemu<ph name="END_LINK"/>.</translation>
@@ -315,6 +325,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="4972737347717125191">Strony mogą prosić o zgodę na używanie urządzeń i danych rzeczywistości wirtualnej</translation>
 <translation id="497421865427891073">Dalej</translation>
 <translation id="4976702386844183910">Ostatnia wizyta <ph name="DATE"/></translation>
+<translation id="4978178243417029856">Więcej informacji o kanale Discover</translation>
 <translation id="4994033804516042629">Nie znaleziono kontaktów</translation>
 <translation id="4996978546172906250">Udostępnij przez</translation>
 <translation id="5001526427543320409">Pliki cookie innych firm</translation>
@@ -337,6 +348,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="5216942107514965959">Ostatnio używana dzisiaj</translation>
 <translation id="5225463052809312700">Włącz kamerę</translation>
 <translation id="5234764350956374838">Zamknij</translation>
+<translation id="5239623327352565343">Lokalizacja jest dozwolona</translation>
 <translation id="5246825184569358663">Spowoduje to usunięcie wszystkich danych lokalnych (w tym plików cookie) oraz zresetowanie wszystkich uprawnień witryny <ph name="DOMAIN"/> i jej wszystkich podstron</translation>
 <translation id="5264323282659631142">Usuń: „<ph name="CHIP_LABEL"/>”</translation>
 <translation id="528192093759286357">Przeciągnij od góry i kliknij przycisk Wstecz, by wyjść z trybu pełnoekranowego.</translation>
@@ -378,7 +390,9 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="571222594670061844">Witryny mogą wyświetlać prośby o zalogowanie się pochodzące od usług tożsamości</translation>
 <translation id="5740126560802162366">Witryny mogą zapisywać dane na Twoim urządzeniu</translation>
 <translation id="5743425052258407233">Zyskaj dostęp do swojej historii na wszystkich urządzeniach, aby móc łatwo wznawiać przeglądanie od ostatniego miejsca</translation>
+<translation id="5749158352074143502">Kontynuuj na tej karcie</translation>
 <translation id="5750869797196646528">Śledzenie rąk</translation>
+<translation id="5753570386948603678">Usuń z historii</translation>
 <translation id="5771720122942595109">Zablokowane: <ph name="PERMISSION_1"/></translation>
 <translation id="5804241973901381774">Uprawnienia</translation>
 <translation id="5822675474983796325">Plansza dolna Dostosuj stronę nowej karty otwarta na całą wysokość</translation>
@@ -404,6 +418,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="5968921426641056619">Podaj adres internetowy</translation>
 <translation id="5975083100439434680">Pomniejsz</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> – <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">Włącz karty Discover</translation>
 <translation id="6015775454662021376">Zarządzaj dostępem tej strony do Twojego urządzenia</translation>
 <translation id="6040143037577758943">Zamknij</translation>
 <translation id="6042308850641462728">Więcej</translation>
@@ -439,11 +454,13 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="6527303717912515753">Udostępnij</translation>
 <translation id="6530703012083415527">Gdy ta opcja jest włączona, strony internetowe mogą używać wyskakujących okienek i przekierowań. Gdy jest wyłączona, nie mają tej możliwości.</translation>
 <translation id="6540488083026747005">W przypadku tej witryny zezwalasz na pliki cookie innych firm</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> tydzień temu}few{<ph name="NUM_WEEKS_MANY"/> tygodnie temu}many{<ph name="NUM_WEEKS_MANY"/> tygodni temu}other{<ph name="NUM_WEEKS_MANY"/> tygodnia temu}}</translation>
 <translation id="6545864417968258051">Skanowanie Bluetooth</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{Zablokowane: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}few{Zablokowane: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}many{Zablokowane: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}other{Zablokowane: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}}</translation>
 <translation id="6554732001434021288">Ostatnio używano <ph name="NUM_DAYS"/> dni temu</translation>
 <translation id="656065428026159829">Pokaż więcej</translation>
 <translation id="6561560012278703671">Pokazuj wiadomości dyskretnie (blokuje powiadomienia, by Ci nie przeszkadzały)</translation>
+<translation id="6565144332292237355">Witryny mogą używać tej funkcji do wyszukiwania urządzeń w Twojej sieci lokalnej i łączenia się z nimi</translation>
 <translation id="6593061639179217415">Wersja na komputer</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Pliki cookie dozwolone w przypadku <ph name="RWS_MEMBERS_COUNT"/> witryny <ph name="RWS_OWNER"/>}few{Pliki cookie dozwolone w przypadku <ph name="RWS_MEMBERS_COUNT"/> witryn <ph name="RWS_OWNER"/>}many{Pliki cookie dozwolone w przypadku <ph name="RWS_MEMBERS_COUNT"/> witryn <ph name="RWS_OWNER"/>}other{Pliki cookie dozwolone w przypadku <ph name="RWS_MEMBERS_COUNT"/> witryny <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -477,6 +494,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="6992289844737586249">Pytaj, zanim zezwolisz stronom na korzystanie z mikrofonu (zalecane)</translation>
 <translation id="7000754031042624318">Wyłączone w ustawieniach Androida</translation>
 <translation id="8683151724374457021">Witryna określa Twoje zainteresowania, a potem sugeruje reklamy innym witrynom. Witryna wykorzystuje też gromadzone przez Brave informacje o interesujących Cię tematach, aby wyświetlać trafniejsze reklamy.</translation>
+<translation id="7044081119134178347">Przyznano jednorazowy dostęp do aparatu</translation>
 <translation id="7053983685419859001">Blokuj</translation>
 <translation id="7055552182600664515">W przypadku odtwarzania treści chronionych prawem autorskim może być wymagane, aby strony korzystały z usługi ochrony treści. <ph name="BEGIN_LINK"/>Więcej informacji<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Wybrano 1}few{Wybrano #}many{Wybrano #}other{Wybrano #}}</translation>
@@ -488,8 +506,10 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="7188508872042490670">Dane witryn na urządzeniu</translation>
 <translation id="7201549776650881587">Spowoduje to usunięcie wszystkich danych i plików cookie zapisanych przez strony internetowe w grupie <ph name="ORIGIN"/> lub jej aplikację na ekranie głównym</translation>
 <translation id="7203150201908454328">Rozwinięty</translation>
+<translation id="7213166370492037743">Nie zezwalaj witrynom na łączenie się z żadnym urządzeniem w sieci lokalnej</translation>
 <translation id="7219254577985949841">Usunąć dane witryny?</translation>
 <translation id="723171743924126238">Wybierz zdjęcia</translation>
+<translation id="7243246278722455312">Plansza dolna Dostosuj stronę nowej karty</translation>
 <translation id="7243308994586599757">Opcje dostępne u dołu ekranu</translation>
 <translation id="7250468141469952378">Wybrano <ph name="ITEM_COUNT"/></translation>
 <translation id="7260727271532453612">Dozwolone: <ph name="PERMISSION_1"/> i <ph name="PERMISSION_2"/></translation>
@@ -512,7 +532,9 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="7554752735887601236">Strona używa mikrofonu</translation>
 <translation id="7561196759112975576">Zawsze</translation>
 <translation id="7573594921350120855">Strony zwykle używają kamery wideo na potrzeby komunikacji, na przykład czatu wideo</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> miesiąc temu}few{<ph name="NUM_MONTHS_MANY"/> miesiące temu}many{<ph name="NUM_MONTHS_MANY"/> miesięcy temu}other{<ph name="NUM_MONTHS_MANY"/> miesiąca temu}}</translation>
 <translation id="757524316907819857">Blokuj odtwarzanie treści chronionej na stronach</translation>
+<translation id="7586676035079382730">Powiadomienia nie są dozwolone</translation>
 <translation id="7594634374516752650">Połączono z urządzeniem Bluetooth</translation>
 <translation id="7617547684249261169">Możesz w całości lub częściowo usunąć m.in. historię, pliki cookie i dane witryn</translation>
 <translation id="7649070708921625228">Pomoc</translation>
@@ -525,15 +547,16 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="7759147511335618829">Urządzenia MIDI: sterowanie/przeprogramowywanie</translation>
 <translation id="7781829728241885113">Wczoraj</translation>
 <translation id="7791543448312431591">Dodaj</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{Kontynuuj na tej karcie}few{Kontynuuj na tych kartach}many{Kontynuuj na tych kartach}other{Kontynuuj na tych kartach}}</translation>
 <translation id="780301667611848630">Nie, dziękuję</translation>
 <translation id="7804248752222191302">Strona używa kamery</translation>
 <translation id="6720480757902085971">Udostępniany przez Brave</translation>
+<translation id="7815680994978050279">Zablokowano niebezpieczne pobieranie</translation>
 <translation id="7835852323729233924">Odtwarzanie multimediów</translation>
 <translation id="783819812427904514">Wyłącz wyciszenie filmu</translation>
 <translation id="7846076177841592234">Anuluj wybór</translation>
 <translation id="2353409725922994861">Brave ogranicza większości witryn możliwość używania plików cookie innych firm. Takie pliki są jednak dozwolone w tej witrynie, ponieważ są w niej niezbędne do świadczenia podstawowych usług.\n\nAby <ph name="BEGIN_LINK"/>zarządzać dostępem do plików cookie innych firm<ph name="END_LINK"/>, otwórz ustawienia.</translation>
 <translation id="7882806643839505685">Zezwalaj na dźwięk na określonej stronie.</translation>
+<translation id="7891547341794213004">Ukryj kartę Kontynuuj na tej karcie</translation>
 <translation id="789722939441020330">Nie zezwalaj witrynom na automatyczne pobieranie wielu plików</translation>
 <translation id="7940722705963108451">Przypomnij mi</translation>
 <translation id="7948081750384205628">Dowiedz się więcej o ustawieniu <ph name="SETTING_TITLE"/></translation>
@@ -541,7 +564,6 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="7986741934819883144">Wybierz kontakt</translation>
 <translation id="7990211076305263060">Gdy ta opcja jest włączona, strony internetowe mogą prosić o dostęp do mikrofonu. Gdy jest wyłączona, strony nie mogą go używać.</translation>
 <translation id="8007176423574883786">Wyłączona na tym urządzeniu</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{Ukryj kartę Kontynuuj na tej karcie}few{Ukryj kartę Kontynuuj na tych kartach}many{Ukryj kartę Kontynuuj na tych kartach}other{Ukryj kartę Kontynuuj na tych kartach}}</translation>
 <translation id="802154636333426148">Nie udało się pobrać</translation>
 <translation id="8042586301629853791">Sortuj według:</translation>
 <translation id="8051193500142930381">Nie będą działać funkcje, które potrzebują kamery</translation>
@@ -576,6 +598,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="8380167699614421159">Na tej stronie wyświetlają się uciążliwe lub wprowadzające w błąd reklamy</translation>
 <translation id="8394832520002899662">Kliknij, by wrócić na tę stronę</translation>
 <translation id="8409345997656833551">Otrzymuj powiadomienia, gdy artykuł można wyświetlić w widoku uproszczonym</translation>
+<translation id="8416874502399604126">Przyznano jednorazowy dostęp do mikrofonu</translation>
 <translation id="8423565414844018592">Skalowanie tekstu ustawione na <ph name="TEXT_SCALING"/></translation>
 <translation id="8428213095426709021">Ustawienia</translation>
 <translation id="8441146129660941386">Przewiń do tyłu</translation>
@@ -643,12 +666,14 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="9106233582039520022">Usunąć pliki cookie?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}few{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}many{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}}</translation>
 <translation id="913657688200966289">Przyznaj aplikacji <ph name="APP_NAME"/> uprawnienia w <ph name="BEGIN_LINK"/>ustawieniach Androida<ph name="END_LINK"/>.</translation>
+<translation id="9138037198177304356">Powiadomienia są dozwolone</translation>
 <translation id="9138217887606523162">Obecne powiększenie: <ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="7359422048569205930">Pozwól Brave wyświetlać ostatnie karty na liście aplikacji i w wynikach wyszukiwania na urządzeniu. Tę funkcję możesz w każdej chwili wyłączyć w ustawieniach Brave.</translation>
 <translation id="9162462602695099906">Ten pakiet jest niebezpieczny</translation>
 <translation id="9182556968660520230">Nie zezwalaj witrynom na odtwarzanie chronionych treści</translation>
 <translation id="947156494302904893">Witryny, które odwiedzasz, mogą sprawdzać, czy jesteś prawdziwą osobą, a nie botem</translation>
 <translation id="959682366969460160">Większy porządek</translation>
+<translation id="961930410699694996">Przyznano jednorazowy dostęp do lokalizacji</translation>
 <translation id="967624055006145463">Zapisane dane</translation>
 <translation id="969975166333045662">Nie zezwalaj witrynie na korzystanie z optymalizatora V8.</translation>
 <translation id="3110967157686007724">Karta prywatna</translation>

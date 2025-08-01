@@ -875,7 +875,7 @@
 <translation id="1939235910515558387">Bắt đầu với Ví Brave trong một vài phút.</translation>
 <translation id="5844138175312846408">Đã có ví?</translation>
 <translation id="772643556080081594">Tôi cần một chiếc ví chỉ xem</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave và logo Brave là các thương hiệu đã đăng ký của Brave Software, Inc. Các tên sản phẩm và logo khác có thể là thương hiệu của các công ty tương ứng. Mọi quyền được bảo lưu.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave và logo Brave là các thương hiệu đã đăng ký của Brave Software, Inc. Các tên sản phẩm và logo khác có thể là thương hiệu của các công ty tương ứng. Mọi quyền được bảo lưu.</translation>
 <translation id="7501957181231305652">hoặc</translation>
 <translation id="375882617301124395">Sao lưu ví tiền mã hóa của bạn</translation>
 <translation id="5024543173656851695">Tôi hiểu rằng nếu tôi mất các từ khôi phục, tôi sẽ không thể truy cập vào ví tiền điện tử của mình.</translation>
@@ -1119,10 +1119,6 @@
 <translation id="4324239559624557455">Trong 24 giờ</translation>
 <translation id="9139452553033760558">Trong 1 tuần</translation>
 <translation id="1658834457013045127">Mãi mãi</translation>
-<translation id="2770851145415891830">Đã phát hiện ví tiền mã hóa hiện hành</translation>
-<translation id="2237759620789871865">Nếu bạn muốn bỏ qua việc nhập và giữ lại trải nghiệm Ví tiền mã hóa cũ, chỉ cần chuyển đến Trình duyệt Brave <ph name="LINK_BEFORE"/>Cài đặt<ph name="LINK_AFTER"/> và thay đổi mặc định về Ví tiền mã hóa. Bạn cũng có thể nhập, dùng thử Ví Brave mới và thay đổi lại bất cứ lúc nào.</translation>
-<translation id="5590175005414413980">Nhập mật khẩu ví tiền mã hóa hiện tại của bạn để nhập vào Ví Brave. Tận hưởng một phương thức nhanh hơn và bảo mật hơn để quản lý tài sản tiền mã hóa và tương tác với các ứng dụng Web3 DApps.</translation>
-<translation id="880619123281809987">Nhập mật khẩu ví tiền điện tử</translation>
 <translation id="6344138931392227467">Đã kết nối <ph name="DEVICE_NAME"/></translation>
 <translation id="7051244143160304048">Đã ngắt kết nối <ph name="DEVICE_NAME"/></translation>
 <translation id="5317781812114905957">Hướng dẫn</translation>
@@ -1512,7 +1508,6 @@
 <translation id="396152018598329740">Cách sử dụng ví tiền điện tử?</translation>
 <translation id="7512061585041489067">Ví tiền điện tử tốt nhất là gì?</translation>
 <translation id="1342755158522323177">Trình duyệt tiền điện tử là gì?</translation>
-<translation id="4702762916247565868">Ví tiền điện tử 101</translation>
 <translation id="4674552515763857735">Cụm từ khôi phục là gì?</translation>
 <translation id="7328255859839881981">DApps là gì?</translation>
 <translation id="3852489285890032403">Web 3 là gì?</translation>
@@ -1530,7 +1525,6 @@
 <translation id="7877416315564177070">Hãy kiểm tra cụm từ khôi phục của bạn và thử lại.</translation>
 <translation id="6503538941917874992">Nhập bằng cách sử dụng cụm từ khôi phục của bạn</translation>
 <translation id="782167880151571109">Đã phát hiện thấy ví MetaMask!</translation>
-<translation id="3619071361843652814">Đã phát hiện thấy ví Legacy</translation>
 <translation id="4634124774493850572">Sử dụng mật khẩu</translation>
 <translation id="7697478310235189459">Từ <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Nhập cụm từ khôi phục MetaMask 12-24 từ của bạn.</translation>
@@ -1543,7 +1537,6 @@
 <translation id="3604445540387095708">Tôi đã đọc và đồng ý với <ph name="LINK_BEFORE"/>Điều khoản sử dụng<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Mua tiền điện tử</translation>
 <translation id="3887541341068007345">Đang kiểm tra các tiện ích mở rộng ví...</translation>
-<translation id="3567994771568272606">Nhập khẩu từ ví tiền điện tử Brave cũ</translation>
 <translation id="8407091560429310499">Chọn tài sản</translation>
 <translation id="756590380936155533">Để hoàn tất <ph name="ASSET_TICKER"/> giao dịch mua của bạn, hãy chọn một trong các đối tác của chúng tôi</translation>
 <translation id="7880860489474966219">Sau khi hoàn tất, tiền của bạn sẽ được chuyển vào Ví Brave của bạn</translation>
@@ -1837,7 +1830,7 @@
 <translation id="7758665172236842395">Theo dõi các nguồn yêu thích của bạn, trong một nguồn cấp dữ liệu duy nhất. Chỉ cần mở một tab trong Brave, cuộn xuống và… đây rồi!</translation>
 <translation id="2376542729617592331">Brave Tin tức được hỗ trợ quảng cáo với các quảng cáo riêng tư, ẩn danh. <ph name="LINK_START"/>Tìm hiểu thêm.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Bật Tin tức Brave</translation>
-<translation id="5149018766422637336">Tin tức và RSS</translation>
+<translation id="1772301834467143364">Tin tức Brave</translation>
 <translation id="6265592479622441247">Quay lại <ph name="BEGIN_BOLD"/>Bảng điều khiển<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Khám phá</translation>
 <translation id="8981973962043893066">Tìm kiếm trang web, chủ đề hoặc nguồn cấp dữ liệu RSS</translation>
@@ -2134,7 +2127,7 @@
 <translation id="6187065185557150870">Trò chuyện</translation>
 <translation id="4685048769603134644">Mở trang đầy đủ</translation>
 <translation id="2961040541145689181">Trò chuyện mới</translation>
-<translation id="7557539689487606886">Lên Premium</translation>
+<translation id="7557539689487606886">Nâng cấp lên Premium</translation>
 <translation id="1691256669639196606">Quản lý đăng ký</translation>
 <translation id="3840096463915153852">Lịch sử trò chuyện</translation>
 <translation id="2304783958703511257">Cài đặt nâng cao</translation>
@@ -2202,16 +2195,12 @@
 <translation id="8712637175834984815">Bỏ qua</translation>
 <translation id="1093419424466417703">Trang này quá dài đối với Leo. Một số bối cảnh có thể bị thiếu trong cuộc trò chuyện. Leo đã có thể đọc <ph name="PERCENTAGE"/> nội dung của trang.</translation>
 <translation id="4592293425457329338">Cuộc trò chuyện có thể thiếu một số ngữ cảnh. Leo có thể giữ lại <ph name="PERCENTAGE"/> nội dung liên quan của cuộc trò chuyện.</translation>
-<translation id="2186990448773134544">Nội dung trang đã được tinh chỉnh bằng cách trích xuất thông tin có liên quan nhất vì nó quá dài đối với Leo.</translation>
-<translation id="5140068729857132378">Tìm các phần có liên quan của trang web...</translation>
 <translation id="4370698775470316661">Cuộc trò chuyện này quá dài và không thể tiếp tục. Có thể có sẵn các mô hình khác mà Leo có khả năng duy trì độ chính xác cho các cuộc trò chuyện dài hơn.</translation>
 <translation id="5719170755629028558">Đang cải thiện câu trả lời của bạn với Tìm kiếm Brave…</translation>
 <translation id="5794962229997281366">Câu trả lời được cải thiện đang tìm kiếm <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> khác…</translation>
 <translation id="8103700533980268469">Đóng thông báo này</translation>
 <translation id="3417835166382867856">Tìm thẻ</translation>
-<translation id="9090243919347147717">Tệp đính kèm</translation>
-<translation id="4444978378117903684">Thêm thẻ trình duyệt của bạn để Leo có thể hiểu rõ hơn bối cảnh cuộc trò chuyện của bạn</translation>
 <translation id="4300920590112551536">Thẻ trình duyệt</translation>
 <translation id="2315654674554095762">Giờ đây Leo sẽ nhớ các cuộc trò chuyện để bạn có thể quay lại và tiếp tục. Các cuộc trò chuyện được lưu trữ mã hóa trên thiết bị của bạn và bạn có thể xóa bất kỳ lúc nào.</translation>
 <translation id="7821251979960635244">Lịch sử trò chuyện của bạn sẽ hiển thị ở đây khi bạn bắt đầu một cuộc trò chuyện.</translation>
@@ -2234,8 +2223,6 @@
 <translation id="5642775487085641191">Chỉ muốn trò chuyện?</translation>
 <translation id="8857222718794549840">Hỏi tôi bất cứ điều gì! Chúng ta có thể nói về bất kỳ chủ đề nào bạn muốn. Tôi luôn học hỏi và cải thiện để đưa ra câu trả lời tốt hơn.</translation>
 <translation id="9051226419897869406">Trò chuyện riêng với Brave Leo</translation>
-<translation id="637548538907281147">Định hình câu trả lời dựa trên nội dung của trang</translation>
-<translation id="8599503173207256429">Bật để hỏi về trang này. Nội dung của nó sẽ được gửi đến Brave Leo cùng với tin nhắn của bạn.</translation>
 <translation id="318819763888864209">Tất cả các đăng ký đều được tự động gia hạn nhưng có thể bị hủy bất kỳ lúc nào trước khi gia hạn.</translation>
 <translation id="5091223967610958">Chia sẻ tên máy chủ của trang bạn đang truy cập (<ph name="HOST_NAME"/>) để giúp chúng tôi cải thiện Leo.</translation>
 <translation id="8732450785281947197">Công cụ Leo AI</translation>
@@ -2387,6 +2374,7 @@
 <translation id="6821108091726602352">Hãy giúp chúng tôi sửa chữa trang web bằng cách tham gia Dự án Khám phá Web của Brave. Bằng cách chia sẻ các tín hiệu tìm kiếm hoàn toàn ẩn danh, bạn có thể giúp Brave phát triển chỉ mục tìm kiếm.</translation>
 <translation id="6764845498618413165">Tìm hiểu thêm.</translation>
 <translation id="7818938154803162778">Chắc chắn rồi, tôi sẽ giúp</translation>
+<translation id="7207456302801184289">Chào mứng tới Brave</translation>
 <translation id="3486480638399578250">Giữ riêng tư địa chỉ email cá nhân của bạn</translation>
 <translation id="7765422154906712751">Tạo các địa chỉ ngẫu nhiên, duy nhất chuyển tiếp đến email tài khoản Brave của bạn và có thể được xóa bất cứ lúc nào. Giữ cho địa chỉ email thực tế của bạn không bị tiết lộ hoặc sử dụng bởi các nhà quảng cáo.</translation>
 <translation id="5222676887888702881">Đăng xuất</translation>
@@ -2416,7 +2404,7 @@
 <translation id="3699624789011381381">Địa chỉ email</translation>
 <translation id="8124939971041602970">Email đăng nhập đang được gửi đến <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">Bấm vào liên kết đăng nhập an toàn trong email để truy cập tài khoản của bạn.</translation>
-<translation id="6549775668256477823">Không thấy email? Hãy kiểm tra thư mục thư rác của bạn hoặc <ph name="BEGIN_LINK"/>thử lại<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Không thấy email? Hãy kiểm tra thư mục thư rác của bạn hoặc thử lại.</translation>
 <translation id="958268166261124668">Brave VPN: Đã kết nối</translation>
 <translation id="6021669293402055982">Brave VPN: Ngắt kết nối</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>

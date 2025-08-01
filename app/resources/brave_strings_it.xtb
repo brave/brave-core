@@ -82,7 +82,6 @@
 <translation id="2126108037660393668">Il file scaricato non ha superato la verifica.</translation>
 <translation id="2137162749895930932">Chiudi la schermata di traduzione</translation>
 <translation id="5789330946301045610">Brave ha bloccato questo download perché il sito non utilizza una connessione sicura e il file potrebbe essere stato manomesso</translation>
-<translation id="5401976223298265794">Puoi aprire i preferiti, la modalità Lettura e altro ancora dal menu di Brave</translation>
 <translation id="142389341645668510">Personalizza Brave</translation>
 <translation id="2174917724755363426">Installazione non completata. Vuoi annullarla?</translation>
 <translation id="8745514854244955877">Brave - Accesso rete - <ph name="PAGE_TITLE"/></translation>
@@ -213,6 +212,7 @@
 <translation id="4256965182800026277">Le password, i metodi di pagamento e gli indirizzi che hai salvato nel tuo Account Brave verranno rimossi da questo dispositivo. Per usarli di nuovo in Brave, accedi nuovamente.</translation>
 <translation id="395904275706073188">Le pagine protette non possono essere lette. Prova con un'altra pagina.</translation>
 <translation id="4194619960643453552">Scopri in che modo Brave ti protegge</translation>
+<translation id="1486377520191913768">Quando digiti nella barra degli indirizzi o nella casella di ricerca, Brave invia ciò che digiti agli strumenti di ricerca, all'AI e all'agente della tua organizzazione per ricevere suggerimenti.</translation>
 <translation id="1311808042904310985">Informazioni su &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">Informazioni su Chrome OS</translation>
 <translation id="3703994572283698466">La realizzazione di Chrome OS è stata possibile grazie a un <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> aggiuntivo, noto come <ph name="BEGIN_LINK_LINUX_OSS"/>ambiente di sviluppo Linux<ph name="END_LINK_LINUX_OSS"/>.</translation>
@@ -238,6 +238,7 @@
 <translation id="4281844954008187215">Termini di servizio</translation>
 <translation id="7691786510374174420">Installazione non riuscita a causa di un errore imprecisato. Se Brave è in esecuzione, chiudilo e riprova.</translation>
 <translation id="4304713468139749426">Gestore delle password</translation>
+<translation id="4334241893986177674">Cerca questo screenshot</translation>
 <translation id="4334294535648607276">Download completato.</translation>
 <translation id="1068681683510904753"><ph name="MANAGER"/> richiede di leggere e accettare i seguenti Termini di servizio prima di utilizzare il dispositivo. Questi termini non ampliano, modificano né limitano i Termini di Chrome OS.</translation>
 <translation id="9183662282810237335">Vuoi uscire comunque da Brave?</translation>
@@ -256,7 +257,7 @@
 <translation id="8594994021633965927">Per questa estensione non sono state pubblicate Norme di tutela della privacy, ad esempio la modalità di raccolta e utilizzo dei dati. Brave consiglia di rimuoverla.</translation>
 <translation id="7084397798469173252">Ti diamo il benvenuto in Brave; nuova finestra del browser aperta</translation>
 <translation id="137732229629632648">Brave deve avere l'autorizzazione per mappare l'ambiente circostante e monitorare le tue mani</translation>
-<translation id="5917968343741192617">Brave comprende meglio i moduli e può compilarli automaticamente e più velocemente al tuo posto</translation>
+<translation id="5917968343741192617">Brave comprende meglio i moduli e può compilarli automaticamente per te in modo più rapido</translation>
 <translation id="5036046007335188949">Hai già eseguito l'accesso come <ph name="USER_EMAIL_ADDRESS"/> in un altro profilo Brave</translation>
 <translation id="1878185978731985193">Brave precarica le pagine per velocizzare la navigazione e la ricerca. <ph name="BEGIN_LINK"/>Scopri di più sul precaricamento delle pagine<ph name="END_LINK"/></translation>
 <translation id="4567424176335768812">Hai eseguito l'accesso come <ph name="USER_EMAIL_ADDRESS"/>. Ora puoi accedere ai tuoi Preferiti, alla tua cronologia e ad altre impostazioni su tutti i tuoi dispositivi su cui esegui l'accesso.</translation>
@@ -332,6 +333,7 @@
 <translation id="899523323751802352">Se dimentichi la passphrase o vuoi modificare questa impostazione, <ph name="SETTINGS_LINK"/> i dati di Brave nel tuo account.</translation>
 <translation id="82926023981336111">Personalizza e controlla Brave. Imposta Brave come browser predefinito.</translation>
 <translation id="5809516625706423866">Impossibile connettersi a internet. HTTP 401 Autorizzazione assente. Controlla la configurazione del proxy.</translation>
+<translation id="95980832839683236">Consente di accelerare i siti con il motore V8 di Brave, ma rende Brave leggermente meno resistente agli attacchi. Questa impostazione non è attiva.</translation>
 <translation id="1224606669200461217">Aggiorna Brave per usare e salvare i dati di Brave nel tuo Account Brave</translation>
 <translation id="5824893331272123205">Impossibile caricare questo riquadro. Riprova.</translation>
 <translation id="7207456302801184289">Benvenuto in Brave</translation>
@@ -348,7 +350,6 @@
 <translation id="3598551856834560515">Aggiorna Brave per avviare la sincronizzazione</translation>
 <translation id="5225261774087485064">È normale che i siti che visiti memorizzino argomenti di tuo interesse per personalizzare la tua esperienza. I siti possono anche memorizzare su Brave informazioni relative ai tuoi interessi.</translation>
 <translation id="6003112304606738118">Download in corso… Ore rimanenti: <ph name="HOURS"/></translation>
-<translation id="1663358621471164569">Puoi aprire i preferiti, la modalità Lettura e altro ancora dal menu di Brave in alto a destra</translation>
 <translation id="6040143037577758943">Chiudi</translation>
 <translation id="700488072601322385">Per proteggere i tuoi dati, consenti a Brave di rimuovere le autorizzazioni dai siti che non hai visitato di recente. Le notifiche non vengono interrotte.</translation>
 <translation id="9071554113102421877">&amp;Apri in Brave</translation>
@@ -422,6 +423,7 @@ Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory 
 <translation id="1505112054322049777">Per accedere alla personalizzazione e ad altre funzionalità, includi Brave in Attività web e app e nei servizi Brave collegati</translation>
 <translation id="6666624454809779082">Brave è già installato per tutti gli utenti sul computer.</translation>
 <translation id="9136637081636160997">Non hai visitato il sito di recente. Brave ha rimosso <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e altre <ph name="COUNT"/> autorizzazioni</translation>
+<translation id="4020203987234748583">Consente di accelerare i siti con il motore V8 di Brave, ma rende Brave leggermente meno resistente agli attacchi. Questa impostazione è attiva.</translation>
 <translation id="3136039682492230890">Brave consiglia di analizzare questo file perché potrebbe essere pericoloso.</translation>
 <translation id="1547295885616600893">La realizzazione di Chrome OS è stata possibile grazie a <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> aggiuntivi.</translation>
 <translation id="6831043979455480757">Traduci</translation>
@@ -515,7 +517,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8118331347066725040">Invia feedback per la ricerca con Lens</translation>
 <translation id="5334309298019785904">Impossibile sincronizzare i dati in Chrome OS perché la sincronizzazione non è disponibile per il tuo dominio.</translation>
 <translation id="813913629614996137">Inizializzazione...</translation>
-<translation id="7550680632761245819">Attiva la protezione aggiuntiva nel motore JavaScript e WebAssembly di Brave</translation>
 <translation id="9067428552314418522">Questo file è pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="8177472873527554730">Impossibile trovare contenuti nella pagina</translation>
 <translation id="6219250889396046657">Inserisci la tua passphrase per usare e salvare i dati di Brave nel tuo Account Brave, <ph name="USER_EMAIL"/></translation>
@@ -560,6 +561,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="4100716194836114130">Questo è il tuo account Brave</translation>
 <translation id="1419543648228375718">Accedere a Brave?</translation>
 <translation id="8747073452963259673">angolo in basso a sinistra dell'area di ricerca: sinistra <ph name="LEFT"/>%, in basso <ph name="BOTTOM"/>%</translation>
+<translation id="3562508460098852626">Le password possono essere eliminate solo al di fuori di Brave</translation>
 <translation id="878572486461146056">Errore di installazione: l'amministratore di rete ha applicato una policy di gruppo che impedisce l'installazione: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera e al microfono</translation>
 <translation id="64216977793816291">Accedere a Brave?</translation>
@@ -612,6 +614,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio.}=1{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio. La finestra di navigazione in incognito non verrà riaperta.}other{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento}=1{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento. La finestra di navigazione in incognito non verrà riaperta.}other{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{L'amministratore richiede il riavvio di Brave per installare un aggiornamento}=1{L'amministratore richiede il riavvio di Brave per installare un aggiornamento. La finestra di navigazione in incognito non verrà riaperta.}other{L'amministratore richiede il riavvio di Brave per installare un aggiornamento. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
+<translation id="5749154344207139683">Aiutaci a proteggere la privacy con questo sondaggio. Basta un minuto.</translation>
 <translation id="79269250264141507">Quando digiti qualcosa nella barra degli indirizzi o nella casella di ricerca, Brave invia il testo digitato al tuo motore di ricerca predefinito per ottenere suggerimenti migliori. Questa opzione è disattivata nella modalità privata.</translation>
 <translation id="2589970573128789862">Modalità privata Brave</translation>
 <translation id="5994282802285556682">Navigando in modalità privata, riceverai un avviso da Brave prima di caricare un sito tramite una connessione non sicura</translation>

@@ -10,6 +10,7 @@
 <translation id="7630214457764713113">Цэвэр линк хуулах</translation>
 <translation id="6406506848690869874">Синк хийх</translation>
 <translation id="1544192797660353713">Хэтэвч</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="1990886731975529483">Google Widevine-ыг суулгаж, уншуулах</translation>
 <translation id="4900351245762303149">Google Widevine суулгах</translation>
 <translation id="8342816622062204340"><ph name="URL"/> хамгаалалтай Google Widevine контентыг тоглуулах гэж байна, үүнд та Widevine-ний Андройд системийн дэмжлэгийг зөвшөөрөх шаардлагатай. Үүнийг зөвшөөрснөөр та Google-н ашиглалтын нөхцөлийг зөвшөөрч байгаа болно.</translation>
@@ -37,7 +38,6 @@
 <translation id="4877147287319222750">Хажуугийн самбарт нэмэх</translation>
 <translation id="6040143037577758943">Хаах</translation>
 <translation id="8712637175834984815">Ойлгосон</translation>
-<translation id="8428213095426709021">Тохиргоо</translation>
 <translation id="5234764350956374838">Цуцлах</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4759238208242260848">Татаж авсан зүйлс</translation>
@@ -95,7 +95,6 @@
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">Миний харилцан ярианы түүхийг хадгал</translation>
 <translation id="6106701981952170121">Бүх Leo хиймэл оюуны ярианы өгөгдлийг устгах</translation>
-<translation id="2361906291514218784">Leo хиймэл оюун</translation>
 <translation id="614530507403667291">Шинэ харилцан ярианы үндсэн загвар</translation>
 <translation id="1907126221851170941">Загвар нэмэх</translation>
 <translation id="154702742922788359">Нээх горим</translation>

@@ -25,6 +25,7 @@ Advanced Protection controls these Brave settings:
 <translation id="129382876167171263">Files saved by websites appear here</translation>
 <translation id="131112695174432497">Data that affects Ad Personalisation is deleted</translation>
 <translation id="1317194122196776028">Forget this site</translation>
+<translation id="1323433172918577554">Show More</translation>
 <translation id="1333965224356556482">Don't allow sites to see your location</translation>
 <translation id="1343356790768851700">This site determines things that you like and then suggests ads to other sites</translation>
 <translation id="1369915414381695676">Site <ph name="SITE_NAME"/> added</translation>
@@ -35,6 +36,7 @@ Advanced Protection controls these Brave settings:
 <translation id="1409338233051621926">Tap Apps, then tap Default apps</translation>
 <translation id="1415402041810619267">URL truncated</translation>
 <translation id="1741136041592162279">Let Brave share your recent tabs with your device to see them in your device's app list and search results. You can turn this on or off in Brave settings.</translation>
+<translation id="1432650420699700107">Sites can ask to connect to any device on your local network</translation>
 <translation id="1448064542941920355">Decrease zoom</translation>
 <translation id="1464044141348608623">Don't allow sites to know when you're actively using your device</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> site}other{<ph name="SITE_COUNT"/> sites}}</translation>
@@ -96,6 +98,7 @@ Advanced Protection controls these Brave settings:
 <translation id="2182457891543959921">Ask before allowing sites to create a 3D map of your surroundings or track camera position (recommended)</translation>
 <translation id="2185965788978862351">This will clear <ph name="DATASIZE"/> of data and cookies stored by sites or by apps on your home screen.</translation>
 <translation id="2194856509914051091">Things to consider</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{Yesterday}other{<ph name="NUM_DAYS_MANY"/> days ago}}</translation>
 <translation id="2215727959747642672">File editing</translation>
 <translation id="2218389616572918761">Sites can ask for your microphone</translation>
 <translation id="2228071138934252756">To let <ph name="APP_NAME"/> access your camera, also turn on camera in <ph name="BEGIN_LINK"/>Android settings<ph name="END_LINK"/>.</translation>
@@ -126,6 +129,7 @@ Advanced Protection controls these Brave settings:
 <translation id="2490684707762498678">Managed by <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Help and feedback</translation>
 <translation id="2501278716633472235">Go back</translation>
+<translation id="2533138527374486328">When on, sites can ask to connect to any device on your local network. When off, sites can't connect to devices on your local network.</translation>
 <translation id="2546283357679194313">Cookies and site data</translation>
 <translation id="2570922361219980984">Location access is also off for this device. Turn it on in <ph name="BEGIN_LINK"/>Android Settings<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Expanded – click to collapse.</translation>
@@ -182,6 +186,7 @@ Advanced Protection controls these Brave settings:
 <translation id="3167868116600277716">Discover feed</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> stored data</translation>
 <translation id="321187648315454507">To let <ph name="APP_NAME"/> send you notifications, also turn on notifications in <ph name="BEGIN_LINK"/>Android settings<ph name="END_LINK"/>.</translation>
+<translation id="3223425961342298674">Location not allowed</translation>
 <translation id="3227137524299004712">Microphone</translation>
 <translation id="3232293466644486101">Delete browsing data…</translation>
 <translation id="3242646949159196181">When on, sites can play sound. When off, sites can't play sound.</translation>
@@ -248,12 +253,14 @@ Advanced Protection controls these Brave settings:
 <translation id="3955321697524543127">Don't allow sites to connect to USB devices</translation>
 <translation id="3965467402665811906">Sites can ask to use information that they've saved about you</translation>
 <translation id="3967822245660637423">Download complete</translation>
+<translation id="3969869202926863008">Local network access</translation>
 <translation id="3981465354637804599">Sites usually show ads so that they can provide content or services free of charge. But, some sites are known to show intrusive or misleading ads.</translation>
 <translation id="3987993985790029246">Copy link</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/?</translation>
 <translation id="3992308058851451478"><ph name="SITE"/> can use your information as you browse</translation>
 <translation id="3992684624889376114">About this page</translation>
 <translation id="4002066346123236978">Title</translation>
+<translation id="4031179711345676612">Microphone allowed</translation>
 <translation id="4046123991198612571">Next track</translation>
 <translation id="4077310749977440510">Sites usually read your clipboard for features like keeping the formatting of text that you copied</translation>
 <translation id="4149890623864272035">Are you sure that you want to delete all local data, including cookies, and reset all permissions for this website?</translation>
@@ -263,8 +270,10 @@ Advanced Protection controls these Brave settings:
 <translation id="4169549551965910670">Connected to a USB device</translation>
 <translation id="4194328954146351878">Ask before allowing sites to see and change information on NFC devices (recommended)</translation>
 <translation id="4200726100658658164">Open location settings</translation>
+<translation id="4203769790323223880">Camera not allowed</translation>
 <translation id="421742575134139848">Sites might play sound to provide audio for music, videos and other media</translation>
 <translation id="4217710972110098902">Connected to a serial port</translation>
+<translation id="4223404254440398437">Microphone not allowed</translation>
 <translation id="4226663524361240545">Notifications may vibrate the device</translation>
 <translation id="4259722352634471385">Navigation is blocked: <ph name="URL"/></translation>
 <translation id="4274673989874969668">After you leave a site, it can keep syncing to finish tasks, like uploading photos or sending a chat message</translation>
@@ -295,6 +304,7 @@ Advanced Protection controls these Brave settings:
 <translation id="4635969503923889910">Don't allow sites to use NFC devices</translation>
 <translation id="4644713492825682049">Delete and reset</translation>
 <translation id="4645575059429386691">Managed by your parent</translation>
+<translation id="4663373278480897665">Camera allowed</translation>
 <translation id="4670064810192446073">Virtual reality</translation>
 <translation id="5652778654712411580">Tap Browser app, then tap Brave</translation>
 <translation id="4676059169848868271">To let <ph name="APP_NAME"/> use hand tracking, also turn on hand tracking in <ph name="BEGIN_LINK"/>system settings<ph name="END_LINK"/>.</translation>
@@ -316,6 +326,7 @@ Advanced Protection controls these Brave settings:
 <translation id="4972737347717125191">Sites can ask to use virtual reality devices and data</translation>
 <translation id="497421865427891073">go forward</translation>
 <translation id="4976702386844183910">Last visited <ph name="DATE"/></translation>
+<translation id="4978178243417029856">Learn more about Discover feed</translation>
 <translation id="4994033804516042629">No contacts found</translation>
 <translation id="4996978546172906250">Share via</translation>
 <translation id="5001526427543320409">Third-party cookies</translation>
@@ -339,6 +350,7 @@ Advanced Protection controls these Brave settings:
 <translation id="5216942107514965959">Last visited today</translation>
 <translation id="5225463052809312700">Turn on camera</translation>
 <translation id="5234764350956374838">Dismiss</translation>
+<translation id="5239623327352565343">Location allowed</translation>
 <translation id="5246825184569358663">This action will delete all local data, including cookies, and reset all permissions for <ph name="DOMAIN"/> and all sites under it</translation>
 <translation id="5264323282659631142">Remove '<ph name="CHIP_LABEL"/>'</translation>
 <translation id="528192093759286357">Drag from top and touch the back button to exit full screen.</translation>
@@ -380,7 +392,9 @@ Advanced Protection controls these Brave settings:
 <translation id="571222594670061844">Sites can show sign-in prompts from identity services</translation>
 <translation id="5740126560802162366">Sites can save data on your device</translation>
 <translation id="5743425052258407233">Get your history on all your devices, so that you can easily pick up where you left off</translation>
+<translation id="5749158352074143502">Continue with this tab</translation>
 <translation id="5750869797196646528">Hand tracking</translation>
+<translation id="5753570386948603678">Delete from history</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> blocked</translation>
 <translation id="5804241973901381774">Permissions</translation>
 <translation id="5822675474983796325">Customise your new tab page bottom sheet opened at full height</translation>
@@ -406,6 +420,7 @@ Advanced Protection controls these Brave settings:
 <translation id="5968921426641056619">Enter web address</translation>
 <translation id="5975083100439434680">Zoom out</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> – <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">Turn on Discover feed</translation>
 <translation id="6015775454662021376">Control this site's access to your device</translation>
 <translation id="6040143037577758943">Close</translation>
 <translation id="6042308850641462728">More</translation>
@@ -441,11 +456,13 @@ Advanced Protection controls these Brave settings:
 <translation id="6527303717912515753">Share</translation>
 <translation id="6530703012083415527">When on, sites can use pop-ups and redirects. When off, sites can't use pop-ups and redirects.</translation>
 <translation id="6540488083026747005">You allowed third-party cookies on this site</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> week ago}other{<ph name="NUM_WEEKS_MANY"/> weeks ago}}</translation>
 <translation id="6545864417968258051">Bluetooth scanning</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> and <ph name="NUM_MORE"/> more blocked}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> and <ph name="NUM_MORE"/> more blocked}}</translation>
 <translation id="6554732001434021288">Last visited <ph name="NUM_DAYS"/> days ago</translation>
 <translation id="656065428026159829">See more</translation>
 <translation id="6561560012278703671">Use quieter messaging (blocks notification prompts from interrupting you)</translation>
+<translation id="6565144332292237355">Sites can use this feature to look for and connect to any device on your local network</translation>
 <translation id="6593061639179217415">Desktop site</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Cookies allowed for <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> site}other{Cookies allowed for <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> sites}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -479,6 +496,7 @@ Advanced Protection controls these Brave settings:
 <translation id="6992289844737586249">Ask first before allowing sites to use your microphone (recommended)</translation>
 <translation id="7000754031042624318">Turned off in Android settings</translation>
 <translation id="8683151724374457021">This site determines things that you like and then suggests ads to other sites. This site also gets your ad topics from Brave to show you more relevant ads.</translation>
+<translation id="7044081119134178347">Camera allowed this time</translation>
 <translation id="7053983685419859001">Block</translation>
 <translation id="7055552182600664515">To play content protected by copyright, sites may need to use a content protection service. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 selected}other{# selected}}</translation>
@@ -490,8 +508,10 @@ Advanced Protection controls these Brave settings:
 <translation id="7188508872042490670">On-device site data</translation>
 <translation id="7201549776650881587">This action will clear all data and cookies stored by all sites under <ph name="ORIGIN"/> or by its app on your Home screen</translation>
 <translation id="7203150201908454328">Expanded</translation>
+<translation id="7213166370492037743">Don't allow sites to connect to any device on your local network</translation>
 <translation id="7219254577985949841">Delete site data?</translation>
 <translation id="723171743924126238">Select images</translation>
+<translation id="7243246278722455312">Customise your new tab page bottom sheet</translation>
 <translation id="7243308994586599757">Options available near bottom of the screen</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> selected</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> and <ph name="PERMISSION_2"/> allowed</translation>
@@ -514,7 +534,9 @@ Advanced Protection controls these Brave settings:
 <translation id="7554752735887601236">A site is using your microphone</translation>
 <translation id="7561196759112975576">Always</translation>
 <translation id="7573594921350120855">Sites usually use your video camera for communication features like video chatting</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> month ago}other{<ph name="NUM_MONTHS_MANY"/> months ago}}</translation>
 <translation id="757524316907819857">Block sites from playing protected content</translation>
+<translation id="7586676035079382730">Notifications not allowed</translation>
 <translation id="7594634374516752650">Connected to a Bluetooth device</translation>
 <translation id="7617547684249261169">You can delete some or all of your history, cookies, site data and more</translation>
 <translation id="7649070708921625228">Help</translation>
@@ -527,15 +549,16 @@ Advanced Protection controls these Brave settings:
 <translation id="7759147511335618829">MIDI device control and reprogramme.</translation>
 <translation id="7781829728241885113">Yesterday</translation>
 <translation id="7791543448312431591">Add</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{Continue with this tab}other{Continue with these tabs}}</translation>
 <translation id="780301667611848630">No, thanks</translation>
 <translation id="7804248752222191302">A site is using your camera</translation>
 <translation id="6720480757902085971">Provided by Brave</translation>
+<translation id="7815680994978050279">Dangerous download blocked</translation>
 <translation id="7835852323729233924">Playing media</translation>
 <translation id="783819812427904514">Unmute video</translation>
 <translation id="7846076177841592234">Cancel selection</translation>
 <translation id="2353409725922994861">Brave limits most sites from using third-party cookies. However, third-party cookies are allowed on this site because it relies on them to provide basic services.\n\nVisit settings to <ph name="BEGIN_LINK"/>manage access to third-party cookies<ph name="END_LINK"/>.</translation>
 <translation id="7882806643839505685">Allow sound for a specific site.</translation>
+<translation id="7891547341794213004">Hide continue with this tab card</translation>
 <translation id="789722939441020330">Don't allow sites to automatically download multiple files</translation>
 <translation id="7940722705963108451">Remind me</translation>
 <translation id="7948081750384205628">Learn more about <ph name="SETTING_TITLE"/></translation>
@@ -543,7 +566,6 @@ Advanced Protection controls these Brave settings:
 <translation id="7986741934819883144">Select a contact</translation>
 <translation id="7990211076305263060">When on, sites can ask to use your microphone. When off, sites can't use your microphone.</translation>
 <translation id="8007176423574883786">Turned off for this device</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{Hide 'Continue with this tab' card}other{Hide 'Continue with these tabs' card}}</translation>
 <translation id="802154636333426148">Download failed</translation>
 <translation id="8042586301629853791">Sort by:</translation>
 <translation id="8051193500142930381">Features that need a camera won't work</translation>
@@ -578,6 +600,7 @@ Advanced Protection controls these Brave settings:
 <translation id="8380167699614421159">This site shows intrusive or misleading ads</translation>
 <translation id="8394832520002899662">Tap to return to the site</translation>
 <translation id="8409345997656833551">Get notified when an article can be shown in simplified view</translation>
+<translation id="8416874502399604126">Microphone allowed this time</translation>
 <translation id="8423565414844018592">Text scaling set to <ph name="TEXT_SCALING"/></translation>
 <translation id="8428213095426709021">Settings</translation>
 <translation id="8441146129660941386">Seek backward</translation>
@@ -645,12 +668,14 @@ Advanced Protection controls these Brave settings:
 <translation id="9106233582039520022">Delete cookies?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, and <ph name="NUM_MORE"/> more}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, and <ph name="NUM_MORE"/> more}}</translation>
 <translation id="913657688200966289">Turn on permissions for <ph name="APP_NAME"/> in <ph name="BEGIN_LINK"/>Android settings<ph name="END_LINK"/>.</translation>
+<translation id="9138037198177304356">Notifications allowed</translation>
 <translation id="9138217887606523162">Current zoom is <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">Let Brave show your recent tabs in your device's app list and search results. You can turn this off at any time in Brave settings.</translation>
 <translation id="9162462602695099906">This page is dangerous</translation>
 <translation id="9182556968660520230">Don't allow sites to play protected content</translation>
 <translation id="947156494302904893">Sites that you visit can verify that you're a real person and not a bot</translation>
 <translation id="959682366969460160">Get organised</translation>
+<translation id="961930410699694996">Location allowed this time</translation>
 <translation id="967624055006145463">Data stored</translation>
 <translation id="969975166333045662">Block site from using V8 optimiser.</translation>
 <translation id="3110967157686007724">Private tab</translation>

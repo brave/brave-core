@@ -878,7 +878,7 @@
 <translation id="1939235910515558387">Braveウォレットはすぐにお使いいただけます。</translation>
 <translation id="5844138175312846408">ウォレットを既にお持ちですか？</translation>
 <translation id="772643556080081594">閲覧専用ウォレットを作成</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. BraveおよびBraveロゴはBrave Software, Incの登録商標です。その他の製品名およびロゴは、各社の商標である場合があります。無断複写・転載を禁じます。</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. BraveおよびBraveロゴはBrave Software, Incの登録商標です。その他の製品名およびロゴは、各社の商標である場合があります。無断複写・転載を禁じます。</translation>
 <translation id="7501957181231305652">or</translation>
 <translation id="375882617301124395">暗号資産ウォレットをバックアップします</translation>
 <translation id="5024543173656851695">リカバリーワードを紛失した場合、自分の暗号資産ウォレットにアクセスできなくなることを理解しました。</translation>
@@ -1122,10 +1122,6 @@
 <translation id="4324239559624557455">24時間</translation>
 <translation id="9139452553033760558">1週間</translation>
 <translation id="1658834457013045127">無期限</translation>
-<translation id="2770851145415891830">既存の暗号資産ウォレットが検出されました</translation>
-<translation id="2237759620789871865">インポートをスキップして以前の暗号資産ウォレットのエクスペリエンスを維持したい場合は、Braveブラウザの<ph name="LINK_BEFORE"/>設定<ph name="LINK_AFTER"/>に移動して、デフォルトを暗号資産ウォレットに戻してください。インポートして新しいBraveウォレットを試した後、いつでも元に戻すことができます。</translation>
-<translation id="5590175005414413980">Braveウォレットにインポートする既存の暗号資産ウォレットのパスワードを入力します。暗号資産の管理とWeb3 DAppとの通信を、より高速で安全に行うことができます。</translation>
-<translation id="880619123281809987">暗号通貨ウォレットのパスワードを入力します。</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/>を接続しました</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/>との接続を解除しました</translation>
 <translation id="5317781812114905957">手順</translation>
@@ -1382,6 +1378,9 @@
 <translation id="5601436886921227795">DAppとのアクセス</translation>
 <translation id="9104177294757104789"><ph name="VALUE"/>を送信</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/>を<ph name="TAKER"/>にスワップ</translation>
+<translation id="1748114617341025015">関連トークンアカウントを作成中です</translation>
+<translation id="4418115887224983240">関連トークンアカウントの作成に失敗しました</translation>
+<translation id="7165697599360786670">関連トークンアカウントが作成されました</translation>
 <translation id="8613144770663526433">Braveウォレットでサインイン</translation>
 <translation id="8813165409788097898"><ph name="ORIGIN"/>にサインインしています。Brave Walletはウォレットアドレスを<ph name="ORIGIN"/>と共有します。</translation>
 <translation id="1028781062521375153">詳細を見る</translation>
@@ -1515,7 +1514,6 @@
 <translation id="396152018598329740">暗号ウォレットを使うには？</translation>
 <translation id="7512061585041489067">最高の暗号ウォレットは何ですか？</translation>
 <translation id="1342755158522323177">暗号ブラウザって何？</translation>
-<translation id="4702762916247565868">暗号化ウォレット入門</translation>
 <translation id="4674552515763857735">リカバリーフレーズって何？</translation>
 <translation id="7328255859839881981">DAppsとは？</translation>
 <translation id="3852489285890032403">web3って何？</translation>
@@ -1533,7 +1531,6 @@
 <translation id="7877416315564177070">リカバリーフレーズを確認してもう一度お試しください。</translation>
 <translation id="6503538941917874992">リカバリーフレーズを使用してインポート</translation>
 <translation id="782167880151571109">Metamaskウォレットが検出されました！</translation>
-<translation id="3619071361843652814">レガシーウォレットが検出されました！</translation>
 <translation id="4634124774493850572">パスワードを使用</translation>
 <translation id="7697478310235189459">ワード<ph name="VALUE"/></translation>
 <translation id="5913194823092185468">MetaMaskの12～24語のリカバリーフレーズを入力します。</translation>
@@ -1546,7 +1543,6 @@
 <translation id="3604445540387095708">私は、<ph name="LINK_BEFORE"/>利用規約<ph name="LINK_AFTER"/> を読み、これに同意します。</translation>
 <translation id="1422451606553326863">暗号資産を購入</translation>
 <translation id="3887541341068007345">ウォレットエクステンションのチェック...</translation>
-<translation id="3567994771568272606">レガシーBrave暗号ウォレットからのインポート</translation>
 <translation id="8407091560429310499">アセットを選択する</translation>
 <translation id="756590380936155533"><ph name="ASSET_TICKER"/> 購入を完了するには、パートナーのいずれかを選択します。</translation>
 <translation id="7880860489474966219">完了すると、Brave Walletに資金が振り込まれます。</translation>
@@ -1749,6 +1745,7 @@
 <translation id="4583937519241190398">DappRadarにより検証済</translation>
 <translation id="8713438253026855351">シールド済アカウントに切り替える</translation>
 <translation id="3526789880090101085">シールド済アカウント</translation>
+<translation id="3155166394760577549">シールドを有効にして、トランザクションのプライバシーを強化する。</translation>
 <translation id="2298396008562701154">現在、このアカウントは透明なトランザクションをサポートしており、ブロックチェーン上のすべての人に閲覧可能な状態になっています。</translation>
 <translation id="3987095760757102811">シールドアカウントにアップグレードすると、トランザクションの送信者、受信者、金額の詳細が非表示になります。</translation>
 <translation id="3819528427777765709">シールド済</translation>
@@ -1779,6 +1776,8 @@
 <translation id="99991973626409495">シールドをレビュー</translation>
 <translation id="3114681061018999547">シールド中</translation>
 <translation id="8897189056319316783">ZECをシールド</translation>
+<translation id="3382275793825152362">資金をシールド</translation>
+<translation id="8631765320256788981">透明なアカウントからシールドされたアカウントに資金を送金します。</translation>
 <translation id="7144878232160441200">再試行</translation>
 <translation id="9094621390791852268">トランザクションをプレビューできませんでした。</translation>
 <translation id="4982713341035600933">推定される残高の変化</translation>
@@ -1840,7 +1839,7 @@
 <translation id="7758665172236842395">お気に入りのソースを1つのフィードでフォロー。Braveのタブを開いて、下にスクロールすればすぐに設定できます！</translation>
 <translation id="2376542729617592331">Braveニュースは、匿名化されたプライベート広告を使用する広告サポート型のツールです。<ph name="LINK_START"/>詳細はこちら<ph name="LINK_END"/>。</translation>
 <translation id="1765217911817124376">Braveニュースを有効にする</translation>
-<translation id="5149018766422637336">ニュースとRSS</translation>
+<translation id="1772301834467143364">Brave News</translation>
 <translation id="6265592479622441247"><ph name="BEGIN_BOLD"/>ダッシュボード<ph name="END_BOLD"/>に戻る</translation>
 <translation id="3169472444629675720">ディスカバー</translation>
 <translation id="8981973962043893066">サイト、トピック、RSSフィードを検索</translation>
@@ -2111,10 +2110,18 @@
 <translation id="4885527781814382758">Brave Leoは、インターネットの使い方をより強化する、プライベートなAIスマートアシスタントです。Leoは無料で一定のアクセスをご利用いただけます。Brave Leoプレミアムでは、より多くのモデルが利用できるほか、アクセス上限が高くなり、新機能への早期アクセスが提供されます。デフォルトモデルは随時変更されます。詳細は<ph name="LINK_BEFORE"/>Braveヘルプセンター<ph name="LINK_AFTER"/>をご覧ください。</translation>
 <translation id="7189603330209995455">デフォルトでは、Leoに質問すると、閲覧中のウェブページの内容やページ上でハイライトしたテキストをBrave Leoに送信し、回答を提供するために使用することがあります。回答の正確さは保証されず、不正確な情報、誤解を招く情報、または偽の情報が含まれることがあります。LeoはBrave Searchからのデータを使用して回答の品質を向上させます。機密性の高い情報や個人情報を送信しないでください。また、健康、財務、個人の安全、またはそれに類する内容に関する回答には注意してください。Leoのオプションはいつでも設定で調整できます。設定 &gt; Leoにアクセスしてください。</translation>
 <translation id="3038772045018370764">Leoは、あなたを特定できるIPアドレスなどの識別子を収集しません。AIモデルのトレーニングにデータは使用されませんし、AIモデルによる個人データの保持もありません（Anthropicがデータを30日間保持し、その後削除する場合を除く）。詳細は<ph name="LINK_BEFORE"/>プライバシーポリシー<ph name="LINK_AFTER"/>をご覧ください。</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {このページの内容について質問する}
+      other {これらのページの内容について質問する}
+    }</translation>
 <translation id="6961721183181597848">今日は何をお手伝いしましょうか？</translation>
 <translation id="2966135729673253768">フォローアップを頼む</translation>
 <translation id="4524675003624341892">質問を推奨...</translation>
 <translation id="4567071417854988869">この動画を要約</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {このページを要約する}
+      other {これらのページを要約する}
+    }</translation>
 <translation id="7921782882718083488">このページを要約</translation>
 <translation id="7932221068776853847">接続を解除して、Leoへのページコンテンツの送信を停止し、新しい会話をはじめます</translation>
 <translation id="8743383817154663379">リクエストの処理中にエラーが発生しました。もう一度お試しください。</translation>
@@ -2204,16 +2211,14 @@
 <translation id="8712637175834984815">閉じる</translation>
 <translation id="1093419424466417703">このページはLeoには長すぎるため、会話から一部のコンテキストが欠ける可能性があります。Leoはページコンテンツの<ph name="PERCENTAGE"/>を解析可能です。</translation>
 <translation id="4592293425457329338">会話から文脈が欠落している可能性があります。Leoは会話に関連したコンテンツの <ph name="PERCENTAGE"/> を維持することができました。</translation>
-<translation id="2186990448773134544">ページコンテンツがLeoには長すぎるため、ページから抽出した関連情報をもとに内容を修正しました。</translation>
-<translation id="5140068729857132378">Webページの関連する部分を探しています...</translation>
 <translation id="4370698775470316661">この会話は長すぎるため、続行できません。Leoがより長い会話の精度を維持できるよう、他のモデルをご利用いただくことをおすすめします。</translation>
 <translation id="5719170755629028558">Brave検索で回答を推敲しています...</translation>
 <translation id="5794962229997281366">クエリ: <ph name="SEARCH_TERMS"/> への回答を推敲しました。</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/>もっと見る</translation>
 <translation id="8103700533980268469">この通知を閉じる</translation>
 <translation id="3417835166382867856">検索タブ</translation>
-<translation id="9090243919347147717">添付ファイル</translation>
-<translation id="4444978378117903684">ブラウザのタブを追加して、会話のコンテキストをLeoに教えます</translation>
+<translation id="1352836459737874921">他のタブからコンテンツを添付</translation>
+<translation id="3028258613451571431">ブラウザからページの内容を送信して、会話のコンテキストをLeoに教えます</translation>
 <translation id="4300920590112551536">ブラウザのタブ</translation>
 <translation id="2315654674554095762">Leoが会話履歴を保存するので、同じ会話に戻ることができます。会話は暗号化されてあなたのデバイスに保存され、いつでも削除できます。</translation>
 <translation id="7821251979960635244">会話を開始すると、会話履歴がここに表示されます。</translation>
@@ -2236,8 +2241,8 @@
 <translation id="5642775487085641191">チャットを開始しますか？</translation>
 <translation id="8857222718794549840">何でも聞いてください！どんな話題でも構いません。より良い答えを提供するために、Leoは常に学び、向上しています。</translation>
 <translation id="9051226419897869406">Brave Leoとプライベートチャット</translation>
-<translation id="637548538907281147">ページのコンテンツに基づいて回答を作成</translation>
-<translation id="8599503173207256429">このページについて質問するには、トグルをクリックしてください。あなたが入力したメッセージとともに、ページのコンテンツがBrave Leoに送信されます。</translation>
+<translation id="2414904697165579184">タブのコンテンツに基づいて回答を作成</translation>
+<translation id="8258324391302611485">このページの内容は、メッセージとともにLeoに送信されます。</translation>
 <translation id="318819763888864209">すべてのサブスクリプションは自動更新されますが、更新前にいつでもキャンセルすることができます。</translation>
 <translation id="5091223967610958">開いているページのホスト名 (<ph name="HOST_NAME"/>) をシェアして、Leoの改善にご協力ください。</translation>
 <translation id="8732450785281947197">LeoのAIツール</translation>
@@ -2268,11 +2273,14 @@
 <translation id="9088751620363630236">写真をアップロード...</translation>
 <translation id="4250229828105606438">スクリーンショット</translation>
 <translation id="6332876390231524389">現在のタブの内容</translation>
+<translation id="7742969455167760092">開いているタブ...</translation>
 <translation id="49269513399674318">マイクを使用</translation>
 <translation id="3895031624234442305">カスタムモデル</translation>
 <translation id="4572010449071015143">新しい会話を開始</translation>
 <translation id="345901077335355561">現在進行中の会話に戻る</translation>
 <translation id="6287023598025162715">新規の会話</translation>
+<translation id="7097822247923237815">一時チャット</translation>
+<translation id="7481750859362986254">このチャットは履歴に残りません。また、Leoのカスタマイゼーションやメモリを一切使用しません。</translation>
 <translation id="8370801182970639038">自動 (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">有効な検索エンジン</translation>
 <translation id="5355776323718420036">トップサイトを非表示</translation>
@@ -2389,6 +2397,7 @@
 <translation id="6821108091726602352">BraveのWeb Discovery Projectに参加し、Webの修復にご協力ください。完全に匿名化されたサーチ・シグナルのシェアにより、Braveの検索インデックスの改善をサポートすることができます。</translation>
 <translation id="6764845498618413165">詳細はこちら</translation>
 <translation id="7818938154803162778">はい、協力します</translation>
+<translation id="7207456302801184289">Braveへようこそ</translation>
 <translation id="3486480638399578250">個人メールアドレスを非公開に保つ</translation>
 <translation id="7765422154906712751">一意のランダムアドレスを作成して、Braveアカウントのメールアドレスに転送することができます。このランダムアドレスはいつでも削除できます。実際のメールアドレスが開示されたり、広告主に使用されたりするのを防ぎます。</translation>
 <translation id="5222676887888702881">サインアウト</translation>
@@ -2405,6 +2414,7 @@
 <translation id="1104500750724567895">新しいエイリアス</translation>
 <translation id="8072910658503112482">別のメールエイリアスを提案</translation>
 <translation id="7710361355427562228">新しいエイリアスを生成中...</translation>
+<translation id="8013913032858654337">エイリアスの生成中にエラーが発生しました。インターネット接続を確認して、もう一度やり直してください。</translation>
 <translation id="4253168017788158739">メモ</translation>
 <translation id="7596996548739923550">アドレスに関するメモを入力（任意）</translation>
 <translation id="3810973564298564668">管理</translation>
@@ -2412,13 +2422,21 @@
 <translation id="3919357515365744684">メールは<ph name="MAIN_EMAIL"/>に転送されます</translation>
 <translation id="6063403442924238501">メールエイリアスを編集</translation>
 <translation id="8729265501883390499">エイリアスを作成</translation>
+<translation id="7137645995703540578">エイリアスの保存中にエラーが発生しました。インターネット接続を確認して、もう一度やり直してください。</translation>
+<translation id="1765544689721905747">メールエイリアスを削除</translation>
+<translation id="646524615209870492"><ph name="ALIAS"/> をエイリアスから削除すると、メールを受信できなくなります。</translation>
+<translation id="8133100642915054515">エイリアスの削除中にエラーが発生しました。インターネット接続を確認して、もう一度やり直してください。</translation>
+<translation id="8465742443901727718">この操作は元に戻せません。続行してもよろしいですか？</translation>
 <translation id="8662104432574824754">始めるにはサインインするか、Braveアカウントを作成してください</translation>
 <translation id="8069030342700068465">安全なログインリンクの送信先となるメールアドレスを入力してください。このリンクをクリックすると、Braveアカウントが作成されるか、もしくは既存のアカウントにアクセスして無料のメールエイリアスサービスが利用できるようになります。</translation>
 <translation id="2133391407495495735">ログインリンクを取得</translation>
+<translation id="2650906829817220223">認証リクエスト中にエラーが発生しました。インターネット接続を確認して、もう一度やり直してください。</translation>
 <translation id="3699624789011381381">メールアドレス</translation>
 <translation id="8124939971041602970">ログインメールが<ph name="MAIN_EMAIL"/>に送信されました</translation>
 <translation id="8140361186431963982">メールに記載されている安全なログインリンクをクリックして、あなたのアカウントにアクセスしてください。</translation>
-<translation id="6549775668256477823">メールが見当たりませんか？ 迷惑メールフォルダーをチェックするか、<ph name="BEGIN_LINK"/>再試行してください<ph name="END_LINK"/>。</translation>
+<translation id="619122420105901711">メールが見当たりませんか？ 迷惑メールフォルダーをチェックするか、再試行してください。</translation>
+<translation id="3397336197747843396">Braveアカウントの認証中にエラーが発生しました。もう一度やり直してください。</translation>
+<translation id="1340795582009113055">やり直す</translation>
 <translation id="958268166261124668">Brave VPN: 接続済み</translation>
 <translation id="6021669293402055982">Brave VPN: 切断</translation>
 <translation id="3541307549916475335">Brave VPNパネルUI</translation>

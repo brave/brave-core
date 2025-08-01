@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Brave 浏览器崩溃或无响应时自动发送诊断报告，帮助提高 Brave\u2019s 产品稳定性。</translation>
 <translation id="7977176350719484850">预计\n节省的数据</translation>
 <translation id="9008534313521214777">预计节省的\n时间</translation>
+<translation id="8347743943525229984">允许 Brave 进行调查</translation>
+<translation id="6022939994702081659">允许 Brave 在新标签页中显示隐私调查链接。这些调查可以帮助我们开发更好的功能，以及衡量浏览器广告活动的有效性。</translation>
+<translation id="7746496306508543965">了解有关 Brave 调查的更多信息</translation>
 <translation id="410351446219883937">自动播放</translation>
 <translation id="7445411102860286510">允许网站自动播放静音的视频（推荐）</translation>
 <translation id="7837721118676387834">允许特定网站自动播放静音的视频。</translation>
@@ -632,7 +635,6 @@
 <translation id="3961126209136843111">导入现有钱包</translation>
 <translation id="4811736040444856406">显示恢复密语</translation>
 <translation id="4359319875297001084">从旧的 Brave 加密钱包导入？</translation>
-<translation id="3157931365184549694">恢复</translation>
 <translation id="5844138175312846408">已经有钱包？</translation>
 <translation id="2502258949541727762">开始之前</translation>
 <translation id="4303748097351941030">支持的网络</translation>
@@ -794,7 +796,6 @@
 <translation id="1426320910664514906">Gas Limit</translation>
 <translation id="6389441740143786465">禁用分享库</translation>
 <translation id="9065203028668620118">编辑</translation>
-<translation id="473775607612524610">更新</translation>
 <translation id="479795390141144417">账户更新失败。</translation>
 <translation id="8084782383392198011">账户名不能为空。</translation>
 <translation id="5045550434625856497">密码不正确</translation>

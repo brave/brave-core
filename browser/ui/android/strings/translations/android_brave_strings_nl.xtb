@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Help de productstabiliteit van Brave te verbeteren door automatisch diagnostische rapporten te verzenden wanneer de Brave-browser crasht of vastloopt.</translation>
 <translation id="7977176350719484850">Geschatte hoeveelheid\ndata bespaard</translation>
 <translation id="9008534313521214777">Gem. bespaarde\ntijd</translation>
+<translation id="8347743943525229984">Brave-enquêtes toestaan</translation>
+<translation id="6022939994702081659">Hiermee sta je toe dat Brave links naar privé-enquêtes weergeeft op het nieuwe tabblad. Deze enquêtes helpen ons betere functies te ontwikkelen en de effectiviteit van advertentiecampagnes in de browser te meten.</translation>
+<translation id="7746496306508543965">Meer informatie over Brave-enquêtes</translation>
 <translation id="410351446219883937">Automatisch afspelen</translation>
 <translation id="7445411102860286510">Sites toestaan gedempte video's automatisch af te spelen (aanbevolen)</translation>
 <translation id="7837721118676387834">Automatisch afspelen van gedempte video's toestaan voor een specifieke site.</translation>
@@ -632,7 +635,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3961126209136843111">Importeer een bestaande wallet</translation>
 <translation id="4811736040444856406">Herstelwoorden tonen</translation>
 <translation id="4359319875297001084">Importeren vanuit verouderde Brave-cryptowallets?</translation>
-<translation id="3157931365184549694">Herstel</translation>
 <translation id="5844138175312846408">Hebt u al een wallet?</translation>
 <translation id="2502258949541727762">Voordat we beginnen</translation>
 <translation id="4303748097351941030">Ondersteunde netwerken</translation>
@@ -794,7 +796,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1426320910664514906">Gaslimiet</translation>
 <translation id="6389441740143786465">Sharing Hub uitschakelen</translation>
 <translation id="9065203028668620118">Bewerken</translation>
-<translation id="473775607612524610">Updaten</translation>
 <translation id="479795390141144417">Bijwerken van account is mislukt.</translation>
 <translation id="8084782383392198011">Veld voor accountnaam kan niet leeg zijn.</translation>
 <translation id="5045550434625856497">Onjuist wachtwoord</translation>

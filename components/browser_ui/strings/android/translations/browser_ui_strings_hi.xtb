@@ -25,6 +25,7 @@
 <translation id="129382876167171263">यहां वे फ़ाइलें दिखाई देती हैं जिन्हें वेबसाइटें सेव करती हैं</translation>
 <translation id="131112695174432497">दिलचस्पी के मुताबिक विज्ञापन पर असर डालने वाला डेटा मिटा दिया जाएगा</translation>
 <translation id="1317194122196776028">इस साइट का पूरा इतिहास मिटाएं</translation>
+<translation id="1323433172918577554">और दिखाएं</translation>
 <translation id="1333965224356556482">साइटों को आपकी जगह की जानकारी देखने की अनुमति न दें</translation>
 <translation id="1343356790768851700">यह साइट, आपकी पसंद के विषयों का पता लगाती है और फिर दूसरी साइटों पर विज्ञापन के सुझाव देती है</translation>
 <translation id="1369915414381695676"><ph name="SITE_NAME"/> साइट जोड़ी गई</translation>
@@ -35,6 +36,7 @@
 <translation id="1409338233051621926">ऐप्लिकेशन पर टैप करें. इसके बाद, डिफ़ॉल्ट ऐप्लिकेशन पर टैप करें</translation>
 <translation id="1415402041810619267">यूआरएल छोटा हो गया</translation>
 <translation id="1741136041592162279">Brave को आपके हाल ही में इस्तेमाल किए गए टैब, आपके डिवाइस के साथ शेयर करने की अनुमति दें, ताकि वे आपके डिवाइस की ऐप्लिकेशन की सूची और खोज के नतीजों में देखे जा सकें. Brave की सेटिंग में जाकर, इसे चालू या बंद किया जा सकता है.</translation>
+<translation id="1432650420699700107">साइटें, आपके लोकल नेटवर्क पर मौजूद किसी भी डिवाइस से कनेक्ट करने की अनुमति मांग सकती हैं</translation>
 <translation id="1448064542941920355">ज़ूम आउट करें</translation>
 <translation id="1464044141348608623">साइटों को यह जानने की अनुमति न दें कि आप अपने डिवाइस का इस्तेमाल कब करते हैं</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> साइट}one{<ph name="SITE_COUNT"/> साइट}other{<ph name="SITE_COUNT"/> साइटें}}</translation>
@@ -96,6 +98,7 @@
 <translation id="2182457891543959921">किसी साइट को आपके आस-पास की जगह का 3D मैप बनाने या कैमरे की स्थिति ट्रैक करने की अनुमति देने से पहले पूछें (सुझाया गया)</translation>
 <translation id="2185965788978862351">इससे <ph name="DATASIZE"/> डेटा और कुकी मिट जाएंगी, जिन्हें साइटों या ऐप्लिकेशन ने आपकी होम स्क्रीन पर सेव किया है.</translation>
 <translation id="2194856509914051091">इन बातों का ध्यान रखें</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{बीता हुआ कल}one{<ph name="NUM_DAYS_MANY"/> दिन पहले}other{<ph name="NUM_DAYS_MANY"/> दिन पहले}}</translation>
 <translation id="2215727959747642672">फ़ाइल में बदलाव करना</translation>
 <translation id="2218389616572918761">साइटें, आपके माइक्रोफ़ोन का इस्तेमाल करने की अनुमति मांग सकती हैं</translation>
 <translation id="2228071138934252756"><ph name="APP_NAME"/> को कैमरे का ऐक्सेस देने के लिए, <ph name="BEGIN_LINK"/>Android की सेटिंग<ph name="END_LINK"/> में जाकर भी कैमरा चालू करें.</translation>
@@ -125,6 +128,7 @@
 <translation id="2490684707762498678"><ph name="APP_NAME"/> मैनेज करता है</translation>
 <translation id="2498359688066513246">सहायता और फ़ीडबैक</translation>
 <translation id="2501278716633472235">वापस जाएं</translation>
+<translation id="2533138527374486328">इस सेटिंग के चालू होने पर, साइटें आपके लोकल नेटवर्क पर मौजूद किसी डिवाइस से कनेक्ट करने के लिए अनुमति का अनुरोध कर सकती हैं. इस सेटिंग के बंद होने पर, साइटें आपके लोकल नेटवर्क पर मौजूद डिवाइसों से कनेक्ट नहीं कर सकतीं.</translation>
 <translation id="2546283357679194313">कुकी और साइट डेटा</translation>
 <translation id="2570922361219980984">इस डिवाइस के लिए जगह की जानकारी का एक्सेस भी बंद है. इसे <ph name="BEGIN_LINK"/>Android सेटिंग<ph name="END_LINK"/> में चालू करें.</translation>
 <translation id="257931822824936280">बड़ा किया गया - छोटा करने के लिए क्‍लिक करें.</translation>
@@ -181,6 +185,7 @@
 <translation id="3167868116600277716">डिस्कवर फ़ीड</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> संग्रहित डेटा</translation>
 <translation id="321187648315454507"><ph name="BEGIN_LINK"/>Android की सेटिंग<ph name="END_LINK"/> में जाकर भी सूचनाएं चालू करें, ताकि <ph name="APP_NAME"/> आपको सूचनाएं भेज सके.</translation>
+<translation id="3223425961342298674">जगह की जानकारी ऐक्सेस करने की अनुमति नहीं है</translation>
 <translation id="3227137524299004712">माइक्रोफ़ोन</translation>
 <translation id="3232293466644486101">ब्राउज़िंग डेटा मिटाएं…</translation>
 <translation id="3242646949159196181">इस सेटिंग के चालू होने पर, साइटें आवाज़ चालू कर सकती हैं. इस सेटिंग के बंद होने पर, साइटें आवाज़ चालू नहीं कर सकतीं.</translation>
@@ -247,12 +252,14 @@
 <translation id="3955321697524543127">साइटों को यूएसबी डिवाइसों से कनेक्ट करने की अनुमति न दें</translation>
 <translation id="3965467402665811906">साइटें, आपके बारे में सेव की गई जानकारी इस्तेमाल करने की अनुमति मांग सकती हैं</translation>
 <translation id="3967822245660637423">डाउनलोड पूरा हुआ</translation>
+<translation id="3969869202926863008">लोकल नेटवर्क का ऐक्सेस</translation>
 <translation id="3981465354637804599">साइटें, बिना किसी शुल्क के कॉन्टेंट दिखाने या सेवाएं देने के लिए अक्सर विज्ञापन दिखाती हैं. हालांकि, कुछ साइटों को परेशान करने या गुमराह करने वाले विज्ञापन दिखाने के लिए जाना जाता है.</translation>
 <translation id="3987993985790029246">लिंक कॉपी करें</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
 <translation id="3992308058851451478">ब्राउज़ करते समय, <ph name="SITE"/> आपकी जानकारी का इस्तेमाल कर सकती है</translation>
 <translation id="3992684624889376114">इस पेज के बारे में</translation>
 <translation id="4002066346123236978">टाइटल</translation>
+<translation id="4031179711345676612">माइक्रोफ़ोन की अनुमति है</translation>
 <translation id="4046123991198612571">अगला ट्रैक</translation>
 <translation id="4077310749977440510">साइटें आपके क्लिपबोर्ड को पढ़ती हैं, ताकि आप कॉपी किए गए टेक्स्ट का फ़ॉर्मैट सेव करने जैसी सुविधाओं का इस्तेमाल कर सकें</translation>
 <translation id="4149890623864272035">क्या आपको वाकई कुकी के साथ-साथ पूरा स्थानीय डेटा मिटाना है और इस वेबसाइट के लिए सभी अनुमतियां रीसेट करनी हैं?</translation>
@@ -262,8 +269,10 @@
 <translation id="4169549551965910670">यूएसबी डिवाइस से कनेक्ट है</translation>
 <translation id="4194328954146351878">साइटों को एनएफ़सी की सुविधा वाले डिवाइसों पर, जानकारी देखने और उसमें बदलाव करने की अनुमति देने से पहले पूछा जाए (सुझाई गई सेटिंग)</translation>
 <translation id="4200726100658658164">जगह की सेटिंग खोलें</translation>
+<translation id="4203769790323223880">कैमरा ऐक्सेस करने की अनुमति नहीं है</translation>
 <translation id="421742575134139848">संगीत, वीडियो, और अन्य मीडिया में ऑडियो की सुविधा देने के लिए, साइटें आवाज़ चला सकती हैं</translation>
 <translation id="4217710972110098902">सीरियल पोर्ट से कनेक्ट है</translation>
+<translation id="4223404254440398437">माइक्रोफ़ोन ऐक्सेस करने की अनुमति नहीं है</translation>
 <translation id="4226663524361240545">नोटिफ़िकेशन से डिवाइस में कंपन हो सकता है</translation>
 <translation id="4259722352634471385">मार्गदर्शक अवरोधित है: <ph name="URL"/></translation>
 <translation id="4274673989874969668">जब आप कोई साइट छोड़ते हैं, तो वह कुछ कामों को पूरा करने के लिए, सिंक करने की सुविधा का इस्तेमाल जारी रख सकती है, जैसे कि फ़ोटो अपलोड करना या चैट मैसेज भेजना</translation>
@@ -294,6 +303,7 @@
 <translation id="4635969503923889910">साइटों को एनएफ़सी डिवाइसों का इस्तेमाल करने की अनुमति न दें</translation>
 <translation id="4644713492825682049">मिटाएं और रीसेट करें</translation>
 <translation id="4645575059429386691">आपके अभिभावक द्वारा प्रबंधित</translation>
+<translation id="4663373278480897665">कैमरे की अनुमति है</translation>
 <translation id="4670064810192446073">वर्चुअल रिएलिटी</translation>
 <translation id="5652778654712411580">ब्राउज़र ऐप्लिकेशन पर टैप करें. इसके बाद, Brave पर टैप करें</translation>
 <translation id="4676059169848868271"><ph name="APP_NAME"/> को हाथ ट्रैक करने की सुविधा का इस्तेमाल करने की अनुमति देने के लिए, इसे <ph name="BEGIN_LINK"/>सिस्टम सेटिंग<ph name="END_LINK"/> से भी चालू करें.</translation>
@@ -315,6 +325,7 @@
 <translation id="4972737347717125191">साइटें, वर्चुअल रियलिटी डिवाइस और डेटा का इस्तेमाल करने के लिए पूछ सकती हैं</translation>
 <translation id="497421865427891073">आगे जाएं</translation>
 <translation id="4976702386844183910">पिछली बार <ph name="DATE"/> को देखा गया</translation>
+<translation id="4978178243417029856">डिस्कवर फ़ीड के बारे में ज़्यादा जानें</translation>
 <translation id="4994033804516042629">कोई संपर्क नहीं मिला</translation>
 <translation id="4996978546172906250">इससे शेयर करें</translation>
 <translation id="5001526427543320409">तीसरे पक्ष की कुकी</translation>
@@ -337,6 +348,7 @@
 <translation id="5216942107514965959">साइट पर पिछली बार आज गए</translation>
 <translation id="5225463052809312700">कैमरा चालू करें</translation>
 <translation id="5234764350956374838">खारिज करें</translation>
+<translation id="5239623327352565343">जगह की जानकारी ऐक्सेस करने की अनुमति है</translation>
 <translation id="5246825184569358663">ऐसा करने से, कुकी के साथ-साथ लोकल डेटा भी मिट जाएगा. साथ ही, <ph name="DOMAIN"/> और इसके तहत आने वाली सभी साइटों के लिए, सभी अनुमतियां रीसेट हो जाएंगी</translation>
 <translation id="5264323282659631142">'<ph name="CHIP_LABEL"/>' हटाएं</translation>
 <translation id="528192093759286357">फ़ुल स्क्रीन से बाहर निकलने के लिए ऊपर से खींचें और वापस जाएं स्पर्श करें.</translation>
@@ -378,7 +390,9 @@
 <translation id="571222594670061844">साइटें, पहचान करने वाली सेवाओं से जुड़े, साइन इन करने के अनुरोध दिखा सकती हैं</translation>
 <translation id="5740126560802162366">साइटें आपके डिवाइस पर डेटा सेव कर सकती हैं</translation>
 <translation id="5743425052258407233">अपने सभी डिवाइसों पर अपना ब्राउज़िंग इतिहास देखें, ताकि जहां आपने पिछली बार छोड़ा था वहीं से शुरू कर सकें</translation>
+<translation id="5749158352074143502">इस टैब के साथ जारी रखें</translation>
 <translation id="5750869797196646528">हाथ ट्रैक करने की सुविधा</translation>
+<translation id="5753570386948603678">इतिहास से मिटाएं</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> को ब्लॉक किया गया</translation>
 <translation id="5804241973901381774">अनुमतियां</translation>
 <translation id="5822675474983796325">'नया टैब' पेज को कस्टमाइज़ करने की जानकारी देने वाली बॉटम शीट, पूरी स्क्रीन पर खोल दी गई है</translation>
@@ -404,6 +418,7 @@
 <translation id="5968921426641056619">वेब पता डालें</translation>
 <translation id="5975083100439434680">ज़ूम आउट</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> - <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">डिस्कवर फ़ीड को चालू करें</translation>
 <translation id="6015775454662021376">इस साइट के लिए अपने डिवाइस का ऐक्सेस कंट्रोल करें</translation>
 <translation id="6040143037577758943">बंद करें</translation>
 <translation id="6042308850641462728">और ज़्यादा</translation>
@@ -439,11 +454,13 @@
 <translation id="6527303717912515753">शेयर करें</translation>
 <translation id="6530703012083415527">इस सेटिंग के चालू होने पर, साइटें पॉप-अप का इस्तेमाल और रीडायरेक्ट कर सकती हैं. इस सेटिंग के बंद होने पर, साइटें पॉप-अप का इस्तेमाल और रीडायरेक्ट नहीं कर सकती हैं.</translation>
 <translation id="6540488083026747005">इस साइट पर आपने तीसरे पक्ष की कुकी को अनुमति दी है</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> हफ़्ते पहले}one{<ph name="NUM_WEEKS_MANY"/> हफ़्ते पहले}other{<ph name="NUM_WEEKS_MANY"/> हफ़्ते पहले}}</translation>
 <translation id="6545864417968258051">ब्लूटूथ स्कैन करना</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, और <ph name="NUM_MORE"/> अन्य सुविधा को ब्लॉक किया गया}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, और <ph name="NUM_MORE"/> अन्य सुविधा को ब्लॉक किया गया}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, और <ph name="NUM_MORE"/> अन्य सुविधाओं को ब्लॉक किया गया}}</translation>
 <translation id="6554732001434021288">साइट पर पिछली बार <ph name="NUM_DAYS"/> दिन पहले गए</translation>
 <translation id="656065428026159829">ज़्यादा देखें</translation>
 <translation id="6561560012278703671">बिना आवाज़ के मैसेज पाएं (सूचनाओं में आवाज़ को रोकता है, ताकि आपके काम में रुकावट न आए)</translation>
+<translation id="6565144332292237355">साइटें इस सुविधा का इस्तेमाल करके, आपके लोकल नेटवर्क पर मौजूद किसी भी डिवाइस को खोज सकती हैं और उससे कनेक्ट कर सकती हैं</translation>
 <translation id="6593061639179217415">डेस्कटॉप साइट</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{<ph name="RWS_OWNER"/> की <ph name="RWS_MEMBERS_COUNT"/> साइट को कुकी इस्तेमाल करने की अनुमति दी गई है}one{<ph name="RWS_OWNER"/> की <ph name="RWS_MEMBERS_COUNT"/> साइट को कुकी इस्तेमाल करने की अनुमति दी गई है}other{<ph name="RWS_OWNER"/> की <ph name="RWS_MEMBERS_COUNT"/> साइटों को कुकी इस्तेमाल करने की अनुमति दी गई है}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> जीबी</translation>
@@ -477,6 +494,7 @@
 <translation id="6992289844737586249">साइटों को अपने माइक्रोफ़ोन का इस्तेमाल करने देने से पहले अनुमति लेना ज़रूरी बनाएं (सुझाया गया)</translation>
 <translation id="7000754031042624318">Android सेटिंग में बंद कर दिया गया है</translation>
 <translation id="8683151724374457021">यह साइट, आपकी पसंद के विषयों का पता लगाती है और फिर दूसरी साइटों पर, उनके हिसाब से विज्ञापन के सुझाव देती है. यह साइट आपके पसंदीदा, विज्ञापन के विषयों के बारे में जानने के लिए Brave की भी मदद लेती है, ताकि आपको ज़्यादा काम के विज्ञापन दिखाए जा सकें.</translation>
+<translation id="7044081119134178347">इस बार कैमरा इस्तेमाल करने की अनुमति दी गई</translation>
 <translation id="7053983685419859001">ब्लॉक करें</translation>
 <translation id="7055552182600664515">कॉपीराइट से सुरक्षित किया गया कॉन्टेंट चलाने के लिए, साइटों को कॉन्टेंट की सुरक्षा से जुड़ी किसी सेवा का इस्तेमाल करना पड़ सकता है. <ph name="BEGIN_LINK"/>ज़्यादा जानें<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 चुना गया}one{# चुने गए}other{# चुने गए}}</translation>
@@ -488,8 +506,10 @@
 <translation id="7188508872042490670">उपयोगकर्ता के डिवाइस पर साइट डेटा</translation>
 <translation id="7201549776650881587">इस कार्रवाई से, <ph name="ORIGIN"/> से जुड़ी सभी साइटों या आपकी होम स्क्रीन पर मौजूद ऐप्लिकेशन के ज़रिए सेव किया गया सारा डेटा और सभी कुकी मिट जाएंगी</translation>
 <translation id="7203150201908454328">विस्तृत</translation>
+<translation id="7213166370492037743">साइटों को, अपने लोकल नेटवर्क पर मौजूद किसी भी डिवाइस से कनेक्ट करने की अनुमति न दें</translation>
 <translation id="7219254577985949841">क्या आपको साइट डेटा मिटाना है?</translation>
 <translation id="723171743924126238">फ़ोटो चुनें</translation>
+<translation id="7243246278722455312">'नया टैब' पेज को कस्टमाइज़ करने की जानकारी देने वाली बॉटम शीट</translation>
 <translation id="7243308994586599757">विकल्‍प स्‍क्रीन के नीचे उपलब्‍ध हैं</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> चुने गए</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> और <ph name="PERMISSION_2"/> इस्तेमाल करने की अनुमति दी गई</translation>
@@ -512,7 +532,9 @@
 <translation id="7554752735887601236">कोई साइट आपके माइक्रोफ़ोन का इस्तेमाल कर रही है</translation>
 <translation id="7561196759112975576">हमेशा</translation>
 <translation id="7573594921350120855">आम तौर पर, साइटें, वीडियो चैटिंग जैसी कम्यूनिकेशन सुविधाओं के लिए, आपके वीडियो कैमरा का इस्तेमाल करती हैं</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> महीने पहले}one{<ph name="NUM_MONTHS_MANY"/> महीने पहले}other{<ph name="NUM_MONTHS_MANY"/> महीने पहले}}</translation>
 <translation id="757524316907819857">साइटों को सुरक्षित कॉन्टेंट चलाने से रोकें</translation>
+<translation id="7586676035079382730">सूचनाएं भेजने की अनुमति नहीं है</translation>
 <translation id="7594634374516752650">ब्लूटूथ डिवाइस से जुड़ा हुआ है</translation>
 <translation id="7617547684249261169">आपके पास अपना ब्राउज़िंग इतिहास, कुकी, साइट डेटा, और अन्य डेटा का कुछ हिस्सा या पूरा डेटा मिटाने का विकल्प है</translation>
 <translation id="7649070708921625228">सहायता</translation>
@@ -522,18 +544,19 @@
 <translation id="7681597159868843240">आम तौर पर साइटें, वर्चुअल रियलिटी या फ़िटनेस ट्रैकिंग जैसी सुविधाओं के लिए आपके डिवाइस के मोशन सेंसर इस्तेमाल करती हैं</translation>
 <translation id="5455732060086060613">Brave के इस्तेमाल से जुड़ी सलाह देने वाला कार्ड छिपाएं</translation>
 <translation id="7719367874908701697">पेज ज़ूम</translation>
-<translation id="7759147511335618829">एमआईडीआई डिवाइस कंट्रोल और फिर से प्रोग्राम करना</translation>
+<translation id="7759147511335618829">एमआईडीआई डिवाइस कंट्रोल और रीप्रोग्राम करना</translation>
 <translation id="7781829728241885113">बीता कल</translation>
 <translation id="7791543448312431591">जोड़ें</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{इस टैब के साथ जारी रखें}one{इस टैब के साथ जारी रखें}other{इन टैब के साथ जारी रखें}}</translation>
 <translation id="780301667611848630">नहीं, रहने दें</translation>
 <translation id="7804248752222191302">कोई साइट आपका कैमरा इस्तेमाल कर रही है</translation>
 <translation id="6720480757902085971">Brave से मिला फ़ीड</translation>
+<translation id="7815680994978050279">खतरनाक डाउनलोड अवरोधित किया गया</translation>
 <translation id="7835852323729233924">चलाया जा रहा मीडिया</translation>
 <translation id="783819812427904514">वीडियो अनम्यूट करें</translation>
 <translation id="7846076177841592234">चुना गया हटाएं</translation>
 <translation id="2353409725922994861">Brave, ज़्यादातर साइटों को तीसरे पक्ष की कुकी इस्तेमाल करने से रोकता है. हालांकि, इस साइट को तीसरे पक्ष की कुकी इस्तेमाल करने की अनुमति है. ऐसा इसलिए, क्योंकि यह बुनियादी सेवाएं देने के लिए इन कुकी पर निर्भर करती है.\n\n<ph name="BEGIN_LINK"/>तीसरे पक्ष की कुकी का ऐक्सेस मैनेज करने<ph name="END_LINK"/> के लिए, सेटिंग पर जाएं.</translation>
 <translation id="7882806643839505685">किसी खास साइट के लिए आवाज़ की अनुमति दें.</translation>
+<translation id="7891547341794213004">'इस टैब के साथ जारी रखें' कार्ड को छिपाएं</translation>
 <translation id="789722939441020330">साइटों को अपने-आप कई फ़ाइलें डाउनलोड करने की अनुमति न दें</translation>
 <translation id="7940722705963108451">मुझे याद दिलाएं</translation>
 <translation id="7948081750384205628"><ph name="SETTING_TITLE"/> के बारे में ज़्यादा जानें</translation>
@@ -541,7 +564,6 @@
 <translation id="7986741934819883144">कोई संपर्क चुनें</translation>
 <translation id="7990211076305263060">इस सेटिंग के चालू होने पर, साइटें आपका माइक्रोफ़ोन इस्तेमाल करने की अनुमति मांग सकती हैं. इस सेटिंग के बंद होने पर, साइटें आपके माइक्रोफ़ोन का इस्तेमाल नहीं कर सकतीं.</translation>
 <translation id="8007176423574883786">इस डिवाइस के लिए बंद कर दिया गया है</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{'इस टैब का इस्तेमाल करके जारी रखें' कार्ड को छिपाएं}one{'इस टैब का इस्तेमाल करके जारी रखें' कार्ड को छिपाएं}other{'इन टैब के साथ जारी रखें' कार्ड को छिपाएं}}</translation>
 <translation id="802154636333426148">डाउनलोड विफल रहा</translation>
 <translation id="8042586301629853791">इसके अनुसार क्रम से लगाएं:</translation>
 <translation id="8051193500142930381">जिन सुविधाओं के लिए कैमरे की ज़रूरत होती है वे काम नहीं करेंगी</translation>
@@ -576,6 +598,7 @@
 <translation id="8380167699614421159">इस साइट में तंग करने वाले या गुमराह करने वाले विज्ञापन दिखाई देते हैं</translation>
 <translation id="8394832520002899662">साइट पर वापस जाने के लिए टैप करें</translation>
 <translation id="8409345997656833551">किसी लेख के लिए, आसान बनाए गए व्यू की सुविधा उपलब्ध होने पर सूचना पाएं</translation>
+<translation id="8416874502399604126">इस बार माइक्रोफ़ोन इस्तेमाल करने की अनुमति दी गई</translation>
 <translation id="8423565414844018592">टेक्स्ट स्केलिंग को <ph name="TEXT_SCALING"/> पर सेट किया गया</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
 <translation id="8441146129660941386">पीछे जाएं</translation>
@@ -643,13 +666,15 @@
 <translation id="9106233582039520022">क्या आपको कुकी को मिटाना है?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, और <ph name="NUM_MORE"/> अन्य सुविधा}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, और <ph name="NUM_MORE"/> अन्य सुविधा}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, और <ph name="NUM_MORE"/> अन्य सुविधाएं}}</translation>
 <translation id="913657688200966289"><ph name="BEGIN_LINK"/>Android की सेटिंग<ph name="END_LINK"/> में जाकर, <ph name="APP_NAME"/> के लिए अनुमतियां चालू करें.</translation>
+<translation id="9138037198177304356">सूचनाएं भेजने की अनुमति है</translation>
 <translation id="9138217887606523162">मौजूदा ज़ूम लेवल <ph name="ZOOM_LEVEL"/>%% है</translation>
 <translation id="7359422048569205930">Brave को आपके हाल ही में इस्तेमाल किए गए टैब, आपके डिवाइस की ऐप्लिकेशन की सूची और खोज के नतीजों में दिखाने की अनुमति दें. Brave की सेटिंग में जाकर, इसे कभी भी बंद किया जा सकता है.</translation>
 <translation id="9162462602695099906">यह पेज सुरक्षित नहीं है</translation>
 <translation id="9182556968660520230">साइटों को सुरक्षित कॉन्टेंट चलाने की अनुमति न दें</translation>
 <translation id="947156494302904893">किसी साइट को विज़िट करने पर, वह इस बात की पुष्टि कर सकती है कि आप बॉट के बजाय असली उपयोगकर्ता हैं</translation>
 <translation id="959682366969460160">व्‍यवस्‍थित हों</translation>
-<translation id="967624055006145463">डेटा सेव किया गया</translation>
+<translation id="961930410699694996">इस बार जगह की जानकारी ऐक्सेस करने की अनुमति दी गई</translation>
+<translation id="967624055006145463">सेव किया गया डेटा</translation>
 <translation id="969975166333045662">साइट को V8 ऑप्टिमाइज़र का इस्तेमाल करने से रोकें.</translation>
 <translation id="3110967157686007724">निजी टैब</translation>
 <translation id="8623552597614912461">यह साइट प्राइवेट मोड के बाहर किसी ऐप से जानकारी शेयर करने वाली है।</translation>

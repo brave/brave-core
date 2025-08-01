@@ -293,6 +293,7 @@
 <translation id="6277237872689140644">हे कदाचित दुसऱ्या ठिकाणी हलविले गेले आहे किंवा URL मध्ये टायपो असू शकतो.</translation>
 <translation id="2737084171727561244">पोर्टफोलियोवर जा</translation>
 <translation id="3662406032239313663">लॉग्ज</translation>
+<translation id="1772301834467143364">ब्रेव्ह न्यूज</translation>
 <translation id="3861486700625780712">अनफॉलो</translation>
 <translation id="4108314971463891922">फॉलो</translation>
 <translation id="3225021799163709119">लोकप्रिय</translation>
@@ -353,6 +354,7 @@
 <translation id="2370739752330685659">नंतर बघू</translation>
 <translation id="6739516910850820220">फाईल अपलोड करत आहे...</translation>
 <translation id="4250229828105606438">स्क्रीनशॉट</translation>
+<translation id="7742969455167760092">खुले टॅब...</translation>
 <translation id="867722069064361487">12-तासांचे घड्याळ</translation>
 <translation id="4064062743338217840">24-तासांचे घड्याळ</translation>
 <translation id="1776831331757823105">घड्याळ</translation>
@@ -367,7 +369,6 @@
 <translation id="423209533815462685">शोध सूचना सक्षम करायच्या?</translation>
 <translation id="167018310108390163">नवीन टॅब पृष्ठामध्ये तुम्हाला हवे ते बदल करा</translation>
 <translation id="8522669544471808198">पार्श्वभूमी प्रतिमा दर्शवा</translation>
-<translation id="5149018766422637336">बातम्या आणि RSS</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave रिवॉर्ड्स<ph name="LINK_END"/> सह, तुम्ही नवीन टॅब पृष्ठावरील जाहिराती पाहून कमवू शकता.</translation>
 <translation id="4100520468072294616">नवीन टॅब पृष्ठावरील जाहिराती दाखवा</translation>
 <translation id="8112367589167674370">Brave टॉक</translation>
@@ -409,6 +410,7 @@
 <translation id="6821108091726602352">Brave च्या वेब डिस्कव्हरी प्रकल्पामध्ये भाग घेऊन वेब सुधारण्यास आम्हाला मदत करा. पूर्णपणे निनावी शोध संकेत शेअर करून, तुम्ही Brave ला शोध अनुक्रमणिका वाढवण्यास मदत करू शकता.</translation>
 <translation id="6764845498618413165">अधिक जाणून घ्या.</translation>
 <translation id="7818938154803162778">हो, मी नक्की मदत करेन</translation>
+<translation id="7207456302801184289">Brave मध्ये स्वागत आहे</translation>
 <translation id="3486480638399578250">तुमचा वैयक्तिक ईमेल पत्ता खासगी ठेवा</translation>
 <translation id="7765422154906712751">तुमच्या Brave खात्याच्या ईमेलवर अग्रेषित करणारे असे अद्वितीय, यादृच्छिक पत्ते तयार करा जे कधीही हटवता येतात. तुमचा वास्तविक ईमेल पत्ता जाहिरातदारांना कळण्यापासून किंवा त्यांना वापरता येण्यापासून वाचवा.</translation>
 <translation id="5222676887888702881">साइन आउट करा</translation>
@@ -439,7 +441,7 @@
 <translation id="3699624789011381381">ईमेल ॲड्रेस</translation>
 <translation id="8124939971041602970">लॉगिन ईमेल पुढील पत्त्यावर पाठवला जात आहे <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">तुमच्या खात्यात प्रवेश करण्यासाठी ईमेलमधील सुरक्षित लॉगिन लिंकवर क्लिक करा.</translation>
-<translation id="6549775668256477823">ईमेल दिसत नाही? तुमचा स्पॅम फोल्डर तपासा किंवा <ph name="BEGIN_LINK"/>पुन्हा प्रयत्न करा<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">ईमेल दिसत नाही? तुमचा स्पॅम फोल्डर तपासा किंवा पुन्हा प्रयत्न करा.</translation>
 <translation id="5753795690521538679">7 दिवसांचे विनामूल्य ट्रायल सुरु करा</translation>
 <translation id="3357036723290257445">Brave VPN आधीच खरेदी केला आहे?</translation>
 <translation id="7805768142964895445">स्थिती</translation>

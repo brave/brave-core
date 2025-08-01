@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">Kun på siden med nye faneblad</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Mere…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {Luk gæst}
+          other {Luk gæst}
+        }</translation>
 <translation id="1990886731975529483">Installér og kør Google Widevine</translation>
 <translation id="8926389886865778422">Spørg ikke igen</translation>
 <translation id="4900351245762303149">Installér Google Widevine</translation>
@@ -77,13 +81,20 @@ vindue med Tor</translation>
 <translation id="2808103541110899519">Skjul Brave Wallet-ikon</translation>
 <translation id="7595540212376041331">Skjul Brave Wallet-ikonet</translation>
 <translation id="3893997535859323951">Skjul ikonet for Leo AI</translation>
+<translation id="8832245978592881387">Åbn Leo AI i en ny fane</translation>
+<translation id="4577675328803804820">Åbn Leo AI i sidepanelet</translation>
+<translation id="564305948667173847">Administrer Leo AI-indstillinger</translation>
 <translation id="6208515240323786457">Skjul ikonet for Leo AI</translation>
-<translation id="2361906291514218784">Leo AI</translation>
+<translation id="2169338740411893745">Åbn Leo AI i en ny fane</translation>
+<translation id="3295805221342028003">Åbn Leo AI i sidepanelet</translation>
+<translation id="7400808612454224939">Administrer Leo AI-indstillinger</translation>
+<translation id="5385064007245738696">Om Leo AI</translation>
 <translation id="4928988318462976765">Internetadresse-Butik</translation>
 <translation id="9181207987584064303">Se i Internetadresse-Butik</translation>
 <translation id="3161744659507801211">Advarsel: Brave kan ikke forhindre udvidelser i at gemme din browserhistorik.</translation>
 <translation id="2162109630536601963">Hvis denne udvidelse foretager netværksanmodninger, vil de ikke bruge Tor eller privat tilstand.</translation>
 <translation id="2725327089319971976">Fjern markeringen af denne indstilling for at deaktivere denne udvidelse i privat tilstand og Tor-tilstand.</translation>
+<translation id="438106944087726695">Brave-hostet</translation>
 <translation id="3371343170427636147">Brave Browser natlige apps</translation>
 <translation id="4097979995947147464">Brave Browser beta-apps</translation>
 <translation id="8303432794159193481">Brave Browser udvikler-apps</translation>
@@ -182,11 +193,6 @@ vindue med Tor</translation>
 <translation id="4394049700291259645">Deaktiver</translation>
 <translation id="7142548388914389999">Tillad anonymitetsbeskyttede produktanalyser (også kendt som P3A)</translation>
 <translation id="2604698253988679506">Disse private svar hjælper kun Brave med at anslå det generelle forbrug af visse funktioner og gøre servicen endnu bedre.</translation>
-<translation id="1947672064022327074">Vil du starte Crypto Wallets for Ethereum support?</translation>
-<translation id="7583735190612229830">Sæt dine krypto wallets op til at interagere med denne app og andre som den</translation>
-<translation id="8731422418734770661">Konfigurér krypto-wallets</translation>
-<translation id="8199661191594897555">Åbn Krypto-tegnebøger og genindlæs</translation>
-<translation id="8428213095426709021">Indstillinger</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3-domæner</translation>
 <translation id="5046066249040287308">Værktøjstjeneste til Brave Wallet</translation>
@@ -336,6 +342,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="7557539689487606886">Vælg Premium</translation>
 <translation id="1035309871698658326">Når den åbnes, sender den automatisk titlerne og oprindelsen på alle ikke-private faner til Leo for at klassificere dem.</translation>
 <translation id="3435896845095436175">Aktivér</translation>
+<translation id="1940221956626514677">Tilpas værktøjslinjen</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -493,6 +500,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="3540231253392253941">Brug Google-tjenester til push-beskeder</translation>
 <translation id="933652931229970927">Send automatiske diagnosticeringsrapporter</translation>
 <translation id="4891600875049212418">Forbliv anonym, imens du besøger følsomme sider</translation>
+<translation id="509873765238158442">Bloker Microsoft Recall-funktionen</translation>
+<translation id="4763421121695677716">Bloker Recall-funktionen på Microsoft Windows-computere fra automatisk at tage skærmbilleder af alle åbne Brave-faner.</translation>
 <translation id="1968895725257436430">Dataindsamling</translation>
 <translation id="4846154056248462491">Ved udgang</translation>
 <translation id="216468847346280584">Slet data om Brave-reklamer ...</translation>
@@ -654,10 +663,10 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2653659639078652383">Indsend</translation>
 <translation id="1294350054292274934">Løs kun .onion-adresser i Tor-vinduer</translation>
 <translation id="601227612175911475">Onion-tjenester vil ikke være tilgængelige uden for Tor-vinduer.</translation>
-<translation id="2896916411183256228">Bruger WebTorrent til at vise torrents direkte i browseren. Understøtter torrent-filer og magnetlinks.</translation>
 <translation id="5249433283143453448">Brug Widevine Digital Rights Management (DRM) komponentet til at vise beskyttet streaming af video og andet indhold i browseren.</translation>
 <translation id="1314131187310290315">Udvidelser til Manifest V2</translation>
 <translation id="2488433650767270565">Følgende Manifest V2-udvidelser fjernes fra Chromes webshop, men understøttes stadig i Brave. Slå til/fra for at downloade og installere eller for at afinstallere.</translation>
+<translation id="6918225713618473646">Brave hoster disse Manifest V2-udvidelser på Brave-servere, men gennemgår eller verificerer ikke deres indhold, sikkerhed eller adfærd. Se venligst hver udvidelses officielle side for at få hjælp. Læs om Braves planer for Manifest V2 <ph name="BEGIN_LINK"/>her<ph name="END_LINK"/>.</translation>
 <translation id="578671172657727816">Aktivér NoScript™</translation>
 <translation id="9068475464170522036">NoScript er en udvidelse til Manifest V2, der gør det muligt for dig at blokere og fjerne blokeringen af individuelle scripts, der kører eller forsøger at køre på en bestemt side.</translation>
 <translation id="1394592156621788100">Aktivér uBlock Origin™</translation>
@@ -672,7 +681,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="7701023802820268122">Standard Solana-wallet</translation>
 <translation id="8488282162676695335">Brave-wallet</translation>
 <translation id="6942354363301686374">Udvidelser (ingen backup)</translation>
-<translation id="1274962333945373242">Crypto Wallets (forældet)</translation>
 <translation id="702381242110464396">Udvidelser (tilbagefald af Brave-tegnebog)</translation>
 <translation id="4718664830805652430">Standard basisvaluta</translation>
 <translation id="7992507032049865603">Standardbasis for cryptovaluta</translation>
@@ -737,6 +745,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="3095201688102519917">Advar, inden jeg lukker et vindue med flere faner</translation>
 <translation id="7120553802660696133">Luk hele vinduet, når det sidste faneblad lukkes</translation>
 <translation id="3394171693948989253">Vis påmindelse i fuld skærm om at trykke Esc ved afslutning</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Vis Leo-ikon i sidebjælken</translation>
 <translation id="8055509865174199683">Vis Leo i kontekstmenuen på hjemmesider</translation>
 <translation id="1529674267267221673">Leo vil blive vist i kontekstmenuen, når du højreklikker på en hjemmeside. Dette vil sende konteksten fra den aktuelle hjemmeside til Leo.</translation>
@@ -750,7 +759,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 Leo AI fremover, og denne handling sletter også din chathistorik. Hvis du sletter din chathistorik, slettes alle dine tidligere samtaler med Brave Leo AI. Denne handling kan ikke fortrydes.</translation>
 <translation id="5574059574002819179">Justér automatiske forslag</translation>
 <translation id="7942415993090181327">Chathistorik</translation>
-<translation id="5385064007245738696">Om Leo AI</translation>
 <translation id="5084498230659987096">Brave Leo leverer en AI-chat og andre AI-drevne grænseflader i browseren, der prioriterer privatlivets fred. Leo lærer aldrig af dine data eller bruger dem til modeltræning. Alle anmodninger sendes gennem en anonymiserende server.</translation>
 <translation id="6458721693611638005">Læs mere om, hvordan Brave beskytter din brug af AI i Leos privatlivspolitik. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Standardmodel for nye samtaler</translation>
@@ -787,6 +795,9 @@ Leo AI fremover, og denne handling sletter også din chathistorik. Hvis du slett
 <translation id="6304169450064541679">System-prompt</translation>
 <translation id="3081947790648024460">Brugerdefinerede instruktioner og/eller kontekst, der gives til modellen for at lede dens svar i en bestemt retning eller stil. Brug %datetime%, hvor du gerne vil have indsat den aktuelle dato og det aktuelle klokkeslæt.</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokens</translation>
+<translation id="5985516785067818307">Paneldeltager i undersøgelsen</translation>
+<translation id="8347743943525229984">Tillad Brave-undersøgelser</translation>
+<translation id="3204080538332044581">Giver Brave mulighed for at vise links til private undersøgelser i den nye fane. Undersøgelser hjælper os med at udvikle bedre funktioner og måle effektiviteten af browserbaserede annoncekampagner. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Aktivér spilleliste</translation>
 <translation id="7903608716704052878">Tilføj automatisk filer til offline visning</translation>
 <translation id="4193768184502613558">Denne indstilling vil automatisk lave cache mediefiler, så du kan afspille dem uden internetforbindelse.</translation>

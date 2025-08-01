@@ -9,6 +9,7 @@
 <translation id="7630214457764713113">क्लीन लिंक कॉपी करा</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="1990886731975529483">गूगल वाइडवाइन इन्स्टॉल करा आणि चालू करा</translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
 <translation id="4900351245762303149">Google Widevine इन्स्टॉल करा</translation>
@@ -47,7 +48,6 @@
 <translation id="4877147287319222750">साइडबारमध्ये जोडा</translation>
 <translation id="8712637175834984815">समजले</translation>
 <translation id="4394049700291259645">अक्षम करा</translation>
-<translation id="8428213095426709021">सेटिंग्ज</translation>
 <translation id="4474155171896946103">सर्व टॅब बुकमार्क करा...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{टॅब म्यूट करा}one{टॅब म्यूट करा}other{टॅब म्यूट करा}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{टॅब अनम्यूट करा}one{टॅब अनम्यूट करा}other{टॅब अनम्यूट करा}}</translation>
@@ -164,7 +164,6 @@
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">माझा संभाषण इतिहास जतन करा</translation>
 <translation id="6106701981952170121">सर्व Leo AI संभाषण डेटा काढून टाका</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="614530507403667291">नवीन संभाषणांसाठीचे डीफॉल्ट मॉडेल</translation>
 <translation id="1907126221851170941">मॉडेल जोडा</translation>
 <translation id="154702742922788359">उघडा मोड</translation>

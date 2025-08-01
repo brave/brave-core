@@ -876,7 +876,7 @@
 <translation id="1939235910515558387">Începeți să folosiți Portofelul Brave în câteva minute.</translation>
 <translation id="5844138175312846408">Aveți deja un portofel?</translation>
 <translation id="772643556080081594">Am nevoie de un portofel doar pentru vizualizare</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave și logoul Brave sunt mărci comerciale înregistrate ale Brave Software, Inc. Alte nume de produse și logouri pot fi mărci comerciale ale companiilor respective. Toate drepturile sunt rezervate.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave și logoul Brave sunt mărci comerciale înregistrate ale Brave Software, Inc. Alte nume de produse și logouri pot fi mărci comerciale ale companiilor respective. Toate drepturile sunt rezervate.</translation>
 <translation id="7501957181231305652">sau</translation>
 <translation id="375882617301124395">Realizați o copie de rezervă după portofel</translation>
 <translation id="5024543173656851695">Înțeleg faptul că, dacă pierd cuvintele pentru recuperare, nu voi putea accesa portofelul meu cu criptomonede.</translation>
@@ -1120,10 +1120,6 @@
 <translation id="4324239559624557455">Pentru 24 de ore</translation>
 <translation id="9139452553033760558">Pentru o săptămână</translation>
 <translation id="1658834457013045127">Pentru totdeauna</translation>
-<translation id="2770851145415891830">S-au detectat portofele de criptomonede existente</translation>
-<translation id="2237759620789871865">Dacă preferați să omiteți importarea și să păstrați vechile portofele pentru criptomonede, trebuie doar să navigați la <ph name="LINK_BEFORE"/>Setările<ph name="LINK_AFTER"/> Brave Browser și să modificați opțiunea implicită înapoi la Portofele de criptomonede. De asemenea, puteți și să realizați importarea, să testați noua opțiune Brave Wallet și să reveniți la soluția anterioară în orice moment.</translation>
-<translation id="5590175005414413980">Introduceți parola pentru portofelele existente de criptomonede pentru importarea în portofelul Brave. Beneficiați de o modalitate mai rapidă și mai sigură de a gestiona activele de criptomonede și de a interacționa cu aplicațiile descentralizate Web3.</translation>
-<translation id="880619123281809987">Tastați parola portofelelor Crypto</translation>
 <translation id="6344138931392227467">Dispozitivul <ph name="DEVICE_NAME"/> este conectat</translation>
 <translation id="7051244143160304048">Dispozitivul <ph name="DEVICE_NAME"/> este deconectat</translation>
 <translation id="5317781812114905957">Instrucțiuni</translation>
@@ -1381,6 +1377,9 @@
 <translation id="5601436886921227795">Interacțiune Dapp</translation>
 <translation id="9104177294757104789">Trimiteți <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Convertiți <ph name="MAKER"/> în <ph name="TAKER"/></translation>
+<translation id="1748114617341025015">Se creează contul token asociat</translation>
+<translation id="4418115887224983240">A eșuat crearea contului token asociat</translation>
+<translation id="7165697599360786670">Cont token asociat creat</translation>
 <translation id="8613144770663526433">Conectați-vă cu Brave Wallet</translation>
 <translation id="8813165409788097898">Vă conectați la . Brave Wallet va partaja adresa portofelului dvs. cu <ph name="ORIGIN"/><ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Vedeți detaliile</translation>
@@ -1514,7 +1513,6 @@
 <translation id="396152018598329740">Cum se utilizează un portofel crypto?</translation>
 <translation id="7512061585041489067">Care este cel mai bun portofel crypto?</translation>
 <translation id="1342755158522323177">Ce este un browser crypto?</translation>
-<translation id="4702762916247565868">Portofele crypto 101</translation>
 <translation id="4674552515763857735">Ce este o frază de recuperare?</translation>
 <translation id="7328255859839881981">Ce sunt DApps?</translation>
 <translation id="3852489285890032403">Ce este web 3?</translation>
@@ -1532,7 +1530,6 @@
 <translation id="7877416315564177070">Verificați expresia de recuperare și încercați din nou.</translation>
 <translation id="6503538941917874992">Importați folosind expresia dvs. de recuperare</translation>
 <translation id="782167880151571109">Portofel Metamask detectat!</translation>
-<translation id="3619071361843652814">Portofel Legacy detectat!</translation>
 <translation id="4634124774493850572">Folosește parola</translation>
 <translation id="7697478310235189459">Cuvântul <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Tastați expresia de recuperare MetaMask de 12 -24 de cuvinte.</translation>
@@ -1545,7 +1542,6 @@
 <translation id="3604445540387095708">Am citit și sunt de acord cu<ph name="LINK_BEFORE"/> Termenii de utilizare<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Cumpărați cripto</translation>
 <translation id="3887541341068007345">Verificarea extensiilor de portofel...</translation>
-<translation id="3567994771568272606">Importați din portofelele cripto Brave anterioare</translation>
 <translation id="8407091560429310499">Selectarea unui activ</translation>
 <translation id="756590380936155533">Pentru a finaliza achiziția dvs. <ph name="ASSET_TICKER"/>, selectați unul dintre partenerii noștri</translation>
 <translation id="7880860489474966219">La finalizare, fondurile dvs. vor fi transferate în Portofelul Brave</translation>
@@ -1748,6 +1744,7 @@
 <translation id="4583937519241190398">Verificat de DappRadar</translation>
 <translation id="8713438253026855351">Treceți la un cont protejat</translation>
 <translation id="3526789880090101085">Cont protejat</translation>
+<translation id="3155166394760577549">Activează protecţia pentru a îmbunătăţi confidenţialitatea tranzacţiilor.</translation>
 <translation id="2298396008562701154">În prezent, acest cont acceptă tranzacții transparente, ceea ce înseamnă că acestea sunt vizibile pentru toată lumea pe blockchain.</translation>
 <translation id="3987095760757102811">Trecerea la un cont protejat înseamnă că aceste tranzacții ascund detaliile privind expeditorul, destinatarul și suma.</translation>
 <translation id="3819528427777765709">Protejat</translation>
@@ -1778,6 +1775,8 @@
 <translation id="99991973626409495">Revizuire protecție</translation>
 <translation id="3114681061018999547">Se protejează</translation>
 <translation id="8897189056319316783">Protecție ZEC</translation>
+<translation id="3382275793825152362">Protejează fondurile</translation>
+<translation id="8631765320256788981">Trimiți fonduri din contul tău transparent în contul tău protejat.</translation>
 <translation id="7144878232160441200">Reîncearcă</translation>
 <translation id="9094621390791852268">Previzualizarea tranzacției a eșuat.</translation>
 <translation id="4982713341035600933">Modificarea estimată a soldului</translation>
@@ -1839,7 +1838,7 @@
 <translation id="7758665172236842395">Urmăriți-vă sursele preferate, într-un singur flux. Deschideți o filă în Brave, derulați în jos și... voila!</translation>
 <translation id="2376542729617592331">Știrile Brave este susținut de reclame private, anonime. <ph name="LINK_START"/> Aflați mai multe <ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Activați știrile Brave</translation>
-<translation id="5149018766422637336">Știri și RSS</translation>
+<translation id="1772301834467143364">Știrile Brave</translation>
 <translation id="6265592479622441247">Înapoi la <ph name="BEGIN_BOLD"/>Tabloul de bord<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Descoperă</translation>
 <translation id="8981973962043893066">Căutați un site, un subiect sau un flux RSS</translation>
@@ -2110,10 +2109,18 @@ other {# surse}
 <translation id="4885527781814382758">Brave Leo este un asistent inteligent de IA privat menit să îmbunătățească folosirea internetului. Leo poate fi folosit gratuit cu funcții limitate. Brave Leo Premium oferă mai multe modele, limite mai ridicate și oferă abonaților acces timpuriu la funcții noi. Modelul implicit se va schimba din când în când. Consultă <ph name="LINK_BEFORE"/>Centrul de ajutor<ph name="LINK_AFTER"/> pentru mai multe detalii.</translation>
 <translation id="7189603330209995455">În mod implicit, când îi adresați o întrebare lui Leo, acesta poate trimite și folosi conținutul paginii web pe care o vizualizați, respectiv un fragment de text evidențiat dintr-o pagină la Brave Leo în vederea generării unui răspuns. Acuratețea răspunsurilor nu este garantată, acestea putând conține informații inexacte, înșelătoare sau false. Leo folosește datele de la Brave Search pentru a îmbunătăți calitatea răspunsurilor. Nu trimiteți informații sensibile sau confidențiale și manifestați prudență în ceea ce privește răspunsurile referitoare la sănătate, finanțe, siguranță personală etc. Puteți ajusta opțiunile Leo în Setări, în orice moment. Accesați Setările &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo nu colectează identificatori precum adresa de IP care pot fi asociați cu dvs. Datele nu sunt folosite pentru antrenarea modelelor IA, iar datele personale nu sunt reținute de modelele IA (cu excepția Anthropic, care păstrează datele timp de 30 de zile). Consultați <ph name="LINK_BEFORE"/>politica de confidențialitate<ph name="LINK_AFTER"/> pentru mai multe informații.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {Pune o întrebare despre conținutul acestor pagini}
+      other {Pun o întrebare despre conținutul acestor pagini}
+    }</translation>
 <translation id="6961721183181597848">Cum te pot ajuta astăzi?</translation>
 <translation id="2966135729673253768">Cere o continuare</translation>
 <translation id="4524675003624341892">Sugerați întrebări...</translation>
 <translation id="4567071417854988869">Rezumați acest videoclip</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {Rezumă această pagină}
+      other {Rezumă aceste pagini}
+    }</translation>
 <translation id="7921782882718083488">Rezumați această pagină</translation>
 <translation id="7932221068776853847">Deconectați pentru a întrerupe transmiterea conținutul acestei pagini la Leo și începeți o conversație nouă</translation>
 <translation id="8743383817154663379">Ceva nu a funcționat în timpul procesării cererii tale. Te rugăm să încerci din nou mai târziu.</translation>
@@ -2136,7 +2143,7 @@ other {# surse}
 <translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Deschideți pagina întreagă</translation>
 <translation id="2961040541145689181">Chat nou</translation>
-<translation id="7557539689487606886">Alegeți Premium</translation>
+<translation id="7557539689487606886">Alege Premium</translation>
 <translation id="1691256669639196606">Gestionați abonamentul</translation>
 <translation id="3840096463915153852">Istoricul conversației</translation>
 <translation id="2304783958703511257">Setări avansate</translation>
@@ -2204,16 +2211,14 @@ other {# surse}
 <translation id="8712637175834984815">Am înțeles</translation>
 <translation id="1093419424466417703">Această pagină este prea lungă pentru Leo. E posibil să lipsească context din conversație. Leo a putut citi <ph name="PERCENTAGE"/> din conținutul paginii.</translation>
 <translation id="4592293425457329338">S-ar putea să lipsească un anumit context din conversație. Leo a reușit să rețină <ph name="PERCENTAGE"/> din conținutul asociat conversației.</translation>
-<translation id="2186990448773134544">Conținutul paginii a fost rafinat prin extragerea celor mai relevante informații din pagină, deoarece acesta era prea lung pentru Leo.</translation>
-<translation id="5140068729857132378">Se caută părțile relevante ale paginii web...</translation>
 <translation id="4370698775470316661">Această conversație este prea lungă și nu mai poate continua. Ar putea exista alte modele disponibile cu care Leo poate menține acuratețea pentru conversații mai lungi.</translation>
 <translation id="5719170755629028558">Se îmbunătățește răspunsul dvs. cu Brave Search...</translation>
 <translation id="5794962229997281366">Se caută un răspuns îmbunătățit pentru <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949">încă <ph name="COUNT"/>…</translation>
 <translation id="8103700533980268469">Închide această notificare</translation>
 <translation id="3417835166382867856">File de căutare</translation>
-<translation id="9090243919347147717">Atașamente</translation>
-<translation id="4444978378117903684">Adaugă filele tale de browser pentru a oferi Leo mai mult context pentru conversație</translation>
+<translation id="1352836459737874921">Atașează conținut din alte file</translation>
+<translation id="3028258613451571431">Trimite conținutul paginii din filele browser-ului pentru a oferi lui Leo mai mult context pentru conversație</translation>
 <translation id="4300920590112551536">File browser</translation>
 <translation id="2315654674554095762">Leo își va aminti acum conversațiile tale ca să te poți întoarce la ele. Acestea sunt stocate criptat pe dispozitivul tău și le poți șterge oricând.</translation>
 <translation id="7821251979960635244">Istoricul conversațiilor tale va apărea aici odată ce începi o conversație.</translation>
@@ -2236,8 +2241,8 @@ other {# surse}
 <translation id="5642775487085641191">Vreți doar chat?</translation>
 <translation id="8857222718794549840">Întrebați-mă orice! Putem discuta despre orice subiect. Învăț și fac eforturi continue să mă îmbunătățesc pentru a oferi răspunsuri cât mai pertinente.</translation>
 <translation id="9051226419897869406">Inițiați conversații private cu Brave Leo</translation>
-<translation id="637548538907281147">Generează răspunsuri pe baza conținutului paginii</translation>
-<translation id="8599503173207256429">Activați pentru a întreba despre această pagină. Conținutul său îi va fi trimis lui Brave Leo, alături de mesajele dvs.</translation>
+<translation id="2414904697165579184">Definește răspunsurile pe baza conținutului filei (filelor)</translation>
+<translation id="8258324391302611485">Conținutul acestei pagini va fi trimis la Leo împreună cu mesajele tale.</translation>
 <translation id="318819763888864209">Toate abonamentele se reînnoiesc automat, dar pot fi anulate în orice moment înainte de data scadentă a reînnoirii.</translation>
 <translation id="5091223967610958">Trimiteți numele de gazdă al paginii pe care vă aflați (<ph name="HOST_NAME"/>) pentru a ne ajuta să îmbunătățim Leo.</translation>
 <translation id="8732450785281947197">Instrumente Leo IA</translation>
@@ -2268,11 +2273,14 @@ other {# surse}
 <translation id="9088751620363630236">Fă o poză...</translation>
 <translation id="4250229828105606438">Captură de ecran</translation>
 <translation id="6332876390231524389">Conținutul filei curente</translation>
+<translation id="7742969455167760092">Deschide file...</translation>
 <translation id="49269513399674318">Utilizați microfonul</translation>
 <translation id="3895031624234442305">Modele personalizate</translation>
 <translation id="4572010449071015143">Începeți o nouă conversație</translation>
 <translation id="345901077335355561">Întoarce-te la conversația activă</translation>
 <translation id="6287023598025162715">Conversație nouă</translation>
+<translation id="7097822247923237815">Chat temporar</translation>
+<translation id="7481750859362986254">Acest chat nu va fi salvat în istoricul tău sau nu va folosi nici o personalizare sau memorie a lui Leo.</translation>
 <translation id="8370801182970639038">Automat (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Activează motoarele de căutare</translation>
 <translation id="5355776323718420036">Ascunde site-urile de top</translation>
@@ -2389,6 +2397,7 @@ other {# surse}
 <translation id="6821108091726602352">Ajutați-ne să remediem web-ul prin participarea la Web Discovery Project creat de Brave. Prin partajarea semnalelor de căutare complet anonime, puteți ajuta Brave să își crească indexul de căutare.</translation>
 <translation id="6764845498618413165">Aflați mai multe.</translation>
 <translation id="7818938154803162778">Sigur, voi ajuta</translation>
+<translation id="7207456302801184289">Bun venit la Brave</translation>
 <translation id="3486480638399578250">Menține adresa de e-mail privată</translation>
 <translation id="7765422154906712751">Creează adrese unice și aleatorii care redirecționează către contul tău de e-mail Brave și care pot fi șterse oricând. Menține adresa ta reală de e-mail departe de publicitate.</translation>
 <translation id="5222676887888702881">Deconectare</translation>
@@ -2405,6 +2414,7 @@ other {# surse}
 <translation id="1104500750724567895">Nume alternativ nou</translation>
 <translation id="8072910658503112482">Sugerează un alt nume alternativ pentru email</translation>
 <translation id="7710361355427562228">Se generează un nume alternativ nou...</translation>
+<translation id="8013913032858654337">Eroare la generarea aliasului. Verifică conexiunea la internet și încearcă din nou.</translation>
 <translation id="4253168017788158739">Notă</translation>
 <translation id="7596996548739923550">Introdu o notă pentru adresa ta (opțional)</translation>
 <translation id="3810973564298564668">Gestionează</translation>
@@ -2412,13 +2422,21 @@ other {# surse}
 <translation id="3919357515365744684">Emailurile vor fi redirecționate către <ph name="MAIN_EMAIL"/></translation>
 <translation id="6063403442924238501">Editează numele alternativ pentru email</translation>
 <translation id="8729265501883390499">Creează numele alternativ</translation>
+<translation id="7137645995703540578">Eroare la salvarea aliasului. Verifică conexiunea la internet și încearcă din nou.</translation>
+<translation id="1765544689721905747">Șterge alias e-mail</translation>
+<translation id="646524615209870492">Eliminarea <ph name="ALIAS"/> ca alias va duce la pierderea capacității de a primi e-mailuri.</translation>
+<translation id="8133100642915054515">Eroare la ștergerea aliasului. Verifică conexiunea la internet și încearcă din nou.</translation>
+<translation id="8465742443901727718">Această acțiune este ireversibilă. Sigur vrei să continui?</translation>
 <translation id="8662104432574824754">Pentru a începe, autentifică-te sau creează un cont Brave</translation>
 <translation id="8069030342700068465">Introdu adresa ta de email pentru a primi un link de autentificare securizat trimis la emailul tău. Dacă dai clic pe acest link se va crea sau accesa un Cont Brave și îți va permite să utilizezi serviciul gratuit de Nume alternative pentru Email.</translation>
 <translation id="2133391407495495735">Obține linkul de autentificare</translation>
+<translation id="2650906829817220223">Eroare la solicitarea autentificării. Verifică conexiunea la internet și încearcă din nou.</translation>
 <translation id="3699624789011381381">Adresă de email</translation>
 <translation id="8124939971041602970">Un email de autentificare este pe drum către <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">Fă click pe linkul de autentificare securizat din email pentru a accesa contul tău.</translation>
-<translation id="6549775668256477823">Nu vezi emailul? Verifică folderul de spam sau <ph name="BEGIN_LINK"/>încearcă din nou<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Nu vezi emailul? Verifică folderul de spam sau încearcă din nou.</translation>
+<translation id="3397336197747843396">Eroare la autentificarea cu contul Brave. Te rugăm să încerci din nou.</translation>
+<translation id="1340795582009113055">Începe din nou</translation>
 <translation id="958268166261124668">Brave VPN: Conectat</translation>
 <translation id="6021669293402055982">Brave VPN: Deconectat</translation>
 <translation id="3541307549916475335">Interfață de utilizator a panoului VPN Brave</translation>

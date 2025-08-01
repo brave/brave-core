@@ -875,7 +875,7 @@
 <translation id="1939235910515558387">ابدأ مع محفظة Brave في غضون دقائق</translation>
 <translation id="5844138175312846408">هل لديك محفظة بالفعل؟</translation>
 <translation id="772643556080081594">أريد محفظة للعرض فقط</translation>
-<translation id="4878034296528175352">الحقوق محفوظة ©لشركة Brave Software Inc لعام 2024، إن Brave وشعار Brave علامتان تجاريتان لشركة Brave Software, Inc. قد تكون أسماء المنتجات والشعارات الأخرى علامات تجارية لشركاتها المعنية. جميع الحقوق محفوظة.</translation>
+<translation id="5324869722853875525">الحقوق محفوظة ©لشركة Brave Software Inc لعام 2025، إن Brave وشعار Brave علامتان تجاريتان لشركة Brave Software, Inc. قد تكون أسماء المنتجات والشعارات الأخرى علامات تجارية لشركاتها المعنية. جميع الحقوق محفوظة.</translation>
 <translation id="7501957181231305652">أو</translation>
 <translation id="375882617301124395">قم بعمل نسخة احتياطية من crypto wallet</translation>
 <translation id="5024543173656851695">أُدرك أنه في حال فقدت كلمات الاسترداد الخاصة بي، فلن أتمكن من الوصول إلى محفظة التشفير الخاصة بي.</translation>
@@ -1119,10 +1119,6 @@
 <translation id="4324239559624557455">لمدة 24 ساعة</translation>
 <translation id="9139452553033760558">لمدة أسبوع واحد</translation>
 <translation id="1658834457013045127">للأبد</translation>
-<translation id="2770851145415891830">تم الكشف عن محافظ التشفير الحالية</translation>
-<translation id="2237759620789871865">إذا كنت تفضل تخطي الاستيراد والاحتفاظ بتجربة Crypto Wallets القديمة، فما عليك سوى الانتقال إلى <ph name="LINK_BEFORE"/> إعدادات <ph name="LINK_AFTER"/> المتصفح، وقم بتغيير الافتراضي إلى Crypto Wallets. يمكنك أيضًا استيراد Brave Wallet الجديدة وتجربتها والتغيير مرة أخرى في أي وقت.</translation>
-<translation id="5590175005414413980">أدخل كلمة مرور محافظ التشفير الحالية للاستيراد إلى Brave Wallet. استمتع بطريقة أسرع وأكثر أمانًا لإدارة أصول التشفير والتفاعل مع Web3 DApps على الويب.</translation>
-<translation id="880619123281809987">اكتب كلمة مرور محافظ العملات المشفرة</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> متصل</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> غير متصل</translation>
 <translation id="5317781812114905957">تعليمات</translation>
@@ -1513,7 +1509,6 @@
 <translation id="396152018598329740">كيفية استخدام محفظة العملات المشفرة؟</translation>
 <translation id="7512061585041489067">ما أفضل محفظة عملات مشفرة؟</translation>
 <translation id="1342755158522323177">ما متصفح العملات المشفرة؟</translation>
-<translation id="4702762916247565868">محافظ العملات المشفرة 101</translation>
 <translation id="4674552515763857735">ما المقصود بعبارة الاسترداد؟</translation>
 <translation id="7328255859839881981">ما المقصود بـDApps؟</translation>
 <translation id="3852489285890032403">ما المقصود بالويب 3؟</translation>
@@ -1531,7 +1526,6 @@
 <translation id="7877416315564177070">تحقق من عبارة الاسترداد وحاول مجددًا.</translation>
 <translation id="6503538941917874992">الاستيراد باستخدام عبارة استرداد</translation>
 <translation id="782167880151571109">تم اكتشاف محفظة Metamask!</translation>
-<translation id="3619071361843652814">اكتشاف محفظة قديمة!</translation>
 <translation id="4634124774493850572">استخدام كلمة المرور</translation>
 <translation id="7697478310235189459">كلمة <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">اكتب عبارة استرداد MetaMask المكوّنة من 12 إلى 24 كلمة.</translation>
@@ -1544,7 +1538,6 @@
 <translation id="3604445540387095708">قرأت شروط الاستخدام <ph name="LINK_BEFORE"/>وأوافق عليها<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">شراء العملات المشفرة</translation>
 <translation id="3887541341068007345">جارٍ التحقق من ملحقات المحفظة...</translation>
-<translation id="3567994771568272606">استيراد من محافظ Brave القديمة للعملات المشفرة</translation>
 <translation id="8407091560429310499">تحديد أصل</translation>
 <translation id="756590380936155533">لإنهاء عملية الشراء <ph name="ASSET_TICKER"/> ، اختر أحد شركائنا</translation>
 <translation id="7880860489474966219">عند الانتهاء، سيتم تحويل أموالك إلى محفظة Brave الخاصة بك</translation>
@@ -1838,7 +1831,7 @@
 <translation id="7758665172236842395">تابع المصادر التي تفضلها، في موجو واحد، ليس عليك سوى فتح علامة تبويب في منصة Brave، والتمرير لأسفل، و... ها هو ذا!</translation>
 <translation id="2376542729617592331">أخبار Brave هي خدمة مدعومة بالإعلانات، وتتضمن إعلانات خاصة، وإعلانات مجهولة المصدر. <ph name="LINK_START"/> معرفة المزيد <ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">تشغيل أخبار Brave</translation>
-<translation id="5149018766422637336">الأخبار و الموجزات</translation>
+<translation id="1772301834467143364">Brave News</translation>
 <translation id="6265592479622441247">الرجوع إلى <ph name="BEGIN_BOLD"/>لوحة التحكم<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">اكتشف</translation>
 <translation id="8981973962043893066">بحث عن موقع، أو موضوع، أو موجز RSS</translation>
@@ -2203,16 +2196,12 @@
 <translation id="8712637175834984815">تم</translation>
 <translation id="1093419424466417703">تعد الصفحة طويلة للغاية بالنسبة لـ Leo، لذا فقد يفقد بعض السياق من المحادثة، إذ تمكن Leo من قراءة نسبة <ph name="PERCENTAGE"/> فقط من محتويات الصفحة.</translation>
 <translation id="4592293425457329338">قد تفتقر المحادثة إلى بعض السياق. تمكن Leo من الاحتفاظ بنسبة <ph name="PERCENTAGE"/> من المحتوى المرتبط بالصفحة.</translation>
-<translation id="2186990448773134544">لقد تم تحسين محتوى الصفحة من خلال استخراج المعلومات الأكثر صلة من الصفحة لأنها كانت طويلة للغاية بالنسبة إلى Leo.</translation>
-<translation id="5140068729857132378">جارِ العثور على الأجزاء المتصلة بصفحة الويب...</translation>
 <translation id="4370698775470316661">هذه المحادثة طويلة جدًا ولا يمكن أن تستمر.  قد تكون هناك نماذج أخرى متوفرة يستطيع Leo من خلالها الحفاظ على الدقة المطلوبة لإجراء محادثات أطول.</translation>
 <translation id="5719170755629028558">تحسين إجابتك بواسطة بحث Brave...</translation>
 <translation id="5794962229997281366">بحث مُحسن عن الإجابات لـ <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> المزيد…</translation>
 <translation id="8103700533980268469">إغلاق هذا الإشعار</translation>
 <translation id="3417835166382867856">علامات تبويب البحث</translation>
-<translation id="9090243919347147717">المرفقات</translation>
-<translation id="4444978378117903684">أضف علامات تبويب متصفحك لتزويد ليو بمزيد من السياق للمحادثة</translation>
 <translation id="4300920590112551536">علامة تبويب متصفح جديدة</translation>
 <translation id="2315654674554095762">سيتذكر Leo الآن محادثاتك حتى تتمكن من العودة إليها. يتم تخزينها مشفرة على جهازك، ويمكنك حذفها في أي وقت.</translation>
 <translation id="7821251979960635244">سيظهر سجل المحادثة الخاص بك هنا بمجرد بدء محادثة.</translation>
@@ -2235,8 +2224,6 @@
 <translation id="5642775487085641191">هل تريد إجراء محادثة فقط؟</translation>
 <translation id="8857222718794549840">اسألني على أي شيء! يمكننا التحدُّث حول أي موضوع تريده. أنا أتعلم دومًا وأحرص على التحسُّن لتقديم أفضل الإجابات.</translation>
 <translation id="9051226419897869406">الدردشة بخصوصية مع Brave Leo</translation>
-<translation id="637548538907281147">قم بصياغة الإجابات بناءً على محتويات الصفحة</translation>
-<translation id="8599503173207256429">قم بالتشغيل لطرح سؤال حول هذه الصفحة. سيتم إرسال محتواها إلى ليو في متصفح Brave إلى جانب رسائلك.</translation>
 <translation id="318819763888864209">تجدد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها في أي وقت قبل التجديد.</translation>
 <translation id="5091223967610958">شارك اسم المضيف للصفحة التي أنت فيها (<ph name="HOST_NAME"/>)  لمساعدتنا على تحسين مساعد Leo.</translation>
 <translation id="8732450785281947197">أدوات Leo للذكاء الاصطناعي</translation>
@@ -2387,6 +2374,7 @@
 <translation id="6821108091726602352">ساعدنا على إصلاح الموقع الإلكتروني من خلال المشاركة في مشروع اكتشاف الموقع في Brave، وذلك من خلال مشاركة إشارات البحث غير المعروفة تمامًا، حيث يمكنك مساعدة Brave على توسيع فهرس البحث.</translation>
 <translation id="6764845498618413165">اطلع على المزيد من المعلومات.</translation>
 <translation id="7818938154803162778">بالتأكيد، سأقدم المساعدة.</translation>
+<translation id="7207456302801184289">مرحباً بك في Brave</translation>
 <translation id="3486480638399578250">حافظ على خصوصية عنوان بريدك الإلكتروني الشخصي</translation>
 <translation id="7765422154906712751">أنشئ عناوين فريدة وعشوائية يتم توجيهها إلى عنوان بريدك الإلكتروني في حساب Brave ويمكن حذفها في أي وقت. احمِ عنوان بريدك الإلكتروني الفعلي ضد الكشف أو استخدام المعلنين له.</translation>
 <translation id="5222676887888702881">تسجيل الخروج</translation>
@@ -2416,7 +2404,7 @@
 <translation id="3699624789011381381">عنوان البريد الإلكتروني</translation>
 <translation id="8124939971041602970">بريد تسجيل الدخول في طريقه إلى <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">انقر على رابط تسجيل الدخول الآمن في البريد الإلكتروني للوصول إلى حسابك.</translation>
-<translation id="6549775668256477823">لا ترى البريد الإلكتروني؟ تحقق من مجلد البريد غير المرغوب فيه الخاص بك أو <ph name="BEGIN_LINK"/>حاول مرة أخرى<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">لا ترى البريد الإلكتروني؟ تحقق من مجلد البريد غير المرغوب فيه الخاص بك أو حاول مرة أخرى.</translation>
 <translation id="958268166261124668">Brave VPN: متصل</translation>
 <translation id="6021669293402055982">Brave VPN: غير متصل</translation>
 <translation id="3541307549916475335">واجهة مستخدم لوحة Brave VPN</translation>

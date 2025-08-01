@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">새 탭 페이지에서만</translation>
 <translation id="6406506848690869874">동기화</translation>
 <translation id="1544192797660353713">월렛</translation>
-<translation id="6129027151000961048">레오</translation>
+<translation id="2361906291514218784">레오 AI</translation>
 <translation id="8275068909952022340">더 보기…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {게스트 창 닫기}
+          other {게스트 창 닫기}
+        }</translation>
 <translation id="1990886731975529483">Google Widevine 설치 및 실행</translation>
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
 <translation id="4900351245762303149">Google Widevine 설치</translation>
@@ -76,13 +80,20 @@
 <translation id="2808103541110899519">Brave 월렛 아이콘 숨기기</translation>
 <translation id="7595540212376041331">Brave 월렛 아이콘 숨기기</translation>
 <translation id="3893997535859323951">레오 AI 아이콘 숨기기</translation>
+<translation id="8832245978592881387">새 탭에서 레오 AI 열기</translation>
+<translation id="4577675328803804820">사이드바에서 레오 AI 열기</translation>
+<translation id="564305948667173847">레오 AI 설정 관리</translation>
 <translation id="6208515240323786457">레오 AI 아이콘 숨기기</translation>
-<translation id="2361906291514218784">레오 AI</translation>
+<translation id="2169338740411893745">새 탭에서 레오 AI 열기</translation>
+<translation id="3295805221342028003">사이드바에서 레오 AI 열기</translation>
+<translation id="7400808612454224939">레오 AI 설정 관리</translation>
+<translation id="5385064007245738696">레오 AI 소개</translation>
 <translation id="4928988318462976765">웹 익스텐션 스토어</translation>
 <translation id="9181207987584064303">웹 익스텐션 스토어에서 보기</translation>
 <translation id="3161744659507801211">경고: Brave는 확장 기능이 여러분의 브라우징 기록을 기록하는 것을 막을 수 없습니다.</translation>
 <translation id="2162109630536601963">이 확장 기능이 네트워크 요청을 생성할 경우, 이는 Tor나 프라이빗 모드를 사용하지 않을 것입니다.</translation>
 <translation id="2725327089319971976">이 확장 기능을 개인 정보 보호 모드와 Tor 모드에서 비활성화하려면, 이 옵션을 선택 해제하십시오.</translation>
+<translation id="438106944087726695">Brave에서 호스팅함</translation>
 <translation id="3371343170427636147">Brave 브라우저 야간 앱</translation>
 <translation id="4097979995947147464">Brave 브라우저 베타 앱</translation>
 <translation id="8303432794159193481">Brave 브라우저 개발 앱</translation>
@@ -181,11 +192,6 @@
 <translation id="4394049700291259645">사용 중지</translation>
 <translation id="7142548388914389999">프라이버시 보호 제품 분석(P3A) 허용</translation>
 <translation id="2604698253988679506">이 비공개 답변은 Brave가 특정 기능의 총 사용량을 산정하고 기능을 개선하는 용도로 사용됩니다.</translation>
-<translation id="1947672064022327074">이더리움 지원을 위해 암호 화폐 지갑을 시작하시겠습니까?</translation>
-<translation id="7583735190612229830">크립토 월렛을 설정하여 이 앱 및 기타 비슷한 앱과 소통하십시오.</translation>
-<translation id="8731422418734770661">Crypto 월렛 설정</translation>
-<translation id="8199661191594897555">암호 지갑을 시작하고 새로고침</translation>
-<translation id="8428213095426709021">설정</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 도메인</translation>
 <translation id="5046066249040287308">Brave 월렛 유틸리티 서비스</translation>
@@ -335,6 +341,7 @@
 <translation id="7557539689487606886">프리미엄 가입</translation>
 <translation id="1035309871698658326">탭을 열면 비공개 탭이 아닌 모든 탭의 제목과 출처가 자동으로 레오로 전송되어 분류됩니다.</translation>
 <translation id="3435896845095436175">사용</translation>
+<translation id="1940221956626514677">도구 모음 사용자 지정</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="1426410128494586442">예</translation>
@@ -492,6 +499,8 @@
 <translation id="3540231253392253941">푸시 메시지에 Google 서비스 사용</translation>
 <translation id="933652931229970927">진단 보고서 자동 전송</translation>
 <translation id="4891600875049212418">민감한 사이트 방문 시 오프더레코드 활성화</translation>
+<translation id="509873765238158442">마이크로소프트 리콜 차단</translation>
+<translation id="4763421121695677716">마이크로소프트 윈도우 컴퓨터의 리콜 기능이 열려 있는 Brave 탭의 스크린샷을 자동으로 찍지 못하도록 차단합니다.</translation>
 <translation id="1968895725257436430">데이터 수집</translation>
 <translation id="4846154056248462491">나갈 때</translation>
 <translation id="216468847346280584">Brave Ads 데이터 지우기...</translation>
@@ -653,10 +662,10 @@
 <translation id="2653659639078652383">제출</translation>
 <translation id="1294350054292274934">Tor 창에서만 .onion 주소 해석</translation>
 <translation id="601227612175911475">Onion 서비스는 Tor 창 외부에서 사용할 수 없습니다.</translation>
-<translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
 <translation id="5249433283143453448">Widevine 디지털 권리 관리(DRM) 구성 요소 사용으로 브라우저에서 보호된 스트리밍 동영상 및 기타 콘텐츠를 볼 수 있습니다.</translation>
 <translation id="1314131187310290315">Manifest V2 확장 프로그램</translation>
 <translation id="2488433650767270565">다음 Manifest V2 확장 프로그램이 Chrome 웹 스토어에서 제거될 예정이지만 Brave에서는 계속 지원됩니다. 다운로드하여 설치할지, 제거할지 토글하여 선택하세요.</translation>
+<translation id="6918225713618473646">Brave는 이러한 매니페스트 V2 확장 프로그램을 Brave 서버에서 호스팅하지만, 해당 확장 프로그램의 콘텐츠, 보안 또는 동작을 별도로 검토하거나 확인하지는 않습니다. 도움이 필요한 경우 각 확장 프로그램의 공식 페이지를 참조하세요. 매니페스트 V2에 관한 Brave의 계획은 <ph name="BEGIN_LINK"/>여기<ph name="END_LINK"/>에서 확인할 수 있습니다.</translation>
 <translation id="578671172657727816">NoScript™ 활성화</translation>
 <translation id="9068475464170522036">NoScrip는 특정 페이지에서 실행되거나 실행을 시도하는 개별 스크립트를 차단 또는 차단 해제할 수 있는 Manifest V2 확장 프로그램입니다.</translation>
 <translation id="1394592156621788100">uBlock Origin™ 활성화</translation>
@@ -671,7 +680,6 @@
 <translation id="7701023802820268122">기본 Solana 월렛</translation>
 <translation id="8488282162676695335">Brave 월렛</translation>
 <translation id="6942354363301686374">확장 프로그램(대체 없음)</translation>
-<translation id="1274962333945373242">암호화폐 월렛(지원 중단)</translation>
 <translation id="702381242110464396">확장 프로그램(Brave 월렛 대체)</translation>
 <translation id="4718664830805652430">기본 기준 통화</translation>
 <translation id="7992507032049865603">기본 기준 암호화폐</translation>
@@ -736,6 +744,7 @@
 <translation id="3095201688102519917">탭 여러 개가 있는 창을 닫기 전에 경고</translation>
 <translation id="7120553802660696133">마지막 탭을 닫으면 창 닫기</translation>
 <translation id="3394171693948989253">전체화면 알림 표시, 나가려면 Esc 누르기</translation>
+<translation id="6129027151000961048">레오</translation>
 <translation id="2751872555001636931">사이드바에 레오 아이콘 표시</translation>
 <translation id="8055509865174199683">웹사이트의 컨텍스트 메뉴에 레오 표시</translation>
 <translation id="1529674267267221673">웹사이트에서 우클릭하면 나오는 컨텍스트 메뉴에 레오가 표시됩니다. 현재 웹페이지의 컨텍스트를 레오로 보낼 수 있습니다.</translation>
@@ -751,7 +760,6 @@ Brave 레오 AI와 나눴던 모든 대화가 삭제됩니다.
 이 작업은 번복할 수 없습니다.</translation>
 <translation id="5574059574002819179">자동 완성 제안 조정</translation>
 <translation id="7942415993090181327">대화 기록</translation>
-<translation id="5385064007245738696">레오 AI 소개</translation>
 <translation id="5084498230659987096">Brave 레오는 브라우저 환경에서 개인 정보 보호를 최우선으로 하는 AI 채팅과 다양한 AI 기반 기능을 제공합니다. 레오는 사용자의 데이터를 학습에 활용하지 않으며, 사용자 데이터를 모델 학습에 사용하지 않습니다. 모든 요청은 익명화 서버를 거쳐 프록시 처리됩니다.</translation>
 <translation id="6458721693611638005">레오의 개인정보 처리방침에서 Brave가 사용자의 AI 사용을 보호하는 방법을 자세히 알아보세요. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">새 대화의 기본 모델</translation>
@@ -788,6 +796,9 @@ Brave 레오 AI와 나눴던 모든 대화가 삭제됩니다.
 <translation id="6304169450064541679">시스템 프롬프트</translation>
 <translation id="3081947790648024460">특정 방향이나 스타일로 응답을 유도하기 위해 모델에 제공되는 사용자 지정 지침 및/또는 컨텍스트입니다. 현재 날짜와 시간을 삽입할 위치에 %datetime%을 사용하세요.</translation>
 <translation id="5688878061573389791">토큰 약 <ph name="TOKENS_COUNT"/>개</translation>
+<translation id="5985516785067818307">설문조사 패널리스트</translation>
+<translation id="8347743943525229984">Brave 설문조사 허용</translation>
+<translation id="3204080538332044581">새 탭 페이지에서 비공개 설문조사 링크를 표시할 수 있도록 허용합니다. 설문조사는 더 나은 기능을 개발하고, 브라우저 기반 광고 캠페인의 효과를 측정하는 데 도움이 됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">재생목록 활성화</translation>
 <translation id="7903608716704052878">파일을 오프라인 보기용으로 자동 추가</translation>
 <translation id="4193768184502613558">이 옵션을 선택하면 미디어 파일을 자동으로 캐싱하여 인터넷 연결이 끊어진 상태에서도 재생할 수 있습니다.</translation>
