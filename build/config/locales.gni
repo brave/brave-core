@@ -12,7 +12,9 @@ if (!is_ios) {
   brave_extended_locales_exclusions += [
     "az",
     "ka",
+    "kk",
     "km",
+    "lo",
     "mk",
     "mn",
     "my",

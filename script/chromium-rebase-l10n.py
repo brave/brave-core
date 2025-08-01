@@ -188,7 +188,8 @@ def generate_overrides_and_replace_strings(source_string_path):
 def update_locale_settings_grd(xml_tree):
     # Insert additional languages we support into locale_settings_*.grd file.
     additional_languages = [
-        'az', 'ka', 'km', 'mk', 'mn', 'my', 'si', 'sq', 'sr-Latn', 'uz'
+        'az', 'ka', 'kk', 'km', 'lo', 'mk', 'mn', 'my', 'si', 'sq', 'sr-Latn',
+        'uz'
     ]
     outputs = xml_tree.find('.//outputs')
     for lang in additional_languages:
