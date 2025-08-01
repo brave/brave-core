@@ -6,30 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_PASSWORDS_WEB_VIEW_PASSWORD_MANAGER_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_PASSWORDS_WEB_VIEW_PASSWORD_MANAGER_CLIENT_H_
 
-#include <memory>
+class BraveWebViewPasswordManagerClient;
 
-#include "components/password_manager/core/browser/password_manager_client.h"
-#include "components/password_manager/ios/password_manager_client_bridge.h"
-#include "ios/web/public/browser_state.h"
-#include "ios/web/public/web_state.h"
-
-namespace ios_web_view {
-
-// We do not use any WebView* specific clients & services since we would instead
-// use the Chrome iOS ones.
-//
-// Replaces the implementation of the WebViewPasswordManagerClient with one that
-// does nothing
-class WebViewPasswordManagerClient
-    : public password_manager::PasswordManagerClient {
- public:
-  static std::unique_ptr<WebViewPasswordManagerClient> Create(
-      web::WebState* web_state,
-      web::BrowserState* browser_state);
-
-  void set_bridge(id<PasswordManagerClientBridge> bridge) {}
-};
-
-}  // namespace ios_web_view
+// Add a friend class so that subclasses can access the private `bridge_` field
+#define requirements_service_ \
+  requirements_service_;      \
+  friend class ::BraveWebViewPasswordManagerClient
+#include <ios/web_view/internal/passwords/web_view_password_manager_client.h>  // IWYU pragma: export
+#undef requirements_service_
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_PASSWORDS_WEB_VIEW_PASSWORD_MANAGER_CLIENT_H_
