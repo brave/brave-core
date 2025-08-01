@@ -343,7 +343,8 @@ static_library("browser") {
     "//third_party/boringssl",
     "//third_party/re2",
     "//tools/json_schema_compiler:generated_api_util",
-    "//ui/base:base",
+    "//ui/base",
+    "//ui/base/clipboard",
     "//url",
   ]
 

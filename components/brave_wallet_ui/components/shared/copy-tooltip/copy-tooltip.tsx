@@ -22,6 +22,7 @@ type Props = {
   tooltipText?: string
   actionText?: string
   text?: string
+  isConfidential?: boolean
 } & ToolTipProps
 
 export const CopyTooltip = ({
@@ -29,9 +30,10 @@ export const CopyTooltip = ({
   tooltipText,
   actionText,
   text,
+  isConfidential,
   ...tipProps
 }: Props) => {
-  const { isCopied, copyToClipboard } = useCopyToClipboard(1500)
+  const { isCopied, copyToClipboard } = useCopyToClipboard(1500, isConfidential)
 
   const handleClick = React.useCallback(async () => {
     if (text) {
