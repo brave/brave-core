@@ -1,10 +1,10 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_URL_SANITIZER_BROWSER_URL_SANITIZER_COMPONENT_INSTALLER_H_
-#define BRAVE_COMPONENTS_URL_SANITIZER_BROWSER_URL_SANITIZER_COMPONENT_INSTALLER_H_
+#ifndef BRAVE_COMPONENTS_URL_SANITIZER_CORE_BROWSER_URL_SANITIZER_COMPONENT_INSTALLER_H_
+#define BRAVE_COMPONENTS_URL_SANITIZER_CORE_BROWSER_URL_SANITIZER_COMPONENT_INSTALLER_H_
 
 #include <memory>
 #include <string>
@@ -68,4 +68,4 @@ class URLSanitizerComponentInstaller
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_URL_SANITIZER_BROWSER_URL_SANITIZER_COMPONENT_INSTALLER_H_
+#endif  // BRAVE_COMPONENTS_URL_SANITIZER_CORE_BROWSER_URL_SANITIZER_COMPONENT_INSTALLER_H_
