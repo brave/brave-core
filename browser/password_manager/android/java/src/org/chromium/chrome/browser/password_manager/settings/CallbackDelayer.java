@@ -12,6 +12,7 @@ public interface CallbackDelayer {
     /**
      * Run a callback after a delay specific to a particular implementation. The callback is always
      * run asynchronously.
+     *
      * @param callback The callback to be run.
      */
     void delay(Runnable callback);
