@@ -84,18 +84,18 @@ TEST_F(WebDiscoveryPrivacyGuardTest, IsPrivateQueryLikely) {
 TEST_F(WebDiscoveryPrivacyGuardTest, GeneratePrivateSearchURL) {
   GURL original_url("https://example.com/search?q=aaa&country=us&f=1");
 
-  EXPECT_EQ(GeneratePrivateSearchURL(original_url, "a simple test query",
-                                     search_engine_pattern_)
-                .spec(),
-            "https://example.com/find?testquery=a+simple+test+query");
   EXPECT_EQ(
-      GeneratePrivateSearchURL(original_url, "another simple test query 123",
-                               PatternsURLDetails())
+      GeneratePrivateSearchURL(original_url, "a simple test query",
+                               search_engine_pattern_.search_template_prefix)
           .spec(),
-      "https://example.com/search?q=another+simple+test+query+123");
+      "https://example.com/find?testquery=a+simple+test+query");
+  EXPECT_EQ(GeneratePrivateSearchURL(
+                original_url, "another simple test query 123", std::nullopt)
+                .spec(),
+            "https://example.com/search?q=another+simple+test+query+123");
   EXPECT_EQ(
-      GeneratePrivateSearchURL(original_url,
-                               "special chars @#$%^&=", search_engine_pattern_)
+      GeneratePrivateSearchURL(original_url, "special chars @#$%^&=",
+                               search_engine_pattern_.search_template_prefix)
           .spec(),
       "https://example.com/find?testquery=special+chars+%40%23%24%25%5E%26%3D");
 }

@@ -169,7 +169,7 @@ bool IsPrivateQueryLikely(const std::string& query) {
 
 GURL GeneratePrivateSearchURL(const GURL& original_url,
                               const std::string& query,
-                              const PatternsURLDetails& matching_url_details) {
+                              std::optional<std::string_view> prefix) {
   url::RawCanonOutputT<char> query_encoded;
   url::EncodeURIComponent(query, &query_encoded);
   std::string query_encoded_str(query_encoded.view());
@@ -178,9 +178,7 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
   return GURL(
       base::StrCat({original_url.scheme(), url::kStandardSchemeSeparator,
                     original_url.host(), "/",
-                    matching_url_details.search_template_prefix.value_or(
-                        kDefaultSearchPrefix),
-                    query_encoded_str}));
+                    prefix.value_or(kDefaultSearchPrefix), query_encoded_str}));
 }
 
 bool ShouldMaskURL(const GURL& url) {
