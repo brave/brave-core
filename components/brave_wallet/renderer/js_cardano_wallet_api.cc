@@ -51,11 +51,10 @@ v8::Local<v8::Value> ConvertError(
 // content::RenderFrameObserver
 void JSCardanoWalletApi::OnDestruct() {}
 
-// gin::DeprecatedWrappable<JSCardanoProvider>
+// gin::Wrappable<JSCardanoProvider>
 gin::ObjectTemplateBuilder JSCardanoWalletApi::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
-  return gin::DeprecatedWrappable<JSCardanoWalletApi>::GetObjectTemplateBuilder(
-             isolate)
+  return gin::Wrappable<JSCardanoWalletApi>::GetObjectTemplateBuilder(isolate)
       .SetMethod("getNetworkId", &JSCardanoWalletApi::GetNetworkId)
       .SetMethod("getUsedAddresses", &JSCardanoWalletApi::GetUsedAddresses)
       .SetMethod("getUnusedAddresses", &JSCardanoWalletApi::GetUnusedAddresses)
@@ -70,13 +69,9 @@ gin::ObjectTemplateBuilder JSCardanoWalletApi::GetObjectTemplateBuilder(
       .SetMethod("getCollateral", &JSCardanoWalletApi::GetCollateral);
 }
 
-const char* JSCardanoWalletApi::GetTypeName() {
-  return "JSCardanoWalletApi";
+const gin::WrapperInfo* JSCardanoWalletApi::wrapper_info() const {
+  return &kWrapperInfo;
 }
-
-// JSCardanoProvider
-gin::DeprecatedWrapperInfo JSCardanoWalletApi::kWrapperInfo = {
-    gin::kEmbedderNativeGin};
 
 JSCardanoWalletApi::~JSCardanoWalletApi() = default;
 
