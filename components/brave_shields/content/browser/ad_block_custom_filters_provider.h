@@ -20,10 +20,6 @@ using brave_component_updater::DATFileDataBuffer;
 
 class PrefService;
 
-namespace content {
-class BrowserContext;
-}
-
 namespace brave_shields {
 
 class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
