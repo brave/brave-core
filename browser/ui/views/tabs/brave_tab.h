@@ -11,13 +11,17 @@
 
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/point.h"
+#include "ui/views/controls/textfield/textfield.h"
+#include "ui/views/controls/textfield/textfield_controller.h"
 
-class BraveTab : public Tab {
+class BraveTab : public Tab, public views::TextfieldController {
  public:
-  using Tab::Tab;
+  explicit BraveTab(TabSlotController* controller);
   BraveTab(const BraveTab&) = delete;
   BraveTab& operator=(const BraveTab&) = delete;
   ~BraveTab() override;
+
+  void EnterRenameMode();
 
   // Tab:
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
@@ -40,10 +44,24 @@ class BraveTab : public Tab {
   void SetData(TabRendererData data) override;
   bool IsActive() const override;
 
+  // views::TextfieldController:
+  bool HandleKeyEvent(views::Textfield* sender,
+                      const ui::KeyEvent& key_event) override;
+
  private:
   friend class BraveTabTest;
 
   bool IsAtMinWidthForVerticalTabStrip() const;
+
+  void CommitRename();
+  void ExitRenameMode();
+  void UpdateRenameTextfieldBounds();
+
+  bool in_renaming_mode() const {
+    return rename_textfield_ && rename_textfield_->GetVisible();
+  }
+
+  raw_ptr<views::Textfield> rename_textfield_ = nullptr;
 
   static constexpr int kExtraLeftPadding = 4;
 };
