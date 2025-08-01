@@ -6,6 +6,9 @@
 const fs = require('fs-extra')
 const path = require('path')
 
+// HACK: determines the executable path from the gn target name 
+// Alternative: gn desc <buildDir> <target> outputs --format=json
+// TODO: is there a better way of doing this? (https://github.com/brave/devops/issues/14213)
 const gnTargetToExecutableName = (str) => str.split(':').at(-1).split('(')[0]
 
 const getTestBinary = (config, suite) => {
