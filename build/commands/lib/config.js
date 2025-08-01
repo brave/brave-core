@@ -1335,8 +1335,11 @@ Object.defineProperty(Config.prototype, 'outputDir', {
 
 Object.defineProperty(Config.prototype, 'useSiso', {
   get: function () {
-    // Android fails with multiple reasons currently. Disable it for now.
-    return this.useRemoteExec && this.hostOS === 'linux' && !this.isAndroid()
+    return getEnvConfig(
+      ['use_siso'],
+      // Android fails with multiple reasons currently. Disable it for now.
+      this.useRemoteExec && this.hostOS === 'linux' && !this.isAndroid(),
+    )
   },
 })
 
