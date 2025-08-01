@@ -3,6 +3,7 @@ include_rules = [
   "+brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h",
   "+brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h",
   "+brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1.h",
+  "-brave/components/brave_wallet/browser/internal/sr25519.rs.h"
 ]
 
 specific_include_rules = {
@@ -11,5 +12,8 @@ specific_include_rules = {
   ],
   "hd_key_sr25519\.h": [
     "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "hd_key_sr25519\.cc": [
+    "+brave/components/brave_wallet/browser/internal/sr25519.rs.h",
   ],
 }
