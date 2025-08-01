@@ -13,7 +13,6 @@
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "components/grit/brave_components_resources.h"
 #include "gin/converter.h"
-#include "gin/handle.h"
 #include "gin/object_template_builder.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
@@ -129,18 +128,14 @@ void JSCardanoProvider::OnEnableResponse(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   if (!error) {
-    gin::Handle<JSCardanoWalletApi> wallet_api = gin::CreateHandle(
-        isolate, new JSCardanoWalletApi(
-                     std::move(remote), base::PassKey<JSCardanoProvider>(),
-                     global_context.Get(isolate), isolate, render_frame()));
-    if (wallet_api.IsEmpty()) {
-      return;
-    }
-    v8::Local<v8::Value> wallet_api_value = wallet_api.ToV8();
-    v8::Local<v8::Object> wallet_api_object;
-    if (!wallet_api_value->ToObject(context).ToLocal(&wallet_api_object)) {
-      return;
-    }
+    JSCardanoWalletApi* wallet_api =
+        cppgc::MakeGarbageCollected<JSCardanoWalletApi>(
+            isolate->GetCppHeap()->GetAllocationHandle(), std::move(remote),
+            base::PassKey<JSCardanoProvider>(), global_context.Get(isolate),
+            isolate, render_frame());
+
+    v8::Local<v8::Object> wallet_api_object =
+        wallet_api->GetWrapper(isolate).ToLocalChecked();
 
     // Non-function properties are readonly guaranteed by
     // gin::Wrappable
