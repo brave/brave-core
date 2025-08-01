@@ -27,6 +27,7 @@
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_generated_resources_webui_strings.h"
@@ -49,6 +50,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
 namespace settings {
@@ -1225,6 +1230,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "braveTalkDisabledByPolicy",
       profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
+
+#if BUILDFLAG(ENABLE_TOR)
+  html_source->AddBoolean("braveTorDisabledByPolicy",
+                          TorProfileServiceFactory::IsTorDisabled(profile));
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   html_source->AddBoolean(
