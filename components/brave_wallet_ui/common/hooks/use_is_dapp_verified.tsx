@@ -13,8 +13,10 @@ export const useIsDAppVerified = (originInfo: BraveWallet.OriginInfo) => {
   // Queries
   const { data: topDapps } = useGetTopDappsQuery()
 
-  return topDapps?.some((dapp) =>
+  const foundDApp = topDapps?.find((dapp) =>
     dapp.website.startsWith(originInfo.originSpec),
   )
+
+  return { isDAppVerified: foundDApp !== undefined, dapp: foundDApp }
 }
 export default useIsDAppVerified
