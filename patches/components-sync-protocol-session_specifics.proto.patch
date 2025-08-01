@@ -1,0 +1,20 @@
+diff --git a/components/sync/protocol/session_specifics.proto b/components/sync/protocol/session_specifics.proto
+index ac693b94def9fe248a6317022772b227c6779e5c..f559f9725feaf7c99976af421f533cc724e09fd0 100644
+--- a/components/sync/protocol/session_specifics.proto
++++ b/components/sync/protocol/session_specifics.proto
+@@ -17,6 +17,7 @@ option optimize_for = LITE_RUNTIME;
+ package sync_pb;
+ 
+ import "components/sync/protocol/sync_enums.proto";
++import "brave/components/sync/protocol/brave_session_specifics.proto";
+ 
+ message SessionSpecifics {
+   // Unique id for the client. M89 and higher use sync's cache GUID (client ID)
+@@ -96,6 +97,7 @@ message SessionTab {
+ }
+ 
+ message TabNavigation {
++  optional TabNavigationBraveFields brave_fields = 1000;
+   // The page's URL as displayed to the user (which can be the actual page URL
+   // or a virtual override). It can be empty or, in rare cases, an unsyncable
+   // URL, so it is the receiver's responsibility to implement additional

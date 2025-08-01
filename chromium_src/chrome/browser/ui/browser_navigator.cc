@@ -6,12 +6,18 @@
 #include <string_view>
 
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/partitioned_tabs/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/tab_contents/tab_util.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 // Needed to prevent overriding url_typed_with_http_scheme
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/common/webui_url_constants.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_PARTITIONED_TABS)
+#include "brave/components/partitioned_tabs/browser/partitioned_tabs_handler_registry.h"
+#endif
 
 namespace {
 
@@ -52,8 +58,24 @@ bool IsURLAllowedInIncognitoBraveImpl(const GURL& url) {
 #define BRAVE_IS_URL_ALLOWED_IN_INCOGNITO     \
   if (!IsURLAllowedInIncognitoBraveImpl(url)) \
     return false;
+
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateBraveScheme(params);
+
+#if BUILDFLAG(ENABLE_PARTITIONED_TABS)
+#define GetSiteInstanceForNewTab(...)                                    \
+  GetSiteInstanceForNewTab(                                              \
+      __VA_ARGS__,                                                       \
+      partitioned_tabs::PartitionedTabsHandlerRegistry::GetInstance()    \
+          .MaybeInheritStoragePartition(params.storage_partition_config, \
+                                        params.source_site_instance.get()))
+#endif
+
 #include <chrome/browser/ui/browser_navigator.cc>
+
+#if BUILDFLAG(ENABLE_PARTITIONED_TABS)
+#undef GetSiteInstanceForNewTab
+#endif
+
 #undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
 #undef BRAVE_IS_URL_ALLOWED_IN_INCOGNITO
 #undef url_typed_with_http_scheme

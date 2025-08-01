@@ -18,7 +18,10 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/core/common/features.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/partitioned_tabs/browser/partitioned_tabs_handler_registry.h"
+#include "brave/components/partitioned_tabs/browser/storage_partition_session_info_handler.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -82,6 +85,20 @@ int ChromeBrowserMainParts::PreMainMessageLoopRun() {
   return ChromeBrowserMainParts_ChromiumImpl::PreMainMessageLoopRun();
 }
 
+class ContainersPartitionedTabsHandler
+    : public partitioned_tabs::PartitionedTabsHandler {
+ public:
+  ContainersPartitionedTabsHandler()
+      : id_(base::StrCat({PartitionedTabsHandler::kIdPrefix, "containers"})) {
+    DCHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
+  }
+
+  const std::string& GetId() const override { return id_; }
+
+ private:
+  std::string id_;
+};
+
 void ChromeBrowserMainParts::PreBrowserStart() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Register() must be called after the SerializedNavigationDriver is
@@ -92,6 +109,14 @@ void ChromeBrowserMainParts::PreBrowserStart() {
   DCHECK(sessions::ContentSerializedNavigationDriver::GetInstance());
   speedreader::SpeedreaderExtendedInfoHandler::Register();
 #endif
+
+  partitioned_tabs::StoragePartitionSessionInfoHandler::Register();
+
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    partitioned_tabs::PartitionedTabsHandlerRegistry::GetInstance()
+        .RegisterPartitionedTabsHandler(
+            std::make_unique<ContainersPartitionedTabsHandler>());
+  }
 
   ChromeBrowserMainParts_ChromiumImpl::PreBrowserStart();
 }
