@@ -42,6 +42,14 @@ class BraveWebClient : public ChromeWebClient {
   void BuildEditMenu(web::WebState* web_state,
                      id<UIMenuBuilder>) const override;
 
+  bool ShouldBlockJavaScript(web::WebState* web_state,
+                             NSURLRequest* request) override;
+  NSString* GetUserAgentForRequest(web::WebState* web_state,
+                                   web::UserAgentType user_agent_type,
+                                   NSURLRequest* request) override;
+  bool ShouldBlockUniversalLinks(web::WebState* web_state,
+                                 NSURLRequest* request) override;
+
  private:
   std::string legacy_user_agent_;
 };
