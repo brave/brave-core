@@ -12,6 +12,7 @@
   kCardanoWalletApi,                  \
   kEthereumProvider,                  \
   kMetaMask,                          \
+  kSolanaProvider,                    \
   kCardanoProvider
 // clang-format on
 
