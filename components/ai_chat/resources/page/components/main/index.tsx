@@ -10,6 +10,7 @@ import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
+import getAPI from '../../api'
 import * as Mojom from '../../../common/mojom'
 import { useConversation, useIsNewConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
@@ -324,21 +325,27 @@ function Main() {
     }
   }, [])
 
-  // Listen for iframe drag notifications
+  // Listen for iframe drag notifications via mojom
   React.useEffect(() => {
-    const handleMessage = async (event: MessageEvent) => {
-      if (event.data?.type === 'IFRAME_DRAG_START') {
+    const api = getAPI()
+
+    const dragStartId = api.conversationEntriesFrameObserver.dragStart
+      .addListener(() => {
         setIsDragActive(true)
         setIsDragOver(true)
-      } else if (event.data?.type === 'IFRAME_DRAG_END') {
+      })
+
+    const dragEndId = api.conversationEntriesFrameObserver.dragEnd
+      .addListener(() => {
         setIsDragActive(false)
         setIsDragOver(false)
-      }
-    }
+      })
 
-    window.addEventListener('message', handleMessage)
-    return () => window.removeEventListener('message', handleMessage)
-  }, [conversationContext])
+    return () => {
+      api.conversationEntriesFrameObserver.removeListener(dragStartId)
+      api.conversationEntriesFrameObserver.removeListener(dragEndId)
+    }
+  }, [])
 
   const handleOverlayDrop = async (e: React.DragEvent) => {
     e.preventDefault()

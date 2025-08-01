@@ -10,6 +10,7 @@ import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
 import ConversationEntries from './components/conversation_entries'
 import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
+import UntrustedConversationFrameAPI from './untrusted_conversation_frame_api'
 
 import '../common/strings'
 
@@ -19,12 +20,13 @@ function App() {
   // Iframe drag detection with proper cleanup
   React.useEffect(() => {
     let dragCounter = 0
+    const api = UntrustedConversationFrameAPI.getInstance()
 
     const handleDragEnter = (e: DragEvent) => {
       if (e.dataTransfer?.types?.includes('Files')) {
         dragCounter++
         if (dragCounter === 1) {
-          window.parent.postMessage({ type: 'IFRAME_DRAG_START' }, '*')
+          api.parentUIFrame.dragStart()
         }
       }
     }
@@ -33,14 +35,14 @@ function App() {
       if (e.dataTransfer?.types?.includes('Files')) {
         dragCounter--
         if (dragCounter === 0) {
-          window.parent.postMessage({ type: 'IFRAME_DRAG_END' }, '*')
+          api.parentUIFrame.dragEnd()
         }
       }
     }
 
     const handleDragEnd = (e: DragEvent) => {
       dragCounter = 0
-      window.parent.postMessage({ type: 'IFRAME_DRAG_END' }, '*')
+      api.parentUIFrame.dragEnd()
     }
 
     const handleDragOver = (e: DragEvent) => {
@@ -51,7 +53,7 @@ function App() {
       // Don't prevent default - let event bubble to parent overlay
       // for file processing
       dragCounter = 0
-      window.parent.postMessage({ type: 'IFRAME_DRAG_END' }, '*')
+      api.parentUIFrame.dragEnd()
     }
 
     // Note: Minimal drop handler to clean up drag state,
