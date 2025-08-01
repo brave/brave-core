@@ -44,16 +44,13 @@ const getTestsToRun = (config, suite) => {
     path.join(config.outputDir, `${suite}.json`),
   )
 
-  const isLinuxCI = (config.isCI && config.targetOS === 'linux')
+  const isLinuxCI = config.isCI && config.targetOS === 'linux'
 
   const ciTests = isLinuxCI
     ? getTestGroupDeps(path.join(config.outputDir, `${suite}_ci.json`))
     : []
-    
-  const testsToRun = [
-    ...testGroupDeps,
-    ...ciTests
-  ]
+
+  const testsToRun = [...testGroupDeps, ...ciTests]
 
   if (testsToRun.length === 0) {
     return [suite]
