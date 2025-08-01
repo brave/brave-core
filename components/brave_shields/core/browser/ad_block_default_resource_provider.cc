@@ -9,8 +9,7 @@
 #include <utility>
 
 #include "base/files/file_path.h"
-#include "base/task/thread_pool.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_component_updater/browser/component_contents_reader.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 
 namespace {
@@ -37,48 +36,43 @@ AdBlockDefaultResourceProvider::AdBlockDefaultResourceProvider(
 AdBlockDefaultResourceProvider::~AdBlockDefaultResourceProvider() = default;
 
 base::FilePath AdBlockDefaultResourceProvider::GetResourcesPath() {
-  if (component_path_.empty()) {
-    // Since we know it's empty return it as is.
-    return component_path_;
+  if (!component_reader_) {
+    return base::FilePath();
   }
 
-  return component_path_.AppendASCII(kAdBlockResourcesFilename);
+  return component_reader_->GetComponentRootDeprecated().AppendASCII(
+      kAdBlockResourcesFilename);
 }
 
 void AdBlockDefaultResourceProvider::OnComponentReady(
-    const base::FilePath& path) {
-  component_path_ = path;
-  base::FilePath resources_path = GetResourcesPath();
-
-  if (resources_path.empty()) {
-    // This should not happen, but if it does, we should not proceed.
-    return;
-  }
+    std::unique_ptr<component_updater::ComponentContentsReader> reader) {
+  component_reader_ = std::move(reader);
 
   // Load the resources (as a string)
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     resources_path),
+  LoadResources(
       base::BindOnce(&AdBlockDefaultResourceProvider::NotifyResourcesLoaded,
                      weak_factory_.GetWeakPtr()));
 }
 
 void AdBlockDefaultResourceProvider::LoadResources(
     base::OnceCallback<void(const std::string& resources_json)> cb) {
-  base::FilePath resources_path = GetResourcesPath();
-  if (resources_path.empty()) {
-    // If the path is not ready yet, run the callback with empty resources to
-    // avoid blocking filter data loads.
+  if (!component_reader_) {
+    // If the component is not ready yet, run the callback with empty resources
+    // to avoid blocking filter data loads.
     std::move(cb).Run("[]");
     return;
   }
 
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     resources_path),
+  auto handle_file_content = base::BindOnce(
+      [](base::OnceCallback<void(const std::string& resources_json)> cb,
+         std::optional<std::string> content) {
+        std::move(cb).Run(std::move(content).value_or("[]"));
+      },
       std::move(cb));
+
+  component_reader_->GetFileAsString(
+      base::FilePath::FromASCII(kAdBlockResourcesFilename),
+      std::move(handle_file_content));
 }
 
 }  // namespace brave_shields

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_DEFAULT_RESOURCE_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_DEFAULT_RESOURCE_PROVIDER_H_
 
+#include <memory>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -13,6 +14,7 @@
 
 namespace component_updater {
 class ComponentUpdateService;
+class ComponentContentsReader;
 }  // namespace component_updater
 
 namespace base {
@@ -42,9 +44,10 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
  private:
   friend class ::AdBlockServiceTest;
 
-  void OnComponentReady(const base::FilePath&);
+  void OnComponentReady(
+      std::unique_ptr<component_updater::ComponentContentsReader> reader);
 
-  base::FilePath component_path_;
+  std::unique_ptr<component_updater::ComponentContentsReader> component_reader_;
 
   base::WeakPtrFactory<AdBlockDefaultResourceProvider> weak_factory_{this};
 };
