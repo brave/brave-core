@@ -12,7 +12,7 @@ class BraveWebViewPasswordManagerClient;
 #define requirements_service_ \
   requirements_service_;      \
   friend class ::BraveWebViewPasswordManagerClient
-#include "src/ios/web_view/internal/passwords/web_view_password_manager_client.h"  // IWYU pragma: export
+#include <ios/web_view/internal/passwords/web_view_password_manager_client.h>  // IWYU pragma: export
 #undef requirements_service_
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_PASSWORDS_WEB_VIEW_PASSWORD_MANAGER_CLIENT_H_
