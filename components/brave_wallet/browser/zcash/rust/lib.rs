@@ -180,8 +180,8 @@ mod ffi {
     // Represents output of the Orchard transaction.
     // https://github.com/zcash/orchard/blob/5c451beb05a10337a57a7fdf279c1dd6a533b805/src/pczt.rs#L210
     struct CxxOrchardOutput {
-        // Amount of zashi being spend
-        value: u32,
+        // Amount of zatoshi being spent
+        value: u64,
         // Recipient raw Orchard address.
         // Array size should match kOrchardRawBytesSize
         addr: [u8; 43],
@@ -209,7 +209,7 @@ mod ffi {
         fvk: [u8; 96],
         sk: [u8; 32],
         // Note value
-        value: u32,
+        value: u64,
         addr: [u8; 43],
         rho: [u8; 32],
         r: [u8; 32],
@@ -419,7 +419,7 @@ mod ffi {
         ) -> Box<CxxOrchardDecodedBlocksBundle>;
 
         fn size(self: &CxxOrchardDecodedBlocksBundle) -> usize;
-        fn note_value(self: &CxxOrchardDecodedBlocksBundle, index: usize) -> u32;
+        fn note_value(self: &CxxOrchardDecodedBlocksBundle, index: usize) -> u64;
         // Result array size should match kOrchardNullifierSize
         // fvk array size should match kOrchardFullViewKeySize
         fn note_nullifier(self: &CxxOrchardDecodedBlocksBundle, index: usize) -> [u8; 32];
@@ -891,7 +891,7 @@ fn create_orchard_builder_internal(
 
         let note = orchard::Note::from_parts(
             addr.unwrap(),
-            NoteValue::from_raw(u64::from(spend.value)),
+            NoteValue::from_raw(spend.value),
             rho.unwrap().clone(),
             rseed.unwrap(),
         );
@@ -914,7 +914,7 @@ fn create_orchard_builder_internal(
             Some(addr) => builder.add_output(
                 None,
                 addr,
-                orchard::value::NoteValue::from_raw(u64::from(out.value)),
+                orchard::value::NoteValue::from_raw(out.value),
                 if out.use_memo { Some(out.memo) } else { Option::None },
             ),
             None => {
@@ -1136,9 +1136,8 @@ impl CxxOrchardDecodedBlocksBundle {
         self.0.outputs.len()
     }
 
-    fn note_value(self: &CxxOrchardDecodedBlocksBundle, index: usize) -> u32 {
-        u32::try_from(self.0.outputs[index].note.value().inner())
-            .expect("Outputs are always created from a u32, so conversion back will always succeed")
+    fn note_value(self: &CxxOrchardDecodedBlocksBundle, index: usize) -> u64 {
+        self.0.outputs[index].note.value().inner()
     }
 
     fn note_nullifier(self: &CxxOrchardDecodedBlocksBundle, index: usize) -> [u8; 32] {

@@ -78,6 +78,54 @@ TEST_F(OrchardStorageTest, AccountMeta) {
   }
 }
 
+TEST_F(OrchardStorageTest, PutDiscoveredNotes_u64Value) {
+  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
+
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_1, 100).has_value());
+
+  // Update notes for account 1 with wrong values
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(
+        GenerateMockOrchardNote(account_id_1, 101, 1, 0xFFFFFFFFFFFFFFFF));
+    notes.push_back(
+        GenerateMockOrchardNote(account_id_1, 105, 2, 0xAAFFFFFFFFFFFFFF));
+
+    EXPECT_FALSE(
+        orchard_storage_->UpdateNotes(account_id_1, notes, {}, 200, "hash200")
+            .has_value());
+  }
+
+  // Update notes for account 1 with valid values
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(
+        GenerateMockOrchardNote(account_id_1, 101, 1, 0xFFFFFFFFFFFFFFFF / 2));
+    notes.push_back(GenerateMockOrchardNote(account_id_1, 105, 2,
+                                            0xFFFFFFFFFFFFFFFF / 2 - 1));
+
+    EXPECT_TRUE(
+        orchard_storage_->UpdateNotes(account_id_1, notes, {}, 200, "hash200")
+            .has_value());
+  }
+
+  // Check account_1 spendable notes
+  {
+    auto account_1_spendable_notes =
+        orchard_storage_->GetSpendableNotes(account_id_1);
+    EXPECT_EQ(2u, account_1_spendable_notes->size());
+    SortByBlockId(*account_1_spendable_notes);
+    EXPECT_EQ(
+        account_1_spendable_notes.value()[0],
+        GenerateMockOrchardNote(account_id_1, 101, 1, 0xFFFFFFFFFFFFFFFF / 2));
+    EXPECT_EQ(account_1_spendable_notes.value()[1],
+              GenerateMockOrchardNote(account_id_1, 105, 2,
+                                      0xFFFFFFFFFFFFFFFF / 2 - 1));
+  }
+}
+
 TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                               mojom::KeyringId::kZCashMainnet,
