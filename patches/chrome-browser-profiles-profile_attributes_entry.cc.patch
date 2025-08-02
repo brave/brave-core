@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_attributes_entry.cc b/chrome/browser/profiles/profile_attributes_entry.cc
-index ddbb9f9b9e44d5e8f009bf369e22ce67298d9670..eff80f5ba27257e52fe8d7ab2f588812c5f031cf 100644
+index ddbb9f9b9e44d5e8f009bf369e22ce67298d9670..a63b0e4834f590b78cdf8638f428b182f1e3801d 100644
 --- a/chrome/browser/profiles/profile_attributes_entry.cc
 +++ b/chrome/browser/profiles/profile_attributes_entry.cc
-@@ -1102,11 +1102,13 @@ bool ProfileAttributesEntry::ClearValue(const char* key) {
+@@ -1102,6 +1102,7 @@ bool ProfileAttributesEntry::ClearValue(const char* key) {
  
  // This method should be periodically pruned of year+ old migrations.
  void ProfileAttributesEntry::MigrateObsoleteProfileAttributes() {
@@ -10,9 +10,3 @@ index ddbb9f9b9e44d5e8f009bf369e22ce67298d9670..eff80f5ba27257e52fe8d7ab2f588812
    // Added 3/2023.
    ClearValue(kAccountCategories);
  }
- 
- void ProfileAttributesEntry::SetIsOmittedInternal(bool is_omitted) {
-+  BRAVE_SET_IS_OMITTED_INTERNAL
-   if (is_omitted) {
-     DCHECK(IsEphemeral()) << "Only ephemeral profiles can be omitted.";
-   }
