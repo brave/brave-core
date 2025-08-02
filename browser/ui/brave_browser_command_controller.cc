@@ -93,9 +93,10 @@ bool IsBraveOverrideCommands(int id) {
 
 namespace chrome {
 
-BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
-    : BrowserCommandController(browser),
-      browser_(*browser),
+BraveBrowserCommandController::BraveBrowserCommandController(
+    BrowserWindowInterface* bwi)
+    : BrowserCommandController(bwi),
+      browser_(*bwi->GetBrowserForMigrationOnly()),
       brave_command_updater_(nullptr) {
   InitBraveCommandState();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
