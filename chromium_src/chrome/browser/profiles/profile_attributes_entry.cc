@@ -39,13 +39,6 @@ void ProfileAttributesEntry::BraveMigrateObsoleteProfileAttributes() {
 #define BRAVE_PROFILE_ATTRIBUTES_ENTRY_MIGRATE_OBSOLETE_PROFILE_ATTRIBUTES \
   BraveMigrateObsoleteProfileAttributes();
 
-// Allow non-ephemeral profiles to be omitted for the purposes of
-// built-in profiles like the AI Chat Agentic Profile.
-#define BRAVE_SET_IS_OMITTED_INTERNAL \
-  is_omitted_ = is_omitted;           \
-  return;
-
 #include <chrome/browser/profiles/profile_attributes_entry.cc>
 
 #undef BRAVE_PROFILE_ATTRIBUTES_ENTRY_MIGRATE_OBSOLETE_PROFILE_ATTRIBUTES
-#undef BRAVE_SET_IS_OMITTED_INTERNAL

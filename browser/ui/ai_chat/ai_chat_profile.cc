@@ -40,7 +40,6 @@ void SetupAndOpenAIChatAgentProfile(Profile* profile) {
       profile_manager->GetProfileAttributesStorage();
   ProfileAttributesEntry* attributes =
       storage.GetProfileAttributesWithPath(GetAIChatAgentProfileDir());
-  attributes->SetIsOmitted(true);
   attributes->SetLocalProfileName(kAIChatAgentProfileName, false);
 
   // Open browser window
