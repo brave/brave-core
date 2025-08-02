@@ -779,7 +779,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
-                        "moveTabAction",
+                        "moveTabToWindow",
                         MethodModifier.REGULAR,
                         void.class,
                         getClassForPath("org/chromium/chrome/browser/multiwindow/InstanceInfo"),
@@ -2640,6 +2640,7 @@ public class BytecodeTest {
             return false;
         }
         for (Method m : c.getDeclaredMethods()) {
+            boolean didMethodParamsMatch = true;
             if (m.getName().equals(methodName)) {
                 Class<?> type = m.getReturnType();
                 if ((type == null && returnType != null)
@@ -2657,8 +2658,16 @@ public class BytecodeTest {
                 }
                 for (int i = 0; i < (types == null ? 0 : types.length); i++) {
                     if (!types[i].equals(parameterTypes[i])) {
-                        return false;
+                        // Handle case when class has overridden methods, see
+                        // MultiInstanceManagerApi31 class with
+                        //    moveTabToWindow(Activity, Tab, int) and
+                        //    moveTabToWindow(InstanceInfo, Tab, int)
+                        didMethodParamsMatch = false;
                     }
+                }
+
+                if (!didMethodParamsMatch) {
+                    continue;
                 }
 
                 if (methodModifier == MethodModifier.STATIC
