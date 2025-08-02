@@ -43,14 +43,14 @@ actions::ActionItem::ActionItemBuilder SidePanelAction(
 
 }  // namespace
 
-BraveBrowserActions::BraveBrowserActions(Browser& browser)
-    : BrowserActions(browser) {}
+BraveBrowserActions::BraveBrowserActions(BrowserWindowInterface* bwi)
+    : BrowserActions(bwi) {}
 
 BraveBrowserActions::~BraveBrowserActions() = default;
 
 void BraveBrowserActions::InitializeBrowserActions() {
   BrowserActions::InitializeBrowserActions();
-  Browser* browser = &(browser_.get());
+  Browser* browser = bwi_->GetBrowserForMigrationOnly();
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
@@ -63,7 +63,7 @@ void BraveBrowserActions::InitializeBrowserActions() {
   }
 #endif
 
-  Profile* profile = browser_->profile();
+  Profile* profile = browser->profile();
   if (ai_chat::IsAIChatEnabled(profile->GetPrefs())) {
     root_action_item_->AddChild(
         SidePanelAction(SidePanelEntryId::kChatUI, IDS_CHAT_UI_TITLE,
