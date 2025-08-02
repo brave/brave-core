@@ -45,7 +45,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
 #endif
 {
  public:
-  explicit BraveBrowserCommandController(Browser* browser);
+  explicit BraveBrowserCommandController(BrowserWindowInterface* bwi);
   BraveBrowserCommandController(const BraveBrowserCommandController&) = delete;
   BraveBrowserCommandController& operator=(
       const BraveBrowserCommandController&) = delete;
