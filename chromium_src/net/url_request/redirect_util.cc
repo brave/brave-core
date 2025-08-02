@@ -17,7 +17,7 @@ namespace net {
 
 void RedirectUtil::UpdateHttpRequest(
     const GURL& original_url,
-    const std::string& original_method,
+    std::string_view original_method,
     const RedirectInfo& redirect_info,
     const std::optional<std::vector<std::string>>& removed_headers,
     const std::optional<net::HttpRequestHeaders>& modified_headers,
