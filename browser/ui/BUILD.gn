@@ -59,6 +59,7 @@ source_set("ui") {
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
     "//chrome/browser/ui:browser_navigator_params_headers",
+    "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
   ]
 
@@ -1462,6 +1463,7 @@ source_set("browser_tests") {
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/startup",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//components/javascript_dialogs",
