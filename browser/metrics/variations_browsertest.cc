@@ -7,7 +7,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/test/base/platform_browser_test.h"
-#include "components/variations/service/variations_field_trial_creator_base.h"
+#include "components/variations/service/variations_field_trial_creator.h"
 #include "components/variations/variations_test_utils.h"
 #include "content/public/test/browser_test.h"
 
