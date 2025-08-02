@@ -26,6 +26,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "dignifiedquire <dignifiedquire@gmail.com>"
   cargo_pkg_name = "bls-signatures"
   cargo_pkg_description = "Aggregate BLS Signatures"
+  cargo_pkg_repository = "https://github.com/filecoin-project/bls-signatures"
   cargo_pkg_version = "0.15.0"
 
   deps = [

@@ -23,7 +23,7 @@ namespace brave_page_graph {
 
 NodeHTMLText::NodeHTMLText(GraphItemContext* context,
                            const DOMNodeId dom_node_id,
-                           const String& text)
+                           const blink::String& text)
     : NodeHTML(context, dom_node_id), text_(text) {}
 
 NodeHTMLText::~NodeHTMLText() = default;
@@ -33,7 +33,7 @@ ItemName NodeHTMLText::GetItemName() const {
 }
 
 ItemDesc NodeHTMLText::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeHTML::GetItemDesc() << " [length: " << text_.length() << "]";
   return ts.ReleaseString();
 }

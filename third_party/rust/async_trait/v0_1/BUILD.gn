@@ -29,6 +29,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"
   cargo_pkg_name = "async-trait"
   cargo_pkg_description = "Type erasure for async trait methods"
+  cargo_pkg_repository = "https://github.com/dtolnay/async-trait"
   cargo_pkg_version = "0.1.64"
 
   deps = [

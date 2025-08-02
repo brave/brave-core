@@ -99,13 +99,6 @@ RegisterPolymerTemplateModifications({
     } else {
       customizeFontsSubpageTrigger.remove()
     }
-    const customizeFontsTemplate = templateContent.querySelector(
-        'template[is=dom-if][route-path="/fonts"]')
-    if (!customizeFontsTemplate) {
-      console.error(`[Settings] Couldn't find customize fonts subpage template`)
-    } else {
-      customizeFontsTemplate.remove()
-    }
     const pageZoom = templateContent.querySelector('.cr-row:has(#pageZoom)')
     if (!pageZoom) {
       console.error(`[Settings] Couldn't find page zoom`)
@@ -181,15 +174,15 @@ RegisterPolymerTemplateModifications({
     }
 
     // Append toolbar related items to the 'Appearance'pages
-    const pages = templateContent.querySelector('#pages > div')
-    if (!pages) {
-      console.error(`[Settings] Couldn't find appearance page #pages > div`)
-    } else {
-      pages.appendChild(html`
-          <settings-brave-appearance-toolbar
-            prefs="{{prefs}}">
-          </settings-brave-appearance-toolbar>
-        `)
-    }
+//    const pages = templateContent.querySelector('#pages > div')
+//    if (!pages) {
+//      console.error(`[Settings] Couldn't find appearance page #pages > div`)
+//    } else {
+//      pages.appendChild(html`
+//          <settings-brave-appearance-toolbar
+//            prefs="{{prefs}}">
+//          </settings-brave-appearance-toolbar>
+//        `)
+//    }
   }
 })

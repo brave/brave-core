@@ -11,7 +11,7 @@
 namespace brave_page_graph {
 
 NodeTrackerFilter::NodeTrackerFilter(GraphItemContext* context,
-                                     const String& host)
+                                     const blink::String& host)
     : NodeFilter(context), host_(host) {}
 
 NodeTrackerFilter::~NodeTrackerFilter() = default;
@@ -21,7 +21,7 @@ ItemName NodeTrackerFilter::GetItemName() const {
 }
 
 ItemDesc NodeTrackerFilter::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << NodeFilter::GetItemDesc() << " [" << host_ << "]";
   return ts.ReleaseString();
 }

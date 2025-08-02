@@ -16,11 +16,18 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (pageVisibility.getStarted) {
     r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
     // Bring back people's /manageProfile (now in getStarted)
-    r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile')
+    if (!r.MANAGE_PROFILE) {
+      r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile')
+      r.MANAGE_PROFILE.hasMigratedToPlugin = true
+      r.MANAGE_PROFILE.section = 'getStarted'
+    }
     // We re-section people page into getStarted section (see people_page Brave
     // override), so we need to adjust the route accordingly in order for the
     // direct navigation to brave://settings/importData to work.
-    if (r.IMPORT_DATA) {
+    if (!r.IMPORT_DATA) {
+      r.IMPORT_DATA = r.GET_STARTED.createChild('/importData')
+      r.IMPORT_DATA.isNavigableDialog = true
+      r.IMPORT_DATA.hasMigratedToPlugin = true
       r.IMPORT_DATA.section = 'getStarted'
     }
   }
@@ -29,6 +36,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (loadTimeData.getBoolean('areShortcutsSupported')) {
     if (r.SYSTEM) {
       r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
+      r.SHORTCUTS.hasMigratedToPlugin = true
     } else if (!isGuest) {
       console.error('[Settings] Routes: could not find SYSTEM page')
     }
@@ -137,5 +145,12 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   // Delete storage access
   if (r.SITE_SETTINGS_STORAGE_ACCESS) {
     delete r.SITE_SETTINGS_STORAGE_ACCESS
+  }
+  if (r.SYNC) {
+    delete r.SYNC
+  }
+  // Delete /syncSetup/advanced
+  if (r.SYNC_ADVANCED) {
+    delete r.SYNC_ADVANCED
   }
 }

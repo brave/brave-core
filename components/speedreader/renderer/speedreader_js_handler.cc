@@ -12,7 +12,6 @@
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/converter.h"
-#include "gin/handle.h"
 #include "gin/object_template_builder.h"
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -20,15 +19,15 @@
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "v8/include/cppgc/allocation.h"
 #include "v8/include/v8-context.h"
+#include "v8/include/v8-cppgc.h"
 
 namespace {
 constexpr const char kSpeedreader[] = "speedreader";
 }
 
 namespace speedreader {
-
-gin::WrapperInfo SpeedreaderJSHandler::kWrapperInfo = {gin::kEmbedderNativeGin};
 
 SpeedreaderJSHandler::SpeedreaderJSHandler(
     base::WeakPtr<SpeedreaderRenderFrameObserver> owner)
@@ -61,13 +60,12 @@ void SpeedreaderJSHandler::Install(
     return;
   }
 
-  gin::Handle<SpeedreaderJSHandler> handler =
-      gin::CreateHandle(isolate, new SpeedreaderJSHandler(std::move(owner)));
-  if (handler.IsEmpty()) {
-    return;
-  }
+  SpeedreaderJSHandler* handler =
+      cppgc::MakeGarbageCollected<SpeedreaderJSHandler>(
+          isolate->GetCppHeap()->GetAllocationHandle(), std::move(owner));
 
-  v8::PropertyDescriptor desc(handler.ToV8(), false);
+  v8::PropertyDescriptor desc(handler->GetWrapper(isolate).ToLocalChecked(),
+                              false);
   desc.set_configurable(false);
 
   global
@@ -96,6 +94,10 @@ void SpeedreaderJSHandler::ShowOriginalPage(v8::Isolate* isolate) {
   if (speedreader_host.is_bound()) {
     speedreader_host->OnShowOriginalPage();
   }
+}
+
+const gin::WrapperInfo* SpeedreaderJSHandler::wrapper_info() const {
+  return &kWrapperInfo;
 }
 
 void SpeedreaderJSHandler::TtsPlayPause(v8::Isolate* isolate,

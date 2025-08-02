@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index 40361f22b34dd51473feb3142dd6726bf630d7c1..75ce78b1df72709d8bce8f2102f2f4af80a26923 100644
+index 2f09a4f136216d6b00e87184d0b28b0cc255a3a2..3832763ad5fae3f476e54264dba2fdd5a2a5809f 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -201,6 +201,7 @@ class TabStripModel {
+@@ -202,6 +202,7 @@ class TabStripModel {
    TabStripModel(const TabStripModel&) = delete;
    TabStripModel& operator=(const TabStripModel&) = delete;
  

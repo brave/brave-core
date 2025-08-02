@@ -874,7 +874,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
       return;
     } else if (name_piece == "Document.cookie.set") {
       String value(args[0].GetString());
-      Vector<String> cookie_structure;
+      blink::Vector<String> cookie_structure;
       value.Split("=", cookie_structure);
       String cookie_key = *(cookie_structure.begin());
       String cookie_value =

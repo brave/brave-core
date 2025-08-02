@@ -25,6 +25,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "The Rand Project Developers, The Rust Project Developers, The CryptoCorrosion Contributors"
   cargo_pkg_name = "rand_chacha"
   cargo_pkg_description = "ChaCha random number generator"
+  cargo_pkg_repository = "https://github.com/rust-random/rand"
   cargo_pkg_version = "0.2.2"
 
   deps = [

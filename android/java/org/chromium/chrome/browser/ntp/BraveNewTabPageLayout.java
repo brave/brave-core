@@ -224,13 +224,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         }
     }
 
-    protected void insertSiteSectionView() {
+    protected void initializeSiteSectionView() {
         mMainLayout = findViewById(R.id.ntp_content);
-
         mMvTilesContainerLayout =
                 (ViewGroup)
                         LayoutInflater.from(mMainLayout.getContext())
-                                .inflate(R.layout.mv_tiles_container, mMainLayout, false);
+                                .inflate(R.layout.mv_tiles_layout, mMainLayout, false);
+        mMvTilesContainerLayout.setId(R.id.mv_tiles_container);
         mMvTilesContainerLayout.setPadding(0, 0, 0, 0);
         mMvTilesContainerLayout.setVisibility(View.VISIBLE);
 
@@ -1571,8 +1571,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         if (mIsTablet) {
             if (mInitialTileNum == null) {
                 // In the upstream `mMvTilesContainerLayout` is added as a view in
-                // `insertSiteSectionView`.
-                // We override `insertSiteSectionView` to add `mMvTilesContainerLayout` in our own
+                // `insertSiteSectionView`/`initializeSiteSectionView`.
+                // We override `insertSiteSectionView`/`initializeSiteSectionView` to add
+                // `mMvTilesContainerLayout` in our own
                 // RecyclerView to have own NTP UI.
                 // Thus upstream's NewTabPageLayout.findViewById does not see `mv_tiles_layout` and
                 // returns null.

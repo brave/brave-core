@@ -25,6 +25,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Keegan McAllister <kmcallister@mozilla.com>"
   cargo_pkg_name = "futf"
   cargo_pkg_description = "Handling fragments of UTF-8"
+  cargo_pkg_repository = "https://github.com/servo/futf"
   cargo_pkg_version = "0.1.5"
 
   deps = [

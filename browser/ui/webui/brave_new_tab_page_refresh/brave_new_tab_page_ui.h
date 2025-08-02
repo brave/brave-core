@@ -13,9 +13,9 @@
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
+#include "components/omnibox/browser/searchbox.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
-#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
