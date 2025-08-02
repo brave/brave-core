@@ -456,6 +456,7 @@ if (is_android) {
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//chrome/android:jni_headers",
+    "//chrome/browser/password_manager/android:jni_headers",
     "//components/sync_device_info",
   ]
 } else {

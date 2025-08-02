@@ -47,7 +47,7 @@
 #include "url/gurl.h"
 
 // Must come after other includes, because FromJniType() uses Profile.
-#include "brave/browser/password_manager/android/jni_headers/PasswordUiView_jni.h"
+#include "chrome/browser/password_manager/android/jni_headers/PasswordUiView_jni.h"
 
 namespace {
 
