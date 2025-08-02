@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 
+#include "brave/browser/ui/brave_browser_actions.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 #include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
@@ -25,6 +26,7 @@
 #define SidePanelCoordinator BraveSidePanelCoordinator
 #define BookmarksSidePanelCoordinator BraveBookmarksSidePanelCoordinator
 #define BrowserCommandController BraveBrowserCommandController
+#define BrowserActions BraveBrowserActions
 
 #include <chrome/browser/ui/browser_window/internal/browser_window_features.cc>
 
@@ -34,3 +36,4 @@
 #undef BrowserLocationBarModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController
+#undef BrowserActions
