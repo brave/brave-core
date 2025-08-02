@@ -61,7 +61,7 @@ void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
       SidePanelEntry::Key(SidePanelEntry::Id::kPlaylist),
       base::BindRepeating(&PlaylistSidePanelCoordinator::CreateWebView,
                           base::Unretained(this)),
-      SidePanelEntry::kSidePanelDefaultContentWidth));
+      /*default_content_width_callback=*/base::NullCallback()));
 }
 
 void PlaylistSidePanelCoordinator::ActivatePanel() {
