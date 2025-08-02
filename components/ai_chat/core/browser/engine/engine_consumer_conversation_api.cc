@@ -312,11 +312,14 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     if (message->uploaded_files) {
       std::vector<std::string> uploaded_images;
       std::vector<std::string> screenshot_images;
+      std::vector<std::string> uploaded_pdfs;
       for (const auto& uploaded_file : message->uploaded_files.value()) {
         if (uploaded_file->type == mojom::UploadedFileType::kScreenshot) {
           screenshot_images.emplace_back(GetImageDataURL(uploaded_file->data));
         } else if (uploaded_file->type == mojom::UploadedFileType::kImage) {
           uploaded_images.emplace_back(GetImageDataURL(uploaded_file->data));
+        } else if (uploaded_file->type == mojom::UploadedFileType::kPdf) {
+          uploaded_pdfs.emplace_back(GetPdfDataURL(uploaded_file->data));
         }
       }
       if (!uploaded_images.empty()) {
@@ -328,6 +331,11 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         conversation.emplace_back(ConversationEventRole::kUser,
                                   ConversationEventType::kPageScreenshot,
                                   std::move(screenshot_images));
+      }
+      if (!uploaded_pdfs.empty()) {
+        conversation.emplace_back(ConversationEventRole::kUser,
+                                  ConversationEventType::kUploadPdf,
+                                  std::move(uploaded_pdfs));
       }
     }
 

@@ -48,6 +48,11 @@ std::string EngineConsumer::GetImageDataURL(base::span<uint8_t> image_data) {
   return base::StrCat({kDataUrlPrefix, base::Base64Encode(image_data)});
 }
 
+std::string EngineConsumer::GetPdfDataURL(base::span<uint8_t> pdf_data) {
+  constexpr char kDataUrlPrefix[] = "data:application/pdf;base64,";
+  return base::StrCat({kDataUrlPrefix, base::Base64Encode(pdf_data)});
+}
+
 bool EngineConsumer::CanPerformCompletionRequest(
     const ConversationHistory& conversation_history) const {
   if (conversation_history.empty()) {

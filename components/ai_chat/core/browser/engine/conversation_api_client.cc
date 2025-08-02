@@ -120,6 +120,7 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::kGetFocusTabsForTopic, "classifyTabs"},
            {ConversationEventType::kUploadImage, "uploadImage"},
            {ConversationEventType::kPageScreenshot, "pageScreenshot"},
+           {ConversationEventType::kUploadPdf, "uploadPdf"},
            {ConversationEventType::kToolUse, "toolUse"},
            {ConversationEventType::kUserMemory, "userMemory"}});
 

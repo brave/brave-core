@@ -43,6 +43,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/origin.h"
 
 using ::testing::_;
@@ -81,6 +82,13 @@ GetMockTabsAndExpectedTabsJsonString(size_t num_tabs) {
     tabs_json_strings.push_back(tabs_json_string);
   }
   return {tabs, tabs_json_strings};
+}
+
+// Helper function to create base64 data URL from uploaded file data
+std::string CreateDataURLFromUploadedFile(const mojom::UploadedFilePtr& file,
+                                          const std::string& mime_type) {
+  std::string base64_data = base::Base64Encode(file->data);
+  return absl::StrFormat("data:%s;base64,%s", mime_type, base64_data);
 }
 
 }  // namespace
@@ -2475,6 +2483,323 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         {page_content_1, page_content_2}, "", base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateEvents_WithUploadedPdfFiles) {
+  PageContent page_content("This is a page about The Mandalorian.", false);
+
+  // Create test uploaded PDF files
+  auto uploaded_files =
+      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kPdf);
+
+  // Create expected base64 data URLs from the actual file data
+  std::string pdf1_data_url =
+      CreateDataURLFromUploadedFile(uploaded_files[0], "application/pdf");
+  std::string pdf2_data_url =
+      CreateDataURLFromUploadedFile(uploaded_files[1], "application/pdf");
+
+  std::string expected_events = absl::StrFormat(R"([
+    {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
+    {"role": "user", "type": "uploadPdf", "content": ["%s", "%s"]},
+    {"role": "user", "type": "chatMessage", "content": "Can you analyze these PDFs?"}
+  ])",
+                                                pdf1_data_url, pdf2_data_url);
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // Verify conversation structure
+        EXPECT_EQ(conversation.size(), 3u);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[1].type, ConversationEventType::kUploadPdf);
+        EXPECT_EQ(GetContentStrings(conversation[1].content).size(), 2u);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[2].type, ConversationEventType::kChatMessage);
+
+        // Verify PDF content starts with expected data URL format
+        for (const auto& pdf_content :
+             GetContentStrings(conversation[1].content)) {
+          EXPECT_TRUE(pdf_content.find("data:application/pdf;base64,") == 0);
+        }
+
+        // Match entire structure with exact content matching
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->text = "Can you analyze these PDFs?";
+  turn->uploaded_files = std::move(uploaded_files);
+  history.push_back(std::move(turn));
+
+  engine_->GenerateAssistantResponse(
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateEvents_WithMixedUploadedFiles) {
+  PageContent page_content("This is a page about The Mandalorian.", false);
+
+  // Create test uploaded files of different types
+  auto uploaded_files = std::vector<mojom::UploadedFilePtr>();
+
+  // Add a PDF file
+  auto pdf_file = mojom::UploadedFile::New();
+  pdf_file->filename = "document.pdf";
+  pdf_file->filesize = 1024;
+  pdf_file->data = {0x25, 0x50, 0x44, 0x46};  // PDF magic bytes
+  pdf_file->type = mojom::UploadedFileType::kPdf;
+  uploaded_files.push_back(std::move(pdf_file));
+
+  // Add an image file
+  auto image_file = mojom::UploadedFile::New();
+  image_file->filename = "image.jpg";
+  image_file->filesize = 512;
+  image_file->data = {0xFF, 0xD8, 0xFF};  // JPEG magic bytes
+  image_file->type = mojom::UploadedFileType::kImage;
+  uploaded_files.push_back(std::move(image_file));
+
+  // Add a screenshot
+  auto screenshot_file = mojom::UploadedFile::New();
+  screenshot_file->filename = "screenshot.png";
+  screenshot_file->filesize = 768;
+  screenshot_file->data = {0x89, 0x50, 0x4E, 0x47};  // PNG magic bytes
+  screenshot_file->type = mojom::UploadedFileType::kScreenshot;
+  uploaded_files.push_back(std::move(screenshot_file));
+
+  // Create expected base64 data URLs from the actual file data
+  std::string pdf_data_url =
+      CreateDataURLFromUploadedFile(uploaded_files[0], "application/pdf");
+  std::string image_data_url =
+      CreateDataURLFromUploadedFile(uploaded_files[1], "image/png");
+  std::string screenshot_data_url =
+      CreateDataURLFromUploadedFile(uploaded_files[2], "image/png");
+
+  std::string expected_events =
+      absl::StrFormat(R"([
+    {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
+    {"role": "user", "type": "uploadImage", "content": "%s"},
+    {"role": "user", "type": "pageScreenshot", "content": "%s"},
+    {"role": "user", "type": "uploadPdf", "content": "%s"},
+    {"role": "user", "type": "chatMessage", "content": "Can you analyze these files?"}
+  ])",
+                      image_data_url, screenshot_data_url, pdf_data_url);
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // Verify conversation structure
+        EXPECT_EQ(conversation.size(), 5u);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[1].type, ConversationEventType::kUploadImage);
+        EXPECT_EQ(GetContentStrings(conversation[1].content).size(), 1u);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[2].type, ConversationEventType::kPageScreenshot);
+        EXPECT_EQ(GetContentStrings(conversation[2].content).size(), 1u);
+        EXPECT_EQ(conversation[3].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[3].type, ConversationEventType::kUploadPdf);
+        EXPECT_EQ(GetContentStrings(conversation[3].content).size(), 1u);
+        EXPECT_EQ(conversation[4].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[4].type, ConversationEventType::kChatMessage);
+
+        // Verify content formats
+        EXPECT_TRUE(GetContentStrings(conversation[1].content)[0].find(
+                        "data:image/png;base64,") == 0);
+        EXPECT_TRUE(GetContentStrings(conversation[2].content)[0].find(
+                        "data:image/png;base64,") == 0);
+        EXPECT_TRUE(GetContentStrings(conversation[3].content)[0].find(
+                        "data:application/pdf;base64,") == 0);
+
+        // Match entire structure with exact content matching
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->text = "Can you analyze these files?";
+  turn->uploaded_files = std::move(uploaded_files);
+  history.push_back(std::move(turn));
+
+  engine_->GenerateAssistantResponse(
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithOnlyPdfFiles) {
+  // Test case with only PDF files, no page content
+  auto uploaded_files =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kPdf);
+
+  // Create expected base64 data URL from the actual file data
+  std::string pdf_data_url =
+      CreateDataURLFromUploadedFile(uploaded_files[0], "application/pdf");
+
+  std::string expected_events = absl::StrFormat(R"([
+    {"role": "user", "type": "uploadPdf", "content": "%s"},
+    {"role": "user", "type": "chatMessage", "content": "What's in this PDF?"}
+  ])",
+                                                pdf_data_url);
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // Verify conversation structure
+        EXPECT_EQ(conversation.size(), 2u);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kUploadPdf);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
+        EXPECT_EQ(GetContentStrings(conversation[1].content).size(), 1u);
+
+        // Verify PDF content format
+        EXPECT_TRUE(GetContentStrings(conversation[0].content)[0].find(
+                        "data:application/pdf;base64,") == 0);
+
+        // Match entire structure with exact content matching
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->text = "What's in this PDF?";
+  turn->uploaded_files = std::move(uploaded_files);
+  history.push_back(std::move(turn));
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateEvents_WithMultiplePdfFiles) {
+  PageContent page_content("This is a page about The Mandalorian.", false);
+
+  // Create multiple PDF files
+  auto uploaded_files =
+      CreateSampleUploadedFiles(3, mojom::UploadedFileType::kPdf);
+
+  // Create expected base64 data URLs from the actual file data
+  std::string pdf1_data_url =
+      CreateDataURLFromUploadedFile(uploaded_files[0], "application/pdf");
+  std::string pdf2_data_url =
+      CreateDataURLFromUploadedFile(uploaded_files[1], "application/pdf");
+  std::string pdf3_data_url =
+      CreateDataURLFromUploadedFile(uploaded_files[2], "application/pdf");
+
+  std::string expected_events =
+      absl::StrFormat(R"([
+    {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
+    {"role": "user", "type": "uploadPdf", "content": ["%s", "%s", "%s"]},
+    {"role": "user", "type": "chatMessage", "content": "Can you compare these three PDFs?"}
+  ])",
+                      pdf1_data_url, pdf2_data_url, pdf3_data_url);
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // Verify conversation structure
+        EXPECT_EQ(conversation.size(), 3u);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[1].type, ConversationEventType::kUploadPdf);
+        EXPECT_EQ(GetContentStrings(conversation[1].content).size(), 3u);
+        EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[2].type, ConversationEventType::kChatMessage);
+
+        // Verify all PDF content formats
+        for (const auto& pdf_content :
+             GetContentStrings(conversation[1].content)) {
+          EXPECT_TRUE(pdf_content.find("data:application/pdf;base64,") == 0);
+        }
+
+        // Match entire structure with exact content matching
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(""));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->text = "Can you compare these three PDFs?";
+  turn->uploaded_files = std::move(uploaded_files);
+  history.push_back(std::move(turn));
+
+  engine_->GenerateAssistantResponse(
+      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
 }  // namespace ai_chat

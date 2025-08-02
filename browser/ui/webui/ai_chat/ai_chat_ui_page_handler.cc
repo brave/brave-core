@@ -200,14 +200,14 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 #endif
 }
 
-void AIChatUIPageHandler::UploadImage(bool use_media_capture,
-                                      UploadImageCallback callback) {
+void AIChatUIPageHandler::UploadFile(bool use_media_capture,
+                                     UploadFileCallback callback) {
   if (!upload_file_helper_) {
     upload_file_helper_ =
         std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
     upload_file_helper_observation_.Observe(upload_file_helper_.get());
   }
-  upload_file_helper_->UploadImage(
+  upload_file_helper_->UploadFile(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
 #if BUILDFLAG(IS_ANDROID)
       use_media_capture,

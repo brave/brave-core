@@ -32,6 +32,25 @@ namespace ai_chat {
 
 namespace {
 
+// Test data for PDF files
+constexpr uint8_t kSamplePdf[] = {
+    0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34, 0x0a, 0x25, 0xc7, 0xec,
+    0x8f, 0xa2, 0x0a, 0x31, 0x20, 0x30, 0x20, 0x6f, 0x62, 0x6a, 0x0a, 0x3c,
+    0x3c, 0x20, 0x2f, 0x54, 0x79, 0x70, 0x65, 0x20, 0x2f, 0x43, 0x61, 0x74,
+    0x61, 0x6c, 0x6f, 0x67, 0x20, 0x2f, 0x50, 0x61, 0x67, 0x65, 0x73, 0x20,
+    0x32, 0x20, 0x30, 0x20, 0x52, 0x20, 0x2f, 0x4f, 0x75, 0x74, 0x6c, 0x69,
+    0x6e, 0x65, 0x73, 0x20, 0x33, 0x20, 0x30, 0x20, 0x52, 0x20, 0x2f, 0x4d,
+    0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x20, 0x34, 0x20, 0x30, 0x20,
+    0x52, 0x20, 0x3e, 0x3e, 0x0a, 0x65, 0x6e, 0x64, 0x6f, 0x62, 0x6a, 0x0a,
+    0x78, 0x72, 0x65, 0x66, 0x0a, 0x30, 0x20, 0x35, 0x0a, 0x30, 0x30, 0x30,
+    0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x20, 0x6e, 0x0a, 0x0a, 0x74, 0x72,
+    0x61, 0x69, 0x6c, 0x65, 0x72, 0x0a, 0x3c, 0x3c, 0x20, 0x2f, 0x53, 0x69,
+    0x7a, 0x65, 0x20, 0x35, 0x20, 0x2f, 0x52, 0x6f, 0x6f, 0x74, 0x20, 0x31,
+    0x20, 0x30, 0x20, 0x52, 0x20, 0x2f, 0x49, 0x6e, 0x66, 0x6f, 0x20, 0x34,
+    0x20, 0x30, 0x20, 0x52, 0x20, 0x3e, 0x3e, 0x0a, 0x73, 0x74, 0x61, 0x72,
+    0x74, 0x78, 0x72, 0x65, 0x66, 0x0a, 0x31, 0x32, 0x38, 0x0a, 0x25, 0x25,
+    0x45, 0x4f, 0x46, 0x0a};
+
 class MockObserver : UploadFileHelper::Observer {
  public:
   explicit MockObserver(UploadFileHelper* helper) { obs_.Observe(helper); }
@@ -64,10 +83,10 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
     file_helper_ = std::make_unique<UploadFileHelper>(web_contents(), profile);
   }
 
-  std::optional<std::vector<mojom::UploadedFilePtr>> UploadImageSync() {
+  std::optional<std::vector<mojom::UploadedFilePtr>> UploadFileSync() {
     base::test::TestFuture<std::optional<std::vector<mojom::UploadedFilePtr>>>
         future;
-    file_helper_->UploadImage(
+    file_helper_->UploadFile(
         std::make_unique<ChromeSelectFilePolicy>(web_contents()),
 #if BUILDFLAG(IS_ANDROID)
         false,
@@ -89,7 +108,6 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
 
  protected:
   base::ScopedTempDir temp_dir_;
-  data_decoder::test::InProcessDataDecoder data_decoder_;
   std::unique_ptr<ScopedTestingLocalState> testing_local_state_;
   std::unique_ptr<UploadFileHelper> file_helper_;
   // Must persist throughout TearDown().
@@ -103,7 +121,7 @@ TEST_F(UploadFileHelperTest, AcceptedFileExtensions) {
   // This also test cancel selection result
   testing::NiceMock<MockObserver> observer(file_helper_.get());
   EXPECT_CALL(observer, OnFilesSelected).Times(0);
-  EXPECT_FALSE(UploadImageSync());
+  EXPECT_FALSE(UploadFileSync());
   EXPECT_EQ(dialog_params_.type, ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE);
   ASSERT_TRUE(dialog_params_.file_types);
   ASSERT_EQ(1u, dialog_params_.file_types->extensions.size());
@@ -115,14 +133,17 @@ TEST_F(UploadFileHelperTest, AcceptedFileExtensions) {
                              FILE_PATH_LITERAL("jpg")));
   EXPECT_TRUE(base::Contains(dialog_params_.file_types->extensions[0],
                              FILE_PATH_LITERAL("webp")));
+  EXPECT_TRUE(base::Contains(dialog_params_.file_types->extensions[0],
+                             FILE_PATH_LITERAL("pdf")));
 #if BUILDFLAG(IS_ANDROID)
   EXPECT_THAT(dialog_params_.accept_types,
               testing::UnorderedElementsAre(u"image/png", u"image/jpeg",
-                                            u"image/jpg", u"image/webp"));
+                                            u"image/webp", u"application/pdf"));
 #endif
 }
 
 TEST_F(UploadFileHelperTest, ImageRead) {
+  data_decoder::test::InProcessDataDecoder data_decoder;
   base::FilePath path = temp_dir_.GetPath().AppendASCII("not_png.png");
   ASSERT_TRUE(base::WriteFile(path, "1234"));
   ui::SelectFileDialog::SetFactory(
@@ -130,7 +151,7 @@ TEST_F(UploadFileHelperTest, ImageRead) {
           std::vector<base::FilePath>{path}));
   testing::NiceMock<MockObserver> observer(file_helper_.get());
   EXPECT_CALL(observer, OnFilesSelected).Times(1);
-  EXPECT_FALSE(UploadImageSync());
+  EXPECT_FALSE(UploadFileSync());
   testing::Mock::VerifyAndClearExpectations(&observer);
 
   base::FilePath path2 = temp_dir_.GetPath().AppendASCII("empty.png");
@@ -139,7 +160,7 @@ TEST_F(UploadFileHelperTest, ImageRead) {
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path2}));
   EXPECT_CALL(observer, OnFilesSelected).Times(1);
-  EXPECT_FALSE(UploadImageSync());
+  EXPECT_FALSE(UploadFileSync());
   testing::Mock::VerifyAndClearExpectations(&observer);
 
   constexpr uint8_t kSamplePng[] = {
@@ -157,7 +178,7 @@ TEST_F(UploadFileHelperTest, ImageRead) {
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path3}));
   EXPECT_CALL(observer, OnFilesSelected).Times(1);
-  auto sample_result = UploadImageSync();
+  auto sample_result = UploadFileSync();
   testing::Mock::VerifyAndClearExpectations(&observer);
   ASSERT_TRUE(sample_result);
   ASSERT_EQ(1u, sample_result->size());
@@ -178,7 +199,7 @@ TEST_F(UploadFileHelperTest, ImageRead) {
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path4}));
   EXPECT_CALL(observer, OnFilesSelected).Times(1);
-  auto large_result = UploadImageSync();
+  auto large_result = UploadFileSync();
   testing::Mock::VerifyAndClearExpectations(&observer);
   ASSERT_TRUE(large_result);
   ASSERT_EQ(1u, large_result->size());
@@ -196,7 +217,7 @@ TEST_F(UploadFileHelperTest, ImageRead) {
           std::vector<base::FilePath>{path3, path4}));
 
   EXPECT_CALL(observer, OnFilesSelected).Times(1);
-  auto result = UploadImageSync();
+  auto result = UploadFileSync();
   testing::Mock::VerifyAndClearExpectations(&observer);
 
   ASSERT_TRUE(result);
@@ -216,6 +237,113 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   auto encoded_bitmap2 = gfx::PNGCodec::Decode((*result)[1]->data);
   EXPECT_EQ(1024, encoded_bitmap2.width());
   EXPECT_EQ(768, encoded_bitmap2.height());
+}
+
+TEST_F(UploadFileHelperTest, PdfFileHandling) {
+  // Test PDF file with valid PDF header
+
+  base::FilePath pdf_path = temp_dir_.GetPath().AppendASCII("sample.pdf");
+  ASSERT_TRUE(base::WriteFile(pdf_path, kSamplePdf));
+
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{pdf_path}));
+
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
+
+  auto result = UploadFileSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  ASSERT_TRUE(result);
+  ASSERT_EQ(1u, result->size());
+  EXPECT_EQ((*result)[0]->filename, "sample.pdf");
+  EXPECT_EQ((*result)[0]->filesize, (*result)[0]->data.size());
+  EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kPdf);
+
+  // Verify the PDF data is returned unchanged (no processing)
+  EXPECT_EQ((*result)[0]->data.size(), sizeof(kSamplePdf));
+  EXPECT_EQ(base::span((*result)[0]->data), base::span(kSamplePdf));
+}
+
+TEST_F(UploadFileHelperTest, PdfFileWithInvalidHeader) {
+  // Test file with .pdf extension but invalid content
+  constexpr uint8_t kInvalidPdf[] = {
+      0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f, 0x72, 0x6c,
+      0x64, 0x21, 0x20, 0x54, 0x68, 0x69, 0x73, 0x20, 0x69, 0x73,
+      0x20, 0x6e, 0x6f, 0x74, 0x20, 0x61, 0x20, 0x50, 0x44, 0x46,
+      0x20, 0x66, 0x69, 0x6c, 0x65, 0x2e, 0x0a};
+
+  base::FilePath invalid_pdf_path =
+      temp_dir_.GetPath().AppendASCII("invalid.pdf");
+  ASSERT_TRUE(base::WriteFile(invalid_pdf_path, kInvalidPdf));
+
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{invalid_pdf_path}));
+
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
+
+  auto result = UploadFileSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // Should fail since it has .pdf extension but doesn't look like a PDF
+  EXPECT_FALSE(result);
+}
+
+TEST_F(UploadFileHelperTest, PdfFileTooSmall) {
+  // Test PDF file that's too small to be valid (less than 50 bytes)
+  constexpr uint8_t kSmallPdf[] = {0x25, 0x50, 0x44, 0x46, 0x2d,
+                                   0x31, 0x2e, 0x34, 0x0a};
+
+  base::FilePath small_pdf_path = temp_dir_.GetPath().AppendASCII("small.pdf");
+  ASSERT_TRUE(base::WriteFile(small_pdf_path, kSmallPdf));
+
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{small_pdf_path}));
+
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
+
+  auto result = UploadFileSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // Should fail since it has .pdf extension but is too small to be a valid PDF
+  EXPECT_FALSE(result);
+}
+
+TEST_F(UploadFileHelperTest, MixedFileTypes) {
+  data_decoder::test::InProcessDataDecoder data_decoder;
+  // Test uploading both PDF and image files together
+
+  auto png_bytes = gfx::test::CreatePNGBytes(100);
+  base::FilePath pdf_path = temp_dir_.GetPath().AppendASCII("document.pdf");
+  base::FilePath png_path = temp_dir_.GetPath().AppendASCII("image.png");
+  ASSERT_TRUE(base::WriteFile(pdf_path, kSamplePdf));
+  ASSERT_TRUE(base::WriteFile(png_path, base::span(*png_bytes)));
+
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{pdf_path, png_path}));
+
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
+
+  auto result = UploadFileSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  ASSERT_TRUE(result);
+  ASSERT_EQ(2u, result->size());
+
+  EXPECT_EQ((*result)[0]->filename, "document.pdf");
+  EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kPdf);
+  EXPECT_EQ((*result)[0]->data.size(), sizeof(kSamplePdf));
+
+  EXPECT_EQ((*result)[1]->filename, "image.png");
+  EXPECT_EQ((*result)[1]->type, mojom::UploadedFileType::kImage);
+  EXPECT_GT((*result)[1]->data.size(), 0u);
 }
 
 }  // namespace ai_chat

@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { AttachmentItem, AttachmentPageItem, AttachmentSpinnerItem } from '.'
+import { AttachmentItem, AttachmentPageItem, AttachmentSpinnerItem, formatFileSize } from '.'
 
 describe('attachment item', () => {
   it('renders title, subtitle and thumbnail', () => {
@@ -95,5 +95,29 @@ describe('attachment page item', () => {
 
     render(<AttachmentPageItem title='Title' url='ftp:///path/to/file.txt' />)
     expect(screen.getByText('ftp:///path/to/file.txt', { selector: 'leo-tooltip div:first-child' })).toBeInTheDocument()
+  })
+})
+
+describe('formatFileSize', () => {
+  it('should format bytes correctly', () => {
+    expect(formatFileSize(512)).toBe('512.00 B')
+    expect(formatFileSize(1024)).toBe('1.00 KB')
+    expect(formatFileSize(1025)).toBe('1.00 KB')
+    expect(formatFileSize(1025 * 1024)).toBe('1.00 MB')
+    expect(formatFileSize(1536)).toBe('1.50 KB')
+    expect(formatFileSize(1024 * 1024)).toBe('1.00 MB')
+    expect(formatFileSize(1025 * 1024 * 1024)).toBe('1.00 GB')
+    expect(formatFileSize(1024 * 1024 * 1024)).toBe('1.00 GB')
+  })
+
+  it('should handle large file sizes', () => {
+    expect(formatFileSize(4.5 * 1024 * 1024)).toBe('4.50 MB')
+    expect(formatFileSize(2.5 * 1024 * 1024 * 1024)).toBe('2.50 GB')
+  })
+
+  it('should handle edge cases', () => {
+    expect(formatFileSize(0)).toBe('0.00 B')
+    expect(formatFileSize(1023)).toBe('1023.00 B')
+    expect(formatFileSize(1024 * 1024 * 1024 * 1024)).toBe('1024.00 GB') // Max supported unit
   })
 })

@@ -13,10 +13,10 @@ import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
 import { useAIChat } from './ai_chat_context'
 import getAPI from '../api'
 import {
-  IGNORE_EXTERNAL_LINK_WARNING_KEY, MAX_IMAGES //
+  IGNORE_EXTERNAL_LINK_WARNING_KEY
 } from '../../common/constants'
 import {
-  updateConversationHistory, getImageFiles
+  updateConversationHistory, processUploadedFilesWithLimits
 } from '../../common/conversation_history_utils'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useIsDragging } from '../hooks/useIsDragging'
@@ -75,12 +75,12 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   isTemporaryChat: boolean
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
-  uploadImage: (useMediaCapture: boolean) => void
+  uploadFile: (useMediaCapture: boolean) => void
   getScreenshots: () => void
-  removeImage: (index: number) => void
+  removeFile: (index: number) => void
   setGeneratedUrlToBeOpened: (url?: Url) => void
   setIgnoreExternalLinkWarning: () => void
-  pendingMessageImages: Mojom.UploadedFile[]
+  pendingMessageFiles: Mojom.UploadedFile[]
   isUploadingFiles: boolean
   setTemporary: (temporary: boolean) => void
   processDroppedImages: (images: Mojom.UploadedFile[]) => void
@@ -129,12 +129,12 @@ export const defaultContext: ConversationContext = {
   disassociateContent: () => { },
   showAttachments: false,
   setShowAttachments: () => { },
-  uploadImage: (useMediaCapture: boolean) => { },
+  uploadFile: (useMediaCapture: boolean) => { },
   getScreenshots: () => { },
-  removeImage: () => { },
+  removeFile: () => { },
   setGeneratedUrlToBeOpened: () => { },
   setIgnoreExternalLinkWarning: () => { },
-  pendingMessageImages: [],
+  pendingMessageFiles: [],
   isUploadingFiles: false,
   setTemporary: (temporary: boolean) => { },
   processDroppedImages: (images: Mojom.UploadedFile[]) => { },
@@ -445,12 +445,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     } else {
       conversationHandler.submitHumanConversationEntry(
         context.inputText,
-        context.pendingMessageImages)
+        context.pendingMessageFiles)
     }
 
     setPartialContext({
       inputText: '',
-      pendingMessageImages: []
+      pendingMessageFiles: []
     })
     resetSelectedActionType()
   }
@@ -509,21 +509,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
   }
 
-  const processUploadedImage = (images: Mojom.UploadedFile[]) => {
-    const totalUploadedImages = context.conversationHistory.reduce(
-      (total, turn) => total +
-        (getImageFiles(turn.uploadedFiles)?.length || 0),
-      0
-    )
-    const currentPendingImages = context.pendingMessageImages.length
-    const maxNewImages = MAX_IMAGES - totalUploadedImages - currentPendingImages
-    const newImages = images.slice(0, Math.max(0, maxNewImages))
-
-    if (newImages.length > 0) {
+    const processUploadedFiles = (files: Mojom.UploadedFile[]) => {
+    const newFiles = processUploadedFilesWithLimits(files, context.conversationHistory, context.pendingMessageFiles)
+    if (newFiles.length > 0) {
       setPartialContext({
         isUploadingFiles: false,
-        pendingMessageImages:
-          [...context.pendingMessageImages, ...newImages]
+        pendingMessageFiles: [...context.pendingMessageFiles, ...newFiles]
       })
     } else {
       setPartialContext({
@@ -539,25 +530,25 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     conversationHandler.getScreenshots()
       .then(({ screenshots }) => {
         if (screenshots) {
-          processUploadedImage(screenshots)
+          processUploadedFiles(screenshots)
         }
       })
   }
 
-  const uploadImage = (useMediaCapture: boolean) => {
-    aiChatContext.uiHandler?.uploadImage(useMediaCapture)
-      .then(({ uploadedImages }) => {
-        if (uploadedImages) {
-          processUploadedImage(uploadedImages)
+  const uploadFile = (useMediaCapture: boolean) => {
+    aiChatContext.uiHandler?.uploadFile(useMediaCapture)
+      .then(({ uploadedFiles }) => {
+        if (uploadedFiles) {
+          processUploadedFiles(uploadedFiles)
         }
       })
   }
 
-  const removeImage = (index: number) => {
-    const updatedImages = [...context.pendingMessageImages]
+  const removeFile = (index: number) => {
+    const updatedImages = [...context.pendingMessageFiles]
     updatedImages.splice(index, 1)
     setPartialContext({
-      pendingMessageImages: updatedImages
+      pendingMessageFiles: updatedImages
     })
   }
 
@@ -666,9 +657,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     switchToBasicModel,
     setIsToolsMenuOpen: (isToolsMenuOpen) => setPartialContext({ isToolsMenuOpen }),
     handleVoiceRecognition,
-    uploadImage,
+    uploadFile,
     getScreenshots,
-    removeImage,
+    removeFile,
     setTemporary: (temporary) => {
       // Backend would check if the conversation has not yet started
       // (conversation.hasContent is false), the UI switch is only available
@@ -686,7 +677,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         setPartialContext({
           isUploadingFiles: true
         })
-        processUploadedImage(images)
+        processUploadedFiles(images)
       },
       clearDragState
   }
