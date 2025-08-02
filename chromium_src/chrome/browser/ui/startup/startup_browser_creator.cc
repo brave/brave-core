@@ -7,7 +7,6 @@
 
 #include "base/command_line.h"
 #include "base/logging.h"
-#include "brave/browser/ai_chat/ai_chat_profile.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
@@ -79,10 +78,9 @@ void BraveStartupBrowserCreatorImpl::Launch(
 
 // Make sure the AI Chat profile won't open on startup even if it was
 // still active when the last session ended.
-#define BRAVE_CAN_OPEN_PROFILE_ON_STARTUP                                      \
-  if (profile_info.profile &&                                                  \
-      ai_chat::IsAIChatContentAgentProfile(profile_info.profile->GetPath())) { \
-    return false;                                                              \
+#define BRAVE_CAN_OPEN_PROFILE_ON_STARTUP                              \
+  if (profile_info.profile && profile_info.profile->IsAIChatAgent()) { \
+    return false;                                                      \
   }
 
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl

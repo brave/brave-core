@@ -11,4 +11,7 @@ namespace brave {
 
 const base::FilePath::CharType kSessionProfileDir[] = FPL("session_profiles");
 
+const base::FilePath::CharType kAIChatAgentProfileDir[] =
+    FPL("ai_chat_agent_profile");
+
 }  // namespace brave
