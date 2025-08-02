@@ -7,6 +7,7 @@
 
 #include <initializer_list>
 
+#include "base/version_info/channel.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ui/brave_ui_features.h"
@@ -126,7 +127,9 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 
 namespace {
 const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
-}
+constexpr char kAIChatAgenticProfileInternalName[] =
+    "brave-ai-chat-agentic-profile";
+}  // namespace
 
 #define SPEEDREADER_FEATURE_ENTRIES                                        \
   IF_BUILDFLAG(                                                            \
@@ -500,6 +503,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "specific actions.",                                                 \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatTools),                 \
+      },                                                                       \
+      {                                                                        \
+          kAIChatAgenticProfileInternalName,                                   \
+          "Brave AI Chat Agentic Profile",                                     \
+          "Enables Leo's agentic features and only in a separate built-in "    \
+          "profile.",                                                          \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatAgenticProfile),        \
       },                                                                       \
       {                                                                        \
           "brave-ai-host-specific-distillation",                               \
@@ -1154,6 +1165,16 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   PSST_FEATURE_ENTRIES                                                         \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
+
+#define BRAVE_SHOULD_SKIP_CONDITIONAL_FEATURE_ENTRY                      \
+  /* Only show AI Agentic Profile flag on Dev/Canary/Unknown */          \
+  if (!strcmp(kAIChatAgenticProfileInternalName, entry.internal_name)) { \
+    version_info::Channel chrome_channel = chrome::GetChannel();         \
+    return chrome_channel != version_info::Channel::DEV &&               \
+           chrome_channel != version_info::Channel::CANARY &&            \
+           chrome_channel != version_info::Channel::UNKNOWN;             \
+  }
+
 namespace flags_ui {
 namespace {
 

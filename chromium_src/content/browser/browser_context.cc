@@ -62,6 +62,10 @@ namespace content {
 bool BrowserContext::IsTor() const {
   return false;
 }
+
+bool BrowserContext::IsAIChatAgent() const {
+  return false;
+}
 }  // namespace content
 
 #include <content/browser/browser_context.cc>

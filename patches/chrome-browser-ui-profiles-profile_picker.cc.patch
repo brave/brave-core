@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/profiles/profile_picker.cc b/chrome/browser/ui/profiles/profile_picker.cc
+index f36a769ff629c914c720ded4a73aec9f04c2e581..3a5f5c7d32fafbeb664de78d9b4761ec9bc7733c 100644
+--- a/chrome/browser/ui/profiles/profile_picker.cc
++++ b/chrome/browser/ui/profiles/profile_picker.cc
+@@ -162,6 +162,7 @@ StartupProfileModeReason ProfilePicker::GetStartupModeReason() {
+       profile_manager->GetProfileAttributesStorage().GetAllProfilesAttributes();
+   int number_of_active_profiles = std::ranges::count_if(
+       profile_attributes, [](ProfileAttributesEntry* entry) {
++        BRAVE_PROFILE_PICKER_GET_STARTUP_MODE_REASON_IS_ACTIVE_PROFILE
+         return (base::Time::Now() - entry->GetActiveTime() <
+                 kActiveTimeThreshold);
+       });

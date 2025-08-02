@@ -12,7 +12,10 @@
   bool IsSearchBackupResults() const;                       \
   friend class TorProfileManager;                           \
   static const OTRProfileID TorID
-#define HasPrimaryOTRProfile IsTor() const override; bool HasPrimaryOTRProfile
+#define HasPrimaryOTRProfile           \
+  IsTor() const override;              \
+  bool IsAIChatAgent() const override; \
+  bool HasPrimaryOTRProfile
 #define IsIncognitoProfile                 \
   IsIncognitoProfile_ChromiumImpl() const; \
   bool IsIncognitoProfile
