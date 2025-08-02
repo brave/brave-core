@@ -969,6 +969,8 @@ enum KeyringId {
   kBitcoinHardwareTestnet = 11,
   kCardanoMainnet = 12,
   kCardanoTestnet = 13,
+  kECashMainnet = 14,
+  kECashTestnet = 15,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
@@ -1480,6 +1482,8 @@ const string kCardanoMainnet = "cardano_mainnet";
 const string kCardanoTestnet = "cardano_testnet";
 const string kZCashMainnet = "zcash_mainnet";
 const string kZCashTestnet = "zcash_testnet";
+const string kECashMainnet = "ecash_mainnet";
+const string kECashTestnet = "ecash_testnet";
 const string kArbitrumNovaChainId = "0xa4ba";
 const string kGnosisChainId = "0x64";
 const string kGodwokenChainId = "0x116ea";
@@ -1546,6 +1550,7 @@ enum CoinType {
   ETH = 60,
   FIL = 461,
   SOL = 501,
+  XEC = 899,
   ADA = 1815,
 };
 
@@ -3487,4 +3492,15 @@ interface SimulationService {
   // error_string contains internal errors generated in brave-core.
   ScanSignSolTransactionsRequest(int32 id, string language)
     => (SolanaSimulationResponse? response, string error_response, string error_string);
+};
+
+struct ECashKeyId {
+  uint32 account;
+  uint32 change;
+  uint32 index;
+};
+
+struct ECashAddress {
+  string address_string;
+  ECashKeyId key_id;
 };
