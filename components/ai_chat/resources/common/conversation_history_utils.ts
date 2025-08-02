@@ -49,3 +49,16 @@ export function getImageFiles(
     file.type === Mojom.UploadedFileType.kScreenshot
   );
 }
+
+/**
+ * Filters uploaded files to only include documents
+ *
+ * @param files - The array of uploaded files to filter
+ * @returns Filtered array containing only document files
+ */
+export function getDocumentFiles(
+  files?: Mojom.UploadedFile[]): Mojom.UploadedFile[] | undefined {
+  return files?.filter(file =>
+    file.type === Mojom.UploadedFileType.kPdf
+  );
+}

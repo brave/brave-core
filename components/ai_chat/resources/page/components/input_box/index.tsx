@@ -11,9 +11,10 @@ import { getLocale } from '$web-common/locale'
 import ActionTypeLabel from '../../../common/components/action_type_label'
 import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
+import { getDocumentFiles, getImageFiles } from '../../../common/conversation_history_utils'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
-import { AttachmentImageItem, AttachmentSpinnerItem, AttachmentPageItem } from '../attachment_item'
+import { AttachmentDocumentItem, AttachmentImageItem, AttachmentSpinnerItem, AttachmentPageItem } from '../attachment_item'
 import usePromise from '$web-common/usePromise'
 
 type Props = Pick<
@@ -32,10 +33,10 @@ type Props = Pick<
   | 'handleVoiceRecognition'
   | 'isGenerating'
   | 'handleStopGenerating'
-  | 'uploadImage'
+  | 'uploadFile'
   | 'getScreenshots'
-  | 'pendingMessageImages'
-  | 'removeImage'
+  | 'pendingMessageFiles'
+  | 'removeFile'
   | 'conversationHistory'
   | 'associatedContentInfo'
   | 'isUploadingFiles'
@@ -123,11 +124,11 @@ function InputBox(props: InputBoxProps) {
 
   React.useEffect(() => {
     // Update the height of the attachment wrapper when
-    // pendingMessageImages changes.
-    if (props.context?.pendingMessageImages.length > 0) {
+    // pendingMessageFiles changes.
+    if (props.context?.pendingMessageFiles.length > 0) {
       updateAttachmentWrapperHeight()
     }
-  }, [props.context.pendingMessageImages])
+  }, [props.context.pendingMessageFiles])
 
   const placeholderText = usePlaceholderText(
     props.context.associatedContentInfo.length,
@@ -135,7 +136,10 @@ function InputBox(props: InputBoxProps) {
     props.context.getPluralString
   )
 
-  const showImageAttachments = props.context.pendingMessageImages.length > 0 || props.context.isUploadingFiles
+  const imageFiles = getImageFiles(props.context.pendingMessageFiles) || []
+  const showImageAttachments = imageFiles.length > 0
+  const documentFiles = getDocumentFiles(props.context.pendingMessageFiles) || []
+  const showDocumentAttachments = documentFiles.length > 0
   const showPageAttachments = props.context.associatedContentInfo.length > 0
     && !props.conversationStarted
   const isSendButtonDisabled =
@@ -172,11 +176,18 @@ function InputBox(props: InputBoxProps) {
           {props.context.isUploadingFiles && (
             <AttachmentSpinnerItem title={getLocale(S.AI_CHAT_UPLOADING_FILE_LABEL)} />
           )}
-          {showImageAttachments && props.context.pendingMessageImages?.map((img, i) => (
+          {showImageAttachments && imageFiles?.map((img, i) => (
             <AttachmentImageItem
               key={img.filename}
-              uploadedImage={img}
-              remove={() => props.context.removeImage(i)}
+              uploadedFile={img}
+                              remove={() => props.context.removeFile(i)}
+            />
+          ))}
+          {showDocumentAttachments && documentFiles?.map((doc, i) => (
+            <AttachmentDocumentItem
+              key={doc.filename}
+              uploadedFile={doc}
+                              remove={() => props.context.removeFile(i)}
             />
           ))}
         </div>
@@ -239,7 +250,7 @@ function InputBox(props: InputBoxProps) {
             </Button>
           )}
           <AttachmentButtonMenu
-            uploadImage={props.context.uploadImage}
+            uploadFile={props.context.uploadFile}
             getScreenshots={props.context.getScreenshots}
             conversationHistory={props.context.conversationHistory}
             associatedContentInfo={props.context.associatedContentInfo}
