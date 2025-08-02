@@ -91,7 +91,6 @@ class MockPermissionPromptBubbleBaseView
       base::WeakPtr<permissions::PermissionPrompt::Delegate> delegate)
       : PermissionPromptBubbleBaseView(browser,
                                        delegate,
-                                       base::TimeTicks::Now(),
                                        PermissionPromptStyle::kBubbleOnly) {
     CreateWidget();
     ShowWidget();
