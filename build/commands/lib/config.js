@@ -85,8 +85,10 @@ const getEnvConfig = (key, defaultValue = undefined) => {
 
     // Convert 'true' and 'false' strings into booleans.
     for (const [key, value] of Object.entries(envConfig)) {
-      if (value === 'true' || value === 'false') {
-        envConfig[key] = value === 'true'
+      try {
+        envConfig[key] = JSON.parse(value)
+      } catch (e) {
+        envConfig[key] = value
       }
     }
   }
@@ -273,6 +275,7 @@ const Config = function () {
     'brave_stats_updater_url',
     'brave_sync_endpoint',
     'brave_variations_server_url',
+    'concurrent_links',
     'gemini_production_api_url',
     'gemini_production_client_id',
     'gemini_production_client_secret',
@@ -328,10 +331,10 @@ Config.prototype.isBraveReleaseBuild = function () {
   const isBraveReleaseBuildValue = getEnvConfig(['is_brave_release_build'])
   if (isBraveReleaseBuildValue !== undefined) {
     assert(
-      isBraveReleaseBuildValue === '0' || isBraveReleaseBuildValue === '1',
+      isBraveReleaseBuildValue === 0 || isBraveReleaseBuildValue === 1,
       'Bad is_brave_release_build value (should be 0 or 1)',
     )
-    return isBraveReleaseBuildValue === '1'
+    return isBraveReleaseBuildValue === 1
   }
 
   return false
