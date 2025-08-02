@@ -164,9 +164,9 @@ class AIChatProfileStartupBrowserTest : public AIChatProfileBrowserTest {
  public:
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
-    // This test configures command line params carefully. Make sure
-    // InProcessBrowserTest does _not_ add about:blank as a startup URL.
+    // Make sure InProcessBrowserTest does not add about:blank as a startup URL.
     set_open_about_blank_on_browser_launch(false);
+    set_exit_when_last_browser_closes(true);
   }
 };
 
@@ -187,13 +187,35 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
   CloseAllBrowsers();
 }
 
-// Verify that on restart, the profile picker is not shown and the original
-// profile is used
 IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
                        AIChatProfileDoesNotAffectStartup) {
+  // Verify that on restart, the profile picker is not shown and the original
+  // profile is used. This tests the override in profile_picker.cc.
   EXPECT_FALSE(ProfilePicker::IsOpen());
   // If the profile picker is open then there are no browser open,
   // so make sure we have a default browser open.
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(nullptr, FindAIChatBrowser());
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+                       PRE_ProfileNotReopenedOnStartup) {
+  // Quit the first session with main profile and AI Chat profile
+  // still open.
+  SetUserOptedIn(GetProfile()->GetPrefs(), true);
+  OpenBrowserWindowForAIChatAgentProfile(GetProfile());
+  if (chrome::GetTotalBrowserCount() == 1u) {
+    ui_test_utils::WaitForBrowserToOpen();
+  }
+  EXPECT_EQ(2u, chrome::GetTotalBrowserCount());
+  VerifyAIChatSidePanelShowing(FindAIChatBrowser());
+  // Leave the browser windows open
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+                       ProfileNotReopenedOnStartup) {
+  // Verify the AI Chat profile is not opened on startup
+  // This tests the override in startup_browser_creator.cc.
   EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
   EXPECT_EQ(nullptr, FindAIChatBrowser());
 }
