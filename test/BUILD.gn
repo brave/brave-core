@@ -946,6 +946,7 @@ test("brave_browser_tests") {
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/hats",
     "//chrome/browser/ui/omnibox",
+    "//chrome/browser/ui/startup",
     "//chrome/browser/web_applications",
     "//chrome/test:chrome_test_launcher",
     "//chrome/test:test_support_ui",
