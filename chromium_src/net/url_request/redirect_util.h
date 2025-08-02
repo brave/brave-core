@@ -8,7 +8,7 @@
 
 #define UpdateHttpRequest                                              \
   UpdateHttpRequest_ChromiumImpl(                                      \
-      const GURL& original_url, const std::string& original_method,    \
+      const GURL& original_url, std::string_view original_method,      \
       const RedirectInfo& redirect_info,                               \
       const std::optional<std::vector<std::string>>& removed_headers,  \
       const std::optional<net::HttpRequestHeaders>& modified_headers,  \
