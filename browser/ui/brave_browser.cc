@@ -139,8 +139,10 @@ void BraveBrowser::TabStripEmpty() {
   }
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), -1,
-                                true, std::nullopt));
+      FROM_HERE,
+      base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), /*index=*/-1,
+                     /*foreground=*/true, /*group=*/std::nullopt,
+                     /*pinned=*/false));
 }
 
 void BraveBrowser::RunFileChooser(
