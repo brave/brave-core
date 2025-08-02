@@ -51,6 +51,6 @@ bool SetEnableHighAccuracy(LocalFrame* frame, bool enable_high_accuracy) {
   SetHighAccuracyHint(is_high_accuracy)
 #endif
 
-#include <third_party/blink/renderer/modules/geolocation/geolocation.cc>
+#include <third_party/blink/renderer/core/geolocation/geolocation.cc>
 
 #undef SetHighAccuracyHint
