@@ -45,6 +45,7 @@ function buildDefaultGClientConfig(
       },
       custom_vars: {
         'checkout_pgo_profiles': config.isBraveReleaseBuild(),
+        'checkout_instrumented_libraries': true,
       },
     },
   ]
