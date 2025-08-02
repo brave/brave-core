@@ -38,8 +38,10 @@ std::unique_ptr<CommandItem> CreateOpenBookmarkItem(
   item->entity_type = CommandItem::Entity::kBookmark;
   // base::Unretained is safe because commands are reset when a browser is
   // closed.
-  item->command = base::BindOnce(&chrome::AddTabAt, base::Unretained(browser),
-                                 GURL(bookmark.url), -1, true, std::nullopt);
+  item->command =
+      base::BindOnce(&chrome::AddTabAt, base::Unretained(browser),
+                     GURL(bookmark.url), /*index=*/-1, /*foreground=*/true,
+                     /*group=*/std::nullopt, /*pinned=*/false);
   return item;
 }
 
