@@ -83,7 +83,7 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     suggestion.getImageUrl(),
                     suggestion.getImageDominantColor(),
                     suggestion.isDeletable(),
-                    suggestion.getPostContentType(),
+                    suggestion.getExtraHeaders().get("Content-Type"),
                     suggestion.getPostData(),
                     suggestion.getGroupId(),
                     suggestion.getClipboardImageData(),
