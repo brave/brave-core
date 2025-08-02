@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_browser.h"
-#include "brave/browser/ui/brave_browser_actions.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/brave_tab_strip_model_delegate.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -14,13 +13,11 @@
 
 #define BrowserCommandController BraveBrowserCommandController
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
-#define BrowserActions(...) BraveBrowserActions(__VA_ARGS__)
 #define DeprecatedCreateOwnedForTesting DeprecatedCreateOwnedForTesting_Unused
 
 #include <chrome/browser/ui/browser.cc>
 
 #undef DeprecatedCreateOwnedForTesting
-#undef BrowserActions
 #undef BrowserTabStripModelDelegate
 #undef BrowserCommandController
 #undef BRAVE_BROWSER_DEPRECATED_CREATE_OWNED_FOR_TESTING

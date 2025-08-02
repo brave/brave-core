@@ -11,7 +11,7 @@
 // Add more side panel actions for our playlist/chat panels.
 class BraveBrowserActions : public BrowserActions {
  public:
-  explicit BraveBrowserActions(Browser& browser);
+  explicit BraveBrowserActions(BrowserWindowInterface* bwi);
   ~BraveBrowserActions() override;
 
  private:
