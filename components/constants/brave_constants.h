@@ -12,6 +12,9 @@ namespace brave {
 
 extern const base::FilePath::CharType kSessionProfileDir[];
 
+// Path to create the AI Chat agent profile
+extern const base::FilePath::CharType kAIChatAgentProfileDir[];
+
 }  // namespace brave
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_BRAVE_CONSTANTS_H_

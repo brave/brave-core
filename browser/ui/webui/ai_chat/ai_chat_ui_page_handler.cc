@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -50,8 +51,8 @@
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #endif
 
-#if defined(TOOLKIT_VIEWS)
-#include "brave/browser/ui/ai_chat/ai_chat_profile.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/ai_chat/ai_chat_agent_profile_helper.h"
 #endif
 
 namespace {
@@ -263,8 +264,8 @@ void AIChatUIPageHandler::OpenConversationFullPage(
 
 void AIChatUIPageHandler::OpenAIChatAgenticProfile() {
   CHECK(ai_chat::features::IsAIChatAgenticProfileEnabled());
-#if defined(TOOLKIT_VIEWS)
-  ai_chat::OpenBrowserWindowForAIChatAgentProfile(profile_);
+#if !BUILDFLAG(IS_ANDROID)
+  ai_chat::OpenBrowserWindowForAIChatAgentProfile(profile_, base::DoNothing());
 #endif
 }
 

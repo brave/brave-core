@@ -8,11 +8,20 @@ import("//pdf/features.gni")
 if (!is_android) {
   source_set("ai_chat") {
     sources = [
+      "ai_chat_agent_profile_helper.cc",
+      "ai_chat_agent_profile_helper.h",
       "utils.cc",
       "utils.h",
     ]
 
     deps = [
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+      "//chrome/browser:browser_process",
+      "//chrome/browser:browser_public_dependencies",
+      "//chrome/browser/profiles:profile_util",
+      "//chrome/browser/themes",
+      "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/tabs",
       "//chrome/browser/ui/views/side_panel",

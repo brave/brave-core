@@ -462,8 +462,6 @@ source_set("ui") {
 
   if (toolkit_views) {
     sources += [
-      "ai_chat/ai_chat_profile.cc",
-      "ai_chat/ai_chat_profile.h",
       "views/bookmarks/bookmark_bar_instructions_view.cc",
       "views/bookmarks/bookmark_bar_instructions_view.h",
       "views/bookmarks/brave_bookmark_bar_view.cc",
@@ -609,16 +607,9 @@ source_set("ui") {
 
     deps += [
       "//brave/browser/ui/side_panel",
-      "//brave/components/ai_chat/core/browser",
-      "//brave/components/ai_chat/core/common",
-      "//chrome/browser:browser_process",
-      "//chrome/browser:browser_public_dependencies",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",
-      "//chrome/browser/profiles:profile_util",
-      "//chrome/browser/themes",
-      "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/javascript_dialogs",

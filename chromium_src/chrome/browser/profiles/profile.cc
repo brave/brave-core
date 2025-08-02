@@ -6,6 +6,7 @@
 #include "brave/chromium_src/chrome/browser/profiles/profile.h"
 
 #include "base/strings/string_util.h"
+#include "brave/components/constants/brave_constants.h"
 #include "brave/components/tor/tor_constants.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_utils.h"
 
@@ -30,6 +31,10 @@ const Profile::OTRProfileID Profile::OTRProfileID::TorID() {
 
 bool Profile::IsTor() const {
   return IsOffTheRecord() && GetOTRProfileID() == OTRProfileID::TorID();
+}
+
+bool Profile::IsAIChatAgent() const {
+  return GetPath().BaseName().value() == brave::kAIChatAgentProfileDir;
 }
 
 bool Profile::IsIncognitoProfile() const {
