@@ -7,33 +7,13 @@ import * as React from 'react'
 import { render, screen } from '@testing-library/react'
 import InputBox, { InputBoxProps } from '.'
 import { ContentType } from '../../../common/mojom'
+import { defaultContext } from '../../state/conversation_context'
 
-const defaultContext: InputBoxProps['context'] = {
-  conversationHistory: [],
-  getScreenshots: () => {},
-  async handleStopGenerating() {},
-  hasAcceptedAgreement: true,
-  inputText: '',
-  inputTextCharCountDisplay: `0/1000`,
-  isCharLimitApproaching: false,
-  isCharLimitExceeded: false,
-  isGenerating: false,
+const testContext: InputBoxProps['context'] = {
+  ...defaultContext,
+  // Override specific properties for testing
   isMobile: false,
-  isToolsMenuOpen: false,
-  pendingMessageImages: [],
-  removeImage: () => {},
-  resetSelectedActionType: () => {},
-  selectedActionType: undefined,
-  setInputText: () => {},
-  setIsToolsMenuOpen: () => {},
-  shouldDisableUserInput: false,
-  submitInputTextToAPI: () => {},
-  uploadImage: () => {},
-  associatedContentInfo: [],
-  handleVoiceRecognition: () => {},
-  isUploadingFiles: false,
-  disassociateContent: () => {},
-  associateDefaultContent: () => {},
+  hasAcceptedAgreement: true,
   getPluralString: () => Promise.resolve(''),
   tabs: [],
 }
@@ -43,7 +23,7 @@ describe('input box', () => {
     const { container } = render(
       <InputBox
         context={{
-          ...defaultContext,
+          ...testContext,
           associatedContentInfo: [{
             contentId: 1,
             contentType: ContentType.PageContent,
@@ -67,7 +47,7 @@ describe('input box', () => {
     const { container } = render(
       <InputBox
         context={{
-          ...defaultContext,
+          ...testContext,
           associatedContentInfo: [],
         }}
         conversationStarted={false}
@@ -84,7 +64,7 @@ describe('input box', () => {
     const { container } = render(
       <InputBox
         context={{
-          ...defaultContext,
+          ...testContext,
           associatedContentInfo: [{
             contentId: 1,
             contentType: ContentType.PageContent,
@@ -108,7 +88,7 @@ describe('input box', () => {
     const { container } = render(
       <InputBox
         context={{
-          ...defaultContext,
+          ...testContext,
           inputText: ''
         }}
         conversationStarted={false}
@@ -124,7 +104,7 @@ describe('input box', () => {
     const { container } = render(
       <InputBox
         context={{
-          ...defaultContext,
+          ...testContext,
           inputText: 'test'
         }}
         conversationStarted={false}
@@ -139,7 +119,7 @@ describe('input box', () => {
   it('streaming button is shown while generating', () => {
     const { container } = render(
       <InputBox
-        context={{ ...defaultContext, isGenerating: true }}
+        context={{ ...testContext, isGenerating: true }}
         conversationStarted={false}
       />
     )

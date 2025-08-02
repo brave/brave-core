@@ -18,7 +18,7 @@ import { getLocale } from '$web-common/locale'
 // Styles
 import styles from './style.module.scss'
 
-type Props = Pick<ConversationContext, 'uploadImage' | 'getScreenshots' |
+type Props = Pick<ConversationContext, 'uploadFile' | 'getScreenshots' |
   'conversationHistory' | 'associatedContentInfo' | 'setShowAttachments'
   | 'associateDefaultContent'> &
   Pick<AIChatContext, 'isMobile' | 'tabs'> & {
@@ -51,7 +51,7 @@ export default function AttachmentButtonMenu(props: Props) {
             <Icon name='attachment' />
           </Button>
         </div>
-        <leo-menu-item onClick={() => props.uploadImage(false)}>
+        <leo-menu-item onClick={() => props.uploadFile(false)}>
           <div className={styles.buttonContent}>
             <Icon
               className={styles.buttonIcon}
@@ -71,7 +71,7 @@ export default function AttachmentButtonMenu(props: Props) {
             </div>
           </leo-menu-item>}
         {props.isMobile &&
-          <leo-menu-item onClick={() => props.uploadImage(true)}>
+          <leo-menu-item onClick={() => props.uploadFile(true)}>
             <div className={styles.buttonContent}>
               <Icon
                 className={styles.buttonIcon}

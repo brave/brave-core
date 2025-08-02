@@ -3,7 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-export const MAX_IMAGES = 64
+// https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Message.html#API_runtime_Message_Contents
+export const MAX_IMAGES = 20
+export const MAX_DOCUMENTS = 5
+export const MAX_DOCUMENT_SIZE_BYTES = 4.5 * 1024 * 1024 // 4.5MB in bytes
 
 export const IGNORE_EXTERNAL_LINK_WARNING_KEY = 'IGNORE_EXTERNAL_LINK_WARNING'
 

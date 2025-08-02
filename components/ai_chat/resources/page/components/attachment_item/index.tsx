@@ -16,6 +16,24 @@ import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
 import { getLocale } from '$web-common/locale'
 
+/**
+ * Formats file size in bytes to human readable format
+ * @param bytes - File size in bytes
+ * @returns Formatted string (e.g., "1.25 MB")
+ */
+export const formatFileSize = (bytes: number): string => {
+  const units = ['B', 'KB', 'MB', 'GB']
+  let index = 0
+  let size = bytes
+
+  while (size >= 1024 && index < units.length - 1) {
+    size /= 1024
+    index++
+  }
+
+  return `${size.toFixed(2)} ${units[index]}`
+}
+
 type Props = {
   icon: React.ReactNode
   title: string
@@ -65,27 +83,18 @@ export function AttachmentItem(props: Props) {
 
 export function AttachmentImageItem(props: {
   remove?: () => void
-  uploadedImage: Mojom.UploadedFile
+  uploadedFile: Mojom.UploadedFile
 }) {
   const dataUrl = React.useMemo(() => {
-    const blob = new Blob([new Uint8Array(props.uploadedImage.data)], {
+    const blob = new Blob([new Uint8Array(props.uploadedFile.data)], {
       type: 'image/*'
     })
     return URL.createObjectURL(blob)
-  }, [props.uploadedImage])
+  }, [props.uploadedFile])
 
   const filesize = React.useMemo(() => {
-    let bytes = Number(props.uploadedImage.filesize)
-    const units = ['B', 'KB', 'MB', 'GB']
-    let index = 0
-
-    while (bytes >= 1024 && index < units.length - 1) {
-      bytes /= 1024
-      index++
-    }
-
-    return `${bytes.toFixed(2)} ${units[index]}`
-  }, [props.uploadedImage.filesize])
+    return formatFileSize(Number(props.uploadedFile.filesize))
+  }, [props.uploadedFile.filesize])
 
   return (
     <AttachmentItem
@@ -95,7 +104,26 @@ export function AttachmentImageItem(props: {
           src={dataUrl}
         />
       }
-      title={props.uploadedImage.filename}
+      title={props.uploadedFile.filename}
+      subtitle={filesize}
+      remove={props.remove}
+    />
+  )
+}
+
+export function AttachmentDocumentItem(props: {
+  remove?: () => void
+  uploadedFile: Mojom.UploadedFile
+}) {
+  const filesize = React.useMemo(() => {
+    return formatFileSize(Number(props.uploadedFile.filesize))
+  }, [props.uploadedFile.filesize])
+
+  return (
+    <AttachmentItem
+      icon={
+          <Icon name='file' />}
+      title={props.uploadedFile.filename}
       subtitle={filesize}
       remove={props.remove}
     />

@@ -74,6 +74,7 @@ class ConversationAPIClient {
     kRequestRewrite,
     kSuggestedActions,
     kUploadImage,
+    kUploadPdf,
     kGetSuggestedTopicsForFocusTabs,
     kDedupeTopics,
     kGetSuggestedAndDedupeTopicsForFocusTabs,
