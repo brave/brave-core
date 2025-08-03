@@ -1470,6 +1470,7 @@ public class BytecodeTest {
                         Supplier.class,
                         LocationBarDataProvider.class,
                         Callback.class,
+                        Callback.class,
                         Supplier.class,
                         BookmarkState.class,
                         OmniboxActionDelegate.class,
