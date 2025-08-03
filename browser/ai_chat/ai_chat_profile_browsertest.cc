@@ -10,7 +10,9 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_constants.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/browser/ui/browser.h"
@@ -21,6 +23,7 @@
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -42,7 +45,9 @@ class AIChatProfileBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     // Browser should never launch with the AI Chat profile
-    ASSERT_FALSE(browser()->profile()->IsAIChatAgent());
+    if (browser()) {
+      ASSERT_FALSE(browser()->profile()->IsAIChatAgent());
+    }
   }
 
   void VerifyAIChatSidePanelShowing(Browser* browser) {
@@ -170,9 +175,9 @@ class AIChatProfileStartupBrowserTest : public AIChatProfileBrowserTest {
  public:
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
-    // Make sure InProcessBrowserTest does not add about:blank as a startup URL.
+    // Avoid providing a URL for the browser to open, allows the profile picker
+    // to be displayed on startup when it is enabled.
     set_open_about_blank_on_browser_launch(false);
-    set_exit_when_last_browser_closes(true);
   }
 };
 
@@ -193,6 +198,48 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
                        AIChatProfileDoesNotAffectStartup) {
+  // Verify that on restart, the profile picker is not shown and the original
+  // profile is used. This tests the override in profile_picker.cc.
+  EXPECT_FALSE(ProfilePicker::IsOpen());
+  // If the profile picker is open then there are no browser open,
+  // so make sure we have a default browser open.
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(nullptr, FindAIChatBrowser());
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+                       PRE_AIChatProfileDoesNotAffectStartup_MultiplePrevious) {
+  // If we previously showed the profile picker because
+  // the user had multiple profiles but now only has one (aside from AI Chat
+  // agent profile), the profile picker should not be shown. Without modifying
+  // ProfileManager::GetNumberOfProfiles, ProfilePicker::GetStartupModeReason
+  // would decide to show the picker because the number of profiles is > 1 and
+  // we have shown the profile picker before.
+
+  // Create AI Chat Agent profile and browser window
+  SetUserOptedIn(GetProfile()->GetPrefs(), true);
+  Browser* opened_browser =
+      CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
+  ASSERT_TRUE(opened_browser);
+  // Verify that a new browser window was opened
+  EXPECT_EQ(2u, chrome::GetTotalBrowserCount());
+
+  // Simulate the profile picker having been shown without the user
+  // unchecking the "Show profile picker on startup" checkbox.
+  // This tests where the user previously had multiple profiles but
+  // now only has one regular profile and one AI Chat agent profile.
+  // Since they would have seen the profile picker before, this pref
+  // will be true.
+  g_browser_process->local_state()->SetBoolean(
+      prefs::kBrowserProfilePickerShown, true);
+
+  // Need to close the browser window manually so that the real test does not
+  // treat it as session restore.
+  CloseAllBrowsers();
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+                       AIChatProfileDoesNotAffectStartup_MultiplePrevious) {
   // Verify that on restart, the profile picker is not shown and the original
   // profile is used. This tests the override in profile_picker.cc.
   EXPECT_FALSE(ProfilePicker::IsOpen());

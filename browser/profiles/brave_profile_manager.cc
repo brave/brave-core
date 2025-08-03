@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/path_service.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -20,6 +21,7 @@
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
+#include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
@@ -31,6 +33,7 @@
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profiles_state.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
@@ -104,6 +107,22 @@ void RecordInitialP3AValues(Profile* profile) {
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
     : ProfileManager(user_data_dir) {
   MigrateProfileNames();
+}
+
+size_t BraveProfileManager::GetNumberOfProfiles() {
+  size_t count = ProfileManager::GetNumberOfProfiles();
+  // Don't include AI Chat agent profile in the count
+  base::FilePath ai_chat_agent_profile_path =
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA);
+  ai_chat_agent_profile_path =
+      ai_chat_agent_profile_path.Append(brave::kAIChatAgentProfileDir);
+
+  if (count > 0 && GetProfileAttributesStorage().GetProfileAttributesWithPath(
+                       ai_chat_agent_profile_path)) {
+    count--;
+  }
+
+  return count;
 }
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
@@ -184,6 +203,17 @@ bool BraveProfileManager::LoadProfileByPath(const base::FilePath& profile_path,
 #endif
   return ProfileManager::LoadProfileByPath(profile_path, incognito,
                                            std::move(callback));
+}
+
+void BraveProfileManager::SetProfileAsLastUsed(Profile* last_active) {
+  // Prevent AI Chat agent profile from having an active time so that
+  // `ProfilePicker::GetStartupModeReason` doesn't consider it as a
+  // recently-active profile. This change causes it not to be considered
+  // for showing the profile picker on startup.
+  if (last_active->IsAIChatAgent()) {
+    return;
+  }
+  ProfileManager::SetProfileAsLastUsed(last_active);
 }
 
 // This overridden method doesn't clear |kDefaultSearchProviderDataPrefName|.

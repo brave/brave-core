@@ -82,8 +82,8 @@ void OpenBrowserWindowForAIChatAgentProfile(
 
   // We don't provide a profile-init callback because we want to ensure
   // the prefs are up to date each time.
-  base::FilePath profile_path;
-  base::PathService::Get(chrome::DIR_USER_DATA, &profile_path);
+  base::FilePath profile_path =
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA);
   profile_path = profile_path.Append(brave::kAIChatAgentProfileDir);
 
   g_browser_process->profile_manager()->CreateProfileAsync(

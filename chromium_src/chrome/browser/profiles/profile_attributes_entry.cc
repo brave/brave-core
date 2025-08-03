@@ -40,5 +40,4 @@ void ProfileAttributesEntry::BraveMigrateObsoleteProfileAttributes() {
   BraveMigrateObsoleteProfileAttributes();
 
 #include <chrome/browser/profiles/profile_attributes_entry.cc>
-
 #undef BRAVE_PROFILE_ATTRIBUTES_ENTRY_MIGRATE_OBSOLETE_PROFILE_ATTRIBUTES
