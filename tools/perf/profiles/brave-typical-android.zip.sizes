@@ -31,7 +31,7 @@ GROUP chromium [3107K total]
     32K real_time_url_checks_allowlist 11 [RealTimeUrlChecksAllowlist]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
    176K safetyTips 3077 [SafetyTips]
-    34K Third-Party Cookie Deprecation Metadata 2025.8.1.1 [TpcdMetadata]
+    34K Third-Party Cookie Deprecation Metadata 2025.8.2.1 [TpcdMetadata]
   1642K zxcvbnData 3 [ZxcvbnData]
 
 GROUP large_files [6539K total]
