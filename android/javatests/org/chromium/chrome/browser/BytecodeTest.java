@@ -1568,6 +1568,7 @@ public class BytecodeTest {
                         BackKeyBehaviorDelegate.class,
                         PageInfoAction.class,
                         Callback.class,
+                        Callback.class,
                         BraveLocationBarMediator.getOmniboxUmaClass(),
                         Supplier.class,
                         BookmarkState.class,
