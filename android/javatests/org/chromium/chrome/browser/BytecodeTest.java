@@ -1236,19 +1236,8 @@ public class BytecodeTest {
                         boolean.class,
                         AsyncTabParamsManager.class,
                         Supplier.class,
-                        Supplier.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/tabmodel/RedirectTabCreator",
-                        "org/chromium/chrome/browser/tabmodel/BraveTabCreator",
-                        Activity.class,
-                        WindowAndroid.class,
                         Supplier.class,
-                        OneshotSupplier.class,
-                        boolean.class,
-                        AsyncTabParamsManager.class,
-                        Supplier.class,
-                        Supplier.class));
+                        MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
