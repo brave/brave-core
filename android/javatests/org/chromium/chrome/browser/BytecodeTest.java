@@ -1822,7 +1822,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/identity_disc/IdentityDiscController",
                         "org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController",
                         Context.class,
-                        ActivityLifecycleDispatcher.class,
                         ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
