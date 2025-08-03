@@ -1287,6 +1287,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         MenuButtonCoordinator.VisibilityDelegate.class,
                         TopControlsStacker.class,
+                        ObservableSupplier.class,
                         ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
