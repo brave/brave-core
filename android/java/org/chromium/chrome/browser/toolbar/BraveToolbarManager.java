@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.ntp_customization.edge_to_edge.TopInsetCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -203,6 +204,7 @@ public class BraveToolbarManager extends ToolbarManager
             @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
             @Nullable MenuButtonCoordinator.VisibilityDelegate menuButtonVisibilityDelegate,
             TopControlsStacker topControlsStacker,
+            ObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
             @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 activity,
@@ -250,6 +252,7 @@ public class BraveToolbarManager extends ToolbarManager
                 tabBookmarkerSupplier,
                 menuButtonVisibilityDelegate,
                 topControlsStacker,
+                topInsetCoordinatorSupplier,
                 xrSpaceModeObservableSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
