@@ -15,10 +15,13 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_service_factory.h"
+#include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_live_tab_context.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_renderer_data.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
@@ -291,4 +294,27 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
   base::test::RunUntil([&]() {
     return !TabRendererData::FromTabInModel(tab_strip_model, 0).is_custom_title;
   });
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
+                       RestoringTabWithCustomTitle) {
+  // Given a tab has a custom title set.
+  BraveTabStripModel* tab_strip_model =
+      static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
+  tab_strip_model->SetCustomTitleForTab(0, u"Custom Title");
+  ASSERT_EQ(TabRendererData::FromTabInModel(tab_strip_model, 0).title,
+            u"Custom Title");
+
+  // When the tab is closed and restored.
+  // : Add a new tab and close the original tab.
+  chrome::AddTabAt(browser(), GURL("about:blank"), 1, /*foreground=*/false);
+  chrome::CloseTab(browser());
+
+  ASSERT_TRUE(TabRestoreServiceFactory::GetForProfile(browser()->profile()));
+  chrome::RestoreTab(browser());
+  base::test::RunUntil([&]() { return tab_strip_model->count() == 2; });
+
+  // Then the restored tab should have the custom title.
+  EXPECT_EQ(TabRendererData::FromTabInModel(tab_strip_model, 0).title,
+            u"Custom Title");
 }
