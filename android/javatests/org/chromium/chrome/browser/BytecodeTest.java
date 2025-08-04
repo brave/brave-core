@@ -2420,15 +2420,6 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
                         "android/widget/FrameLayout"));
-        // TODO(alexeybarabash): PasswordSettings was removed at upstream,
-        // but we need to get it back
-        // Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
-        // Assert.assertTrue(
-        //         checkSuperName(
-        //                 "org/chromium/chrome/browser/password_manager/settings/PasswordSettings",
-        //
-        // "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase")); //
-        // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",

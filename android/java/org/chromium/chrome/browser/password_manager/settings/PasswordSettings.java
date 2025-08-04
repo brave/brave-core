@@ -40,10 +40,7 @@ import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.password_check.PasswordCheck;
-import org.chromium.chrome.browser.password_check.PasswordCheckFactory;
 import org.chromium.chrome.browser.password_manager.ManagePasswordsReferrer;
-import org.chromium.chrome.browser.password_manager.PasswordCheckReferrer;
 import org.chromium.chrome.browser.password_manager.PasswordManagerHelper;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -104,7 +101,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
     public static final String PREF_SAVE_PASSWORDS_SWITCH = "save_passwords_switch";
     public static final String PREF_AUTOSIGNIN_SWITCH = "autosignin_switch";
-    public static final String PREF_CHECK_PASSWORDS = "check_passwords";
     public static final String PREF_TRUSTED_VAULT_BANNER = "trusted_vault_banner";
     public static final String PREF_KEY_MANAGE_ACCOUNT_LINK = "manage_account_link";
 
@@ -114,7 +110,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
     private static final int ORDER_SWITCH = 0;
     private static final int ORDER_AUTO_SIGNIN_CHECKBOX = 1;
-    private static final int ORDER_CHECK_PASSWORDS = 2;
     private static final int ORDER_TRUSTED_VAULT_BANNER = 3;
     private static final int ORDER_MANAGE_ACCOUNT_LINK = 4;
     private static final int ORDER_SAVED_PASSWORDS = 6;
@@ -140,7 +135,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private @Nullable Preference mLinkPref;
     private /*@Nullable*/ Menu mMenu;
 
-    private @Nullable PasswordCheck mPasswordCheck;
     private @ManagePasswordsReferrer int mManagePasswordsReferrer;
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -224,7 +218,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPasswordCheck = PasswordCheckFactory.getOrCreate();
         computeTrustedVaultBannerState();
     }
 
@@ -336,9 +329,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         createSavePasswordsSwitch();
         if (shouldShowAutoSigninOption()) {
             createAutoSignInCheckbox();
-        }
-        if (mPasswordCheck != null) {
-            createCheckPasswords();
         }
 
         if (mTrustedVaultBannerState == TrustedVaultBannerState.OPTED_IN) {
@@ -541,10 +531,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         // by the system.
         if (getActivity().isFinishing()) {
             PasswordManagerHandlerProvider.getForProfile(getProfile()).removeObserver(this);
-            if (mPasswordCheck != null
-                    && mManagePasswordsReferrer != ManagePasswordsReferrer.CHROME_SETTINGS) {
-                PasswordCheckFactory.destroy();
-            }
         }
     }
 
@@ -633,24 +619,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         getPreferenceScreen().addPreference(autoSignInSwitch);
         autoSignInSwitch.setChecked(
                 getPrefService().getBoolean(Pref.CREDENTIALS_ENABLE_AUTOSIGNIN));
-    }
-
-    private void createCheckPasswords() {
-        ChromeBasePreference checkPasswords = new ChromeBasePreference(getStyledContext());
-        checkPasswords.setKey(PREF_CHECK_PASSWORDS);
-        checkPasswords.setTitle(R.string.passwords_check_title);
-        checkPasswords.setOrder(ORDER_CHECK_PASSWORDS);
-        checkPasswords.setSummary(R.string.passwords_check_description);
-        // Add a listener which launches a settings page for the leak password check
-        checkPasswords.setOnPreferenceClickListener(
-                preference -> {
-                    PasswordCheck passwordCheck = PasswordCheckFactory.getOrCreate();
-                    passwordCheck.showUi(
-                            getStyledContext(), PasswordCheckReferrer.PASSWORD_SETTINGS);
-                    // Return true to notify the click was handled.
-                    return true;
-                });
-        getPreferenceScreen().addPreference(checkPasswords);
     }
 
     private void createTrustedVaultBanner(
