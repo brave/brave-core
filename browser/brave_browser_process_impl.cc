@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
@@ -54,6 +55,7 @@
 #include "chrome/common/buildflags.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_paths.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
@@ -223,7 +225,9 @@ BraveBrowserProcessImpl::brave_component_updater_delegate() {
   if (!brave_component_updater_delegate_) {
     brave_component_updater_delegate_ = std::make_unique<
         brave_component_updater::BraveComponentUpdaterDelegate>(
-        component_updater(), local_state(), GetApplicationLocale());
+        component_updater(), local_state(), GetApplicationLocale(),
+        base::CommandLine::ForCurrentProcess()->HasSwitch(
+            switches::kDisableComponentUpdate));
   }
   return brave_component_updater_delegate_.get();
 }

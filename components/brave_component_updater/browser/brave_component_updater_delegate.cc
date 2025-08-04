@@ -5,9 +5,6 @@
 
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 
-#include <memory>
-#include <utility>
-
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_component_installer.h"
@@ -24,11 +21,13 @@ namespace brave_component_updater {
 BraveComponentUpdaterDelegate::BraveComponentUpdaterDelegate(
     ComponentUpdateService* component_updater,
     PrefService* local_state,
-    const std::string& locale)
+    const std::string& locale,
+    bool is_disabled_by_command_line)
     : component_updater_(
           raw_ref<ComponentUpdateService>::from_ptr(component_updater)),
       local_state_(raw_ref<PrefService>::from_ptr(local_state)),
       locale_(locale),
+      is_disabled_by_command_line_(is_disabled_by_command_line),
       task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_BLOCKING,
            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
@@ -40,9 +39,12 @@ void BraveComponentUpdaterDelegate::Register(
     const std::string& component_base64_public_key,
     base::OnceClosure registered_callback,
     BraveComponent::ReadyCallback ready_callback) {
-  RegisterComponent(base::to_address(component_updater_), component_name,
-                    component_base64_public_key, std::move(registered_callback),
-                    std::move(ready_callback));
+  if (!is_disabled_by_command_line_) {
+    RegisterComponent(base::to_address(component_updater_), component_name,
+                      component_base64_public_key,
+                      std::move(registered_callback),
+                      std::move(ready_callback));
+  }
 }
 
 bool BraveComponentUpdaterDelegate::Unregister(
@@ -52,7 +54,9 @@ bool BraveComponentUpdaterDelegate::Unregister(
 
 void BraveComponentUpdaterDelegate::EnsureInstalled(
     const std::string& component_id) {
-  BraveOnDemandUpdater::GetInstance()->EnsureInstalled(component_id);
+  if (!is_disabled_by_command_line_) {
+    BraveOnDemandUpdater::GetInstance()->EnsureInstalled(component_id);
+  }
 }
 
 void BraveComponentUpdaterDelegate::AddObserver(ComponentObserver* observer) {

@@ -2,3 +2,12 @@ include_rules = [
   "+brave/components/brave_extension/grit",
   "+brave/components/update_client/buildflags.h",
 ]
+
+specific_include_rules = {
+  "brave_component_loader\.cc": [
+    "+brave/components/brave_component_updater/browser/brave_component_installer.h",
+  ],
+  "brave_base_local_data_files_browsertest\.h": [
+    "+brave/components/brave_component_updater/browser/local_data_files_observer.h",
+  ],
+}
