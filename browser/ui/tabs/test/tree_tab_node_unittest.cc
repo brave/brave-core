@@ -44,7 +44,7 @@ TEST_F(TreeTabNodeUnitTest, Constructor) {
 
   // Check that the TreeTabNode is constructed correctly.
   EXPECT_EQ(tree_tab_node_id, tree_tab_node.tree_tab_node_id());
-  EXPECT_EQ(mock_tab_interface_ptr, &tree_tab_node.current_tab());
+  EXPECT_EQ(mock_tab_interface_ptr, tree_tab_node.current_tab());
   EXPECT_EQ(0, tree_tab_node.GetIndexOfTab(mock_tab_interface_ptr));
 }
 
