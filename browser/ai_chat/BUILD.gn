@@ -109,32 +109,28 @@ if (enable_print_preview) {
 
 if (enable_brave_ai_chat_agent_profile) {
   source_set("ai_chat_agent_profile") {
-    sources = [
-      "ai_chat_agent_profile_helper.h",
-      "ai_chat_agent_profile_manager.h",
-    ]
+    sources = [ "ai_chat_agent_profile_helper.h" ]
 
-    deps = [
-      "//base",
-      "//chrome/browser/profiles:profile_util",
-      "//chrome/browser/ui:browser_list",
-    ]
+    deps = [ "//base" ]
   }
 
   source_set("ai_chat_agent_profile_impl") {
     sources = [
       "ai_chat_agent_profile_helper.cc",
       "ai_chat_agent_profile_manager.cc",
+      "ai_chat_agent_profile_manager.h",
     ]
 
     deps = [
-      "//brave/browser/ai_chat:ai_chat_agent_profile",
+      ":ai_chat_agent_profile",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common",
       "//chrome/browser:browser_process",
       "//chrome/browser:browser_public_dependencies",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/profiles:profile_util",
+      "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_list",
     ]
 
     if (!is_android) {

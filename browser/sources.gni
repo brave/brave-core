@@ -639,10 +639,8 @@ brave_chrome_browser_allow_circular_includes_from = [
 ]
 
 if (enable_brave_ai_chat_agent_profile) {
-  brave_chrome_browser_deps += [
-    "//brave/browser/ai_chat:ai_chat_agent_profile",
-    "//brave/browser/ai_chat:ai_chat_agent_profile_impl",
-  ]
+  brave_chrome_browser_deps +=
+      [ "//brave/browser/ai_chat:ai_chat_agent_profile_impl" ]
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ai_chat:ai_chat_agent_profile_impl" ]
 }
