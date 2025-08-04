@@ -98,7 +98,7 @@ struct DecodedZCashTransparentAddress {
 };
 
 struct OrchardOutput {
-  uint32_t value = 0;
+  uint64_t value = 0;
   OrchardAddrRawPart addr{};
   std::optional<OrchardMemo> memo;
 
@@ -125,7 +125,7 @@ struct OrchardNote {
   OrchardAddrRawPart addr{};
   uint32_t block_id = 0;
   OrchardNullifier nullifier{};
-  uint32_t amount = 0;
+  uint64_t amount = 0;
   uint32_t orchard_commitment_tree_position = 0;
   OrchardRho rho{};
   OrchardRseed seed{};
@@ -182,8 +182,9 @@ base::expected<void, mojom::ZCashAddressError> ValidateOrchardRecipientAddress(
 bool OutputZCashTransparentAddressSupported(const std::string& address,
                                             bool is_testnet);
 // https://zips.z.cash/zip-0317
-uint64_t CalculateZCashTxFee(const uint32_t tx_input_count,
-                             const uint32_t orchard_actions_count);
+base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
+    const uint32_t tx_input_count,
+    const uint32_t orchard_actions_count);
 bool IsUnifiedAddress(const std::string& address);
 bool IsUnifiedTestnetAddress(const std::string& address);
 
