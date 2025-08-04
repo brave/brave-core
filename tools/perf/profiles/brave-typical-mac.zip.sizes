@@ -1,27 +1,27 @@
-Total size 84286K
+Total size 84169K
 
-GROUP Adblock [8885K total]
-   234K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.396 [adcocjohghhfpidemphmcmlmhnfgikei]
-    57K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.14288 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1467K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.15951 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+GROUP Adblock [8966K total]
+   234K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.397 [adcocjohghhfpidemphmcmlmhnfgikei]
+    58K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.14432 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1469K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.16126 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
     97K Brave Ad Block Updater (Regional Catalog) 1.0.78 [gkboaolpopklhgplhaaiboijnklogmbc]
-  4244K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.13719 [iodkpdagapdfkphljnddpjlldadblomo]
-  1530K Brave Ad Block Updater (Brave default privacy lists (plaintext)) 1.0.81 [kihnoaefogbkmblfimmibknnmkllbhlf]
+  4318K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.13907 [iodkpdagapdfkphljnddpjlldadblomo]
+  1533K Brave Ad Block Updater (Brave default privacy lists (plaintext)) 1.0.269 [kihnoaefogbkmblfimmibknnmkllbhlf]
   1253K Brave Ad Block Updater (Resources) 1.0.111 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22972K total]
     68K Brave Ads Resources 1.0.109 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.68 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13444K total]
+GROUP Ntp [13272K total]
  11624K Brave NTP background images 1.0.19 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-  1820K Brave NTP sponsored images 1.0.2109 [gccbbckogglekeggclmmekihdgdpdgoe]
+  1648K Brave NTP sponsored images 1.0.2118 [gccbbckogglekeggclmmekihdgdpdgoe]
 
 GROUP Other [131K total]
-   131K Brave Local Data Files Updater 1.0.1227 [afalakplffnnnlkncjhbmahjfjhmlkal]
+   131K Brave Local Data Files Updater 1.0.1232 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [28526K total]
+GROUP large_files [28548K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
   6539K Default/RewardsCreators.db
-  1869K Safe Browsing/ChromeExtMalware.store.32_13398106750261602
- 16854K Safe Browsing/UrlSoceng.store.4_13398107473403178
+  1868K Safe Browsing/ChromeExtMalware.store.32_13398797322886348
+ 16877K Safe Browsing/UrlSoceng.store.4_13398797854239307
