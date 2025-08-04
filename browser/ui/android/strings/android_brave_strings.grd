@@ -4113,9 +4113,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PASSWORDS_AUTO_SIGNIN_DESCRIPTION" desc="Text under 'Auto sign-in' checkbox">
       Automatically sign in to websites using stored credentials. When the feature is off, you’ll be asked for verification every time before signing in to a website.
     </message>
-    <message name="IDS_PASSWORDS_CHECK_DESCRIPTION" desc="Text explaining the benefits of checking the passwords, to be displayed under the Check Passwords button title.">
-      Keep your passwords safe from data breaches and other security issues
-    </message>
     <message name="IDS_ANDROID_TRUSTED_VAULT_BANNER_LABEL" desc="Title for the on-device encryption banner in password settings.">
       On-device encryption
     </message>
