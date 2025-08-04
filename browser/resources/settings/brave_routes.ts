@@ -15,6 +15,8 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (pageVisibility.getStarted) {
     r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
+    r.GET_STARTED.hasMigratedToPlugin = true
+
     // Bring back people's /manageProfile (now in getStarted)
     if (!r.MANAGE_PROFILE) {
       r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile')
