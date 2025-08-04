@@ -28,7 +28,7 @@
     "mass_rename": "node ./build/commands/scripts/commands.js mass_rename",
     "docs": "node ./build/commands/scripts/commands.js docs",
     "test": "node ./build/commands/scripts/commands.js test",
-    "test:scripts": "cross-env NODE_OPTIONS=--no-experimental-fetch jest build/commands/lib build/commands/scripts",
+    "test:scripts": "jest build/commands/lib build/commands/scripts",
     "tslint": "npm run eslint",
     "eslint": "eslint ./components ./build",
     "pep8": "pycodestyle --max-line-length 120 -r script",
@@ -37,8 +37,8 @@
     "web-ui": "webpack --config components/webpack/webpack.config.js",
     "build-storybook": "npm run build -- --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
     "storybook": "storybook dev",
-    "test-unit": "cross-env NODE_OPTIONS=--no-experimental-fetch jest -t",
-    "test-unit:wallet": "cross-env NODE_OPTIONS=--no-experimental-fetch jest --coverage=false components/brave_wallet_ui",
+    "test-unit": "jest -t",
+    "test-unit:wallet": "jest --coverage=false components/brave_wallet_ui",
     "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test",
     "update_symlink": "node ./build/commands/scripts/commands.js update_symlink",
     "build_fuzzer": "node ./build/commands/scripts/commands.js build_fuzzer",
@@ -64,7 +64,7 @@
     "url": "https://github.com/brave/brave-browser/issues"
   },
   "engines": {
-    "node": ">=20.0.0 <23.0.0",
+    "node": ">=20.0.0 <25.0.0",
     "npm": ">=10.0.0"
   },
   "homepage": "https:/github.com/brave/brave-core#readme",
@@ -119,7 +119,6 @@
     "buffer": "6.0.3",
     "chalk": "4.1.2",
     "commander": "2.20.3",
-    "cross-env": "7.0.3",
     "crypto-browserify": "3.12.0",
     "css-loader": "5.2.7",
     "csstype": "2.6.21",
