@@ -308,6 +308,7 @@ source_set("ui") {
 
     deps += [
       "//base",
+      "//brave/browser/ai_chat:ai_chat_agent_profile_helper",
       "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",

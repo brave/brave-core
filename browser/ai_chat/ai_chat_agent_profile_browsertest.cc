@@ -5,7 +5,7 @@
 
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ui/ai_chat/ai_chat_agent_profile_helper.h"
+#include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -32,14 +32,15 @@
 
 namespace ai_chat {
 
-class AIChatProfileBrowserTest : public InProcessBrowserTest {
+class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
  public:
-  AIChatProfileBrowserTest() {
+  AIChatAgentProfileBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
         ai_chat::features::kAIChatAgenticProfile);
   }
-  AIChatProfileBrowserTest(const AIChatProfileBrowserTest&) = delete;
-  AIChatProfileBrowserTest& operator=(const AIChatProfileBrowserTest&) = delete;
+  AIChatAgentProfileBrowserTest(const AIChatAgentProfileBrowserTest&) = delete;
+  AIChatAgentProfileBrowserTest& operator=(
+      const AIChatAgentProfileBrowserTest&) = delete;
 
  protected:
   void SetUpOnMainThread() override {
@@ -92,7 +93,7 @@ class AIChatProfileBrowserTest : public InProcessBrowserTest {
 };
 
 // Test that OpenBrowserWindowForAIChatAgentProfile creates a browser window
-IN_PROC_BROWSER_TEST_F(AIChatProfileBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
                        OpenBrowserWindowForAIChatAgentProfile) {
   // Keep track of initial browser count
   EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
@@ -133,7 +134,7 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileBrowserTest,
 
 // Test that multiple calls to OpenBrowserWindowForAIChatAgentProfile work
 // correctly
-IN_PROC_BROWSER_TEST_F(AIChatProfileBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
                        OpenBrowserWindowForAIChatAgentProfile_MultipleOpens) {
   SetUserOptedIn(GetProfile()->GetPrefs(), true);
 
@@ -171,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileBrowserTest,
 }
 
 // // Tests for AI Chat Agent Profile startup behavior
-class AIChatProfileStartupBrowserTest : public AIChatProfileBrowserTest {
+class AIChatProfileStartupBrowserTest : public AIChatAgentProfileBrowserTest {
  public:
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);

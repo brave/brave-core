@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_AI_CHAT_AI_CHAT_AGENT_PROFILE_HELPER_H_
-#define BRAVE_BROWSER_UI_AI_CHAT_AI_CHAT_AGENT_PROFILE_HELPER_H_
+#ifndef BRAVE_BROWSER_AI_CHAT_AI_CHAT_AGENT_PROFILE_HELPER_H_
+#define BRAVE_BROWSER_AI_CHAT_AI_CHAT_AGENT_PROFILE_HELPER_H_
 
 #include "base/functional/callback.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+
+class Profile;
+class Browser;
 
 namespace ai_chat {
 
@@ -27,4 +28,4 @@ void OpenBrowserWindowForAIChatAgentProfile(
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_BROWSER_UI_AI_CHAT_AI_CHAT_AGENT_PROFILE_HELPER_H_
+#endif  // BRAVE_BROWSER_AI_CHAT_AI_CHAT_AGENT_PROFILE_HELPER_H_

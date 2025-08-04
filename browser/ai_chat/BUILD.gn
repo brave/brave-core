@@ -98,6 +98,32 @@ if (enable_print_preview) {
   }
 }
 
+if (!is_android) {
+  source_set("ai_chat_agent_profile_helper") {
+    sources = [ "ai_chat_agent_profile_helper.h" ]
+
+    deps = [ "//base" ]
+  }
+
+  source_set("ai_chat_agent_profile_helper_impl") {
+    sources = [ "ai_chat_agent_profile_helper.cc" ]
+
+    deps = [
+      "//brave/browser/ai_chat:ai_chat_agent_profile_helper",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+      "//chrome/browser:browser_process",
+      "//chrome/browser:browser_public_dependencies",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/profiles:profile_util",
+      "//chrome/browser/themes",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/views/side_panel",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
@@ -145,11 +171,11 @@ source_set("browser_tests") {
     sources = [
       "//chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.cc",
       "//chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h",
+      "ai_chat_agent_profile_browsertest.cc",
       "ai_chat_brave_search_throttle_browsertest.cc",
       "ai_chat_browsertests.cc",
       "ai_chat_metrics_browsertest.cc",
       "ai_chat_policy_browsertest.cc",
-      "ai_chat_profile_browsertest.cc",
       "ai_chat_profiles_enabled_browsertest.cc",
       "ai_chat_render_view_context_menu_browsertest.cc",
       "ai_chat_ui_browsertest.cc",
@@ -158,8 +184,9 @@ source_set("browser_tests") {
     deps = [
       "//brave/app:generate_command_metadata",
       "//brave/browser/ai_chat",
+      "//brave/browser/ai_chat:ai_chat_agent_profile_helper",
+      "//brave/browser/ai_chat:ai_chat_agent_profile_helper_impl",
       "//brave/browser/misc_metrics",
-      "//brave/browser/ui/ai_chat",
       "//brave/browser/ui/sidebar",
       "//brave/components/ai_chat/content/browser",
       "//brave/components/ai_chat/core/browser",

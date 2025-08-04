@@ -636,6 +636,15 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/ntp_background",
 ]
 
+if (!is_android) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/ai_chat:ai_chat_agent_profile_helper",
+    "//brave/browser/ai_chat:ai_chat_agent_profile_helper_impl",
+  ]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ai_chat:ai_chat_agent_profile_helper_impl" ]
+}
+
 if (toolkit_views) {
   brave_chrome_browser_deps += [ "//brave/browser/ui/sidebar" ]
   brave_chrome_browser_allow_circular_includes_from +=
