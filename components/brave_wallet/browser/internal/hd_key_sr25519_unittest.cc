@@ -15,7 +15,7 @@
 
 namespace brave_wallet {
 
-// taken from:
+// Taken from:
 // https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/struct.MiniSecretKey.html#method.from_bytes
 inline constexpr uint8_t kSchnorrkelSeed[] = {
     157, 97,  177, 157, 239, 253, 90, 96,  186, 132, 74,
@@ -23,8 +23,8 @@ inline constexpr uint8_t kSchnorrkelSeed[] = {
     105, 25,  112, 59,  172, 3,   28, 174, 127, 96,
 };
 
-// manually derived from the polkadot-sdk using
-// `polkadot_sdk::sp_core::sr25519::Pair`
+// Manually derived from the polkadot-sdk using
+// `polkadot_sdk::sp_core::sr25519::Pair`.
 inline constexpr const char* kSchnorrkelPubKey =
     "44A996BEB1EEF7BDCAB976AB6D2CA26104834164ECF28FB375600576FCC6EB0F";
 
@@ -40,7 +40,7 @@ TEST(HDKeySr25519, GetPublicKey) {
   auto pubkey = base::HexEncode(keypair.GetPublicKey());
   EXPECT_EQ(pubkey, kSchnorrkelPubKey);
 
-  // prove idempotence
+  // Prove idempotence.
   auto keypair2 = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
   auto pubkey2 = base::HexEncode(keypair2.GetPublicKey());
   EXPECT_EQ(pubkey2, kSchnorrkelPubKey);
@@ -60,7 +60,7 @@ TEST(HDKeySr25519, MoveConstruction) {
 }
 
 TEST(HDKeySr25519, SelfMoveAssign) {
-  // prove that self-move-assign doesn't segfault
+  // Prove that self-move-assign doesn't segfault.
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
 
   auto& ref = keypair;
@@ -86,7 +86,7 @@ TEST(HDKeySr25519, SignAndVerify) {
   // Schnorr signatures and the schnorrkel crate use a randomized nonce when
   // generating the signature so we can't test against any hard-coded vectors
   // but can only prove that signatures won't match but they'll still verify the
-  // same message using the same keypair
+  // same message using the same keypair.
 
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
   EXPECT_EQ(base::HexEncode(keypair.GetPublicKey()), kSchnorrkelPubKey);
@@ -112,8 +112,7 @@ TEST(HDKeySr25519, SignAndVerify) {
 }
 
 TEST(HDKeySr25519, VerifySignature) {
-  // derived from the binary message [1, 2, 3, 4, 6] using our kSchnorrkelSeed
-  //
+  // Derived from the binary message [1, 2, 3, 4, 6] using our kSchnorrkelSeed.
 
   constexpr const char* kSchnorrSignature =
       "669DB9831C33855F0A3BFCF0B8F48EDDE504281C5CED4DF7882E0FF89A48F77128DB08B7"
@@ -167,7 +166,7 @@ TEST(HDKeySr25519, HardDerive) {
   auto derived2 = keypair.DeriveHard(path2);
   auto derived3 = keypair.DeriveHard(path1);
 
-  // derived using the polkadot-sdk:
+  // Derived using the polkadot-sdk:
   // let derived =
   //   pair.derive(
   //     Some(DeriveJunction::from("Alice").harden()).into_iter(),
@@ -178,7 +177,7 @@ TEST(HDKeySr25519, HardDerive) {
   EXPECT_EQ(base::HexEncode(derived1.GetPublicKey()), kPath1DerivedPubKey);
   EXPECT_EQ(base::HexEncode(derived3.GetPublicKey()), kPath1DerivedPubKey);
 
-  // derived similarly above using /ecilA
+  // Derived similarly above using /ecilA.
   constexpr const char* kPath2DerivedPubKey =
       "F0F4DC4A68BB4977FE41DAC5F6846260F0BAB780F60BDAADB8C37AD95DFBFD10";
 
@@ -212,7 +211,7 @@ TEST(HDKeySr25519, HardDerive) {
 TEST(HDKeySr25519, HardDeriveSignAndVerify) {
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
 
-  // manually create a SCALE-encoded chaincode value
+  // Manually create a SCALE-encoded chaincode value.
   unsigned char path1[] = {20, 'A', 'l', 'i', 'c', 'e'};
   unsigned char path2[] = {20, 'e', 'c', 'i', 'l', 'A'};
 
@@ -243,7 +242,7 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
           60,  141, 101, 48,  242, 2,   176, 47,  216, 249, 245,
           202, 53,  128, 236, 141, 235, 119, 151, 71,  158});
 
-  // manually create a SCALE-encoded chaincode value
+  // Manually create a SCALE-encoded chaincode value.
   unsigned char path[] = {20, 'A', 'l', 'i', 'c', 'e'};
 
   constexpr const char* kDerivedPubKey =
