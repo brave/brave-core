@@ -62,9 +62,10 @@ def __adjust_handlers(ctx, step_config, handlers):
     for rule in step_config["rules"]:
         rule_name = rule["name"]
 
-        # Disable remote execution for rules that need local processing
+        # Disable remote execution for rules that need local processing.
         if rule_name in __RULES_TO_DISABLE_REMOTE:
             rule["remote"] = False
+            rule.pop("reproxy_config", None)
             continue
 
         if rule_name == "blink/generate_bindings":
