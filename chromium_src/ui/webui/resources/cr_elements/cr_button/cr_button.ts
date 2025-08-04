@@ -114,7 +114,7 @@ leo-button {
     // Avatar buttons should not have a border
     const avatar = this.classList.contains('avatar')
     if (avatar || this.classList.contains('plain')) {
-      kind = 'plain'
+      kind = 'plain-faint'
     }
 
     // Avatar buttons should be round.
