@@ -35,6 +35,8 @@
 
 namespace {
 
+// A textfield used for renaming tabs. It is a child of BraveTab and
+// automatically handles mouse clicks outside of it to exit rename mode.
 class RenameTextfield : public views::Textfield,
                         public views::MouseWatcherListener {
   METADATA_HEADER(RenameTextfield, views::Textfield)
@@ -54,6 +56,7 @@ class RenameTextfield : public views::Textfield,
       return;
     }
 
+    // We start or stop mouse watcher based on visibility of the textfield.
     if (is_visible) {
       mouse_watcher_.Start(GetWidget()->GetNativeWindow());
     } else {
@@ -68,6 +71,8 @@ class RenameTextfield : public views::Textfield,
   }
 
  private:
+  // MouseWatcherHost implementation that tells whether mouse clicks outside
+  // of tracked area.
   class ClickWatcherHost : public views::MouseWatcherHost {
    public:
     explicit ClickWatcherHost(RenameTextfield& textfield)
@@ -89,7 +94,10 @@ class RenameTextfield : public views::Textfield,
     raw_ref<RenameTextfield> textfield_;
   };
 
+  // Callback to be invoked when mouse is clicked outside of the textfield.
   base::RepeatingClosure on_click_outside_callback_;
+
+  // Mouse watcher that tracks mouse clicks outside of the textfield.
   views::MouseWatcher mouse_watcher_;
 };
 

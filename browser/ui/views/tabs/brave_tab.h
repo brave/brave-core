@@ -14,6 +14,9 @@
 #include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/controls/textfield/textfield_controller.h"
 
+// Brave specific tab implementation that extends the base Tab class.
+// It includes features like vertical tab support, renaming functionality.
+// Also customizes the tab layout and visual appearance for Brave's UI.
 class BraveTab : public Tab, public views::TextfieldController {
  public:
   explicit BraveTab(TabSlotController* controller);

@@ -89,6 +89,7 @@ class BraveTabMenuModel : public TabMenuModel {
       const std::vector<int>& indices);
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+  // Build menu items for tab customization, such as renaming the tab.
   void BuildItemForCustomization(TabStripModel* tab_strip_model, int tab_index);
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
