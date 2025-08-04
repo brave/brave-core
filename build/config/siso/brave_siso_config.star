@@ -78,9 +78,6 @@ def __adjust_handlers(ctx, step_config, handlers):
             __wrap_python_with_chromium_src_inputs_handler(
                 rule, handlers, [
                     "brave/script/brave_task_queue_helper.py",
-                    "build/gn_helpers.py",
-                    ctx.fs.canonpath("./args.gn"),
-                    ctx.fs.canonpath("./args_generated.gni"),
                 ])
             continue
 

@@ -1,10 +1,19 @@
-# Copyright 2022 The Brave Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/brave_channel.gni")
 
 declare_args() {
-  enable_brave_page_graph = false
-  enable_brave_page_graph_webapi_probes = false
+  enable_brave_page_graph = is_win || is_mac || is_linux
+}
+
+declare_args() {
+  enable_brave_page_graph_webapi_probes =
+      enable_brave_page_graph &&
+      (!is_official_build || brave_channel == "dev" ||
+       brave_channel == "nightly")
 }
 
 # Allow Page Graph only in desktop builds.
@@ -12,3 +21,15 @@ assert(!enable_brave_page_graph || is_win || is_mac || is_linux)
 
 assert(!enable_brave_page_graph_webapi_probes ||
        enable_brave_page_graph_webapi_probes == enable_brave_page_graph)
+
+gn_args_page_graph_file = "$root_build_dir/gn_args_page_graph.json"
+
+if (current_toolchain == default_toolchain) {
+  write_file(gn_args_page_graph_file,
+             {
+               enable_brave_page_graph = enable_brave_page_graph
+               enable_brave_page_graph_webapi_probes =
+                   enable_brave_page_graph_webapi_probes
+             },
+             "json")
+}
