@@ -13,7 +13,7 @@ source_set("debounce") {
     "//base",
     "//brave/components/debounce/core/browser",
     "//brave/components/debounce/core/common",
-    "//brave/ios/browser/api/debounce",
+    "//brave/components/debounce/ios/browser",
     "//brave/ios/browser/application_context",
     "//brave/ios/browser/keyed_service",
     "//components/keyed_service/core",

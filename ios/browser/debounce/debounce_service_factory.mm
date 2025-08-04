@@ -9,7 +9,7 @@
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/ios/browser/api/debounce/debounce_service+private.h"
+#include "brave/components/debounce/ios/browser/debounce_service_bridge_impl.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/debounce/debounce_service_factory+private.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
@@ -24,7 +24,8 @@
   // Create and start the local data file service and component installer
   debounce::DebounceService* debounceService =
       debounce::DebounceServiceFactory::GetServiceForState(profile);
-  return [[DebounceService alloc] initWithDebounceService:debounceService];
+  return [[DebounceServiceBridgeImpl alloc]
+      initWithDebounceService:debounceService];
 }
 @end
 

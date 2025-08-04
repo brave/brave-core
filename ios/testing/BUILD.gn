@@ -8,6 +8,32 @@ import("//ios/build/config.gni")
 import("//testing/test.gni")
 
 test("ios_brave_unit_tests") {
+  deps = [
+    # Ensure that all unit tests are run
+    "//ios/chrome/test:run_all_unittests",
+    "//ios/chrome/test:test_support",
+
+    # use fake hooks and pack resources
+    "//ios/chrome/app:tests_fake_hook",
+    "//ios/chrome/app/resources:packed_resources",
+    "//ios/chrome/app/resources:system_strings",
+    "//ios/testing:http_server_bundle_data",
+
+    # Providers
+    "//ios/chrome/test/providers",
+    "//ios/chrome/test/providers/signin:trusted_vault_provider",
+
+    # Unit tests
+    ":legacy_unit_tests",
+
+    # This is required until we can sort out overridden deps symbols
+    "//brave/ios/browser",
+  ]
+
+  assert_no_deps = ios_assert_no_deps
+}
+
+source_set("legacy_unit_tests") {
   testonly = true
 
   sources = [
@@ -20,11 +46,7 @@ test("ios_brave_unit_tests") {
 
   deps = [
     "//base",
-    "//brave/ios/app",
-    "//brave/ios/browser",
     "//brave/ios/browser/api/net",
-    "//ios/chrome/test:run_all_unittests",
-    "//ios/chrome/test:test_support",
     "//net",
     "//net/http:generate_transport_security_state",
     "//testing/gtest",
@@ -34,6 +56,4 @@ test("ios_brave_unit_tests") {
     "Foundation.framework",
     "Security.framework",
   ]
-
-  assert_no_deps = ios_assert_no_deps
 }

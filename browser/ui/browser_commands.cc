@@ -72,9 +72,11 @@
 #include "components/tabs/public/split_tab_visual_data.h"
 #include "components/tabs/public/tab_group.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/base/window_open_disposition.h"
 #include "ui/shell_dialogs/select_file_policy.h"
 #include "ui/shell_dialogs/selected_file_info.h"
 #include "url/origin.h"
@@ -1033,9 +1035,7 @@ bool CanOpenNewSplitViewForTab(Browser* browser,
   return !split_view_data->IsTabTiled(*tab);
 }
 
-void NewSplitViewForTab(Browser* browser,
-                        std::optional<tabs::TabHandle> tab,
-                        const GURL& url) {
+void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
   auto* split_view_data = browser->GetFeatures().split_view_browser_data();
   if (!split_view_data) {
     return;
@@ -1055,13 +1055,38 @@ void NewSplitViewForTab(Browser* browser,
                                 ? model->IndexOfFirstNonPinnedTab()
                                 : tab_index + 1;
 
-  if (!url.is_valid()) {
-    chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
-                     /*foreground*/ true);
-  } else {
-    chrome::AddTabAt(browser, url, new_tab_index,
-                     /*foreground*/ true);
+  chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
+                   /*foreground*/ true);
+
+  split_view_data->TileTabs(
+      {.first = model->GetTabAtIndex(tab_index)->GetHandle(),
+       .second = model->GetTabAtIndex(new_tab_index)->GetHandle()});
+}
+
+void OpenLinkInSplitView(Browser* browser,
+                         content::OpenURLParams open_url_params) {
+  auto* split_view_data = browser->GetFeatures().split_view_browser_data();
+  if (!split_view_data) {
+    return;
   }
+
+  auto tab = GetActiveTabHandle(browser);
+  if (!CanOpenNewSplitViewForTab(browser, tab)) {
+    return;
+  }
+
+  auto* model = browser->tab_strip_model();
+  const int tab_index = model->GetIndexOfTab(tab->Get());
+  const int new_tab_index = model->IsTabPinned(tab_index)
+                                ? model->IndexOfFirstNonPinnedTab()
+                                : tab_index + 1;
+  auto web_contents = content::WebContents::Create(
+      content::WebContents::CreateParams(browser->profile()));
+  auto* web_contents_ptr = web_contents.get();
+  model->InsertWebContentsAt(new_tab_index, std::move(web_contents),
+                             ADD_ACTIVE);
+  open_url_params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  web_contents_ptr->OpenURL(open_url_params, base::DoNothing());
 
   split_view_data->TileTabs(
       {.first = model->GetTabAtIndex(tab_index)->GetHandle(),

@@ -7,21 +7,36 @@ import * as React from 'react'
 
 // utils
 import { copyToClipboard } from '../../utils/copy-to-clipboard'
+import {
+  useCopyToClipboardConfidentiallyMutation, //
+} from '../slices/api.slice'
 
 const temporaryCopyTimeout = 5000 // 5s
 const copiedMessageTimeout = 1500 // 1.5s
 
 export const useTemporaryCopyToClipboard = (
   timeoutMs: number = temporaryCopyTimeout,
+  isConfidential = false,
 ) => {
+  // mutations
+  const [copyToClipboardConfidentially] =
+    useCopyToClipboardConfidentiallyMutation()
+
   // state
   const [isCopied, setIsCopied] = React.useState(false)
 
   // methods
-  const temporaryCopyToClipboard = React.useCallback(async (value: string) => {
-    await copyToClipboard(value)
-    setIsCopied(true)
-  }, [])
+  const temporaryCopyToClipboard = React.useCallback(
+    async (value: string) => {
+      if (isConfidential) {
+        await copyToClipboardConfidentially({ text: value })
+      } else {
+        await copyToClipboard(value)
+      }
+      setIsCopied(true)
+    },
+    [isConfidential, copyToClipboardConfidentially],
+  )
 
   // effects
   React.useEffect(() => {
@@ -32,7 +47,11 @@ export const useTemporaryCopyToClipboard = (
 
     // clear the clipboard after a set time
     const timer = window.setTimeout(async () => {
-      await copyToClipboard('')
+      if (isConfidential) {
+        await copyToClipboardConfidentially({ text: '' })
+      } else {
+        await copyToClipboard('')
+      }
       setIsCopied(false)
     }, timeoutMs)
 
@@ -40,7 +59,7 @@ export const useTemporaryCopyToClipboard = (
     return () => {
       timer && clearTimeout(timer)
     }
-  }, [isCopied, timeoutMs])
+  }, [isCopied, timeoutMs, isConfidential, copyToClipboardConfidentially])
 
   return {
     temporaryCopyToClipboard,
@@ -48,15 +67,29 @@ export const useTemporaryCopyToClipboard = (
   }
 }
 
-export const useCopyToClipboard = (timeoutMs = copiedMessageTimeout) => {
+export const useCopyToClipboard = (
+  timeoutMs = copiedMessageTimeout,
+  isConfidential = false,
+) => {
+  // mutations
+  const [copyToClipboardConfidentially] =
+    useCopyToClipboardConfidentiallyMutation()
+
   // state
   const [isCopied, setIsCopied] = React.useState(false)
 
   // methods
-  const _copyToClipboard = React.useCallback(async (value: string) => {
-    await copyToClipboard(value)
-    setIsCopied(true)
-  }, [])
+  const _copyToClipboard = React.useCallback(
+    async (value: string) => {
+      if (isConfidential) {
+        await copyToClipboardConfidentially({ text: value })
+      } else {
+        await copyToClipboard(value)
+      }
+      setIsCopied(true)
+    },
+    [isConfidential, copyToClipboardConfidentially],
+  )
 
   const resetCopyState = React.useCallback(() => {
     setIsCopied(false)

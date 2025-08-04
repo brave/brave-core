@@ -23,7 +23,6 @@ source_set("web") {
     "//components/component_updater/installer_policies",
     "//components/translate/ios/browser",
     "//ios/chrome/browser/application_context/model",
-    "//ios/chrome/browser/providers/raccoon:chromium_raccoon",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/paths",
     "//ios/chrome/browser/shared/model/url",

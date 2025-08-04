@@ -17,6 +17,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
@@ -117,6 +118,15 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
         }) != content_delegates_.end()) {
       return;
     }
+
+    // Note: When we add a delegate to a conversation we should fetch the
+    // content. Otherwise we can end up with a Snapshot with no content (i.e. if
+    // the tab is closed).
+    // We don't try and keep the content alive to force letting the content to
+    // fetch because its a bit of an edge case, and there are no real
+    // consequences of not having the content (except for the content not being
+    // attached).
+    delegate->GetContent(base::DoNothing());
 
     content_delegates_.push_back(delegate);
     content_observations_.AddObservation(delegate);

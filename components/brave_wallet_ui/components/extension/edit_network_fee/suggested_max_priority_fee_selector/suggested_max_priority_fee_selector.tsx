@@ -144,6 +144,7 @@ export function SuggestedMaxPriorityFeeSelector(props: Props) {
 
           return (
             <FeeOptionButton
+              key={option.id}
               isSelected={isSelected}
               onClick={() => setUserSelectedMaxPriorityFee(option.id)}
             >
