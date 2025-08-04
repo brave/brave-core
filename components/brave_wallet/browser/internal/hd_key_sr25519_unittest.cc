@@ -111,6 +111,24 @@ TEST(HDKeySr25519, SignAndVerify) {
   EXPECT_FALSE(is_verified);
 }
 
+TEST(HDKeySr25519, VerifySignature) {
+  // derived from the binary message [1, 2, 3, 4, 6] using our kSchnorrkelSeed
+  //
+
+  constexpr const char* kSchnorrSignature =
+      "669DB9831C33855F0A3BFCF0B8F48EDDE504281C5CED4DF7882E0FF89A48F77128DB08B7"
+      "B90AE7CDF45602FF0F7C78E49594E282D955C0EDFE9080945703E28F";
+
+  std::vector<uint8_t> signature_bytes;
+  base::HexStringToBytes(kSchnorrSignature, &signature_bytes);
+
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  auto is_verified = keypair.VerifyMessage(
+      base::span<uint8_t const, kSr25519SignatureSize>(signature_bytes),
+      {1, 2, 3, 4, 5, 6});
+  EXPECT_TRUE(is_verified);
+}
+
 TEST(HDKeySr25519, HardDerive) {
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
   EXPECT_EQ(base::HexEncode(keypair.GetPublicKey()), kSchnorrkelPubKey);
