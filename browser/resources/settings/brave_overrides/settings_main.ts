@@ -63,42 +63,7 @@ RegisterPolymerTemplateModifications({
           </div>
         </template>
       `)
-
-    const templateAppearance = templateContent.querySelector(
-      'template[is=dom-if][if="[[showPage_(pageVisibility_.appearance)]]"]')
-    if (!templateAppearance) {
-      throw new Error('[Settings] Missing template for appearance')
-    }
-    const appearanceSlot =
-      templateAppearance.content.querySelector('#appearance')
-    if (!appearanceSlot) {
-      throw new Error(
-        '[Settings] Missing appearance slot on settings-basic-page')
-    }
-
-    // Insert the tabs page into the view manager
-    if (appearanceSlot) {
-      appearanceSlot.appendChild(
-        html`
-          <template is="dom-if" if="[[showPage_(pageVisibility_.tabs)]]">
-            <template is="dom-if" if="true">
-              <settings-brave-appearance-tabs
-                prefs="{{prefs}}"
-                in-search-mode="[[inSearchMode_]]">
-              </settings-brave-appearance-tabs>
-            </template>
-          </template>
-          <template is="dom-if" if="[[showPage_(pageVisibility_.sidebar)]]">
-            <template is="dom-if" if="true">
-              <settings-brave-appearance-sidebar
-                prefs="{{prefs}}"
-                in-search-mode="[[inSearchMode_]]">
-              </settings-brave-appearance-sidebar>
-            </template>
-          </template>
-        `)
-    }
-
+      
     // Insert the content page into the view manager
     switcher.appendChild(
       html`
