@@ -321,6 +321,11 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameCases) {
 
 IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, TwoProfiles) {
   EnableDeveloperMode(true);
+
+  UpdateAdBlockInstanceWithRules(
+      "a.com##+js(user-1)\n"
+      "a.com##+js(user-2)");
+
   NavigateToURL(GURL("brave://settings/shields/filters"));
 
   ProfileManager* profile_manager = g_browser_process->profile_manager();
@@ -336,10 +341,10 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, TwoProfiles) {
       second_web_contents, GURL("brave://settings/shields/filters"), 1, true);
 
   ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
-  SaveCustomScriptlet("user-1", "1");
+  SaveCustomScriptlet("user-1", "window.test_1 = true");
 
   ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
-  SaveCustomScriptlet("user-2", "2");
+  SaveCustomScriptlet("user-2", "window.test_2 = true");
 
   // Expect the second profile shows the same scriptlets even if developer mode
   // is disabled.
@@ -348,4 +353,17 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, TwoProfiles) {
   AwaitRoot(second_web_contents, "adblockScriptletList");
   AwaitElement(second_web_contents, "adblockScriptletList", "user-1.js");
   AwaitElement(second_web_contents, "adblockScriptletList", "user-2.js");
+
+  // Check both scripts work in both profiles
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  EXPECT_TRUE(
+      EvalJs(web_contents(), "window.test_1 && window.test_2").ExtractBool());
+
+  content::NavigateToURLBlockUntilNavigationsComplete(second_web_contents,
+                                                      tab_url, 1, true);
+  EXPECT_TRUE(EvalJs(second_web_contents, "window.test_1 && window.test_2")
+                  .ExtractBool());
 }
