@@ -510,6 +510,12 @@ export class MockedWalletApiProxy {
       }
       return { network: mockEthMainnet }
     },
+
+    writeToClipboard: async (text: string, isConfidential: boolean) => {
+      return {
+        data: true,
+      }
+    },
   }
 
   swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> =
