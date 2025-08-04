@@ -452,6 +452,40 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
   ui_test_utils::WaitForBrowserToClose();
 }
 
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanWebRTC) {
+  testing::Mock::AllowLeak(GetTorLauncherFactory());
+  EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
+      .WillRepeatedly(testing::Return(true));
+
+  constexpr char kCheckWebRTC[] = R"js(
+    (function() {
+      try {
+        const peerConnection = new RTCPeerConnection();
+        return !!peerConnection;
+      } catch(e) {
+        return false;
+      }
+    })();
+  )js";
+
+  Browser* tor_browser = SwitchToTorProfile(
+      browser()->profile(), GetTorLauncherFactory(), 1, GURL("brave://newtab"));
+  Profile* tor_profile = tor_browser->profile();
+
+  auto* tor_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
+  content::WaitForLoadStop(tor_contents);
+
+  EXPECT_FALSE(content::EvalJs(tor_contents, kCheckWebRTC).ExtractBool());
+
+  auto* regular_contents =
+      ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab"));
+  EXPECT_TRUE(content::EvalJs(regular_contents, kCheckWebRTC).ExtractBool());
+
+  EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess);
+  TorProfileManager::CloseTorProfileWindows(tor_profile);
+  ui_test_utils::WaitForBrowserToClose();
+}
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 class TorProfileManagerExtensionTest : public extensions::ExtensionBrowserTest {
  public:

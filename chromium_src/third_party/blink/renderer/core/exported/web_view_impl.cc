@@ -5,18 +5,26 @@
 
 #include "third_party/blink/renderer/core/exported/web_view_impl.h"
 
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
+#include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
-#if BUILDFLAG(IS_MAC)
-#define SetAccelerated2dCanvasEnabled(...)             \
-  SetAccelerated2dCanvasEnabled(__VA_ARGS__);          \
-  if (prefs.disable_web_share) {                       \
-    RuntimeEnabledFeatures::SetWebShareEnabled(false); \
+// not a funtions because Set* methods are protected and WebView is a friend of
+// RuntimeEnabledFeatures.
+#define BRAVE_APPLY_WEB_PREFERENCES(prefs)                 \
+  {                                                        \
+    RuntimeEnabledFeatures::SetBraveIsInTorContextEnabled( \
+        prefs.is_tor_window);                              \
+    if (prefs.is_tor_window && BUILDFLAG(IS_MAC)) {        \
+      RuntimeEnabledFeatures::SetWebShareEnabled(false);   \
+    }                                                      \
   }
-#endif
+
+#define SetAccelerated2dCanvasEnabled(...)    \
+  SetAccelerated2dCanvasEnabled(__VA_ARGS__); \
+  BRAVE_APPLY_WEB_PREFERENCES(prefs)
 
 #include <third_party/blink/renderer/core/exported/web_view_impl.cc>
 
-#if BUILDFLAG(IS_MAC)
 #undef SetAccelerated2dCanvasEnabled
-#endif
+#undef BRAVE_APPLY_WEB_PREFERENCES
