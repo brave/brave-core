@@ -14,8 +14,10 @@
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -25,13 +27,29 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_strip_collection.h"
+#include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
 
-BraveTabStripModel::BraveTabStripModel(
-    TabStripModelDelegate* delegate,
-    Profile* profile,
-    TabGroupModelFactory* group_model_factory)
-    : TabStripModel(delegate, profile, group_model_factory) {}
+    BraveTabStripModel::BraveTabStripModel(
+        TabStripModelDelegate* delegate,
+        Profile* profile,
+        TabGroupModelFactory* group_model_factory)
+    : TabStripModel(delegate, profile, group_model_factory) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab) &&
+      delegate->IsNormalWindow()) {
+    tree_tabs_enabled_.Init(
+        brave_tabs::kTreeTabsEnabled, profile->GetPrefs(),
+        base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
+                            base::Unretained(this)));
+    vertical_tabs_enabled_.Init(
+        brave_tabs::kVerticalTabsEnabled, profile->GetPrefs(),
+        base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
+                            base::Unretained(this)));
+    OnTreeTabRelatedPrefChanged();
+  }
+}
+
 BraveTabStripModel::~BraveTabStripModel() = default;
 
 void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
@@ -152,4 +170,35 @@ void BraveTabStripModel::CloseSelectedTabsWithSplitView() {
   }
 
   return CloseSelectedTabs();
+}
+
+void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
+  if (*tree_tabs_enabled_ && *vertical_tabs_enabled_) {
+    BuildTreeTabs();
+  } else {
+    FlattenTreeTabs();
+  }
+}
+
+void BraveTabStripModel::BuildTreeTabs() {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
+
+  auto* unpinned_collection = contents_data_->unpinned_collection();
+  CHECK(unpinned_collection);
+
+  TreeTabNode::BuildTreeTabs(*unpinned_collection);
+}
+
+void BraveTabStripModel::FlattenTreeTabs() {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
+
+  auto* unpinned_collection = contents_data_->unpinned_collection();
+  CHECK(unpinned_collection);
+
+  TreeTabNode::FlattenTreeTabs(*unpinned_collection);
+}
+
+tabs::TabStripCollection&
+BraveTabStripModel::GetTabStripCollectionForTesting() {
+  return *contents_data_;
 }
