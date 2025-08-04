@@ -1166,15 +1166,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   PSST_FEATURE_ENTRIES                                                         \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 
-#define BRAVE_SHOULD_SKIP_CONDITIONAL_FEATURE_ENTRY                      \
-  /* Only show AI Agentic Profile flag on Dev/Canary/Unknown */          \
-  if (!strcmp(kAIChatAgenticProfileInternalName, entry.internal_name)) { \
-    version_info::Channel chrome_channel = chrome::GetChannel();         \
-    return chrome_channel != version_info::Channel::DEV &&               \
-           chrome_channel != version_info::Channel::CANARY &&            \
-           chrome_channel != version_info::Channel::UNKNOWN;             \
-  }
-
 namespace flags_ui {
 namespace {
 

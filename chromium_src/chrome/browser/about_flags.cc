@@ -8,4 +8,14 @@
 #include "chrome/common/channel_info.h"
 #include "components/autofill/core/browser/studies/autofill_experiments.h"
 
+#define BRAVE_SHOULD_SKIP_CONDITIONAL_FEATURE_ENTRY                      \
+  /* Only show AI Agentic Profile flag on Nightly and Local */           \
+  if (!strcmp(kAIChatAgenticProfileInternalName, entry.internal_name)) { \
+    version_info::Channel chrome_channel = chrome::GetChannel();         \
+    return chrome_channel != version_info::Channel::DEV &&               \
+           chrome_channel != version_info::Channel::CANARY &&            \
+           chrome_channel != version_info::Channel::UNKNOWN;             \
+  }
+
 #include <chrome/browser/about_flags.cc>
+#undef BRAVE_SHOULD_SKIP_CONDITIONAL_FEATURE_ENTRY
