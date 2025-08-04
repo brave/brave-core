@@ -63,11 +63,14 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (pageVisibility.content) {
     r.BRAVE_CONTENT = r.BASIC.createSection('/braveContent', 'content')
+    r.BRAVE_CONTENT.hasMigratedToPlugin = true
+
     // Move fonts from APPEARANCE to BRAVE_CONTENT
     if (r.FONTS) {
         delete r.FONTS
     }
     r.FONTS = r.BRAVE_CONTENT.createChild('/fonts')
+    r.FONTS.hasMigratedToPlugin = true
   }
   if (pageVisibility.surveyPanelist) {
     r.BRAVE_SURVEY_PANELIST =
