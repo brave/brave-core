@@ -11,6 +11,7 @@ import {
 import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_content_page/content_page_index.js'
+import '../getting_started_page/getting_started_page_index.js'
 
 RegisterPolymerTemplateModifications({
   'settings-main': (templateContent) => {
@@ -49,18 +50,10 @@ RegisterPolymerTemplateModifications({
         <template is="dom-if" if="[[showPage_(pageVisibility_.getStarted)]]">
           <div slot="view" id="getStarted">
             <template is="dom-if" if="true">
-              <brave-settings-getting-started
+              <settings-getting-started-page-index
                 prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
-              </brave-settings-getting-started>
-            </template>
-            <template is="dom-if" if="[[showPage_(pageVisibility_.newTab)]]">
-              <template is="dom-if" if="true">
-                <settings-brave-new-tab-page
-                  prefs="{{prefs}}"
-                  in-search-mode="[[inSearchMode_]]">
-                </settings-brave-new-tab-page>
-              </template>
+              </settings-getting-started-page-index>
             </template>
           </div>
         </template>

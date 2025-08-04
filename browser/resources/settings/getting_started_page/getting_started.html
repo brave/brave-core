@@ -3,8 +3,7 @@
 
 <settings-section
   id="getStarted"
-  page-title="$i18n{braveGetStartedTitle}"
-  class="cr-centered-card-container">
+  page-title="$i18n{braveGetStartedTitle}">
   <template is="dom-if" if="[[isBraveAccountEnabled_]]">
     <settings-brave-account-row></settings-brave-account-row>
   </template>
@@ -24,3 +23,8 @@
     </div>
   </div>
 </settings-section>
+
+<settings-brave-new-tab-page
+  prefs="{{prefs}}"
+  in-search-mode="[[inSearchMode_]]">
+</settings-brave-new-tab-page>
