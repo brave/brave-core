@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -41,10 +42,12 @@ AdBlockPrefService::AdBlockPrefService(
     AdBlockService* ad_block_service,
     PrefService* prefs,
     PrefService* local_state,
+    std::string locale,
     HostContentSettingsMap* host_content_settings_map)
     : ad_block_service_(ad_block_service),
       prefs_(prefs),
-      host_content_settings_map_(host_content_settings_map) {
+      host_content_settings_map_(host_content_settings_map),
+      locale_(std::move(locale)) {
   pref_change_registrar_.reset(new PrefChangeRegistrar());
   pref_change_registrar_->Init(prefs_);
   pref_change_registrar_->Add(
@@ -70,17 +73,25 @@ AdBlockPrefService::AdBlockPrefService(
       base::BindRepeating(&AdBlockPrefService::OnDeveloperModeChanged,
                           base::Unretained(this)));
 
-  // TODO(aseren): Currently we use both local state and content settings.
-  // Need to move to local state usage only.
-  if (local_state) {
-    SetBraveShieldsAdBlockOnlyModeEnabled(
-        host_content_settings_map_,
-        local_state->GetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled), GURL(),
-        local_state);
-  }
+  bool is_adblock_only_mode_enabled = false;
+  if (IsAdblockOnlyModeSupported()) {
+    is_adblock_only_mode_enabled =
+        local_state &&
+        local_state->GetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled);
 
-  CHECK(host_content_settings_map_);
-  host_content_settings_map_->AddObserver(this);
+    pref_change_registrar_->Add(
+        prefs::kAdBlockAdblockOnlyModeEnabled,
+        base::BindRepeating(&AdBlockPrefService::OnAdBlockOnlyModeChanged,
+                            base::Unretained(this)));
+
+    CHECK(host_content_settings_map_);
+    host_content_settings_map_->AddObserver(this);
+  }
+  // TODO(aseren): Currently we use both local state and content settings.
+  // Consider moving to local state usage only.
+  SetBraveShieldsAdBlockOnlyModeEnabled(host_content_settings_map_,
+                                        is_adblock_only_mode_enabled, GURL(),
+                                        local_state);
 
   OnDeveloperModeChanged();
   OnAdBlockOnlyModeChanged();
@@ -109,6 +120,11 @@ AdBlockPrefService::GetLatestProxyConfig(
 
   *config = last_proxy_config_;
   return last_proxy_config_availability_;
+}
+
+bool AdBlockPrefService::IsAdblockOnlyModeSupported() const {
+  return IsAdblockOnlyModeFeatureEnabled() &&
+         IsAdblockOnlyModeSupportedForLocale(locale_);
 }
 
 void AdBlockPrefService::Shutdown() {

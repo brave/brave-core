@@ -35,6 +35,7 @@ class AdBlockPrefService : public KeyedService,
       AdBlockService* ad_block_service,
       PrefService* prefs,
       PrefService* local_state,
+      std::string locale,
       HostContentSettingsMap* host_content_settings_map);
   ~AdBlockPrefService() override;
 
@@ -43,6 +44,8 @@ class AdBlockPrefService : public KeyedService,
       std::unique_ptr<net::ProxyConfigService> proxy_config_service);
   net::ProxyConfigService::ConfigAvailability GetLatestProxyConfig(
       net::ProxyConfigWithAnnotation* config) const;
+
+  bool IsAdblockOnlyModeSupported() const;
 
  private:
   void Shutdown() override;
@@ -66,6 +69,7 @@ class AdBlockPrefService : public KeyedService,
   raw_ptr<PrefService> prefs_ = nullptr;                // not owned
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ =
       nullptr;  // not owned
+  const std::string locale_;
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
 

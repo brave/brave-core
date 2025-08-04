@@ -29,6 +29,8 @@ export interface DefaultBraveShieldsBrowserProxy {
   getAdBlockOnlyModeEnabled: () => Promise<boolean>
   setAdBlockOnlyModeEnabled: (value: boolean) => void
 
+  getAdBlockOnlyModeSupported: () => Promise<boolean>
+
   getHttpsUpgradeControlType: () => Promise<string>
   setHttpsUpgradeControlType: (value: string) => void
 
@@ -91,6 +93,10 @@ implements DefaultBraveShieldsBrowserProxy {
 
   setAdBlockOnlyModeEnabled (value: boolean) {
     chrome.send('setAdBlockOnlyModeEnabled', [value])
+  }
+
+  getAdBlockOnlyModeSupported () {
+    return sendWithPromise('getAdBlockOnlyModeSupported')
   }
 
   getHttpsUpgradeControlType () {

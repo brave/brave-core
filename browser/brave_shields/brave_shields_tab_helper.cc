@@ -13,9 +13,12 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_shields/content/browser/ad_block_pref_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -79,6 +82,14 @@ void BraveShieldsTabHelper::MaybeNotifyAfterRepeatedReloads(
 
   if (ignore_force_reload_web_contents_) {
     ignore_force_reload_web_contents_ = false;
+    return;
+  }
+
+  AdBlockPrefService* ad_block_pref_service =
+      AdBlockPrefServiceFactory::GetForBrowserContext(
+          web_contents()->GetBrowserContext());
+  if (!ad_block_pref_service ||
+      !ad_block_pref_service->IsAdblockOnlyModeSupported()) {
     return;
   }
 

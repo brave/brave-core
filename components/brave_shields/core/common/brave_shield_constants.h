@@ -51,6 +51,9 @@ const base::FilePath::CharType kCustomSubscriptionListText[] =
 inline constexpr auto kAdblockOnlyModeUuidList =
     base::MakeFixedFlatSet<std::string_view>({"default"});
 
+inline constexpr auto kAdblockOnlyModeSupportedLanguageCodes =
+    base::MakeFixedFlatSet<std::string_view>({"en"});
+
 inline constexpr char kCookieListUuid[] =
     "AC023D22-AE88-4060-A978-4FEEEC4221693";
 inline constexpr char kMobileNotificationsListUuid[] =

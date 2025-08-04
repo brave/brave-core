@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_settings_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
@@ -35,6 +36,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_shields/content/browser/ad_block_pref_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -218,6 +220,16 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
                                   kBraveNTPBrandedWallpaperSurveyPanelist));
+
+  bool ad_block_only_mode_supported = false;
+  if (brave_shields::AdBlockPrefService* ad_block_pref_service =
+          brave_shields::AdBlockPrefServiceFactory::GetForBrowserContext(
+              profile)) {
+    ad_block_only_mode_supported =
+        ad_block_pref_service->IsAdblockOnlyModeSupported();
+  }
+  html_source->AddBoolean("isAdBlockOnlyModeSupported",
+                          ad_block_only_mode_supported);
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(

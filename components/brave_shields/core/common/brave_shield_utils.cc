@@ -10,6 +10,9 @@
 #include <string>
 
 #include "base/no_destructor.h"
+#include "base/strings/string_util.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -109,6 +112,23 @@ ShieldsSettingCounts GetAdsSettingCountFromRules(
   }
 
   return result;
+}
+
+bool IsAdblockOnlyModeFeatureEnabled() {
+  return base::FeatureList::IsEnabled(features::kAdblockOnlyMode);
+}
+
+bool IsAdblockOnlyModeSupportedForLocale(const std::string& locale) {
+  return kAdblockOnlyModeSupportedLanguageCodes.contains(
+      GetLanguageCodeFromLocale(locale));
+}
+
+std::string GetLanguageCodeFromLocale(const std::string& locale) {
+  const std::string::size_type loc = locale.find("-");
+  if (loc == std::string::npos) {
+    return base::ToLowerASCII(locale);
+  }
+  return base::ToLowerASCII(locale.substr(0, loc));
 }
 
 }  // namespace brave_shields

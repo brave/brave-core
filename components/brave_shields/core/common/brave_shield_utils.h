@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_UTILS_H_
 
 #include <map>
+#include <string>
 
 #include "components/content_settings/core/common/content_settings.h"
 
@@ -34,6 +35,13 @@ ShieldsSettingCounts GetFPSettingCountFromRules(
     const ContentSettingsForOneType& fp_rules);
 ShieldsSettingCounts GetAdsSettingCountFromRules(
     const ContentSettingsForOneType& ads_rules);
+
+bool IsAdblockOnlyModeFeatureEnabled();
+
+bool IsAdblockOnlyModeSupportedForLocale(const std::string& locale);
+
+std::string GetLanguageCodeFromLocale(const std::string& locale);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_UTILS_H_

@@ -45,7 +45,7 @@ function getPageVisibility () {
     // Hide appropriate brave sections as well as chromium ones
     return {
       ...chromiumPageVisibility,
-      adBlockOnlyMode: true,
+      adBlockOnlyMode: false,
       braveSync: false,
       braveWallet: false,
       // <if expr="enable_containers">
@@ -81,6 +81,7 @@ function getPageVisibility () {
     appearance: alwaysTrueProxy,
     privacy: alwaysTrueProxy,
     // custom properties
+    adBlockOnlyMode: loadTimeData.getBoolean('isAdBlockOnlyModeSupported'),
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
     braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
     leoAssistant: loadTimeData.getBoolean('isLeoAssistantAllowed'),
