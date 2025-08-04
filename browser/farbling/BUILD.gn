@@ -32,7 +32,7 @@ if (!is_android) {
       "//brave/browser",
       "//brave/browser/extensions:test_support",
       "//brave/common:common",
-      "//brave/components/brave_component_updater/browser",
+      "//brave/components/brave_component_updater/browser:browser",
       "//brave/components/brave_shields/content/browser",
       "//brave/components/brave_shields/content/browser:test_support",
       "//brave/components/brave_shields/core/browser",

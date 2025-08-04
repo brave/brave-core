@@ -33,7 +33,7 @@ static_library("core") {
   ]
 
   deps = [
-    "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/psst/common",
     "//brave/extensions:common",
     "//components/component_updater",

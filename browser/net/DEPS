@@ -12,9 +12,3 @@ include_rules = [
   "+brave/components/static_redirect_helper",
   "+services/network/host_resolver.h",
 ]
-
-specific_include_rules = {
-  "brave_ad_block_tp_network_delegate_helper_unittest\.cc": [
-    "+brave/components/brave_component_updater/browser/brave_component.h",
-  ],
-}

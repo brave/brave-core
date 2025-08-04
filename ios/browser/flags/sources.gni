@@ -6,7 +6,7 @@
 brave_flags_deps = [
   "//base",
   "//brave/components/brave_ads/core",
-  "//brave/components/brave_component_updater/browser:public",
+  "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_rewards/core",
   "//brave/components/brave_rewards/core/buildflags",
   "//brave/components/brave_shields/core/common",

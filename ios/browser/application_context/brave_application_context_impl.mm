@@ -53,7 +53,7 @@ BraveApplicationContextImpl::brave_component_updater_delegate() {
     brave_component_updater_delegate_ = std::make_unique<
         brave_component_updater::BraveComponentUpdaterDelegate>(
         GetComponentUpdateService(), GetLocalState(),
-        GetApplicationLocaleStorage()->Get(), false);
+        GetApplicationLocaleStorage()->Get());
   }
 
   return brave_component_updater_delegate_.get();

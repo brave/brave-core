@@ -70,7 +70,7 @@ static_library("p3a") {
     "constellation/rs/cxx:rust_lib",
     "//base",
     "//brave/brave_domains",
-    "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/l10n/common",
     "//brave/components/p3a:buildflags",

@@ -31,8 +31,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponentUpdaterDelegate
   BraveComponentUpdaterDelegate(
       component_updater::ComponentUpdateService* updater,
       PrefService* local_state,
-      const std::string& locale,
-      bool is_disabled_by_command_line_flag);
+      const std::string& locale);
   BraveComponentUpdaterDelegate(const BraveComponentUpdaterDelegate&) = delete;
   BraveComponentUpdaterDelegate& operator=(
       const BraveComponentUpdaterDelegate&) = delete;
@@ -60,7 +59,6 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponentUpdaterDelegate
   const raw_ref<component_updater::ComponentUpdateService> component_updater_;
   const raw_ref<PrefService> local_state_;
   std::string locale_;
-  bool is_disabled_by_command_line_ = false;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 };
 
