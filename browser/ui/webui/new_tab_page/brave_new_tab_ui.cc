@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
-#include "base/strings/stringprintf.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -49,6 +48,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 

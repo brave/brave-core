@@ -10,8 +10,8 @@
 
 #include "base/containers/contains.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_shields {
 

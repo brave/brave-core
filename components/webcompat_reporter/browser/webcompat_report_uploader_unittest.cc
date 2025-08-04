@@ -9,7 +9,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"

@@ -14,11 +14,11 @@
 #include "base/environment.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_stats/browser/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_stats {
 
