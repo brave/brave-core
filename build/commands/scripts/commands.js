@@ -25,6 +25,7 @@ const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
 const perfTests = require('../lib/perfTests')
+const registerListAffectedTestsCommand = require('./listAffectedTests')
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -359,6 +360,10 @@ program
   .option('--filter <filter>', 'set test filter')
   .option('--no_gn_gen', 'Use args.gn as default values')
   .option(
+    '--base [targetCommitRef]',
+    'use this commit/branch/tag as reference for change detection',
+  )
+  .option(
     '--output_xml',
     'indicates if test results xml output file(s) should be generated. '
       + '<suite>.txt file will contain the list of xml files with results. '
@@ -463,5 +468,7 @@ program
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program.command('docs').action(util.launchDocs)
+
+registerListAffectedTestsCommand(program)
 
 program.parse(process.argv)

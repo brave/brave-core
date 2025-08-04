@@ -10,11 +10,13 @@ const Config = require('../lib/config')
 const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
+
+const { getAffectedTests } = require('./affectedTests')
 const {
   getTestBinary,
-  getChromiumTestsSuites,
   getTestsToRun,
   getApplicableFilters,
+  getChromiumTestsSuites,
 } = require('./testUtils')
 
 const test = async (
@@ -30,15 +32,18 @@ const test = async (
     Log.error('Running ios tests on a device is not yet supported')
     process.exit(1)
   }
-  await buildTests(suite, Config, options)
-  runTests(passthroughArgs, suite, Config, options)
-}
 
-const buildTests = async (suite, config, options = {}) => {
-  util.touchOverriddenFiles()
-  util.touchGsutilChangeLogFile()
+  const testsToRun = options.base
+    ? await getAffectedTests({ ...options, suite })
+    : getTestsToRun(Config, suite)
 
-  await util.buildTargets([suite], config.defaultOptions)
+  if (testsToRun.length === 0 && !options.quiet) {
+    console.warn('SKIP: No tests need to run')
+    return
+  }
+
+  await buildTests(testsToRun, Config, options)
+  await runTests(passthroughArgs, { suite, testsToRun }, Config, options)
 }
 
 const deleteFile = (filePath) => {
@@ -47,7 +52,20 @@ const deleteFile = (filePath) => {
   }
 }
 
-const runTests = (passthroughArgs, suite, config, options) => {
+const buildTests = async (testsToRun, config) => {
+  config.buildTargets = testsToRun
+  util.touchOverriddenFiles()
+  util.touchGsutilChangeLogFile()
+
+  await util.buildTargets(config.buildTargets, config.defaultOptions)
+}
+
+const runTests = async (
+  passthroughArgs,
+  { suite, testsToRun },
+  config,
+  options,
+) => {
   const isJunitTestSuite = suite.endsWith('_junit_tests')
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
   // Clear previous results file
@@ -114,7 +132,7 @@ const runTests = (passthroughArgs, suite, config, options) => {
   const upstreamTestSuites = getChromiumTestsSuites(config)
 
   // Run the tests
-  getTestsToRun(config, suite).every((testSuite) => {
+  testsToRun.every((testSuite) => {
     let runArgs = braveArgs.slice()
     let runOptions = config.defaultOptions
 
