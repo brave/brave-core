@@ -34,7 +34,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     }
   }
   r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
+  r.SHIELDS.hasMigratedToPlugin = true
   r.SHIELDS_ADBLOCK = r.SHIELDS.createChild('/shields/filters')
+  r.SHIELDS_ADBLOCK.hasMigratedToPlugin = true
+
   if (loadTimeData.getBoolean('areShortcutsSupported')) {
     if (r.SYSTEM) {
       r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
@@ -44,6 +47,8 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     }
   }
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
+  r.SOCIAL_BLOCKING.hasMigratedToPlugin = true
+
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
   r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
   if (pageVisibility.braveSync) {

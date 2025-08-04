@@ -165,8 +165,13 @@
   #search-box iron-icon {
     --iron-icon-fill-color: var(--google-grey-500);
   }
+
+  #adblock-section .settings-box:first-child {
+    border-top: transparent;
+  }
 </style>
 
+<settings-subpage page-title="$i18n{adblockContentFiltersLabel}">
 <div id="adblock-section">
   <div class="settings-box">
     <div class="flex">
@@ -353,3 +358,4 @@
     </div>
   </div>
 </template>
+</settings-subpage>

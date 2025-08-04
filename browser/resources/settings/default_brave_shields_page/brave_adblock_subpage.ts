@@ -24,11 +24,14 @@ import {
   SubscriptionInfo
 } from './brave_adblock_browser_proxy.js'
 
+import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js';
+
 import {getTemplate} from './brave_adblock_subpage.html.js'
 
 import {loadTimeData} from '../i18n_setup.js'
 
-const AdBlockSubpageBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
+const AdBlockSubpageBase = SettingsViewMixin(
+  PrefsMixin(I18nMixin(BaseMixin(PolymerElement))))
 
 class AdBlockSubpage extends AdBlockSubpageBase {
   static get is() {

@@ -22,6 +22,8 @@ import {
 
 import {getTemplate} from './default_brave_shields_page.html.js'
 
+import '../social_blocking_page/social_blocking_page.js';
+
 interface BraveShieldsPage {
   $: {
     adControlType: HTMLSelectElement,
