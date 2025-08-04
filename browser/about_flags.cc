@@ -7,7 +7,6 @@
 
 #include <initializer_list>
 
-#include "base/version_info/channel.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ui/brave_ui_features.h"
@@ -127,8 +126,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 
 namespace {
 const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
-constexpr char kAIChatAgenticProfileInternalName[] =
-    "brave-ai-chat-agentic-profile";
 }  // namespace
 
 #define SPEEDREADER_FEATURE_ENTRIES                                        \
@@ -505,7 +502,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatTools),                 \
       },                                                                       \
       {                                                                        \
-          kAIChatAgenticProfileInternalName,                                   \
+          "brave-ai-chat-agentic-profile",                                     \
           "Brave AI Chat Agentic Profile",                                     \
           "Enables Leo's agentic features and only in a separate built-in "    \
           "profile.",                                                          \
@@ -1165,7 +1162,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   PSST_FEATURE_ENTRIES                                                         \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
-
 namespace flags_ui {
 namespace {
 
