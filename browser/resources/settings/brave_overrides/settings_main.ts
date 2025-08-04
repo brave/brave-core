@@ -10,6 +10,8 @@ import {
 
 import {loadTimeData} from '../i18n_setup.js'
 
+import '../brave_content_page/content_page_index.js'
+
 RegisterPolymerTemplateModifications({
   'settings-main': (templateContent) => {
     // Always show settings-basic-page
@@ -63,33 +65,18 @@ RegisterPolymerTemplateModifications({
           </div>
         </template>
       `)
-      
+
     // Insert the content page into the view manager
     switcher.appendChild(
       html`
         <template is="dom-if" if="[[showPage_(pageVisibility_.content)]]">
           <div slot="view" id="content">
-            <template is="dom-if" if="true">
-              <settings-brave-content-content
+            <template is="dom-if" if="[[renderPlugin_(
+          routes_.BRAVE_CONTENT, lastRoute_, inSearchMode_)]]">
+              <settings-brave-content-page-index
                 prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
-              </settings-brave-content-content>
-            </template>
-            <template is="dom-if" if="[[showPage_(pageVisibility_.playlist)]]">
-              <template is="dom-if" if="true">
-                <settings-brave-content-playlist
-                  prefs="{{prefs}}"
-                  in-search-mode="[[inSearchMode_]]">
-                </settings-brave-content-playlist>
-              </template>
-            </template>
-            <template is="dom-if" if="[[showPage_(pageVisibility_.speedreader)]]">
-              <template is="dom-if" if="true">
-                <settings-brave-content-speedreader
-                  prefs="{{prefs}}"
-                  in-search-mode="[[inSearchMode_]]">
-                </settings-brave-content-speedreader>
-              </template>
+              </settings-brave-content-page-index>
             </template>
           </div>
         </template>
