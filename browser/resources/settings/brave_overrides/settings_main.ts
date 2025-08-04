@@ -12,6 +12,7 @@ import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_content_page/content_page_index.js'
 import '../getting_started_page/getting_started_page_index.js'
+import '../default_brave_shields_page/shields_page_index.js'
 
 RegisterPolymerTemplateModifications({
   'settings-main': (templateContent) => {
@@ -80,19 +81,12 @@ RegisterPolymerTemplateModifications({
       html`
         <template is="dom-if" if="[[showPage_(pageVisibility_.shields)]]">
           <div slot="view" id="shields">
-            <template is="dom-if" if="true">
-              <settings-default-brave-shields-page
+            <template is="dom-if" if="[[renderPlugin_(
+          routes_.SHIELDS, lastRoute_, inSearchMode_)]]">
+              <settings-shields-page-index
                 prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
-              </settings-default-brave-shields-page>
-            </template>
-            <template is="dom-if" if="[[showPage_(pageVisibility_.socialBlocking)]]">
-              <template is="dom-if" if="true">
-                <settings-social-blocking-page
-                  prefs="{{prefs}}"
-                  in-search-mode="[[inSearchMode_]]">
-                </settings-social-blocking-page>
-              </template>
+              </settings-shields-page-index>
             </template>
           </div>
         </template>
