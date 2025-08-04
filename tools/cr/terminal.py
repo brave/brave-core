@@ -118,7 +118,7 @@ class Terminal:
             status.stop()
             self.status = None
 
-    def run(self, cmd, env: Optional[Dict[str, str]] = None):
+    def run(self, cmd, env: Optional[Dict[str, str]] = None, cwd=None):
         """Runs a command on the terminal.
         """
         # Convert all arguments to strings, to avoid issues with `PurePath`
@@ -153,6 +153,7 @@ class Terminal:
                                     text=True,
                                     check=True,
                                     env=env,
+                                    cwd=cwd,
                                     shell=platform.system() == 'Windows')
         except subprocess.CalledProcessError as e:
             logging.debug('❯ %s', e.stderr.strip())
