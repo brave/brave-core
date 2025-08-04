@@ -12,10 +12,10 @@ import {
   RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
 
-import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
+import { getTrustedHTML } from 'chrome://resources/js/static_types.js'
 
-import {loadTimeData} from '../i18n_setup.js'
-import {Router} from '../router.js'
+import { loadTimeData } from '../i18n_setup.js'
+import { Router } from '../router.js'
 
 import {
   SettingsAppearancePageElement
@@ -65,7 +65,7 @@ RegisterPolymerTemplateModifications({
       homeButtonToggle.remove()
     }
     const homeButtonOptionsTemplate = templateContent.querySelector(
-        'template[is=dom-if][if="[[prefs.browser.show_home_button.value]]"]')
+      'template[is=dom-if][if="[[prefs.browser.show_home_button.value]]"]')
     if (!homeButtonOptionsTemplate) {
       console.error(
         `[Settings] Couldn't find home button options template`)
@@ -173,16 +173,29 @@ RegisterPolymerTemplateModifications({
       sidePanelPosition.parentNode.setAttribute('hidden', 'true')
     }
 
-    // Append toolbar related items to the 'Appearance'pages
-//    const pages = templateContent.querySelector('#pages > div')
-//    if (!pages) {
-//      console.error(`[Settings] Couldn't find appearance page #pages > div`)
-//    } else {
-//      pages.appendChild(html`
-//          <settings-brave-appearance-toolbar
-//            prefs="{{prefs}}">
-//          </settings-brave-appearance-toolbar>
-//        `)
-//    }
+    const section = templateContent.querySelector('settings-section')
+    if (!section) {
+      console.error(`[Settings] Couldn't find settings-section`)
+    } else {
+      // Append toolbar settings to the appearance section.
+      section.appendChild(html`
+        <settings-brave-appearance-toolbar
+          prefs="{{prefs}}">
+        </settings-brave-appearance-toolbar>
+      `)
+
+      // Append tabs and sidebar settings to the appearance page.
+      section.insertAdjacentHTML('afterend', getTrustedHTML`
+        <settings-brave-appearance-tabs
+          prefs="{{prefs}}"
+          in-search-mode="[[inSearchMode_]]">
+        </settings-brave-appearance-tabs>
+
+        <settings-brave-appearance-sidebar
+          prefs="{{prefs}}"
+          in-search-mode="[[inSearchMode_]]">
+        </settings-brave-appearance-sidebar>
+      `)
+    }
   }
 })
