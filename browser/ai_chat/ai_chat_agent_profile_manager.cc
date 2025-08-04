@@ -46,13 +46,13 @@ void AIChatAgentProfileManager::OnProfileAdded(
     // Some actions we might want to do only if the profile is new, but we
     // can't access the Profile here yet. Wait for ProfileManager to call
     // OnProfileAdded(Profile*) and remember it's new.
-    is_added_profile_new_profile_ = true;
+    is_added_profile_new_ai_chat_agent_profile_ = true;
   }
 }
 
 void AIChatAgentProfileManager::OnProfileAdded(Profile* profile) {
-  if (profile->IsAIChatAgent() && is_added_profile_new_profile_) {
-    is_added_profile_new_profile_ = false;
+  if (is_added_profile_new_ai_chat_agent_profile_ && profile->IsAIChatAgent()) {
+    is_added_profile_new_ai_chat_agent_profile_ = false;
     // Assume user has opted-in in some profile already in order to get
     // here, so we can copy that preference.
     ai_chat::SetUserOptedIn(profile->GetPrefs(), true);

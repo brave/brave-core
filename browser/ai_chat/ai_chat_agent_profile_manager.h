@@ -31,7 +31,7 @@ class AIChatAgentProfileManager : public ProfileAttributesStorage::Observer,
   void OnProfileAdded(Profile* profile) override;
 
  private:
-  bool is_added_profile_new_profile_ = false;
+  bool is_added_profile_new_ai_chat_agent_profile_ = false;
 
   raw_ptr<ProfileManager> profile_manager_ = nullptr;
 };
