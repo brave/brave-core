@@ -50,5 +50,6 @@
         <ignore regexp="The resource `R.color.empty_state_tab_group_border_color` appears to be unused"/>
         <ignore regexp="The resource `R.color.empty_state_icon_bg_color` appears to be unused"/>
         <ignore regexp="The resource `R.macro.default_bg_color_elev_0` appears to be unused"/>
+        <ignore regexp="The resource `R.drawable.incognito_card_bg` appears to be unused"/>
     </issue>
 </lint>
