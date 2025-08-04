@@ -266,7 +266,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
 void AIChatUIPageHandler::OpenAIChatAgenticProfile() {
   CHECK(ai_chat::features::IsAIChatAgenticProfileEnabled());
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
-  ai_chat::OpenBrowserWindowForAIChatAgentProfile(profile_);
+  ai_chat::OpenBrowserWindowForAIChatAgentProfile(*profile_);
 #endif
 }
 

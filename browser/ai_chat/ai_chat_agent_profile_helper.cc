@@ -49,11 +49,10 @@ void OpenBrowserWindowAndSidePanel(base::OnceCallback<void(Browser*)> callback,
 }
 
 void OpenBrowserWindowForAIChatAgentProfileWithCallback(
-    Profile* from_profile,
+    Profile& from_profile,
     base::OnceCallback<void(Browser*)> callback) {
-  CHECK(from_profile);
-  CHECK(IsAIChatEnabled(from_profile->GetPrefs()));
-  CHECK(!from_profile->IsAIChatAgent());
+  CHECK(IsAIChatEnabled(from_profile.GetPrefs()));
+  CHECK(!from_profile.IsAIChatAgent());
   // This should not be called if the feature is disabled
   if (!features::IsAIChatAgenticProfileEnabled()) {
     DLOG(ERROR) << __func__ << " AI Chat Agentic Profile feature is disabled";
@@ -62,7 +61,7 @@ void OpenBrowserWindowForAIChatAgentProfileWithCallback(
   }
   // This should not be callable if the current profile has not yet opted-in to
   // AI Chat.
-  if (!HasUserOptedIn(from_profile->GetPrefs())) {
+  if (!HasUserOptedIn(from_profile.GetPrefs())) {
     DLOG(ERROR) << __func__ << " Existing profile has not opted-in to AI Chat";
     std::move(callback).Run(nullptr);
     return;
@@ -81,14 +80,14 @@ void OpenBrowserWindowForAIChatAgentProfileWithCallback(
 
 }  // namespace
 
-void OpenBrowserWindowForAIChatAgentProfile(Profile* from_profile) {
+void OpenBrowserWindowForAIChatAgentProfile(Profile& from_profile) {
   OpenBrowserWindowForAIChatAgentProfileWithCallback(from_profile,
                                                      base::DoNothing());
 }
 
 #if !BUILDFLAG(IS_ANDROID)
 void OpenBrowserWindowForAIChatAgentProfileForTesting(
-    Profile* from_profile,
+    Profile& from_profile,
     base::OnceCallback<void(Browser*)> callback) {
   OpenBrowserWindowForAIChatAgentProfileWithCallback(from_profile,
                                                      std::move(callback));

@@ -26,11 +26,11 @@ namespace ai_chat {
 // showing the profile picker dialog at browser startup just because we have
 // created this profile.
 
-void OpenBrowserWindowForAIChatAgentProfile(Profile* from_profile);
+void OpenBrowserWindowForAIChatAgentProfile(Profile& from_profile);
 
 #if !BUILDFLAG(IS_ANDROID)
 void OpenBrowserWindowForAIChatAgentProfileForTesting(
-    Profile* from_profile,
+    Profile& from_profile,
     base::OnceCallback<void(Browser*)> callback);
 #endif
 
