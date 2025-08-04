@@ -93,8 +93,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
   source->AddBoolean("isContentAgentFeatureEnabled",
-                     BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE) &&
-                         ai_chat::features::IsAIChatAgenticProfileEnabled());
+                     ai_chat::features::IsAIChatAgenticProfileEnabled() &&
+                         BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
   source->AddBoolean("isContentAgentSupportedInCurrentProfile",
                      profile_->IsAIChatAgent());
 
