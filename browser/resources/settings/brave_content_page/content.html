@@ -2,8 +2,7 @@
 
 <settings-section
   id="content"
-  page-title="$i18n{contentSettingsContentSection}"
-  class="cr-centered-card-container">
+  page-title="$i18n{contentSettingsContentSection}">
 
 <div class="cr-row">
     <div class="flex cr-padded-text" aria-hidden="true">
@@ -54,6 +53,15 @@
 </if>
 
 </settings-section>
+
+<if expr="enable_containers">
+  <settings-section id="containers" page-title="$i18n{SETTINGS_CONTAINERS_SECTION_LABEL}" section="containers">
+    <settings-brave-content-containers
+      prefs="{{prefs}}"
+      in-search-mode="[[inSearchMode_]]">
+    </settings-brave-content-containers>
+  </settings-section>
+</if>
 
 <settings-brave-content-playlist
 prefs="{{prefs}}"
