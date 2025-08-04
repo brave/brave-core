@@ -48,13 +48,13 @@ class HDKeySr25519 {
   // Sign the provided binary blob and get the 64-byte signature that can be
   // used for verification.
   std::array<uint8_t, kSr25519SignatureSize> SignMessage(
-      base::span<const uint8_t> msg);
+      base::span<const uint8_t> message);
 
   // Verify a given message using the provided signature and the internal public
   // key.
   [[nodiscard]] bool VerifyMessage(
-      std::array<uint8_t, kSr25519SignatureSize> const& sig,
-      base::span<const uint8_t> msg);
+      base::span<const uint8_t, kSr25519SignatureSize> signature,
+      base::span<const uint8_t> message);
 
   // Hard-derive a child key from a provided "derive junction" which is a
   // SCALE-encoded path segment i.e. given "<mnemonic>//Alice", "Alice" is a

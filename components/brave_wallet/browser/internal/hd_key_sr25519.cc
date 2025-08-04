@@ -53,12 +53,12 @@ std::array<uint8_t, kSr25519SignatureSize> HDKeySr25519::SignMessage(
 }
 
 bool HDKeySr25519::VerifyMessage(
-    std::array<uint8_t, kSr25519SignatureSize> const& sig,
-    base::span<const uint8_t> msg) {
+    base::span<uint8_t const, kSr25519SignatureSize> signature,
+    base::span<const uint8_t> message) {
   CHECK(IsBoxNonNull(keypair_));
   base::AssertLongCPUWorkAllowed();
-  auto sig_bytes = base::SpanToRustSlice(sig);
-  auto bytes = base::SpanToRustSlice(msg);
+  auto sig_bytes = base::SpanToRustSlice(signature);
+  auto bytes = base::SpanToRustSlice(message);
   return keypair_->verify_message(sig_bytes, bytes);
 }
 
