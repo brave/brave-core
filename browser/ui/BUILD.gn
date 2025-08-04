@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/ai_chat/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/browser/ui/config.gni")
 import("//brave/browser/updater/buildflags.gni")
@@ -51,6 +52,7 @@ source_set("ui") {
 
   deps = [
     "//brave/browser/ai_chat",
+    "//brave/browser/ai_chat:buildflags",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
@@ -308,7 +310,6 @@ source_set("ui") {
 
     deps += [
       "//base",
-      "//brave/browser/ai_chat:ai_chat_agent_profile_helper",
       "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
@@ -1374,6 +1375,10 @@ source_set("ui") {
       "//ui/events",
       "//ui/views",
     ]
+  }
+
+  if (enable_brave_ai_chat_agent_profile) {
+    deps += [ "//brave/browser/ai_chat:ai_chat_agent_profile_helper" ]
   }
 
   if (enable_containers) {

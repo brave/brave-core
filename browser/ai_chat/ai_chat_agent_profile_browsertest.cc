@@ -70,7 +70,7 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
   Browser* CallOpenBrowserWindowForAiChatAgentProfile(Profile* from_profile) {
     base::RunLoop run_loop;
     Browser* browser = nullptr;
-    OpenBrowserWindowForAIChatAgentProfile(
+    OpenBrowserWindowForAIChatAgentProfileForTesting(
         from_profile,
         base::BindLambdaForTesting([&](Browser* ai_profile_browser) {
           browser = ai_profile_browser;

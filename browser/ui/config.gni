@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/ai_chat/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
@@ -10,7 +11,6 @@ brave_ui_allow_circular_includes_from =
     [ "//brave/browser/ui/webui/ads_internals" ]
 if (!is_android) {
   brave_ui_allow_circular_includes_from += [
-    "//brave/browser/ai_chat:ai_chat_agent_profile_helper_impl",
     "//brave/browser/ui/browser_window:impl",
     "//brave/browser/ui/webui/brave_education",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
@@ -34,4 +34,8 @@ if (toolkit_views) {
   if (enable_containers) {
     brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/containers" ]
   }
+}
+if (enable_brave_ai_chat_agent_profile) {
+  brave_ui_allow_circular_includes_from +=
+      [ "//brave/browser/ai_chat:ai_chat_agent_profile_helper_impl" ]
 }

@@ -9,7 +9,10 @@
 #include "base/functional/callback.h"
 
 class Profile;
+
+#if !BUILDFLAG(IS_ANDROID)
 class Browser;
+#endif
 
 namespace ai_chat {
 
@@ -22,9 +25,14 @@ namespace ai_chat {
 // are made to ensure the profile does not become the default profile, e.g. not
 // showing the profile picker dialog at browser startup just because we have
 // created this profile.
-void OpenBrowserWindowForAIChatAgentProfile(
+
+void OpenBrowserWindowForAIChatAgentProfile(Profile* from_profile);
+
+#if !BUILDFLAG(IS_ANDROID)
+void OpenBrowserWindowForAIChatAgentProfileForTesting(
     Profile* from_profile,
     base::OnceCallback<void(Browser*)> callback);
+#endif
 
 }  // namespace ai_chat
 

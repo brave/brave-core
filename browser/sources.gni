@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ai_chat/android/sources.gni")
+import("//brave/browser/ai_chat/buildflags.gni")
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/brave_news/sources.gni")
 import("//brave/browser/brave_referrals/sources.gni")
@@ -636,7 +637,7 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/ntp_background",
 ]
 
-if (!is_android) {
+if (enable_brave_ai_chat_agent_profile) {
   brave_chrome_browser_deps += [
     "//brave/browser/ai_chat:ai_chat_agent_profile_helper",
     "//brave/browser/ai_chat:ai_chat_agent_profile_helper_impl",

@@ -12,19 +12,25 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/common/chrome_paths.h"
+
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
-#include "chrome/common/chrome_paths.h"
+#endif
 
 namespace ai_chat {
 
 namespace {
 
+#if !BUILDFLAG(IS_ANDROID)
 const SkColor kAIChatAgentProfileThemeColor = SkColorSetRGB(253, 58, 122);
+#endif
+
 const char16_t kAIChatAgentProfileName[] = u"Leo AI Content Agent";
 
 void SetupAndOpenAIChatAgentProfile(base::OnceCallback<void(Browser*)> callback,
@@ -32,18 +38,22 @@ void SetupAndOpenAIChatAgentProfile(base::OnceCallback<void(Browser*)> callback,
   // This runs for every profile open so that we can update
   // with any changes to the profile.
 
-  // Set theme
-  auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
-  theme_service->SetUserColor(kAIChatAgentProfileThemeColor);
   // Assume user has opted-in in some profile already in order to get
   // here, so we can copy that preference.
   ai_chat::SetUserOptedIn(profile->GetPrefs(), true);
+
+  // Set profile name
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ProfileAttributesStorage& storage =
       profile_manager->GetProfileAttributesStorage();
   ProfileAttributesEntry* attributes =
       storage.GetProfileAttributesWithPath(profile->GetPath());
   attributes->SetLocalProfileName(kAIChatAgentProfileName, false);
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Set theme
+  auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
+  theme_service->SetUserColor(kAIChatAgentProfileThemeColor);
 
   // Open browser window
   profiles::OpenBrowserWindowForProfile(
@@ -56,11 +66,10 @@ void SetupAndOpenAIChatAgentProfile(base::OnceCallback<void(Browser*)> callback,
           },
           std::move(callback)),
       false, false, false, profile);
+#endif
 }
 
-}  // namespace
-
-void OpenBrowserWindowForAIChatAgentProfile(
+void OpenBrowserWindowForAIChatAgentProfileWithCallback(
     Profile* from_profile,
     base::OnceCallback<void(Browser*)> callback) {
   CHECK(from_profile);
@@ -90,5 +99,21 @@ void OpenBrowserWindowForAIChatAgentProfile(
       profile_path,
       base::BindOnce(&SetupAndOpenAIChatAgentProfile, std::move(callback)));
 }
+
+}  // namespace
+
+void OpenBrowserWindowForAIChatAgentProfile(Profile* from_profile) {
+  OpenBrowserWindowForAIChatAgentProfileWithCallback(from_profile,
+                                                     base::DoNothing());
+}
+
+#if !BUILDFLAG(IS_ANDROID)
+void OpenBrowserWindowForAIChatAgentProfileForTesting(
+    Profile* from_profile,
+    base::OnceCallback<void(Browser*)> callback) {
+  OpenBrowserWindowForAIChatAgentProfileWithCallback(from_profile,
+                                                     std::move(callback));
+}
+#endif
 
 }  // namespace ai_chat
