@@ -700,6 +700,8 @@ action("audit_deps") {
   script = "//brave/script/audit_deps.py"
   output = "$target_gen_dir/audit_deps.json"
 
+  # Action must have outputs, and these outputs must be created, otherwise
+  # SISO will fail.
   outputs = [ output ]
 
   args = [
