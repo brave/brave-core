@@ -213,32 +213,12 @@ RegisterPolymerTemplateModifications({
         }
       ))
 
-      // <if expr="enable_containers">
-      const sectionContainers = document.createElement('template')
-      sectionContainers.setAttribute('is', 'dom-if')
-      sectionContainers.setAttribute('restamp', 'true')
-      sectionContainers.setAttribute('if', '[[showPage_(pageVisibility_.containers)]]')
-      sectionContainers.content.appendChild(createNestedSectionElement(
-        'containers',
-        'content',
-        ContainersStrings.SETTINGS_CONTAINERS_SECTION_LABEL,
-        'settings-brave-content-containers',
-        {
-          prefs: '{{prefs}}',
-        }
-      ))
-      // </if>
-
       // Insert Tor
       let last = basicPageEl.insertAdjacentElement('afterend', sectionTor)
       // Insert Data collection
       last = last.insertAdjacentElement('afterend', sectionDataCollection)
       // Insert Surevy Panelist
       last = last.insertAdjacentElement('afterend', sectionSurveyPanelist)
-
-      // <if expr="enable_containers">
-      last = last.insertAdjacentElement('afterend', sectionContainers)
-      // </if>
     }
   }
 })
