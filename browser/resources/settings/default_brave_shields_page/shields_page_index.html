@@ -1,0 +1,20 @@
+<style include="settings-shared">
+  cr-view-manager [hidden-by-search],
+  cr-view-manager[show-all] [slot=view][data-parent-view-id] {
+    display: none;
+  }
+</style>
+
+<cr-view-manager id="viewManager" class="cr-centered-card-container"
+    show-all$="[[shouldShowAll]]">
+  <settings-default-brave-shields-page slot="view" id="parent" prefs="{{prefs}}">
+  </settings-default-brave-shields-page>
+
+  <adblock-subpage slot="view" id="adblock"
+      data-parent-view-id="parent" prefs="{{prefs}}">
+  </adblock-subpage>
+
+  <settings-social-blocking-page slot="view" id="socialBlocking"
+      data-parent-view-id="parent" prefs="{{prefs}}">
+  </settings-social-blocking-page>
+</cr-view-manager>
