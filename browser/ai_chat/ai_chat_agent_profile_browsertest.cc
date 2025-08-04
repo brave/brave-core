@@ -127,6 +127,9 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   // Verify the profile path matches the AI Chat profile path
   EXPECT_TRUE(ai_chat_browser->profile()->GetPath().BaseName().value() ==
               brave::kAIChatAgentProfileDir);
+  // Verify the built-in profile title is set
+  EXPECT_EQ("Leo AI Content Agent",
+            ai_chat_browser->profile()->GetProfileUserName());
 
   // Verify the AI Chat browser has the side panel opened to Chat UI
   VerifyAIChatSidePanelShowing(ai_chat_browser);

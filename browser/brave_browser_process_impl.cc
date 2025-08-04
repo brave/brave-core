@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/ai_chat/buildflags.h"
 #include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
@@ -61,6 +62,10 @@
 #include "net/base/features.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+#include "brave/browser/ai_chat/ai_chat_agent_profile_manager.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/brave_tor_client_updater.h"
@@ -182,6 +187,10 @@ void BraveBrowserProcessImpl::Init() {
   // Initializes the internal static data on start up.
   windows_recall::IsWindowsRecallDisabled(local_state());
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  CreateAIChatAgentProfileManager();
+#endif
 }
 
 void BraveBrowserProcessImpl::PreMainMessageLoopRun() {
@@ -206,6 +215,9 @@ void BraveBrowserProcessImpl::StartTearDown() {
   if (p3a_service_) {
     p3a_service_->StartTeardown();
   }
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  ai_chat_agent_profile_manager_.reset();
 #endif
   brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
   BrowserProcessImpl::StartTearDown();
@@ -381,6 +393,13 @@ void BraveBrowserProcessImpl::UpdateBraveDarkMode() {
 void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
   UpdateBraveDarkMode();
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+void BraveBrowserProcessImpl::CreateAIChatAgentProfileManager() {
+  ai_chat_agent_profile_manager_ =
+      std::make_unique<ai_chat::AIChatAgentProfileManager>(profile_manager());
+}
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 tor::BraveTorClientUpdater* BraveBrowserProcessImpl::tor_client_updater() {

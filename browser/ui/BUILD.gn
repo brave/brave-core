@@ -1378,7 +1378,7 @@ source_set("ui") {
   }
 
   if (enable_brave_ai_chat_agent_profile) {
-    deps += [ "//brave/browser/ai_chat:ai_chat_agent_profile_helper" ]
+    deps += [ "//brave/browser/ai_chat:ai_chat_agent_profile" ]
   }
 
   if (enable_containers) {

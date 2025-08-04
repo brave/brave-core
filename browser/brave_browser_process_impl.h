@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/ref_counted.h"
+#include "brave/browser/ai_chat/buildflags.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -80,6 +81,12 @@ namespace brave_ads {
 class BraveStatsHelper;
 class ResourceComponent;
 }  // namespace brave_ads
+
+namespace ai_chat {
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+class AIChatAgentProfileManager;
+#endif
+}  // namespace ai_chat
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
 class DayZeroBrowserUIExptManager;
@@ -156,6 +163,10 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 
   void InitBraveStatsHelper();
 
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  void CreateAIChatAgentProfileManager();
+#endif
+
   brave_component_updater::BraveComponent::Delegate*
   brave_component_updater_delegate();
 
@@ -211,6 +222,11 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
   std::unique_ptr<DayZeroBrowserUIExptManager>
       day_zero_browser_ui_expt_manager_;
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  std::unique_ptr<ai_chat::AIChatAgentProfileManager>
+      ai_chat_agent_profile_manager_;
 #endif
 };
 

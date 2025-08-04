@@ -37,5 +37,5 @@ if (toolkit_views) {
 }
 if (enable_brave_ai_chat_agent_profile) {
   brave_ui_allow_circular_includes_from +=
-      [ "//brave/browser/ai_chat:ai_chat_agent_profile_helper_impl" ]
+      [ "//brave/browser/ai_chat:ai_chat_agent_profile_impl" ]
 }
