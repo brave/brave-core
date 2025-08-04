@@ -29,6 +29,10 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kVerticalTabsShowScrollbar, false);
 
   registry->RegisterBooleanPref(kSharedPinnedTab, false);
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab)) {
+    registry->RegisterBooleanPref(kTreeTabsEnabled, false);
+  }
 }
 
 void MigrateBraveProfilePrefs(PrefService* prefs) {
