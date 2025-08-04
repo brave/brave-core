@@ -69,13 +69,14 @@ class BraveShieldsTabHelper
   void SetBraveShieldsEnabled(bool is_enabled);
   bool GetBraveShieldsAdBlockOnlyModeEnabled();
   void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
-  GURL GetCurrentSiteURL();
+  GURL GetCurrentSiteURL() const;
   GURL GetFaviconURL(bool refresh);
   const base::flat_set<ContentSettingsType>& GetInvokedWebcompatFeatures();
 
   AdBlockMode GetAdBlockMode();
   FingerprintMode GetFingerprintMode();
   CookieBlockMode GetCookieBlockMode();
+  bool GetReduceLanguageEnabled() const;
   bool IsBraveShieldsManaged();
   bool IsForgetFirstPartyStorageFeatureEnabled() const;
   HttpsUpgradeMode GetHttpsUpgradeMode();

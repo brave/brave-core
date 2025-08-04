@@ -253,7 +253,7 @@ void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(
   ReloadWebContents();
 }
 
-GURL BraveShieldsTabHelper::GetCurrentSiteURL() {
+GURL BraveShieldsTabHelper::GetCurrentSiteURL() const {
   return web_contents()->GetLastCommittedURL();
 }
 
@@ -328,6 +328,13 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
   }
   NOTREACHED() << "Unexpected value for control_type: "
                << base::to_underlying(control_type);
+}
+
+bool BraveShieldsTabHelper::GetReduceLanguageEnabled() const {
+  return brave_shields::IsReduceLanguageEnabledForProfile(
+      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL(),
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs());
 }
 
 HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {

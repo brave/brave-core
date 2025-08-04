@@ -29,7 +29,7 @@ class DebounceService : public KeyedService {
   ~DebounceService() override;
   bool Debounce(const GURL& original_url, GURL* final_url) const;
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-  bool IsEnabled();
+  bool IsEnabled(const GURL& url);
   void SetIsEnabled(const bool isEnabled);
 
  private:

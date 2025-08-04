@@ -60,10 +60,12 @@ void DebounceService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kDebounceEnabled, true);  // default on
 }
 
-bool DebounceService::IsEnabled() {
+bool DebounceService::IsEnabled(const GURL& url) {
   return prefs_->GetBoolean(prefs::kDebounceEnabled) &&
+         brave_shields::GetBraveShieldsEnabled(host_content_settings_map_,
+                                               url) &&
          !brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
-             host_content_settings_map_, GURL());
+             host_content_settings_map_, url);
 }
 
 void DebounceService::SetIsEnabled(const bool isEnabled) {

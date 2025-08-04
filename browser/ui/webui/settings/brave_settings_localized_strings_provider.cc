@@ -24,6 +24,8 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/de_amp/common/features.h"
+#include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -1238,6 +1240,14 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "showStrictFingerprintingMode",
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShowStrictFingerprintingMode));
+
+  html_source->AddBoolean(
+      "isDeAmpFeatureEnabled",
+      base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
+
+  html_source->AddBoolean(
+      "isDebounceFeatureEnabled",
+      base::FeatureList::IsEnabled(debounce::features::kBraveDebounce));
 
   html_source->AddBoolean("braveNewsDisabledByPolicy",
                           profile->GetPrefs()->GetBoolean(

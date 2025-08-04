@@ -163,7 +163,21 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       isAdBlockOnlyModeEnabled_: {
         type: Boolean,
         value: false,
-      }
+      },
+      isDeAmpFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isDeAmpFeatureEnabled')
+        },
+      },
+      isDebounceFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isDebounceFeatureEnabled')
+        },
+      },
     }
   }
 
@@ -185,6 +199,8 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare showStrictFingerprintingMode_: boolean
   private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
   private declare isAdBlockOnlyModeEnabled_: boolean
+  private declare isDebounceFeatureEnabled_: boolean
+  private declare isDeAmpFeatureEnabled_: boolean
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
     DefaultBraveShieldsBrowserProxyImpl.getInstance()

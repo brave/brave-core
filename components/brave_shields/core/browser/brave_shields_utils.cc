@@ -440,7 +440,8 @@ bool IsReduceLanguageEnabledForProfile(HostContentSettingsMap* map,
     return false;
   }
 
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+  if (!GetBraveShieldsEnabled(map, url) ||
+      GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
     return false;
   }
 
