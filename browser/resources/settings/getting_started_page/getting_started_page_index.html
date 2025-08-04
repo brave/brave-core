@@ -1,0 +1,16 @@
+<style include="settings-shared">
+  cr-view-manager [hidden-by-search],
+  cr-view-manager[show-all] [slot=view][data-parent-view-id] {
+    display: none;
+  }
+</style>
+
+<cr-view-manager id="viewManager" class="cr-centered-card-container"
+    show-all$="[[shouldShowAll]]">
+  <brave-settings-getting-started slot="view" id="parent" prefs="{{prefs}}">
+  </brave-settings-getting-started>
+
+  <settings-manage-profile slot="view" id="manageProfile"
+      data-parent-view-id="parent" prefs="{{prefs}}">
+  </settings-manage-profile>
+</cr-view-manager>
