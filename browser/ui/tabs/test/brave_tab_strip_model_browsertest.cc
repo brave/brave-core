@@ -312,7 +312,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
 
   ASSERT_TRUE(TabRestoreServiceFactory::GetForProfile(browser()->profile()));
   chrome::RestoreTab(browser());
-  base::test::RunUntil([&]() { return tab_strip_model->count() == 2; });
+  ASSERT_EQ(tab_strip_model->count(), 2);
 
   // Then the restored tab should have the custom title.
   EXPECT_EQ(TabRendererData::FromTabInModel(tab_strip_model, 0).title,
