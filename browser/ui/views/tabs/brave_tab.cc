@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_forward.h"
 #include "base/notimplemented.h"
@@ -27,83 +28,78 @@
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/label.h"
-#include "ui/views/mouse_watcher.h"
+#include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/view_class_properties.h"
 
 namespace {
 
-// A textfield used for renaming tabs. It is a child of BraveTab and
-// automatically handles mouse clicks outside of it to exit rename mode.
-class RenameTextfield : public views::Textfield,
-                        public views::MouseWatcherListener {
-  METADATA_HEADER(RenameTextfield, views::Textfield)
+// MouseWatcherHost implementation that tells whether mouse clicks outside
+// of tracked area.
+class ClickWatcherHost : public views::MouseWatcherHost {
  public:
-  explicit RenameTextfield(base::RepeatingClosure on_click_outside_callback)
-      : on_click_outside_callback_(std::move(on_click_outside_callback)),
-        mouse_watcher_(std::make_unique<ClickWatcherHost>(*this), this) {
-    SetBorder(nullptr);
-    SetBackgroundEnabled(false);
-  }
+  explicit ClickWatcherHost(views::Textfield& textfield)
+      : textfield_(textfield) {}
+  ~ClickWatcherHost() override = default;
 
-  ~RenameTextfield() override = default;
-
-  // views::Textfield:
-  void VisibilityChanged(views::View* starting_from, bool is_visible) override {
-    if (starting_from != this) {
-      return;
+  bool Contains(const gfx::Point& screen_point, EventType type) override {
+    if (type != EventType::kPress) {
+      // We only tracks mouse press events
+      return true;
     }
 
-    // We start or stop mouse watcher based on visibility of the textfield.
-    if (is_visible) {
-      mouse_watcher_.Start(GetWidget()->GetNativeWindow());
-    } else {
-      mouse_watcher_.Stop();
-    }
-  }
-
-  // views::MouseWatcherListener:
-  void MouseMovedOutOfHost() override {
-    CHECK(on_click_outside_callback_);
-    on_click_outside_callback_.Run();
+    auto bounds = textfield_->GetLocalBounds();
+    views::View::ConvertRectToScreen(base::to_address(textfield_), &bounds);
+    return bounds.Contains(screen_point);
   }
 
  private:
-  // MouseWatcherHost implementation that tells whether mouse clicks outside
-  // of tracked area.
-  class ClickWatcherHost : public views::MouseWatcherHost {
-   public:
-    explicit ClickWatcherHost(RenameTextfield& textfield)
-        : textfield_(textfield) {}
-    ~ClickWatcherHost() override = default;
-
-    bool Contains(const gfx::Point& screen_point, EventType type) override {
-      if (type != EventType::kPress) {
-        // We only tracks mouse press events
-        return true;
-      }
-
-      auto bounds = textfield_->GetLocalBounds();
-      views::View::ConvertRectToScreen(base::to_address(textfield_), &bounds);
-      return bounds.Contains(screen_point);
-    }
-
-   private:
-    raw_ref<RenameTextfield> textfield_;
-  };
-
-  // Callback to be invoked when mouse is clicked outside of the textfield.
-  base::RepeatingClosure on_click_outside_callback_;
-
-  // Mouse watcher that tracks mouse clicks outside of the textfield.
-  views::MouseWatcher mouse_watcher_;
+  raw_ref<views::Textfield> textfield_;
 };
 
 }  // namespace
 
-BEGIN_METADATA(RenameTextfield)
+BraveTab::RenameTextfield::RenameTextfield(
+    base::RepeatingClosure on_click_outside_callback)
+    : on_click_outside_callback_(std::move(on_click_outside_callback)),
+      mouse_watcher_(std::make_unique<ClickWatcherHost>(*this), this) {
+  SetBorder(nullptr);
+  SetBackgroundEnabled(false);
+}
+
+BraveTab::RenameTextfield::~RenameTextfield() = default;
+
+// views::Textfield:
+void BraveTab::RenameTextfield::VisibilityChanged(views::View* starting_from,
+                                                  bool is_visible) {
+  if (starting_from != this) {
+    return;
+  }
+
+  // We start or stop mouse watcher based on visibility of the textfield.
+  if (is_visible) {
+    auto* widget = GetWidget();
+    if (!widget) {
+      CHECK_IS_TEST();
+      return;
+    }
+
+    mouse_watcher_.Start(widget->GetNativeWindow());
+  } else {
+    mouse_watcher_.Stop();
+  }
+}
+
+// views::MouseWatcherListener:
+void BraveTab::RenameTextfield::MouseMovedOutOfHost() {
+  CHECK(on_click_outside_callback_);
+  on_click_outside_callback_.Run();
+}
+
+BEGIN_METADATA(BraveTab, RenameTextfield)
 END_METADATA
 
 BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {
@@ -134,9 +130,8 @@ void BraveTab::EnterRenameMode() {
 
   // Fill the textfield with the current title of the tab and select all text.
   if (rename_textfield_->GetText().empty()) {
-    rename_textfield_->SetText(data_.title);
+    rename_textfield_->SetText(title_->GetText());
   }
-  rename_textfield_->SetText(data_.title);
   rename_textfield_->SelectAll(/*reversed=*/false);
   UpdateRenameTextfieldBounds();
   rename_textfield_->SetVisible(true);

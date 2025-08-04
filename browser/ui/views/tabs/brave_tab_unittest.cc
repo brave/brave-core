@@ -5,14 +5,20 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
+#include <string>
+
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/views/chrome_views_test_base.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
+#include "ui/events/base_event_utils.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -94,4 +100,165 @@ TEST_F(BraveTabTest, TabStyleTest) {
             tab_style->GetStandardWidth(/*is_split*/ false));
   EXPECT_EQ(tab_style->GetMinimumActiveWidth(/*is_split*/ true),
             tab_style->GetMinimumActiveWidth(/*is_split*/ false));
+}
+
+class BraveTabRenamingUnitTest : public BraveTabTest {
+ public:
+  class MockTabSlotController : public FakeTabSlotController {
+   public:
+    MockTabSlotController() = default;
+    ~MockTabSlotController() override = default;
+
+    // FakeTabSlotController overrides:
+    MOCK_METHOD(void,
+                SetCustomTitleForTab,
+                (Tab * tab, const std::u16string& title),
+                (override));
+  };
+
+  BraveTabRenamingUnitTest() = default;
+  ~BraveTabRenamingUnitTest() override = default;
+
+ protected:
+  BraveTab* tab() { return tab_.get(); }
+
+  testing::NiceMock<MockTabSlotController>* tab_slot_controller() {
+    return &tab_slot_controller_;
+  }
+
+  void SetUp() override {
+    BraveTabTest::SetUp();
+    tab_ = std::make_unique<BraveTab>(&tab_slot_controller_);
+    LayoutAndCheckBorder(tab_.get(), {0, 0, 100, 50});
+  }
+
+  void TearDown() override {
+    tab_.reset();
+    BraveTabTest::TearDown();
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_{
+      tabs::features::kBraveRenamingTabs};
+  std::unique_ptr<BraveTab> tab_;
+  testing::NiceMock<MockTabSlotController> tab_slot_controller_;
+};
+
+TEST_F(BraveTabRenamingUnitTest, EnterRenameMode) {
+  constexpr char16_t kTestTitle[] = u"Test Title";
+  tab()->title_for_test()->SetText(kTestTitle);
+  tab()->EnterRenameMode();
+  EXPECT_TRUE(tab()->in_renaming_mode());
+  EXPECT_TRUE(tab()->rename_textfield_->GetVisible());
+  EXPECT_FALSE(tab()->title_for_test()->GetVisible());
+
+  // Check that the textfield is filled with the current title.
+  EXPECT_EQ(tab()->rename_textfield_->GetText(), kTestTitle);
+
+  // Check that the all text in textfield is selected.
+  EXPECT_TRUE(tab()->rename_textfield_->HasSelection());
+  EXPECT_EQ(tab()->rename_textfield_->GetSelectedText(), kTestTitle);
+
+  // Check that the textfield bounds are updated.
+  LayoutAndCheckBorder(tab(), {0, 0, 50, 50});
+  tab()->UpdateRenameTextfieldBounds();
+  EXPECT_EQ(tab()->rename_textfield_->bounds().width(),
+            tab()->title_for_test()->bounds().width());
+  EXPECT_EQ(tab()->rename_textfield_->bounds().x(),
+            tab()->title_for_test()->bounds().x());
+}
+
+TEST_F(BraveTabRenamingUnitTest, CommitRename) {
+  constexpr char16_t kNewTitle[] = u"New Title";
+  tab()->EnterRenameMode();
+  tab()->rename_textfield_->SetText(kNewTitle);
+
+  // Check that the custom title is set.
+  EXPECT_CALL(*tab_slot_controller(),
+              SetCustomTitleForTab(tab(), std::u16string(kNewTitle)));
+  tab()->CommitRename();
+
+  EXPECT_FALSE(tab()->in_renaming_mode());
+  EXPECT_FALSE(tab()->rename_textfield_->GetVisible());
+  EXPECT_TRUE(tab()->title_for_test()->GetVisible());
+}
+
+TEST_F(BraveTabRenamingUnitTest, ExitRenameMode) {
+  constexpr char16_t kOriginalTitle[] = u"Original Title";
+  tab()->title_for_test()->SetText(kOriginalTitle);
+
+  tab()->EnterRenameMode();
+  tab()->rename_textfield_->SetText(u"Some other title");
+
+  // Check that exiting rename mode without committing does not change the
+  // title.
+  EXPECT_CALL(*tab_slot_controller(), SetCustomTitleForTab(tab(), testing::_))
+      .Times(0);
+  tab()->ExitRenameMode();
+
+  // Exiting rename mode should hide the textfield and show the title.
+  EXPECT_FALSE(tab()->in_renaming_mode());
+  EXPECT_FALSE(tab()->rename_textfield_->GetVisible());
+  EXPECT_TRUE(tab()->rename_textfield_->GetText().empty());
+  EXPECT_TRUE(tab()->title_for_test()->GetVisible());
+
+  EXPECT_EQ(tab()->title_for_test()->GetText(), kOriginalTitle);
+}
+
+TEST_F(BraveTabRenamingUnitTest, EnterKeyCommitsRename) {
+  constexpr char16_t kNewTitle[] = u"New Title";
+  tab()->EnterRenameMode();
+  tab()->rename_textfield_->SetText(kNewTitle);
+
+  // Check that the custom title is set.
+  EXPECT_CALL(*tab_slot_controller(),
+              SetCustomTitleForTab(tab(), std::u16string(kNewTitle)));
+  // Simulate pressing Enter key to commit the rename.
+  tab()->rename_textfield_->OnEvent(new ui::KeyEvent(
+      ui::EventType::kKeyPressed, ui::VKEY_RETURN, ui::EF_NONE));
+
+  EXPECT_FALSE(tab()->in_renaming_mode());
+  EXPECT_FALSE(tab()->rename_textfield_->GetVisible());
+  EXPECT_TRUE(tab()->title_for_test()->GetVisible());
+}
+
+TEST_F(BraveTabRenamingUnitTest, EscapeKeyExitsRenameMode) {
+  constexpr char16_t kOriginalTitle[] = u"Original Title";
+  tab()->title_for_test()->SetText(kOriginalTitle);
+
+  tab()->EnterRenameMode();
+  tab()->rename_textfield_->SetText(u"Some other title");
+
+  // Check that exiting rename mode without committing does not change the
+  // title.
+  EXPECT_CALL(*tab_slot_controller(), SetCustomTitleForTab(tab(), testing::_))
+      .Times(0);
+  // Simulate pressing Escape key to exit rename mode.
+  tab()->rename_textfield_->OnEvent(new ui::KeyEvent(
+      ui::EventType::kKeyPressed, ui::VKEY_ESCAPE, ui::EF_NONE));
+
+  EXPECT_FALSE(tab()->in_renaming_mode());
+  EXPECT_FALSE(tab()->rename_textfield_->GetVisible());
+  EXPECT_TRUE(tab()->title_for_test()->GetVisible());
+
+  EXPECT_EQ(tab()->title_for_test()->GetText(), kOriginalTitle);
+}
+
+TEST_F(BraveTabRenamingUnitTest, ClickingOutsideRenamingTabCommitsRename) {
+  tab()->EnterRenameMode();
+  ASSERT_TRUE(tab()->in_renaming_mode());
+
+  constexpr char16_t kNewTitle[] = u"New Title";
+  tab()->rename_textfield_->SetText(kNewTitle);
+
+  // Check that the custom title is set.
+  EXPECT_CALL(*tab_slot_controller(),
+              SetCustomTitleForTab(tab(), std::u16string(kNewTitle)));
+
+  // Simulate clicking outside the textfield to commit the rename.
+  tab()->rename_textfield_->MouseMovedOutOfHost();
+
+  EXPECT_FALSE(tab()->in_renaming_mode());
+  EXPECT_FALSE(tab()->rename_textfield_->GetVisible());
+  EXPECT_TRUE(tab()->title_for_test()->GetVisible());
 }
