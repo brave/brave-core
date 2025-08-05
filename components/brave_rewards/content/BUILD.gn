@@ -76,7 +76,7 @@ source_set("testutil") {
     "//brave/browser/brave_rewards",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/engine:headers",
-    "//chrome/browser/bitmap_fetcher:bitmap_fetcher",
+    "//chrome/browser/bitmap_fetcher",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
     "//content/public/browser",

@@ -32,7 +32,7 @@ source_set("exporter") {
     "//ios/web/public/thread",
     "//ios/web/web_state",
     "//net",
-    "//ui/base:base",
+    "//ui/base",
     "//url",
   ]
 

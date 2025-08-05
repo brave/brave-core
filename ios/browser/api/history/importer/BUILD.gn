@@ -17,13 +17,13 @@ source_set("importer") {
   deps = [
     "//base",
     "//components/history/core/browser",
-    "//components/keyed_service/core:core",
+    "//components/keyed_service/core",
     "//ios/chrome/browser/history/model",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/web/public/thread",
     "//net",
-    "//ui/base:base",
+    "//ui/base",
     "//url",
   ]
 

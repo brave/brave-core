@@ -18,14 +18,14 @@ source_set("importer") {
     "//brave/components/password_manager/services/csv_password:lib",
     "//components/password_manager/core/browser/password_store:password_store_interface",
     "//components/password_manager/core/browser/ui",
-    "//ios/chrome/browser/affiliations/model:model",
+    "//ios/chrome/browser/affiliations/model",
     "//ios/chrome/browser/passwords/model:store_factory",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/webauthn/model",
     "//ios/web/public/thread",
     "//net",
-    "//ui/base:base",
+    "//ui/base",
     "//url",
   ]
 

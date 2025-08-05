@@ -1,3 +1,8 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 assert(enable_speedreader)
@@ -12,7 +17,7 @@ source_set("renderer") {
 
   deps = [
     "//base",
-    "//brave/components/speedreader/common:common",
+    "//brave/components/speedreader/common",
     "//brave/components/speedreader/common:mojom",
     "//content/public/renderer",
     "//gin",

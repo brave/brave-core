@@ -49,7 +49,7 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//brave/components/api_request_helper:api_request_helper",
+    "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/p3a_utils",
     "//brave/components/resources:static_resources",

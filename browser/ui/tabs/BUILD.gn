@@ -11,7 +11,7 @@ source_set("tabs_public") {
   sources = [ "public/brave_tab_features.h" ]
 
   public_deps = [
-    "//brave/components/psst/buildflags:buildflags",
+    "//brave/components/psst/buildflags",
     "//chrome/browser/ui/tabs:tabs_public",
   ]
 }

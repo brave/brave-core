@@ -19,7 +19,7 @@ source_set("api") {
 
   deps = [
     "//base",
-    "//brave/components/api_request_helper:api_request_helper",
+    "//brave/components/api_request_helper",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
     "//brave/components/skus/browser",

@@ -90,7 +90,7 @@ source_set("app") {
     "//components/variations",
     "//ios/chrome/app:app_internal",
     "//ios/chrome/app:tests_fake_hook",
-    "//ios/chrome/app/startup:startup",
+    "//ios/chrome/app/startup",
     "//ios/chrome/app/startup:startup_basic",
     "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/browsing_data/model",

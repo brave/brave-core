@@ -77,7 +77,7 @@ source_set("widevine_permission_android_unittest") {
     ":widevine",
     "//base",
     "//brave/common",
-    "//chrome/browser:browser",
+    "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/test:test_support",
     "//components/permissions",

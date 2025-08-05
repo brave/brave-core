@@ -13,6 +13,6 @@ static_library("resolver") {
 
   deps = [
     "//brave/components/brave_shields/core/browser/adblock/rs:rust_lib",
-    "//net:net",
+    "//net",
   ]
 }

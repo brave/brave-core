@@ -368,7 +368,7 @@ source_set("ui") {
     if (enable_request_otr) {
       deps += [
         "//brave/components/request_otr/common",
-        "//brave/components/request_otr/common/buildflags:buildflags",
+        "//brave/components/request_otr/common/buildflags",
       ]
     }
 
@@ -755,7 +755,7 @@ source_set("ui") {
   deps += [
     "//base",
     "//brave/app:command_ids",
-    "//brave/app/vector_icons:vector_icons",
+    "//brave/app/vector_icons",
     "//brave/browser:browser_process",
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/brave_rewards:util",
@@ -841,7 +841,7 @@ source_set("ui") {
     "//brave/components/web_discovery/buildflags",
     "//brave/components/webui",
     "//chrome/app:command_ids",
-    "//chrome/app/vector_icons:vector_icons",
+    "//chrome/app/vector_icons",
     "//chrome/browser:browser_process",
     "//chrome/browser/bitmap_fetcher",
     "//chrome/browser/media/router:media_router_feature",
@@ -1196,7 +1196,7 @@ source_set("ui") {
       "//brave/components/brave_vpn/common/mojom",
       "//brave/components/brave_vpn/resources:panel_resources",
       "//mojo/public/cpp/bindings",
-      "//ui/webui:webui",
+      "//ui/webui",
     ]
 
     if (toolkit_views) {

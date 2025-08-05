@@ -23,12 +23,12 @@ if (!is_android) {
     deps = [
       "///brave/components/de_amp/browser",
       "///brave/components/de_amp/common",
-      "//chrome/browser:browser",
+      "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/profiles/keep_alive",
-      "//chrome/browser/ui:ui",
+      "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
-      "//components/keep_alive_registry:keep_alive_registry",
+      "//components/keep_alive_registry",
       "//components/prefs",
       "//testing/gtest",
     ]

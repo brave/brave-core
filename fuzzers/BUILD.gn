@@ -43,7 +43,7 @@ fuzzer_test("adblock_engine_matches_fuzzer") {
     ":adblock_fuzzer_proto",
     "//base",
     "//base:i18n",
-    "//brave/components/brave_component_updater/browser:browser",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/core/browser/adblock",
     "//testing/libfuzzer/proto:url_proto",
     "//testing/libfuzzer/proto:url_proto_converter",

@@ -22,19 +22,19 @@ source_set("importer") {
 
   deps = [
     "//base",
-    "//components/bookmarks/browser:browser",
-    "//components/bookmarks/common:common",
+    "//components/bookmarks/browser",
+    "//components/bookmarks/common",
     "//components/favicon_base",
-    "//components/prefs:prefs",
-    "//components/search_engines:search_engines",
+    "//components/prefs",
+    "//components/search_engines",
     "//components/strings:components_strings_grit",
-    "//components/user_prefs:user_prefs",
+    "//components/user_prefs",
     "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/web/public/thread",
     "//net",
-    "//ui/base:base",
+    "//ui/base",
     "//url",
   ]
 

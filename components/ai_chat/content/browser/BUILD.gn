@@ -37,7 +37,7 @@ static_library("browser") {
     "//brave/components/text_recognition/common/buildflags",
     "//components/favicon/content",
     "//components/favicon/core",
-    "//components/keyed_service/content:content",
+    "//components/keyed_service/content",
     "//components/paint_preview/browser",
     "//components/paint_preview/common",
     "//components/paint_preview/public",
@@ -70,7 +70,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/ai_chat/content/browser:browser",
+    "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
@@ -84,7 +84,7 @@ source_set("unit_tests") {
     "//services/network:test_support",
     "//services/network/public/cpp:test_support",
     "//services/service_manager/public/cpp",
-    "//testing/gmock:gmock",
-    "//testing/gtest:gtest",
+    "//testing/gmock",
+    "//testing/gtest",
   ]
 }

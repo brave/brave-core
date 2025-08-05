@@ -125,7 +125,7 @@ source_set("unit_tests") {
     "//brave/components/p3a:buildflags",
     "//components/cbor",
     "//components/prefs:test_support",
-    "//net:net",
+    "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//testing/gtest",

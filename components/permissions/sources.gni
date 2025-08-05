@@ -44,7 +44,7 @@ brave_components_permissions_deps = [
   "//brave/brave_domains",
   "//brave/components/brave_wallet/browser:permission_utils",
   "//brave/components/brave_wallet/common:mojom",
-  "//brave/components/constants:constants",
+  "//brave/components/constants",
   "//brave/components/resources:strings_grit",
   "//components/content_settings/core/browser",
   "//components/content_settings/core/common",

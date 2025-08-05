@@ -43,7 +43,7 @@ if (!is_ios) {
       "//content/test:test_support",
       "//mojo/public/cpp/bindings",
       "//services/service_manager/public/cpp",
-      "//testing/gtest:gtest",
+      "//testing/gtest",
     ]
   }
 }

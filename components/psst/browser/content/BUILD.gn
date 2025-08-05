@@ -45,6 +45,6 @@ source_set("unit_tests") {
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gtest",
-    "//url:url",
+    "//url",
   ]
 }
