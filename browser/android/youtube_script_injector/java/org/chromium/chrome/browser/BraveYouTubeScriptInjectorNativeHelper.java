@@ -24,7 +24,7 @@ import org.chromium.ui.base.WindowAndroid;
 @JNINamespace("youtube_script_injector")
 @NullMarked
 public class BraveYouTubeScriptInjectorNativeHelper {
-    private static final String TAG = "BraveYouTubeScriptInjectorNativeHelper";
+    private static final String TAG = "YouTubeNativeHelper";
 
     public static void setFullscreen(WebContents webContents) {
         BraveYouTubeScriptInjectorNativeHelperJni.get().setFullscreen(webContents);
