@@ -28,9 +28,13 @@ namespace brave_wallet {
 namespace {
 
 bool IsDisabledByPolicy(PrefService* prefs) {
+#if BUILDFLAG(IS_ANDROID)
+  return false;
+#else
   DCHECK(prefs);
   return prefs->IsManagedPreference(prefs::kDisabledByPolicy) &&
          prefs->GetBoolean(prefs::kDisabledByPolicy);
+#endif
 }
 
 }  // namespace
