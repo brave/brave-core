@@ -57,6 +57,8 @@ class BraveImportDataHandler : public ImportDataHandler,
   virtual void OnImportEnded(
       const user_data_importer::SourceProfile& source_profile);
 
+  void OnJavascriptDisallowed() override;
+
   void OnStartImport(const user_data_importer::SourceProfile& source_profile,
                      uint16_t imported_items);
 #if BUILDFLAG(IS_MAC)

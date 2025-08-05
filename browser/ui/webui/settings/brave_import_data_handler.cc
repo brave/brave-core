@@ -140,6 +140,14 @@ void BraveImportDataHandler::OnImportEnded(
                                                     : kImportStatusFailed));
 }
 
+void BraveImportDataHandler::OnJavascriptDisallowed() {
+  ImportDataHandler::OnJavascriptDisallowed();
+
+  // When the WebUI is unloading, we ignore all further updates from the host as
+  // ImportDataHandler does.
+  import_observers_.clear();
+}
+
 const user_data_importer::SourceProfile&
 BraveImportDataHandler::GetSourceProfileAt(int browser_index) {
   return importer_list_->GetSourceProfileAt(browser_index);
