@@ -14,6 +14,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "chrome/browser/browser_process.h"
@@ -174,14 +175,14 @@ BraveShieldsTabHelper::GetInvokedWebcompatFeatures() {
 }
 
 bool BraveShieldsTabHelper::GetBraveShieldsEnabled() {
-  return brave_shields::GetBraveShieldsEnabled(
+  return brave_shields::GetIsBraveShieldsEnabled(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
   auto* map = GetHostContentSettingsMap(web_contents());
-  brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL(),
-                                        g_browser_process->local_state());
+  brave_shields::SetIsBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL(),
+                                          g_browser_process->local_state());
   ReloadWebContents();
 }
 

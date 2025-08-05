@@ -7,9 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_UTILS_H_
 
 #ifdef __cplusplus
-#include "brave/components/brave_shields/ios/common/brave_shields_panel.mojom.objc.h"
+#include "brave/components/brave_shields/ios/common/shields_settings.mojom.objc.h"
 #else
-#import "brave_shields_panel.mojom.objc.h"
+#import "shields_settings.mojom.objc.h"
 #endif
 
 @protocol BraveShieldsUtils
@@ -29,11 +29,11 @@
     NS_SWIFT_NAME(isBlockScriptsEnabled(for:));
 - (void)setBlockScriptsEnabled:(BOOL)isEnabled forURL:(NSURL*)url;
 
-@property(nonatomic, getter=isBlockFingerprintingEnabledByDefault)
-    BOOL blockFingerprintingEnabledByDefault;
-- (BOOL)blockFingerprintingEnabledForURL:(NSURL*)url
-    NS_SWIFT_NAME(isBlockFingerprintingEnabled(for:));
-- (void)setBlockFingerprintingEnabled:(BOOL)isEnabled forURL:(NSURL*)url;
+@property(nonatomic) BraveShieldsFingerprintMode defaultFingerprintMode;
+- (BraveShieldsFingerprintMode)fingerprintModeForURL:(NSURL*)url
+    NS_SWIFT_NAME(fingerprintMode(for:));
+- (void)setFingerprintMode:(BraveShieldsFingerprintMode)fingerprintMode
+                    forURL:(NSURL*)url;
 @end
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_UTILS_H_

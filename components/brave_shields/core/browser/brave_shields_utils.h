@@ -72,13 +72,6 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                             const GURL& url);
 
-void SetAdBlockMode(HostContentSettingsMap* map,
-                    mojom::AdBlockMode mode,
-                    const GURL& url,
-                    PrefService* local_state = nullptr,
-                    PrefService* profile_state = nullptr);
-mojom::AdBlockMode GetAdBlockMode(HostContentSettingsMap* map, const GURL& url);
-
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
 
@@ -109,14 +102,6 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                          const GURL& url);
 
-void SetFingerprintMode(HostContentSettingsMap* map,
-                        mojom::FingerprintMode mode,
-                        const GURL& url,
-                        PrefService* local_state = nullptr,
-                        PrefService* profile_state = nullptr);
-mojom::FingerprintMode GetFingerprintMode(HostContentSettingsMap* map,
-                                          const GURL& url);
-
 bool IsBraveShieldsManaged(PrefService* prefs,
                            HostContentSettingsMap* map,
                            GURL url);
@@ -143,12 +128,6 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
                             PrefService* local_state = nullptr);
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url);
-
-void SetIsNoScriptEnabled(HostContentSettingsMap* map,
-                          bool is_enabled,
-                          const GURL& url,
-                          PrefService* local_state = nullptr);
-bool GetNoScriptEnabled(HostContentSettingsMap* map, const GURL& url);
 
 void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
                                        bool is_enabled,

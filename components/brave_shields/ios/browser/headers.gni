@@ -5,7 +5,7 @@
 
 brave_shields_component_public_headers = [
   "//brave/components/brave_shields/ios/browser/brave_shields_utils.h",
-  "$root_gen_dir/brave/components/brave_shields/ios/common/brave_shields_panel.mojom.objc.h",
+  "$root_gen_dir/brave/components/brave_shields/ios/common/shields_settings.mojom.objc.h",
 ]
 brave_shields_component_public_deps =
     [ "//brave/components/brave_shields/ios/common:mojom" ]

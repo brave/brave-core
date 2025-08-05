@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #include "brave/components/brave_shields/ios/browser/brave_shields_utils.h"
-#include "brave/components/brave_shields/ios/common/brave_shields_panel.mojom.objc.h"
+#include "brave/components/brave_shields/ios/common/shields_settings.mojom.objc.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,10 +35,10 @@ class PrefService;
 - (BOOL)blockScriptsEnabledForURL:(NSURL*)url;
 - (void)setBlockScriptsEnabled:(BOOL)isEnabled forURL:(NSURL*)url;
 
-@property(nonatomic, getter=isBlockFingerprintingEnabledByDefault)
-    BOOL blockFingerprintingEnabledByDefault;
-- (BOOL)blockFingerprintingEnabledForURL:(NSURL*)url;
-- (void)setBlockFingerprintingEnabled:(BOOL)isEnabled forURL:(NSURL*)url;
+@property(nonatomic) BraveShieldsFingerprintMode defaultFingerprintMode;
+- (BraveShieldsFingerprintMode)fingerprintModeForURL:(NSURL*)url;
+- (void)setFingerprintMode:(BraveShieldsFingerprintMode)fingerprintMode
+                    forURL:(NSURL*)url;
 
 @end
 
