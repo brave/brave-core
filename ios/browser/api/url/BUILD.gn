@@ -21,7 +21,7 @@ source_set("url") {
   deps = [
     "//base",
     "//brave/extensions:common",
-    "//components/lookalikes/core:core",
+    "//components/lookalikes/core",
     "//components/lookalikes/core:safety_tips",
     "//components/url_formatter",
     "//components/url_formatter/spoof_checks/top_domains:common",

@@ -18,6 +18,6 @@ source_set("common_handler") {
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
-    "//ui/webui:webui",
+    "//ui/webui",
   ]
 }

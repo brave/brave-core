@@ -179,9 +179,9 @@ source_set("unit_tests") {
     "//net/traffic_annotation:test_support",
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
-    "//services/network/public/cpp:cpp",
+    "//services/network/public/cpp",
     "//sql:test_support",
-    "//testing/gtest:gtest",
+    "//testing/gtest",
     "//ui/base",
     "//ui/gfx:test_support",
   ]

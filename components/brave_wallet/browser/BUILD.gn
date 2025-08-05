@@ -372,7 +372,7 @@ static_library("browser") {
 
     deps += [
       "//brave/components/brave_wallet/browser/internal:orchard_bundle",
-      "//brave/components/brave_wallet/browser/internal/orchard_storage:orchard_storage",
+      "//brave/components/brave_wallet/browser/internal/orchard_storage",
       "//sql",
     ]
   }
@@ -411,7 +411,7 @@ source_set("constants") {
     "//base",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
-    "//ui/base:base",
+    "//ui/base",
   ]
 
   public_deps = [ "//brave/components/brave_wallet/common" ]
@@ -451,7 +451,7 @@ source_set("utils") {
     # TODO(https://github.com/brave/brave-browser/issues/46940): Remove this
     # dependency to version_info once crash dumps have been collected for
     # MakeChainIdLowerCase.
-    "//base/version_info:version_info",
+    "//base/version_info",
   ]
 
   public_deps = [ "//brave/components/brave_wallet/common" ]
@@ -791,7 +791,7 @@ source_set("unit_tests") {
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
     "//testing/gtest",
-    "//ui/base:base",
+    "//ui/base",
     "//url",
   ]
 

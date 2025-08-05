@@ -21,12 +21,12 @@ source_set("importer") {
 
   deps = [
     "//brave/components/password_manager/services/csv_password:lib",
-    "//brave/components/password_manager/services/csv_password/public/mojom:mojom",
+    "//brave/components/password_manager/services/csv_password/public/mojom",
     "//build:blink_buildflags",
     "//components/password_manager/core/browser/ui",
     "//components/password_manager/core/common:constants",
     "//components/password_manager/core/common:features",
-    "//components/sync/base:base",
+    "//components/sync/base",
   ]
 
   if (use_blink) {

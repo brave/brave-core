@@ -1,6 +1,7 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # Template to run the tweak_info_plist.py script on a plist.
 #
@@ -31,12 +32,8 @@ template("brave_tweak_info_plist") {
                              "testonly",
                            ])
     script = "//brave/build/mac/tweak_info_plist.py"
-    sources = [
-      _source_name,
-    ]
-    outputs = [
-      _output_name,
-    ]
+    sources = [ _source_name ]
+    outputs = [ _output_name ]
     if (!defined(args)) {
       args = []
     }

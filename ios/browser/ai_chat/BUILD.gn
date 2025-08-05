@@ -16,7 +16,7 @@ source_set("ai_chat") {
 
   deps = [
     "//base",
-    "//brave/components/ai_chat/core/browser:browser",
+    "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/ios/browser",
     "//brave/components/ai_chat/ios/common:mojom",

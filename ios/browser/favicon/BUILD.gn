@@ -18,7 +18,7 @@ source_set("favicon") {
     "//brave/ios/browser/api/web_image",
     "//components/favicon/core",
     "//components/favicon/ios",
-    "//components/favicon_base:favicon_base",
+    "//components/favicon_base",
     "//components/image_fetcher/ios",
     "//components/keyed_service/core",
     "//components/keyed_service/ios",

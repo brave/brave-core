@@ -45,7 +45,7 @@ static_library("misc_metrics_impl") {
     "//brave/components/time_period_storage",
     "//chrome/browser:browser_process",
     "//chrome/browser/autofill",
-    "//chrome/browser/profiles:profiles",
+    "//chrome/browser/profiles",
     "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/common:constants",
@@ -94,7 +94,7 @@ if (!is_android) {
 
     deps = [
       "//base",
-      "//chrome/browser/metrics/desktop_session_duration:desktop_session_duration",
+      "//chrome/browser/metrics/desktop_session_duration",
     ]
   }
 }
@@ -137,7 +137,7 @@ source_set("unit_tests") {
     deps += [
       ":usage_clock",
       "//brave/browser/themes",
-      "//chrome/browser/metrics/desktop_session_duration:desktop_session_duration",
+      "//chrome/browser/metrics/desktop_session_duration",
       "//chrome/browser/themes",
     ]
   }

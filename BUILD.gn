@@ -193,7 +193,7 @@ if (is_win) {
     ]
     deps = [
       "//chrome/installer/mini_installer:mini_installer_archive",
-      "//chrome/installer/setup:setup",
+      "//chrome/installer/setup",
       "//components/zucchini:zucchini64",
     ]
     if (!skip_signing) {
@@ -220,7 +220,7 @@ if (is_win) {
     sign("signed_setup_exe") {
       sources = [ "$root_out_dir/setup.exe" ]
       outputs = [ "$root_out_dir/presigned_binaries/setup.exe" ]
-      deps = [ "//chrome/installer/setup:setup" ]
+      deps = [ "//chrome/installer/setup" ]
     }
     sign("signed_brave_exe") {
       sources = [ "$root_out_dir/brave.exe" ]

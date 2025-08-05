@@ -34,8 +34,8 @@ source_set("channel_info") {
     ]
 
     deps = [
-      "//base:base",
-      "//components/version_info:version_info",
+      "//base",
+      "//components/version_info",
     ]
 
     configs += [ "//brave/build/linux:linux_channel_names" ]

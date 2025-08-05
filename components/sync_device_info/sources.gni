@@ -7,5 +7,4 @@ brave_components_sync_device_info_sources = [
   "//brave/components/sync_device_info/brave_device_info.cc",
   "//brave/components/sync_device_info/brave_device_info.h",
 ]
-brave_components_sync_device_info_deps = [
-]
+brave_components_sync_device_info_deps = []

@@ -33,7 +33,7 @@ android_library("brave_test_java_helper") {
     "//third_party/androidx:androidx_test_core_java",
     "//third_party/androidx:androidx_test_monitor_java",
     "//third_party/androidx:androidx_test_runner_java__classes",
-    "//third_party/junit:junit",
+    "//third_party/junit",
   ]
 }
 
