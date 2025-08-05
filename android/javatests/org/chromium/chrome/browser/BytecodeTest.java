@@ -108,8 +108,10 @@ import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdow
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.password_manager.PasswordManagerHelper;
 import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileKeyedMap;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
@@ -998,6 +1000,13 @@ public class BytecodeTest {
                         "getCustomizationSetting",
                         MethodModifier.STATIC,
                         int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/password_manager/PasswordManagerHelper",
+                        "getForProfile",
+                        MethodModifier.STATIC,
+                        PasswordManagerHelper.class,
+                        Profile.class));
     }
 
     @Test
@@ -2403,6 +2412,12 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/infobar/InfoBarContainerView",
                         "mEdgeToEdgeSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/password_manager/PasswordManagerHelper",
+                        "sProfileMap",
+                        true,
+                        ProfileKeyedMap.class));
     }
 
     @Test

@@ -90,6 +90,7 @@ public class BraveClassAdapter {
         chain = new BraveOmniboxResourceProviderClassAdapter(chain);
         chain = new BravePartialCustomTabBottomSheetStrategyClassAdapter(chain);
         chain = new BravePasswordAccessReauthenticationHelperClassAdapter(chain);
+        chain = new BravePasswordManagerHelperClassAdapter(chain);
         chain = new BravePermissionDialogDelegateClassAdapter(chain);
         chain = new BravePermissionDialogModelClassAdapter(chain);
         chain = new BravePictureInPictureActivityClassAdapter(chain);
