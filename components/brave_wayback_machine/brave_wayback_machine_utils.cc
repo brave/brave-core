@@ -10,13 +10,13 @@
 #include <vector>
 
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/common/url_constants.h"
 #include "net/base/url_util.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 #include "url/url_util.h"
 

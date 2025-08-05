@@ -15,7 +15,6 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
-#include "base/strings/stringprintf.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/engine/constants.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"
@@ -29,6 +28,7 @@
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "brave/components/brave_rewards/core/features.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal {
 

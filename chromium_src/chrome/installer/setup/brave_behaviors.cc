@@ -8,9 +8,9 @@
 #include "base/check_op.h"
 #include "base/dcheck_is_on.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/installer/setup/brand_behaviors.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #define DoPostUninstallOperations DoPostUninstallOperations_UNUSED
 #include <chrome/installer/setup/google_chrome_behaviors.cc>

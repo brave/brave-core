@@ -5,8 +5,8 @@
 
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_util.h"
 
-#include "base/strings/stringprintf.h"
 #include "content/public/test/browser_test_utils.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::test_util {
 

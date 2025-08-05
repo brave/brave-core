@@ -7,7 +7,6 @@
 
 #include "base/base64url.h"
 #include "base/path_service.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/types/zip.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -25,6 +24,7 @@
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_TOR)

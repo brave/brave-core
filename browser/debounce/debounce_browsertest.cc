@@ -6,7 +6,6 @@
 #include "base/base64url.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_content_browser_client.h"
@@ -29,6 +28,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/resource_request.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
 namespace {

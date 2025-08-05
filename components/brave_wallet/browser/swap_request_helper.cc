@@ -12,7 +12,6 @@
 
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
@@ -21,6 +20,7 @@
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/json/json_helper.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
 

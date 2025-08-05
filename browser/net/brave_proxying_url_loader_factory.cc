@@ -14,7 +14,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/strings/stringprintf.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/components/brave_shields/content/browser/adblock_stub_response.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -34,6 +33,7 @@
 #include "services/network/public/cpp/parsed_headers.h"
 #include "services/network/public/cpp/url_loader_factory_builder.h"
 #include "services/network/public/mojom/early_hints.mojom.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/origin.h"
 
 namespace {

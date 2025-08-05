@@ -11,10 +11,10 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/request_signer.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal::endpoints {
 

@@ -5,7 +5,6 @@
 
 #include "base/base64.h"
 #include "base/memory/raw_ptr.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/pref_names.h"
@@ -21,6 +20,7 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
  public:

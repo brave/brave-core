@@ -12,7 +12,6 @@
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/rand_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
@@ -35,6 +34,7 @@
 #include "printing/buildflags/buildflags.h"
 #include "printing/print_job_constants.h"
 #include "printing/units.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/gfx/image/image_unittest_util.h"
 
