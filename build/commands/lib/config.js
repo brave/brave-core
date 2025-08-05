@@ -288,6 +288,8 @@ const Config = function () {
     'gemini_sandbox_oauth_url',
     'google_default_client_id',
     'google_default_client_secret',
+    'is_msan',
+    'msan_track_origins',
     'rewards_grant_dev_endpoint',
     'rewards_grant_prod_endpoint',
     'rewards_grant_staging_endpoint',
