@@ -257,6 +257,9 @@
 <translation id="5549369333299694936"><ph name="AMOUNT"/> શિલ્ડ કરવામાં આવ્યું છે</translation>
 <translation id="6257687515171395402">રસીદ</translation>
 <translation id="3541662075332902575">લેણદેણને સફળતાપૂર્વક બ્લોકમાં સમાવવામાં આવી હતી. બેવાર ખર્ચ થવાના જોખમને ટાળવા માટે, અમે બ્લોક પુષ્ટિકરણની રાહ જોવાની ભલામણ કરીએ છીએ.</translation>
+<translation id="1748114617341025015">સંકળાયેલ ટોકન એકાઉન્ટ બનાવાઈ રહ્યું છે</translation>
+<translation id="4418115887224983240">સંકળાયેલ ટોકન એકાઉન્ટ બનાવવામાં નિષ્ફળ</translation>
+<translation id="7165697599360786670">સંકળાયેલ ટોકન એકાઉન્ટ બનાવ્યું</translation>
 <translation id="3950820424414687140">સાઇન ઇન</translation>
 <translation id="4530494379350999373">મૂળ</translation>
 <translation id="6736243959894955139">સરનામું</translation>
@@ -296,12 +299,16 @@
 <translation id="193368604235852218">Web3</translation>
 <translation id="1472675084647422956">વધુ બતાવો</translation>
 <translation id="4522570452068850558">વિગતો</translation>
+<translation id="3155166394760577549">ટ્રાન્ઝેક્શનની પ્રાઇવસી ઉન્નત કરવા શિલ્ડ કરવાનું સક્ષમ કરો.</translation>
 <translation id="1178581264944972037">થોભો</translation>
+<translation id="3382275793825152362">ફંડને શિલ્ડ કરો</translation>
+<translation id="8631765320256788981">તમે તમારા ટ્રાન્સપેરેંટ એકાઉન્ટથી તમારા શિલ્ડ કરેલા એકાઉન્ટ પર ફંડ મોકલી રહ્યા છો.</translation>
 <translation id="7144878232160441200">ફરી પ્રયાસ કરો</translation>
 <translation id="2244921323472112851">તમે શોધી રહ્યા છો તે પેજને અમે અત્યારે શોધી શકતા નથી.</translation>
 <translation id="6277237872689140644">તે કદાચ બીજી જગ્યાએ ખસેડવામાં આવ્યું હોઈ શકે અથવા URLમાં ટાઇપિંગની ભૂલ હોઈ શકે છે.</translation>
 <translation id="2737084171727561244">પોર્ટફોલિયો પર જાઓ</translation>
 <translation id="3662406032239313663">લૉગ્સ</translation>
+<translation id="1772301834467143364">Brave News</translation>
 <translation id="3861486700625780712">અનફોલો કરો</translation>
 <translation id="4108314971463891922">ફોલો કરો</translation>
 <translation id="3225021799163709119">લોકપ્રિય</translation>
@@ -327,6 +334,14 @@
 <translation id="2593272815202181319">મોનોસ્પેસ</translation>
 <translation id="4330722796577425585">રીવાઇન્‍ડ કરો</translation>
 <translation id="6129027151000961048">Leo</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      one {}=1 {આ પેજના કન્ટેન્ટ વિશે પ્રશ્ન પૂછો}
+      other {આ પેજિસના કન્ટેન્ટ વિશે પ્રશ્ન પૂછો}
+    }</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      one {}=1 {આ પેજનો સારાંશ આપો}
+      other {આ પેજિસનો સારાંશ આપો}
+    }</translation>
 <translation id="999273441077650169">ટાસ્ક માટે શ્રેષ્ઠનો ઉપયોગ કરવા માટે મોડલ ગતિશીલ રીતે બદલાય છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="7557539689487606886">પ્રીમિયમ સભ્ય બનો</translation>
 <translation id="3840096463915153852">વાતચીતનો ઇતિહાસ</translation>
@@ -352,14 +367,21 @@
 <translation id="7754678742055438573">વાતચીતને ડિલીટ કરો</translation>
 <translation id="4881695831933465202">ખોલો</translation>
 <translation id="8712637175834984815">સમજાઈ ગયું</translation>
+<translation id="1352836459737874921">અન્ય ટૅબ પરથી કન્ટેન્ટ જોડો</translation>
+<translation id="3028258613451571431">Leoને વાતચીત પર વધુ સંદર્ભ આપવા માટે તમારા બ્રાઉઝર પરથી પેજના કન્ટેન્ટ મોકલો</translation>
 <translation id="2315654674554095762">Leo હવે તમારી વાતચીતોને યાદ રાખશે જેથી તમે તેમને ફરીથી જોઈ શકો. તેઓને તમારા ડિવાઇસ પર એન્ક્રિપ્ટ કરીને સ્ટોર કરવામાં આવે છે અને તમે તેઓને કોઈપણ સમયે ડિલીટ કરી શકો છો.</translation>
 <translation id="6291843235651817590">સામાન્ય હેતુની ચેટ</translation>
 <translation id="7979673624064378842">એકદમ ઝડપી ચેટ</translation>
 <translation id="2836330653441111204">ઝડપ અને બુદ્ધિમત્તાનું સંતુલન</translation>
 <translation id="8782867266498869301">મોડલને ક્રિયાપ્રતિક્રિયાઓ માટે શ્રેષ્ઠ વિડીયો ઉપયોગ કરવા માટે ગતિશીલપણે બદલાય છે.</translation>
+<translation id="2414904697165579184">ટૅબ(ટૅબ્સ)ના કન્ટેન્ટના આધારે જવાબ તૈયાર કરો</translation>
+<translation id="8258324391302611485">તમારા મેસેજ સાથે આ પેજના કન્ટેન્ટ Leoને મોકલવામાં આવશે.</translation>
 <translation id="1223498995510244364">સારાંશ આપો</translation>
 <translation id="2370739752330685659">કદાચ પછી</translation>
 <translation id="6739516910850820220">ફાઇલ અપલોડ કરી રહ્યું છે...</translation>
+<translation id="7742969455167760092">ટૅબ્સ ખોલો...</translation>
+<translation id="7097822247923237815">કામચલાઉ ચેટ</translation>
+<translation id="7481750859362986254">આ ચેટ તમારા ઇતિહાસમાં સેવ નહીં થાય કે Leoના કોઈ કસ્ટમાઇઝેશન અથવા મેમરીનો ઉપયોગ નહીં કરે.</translation>
 <translation id="5912396950572065471">ફોર્મેટ</translation>
 <translation id="867722069064361487">12-કલાકની ઘડિયાળ</translation>
 <translation id="4064062743338217840">24-કલાકની ઘડિયાળ</translation>
@@ -375,7 +397,6 @@
 <translation id="423209533815462685">શોધ સૂચનો સક્ષમ કરીએ?</translation>
 <translation id="167018310108390163">નવી ટેબ પેજ કસ્ટમાઇઝ કરો</translation>
 <translation id="8522669544471808198">બૅકગ્રાઉન્ડ ઇમેજ બતાવો</translation>
-<translation id="5149018766422637336">ન્યૂઝ અને RSS</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> સાથે, તમે નવા ટેબ પેજની જાહેરાતો જોઈને કમાઈ શકો છો.</translation>
 <translation id="4100520468072294616">નવા ટેબ પેજની જાહેરાતો બતાવો</translation>
 <translation id="8112367589167674370">Brave ટૉક</translation>
@@ -416,6 +437,7 @@
 <translation id="6821108091726602352">Braveના વેબ ડિસ્કવરી પ્રોજેક્ટમાં સહભાગી થઈને અમને વેબને સુધારવામાં મદદ કરો. સંપૂર્ણપણે અનામી સર્ચ સંકેતોને શેર કરીને, તમે Braveને સર્ચ ઇન્ડેક્સ વધારવામાં મદદ કરી શકો છો.</translation>
 <translation id="6764845498618413165">વધુ જાણો.</translation>
 <translation id="7818938154803162778">ચોક્કસ, હું મદદ કરીશ</translation>
+<translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="3486480638399578250">તમારા વ્યક્તિગત ઇમેઇલ એડ્રેસને ગુપ્ત રાખો</translation>
 <translation id="7765422154906712751">અનોખા, રેન્ડમ સરનામાંઓ બનાવો જે તમારા Brave અકાઉન્ટ ઇમેઇલ પર ફોરવર્ડ થઈ શકે છે અને તમારી ઇચ્છા પર ડિલીટ કરી શકાય છે. તમારા વાસ્તવિક ઇમેઇલ એડ્રેસને જાહેરાતકર્તાઓ સામે જાહેર થવાથી અથવા તેમના દ્વારા ઉપયોગ થવાથી બચાવો.</translation>
 <translation id="5222676887888702881">સાઇન આઉટ કરો</translation>
@@ -433,6 +455,7 @@
 <translation id="1104500750724567895">નવું ઉપનામ</translation>
 <translation id="8072910658503112482">બીજું ઇમેલ ઉપનામ સૂચવો</translation>
 <translation id="7710361355427562228">નવું ઉપનામ જનરેટ થઈ રહ્યું છે...</translation>
+<translation id="8013913032858654337">ઉપનામ જનરેટ કરવામાં ત્રુટિ આવી. તમારું ઇન્ટરનેટ કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.</translation>
 <translation id="4253168017788158739">નોંધ</translation>
 <translation id="7596996548739923550">તમારા સરનામા માટે નોંધ દાખલ કરો (વૈકલ્પિક)</translation>
 <translation id="3810973564298564668">મેનેજ કરો</translation>
@@ -440,13 +463,21 @@
 <translation id="3919357515365744684">ઇમેઇલ <ph name="MAIN_EMAIL"/> ને ફોરવર્ડ કરવામાં આવશે</translation>
 <translation id="6063403442924238501">ઇમેલ ઉપનામ સંપાદિત કરો</translation>
 <translation id="8729265501883390499">ઉપનામ બનાવો</translation>
+<translation id="7137645995703540578">ઉપનામ સેવ કરવામાં ત્રુટિ આવી. તમારું ઇન્ટરનેટ કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.</translation>
+<translation id="1765544689721905747">ઇમેઇલ ઉપનામ ડિલીટ કરો</translation>
+<translation id="646524615209870492"><ph name="ALIAS"/> ને ઉપનામ તરીકેથી દૂર કરવાથી તમે તમારી ઇમેઇલ પ્રાપ્ત કરવાની ક્ષમતા ગુમાવશો.</translation>
+<translation id="8133100642915054515">ઉપનામ ડિલીટ કરવામાં ત્રુટિ આવી. તમારું ઇન્ટરનેટ કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.</translation>
+<translation id="8465742443901727718">આ ક્રિયા ઉલટાવી નહીં શકાય. શું તમે ખરેખર આગળ વધવા માંગો છો?</translation>
 <translation id="8662104432574824754">શરૂઆત કરવા માટે, Brave અકાઉન્ટમાં સાઇન ઇન કરો અથવા બનાવો</translation>
 <translation id="8069030342700068465">તમારા ઇમેલ સરનામા દાખલ કરો, જેથી તમારા ઇમેલ પર સુરક્ષિત લૉગિન લિંક મોકલવામાં આવે. આ લિંક પર ક્લિક કરવાથી Brave અકાઉન્ટ બનાવશે અથવા ઍક્સેસ કરશે અને મફત ઇમેલ ઉપનામ સેવા ઉપયોગ કરવાની મંજુરી આપશે.</translation>
 <translation id="2133391407495495735">લૉગિન લિંક મેળવો</translation>
+<translation id="2650906829817220223">પ્રમાણીકરણની વિનંતી કરવામાં ત્રુટિ આવી. તમારું ઇન્ટરનેટ કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.</translation>
 <translation id="3699624789011381381">ઇમેઇલ એડ્રેસ</translation>
 <translation id="8124939971041602970">લૉગિન ઇમેઇલ <ph name="MAIN_EMAIL"/> પર મોકલાઈ રહ્યો છે</translation>
 <translation id="8140361186431963982">તમારા અકાઉન્ટમાં ઍક્સેસ કરવા માટે ઇમેઇલમાં સુરક્ષિત લૉગિન લિંક પર ક્લિક કરો.</translation>
-<translation id="6549775668256477823">ઇમેઇલ નથી દેખાઈ રહ્યોl? તમારું સ્પામ ફોલ્ડર તપાસો અથવા <ph name="BEGIN_LINK"/>ફરી પ્રયાસ કરો<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">ઇમેઇલ નથી દેખાઈ રહ્યોl? તમારું સ્પામ ફોલ્ડર તપાસો અથવા ફરી પ્રયાસ કરો.</translation>
+<translation id="3397336197747843396">Brave એકાઉન્ટ સાથે પ્રમાણીકરણ કરવામાં ત્રુટિ આવી. કૃપા કરીને ફરી પ્રયાસ કરો.</translation>
+<translation id="1340795582009113055">પહેલાથી શરૂ કરો</translation>
 <translation id="5753795690521538679">7-દિવસની મફત અજમાયશ શરૂ કરો</translation>
 <translation id="3357036723290257445">Brave VPN પહેલાંથી જ ખરીદ્યું છે?</translation>
 <translation id="7805768142964895445">સ્થિતિ</translation>

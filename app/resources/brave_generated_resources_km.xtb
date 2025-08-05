@@ -7,6 +7,11 @@
 <translation id="7630214457764713113">ចម្លងតំណស្អាត</translation>
 <translation id="6406506848690869874">សមកាលកម្ម</translation>
 <translation id="1544192797660353713">កាបូប</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {បិទភ្ញៀវ}
+          other {បិទភ្ញៀវ}
+        }</translation>
 <translation id="1990886731975529483">ដំឡើង និងដំណើរការ Google Widevine</translation>
 <translation id="8926389886865778422">កុំសួរម្តងទៀត</translation>
 <translation id="4900351245762303149">ដំឡើង Google Widevine</translation>
@@ -16,6 +21,13 @@
 <translation id="7658239707568436148">បដិសេធ</translation>
 <translation id="4615489450165434530">រាយការណ៍ពីគេហទំព័រដែលមិនដំណើរការ</translation>
 <translation id="2804710924397009224">លាក់រូបតំណាង Brave Rewards</translation>
+<translation id="8832245978592881387">បើក Leo AI នៅក្នុងផ្ទាំងថ្មី</translation>
+<translation id="4577675328803804820">បើក Leo AI នៅក្នុងរបារចំហៀង</translation>
+<translation id="564305948667173847">គ្រប់គ្រងការកំណត់ Leo AI</translation>
+<translation id="2169338740411893745">បើក Leo AI នៅក្នុងផ្ទាំងថ្មី</translation>
+<translation id="3295805221342028003">បើក Leo AI នៅក្នុងរបារចំហៀង</translation>
+<translation id="7400808612454224939">គ្រប់គ្រងការកំណត់ Leo AI</translation>
+<translation id="438106944087726695">Brave-hosted</translation>
 <translation id="5039804452771397117">អនុញ្ញាត</translation>
 <translation id="7053983685419859001">ទប់ស្កាត់</translation>
 <translation id="8915916167043355778">បិទទាំងអស់</translation>
@@ -44,7 +56,6 @@
 <translation id="4877147287319222750">បន្ថែមទៅរបារចំហៀង</translation>
 <translation id="8712637175834984815">យល់ហើយ</translation>
 <translation id="4394049700291259645">បិទដំណើរការ</translation>
-<translation id="8428213095426709021">ការកំណត់</translation>
 <translation id="4474155171896946103">ចំណាំផ្ទាំងទាំងអស់...</translation>
 <translation id="2336228925368920074">ចំណាំផ្ទាំងទាំងអស់...</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
@@ -72,6 +83,7 @@
 <translation id="6165508094623778733">ស្វែងយល់​បន្ថែម</translation>
 <translation id="7557539689487606886">ដំឡើងទៅ Premium</translation>
 <translation id="3435896845095436175">ដំឡើង</translation>
+<translation id="1940221956626514677">ប្ដូររបារឧបករណ៍តាមបំណង</translation>
 <translation id="9156965752763025780">ការផ្លាស់ប្តូររបស់អ្នកនឹងមានប្រសិទ្ធភាពនៅពេលដែលបើកដំណើរការ Brave ឡើងវិញពេលក្រោយ។</translation>
 <translation id="1426410128494586442">បាទ/ចាស</translation>
 <translation id="4250680216510889253">ទេ</translation>
@@ -115,6 +127,8 @@
 <translation id="8798099450830957504">លំនាំដើម</translation>
 <translation id="933652931229970927">ផ្ញើរបាយការណ៍វិភាគដោយស្វ័យប្រវត្តិ</translation>
 <translation id="1679356339067548863">ជួយកែលម្អស្ថិរភាពផលិតផលរបស់ Brave ដោយផ្ញើរបាយការណ៍វិភាគដោយស្វ័យប្រវត្តិ នៅពេលដែលកម្មវិធីរុករក Brave គាំង ឬបង្កក។</translation>
+<translation id="509873765238158442">ទប់ស្កាត់មុខងាររំលឹកឡើងវិញ Microsoft</translation>
+<translation id="4763421121695677716">ទប់ស្កាត់មុខងាររំលឹកឡើងវិញនៅលើកុំព្យូទ័រ Microsoft Windows ពីការថតអេក្រង់ដោយស្វ័យប្រវត្តិនៃផ្ទាំង Brave ដែលបើកណាមួយ។</translation>
 <translation id="3858860766373142691">ឈ្មោះ</translation>
 <translation id="4530494379350999373">ប្រភពដើម</translation>
 <translation id="410351446219883937">ចាក់ស្វ័យប្រវត្តិ</translation>
@@ -126,14 +140,17 @@
 <translation id="2055363275850890030">វីនដូឯកជន</translation>
 <translation id="2653659639078652383">ដាក់ស្នើ</translation>
 <translation id="5249433283143453448">ប្រើសមាសភាគការគ្រប់គ្រងសិទ្ធិឌីជីថល Widevine (DRM) ដើម្បីមើលវីដេអូស្ទ្រីមដែលមានការការពារ និងមាតិកាផ្សេងទៀតនៅក្នុងកម្មវិធីរុករក។</translation>
+<translation id="6918225713618473646">Brave រៀបចំកម្មវិធីបន្ថែម Manifest V2 ទាំងនេះនៅលើម៉ាស៊ីនមេ Brave ប៉ុន្តែមិនពិនិត្យមើល ឬផ្ទៀងផ្ទាត់ខ្លឹមសារ សុវត្ថិភាព ឬអាកប្បកិរិយារបស់ពួកគេទេ។ សូមមើលទំព័រផ្លូវការរបស់ផ្នែកបន្ថែមនីមួយៗសម្រាប់ជំនួយ។ អានផែនការរបស់ Brave សម្រាប់ Manifest V2 <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
 <translation id="8137559199583651773">គ្រប់គ្រងកម្មវិធីបន្ថែម</translation>
 <translation id="8488282162676695335">កាបូប Brave</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">រក្សាទុកប្រវត្តិសន្ទនារបស់ខ្ញុំ</translation>
 <translation id="6106701981952170121">លុបទិន្នន័យសន្ទនា Leo AI ទាំងអស់</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="614530507403667291">ម៉ូដែលលំនាំដើមសម្រាប់ការសន្ទនាថ្មីៗ</translation>
 <translation id="1907126221851170941">បន្ថែមគំរូ</translation>
+<translation id="5985516785067818307">អ្នកវិភាគការស្ទង់មតិ</translation>
+<translation id="8347743943525229984">អនុញ្ញាតឱ្យមានការស្ទង់មតិ Brave</translation>
+<translation id="3204080538332044581">អនុញ្ញាតឱ្យ Brave បង្ហាញតំណទៅកាន់ការស្ទង់មតិឯកជននៅក្នុងទំព័រផ្ទាំងថ្មី។ ការស្ទង់មតិជួយយើងបង្កើតមុខងារកាន់តែប្រសើរ និងវាស់ស្ទង់ប្រសិទ្ធភាពនៃយុទ្ធនាការផ្សាយពាណិជ្ជកម្មផ្អែកលើកម្មវិធីរុករក។ <ph name="BEGIN_LINK"/>ស្វែងយល់បន្ថែម<ph name="END_LINK"/></translation>
 <translation id="154702742922788359">របៀបបើក</translation>
 <translation id="2249111429176737533">បើក​ជា​ផ្ទាំងវីនដូ</translation>
 <translation id="7022756207310403729">បើកនៅក្នុងកម្មវិធីរុករក</translation>

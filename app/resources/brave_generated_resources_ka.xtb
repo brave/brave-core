@@ -7,12 +7,24 @@
 <translation id="7630214457764713113">სუფთა ბმულის კოპირება</translation>
 <translation id="6406506848690869874">სინქრონიზაცია</translation>
 <translation id="1544192797660353713">საფულე</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {სტუმრის სესიის დახურვა}
+          other {სტუმრის სესიის დახურვა}
+        }</translation>
 <translation id="1990886731975529483">Google Widevine-ის ინსტალაცია და გააქტიურება</translation>
 <translation id="4900351245762303149">Google Widevine-ის ინსტალაცია და გააქტიურება</translation>
 <translation id="8342816622062204340"><ph name="URL"/> სურს Google Widevine-ის დაცული კონტენტის დაკვრა, რისთვისაც საჭიროა Widevine-ის Android სისტემის მხარდაჭერა. ნებართვის მიცემით, თქვენ ეთანხმებით Google-ის გამოყენების წესებს.</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="7658239707568436148">გაუქმება</translation>
 <translation id="4615489450165434530">ხარვეზის შესახებ შეტყობინება</translation>
+<translation id="8832245978592881387">გახსენით Leo AI ახალ ტაბში</translation>
+<translation id="4577675328803804820">გახსენით Leo AI გვერდითა პანელში</translation>
+<translation id="564305948667173847">Leo AI-ის პარამეტრების მართვა</translation>
+<translation id="2169338740411893745">გახსენით Leo AI ახალ ტაბში</translation>
+<translation id="3295805221342028003">გახსენით Leo AI გვერდითა პანელში</translation>
+<translation id="7400808612454224939">Leo AI-ის პარამეტრების მართვა</translation>
+<translation id="438106944087726695">Brave-ზე განთავსებული</translation>
 <translation id="5039804452771397117">დაშვება</translation>
 <translation id="8926389886865778422">აღარ მკითხო</translation>
 <translation id="8915916167043355778">დახურვა</translation>
@@ -35,7 +47,6 @@
 <translation id="4877147287319222750">გვერდით პანელზე დამატება</translation>
 <translation id="6040143037577758943">დახურვა</translation>
 <translation id="8712637175834984815">გასაგებია</translation>
-<translation id="8428213095426709021">პარამეტრები</translation>
 <translation id="5234764350956374838">გაუქმება</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4759238208242260848">გადმოწერილი ფაილები</translation>
@@ -49,6 +60,7 @@
 <translation id="6165508094623778733">გაიგეთ მეტი</translation>
 <translation id="7557539689487606886">პრემიუმის გააქტიურება</translation>
 <translation id="3435896845095436175">გააქტიურება</translation>
+<translation id="1940221956626514677">დაარეგულირეთ ხელსაწყოთა პანელი</translation>
 <translation id="1426410128494586442">დიახ</translation>
 <translation id="4250680216510889253">არა</translation>
 <translation id="4472575034687746823">დაწყება</translation>
@@ -81,6 +93,8 @@
 <translation id="933652931229970927">დიაგნოსტიკური ანგარიშების ავტომატურად გაგზავნა</translation>
 <translation id="1679356339067548863">დაეხმარეთ Brave-ს პროდუქტების სტაბილურობის გაუმჯობესებაში დიაგნოსტიკური რეპორტების ავტომატური გაგზავნით, როდესაც Brave ბრაუზერი გაითიშება ან გაიყინება.</translation>
 <translation id="2356070529366658676">კითხვა</translation>
+<translation id="509873765238158442">Microsoft Recall-ის დაბლოკვა</translation>
+<translation id="4763421121695677716">არ დაუშვათ Microsoft Windows-ის Recall ფუნქციამ ავტომატურად გადაიღოს ეკრანის სურათები Brave-ის გახსნილი ტაბებიდან.</translation>
 <translation id="3858860766373142691">სახელი</translation>
 <translation id="1181037720776840403">წაშლა</translation>
 <translation id="4332558599726753990">სინქრონიზაციის დაყენება</translation>
@@ -88,14 +102,17 @@
 <translation id="2055363275850890030">პირადი ფანჯარა</translation>
 <translation id="6786747875388722282">გაფართოებები</translation>
 <translation id="5249433283143453448">Widevine-ის ციფრული უფლებების მართვის (DRM) კომპონენტის გამოყენება, ბრაუზერში დაცული სტრიმინგის ვიდეოებისა და სხვა კონტენტის სანახავად.</translation>
+<translation id="6918225713618473646">Brave მასპინძლობს Manifest V2 გაფართოებებს საკუთარ სერვერებზე, თუმცა არ ამოწმებს მათ შინაარსს, უსაფრთხოებასა თუ ქცევას. დამატებითი ინფორმაციისთვის, გთხოვთ ეწვიოთ შესაბამისი გაფართოების ოფიციალურ გვერდს. გაეცანით Brave-ის გეგმებს Manifest V2-ის შესახებ <ph name="BEGIN_LINK"/>აქ<ph name="END_LINK"/>;</translation>
 <translation id="8488282162676695335">Brave საფულე</translation>
 <translation id="2653659639078652383">გაგზავნა</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">მიმოწერების ისტორიის შენახვა</translation>
 <translation id="6106701981952170121">Leo AI მიმოწერების მონაცემების წაშლა</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="614530507403667291">ნაგულისხმევი მოდელი ახალი საუბრებისთვის</translation>
 <translation id="1907126221851170941">მოდელის დამატება</translation>
+<translation id="5985516785067818307">კითხვარის პანელი</translation>
+<translation id="8347743943525229984">Brave-ის გამოკითხვის დაშვება</translation>
+<translation id="3204080538332044581">ეს პარამეტრი Brave-ს საშუალებას აძლევს, ახალ ტაბზე პირადი გამოკითხვის ბმულები გვაჩვენოს. გამოკითხვები გვეხმარება მომხმარებელთა საჭიროებების უკეთ გაცნობაში, ფუნქციონალის გაუმჯობესებასა და ბრაუზერზე დაფუძნებული სარეკლამო კამპანიების ეფექტიანობის შეფასებაში. <ph name="BEGIN_LINK"/>გაიგეთ მეტი<ph name="END_LINK"/>;</translation>
 <translation id="154702742922788359">ღია რეჟიმი</translation>
 <translation id="2249111429176737533">ჩანართების ფანჯარაში გახსნა</translation>
 <translation id="7022756207310403729">ბრაუზერში გახსნა</translation>

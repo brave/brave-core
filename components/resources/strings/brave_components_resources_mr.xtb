@@ -248,6 +248,9 @@
 <translation id="5549369333299694936"><ph name="AMOUNT"/> शील्ड केले गेले आहे</translation>
 <translation id="6257687515171395402">पावती</translation>
 <translation id="3541662075332902575">व्यवहार यशस्वीरीत्या ब्लॉकमध्ये समाविष्ट झाला. दुहेरी खर्चाचा धोका टाळण्यासाठी, आम्ही ब्लॉक पुष्टीकरणाची प्रतीक्षा करण्याची शिफारस करतो.</translation>
+<translation id="1748114617341025015">संबंधित टोकन खाते तयार करत आहे</translation>
+<translation id="4418115887224983240">संबंधित टोकन खाते तयार करण्यास अपयश आले</translation>
+<translation id="7165697599360786670">संबंधित टोकन खाते तयार झाले</translation>
 <translation id="3950820424414687140">साइन इन करा</translation>
 <translation id="4530494379350999373">मूळ</translation>
 <translation id="6736243959894955139">पत्ता</translation>
@@ -285,14 +288,18 @@
 <translation id="193368604235852218">Web3</translation>
 <translation id="1472675084647422956">अधिक दर्शवा</translation>
 <translation id="4522570452068850558">तपशील</translation>
+<translation id="3155166394760577549">व्यवहाराची गोपनीयता वाढवण्यासाठी शील्डिंग चालू करा.</translation>
 <translation id="3609785682760573515">संकालन करत आहे...</translation>
 <translation id="1178581264944972037">विराम द्या</translation>
 <translation id="9086302186042011942">संकालन करीत आहे</translation>
+<translation id="3382275793825152362">पैसे शील्ड करा</translation>
+<translation id="8631765320256788981">तुम्ही तुमच्या पारदर्शक खात्यामधून तुमच्या शील्डेड खात्यामध्ये पैसे पाठवत आहात.</translation>
 <translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
 <translation id="2244921323472112851">सध्या तुम्ही शोधत असलेले पान आम्हाला सापडत नाही.</translation>
 <translation id="6277237872689140644">हे कदाचित दुसऱ्या ठिकाणी हलविले गेले आहे किंवा URL मध्ये टायपो असू शकतो.</translation>
 <translation id="2737084171727561244">पोर्टफोलियोवर जा</translation>
 <translation id="3662406032239313663">लॉग्ज</translation>
+<translation id="1772301834467143364">ब्रेव्ह न्यूज</translation>
 <translation id="3861486700625780712">अनफॉलो</translation>
 <translation id="4108314971463891922">फॉलो</translation>
 <translation id="3225021799163709119">लोकप्रिय</translation>
@@ -318,6 +325,14 @@
 <translation id="2593272815202181319">मोनोस्पेस</translation>
 <translation id="4330722796577425585">रीवाइंड</translation>
 <translation id="6129027151000961048">Leo</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {या पानावरील मजकुराविषयी एक प्रश्न विचारा}
+      other {या पानांवरील मजकुराविषयी एक प्रश्न विचारा}
+    }</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {या पानाचा सारांश लिहा}
+      other {या पानांचा सारांश लिहा}
+    }</translation>
 <translation id="8151638057146502721">कॉन्फिगर करा</translation>
 <translation id="999273441077650169">कार्यक्रमासाठी सर्वोत्तम मॉडेल वापरण्यासाठी मॉडेल गतिशीलपणे बदलतो.<ph name="LINK_BEFORE"/>अधिक जाणून घ्या<ph name="LINK_AFTER"/></translation>
 <translation id="7557539689487606886">प्रीमियम घ्या</translation>
@@ -344,15 +359,22 @@
 <translation id="7754678742055438573">संभाषण काढून टाका</translation>
 <translation id="4881695831933465202">उघडा</translation>
 <translation id="8712637175834984815">समजले</translation>
+<translation id="1352836459737874921">दुसऱ्या टॅब्समधील मजकूर जोडा</translation>
+<translation id="3028258613451571431">Leoला संभाषणासाठी अधिक संदर्भ मिळावा म्हणून तुमच्या ब्राऊझर टॅब्समधील मजकूर पाठवा</translation>
 <translation id="2315654674554095762">Leo आता तुमची संभाषणे लक्षात ठेवेल ज्यामुळे तुम्ही त्यांमध्ये पुन्हा सहभागी होऊ शकता. ती तुमच्या डिव्हाईसवर एन्क्रिप्ट करून जतन केलेली असतात, आणि तुम्ही कधीही ती काढून टाकू शकता.</translation>
 <translation id="6291843235651817590">सर्वसाधारण हेतुसाठीचे चॅट</translation>
 <translation id="7979673624064378842">अतिजलद चॅट</translation>
 <translation id="2836330653441111204">संतुलित वेग आणि बुद्धिमत्ता</translation>
 <translation id="8782867266498869301">कामासाठी सर्वोत्तम मॉडेल वापरण्यासाठी ते गतिशीलपणे बदलते</translation>
+<translation id="2414904697165579184">उत्तरे टॅब(ब्स)मधील मजकुरावर आधारित ठेवा</translation>
+<translation id="8258324391302611485">या पानाचा मजकूर तुमच्या संदेशांसोबत Leoला पाठवला जाईल.</translation>
 <translation id="1223498995510244364">सारांश द्या</translation>
 <translation id="2370739752330685659">नंतर बघू</translation>
 <translation id="6739516910850820220">फाईल अपलोड करत आहे...</translation>
 <translation id="4250229828105606438">स्क्रीनशॉट</translation>
+<translation id="7742969455167760092">खुले टॅब...</translation>
+<translation id="7097822247923237815">तात्पुरते चॅट</translation>
+<translation id="7481750859362986254">हे चॅट तुमच्या इतिहासामध्ये जतन केले जाणार नाही किंवा Leoच्या कोणत्याही कस्टमायझेशनचा किंवा आठवणींचा वापर करणार नाही.</translation>
 <translation id="867722069064361487">12-तासांचे घड्याळ</translation>
 <translation id="4064062743338217840">24-तासांचे घड्याळ</translation>
 <translation id="1776831331757823105">घड्याळ</translation>
@@ -367,7 +389,6 @@
 <translation id="423209533815462685">शोध सूचना सक्षम करायच्या?</translation>
 <translation id="167018310108390163">नवीन टॅब पृष्ठामध्ये तुम्हाला हवे ते बदल करा</translation>
 <translation id="8522669544471808198">पार्श्वभूमी प्रतिमा दर्शवा</translation>
-<translation id="5149018766422637336">बातम्या आणि RSS</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave रिवॉर्ड्स<ph name="LINK_END"/> सह, तुम्ही नवीन टॅब पृष्ठावरील जाहिराती पाहून कमवू शकता.</translation>
 <translation id="4100520468072294616">नवीन टॅब पृष्ठावरील जाहिराती दाखवा</translation>
 <translation id="8112367589167674370">Brave टॉक</translation>
@@ -409,6 +430,7 @@
 <translation id="6821108091726602352">Brave च्या वेब डिस्कव्हरी प्रकल्पामध्ये भाग घेऊन वेब सुधारण्यास आम्हाला मदत करा. पूर्णपणे निनावी शोध संकेत शेअर करून, तुम्ही Brave ला शोध अनुक्रमणिका वाढवण्यास मदत करू शकता.</translation>
 <translation id="6764845498618413165">अधिक जाणून घ्या.</translation>
 <translation id="7818938154803162778">हो, मी नक्की मदत करेन</translation>
+<translation id="7207456302801184289">Brave मध्ये स्वागत आहे</translation>
 <translation id="3486480638399578250">तुमचा वैयक्तिक ईमेल पत्ता खासगी ठेवा</translation>
 <translation id="7765422154906712751">तुमच्या Brave खात्याच्या ईमेलवर अग्रेषित करणारे असे अद्वितीय, यादृच्छिक पत्ते तयार करा जे कधीही हटवता येतात. तुमचा वास्तविक ईमेल पत्ता जाहिरातदारांना कळण्यापासून किंवा त्यांना वापरता येण्यापासून वाचवा.</translation>
 <translation id="5222676887888702881">साइन आउट करा</translation>
@@ -426,6 +448,7 @@
 <translation id="1104500750724567895">नवीन बनावट ईमेल</translation>
 <translation id="8072910658503112482">दुसरा बनावट ईमेल सुचवा</translation>
 <translation id="7710361355427562228">नवीन बनावट ईमेल तयार करत आहे...</translation>
+<translation id="8013913032858654337">बनावट ईमेल तयार करण्यात त्रुटी आली. कृपया तुमचे इंटरनेट कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="4253168017788158739">टीप</translation>
 <translation id="7596996548739923550">तुमच्या पत्त्यासाठी एक टीप एंटर करा (पर्यायी)</translation>
 <translation id="3810973564298564668">व्यवस्थापित करा</translation>
@@ -433,13 +456,21 @@
 <translation id="3919357515365744684">ईमेल <ph name="MAIN_EMAIL"/> वर अग्रेषित केले जातील</translation>
 <translation id="6063403442924238501">बनावट ईमेल संपादित करा</translation>
 <translation id="8729265501883390499">बनावट ईमेल तयार करा</translation>
+<translation id="7137645995703540578">बनावट ईमेल जतन करण्यात त्रुटी आली. कृपया तुमचे इंटरनेट कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</translation>
+<translation id="1765544689721905747">बनावट ईमेल काढून टाका</translation>
+<translation id="646524615209870492">बनावट <ph name="ALIAS"/> काढून टाकल्याने तुम्हाला ईमेल्स मिळवता येणार नाहीत.</translation>
+<translation id="8133100642915054515">बनावट ईमेल काढून टाकताना त्रुटी आली. कृपया तुमचे इंटरनेट कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</translation>
+<translation id="8465742443901727718">ही कृती उलटवता येणार नाही. तुम्हाला नक्की हे करायचे आहे का?</translation>
 <translation id="8662104432574824754">प्रारंभ करण्यासाठी, साइन इन करा किंवा नवीन Brave खाते तयार करा</translation>
 <translation id="8069030342700068465">सुरक्षित लॉगिन लिंक तुमच्या ईमेलवर पाठवण्यासाठी तुमचा ईमेल पत्ता एंटर करा. या लिंकवर क्लिक केल्याने नवीन Brave खाते तयार होईल किंवा त्यामध्ये प्रवेश करता येईल आणि तुम्हाला विनामूल्य बनावट ईमेल सेवा वापरण्यास अनुमती मिळेल.</translation>
 <translation id="2133391407495495735">लॉगिन लिंक मिळवा</translation>
+<translation id="2650906829817220223">अधिस्वीकृतीची विनंती करण्यात त्रुटी आली. कृपया तुमचे इंटरनेट कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="3699624789011381381">ईमेल ॲड्रेस</translation>
 <translation id="8124939971041602970">लॉगिन ईमेल पुढील पत्त्यावर पाठवला जात आहे <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">तुमच्या खात्यात प्रवेश करण्यासाठी ईमेलमधील सुरक्षित लॉगिन लिंकवर क्लिक करा.</translation>
-<translation id="6549775668256477823">ईमेल दिसत नाही? तुमचा स्पॅम फोल्डर तपासा किंवा <ph name="BEGIN_LINK"/>पुन्हा प्रयत्न करा<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">ईमेल दिसत नाही? तुमचा स्पॅम फोल्डर तपासा किंवा पुन्हा प्रयत्न करा.</translation>
+<translation id="3397336197747843396">Brave खात्याने अधिस्वीकृती देताना त्रुटी आली. कृपया पुन्हा प्रयत्न करा.</translation>
+<translation id="1340795582009113055">पुन्हा सुरुवात करा</translation>
 <translation id="5753795690521538679">7 दिवसांचे विनामूल्य ट्रायल सुरु करा</translation>
 <translation id="3357036723290257445">Brave VPN आधीच खरेदी केला आहे?</translation>
 <translation id="7805768142964895445">स्थिती</translation>

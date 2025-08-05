@@ -9,6 +9,11 @@
 <translation id="7630214457764713113">ક્લીન લિંક કૉપિ કરો</translation>
 <translation id="6406506848690869874">સમન્વયન</translation>
 <translation id="1544192797660353713">વૉલેટ</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="9092796350041759828">{0, plural,
+          one {}=1 {ગેસ્ટ બંધ કરો}
+          other {ગેસ્ટ બંધ કરો}
+        }</translation>
 <translation id="1990886731975529483">Google Widevine ઇન્સ્ટોલ કરો અને ચલાવો</translation>
 <translation id="8926389886865778422">ફરિથી પુછશો નહીં</translation>
 <translation id="4900351245762303149">Google Widevine ઇન્સ્ટોલ કરો</translation>
@@ -19,6 +24,13 @@
 <translation id="4615489450165434530">બ્રેક થયેલી સાઇટ અંગે રિપોર્ટ કરો</translation>
 <translation id="474217410105706308">ટૅબ મ્યૂટ કરો</translation>
 <translation id="2804710924397009224">Brave પુરસ્કારો ચિહ્ન છુપાવો</translation>
+<translation id="8832245978592881387">Leo AIને નવી ટૅબમાં ખોલો</translation>
+<translation id="4577675328803804820">Leo AIને સાઇડબારમાં ખોલો</translation>
+<translation id="564305948667173847">Leo AI સેટિંગ્સ મેનેજ કરો</translation>
+<translation id="2169338740411893745">Leo AIને નવી ટૅબમાં ખોલો</translation>
+<translation id="3295805221342028003">Leo AIને સાઇડબારમાં ખોલો</translation>
+<translation id="7400808612454224939">Leo AI સેટિંગ્સ મેનેજ કરો</translation>
+<translation id="438106944087726695">Brave દ્વારા હોસ્ટ કરેલ</translation>
 <translation id="5039804452771397117">મંજૂરી આપો</translation>
 <translation id="7053983685419859001">અવરોધિત કરો</translation>
 <translation id="8915916167043355778">બધું બંધ કરો</translation>
@@ -47,7 +59,6 @@
 <translation id="4877147287319222750">સાઇડબારમાં ઉમેરો</translation>
 <translation id="8712637175834984815">સમજાઈ ગયું</translation>
 <translation id="4394049700291259645">બંધ કરો</translation>
-<translation id="8428213095426709021">સેટિંગ્સ</translation>
 <translation id="4474155171896946103">બધા ટૅબ્સ બુકમાર્ક  કરો...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{ટૅબને મ્યૂટ કરો}one{ટૅબને મ્યૂટ કરો}other{ટૅબને મ્યૂટ કરો}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{ટૅબને અનમ્યૂટ કરો}one{ટૅબને અનમ્યૂટ કરો}other{ટૅબને અનમ્યૂટ કરો}}</translation>
@@ -86,6 +97,7 @@
 <translation id="6165508094623778733">વધુ જાણો</translation>
 <translation id="7557539689487606886">પ્રીમિયમ સભ્ય બનો</translation>
 <translation id="3435896845095436175">સક્ષમ કરો</translation>
+<translation id="1940221956626514677">ટૂલબાર કસ્ટમાઇઝ કરો</translation>
 <translation id="9156965752763025780">તમારા ફેરફારો તમે આગલી વખતે Brave ફરીથી લોંચ કરશો ત્યારે પ્રભાવમાં આવશે.</translation>
 <translation id="1426410128494586442">હા</translation>
 <translation id="4250680216510889253">નહીં</translation>
@@ -128,6 +140,8 @@
 <translation id="8798099450830957504">ડિફૉલ્ટ</translation>
 <translation id="933652931229970927">આપમેળે ડાયગ્નોસ્ટિક્સ રિપોર્ટ મોકલો</translation>
 <translation id="1679356339067548863">Brave બ્રાઉઝર ક્રેશ થાય અથવા ફ્રીઝ થાય ત્યારે ડાયગ્નોસ્ટિક રિપોર્ટસ આપમેળે મોકલવાથી Braveની ઉત્પાદન સ્થિરતા સુધારવામાં મદદ કરો.</translation>
+<translation id="509873765238158442">Microsoft Recallને બ્લોક કરો</translation>
+<translation id="4763421121695677716">Microsoft Windows કમ્પ્યુટર પરથી Recall ફીચરને કોઈપણ ખુલ્લી Brave ટૅબના આપમેળે સ્ક્રીનશૉટ લેવાથી બ્લોક કરો.</translation>
 <translation id="7702907602086592255">ડોમેન</translation>
 <translation id="3202131003361292969">પથ</translation>
 <translation id="5390743329570580756">આ માટે મોકલો</translation>
@@ -156,14 +170,17 @@
 <translation id="2055363275850890030">પ્રાઇવેટ વિન્ડો</translation>
 <translation id="2653659639078652383">સબમિટ કરો</translation>
 <translation id="5249433283143453448">સંરક્ષિત સ્ટ્રીમીંગ વીડિયો અને અન્ય કન્ટેન્ટને બ્રાઉઝરમાં જોવા માટે Widevine ડિજિટલ રાઇટ્સ મેનેજમેન્ટ (DRM) કમ્પોનન્ટનો ઉપયોગ કરો.</translation>
+<translation id="6918225713618473646">Brave આ Manifest V2 એક્સટેન્શનને Brave સર્વર પર હોસ્ટ કરે છે, પરંતુ તેમના કન્ટેન્ટ, સુરક્ષા અથવા વર્તણૂકની સમીક્ષા અથવા ચકાસણી કરતું નથી. મદદ માટે કૃપા કરીને દરેક એક્સટેન્શનનું સત્તાવાર પેજ જુઓ. Manifest V2 માટે Braveના પ્લાન <ph name="BEGIN_LINK"/>અહીં<ph name="END_LINK"/> વાંચો.</translation>
 <translation id="8137559199583651773">એક્સટેન્શનનું સંચાલન કરો</translation>
 <translation id="8488282162676695335">Brave વૉલેટ</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">મારી વાતચીતના ઇતિહાસને સ્ટોર કરો</translation>
 <translation id="6106701981952170121">તમામ Leo AI વાતચીત ડેટાને ડિલીટ કરો</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="614530507403667291">નવી વાતચીતો માટે ડિફોલ્ટ મોડેલ</translation>
 <translation id="1907126221851170941">મોડલ ઉમેરો</translation>
+<translation id="5985516785067818307">સર્વે પેનલિસ્ટ</translation>
+<translation id="8347743943525229984">Brave સર્વેને મંજૂરી આપો</translation>
+<translation id="3204080538332044581">Braveને નવા ટૅબ પેજ પર પ્રાઇવેટ સર્વેની લિંક દર્શાવવાની મંજૂરી આપે છે. સર્વે અમને બહેતર ફીચર બનાવવા અને બ્રાઉઝર-આધારિત જાહેરાત પ્રચારોની અસરકારકતા માપવામાં મદદ કરે છે. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>
 <translation id="154702742922788359">ઓપન મોડ</translation>
 <translation id="2249111429176737533">ટેબ્ડ વિન્ડો તરીકે ખોલો</translation>
 <translation id="7022756207310403729">બ્રાઉઝરમાં ખોલો</translation>

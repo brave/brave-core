@@ -83,7 +83,6 @@
 <translation id="2126108037660393668">Không xác minh được tệp tải xuống.</translation>
 <translation id="2137162749895930932">Đóng màn hình dịch</translation>
 <translation id="5789330946301045610">Brave đã chặn tệp tải xuống này vì trang web không sử dụng kết nối an toàn và tệp có thể đã bị can thiệp</translation>
-<translation id="5401976223298265794">Bạn có thể mở dấu trang, chế độ đọc và nhiều nội dung khác từ trình đơn Brave</translation>
 <translation id="142389341645668510">Tùy chỉnh Brave</translation>
 <translation id="2174917724755363426">Chưa cài đặt xong. Bạn có chắc chắn muốn huỷ không?</translation>
 <translation id="8745514854244955877">Brave – Đăng nhập vào mạng – <ph name="PAGE_TITLE"/></translation>
@@ -143,7 +142,7 @@
 <translation id="2176825726964012531">Giới thiệu về &amp;Brave</translation>
 <translation id="2915996080311180594">Khởi động lại sau</translation>
 <translation id="2928420929544864228">Đã cài đặt xong.</translation>
-<translation id="2481553173340651149">Dữ liệu của bạn được mã hoá bằng cụm mật khẩu. Nhập cụm mật khẩu để sử dụng và lưu dữ liệu Brave vào Tài khoản Brave của bạn.</translation>
+<translation id="2481553173340651149">Dữ liệu của bạn được mã hoá bằng cụm mật khẩu. Nhập cụm mật khẩu để sử dụng và lưu dữ liệu trên Brave vào Tài khoản Brave của bạn.</translation>
 <translation id="2945997411976714835">Lỗi cài đặt: Trình cài đặt không thể bắt đầu quá trình.</translation>
 <translation id="3688936822855019158">Tổ chức bạn quản lý Brave</translation>
 <translation id="8208853227947884571">Brave đã được cập nhật</translation>
@@ -214,6 +213,7 @@
 <translation id="4256965182800026277">Mật khẩu, phương thức thanh toán và địa chỉ mà bạn đã lưu trong Tài khoản Brave sẽ bị xoá khỏi thiết bị này. Để tiếp tục sử dụng các dữ liệu đó trong Brave, hãy đăng nhập lại.</translation>
 <translation id="395904275706073188">Không thể đọc các trang được bảo vệ. Hãy thử đọc một trang khác.</translation>
 <translation id="4194619960643453552">Tìm hiểu cách Brave bảo vệ bạn</translation>
+<translation id="1486377520191913768">Khi bạn nhập vào thanh địa chỉ hoặc hộp tìm kiếm, Brave sẽ gửi nội dung bạn nhập đến công cụ tìm kiếm, AI và công cụ hỗ trợ của tổ chức bạn để đưa ra đề xuất.</translation>
 <translation id="1311808042904310985">Giới thiệu về &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">Giới thiệu về ChromeOS</translation>
 <translation id="3703994572283698466">ChromeOS có thể hoạt động được là nhờ <ph name="BEGIN_LINK_CROS_OSS"/>phần mềm nguồn mở<ph name="END_LINK_CROS_OSS"/> bổ sung, tương tự như <ph name="BEGIN_LINK_LINUX_OSS"/>môi trường phát triển Linux<ph name="END_LINK_LINUX_OSS"/>.</translation>
@@ -239,6 +239,7 @@
 <translation id="4281844954008187215">Điều khoản dịch vụ</translation>
 <translation id="7691786510374174420">Không thể cài đặt do lỗi chưa xác định. Nếu Brave hiện đang chạy, hãy đóng Brave và thử lại.</translation>
 <translation id="4304713468139749426">Trình quản lý mật khẩu</translation>
+<translation id="4334241893986177674">Tìm kiếm thông tin trên ảnh chụp màn hình này</translation>
 <translation id="4334294535648607276">Quá trình tải xuống hoàn tất.</translation>
 <translation id="1068681683510904753"><ph name="MANAGER"/> yêu cầu bạn phải đọc và chấp nhận Điều khoản dịch vụ sau đây trước khi sử dụng thiết bị này. Những điều khoản này không mở rộng, sửa đổi hay giới hạn Điều khoản của ChromeOS.</translation>
 <translation id="9183662282810237335">Bạn vẫn muốn thoát khỏi Brave?</translation>
@@ -333,6 +334,7 @@
 <translation id="899523323751802352">Nếu bạn quên cụm mật khẩu hoặc muốn thay đổi chế độ cài đặt này, hãy <ph name="SETTINGS_LINK"/> dữ liệu Brave trong tài khoản của bạn</translation>
 <translation id="82926023981336111">Tuỳ chỉnh và kiểm soát Brave. Đặt Brave làm trình duyệt mặc định.</translation>
 <translation id="5809516625706423866">Không thể kết nối với Internet. HTTP 401 không được phép. Vui lòng kiểm tra cấu hình proxy.</translation>
+<translation id="95980832839683236">Tăng tốc độ tải trang web bằng công cụ V8 của Brave nhưng làm giảm khả năng chống lại các cuộc tấn công của Brave. Chế độ cài đặt này đang tắt.</translation>
 <translation id="1224606669200461217">Để sử dụng và lưu dữ liệu Brave trong Tài khoản Brave, hãy cập nhật Brave</translation>
 <translation id="5824893331272123205">Không tải được bảng điều khiển này, hãy thử lại</translation>
 <translation id="7207456302801184289">Chào mừng bạn đến với Brave</translation>
@@ -349,7 +351,6 @@
 <translation id="3598551856834560515">Cập nhật Brave để bắt đầu đồng bộ hóa</translation>
 <translation id="5225261774087485064">Các trang web bạn truy cập thường ghi nhớ các mối quan tâm của bạn để cá nhân hoá trải nghiệm cho bạn. Các trang web cũng có thể lưu trữ thông tin trên Brave về mối quan tâm của bạn.</translation>
 <translation id="6003112304606738118">Đang tải xuống... Còn <ph name="HOURS"/> giờ.</translation>
-<translation id="1663358621471164569">Bạn có thể mở dấu trang, chế độ đọc và nhiều nội dung khác từ trình đơn Brave ở trên cùng bên phải</translation>
 <translation id="6040143037577758943">Đóng</translation>
 <translation id="700488072601322385">Để bảo vệ dữ liệu của bạn, hãy cho phép Brave loại bỏ quyền khỏi các trang web mà gần đây bạn không truy cập. Bạn sẽ vẫn nhận được thông báo.</translation>
 <translation id="9071554113102421877">&amp;Mở trong Brave</translation>
@@ -423,6 +424,7 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 <translation id="1505112054322049777">Để sử dụng chế độ cá nhân hoá và các tính năng khác, hãy thêm Brave vào mục Hoạt động trên web và ứng dụng cũng như các dịch vụ của Brave được liên kết</translation>
 <translation id="6666624454809779082">Brave đã được cài đặt cho tất cả người dùng trên máy tính của bạn.</translation>
 <translation id="9136637081636160997">Gần đây bạn không truy cập trang web này. Brave đã xoá <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> và <ph name="COUNT"/> quyền khác</translation>
+<translation id="4020203987234748583">Tăng tốc độ tải trang web bằng công cụ V8 của Brave nhưng làm giảm khả năng chống lại các cuộc tấn công của Brave. Chế độ cài đặt này đang bật.</translation>
 <translation id="3136039682492230890">Brave đề xuất quét tệp này vì tệp này có thể nguy hiểm.</translation>
 <translation id="1547295885616600893">ChromeOS có thể hoạt động được là nhờ <ph name="BEGIN_LINK_CROS_OSS"/>phần mềm nguồn mở<ph name="END_LINK_CROS_OSS"/> bổ sung.</translation>
 <translation id="6831043979455480757">Dịch</translation>
@@ -516,7 +518,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="8118331347066725040">Gửi ý kiến phản hồi về tính năng tìm kiếm bằng Ống kính</translation>
 <translation id="5334309298019785904">ChromeOS không thể đồng bộ hoá dữ liệu của bạn vì miền của bạn không dùng được tính năng Đồng bộ hoá.</translation>
 <translation id="813913629614996137">Đang khởi chạy...</translation>
-<translation id="7550680632761245819">Bật chế độ bảo vệ bổ sung trong công cụ WebAssembly và JavaScript của Brave</translation>
 <translation id="9067428552314418522">Tệp này nguy hiểm, do đó Brave đã chặn tệp.</translation>
 <translation id="8177472873527554730">Không tìm thấy nội dung trong trang</translation>
 <translation id="6219250889396046657">Nhập cụm mật khẩu để sử dụng và lưu dữ liệu Brave trong tài khoản <ph name="USER_EMAIL"/> của bạn</translation>
@@ -561,6 +562,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="4100716194836114130">Đây là Brave của bạn</translation>
 <translation id="1419543648228375718">Bạn muốn đăng nhập vào Brave?</translation>
 <translation id="8747073452963259673">góc dưới cùng bên trái của khu vực tìm kiếm: <ph name="LEFT"/>% từ bên trái sang, <ph name="BOTTOM"/>% từ dưới cùng lên</translation>
+<translation id="3562508460098852626">Bạn chỉ có thể xoá mật khẩu bên ngoài Brave</translation>
 <translation id="878572486461146056">Lỗi cài đặt: Quản trị viên mạng của bạn đã áp dụng Chính sách nhóm ngăn chặn hoạt động cài đặt: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave cần có quyền truy cập vào máy ảnh và micrô của bạn cho trang web này</translation>
 <translation id="64216977793816291">Bạn muốn đăng nhập vào Brave?</translation>
@@ -613,6 +615,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Đã có bản cập nhật Brave mới và bản cập nhật này sẽ áp dụng ngay khi bạn chạy lại Brave.}=1{Đã có bản cập nhật Brave mới và bản cập nhật này sẽ áp dụng ngay khi bạn chạy lại Brave. Cửa sổ ẩn danh của bạn sẽ không mở lại.}other{Đã có bản cập nhật Brave mới và bản cập nhật này sẽ áp dụng ngay khi bạn chạy lại Brave. # cửa sổ ẩn danh của bạn sẽ không mở lại.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật này}=1{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật này. Cửa sổ ẩn danh của bạn sẽ không mở lại.}other{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật này. # cửa sổ ẩn danh của bạn sẽ không mở lại.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật}=1{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật. Cửa sổ ẩn danh của bạn sẽ không mở lại.}other{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật. # cửa sổ ẩn danh của bạn sẽ không mở lại.}}</translation>
+<translation id="5749154344207139683">Hãy giúp chúng tôi cải thiện chế độ duyệt riêng tư bằng cách tham gia khảo sát dài 1 phút này.</translation>
 <translation id="79269250264141507">Khi bạn nhập vào thanh địa chỉ hoặc hộp tìm kiếm, Brave sẽ gửi nội dung bạn nhập tới công cụ tìm kiếm mặc định của bạn để nhận các đề xuất tốt hơn. Điều này được tắt trong Riêng tư.</translation>
 <translation id="2589970573128789862">Brave Riêng tư</translation>
 <translation id="5994282802285556682">Khi duyệt ở chế độ Riêng tư, Brave sẽ cảnh báo bạn trước khi tải trang web bằng kết nối không an toàn</translation>

@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">Tikai jaunā cilnes lapā</translation>
 <translation id="6406506848690869874">Sinhronizācija</translation>
 <translation id="1544192797660353713">Maks</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo MI</translation>
 <translation id="8275068909952022340">Vairāk…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {Pazīstams viesis}
+          other {Pazīstams viesis}
+        }</translation>
 <translation id="1990886731975529483">Instalēt un palaist Google Widevine</translation>
 <translation id="8926389886865778422">Nejautāt atkārtoti</translation>
 <translation id="4900351245762303149">Instalēt Google Widevine</translation>
@@ -75,13 +79,20 @@
 <translation id="2808103541110899519">Paslēpt Brave maka ikonu</translation>
 <translation id="7595540212376041331">Paslēpt Brave maka ikonu</translation>
 <translation id="3893997535859323951">Slēpt Leo MI ikonu</translation>
+<translation id="8832245978592881387">Atvērt Leo MI jaunā cilnē</translation>
+<translation id="4577675328803804820">Atvērt Leo MI sānjoslā</translation>
+<translation id="564305948667173847">Pārvaldīt Leo MI iestatījumus</translation>
 <translation id="6208515240323786457">Slēpt Leo MI ikonu</translation>
-<translation id="2361906291514218784">Leo MI</translation>
+<translation id="2169338740411893745">Atvērt Leo MI jaunā cilnē</translation>
+<translation id="3295805221342028003">Atvērt Leo MI sānjoslā</translation>
+<translation id="7400808612454224939">Pārvaldīt Leo MI iestatījumus</translation>
+<translation id="5385064007245738696">Par Leo MI</translation>
 <translation id="4928988318462976765">Paplašinājumu interneta veikals</translation>
 <translation id="9181207987584064303">Skatīt paplašinājumu interneta veikalā</translation>
 <translation id="3161744659507801211">Brīdinājums: Brave nevar novērst to, ka paplašinājumi ieraksta jūsu pārlūkošanas vēsturi.</translation>
 <translation id="2162109630536601963">Ja šis paplašinājums veic tīkla pieprasījumus, tie neizmanto Tor vai inkognito režīmu.</translation>
 <translation id="2725327089319971976">Lai atspējotu šo paplašinājumu inkognito un Tor režīmā, noņemiet atzīmi no šīs opcijas.</translation>
+<translation id="438106944087726695">Viesots platformā Brave</translation>
 <translation id="3371343170427636147">Brave Nightly pārlūka lietotnes</translation>
 <translation id="4097979995947147464">Brave Beta pārlūka lietotnes</translation>
 <translation id="8303432794159193481">Brave Dev pārlūka lietotnes</translation>
@@ -180,11 +191,6 @@
 <translation id="4394049700291259645">Atspējot</translation>
 <translation id="7142548388914389999">Atļaut privātuma nodrošināšanas produktu analīzi (P3A)</translation>
 <translation id="2604698253988679506">Šīs anonimizētās atbildes palīdz Brave aprēķināt atsevišķu funkciju kopējo lietojumu un uzlabot tās.</translation>
-<translation id="1947672064022327074">Vai vēlaties palaist kripto makus Ethereum atbalstam?</translation>
-<translation id="7583735190612229830">Iestatiet kripto makus, lai tie mijiedarbotos ar šo lietotni un citām tai līdzīgām lietotnēm.</translation>
-<translation id="8731422418734770661">Iestatīt Crypto Wallets</translation>
-<translation id="8199661191594897555">Startēt kripto makus un atkārtoti ielādēt</translation>
-<translation id="8428213095426709021">Iestatījumi</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 domēni</translation>
 <translation id="5046066249040287308">Brave maka ērtības pakalpojums</translation>
@@ -334,6 +340,7 @@
 <translation id="7557539689487606886">Pāriet uz Premium</translation>
 <translation id="1035309871698658326">Atverot parastas cilnes, to nosaukumi un izcelsme tiks automātiski nosūtīti Leo to klasifikācijai.</translation>
 <translation id="3435896845095436175">Iespējot</translation>
+<translation id="1940221956626514677">Pielāgot rīkjoslu</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
 <translation id="7179921470347911571">Restartēt tūlīt</translation>
 <translation id="1426410128494586442">Jā</translation>
@@ -491,6 +498,8 @@
 <translation id="3540231253392253941">Informatīvajiem paziņojumiem lietot Google pakalpojumus</translation>
 <translation id="933652931229970927">Automātiski nosūtīt diagnostikas ziņojumus</translation>
 <translation id="4891600875049212418">Apmeklējot sensitīvas vietnes, pāriet neredzamajā režīmā</translation>
+<translation id="509873765238158442">Bloķēt Microsoft funkciju "Recall"</translation>
+<translation id="4763421121695677716">Neļaut funkcijai "Recall" Microsoft Windows datoros automātiski uzņemt jebkuras atvērtas Brave cilnes ekrānuzņēmumus.</translation>
 <translation id="1968895725257436430">Datu vākšana</translation>
 <translation id="4846154056248462491">Izejot</translation>
 <translation id="216468847346280584">Dzēst Brave reklāmu datus...</translation>
@@ -652,10 +661,10 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2653659639078652383">Iesniegt</translation>
 <translation id="1294350054292274934">Atrisināt tikai .onion adreses Tor logos</translation>
 <translation id="601227612175911475">Onion pakalpojumi nebūs pieejami ārpus Tor logiem.</translation>
-<translation id="2896916411183256228">Izmanto programmu WebTorrent, lai torentus parādītu uzreiz pārlūkprogrammā. Atbalsta torentu failus un magnētiskās saites.</translation>
 <translation id="5249433283143453448">Izmantojiet Widevine digitālā satura tiesību pārvaldības (DRM) komponentu, lai pārlūkā skatītu aizsargātu videostraumējumu un citu saturu.</translation>
 <translation id="1314131187310290315">Manifest V2 paplašinājumi</translation>
 <translation id="2488433650767270565">Norādītie Manifest V2 paplašinājumi tiks izņemti no Chrome Web Store, bet tiks joprojām atbalstīti Brave. Nospiediet pogu, lai lejupielādētu un instalētu vai atinstalētu.</translation>
+<translation id="6918225713618473646">Brave mitina šos Manifest V2 paplašinājumus Brave serveros, taču nepārskata un nepārbauda to saturu, drošību vai darbību. Lūdzam skatīt katra paplašinājuma oficiālo lapu, lai saņemtu palīdzību. Lasiet par Brave plāniem attiecībā uz Manifest V2 <ph name="BEGIN_LINK"/>šeit<ph name="END_LINK"/>.</translation>
 <translation id="578671172657727816">Iespējot NoScript™</translation>
 <translation id="9068475464170522036">NoScript ir Manifest V2 paplašinājums, kas ļauj bloķēt un atbloķēt individuālus skriptus, kas izmanto vai cenšas izmantot noteiktu lapu.</translation>
 <translation id="1394592156621788100">Iespējot uBlock Origin™</translation>
@@ -670,7 +679,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7701023802820268122">Noklusējuma Solana maks</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="6942354363301686374">Paplašinājumi (bez atkāpšanās)</translation>
-<translation id="1274962333945373242">Kriptovalūtas maciņi (samazināti)</translation>
 <translation id="702381242110464396">Paplašinājumi (atkāpšanās uz Brave maku)</translation>
 <translation id="4718664830805652430">Noklusējuma pamata valūta</translation>
 <translation id="7992507032049865603">Noklusējuma pamata kriptovalūta</translation>
@@ -735,6 +743,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="3095201688102519917">Brīdināt, pirms tiek aizvērts logs ar vairākām cilnēm</translation>
 <translation id="7120553802660696133">Aizvērt logu, kad tiek aizvērta pēdējā cilne</translation>
 <translation id="3394171693948989253">Rādīt pilnekrāna atgādinājumu nospiest Esc izejot</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Rādīt Leo ikonu sānjoslā</translation>
 <translation id="8055509865174199683">Rādīt Leo tīmekļa vietnēs konteksta izvēlnē</translation>
 <translation id="1529674267267221673">Leo parādīsies konteksta izvēlnē, kad noklikšķināsiet tīmekļa vietnē ar labo peles taustiņu. Tādā veidā konteksts no aktuālās tīmekļa vietnes tiks nosūtīts Leo.</translation>
@@ -747,7 +756,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1335414530428321716">Atiestatot Leo MI, jūsu tērzēšanas vēsture tiks dzēsta, un jums būs atkal jāpiekrīt Brave Leo MI lietošanai. Dzēšot tērzēšanas vēsturi, visas jūsu iepriekšējās sarunas ar Brave Leo MI tiks dzēstas. Šo darbību nav iespējams atsaukt.</translation>
 <translation id="5574059574002819179">Pielāgot automātiskās pabeigšanas ieteikumus</translation>
 <translation id="7942415993090181327">Tērzēšanas vēsture</translation>
-<translation id="5385064007245738696">Par Leo MI</translation>
 <translation id="5084498230659987096">Brave Leo piedāvā privātu tērzēšanu ar MI un citas ar MI darbinātas saskarnes pārlūkprogrammā. Leo nemācās no jūsu datiem, un tie netiek izmantoti modeļa apmācībai. Visi pieprasījumi tiek filtrēti caur anonimizējošu serveri.</translation>
 <translation id="6458721693611638005">Jūs varat uzzināt vairāk par to, kā Brave rūpējas par jūsu privātumu, kad jūs mijiedarbojaties ar MI, izlasot Leo privātuma politiku: <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Nosklusējuma modelis jaunām sarunām</translation>
@@ -784,6 +792,9 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="6304169450064541679">Sistēmas uzvedne</translation>
 <translation id="3081947790648024460">Modelim sniegtās instrukcijas un/vai konteksts, kas pielāgos tā atbildes, ievērojot vēlamo virzienu vai stilu. Izmantojiet %datetime% tur, kur vēlaties ievietot datumu un laiku.</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> daļiņas</translation>
+<translation id="5985516785067818307">Aptaujas dalībnieks</translation>
+<translation id="8347743943525229984">Atļaut Brave aptaujas</translation>
+<translation id="3204080538332044581">Ļauj Brave rādīt saites uz privātām aptaujām jaunas cilnes lapā. Aptaujas palīdz mums veidot labākas funkcijas un izvērtēt pārlūkprogrammā balstītu reklāmas kampaņu efektivitāti. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Iespējot atskaņošanas sarakstu</translation>
 <translation id="7903608716704052878">Automātiski pievienot failus, lai skatītu bezsaistē</translation>
 <translation id="4193768184502613558">Šī opcija automātiski saglabās multivides failus kešatmiņā, lai jūs varētu tos atskaņot bez interneta savienojuma.</translation>

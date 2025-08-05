@@ -84,7 +84,6 @@
 <translation id="2126108037660393668">다운로드한 파일을 확인할 수 없습니다.</translation>
 <translation id="2137162749895930932">번역 화면 닫기</translation>
 <translation id="5789330946301045610">사이트에서 보안 연결을 사용하고 있지 않으며 파일이 조작되었을 가능성이 있기 때문에 Brave에서 이 다운로드를 차단했습니다.</translation>
-<translation id="5401976223298265794">Brave 메뉴에서 북마크, 읽기 모드 등을 열 수 있습니다.</translation>
 <translation id="142389341645668510">Brave 맞춤설정</translation>
 <translation id="2174917724755363426">설치가 완료되지 않았습니다. 취소하시겠습니까?</translation>
 <translation id="8745514854244955877">Brave - 네트워크 로그인 - <ph name="PAGE_TITLE"/></translation>
@@ -215,6 +214,7 @@
 <translation id="4256965182800026277">Brave 계정에 저장된 비밀번호, 결제 수단, 주소가 이 기기에서 삭제됩니다. Brave에서 다시 사용하려면 다시 로그인하세요</translation>
 <translation id="395904275706073188">보호된 페이지는 읽을 수 없습니다. 다른 페이지를 사용해 보세요.</translation>
 <translation id="4194619960643453552">Brave이 사용자를 안전하게 보호하는 방법 알아보기</translation>
+<translation id="1486377520191913768">주소 표시줄이나 검색창에 입력하면 추천을 받을 수 있도록 Brave에서 입력 내용을 조직의 검색, AI, 에이전트 도구로 전송합니다.</translation>
 <translation id="1311808042904310985">&amp;Brave for Testing 정보</translation>
 <translation id="1152920704813762236">ChromeOS 정보</translation>
 <translation id="3703994572283698466"><ph name="BEGIN_LINK_LINUX_OSS"/>Linux 개발 환경<ph name="END_LINK_LINUX_OSS"/>과 마찬가지로, ChromeOS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용하여 개발되었습니다.</translation>
@@ -240,6 +240,7 @@
 <translation id="4281844954008187215">서비스 약관</translation>
 <translation id="7691786510374174420">확인되지 않은 오류로 설치에 실패했습니다. Brave이 실행 중인 경우 종료한 후 다시 실행하세요.</translation>
 <translation id="4304713468139749426">비밀번호 관리자</translation>
+<translation id="4334241893986177674">이 스크린샷을 검색합니다.</translation>
 <translation id="4334294535648607276">다운로드가 완료되었습니다.</translation>
 <translation id="1068681683510904753">기기를 사용하기 전에 <ph name="MANAGER"/>에서 다음 서비스 약관을 읽고 이에 동의해야 합니다. 이 약관은 ChromeOS 약관을 확대, 수정 또는 제한하지 않습니다</translation>
 <translation id="9183662282810237335">Brave을 종료하시겠습니까?</translation>
@@ -334,6 +335,7 @@
 <translation id="899523323751802352">암호가 기억나지 않거나 이 설정을 변경하려면 계정의 Brave 데이터를 <ph name="SETTINGS_LINK"/>하세요.</translation>
 <translation id="82926023981336111">Brave을 맞춤설정 및 제어합니다. Brave을 기본 브라우저로 설정합니다.</translation>
 <translation id="5809516625706423866">인터넷에 연결할 수 없습니다(HTTP 401 Unauthorized). 프록시 설정을 확인하시기 바랍니다.</translation>
+<translation id="95980832839683236">Brave의 V8 엔진으로 사이트 속도를 높이지만 Brave이 공격에 약간 더 취약해집니다. 설정이 사용 중지되어 있습니다.</translation>
 <translation id="1224606669200461217">Brave 계정에서 Brave 데이터를 사용하고 저장하려면 Brave을 업데이트하세요.</translation>
 <translation id="5824893331272123205">패널을 로드할 수 없습니다. 다시 시도해 주세요.</translation>
 <translation id="7207456302801184289">Brave에 오신 것을 환영합니다.</translation>
@@ -350,7 +352,6 @@
 <translation id="3598551856834560515">동기화를 시작하려면 Brave을 업데이트하세요.</translation>
 <translation id="5225261774087485064">방문하는 사이트에서는 일반적으로 사용 경험을 개인화하기 위해 내가 관심을 보인 항목을 기억합니다. 또한 사이트에서는 내 관심분야에 관한 정보를 Brave에 저장할 수 있습니다.</translation>
 <translation id="6003112304606738118">다운로드 중... <ph name="HOURS"/>시간 남음</translation>
-<translation id="1663358621471164569">오른쪽 상단의 Brave 메뉴에서 북마크, 읽기 모드 등을 열 수 있습니다</translation>
 <translation id="6040143037577758943">닫기</translation>
 <translation id="700488072601322385">데이터를 보호하려면 최근에 방문하지 않은 사이트의 권한을 Brave에서 삭제하도록 허용하세요. 알림은 중지되지 않습니다.</translation>
 <translation id="9071554113102421877">&amp;Brave에서 열기</translation>
@@ -424,6 +425,7 @@
 <translation id="1505112054322049777">맞춤설정 및 기타 기능을 사용하려면 웹 및 앱 활동 그리고 연결된 Brave 서비스에 Brave을 포함하세요</translation>
 <translation id="6666624454809779082">모든 사용자가 사용할 수 있도록 컴퓨터에 Brave이 이미 설치되어 있습니다.</translation>
 <translation id="9136637081636160997">최근에 사이트를 방문하지 않았습니다. Brave에서 <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> 외 권한 <ph name="COUNT"/>개를 삭제했습니다.</translation>
+<translation id="4020203987234748583">Brave의 V8 엔진으로 사이트 속도를 높이지만 Brave이 공격에 약간 더 취약해집니다. 설정이 사용 설정되어 있습니다.</translation>
 <translation id="3136039682492230890">위험할 수 있는 파일이므로 검사하는 것이 좋습니다.</translation>
 <translation id="1547295885616600893">ChromeOS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용하여 개발되었습니다.</translation>
 <translation id="6831043979455480757">번역</translation>
@@ -517,7 +519,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8118331347066725040">렌즈로 검색에 관한 의견 보내기</translation>
 <translation id="5334309298019785904">내 도메인에서 동기화를 사용할 수 없으므로 ChromeOS에서 데이터를 동기화할 수 없습니다.</translation>
 <translation id="813913629614996137">초기화 중...</translation>
-<translation id="7550680632761245819">Brave의 JavaScript 및 WebAssembly 엔진에서 추가 보호 기능 사용 설정</translation>
 <translation id="9067428552314418522">이 파일은 위험하므로 Brave에서 차단했습니다.</translation>
 <translation id="8177472873527554730">페이지의 콘텐츠를 찾을 수 없음</translation>
 <translation id="6219250889396046657"><ph name="USER_EMAIL"/> 계정에서 Brave 데이터를 사용하고 저장하려면 비밀번호를 입력하세요</translation>
@@ -562,6 +563,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="4100716194836114130">나만의 Brave</translation>
 <translation id="1419543648228375718">Brave에 로그인하시겠습니까?</translation>
 <translation id="8747073452963259673">검색 영역의 왼쪽 하단: 왼쪽 <ph name="LEFT"/>%, 하단 <ph name="BOTTOM"/>%</translation>
+<translation id="3562508460098852626">비밀번호는 Brave 외부에서만 삭제할 수 있습니다</translation>
 <translation id="878572486461146056">설치 오류: 네트워크 관리자가 설치를 방지하는 그룹 정책을 적용했습니다: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">이 사이트에서 카메라와 마이크에 액세스하려면 Brave에 권한이 필요합니다</translation>
 <translation id="64216977793816291">Brave에 로그인하시겠습니까?</translation>
@@ -614,6 +616,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다.}=1{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다. 시크릿 창이 다시 열리지 않습니다.}other{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다.}=1{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다. 시크릿 창이 다시 열리지 않습니다.}other{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다.}=1{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다. 시크릿 창이 다시 열리지 않습니다.}other{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
+<translation id="5749154344207139683">1분 설문조사에 참여하여 개인 정보 보호 기능을 개선할 수 있도록 도와주세요.</translation>
 <translation id="79269250264141507">주소창이나 검색창에 입력하면 입력하신 내용을 Brave가 기본 검색 엔진으로 보내 추천 결과를 개선합니다. 비공개 모드에서는 꺼집니다.</translation>
 <translation id="2589970573128789862">Brave Private</translation>
 <translation id="5994282802285556682">비공개 모드로 탐색 중에 비보안 연결을 사용하는 사이트에 진입하면 로드 전에 Brave가 경고합니다.</translation>

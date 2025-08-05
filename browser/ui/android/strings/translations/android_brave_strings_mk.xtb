@@ -96,6 +96,9 @@
 <translation id="933652931229970927">Испраќај дијагностички извештаи автоматски</translation>
 <translation id="7977176350719484850">Прибл. заштеден\nинтернет</translation>
 <translation id="9008534313521214777">Прибл. заштедено\nвреме</translation>
+<translation id="8347743943525229984">Дозволи анкети на Brave</translation>
+<translation id="6022939994702081659">Дозволува Brave да прикажува врски до приватни анкети на страница на нова картичка. Анкетите ни помагаат да создаваме подобри функции и да ја мериме ефикасноста на рекламните кампањи базирани на прегледувач.</translation>
+<translation id="7746496306508543965">Дознајте повеќе за анкетите на Brave</translation>
 <translation id="410351446219883937">Автоматско пуштање</translation>
 <translation id="4206299587103092719">Најава на Google</translation>
 <translation id="9110294136812584522">Страниците може да побараат да користат старомодно најавување на Google преку колачиња од трети страни</translation>
@@ -271,7 +274,6 @@
 <translation id="3961126209136843111">Увезете постоечки паричник</translation>
 <translation id="4811736040444856406">Покажи фраза за обнова</translation>
 <translation id="4359319875297001084">Увезете од наследни Brave крипто паричници?</translation>
-<translation id="3157931365184549694">Врати</translation>
 <translation id="5844138175312846408">Веќе имате паричник?</translation>
 <translation id="2502258949541727762">Пред да започнеме</translation>
 <translation id="4303748097351941030">Поддржани мрежи</translation>
@@ -341,7 +343,6 @@
 <translation id="5317780077021120954">Зачувај</translation>
 <translation id="1426320910664514906">Лимит за гас</translation>
 <translation id="9065203028668620118">Уреди</translation>
-<translation id="473775607612524610">Ажурирај</translation>
 <translation id="5045550434625856497">Погрешна лозинка</translation>
 <translation id="8047527352810290817">Измени гас</translation>
 <translation id="9091334651803050473">Иако не е загарантирано, рударите најверојатно ќе ја направат вашата трансакција приоритетна ако платите повисок надомест.</translation>
