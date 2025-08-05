@@ -7,15 +7,10 @@ import("//brave/build/ios/mojom/mojom_wrappers.gni")
 
 ios_objc_mojom_wrappers("mojom") {
   mojom_target = "//brave/components/brave_shields/core/common:mojom"
-  sources = [
-    "//brave/components/brave_shields/core/common/brave_shields_panel.mojom",
-  ]
+  sources =
+      [ "//brave/components/brave_shields/core/common/shields_settings.mojom" ]
   exclude_types = [
-    "PanelHandlerFactory",
-    "PanelHandler",
-    "UIHandler",
-    "DataHandler",
-    "SiteBlockInfo",
-    "SiteSettings",
+    "FarblingLevel",
+    "ShieldsSettings",
   ]
 }

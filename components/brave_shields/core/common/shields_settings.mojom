@@ -19,3 +19,16 @@ struct ShieldsSettings {
   array<string> origins_to_allow_scripts;
   bool reduce_language;
 };
+
+enum AdBlockMode {
+  AGGRESSIVE,
+  STANDARD,
+  ALLOW
+};
+
+enum FingerprintMode {
+  // STRICT clashes with Windows SDK
+  STRICT_MODE,
+  STANDARD_MODE,
+  ALLOW_MODE
+};

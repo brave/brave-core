@@ -371,52 +371,6 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
   }
 }
 
-void SetAdBlockMode(HostContentSettingsMap* map,
-                    mojom::AdBlockMode mode,
-                    const GURL& url,
-                    PrefService* local_state,
-                    PrefService* profile_state) {
-  ControlType control_type_ad;
-  ControlType control_type_cosmetic;
-
-  if (mode == mojom::AdBlockMode::ALLOW) {
-    control_type_ad = ControlType::ALLOW;
-  } else {
-    control_type_ad = ControlType::BLOCK;
-  }
-
-  if (mode == mojom::AdBlockMode::AGGRESSIVE) {
-    control_type_cosmetic = ControlType::BLOCK;  // aggressive
-  } else if (mode == mojom::AdBlockMode::STANDARD) {
-    control_type_cosmetic = ControlType::BLOCK_THIRD_PARTY;  // standard
-  } else {
-    control_type_cosmetic = ControlType::ALLOW;  // allow
-  }
-
-  brave_shields::SetAdControlType(map, control_type_ad, url, local_state);
-
-  brave_shields::SetCosmeticFilteringControlType(
-      map, control_type_cosmetic, url, local_state, profile_state);
-}
-
-mojom::AdBlockMode GetAdBlockMode(HostContentSettingsMap* map,
-                                  const GURL& url) {
-  ControlType control_type_ad = brave_shields::GetAdControlType(map, url);
-
-  ControlType control_type_cosmetic =
-      brave_shields::GetCosmeticFilteringControlType(map, url);
-
-  if (control_type_ad == ControlType::ALLOW) {
-    return mojom::AdBlockMode::ALLOW;
-  }
-
-  if (control_type_cosmetic == ControlType::BLOCK) {
-    return mojom::AdBlockMode::AGGRESSIVE;
-  } else {
-    return mojom::AdBlockMode::STANDARD;
-  }
-}
-
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url) {
   const ControlType type = GetCosmeticFilteringControlType(map, url);
@@ -684,39 +638,6 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                              : ControlType::BLOCK;
 }
 
-void SetFingerprintMode(HostContentSettingsMap* map,
-                        mojom::FingerprintMode mode,
-                        const GURL& url,
-                        PrefService* local_state,
-                        PrefService* profile_state) {
-  ControlType control_type;
-
-  if (mode == mojom::FingerprintMode::ALLOW_MODE) {
-    control_type = ControlType::ALLOW;
-  } else if (mode == mojom::FingerprintMode::STRICT_MODE) {
-    control_type = ControlType::BLOCK;
-  } else {
-    control_type = ControlType::DEFAULT;  // STANDARD_MODE
-  }
-
-  brave_shields::SetFingerprintingControlType(map, control_type, url,
-                                              local_state, profile_state);
-}
-
-mojom::FingerprintMode GetFingerprintMode(HostContentSettingsMap* map,
-                                          const GURL& url) {
-  ControlType control_type =
-      brave_shields::GetFingerprintingControlType(map, url);
-
-  if (control_type == ControlType::ALLOW) {
-    return mojom::FingerprintMode::ALLOW_MODE;
-  } else if (control_type == ControlType::BLOCK) {
-    return mojom::FingerprintMode::STRICT_MODE;
-  } else {
-    return mojom::FingerprintMode::STANDARD_MODE;
-  }
-}
-
 bool IsBraveShieldsManaged(PrefService* prefs,
                            HostContentSettingsMap* map,
                            GURL url) {
@@ -867,25 +788,6 @@ ControlType GetNoScriptControlType(HostContentSettingsMap* map,
 
   return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                           : ControlType::BLOCK;
-}
-
-void SetIsNoScriptEnabled(HostContentSettingsMap* map,
-                          bool is_enabled,
-                          const GURL& url,
-                          PrefService* local_state) {
-  ControlType control_type =
-      is_enabled ? ControlType::BLOCK : ControlType::ALLOW;
-  brave_shields::SetNoScriptControlType(map, control_type, url, local_state);
-}
-
-bool GetNoScriptEnabled(HostContentSettingsMap* map, const GURL& url) {
-  ControlType control_type = brave_shields::GetNoScriptControlType(map, url);
-
-  if (control_type == ControlType::ALLOW) {
-    return false;
-  }
-
-  return true;
 }
 
 void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,

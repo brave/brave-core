@@ -5,6 +5,7 @@
 
 module brave_shields.mojom;
 
+import "brave/components/brave_shields/core/common/shields_settings.mojom";
 import "components/content_settings/core/common/content_settings_types.mojom";
 import "url/mojom/url.mojom";
 import "ui/gfx/geometry/mojom/geometry.mojom";
@@ -84,19 +85,6 @@ struct SiteSettings {
   bool is_noscript_enabled;
   bool is_forget_first_party_storage_enabled;
   map<content_settings.mojom.ContentSettingsType, bool> webcompat_settings;
-};
-
-enum AdBlockMode {
-  AGGRESSIVE,
-  STANDARD,
-  ALLOW
-};
-
-enum FingerprintMode {
-  // STRICT clashes with Windows SDK
-  STRICT_MODE,
-  STANDARD_MODE,
-  ALLOW_MODE
 };
 
 enum CookieBlockMode {
