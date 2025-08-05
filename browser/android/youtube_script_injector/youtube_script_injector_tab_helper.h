@@ -36,10 +36,9 @@ class YouTubeScriptInjectorTabHelper
   bool IsPictureInPictureAvailable() const;
 
   // content::WebContentsObserver overrides:
+  void DidFinishNavigation(content::NavigationHandle* navigation_handle) override;
   void PrimaryMainDocumentElementAvailable() override;
-  void DidToggleFullscreenModeForTab(bool entered_fullscreen,
-                                     bool will_cause_resize) override;
-
+  void MediaEffectivelyFullscreenChanged(bool is_fullscreen) override;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
  private:

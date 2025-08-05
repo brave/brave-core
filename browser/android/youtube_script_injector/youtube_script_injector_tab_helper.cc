@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/android/youtube_script_injector/lockable_screen_orientation_delegate.h"
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
+#include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.cc"
 
 #include <memory>
 #include <string>
@@ -114,28 +116,28 @@ constexpr char16_t kYoutubeFullscreen[] =
     function triggerFullscreen() {
       // Check if the video is not in fullscreen mode already.
       if (!document.fullscreenElement) {
-        let observerTimeout;
-        // Create a MutationObserver to watch for changes in the DOM.
-        const observer = new MutationObserver((_mutationsList, observer) => {
-          var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
-          var videoPlayer = document.querySelector(videoPlaySelector);
-          if (fullscreenBtn && videoPlayer && videoPlayer.readyState >= 3) {
-            clearTimeout(observerTimeout);
-            observer.disconnect()
-            requestFullscreen(fullscreenBtn, resolve);
-          }
-        });
-
         var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
         var videoPlayer = document.querySelector(videoPlaySelector);
         // Check if fullscreen button and video are available.
-        if (fullscreenBtn && videoPlayer && videoPlayer.readyState >= 3) {
-         requestFullscreen(fullscreenBtn, resolve);
+        if (fullscreenBtn && videoPlayer) {
+         requestFullscreen(fullscreenBtn, resolve, videoPlayer);
         } else {
           // When fullscreen button is not available
           // clicking the movie player resume the UI.
           var playerContainer = document.getElementById("player-container-id");
           if (videoPlayer && playerContainer) {
+            let observerTimeout;
+            // Create a MutationObserver to watch for changes in the DOM.
+            const observer = new MutationObserver((_mutationsList, observer) => {
+              var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
+              var videoPlayer = document.querySelector(videoPlaySelector);
+              if (fullscreenBtn && videoPlayer) {
+                clearTimeout(observerTimeout);
+                observer.disconnect()
+                requestFullscreen(fullscreenBtn, resolve, videoPlayer);
+              }
+            });
+
             // Auto-disconnect the observer after 30 seconds,
             // a reasonable duration picked after some testing.
             observerTimeout = setTimeout(() => {
@@ -162,17 +164,30 @@ constexpr char16_t kYoutubeFullscreen[] =
     // Attempts to request fullscreen mode for the given movie player element.
     // Resolves with 'fullscreen_triggered' if successful, or
     // 'requestFullscreen_failed' if the request fails.
-    function requestFullscreen(fullscreenBtn, resolve) {
-      fullscreenBtn.click().then(() => {
+    function requestFullscreen(fullscreenBtn, resolve, videoPlayer) {
+      if (videoPlayer.readyState >= 3) {
+        videoPlayer.click();
+        clickFullscreenButton(fullscreenBtn, resolve);
+      } else {
+        videoPlayer.addEventListener("canplay", () => {
+          videoPlayer.click();
+          clickFullscreenButton(fullscreenBtn, resolve);
+        }, { once: true });
+      }
+    }
+
+    function clickFullscreenButton(fullscreenBtn, resolve) {
+      if (fullscreenBtn && !document.hidden) {
+        fullscreenBtn.click();
         resolve('fullscreen_triggered');
-      }).catch(() => {
+      } else {
         resolve('requestFullscreen_failed');
-      });
+      }
     }
 
     if (document.readyState === "loading") {
       // Loading hasn't finished yet.
-      document.addEventListener("DOMContentLoaded", triggerFullscreen);
+      document.addEventListener("DOMContentLoaded", triggerFullscreen, { once: true });
     } else {
       // `DOMContentLoaded` has already fired.
       triggerFullscreen();
@@ -199,8 +214,14 @@ YouTubeScriptInjectorTabHelper::YouTubeScriptInjectorTabHelper(
 
 YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
+void YouTubeScriptInjectorTabHelper::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (navigation_handle->IsSameDocument() && navigation_handle->IsInMainFrame() && navigation_handle->HasCommitted()) {
+    SetFullscreenRequested(false);
+  }
+}
+
 void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
-  SetFullscreenRequested(false);
   content::WebContents* contents = web_contents();
   // Filter only YouTube videos.
   if (!IsYouTubeVideo()) {
@@ -218,13 +239,13 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
   }
 }
 
-void YouTubeScriptInjectorTabHelper::DidToggleFullscreenModeForTab(
-    bool entered_fullscreen,
-    bool will_cause_resize) {
-  // Reset fullscreen state when toggling fullscreen mode.
-  // This ensures that the next time fullscreen is requested, it will be
-  // processed.
-  SetFullscreenRequested(false);
+void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(bool is_fullscreen) {
+  if (is_fullscreen && HasFullscreenBeenRequested()) {
+    SetFullscreenRequested(false);
+    if (web_contents()->GetVisibility() == content::Visibility::VISIBLE) {
+      ::youtube_script_injector::EnterPictureInPicture(web_contents());
+    }
+  }
 }
 
 void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
@@ -314,6 +335,11 @@ bool YouTubeScriptInjectorTabHelper::HasFullscreenBeenRequested() const {
 }
 
 void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
+  if (requested) {
+    new LockableScreenOrientationDelegate();
+  } else {
+    new content::ScreenOrientationDelegateAndroid();
+  }
   content::NavigationEntry* entry =
       web_contents()->GetController().GetLastCommittedEntry();
   if (!entry) {
@@ -333,10 +359,17 @@ void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
 void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
     content::GlobalRenderFrameHostToken token,
     base::Value value) {
-  if (token == web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()) {
-    // Reset fullscreen state when the script completes
-    SetFullscreenRequested(false);
+  // If the tab is visible, the script result indicates fullscreen was triggered,
+  // and the callback is for the current main frame, return early without resetting
+  // the fullscreen state. This prevents unnecessary state changes when fullscreen
+  // was successfully entered.
+  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE && value.is_string() &&
+  value.GetString() == "fullscreen_triggered" &&
+  token == web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()) {
+    return;
   }
+
+  SetFullscreenRequested(false);
 }
 
 bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {

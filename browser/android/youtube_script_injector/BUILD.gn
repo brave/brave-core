@@ -11,6 +11,8 @@ source_set("youtube_script_injector") {
     "brave_youtube_script_injector_native_helper.cc",
     "youtube_script_injector_tab_helper.cc",
     "youtube_script_injector_tab_helper.h",
+    "lockable_screen_orientation_delegate.cc",
+    "lockable_screen_orientation_delegate.h",
   ]
 
   public_deps = [ "//content/public/browser" ]
@@ -38,6 +40,7 @@ android_library("java") {
     "//base:base_java",
     "//content/public/android:content_full_java",
     "//third_party/jni_zero:jni_zero_java",
+    "//ui/android:ui_no_recycler_view_java"
   ]
 
   resources_package = "org.chromium.chrome.browser"

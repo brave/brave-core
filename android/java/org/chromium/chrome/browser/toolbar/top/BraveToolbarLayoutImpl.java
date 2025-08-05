@@ -65,8 +65,6 @@ import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.fullscreen.FullscreenOptions;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
@@ -148,8 +146,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 BraveRewardsObserver,
                 BraveRewardsNativeWorker.PublisherObserver,
                 ConnectionErrorHandler,
-                PlaylistServiceObserverImplDelegate,
-                FullscreenManager.Observer {
+                PlaylistServiceObserverImplDelegate {
     private static final String TAG = "BraveToolbar";
 
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
@@ -207,7 +204,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Collections.synchronizedSet(new HashSet<Integer>());
 
     private PlaylistService mPlaylistService;
-    private FullscreenManager mFullscreenManager;
 
     private enum BigtechCompany {
         Google,
@@ -478,14 +474,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mBraveRewardsNativeWorker.addObserver(this);
             mBraveRewardsNativeWorker.addPublisherObserver(this);
             mBraveRewardsNativeWorker.getAllNotifications();
-        }
-    }
-
-    public void setFullscreenManager(final FullscreenManager fullscreenManager) {
-        mFullscreenManager = fullscreenManager;
-        if (ChromeFeatureList.isEnabled(
-                BraveFeatureList.BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS)) {
-            mFullscreenManager.addObserver(this);
         }
     }
 
@@ -1674,37 +1662,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (ChromeSharedPreferences.getInstance()
                     .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
                 showPlaylistButton(playlistItems);
-            }
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        // Remove the observer when the layout is detached from the window.
-        if (mFullscreenManager != null) {
-            mFullscreenManager.removeObserver(this);
-        }
-    }
-
-    // FullscreenManager.Observer method.
-    @Override
-    public void onEnterFullscreen(Tab tab, FullscreenOptions options) {
-        final WebContents webContents = tab.getWebContents();
-        if (webContents != null
-                && BraveYouTubeScriptInjectorNativeHelper.hasFullscreenBeenRequested(webContents)) {
-            MediaSession mediaSession = MediaSession.fromWebContents(webContents);
-            if (mediaSession != null) {
-                mediaSession.resume();
-            }
-            Activity activity = tab.getWindowAndroid().getActivity().get();
-            if (activity != null) {
-                try {
-                    activity.enterPictureInPictureMode(
-                            new PictureInPictureParams.Builder().build());
-                } catch (IllegalStateException | IllegalArgumentException e) {
-                    Log.e(TAG, "Error entering picture in picture mode.", e);
-                }
             }
         }
     }
