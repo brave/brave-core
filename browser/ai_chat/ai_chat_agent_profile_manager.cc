@@ -62,13 +62,12 @@ void AIChatAgentProfileManager::OnProfileAdded(Profile* profile) {
     // here, so we can copy that preference.
     ai_chat::SetUserOptedIn(profile->GetPrefs(), true);
 
-    // Set profile name
-    ProfileManager* profile_manager = g_browser_process->profile_manager();
-    ProfileAttributesStorage& storage =
-        profile_manager->GetProfileAttributesStorage();
-    ProfileAttributesEntry* attributes =
-        storage.GetProfileAttributesWithPath(profile->GetPath());
-    attributes->SetLocalProfileName(kAIChatAgentProfileName, false);
+    // Set profile name so that the user can identify the profile
+    // in the various profile list UIs.
+    // TODO(https://github.com/brave/brave-browser/issues/48164): set an avatar
+    profile_manager_->GetProfileAttributesStorage()
+        .GetProfileAttributesWithPath(profile->GetPath())
+        ->SetLocalProfileName(kAIChatAgentProfileName, false);
 
 #if !BUILDFLAG(IS_ANDROID)
     // Set theme
