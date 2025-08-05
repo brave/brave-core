@@ -8,6 +8,7 @@ import { debounce } from '$web-common/debounce'
 
 import {
   externalWalletFromExtensionData,
+  isSelfCustodyProvider,
   ExternalWalletProvider,
   externalWalletProviderFromString
 } from '../../shared/lib/external_wallet'
@@ -140,6 +141,20 @@ export function createModel(): AppModel {
     const { updateRequired } =
       await pageHandler.getTermsOfServiceUpdateRequired()
     stateManager.update({ tosUpdateRequired: updateRequired })
+  }
+
+  async function updateSelfCustodyProviderInvites() {
+    const { providers } = await pageHandler.getSelfCustodyProviderInvites()
+
+    const selfCustodyProviderInvites: ExternalWalletProvider[] = []
+    for (const name of providers) {
+      const provider = externalWalletProviderFromString(name)
+      if (provider && isSelfCustodyProvider(provider)) {
+        selfCustodyProviderInvites.push(provider)
+      }
+    }
+
+    stateManager.update({ selfCustodyProviderInvites })
   }
 
   async function updateSelfCustodyInviteDismissed() {
@@ -304,6 +319,7 @@ export function createModel(): AppModel {
       updateExternalWalletProviders(),
       inBackground(updateBalance()),
       updateTosUpdateRequired(),
+      updateSelfCustodyProviderInvites(),
       updateSelfCustodyInviteDismissed(),
       updateAdsInfo(),
       updateRecurringContributions(),
