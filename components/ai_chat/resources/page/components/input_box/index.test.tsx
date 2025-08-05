@@ -169,7 +169,7 @@ describe('input box', () => {
   it.each(contentAgentParams)('Content Agent button is shown only if the feature is enabled', (params: ContentAgentParams) => {
     render(
       <InputBox
-        context={{ ...defaultContext, isAgentProfileFeatureEnabled: params.isAgentProfileFeatureEnabled, isAgentProfile: params.isAgentProfile }}
+        context={{ ...defaultContext, isAIChatAgentProfileFeatureEnabled: params.isAgentProfileFeatureEnabled, isAIChatAgentProfile: params.isAgentProfile }}
         conversationStarted={params.isConversationStarted}
       />
     )

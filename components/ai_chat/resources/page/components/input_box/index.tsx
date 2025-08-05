@@ -44,7 +44,14 @@ type Props = Pick<
   | 'associateDefaultContent'
   | 'setShowAttachments'
 > &
-  Pick<AIChatContext, 'isMobile' | 'isAgentProfileFeatureEnabled' | 'isAgentProfile' | 'hasAcceptedAgreement' | 'getPluralString' | 'tabs' | 'openAIChatAgenticProfile'>
+  Pick<AIChatContext,
+    | 'isMobile'
+    | 'isAIChatAgentProfileFeatureEnabled'
+    | 'isAIChatAgentProfile'
+    | 'hasAcceptedAgreement'
+    | 'getPluralString'
+    | 'tabs'
+    | 'openAIChatAgenticProfile'>
 
 export interface InputBoxProps {
   context: Props
@@ -255,8 +262,8 @@ function InputBox(props: InputBoxProps) {
             setShowAttachments={props.context.setShowAttachments}
           />
           {props.context.hasAcceptedAgreement &&
-            props.context.isAgentProfileFeatureEnabled &&
-            !props.context.isAgentProfile && (
+            props.context.isAIChatAgentProfileFeatureEnabled &&
+            !props.context.isAIChatAgentProfile && (
             <Button
               fab
               kind='plain-faint'
@@ -266,8 +273,8 @@ function InputBox(props: InputBoxProps) {
               <Icon name='leo-cursor' />
             </Button>
           )}
-          {props.context.isAgentProfileFeatureEnabled &&
-            props.context.isAgentProfile && (
+          {props.context.isAIChatAgentProfileFeatureEnabled &&
+            props.context.isAIChatAgentProfile && (
             <div data-testid='agent-profile-tooltip'>
               <Tooltip
 

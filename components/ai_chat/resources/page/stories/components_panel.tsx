@@ -800,8 +800,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     canShowPremiumPrompt: options.args.canShowPremiumPrompt,
     isMobile: options.args.isMobile,
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
-    isAgentProfileFeatureEnabled: options.args.isContentAgentFeatureEnabled,
-    isAgentProfile: options.args.isContentAgentSupportedInCurrentProfile,
+    isAIChatAgentProfileFeatureEnabled: options.args.isContentAgentFeatureEnabled,
+    isAIChatAgentProfile: options.args.isContentAgentSupportedInCurrentProfile,
     isStandalone: options.args.isStandalone,
     actionList: ACTIONS_LIST,
     tabs: [{
