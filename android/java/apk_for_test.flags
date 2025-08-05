@@ -863,6 +863,11 @@
     *** getToolbarSidePaddingForNtp(...);
 }
 
+-keep class org.chromium.chrome.browser.password_manager.PasswordManagerHelper {
+    *** getForProfile(...);
+    *** sProfileMap;
+}
+
 -keep class org.chromium.chrome.browser.notifications.NotificationPlatformBridge {
     *** dispatchNotificationEvent(...);
     *** prepareNotificationBuilder(...);
