@@ -1,0 +1,13 @@
+diff --git a/components/sync/engine/net/sync_server_connection_manager.cc b/components/sync/engine/net/sync_server_connection_manager.cc
+index c6a6e44fb068d0457e1407dc8da092452ed400f9..9a3ec6bceb40b765cf0e03421eb36b33bf89e265 100644
+--- a/components/sync/engine/net/sync_server_connection_manager.cc
++++ b/components/sync/engine/net/sync_server_connection_manager.cc
+@@ -73,7 +73,7 @@ HttpResponse Connection::PostRequestAndDownloadResponse(
+ 
+   if (!access_token.empty()) {
+     net::HttpRequestHeaders headers;
+-    headers.SetHeader("Authorization", "Bearer " + access_token);
++    headers.AddHeadersFromString("Authorization: Bearer " + access_token);
+     post_provider_->SetExtraRequestHeaders(headers);
+   }
+ 
