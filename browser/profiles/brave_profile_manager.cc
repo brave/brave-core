@@ -117,10 +117,7 @@ size_t BraveProfileManager::GetNumberOfProfiles() {
   if (ai_chat::features::IsAIChatAgentProfileEnabled()) {
     // Don't include AI Chat agent profile in the count
     base::FilePath ai_chat_agent_profile_path =
-        base::PathService::CheckedGet(chrome::DIR_USER_DATA);
-    ai_chat_agent_profile_path =
-        ai_chat_agent_profile_path.Append(brave::kAIChatAgentProfileDir);
-
+        user_data_dir_.Append(brave::kAIChatAgentProfileDir);
     if (count > 0 && GetProfileAttributesStorage().GetProfileAttributesWithPath(
                          ai_chat_agent_profile_path)) {
       count--;
