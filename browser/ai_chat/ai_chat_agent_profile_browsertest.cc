@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
+#include "chrome/browser/ui/profiles/profile_view_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/common/pref_names.h"
@@ -127,9 +128,10 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   // Verify the profile path matches the AI Chat profile path
   EXPECT_TRUE(ai_chat_browser->profile()->GetPath().BaseName().value() ==
               brave::kAIChatAgentProfileDir);
-  // Verify the built-in profile title is set
-  EXPECT_EQ("Leo AI Content Agent",
-            ai_chat_browser->profile()->GetProfileUserName());
+  // Verify the built-in profile title is set as the local user name
+  ProfileAttributesEntry* profile_attributes =
+      GetProfileAttributesFromProfile(ai_chat_browser->profile());
+  EXPECT_EQ(u"Leo AI Content Agent", profile_attributes->GetLocalProfileName());
 
   // Verify the AI Chat browser has the side panel opened to Chat UI
   VerifyAIChatSidePanelShowing(ai_chat_browser);
