@@ -8,7 +8,6 @@
       "browser-type": "brave",
       "profile": "brave-typical-win",
       "extra-browser-args": [
-        "--disable-component-update",
         "--disable-backgrounding-occluded-windows",
       ],
       "extra-benchmark-args": [],
@@ -19,7 +18,6 @@
       "browser-type": "brave",
       "profile": "brave-typical-win",
       "extra-browser-args": [
-        "--disable-component-update",
         "--disable-backgrounding-occluded-windows",
       ],
       "extra-benchmark-args": [],

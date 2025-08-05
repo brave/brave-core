@@ -10,8 +10,6 @@
       "--variations-server-url=https://127.0.0.1/invalid",
       "--variations-insecure-server-url=http://127.0.0.1/invalid",
 
-      "--disable-component-update",
-
       "--disable-backgrounding-occluded-windows",
     ],
     "extra-benchmark-args": ["--use-live-sites"],

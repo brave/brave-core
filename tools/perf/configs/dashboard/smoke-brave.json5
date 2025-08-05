@@ -4,7 +4,6 @@
     "browser-type": "brave",
     "profile": "brave-typical-mac",
     "extra-browser-args": [
-      "--disable-component-update",
       "--disable-backgrounding-occluded-windows",
     ],
     "extra-benchmark-args": [
