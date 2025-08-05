@@ -1,34 +1,36 @@
 <style include="cr-shared-style" >
 </style>
 
-<wallet-networks-list id="eth-networks-section"
-                      coin="[[ethCoin]]"
-                      add-new-allowed
-                      list-title="$i18n{walletEthNetworksListTitle}">
-</wallet-networks-list>
-<wallet-networks-list id="fil-networks-section"
-                      coin="[[filCoin]]"
-                      list-title="$i18n{walletFilNetworksListTitle}">
-</wallet-networks-list>
-<wallet-networks-list id="sol-networks-section"
-                      coin="[[solCoin]]"
-                      list-title="$i18n{walletSolNetworksListTitle}">
-</wallet-networks-list>
-<template is="dom-if" if="[[isBitcoinEnabled]]" restamp>
-  <wallet-networks-list id="btc-networks-section"
-                        coin="[[btcCoin]]"
-                        list-title="$i18n{walletBtcNetworksListTitle}">
+<settings-subpage page-title="$i18n{walletNetworksLinkTitle}">
+  <wallet-networks-list id="eth-networks-section"
+                        coin="[[ethCoin]]"
+                        add-new-allowed
+                        list-title="$i18n{walletEthNetworksListTitle}">
   </wallet-networks-list>
-</template>
-<template is="dom-if" if="[[isZCashEnabled]]" restamp>
-  <wallet-networks-list id="zec-networks-section"
-                        coin="[[zecCoin]]"
-                        list-title="$i18n{walletZecNetworksListTitle}">
+  <wallet-networks-list id="fil-networks-section"
+                        coin="[[filCoin]]"
+                        list-title="$i18n{walletFilNetworksListTitle}">
   </wallet-networks-list>
-</template>
-<template is="dom-if" if="[[isCardanoEnabled]]" restamp>
-  <wallet-networks-list id="ada-networks-section"
-                        coin="[[adaCoin]]"
-                        list-title="$i18n{walletCardanoNetworksListTitle}">
+  <wallet-networks-list id="sol-networks-section"
+                        coin="[[solCoin]]"
+                        list-title="$i18n{walletSolNetworksListTitle}">
   </wallet-networks-list>
-</template>
+  <template is="dom-if" if="[[isBitcoinEnabled]]" restamp>
+    <wallet-networks-list id="btc-networks-section"
+                          coin="[[btcCoin]]"
+                          list-title="$i18n{walletBtcNetworksListTitle}">
+    </wallet-networks-list>
+  </template>
+  <template is="dom-if" if="[[isZCashEnabled]]" restamp>
+    <wallet-networks-list id="zec-networks-section"
+                          coin="[[zecCoin]]"
+                          list-title="$i18n{walletZecNetworksListTitle}">
+    </wallet-networks-list>
+  </template>
+  <template is="dom-if" if="[[isCardanoEnabled]]" restamp>
+    <wallet-networks-list id="ada-networks-section"
+                          coin="[[adaCoin]]"
+                          list-title="$i18n{walletCardanoNetworksListTitle}">
+    </wallet-networks-list>
+  </template>
+</settings-subpage>

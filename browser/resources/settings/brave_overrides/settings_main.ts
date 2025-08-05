@@ -13,6 +13,7 @@ import {loadTimeData} from '../i18n_setup.js'
 import '../brave_content_page/content_page_index.js'
 import '../getting_started_page/getting_started_page_index.js'
 import '../default_brave_shields_page/shields_page_index.js'
+import '../brave_wallet_page/wallet_page_index.js'
 
 RegisterPolymerTemplateModifications({
   'settings-main': (templateContent) => {
@@ -99,19 +100,12 @@ RegisterPolymerTemplateModifications({
         html`
           <template is="dom-if" if="[[showPage_(pageVisibility_.braveWallet)]]">
             <div slot="view" id="web3">
-              <template is="dom-if" if="true">
-                <settings-brave-wallet-page
+              <template is="dom-if" if="[[renderPlugin_(
+          routes_.BRAVE_WEB3, lastRoute_, inSearchMode_)]]">
+                <settings-wallet-page-index
                   prefs="{{prefs}}"
                   in-search-mode="[[inSearchMode_]]">
-                </settings-brave-wallet-page>
-              </template>
-              <template is="dom-if" if="[[showPage_(pageVisibility_.braveWeb3Domains)]]">
-                <template is="dom-if" if="true">
-                  <settings-brave-web3-domains-page
-                    prefs="{{prefs}}"
-                    in-search-mode="[[inSearchMode_]]">
-                  </settings-brave-web3-domains-page>
-                </template>
+                </settings-wallet-page-index>
               </template>
             </div>
           </template>
