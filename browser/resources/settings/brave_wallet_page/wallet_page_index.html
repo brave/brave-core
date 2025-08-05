@@ -1,0 +1,16 @@
+<style include="settings-shared">
+  cr-view-manager [hidden-by-search],
+  cr-view-manager[show-all] [slot=view][data-parent-view-id] {
+    display: none;
+  }
+</style>
+
+<cr-view-manager id="viewManager" class="cr-centered-card-container"
+    show-all$="[[shouldShowAll]]">
+  <settings-brave-wallet-page slot="view" id="parent" prefs="{{prefs}}">
+  </settings-brave-wallet-page>
+
+  <settings-wallet-networks-subpage slot="view" id="networks"
+      data-parent-view-id="parent" prefs="{{prefs}}">
+  </settings-wallet-networks-subpage>
+</cr-view-manager>
