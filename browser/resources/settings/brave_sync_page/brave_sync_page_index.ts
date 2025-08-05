@@ -10,7 +10,7 @@ import '../settings_page/settings_subpage.js';
 import '../settings_shared.css.js';
 import '../settings_vars.css.js';
 import './brave_sync_subpage.js';
-
+import './brave_sync_manage_devices_page.js';
 import type {CrViewManagerElement} from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
 
 import {SyncBrowserProxy, SyncBrowserProxyImpl, SyncPrefs} from '/shared/settings/people_page/sync_browser_proxy.js';
@@ -23,22 +23,27 @@ import {Route, Router} from '../router.js';
 import {routes} from '../route.js';
 import {RouteObserverMixin, RouteObserverMixinInterface} from '../router.js';
 import type {SettingsPlugin} from '../settings_main/settings_plugin.js';
-import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js';
+import {SettingsViewMixin, SettingsViewMixinInterface} from '../settings_page/settings_view_mixin.js';
 import {SearchableViewContainerMixin, SearchableViewContainerMixinInterface} from '../settings_page/searchable_view_container_mixin.js';
 
 
 import {BraveSyncBrowserProxy, BraveSyncStatus} from './brave_sync_browser_proxy.js';
-import {getTemplate} from './brave_sync_page.html.js'
+import {getTemplate} from './brave_sync_page_index.html.js'
 
 /**
  * @fileoverview
- * 'settings-brave-sync-page' is the settings page containing brave's
+ * 'settings-brave-sync-page-index' is the settings page containing brave's
  * custom sync.
  */
 
 const SettingsBraveSyncPageElementBase =
-SearchableViewContainerMixin(SettingsViewMixin(RouteObserverMixin(I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement)))))) as {
-    new(): PolymerElement & WebUiListenerMixinInterface & I18nMixinInterface & RouteObserverMixinInterface & SearchableViewContainerMixinInterface
+SettingsViewMixin(SearchableViewContainerMixin(RouteObserverMixin(I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement)))))) as {
+    new(): PolymerElement
+      & WebUiListenerMixinInterface
+      & I18nMixinInterface
+      & RouteObserverMixinInterface 
+      & SearchableViewContainerMixinInterface
+      & SettingsViewMixinInterface
   }
 
 export interface SettingsBraveSyncPageElement {
@@ -49,7 +54,7 @@ export interface SettingsBraveSyncPageElement {
 
 export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBase implements SettingsPlugin {
   static get is() {
-    return 'settings-brave-sync-page'
+    return 'settings-brave-sync-page-index'
   }
 
   static get template() {
@@ -103,13 +108,6 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
     this.addWebUiListener(
       'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
     this.addWebUiListener('sync-status-changed', onSyncStatus);
-  }
-
-  onSyncTap_() {
-    // Users can go to sync subpage regardless of sync status.
-    const router = Router.getInstance();
-    router.navigateTo(
-      (router.getRoutes() as {BRAVE_SYNC_SETUP: Route}).BRAVE_SYNC_SETUP);
   }
 
   /**
