@@ -19,7 +19,7 @@
 .buttonMenu {
   line-height: 0;
   leo-menu-item {
-    padding: var(--leo-spacing-m);
+    padding: var(--leo-spacing-s) var(--leo-spacing-m);
     min-width: 260px;
     max-width:280px;
     margin-bottom:0;
@@ -35,6 +35,7 @@
   padding: 0;
   height: 1px;
   background-color: var(--leo-color-divider-subtle);
+  margin-top:var(--leo-spacing-s);
 }
 
 .menuItemWithIcon {
