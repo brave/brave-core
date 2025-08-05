@@ -35,9 +35,14 @@ namespace ai_chat {
 
 class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
  public:
-  AIChatAgentProfileBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        ai_chat::features::kAIChatAgentProfile);
+  explicit AIChatAgentProfileBrowserTest(bool enable_feature = true) {
+    if (enable_feature) {
+      scoped_feature_list_.InitAndEnableFeature(
+          ai_chat::features::kAIChatAgentProfile);
+    } else {
+      scoped_feature_list_.InitAndDisableFeature(
+          ai_chat::features::kAIChatAgentProfile);
+    }
   }
   AIChatAgentProfileBrowserTest(const AIChatAgentProfileBrowserTest&) = delete;
   AIChatAgentProfileBrowserTest& operator=(
@@ -52,10 +57,14 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
     }
   }
 
-  void VerifyAIChatSidePanelShowing(Browser* browser) {
+  void VerifyAIChatSidePanelShowing(Browser* browser,
+                                    bool should_open_panel = false) {
     auto* side_panel_coordinator =
         browser->GetFeatures().side_panel_coordinator();
     ASSERT_TRUE(side_panel_coordinator);
+    if (should_open_panel) {
+      side_panel_coordinator->Show(SidePanelEntry::Id::kChatUI);
+    }
     auto* side_panel_web_contents =
         side_panel_coordinator->GetWebContentsForTest(
             SidePanelEntry::Id::kChatUI);
@@ -89,6 +98,8 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
     }
     return nullptr;
   }
+
+  Profile* GetProfile() { return browser()->profile(); }
 
   base::test::ScopedFeatureList scoped_feature_list_;
 };
@@ -176,8 +187,144 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   VerifyAIChatSidePanelShowing(third_opened_browser);
 }
 
+// UI Tests for AI Chat Agent Profile features
+// TODO(https://github.com/brave/brave-browser/issues/48165): This should be
+// converted to an interactive_uitest.
+
+class AIChatAgentProfileWebUIContentBrowserTest
+    : public AIChatAgentProfileBrowserTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  AIChatAgentProfileWebUIContentBrowserTest()
+      : AIChatAgentProfileBrowserTest(GetParam()) {}
+
+  void SetUp() override { AIChatAgentProfileBrowserTest::SetUp(); }
+
+ protected:
+  void WaitForElementInSidePanel(Browser* browser,
+                                 const std::string& selector) {
+    // TODO(https://github.com/brave/brave-browser/issues/48165): This would be
+    // nicer in an interactive_uitest.
+    auto* side_panel_web_contents =
+        browser->GetFeatures().side_panel_coordinator()->GetWebContentsForTest(
+            SidePanelEntry::Id::kChatUI);
+    constexpr char kWaitForAIChatRenderScript[] = R"(
+      new Promise((resolve, reject) => {
+        const TIMEOUT_SECONDS = 10;
+
+        let element = document.querySelector($1);
+        if (element) {
+          resolve(true);
+          return;
+        }
+
+        const timerID = window.setTimeout(() => {
+          observer.disconnect();
+          let element = document.querySelector($1);
+          if (element) {
+            resolve(true);
+          } else {
+            reject(new Error("Timed out waiting for '" + $1 + "'."));
+          }
+        }, TIMEOUT_SECONDS * 1000);
+
+        const observer = new MutationObserver(() => {
+          let element = document.querySelector($1);
+          if (element) {
+            clearTimeout(timerID);
+            observer.disconnect();
+            resolve(true);
+          }
+        });
+        observer.observe(document.documentElement,
+            { childList: true, subtree: true });
+      });
+    )";
+
+    auto result = content::EvalJs(
+        side_panel_web_contents,
+        content::JsReplace(kWaitForAIChatRenderScript, selector));
+    ASSERT_TRUE(result.ExtractBool());
+  }
+
+  bool IsElementInSidePanel(Browser* browser, const std::string& selector) {
+    auto* side_panel_web_contents =
+        browser->GetFeatures().side_panel_coordinator()->GetWebContentsForTest(
+            SidePanelEntry::Id::kChatUI);
+    auto result = content::EvalJs(
+        side_panel_web_contents,
+        content::JsReplace("!!document.querySelector($1)", selector));
+    return result.ExtractBool();
+  }
+
+  void WaitForAIChatRender(Browser* browser) {
+    // Wait for initial data to be received and full UI to be rendered.
+    WaitForElementInSidePanel(browser, "[data-testid=\"main\"]");
+  }
+
+  bool IsAIChatAgentProfileTooltipPresent(Browser* browser) {
+    return IsElementInSidePanel(browser,
+                                "[data-testid=\"agent-profile-tooltip\"]");
+  }
+
+  bool IsAIChatAgentProfileLaunchButtonPresent(Browser* browser) {
+    return IsElementInSidePanel(browser,
+                                "[title=\"Open Leo AI Content Agent Window\"]");
+  }
+
+  void WaitForAIChatAgentProfileLaunchButton(Browser* browser) {
+    WaitForElementInSidePanel(browser,
+                              "[title=\"Open Leo AI Content Agent Window\"]");
+  }
+};
+
+IN_PROC_BROWSER_TEST_P(AIChatAgentProfileWebUIContentBrowserTest,
+                       AgentProfileElements) {
+  bool feature_enabled = GetParam();
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+  EXPECT_FALSE(GetProfile()->IsAIChatAgent());
+
+  VerifyAIChatSidePanelShowing(browser(), true);
+  WaitForAIChatRender(browser());
+
+  if (!feature_enabled) {
+    // When the feature is disabled, no buttons are shown
+    EXPECT_FALSE(IsAIChatAgentProfileLaunchButtonPresent(browser()));
+    EXPECT_FALSE(IsAIChatAgentProfileTooltipPresent(browser()));
+    return;
+  }
+
+  // When not opted in, no agent profile button is shown
+  EXPECT_FALSE(IsAIChatAgentProfileTooltipPresent(browser()));
+  EXPECT_FALSE(IsAIChatAgentProfileLaunchButtonPresent(browser()));
+
+  // When opted in, the agent profile button is shown
+  SetUserOptedIn(GetProfile()->GetPrefs(), true);
+  WaitForAIChatAgentProfileLaunchButton(browser());
+  EXPECT_FALSE(IsAIChatAgentProfileTooltipPresent(browser()));
+
+  // In the AI Chat agent profile, the tooltip is shown but
+  // not the launch button.
+  Browser* opened_browser =
+      CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
+  VerifyAIChatSidePanelShowing(opened_browser);
+  WaitForAIChatRender(opened_browser);
+  ASSERT_TRUE(opened_browser);
+  EXPECT_FALSE(IsAIChatAgentProfileLaunchButtonPresent(opened_browser));
+  EXPECT_TRUE(IsAIChatAgentProfileTooltipPresent(opened_browser));
+}
+
+INSTANTIATE_TEST_SUITE_P(,
+                         AIChatAgentProfileWebUIContentBrowserTest,
+                         testing::Values(true, false),
+                         [](const testing::TestParamInfo<bool>& info) {
+                           return info.param ? "AIChatAgentProfileEnabled"
+                                             : "AIChatAgentProfileDisabled";
+                         });
+
 // // Tests for AI Chat Agent Profile startup behavior
-class AIChatProfileStartupBrowserTest : public AIChatAgentProfileBrowserTest {
+class AIChatAgentProfileStartupBrowserTest
+    : public AIChatAgentProfileBrowserTest {
  public:
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
@@ -187,7 +334,7 @@ class AIChatProfileStartupBrowserTest : public AIChatAgentProfileBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileStartupBrowserTest,
                        PRE_AIChatProfileDoesNotAffectStartup) {
   // Create AI Chat Agent profile and browser window
   SetUserOptedIn(GetProfile()->GetPrefs(), true);
@@ -202,7 +349,7 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
   CloseAllBrowsers();
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileStartupBrowserTest,
                        AIChatProfileDoesNotAffectStartup) {
   // Verify that on restart, the profile picker is not shown and the original
   // profile is used. This tests the override in profile_picker.cc.
@@ -213,7 +360,7 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
   EXPECT_EQ(nullptr, FindAIChatBrowser());
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileStartupBrowserTest,
                        PRE_AIChatProfileDoesNotAffectStartup_MultiplePrevious) {
   // If we previously showed the profile picker because
   // the user had multiple profiles but now only has one (aside from AI Chat
@@ -244,7 +391,7 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
   CloseAllBrowsers();
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileStartupBrowserTest,
                        AIChatProfileDoesNotAffectStartup_MultiplePrevious) {
   // Verify that on restart, the profile picker is not shown and the original
   // profile is used. This tests the override in profile_picker.cc.
@@ -255,7 +402,7 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
   EXPECT_EQ(nullptr, FindAIChatBrowser());
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileStartupBrowserTest,
                        PRE_ProfileNotReopenedOnStartup) {
   // Quit the first session with main profile and AI Chat profile
   // still open.
@@ -268,7 +415,7 @@ IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
   // Leave the browser windows open
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatProfileStartupBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileStartupBrowserTest,
                        ProfileNotReopenedOnStartup) {
   // Verify the AI Chat profile is not opened on startup
   // This tests the override in startup_browser_creator.cc.
