@@ -6,7 +6,9 @@
 import("//brave/build/brave_channel.gni")
 
 declare_args() {
-  enable_brave_page_graph = is_win || is_mac || is_linux
+  enable_brave_page_graph =
+      (is_win || is_mac || is_linux) &&
+      target_os != "android"  # Do not enable PG in secondary toolchains.
 }
 
 declare_args() {
