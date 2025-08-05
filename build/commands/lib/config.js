@@ -251,6 +251,7 @@ const Config = function () {
   ])
   this.skip_download_rust_toolchain_aux =
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
+  this.is_msan = getEnvConfig(['is_msan'])
   this.is_ubsan = getEnvConfig(['is_ubsan'])
 
   this.forwardEnvArgsToGn = [
@@ -288,7 +289,6 @@ const Config = function () {
     'gemini_sandbox_oauth_url',
     'google_default_client_id',
     'google_default_client_secret',
-    'is_msan',
     'msan_track_origins',
     'rewards_grant_dev_endpoint',
     'rewards_grant_prod_endpoint',
@@ -374,7 +374,9 @@ Config.prototype.isAsan = function () {
 }
 
 Config.prototype.isOfficialBuild = function () {
-  return this.isReleaseBuild() && !this.isAsan() && !this.is_ubsan
+  return (
+    this.isReleaseBuild() && !this.isAsan() && !this.is_msan && !this.is_ubsan
+  )
 }
 
 Config.prototype.getBraveLogoIconName = function () {
@@ -403,6 +405,7 @@ Config.prototype.buildArgs = function () {
     is_ubsan: this.is_ubsan,
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
+    is_msan: this.is_msan,
     disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
     root_extra_deps: ['//brave'],
