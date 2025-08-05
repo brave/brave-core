@@ -179,6 +179,13 @@ extension BrowserViewController: BraveWalletDelegate {
     }
     if let url = tabManager.selectedTab?.visibleURL, InternalURL.isValid(url: url) {
       select(url: destinationURL, isUserDefinedURLNavigation: false)
+    } else if isWalletURL(destinationURL) {
+      if let url = tabManager.selectedTab?.visibleURL, isWalletURL(url) {
+        // selected tab is a wallet webui page.
+        // will get refreshed once wallet is freshly set up or unlocked
+      } else {
+        switchToTabForURLOrOpen(destinationURL, isPrivate: false, isPrivileged: false)
+      }
     } else {
       _ = tabManager.addTabAndSelect(
         URLRequest(url: destinationURL),
@@ -208,6 +215,12 @@ extension BrowserViewController: BraveWalletDelegate {
     default:
       panel.present(walletHostingController, animated: true)
     }
+  }
+  
+  func isWalletURL(_ url: URL) -> Bool {
+    let isInernalScheme = url.scheme == "brave" || url.scheme == "chrome"
+    let isWalletHost = url.host == "wallet"
+    return isInernalScheme && isWalletHost
   }
 }
 
