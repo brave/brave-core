@@ -25,6 +25,7 @@
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_result.h"
 #include "components/omnibox/browser/mock_autocomplete_provider_client.h"
+#include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -84,6 +85,7 @@ class OmniboxPromotionTest : public testing::Test {
 
   void SetUp() override {
     RegisterPrefs(pref_service_.registry());
+    omnibox::RegisterProfilePrefs(pref_service_.registry());
     omnibox::RegisterBraveProfilePrefs(pref_service_.registry());
     pref_service_.SetBoolean(omnibox::kTopSuggestionsEnabled, false);
 
