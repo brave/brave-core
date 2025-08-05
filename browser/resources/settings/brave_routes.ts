@@ -57,8 +57,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (pageVisibility.braveWallet) {
     r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')
-    r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
-    r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')
+    r.BRAVE_WEB3.hasMigratedToPlugin = true
+
+    r.BRAVE_WALLET_NETWORKS = r.BRAVE_WEB3.createChild('/wallet/networks')
+    r.BRAVE_WALLET_NETWORKS.hasMigratedToPlugin = true
   }
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
 
