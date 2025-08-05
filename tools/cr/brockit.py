@@ -1503,8 +1503,6 @@ class Upgrade(Versioned):
         terminal.run_npm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
 
-        self._save_gnrt_rerun()
-
     def execute(self, no_conflict_continuation: bool, launch_vscode: bool,
                 with_github: bool, ack_advisory: bool):
         """Executes the upgrade process.
@@ -1574,6 +1572,8 @@ class Upgrade(Versioned):
             GitHubIssue(base_version=self.base_version,
                         target_version=self.target_version
                         ).create_or_update_version_issue(with_pr=False)
+
+        self._save_gnrt_rerun()
 
 
 def solve_git_ref(from_ref: str) -> str:
