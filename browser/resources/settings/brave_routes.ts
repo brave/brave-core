@@ -53,7 +53,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
   if (pageVisibility.braveSync) {
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
+    r.BRAVE_SYNC.hasMigratedToPlugin = true
     r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup')
+    r.BRAVE_SYNC_SETUP.hasMigratedToPlugin = true
   }
   if (pageVisibility.braveWallet) {
     r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')

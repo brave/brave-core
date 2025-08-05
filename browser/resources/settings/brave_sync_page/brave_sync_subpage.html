@@ -27,7 +27,6 @@
     padding: var(--leo-spacing-2xl);
   }
 </style>
-
 <!-- Disabled content -->
 <div class="cr-row first" hidden="[[!syncDisabledByAdmin_]]">
   <iron-icon id="disabled-by-admin-icon" icon="cr20:domain"></iron-icon>
@@ -75,7 +74,7 @@
 
     <template is="dom-if" if="[[isStatus_('setup', pageStatus_)]]">
       <settings-brave-sync-setup on-setup-success="onSetupSuccess_"
-       sync-code-dialog-type="{{syncCodeDialogType}}">
+        sync-code-dialog-type="{{syncCodeDialogType}}">
       </settings-brave-sync-setup>
     </template>
   </div>

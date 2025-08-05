@@ -11,6 +11,8 @@ import '../settings_shared.css.js';
 import '../settings_vars.css.js';
 import './brave_sync_subpage.js';
 
+import type {CrViewManagerElement} from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
+
 import {SyncBrowserProxy, SyncBrowserProxyImpl, SyncPrefs} from '/shared/settings/people_page/sync_browser_proxy.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
@@ -18,6 +20,12 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
 
 import {BaseMixin} from '../base_mixin.js'
 import {Route, Router} from '../router.js';
+import {routes} from '../route.js';
+import {RouteObserverMixin, RouteObserverMixinInterface} from '../router.js';
+import type {SettingsPlugin} from '../settings_main/settings_plugin.js';
+import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js';
+import {SearchableViewContainerMixin, SearchableViewContainerMixinInterface} from '../settings_page/searchable_view_container_mixin.js';
+
 
 import {BraveSyncBrowserProxy, BraveSyncStatus} from './brave_sync_browser_proxy.js';
 import {getTemplate} from './brave_sync_page.html.js'
@@ -29,11 +37,17 @@ import {getTemplate} from './brave_sync_page.html.js'
  */
 
 const SettingsBraveSyncPageElementBase =
-  I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement))) as {
-    new(): PolymerElement & WebUiListenerMixinInterface & I18nMixinInterface
+SearchableViewContainerMixin(SettingsViewMixin(RouteObserverMixin(I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement)))))) as {
+    new(): PolymerElement & WebUiListenerMixinInterface & I18nMixinInterface & RouteObserverMixinInterface & SearchableViewContainerMixinInterface
   }
 
-export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBase {
+export interface SettingsBraveSyncPageElement {
+  $: {
+    viewManager: CrViewManagerElement,
+  };
+}
+
+export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBase implements SettingsPlugin {
   static get is() {
     return 'settings-brave-sync-page'
   }
@@ -44,6 +58,7 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
 
   static get properties() {
     return {
+      prefs: Object,
       /**
        * The current sync status, supplied by SyncBrowserProxy.
        * @type {?SyncStatus}
@@ -59,6 +74,8 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
       },
     };
   }
+
+  declare prefs: {[key: string]: any};
 
   private declare syncStatus_: BraveSyncStatus;
   private declare isEncryptionSet_: boolean;
@@ -117,6 +134,35 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
         })
       }
     }
+  }
+
+  override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
+    super.currentRouteChanged(newRoute, oldRoute);
+
+    // Need to wait for currentRouteChanged observers on child views to run
+    // first, before switching views.
+    queueMicrotask(() => {
+      switch (newRoute) {
+        case routes.BRAVE_SYNC:
+          this.$.viewManager.switchView(
+              'braveSync', 'no-animation', 'no-animation');
+          break;
+        case routes.BRAVE_SYNC_SETUP:
+          this.$.viewManager.switchView(
+              'setup', 'no-animation', 'no-animation');
+          break;
+        case routes.BASIC:
+          // Switch back to the default view in case they are part of search
+          // results.
+          this.$.viewManager.switchView(
+              'braveSync', 'no-animation', 'no-animation');
+          break;
+        default:
+          // Nothing to do. Other parent elements are responsible for updating
+          // the displayed contents.
+          break;
+      }
+    });
   }
 }
 
