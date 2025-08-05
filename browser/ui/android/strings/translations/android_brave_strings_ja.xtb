@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
+<translation id="8347743943525229984">Braveアンケートを許可</translation>
+<translation id="6022939994702081659">Braveに対し、新しいタブページに匿名アンケートへのリンクを表示することを許可します。こうした調査は、より良い機能の構築や、ブラウザベースの広告キャンペーンの効果測定などに役立ちます。</translation>
+<translation id="7746496306508543965">Braveアンケートの詳細</translation>
 <translation id="410351446219883937">自動再生</translation>
 <translation id="7445411102860286510">ミュートされた動画の自動再生をサイトに許可する（推奨）</translation>
 <translation id="7837721118676387834">特定のサイトに対し、ミュートされた動画の自動再生を許可します。</translation>
@@ -632,7 +635,6 @@
 <translation id="3961126209136843111">既存のウォレットをインポート</translation>
 <translation id="4811736040444856406">リカバリーフレーズを表示</translation>
 <translation id="4359319875297001084">従来の Brave 暗号資産ウォレットからインポートしますか？</translation>
-<translation id="3157931365184549694">Restore</translation>
 <translation id="5844138175312846408">ウォレットを既にお持ちですか？</translation>
 <translation id="2502258949541727762">はじめに</translation>
 <translation id="4303748097351941030">対応しているネットワーク</translation>
@@ -794,7 +796,6 @@
 <translation id="1426320910664514906">Gasリミット</translation>
 <translation id="6389441740143786465">共有ハブを無効にする</translation>
 <translation id="9065203028668620118">編集</translation>
-<translation id="473775607612524610">更新</translation>
 <translation id="479795390141144417">アカウントの更新に失敗しました。</translation>
 <translation id="8084782383392198011">アカウント名を空にすることはできません。</translation>
 <translation id="5045550434625856497">パスワードが正しくありません</translation>

@@ -25,6 +25,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="129382876167171263">Veb saytların yadda saxladığı fayllar burada görünür</translation>
 <translation id="131112695174432497">Reklamın fərdiləşdirilməsinə təsir edən data silinir</translation>
 <translation id="1317194122196776028">Bu saytı unudun</translation>
+<translation id="1323433172918577554">Digərlərinə baxın</translation>
 <translation id="1333965224356556482">Saytlara məkanınıza baxmaq icazəsi verməyin</translation>
 <translation id="1343356790768851700">Bu sayt bəyəndiklərinizi müəyyənləşdirir və sonra digər saytlara reklam təklif edir</translation>
 <translation id="1369915414381695676"><ph name="SITE_NAME"/> saytı əlavə edildi</translation>
@@ -35,6 +36,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="1409338233051621926">Tətbiqlər, sonra Defolt tətbiqlər seçiminə toxunun</translation>
 <translation id="1415402041810619267">URL tam deyil</translation>
 <translation id="1741136041592162279">Brave-un son tabları cihazla paylaşmasına icazə verməklə tətbiq siyahısında və axtarış nəticələrində onları görə bilərsiniz. Bunu istənilən vaxt Brave ayarlarında aktiv və ya deaktiv edə bilərsiniz.</translation>
+<translation id="1432650420699700107">Saytlar lokal şəbəkənizdəki hər hansı cihaza qoşulmaq istəyə bilər</translation>
 <translation id="1448064542941920355">Zoom'u azaldın</translation>
 <translation id="1464044141348608623">Saytlara cihazınızdan nə zaman aktiv şəkildə istifadə etdiyinizi bilmək icazəsi verməyin</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> sayt}other{<ph name="SITE_COUNT"/> sayt}}</translation>
@@ -96,6 +98,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="2182457891543959921">Saytların ətrafınızdakı sahələrin 3D xəritəsini yaratmasına və ya kamera mövqeyini izləməsinə icazə verməzdən əvvəl icazə tələb edin (tövsiyə edilir)</translation>
 <translation id="2185965788978862351">Əsas ekranda sayt və ya tətbiqlər tərəfindən saxlanan <ph name="DATASIZE"/> data və kuki silinəcək.</translation>
 <translation id="2194856509914051091">Nəzərə alınmalı amillər</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{Dünən}other{<ph name="NUM_DAYS_MANY"/> gün əvvəl}}</translation>
 <translation id="2215727959747642672">Fayl redaktəsi</translation>
 <translation id="2218389616572918761">Saytlar mikrofona giriş istəyə bilər</translation>
 <translation id="2228071138934252756"><ph name="APP_NAME"/> tətbiqinə kameranıza giriş icazəsi vermək üçün <ph name="BEGIN_LINK"/>Android Ayarlarında<ph name="END_LINK"/> kameranı da aktiv edin.</translation>
@@ -116,7 +119,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="2410940059315936967">Baxdığınız sayt şəkillər, reklamlar və mətn kimi digər saytlardan məzmunu daxil edə bilər. Digər saytlar tərəfindən təyin olunan kukilərə üçüncü tərəf kukiləri deyilir.</translation>
 <translation id="2434158240863470628">Endirmə tamamlandı <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="2438120137003069591">Bu sayta üçüncü tərəf kukilərindən müvəqqəti istifadə icazəsi verdiniz. Baxış zamanı qoruma səviyyəsi aşağı olsa da, sayt funksiyaları düzgün işləyəcək. <ph name="BEGIN_LINK"/>Rəy göndərin<ph name="END_LINK"/></translation>
-<translation id="20460146243579445">Bəzi saytlardakı funksiyalar Anonim rejimdə işləməyə bilər</translation>
 <translation id="2442870161001914531">Həmişə masaüstü saytını tələb edin</translation>
 <translation id="1736696984974511795">Brave artıq son tabları cihazla paylaşır. Onları cihazın tətbiq siyahısında və axtarış nəticələrində görəcəksiniz. Bunu istənilən vaxt Brave ayarlarında deaktiv edə bilərsiniz.</translation>
 <translation id="245322989586167203">Saytlar adətən şəbəkəni ayarlamaq kimi datanın ötürülməsi funksiyaları üçün ardıcıl portlara qoşulur</translation>
@@ -126,6 +128,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="2490684707762498678"><ph name="APP_NAME"/> tərəfindən idarə edilir</translation>
 <translation id="2498359688066513246">Yardım və geri əlaqə</translation>
 <translation id="2501278716633472235">Geri qayıdın</translation>
+<translation id="2533138527374486328">Aktiv olduqda saytlar yerli şəbəkənizdəki istənilən cihaza qoşulmağı istəyə bilər. Deaktiv olduqda saytlar yerli şəbəkənizdəki cihazlara qoşula bilməz.</translation>
 <translation id="2546283357679194313">Kukilər və sayt datası</translation>
 <translation id="2570922361219980984">Bu cihazda məkan girişi də deaktivdir. <ph name="BEGIN_LINK"/>Android Ayarlarında<ph name="END_LINK"/> girişi aktiv edin.</translation>
 <translation id="257931822824936280">Geniş - Qısaltmaq üçün klikləyin</translation>
@@ -182,6 +185,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="3167868116600277716">Təkliflər lenti</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> saxlanılan data</translation>
 <translation id="321187648315454507"><ph name="APP_NAME"/> tətbiqinə sizə bildiriş göndərmək icazəsi vermək üçün <ph name="BEGIN_LINK"/>Android Ayarlarında<ph name="END_LINK"/> bildirişləri də aktiv edin.</translation>
+<translation id="3223425961342298674">Məkana icazə verilmir</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
 <translation id="3232293466644486101">Baxış datasını silin…</translation>
 <translation id="3242646949159196181">Aktiv ediləndə saytlar səs oxuda bilər. Aktiv ediləndə saytlar səs oxuda bilməz.</translation>
@@ -206,8 +210,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="3523447078673133727">Saytlara əllərinizi izləmək icazəsi verməyin</translation>
 <translation id="3536227077203206203">Bu dəfə üçün icazə verilib</translation>
 <translation id="3538390592868664640">Saytların ətrafınızdakı sahələrin 3D xəritəsini yaratmasına və ya kamera mövqeyini izləməsinə qarşı blok qoyun</translation>
-<translation id="1593610935874634135">Şirkət qrupda fəaliyyətinizi paylaşmaq üçün kukilərdən istifadə edə biləcək saytlar qrupu təyin edə bilər. Bu, Anonim rejimdə deaktivdir.</translation>
-<translation id="8157212814767579028">Anonim rejimdən çıxılsın?</translation>
 <translation id="3586500876634962664">Kamera və mikrofondan istifadə</translation>
 <translation id="358794129225322306">Sayta çoxsaylı faylları avtomatik endirmək icazəsi verin.</translation>
 <translation id="3594780231884063836">Videonu səssiz rejimə keçirin</translation>
@@ -243,7 +245,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="3895926599014793903">Zoom'a icazə verməyə məcbur edin</translation>
 <translation id="3903738175795615004">Tam ekran rejimindən çıxmaq üçün yuxarıdan sürüşdürün və ya Esc düyməsinə basın.</translation>
 <translation id="3905475044299942653">Çoxlu bildirişləri dayandırın</translation>
-<translation id="6642913673024345959">Anonim rejimdə üçüncü tərəf kukilərini bloklayın</translation>
 <translation id="3918378745482005425">Bəzi funksiyalar işləməyə bilər. Əlaqədar saytlar hələ də üçüncü tərəf kukilərindən istifadə edə bilər.</translation>
 <translation id="3922092564198021702">Telefonda Ayarları açın</translation>
 <translation id="3933121352599513978">Lazımsız sorğuları yığcamlaşdırın (tövsiyə edilir)</translation>
@@ -251,12 +252,14 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="3955321697524543127">Saytlara USB cihazlarına qoşulmaq icazəsi verməyin</translation>
 <translation id="3965467402665811906">Saytlar haqqınızda yadda saxlanılan məlumatdan istifadə etmək istəyə bilər</translation>
 <translation id="3967822245660637423">Endirmə tamamdır</translation>
+<translation id="3969869202926863008">Lokal şəbəkə girişi</translation>
 <translation id="3981465354637804599">Saytlar adətən ödənişsiz kontent və xidmətlər təqdim etmək üçün reklamlar göstərir. Lakin bəzi saytlar müdaxilə edən və aldadıcı reklamlar göstərir.</translation>
 <translation id="3987993985790029246">Linki kopyalayın</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
 <translation id="3992308058851451478"><ph name="SITE"/> siz baxarkən məlumatlarınızdan istifadə edə bilər</translation>
 <translation id="3992684624889376114">Bu səhifə haqqında</translation>
 <translation id="4002066346123236978">Başlıq</translation>
+<translation id="4031179711345676612">Mikrofona icazə verildi</translation>
 <translation id="4046123991198612571">Növbəti trek</translation>
 <translation id="4077310749977440510">Saytlar adətən kopiyaladığınız mətnin formatını saxlamaq kimi funksiyalar üçün mübadilə buferinizi oxuyur</translation>
 <translation id="4149890623864272035">Kukilər daxil olmaqla bütün lokal datanı silmək və bu veb-sayt üçün icazələri sıfırlamaq istədiyinizə əminsiniz?</translation>
@@ -266,8 +269,10 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="4169549551965910670">USB cihazına qoşulub</translation>
 <translation id="4194328954146351878">Saytların NFC cihazlarındakı məlumatları görməsi və dəyişməsinə icazə verməzdən əvvəl soruşun (tövsiyə edilir)</translation>
 <translation id="4200726100658658164">Məkan Ayarlarını açın</translation>
+<translation id="4203769790323223880">Kameraya icazə verilmir</translation>
 <translation id="421742575134139848">Saytlar musiqi, video və başqa media üçün audio təmin etmək məqsədilə səs oxuda bilər</translation>
 <translation id="4217710972110098902">Serial porta qoşulub</translation>
+<translation id="4223404254440398437">Mikrofona icazə verilmir</translation>
 <translation id="4226663524361240545">Bildirişlər cihazı titrədə bilər</translation>
 <translation id="4259722352634471385">Naviqasiya bloklandı: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Saytdan çıxdıqdan sonra o, fotoların yüklənməsi, yaxud söhbət mesajı göndərmək kimi tapşırıqları tamamlamaq üçün sinxronizasiyanı saxlaya bilər</translation>
@@ -294,11 +299,11 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="4566417217121906555">Mikrofonu susdurun</translation>
 <translation id="4570913071927164677">Ətraflı</translation>
 <translation id="4578289292431526768">Başlayaq</translation>
-<translation id="8877838532507724268">Anonim rejimdə olduqda, saytlar müxtəlif saytlarda, eləcə də əlaqəli saytlarda axtarış fəaliyyətinizi görmək üçün kukilərinizdən istifadə edə bilmir. Axtarış fəaliyyətiniz reklamların fərdiləşdirilməsi kimi işlər üçün istifadə edilmir. Bəzi saytlardakı funksiyalar işləməyə bilər.</translation>
 <translation id="461356340001513807">Kimlik xidməti olan hesabdan istifadə edərək veb-saytlara daxil olmağa imkan verir</translation>
 <translation id="4635969503923889910">Saytlara NFC cihazlarından istifadə etmək icazəsi verməyin</translation>
 <translation id="4644713492825682049">Silin və sıfırlayın</translation>
 <translation id="4645575059429386691">Valideyniniz tərəfindən idarə olunur</translation>
+<translation id="4663373278480897665">Kameraya icazə verildi</translation>
 <translation id="4670064810192446073">Virtual reallıq</translation>
 <translation id="5652778654712411580">Brauzer tətbiqinə, sonra Brave-a toxunun</translation>
 <translation id="4676059169848868271"><ph name="APP_NAME"/> tətbiqinə əl izləmədən istifadə etmək imkanı vermək üçün <ph name="BEGIN_LINK"/>sistem ayarlarında<ph name="END_LINK"/> əl izləməni də yandırın.</translation>
@@ -320,6 +325,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="4972737347717125191">Saytlar virtual reallıq cihazları və datadan istifadə üçün icazə istəyə bilər</translation>
 <translation id="497421865427891073">İrəli</translation>
 <translation id="4976702386844183910">Son ziyarət: <ph name="DATE"/></translation>
+<translation id="4978178243417029856">Kəşf lenti haqqında ətraflı məlumat</translation>
 <translation id="4994033804516042629">Kontakt tapılmadı</translation>
 <translation id="4996978546172906250">Paylaşma vasitəsi:</translation>
 <translation id="5001526427543320409">Üçüncü tərəf kukiləri</translation>
@@ -327,7 +333,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="5039804452771397117">İcazə verin</translation>
 <translation id="5048398596102334565">Saytların hərəkət sensorlarınıza daxil olmasına icazə verin (tövsiyə edilir)</translation>
 <translation id="5048841907079026162">Axtarış məlumatlarını idarə edin</translation>
-<translation id="8623552597614912461">Bu sayt Anonim rejimdə olmayan tətbiqlə məlumat paylaşmaq üzrədir.</translation>
 <translation id="5063480226653192405">Istifadə</translation>
 <translation id="5068293087784369013">Yeni tab səhifənizi fərdiləşdirin</translation>
 <translation id="5091013926750941408">Mobil sayt</translation>
@@ -343,6 +348,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="5216942107514965959">Son ziyarət bu gün olub</translation>
 <translation id="5225463052809312700">Kameranı aktiv edin</translation>
 <translation id="5234764350956374838">Kənarlaşdırın</translation>
+<translation id="5239623327352565343">Məkana icazə verilib</translation>
 <translation id="5246825184569358663">Bu əməliyyat ilə kukilər daxil olmaqla lokal data silinəcək, <ph name="DOMAIN"/> və ona aid saytlar üzrə icazələr sıfırlanacaq</translation>
 <translation id="5264323282659631142">"<ph name="CHIP_LABEL"/>" daxiletməsini silin</translation>
 <translation id="528192093759286357">Yuxarıdan sürüşdürün və tam ekrandan çıxmaq üçün geri düyməsinə basın.</translation>
@@ -382,10 +388,11 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="5700761515355162635">Üçüncü tərəf kukilərinə icazə verildi</translation>
 <translation id="5706552988683188916">Bu, <ph name="WEBSITE"/> üçün kukiləri və digər sayt datasını silir</translation>
 <translation id="571222594670061844">Saytlar kimlik xidmətlərindən daxil olma sorğularını göstərə bilər</translation>
-<translation id="6105125042109106861">Üçüncü tərəf kukiləri Anonim rejimdə bloklanır</translation>
 <translation id="5740126560802162366">Saytlar cihazınızda data saxlaya bilər</translation>
 <translation id="5743425052258407233">Qaldığınız yerdən asanlıqla davam edə bilmək üçün tarixçəni bütün cihazlarda əldə edin</translation>
+<translation id="5749158352074143502">Bu tab ilə davam edin</translation>
 <translation id="5750869797196646528">Əlin izlənilməsi</translation>
+<translation id="5753570386948603678">Tarixçədən silin</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> bloklanıb</translation>
 <translation id="5804241973901381774">İcazələr</translation>
 <translation id="5822675474983796325">Yeni tab səhifəsinin tam hündürlükdə açılmış aşağıdakı vərəqini fərdiləşdirin</translation>
@@ -411,6 +418,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="5968921426641056619">Veb ünvanını daxil edin</translation>
 <translation id="5975083100439434680">Kiçildin</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/>-<ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">Təkliflər lentini aktivləşdirin</translation>
 <translation id="6015775454662021376">Bu saytın cihazınıza girişini idarə edin</translation>
 <translation id="6040143037577758943">Qapat</translation>
 <translation id="6042308850641462728">Daha çox</translation>
@@ -446,11 +454,13 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="6527303717912515753">Paylaşın</translation>
 <translation id="6530703012083415527">Aktiv ediləndə saytlar popap və yönləndirmələrdən istifadə edə bilər. Deaktiv ediləndə saytlar popap və yönləndirmələrdən istifadə edə bilməz.</translation>
 <translation id="6540488083026747005">Bu saytda üçüncü tərəf kukilərinə icazə verdiniz</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> həftə əvvəl}other{<ph name="NUM_WEEKS_MANY"/> həftə əvvəl}}</translation>
 <translation id="6545864417968258051">Bluetooth axtarışı</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> və daha <ph name="NUM_MORE"/> icazə bloklanıb}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> və daha <ph name="NUM_MORE"/> icazə bloklanıb}}</translation>
 <translation id="6554732001434021288">Son ziyarət <ph name="NUM_DAYS"/> gün əvvəl olub</translation>
 <translation id="656065428026159829">Daha çoxuna baxın</translation>
 <translation id="6561560012278703671">Səssiz mesajlaşmadan istifadə edin (bildirişlər sizi narahat etməyəcək)</translation>
+<translation id="6565144332292237355">Saytlar bu funksiyadan lokal şəbəkənizdəki hər hansı cihazı axtarmaq və ona qoşulmaq üçün istifadə edə bilər</translation>
 <translation id="6593061639179217415">Masaüstü saytı</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> saytı üçün kukilərə icazə verilir}other{<ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> saytı üçün kukilərə icazə verilir}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -484,6 +494,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="6992289844737586249">Saytlara mikrofonunuzu istifadə etmək icazəsi verməmişdən əvvəl soruşun (tövsiyə olunur)</translation>
 <translation id="7000754031042624318">Android ayarlarında söndürülüb</translation>
 <translation id="8683151724374457021">Bu sayt bəyəndiklərinizi müəyyənləşdirir və sonra digər saytlara reklam təklif edir. Bu sayt sizə daha uyğun reklamlar göstərmək üçün Brave'dan reklam mövzularınızı da əldə edir.</translation>
+<translation id="7044081119134178347">Bu dəfə üçün kameraya icazə verilib</translation>
 <translation id="7053983685419859001">Bloklayın</translation>
 <translation id="7055552182600664515">Müəllif hüququ ilə qorunan kontenti işə salmaq üçün saytlar kontent qoruma xidmətindən istifadə etməli ola bilər. <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 element seçildi}other{# element seçildi}}</translation>
@@ -495,8 +506,10 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="7188508872042490670">Cihazda olan sayt məlumatları</translation>
 <translation id="7201549776650881587">Bu əməliyyat ilə Əsas ekranda <ph name="ORIGIN"/> saytları və ya tətbiqi tərəfindən saxlanan data və kukilər silinəcək</translation>
 <translation id="7203150201908454328">Genişləndirilmiş</translation>
+<translation id="7213166370492037743">Saytlara lokal şəbəkənizdəki hər hansı cihaza qoşulmaq icazəsi verməyin</translation>
 <translation id="7219254577985949841">Sayt datası silinsin?</translation>
 <translation id="723171743924126238">Şəkil seçin</translation>
+<translation id="7243246278722455312">Yeni tab səhifəsinin aşağıdakı vərəqini fərdiləşdirin</translation>
 <translation id="7243308994586599757">Seçənəklər ekranın aşağısına yaxın yerdə əlçatandır</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> seçildi</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> və <ph name="PERMISSION_2"/> üçün icazə verilib</translation>
@@ -519,7 +532,9 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="7554752735887601236">Sayt mikrofonunuzdan istifadə edir</translation>
 <translation id="7561196759112975576">Həmişə</translation>
 <translation id="7573594921350120855">Saytlar adətən video çat kimi ünsiyyət xüsusiyyətləri üçün video kameranızdan istifadə edir</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> ay əvvəl}other{<ph name="NUM_MONTHS_MANY"/> ay əvvəl}}</translation>
 <translation id="757524316907819857">Saytların qorunan kontenti oxutmasını blok edin</translation>
+<translation id="7586676035079382730">Bildirişlərə icazə verilmir</translation>
 <translation id="7594634374516752650">Bluetooth cihazına qoşulub</translation>
 <translation id="7617547684249261169">Tarixçə, kukilər, sayt məlumatları və digərlərinin bir qismini və ya hamısını silə bilərsiniz</translation>
 <translation id="7649070708921625228">Yardım</translation>
@@ -532,16 +547,16 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="7759147511335618829">MIDI cihaz idarəetməsi/təkrar proqramlaşdırma</translation>
 <translation id="7781829728241885113">Dünən</translation>
 <translation id="7791543448312431591">Əlavə etmək</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{Bu tab ilə davam edin}other{Bu tablar ilə davam edin}}</translation>
 <translation id="780301667611848630">Yox, çox sağ olun</translation>
 <translation id="7804248752222191302">Sayt kameranızdan istifadə edir</translation>
 <translation id="6720480757902085971">Brave tərəfindən təmin edilib</translation>
+<translation id="7815680994978050279">Təhlükəli endirmə blok edildi</translation>
 <translation id="7835852323729233924">Medianın oxudulması</translation>
 <translation id="783819812427904514">Videonu səssiz rejimdən çıxarın</translation>
 <translation id="7846076177841592234">Seçimi ləğv edin</translation>
 <translation id="2353409725922994861">Brave əksər saytların üçüncü tərəf kukilərindən istifadəsini məhdudlaşdırır. Lakin bu sayt kukilər vasitəsilə əsas xidmətləri təmin etdiyi üçün onlara icazə verir.\n\n<ph name="BEGIN_LINK"/>Üçüncü tərəf kukilərinə girişi idarə etmək<ph name="END_LINK"/> üçün Ayarlara keçin.</translation>
 <translation id="7882806643839505685">Xüsusi sayt üçün səsə icazə verin.</translation>
-<translation id="1856888821396498049">Anonim rejimdə üçüncü tərəf kukilərini bloklayın:</translation>
+<translation id="7891547341794213004">Bu tab ilə davam etmək kartını gizlədin</translation>
 <translation id="789722939441020330">Saytlara çoxsaylı faylları avtomatik endirmək icazəsi verməyin</translation>
 <translation id="7940722705963108451">Mənə xatırladın</translation>
 <translation id="7948081750384205628"><ph name="SETTING_TITLE"/> haqqında ətraflı məlumat əldə edin</translation>
@@ -549,7 +564,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="7986741934819883144">Kontakt seçin</translation>
 <translation id="7990211076305263060">Aktiv ediləndə saytlar mikrofondan istifadə icazəsi istəyə bilər. Deaktiv ediləndə saytlar mikrofondan istifadə edə bilməz.</translation>
 <translation id="8007176423574883786">Bu cihaz üçün söndürüldükdə</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{Bu tab ilə davam etmək kartını gizlədin}other{Bu tablar ilə davam etmək kartını gizlədin}}</translation>
 <translation id="802154636333426148">Endirmə alınmadı</translation>
 <translation id="8042586301629853791">Sıralama metodu:</translation>
 <translation id="8051193500142930381">Kamera tələb edən xüsusiyyətlər işləmir</translation>
@@ -584,6 +598,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="8380167699614421159">Bu sayt inadçı və ya aldadıcı reklamlar göstərir</translation>
 <translation id="8394832520002899662">Sayta qayıtmaq üçün toxunun</translation>
 <translation id="8409345997656833551">Məqalə sadələşdirilmiş görünüşdə göstərilə bildikdə bildiriş alın</translation>
+<translation id="8416874502399604126">Bu dəfə üçün mikrofona icazə verilib</translation>
 <translation id="8423565414844018592">Mətn miqyası <ph name="TEXT_SCALING"/> olaraq ayarlanıb</translation>
 <translation id="8428213095426709021">Ayarlar</translation>
 <translation id="8441146129660941386">Geri axtarı</translation>
@@ -651,13 +666,23 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="9106233582039520022">Kukilər silinsin?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> və daha <ph name="NUM_MORE"/> icazə}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> və daha <ph name="NUM_MORE"/> icazə}}</translation>
 <translation id="913657688200966289"><ph name="APP_NAME"/> üçün icazələri <ph name="BEGIN_LINK"/>Android Ayarlarında<ph name="END_LINK"/> aktiv edin.</translation>
+<translation id="9138037198177304356">Bildirişlərə icazə verilib</translation>
 <translation id="9138217887606523162">Cari zoom: <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">Brave-un cihazın tətbiq siyahısında və axtarış nəticələrində son tabları göstərməsinə icazə verin. Bunu istənilən vaxt Brave ayarlarında deaktiv edə bilərsiniz.</translation>
 <translation id="9162462602695099906">Bu səhifə təhlükəlidir</translation>
 <translation id="9182556968660520230">Saytlara qorunan məzmunu göstərmək icazəsi verməyin</translation>
 <translation id="947156494302904893">Daxil olduğunuz saytlar bot yox, real insan olduğunuzu təsdiqləyə bilər</translation>
 <translation id="959682366969460160">Sistemləşdirin</translation>
+<translation id="961930410699694996">Bu dəfə üçün məkana icazə verilib</translation>
 <translation id="967624055006145463">Yadda saxlanmış data</translation>
 <translation id="969975166333045662">Saytın V8 optimallaşdırıcısından istifadəsini bloklayın.</translation>
 <translation id="3110967157686007724">Məxfi tab-vərəqə</translation>
+<translation id="8623552597614912461">Bu sayt Gizli rejim xaricindəki tətbiqlə məlumat paylaşmaq üzrədir.</translation>
+<translation id="8157212814767579028">Gizli rejimdən çıxılsın?</translation>
+<translation id="6105125042109106861">Gizli rejimdə üçüncü tərəf kukiləri bloklanır</translation>
+<translation id="6642913673024345959">Gizli rejimdə üçüncü tərəf kukilərini blokla</translation>
+<translation id="20460146243579445">Gizli rejimdə bəzi saytların xüsusiyyətləri işləməyə bilər</translation>
+<translation id="8877838532507724268">Gizli rejimdə ikən saytlar hətta əlaqəli saytlarda belə saytlararası hərəkətlərinizi, görmək üçün kukilərdən istifadə edə bilmir. Saytdakı hərkətləriniz fərdiləşdirilmiş reklamlar kimi xidmətlər üçün istifadə edilmir. Bəzi saytların xüsusiyyətləri pozula bilər.</translation>
+<translation id="1856888821396498049">Gizli rejimdə üçüncü tərəf kukilərini blokla:</translation>
+<translation id="1593610935874634135">Bir şirkət qrup fəaliyyətinizi paylaşmaq üçün kukilərdən istifadə edə bilən saytlar qrupu müəyyənləşdirə bilər. Bu xüsusiyyət Gizli rejimdə sönülüdür.</translation>
 </translationbundle>

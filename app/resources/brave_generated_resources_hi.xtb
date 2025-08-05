@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">सिर्फ़ नए टैब पेज पर</translation>
 <translation id="6406506848690869874">सिंक</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
-<translation id="6129027151000961048">लियो</translation>
+<translation id="2361906291514218784">लियो AI</translation>
 <translation id="8275068909952022340">और…</translation>
+<translation id="9092796350041759828">{0, plural,
+          one {}=1 {गेस्ट विंडो बंद करें}
+          other {गेस्ट विंडो बंद करें}
+        }</translation>
 <translation id="1990886731975529483">Widevine को इंस्टॉल करें और चलाएँ</translation>
 <translation id="8926389886865778422">दोबारा न पूछें</translation>
 <translation id="4900351245762303149">Google Widevine को इंस्टॉल करें</translation>
@@ -77,13 +81,20 @@
 <translation id="2808103541110899519">Brave वॉलेट आइकन को छिपाएँ</translation>
 <translation id="7595540212376041331">Brave वॉलेट आइकन को छिपाएँ</translation>
 <translation id="3893997535859323951">Leo AI आइकन छिपाएँ</translation>
+<translation id="8832245978592881387">नए टैब में Leo AI खोलें</translation>
+<translation id="4577675328803804820">साइडबार में Leo AI खोलें</translation>
+<translation id="564305948667173847">Leo AI सेटिंग्स प्रबंधित करें</translation>
 <translation id="6208515240323786457">Leo AI आइकन छिपाएँ</translation>
-<translation id="2361906291514218784">लियो AI</translation>
+<translation id="2169338740411893745">नए टैब में Leo AI खोलें</translation>
+<translation id="3295805221342028003">साइडबार में Leo AI खोलें</translation>
+<translation id="7400808612454224939">Leo AI सेटिंग्स प्रबंधित करें</translation>
+<translation id="5385064007245738696">Leo AI के बारे में जानकारी</translation>
 <translation id="4928988318462976765">वेब एक्सटेंशन स्टोर</translation>
 <translation id="9181207987584064303">वेब एक्सटेंशन स्टोर में देखें</translation>
 <translation id="3161744659507801211">ध्यान दें: Brave, एक्सटेंशन को आपके ब्राउज़िंग विवरण को रिकॉर्ड करने से नहीं रोक सकता है।</translation>
 <translation id="2162109630536601963">यदि यह एक्सटेंशन नेटवर्क का अनुरोध करता है, तो वे टॉर या निजी मोड का उपयोग नहीं करेंगे।</translation>
 <translation id="2725327089319971976">निजी मोड और टॉर मोड में इस एक्सटेंशन को निष्क्रिय करने के लिए, इस विकल्प को अचयनित करें।</translation>
+<translation id="438106944087726695">Brave के होस्ट किए गए</translation>
 <translation id="3371343170427636147">Brave ब्राउज़र Nightly ऐप्स</translation>
 <translation id="4097979995947147464">Brave ब्राउज़र बीटा ऐप</translation>
 <translation id="8303432794159193481">Brave ब्राउज़र डेवलपमेंट ऐप</translation>
@@ -182,11 +193,6 @@
 <translation id="4394049700291259645">बंद करें</translation>
 <translation id="7142548388914389999">गोपनीयता-संरक्षण प्रोडक्ट एनालिटिक्स की अनुमति दें (P3A)</translation>
 <translation id="2604698253988679506">ये प्राइवेट रिस्पॉन्स, कुछ फ़ीचर्स के कुल उपयोग का अनुमान लगाने और उन्हें आपके लिए बेहतर बनाने में Brave की मदद करते हैं।</translation>
-<translation id="1947672064022327074">क्या आप एथेरियम सहायता के लिए क्रिप्टो वॉलेट शुरू करना चाहते हैं?</translation>
-<translation id="7583735190612229830">इस ऐप और इसके जैसे अन्य ऐप के साथ जुड़ने के लिए क्रिप्टो वॉलेट सेट करें।</translation>
-<translation id="8731422418734770661">क्रिप्टो वॉलेट् सेट करें</translation>
-<translation id="8199661191594897555">क्रिप्टो वॉलेट शुरू करें और पुनः लोड करें</translation>
-<translation id="8428213095426709021">सेटिंग</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 डोमेन</translation>
 <translation id="5046066249040287308">Brave वॉलेट यूटिलिटी सेवा</translation>
@@ -336,6 +342,7 @@
 <translation id="7557539689487606886">प्रीमियम सदस्य बनें</translation>
 <translation id="1035309871698658326">खुला होने पर, यह शीर्षकों और सभी गैर-निजी टैब्स के मूल को श्रेणियों में बाँटने के लिए Leo को अपने-आप भेज देगी।</translation>
 <translation id="3435896845095436175">सक्षम करें</translation>
+<translation id="1940221956626514677">टूलबार कस्टमाइज़ करें</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
 <translation id="1426410128494586442">हां</translation>
@@ -526,6 +533,8 @@ Binance
 <translation id="3540231253392253941">पुश मैसेजिंग के लिए Google सेवाओं का इस्तेमाल करें</translation>
 <translation id="933652931229970927">अपने आप नैदानिक रिपोर्ट भेजें</translation>
 <translation id="4891600875049212418">संवेदनशील वेबसाइट पर जाते समय 'अदृश्य' हो जाएँ</translation>
+<translation id="509873765238158442">Microsoft Recall ब्लॉक करें</translation>
+<translation id="4763421121695677716">Microsoft Windows पर Recall सुविधा को Brave के किसी भी खुले टैब के अपने-आप स्क्रीनशॉट लेने से ब्लॉक करें।</translation>
 <translation id="1968895725257436430">डेटा कनेक्शन</translation>
 <translation id="4846154056248462491">बाहर निकलने पर</translation>
 <translation id="216468847346280584">Brave Ads डेटा हटाएं...</translation>
@@ -687,10 +696,10 @@ Binance
 <translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="1294350054292274934">Tor विंडोज़ में सिर्फ़ .onion पतों को ठीक करें</translation>
 <translation id="601227612175911475">Tor विंडोज़ के बाहर Onion सर्विस मौजूद नहीं होंगी.</translation>
-<translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
 <translation id="5249433283143453448">वाइडवाइन डिजिटल राइट्सस मैनेजमेंट (डीआरएम) के आंशिक प्रयोग से आप स्ट्रीम किये गए गोपनीय वीडियो के साथ और भी दूसरे कंटेंट देख सकते हैं.</translation>
 <translation id="1314131187310290315">मैनिफ़ेस्ट V2 एक्सटेंशन</translation>
 <translation id="2488433650767270565">निम्नलिखित मैनिफ़ेस्ट V2 एक्सटेंशन को Chrome वेब स्टोर से निकाल दिया जाएगा, लेकिन वे तब भी Brave में काम करते रहेंगे। डाउनलोड और इंस्टॉल करने या अनइंस्टॉल करने के लिए टॉगल करें।</translation>
+<translation id="6918225713618473646">Brave इन Manifest V2 एक्सटेंशन को Brave सर्वर्स पर होस्ट करता है, लेकिन उनके कॉन्टेंट, सुरक्षा या व्यवहार की समीक्षा या उन्हें वेरिफ़ाय नहीं करता। सहायता के लिए, कृपया हर एक्सटेंशन के आधिकारिक पेज को देखें। Manifest V2 के लिए Brave की योजनाएँ <ph name="BEGIN_LINK"/>यहाँ<ph name="END_LINK"/> देखें।</translation>
 <translation id="578671172657727816">NoScript™ सक्षम करें</translation>
 <translation id="9068475464170522036">NoScript मैनिफ़ेस्ट V2 एक ऐसा एक्सटेंशन है, जो आपको किसी दिए गए पेज पर चलने वाली या चलने की कोशिश करने वाली अलग-अलग स्क्रिप्ट को ब्लॉक और अनब्लॉक करने देता है।</translation>
 <translation id="1394592156621788100">uBlock Origin™ सक्षम करें</translation>
@@ -705,7 +714,6 @@ Binance
 <translation id="7701023802820268122">डिफ़ॉल्ट Solana वॉलेट</translation>
 <translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="6942354363301686374">एक्सटेंशन (कोई फ़ॉलबैक नहीं)</translation>
-<translation id="1274962333945373242">क्रिप्टो वॉलेट (डेप्रीकेट किए हुए)</translation>
 <translation id="702381242110464396">एक्सटेंशन (Brave वॉलेट फ़ॉलबैक)</translation>
 <translation id="4718664830805652430">डिफ़ॉल्ट बेस करेंसी</translation>
 <translation id="7992507032049865603">डिफ़ॉल्ट बेस क्रिप्टोकरेंसी</translation>
@@ -770,6 +778,7 @@ Binance
 <translation id="3095201688102519917">कई सारे टैब वाली विंडो बंद करने से पहले मुझे बताएँ</translation>
 <translation id="7120553802660696133">आखिरी टैब को बंद करते समय विंडो को भी बंद करें</translation>
 <translation id="3394171693948989253">बाहर निकलने पर Esc दबाने के लिए फ़ुल स्क्रीन रिमाइंडर दिखाएं</translation>
+<translation id="6129027151000961048">लियो</translation>
 <translation id="2751872555001636931">साइडबार में लियो आइकन दिखाएँ</translation>
 <translation id="8055509865174199683">वेबसाइट पर संदर्भ मेनू में Leo को दिखाएँ</translation>
 <translation id="1529674267267221673">जब आप किसी वेबसाइट पर राइट क्लिक करेंगे, तब संदर्भ मेनू में Leo दिखने लगेगा। यह संदर्भ को मौजूदा वेब पेज से Leo पर भेज देगा।</translation>
@@ -782,7 +791,6 @@ Binance
 <translation id="1335414530428321716">Leo AI को रीसेट करने के लिए, आपको भविष्य में Brave Leo AI इस्तेमाल करने का विकल्प चुनना होगा और आपकी चैट का इतिहास भी मिट जाएगा। अपनी चैट का इतिहास मिटाने से, Brave Leo AI से आपकी सभी पिछली बातचीतें डिलीट हो जाएँगी। इस कार्रवाई को पहले जैसा नहीं किया जा सकता।</translation>
 <translation id="5574059574002819179">स्वत: पूर्ण सुझावों को एडजस्ट करें</translation>
 <translation id="7942415993090181327">चैट का इतिहास</translation>
-<translation id="5385064007245738696">Leo AI के बारे में जानकारी</translation>
 <translation id="5084498230659987096">Brave Leo निजता पर ध्यान देने वाली AI चैट और AI की सुविधा वाले दूसरे इंटरफ़ेस उपलब्ध कराता है। Leo कभी भी आपके डेटा से नहीं सीखता या उसे मॉडल ट्रेनिंग के लिए इस्तेमाल नहीं करता। सभी अनुरोधों को एक अनाम किए गए सर्वर से प्रॉक्सी किया जाता है।</translation>
 <translation id="6458721693611638005">Leo की प्राइवेसी पॉलिसी में इस बारे में ज़्यादा पढ़ें कि Brave कैसे आपके AI के इस्तेमाल को सुरक्षित करता है। <ph name="BEGIN_LINK"/>ज़्यादा जानें<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">नई बातचीत के लिए डिफ़ॉल्ट मॉडल</translation>
@@ -819,6 +827,9 @@ Binance
 <translation id="6304169450064541679">सिस्टम प्रॉम्प्ट</translation>
 <translation id="3081947790648024460">मॉडल के जवाबों को खास दिशा या स्टाइल में गाइड करने के लिए, मॉडल को दिए गए कस्टम निर्देश और/या कॉन्टेक्स्ट। %datetime% का इस्तेमाल करें, जहाँ आप मौजूदा तारीख और समय डाला जाना चाहेंगे।</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> टोकन</translation>
+<translation id="5985516785067818307">सर्वे पैनलिस्ट</translation>
+<translation id="8347743943525229984">Brave के सर्वे को अनुमति दें</translation>
+<translation id="3204080538332044581">Brave को नए टैब पेज में प्राइवेट सर्वे के लिंक दिखाने की अनुमति दें। सर्वे की मदद से, हम बेहतर सुविधाएँ बना सकते हैं और ब्राउज़र पर आधारित ऐड कैंपेन के असर को माप सकते हैं। <ph name="BEGIN_LINK"/>ज़्यादा जानें<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">प्लेलिस्ट सक्षम करें</translation>
 <translation id="7903608716704052878">ऑफ़लाइन रूप से देखने के लिए फाइलें अपने आप जोड़ें</translation>
 <translation id="4193768184502613558">यह विकल्प अपने आप से मीडिया फ़ाइलों को कैश कर देगा, ताकि आप उन्हें इंटरनेट कनेक्शन के बिना चला सकें।</translation>

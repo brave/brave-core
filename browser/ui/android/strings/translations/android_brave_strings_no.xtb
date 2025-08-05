@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Bidra til å forbedre produktstabiliteten for Brave\u2019s ved å automatisk sende diagnoserapporter hvis Brave-nettleseren krasjer eller slutter å fungere.</translation>
 <translation id="7977176350719484850">Est. data\nlagret</translation>
 <translation id="9008534313521214777">Beregnet tid\nspart</translation>
+<translation id="8347743943525229984">Tillat undersøkelser fra Brave</translation>
+<translation id="6022939994702081659">Lar Brave vise linker til private spørreundersøkelser i nye faner. Undersøkelsene hjelper oss med å utvikle funksjoner og måle effekten av annonsene i nettleseren.</translation>
+<translation id="7746496306508543965">Finn ut mer om Braves undersøkelser</translation>
 <translation id="410351446219883937">Autoavspilling</translation>
 <translation id="7445411102860286510">Gi nettsteder tillatelse til automatisk avspilling av videoer med kuttet lyd (anbefales)</translation>
 <translation id="7837721118676387834">Tillat automatisk avspilling av videoer med dempet lyd for et bestemt nettsted.</translation>
@@ -632,7 +635,6 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="3961126209136843111">Importer en eksisterende lommebok</translation>
 <translation id="4811736040444856406">Vis gjenopprettingsfrase</translation>
 <translation id="4359319875297001084">Vil du importere fra utrangerte Brave-kryptolommebøker?</translation>
-<translation id="3157931365184549694">Gjenopprett</translation>
 <translation id="5844138175312846408">Har du allerede en lommebok?</translation>
 <translation id="2502258949541727762">Før vi begynner</translation>
 <translation id="4303748097351941030">Støttede nettverk</translation>
@@ -794,7 +796,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="1426320910664514906">Datakraftsgrense</translation>
 <translation id="6389441740143786465">Deaktiver Sharing Hub</translation>
 <translation id="9065203028668620118">Endre</translation>
-<translation id="473775607612524610">Oppdater</translation>
 <translation id="479795390141144417">Kontooppdateringen mislyktes.</translation>
 <translation id="8084782383392198011">Feltet for kontonavn kan ikke være tomt.</translation>
 <translation id="5045550434625856497">Feil passord</translation>
