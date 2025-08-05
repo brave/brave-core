@@ -1206,7 +1206,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="6482749332252372425">No se ha podido descargar <ph name="FILE_NAME"/> porque no hay suficiente espacio de almacenamiento.</translation>
 <translation id="6486420406192123355">Este archivo PDF procede de un sitio que usa una conexión no segura</translation>
 <translation id="650224091954855786">{FILE_COUNT,plural, =1{Archivo descargado}other{# descargas completadas}}</translation>
-<translation id="3960299545138990065">Reinicia Brave</translation>
+<translation id="3960299545138990065">Reiniciar Brave</translation>
 <translation id="6513924416597632811">Copia el enlace a la página de resultados de búsqueda de <ph name="SEARCH_QUERY"/>. Fuente: <ph name="PAGE_URL"/></translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="6527303717912515753">Compartir</translation>
@@ -1682,7 +1682,7 @@ Para cambiar este ajuste, <ph name="BEGIN_LINK"/>elimina los datos de Brave de t
 <translation id="8438566539970814960">Mejorar las búsquedas y la navegación</translation>
 <translation id="8439974325294139057"><ph name="LANG"/>: idioma listo. Reinicia <ph name="APP_NAME"/>.</translation>
 <translation id="8442258441309440798">No hay historias disponibles</translation>
-<translation id="4058091506841967397">No se puede actualizar Brave.</translation>
+<translation id="4058091506841967397">No se puede actualizar Brave</translation>
 <translation id="8443600937324357591">Mover pestaña a otra ventana</translation>
 <translation id="8445448999790540984">No se pueden exportar las contraseñas</translation>
 <translation id="8446884382197647889">Más información</translation>
@@ -1777,7 +1777,7 @@ Para cambiar este ajuste, <ph name="BEGIN_LINK"/>elimina los datos de Brave de t
 <translation id="885480114717186641">Puedes solicitar el sitio para ordenadores de <ph name="HOST_NAME"/></translation>
 <translation id="8856607253650333758">Obtener descripciones</translation>
 <translation id="8856931513242997049">Flujo del permiso de notificaciones cerrado</translation>
-<translation id="8863714995118816041">Se han vuelto a dar permisos a <ph name="SITE_NAME"/></translation>
+<translation id="8863714995118816041">Se ha vuelto a dar permisos a <ph name="SITE_NAME"/></translation>
 <translation id="7261356974224431851">Datos de Brave en tu cuenta</translation>
 <translation id="8888527824584402177">Las pestañas que no hayas usado durante <ph name="DAYS_INACTIVE"/> días se moverán aquí<ph name="AUTODELETE_SECTION"/>. Puedes cambiar esta opción en cualquier momento en <ph name="SETTINGS_TITLE"/>.</translation>
 <translation id="1984646864943401749">Envía a Brave las URLs de algunas páginas que visitas, información limitada del sistema y algún contenido de las páginas para ayudar a descubrir nuevas amenazas y proteger a los usuarios de la Web.</translation>

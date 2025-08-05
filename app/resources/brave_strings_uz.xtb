@@ -5,7 +5,6 @@
 <translation id="7099479769133613710">ChromeOS tizimini yangilash uchun qayta ishga tushiring</translation>
 <translation id="2479110114759182442">Brave bu kengaytmani tekshirishni tavsiya qiladi</translation>
 <translation id="3814674848168165531">Birorta sayt havolalarni maxfiy tarzda sahifalarida oldindan yuklashni soʻrasa, Brave Brave xizmatlaridan foydalanadi. Bunda, oldindan yuklangan saytda shaxsingiz berkitiladi, lekin Brave qaysi saytlar oldindan yuklanishini oʻrganadi.</translation>
-<translation id="5749154344207139683">1 daqiqalik soʻrovnoma orqali Inkognito rejimini yaxshilashimizga yordam bering.</translation>
 <translation id="1065672644894730302">Sozlamalarni ko‘rib bo‘lmadi. Ba’zi funksiyalar mavjud emas va o‘zgartirilgan sozlamalar saqlanmaydi.</translation>
 <translation id="7577672138294294152">Bravedagi “Sayt, ilova va kengaytmalarga ruxsat” ota-onangiz tomonidan faolsizlantirilgan</translation>
 <translation id="5918095577778020936">Brave parollaringizni eksport qilmoqchi. Ruxsat berish uchun Windows platformasidagi parolingizni kiriting.</translation>
@@ -622,6 +621,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
               =0 {Yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda}
               =1 {Yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda. Maxfiy oynangiz qayta ochilmaydi.}
               other {Yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda. # ta Maxfiy oynangiz qayta ochilmaydi.}}</translation>
+<translation id="5749154344207139683">Bu 1 daqiqalik soʻrovnomada qatnashish orqali Maxfiylikni yaxshilashga yordam bering.</translation>
 <translation id="79269250264141507">Manzil qatori va qidiruv maydonchasida matn kiritganingizda, yaxshiroq tavsiyalar berilishi uchun Brave kiritilganlarni birlamchi qidiruv tizimingizga yuboradi. Bu funksiya Maxfiy rejimda faolsizlantiriladi.</translation>
 <translation id="2589970573128789862">Brave Maxfiy rejimi</translation>
 <translation id="5994282802285556682">Maxfiy rejimdan foydalanilganda, Brave saytni yuklashdan oldin sizni xavfsiz boʻlmagan ulanish usuli orqali ogohlantiradi</translation>

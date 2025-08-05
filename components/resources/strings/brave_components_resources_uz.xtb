@@ -182,6 +182,9 @@
 <translation id="5549369333299694936"><ph name="AMOUNT"/> miqdori qo‘riqlandi</translation>
 <translation id="6257687515171395402">Kvittansiya</translation>
 <translation id="3541662075332902575">Transaksiyaning blokka kiritilishi muvaffaqiyatli bo'ldi. Ikkilamchi xarajat qilish xavfini oldini olish uchun blok tasdiqlashlarni kutishingizni tavsiya qilamiz.</translation>
+<translation id="1748114617341025015">Bogʻlangan token hisobini yaratish</translation>
+<translation id="4418115887224983240">Bogʻlangan token hisobini yaratib bo‘lmadi</translation>
+<translation id="7165697599360786670">Bogʻlangan token hisobi yaratildi</translation>
 <translation id="4530494379350999373">Manba</translation>
 <translation id="4220062530885628403">Nons</translation>
 <translation id="3959969108528118741">Egalik qiluvchi</translation>
@@ -208,7 +211,10 @@
 <translation id="8242426110754782860">Davom etish</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="1736419249208073774">Koʻrib chiqish</translation>
+<translation id="3155166394760577549">Tranzaksiya maxfiyligini oshirish uchun himoyalashni yoqing.</translation>
 <translation id="1178581264944972037">Toʻxtatib turish</translation>
+<translation id="3382275793825152362">Mablagʻlarni himoyalash</translation>
+<translation id="8631765320256788981">Siz shaffof hisobingizdan himoyalangan hisobingizga mablagʻ oʻtkazyapsiz.</translation>
 <translation id="8030852056903932865">Tasdiqlash</translation>
 <translation id="7138678301420049075">Boshqa</translation>
 <translation id="2244921323472112851">Ayni paytda siz qidirayotgan sahifani topa olmadik.</translation>
@@ -236,6 +242,14 @@
 <translation id="1013121820689882118">Tezkor oʻqish rejimi</translation>
 <translation id="4330722796577425585">Orqaga qaytarish</translation>
 <translation id="6129027151000961048">Leo</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {Ushbu sahifa kontenti haqida savol bering}
+      other {Ushbu sahifalar kontenti haqida savol bering}
+    }</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {Ushbu sahifani umumlashtiring}
+      other {Ushbu sahifalarni umumlashtiring}
+    }</translation>
 <translation id="7144878232160441200">Qayta urinib koʻring</translation>
 <translation id="999273441077650169">Model vazifaga mos ravishda eng yaxshi variantni tanlab, dinamik tarzda oʻzgaradi. <ph name="LINK_BEFORE"/>Batafsil maʼlumot<ph name="LINK_AFTER"/></translation>
 <translation id="7557539689487606886">Premium obuna qilish</translation>
@@ -264,14 +278,21 @@
 <translation id="3586931643579894722">Tafsilotlarni yashirish</translation>
 <translation id="4881695831933465202">Ochish</translation>
 <translation id="8712637175834984815">Tushunarli</translation>
+<translation id="1352836459737874921">Boshqa varaqlardagi kontentni biriktirish</translation>
+<translation id="3028258613451571431">Suhbat uchun Leoga koʻproq kontekst berish uchun sahifa kontentini brauzer varaqlari orqali yuborish</translation>
 <translation id="2315654674554095762">Endi Leo keyin davom ettira olishingiz uchun suhbatlarni eslab qoladi. Suhbatlar shifrlangan holda qurilmangizda saqlanadi va ularni istalgan payt oʻchirib tashlashingiz mumkin.</translation>
 <translation id="6291843235651817590">Umumiy maqsadli chat</translation>
 <translation id="7979673624064378842">Tezkor chat</translation>
 <translation id="2836330653441111204">Muvozanatlangan tezlik va intellekt</translation>
 <translation id="8782867266498869301">Model vazifani bajarish uchun eng yaxshisiga o'zgartiriladi</translation>
+<translation id="2414904697165579184">Javoblarni varaq(lar) kontenti asosida shakllantirish</translation>
+<translation id="8258324391302611485">Bu sahifa kontenti xabarlaringiz bilan birga Leo'ga yuboriladi.</translation>
 <translation id="1223498995510244364">Qisqacha bayon qilish</translation>
 <translation id="2370739752330685659">Balki keyinroq</translation>
 <translation id="6739516910850820220">Fayl yuklanmoqda...</translation>
+<translation id="7742969455167760092">Varaqlarni ochish...</translation>
+<translation id="7097822247923237815">Vaqtinchalik chat</translation>
+<translation id="7481750859362986254">Ushbu suhbat tarixingizga saqlanmaydi va Leo'ning sozlamalari yoki eslab qolish funksiyalaridan foydalanilmaydi.</translation>
 <translation id="5912396950572065471">Format</translation>
 <translation id="867722069064361487">12 soatlik format</translation>
 <translation id="4064062743338217840">24 soatlik format</translation>
@@ -346,6 +367,7 @@
 <translation id="1104500750724567895">Yangi taxallus</translation>
 <translation id="8072910658503112482">Yangi email taxallusini tavsiya qilish</translation>
 <translation id="7710361355427562228">Yangi taxallus yaratilmoqda...</translation>
+<translation id="8013913032858654337">Taxalluslar yaratilmadi. Internet aloqasini tekshiring va qayta urining.</translation>
 <translation id="4253168017788158739">Eslatma</translation>
 <translation id="7596996548739923550">Manzilingiz uchun eslatmani kiriting (ixtiyoriy)</translation>
 <translation id="3810973564298564668">Boshqarish</translation>
@@ -353,13 +375,21 @@
 <translation id="3919357515365744684">Email xabarlari <ph name="MAIN_EMAIL"/> manziliga yuboriladi</translation>
 <translation id="6063403442924238501">Email taxallusini tahrirlash</translation>
 <translation id="8729265501883390499">Taxallus yaratish</translation>
+<translation id="7137645995703540578">Taxalluslar saqlanmadi. Internet aloqasini tekshiring va qayta urining.</translation>
+<translation id="1765544689721905747">Email taxalluslarini oʻchirish</translation>
+<translation id="646524615209870492"><ph name="ALIAS"/> taxallus sifatida olib tashlansa, xatlarni qabul qilish imkoniyati yoʻqoladi.</translation>
+<translation id="8133100642915054515">Taxallus oʻchirilmadi. Internet aloqasini tekshiring va qayta urining.</translation>
+<translation id="8465742443901727718">Bu harakat orqaga qaytarib boʻlmaydi. Davom etishni xohlaysizmi?</translation>
 <translation id="8662104432574824754">Boshlash uchun, tizimga kiring yoki Brave hisobini yarating</translation>
 <translation id="8069030342700068465">Emailingizga yuborilgan xavfsiz kirish havolasini olish uchun email manzilingizni kiriting. Bu havolani bossangiz, Brave hisobini yaratasiz yoki unga kirasiz va sizga bepul Email taxalluslar xizmatidan foydalanish imkonini beradi.</translation>
 <translation id="2133391407495495735">Kirish havolasini olish</translation>
+<translation id="2650906829817220223">Autentifikatsiya soʻrovida xatolik. Internet aloqasini tekshiring va qayta urining.</translation>
 <translation id="3699624789011381381">Email manzili</translation>
 <translation id="8124939971041602970">Kirish email manzili <ph name="MAIN_EMAIL"/> ga yuborilmoqda</translation>
 <translation id="8140361186431963982">Hisobingizga kirish uchun emaildagi xavfsiz kirish havolasini bosing.</translation>
 <translation id="619122420105901711">Email koʻrinmayaptimi? Spam jildingizni tekshiring yoki qayta urining.</translation>
+<translation id="3397336197747843396">Brave hisobi bilan autentifikatsiya qilinmadi. Qayta urining.</translation>
+<translation id="1340795582009113055">Qaytadan boshlash</translation>
 <translation id="5753795690521538679">7 kunlik bepul sinovni boshlash</translation>
 <translation id="3357036723290257445">Allaqachon Brave VPN sotib olganmisiz?</translation>
 <translation id="5747552184818312860">Muddati tugaydi</translation>
