@@ -7,7 +7,7 @@
 
 #include <Foundation/Foundation.h>
 
-#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "ios/web/public/thread/web_thread.h"
@@ -34,12 +34,12 @@
 
 - (bool)braveShieldsEnabledFor:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  return brave_shields::GetBraveShieldsEnabled(_map, gurl);
+  return brave_shields::GetIsBraveShieldsEnabled(_map, gurl);
 }
 
 - (void)setBraveShieldsEnabled:(bool)isEnabled forURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  brave_shields::SetBraveShieldsEnabled(_map, isEnabled, gurl, _localState);
+  brave_shields::SetIsBraveShieldsEnabled(_map, isEnabled, gurl, _localState);
 }
 
 - (BraveShieldsAdBlockMode)defaultAdBlockMode {
@@ -97,37 +97,35 @@
   brave_shields::SetIsNoScriptEnabled(_map, isEnabled, gurl, _localState);
 }
 
-- (bool)isBlockFingerprintingEnabledByDefault {
-  return [self blockFingerprintingEnabledForGURL:GURL()];
+- (BraveShieldsFingerprintMode)defaultFingerprintMode {
+  return [self fingerprintModeForGURL:GURL()];
 }
 
-- (bool)blockFingerprintingEnabledForURL:(NSURL*)url {
+- (BraveShieldsFingerprintMode)fingerprintModeForURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  return [self blockFingerprintingEnabledForGURL:gurl];
+  return [self fingerprintModeForGURL:gurl];
 }
 
-- (bool)blockFingerprintingEnabledForGURL:(GURL)gurl {
-  auto fingerprintMode = static_cast<BraveShieldsFingerprintMode>(
+- (BraveShieldsFingerprintMode)fingerprintModeForGURL:(GURL)gurl {
+  return static_cast<BraveShieldsFingerprintMode>(
       brave_shields::GetFingerprintMode(_map, gurl));
-  return fingerprintMode != BraveShieldsFingerprintModeAllowMode;
 }
 
-- (void)setBlockFingerprintingEnabledByDefault:(bool)isEnabled {
-  [self setBlockFingerprintingEnabled:isEnabled forGURL:GURL()];
+- (void)setDefaultFingerprintMode:(BraveShieldsFingerprintMode)fingerprintMode {
+  [self setFingerprintMode:fingerprintMode forGURL:GURL()];
 }
 
-- (void)setBlockFingerprintingEnabled:(bool)isEnabled forURL:(NSURL*)url {
+- (void)setFingerprintMode:(BraveShieldsFingerprintMode)fingerprintMode
+                    forURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  [self setBlockFingerprintingEnabled:isEnabled forGURL:gurl];
+  [self setFingerprintMode:fingerprintMode forGURL:gurl];
 }
 
-- (void)setBlockFingerprintingEnabled:(bool)isEnabled forGURL:(GURL)gurl {
-  // iOS only supports standard & allow FingerprintMode's.
-  brave_shields::mojom::FingerprintMode fingerprintMode =
-      isEnabled ? brave_shields::mojom::FingerprintMode::STANDARD_MODE
-                : brave_shields::mojom::FingerprintMode::ALLOW_MODE;
-  brave_shields::SetFingerprintMode(_map, fingerprintMode, gurl, _localState,
-                                    _profilePrefs);
+- (void)setFingerprintMode:(BraveShieldsFingerprintMode)fingerprintMode
+                   forGURL:(GURL)gurl {
+  brave_shields::SetFingerprintMode(
+      _map, static_cast<brave_shields::mojom::FingerprintMode>(fingerprintMode),
+      gurl, _localState, _profilePrefs);
 }
 
 @end
