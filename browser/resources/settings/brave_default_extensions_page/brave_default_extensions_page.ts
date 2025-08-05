@@ -8,22 +8,28 @@ import './brave_extensions_manifest_v2_subpage.js';
 import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import type {CrViewManagerElement} from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
 
 import {SettingsCheckboxElement} from '../controls/settings_checkbox.js';
 import {loadTimeData} from '../i18n_setup.js';
-import {RouteObserverMixin, Router} from '../router.js';
+import {Route, RouteObserverMixin, Router} from '../router.js';
+import {routes} from '../route.js';
+
+import {SettingsViewMixin, SettingsViewMixinInterface} from '../settings_page/settings_view_mixin.js';
+import {SearchableViewContainerMixin, SearchableViewContainerMixinInterface} from '../settings_page/searchable_view_container_mixin.js';
 
 import {BraveDefaultExtensionsBrowserProxyImpl} from './brave_default_extensions_browser_proxy.js'
 import {getTemplate} from './brave_default_extensions_page.html.js'
 
 const SettingBraveDefaultExtensionsPageElementBase =
-  WebUiListenerMixin(PrefsMixin(RouteObserverMixin(PolymerElement))) as {
-  new (): PolymerElement & WebUiListenerMixinInterface & PrefsMixinInterface
+  SearchableViewContainerMixin(SettingsViewMixin(SettingsViewMixin(WebUiListenerMixin(PrefsMixin(RouteObserverMixin(PolymerElement)))))) as {
+  new (): PolymerElement & WebUiListenerMixinInterface & PrefsMixinInterface & SearchableViewContainerMixinInterface & SettingsViewMixinInterface
 }
 
 export interface SettingBraveDefaultExtensionsPageElement {
   $: {
-    widevineEnabled: SettingsCheckboxElement
+    widevineEnabled: SettingsCheckboxElement,
+    viewManager: CrViewManagerElement,
   }
 }
 
@@ -87,10 +93,36 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   }
 
   /** @protected */
-  currentRouteChanged() {
+  override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
+    super.currentRouteChanged(newRoute, oldRoute);
+
     const router = Router.getInstance();
     this.isExtensionsManifestV2Routed_ =
       router.getCurrentRoute() == router.getRoutes().EXTENSIONS_V2;
+    // Need to wait for currentRouteChanged observers on child views to run
+    // first, before switching views.
+    queueMicrotask(() => {
+      switch (newRoute) {
+        case routes.EXTENSIONS:
+          this.$.viewManager.switchView(
+              'extensions', 'no-animation', 'no-animation');
+          break;
+        case routes.EXTENSIONS_V2:
+          this.$.viewManager.switchView(
+              'extensions-v2-subpage', 'no-animation', 'no-animation');
+          break;
+        case routes.BASIC:
+          // Switch back to the default view in case they are part of search
+          // results.
+          this.$.viewManager.switchView(
+              'braveSync', 'no-animation', 'no-animation');
+          break;
+        default:
+          // Nothing to do. Other parent elements are responsible for updating
+          // the displayed contents.
+          break;
+      }
+    });
   }
 
   restartBrowser_(e: Event) {
