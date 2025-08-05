@@ -49,6 +49,11 @@ export class BraveLeoAssistantPageIndexElement extends
 
   declare prefs: {[key: string]: any};
 
+  private showDefaultViews_() {
+    this.$.viewManager.switchViews(
+        ['assistant', 'personalization', 'model-list'], 'no-animation', 'no-animation');
+  }
+
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
     super.currentRouteChanged(newRoute, oldRoute);
 
@@ -57,8 +62,7 @@ export class BraveLeoAssistantPageIndexElement extends
     queueMicrotask(() => {
       switch (newRoute) {
         case routes.BRAVE_LEO_ASSISTANT:
-          this.$.viewManager.switchView(
-              'parent', 'no-animation', 'no-animation');
+          this.showDefaultViews_();
           break;
         case routes.BRAVE_LEO_CUSTOMIZATION:
           this.$.viewManager.switchView(
@@ -67,8 +71,7 @@ export class BraveLeoAssistantPageIndexElement extends
         case routes.BASIC:
           // Switch back to the default view in case they are part of search
           // results.
-          this.$.viewManager.switchView(
-              'parent', 'no-animation', 'no-animation');
+          this.showDefaultViews_();
           break;
         default:
           // Nothing to do. Other parent elements are responsible for updating
