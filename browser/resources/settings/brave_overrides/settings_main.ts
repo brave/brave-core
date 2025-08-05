@@ -52,7 +52,8 @@ RegisterPolymerTemplateModifications({
       html`
         <template is="dom-if" if="[[showPage_(pageVisibility_.getStarted)]]">
           <div slot="view" id="getStarted">
-            <template is="dom-if" if="true">
+            <template is="dom-if" if="[[renderPlugin_(
+          routes_.GET_STARTED, lastRoute_, inSearchMode_)]]">
               <settings-getting-started-page-index
                 prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
