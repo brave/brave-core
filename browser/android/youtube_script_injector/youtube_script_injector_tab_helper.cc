@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/feature_list.h"
-#include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.cc"
+#include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"

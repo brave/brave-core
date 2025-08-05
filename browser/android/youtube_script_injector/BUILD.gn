@@ -9,6 +9,7 @@ import("//third_party/jni_zero/jni_zero.gni")
 source_set("youtube_script_injector") {
   sources = [
     "brave_youtube_script_injector_native_helper.cc",
+    "brave_youtube_script_injector_native_helper.h",
     "youtube_script_injector_tab_helper.cc",
     "youtube_script_injector_tab_helper.h",
   ]
