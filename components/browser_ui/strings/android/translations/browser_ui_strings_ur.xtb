@@ -25,6 +25,7 @@
 <translation id="129382876167171263">ویب سائٹس کے ذریعے محفوظ کردہ فائلز یہاں ظاہر ہوں گی</translation>
 <translation id="131112695174432497">اشتہارات کی ذاتی نوعیت سازی کو متاثر کرنے والا ڈیٹا حذف کر دیا جاتا ہے</translation>
 <translation id="1317194122196776028">اس سائٹ کو بھول جائیں</translation>
+<translation id="1323433172918577554">مزید دکھائیں</translation>
 <translation id="1333965224356556482">سائٹس کو اپنا مقام دیکھنے کی اجازت نہ دیں</translation>
 <translation id="1343356790768851700">یہ سائٹ آپ کی پسند کی چیزوں کا تعین کرتی ہے اور پھر دوسری سائٹس کو اشتہارات تجویز کرتی ہے</translation>
 <translation id="1369915414381695676">سائٹ <ph name="SITE_NAME"/> شامل کی گئی</translation>
@@ -35,6 +36,7 @@
 <translation id="1409338233051621926">ایپس پر تھپتھپائیں پھر ڈیفالٹ ایپس پر تھپتھپائیں</translation>
 <translation id="1415402041810619267">‏URL کو چھوٹا کیا گیا</translation>
 <translation id="1741136041592162279">‏اپنے آلے کی مدد سے Brave کو اپنے حالیہ ٹیبز کا اشتراک کرنے کی اجازت دیں تاکہ وہ آپ کے آلے کی ایپس کی فہرست اور تلاش کے نتائج میں دکھائی دیں۔ آپ اسے Brave کی ترتیبات میں کسی بھی وقت آن یا آف کر سکتے ہیں۔</translation>
+<translation id="1432650420699700107">سائٹس آپ کے مقامی نیٹ ورک پر کسی آلے سے منسلک ہونے کی استدعا کر سکتی ہیں</translation>
 <translation id="1448064542941920355">زوم آؤٹ کریں</translation>
 <translation id="1464044141348608623">آپ اپنے آلے کا فعال طور پر استعمال کب کر رہے ہیں سائٹس کو یہ جاننے کی اجازت نہ دیں</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> سائٹ}other{<ph name="SITE_COUNT"/> سائٹس}}</translation>
@@ -96,6 +98,7 @@
 <translation id="2182457891543959921">‏سائٹس کو اپنے اطراف کا 3D نقشہ تخلیق یا کیمرے کی پوزیشن ٹریک کرنے کی اجازت دینے سے پہلے پوچھیں (تجویز کردہ)</translation>
 <translation id="2185965788978862351">اس سے آپ کی ہوم اسکرین پر موجود سائٹس یا ایپس کے ذریعے اسٹور کردہ <ph name="DATASIZE"/> ڈیٹا اور کوکیز حذف ہو جائیں گی۔</translation>
 <translation id="2194856509914051091">قابل غور چیزیں</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{گزشتہ کل}other{‫<ph name="NUM_DAYS_MANY"/> دن قبل}}</translation>
 <translation id="2215727959747642672">فائل میں ترمیم کریں</translation>
 <translation id="2218389616572918761">سائٹس آپ کا مائیکروفون استعمال کرنے اجازت طلب کر سکتی ہیں</translation>
 <translation id="2228071138934252756">‏<ph name="APP_NAME"/> کو اپنے کیمرے تک رسائی دینے کے لیے، <ph name="BEGIN_LINK"/>Android کی ترتیبات<ph name="END_LINK"/> میں بھی کیمرا آن کریں۔</translation>
@@ -126,6 +129,7 @@
 <translation id="2490684707762498678"><ph name="APP_NAME"/> کے زیر انتظام</translation>
 <translation id="2498359688066513246">مدد اور تاثرات</translation>
 <translation id="2501278716633472235">پیچھے جائیں</translation>
+<translation id="2533138527374486328">آن ہونے پر، سائٹس آپ کے مقامی نیٹ ورک پر کسی بھی آلہ سے منسلک ہونے کی درخواست کر سکتی ہیں۔ آف ہونے پر، سائٹس آپ کے مقامی نیٹ ورک پر موجود آلات سے منسلک نہیں ہو سکتیں۔</translation>
 <translation id="2546283357679194313">کوکیز اور سائٹ ڈیٹا</translation>
 <translation id="2570922361219980984">‏مقام کی رسائی بھی اس آلہ کے لیے آف ہے۔ <ph name="BEGIN_LINK"/>Android کی ترتیبات<ph name="END_LINK"/>.میں اسے آن کریں۔</translation>
 <translation id="257931822824936280">پھیلایا ہوا - سکیڑنے کیلئے کلک کریں۔</translation>
@@ -182,6 +186,7 @@
 <translation id="3167868116600277716">‏Discover فیڈ</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> اسٹور کردہ ڈیٹا</translation>
 <translation id="321187648315454507">‏<ph name="APP_NAME"/> کو آپ کو اطلاعات بھیجنے کی سہولت دینے کے لیے، <ph name="BEGIN_LINK"/>Android کی ترتیبات<ph name="END_LINK"/> میں بھی اطلاعات آن کریں۔</translation>
+<translation id="3223425961342298674">مقام کی اجازت نہیں ہے</translation>
 <translation id="3227137524299004712">مائیکروفون</translation>
 <translation id="3232293466644486101">براؤزنگ ڈیٹا حذف کریں…</translation>
 <translation id="3242646949159196181">آن ہونے پر، سائٹس آواز چلا سکتی ہیں۔ آف ہونے پر، سائٹس آواز نہیں چلا سکتی ہیں۔</translation>
@@ -251,12 +256,14 @@
 <translation id="3955321697524543127">‏سائٹس کو USB آلات سے منسلک ہونے کی اجازت نہ دیں</translation>
 <translation id="3965467402665811906">سائٹس ان معلومات کو استعمال کرنے کے لیے پوچھ سکتی ہیں جو انہوں نے آپ کے بارے میں محفوظ کی ہیں</translation>
 <translation id="3967822245660637423">ڈاؤن لوڈ مکمل ہوگیا ہے</translation>
+<translation id="3969869202926863008">مقامی نیٹ ورک تک رسائی</translation>
 <translation id="3981465354637804599">سائٹس عام طور پر اشتہارات دکھاتی ہیں تاکہ وہ بغیر کسی قیمت کے مواد یا سروسز فراہم کر سکیں۔ لیکن کچھ سائٹس دخل اندازی کرنے والے یا گمراہ کن اشتہارات دکھانے کیلئے جانی جاتی ہیں۔</translation>
 <translation id="3987993985790029246">لنک کاپی کریں</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
 <translation id="3992308058851451478">‫<ph name="SITE"/> براؤز کرتے وقت آپ کی معلومات استعمال کر سکتی ہے</translation>
 <translation id="3992684624889376114">اس صفحہ کے بارے میں</translation>
 <translation id="4002066346123236978">عنوان</translation>
+<translation id="4031179711345676612">مائیکروفون اجازت یافتہ ہے</translation>
 <translation id="4046123991198612571">اگلا ٹریک</translation>
 <translation id="4077310749977440510">آپ کے کاپی کردہ ٹیکسٹ کی فارمیٹنگ کو برقرار رکھنے جیسی خصوصیات کیلئے سائٹس عام طور پر آپ کے کلپ بورڈ کو پڑھتی ہیں</translation>
 <translation id="4149890623864272035">کیا آپ واقعی کوکیز سمیت تمام مقامی ڈیٹا حذف اور اس ویب سائٹ کیلئے تمام اجازتیں ری سیٹ کرنا چاہتے ہیں؟</translation>
@@ -266,8 +273,10 @@
 <translation id="4169549551965910670">‏USB آلہ سے منسلک ہے</translation>
 <translation id="4194328954146351878">‏سائٹس کو NFC آلات پر معلومات دیکھنے اور تبدیل کرنے کی اجازت دینے سے پہلے پوچھیں (تجویز کردہ)</translation>
 <translation id="4200726100658658164">مقام کی ترتیبات کھولیں</translation>
+<translation id="4203769790323223880">کیمرے کی اجازت نہیں ہے</translation>
 <translation id="421742575134139848">سائٹس موسیقی، ویڈیوز اور دیگر میڈیا کی خاطر آڈیو فراہم کرنے کیلئے آواز چلا سکتی ہیں</translation>
 <translation id="4217710972110098902">سیریل پورٹ سے منسلک ہے</translation>
+<translation id="4223404254440398437">مائیکروفون کی اجازت نہیں ہے</translation>
 <translation id="4226663524361240545">اطلاعات آلہ کو وائبریٹ کر سکتی ہیں</translation>
 <translation id="4259722352634471385">نیویگیشن مسدود ہے: <ph name="URL"/></translation>
 <translation id="4274673989874969668">آپ کے کسی سائٹ سے باہر جانے بعد تصاویر اپ لوڈ کرنے یا چیٹ پیغام بھیجنے جیسے ٹاسکس مکمل کرنے کے لیے یہ مطابقت پذیری کا عمل جاری رکھتی ہے</translation>
@@ -299,6 +308,7 @@
 <translation id="4635969503923889910">‏سائٹس کو NFC آلات استعمال کرنے کی اجازت نہ دیں</translation>
 <translation id="4644713492825682049">حذف اور ری سیٹ کریں</translation>
 <translation id="4645575059429386691">آپ کے والدین کے زیر انتظام</translation>
+<translation id="4663373278480897665">کیمرا اجازت یافتہ ہے</translation>
 <translation id="4670064810192446073">ورچوئل رئیلٹی</translation>
 <translation id="5652778654712411580">‏براؤزر ایپ پر تھپتھپائیں پھر Brave پر تھپتھپائیں</translation>
 <translation id="4676059169848868271"><ph name="APP_NAME"/> کو ہینڈ ٹریکنگ استعمال کرنے کی اجازت دینے کے لیے، <ph name="BEGIN_LINK"/>سسٹم کی ترتیبات<ph name="END_LINK"/> میں ہینڈ ٹریکنگ کو بھی آن کریں۔</translation>
@@ -320,6 +330,7 @@
 <translation id="4972737347717125191">سائٹس ورچوئل رئیلٹی آلات اور ڈیٹا استعمال کرنے کے لیے پوچھ سکتی ہیں</translation>
 <translation id="497421865427891073">آگے جائیں</translation>
 <translation id="4976702386844183910">آخری بار ملاحظہ کردہ <ph name="DATE"/></translation>
+<translation id="4978178243417029856">دریافت فیڈ کے بارے میں مزید جانیں</translation>
 <translation id="4994033804516042629">کوئی رابطہ نہیں ملا</translation>
 <translation id="4996978546172906250">اشتراک کریں بذریعہ</translation>
 <translation id="5001526427543320409">فریق ثالث کوکیز</translation>
@@ -344,6 +355,7 @@
 <translation id="5216942107514965959">آخری بار آج ملاحظہ کیا گیا</translation>
 <translation id="5225463052809312700">کیمرا آن کریں</translation>
 <translation id="5234764350956374838">برخاست کریں</translation>
+<translation id="5239623327352565343">مقام کی اجازت ہے</translation>
 <translation id="5246825184569358663">اس کارروائی سے کوکیز سمیت تمام مقامی ڈیٹا حذف ہو جائے گا اور <ph name="DOMAIN"/> اور اس کے تحت موجود تمام سائٹس کیلئے تمام اجازتیں ری سیٹ ہو جائیں گی</translation>
 <translation id="5264323282659631142">’<ph name="CHIP_LABEL"/>‘ ہٹائیں</translation>
 <translation id="528192093759286357">پوری اسکرین سے باہر نکلنے کیلئے اوپر سے گھسیٹیں اور پیچھے جائیں بٹن کو ٹچ کریں۔</translation>
@@ -386,7 +398,9 @@
 <translation id="6105125042109106861">فریق ثالث کی کوکیز پوشیدگی وضع میں مسدود کی جاتی ہیں</translation>
 <translation id="5740126560802162366">سائٹس آپ کے آلے پر ڈیٹا محفوظ کر سکتی ہیں</translation>
 <translation id="5743425052258407233">اپنے تمام آلات پر اپنی سرگزشت حاصل کریں تاکہ آپ آسانی سے وہیں سے شروع کر سکیں جہاں آپ نے چھوڑا تھا</translation>
+<translation id="5749158352074143502">اس ٹیب کے ساتھ جاری رکھیں</translation>
 <translation id="5750869797196646528">ہاتھ کی ٹریکنگ</translation>
+<translation id="5753570386948603678">سرگزشت سے حذف کریں</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> مسدود ہو گیا</translation>
 <translation id="5804241973901381774">اجازتیں</translation>
 <translation id="5822675474983796325">اپنے نئے ٹیب کے صفحہ کے نیچے کی شیٹ کو حسب ضرورت بنائیں پورا کھلا ہے</translation>
@@ -412,6 +426,7 @@
 <translation id="5968921426641056619">ویب پتہ درج کریں</translation>
 <translation id="5975083100439434680">زوم آؤٹ کریں</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> - <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">‏‫Discover فیڈ کو آن کریں</translation>
 <translation id="6015775454662021376">اپنے آلے تک اس سائٹ کی رسائی کو کنٹرول کریں</translation>
 <translation id="6040143037577758943">بند کریں</translation>
 <translation id="6042308850641462728">مزید</translation>
@@ -447,11 +462,13 @@
 <translation id="6527303717912515753">اشتراک کریں</translation>
 <translation id="6530703012083415527">آن ہونے پر، سائٹس پاپ اپس اور ری ڈائریکٹ کا استعمال کر سکتی ہیں۔ آف ہونے پر، سائٹس پاپ اپس اور ری ڈائریکٹس کا استعمال نہیں کر سکتی ہیں۔</translation>
 <translation id="6540488083026747005">آپ نے اس سائٹ پر فریق ثالث کوکیز کی اجازت دی ہے</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{‫<ph name="NUM_WEEKS_ONE"/> ہفتہ قبل}other{‫<ph name="NUM_WEEKS_MANY"/> ہفتے قبل}}</translation>
 <translation id="6545864417968258051">بلوٹوتھ اسکیننگ</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>، <ph name="PERMISSION_2"/> اور <ph name="NUM_MORE"/> مزید کو مسدود کیا گیا}other{<ph name="PERMISSION_1"/>، <ph name="PERMISSION_2"/> اور <ph name="NUM_MORE"/> مزید کو مسدود کیا گیا}}</translation>
 <translation id="6554732001434021288">سائٹ آخری بار <ph name="NUM_DAYS"/> دن پہلے ملاحظہ کی گئی</translation>
 <translation id="656065428026159829">مزید دیکھیں</translation>
 <translation id="6561560012278703671">پر سکون پیغام رسانی کا استعمال کریں (اطلاع کی پرامپٹس کو آپ کو خلل ڈالنے سے مسدود کرتا ہے)</translation>
+<translation id="6565144332292237355">آپ کے مقامی نیٹ ورک پر کوئی آلہ تلاش کرنے اور کسی آلے سے منسلک ہونے کیلئے، سائٹس اس خصوصیت کا استعمال کر سکتی ہیں</translation>
 <translation id="6593061639179217415">ڈیسک ٹاپ سائٹ</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> سائٹ کے لیے کوکیز کی اجازت ہے}other{<ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> سائٹس کے لیے کوکیز کی اجازت ہے}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -485,6 +502,7 @@
 <translation id="6992289844737586249">سائٹس کو آپ کا مائیکروفون استعمال کرنے کی اجازت دینے سے پہلے پوچھیں (تجویز کردہ)</translation>
 <translation id="7000754031042624318">‏Android ترتیبات میں آف کر دیا گیا</translation>
 <translation id="8683151724374457021">‏یہ سائٹ آپ کی پسندیدہ چیزوں کا تعین کرتی ہے اور پھر دیگر سائٹس کو اشتہارات تجویز کرتی ہے۔ آپ کو مزید متعلقہ اشتہارات دکھانے کیلئے، یہ سائٹ Brave سے آپ کے اشتہار کے موضوعات بھی وصول کرتی ہے۔</translation>
+<translation id="7044081119134178347">اس بار کیمرا کی اجازت ہے</translation>
 <translation id="7053983685419859001">مسدود کریں</translation>
 <translation id="7055552182600664515">کاپی رائٹ کے ذریعے تحفظ یافتہ مواد کو چلانے کیلئے، سائٹس کو مواد کے تحفظ کی سروس کا استعمال کرنے کی ضرورت پڑ سکتی ہے۔ <ph name="BEGIN_LINK"/>مزید جانیں<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 منتخب ہے}other{# منتخب کردہ}}</translation>
@@ -496,8 +514,10 @@
 <translation id="7188508872042490670">آلہ پر موجود سائٹ کا ڈیٹا</translation>
 <translation id="7201549776650881587">اس کارروائی سے آپ کی ہوم اسکرین پر موجود <ph name="ORIGIN"/> کے تحت یا اس کی ایپ کے ذریعے سبھی سائٹس کے ذریعے اسٹور کردہ سبھی ڈیٹا اور کوکیز حذف ہو جائیں گی</translation>
 <translation id="7203150201908454328">توسیع کردہ</translation>
+<translation id="7213166370492037743">سائٹس کو اپنے مقامی نیٹ ورک پر کسی آلے سے منسلک ہونے کی اجازت نہ دیں</translation>
 <translation id="7219254577985949841">سائٹ ڈیٹا کو حذف کریں؟</translation>
 <translation id="723171743924126238">تصاویر منتخب کریں</translation>
+<translation id="7243246278722455312">اپنے نئے ٹیب کے صفحہ کے نیچے کی شیٹ کو حسب ضرورت بنائیں</translation>
 <translation id="7243308994586599757">اسکرین کے نچلے حصہ کے قریب اختیارات دستیاب ہیں</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> منتخب ہو گئے</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> اور <ph name="PERMISSION_2"/> کی اجازت دی گئی</translation>
@@ -520,7 +540,9 @@
 <translation id="7554752735887601236">سائٹ آپ کا مائیکروفون استعمال کر رہی ہے</translation>
 <translation id="7561196759112975576">ہمیشہ</translation>
 <translation id="7573594921350120855">سائٹس عام طور پر ویڈیو چیٹ جیسی کمیونیکشن کی خصوصیات کے لیے آپ کا ویڈیو کیمرا استعمال کرتی ہیں</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{‫<ph name="NUM_MONTHS_ONE"/> ماہ قبل}other{‫<ph name="NUM_MONTHS_MANY"/> ماہ قبل}}</translation>
 <translation id="757524316907819857">محفوظ مواد چلانے سے سائٹس کو مسدود کریں</translation>
+<translation id="7586676035079382730">اطلاعات کی اجازت نہیں ہے</translation>
 <translation id="7594634374516752650">بلوٹوتھ آلے سے منسلک ہے</translation>
 <translation id="7617547684249261169">آپ اپنی بعض یا سبھی سرگزشت، کوکیز، سائٹ ڈیٹا اور مزید کو حذف کر سکتے ہیں</translation>
 <translation id="7649070708921625228">مدد</translation>
@@ -533,15 +555,16 @@
 <translation id="7759147511335618829">‏MIDI آلے کا کنٹرول و دوبارہ پروگرام</translation>
 <translation id="7781829728241885113">گزشتہ کل</translation>
 <translation id="7791543448312431591">شامل کریں</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{اس ٹیب کے ساتھ جاری رکھیں}other{ان ٹیبز کے ساتھ جاری رکھیں}}</translation>
 <translation id="780301667611848630">نہیں شکریہ</translation>
 <translation id="7804248752222191302">ایک سائٹ آپ کا کیمرا استعمال کر رہی ہے</translation>
 <translation id="6720480757902085971">‏Brave کے ذریعے فراہم کردہ</translation>
+<translation id="7815680994978050279">خطرناک ڈاؤن لوڈ مسدود کیا گیا</translation>
 <translation id="7835852323729233924">میڈیا کو چلایا جا رہا ہے</translation>
 <translation id="783819812427904514">ویڈیو کی آواز چلائیں</translation>
 <translation id="7846076177841592234">انتخاب منسوخ کریں</translation>
 <translation id="2353409725922994861">‏‫Brave زیادہ تر سائٹس کو فریق ثالث کوکیز استعمال کرنے سے روکتا ہے۔ لیکن اس سائٹ پر فریق ثالث کوکیز کی اجازت ہے کیونکہ یہ بنیادی سروسز فراہم کرنے کے لیے ان پر انحصار کرتی ہیں۔\n\n<ph name="BEGIN_LINK"/>فریق ثالث کوکیز تک رسائی کا نظم<ph name="END_LINK"/> کرنے کے لیے ترتیبات ملاحظہ کریں۔</translation>
 <translation id="7882806643839505685">کسی مخصوص سائٹ کیلئے آواز کی اجازت دیں۔</translation>
+<translation id="7891547341794213004">اس ٹیب کارڈ کے ساتھ جاری رکھیں کو چھپائیں</translation>
 <translation id="1856888821396498049">پوشیدگی وضع میں فریق ثالث کوکیز کو مسدود کریں:</translation>
 <translation id="789722939441020330">سائٹس کو خودکار طور پر متعدد فائلیں ڈاؤن لوڈ کرنے کی اجازت نہ دیں</translation>
 <translation id="7940722705963108451">مجھے یاد دلائیں</translation>
@@ -550,7 +573,6 @@
 <translation id="7986741934819883144">رابطہ منتخب کریں</translation>
 <translation id="7990211076305263060">آن ہونے پر، سائٹس آپ کا مائیکروفون استعمال کرنے کیلئے پوچھ سکتی ہیں۔ آف ہونے پر، سائٹس آپ کا مائیکروفون استعمال نہیں کر سکتیں۔</translation>
 <translation id="8007176423574883786">اس آلے کیلئے آف کر دیا گیا</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{اس ٹیب کارڈ کے ساتھ جاری رکھیں چھپائیں}other{ان ٹیبز کارڈ کے ساتھ جاری رکھیں چھپائیں}}</translation>
 <translation id="802154636333426148">ڈاؤن لوڈ ناکام ہوگیا</translation>
 <translation id="8042586301629853791">ترتیب دیں بلحاظ:</translation>
 <translation id="8051193500142930381">وہ خصوصیات کام نہیں کریں گی جن کے لیے کیمرا کی ضرورت ہوتی ہے</translation>
@@ -585,6 +607,7 @@
 <translation id="8380167699614421159">یہ سائٹ دخل انداز یا گمراہ کن اشتہارات دکھاتی ہے</translation>
 <translation id="8394832520002899662">سائٹ پر واپس جانے کے لیے تھپتھپائیں</translation>
 <translation id="8409345997656833551">جب کوئی مضمون آسان منظر میں دکھایا جا سکتا ہے تو مطلع کریں</translation>
+<translation id="8416874502399604126">اس بار مائیکروفون کی اجازت ہے</translation>
 <translation id="8423565414844018592">ٹیکسٹ اسکیلنگ کو <ph name="TEXT_SCALING"/> پر سیٹ کیا گیا</translation>
 <translation id="8428213095426709021">ترتیبات</translation>
 <translation id="8441146129660941386">پیچھے لے جائیں</translation>
@@ -652,12 +675,14 @@
 <translation id="9106233582039520022">کوکیز حذف کریں؟</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>، <ph name="PERMISSION_2"/> اور <ph name="NUM_MORE"/> مزید}other{<ph name="PERMISSION_1"/>، <ph name="PERMISSION_2"/> اور <ph name="NUM_MORE"/> مزید}}</translation>
 <translation id="913657688200966289">‏<ph name="BEGIN_LINK"/>Android ترتیبات<ph name="END_LINK"/> میں <ph name="APP_NAME"/> کے لیے اجازتیں آن کریں۔</translation>
+<translation id="9138037198177304356">اطلاعات کی اجازت ہے</translation>
 <translation id="9138217887606523162">موجودہ زوم %% <ph name="ZOOM_LEVEL"/> ہے</translation>
 <translation id="7359422048569205930">‏‫Brave کو اپنے حالیہ ٹیبز کو اپنے آلے کی ایپس کی فہرست اور تلاش کے نتائج میں دکھانے کی اجازت دیں۔ آپ اسے Brave کی ترتیبات میں کسی بھی وقت آف کر سکتے ہیں۔</translation>
 <translation id="9162462602695099906">یہ صفحہ خطرناک ہے</translation>
 <translation id="9182556968660520230">سائٹس کو تحفظ یافتہ مواد چلانے کی اجازت نہ دیں</translation>
 <translation id="947156494302904893">آپ کی ملاحظہ کردہ سائٹس اس بات کی تصدیق کر سکتی ہیں کہ آپ ایک حقیقی شخص ہیں نہ کہ ایک بوٹ</translation>
 <translation id="959682366969460160">منظم رہیں</translation>
+<translation id="961930410699694996">اس بار مقام کی اجازت ہے</translation>
 <translation id="967624055006145463">اسٹور کردہ ڈیٹا</translation>
 <translation id="969975166333045662">‏سائٹ کو V8 کو بہتر بنانے والا استعمال کرنے سے روکیں۔</translation>
 </translationbundle>

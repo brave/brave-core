@@ -7,12 +7,24 @@
 <translation id="7630214457764713113">Копирај чиста врска</translation>
 <translation id="6406506848690869874">Синхронизирај</translation>
 <translation id="1544192797660353713">Паричник</translation>
+<translation id="2361906291514218784">Лео ВИ</translation>
+<translation id="9092796350041759828">{0, plural,
+          one {}=1 {Затвори прозорец за гости}
+          other {Затвори прозорци за гости}
+        }</translation>
 <translation id="1990886731975529483">Инсталирај и стартувај Google Widevine</translation>
 <translation id="4900351245762303149">Инсталирај Google Widevine</translation>
 <translation id="8342816622062204340"><ph name="URL"/> сака да репродуцира заштитена содржина на Google Widevine, за што е потребно да дозволите системска поддршка за Widevine на Android. Ако дозволите, се согласувате со условите за користење на Google.</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="7658239707568436148">Откажи</translation>
 <translation id="4615489450165434530">Пријави нефункционална страница</translation>
+<translation id="8832245978592881387">Отвори Лео ВИ во нова картичка</translation>
+<translation id="4577675328803804820">Отвори Лео ВИ во страничната лента</translation>
+<translation id="564305948667173847">Управувај со поставките за Лео ВИ</translation>
+<translation id="2169338740411893745">Отвори Лео ВИ во нова картичка</translation>
+<translation id="3295805221342028003">Отвори Лео ВИ во страничната лента</translation>
+<translation id="7400808612454224939">Управувај со поставките за Лео ВИ</translation>
+<translation id="438106944087726695">Хостирано од Brave</translation>
 <translation id="5039804452771397117">Дозволи</translation>
 <translation id="8926389886865778422">Не прашувај повторно</translation>
 <translation id="8915916167043355778">Затвори ги сите</translation>
@@ -35,7 +47,6 @@
 <translation id="4877147287319222750">Додај во странична лента</translation>
 <translation id="6040143037577758943">Затвори</translation>
 <translation id="8712637175834984815">Разбрав</translation>
-<translation id="8428213095426709021">Поставки</translation>
 <translation id="5234764350956374838">Откажи</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4759238208242260848">Преземања</translation>
@@ -49,6 +60,7 @@
 <translation id="6165508094623778733">Дознајте повеќе</translation>
 <translation id="7557539689487606886">Вклучи Premium</translation>
 <translation id="3435896845095436175">Овозможи</translation>
+<translation id="1940221956626514677">Персонализирај ја лентата со алатки</translation>
 <translation id="1426410128494586442">Да</translation>
 <translation id="4250680216510889253">Не</translation>
 <translation id="4472575034687746823">Започни</translation>
@@ -81,6 +93,8 @@
 <translation id="933652931229970927">Испраќај дијагностички извештаи автоматски</translation>
 <translation id="1679356339067548863">Помогнете му на Brave да ја подобри стабилноста на производот со автоматско испраќање дијагностички извештаи кога Brave прелистувачот ќе падне или замрзне.</translation>
 <translation id="2356070529366658676">Прашај</translation>
+<translation id="509873765238158442">Блокирај Microsoft Recall</translation>
+<translation id="4763421121695677716">Блокирајте ја функцијата Recall на компјутерите со Microsoft Windows за да не прават автоматски снимки на екранот на која било отворена картичка на Brave.</translation>
 <translation id="3858860766373142691">Име</translation>
 <translation id="1181037720776840403">Отстрани</translation>
 <translation id="4332558599726753990">Поставки за синхронизација</translation>
@@ -88,14 +102,17 @@
 <translation id="2055363275850890030">Таен прозорец</translation>
 <translation id="6786747875388722282">Екстензии</translation>
 <translation id="5249433283143453448">Користете ја компонентата за управување со дигитални права (DRM) Widevine за да гледате заштитен видео пренос и друга содржина во прелистувачот.</translation>
+<translation id="6918225713618473646">Brave ги хостира овие екстензии на Manifest V2 на серверите на Brave, но не ги прегледува ниту ја потврдува нивната содржина, безбедност или однесување. Погледнете ја официјалната страница на секоја екстензија за помош. Плановите на Brave за Manifest V2 прочитајте ги <ph name="BEGIN_LINK"/>овде<ph name="END_LINK"/>.</translation>
 <translation id="8488282162676695335">Паричник Brave</translation>
 <translation id="2653659639078652383">Поднеси</translation>
 <translation id="6129027151000961048">Лео</translation>
 <translation id="5781842473834867765">Складирај ја мојата историја на разговори</translation>
 <translation id="6106701981952170121">Избриши ги сите податоци за разговори на Лео ВИ</translation>
-<translation id="2361906291514218784">Лео ВИ</translation>
 <translation id="614530507403667291">Стандарден модел за нови разговори</translation>
 <translation id="1907126221851170941">Додај модел</translation>
+<translation id="5985516785067818307">Учество во анкети</translation>
+<translation id="8347743943525229984">Дозволи анкети на Brave</translation>
+<translation id="3204080538332044581">Дозволува Brave да прикажува врски до приватни анкети на страница на нова картичка. Анкетите ни помагаат да создаваме подобри функции и да ја мериме ефикасноста на рекламните кампањи базирани на прегледувач. <ph name="BEGIN_LINK"/>Дознајте повеќе<ph name="END_LINK"/></translation>
 <translation id="154702742922788359">Режим на отворање</translation>
 <translation id="2249111429176737533">Отвори како прозорец со картичка</translation>
 <translation id="7022756207310403729">Отвори во прелистувач</translation>

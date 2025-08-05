@@ -25,6 +25,7 @@
 <translation id="129382876167171263">Файли, збережені веб-сайтами, відображаються тут</translation>
 <translation id="131112695174432497">Дані, що впливають на персоналізацію реклами, видалено</translation>
 <translation id="1317194122196776028">Забути цей сайт</translation>
+<translation id="1323433172918577554">Показати більше</translation>
 <translation id="1333965224356556482">Заборонити сайтам переглядати ваше місцезнаходження</translation>
 <translation id="1343356790768851700">Цей сайт визначає теми, які вас цікавлять, а потім пропонує свою рекламу на інших сайтах</translation>
 <translation id="1369915414381695676">Сайт <ph name="SITE_NAME"/> додано</translation>
@@ -35,6 +36,7 @@
 <translation id="1409338233051621926">Натисніть "Додатки", а потім – "Додатки за умовчанням"</translation>
 <translation id="1415402041810619267">URL-адресу скорочено</translation>
 <translation id="1741136041592162279">Дозвольте Brave надсилати на ваш пристрій інформацію про останні вкладки, щоб ви могли переглядати їх у списку додатків і результатах пошуку. Цю функцію можна будь-коли ввімкнути або вимкнути в налаштуваннях Brave.</translation>
+<translation id="1432650420699700107">Сайти можуть запитувати дозвіл на підключення до пристроїв у вашій локальній мережі</translation>
 <translation id="1448064542941920355">Зменшити масштаб</translation>
 <translation id="1464044141348608623">Заборонити сайтам дізнаватися, коли ви активно використовуєте пристрій</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> сайт}one{<ph name="SITE_COUNT"/> сайт}few{<ph name="SITE_COUNT"/> сайти}many{<ph name="SITE_COUNT"/> сайтів}other{<ph name="SITE_COUNT"/> сайту}}</translation>
@@ -96,6 +98,7 @@
 <translation id="2182457891543959921">Запитувати, перш ніж дозволяти сайтам створювати 3D-карту вашого оточення або відстежувати положення камери (рекомендовано)</translation>
 <translation id="2185965788978862351">Буде видалено <ph name="DATASIZE"/> даних і файлів cookie сайтів або додатків на головному екрані.</translation>
 <translation id="2194856509914051091">Що варто врахувати</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{Учора}one{<ph name="NUM_DAYS_MANY"/> день тому}few{<ph name="NUM_DAYS_MANY"/> дні тому}many{<ph name="NUM_DAYS_MANY"/> днів тому}other{<ph name="NUM_DAYS_MANY"/> дня тому}}</translation>
 <translation id="2215727959747642672">Редагування файлів</translation>
 <translation id="2218389616572918761">Сайти можуть запитувати дозвіл на доступ до мікрофона</translation>
 <translation id="2228071138934252756">Щоб надати додатку <ph name="APP_NAME"/> доступ до камери, також увімкніть її в <ph name="BEGIN_LINK"/>налаштуваннях Android<ph name="END_LINK"/>.</translation>
@@ -125,6 +128,7 @@
 <translation id="2490684707762498678">Адміністратор сімейної групи: <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Довідка й відгуки</translation>
 <translation id="2501278716633472235">Назад</translation>
+<translation id="2533138527374486328">Якщо цей перемикач увімкнено, сайти можуть запитувати дозвіл на підключення до пристроїв у вашій локальній мережі. Якщо його вимкнено, сайти не можуть підключатися до пристроїв у вашій локальній мережі.</translation>
 <translation id="2546283357679194313">Файли cookie й дані сайтів</translation>
 <translation id="2570922361219980984">На цьому пристрої також вимкнено доступ до геоданих. Увімкніть його в <ph name="BEGIN_LINK"/>налаштуваннях Android<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Розгорнуто – натисніть, щоб згорнути.</translation>
@@ -181,6 +185,7 @@
 <translation id="3167868116600277716">Стрічка рекомендацій</translation>
 <translation id="3198916472715691905">У пам'яті зайнято <ph name="STORAGE_AMOUNT"/></translation>
 <translation id="321187648315454507">Щоб дозволити додатку <ph name="APP_NAME"/> надсилати вам сповіщення, також увімкніть їх у <ph name="BEGIN_LINK"/>налаштуваннях Android<ph name="END_LINK"/>.</translation>
+<translation id="3223425961342298674">Доступ до геоданих заборонено</translation>
 <translation id="3227137524299004712">Мікрофон</translation>
 <translation id="3232293466644486101">Видалити дані вебперегляду…</translation>
 <translation id="3242646949159196181">Якщо цей параметр увімкнено, сайти можуть відтворювати звук. Якщо його вимкнено, сайти не можуть відтворювати звук.</translation>
@@ -247,12 +252,14 @@
 <translation id="3955321697524543127">Заборонити сайтам підключатися до пристроїв USB</translation>
 <translation id="3965467402665811906">Сайти можуть запитувати дозвіл на використання збереженої про вас інформації</translation>
 <translation id="3967822245660637423">Завантажено</translation>
+<translation id="3969869202926863008">Доступ до локальної мережі</translation>
 <translation id="3981465354637804599">Сайти зазвичай показують рекламу, щоб пропонувати контент або послуги безкоштовно. Однак деякі сайти показують нав’язливі чи оманливі оголошення.</translation>
 <translation id="3987993985790029246">Копіювати</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/?</translation>
 <translation id="3992308058851451478"><ph name="SITE"/> може використовувати ваші дані, коли ви переглядаєте такі сайти:</translation>
 <translation id="3992684624889376114">Про цю сторінку</translation>
 <translation id="4002066346123236978">Назва</translation>
+<translation id="4031179711345676612">Дозволено використовувати мікрофон</translation>
 <translation id="4046123991198612571">Наступна композиція</translation>
 <translation id="4077310749977440510">Сайти зазвичай переглядають буфер обміну для роботи таких функцій, як зберігання форматування скопійованого тексту</translation>
 <translation id="4149890623864272035">Ви хочете видалити всі локальні дані (зокрема файли cookie) і скинути всі дозволи для цього веб-сайту?</translation>
@@ -262,8 +269,10 @@
 <translation id="4169549551965910670">Підключено до пристрою USB</translation>
 <translation id="4194328954146351878">Запитувати, перш ніж дозволяти сайтам переглядати й змінювати інформацію на пристроях NFC (рекомендовано)</translation>
 <translation id="4200726100658658164">Відкрити налаштування доступу до моїх геоданих</translation>
+<translation id="4203769790323223880">Користуватися камерою заборонено</translation>
 <translation id="421742575134139848">Сайти можуть відтворювати звук, щоб транслювати аудіо з музики, відео й іншого медіаконтенту</translation>
 <translation id="4217710972110098902">Підключено до послідовного порту</translation>
+<translation id="4223404254440398437">Користуватися мікрофоном заборонено</translation>
 <translation id="4226663524361240545">Коли надходитимуть сповіщення, пристрій може вібрувати</translation>
 <translation id="4259722352634471385">Веб-сторінку <ph name="URL"/> заблоковано</translation>
 <translation id="4274673989874969668">Коли ви закриваєте сайт, він зазвичай продовжує синхронізацію, щоб завершити завдання (наприклад, завантажити фото чи надіслати повідомлення в чаті)</translation>
@@ -294,6 +303,7 @@
 <translation id="4635969503923889910">Заборонити сайтам використовувати пристрої NFC</translation>
 <translation id="4644713492825682049">Видалити й скинути</translation>
 <translation id="4645575059429386691">Керується одним із батьків</translation>
+<translation id="4663373278480897665">Дозволено використовувати камеру</translation>
 <translation id="4670064810192446073">Віртуальна реальність</translation>
 <translation id="5652778654712411580">Виберіть "Вебпереглядач", а потім – "Brave"</translation>
 <translation id="4676059169848868271">Щоб дозволити додатку <ph name="APP_NAME"/> відстежувати ваші руки, також увімкніть цю функцію в <ph name="BEGIN_LINK"/>системних налаштуваннях<ph name="END_LINK"/>.</translation>
@@ -315,6 +325,7 @@
 <translation id="4972737347717125191">Сайти можуть запитувати дозвіл на використання пристроїв і даних віртуальної реальності</translation>
 <translation id="497421865427891073">Перейти вперед</translation>
 <translation id="4976702386844183910">Останнє відвідування: <ph name="DATE"/></translation>
+<translation id="4978178243417029856">Докладніше про стрічку рекомендацій</translation>
 <translation id="4994033804516042629">Немає контактів</translation>
 <translation id="4996978546172906250">Надіслати</translation>
 <translation id="5001526427543320409">Сторонні файли cookie</translation>
@@ -337,6 +348,7 @@
 <translation id="5216942107514965959">Останнє відвідування: сьогодні</translation>
 <translation id="5225463052809312700">Увімкнути камеру</translation>
 <translation id="5234764350956374838">Закрити</translation>
+<translation id="5239623327352565343">Доступ до геоданих дозволено</translation>
 <translation id="5246825184569358663">У результаті буде видалено всі локальні дані (зокрема файли cookie) і скинуто всі дозволи для домену <ph name="DOMAIN"/> та всіх сайтів у ньому</translation>
 <translation id="5264323282659631142">Видалити запит "<ph name="CHIP_LABEL"/>"</translation>
 <translation id="528192093759286357">Щоб вийти з повноекранного режиму, проведіть пальцем по екрану згори вниз і торкніться кнопки "Назад".</translation>
@@ -378,7 +390,9 @@
 <translation id="571222594670061844">Сайти можуть показувати підказки щодо входу від сервісів ідентифікації</translation>
 <translation id="5740126560802162366">Сайти можуть зберігати дані на вашому пристрої</translation>
 <translation id="5743425052258407233">Синхронізуйте історію дій на всіх своїх пристроях, щоб легко продовжувати роботу з того місця, на якому зупинилися</translation>
+<translation id="5749158352074143502">Продовжити на цій вкладці</translation>
 <translation id="5750869797196646528">Відстеження рук</translation>
+<translation id="5753570386948603678">Видалити з історії</translation>
 <translation id="5771720122942595109">Заблоковано: "<ph name="PERMISSION_1"/>"</translation>
 <translation id="5804241973901381774">Дозволи</translation>
 <translation id="5822675474983796325">Нижній екран "Налаштуйте сторінку нової вкладки" відкрито на всю висоту</translation>
@@ -404,6 +418,7 @@
 <translation id="5968921426641056619">Введіть веб-адресу</translation>
 <translation id="5975083100439434680">Зменшити масштаб</translation>
 <translation id="5976059395673079613">"<ph name="PERMISSION"/>" – <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">Увімкнути стрічку рекомендацій</translation>
 <translation id="6015775454662021376">Керуйте доступом цього сайту до вашого пристрою</translation>
 <translation id="6040143037577758943">Закрити</translation>
 <translation id="6042308850641462728">Більше</translation>
@@ -439,11 +454,13 @@
 <translation id="6527303717912515753">Надіслати</translation>
 <translation id="6530703012083415527">Якщо цей параметр увімкнено, сайти можуть використовувати спливаючі вікна й переспрямування. Якщо його вимкнено, сайти не можуть використовувати спливаючі вікна й переспрямування.</translation>
 <translation id="6540488083026747005">Ви дозволили сторонні файли cookie на цьому сайті</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> тиждень тому}one{<ph name="NUM_WEEKS_MANY"/> тиждень тому}few{<ph name="NUM_WEEKS_MANY"/> тижні тому}many{<ph name="NUM_WEEKS_MANY"/> тижнів тому}other{<ph name="NUM_WEEKS_MANY"/> тижня тому}}</translation>
 <translation id="6545864417968258051">Пошук пристроїв Bluetooth</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{Заблоковано: "<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і ще <ph name="NUM_MORE"/>}one{Заблоковано: "<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і ще <ph name="NUM_MORE"/>}few{Заблоковано: "<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і ще <ph name="NUM_MORE"/>}many{Заблоковано: "<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і ще <ph name="NUM_MORE"/>}other{Заблоковано: "<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і ще <ph name="NUM_MORE"/>}}</translation>
 <translation id="6554732001434021288">Останнє відвідування: <ph name="NUM_DAYS"/> дн. тому</translation>
 <translation id="656065428026159829">Показати більше</translation>
 <translation id="6561560012278703671">Показувати лише значок повідомлення (блокувати сповіщення)</translation>
+<translation id="6565144332292237355">Сайти можуть використовувати цю функцію, щоб шукати пристрої в локальній мережі й підключатися до них</translation>
 <translation id="6593061639179217415">Версія для комп’ютера</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Файли cookie дозволено для <ph name="RWS_MEMBERS_COUNT"/> сайту в групі сайту-власника <ph name="RWS_OWNER"/>}one{Файли cookie дозволено для <ph name="RWS_MEMBERS_COUNT"/> сайту в групі сайту-власника <ph name="RWS_OWNER"/>}few{Файли cookie дозволено для <ph name="RWS_MEMBERS_COUNT"/> сайтів у групі сайту-власника <ph name="RWS_OWNER"/>}many{Файли cookie дозволено для <ph name="RWS_MEMBERS_COUNT"/> сайтів у групі сайту-власника <ph name="RWS_OWNER"/>}other{Файли cookie дозволено для <ph name="RWS_MEMBERS_COUNT"/> сайту в групі сайту-власника <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> ГБ</translation>
@@ -477,6 +494,7 @@
 <translation id="6992289844737586249">Запитувати, перш ніж дозволити сайтам використовувати мікрофон (рекомендується)</translation>
 <translation id="7000754031042624318">Вимкнено в налаштуваннях Android</translation>
 <translation id="8683151724374457021">Цей сайт визначає теми, які вас цікавлять, а потім пропонує свою рекламу на інших сайтах. Він також використовує ваші теми оголошень із Brave, щоб показувати вам релевантнішу рекламу.</translation>
+<translation id="7044081119134178347">Надано разовий доступ до камери</translation>
 <translation id="7053983685419859001">Блокувати</translation>
 <translation id="7055552182600664515">Щоб відтворювати контент, захищений авторським правом, сайтам, можливо, буде потрібно використовувати сервіс захисту контенту. <ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Вибрано 1}one{Вибрано #}few{Вибрано #}many{Вибрано #}other{Вибрано #}}</translation>
@@ -488,8 +506,10 @@
 <translation id="7188508872042490670">Дані сайтів на пристрої</translation>
 <translation id="7201549776650881587">У результаті буде видалено всі дані й файли cookie, збережені сайтами в групі сайту <ph name="ORIGIN"/> або додатками на головному екрані</translation>
 <translation id="7203150201908454328">Розгорнуто</translation>
+<translation id="7213166370492037743">Заборонити сайтам підключатися до пристроїв у вашій локальній мережі</translation>
 <translation id="7219254577985949841">Видалити дані сайту?</translation>
 <translation id="723171743924126238">Вибрати зображення</translation>
+<translation id="7243246278722455312">Нижній екран "Налаштуйте сторінку нової вкладки"</translation>
 <translation id="7243308994586599757">Опції можна знайти внизу екрана</translation>
 <translation id="7250468141469952378">Вибрано <ph name="ITEM_COUNT"/></translation>
 <translation id="7260727271532453612">Дозволено: "<ph name="PERMISSION_1"/>" і "<ph name="PERMISSION_2"/>"</translation>
@@ -512,7 +532,9 @@
 <translation id="7554752735887601236">Сайт використовує мікрофон</translation>
 <translation id="7561196759112975576">Завжди</translation>
 <translation id="7573594921350120855">Сайти зазвичай використовують камеру для роботи функцій спілкування, як-от відеочати</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> місяць тому}one{<ph name="NUM_MONTHS_MANY"/> місяць тому}few{<ph name="NUM_MONTHS_MANY"/> місяці тому}many{<ph name="NUM_MONTHS_MANY"/> місяців тому}other{<ph name="NUM_MONTHS_MANY"/> місяця тому}}</translation>
 <translation id="757524316907819857">Заборонити сайтам відтворювати захищений вміст</translation>
+<translation id="7586676035079382730">Сповіщення заборонено</translation>
 <translation id="7594634374516752650">Підключено до пристрою з Bluetooth</translation>
 <translation id="7617547684249261169">Ви можете частково або повністю видалити історію, файли cookie, дані сайтів тощо</translation>
 <translation id="7649070708921625228">Довідка</translation>
@@ -525,15 +547,16 @@
 <translation id="7759147511335618829">Керування пристроями MIDI</translation>
 <translation id="7781829728241885113">Учора</translation>
 <translation id="7791543448312431591">Додати</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{Продовжити на цій вкладці}one{Продовжити із цими вкладками}few{Продовжити із цими вкладками}many{Продовжити із цими вкладками}other{Продовжити із цими вкладками}}</translation>
 <translation id="780301667611848630">Ні, дякую</translation>
 <translation id="7804248752222191302">Сайт використовує камеру</translation>
 <translation id="6720480757902085971">Надано компанією Brave</translation>
+<translation id="7815680994978050279">Заблоковано небезпечне завантаження</translation>
 <translation id="7835852323729233924">Відтворення медіафайлу</translation>
 <translation id="783819812427904514">Увімкнути звук у відео</translation>
 <translation id="7846076177841592234">Скасувати вибір</translation>
 <translation id="2353409725922994861">Brave забороняє більшості сайтів використовувати сторонні файли cookie. Однак на цьому сайті такі файли дозволені, оскільки вони потрібні для роботи його основних функцій.\n\nПерейдіть у налаштування, щоб <ph name="BEGIN_LINK"/>керувати доступом до сторонніх файлів cookie<ph name="END_LINK"/>.</translation>
 <translation id="7882806643839505685">Увімкнути звук для певного сайту.</translation>
+<translation id="7891547341794213004">Сховати картку "Продовжити на цій вкладці"</translation>
 <translation id="789722939441020330">Заборонити сайтам автоматично завантажувати кілька файлів</translation>
 <translation id="7940722705963108451">Нагадати мені</translation>
 <translation id="7948081750384205628">Докладніше про <ph name="SETTING_TITLE"/></translation>
@@ -541,7 +564,6 @@
 <translation id="7986741934819883144">Виберіть контакт</translation>
 <translation id="7990211076305263060">Якщо цей параметр увімкнено, сайти можуть просити доступ до мікрофона. Якщо його вимкнено, сайти не можуть використовувати мікрофон.</translation>
 <translation id="8007176423574883786">Вимкнено для цього пристрою</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{Сховати картку "Продовжити на цій вкладці"}one{Сховати картку "Продовжити із цими вкладками"}few{Сховати картку "Продовжити із цими вкладками"}many{Сховати картку "Продовжити із цими вкладками"}other{Сховати картку "Продовжити із цими вкладками"}}</translation>
 <translation id="802154636333426148">Не вдалося завантажити</translation>
 <translation id="8042586301629853791">Порядок сортування:</translation>
 <translation id="8051193500142930381">Функції, яким потрібна камера, не працюватимуть</translation>
@@ -576,6 +598,7 @@
 <translation id="8380167699614421159">Цей сайт показує нав’язливі чи оманливі оголошення</translation>
 <translation id="8394832520002899662">Натисніть, щоб повернутися на сайт</translation>
 <translation id="8409345997656833551">Отримувати сповіщення, коли статтю можна показати в режимі спрощеного перегляду</translation>
+<translation id="8416874502399604126">Надано разовий доступ до мікрофона</translation>
 <translation id="8423565414844018592">Масштаб тексту: <ph name="TEXT_SCALING"/></translation>
 <translation id="8428213095426709021">Налаштування</translation>
 <translation id="8441146129660941386">Назад</translation>
@@ -643,12 +666,14 @@
 <translation id="9106233582039520022">Видалити файли cookie?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{"<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і ще <ph name="NUM_MORE"/>}one{"<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і ще <ph name="NUM_MORE"/>}few{"<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і ще <ph name="NUM_MORE"/>}many{"<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і ще <ph name="NUM_MORE"/>}other{"<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і ще <ph name="NUM_MORE"/>}}</translation>
 <translation id="913657688200966289">Увімкніть дозволи для додатка <ph name="APP_NAME"/> у <ph name="BEGIN_LINK"/>налаштуваннях Android<ph name="END_LINK"/>.</translation>
+<translation id="9138037198177304356">Сповіщення дозволено</translation>
 <translation id="9138217887606523162">Поточний масштаб: <ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="7359422048569205930">Дозвольте Brave показувати нещодавно відкриті вкладки в списку додатків і результатах пошуку на пристрої. Цю функцію можна будь-коли вимкнути в налаштуваннях Brave.</translation>
 <translation id="9162462602695099906">Ця сторінка небезпечна</translation>
 <translation id="9182556968660520230">Заборонити сайтам відтворювати захищений контент</translation>
 <translation id="947156494302904893">Відвідувані вами сайти можуть перевіряти, що ви реальна людина, а не бот</translation>
 <translation id="959682366969460160">Упорядковуйте свої дані</translation>
+<translation id="961930410699694996">Надано разовий доступ до місцезнаходження</translation>
 <translation id="967624055006145463">Збережені дані</translation>
 <translation id="969975166333045662">Заборонити сайту використовувати оптимізатор V8.</translation>
 <translation id="3110967157686007724">Приватна вкладка</translation>

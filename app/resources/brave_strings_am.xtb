@@ -5,6 +5,7 @@
 <translation id="7099479769133613710">&amp;ChromeOSን ለማዘመን ዳግም ያስነሱት</translation>
 <translation id="2479110114759182442">Brave ይህን ቅጥያ እንዲገመግሙ ይመክርዎታል</translation>
 <translation id="3814674848168165531">አንድ ጣቢያ በገጻቸው ላይ በግል አገናኞችን ቅድሚያ ለመጫን ሲጠይቅ Brave የBrave አገልጋዮችን ይጠቀማል። ይህ ማንነትዎን ቅድሚያ ከተጫነው ጣቢያ ይደብቃል ነገር ግን Brave ምን ጣቢያዎች ቅድሚያ እንደሚጫኑ ያውቃል።</translation>
+<translation id="5749154344207139683">ይህን የ1 ደቂቃ የዳሰሳ ጥናት በመውሰድ ማንነት የማያሳውቅን እንድናሻሽል ያግዙን።</translation>
 <translation id="1065672644894730302">አማራጮችዎ ሊነበቡ አልቻሉም።
 
 አንዳንድ ባህሪያት ላይገኙ ይችላሉ፣ እና በአማራጮች ላይ የተደረጉ ለውጦች አይቀመጡም።</translation>
@@ -85,7 +86,6 @@
 <translation id="2126108037660393668">የወረደው ፋይል ማረጋገጫን አላለፈም።</translation>
 <translation id="2137162749895930932">የመተርጎሚያ ማያ ገፅን ዝጋ</translation>
 <translation id="5789330946301045610">ጣቢያው ደህንነቱ የተጠበቀ ግንኙነት እየተጠቀመ ስላልሆነ እና ፋይሉ ተነካክቶ ሊሆን ስለሚችል Brave ይህን ውርድ አግዷል</translation>
-<translation id="5401976223298265794">ዕልባቶችን፣ የንባብ ሁነታን እና ሌሎችንም ከBrave ምናሌው መክፈት ይችላሉ</translation>
 <translation id="142389341645668510">Braveን አብጅ</translation>
 <translation id="2174917724755363426">መጫኑ አልተጠናቀቀም። እርግጠኛ ነዎት መሰረዝ ይፈልጋሉ?</translation>
 <translation id="8745514854244955877">Brave - በአውታረ መረብ ወደ መለያ መግባት - <ph name="PAGE_TITLE"/></translation>
@@ -216,6 +216,7 @@
 <translation id="4256965182800026277">የእርስዎ የይለፍ ቃላቶች፣ የመክፈያ ዘዴዎች እና በBrave መለያዎ ውስጥ ያስቀመጧቸው አድራሻዎች ከዚህ መሣሪያ ይወገዳሉ። እንደገና Brave ውስጥ እነሱን ለመጠቀም መልሰው በመለያ ይግቡ።</translation>
 <translation id="395904275706073188">የተጠብቁ ገፆች ሊነበቡ አይችሉም። የተለተ ገፅ ይሞክሩ።</translation>
 <translation id="4194619960643453552">Brave እንዴት ደህንነትዎን እንደሚጠብቅ ይወቁ</translation>
+<translation id="1486377520191913768">የአድራሻ አሞሌው ወይም የፍለጋ ሳጥኑ ውስጥ ሲተይቡ ወይም መታ ሲያደርጉ Brave ጥቆማዎችን ለማግኘት ወደ ድርጅትዎ ፍለጋ፣ ሰው ሠራሽ አስተውሎት እና ወኪል መሣሪያዎች ውስጥ የሚተይቡትን ነገር ይልካል።</translation>
 <translation id="1311808042904310985">ስለ Brave ለሙከራ</translation>
 <translation id="1152920704813762236">ስለChromeOS</translation>
 <translation id="3703994572283698466">ChromeOS እና <ph name="BEGIN_LINK_LINUX_OSS"/>የLinux ግንባታ ምህዳር<ph name="END_LINK_LINUX_OSS"/> ሊሠሩ የቻሉት በተጨማሪ <ph name="BEGIN_LINK_CROS_OSS"/>የክፍት ምንጭ ሶፍትዌር<ph name="END_LINK_CROS_OSS"/> ነው።</translation>
@@ -241,6 +242,7 @@
 <translation id="4281844954008187215">የአግልግሎት ውል</translation>
 <translation id="7691786510374174420">ተለይቶ ባልታወቀ ስህተት ምክንያት ጭነት ከሽፏል። Brave አሁን እያሄደ ከሆነ እባክዎ ይዝጉትና እንደገና ይሞክሩ።</translation>
 <translation id="4304713468139749426">የይለፍ ቃል አስተዳዳሪ</translation>
+<translation id="4334241893986177674">ይህን ቅጽበታዊ ገጽ እይታ ይፈልጉ</translation>
 <translation id="4334294535648607276">ማውረድ ተጠናቅቋል።</translation>
 <translation id="1068681683510904753"><ph name="MANAGER"/> ይህን መሣሪያ ከመጠቀምዎ በፊት የሚከተለውን የአገልግሎት ውል እንዲያነብቡት እና እንዲቀበሉት ይፈለጋል። ይህ ውል የChromeOS ውሉን አያስፋፋውም፣ አይቀይረውም ወይም አይገድበውም።</translation>
 <translation id="9183662282810237335">የሆነው ሆኖ ከBrave ይወጣ?</translation>
@@ -335,6 +337,7 @@
 <translation id="899523323751802352">የይለፍ ሐረግዎን ከረሱ ወይም ይህን ቅንብር መለወጥ ከፈለጉ በመለያዎ ውስጥ ያለውን የBrave ውሂብ <ph name="SETTINGS_LINK"/></translation>
 <translation id="82926023981336111">Braveን ያብጁ እና ይቆጣጠሩ። Braveን እንደ ነባሪ ያቀናብሩት።</translation>
 <translation id="5809516625706423866">ከበይነመረብ ጋር መገናኘት አልተቻለም። ኤችቲቲፒኤስ 401 አልተፈቀደም። እባክዎ ተኪ ውቅረትዎን ይፈትሹ።</translation>
+<translation id="95980832839683236">በBrave V8 ሞተር ጣቢያዎችን ያፋጥናል ነገር ግን የBraveን ጥቃቶችን የመቋቋም አቅም በመጠኑ ያነሰ ያደርገዋል። ይህ ቅንብር ጠፍቷል።</translation>
 <translation id="1224606669200461217">የBrave ውሂብን በBrave መለያዎ ላይ ለመጠቀም እና ለማስቀመጥ Brave ያዘምኑ</translation>
 <translation id="5824893331272123205">ይህን ፓነል መጫን አልተቻለም፣ እንደገና ይሞክሩ</translation>
 <translation id="7207456302801184289">ወደ Brave እንኳን በደህና መጡ</translation>
@@ -351,7 +354,6 @@
 <translation id="3598551856834560515">ስምረትን ለመጀመር Braveን ያዘምኑ</translation>
 <translation id="5225261774087485064">የሚጎበኟቸው ጣቢያዎች ልምድዎን ግላዊነት ማላበስ እንዲችሉ እርስዎ የሚፈልጓቸውን ነገሮች ማስታወስ የተለመደ ነው። እንዲሁም ጣቢያዎች ስለዝንባሌዎችዎ መረጃን በBrave አማካኝነት ማከማቸት ይችላሉ።</translation>
 <translation id="6003112304606738118">በማውረድ ላይ... <ph name="HOURS"/> ሰዓት(ታት) ይቀራል(ሉ)</translation>
-<translation id="1663358621471164569">ከላይ በስተቀኝ ካለው የBrave ምናሌ ሆነው ዕልባቶችን፣ የንባብ ሁነታን እና ሌሎችንም መክፈት ይችላሉ</translation>
 <translation id="6040143037577758943">ዝጋ</translation>
 <translation id="700488072601322385">ውሂብዎን ለመጠበቅ እርስዎ በቅርቡ ካልጎበኟቸው ጣቢያዎች Brave ፈቃዶችን እንዲያስወግድ ይፍቀዱ። ማሳወቂያዎችን አያቆምም።</translation>
 <translation id="9071554113102421877">በBrave ውስጥ &amp;ክፈት</translation>
@@ -425,6 +427,7 @@
 <translation id="1505112054322049777">ግላዊነት ማላበስን እና ሌሎች ባህሪያትን ለማግኘት Braveን በድር እና በመተግበሪያ እንቅስቃሴ እና በተገናኙ የBrave አገልግሎቶች ውስጥ ያካትቱ</translation>
 <translation id="6666624454809779082">Brave ለሁሉም በእርስዎ ኮምፒውተር ላይ ላሉ ተጠቃሚዎች አስቀድሞ ተጭኗል።</translation>
 <translation id="9136637081636160997">በቅርብ ጊዜ አልጎበኙም። Brave <ph name="PERMISSION_1"/>፣ <ph name="PERMISSION_2"/>፣ እና <ph name="COUNT"/> ጨምሮ አስወግዷል</translation>
+<translation id="4020203987234748583">በBrave V8 ሞተር ጣቢያዎችን ያፋጥናል ነገር ግን የBraveን ጥቃቶችን የመቋቋም አቅም በመጠኑ ያነሰ ያደርገዋል። ይህ ቅንብር በርቷል።</translation>
 <translation id="3136039682492230890">Brave ይህ ፋይል አደገኛ ሊሆን ስለሚችል እንዲቃኙት ይመክራል።</translation>
 <translation id="1547295885616600893">ChromeOS በተጨማሪ <ph name="BEGIN_LINK_CROS_OSS"/>ክፍት ምንጭ ሶፍትዌር<ph name="END_LINK_CROS_OSS"/> እውን ሊሆን ችሏል።</translation>
 <translation id="6831043979455480757">መተርጎም</translation>
@@ -518,7 +521,6 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="8118331347066725040">በሌንስ ለፍለጋ ግብረ መልስ ይላኩ</translation>
 <translation id="5334309298019785904">ማስመር ለጎራዎ ስለማይገኝ ChromeOS ውሂብዎን ማስመር አይችልም።</translation>
 <translation id="813913629614996137">በማስጀመር ላይ…</translation>
-<translation id="7550680632761245819">ተጨማሪ ጥበቃን በBrave ጃቫስክሪፕት እና በWebAssembly ሞተር ውስጥ ያብሩ</translation>
 <translation id="9067428552314418522">ይህ ፋይል አደገኛ ስለሆነ Brave አግዶታል።</translation>
 <translation id="8177472873527554730">በገፅ ውስጥ ያለ ይዘትን ማግኘት አይቻልም</translation>
 <translation id="6219250889396046657">Brave ውሂብን በእርስዎ መለያ <ph name="USER_EMAIL"/> ውስጥ ለመጠቀም እና ለማስቀመጥ የይለፍ ሐረግዎን ያስገቡ</translation>
@@ -563,6 +565,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="4100716194836114130">ይሄ የእርስዎ Brave ነው</translation>
 <translation id="1419543648228375718">ወደ Brave ይግቡ?</translation>
 <translation id="8747073452963259673">የፍለጋው አካባቢ ከታች በስተግራ ጥግ፦ ግራ <ph name="LEFT"/>%፣ ከታች <ph name="BOTTOM"/>%</translation>
+<translation id="3562508460098852626">የይለፍ ቃሎች መሰረዝ የሚችሉት ከBrave ውጭ ብቻ ነው</translation>
 <translation id="878572486461146056">የጭነት ስህተት፦ የእርስዎ የአውታረ መረብ አስተዳዳሪ ጭነትን የሚከላከል የቡድን መመሪያ ተግባራዊ አድርጓል፦ <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave ለዚህ ጣቢያ የእርስዎን ካሜራ እና ማይክሮፎን ለመድረስ ፈቃድ ያስፈልገዋል</translation>
 <translation id="64216977793816291">ወደ Brave ይግቡ?</translation>

@@ -26,6 +26,9 @@
 <translation id="933652931229970927">Diaqnostika hesabatlarının avtomatik göndərilməsi</translation>
 <translation id="7977176350719484850">Qənaət edilmiş\ntəxmini verilənlər</translation>
 <translation id="9008534313521214777">Qənaət edilmiş\ntəxmini vaxt</translation>
+<translation id="8347743943525229984">Brave sorğularına icazə ver</translation>
+<translation id="6022939994702081659">Brave-ə keçidləri yeni tab-vərəqə səhifəsində məxfi sorğulara göstərməyə icazə verir. Sorğular daha yaxşı xüsusiyyətlər yaratmağımıza və brauzer əsaslı reklam kampaniyalarının effektivliyini ölçməyimizə kömək edir.</translation>
+<translation id="7746496306508543965">Brave sorğuları haqqında ətraflı məlumat</translation>
 <translation id="6332924730165919598">Bütün tabulyasiyalar bağlandıqda Brave də bağlanır</translation>
 <translation id="4150201353443180367">Göstər</translation>
 <translation id="4275663329226226506">Media</translation>
@@ -61,11 +64,15 @@
 <translation id="1116694919640316211">Haqqımızda</translation>
 <translation id="7961015016161918242">Heç vaxt</translation>
 <translation id="1275213816424141989">Bəlkə daha sonra</translation>
+<translation id="7445306466605902444">Barmaq izi şifrəsi bloklandı (kəskin, saytları poza bilər)</translation>
+<translation id="5582686930349810484">Barmaq izi şifrəsi bloklandı (standart)</translation>
+<translation id="769702552748212954">Bütün barmaq izi şifrələrinə icazə ver</translation>
 <translation id="876424292214881779">Reklamlar və digər qorxunc şeylər bloklandı</translation>
 <translation id="8912304686498704084">AÇ</translation>
 <translation id="4963218453264888510">BAĞLA</translation>
 <translation id="7474113515179313724">Bu saytı Brave-in məxfilik qoruması olmadan açırsınız. Qoruyucu qalxanlar qaldırıldıqda düzgün işləmir?</translation>
 <translation id="9055546041146396417">Bu saytda nasazlıq varsa Qalxanlardan istifadə edin.</translation>
+<translation id="7898672232170410330">Elementi blokla</translation>
 <translation id="1209739344687072997">Nasaz sayt haqqında bildirin</translation>
 <translation id="8759753423332885148">Ətraflı məlumat.</translation>
 <translation id="650318023204990401">Qabaqcıl idarəetmələr</translation>

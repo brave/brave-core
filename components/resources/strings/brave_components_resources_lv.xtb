@@ -875,7 +875,7 @@
 <translation id="1939235910515558387">Sāciet izmantot Brave maku pāris minūšu laikā.</translation>
 <translation id="5844138175312846408">Jums jau ir maks?</translation>
 <translation id="772643556080081594">Man vajag tikai skatāmo maku</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc., Brave un Brave logotips ir Brave Software, Inc. reģistrētas prečzīmes. Citi produktu nosaukumi un logotipi var būt to attiecīgo uzņēmumu prečzīmes. Visas tiesības aizsargātas.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc., Brave un Brave logotips ir Brave Software, Inc. reģistrētas prečzīmes. Citi produktu nosaukumi un logotipi var būt to attiecīgo uzņēmumu prečzīmes. Visas tiesības aizsargātas.</translation>
 <translation id="7501957181231305652">vai</translation>
 <translation id="375882617301124395">Dublējiet kripto maku</translation>
 <translation id="5024543173656851695">Es apzinos, ka gadījumā, ja pazaudēšu savus atkopšanas vārdus, nevarēšu piekļūt kriptovalūtas makam.</translation>
@@ -1119,10 +1119,6 @@
 <translation id="4324239559624557455">24 stundas</translation>
 <translation id="9139452553033760558">1 nedēļu</translation>
 <translation id="1658834457013045127">Vienmēr</translation>
-<translation id="2770851145415891830">Konstatēti esoši kriptovalūtas maki</translation>
-<translation id="2237759620789871865">Ja jūs vēlaties izlaist importēšanu un saglabāt iepriekšējo kriptovalūtas maciņu, atveriet Brave pārlūka <ph name="LINK_BEFORE"/>Iestatījumus<ph name="LINK_AFTER"/> un mainiet noklusējumu uz kriptovalūtas maciņiem. Jūs varat arī importēt, izmantojot jauno Brave maciņu un mainīt to jebkurā laikā.</translation>
-<translation id="5590175005414413980">Ievadiet esošo kriptovalūtas maku paroli, lai importētu to Brave makā. Izbaudiet ātrāku un drošāku veidu, kā pārvaldīt kriptovalūtu līdzekļus un mijiedarboties ar tīmekļa 3 DApps.</translation>
-<translation id="880619123281809987">Ievadiet Kripto maku paroli</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> savienots</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> atvienots</translation>
 <translation id="5317781812114905957">Instrukcijas</translation>
@@ -1379,6 +1375,9 @@
 <translation id="5601436886921227795">Dapp saziņa</translation>
 <translation id="9104177294757104789">Sūtīt <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Mainīt <ph name="MAKER"/> uz <ph name="TAKER"/></translation>
+<translation id="1748114617341025015">Tiek veidots saistītais žetonu konts</translation>
+<translation id="4418115887224983240">Neizdevās izveidot saistīto žetonu kontu</translation>
+<translation id="7165697599360786670">Saistītais žetonu konts izveidots</translation>
 <translation id="8613144770663526433">Pierakstīties ar Brave maku</translation>
 <translation id="8813165409788097898">Jūs pierakstāties <ph name="ORIGIN"/>. Brave maks kopīgos jūsu maka adresi ar <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Skatīt informāciju</translation>
@@ -1512,7 +1511,6 @@
 <translation id="396152018598329740">Kā lietot kriptonaudas maku?</translation>
 <translation id="7512061585041489067">Kurš ir labākais kriptovalūtas maks?</translation>
 <translation id="1342755158522323177">Kas ir kriptogrāfijas pārlūkprogramma?</translation>
-<translation id="4702762916247565868">Kripto maki 101</translation>
 <translation id="4674552515763857735">Kas ir atkopšanas frāze?</translation>
 <translation id="7328255859839881981">Kas ir DApps?</translation>
 <translation id="3852489285890032403">Kas ir tīmeklis 3?</translation>
@@ -1530,7 +1528,6 @@
 <translation id="7877416315564177070">Pārbaudiet savu atgūšanas frāzi un mēģiniet vēlreiz.</translation>
 <translation id="6503538941917874992">Importējiet, izmantojot savu atgūšanas frāzi</translation>
 <translation id="782167880151571109">Atpazīts MetaMask maks!</translation>
-<translation id="3619071361843652814">Atpazīts Legacy maks!</translation>
 <translation id="4634124774493850572">Izmantot paroli</translation>
 <translation id="7697478310235189459">Vārds <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Ierakstiet savu MetaMask 12–24 vārdu atkopšanas frāzi.</translation>
@@ -1543,7 +1540,6 @@
 <translation id="3604445540387095708">Esmu izlasījis <ph name="LINK_BEFORE"/>lietošanas noteikumus<ph name="LINK_AFTER"/> un piekrītu tiem.</translation>
 <translation id="1422451606553326863">Pirkt kripto</translation>
 <translation id="3887541341068007345">Notiek maka paplašinājumu pārbaude...</translation>
-<translation id="3567994771568272606">Importēt no mantotajiem Brave kriptonauda makiem</translation>
 <translation id="8407091560429310499">Atlasīt aktīvu</translation>
 <translation id="756590380936155533">Lai pabeigtu pirkumu <ph name="ASSET_TICKER"/> vērtībā, atlasiet kādu no mūsu partneriem</translation>
 <translation id="7880860489474966219">Pēc pabeigšanas jūsu līdzekļi tiks pārskaitīti uz jūsu Brave maku</translation>
@@ -1746,6 +1742,7 @@
 <translation id="4583937519241190398">DappRadar apstiprināts</translation>
 <translation id="8713438253026855351">Pārslēgties uz Aizsargātu kontu</translation>
 <translation id="3526789880090101085">Aizsargāts konts</translation>
+<translation id="3155166394760577549">Iespējojiet aizsardzību, lai uzlabotu darījumu privātumu.</translation>
 <translation id="2298396008562701154">Šobrīd šis konts atbalsta caurskatāmus darījumus, kas nozīmē, ka tos redz jebkurš blokķēdē.</translation>
 <translation id="3987095760757102811">Pārslēdzoties uz Aizsargātu kontu, informācija par darījuma summu, kā arī tās sūtītāju un saņēmēju, tiek slēpta.</translation>
 <translation id="3819528427777765709">Aizsargāts</translation>
@@ -1776,6 +1773,8 @@
 <translation id="99991973626409495">Pārskatīt šifrēšanu</translation>
 <translation id="3114681061018999547">Šifrē</translation>
 <translation id="8897189056319316783">Šifrējiet ZEC</translation>
+<translation id="3382275793825152362">Aizsargāt līdzekļus</translation>
+<translation id="8631765320256788981">Jūs sūtāt līdzekļus no sava atklātā konta uz savu aizsargāto kontu.</translation>
 <translation id="7144878232160441200">Mēģināt vēlreiz</translation>
 <translation id="9094621390791852268">Neizdevās izveidot darījuma priekšskatījumu.</translation>
 <translation id="4982713341035600933">Plānotās bilances izmaiņas</translation>
@@ -1837,7 +1836,7 @@
 <translation id="7758665172236842395">Seko saviem mīļākajiem avotiem vienā plūsmā. Vienkārši atver cilni Brave pārlūkā, ritini lejup un... paskat!</translation>
 <translation id="2376542729617592331">Brave News tiek atbalstīts no privātu, anonimizētu reklāmu ieņēmumiem. <ph name="LINK_START"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Ieslēgt Brave News</translation>
-<translation id="5149018766422637336">Ziņas un RSS</translation>
+<translation id="1772301834467143364">Brave ziņas</translation>
 <translation id="6265592479622441247">Atgriezties <ph name="BEGIN_BOLD"/>Informācijas panelī<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Jaunumi</translation>
 <translation id="8981973962043893066">Meklē vietni, tēmu vai RSS plūsmu</translation>
@@ -2108,10 +2107,18 @@
 <translation id="4885527781814382758">Brave Leo ir privāts MI viedais palīgs, kas uzlabo to, kā jūs lietojat internetu. Leo bezmaksas versijai ir ierobežotas funkcijas. Brave Leo Premium abonenti iegūst vairāk modeļus, lielāku mijiedarbību skaitu un ātrāku piekļuvi jaunajām funkcijām. Noklusējuma modelis laiku pa laikam tiek atjaunots. Plašāku informāciju skatiet <ph name="LINK_BEFORE"/>Brave Palīdzības centrā<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Pēc noklusējuma, kad uzdodat Leo jautājumu, tas, lai sniegtu atbildi, var nosūtīt Brave Leo un izmantot jūsu skatītās tīmekļa lapas saturu vai jebkuru tekstu, ko lapā iezīmējat. Atbilžu precizitāte netiek garantēta, un tajās var būt ietverta neprecīza, maldinoša vai nepatiesa informācija. Leo izmanto datus no Brave meklēšanas, lai uzlabotu atbildes kvalitāti. Neiesniedziet sensitīvu vai privātu informāciju un ievērojiet piesardzību atbildēs saistībā ar veselību, finansēm, personīgo drošību vai tamlīdzīgi. Jūs jebkurā laikā varat pielāgot Leo opcijas Iestatījumos. Dodieties uz Iestatījumi &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo neapkopo identifikatorus, piemēram, jūsu IP adresi, ko var saistīt ar jums. Nekādi dati netiek izmantoti, lai apmācītu AI modeļus, un AI modeļi nesaglabā personas datus (izņemot Anthropic, kurā dati tiek glabāti 30 dienas pirms to dzēšanas). Plašāku informāciju skatiet <ph name="LINK_BEFORE"/>konfidencialitātes politikā<ph name="LINK_AFTER"/>.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {Uzdodiet jautājumu par šīs lapas saturu}
+      other {Uzdodiet jautājumu par šo lapu saturu}
+    }</translation>
 <translation id="6961721183181597848">Kā es varu jums šodien palīdzēt?</translation>
 <translation id="2966135729673253768">Uzdot papildjautājumu</translation>
 <translation id="4524675003624341892">Ieteikt jautājumus...</translation>
 <translation id="4567071417854988869">Apkopot informāciju šajā video</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {Apkopot informāciju šajā lapā}
+      other {Apkopot informāciju šajās lapās}
+    }</translation>
 <translation id="7921782882718083488">Apkopot informāciju šajā lapā</translation>
 <translation id="7932221068776853847">Atvienoties, lai pārtrauktu sūtīt šīs lapas saturu Leo, un sākt jaunu sarunu</translation>
 <translation id="8743383817154663379">Apstrādājot jūsu pieprasījumu, kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
@@ -2202,16 +2209,14 @@
 <translation id="8712637175834984815">Sapratu!</translation>
 <translation id="1093419424466417703">Lapa Leo ir pārāk gara. Sarunā var trūkt nedaudz konteksta. Leo spēja nolasīt <ph name="PERCENTAGE"/> lapas satura.</translation>
 <translation id="4592293425457329338">Iespējams, sarunā trūkst konteksts. Leo izdevās saglabāt <ph name="PERCENTAGE"/> ar sarunu saistītā satura.</translation>
-<translation id="2186990448773134544">Lapas saturs ir saīsināts, izvelkot svarīgāko lapas informāciju, jo teksts Leo bija par garu.</translation>
-<translation id="5140068729857132378">Meklē tīmekļa lapas atbilstošās daļas...</translation>
 <translation id="4370698775470316661">Šī saruna ir pārāk gara, un tā nevar turpināties. Iespējams, ir citi modeļi, kuros Leo spēj nodrošināt precizitāti garākās sarunās.</translation>
 <translation id="5719170755629028558">Uzlabojam jūsu atbildi Brave meklētājā…</translation>
 <translation id="5794962229997281366">Uzlabota atbilde, meklējot <ph name="SEARCH_TERMS"/></translation>
 <translation id="7307396647043599949">Atlikums: <ph name="COUNT"/></translation>
 <translation id="8103700533980268469">Aizvērt šo paziņojumu</translation>
 <translation id="3417835166382867856">Meklēšana cilnēs</translation>
-<translation id="9090243919347147717">Pielikumi</translation>
-<translation id="4444978378117903684">Pievienojiet sava pārlūka cilnes, lai sniegtu sarunai ar Leo vairāk konteksta</translation>
+<translation id="1352836459737874921">Pievienot saturu no citām cilnēm</translation>
+<translation id="3028258613451571431">Nosūtiet lapas saturu no savām pārlūkprogrammas cilnēm, lai Leo sniegtu vairāk konteksta sarunai</translation>
 <translation id="4300920590112551536">Pārlūka cilnes</translation>
 <translation id="2315654674554095762">Leo tagad iegaumēs jūsu sarunas, lai jūs varat tās pārskatīt nākotnē. Tās tiek saglabātas jūsu ierīcē šifrētā veidā, un jūs varat tās dzēst jebkurā laikā.</translation>
 <translation id="7821251979960635244">Kolīdz sāksiet sarunu, jūsu sarunu vēsture tiks parādīta šeit.</translation>
@@ -2234,8 +2239,8 @@
 <translation id="5642775487085641191">Vēlaties tikai patērzēt?</translation>
 <translation id="8857222718794549840">Vaicājiet man jebko! Mēs varat parunāt par jebkuru tematu. Es nepārtraukti mācos un uzlaboju prasmes, lai sniegtu labākas atbildes.</translation>
 <translation id="9051226419897869406">Tērzējiet privāti ar Brave Leo</translation>
-<translation id="637548538907281147">Pielāgot atbildes, pamatojoties uz lapas saturu</translation>
-<translation id="8599503173207256429">Ieslēdziet, lai vaicātu par šo lapu. Tās saturs tiks nosūtīts Brave Leo kopā ar jūsu ziņojumiem.</translation>
+<translation id="2414904697165579184">Veidot atbildes, pamatojoties uz cilnes saturu</translation>
+<translation id="8258324391302611485">Šīs lapas saturs tiks nosūtīts Leo kopā ar jūsu ziņojumiem.</translation>
 <translation id="318819763888864209">Visi abonementi tiek automātiski atjaunināti, bet tos jebkurā laikā var atcelt pirms atjaunošanas.</translation>
 <translation id="5091223967610958">Atklājiet jūsu apmeklētās lapas (<ph name="HOST_NAME"/>) resursdatora nosaukumu, lai mēs varētu uzlabot Leo.</translation>
 <translation id="8732450785281947197">Leo MI rīki</translation>
@@ -2266,11 +2271,14 @@
 <translation id="9088751620363630236">Uzņemt fotoattēlu...</translation>
 <translation id="4250229828105606438">Ekrānuzņēmums</translation>
 <translation id="6332876390231524389">Pašreizējās cilnes saturs</translation>
+<translation id="7742969455167760092">Atvērt cilnes...</translation>
 <translation id="49269513399674318">Izmantot mikrofonu</translation>
 <translation id="3895031624234442305">Pielāgoti modeļi</translation>
 <translation id="4572010449071015143">Sākt jaunu sarunu</translation>
 <translation id="345901077335355561">Atgriezties pie esošās sarunas</translation>
 <translation id="6287023598025162715">Jauna saruna</translation>
+<translation id="7097822247923237815">Pagaidu tērzēšana</translation>
+<translation id="7481750859362986254">Šī saruna netiks saglabāta jūsu vēsturē un neizmantos Leo pielāgojumus vai atmiņu.</translation>
 <translation id="8370801182970639038">Automātiski (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Iespējotās meklētājprogrammas</translation>
 <translation id="5355776323718420036">Paslēpt populārākās vietnes</translation>
@@ -2387,6 +2395,7 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="6821108091726602352">Palīdziet mums labot tīmekli, piedaloties Brave Tīmekļa atklāšanas projektā. Kopīgojot pilnīgi anonīmus meklēšanas signālus, jūs varat palīdzēt Brave paaugstināt meklēšanas rādītāju.</translation>
 <translation id="6764845498618413165">Uzzināt vairāk.</translation>
 <translation id="7818938154803162778">Protams, es palīdzēšu</translation>
+<translation id="7207456302801184289">Laipni lūdzam pārlūkā Brave!</translation>
 <translation id="3486480638399578250">Saglabājiet savas personīgās e-pasta adreses konfidencialitāti</translation>
 <translation id="7765422154906712751">Izveidojiet unikālas, uzģenerētas adreses, kas pārsūta ziņojumus uz jūsu Brave konta e-pastu un var tikt dzēstas jebkurā laikā. Saglabājiet savu faktisko e-pasta adresi konfidenciālu un nepieejamu reklāmdevējiem.</translation>
 <translation id="5222676887888702881">Izrakstīties</translation>
@@ -2403,6 +2412,7 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="1104500750724567895">Jauns pseidonīms</translation>
 <translation id="8072910658503112482">Ieteikt citu e-pasta pseidonīmu</translation>
 <translation id="7710361355427562228">Ģenerē jaunu pseidonīmu...</translation>
+<translation id="8013913032858654337">Kļūda, ģenerējot pseidonīmu. Pārbaudiet savu interneta savienojumu un mēģiniet vēlreiz.</translation>
 <translation id="4253168017788158739">Piezīme</translation>
 <translation id="7596996548739923550">Ievadiet piezīmi šai adresei (pēc izvēles)</translation>
 <translation id="3810973564298564668">Pārvaldīt</translation>
@@ -2410,13 +2420,21 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="3919357515365744684">E-pasta ziņojumi tiks pārsūtīti uz adresi: <ph name="MAIN_EMAIL"/></translation>
 <translation id="6063403442924238501">Rediģēt e-pasta pseidonīmu</translation>
 <translation id="8729265501883390499">Izveidot pseidonīmu</translation>
+<translation id="7137645995703540578">Kļūda, saglabājot pseidonīmu. Pārbaudiet savu interneta savienojumu un mēģiniet vēlreiz.</translation>
+<translation id="1765544689721905747">Dzēst e-pasta pseidonīmu</translation>
+<translation id="646524615209870492">Pseidonīma <ph name="ALIAS"/> noņemšana neļaus saņemt e-pastus.</translation>
+<translation id="8133100642915054515">Kļūda, dzēšot pseidonīmu. Pārbaudiet savu interneta savienojumu un mēģiniet vēlreiz.</translation>
+<translation id="8465742443901727718">Šo darbību nevar atsaukt. Vai tiešām vēlaties turpināt?</translation>
 <translation id="8662104432574824754">Lai sāktu darbu, piesakieties vai izveidojiet jaunu Brave kontu</translation>
 <translation id="8069030342700068465">Ievadiet savu e-pasta adresi, lai saņemtu drošu pieteikšanās saiti. Noklikšķinot uz šīs saites, tiks izveidots Brave konts vai jūs piekļūsiet tam, kā arī varēsiet izmantot bezmaksas e-pasta pseidonīmu pakalpojumu.</translation>
 <translation id="2133391407495495735">Saņemt pieteikšanās saiti</translation>
+<translation id="2650906829817220223">Kļūda, pieprasot autentifikāciju. Pārbaudiet savu interneta savienojumu un mēģiniet vēlreiz.</translation>
 <translation id="3699624789011381381">E-pasta adrese</translation>
 <translation id="8124939971041602970">E-pasta ziņojums ar pieteikšanās saiti ir nosūtīts uz <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">Klikšķiniet uz drošās pieteikšanās saites, ko saņēmāt e-pastā, lai piekļūtu savam kontam.</translation>
-<translation id="6549775668256477823">Neredzat e-pastu? Pārbaudiet surogātpasta mapi vai <ph name="BEGIN_LINK"/>mēģiniet vēlreiz<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Neredzat e-pastu? Pārbaudiet surogātpasta mapi vai mēģiniet vēlreiz.</translation>
+<translation id="3397336197747843396">Kļūda, autentificējoties ar Brave kontu. Lūdzu, mēģiniet vēlreiz.</translation>
+<translation id="1340795582009113055">Sākt no jauna</translation>
 <translation id="958268166261124668">Brave VPN: Savienots</translation>
 <translation id="6021669293402055982">Brave VPN: Atvienots</translation>
 <translation id="3541307549916475335">Brave VPN paneļa lietotāja saskarne</translation>
