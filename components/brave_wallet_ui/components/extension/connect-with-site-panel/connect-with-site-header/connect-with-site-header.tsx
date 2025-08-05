@@ -56,7 +56,7 @@ export const ConnectWithSiteHeader = (props: Props) => {
   const { originInfo, address, isReadyToConnect, isScrolled, onBack } = props
 
   // Hooks
-  const isDAppVerified = useIsDAppVerified(originInfo)
+  const { isDAppVerified } = useIsDAppVerified(originInfo)
 
   // Memos
   const orb = useAddressOrb(address)

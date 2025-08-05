@@ -8,8 +8,15 @@ import * as React from 'react'
 // Types
 import { BraveWallet } from '../../../constants/types'
 
+// Utils
+import { isComponentInStorybook } from '../../../utils/string-utils'
+
+// Hooks
+import { useIsDAppVerified } from '../../../common/hooks/use_is_dapp_verified'
+
 // Components
 import { CreateSiteOrigin } from '../../shared/create-site-origin'
+import { VerifiedLabel } from '../../shared/verified_label/verified_label'
 
 // Styled Components
 import {
@@ -20,6 +27,8 @@ import {
 } from './origin_info_card.style'
 import { Column } from '../../shared/style'
 
+const isStorybook = isComponentInStorybook()
+
 interface Props {
   origin: BraveWallet.OriginInfo
 }
@@ -27,20 +36,32 @@ interface Props {
 export const OriginInfoCard = (props: Props) => {
   const { origin } = props
 
+  // Hooks
+  const { isDAppVerified, dapp } = useIsDAppVerified(origin)
+
+  // Computed
+  const dappIcon = dapp
+    ? isStorybook
+      ? dapp.logo
+      : `chrome://image?url=${encodeURIComponent(dapp.logo)}&staticEncode=true`
+    : undefined
+
+  const iconSrc =
+    dappIcon
+    ?? 'chrome://favicon2?size=64&pageUrl='
+      + encodeURIComponent(origin.originSpec)
+
   return (
     <StyledWrapper
       padding='10px 16px'
       gap='16px'
       justifyContent='flex-start'
     >
-      <FavIcon
-        src={
-          'chrome://favicon2?size=64&pageUrl='
-          + encodeURIComponent(origin.originSpec)
-        }
-      />
+      <FavIcon src={iconSrc} />
       <Column alignItems='flex-start'>
-        <OriginName textColor='primary'>{origin.eTldPlusOne}</OriginName>
+        <OriginName textColor='primary'>
+          {dapp ? dapp.name : origin.eTldPlusOne}
+        </OriginName>
         <Column
           gap='4px'
           alignItems='flex-start'
@@ -51,6 +72,7 @@ export const OriginInfoCard = (props: Props) => {
               eTldPlusOne={origin.eTldPlusOne}
             />
           </OriginUrl>
+          {isDAppVerified && <VerifiedLabel />}
         </Column>
       </Column>
     </StyledWrapper>
