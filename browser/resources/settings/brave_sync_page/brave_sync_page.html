@@ -1,28 +1,28 @@
 <style include="settings-shared">
+  cr-view-manager [hidden-by-search],
+  cr-view-manager[show-all] [slot=view][data-parent-view-id] {
+    display: none;
+  }
 </style>
 
-<settings-section
-  id="braveSync"
-  page-title="$i18n{braveSync}"
-  class="cr-centered-card-container">
-  <settings-animated-pages id="pages" section="braveSync">
-    <div route-path="default">
-      <cr-link-row
-	id="brave-sync-setup"
-	label$="[[syncLabel_]]"
-	on-click="onSyncTap_"
-	role-description="$i18n{subpageArrowRoleDescription}">
-      </cr-link-row>
-    </div>
-
-    <template is="dom-if" route-path="/braveSync/setup">
-      <settings-subpage
-	associated-control="[[$$('#brave-sync-setup')]]"
-	page-title="[[syncLabel_]]">
-	<settings-brave-sync-subpage
-          sync-status="[[syncStatus_]]">
-	</settings-brave-sync-subpage>
-      </settings-subpage>
-    </template>
-  </settings-animated-pages>
-</settings-section>
+<cr-view-manager id="viewManager" class="cr-centered-card-container"
+  show-all$="[[shouldShowAll]]">
+  <settings-section
+    slot="view"
+    id="braveSync"
+    page-title="$i18n{braveSync}"
+    class="cr-centered-card-container">
+    <cr-link-row
+      id="brave-sync-setup"
+      label$="[[syncLabel_]]"
+      on-click="onSyncTap_"
+      role-description="$i18n{subpageArrowRoleDescription}">
+    </cr-link-row>
+  </settings-section>
+  <settings-subpage
+    page-title="[[syncLabel_]]" slot="view" id="setup"
+    data-parent-view-id="braveSync">
+    <settings-brave-sync-subpage prefs="{{prefs}}" sync-status="[[syncStatus_]]">
+    </settings-brave-sync-subpage>
+  </settings-subpage>
+</cr-view-manager>
