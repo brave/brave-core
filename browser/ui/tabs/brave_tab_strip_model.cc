@@ -51,13 +51,11 @@ void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
 
 void BraveTabStripModel::UpdateWebContentsStateAt(int index,
                                                   TabChangeType change_type) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
-    TabStripModel::UpdateWebContentsStateAt(index, change_type);
-    return;
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+    // Make sure that the tab's last origin is updated when the url changes.
+    GetTabAtIndex(index)->GetTabFeatures()->tab_ui_helper()->UpdateLastOrigin();
   }
 
-  // Make sure that the tab's last origin is updated when the url changes.
-  GetTabAtIndex(index)->GetTabFeatures()->tab_ui_helper()->UpdateLastOrigin();
   TabStripModel::UpdateWebContentsStateAt(index, change_type);
 }
 
