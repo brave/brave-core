@@ -267,55 +267,15 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
   return setting == CONTENT_SETTING_BLOCK ? false : true;
 }
 
-void SetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
-                                           bool enable,
-                                           const GURL& url,
-                                           PrefService* local_state) {
-  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
-    return;
-  }
-
-  // TODO(aseren): Fix default value for BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE
-  // this is 'allow_brave_shields_ad_block_only_mode' so 'enable' == 'allow'
-  const auto setting = enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
-  if (map->IsOffTheRecord() ||
-      setting !=
-          map->GetDefaultContentSetting(
-              ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE, nullptr)) {
-    map->SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE, setting);
-
-    if (!map->IsOffTheRecord()) {
-      RecordShieldsToggled(local_state);
-    }
-  } else {
-    map->SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE,
-        CONTENT_SETTING_DEFAULT);
+void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs, bool enable) {
+  if (prefs) {
+    prefs->SetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled, enable);
   }
 }
 
-bool GetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
-                                           const GURL& url) {
-  if (base::FeatureList::IsEnabled(
-          ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
-      url.SchemeIs(kChromeExtensionScheme)) {
-    // TODO(aseren): Should we return false for extension requests?
-    return true;
-  }
-
-  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
-    return false;
-  }
-
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE);
-
-  // see EnableBraveShieldsAdBlockingOnlyMode - allow and default == false
-  // TODO(aseren): Fix default value for BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE
-  return setting == CONTENT_SETTING_BLOCK ? false : true;
+bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs) {
+  return prefs ? prefs->GetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled)
+               : false;
 }
 
 void SetAdControlType(HostContentSettingsMap* map,
@@ -441,7 +401,7 @@ bool IsReduceLanguageEnabledForProfile(HostContentSettingsMap* map,
   }
 
   if (!GetBraveShieldsEnabled(map, url) ||
-      GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+      GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
     return false;
   }
 
@@ -467,7 +427,7 @@ bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
   }
 
   // Don't reduce language if fingerprinting is off
-  if (brave_shields::GetFingerprintingControlType(map, url) ==
+  if (brave_shields::GetFingerprintingControlType(map, url, pref_service) ==
       ControlType::ALLOW) {
     return false;
   }
@@ -482,7 +442,8 @@ bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
 }
 
 DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
-                                         const GURL& url) {
+                                         const GURL& url,
+                                         PrefService* pref_service) {
   // Don't block if feature is disabled
   if (!base::FeatureList::IsEnabled(
           brave_shields::features::kBraveDomainBlock)) {
@@ -490,7 +451,7 @@ DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
   }
 
   // Don't block if Brave Shields ad block only mode is enabled.
-  if (brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
     // TODO(tmancey): ...
     // DCHECK(false) << "Checking that this is hit";
     return DomainBlockingType::kNone;
@@ -621,11 +582,12 @@ void SetCookieControlType(HostContentSettingsMap* map,
 ControlType GetCookieControlType(
     HostContentSettingsMap* map,
     content_settings::CookieSettings* cookie_settings,
-    const GURL& url) {
+    const GURL& url,
+    PrefService* pref_service) {
   DCHECK(map);
   DCHECK(cookie_settings);
 
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
     return ControlType::ALLOW;
   }
 
@@ -655,7 +617,8 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
     return;
   }
 
-  ControlType prev_setting = GetFingerprintingControlType(map, url);
+  ControlType prev_setting =
+      GetFingerprintingControlType(map, url, profile_state);
   content_settings::SettingInfo setting_info;
   base::Value web_setting = map->GetWebsiteSetting(
       url, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
@@ -684,7 +647,8 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
       RecordShieldsDomainSettingCounts(profile_state, true, type);
     } else {
       // If domain specific setting changed, recalculate counts
-      ControlType global_setting = GetFingerprintingControlType(map, GURL());
+      ControlType global_setting =
+          GetFingerprintingControlType(map, GURL(), profile_state);
       RecordShieldsDomainSettingCountsWithChange(
           profile_state, true, global_setting,
           was_default ? nullptr : &prev_setting, type);
@@ -693,8 +657,9 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
 }
 
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
-                                         const GURL& url) {
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+                                         const GURL& url,
+                                         PrefService* pref_service) {
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
     return ControlType::ALLOW;
   }
 
@@ -859,8 +824,9 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 }
 
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
-                                   const GURL& url) {
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(map, url)) {
+                                   const GURL& url,
+                                   PrefService* pref_service) {
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
     return ControlType::ALLOW;
   }
 
@@ -949,7 +915,8 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
 }
 
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
-                                      const GURL& primary_url) {
+                                      const GURL& primary_url,
+                                      PrefService* pref_service) {
   if (!base::FeatureList::IsEnabled(features::kBraveFarbling)) {
     return brave_shields::mojom::FarblingLevel::OFF;
   }
@@ -959,7 +926,8 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
     return brave_shields::mojom::FarblingLevel::OFF;
   }
 
-  auto fingerprinting_type = GetFingerprintingControlType(map, primary_url);
+  auto fingerprinting_type =
+      GetFingerprintingControlType(map, primary_url, pref_service);
   switch (fingerprinting_type) {
     case ControlType::ALLOW:
       return brave_shields::mojom::FarblingLevel::OFF;

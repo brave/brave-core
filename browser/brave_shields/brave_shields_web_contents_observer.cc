@@ -298,16 +298,17 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
 
   HostContentSettingsMap* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
+  PrefService* pref_service =
+      user_prefs::UserPrefs::Get(rfh->GetBrowserContext());
+
   const brave_shields::mojom::FarblingLevel farbling_level =
-      brave_shields::GetFarblingLevel(host_content_settings_map, primary_url);
+      brave_shields::GetFarblingLevel(host_content_settings_map, primary_url,
+                                      pref_service);
   const base::Token farbling_token =
       farbling_level != brave_shields::mojom::FarblingLevel::OFF
           ? brave_shields::GetFarblingToken(host_content_settings_map,
                                             primary_url)
           : base::Token();
-
-  PrefService* pref_service =
-      user_prefs::UserPrefs::Get(rfh->GetBrowserContext());
 
   mojo::AssociatedRemote<brave_shields::mojom::BraveShields> agent;
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&agent);
@@ -315,8 +316,7 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
       farbling_level, farbling_token, allowed_scripts_,
       brave_shields::IsReduceLanguageEnabledForProfile(
           host_content_settings_map, primary_url, pref_service),
-      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
-          host_content_settings_map, primary_url)));
+      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)));
 }
 
 void BraveShieldsWebContentsObserver::BindReceiver(

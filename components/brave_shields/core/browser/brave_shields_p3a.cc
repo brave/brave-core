@@ -263,7 +263,8 @@ void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
   VLOG(1) << "BraveShieldsP3A: Starting initial report for profile";
 
   ControlType global_ads_setting = GetCosmeticFilteringControlType(map, GURL());
-  ControlType global_fp_setting = GetFingerprintingControlType(map, GURL());
+  ControlType global_fp_setting =
+      GetFingerprintingControlType(map, GURL(), profile_prefs);
   RecordShieldsAdsSetting(global_ads_setting);
   RecordShieldsFingerprintSetting(global_fp_setting);
 

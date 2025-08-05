@@ -687,11 +687,12 @@ bool BraveContentBrowserClient::CanThirdPartyStoragePartitioningBeDisabled(
     return false;
   }
   const auto url = origin.GetURL();
+  PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
   return !brave_shields::GetBraveShieldsEnabled(host_content_settings_map,
                                                 url) ||
-         brave_shields::GetCookieControlType(host_content_settings_map,
-                                             cookie_settings.get(), url) ==
-             brave_shields::ControlType::ALLOW;
+         brave_shields::GetCookieControlType(
+             host_content_settings_map, cookie_settings.get(), url,
+             pref_service) == brave_shields::ControlType::ALLOW;
 }
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
@@ -707,21 +708,22 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
     content::BrowserContext* browser_context) {
   HostContentSettingsMap* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(browser_context);
+
+  PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
+
   const brave_shields::mojom::FarblingLevel farbling_level =
-      brave_shields::GetFarblingLevel(host_content_settings_map, url);
+      brave_shields::GetFarblingLevel(host_content_settings_map, url,
+                                      pref_service);
   const base::Token farbling_token =
       farbling_level != brave_shields::mojom::FarblingLevel::OFF
           ? brave_shields::GetFarblingToken(host_content_settings_map, url)
           : base::Token();
 
-  PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
-
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(
           host_content_settings_map, url, pref_service),
-      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
-          host_content_settings_map, url));
+      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(pref_service));
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult
@@ -1100,8 +1102,7 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   const bool shields_up = brave_shields::GetBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);
   const bool shields_ad_block_only_mode_enabled =
-      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
-          HostContentSettingsMapFactory::GetForProfile(profile), document_url);
+      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(profile->GetPrefs());
 
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(
@@ -1262,7 +1263,7 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
   const bool shields_up =
       brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
   auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      host_content_settings_map, url);
+      host_content_settings_map, url, profile->GetPrefs());
   // https://github.com/brave/brave-browser/issues/15265
   // Always use color scheme Light if fingerprinting mode strict
   if (base::FeatureList::IsEnabled(

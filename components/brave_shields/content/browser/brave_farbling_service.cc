@@ -14,16 +14,16 @@
 namespace brave {
 
 BraveFarblingService::BraveFarblingService(
+    PrefService* prefs,
     HostContentSettingsMap* host_content_settings_map)
-    : host_content_settings_map_(host_content_settings_map) {
-  DCHECK(host_content_settings_map_);
-}
+    : prefs_(prefs), host_content_settings_map_(host_content_settings_map) {}
 
 BraveFarblingService::~BraveFarblingService() = default;
 
 bool BraveFarblingService::MakePseudoRandomGeneratorForURL(const GURL& url,
                                                            FarblingPRNG* prng) {
-  if (brave_shields::GetFarblingLevel(host_content_settings_map_, url) ==
+  if (brave_shields::GetFarblingLevel(host_content_settings_map_, url,
+                                      prefs_) ==
       brave_shields::mojom::FarblingLevel::OFF) {
     return false;
   }

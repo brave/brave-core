@@ -123,7 +123,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
     auto* host_content_settings_map =
         HostContentSettingsMapFactory::GetForProfile(profile_);
     if (host_content_settings_map &&
-        brave_shields::GetNoScriptControlType(host_content_settings_map, url) ==
+        brave_shields::GetNoScriptControlType(host_content_settings_map, url,
+                                              profile_->GetPrefs()) ==
             brave_shields::ControlType::BLOCK) {
       std::move(callback).Run(std::nullopt);
       return;

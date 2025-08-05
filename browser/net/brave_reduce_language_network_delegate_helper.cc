@@ -116,8 +116,8 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   }
 
   std::string accept_language_string;
-  switch (brave_shields::GetFingerprintingControlType(content_settings,
-                                                      origin_url)) {
+  switch (brave_shields::GetFingerprintingControlType(
+      content_settings, origin_url, profile->GetPrefs())) {
     case ControlType::BLOCK: {
       // If fingerprint blocking is maximum, set Accept-Language header to
       // static value regardless of other preferences.

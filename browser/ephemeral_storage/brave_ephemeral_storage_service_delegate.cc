@@ -57,10 +57,10 @@ void BraveEphemeralStorageServiceDelegate::CleanupTLDEphemeralArea(
   filter->ephemeral_storage_domain = key.first;
   storage_partition->GetCookieManagerForBrowserProcess()->DeleteCookies(
       std::move(filter), base::NullCallback());
-
   const GURL https_url(base::StrCat({"https://", key.first}));
-  if (brave_shields::GetCookieControlType(host_content_settings_map_,
-                                          cookie_settings_.get(), https_url) ==
+  if (brave_shields::GetCookieControlType(
+          host_content_settings_map_, cookie_settings_.get(), https_url,
+          Profile::FromBrowserContext(context_)->GetPrefs()) ==
       brave_shields::ControlType::ALLOW) {
     // All cookies are allowed, Ephemeral Storage is effectively disabled.
     return;

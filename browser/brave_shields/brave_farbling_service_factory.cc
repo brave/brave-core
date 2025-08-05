@@ -42,7 +42,9 @@ BraveFarblingServiceFactory::~BraveFarblingServiceFactory() = default;
 std::unique_ptr<KeyedService>
 BraveFarblingServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
+  CHECK(context);
   return std::make_unique<BraveFarblingService>(
+      Profile::FromBrowserContext(context)->GetPrefs(),
       HostContentSettingsMapFactory::GetForProfile(context));
 }
 

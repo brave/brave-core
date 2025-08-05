@@ -107,9 +107,9 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->allow_brave_shields =
       map ? brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin) : true;
   ctx->shields_ad_block_only_mode_enabled =
-      map ? brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
-                map, ctx->tab_origin)
-          : false;
+      profile ? brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+                    profile->GetPrefs())
+              : false;
   ctx->allow_ads =
       map ? brave_shields::GetAdControlType(map, ctx->tab_origin) ==
                 brave_shields::ControlType::ALLOW

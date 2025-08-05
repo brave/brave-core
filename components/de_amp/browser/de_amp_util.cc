@@ -46,7 +46,7 @@ RE2::Options InitRegexOptions() {
 bool IsDeAmpEnabled(PrefService* prefs, HostContentSettingsMap* map) {
   return base::FeatureList::IsEnabled(features::kBraveDeAMP) &&
          prefs->GetBoolean(de_amp::kDeAmpPrefEnabled) &&
-         !brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(map, GURL());
+         !brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(prefs);
 }
 
 bool VerifyCanonicalAmpUrl(const GURL& canonical_link,

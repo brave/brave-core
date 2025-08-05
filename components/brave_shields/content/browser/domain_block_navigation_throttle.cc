@@ -151,8 +151,13 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   DCHECK(handle->IsInMainFrame());
   GURL request_url = handle->GetURL();
 
+  content::BrowserContext* context =
+      handle->GetWebContents()->GetBrowserContext();
+  PrefService* pref_service = user_prefs::UserPrefs::Get(context);
+
   DomainBlockingType domain_blocking_type =
-      brave_shields::GetDomainBlockingType(content_settings_, request_url);
+      brave_shields::GetDomainBlockingType(content_settings_, request_url,
+                                           pref_service);
   content::WebContents* web_contents = handle->GetWebContents();
   // Maybe don't block based on Brave Shields settings
   if (domain_blocking_type == DomainBlockingType::kNone) {

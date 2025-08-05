@@ -13,6 +13,7 @@
 class GURL;
 
 class HostContentSettingsMap;
+class PrefService;
 
 namespace user_prefs {
 class PrefRegistrySyncable;
@@ -25,6 +26,7 @@ typedef absl::randen_engine<uint64_t> FarblingPRNG;
 class BraveFarblingService : public KeyedService {
  public:
   explicit BraveFarblingService(
+      PrefService* prefs,
       HostContentSettingsMap* host_content_settings_map);
   ~BraveFarblingService() override;
 
@@ -33,6 +35,7 @@ class BraveFarblingService : public KeyedService {
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
  private:
+  const raw_ptr<PrefService> prefs_;
   const raw_ptr<HostContentSettingsMap> host_content_settings_map_;
 };
 

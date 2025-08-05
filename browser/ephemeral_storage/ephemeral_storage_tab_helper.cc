@@ -13,6 +13,8 @@
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
@@ -25,6 +27,18 @@ using content::WebContents;
 
 namespace ephemeral_storage {
 
+namespace {
+
+PrefService* GetPrefs(content::WebContents* web_contents) {
+  CHECK(web_contents);
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  CHECK(profile);
+  return profile->GetPrefs();
+}
+
+}  // namespace
+
 // EphemeralStorageTabHelper helps to manage the lifetime of ephemeral storage.
 // For more information about the design of ephemeral storage please see the
 // design document at:
@@ -35,7 +49,8 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
       host_content_settings_map_(HostContentSettingsMapFactory::GetForProfile(
           web_contents->GetBrowserContext())),
       cookie_settings_(CookieSettingsFactory::GetForProfile(
-          Profile::FromBrowserContext(web_contents->GetBrowserContext()))) {
+          Profile::FromBrowserContext(web_contents->GetBrowserContext()))),
+      prefs_(GetPrefs(web_contents)) {
   DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
 
   // The URL might not be empty if this is a restored WebContents, for instance.
@@ -157,9 +172,10 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
   }
   const bool shields_enabled =
       brave_shields::GetBraveShieldsEnabled(host_content_settings_map_, url);
+
   const bool cookies_restricted =
-      brave_shields::GetCookieControlType(host_content_settings_map_,
-                                          cookie_settings_.get(), url) !=
+      brave_shields::GetCookieControlType(
+          host_content_settings_map_, cookie_settings_.get(), url, prefs_) !=
       brave_shields::ControlType::ALLOW;
   tld_ephemeral_lifetime_->SetShieldsStateOnHost(
       url.host(), shields_enabled && cookies_restricted);

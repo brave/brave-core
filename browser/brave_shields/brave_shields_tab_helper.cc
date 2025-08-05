@@ -44,6 +44,17 @@ HostContentSettingsMap* GetHostContentSettingsMap(
       web_contents->GetBrowserContext());
 }
 
+PrefService* GetPrefs(content::WebContents* web_contents) {
+  CHECK(web_contents);
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  if (!profile) {
+    return nullptr;
+  }
+  return Profile::FromBrowserContext(web_contents->GetBrowserContext())
+      ->GetPrefs();
+}
+
 constexpr char kShieldsAllowScriptOnceHistogramName[] =
     "Brave.Shields.AllowScriptOnce";
 
@@ -242,14 +253,13 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
 
 bool BraveShieldsTabHelper::GetBraveShieldsAdBlockOnlyModeEnabled() {
   return brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+      GetPrefs(web_contents()));
 }
 
 void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(
     bool is_enabled) {
-  auto* map = GetHostContentSettingsMap(web_contents());
-  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
-      map, is_enabled, GetCurrentSiteURL(), g_browser_process->local_state());
+  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(GetPrefs(web_contents()),
+                                                       is_enabled);
   ReloadWebContents();
 }
 
@@ -297,7 +307,8 @@ AdBlockMode BraveShieldsTabHelper::GetAdBlockMode() {
 
 FingerprintMode BraveShieldsTabHelper::GetFingerprintMode() {
   ControlType control_type = brave_shields::GetFingerprintingControlType(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL(),
+      GetPrefs(web_contents()));
 
   if (control_type == ControlType::ALLOW) {
     return FingerprintMode::ALLOW_MODE;
@@ -314,7 +325,7 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
 
   const ControlType control_type = brave_shields::GetCookieControlType(
       GetHostContentSettingsMap(web_contents()), cookie_settings.get(),
-      GetCurrentSiteURL());
+      GetCurrentSiteURL(), GetPrefs(web_contents()));
 
   switch (control_type) {
     case ControlType::ALLOW:
@@ -333,8 +344,7 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
 bool BraveShieldsTabHelper::GetReduceLanguageEnabled() const {
   return brave_shields::IsReduceLanguageEnabledForProfile(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL(),
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs());
+      GetPrefs(web_contents()));
 }
 
 HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
@@ -353,7 +363,8 @@ HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
 
 bool BraveShieldsTabHelper::GetNoScriptEnabled() {
   ControlType control_type = brave_shields::GetNoScriptControlType(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL(),
+      GetPrefs(web_contents()));
 
   if (control_type == ControlType::ALLOW) {
     return false;
@@ -390,12 +401,9 @@ void BraveShieldsTabHelper::SetAdBlockMode(AdBlockMode mode) {
   brave_shields::SetAdControlType(map, control_type_ad, GetCurrentSiteURL(),
                                   g_browser_process->local_state());
 
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
   brave_shields::SetCosmeticFilteringControlType(
       map, control_type_cosmetic, GetCurrentSiteURL(),
-      g_browser_process->local_state(), profile_prefs);
+      g_browser_process->local_state(), GetPrefs(web_contents()));
 
   ReloadWebContents();
 }
@@ -411,19 +419,15 @@ void BraveShieldsTabHelper::SetFingerprintMode(FingerprintMode mode) {
     control_type = ControlType::DEFAULT;  // STANDARD_MODE
   }
 
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
   brave_shields::SetFingerprintingControlType(
       GetHostContentSettingsMap(web_contents()), control_type,
-      GetCurrentSiteURL(), g_browser_process->local_state(), profile_prefs);
+      GetCurrentSiteURL(), g_browser_process->local_state(),
+      GetPrefs(web_contents()));
 
   ReloadWebContents();
 }
 
 void BraveShieldsTabHelper::SetCookieBlockMode(CookieBlockMode mode) {
-  auto* prefs = Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-                    ->GetPrefs();
   ControlType control_type = ControlType::BLOCK;
 
   switch (mode) {
@@ -438,9 +442,9 @@ void BraveShieldsTabHelper::SetCookieBlockMode(CookieBlockMode mode) {
       break;
   }
 
-  brave_shields::SetCookieControlType(GetHostContentSettingsMap(web_contents()),
-                                      prefs, control_type, GetCurrentSiteURL(),
-                                      g_browser_process->local_state());
+  brave_shields::SetCookieControlType(
+      GetHostContentSettingsMap(web_contents()), GetPrefs(web_contents()),
+      control_type, GetCurrentSiteURL(), g_browser_process->local_state());
 
   ReloadWebContents();
 }
@@ -509,12 +513,8 @@ void BraveShieldsTabHelper::AllowScriptsOnce(
 }
 
 bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
-
   return brave_shields::IsBraveShieldsManaged(
-      profile_prefs, GetHostContentSettingsMap(web_contents()),
+      GetPrefs(web_contents()), GetHostContentSettingsMap(web_contents()),
       GetCurrentSiteURL());
 }
 

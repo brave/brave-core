@@ -56,12 +56,8 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
                             const GURL& url,
                             PrefService* local_state = nullptr);
 bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
-void SetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
-                                           bool enable,
-                                           const GURL& url,
-                                           PrefService* local_state = nullptr);
-bool GetBraveShieldsAdBlockOnlyModeEnabled(HostContentSettingsMap* map,
-                                           const GURL& url);
+void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs, bool enable);
+bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs);
 
 void SetAdControlType(HostContentSettingsMap* map,
                       ControlType type,
@@ -88,7 +84,8 @@ bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
                             PrefService* pref_service);
 
 DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
-                                         const GURL& url);
+                                         const GURL& url,
+                                         PrefService* pref_service);
 
 void SetCookieControlType(HostContentSettingsMap* map,
                           PrefService* profile_state,
@@ -98,7 +95,8 @@ void SetCookieControlType(HostContentSettingsMap* map,
 ControlType GetCookieControlType(
     HostContentSettingsMap* map,
     content_settings::CookieSettings* cookie_settings,
-    const GURL& url);
+    const GURL& url,
+    PrefService* pref_service);
 
 void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   ControlType type,
@@ -106,7 +104,8 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   PrefService* local_state = nullptr,
                                   PrefService* profile_state = nullptr);
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
-                                         const GURL& url);
+                                         const GURL& url,
+                                         PrefService* pref_service);
 bool IsBraveShieldsManaged(PrefService* prefs,
                            HostContentSettingsMap* map,
                            GURL url);
@@ -132,7 +131,8 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
                             const GURL& url,
                             PrefService* local_state = nullptr);
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
-                                   const GURL& url);
+                                   const GURL& url,
+                                   PrefService* pref_service);
 
 void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
                                        bool is_enabled,
@@ -156,7 +156,8 @@ ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map);
 ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map);
 
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
-                                      const GURL& primary_url);
+                                      const GURL& primary_url,
+                                      PrefService* pref_service);
 base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
 
 }  // namespace brave_shields

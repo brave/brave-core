@@ -230,7 +230,8 @@ void DefaultBraveShieldsHandler::GetCookieControlType(
 
   const ControlType setting = brave_shields::GetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
+      CookieSettingsFactory::GetForProfile(profile_).get(), GURL(),
+      profile_->GetPrefs());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(ControlTypeToString(setting)));
@@ -242,7 +243,8 @@ void DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag(
   CHECK(profile_);
   const ControlType setting = brave_shields::GetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
+      CookieSettingsFactory::GetForProfile(profile_).get(), GURL(),
+      profile_->GetPrefs());
 
   const bool block_all_cookies_feature_enabled = base::FeatureList::IsEnabled(
       brave_shields::features::kBlockAllCookiesToggle);
@@ -271,7 +273,8 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(
   CHECK(profile_);
 
   ControlType setting = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL(),
+      profile_->GetPrefs());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(ControlTypeToString(setting)));
@@ -295,7 +298,8 @@ void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(
   CHECK(profile_);
 
   ControlType setting = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL(),
+      profile_->GetPrefs());
   bool result = setting != ControlType::ALLOW;
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(result));
@@ -319,7 +323,7 @@ void DefaultBraveShieldsHandler::GetAdBlockOnlyModeEnabled(
   CHECK(profile_);
 
   const bool enabled = brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+      profile_->GetPrefs());
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(enabled));
 }
@@ -330,10 +334,8 @@ void DefaultBraveShieldsHandler::SetAdBlockOnlyModeEnabled(
   CHECK(profile_);
 
   const bool enabled = args[0].GetBool();
-  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      enabled ? ControlType::DEFAULT : ControlType::ALLOW, GURL(),
-      g_browser_process->local_state());
+  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(profile_->GetPrefs(),
+                                                       enabled);
 }
 
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
