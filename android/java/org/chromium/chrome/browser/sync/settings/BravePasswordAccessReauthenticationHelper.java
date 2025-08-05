@@ -6,20 +6,26 @@
 package org.chromium.chrome.browser.sync.settings;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
 
 import org.chromium.base.Callback;
-import org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper;
-import org.chromium.chrome.browser.password_manager.settings.ReauthenticationManager;
-import org.chromium.chrome.browser.password_manager.settings.ReauthenticationManager.ReauthScope;
+
+// TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+// Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+// import
+// org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper;
+// import org.chromium.chrome.browser.password_manager.settings.ReauthenticationManager;
+// import org.chromium.chrome.browser.password_manager.settings.ReauthenticationManager.ReauthScope;
 
 /**
  * Class to replace description at Chromium's PasswordAccessReauthenticationHelper.reauthenticate
  */
 public class BravePasswordAccessReauthenticationHelper
-        extends PasswordAccessReauthenticationHelper {
+// TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+// Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+//        extends PasswordAccessReauthenticationHelper
+{
     // Both fields below belong to PasswordAccessReauthenticationHelper and required to make
     // protected with BravePasswordAccessReauthenticationHelperClassAdapter
     private Callback<Boolean> mCallback;
@@ -27,23 +33,23 @@ public class BravePasswordAccessReauthenticationHelper
 
     public BravePasswordAccessReauthenticationHelper(
             Context context, FragmentManager fragmentManager) {
-        super(context, fragmentManager);
+        // super(context, fragmentManager);
     }
 
     public void reauthenticateWithDescription(int descriptionId, Callback<Boolean> callback) {
-        assert canReauthenticate();
+        // assert canReauthenticate();
         assert mCallback == null;
 
         assert mFragmentManager != null;
 
         // Invoke the handler immediately if an authentication is still valid.
-        if (ReauthenticationManager.authenticationStillValid(ReauthScope.ONE_AT_A_TIME)) {
-            callback.onResult(true);
-            return;
-        }
+        // if (ReauthenticationManager.authenticationStillValid(ReauthScope.ONE_AT_A_TIME)) {
+        //     callback.onResult(true);
+        //     return;
+        // }
 
-        mCallback = callback;
-        ReauthenticationManager.displayReauthenticationFragment(
-                descriptionId, View.NO_ID, mFragmentManager, ReauthScope.ONE_AT_A_TIME);
+        // mCallback = callback;
+        // ReauthenticationManager.displayReauthenticationFragment(
+        //         descriptionId, View.NO_ID, mFragmentManager, ReauthScope.ONE_AT_A_TIME);
     }
 }
