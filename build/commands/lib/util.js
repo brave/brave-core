@@ -528,15 +528,6 @@ const util = {
           options,
         )
       }
-
-      // Workaround until this change appears in Brave.
-      // https://chromium.googlesource.com/chromium/src/+/add31462297022cbd6c61462329c780b3ad82731
-      if (config.useSiso) {
-        const cargoPkgRepository = path.join(outputDir, 'CARGO_PKG_REPOSITORY')
-        if (!fs.existsSync(cargoPkgRepository)) {
-          fs.writeFileSync(cargoPkgRepository, '')
-        }
-      }
     })
   },
 
