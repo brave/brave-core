@@ -71,14 +71,7 @@ class ChromiumTabState: TabState, TabStateImpl {
 
   private func webviewBackForwardStateDidChange() {
     backForwardList = webView.flatMap {
-      if let backForwardList = $0.backForwardList {
-        return ChromiumBackForwardList(
-          backForwardList,
-          canGoBack: $0.canGoBack,
-          canGoForward: $0.canGoForward
-        )
-      }
-      return nil
+      ChromiumBackForwardList(webView: $0)
     }
     observers.forEach {
       $0.tabDidChangeBackForwardState(self)
@@ -566,20 +559,24 @@ private struct ChromiumBackForwardList: BackForwardListProxy {
     }
   }
 
-  init(_ backForwardList: CWVBackForwardList, canGoBack: Bool, canGoForward: Bool) {
-    self.backForwardList = backForwardList
-    self.currentItem = backForwardList.currentItem.flatMap(Item.init)
-    if canGoBack {
-      self.backItem = backForwardList.backItem.flatMap(Item.init)
-      self.backList = backForwardList.backList.map(Item.init)
+  init(webView: CWVWebView) {
+    // Current item is fine to get from backForwardList as it just uses GetLastCommittedItem
+    self.currentItem = webView.backForwardList?.currentItem.flatMap(Item.init)
+    // The rest we want to use our own exposed `backList`/`forwardList` methods to get the
+    // version that doesn't use CWVBackForwardListItemArray
+    if webView.canGoBack {
+      let backItems = webView.backList
+      self.backItem = backItems.first.flatMap(Item.init)
+      // Reverse the back list to mimic WKWebView's back forward list implementation
+      self.backList = backItems.reversed().map(Item.init)
     }
-    if canGoForward {
-      self.forwardItem = backForwardList.forwardItem.flatMap(Item.init)
-      self.forwardList = backForwardList.forwardList.map(Item.init)
+    if webView.canGoForward {
+      let forwardItems = webView.forwardList
+      self.forwardItem = forwardItems.first.flatMap(Item.init)
+      self.forwardList = forwardItems.map(Item.init)
     }
   }
 
-  var backForwardList: CWVBackForwardList
   var backList: [any BackForwardListItemProxy] = []
   var forwardList: [any BackForwardListItemProxy] = []
   var currentItem: (any BackForwardListItemProxy)?
