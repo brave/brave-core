@@ -5,6 +5,7 @@
 
 import contextlib
 import functools
+import json
 import os.path
 import sys
 
@@ -151,26 +152,19 @@ def sys_path(path: str, position: Optional[int] = None):
 
 
 @functools.lru_cache(maxsize=None)
-def get_gn_args(output_dir: str) -> Dict[str, Any]:
-    """Return parsed `args.gn` from `output_dir`."""
-    ARGS_GN = "args.gn"
-    args_gn_filename = os.path.join(output_dir, ARGS_GN)
-    if not os.path.exists(args_gn_filename):
-        raise FileNotFoundError(f"{ARGS_GN} not found in {output_dir}")
-
-    with sys_path('//build'):
-        import gn_helpers
-    with open(args_gn_filename, "r") as f:
-        return gn_helpers.FromGNArgs(f.read())
+def parse_json_file_cached(file_path: str) -> Dict[str, Any]:
+    """Return parsed `file_path`."""
+    with open(file_path, "r") as f:
+        return json.load(f)
 
 
-def get_gn_arg(arg: str, output_dir=os.getcwd()) -> Any:
-    """Return GN arg from `args.gn` in `output_dir`."""
+def get_json_value(file_path: str, key: str) -> Any:
+    """Return value from `file_path`."""
 
-    gn_arg = get_gn_args(output_dir).get(arg)
-    if gn_arg is None:
+    value = parse_json_file_cached(file_path).get(key)
+    if value is None:
         raise RuntimeError(
-            f"Python-checked gn arg should be explicitly set during gn gen: "
-            f"{arg} gn arg not found")
+            "Python-checked value should be explicitly set during gn gen: "
+            f"{key} value not found in {file_path}")
 
-    return gn_arg
+    return value

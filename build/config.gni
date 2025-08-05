@@ -3,17 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/build/brave_channel.gni")
 import("//build/config/apple/symbols.gni")
 import("//build/util/branding.gni")
 import("//chrome/version.gni")
 
 declare_args() {
-  # Release channel support.
-  # "beta" for beta release.
-  # "dev" for dev channel release.
-  # "nightly" for nightly channel release.
-  # "" for stable channel release.
-  brave_channel = ""
   base_sparkle_update_url = ""
   enable_sparkle = !is_component_build && is_mac
   build_sparkle = false
