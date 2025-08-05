@@ -1,0 +1,16 @@
+<style include="settings-shared">
+  cr-view-manager [hidden-by-search],
+  cr-view-manager[show-all] [slot=view][data-parent-view-id] {
+    display: none;
+  }
+</style>
+
+<cr-view-manager id="viewManager" class="cr-centered-card-container"
+    show-all$="[[shouldShowAll]]">
+  <settings-brave-leo-assistant-page slot="view" id="parent" prefs="{{prefs}}">
+  </settings-brave-leo-assistant-page>
+
+  <leo-customization-subpage slot="view" id="customization"
+      data-parent-view-id="parent" prefs="{{prefs}}">
+  </leo-customization-subpage>
+</cr-view-manager>
