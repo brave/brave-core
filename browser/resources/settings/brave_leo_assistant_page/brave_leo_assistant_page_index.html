@@ -3,14 +3,31 @@
   cr-view-manager[show-all] [slot=view][data-parent-view-id] {
     display: none;
   }
+  cr-view-manager [slot=view]:not(.closing) {
+    position: initial;
+  }
 </style>
 
 <cr-view-manager id="viewManager" class="cr-centered-card-container"
-    show-all$="[[shouldShowAll]]">
-  <settings-brave-leo-assistant-page slot="view" id="parent" prefs="{{prefs}}">
+  show-all$="[[shouldShowAll]]">
+  <settings-brave-leo-assistant-page slot="view" id="assistant" prefs="{{prefs}}">
   </settings-brave-leo-assistant-page>
 
+  <brave-leo-personalization
+    id="personalization"
+    slot="view"
+    prefs="{{prefs}}"
+    in-search-mode="[[inSearchMode_]]">
+  </brave-leo-personalization>
+
+  <model-list-section
+    id="model-list"
+    slot="view"
+    prefs="{{prefs}}"
+    in-search-mode="[[inSearchMode_]]">
+  </model-list-section>
+
   <leo-customization-subpage slot="view" id="customization"
-      data-parent-view-id="parent" prefs="{{prefs}}">
+    data-parent-view-id="personalization" prefs="{{prefs}}">
   </leo-customization-subpage>
 </cr-view-manager>
