@@ -29,12 +29,17 @@ namespace {
 
 void OpenBrowserWindowAndSidePanel(base::OnceCallback<void(Browser*)> callback,
                                    Profile* profile) {
+  if (!profile) {
+    DLOG(ERROR) << "Could not create profile";
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
 #if !BUILDFLAG(IS_ANDROID)
   // Open browser window
   profiles::OpenBrowserWindowForProfile(
       base::BindOnce(
           [](base::OnceCallback<void(Browser*)> callback, Browser* browser) {
-#if !BUILDFLAG(IS_ANDROID)
             // Open sidebar when a browser window first opens
             // TODO(petemill): Move this to the AIChatAgentProfileManager
             // on `BrowserListObserver::OnBrowserAdded` when the kChatUI side
@@ -43,12 +48,13 @@ void OpenBrowserWindowAndSidePanel(base::OnceCallback<void(Browser*)> callback,
             if (side_panel_ui) {
               side_panel_ui->Show(SidePanelEntryId::kChatUI);
             }
-#endif
             std::move(callback).Run(browser);
           },
           std::move(callback)),
       /*always_create=*/false, /*is_new_profile=*/false,
       /*unblock_extensions=*/false, profile);
+#else
+  std::move(callback).Run(nullptr);
 #endif
 }
 
@@ -73,6 +79,8 @@ void OpenBrowserWindowForAIChatAgentProfileWithCallback(
 
   // We don't provide a profile-init callback because we want to ensure
   // the prefs are up to date each time.
+  // TODO(https://github.com/brave/brave-browser/issues/48188): Don't use
+  // a harcoded path for the profile, use an attribute instead.
   base::FilePath profile_path =
       base::PathService::CheckedGet(chrome::DIR_USER_DATA);
   profile_path = profile_path.Append(brave::kAIChatAgentProfileDir);

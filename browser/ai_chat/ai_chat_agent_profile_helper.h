@@ -29,6 +29,9 @@ namespace ai_chat {
 // showing the profile picker dialog at browser startup just because we have
 // created this profile.
 
+// TODO(https://github.com/brave/brave-browser/issues/48190): Move to
+// AIChatAgentProfileManager.
+
 void OpenBrowserWindowForAIChatAgentProfile(Profile& from_profile);
 
 #if !BUILDFLAG(IS_ANDROID)

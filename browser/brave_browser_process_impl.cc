@@ -190,7 +190,9 @@ void BraveBrowserProcessImpl::Init() {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
-  CreateAIChatAgentProfileManager();
+  if (ai_chat::features::IsAIChatAgentProfileEnabled()) {
+    CreateAIChatAgentProfileManager();
+  }
 #endif
 }
 
@@ -397,9 +399,7 @@ void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
 void BraveBrowserProcessImpl::CreateAIChatAgentProfileManager() {
-  if (!ai_chat::features::IsAIChatAgentProfileEnabled()) {
-    return;
-  }
+  CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
   ai_chat_agent_profile_manager_ =
       std::make_unique<ai_chat::AIChatAgentProfileManager>(profile_manager());
 }

@@ -11,6 +11,7 @@
 #include "brave/components/constants/brave_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "third_party/skia/include/core/SkColor.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/themes/theme_service.h"
