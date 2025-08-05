@@ -20,6 +20,7 @@
 #include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/constants/brave_constants.h"
@@ -112,16 +113,20 @@ BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
 
 size_t BraveProfileManager::GetNumberOfProfiles() {
   size_t count = ProfileManager::GetNumberOfProfiles();
-  // Don't include AI Chat agent profile in the count
-  base::FilePath ai_chat_agent_profile_path =
-      base::PathService::CheckedGet(chrome::DIR_USER_DATA);
-  ai_chat_agent_profile_path =
-      ai_chat_agent_profile_path.Append(brave::kAIChatAgentProfileDir);
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  if (ai_chat::features::IsAIChatAgentProfileEnabled()) {
+    // Don't include AI Chat agent profile in the count
+    base::FilePath ai_chat_agent_profile_path =
+        base::PathService::CheckedGet(chrome::DIR_USER_DATA);
+    ai_chat_agent_profile_path =
+        ai_chat_agent_profile_path.Append(brave::kAIChatAgentProfileDir);
 
-  if (count > 0 && GetProfileAttributesStorage().GetProfileAttributesWithPath(
-                       ai_chat_agent_profile_path)) {
-    count--;
+    if (count > 0 && GetProfileAttributesStorage().GetProfileAttributesWithPath(
+                         ai_chat_agent_profile_path)) {
+      count--;
+    }
   }
+#endif
 
   return count;
 }

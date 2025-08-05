@@ -5,6 +5,7 @@
 
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 
 // static
 std::vector<Profile*> ProfileManager::GetLastOpenedProfiles() {
@@ -19,8 +20,10 @@ std::vector<Profile*> ProfileManager::GetLastOpenedProfiles() {
   // quick subsequent pref update (which could cause side effects).
   std::vector<Profile*> profiles = GetLastOpenedProfiles_ChromiumImpl();
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
-  std::erase_if(profiles,
-                [](Profile* profile) { return profile->IsAIChatAgent(); });
+  if (ai_chat::features::IsAIChatAgentProfileEnabled()) {
+    std::erase_if(profiles,
+                  [](Profile* profile) { return profile->IsAIChatAgent(); });
+  }
 #endif
   return profiles;
 }

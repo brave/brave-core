@@ -7,6 +7,7 @@
 
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -34,6 +35,7 @@ AIChatAgentProfileManager::AIChatAgentProfileManager(
     ProfileManager* profile_manager)
     : profile_manager_(profile_manager) {
   CHECK(profile_manager_);
+  CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
   profile_manager_->GetProfileAttributesStorage().AddObserver(this);
   profile_manager_->AddObserver(this);
 }

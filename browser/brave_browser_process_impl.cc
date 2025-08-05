@@ -26,6 +26,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
@@ -396,6 +397,9 @@ void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
 void BraveBrowserProcessImpl::CreateAIChatAgentProfileManager() {
+  if (!ai_chat::features::IsAIChatAgentProfileEnabled()) {
+    return;
+  }
   ai_chat_agent_profile_manager_ =
       std::make_unique<ai_chat::AIChatAgentProfileManager>(profile_manager());
 }
