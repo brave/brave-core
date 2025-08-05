@@ -61,7 +61,8 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsPictureInPictureAvailable(
 // static
 void EnterPictureInPicture(content::WebContents* web_contents) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveYouTubeScriptInjectorNativeHelper_enterPictureInPicture(env, web_contents->GetJavaWebContents());
+  Java_BraveYouTubeScriptInjectorNativeHelper_enterPictureInPicture(
+      env, web_contents->GetJavaWebContents());
 }
 
 }  // namespace youtube_script_injector

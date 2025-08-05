@@ -3,14 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/android/youtube_script_injector/lockable_screen_orientation_delegate.h"
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
-#include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.cc"
 
 #include <memory>
 #include <string>
 
 #include "base/feature_list.h"
+#include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.cc"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
@@ -216,7 +215,8 @@ YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
 void YouTubeScriptInjectorTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (navigation_handle->IsSameDocument() && navigation_handle->IsInMainFrame() && navigation_handle->HasCommitted()) {
+  if (navigation_handle->IsSameDocument() &&
+      navigation_handle->IsInMainFrame() && navigation_handle->HasCommitted()) {
     SetFullscreenRequested(false);
   }
 }
@@ -239,7 +239,8 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
   }
 }
 
-void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(bool is_fullscreen) {
+void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
+    bool is_fullscreen) {
   if (is_fullscreen && HasFullscreenBeenRequested()) {
     SetFullscreenRequested(false);
     if (web_contents()->GetVisibility() == content::Visibility::VISIBLE) {
@@ -335,11 +336,6 @@ bool YouTubeScriptInjectorTabHelper::HasFullscreenBeenRequested() const {
 }
 
 void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
-  if (requested) {
-    new LockableScreenOrientationDelegate();
-  } else {
-    new content::ScreenOrientationDelegateAndroid();
-  }
   content::NavigationEntry* entry =
       web_contents()->GetController().GetLastCommittedEntry();
   if (!entry) {
@@ -359,13 +355,13 @@ void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
 void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
     content::GlobalRenderFrameHostToken token,
     base::Value value) {
-  // If the tab is visible, the script result indicates fullscreen was triggered,
-  // and the callback is for the current main frame, return early without resetting
-  // the fullscreen state. This prevents unnecessary state changes when fullscreen
-  // was successfully entered.
-  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE && value.is_string() &&
-  value.GetString() == "fullscreen_triggered" &&
-  token == web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()) {
+  // If the tab is visible, the script result indicates fullscreen was
+  // triggered, and the callback is for the current main frame, return early
+  // without resetting the fullscreen state. This prevents unnecessary state
+  // changes when fullscreen was successfully entered.
+  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
+      value.is_string() && value.GetString() == "fullscreen_triggered" &&
+      token == web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()) {
     return;
   }
 
