@@ -69,12 +69,47 @@ extension BrowserViewController {
   }
 
   /// Presents Wallet without an origin (ex. from menu)
-  func presentWallet() {
+  func presentWallet(presentingContext: PresentingContext = .default(.portfolio)) {
     guard let walletStore = self.walletStore ?? newWalletStore() else { return }
     walletStore.origin = nil
+    if case .webUI(let action) = presentingContext, action == .backup {
+      openNativeWallet(
+        walletStore: walletStore,
+        presentingContext: presentingContext
+      )
+    } else {
+      walletStore.webUIValidation { [weak self] valid in
+        guard let self else { return }
+        if valid {
+          if let url = tabManager.selectedTab?.visibleURL, isWalletURL(url) {
+            // selected tab is a wallet webui page.
+            // will get refreshed once wallet is freshly set up or unlocked
+            self.dismiss(animated: true)
+          } else if let walletURL = URL(string: "brave://wallet") {
+            switchToTabForURLOrOpen(
+              walletURL,
+              isPrivate: false,
+              isPrivileged: false
+            )
+          }
+        } else {
+          openNativeWallet(
+            walletStore: walletStore,
+            presentingContext: presentingContext
+          )
+        }
+      }
+    }
+  }
+
+  private func openNativeWallet(
+    walletStore: WalletStore,
+    presentingContext: PresentingContext
+  ) {
     let vc = WalletHostingViewController(
       walletStore: walletStore,
-      webImageDownloader: profileController.webImageDownloader
+      webImageDownloader: profileController.webImageDownloader,
+      presentingContext: presentingContext
     )
     vc.delegate = self
     self.dismiss(animated: true) {
@@ -492,7 +527,7 @@ extension BrowserViewController {
       actions.append(
         .init(id: .braveWallet) { @MainActor [unowned self] _ in
           // Present wallet already handles dismiss + present
-          self.presentWallet()
+          self.presentWallet(presentingContext: .default(.portfolio))
           return .none
         }
       )

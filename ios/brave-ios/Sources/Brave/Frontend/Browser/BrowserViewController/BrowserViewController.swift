@@ -2500,11 +2500,11 @@ extension BrowserViewController: TabWebUIDelegate {
   }
 
   public func showWalletBackupUI(_ tab: some TabState) {
-    print("SHOWING WALLET BACKUP UI")
+    presentWallet(presentingContext: .webUI(action: .backup))
   }
 
   public func unlockWallet(_ tab: some TabState) {
-    presentWallet()
+    presentWallet(presentingContext: .webUI(action: .unlock))
   }
 }
 
