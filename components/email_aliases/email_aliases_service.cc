@@ -38,15 +38,15 @@ const char kAccountsServiceRequestPath[] = "/verify/init";
 const char kAccountsServiceVerifyPath[] = "/verify/result";
 
 const char* GetBraveApiKey() {
-  #if defined(BRAVE_ACCOUNT_API_KEY)
-    return BRAVE_ACCOUNT_API_KEY;
-  #else
-    return "";
-  #endif
-  }
+#if defined(BRAVE_ACCOUNT_API_KEY)
+  return BRAVE_ACCOUNT_API_KEY;
+#else
+  return "";
+#endif
+}
 
-  const net::NetworkTrafficAnnotationTag traffic_annotation =
-      net::DefineNetworkTrafficAnnotation("email_aliases_mapping_service", R"(
+const net::NetworkTrafficAnnotationTag traffic_annotation =
+    net::DefineNetworkTrafficAnnotation("email_aliases_mapping_service", R"(
       semantics {
         sender: "Email Aliases service"
         description:
@@ -60,7 +60,7 @@ const char* GetBraveApiKey() {
         cookies_allowed: YES
     })");
 
-  constexpr int kMaxResponseLength = 32768;
+constexpr int kMaxResponseLength = 32768;
 
 }  // namespace
 
