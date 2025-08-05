@@ -17,6 +17,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -32,12 +33,11 @@
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
-#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_request_manager.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/browser_test_utils.h"
@@ -105,8 +105,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
   }
 
   void SetUp() override {
-    local_state_ = std::make_unique<ScopedTestingLocalState>(
-        TestingBrowserProcess::GetGlobal());
+    brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
     BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
@@ -128,7 +127,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(browser_context()),
-        profile_.GetPrefs(), local_state_->Get());
+        profile_.GetPrefs(), &local_state_);
     json_rpc_service_ = brave_wallet_service_->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
@@ -472,7 +471,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
   std::unique_ptr<MockEventsListener> observer_;
 
  private:
-  std::unique_ptr<ScopedTestingLocalState> local_state_;
+  TestingPrefServiceSimple local_state_;
   std::unique_ptr<content::TestWebContents> web_contents_;
   content::BrowserTaskEnvironment browser_task_environment_;
   content::TestWebContentsFactory factory_;
