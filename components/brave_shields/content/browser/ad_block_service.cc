@@ -380,13 +380,6 @@ void AdBlockService::EnableDeveloperMode(bool enabled) {
   }
 }
 
-void AdBlockService::EnableAdBlockOnlyMode(bool enabled) {
-  // TODO(aseren): Currently we use both local state and content settings.
-  // Need to move to local state usage only.
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  local_state_->SetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled, enabled);
-}
-
 void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Tags only need to be modified for the default engine.
@@ -404,6 +397,21 @@ void AdBlockService::AddUserCosmeticFilter(const std::string& filter) {
 bool AdBlockService::AreAnyBlockedElementsPresent(const std::string& host) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return custom_filters_provider_->AreAnyBlockedElementsPresent(host);
+}
+
+void AdBlockService::EnableAdBlockOnlyMode(bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  component_service_manager_->EnableAdBlockOnlyMode(enabled);
+}
+
+bool AdBlockService::GetAdBlockOnlyModeEnabled() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return component_service_manager_->GetAdBlockOnlyModeEnabled();
+}
+
+bool AdBlockService::GetAdBlockOnlyModeSupported() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return component_service_manager_->GetAdBlockOnlyModeSupported();
 }
 
 void AdBlockService::ResetCosmeticFilter(const std::string& host) {

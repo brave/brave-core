@@ -14,7 +14,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "brave/components/constants/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/proxy_config/pref_proxy_config_tracker.h"
@@ -38,16 +38,10 @@ std::string GetTagFromPrefName(const std::string& pref_name) {
 
 }  // namespace
 
-AdBlockPrefService::AdBlockPrefService(
-    AdBlockService* ad_block_service,
-    PrefService* prefs,
-    PrefService* local_state,
-    std::string locale,
-    HostContentSettingsMap* host_content_settings_map)
-    : ad_block_service_(ad_block_service),
-      prefs_(prefs),
-      host_content_settings_map_(host_content_settings_map),
-      locale_(std::move(locale)) {
+AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
+                                       PrefService* prefs,
+                                       PrefService* local_state)
+    : ad_block_service_(ad_block_service), prefs_(prefs) {
   pref_change_registrar_.reset(new PrefChangeRegistrar());
   pref_change_registrar_->Init(prefs_);
   pref_change_registrar_->Add(
@@ -72,27 +66,22 @@ AdBlockPrefService::AdBlockPrefService(
       prefs::kAdBlockDeveloperMode,
       base::BindRepeating(&AdBlockPrefService::OnDeveloperModeChanged,
                           base::Unretained(this)));
+  OnDeveloperModeChanged();
 
-  bool is_adblock_only_mode_enabled = false;
-  if (IsAdblockOnlyModeSupported()) {
-    is_adblock_only_mode_enabled =
-        local_state &&
-        local_state->GetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled);
-
-    pref_change_registrar_->Add(
-        prefs::kAdBlockAdblockOnlyModeEnabled,
-        base::BindRepeating(&AdBlockPrefService::OnAdBlockOnlyModeChanged,
-                            base::Unretained(this)));
-
-    CHECK(host_content_settings_map_);
-    host_content_settings_map_->AddObserver(this);
+  AdBlockOnlyModeState adblock_only_mode_state =
+      AdBlockOnlyModeState::kNotSupported;
+  if (ad_block_service_->GetAdBlockOnlyModeSupported()) {
+    adblock_only_mode_state = ad_block_service_->GetAdBlockOnlyModeEnabled()
+                                  ? AdBlockOnlyModeState::kEnabled
+                                  : AdBlockOnlyModeState::kDisabled;
   }
   // TODO(aseren): Currently we use both local state and content settings.
   // Consider moving to local state usage only.
-  SetBraveShieldsAdBlockOnlyModeEnabled(prefs_, is_adblock_only_mode_enabled);
-
-  OnDeveloperModeChanged();
-  OnAdBlockOnlyModeChanged();
+  SetBraveShieldsAdBlockOnlyModeState(prefs_, adblock_only_mode_state);
+  pref_change_registrar_->Add(
+      kShieldsAdBlockOnlyModeState,
+      base::BindRepeating(&AdBlockPrefService::OnAdBlockOnlyModeChanged,
+                          base::Unretained(this)));
 }
 
 AdBlockPrefService::~AdBlockPrefService() = default;
@@ -118,11 +107,6 @@ AdBlockPrefService::GetLatestProxyConfig(
 
   *config = last_proxy_config_;
   return last_proxy_config_availability_;
-}
-
-bool AdBlockPrefService::IsAdblockOnlyModeSupported() const {
-  return IsAdblockOnlyModeFeatureEnabled() &&
-         IsAdblockOnlyModeSupportedForLocale(locale_);
 }
 
 void AdBlockPrefService::Shutdown() {
@@ -167,23 +151,6 @@ void AdBlockPrefService::OnProxyConfigChanged(
     net::ProxyConfigService::ConfigAvailability availability) {
   last_proxy_config_availability_ = availability;
   last_proxy_config_ = config;
-}
-
-void AdBlockPrefService::OnContentSettingChanged(
-    const ContentSettingsPattern& primary_pattern,
-    const ContentSettingsPattern& secondary_pattern,
-    ContentSettingsTypeSet content_type_set) {
-  if (!content_type_set.Contains(
-          ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE)) {
-    return;
-  }
-
-  if (primary_pattern != ContentSettingsPattern::Wildcard() &&
-      secondary_pattern != ContentSettingsPattern::Wildcard()) {
-    return;
-  }
-
-  OnAdBlockOnlyModeChanged();
 }
 
 }  // namespace brave_shields

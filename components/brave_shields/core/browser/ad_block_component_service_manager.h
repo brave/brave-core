@@ -19,7 +19,6 @@
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 
 class AdBlockServiceTest;
@@ -63,12 +62,15 @@ class AdBlockComponentServiceManager
 
   void UpdateFilterLists(base::OnceCallback<void(bool)> callback);
 
+  void EnableAdBlockOnlyMode(bool enabled);
+  bool GetAdBlockOnlyModeEnabled() const;
+  bool GetAdBlockOnlyModeSupported() const;
+
   // AdBlockFilterListCatalogProvider::Observer
   void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
 
  private:
   friend class ::AdBlockServiceTest;
-  void InitializeLocalStatePrefChangeRegistrar();
   void OnAdBlockOnlyModePrefChanged();
 
   void StartRegionalServices();
@@ -88,8 +90,6 @@ class AdBlockComponentServiceManager
   std::string locale_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>
       component_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);
-
-  PrefChangeRegistrar local_state_pref_change_registrar_;
 
   std::vector<FilterListCatalogEntry> filter_list_catalog_
       GUARDED_BY_CONTEXT(sequence_checker_);

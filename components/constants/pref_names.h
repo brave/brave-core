@@ -63,6 +63,8 @@ inline constexpr char kShieldsAdvancedViewEnabled[] =
     "brave.shields.advanced_view_enabled";
 inline constexpr char kShieldsStatsBadgeVisible[] =
     "brave.shields.stats_badge_visible";
+inline constexpr char kShieldsAdBlockOnlyModeState[] =
+    "brave.shields.adblock_only_mode_state";
 inline constexpr char kAdControlType[] = "brave.ad_default";
 inline constexpr char kGoogleLoginControlType[] = "brave.google_login_default";
 // Deprecated

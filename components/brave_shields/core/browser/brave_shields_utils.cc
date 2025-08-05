@@ -18,6 +18,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
@@ -267,15 +268,21 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
   return setting == CONTENT_SETTING_BLOCK ? false : true;
 }
 
-void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs, bool enable) {
-  if (prefs) {
-    prefs->SetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled, enable);
-  }
+bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs) {
+  return prefs && prefs->GetInteger(kShieldsAdBlockOnlyModeState) ==
+                      static_cast<int>(AdBlockOnlyModeState::kEnabled);
 }
 
-bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs) {
-  return prefs ? prefs->GetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled)
-               : false;
+bool GetBraveShieldsAdBlockOnlyModeSupported(PrefService* prefs) {
+  return prefs && prefs->GetInteger(kShieldsAdBlockOnlyModeState) !=
+                      static_cast<int>(AdBlockOnlyModeState::kNotSupported);
+}
+
+void SetBraveShieldsAdBlockOnlyModeState(PrefService* prefs,
+                                         AdBlockOnlyModeState state) {
+  if (prefs) {
+    prefs->SetInteger(kShieldsAdBlockOnlyModeState, static_cast<int>(state));
+  }
 }
 
 void SetAdControlType(HostContentSettingsMap* map,

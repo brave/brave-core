@@ -16,9 +16,6 @@
 #include "net/proxy_resolution/proxy_config_service.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 
-class ContentSettingsPattern;
-class ContentSettingsTypeSet;
-class HostContentSettingsMap;
 class PrefChangeRegistrar;
 class PrefService;
 class PrefProxyConfigTracker;
@@ -31,12 +28,9 @@ class AdBlockPrefService : public KeyedService,
                            public net::ProxyConfigService::Observer,
                            public content_settings::Observer {
  public:
-  explicit AdBlockPrefService(
-      AdBlockService* ad_block_service,
-      PrefService* prefs,
-      PrefService* local_state,
-      std::string locale,
-      HostContentSettingsMap* host_content_settings_map);
+  AdBlockPrefService(AdBlockService* ad_block_service,
+                     PrefService* prefs,
+                     PrefService* local_state);
   ~AdBlockPrefService() override;
 
   void StartProxyTracker(
@@ -44,8 +38,6 @@ class AdBlockPrefService : public KeyedService,
       std::unique_ptr<net::ProxyConfigService> proxy_config_service);
   net::ProxyConfigService::ConfigAvailability GetLatestProxyConfig(
       net::ProxyConfigWithAnnotation* config) const;
-
-  bool IsAdblockOnlyModeSupported() const;
 
  private:
   void Shutdown() override;
@@ -59,16 +51,8 @@ class AdBlockPrefService : public KeyedService,
       const net::ProxyConfigWithAnnotation& config,
       net::ProxyConfigService::ConfigAvailability availability) override;
 
-  // content_settings::Observer:
-  void OnContentSettingChanged(
-      const ContentSettingsPattern& primary_pattern,
-      const ContentSettingsPattern& secondary_pattern,
-      ContentSettingsTypeSet content_type_set) override;
-
   raw_ptr<AdBlockService> ad_block_service_ = nullptr;  // not owned
   raw_ptr<PrefService> prefs_ = nullptr;                // not owned
-  raw_ptr<HostContentSettingsMap> host_content_settings_map_ =
-      nullptr;  // not owned
   const std::string locale_;
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;

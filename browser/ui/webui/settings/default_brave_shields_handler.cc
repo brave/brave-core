@@ -15,6 +15,7 @@
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -132,6 +133,13 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       HostContentSettingsMapFactory::GetForProfile(profile_));
   cookie_settings_observation_.Observe(
       CookieSettingsFactory::GetForProfile(profile_).get());
+
+  pref_change_registrar_.Init(profile_->GetPrefs());
+  pref_change_registrar_.Add(
+      kShieldsAdBlockOnlyModeState,
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::OnAdBlockOnlyModePrefChanged,
+          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void DefaultBraveShieldsHandler::OnContentSettingChanged(
@@ -168,6 +176,13 @@ void DefaultBraveShieldsHandler::OnContentSettingChanged(
 
 void DefaultBraveShieldsHandler::OnThirdPartyCookieBlockingChanged(
     bool block_third_party_cookies) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("brave-shields-settings-changed");
+}
+
+void DefaultBraveShieldsHandler::OnAdBlockOnlyModePrefChanged() {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -334,8 +349,10 @@ void DefaultBraveShieldsHandler::SetAdBlockOnlyModeEnabled(
   CHECK(profile_);
 
   const bool enabled = args[0].GetBool();
-  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(profile_->GetPrefs(),
-                                                       enabled);
+  brave_shields::SetBraveShieldsAdBlockOnlyModeState(
+      profile_->GetPrefs(),
+      enabled ? brave_shields::AdBlockOnlyModeState::kEnabled
+              : brave_shields::AdBlockOnlyModeState::kDisabled);
 }
 
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(

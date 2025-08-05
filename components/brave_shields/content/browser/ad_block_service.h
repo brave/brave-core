@@ -131,11 +131,14 @@ class AdBlockService {
   AdBlockCustomResourceProvider* custom_resource_provider();
 
   void EnableDeveloperMode(bool enabled);
-  void EnableAdBlockOnlyMode(bool enabled);
   void EnableTag(const std::string& tag, bool enabled);
   void AddUserCosmeticFilter(const std::string& filter);
   void ResetCosmeticFilter(const std::string& host);
   bool AreAnyBlockedElementsPresent(const std::string& host);
+
+  void EnableAdBlockOnlyMode(bool enabled);
+  bool GetAdBlockOnlyModeEnabled() const;
+  bool GetAdBlockOnlyModeSupported() const;
 
   // Methods for brave://adblock-internals.
   using GetDebugInfoCallback =
