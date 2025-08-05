@@ -14,6 +14,7 @@ import '../brave_content_page/content_page_index.js'
 import '../getting_started_page/getting_started_page_index.js'
 import '../default_brave_shields_page/shields_page_index.js'
 import '../brave_wallet_page/wallet_page_index.js'
+import '../brave_leo_assistant_page/brave_leo_assistant_page_index.js'
 
 RegisterPolymerTemplateModifications({
   'settings-main': (templateContent) => {
@@ -117,27 +118,12 @@ RegisterPolymerTemplateModifications({
       html`
         <template is="dom-if" if="[[showPage_(pageVisibility_.leoAssistant)]]">
           <div slot="view" id="leoAssistant">
-            <template is="dom-if" if="true">
-              <settings-brave-leo-assistant-page
+            <template is="dom-if" if="[[renderPlugin_(
+          routes_.BRAVE_LEO_ASSISTANT, lastRoute_, inSearchMode_)]]">
+              <settings-brave-leo-assistant-page-index
                 prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
-              </settings-brave-leo-assistant-page>
-            </template>
-            <template is="dom-if" if="[[showPage_(pageVisibility_.leoPersonalization)]]">
-              <template is="dom-if" if="true">
-                <brave-leo-personalization
-                  prefs="{{prefs}}"
-                  in-search-mode="[[inSearchMode_]]">
-                </brave-leo-personalization>
-              </template>
-            </template>
-            <template is="dom-if" if="[[showPage_(pageVisibility_.leoModels)]]">
-              <template is="dom-if" if="true">
-                <model-list-section
-                  prefs="{{prefs}}"
-                  in-search-mode="[[inSearchMode_]]">
-                </model-list-section>
-              </template>
+              </settings-brave-leo-assistant-page-index>
             </template>
           </div>
         </template>
