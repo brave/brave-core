@@ -6,6 +6,7 @@
 #include "brave/browser/ai_chat/ai_chat_agent_profile_manager.h"
 
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -14,6 +15,8 @@
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #endif
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
 
 namespace ai_chat {
 

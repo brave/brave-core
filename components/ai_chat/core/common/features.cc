@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "build/build_config.h"
 
@@ -75,12 +76,16 @@ bool IsToolsEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatTools);
 }
 
-BASE_FEATURE(kAIChatAgenticProfile,
-             "AIChatAgenticProfile",
+BASE_FEATURE(kAIChatAgentProfile,
+             "AIChatAgentProfile",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-bool IsAIChatAgenticProfileEnabled() {
-  return base::FeatureList::IsEnabled(features::kAIChatAgenticProfile);
+bool IsAIChatAgentProfileEnabled() {
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  return base::FeatureList::IsEnabled(features::kAIChatAgentProfile);
+#else
+  return false;
+#endif
 }
 
 BASE_FEATURE(kCustomSiteDistillerScripts,

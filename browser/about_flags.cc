@@ -502,12 +502,12 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatTools),                 \
       },                                                                       \
       {                                                                        \
-          "brave-ai-chat-agentic-profile",                                     \
-          "Brave AI Chat Agentic Profile",                                     \
-          "Enables Leo's agentic features and only in a separate built-in "    \
-          "profile.",                                                          \
+          "brave-ai-chat-agent-profile",                                       \
+          "Brave AI Chat Agent Profile",                                       \
+          "Enables Leo's content agent features and only in a separate "       \
+          "built-in profile.",                                                 \
           kOsWin | kOsMac | kOsLinux,                                          \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatAgenticProfile),        \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatAgentProfile),          \
       },                                                                       \
       {                                                                        \
           "brave-ai-host-specific-distillation",                               \

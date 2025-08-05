@@ -255,8 +255,8 @@ function InputBox(props: InputBoxProps) {
             setShowAttachments={props.context.setShowAttachments}
           />
           {props.context.hasAcceptedAgreement &&
-            props.context.isContentAgentFeatureEnabled &&
-            !props.context.isContentAgentSupportedInCurrentProfile && (
+            props.context.isAgentProfileFeatureEnabled &&
+            !props.context.isAIChatAgentProfile && (
             <Button
               fab
               kind='plain-faint'
@@ -266,8 +266,8 @@ function InputBox(props: InputBoxProps) {
               <Icon name='leo-cursor' />
             </Button>
           )}
-          {props.context.isContentAgentFeatureEnabled &&
-            props.context.isContentAgentSupportedInCurrentProfile && (
+          {props.context.isAgentProfileFeatureEnabled &&
+            props.context.isAIChatAgentProfile && (
             <Tooltip
               text={getLocale(S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL)}
             >

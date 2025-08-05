@@ -7,8 +7,11 @@
 #define BRAVE_BROWSER_AI_CHAT_AI_CHAT_AGENT_PROFILE_MANAGER_H_
 
 #include "base/files/file_path.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
 
 class ProfileManager;
 

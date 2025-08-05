@@ -19,6 +19,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/request_otr/request_otr_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/constants/brave_constants.h"
@@ -210,9 +211,11 @@ void BraveProfileManager::SetProfileAsLastUsed(Profile* last_active) {
   // `ProfilePicker::GetStartupModeReason` doesn't consider it as a
   // recently-active profile. This change causes it not to be considered
   // for showing the profile picker on startup.
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   if (last_active->IsAIChatAgent()) {
     return;
   }
+#endif
   ProfileManager::SetProfileAsLastUsed(last_active);
 }
 

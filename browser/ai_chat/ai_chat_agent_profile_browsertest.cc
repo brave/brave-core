@@ -36,7 +36,7 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
  public:
   AIChatAgentProfileBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
-        ai_chat::features::kAIChatAgenticProfile);
+        ai_chat::features::kAIChatAgentProfile);
   }
   AIChatAgentProfileBrowserTest(const AIChatAgentProfileBrowserTest&) = delete;
   AIChatAgentProfileBrowserTest& operator=(

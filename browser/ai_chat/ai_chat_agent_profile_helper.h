@@ -7,6 +7,9 @@
 #define BRAVE_BROWSER_AI_CHAT_AI_CHAT_AGENT_PROFILE_HELPER_H_
 
 #include "base/functional/callback.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
 
 class Profile;
 

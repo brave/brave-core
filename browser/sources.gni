@@ -4,7 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ai_chat/android/sources.gni")
-import("//brave/browser/ai_chat/buildflags.gni")
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/brave_news/sources.gni")
 import("//brave/browser/brave_referrals/sources.gni")
@@ -43,6 +42,7 @@ import("//brave/browser/webcompat_reporter/sources.gni")
 import("//brave/build/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -120,7 +120,6 @@ brave_chrome_browser_deps = [
   "//brave/browser:browser_process",
   "//brave/browser:sparkle_buildflags",
   "//brave/browser/ai_chat",
-  "//brave/browser/ai_chat:buildflags",
   "//brave/browser/brave_account",
   "//brave/browser/brave_adaptive_captcha",
   "//brave/browser/brave_adaptive_captcha:impl",

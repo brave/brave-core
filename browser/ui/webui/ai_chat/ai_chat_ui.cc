@@ -12,7 +12,6 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/ai_chat/buildflags.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
@@ -21,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -92,11 +92,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isMobile", kIsMobile);
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
-  source->AddBoolean("isContentAgentFeatureEnabled",
-                     ai_chat::features::IsAIChatAgenticProfileEnabled() &&
-                         BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
-  source->AddBoolean("isContentAgentSupportedInCurrentProfile",
-                     profile_->IsAIChatAgent());
+  source->AddBoolean("isAgentProfileFeatureEnabled",
+                     ai_chat::features::IsAIChatAgentProfileEnabled());
+  source->AddBoolean("isAIChatAgentProfile", profile_->IsAIChatAgent());
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(

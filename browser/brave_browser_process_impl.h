@@ -9,8 +9,8 @@
 #include <memory>
 
 #include "base/memory/ref_counted.h"
-#include "brave/browser/ai_chat/buildflags.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"

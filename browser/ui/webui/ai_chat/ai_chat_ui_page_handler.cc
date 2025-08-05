@@ -18,12 +18,12 @@
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
-#include "brave/browser/ai_chat/buildflags.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
@@ -264,7 +264,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
 }
 
 void AIChatUIPageHandler::OpenAIChatAgenticProfile() {
-  CHECK(ai_chat::features::IsAIChatAgenticProfileEnabled());
+  CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   ai_chat::OpenBrowserWindowForAIChatAgentProfile(*profile_);
 #endif

@@ -58,8 +58,8 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsToolsEnabled();
 
 // Enables experimental features being enabled in a separate profile. If
 // disabled, the features will not be enabled anywhere.
-COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatAgenticProfile);
-COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatAgenticProfileEnabled();
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatAgentProfile);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatAgentProfileEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kCustomSiteDistillerScripts);

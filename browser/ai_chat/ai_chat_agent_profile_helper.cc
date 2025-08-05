@@ -7,6 +7,7 @@
 
 #include "base/path_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "chrome/browser/browser_process.h"
@@ -19,6 +20,8 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #endif
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
 
 namespace ai_chat {
 
@@ -55,7 +58,7 @@ void OpenBrowserWindowForAIChatAgentProfileWithCallback(
   CHECK(IsAIChatEnabled(from_profile.GetPrefs()));
   CHECK(!from_profile.IsAIChatAgent());
   // This should not be called if the feature is disabled
-  if (!features::IsAIChatAgenticProfileEnabled()) {
+  if (!features::IsAIChatAgentProfileEnabled()) {
     DLOG(ERROR) << __func__ << " AI Chat Agentic Profile feature is disabled";
     std::move(callback).Run(nullptr);
     return;

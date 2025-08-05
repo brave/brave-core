@@ -6,6 +6,7 @@
 #include "brave/chromium_src/chrome/browser/profiles/profile.h"
 
 #include "base/strings/string_util.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/tor/tor_constants.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_utils.h"
@@ -34,7 +35,11 @@ bool Profile::IsTor() const {
 }
 
 bool Profile::IsAIChatAgent() const {
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   return GetPath().BaseName().value() == brave::kAIChatAgentProfileDir;
+#else
+  NOTREACHED();
+#endif
 }
 
 bool Profile::IsIncognitoProfile() const {
