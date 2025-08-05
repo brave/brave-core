@@ -3240,7 +3240,9 @@ extension BrowserViewController {
   }
 
   func openBraveLeo(with query: String? = nil) {
-    if !FeatureList.kAIChat.enabled {
+    if !FeatureList.kAIChat.enabled
+      || !AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs)
+    {
       let alert = UIAlertController(
         title: Strings.AIChat.leoDisabledMessageTitle,
         message: Strings.AIChat.leoDisabledMessageDescription,

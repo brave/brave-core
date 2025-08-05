@@ -9,6 +9,7 @@ source_set("policy") {
     "configuration_policy_handler_list_factory_impl.mm",
   ]
   deps = [
+    "//brave/components/ai_chat/core/common",
     "//brave/components/brave_wallet/common:pref_names",
     "//components/policy/core/browser",
     "//ios/chrome/browser/policy/model",

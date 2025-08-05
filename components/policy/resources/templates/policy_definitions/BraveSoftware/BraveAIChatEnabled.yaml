@@ -32,6 +32,7 @@ owners:
 schema:
   type: boolean
 supported_on:
+- ios:139-
 - chrome.*:121-
 future_on:
 - android

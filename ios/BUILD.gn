@@ -77,6 +77,7 @@ brave_core_public_headers = [
   "//brave/ios/app/brave_core_main.h",
   "//brave/ios/app/brave_profile_controller.h",
   "//brave/ios/app/brave_core_switches.h",
+  "//brave/ios/browser/ai_chat/ai_chat_utils.h",
   "//brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h",
   "//brave/ios/browser/skus/skus_sdk_factory_wrappers.h",
   "//brave/ios/browser/api/bookmarks/brave_bookmarks_api.h",
