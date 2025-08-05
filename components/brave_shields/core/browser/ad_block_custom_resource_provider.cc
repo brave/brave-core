@@ -247,7 +247,7 @@ void AdBlockCustomResourceProvider::UpdateResourceInternal(
   if (old_name != new_name) {
     if (FindResource(resources.GetList(), new_name) !=
         resources.GetList().end()) {
-      return std::move(on_complete).Run(ErrorCode::kNotFound);
+      return std::move(on_complete).Run(ErrorCode::kAlreadyExists);
     }
   }
 
