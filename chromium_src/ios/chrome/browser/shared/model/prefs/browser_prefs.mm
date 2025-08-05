@@ -21,7 +21,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
-#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/rotation_scheduler.h"
@@ -55,11 +54,9 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
   decentralized_dns::RegisterLocalStatePrefs(registry);
   skus::RegisterLocalStatePrefs(registry);
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   p3a::P3AService::RegisterPrefs(registry, false);
   p3a::MetricLogStore::RegisterLocalStatePrefsForMigration(registry);
   p3a::RotationScheduler::RegisterLocalStatePrefsForMigration(registry);
-#endif
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
   brave_l10n::RegisterLocalStatePrefsForMigration(registry);
@@ -109,8 +106,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
   MigrateObsoleteLocalStatePrefs_ChromiumImpl(prefs);
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   p3a::MetricLogStore::MigrateObsoleteLocalStatePrefs(prefs);
   p3a::RotationScheduler::MigrateObsoleteLocalStatePrefs(prefs);
-#endif
 }

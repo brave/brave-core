@@ -22,7 +22,6 @@ import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -808,11 +807,7 @@ public class BravePrivacySettings extends PrivacySettings {
         mSendP3A.setSummary(
                 getActivity().getResources().getString(R.string.send_p3a_analytics_summary));
 
-        if (BraveConfig.P3A_ENABLED) {
-            mSendP3A.setChecked(BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED));
-        } else {
-            getPreferenceScreen().removePreference(mSendP3A);
-        }
+        mSendP3A.setChecked(BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED));
 
         mSendCrashReports.setChecked(mPrivacyPrefManager.isUsageAndCrashReportingPermittedByUser());
 
