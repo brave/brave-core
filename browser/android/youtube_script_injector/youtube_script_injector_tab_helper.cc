@@ -110,12 +110,12 @@ constexpr char16_t kYoutubeFullscreen[] =
 (function() {
   return new Promise((resolve) => {
     const videoPlaySelector = "video.html5-main-video";
-    const fullscreenButtonSelector = "button.fullscreen-icon";
+    const fullscreenSelector = "button.fullscreen-icon";
 
     function triggerFullscreen() {
       // Check if the video is not in fullscreen mode already.
       if (!document.fullscreenElement) {
-        var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
+        var fullscreenBtn = document.querySelector(fullscreenSelector);
         var videoPlayer = document.querySelector(videoPlaySelector);
         // Check if fullscreen button and video are available.
         if (fullscreenBtn && videoPlayer) {
@@ -127,8 +127,9 @@ constexpr char16_t kYoutubeFullscreen[] =
           if (videoPlayer && playerContainer) {
             let observerTimeout;
             // Create a MutationObserver to watch for changes in the DOM.
-            const observer = new MutationObserver((_mutationsList, observer) => {
-              var fullscreenBtn = document.querySelector(fullscreenButtonSelector);
+            const observer = new MutationObserver(
+            (_mutationsList, observer) => {
+              var fullscreenBtn = document.querySelector(fullscreenSelector);
               var videoPlayer = document.querySelector(videoPlaySelector);
               if (fullscreenBtn && videoPlayer) {
                 clearTimeout(observerTimeout);
@@ -186,7 +187,8 @@ constexpr char16_t kYoutubeFullscreen[] =
 
     if (document.readyState === "loading") {
       // Loading hasn't finished yet.
-      document.addEventListener("DOMContentLoaded", triggerFullscreen, { once: true });
+      document.addEventListener("DOMContentLoaded",
+      triggerFullscreen, { once: true });
     } else {
       // `DOMContentLoaded` has already fired.
       triggerFullscreen();
