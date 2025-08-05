@@ -215,6 +215,7 @@
 <translation id="6277237872689140644">Энэ өөр газар руу шилжсэн эсвэл энэ URL-д үсгийн алдаа байж магадгүй.</translation>
 <translation id="2737084171727561244">Хөрөнгө оруулагчдад</translation>
 <translation id="3662406032239313663">Лог</translation>
+<translation id="1772301834467143364">Brave-н Мэдээ</translation>
 <translation id="8890516388109605451">Эх сурвалж</translation>
 <translation id="3861486700625780712">Дагахаа болих</translation>
 <translation id="4108314971463891922">Дагах</translation>
@@ -286,7 +287,6 @@
 <translation id="423209533815462685">Хайлтын саналыг идэвхжүүлэх үү?</translation>
 <translation id="167018310108390163">Шинэ таб хуудсыг тохируулах</translation>
 <translation id="8522669544471808198">Дэвсгэр зургийг харуулах</translation>
-<translation id="5149018766422637336">Мэдээ ба RSS</translation>
 <translation id="7328310113820087094">Та <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> ашиглан шинэ таб хуудсан дээрх заруудыг харж орлого олох боломжтой.</translation>
 <translation id="4100520468072294616">Шинэ таб хуудсан дээрх суртчилгааг харуулах</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
@@ -328,6 +328,7 @@
 <translation id="6821108091726602352">Brave-н Вэб дэмжих төсөлд оролцон, бидэнд вэбээ сайжруулахад минь туслаарай. Нэр бүрэн нууцалсан хайлтын тэмдэгтүүдийг хуваалцах замаар та Brave-н хайлтын системийн индексийг өргөжүүлэхэд туслаарай.</translation>
 <translation id="6764845498618413165">Илүү ихийг мэдэх.</translation>
 <translation id="7818938154803162778">Мэдээж, би тусалъя</translation>
+<translation id="7207456302801184289">Brave-д тавтай морил</translation>
 <translation id="3486480638399578250">Хувийн цахим шуудангийн хаягаа нууцлаарай</translation>
 <translation id="7765422154906712751">Таны Brave-н бүртгэлтэй мэйл рүү давхар дамжуулж, хүссэн үедээ устгаж болох өвөрмөц, хаяг үүсгээрэй. Жинхэнэ мэйл хаягаа сурталчилгаанд алдахгүй хамгаалаарай.</translation>
 <translation id="5222676887888702881">Гарах</translation>
@@ -358,7 +359,7 @@
 <translation id="3699624789011381381">Мэйл хаяг</translation>
 <translation id="8124939971041602970">Нэвтрэх цахим шуудан <ph name="MAIN_EMAIL"/> руу илгээгдэж байна</translation>
 <translation id="8140361186431963982">Мэйлээр илгээсэн хамгаалалттай линк дээр дараад бүртгэл рүүгээ нэвтэрнэ.</translation>
-<translation id="6549775668256477823">Мэйл харагдахгүй байна уу? Спам хавтсаа шалгаарай эсвэл <ph name="BEGIN_LINK"/>дахин шалгах<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Мэйл харагдахгүй байна уу? Спам хавтсаа шалгаарай эсвэл дахин шалгах.</translation>
 <translation id="5753795690521538679">7-хоногийн үнэгүй туршилт эхлүүлэх</translation>
 <translation id="3357036723290257445">Brave VPN-н худалдан авалтаа хийчихсэн үү?</translation>
 <translation id="5747552184818312860">Дуусах</translation>

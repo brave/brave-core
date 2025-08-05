@@ -25,6 +25,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="129382876167171263">Veebisaitide salvestatud failid kuvatakse siin</translation>
 <translation id="131112695174432497">Andmed, mis mõjutavad reklaamide isikupärastamist, kustutatakse</translation>
 <translation id="1317194122196776028">Unusta see sait</translation>
+<translation id="1323433172918577554">Kuva rohkem</translation>
 <translation id="1333965224356556482">Ära luba saitidel minu asukohta näha</translation>
 <translation id="1343356790768851700">See sait tuvastab, mis teile meeldib, ja soovitab seejärel teistele saitidele reklaame</translation>
 <translation id="1369915414381695676"><ph name="SITE_NAME"/> on lisatud</translation>
@@ -35,6 +36,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="1409338233051621926">Puudutage valikut Rakendused ja seejärel valikut Vaikerakendused</translation>
 <translation id="1415402041810619267">Lühendatud URL</translation>
 <translation id="1741136041592162279">Lubage Brave’il jagada teie hiljutisi vahelehti teie seadmega, et näha neid seadme rakenduste loendis ja otsingutulemustes. Saate selle Brave’i seadetes sisse või välja lülitada.</translation>
+<translation id="1432650420699700107">Saidid saavad küsida luba teie kohalikus võrgus mis tahes seadmega ühenduse loomiseks</translation>
 <translation id="1448064542941920355">Suumi vähendamine</translation>
 <translation id="1464044141348608623">Ära luba saitidel teada, millal seadet aktiivselt kasutan</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> sait}other{<ph name="SITE_COUNT"/> saiti}}</translation>
@@ -96,6 +98,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="2182457891543959921">Küsi enne saitidele loa andmist mind ümbritsevast 3D-kaardi loomiseks või kaamera asendi jälgimiseks (soovitatav)</translation>
 <translation id="2185965788978862351">See kustutab <ph name="DATASIZE"/> andmeid ja küpsisefaile, mille saidid või rakendused on teie avakuvale salvestanud.</translation>
 <translation id="2194856509914051091">Olulised aspektid</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{Eile}other{<ph name="NUM_DAYS_MANY"/> päeva tagasi}}</translation>
 <translation id="2215727959747642672">Failide muutmine</translation>
 <translation id="2218389616572918761">Lubage saitidel küsida luba mikrofoni kasutamiseks</translation>
 <translation id="2228071138934252756">Selleks et anda rakendusele <ph name="APP_NAME"/> juurdepääs teie kaamerale, lülitage kaamera sisse ka <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/>.</translation>
@@ -125,6 +128,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="2490684707762498678">Haldab <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Abi ja tagasiside</translation>
 <translation id="2501278716633472235">Mine tagasi</translation>
+<translation id="2533138527374486328">Kui see on sisse lülitatud, saavad saidid küsida luba ühenduse loomiseks mis tahes seadmega teie kohalikus võrgus. Kui see on välja lülitatud, ei saa saidid teie kohalikus võrgus seadmetega ühendust luua.</translation>
 <translation id="2546283357679194313">Küpsised ja saidi andmed</translation>
 <translation id="2570922361219980984">Ka juurdepääs asukohale on selle seadme puhul välja lülitatud. Lülitage see sisse <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Laiendatud – ahendamiseks klõpsake.</translation>
@@ -181,6 +185,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="3167868116600277716">Discoveri voog</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> salvestatud andmeid</translation>
 <translation id="321187648315454507">Selleks et lubada rakendusel <ph name="APP_NAME"/> teile märguandeid saata, lülitage märguanded sisse ka <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/>.</translation>
+<translation id="3223425961342298674">Asukoht ei ole lubatud</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
 <translation id="3232293466644486101">Sirvimisandmete kustutamine …</translation>
 <translation id="3242646949159196181">Kui see on sisse lülitatud, saavad saidid heli esitada. Kui see on välja lülitatud, ei saa saidid heli esitada.</translation>
@@ -247,12 +252,14 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="3955321697524543127">Ära luba saitidel USB-seadmetega ühendust luua</translation>
 <translation id="3965467402665811906">Saidid saavad küsida luba kasutada teie kohta salvestatud teavet</translation>
 <translation id="3967822245660637423">Allalaadimine on lõpule viidud</translation>
+<translation id="3969869202926863008">Juurdepääs kohalikule võrgule</translation>
 <translation id="3981465354637804599">Tavaliselt esitavad saidid reklaame selleks, et sisu või teenuseid maksekohustuseta pakkuda. Mõned saidid aga kuvavad sekkuvaid või eksitavaid reklaame.</translation>
 <translation id="3987993985790029246">Kop. link</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
 <translation id="3992308058851451478"><ph name="SITE"/> saab sirvimise ajal teie teavet kasutada</translation>
 <translation id="3992684624889376114">Teave selle lehe kohta</translation>
 <translation id="4002066346123236978">Pealkiri</translation>
+<translation id="4031179711345676612">Mikrofon on lubatud</translation>
 <translation id="4046123991198612571">Järgmine lugu</translation>
 <translation id="4077310749977440510">Tavaliselt loevad saidid teie lõikelaual olevat sisu näiteks teie kopeeritud teksti vormingu säilitamiseks</translation>
 <translation id="4149890623864272035">Kas olete kindel, et soovite kustutada kõik kohalikud andmed, sh küpsised, ja lähtestada kõik selle veebisaidi õigused?</translation>
@@ -262,8 +269,10 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="4169549551965910670">Ühendatud USB-seadmega</translation>
 <translation id="4194328954146351878">Teilt küsitakse luba, kui saidid üritavad NFC-seadmetes teavet vaadata ja muuta (soovitatav)</translation>
 <translation id="4200726100658658164">Ava asukohaseaded</translation>
+<translation id="4203769790323223880">Kaamera ei ole lubatud</translation>
 <translation id="421742575134139848">Saidid võivad heli esitada näiteks muusika, videote ja muu meedia puhul</translation>
 <translation id="4217710972110098902">Jadapordiga ühendatud</translation>
+<translation id="4223404254440398437">Mikrofon ei ole lubatud</translation>
 <translation id="4226663524361240545">Seade võib märguannete korral vibreerida</translation>
 <translation id="4259722352634471385">Navigeerimine on blokeeritud: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Kui lahkute saidilt, võib see sünkroonimist jätkata, et toimingud (nt fotode üleslaadimine või vestlussõnumi saatmine) lõpule viia</translation>
@@ -294,6 +303,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="4635969503923889910">Ärge lubage saitidel kasutada NFC-seadmeid</translation>
 <translation id="4644713492825682049">Kustuta ja lähtesta</translation>
 <translation id="4645575059429386691">Vanema hallatud</translation>
+<translation id="4663373278480897665">Kaamera on lubatud</translation>
 <translation id="4670064810192446073">Virtuaalreaalsus</translation>
 <translation id="5652778654712411580">Puudutage valikut Brauseri rakendus ja seejärel valikut Brave</translation>
 <translation id="4676059169848868271">Kui soovite lubada rakendusel <ph name="APP_NAME"/> kasutada käeliigutuste jälgimist, lülitage <ph name="BEGIN_LINK"/>süsteemiseadetes<ph name="END_LINK"/> sisse ka käeliigutuste jälgimine.</translation>
@@ -315,6 +325,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="4972737347717125191">Saidid saavad küsida luba VR-seadmete ja -andmete kasutamiseks</translation>
 <translation id="497421865427891073">Edasiminek</translation>
 <translation id="4976702386844183910">Viimati külastati <ph name="DATE"/></translation>
+<translation id="4978178243417029856">Lisateave Discoveri voo kohta</translation>
 <translation id="4994033804516042629">Kontakte ei leitud</translation>
 <translation id="4996978546172906250">Jagamine:</translation>
 <translation id="5001526427543320409">Kolmanda osapoole küpsisefailid</translation>
@@ -337,6 +348,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="5216942107514965959">Viimati külastati täna</translation>
 <translation id="5225463052809312700">Lülita kaamera sisse</translation>
 <translation id="5234764350956374838">Loobu</translation>
+<translation id="5239623327352565343">Asukoht on lubatud</translation>
 <translation id="5246825184569358663">See toiming kustutab kõik kohalikud andmed, sh küpsised, ning lähtestab kõik domeeni <ph name="DOMAIN"/> ja selle alla kuuluvate saitide õigused.</translation>
 <translation id="5264323282659631142">Eemalda „<ph name="CHIP_LABEL"/>”</translation>
 <translation id="528192093759286357">Täisekraanilt väljumiseks lohistage ülaservast alla ja puudutage tagasinuppu.</translation>
@@ -378,7 +390,9 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="571222594670061844">Saidid saavad kuvada identiteedihaldusteenuste sisselogimisviipasid</translation>
 <translation id="5740126560802162366">Saidid võivad teie seadmesse andmeid salvestada</translation>
 <translation id="5743425052258407233">Hankige oma ajalugu kõikides seadmetes, et saaksite lihtsalt jätkata sealt, kus pooleli jäite</translation>
+<translation id="5749158352074143502">Jätka selle vahekaardiga</translation>
 <translation id="5750869797196646528">Käeliigutuste jälgimine</translation>
+<translation id="5753570386948603678">Kustuta ajaloost</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> on keelatud</translation>
 <translation id="5804241973901381774">Load</translation>
 <translation id="5822675474983796325">Uue vahelehe kohandamise alumine leht on avatud täispikkuses</translation>
@@ -404,6 +418,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="5968921426641056619">Sisestage veebiaadress</translation>
 <translation id="5975083100439434680">Suumib välja</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> – <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">Lülitage Discoveri voog sisse</translation>
 <translation id="6015775454662021376">Selle saidi juurdepääsu muutmine teie seadmele</translation>
 <translation id="6040143037577758943">Sulge</translation>
 <translation id="6042308850641462728">Rohkem</translation>
@@ -439,11 +454,13 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="6527303717912515753">Jaga</translation>
 <translation id="6530703012083415527">Kui see on sisse lülitatud, saavad saidid kasutada hüpikaknaid ja ümbersuunamisi. Kui see on välja lülitatud, ei saa saidid kasutada hüpikaknaid ega ümbersuunamisi.</translation>
 <translation id="6540488083026747005">Lubasite sellel saidil kolmanda osapoole küpsisefailid</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> nädal tagasi}other{<ph name="NUM_WEEKS_MANY"/> nädalat tagasi}}</translation>
 <translation id="6545864417968258051">Bluetoothi otsimine</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ja veel <ph name="NUM_MORE"/> on blokeeritud}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ja veel <ph name="NUM_MORE"/> on blokeeritud}}</translation>
 <translation id="6554732001434021288">Viimati külastati <ph name="NUM_DAYS"/> päeva tagasi</translation>
 <translation id="656065428026159829">Kuva rohkem</translation>
 <translation id="6561560012278703671">Kasuta vaiksemat sõnumsidet (märguandeviibad blokeeritakse)</translation>
+<translation id="6565144332292237355">Saidid saavad selle funktsiooni abil otsida teie kohalikust võrgust seadmeid ja luua nendega ühenduse</translation>
 <translation id="6593061639179217415">Arvutisait</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Küpsisefailid on lubatud domeeni <ph name="RWS_OWNER"/> <ph name="RWS_MEMBERS_COUNT"/> saidi puhul}other{Küpsisefailid on lubatud domeeni <ph name="RWS_OWNER"/> <ph name="RWS_MEMBERS_COUNT"/> saidi puhul}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -477,6 +494,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="6992289844737586249">Küsi enne saitidele minu mikrofoni kasutamiseks juurdepääsu lubamist (soovitatav)</translation>
 <translation id="7000754031042624318">Androidi seadetes välja lülitatud</translation>
 <translation id="8683151724374457021">See sait tuvastab asjad, mis teile meeldivad, ja soovitab seejärel teistele saitidele reklaame. Samuti hangib see sait Brave'ist teie reklaamiteemad, et näidata teile asjakohasemaid reklaame.</translation>
+<translation id="7044081119134178347">Kaamera seekord lubatud</translation>
 <translation id="7053983685419859001">Blokeeri</translation>
 <translation id="7055552182600664515">Autoriõigustega kaitstud sisu esitamiseks peavad saidid võib-olla kasutama sisukaitseteenust. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 on valitud}other{# on valitud}}</translation>
@@ -488,8 +506,10 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="7188508872042490670">Seadmes olevad saidiandmed</translation>
 <translation id="7201549776650881587">See toiming kustutab teie avakuval kõik saidigrupi <ph name="ORIGIN"/> alla kuuluvate saitide või selle rakenduse salvestatud andmed ja küpsised</translation>
 <translation id="7203150201908454328">Laiendatud</translation>
+<translation id="7213166370492037743">Ära luba saitidel luua ühendust ühegi seadmega minu kohalikus võrgus</translation>
 <translation id="7219254577985949841">Kas kustutada saidi andmed?</translation>
 <translation id="723171743924126238">Kujutiste valimine</translation>
+<translation id="7243246278722455312">Uue vahelehe kohandamise alumine leht</translation>
 <translation id="7243308994586599757">Valikud on saadaval ekraani allosas</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> on valitud</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> ja <ph name="PERMISSION_2"/> on lubatud</translation>
@@ -512,7 +532,9 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="7554752735887601236">Sait kasutab teie mikrofoni</translation>
 <translation id="7561196759112975576">Alati</translation>
 <translation id="7573594921350120855">Saidid kasutavad teie videokaamerat tavaliselt suhtlusfunktsioonide jaoks, näiteks videovestluseks</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> kuu tagasi}other{<ph name="NUM_MONTHS_MANY"/> kuud tagasi}}</translation>
 <translation id="757524316907819857">Saitidel kaitstud sisu esitamise blokeerimine</translation>
+<translation id="7586676035079382730">Märguanded ei ole lubatud</translation>
 <translation id="7594634374516752650">Ühendatud Bluetooth-seadmega</translation>
 <translation id="7617547684249261169">Saate kustutada osa või kogu oma ajaloo, küpsisefailid, saidiandmed ja palju muud</translation>
 <translation id="7649070708921625228">Abi</translation>
@@ -525,15 +547,16 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="7759147511335618829">MIDI-seadme juhtimine ja ümberprogrammeerimine</translation>
 <translation id="7781829728241885113">Eile</translation>
 <translation id="7791543448312431591">Lisa</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{Jätka selle vahekaardiga}other{Jätka nende vahekaartidega}}</translation>
 <translation id="780301667611848630">Tänan, ei</translation>
 <translation id="7804248752222191302">Sait kasutab teie kaamerat</translation>
 <translation id="6720480757902085971">Pakub Brave</translation>
+<translation id="7815680994978050279">Ohtlik allalaadimine blokeeriti</translation>
 <translation id="7835852323729233924">Meedia esitamine</translation>
 <translation id="783819812427904514">Video vaigistuse tühistamine</translation>
 <translation id="7846076177841592234">Tühista valik</translation>
 <translation id="2353409725922994861">Brave piirab enamikul saitidel kolmanda osapoole küpsisefailide kasutamist. Kuid sellel saidil on kolmanda osapoole küpsisefailid lubatud, kuna sait vajab neid põhiteenuste pakkumiseks.\n\nKülastage seadeid, et <ph name="BEGIN_LINK"/>hallata juurdepääsu kolmanda osapoole küpsisefailidele<ph name="END_LINK"/>.</translation>
 <translation id="7882806643839505685">Konkreetse saidi heli lubamine.</translation>
+<translation id="7891547341794213004">Peida valik Selle vahelehe kaardiga jätkamine</translation>
 <translation id="789722939441020330">Ära luba saitidel automaatselt mitut faili alla laadida</translation>
 <translation id="7940722705963108451">Tuleta mulle meelde</translation>
 <translation id="7948081750384205628">Lisateave: <ph name="SETTING_TITLE"/></translation>
@@ -541,7 +564,6 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="7986741934819883144">Kontakti valimine</translation>
 <translation id="7990211076305263060">Kui see on sisse lülitatud, võivad saidid küsida luba teie mikrofoni kasutamiseks. Kui see on välja lülitatud, ei saa saidid teie mikrofoni kasutada.</translation>
 <translation id="8007176423574883786">Selle seadme puhul on välja lülitatud</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{Peida valik Selle vahelehe kaardiga jätkamine}other{Peida valik Nende vahelehtede kaardiga jätkamine}}</translation>
 <translation id="802154636333426148">Allalaadimine ebaõnnestus</translation>
 <translation id="8042586301629853791">Sortimisalus:</translation>
 <translation id="8051193500142930381">Kaamerat vajavad funktsioonid ei tööta</translation>
@@ -576,6 +598,7 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="8380167699614421159">Sait kuvab sekkuvaid või eksitavaid reklaame.</translation>
 <translation id="8394832520002899662">Puudutage saidile naasmiseks</translation>
 <translation id="8409345997656833551">Saate märguande, kui artiklit saab kuvada lihtsustatud vaates</translation>
+<translation id="8416874502399604126">Mikrofon seekord lubatud</translation>
 <translation id="8423565414844018592">Teksti suuruseks on määratud <ph name="TEXT_SCALING"/></translation>
 <translation id="8428213095426709021">Seaded</translation>
 <translation id="8441146129660941386">Keri tagasi</translation>
@@ -643,12 +666,14 @@ Täiustatud kaitsega juhitage järgmisi Brave’i seadeid:
 <translation id="9106233582039520022">Kas kustutada küpsisefailid?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ja veel <ph name="NUM_MORE"/>}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ja veel <ph name="NUM_MORE"/>}}</translation>
 <translation id="913657688200966289">Lülitage <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/> sisse load rakendusele <ph name="APP_NAME"/>.</translation>
+<translation id="9138037198177304356">Märguanded on lubatud</translation>
 <translation id="9138217887606523162">Praegune suumitase on <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">Laske Brave'il kuvada teie hiljutisi vahelehti teie seadme rakenduste loendis ja otsingutulemustes. Saate selle Brave’i seadetes igal ajal välja lülitada.</translation>
 <translation id="9162462602695099906">See leht on ohtlik</translation>
 <translation id="9182556968660520230">Ära luba saitidel kaitstud sisu esitada</translation>
 <translation id="947156494302904893">Külastatavad saidid saavad kinnitada, et olete päris inimene, mitte robot</translation>
 <translation id="959682366969460160">Lööge kord majja</translation>
+<translation id="961930410699694996">Asukoht seekord lubatud</translation>
 <translation id="967624055006145463">Salvestatud andmete maht</translation>
 <translation id="969975166333045662">Ärge lubage saidil V8 optimeerijat kasutada.</translation>
 <translation id="3110967157686007724">Privaatne vaheleht</translation>

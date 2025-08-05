@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Tulungang mapabuti ang estabilidad ng produkto ng Brave\u2019s sa pamamagitan ng kusang pagpapadala ng mga ulat ng diagnostic kapag nagkaproblema o tumigil ang Brave Browser.</translation>
 <translation id="7977176350719484850">Tinatantyang Natipid na\nData</translation>
 <translation id="9008534313521214777">Tinatantyang Oras na\nNatipid</translation>
+<translation id="8347743943525229984">Payagan ang mga survey ng Brave</translation>
+<translation id="6022939994702081659">Binibigyang-daan ang Brave na magpakita ng mga link sa mga pribadong survey sa page ng bagong tab. Tinutulungan kami ng mga survey na bumuo ng mas magagandang feature at sukatin ang pagiging epektibo ng mga ad campaign na nakabatay sa browser.</translation>
+<translation id="7746496306508543965">Alamin pa ang tungkol sa mga survey ng Brave</translation>
 <translation id="410351446219883937">I-autoplay</translation>
 <translation id="7445411102860286510">Payagan ang mga site na awtomatikong mag-play ng mga naka-mute na video (inirerekomenda)</translation>
 <translation id="7837721118676387834">Payagan ang pag-autoplay ng mga naka-mute na video para sa isang partikular na site.</translation>
@@ -632,7 +635,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="3961126209136843111">Mag-import ng umiiral na wallet</translation>
 <translation id="4811736040444856406">Ipakita ang parirala sa pag-recover</translation>
 <translation id="4359319875297001084">Mag-import mula sa mga legacy na wallet ng cryptocurrency ng Brave?</translation>
-<translation id="3157931365184549694">Ipanumbalik</translation>
 <translation id="5844138175312846408">Mayroon na bang wallet?</translation>
 <translation id="2502258949541727762">Bago tayo magsimula</translation>
 <translation id="4303748097351941030">Mga sinusuportahang network</translation>
@@ -794,7 +796,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="1426320910664514906">Limitasyon sa Gas</translation>
 <translation id="6389441740143786465">I-off ang Hub sa Pagbabahagi</translation>
 <translation id="9065203028668620118">I-edit</translation>
-<translation id="473775607612524610">I-update</translation>
 <translation id="479795390141144417">Hindi na-update ang account.</translation>
 <translation id="8084782383392198011">Hindi pwedeng walang laman ang pangalan ng account.</translation>
 <translation id="5045550434625856497">Hindi wastong password</translation>

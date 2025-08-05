@@ -52,6 +52,7 @@
 <translation id="1031362278801463162">Eelvaate laadimine</translation>
 <translation id="1032605640136438169">Vaadake uued tingimused üle</translation>
 <translation id="103279545524624934">Vabastage Androidi rakenduste käivitamiseks kettaruumi.</translation>
+<translation id="1033060461778467949">Vahelehe teisaldamine poolitatud vaatesse</translation>
 <translation id="1033780634303702874">Juurdepääs jadaseadmetele</translation>
 <translation id="1034484273907870301">Pisipiltidega vahelehtede riba tahvelarvuti režiimi jaoks</translation>
 <translation id="1035289631433631911">Tööriist Sisuedastus</translation>
@@ -353,12 +354,12 @@ Paroole saate alati kontrollida menüüs <ph name="GOOGLE_PASSWORD_MANAGER"/>.</
 <translation id="1232569758102978740">Pealkirjata</translation>
 <translation id="1233497634904001272">Taotluse lõpule viimiseks puudutage uuesti turvavõtit.</translation>
 <translation id="1233721473400465416">Lokaat</translation>
+<translation id="1233835246554936745">{0,plural, =1{Salvesta üks kontol olev üksus}other{Salvesta # kontol olevat üksust}}</translation>
 <translation id="1234736487471201993">Loo selle pildi jaoks QR-kood</translation>
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="1235458158152011030">Teadaolevad võrgud</translation>
 <translation id="123578888592755962">Ketas on täis</translation>
 <translation id="1235924639474699896">{COUNT,plural, =1{tekstsõnum}other{# tekstsõnumit}}</translation>
-<translation id="1236009322878349843">Telefoni muutmine</translation>
 <translation id="1237251612871334180">Paroolide salvestamiseks värskendage</translation>
 <translation id="1237950098253310325">Nupu <ph name="BUTTON_NAME"/> ümberjärjestamine kasutades klahve Ctrl + üles- või allanool</translation>
 <translation id="1238293488628890871">Kas vahetada profiil?</translation>
@@ -471,7 +472,6 @@ Paroole saate alati kontrollida menüüs <ph name="GOOGLE_PASSWORD_MANAGER"/>.</
 <translation id="1312721752506309252">Täiustatud kaitse on sisse lülitatud</translation>
 <translation id="1312811472299082263">Loomine Ansible Playbooki või Crostini varundusfailist</translation>
 <translation id="13130607084115184">Salvestatud paroolid kuvatakse siin. Selles seadmes paroolide teenusesse <ph name="BRAND"/> importimiseks<ph name="BEGIN_LINK"/> valige CSV-fail<ph name="END_LINK"/>.</translation>
-<translation id="1313264149528821971">Eemaldati <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/></translation>
 <translation id="1313405956111467313">Automaatne puhverserveri konfigureerimine</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1313660246522271310">Teid logitakse kõikidelt saitidelt (sh avatud vahelehtedel) välja</translation>
@@ -576,7 +576,6 @@ Paroole saate alati kontrollida menüüs <ph name="GOOGLE_PASSWORD_MANAGER"/>.</
 <translation id="1395832189806039783">Klaviatuuri fookusega üksuse esiletõstmine</translation>
 <translation id="1396120028054416908">Tagasi kausta <ph name="FOLDER_TITLE"/></translation>
 <translation id="1396139853388185343">Viga printeri seadistamisel</translation>
-<translation id="6748713973802395004">Olete nendes seadmetes Brave'i sisse logitud, seega saate neid turvavõtmetena kasutada.</translation>
 <translation id="1398853756734560583">Maksimeeri</translation>
 <translation id="1399261165075500043">Google Play teenusetingimusi ei saa laadida</translation>
 <translation id="1400243387594338234">Saate seda PIN-koodi kasutada oma seadmesse sisselogimiseks</translation>
@@ -635,6 +634,7 @@ Paroole saate alati kontrollida menüüs <ph name="GOOGLE_PASSWORD_MANAGER"/>.</
 <translation id="1438630805136563416">Eemaldatud toiming <ph name="REMOVED_ACTION"/></translation>
 <translation id="1439671507542716852">pikaajaline tugi</translation>
 <translation id="1440090277117135316">Koolis kasutamiseks registreerimine on lõpule viidud</translation>
+<translation id="1442054921249164535">Muud andmed</translation>
 <translation id="144283815522798837"><ph name="NUMBER_OF_ITEMS_SELECTED"/> on valitud</translation>
 <translation id="1442851588227551435">Kerberose pileti aktiveerimine</translation>
 <translation id="1444389367706681769">Kosmos</translation>
@@ -784,7 +784,6 @@ Load, mille olete juba rakendustele andnud, võivad selle konto puhul kehtida. S
 <translation id="1542524755306892917">See võimaldab Brave’i assistendil anda kohandatud vastuseid, kui <ph name="SUPERVISED_USER_NAME"/> esitab küsimusi.</translation>
 <translation id="1543284117603151572">Imporditud teenusest Edge</translation>
 <translation id="1543538514740974167">Jõudke siia kiiremini</translation>
-<translation id="154420222899071768">Teie parooli ei värskendatud, aga teil peaks endiselt olema võimalik saidile juurde pääseda oma vana parooliga</translation>
 <translation id="1544588554445317666">Kasutage lühemat failinime või salvestage teise kausta</translation>
 <translation id="1545177026077493356">Automaatne kioskirežiim</translation>
 <translation id="1545749641540134597">QR-koodi skannimine</translation>
@@ -945,7 +944,7 @@ Load, mille olete juba rakendustele andnud, võivad selle konto puhul kehtida. S
 <translation id="1639239467298939599">Laadimine</translation>
 <translation id="1640235262200048077"><ph name="IME_NAME"/> Linuxi rakendustega veel ei tööta</translation>
 <translation id="1640283014264083726">PKCS 1 MD4 koos RSA krüpteerimisega</translation>
-<translation id="1641113438599504367">Ohutu sirvimine</translation>
+<translation id="1641113438599504367">Brave'i ohutu sirvimine</translation>
 <translation id="1641496881756082050">Rohkem toiminguid: <ph name="NETWORK_NAME"/></translation>
 <translation id="1641884605525735390">{NUM_PASSWORDS,plural, =1{Veel 1 parooli ei imporditud, kuna see on valesti vormindatud}other{Veel {NUM_PASSWORDS} parooli ei imporditud, kuna need on valesti vormindatud}}</translation>
 <translation id="1642299742557467312">See fail võib teie seadet kahjustada</translation>
@@ -1156,7 +1155,6 @@ Load, mille olete juba rakendustele andnud, võivad selle konto puhul kehtida. S
 <translation id="1795438342141780114">Kursori keskele lähtestamine</translation>
 <translation id="1796588414813960292">Heli vajavad funktsioonid ei tööta</translation>
 <translation id="1797117170091578105">Mängige oma Chromebooki klaviatuuri kasutades. Saate klahvidele konkreetsed toimingud määrata.</translation>
-<translation id="1798335429200675510">Paremklikkige tekstikastis, et luua mustand või viimistleda olemasolevat tööd (toimib Brave'i AI platvormil). See on hetkel piiratud saadavusega.</translation>
 <translation id="1799852120691957794">Eelmise seansi aknaid ei saa taastada</translation>
 <translation id="180203835522132923">Otsinguklahv + O, seejärel W</translation>
 <translation id="1802624026913571222">Lülita unerežiimi, kui kaas on suletud</translation>
@@ -1233,6 +1231,7 @@ Load, mille olete juba rakendustele andnud, võivad selle konto puhul kehtida. S
 <translation id="184862733444771842">Funktsiooni taotlemine</translation>
 <translation id="1849016657376805933">Mis tahes HID-seade</translation>
 <translation id="1849022541429818637">Hiiresisendi jäädvustamine ja kasutamine on lubatud</translation>
+<translation id="1849252834922144634">Otseteede kinnitamiseks puudutage pikalt</translation>
 <translation id="1850145825777333687">Seadme mandaadid</translation>
 <translation id="1850508293116537636">Pööra &amp;päripäeva</translation>
 <translation id="185111092974636561"><ph name="BEGIN_PARAGRAPH1"/>Enne registreerumist peate kustutama TPM-i, et <ph name="DEVICE_OS"/> saaks endale seadme omandilise kuuluvuse.<ph name="END_PARAGRAPH1"/>
@@ -1594,6 +1593,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2096716221239095980">Kustuta kõik andmed</translation>
 <translation id="2097950021134740304">Tühista tellimuse unustamine</translation>
 <translation id="2098805196501063469">Ülejäänud paroolide kontrollimine</translation>
+<translation id="2099883893520019102">Viimased 15 minutit</translation>
 <translation id="2101225219012730419">Versioon:</translation>
 <translation id="2102396546234652240">Ära luba saitidel kasutada minu mikrofoni</translation>
 <translation id="2102495993840063010">Androidi rakendused</translation>
@@ -1685,7 +1685,6 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2162705204091149050">Teabe lugemine teie brauseri, OS-i, seadme, installitud tarkvara ja failide kohta</translation>
 <translation id="2163470535490402084">Seadmesse <ph name="DEVICE_TYPE"/> sisselogimiseks looge ühendus Internetiga.</translation>
 <translation id="2164131635608782358"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/> ja veel 1 lüliti</translation>
-<translation id="2165102982098084499">Linkisite need seadmed QR-koodi skannimise kaudu.</translation>
 <translation id="2165177462441582039">Valige, kui kaua iga üksus on esile tõstetud</translation>
 <translation id="2166369534954157698">Väle pruun rebane hüppab üle laisa koera</translation>
 <translation id="2169062631698640254">Logi ikkagi sisse</translation>
@@ -1775,6 +1774,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2234827758954819389">Privaatsusjuhend</translation>
 <translation id="7956662517480676674">Sünkroonimine ja Brave'i teen.</translation>
 <translation id="2235344399760031203">Kolmanda osapoole küpsisefailid on blokeeritud</translation>
+<translation id="2236949375853147973">Minu tegevused</translation>
 <translation id="2238379619048995541">Sageduse oleku andmed</translation>
 <translation id="2240582393605484605">Andmed, mis on salvestatud ainult sellele seadmele, jäävad olemasolevale profiilile</translation>
 <translation id="2241053333139545397">Andmete lugemine ja muutmine mitmel veebisaidil</translation>
@@ -1909,6 +1909,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2312219318583366810">Lehe URL</translation>
 <translation id="2314165183524574721">Praegune nähtavuse seade on Peidetud</translation>
 <translation id="2314774579020744484">Lehtede tõlkimiseks kasutatav keel</translation>
+<translation id="2316090909467242775">Proovige seda taasteparooli</translation>
 <translation id="2316129865977710310">Ei, aitäh</translation>
 <translation id="2316433409811863464">Rakenduse voogesitus</translation>
 <translation id="2316709634732130529">Kasuta soovitatud parooli</translation>
@@ -1977,7 +1978,6 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2359345697448000899">Laienduste haldamiseks klõpsake menüüs Tööriistad valikul Laiendused.</translation>
 <translation id="2359556993567737338">Bluetooth-seadme ühendamine</translation>
 <translation id="2359808026110333948">Jätka</translation>
-<translation id="2360047907847684514">Võimendage oma brauserit laienduste ja teemadega</translation>
 <translation id="5184079355364489096">Lehe kokkuvõtte, seotud otsingute ja muu kasuliku teabe saamiseks selle lehe kohta valige tööriistaribal Brave'i otsingu külgpaneeli nupp</translation>
 <translation id="2361100938102002520">Lisate sellesse brauserisse hallatud profiili. Teie administraator saab seda profiili hallata ja selle andmetele juurde pääseda.</translation>
 <translation id="236117173274098341">Optimeeri</translation>
@@ -2152,10 +2152,12 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2476901513051581836">Salvestusruumi ei saa vabastada enne, kui on teada võrguvälise salvestusruumi maht.</translation>
 <translation id="2476974672882258506">Tarkvara <ph name="PARALLELS_DESKTOP"/> desinstallimiseks lülitage Windows välja.</translation>
 <translation id="2477065602824695373">Kuna seadistasite mitu seadet, on automaatne skannimine välja lülitatud.</translation>
+<translation id="50589553892093838">Muud Brave'i andmed</translation>
 <translation id="2478176599153288112">Meediafaili load laiendusele „<ph name="EXTENSION"/>”</translation>
 <translation id="24786041351753425">Lubage andmete taastamise teenus.</translation>
 <translation id="2479541499757560845">Juurdepääsetavuse klaviatuuri seaded</translation>
 <translation id="2480868415629598489">Kopeeritud ja kleebitud andmete muutmine</translation>
+<translation id="2480881140544300950">Otsingumootor, mis praegu teie uut vahelehte haldab</translation>
 <translation id="2482878487686419369">Märguanded</translation>
 <translation id="2482895651873876648">Vaheleht teisaldati gruppi <ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENTS"/></translation>
 <translation id="38202112821964345">Määrake otsingumootor Brave'i brauseri seadetes</translation>
@@ -2210,6 +2212,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2514326558286966059">Sõrmejäljega kiiremini avamine</translation>
 <translation id="2514465118223423406">Kui hiir on ühendatud</translation>
 <translation id="2514938842036917377">See kustutab <ph name="TOTAL_USAGE"/> ulatuses saidi <ph name="SITE_NAME"/>, seotud saitide ja installitud rakenduste salvestatud andmeid</translation>
+<translation id="2515489088825102986">Lisateave selle funktsiooni ja teie privaatsuse kohta</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="251722524540674480">Kinnitage oma kasutajanimi</translation>
 <translation id="2517472476991765520">Kontrolli</translation>
@@ -2268,6 +2271,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2552966063069741410">Ajavöönd</translation>
 <translation id="2553290675914258594">Kinnitatud juurdepääs</translation>
 <translation id="2553340429761841190"><ph name="PRODUCT_NAME"/> ei suutnud ühenduda võrku <ph name="NETWORK_ID"/>. Valige muu võrk või proovige uuesti.</translation>
+<translation id="2553352788023127673">Otsinguajaloo ja paroolid saab kustutada nende haldamise seadetes</translation>
 <translation id="2553440850688409052">Peida pistikprogramm</translation>
 <translation id="2554553592469060349">Valitud fail on liiga suur (max suurus on 3 MB).</translation>
 <translation id="2555802059188792472"><ph name="NUM_ALLOWED_APPS"/> / <ph name="TOTAL_NUM_APPS"/> rakendusest saab saata märguandeid</translation>
@@ -2312,7 +2316,6 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2588636910004461974">Seadmed teenusepakkujalt <ph name="VENDOR_NAME"/></translation>
 <translation id="2589658397149952302">Ära kunagi näita Drive'i faile</translation>
 <translation id="2593499352046705383">Enne alustamist veenduge, et teil oleks oma andmetest olemas varukoopia. Operatsioonisüsteemi <ph name="DEVICE_OS"/> installimisel kirjutatakse üle kõik teie kõvakettal olevad andmed. Lisateave: g.co/flex/InstallGuide.</translation>
-<translation id="2594832159966169099">V8 turvalisuse haldamine</translation>
 <translation id="2597073208962000830">Läheduses jagamine kasutab läheduses olevate seadmete leidmiseks Bluetoothi skannimist.</translation>
 <translation id="2598136842498757793">Tööriistariba nuppude kohandamine</translation>
 <translation id="2024721991200132064">Saadaval on uus Brave</translation>
@@ -2338,6 +2341,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="261114180663074524">Logige sisse oma Microsofti kontole ja proovige uuesti</translation>
 <translation id="2611702650078660078">Ilmnes viga</translation>
 <translation id="2611776654555141051">Nelinurgatööriist</translation>
+<translation id="2611885296070244383">Mikrofon (sisemine)</translation>
 <translation id="2612676031748830579">Kaardi number</translation>
 <translation id="261305050785128654">Andke veebisaitidele teada, milliseid keeli te räägite. Võimaluse korral kuvatakse sisu nendes keeltes.</translation>
 <translation id="2613210758071148851">Ära luba saidil <ph name="RESTRICTED_SITE"/> ühtegi laiendust</translation>
@@ -2594,6 +2598,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2777815813197804919">{NUM_SITES,plural, =1{Leiti 1 sait, kus on palju märguandeid}other{Leiti {NUM_SITES} saiti, kus on palju märguandeid}}</translation>
 <translation id="2778471504622896352">Kaugrakenduste lisamine ChromeOS-i käivitajasse</translation>
 <translation id="2779728796406650689">See võimaldab Brave’i assistendil anda kohandatud vastuseid, kui esitate küsimusi.</translation>
+<translation id="2781459437789641557"><ph name="ATTRIBUTION_LINE_1"/>, <ph name="ATTRIBUTION_LINE_2"/></translation>
 <translation id="2781692009645368755">Google Pay</translation>
 <translation id="2782104745158847185">Viga Linuxi rakenduse installimisel</translation>
 <translation id="2783952358106015700">Turvavõtme kasutamine rakendusega <ph name="APP_NAME"/></translation>
@@ -2775,6 +2780,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2912247081180973411">Sule aknad</translation>
 <translation id="2915102088417824677">Kuva tegevuste logi</translation>
 <translation id="2915873080513663243">Automaatne skannimine</translation>
+<translation id="2916067990491711240">Hallatud külastajaseanssidest väljumine</translation>
 <translation id="2916073183900451334">Veebilehel tabeldusklahvi vajutades tõstetakse esile lingid ja ka vormiväljad</translation>
 <translation id="2916745397441987255">Otsige laiendusi</translation>
 <translation id="2918484639460781603">Ava seaded</translation>
@@ -2879,6 +2885,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="2992931425024192067">Kuva kogu märguande sisu</translation>
 <translation id="2993517869960930405">Rakenduse teave</translation>
 <translation id="2995472388018163047">{NUM_GROUPS,plural, =1{Saate säilitada selle grupi, et lisada vahelehed hiljem, või lahkuda sellest, kui te ei soovi sellele enam juurde pääseda}other{Säilitage need grupid, et vahelehti hiljem lisada, või lahkuge neist, kui te ei soovi neile enam juurdepääsu}}</translation>
+<translation id="895607917803377515">Lisateave selle kohta, kuidas AI teie kogemust ja Brave'i pakutavaid juhtelemente kujundab</translation>
 <translation id="2996108796702395498">Teie seadme seerianumber on <ph name="SERIAL_NUMBER"/>. See number on abiks teenuse aktiveerimisel.</translation>
 <translation id="2996286169319737844">Andmed on krüpteeritud teie sünkroonimisparooliga. See ei hõlma Google Pay makseviise ja aadresse.</translation>
 <translation id="2996722619877761919">Pööre pikal serval</translation>
@@ -3217,6 +3224,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="3253225298092156258">Pole saadaval</translation>
 <translation id="3253344772044554413">{NUM_OF_FILES,plural, =1{Selle faili kopeerimiseks vabastage teenuses <ph name="CLOUD_PROVIDER"/> ruumi}other{Nende failide kopeerimiseks vabastage teenuses <ph name="CLOUD_PROVIDER"/> ruumi}}</translation>
 <translation id="3253448572569133955">Tundmatu konto</translation>
+<translation id="3253746622312821295">Juhtmega kõrvaklapid</translation>
 <translation id="3254451942070605467">Faili <ph name="FILE_NAME"/> allalaadimine, <ph name="PERCENT_REMAINING"/>% jäänud</translation>
 <translation id="3254516606912442756">Automaatne ajavööndi tuvastamine on keelatud</translation>
 <translation id="3255747772218936245">Installi värskendus</translation>
@@ -3330,7 +3338,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="3335947283844343239">Ava uuesti suletud vaheleht</translation>
 <translation id="3336855445806447827">Pole kindel</translation>
 <translation id="3337568642696914359">Ära luba saitidel protokolle käsitleda</translation>
-<translation id="333863344734218290">Hoiatab teid ebaturvalistest avalikest ja privaatsetest saitidest</translation>
+<translation id="333863344734218290">Hoiatab teid ebaturvaliste avalike ja privaatsete saitide eest</translation>
 <translation id="3340620525920140773">Allalaadimine on lõpule viidud: <ph name="FILE_NAME"/>.</translation>
 <translation id="3340978935015468852">seaded</translation>
 <translation id="2462927274144730162">Brave saab luua ja tõlkida siin kuvatavates keeltes subtiitreid</translation>
@@ -3399,6 +3407,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="3387829698079331264">Ei ole lubatud teada, millal oma seadet aktiivselt kasutate</translation>
 <translation id="3388094447051599208">Väljastussalv on peaaegu täis</translation>
 <translation id="3388788256054548012">See fail on krüpteeritud. Paluge omanikul see dekrüpteerida.</translation>
+<translation id="3389326266972418853">Lisateave parooli automaatse muutmise kohta</translation>
 <translation id="3390013585654699824">Rakenduse üksikasjad</translation>
 <translation id="3390442085511866400">Salvesta video&amp;kaader kui …</translation>
 <translation id="3390530051434634135">Märkus: <ph name="NOTE"/></translation>
@@ -3426,6 +3435,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="3408555740610481810">Kaamerat ja mikrofoni kasutatakse</translation>
 <translation id="3409157109901479672">Vasak pool</translation>
 <translation id="3409513286451883969">&amp;Tõlgi valik <ph name="LANGUAGE"/> keelde</translation>
+<translation id="4302350545547675750">Hallake Brave'i paroolihalduris</translation>
 <translation id="3412265149091626468">Hüppa valikusse</translation>
 <translation id="3413122095806433232">CA väljastajad: <ph name="LOCATION"/></translation>
 <translation id="3414952576877147120">Suurus:</translation>
@@ -3513,6 +3523,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="3462413494201477527">Kas tühistada konto seadistamine?</translation>
 <translation id="346298925039590474">See mobiilsidevõrk on saadaval kõigile selle seadme kasutajatele</translation>
 <translation id="3464145797867108663">Lisa tööprofiil</translation>
+<translation id="34673353983913587">Enne uue parooli salvestamist nõuab sait täiendavat kinnitust</translation>
 <translation id="3468298837301810372">Silt</translation>
 <translation id="3468999815377931311">Android-telefon</translation>
 <translation id="3469583217479686109">Valikutööriist</translation>
@@ -3540,6 +3551,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="3487007233252413104">anonüümne funktsioon</translation>
 <translation id="3487649228420469005">Kontroll on tehtud</translation>
 <translation id="3488199663160411179">nimi</translation>
+<translation id="1088295851754116403">Brave'i rakendused lõpetavad töötamise ChromeOS-i seadmetes 2025. aasta juulis. Kaaluge alternatiivse rakenduse kasutamist.</translation>
 <translation id="3490695139702884919">Allalaadimine … <ph name="PERCENT"/>%</translation>
 <translation id="3491171603443463516">Kohalikud andmed saab taastada, kui oma PIN-i või parooli unustate</translation>
 <translation id="3491616972057195633">Põrkeklahvid</translation>
@@ -3744,6 +3756,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="3629664892718440872">Jäta valik meelde</translation>
 <translation id="3630132874740063857">Teie telefon</translation>
 <translation id="3630995161997703415">Lisage sait riiulisse, et see oleks alati käepärast</translation>
+<translation id="3633759325857031264">HDMI-seade</translation>
 <translation id="3634652306074934350">Loa taotlus aegus</translation>
 <translation id="3635199270495525546">Tuvastati usaldusväärse platvormi moodul (TPM)</translation>
 <translation id="1892630320532151038">Brave’ile tagasiside saatmine</translation>
@@ -3827,7 +3840,6 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="3694027410380121301">Vali eelmine vaheleht</translation>
 <translation id="3694122362646626770">Veebisaidid</translation>
 <translation id="3694590407685276748">Tekstikursori esiletõstmine</translation>
-<translation id="3694777699203615368">Praeguse vaatega vahetamine</translation>
 <translation id="369489984217678710">Paroolid ja muud sisselogimisandmed</translation>
 <translation id="369522892592566391">{NUM_FILES,plural, =0{Turvakontrollid on tehtud. Teie andmed laaditakse üles.}=1{Turvakontrollid on tehtud. Teie fail laaditakse üles.}other{Turvakontrollid on tehtud. Teie failid laaditakse üles.}}</translation>
 <translation id="3695339288331169103">Asukohast <ph name="BEGIN_LINK"/><ph name="DISPLAY_REFERRER_URL"/><ph name="END_LINK"/></translation>
@@ -4002,6 +4014,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="3792973596468118484"><ph name="NUM_EXTENSIONS"/> laiendust</translation>
 <translation id="3794792524918736965">Lülitage sisse Windows Hello</translation>
 <translation id="379509625511193653">Väljas</translation>
+<translation id="1064391869156884018">Muutsite hiljuti avalikust andmetega seotud rikkumisest leitud parooli. Probleemide korral aitab Brave'i paroolihaldur teil sisse logida.</translation>
 <translation id="3796215473395753611">alt + ülesnool</translation>
 <translation id="3796421550129770366"><ph name="LANGUAGE"/>, kasutage hääle eelkuulamiseks paremnooleklahvi</translation>
 <translation id="3796648294839530037">Lemmikvõrgud:</translation>
@@ -4142,6 +4155,7 @@ Selle konto seadete haldamiseks installige oma seadmesse Family Link.  Saatsime 
 <translation id="3876219572815410515">Akende suurust muudeti üles</translation>
 <translation id="3877075909000773256">Läheduses jagamise seaded kasutaja <ph name="USER_NAME"/> seadme jaoks. Jagamine toimub kontol <ph name="USER_EMAIL"/>.</translation>
 <translation id="3877209288227498506">Valige, kas vahelehel hõljutamise eelvaatekaardil mälukasutus ja pildid kuvada</translation>
+<translation id="3877603629930976930">Ära jaga</translation>
 <translation id="3878445208930547646">Sellelt saidilt kopeerimine ei ole lubatud</translation>
 <translation id="3879748587602334249">Allalaadimishaldur</translation>
 <translation id="3880513902716032002">Mõned teie külastatavad lehed on eellaaditud</translation>
@@ -4241,6 +4255,7 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="3948334586359655083">See vaheleht esitab heli</translation>
 <translation id="3948507072814225786"><ph name="ORIGIN"/> saab muuta järgmistes kaustades olevaid faile</translation>
 <translation id="3948985214866944547">Enamik inimesi blokeerivad selle saidi puhul täpse asukoha jagamise</translation>
+<translation id="394930357226768495">Kuvage oma organisatsiooni soovitused ja tulemused</translation>
 <translation id="394984172568887996">Imporditud IE'st</translation>
 <translation id="3949999964543783947"><ph name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_SAFE_BROWSING_SETTING_LINK"/>, et faile ohutumalt alla laadida</translation>
 <translation id="3950479158728806902">Loo kiiremaks sisselogimiseks automaatselt pääsuvõti</translation>
@@ -4262,7 +4277,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="3959969108528118741">Omanik</translation>
 <translation id="3960566196862329469">ONC</translation>
 <translation id="3961005895395968120">Rohkem toiminguid: <ph name="IBAN_DESCRIPTION"/></translation>
-<translation id="3963753386716096475">Kasutage teist nutitelefoni, tahvelarvutit või turvavõtit</translation>
 <translation id="3964480518399667971">Mobiilsidevõrgu väljalülitamine</translation>
 <translation id="3965467402665811906">Saidid saavad küsida luba kasutada teie kohta salvestatud teavet</translation>
 <translation id="3965965397408324205">Välju profiililt <ph name="PROFILE_NAME"/></translation>
@@ -4517,7 +4531,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="413915106327509564"><ph name="WINDOW_TITLE"/> – HID-seade on ühendatud</translation>
 <translation id="4139326893730851150">Püsivara värskendused</translation>
 <translation id="4142052906269098341">Avage seade <ph name="DEVICE_TYPE"/> oma telefoniga. <ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/></translation>
-<translation id="4143606504420684845">Avastage, kuidas kujundab AI teie kogemust, ja tehke oma privaatsuse kohta teadlikke otsuseid</translation>
 <translation id="4146026355784316281">Ava alati süsteemivaaturiga</translation>
 <translation id="4146785383423576110">Lähtestamine ja puhastamine</translation>
 <translation id="4147099377280085053">Valige Braille' tabel</translation>
@@ -4565,7 +4578,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="4190492351494485814">Esialgse seadistuse jaoks peate looma internetiühenduse, et faile oleks võimalik Chromebookiga sünkroonida</translation>
 <translation id="4190828427319282529">Klaviatuuri fookusega esiletõstmine</translation>
 <translation id="4191892134568599822">Kas võtta vastu funktsiooni <ph name="FEATURE_NAME"/> kaudu?</translation>
-<translation id="4192024474038595073">{NUM_SITES,plural, =1{Eemaldati 1 kasutamata saidi load}other{Eemaldati {NUM_SITES} kasutamata saidi load}}</translation>
 <translation id="4192850928807059784"><ph name="BEGIN_PARAGRAPH1"/>Ainult seadme <ph name="DEVICE_TYPE"/> puhul.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Generatiivne AI on katseline ja varajases arendusjärgus ning sellel on praegu piiratud saadavus.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="4193251682249731404">Usaldusväärne CA</translation>
@@ -4732,6 +4744,7 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="4305402730127028764">Kopeeri seadmesse <ph name="DEVICE_NAME"/></translation>
 <translation id="4305817255990598646">Lüliti</translation>
 <translation id="4306119971288449206">Rakendusi tuleb esitada sisu tüübiga „<ph name="CONTENT_TYPE"/>”</translation>
+<translation id="4306489587293957491">Sisesta</translation>
 <translation id="1689951986267171188">Brave lõpetab sellelt saidilt pärinevate märguannete märgistamise rämpspostiks</translation>
 <translation id="4307992518367153382">Põhiteave</translation>
 <translation id="4309165024397827958">Lubage asukohale juurdepääsu loaga Androidi rakendustel ja teenustel kasutada teie seadme asukohta. Brave võib aeg-ajalt koguda asukohaandmeid ja kasutada neid anonüümselt asukohatäpsuse ning asukohapõhiste teenuste parendamiseks.</translation>
@@ -4789,11 +4802,13 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="4350230709416545141">Blokeeri hosti <ph name="HOST"/> jaoks alati juurdepääs minu asukohale</translation>
 <translation id="1471559864592637964">Ok Brave</translation>
 <translation id="435185728237714178">Installitud ja voogedastatavate rakenduste haldamiseks avage rakendus „<ph name="APP_NAME"/>“</translation>
+<translation id="4352913519324947509">Teie parooli ei muudetud aga teil peaks endiselt olema võimalik saidile juurde pääseda oma praeguse parooliga</translation>
 <translation id="4354073718307267720">Küsi, kui sait soovib luua mind ümbritsevast 3D-kaarti või jälgida kaamera asendit</translation>
 <translation id="4354344420232759511">Külastatud saidid kuvatakse siin</translation>
 <translation id="435527878592612277">Valige foto</translation>
 <translation id="4356100841225547054">Lülita heli välja</translation>
 <translation id="4357583358198801992">Kuva vahelehegrupid</translation>
+<translation id="4357812592970409234">Lisateave uue vahelehe tausta kohta</translation>
 <translation id="4358361163731478742">Ükski rakendus ei toeta rakenduse keele valimist</translation>
 <translation id="4358643842961018282">Teie seade on ajakohane</translation>
 <translation id="4358995225307748864">Valige avamiseks rakendus</translation>
@@ -4817,7 +4832,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="4370975561335139969">Sisestatud e-posti aadress ja parool ei ühildu</translation>
 <translation id="4373418556073552953">Android-telefoniga sisselogimine</translation>
 <translation id="4373973310429385827">Tuletorn</translation>
-<translation id="4374805630006466253">Kasutage teist telefoni või tahvelarvutit</translation>
 <translation id="4374831787438678295">Linuxi installiprogramm</translation>
 <translation id="4375035964737468845">Ava allalaaditud failid</translation>
 <translation id="4376226992615520204">Asukoht on välja lülitatud</translation>
@@ -4867,6 +4881,7 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="4406883609789734330">Reaalajas subtiitrid</translation>
 <translation id="4408599188496843485">A&amp;bi</translation>
 <translation id="4409271659088619928">Teie otsingumootor on <ph name="DSE"/>. Vaadake selle juhiseid otsinguajaloo kustutamise kohta, kui see on asjakohane.</translation>
+<translation id="4409340274650920844">{NUM_APPS,plural,offset:2 =1{Teie administraator saab rakenduse <ph name="APP0_NAME"/> abil jäädvustada teie ekraani. Teid teavitatakse, kui salvestamine algab.}=2{Teie administraator saab rakenduste <ph name="APP0_NAME"/> ja <ph name="APP1_NAME"/> abil jäädvustada teie ekraani. Teid teavitatakse, kui salvestamine algab.}=3{Teie administraator saab rakenduste <ph name="APP0_NAME"/> ja <ph name="APP1_NAME"/> ning veel 1 rakenduse abil salvestada teie ekraani. Teid teavitatakse, kui salvestamine algab.}other{Teie administraator saab rakenduste <ph name="APP0_NAME"/> ja <ph name="APP1_NAME"/> ning veel # rakenduse abil salvestada teie ekraani. Teid teavitatakse, kui salvestamine algab.}}</translation>
 <translation id="4409697491990005945">Veerised</translation>
 <translation id="4409779593816003679">Paroolid ja &amp;automaattäide</translation>
 <translation id="4410545552906060960">Kasutage seadme avamiseks parooli asemel numbrit (PIN-kood). Hiljem PIN-koodi seadistamiseks avage jaotis Seaded.</translation>
@@ -5116,7 +5131,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="4585793705637313973">Lehe muutmine</translation>
 <translation id="4586275095964870617">URL-i <ph name="URL"/> ei saanud alternatiivses brauseris avada. Võtke ühendust süsteemiadministraatoriga.</translation>
 <translation id="4587589328781138893">Saidid</translation>
-<translation id="4588497044036650559">Ava uue vahelehe laienduse valikuleht praegusel vahelehel</translation>
 <translation id="4588749726511456218">Kerimise kiirendus. <ph name="LINK_BEGIN"/>Lugege lisateavet<ph name="LINK_END"/>.</translation>
 <translation id="4589197033939192905"><ph name="PASSWORD_DOMAIN"/> ja <ph name="DOMAIN"/> tunduvad olema seotud. Enne oma parooli kasutamist veenduge, et usaldaksite saiti <ph name="DOMAIN"/>.</translation>
 <translation id="4589713469967853491">Logide kirjutamine kataloogi Allalaadimised õnnestus.</translation>
@@ -5326,10 +5340,12 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="4742970037960872810">Eemalda esiletõstmine</translation>
 <translation id="4743260470722568160"><ph name="BEGIN_LINK"/>Vaadake, kuidas rakendusi värskendada<ph name="END_LINK"/></translation>
 <translation id="4743990041512863976">Lubatud – <ph name="PERMISSION_DETAILS"/>. Lülitage sisse <ph name="LINK_BEGIN"/>süsteemi juurdepääs mikrofonile<ph name="LINK_END"/>.</translation>
+<translation id="4744172369799559159">Selle funktsiooni täiustamiseks vaatavad paroolilehti ja nendega seotud teavet üle inimesed, aga teie parool krüpteeritakse ja seda ei näe keegi.</translation>
 <translation id="4744260496658845719">Klaviatuuri taustavalgustuse eredus</translation>
 <translation id="4744268813103118742">Minge saidile</translation>
 <translation id="4744571849207727284">Excel</translation>
 <translation id="4744981231093950366">{NUM_TABS,plural, =1{Tühista saidi vaigistus}other{Tühista saitide vaigistus}}</translation>
+<translation id="4745096442457817087">Teie parool leiti avalikust andmetega seotud rikkumisest.</translation>
 <translation id="4745500401920035244">Teie administraator tegi süsteemiülese muudatuse, mis keelab mõned vanad profiilid. Te ei pääse sellele profiilile enam juurde, kuid saate selle siiski eemaldada</translation>
 <translation id="474609389162964566">Juurdepääs assistendile otsetee sõnaga „Ok Brave”</translation>
 <translation id="4746757725581505837">Kustutate oma teenuse <ph name="BRAND"/> andmed, mis on salvestatud sellesse seadmesse</translation>
@@ -5363,6 +5379,7 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="4773122030389014189">Vahelehegrupi „<ph name="GROUP_NAME"/>“ jagamine</translation>
 <translation id="4773253008034797668">Lubatud luua ühendus mis tahes seadmega teie kohalikus võrgus</translation>
 <translation id="477548766361111120">Luba laiendusel seda saiti lugeda ja muuta</translation>
+<translation id="4775646243557794597"><ph name="TIME_PERIOD"/> on kustutatud</translation>
 <translation id="4776311127346151860"><ph name="DEVICE_NAME"/> on ühendatud</translation>
 <translation id="4776594120007763294">Lehe lisamiseks hiljem lugemiseks klõpsake nupul</translation>
 <translation id="4777458362738635055">Teised selle seadme kasutajad saavad seda võrku kasutada</translation>
@@ -5422,7 +5439,6 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="4814114628197290459">IBAN-i kustutamine</translation>
 <translation id="4814327014588285482">Jäta vahele ja tuleta hiljem meelde</translation>
 <translation id="4814378367953456825">Sisestage sellele sõrmejäljele nimi</translation>
-<translation id="481574578487123132">Lingitud seadmed</translation>
 <translation id="4816097470512964351"><ph name="DEVICE"/>, üksikasjad</translation>
 <translation id="4816336393325437908">{COUNT,plural, =1{1 järjehoidja kustutati}other{{COUNT} järjehoidjat kustutati}}</translation>
 <translation id="481689174647911539">See fail võib olla viirus või pahavara.<ph name="LINE_BREAK"/>Võite selle saata teenusele Brave'i ohutu sirvimine, et kontrollida, kas see on ohtlik. Tavaliselt võtab kontrollimine paar sekundit.</translation>
@@ -5592,6 +5608,7 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="4918844574251943176">Pilt kopeeriti</translation>
 <translation id="4921348630401250116">Kõnesüntees</translation>
 <translation id="1298471559729553235">Paroolihalduri kasutamiseks oma operatsioonisüsteemiga käivitage Brave uuesti ja lubage juurdepääs oma arvuti paroolihaldurile. Pärast uuesti käivitamist avanevad teie vahelehed taas.</translation>
+<translation id="4923561999941435531">{0,plural, =1{Salvesta üks kontol olev üksus}other{Salvesta # kontol olevat üksust}}</translation>
 <translation id="492363500327720082">Rakenduse <ph name="APP_NAME"/>desinstallimine …</translation>
 <translation id="4923977675318667854">Kuva vahelehegrupid</translation>
 <translation id="4924002401726507608">Tagasiside esitamine</translation>
@@ -5706,6 +5723,7 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="5016305686459575361">Ühendades oma telefoni, saate teha järgmist.</translation>
 <translation id="5016491575926936899">Saate tekstsõnumeid arvutist saata, internetiühendust jagada, vestluse märguannetele vastata ja telefoniga oma seadme (<ph name="DEVICE_TYPE"/>) avada.<ph name="FOOTNOTE_POINTER"/> <ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/></translation>
 <translation id="5017250179386090956">Põhisõlme märgistamise failide allalaadimine</translation>
+<translation id="5017529052065664584">Viimased 15 minutit</translation>
 <translation id="5018207570537526145">Ava laienduse veebisait</translation>
 <translation id="5018526990965779848">Kasutus- ja diagnostikaandmete saatmine. Aidake täiustada Androidi kasutuskogemust, saates Brave'ile automaatselt seadme teavet ning rakenduse kasutus- ja diagnostikaandmeid. See aitab parandada süsteemi ja rakenduse stabiilsust ning muud. Teatud koondandmed on abiks ka Brave'i rakendustele ja partneritele, näiteks Androidi arendajatele. Kui täiendavad veebi- ja rakendustegevused on sisse lülitatud, võidakse need andmed salvestada teie Brave'i kontole.</translation>
 <translation id="5019487038187875030">MacOS-ist imporditud sertifikaatide vaatamine</translation>
@@ -5808,6 +5826,7 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="5088534251099454936">PKCS 1 SHA-512 koos RSA krüpteerimisega</translation>
 <translation id="5090637338841444533">Pole lubatud jälgida teie kaamera asendit</translation>
 <translation id="5091636240353511739">Kuva PIN-kood</translation>
+<translation id="5093417502834168387">Kas sisselogimisega on probleeme? Proovige mõnda muud võimalust</translation>
 <translation id="5093477827231450397">Loend blokeeritud saitidest, mille puhul te ei soovi lubada muudele saitidele reklaamide soovitamist</translation>
 <translation id="5094176498302660097">Võite toetatud faile avada ja redigeerida selle rakendusega rakenduse Failid või muude rakenduste kaudu. Selle haldamiseks, millised failid vaikimisi selles rakenduses avatakse, <ph name="BEGIN_LINK"/>vaadake, kuidas oma seadmes vaikerakendusi seadistada<ph name="END_LINK"/>.</translation>
 <translation id="5094721898978802975">Side koostööd tegevate omarakendustega</translation>
@@ -5827,6 +5846,7 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="5102244391872941183">Teie asukohta võivad kasutada asukohale juurdepääsu loaga rakendused ja veebisaidid, aga ka süsteemiteenused</translation>
 <translation id="5103311607312269661">ekraanikuva ereduse suurendamine</translation>
 <translation id="5105228265654873067">{NUM_GROUPS,plural, =1{Kustuta grupp}other{Kustuta grupid}}</translation>
+<translation id="1006701764546698765">Hallake Brave'i muid andmeid</translation>
 <translation id="5106350808162641062">Eemalda</translation>
 <translation id="510695978163689362"><ph name="USER_EMAIL"/> on Family Linki järelevalve all. Vanemliku järelevalve all saad lisada kooli kontosid, et pääseda juurde kooli ressurssidele.</translation>
 <translation id="5107093668001980925">Ära kunagi näita kaupmeest <ph name="MODULE_NAME"/></translation>
@@ -5939,7 +5959,6 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="5186381005592669696">Toetatud rakenduste kuvakeele kohandamine</translation>
 <translation id="3075701570150269201">Selle pääsuvõtme abil saate eri seadmetes kiiremini sisse logida. See salvestatakse konto <ph name="ACCOUNT_NAME"/> Brave’i paroolihaldurisse.</translation>
 <translation id="5187641678926990264">&amp;Installi leht rakendusena...</translation>
-<translation id="5187671830619031922">Lisa vaheleht poolitatud vaatesse</translation>
 <translation id="5187826826541650604"><ph name="KEY_NAME"/> (<ph name="DEVICE"/>)</translation>
 <translation id="5188242000716462162">Jagas <ph name="USER_NAME"/></translation>
 <translation id="5188648870018555788">Asukoha kasutamine. Lubage asukohale juurdepääsu loaga ChromeOS-i ja Androidi rakendustel, veebisaitidel ning teenustel teie seadme asukohta kasutada. Asukohatäpsus pakub Androidi rakenduste ja teenuste jaoks täpsemat asukohta. Selleks töötleb Brave regulaarselt teavet seadme andurite ja teie seadme juhtmeta signaalide kohta, et juhtmeta signaalide asukohti ühiselt tuvastada. Neid kasutatakse teie isikut tuvastamata asukohatäpsuse ja asukohapõhiste teenuste parandamiseks ning Brave’i teenuste täiustamiseks, pakkumiseks ja haldamiseks, lähtudes Brave’i ning kolmandate osapoolte õigustatud huvidest, et kasutajate vajadusi rahuldada. <ph name="BEGIN_LINK1"/>Lisateave asukoha kasutamise kohta<ph name="END_LINK1"/></translation>
@@ -6071,6 +6090,7 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="5278823018825269962">Oleku ID</translation>
 <translation id="5279600392753459966">Blokeeri kõik</translation>
 <translation id="5280064835262749532">Värskendage üksuse <ph name="SHARE_PATH"/> mandaati</translation>
+<translation id="5280303168922585051">Teie organisatsioon määras selle seade. Kas soovite selle otsingumootori kindlasti kustutada?</translation>
 <translation id="5280426389926346830">Kas soovite luua otsetee?</translation>
 <translation id="5281013262333731149">Avaneb brauseris: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Androidi rakenduste allalaadimiseks ja kasutamiseks peate esmalt installima selle kohustusliku värskenduse. Seadme <ph name="DEVICE_TYPE"/> värskendamise ajal ei saa te seda kasutada. <ph name="DEVICE_TYPE"/> taaskäivitatakse pärast installimise lõpulejõudmist.</translation>
@@ -6102,7 +6122,6 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="5297984209202974345">Hiljutine AI loodud teema <ph name="INDEX"/> otsingu <ph name="SUBJECT"/> kohta; stiil: <ph name="STYLE"/></translation>
 <translation id="5298219193514155779">Teema on loonud</translation>
 <translation id="5298315677001348398">Kas soovite jätkata ja lubada sellel tarkvaral teha teie seadmes muudatusi?</translation>
-<translation id="5298611529917615393">Funktsiooni kasutamiseks peate üle vaatama tingimused ja nendega nõustuma</translation>
 <translation id="5299109548848736476">Ära jälgi</translation>
 <translation id="5299558715747014286">Teie vahelehegruppide vaatamine ja haldamine</translation>
 <translation id="5300589172476337783">Kuva</translation>
@@ -6130,6 +6149,7 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="5320135788267874712">Seadme uus nimi</translation>
 <translation id="532247166573571973">Serveriga ei pruugi ühendust saada. Proovige hiljem uuesti.</translation>
 <translation id="4201026620212054031">Kohandage Brave’i ja selle lehe välimust</translation>
+<translation id="2334093076041322971">Hallake oma Brave'i kontol</translation>
 <translation id="5324300749339591280">Rakenduste loend</translation>
 <translation id="5324780743567488672">Määra ajavöönd asukoha alusel automaatselt</translation>
 <translation id="5327248766486351172">Nimi</translation>
@@ -6195,7 +6215,6 @@ Väljasuumimiseks kasutage klahvikombinatsiooni Ctrl + Alt + Ereduse vähendamin
 <translation id="5376931455988532197">Fail on liiga suur</translation>
 <translation id="5377367976106153749">Kas lülitada juurdepääs kaamerale sisse?</translation>
 <translation id="5379140238605961210">Blokeeri ka edaspidi juurdepääs mikrofonile</translation>
-<translation id="5380424552031517043"><ph name="PERMISSION"/> eemaldati</translation>
 <translation id="5380526436444479273">Oodake mõni minut ja proovige uuesti</translation>
 <translation id="5382591305415226340">Toetatud linkide haldamine</translation>
 <translation id="5384401776498845256">Kes saavad teiega jagada</translation>
@@ -6278,6 +6297,7 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="5434065355175441495">PKCS 1 RSA krüpteerimine</translation>
 <translation id="5435274640623994081">Helisignaali logimise lubamine</translation>
 <translation id="5435779377906857208">Luba hosti <ph name="HOST"/> jaoks alati juurdepääs minu asukohale</translation>
+<translation id="5436211819997237281">Laiendus, mis praegu teie uut vahelehte haldab</translation>
 <translation id="5436492226391861498">Puhverserveri tunneli ootamine...</translation>
 <translation id="5436510242972373446">Otsi <ph name="SITE_NAME"/>-st:</translation>
 <translation id="5438014818441491616">Akna (<ph name="WINDOW_SIDE"/>) laius on nüüd <ph name="WINDOW_SIZE_PERCENT"/>, paani (<ph name="PANE_SIDE"/>) laius on nüüd <ph name="PANE_SIZE_PERCENT"/>.</translation>
@@ -6418,6 +6438,7 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="5533343601674003130">PDF-i teenus</translation>
 <translation id="5537725057119320332">Ülekanne</translation>
 <translation id="5539070192556911367">Brave'iga ei saa ühendust</translation>
+<translation id="5541091577812545428">Parooli ei muudetud</translation>
 <translation id="5542132724887566711">Profiil</translation>
 <translation id="5542750926112347543">Domeeni <ph name="DOMAIN"/> küpsisefailid on blokeeritud.</translation>
 <translation id="5542949973455282971">Luuakse ühendus operaatoriga <ph name="CARRIER_NAME"/></translation>
@@ -6455,6 +6476,7 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="556321030400250233">kohalik või jagatud fail</translation>
 <translation id="6363797201514053536">Otsige Brave'ist või sisestage URL</translation>
 <translation id="5563824734298958390">Kas soovite vahelehegrupist lahkuda?</translation>
+<translation id="5565579144504951367">Teie riistvara on seadistamiseks valmis</translation>
 <translation id="5565735124758917034">Aktiivne</translation>
 <translation id="5568069709869097550">Ei saa sisse logida</translation>
 <translation id="5568525251731145240">Kas kustutada saidi <ph name="SITE_NAME"/>, kõigi selle alamsaitide ning installitud rakenduste saidiandmed ja load?</translation>
@@ -6471,6 +6493,7 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="557722062034137776">Seadme lähtestamine ei mõjuta teie Brave'i kontosid ega nende kontodega sünkroonitud andmeid. Kõik seadmesse lokaalselt salvestatud failid siiski kustutatakse.</translation>
 <translation id="5578059481725149024">Automaatne sisselogimine</translation>
 <translation id="5578387000057347457">Piltide loomine vabas vormis päringu või esiletõstetud teksti põhjal</translation>
+<translation id="5579225964082017560">Eemalda <ph name="SITE"/> loendist <ph name="SECTION_HEADER"/></translation>
 <translation id="5581134892342029705">Tõlge <ph name="LANGUAGE"/> keelde on valmis</translation>
 <translation id="558170650521898289">Microsoft Windowsi riistvara draiverite kontrollimine</translation>
 <translation id="5581972110672966454">Ei õnnestunud seadet domeeniga ühendada. Proovige uuesti või võtke ühendust seadme omaniku või administraatoriga. Veakood: <ph name="ERROR_CODE"/>.</translation>
@@ -6672,6 +6695,7 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="573520097779121706">Kasutage kursori liigutamiseks klahve 7, 8, 9, u, o, j, k, l</translation>
 <translation id="5736092224453113618">{NUM_FILES,plural, =0{Need andmed või teie seade ei vasta teie organisatsiooni teatud turvareeglitele. Pöörduge administraatori poole, et teada saada, mida on vaja parandada.}=1{See fail või teie seade ei vasta teie organisatsiooni teatud turvareeglitele. Pöörduge administraatori poole, et teada saada, mida on vaja parandada.}other{Need failid ei vasta teie organisatsiooni teatud turvareeglitele. Pöörduge administraatori poole, et teada saada, mida on vaja parandada.}}</translation>
 <translation id="5738093759615225354">Vajate seda pääsuvõtit oma arvutisse sisselogimiseks</translation>
+<translation id="5738386565827477765">Audioseade</translation>
 <translation id="5739017626473506901">Logige sisse, et aidata kasutajal <ph name="USER_NAME"/> lisada koolikonto</translation>
 <translation id="5739235828260127894">Kinnitamise ootel. <ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/></translation>
 <translation id="5739458112391494395">Väga suur</translation>
@@ -6733,6 +6757,7 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="7171242884588191792">Brave'i failide utiliidid</translation>
 <translation id="5787146423283493983">Võtme ühildumine</translation>
 <translation id="5787420647064736989">Seadme nimi</translation>
+<translation id="3481489625298495279">Külastage Brave Walletit, et lisada või hallata <ph name="BEGIN_LINK_LOYALTY_CARDS"/>kliendikaarte<ph name="END_LINK_LOYALTY_CARDS"/> või Google Pay <ph name="BEGIN_LINK_PAYMENT_METHODS"/>makseviise<ph name="END_LINK_PAYMENT_METHODS"/></translation>
 <translation id="5788367137662787332">Kahjuks ei õnnestunud seadmes <ph name="DEVICE_LABEL"/> vähemalt ühe kettapartitsiooni ühendamine.</translation>
 <translation id="5789581866075720267">Paroolide importimiseks selles seadmes teenusesse <ph name="BRAND"/>, valige CSV-fail.</translation>
 <translation id="5790085346892983794">Õnnestus</translation>
@@ -6922,6 +6947,7 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="5916664084637901428">Sees</translation>
 <translation id="59174027418879706">Lubatud</translation>
 <translation id="5919305207330938913">Kõiki kogutud andmeid kasutatakse kooskõlas Brave’i <ph name="BEGIN_LINK"/>privaatsuseeskirjadega<ph name="END_LINK"/>.</translation>
+<translation id="5919486630433391408">Administraator on püsivaravärskendused keelanud.</translation>
 <translation id="5920543303088087579">Administraator on selle võrguga ühenduse loomise keelanud</translation>
 <translation id="5922963926582976524">Vahetu kuumkoha võrgu ühenduse katkestamine</translation>
 <translation id="5924047253200400718">Hankige abi<ph name="SCANNING_STATUS"/></translation>
@@ -6956,7 +6982,6 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="594221546068848596">Otsige lehelt rakendusega <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="5942779427914696408">Seadme nähtavus</translation>
 <translation id="5943127421590245687">Kinnitamine õnnestus. Kohalike andmete avamiseks ja taastamiseks sisestage oma seadme (<ph name="DEVICE_TYPE"/>) vana parool.</translation>
-<translation id="5943209617717087975"><ph name="THIRD_PARTY_NTP_MANAGER"/> haldab teie uut vahelehte</translation>
 <translation id="5945002094477276055"><ph name="FILE_NAME"/> võib olla ohtlik. Kas saata see skannimiseks Brave'i ohutu sirvimise funktsioonile?</translation>
 <translation id="5945192511027649793">Puuteplaadi keelamine</translation>
 <translation id="5945363896952315544">Teie turvavõtmele ei saa rohkem sõrmejälgi talletada. Uue sõrmejälje lisamiseks kustutage mõni olemasolev.</translation>
@@ -7041,7 +7066,6 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="6003479444341796444">Pealkirjariba on nüüd kuvatud</translation>
 <translation id="6003582434972667631">Teema on seadistanud teie organisatsioon</translation>
 <translation id="6005045517426700202">Telliskivihoone</translation>
-<translation id="6006392003290068688">Eemaldati <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/></translation>
 <translation id="6006484371116297560">Klassikaline</translation>
 <translation id="6007053304250788613">Peegelrežiimist saab välistada ainult ühe ekraani</translation>
 <translation id="6007240208646052708">Häälotsing pole teie keeles saadaval.</translation>
@@ -7215,6 +7239,7 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="6131511889181741773">Splatter</translation>
 <translation id="6132251717264923430">Nupp on kinnitatud</translation>
 <translation id="6132714462430777655">Kas jätta koolis kasutamiseks registreerimine vahele?</translation>
+<translation id="6134418895482326458">Jaluse peitmine uuel vahelehel</translation>
 <translation id="6134428719487602109">Kõik kasutajakontod eemaldatakse ja Chromebook lähtestatakse algsele olekule.</translation>
 <translation id="6135826623269483856">Nendel saitidel ei lubata kõikidel teie ekraanidel aknaid hallata</translation>
 <translation id="6136114942382973861">Sule allalaadimiste riba</translation>
@@ -7569,6 +7594,7 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="6388577073199278153">Teie mobiilikontole ei pääse juurde</translation>
 <translation id="6390020764191254941">Vahelehe teisaldamine uude aknasse</translation>
 <translation id="6390046581187330789">{COUNT,plural, =0{Mitte ühegi saidi jaoks}=1{Saitide <ph name="EXAMPLE_DOMAIN_1"/> ja <ph name="EXAMPLE_DOMAIN_2"/> ning veel 1 jaoks}other{Saitide <ph name="EXAMPLE_DOMAIN_1"/> ja <ph name="EXAMPLE_DOMAIN_2"/> ning veel {COUNT} jaoks}}</translation>
+<translation id="6390533465682072118">Taastamine</translation>
 <translation id="6391131092053186625">Teie seadme IMEI on <ph name="IMEI_NUMBER"/>. See number on abiks teenuse aktiveerimisel.</translation>
 <translation id="6393156038355142111">Soovita tugevat parooli</translation>
 <translation id="6393550101331051049">Lubatud kuvada ebaturvalist sisu</translation>
@@ -7652,6 +7678,7 @@ Saate sellele toimingule määrata mitu lülitit.</translation>
 <translation id="6455521402703088376">Väljas • Arendaja tühistas selle laienduse avaldamise</translation>
 <translation id="6455894534188563617">&amp;Uus kaust</translation>
 <translation id="645705751491738698">Jätka JavaScripti blokeerimist</translation>
+<translation id="6457572529564180082">Rakendust <ph name="APP_NAME"/> ei saa käivitada</translation>
 <translation id="6458606150257356946">Kleebi ikkagi</translation>
 <translation id="6458701200018867744">Üleslaadimine nurjus (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="6459488832681039634">Kasuta otsimiseks valikut</translation>
@@ -7941,6 +7968,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="4653111393922644171">Praegu saate paroole jagada ainult pereliikmetega. <ph name="BEGIN_LINK"/>Looge peregrupp<ph name="END_LINK"/> kuni kuue liikmega, et kasutada oma Brave'i teenuseid ja tellimusi paremal moel.</translation>
 <translation id="666731172850799929">Ava rakenduses <ph name="APP_NAME"/></translation>
 <translation id="6669195257625975787">Andmeid töödeldakse samuti nagu saiti, mida vaatate.</translation>
+<translation id="6669637573228217624">Faili üleslaadimine</translation>
 <translation id="6670142487971298264"><ph name="APP_NAME"/> on nüüd saadaval</translation>
 <translation id="7256334756499709483">Mõned laiendused võivad Brave'ile otsingumootoreid lisada</translation>
 <translation id="6670983860904543332">Automaatsed värskendused teevad uusimad funktsioonid teile kättesaadavaks. Avastage hiljutiste värskenduste esiletõstetud funktsioone.</translation>
@@ -7984,7 +8012,6 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="6694462491298752106">Sisseehitatud puuteplaat on keelatud</translation>
 <translation id="6694634756612002311">Halda jagamist</translation>
 <translation id="6697172646384837537">Valige, kuhu oma paroolid importida</translation>
-<translation id="6697492270171225480">Kui lehte ei leita, kuvatakse sarnaste lehtede soovitusi</translation>
 <translation id="6697690052557311665">Jagamiseks paremklõpsake rakenduses Failid soovitud kaustal ja valige käsk „Jaga Linuxiga”.</translation>
 <translation id="6698810901424468597">Andmete lugemine ja muutmine veebisaidil <ph name="WEBSITE_1"/> ja <ph name="WEBSITE_2"/></translation>
 <translation id="6700093763382332031">Mobiilsidevõrgu SIM-kaardi lukk</translation>
@@ -8078,6 +8105,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="6771503742377376720">On sertifitseerimisorgan</translation>
 <translation id="6772974422346500939">Ava ja muuda</translation>
 <translation id="574857039466693275">Brave Root Store</translation>
+<translation id="677394079035748956">Sait vajab ühekordset parooli</translation>
 <translation id="6774710250118040929">Uue parooli lisamine</translation>
 <translation id="6775163072363532304">Saadaolevad seadmed kuvatakse siin.</translation>
 <translation id="6775992990195573904">Korrastage oma vahelehed</translation>
@@ -8157,6 +8185,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="6811792477922751991">Käivitajaklahvi kasutamine funktsiooniklahvide käitumise muutmiseks</translation>
 <translation id="6812349420832218321">Toodet <ph name="PRODUCT_NAME"/> ei saa juurkasutajana käitada.</translation>
 <translation id="6812841287760418429">Säilita muudatused</translation>
+<translation id="681360534161436378">{NUM_APPS,plural,offset:2 =1{Teie administraator saab rakenduse <ph name="APP0_NAME"/> abil jäädvustada teie ekraani.}=2{Teie administraator saab rakenduste <ph name="APP0_NAME"/> ja <ph name="APP1_NAME"/> abil jäädvustada teie ekraani.}=3{Teie administraator saab rakenduste <ph name="APP0_NAME"/> ja <ph name="APP1_NAME"/> ning veel 1 rakenduse abil salvestada teie ekraani.}other{Teie administraator saab rakenduste <ph name="APP0_NAME"/> ja <ph name="APP1_NAME"/> ning veel # rakenduse abil salvestada teie ekraani.}}</translation>
 <translation id="6813907279658683733">Kogu ekraan</translation>
 <translation id="6814754908910736855">WiFi Directi klientide teave:</translation>
 <translation id="6815376457351236663">Ava ikka</translation>
@@ -8202,6 +8231,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="6841186874966388268">Vead</translation>
 <translation id="6842135459748401207">Ainult kontole <ph name="USER_EMAIL"/> sisse logitud seadmed</translation>
 <translation id="6842136130964845393">Selleks, et saaksite alati oma salvesatud paroolidele juurde pääseda, kinnitage oma isik</translation>
+<translation id="6842670680297285750">Uus poolitatud vaade praeguse vahelehega</translation>
 <translation id="6842749380892715807">XML-i saidiloendite viimane allalaadimine: <ph name="LAST_DATE_DOWNLOAD"/>.</translation>
 <translation id="6842868554183332230">Saidid tuvastavad, millel seadet aktiivselt kasutate, et määrata vestlusrakendustes teie saadavalolek</translation>
 <translation id="6843264316370513305">Võrgu silumine</translation>
@@ -8247,6 +8277,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="686831807558000905">Ära logi sisse</translation>
 <translation id="686839242150793617">Lubatakse automaatselt pilt pildis režiimi siseneda</translation>
 <translation id="6868934826811377550">Kuva üksikasjad</translation>
+<translation id="6870470066213933201">JavaScripti optimeerimise ja turvalisuse haldamine</translation>
 <translation id="6871644448911473373">OCSP vastaja: <ph name="LOCATION"/></translation>
 <translation id="6871860225073478239">Keeled …</translation>
 <translation id="6873571253135628430">Saidi lubade muutmine</translation>
@@ -8366,7 +8397,6 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="6965607054907047032">Vabastage mälu vahelehtede tegevusetuse põhjal</translation>
 <translation id="6965648386495488594">Port</translation>
 <translation id="6965978654500191972">Seade</translation>
-<translation id="6966370001499648704">Hallake, milliseid telefone kasutate turvavõtmetena</translation>
 <translation id="6967112302799758487">Kõik teenuse Steam Chromebookile (beeta) abil installitud rakendused ja mängud eemaldatakse sellest seadmest. Samuti eemaldatakse nende rakenduste ja mängudega seotud andmed. Enne desinstallimist varundage kindlasti salvestatud rakendused ja mängud.</translation>
 <translation id="6967430741871315905">Ei saa kontrollida, kas seade on lubatud</translation>
 <translation id="6968288415730398122">Ekraaniluku seadistamiseks sisestage parool</translation>
@@ -8385,6 +8415,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="5351075736722780148">Kui Brave on ka teie vaikeotsingumootor, näete paremaid, konteksti suhtes asjakohaseid soovitusi</translation>
 <translation id="697508444536771064">Lülita Linux välja</translation>
 <translation id="6978121630131642226">Otsingumootorid</translation>
+<translation id="6978236010531171013">Jaga ikkagi</translation>
 <translation id="6978717888677691380">Blokeeritud saidid</translation>
 <translation id="6979041727349121225">Energiasäästja</translation>
 <translation id="6979044105893951891">Hallatavate külastajaseansside käivitamine ja nendest väljumine</translation>
@@ -8483,14 +8514,12 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="7039912931802252762">Microsofti kiipkaardi sisselogimine</translation>
 <translation id="7039951224110875196">Looge lapsele Brave'i konto</translation>
 <translation id="7039968672732182060">Teie Chromebook ei saa enam turvavärskendusi. Aeg minna üle uusimale turbe- ja tarkvarale. Kehtivad pakkumise tingimused.</translation>
-<translation id="7041405817194720353">Eemaldati <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ja veel <ph name="COUNT"/></translation>
 <translation id="7042116641003232070">Lubatud teie seadmesse andmeid salvestada</translation>
 <translation id="7043108582968290193">Valmis! Ühildumatuid rakendusi ei leitud.</translation>
 <translation id="7044124535091449260">Lisateave saidile juurdepääsu kohta</translation>
 <translation id="7044207729381622209">Teid logitakse nendelt saitidelt (sh avatud vahelehtedel) välja</translation>
 <translation id="7044211973375150246">Rakendus avab samad lingid, mille avab rakendus <ph name="APP_NAME"/>. See keelab rakenduse <ph name="APP_NAME_2"/> jaoks toetatud linkide avamise.</translation>
 <translation id="7044606776288350625">Andmete sünkroonimine</translation>
-<translation id="7049334121062577747">Praeguse vaatega vahetamine</translation>
 <translation id="7050037487872780845">Kuumkoha sobimatu seadistus</translation>
 <translation id="1419348090043109902">{COUNT,plural, =1{Parool salvestati teie Brave’i kontole <ph name="USER_EMAIL"/>}other{Paroolid salvestati teie Brave’i kontole <ph name="USER_EMAIL"/>}}</translation>
 <translation id="7052147783849658969">Mitteaktiivseid vahelehti ei ole praegu</translation>
@@ -8598,6 +8627,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="7131896909366247105"><ph name="APP_NAME"/>, ootel</translation>
 <translation id="5639710699305791127">Kasutage Brave’i AI-d, et saada lugemisel, kirjutamisel ja loomisel abi</translation>
 <translation id="7134098520442464001">Saate teksti suurust vähendada.</translation>
+<translation id="7134653428559514680">Sellelt saidilt jagamine ei ole soovitatav</translation>
 <translation id="7134951043985383439">Laaditi alla ohtlik fail</translation>
 <translation id="7135729336746831607">Kas lülitada Bluetooth sisse?</translation>
 <translation id="7136694880210472378">Muuda vaikevalikuks</translation>
@@ -8743,6 +8773,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="7250616558727237648">Seade, millega jagate, ei vastanud. Proovige uuesti.</translation>
 <translation id="725109152065019550">Kahjuks on teie administraator keelanud teie kontol välismäluseadme.</translation>
 <translation id="7251635775446614726">Teie administraator ütleb: „<ph name="CUSTOM_MESSAGE"/>”</translation>
+<translation id="7252424535852086046">Nende andmete kustutamiseks avage haldamise seaded</translation>
 <translation id="7253521419891527137">&amp;Lisateave</translation>
 <translation id="7254951428499890870">Kas soovite kindlasti käivitada rakenduse „<ph name="APP_NAME"/>” diagnostikarežiimis?</translation>
 <translation id="725497546968438223">Järjehoidjate kausta nupp</translation>
@@ -8935,6 +8966,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="7387951778417998929">Kui soovite kasutada muud otsingumootorit peale vaikeotsingumootori, sisestage selle otsetee aadressiribale ja seejärel vajutage valitud klaviatuuriotseteed. Samuti saate siin oma vaikeotsingumootorit muuta.</translation>
 <translation id="7388615499319468910">Saidid ja reklaamijad saavad hankida teavet reklaamide toimivuse kohta. See seade on välja lülitatud.</translation>
 <translation id="738903649531469042">Vahelehe lisamine lugemisloendisse</translation>
+<translation id="7389615853658756494">Muuda seda saidil</translation>
 <translation id="7392118418926456391">Viiruste skannimine ebaõnnestus</translation>
 <translation id="7392915005464253525">A&amp;va suletud aken uuesti</translation>
 <translation id="7393073300870882456">{COUNT,plural, =1{1 üksus kopeeriti}other{{COUNT} üksust kopeeriti}}</translation>
@@ -9027,6 +9059,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="7450761244949417357">Brauser <ph name="ALTERNATIVE_BROWSER_NAME"/> avatakse kohe</translation>
 <translation id="6147816961713837040">Saadab privaatse serveri kaudu Brave'ile URL-i hägustatud osa, mis peidab teie IP-aadressi</translation>
 <translation id="7453008956351770337">Kui valite selle printeri, annate järgmisele laiendile loa printerile juurde pääseda.</translation>
+<translation id="7453032093368223821">Hallake muid andmeid</translation>
 <translation id="7454548535253569100">Portaal: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7454744349230173024">Teie organisatsioon on paroolide salvestamise välja lülitanud</translation>
 <translation id="7455730275746867420">Halda lisakonteinereid</translation>
@@ -9041,6 +9074,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="7460045493116006516">Teie installitud praegune teema</translation>
 <translation id="7461924472993315131">Kinnita</translation>
 <translation id="746216226901520237">Järgmisel korral avab seadme <ph name="DEVICE_TYPE"/> teie telefon. Funktsiooni Smart Lock saab välja lülitada menüüs Seaded.</translation>
+<translation id="7463068149674892185">Seda toimingut ei soovitata</translation>
 <translation id="746329643760972486">MacOS</translation>
 <translation id="7463985990119325874">Nende funktsioonide kogutavate andmete kasutusviise haldab teie organisatsioon.</translation>
 <translation id="7464645554245611385">Selle vahelehe viimane värskendus</translation>
@@ -9063,6 +9097,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="7474043404939621342">Kohanda tööriistariba</translation>
 <translation id="747459581954555080">Taasta kõik</translation>
 <translation id="747507174130726364">{NUM_DAYS,plural, =1{Nõutav on kohene tagastamine}other{Tagastage seade (<ph name="DEVICE_TYPE"/>) {NUM_DAYS} päeva jooksul}}</translation>
+<translation id="747557463733380256">Lugege teavet brauseri haldamise kohta</translation>
 <translation id="7475671414023905704">Netscape'i kaotatud parooli URL</translation>
 <translation id="7475742997309661417">ChromeOS-i ekraanilugejat ChromeVox kasutavad peamiselt pimedad või vaegnägemisega inimesed, et lugeda ekraanil kuvatavat teksti kõnesünteesi või Braille’i ekraani abil. ChromeVoxi sisselülitamiseks vajutage 5 sekundit pikalt mõlemat helitugevuse klahvi. Kui ChromeVox aktiveeritakse, tehakse teile kiire tutvustus.</translation>
 <translation id="7476454130948140105">Aku on värskendamiseks liiga tühi (<ph name="BATTERY_PERCENT"/>%)</translation>
@@ -9136,8 +9171,8 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="7528440855533975803">{GROUP_COUNT,plural, =1{Kas tühistada vahelehegrupi grupeerimine?}other{Kas tühistada vahelehegruppide grupeerimine?}}</translation>
 <translation id="7529411698175791732">Kontrollige oma Interneti-ühendust. Probleemi jätkumisel logige välja ja uuesti sisse.</translation>
 <translation id="7529865045818406536">Eelistatud võrke kasutatakse, kui saadaval on mitu eelmist võrku</translation>
-<translation id="7529876053219658589">{0,plural, =1{Sule külalise aknad}other{Sule külalise aknad}}</translation>
 <translation id="7530016656428373557">Tühjenemise määr vattides</translation>
+<translation id="7530215951451994972">Looge pilt</translation>
 <translation id="7531771599742723865">Seade on kasutuses</translation>
 <translation id="7531779363494549572">Avage jaotis Seaded &gt; Rakendused ja märguanded &gt; Märguanded.</translation>
 <translation id="7532009420053991888"><ph name="LINUX_APP_NAME"/> ei reageeri. Rakenduse sulgemiseks valige käsk „Sundpeata”.</translation>
@@ -9185,6 +9220,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="7566118625369982896">Play rakenduse linkide haldamine</translation>
 <translation id="7566723889363720618">F12</translation>
 <translation id="7566969018588966785">Klahvikombinatsiooni loomine</translation>
+<translation id="7567100268516475532">Vahelehe teisaldamine poolitatud vaatesse</translation>
 <translation id="7568014768212280234">Teie vahelehegrupp on täis, uued liikmed ei saa selle lingi kaudu liituda</translation>
 <translation id="7568759527730933493">Kasutage DNS-ist (domeeninimesüsteemist) saidi IP-aadressi otsimiseks turvalist ühendust. See kasutab hallatud teenusepakkujat serverist <ph name="DNS_SERVER_TEMPLATE_WITH_IDENTIFIER"/>. Turvalisi ühendusi ei kasutata teatud domeenide jaoks, mille on seadistanud teie administraator.</translation>
 <translation id="756876171895853918">Avatari kohandamine</translation>
@@ -9210,6 +9246,7 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="7585106857920830898">Kontrollitakse kooskõlas teie organisatsiooni turvaeeskirjadega …</translation>
 <translation id="8201192017531062522">Brave'i käitatakse edasi seni, kuni Brave'i rakendused on avatud.</translation>
 <translation id="7587806318633605613">Soovituste ajalugu</translation>
+<translation id="7589448773774086276">Uus poolitatud vaade praeguse vahelehega</translation>
 <translation id="7589461650300748890">Hei! Olge ettevaatlik.</translation>
 <translation id="7590883480672980941">Sisendi seaded</translation>
 <translation id="7592060599656252486">Mõni</translation>
@@ -9282,7 +9319,6 @@ Teil on veel # ohustatud parooli. Brave'i paroolihaldur soovitab kohe neid paroo
 <translation id="764178579712141045"><ph name="USER_EMAIL"/> lisati</translation>
 <translation id="7642778300616172920">Peida tundlik sisu</translation>
 <translation id="7643117827468520640">Vaadake need tingimused üle</translation>
-<translation id="7643842463591647490">{0,plural, =1{# avatud aken}other{# avatud akent}}</translation>
 <translation id="7643932971554933646">Kas soovite lubada saidil faile vaadata?</translation>
 <translation id="7644953783774050577">Tühistage kõik valikud</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (omanik)</translation>
@@ -9422,6 +9458,8 @@ See võib hõlmata teavet installitud tarkvara, failide, teie brauseri, seadme o
 <translation id="7722040605881499779">Värskendamiseks vajalik: <ph name="NECESSARY_SPACE"/></translation>
 <translation id="8543787950557226450">Lähtesta Brave’i vaikekujundusele</translation>
 <translation id="7724603315864178912">Lõika</translation>
+<translation id="7724711098786238351">Demorežiim on mõeldud vähemalt 18-aastastele kasutajatele ning selle puhul kehtivad Brave'i teenusetingimused ja privaatsuseeskirjad. Selles seadmes sisestatud andmeid võivad perioodiliste tühjendamiste vahelisel ajal vaadata ka teised.</translation>
+<translation id="7726288096350730168">Kustuta sellest seadmest</translation>
 <translation id="7726391492136714301">Teie telefoni märguannete ja rakenduste vaatamine</translation>
 <translation id="7727898923446098954">Vaheleht peideti</translation>
 <translation id="7728089752992902596">{NUM_TABS,plural, =1{Peata see vaheleht}other{Peata need vahelehed}}</translation>
@@ -9808,6 +9846,7 @@ Määrangu eemaldamiseks vajutage määratud lülitit või klahvi.</translation>
 <translation id="7985528042147759910">Kas lubada välistel tarvikutel mälule juurde pääseda?</translation>
 <translation id="7986295104073916105">Salvestatud parooli seadete lugemine ja muutmine</translation>
 <translation id="7986764869610100215">See lubab USB-seadmete püsiva jagamise külalistega. Kui seadet külalisega jagatakse, üritab see automaatselt ühendada sama külalisega. Seadme ühenduse käsitsi katkestamisel keelatakse püsiv ühendus ning funktsiooni täielikul keelamisel lähtestatakse kõik püsivuse seaded. Kas olete kindel?</translation>
+<translation id="798779949890829624">Seda seadet haldab administraator</translation>
 <translation id="7987814697832569482">Loo alati ühendus selle VPN-i kaudu</translation>
 <translation id="7988355189918024273">Luba juurdepääsetavuse funktsioonid</translation>
 <translation id="7988805580376093356">Säilitage oma operatsioonisüsteem ja käitage operatsioonisüsteemi <ph name="DEVICE_OS"/> USB-seadmelt.</translation>
@@ -9943,6 +9982,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8174413867995118050">Muud Brave'i profiilid</translation>
 <translation id="8077749280021225629">Kustutage ka sirvimisandmed (<ph name="URL"/>). See võib teid saidilt <ph name="DOMAIN"/> välja logida. <ph name="LEARN_MORE"/></translation>
 <translation id="80790299200510644">Pildiotsing</translation>
+<translation id="7239633109246708042">Brave'i paroolihaldur saab teie konto parooli asendada tugeva parooliga ja salvestada selle aadressile <ph name="EMAIL"/>. <ph name="PASSWORD_CHANGE"/></translation>
 <translation id="80798452873915119">Saidid võivad küsida luba kõikidel teie ekraanidel akende haldamiseks</translation>
 <translation id="8080028325999236607">Sule kõik vahelehed</translation>
 <translation id="8081989000209387414">Kas keelata ADB silumine?</translation>
@@ -10154,6 +10194,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8230134520748321204">Kas salvestada saidi <ph name="ORIGIN"/> parool?</translation>
 <translation id="8230326817897075865">Kustutage <ph name="CREDENTIAL_TYPE"/></translation>
 <translation id="8230446983261649357">Ära luba saitidel pilte näidata</translation>
+<translation id="8231438895476693774">Vahelehe lisamine uuele poolitatud vaatele</translation>
 <translation id="823226567613548870">kustutada teie teenuse <ph name="BRAND"/> andmed.</translation>
 <translation id="8233028084277069927">Ava nüüd</translation>
 <translation id="8234795456569844941">Aidake meie spetsialistidel probleemi lahendada. Andke meile teada, mis toimus vahetult enne profiili veateate ilmumist.</translation>
@@ -10166,6 +10207,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8239932336306009582">Pole lubatud märguandeid saata</translation>
 <translation id="8241040075392580210">Pilvine</translation>
 <translation id="8241338426526905580">Sertifikaadid puuduvad</translation>
+<translation id="8241650983304689286">Vahelehe lisamine uuele poolitatud vaatele</translation>
 <translation id="8241806945692107836">Seadme konfiguratsiooni määramine ...</translation>
 <translation id="8241868517363889229">Järjehoidjate lugemine ja muutmine</translation>
 <translation id="8242273718576931540">Teie seade ei saa selle võrguga ühendust luua. <ph name="BEGIN_LINK_LEARN_MORE"/>Lisateave<ph name="END_LINK_LEARN_MORE"/></translation>
@@ -10206,6 +10248,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8264195025773092348">Näidatakse ainult toetatud seadmeid. USB-seadmed pole omarakendustele enam saadaval, kuni nende ühendus katkestatakse.</translation>
 <translation id="8265018477030547118">Ainult selles seadmes</translation>
 <translation id="826511437356419340">Akna ülevaate režiim on aktiveeritud. Pühkige navigeerimiseks või vajutage tabulaatorit, kui kasutate klaviatuuri.</translation>
+<translation id="8266430295499893285">Enne paroolidele juurdepääsu peate kinnitame, et see olete teie</translation>
 <translation id="8266947622852630193">Kõik sisestusmeetodid</translation>
 <translation id="8267539814046467575">Printeri lisamine</translation>
 <translation id="8267961145111171918"><ph name="BEGIN_PARAGRAPH1"/>See on üldteave seadme ja selle kasutamise kohta (nt aku tase, süsteemi ja rakenduste tegevus ning vead). Neid andmeid kasutatakse Androidi täiustamiseks ning teatud koondteave aitab ka Brave'i rakendusi ja partnerite, näiteks Androidi arendajate, tooteid ja teenuseid täiustada.<ph name="END_PARAGRAPH1"/>
@@ -10317,6 +10360,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8339288417038613756">Ekraani ja teksti suurus</translation>
 <translation id="833986336429795709">Valige lingi avamiseks rakendus</translation>
 <translation id="8340547030807793004">Rohkem toiminguid: <ph name="DEVICE"/></translation>
+<translation id="8341804784147620576">Kuva otsingu otseteed</translation>
 <translation id="8342221978608739536">Ei proovinud</translation>
 <translation id="8342861492835240085">Kogu valimine</translation>
 <translation id="8345848587667658367">Saate nüüd vaadata oma telefoni hiljutisi fotosid, meediat, märguandeid ja rakendusi</translation>
@@ -10346,6 +10390,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8363277452449582220">Ookean</translation>
 <translation id="8366396658833131068">Võrguühendus on taastatud. Valige teine võrk või vajutage allolevat nuppu „Jätka” rakenduse Kiosk käivitamiseks.</translation>
 <translation id="8366694425498033255">Valikuklahvid</translation>
+<translation id="8367705492654390392">Küsige midagi</translation>
 <translation id="8368859634510605990">&amp;Ava kõik järjehoidjad</translation>
 <translation id="8370294614544004647">Sülearvuti sulgemisel aktiveeritakse unerežiim</translation>
 <translation id="8370419414641876532">Klõpsake valikul „Paroolid ja automaattäide“</translation>
@@ -10596,6 +10641,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8540503336857689453">Turvakaalutlustel ei soovitata peidetud võrku kasutada.</translation>
 <translation id="854071720451629801">Märgi loetuks</translation>
 <translation id="8540942859441851323">Teenusepakkuja nõuab andmeside rändlust</translation>
+<translation id="8541158209346794904">Bluetooth-seade</translation>
 <translation id="8541462173655894684">Prindiserverist ei leitud ühtegi printerit</translation>
 <translation id="8541838361296720865">Vajutage lülitit või klahvi klaviatuuril, et see toimingule „<ph name="ACTION"/>“ määrata</translation>
 <translation id="8546186510985480118">Seadmes on vähe salvestusruumi</translation>
@@ -10822,6 +10868,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8702825062053163569">Teie seade <ph name="DEVICE_TYPE"/> lukustati.</translation>
 <translation id="8703346390800944767">Jäta reklaam vahele</translation>
 <translation id="8703372953981978786">See link ei toimi</translation>
+<translation id="8703766890819308134">Kuva otsingu otseteed</translation>
 <translation id="8704662571571150811">Domeenid</translation>
 <translation id="8705331520020532516">Seerianumber</translation>
 <translation id="8705580154597116082">WiFi on telefoni kaudu saadaval</translation>
@@ -10897,6 +10944,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8749805710397399240">Ekraanikuva ei saa üle kanda. Kontrollige süsteemieelistustes ekraanisalvestuse luba.</translation>
 <translation id="8749826920799243530">Seade ei ole registreeritud</translation>
 <translation id="8749863574775030885">Juurdepääs tundmatu müüja USB-seadmetele</translation>
+<translation id="8749865622265861882">Kasutate demoseadet</translation>
 <translation id="8750155211039279868"><ph name="ORIGIN"/> soovib järjestikpordiga ühendust luua</translation>
 <translation id="8750346984209549530">Mobiilivõrgu APN</translation>
 <translation id="8750786237117206586">ChromeOS Flexi heliseadete haldamine</translation>
@@ -10958,6 +11006,7 @@ See võib hõlmata teavet installitud tarkvara, failide, teie brauseri, seadme o
 <translation id="8791157330927639737">Lugege lisateavet värskendamise kohta</translation>
 <translation id="8791534160414513928">Saada sirvimisliiklusega taotlus „Do Not Track”</translation>
 <translation id="8793390639824829328">Saidid kasutavad seda funktsiooni jagatud vahelehtede kerimiseks ja suumimiseks</translation>
+<translation id="8793895150509408038">Kuva saidi <ph name="SITE"/> üksikasjad loendist <ph name="SECTION_HEADER"/></translation>
 <translation id="879413103056696865">Kui leviala on sisse lülitatud, teeb teie telefon <ph name="PHONE_NAME"/> järgmist.</translation>
 <translation id="8794548468611058947">Selle asemel et sisestada sisselogimiseks oma Brave'i konto parool, saate seadme <ph name="DEVICE_TYPE"/> jaoks PIN-koodi luua</translation>
 <translation id="8795916974678578410">Uus aken</translation>
@@ -11008,7 +11057,6 @@ See võib hõlmata teavet installitud tarkvara, failide, teie brauseri, seadme o
 <translation id="8827125715368568315">Blokeeritud on <ph name="PERMISSION"/> ja veel <ph name="COUNT"/></translation>
 <translation id="8827289157496676362">Kinnita laiendus</translation>
 <translation id="8828933418460119530">DNS-nimi</translation>
-<translation id="8829979393064090868">Lisa vaheleht poolitatud vaatesse</translation>
 <translation id="8830479210602243906">Suurendage produktiivsust</translation>
 <translation id="883062543841130884">Asendused</translation>
 <translation id="8830779999439981481">Taaskäivitatakse värskenduste rakendamiseks</translation>
@@ -11024,7 +11072,6 @@ See võib hõlmata teavet installitud tarkvara, failide, teie brauseri, seadme o
 <translation id="8838234842677265403"><ph name="WEB_DRIVE_MESSAGE"/> (<ph name="SUPPORT_INFO"/>)</translation>
 <translation id="8838601485495657486">Läbipaistmatu</translation>
 <translation id="8838770651474809439">Hamburger</translation>
-<translation id="8838778928843281408">Telefonide haldamine</translation>
 <translation id="883924185304953854">Otsing pildi järgi</translation>
 <translation id="3740206403750675781">Parool on salvestatud ainult sellesse seadmesse. Uute paroolide salvestamiseks oma Brave'i kontole värskendage Google Play teenuseid.</translation>
 <translation id="8841843049738266382">Lubamisloendisse lisatud kasutajate lugemine ja muutmine</translation>
@@ -11333,7 +11380,6 @@ See võib hõlmata teavet installitud tarkvara, failide, teie brauseri, seadme o
 <translation id="9043264199499366189">Tellige ChromeOS Flexi süsteemisündmused</translation>
 <translation id="9044646465488564462">Võrguga ühenduse loomine ebaõnnestus: <ph name="DETAILS"/></translation>
 <translation id="9045160989383249058">Lugemisloend teisaldati külgpaneelile. Proovige seda siin.</translation>
-<translation id="4534361985432360439">Saadab Brave'ile teie soovitud lehe veebiaadressi.</translation>
 <translation id="9048745018038487540">Vali kõik fondid</translation>
 <translation id="9050666287014529139">Parool</translation>
 <translation id="905145695813415387">„<ph name="LOCAL_FOLDER"/>“ on salvestatud ainult sellesse seadmesse. Kui teisaldate selle kausta kausta „<ph name="LOCAL_FOLDER"/>“, ei saa te seda enam teistesse seadmetesse.</translation>
@@ -11530,6 +11576,7 @@ See võib hõlmata teavet installitud tarkvara, failide, teie brauseri, seadme o
 <translation id="9182556968660520230">Ära luba saitidel kaitstud sisu esitada</translation>
 <translation id="9183302530794969518">Brave'i dokumendid</translation>
 <translation id="918352324374649435">{COUNT,plural, =1{Rakendus}other{# rakendust}}</translation>
+<translation id="9186743636216815027">{NUM_APPS,plural,offset:2 =1{Teie administraator saab rakenduse <ph name="APP0_NAME"/> abil jäädvustada teie ekraani. Teid ei teavitata, kui salvestamine algab.}=2{Teie administraator saab rakenduste <ph name="APP0_NAME"/> ja <ph name="APP1_NAME"/> abil jäädvustada teie ekraani. Teid ei teavitata, kui salvestamine algab.}=3{Teie administraator saab rakenduste <ph name="APP0_NAME"/> ja <ph name="APP1_NAME"/> ning veel 1 rakenduse abil salvestada teie ekraani. Teid ei teavitata, kui salvestamine algab.}other{Teie administraator saab rakenduste <ph name="APP0_NAME"/> ja <ph name="APP1_NAME"/> ning veel # rakenduse abil salvestada teie ekraani. Teid ei teavitata, kui salvestamine algab.}}</translation>
 <translation id="9186963452600581158">Logige sisse oma lapse Brave'i kontoga</translation>
 <translation id="9187967020623675250">Klahvid ei ühti. Vajutage mis tahes klahvi, et <ph name="RESPONSE"/>.</translation>
 <translation id="9192019773545828776">Esitatakse suulist tagasisidet, et saaksite seadet kasutada ilma ekraanikuva vaatamata. Braille'i teel tagasiside on saadaval ühendatud seadme puhul. ChromeVoxi sisse- ja väljalülitamiseks vajutage klahvikombinatsiooni Ctrl + Alt + Z. Navigeerimiseks kasutage klahvikombinatsiooni Otsing + vasaknool või paremnool. Valimiseks (aktiveerimiseks) kasutage klahvikombinatsiooni Otsing + tühik.</translation>
@@ -11583,7 +11630,6 @@ See võib hõlmata teavet installitud tarkvara, failide, teie brauseri, seadme o
 <translation id="934244546219308557">Määrake sellele grupile nimi</translation>
 <translation id="93480724622239549">Tõrge või viga</translation>
 <translation id="9354763467503131">Veebirakenduste teie seadmesse installimise küsimine on lubatud</translation>
-<translation id="936329857119665832">Avaneb samal vahelehel</translation>
 <translation id="936646668635477464">Kaamera ja mikrofon</translation>
 <translation id="936801553271523408">Süsteemidiagnostika andmed</translation>
 <translation id="93766956588638423">Laiendi parandamine</translation>
@@ -11720,11 +11766,11 @@ See võib hõlmata teavet installitud tarkvara, failide, teie brauseri, seadme o
 <translation id="5606799898021851536">Kas salvestada see parool väljaspool privaatset?</translation>
 <translation id="5186185447130319458">Privaatne</translation>
 <translation id="2579188629646253712">Välju privaatsest</translation>
-<translation id="1001131747196960052">Sule privaatne</translation>
 <translation id="2080854978086439640">Andmete kustutamiseks sulgege kõik privaatsed aknad</translation>
 <translation id="3610571162330520499">See mõjutab ainult privaatseid aknaid.</translation>
 <translation id="1961291599064731706">Privaatrežiimis külastatud veebisaite ei salvestata</translation>
 <translation id="8904732128631177813">Privaatse sirvimisajaloo seadmest kustutamiseks sulgege kõik privaatsed vahelehed</translation>
+<translation id="1001131747196960052">Sule privaatne</translation>
 <translation id="433830930456392967">{COUNT, plural,
           =0 {Ava kõik &amp;Privaatses aknas}
           =1 {Ava &amp;Privaatses aknas}

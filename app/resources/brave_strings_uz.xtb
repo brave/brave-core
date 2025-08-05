@@ -82,7 +82,6 @@
 <translation id="2126108037660393668">Yuklab olingan fayl tekshirilmadi.</translation>
 <translation id="2137162749895930932">Tarjima rejimini yopish</translation>
 <translation id="5789330946301045610">Brave bu yuklamani blokladi, chunki sayt xavfsiz ulanishdan foydalanmayapti va fayl oʻzgartirilgan boʻlishi mumkin.</translation>
-<translation id="5401976223298265794">Brave menyusidan bukmark, oʻqish rejimi va boshqalarni ochishingiz mumkin</translation>
 <translation id="142389341645668510">Braveni moslash</translation>
 <translation id="2174917724755363426">Oʻrnatish yakunlanmadi. Haqiqatan ham bekor qilmoqchimisiz?</translation>
 <translation id="8745514854244955877">Brave - Tarmoqqa kirish - <ph name="PAGE_TITLE"/></translation>
@@ -211,6 +210,7 @@
 <translation id="4256965182800026277">Brave hisobingizga saqlangan parollar, toʻlov usullari va manzillar bu qurilmadan olib tashlanadi. Ularni Braveda yana ishlatish uchun hisobingizga kiring.</translation>
 <translation id="395904275706073188">Himoyalangan sahifalarni oʻqish imkonsiz. Boshqa sahifada urining.</translation>
 <translation id="4194619960643453552">Brave qanday qilib sizni himoya qilishi haqida batafsil</translation>
+<translation id="1486377520191913768">Brave tavsiyalar olish uchun manzillar qatori yoki qidiruv panelida kiritilgan matnni tashkilotning qidiruvi, AI hamda agent vositalariga yuboradi.</translation>
 <translation id="1311808042904310985">Brave for Testing haqida</translation>
 <translation id="1152920704813762236">ChromeOS haqida</translation>
 <translation id="3703994572283698466">ChromeOS tizimini ishlab chiqishda <ph name="BEGIN_LINK_LINUX_OSS"/>Linux dasturlash muhiti<ph name="END_LINK_LINUX_OSS"/> <ph name="BEGIN_LINK_CROS_OSS"/>ochiq kodli DT<ph name="END_LINK_CROS_OSS"/> vositalaridan foydalanilgan.</translation>
@@ -236,6 +236,7 @@
 <translation id="4281844954008187215">Xizmat shartlari</translation>
 <translation id="7691786510374174420">Noma’lum xatolik tufayli o‘rnatish amalga oshmadi. Agar hozirda Brave ishlab turgan bo‘lsa, iltimos brauzeringizni yoping va qaytadan urinib ko‘ring.</translation>
 <translation id="4304713468139749426">Parollar menejeri</translation>
+<translation id="4334241893986177674">Bu skrinshotni qidirish</translation>
 <translation id="4334294535648607276">Yuklab olindi.</translation>
 <translation id="1068681683510904753"><ph name="MANAGER"/> bu qurilmadan foydalanishdan oldin quyidagi Xizmat shartlarini oʻqib, qabul qilishingizni talab qiladi. Bu shartlar Brave ChromeOS shartlarini kengaytirmaydi, oʻzgartirmaydi yoki cheklamaydi.</translation>
 <translation id="9183662282810237335">Brave baribir yopilsinmi?</translation>
@@ -330,6 +331,7 @@
 <translation id="899523323751802352">Agar kodli iborani unutsangiz yoki bu sozlamani oʻzgartirmoqchi boʻlsangiz, hisobingizda Brave maʼlumotlarini <ph name="SETTINGS_LINK"/></translation>
 <translation id="82926023981336111">Braveni oʻzingizga moslab, boshqaring. Braveni asosiy brauzer etib belgilang.</translation>
 <translation id="5809516625706423866">Internetga ulanmadi. HTTP 401, ruxsat berilmagan. Proksi konfiguratsiyasini tekshiring.</translation>
+<translation id="95980832839683236">Brave V8 tizimi bilan saytlar ishlashini tezlashtiradi, ammo Brave brauzerining hujumlardan himoyasini biroz pasaytiradi. Bu sozlama oʻchiq.</translation>
 <translation id="1224606669200461217">Brave maʼlumotlarini ishlatish va Brave hisobingizda saqlash uchun Braveni yangilang</translation>
 <translation id="5824893331272123205">Bu panel yuklanmadi, qaytadan urining</translation>
 <translation id="7207456302801184289">Brave brauzeriga xush kelibsiz</translation>
@@ -346,7 +348,6 @@
 <translation id="3598551856834560515">Sinxronizatsiyani boshlash uchun Brave brauzerini yangilang</translation>
 <translation id="5225261774087485064">Odatda siz kiradigan saytlar oʻz xizmatlarini sizga moslashtirish uchun sizga qiziq narsalarni eslab qoladi. Brave orqali saytlar ham qiziqishlaringiz haqidagi maʼlumotlarni saqlashi mumkin.</translation>
 <translation id="6003112304606738118">Yuklab olinmoqda... <ph name="HOURS"/> soat qoldi</translation>
-<translation id="1663358621471164569">Yuqori oʻng burchakdagi Brave menyusidan bukmark, oʻqish rejimi va boshqalarni ochishingiz mumkin</translation>
 <translation id="6040143037577758943">Yopish</translation>
 <translation id="700488072601322385">Maʼlumotlaringizni himoyalash maqsadida Brave brauzeriga uzoq vaqt kirmagan saytlardan ruxsatlarni olib tashlashi uchun ruxsat bering. Bildirishnomalar kelishi davom etadi.</translation>
 <translation id="9071554113102421877">&amp;Braveda ochish</translation>
@@ -420,6 +421,7 @@ Ba’zi imkoniyatlar ishlamasligi mumkin. Profilni saqlash uchun boshqa jild tay
 <translation id="1505112054322049777">Moslashtirish va boshqa funksiyalarni olish uchun Veb va ilovalardagi faoliyat tarixi va ulangan Brave xizmatlarida Braveni kiriting</translation>
 <translation id="6666624454809779082">Brave allaqachon kompyuterdagi barcha foydalanuvchilar uchun o‘rnatilgan.</translation>
 <translation id="9136637081636160997">Yaqinda ochmagansiz. Brave olib tashladi: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> va yana <ph name="COUNT"/> ta.</translation>
+<translation id="4020203987234748583">Brave V8 tizimi bilan saytlar ishlashini tezlashtiradi, ammo Brave brauzerining hujumlardan himoyasini biroz pasaytiradi. Bu sozlama yoniq.</translation>
 <translation id="3136039682492230890">Bu fayl xavfli boʻlishi mumkin, Brave uni tekshirishni tavsiya qiladi.</translation>
 <translation id="1547295885616600893">ChromeOS tizimini ishlab chiqishda <ph name="BEGIN_LINK_CROS_OSS"/>ochiq kodli DT<ph name="END_LINK_CROS_OSS"/> vositalaridan foydalanilgan.</translation>
 <translation id="6831043979455480757">Tarjima</translation>
@@ -513,7 +515,6 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="8118331347066725040">Lens bilan qidirish haqida fikr-mulohaza yuborish</translation>
 <translation id="5334309298019785904">Domeningizda Sinxronlash xizmati mavjud emasligi sababli ChromeOS maʼlumotlaringizni sinxronlay olmadi.</translation>
 <translation id="813913629614996137">Ishga tushirilmoqda...</translation>
-<translation id="7550680632761245819">Braveda JavaScript va WebAssembly tizimi uchun qoʻshimcha himoyasini yoqish</translation>
 <translation id="9067428552314418522">Bu fayl xavfli edi va u Brave tomonidan bloklandi.</translation>
 <translation id="8177472873527554730">Sahifada kontent topilmadi</translation>
 <translation id="6219250889396046657"><ph name="USER_EMAIL"/> hisobingizda Brave maʼlumotlaridan foydalanish va saqlash uchun kalit iborangizni kiriting</translation>
@@ -558,6 +559,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="4100716194836114130">Bu sizning shaxsiy Brave brauzeringiz</translation>
 <translation id="1419543648228375718">Brave hisobiga kirasizmi?</translation>
 <translation id="8747073452963259673">qidiruv hududining pastki chap burchagi: chap <ph name="LEFT"/>%, past <ph name="BOTTOM"/>%</translation>
+<translation id="3562508460098852626">Parollarni faqat Brave tashqarisida oʻchirish mumkin</translation>
 <translation id="878572486461146056">Oʻrnatishda xato: Tarmoq administratori oʻrnatishlarni taqiqlovchi guruh siyosatini tatbiq qilgan: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Bu sayt kamera va mikrofoningizdan foydalanishi uchun Brave brauzeriga ruxsat berishingiz lozim</translation>
 <translation id="64216977793816291">Brave hisobiga kirasizmi?</translation>
@@ -619,6 +621,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
               =0 {Yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda}
               =1 {Yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda. Maxfiy oynangiz qayta ochilmaydi.}
               other {Yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda. # ta Maxfiy oynangiz qayta ochilmaydi.}}</translation>
+<translation id="5749154344207139683">Bu 1 daqiqalik soʻrovnomada qatnashish orqali Maxfiylikni yaxshilashga yordam bering.</translation>
 <translation id="79269250264141507">Manzil qatori va qidiruv maydonchasida matn kiritganingizda, yaxshiroq tavsiyalar berilishi uchun Brave kiritilganlarni birlamchi qidiruv tizimingizga yuboradi. Bu funksiya Maxfiy rejimda faolsizlantiriladi.</translation>
 <translation id="2589970573128789862">Brave Maxfiy rejimi</translation>
 <translation id="5994282802285556682">Maxfiy rejimdan foydalanilganda, Brave saytni yuklashdan oldin sizni xavfsiz boʻlmagan ulanish usuli orqali ogohlantiradi</translation>
