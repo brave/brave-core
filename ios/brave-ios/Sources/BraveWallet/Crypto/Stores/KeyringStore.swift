@@ -302,6 +302,32 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     rpcServiceObserver = nil
   }
 
+  func webUIValidation(completion: @escaping (Bool) -> Void) {
+    var walletCreated: Bool?
+    var walletLocked: Bool?
+
+    let group = DispatchGroup()
+    group.enter()
+    keyringService.isWalletCreated { created in
+      walletCreated = created
+      group.leave()
+    }
+    group.enter()
+    keyringService.isLocked { locked in
+      walletLocked = locked
+      group.leave()
+    }
+    group.notify(queue: DispatchQueue.main) {
+      if let walletCreated, walletCreated,
+        let walletLocked, !walletLocked
+      {
+        completion(true)
+      } else {
+        completion(false)
+      }
+    }
+  }
+
   func updateInfo(completion: (() -> Void)? = nil) {
     Task { @MainActor in
       await updateInfo()

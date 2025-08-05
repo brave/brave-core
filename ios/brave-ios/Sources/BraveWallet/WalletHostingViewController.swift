@@ -54,6 +54,14 @@ public enum PresentingContext {
   case editSiteConnection(_ origin: URLOrigin, handler: (_ permittedAccounts: [String]) -> Void)
   /// Shows account creation
   case createAccount(_ request: WalletProviderAccountCreationRequest)
+  /// Shows native wallet screen with certain action requested from wallet webui
+  case webUI(action: WalletWebUIAction)
+}
+
+public enum WalletWebUIAction {
+  case setup
+  case backup
+  case unlock
 }
 
 /// The initial wallet controller to present when the user wants to view their wallet
