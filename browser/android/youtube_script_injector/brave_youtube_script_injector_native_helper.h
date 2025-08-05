@@ -6,9 +6,7 @@
 #ifndef BRAVE_BROWSER_ANDROID_YOUTUBE_SCRIPT_INJECTOR_BRAVE_YOUTUBE_SCRIPT_INJECTOR_NATIVE_HELPER_H_
 #define BRAVE_BROWSER_ANDROID_YOUTUBE_SCRIPT_INJECTOR_BRAVE_YOUTUBE_SCRIPT_INJECTOR_NATIVE_HELPER_H_
 
-namespace content {
-class WebContents;
-}  // namespace content
+#include "content/public/browser/web_contents.h"
 
 namespace youtube_script_injector {
 
