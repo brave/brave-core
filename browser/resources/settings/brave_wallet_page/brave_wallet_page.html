@@ -158,24 +158,12 @@
     </div>
   </div>
 </template>
-<settings-animated-pages id="wallet-networks" section="wallet">
-  <div route-path="default">
-    <cr-link-row id="walletNetworksLinkRow"
-      class="hr" label="$i18n{walletNetworksLinkTitle}"
-      sub-label="$i18n{walletNetworksItemDesc}"
-      on-click="onWalletNetworksEditorClick_"
-      role-description="$i18n{subpageArrowRoleDescription}">
-    </cr-link-row>
-  </div>
-  <template is="dom-if" route-path="/wallet/networks" no-search>
-    <settings-subpage
-      associated-control="[[$$('#walletNetworksLinkRow')]]"
-      page-title="$i18n{walletNetworksLinkTitle}">
-      <settings-wallet-networks-subpage prefs="{{prefs}}">
-      </settings-wallet-networks-subpage>
-    </settings-subpage>
-  </template>
-</settings-animated-pages>
+<cr-link-row id="walletNetworksLinkRow"
+  class="hr" label="$i18n{walletNetworksLinkTitle}"
+  sub-label="$i18n{walletNetworksItemDesc}"
+  on-click="onWalletNetworksEditorClick_"
+  role-description="$i18n{subpageArrowRoleDescription}">
+</cr-link-row>
 
 <template is="dom-if" if="[[!isNetworkEditor_]]">
   <template is="dom-if" if="[[isZCashShieldedTxEnabled_]]">
@@ -200,3 +188,7 @@
 </template>
 
 </settings-section>
+
+<settings-brave-web3-domains-page prefs="{{prefs}}"
+  in-search-mode="[[inSearchMode_]]">
+</settings-brave-web3-domains-page>

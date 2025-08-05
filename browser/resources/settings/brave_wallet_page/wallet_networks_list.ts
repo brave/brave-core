@@ -16,12 +16,15 @@ import type {CrLazyRenderElement} from 'chrome://resources/cr_elements/cr_lazy_r
 import type {IronListElement} from 'chrome://resources/polymer/v3_0/iron-list/iron-list.js'
 
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {RouteObserverMixin} from '../router.js'
+import type {Route} from '../router.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {BaseMixin} from '../base_mixin.js'
 import {getTemplate} from './wallet_networks_list.html.js'
 import {loadTimeData} from '../i18n_setup.js'
 
-const SettingsWalletNetworksListBase = I18nMixin(BaseMixin(PolymerElement))
+const SettingsWalletNetworksListBase =
+  I18nMixin(RouteObserverMixin(BaseMixin(PolymerElement)))
 
 class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
   static get is() {
@@ -131,6 +134,10 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       delete window.testing[`walletNetworks${this.coin}`]
     }
+  }
+
+  override currentRouteChanged(_newRoute: Route, _oldRoute?: Route) {
+    this.updateNetworks()
   }
 
   private notifyKeylist() {
