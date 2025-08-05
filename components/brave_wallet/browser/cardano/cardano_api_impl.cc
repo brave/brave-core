@@ -64,44 +64,22 @@ BraveWalletProviderDelegate* CardanoApiImpl::delegate() {
 }
 
 void CardanoApiImpl::GetNetworkId(GetNetworkIdCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        0, mojom::CardanoProviderErrorBundle::New(
-               kAPIErrorRefused, kAccountNotConnectedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        0, mojom::CardanoProviderErrorBundle::New(
-               kAPIErrorAccountChange, kAccountChangedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(false, std::move(error));
     return;
   }
 
   delegate_->WalletInteractionDetected();
 
   std::move(callback).Run(
-      IsCardanoMainnetKeyring(account_id->keyring_id) ? 1 : 0, nullptr);
+      IsCardanoMainnetKeyring(selected_account_->keyring_id) ? 1 : 0, nullptr);
 }
 
 void CardanoApiImpl::GetUsedAddresses(GetUsedAddressesCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
 
@@ -110,7 +88,7 @@ void CardanoApiImpl::GetUsedAddresses(GetUsedAddressesCallback callback) {
   std::vector<std::string> result;
   for (auto& address :
        brave_wallet_service_->GetCardanoWalletService()->GetUsedAddresses(
-           account_id)) {
+           selected_account_)) {
     auto cardano_address = CardanoAddress::FromString(address->address_string);
     CHECK(cardano_address);
 
@@ -121,21 +99,9 @@ void CardanoApiImpl::GetUsedAddresses(GetUsedAddressesCallback callback) {
 }
 
 void CardanoApiImpl::GetUnusedAddresses(GetUnusedAddressesCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
 
@@ -144,7 +110,7 @@ void CardanoApiImpl::GetUnusedAddresses(GetUnusedAddressesCallback callback) {
   std::vector<std::string> result;
   for (auto& address :
        brave_wallet_service_->GetCardanoWalletService()->GetUnusedAddresses(
-           account_id)) {
+           selected_account_)) {
     auto cardano_address = CardanoAddress::FromString(address->address_string);
     CHECK(cardano_address);
 
@@ -155,21 +121,9 @@ void CardanoApiImpl::GetUnusedAddresses(GetUnusedAddressesCallback callback) {
 }
 
 void CardanoApiImpl::GetChangeAddress(GetChangeAddressCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
 
@@ -177,7 +131,7 @@ void CardanoApiImpl::GetChangeAddress(GetChangeAddressCallback callback) {
 
   auto address =
       brave_wallet_service_->GetCardanoWalletService()->GetChangeAddress(
-          account_id);
+          selected_account_);
   if (!address) {
     std::move(callback).Run(
         std::nullopt,
@@ -194,21 +148,9 @@ void CardanoApiImpl::GetChangeAddress(GetChangeAddressCallback callback) {
 }
 
 void CardanoApiImpl::GetRewardAddresses(GetRewardAddressesCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
 
@@ -221,21 +163,9 @@ void CardanoApiImpl::GetRewardAddresses(GetRewardAddressesCallback callback) {
 }
 
 void CardanoApiImpl::GetBalance(GetBalanceCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
 
@@ -250,24 +180,11 @@ void CardanoApiImpl::GetBalance(GetBalanceCallback callback) {
 void CardanoApiImpl::GetUtxos(const std::optional<std::string>& amount,
                               mojom::CardanoProviderPaginationPtr paginate,
                               GetUtxosCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
-    return;
-  }
-
   delegate_->WalletInteractionDetected();
 
   NOTIMPLEMENTED_LOG_ONCE();
@@ -279,21 +196,9 @@ void CardanoApiImpl::GetUtxos(const std::optional<std::string>& amount,
 void CardanoApiImpl::SignTx(const std::string& tx_cbor,
                             bool partial_sign,
                             SignTxCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
 
@@ -307,29 +212,9 @@ void CardanoApiImpl::SignTx(const std::string& tx_cbor,
 void CardanoApiImpl::SignData(const std::string& address,
                               const std::string& payload_hex,
                               SignDataCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
 
@@ -338,7 +223,7 @@ void CardanoApiImpl::SignData(const std::string& address,
   // We now support only one address per cardano account.
   auto supported_signing_address =
       brave_wallet_service_->keyring_service()->GetCardanoAddress(
-          account_id,
+          selected_account_,
           mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
   if (!supported_signing_address ||
       supported_signing_address->address_string != address) {
@@ -359,7 +244,7 @@ void CardanoApiImpl::SignData(const std::string& address,
   }
 
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), 0, account_id.Clone(),
+      MakeOriginInfo(delegate_->GetOrigin()), 0, selected_account_.Clone(),
       mojom::SignDataUnion::NewCardanoSignData(mojom::CardanoSignData::New(
           std::string(base::as_string_view(message)))),
       mojom::CoinType::ADA,
@@ -369,7 +254,7 @@ void CardanoApiImpl::SignData(const std::string& address,
   brave_wallet_service_->AddSignMessageRequest(
       std::move(request),
       base::BindOnce(&CardanoApiImpl::OnSignMessageRequestProcessed,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(account_id),
+                     weak_ptr_factory_.GetWeakPtr(), selected_account_.Clone(),
                      std::move(supported_signing_address->payment_key_id),
                      std::move(message), std::move(callback)));
   delegate_->ShowPanel();
@@ -400,9 +285,9 @@ void CardanoApiImpl::OnSignMessageRequestProcessed(
     return;
   }
 
-  auto sig_data =
-      brave_wallet_service_->keyring_service()
-          ->SignCip30MessageByCardanoKeyring(account_id, key_id, message);
+  auto sig_data = brave_wallet_service_->keyring_service()
+                      ->SignCip30MessageByCardanoKeyring(
+                          selected_account_.Clone(), key_id, message);
 
   if (!sig_data) {
     std::move(callback).Run(
@@ -417,21 +302,9 @@ void CardanoApiImpl::OnSignMessageRequestProcessed(
 
 void CardanoApiImpl::SubmitTx(const std::string& signed_tx_cbor,
                               SubmitTxCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
 
@@ -445,21 +318,9 @@ void CardanoApiImpl::SubmitTx(const std::string& signed_tx_cbor,
 
 void CardanoApiImpl::GetCollateral(const std::string& amount,
                                    GetCollateralCallback callback) {
-  auto account_id = GetCardanoAllowedSelectedAccount(
-      delegate(), brave_wallet_service_->keyring_service());
-  if (!account_id) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorRefused, kAccountNotConnectedError, nullptr));
-    return;
-  }
-
-  if (account_id->unique_key != selected_account_->unique_key) {
-    std::move(callback).Run(
-        std::nullopt,
-        mojom::CardanoProviderErrorBundle::New(kAPIErrorAccountChange,
-                                               kAccountChangedError, nullptr));
+  auto error = CheckSelectedAccountValid();
+  if (error) {
+    std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
 
@@ -469,6 +330,22 @@ void CardanoApiImpl::GetCollateral(const std::string& amount,
   std::move(callback).Run(
       std::nullopt, mojom::CardanoProviderErrorBundle::New(
                         kAPIErrorInternalError, kNotImplemented, nullptr));
+}
+
+mojom::CardanoProviderErrorBundlePtr
+CardanoApiImpl::CheckSelectedAccountValid() {
+  auto account_id = GetCardanoAllowedSelectedAccount(
+      delegate(), brave_wallet_service_->keyring_service());
+  if (!account_id) {
+    return mojom::CardanoProviderErrorBundle::New(
+        kAPIErrorRefused, kAccountNotConnectedError, nullptr);
+  }
+
+  if (account_id->unique_key != selected_account_->unique_key) {
+    return mojom::CardanoProviderErrorBundle::New(
+        kAPIErrorAccountChange, kAccountChangedError, nullptr);
+  }
+  return nullptr;
 }
 
 }  // namespace brave_wallet

@@ -67,10 +67,10 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
   BraveWalletProviderDelegateFactory delegate_factory_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
 
-  std::optional<EnableCallback> pending_request_cardano_permissions_callback_;
+  EnableCallback pending_request_cardano_permissions_callback_;
   mojo::PendingReceiver<mojom::CardanoApi> pending_cardano_api_;
   url::Origin pending_request_cardano_permissions_origin_;
-  bool wallet_onboarding_shown_ = false;
+  bool wallet_page_shown_ = false;
 
   mojo::Receiver<mojom::KeyringServiceObserver> keyring_observer_receiver_{
       this};

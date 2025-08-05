@@ -56,6 +56,8 @@ class CardanoApiImpl final : public mojom::CardanoApi {
                                      mojom::EthereumSignatureBytesPtr signature,
                                      const std::optional<std::string>& error);
 
+  mojom::CardanoProviderErrorBundlePtr CheckSelectedAccountValid();
+
   BraveWalletProviderDelegate* delegate();
 
   raw_ref<BraveWalletService> brave_wallet_service_;
