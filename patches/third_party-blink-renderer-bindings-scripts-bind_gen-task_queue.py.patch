@@ -1,12 +1,10 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py b/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
-index 39e7f5eefa7da758409e45f4962c7ec0e4780808..6292c46c79051f4fedc868f2fa85584ccf6e1937 100644
+index 39e7f5eefa7da758409e45f4962c7ec0e4780808..ab811d36ecad35affa7837ad68d32e59ebed59e1 100644
 --- a/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
 +++ b/third_party/blink/renderer/bindings/scripts/bind_gen/task_queue.py
-@@ -43,6 +43,7 @@ class TaskQueue(object):
-                 # TODO(crbug.com/1190269) - we can't use more than 56
-                 # cores on Windows or Python3 may hang.
-                 self._pool_size = min(self._pool_size, 56)
-+            from brave_task_queue_helper import limit_pool_size; limit_pool_size(self)
-             self._pool = multiprocessing.Pool(self._pool_size,
-                                               package_initializer().init)
-         self._requested_tasks = []  # List of _Task
+@@ -126,3 +126,4 @@ class TaskQueue(object):
+                 break
+ 
+         self._pool.join()
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+\ No newline at end of file

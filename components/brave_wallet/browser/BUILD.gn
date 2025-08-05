@@ -693,6 +693,7 @@ source_set("unit_tests") {
     "internal/hd_key_common_unittest.cc",
     "internal/hd_key_ed25519_slip23_unittest.cc",
     "internal/hd_key_ed25519_unittest.cc",
+    "internal/hd_key_sr25519_unittest.cc",
     "internal/hd_key_unittest.cc",
     "internal/secp256k1_signature_unittest.cc",
     "json_keystore_parser_unittest.cc",

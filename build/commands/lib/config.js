@@ -85,8 +85,10 @@ const getEnvConfig = (key, defaultValue = undefined) => {
 
     // Convert 'true' and 'false' strings into booleans.
     for (const [key, value] of Object.entries(envConfig)) {
-      if (value === 'true' || value === 'false') {
-        envConfig[key] = value === 'true'
+      try {
+        envConfig[key] = JSON.parse(value)
+      } catch (e) {
+        envConfig[key] = value
       }
     }
   }
@@ -273,6 +275,7 @@ const Config = function () {
     'brave_stats_updater_url',
     'brave_sync_endpoint',
     'brave_variations_server_url',
+    'concurrent_links',
     'gemini_production_api_url',
     'gemini_production_client_id',
     'gemini_production_client_secret',
@@ -328,10 +331,10 @@ Config.prototype.isBraveReleaseBuild = function () {
   const isBraveReleaseBuildValue = getEnvConfig(['is_brave_release_build'])
   if (isBraveReleaseBuildValue !== undefined) {
     assert(
-      isBraveReleaseBuildValue === '0' || isBraveReleaseBuildValue === '1',
+      isBraveReleaseBuildValue === 0 || isBraveReleaseBuildValue === 1,
       'Bad is_brave_release_build value (should be 0 or 1)',
     )
-    return isBraveReleaseBuildValue === '1'
+    return isBraveReleaseBuildValue === 1
   }
 
   return false
@@ -592,27 +595,6 @@ Config.prototype.buildArgs = function () {
   if (['android', 'linux', 'mac'].includes(this.targetOS)) {
     // LSAN only works with ASAN and has very low overhead.
     args.is_lsan = args.is_asan
-  }
-
-  // Enable Page Graph only in desktop builds.
-  // Page Graph gn args should always be set explicitly, because they are parsed
-  // from out/<dir>/args.gn by Python scripts during the build. We do this to
-  // handle gn args in upstream build scripts without introducing git conflict.
-  if (this.targetOS !== 'android' && this.targetOS !== 'ios') {
-    args.enable_brave_page_graph = true
-  } else {
-    args.enable_brave_page_graph = false
-  }
-  // Enable Page Graph WebAPI probes only in dev/nightly builds.
-  if (
-    args.enable_brave_page_graph
-    && (!this.isBraveReleaseBuild()
-      || this.channel === 'dev'
-      || this.channel === 'nightly')
-  ) {
-    args.enable_brave_page_graph_webapi_probes = true
-  } else {
-    args.enable_brave_page_graph_webapi_probes = false
   }
 
   // Devtools: Now we patch devtools frontend, so it is useful to see

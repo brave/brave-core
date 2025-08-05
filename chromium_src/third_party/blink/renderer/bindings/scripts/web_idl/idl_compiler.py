@@ -7,8 +7,8 @@ import brave_chromium_utils
 import override_utils
 
 # Get gn arg to enable WebAPI probes.
-_IS_PG_WEBAPI_PROBES_ENABLED = brave_chromium_utils.get_gn_arg(
-    "enable_brave_page_graph_webapi_probes")
+_IS_PG_WEBAPI_PROBES_ENABLED = brave_chromium_utils.get_json_value(
+    "gn_args_page_graph.json", "enable_brave_page_graph_webapi_probes")
 
 
 @override_utils.override_method(IdlCompiler,

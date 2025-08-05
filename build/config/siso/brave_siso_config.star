@@ -62,9 +62,10 @@ def __adjust_handlers(ctx, step_config, handlers):
     for rule in step_config["rules"]:
         rule_name = rule["name"]
 
-        # Disable remote execution for rules that need local processing
+        # Disable remote execution for rules that need local processing.
         if rule_name in __RULES_TO_DISABLE_REMOTE:
             rule["remote"] = False
+            rule.pop("reproxy_config", None)
             continue
 
         if rule_name == "blink/generate_bindings":
@@ -75,13 +76,7 @@ def __adjust_handlers(ctx, step_config, handlers):
                 reproxy_config["exec_timeout"] = "10m"
                 reproxy_config["reclient_timeout"] = "10m"
 
-            __wrap_python_with_chromium_src_inputs_handler(
-                rule, handlers, [
-                    "brave/script/brave_task_queue_helper.py",
-                    "build/gn_helpers.py",
-                    ctx.fs.canonpath("./args.gn"),
-                    ctx.fs.canonpath("./args_generated.gni"),
-                ])
+            __wrap_python_with_chromium_src_inputs_handler(rule, handlers, [])
             continue
 
         if rule_name.startswith("clang"):

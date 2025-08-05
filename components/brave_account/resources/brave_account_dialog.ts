@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import {
+  CrLitElement,
+  PropertyValues,
+} from '//resources/lit/v3_0/lit.rollup.js'
 
 import { getCss } from './brave_account_dialog.css.js'
 import { getHtml } from './brave_account_dialog.html.js'
@@ -26,6 +29,7 @@ export class BraveAccountDialogElement extends CrLitElement {
       alertMessage: { type: String },
       dialogDescription: { type: String },
       dialogTitle: { type: String },
+      isFooterSlotted: { type: Boolean },
       showBackButton: { type: Boolean },
     }
   }
@@ -33,7 +37,20 @@ export class BraveAccountDialogElement extends CrLitElement {
   protected accessor alertMessage: string = ''
   protected accessor dialogDescription: string = ''
   protected accessor dialogTitle: string = ''
+  protected accessor isFooterSlotted: boolean = false
   protected accessor showBackButton: boolean = false
+
+  override firstUpdated(changedProperties: PropertyValues<this>) {
+    super.firstUpdated(changedProperties)
+    const footer = this.shadowRoot?.querySelector(
+      'slot[name="footer"]',
+    ) as HTMLSlotElement
+    if (footer) {
+      footer.addEventListener('slotchange', () => {
+        this.isFooterSlotted = footer.assignedNodes().length > 0
+      })
+    }
+  }
 }
 
 declare global {

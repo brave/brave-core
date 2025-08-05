@@ -59,7 +59,7 @@ export const Connections = () => {
   )
 
   // Hooks
-  const isDAppVerified = useIsDAppVerified(activeOrigin)
+  const { isDAppVerified } = useIsDAppVerified(activeOrigin)
 
   return (
     <WalletPageWrapper

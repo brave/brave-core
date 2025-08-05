@@ -55,6 +55,7 @@ export function getHtml(this: BraveAccountDialogElement) {
         </if>
       </div>
     </div>
+    ${this.isFooterSlotted ? html`<div class="divider"></div>` : nothing}
     <slot name="footer"></slot>
     <!--_html_template_end_-->`
 }

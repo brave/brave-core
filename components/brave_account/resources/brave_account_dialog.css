@@ -7,17 +7,27 @@
  * #type=style-lit
  * #css_wrapper_metadata_end */
 
+:host {
+  --logo-height: 36px;
+}
+
+@media (min-width: 500px) {
+  :host {
+    --logo-height: 40px;
+  }
+}
+
 .header {
   align-items: center;
   display: flex;
   flex-direction: column;
-  padding: 0px 0px var(--leo-spacing-4xl);
+  padding: 0px 0px var(--logo-height);
 }
 
 .navigation-buttons {
   display: flex;
   justify-content: flex-end;
-  min-height: var(--leo-spacing-4xl);
+  min-height: var(--logo-height);
   width: 100%;
 }
 
@@ -38,8 +48,8 @@ leo-icon {
 .logo {
   background-image: url('full_brave_brand.svg');
   background-size: cover;
-  height: var(--leo-spacing-4xl);
-  width: calc(var(--leo-spacing-4xl) * 129 / 40);
+  height: var(--logo-height);
+  width: calc(var(--logo-height) * 129 / 40);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,6 +61,14 @@ leo-icon {
 .body {
   padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl)
     var(--leo-spacing-2xl);
+}
+
+@media (min-width: 500px) {
+  .body {
+    box-sizing: border-box;
+    margin: 0px auto;
+    width: 500px;
+  }
 }
 
 .title-and-description {
@@ -82,6 +100,15 @@ leo-icon {
   gap: var(--leo-spacing-m);
 }
 
-:host ::slotted([slot='footer']) {
-  border-top: 1px solid var(--leo-color-divider-subtle);
+.divider {
+  background-color: var(--leo-color-divider-subtle);
+  height: 1px;
+}
+
+@media (min-width: 500px) {
+  :host ::slotted([slot='footer']) {
+    box-sizing: border-box;
+    margin: 0px auto;
+    width: 500px;
+  }
 }
