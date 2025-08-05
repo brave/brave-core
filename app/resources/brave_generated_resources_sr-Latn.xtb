@@ -18,6 +18,10 @@
 <translation id="1544192797660353713">Novčanik</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Više…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {Zatvori prozor posetioca}
+          other {Zatvori prozore posetioca}
+}</translation>
 <translation id="1990886731975529483">Instaliraj i pokreni Google Widevine</translation>
 <translation id="8926389886865778422">Ne pitaj me ponovo</translation>
 <translation id="4900351245762303149">Instaliraj Google Widevine</translation>
@@ -52,6 +56,11 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="4450893287417543264">Ne prikazuj ponovo</translation>
 <translation id="4595286989346610620">Proveri detalje</translation>
 <translation id="8324318899000695659">Blokiraj elemente</translation>
+<translation id="3828310068250853121">Izaberite element koji želite da blokirate</translation>
+<translation id="2577286987423083872">Blokiraj elemente</translation>
+<translation id="3211174446914979436">Upravljanje filtrima</translation>
+<translation id="3108584651298176909">Prikaži pravila</translation>
+<translation id="5156986655891520787">Sakrij pravila</translation>
 <translation id="7658239707568436148">Otkaži</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otvori pomoću adrese .onion: <ph name="ADDRESS"/></translation>
@@ -71,13 +80,20 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="2808103541110899519">Sakrij ikonu Brave novčanika</translation>
 <translation id="7595540212376041331">Sakrij ikonu Brave novčanika</translation>
 <translation id="3893997535859323951">Sakrij ikonu Leo AI</translation>
+<translation id="8832245978592881387">Otvori Leo AI u novoj kartici</translation>
+<translation id="4577675328803804820">Otvori Leo AI u bočnoj traci</translation>
+<translation id="564305948667173847">Upravljaj podešavanjima za Leo AI</translation>
 <translation id="6208515240323786457">Sakrij ikonu Leo AI</translation>
+<translation id="2169338740411893745">Otvori Leo AI u novoj kartici</translation>
+<translation id="3295805221342028003">Otvori Leo AI u bočnoj traci</translation>
+<translation id="7400808612454224939">Upravljaj podešavanjima za Leo AI</translation>
 <translation id="5385064007245738696">O asistentu Leo AI</translation>
 <translation id="4928988318462976765">Veb-prodavnica dodataka</translation>
 <translation id="9181207987584064303">Prikaži u veb-prodavnici dodataka</translation>
 <translation id="3161744659507801211">Upozorenje: Brave ne može da spreči dodatke da snimaju vašu istoriju pregledanja veba.</translation>
 <translation id="2162109630536601963">Ako ovaj dodatak zatraži pristup mreži, neće koristiti Tor ili privatni režim.</translation>
 <translation id="2725327089319971976">Da biste aktivirali ovaj dodatak u privatnom režimu ili Tor režimu, poništite odabir ove opcije.</translation>
+<translation id="438106944087726695">Hostuje Brave</translation>
 <translation id="3371343170427636147">Eksperimentale aplikacije Brave pregledača</translation>
 <translation id="4097979995947147464">Beta aplikacije Brave pregledača</translation>
 <translation id="8303432794159193481">Stabilne aplikacije Brave pregledača</translation>
@@ -133,6 +149,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="3447730462826640312">Ne morate da kliknete da biste zaradili, ali kliknite ako ste zainteresovani!</translation>
 <translation id="5253166205743627564">Hvala vam što ste kliknuli na privatni oglas i time podržali Brave pretragu. Za razliku od velikih tehnoloških kompanija, mi anonimno merimo učinak oglasa da bismo sačuvali vašu privatnost.</translation>
 <translation id="8748471354357836070">Saznajte više / opcije za odustanak</translation>
+<translation id="5927196110206824867">Sponzorisane slike pozadine podržavaju Brave-ovu misiju izgradnje nezavisnog veba koji je prvenstveno usmeren na korisnike. I za razliku od velikih tehnoloških kompanija, mi anonimno merimo učinak oglasa kako bismo sačuvali vašu privatnost.</translation>
 <translation id="4174337572777167894">Projekat istraživanja veba</translation>
 <translation id="8659271182272561965">Priložite anonimne podatke o pretrazi i pregledanju veba da bismo unapredili Brave pretragu.</translation>
 <translation id="1516554614404600536">Brave napomena</translation>
@@ -324,6 +341,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="7557539689487606886">Pređite na Premium</translation>
 <translation id="1035309871698658326">Kada je otvorena, automatski se šalju naslovi i poreklo svih kartica koje nisu privatne asistentu Leo da ih klasifikuje.</translation>
 <translation id="3435896845095436175">Aktiviraj</translation>
+<translation id="1940221956626514677">Prilagodi traku sa alatkama</translation>
 <translation id="9156965752763025780">Promene će biti primenjene kada sledeći put ponovo pokrenete Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -333,6 +351,8 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="8081858229109418493">Profilno ime i ikona</translation>
 <translation id="6786747875388722282">Dodaci</translation>
 <translation id="984275831282074731">Načini plaćanja</translation>
+<translation id="6278858909990433658">Uvoz profila je i dalje u upotrebi</translation>
+<translation id="9071187015476020102">Da biste uvezli dodatke ili druga podešavanja, prvo zatvorite pregledač iz kojeg uvozite.</translation>
 <translation id="2044383478723007273">Boje Brave-a</translation>
 <translation id="1807246157184219062">Svetlo</translation>
 <translation id="2414886740292270097">Tamno</translation>
@@ -468,6 +488,9 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="863171915776379000">Dozvoli prijavu preko Facebook-a i ugrađene objave sa Facebook-a</translation>
 <translation id="7791141927430186653">Dozvoli ugrađene tvitove sa X-a (bivšeg Twitter-a)</translation>
 <translation id="958971637207126733">Dozvoli ugrađene objave sa LinkedIn-a</translation>
+<translation id="1244912498725894944">Neka podešavanja kolačića kontrolišu Brave štitovi. Možete ih videti &lt;a href="/content/braveShields"&gt;vde&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Ovimm podešavanjem upravljaju Brave štitovi.</translation>
+<translation id="352287031024189516">Ovim podešavanjem upravlja prijava preko Google-a.</translation>
 <translation id="8792121506918889955">Smernice za rukovanje WebRTC IP-om</translation>
 <translation id="8798099450830957504">Podrazumevano</translation>
 <translation id="1822560017823072927">Podrazumevani javni i privatni interfejsi</translation>
@@ -476,6 +499,8 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="3540231253392253941">Koristite Google usluge za direktna obaveštenja</translation>
 <translation id="933652931229970927">Automatski šalji dijagnostičke izveštaje</translation>
 <translation id="4891600875049212418">Budite u poverljivom režimu kada posećujete osetljive sajtove</translation>
+<translation id="509873765238158442">Blokiraj Microsoft Recall</translation>
+<translation id="4763421121695677716">Blokirajte funkciju „Recall“ na Microsoft Windows računarima da ne bi automatski uzimala snimke ekrana otvorenih Brave kartica.</translation>
 <translation id="1968895725257436430">Prikupljanje podataka</translation>
 <translation id="4846154056248462491">Prilikom zatvaranja</translation>
 <translation id="216468847346280584">Izbriši podatke iz Brave oglasa…</translation>
@@ -639,6 +664,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="5249433283143453448">Koristite komponentu Widevine-ovog upravljanja digitalnim pravima (DRM) da vidite zaštićeni video striming i drugi sadržaj u pregledaču.</translation>
 <translation id="1314131187310290315">Dodaci za Manifest V2</translation>
 <translation id="2488433650767270565">Dodaci za Manifest V2 navedeni u nastavku biće uklonjeni iz Chrome veb-prodavnice, ali Brave će ih i dalje podržavati. Uključite da preuzmete i instalirate ili isključite da deinstalirate.</translation>
+<translation id="6918225713618473646">Brave hostuje ove dodatke Manifest V2 na Brave serverima, ali ne pregleda niti verifikuje njihov sadržaj, bezbednost ili ponašanje. Za pomoć pogledajte zvaničnu stranicu svakog dodatka. Pročitajte Brave-ove planove za Manifest V2 <ph name="BEGIN_LINK"/>ovde<ph name="END_LINK"/>.</translation>
 <translation id="578671172657727816">Aktiviraj NoScript™</translation>
 <translation id="9068475464170522036">NoScript je dodatak za Manifest V2 koji vam omogućava da blokirate i deblokirate pojedinačne skripte koje se pokreću ili pokušavaju da se pokrenu na određenoj stranici.</translation>
 <translation id="1394592156621788100">Aktiviraj uBlock Origin™</translation>
@@ -666,6 +692,10 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="856371974127598760">Mreže novčanika</translation>
 <translation id="5975930666279943472">Izbriši transakcije novčanika i informacije o jednokratnom ključu</translation>
 <translation id="5693968582510626466">Brisanje transakcija može biti korisno razvojnim programerima ili prilikom brisanja stanja na lokalnom serveru</translation>
+<translation id="6171369470447621882">Resetuj stanje sinhronizacije za Zcash</translation>
+<translation id="6705112675071480687">Resetujuje napredak sinhronizacije za Zcash kod svih zaštićenih naloga</translation>
+<translation id="2012093487873597892">Želite li sigurno da resetujete stanje sinhronizacije za Zcash? Biće prekinut napredak svih zaštićenih naloga. Ukućajte „<ph name="CONFIRMATION_PHRASE"/>“ da potvrdite.</translation>
+<translation id="5031551083187285762">Stanje sinhronizacije za naloge na Zcash-u je resetovano.</translation>
 <translation id="9216386092464743272">Želite li sigurno da resetujete čitavu transakciju novčanika i jednokratni ključ? Tu opciju uglavnom koriste razvojni programeri koji koriste lokalni server za testiranje. Unesite „<ph name="CONFIRMATION_PHRASE"/>“ da potvrdite.</translation>
 <translation id="2326850911705720398">Resetuj i izbriši podatke novčanika</translation>
 <translation id="6369495274982305511">Želite li sigurno da resetujete svoj novčanik? Ako nemate rezervnu kopiju novčanika, a resetujete ga, izgubićete sve podatke naloga (uključujući sva povezana sredstva). Unesite „<ph name="CONFIRMATION_PHRASE"/>“ da potvrdite.</translation>
@@ -762,6 +792,8 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="6304169450064541679">Sistemsko obaveštenje</translation>
 <translation id="3081947790648024460">Prilagođena uputstva i/ili kontekst dati modelu kako bi vodili njegove odgovore u određenom smeru ili stilu. Koristite %datetime% gde želite da se umetnu trenutni datum i vreme.</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> token(a)</translation>
+<translation id="5985516785067818307">Anketni panelista</translation>
+<translation id="8347743943525229984">Aktiviraj Brave ankete</translation>
 <translation id="349846214503465941">Uključi plejlistu</translation>
 <translation id="7903608716704052878">Automatski dodaj fajlove radi oflajn gledanja</translation>
 <translation id="4193768184502613558">Ova opcija će automatski keširati medijske fajlove tako da možete da ih pustite bez veze sa internetom.</translation>

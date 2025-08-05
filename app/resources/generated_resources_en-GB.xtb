@@ -175,7 +175,7 @@ Check your passwords at any time in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</trans
 <translation id="1116639326869298217">Your identity couldn't be verified</translation>
 <translation id="1116694919640316211">About</translation>
 <translation id="1116779635164066733">This setting is enforced by the '<ph name="NAME"/>' extension.</translation>
-<translation id="1118428905044642028">Passwords and Autofill</translation>
+<translation id="1118428905044642028">Passwords and autofill</translation>
 <translation id="1118738876271697201">The system failed to determine device model or serial number.</translation>
 <translation id="111897705806685148">Use Passkey from another device</translation>
 <translation id="1119447706177454957">Internal error</translation>
@@ -2472,7 +2472,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2701737434167469065">Sign in, <ph name="EMAIL"/></translation>
 <translation id="2701960282717219666">Network MAC Address</translation>
 <translation id="2702720509009999256">Check your Internet connection and choose 'Try again', or choose 'Open in basic editor' to use limited view and editing options.</translation>
-<translation id="2702801445560668637">Reading List</translation>
+<translation id="2702801445560668637">Reading list</translation>
 <translation id="270414148003105978">Mobile networks</translation>
 <translation id="2704184184447774363">Microsoft Document Signing</translation>
 <translation id="2704606927547763573">Copied</translation>
@@ -8990,7 +8990,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7396845648024431313"><ph name="APP_NAME"/> will launch at system startup and continue to run in the background, even once you've closed all other <ph name="PRODUCT_NAME"/> windows.</translation>
 <translation id="7399045143794278225">Customise sync</translation>
 <translation id="7399616692258236448">Location requests are automatically blocked for all sites except ones you allow</translation>
-<translation id="7399802613464275309">Safety Check</translation>
+<translation id="7399802613464275309">Safety check</translation>
 <translation id="7400059772197434086">is blocked from using your information on</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="7400447915166857470">Change back to <ph name="OLD_SEARCH_PROVIDER"/>?</translation>
@@ -9216,7 +9216,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="7553012839257224005">Checking the Linux container</translation>
 <translation id="7553242001898162573">Enter your password</translation>
 <translation id="755472745191515939">Your administrator doesn't allow this language</translation>
-<translation id="7554791636758816595">New Tab</translation>
+<translation id="7554791636758816595">New tab</translation>
 <translation id="7556033326131260574">Smart Lock couldn’t verify your account. Type your password to enter.</translation>
 <translation id="7556242789364317684">Unfortunately, <ph name="SHORT_PRODUCT_NAME"/> is unable to recover your settings. To fix the error, <ph name="SHORT_PRODUCT_NAME"/> must reset your device with Powerwash.</translation>
 <translation id="7557194624273628371">Linux port forwarding</translation>
@@ -11021,7 +11021,7 @@ This can include information about installed software, files, your browser, the 
 <translation id="8793895150509408038">View site details for <ph name="SITE"/> from the <ph name="SECTION_HEADER"/> list</translation>
 <translation id="879413103056696865">While the hotspot is on, your <ph name="PHONE_NAME"/> will:</translation>
 <translation id="8794548468611058947">Instead of entering your Brave sync chain password to sign in, you can create a PIN for this <ph name="DEVICE_TYPE"/></translation>
-<translation id="8795916974678578410">New Window</translation>
+<translation id="8795916974678578410">New window</translation>
 <translation id="6596295505984504022">C&amp;ustomize your Brave</translation>
 <translation id="8797459392481275117">Never translate this site</translation>
 <translation id="8798099450830957504">Default</translation>

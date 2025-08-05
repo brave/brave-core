@@ -231,7 +231,7 @@
 <translation id="2067805253194386918">نوشتار</translation>
 <translation id="2079545284768500474">لغو</translation>
 <translation id="2082238445998314030"><ph name="RESULT_NUMBER"/> نتیجه از <ph name="TOTAL_RESULTS"/></translation>
-<translation id="8992364521253636633">‏برای تمام کردن راه‌اندازی «تکمیل خودکار»، اکنون Brave را بازراه‌اندازی کنید. برگه‌هایتان به‌طور خودکار دوباره باز خواهند شد.</translation>
+<translation id="8992364521253636633">‏برای تمام کردن راه‌اندازی «تکمیل خودکار»، اکنون Brave را بازراه‌اندازی کنید. زبانه‌هایتان به‌طور خودکار دوباره باز خواهند شد.</translation>
 <translation id="2091863218454846791">نمای فشرده نشان داده می‌شود</translation>
 <translation id="2093731487903423814">۱۵ دقیقه گذشته</translation>
 <translation id="2100273922101894616">ورود به سیستم خودکار</translation>
@@ -1206,7 +1206,7 @@
 <translation id="6482749332252372425">به‌دلیل نبودن فضای ذخیره‌سازی، بارگیری <ph name="FILE_NAME"/> انجام نشد.</translation>
 <translation id="6486420406192123355">‏این فایل PDF از سایتی دریافت شده است که از اتصال ناامن استفاده می‌کند</translation>
 <translation id="650224091954855786">{FILE_COUNT,plural, =1{فایل بارگیری شد}one{# بارگیری کامل شد}other{# بارگیری کامل شد}}</translation>
-<translation id="3960299545138990065">‏Brave را راه‌اندازی مجدد کنید</translation>
+<translation id="3960299545138990065">‏بازراه‌اندازی Brave</translation>
 <translation id="6513924416597632811">کپی کردن پیوند صفحه نتایج جستجو برای: <ph name="SEARCH_QUERY"/>. منبع: <ph name="PAGE_URL"/></translation>
 <translation id="6518133107902771759">تأیید</translation>
 <translation id="6527303717912515753">اشتراک‌گذاری</translation>
@@ -1508,7 +1508,7 @@
 <translation id="1864444014110998467">‏باز کردن منوِ Brave</translation>
 <translation id="7733878270780732638">فضای کافی در دستگاه وجود ندارد.</translation>
 <translation id="5321611925570577577">‏«مدیر گذرواژه Brave» به‌زودی در این دستگاه ازکار خواهد افتاد</translation>
-<translation id="774876555279732384">‏سرویس‌های تکمیل خودکار نیز در <ph name="BEGIN_LINK"/>تنظیمات Android<ph name="END_LINK"/> مدیریت می‌شود.</translation>
+<translation id="774876555279732384">‏سرویس‌های تکمیل خودکار در <ph name="BEGIN_LINK"/>تنظیمات Android<ph name="END_LINK"/> هم مدیریت می‌شود.</translation>
 <translation id="7759809451544302770">اختیاری</translation>
 <translation id="7762668264895820836">‏کارت SD <ph name="SD_CARD_NUMBER"/></translation>
 <translation id="7764225426217299476">افزودن نشانی</translation>
