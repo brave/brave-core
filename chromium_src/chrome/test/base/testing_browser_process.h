@@ -36,6 +36,7 @@ class TestingBrowserProcess : public TestingBrowserProcess_ChromiumImpl {
   static TestingBrowserProcess* GetGlobal();
 
  private:
+  friend class TestingBrowserProcess_ChromiumImpl;
   TestingBrowserProcess();
   ~TestingBrowserProcess() override;
 };
