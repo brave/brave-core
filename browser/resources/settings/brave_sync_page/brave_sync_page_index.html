@@ -7,18 +7,11 @@
 
 <cr-view-manager id="viewManager" class="cr-centered-card-container"
   show-all$="[[shouldShowAll]]">
-  <settings-section
+  <settings-brave-sync-manage-devices-page
     slot="view"
     id="braveSync"
-    page-title="$i18n{braveSync}"
-    class="cr-centered-card-container">
-    <cr-link-row
-      id="brave-sync-setup"
-      label$="[[syncLabel_]]"
-      on-click="onSyncTap_"
-      role-description="$i18n{subpageArrowRoleDescription}">
-    </cr-link-row>
-  </settings-section>
+    label="[[syncLabel_]]">
+  </settings-brave-sync-manage-devices-page>
   <settings-subpage
     page-title="[[syncLabel_]]" slot="view" id="setup"
     data-parent-view-id="braveSync">
