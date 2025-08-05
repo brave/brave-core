@@ -363,7 +363,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="265156376773362237">標準プリロード</translation>
 <translation id="2656405586795711023">ウェブアプリ</translation>
 <translation id="2664252182805397291">サイトを表示</translation>
-<translation id="2666092431469916601">一番上</translation>
+<translation id="2666092431469916601">上部</translation>
 <translation id="2669454659051515572">ダウンロードしたファイルは、このデバイスを使用するすべてのユーザーが確認できます</translation>
 <translation id="2677748264148917807">このページを離れる</translation>
 <translation id="2687009626279857299">このデバイスでは動作を停止しました</translation>
@@ -456,7 +456,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="3070005020161560471">自動的に翻訳する</translation>
 <translation id="1094255666887095087">Brave で <ph name="APP_NAME"/> を開きます。続行すると、<ph name="BEGIN_LINK1"/>Brave 利用規約<ph name="END_LINK1"/>と <ph name="BEGIN_LINK2"/>Brave および ChromeOS 追加利用規約<ph name="END_LINK2"/>に同意したものと見なされます。また、<ph name="BEGIN_LINK3"/>プライバシー ポリシー<ph name="END_LINK3"/>も適用されます。</translation>
 <translation id="3080525922482950719">ページを保存して、後で読んだり、オフラインで読んだりできます</translation>
-<translation id="3087734570205094154">下</translation>
+<translation id="3087734570205094154">下部</translation>
 <translation id="3091010850649238832">クリップボードの内容を表示</translation>
 <translation id="821565628224723530">正確な説明を生成するため、画像が Brave に送信される場合があります</translation>
 <translation id="3114507951000454849">今日のニュースをチェック <ph name="NEWS_ICON"/></translation>
@@ -1648,7 +1648,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="8279945625179116733"><ph name="APP_NAME"/> で保護</translation>
 <translation id="8281886186245836920">スキップ</translation>
 <translation id="8282297628636750033">可能な場合はダークモードをサイトに適用する</translation>
-<translation id="8282950411412455249">[セキュリティ設定] に移動</translation>
+<translation id="8282950411412455249">セキュリティ設定に移動</translation>
 <translation id="8306751933352925837">まもなくこのデバイスではパスワード機能が動作を停止します。パスワードを引き続き使用するには、Google Play 開発者サービスを更新してください。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="8310451567823644042">まもなくパスワード機能が動作を停止します</translation>
 <translation id="831192587911042850">現在のウェブサイトを、フォローしているウェブサイトのリストに追加します。</translation>

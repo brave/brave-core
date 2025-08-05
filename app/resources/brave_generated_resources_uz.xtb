@@ -8,6 +8,10 @@
 <translation id="6406506848690869874">Sinxronlash</translation>
 <translation id="1544192797660353713">Hamyon</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {Mehmon oynasini yopish}
+          other {Mehmon oynasini yopish}
+        }</translation>
 <translation id="1990886731975529483">Google Widevine oʻrnatish va ishga tushirish</translation>
 <translation id="4900351245762303149">Google Widevine oʻrnatish</translation>
 <translation id="8342816622062204340"><ph name="URL"/> himoyalangan Google Widevine kontentini ijro etmoqchi. Buning uchun Android tizimining Widevine dastaklash ruxsatini berishingiz kerak. Siz ruxsat berish orqali Google foydalanish shartlari uchun rozilik berasiz.</translation>
@@ -16,6 +20,13 @@
 <translation id="7658239707568436148">Bekor qilish</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="4615489450165434530">Nosoz sayt haqida xabar qilish</translation>
+<translation id="8832245978592881387">'Leo AI'ni Yangi varaqda ochish</translation>
+<translation id="4577675328803804820">Leo AI'ni Yon panelda ochish</translation>
+<translation id="564305948667173847">Leo AI Sozlamalarini boshqarish</translation>
+<translation id="2169338740411893745">Leo AI'ni yangi varaqda ochish</translation>
+<translation id="3295805221342028003">Leo AI'ni yon panelda ochish</translation>
+<translation id="7400808612454224939">Leo AI sozlamalarini boshqarish</translation>
+<translation id="438106944087726695">Brave hostingida joylashgan</translation>
 <translation id="5039804452771397117">Ruxsat</translation>
 <translation id="8926389886865778422">Boshqa soʻralmasin</translation>
 <translation id="8915916167043355778">Hammasini yopish</translation>
@@ -50,6 +61,7 @@
 <translation id="6165508094623778733">Batafsil</translation>
 <translation id="7557539689487606886">Premium obuna qilish</translation>
 <translation id="3435896845095436175">Yoqish</translation>
+<translation id="1940221956626514677">Asboblar panelini moslash</translation>
 <translation id="1426410128494586442">Ha</translation>
 <translation id="4250680216510889253">Yoʻq</translation>
 <translation id="4472575034687746823">Foydalanishni boshlash</translation>
@@ -82,6 +94,8 @@
 <translation id="933652931229970927">Diagnostika hisobotlarini avtomatik yuborish</translation>
 <translation id="1679356339067548863">Brave Brauzer ishlamay qolganda yoki muzlaganda diagnostika hisobotlarini avtomatik yuborish orqali Brave mahsulotining barqarorligini oshirishga yordam bering.</translation>
 <translation id="2356070529366658676">Soʻrash</translation>
+<translation id="509873765238158442">Microsoft Recall'ni bloklash</translation>
+<translation id="4763421121695677716">Microsoft Windows kompyuterlarida Recall funksiyasining Brave'dagi ochiq varaqlarning skrinshotlarini avtomatik tarzda olishini bloklang.</translation>
 <translation id="3858860766373142691">Nomi</translation>
 <translation id="1181037720776840403">Olib tashlash</translation>
 <translation id="4332558599726753990">Sinxronlashni sozlash</translation>
@@ -89,6 +103,7 @@
 <translation id="2055363275850890030">Maxfiy oyna</translation>
 <translation id="6786747875388722282">Kengaytmalar</translation>
 <translation id="5249433283143453448">Himoyalangan video translatsiyasi va boshqa kontentni brauzerda koʻrish uchun Widevine raqamli huquqlarni boshqarish (DRM) tarkibiy qismidan foydalanish.</translation>
+<translation id="6918225713618473646">Brave ushbu Manifest V2 kengaytmalarni oʻz serverlarida joylashtiradi, biroq ularning mazmuni, xavfsizligi yoki xatti-harakatlarini ko‘rib chiqmaydi va tasdiqlamaydi. Yordam uchun har bir kengaytmaning rasmiy sahifasiga murojaat qiling. Manifest V2 boʻyicha Brave rejalari bilan <ph name="BEGIN_LINK"/>bu yerda<ph name="END_LINK"/> tanishing.</translation>
 <translation id="8488282162676695335">Brave Hamyon</translation>
 <translation id="2653659639078652383">Yuborish</translation>
 <translation id="6129027151000961048">Leo</translation>
@@ -96,6 +111,9 @@
 <translation id="6106701981952170121">Barcha Leo AI suhbat maʼlumotlarini oʻchirish</translation>
 <translation id="614530507403667291">Yangi suhbatlar uchun odatiy model</translation>
 <translation id="1907126221851170941">Model qoʻshish</translation>
+<translation id="5985516785067818307">Soʻrovnoma ishtirokchisi</translation>
+<translation id="8347743943525229984">Brave soʻrovnomalariga ruxsat bering</translation>
+<translation id="3204080538332044581">Brave'ga yangi varaq sahifasida shaxsiy soʻrovnomalarga havolalarni koʻrsatishga ruxsat beradi. Soʻrovnomalar bizga yangi funksiyalarni yaxshilash va brauzer orqali amalga oshiriladigan reklama kampaniyalarining samaradorligini baholashga yordam beradi. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>
 <translation id="154702742922788359">Ochiq rejim</translation>
 <translation id="2249111429176737533">Varaqli oyna sifatida ochish</translation>
 <translation id="7022756207310403729">Brauzerda ochish</translation>

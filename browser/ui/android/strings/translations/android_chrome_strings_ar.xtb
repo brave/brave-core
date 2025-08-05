@@ -78,7 +78,7 @@
 <translation id="1327257854815634930">يتم فتح سجلّ التنقُّل.</translation>
 <translation id="6773423637732432200">‏يتعذَّر تحديث Brave. يُرجى الاطِّلاع على مزيد من الخيارات</translation>
 <translation id="3169981355900570544">‏اختصارات ميزات Brave</translation>
-<translation id="1333491156693005331">تم إجراء عملية التحقّق مؤخرًا</translation>
+<translation id="1333491156693005331">تم التحقّق منه مؤخرًا</translation>
 <translation id="1336996151357442890">تم إلغاء الاشتراك في تلقّي الإشعارات من "<ph name="SITE_NAME"/>" سيُطلب منك مجددًا منح الإذن في زيارتك القادمة إلى هذا الموقع الإلكتروني.</translation>
 <translation id="1340839264183302272">مغادرة المجموعة</translation>
 <translation id="873343310451048603">‏للتحقّق من كلمات المرور المحتمَل تعرّضها للاختراق، يُرجى الانتقال إلى "مدير كلمات المرور في Brave".</translation>
@@ -269,7 +269,7 @@
 <translation id="2249635629516220541">تخصيص المعلومات التي تستخدمها المواقع الإلكترونية لعرض الإعلانات لك</translation>
 <translation id="2253927598983295051">اختيار المحتوى الذي تتم مشاركته مع "<ph name="APP_NAME"/>"</translation>
 <translation id="2259659629660284697">تصدير كلمات المرور...</translation>
-<translation id="781982477617612877">‏يُرجى تسجيل الدخول إلى حسابك على Brave للتحقُّق من كلمات المرور.</translation>
+<translation id="781982477617612877">‏يُرجى تسجيل الدخول إلى حسابك على Brave للتحقُّق من كلمات المرور</translation>
 <translation id="2278052315791335171">لن يؤدي حذف كلمة المرور هذه إلى حذف حسابك على <ph name="SITE"/>.</translation>
 <translation id="2286841657746966508">عنوان إرسال الفواتير</translation>
 <translation id="228704530595896923">قائمة خيارات المشاركة</translation>
@@ -592,7 +592,7 @@
 <translation id="8397843425685839889">‏أنت وBrave</translation>
 <translation id="3737319253362202215">إعدادات الترجمة</translation>
 <translation id="3738139272394829648">المس للبحث</translation>
-<translation id="4890062597702688591">‏ما مِن كلمات مرور محتمَل تعرّضها للاختراق في حسابك على Brave</translation>
+<translation id="4890062597702688591">‏ما مِن كلمات مرور معرّضة للاختراق في حسابك على Brave</translation>
 <translation id="3739899004075612870">تمت إضافة إشارة مرجعية في <ph name="PRODUCT_NAME"/></translation>
 <translation id="3740525748616366977">لا يتوفر البحث الصوتي على هذا الجهاز.</translation>
 <translation id="376561056759077985">لم يتم حفظ بعض البيانات إلى الآن</translation>
@@ -713,7 +713,7 @@
 <translation id="4320177379694898372">لا يتوفر اتصال بالإنترنت</translation>
 <translation id="6329878711227695496">‏عليك إثبات هويتك لاستخدام بيانات Brave وحفظها في حسابك على Brave</translation>
 <translation id="433213510553688132">جارٍ المتابعة…</translation>
-<translation id="4335835283689002019">التصفُّح الآمن غير مُفعّل.</translation>
+<translation id="4335835283689002019">التصفُّح الآمن غير مُفعّل</translation>
 <translation id="4351244548802238354">إغلاق مربع الحوار</translation>
 <translation id="4352287748243729941">هل تريد استخدام كلمة مرور <ph name="PROVIDER"/>؟</translation>
 <translation id="4355272626458588338">يمكنك الرجوع إلى أي صفحة تهمك من خلال إضافة إشارة مرجعية لها.</translation>
@@ -824,7 +824,7 @@
 <translation id="4782929588435725897">‫<ph name="SEARCH_ENGINE"/> هو محرك البحث التلقائي</translation>
 <translation id="4784349455504343791">يريد <ph name="WEBSITE_ORIGIN"/> استخدام معلومات شخصية من محفظتك الرقمية.</translation>
 <translation id="4787736314074622408">هل تريد حذف "<ph name="ITEM_TITLE"/>"؟</translation>
-<translation id="4194619960643453552">‏تعرّف على الطريقة التي يحافظ بها Brave على أمانك</translation>
+<translation id="4194619960643453552">‏كيف يحافظ Brave على أمانك؟</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4807098396393229769">الاسم المكتوب على البطاقة</translation>
 <translation id="480990236307250886">فتح الصفحة الرئيسية</translation>
@@ -1096,7 +1096,7 @@
 <translation id="604996488070107836">تعذّر تنزيل الملف <ph name="FILE_NAME"/> بسبب خطأ غير معلوم.</translation>
 <translation id="605721222689873409">العام</translation>
 <translation id="6059830886158432458">يمكنك التحكُّم بقصصك ونشاطك هنا.</translation>
-<translation id="4701065218405772222">‏للتحقّق من كلمات المرور المحتمَل تعرّضها للاختراق، يُرجى تسجيل الدخول إلى حسابك على Brave.</translation>
+<translation id="4701065218405772222">‏للتحقّق من كلمات المرور المحتمَل تعرّضها للاختراق، يُرجى تسجيل الدخول إلى حسابك على Brave</translation>
 <translation id="6078323886959318429">إضافة اختصار</translation>
 <translation id="6085886413119427067">تحديد طريقة الاتصال بمواقع إلكترونية من خلال اتصال آمن</translation>
 <translation id="6087286598828478206">هل تريد حظر هذا الحساب ومغادرة المجموعة؟</translation>
@@ -1399,7 +1399,7 @@
 <translation id="727288900855680735">هل تريد إرسال <ph name="ONE_TIME_CODE"/> إلى <ph name="ORIGIN"/>؟</translation>
 <translation id="7274013316676448362">تم حظر الموقع.</translation>
 <translation id="7276868533747677875">‏إذا سبق لك تصدير كلمات المرور، يمكنك البحث عن ملف CSV على جهازك واستيرادها إلى مدير كلمات المرور المفضّل لديك.</translation>
-<translation id="2700309900785251885">‏يوفِّر لك Brave أعلى مستويات الأمان.</translation>
+<translation id="2700309900785251885">‏يوفِّر لك Brave أعلى مستويات الأمان</translation>
 <translation id="7289303553784750393">في حالة استمرار حدوث هذه المشكلة أثناء اتصالك بالإنترنت، يمكنك تجربة طرق أخرى للمتابعة على "<ph name="SITE_ETLD_PLUS_ONE"/>".</translation>
 <translation id="7290209999329137901">إعادة التسمية غير متوفرة</translation>
 <translation id="7291910923717764901">تم إضافة أوصاف الصور لهذه الصفحة.</translation>

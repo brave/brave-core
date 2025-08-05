@@ -1273,7 +1273,6 @@ Masalan, qaysi sahifalarga kirganligingizdan qat’i nazar, ba’zi saytlarda re
 <translation id="676305334223455055">Qiziqishlaringiz asosida kontent olish uchun hisobingiz bilan kiring</translation>
 <translation id="6764137532716892442"><ph name="GROUP_TITLE"/> umumiy varaqlar guruhida yangi faollik</translation>
 <translation id="6767294960381293877">Yarim hajmda ochilgan varaq uzatiladigan qurilmalar roʻyxati.</translation>
-<translation id="7019870729880056499">{TAB_COUNT,plural, =1{<ph name="INCOGNITO_TAB_COUNT"/> ta inkognito va yana <ph name="TAB_COUNT_ONE"/> varaq yopiladi}other{<ph name="INCOGNITO_TAB_COUNT"/> ta inkognito va yana <ph name="TAB_COUNT_MANY"/> varaq yopiladi}}</translation>
 <translation id="8174975477247159780">Brave va ChromeOS qoʻshimcha shartlari</translation>
 <translation id="6786747875388722282">Kengaytmalar</translation>
 <translation id="6795633245022906657">Tezda yangi varaqda ochish. Bu yorliqni tahrirlash uchun Sozlamalarga kiring.</translation>
@@ -1742,7 +1741,6 @@ Bu sozlamani oʻzgartirish uchun <ph name="BEGIN_LINK"/>hisobingizda Brave maʼl
 <translation id="3188408398745868028">Tez orada bu qurilmadagi ayrim parollar ishlamay qoladi. Mazkur parollarni Brave parollar menejeriga koʻchiring.</translation>
 <translation id="8676276370198826499"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> bilan <ph name="SITE_ETLD_PLUS_ONE"/> uchun roʻyxatdan oʻting</translation>
 <translation id="8676789164135894283">Kirishni tasdiqlash</translation>
-<translation id="7770295979628466744">Bukmarklar panelini ochish va yopish</translation>
 <translation id="8683039184091909753">rasm</translation>
 <translation id="8688183792442786085"><ph name="TAB_TITLE"/>, tanlangan varaq</translation>
 <translation id="8693232767599693749">Mutolaa rejimi ochilsinmi?</translation>
@@ -1909,6 +1907,7 @@ Bu sozlamani oʻzgartirish uchun <ph name="BEGIN_LINK"/>hisobingizda Brave maʼl
 <translation id="4639461638460276789"><ph name="TAB_TITLE"/>, Maxfiy varaq</translation>
 <translation id="1315014485411054095"><ph name="TAB_TITLE"/>, Maxfiy varaq tanlandi</translation>
 <translation id="2280910239864711607">Maxfiy rejimda yangi varaq ochish</translation>
+<translation id="7770295979628466744">Xatchoʻplarni koʻrsatish yoki yashirish</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> ta maxfiy varaq}
           other {<ph name="TAB_COUNT_NORMAL"/> ta maxfiy varaq}}</translation>
@@ -1921,6 +1920,9 @@ Bu sozlamani oʻzgartirish uchun <ph name="BEGIN_LINK"/>hisobingizda Brave maʼl
 <translation id="2703361981471284696">{TAB_COUNT, plural,
           =1 {<ph name="INCOGNITO_TAB_COUNT"/> ta maxfiy va yana <ph name="TAB_COUNT_ONE"/> ta varaq yopiladi}
           other {<ph name="INCOGNITO_TAB_COUNT"/> ta maxfiy va yana <ph name="TAB_COUNT_MANY"/> ta varaq yopiladi}}</translation>
+<translation id="7019870729880056499">{TAB_COUNT, plural,
+          =1 {<ph name="INCOGNITO_TAB_COUNT"/> maxfiy va <ph name="TAB_COUNT_ONE"/> boshqa varaq yopiladi}
+          other {<ph name="INCOGNITO_TAB_COUNT"/> maxfiy va <ph name="TAB_COUNT_MANY"/> boshqa varaqlar yopiladi}}</translation>
 <translation id="4362959348993021460">Maxfiy rejimga almashish uchun teginib turing</translation>
 <translation id="1393515642387718683">Maxfiy rejimga almashish uchun ikki marta bosing va ushlab turing</translation>
 <translation id="7096147642287317420">Maxfiy rejimdan chiqish uchun teginib turing</translation>
