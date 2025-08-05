@@ -183,8 +183,7 @@ class BraveProfileManagerAIAgentProfileTest
     ProfileAttributesStorage& storage =
         g_browser_process->profile_manager()->GetProfileAttributesStorage();
     size_t num_profiles = storage.GetNumberOfProfiles();
-    base::FilePath path =
-        GetTempPath().AppendASCII(brave::kAIChatAgentProfileDir);
+    base::FilePath path = GetTempPath().Append(brave::kAIChatAgentProfileDir);
     ProfileAttributesInitParams params;
     params.profile_path = path;
     params.profile_name = u"Testing AI Chat Agent Profile";
