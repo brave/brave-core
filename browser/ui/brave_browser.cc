@@ -181,8 +181,6 @@ void BraveBrowser::TabCustomTitleChanged(content::WebContents* contents,
   SessionService* session_service =
       SessionServiceFactory::GetForProfileIfExisting(profile());
   if (session_service) {
-    // This makes sure that the custom title is stored in the session service
-    // so that it can be restored even after browser restarts.
     sessions::SessionTabHelper* session_tab_helper =
         sessions::SessionTabHelper::FromWebContents(contents);
     session_service->AddTabExtraData(
