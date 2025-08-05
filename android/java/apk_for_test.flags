@@ -85,10 +85,12 @@
     *** mSyncEverything;
 }
 
--keep class org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper {
-    *** mCallback;
-    *** mFragmentManager;
-}
+# TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+# Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+#-keep class org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper {
+#    *** mCallback;
+#    *** mFragmentManager;
+#}
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
     *** mProfile;

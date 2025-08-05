@@ -242,13 +242,18 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
+        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+        // Assert.assertTrue(
+        //         classExists(
+        //
+        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper")); // presubmit: ignore-long-line
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings"));
+                        "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings"));
         Assert.assertTrue(classExists("org/chromium/base/CommandLineInitUtil"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ui/appmenu/AppMenu"));
         Assert.assertTrue(
@@ -1995,23 +2000,33 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/ntp/NewTabPage", "mTabStripHeightSupplier"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                fieldExists(
+                        "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                         "mTileGroup"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
+                fieldExists(
+                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mGoogleActivityControls"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncEncryption"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncEverything"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
-                        "mCallback"));
+                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
+                        "mSyncEncryption"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
-                        "mFragmentManager"));
+                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
+                        "mSyncEverything"));
+        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+        // Assert.assertTrue(
+        //         fieldExists(
+        //
+        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
+        //                 "mCallback"));
+        // Assert.assertTrue(
+        //         fieldExists(
+        //
+        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
+        //                 "mFragmentManager"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
