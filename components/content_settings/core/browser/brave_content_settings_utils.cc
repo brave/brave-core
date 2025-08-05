@@ -57,7 +57,6 @@ const std::vector<ContentSettingsType>& GetShieldsContentSettingsTypes() {
           ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
           ContentSettingsType::BRAVE_FINGERPRINTING_V2,
           ContentSettingsType::BRAVE_SHIELDS,
-          ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE,
           ContentSettingsType::BRAVE_REFERRERS,
           ContentSettingsType::BRAVE_COOKIES,
       });
@@ -79,8 +78,6 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
       return brave_shields::kFingerprintingV2;
     case ContentSettingsType::BRAVE_SHIELDS:
       return brave_shields::kBraveShields;
-    case ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE:
-      return brave_shields::kBraveShieldsAdBlockOnlyMode;
     case ContentSettingsType::BRAVE_REFERRERS:
       return brave_shields::kReferrers;
     case ContentSettingsType::BRAVE_COOKIES:

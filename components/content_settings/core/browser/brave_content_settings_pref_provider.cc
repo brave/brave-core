@@ -274,17 +274,6 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
           continue;
         }
 
-        // TODO(aseren): We have a "global" toggle for ad block only mode.
-        // // Drop a "global" value of brave shields ad block only mode, that
-        // // actually shouldn't exist at all since we don't have any global
-        // toggle
-        // // for this.
-        // if (shields_preference_name ==
-        //         brave_shields::kBraveShieldsAdBlockOnlyMode &&
-        //     patterns_string == "*,*") {
-        //   continue;
-        // }
-
         DCHECK(resource_value.is_int());
         int setting = resource_value.GetInt();
         DCHECK_NE(CONTENT_SETTING_DEFAULT, setting);

@@ -21,8 +21,6 @@ inline constexpr char kHTTPSUpgrades[] = "httpsUpgrades";
 inline constexpr char kJavaScript[] = "javascript";
 inline constexpr char kFingerprintingV2[] = "fingerprintingV2";
 inline constexpr char kBraveShields[] = "braveShields";
-inline constexpr char kBraveShieldsAdBlockOnlyMode[] =
-    "braveShieldsAdBlockOnlyMode";
 inline constexpr char kBraveShieldsMetadata[] = "braveShieldsMetadata";
 inline constexpr char kReferrers[] = "referrers";
 inline constexpr char kCookies[] = "shieldsCookiesV3";

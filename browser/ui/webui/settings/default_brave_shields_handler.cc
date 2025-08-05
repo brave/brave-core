@@ -157,9 +157,7 @@ void DefaultBraveShieldsHandler::OnContentSettingChanged(
       !content_type_set.Contains(ContentSettingsType::BRAVE_SHIELDS) &&
       !content_type_set.Contains(ContentSettingsType::BRAVE_HTTPS_UPGRADE) &&
       !content_type_set.Contains(
-          ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE) &&
-      !content_type_set.Contains(
-          ContentSettingsType::BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE)) {
+          ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE)) {
     return;
   }
 
