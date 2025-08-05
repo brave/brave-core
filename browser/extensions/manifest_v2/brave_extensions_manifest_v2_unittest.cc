@@ -254,7 +254,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
       std::string version;
       base::ReadFileToString(profile()
                                  ->GetPath()
-                                 .AppendASCII("ExtensionsMV2Backup")
+                                 .AppendASCII("MV2Backup")
                                  .AppendASCII(extensions_mv2::kWebStoreUBlockId)
                                  .AppendASCII("version"),
                              &version);
@@ -264,7 +264,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
           profile()->GetPath().AppendASCII("IndexedDB"),
           profile()
               ->GetPath()
-              .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII("MV2Backup")
               .AppendASCII(extensions_mv2::kWebStoreUBlockId)
               .AppendASCII("IndexedDB")));
       EXPECT_TRUE(AreDirectoriesEqual(
@@ -272,12 +272,12 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
               extensions::kLocalExtensionSettingsDirectoryName),
           profile()
               ->GetPath()
-              .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII("MV2Backup")
               .AppendASCII(extensions_mv2::kWebStoreUBlockId)
               .Append(extensions::kLocalExtensionSettingsDirectoryName)));
     } else {
-      EXPECT_FALSE(base::PathExists(
-          profile()->GetPath().AppendASCII("ExtensionsMV2Backup")));
+      EXPECT_FALSE(
+          base::PathExists(profile()->GetPath().AppendASCII("MV2Backup")));
     }
   }
 
@@ -304,26 +304,26 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
       EXPECT_TRUE(base::IsDirectoryEmpty(
           profile()
               ->GetPath()
-              .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII("MV2Backup")
               .AppendASCII(extensions_mv2::kWebStoreUBlockId)
               .AppendASCII("IndexedDB")));
       EXPECT_TRUE(base::IsDirectoryEmpty(
           profile()
               ->GetPath()
-              .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII("MV2Backup")
               .AppendASCII(extensions_mv2::kWebStoreUBlockId)
               .Append(extensions::kLocalExtensionSettingsDirectoryName)));
     } else {
       EXPECT_FALSE(base::IsDirectoryEmpty(
           profile()
               ->GetPath()
-              .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII("MV2Backup")
               .AppendASCII(extensions_mv2::kWebStoreUBlockId)
               .AppendASCII("IndexedDB")));
       EXPECT_FALSE(base::IsDirectoryEmpty(
           profile()
               ->GetPath()
-              .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII("MV2Backup")
               .AppendASCII(extensions_mv2::kWebStoreUBlockId)
               .Append(extensions::kLocalExtensionSettingsDirectoryName)));
     }
@@ -361,7 +361,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
           profile()->GetPath().AppendASCII("IndexedDB"),
           profile()
               ->GetPath()
-              .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII("MV2Backup")
               .AppendASCII(extensions_mv2::kWebStoreUBlockId)
               .AppendASCII("IndexedDB")));
       EXPECT_TRUE(AreDirectoriesEqual(
@@ -369,7 +369,7 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
               extensions::kLocalExtensionSettingsDirectoryName),
           profile()
               ->GetPath()
-              .AppendASCII("ExtensionsMV2Backup")
+              .AppendASCII("MV2Backup")
               .AppendASCII(extensions_mv2::kWebStoreUBlockId)
               .Append(extensions::kLocalExtensionSettingsDirectoryName)));
     }

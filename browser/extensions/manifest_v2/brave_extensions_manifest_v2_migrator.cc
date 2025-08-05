@@ -14,6 +14,7 @@
 #include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "brave/browser/extensions/manifest_v2/features.h"
 #include "chrome/browser/profiles/profile.h"
+#include "extensions/browser/disable_reason.h"
 #include "extensions/browser/extension_file_task_runner.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_prefs_factory.h"
@@ -26,7 +27,7 @@
 namespace {
 
 constexpr base::FilePath::CharType kExtensionMV2BackupDir[] =
-    FILE_PATH_LITERAL("ExtensionsMV2Backup");
+    FILE_PATH_LITERAL("MV2Backup");
 
 constexpr base::FilePath::CharType kIndexedDBDir[] =
     FILE_PATH_LITERAL("IndexedDB");
@@ -143,45 +144,71 @@ base::Version BackupExtensionSettingsOnFileThread(
     return GetBackupVersion(webstore_extension_id, profile_dir);
   }
 
+  base::ScopedClosureRunner remove_backup_on_error(
+      base::GetDeletePathRecursivelyCallback(backup_path));
+
   const auto local_settings_path =
       profile_dir.Append(extensions::kLocalExtensionSettingsDirectoryName)
           .AppendASCII(webstore_extension_id);
   if (base::PathExists(local_settings_path)) {
     const auto local_settings_backup_path =
         backup_path.Append(extensions::kLocalExtensionSettingsDirectoryName);
-    base::DeletePathRecursively(local_settings_backup_path);
-    base::CreateDirectory(local_settings_backup_path);
-    base::CopyDirectory(local_settings_path, local_settings_backup_path, true);
+    if (!base::DeletePathRecursively(local_settings_backup_path) ||
+        !base::CreateDirectory(local_settings_backup_path) ||
+        !base::CopyDirectory(local_settings_path, local_settings_backup_path,
+                             true)) {
+      return base::Version();
+    }
   }
 
   const auto indexeddb_settings_backup_path = backup_path.Append(kIndexedDBDir);
-  base::CreateDirectory(indexeddb_settings_backup_path);
+  if (!base::CreateDirectory(indexeddb_settings_backup_path)) {
+    return base::Version();
+  }
 
+  bool error = false;
   GetIndexedSettings(webstore_extension_id, profile_dir)
-      .ForEach([&indexeddb_settings_backup_path](const base::FilePath& path) {
+      .ForEach([&error,
+                &indexeddb_settings_backup_path](const base::FilePath& path) {
+        if (error) {
+          return;
+        }
         const auto destination =
             indexeddb_settings_backup_path.Append(path.BaseName());
-        base::DeletePathRecursively(destination);
-        base::CopyDirectory(path, destination, true);
+        if (!base::DeletePathRecursively(destination) ||
+            !base::CopyDirectory(path, destination, true)) {
+          error = true;
+        }
       });
+  if (error || !base::WriteFile(backup_path.AppendASCII("version"),
+                                version.GetString())) {
+    return base::Version();
+  }
 
-  base::WriteFile(backup_path.AppendASCII("version"), version.GetString());
+  remove_backup_on_error.ReplaceClosure(base::DoNothing());
   return version;
 }
 
-void ClearExtensionSettingsOnFileThread(
+bool ClearExtensionSettingsOnFileThread(
     const extensions::ExtensionId& brave_hosted_extension_id,
     const base::FilePath& profile_dir) {
   CHECK(extensions_mv2::IsKnownBraveHostedExtension(brave_hosted_extension_id));
 
   const auto local_settings =
       GetLocalSettings(brave_hosted_extension_id, profile_dir);
-  base::DeletePathRecursively(local_settings);
+  if (!base::DeletePathRecursively(local_settings)) {
+    return false;
+  }
 
   auto indexeddb_settings =
       GetIndexedSettings(brave_hosted_extension_id, profile_dir);
-  indexeddb_settings.ForEach(
-      [](const base::FilePath& path) { base::DeletePathRecursively(path); });
+  bool error = false;
+  indexeddb_settings.ForEach([&error](const base::FilePath& path) {
+    if (!error && !base::DeletePathRecursively(path)) {
+      error = true;
+    }
+  });
+  return !error;
 }
 
 void ImportExtensionSettingsOnFileThread(
@@ -198,33 +225,58 @@ void ImportExtensionSettingsOnFileThread(
   const auto webstore_extension_version =
       GetBackupVersion(webstore_extension_id, profile_dir);
 
-  if (webstore_extension_version > brave_hosted_extension_version) {
-    // Webstore extension is newer than brave-hosted, can't import settings.
+  const auto backup_path = profile_dir.Append(kExtensionMV2BackupDir)
+                               .AppendASCII(webstore_extension_id);
+  // Remove backup in any case.
+  base::ScopedClosureRunner remove_backup(
+      base::GetDeletePathRecursivelyCallback(backup_path));
+
+  if (webstore_extension_version != brave_hosted_extension_version) {
     return;
   }
-  // Brave-hosted extension is newer, so it can load an old settings
-  // as it does while updating.
 
-  ClearExtensionSettingsOnFileThread(brave_hosted_extension_id, profile_dir);
+  base::ScopedClosureRunner clear_settings_on_error(base::BindOnce(
+      [](const extensions::ExtensionId& brave_hosted_extension_id,
+         const base::FilePath& profile_dir) {
+        ClearExtensionSettingsOnFileThread(brave_hosted_extension_id,
+                                           profile_dir);
+      },
+      brave_hosted_extension_id, profile_dir));
+
+  if (!ClearExtensionSettingsOnFileThread(brave_hosted_extension_id,
+                                          profile_dir)) {
+    return;
+  }
 
   const auto local_settings_backup =
       GetLocalSettingsForImport(brave_hosted_extension_id, profile_dir);
   if (!local_settings_backup.empty()) {
-    base::Move(
-        local_settings_backup,
-        profile_dir.Append(extensions::kLocalExtensionSettingsDirectoryName)
-            .AppendASCII(brave_hosted_extension_id));
+    if (!base::Move(
+            local_settings_backup,
+            profile_dir.Append(extensions::kLocalExtensionSettingsDirectoryName)
+                .AppendASCII(brave_hosted_extension_id))) {
+      return;
+    }
   }
 
+  bool error = false;
   GetIndexedSettingsForImport(brave_hosted_extension_id, profile_dir)
-      .ForEach([&profile_dir, &brave_hosted_extension_id,
+      .ForEach([&error, &profile_dir, &brave_hosted_extension_id,
                 &webstore_extension_id](const base::FilePath& path) {
+        if (error) {
+          return;
+        }
         auto name = path.BaseName().value();
         base::ReplaceFirstSubstringAfterOffset(
             &name, 0, ASCIIToPathStringType(webstore_extension_id),
             ASCIIToPathStringType(brave_hosted_extension_id));
-        base::Move(path, profile_dir.Append(kIndexedDBDir).Append(name));
+        if (!base::Move(path, profile_dir.Append(kIndexedDBDir).Append(name))) {
+          error = true;
+        }
       });
+  if (!error) {
+    clear_settings_on_error.ReplaceClosure(base::DoNothing());
+  }
 }
 
 }  // namespace
@@ -294,10 +346,15 @@ void ExtensionsManifestV2Migrator::OnExtensionInstalled(
       !extensions_mv2::IsKnownBraveHostedExtension(extension->id())) {
     return;
   }
-  extensions::GetExtensionFileTaskRunner()->PostTask(
+
+  extensions::ExtensionRegistrar::Get(profile_)->DisableExtension(
+      extension->id(), {extensions::disable_reason::DISABLE_RELOAD});
+  extensions::GetExtensionFileTaskRunner()->PostTaskAndReply(
       FROM_HERE,
       base::BindOnce(&ImportExtensionSettingsOnFileThread, extension->id(),
-                     extension->version(), profile_->GetPath()));
+                     extension->version(), profile_->GetPath()),
+      base::BindOnce(&ExtensionsManifestV2Migrator::OnSettingsImported,
+                     weak_factory_.GetWeakPtr(), extension->id()));
 }
 
 void ExtensionsManifestV2Migrator::BackupExtensionSettings(
@@ -312,6 +369,13 @@ void ExtensionsManifestV2Migrator::BackupExtensionSettings(
                      webstore_extension_id, webstore_extension_version,
                      profile_->GetPath()),
       base::BindOnce([](const base::Version&) {}));
+}
+
+void ExtensionsManifestV2Migrator::OnSettingsImported(
+    const extensions::ExtensionId& brave_hosted_extension_id) {
+  CHECK(extensions_mv2::IsKnownBraveHostedExtension(brave_hosted_extension_id));
+  extensions::ExtensionRegistrar::Get(profile_)->EnableExtension(
+      brave_hosted_extension_id);
 }
 
 //-----------------------------------------------------------------------------

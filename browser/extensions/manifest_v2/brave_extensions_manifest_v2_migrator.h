@@ -52,9 +52,8 @@ class ExtensionsManifestV2Migrator
 
   void BackupExtensionSettings(
       const extensions::ExtensionId& webstore_extension_id);
-  void OnBackupSettingsCompleted(
-      const extensions::ExtensionId& webstores_extension_id,
-      const base::Version& version);
+  void OnSettingsImported(
+      const extensions::ExtensionId& brave_hosted_extension_id);
 
   const raw_ptr<Profile> profile_ = nullptr;
   base::ScopedObservation<extensions::ExtensionPrefs,
