@@ -235,20 +235,12 @@ TEST_P(BraveProfileManagerAIAgentProfileTest, SetProfileAsLastUsed) {
     ASSERT_FALSE(ai_chat_profile->IsAIChatAgent());
   }
 
-  // Get profiles back from profile manager
-  Profile* regular_profile_ptr =
-      profile_manager->GetProfileByPath(regular_path);
-  Profile* ai_chat_profile_ptr =
-      profile_manager->GetProfileByPath(ai_chat_path);
-  ASSERT_TRUE(regular_profile_ptr);
-  ASSERT_TRUE(ai_chat_profile_ptr);
-
   ProfileAttributesStorage* storage =
       &profile_manager->GetProfileAttributesStorage();
 
   // Test regular profile - should always update last used time
   base::Time before_regular = base::Time::Now();
-  profile_manager->SetProfileAsLastUsed(regular_profile_ptr);
+  profile_manager->SetProfileAsLastUsed(regular_profile);
 
   ProfileAttributesEntry* regular_entry =
       storage->GetProfileAttributesWithPath(regular_path);
@@ -261,7 +253,7 @@ TEST_P(BraveProfileManagerAIAgentProfileTest, SetProfileAsLastUsed) {
   ASSERT_TRUE(ai_chat_entry);
   base::Time ai_chat_time_before = ai_chat_entry->GetActiveTime();
 
-  profile_manager->SetProfileAsLastUsed(ai_chat_profile_ptr);
+  profile_manager->SetProfileAsLastUsed(ai_chat_profile);
 
   if (IsAIChatAgentProfileFeatureEnabled()) {
     // When feature is enabled, AI Chat Agent profile should NOT update last
