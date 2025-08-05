@@ -14,16 +14,16 @@ import android.text.style.ForegroundColorSpan;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.password_manager.settings.ReauthenticationManager;
+// TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+// Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+// import org.chromium.chrome.browser.password_manager.settings.ReauthenticationManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
-import org.chromium.ui.widget.Toast;
 
 import java.util.Optional;
 import java.util.Timer;
@@ -41,7 +41,9 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private ChromeSwitchPreference mPrefSyncPasswords;
     private ChromeSwitchPreference mSyncEverything;
 
-    private BravePasswordAccessReauthenticationHelper mReauthenticationHelper;
+    // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+    // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+    // private BravePasswordAccessReauthenticationHelper mReauthenticationHelper;
 
     private Timer mPasswordsSummaryUpdater;
     private static final int RECHECK_VALID_AUTHENTICATION_INTERVAL_MILLIS = 10 * 1000;
@@ -133,11 +135,13 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
                 || pm.hasSystemFeature(ARC_DEVICE_MANAGEMENT_FEATURE);
     }
 
-    private void showScreenLockToast() {
-        Toast.makeText(ContextUtils.getApplicationContext(),
-                     R.string.password_sync_type_set_screen_lock, Toast.LENGTH_LONG)
-                .show();
-    }
+    // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+    // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+    // private void showScreenLockToast() {
+    //     Toast.makeText(ContextUtils.getApplicationContext(),
+    //                  R.string.password_sync_type_set_screen_lock, Toast.LENGTH_LONG)
+    //             .show();
+    // }
 
     private void overrideWithAuthConfirmationSyncPasswords() {
         overrideWithAuthConfirmation(mPrefSyncPasswords);
@@ -156,58 +160,65 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
                     assert newValue instanceof Boolean;
                     if ((Boolean) newValue) {
                         verboseIfEnabled("OnPreferenceChange: newValue is true");
-                        if (!ReauthenticationManager.isScreenLockSetUp(
-                                ContextUtils.getApplicationContext())) {
-                            verboseIfEnabled("OnPreferenceChange: no screenlock set up");
-                            showScreenLockToast();
-                        } else {
+                        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+                        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+                        // if (!ReauthenticationManager.isScreenLockSetUp(
+                        //         ContextUtils.getApplicationContext())) {
+                        //     verboseIfEnabled("OnPreferenceChange: no screenlock set up");
+                        //     showScreenLockToast();
+                        // } else
+                        {
                             verboseIfEnabled("OnPreferenceChange: screenlock is set up");
                             try {
-                                FragmentManager fragmentManager = this.getParentFragmentManager();
+                                // FragmentManager fragmentManager =
+                                // this.getParentFragmentManager();
 
-                                if (mReauthenticationHelper == null) {
-                                    verboseIfEnabled(
-                                            "OnPreferenceChange: screenlock creating auth helper");
-                                    mReauthenticationHelper =
-                                            new BravePasswordAccessReauthenticationHelper(
-                                                    ContextUtils.getApplicationContext(),
-                                                    fragmentManager);
-                                }
+                                // TODO(alexeybarabash): backport
+                                // PasswordAccessReauthenticationHelper
+                                // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+                                // if (mReauthenticationHelper == null) {
+                                //     verboseIfEnabled(
+                                //             "OnPreferenceChange: screenlock creating auth
+                                // helper");
+                                //     mReauthenticationHelper =
+                                //             new BravePasswordAccessReauthenticationHelper(
+                                //                     ContextUtils.getApplicationContext(),
+                                //                     fragmentManager);
+                                // }
 
                                 verboseIfEnabled("OnPreferenceChange: screenlock invoke reauth");
-                                mReauthenticationHelper.reauthenticateWithDescription(
-                                        R.string.enabling_password_sync_auth_message,
-                                        success -> {
-                                            verboseIfEnabled(
-                                                    "OnPreferenceChange: screenlock reauth response"
-                                                            + " success="
-                                                            + success);
-                                            if (success) {
-                                                verboseIfEnabled(
-                                                        "OnPreferenceChange: call original"
-                                                                + " onPreferenceChange");
-                                                Boolean originalOnPreferenceChangeResult =
-                                                        origSyncListner.onPreferenceChange(
-                                                                preference, true);
-                                                verboseIfEnabled(
-                                                        "OnPreferenceChange: original"
-                                                                + " onPreferenceChange result="
-                                                                + originalOnPreferenceChangeResult);
-                                                verboseIfEnabled(
-                                                        "OnPreferenceChange: call setChecked(true)"
-                                                                + " for control");
-                                                control.setChecked(true);
+                                // mReauthenticationHelper.reauthenticateWithDescription(
+                                //         R.string.enabling_password_sync_auth_message,
+                                //         success -> {
+                                //             verboseIfEnabled(
+                                //                     "OnPreferenceChange: screenlock reauth
+                                // response"
+                                //                             + " success="
+                                //                             + success);
+                                //             if (success) {
+                                verboseIfEnabled(
+                                        "OnPreferenceChange: call original"
+                                                + " onPreferenceChange");
+                                Boolean originalOnPreferenceChangeResult =
+                                        origSyncListner.onPreferenceChange(preference, true);
+                                verboseIfEnabled(
+                                        "OnPreferenceChange: original"
+                                                + " onPreferenceChange result="
+                                                + originalOnPreferenceChangeResult);
+                                verboseIfEnabled(
+                                        "OnPreferenceChange: call setChecked(true)"
+                                                + " for control");
+                                control.setChecked(true);
 
-                                                // Authentication will be valid for
-                                                // ReauthenticationManager.
-                                                // VALID_REAUTHENTICATION_TIME_INTERVAL_MILLIS,
-                                                // So schedule re-check operation.
-                                                verboseIfEnabled(
-                                                        "OnPreferenceChange: call schedule check"
-                                                                + " for valid");
-                                                scheduleCheckForStillValidAuth();
-                                            }
-                                        });
+                                // Authentication will be valid for
+                                // ReauthenticationManager.
+                                // VALID_REAUTHENTICATION_TIME_INTERVAL_MILLIS,
+                                // So schedule re-check operation.
+                                verboseIfEnabled(
+                                        "OnPreferenceChange: call schedule check" + " for valid");
+                                scheduleCheckForStillValidAuth();
+                                //     }
+                                // });
                             } catch (java.lang.IllegalStateException ex) {
                                 Log.e(
                                         TAG,
@@ -235,12 +246,14 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
     // See CredentialEditCoordinator.onResumeFragment
     public void onResumeFragment() {
-        if (mReauthenticationHelper != null) {
-            verboseIfEnabled("onResumeFragment: call onReauthenticationMaybeHappened");
-            mReauthenticationHelper.onReauthenticationMaybeHappened();
-        } else {
-            verboseIfEnabled("onResumeFragment: cannot call onReauthenticationMaybeHappened");
-        }
+        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+        // if (mReauthenticationHelper != null) {
+        //     verboseIfEnabled("onResumeFragment: call onReauthenticationMaybeHappened");
+        //     mReauthenticationHelper.onReauthenticationMaybeHappened();
+        // } else {
+        //     verboseIfEnabled("onResumeFragment: cannot call onReauthenticationMaybeHappened");
+        // }
     }
 
     @Override
@@ -261,20 +274,22 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     }
 
     private void updateSyncPasswordsSummary() {
-        if (ReauthenticationManager.isScreenLockSetUp(ContextUtils.getApplicationContext())) {
-            verboseIfEnabled("updateSyncPasswordsSummary: screen lock is set up");
-            if (ReauthenticationManager.authenticationStillValid(
-                    ReauthenticationManager.ReauthScope.ONE_AT_A_TIME)) {
-                verboseIfEnabled("updateSyncPasswordsSummary: auth is still valid");
-                mPrefSyncPasswords.setSummaryOff("");
-            } else {
-                verboseIfEnabled("updateSyncPasswordsSummary: auth is not valid anymore");
-                setRedPasswordsSummaryOff(R.string.sync_password_require_auth_summary);
-            }
-        } else {
-            verboseIfEnabled("updateSyncPasswordsSummary: screen lock is not set up");
-            setRedPasswordsSummaryOff(R.string.device_require_auth_to_sync_passwords_summary);
-        }
+        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+        // if (ReauthenticationManager.isScreenLockSetUp(ContextUtils.getApplicationContext())) {
+        //     verboseIfEnabled("updateSyncPasswordsSummary: screen lock is set up");
+        //     if (ReauthenticationManager.authenticationStillValid(
+        //             ReauthenticationManager.ReauthScope.ONE_AT_A_TIME)) {
+        //         verboseIfEnabled("updateSyncPasswordsSummary: auth is still valid");
+        //         mPrefSyncPasswords.setSummaryOff("");
+        //     } else {
+        //         verboseIfEnabled("updateSyncPasswordsSummary: auth is not valid anymore");
+        //         setRedPasswordsSummaryOff(R.string.sync_password_require_auth_summary);
+        //     }
+        // } else {
+        verboseIfEnabled("updateSyncPasswordsSummary: screen lock is not set up");
+        setRedPasswordsSummaryOff(R.string.device_require_auth_to_sync_passwords_summary);
+        // }
     }
 
     private void setRedPasswordsSummaryOff(int stringId) {
