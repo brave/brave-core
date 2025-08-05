@@ -10,8 +10,10 @@
 
 #define OnExitProfileButtonClicked virtual OnExitProfileButtonClicked
 #define BuildFeatureButtons virtual BuildFeatureButtons
+#define MaybeBuildCloseBrowsersButton virtual MaybeBuildCloseBrowsersButton
 
 #include <chrome/browser/ui/views/profiles/profile_menu_view.h>  // IWYU pragma: export
+#undef MaybeBuildCloseBrowsersButton
 #undef BuildFeatureButtons
 #undef OnExitProfileButtonClicked
 #undef BRAVE_PROFILE_MENU_VIEW_H
