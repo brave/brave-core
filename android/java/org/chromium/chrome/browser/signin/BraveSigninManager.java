@@ -46,9 +46,6 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public void isAccountManaged(String email, final Callback<Boolean> callback) {}
-
-    @Override
     public String getManagementDomain() {
         return "";
     }
