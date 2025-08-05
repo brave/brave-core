@@ -112,6 +112,12 @@ public class WalletStore {
     cryptoStore?.tearDown()
   }
 
+  public func webUIValidation(completion: @escaping (Bool) -> Void) {
+    keyringStore.webUIValidation { validation in
+      completion(validation)
+    }
+  }
+
   private func setUp(
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
