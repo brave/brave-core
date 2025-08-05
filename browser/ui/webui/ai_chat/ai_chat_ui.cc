@@ -94,7 +94,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
                      ai_chat::features::IsAIChatHistoryEnabled());
   source->AddBoolean("isAgentProfileFeatureEnabled",
                      ai_chat::features::IsAIChatAgentProfileEnabled());
-  source->AddBoolean("isAIChatAgentProfile", profile_->IsAIChatAgent());
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  source->AddBoolean("isAgentProfile", profile_->IsAIChatAgent());
+#endif
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(

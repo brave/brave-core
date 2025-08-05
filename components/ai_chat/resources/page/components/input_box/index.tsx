@@ -44,7 +44,7 @@ type Props = Pick<
   | 'associateDefaultContent'
   | 'setShowAttachments'
 > &
-  Pick<AIChatContext, 'isMobile' | 'isContentAgentFeatureEnabled' | 'isContentAgentSupportedInCurrentProfile' | 'hasAcceptedAgreement' | 'getPluralString' | 'tabs' | 'openAIChatAgenticProfile'>
+  Pick<AIChatContext, 'isMobile' | 'isAgentProfileFeatureEnabled' | 'isAgentProfile' | 'hasAcceptedAgreement' | 'getPluralString' | 'tabs' | 'openAIChatAgenticProfile'>
 
 export interface InputBoxProps {
   context: Props
@@ -256,7 +256,7 @@ function InputBox(props: InputBoxProps) {
           />
           {props.context.hasAcceptedAgreement &&
             props.context.isAgentProfileFeatureEnabled &&
-            !props.context.isAIChatAgentProfile && (
+            !props.context.isAgentProfile && (
             <Button
               fab
               kind='plain-faint'
@@ -267,7 +267,7 @@ function InputBox(props: InputBoxProps) {
             </Button>
           )}
           {props.context.isAgentProfileFeatureEnabled &&
-            props.context.isAIChatAgentProfile && (
+            props.context.isAgentProfile && (
             <Tooltip
               text={getLocale(S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL)}
             >
