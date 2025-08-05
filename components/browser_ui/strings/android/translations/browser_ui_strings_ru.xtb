@@ -25,6 +25,7 @@
 <translation id="129382876167171263">Здесь появятся файлы, сохраненные сайтами.</translation>
 <translation id="131112695174432497">Данные, влияющие на персонализацию рекламы, будут удалены.</translation>
 <translation id="1317194122196776028">Удалить этот сайт</translation>
+<translation id="1323433172918577554">Развернуть</translation>
 <translation id="1333965224356556482">Запретить сайтам доступ к местоположению</translation>
 <translation id="1343356790768851700">Этот сайт определяет ваши интересы и предлагает рекламу на их основе другим сайтам</translation>
 <translation id="1369915414381695676">Добавлен сайт <ph name="SITE_NAME"/></translation>
@@ -35,6 +36,7 @@
 <translation id="1409338233051621926">Нажмите "Приложения" и выберите "Приложения по умолчанию"</translation>
 <translation id="1415402041810619267">URL укорочен</translation>
 <translation id="1741136041592162279">Разрешите Brave отправлять недавние вкладки на ваше устройство, чтобы они появлялись в списке приложений и результатах поиска. Вы можете включить или отключить эту функцию в настройках Brave.</translation>
+<translation id="1432650420699700107">Разрешить сайтам отправлять запросы на подключение к любым устройствам в локальной сети</translation>
 <translation id="1448064542941920355">Уменьшить масштаб</translation>
 <translation id="1464044141348608623">Запретить сайтам доступ к информации об использовании устройства</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> сайт}one{<ph name="SITE_COUNT"/> сайт}few{<ph name="SITE_COUNT"/> сайта}many{<ph name="SITE_COUNT"/> сайтов}other{<ph name="SITE_COUNT"/> сайта}}</translation>
@@ -96,6 +98,7 @@
 <translation id="2182457891543959921">Запрашивать для сайтов разрешение на создание 3D-карты места, в котором вы находитесь, и отслеживание положения камеры (рекомендуется)</translation>
 <translation id="2185965788978862351">Будут удалены данные и файлы cookie, сохраненные сайтами или приложениями, добавленными на главный экран (<ph name="DATASIZE"/>).</translation>
 <translation id="2194856509914051091">Важная информация</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{Вчера}one{<ph name="NUM_DAYS_MANY"/> день назад}few{<ph name="NUM_DAYS_MANY"/> дня назад}many{<ph name="NUM_DAYS_MANY"/> дней назад}other{<ph name="NUM_DAYS_MANY"/> дня назад}}</translation>
 <translation id="2215727959747642672">Редактирование файлов</translation>
 <translation id="2218389616572918761">Сайты могут запрашивать разрешение на использование микрофона</translation>
 <translation id="2228071138934252756">Чтобы у приложения "<ph name="APP_NAME"/>" был доступ к камере, включите ее в <ph name="BEGIN_LINK"/>настройках Android<ph name="END_LINK"/>.</translation>
@@ -125,11 +128,12 @@
 <translation id="2490684707762498678">Под управлением приложения "<ph name="APP_NAME"/>"</translation>
 <translation id="2498359688066513246">Справка/отзыв</translation>
 <translation id="2501278716633472235">Назад</translation>
+<translation id="2533138527374486328">Если функция включена, сайты могут отправлять запросы на подключение к устройствам в локальной сети. Если функция отключена, сайты не могут подключаться к устройствам в локальной сети.</translation>
 <translation id="2546283357679194313">Файлы сookie и данные сайтов</translation>
 <translation id="2570922361219980984">Определение местоположения отключено и для самого устройства. Включите эту функцию в <ph name="BEGIN_LINK"/>настройках Android<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Развернуто. Нажмите, чтобы свернуть.</translation>
 <translation id="2586657967955657006">Буфер обмена</translation>
-<translation id="2588271083332682494">Поддерживайте порядок с помощью групп вкладок</translation>
+<translation id="2588271083332682494">Наводите порядок – собирайте вкладки в группы</translation>
 <translation id="2597457036804169544">Тёмная тема не используется для сайтов.</translation>
 <translation id="2606760465469169465">Автоматическая проверка</translation>
 <translation id="2621115761605608342">Разрешить JavaScript для конкретного сайта</translation>
@@ -181,6 +185,7 @@
 <translation id="3167868116600277716">Лента рекомендаций</translation>
 <translation id="3198916472715691905">В памяти занято: <ph name="STORAGE_AMOUNT"/></translation>
 <translation id="321187648315454507">Чтобы получать уведомления из приложения "<ph name="APP_NAME"/>", включите их в <ph name="BEGIN_LINK"/>настройках Android<ph name="END_LINK"/>.</translation>
+<translation id="3223425961342298674">Доступ к данным о местоположении запрещен</translation>
 <translation id="3227137524299004712">Микрофон</translation>
 <translation id="3232293466644486101">Удалить данные о работе в браузере…</translation>
 <translation id="3242646949159196181">Когда этот параметр включен, сайты могут воспроизводить звук. Когда параметр отключен, сайтам запрещено это делать.</translation>
@@ -218,7 +223,7 @@
 <translation id="3676777756440746804">Сайтам запрещено запрашивать разрешение на использование сохраненной информации о вас</translation>
 <translation id="3678318839615834650">Нижний экран с карточками на странице быстрого доступа открыт полностью</translation>
 <translation id="3697164069658504920">Когда этот параметр включен, сайты могут запрашивать разрешение на использование USB-устройств. Когда параметр отключен, сайтам запрещено использовать такие устройства.</translation>
-<translation id="3703430731944883733">Управление лентой</translation>
+<translation id="3703430731944883733">Настройка ленты</translation>
 <translation id="2697264242676904869">Сайт, который вы посещаете, может сохранять небольшой объем информации в Brave, в основном для подтверждения того, что вы не бот.</translation>
 <translation id="3708684582558000260">Запретить закрытым сайтам завершать отправку и получение данных</translation>
 <translation id="3709818294139939629">Доступ сайта к файлу отменен.</translation>
@@ -247,12 +252,14 @@
 <translation id="3955321697524543127">Запретить сайтам подключаться к USB-устройствам</translation>
 <translation id="3965467402665811906">Сайты могут запрашивать разрешение на использование сохраненной информации о вас</translation>
 <translation id="3967822245660637423">Скачивание завершено.</translation>
+<translation id="3969869202926863008">Доступ к локальной сети</translation>
 <translation id="3981465354637804599">Обычно сайты показывают рекламу, чтобы иметь возможность бесплатно предоставлять свой контент или сервисы. Однако на некоторых страницах используется навязчивая или вводящая в заблуждение реклама.</translation>
 <translation id="3987993985790029246">Скопировать ссылку</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> из ?</translation>
 <translation id="3992308058851451478"><ph name="SITE"/> может использовать ваши данные при просмотре следующих сайтов:</translation>
 <translation id="3992684624889376114">Об этой странице</translation>
 <translation id="4002066346123236978">Название</translation>
+<translation id="4031179711345676612">Доступ к микрофону разрешен</translation>
 <translation id="4046123991198612571">Следующий трек</translation>
 <translation id="4077310749977440510">Обычно сайты обращаются к буферу обмена, чтобы сохранять форматирование скопированного текста и обеспечивать работу других функций.</translation>
 <translation id="4149890623864272035">Вы действительно хотите удалить все локальные данные этого сайта, включая файлы cookie, и сбросить все его разрешения?</translation>
@@ -262,8 +269,10 @@
 <translation id="4169549551965910670">Выполнено подключение к USB-устройству</translation>
 <translation id="4194328954146351878">Запрашивать для сайтов разрешение на доступ к информации и ее изменение через NFC (рекомендуется)</translation>
 <translation id="4200726100658658164">Открыть настройки геолокации</translation>
+<translation id="4203769790323223880">Доступ к камере запрещен</translation>
 <translation id="421742575134139848">Сайты могут воспроизводить звук при проигрывании музыки, видео и другого медиаконтента.</translation>
 <translation id="4217710972110098902">Подключено к последовательному порту</translation>
+<translation id="4223404254440398437">Доступ к микрофону запрещен</translation>
 <translation id="4226663524361240545">Вибрация при получении уведомлений</translation>
 <translation id="4259722352634471385">Навигация заблокирована: <ph name="URL"/></translation>
 <translation id="4274673989874969668">После того как вы закроете сайт, он может продолжить выполнять синхронизацию, пока не завершит выполнение некоторых задач, например загрузку снимков или отправку сообщения в чате.</translation>
@@ -294,6 +303,7 @@
 <translation id="4635969503923889910">Не разрешать сайтам использовать устройства с NFC</translation>
 <translation id="4644713492825682049">Удалить и сбросить</translation>
 <translation id="4645575059429386691">Управляется твоим родителем</translation>
+<translation id="4663373278480897665">Доступ к камере разрешен</translation>
 <translation id="4670064810192446073">Виртуальная реальность</translation>
 <translation id="5652778654712411580">Нажмите "Браузер" и выберите Brave</translation>
 <translation id="4676059169848868271">Чтобы приложение "<ph name="APP_NAME"/>" могло отслеживать движения рук, включите этот параметр в <ph name="BEGIN_LINK"/>системных настройках<ph name="END_LINK"/>.</translation>
@@ -315,6 +325,7 @@
 <translation id="4972737347717125191">Разрешить сайтам отправлять запрос на использование устройств и данных виртуальной реальности</translation>
 <translation id="497421865427891073">Вперед</translation>
 <translation id="4976702386844183910">Последнее посещение: <ph name="DATE"/></translation>
+<translation id="4978178243417029856">Подробнее о ленте рекомендаций…</translation>
 <translation id="4994033804516042629">Контакты не найдены</translation>
 <translation id="4996978546172906250">Способ отправки</translation>
 <translation id="5001526427543320409">Сторонние файлы cookie</translation>
@@ -337,6 +348,7 @@
 <translation id="5216942107514965959">Последнее посещение: сегодня</translation>
 <translation id="5225463052809312700">Включить камеру</translation>
 <translation id="5234764350956374838">Закрыть</translation>
+<translation id="5239623327352565343">Доступ к данным о местоположении разрешен</translation>
 <translation id="5246825184569358663">Это действие удалит все локальные данные для домена <ph name="DOMAIN"/> и всех связанных с ним сайтов, включая файлы cookie, а также сбросит все разрешения этих сайтов.</translation>
 <translation id="5264323282659631142">Удалить элемент "<ph name="CHIP_LABEL"/>"</translation>
 <translation id="528192093759286357">Чтобы выйти из полноэкранного режима, проведите по экрану сверху вниз и нажмите кнопку "Назад".</translation>
@@ -378,7 +390,9 @@
 <translation id="571222594670061844">Разрешить сайтам показывать предложения войти в аккаунт через сервисы идентификации</translation>
 <translation id="5740126560802162366">Сайты могут сохранять данные на вашем устройстве</translation>
 <translation id="5743425052258407233">Синхронизируйте историю на всех своих устройствах, чтобы продолжать с того места, на котором вы остановились.</translation>
+<translation id="5749158352074143502">Снова открыть эту вкладку</translation>
 <translation id="5750869797196646528">Отслеживание рук</translation>
+<translation id="5753570386948603678">Удалить из истории</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/>: заблокировано</translation>
 <translation id="5804241973901381774">Разрешения</translation>
 <translation id="5822675474983796325">Нижний экран с настройками страницы быстрого доступа открыт</translation>
@@ -404,6 +418,7 @@
 <translation id="5968921426641056619">Введите веб-адрес</translation>
 <translation id="5975083100439434680">Уменьшить</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> – <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">Включить ленту рекомендаций</translation>
 <translation id="6015775454662021376">Управляйте доступом сайта к данным на устройстве.</translation>
 <translation id="6040143037577758943">Закрыть</translation>
 <translation id="6042308850641462728">Ещё</translation>
@@ -439,11 +454,13 @@
 <translation id="6527303717912515753">Поделиться</translation>
 <translation id="6530703012083415527">Когда этот параметр включен, сайты могут использовать всплывающие окна и переадресацию. Когда параметр отключен, сайтам запрещено это делать.</translation>
 <translation id="6540488083026747005">Вы разрешили сторонние файлы cookie для этого сайта.</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> неделю назад}one{<ph name="NUM_WEEKS_MANY"/> неделю назад}few{<ph name="NUM_WEEKS_MANY"/> недели назад}many{<ph name="NUM_WEEKS_MANY"/> недель назад}other{<ph name="NUM_WEEKS_MANY"/> недели назад}}</translation>
 <translation id="6545864417968258051">Поиск Bluetooth-устройств</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{Заблокировано: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и ещё <ph name="NUM_MORE"/>}one{Заблокировано: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и ещё <ph name="NUM_MORE"/>}few{Заблокировано: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и ещё <ph name="NUM_MORE"/>}many{Заблокировано: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и ещё <ph name="NUM_MORE"/>}other{Заблокировано: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и ещё <ph name="NUM_MORE"/>}}</translation>
 <translation id="6554732001434021288">Последнее посещение: <ph name="NUM_DAYS"/> дн. назад</translation>
 <translation id="656065428026159829">Ещё</translation>
 <translation id="6561560012278703671">Не прерывать мою работу при запросе разрешения на показ уведомлений</translation>
+<translation id="6565144332292237355">Сайты могут использовать эту функцию для поиска устройств в локальной сети и подключения к ним.</translation>
 <translation id="6593061639179217415">Версия для ПК</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Файлы cookie разрешены для <ph name="RWS_MEMBERS_COUNT"/> сайта <ph name="RWS_OWNER"/>}one{Файлы cookie разрешены для <ph name="RWS_MEMBERS_COUNT"/> сайта <ph name="RWS_OWNER"/>}few{Файлы cookie разрешены для <ph name="RWS_MEMBERS_COUNT"/> сайтов <ph name="RWS_OWNER"/>}many{Файлы cookie разрешены для <ph name="RWS_MEMBERS_COUNT"/> сайтов <ph name="RWS_OWNER"/>}other{Файлы cookie разрешены для <ph name="RWS_MEMBERS_COUNT"/> сайта <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> ГБ</translation>
@@ -477,6 +494,7 @@
 <translation id="6992289844737586249">Запрашивать разрешение на доступ к микрофону (рекомендуется)</translation>
 <translation id="7000754031042624318">Отключено в настройках Android</translation>
 <translation id="8683151724374457021">Этот сайт определяет ваши интересы и затем предлагает другим сайтам рекламу для вас. Кроме того, он использует темы рекламы из Brave, чтобы показывать вам более подходящие объявления.</translation>
+<translation id="7044081119134178347">Дано разовое разрешение на доступ к камере</translation>
 <translation id="7053983685419859001">Блокировать</translation>
 <translation id="7055552182600664515">Чтобы воспроизводить контент, защищенный авторскими правами, сайтам иногда требуется использовать сервис защиты контента. <ph name="BEGIN_LINK"/>Подробнее…<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Выбран 1 объект}one{Выбран # объект}few{Выбрано # объекта}many{Выбрано # объектов}other{Выбрано # объекта}}</translation>
@@ -488,8 +506,10 @@
 <translation id="7188508872042490670">Данные сайтов, сохраненные на устройстве</translation>
 <translation id="7201549776650881587">Будут удалены все данные и файлы cookie, сохраненные сайтами, которые связаны с <ph name="ORIGIN"/>, или их приложением, добавленным на главный экран.</translation>
 <translation id="7203150201908454328">Развернуто</translation>
+<translation id="7213166370492037743">Запретить сайтам подключаться к устройствам в локальной сети</translation>
 <translation id="7219254577985949841">Удалить данные сайта?</translation>
 <translation id="723171743924126238">Выберите изображения</translation>
+<translation id="7243246278722455312">Нижний экран с настройками страницы быстрого доступа</translation>
 <translation id="7243308994586599757">Доступные параметры указаны в нижней части экрана</translation>
 <translation id="7250468141469952378">Выбрано: <ph name="ITEM_COUNT"/></translation>
 <translation id="7260727271532453612">Разрешено: <ph name="PERMISSION_1"/> и <ph name="PERMISSION_2"/></translation>
@@ -512,7 +532,9 @@
 <translation id="7554752735887601236">Сайт использует ваш микрофон</translation>
 <translation id="7561196759112975576">Всегда</translation>
 <translation id="7573594921350120855">Обычно сайты используют видеокамеру для функций общения, например видеочата.</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> месяц назад}one{<ph name="NUM_MONTHS_MANY"/> месяц назад}few{<ph name="NUM_MONTHS_MANY"/> месяца назад}many{<ph name="NUM_MONTHS_MANY"/> месяцев назад}other{<ph name="NUM_MONTHS_MANY"/> месяца назад}}</translation>
 <translation id="757524316907819857">Запретить сайтам воспроизводить защищенный контент</translation>
+<translation id="7586676035079382730">Доступ к уведомлениям запрещен</translation>
 <translation id="7594634374516752650">Подключено устройство Bluetooth</translation>
 <translation id="7617547684249261169">Вы можете полностью или частично удалить историю, данные сайтов, файлы cookie и не только.</translation>
 <translation id="7649070708921625228">Справка</translation>
@@ -525,15 +547,16 @@
 <translation id="7759147511335618829">Управление/программирование MIDI</translation>
 <translation id="7781829728241885113">Вчера</translation>
 <translation id="7791543448312431591">Добавить</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{Снова открыть эту вкладку}one{Снова открыть эти вкладки}few{Снова открыть эти вкладки}many{Снова открыть эти вкладки}other{Снова открыть эти вкладки}}</translation>
 <translation id="780301667611848630">Нет, спасибо</translation>
 <translation id="7804248752222191302">Сайт использует вашу камеру</translation>
 <translation id="6720480757902085971">Данные от Brave</translation>
+<translation id="7815680994978050279">Заблокировано скачивание опасного файла</translation>
 <translation id="7835852323729233924">Воспроизведение медиаконтента</translation>
 <translation id="783819812427904514">Включить звук для видео</translation>
 <translation id="7846076177841592234">Отменить выбор</translation>
 <translation id="2353409725922994861">В Brave большинству сайтов запрещено использовать сторонние файлы cookie. Запрет не действует для этого сайта, потому что такие файлы нужны ему для предоставления базовых функций.\n\n<ph name="BEGIN_LINK"/>Управлять доступом к сторонним файлам cookie<ph name="END_LINK"/> можно в настройках.</translation>
 <translation id="7882806643839505685">Включить звуки на определенном сайте</translation>
+<translation id="7891547341794213004">Скрыть карточку "Снова открыть эту вкладку"</translation>
 <translation id="789722939441020330">Запретить сайтам автоматически скачивать несколько файлов</translation>
 <translation id="7940722705963108451">Напомнить</translation>
 <translation id="7948081750384205628">Подробнее о параметре "<ph name="SETTING_TITLE"/>"…</translation>
@@ -541,7 +564,6 @@
 <translation id="7986741934819883144">Выберите контакт</translation>
 <translation id="7990211076305263060">Когда этот параметр включен, сайты могут запрашивать разрешение на использование микрофона. Когда параметр отключен, им запрещено использовать ваш микрофон.</translation>
 <translation id="8007176423574883786">Отключено для этого устройства</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{Скрыть "Снова открыть эту вкладку"}one{Скрыть "Снова открыть эти вкладки"}few{Скрыть "Снова открыть эти вкладки"}many{Скрыть "Снова открыть эти вкладки"}other{Скрыть "Снова открыть эти вкладки"}}</translation>
 <translation id="802154636333426148">Ошибка скачивания</translation>
 <translation id="8042586301629853791">Упорядочить:</translation>
 <translation id="8051193500142930381">Функции, которые используют камеру, не будут работать</translation>
@@ -576,6 +598,7 @@
 <translation id="8380167699614421159">Этот сайт показывает навязчивую или вводящую в заблуждение рекламу</translation>
 <translation id="8394832520002899662">Нажмите, чтобы вернуться на сайт.</translation>
 <translation id="8409345997656833551">Показывать уведомление, если для статьи доступен упрощенный просмотр</translation>
+<translation id="8416874502399604126">Дано разовое разрешение на доступ к микрофону</translation>
 <translation id="8423565414844018592">Задан масштаб текста <ph name="TEXT_SCALING"/></translation>
 <translation id="8428213095426709021">Настройки</translation>
 <translation id="8441146129660941386">Перемотать назад</translation>
@@ -643,12 +666,14 @@
 <translation id="9106233582039520022">Удалить файлы cookie</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и ещё <ph name="NUM_MORE"/>}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и ещё <ph name="NUM_MORE"/>}few{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и ещё <ph name="NUM_MORE"/>}many{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и ещё <ph name="NUM_MORE"/>}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и ещё <ph name="NUM_MORE"/>}}</translation>
 <translation id="913657688200966289">Предоставьте приложению "<ph name="APP_NAME"/>" разрешения в <ph name="BEGIN_LINK"/>настройках Android<ph name="END_LINK"/>.</translation>
+<translation id="9138037198177304356">Доступ к уведомлениям разрешен</translation>
 <translation id="9138217887606523162">Текущий масштаб: <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">Разрешите Brave показывать в списке приложений и результатах поиска ваши недавние вкладки. Вы сможете в любой момент отключить эту функцию в настройках Brave.</translation>
 <translation id="9162462602695099906">Опасная страница</translation>
 <translation id="9182556968660520230">Запретить сайтам воспроизводить защищенный контент</translation>
 <translation id="947156494302904893">Сайты, которые вы посещаете, могут получать данные о том, что вы реальный человек</translation>
 <translation id="959682366969460160">Организация работы</translation>
+<translation id="961930410699694996">Дано разовое разрешение на доступ к данным о местоположении</translation>
 <translation id="967624055006145463">Сохраненные данные</translation>
 <translation id="969975166333045662">Вы можете запретить сайту использовать оптимизатор V8.</translation>
 <translation id="3110967157686007724">Приватная вкладка</translation>

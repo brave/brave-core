@@ -16,8 +16,14 @@
 <translation id="8294286161128352783">Pouze na nové kartě</translation>
 <translation id="6406506848690869874">Synchronizace</translation>
 <translation id="1544192797660353713">Peněženka</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Umělá inteligence Leo</translation>
 <translation id="8275068909952022340">Další...</translation>
+<translation id="9092796350041759828">{0, plural,
+          one {}
+          few {Close Guest}
+          many {Close Guest}=1 {Close Guest}
+          other {Close Guest}
+        }</translation>
 <translation id="1990886731975529483">Nainstalovat a spustit Google Widevine</translation>
 <translation id="8926389886865778422">Dotaz již nezobrazovat</translation>
 <translation id="4900351245762303149">Nainstalovat Google Widevine</translation>
@@ -76,13 +82,20 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2808103541110899519">Skrýt ikonu peněženky Brave</translation>
 <translation id="7595540212376041331">Skrýt ikonu peněženky Brave</translation>
 <translation id="3893997535859323951">Skrýt Ikonu UI Leo</translation>
+<translation id="8832245978592881387">Otevřít Leo AI v nové kartě</translation>
+<translation id="4577675328803804820">Otevřít Leo AI v postranním panelu</translation>
+<translation id="564305948667173847">Spravovat nastavení Leo AI</translation>
 <translation id="6208515240323786457">Skrýt ikonu UI Leo</translation>
-<translation id="2361906291514218784">Umělá inteligence Leo</translation>
+<translation id="2169338740411893745">Otevřít Leo AI v nové kartě</translation>
+<translation id="3295805221342028003">Otevřít Leo AI v postranním panelu</translation>
+<translation id="7400808612454224939">Spravovat nastavení Leo AI</translation>
+<translation id="5385064007245738696">Informace o Leovi a jeho umělé inteligenci</translation>
 <translation id="4928988318462976765">Obchod s rozšířeními pro internetové stránky</translation>
 <translation id="9181207987584064303">Zobrazit v Obchodu s rozšířeními pro internetové stránky</translation>
 <translation id="3161744659507801211">Upozornění: Brave nemůže zabránit rozšířením v zaznamenávání vaší historie procházení.</translation>
 <translation id="2162109630536601963">Pokud toto rozšíření provádí požadavky na síť, nebude používat Tor ani soukromý režim.</translation>
 <translation id="2725327089319971976">Chcete-li toto rozšíření deaktivovat v soukromém režimu a v režimu Tor, zrušte výběr této možnosti.</translation>
+<translation id="438106944087726695">Hostováno službou Brave</translation>
 <translation id="3371343170427636147">Noční aplikace prohlížeče Brave</translation>
 <translation id="4097979995947147464">Beta aplikace prohlížeče Brave</translation>
 <translation id="8303432794159193481">Vývojové aplikace prohlížeče Brave</translation>
@@ -181,11 +194,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4394049700291259645">Deaktivovat</translation>
 <translation id="7142548388914389999">Umožnit analýzu produktů se zachováním soukromí (P3A)</translation>
 <translation id="2604698253988679506">Tyto soukromé odpovědi pomáhají Brave odhadnout celkové využití určitých funkcí a vylepšit je pro vás.</translation>
-<translation id="1947672064022327074">Chcete přidat kryptopeněženku pro podporu Etherea?</translation>
-<translation id="7583735190612229830">Pro vzájemné fungování s touto aplikací a dalšími podobnými si Nastavte peněženky Crypto.</translation>
-<translation id="8731422418734770661">Nastavte krypto peněženky</translation>
-<translation id="8199661191594897555">Začít kryptopeněženky a načíst znovu</translation>
-<translation id="8428213095426709021">Nastavení</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Domény web3</translation>
 <translation id="5046066249040287308">Pomocné služby peněženky Brave</translation>
@@ -332,9 +340,10 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="1533980864758658574">Vytvořeno nové okno na téma <ph name="TOPIC"/></translation>
 <translation id="7985042437720138349">Tato funkce odesílá data o vašich otevřených kartách Leovi, asistentovi prohlížeče Brave, který využívá umělou inteligenci.</translation>
 <translation id="6165508094623778733">Zjistěte více.</translation>
-<translation id="7557539689487606886">Přejít na verzi Premium</translation>
+<translation id="7557539689487606886">Přejít na Premium</translation>
 <translation id="1035309871698658326">Když je tato funkce zapnutá, názvy a původ všech nesoukromých karet jsou odeslány Leovy k roztřídění.</translation>
 <translation id="3435896845095436175">Aktivovat</translation>
+<translation id="1940221956626514677">Přizpůsobit panel nástrojů</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="1426410128494586442">Ano</translation>
@@ -492,6 +501,8 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3540231253392253941">Použít pro oznámení služby Google</translation>
 <translation id="933652931229970927">Automaticky odesílat diagnostické zprávy</translation>
 <translation id="4891600875049212418">Při návštěvě citlivých stránek postupovat důvěrně</translation>
+<translation id="509873765238158442">Blokovat Microsoft Recall</translation>
+<translation id="4763421121695677716">Zabrání funkci Recall v počítačích s operačním systémem Microsoft Windows, aby automaticky pořizovala snímky obrazovky všech otevřených karet Brave.</translation>
 <translation id="1968895725257436430">Shromažďování dat</translation>
 <translation id="4846154056248462491">Na výstupu</translation>
 <translation id="216468847346280584">Smazat data Reklam Brave...</translation>
@@ -653,10 +664,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2653659639078652383">Submit</translation>
 <translation id="1294350054292274934">Překládat adresy .onion pouze v oknech Tor</translation>
 <translation id="601227612175911475">Služby Onion nebudou dostupné mimo okna Tor.</translation>
-<translation id="2896916411183256228">Používá WebTorrent k zobrazení torrentů přímo v prohlížeči. Podporuje torrentové soubory a odkazy magnet.</translation>
 <translation id="5249433283143453448">Používat k prohlížení chráněného streamovaného videa a dalšího obsahu v prohlížeči komponent Widevine pro správu digitálních práv (DRM).</translation>
 <translation id="1314131187310290315">Rozšíření Manifest V2</translation>
 <translation id="2488433650767270565">Následující Manifest V2 rozšíření budou odstraněna z webového obchodu Chrome, ale v Brave budou nadále podporována. Přepnutím je stáhnete a nainstalujete nebo odinstalujete.</translation>
+<translation id="6918225713618473646">Brave hostuje tato rozšíření Manifest V2 na serverech Brave, ale nekontroluje ani neověřuje jejich obsah, bezpečnost nebo chování. Nápovědu naleznete na oficiální stránce každého rozšíření. <ph name="BEGIN_LINK"/>Tady <ph name="END_LINK"/> si můžete přečíst plány společnosti Brave pro Manifest V2.</translation>
 <translation id="578671172657727816">Zapnout NoScript™</translation>
 <translation id="9068475464170522036">NoScript je Manifest V2 rozšíření, které umožňuje blokovat nebo povolit jednotlivé skripty spuštěné nebo pokoušející se spustit na dané stránce.</translation>
 <translation id="1394592156621788100">Zapnout uBlock Origin™</translation>
@@ -671,7 +682,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="7701023802820268122">Základní peněženka Solana</translation>
 <translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="6942354363301686374">Rozšíření (bez náhradního řešení)</translation>
-<translation id="1274962333945373242">Kryptopeněženky (zastaralé)</translation>
 <translation id="702381242110464396">Rozšíření (náhradní řešení Brave Wallet)</translation>
 <translation id="4718664830805652430">Výchozí základní měna</translation>
 <translation id="7992507032049865603">Výchozí základní kryptoměna</translation>
@@ -736,6 +746,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3095201688102519917">Upozornění před zavřením okna s více kartami</translation>
 <translation id="7120553802660696133">Při zavření posledního panelu zavřete okno</translation>
 <translation id="3394171693948989253">Zobrazení připomenutí na celou obrazovku, abyste při ukončení stiskli Esc</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Zobrazit ikonu Leo na postranním panelu</translation>
 <translation id="8055509865174199683">Zobrazit Leo v kontextové nabídce na webových stránkách</translation>
 <translation id="1529674267267221673">Leo se objeví v kontextové nabídce, když kliknete pravým tlačítkem na webovou stránku. To odešle kontext z aktuální webové stránky do Leo.</translation>
@@ -749,7 +760,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 v budoucnu a také vymaže historii vašeho chatu. Vymazání vaší historie chatu odstraní všechny vaše předchozí konverzace s Brave Leo. Tuto akci nelze vrátit zpět.</translation>
 <translation id="5574059574002819179">Úprava návrhů automatického dokončování</translation>
 <translation id="7942415993090181327">Historie chatu</translation>
-<translation id="5385064007245738696">Informace o Leovi a jeho umělé inteligenci</translation>
 <translation id="5084498230659987096">Brave Leo přináší chat s umělou inteligencí a další rozhraní využívající umělou inteligenci v prohlížeči – to vše při maximálním důrazu na ochranu soukromí. Leo se nikdy neučí z vašich dat ani je nepoužívá k trénování modelů. Všechny požadavky jsou zprostředkovány přes anonymizační server.</translation>
 <translation id="6458721693611638005">Další informace o tom, jak vás Brave chrání při používání umělé inteligence, najdete v zásadách ochrany osobních údajů asistenta Lea. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Výchozí model pro konverzace</translation>
@@ -786,6 +796,9 @@ v budoucnu a také vymaže historii vašeho chatu. Vymazání vaší historie ch
 <translation id="6304169450064541679">Požadavek systému</translation>
 <translation id="3081947790648024460">Vlastní pokyny a/nebo kontext zadaný modelu, kterým se řídí jeho odpovědi v konkrétním směru nebo stylu. Pokud chcete, aby bylo vloženo současné datum a čas, použijte %datetime%.</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokeny(ů)</translation>
+<translation id="5985516785067818307">Účastník průzkumu</translation>
+<translation id="8347743943525229984">Povolit průzkumy Brave</translation>
+<translation id="3204080538332044581">Umožňuje službě Brave zobrazovat na nově kartě odkazy na soukromé průzkumy. Průzkumy nám pomáhají vytvářet lepší funkce a měřit účinnost reklamních kampaní v prohlížeči. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Aktivovat seznam stop</translation>
 <translation id="7903608716704052878">Automaticky přidávat soubory pro prohlížení offline</translation>
 <translation id="4193768184502613558">Tato možnost automaticky ukládá mediální soubory do mezipaměti, abyste je mohli přehrávat bez připojení k Internetu.</translation>

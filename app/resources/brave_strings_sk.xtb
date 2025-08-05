@@ -84,7 +84,6 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="2126108037660393668">Stiahnutý súbor sa nepodarilo overiť.</translation>
 <translation id="2137162749895930932">Zavrieť obrazovku prekladu</translation>
 <translation id="5789330946301045610">Prehliadač Brave toto sťahovanie zablokoval, pretože daný web nepoužíva zabezpečené pripojenie a v súbore mohol niekto vykonať zmeny</translation>
-<translation id="5401976223298265794">Záložky, režim čítania a ďalší obsah môžete otvoriť v ponuke prehliadača Brave</translation>
 <translation id="142389341645668510">Prispôsobiť Brave</translation>
 <translation id="2174917724755363426">Inštalácia nie je dokončená. Naozaj ju chcete zrušiť?</translation>
 <translation id="8745514854244955877">Brave – prihlásenie do siete – <ph name="PAGE_TITLE"/></translation>
@@ -215,6 +214,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="4256965182800026277">Heslá, spôsoby platby a adresy uložené vo vašom účte Brave budú z tohto zariadenia odstránené. Ak ich chcete opäť používať v prehliadači Brave, znova sa prihláste.</translation>
 <translation id="395904275706073188">Chránené stránky sa nedajú čítať. Skúste inú stránku.</translation>
 <translation id="4194619960643453552">Ako vás Brave chráni</translation>
+<translation id="1486377520191913768">Keď píšete do panela s adresou alebo vyhľadávacieho poľa, prehliadač Brave odosiela zadávaný text vyhľadávaniu, nástrojom umelej inteligencie a nástrojom agentov vašej organizácie, aby získal návrhy.</translation>
 <translation id="1311808042904310985">Brave for Testing</translation>
 <translation id="1152920704813762236">Brave OS</translation>
 <translation id="3703994572283698466">Brave OS mohol vzniknúť vďaka ďalšiemu <ph name="BEGIN_LINK_CROS_OSS"/>softvéru typu open source<ph name="END_LINK_CROS_OSS"/>, ako je <ph name="BEGIN_LINK_LINUX_OSS"/>vývojové prostredie systému Linux<ph name="END_LINK_LINUX_OSS"/>.</translation>
@@ -240,6 +240,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="4281844954008187215">Zmluvné podmienky</translation>
 <translation id="7691786510374174420">Inštalácia zlyhala kvôli neurčenej chybe. Ak je prehliadač Brave momentálne spustený, zatvorte ho a skúste znova.</translation>
 <translation id="4304713468139749426">Správca hesiel</translation>
+<translation id="4334241893986177674">Nájsť túto snímku obrazovky</translation>
 <translation id="4334294535648607276">Sťahovanie bolo dokončené.</translation>
 <translation id="1068681683510904753"><ph name="MANAGER"/> vyžaduje, aby ste si pred používaním tohto zariadenia prečítali nasledujúce zmluvné podmienky a vyjadrili s nimi súhlas. Tieto zmluvné podmienky nerozširujú, neupravujú ani neobmedzujú zmluvné podmienky systému Brave OS.</translation>
 <translation id="9183662282810237335">Chcete Brave napriek tomu ukončiť?</translation>
@@ -334,6 +335,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="899523323751802352">Ak ste zabudli prístupovú frázu alebo chcete toto nastavenie zmeniť, <ph name="SETTINGS_LINK"/> údaje prehliadača Brave vo svojom účte</translation>
 <translation id="82926023981336111">Prispôsobte si a ovládajte Brave. Nastavte Brave ako predvolený prehliadač.</translation>
 <translation id="5809516625706423866">Nepodarilo sa pripojiť k internetu. Chyba autorizácie HTTP 401. Skontrolujte konfiguráciu servera proxy.</translation>
+<translation id="95980832839683236">Zrýchľuje weby pomocou nástroja V8 prehliadača Brave, ale mierne zníži odolnosť prehliadača voči útokom. Toto nastavenie je vypnuté.</translation>
 <translation id="1224606669200461217">Ak chcete používať a ukladať údaje prehliadača Brave vo svojom účte Brave, aktualizujte Brave</translation>
 <translation id="5824893331272123205">Tento panel sa nepodarilo načítať, skúste to znova</translation>
 <translation id="7207456302801184289">Vitajte v prehliadači Brave</translation>
@@ -350,7 +352,6 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="3598551856834560515">Ak chcete spustiť synchronizáciu, aktualizujte Brave</translation>
 <translation id="5225261774087485064">Je bežné, že navštívené weby si pamätajú veci, ktoré vás zaujímajú, aby vám mohli prispôsobiť prostredie. Weby môžu v prehliadači Brave ukladať aj údaje o vašich záujmoch.</translation>
 <translation id="6003112304606738118">Sťahuje sa… Zostávajúci čas: <ph name="HOURS"/> h</translation>
-<translation id="1663358621471164569">Záložky, režim čítania a ďalší obsah môžete otvoriť v ponuke prehliadača Brave vpravo hore</translation>
 <translation id="6040143037577758943">Zavrieť</translation>
 <translation id="700488072601322385">Povoľte prehliadaču Brave odstraňovať povolenia z webov, ktoré ste v poslednom čase nenavštívili, a ochráňte tak svoje údaje. Upozornenia sa tým nedeaktivujú.</translation>
 <translation id="9071554113102421877">&amp;Otvoriť v prehliadači Brave</translation>
@@ -424,6 +425,7 @@ Niektoré funkcie nemusia byť k dispozícii. Zadajte iný adresár profilu aleb
 <translation id="1505112054322049777">Ak chcete mať k dispozícii prispôsobenie a ďalšie funkcie, zahrňte Brave do aktivity na internete a v aplikáciách a prepojených služieb Googlu</translation>
 <translation id="6666624454809779082">Brave už majú nainštalovaný všetci používatelia na vašom počítači.</translation>
 <translation id="9136637081636160997">Tento web ste v poslednom čase nenavštívili. Prehliadač Brave odstránil povolenia <ph name="PERMISSION_1"/> a <ph name="PERMISSION_2"/> a ďalšie (<ph name="COUNT"/>).</translation>
+<translation id="4020203987234748583">Zrýchľuje weby pomocou nástroja V8 prehliadača Brave, ale mierne zníži odolnosť prehliadača voči útokom. Toto nastavenie je zapnuté.</translation>
 <translation id="3136039682492230890">Brave odporúča skontrolovať tento súbor, pretože môže byť nebezpečný.</translation>
 <translation id="1547295885616600893">Brave OS mohol vzniknúť vďaka ďalšiemu <ph name="BEGIN_LINK_CROS_OSS"/>softvéru typu open source<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="6831043979455480757">Preložiť</translation>
@@ -517,7 +519,6 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="8118331347066725040">Odošlite spätnú väzbu k vyhľadávaniu pomocou funkcie Lens</translation>
 <translation id="5334309298019785904">Systému Brave OS sa nepodarilo synchronizovať vaše údaje, pretože možnosť synchronizácie nie je pre vašu doménu k dispozícii.</translation>
 <translation id="813913629614996137">Prebieha inicializácia...</translation>
-<translation id="7550680632761245819">Zapnúť dodatočnú ochranu v nástroji skriptov JavaScript a WebAssembly v prehliadači Brave</translation>
 <translation id="9067428552314418522">Tento súbor je nebezpečný, a preto ho prehliadač Brave zablokoval.</translation>
 <translation id="8177472873527554730">Obsah na stránke sa nepodarilo nájsť</translation>
 <translation id="6219250889396046657">Ak chcete používať a ukladať údaje prehliadača Brave vo svojom účte <ph name="USER_EMAIL"/>, zadajte prístupovú frázu</translation>
@@ -562,6 +563,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="4100716194836114130">Toto je váš prehliadač Brave</translation>
 <translation id="1419543648228375718">Chcete sa prihlásiť do prehliadača Brave?</translation>
 <translation id="8747073452963259673">ľavý dolný roh oblasti vyhľadávania: vľavo <ph name="LEFT"/> %, dole <ph name="BOTTOM"/> %</translation>
+<translation id="3562508460098852626">Heslá sa dajú odstrániť iba mimo prehliadača Brave</translation>
 <translation id="878572486461146056">Chyba inštalácie: správca siete uplatnil skupinové pravidlá, ktoré zabraňujú inštalácii: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave potrebuje povolenie pre tento web na prístup k fotoaparátu a mikrofónu</translation>
 <translation id="64216977793816291">Chcete sa prihlásiť do prehliadača Brave?</translation>
@@ -614,6 +616,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{K dispozícii je aktualizácia pre Brave, ktorá bude použitá po najbližšom novom spustení.}=1{K dispozícii je aktualizácia pre Brave, ktorá bude použitá po najbližšom novom spustení. Vaše okno inkognito sa neotvorí.}few{K dispozícii je aktualizácia pre Brave, ktorá bude použitá po najbližšom novom spustení. Vaše # okná inkognito sa neotvoria.}many{K dispozícii je aktualizácia pre Brave, ktorá bude použitá po najbližšom novom spustení. Your # Incognito windows won't reopen.}other{K dispozícii je aktualizácia pre Brave, ktorá bude použitá po najbližšom novom spustení. Vašich # okien inkognito sa neotvorí.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Správca vás žiada o nové spustenie prehliadača Brave, aby sa použila táto aktualizácia}=1{Správca vás žiada o nové spustenie prehliadača Brave, aby sa použila táto aktualizácia. Vaše okno inkognito sa neotvorí.}few{Správca vás žiada o nové spustenie prehliadača Brave, aby sa použila táto aktualizácia. Vaše # okná inkognito sa neotvoria.}many{Správca vás žiada o nové spustenie prehliadača Brave, aby sa použila táto aktualizácia. Your # Incognito windows won't reopen.}other{Správca vás žiada o nové spustenie prehliadača Brave, aby sa použila táto aktualizácia. Vašich # okien inkognito sa neotvorí.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Správca požaduje nové spustenie prehliadača Brave, aby sa použila aktualizácia}=1{Správca požaduje nové spustenie prehliadača Brave, aby sa použila aktualizácia. Vaše okno inkognito sa neotvorí.}few{Správca požaduje nové spustenie prehliadača Brave, aby sa použila aktualizácia. Vaše # okná inkognito sa neotvoria.}many{Správca požaduje nové spustenie prehliadača Brave, aby sa použila aktualizácia. Your # Incognito windows won't reopen.}other{Správca požaduje nové spustenie prehliadača Brave, aby sa použila aktualizácia. Vašich # okien inkognito sa neotvorí.}}</translation>
+<translation id="5749154344207139683">Pomôžte nám vylepšiť súkromný režim vyplnením tohto 1 minútového dotazníka.</translation>
 <translation id="79269250264141507">Pri písaní do adresného riadka alebo vyhľadávacieho poľa posiela Brave vložený text vášmu predvolenému vyhľadávaču, čím získate lepšie návrhy. Táto možnosť je v súkromnom režime vypnutá.</translation>
 <translation id="2589970573128789862">Brave Private</translation>
 <translation id="5994282802285556682">Pri prehliadaní v súkromnom režime vás aplikácia Brave upozorní pred načítaním stránky prostredníctvom nezabezpečeného pripojenia.</translation>

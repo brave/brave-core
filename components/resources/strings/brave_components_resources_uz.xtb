@@ -215,6 +215,7 @@
 <translation id="6277237872689140644">U boshqa joyga koʻchgan yoki URL manzilida xato yozilgan boʻlishi mumkin.</translation>
 <translation id="2737084171727561244">Portfelingizga kiring</translation>
 <translation id="3662406032239313663">Jurnallar</translation>
+<translation id="1772301834467143364">Brave Yangiliklar</translation>
 <translation id="8890516388109605451">Manbalar</translation>
 <translation id="3861486700625780712">Kuzatishni toʻxtatish</translation>
 <translation id="4108314971463891922">Kuzatish</translation>
@@ -286,7 +287,6 @@
 <translation id="423209533815462685">Qidiruv tavsiyalari yoqilsinmi?</translation>
 <translation id="167018310108390163">Yangi varaq sahifasini moslashtirish</translation>
 <translation id="8522669544471808198">Fon rasmlarini koʻrsatish</translation>
-<translation id="5149018766422637336">Yangiliklar va RSS</translation>
 <translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave mukofotlari<ph name="LINK_END"/> orqali siz yangi varaq sahifasidagi reklamalarni koʻrib daromad olishingiz mumkin.</translation>
 <translation id="4100520468072294616">Yangi varaq sahifasidagi reklamalarni koʻrsatish</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
@@ -328,6 +328,7 @@
 <translation id="6821108091726602352">Brave brauzerining Web Discovery Project'da qatnashish orqali Internetni yaxshilashimizga yordam bering. Butunlay anonim qidiruv signallarini yuborish orqali Brave qidiruv indeksini kengaytirishga yordam berishingiz mumkin.</translation>
 <translation id="6764845498618413165">Batafsil.</translation>
 <translation id="7818938154803162778">Albatta, yordam beraman</translation>
+<translation id="7207456302801184289">Brave brauzeriga xush kelibsiz</translation>
 <translation id="3486480638399578250">Shaxsiy email manzilingizni maxfiy saqlang</translation>
 <translation id="7765422154906712751">Brave hisobingiz emailiga xabarlarni yuboradigan noyob va tasodifiy manzillar yarating hamda ularni istalgan vaqtda oʻchirib tashlang. Bu orqali haqiqiy email manzilingiz reklama beruvchilarga oshkor boʻlishining oldini olasiz.</translation>
 <translation id="5222676887888702881">Hisobdan chiqish</translation>
@@ -358,7 +359,7 @@
 <translation id="3699624789011381381">Email manzili</translation>
 <translation id="8124939971041602970">Kirish email manzili <ph name="MAIN_EMAIL"/> ga yuborilmoqda</translation>
 <translation id="8140361186431963982">Hisobingizga kirish uchun emaildagi xavfsiz kirish havolasini bosing.</translation>
-<translation id="6549775668256477823">Email koʻrinmayaptimi? Spam jildingizni tekshiring yoki <ph name="BEGIN_LINK"/>qayta urining<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Email koʻrinmayaptimi? Spam jildingizni tekshiring yoki qayta urining.</translation>
 <translation id="5753795690521538679">7 kunlik bepul sinovni boshlash</translation>
 <translation id="3357036723290257445">Allaqachon Brave VPN sotib olganmisiz?</translation>
 <translation id="5747552184818312860">Muddati tugaydi</translation>

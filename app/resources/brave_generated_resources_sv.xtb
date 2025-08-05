@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">Endast på sidan Ny flik</translation>
 <translation id="6406506848690869874">Synka</translation>
 <translation id="1544192797660353713">Plånbok</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Mer</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {Stäng gästfönster}
+          other {Stäng gästfönster}
+        }</translation>
 <translation id="1990886731975529483">Installera och kör Google Wildwine</translation>
 <translation id="8926389886865778422">Fråga inte igen.</translation>
 <translation id="4900351245762303149">Installera Google Widevine</translation>
@@ -76,13 +80,20 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2808103541110899519">Dölj Brave Wallet-ikon</translation>
 <translation id="7595540212376041331">Dölj ikonen för Brave-plånboken</translation>
 <translation id="3893997535859323951">Dölj Leo AI-ikonen</translation>
+<translation id="8832245978592881387">Öppna Leo AI i en ny flik</translation>
+<translation id="4577675328803804820">Öppna Leo AI i sidofältet</translation>
+<translation id="564305948667173847">Hantera inställningar för Leo AI</translation>
 <translation id="6208515240323786457">Dölj Leo AI-ikonen</translation>
-<translation id="2361906291514218784">Leo AI</translation>
+<translation id="2169338740411893745">Öppna Leo AI i en ny flik</translation>
+<translation id="3295805221342028003">Öppna Leo AI i sidofältet</translation>
+<translation id="7400808612454224939">Hantera Leo AI-inställningar</translation>
+<translation id="5385064007245738696">Om Leo AI</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Visa i Web Extensions Store</translation>
 <translation id="3161744659507801211">Varning: Brave kan inte förhindra tillägg från att spela in din sökhistorik.</translation>
 <translation id="2162109630536601963">Om det här tillägget gör nätverksförfrågningar använder det inte Tor eller privat läge.</translation>
 <translation id="2725327089319971976">För att avaktivera detta tillägg i privat läge och Tor-läge, avmarkera detta alternativ.</translation>
+<translation id="438106944087726695">Brave-värd</translation>
 <translation id="3371343170427636147">Brave Browser Nightly-appar</translation>
 <translation id="4097979995947147464">Brave Browser Beta-appar</translation>
 <translation id="8303432794159193481">Brave Browser Dev-appar</translation>
@@ -181,11 +192,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4394049700291259645">Inaktivera</translation>
 <translation id="7142548388914389999">Tillåt integritetsbevarande produktanalys (P3A)</translation>
 <translation id="2604698253988679506">Dessa privata svar hjälper Brave att uppskatta den totala användningen av vissa funktioner och göra dem bättre för dig.</translation>
-<translation id="1947672064022327074">Vill du starta kryptoplånböcker för Ethereum-support?</translation>
-<translation id="7583735190612229830">Ställ in Crypto Wallets för att interagera med denna app och andra som den.</translation>
-<translation id="8731422418734770661">Ställ in Crypto Wallets</translation>
-<translation id="8199661191594897555">Starta Crypto Wallets och ladda om</translation>
-<translation id="8428213095426709021">Inställningar</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3-domäner</translation>
 <translation id="5046066249040287308">Brave Wallet-funktionsservice</translation>
@@ -335,6 +341,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7557539689487606886">Välj Premium</translation>
 <translation id="1035309871698658326">När den öppnas kommer detta automatiskt att skicka titlar och ursprung för alla icke-privata flikar till Leo för att klassificera dem.</translation>
 <translation id="3435896845095436175">Aktivera</translation>
+<translation id="1940221956626514677">Anpassa verktygsfältet</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -492,6 +499,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3540231253392253941">Använd Googles tjänster för push-meddelanden</translation>
 <translation id="933652931229970927">Skicka diagnostikrapporter automatiskt</translation>
 <translation id="4891600875049212418">Gå Off-The-Record när du besöker känsliga webbplatser</translation>
+<translation id="509873765238158442">Blockera Microsofts återkallelse</translation>
+<translation id="4763421121695677716">Blockera återkallningsfunktionen på Microsoft Windows-datorer från att automatiskt ta skärmdumpar av öppna Brave-flikar.</translation>
 <translation id="1968895725257436430">Insamling av data</translation>
 <translation id="4846154056248462491">Vid avslut</translation>
 <translation id="216468847346280584">Rensa Brave Annonser-data ...</translation>
@@ -653,10 +662,10 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="2653659639078652383">Skicka</translation>
 <translation id="1294350054292274934">Matcha endast .onion-adresser i Tor-fönster</translation>
 <translation id="601227612175911475">Onion-tjänster kommer inte att vara tillgängliga utanför Tor-fönster.</translation>
-<translation id="2896916411183256228">Använder WebTorrent för att visa torrenter direkt i webbläsaren. Stödjer torrentfiler och magnetlänkar.</translation>
 <translation id="5249433283143453448">Använd komponenten Widevine digital rights management (DRM) för att se skyddad strömmande video och annat innehåll i webbläsaren.</translation>
 <translation id="1314131187310290315">Manifest V2-tillägg</translation>
 <translation id="2488433650767270565">Följande Manifest V2-tillägg tas bort från Chrome Web Store, men stöds fortfarande i Brave. Växla för att ladda ned och installera eller för att avinstallera.</translation>
+<translation id="6918225713618473646">Brave är värd för dessa Manifest V2-tillägg på Brave-servrar, men granskar eller verifierar inte deras innehåll, säkerhet eller beteende. Se varje tilläggs officiella sida för hjälp. Läs Braves planer för Manifest V2 <ph name="BEGIN_LINK"/>här<ph name="END_LINK"/>.</translation>
 <translation id="578671172657727816">Aktivera NoScript™</translation>
 <translation id="9068475464170522036">NoScript är ett Manifest V2-tillägg som låter dig blockera och avblockera enskilda skript som körs eller försöker köras på en viss sida.</translation>
 <translation id="1394592156621788100">Aktivera uBlock Origin™</translation>
@@ -671,7 +680,6 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="7701023802820268122">Standardplånbok för Solana</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="6942354363301686374">Tillägg (ingen reserv)</translation>
-<translation id="1274962333945373242">Kryptoplånböcker (utfasad)</translation>
 <translation id="702381242110464396">Tillägg (Brave Wallet-reserv)</translation>
 <translation id="4718664830805652430">Standard basvaluta</translation>
 <translation id="7992507032049865603">Standard baskryptovaluta</translation>
@@ -736,6 +744,7 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="3095201688102519917">Varna mig innan fönster med flera flikar stängs</translation>
 <translation id="7120553802660696133">Stäng fönstret när du stänger den sista fliken</translation>
 <translation id="3394171693948989253">Visa påminnelse i helskärm om att trycka på Esc vid avslutning</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Visa Leo-ikonen i sidofältet</translation>
 <translation id="8055509865174199683">Visa Leo i snabbmenyn på webbplatser</translation>
 <translation id="1529674267267221673">Leo visas i snabbmenyn när du högerklickar på en webbplats. Detta kommer att skicka kontext från den aktuella webbsidan till Leo.</translation>
@@ -751,7 +760,6 @@ chatthistorik kommer alla dina tidigare konversationer med Brave
 Leo AI att raderas. Denna åtgärd kan inte ångras.</translation>
 <translation id="5574059574002819179">Justera autokompletteringsförslag</translation>
 <translation id="7942415993090181327">Chatthistorik</translation>
-<translation id="5385064007245738696">Om Leo AI</translation>
 <translation id="5084498230659987096">Brave Leo tillhandahåller AI-chatt med integritet i första hand samt andra AI-drivna gränssnitt i webbläsaren. Leo lär sig aldrig från dina data eller använder dem för modellträning. Alla förfrågningar skickas via en anonymiserande server.</translation>
 <translation id="6458721693611638005">Läs mer om hur Brave skyddar din användning av AI i Leos integritetspolicy. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Standardmodell för nya konversationer</translation>
@@ -788,6 +796,9 @@ Leo AI att raderas. Denna åtgärd kan inte ångras.</translation>
 <translation id="6304169450064541679">Systemuppmaning</translation>
 <translation id="3081947790648024460">Anpassade instruktioner och/eller kontext som ges till modellen för att vägleda dess svar i en specifik riktning eller stil. Använd %datetime% där du vill att aktuellt datum och tid ska infogas.</translation>
 <translation id="5688878061573389791">≥<ph name="TOKENS_COUNT"/> tokens</translation>
+<translation id="5985516785067818307">Undersökningspanel</translation>
+<translation id="8347743943525229984">Tillåt Brave-undersökningar</translation>
+<translation id="3204080538332044581">Tillåter Brave att visa länkar till privata undersökningar i den nya fliken. Undersökningar hjälper oss att bygga bättre funktioner och mäta effektiviteten i webbläsarbaserade annonskampanjer. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Aktivera spellista</translation>
 <translation id="7903608716704052878">Lägg automatiskt till filer för offlinevisning</translation>
 <translation id="4193768184502613558">Med det här alternativet cachas mediefiler automatiskt så att du kan spela upp dem utan Internetanslutning.</translation>

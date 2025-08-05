@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">Только на новой вкладке</translation>
 <translation id="6406506848690869874">Синхронизация</translation>
 <translation id="1544192797660353713">Кошелек</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">ИИ-помощник Leo</translation>
 <translation id="8275068909952022340">Ещё…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {Close Guest}
+          other {Close Guest}
+        }</translation>
 <translation id="1990886731975529483">Установка и запуск Widevine</translation>
 <translation id="8926389886865778422">Больше не спрашивать</translation>
 <translation id="4900351245762303149">Установка расширения Widevine от компании Google</translation>
@@ -76,13 +80,20 @@
 <translation id="2808103541110899519">Скрыть значок Brave Кошелька</translation>
 <translation id="7595540212376041331">Скрыть значок Brave Кошелька</translation>
 <translation id="3893997535859323951">Скрыть значок Leo</translation>
+<translation id="8832245978592881387">Открыть Leo AI в новой вкладке</translation>
+<translation id="4577675328803804820">Открыть Leo AI в боковой панели</translation>
+<translation id="564305948667173847">Управление настройками Leo AI</translation>
 <translation id="6208515240323786457">Скрыть значок Leo</translation>
-<translation id="2361906291514218784">ИИ-помощник Leo</translation>
+<translation id="2169338740411893745">Открыть Leo AI в новой вкладке</translation>
+<translation id="3295805221342028003">Открыть Leo AI в боковой панели</translation>
+<translation id="7400808612454224939">Управление настройками Leo AI</translation>
+<translation id="5385064007245738696">О Leo ИИ</translation>
 <translation id="4928988318462976765">Магазин расширений</translation>
 <translation id="9181207987584064303">Открыть в магазине расширений</translation>
 <translation id="3161744659507801211">Внимание: Brave не может запретить расширениям сохранять историю просмотров.</translation>
 <translation id="2162109630536601963">Если это расширение отправляет запросы по сети, то они не будут идти через Tor или использовать приватный режим.</translation>
 <translation id="2725327089319971976">Чтобы отключить расширение в приватном режиме и режиме Tor, снимите эту галочку.</translation>
+<translation id="438106944087726695">Brave-хостинг</translation>
 <translation id="3371343170427636147">Ночные сборки приложений браузера Brave</translation>
 <translation id="4097979995947147464">Бета-приложения браузера Brave</translation>
 <translation id="8303432794159193481">Приложения разработчика для браузера Brave</translation>
@@ -181,11 +192,6 @@
 <translation id="4394049700291259645">Отключить</translation>
 <translation id="7142548388914389999">Разрешить выполнение аналитики продукта, не нарушающей конфиденциальности</translation>
 <translation id="2604698253988679506">Эти анонимные сведения помогают Brave оценивать, как используются определенные функции, и улучшать работу браузера.</translation>
-<translation id="1947672064022327074">Вы хотите открыть Криптокошельки для работы с Эфириумом?</translation>
-<translation id="7583735190612229830">Настройте Криптовалютные кошельки для взаимодействия с этим и другими похожими приложениями.</translation>
-<translation id="8731422418734770661">Настроить Crypto Wallets</translation>
-<translation id="8199661191594897555">Запустить криптовалютные кошельки и перезагрузить</translation>
-<translation id="8428213095426709021">Настройки</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Домены Web3</translation>
 <translation id="5046066249040287308">Утилита Brave Кошелька</translation>
@@ -335,6 +341,7 @@
 <translation id="7557539689487606886">Премиум-подписка</translation>
 <translation id="1035309871698658326">При открытии она автоматически отправит названия и происхождение всех неприватных вкладок в Leo, чтобы классифицировать их.</translation>
 <translation id="3435896845095436175">Включить</translation>
+<translation id="1940221956626514677">Настройте панель инструментов</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
 <translation id="1426410128494586442">Да</translation>
@@ -492,6 +499,8 @@
 <translation id="3540231253392253941">Использовать сервисы Google для обмена push-сообщениями</translation>
 <translation id="933652931229970927">Автоматически отправлять данные диагностики</translation>
 <translation id="4891600875049212418">Включать режим «Не для протокола» при посещении сайтов с деликатным контентом</translation>
+<translation id="509873765238158442">Блокировать Microsoft Recall</translation>
+<translation id="4763421121695677716">Блокируйте функцию Recall на компьютерах Microsoft Windows от автоматического снятия скриншотов любых открытых вкладок Brave.</translation>
 <translation id="1968895725257436430">Сбор данных</translation>
 <translation id="4846154056248462491">На выходе</translation>
 <translation id="216468847346280584">Удалить данные Brave Рекламы</translation>
@@ -653,10 +662,10 @@
 <translation id="2653659639078652383">Submit</translation>
 <translation id="1294350054292274934">Только разрешить адрес .onion в окнах Tor</translation>
 <translation id="601227612175911475">Сервисы Onion не будут доступны вне окон Tor.</translation>
-<translation id="2896916411183256228">WebTorrent позволит отображать информацию о торрентах прямо в браузере. Поддерживаются торрент-файлы и magnet-ссылки.</translation>
 <translation id="5249433283143453448">Использовать компонент управления цифровыми правами (DRM) Widevine для просмотра защищенного потокового видео- и другого контента в браузере.</translation>
 <translation id="1314131187310290315">Расширения Manifest V2</translation>
 <translation id="2488433650767270565">Эти расширения Manifest V2 будут удалены из Chrome Web Store, но они все еще поддерживаются в Brave. Выберите вручную, чтобы загрузить и установить или удалить конкретные расширения.</translation>
+<translation id="6918225713618473646">Brave размещает эти расширения Manifest V2 на своих серверах, но не проверяет и не подтверждает их содержимое, безопасность или поведение. Пожалуйста, обращайтесь на официальную страницу каждого расширения для получения помощи. Ознакомьтесь с планами Brave в отношении Manifest V2 <ph name="BEGIN_LINK"/>здесь<ph name="END_LINK"/>.</translation>
 <translation id="578671172657727816">Включить NoScript™</translation>
 <translation id="9068475464170522036">Расширение NoScript, созданное на основе Manifest V2, позволяет блокировать и разблокировать отдельные сценарии, запускающиеся или пытающиеся запуститься на определенной странице.</translation>
 <translation id="1394592156621788100">Включить uBlock Origin™</translation>
@@ -671,7 +680,6 @@
 <translation id="7701023802820268122">Кошелек Solana по умолчанию</translation>
 <translation id="8488282162676695335">Кошелек Brave</translation>
 <translation id="6942354363301686374">Расширения (без бэкапа)</translation>
-<translation id="1274962333945373242">Криптокошельки (устарело)</translation>
 <translation id="702381242110464396">Расширения (бэкап кошелька Brave)</translation>
 <translation id="4718664830805652430">Основная валюта по умолчанию</translation>
 <translation id="7992507032049865603">Основная криптовалюта по умолчанию</translation>
@@ -736,6 +744,7 @@
 <translation id="3095201688102519917">Предупреждать перед закрытием окна с несколькими вкладками</translation>
 <translation id="7120553802660696133">Закрывать окно при закрытии последней вкладки</translation>
 <translation id="3394171693948989253">Показывать подсказку о нажатии Esc для выхода из полноэкранного режима</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Показывать значок Leo на боковой панели</translation>
 <translation id="8055509865174199683">Показывать Leo в контекстных меню сайтов</translation>
 <translation id="1529674267267221673">Leo появится в контекстном меню на сайте при нажатии правой кнопкой мыши и получит сведения о текущей странице.</translation>
@@ -749,7 +758,6 @@
 удалит все ваши предыдущие разговоры с Brave
 Leo ИИ. Это действие нельзя отменить.</translation>
 <translation id="5574059574002819179">Настроить опции автозаполнения</translation>
-<translation id="5385064007245738696">О Leo ИИ</translation>
 <translation id="5084498230659987096">Brave Leo - это чат с искусственным интеллектом, основанный на принципах конфиденциальности, а также другие интерфейсы, работающие на основе искусственного интеллекта, в браузере. Leo никогда не изучает ваши данные и не использует их для обучения моделей. Все запросы передаются через анонимизирующий сервер.</translation>
 <translation id="614530507403667291">Выбрать модель для всех новых бесед</translation>
 <translation id="8826914609353373601">Управление премиум-подпиской</translation>
@@ -785,6 +793,9 @@ Leo ИИ. Это действие нельзя отменить.</translation>
 <translation id="6304169450064541679">Системный запрос</translation>
 <translation id="3081947790648024460">Пользовательские инструкции и/или контекст, предоставляемые модели, чтобы направлять ее ответы в определенном направлении или стиле. Используйте %datetime% где вы бы хотели вставить текущую дату и время.</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> токенов</translation>
+<translation id="5985516785067818307">Панель опросов</translation>
+<translation id="8347743943525229984">Разрешить опросы Brave</translation>
+<translation id="3204080538332044581">Позволяет Brave показывать ссылки на частные опросы на странице новой вкладки. Опросы помогают нам создавать лучшие функции и измерять эффективность рекламных кампаний в браузере. <ph name="BEGIN_LINK"/>Узнать больше<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Включить плейлист</translation>
 <translation id="7903608716704052878">Автоматически добавлять файлы для просмотра, находясь не в сети</translation>
 <translation id="4193768184502613558">Этот вариант автоматически будет кэшировать медиафайлы, чтобы вы могли воспроизводить их, находясь не в сети.</translation>

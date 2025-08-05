@@ -875,7 +875,7 @@
 <translation id="1939235910515558387">Brave 월렛은 몇 분 만에 시작할 수 있습니다.</translation>
 <translation id="5844138175312846408">이미 월렛이 있으십니까?</translation>
 <translation id="772643556080081594">조회 전용 월렛</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave 및 Brave 로고는 Brave Software, Inc.의 등록 상표입니다. 기타 제품 명칭 및 로고는 해당 회사의 상표일 수 있습니다. 모든 권한 보유.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave 및 Brave 로고는 Brave Software, Inc.의 등록 상표입니다. 기타 제품 명칭 및 로고는 해당 회사의 상표일 수 있습니다. 모든 권한 보유.</translation>
 <translation id="7501957181231305652">또는</translation>
 <translation id="375882617301124395">암호화폐 월렛 백업</translation>
 <translation id="5024543173656851695">복구 단어를 잊어버리면 내 암호화폐 계정에 액세스할 수 없음을 이해합니다.</translation>
@@ -1119,10 +1119,6 @@
 <translation id="4324239559624557455">24시간</translation>
 <translation id="9139452553033760558">1주</translation>
 <translation id="1658834457013045127">영구적으로</translation>
-<translation id="2770851145415891830">기존 암호화폐 월렛 감지됨</translation>
-<translation id="2237759620789871865">가져오기를 건너뛰고 기존 암호화폐 월렛 경험을 유지하려면 Brave 브라우저 <ph name="LINK_BEFORE"/>설정<ph name="LINK_AFTER"/>으로 이동하여 기본값을 암호화폐 월렛으로 변경하세요. 언제든지 새 Brave 월렛을 가져와 사용해보거나 되돌릴 수 있습니다.</translation>
-<translation id="5590175005414413980">기존 암호화폐 월렛 비밀번호를 입력하면 Brave 계정으로 가져옵니다. 더욱 빠르고 안전하게 암호화폐 자산을 관리하고 Web3 DApps를 이용하세요.</translation>
-<translation id="880619123281809987">암호화폐 월렛 비밀번호 입력</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> 연결됨</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> 연결 해제됨</translation>
 <translation id="5317781812114905957">지침</translation>
@@ -1379,6 +1375,9 @@
 <translation id="5601436886921227795">Dapp 인터랙션</translation>
 <translation id="9104177294757104789"><ph name="VALUE"/> 보내기</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/>에서 <ph name="TAKER"/>(으)로 스왑</translation>
+<translation id="1748114617341025015">연결된 토큰 계정 만드는 중입니다</translation>
+<translation id="4418115887224983240">연결된 토큰 계정을 만들지 못했습니다</translation>
+<translation id="7165697599360786670">연결된 토큰 계정을 만들었습니다</translation>
 <translation id="8613144770663526433">Brave 월렛으로 로그인</translation>
 <translation id="8813165409788097898"><ph name="ORIGIN"/>에 로그인합니다. Brave 월렛이 귀하의 월렛 주소를 <ph name="ORIGIN"/>에 공유합니다.</translation>
 <translation id="1028781062521375153">세부정보 보기</translation>
@@ -1512,7 +1511,6 @@
 <translation id="396152018598329740">암호화폐 월렛은 어떻게 사용할 수 있나요?</translation>
 <translation id="7512061585041489067">최고의 암호화폐 월렛은 무엇인가요?</translation>
 <translation id="1342755158522323177">암호화폐 브라우저란 무엇인가요?</translation>
-<translation id="4702762916247565868">암호화폐 월렛 기본 상식</translation>
 <translation id="4674552515763857735">복구 문구란 무엇인가요?</translation>
 <translation id="7328255859839881981">DApps이란 무엇인가요?</translation>
 <translation id="3852489285890032403">Web3란 무엇인가요?</translation>
@@ -1530,7 +1528,6 @@
 <translation id="7877416315564177070">복구 문구를 확인하고 다시 시도하세요.</translation>
 <translation id="6503538941917874992">복구 문구를 사용하여 가져오기</translation>
 <translation id="782167880151571109">Metamask 월렛이 감지되었습니다!</translation>
-<translation id="3619071361843652814">레거시 월렛이 감지되었습니다!</translation>
 <translation id="4634124774493850572">비밀번호 사용</translation>
 <translation id="7697478310235189459">단어 <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">MetaMask 12~24단어 복구 문구를 입력하세요.</translation>
@@ -1543,7 +1540,6 @@
 <translation id="3604445540387095708"><ph name="LINK_BEFORE"/>이용 약관<ph name="LINK_AFTER"/>을 읽었으며 이에 동의합니다.</translation>
 <translation id="1422451606553326863">암호화폐 구입</translation>
 <translation id="3887541341068007345">월렛 확장 프로그램 확인 중...</translation>
-<translation id="3567994771568272606">레거시 Brave 암호화폐 월렛에서 가져오기</translation>
 <translation id="8407091560429310499">자산 선택</translation>
 <translation id="756590380936155533"><ph name="ASSET_TICKER"/> 구매를 완료하려면 파트너 중 하나를 선택하세요.</translation>
 <translation id="7880860489474966219">완료되면 자금이 용감한 지갑으로 이체됩니다.</translation>
@@ -1746,6 +1742,7 @@
 <translation id="4583937519241190398">DappRadar에서 검증함</translation>
 <translation id="8713438253026855351">보호 계정으로 전환</translation>
 <translation id="3526789880090101085">Shields 계정</translation>
+<translation id="3155166394760577549">트랜잭션 프라이버시를 강화하려면 보호를 활성화하세요.</translation>
 <translation id="2298396008562701154">현재 이 계정은 투명한 트랜잭션을 지원하므로 블록체인의 모든 사용자가 트랜잭션을 볼 수 있습니다.</translation>
 <translation id="3987095760757102811">보호 계정으로 업그레이드하면 이러한 트랜잭션에서 발신자와 수신자, 금액 세부 정보를 숨깁니다.</translation>
 <translation id="3819528427777765709">보호</translation>
@@ -1776,6 +1773,8 @@
 <translation id="99991973626409495">쉴드 검토</translation>
 <translation id="3114681061018999547">차폐</translation>
 <translation id="8897189056319316783">ZEC 쉴드</translation>
+<translation id="3382275793825152362">자금 보호</translation>
+<translation id="8631765320256788981">투명 계정에서 차폐 계정으로 자금을 송금하는 중입니다.</translation>
 <translation id="7144878232160441200">재시도</translation>
 <translation id="9094621390791852268">트랜잭션 미리보기 실패.</translation>
 <translation id="4982713341035600933">예상 잔액 변화</translation>
@@ -1837,7 +1836,7 @@
 <translation id="7758665172236842395">좋아하는 소스를 피드 한 곳에서 팔로우하세요. Brave에서 탭을 열고 아래로 스크롤하면, 다 보이죠!</translation>
 <translation id="2376542729617592331">Brave News는 프라이버시를 보호하는 익명 광고의 도움으로 서비스가 유지됩니다. <ph name="LINK_START"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="1765217911817124376">Brave News 켜기</translation>
-<translation id="5149018766422637336">뉴스 및 RSS</translation>
+<translation id="1772301834467143364">Brave News</translation>
 <translation id="6265592479622441247"><ph name="BEGIN_BOLD"/>대시보드<ph name="END_BOLD"/>로 돌아가기</translation>
 <translation id="3169472444629675720">디스커버</translation>
 <translation id="8981973962043893066">사이트, 주제, RSS 피드 검색</translation>
@@ -2108,10 +2107,18 @@
 <translation id="4885527781814382758">Brave 레오는 인터넷 사용성을 개선해주는 개인용 AI 스마트 어시스턴트입니다. 레오는 무료로 사용할 수 있으며 액세스 한도가 있습니다. Brave 레오 프리미엄은 더 많은 모델을 지원하고 한도가 높으며 구독자 여러분께 새로운 기능을 먼저 제공해 드립니다. 기본 모델은 수시로 변경됩니다. 자세한 정보는 <ph name="LINK_BEFORE"/>Brave 도움말 센터<ph name="LINK_AFTER"/>를 참조하세요.</translation>
 <translation id="7189603330209995455">기본적으로, 사용자가 보고 있는 웹페이지나 페이지상에 강조된 텍스트에 대해 레오에게 질문을 하면 그 내용이 Brave 레오에게 전송되어 답변을 제공합니다. 답변의 정확성은 보장되지 않으며 부정확하거나 오인할 수 있거나 잘못된 정보가 포함될 수 있습니다. 레오는 Brave 검색에서 얻어진 데이터를 사용하여 답변의 품질을 개선합니다. 민감하거나 사적인 정보를 입력하지 않아야 하며, 건강, 재무, 개인 안전 등과 관련된 텍스트에는 특별한 주의를 요합니다. 레오 옵션은 설정에서 언제든 조정할 수 있습니다. 설정 &gt; 레오로 이동하세요.</translation>
 <translation id="3038772045018370764">레오는 IP 주소와 같이 개인을 특정할 수 있는 식별자를 수집하지 않습니다. 어떠한 데이터도 AI 모델을 훈련하는 데 사용되지 않으며 AI 모델은 개인 데이터를 보관하지 않습니다(예외적으로 Anthropic의 경우 30일간 보관 후 삭제). 자세한 정보는 <ph name="LINK_BEFORE"/>개인정보 보호정책<ph name="LINK_AFTER"/>을 참조하세요.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {이 페이지 내용에 관해 질문하기}
+      other {이 페이지 내용에 관해 질문하기}
+    }</translation>
 <translation id="6961721183181597848">무엇을 도와드릴까요?</translation>
 <translation id="2966135729673253768">후속 조치 요청</translation>
 <translation id="4524675003624341892">추천 질문...</translation>
 <translation id="4567071417854988869">이 동영상 요약하기</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {이 페이지 요약}
+      other {이 페이지 요약}
+    }</translation>
 <translation id="7921782882718083488">이 페이지 요약하기</translation>
 <translation id="7932221068776853847">연결을 끊어 이 페이지 콘텐츠를 레오에게 보내기를 중지하고 새 대화를 시작합니다.</translation>
 <translation id="8743383817154663379">요청을 처리하는 동안 문제가 발생했습니다. 나중에 다시 시도해 주세요.</translation>
@@ -2202,16 +2209,14 @@
 <translation id="8712637175834984815">확인</translation>
 <translation id="1093419424466417703">페이지가 레오에게 너무 깁니다. 일부 맥락이 대화에서 누락될 수 있습니다. 레오가 페이지 콘텐츠의 <ph name="PERCENTAGE"/>를 읽을 수 있었습니다.</translation>
 <translation id="4592293425457329338">대화에서 일부 문맥이 누락되었을 수 있습니다. 레오가 대화와 관련된 내용의 <ph name="PERCENTAGE"/>를 보관할 수 있었습니다.</translation>
-<translation id="2186990448773134544">페이지가 레오에겐 너무 길어 가장 관련성 있는 정보만 추출하여 페이지 콘텐츠를 정제했습니다.</translation>
-<translation id="5140068729857132378">웹페이지에서 관련된 부분 찾는 중...</translation>
 <translation id="4370698775470316661">대화가 너무 길어 계속할 수 없습니다. 레오가 긴 대화에서도 정확성을 유지할 수 있게 해주는 다른 모델을 사용하실 수 있습니다.</translation>
 <translation id="5719170755629028558">Brave 검색으로 답변 수준 높이기...</translation>
 <translation id="5794962229997281366"><ph name="SEARCH_TERMS"/>에 대한 더 나은 답변 검색.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/>개 더 보기…</translation>
 <translation id="8103700533980268469">이 알림 닫기</translation>
 <translation id="3417835166382867856">검색 탭</translation>
-<translation id="9090243919347147717">첨부 파일</translation>
-<translation id="4444978378117903684">브라우저 탭을 추가하여 레오에게 더 자세한 대화 맥락을 제공하세요</translation>
+<translation id="1352836459737874921">다른 탭의 내용 첨부</translation>
+<translation id="3028258613451571431">브라우저 탭의 내용을 전송하여 레오에게 더 자세한 대화 맥락을 제공하세요</translation>
 <translation id="4300920590112551536">브라우저 탭</translation>
 <translation id="2315654674554095762">이제 레오가 대화를 기억해두므로 다시 대화로 돌아갈 수 있습니다. 대화는 장치에 암호화되어 저장되며 언제든지 삭제할 수 있습니다.</translation>
 <translation id="7821251979960635244">대화를 시작하면 여기에 대화 기록이 나타납니다.</translation>
@@ -2234,8 +2239,8 @@
 <translation id="5642775487085641191">가볍게 채팅하고 싶으신가요?</translation>
 <translation id="8857222718794549840">무엇이든 제게 물어보세요! 어떤 주제든 함께 이야기할 수 있습니다. 전 항상 열심히 배워 점점 더 똑똑해지고 있으니까 갈수록 나은 답변을 드릴 거예요.</translation>
 <translation id="9051226419897869406">Brave 레오와 사적인 채팅하기</translation>
-<translation id="637548538907281147">페이지 내용에 기반하여 새 답변 만들기</translation>
-<translation id="8599503173207256429">이 페이지에 대해 물어보시려면 토글하여 켜세요. 입력하신 메시지와 함께 콘텐츠가 Brave 레오에게 전송됩니다.</translation>
+<translation id="2414904697165579184">페이지 내용에 기반하여 새 답변 생성</translation>
+<translation id="8258324391302611485">메시지와 함께 이 페이지의 내용이 레오에게 전송됩니다.</translation>
 <translation id="318819763888864209">모든 구독은 자동 갱신되지만, 갱신 전 언제든지 취소할 수 있습니다.</translation>
 <translation id="5091223967610958">현재 보고 있는 페이지의 호스트 이름(<ph name="HOST_NAME"/>)을 공유하여 레오 개선에 도움을 줍니다.</translation>
 <translation id="8732450785281947197">레오 AI 도구</translation>
@@ -2266,11 +2271,14 @@
 <translation id="9088751620363630236">사진 찍기...</translation>
 <translation id="4250229828105606438">스크린샷</translation>
 <translation id="6332876390231524389">현재 탭 내용</translation>
+<translation id="7742969455167760092">탭 열기...</translation>
 <translation id="49269513399674318">마이크 사용</translation>
 <translation id="3895031624234442305">맞춤 모델</translation>
 <translation id="4572010449071015143">새 대화 시작</translation>
 <translation id="345901077335355561">활성 대화로 돌아가기</translation>
 <translation id="6287023598025162715">새 대화</translation>
+<translation id="7097822247923237815">임시 채팅</translation>
+<translation id="7481750859362986254">이 채팅은 기록에 저장되지 않으며, 레오의 사용자 지정이나 메모리를 사용하지 않습니다.</translation>
 <translation id="8370801182970639038">자동(<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">검색 엔진 활성화됨</translation>
 <translation id="5355776323718420036">인기 사이트 숨기기</translation>
@@ -2387,6 +2395,7 @@
 <translation id="6821108091726602352">Brave의 Web Discovery Project에 참여하여 웹 개선에 도움을 주세요. 완전히 익명화된 검색 신호를 공유하는 방법으로 Brave의 검색 색인 확보에 기여하실 수 있습니다.</translation>
 <translation id="6764845498618413165">자세히 알아보기</translation>
 <translation id="7818938154803162778">좋아요, 도울게요</translation>
+<translation id="7207456302801184289">Brave에 오신걸 환영합니다</translation>
 <translation id="3486480638399578250">개인 이메일 주소 비공개 유지</translation>
 <translation id="7765422154906712751">고유하고 랜덤한 주소를 생성하여 Brave 계정 이메일로 전달하고 언제든지 삭제할 수 있습니다. 실제 이메일 주소가 광고주에게 공개되거나 사용되지 않도록 보호합니다.</translation>
 <translation id="5222676887888702881">로그아웃</translation>
@@ -2403,6 +2412,7 @@
 <translation id="1104500750724567895">새로운 별명</translation>
 <translation id="8072910658503112482">다른 이메일 별명 제안</translation>
 <translation id="7710361355427562228">새 별명 생성 중...</translation>
+<translation id="8013913032858654337">별칭 생성 중 오류가 발생했습니다. 인터넷 연결을 확인한 후 다시 시도하세요.</translation>
 <translation id="4253168017788158739">주석</translation>
 <translation id="7596996548739923550">주소에 대한 주석 입력 (선택 사항)</translation>
 <translation id="3810973564298564668">관리</translation>
@@ -2410,13 +2420,21 @@
 <translation id="3919357515365744684">이메일이 <ph name="MAIN_EMAIL"/>(으)로 전달됩니다</translation>
 <translation id="6063403442924238501">이메일 별명 편집</translation>
 <translation id="8729265501883390499">별명 만들기</translation>
+<translation id="7137645995703540578">별칭 저장 중 오류가 발생했습니다. 인터넷 연결을 확인한 후 다시 시도하세요.</translation>
+<translation id="1765544689721905747">이메일 별칭 삭제</translation>
+<translation id="646524615209870492"><ph name="ALIAS"/> 별칭을 제거하면 이메일 수신 기능을 사용할 수 없게 됩니다.</translation>
+<translation id="8133100642915054515">별칭을 삭제하는 동안 오류가 발생했습니다. 인터넷 연결을 확인한 후 다시 시도하세요.</translation>
+<translation id="8465742443901727718">이 작업은 되돌릴 수 없습니다. 계속 하시겠습니까?</translation>
 <translation id="8662104432574824754">시작하려면 Brave 계정에 로그인하거나 계정을 만드세요</translation>
 <translation id="8069030342700068465">로그인 링크를 이메일로 받을 이메일 주소를 입력하세요. 이 링크를 클릭하면 Brave 계정을 만들거나 액세스할 수 있으며 무료 이메일 별명 서비스를 사용할 수 있습니다.</translation>
 <translation id="2133391407495495735">로그인 링크 받기</translation>
+<translation id="2650906829817220223">인증 요청 중 오류가 발생했습니다. 인터넷 연결을 확인한 후 다시 시도하세요.</translation>
 <translation id="3699624789011381381">이메일 주소</translation>
 <translation id="8124939971041602970">로그인 이메일이 <ph name="MAIN_EMAIL"/>(으)로 발송되었습니다</translation>
 <translation id="8140361186431963982">계정에 액세스하려면 이메일의 안전한 로그인 링크를 클릭하세요.</translation>
-<translation id="6549775668256477823">이메일이 보이지 않습니까? 스팸 폴더를 확인하거나 <ph name="BEGIN_LINK"/>다시 시도<ph name="END_LINK"/>하세요.</translation>
+<translation id="619122420105901711">이메일이 보이지 않습니까? 스팸 폴더를 확인하거나 다시 시도하세요.</translation>
+<translation id="3397336197747843396">Brave 계정으로 인증하는 동안 오류가 발생했습니다. 다시 시도해 주세요.</translation>
+<translation id="1340795582009113055">다시 시작</translation>
 <translation id="958268166261124668">Brave VPN: 연결됨</translation>
 <translation id="6021669293402055982">Brave VPN: 연결 해제됨</translation>
 <translation id="3541307549916475335">Brave VPN 패널 UI</translation>
