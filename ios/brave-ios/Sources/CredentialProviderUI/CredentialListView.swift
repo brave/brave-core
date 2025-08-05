@@ -231,6 +231,9 @@ extension CredentialListModel {
     var encrypted: Data!
     var creationTime: Int64 = 0
     var lastUsedTime: Int64 = 0
+    var hidden: Bool = false
+    var hiddenTime: Int64 = 0
+    var editedByUser: Bool = false
 
     init(
       favicon: FaviconAttributes?,
