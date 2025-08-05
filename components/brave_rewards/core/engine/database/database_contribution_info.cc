@@ -10,11 +10,11 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/time_util.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal::database {
 
@@ -45,7 +45,7 @@ void DatabaseContributionInfo::InsertOrUpdate(mojom::ContributionInfoPtr info,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(contribution_id, amount, type, step, retry_count, created_at, "
       "processor) "
@@ -77,7 +77,7 @@ void DatabaseContributionInfo::GetRecord(const std::string& contribution_id,
                                          GetContributionInfoCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
       "ci.processor, ci.created_at "
       "FROM %s as ci "
@@ -159,7 +159,7 @@ void DatabaseContributionInfo::GetAllRecords(
     ContributionInfoListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count,"
       "ci.processor, ci.created_at "
       "FROM %s as ci ",
@@ -196,7 +196,7 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
       "ci.amount, ci.created_at, spi.status, spi.updated_at, pi.provider "
       "FROM %s as ci "
@@ -215,7 +215,7 @@ void DatabaseContributionInfo::GetOneTimeTips(const mojom::ActivityMonth month,
   command->command = query;
 
   const std::string formatted_month =
-      base::StringPrintf("%02d", base::to_underlying(month));
+      absl::StrFormat("%02d", base::to_underlying(month));
 
   BindString(command.get(), 0, formatted_month);
   BindString(command.get(), 1, base::NumberToString(year));
@@ -299,7 +299,7 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
 
   transaction->commands.push_back(std::move(revive_command));
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
       "ci.processor, ci.created_at "
       "FROM %s as ci WHERE ci.step > 0",
@@ -393,7 +393,7 @@ void DatabaseContributionInfo::UpdateStep(const std::string& contribution_id,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET step=?, retry_count=0 WHERE contribution_id = ?",
       kTableName);
 
@@ -424,7 +424,7 @@ void DatabaseContributionInfo::UpdateStepAndCount(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET step=?, retry_count=? WHERE contribution_id = ?;",
       kTableName);
 
@@ -454,7 +454,7 @@ void DatabaseContributionInfo::UpdateContributedAmount(
 void DatabaseContributionInfo::FinishAllInProgressRecords(
     ResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET step = ?, retry_count = 0 WHERE step >= 0", kTableName);
 
   auto command = mojom::DBCommand::New();

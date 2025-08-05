@@ -23,7 +23,7 @@
 #define StackAtTop GetTopLevelWidget()->StackAtTop
 #define GetWindowBoundsInScreen GetTopLevelWidget()->GetWindowBoundsInScreen
 
-#include "src/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.cc"
+#include <chrome/browser/ui/views/tabs/dragging/tab_drag_controller.cc>
 
 #undef GetWindowBoundsInScreen
 #undef StackAtTop

@@ -7,9 +7,9 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -50,7 +50,7 @@ TEST(BraveAdsHttpStatusCodeUtilTest, HttpStatusCodeToString) {
     if (kAllowedHttpStatusCodes.contains(i)) {
       EXPECT_EQ(base::NumberToString(i), http_status_code);
     } else {
-      EXPECT_EQ(base::StringPrintf("%dxx", /*http_status_code_class*/ i / 100),
+      EXPECT_EQ(absl::StrFormat("%dxx", /*http_status_code_class*/ i / 100),
                 http_status_code);
     }
   }

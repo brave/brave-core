@@ -573,6 +573,9 @@
     All Extensions
   </message>
   <!-- Extension Safety Check Review Panel strings -->
+  <message name="IDS_EXTENSIONS_SAFETY_HUB_HEADER" desc="Name of a section in chrome://extensions that gives users an overview over their safety status and where users can take action to improve their safety.">
+    Safety Check
+  </message>
   <message name="IDS_EXTENSIONS_SC_MALWARE" desc="The text explaining the reason for extension being potentially unsafe. The extension in question contains malware.">
     Off • This extension contains malware
   </message>
@@ -720,7 +723,7 @@
 <if expr="enable_extensions">
   <!-- Extensions Zero State Promo IPH -->
   <message name="IDS_EXTENSIONS_ZERO_STATE_IPH_HEADER" desc="Header of the extensions zero state in-product help promo.">
-    Supercharge your browser with extensions and themes
+    Enhance your browser with extensions
   </message>
   <message name="IDS_EXTENSIONS_ZERO_STATE_CHIPS_IPH_DESCRIPTION" desc="An one line description for the extensions zero state in-product-help promo.">
     Extensions are add-ons for Brave that can help you do more

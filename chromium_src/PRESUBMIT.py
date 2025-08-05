@@ -26,7 +26,7 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
     file_filter = lambda f: input_api.FilterSourceFile(
         f, files_to_check=files_to_check, files_to_skip=files_to_skip)
 
-    include_prefixes = ('#include <', '#include "src/', '#include "../gen/')
+    include_prefixes = ('#include <', '#include "../gen/')
     nolint = 'NOLINT'
     expected_suffix = '// IWYU pragma: export'
 
@@ -89,8 +89,12 @@ def CheckOverrides(input_api, output_api):
     items = []
     with brave_chromium_utils.sys_path('//brave/tools/chromium_src'):
         import check_chromium_src
+    # None will make filter pick Chromium's DEFAULT_FILES_TO_CHECK.
+    file_filter = lambda f: input_api.FilterSourceFile(
+        f, files_to_check=None, files_to_skip=())
     overrides = [
-        f.AbsoluteLocalPath() for f in input_api.AffectedSourceFiles(None)
+        f.AbsoluteLocalPath()
+        for f in input_api.AffectedSourceFiles(file_filter)
     ]
     # We can't provide the gen directory path from presubmit.
     messages = check_chromium_src.ChromiumSrcOverridesChecker(

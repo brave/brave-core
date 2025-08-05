@@ -10,6 +10,6 @@
 #define DistillabilityAgent(render_frame, dcheck_is_on) \
   DistillabilityAgent(render_frame, false)
 
-#include "src/chrome/renderer/chrome_content_renderer_client.cc"
+#include <chrome/renderer/chrome_content_renderer_client.cc>
 
 #undef DistillabilityAgent

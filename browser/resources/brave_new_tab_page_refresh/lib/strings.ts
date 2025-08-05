@@ -44,6 +44,9 @@ export type StringKey =
   'rewardsLoginTitle' |
   'rewardsOnboardingButtonLabel' |
   'rewardsOnboardingLink' |
+  'rewardsTosUpdateButtonLabel' |
+  'rewardsTosUpdateText' |
+  'rewardsTosUpdateTitle' |
   'rewardsWidgetTitle' |
   'saveChangesButtonLabel' |
   'searchAskLeoDescription' |
@@ -84,6 +87,8 @@ export type StringKey =
   'topSitesMostVisitedOptionTitle' |
   'topSitesSettingsTitle' |
   'topSitesShowCustomLabel' |
+  'topSitesShowLessLabel' |
+  'topSitesShowMoreLabel' |
   'topSitesShowMostVisitedLabel' |
   'topSitesTitleLabel' |
   'topSitesURLLabel' |

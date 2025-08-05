@@ -5,9 +5,9 @@
 
 #define BRAVE_STORAGE_ACCESS_GRANT_PERMISSION_CONTEXT_CHECK_FOR_AUTO_GRANT_OR_AUTO_DENIAL \
   NotifyPermissionSetInternal(*request_data, std::move(callback),                         \
-                              /*persist=*/true, CONTENT_SETTING_BLOCK,                    \
+                              /*persist=*/true, PermissionDecision::kDeny,                \
                               RequestOutcome::kDeniedByPrerequisites);                    \
   return;
 
-#include "src/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc"
+#include <chrome/browser/storage_access_api/storage_access_grant_permission_context.cc>
 #undef BRAVE_STORAGE_ACCESS_GRANT_PERMISSION_CONTEXT_CHECK_FOR_AUTO_GRANT_OR_AUTO_DENIAL

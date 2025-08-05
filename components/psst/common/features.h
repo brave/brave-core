@@ -6,12 +6,11 @@
 #ifndef BRAVE_COMPONENTS_PSST_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_PSST_COMMON_FEATURES_H_
 
-#include "base/component_export.h"
 #include "base/feature_list.h"
 
 namespace psst::features {
 
-COMPONENT_EXPORT(PSST_COMMON) BASE_DECLARE_FEATURE(kBravePsst);
+BASE_DECLARE_FEATURE(kEnablePsst);
 
 }  // namespace psst::features
 

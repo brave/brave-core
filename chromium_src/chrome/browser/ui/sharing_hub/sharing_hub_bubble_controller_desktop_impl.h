@@ -15,7 +15,7 @@
   ShouldOfferOmniboxIcon_ChromiumImpl(); \
   bool ShouldOfferOmniboxIcon
 
-#include "src/chrome/browser/ui/sharing_hub/sharing_hub_bubble_controller_desktop_impl.h"  // IWYU pragma: export
+#include <chrome/browser/ui/sharing_hub/sharing_hub_bubble_controller_desktop_impl.h>  // IWYU pragma: export
 
 #undef ShouldOfferOmniboxIcon
 

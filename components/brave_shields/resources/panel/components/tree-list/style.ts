@@ -27,20 +27,8 @@ export const Footer = styled.div`
   width: 100%;
   z-index: 2;
 
-  button {
+  leo-button {
     width: 100%;
-
-    div {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    svg {
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-    }
   }
 }
 `

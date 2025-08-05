@@ -16,7 +16,7 @@
 #define BRAVE_REFERRER_SCRIPT_INFO_IS_DEFAULT_VALUE true
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc"
+#include <third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc>
 #undef BRAVE_REFERRER_SCRIPT_INFO_IS_DEFAULT_VALUE
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef ToV8HostDefinedOptions
@@ -45,7 +45,7 @@ ReferrerScriptInfo ReferrerScriptInfo::FromV8HostDefinedOptions(
     v8::Local<v8::PrimitiveArray> host_defined_options =
         v8::Local<v8::PrimitiveArray>::Cast(raw_host_defined_options);
     if (host_defined_options->Length()) {
-      v8::Isolate* isolate = context->GetIsolate();
+      v8::Isolate* isolate = v8::Isolate::GetCurrent();
 
       v8::Local<v8::Primitive> dom_node_id_value = host_defined_options->Get(
           isolate, HostDefinedOptionsIndex::kDomNodeId);

@@ -6,9 +6,9 @@
 #include "brave/components/brave_wallet/common/test_utils.h"
 
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
 
@@ -68,8 +68,8 @@ mojom::ChainIdPtr SolMainnetChainId() {
 namespace mojom {
 
 void PrintTo(const BitcoinAddressPtr& address, ::std::ostream* os) {
-  *os << base::StringPrintf("[%s %d/%d]", address->address_string.c_str(),
-                            address->key_id->change, address->key_id->index);
+  *os << absl::StrFormat("[%s %d/%d]", address->address_string,
+                         address->key_id->change, address->key_id->index);
 }
 
 void PrintTo(const BlockchainTokenPtr& token, ::std::ostream* os) {
@@ -102,13 +102,13 @@ void PrintTo(const BtcHardwareTransactionSignInputDataPtr& input_data,
 }
 
 void PrintTo(const CardanoAddressPtr& address, ::std::ostream* os) {
-  *os << base::StringPrintf("[%s %d/%d]", address->address_string.c_str(),
-                            address->payment_key_id->role,
-                            address->payment_key_id->index);
+  *os << absl::StrFormat("[%s %d/%d]", address->address_string,
+                         address->payment_key_id->role,
+                         address->payment_key_id->index);
 }
 
 void PrintTo(const CardanoBalancePtr& balance, ::std::ostream* os) {
-  *os << base::StringPrintf("[%d]", balance->total_balance);
+  *os << absl::StrFormat("[%d]", balance->total_balance);
 }
 
 }  // namespace mojom

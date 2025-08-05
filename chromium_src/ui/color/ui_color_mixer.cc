@@ -7,7 +7,7 @@
 
 #define AddUiColorMixer AddUiColorMixer_Chromium
 
-#include "src/ui/color/ui_color_mixer.cc"
+#include <ui/color/ui_color_mixer.cc>
 
 #undef AddUiColorMixer
 
@@ -24,9 +24,7 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // Border colors
   // --------------------------------------------------------------------------
   // For deprecated kColorId_FocusedBorderColor
-  mixer[kColorFocusableBorderFocused] = {
-      dark_mode ? SkColorSetA(gfx::kColorButtonBackground, 0x66)
-                : SkColorSetA(gfx::kColorButtonBackground, 0x99)};
+  mixer[kColorFocusableBorderFocused] = {nala::kColorPrimary40};
 
   // --------------------------------------------------------------------------
   // Button colors

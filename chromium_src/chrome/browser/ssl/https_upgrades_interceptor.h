@@ -12,7 +12,7 @@
   MaybeCreateLoader_ChromiumImpl(__VA_ARGS__); \
   void MaybeCreateLoader(__VA_ARGS__)
 
-#include "src/chrome/browser/ssl/https_upgrades_interceptor.h"  // IWYU pragma: export
+#include <chrome/browser/ssl/https_upgrades_interceptor.h>  // IWYU pragma: export
 
 #undef MaybeCreateLoader
 

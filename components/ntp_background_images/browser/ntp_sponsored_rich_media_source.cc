@@ -10,7 +10,6 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/memory/ref_counted_memory.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -18,6 +17,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_source_util.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/mime_util.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 namespace ntp_background_images {
@@ -80,8 +80,8 @@ std::string NTPSponsoredRichMediaSource::GetContentSecurityPolicy(
     network::mojom::CSPDirectiveName directive) {
   switch (directive) {
     case network::mojom::CSPDirectiveName::FrameAncestors:
-      return base::StringPrintf("frame-ancestors %s %s;", kBraveUINewTabURL,
-                                kBraveUINewTabTakeoverURL);
+      return absl::StrFormat("frame-ancestors %s %s;", kBraveUINewTabURL,
+                             kBraveUINewTabTakeoverURL);
     case network::mojom::CSPDirectiveName::Sandbox:
       return "sandbox allow-scripts;";
     case network::mojom::CSPDirectiveName::DefaultSrc:

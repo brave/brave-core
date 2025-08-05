@@ -13,7 +13,7 @@
   virtual UpdateCaptionButtonPlaceholderContainerBackground
 #define PaintClientEdge virtual PaintClientEdge
 
-#include "src/chrome/browser/ui/views/frame/opaque_browser_frame_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/opaque_browser_frame_view.h>  // IWYU pragma: export
 
 #undef PaintClientEdge
 #undef UpdateCaptionButtonPlaceholderContainerBackground

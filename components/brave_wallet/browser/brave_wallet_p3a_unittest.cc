@@ -17,6 +17,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -34,7 +35,6 @@
 #include "brave/components/brave_wallet/common/switches.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -366,7 +366,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
       features::kBraveWalletBitcoinFeature};
   base::test::ScopedFeatureList feature_zec_feature_{
       features::kBraveWalletZCashFeature};
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;

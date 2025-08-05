@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">Solo en la página de la nueva pestaña</translation>
 <translation id="6406506848690869874">Brave Sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo IA</translation>
 <translation id="8275068909952022340">Más…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {Cerrar Invitados}
+          other {Cerrar Invitado}
+        }</translation>
 <translation id="1990886731975529483">Instalar y ejecutar Google Widevine</translation>
 <translation id="8926389886865778422">No preguntar de nuevo</translation>
 <translation id="4900351245762303149">Instalar Google Widevine</translation>
@@ -76,13 +80,20 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="2808103541110899519">Ocultar el icono de Cartera de Brave</translation>
 <translation id="7595540212376041331">Ocultar el icono de Cartera de Brave</translation>
 <translation id="3893997535859323951">Ocultar el icono de Leo IA</translation>
+<translation id="8832245978592881387">Abrir Leo AI en una nueva pestaña</translation>
+<translation id="4577675328803804820">Abrir Leo AI en la barra lateral</translation>
+<translation id="564305948667173847">Gestionar los ajustes de Leo AI</translation>
 <translation id="6208515240323786457">Ocultar el icono de Leo IA</translation>
-<translation id="2361906291514218784">Leo IA</translation>
+<translation id="2169338740411893745">Abrir Leo AI en una nueva pestaña</translation>
+<translation id="3295805221342028003">Abrir Leo AI en la barra lateral</translation>
+<translation id="7400808612454224939">Gestionar los ajustes de Leo AI</translation>
+<translation id="5385064007245738696">Acerca de Leo AI</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Ver en la Web Extensions Store</translation>
 <translation id="3161744659507801211">Advertencia: Brave no puede impedir que las extensiones registren su historial de navegación.</translation>
 <translation id="2162109630536601963">Si esta extensión hace peticiones de red, no se usará Tor ni el modo privado.</translation>
 <translation id="2725327089319971976">Para desactivar esta extensión en modo privado y modo Tor, deseleccione esta opción.</translation>
+<translation id="438106944087726695">Alojado en Brave</translation>
 <translation id="3371343170427636147">Brave Browser Nightly Apps</translation>
 <translation id="4097979995947147464">Brave Browser Beta Apps</translation>
 <translation id="8303432794159193481">Brave Browser Dev Apps</translation>
@@ -181,11 +192,6 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="4394049700291259645">Deshabilitar</translation>
 <translation id="7142548388914389999">Permitir estadísticas del producto con preservación de la privacidad (P3A)</translation>
 <translation id="2604698253988679506">Estas respuestas privadas permiten a Brave calcular el uso general de ciertas funciones y mejorarlas para ti.</translation>
-<translation id="1947672064022327074">¿Quiere iniciar carteras de criptomonedas con compatibilidad con Ethereum?</translation>
-<translation id="7583735190612229830">Configura Crypto Wallets para interactuar con esta aplicación y otras similares.</translation>
-<translation id="8731422418734770661">Configurar carteras de criptomonedas</translation>
-<translation id="8199661191594897555">Iniciar Crypto Wallets y volver a cargar</translation>
-<translation id="8428213095426709021">Configuración</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Dominios Web3</translation>
 <translation id="5046066249040287308">Servicio de uso general de Cartera de Brave</translation>
@@ -335,6 +341,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="7557539689487606886">Hazte Premium</translation>
 <translation id="1035309871698658326">Cuando se abre, esto enviará automáticamente los títulos y el origen de todas las pestañas que no son de incógnito a Leo para clasificarlas.</translation>
 <translation id="3435896845095436175">Habilitar</translation>
+<translation id="1940221956626514677">Personalizar barra de herramientas</translation>
 <translation id="9156965752763025780">Tus cambios se aplicarán la próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzar Ahora</translation>
 <translation id="1426410128494586442">Sí</translation>
@@ -492,6 +499,8 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="3540231253392253941">Utiliza los servicios de Google para la mensajería push</translation>
 <translation id="933652931229970927">Enviar informes de diagnóstico automáticamente</translation>
 <translation id="4891600875049212418">Navega en modo Off-The-Record cuando visites sitios de naturaleza confidencial</translation>
+<translation id="509873765238158442">Bloquear el recordatorio de Microsoft</translation>
+<translation id="4763421121695677716">Bloquea la función de recordatorio en los ordenadores con Microsoft Windows para que no realice automáticamente capturas de pantalla de las pestañas abiertas de Brave.</translation>
 <translation id="1968895725257436430">Recopilación de datos</translation>
 <translation id="4846154056248462491">Al salir</translation>
 <translation id="216468847346280584">Borrar los datos de Anuncios de Brave...</translation>
@@ -653,10 +662,10 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="2653659639078652383">Submit</translation>
 <translation id="1294350054292274934">Resolver únicamente las direcciones .onion en las ventanas de Tor</translation>
 <translation id="601227612175911475">Los servicios onion no estarán disponibles fuera de las ventanas de Tor.</translation>
-<translation id="2896916411183256228">Usa WebTorrent para mostrar directamente los torrents en el navegador. Es compatible con archivos torrent y enlaces magnet.</translation>
 <translation id="5249433283143453448">Usa el componente de gestión de derechos digitales (DRM) Widevine para ver transmisiones de vídeo y otros contenidos protegidos en el navegador.</translation>
 <translation id="1314131187310290315">Extensiones Manifest V2</translation>
 <translation id="2488433650767270565">Las siguientes extensiones Manifest V2 se eliminarán de la Chrome Web Store, pero siguen siendo compatibles con Brave. Activa o desactiva la opción para descargar e instalar, o para desinstalar.</translation>
+<translation id="6918225713618473646">Brave aloja estas extensiones Manifest V2 en los servidores de Brave, pero no revisa ni verifica su contenido, seguridad o comportamiento. Consulta la página oficial de cada extensión para obtener ayuda. Lee los planes de Brave para Manifest V2 <ph name="BEGIN_LINK"/>aquí<ph name="END_LINK"/>.</translation>
 <translation id="578671172657727816">Activar NoScript™</translation>
 <translation id="9068475464170522036">NoScript es una extensión de Manifest V2 que te permite bloquear y desbloquear scripts individuales que se ejecuten o intenten ejecutarse en una página concreta.</translation>
 <translation id="1394592156621788100">Activar uBlock Origin™</translation>
@@ -671,7 +680,6 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="7701023802820268122">Cartera predeterminada de Solana</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="6942354363301686374">Extensiones (sin copia de seguridad)</translation>
-<translation id="1274962333945373242">Crypto Wallets (obsoleto)</translation>
 <translation id="702381242110464396">Extensiones (copia de seguridad de billetera de Brave)</translation>
 <translation id="4718664830805652430">Divisa base por defecto</translation>
 <translation id="7992507032049865603">Criptomoneda base por defecto</translation>
@@ -736,6 +744,7 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="3095201688102519917">Avisarme antes de cerrar una ventana con varias pestañas</translation>
 <translation id="7120553802660696133">Cerrar la ventana al cerrar la última pestaña</translation>
 <translation id="3394171693948989253">Mostrar el recordatorio a pantalla completa para pulsar Esc al salir</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Mostrar el icono de Leo en la barra lateral</translation>
 <translation id="8055509865174199683">Mostrar Leo en el menú contextual en sitios web</translation>
 <translation id="1529674267267221673">Leo aparecerá en el menú contextual cuando hagas clic con el botón derecho en un sitio web. Al hacerlo, Leo recibirá el contexto de la página web en cuestión.</translation>
@@ -748,7 +757,6 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="1335414530428321716">Si restableces el asistente Leo, tendrás que habilitarIo de nuevo para poder usarlo en el futuro y se borrará el historial de chats. Esto significa que se eliminarán todas las conversaciones que hayas mantenido con Leo AI de forma irreversible.</translation>
 <translation id="5574059574002819179">Ajustar sugerencias de autocompletar</translation>
 <translation id="7942415993090181327">Historial del chat</translation>
-<translation id="5385064007245738696">Acerca de Leo AI</translation>
 <translation id="5084498230659987096">Brave Leo ofrece chat con IA que prioriza la privacidad y otras interfaces con tecnología de IA en el navegador. Leo nunca aprende de tus datos ni los utiliza para entrenar modelos. Todas las solicitudes se proxy a través de un servidor anonimizado.</translation>
 <translation id="6458721693611638005">Lee más sobre cómo Brave protege el uso de la IA en la política de privacidad de Leo. <ph name="BEGIN_LINK"/>Saber más<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Modelo predeterminado para conversaciones nuevas</translation>
@@ -785,6 +793,9 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="6304169450064541679">Indicación del sistema</translation>
 <translation id="3081947790648024460">Instrucciones personalizadas y/o contexto dado al modelo para guiar sus respuestas en una dirección o estilo específicos. Utiliza %datetime% donde quieras que se inserte la fecha y hora actuales.</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokens</translation>
+<translation id="5985516785067818307">Participante de encuesta</translation>
+<translation id="8347743943525229984">Permitir encuestas Brave</translation>
+<translation id="3204080538332044581">Permite a Brave mostrar enlaces a encuestas privadas en la página de nueva pestaña. Las encuestas nos ayudan a crear mejores funciones y a medir la eficacia de las campañas publicitarias basadas en el navegador. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Activar Lista de reproducción</translation>
 <translation id="7903608716704052878">Añadir archivos de forma automática para visualizarlos sin conexión</translation>
 <translation id="4193768184502613558">Esta opción guardará los archivos multimedia en caché de forma automática para que puedas reproducirlos sin conexión a Internet.</translation>

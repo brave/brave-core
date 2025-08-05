@@ -21,7 +21,7 @@
 
 #define PermissionRequest PermissionRequest_ChromiumImpl
 #define IsDuplicateOf IsDuplicateOf_ChromiumImpl
-#include "src/components/permissions/permission_request.h"  // IWYU pragma: export
+#include <components/permissions/permission_request.h>  // IWYU pragma: export
 #undef IsDuplicateOf
 #undef PermissionRequest
 

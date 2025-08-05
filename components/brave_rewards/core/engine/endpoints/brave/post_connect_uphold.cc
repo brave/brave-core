@@ -11,10 +11,10 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/request_signer.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal::endpoints {
 
@@ -104,7 +104,7 @@ std::optional<std::vector<std::string>> PostConnectUphold::Headers(
 }
 
 std::string PostConnectUphold::Path(base::cstring_view payment_id) const {
-  return base::StringPrintf("/v3/wallet/uphold/%s/claim", payment_id.c_str());
+  return absl::StrFormat("/v3/wallet/uphold/%s/claim", payment_id);
 }
 
 }  // namespace brave_rewards::internal::endpoints

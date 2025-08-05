@@ -11,6 +11,7 @@
       "--variations-insecure-server-url=http://127.0.0.1/invalid",
 
       "--disable-component-update",
+      "--allow-brave-component-update",
 
       "--disable-backgrounding-occluded-windows",
     ],

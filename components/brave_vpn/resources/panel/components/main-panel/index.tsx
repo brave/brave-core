@@ -7,9 +7,10 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import * as S from './style'
+import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/leo/react/tooltip'
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { getLocale } from '$web-common/locale'
-import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
+import { getLocale, formatLocale } from '$web-common/locale'
 import SelectRegionList from '../select-region-list'
 import PanelBox from '../panel-box'
 import Toggle from '../toggle'
@@ -33,6 +34,18 @@ const RegionInfo = styled.div`
   flex: 1 0 0;
 `
 
+const SmartProxyIcon = styled(Icon)`
+  --leo-icon-size: 18px;
+  --leo-icon-color: ${color.icon.default};
+  background: ${color.container.highlight};
+`
+
+const RegionLabelBox = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`
+
 const RegionLabel = styled.span`
   color: ${color.text.primary};
   font: ${font.heading.h4};
@@ -45,7 +58,6 @@ const RegionServerLabel = styled.span`
 
 function SessionExpiredContent() {
   const productUrls = useSelector((state) => state.productUrls)
-  const message = getLocale('braveVpnSessionExpiredContent')
 
   const handleClick = (intent: ManageURLType) => {
     if (!productUrls) return
@@ -54,18 +66,15 @@ function SessionExpiredContent() {
 
   return (
     <span>
-      {formatMessage(message, {
-        tags: {
-          $1: (content) => (
-            <a
-              href='#'
-              key='recoverAccount'
-              onClick={() => handleClick(ManageURLType.MANAGE)}
-            >
-              {content}
-            </a>
-          )
-        }
+      {formatLocale('braveVpnSessionExpiredContent', {
+        $1: (content) => (
+          <a
+            href='#'
+            onClick={() => handleClick(ManageURLType.MANAGE)}
+          >
+            {content}
+          </a>
+        )
       })}
     </span>
   )
@@ -118,6 +127,7 @@ function MainPanel() {
   const outOfCredentials = useSelector((state) => state.outOfCredentials)
   const regions = useSelector((state) => state.regions)
   const stateDescription = useSelector((state) => state.stateDescription)
+  const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
 
   const onSelectRegionButtonClick = () => {
     dispatch(Actions.toggleRegionSelector(true))
@@ -210,7 +220,17 @@ function MainPanel() {
           >
             <Flag countryCode={currentRegion.countryIsoCode} />
             <RegionInfo>
-              <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
+              <RegionLabelBox>
+                <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
+                {smartProxyRoutingEnabled && currentRegion.smartRoutingProxyState === 'all' && (
+                  <Tooltip mode='mini'>
+                    <SmartProxyIcon name='smart-proxy-routing' />
+                    <div slot='content'>
+                      {getLocale('braveVpnSmartProxyRoutingIconTooltip')}
+                    </div>
+                  </Tooltip>)
+                }
+              </RegionLabelBox>
               <RegionServerLabel>{regionServerLabel}</RegionServerLabel>
             </RegionInfo>
             <S.StyledIcon name='carat-right' />

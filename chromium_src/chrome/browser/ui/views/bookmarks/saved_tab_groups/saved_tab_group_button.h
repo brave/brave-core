@@ -11,7 +11,7 @@
   friend class BraveSavedTabGroupButton; \
   virtual void UpdateButtonLayout
 
-#include "src/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h>  // IWYU pragma: export
 
 #undef UpdateButtonLayout
 

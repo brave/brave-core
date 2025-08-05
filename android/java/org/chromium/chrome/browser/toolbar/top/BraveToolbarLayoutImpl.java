@@ -10,6 +10,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -54,6 +56,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
+import org.chromium.chrome.browser.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
@@ -62,9 +65,12 @@ import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.fullscreen.FullscreenOptions;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
+import org.chromium.chrome.browser.media.PictureInPicture;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
@@ -108,7 +114,9 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.feature_engagement.Tracker;
+import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.NavigationHandle;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistItem;
@@ -140,7 +148,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 BraveRewardsObserver,
                 BraveRewardsNativeWorker.PublisherObserver,
                 ConnectionErrorHandler,
-                PlaylistServiceObserverImplDelegate {
+                PlaylistServiceObserverImplDelegate,
+                FullscreenManager.Observer {
     private static final String TAG = "BraveToolbar";
 
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
@@ -155,10 +164,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private ImageButton mBraveWalletButton;
     private ImageButton mBraveShieldsButton;
     private ImageButton mBraveRewardsButton;
+    private ImageButton mYouTubePipButton;
     private HomeButton mHomeButton;
     private FrameLayout mWalletLayout;
     private FrameLayout mShieldsLayout;
     private FrameLayout mRewardsLayout;
+    private FrameLayout mYouTubePipLayout;
     private BraveShieldsHandler mBraveShieldsHandler;
 
     // TabModelSelectorTabObserver setups observer at the ctor
@@ -196,8 +207,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Collections.synchronizedSet(new HashSet<Integer>());
 
     private PlaylistService mPlaylistService;
+    private FullscreenManager mFullscreenManager;
 
-    private enum BigtechCompany { Google, Facebook, Amazon }
+    private enum BigtechCompany {
+        Google,
+        Facebook,
+        Amazon
+    }
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -239,15 +255,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
 
-        mWalletLayout = (FrameLayout) findViewById(R.id.brave_wallet_button_layout);
-        mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
-        mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
-        mBraveRewardsNotificationsCount = (TextView) findViewById(R.id.br_notifications_count);
+        mWalletLayout = findViewById(R.id.brave_wallet_button_layout);
+        mShieldsLayout = findViewById(R.id.brave_shields_button_layout);
+        mRewardsLayout = findViewById(R.id.brave_rewards_button_layout);
+        mYouTubePipLayout = findViewById(R.id.brave_youtube_pip_layout);
+        mBraveRewardsNotificationsCount = findViewById(R.id.br_notifications_count);
         mBraveRewardsOnboardingIcon = findViewById(R.id.br_rewards_onboarding_icon);
-        mBraveWalletButton = (ImageButton) findViewById(R.id.brave_wallet_button);
-        mBraveShieldsButton = (ImageButton) findViewById(R.id.brave_shields_button);
-        mBraveRewardsButton = (ImageButton) findViewById(R.id.brave_rewards_button);
-        mHomeButton = (HomeButton) findViewById(R.id.home_button);
+        mBraveWalletButton = findViewById(R.id.brave_wallet_button);
+        mBraveShieldsButton = findViewById(R.id.brave_shields_button);
+        mBraveRewardsButton = findViewById(R.id.brave_rewards_button);
+        mYouTubePipButton = findViewById(R.id.brave_youtube_pip_button);
+        mHomeButton = findViewById(R.id.home_button);
         mBraveWalletBadge = findViewById(R.id.wallet_notfication_badge);
         if (mWalletLayout != null) {
             mWalletIcon = mWalletLayout.findViewById(R.id.brave_wallet_button);
@@ -280,6 +298,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mBraveWalletButton.setOnClickListener(this);
             mBraveWalletButton.setOnLongClickListener(this);
             BraveTouchUtils.ensureMinTouchTarget(mBraveWalletButton);
+        }
+
+        if (mYouTubePipButton != null) {
+            mYouTubePipButton.setClickable(true);
+            mYouTubePipButton.setOnClickListener(this);
+            mYouTubePipButton.setOnLongClickListener(this);
+            BraveTouchUtils.ensureMinTouchTarget(mYouTubePipButton);
         }
 
         mBraveShieldsHandler = new BraveShieldsHandler(getContext());
@@ -456,6 +481,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
+    public void setFullscreenManager(final FullscreenManager fullscreenManager) {
+        mFullscreenManager = fullscreenManager;
+        if (ChromeFeatureList.isEnabled(
+                BraveFeatureList.BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS)) {
+            mFullscreenManager.addObserver(this);
+        }
+    }
+
     public void setTabModelSelector(TabModelSelector selector) {
         // We might miss events before calling setTabModelSelector, so we need
         // to proactively update the shields button state here, otherwise shields
@@ -469,6 +502,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         if (tab.isIncognito()) {
                             showWalletIcon(false);
                         }
+                    }
+
+                    @Override
+                    public void onCrash(Tab tab) {
+                        super.onCrash(tab);
+                        // When a tab crashes it shows a custom view with a reload button.
+                        // The PIP layout must be hidden.
+                        hideYouTubePipIcon();
                     }
 
                     @Override
@@ -490,6 +531,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
                     @Override
                     public void onPageLoadStarted(Tab tab, GURL url) {
+                        hideYouTubePipIcon();
                         showWalletIcon(false, tab);
                         if (getToolbarDataProvider().getTab() == tab) {
                             updateBraveShieldsButtonState(tab);
@@ -529,6 +571,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void onDidFinishNavigationInPrimaryMainFrame(
                             Tab tab, NavigationHandle navigation) {
+                        showYouTubePipIcon(tab);
                         if (mBraveRewardsNativeWorker != null) {
                             mBraveRewardsNativeWorker.triggerOnNotifyFrontTabUrlChanged();
                         }
@@ -573,6 +616,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 new TabModelSelectorTabModelObserver(selector) {
                     @Override
                     public void didSelectTab(Tab tab, @TabSelectionType int type, int lastId) {
+                        showYouTubePipIcon(tab);
                         if (mBraveRewardsNativeWorker != null && !tab.isIncognito()) {
                             mBraveRewardsNativeWorker.onNotifyFrontTabUrlChanged(
                                     tab.getId(), tab.getUrl().getSpec());
@@ -588,6 +632,32 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         }
                     }
                 };
+    }
+
+    private void showYouTubePipIcon(@NonNull final Tab tab) {
+        // The layout could be null in Custom Tabs layout.
+        if (mYouTubePipLayout == null) {
+            return;
+        }
+
+        // Hide the layout if the current tab is in a state where it doesn't support or allow PiP
+        // mode. This can also happen when a tab is re-selected after a crash and it's showing
+        // the crash custom view, or is in a frozen state (likely inactive or unloaded).
+        final boolean available =
+                BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
+                        tab.getWebContents());
+        final boolean enabled = PictureInPicture.isEnabled(getContext());
+
+        final boolean show = available && enabled;
+        mYouTubePipLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void hideYouTubePipIcon() {
+        // The layout could be null in Custom Tabs layout.
+        if (mYouTubePipLayout == null) {
+            return;
+        }
+        mYouTubePipLayout.setVisibility(View.GONE);
     }
 
     private void showOnBoarding() {
@@ -1090,6 +1160,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
             maybeShowWalletPanel();
+        } else if (mYouTubePipButton == v && mYouTubePipButton != null) {
+            Tab currentTab = getToolbarDataProvider().getTab();
+            if (currentTab != null
+                    && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
+                            currentTab.getWebContents())) {
+                BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
+            }
         }
     }
 
@@ -1238,6 +1315,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         if (mWalletLayout != null) {
             mWalletLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
+        if (mYouTubePipLayout != null) {
+            mYouTubePipLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
     }
 
@@ -1504,7 +1584,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             ObservableSupplier<Tracker> trackerSupplier,
             ToolbarProgressBar progressBar,
             @Nullable ReloadButtonCoordinator reloadButtonCoordinator,
-            @Nullable BackButtonCoordinator backButtonCoordinator) {
+            @Nullable BackButtonCoordinator backButtonCoordinator,
+            HomeButtonDisplay homeButtonDisplay) {
         super.initialize(
                 toolbarDataProvider,
                 tabController,
@@ -1515,12 +1596,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 trackerSupplier,
                 progressBar,
                 reloadButtonCoordinator,
-                backButtonCoordinator);
+                backButtonCoordinator,
+                homeButtonDisplay);
 
         BraveMenuButtonCoordinator.setMenuFromBottom(
-                isMenuButtonOnBottomControls()
-                        || (isToolbarPhone()
-                                && BottomToolbarConfiguration.isToolbarBottomAnchored()));
+                isMenuButtonOnBottomControls() || isMenuOnBottomWithBottomAddressBar());
     }
 
     public void updateWalletBadgeVisibility(boolean visible) {
@@ -1532,8 +1612,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             BraveMenuButtonCoordinator.setMenuFromBottom(mIsBottomControlsVisible);
         } else {
-            BraveMenuButtonCoordinator.setMenuFromBottom(
-                    isToolbarPhone() && BottomToolbarConfiguration.isToolbarBottomAnchored());
+            BraveMenuButtonCoordinator.setMenuFromBottom(isMenuOnBottomWithBottomAddressBar());
         }
     }
 
@@ -1576,6 +1655,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mRewardsLayout.draw(canvas);
             canvas.restore();
         }
+        if (mYouTubePipLayout != null && mYouTubePipLayout.getVisibility() != View.GONE) {
+            canvas.save();
+            ViewUtils.translateCanvasToView(toolbarButtonsContainer, mYouTubePipLayout, canvas);
+            mYouTubePipLayout.draw(canvas);
+            canvas.restore();
+        }
     }
 
     @Override
@@ -1593,7 +1678,51 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    private boolean isToolbarPhone() {
-        return BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class);
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        // Remove the observer when the layout is detached from the window.
+        if (mFullscreenManager != null) {
+            mFullscreenManager.removeObserver(this);
+        }
+    }
+
+    // FullscreenManager.Observer method.
+    @Override
+    public void onEnterFullscreen(Tab tab, FullscreenOptions options) {
+        final WebContents webContents = tab.getWebContents();
+        if (webContents != null
+                && BraveYouTubeScriptInjectorNativeHelper.hasFullscreenBeenRequested(webContents)) {
+            MediaSession mediaSession = MediaSession.fromWebContents(webContents);
+            if (mediaSession != null) {
+                mediaSession.resume();
+            }
+            Activity activity = tab.getWindowAndroid().getActivity().get();
+            if (activity != null) {
+                try {
+                    activity.enterPictureInPictureMode(
+                            new PictureInPictureParams.Builder().build());
+                } catch (IllegalStateException | IllegalArgumentException e) {
+                    Log.e(TAG, "Error entering picture in picture mode.", e);
+                }
+            }
+        }
+    }
+
+    private boolean isMenuOnBottomWithBottomAddressBar() {
+        // If address bar is not on bottom, then menu is not on bottom too.
+        if (!BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+            return false;
+        }
+        // Menu can be on bottom only with ToolbarPhone.
+        if (!BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)) {
+            return false;
+        }
+        // In overview mode the menu is on top.
+        Context context = getContext();
+        if (context instanceof BraveActivity && ((BraveActivity) context).isInOverviewMode()) {
+            return false;
+        }
+        return true;
     }
 }

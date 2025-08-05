@@ -12,18 +12,15 @@
 #include "base/files/scoped_temp_dir.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
 class OrchardStorageTest : public testing::Test {
  public:
-  OrchardStorageTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+  OrchardStorageTest() = default;
   void SetUp() override;
 
-  base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   std::unique_ptr<OrchardStorage> orchard_storage_;
 };
@@ -75,6 +72,54 @@ TEST_F(OrchardStorageTest, AccountMeta) {
     EXPECT_EQ(result.value()->account_birthday, 200u);
     EXPECT_FALSE(result.value()->latest_scanned_block_id);
     EXPECT_FALSE(result.value()->latest_scanned_block_hash);
+  }
+}
+
+TEST_F(OrchardStorageTest, PutDiscoveredNotes_u64Value) {
+  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
+
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_1, 100).has_value());
+
+  // Update notes for account 1 with wrong values
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(
+        GenerateMockOrchardNote(account_id_1, 101, 1, 0xFFFFFFFFFFFFFFFF));
+    notes.push_back(
+        GenerateMockOrchardNote(account_id_1, 105, 2, 0xAAFFFFFFFFFFFFFF));
+
+    EXPECT_FALSE(
+        orchard_storage_->UpdateNotes(account_id_1, notes, {}, 200, "hash200")
+            .has_value());
+  }
+
+  // Update notes for account 1 with valid values
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(
+        GenerateMockOrchardNote(account_id_1, 101, 1, 0xFFFFFFFFFFFFFFFF / 2));
+    notes.push_back(GenerateMockOrchardNote(account_id_1, 105, 2,
+                                            0xFFFFFFFFFFFFFFFF / 2 - 1));
+
+    EXPECT_TRUE(
+        orchard_storage_->UpdateNotes(account_id_1, notes, {}, 200, "hash200")
+            .has_value());
+  }
+
+  // Check account_1 spendable notes
+  {
+    auto account_1_spendable_notes =
+        orchard_storage_->GetSpendableNotes(account_id_1);
+    EXPECT_EQ(2u, account_1_spendable_notes->size());
+    SortByBlockId(*account_1_spendable_notes);
+    EXPECT_EQ(
+        account_1_spendable_notes.value()[0],
+        GenerateMockOrchardNote(account_id_1, 101, 1, 0xFFFFFFFFFFFFFFFF / 2));
+    EXPECT_EQ(account_1_spendable_notes.value()[1],
+              GenerateMockOrchardNote(account_id_1, 105, 2,
+                                      0xFFFFFFFFFFFFFFFF / 2 - 1));
   }
 }
 
@@ -559,7 +604,7 @@ TEST_F(OrchardStorageTest, InsertShards) {
   EXPECT_EQ(new_shard, orchard_storage_->LastShard(account_id, 1).value());
 }
 
-TEST_F(OrchardStorageTest, RemoveChekpoint) {
+TEST_F(OrchardStorageTest, RemoveCheckpoint) {
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                             mojom::KeyringId::kZCashMainnet,
                                             mojom::AccountKind::kDerived, 0);
@@ -828,7 +873,7 @@ TEST_F(OrchardStorageTest, AddSameCheckpoint) {
   }
 }
 
-TEST_F(OrchardStorageTest, AddChekpoint_ErrorOnConflict) {
+TEST_F(OrchardStorageTest, AddCheckpoint_ErrorOnConflict) {
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                             mojom::KeyringId::kZCashMainnet,
                                             mojom::AccountKind::kDerived, 0);

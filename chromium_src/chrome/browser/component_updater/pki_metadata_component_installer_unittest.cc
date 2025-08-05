@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/chrome/browser/component_updater/pki_metadata_component_installer_unittest.cc"
+#include <chrome/browser/component_updater/pki_metadata_component_installer_unittest.cc>
 
 namespace component_updater {
 

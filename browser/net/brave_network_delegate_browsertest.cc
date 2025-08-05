@@ -5,7 +5,6 @@
 
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
@@ -28,6 +27,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/http_request.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 using net::test_server::EmbeddedTestServer;
@@ -37,11 +37,11 @@ namespace {
 bool NavigateRenderFrameToURL(content::RenderFrameHost* frame,
                               std::string iframe_id,
                               const GURL& url) {
-  std::string script = base::StringPrintf(
+  std::string script = absl::StrFormat(
       "setTimeout(\""
       "var iframes = document.getElementById('%s');iframes.src='%s';"
       "\",0)",
-      iframe_id.c_str(), url.spec().c_str());
+      iframe_id, url.spec());
 
   content::TestNavigationManager navigation_manager(
       content::WebContents::FromRenderFrameHost(frame), url);

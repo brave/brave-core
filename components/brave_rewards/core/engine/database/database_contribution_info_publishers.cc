@@ -9,9 +9,9 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal::database {
 
@@ -38,7 +38,7 @@ void DatabaseContributionInfoPublishers::InsertOrUpdate(
     return;
   }
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(contribution_id, publisher_key, total_amount, contributed_amount) "
       "VALUES (?, ?, ?, ?)",
@@ -68,10 +68,10 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT contribution_id, publisher_key, total_amount, contributed_amount "
       "FROM %s WHERE contribution_id IN (%s)",
-      kTableName, GenerateStringInCase(contribution_ids).c_str());
+      kTableName, GenerateStringInCase(contribution_ids));
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -128,7 +128,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT cip.contribution_id, cip.publisher_key, cip.total_amount, "
       "pi.name, pi.url, pi.favIcon, spi.status, spi.updated_at, pi.provider "
       "FROM %s as cip "
@@ -136,7 +136,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
       "LEFT JOIN server_publisher_info AS spi "
       "ON spi.publisher_key = cip.publisher_key "
       "WHERE cip.contribution_id IN (%s)",
-      kTableName, GenerateStringInCase(contribution_ids).c_str());
+      kTableName, GenerateStringInCase(contribution_ids));
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -206,7 +206,7 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET contributed_amount="
       "(SELECT total_amount WHERE contribution_id = ? AND publisher_key = ?) "
       "WHERE contribution_id = ? AND publisher_key = ?;",

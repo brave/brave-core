@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 
+#include "base/command_line.h"
 #include "base/logging.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -76,5 +77,5 @@ void BraveStartupBrowserCreatorImpl::Launch(
 }
 
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl
-#include "src/chrome/browser/ui/startup/startup_browser_creator.cc"
+#include <chrome/browser/ui/startup/startup_browser_creator.cc>
 #undef StartupBrowserCreatorImpl

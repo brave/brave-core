@@ -12,7 +12,7 @@
 #include "ui/views/controls/highlight_path_generator.h"
 
 #define ToolbarButton ToolbarButton_ChromiumImpl
-#include "src/chrome/browser/ui/views/toolbar/toolbar_button.cc"
+#include <chrome/browser/ui/views/toolbar/toolbar_button.cc>
 #undef ToolbarButton
 
 void ToolbarButton_ChromiumImpl::SetMenuModel(

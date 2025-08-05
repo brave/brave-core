@@ -10,6 +10,10 @@ RegisterStyleOverride(
   'settings-section',
   html`
     <style include="settings-shared">
+      :host-context(settings-section:first-of-type) #header:has(.title:empty) {
+        display: none;
+      }
+
       #header .title {
         font-size: var(--leo-typography-heading-h4-font-size) !important;
         font-weight: 600 !important;

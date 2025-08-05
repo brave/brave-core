@@ -13,6 +13,6 @@
   }                              \
   show_app_menu_item_
 
-#include "src/chrome/browser/ui/startup/default_browser_prompt/default_browser_prompt_manager.cc"
+#include <chrome/browser/ui/startup/default_browser_prompt/default_browser_prompt_manager.cc>
 
 #undef show_app_menu_item_

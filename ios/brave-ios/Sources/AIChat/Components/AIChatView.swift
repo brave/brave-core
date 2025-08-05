@@ -173,8 +173,13 @@ public struct AIChatView: View {
                             submitEditedText: { editedText in
                               self.focusedField = nil
                               self.editingTurnIndex = nil
+
+                              guard let turnId = turn.uuid else {
+                                return
+                              }
+
                               self.model.modifyConversation(
-                                turnId: UInt(index),
+                                turnId: turnId,
                                 newText: editedText
                               )
                             }
@@ -222,8 +227,13 @@ public struct AIChatView: View {
                             submitEditedText: { editedText in
                               self.focusedField = nil
                               self.editingTurnIndex = nil
+
+                              guard let turnId = turn.uuid else {
+                                return
+                              }
+
                               self.model.modifyConversation(
-                                turnId: UInt(index),
+                                turnId: turnId,
                                 newText: editedText
                               )
                             }

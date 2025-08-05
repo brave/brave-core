@@ -876,7 +876,7 @@
 <translation id="1939235910515558387">Empeza coa Carteira de Brave en cuestión de minutos</translation>
 <translation id="5844138175312846408">Xa tes unha carteira?</translation>
 <translation id="772643556080081594">Necesito unha carteira só de visualización</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave e o logotipo de Brave son marcas rexistradas de Brave Software, Inc. Outros nomes de produtos e logotipos poden ser marcas comerciais das súas respectivas compañías. Todos os dereitos reservados.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave e o logotipo de Brave son marcas rexistradas de Brave Software, Inc. Outros nomes de produtos e logotipos poden ser marcas comerciais das súas respectivas compañías. Todos os dereitos reservados.</translation>
 <translation id="7501957181231305652">ou</translation>
 <translation id="375882617301124395">Fai unha copia de seguranza da túa carteira de criptomoedas</translation>
 <translation id="5024543173656851695">Entendo que se perdo as miñas palabras de recuperación, no poderei acceder á miña carteira crypto.</translation>
@@ -1120,10 +1120,6 @@
 <translation id="4324239559624557455">Durante 24 horas</translation>
 <translation id="9139452553033760558">Durante 1 semana</translation>
 <translation id="1658834457013045127">Para sempre</translation>
-<translation id="2770851145415891830">Detectáronse carteiras de criptomoedas existentes</translation>
-<translation id="2237759620789871865">Se prefires saltar a importación e manter a experiencia anterior de carteiras de criptomoedas só tes que ir aos <ph name="LINK_BEFORE"/>Axustes<ph name="LINK_AFTER"/> do explorador de Brave e cambiar a opción predeterminada de novo a Carteiras de criptomoedas. Tamén podes importar, probar a nova carteira de Brave e cambiar de novo en calquera momento.</translation>
-<translation id="5590175005414413980">Introduce o contrasinal actual das túas carteiras de criptomoedas para importar a Carteira de Brave. Goza dunha maneira máis rápida e segura de xestionar os criptoactivos e interactuar con aplicacións descentralizadas da Web 3.</translation>
-<translation id="880619123281809987">Introduce o contrasinal da carteira de criptoactivos</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> conectado</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconectado</translation>
 <translation id="5317781812114905957">Instrucións</translation>
@@ -1380,6 +1376,9 @@
 <translation id="5601436886921227795">Interacción de Dapp</translation>
 <translation id="9104177294757104789">Enviar <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Intercambiar <ph name="MAKER"/> por <ph name="TAKER"/></translation>
+<translation id="1748114617341025015">Creando a conta de token asociada</translation>
+<translation id="4418115887224983240">Erro ao crear a conta de token asociada</translation>
+<translation id="7165697599360786670">Conta de token asociada creada</translation>
 <translation id="8613144770663526433">Iniciar sesión con Carteira de Brave</translation>
 <translation id="8813165409788097898">Estás iniciando sesión en <ph name="ORIGIN"/>. Carteira de Brave compartirá o enderezo da túa carteira con <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Ver detalles</translation>
@@ -1513,7 +1512,6 @@
 <translation id="396152018598329740">Como se usa unha carteira de criptoactivos?</translation>
 <translation id="7512061585041489067">Cal é a mellor carteira de criptoactivos?</translation>
 <translation id="1342755158522323177">Que é un navegador para criptoactivos?</translation>
-<translation id="4702762916247565868">As bases das carteiras de criptoactivos</translation>
 <translation id="4674552515763857735">Que é unha frase de recuperación?</translation>
 <translation id="7328255859839881981">Que son as DApps?</translation>
 <translation id="3852489285890032403">Que é a Web 3?</translation>
@@ -1531,7 +1529,6 @@
 <translation id="7877416315564177070">Comproba a frase de recuperación e téntao de novo.</translation>
 <translation id="6503538941917874992">Realiza a importación usando a túa frase de recuperación</translation>
 <translation id="782167880151571109">Detectouse a carteira de Metamask!</translation>
-<translation id="3619071361843652814">Detectouse a carteira antiga!</translation>
 <translation id="4634124774493850572">Usar contrasinal</translation>
 <translation id="7697478310235189459">Palabra <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Escribe a túa frase de recuperación de 12-24 palabras de MetaMask.</translation>
@@ -1544,7 +1541,6 @@
 <translation id="3604445540387095708">Lin e acepto as <ph name="LINK_BEFORE"/>condicións de uso<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Comprar criptomoedas</translation>
 <translation id="3887541341068007345">Comprobando se hai extensións para a carteira…</translation>
-<translation id="3567994771568272606">Importar desde carteiras de criptoactivos herdadas de Brave</translation>
 <translation id="8407091560429310499">Seleccionar un activo</translation>
 <translation id="756590380936155533">Para finalizar a compra de <ph name="ASSET_TICKER"/>, selecciona un dos nosos socios</translation>
 <translation id="7880860489474966219">Ao finalizar, os teus fondos transferiranse á túa conta de Carteira de Brave</translation>
@@ -1747,6 +1743,7 @@
 <translation id="4583937519241190398">Con verificación de DappRadar</translation>
 <translation id="8713438253026855351">Cambiar a unha conta protexida</translation>
 <translation id="3526789880090101085">Conta protexida</translation>
+<translation id="3155166394760577549">Activar o encriptado para mellorar a privacidade das transaccións.</translation>
 <translation id="2298396008562701154">Agora, esta conta admite transaccións transparentes, o que quere dicir que son visibles para calquera na blockchain.</translation>
 <translation id="3987095760757102811">Mellorar a unha conta protexida significa que esta información das transaccións (remitente, receptor e cantidade) permanecerán ocultos.</translation>
 <translation id="3819528427777765709">Protexida</translation>
@@ -1777,6 +1774,8 @@
 <translation id="99991973626409495">Revisar escudo</translation>
 <translation id="3114681061018999547">Activando escudo</translation>
 <translation id="8897189056319316783">Escudo ZEC</translation>
+<translation id="3382275793825152362">Protexer fondos</translation>
+<translation id="8631765320256788981">Estás a transferir fondos da conta pública á conta protexida.</translation>
 <translation id="7144878232160441200">Reintentar</translation>
 <translation id="9094621390791852268">Produciuse un erro na vista previa da transacción.</translation>
 <translation id="4982713341035600933">Cambio de saldo estimado</translation>
@@ -1838,7 +1837,7 @@
 <translation id="7758665172236842395">Sigue as túas fontes favoritas nun único feed. Só tes que abrir un separador en Brave, desprazarte cara a abaixo… ¡e nada máis!</translation>
 <translation id="2376542729617592331">Noticias de Brave mantense por medio da publicidade e amosa anuncios completamente privados e anónimos. <ph name="LINK_START"/>Máis información.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Activar Brave News</translation>
-<translation id="5149018766422637336">Novas e RSS</translation>
+<translation id="1772301834467143364">Noticias de Brave</translation>
 <translation id="6265592479622441247">Volver ao <ph name="BEGIN_BOLD"/>Panel de control<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Explorar</translation>
 <translation id="8981973962043893066">Busca sitios, temas ou feeds de RSS</translation>
@@ -2109,10 +2108,18 @@
 <translation id="4885527781814382758">Brave Leo é un asistente intelixente de IA que funciona en privado e mellora a túa navegación por Internet. Leo é gratuíto, pero con acceso limitado. Brave Leo Premium proporciona acceso a máis modelos, límites incrementados e permite aos subscritores acceder antes a novas funcións. O modelo por defecto mudará ocasionalmente. Para máis información, visita o <ph name="LINK_BEFORE"/>Centro de axuda de Brave<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Por defecto, cando lle fas unha pregunta a Leo, para fornecer unha resposta pode enviarlle a Brave Leo o contido da páxina web que estás a ver ou calquera texto que resaltes nunha páxina, así como usalo. A precisión das respostas non está garantida e pode incluír información incorrecta, enganosa ou falsa. Leo usa datos de Busca de Brave para mellorar a calidade das respostas. Non envíes información sensible ou privada e ten coidado con calquera resposta relacionada coa saúde, finanzas, seguridade persoal ou similar. Podes axustar as opcións de Leo en Configuración en calquera momento. Vai a Configuración &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo non recompila identificadores como o teu enderezo IP que poidan estar vinculados contigo. Non se usan datos para adestrar os modelos de IA e estes non reteñen datos persoais (excepto Anthropic, que conserva os datos durante 30 días antes de eliminados). Consulta a <ph name="LINK_BEFORE"/>política de privacidade<ph name="LINK_AFTER"/> para obter máis información.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      one {}=1 {Fai unha pregunta sobre o contido desta páxina}
+      other {Fai unha pregunta sobre o contido destas páxinas}
+    }</translation>
 <translation id="6961721183181597848">Que podo facer por ti?</translation>
 <translation id="2966135729673253768">Facer unha pregunta de seguimento</translation>
 <translation id="4524675003624341892">Suxerir preguntas…</translation>
 <translation id="4567071417854988869">Resumir este vídeo</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      one {}=1 {Fai un resumen desta páxina}
+      other {Fai un resumen destas páxinas}
+    }</translation>
 <translation id="7921782882718083488">Resumir esta páxina</translation>
 <translation id="7932221068776853847">Desconéctate para deixar de enviar o contido desta páxina a Leo e inicia unha nova conversa</translation>
 <translation id="8743383817154663379">Produciuse un erro mentres se procesaba a túa solicitude. Inténtao de novo máis tarde.</translation>
@@ -2203,16 +2210,14 @@
 <translation id="8712637175834984815">De acordo</translation>
 <translation id="1093419424466417703">A páxina é demasiado longa para Leo. Podería faltar algún contexto na conversa. Leo puido ler o<ph name="PERCENTAGE"/> do contido da páxina.</translation>
 <translation id="4592293425457329338">Podería faltar contexto na conversa. Leo foi capaz de reter <ph name="PERCENTAGE"/> do contido asociado á conversa.</translation>
-<translation id="2186990448773134544">O contido da páxina redefiniuse ao extraer a información máis relevante da páxina porque era demasiado longo para Leo.</translation>
-<translation id="5140068729857132378">Buscando as partes relevantes da páxina web...</translation>
 <translation id="4370698775470316661">Esta conversa é demasiado longa e non pode continuar. Pode haber outros modelos dispoñibles cos que Leo é capaz de manter a precisión en conversas máis longas.</translation>
 <translation id="5719170755629028558">Mellorando a túa resposta con Busca de Brave</translation>
 <translation id="5794962229997281366">Mellorouse a busca de respostas para<ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> máis…</translation>
 <translation id="8103700533980268469">Pechar esta noticia</translation>
 <translation id="3417835166382867856">Separadores de busca</translation>
-<translation id="9090243919347147717">Arquivos adxuntos</translation>
-<translation id="4444978378117903684">Engade os teus separadores do navegador para dar a Leo máis contexto para a conversa</translation>
+<translation id="1352836459737874921">Engadir contido desde outros separadores</translation>
+<translation id="3028258613451571431">Envía o contido dos teus separadores do navegador para que Leo teña máis contexto na conversa</translation>
 <translation id="4300920590112551536">Separadores do navegador</translation>
 <translation id="2315654674554095762">Leo agora recordará as túas conversas para que poidas acceder a elas de novo. Gárdanse de forma encriptada no teu dispositivo, e podes borralas cando queiras.</translation>
 <translation id="7821251979960635244">O historial aparecerá aquí cando comeces unha conversa.</translation>
@@ -2235,8 +2240,8 @@
 <translation id="5642775487085641191">Tan só queres chatear?</translation>
 <translation id="8857222718794549840">Preguntame algo! Podemos falar de calquera tema que queiras. Sempre estou aprendendo e mellorando para ofrecer mellores respostas.</translation>
 <translation id="9051226419897869406">Chatea en privado con Brave Leo</translation>
-<translation id="637548538907281147">Crear ás respostas en función do contido da páxina</translation>
-<translation id="8599503173207256429">Actívao para preguntar sobre esta páxina. O seu contido enviarase a Brave Leo xunto coas túas mensaxes.</translation>
+<translation id="2414904697165579184">Adaptar as respostas en función do contido dos separadores</translation>
+<translation id="8258324391302611485">O contido desta páxina enviarase a Leo xunto coas túas mensaxes.</translation>
 <translation id="318819763888864209">Todas as subscricións renóvanse automaticamente, pero poden cancelarse en calquera momento antes da renovación.</translation>
 <translation id="5091223967610958">Comparte o nome do anfitrión da páxina na que estás (<ph name="HOST_NAME"/>) para axudarnos a mellorar Leo.</translation>
 <translation id="8732450785281947197">Ferramentas de IA de Leo</translation>
@@ -2267,11 +2272,14 @@
 <translation id="9088751620363630236">Sacar unha foto...</translation>
 <translation id="4250229828105606438">Captura de pantalla</translation>
 <translation id="6332876390231524389">Contidos do separador actual</translation>
+<translation id="7742969455167760092">Abrir separadores...</translation>
 <translation id="49269513399674318">Usar micrófono</translation>
 <translation id="3895031624234442305">Modelos personalizados</translation>
 <translation id="4572010449071015143">Iniciar nova conversa</translation>
 <translation id="345901077335355561">Volver á conversa en curso</translation>
 <translation id="6287023598025162715">Nova conversa</translation>
+<translation id="7097822247923237815">Chat temporal</translation>
+<translation id="7481750859362986254">Esta conversa non se gardará no teu historial nin usará ningunha das personalizacións ou recordos de Leo.</translation>
 <translation id="8370801182970639038">Automático (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Motores de busca habilitados</translation>
 <translation id="5355776323718420036">Ocultar os sitios máis destacados</translation>
@@ -2388,6 +2396,7 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="6821108091726602352">Axúdanos a corrixir a web participando no proxecto de descubrimento web de Brave. Ao compartir sinais de busca completamente anónimos, podes axudar a Brave a facer crecer o índice de busca.</translation>
 <translation id="6764845498618413165">Máis información.</translation>
 <translation id="7818938154803162778">Claro, axudarei!</translation>
+<translation id="7207456302801184289">Dámosche a benvida a Brave</translation>
 <translation id="3486480638399578250">Mantén o teu enderezo de correo electrónico privado</translation>
 <translation id="7765422154906712751">Crea enderezos únicos e aleatorios que se reenvían ao teu enderezo de correo electrónico de Brave e pódense borrar en calquera momento. Evita que o teu enderezo auténtico se revele ou se empregue por anunciantes.</translation>
 <translation id="5222676887888702881">Pechar sesión</translation>
@@ -2404,6 +2413,7 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="1104500750724567895">Novo enderezo alternativo</translation>
 <translation id="8072910658503112482">Suxire outro enderezo alternativo</translation>
 <translation id="7710361355427562228">Xerando novo enderezo alternativo...</translation>
+<translation id="8013913032858654337">Non se puido xerar o enderezo alternativo. Comproba a túa conexión a Internet e téntao de novo.</translation>
 <translation id="4253168017788158739">Notas</translation>
 <translation id="7596996548739923550">Introduce unha nota para o teu enderezo (opcional)</translation>
 <translation id="3810973564298564668">Xestionar</translation>
@@ -2411,13 +2421,21 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="3919357515365744684">Os correos serán reenviados a <ph name="MAIN_EMAIL"/></translation>
 <translation id="6063403442924238501">Editar enderezo aleatorio</translation>
 <translation id="8729265501883390499">Crear enderezo aleatorio</translation>
+<translation id="7137645995703540578">Non se puido gardar o enderezo alternativo. Comproba a túa conexión a Internet e téntao de novo.</translation>
+<translation id="1765544689721905747">Borrar enderezo alternativo</translation>
+<translation id="646524615209870492">Eliminar o enderezo alternativo <ph name="ALIAS"/> provocará que perdas a capacidade de recibir emails</translation>
+<translation id="8133100642915054515">Non se puido eliminar o enderezo alternativo. Comproba a túa conexión a Internet e téntao de novo.</translation>
+<translation id="8465742443901727718">Isto non se pode desfacer. Queres continuar?</translation>
 <translation id="8662104432574824754">Para comezar, inicia sesión ou crea unha conta de Brave</translation>
 <translation id="8069030342700068465">Introduce o teu enderezo electrónico para recibir unha ligazón de inicio de sesión segura no teu enderezo electrónico. Premer nesta ligazón creará ou accederá a unha conta de Brave e permitirache usar o servizo gratuíto de enderezos alternativos.</translation>
 <translation id="2133391407495495735">Obter ligazón de inicio de sesión</translation>
+<translation id="2650906829817220223">Non se puido solicitar a autenticación. Comproba a túa conexión a Internet e téntao de novo.</translation>
 <translation id="3699624789011381381">Enderezo electrónico</translation>
 <translation id="8124939971041602970">Enviouse un correo de inicio de sesión a <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">Preme na ligazón de inicio de sesión segura no correo para acceder á túa conta.</translation>
-<translation id="6549775668256477823">Non ves o correo? Comproba o teu cartafol de correo non desexado ou <ph name="BEGIN_LINK"/>inténtao de novo<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Non ves o correo? Comproba o teu cartafol de correo non desexado ou inténtao de novo.</translation>
+<translation id="3397336197747843396">Non se puido autenticar coa conta de Brave. Téntao de novo.</translation>
+<translation id="1340795582009113055">Comezar de novo</translation>
 <translation id="958268166261124668">VPN de Brave: conectada</translation>
 <translation id="6021669293402055982">VPN de Brave: desconectada</translation>
 <translation id="3541307549916475335">IU do panel de VPN de Brave</translation>

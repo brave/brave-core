@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -19,8 +19,8 @@ namespace {
 constexpr int kFreshInstallDatabaseVersion = 0;
 
 std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
-  return base::StringPrintf("%d_to_%d", test_param.param,
-                            database::kVersionNumber);
+  return absl::StrFormat("%d_to_%d", test_param.param,
+                         database::kVersionNumber);
 }
 
 }  // namespace
@@ -44,8 +44,8 @@ class BraveAdsDatabaseMigrationTest : public test::TestBase,
   static int GetSchemaVersion() { return GetParam(); }
 
   static std::string DatabasePathForSchemaVersion() {
-    return base::StringPrintf("database/migration/database_schema_%d.sqlite",
-                              GetSchemaVersion());
+    return absl::StrFormat("database/migration/database_schema_%d.sqlite",
+                           GetSchemaVersion());
   }
 
   static bool IsTestingFreshInstall() {

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveStrings
 import BraveUI
 // To get cellular carrier name
@@ -317,14 +318,12 @@ class BraveVPNContactFormViewController: TableViewController {
   }
 
   private var getNetworkType: String {
-    let status = Reach().connectionStatus()
-
-    switch status {
-    case .offline, .unknown:
+    let type = Reachability.shared.status.connectionType
+    if type == .offline {
       return "-"
-    case .online(let type):
-      return type.description
     }
+
+    return type.description
   }
 
   nonisolated private func fetchReceipt() async -> String? {

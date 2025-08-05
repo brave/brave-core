@@ -18,7 +18,6 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_ostream_operators.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
@@ -39,6 +38,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "pdf/buildflags.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
 #if BUILDFLAG(ENABLE_PDF)
@@ -64,12 +64,6 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
 
 AIChatTabHelper::~AIChatTabHelper() = default;
 
-// content::WebContentsObserver
-
-void AIChatTabHelper::WebContentsDestroyed() {
-  OnNewPage(-1);
-}
-
 void AIChatTabHelper::NavigationEntryCommitted(
     const content::LoadCommittedDetails& load_details) {
   if (!load_details.is_main_frame) {
@@ -81,7 +75,7 @@ void AIChatTabHelper::NavigationEntryCommitted(
   pending_navigation_id_ = pending_navigation_id;
   DVLOG(2) << __func__ << " id: " << pending_navigation_id_
            << "\n url: " << load_details.entry->GetVirtualURL()
-           << "\n current page title: " << GetPageTitle()
+           << "\n current page title: " << load_details.entry->GetTitle()
            << "\n previous page title: " << previous_page_title_
            << "\n same document? " << load_details.is_same_document;
 
@@ -101,24 +95,25 @@ void AIChatTabHelper::NavigationEntryCommitted(
   if (!is_same_document_navigation_) {
     is_page_loaded_ = false;
   }
-  if (!is_same_document_navigation_ || previous_page_title_ != GetPageTitle()) {
+  if (!is_same_document_navigation_ ||
+      previous_page_title_ != load_details.entry->GetTitle()) {
     OnNewPage(pending_navigation_id_);
   }
-  previous_page_title_ = GetPageTitle();
+  previous_page_title_ = load_details.entry->GetTitle();
 }
 
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
   DVLOG(2) << __func__ << ": id=" << entry->GetUniqueID()
            << " title=" << entry->GetTitle();
   MaybeSameDocumentIsNewPage();
-  previous_page_title_ = GetPageTitle();
-  OnTitleChanged();
+  previous_page_title_ = entry->GetTitle();
+  SetTitle(entry->GetTitle());
 }
 
 void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
                                     const GURL& validated_url) {
   DVLOG(4) << __func__ << ": " << validated_url.spec();
-  if (validated_url == GetPageURL()) {
+  if (validated_url == web_contents()->GetLastCommittedURL()) {
     is_page_loaded_ = true;
     if (pending_get_page_content_callback_) {
       GetPageContent(std::move(pending_get_page_content_callback_), "");
@@ -126,14 +121,9 @@ void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
   }
 }
 
-GURL AIChatTabHelper::GetPageURL() const {
-  return web_contents()->GetLastCommittedURL();
-}
-
-void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
+void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
                                      std::string_view invalidation_token) {
   bool is_pdf = IsPdf(web_contents());
-  bool pdf_helper_not_available = false;
   if (is_pdf) {
 #if BUILDFLAG(ENABLE_PDF)
     auto* pdf_helper =
@@ -145,15 +135,15 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
           base::BindOnce(&AIChatTabHelper::OnFetchPageContentComplete,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
       return;
-    } else {
-      pdf_helper_not_available = true;
     }
-#else
-    pdf_helper_not_available = true;
 #endif  // BUILDFLAG(ENABLE_PDF)
+    // If we have a PDF but no PDFHelper there's no point running one of our
+    // other extractors - we'll just end up with empty content anyway.
+    std::move(callback).Run("", false, "");
+    return;
   }
-  if (kPrintPreviewRetrievalHosts.contains(GetPageURL().host_piece()) ||
-      pdf_helper_not_available) {
+  if (kPrintPreviewRetrievalHosts.contains(
+          web_contents()->GetLastCommittedURL().host_piece())) {
     // Get content using a printing / OCR mechanism, instead of
     // directly from the source, if available.
     DVLOG(1) << __func__ << " print preview url";
@@ -168,33 +158,24 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
 }
 
 void AIChatTabHelper::OnFetchPageContentComplete(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     std::string content,
     bool is_video,
     std::string invalidation_token) {
   base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
   // If content is empty, and page was not loaded yet, wait for page load.
-  // Once page load is complete, try again. If it's still empty, fallback
-  // to print preview extraction.
-  if (content.empty() && !is_video) {
-    // When page isn't loaded yet, wait until DidFinishLoad
-    DVLOG(1) << __func__ << " empty content, will attempt fallback";
-    if (MaybePrintPreviewExtract(callback)) {
-      return;
-    } else if (!is_page_loaded_) {
-      DVLOG(1) << "page was not loaded yet, will try again after load";
-      SetPendingGetContentCallback(std::move(callback));
-      return;
-    }
-    // When print preview extraction isn't available, return empty content
-    DVLOG(1) << "no fallback available";
+  // Once page load is complete, try again.
+  if (content.empty() && !is_video && !is_page_loaded_) {
+    DVLOG(1) << "page was not loaded yet, will try again after load";
+    SetPendingGetContentCallback(std::move(callback));
+    return;
   }
   std::move(callback).Run(std::move(content), is_video,
                           std::move(invalidation_token));
 }
 
 void AIChatTabHelper::SetPendingGetContentCallback(
-    GetPageContentCallback callback) {
+    FetchPageContentCallback callback) {
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }
@@ -202,7 +183,7 @@ void AIChatTabHelper::SetPendingGetContentCallback(
 }
 
 bool AIChatTabHelper::MaybePrintPreviewExtract(
-    GetPageContentCallback& callback) {
+    FetchPageContentCallback& callback) {
   if (print_preview_extraction_delegate_ == nullptr) {
     DVLOG(1) << "print preview extraction not supported";
     return false;
@@ -221,7 +202,7 @@ bool AIChatTabHelper::MaybePrintPreviewExtract(
 }
 
 void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     base::expected<std::string, std::string> result) {
   // Invalidation token not applicable for print preview OCR
   if (result.has_value()) {
@@ -232,13 +213,11 @@ void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
   }
 }
 
-std::u16string AIChatTabHelper::GetPageTitle() const {
-  return web_contents()->GetTitle();
-}
-
 void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
   DVLOG(3) << __func__ << " id: " << navigation_id;
   AssociatedContentDriver::OnNewPage(navigation_id);
+  set_url(web_contents()->GetLastCommittedURL());
+  SetTitle(web_contents()->GetTitle());
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }
@@ -260,7 +239,7 @@ void AIChatTabHelper::MaybeSameDocumentIsNewPage() {
 
 #if BUILDFLAG(ENABLE_PDF)
 void AIChatTabHelper::OnPDFDocumentLoadComplete(
-    GetPageContentCallback callback) {
+    FetchPageContentCallback callback) {
   auto* pdf_helper =
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
   if (!pdf_helper) {
@@ -276,7 +255,7 @@ void AIChatTabHelper::OnPDFDocumentLoadComplete(
 }
 
 void AIChatTabHelper::OnGetPDFPageCount(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     pdf::mojom::PdfListener::GetPdfBytesStatus status,
     const std::vector<uint8_t>& bytes,
     uint32_t page_count) {
@@ -310,7 +289,7 @@ void AIChatTabHelper::OnGetPDFPageCount(
 }
 
 void AIChatTabHelper::OnAllPDFPagesTextReceived(
-    GetPageContentCallback callback,
+    FetchPageContentCallback callback,
     const std::vector<std::pair<size_t, std::string>>& page_texts) {
   // Pre-size vector to hold all texts in order
   std::vector<std::string> ordered_texts(page_texts.size());
@@ -334,7 +313,7 @@ void AIChatTabHelper::OnAllPDFPagesTextReceived(
 
 void AIChatTabHelper::GetSearchSummarizerKey(
     GetSearchSummarizerKeyCallback callback) {
-  if (!IsBraveSearchSERP(GetPageURL())) {
+  if (!IsBraveSearchSERP(web_contents()->GetLastCommittedURL())) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -384,7 +363,7 @@ void AIChatTabHelper::OnScreenshotsCaptured(
     for (auto& screenshot : result.value()) {
       size_t screenshot_size = screenshot.size();
       screenshots.push_back(mojom::UploadedFile::New(
-          base::StringPrintf("fullscreenshot_%i.png", screenshot_index++),
+          absl::StrFormat("fullscreenshot_%i.png", screenshot_index++),
           screenshot_size, std::move(screenshot),
           mojom::UploadedFileType::kScreenshot));
     }

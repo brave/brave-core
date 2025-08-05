@@ -6,15 +6,19 @@
 import * as React from 'react'
 
 import { NewTabPageAdEventType, SponsoredImageBackground } from '../../state/background_state'
-import { useBackgroundState, useBackgroundActions } from '../../context/background_context'
 import { openLink } from '../common/link'
 import { loadImage } from '../../lib/image_loader'
+
+import {
+  useBackgroundState,
+  useCurrentBackground,
+  useBackgroundActions } from '../../context/background_context'
 
 import { style } from './background.style'
 
 export function Background() {
   const actions = useBackgroundActions()
-  const currentBackground = useBackgroundState((s) => s.currentBackground)
+  const currentBackground = useCurrentBackground()
 
   function renderBackground() {
     if (!currentBackground) {
@@ -148,6 +152,7 @@ function IframeBackground(props: IframeBackgroundProps) {
 
   return (
     <iframe
+      ref={iframeRef}
       className={contentLoaded ? '' : 'loading'}
       src={props.url}
       sandbox='allow-scripts allow-same-origin'

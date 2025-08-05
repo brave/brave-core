@@ -8,9 +8,9 @@
 #include <memory>
 #include <utility>
 
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal::database {
 
@@ -35,7 +35,7 @@ void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(order_id, total_amount, merchant_id, location, status, "
       "contribution_id) "
@@ -73,7 +73,7 @@ void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET status = ? WHERE order_id = ?", kTableName);
 
   auto command = mojom::DBCommand::New();
@@ -100,7 +100,7 @@ void DatabaseSKUOrder::GetRecord(const std::string& order_id,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT order_id, total_amount, merchant_id, location, status, "
       "contribution_id, created_at FROM %s WHERE order_id = ?",
       kTableName);
@@ -183,7 +183,7 @@ void DatabaseSKUOrder::GetRecordByContributionId(
   }
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT order_id, total_amount, merchant_id, location, status, "
       "contribution_id, created_at FROM %s WHERE contribution_id = ?",
       kTableName);
@@ -223,7 +223,7 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET contribution_id = ? WHERE order_id = ?", kTableName);
 
   auto command = mojom::DBCommand::New();

@@ -14,7 +14,7 @@
   SetCancelCallback(__VA_ARGS__); \
   SetCloseCallback(base::DoNothing())
 
-#include "src/chrome/browser/ui/views/incognito_clear_browsing_data_dialog.cc"
+#include <chrome/browser/ui/views/incognito_clear_browsing_data_dialog.cc>
 
 #undef SetCancelCallback
 #undef SetShowCloseButton

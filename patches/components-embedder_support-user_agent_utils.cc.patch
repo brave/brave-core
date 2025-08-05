@@ -1,8 +1,8 @@
 diff --git a/components/embedder_support/user_agent_utils.cc b/components/embedder_support/user_agent_utils.cc
-index 47abbd2835a36325b068c997ba8c2029e5885743..981ad31da1e8c5bb94c04e97166511f45ff3b694 100644
+index 054a0dc411638ac8e2586ac9a1dd45c821249abb..9bde1a8ba62191dfaacc2362fcebcaf97943bc9a 100644
 --- a/components/embedder_support/user_agent_utils.cc
 +++ b/components/embedder_support/user_agent_utils.cc
-@@ -206,10 +206,11 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
+@@ -210,10 +210,11 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
  #if !BUILDFLAG(CHROMIUM_BRANDING)
    brand = version_info::GetProductName();
  #endif
@@ -15,7 +15,7 @@ index 47abbd2835a36325b068c997ba8c2029e5885743..981ad31da1e8c5bb94c04e97166511f4
            : major_version;
  
    return GenerateBrandVersionList(major_version_number, brand, brand_version,
-@@ -889,6 +890,7 @@ std::string GetAndroidOSInfo(
+@@ -895,6 +896,7 @@ std::string GetAndroidOSInfo(
  
    // Send information about the device.
    bool semicolon_inserted = false;

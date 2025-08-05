@@ -10,7 +10,7 @@
 
 #define GetAccountsInCookieJar GetAccountsInCookieJar_Unused
 #define PrepareForAddingNewAccount PrepareForAddingNewAccount_Unused
-#include "src/components/signin/public/identity_manager/identity_manager.cc"
+#include <components/signin/public/identity_manager/identity_manager.cc>
 #undef PrepareForAddingNewAccount
 #undef GetAccountsInCookieJar
 

@@ -30,6 +30,7 @@ const gfx::VectorIcon& GetVectorIconFromIconType(mojom::Icon icon);
 gfx::ImageSkia GenerateContainerIcon(mojom::Icon icon,
                                      SkColor background,
                                      int dip_size,
+                                     int dip_icon_size,
                                      float scale_factor,
                                      const ui::ColorProvider* color_provider);
 

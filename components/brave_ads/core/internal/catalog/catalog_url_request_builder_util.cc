@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_ads {
 
 std::string BuildCatalogUrlPath() {
-  return base::StringPrintf("/v%d/catalog", kCatalogVersion);
+  return absl::StrFormat("/v%d/catalog", kCatalogVersion);
 }
 
 }  // namespace brave_ads

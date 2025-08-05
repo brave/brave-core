@@ -13,7 +13,7 @@
   GetMediaPositionFromNormalPlayerIfPossible(); \
   void NotifyMediaSessionMetadataChange
 
-#include "src/content/browser/media/session/media_session_impl.h"  // IWYU pragma: export
+#include <content/browser/media/session/media_session_impl.h>  // IWYU pragma: export
 
 #undef NotifyMediaSessionMetadataChange
 

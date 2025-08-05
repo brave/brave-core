@@ -1,8 +1,8 @@
 diff --git a/chrome/test/data/webui/settings/BUILD.gn b/chrome/test/data/webui/settings/BUILD.gn
-index e9e94d22a233f12c54fca8597c1597c6460911a0..810027e100cf8a4a812ef55717523e4c8bcccabe 100644
+index b48d0df42e213efc6b6583396eeb270cc6e64f33..73b2a957d19198d47a09e4f9e0ba8c97821ba3dd 100644
 --- a/chrome/test/data/webui/settings/BUILD.gn
 +++ b/chrome/test/data/webui/settings/BUILD.gn
-@@ -270,6 +270,7 @@ build_webui_tests("build") {
+@@ -266,6 +266,7 @@ build_webui_tests("build") {
      ts_definitions +=
          [ "//tools/typescript/definitions/quick_unlock_private.d.ts" ]
    }

@@ -10,6 +10,7 @@ assert(current_toolchain == default_toolchain)
 java_binary("java_bytecode_rewriter") {
   sources = [
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveActivityClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAdaptiveToolbarPrefsClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAppHooksClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAppMenuClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveApplicationImplBaseClassAdapter.java",
@@ -59,6 +60,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFullscreenVideoPictureInPictureControllerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHelpAndFeedbackLauncherImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHomepageManagerClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHttpURLConnectionFactoryImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHubManagerImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIdentityDiscControllerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIncognitoTabSwitcherPaneClassAdapter.java",
@@ -116,18 +118,18 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveStatusMediatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveStrictPreferenceKeyCheckerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSystemAccountManagerDelegateAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabCardThemeUtilClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabGroupModelFilterClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabGroupUiCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabHelpersClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabSwitcherPaneBaseClassAdapter.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabUiThemeProviderClassAdapter.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabUiThemeUtilsClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabbedActivityClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabbedNavigationBarColorControllerBaseClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabbedRootUiCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveThemeUtilsClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTileViewClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarLayoutClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarLongPressMenuHandlerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarPositionControllerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarSwipeLayoutClassAdapter.java",
@@ -145,7 +147,6 @@ java_binary("java_bytecode_rewriter") {
   deps = [
     "//third_party/android_deps:org_ow2_asm_asm_java",
     "//third_party/android_deps:org_ow2_asm_asm_tree_java",
-    "//third_party/android_deps:org_ow2_asm_asm_util_java",
   ]
   wrapper_script_name = "helper/java_bytecode_rewriter"
   enable_bytecode_checks = false

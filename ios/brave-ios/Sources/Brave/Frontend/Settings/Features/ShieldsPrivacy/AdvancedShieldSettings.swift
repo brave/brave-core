@@ -106,17 +106,17 @@ import os
   private var subscriptions: [AnyCancellable] = []
   private let p3aUtilities: BraveP3AUtils
   private let deAmpPrefs: DeAmpPrefs
-  private let debounceService: DebounceService?
+  private let debounceService: (any DebounceService)?
   private let rewards: BraveRewards?
   private let clearDataCallback: ClearDataCallback
   private let webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?
   let tabManager: TabManager
 
   init(
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
-    debounceService: DebounceService?,
+    debounceService: (any DebounceService)?,
     braveCore: BraveProfileController,
     p3aUtils: BraveP3AUtils,
     rewards: BraveRewards?,
@@ -267,6 +267,9 @@ import os
     // Reset Webkit configuration to remove data from memory
     if clearAffectsTabs {
       self.tabManager.reset()
+      // This will recreate the webview for the selected tab.
+      // Other tabs will have webviews re-created when they are selected
+      self.tabManager.reloadSelectedTab()
       // Unlock the folders to allow clearing of data.
       await _toggleFolderAccessForBlockCookies(locked: false)
     }

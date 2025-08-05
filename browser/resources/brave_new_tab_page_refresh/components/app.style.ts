@@ -8,13 +8,14 @@ import { scoped } from '../lib/scoped_css'
 
 export const narrowBreakpoint = '900px'
 export const threeColumnBreakpoint = '1275px'
+export const horizontalContentPadding = 24
 
 export const style = scoped.css`
   & {
     --search-transition-duration: 120ms;
   }
 
-  @keyframes scroll-fade {
+  @keyframes background-scroll-fade {
     from {
       background: rgba(0, 0, 0, 0);
       backdrop-filter: blur(0);
@@ -33,7 +34,7 @@ export const style = scoped.css`
     inset: 0;
     z-index: 1;
 
-    animation: linear scroll-fade both;
+    animation: linear background-scroll-fade both;
     animation-timeline: scroll();
     animation-range: 0px 100vh;
   }
@@ -88,6 +89,7 @@ export const style = scoped.css`
 
   main {
     container-type: inline-size;
+    view-timeline-name: --ntp-main-view-timeline;
     position: relative;
     z-index: 1;
     display: flex;
@@ -95,7 +97,7 @@ export const style = scoped.css`
     align-items: center;
     min-height: 100vh;
     gap: 16px;
-    padding: 16px 24px;
+    padding: 16px ${horizontalContentPadding}px;
 
     > * {
       transition:
@@ -168,7 +170,6 @@ export const style = scoped.css`
 
     anchor-name: --ntp-widget-container;
 
-    align-self: stretch;
     flex: 0 0 auto;
     min-height: var(--widget-height);
 

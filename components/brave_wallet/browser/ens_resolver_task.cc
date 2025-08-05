@@ -287,7 +287,7 @@ void EnsResolverTask::FetchEnsResolver() {
 
   std::string call_data = ens::Resolver(resolver_domain_);
 
-  RequestInternal(eth::eth_call(contract_address, call_data),
+  RequestInternal(eth::GetCallPayload(contract_address, call_data),
                   base::BindOnce(&EnsResolverTask::OnFetchEnsResolverDone,
                                  weak_ptr_factory_.GetWeakPtr()));
 }
@@ -333,7 +333,7 @@ void EnsResolverTask::FetchEnsip10Support() {
   // https://docs.ens.domains/ens-improvement-proposals/ensip-10-wildcard-resolution#specification
   auto call = erc165::SupportsInterface(kResolveBytesBytesSelector);
 
-  RequestInternal(eth::eth_call(resolver_address_.ToHex(), ToHex(call)),
+  RequestInternal(eth::GetCallPayload(resolver_address_.ToHex(), ToHex(call)),
                   base::BindOnce(&EnsResolverTask::OnFetchEnsip10SupportDone,
                                  weak_ptr_factory_.GetWeakPtr()));
 }
@@ -369,9 +369,10 @@ void EnsResolverTask::FetchEnsRecord() {
     return;
   }
 
-  RequestInternal(eth::eth_call(resolver_address_.ToHex(), ToHex(ens_call_)),
-                  base::BindOnce(&EnsResolverTask::OnFetchEnsRecordDone,
-                                 weak_ptr_factory_.GetWeakPtr()));
+  RequestInternal(
+      eth::GetCallPayload(resolver_address_.ToHex(), ToHex(ens_call_)),
+      base::BindOnce(&EnsResolverTask::OnFetchEnsRecordDone,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void EnsResolverTask::OnFetchEnsRecordDone(
@@ -420,7 +421,7 @@ void EnsResolverTask::FetchWithEnsip10Resolve() {
                               .EncodeWithSelector(kResolveBytesBytesSelector);
 
   RequestInternal(
-      eth::eth_call(resolver_address_.ToHex(), ToHex(ens_resolve_call)),
+      eth::GetCallPayload(resolver_address_.ToHex(), ToHex(ens_resolve_call)),
       base::BindOnce(&EnsResolverTask::OnFetchWithEnsip10ResolveDone,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -563,10 +564,10 @@ void EnsResolverTask::FetchOffchainCallback() {
   DCHECK(offchain_callback_call_);
   DCHECK(!task_result_);
 
-  RequestInternal(
-      eth::eth_call(resolver_address_.ToHex(), ToHex(*offchain_callback_call_)),
-      base::BindOnce(&EnsResolverTask::OnFetchOffchainCallbackDone,
-                     weak_ptr_factory_.GetWeakPtr()));
+  RequestInternal(eth::GetCallPayload(resolver_address_.ToHex(),
+                                      ToHex(*offchain_callback_call_)),
+                  base::BindOnce(&EnsResolverTask::OnFetchOffchainCallbackDone,
+                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 void EnsResolverTask::OnFetchOffchainCallbackDone(

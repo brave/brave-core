@@ -12,6 +12,6 @@
    EnforcementLevel::ENFORCE_ON_LOAD, PrefTrackingStrategy::ATOMIC, \
    ValueType::IMPERSONAL},
 
-#include "src/chrome/browser/prefs/chrome_pref_service_factory.cc"
+#include <chrome/browser/prefs/chrome_pref_service_factory.cc>
 
 #undef BRAVE_TRACKED_PREFS_EXTEND

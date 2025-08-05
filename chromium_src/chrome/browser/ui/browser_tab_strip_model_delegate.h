@@ -11,7 +11,7 @@
   friend class BraveTabStripModelDelegate; \
   void CloseFrame
 
-#include "src/chrome/browser/ui/browser_tab_strip_model_delegate.h"  // IWYU pragma: export
+#include <chrome/browser/ui/browser_tab_strip_model_delegate.h>  // IWYU pragma: export
 
 #undef CloseFrame
 

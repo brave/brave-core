@@ -11,7 +11,7 @@
 
 #define BuildServiceInstanceForBrowserContext \
   BuildServiceInstanceForBrowserContext_ChromiumImpl
-#include "src/chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.cc"
+#include <chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.cc>
 #undef BuildServiceInstanceForBrowserContext
 
 std::unique_ptr<KeyedService>
@@ -20,11 +20,7 @@ PrivacySandboxSettingsFactory::BuildServiceInstanceForBrowserContext(
   Profile* profile = Profile::FromBrowserContext(context);
 
   return std::make_unique<BravePrivacySandboxSettings>(
-      std::make_unique<PrivacySandboxSettingsDelegate>(
-          profile,
-          tpcd::experiment::ExperimentManagerImpl::GetForProfile(profile)),
-      HostContentSettingsMapFactory::GetForProfile(profile),
-      CookieSettingsFactory::GetForProfile(profile).get(),
-      TrackingProtectionSettingsFactory::GetForProfile(profile),
+      nullptr /*delegate*/, nullptr /*host_content_settings_map*/,
+      nullptr /*cookie_settings*/, nullptr /*tracking_protection_settings*/,
       profile->GetPrefs());
 }

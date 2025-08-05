@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "src/v8/src/builtins/builtins.cc"
+#include <v8/src/builtins/builtins.cc>
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
 #include "src/builtins/builtins-inl.h"

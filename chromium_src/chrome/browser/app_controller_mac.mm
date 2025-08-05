@@ -7,4 +7,4 @@
 
 #import "brave/browser/brave_app_controller_mac.h"
 
-#include "src/chrome/browser/app_controller_mac.mm"
+#include <chrome/browser/app_controller_mac.mm>

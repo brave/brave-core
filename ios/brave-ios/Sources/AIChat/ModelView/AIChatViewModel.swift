@@ -15,7 +15,6 @@ public enum AIChatModelKey: String {
   case chatQwen = "chat-qwen"
   case chatClaudeHaiku = "chat-claude-haiku"
   case chatClaudeSonnet = "chat-claude-sonnet"
-  case chatVisionBasic = "chat-vision-basic"
   case chatDeepseekR1 = "chat-deepseek-r1"
 }
 
@@ -212,7 +211,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
     self.suggestedQuestions = state.suggestedQuestions
     self.suggestionsStatus = state.suggestionStatus
     self.siteInfo = state.associatedContent
-    self._shouldSendPageContents = state.shouldSendContent
+    self._shouldSendPageContents = state.associatedContent.count == 1
     self.apiError = state.error
     self.models = state.allModels
 
@@ -242,7 +241,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   @MainActor
-  func modifyConversation(turnId: UInt, newText: String) {
+  func modifyConversation(turnId: String, newText: String) {
     api.modifyConversation(turnId, newText: newText)
   }
 }
@@ -341,11 +340,10 @@ extension AIChatViewModel: AIChatDelegate {
   }
 
   public func onPageHasContent(
-    _ siteInfo: [AiChat.AssociatedContent],
-    shouldSendContent shouldSendPageContents: Bool
+    _ siteInfo: [AiChat.AssociatedContent]
   ) {
     self.siteInfo = siteInfo
-    self._shouldSendPageContents = shouldSendPageContents
+    self._shouldSendPageContents = siteInfo.count == 1
   }
 
   public func onServiceStateChanged(_ state: AiChat.ServiceState) {
@@ -372,9 +370,6 @@ extension AiChat.Model {
     case .chatClaudeSonnet:
       return Strings.AIChat.introMessageClaudeSonnetMessageDescription
 
-    case .chatVisionBasic:
-      return Strings.AIChat.introMessageLlamaVisionMessageDescription
-
     case .chatDeepseekR1:
       return Strings.AIChat.introMessageDeepSeekR1MessageDescription
     }
@@ -397,9 +392,6 @@ extension AiChat.Model {
 
     case .chatClaudeSonnet:
       return Strings.AIChat.introMessageClaudeSonnetModelPurposeDescription
-
-    case .chatVisionBasic:
-      return Strings.AIChat.introMessageLlamaVisionModelPurposeDescription
 
     case .chatDeepseekR1:
       return Strings.AIChat.introMessageDeepSeekR1ModelPurposeDescription

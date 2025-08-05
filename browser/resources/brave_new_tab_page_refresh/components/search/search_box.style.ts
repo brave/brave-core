@@ -66,10 +66,11 @@ export const style = scoped.css`
     padding: 8px;
     border-radius: 12px;
     background: ${color.container.background};
+    box-shadow: ${effect.elevation['03']};
     color: ${color.text.primary};
 
     &:hover, &:focus-within {
-      box-shadow: ${effect.elevation['01']};
+      box-shadow: ${effect.elevation['04']};
     }
   }
 

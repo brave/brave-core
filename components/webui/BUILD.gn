@@ -10,6 +10,7 @@ static_library("webui") {
   visibility = [
     "//brave/browser/ui",
     "//brave/ios/browser/ui/webui",
+    "//brave/ios/web/webui",
   ]
 
   sources = [
@@ -31,6 +32,6 @@ static_library("webui") {
     "//components/resources:components_resources_grit",
     "//components/strings:components_strings",
     "//third_party/re2",
-    "//ui/base:base",
+    "//ui/base",
   ]
 }

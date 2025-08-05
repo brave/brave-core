@@ -98,6 +98,7 @@ import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveSyncWorker;
+import org.chromium.chrome.browser.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
 import org.chromium.chrome.browser.IntentHandler;
@@ -110,6 +111,7 @@ import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
+import org.chromium.chrome.browser.brave_leo.BraveLeoVoiceRecognitionHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
@@ -132,6 +134,7 @@ import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.lifetime.ApplicationLifetime;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErrorHandler;
@@ -219,6 +222,7 @@ import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -393,6 +397,8 @@ public abstract class BraveActivity extends ChromeActivity
                                 }
                             });
         }
+        // Executes Leo voice prompt if it was triggered from quick search app widget
+        maybeExecuteLeoVoicePrompt();
     }
 
     @Override
@@ -503,6 +509,26 @@ public abstract class BraveActivity extends ChromeActivity
         super.onDestroyInternal();
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
+    }
+
+    @Override
+    public void onPictureInPictureModeChanged(boolean inPicture, Configuration newConfig) {
+        super.onPictureInPictureModeChanged(inPicture, newConfig);
+
+        if (!inPicture
+                && getCurrentWebContents() != null
+                && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
+                        getCurrentWebContents())) {
+            // PiP has been dismissed when watching a YT video, then pause it.
+            MediaSession mediaSession = MediaSession.fromWebContents(getCurrentWebContents());
+            if (mediaSession != null) {
+                mediaSession.suspend();
+            }
+            FullscreenManager fullscreenManager = getFullscreenManager();
+            if (fullscreenManager.getPersistentFullscreenMode()) {
+                fullscreenManager.exitPersistentFullscreenMode();
+            }
+        }
     }
 
     /**
@@ -2417,9 +2443,9 @@ public abstract class BraveActivity extends ChromeActivity
         ((TabBookmarker) mTabBookmarkerSupplier.get()).addOrEditBookmark(tabToBookmark);
     }
 
-    public void showBookmarkManager(Profile profile) {
+    public void showBookmarkManager(Profile profile, Tab currentTab) {
         if (mBookmarkManagerOpenerSupplier.get() != null) {
-            mBookmarkManagerOpenerSupplier.get().showBookmarkManager(this, profile);
+            mBookmarkManagerOpenerSupplier.get().showBookmarkManager(this, currentTab, profile);
         }
     }
 
@@ -2626,6 +2652,25 @@ public abstract class BraveActivity extends ChromeActivity
             WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
             windowManager.removeView(mQuickSearchEnginesView);
             mQuickSearchEnginesView = null;
+        }
+    }
+
+    private void maybeExecuteLeoVoicePrompt() {
+        Intent intent = getIntent();
+        WebContents webContents = getCurrentWebContents();
+        if (intent != null
+                && IntentUtils.safeGetBooleanExtra(
+                        intent, IntentHandler.EXTRA_INVOKED_FROM_APP_WIDGET, false)
+                && IntentUtils.safeGetBooleanExtra(
+                        intent, BraveIntentHandler.EXTRA_INVOKED_FROM_APP_WIDGET_LEO, false)
+                && !IntentUtils.safeGetBooleanExtra(
+                        intent, BraveIntentHandler.EXTRA_LEO_VOICE_PROMPT_INVOKED, false)
+                && webContents != null) {
+            // Marks that Leo prompt was invoked to avoid re-invoke on resume
+            intent.putExtra(BraveIntentHandler.EXTRA_LEO_VOICE_PROMPT_INVOKED, true);
+            new BraveLeoVoiceRecognitionHandler(
+                            webContents.getTopLevelNativeWindow(), webContents, "")
+                    .startVoiceRecognition();
         }
     }
 

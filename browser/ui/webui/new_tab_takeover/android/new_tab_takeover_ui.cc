@@ -10,7 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -25,6 +24,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
 
@@ -57,7 +57,7 @@ NewTabTakeoverUI::NewTabTakeoverUI(
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::StringPrintf("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
+      absl::StrFormat("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
   source->AddString("ntpNewTabTakeoverRichMediaUrl",
                     kNTPNewTabTakeoverRichMediaUrl);
 }

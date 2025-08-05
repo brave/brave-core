@@ -22,7 +22,7 @@
 #define kDefaultIconSizeChromeRefresh \
   kDefaultIconSizeChromeRefresh = 20; \
   static constexpr int kDefaultIconSizeChromeRefresh_UnUsed
-#include "src/chrome/browser/ui/views/toolbar/toolbar_button.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/toolbar/toolbar_button.h>  // IWYU pragma: export
 #undef kDefaultIconSizeChromeRefresh
 #undef kDefaultIconSize
 #undef SetHighlight

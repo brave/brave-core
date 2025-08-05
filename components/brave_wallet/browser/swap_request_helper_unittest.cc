@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/strings/stringprintf.h"
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
@@ -16,6 +15,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using base::test::ParseJson;
 
@@ -830,9 +830,9 @@ constexpr char kLiFiEvmToSolQuoteTemplate2[] = R"(
 }  // namespace
 
 TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
-  std::string json = base::StringPrintf(
-      kJupiterQuoteTemplate,
-      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");  // USDC
+  std::string json =
+      absl::StrFormat(kJupiterQuoteTemplate,
+                      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");  // USDC
   mojom::JupiterQuotePtr swap_quote =
       jupiter::ParseQuoteResponse(ParseJson(json));
   ASSERT_TRUE(swap_quote);

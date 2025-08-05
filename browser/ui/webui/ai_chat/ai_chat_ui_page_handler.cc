@@ -316,7 +316,8 @@ void AIChatUIPageHandler::HandleWebContentsDestroyed() {
   chat_context_observer_.reset();
 }
 
-void AIChatUIPageHandler::OnNavigated(AssociatedContentDelegate* delegate) {
+void AIChatUIPageHandler::OnRequestArchive(
+    AssociatedContentDelegate* delegate) {
   // This is only applicable to content-adjacent UI, e.g. SidePanel on Desktop
   // where it would like to remain associated with the Tab and move away from
   // Conversations of previous navigations. That doens't apply to the standalone
@@ -324,7 +325,7 @@ void AIChatUIPageHandler::OnNavigated(AssociatedContentDelegate* delegate) {
 
   chat_ui_->OnNewDefaultConversation(
       active_chat_tab_helper_
-          ? std::make_optional(active_chat_tab_helper_->GetContentId())
+          ? std::make_optional(active_chat_tab_helper_->content_id())
           : std::nullopt);
 }
 
@@ -347,7 +348,7 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
 
   chat_ui_->OnNewDefaultConversation(
       active_chat_tab_helper_
-          ? std::make_optional(active_chat_tab_helper_->GetContentId())
+          ? std::make_optional(active_chat_tab_helper_->content_id())
           : std::nullopt);
 }
 
@@ -365,7 +366,7 @@ void AIChatUIPageHandler::BindRelatedConversation(
   ConversationHandler* conversation =
       AIChatServiceFactory::GetForBrowserContext(profile_)
           ->GetOrCreateConversationHandlerForContent(
-              active_chat_tab_helper_->GetContentId(),
+              active_chat_tab_helper_->content_id(),
               active_chat_tab_helper_->GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
@@ -396,21 +397,11 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                     conversation_uuid));
 }
 
-void AIChatUIPageHandler::DisassociateTab(
-    mojom::TabDataPtr mojom_tab,
+void AIChatUIPageHandler::DisassociateContent(
+    mojom::AssociatedContentPtr content,
     const std::string& conversation_uuid) {
-  auto* contents = GetWebContentsFromTabId(mojom_tab->id);
-  if (!contents) {
-    return;
-  }
-
-  auto* tab_helper = ai_chat::AIChatTabHelper::FromWebContents(contents);
-  if (!tab_helper) {
-    return;
-  }
-
-  AIChatServiceFactory::GetForBrowserContext(contents->GetBrowserContext())
-      ->DisassociateContent(tab_helper, conversation_uuid);
+  auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
+  service->DisassociateContent(content, conversation_uuid);
 }
 
 void AIChatUIPageHandler::NewConversation(
@@ -420,7 +411,7 @@ void AIChatUIPageHandler::NewConversation(
   if (active_chat_tab_helper_) {
     conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
                        ->CreateConversationHandlerForContent(
-                           active_chat_tab_helper_->GetContentId(),
+                           active_chat_tab_helper_->content_id(),
                            active_chat_tab_helper_->GetWeakPtr());
   } else {
     conversation = AIChatServiceFactory::GetForBrowserContext(profile_)

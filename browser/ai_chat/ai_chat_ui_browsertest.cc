@@ -174,18 +174,15 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
                         bool wait_for_callback = true) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
-    chat_tab_helper_->GetPageContent(
-        base::BindLambdaForTesting(
-            [&run_loop, expected_text, wait_for_callback](
-                std::string text, bool is_video,
-                std::string invalidation_token) {
-              EXPECT_FALSE(is_video);
-              EXPECT_EQ(text, expected_text);
-              if (wait_for_callback) {
-                run_loop.Quit();
-              }
-            }),
-        "");
+    chat_tab_helper_->GetContent(base::BindLambdaForTesting(
+        [&run_loop, expected_text,
+         wait_for_callback](ai_chat::PageContent content) {
+          EXPECT_FALSE(content.is_video);
+          EXPECT_EQ(content.content, expected_text);
+          if (wait_for_callback) {
+            run_loop.Quit();
+          }
+        }));
     if (wait_for_callback) {
       run_loop.Run();
     }
@@ -298,31 +295,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
   content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
                               "window.print();");
   print_preview_observer.WaitUntilPreviewIsReady();
-}
-
-// Disable flaky test on ASAN windows 64-bit
-// https://github.com/brave/brave-browser/issues/37969
-#if BUILDFLAG(IS_WIN) && defined(ADDRESS_SANITIZER) && defined(ARCH_CPU_64_BITS)
-#define MAYBE_PrintPreviewFallback DISABLED_PrintPreviewFallback
-#else
-#define MAYBE_PrintPreviewFallback PrintPreviewFallback
-#endif  // BUILDFLAG(IS_WIN) && defined(ADDRESS_SANITIZER) &&
-        // defined(ARCH_CPU_64_BITS)
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
-  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"), false);
-  ASSERT_TRUE(
-      pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
-  FetchPageContent(
-      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
-
-  NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
-  FetchPageContent(FROM_HERE, "this is the way");
-
-  // Does not fall back when there is regular DOM content
-  NavigateURL(
-      https_server_.GetURL("a.com", "/long_canvas_with_dom_content.html"),
-      false);
-  FetchPageContent(FROM_HERE, "Or maybe not.");
 }
 #endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
@@ -438,4 +410,21 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PdfScreenshot) {
   EXPECT_EQ(result->size(), 4u);
   EXPECT_TRUE(std::ranges::any_of(
       result.value(), [](const auto& entry) { return !entry->data.empty(); }));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, WebContentsShouldBeFocused) {
+  auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
+  side_panel_ui->Show(SidePanelEntryId::kChatUI);
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* side_panel = browser_view->unified_side_panel();
+  auto* ai_chat_side_panel = static_cast<views::WebView*>(
+      side_panel->GetViewByID(SidePanelWebUIView::kSidePanelWebViewId));
+  ASSERT_TRUE(ai_chat_side_panel);
+
+  auto* side_panel_web_contents = ai_chat_side_panel->web_contents();
+  ASSERT_TRUE(side_panel_web_contents);
+
+  const auto has_focus = content::EvalJs(
+      side_panel_web_contents->GetPrimaryMainFrame(), "document.hasFocus()");
+  EXPECT_TRUE(has_focus.ExtractBool());
 }

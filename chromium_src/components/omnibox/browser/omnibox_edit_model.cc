@@ -9,40 +9,19 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "components/omnibox/browser/omnibox_controller.h"
 #include "components/vector_icons/vector_icons.h"
-#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/commander/common/features.h"
 #endif
 
-#if !BUILDFLAG(IS_IOS)
-#include "content/public/common/url_constants.h"
-#endif
-
-namespace {
-void BraveAdjustTextForCopy(GURL* url) {
-#if !BUILDFLAG(IS_IOS)
-  if (url->scheme() == content::kChromeUIScheme) {
-    GURL::Replacements replacements;
-    replacements.SetSchemeStr(content::kBraveUIScheme);
-    *url = url->ReplaceComponents(replacements);
-  }
-#endif
-}
-
-}  // namespace
-
-#define BRAVE_ADJUST_TEXT_FOR_COPY BraveAdjustTextForCopy(url_from_text);
-
 #define CanPasteAndGo CanPasteAndGo_Chromium
 #define PasteAndGo PasteAndGo_Chromium
 #define GetSuperGIcon GetSuperGIcon_Unused
-#include "src/components/omnibox/browser/omnibox_edit_model.cc"
+#include <components/omnibox/browser/omnibox_edit_model.cc>
 #undef GetSuperGIcon
 #undef CanPasteAndGo
 #undef PasteAndGo
-#undef BRAVE_ADJUST_TEXT_FOR_COPY
 
 bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
 #if BUILDFLAG(ENABLE_COMMANDER)

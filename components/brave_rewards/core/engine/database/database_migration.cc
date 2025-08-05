@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/database/migration/migration_v1.h"
@@ -58,6 +57,7 @@
 #include "brave/components/brave_rewards/core/engine/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // NOTICE!!
@@ -206,7 +206,7 @@ void DatabaseMigration::RunDBTransactionCallback(
     if (migrated_version >= 29) {
       engine_->database()->SaveEventLog(
           log::kDatabaseMigrated,
-          base::StringPrintf("%d->%d", start_version - 1, migrated_version));
+          absl::StrFormat("%d->%d", start_version - 1, migrated_version));
     }
 
     return std::move(callback).Run(mojom::Result::OK);

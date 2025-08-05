@@ -12,11 +12,16 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "components/permissions/request_type.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+// TODO(https://github.com/brave/brave-browser/issues/47669) this file should be
+// in content/browser subfolder of a layered brave_wallet component.
 
 namespace {
 
@@ -202,15 +207,15 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
 
   std::vector<std::string> query_parts;
   for (const auto& account : accounts) {
-    query_parts.push_back(base::StringPrintf("addr=%s", account.c_str()));
+    query_parts.push_back(absl::StrFormat("addr=%s", account));
   }
 
   mojom::OriginInfoPtr origin_info = MakeOriginInfo(origin);
 
   query_parts.push_back(
-      base::StringPrintf("origin-spec=%s", origin_info->origin_spec.c_str()));
-  query_parts.push_back(base::StringPrintf(
-      "etld-plus-one=%s", origin_info->e_tld_plus_one.c_str()));
+      absl::StrFormat("origin-spec=%s", origin_info->origin_spec));
+  query_parts.push_back(
+      absl::StrFormat("etld-plus-one=%s", origin_info->e_tld_plus_one));
 
   std::string query_str = base::JoinString(query_parts, "&");
   GURL::Replacements replacements;

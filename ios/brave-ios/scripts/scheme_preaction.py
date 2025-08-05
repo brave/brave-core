@@ -38,10 +38,8 @@ def main():
 
     options = parser.parse_args()
 
-    # Passed in configuration is going to be based on Xcode configurations which
-    # is based on channels, so use Release for all non-Debug configs.
-    config = 'Release' if 'Debug' not in options.configuration else 'Debug'
-    output_dir = BuildOutputDirectory(config, options.platform_name)
+    output_dir = BuildOutputDirectory(options.configuration,
+                                      options.platform_name)
     target_arch = 'arm64' if platform.processor(
     ) == 'arm' or options.platform_name == 'iphoneos' else 'x64'
     target_environment = 'simulator' if (options.platform_name
@@ -60,9 +58,9 @@ def main():
             ''')
             raise Exception(err)
     else:
-        BuildCore(config, target_arch, target_environment)
+        BuildCore(options.configuration, target_arch, target_environment)
         CallNpm(['npm', 'run', 'ios_pack_js'])
-    UpdateSymlink(config, target_arch, target_environment)
+    UpdateSymlink(options.configuration, target_arch, target_environment)
 
 
 def BuildOutputDirectory(config, platform_name):

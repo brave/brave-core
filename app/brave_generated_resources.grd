@@ -242,6 +242,7 @@
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
       </message>
+
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Google Widevine
@@ -699,9 +700,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </if>
 
       <!-- Brave Ads -->
-      <message name="IDS_UTILITY_PROCESS_REWARDS_NAME" desc="The utility process running rewards">
-        Bat Rewards Service
-      </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_AD_CLOSE_BUTTON" desc="Text to be spoken for the notification ad close button">
         Close
       </message>
@@ -907,11 +905,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_WEB3_DOMAINS_SETTINGS_SECTION" desc="Open Web3 Domains settings section">
         Web3 Domains
       </message>
-      <!-- Brave Wallet -->
-      <message name="IDS_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The utility process running wallet utils">
-        Brave Wallet Utility Service
-      </message>
-
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT" desc="The label for sorry message when page is not available on bubble">
         Sorry, that page is missing.

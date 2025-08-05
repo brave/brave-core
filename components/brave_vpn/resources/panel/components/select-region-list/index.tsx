@@ -4,15 +4,31 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import styled from 'styled-components'
 
 import * as S from './style'
+import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/leo/react/tooltip'
 import Flag from '../flag'
+import { color } from '@brave/leo/tokens/css/variables'
 import { ConnectionState, Region } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
 import { getLocale } from '$web-common/locale'
 
 import 'emptykit.css'
+
+const RegionLabelBox = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`
+
+const SmartProxyIcon = styled(Icon)`
+  --leo-icon-size: 18px;
+  --leo-icon-color: ${color.icon.default};
+  background: ${color.container.highlight};
+`
 
 function getCountryInfo(numCity: number, numServer: number) {
   const city =
@@ -96,6 +112,7 @@ interface RegionContentProps {
 function RegionContent(props: RegionContentProps) {
   const dispatch = useDispatch()
   const currentRegion = useSelector((state) => state.currentRegion)
+  const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
   const handleConnect = (region: Region) => {
     dispatch(Actions.connectToNewRegion(region))
   }
@@ -120,9 +137,19 @@ function RegionContent(props: RegionContentProps) {
       >
         <Flag countryCode={props.region.countryIsoCode} />
         <S.CountryInfo>
-          <S.RegionCountryLabel selected={!props.open && props.selected}>
-            {props.region.namePretty}
-          </S.RegionCountryLabel>
+          <RegionLabelBox>
+            <S.RegionCountryLabel selected={!props.open && props.selected}>
+              {props.region.namePretty}
+            </S.RegionCountryLabel>
+            {smartProxyRoutingEnabled && props.region.smartRoutingProxyState === 'all' && (
+              <Tooltip mode='mini'>
+                <SmartProxyIcon name='smart-proxy-routing' />
+                <div slot='content'>
+                  {getLocale('braveVpnSmartProxyRoutingIconTooltip')}
+                </div>
+              </Tooltip>)
+            }
+          </RegionLabelBox>
           <S.CountryServerInfo selected={!props.open && props.selected}>
             {getCountryInfo(
               props.region.cities.length,

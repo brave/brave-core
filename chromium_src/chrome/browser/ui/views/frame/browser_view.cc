@@ -41,7 +41,7 @@
     return false;                                    \
   }
 
-#include "src/chrome/browser/ui/views/frame/browser_view.cc"
+#include <chrome/browser/ui/views/frame/browser_view.cc>
 
 #undef MultiContentsView
 #undef UpdateExclusiveAccessBubble

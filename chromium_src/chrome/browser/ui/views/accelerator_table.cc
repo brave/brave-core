@@ -11,7 +11,7 @@
 #include "build/build_config.h"
 
 #define GetAcceleratorList GetAcceleratorList_ChromiumImpl
-#include "src/chrome/browser/ui/views/accelerator_table.cc"
+#include <chrome/browser/ui/views/accelerator_table.cc>
 #undef GetAcceleratorList
 
 namespace {

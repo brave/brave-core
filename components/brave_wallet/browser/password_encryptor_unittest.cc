@@ -9,6 +9,7 @@
 
 #include "base/base64.h"
 #include "base/containers/span.h"
+#include "base/strings/string_view_util.h"
 #include "base/test/values_test_util.h"
 #include "crypto/aead.h"
 #include "testing/gtest/include/gtest/gtest.h"

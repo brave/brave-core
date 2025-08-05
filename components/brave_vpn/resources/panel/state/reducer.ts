@@ -14,6 +14,7 @@ type RootState = {
   isSelectingRegion: boolean
   expired: boolean
   outOfCredentials: boolean
+  smartProxyRoutingEnabled: boolean
   connectionStatus: ConnectionState
   regions: Region[]
   currentRegion: Region
@@ -27,6 +28,7 @@ const defaultState: RootState = {
   isSelectingRegion: (window.location.pathname === '/select'),
   expired: false,
   outOfCredentials: false,
+  smartProxyRoutingEnabled: false,
   connectionStatus: ConnectionState.DISCONNECTED,
   regions: [],
   currentRegion: new Region(),
@@ -92,6 +94,13 @@ reducer.on(Actions.connectionStateChanged, (state, payload): RootState => {
   }
 })
 
+reducer.on(Actions.smartProxyRoutingStateChanged, (state, payload): RootState => {
+  return {
+    ...state,
+    smartProxyRoutingEnabled: payload
+  }
+})
+
 reducer.on(Actions.selectedRegionChanged, (state, payload): RootState => {
   return {
     ...state,
@@ -141,7 +150,8 @@ reducer.on(Actions.outOfCredentials, (state, payload): RootState => {
 reducer.on(Actions.initialized, (state, payload): RootState => {
   return {
     ...state,
-    productUrls: payload.productUrls
+    productUrls: payload.productUrls,
+    smartProxyRoutingEnabled: payload.smartProxyRoutingEnabled
   }
 })
 

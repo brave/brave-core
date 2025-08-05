@@ -11,13 +11,11 @@
 #include <functional>
 #include <map>
 #include <memory>
-#include <ostream>
 #include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
 
-#include "base/callback_list.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
@@ -95,12 +93,16 @@ class AIChatService : public KeyedService,
   // ConversationHandler::Observer
   void OnRequestInProgressChanged(ConversationHandler* handler,
                                   bool in_progress) override;
-  void OnConversationEntryAdded(ConversationHandler* handler,
-                                mojom::ConversationTurnPtr& entry,
-                                std::optional<std::vector<std::string_view>>
-                                    maybe_associated_content) override;
+  void OnConversationEntryAdded(
+      ConversationHandler* handler,
+      mojom::ConversationTurnPtr& entry,
+      std::optional<PageContents> maybe_associated_content) override;
   void OnConversationEntryRemoved(ConversationHandler* handler,
                                   std::string entry_uuid) override;
+  void OnToolUseEventOutput(ConversationHandler* handler,
+                            std::string_view entry_uuid,
+                            size_t event_order,
+                            mojom::ToolUseEventPtr tool_use) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
   void OnConversationTitleChanged(const std::string& conversation_uuid,
                                   const std::string& title) override;
@@ -149,7 +151,7 @@ class AIChatService : public KeyedService,
 
   void MaybeAssociateContent(AssociatedContentDelegate* content,
                              const std::string& conversation_uuid);
-  void DisassociateContent(AssociatedContentDelegate* content,
+  void DisassociateContent(const mojom::AssociatedContentPtr& content,
                            const std::string& conversation_uuid);
 
   void GetFocusTabs(const std::vector<Tab>& tabs,
@@ -232,7 +234,7 @@ class AIChatService : public KeyedService,
 
   void MaybeInitStorage();
   // Called when the database encryptor is ready.
-  void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor, bool success);
+  void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor);
   void LoadConversationsLazy(ConversationMapCallback callback);
   void OnLoadConversationsLazyData(
       std::vector<mojom::ConversationPtr> conversations);
@@ -366,8 +368,6 @@ class AIChatService : public KeyedService,
   // subscription status changes. So we cache it and fetch latest fairly
   // often (whenever UI is focused).
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
-  // Maintains the subscription for `OSCryptAsync` and cancels upon destruction.
-  base::CallbackListSubscription encryptor_ready_subscription_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

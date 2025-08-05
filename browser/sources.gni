@@ -48,6 +48,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//chrome/browser/buildflags.gni")
@@ -216,9 +217,7 @@ brave_chrome_browser_deps = [
   "//brave/components/password_strength_meter:mojom",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
-  "//brave/components/psst/browser/content",
-  "//brave/components/psst/browser/core",
-  "//brave/components/psst/common",
+  "//brave/components/psst/buildflags",
   "//brave/components/request_otr/common/buildflags",
   "//brave/components/resources",
   "//brave/components/skus/browser",
@@ -232,6 +231,7 @@ brave_chrome_browser_deps = [
   "//brave/components/web_discovery/buildflags",
   "//brave/components/webcompat/content/browser",
   "//brave/components/webcompat/core/common",
+  "//brave/extensions:common",
   "//brave/services/network/public/cpp",
   "//brave/third_party/blink/renderer",
   "//chrome/browser:browser_process",
@@ -251,6 +251,7 @@ brave_chrome_browser_deps = [
   "//components/gcm_driver:gcm_buildflags",
   "//components/metrics",
   "//components/ntp_tiles",
+  "//components/omnibox/browser",
   "//components/password_manager/core/common",
   "//components/permissions",
   "//components/policy/core/common:common_constants",
@@ -279,6 +280,14 @@ brave_chrome_browser_deps = [
   "//ui/base",
   "//url",
 ]
+
+if (enable_psst) {
+  brave_chrome_browser_deps += [
+    "//brave/components/psst/browser/content",
+    "//brave/components/psst/browser/core",
+    "//brave/components/psst/common",
+  ]
+}
 
 if (!is_android) {
   # Already included on android by upstream

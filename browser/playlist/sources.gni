@@ -21,7 +21,7 @@ if (enable_playlist) {
     "//chrome/browser/profiles:profile",
     "//chrome/common",
     "//components/keyed_service/content",
-    "//components/pref_registry:pref_registry",
+    "//components/pref_registry",
   ]
 
   if (is_android) {

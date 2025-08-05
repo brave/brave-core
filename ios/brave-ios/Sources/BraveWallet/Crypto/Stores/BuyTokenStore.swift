@@ -162,45 +162,39 @@ public class BuyTokenStore: ObservableObject {
   @MainActor
   func updateInfo() async {
     isFetchingPrefilledToken = prefilledToken != nil
-    // get all crypto currencies
-    let (cryptoCurrencies, _) = await meldIntegrationService.cryptoCurrencies(
-      filter: .init(
-        countries: nil,
-        fiatCurrencies: nil,
-        cryptoCurrencies: nil,
-        cryptoChains: nil,
-        serviceProviders: nil,
-        paymentMethodTypes: nil,
-        statuses: nil
-      )
-    )
-    guard let cryptoCurrencies else {
-      encounterMeldAPIError = true
-      Logger.module.debug("Meld - Error getting crypto currencies")
-      return
-    }
-    supportedCryptoCurrencies = cryptoCurrencies
 
     if let prefilledToken {
-      let matchedCyptoCurrency = supportedCryptoCurrencies.first(where: {
-        if let cryptoContractAddress = $0.contractAddress {
-          return cryptoContractAddress.caseInsensitiveCompare(
-            prefilledToken.contractAddress
-          ) == .orderedSame
-        } else if let cryptoName = $0.name, let cryptoChainId = $0.chainId {
-          return cryptoName.caseInsensitiveCompare(prefilledToken.name) == .orderedSame
-            && cryptoChainId.caseInsensitiveCompare(prefilledToken.chainId) == .orderedSame
-        } else {
-          return $0.displaySymbol.caseInsensitiveCompare(prefilledToken.symbol) == .orderedSame
-        }
-      })
-      guard let matchedCyptoCurrency else {
+      let (matchedCryptoCurrency, allMeldSupportedCryptoCurrencies) =
+        await meldIntegrationService.convertToMeldCryptoCurrency(for: prefilledToken)
+      guard let allMeldSupportedCryptoCurrencies else {
         encounterMeldAPIError = true
-        Logger.module.debug("Meld - Cannot find prefilled token")
+        Logger.module.debug("Meld - Error getting crypto currencies")
         return
       }
-      selectedBuyToken = matchedCyptoCurrency
+      supportedCryptoCurrencies = allMeldSupportedCryptoCurrencies
+      if let matchedCryptoCurrency {
+        selectedBuyToken = matchedCryptoCurrency
+      }
       isFetchingPrefilledToken = false
+    } else {
+      // get all crypto currencies
+      let (cryptoCurrencies, _) = await meldIntegrationService.cryptoCurrencies(
+        filter: .init(
+          countries: nil,
+          fiatCurrencies: nil,
+          cryptoCurrencies: nil,
+          cryptoChains: WalletConstants.supportedChainsForMeld.joined(separator: ","),
+          serviceProviders: nil,
+          paymentMethodTypes: nil,
+          statuses: nil
+        )
+      )
+      guard let cryptoCurrencies else {
+        encounterMeldAPIError = true
+        Logger.module.debug("Meld - Error getting crypto currencies")
+        return
+      }
+      supportedCryptoCurrencies = cryptoCurrencies
     }
 
     // get all fiat currencies

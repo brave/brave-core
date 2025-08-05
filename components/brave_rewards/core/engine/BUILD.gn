@@ -61,12 +61,12 @@ buildflag_header("buildflags") {
 source_set("headers") {
   visibility = [
     ":*",
-    "//brave/browser/extensions:extensions",
-    "//brave/browser/ui:ui",
+    "//brave/browser/extensions",
+    "//brave/browser/ui",
     "//brave/components/brave_rewards/content",
     "//brave/components/brave_rewards/content:testutil",
     "//brave/vendor/brave-ios:rewards_db",
-    "//chrome/browser:browser",
+    "//chrome/browser",
   ]
 
   sources = [
@@ -76,7 +76,7 @@ source_set("headers") {
     "rewards_database.h",
   ]
 
-  deps = [ "//sql:sql" ]
+  deps = [ "//sql" ]
 
   public_deps = [
     ":buildflags",
@@ -410,8 +410,8 @@ static_library("engine") {
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
     "//brave/vendor/brave_base",
     "//crypto",
-    "//net:net",
-    "//sql:sql",
+    "//net",
+    "//sql",
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
     "//third_party/brotli:dec",

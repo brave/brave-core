@@ -13,7 +13,7 @@
 #define DraggingTabsSession DraggingTabsSessionChromium
 #define IsReadLaterSupportedForAny virtual IsReadLaterSupportedForAny
 
-#include "src/chrome/browser/ui/tabs/tab_strip_model.h"  // IWYU pragma: export
+#include <chrome/browser/ui/tabs/tab_strip_model.h>  // IWYU pragma: export
 
 #undef IsReadLaterSupportedForAny
 #undef DraggingTabsSession

@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/bindings/BUILD.gn b/third_party/blink/renderer/bindings/BUILD.gn
-index 1a9dfc4c1689e8d592b2a6f97bf5ca8c9064e621..a065f41dad55a4b8a1c4d7ab1cf17b6da9c2090c 100644
+index 1a9dfc4c1689e8d592b2a6f97bf5ca8c9064e621..c0c7291a8cd9bf170b8bdee197535015498ab208 100644
 --- a/third_party/blink/renderer/bindings/BUILD.gn
 +++ b/third_party/blink/renderer/bindings/BUILD.gn
 @@ -203,6 +203,7 @@ template("generate_bindings") {
      args += invoker.targets
  
      deps = [ ":web_idl_database" ]
-+    import("//brave/third_party/blink/renderer/bindings/sources.gni") deps += brave_third_party_blink_renderer_bindings_generate_bindings_deps
++    import("//brave/third_party/blink/renderer/bindings/sources.gni") inputs += brave_third_party_blink_renderer_bindings_generate_bindings_inputs deps += brave_third_party_blink_renderer_bindings_generate_bindings_deps
    }
  }
  

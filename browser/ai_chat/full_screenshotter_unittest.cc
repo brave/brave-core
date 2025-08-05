@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/notreached.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/test_future.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/paint_preview/common/mojom/paint_preview_recorder.mojom.h"
@@ -19,6 +18,7 @@
 #include "content/test/test_web_contents.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/image/image_unittest_util.h"
@@ -367,7 +367,7 @@ TEST_F(FullScreenshotterTest, CaptureFailedAllErrorStates) {
     auto result = CaptureScreenshots(web_contents());
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(),
-              base::StringPrintf(
+              absl::StrFormat(
                   "Failed to capture a screenshot (CaptureStatus=%d)",
                   static_cast<int>(paint_preview::PaintPreviewBaseService::
                                        CaptureStatus::kCaptureFailed)));
@@ -507,8 +507,8 @@ TEST_F(FullScreenshotterTest, BitmapForMainFrameFailed) {
     auto result = CaptureScreenshots(web_contents());
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(),
-              base::StringPrintf("Failed to get bitmap (BitmapStatus=%d)",
-                                 static_cast<int>(status)));
+              absl::StrFormat("Failed to get bitmap (BitmapStatus=%d)",
+                              static_cast<int>(status)));
   }
 }
 

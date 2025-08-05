@@ -15,6 +15,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -29,6 +30,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/context_menu_params.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/render_widget_host.h"
@@ -43,6 +45,10 @@
 #include "ui/base/mojom/menu_source_type.mojom.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(ENABLE_PDF)
+#include "chrome/browser/pdf/pdf_extension_test_util.h"
+#endif  // BUILDFLAG(ENABLE_PDF)
+
 using ::testing::_;
 
 namespace ai_chat {
@@ -54,6 +60,53 @@ void ExecuteRewriteCommand(RenderViewContextMenu* context_menu) {
   context_menu->ExecuteCommand(IDC_AI_CHAT_CONTEXT_SHORTEN, 0);
   context_menu->Cancel();
 }
+
+class MockConversationHandlerClient : public mojom::ConversationUI {
+ public:
+  explicit MockConversationHandlerClient(ConversationHandler* driver) {
+    driver->Bind(conversation_handler_.BindNewPipeAndPassReceiver(),
+                 conversation_ui_receiver_.BindNewPipeAndPassRemote());
+  }
+
+  ~MockConversationHandlerClient() override = default;
+
+  void Disconnect() {
+    conversation_handler_.reset();
+    conversation_ui_receiver_.reset();
+  }
+
+  MOCK_METHOD(void,
+              OnConversationHistoryUpdate,
+              (const mojom::ConversationTurnPtr),
+              (override));
+
+  MOCK_METHOD(void, OnAPIRequestInProgress, (bool), (override));
+
+  MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError), (override));
+
+  MOCK_METHOD(void,
+              OnModelDataChanged,
+              (const std::string& conversation_model_key,
+               std::vector<mojom::ModelPtr> all_models),
+              (override));
+
+  MOCK_METHOD(void,
+              OnSuggestedQuestionsChanged,
+              (const std::vector<std::string>&,
+               mojom::SuggestionGenerationStatus),
+              (override));
+
+  MOCK_METHOD(void,
+              OnAssociatedContentInfoChanged,
+              (std::vector<mojom::AssociatedContentPtr>),
+              (override));
+
+  MOCK_METHOD(void, OnConversationDeleted, (), (override));
+
+ private:
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
+  mojo::Remote<mojom::ConversationHandler> conversation_handler_;
+};
 
 }  // namespace
 
@@ -72,9 +125,9 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
 
     base::FilePath test_data_dir =
-        base::PathService::CheckedGet(brave::DIR_TEST_DATA)
-            .AppendASCII("ai_chat");
-    https_server_.ServeFilesFromDirectory(test_data_dir);
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA);
+    https_server_.ServeFilesFromDirectory(test_data_dir.AppendASCII("ai_chat"));
+    https_server_.ServeFilesFromDirectory(test_data_dir.AppendASCII("leo"));
     ASSERT_TRUE(https_server_.Start());
   }
 
@@ -195,6 +248,67 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
     return sidebar_controller->IsActiveIndex(index);
   }
 
+  ConversationHandler* GetConversationHandler() {
+    AIChatTabHelper* helper = AIChatTabHelper::FromWebContents(web_contents());
+    if (!helper) {
+      return nullptr;
+    }
+
+    return AIChatServiceFactory::GetInstance()
+        ->GetForBrowserContext(browser()->profile())
+        ->GetOrCreateConversationHandlerForContent(helper->content_id(),
+                                                   helper->GetWeakPtr());
+  }
+
+  std::unique_ptr<testing::NiceMock<MockConversationHandlerClient>>
+  SetupMockConversationHandler(const base::Location& location) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+    ConversationHandler* conversation_handler = GetConversationHandler();
+    if (!conversation_handler) {
+      ADD_FAILURE() << "Could not get ConversationHandler";
+      return nullptr;
+    }
+
+    return std::make_unique<testing::NiceMock<MockConversationHandlerClient>>(
+        conversation_handler);
+  }
+
+  // This is to wait for the conversation history update event.
+  // Note that this event would only happen in non rewrite-in-place path.
+  void ListenForConversationHistoryUpdate(
+      testing::NiceMock<MockConversationHandlerClient>& client,
+      base::RunLoop& run_loop,
+      std::string& submitted_text,
+      const base::Location& location) {
+    EXPECT_CALL(client, OnConversationHistoryUpdate(_))
+        .WillOnce(testing::Invoke([&, location](
+                                      const mojom::ConversationTurnPtr turn) {
+          SCOPED_TRACE(testing::Message() << location.ToString());
+          ConversationHandler* conversation_handler = GetConversationHandler();
+          ASSERT_TRUE(conversation_handler);
+          auto& history = conversation_handler->GetConversationHistory();
+          ASSERT_EQ(history.size(), 1u);
+          auto& entry = history[0];
+          ASSERT_TRUE(entry);
+          ASSERT_TRUE(entry->selected_text);
+          submitted_text = *entry->selected_text;
+          run_loop.Quit();
+        }));
+  }
+
+  std::unique_ptr<TestRenderViewContextMenu> CreateContextMenu(
+      content::RenderFrameHost* target_frame,
+      bool is_editable,
+      const std::u16string& selection_text) {
+    content::ContextMenuParams params;
+    params.is_editable = is_editable;
+    params.selection_text = selection_text;
+    auto menu =
+        std::make_unique<TestRenderViewContextMenu>(*target_frame, params);
+    menu->Init();
+    return menu;
+  }
+
  private:
   std::unique_ptr<MockEngineConsumer> ai_engine_;
   content::ContentMockCertVerifier mock_cert_verifier_;
@@ -210,17 +324,9 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   auto* contents = web_contents();
 
-  // Setup a mock completion client to handle the request.
-  ai_chat::AIChatTabHelper* helper =
-      ai_chat::AIChatTabHelper::FromWebContents(contents);
-  ASSERT_TRUE(helper);
-
-  ConversationHandler* conversation_handler =
-      ai_chat::AIChatServiceFactory::GetInstance()
-          ->GetForBrowserContext(browser()->profile())
-          ->GetOrCreateConversationHandlerForContent(helper->GetContentId(),
-                                                     helper->GetWeakPtr());
-  ASSERT_TRUE(conversation_handler);
+  // This is to keep the ConversationHandler alive until the test is done.
+  auto client = SetupMockConversationHandler(FROM_HERE);
+  ASSERT_TRUE(client);
 
   // Test rewriting textarea value and verify that the response tag is ignored
   // by BraveRenderViewContextMenu
@@ -252,5 +358,113 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
                      base::unexpected(mojom::APIError::ConnectionIssue), "OK2");
   EXPECT_TRUE(IsAIChatSidebarActive());
 }
+
+IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest,
+                       SubmitSelectedText) {
+  // Mimic user opt-in by setting pref.
+  SetUserOptedIn(GetPrefs(), true);
+
+  GURL url = https_server()->GetURL("/text.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  auto* contents = web_contents();
+
+  // Setup a mock completion client to handle the request.
+  auto client = SetupMockConversationHandler(FROM_HERE);
+  ASSERT_TRUE(client);
+
+  base::RunLoop run_loop;
+  std::string submitted_text;
+  ListenForConversationHistoryUpdate(*client, run_loop, submitted_text,
+                                     FROM_HERE);
+
+  // Create a context menu with selected text.
+  content::RenderFrameHost* target_frame = contents->GetPrimaryMainFrame();
+  auto menu = CreateContextMenu(target_frame, /*is_editable=*/false,
+                                u"This is the way");
+
+  ASSERT_TRUE(menu->IsCommandIdEnabled(IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT));
+
+  // Execute the command.
+  menu->ExecuteCommand(IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT, 0);
+  run_loop.Run();
+
+  EXPECT_EQ(submitted_text, "This is the way");
+  EXPECT_TRUE(IsAIChatSidebarActive());
+}
+
+#if BUILDFLAG(ENABLE_PDF)
+IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest,
+                       SubmitSelectedTextInPDF) {
+  // Mimic user opt-in by setting pref.
+  SetUserOptedIn(GetPrefs(), true);
+
+  // Load a dummy PDF page.
+  GURL url = https_server()->GetURL("/dummy.pdf");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  ASSERT_TRUE(pdf_extension_test_util::EnsurePDFHasLoaded(web_contents()));
+
+  // Setup a mock client to listen to the conversation history update.
+  auto client = SetupMockConversationHandler(FROM_HERE);
+  ASSERT_TRUE(client);
+
+  base::RunLoop run_loop;
+  std::string submitted_text;
+  ListenForConversationHistoryUpdate(*client, run_loop, submitted_text,
+                                     FROM_HERE);
+
+  // Create a context menu on PDF frame with selected text.
+  content::RenderFrameHost* target_frame =
+      pdf_extension_test_util::GetOnlyPdfPluginFrame(web_contents());
+  auto menu = CreateContextMenu(target_frame, /*is_editable=*/false,
+                                u"This is the way");
+
+  ASSERT_TRUE(menu->IsCommandIdEnabled(IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT));
+
+  // Execute the command.
+  menu->ExecuteCommand(IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT, 0);
+  run_loop.Run();
+
+  EXPECT_EQ(submitted_text, "This is the way");
+  EXPECT_TRUE(IsAIChatSidebarActive());
+}
+
+// Rewrite commands in PDF would always go through the same path as
+// SubmitSelectedTextInPDF currently because the rewrite in place
+// implementation does not support PDF. This test is to verify that
+// it would work by going through the same path as SubmitSelectedTextInPDF.
+IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest,
+                       RewriteInPlaceDisabledInPDF) {
+  // Mimic user opt-in by setting pref.
+  SetUserOptedIn(GetPrefs(), true);
+
+  // Load a dummy PDF page.
+  GURL url = https_server()->GetURL("/dummy.pdf");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  ASSERT_TRUE(pdf_extension_test_util::EnsurePDFHasLoaded(web_contents()));
+
+  auto client = SetupMockConversationHandler(FROM_HERE);
+  ASSERT_TRUE(client);
+
+  base::RunLoop run_loop;
+  std::string submitted_text;
+  ListenForConversationHistoryUpdate(*client, run_loop, submitted_text,
+                                     FROM_HERE);
+
+  // Create a context menu on PDF frame with selected text.
+  content::RenderFrameHost* target_frame =
+      pdf_extension_test_util::GetOnlyPdfPluginFrame(web_contents());
+  auto menu =
+      CreateContextMenu(target_frame, /*is_editable=*/true, u"This is the way");
+
+  ASSERT_TRUE(menu->IsCommandIdEnabled(IDC_AI_CHAT_CONTEXT_SHORTEN));
+
+  // Execute the command.
+  menu->ExecuteCommand(IDC_AI_CHAT_CONTEXT_SHORTEN, 0);
+  run_loop.Run();
+
+  EXPECT_EQ(submitted_text, "This is the way");
+  EXPECT_TRUE(IsAIChatSidebarActive());
+}
+#endif  // BUILDFLAG(ENABLE_PDF)
 
 }  // namespace ai_chat

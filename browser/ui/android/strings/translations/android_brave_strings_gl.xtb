@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Envía informes de diagnóstico automaticamente cando falle ou se bloquee o navegador de Brave para que poidamos mellorar a estabilidade dos produtos de Brave.</translation>
 <translation id="7977176350719484850">Est. de datos\naforrados</translation>
 <translation id="9008534313521214777">Est. de tempo\naforrado</translation>
+<translation id="8347743943525229984">Permitir as enquisas de Brave</translation>
+<translation id="6022939994702081659">Permite que Brave amose ligazóns a enquisas privadas na páxina de novo separador. As enquisas axúdannos a crear mellores funcións e a medir a eficacia das campañas publicitarias baseadas no navegador.</translation>
+<translation id="7746496306508543965">Máis información sobre as enquisas de Brave</translation>
 <translation id="410351446219883937">Reprodución automática</translation>
 <translation id="7445411102860286510">Permitir aos sitios reproducir automaticamente vídeos silenciados (recomendado)</translation>
 <translation id="7837721118676387834">Permite a reprodución automática de vídeos silenciados dun sitio específico.</translation>
@@ -632,7 +635,6 @@ Seguro que queres facelo?</translation>
 <translation id="3961126209136843111">Importar unha carteira existente</translation>
 <translation id="4811736040444856406">Mostrar frase de recuperación</translation>
 <translation id="4359319875297001084">Queres importar das carteiras de criptomoedas herdadas de Brave?</translation>
-<translation id="3157931365184549694">Restaurar</translation>
 <translation id="5844138175312846408">Xa tes unha carteira?</translation>
 <translation id="2502258949541727762">Antes de comezar</translation>
 <translation id="4303748097351941030">Redes compatibles</translation>
@@ -793,7 +795,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="1426320910664514906">Límite de gas</translation>
 <translation id="6389441740143786465">Desactivar menú para compartir</translation>
 <translation id="9065203028668620118">Editar</translation>
-<translation id="473775607612524610">Actualizar</translation>
 <translation id="479795390141144417">Non se puido actualizar a conta.</translation>
 <translation id="8084782383392198011">O nome da conta non pode quedar baleiro.</translation>
 <translation id="5045550434625856497">Contrasinal incorrecto</translation>

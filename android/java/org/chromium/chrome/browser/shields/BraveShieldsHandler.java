@@ -17,16 +17,19 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.StyleSpan;
-import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -37,9 +40,11 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
@@ -63,11 +68,14 @@ import org.chromium.components.browser_ui.widget.ChromeDialog;
 import org.chromium.components.version_info.BraveVersionConstants;
 import org.chromium.ui.widget.ChromeImageButton;
 import org.chromium.webcompat_reporter.mojom.ReportInfo;
+import org.chromium.webcompat_reporter.mojom.WebcompatCategory;
+import org.chromium.webcompat_reporter.mojom.WebcompatCategoryItem;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** Object responsible for handling the creation, showing, hiding of the BraveShields menu. */
@@ -89,6 +97,51 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         public int mScriptsBlocked;
         public int mFingerprintsBlocked;
         public final ArrayList<String> mBlockerNames;
+    }
+
+    public static class CategorySpinnerItem {
+        private final int mId;
+        private final String mText;
+        private final String mValue;
+
+        public CategorySpinnerItem(int id, String text, String value) {
+            this.mId = id;
+            this.mText = text;
+            this.mValue = value;
+        }
+
+        public CategorySpinnerItem(WebcompatCategoryItem item) {
+            this.mId = item.category;
+            this.mText = item.localizedTitle;
+            this.mValue = item.value;
+        }
+
+        public int getId() {
+            return mId;
+        }
+
+        public String getText() {
+            return mText;
+        }
+
+        public String getValue() {
+            return mValue;
+        }
+
+        public boolean isPlaceholder() {
+            return mId == -1;
+        }
+
+        public boolean isSubmitAllowed(String additionalInfoText) {
+            return !isPlaceholder()
+                    && (mId != WebcompatCategory.OTHER
+                            || (mId == WebcompatCategory.OTHER && !additionalInfoText.isEmpty()));
+        }
+
+        @Override
+        public String toString() {
+            return mText;
+        }
     }
 
     private Context mContext;
@@ -137,6 +190,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private ImageView mImageView;
     private TextView mViewScreenshot;
     private byte[] mScreenshotBytes;
+
+    private String mSelectedWebcompatCategory;
+    private Spinner mIssueCategorySpinner;
+    private ArrayAdapter<CategorySpinnerItem> mIssueCategorySpinnerAdapter;
 
     private WebcompatReporterHandler mWebcompatReporterHandler;
 
@@ -259,7 +316,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             anchorView = mHardwareButtonMenuAnchor;
         }
 
-        ContextThemeWrapper wrapper = new ContextThemeWrapper(mContext, R.style.OverflowMenuThemeOverlay);
         Point pt = new Point();
         ((Activity)mContext).getWindowManager().getDefaultDisplay().getSize(pt);
         // Get the height and width of the display.
@@ -295,12 +351,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         PopupWindow popupWindow = new PopupWindow(mPopupView, width, height, focusable);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         popupWindow.setElevation(20);
-        Rect bgPadding = new Rect();
-        int popupWidth =
-                wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
-                        + bgPadding.left
-                        + bgPadding.right;
-        popupWindow.setWidth(popupWidth);
         // Set the location of the window on the screen
         mAnchorView = anchorView;
         if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
@@ -886,7 +936,62 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                         mViewScreenshot.setVisibility(View.GONE);
                     }
                 });
+
+        mIssueCategorySpinnerAdapter =
+                new ArrayAdapter<>(
+                        mContext, android.R.layout.simple_spinner_item, new ArrayList<>());
+
+        mIssueCategorySpinner = mReportBrokenSiteLayout.findViewById(R.id.issue_category_spinner);
+        mIssueCategorySpinner.setAdapter(mIssueCategorySpinnerAdapter);
+
+        if (mWebcompatReporterHandler != null) {
+            mWebcompatReporterHandler.getWebcompatCategories(
+                    (categories) -> {
+                        if (categories != null && categories.length > 0) {
+                            mIssueCategorySpinnerAdapter.clear();
+                            List<CategorySpinnerItem> items = new ArrayList<>();
+                            items.add(
+                                    new CategorySpinnerItem(
+                                            -1,
+                                            mContext.getString(R.string.issue_category_placeholder),
+                                            ""));
+                            for (WebcompatCategoryItem cat : categories) {
+                                items.add(new CategorySpinnerItem(cat));
+                            }
+                            mIssueCategorySpinnerAdapter.addAll(items);
+                            mIssueCategorySpinnerAdapter.notifyDataSetChanged();
+                        } else {
+                            mIssueCategorySpinnerAdapter.addAll(new ArrayList<>());
+                            mIssueCategorySpinnerAdapter.notifyDataSetChanged();
+                        }
+                    });
+        }
+
         mEditTextDetails = mReportBrokenSiteLayout.findViewById(R.id.details_info_text);
+        mEditTextDetails.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                    @Override
+                    public void afterTextChanged(Editable newValue) {
+                        int position = mIssueCategorySpinner.getSelectedItemPosition();
+                        AdapterView.OnItemSelectedListener listener =
+                                mIssueCategorySpinner.getOnItemSelectedListener();
+                        if (listener != null) {
+                            listener.onItemSelected(
+                                    mIssueCategorySpinner,
+                                    mIssueCategorySpinner.getSelectedView(),
+                                    position,
+                                    mIssueCategorySpinner.getItemIdAtPosition(position));
+                        }
+                    }
+                });
+
         mEditTextContact = mReportBrokenSiteLayout.findViewById(R.id.contact_info_text);
         mTextContactInfoApopup =
                 mReportBrokenSiteLayout.findViewById(R.id.contact_info_apopup_label);
@@ -913,6 +1018,34 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                 contactInfoSaveFlag ? View.VISIBLE : View.GONE);
                     });
         }
+        mIssueCategorySpinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(
+                            AdapterView<?> parent, View view, int position, long id) {
+                        final CategorySpinnerItem item =
+                                (CategorySpinnerItem) parent.getItemAtPosition(position);
+
+                        final boolean isSubmitAllowed =
+                                item.isSubmitAllowed(mEditTextDetails.getText().toString());
+                        mSubmitButton.setEnabled(isSubmitAllowed);
+                        mSubmitButton.setBackground(
+                                ResourcesCompat.getDrawable(
+                                        mContext.getResources(),
+                                        isSubmitAllowed
+                                                ? R.drawable.orange_rounded_button
+                                                : R.drawable.set_default_rounded_button_disabled,
+                                        /* theme= */ null));
+                        if (isSubmitAllowed) {
+                            mSelectedWebcompatCategory = item.getValue();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        /* Unused. */
+                    }
+                });
     }
 
     private ReportInfo getReportInfo(String siteUrl) {
@@ -921,7 +1054,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         reportInfo.braveVersion = BraveVersionConstants.VERSION;
         reportInfo.reportUrl = siteUrl;
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
-        reportInfo.category = "";
+        reportInfo.category = mSelectedWebcompatCategory;
         reportInfo.details = mEditTextDetails.getText().toString();
         reportInfo.contact = mEditTextContact.getText().toString();
         return reportInfo;

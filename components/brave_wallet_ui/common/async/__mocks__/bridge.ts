@@ -63,7 +63,7 @@ import { mockNFTMetadata } from '../../../stories/mock-data/mock-nft-metadata'
 import {
   coinMarketMockData, //
 } from '../../../stories/mock-data/mock-coin-market-data'
-import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
+import { mockUniswapOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 import { WalletApiDataOverrides } from '../../../constants/testing_types'
 import {
   mockAddChainRequest,
@@ -408,7 +408,9 @@ export class MockedWalletApiProxy {
     },
     getPendingAddSuggestTokenRequests: async () => {
       return {
-        requests: [{ origin: mockOriginInfo, token: mockBasicAttentionToken }],
+        requests: [
+          { origin: mockUniswapOriginInfo, token: mockBasicAttentionToken },
+        ],
       }
     },
     removeUserAsset: async (token) => {
@@ -510,6 +512,12 @@ export class MockedWalletApiProxy {
         return { network: mockSolanaMainnetNetwork }
       }
       return { network: mockEthMainnet }
+    },
+
+    writeToClipboard: async (text: string, isConfidential: boolean) => {
+      return {
+        data: true,
+      }
     },
   }
 

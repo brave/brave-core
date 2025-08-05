@@ -371,6 +371,7 @@ brave_java_resources = [
   "java/res/drawable/ic_brave_smiley_happy.xml",
   "java/res/drawable/ic_brave_smiley_sad.xml",
   "java/res/drawable/ic_brave_vpn_graphic.xml",
+  "java/res/drawable/ic_browser_customizable_shortcut.xml",
   "java/res/drawable/ic_browser_mobile_tabs.xml",
   "java/res/drawable/ic_browser_mobile_tabs_bottom.xml",
   "java/res/drawable/ic_browser_mobile_tabs_top.xml",
@@ -495,6 +496,7 @@ brave_java_resources = [
   "java/res/drawable/ic_payout_status_pending.xml",
   "java/res/drawable/ic_phantom.xml",
   "java/res/drawable/ic_phone.xml",
+  "java/res/drawable/ic_picture_in_picture.xml",
   "java/res/drawable/ic_plans.xml",
   "java/res/drawable/ic_popular_sources.xml",
   "java/res/drawable/ic_privacy_reports.xml",
@@ -977,11 +979,4 @@ brave_android_features_java_resources = [
   "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_cloud_left.xml",
   "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_cloud_right.xml",
   "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_top_window.xml",
-  "java/res/drawable-night/tablet_tab_switcher_empty_state_illustration.xml",
 ]
-
-# XML preprocessing
-brave_java_preprocess_xml_sources =
-    [ "//chrome/android/java/res/menu/main_menu.xml" ]
-brave_java_preprocess_module_sources =
-    [ "//brave/android/preprocess/xml/menu_main_menu_xml.py" ]

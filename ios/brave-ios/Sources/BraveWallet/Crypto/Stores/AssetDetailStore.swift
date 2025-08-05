@@ -50,7 +50,6 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   @Published private(set) var isLoadingAccountBalances: Bool = false
   @Published private(set) var nonZeroBalanceAccounts: [AccountAssetViewModel] = []
   @Published private(set) var transactionSections: [TransactionSection] = []
-  @Published private(set) var isBuySupported: Bool = false
   @Published private(set) var isSendSupported: Bool = false
   @Published private(set) var isSwapSupported: Bool = false
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
@@ -63,6 +62,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     }
   }
   @Published private(set) var network: BraveWallet.NetworkInfo?
+  /// For buy option
+  @Published private(set) var meldCryptoCurrency: BraveWallet.MeldCryptoCurrency?
 
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
@@ -70,6 +71,10 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     nonZeroBalanceAccounts
       .compactMap { Double($0.balance) }
       .reduce(0, +)
+  }
+
+  var isBuySupported: Bool {
+    meldCryptoCurrency != nil
   }
 
   private let assetRatioService: BraveWalletAssetRatioService
@@ -118,6 +123,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   }
 
   // All account info that has the same coin type as this asset's
+  // This should only be used for asset from token registry
+  // Token from market does not guarantee the correct coin type.
   var allAccountsForToken: [BraveWallet.AccountInfo] = []
   private var depositableTokens: [BraveWallet.BlockchainToken] = []
 
@@ -213,7 +220,9 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           allNetworks.first(where: { $0.coin == token.coin && $0.chainId == token.chainId })
           ?? selectedNetwork
         self.network = network
-        self.isBuySupported = await self.isBuyButtonSupported(in: network, for: token)
+        let (matchedCryptoCurrency, _) =
+          await meldIntegrationService.convertToMeldCryptoCurrency(for: assetDetailToken)
+        self.meldCryptoCurrency = matchedCryptoCurrency
         self.isSendSupported = true
         self.isSwapSupported = await swapService.isSwapSupported(chainId: token.chainId)
 
@@ -346,7 +355,9 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           .flatMap(\.tokens)
         self.depositableTokens = allUserTokens + allBlockchainTokens
 
-        self.isBuySupported = await isBuyButtonSupported(in: nil, for: assetDetailToken)
+        let (matchedCryptoCurrency, _) =
+          await meldIntegrationService.convertToMeldCryptoCurrency(for: assetDetailToken)
+        self.meldCryptoCurrency = matchedCryptoCurrency
 
         // fetch accounts if this coinMarket is depositable
         if let depositableToken = convertCoinMarketToDepositableToken(symbol: coinMarket.symbol) {
@@ -368,41 +379,6 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.transactionSections = []
       }
     }
-  }
-
-  @MainActor private func isBuyButtonSupported(
-    in network: BraveWallet.NetworkInfo?,
-    for token: BraveWallet.BlockchainToken
-  ) async -> Bool {
-    if let network,
-      network.isNativeAsset(token)
-    {
-      return true
-    }
-    let (allMeldSupportedTokens, _) = await meldIntegrationService.cryptoCurrencies(
-      filter: .init(
-        countries: nil,
-        fiatCurrencies: nil,
-        cryptoCurrencies: nil,
-        cryptoChains: network?.chainId,
-        serviceProviders: nil,
-        paymentMethodTypes: nil,
-        statuses: nil
-      )
-    )
-    guard let allMeldSupportedTokens else {
-      return false
-    }
-    return allMeldSupportedTokens.contains(where: {
-      if let contractAddress = $0.contractAddress,
-        let chainId = $0.chainId
-      {
-        return contractAddress.caseInsensitiveCompare(token.contractAddress) == .orderedSame
-          && chainId.caseInsensitiveCompare(token.chainId) == .orderedSame
-      } else {
-        return $0.displaySymbol.caseInsensitiveCompare(token.symbol) == .orderedSame
-      }
-    })
   }
 
   func convertCoinMarketToDepositableToken(symbol: String) -> BraveWallet.BlockchainToken? {
@@ -609,6 +585,13 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     self.transactionDetailsStore = nil
   }
 
+  @MainActor func accountCreationNeededForBuy() async -> Bool {
+    guard let meldCryptoCurrency else {
+      return false
+    }
+    return await !keyringService.isAccountAvailable(for: meldCryptoCurrency.coin)
+  }
+
   /// Should be called after dismissing create account. Returns true if an account was created
   @MainActor func handleDismissAddAccount() async -> Bool {
     if await keyringService.isAccountAvailable(
@@ -707,6 +690,9 @@ extension AssetDetailStore: BraveWalletBraveWalletServiceObserver {
   }
 
   func onDefaultSolanaWalletChanged(wallet: BraveWallet.DefaultWallet) {
+  }
+
+  func onDefaultCardanoWalletChanged(wallet: BraveWallet.DefaultWallet) {
   }
 
   func onDiscoverAssetsStarted() {

@@ -7,7 +7,6 @@
 
 #include "base/base64url.h"
 #include "base/path_service.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/types/zip.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -25,6 +24,7 @@
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -130,8 +130,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     base::Base64UrlEncode(destination_url.spec(),
                           base::Base64UrlEncodePolicy::OMIT_PADDING,
                           &encoded_destination);
-    const std::string query =
-        base::StringPrintf("url=%s", encoded_destination.c_str());
+    const std::string query = absl::StrFormat("url=%s", encoded_destination);
     GURL::Replacements replacement;
     replacement.SetQueryStr(query);
     return navigation_url.ReplaceComponents(replacement);

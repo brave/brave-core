@@ -14,7 +14,6 @@
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -33,6 +32,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #if !BUILDFLAG(IS_IOS)
 #include "brave/components/brave_referrals/common/pref_names.h"
@@ -57,8 +57,8 @@ constexpr char kTestHost[] = "https://localhost:8443";
 std::string FormatUTCDateFromTime(const base::Time& time) {
   base::Time::Exploded exploded;
   time.UTCExplode(&exploded);
-  return base::StringPrintf("%d-%02d-%02d", exploded.year, exploded.month,
-                            exploded.day_of_month);
+  return absl::StrFormat("%d-%02d-%02d", exploded.year, exploded.month,
+                         exploded.day_of_month);
 }
 
 std::vector<std::string> SplitMessageLayers(const std::string& message) {

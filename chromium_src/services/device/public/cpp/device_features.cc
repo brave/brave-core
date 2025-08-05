@@ -6,7 +6,7 @@
 #include "services/device/public/cpp/device_features.h"
 
 #define kLocationProviderManagerParam kLocationProviderManagerParamUnused
-#include "src/services/device/public/cpp/device_features.cc"
+#include <services/device/public/cpp/device_features.cc>
 #undef kLocationProviderManagerParam
 
 #include "base/feature_override.h"

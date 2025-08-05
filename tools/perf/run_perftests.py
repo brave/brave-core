@@ -41,7 +41,8 @@ with path_util.SysPath(path_util.GetPyJson5Dir()):
   # pylint: enable=import-error # pytype: enable=import-error
 
 
-def load_config(config: str, options: CommonOptions) -> dict:
+def load_config(options: CommonOptions) -> dict:
+  config = options.config
   if config.startswith('https://'):  # URL to download the config
     _, config_path = tempfile.mkstemp(dir=options.working_directory,
                                       prefix='config-')
@@ -49,18 +50,6 @@ def load_config(config: str, options: CommonOptions) -> dict:
 
   elif os.path.isfile(config):  # Full config path
     config_path = config
-  elif config == 'auto':  # Select the config by machine_id and chromium
-    if options.machine_id is None:
-      raise RuntimeError('Set --machine-id to use config=auto')
-
-    prefix = 'chromium' if options.chromium else 'brave'
-    config = (f'{prefix}-{options.target_os}-' +
-              f'{options.target_arch}-{options.machine_id}.json5')
-    logging.info('Using %s as config=auto', config)
-    config_path = os.path.join(path_util.GetBravePerfConfigDir(), 'ci', config)
-
-    if not os.path.isfile(config_path):
-      raise RuntimeError(f'No config file {config_path}')
   else:  # config is a relative path
     config_path = os.path.join(path_util.GetBravePerfConfigDir(), config)
     if not os.path.isfile(config_path):
@@ -100,7 +89,7 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
 
   os.makedirs(options.working_directory, exist_ok=True)
 
-  json_config = load_config(args.config, options)
+  json_config = load_config(options)
   config = perf_config.PerfConfig(json_config)
 
   if options.is_android:
@@ -125,10 +114,10 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
     if options.chromium:
       return 0  # A build with !options.chromium will update the both profiles
     options.chromium = True
-    chromium_config = perf_config.PerfConfig(load_config(args.config, options))
+    chromium_config = perf_config.PerfConfig(load_config(options))
     chromium_config.runners[0].label = 'chromium-rebase'
     options.chromium = False
-    brave_config = perf_config.PerfConfig(load_config(args.config, options))
+    brave_config = perf_config.PerfConfig(load_config(options))
     brave_config.runners[0].label = 'brave-rebase'
     return 0 if profile_tools.RunUpdateProfile(brave_config, chromium_config,
                                                options) else 1

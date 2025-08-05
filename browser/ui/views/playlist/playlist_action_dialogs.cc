@@ -14,7 +14,6 @@
 #include "base/check_op.h"
 #include "base/logging.h"
 #include "base/notreached.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -31,6 +30,7 @@
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/cursor/cursor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
@@ -180,7 +180,7 @@ class BoundedTextfield : public views::Textfield {
 
   void UpdateLengthLabel() {
     length_label_->SetText(base::UTF8ToUTF16(
-        base::StringPrintf("%zu/%zu", GetText().length(), max_length_)));
+        absl::StrFormat("%zu/%zu", GetText().length(), max_length_)));
   }
 
   const size_t max_length_;

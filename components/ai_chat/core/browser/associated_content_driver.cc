@@ -20,8 +20,8 @@
 #include "base/one_shot_event.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/brave_search_responses.h"
-#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -65,18 +65,6 @@ AssociatedContentDriver::AssociatedContentDriver(
 
 AssociatedContentDriver::~AssociatedContentDriver() = default;
 
-int AssociatedContentDriver::GetContentId() const {
-  return current_navigation_id_;
-}
-
-GURL AssociatedContentDriver::GetURL() const {
-  return GetPageURL();
-}
-
-std::u16string AssociatedContentDriver::GetTitle() const {
-  return GetPageTitle();
-}
-
 void AssociatedContentDriver::GetContent(GetPageContentCallback callback) {
   // Determine whether we're adding our callback to the queue or the
   // we need to call GetPageContent.
@@ -88,8 +76,7 @@ void AssociatedContentDriver::GetContent(GetPageContentCallback callback) {
   // Register callback to fire when the event is complete
   auto handle_existing_fetch_complete = base::BindOnce(
       &AssociatedContentDriver::OnExistingGeneratePageContentComplete,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-      current_navigation_id_);
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback), content_id());
   on_page_text_fetch_complete_->Post(FROM_HERE,
                                      std::move(handle_existing_fetch_complete));
 
@@ -102,18 +89,17 @@ void AssociatedContentDriver::GetContent(GetPageContentCallback callback) {
   // event when done.
   GetPageContent(
       base::BindOnce(&AssociatedContentDriver::OnGeneratePageContentComplete,
-                     weak_ptr_factory_.GetWeakPtr(), current_navigation_id_),
+                     weak_ptr_factory_.GetWeakPtr(), content_id()),
       content_invalidation_token_);
 }
 
 void AssociatedContentDriver::OnExistingGeneratePageContentComplete(
     GetPageContentCallback callback,
     int64_t navigation_id) {
-  if (navigation_id != current_navigation_id_) {
+  if (navigation_id != content_id()) {
     return;
   }
-  std::move(callback).Run(cached_text_content_, is_video_,
-                          content_invalidation_token_);
+  std::move(callback).Run(cached_page_content());
 }
 
 void AssociatedContentDriver::OnGeneratePageContentComplete(
@@ -125,7 +111,7 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
   DVLOG(4) << "Contents(is_video=" << is_video
            << ", invalidation_token=" << invalidation_token
            << "): " << contents_text;
-  if (navigation_id != current_navigation_id_) {
+  if (navigation_id != content_id()) {
     return;
   }
 
@@ -133,13 +119,12 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
   // content was not re-fetched and we can use our existing cache.
   if (invalidation_token.empty() ||
       (invalidation_token != content_invalidation_token_)) {
-    is_video_ = is_video;
     // Cache page content on instance so we don't always have to re-fetch
     // if the content fetcher knows the content won't have changed and the fetch
     // operation is expensive (e.g. network).
-    cached_text_content_ = contents_text;
-    content_invalidation_token_ = invalidation_token;
-    if (contents_text.empty()) {
+    set_cached_page_content(PageContent(std::move(contents_text), is_video));
+
+    if (cached_page_content().content.empty()) {
       DVLOG(1) << __func__ << ": No data";
     }
   }
@@ -148,33 +133,24 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
   on_page_text_fetch_complete_ = nullptr;
 }
 
-std::string_view AssociatedContentDriver::GetCachedTextContent() const {
-  return cached_text_content_;
-}
-
-bool AssociatedContentDriver::GetCachedIsVideo() const {
-  return is_video_;
-}
-
 void AssociatedContentDriver::GetStagedEntriesFromContent(
     GetStagedEntriesCallback callback) {
   // At the moment we only know about staged entries from:
   // - Brave Search results page
-  if (!IsBraveSearchSERP(GetPageURL())) {
+  if (!IsBraveSearchSERP(url())) {
     std::move(callback).Run(std::nullopt);
     return;
   }
-  GetSearchSummarizerKey(
-      base::BindOnce(&AssociatedContentDriver::OnSearchSummarizerKeyFetched,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     current_navigation_id_));
+  GetSearchSummarizerKey(base::BindOnce(
+      &AssociatedContentDriver::OnSearchSummarizerKeyFetched,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback), content_id()));
 }
 
 void AssociatedContentDriver::OnSearchSummarizerKeyFetched(
     GetStagedEntriesCallback callback,
     int64_t navigation_id,
     const std::optional<std::string>& key) {
-  if (!key || key->empty() || navigation_id != current_navigation_id_) {
+  if (!key || key->empty() || navigation_id != content_id()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -206,7 +182,7 @@ void AssociatedContentDriver::OnSearchQuerySummaryFetched(
     GetStagedEntriesCallback callback,
     int64_t navigation_id,
     api_request_helper::APIRequestResult result) {
-  if (!result.Is2XXResponseCode() || navigation_id != current_navigation_id_) {
+  if (!result.Is2XXResponseCode() || navigation_id != content_id()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -244,11 +220,6 @@ AssociatedContentDriver::ParseSearchQuerySummaryResponse(
 }
 
 void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
-  // Reset state for next navigated Page
-  current_navigation_id_ = navigation_id;
-  cached_text_content_.clear();
-  content_invalidation_token_.clear();
-  is_video_ = false;
   api_request_helper_.reset();
 
   AssociatedContentDelegate::OnNewPage(navigation_id);

@@ -7,6 +7,8 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { initLocale } from 'brave-ui'
 
+import { setIconBasePath } from '@brave/leo/react/icon'
+
 import { loadTimeData } from '../../../common/loadTimeData'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import shieldsDarkTheme from './theme/shields-dark'
@@ -17,6 +19,8 @@ import Container from './container'
 import { useSiteBlockInfoData, useSiteSettingsData } from './state/hooks'
 import DataContext from './state/context'
 import { ViewType } from './state/component_types'
+
+setIconBasePath('//resources/brave-icons')
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()

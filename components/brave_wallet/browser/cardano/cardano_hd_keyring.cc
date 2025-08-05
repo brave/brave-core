@@ -41,6 +41,17 @@ mojom::CardanoKeyId CardanoDefaultDelegationKeyId() {
   return mojom::CardanoKeyId(mojom::CardanoKeyRole::kStaking, 0);
 }
 
+CardanoAddress MakeCaranoAddressFromKeys(
+    bool is_testnet,
+    const HDKeyEd25519Slip23& payment_hd_key,
+    const HDKeyEd25519Slip23& delegation_hd_key) {
+  return CardanoAddress::FromParts(
+      is_testnet,
+      Blake2bHash<kPaymentKeyHashLength>({payment_hd_key.GetPublicKeyAsSpan()}),
+      Blake2bHash<kStakeKeyHashLength>(
+          {delegation_hd_key.GetPublicKeyAsSpan()}));
+}
+
 }  // namespace
 
 CardanoHDKeyring::CardanoHDKeyring(base::span<const uint8_t> entropy,
@@ -66,11 +77,8 @@ mojom::CardanoAddressPtr CardanoHDKeyring::GetAddress(
   }
 
   return mojom::CardanoAddress::New(
-      CardanoAddress::FromParts(IsTestnet(),
-                                Blake2bHash<kPaymentKeyHashLength>(
-                                    {payment_hd_key->GetPublicKeyAsSpan()}),
-                                Blake2bHash<kStakeKeyHashLength>(
-                                    {delegation_hd_key->GetPublicKeyAsSpan()}))
+      MakeCaranoAddressFromKeys(IsTestnet(), *payment_hd_key,
+                                *delegation_hd_key)
           .ToString(),
       payment_key_id.Clone());
 }
@@ -87,10 +95,10 @@ std::optional<std::string> CardanoHDKeyring::AddNewHDAccount(uint32_t index) {
   return "";
 }
 
-std::optional<std::array<uint8_t, kCardanoSignatureSize>>
-CardanoHDKeyring::SignMessage(uint32_t account,
-                              const mojom::CardanoKeyId& key_id,
-                              base::span<const uint8_t> message) {
+std::optional<CardanoSignMessageResult> CardanoHDKeyring::SignMessage(
+    uint32_t account,
+    const mojom::CardanoKeyId& key_id,
+    base::span<const uint8_t> message) {
   auto hd_key = DeriveKey(account, key_id);
   if (!hd_key) {
     return std::nullopt;
@@ -100,11 +108,10 @@ CardanoHDKeyring::SignMessage(uint32_t account,
     return std::nullopt;
   }
 
-  std::array<uint8_t, kCardanoSignatureSize> result;
-  base::span(result).first<kEd25519PublicKeySize>().copy_from_nonoverlapping(
-      hd_key->GetPublicKeyAsSpan());
-  base::span(result).last<kEd25519SignatureSize>().copy_from_nonoverlapping(
-      *signature);
+  CardanoSignMessageResult result;
+  base::span(result.pubkey)
+      .copy_from_nonoverlapping(hd_key->GetPublicKeyAsSpan());
+  base::span(result.signature).copy_from_nonoverlapping(*signature);
 
   return result;
 }

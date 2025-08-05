@@ -167,7 +167,7 @@ public class BrowserViewController: UIViewController {
   var customSearchBarButtonItemGroup: UIBarButtonItemGroup?
 
   public let windowId: UUID
-  let profile: Profile
+  let profile: LegacyBrowserProfile
   let attributionManager: AttributionManager
   let braveCore: BraveCoreMain
   let profileController: BraveProfileController
@@ -276,7 +276,7 @@ public class BrowserViewController: UIViewController {
 
   public init(
     windowId: UUID,
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     attributionManager: AttributionManager,
     braveCore: BraveCoreMain,
     profileController: BraveProfileController,
@@ -509,6 +509,7 @@ public class BrowserViewController: UIViewController {
     Preferences.PrivacyReports.captureShieldsData.observe(from: self)
     Preferences.PrivacyReports.captureVPNAlerts.observe(from: self)
     Preferences.Wallet.defaultEthWallet.observe(from: self)
+    Preferences.Wallet.defaultSolWallet.observe(from: self)
 
     if rewards.rewardsAPI != nil {
       // Ledger was started immediately due to user having ads enabled
@@ -2892,11 +2893,9 @@ extension BrowserViewController: PreferencesObserver {
       ])
       tabManager.reloadSelectedTab()
     case Preferences.General.youtubeHighQuality.key:
+      let status = Reachability.shared.status
       tabManager.allTabs.forEach {
-        YoutubeQualityScriptHandler.setEnabled(
-          option: Preferences.General.youtubeHighQuality,
-          for: $0
-        )
+        $0.youtubeQualityTabHelper?.setHighQuality(networkStatus: status)
       }
     case Preferences.Playlist.enablePlaylistURLBarButton.key:
       let selectedTab = tabManager.selectedTab

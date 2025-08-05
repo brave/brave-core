@@ -36,7 +36,7 @@ source_set("unit_tests") {
     "//components/pdf/common:constants",
     "//content/test:test_support",
     "//pdf:buildflags",
-    "//testing/gtest:gtest",
+    "//testing/gtest",
   ]
 
   if (enable_pdf) {

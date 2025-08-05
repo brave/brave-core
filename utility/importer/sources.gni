@@ -25,7 +25,7 @@ if (!is_android) {
   brave_utility_importer_deps += [
     "//base",
     "//brave/app:brave_generated_resources_grit",
-    "//brave/common/importer:importer",
+    "//brave/common/importer",
     "//brave/common/importer:interfaces",
     "//chrome/app:branded_strings",
     "//components/os_crypt/sync",

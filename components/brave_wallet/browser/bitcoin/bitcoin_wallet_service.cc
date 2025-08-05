@@ -20,7 +20,6 @@
 #include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_fetch_raw_transactions_task.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_knapsack_solver.h"
@@ -35,6 +34,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
 
@@ -70,11 +70,11 @@ std::string MakeHwPath(const mojom::AccountIdPtr& account,
                        const mojom::BitcoinKeyIdPtr& key_id) {
   CHECK(IsBitcoinHardwareKeyring(account->keyring_id));
   if (account->keyring_id == mojom::KeyringId::kBitcoinHardware) {
-    return base::StringPrintf("84'/0'/%d'/%d/%d", account->account_index,
-                              key_id->change, key_id->index);
+    return absl::StrFormat("84'/0'/%d'/%d/%d", account->account_index,
+                           key_id->change, key_id->index);
   } else if (account->keyring_id == mojom::KeyringId::kBitcoinHardwareTestnet) {
-    return base::StringPrintf("84'/1'/%d'/%d/%d", account->account_index,
-                              key_id->change, key_id->index);
+    return absl::StrFormat("84'/1'/%d'/%d/%d", account->account_index,
+                           key_id->change, key_id->index);
   }
   NOTREACHED();
 }

@@ -11,7 +11,7 @@
   friend class BraveBookmarkBarView;               \
   virtual bool UpdateOtherAndManagedButtonsVisibility
 
-#include "src/chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/bookmarks/bookmark_bar_view.h>  // IWYU pragma: export
 
 #undef UpdateOtherAndManagedButtonsVisibility
 

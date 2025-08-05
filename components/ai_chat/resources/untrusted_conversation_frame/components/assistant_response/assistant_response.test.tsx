@@ -8,31 +8,8 @@ import '@testing-library/jest-dom'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import * as Mojom from '../../../common/mojom'
+import { getCompletionEvent, getWebSourcesEvent } from '../../../common/test_data_utils'
 import AssistantResponse from '.'
-
-const eventTemplate: Mojom.ConversationEntryEvent = {
-  completionEvent: undefined,
-  searchQueriesEvent: undefined,
-  searchStatusEvent: undefined,
-  selectedLanguageEvent: undefined,
-  conversationTitleEvent: undefined,
-  sourcesEvent: undefined,
-  contentReceiptEvent: undefined
-}
-
-function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
-  return {
-    ...eventTemplate,
-    completionEvent: { completion: text }
-  }
-}
-
-function getWebSourcesEvent(sources: Mojom.WebSource[]): Mojom.ConversationEntryEvent {
-  return {
-    ...eventTemplate,
-    sourcesEvent: { sources }
-  }
-}
 
 test('AssistantResponse should include expandable sources', async () => {
   const testEntry: Mojom.ConversationTurn = {
@@ -45,6 +22,8 @@ test('AssistantResponse should include expandable sources', async () => {
     createdTime: { internalValue: BigInt('13278618001000000') },
     edits: undefined,
     fromBraveSearchSERP: false,
+    uploadedFiles: undefined,
+    modelKey: undefined,
     events: [
       getCompletionEvent('test completion'),
       getWebSourcesEvent([
@@ -60,7 +39,12 @@ test('AssistantResponse should include expandable sources', async () => {
     ]
   }
   render(<AssistantResponse
-            entry={testEntry} isEntryInProgress={false} allowedLinks={[]} />)
+            events={testEntry.events!}
+            isEntryInteractivityAllowed={false}
+            isLeoModel={true}
+            isEntryInProgress={false}
+            allowedLinks={[]}
+          />)
   // There should be the first items showing
   let links = screen.getAllByRole('link')
   expect(links).toHaveLength(4)

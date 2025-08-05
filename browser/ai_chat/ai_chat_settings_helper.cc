@@ -125,15 +125,15 @@ void AIChatSettingsHelper::GetModelsWithSubtitles(
       } else if (model->key == "chat-qwen") {
         modelWithSubtitle.subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_SUBTITLE);
-      } else if (model->key == "chat-vision-basic") {
-        modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_VISION_BASIC_SUBTITLE);
       } else if (model->key == "chat-deepseek-r1") {
         modelWithSubtitle.subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE);
       } else if (model->key == "chat-automatic") {
         modelWithSubtitle.subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE);
+      } else if (model->key == "chat-gemma") {
+        modelWithSubtitle.subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE);
       }
     }
 

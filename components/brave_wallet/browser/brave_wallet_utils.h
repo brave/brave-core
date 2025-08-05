@@ -54,16 +54,17 @@ void SetDefaultEthereumWallet(PrefService* prefs,
                               mojom::DefaultWallet default_wallet);
 void SetDefaultSolanaWallet(PrefService* prefs,
                             mojom::DefaultWallet default_wallet);
+void SetDefaultCardanoWallet(PrefService* prefs,
+                             mojom::DefaultWallet default_wallet);
 mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs);
 mojom::DefaultWallet GetDefaultSolanaWallet(PrefService* prefs);
+mojom::DefaultWallet GetDefaultCardanoWallet(PrefService* prefs);
 void SetDefaultBaseCurrency(PrefService* prefs, std::string_view currency);
 std::string GetDefaultBaseCurrency(PrefService* prefs);
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   std::string_view cryptocurrency);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 
-std::string_view GetUnstoppableDomainsProxyReaderContractAddress(
-    std::string_view chain_id);
 std::string GetEnsRegistryContractAddress(std::string_view chain_id);
 
 mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
@@ -115,6 +116,7 @@ std::string GenerateRandomHexString();
 std::string WalletInternalErrorMessage();
 std::string WalletParsingErrorMessage();
 std::string WalletInsufficientBalanceErrorMessage();
+std::string WalletUserRejectedRequestErrorMessage();
 
 mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id);
 mojom::BlockchainTokenPtr GetZcashNativeToken(std::string_view chain_id);

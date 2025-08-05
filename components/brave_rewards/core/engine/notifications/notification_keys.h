@@ -9,9 +9,6 @@
 namespace brave_rewards::internal {
 namespace notifications {
 
-inline constexpr char kUpholdBATNotAllowed[] = "uphold_bat_not_allowed";
-inline constexpr char kUpholdInsufficientCapabilities[] =
-    "uphold_insufficient_capabilities";
 inline constexpr char kWalletDisconnected[] = "wallet_disconnected";
 inline constexpr char kSelfCustodyAvailable[] = "self_custody_available";
 

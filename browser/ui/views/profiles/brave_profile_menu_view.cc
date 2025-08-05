@@ -24,59 +24,31 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 
-// This method is overriden because otherwise we would have to call
-// `SetProfileIdentityInfo` a second time, and this leaves
-// `profile_background_container_`, and `heading_label_` dangling in
-// `ProfileMenuViewBase` for a while in between
-// `identity_info_container_->RemoveAllChildViews()` being called, and the new
-// pointers being assigned to those members.
-void BraveProfileMenuView::SetProfileIdentityInfo(
-    const ui::ImageModel& image_model,
-    const std::u16string& title,
-    const std::u16string& subtitle,
-    const gfx::VectorIcon* header_art_icon) {
-  // For non-guest sessions, we want to eliminate the subtitle
-  // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in"). In order to do that, we
-  // must fetch the desired title here so that we can pass it in along with the
-  // given subtitle below.
-  Profile* profile = browser()->profile();
-  std::u16string desired_title = title;
-  if (!profile->IsGuestSession()) {
-    ProfileAttributesEntry* profile_attributes =
-        g_browser_process->profile_manager()
-            ->GetProfileAttributesStorage()
-            .GetProfileAttributesWithPath(profile->GetPath());
-    desired_title = profile_attributes->GetName();
+void BraveProfileMenuView::MaybeBuildCloseBrowsersButton() {
+  Profile* profile = browser().profile();
+  int window_count = chrome::GetBrowserCount(profile);
+  if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile()) {
+    window_count += chrome::GetBrowserCount(
+        profile->GetPrimaryOTRProfile(/*create_if_needed=*/true));
   }
 
-  // We never show the profile name (displayed above the user avatar) nor the
-  // edit buttons, so pass in default values for those parameters.
-  ProfileMenuView::SetProfileIdentityInfo(image_model, title, subtitle,
-                                          header_art_icon);
+  int button_title_id = IDS_PROFILE_MENU_CLOSE_PROFILE_X_WINDOWS_BUTTON;
+  if (profile->IsGuestSession()) {
+    button_title_id = IDS_GUEST_PROFILE_MENU_CLOSE_X_WINDOWS_BUTTON;
+  } else {
+    if (window_count <= 1) {
+      return;
+    }
+  }
+
+  AddFeatureButton(
+      l10n_util::GetPluralStringFUTF16(button_title_id, window_count),
+      base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
+                          base::Unretained(this)),
+      vector_icons::kCloseIcon);
 }
 
 // We don't want feature buttons to manage google account
 void BraveProfileMenuView::BuildFeatureButtons() {
-  Profile* profile = browser()->profile();
-  int window_count = chrome::GetBrowserCount(profile);
-  if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile())
-    window_count += chrome::GetBrowserCount(
-        profile->GetPrimaryOTRProfile(/*create_if_needed=*/true));
-  if (profile->IsGuestSession()) {
-    AddFeatureButton(
-        l10n_util::GetPluralStringFUTF16(IDS_GUEST_PROFILE_MENU_CLOSE_BUTTON,
-                                         window_count),
-        base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
-                            base::Unretained(this)),
-        vector_icons::kCloseIcon);
-  } else {
-    if (window_count > 1) {
-      AddFeatureButton(
-          l10n_util::GetPluralStringFUTF16(
-              IDS_PROFILE_MENU_CLOSE_PROFILE_X_WINDOWS_BUTTON, window_count),
-          base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
-                              base::Unretained(this)),
-          vector_icons::kCloseIcon);
-    }
-  }
+  MaybeBuildCloseBrowsersButton();
 }

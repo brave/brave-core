@@ -15,6 +15,7 @@ export function createRewardsHandler(
   store: Store<RewardsState>
 ): RewardsActions {
   if (!loadTimeData.getBoolean('rewardsFeatureEnabled')) {
+    store.update({ initialized: true })
     return defaultRewardsActions()
   }
 
@@ -71,12 +72,19 @@ export function createRewardsHandler(
     }
   }
 
+  async function updateTosUpdateRequired() {
+    const { updateRequired } =
+      await rewardsHandler.getTermsOfServiceUpdateRequired()
+    store.update({ tosUpdateRequired: updateRequired })
+  }
+
   async function loadData() {
     await Promise.all([
       updatePrefs(),
       updateRewardsEnabled(),
       updateExternalWallet(),
-      updateParameters()
+      updateParameters(),
+      updateTosUpdateRequired()
     ])
 
     store.update({ initialized: true })
@@ -86,7 +94,7 @@ export function createRewardsHandler(
   }
 
   newTabProxy.addListeners({
-    onRewardsStateUpdated: debounce(updatePrefs, 10)
+    onRewardsStateUpdated: debounce(loadData, 10)
   })
 
   rewardsProxy.callbackRouter.onRewardsStateUpdated.addListener(loadData)

@@ -8,21 +8,25 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
 
-#define ListActions                                  \
-  ListActionsChromium(ListActionsCallback callback); \
-  void ListActions
+#define ListCategories(...)                 \
+  ListCategories_ChromiumImpl(__VA_ARGS__); \
+  void ListCategories(__VA_ARGS__)
 
-#define PinAction                                                            \
-  PinActionChromium(side_panel::customize_chrome::mojom::ActionId action_id, \
-                    bool pin);                                               \
-  void ObserveBraveActions();                                                \
-  void OnBraveActionPinnedChanged(                                           \
-      side_panel::customize_chrome::mojom::ActionId action_id);              \
-  void PinAction
+#define ListActions(...)                 \
+  ListActions_ChromiumImpl(__VA_ARGS__); \
+  void ListActions(__VA_ARGS__)
 
-#include "src/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h"  // IWYU pragma: export
+#define PinAction(...)                                          \
+  PinAction_ChromiumImpl(__VA_ARGS__);                          \
+  void ObserveBraveActions();                                   \
+  void OnBraveActionPinnedChanged(                              \
+      side_panel::customize_chrome::mojom::ActionId action_id); \
+  void PinAction(__VA_ARGS__)
+
+#include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h>  // IWYU pragma: export
 
 #undef PinAction
 #undef ListActions
+#undef ListCategories
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_TOOLBAR_CUSTOMIZE_TOOLBAR_HANDLER_H_

@@ -10,9 +10,9 @@
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 /* Sample json.
 {
@@ -54,9 +54,9 @@ Background& Background::operator=(Background&& other) = default;
 Background::~Background() = default;
 
 NTPBackgroundImagesData::NTPBackgroundImagesData()
-    : url_prefix(base::StringPrintf("%s://%s/",
-                                    content::kChromeUIScheme,
-                                    kBackgroundWallpaperHost)) {}
+    : url_prefix(absl::StrFormat("%s://%s/",
+                                 content::kChromeUIScheme,
+                                 kBackgroundWallpaperHost)) {}
 
 NTPBackgroundImagesData::NTPBackgroundImagesData(
     const std::string& json_string,

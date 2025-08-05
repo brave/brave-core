@@ -10,7 +10,7 @@
 
 #define kAdsFilterBlocklist kAdsFilterBlocklist, kRemoteList
 
-#include "src/chrome/browser/ui/webui/settings/site_settings_helper.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/settings/site_settings_helper.h>  // IWYU pragma: export
 
 #undef kAdsFilterBlocklist
 

@@ -9,7 +9,7 @@
 
 #define IsLocalFontAvailable IsLocalFontAvailable_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/css/local_font_face_source.cc"
+#include <third_party/blink/renderer/core/css/local_font_face_source.cc>
 
 #undef IsLocalFontAvailable
 

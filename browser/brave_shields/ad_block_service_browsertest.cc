@@ -2868,6 +2868,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesAttr) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesCss) {
   UpdateAdBlockInstanceWithRules(
       "a.com##:matches-css(opacity: 0.9)\n"
+      "a.com##:matches-css(clear: /t$/)\n"
       "a.com##:matches-css-before(display: inline-block)\n"
       "a.com##:matches-css-before(content:\"advertisement\")");
 

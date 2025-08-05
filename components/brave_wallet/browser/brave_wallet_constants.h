@@ -220,6 +220,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEnableTransactionSimulation",
      IDS_BRAVE_WALLET_ENABLE_TRANSACTION_SIMULATION},
     {"braveWalletNetworkFees", IDS_BRAVE_WALLET_NETWORK_FEES},
+    {"braveWalletNetworkFee", IDS_BRAVE_WALLET_NETWORK_FEE},
     {"braveWalletSolanaSysvarRentProgram",
      IDS_BRAVE_WALLET_SOLANA_SYSVAR_RENT_PROGRAM},
     {"braveWalletSolanaMetaDataProgram",
@@ -773,6 +774,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_EXPLORER},
     {"braveWalletAllowAddNetworkNetworkPanelTitle",
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_PANEL_TITLE},
+    {"braveWalletAddNetwork", IDS_BRAVE_WALLET_ADD_NETWORK},
     {"braveWalletConfirmTransactionTotal",
      IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL},
     {"braveWalletConfirmTransactionGasFee",
@@ -1682,7 +1684,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPageNotFoundTitle", IDS_BRAVE_WALLET_PAGE_NOT_FOUND_TITLE},
     {"braveWalletPageNotFoundDescription",
      IDS_BRAVE_WALLET_PAGE_NOT_FOUND_DESCRIPTION},
-    {"braveWalletGoToPortfolio", IDS_BRAVE_WALLET_GO_TO_PORTFOLIO}};
+    {"braveWalletGoToPortfolio", IDS_BRAVE_WALLET_GO_TO_PORTFOLIO},
+    {"braveWalletAddToken", IDS_BRAVE_WALLET_ADD_TOKEN}};
 
 // 0x swap constants
 inline constexpr char kZeroExBaseAPIURL[] = "https://api.0x.wallet.brave.com";

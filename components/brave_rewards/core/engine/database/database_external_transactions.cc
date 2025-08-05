@@ -9,9 +9,9 @@
 
 #include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal::database {
 
@@ -33,7 +33,7 @@ void DatabaseExternalTransactions::Insert(
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
-  command->command = base::StringPrintf(
+  command->command = absl::StrFormat(
       R"(
         INSERT INTO %s (transaction_id, contribution_id, destination, amount)
         VALUES(?, ?, ?, ?)
@@ -69,7 +69,7 @@ void DatabaseExternalTransactions::GetTransaction(
     GetExternalTransactionCallback callback) {
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
-  command->command = base::StringPrintf(
+  command->command = absl::StrFormat(
       R"(
         SELECT transaction_id, contribution_id, destination, amount
         FROM %s

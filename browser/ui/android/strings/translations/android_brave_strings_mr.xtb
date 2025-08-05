@@ -106,6 +106,9 @@
 <translation id="933652931229970927">आपोआप निदान अहवाल पाठवा</translation>
 <translation id="7977176350719484850">अंदाजे डेटा\nबचत</translation>
 <translation id="9008534313521214777">अंदाजे वेळेची\nबचत</translation>
+<translation id="8347743943525229984">Brave सर्वेक्षणांना अनुमती द्या</translation>
+<translation id="6022939994702081659">Braveला नवीन टॅबच्या पानावर गोपनीय सर्वेक्षणांच्या लिंक्स दाखवण्याची अनुमती द्या. सर्वेक्षणांमधून आम्हाला जास्त चांगली वैशिष्ट्ये उभारण्यास आणि ब्राऊझर वर आधारित जाहिरात मोहिमांचा प्रभावीपणा मोजण्यास मदत होते.</translation>
+<translation id="7746496306508543965">Brave सर्वेक्षणांविषयी अधिक जाणून घ्या</translation>
 <translation id="410351446219883937">ऑटोप्ले</translation>
 <translation id="7445411102860286510">साइटना स्वयंचलितपणे नि:शब्द केलेले व्हिडिओ प्ले करण्याची अनुमती द्या (शिफारस केलेले)</translation>
 <translation id="7837721118676387834">एका विशिष्ट साइटकरिता नि:शब्द केलेल्या व्हिडिओंच्या ऑटोप्ले ला अनुमती द्या.</translation>
@@ -294,7 +297,6 @@
 <translation id="3961126209136843111">अस्तित्वात असलेले वॉलेट आयात करा</translation>
 <translation id="4811736040444856406">पुनर्प्राप्ती वाक्य दाखवा</translation>
 <translation id="4359319875297001084">Legcy Brave क्रिप्टो वॉलेट्समधून आयात करायचे?</translation>
-<translation id="3157931365184549694">पुनर्संचयित करा</translation>
 <translation id="5844138175312846408">वॉलेट आधीपासूनच आहे?</translation>
 <translation id="2502258949541727762">आपण सुरुवात करण्यापूर्वी</translation>
 <translation id="4303748097351941030">समर्थित नेटवर्क</translation>
@@ -366,7 +368,6 @@
 <translation id="5317780077021120954">सेव्ह करा</translation>
 <translation id="1426320910664514906">गॅस लिमिट</translation>
 <translation id="9065203028668620118">संपादन</translation>
-<translation id="473775607612524610">अपडेट करा</translation>
 <translation id="5045550434625856497">अयोग्य पासवर्ड</translation>
 <translation id="1367951781824006909">फाइल निवडा</translation>
 <translation id="8047527352810290817">गॅस संपादित करा</translation>

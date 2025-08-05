@@ -5,9 +5,9 @@
 
 #include "brave/components/safe_builtins/renderer/safe_builtins_helpers.h"
 
-#include "base/strings/stringprintf.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "gin/converter.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "v8/include/v8-context.h"
@@ -31,13 +31,13 @@ std::string CreateExceptionString(v8::Local<v8::Context> context,
   std::string resource_name = "<unknown resource>";
   if (!message->GetScriptOrigin().ResourceName().IsEmpty()) {
     v8::String::Utf8Value resource_name_v8(
-        context->GetIsolate(), message->GetScriptOrigin().ResourceName());
+        v8::Isolate::GetCurrent(), message->GetScriptOrigin().ResourceName());
     resource_name.assign(*resource_name_v8, resource_name_v8.length());
   }
 
   std::string error_message = "<no error message>";
   if (!message->Get().IsEmpty()) {
-    v8::String::Utf8Value error_message_v8(context->GetIsolate(),
+    v8::String::Utf8Value error_message_v8(v8::Isolate::GetCurrent(),
                                            message->Get());
     error_message.assign(*error_message_v8, error_message_v8.length());
   }
@@ -46,8 +46,8 @@ std::string CreateExceptionString(v8::Local<v8::Context> context,
   auto maybe = message->GetLineNumber(context);
   line_number = maybe.IsJust() ? maybe.FromJust() : 0;
 
-  return base::StringPrintf("%s:%d: %s", resource_name.c_str(), line_number,
-                            error_message.c_str());
+  return absl::StrFormat("%s:%d: %s", resource_name, line_number,
+                         error_message);
 }
 
 v8::Local<v8::String> WrapSource(v8::Isolate* isolate,
@@ -64,13 +64,13 @@ v8::Local<v8::String> WrapSource(v8::Isolate* isolate,
 
 v8::Local<v8::Value> RunScript(v8::Local<v8::Context> context,
                                v8::Local<v8::String> code) {
-  v8::EscapableHandleScope handle_scope(context->GetIsolate());
+  v8::EscapableHandleScope handle_scope(v8::Isolate::GetCurrent());
   v8::Context::Scope context_scope(context);
 
-  v8::MicrotasksScope microtasks(context->GetIsolate(),
+  v8::MicrotasksScope microtasks(v8::Isolate::GetCurrent(),
                                  context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
-  v8::TryCatch try_catch(context->GetIsolate());
+  v8::TryCatch try_catch(v8::Isolate::GetCurrent());
   try_catch.SetCaptureMessage(true);
   v8::ScriptCompiler::Source script_source(code);
   v8::Local<v8::Script> script;
@@ -83,7 +83,7 @@ v8::Local<v8::Value> RunScript(v8::Local<v8::Context> context,
                      blink::mojom::ConsoleMessageLevel::kError,
                      blink::WebString::FromUTF8(
                          CreateExceptionString(context, try_catch))));
-    return v8::Undefined(context->GetIsolate());
+    return v8::Undefined(v8::Isolate::GetCurrent());
   }
 
   v8::Local<v8::Value> result;
@@ -93,7 +93,7 @@ v8::Local<v8::Value> RunScript(v8::Local<v8::Context> context,
                      blink::mojom::ConsoleMessageLevel::kError,
                      blink::WebString::FromUTF8(
                          CreateExceptionString(context, try_catch))));
-    return v8::Undefined(context->GetIsolate());
+    return v8::Undefined(v8::Isolate::GetCurrent());
   }
 
   return handle_scope.Escape(result);
@@ -105,9 +105,9 @@ v8::MaybeLocal<v8::Value> SafeCallFunction(
     const v8::Local<v8::Function>& function,
     int argc,
     v8::Local<v8::Value> argv[]) {
-  v8::EscapableHandleScope handle_scope(context->GetIsolate());
+  v8::EscapableHandleScope handle_scope(v8::Isolate::GetCurrent());
   v8::Context::Scope scope(context);
-  v8::MicrotasksScope microtasks(context->GetIsolate(),
+  v8::MicrotasksScope microtasks(v8::Isolate::GetCurrent(),
                                  context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Object> global = context->Global();
@@ -124,15 +124,15 @@ v8::MaybeLocal<v8::Value> LoadScriptWithSafeBuiltins(
     blink::WebLocalFrame* web_frame,
     const std::string& script) {
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
-  v8::Local<v8::String> wrapped_source(WrapSource(
-      context->GetIsolate(), gin::StringToV8(context->GetIsolate(), script)));
+  v8::Local<v8::String> wrapped_source(
+      WrapSource(v8::Isolate::GetCurrent(),
+                 gin::StringToV8(v8::Isolate::GetCurrent(), script)));
   // Wrapping script in function(...) {...}
   v8::Local<v8::Value> func_as_value = RunScript(context, wrapped_source);
   if (func_as_value.IsEmpty() || func_as_value->IsUndefined()) {
-    std::string message = base::StringPrintf("Bad source");
     web_frame->AddMessageToConsole(
         blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kError,
-                                 blink::WebString::FromUTF8(message)));
+                                 blink::WebString::FromUTF8("Bad source")));
     return v8::MaybeLocal<v8::Value>();
   }
 

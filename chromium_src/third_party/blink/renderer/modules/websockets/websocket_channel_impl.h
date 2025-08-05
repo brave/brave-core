@@ -22,7 +22,7 @@ using WebSocketChannelImpl_BraveImpl = WebSocketChannelImpl;
   void NotUsed
 #define ShouldDisallowConnection virtual ShouldDisallowConnection
 
-#include "src/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/modules/websockets/websocket_channel_impl.h>  // IWYU pragma: export
 
 #undef ShouldDisallowConnection
 #undef TearDownFailedConnection
@@ -37,7 +37,7 @@ class MODULES_EXPORT WebSocketChannelImpl final
 
   static WebSocketChannelImpl* Create(ExecutionContext* execution_context,
                                       WebSocketChannelClient* client,
-                                      std::unique_ptr<SourceLocation> location);
+                                      SourceLocation* location);
 
  private:
   void TearDownFailedConnection() override;

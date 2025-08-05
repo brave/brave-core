@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -13,6 +12,7 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using extensions::ExtensionBrowserTest;
 
@@ -38,7 +38,7 @@ class ExtensionSystemBrowserTest : public ExtensionBrowserTest {
     ExtensionBrowserTest::SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_.port()));
+        absl::StrFormat("MAP *:443 127.0.0.1:%d", https_server_.port()));
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
 

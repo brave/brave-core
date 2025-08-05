@@ -14,8 +14,21 @@ import {
 // Merge our interface additions with upstream's interface
 declare module '../page_visibility' {
   export interface PageVisibility {
+    braveSync?: boolean
+    braveWallet?: boolean
+    // <if expr="enable_containers">
+    containers?: boolean
+    // </if>
+    content?: boolean
     getStarted?: boolean
-    braveWeb3?: boolean
+    leoAssistant?: boolean
+    newTab?: boolean
+    playlist?: boolean
+    shields?: boolean
+    socialBlocking?: boolean
+    speedreader?: boolean
+    surveyPanelist?: boolean,
+    braveTor?: boolean
   }
 }
 
@@ -32,21 +45,21 @@ function getPageVisibility () {
     // Hide appropriate brave sections as well as chromium ones
     return {
       ...chromiumPageVisibility,
-      shields: true,
-      socialBlocking: true,
       braveSync: false,
-      getStarted: false,
-      newTab: false,
       braveWallet: false,
-      braveWeb3: false,
-      leoAssistant: false,
-      surveyPanelist: false,
       // <if expr="enable_containers">
       containers: false,
       // </if>
       content: false,
+      getStarted: false,
+      leoAssistant: false,
+      newTab: false,
       playlist: false,
+      shields: true,
+      socialBlocking: true,
       speedreader: false,
+      surveyPanelist: false,
+      braveTor: false,
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of
@@ -78,6 +91,8 @@ function getPageVisibility () {
     playlist: loadTimeData.getBoolean('isPlaylistAllowed'),
     speedreader: loadTimeData.getBoolean('isSpeedreaderFeatureEnabled') &&
                  !loadTimeData.getBoolean('isSpeedreaderDisabledByPolicy'),
+    braveTor: !loadTimeData.getBoolean('braveTorDisabledByPolicy') ||
+              loadTimeData.getBoolean('shouldExposeElementsForTesting'),
   }
   // Proxy so we can respond to any other property
   return new Proxy(staticProps, {

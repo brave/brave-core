@@ -58,13 +58,6 @@
     label="$i18n{appearanceSettingsShowBraveNewsButtonLabel}">
   </settings-toggle-button>
 </template>
-<template is="dom-if" if="[[isBraveRewardsSupported_()]]">
-  <settings-toggle-button
-    class="cr-row"
-    label="$i18n{braveRewardsShowBraveRewardsButtonLabel}"
-    pref="{{prefs.brave.rewards.show_brave_rewards_button_in_location_bar}}">
-  </settings-toggle-button>
-</template>
 <settings-toggle-button
   id="autocomplete-suggestion-sources"
   class="cr-row"

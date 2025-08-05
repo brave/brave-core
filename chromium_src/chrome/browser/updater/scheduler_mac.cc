@@ -13,7 +13,7 @@
 
 #define DoPeriodicTasks DoPeriodicTasks_ChromiumImpl
 
-#include "src/chrome/browser/updater/scheduler_mac.cc"
+#include <chrome/browser/updater/scheduler_mac.cc>
 
 #undef DoPeriodicTasks
 

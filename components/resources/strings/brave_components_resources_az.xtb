@@ -40,8 +40,23 @@
 <translation id="5039804452771397117">İcazə ver</translation>
 <translation id="9065203028668620118">Redaktə et</translation>
 <translation id="9218430445555521422">Standart kimi təyin et</translation>
+<translation id="1748114617341025015">Əlaqələndirilmiş token hesabı yaradılır</translation>
+<translation id="4418115887224983240">Əlaqələndirilmiş token hesabını yaratmaq baş tutmadı</translation>
+<translation id="7165697599360786670">Əlaqələndirilmiş token hesabı yaradıldı</translation>
+<translation id="3155166394760577549">Əməliyyatın məxfiliyini artırmaq üçün təhlükəsizlik qalxanlarını aktivləşdirin.</translation>
+<translation id="3382275793825152362">Təhlükəsizlik qalxanı fondları</translation>
+<translation id="8631765320256788981">Şəffaf hesabınızdan təhlükəsizlik qalxanı ilə təchiz edilmiş hesabınıza pul köçürürsünüz.</translation>
+<translation id="1772301834467143364">Brave Xəbərlər</translation>
 <translation id="5385187102307010596">Hazırda bu lentdə heç bir məqalə yoxdur. Daha sonra yenidən daxil olmağa və ya lenti yeniləməyə çalışın.</translation>
 <translation id="5233638681132016545">Yeni tabulyasiya</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      one {}=1 {Bu səhifənin məzmunu haqqında sual verin}
+      other {Bu səhifələrin məzmunu haqqında sual verin}
+    }</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      one {}=1 {Bu səhifənin xülasəsini çıxarın}
+      other {Bu səhifələrin xülasəsini çıxarın}
+    }</translation>
 <translation id="7557539689487606886">Premiuma keç</translation>
 <translation id="4173478269537830374">Müxtəlif Sİ modellərini kəşf edin</translation>
 <translation id="3245401959451976966">Yaradıcılıq yolunuzu açın</translation>
@@ -55,9 +70,16 @@
 <translation id="298783097210745222">Daha təfərrüatlı söhbətlər üçün daha səlist cavablar alın.</translation>
 <translation id="4314705522985583059">Daha uzun söhbətlər üçün daha yüksək qiymət limitləri alın.</translation>
 <translation id="8712637175834984815">Anladım</translation>
+<translation id="1352836459737874921">Digər tab-vərəqələrdən məzmun əlavə et</translation>
+<translation id="3028258613451571431">Leo-ya söhbət üçün daha çox mövzu vermək istəsəniz brauzerinizin tab-vərəqələrindən məzmun göndərin</translation>
 <translation id="6291843235651817590">Ümumi məqsədli çatlaşma</translation>
 <translation id="7979673624064378842">İldırım sürətli çatlaşma</translation>
 <translation id="2836330653441111204">Tarazlanmış sürət və intellekt</translation>
+<translation id="2414904697165579184">Cavabları tab-vərəqələrin məzmununa əsasən formalaşdırın</translation>
+<translation id="8258324391302611485">Bu səhifənin məzmunu mesajlarınızla birgə Leo-ya göndəriləcək.</translation>
+<translation id="7742969455167760092">Tab-vərəqələri aç...</translation>
+<translation id="7097822247923237815">Müvəqqəti söhbət</translation>
+<translation id="7481750859362986254">Bu söhbət tarixçənin yaddaşında saxlanılmayacaq və ya Leo-nun hər hansı xüsusi mesaj və ya yaddaşından istifadə edilməyəcək.</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="755045397420611731">Əlavə məxfilik &amp; onlayn təhlükəsizlik</translation>
 <translation id="4520128772974831415">IP-nizi gizlədin &amp; məkanınızı dəyişin</translation>
@@ -67,6 +89,16 @@
 <translation id="2273851479262317744">Brave-i standart brauzer kimi təyin et</translation>
 <translation id="5148943178722443958">Brave-i təkmilləşdirməyə kömək edin.</translation>
 <translation id="6764845498618413165">Ətraflı məlumat.</translation>
+<translation id="7207456302801184289">Brave-ə xoş gəldiniz</translation>
+<translation id="8013913032858654337">Ləqəb yaradılarkən xəta baş verdi. İnternet bağlantınızı yoxlayıb, yenidən cəhd edin.</translation>
+<translation id="7137645995703540578">Ləqəb yaddaşda saxlanarkən xəta baş verdi. İnternet bağlantınızı yoxlayıb, yenidən cəhd edin.</translation>
+<translation id="1765544689721905747">E-poçt ləqəbini sil</translation>
+<translation id="646524615209870492"><ph name="ALIAS"/> ləqəbini silsəniz, e-poçtları ala bilməyəcəksiniz.</translation>
+<translation id="8133100642915054515">Ləqəb silinərkən xəta baş verdi. İnternet bağlantınızı yoxlayıb, yenidən cəhd edin.</translation>
+<translation id="8465742443901727718">Bu əməliyyatı geri qaytarmaq mümkün deyil. Davam etmək istədiyinizə əminsiniz?</translation>
+<translation id="2650906829817220223">Kimlik yoxlaması tələbində xəta baş verdi. İnternet bağlantınızı yoxlayıb, yenidən cəhd edin.</translation>
+<translation id="3397336197747843396">Brave hesabının kimlik yoxlamasında xəta baş verdi. Yenidən cəhd edin.</translation>
+<translation id="1340795582009113055">Başdan başla</translation>
 <translation id="1116694919640316211">Haqqımızda</translation>
 <translation id="2044418816479192294">Düynanın dörd bir yanından yüzlərlə serverlər</translation>
 <translation id="7410504850864021600">İldırım sürətli qoşulma imkanları</translation>

@@ -15,21 +15,19 @@
 #include "base/barrier_callback.h"
 #include "base/barrier_closure.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "third_party/re2/src/re2/re2.h"
 
 namespace ai_chat {
-
-const char kPageTagRegex[] = "</?page>";
 
 AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
@@ -72,16 +70,15 @@ void AssociatedContentManager::LoadArchivedContent(
     AddContent(archive_content_.back().get(), /*notify_updated=*/false);
   }
 
-  // If we restored content from an archive then it was used in the conversation
-  // so we should send it.
-  should_send_ = should_send_ || !archive->associated_content.empty();
   conversation_->OnAssociatedContentUpdated();
 }
 
-void AssociatedContentManager::SetArchiveContent(std::string content_uuid,
-                                                 std::string text_content,
-                                                 bool is_video) {
+void AssociatedContentManager::CreateArchiveContent(
+    AssociatedContentDelegate* to_archive) {
   DVLOG(1) << __func__;
+  auto content_uuid = to_archive->uuid();
+  auto text_content = to_archive->cached_page_content().content;
+  auto is_video = to_archive->cached_page_content().is_video;
 
   auto it = std::ranges::find(content_delegates_, content_uuid,
                               [](const auto& ptr) { return ptr->uuid(); });
@@ -93,8 +90,8 @@ void AssociatedContentManager::SetArchiveContent(std::string content_uuid,
   // Construct a "content archive" implementation of AssociatedContentDelegate
   // with a duplicate of the article text.
   archive_content_.emplace_back(std::make_unique<AssociatedArchiveContent>(
-      delegate->GetURL(), std::move(text_content), delegate->GetTitle(),
-      is_video, delegate->uuid()));
+      delegate->url(), std::move(text_content), delegate->title(), is_video,
+      delegate->uuid()));
   *it = archive_content_.back().get();
   content_observations_.AddObservation(*it);
 
@@ -122,13 +119,18 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
       return;
     }
 
+    // Note: When we add a delegate to a conversation we should fetch the
+    // content. Otherwise we can end up with a Snapshot with no content (i.e. if
+    // the tab is closed).
+    // We don't try and keep the content alive to force letting the content to
+    // fetch because its a bit of an edge case, and there are no real
+    // consequences of not having the content (except for the content not being
+    // attached).
+    delegate->GetContent(base::DoNothing());
+
     content_delegates_.push_back(delegate);
     content_observations_.AddObservation(delegate);
   }
-
-  // If we're adding content, we probably want to send it, otherwise, set
-  // |should_send_| to the default value.
-  should_send_ = !detach_existing_content || HasAssociatedContent();
 
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
@@ -157,12 +159,33 @@ void AssociatedContentManager::RemoveContent(
     archive_content_.erase(archive_it);
   }
 
-  // If we're modifying the associated content, we probably want to send it.
-  should_send_ = !content_delegates_.empty();
-
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
   }
+}
+
+void AssociatedContentManager::RemoveContent(std::string_view content_uuid,
+                                             bool notify_updated) {
+  DVLOG(1) << __func__;
+
+  auto it = std::ranges::find_if(content_delegates_,
+                                 [&content_uuid](const auto& delegate) {
+                                   return delegate->uuid() == content_uuid;
+                                 });
+  if (it != content_delegates_.end()) {
+    RemoveContent(*it, notify_updated);
+  }
+}
+
+void AssociatedContentManager::ClearContent() {
+  DVLOG(1) << __func__;
+  if (!HasAssociatedContent()) {
+    return;
+  }
+
+  DetachContent();
+
+  conversation_->OnAssociatedContentUpdated();
 }
 
 std::vector<mojom::AssociatedContentPtr>
@@ -178,17 +201,18 @@ AssociatedContentManager::GetAssociatedContent() const {
 
   std::vector<mojom::AssociatedContentPtr> result;
   for (auto* delegate : content_delegates_) {
+    auto cached_page_content = delegate->cached_page_content();
     mojom::AssociatedContentPtr content = mojom::AssociatedContent::New();
     content->uuid = delegate->uuid();
-    content->content_id = delegate->GetContentId();
-    content->url = delegate->GetURL();
-    content->title = base::UTF16ToUTF8(delegate->GetTitle());
-    content->content_type = delegate->GetCachedIsVideo()
+    content->content_id = delegate->content_id();
+    content->url = delegate->url();
+    content->title = base::UTF16ToUTF8(delegate->title());
+    content->content_type = cached_page_content.is_video
                                 ? mojom::ContentType::VideoTranscript
                                 : mojom::ContentType::PageContent;
 
     const uint32_t content_length =
-        delegate->GetCachedTextContent().length() + kAdditionalCharsPerContent;
+        cached_page_content.content.length() + kAdditionalCharsPerContent;
     if (total_consumed_chars + content_length <=
         max_associated_content_length) {
       content->content_used_percentage = 100;
@@ -208,6 +232,40 @@ AssociatedContentManager::GetAssociatedContent() const {
     total_consumed_chars += content_length;
   }
   return result;
+}
+
+void AssociatedContentManager::HasContentUpdated(
+    base::OnceCallback<void(bool)> callback) {
+  DVLOG(1) << __func__;
+
+  std::vector<PageContent> cached_content;
+  std::ranges::copy(GetCachedContents(), std::back_inserter(cached_content));
+
+  GetContent(base::BindOnce(
+      [](base::WeakPtr<AssociatedContentManager> self,
+         std::vector<PageContent> cached_content,
+         base::OnceCallback<void(bool)> callback) {
+        if (!self) {
+          return;
+        }
+
+        auto new_contents = self->GetCachedContents();
+        bool changed = cached_content.size() != new_contents.size();
+        if (!changed) {
+          for (size_t i = 0; i < cached_content.size(); ++i) {
+            auto cached = cached_content[i];
+            auto& new_content = new_contents[i].get();
+            if (cached != new_content) {
+              changed = true;
+              break;
+            }
+          }
+        }
+
+        std::move(callback).Run(changed);
+      },
+      weak_ptr_factory_.GetWeakPtr(), std::move(cached_content),
+      std::move(callback)));
 }
 
 void AssociatedContentManager::GetContent(base::OnceClosure callback) {
@@ -239,8 +297,7 @@ void AssociatedContentManager::GetContent(base::OnceClosure callback) {
             weak_ptr_factory_.GetWeakPtr()));
     for (auto* content : content_delegates_) {
       content->GetContent(base::BindOnce(
-          [](base::RepeatingClosure callback, std::string content,
-             bool is_video, std::string invalidation_token) { callback.Run(); },
+          [](base::RepeatingClosure callback, PageContent) { callback.Run(); },
           content_callback));
     }
   } else {
@@ -249,7 +306,7 @@ void AssociatedContentManager::GetContent(base::OnceClosure callback) {
 }
 
 void AssociatedContentManager::GetScreenshots(
-    ConversationHandler::GetScreenshotsCallback callback) {
+    mojom::ConversationHandler::GetScreenshotsCallback callback) {
   DVLOG(1) << __func__;
 
   if (content_delegates_.size() == 0) {
@@ -300,42 +357,11 @@ void AssociatedContentManager::GetStagedEntriesFromContent(
   content_delegates_[0]->GetStagedEntriesFromContent(std::move(callback));
 }
 
-std::string AssociatedContentManager::GetCachedTextContent() const {
+PageContents AssociatedContentManager::GetCachedContents() const {
   DVLOG(1) << __func__;
-
-  auto cached_content = GetCachedContent();
-  std::vector<std::string> transformed_content;
-  std::ranges::transform(cached_content,
-                         std::back_inserter(transformed_content),
-                         [](const auto& content) {
-                           std::string text(content);
-                           while (RE2::GlobalReplace(&text, kPageTagRegex, ""))
-                             ;
-                           return text;
-                         });
-
-  // If we only have one content delegate directly return the content.
-  // Otherwise, wrap each content in <page> tags.
-  if (transformed_content.size() == 1) {
-    return std::string(transformed_content[0]);
-  }
-
-  if (transformed_content.size() == 0) {
-    return "";
-  }
-
-  return base::StrCat({"<page>",
-                       base::JoinString(transformed_content, "</page><page>"),
-                       "</page>"});
-}
-
-std::vector<std::string_view> AssociatedContentManager::GetCachedContent()
-    const {
-  DVLOG(1) << __func__;
-
-  std::vector<std::string_view> result;
+  PageContents result;
   for (auto* delegate : content_delegates_) {
-    result.push_back(delegate->GetCachedTextContent());
+    result.push_back(delegate->cached_page_content());
   }
 
   return result;
@@ -364,25 +390,23 @@ bool AssociatedContentManager::IsVideo() const {
   DVLOG(1) << __func__;
 
   return content_delegates_.size() == 1 &&
-         content_delegates_[0]->GetCachedIsVideo();
+         content_delegates_[0]->cached_page_content().is_video;
 }
 
-void AssociatedContentManager::SetShouldSend(bool value) {
-  DVLOG(1) << __func__ << " " << value;
-
-  should_send_ = value && HasAssociatedContent();
-  conversation_->OnAssociatedContentUpdated();
-}
-
-void AssociatedContentManager::OnNavigated(
+void AssociatedContentManager::OnDestroyed(
     AssociatedContentDelegate* delegate) {
   DVLOG(1) << __func__;
-  SetArchiveContent(delegate->uuid(),
-                    std::string(delegate->GetCachedTextContent()),
-                    delegate->GetCachedIsVideo());
 
-  // Note: We don't call conversation_->OnAssociatedContentUpdated() here
-  // because the content should not have changed.
+  // Note: creating an archive removes the reference to |delegate| from
+  // |content_delegates_| and replaces it with an archive.
+  CreateArchiveContent(delegate);
+}
+
+void AssociatedContentManager::OnRequestArchive(
+    AssociatedContentDelegate* delegate) {
+  DVLOG(1) << __func__;
+
+  CreateArchiveContent(delegate);
 }
 
 void AssociatedContentManager::OnTitleChanged(

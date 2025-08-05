@@ -9,8 +9,8 @@
 
 #include "base/containers/flat_map.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_ads {
 
@@ -36,11 +36,11 @@ std::string HeadersToString(
 
 std::string UrlResponseToString(
     const mojom::UrlResponseInfo& mojom_url_response) {
-  return base::StringPrintf(
+  return absl::StrFormat(
       "URL Response:\n  URL: %s\n  Response "
       "Status Code: %d\n  Response: %s",
-      mojom_url_response.url.spec().c_str(), mojom_url_response.status_code,
-      mojom_url_response.body.c_str());
+      mojom_url_response.url.spec(), mojom_url_response.status_code,
+      mojom_url_response.body);
 }
 
 std::string UrlResponseHeadersToString(

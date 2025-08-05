@@ -16,7 +16,7 @@ inline constexpr char kSyncDevServerUrl[] = BUILDFLAG(BRAVE_SYNC_ENDPOINT);
 #define kSyncServerUrl kSyncServerUrl_ChromiumImpl
 #define kSyncDevServerUrl kSyncDevServerUrl_ChromiumImpl
 
-#include "src/components/sync/base/sync_util.h"  // IWYU pragma: export
+#include <components/sync/base/sync_util.h>  // IWYU pragma: export
 
 #undef kSyncDevServerUrl
 #undef kSyncServerUrl

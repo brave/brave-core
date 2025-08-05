@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">บนหน้าแท็บใหม่เท่านั้น</translation>
 <translation id="6406506848690869874">ซิงค์</translation>
 <translation id="1544192797660353713">วอลเล็ท</translation>
-<translation id="6129027151000961048">ลีโอ</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">เพิ่มเติม…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {ปิดหน้าต่างผู้เยี่ยมชม}
+          other {ปิดหน้าต่างผู้เยี่ยมชมt}
+        }</translation>
 <translation id="1990886731975529483">ติดตั้งและเรียกใช้ Google Widevine</translation>
 <translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
 <translation id="4900351245762303149">ติดตั้ง Google Widevine</translation>
@@ -76,13 +80,20 @@
 <translation id="2808103541110899519">ซ่อนไอคอน Brave Wallet</translation>
 <translation id="7595540212376041331">ซ่อนไอคอน Brave วอลเล็ต</translation>
 <translation id="3893997535859323951">ซ่อนไอคอน Leo AI</translation>
+<translation id="8832245978592881387">เปิด Leo AI ในแท็บใหม่</translation>
+<translation id="4577675328803804820">เปิด Leo AI ในแถบข้าง</translation>
+<translation id="564305948667173847">จัดการการตั้งค่า Leo AI</translation>
 <translation id="6208515240323786457">ซ่อนไอคอน Leo AI</translation>
-<translation id="2361906291514218784">Leo AI</translation>
+<translation id="2169338740411893745">เปิด Leo AI ในแท็บใหม่</translation>
+<translation id="3295805221342028003">เปิด Leo AI ในแถบข้าง</translation>
+<translation id="7400808612454224939">จัดการการตั้งค่า Leo AI</translation>
+<translation id="5385064007245738696">เกี่ยวกับ Leo AI</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">ดูใน Web Extensions Store</translation>
 <translation id="3161744659507801211">คำเตือน: Brave ไม่สามารถป้องกันไม่ให้ส่วนขยายต่างๆ บันทึกประวัติการท่องเว็บของคุณ</translation>
 <translation id="2162109630536601963">หากส่วนขยายนี้มีคำขอเครือข่าย จะไม่ใช้โหมด Tor หรือโหมดส่วนตัว</translation>
 <translation id="2725327089319971976">หากต้องการปิดใช้ส่วนขยายนี้ในโหมดส่วนตัวและโหมด Tor ให้ยกเลิกการเลือกข้อนี้</translation>
+<translation id="438106944087726695">โฮสต์โดย Brave</translation>
 <translation id="3371343170427636147">แอป Brave Browser Nightly</translation>
 <translation id="4097979995947147464">แอป Brave Browser Beta</translation>
 <translation id="8303432794159193481">แอป Brave Browser Dev</translation>
@@ -181,11 +192,6 @@
 <translation id="4394049700291259645">ปิดการใช้งาน</translation>
 <translation id="7142548388914389999">อนุญาตการวิเคราะห์ผลิตภัณฑ์โดยรักษาความเป็นส่วนตัว (P3A)</translation>
 <translation id="2604698253988679506">การตอบกลับแบบส่วนตัวเหล่านี้จะช่วยให้ Brave ประเมินการใช้งานโดยรวมของบางฟีเจอร์และปรับให้เหมาะกับคุณมากยิ่งขึ้น</translation>
-<translation id="1947672064022327074">คุณต้องการเริ่มต้น Crypto Wallets สำหรับรองรับ Ethereum หรือไม่</translation>
-<translation id="7583735190612229830">ตั้งค่ากระเป๋าสตางค์ดิจิตอลเพื่อโต้ตอบกับแอปนี้และแอปอื่นๆ ที่คล้ายกันนี้</translation>
-<translation id="8731422418734770661">ตั้งค่ากระเป๋าเงินดิจิตอล</translation>
-<translation id="8199661191594897555">เริ่ม Crypto Wallets และโหลดใหม่</translation>
-<translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">โดเมน Web3</translation>
 <translation id="5046066249040287308">บริการยูทิลิตีของ Brave Wallet</translation>
@@ -335,6 +341,7 @@
 <translation id="7557539689487606886">ใช้งาน Premium</translation>
 <translation id="1035309871698658326">เมื่อเปิดใช้งาน ฟีเจอร์นี้จะส่งชื่อและแหล่งที่มาของแท็บทั้งหมดที่ไม่ใช่โหมดส่วนตัวไปยัง Leo เพื่อจัดประเภท</translation>
 <translation id="3435896845095436175">เปิดการใช้งาน</translation>
+<translation id="1940221956626514677">ปรับแต่งแถบเครื่องมือ</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="1426410128494586442">ใช่</translation>
@@ -492,6 +499,8 @@
 <translation id="3540231253392253941">ใช้บริการ Google ในการส่งข้อความแบบพุช</translation>
 <translation id="933652931229970927">ส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
 <translation id="4891600875049212418">ไปที่ Off-The-Record เมื่อเยี่ยมชมเว็บไซต์ที่สำคัญ</translation>
+<translation id="509873765238158442">บล็อก Microsoft Recall</translation>
+<translation id="4763421121695677716">บล็อกฟีเจอร์ Recall บนคอมพิวเตอร์ Microsoft Windows ไม่ให้จับภาพหน้าจอของแท็บ Brave ที่เปิดอยู่โดยอัตโนมัติ</translation>
 <translation id="1968895725257436430">การรวบรวมข้อมูล</translation>
 <translation id="4846154056248462491">เมื่อออก</translation>
 <translation id="216468847346280584">ล้างข้อมูล Brave Ads...</translation>
@@ -653,10 +662,12 @@
 <translation id="2653659639078652383">ส่ง</translation>
 <translation id="1294350054292274934">แปลงเฉพาะที่อยู่ .onion ในหน้าต่าง Tor</translation>
 <translation id="601227612175911475">ไม่สามารถใช้บริการ Onion เมื่อไม่ได้อยู่ในหน้าต่าง Tor</translation>
-<translation id="2896916411183256228">ใช้ WebTorrent สำหรับแสดงทอร์เรนต์ในเบราว์เซอร์โดยตรง รองรับไฟล์ทอร์เรนต์และแม็กเน็ตลิงก์</translation>
 <translation id="5249433283143453448">ใช้องค์ประกอบการจัดการสิทธิ์ทางดิจิทัล Widevine (DRM) เพื่อดูสตรีมมิ่งวิดีโอที่มีการป้องกันและเนื้อหาอื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="1314131187310290315">ส่วนขยาย Manifest V2</translation>
 <translation id="2488433650767270565">ส่วนขยาย Manifest V2 ต่อไปนี้จะถูกลบออกจาก Chrome เว็บสโตร์ แต่ยังคงรองรับใน Brave สลับเพื่อดาวน์โหลดและติดตั้งหรือถอนการติดตั้ง</translation>
+<translation id="6918225713618473646">Brave เป็นโฮสต์ส่วนขยาย Manifest V2 เหล่านี้ไว้บนเซิร์ฟเวอร์ของ Brave เอง แต่ไม่ได้ตรวจสอบหรือยืนยันเนื้อหา ความปลอดภัย หรือพฤติกรรมของส่วนขยายนั้น ๆ
+โปรดดูหน้าทางการของแต่ละส่วนขยายเพื่อขอความช่วยเหลือ
+อ่านแผนของ Brave เกี่ยวกับ Manifest V2 ได้<ph name="BEGIN_LINK"/>ที่นี่<ph name="END_LINK"/></translation>
 <translation id="578671172657727816">เปิดใช้งาน NoScript™</translation>
 <translation id="9068475464170522036">NoScript คือส่วนขยาย Manifest V2 ที่จะช่วยให้คุณบล็อกหรือยกเลิกบล็อกสคริปต์ที่กำลังเรียกใช้หรือพยายามที่จะเรียกใช้ในหน้าที่กำหนด</translation>
 <translation id="1394592156621788100">เปิดใช้งาน uBlock Origin™</translation>
@@ -671,7 +682,6 @@
 <translation id="7701023802820268122">วอลเล็ต Solana เริ่มต้น</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="6942354363301686374">ส่วนขยาย (ไม่มีการสำรองข้อมูล)</translation>
-<translation id="1274962333945373242">กระเป๋าเงินคริปโต (ที่เลิกใช้แล้ว)</translation>
 <translation id="702381242110464396">ส่วนขยาย (สำรองข้อมูล Brave วอลเล็ท)</translation>
 <translation id="4718664830805652430">สกุลเงินพื้นฐานเริ่มต้น</translation>
 <translation id="7992507032049865603">สกุลเงินคริปโตพื้นฐานเริ่มต้น</translation>
@@ -736,6 +746,7 @@
 <translation id="3095201688102519917">เตือนฉันก่อนปิดหน้าต่างที่มีหลายแท็บ</translation>
 <translation id="7120553802660696133">ปิดหน้าต่างเมื่อปิดแท็บสุดท้าย</translation>
 <translation id="3394171693948989253">แสดงการแจ้งเตือนแบบเต็มหน้าจอในการกดปุ่ม Esc เมื่อทำการออกจากโปรแกรม</translation>
+<translation id="6129027151000961048">ลีโอ</translation>
 <translation id="2751872555001636931">แสดงไอคอน Leo ในแถบด้านข้าง</translation>
 <translation id="8055509865174199683">แสดง Leo ในเมนูตามบริบทบนเว็บไซต์</translation>
 <translation id="1529674267267221673">Leo จะปรากฏในเมนูตามบริบทเมื่อคุณคลิกขวาบนเว็บไซต์ การคลิกจะส่งบริบทจากหน้าเว็บปัจจุบันไปยัง Leo</translation>
@@ -748,7 +759,6 @@
 <translation id="1335414530428321716">การรีเซ็ต Leo AI จะทำให้คุณต้องเลือกเปิดใช้งาน Brave Leo AI อีกครั้งในอนาคต และจะล้างประวัติแชตของคุณด้วย การล้างประวัติแชตจะลบการสนทนาทั้งหมดของคุณกับ Brave Leo AI อย่างถาวร การกระทำนี้ไม่สามารถย้อนกลับได้</translation>
 <translation id="5574059574002819179">ปรับคำแนะนำการเติมข้อความอัตโนมัติ</translation>
 <translation id="7942415993090181327">ประวัติการแชท</translation>
-<translation id="5385064007245738696">เกี่ยวกับ Leo AI</translation>
 <translation id="5084498230659987096">Brave Leo ให้บริการแชต AI และอินเทอร์เฟซอื่น ๆ ที่ขับเคลื่อนด้วย AI โดยคำนึงถึงความเป็นส่วนตัวเป็นหลัก Leo จะไม่เรียนรู้จากข้อมูลของคุณหรือใช้ข้อมูลนั้นในการฝึกโมเดล และทุกคำขอจะถูกส่งผ่านเซิร์ฟเวอร์ที่ช่วยปกปิดตัวตน ทุกการใช้งานเกิดขึ้นในเบราว์เซอร์</translation>
 <translation id="6458721693611638005">อ่านเพิ่มเติมเกี่ยวกับวิธีที่ Brave ปกป้องการใช้งาน AI ของคุณได้ในนโยบายความเป็นส่วนตัวของ Leo <ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">โมเดลเริ่มต้นสำหรับการสนทนาใหม่</translation>
@@ -785,6 +795,10 @@
 <translation id="6304169450064541679">พรอมต์ระบบ</translation>
 <translation id="3081947790648024460">คำสั่งหรือบริบทที่กำหนดให้กับโมเดลเพื่อแนะแนวทางการตอบสนองในทิศทางหรือสไตล์ที่เฉพาะเจาะจง ใช้ %datetime% เมื่อคุณต้องการแทรกวันที่และเวลาปัจจุบัน</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> โทเค็น</translation>
+<translation id="5985516785067818307">ผู้ร่วมตอบแบบสำรวจ</translation>
+<translation id="8347743943525229984">เปิดใช้งานแบบสำรวจจาก Brave</translation>
+<translation id="3204080538332044581">อนุญาตให้ Brave แสดงลิงก์ไปยังแบบสำรวจส่วนตัวในหน้าแท็บใหม่ แบบสำรวจเหล่านี้ช่วยให้เราพัฒนาฟีเจอร์ให้ดีขึ้น และวัดประสิทธิภาพของแคมเปญโฆษณาบนเบราว์เซอร์ได้
+<ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">เปิดใช้งานเพลย์ลิสต์</translation>
 <translation id="7903608716704052878">เพิ่มไฟล์เพื่อการดูแบบออฟไลน์โดยอัตโนมัติ</translation>
 <translation id="4193768184502613558">ตัวเลือกนี้จะทำการแคชไฟล์สื่อแบบอัตโนมัติ เพื่อให้คุณสามารถดูไฟล์เหล่านั้นได้โดยไม่ต้องใช้การเชื่อมต่ออินเทอร์เน็ต</translation>

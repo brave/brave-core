@@ -65,6 +65,10 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     OpenWindowProxyImpl.getInstance().openUrl(
       loadTimeData.getString('discardRingTreatmentLearnMoreUrl'));
   }
+
+  private isTreeTabsFlagEnabled() {
+    return loadTimeData.getBoolean('isTreeTabsFlagEnabled');
+  }
 }
 
 customElements.define(SettingsBraveAppearanceTabsElement.is, SettingsBraveAppearanceTabsElement)

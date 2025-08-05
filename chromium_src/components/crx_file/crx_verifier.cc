@@ -7,7 +7,6 @@
 
 #include <array>
 #include <utility>
-#include <vector>
 
 #include "base/containers/span.h"
 
@@ -45,4 +44,4 @@ void SetBravePublisherKeyHashForTesting(base::span<const uint8_t> test_key) {
 
 }  // namespace crx_file
 
-#include "src/components/crx_file/crx_verifier.cc"
+#include <components/crx_file/crx_verifier.cc>

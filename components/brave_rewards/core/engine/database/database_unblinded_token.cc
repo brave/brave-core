@@ -12,10 +12,10 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/time_util.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal::database {
 
@@ -41,7 +41,7 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR IGNORE INTO %s "
       "(token_id, token_value, public_key, value, creds_id, expires_at) "
       "VALUES (?, ?, ?, ?, ?, ?)",
@@ -104,7 +104,7 @@ void DatabaseUnblindedToken::GetSpendableRecords(
     GetUnblindedTokenListCallback callback) {
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
-  command->command = base::StringPrintf(
+  command->command = absl::StrFormat(
       R"(
     SELECT
       ut.token_id,
@@ -150,10 +150,10 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET redeemed_at = ?, redeem_id = ?, redeem_type = ? "
       "WHERE token_id IN (%s)",
-      kTableName, GenerateStringInCase(ids).c_str());
+      kTableName, GenerateStringInCase(ids));
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
@@ -184,13 +184,13 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
 
   const std::string id_values = GenerateStringInCase(ids);
 
-  std::string query = base::StringPrintf(
+  std::string query = absl::StrFormat(
       "UPDATE %s SET redeem_id = ?, reserved_at = ? "
       "WHERE ( "
       "SELECT COUNT(*) FROM %s "
       "WHERE reserved_at = 0 AND redeemed_at = 0 AND token_id IN (%s) "
       ") = ? AND token_id IN (%s)",
-      kTableName, kTableName, id_values.c_str(), id_values.c_str());
+      kTableName, kTableName, id_values, id_values);
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
@@ -216,10 +216,10 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
 
   transaction->commands.push_back(std::move(command));
 
-  query = base::StringPrintf(
+  query = absl::StrFormat(
       "SELECT token_id FROM %s "
       "WHERE reserved_at != 0 AND token_id IN (%s)",
-      kTableName, id_values.c_str());
+      kTableName, id_values);
 
   command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -264,7 +264,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpendable(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "UPDATE %s SET redeem_id = '', reserved_at = 0 "
       "WHERE redeem_id = ? AND redeemed_at = 0",
       kTableName);
@@ -293,7 +293,7 @@ void DatabaseUnblindedToken::GetReservedRecordList(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
       "ut.creds_id, ut.expires_at FROM %s as ut "
       "WHERE ut.redeem_id = ? AND ut.redeemed_at = 0 AND ut.reserved_at != 0",
@@ -337,14 +337,14 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
       "ut.creds_id, ut.expires_at FROM %s as ut "
       "LEFT JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
       "WHERE ut.redeemed_at = 0 AND "
       "(ut.expires_at > strftime('%%s','now') OR ut.expires_at = 0) AND "
       "(cb.trigger_type IN (%s) OR ut.creds_id IS NULL)",
-      kTableName, base::JoinString(in_case, ",").c_str());
+      kTableName, base::JoinString(in_case, ","));
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;

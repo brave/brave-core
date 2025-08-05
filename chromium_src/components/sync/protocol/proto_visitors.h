@@ -14,7 +14,7 @@ VISIT_PROTO_FIELDS(const sync_pb::BraveSpecificFields& proto) {        \
   VISIT(is_self_delete_supported);                                     \
 }
 
-#include "src/components/sync/protocol/proto_visitors.h"  // IWYU pragma: export
+#include <components/sync/protocol/proto_visitors.h>  // IWYU pragma: export
 #undef BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD
 #undef BRAVE_VISIT_DEVICE_INFO_SPECIFICS_BRAVE_FIELDS
 

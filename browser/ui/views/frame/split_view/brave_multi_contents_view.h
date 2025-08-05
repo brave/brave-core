@@ -19,38 +19,36 @@ class Widget;
 }  // namespace views
 
 class SplitViewLocationBar;
+class BraveContentsContainerView;
 
 class BraveMultiContentsView : public MultiContentsView,
                                public SplitViewSeparatorDelegate {
   METADATA_HEADER(BraveMultiContentsView, MultiContentsView)
 
  public:
-  static constexpr int kBorderThickness = 2;
-
   static BraveMultiContentsView* From(MultiContentsView* view);
 
-  BraveMultiContentsView(
-      BrowserView* browser_view,
-      WebContentsFocusedCallback inactive_contents_focused_callback,
-      WebContentsResizeCallback contents_resize_callback);
+  BraveMultiContentsView(BrowserView* browser_view,
+                         std::unique_ptr<MultiContentsViewDelegate> delegate);
   ~BraveMultiContentsView() override;
 
   void UpdateSecondaryLocationBar();
 
+  BraveContentsContainerView* GetActiveContentsContainerView();
+  BraveContentsContainerView* GetInactiveContentsContainerView();
+
  private:
   friend class SplitViewLocationBarBrowserTest;
   friend class SideBySideEnabledBrowserTest;
+  friend class SpeedReaderWithSplitViewBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
 
   // MultiContentsView:
-  void UpdateContentsBorderAndOverlay() override;
   void Layout(PassKey) override;
 
   // SplitViewSeparatorDelegate:
   void OnDoubleClicked() override;
-
-  float GetCornerRadius(bool for_border) const;
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
       const {

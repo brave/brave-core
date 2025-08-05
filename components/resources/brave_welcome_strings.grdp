@@ -61,11 +61,11 @@
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SEND_REPORTS_LABEL" desc="A checkbox label for user to opt-in opt-out to send diagnostic reports">
-  Send diagnostic reports if you experience a crash or freeze. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">$1</ph>
+  Send diagnostic reports if you experience a crash or freeze. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">/$1</ph>
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SEND_INSIGHTS_LABEL" desc="A checkbox label for user to opt-in opt-out to share anonymous, product insights information">
-  Share private and anonymous product insights about what features are being used by Brave's users. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">$1</ph>
+  Share private and anonymous product insights about what features are being used by Brave's users. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">/$1</ph>
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SETUP_COMPLETE_LABEL" desc="A title for screen when user has completed all the steps">
@@ -73,11 +73,11 @@
 </message>
 
 <message name="IDS_BRAVE_WELCOME_CHANGE_SETTINGS_NOTE" desc="A footnote with a link to change settings.">
-  Change these choices at any time in Brave at <ph name="LINK_BEFORE1">$1</ph>brave://settings/privacy<ph name="LINK_AFTER2">$1</ph>.
+  Change these choices at any time in Brave at <ph name="LINK_BEFORE1">$1</ph>brave://settings/privacy<ph name="LINK_AFTER2">/$1</ph>.
 </message>
 
 <message name="IDS_BRAVE_WELCOME_PRIVACY_POLICY_NOTE" desc="A footnote with a link to Brave's privacy polcy.">
-  Read our full <ph name="LINK_BEFORE">$1</ph>Privacy Policy<ph name="LINK_AFTER">$1</ph>
+  Read our full <ph name="LINK_BEFORE">$1</ph>Privacy Policy<ph name="LINK_AFTER">/$1</ph>
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SELECT_THEME_LABEL" desc="A title for screen to select color theme">
@@ -123,4 +123,9 @@
 <message name="IDS_BRAVE_WELCOME_HELP_WDP_REJECT" desc="A label 'help wdp' page">
   Maybe later
 </message>
+
+<message name="IDS_WELCOME_HEADER" desc="A message which will appear as the header on the Welcome UI if the user has never run Brave before.">
+  Welcome to Brave
+</message>
+
 </grit-part>

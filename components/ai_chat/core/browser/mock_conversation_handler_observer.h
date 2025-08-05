@@ -8,8 +8,10 @@
 
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/scoped_multi_source_observation.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -32,12 +34,20 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
               OnConversationEntryAdded,
               (ConversationHandler*,
                mojom::ConversationTurnPtr&,
-               std::optional<std::vector<std::string_view>>),
+               std::optional<PageContents>),
               (override));
 
   MOCK_METHOD(void,
               OnConversationEntryRemoved,
               (ConversationHandler*, std::string),
+              (override));
+
+  MOCK_METHOD(void,
+              OnToolUseEventOutput,
+              (ConversationHandler*,
+               std::string_view entry_uuid,
+               size_t event_order,
+               mojom::ToolUseEventPtr tool_use),
               (override));
 
   MOCK_METHOD(void,

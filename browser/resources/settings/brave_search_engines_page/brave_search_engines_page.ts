@@ -16,9 +16,10 @@ import {BraveSearchEnginesPageBrowserProxyImpl} from './brave_search_engines_pag
 import {getTemplate} from './brave_search_engines_page.html.js'
 import type {CrToastElement} from 'chrome://resources/cr_elements/cr_toast/cr_toast.js'
 import type {SearchEngine} from '../search_engines_page/search_engines_browser_proxy.js'
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 
 const BraveSearchEnginesPageBase =
-  WebUiListenerMixin(I18nMixin(RouteObserverMixin(PolymerElement)))
+  WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
 
 class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   static get is() {

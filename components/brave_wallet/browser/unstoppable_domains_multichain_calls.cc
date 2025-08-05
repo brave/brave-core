@@ -94,13 +94,6 @@ bool MultichainCall<ResultType>::MaybeResolveCallbacks() {
 }
 
 template <class KeyType, class ResultType>
-std::vector<std::string> MultichainCalls<KeyType, ResultType>::GetChains()
-    const {
-  return {mojom::kPolygonMainnetChainId, mojom::kBaseMainnetChainId,
-          mojom::kMainnetChainId};
-}
-
-template <class KeyType, class ResultType>
 bool MultichainCalls<KeyType, ResultType>::HasCall(const KeyType& key) {
   return calls_.count(key) > 0;
 }

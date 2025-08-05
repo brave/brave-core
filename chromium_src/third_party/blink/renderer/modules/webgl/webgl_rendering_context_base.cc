@@ -46,7 +46,7 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
 
 #define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_SCRIPT_VALUE \
   if (!AllowFingerprintingForHost(Host()))              \
-    return ScriptValue::CreateNull(script_state->GetIsolate());
+    return ScriptValue::CreateNull(v8::Isolate::GetCurrent());
 
 #define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_STRING \
   if (!AllowFingerprintingForHost(Host()))        \
@@ -79,7 +79,7 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
 
 #define getExtension getExtension_ChromiumImpl
 #define getSupportedExtensions getSupportedExtensions_ChromiumImpl
-#include "src/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc"
+#include <third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc>
 #undef getSupportedExtensions
 #undef getExtension
 
@@ -108,7 +108,7 @@ ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
   if (!AllowFingerprintingForHost(Host())) {
     if (name != WebGLDebugRendererInfo::ExtensionName())
-      return ScriptObject::CreateNull(script_state->GetIsolate());
+      return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
   }
   return getExtension_ChromiumImpl(script_state, name);
 }

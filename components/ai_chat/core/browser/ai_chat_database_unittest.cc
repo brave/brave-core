@@ -21,9 +21,8 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
@@ -34,6 +33,7 @@
 #include "sql/meta_table.h"
 #include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
 class AIChatDatabaseTest : public testing::Test,
@@ -46,17 +46,9 @@ class AIChatDatabaseTest : public testing::Test,
     os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
         /*is_sync_for_unittests=*/true);
 
-    // Create database when os_crypt is ready
-    base::RunLoop run_loop;
-    encryptor_ready_subscription_ =
-        os_crypt_->GetInstance(base::BindLambdaForTesting(
-            [&](os_crypt_async::Encryptor encryptor, bool success) {
-              ASSERT_TRUE(success);
-              db_ = std::make_unique<AIChatDatabase>(db_file_path(),
-                                                     std::move(encryptor));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    os_crypt_->GetInstance(future.GetCallback());
+    db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
 
     if (GetParam()) {
       db_->DeleteAllData();
@@ -86,7 +78,6 @@ class AIChatDatabaseTest : public testing::Test,
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::ScopedTempDir temp_directory_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
-  base::CallbackListSubscription encryptor_ready_subscription_;
   std::unique_ptr<AIChatDatabase> db_;
 };
 
@@ -98,8 +89,7 @@ INSTANTIATE_TEST_SUITE_P(
     // and no tables are missing or different.
     ::testing::Bool(),
     [](const testing::TestParamInfo<AIChatDatabaseTest::ParamType>& info) {
-      return base::StringPrintf("DropTablesFirst_%s",
-                                info.param ? "Yes" : "No");
+      return absl::StrFormat("DropTablesFirst_%s", info.param ? "Yes" : "No");
     });
 
 // Functions tested:
@@ -561,16 +551,7 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
   "param2": 42,
   "param3": true
 })",
-                               std::vector<mojom::ContentBlockPtr>());
-  tool_event_first->output->emplace_back(
-      mojom::ContentBlock::NewTextContentBlock(
-          mojom::TextContentBlock::New("This is a text response")));
-  tool_event_first->output->emplace_back(
-      mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
-          GURL("data:image/"
-               "png;base64,"
-               "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+"
-               "A8AAQUBAScY42YAAAAASUVORK5CYII="))));
+                               std::nullopt);
 
   auto tool_event_second =
       mojom::ToolUseEvent::New("test_tool_2", "tool_id_456",
@@ -595,7 +576,7 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
   history[1]->events->emplace_back(
       mojom::ConversationEntryEvent::NewCompletionEvent(
           mojom::CompletionEvent::New("This is a completion event")));
-  history[1]->events->emplace_back(
+  auto& tool_event_first_event = history[1]->events->emplace_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(
           std::move(tool_event_first)));
   history[1]->events->emplace_back(
@@ -619,6 +600,27 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
   mojom::ConversationArchivePtr conversation_data =
       db_->GetConversationData(uuid);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+
+  // Add ouptut for the first tool use event and verify it is persisted
+  // on the correct event.
+  auto& tool_event_first_output =
+      tool_event_first_event->get_tool_use_event()->output;
+  tool_event_first_output = std::vector<mojom::ContentBlockPtr>();
+  tool_event_first_output->emplace_back(
+      mojom::ContentBlock::NewTextContentBlock(
+          mojom::TextContentBlock::New("This is a text response")));
+  tool_event_first_output->emplace_back(
+      mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
+          GURL("data:image/"
+               "png;base64,"
+               "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+"
+               "A8AAQUBAScY42YAAAAASUVORK5CYII="))));
+  EXPECT_TRUE(db_->UpdateToolUseEvent(
+      history[1]->uuid.value(), 2,
+      tool_event_first_event->get_tool_use_event()->Clone()));
+  conversation_data = db_->GetConversationData(uuid);
   ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
                                   history);
 }
@@ -1017,18 +1019,11 @@ class AIChatDatabaseMigrationTest : public testing::Test,
         /*is_sync_for_unittests=*/true);
 
     // Create database when os_crypt is ready
-    base::RunLoop run_loop;
-    encryptor_ready_subscription_ =
-        os_crypt_->GetInstance(base::BindLambdaForTesting(
-            [&](os_crypt_async::Encryptor encryptor, bool success) {
-              ASSERT_TRUE(success);
-              CreateDatabase(base::StringPrintf(
-                  "aichat_database_dump_version_%d.sql", version()));
-              db_ = std::make_unique<AIChatDatabase>(db_file_path(),
-                                                     std::move(encryptor));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    os_crypt_->GetInstance(future.GetCallback());
+    CreateDatabase(
+        absl::StrFormat("aichat_database_dump_version_%d.sql", version()));
+    db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
   }
 
   void TearDown() override {
@@ -1080,7 +1075,6 @@ class AIChatDatabaseMigrationTest : public testing::Test,
   base::FilePath database_dump_location_;
   base::ScopedTempDir temp_directory_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
-  base::CallbackListSubscription encryptor_ready_subscription_;
   std::unique_ptr<AIChatDatabase> db_;
 };
 
@@ -1090,8 +1084,8 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Range(kLowestSupportedDatabaseVersion, kCurrentDatabaseVersion),
     [](const testing::TestParamInfo<AIChatDatabaseMigrationTest::ParamType>&
            info) {
-      return base::StringPrintf("From_v%d_to_v%d", info.param,
-                                kCurrentDatabaseVersion);
+      return absl::StrFormat("From_v%d_to_v%d", info.param,
+                             kCurrentDatabaseVersion);
     });
 
 // Tests the migration of the database from version() to kCurrentVersionNumber

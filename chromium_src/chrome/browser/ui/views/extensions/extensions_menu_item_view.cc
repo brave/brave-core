@@ -10,6 +10,6 @@
 
 #define kBrowserToolsChromeRefreshIcon kLeoMoreVerticalIcon
 
-#include "src/chrome/browser/ui/views/extensions/extensions_menu_item_view.cc"
+#include <chrome/browser/ui/views/extensions/extensions_menu_item_view.cc>
 
 #undef kBrowserToolsChromeRefreshIcon

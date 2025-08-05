@@ -10,6 +10,7 @@ import Data
 import Foundation
 import Preferences
 import Shared
+import Web
 import WebKit
 import os.log
 
@@ -570,12 +571,15 @@ import os.log
   }
 
   /// Return the valid generic types for the given domain
-  public func validGenericTypes(for domain: Domain) -> Set<GenericBlocklistType> {
-    guard !domain.areAllShieldsOff else { return [] }
+  public func validGenericTypes(
+    isShieldsEnabled: Bool,
+    isAdBlockEnabled: Bool
+  ) -> Set<GenericBlocklistType> {
+    guard isShieldsEnabled else { return [] }
     var results = Set<GenericBlocklistType>()
 
     // Get domain specific rule types
-    if domain.globalBlockAdsAndTrackingLevel.isEnabled {
+    if isAdBlockEnabled {
       results = results.union([.blockAds, .blockTrackers])
     }
 

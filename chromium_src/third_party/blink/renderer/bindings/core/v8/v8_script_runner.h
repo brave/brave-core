@@ -16,7 +16,7 @@
   CompileModule(__VA_ARGS__); \
   static v8::MaybeLocal<v8::Module> CompileModule_ChromiumImpl(__VA_ARGS__)
 
-#include "src/third_party/blink/renderer/bindings/core/v8/v8_script_runner.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/bindings/core/v8/v8_script_runner.h>  // IWYU pragma: export
 
 #undef CompileModule
 #undef CompileScript

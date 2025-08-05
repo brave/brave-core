@@ -87,6 +87,20 @@ class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
                  possible_browser.profile_directory, dest_profile)
     device.PullFile(possible_browser.profile_directory, dest_profile, True)
 
+    # Recursively removes empty directories
+    def remove_empty_dirs(path: str):
+      for dir_name in os.listdir(path):
+        dir_path = os.path.join(path, dir_name)
+        if os.path.isdir(dir_path):
+          remove_empty_dirs(dir_path)
+
+      # another check, some directories could be removed
+      if not os.listdir(path):
+        os.rmdir(path)
+
+    # Chromium telemetry code fails to deal with empty directories.
+    # Remove empty directories in `dest_profile`:
+    remove_empty_dirs(dest_profile)
 
 class _UpdateProfilePage(page_module.Page):
   _delay: int

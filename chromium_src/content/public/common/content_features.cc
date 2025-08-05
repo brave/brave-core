@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/content/public/common/content_features.cc"
-
 #include "base/feature_override.h"
 #include "build/build_config.h"
+
+#include <content/public/common/content_features.cc>
 
 namespace features {
 
@@ -22,6 +22,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kDevToolsPrivacyUI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDigitalGoodsApi, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCm, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIsOverride, base::FEATURE_DISABLED_BY_DEFAULT},
     {kServiceWorkerAutoPreload, base::FEATURE_DISABLED_BY_DEFAULT},
     {kWebIdentityDigitalCredentials, base::FEATURE_DISABLED_BY_DEFAULT},

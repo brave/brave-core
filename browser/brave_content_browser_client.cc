@@ -54,6 +54,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
@@ -240,7 +241,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
-#include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -870,6 +871,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #if !BUILDFLAG(IS_ANDROID)
     content::RegisterWebUIControllerInterfaceBinder<
         ai_chat::mojom::AIChatSettingsHelper, BraveSettingsUI>(map);
+    content::RegisterWebUIControllerInterfaceBinder<
+        ai_chat::mojom::CustomizationSettingsHandler, BraveSettingsUI>(map);
 #endif
   }
 #if BUILDFLAG(IS_ANDROID)

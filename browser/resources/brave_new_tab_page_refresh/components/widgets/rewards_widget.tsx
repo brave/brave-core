@@ -35,6 +35,7 @@ export function RewardsWidget() {
   const externalWallet = useRewardsState((s) => s.rewardsExternalWallet)
   const balance = useRewardsState((s) => s.rewardsBalance)
   const exchangeRate = useRewardsState((s) => s.rewardsExchangeRate)
+  const tosUpdateRequired = useRewardsState((s) => s.tosUpdateRequired)
   const adsViewed = useRewardsState((s) => s.rewardsAdsViewed)
   const adsViewedString =
     usePluralString('rewardsConnectedAdsViewedText', adsViewed ?? 0)
@@ -140,8 +141,40 @@ export function RewardsWidget() {
     )
   }
 
+  function renderTosUpdateNotice() {
+    return (
+      <div data-css-scope={style.scope} className='login'>
+        <div className='title'>
+          {getString('rewardsWidgetTitle')}
+        </div>
+        <div className='content'>
+          <div className='text'>
+            <div className='header'>
+              {getString('rewardsTosUpdateTitle')}
+            </div>
+            <div>
+              {getString('rewardsTosUpdateText')}
+            </div>
+          </div>
+          <div className='actions'>
+            <Button
+              size='small'
+              onClick={() => openLink(urls.settingsURL)}
+            >
+              {getString('rewardsTosUpdateButtonLabel')}
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (!rewardsEnabled) {
     return renderOnboarding()
+  }
+
+  if (tosUpdateRequired) {
+    return renderTosUpdateNotice()
   }
 
   if (!externalWallet) {

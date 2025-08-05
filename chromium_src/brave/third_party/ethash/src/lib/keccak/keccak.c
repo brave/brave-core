@@ -7,4 +7,4 @@
 #undef __x86_64__
 #endif
 
-#include "src/brave/third_party/ethash/src/lib/keccak/keccak.c"
+#include <brave/third_party/ethash/src/lib/keccak/keccak.c>

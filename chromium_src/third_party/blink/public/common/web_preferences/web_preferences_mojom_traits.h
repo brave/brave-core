@@ -11,7 +11,7 @@
 
 #define WebPreferences WebPreferences_ChromiumImpl
 
-#include "src/third_party/blink/public/common/web_preferences/web_preferences_mojom_traits.h"  // IWYU pragma: export
+#include <third_party/blink/public/common/web_preferences/web_preferences_mojom_traits.h>  // IWYU pragma: export
 
 #undef WebPreferences
 
@@ -29,6 +29,10 @@ struct BLINK_COMMON_EXPORT StructTraits<blink::mojom::WebPreferencesDataView,
 
   static bool page_in_reader_mode(const blink::web_pref::WebPreferences& r) {
     return r.page_in_reader_mode;
+  }
+
+  static bool disable_web_share(const blink::web_pref::WebPreferences& r) {
+    return r.disable_web_share;
   }
 
   static bool Read(blink::mojom::WebPreferencesDataView r,

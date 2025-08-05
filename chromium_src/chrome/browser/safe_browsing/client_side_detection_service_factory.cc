@@ -7,7 +7,7 @@
 
 #define ClientSideDetectionServiceFactory \
   ClientSideDetectionServiceFactory_ChromiumImpl
-#include "src/chrome/browser/safe_browsing/client_side_detection_service_factory.cc"
+#include <chrome/browser/safe_browsing/client_side_detection_service_factory.cc>
 #undef ClientSideDetectionServiceFactory
 
 namespace safe_browsing {

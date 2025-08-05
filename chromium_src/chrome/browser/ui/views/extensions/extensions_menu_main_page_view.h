@@ -11,7 +11,7 @@
   friend class BraveExtensionsMenuMainPageView; \
   content::WebContents* GetActiveWebContents
 
-#include "src/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h>  // IWYU pragma: export
 
 #undef GetActiveWebContents
 

@@ -12,10 +12,12 @@
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 
-# These tests pass locally but fail on CI.
+# These tests pass locally but fail on CI (flaky).
+-AvatarMenuBrowserTest.AddNewProfile
 -DebuggerExtensionApiTest.ParentTargetPermissions
 -EventPage/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
 -EventPage/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
+-GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHidden
 -HeadlessModeProtocolBrowserTest.InputClipboardOps
 -InfoBarUiTest.InvokeUi_bad_flags
 -InfoBarUiTest.InvokeUi_reload_plugin
@@ -27,6 +29,7 @@
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/0
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
+-WebViewNewWindowTest.UserAgent_NewWindow/InnerWebContents
 
 # This test runs fine when run individually, but times out when run with test
 # launcher.
@@ -48,6 +51,10 @@
 # These tests fail because the primary account consent level is null instead of
 # signin::ConsentLevel::kSignin
 -All/AvatarToolbarButtonEnterpriseBadgingWithSyncPromoParamsBrowserTest.*
+
+# This test fails because we override RegionalCapabilitiesServiceClientLinux::
+# FetchCountryId to get locale from device instead of the variations service.
+-RegionalCapabilitiesServiceFactoryBrowserTestForVariationsCountry.GetCountryId/FR
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*

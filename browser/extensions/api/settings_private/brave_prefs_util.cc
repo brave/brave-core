@@ -193,6 +193,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   // Web discovery prefs
   (*s_brave_allowlist)[kWebDiscoveryEnabled] = settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kWebDiscoveryDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
 #endif
   // Clear browsing data on exit prefs.
   (*s_brave_allowlist)[browsing_data::prefs::kDeleteBrowsingHistoryOnExit] =
@@ -221,6 +223,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   (*s_brave_allowlist)[kBraveWaybackMachineEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBraveWaybackMachineDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
 #endif
   (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
       settings_api::PrefType::kBoolean;
@@ -235,6 +239,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kDefaultEthereumWallet] =
       settings_api::PrefType::kNumber;
   (*s_brave_allowlist)[kDefaultSolanaWallet] = settings_api::PrefType::kNumber;
+  (*s_brave_allowlist)[kDefaultCardanoWallet] = settings_api::PrefType::kNumber;
   (*s_brave_allowlist)[kDefaultBaseCurrency] = settings_api::PrefType::kString;
   (*s_brave_allowlist)[kDefaultBaseCryptocurrency] =
       settings_api::PrefType::kString;
@@ -259,6 +264,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatShowToolbarButton] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatTabOrganizationEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatUserCustomizationEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatUserMemoryEnabled] =
       settings_api::PrefType::kBoolean;
 
   // Survey Panelist pref

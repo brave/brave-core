@@ -9,8 +9,10 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/p3a/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -39,6 +41,10 @@
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
 namespace policy {
 
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
@@ -65,6 +71,12 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 #endif
     {policy::key::kBraveAIChatEnabled, ai_chat::prefs::kEnabledByPolicy,
      base::Value::Type::BOOLEAN},
+    {policy::key::kBraveP3ADisabled, p3a::kP3ADisabledByPolicy,
+     base::Value::Type::BOOLEAN},
+    {policy::key::kBraveStatsPingDisabled, kStatsReportingDisabledByPolicy,
+     base::Value::Type::BOOLEAN},
+    {policy::key::kBraveWebDiscoveryDisabled, kWebDiscoveryDisabledByPolicy,
+     base::Value::Type::BOOLEAN},
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {policy::key::kBraveNewsDisabled,
      brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value::Type::BOOLEAN},
@@ -74,6 +86,10 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kBraveSpeedreaderDisabled,
      speedreader::kSpeedreaderDisabledByPolicy, base::Value::Type::BOOLEAN},
 #endif
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+    {policy::key::kBraveWaybackMachineDisabled,
+     kBraveWaybackMachineDisabledByPolicy, base::Value::Type::BOOLEAN},
 #endif
 #if BUILDFLAG(DEPRECATE_IPFS)
     {policy::key::kIPFSEnabled, ipfs::prefs::kIPFSEnabledByPolicy,

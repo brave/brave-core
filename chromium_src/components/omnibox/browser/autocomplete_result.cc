@@ -14,7 +14,7 @@
 
 #define ConvertOpenTabMatches ConvertOpenTabMatches_Chromium
 
-#include "src/components/omnibox/browser/autocomplete_result.cc"
+#include <components/omnibox/browser/autocomplete_result.cc>
 
 #undef ConvertOpenTabMatches
 

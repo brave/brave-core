@@ -18,12 +18,13 @@
 #include "base/sequence_checker.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_view_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "net/base/io_buffer.h"
 #include "net/base/net_errors.h"
 #include "net/socket/tcp_client_socket.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace tor {
 
@@ -549,16 +550,14 @@ void TorControl::SetupPluggableTransport(
       "stun:stun.uls.co.za:3478,stun:stun.voipgate.com:3478,stun:stun.voys.nl:"
       "3478\"";
 
-  const std::string snowflake_setup = base::StringPrintf(
+  const std::string snowflake_setup = absl::StrFormat(
       kSnowflakeConfigCmd,
       snowflake_path.NormalizePathSeparatorsTo(FILE_PATH_LITERAL('/'))
-          .AsUTF8Unsafe()
-          .c_str());
-  const std::string obfs4_setup = base::StringPrintf(
+          .AsUTF8Unsafe());
+  const std::string obfs4_setup = absl::StrFormat(
       kObfs4ConfigCmd,
       obfs4_path.NormalizePathSeparatorsTo(FILE_PATH_LITERAL('/'))
-          .AsUTF8Unsafe()
-          .c_str());
+          .AsUTF8Unsafe());
 
   const std::string configure_pluggable_transport =
       base::StrCat({"SETCONF ", snowflake_setup, " ", obfs4_setup});

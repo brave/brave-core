@@ -42,7 +42,7 @@
        ? tabs::kVerticalTabHeight                                    \
        : GetLayoutConstant(COMPONENT))
 
-#include "src/chrome/browser/ui/views/tabs/tab.cc"
+#include <chrome/browser/ui/views/tabs/tab.cc>
 
 #undef GetLayoutConstant
 #undef BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY

@@ -41,16 +41,18 @@ using testing::Optional;
 
 class MockAssociatedContentDriver : public AssociatedContentDriver {
  public:
-  MockAssociatedContentDriver(
+  explicit MockAssociatedContentDriver(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
       : AssociatedContentDriver(url_loader_factory) {}
   ~MockAssociatedContentDriver() override = default;
 
-  MOCK_METHOD(GURL, GetPageURL, (), (const, override));
-  MOCK_METHOD(std::u16string, GetPageTitle, (), (const, override));
+  void SetUrl(GURL url) { url_ = std::move(url); }
+  void SetTitle(std::u16string title) { title_ = std::move(title); }
+
   MOCK_METHOD(void,
               GetPageContent,
-              (GetPageContentCallback, std::string_view),
+              (AssociatedContentDriver::FetchPageContentCallback,
+               std::string_view),
               (override));
   MOCK_METHOD(void,
               GetSearchSummarizerKey,
@@ -93,22 +95,23 @@ TEST_F(AssociatedContentDriverUnitTest, GetContent) {
   base::MockCallback<GetPageContentCallback> callback2;
   base::MockCallback<GetPageContentCallback> callback3;
 
-  EXPECT_CALL(callback1, Run("content", false, "token")).Times(1);
-  EXPECT_CALL(callback2, Run("content", false, "token")).Times(1);
-  EXPECT_CALL(callback3, Run("content", false, "token")).Times(1);
+  EXPECT_CALL(callback1, Run(PageContent("content", false))).Times(1);
+  EXPECT_CALL(callback2, Run(PageContent("content", false))).Times(1);
+  EXPECT_CALL(callback3, Run(PageContent("content", false))).Times(1);
 
   // Should only ask content once
   base::RunLoop run_loop;
   EXPECT_CALL(*associated_content_driver_, GetPageContent(_, _))
-      .WillOnce([&](GetPageContentCallback callback,
+      .WillOnce([&](AssociatedContentDriver::FetchPageContentCallback callback,
                     std::string_view invalidation_token) {
         // Simulate async response so that multiple calls can queue
         base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-            FROM_HERE, base::BindOnce(
-                           [](GetPageContentCallback callback) {
-                             std::move(callback).Run("content", false, "token");
-                           },
-                           std::move(callback)));
+            FROM_HERE,
+            base::BindOnce(
+                [](AssociatedContentDriver::FetchPageContentCallback callback) {
+                  std::move(callback).Run("content", false, "token");
+                },
+                std::move(callback)));
       });
 
   // Test
@@ -126,9 +129,8 @@ TEST_F(AssociatedContentDriverUnitTest, GetContent) {
 TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent) {
   SetSearchQuerySummaryInterceptor();
   // Give the function a valid URL
-  ON_CALL(*associated_content_driver_, GetPageURL)
-      .WillByDefault(
-          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  associated_content_driver_->SetUrl(
+      GURL("https://search.brave.com/search?q=test"));
   // Give the function a valid key
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey)
       .WillOnce(base::test::RunOnceCallback<0>("key"));
@@ -152,8 +154,7 @@ TEST_F(AssociatedContentDriverUnitTest,
   SetSearchQuerySummaryInterceptor(true);
   // Fetch should not be called if page URL is not Brave Search SERP, staged
   // query and summary will be cleared.
-  ON_CALL(*associated_content_driver_, GetPageURL)
-      .WillByDefault(testing::Return(GURL("https://search.brave.com")));
+  associated_content_driver_->SetUrl(GURL("https://search.brave.com"));
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey).Times(0);
 
   base::MockCallback<GetStagedEntriesCallback> callback;
@@ -166,9 +167,8 @@ TEST_F(AssociatedContentDriverUnitTest,
 }
 
 TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoKey) {
-  ON_CALL(*associated_content_driver_, GetPageURL)
-      .WillByDefault(
-          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  associated_content_driver_->SetUrl(
+      GURL("https://search.brave.com/search?q=test"));
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey)
       .WillOnce(base::test::RunOnceCallback<0>(std::nullopt));
 
@@ -183,9 +183,8 @@ TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoKey) {
 
 TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoResult) {
   SetSearchQuerySummaryInterceptor(true);
-  ON_CALL(*associated_content_driver_, GetPageURL)
-      .WillByDefault(
-          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  associated_content_driver_->SetUrl(
+      GURL("https://search.brave.com/search?q=test"));
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey)
       .WillOnce(base::test::RunOnceCallback<0>("key"));
 

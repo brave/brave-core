@@ -4,26 +4,52 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
 import("//testing/test.gni")
 
-ios_xctest_test("brave_core_ios_tests") {
+test("ios_brave_unit_tests") {
+  deps = [
+    # Ensure that all unit tests are run
+    "//ios/chrome/test:run_all_unittests",
+    "//ios/chrome/test:test_support",
+
+    # use fake hooks and pack resources
+    "//ios/chrome/app:tests_fake_hook",
+    "//ios/chrome/app/resources:packed_resources",
+    "//ios/chrome/app/resources:system_strings",
+    "//ios/testing:http_server_bundle_data",
+
+    # Providers
+    "//ios/chrome/test/providers",
+    "//ios/chrome/test/providers/signin:trusted_vault_provider",
+
+    # Unit tests
+    ":legacy_unit_tests",
+
+    # This is required until we can sort out overridden deps symbols
+    "//brave/ios/browser",
+  ]
+
+  assert_no_deps = ios_assert_no_deps
+}
+
+source_set("legacy_unit_tests") {
+  testonly = true
+
   sources = [
-    "dictionary_transform_test.mm",
-    "main.mm",
-    "net_test.mm",
-    "startup_test.mm",
+    "certificate_unittest.mm",
+    "dictionary_transform_unittest.mm",
     "test_foo.h",
     "test_foo.mm",
-    "vector_transform_test.mm",
+    "vector_transform_unittest.mm",
   ]
 
   deps = [
     "//base",
-    "//brave/ios/app",
     "//brave/ios/browser/api/net",
-    "//ios/third_party/material_components_ios:material_components_ios+bundle",
-    "//ios/third_party/material_components_ios:material_components_ios+link",
     "//net",
+    "//net/http:generate_transport_security_state",
+    "//testing/gtest",
   ]
 
   frameworks = [

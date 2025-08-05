@@ -371,9 +371,7 @@ mojom::ExternalWalletPtr MaybeCreateWallet(RewardsEngine& engine,
   return wallet;
 }
 
-bool LogOutWallet(RewardsEngine& engine,
-                  const std::string& wallet_type,
-                  const std::string& notification) {
+bool LogOutWallet(RewardsEngine& engine, const std::string& wallet_type) {
   DCHECK(!wallet_type.empty());
 
   engine.Log(FROM_HERE) << "Logging out " << wallet_type << " wallet...";
@@ -396,9 +394,7 @@ bool LogOutWallet(RewardsEngine& engine,
 
   if (!engine.Get<InitializationManager>().is_shutting_down()) {
     engine.client()->ExternalWalletLoggedOut();
-    engine.client()->ShowNotification(notification.empty()
-                                          ? notifications::kWalletDisconnected
-                                          : notification,
+    engine.client()->ShowNotification(notifications::kWalletDisconnected,
                                       {wallet_type}, base::DoNothing());
   }
 

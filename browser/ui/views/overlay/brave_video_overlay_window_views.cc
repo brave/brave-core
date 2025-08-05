@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/views/overlay/brave_back_to_tab_label_button.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -25,6 +24,7 @@
 #include "chrome/browser/ui/views/overlay/toggle_camera_button.h"
 #include "chrome/browser/ui/views/overlay/toggle_microphone_button.h"
 #include "chrome/grit/generated_resources.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/hit_test.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/compositor/layer.h"
@@ -41,8 +41,8 @@ std::u16string ToString(base::TimeDelta time) {
   const int seconds = (time_in_seconds % 60);
 
   return base::ASCIIToUTF16(
-      hours ? base::StringPrintf("%02d:%02d:%02d", hours, minutes, seconds)
-            : base::StringPrintf("%02d:%02d", minutes, seconds));
+      hours ? absl::StrFormat("%02d:%02d:%02d", hours, minutes, seconds)
+            : absl::StrFormat("%02d:%02d", minutes, seconds));
 }
 
 std::u16string ToString(const media_session::MediaPosition& position) {

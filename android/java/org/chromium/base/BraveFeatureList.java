@@ -17,6 +17,8 @@ public abstract class BraveFeatureList {
     public static final String ENABLE_PARALLEL_DOWNLOADING = "enable-parallel-downloading";
     public static final String BRAVE_SEARCH_OMNIBOX_BANNER = "BraveSearchOmniboxBanner";
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK = "BraveBackgroundVideoPlayback";
+    public static final String BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS =
+            "BravePictureInPictureForYouTubeVideos";
     public static final String BRAVE_ANDROID_SAFE_BROWSING = "BraveAndroidSafeBrowsing";
     public static final String BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI =
             "BraveVPNLinkSubscriptionAndroidUI";
@@ -41,4 +43,5 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_INCOGNITO_SCREENSHOT = "incognito-screenshot";
     public static final String BRAVE_NTP_BRANDED_WALLPAPER_SURVEY_PANELIST =
             "BraveNTPBrandedWallpaperSurveyPanelist";
+    public static final String BRAVE_ACCOUNT = "BraveAccount";
 }

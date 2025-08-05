@@ -9,9 +9,9 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal::database {
 
@@ -35,7 +35,7 @@ void DatabaseSKUOrderItems::InsertOrUpdateList(
     return;
   }
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(order_item_id, order_id, sku, quantity, price, name, description, "
       "type, expires_at) "
@@ -72,7 +72,7 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT order_item_id, order_id, sku, quantity, price, name, "
       "description, type, expires_at FROM %s WHERE order_id = ?",
       kTableName);

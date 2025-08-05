@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">עזור לשפר את יציבות המוצר של Brave על ידי שליחת דוחות אבחון אוטומטית כאשר הדפדפן האמיץ קורס או קופא.</translation>
 <translation id="7977176350719484850">הערכת נתונים/n שנשמרו</translation>
 <translation id="9008534313521214777">זמן מוערך\n שנשמר</translation>
+<translation id="8347743943525229984">הפעלת סקרי Brave</translation>
+<translation id="6022939994702081659">מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן.</translation>
+<translation id="7746496306508543965">למידע נוסף על סקרי Brave</translation>
 <translation id="410351446219883937">הפעלה אוטומטית</translation>
 <translation id="7445411102860286510">אתרים יוכלו להפעיל באופן אוטומטי סרטונים מושתקים (מומלץ)</translation>
 <translation id="7837721118676387834">אפשר הפעלה אוטומטית של סרטונים מושתקים באתר ספציפי.</translation>
@@ -633,7 +636,6 @@
 <translation id="3961126209136843111">ייבוא ארנק קיים</translation>
 <translation id="4811736040444856406">הצג ביטוי שחזור</translation>
 <translation id="4359319875297001084">לייבא מארנקי קריפטו Brave מדור קודם?</translation>
-<translation id="3157931365184549694">שחזר</translation>
 <translation id="5844138175312846408">כבר יש ברשותך ארנק?</translation>
 <translation id="2502258949541727762">לפני שנתחיל</translation>
 <translation id="4303748097351941030">רשתות נתמכות</translation>
@@ -795,7 +797,6 @@
 <translation id="1426320910664514906">הגבלת דלק</translation>
 <translation id="6389441740143786465">כבה את מרכז השיתוף</translation>
 <translation id="9065203028668620118">עריכה</translation>
-<translation id="473775607612524610">עדכן</translation>
 <translation id="479795390141144417">עדכון החשבון נכשל.</translation>
 <translation id="8084782383392198011">שם החשבון לא יכול להיות ריק.</translation>
 <translation id="5045550434625856497">סיסמה שגויה</translation>

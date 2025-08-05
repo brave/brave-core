@@ -34,6 +34,10 @@ import ErrorServiceOverloaded from '../components/alerts/error_service_overloade
 import LongConversationInfo from '../components/alerts/long_conversation_info'
 import WarningPremiumDisconnected from '../components/alerts/warning_premium_disconnected'
 import Attachments from '../components/attachments'
+import { createTextContentBlock } from '../../common/content_block'
+import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
+
+// TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
 const eventTemplate: Mojom.ConversationEntryEvent = {
   completionEvent: undefined,
@@ -107,6 +111,28 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
     temporary: false
+  }
+]
+
+
+const toolEvents: Mojom.ToolUseEvent[] = [
+  {
+    id: 'abc123d',
+    toolName: 'user_choice_tool',
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: [createTextContentBlock('7:00pm')],
+  },
+  {
+    id: 'abc123e',
+    toolName: 'user_choice_tool',
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: undefined,
+  },
+  {
+    id: 'abc123f',
+    toolName: 'user_choice_tool',
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: undefined,
   }
 ]
 
@@ -237,34 +263,6 @@ const HISTORY: Mojom.ConversationTurn[] = [
         '1962              |\n' +
         '\n\n Let me know if you\'d like more details!'
       )],
-    uploadedFiles : [],
-    fromBraveSearchSERP: false,
-    modelKey: '1'
-  },
-  {
-    uuid: undefined,
-    text: 'Summarize this excerpt',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.SUMMARIZE_SELECTED_TEXT,
-    prompt: undefined,
-    selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles : [],
-    fromBraveSearchSERP: false,
-    modelKey: '1'
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.')],
     uploadedFiles : [],
     fromBraveSearchSERP: false,
     modelKey: '1'
@@ -495,7 +493,40 @@ const HISTORY: Mojom.ConversationTurn[] = [
     uploadedFiles : [],
     fromBraveSearchSERP: false,
     modelKey: '1'
-  }
+  },
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [
+      getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.'),
+      ...toolEvents.slice(0, 3).map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent }))
+    ],
+    uploadedFiles : [],
+    fromBraveSearchSERP: false,
+    modelKey: '1'
+  },
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [
+      ...toolEvents.slice(3).map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent }))
+    ],
+    uploadedFiles:[],
+    fromBraveSearchSERP: false,
+    modelKey: '1'
+  },
 ]
 
 const MODELS: Mojom.Model[] = [
@@ -520,7 +551,7 @@ const MODELS: Mojom.Model[] = [
     key: '2',
     displayName: 'Model Two',
     visionSupport: true,
-    supportsTools: false,
+    supportsTools: true,
     options: {
       leoModelOptions: {
         name: 'model-two-premium',
@@ -554,7 +585,7 @@ const MODELS: Mojom.Model[] = [
     key: '4',
     displayName: 'Microsoft Phi-3',
     visionSupport: false,
-    supportsTools: false,
+    supportsTools: true,
     options: {
       leoModelOptions: undefined,
       customModelOptions: {
@@ -831,7 +862,6 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     shouldDisableUserInput: false,
     shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
     shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
-    shouldSendPageContents: !!associatedContent,
     inputText,
     selectedActionType: undefined,
     isToolsMenuOpen,
@@ -849,7 +879,6 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     switchToBasicModel,
     generateSuggestedQuestions: () => { },
     dismissLongConversationInfo: () => { },
-    updateShouldSendPageContents: () => { },
     retryAPIRequest: () => { },
     handleResetError: () => { },
     handleStopGenerating: async () => { },
@@ -996,6 +1025,18 @@ export const _Loading = {
     return (
       <div className={styles.container}>
         <Loading />
+      </div>
+    )
+  }
+}
+
+export const _ToolUse = {
+  render: () => {
+    return (
+      <div className={styles.container}>
+        {toolEvents.map((event) => (
+          <ToolEvent key={event.id} toolUseEvent={event} isEntryActive></ToolEvent>
+        ))}
       </div>
     )
   }

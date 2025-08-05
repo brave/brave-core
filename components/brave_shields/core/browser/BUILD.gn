@@ -46,7 +46,7 @@ static_library("browser") {
     "//brave/components/p3a",
     "//brave/components/p3a_utils",
     "//brave/components/webcompat/core/common",
-    "//components/component_updater:component_updater",
+    "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/browser:cookie_settings",
     "//components/content_settings/core/common",

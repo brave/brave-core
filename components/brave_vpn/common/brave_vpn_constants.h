@@ -30,6 +30,8 @@ inline constexpr char kRegionCitiesKey[] = "cities";
 inline constexpr char kRegionLatitudeKey[] = "latitude";
 inline constexpr char kRegionLongitudeKey[] = "longitude";
 inline constexpr char kRegionServerCountKey[] = "server-count";
+inline constexpr char kRegionSmartRoutingProxyStateKey[] =
+    "smart-routing-proxy-state";
 
 inline constexpr char kCreateSupportTicket[] =
     "api/v1.2/partners/support-ticket";

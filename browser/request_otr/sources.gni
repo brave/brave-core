@@ -20,7 +20,6 @@ if (enable_request_otr) {
     "//base",
     "//brave/components/request_otr/browser",
     "//brave/components/request_otr/common",
-    "//brave/extensions:common",
     "//chrome/common",
     "//components/keyed_service/content",
   ]

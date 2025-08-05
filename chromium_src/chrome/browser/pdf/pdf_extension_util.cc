@@ -9,7 +9,7 @@
 
 #define GetManifest GetManifest_ChromiumImpl
 
-#include "src/chrome/browser/pdf/pdf_extension_util.cc"
+#include <chrome/browser/pdf/pdf_extension_util.cc>
 
 #undef GetManifest
 

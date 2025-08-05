@@ -15,6 +15,6 @@
       FROM_HERE, base::BindOnce(std::move(fetch_callback_))); \
   return;
 
-#include "src/chrome/browser/profile_resetter/brandcode_config_fetcher.cc"
+#include <chrome/browser/profile_resetter/brandcode_config_fetcher.cc>
 
 #undef BRAVE_BRANDCODE_CONFIG_FETCHER

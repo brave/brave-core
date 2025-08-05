@@ -10,10 +10,10 @@
 
 #include "base/check.h"
 #include "base/logging.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "net/http/http_status_code.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 namespace brave_adaptive_captcha {
@@ -28,7 +28,7 @@ GetAdaptiveCaptchaChallenge::~GetAdaptiveCaptchaChallenge() = default;
 
 std::string GetAdaptiveCaptchaChallenge::GetUrl(const std::string& payment_id) {
   const std::string path =
-      base::StringPrintf("/v3/captcha/challenge/%s", payment_id.c_str());
+      absl::StrFormat("/v3/captcha/challenge/%s", payment_id);
   return ServerUtil::GetInstance()->GetServerUrl(path);
 }
 

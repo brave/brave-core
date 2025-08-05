@@ -25,6 +25,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="129382876167171263">A webhelyek által elmentett fájlok itt jelennek meg</translation>
 <translation id="131112695174432497">A hirdetések személyre szabását befolyásoló adatok törlődnek</translation>
 <translation id="1317194122196776028">Webhely elfelejtése</translation>
+<translation id="1323433172918577554">Több</translation>
 <translation id="1333965224356556482">A webhelyek nem tekinthetik meg az Ön tartózkodási helyét</translation>
 <translation id="1343356790768851700">Ez a webhely kikövetkezteti az Ön által kedvelt dolgokat, majd hirdetéseket ajánl más webhelyeknek</translation>
 <translation id="1369915414381695676">A(z) <ph name="SITE_NAME"/> webhely hozzáadva</translation>
@@ -35,6 +36,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="1409338233051621926">Koppintson az Alkalmazások, majd az Alapértelmezett alkalmazások lehetőségre</translation>
 <translation id="1415402041810619267">URL csonkolva</translation>
 <translation id="1741136041592162279">Engedélyezze a Brave-nak, hogy megossza eszközével a nemrég megnyitott lapokat, hogy azok megjelenjenek az eszköz alkalmazáslistáján és a keresési találatok között is. Ezt a Brave beállításai között kapcsolhatja be vagy ki.</translation>
+<translation id="1432650420699700107">A webhelyek engedélyt kérhetnek a helyi hálózaton lévő bármelyik eszközhöz való csatlakozásra</translation>
 <translation id="1448064542941920355">Nagyítás csökkentése</translation>
 <translation id="1464044141348608623">A webhelyek nem tudhatják, hogy Ön mikor használja aktívan az eszközt</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> webhely}other{<ph name="SITE_COUNT"/> webhely}}</translation>
@@ -96,6 +98,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="2182457891543959921">Kérdezzen rá, mielőtt engedélyezi a webhelyek számára 3D-s térkép létrehozását az Ön környezetéről, valamint a kamera pozíciójának követését (ajánlott)</translation>
 <translation id="2185965788978862351">Ezzel törli a webhelyek és a kezdőképernyőn lévő alkalmazások által az eszközön tárolt <ph name="DATASIZE"/> mennyiségű adatot és cookie-t.</translation>
 <translation id="2194856509914051091">Megfontolandó szempontok</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{Tegnap}other{<ph name="NUM_DAYS_MANY"/> napja}}</translation>
 <translation id="2215727959747642672">Fájlszerkesztés</translation>
 <translation id="2218389616572918761">A webhelyek kérhetik az Ön mikrofonjához való hozzáférést</translation>
 <translation id="2228071138934252756">Ahhoz, hogy a(z) <ph name="APP_NAME"/> hozzáférhessen a kamerához, a kamerát az <ph name="BEGIN_LINK"/>Android-beállítások<ph name="END_LINK"/> között is be kell kapcsolni.</translation>
@@ -125,6 +128,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="2490684707762498678">Kezelő: <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Súgó és visszajelzés</translation>
 <translation id="2501278716633472235">Visszalépés</translation>
+<translation id="2533138527374486328">Ha be van kapcsolva, a webhelyek engedélyt kérhetnek a helyi hálózaton lévő bármelyik eszközhöz való csatlakozásra. Ha ki van kapcsolva, a webhelyek nem tudnak csatlakozni a helyi hálózaton lévő eszközökhöz.</translation>
 <translation id="2546283357679194313">Cookie-k és webhelyadatok</translation>
 <translation id="2570922361219980984">A helyhozzáférés is ki van kapcsolva ennél az eszköznél. A funkciót az <ph name="BEGIN_LINK"/>Android-beállításokban<ph name="END_LINK"/> tudja bekapcsolni.</translation>
 <translation id="257931822824936280">Kibontva – kattintson az összecsukáshoz.</translation>
@@ -181,6 +185,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="3167868116600277716">Discover-feed</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> tárolt adat</translation>
 <translation id="321187648315454507">Ahhoz, hogy a(z) <ph name="APP_NAME"/> értesítéseket küldhessen, az értesítéseket az <ph name="BEGIN_LINK"/>Android-beállítások<ph name="END_LINK"/> között is be kell kapcsolni.</translation>
+<translation id="3223425961342298674">Helyadatok nem engedélyezettek</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
 <translation id="3232293466644486101">Böngészési adatok törlése…</translation>
 <translation id="3242646949159196181">Ha be van kapcsolva, a webhelyek lejátszhatnak hangot. Ha ki van kapcsolva, a webhelyek nem játszhatnak le hangot.</translation>
@@ -247,12 +252,14 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="3955321697524543127">A webhelyek nem csatlakozhatnak USB-eszközökhöz</translation>
 <translation id="3965467402665811906">A webhelyek engedélyt kérhetnek arra, hogy felhasználják az Önről mentett adatokat</translation>
 <translation id="3967822245660637423">A letöltés sikeres</translation>
+<translation id="3969869202926863008">Hozzáférés helyi hálózaton</translation>
 <translation id="3981465354637804599">A webhelyek általában azért jelenítenek meg hirdetéseket, hogy díjmentesen kínálhassanak tartalmakat és szolgáltatásokat. Egyes webhelyek azonban köztudottan tolakodó vagy félrevezető hirdetéseket jelenítenek meg.</translation>
 <translation id="3987993985790029246">Link másolása</translation>
 <translation id="3991845972263764475">? / <ph name="BYTES_DOWNLOADED_WITH_UNITS"/></translation>
 <translation id="3992308058851451478">A(z) <ph name="SITE"/> felhasználhatja az Ön adatait böngészés közben</translation>
 <translation id="3992684624889376114">Információ az oldalról</translation>
 <translation id="4002066346123236978">Cím</translation>
+<translation id="4031179711345676612">Mikrofon engedélyezve</translation>
 <translation id="4046123991198612571">Következő szám</translation>
 <translation id="4077310749977440510">A webhelyek általában bizonyos funkciók biztosítása (például a másolt szöveg formázásának megőrzése) érdekében olvassák le a vágólapon lévő szöveget.</translation>
 <translation id="4149890623864272035">Biztosan törli az összes helyi adatot (a cookie-kkal együtt), és alaphelyzetbe állítja a webhely összes engedélyét?</translation>
@@ -262,8 +269,10 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="4169549551965910670">Csatlakoztatva USB-eszközhöz</translation>
 <translation id="4194328954146351878">Kérdezzen rá, mielőtt engedélyezi a webhelyek számára az NFC-eszközökön található információk megtekintését és az ilyen eszközökkel való információcserét (ajánlott)</translation>
 <translation id="4200726100658658164">Helybeállítások megnyitása</translation>
+<translation id="4203769790323223880">Kamerahasználat nem engedélyezett</translation>
 <translation id="421742575134139848">A webhelyek lejátszhatnak hangot, hogy a zeneszámok, videók és egyéb médiatartalmak hallhatók legyenek.</translation>
 <translation id="4217710972110098902">Soros porthoz csatlakoztatva</translation>
+<translation id="4223404254440398437">Mikrofonhasználat nem engedélyezett</translation>
 <translation id="4226663524361240545">Az értesítések miatt rezeghet az eszköz</translation>
 <translation id="4259722352634471385">Le van tiltva az ide vezető navigáció: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Elhagyásuk után a webhelyek tovább folytathatják a szinkronizálást a feladatok (például fotók feltöltése vagy csevegőüzenetek küldése) befejezése érdekében.</translation>
@@ -294,6 +303,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="4635969503923889910">A webhelyek nem használhatnak NFC-eszközöket</translation>
 <translation id="4644713492825682049">Törlés és alaphelyzetbe állítás</translation>
 <translation id="4645575059429386691">A szülő kezeli</translation>
+<translation id="4663373278480897665">Kamera engedélyezve</translation>
 <translation id="4670064810192446073">Virtuális valóság</translation>
 <translation id="5652778654712411580">Koppintson a Böngésző alkalmazás, majd a Brave lehetőségre</translation>
 <translation id="4676059169848868271">Ahhoz, hogy a <ph name="APP_NAME"/> használhassa a kézkövetést, kapcsolja be a kézkövetést a <ph name="BEGIN_LINK"/>rendszerbeállításokban<ph name="END_LINK"/> is.</translation>
@@ -315,6 +325,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="4972737347717125191">A webhelyek hozzáférést kérhetnek a virtuálisvalóság-eszközökhöz és -adatokhoz</translation>
 <translation id="497421865427891073">Előrelépés</translation>
 <translation id="4976702386844183910">Utolsó látogatás: <ph name="DATE"/></translation>
+<translation id="4978178243417029856">További információ a Discover-feedről</translation>
 <translation id="4994033804516042629">Nem találhatók névjegyek</translation>
 <translation id="4996978546172906250">Megosztás itt:</translation>
 <translation id="5001526427543320409">Harmadik felektől származó cookie-k</translation>
@@ -337,6 +348,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="5216942107514965959">Utolsó látogatás: ma</translation>
 <translation id="5225463052809312700">Kamera bekapcsolása</translation>
 <translation id="5234764350956374838">Elvetés</translation>
+<translation id="5239623327352565343">Helyadatok engedélyezve</translation>
 <translation id="5246825184569358663">A művelet törli az összes helyi adatot (a cookie-kal együtt), és alaphelyzetbe állítja a(z) <ph name="DOMAIN"/> és az alá tartozó webhelyek összes engedélyét</translation>
 <translation id="5264323282659631142">„<ph name="CHIP_LABEL"/>“ eltávolítása</translation>
 <translation id="528192093759286357">A teljes képernyős megjelenítésből való kilépéshez húzza le felülről, majd koppintson a vissza gombra.</translation>
@@ -378,7 +390,9 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="571222594670061844">A webhelyek megjeleníthetnek identitásszolgáltatásoktól származó bejelentkezési értesítéseket</translation>
 <translation id="5740126560802162366">Webhelyek menthetnek adatokat az eszközére</translation>
 <translation id="5743425052258407233">Előzményeihez minden eszközén hozzáférhet, így könnyen folytathatja ott, ahol abbahagyta</translation>
+<translation id="5749158352074143502">Folytatás ezen a lapon</translation>
 <translation id="5750869797196646528">Kézmozgás követése</translation>
+<translation id="5753570386948603678">Törlés az előzmények közül</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> letiltva</translation>
 <translation id="5804241973901381774">Engedélyek</translation>
 <translation id="5822675474983796325">Az Új lap oldal alsó lapjának személyre szabása teljes magasságban megnyitva</translation>
@@ -404,6 +418,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="5968921426641056619">Adja meg a kívánt internetcímet</translation>
 <translation id="5975083100439434680">Kicsinyítés</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> – <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">Discover-hírcsatorna bekapcsolása</translation>
 <translation id="6015775454662021376">A webhelynek az eszközhöz való hozzáférésének vezérlése</translation>
 <translation id="6040143037577758943">Bezárás</translation>
 <translation id="6042308850641462728">Továbbiak</translation>
@@ -439,11 +454,13 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="6527303717912515753">Megosztás</translation>
 <translation id="6530703012083415527">Ha be van kapcsolva, a webhelyek használhatnak előugró ablakokat és átirányításokat. Ha ki van kapcsolva, a webhelyek nem használhatnak előugró ablakokat és átirányításokat.</translation>
 <translation id="6540488083026747005">Engedélyezte a harmadik féltől származó cookie-kat ezen a webhelyen</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> hete}other{<ph name="NUM_WEEKS_MANY"/> hete}}</translation>
 <translation id="6545864417968258051">Bluetooth-alapú keresés</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> és további <ph name="NUM_MORE"/> letiltva}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> és további <ph name="NUM_MORE"/> letiltva}}</translation>
 <translation id="6554732001434021288">Utolsó látogatás: <ph name="NUM_DAYS"/> napja</translation>
 <translation id="656065428026159829">Továbbiak megjelenítése</translation>
 <translation id="6561560012278703671">Csendesebb üzenetküldés használata (letiltja az értesítéseket, hogy ne zavarják meg Önt)</translation>
+<translation id="6565144332292237355">A webhelyek ezt a funkciót használhatják a helyi hálózaton lévő bármely eszköz megkeresésére és a hozzá való csatlakozásra</translation>
 <translation id="6593061639179217415">Asztali webhely</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Cookie-k engedélyezve a(z) <ph name="RWS_OWNER"/> <ph name="RWS_MEMBERS_COUNT"/> webhelyén}other{Cookie-k engedélyezve a(z) <ph name="RWS_OWNER"/> <ph name="RWS_MEMBERS_COUNT"/> webhelyén}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -477,6 +494,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="6992289844737586249">Kérdezzen rá, mielőtt engedélyezné a webhelyek számára a mikrofon használatát (ajánlott)</translation>
 <translation id="7000754031042624318">Kikapcsolva az Android beállításaiban</translation>
 <translation id="8683151724374457021">Ez a webhely kikövetkezteti az Ön által kedvelt dolgokat, majd hirdetéseket ajánl más webhelyeknek. Emellett lekéri az Önre vonatkozó hirdetéstémákat a Brave-ból, hogy relevánsabb hirdetéseket jelenítsen meg Önnek.</translation>
+<translation id="7044081119134178347">A kamera erre az alkalomra engedélyezve van</translation>
 <translation id="7053983685419859001">Letiltás</translation>
 <translation id="7055552182600664515">Lehetséges, hogy a szerzői joggal védett tartalmak lejátszásához a webhelyeknek tartalomvédelmi szolgáltatásokat kell használniuk. <ph name="BEGIN_LINK"/>További információ<ph name="END_LINK"/>.</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 elem kijelölve}other{# elem kijelölve}}</translation>
@@ -488,8 +506,10 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="7188508872042490670">Eszközön tárolt webhelyadatok</translation>
 <translation id="7201549776650881587">A művelet törli a(z) <ph name="ORIGIN"/> alatti összes webhelyen tárolt és az eredetnek az Ön kezdőképernyőjén található alkalmazása által tárolt összes adatot és cookie-t.</translation>
 <translation id="7203150201908454328">Kibontott</translation>
+<translation id="7213166370492037743">A webhelyek nem csatlakozhatnak a helyi hálózaton lévő eszközökhöz</translation>
 <translation id="7219254577985949841">Törli a webhelyadatokat?</translation>
 <translation id="723171743924126238">Képek kiválasztása</translation>
+<translation id="7243246278722455312">Az Új lap oldal alsó lapjának személyre szabása</translation>
 <translation id="7243308994586599757">A beállítások a képernyő alsó részén találhatók</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> elem kiválasztva</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> és <ph name="PERMISSION_2"/> engedélyezve</translation>
@@ -512,7 +532,9 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="7554752735887601236">Egy webhely használja az Ön mikrofonját</translation>
 <translation id="7561196759112975576">Mindig</translation>
 <translation id="7573594921350120855">A webhelyek általában bizonyos kommunikációs funkciók (például a videocsevegés) használata céljából férnek hozzá az Ön videokamerájához</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> hónapja}other{<ph name="NUM_MONTHS_MANY"/> hónapja}}</translation>
 <translation id="757524316907819857">Védett tartalom lejátszásának letiltása a webhelyeken</translation>
+<translation id="7586676035079382730">Értesítések nem engedélyezettek</translation>
 <translation id="7594634374516752650">Bluetooth-eszközhöz csatlakoztatva</translation>
 <translation id="7617547684249261169">Törölheti az előzmények, a cookie-k, a webhelyadatok és egyebek egy részét vagy egészét</translation>
 <translation id="7649070708921625228">Súgó</translation>
@@ -525,15 +547,16 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="7759147511335618829">MIDI-eszköz vezérlése/átprogramozása</translation>
 <translation id="7781829728241885113">Tegnap</translation>
 <translation id="7791543448312431591">Hozzáadás</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{Folytatás ezzel a lappal}other{Folytatás ezekkel a lapokkal}}</translation>
 <translation id="780301667611848630">Köszönöm, nem</translation>
 <translation id="7804248752222191302">Egy webhely használja az Ön kameráját</translation>
 <translation id="6720480757902085971">A Brave biztosítja</translation>
+<translation id="7815680994978050279">Veszélyes letöltés letiltva</translation>
 <translation id="7835852323729233924">Médiatartalom lejátszása…</translation>
 <translation id="783819812427904514">Videó némításának feloldása</translation>
 <translation id="7846076177841592234">Kijelölés törlése</translation>
 <translation id="2353409725922994861">A Brave a legtöbb webhely számára korlátozza, hogy harmadik féltől származó cookie-kat használjanak. A harmadik féltől származó cookie-k azonban engedélyezettek ezen a webhelyen, mivel az alapvető szolgáltatások nyújtásához szüksége van rájuk.\n\nA beállítások között <ph name="BEGIN_LINK"/>kezelheti a harmadik féltől származó cookie-khoz való hozzáférést<ph name="END_LINK"/>.</translation>
 <translation id="7882806643839505685">Egy adott webhely hangjának engedélyezése.</translation>
+<translation id="7891547341794213004">A Folytatás ezen a lapon kártya elrejtése</translation>
 <translation id="789722939441020330">A webhelyek nem kérhetnek engedélyt több fájl automatikus letöltésére</translation>
 <translation id="7940722705963108451">Emlékeztessen</translation>
 <translation id="7948081750384205628">További információ a következőről: <ph name="SETTING_TITLE"/></translation>
@@ -541,7 +564,6 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="7986741934819883144">Válasszon ki egy névjegyet</translation>
 <translation id="7990211076305263060">Ha be van kapcsolva, a webhelyek hozzáférést kérhetnek az Ön mikrofonjához. Ha ki van kapcsolva, a webhelyek nem használhatják a mikrofont.</translation>
 <translation id="8007176423574883786">Kikapcsolva ezen az eszközön</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{A Folytatás ezen a lapon kártya elrejtése}other{A Folytatás ezekkel a lapokkal kártya elrejtése}}</translation>
 <translation id="802154636333426148">Nem sikerült a letöltés</translation>
 <translation id="8042586301629853791">Rendezés:</translation>
 <translation id="8051193500142930381">A kamerát igénylő funkciók nem működnek majd</translation>
@@ -576,6 +598,7 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="8380167699614421159">Ez a webhely tolakodó vagy félrevezető hirdetéseket jelenít meg</translation>
 <translation id="8394832520002899662">Koppintson a webhelyre való visszatéréshez</translation>
 <translation id="8409345997656833551">Értesítés megjelenítése, ha az adott cikk megjeleníthető egyszerűsített négyzetben</translation>
+<translation id="8416874502399604126">A mikrofon erre az alkalomra engedélyezve van</translation>
 <translation id="8423565414844018592">Szöveg mérete beállítva a következőre: <ph name="TEXT_SCALING"/></translation>
 <translation id="8428213095426709021">Beállítások</translation>
 <translation id="8441146129660941386">Ugrás visszafelé</translation>
@@ -643,12 +666,14 @@ A Speciális védelem a következő Brave-beállításokat vezérli:
 <translation id="9106233582039520022">Törli a cookie-kat?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> és további <ph name="NUM_MORE"/>}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> és további <ph name="NUM_MORE"/>}}</translation>
 <translation id="913657688200966289">A(z) <ph name="APP_NAME"/> alkalmazásra vonatkozó engedélyeket az <ph name="BEGIN_LINK"/>Android-beállítások<ph name="END_LINK"/> között lehet aktiválni.</translation>
+<translation id="9138037198177304356">Értesítések engedélyezve</translation>
 <translation id="9138217887606523162">Jelenlegi nagyítási szint: <ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="7359422048569205930">Engedélyezze a Brave-nak, hogy megjeleníthesse a legutóbbi lapokat az eszköz alkalmazáslistáján és a keresési találatok között. Ezt bármikor kikapcsolhatja a Brave beállításai között.</translation>
 <translation id="9162462602695099906">Ez az oldal veszélyes</translation>
 <translation id="9182556968660520230">A webhelyek nem játszhatnak le védett tartalmakat</translation>
 <translation id="947156494302904893">A felkeresett webhelyek ellenőrizni tudják, hogy Ön valódi személy, nem pedig robot</translation>
 <translation id="959682366969460160">Könnyebb rendszerezés</translation>
+<translation id="961930410699694996">A helyadatok erre az alkalomra engedélyezve vannak</translation>
 <translation id="967624055006145463">Tárolt adatok</translation>
 <translation id="969975166333045662">A V8-optimalizáló használatának letiltása az alábbi webhely számára.</translation>
 <translation id="3110967157686007724">Privát fül</translation>

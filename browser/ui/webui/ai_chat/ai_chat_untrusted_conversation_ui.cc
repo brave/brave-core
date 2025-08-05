@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/strings/escape.h"
-#include "base/strings/stringprintf.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
@@ -35,6 +34,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 #include "url/url_constants.h"
@@ -183,7 +183,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "font-src 'self' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameAncestors,
-      base::StringPrintf("frame-ancestors %s;", kAIChatUIURL));
+      absl::StrFormat("frame-ancestors %s;", kAIChatUIURL));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 

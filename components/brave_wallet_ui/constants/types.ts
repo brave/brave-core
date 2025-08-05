@@ -1147,3 +1147,11 @@ export type zcashAddressOptionType = {
 export type MeldCryptoCurrency = MeldTypes.MeldCryptoCurrency & {
   coingeckoId?: string
 }
+
+export type MaxPriorityFeeTypes = 'slow' | 'average' | 'fast'
+
+export type MaxPriorityFeeOptionType = {
+  id: MaxPriorityFeeTypes
+  fee: string
+  duration: string
+}

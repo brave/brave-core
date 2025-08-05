@@ -5,21 +5,14 @@
 
 #include <optional>
 
-#include "base/containers/flat_map.h"
-#include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
-#include "base/strings/stringprintf.h"
-#include "base/test/values_test_util.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
@@ -28,20 +21,14 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/grit/brave_components_resources.h"
-#include "components/grit/brave_components_strings.h"
-#include "content/public/browser/global_routing_id.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/remote.h"
-#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -102,10 +89,10 @@ std::string EnableScript() {
 }
 
 std::string NonWriteableScriptProperty(const std::string& property) {
-  return base::StringPrintf(
+  return absl::StrFormat(
       R"(window.cardano.brave.%s = "brave";
          !(window.cardano.brave.%s === "brave");)",
-      property.c_str(), property.c_str());
+      property, property);
 }
 
 class TestCardanoProvider : public brave_wallet::mojom::CardanoProvider {
@@ -345,7 +332,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, Properties) {
 
   {
     auto result = EvalJs(web_contents(browser()), "window.cardano.brave.icon");
-    EXPECT_EQ(base::Value(""), result.value);
+    EXPECT_TRUE(result.value.GetString().starts_with("data:image/png;base64,"));
   }
 }
 
@@ -538,7 +525,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUsedAddresses) {
   ON_CALL(*provider, GetUsedAddresses(_))
       .WillByDefault(::testing::Invoke(
           [&](TestCardanoProvider::GetUsedAddressesCallback callback) {
-            std::move(callback).Run({"1", "2"}, nullptr);
+            std::vector<std::string> result{"1", "2"};
+            std::move(callback).Run(result, nullptr);
           }));
   auto result =
       EvalJs(web_contents(browser()),
@@ -587,7 +575,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUnusedAddresses) {
   ON_CALL(*provider, GetUnusedAddresses(_))
       .WillByDefault(::testing::Invoke(
           [&](TestCardanoProvider::GetUnusedAddressesCallback callback) {
-            std::move(callback).Run({"1", "2"}, nullptr);
+            std::vector<std::string> result{"1", "2"};
+            std::move(callback).Run(result, nullptr);
           }));
   auto result =
       EvalJs(web_contents(browser()),
@@ -657,8 +646,9 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetBalance_Error) {
   ON_CALL(*provider, GetBalance(_))
       .WillByDefault(::testing::Invoke(
           [&](TestCardanoProvider::GetBalanceCallback callback) {
-            std::move(callback).Run("", mojom::CardanoProviderErrorBundle::New(
-                                            -2, "Internal", nullptr));
+            std::move(callback).Run(std::nullopt,
+                                    mojom::CardanoProviderErrorBundle::New(
+                                        -2, "Internal", nullptr));
           }));
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try { return await (await "
@@ -704,8 +694,9 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetChangeAddress_Error) {
   ON_CALL(*provider, GetChangeAddress(_))
       .WillByDefault(::testing::Invoke(
           [&](TestCardanoProvider::GetChangeAddressCallback callback) {
-            std::move(callback).Run("", mojom::CardanoProviderErrorBundle::New(
-                                            -2, "Internal", nullptr));
+            std::move(callback).Run(std::nullopt,
+                                    mojom::CardanoProviderErrorBundle::New(
+                                        -2, "Internal", nullptr));
           }));
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try{ return await (await "
@@ -730,7 +721,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetRewardAddresses) {
   ON_CALL(*provider, GetRewardAddresses(_))
       .WillByDefault(::testing::Invoke(
           [&](TestCardanoProvider::GetRewardAddressesCallback callback) {
-            std::move(callback).Run({"1", "2"}, nullptr);
+            std::vector<std::string> result{"1", "2"};
+            std::move(callback).Run(result, nullptr);
           }));
 
   auto result =
@@ -959,8 +951,9 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignTx_Error) {
                                 TestCardanoProvider::SignTxCallback callback) {
             EXPECT_EQ(partial_sign, true);
             EXPECT_EQ(tx, "tx");
-            std::move(callback).Run("", mojom::CardanoProviderErrorBundle::New(
-                                            1, "Proof error", nullptr));
+            std::move(callback).Run(std::nullopt,
+                                    mojom::CardanoProviderErrorBundle::New(
+                                        1, "Proof error", nullptr));
           }));
 
   auto result = EvalJs(web_contents(browser()),
@@ -1069,10 +1062,10 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData) {
               TestCardanoProvider::SignDataCallback callback) {
             EXPECT_EQ("addr", address);
             EXPECT_EQ("data", data);
-            auto res = mojom::CardanoProviderSignatureResult::New();
-            res->key = "key_value";
-            res->signature = "signature_value";
-            std::move(callback).Run(std::move(res), nullptr);
+            base::Value::Dict signature_dict;
+            signature_dict.Set("key", "key_value");
+            signature_dict.Set("signature", "signature_value");
+            std::move(callback).Run(std::move(signature_dict), nullptr);
           }));
 
   auto result = EvalJs(
@@ -1101,10 +1094,10 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_WrongArguments) {
               TestCardanoProvider::SignDataCallback callback) {
             EXPECT_EQ("addr", address);
             EXPECT_EQ("data", data);
-            auto res = mojom::CardanoProviderSignatureResult::New();
-            res->key = "key_value";
-            res->signature = "signature_value";
-            std::move(callback).Run(std::move(res), nullptr);
+            base::Value::Dict signature_dict;
+            signature_dict.Set("key", "key_value");
+            signature_dict.Set("signature", "signature_value");
+            std::move(callback).Run(std::move(signature_dict), nullptr);
           }));
 
   {
@@ -1153,7 +1146,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_Error) {
               TestCardanoProvider::SignDataCallback callback) {
             EXPECT_EQ("addr", address);
             EXPECT_EQ("data", data);
-            std::move(callback).Run(nullptr,
+            std::move(callback).Run(std::nullopt,
                                     mojom::CardanoProviderErrorBundle::New(
                                         2, "Data sign error", nullptr));
           }));
@@ -1183,7 +1176,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SubmitTx_Error) {
           [&](const std::string& tx,
               TestCardanoProvider::SubmitTxCallback callback) {
             std::move(callback).Run(
-                "hash",
+                std::nullopt,
                 mojom::CardanoProviderErrorBundle::New(1, "Refused", nullptr));
           }));
 
@@ -1527,6 +1520,18 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest,
           }));
   auto result = EvalJs(web_contents(browser()), EnableScript());
   EXPECT_EQ(base::Value(true), result.value);
+}
+
+IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, NotInstalled) {
+  brave_wallet::SetDefaultCardanoWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::None);
+
+  GURL url = embedded_test_server()->GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  auto result = EvalJs(web_contents(browser()), kCheckCardanoProviderScript);
+  EXPECT_EQ(base::Value(false), result.value);
 }
 
 }  // namespace brave_wallet

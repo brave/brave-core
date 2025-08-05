@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
-#include "base/strings/stringprintf.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "v8/include/v8-context.h"
 #include "v8/include/v8-exception.h"
 #include "v8/include/v8-extension.h"
@@ -108,8 +108,8 @@ inline bool IsTrue(v8::Maybe<bool> maybe) {
 
 v8::Local<v8::Private> MakeKey(const char* name, v8::Isolate* isolate) {
   return v8::Private::ForApi(
-      isolate, ToV8StringUnsafe(
-                   isolate, base::StringPrintf("%s::%s", kClassName, name)));
+      isolate,
+      ToV8StringUnsafe(isolate, absl::StrFormat("%s::%s", kClassName, name)));
 }
 
 // GetProperty() family calls V8::Object::Get() and extracts a value from
@@ -128,14 +128,14 @@ void SaveImpl(const char* name,
               v8::Local<v8::Context> context) {
   CHECK(!value.IsEmpty() && value->IsObject()) << std::string(name);
   context->Global()
-      ->SetPrivate(context, MakeKey(name, context->GetIsolate()), value)
+      ->SetPrivate(context, MakeKey(name, v8::Isolate::GetCurrent()), value)
       .FromJust();
 }
 
 v8::Local<v8::Object> Load(const char* name, v8::Local<v8::Context> context) {
   v8::Local<v8::Value> value =
       context->Global()
-          ->GetPrivate(context, MakeKey(name, context->GetIsolate()))
+          ->GetPrivate(context, MakeKey(name, v8::Isolate::GetCurrent()))
           .ToLocalChecked();
   CHECK(value->IsObject()) << std::string(name);
   return v8::Local<v8::Object>::Cast(value);
@@ -169,8 +169,9 @@ class ExtensionImpl : public v8::Extension {
           info[2]->IsObject() &&    // args
           info[3]->IsInt32() &&     // first_arg_index
           info[4]->IsInt32());      // args_length
-    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
-    v8::MicrotasksScope microtasks(info.GetIsolate(),
+    v8::Local<v8::Context> context =
+        v8::Isolate::GetCurrent()->GetCurrentContext();
+    v8::MicrotasksScope microtasks(v8::Isolate::GetCurrent(),
                                    context->GetMicrotaskQueue(),
                                    v8::MicrotasksScope::kDoNotRunMicrotasks);
     v8::Local<v8::Function> function = info[0].As<v8::Function>();
@@ -178,13 +179,13 @@ class ExtensionImpl : public v8::Extension {
     if (info[1]->IsObject()) {
       recv = v8::Local<v8::Object>::Cast(info[1]);
     } else if (info[1]->IsString()) {
-      recv = v8::StringObject::New(info.GetIsolate(),
+      recv = v8::StringObject::New(v8::Isolate::GetCurrent(),
                                    v8::Local<v8::String>::Cast(info[1]))
                  .As<v8::Object>();
     } else {
-      info.GetIsolate()->ThrowException(
+      v8::Isolate::GetCurrent()->ThrowException(
           v8::Exception::TypeError(ToV8StringUnsafe(
-              info.GetIsolate(),
+              v8::Isolate::GetCurrent(),
               "The first argument is the receiver and must be an object")));
       return;
     }
@@ -212,8 +213,8 @@ class ExtensionImpl : public v8::Extension {
 
   static void Save(const v8::FunctionCallbackInfo<v8::Value>& info) {
     CHECK(info.Length() == 2 && info[0]->IsString() && info[1]->IsObject());
-    SaveImpl(*v8::String::Utf8Value(info.GetIsolate(), info[0]), info[1],
-             info.GetIsolate()->GetCurrentContext());
+    SaveImpl(*v8::String::Utf8Value(v8::Isolate::GetCurrent(), info[0]),
+             info[1], v8::Isolate::GetCurrent()->GetCurrentContext());
   }
 };
 
@@ -225,8 +226,8 @@ std::unique_ptr<v8::Extension> SafeBuiltins::CreateV8Extension() {
 }
 
 SafeBuiltins::SafeBuiltins(const v8::Local<v8::Context>& context)
-    : context_(context->GetIsolate(), context),
-      isolate_(context->GetIsolate()) {}
+    : context_(v8::Isolate::GetCurrent(), context),
+      isolate_(v8::Isolate::GetCurrent()) {}
 
 SafeBuiltins::~SafeBuiltins() = default;
 

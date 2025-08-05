@@ -7,8 +7,9 @@ import("//brave/build/config.gni")
 import("//brave/build/ios/config.gni")
 import("//brave/build/ios/create_xcframework.gni")
 import("//brave/build/mac/tweak_info_plist.gni")
+import("//brave/components/ai_chat/ios/browser/headers.gni")
+import("//brave/components/debounce/ios/browser/headers.gni")
 import("//brave/ios/browser/api/ads/headers.gni")
-import("//brave/ios/browser/api/ai_chat/headers.gni")
 import("//brave/ios/browser/api/brave_domains/headers.gni")
 import("//brave/ios/browser/api/brave_rewards/headers.gni")
 import("//brave/ios/browser/api/brave_services_key/headers.gni")
@@ -20,7 +21,6 @@ import("//brave/ios/browser/api/certificate/headers.gni")
 import("//brave/ios/browser/api/content_settings/headers.gni")
 import("//brave/ios/browser/api/credential_provider/headers.gni")
 import("//brave/ios/browser/api/de_amp/headers.gni")
-import("//brave/ios/browser/api/debounce/headers.gni")
 import("//brave/ios/browser/api/developer_options_code/headers.gni")
 import("//brave/ios/browser/api/favicon/headers.gni")
 import("//brave/ios/browser/api/features/headers.gni")
@@ -31,6 +31,7 @@ import("//brave/ios/browser/api/ntp_background_images/headers.gni")
 import("//brave/ios/browser/api/omnibox/headers.gni")
 import("//brave/ios/browser/api/opentabs/headers.gni")
 import("//brave/ios/browser/api/p3a/headers.gni")
+import("//brave/ios/browser/api/profile/headers.gni")
 import("//brave/ios/browser/api/qr_code/headers.gni")
 import("//brave/ios/browser/api/query_filter/headers.gni")
 import("//brave/ios/browser/api/session_restore/headers.gni")
@@ -71,11 +72,6 @@ group("brave_ios") {
   ]
 }
 
-group("brave_ios_tests") {
-  testonly = true
-  public_deps = [ "testing:brave_core_ios_tests" ]
-}
-
 brave_core_public_headers = [
   "//brave/build/ios/mojom/public/base/base_values.h",
   "//brave/ios/app/brave_core_main.h",
@@ -102,13 +98,13 @@ brave_core_public_headers = [
 ]
 
 brave_core_public_headers += ads_public_headers
-brave_core_public_headers += ai_chat_public_headers
+brave_core_public_headers += ai_chat_component_public_headers
 brave_core_public_headers += brave_domains_public_headers
 brave_core_public_headers += brave_shields_public_headers
 brave_core_public_headers += browser_api_url_sanitizer_public_headers
 brave_core_public_headers += browser_url_sanitizer_public_headers
 brave_core_public_headers += browser_api_de_amp_public_headers
-brave_core_public_headers += browser_api_debounce_public_headers
+brave_core_public_headers += debounce_component_public_headers
 brave_core_public_headers +=
     browser_api_https_upgrade_exceptions_service_public_headers
 brave_core_public_headers +=
@@ -142,6 +138,7 @@ brave_core_public_headers += browser_api_translate_public_headers
 brave_core_public_headers += browser_api_unicode_public_headers
 brave_core_public_headers += browser_api_unzip_public_headers
 brave_core_public_headers += brave_web_view_public_headers
+brave_core_public_headers += browser_api_profile_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"
@@ -190,7 +187,7 @@ ios_framework_bundle("brave_core_ios_framework") {
   ]
 
   deps += ads_public_deps
-  deps += ai_chat_public_deps
+  deps += ai_chat_component_public_deps
   deps += brave_wallet_public_deps
   deps += rewards_public_deps
   deps += skus_public_deps

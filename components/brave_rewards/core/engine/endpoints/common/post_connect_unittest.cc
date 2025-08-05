@@ -9,13 +9,13 @@
 #include <tuple>
 #include <utility>
 
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 #include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using ::testing::TestParamInfo;
 using ::testing::Values;
@@ -33,7 +33,7 @@ class PostConnectMock final : public endpoints::PostConnect {
 
  private:
   std::string Path(base::cstring_view payment_id) const override {
-    return base::StringPrintf("/v3/wallet/mock/%s/claim", payment_id.c_str());
+    return absl::StrFormat("/v3/wallet/mock/%s/claim", payment_id);
   }
 };
 

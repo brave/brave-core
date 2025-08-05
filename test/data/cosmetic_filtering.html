@@ -235,6 +235,12 @@ const classes = (expectedClasses) =>
         <div diff-attr="diff-value" data-expect="visible">
           This should not be hidden.
         </div>
+        <div test-attr-2="test-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div test-attr="test-value-2" data-expect="visible">
+          This should not be hidden.
+        </div>
         <div testing="anything" data-expect="hidden">
           This should be hidden.
         </div>
@@ -277,6 +283,9 @@ const classes = (expectedClasses) =>
         </div>
         <p data-expect="visible">This should not be hidden</p>
         <p class="needle" expect="hidden">This should be hidden</p>
+        <p style="clear: left" expect="hidden">This should be hidden</p>
+        <p style="clear: right" expect="hidden">This should be hidden</p>
+        <p style="clear: both" expect="visible">This should not be hidden</p>
       </div>
 
       <div>

@@ -17,5 +17,5 @@ bool SkipPauseIfAutoplayIsBlockedByPolicy(bool is_gesture_needed) {
       SkipPauseIfAutoplayIsBlockedByPolicy(                  \
           autoplay_policy_->IsGestureNeededForPlayback()) && \
       EffectiveMediaVolume
-#include "src/third_party/blink/renderer/core/html/media/html_media_element.cc"
+#include <third_party/blink/renderer/core/html/media/html_media_element.cc>
 #undef RequestAutoplayUnmute

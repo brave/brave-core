@@ -178,11 +178,9 @@ class ChromiumSrcOverridesChecker:
             regexp = r"""
                 ^\#include\s
                 (?:
-                    # 1. Double quoted include starting with src/
-                    "src/(.*)"
-                    # 2. Angle brackets include <...> for source files
-                    |<(.*\.(?:c|cc|cpp|m|mm))>
-                    # 3. Angle brackets include <...> for header files followed
+                    # Angle brackets include <...> for source files
+                    <(.*\.(?:c|cc|cpp|m|mm))>
+                    # Angle brackets include <...> for header files followed
                     # by `// IWYU pragma: export`
                     |<(.*\.h)>\s*//\ IWYU\ pragma:\ export
                 )
@@ -195,7 +193,7 @@ class ChromiumSrcOverridesChecker:
                 line_match = re.search(regexp, line, re.VERBOSE)
                 if line_match:
                     line_match_path = line_match.group(1) or line_match.group(
-                        2) or line_match.group(3)
+                        2)
                     if original_is_in_gen:
                         self.AddError(
                             f"  {display_override_filepath} overrides a " +
@@ -209,9 +207,9 @@ class ChromiumSrcOverridesChecker:
                             continue
                         self.AddError(
                             f"  {display_override_filepath} uses a " +
-                            "src/-prefixed or <> include that doesn't point " +
+                            "<> include that doesn't point " +
                             "to the expected file:\n" + f"  Include: {line}" +
-                            "  Expected include target: src/" +
+                            "  Expected include target: " +
                             f"{normalized_override_filepath}")
                     continue
 

@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util.h"
 
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_ads {
 
 std::string BuildSubdivisionUrlPath() {
-  return base::StringPrintf("/v%d/getstate", kSubdivisionServerVersion);
+  return absl::StrFormat("/v%d/getstate", kSubdivisionServerVersion);
 }
 
 }  // namespace brave_ads

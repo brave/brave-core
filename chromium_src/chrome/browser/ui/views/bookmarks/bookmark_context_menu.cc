@@ -8,5 +8,5 @@
 #include "brave/browser/ui/toolbar/brave_bookmark_context_menu_controller.h"
 
 #define BookmarkContextMenuController BraveBookmarkContextMenuController
-#include "src/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc"
+#include <chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc>
 #undef BookmarkContextMenuController

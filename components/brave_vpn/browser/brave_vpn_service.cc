@@ -16,7 +16,6 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
@@ -34,6 +33,7 @@
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_util.h"
 
@@ -66,6 +66,10 @@ BraveVpnService::BraveVpnService(
       base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
                           base::Unretained(this)));
 
+  smart_proxy_routing_enabled_.Init(
+      prefs::kBraveVPNSmartProxyRoutingEnabled, local_prefs_,
+      base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
+                          base::Unretained(this)));
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   CheckInitialState();
@@ -337,6 +341,25 @@ void BraveVpnService::GetOnDemandState(GetOnDemandStateCallback callback) {
 #endif
 }
 
+void BraveVpnService::EnableSmartProxyRouting(bool enable) {
+  local_prefs_->SetBoolean(prefs::kBraveVPNSmartProxyRoutingEnabled, enable);
+
+  // If not connected, do nothing because smart proxy routing bit will
+  // be applied when new connection starts. Whenever new connection starts,
+  // we create os vpn entry.
+  if (IsConnected()) {
+    VLOG(2) << __func__ << " : reconnect to apply smart proxy routing config("
+            << enable << "> to current connection";
+    Connect();
+  }
+}
+
+void BraveVpnService::GetSmartProxyRoutingState(
+    GetSmartProxyRoutingStateCallback callback) {
+  std::move(callback).Run(
+      local_prefs_->GetBoolean(prefs::kBraveVPNSmartProxyRoutingEnabled));
+}
+
 // NOTE(bsclifton): Desktop uses API to create a ticket.
 // Android and iOS directly send an email.
 void BraveVpnService::OnCreateSupportTicket(
@@ -350,6 +373,14 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == prefs::kManagedBraveVPNDisabled) {
     if (IsBraveVPNDisabledByPolicy(profile_prefs_)) {
       connection_manager_->Disconnect();
+    }
+    return;
+  }
+
+  if (pref_name == prefs::kBraveVPNSmartProxyRoutingEnabled) {
+    const bool enabled = smart_proxy_routing_enabled_.GetValue();
+    for (const auto& obs : observers_) {
+      obs->OnSmartProxyRoutingStateChanged(enabled);
     }
     return;
   }
@@ -378,12 +409,12 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     std::string expiry_message;
     base::TimeDelta delta = (last_credential_expiry - base::Time::Now());
     if (delta.InHours() == 0) {
-      expiry_message = base::StringPrintf(
+      expiry_message = absl::StrFormat(
           "Out of credentials; check again in %d minutes.", delta.InMinutes());
     } else {
       int delta_hours = delta.InHours();
       base::TimeDelta delta_minutes = (delta - base::Hours(delta_hours));
-      expiry_message = base::StringPrintf(
+      expiry_message = absl::StrFormat(
           "Out of credentials; check again in %d hours %d minutes.",
           delta_hours, delta_minutes.InMinutes());
     }
@@ -690,7 +721,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
     return;
   }
 
-  if (!credential_cookie.HasExpires()) {
+  if (!credential_cookie.Expires()) {
     VLOG(1) << __func__ << " : FAILED cookie doesn't have expired date.";
     SetPurchasedState(env, PurchasedState::FAILED);
     return;
@@ -700,7 +731,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   // That leaves us with a Base64 encoded JSON blob which is the credential.
   const std::string encoded_credential = credential_cookie.Value();
   const auto time =
-      net::cookie_util::ParseCookieExpirationTime(credential_cookie.Expires());
+      net::cookie_util::ParseCookieExpirationTime(*credential_cookie.Expires());
   url::RawCanonOutputT<char16_t> unescaped;
   url::DecodeURLEscapeSequences(
       encoded_credential, url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);

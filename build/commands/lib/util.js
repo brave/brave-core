@@ -13,7 +13,6 @@ const crypto = require('crypto')
 const Log = require('./logging')
 const assert = require('assert')
 const updateChromeVersion = require('./updateChromeVersion')
-const updateUnsafeBuffersPaths = require('./updateUnsafeBuffersPaths.js')
 const ActionGuard = require('./actionGuard')
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
@@ -110,8 +109,6 @@ async function applyPatches(printPatchFailuresInJson) {
     Log.error('Exiting as not all patches were successful!')
     process.exit(1)
   }
-
-  await updateUnsafeBuffersPaths()
 
   updateChromeVersion()
   Log.progressFinish('apply patches')
@@ -447,6 +444,11 @@ const util = {
   },
 
   buildNativeRedirectCC: async () => {
+    if (config.useSiso) {
+      // redirect_cc logic is handled by siso handler.
+      return
+    }
+
     // Expected path to redirect_cc.
     const redirectCC = path.join(
       config.nativeRedirectCCDir,
@@ -475,7 +477,6 @@ const util = {
       use_remoteexec: config.useRemoteExec,
       use_reclient: config.useRemoteExec,
       use_siso: false,
-      rbe_exec_root: config.rbeExecRoot,
       reclient_bin_dir: config.realRewrapperDir,
       real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
@@ -526,6 +527,15 @@ const util = {
           ['gen', outputDir, ...extraGnGenOpts, ...internalOpts],
           options,
         )
+      }
+
+      // Workaround until this change appears in Brave.
+      // https://chromium.googlesource.com/chromium/src/+/add31462297022cbd6c61462329c780b3ad82731
+      if (config.useSiso) {
+        const cargoPkgRepository = path.join(outputDir, 'CARGO_PKG_REPOSITORY')
+        if (!fs.existsSync(cargoPkgRepository)) {
+          fs.writeFileSync(cargoPkgRepository, '')
+        }
       }
     })
   },
@@ -650,7 +660,7 @@ const util = {
         }
         if (hasError) {
           Log.error(line)
-        } else if (buildStats || /^(RBE Stats:|metric\s+count)\s+/.test(line)) {
+        } else if (buildStats || /^(RBE Stats:|metric\s+count|build finished)\s+/.test(line)) {
           buildStats += line + '\n'
         } else {
           console.log(line)

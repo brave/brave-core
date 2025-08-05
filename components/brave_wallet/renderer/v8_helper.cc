@@ -21,7 +21,8 @@ namespace brave_wallet {
 v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
                                       v8::Local<v8::Value> object,
                                       std::string_view name) {
-  v8::Local<v8::String> name_str = gin::StringToV8(context->GetIsolate(), name);
+  v8::Local<v8::String> name_str =
+      gin::StringToV8(v8::Isolate::GetCurrent(), name);
   v8::Local<v8::Object> object_obj;
   if (!object->ToObject(context).ToLocal(&object_obj)) {
     return v8::MaybeLocal<v8::Value>();
@@ -34,7 +35,8 @@ v8::Maybe<bool> CreateDataProperty(v8::Local<v8::Context> context,
                                    v8::Local<v8::Object> object,
                                    std::string_view name,
                                    v8::Local<v8::Value> value) {
-  v8::Local<v8::String> name_str = gin::StringToV8(context->GetIsolate(), name);
+  v8::Local<v8::String> name_str =
+      gin::StringToV8(v8::Isolate::GetCurrent(), name);
 
   return object->CreateDataProperty(context, name_str, value);
 }
@@ -104,9 +106,7 @@ void SetProviderNonWritable(v8::Local<v8::Context> context,
                             bool is_enumerable) {
   v8::PropertyDescriptor desc(provider_obj, false);
   desc.set_configurable(false);
-  if (!is_enumerable) {
-    desc.set_enumerable(false);
-  }
+  desc.set_enumerable(is_enumerable);
   global->DefineProperty(context, provider_name, desc).Check();
 }
 

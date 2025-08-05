@@ -42,9 +42,9 @@
         }
       },
       {
-        "name": "isWebDiscoveryNativeEnabled",
+        "name": "isWebDiscoveryExtensionEnabled",
         "type": "function",
-        "description": "Returns true if Web Discovery native feature is active",
+        "description": "Returns true if Web Discovery extension should be active",
         "parameters": [],
         "returns_async": {
           "name": "callback",

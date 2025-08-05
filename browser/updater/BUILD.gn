@@ -34,9 +34,13 @@ if (enable_omaha4) {
 
   source_set("unit_tests") {
     testonly = true
-    sources = [ "updater_p3a_unittest.cc" ]
+    sources = [
+      "features_unittest.cc",
+      "updater_p3a_unittest.cc",
+    ]
 
     deps = [
+      ":features",
       ":p3a",
       "//base",
       "//base/test:test_support",

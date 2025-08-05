@@ -6,7 +6,6 @@
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
@@ -26,6 +25,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_provider_key.h"
 #include "ui/color/color_provider_manager.h"
@@ -150,15 +150,15 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   bool IsReportingDarkMode() {
     bool light_mode_result =
         content::EvalJs(contents(),
-                        base::StringPrintf(kMatchDarkModeFormatString, "light"))
+                        absl::StrFormat(kMatchDarkModeFormatString, "light"))
             .ExtractBool();
 
     if (!light_mode_result) {
       // Sanity check to make sure that 'dark' is reported for
       // prefers-color-scheme when 'light' was not found before.
-      EXPECT_EQ(true, content::EvalJs(contents(),
-                                      base::StringPrintf(
-                                          kMatchDarkModeFormatString, "dark")));
+      EXPECT_EQ(true, content::EvalJs(
+                          contents(),
+                          absl::StrFormat(kMatchDarkModeFormatString, "dark")));
 
       // Report dark mode.
       return true;

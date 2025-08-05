@@ -14,7 +14,7 @@ if (enable_brave_vpn && is_win) {
       "//base",
       "//base/test:test_support",
       "//brave/browser/brave_vpn/win/brave_vpn_helper:common",
-      "//brave/components/brave_vpn/common/buildflags:buildflags",
+      "//brave/components/brave_vpn/common/buildflags",
       "//chrome/chrome_elf:nt_registry",
       "//chrome/install_static:install_static_util",
       "//chrome/installer/setup:lib",

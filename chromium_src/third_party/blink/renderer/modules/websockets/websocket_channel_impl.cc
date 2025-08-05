@@ -12,7 +12,7 @@
 
 #define WebSocketChannelImpl WebSocketChannelImpl_ChromiumImpl
 
-#include "src/third_party/blink/renderer/modules/websockets/websocket_channel_impl.cc"
+#include <third_party/blink/renderer/modules/websockets/websocket_channel_impl.cc>
 
 #undef WebSocketChannelImpl
 
@@ -22,9 +22,9 @@ namespace blink {
 WebSocketChannelImpl* WebSocketChannelImpl::Create(
     ExecutionContext* execution_context,
     WebSocketChannelClient* client,
-    std::unique_ptr<SourceLocation> location) {
-  auto* channel = MakeGarbageCollected<WebSocketChannelImpl>(
-      execution_context, client, std::move(location));
+    SourceLocation* location) {
+  auto* channel = MakeGarbageCollected<WebSocketChannelImpl>(execution_context,
+                                                             client, location);
   channel->handshake_throttle_ =
       channel->GetBaseFetchContext()->CreateWebSocketHandshakeThrottle();
   return channel;

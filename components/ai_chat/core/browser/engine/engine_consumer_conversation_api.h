@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -18,6 +19,8 @@
 
 template <class T>
 class scoped_refptr;
+
+class PrefService;
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -41,7 +44,8 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       const mojom::LeoModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       AIChatCredentialManager* credential_manager,
-      ModelService* model_service);
+      ModelService* model_service,
+      PrefService* pref_service);
   EngineConsumerConversationAPI(const EngineConsumerConversationAPI&) = delete;
   EngineConsumerConversationAPI& operator=(
       const EngineConsumerConversationAPI&) = delete;
@@ -49,13 +53,11 @@ class EngineConsumerConversationAPI : public EngineConsumer {
 
   // EngineConsumer
   void GenerateQuestionSuggestions(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContents page_contents,
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContents page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       const std::vector<base::WeakPtr<Tool>>& tools,
@@ -120,10 +122,14 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       GenerationResult result);
 
   ConversationAPIClient::ConversationEvent
-  GetAssociatedContentConversationEvent(const std::string& content,
-                                        const bool is_video);
+  GetAssociatedContentConversationEvent(const PageContent& content,
+                                        uint32_t remaining_length);
+  std::optional<ConversationAPIClient::ConversationEvent> GetUserMemoryEvent()
+      const;
 
   std::unique_ptr<ConversationAPIClient> api_ = nullptr;
+  raw_ptr<PrefService> pref_service_ = nullptr;
+
   base::WeakPtrFactory<EngineConsumerConversationAPI> weak_ptr_factory_{this};
 };
 

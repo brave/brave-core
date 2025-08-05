@@ -10,7 +10,6 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/threading/thread_restrictions.h"
@@ -21,6 +20,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/browser_test.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 // CustomBackgroundFileManager requires data decoder which can't be initialized
 // in unit tests.
@@ -120,8 +120,8 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
         custom_file_manager().GetCustomBackgroundDirectory().AppendASCII(
             kTestImageName);
     if (i > 0) {
-      expected_path = expected_path.InsertBeforeExtensionASCII(
-          base::StringPrintf("-%d", i));
+      expected_path =
+          expected_path.InsertBeforeExtensionASCII(absl::StrFormat("-%d", i));
     }
 
     auto check_res =

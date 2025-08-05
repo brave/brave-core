@@ -8,7 +8,6 @@
 #include "base/functional/function_ref.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/thread_test_helper.h"
 #include "base/version.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
@@ -36,6 +35,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/chrome_test_extension_loader.h"
@@ -178,7 +178,7 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_->port()));
+        absl::StrFormat("MAP *:443 127.0.0.1:%d", https_server_->port()));
 #if BUILDFLAG(ENABLE_EXTENSIONS)
     command_line->AppendSwitch(extensions::switches::kOffscreenDocumentTesting);
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)

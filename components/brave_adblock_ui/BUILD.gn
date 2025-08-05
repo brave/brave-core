@@ -1,9 +1,15 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("brave_adblock_ui") {
-  entry_points = [
-    ["brave_adblock", rebase_path("brave_adblock.tsx")]
-  ]
+  entry_points = [ [
+        "brave_adblock",
+        rebase_path("brave_adblock.tsx"),
+      ] ]
 
   resource_name = "brave_adblock"
 }
@@ -11,7 +17,5 @@ transpile_web_ui("brave_adblock_ui") {
 pack_web_resources("generated_resources") {
   resource_name = "brave_adblock"
   output_dir = "$root_gen_dir/brave/components/brave_adblock/resources"
-  deps = [
-    ":brave_adblock_ui"
-  ]
+  deps = [ ":brave_adblock_ui" ]
 }

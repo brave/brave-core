@@ -14,17 +14,19 @@
 #include "base/environment.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_stats/browser/buildflags.h"
+#include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_stats {
 
 std::string GetDateAsYMD(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  return base::StringPrintf("%d-%02d-%02d", exploded.year, exploded.month,
-                            exploded.day_of_month);
+  return absl::StrFormat("%d-%02d-%02d", exploded.year, exploded.month,
+                         exploded.day_of_month);
 }
 
 std::string GetPlatformIdentifier() {
@@ -169,6 +171,11 @@ uint8_t UsageBitfieldFromTimestamp(const base::Time& last_usage_time,
   }
 
   return result;
+}
+
+bool IsStatsReportingEnabled(PrefService& pref_service) {
+  return pref_service.GetBoolean(kStatsReportingEnabled) &&
+         !pref_service.GetBoolean(kStatsReportingDisabledByPolicy);
 }
 
 }  // namespace brave_stats

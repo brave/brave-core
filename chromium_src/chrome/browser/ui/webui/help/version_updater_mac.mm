@@ -14,7 +14,6 @@
 #include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "base/strings/escape.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/mac/keystone_glue.h"
@@ -216,7 +215,7 @@ void SparkleVersionUpdater::UpdateShowPromoteButton() {
                  : static_cast<VersionUpdater*>(new SparkleVersionUpdater()))
 #endif  // BUILDFLAG(ENABLE_OMAHA4)
 
-#include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
+#include <chrome/browser/ui/webui/help/version_updater_mac.mm>
 
 #if BUILDFLAG(ENABLE_OMAHA4)
 #undef WrapUnique

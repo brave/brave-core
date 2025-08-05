@@ -9,11 +9,11 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal {
 
@@ -59,7 +59,7 @@ std::string GenerateActivityFilterQuery(const int start,
   }
 
   if (!filter->non_verified) {
-    const std::string status = base::StringPrintf(
+    const std::string status = absl::StrFormat(
         " AND spi.status != %1d AND spi.address != ''",
         base::to_underlying(mojom::PublisherStatus::NOT_VERIFIED));
     query += status;
@@ -138,9 +138,9 @@ void DatabaseActivityInfo::NormalizeList(
   }
   std::string main_query;
   for (const auto& info : list) {
-    main_query += base::StringPrintf(
+    main_query += absl::StrFormat(
         "UPDATE %s SET percent = %d, weight = %f WHERE publisher_id = '%s';",
-        kTableName, info->percent, info->weight, info->id.c_str());
+        kTableName, info->percent, info->weight, info->id);
   }
 
   if (main_query.empty()) {
@@ -185,7 +185,7 @@ void DatabaseActivityInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
   }
 
   auto transaction = mojom::DBTransaction::New();
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(publisher_id, duration, score, percent, "
       "weight, reconcile_stamp, visits) "
@@ -223,7 +223,7 @@ void DatabaseActivityInfo::GetRecordsList(
 
   auto transaction = mojom::DBTransaction::New();
 
-  std::string query = base::StringPrintf(
+  std::string query = absl::StrFormat(
       "SELECT ai.publisher_id, ai.duration, ai.score, "
       "ai.percent, ai.weight, spi.status, spi.updated_at, pi.excluded, "
       "pi.name, pi.url, pi.provider, "
@@ -311,7 +311,7 @@ void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "DELETE FROM %s WHERE publisher_id = ? AND reconcile_stamp = ?",
       kTableName);
 
@@ -333,7 +333,7 @@ void DatabaseActivityInfo::GetPublishersVisitedCount(
     base::OnceCallback<void(int)> callback) {
   auto transaction = mojom::DBTransaction::New();
 
-  std::string query = base::StringPrintf(
+  std::string query = absl::StrFormat(
       "SELECT COUNT(DISTINCT ai.publisher_id) "
       "FROM %s AS ai INNER JOIN server_publisher_info AS spi "
       "ON spi.publisher_key = ai.publisher_id "

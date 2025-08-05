@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -26,10 +27,13 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -51,8 +55,9 @@ EngineConsumerConversationAPI::EngineConsumerConversationAPI(
     const mojom::LeoModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager,
-    ModelService* model_service)
-    : EngineConsumer(model_service) {
+    ModelService* model_service,
+    PrefService* pref_service)
+    : EngineConsumer(model_service), pref_service_(pref_service) {
   DCHECK(!model_options.name.empty());
   model_name_ = model_options.name;
   api_ = std::make_unique<ConversationAPIClient>(
@@ -131,11 +136,11 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   std::vector<ConversationEvent> conversation;
-  conversation.emplace_back(ConversationEventRole::User,
-                            ConversationEventType::UserText,
+  conversation.emplace_back(ConversationEventRole::kUser,
+                            ConversationEventType::kUserText,
                             std::vector<std::string>{text});
-  conversation.emplace_back(ConversationEventRole::User,
-                            ConversationEventType::RequestRewrite,
+  conversation.emplace_back(ConversationEventRole::kUser,
+                            ConversationEventType::kRequestRewrite,
                             /*Content=*/std::vector<std::string>{question});
   api_->PerformRequest(std::move(conversation), selected_language, std::nullopt,
                        std::nullopt, std::move(received_callback),
@@ -143,15 +148,22 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
 }
 
 void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
-    const bool& is_video,
-    const std::string& page_content,
+    PageContents page_contents,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   std::vector<ConversationEvent> conversation;
-  conversation.emplace_back(
-      GetAssociatedContentConversationEvent(page_content, is_video));
-  conversation.emplace_back(ConversationEventRole::User,
-                            ConversationEventType::RequestSuggestedActions,
+  uint32_t remaining_length = max_associated_content_length_;
+  for (const auto& content : page_contents) {
+    conversation.emplace_back(
+        GetAssociatedContentConversationEvent(content, remaining_length));
+    if (content.get().content.size() > remaining_length) {
+      break;
+    }
+    remaining_length -= content.get().content.size();
+  }
+
+  conversation.emplace_back(ConversationEventRole::kUser,
+                            ConversationEventType::kRequestSuggestedActions,
                             std::vector<std::string>{""});
 
   auto on_response = base::BindOnce(
@@ -187,9 +199,65 @@ void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
   std::move(callback).Run(std::move(questions));
 }
 
+std::optional<ConversationEvent>
+EngineConsumerConversationAPI::GetUserMemoryEvent() const {
+  bool customization_enabled =
+      pref_service_->GetBoolean(prefs::kBraveAIChatUserCustomizationEnabled);
+  bool memory_enabled =
+      pref_service_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled);
+  if (!customization_enabled && !memory_enabled) {
+    return std::nullopt;
+  }
+
+  base::Value::Dict user_memory;
+  if (customization_enabled) {
+    const base::Value::Dict& customizations_dict =
+        pref_service_->GetDict(prefs::kBraveAIChatUserCustomizations);
+
+    // Only set values when they have actual content
+    if (const std::string* name = customizations_dict.FindString("name")) {
+      if (!name->empty()) {
+        user_memory.Set("name", *name);
+      }
+    }
+    if (const std::string* job = customizations_dict.FindString("job")) {
+      if (!job->empty()) {
+        user_memory.Set("job", *job);
+      }
+    }
+    if (const std::string* tone = customizations_dict.FindString("tone")) {
+      if (!tone->empty()) {
+        user_memory.Set("tone", *tone);
+      }
+    }
+    if (const std::string* other = customizations_dict.FindString("other")) {
+      if (!other->empty()) {
+        user_memory.Set("other", *other);
+      }
+    }
+  }
+
+  if (memory_enabled) {
+    const base::Value::List& memories =
+        pref_service_->GetList(prefs::kBraveAIChatUserMemories);
+    if (!memories.empty()) {
+      user_memory.Set("memories", memories.Clone());
+    }
+  }
+
+  if (user_memory.empty()) {
+    return std::nullopt;
+  }
+
+  return ConversationEvent(ConversationEventRole::kUser,
+                           ConversationEventType::kUserMemory,
+                           std::vector<std::string>(),  // Empty content
+                           "",                          // Empty topic
+                           std::move(user_memory));
+}
+
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
-    const bool& is_video,
-    const std::string& page_content,
+    PageContents page_contents,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     const std::vector<base::WeakPtr<Tool>>& tools,
@@ -202,10 +270,21 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   }
 
   std::vector<ConversationEvent> conversation;
+  int remaining_length = max_associated_content_length_;
+
+  // user memory
+  if (auto event = GetUserMemoryEvent()) {
+    conversation.push_back(std::move(*event));
+  }
+
   // associated content
-  if (!page_content.empty()) {
+  for (const auto& content : page_contents) {
     conversation.push_back(
-        GetAssociatedContentConversationEvent(page_content, is_video));
+        GetAssociatedContentConversationEvent(content, remaining_length));
+    remaining_length -= content.get().content.size();
+    if (remaining_length <= 0) {
+      break;
+    }
   }
 
   // We're going to iterate over the conversation entries and
@@ -285,13 +364,13 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         }
       }
       if (!uploaded_images.empty()) {
-        conversation.emplace_back(ConversationEventRole::User,
-                                  ConversationEventType::UploadImage,
+        conversation.emplace_back(ConversationEventRole::kUser,
+                                  ConversationEventType::kUploadImage,
                                   std::move(uploaded_images));
       }
       if (!screenshot_images.empty()) {
-        conversation.emplace_back(ConversationEventRole::User,
-                                  ConversationEventType::PageScreenshot,
+        conversation.emplace_back(ConversationEventRole::kUser,
+                                  ConversationEventType::kPageScreenshot,
                                   std::move(screenshot_images));
       }
     }
@@ -299,15 +378,15 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     if (message->selected_text.has_value() &&
         !message->selected_text->empty()) {
       conversation.emplace_back(
-          ConversationEventRole::User, ConversationEventType::PageExcerpt,
+          ConversationEventRole::kUser, ConversationEventType::kPageExcerpt,
           std::vector<std::string>{message->selected_text.value()});
     }
 
     // Build the main conversation event
     ConversationEvent event;
     event.role = message->character_type == mojom::CharacterType::HUMAN
-                     ? ConversationEventRole::User
-                     : ConversationEventRole::Assistant;
+                     ? ConversationEventRole::kUser
+                     : ConversationEventRole::kAssistant;
     // TODO(petemill): Rebuild an event for most of `message->events` so that
     // we are sending the full context back to the API, including search
     // results, annotations, etc.
@@ -335,10 +414,10 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     // to prompts in addition to SUMMARIZE_PAGE (e.g. PARAPHRASE, EXPLAIN,
     // IMPROVE, etc.)
     if (message->action_type == mojom::ActionType::SUMMARIZE_PAGE) {
-      event.type = ConversationEventType::RequestSummary;
+      event.type = ConversationEventType::kRequestSummary;
       event.content = std::vector<std::string>{""};
     } else {
-      event.type = ConversationEventType::ChatMessage;
+      event.type = ConversationEventType::kChatMessage;
     }
 
     conversation.emplace_back(std::move(event));
@@ -359,8 +438,8 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         }
 
         ConversationEvent tool_result;
-        tool_result.role = ConversationEventRole::Tool;
-        tool_result.type = ConversationEventType::ToolUse;
+        tool_result.role = ConversationEventRole::kTool;
+        tool_result.type = ConversationEventType::kToolUse;
         tool_result.tool_call_id = tool_event->id;
 
         // Check if we should keep the full content for this large tool result
@@ -406,17 +485,18 @@ bool EngineConsumerConversationAPI::SupportsDeltaTextResponses() const {
 
 ConversationEvent
 EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
-    const std::string& content,
-    const bool is_video) {
-  const std::string& truncated_page_content =
-      content.substr(0, max_associated_content_length_);
+    const PageContent& content,
+    uint32_t remaining_length) {
+  std::string truncated_page_content =
+      content.content.substr(0, remaining_length);
+  SanitizeInput(truncated_page_content);
 
   ConversationEvent event;
-  event.role = ConversationEventRole::User;
-  event.content = std::vector<std::string>{truncated_page_content};
+  event.role = ConversationEventRole::kUser;
+  event.content = std::vector<std::string>{std::move(truncated_page_content)};
   // TODO(petemill): Differentiate video transcript / XML / VTT
-  event.type = is_video ? ConversationEventType::VideoTranscript
-                        : ConversationEventType::PageText;
+  event.type = content.is_video ? ConversationEventType::kVideoTranscript
+                                : ConversationEventType::kPageText;
   return event;
 }
 
@@ -434,7 +514,7 @@ void EngineConsumerConversationAPI::DedupeTopics(
   }
   std::vector<ConversationEvent> conversation;
   conversation.push_back(
-      {ConversationEventRole::User, ConversationEventType::DedupeTopics,
+      {ConversationEventRole::kUser, ConversationEventType::kDedupeTopics,
        std::vector<std::string>{
            base::WriteJson(topic_list).value_or(std::string())}});
   api_->PerformRequest(
@@ -458,10 +538,10 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
     ConversationEventType event_type,
     base::OnceCallback<void(std::vector<GenerationResult>)> merge_callback,
     const std::string& topic) {
-  CHECK(event_type == ConversationEventType::GetSuggestedTopicsForFocusTabs ||
+  CHECK(event_type == ConversationEventType::kGetSuggestedTopicsForFocusTabs ||
         event_type ==
-            ConversationEventType::GetSuggestedAndDedupeTopicsForFocusTabs ||
-        event_type == ConversationEventType::GetFocusTabsForTopic);
+            ConversationEventType::kGetSuggestedAndDedupeTopicsForFocusTabs ||
+        event_type == ConversationEventType::kGetFocusTabsForTopic);
 
   // Split tab into chunks of 75
   size_t num_chunks = (tabs.size() + kTabListChunkSize - 1) / kTabListChunkSize;
@@ -480,7 +560,7 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
 
     std::vector<ConversationEvent> conversation;
     conversation.push_back(
-        {ConversationEventRole::User, event_type,
+        {ConversationEventRole::kUser, event_type,
          std::vector<std::string>{
              base::WriteJson(tab_value_list).value_or(std::string())},
          topic});
@@ -513,8 +593,8 @@ void EngineConsumerConversationAPI::GetSuggestedTopics(
     GetSuggestedTopicsCallback callback) {
   auto event_type =
       tabs.size() > kTabListChunkSize
-          ? ConversationEventType::GetSuggestedTopicsForFocusTabs
-          : ConversationEventType::GetSuggestedAndDedupeTopicsForFocusTabs;
+          ? ConversationEventType::kGetSuggestedTopicsForFocusTabs
+          : ConversationEventType::kGetSuggestedAndDedupeTopicsForFocusTabs;
   ProcessTabChunks(
       tabs, event_type,
       base::BindOnce(&EngineConsumerConversationAPI::MergeSuggestTopicsResults,
@@ -527,7 +607,7 @@ void EngineConsumerConversationAPI::GetFocusTabs(
     const std::string& topic,
     EngineConsumer::GetFocusTabsCallback callback) {
   ProcessTabChunks(
-      tabs, ConversationEventType::GetFocusTabsForTopic,
+      tabs, ConversationEventType::kGetFocusTabsForTopic,
       base::BindOnce(
           [](EngineConsumer::GetFocusTabsCallback callback,
              std::vector<GenerationResult> results) {

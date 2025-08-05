@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/to_string.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -166,7 +166,7 @@ GURL AppendZeroExSwapParams(const GURL& swap_url,
   if (base::StringToDouble(params.slippage_percentage, &slippage_percentage)) {
     url = net::AppendQueryParameter(
         url, "slippageBps",
-        base::StringPrintf("%d", static_cast<int>(slippage_percentage * 100)));
+        base::ToString(static_cast<int>(slippage_percentage * 100)));
   }
 
   // TODO(onyb): custom gas_price is currently unused and may be removed in
@@ -202,7 +202,7 @@ GURL AppendJupiterQuoteParams(const GURL& swap_url,
   if (base::StringToDouble(params.slippage_percentage, &slippage_percentage)) {
     url = net::AppendQueryParameter(
         url, "slippageBps",
-        base::StringPrintf("%d", static_cast<int>(slippage_percentage * 100)));
+        base::ToString(static_cast<int>(slippage_percentage * 100)));
   }
 
   if (fee_param.has_value() && !fee_param->empty()) {

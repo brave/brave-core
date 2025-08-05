@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/views/infobars/web_discovery_infobar_view.h"
+#include "brave/browser/web_discovery/web_discovery_infobar_delegate.h"
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -42,6 +44,14 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryTest, InfobarAddedTest) {
   infobar_manager->AddObserver(&observer);
   tab_helper->ShowInfoBar(browser()->profile()->GetPrefs());
   infobar_manager->RemoveObserver(&observer);
+
+  // Verify WebDiscoveryInfoBarView.
+  // WebDiscoveryInfoBarView::content_view_ should be direct child as
+  // it occupies whole parent rect.
+  auto infobar = std::make_unique<WebDiscoveryInfoBarView>(
+      std::make_unique<WebDiscoveryInfoBarDelegate>(
+          browser()->profile()->GetPrefs()));
+  EXPECT_EQ(infobar.get(), infobar->content_view_->parent());
 }
 
 }  // namespace web_discovery

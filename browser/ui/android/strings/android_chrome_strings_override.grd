@@ -244,7 +244,7 @@ CHAR_LIMIT guidelines:
         Open a new tab in Private mode
       </message>
        <message name="IDS_KEYBOARD_SHORTCUT_TOGGLE_BOOKMARK_BAR" desc="A text label that appears next to the keyboard shortcut that will toggle the bookmark bar. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
-        Show or hide the bookmarks
+        Show or hide Bookmarks
       </message>
       <if expr="enable_arcore">
         </if>
@@ -268,6 +268,11 @@ CHAR_LIMIT guidelines:
         {TAB_COUNT, plural,
           =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> more tab will be closed}
           other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> more tabs will be closed}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO_MIXED_V2" desc="The phrase used in the message for deleting private-selected instance.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> other tab will be closed}
+          other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> other tabs will be closed}}
       </message>
 
       <message name="IDS_IPH_TAB_SWITCHER_SWITCH_INTO_INCOGNITO_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">

@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_features.h"
@@ -20,6 +19,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/page_state/page_state.h"
 #include "third_party/blink/public/common/page_state/page_state_serialization.h"
 
@@ -129,8 +129,8 @@ class SessionCookiesCleanupOnSessionRestoreBrowserTest
     ASSERT_TRUE(embedded_test_server()->Start());
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        base::StringPrintf("MAP *:80 127.0.0.1:%d",
-                           embedded_test_server()->port()));
+        absl::StrFormat("MAP *:80 127.0.0.1:%d",
+                        embedded_test_server()->port()));
   }
 
   void SetUpOnMainThread() override {

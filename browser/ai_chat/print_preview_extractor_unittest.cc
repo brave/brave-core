@@ -12,7 +12,6 @@
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/rand_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
@@ -35,6 +34,7 @@
 #include "printing/buildflags/buildflags.h"
 #include "printing/print_job_constants.h"
 #include "printing/units.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/gfx/image/image_unittest_util.h"
 
@@ -397,7 +397,7 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     ASSERT_TRUE(print_preview_ui_id);
     EXPECT_EQ(
         print_render_frame->GetSettings(),
-        base::test::ParseJsonDict(base::StringPrintf(
+        base::test::ParseJsonDict(absl::StrFormat(
             kSettingTemplate,
             static_cast<int>(printing::mojom::MarginType::kDefaultMargins),
             static_cast<int>(printing::mojom::ColorModel::kColor),
@@ -407,7 +407,7 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
             static_cast<int>(printing::ScalingType::DEFAULT),
             *print_preview_ui_id, request_id,
             base::UTF16ToUTF8(web_contents()->GetTitle()),
-            expect_preview_modifiable ? "true" : "false",
+            base::ToString(expect_preview_modifiable),
             web_contents()->GetLastCommittedURL().spec())));
   }
 

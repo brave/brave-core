@@ -5,7 +5,6 @@
 
 #include <string>
 
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
@@ -22,6 +21,7 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 namespace {
@@ -108,7 +108,7 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectScriptAwaitPromise) {
     EXPECT_TRUE(value.GetBool());
     run_loop.Quit();
   });
-  auto script = base::StringPrintf(kScript, "true");
+  auto script = absl::StrFormat(kScript, "true");
   const GURL url = https_server_.GetURL("a.com", "/");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
@@ -133,7 +133,7 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectedScriptReturnsDict) {
     EXPECT_TRUE(*val);
     run_loop.Quit();
   });
-  auto script = base::StringPrintf(kScript, "{ok: true}");
+  auto script = absl::StrFormat(kScript, "{ok: true}");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
   remote->RequestAsyncExecuteScript(
@@ -150,7 +150,7 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest,
                        InjectScriptDoNotAwaitPromise) {
   const GURL url = https_server_.GetURL("a.com", "/");
   auto cb = base::BindOnce([](base::Value value) { FAIL(); });
-  auto script = base::StringPrintf(kScript, "true");
+  auto script = absl::StrFormat(kScript, "true");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
   remote->RequestAsyncExecuteScript(

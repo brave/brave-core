@@ -11,6 +11,7 @@ import org.objectweb.asm.ClassVisitor;
 public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
         chain = new BraveActivityClassAdapter(chain);
+        chain = new BraveAdaptiveToolbarPrefsClassAdapter(chain);
         chain = new BraveAppHooksClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
         chain = new BraveBaseCustomTabActivityClassAdapter(chain);
@@ -56,6 +57,7 @@ public class BraveClassAdapter {
         chain = new BraveFreIntentCreatorClassAdapter(chain);
         chain = new BraveHelpAndFeedbackLauncherImplClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);
+        chain = new BraveHttpURLConnectionFactoryImplClassAdapter(chain);
         chain = new BraveHubManagerImplClassAdapter(chain);
         chain = new BraveIdentityDiscControllerClassAdapter(chain);
         chain = new BraveIncognitoTabSwitcherPaneClassAdapter(chain);
@@ -111,11 +113,10 @@ public class BraveClassAdapter {
         chain = new BraveStatusMediatorClassAdapter(chain);
         chain = new BraveStrictPreferenceKeyCheckerClassAdapter(chain);
         chain = new BraveSystemAccountManagerDelegateAdapter(chain);
+        chain = new BraveTabCardThemeUtilClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherPaneBaseClassAdapter(chain);
         chain = new BraveTabHelpersClassAdapter(chain);
-        chain = new BraveTabUiThemeProviderClassAdapter(chain);
-        chain = new BraveTabUiThemeUtilsClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
         chain = new BraveTabbedNavigationBarColorControllerBaseClassAdapter(chain);
         chain = new BraveTabbedRootUiCoordinatorClassAdapter(chain);
@@ -123,6 +124,7 @@ public class BraveClassAdapter {
         chain = new BraveThemeUtilsClassAdapter(chain);
         chain = new BraveTileViewClassAdapter(chain);
         chain = new BraveToolbarLayoutClassAdapter(chain);
+        chain = new BraveToolbarLongPressMenuHandlerClassAdapter(chain);
         chain = new BraveToolbarManagerClassAdapter(chain);
         chain = new BraveToolbarPositionControllerClassAdapter(chain);
         chain = new BraveToolbarSwipeLayoutClassAdapter(chain);

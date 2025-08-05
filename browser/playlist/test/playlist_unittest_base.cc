@@ -14,22 +14,15 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 
 namespace playlist {
-PlaylistUnitTestBase::PlaylistUnitTestBase() = default;
+PlaylistUnitTestBase::PlaylistUnitTestBase()
+    : scoped_testing_local_state_(TestingBrowserProcess::GetGlobal()) {}
 
 PlaylistUnitTestBase::~PlaylistUnitTestBase() = default;
 
 void PlaylistUnitTestBase::SetUp() {
   content::RenderViewHostTestHarness::SetUp();
-
-  RegisterLocalState(local_state_.registry());
-  TestingBrowserProcess::GetGlobal()->SetLocalState(&local_state_);
 }
 
-void PlaylistUnitTestBase::TearDown() {
-  TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
-
-  content::RenderViewHostTestHarness::TearDown();
-}
 
 std::unique_ptr<content::BrowserContext>
 PlaylistUnitTestBase::CreateBrowserContext() {

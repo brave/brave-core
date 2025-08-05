@@ -17,7 +17,7 @@ source_set("new_tab_takeover") {
 
   deps = [
     "//base",
-    "//brave/browser/brave_ads:brave_ads",
+    "//brave/browser/brave_ads",
     "//brave/components/constants",
     "//brave/components/new_tab_takeover:new_tab_takeover_generated_resources",
     "//brave/components/ntp_background_images/browser",

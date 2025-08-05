@@ -366,7 +366,8 @@ def get_grd_strings(grd_file_path, validate_tags=True):
         assert message_name, 'Message name is empty'
         assert (message_name.startswith('IDS_') or
                 message_name.startswith('IDR_') or
-                message_name.startswith('PRINT_PREVIEW_MEDIA_')), \
+                message_name.startswith('PRINT_PREVIEW_MEDIA_') or
+                message_name == 'DATA_SHARING_GROUP_LABEL_NEW_ACTIVITY'), \
             f'Invalid message ID: {message_name}'
         # None of the PRINT_PREVIEW_MEDIA_ messages currently get uploaded for
         # translation, but in case this changes let's keep the prefix in the

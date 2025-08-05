@@ -14,12 +14,13 @@
     DefaultHostContentSettings, CWVWebViewConfiguration, WebImageDownloader,
     NTPBackgroundImagesService;
 @protocol AIChatDelegate
-, IpfsAPI;
+, IpfsAPI, ProfileBridge;
 
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @interface BraveProfileController : NSObject
+@property(readonly) id<ProfileBridge> profile;
 @property(readonly) BraveBookmarksAPI* bookmarksAPI;
 @property(readonly) BraveHistoryAPI* historyAPI;
 @property(readonly) BravePasswordAPI* passwordAPI;

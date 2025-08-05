@@ -27,6 +27,8 @@ BASE_DECLARE_FEATURE(kBraveVerticalTabHideCompletely);
 
 BASE_DECLARE_FEATURE(kBraveSplitView);
 
+BASE_DECLARE_FEATURE(kBraveTreeTab);
+
 bool HorizontalTabsUpdateEnabled();
 bool IsBraveSplitViewEnabled();
 

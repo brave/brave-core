@@ -10,7 +10,6 @@ import("//ios/public/provider/chrome/browser/build_config.gni")
 
 source_set("app") {
   configs += [
-    "//brave/ios/browser/api/ai_chat:mojom_header_config",
     "//brave/ios/browser/api/webcompat_reporter:mojom_header_config",
     "//brave/ios/browser/api/brave_wallet:mojom_header_config",
     "//brave/ios/browser/api/skus:mojom_header_config",
@@ -31,6 +30,8 @@ source_set("app") {
   deps = [
     "//base",
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/ios/browser",
+    "//brave/components/ai_chat/ios/common:mojom",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_sync:constants",
     "//brave/components/brave_user_agent/browser",
@@ -44,9 +45,8 @@ source_set("app") {
     "//brave/components/variations",
     "//brave/ios/app/resources",
     "//brave/ios/browser",
+    "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/api/ads",
-    "//brave/ios/browser/api/ai_chat",
-    "//brave/ios/browser/api/ai_chat:ai_chat_mojom_wrappers",
     "//brave/ios/browser/api/bookmarks",
     "//brave/ios/browser/api/brave_rewards",
     "//brave/ios/browser/api/brave_shields",
@@ -63,6 +63,7 @@ source_set("app") {
     "//brave/ios/browser/api/opentabs",
     "//brave/ios/browser/api/p3a",
     "//brave/ios/browser/api/password",
+    "//brave/ios/browser/api/profile",
     "//brave/ios/browser/api/qr_code",
     "//brave/ios/browser/api/query_filter",
     "//brave/ios/browser/api/skus:skus_mojom_wrappers",
@@ -89,7 +90,7 @@ source_set("app") {
     "//components/variations",
     "//ios/chrome/app:app_internal",
     "//ios/chrome/app:tests_fake_hook",
-    "//ios/chrome/app/startup:startup",
+    "//ios/chrome/app/startup",
     "//ios/chrome/app/startup:startup_basic",
     "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/browsing_data/model",
@@ -100,6 +101,8 @@ source_set("app") {
     "//ios/chrome/browser/main/model",
     "//ios/chrome/browser/passwords/model:store_factory",
     "//ios/chrome/browser/providers/ui_utils:chromium_ui_utils",
+    "//ios/chrome/browser/sessions/model:session_restoration_service",
+    "//ios/chrome/browser/sessions/model:session_restoration_service_factory",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/paths",
     "//ios/chrome/browser/shared/model/prefs:pref_names",

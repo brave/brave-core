@@ -17,7 +17,7 @@
 #define OnOffTheRecordProfileCreated(...) \
   OnOffTheRecordProfileCreated_ChromiumImpl(__VA_ARGS__)
 
-#include "src/chrome/browser/extensions/api/cookies/cookies_api.cc"
+#include <chrome/browser/extensions/api/cookies/cookies_api.cc>
 
 #undef IsSerializeable
 #undef OnOffTheRecordProfileCreated

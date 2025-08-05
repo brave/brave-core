@@ -14,7 +14,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/strings/stringprintf.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/components/brave_shields/content/browser/adblock_stub_response.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -34,6 +33,7 @@
 #include "services/network/public/cpp/parsed_headers.h"
 #include "services/network/public/cpp/url_loader_factory_builder.h"
 #include "services/network/public/mojom/early_hints.mojom.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/origin.h"
 
 namespace {
@@ -286,11 +286,11 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
   network::mojom::URLResponseHeadPtr head =
       network::mojom::URLResponseHead::New();
-  std::string headers = base::StringPrintf(
+  std::string headers = absl::StrFormat(
       "HTTP/1.1 %i Internal Redirect\n"
       "Location: %s\n"
       "Non-Authoritative-Reason: WebRequest API\n\n",
-      kInternalRedirectStatusCode, redirect_url_.spec().c_str());
+      kInternalRedirectStatusCode, redirect_url_.spec());
 
   // Cross-origin requests need to modify the Origin header to 'null'. Since
   // CorsURLLoader sets |request_initiator| to the Origin request header in

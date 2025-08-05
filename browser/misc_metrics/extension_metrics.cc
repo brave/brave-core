@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
+#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "extensions/browser/extension_registry.h"
 
 namespace misc_metrics {
@@ -78,7 +78,7 @@ void ExtensionMetrics::OnExtensionLoaded(
   }
 
   // Check if this is a pre-configured Manifest V2 extension
-  if (extensions_mv2::IsKnownMV2Extension(extension->id())) {
+  if (extensions_mv2::IsKnownBraveHostedExtension(extension->id())) {
     select_manifest_v2_extensions_loaded_.insert(extension->id());
   }
 
@@ -99,7 +99,7 @@ void ExtensionMetrics::OnExtensionUninstalled(
   }
 
   // Check if this is a pre-configured Manifest V2 extension
-  if (extensions_mv2::IsKnownMV2Extension(extension->id())) {
+  if (extensions_mv2::IsKnownBraveHostedExtension(extension->id())) {
     select_manifest_v2_extensions_loaded_.erase(extension->id());
   }
 

@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
 
@@ -42,7 +42,7 @@ void DatabaseServerPublisherLinks::InsertOrUpdate(
 
     auto command = mojom::DBCommand::New();
     command->type = mojom::DBCommand::Type::RUN;
-    command->command = base::StringPrintf(
+    command->command = absl::StrFormat(
         "INSERT OR REPLACE INTO %s (publisher_key, provider, link) "
         "VALUES (?, ?, ?)",
         kTableName);
@@ -66,8 +66,8 @@ void DatabaseServerPublisherLinks::DeleteRecords(
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
   command->command =
-      base::StringPrintf("DELETE FROM %s WHERE publisher_key IN (%s)",
-                         kTableName, publisher_key_list.c_str());
+      absl::StrFormat("DELETE FROM %s WHERE publisher_key IN (%s)", kTableName,
+                      publisher_key_list);
 
   transaction->commands.push_back(std::move(command));
 }
@@ -82,7 +82,7 @@ void DatabaseServerPublisherLinks::GetRecord(
   }
 
   auto transaction = mojom::DBTransaction::New();
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT provider, link FROM %s WHERE publisher_key=?", kTableName);
 
   auto command = mojom::DBCommand::New();

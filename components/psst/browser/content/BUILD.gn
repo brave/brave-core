@@ -3,23 +3,48 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-component("content") {
-  output_name = "psst_browser_content"
+import("//brave/components/psst/buildflags/buildflags.gni")
 
-  defines = [ "IS_PSST_BROWSER_CONTENT_IMPL" ]
+assert(enable_psst)
+
+static_library("content") {
+  public = [ "psst_tab_web_contents_observer.h" ]
+
+  friend = [ ":unit_tests" ]
 
   sources = [
-    "psst_tab_helper.cc",
-    "psst_tab_helper.h",
+    "psst_scripts_handler_impl.cc",
+    "psst_scripts_handler_impl.h",
+    "psst_tab_web_contents_observer.cc",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/script_injector/common/mojom",
+    "//content/public/browser",
+    "//content/public/common",
   ]
 
   deps = [
-    "//base",
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
-    "//brave/components/script_injector/common/mojom",
-    "//components/sessions",
+    "//components/prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "psst_tab_web_contents_observer_unittest.cc" ]
+
+  deps = [
+    "//brave/components/psst/browser/content",
+    "//brave/components/psst/browser/core",
+    "//brave/components/psst/common",
+    "//components/sync_preferences:test_support",
     "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
     "//url",
   ]
 }

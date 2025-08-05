@@ -272,10 +272,17 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion(.braveWallet)
   }
 
+  func defaultCardanoWallet(completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
+    completion(.braveWallet)
+  }
+
   func setDefaultEthereumWallet(defaultWallet: BraveWallet.DefaultWallet) {
   }
 
   func setDefaultSolanaWallet(defaultWallet: BraveWallet.DefaultWallet) {
+  }
+
+  func setDefaultCardanoWallet(defaultWallet: BraveWallet.DefaultWallet) {
   }
 
   func nftDiscoveryEnabled(completion: @escaping (Bool) -> Void) {
@@ -394,6 +401,9 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func discoverAssetsOnAllSupportedChains(bypassRateLimit: Bool) {
   }
 
+  func writeToClipboard(text: String, isSensitive: Bool) {
+  }
+
   func transactionSimulationOptInStatus(
     completion: @escaping (BraveWallet.BlowfishOptInStatus) -> Void
   ) {
@@ -401,11 +411,6 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func setTransactionSimulationOptInStatus(_ status: BraveWallet.BlowfishOptInStatus) {
-  }
-
-  func countryCode(
-    completion: @escaping (String) -> Void
-  ) {
   }
 }
 #endif

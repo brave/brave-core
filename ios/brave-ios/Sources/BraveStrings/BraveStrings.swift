@@ -1269,6 +1269,13 @@ extension Strings {
       value: "Close All Tabs",
       comment: "A button title which when tapped will close all of the open tabs for the user"
     )
+    public static let privateTabsSettingsTitle = NSLocalizedString(
+      "tabGrid.privateTabsSettingsTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Private Tabs Settings",
+      comment: "A button title which when tapped will present settings for private tabs"
+    )
     public static let moreMenuButtonTitle = NSLocalizedString(
       "tabGrid.moreMenuButtonTitle",
       tableName: "BraveShared",
@@ -1296,6 +1303,20 @@ extension Strings {
       bundle: .module,
       value: "Shred Tabs",
       comment: "Accessibility label for a button that allows users to shred their tabs (erase them & associated data)"
+    )
+    public static let shredSelectedTabButtonTitle = NSLocalizedString(
+      "tabGrid.shredSelectedTabButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Shred Selected Tab",
+      comment: "A button title that when tapped allows users to shred the currently selected tab"
+    )
+    public static let shredAllTabsButtonTitle = NSLocalizedString(
+      "tabGrid.shredAllTabsButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Shred All Tabs",
+      comment: "A button title that when tapped allows users to shred all of their tabs"
     )
     public static let viewHistoryAccessibilityLabel = NSLocalizedString(
       "tabGrid.viewHistoryAccessibilityLabel",
@@ -3007,6 +3028,22 @@ extension Strings {
       "Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'."
   )
 
+  public static let braveAccount = NSLocalizedString(
+    "BraveAccount",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Brave Account",
+    comment: "Title for the Brave Account section in settings"
+  )
+
+  public static let getStarted = NSLocalizedString(
+    "GetStarted",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Get Started",
+    comment: "Button text to get started with Brave Account"
+  )
+
   public static let features = NSLocalizedString(
     "Features",
     tableName: "BraveShared",
@@ -4514,7 +4551,7 @@ extension Strings {
       "ReportBrokenSiteBody1",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Let Brave's developers know that this site doesn't work properly with Shields:",
+      value: "Let Brave's developers know that this site isn't working as expected:",
       comment:
         "First part of the report a broken site copy. After the colon is a new line and then a website address"
     )
@@ -4543,6 +4580,36 @@ extension Strings {
       value: "Additional details (optional)",
       comment:
         "A label for a text entry field where the user can provide additional details for a web-compatibility report"
+    )
+
+    /// A label for a text entry field where the user can provide additional details for a web-compatibility report
+    public static let reportBrokenAdditionalDetailsRequired = NSLocalizedString(
+      "reportBrokenAdditionalDetailsRequired",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Additional details",
+      comment:
+        "A label for a text entry field where the user can provide additional details for a web-compatibility report"
+    )
+
+    /// A label for drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenCategory = NSLocalizedString(
+      "reportBrokenCategory",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "What's the main issue you're seeing?",
+      comment:
+        "A label for a drop down where the user provides a category for a web-compatibility report"
+    )
+
+    /// A placeholder for the drop down where the user can provide a category for a web-compatibility report
+    public static let reportBrokenPlaceholder = NSLocalizedString(
+      "reportBrokenCategory",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Select one option",
+      comment:
+        "A placeholder for a drop down where the user provides a category for a web-compatibility report"
     )
 
     public static let reportBrokenContactMe = NSLocalizedString(
@@ -6454,6 +6521,30 @@ extension Strings {
         bundle: .module,
         value: "Require Face ID",
         comment: ""
+      )
+    public static let privateBrowsingLockDescriptionFaceID =
+      NSLocalizedString(
+        "tabs.settings.privateBrowsingLockDescriptionFaceID",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Require Face ID to access your private tabs.",
+        comment: "Describes the preference that locks the users private tabs behind their device biometrics"
+      )
+    public static let privateBrowsingLockDescriptionTouchID =
+      NSLocalizedString(
+        "tabs.settings.privateBrowsingLockDescriptionTouchID",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Require Touch ID to access your private tabs.",
+        comment: "Describes the preference that locks the users private tabs behind their device biometrics"
+      )
+    public static let privateBrowsingLockDescriptionPinCode =
+      NSLocalizedString(
+        "tabs.settings.privateBrowsingLockDescriptionPinCode",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Require your device PIN to access your private tabs.",
+        comment: "Describes the preference that locks the users private tabs behind their device PIN"
       )
     public static let privateBrowsingLockTitleTouchID =
       NSLocalizedString(

@@ -11,7 +11,7 @@
   friend class BraveBrowserFrameViewLinuxNative; \
   virtual void MaybeUpdateCachedFrameButtonImages
 
-#include "src/chrome/browser/ui/views/frame/browser_frame_view_linux_native.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/browser_frame_view_linux_native.h>  // IWYU pragma: export
 
 #undef MaybeUpdateCachedFrameButtonImages
 

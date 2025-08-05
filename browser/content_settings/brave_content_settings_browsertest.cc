@@ -6,7 +6,6 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/notreached.h"
-#include "base/strings/stringprintf.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -20,6 +19,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 class BraveContentSettingsBrowserTest : public InProcessBrowserTest {
@@ -37,7 +37,7 @@ class BraveContentSettingsBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_.port()));
+        absl::StrFormat("MAP *:443 127.0.0.1:%d", https_server_.port()));
   }
 
   void SetUpOnMainThread() override {

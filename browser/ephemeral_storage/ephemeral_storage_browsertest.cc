@@ -12,7 +12,6 @@
 #include "base/path_service.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
@@ -46,6 +45,7 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "net/test/embedded_test_server/request_handler_util.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using content::RenderFrameHost;
 using content::WebContents;
@@ -123,9 +123,8 @@ std::unique_ptr<HttpResponse> HandleCrossSiteRedirectWithSiteCookie(
   std::string dest;
   size_t delimiter = dest_all.find("/");
   if (delimiter != std::string::npos) {
-    dest = base::StringPrintf(
-        "//%s:%hu/%s", dest_all.substr(0, delimiter).c_str(), server->port(),
-        dest_all.substr(delimiter + 1).c_str());
+    dest = absl::StrFormat("//%s:%hu/%s", dest_all.substr(0, delimiter),
+                           server->port(), dest_all.substr(delimiter + 1));
   }
 
   auto http_response = std::make_unique<BasicHttpResponse>();
@@ -136,7 +135,7 @@ std::unique_ptr<HttpResponse> HandleCrossSiteRedirectWithSiteCookie(
       "server-redirect=true;path=/;SameSite=None;Secure;Max-Age=600");
   http_response->set_content_type("text/html");
   http_response->set_content(
-      base::StringPrintf("<!doctype html><p>Redirecting to %s", dest.c_str()));
+      absl::StrFormat("<!doctype html><p>Redirecting to %s", dest));
   return http_response;
 }
 
@@ -250,7 +249,7 @@ void EphemeralStorageBrowserTest::SetUpCommandLine(
   command_line->AppendSwitch(switches::kDisableRendererBackgrounding);
   command_line->AppendSwitchASCII(
       network::switches::kHostResolverRules,
-      base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_.port()));
+      absl::StrFormat("MAP *:443 127.0.0.1:%d", https_server_.port()));
 }
 
 void EphemeralStorageBrowserTest::SetUpInProcessBrowserTestFixture() {
@@ -321,24 +320,23 @@ void EphemeralStorageBrowserTest::SetStorageValueInFrame(
     RenderFrameHost* host,
     std::string value,
     StorageType storage_type) {
-  std::string script =
-      base::StringPrintf("%sStorage.setItem('storage_key', '%s');",
-                         ToString(storage_type), value.c_str());
+  std::string script = absl::StrFormat(
+      "%sStorage.setItem('storage_key', '%s');", ToString(storage_type), value);
   ASSERT_TRUE(content::ExecJs(host, script));
 }
 
 content::EvalJsResult EphemeralStorageBrowserTest::GetStorageValueInFrame(
     RenderFrameHost* host,
     StorageType storage_type) {
-  std::string script = base::StringPrintf("%sStorage.getItem('storage_key');",
-                                          ToString(storage_type));
+  std::string script = absl::StrFormat("%sStorage.getItem('storage_key');",
+                                       ToString(storage_type));
   return content::EvalJs(host, script);
 }
 
 void EphemeralStorageBrowserTest::SetCookieInFrame(RenderFrameHost* host,
                                                    std::string cookie) {
-  std::string script = base::StringPrintf(
-      "document.cookie='%s; path=/; SameSite=None; Secure'", cookie.c_str());
+  std::string script = absl::StrFormat(
+      "document.cookie='%s; path=/; SameSite=None; Secure'", cookie);
   ASSERT_TRUE(content::ExecJs(host, script));
 }
 
@@ -1332,7 +1330,7 @@ class EphemeralStorageWithDisableThirdPartyStoragePartitioningBrowserTest
 
     blink::RuntimeFeatureStateContext& context =
         navigation_handle->GetMutableRuntimeFeatureStateContext();
-    context.SetDisableThirdPartyStoragePartitioning3Enabled(GetParam());
+    context.SetThirdPartyStoragePartitioningUserBypassEnabled(GetParam());
   }
 };
 

@@ -3,28 +3,61 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-component("core") {
-  output_name = "psst_browser_core"
+import("//brave/components/psst/buildflags/buildflags.gni")
 
-  defines = [ "IS_PSST_BROWSER_CORE_IMPL" ]
+assert(enable_psst)
 
-  sources = [
-    "psst_component_installer.cc",
+static_library("core") {
+  public = [
+    "matched_rule.h",
     "psst_component_installer.h",
-    "psst_rule.cc",
     "psst_rule.h",
-    "psst_rule_registry.cc",
     "psst_rule_registry.h",
   ]
 
-  deps = [
+  friend = [ ":unit_tests" ]
+
+  sources = [
+    "matched_rule.cc",
+    "psst_component_installer.cc",
+    "psst_rule.cc",
+    "psst_rule_registry_impl.cc",
+    "psst_rule_registry_impl.h",
+    "rule_data_reader.cc",
+    "rule_data_reader.h",
+  ]
+
+  public_deps = [
     "//base",
+    "//url",
+  ]
+
+  deps = [
     "//brave/components/brave_component_updater/browser",
     "//brave/components/psst/common",
     "//brave/extensions:common",
     "//components/component_updater",
+    "//components/prefs",
     "//crypto",
     "//net",
-    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "matched_rule_unittest.cc",
+    "psst_rule_registry_unittest.cc",
+    "psst_rule_unittest.cc",
+    "rule_data_reader_unittest.cc",
+  ]
+
+  deps = [
+    ":core",
+    "//base/test:test_support",
+    "//brave/components/psst/common",
+    "//testing/gmock",
+    "//testing/gtest",
   ]
 }

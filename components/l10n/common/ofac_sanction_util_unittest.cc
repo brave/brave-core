@@ -8,10 +8,10 @@
 #include <string>
 
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 // npm run test -- brave_unit_tests --filter=OFACSanctionUtilTest*
 
@@ -187,9 +187,8 @@ std::string TestParamToString(
           ? "WhenShouldSanctionUNM49CodesIsSetToTrue"
           : "WhenShouldSanctionUNM49CodesIsSetToFalse";
 
-  return base::StringPrintf("%s_%s_%s", is_ofac_sanctioned.c_str(),
-                            locale.c_str(),
-                            should_sanction_un_m49_codes.c_str());
+  return absl::StrFormat("%s_%s_%s", is_ofac_sanctioned, locale,
+                         should_sanction_un_m49_codes);
 }
 
 INSTANTIATE_TEST_SUITE_P(,

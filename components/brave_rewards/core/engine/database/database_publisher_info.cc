@@ -9,12 +9,12 @@
 #include <utility>
 #include <vector>
 
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/engine/constants.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
 
@@ -39,7 +39,7 @@ void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "INSERT OR REPLACE INTO %s "
       "(publisher_id, excluded, name, url, provider, favIcon) "
       "VALUES (?, ?, ?, ?, ?, "
@@ -63,7 +63,7 @@ void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
 
   std::string favicon = info->favicon_url;
   if (!favicon.empty() && !info->provider.empty()) {
-    const std::string query_icon = base::StringPrintf(
+    const std::string query_icon = absl::StrFormat(
         "UPDATE %s SET favIcon = ? WHERE publisher_id = ?;", kTableName);
 
     auto command_icon = mojom::DBCommand::New();
@@ -95,7 +95,7 @@ void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, pi.provider, "
       "spi.status, spi.updated_at, pi.excluded "
       "FROM %s as pi "
@@ -167,7 +167,7 @@ void DatabasePublisherInfo::GetPanelRecord(
 
   auto transaction = mojom::DBTransaction::New();
 
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
       "pi.provider, spi.status, pi.excluded, "
       "("
@@ -237,8 +237,8 @@ void DatabasePublisherInfo::OnGetPanelRecord(
 
 void DatabasePublisherInfo::RestorePublishers(ResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
-  const std::string query = base::StringPrintf(
-      "UPDATE %s SET excluded=? WHERE excluded=?", kTableName);
+  const std::string query =
+      absl::StrFormat("UPDATE %s SET excluded=? WHERE excluded=?", kTableName);
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::RUN;
@@ -271,7 +271,7 @@ void DatabasePublisherInfo::OnRestorePublishers(
 
 void DatabasePublisherInfo::GetExcludedList(GetExcludedListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
-  const std::string query = base::StringPrintf(
+  const std::string query = absl::StrFormat(
       "SELECT pi.publisher_id, spi.status, pi.name,"
       "pi.favicon, pi.url, pi.provider "
       "FROM %s as pi "

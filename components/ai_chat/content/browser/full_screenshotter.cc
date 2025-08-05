@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/logging.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
@@ -22,6 +21,7 @@
 #include "components/paint_preview/common/recording_map.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "mojo/public/cpp/base/proto_wrapper.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/geometry/rect.h"
@@ -68,6 +68,7 @@ void FullScreenshotter::CaptureScreenshots(
   capture_params.web_contents = web_contents;
   capture_params.persistence =
       paint_preview::RecordingPersistence::kMemoryBuffer;
+  capture_params.capture_links = false;
   CapturePaintPreview(
       capture_params,
       base::BindOnce(&FullScreenshotter::OnScreenshotCaptured,
@@ -89,8 +90,8 @@ void FullScreenshotter::OnScreenshotCaptured(
   if (status != PaintPreviewBaseService::CaptureStatus::kOk ||
       !result->capture_success) {
     std::move(callback).Run(base::unexpected(
-        base::StringPrintf("Failed to capture a screenshot (CaptureStatus=%d)",
-                           static_cast<int>(status))));
+        absl::StrFormat("Failed to capture a screenshot (CaptureStatus=%d)",
+                        static_cast<int>(status))));
     return;
   }
 
@@ -223,8 +224,8 @@ void FullScreenshotter::OnBitmapReceived(
       bitmap.empty()) {
     std::move(pending->callback)
         .Run(base::unexpected(
-            base::StringPrintf("Failed to get bitmap (BitmapStatus=%d)",
-                               static_cast<int>(status))));
+            absl::StrFormat("Failed to get bitmap (BitmapStatus=%d)",
+                            static_cast<int>(status))));
     return;
   }
 
