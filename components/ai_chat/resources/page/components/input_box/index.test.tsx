@@ -148,4 +148,44 @@ describe('input box', () => {
     expect(streamingButton).toBeInTheDocument()
     expect(streamingButton).toHaveClass('streamingButton')
   })
+
+  type ContentAgentParams = {
+    isAgentProfileFeatureEnabled: boolean
+    isAgentProfile: boolean
+    isConversationStarted: boolean
+  }
+
+  const contentAgentParams: ContentAgentParams[] = [
+    { isAgentProfileFeatureEnabled: false, isAgentProfile: false, isConversationStarted: false },
+    { isAgentProfileFeatureEnabled: false, isAgentProfile: false, isConversationStarted: true },
+    { isAgentProfileFeatureEnabled: false, isAgentProfile: true, isConversationStarted: false },
+    { isAgentProfileFeatureEnabled: false, isAgentProfile: true, isConversationStarted: true },
+    { isAgentProfileFeatureEnabled: true, isAgentProfile: false, isConversationStarted: false },
+    { isAgentProfileFeatureEnabled: true, isAgentProfile: false, isConversationStarted: true },
+    { isAgentProfileFeatureEnabled: true, isAgentProfile: true, isConversationStarted: false },
+    { isAgentProfileFeatureEnabled: true, isAgentProfile: true, isConversationStarted: true },
+  ]
+
+  it.each(contentAgentParams)('Content Agent button is shown only if the feature is enabled', (params: ContentAgentParams) => {
+    render(
+      <InputBox
+        context={{ ...defaultContext, isAgentProfileFeatureEnabled: params.isAgentProfileFeatureEnabled, isAgentProfile: params.isAgentProfile }}
+        conversationStarted={params.isConversationStarted}
+      />
+    )
+
+    const contentAgentLaunchButton = screen.queryByTitle('Open Leo AI Content Agent Window')
+    const contentAgentTooltip = screen.queryByTestId('agent-profile-tooltip')
+
+    if (params.isAgentProfileFeatureEnabled && params.isAgentProfile) {
+      expect(contentAgentLaunchButton).not.toBeInTheDocument()
+      expect(contentAgentTooltip).toBeInTheDocument()
+    } else if (params.isAgentProfileFeatureEnabled && !params.isAgentProfile) {
+      expect(contentAgentLaunchButton).toBeInTheDocument()
+      expect(contentAgentTooltip).not.toBeInTheDocument()
+    } else {
+      expect(contentAgentLaunchButton).not.toBeInTheDocument()
+      expect(contentAgentTooltip).not.toBeInTheDocument()
+    }
+  })
 })

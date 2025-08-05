@@ -268,11 +268,14 @@ function InputBox(props: InputBoxProps) {
           )}
           {props.context.isAgentProfileFeatureEnabled &&
             props.context.isAgentProfile && (
-            <Tooltip
-              text={getLocale(S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL)}
-            >
-              <Icon className={styles.contentAgentButtonEnabled} name='leo-cursor' />
-            </Tooltip>
+            <div data-testid='agent-profile-tooltip'>
+              <Tooltip
+
+                text={getLocale(S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL)}
+              >
+                <Icon className={styles.contentAgentButtonEnabled} name='leo-cursor' />
+              </Tooltip>
+            </div>
           )}
         </div>
         <div>
