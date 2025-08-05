@@ -408,6 +408,8 @@ public class BraveToolbarManager extends ToolbarManager
                         mActivity.findViewById(R.id.control_container),
                         closeAllTabsAction);
             }
+            assert mBottomControlsCoordinatorSupplier != null
+                    : "It must not be null at this point! Something has changed in the upstream!";
             mBottomControlsCoordinatorSupplier.set(bottomControlsCoordinator);
             mBottomControls.setBottomControlsCoordinatorSupplier(
                     mBottomControlsCoordinatorSupplier);
@@ -501,7 +503,8 @@ public class BraveToolbarManager extends ToolbarManager
     protected void onOrientationChange() {
         if (mActionModeController != null) mActionModeController.showControlsOnOrientationChange();
 
-        if (mBottomControlsCoordinatorSupplier.get() != null
+        if (mBottomControlsCoordinatorSupplier != null
+                && mBottomControlsCoordinatorSupplier.get() != null
                 && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             boolean isBraveBottomControlsVisible =
                     mCurrentOrientation != Configuration.ORIENTATION_LANDSCAPE;
@@ -529,7 +532,9 @@ public class BraveToolbarManager extends ToolbarManager
                 currentTab == null || bridge == null || bridge.isEditBookmarksEnabled();
         mToolbar.updateBookmarkButton(isBookmarked, editingAllowed);
 
-        if (mBottomControlsCoordinatorSupplier.get() instanceof BraveBottomControlsCoordinator) {
+        if (mBottomControlsCoordinatorSupplier != null
+                && mBottomControlsCoordinatorSupplier.get()
+                        instanceof BraveBottomControlsCoordinator) {
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
                     .updateBookmarkButton(isBookmarked, editingAllowed);
         }
@@ -550,7 +555,9 @@ public class BraveToolbarManager extends ToolbarManager
         if (mToolbar instanceof BraveTopToolbarCoordinator) {
             ((BraveTopToolbarCoordinator) mToolbar).onBottomControlsVisibilityChanged(visible);
         }
-        if (mBottomControlsCoordinatorSupplier.get() instanceof BraveBottomControlsCoordinator) {
+        if (mBottomControlsCoordinatorSupplier != null
+                && mBottomControlsCoordinatorSupplier.get()
+                        instanceof BraveBottomControlsCoordinator) {
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
                     .setBottomToolbarVisible(visible);
         }
