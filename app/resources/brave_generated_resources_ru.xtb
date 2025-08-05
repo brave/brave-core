@@ -19,8 +19,8 @@
 <translation id="2361906291514218784">ИИ-помощник Leo</translation>
 <translation id="8275068909952022340">Ещё…</translation>
 <translation id="9092796350041759828">{0, plural,
-          =1 {Close Guest}
-          other {Close Guest}
+          =1 {Закрыть для гостя}
+          other {Закрыть для гостя}
         }</translation>
 <translation id="1990886731975529483">Установка и запуск Widevine</translation>
 <translation id="8926389886865778422">Больше не спрашивать</translation>
