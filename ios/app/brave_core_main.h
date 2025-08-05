@@ -12,9 +12,9 @@
 
 @class BraveP3AUtils;
 @class AdblockService;
-@class HTTPSUpgradeExceptionsService;
 @class BraveUserAgentExceptionsIOS;
 @class BraveProfileController;
+@protocol HTTPSUpgradeExceptionsServiceBridge;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,9 +34,8 @@ typedef bool (^BraveCoreLogHandler)(BraveCoreLogSeverity severity,
 OBJC_EXPORT
 @interface BraveCoreMain : NSObject
 
-
-@property(nonatomic, readonly)
-    HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
+@property(nonatomic, readonly) id<HTTPSUpgradeExceptionsServiceBridge>
+    httpsUpgradeExceptionsService;
 
 @property(nonatomic, readonly, nullable)
     BraveUserAgentExceptionsIOS* braveUserAgentExceptions;
