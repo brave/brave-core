@@ -402,6 +402,11 @@ bool CoinSupportsDapps(mojom::CoinType coin) {
          coin == mojom::CoinType::ADA;
 }
 
+bool IsFixedSelectedNetworkCoin(mojom::CoinType coin) {
+  // This might need to be extended with ZEC and FIL.
+  return coin == mojom::CoinType::BTC || coin == mojom::CoinType::ADA;
+}
+
 std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
     mojom::CoinType coin,
     const std::string& chain_id) {

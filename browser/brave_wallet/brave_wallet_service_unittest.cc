@@ -3321,41 +3321,40 @@ TEST_F(BraveWalletServiceUnitTest, HasPermissionSync) {
 TEST_F(BraveWalletServiceUnitTest, GetNetworkForAccountOnActiveOrigin) {
   SetupWallet();
 
-  auto account_id_1 = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
+  auto eth_account_id =
+      GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
+  auto btc_account_id =
+      GetAccountUtils().EnsureBtcAccount(0)->account_id.Clone();
+  auto ada_account_id =
+      GetAccountUtils().EnsureAdaAccount(0)->account_id.Clone();
+  auto ada_testnet_account_id =
+      GetAccountUtils().EnsureAdaTestAccount(0)->account_id.Clone();
 
-  // First account addr
-  const std::string eth_addr = GetAccountUtils().EthAccount(0)->address;
   auto origin = url::Origin::Create(GURL(kBraveUrl));
-  auto* delegate = service_->GetDelegateForTesting();
-  ASSERT_TRUE(delegate);
 
-  // No permission for the account_id_1
-  {
-    EXPECT_FALSE(
-        service_->GetNetworkForAccountOnOriginSync(origin, account_id_1));
-  }
+  // Non-dapp coin
+  EXPECT_FALSE(
+      service_->GetNetworkForAccountOnOriginSync(origin, btc_account_id));
 
-  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
-      blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin, eth_addr));
-
-  // Wrong coin
-  {
-    auto account = account_id_1.Clone();
-    account->coin = mojom::CoinType::BTC;
-    EXPECT_FALSE(service_->GetNetworkForAccountOnOriginSync(origin, account));
-  }
-
-  json_rpc_service_->SetNetwork(mojom::kSepoliaChainId, account_id_1->coin,
+  json_rpc_service_->SetNetwork(mojom::kSepoliaChainId, eth_account_id->coin,
                                 origin);
-  EXPECT_EQ(service_->GetNetworkForAccountOnOriginSync(origin, account_id_1)
+  EXPECT_EQ(service_->GetNetworkForAccountOnOriginSync(origin, eth_account_id)
                 ->chain_id,
             mojom::kSepoliaChainId);
 
-  service_->SetNetworkForAccountOnOriginSync(origin, account_id_1,
+  service_->SetNetworkForAccountOnOriginSync(origin, eth_account_id,
                                              mojom::kPolygonMainnetChainId);
-  EXPECT_EQ(service_->GetNetworkForAccountOnOriginSync(origin, account_id_1)
+  EXPECT_EQ(service_->GetNetworkForAccountOnOriginSync(origin, eth_account_id)
                 ->chain_id,
             mojom::kPolygonMainnetChainId);
+
+  EXPECT_EQ(service_->GetNetworkForAccountOnOriginSync(origin, ada_account_id)
+                ->chain_id,
+            mojom::kCardanoMainnet);
+  EXPECT_EQ(
+      service_->GetNetworkForAccountOnOriginSync(origin, ada_testnet_account_id)
+          ->chain_id,
+      mojom::kCardanoTestnet);
 }
 
 }  // namespace brave_wallet
