@@ -1,0 +1,27 @@
+<style include="cr-shared-style settings-shared">
+  cr-view-manager [hidden-by-search],
+  cr-view-manager[show-all] [slot=view][data-parent-view-id] {
+    display: none;
+  }
+
+  cr-view-manager [slot=view]:not(.closing) {
+    position: initial;
+  }
+</style>
+
+<cr-view-manager id="viewManager" class="cr-centered-card-container"
+  show-all$="[[shouldShowAll]]">
+
+  <settings-brave-default-extensions-page
+    id="extensions"
+    slot="view"
+    prefs="{{prefs}}"
+    in-search-mode="[[inSearchMode_]]">
+  </settings-brave-default-extensions-page>
+
+  <brave-extensions-v2-subpage
+    id="manageV2Extensions"
+    slot="view"
+    prefs="{{prefs}}">
+  </brave-extensions-v2-subpage>
+</cr-view-manager>
