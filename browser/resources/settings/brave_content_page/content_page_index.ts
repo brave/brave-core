@@ -8,17 +8,17 @@ import '/shared/settings/prefs/prefs.js';
 
 import '../settings_shared.css.js';
 
-import type {CrViewManagerElement} from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import type { CrViewManagerElement } from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
+import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
-import {RouteObserverMixin} from '../router.js';
-import type {Route} from '../router.js';
-import {routes} from '../route.js';
+import { RouteObserverMixin } from '../router.js';
+import type { Route } from '../router.js';
+import { routes } from '../route.js';
 
-import type {SettingsPlugin} from '../settings_main/settings_plugin.js';
-import {SearchableViewContainerMixin} from '../settings_page/searchable_view_container_mixin.js';
+import type { SettingsPlugin } from '../settings_main/settings_plugin.js';
+import { SearchableViewContainerMixin } from '../settings_page/searchable_view_container_mixin.js';
 
-import {getTemplate} from './content_page_index.html.js';
+import { getTemplate } from './content_page_index.html.js';
 
 export interface SettingsBraveContentPageIndexElement {
   $: {
@@ -27,10 +27,10 @@ export interface SettingsBraveContentPageIndexElement {
 }
 
 const SettingsBraveContentPageIndexElementBase =
-    SearchableViewContainerMixin(RouteObserverMixin(PolymerElement));
+  SearchableViewContainerMixin(RouteObserverMixin(PolymerElement));
 
 export class SettingsBraveContentPageIndexElement extends
-    SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
+  SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
   static get is() {
     return 'settings-brave-content-page-index';
   }
@@ -45,7 +45,12 @@ export class SettingsBraveContentPageIndexElement extends
     };
   }
 
-  declare prefs: {[key: string]: any};
+  declare prefs: { [key: string]: any };
+
+  private showDefaultViews_() {
+    this.$.viewManager.switchViews(
+      ['parent', 'playlist', 'speedreader'], 'no-animation', 'no-animation');
+  }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
     super.currentRouteChanged(newRoute, oldRoute);
@@ -54,23 +59,12 @@ export class SettingsBraveContentPageIndexElement extends
     // first, before switching views.
     queueMicrotask(() => {
       switch (newRoute) {
-        case (routes as any).BRAVE_CONTENT:
-          this.$.viewManager.switchView(
-              'parent', 'no-animation', 'no-animation');
+        case routes.BRAVE_CONTENT:
+        case routes.BASIC:
+          this.showDefaultViews_();
           break;
         case routes.FONTS:
-          this.$.viewManager.switchView(
-              'fonts', 'no-animation', 'no-animation');
-          break;
-        case routes.BASIC:
-          // Switch back to the default view in case they are part of search
-          // results.
-          this.$.viewManager.switchView(
-              'parent', 'no-animation', 'no-animation');
-          break;
-        default:
-          // Nothing to do. Other parent elements are responsible for updating
-          // the displayed contents.
+          this.$.viewManager.switchView('fonts', 'no-animation', 'no-animation');
           break;
       }
     });
@@ -84,4 +78,4 @@ declare global {
 }
 
 customElements.define(
-    SettingsBraveContentPageIndexElement.is, SettingsBraveContentPageIndexElement);
+  SettingsBraveContentPageIndexElement.is, SettingsBraveContentPageIndexElement);
