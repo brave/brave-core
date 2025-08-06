@@ -1,25 +1,30 @@
 <style include="settings-shared md-select">
-    .settings-row:not(:first-child) {
-      border-top: var(--cr-separator-line);
-    }
-    .flex {
-      align-self: center;
-      flex: 1 1 auto;
-    }
-    .flex-container {
-      display: flex;
-      padding: 8px 1em;
-    }
-    .hidden {
-      display: none;
-    }
-    .reset-wallet {
-      cursor: pointer;
-      color: red;
-    }
-    .reset-transaction-info {
-      cursor: pointer;
-    }
+  .settings-row:not(:first-child) {
+    border-top: var(--cr-separator-line);
+  }
+
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
+
+  .flex-container {
+    display: flex;
+    padding: 8px 1em;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .reset-wallet {
+    cursor: pointer;
+    color: red;
+  }
+
+  .reset-transaction-info {
+    cursor: pointer;
+  }
 
   #needsRestart {
     background-color: #fff;
@@ -42,12 +47,13 @@
     }
 
     button.primary {
-        color: white;
+      color: white;
     }
   }
 
   #needsRestart .flex:last-child {
-    text-align: right;  /* csschecker-disable-line left-right */
+    text-align: right;
+    /* csschecker-disable-line left-right */
   }
 
   .restart-notice {
@@ -69,65 +75,64 @@
   page-title="$i18n{braveWallet}"
   class="cr-centered-card-container">
 
-<div hidden="[[isNetworkEditor_]]">
   <div class="settings-box first">
     <div class="start">$i18n{defaultEthereumWalletDesc}</div>
     <settings-dropdown-menu id="defaultEthereumWalletType"
-                            pref="{{prefs.brave.wallet.default_wallet2}}"
-                            menu-options="[[ethereum_provider_options_]]">
+      pref="{{prefs.brave.wallet.default_wallet2}}"
+      menu-options="[[ethereum_provider_options_]]">
     </settings-dropdown-menu>
   </div>
   <div class="settings-box">
     <div class="start">$i18n{defaultSolanaWalletDesc}</div>
     <settings-dropdown-menu id="defaultSolanaWalletType"
-                            pref="{{prefs.brave.wallet.default_solana_wallet}}"
-                            menu-options="[[solana_provider_options_]]">
+      pref="{{prefs.brave.wallet.default_solana_wallet}}"
+      menu-options="[[solana_provider_options_]]">
     </settings-dropdown-menu>
   </div>
   <div hidden="[[!isCardanoDAppSupportEnabled_]]">
     <div class="settings-box">
       <div class="start">$i18n{defaultCardanoWalletDesc}</div>
       <settings-dropdown-menu id="defaultCardanoWalletType"
-                              pref="{{prefs.brave.wallet.default_cardano_wallet}}"
-                              menu-options="[[cardano_provider_options_]]">
+        pref="{{prefs.brave.wallet.default_cardano_wallet}}"
+        menu-options="[[cardano_provider_options_]]">
       </settings-dropdown-menu>
     </div>
   </div>
   <div class="settings-box">
     <div class="start">$i18n{defaultBaseCurrencyDesc}</div>
     <settings-dropdown-menu id="defaultBaseCurrencyType"
-                            pref="{{prefs.brave.wallet.default_base_currency}}"
-                            menu-options="[[currency_list_]]">
+      pref="{{prefs.brave.wallet.default_base_currency}}"
+      menu-options="[[currency_list_]]">
     </settings-dropdown-menu>
   </div>
   <div class="settings-box">
     <div class="start">$i18n{defaultBaseCryptocurrencyDesc}</div>
     <settings-dropdown-menu id="defaultBaseCryptocurrencyType"
-                            pref="{{prefs.brave.wallet.default_base_cryptocurrency}}"
-                            menu-options="[[cryptocurrency_list_]]">
+      pref="{{prefs.brave.wallet.default_base_cryptocurrency}}"
+      menu-options="[[cryptocurrency_list_]]">
     </settings-dropdown-menu>
   </div>
   <div class="settings-box" hidden="[[!isTransactionSimulationsFeatureEnabled]]">
     <div class="start">$i18nRaw{transactionSimulationDesc}</div>
-      <settings-dropdown-menu id="transactionSimulationOptInStatus"
-        pref="{{prefs.brave.wallet.transaction_simulation_opt_in_status}}"
-        menu-options="[[transaction_simulation_opt_in_options_]]">
+    <settings-dropdown-menu id="transactionSimulationOptInStatus"
+      pref="{{prefs.brave.wallet.transaction_simulation_opt_in_status}}"
+      menu-options="[[transaction_simulation_opt_in_options_]]">
     </settings-dropdown-menu>
   </div>
   <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
     <settings-toggle-button id="enableNftDiscovery"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.nft_discovery_enabled}}"
-        label="$i18n{enableNftDiscoveryLabel}"
-        sub-label="$i18n{enableNftDiscoveryDesc}"
-        learn-more-url="$i18n{enableNftDiscoveryLearnMoreURL}">
+      class="cr-row"
+      pref="{{prefs.brave.wallet.nft_discovery_enabled}}"
+      label="$i18n{enableNftDiscoveryLabel}"
+      sub-label="$i18n{enableNftDiscoveryDesc}"
+      learn-more-url="$i18n{enableNftDiscoveryLearnMoreURL}">
     </settings-toggle-button>
     <settings-toggle-button id="enablePrivateWindows"
-        class="cr-row"
-        pref="[[isPrivateWindowsEnabled_]]"
-        on-settings-boolean-control-change="onPrivateWindowsEnabled_"
-        label="$i18n{enablePrivateWindowsLabel}"
-        sub-label="$i18n{enablePrivateWindowsDesc}">
+      class="cr-row"
+      pref="[[isPrivateWindowsEnabled_]]"
+      on-settings-boolean-control-change="onPrivateWindowsEnabled_"
+      label="$i18n{enablePrivateWindowsLabel}"
+      sub-label="$i18n{enablePrivateWindowsDesc}">
     </settings-toggle-button>
   </template>
   <div class="settings-box" hidden="[[!isNativeWalletEnabled_]]">
@@ -136,43 +141,40 @@
       <div class="secondary">$i18n{autoLockMinutesDesc}</div>
     </div>
     <cr-input
-        id="walletAutoLockMinutes" type="number"
-        class="flex-container"
-        value="$i18n{autoLockMinutesValue}"
-        on-input="onInputAutoLockMinutes_"
-        min="1"
-        max="10080"
-    >
+      id="walletAutoLockMinutes" type="number"
+      class="flex-container"
+      value="$i18n{autoLockMinutesValue}"
+      on-input="onInputAutoLockMinutes_"
+      min="1"
+      max="10080">
     </cr-input>
   </div>
-</div>
-<template is="dom-if" if="{{ showRestartToast_ }}">
-  <div id="needsRestart">
-    <div class="flex-container">
-      <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
-      <div class="flex">
-        <button id="restartButton" class="primary" tabindex="9" on-click="applyPrefChangesAndRestart">
-          $i18n{relaunchButtonLabel}
-        </button>
+  <template is="dom-if" if="{{ showRestartToast_ }}">
+    <div id="needsRestart">
+      <div class="flex-container">
+        <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
+        <div class="flex">
+          <button id="restartButton" class="primary" tabindex="9" on-click="applyPrefChangesAndRestart">
+            $i18n{relaunchButtonLabel}
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-</template>
-<cr-link-row id="walletNetworksLinkRow"
-  class="hr" label="$i18n{walletNetworksLinkTitle}"
-  sub-label="$i18n{walletNetworksItemDesc}"
-  on-click="onWalletNetworksEditorClick_"
-  role-description="$i18n{subpageArrowRoleDescription}">
-</cr-link-row>
+  </template>
+  <cr-link-row id="walletNetworksLinkRow"
+    class="hr" label="$i18n{walletNetworksLinkTitle}"
+    sub-label="$i18n{walletNetworksItemDesc}"
+    on-click="onWalletNetworksEditorClick_"
+    role-description="$i18n{subpageArrowRoleDescription}">
+  </cr-link-row>
 
-<template is="dom-if" if="[[!isNetworkEditor_]]">
   <template is="dom-if" if="[[isZCashShieldedTxEnabled_]]">
-  <div class="settings-box " on-click="onResetZCashSyncState_">
-    <div class="flex cr-padded-text reset-transaction-info">
-      <div>$i18n{resetZCashSyncStateInfo}</div>
-      <div class="secondary">$i18n{resetZCashSyncStateDesc}</div>
+    <div class="settings-box " on-click="onResetZCashSyncState_">
+      <div class="flex cr-padded-text reset-transaction-info">
+        <div>$i18n{resetZCashSyncStateInfo}</div>
+        <div class="secondary">$i18n{resetZCashSyncStateDesc}</div>
+      </div>
     </div>
-  </div>
   </template>
   <div class="settings-box " on-click="onResetTransactionInfo_">
     <div class="flex cr-padded-text reset-transaction-info">
@@ -185,10 +187,5 @@
       <div>$i18n{resetWallet}</div>
     </div>
   </div>
-</template>
 
 </settings-section>
-
-<settings-brave-web3-domains-page prefs="{{prefs}}"
-  in-search-mode="[[inSearchMode_]]">
-</settings-brave-web3-domains-page>
