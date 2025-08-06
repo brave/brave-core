@@ -150,8 +150,10 @@ void RegisterMediaDetectorComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback) {
   // In test, |cus| could be nullptr.
-  if (!cus)
+  if (!cus ||
+      BraveOnDemandUpdater::GetInstance()->is_component_update_disabled()) {
     return;
+  }
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<MediaDetectorComponentInstallerPolicy>(callback));

@@ -142,15 +142,4 @@ bool BraveComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
 
-void RegisterComponent(component_updater::ComponentUpdateService* cus,
-                       const std::string& name,
-                       const std::string& base64_public_key,
-                       base::OnceClosure registered_callback,
-                       BraveComponent::ReadyCallback ready_callback) {
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<BraveComponentInstallerPolicy>(
-          name, base64_public_key, std::move(ready_callback)));
-  installer->Register(cus, std::move(registered_callback));
-}
-
 }  // namespace brave_component_updater

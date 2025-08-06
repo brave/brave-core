@@ -169,6 +169,10 @@ void WalletDataFilesInstaller::SetDelegate(
 
 void WalletDataFilesInstaller::RegisterWalletDataFilesComponentInternal(
     component_updater::ComponentUpdateService* cus) {
+  if (brave_component_updater::BraveOnDemandUpdater::GetInstance()
+          ->is_component_update_disabled()) {
+    return;
+  }
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<WalletDataFilesInstallerPolicy>());
 

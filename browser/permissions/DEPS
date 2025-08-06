@@ -3,3 +3,9 @@ include_rules = [
   "+brave/components/brave_shields/content/test",
   "+brave/components/ephemeral_storage",
 ]
+
+specific_include_rules = {
+  "localhost_access_permission_browsertest\.cc": [
+    "+brave/components/brave_component_updater/browser/local_data_files_service.h",
+  ],
+}
