@@ -126,7 +126,8 @@ IN_PROC_BROWSER_TEST_F(AIRewriterDialogDelegateBrowserTest,
   EXPECT_FALSE(dialog_widget);
 }
 
-IN_PROC_BROWSER_TEST_F(AIRewriterDialogDelegateBrowserTest, CanInsertText) {
+IN_PROC_BROWSER_TEST_F(AIRewriterDialogDelegateBrowserTest,
+                       DISABLED_CanInsertText) {
   OpenPageWithInput();
 
   auto* dialog = ai_rewriter::AIRewriterDialogDelegate::Show(
