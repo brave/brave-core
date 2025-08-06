@@ -7,7 +7,16 @@
 #define BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_STATE_H_
 
 #include "base/files/file_path.h"
+#include "base/observer_list.h"
 #include "base/values.h"
+
+class BraveOriginStateObserver : public base::CheckedObserver {
+ public:
+  ~BraveOriginStateObserver() override = default;
+
+  // Called when the Brave Origin status changes.
+  virtual void OnBraveOriginStatusChanged() = 0;
+};
 
 class BraveOriginState {
  public:
@@ -22,11 +31,15 @@ class BraveOriginState {
   // Must be called after Initialize().
   bool IsBraveOriginUser() const;
 
+  void AddObserver(BraveOriginStateObserver* observer);
+  void RemoveObserver(BraveOriginStateObserver* observer);
+
  private:
   ~BraveOriginState();
 
   bool is_brave_origin_user_;
   bool initialized_;
+  base::ObserverList<BraveOriginStateObserver> observers_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_STATE_H_
