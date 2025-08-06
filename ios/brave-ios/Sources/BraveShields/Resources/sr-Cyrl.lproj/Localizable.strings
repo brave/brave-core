@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Праћење и огласи су блокирани";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Блокирани \nогласи";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Сачувани \nпроц. подаци";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Сачувано \nпроц. време";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "д.";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "h";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "min";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "s";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Блокирана \nпраћења";
+

@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "모두 열기";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "동기화 설정 열기";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "지난주 %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "기기";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "동기화된 탭 없음";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "다른 기기의 탭";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "동기화된 탭이 여기에 표시됩니다";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "내 기기로 보내기";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "최근에 본 적이 없는 탭을 Brave가 자동으로 닫을 수 있도록 허용합니다.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "유튜브의 방해 요소를 차단합니다";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "유튜브 방해 요소 차단";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Youtube.com에서 다음 동영상과 엔드카드 요소를 차단합니다";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "유튜브 추천 콘텐츠 차단";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Youtube.com의 홈페이지, 인기 급상승 페이지, 검색 결과에서 쇼츠를 차단합니다";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "YouTube Shorts 차단";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "최고 품질 재생";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "일일 사용 Ping을 Brave에 자동으로 보내기";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Brave가 새 탭 페이지에서 비공개 설문조사 링크를 표시할 수 있도록 허용합니다. 설문조사는 더 나은 기능을 개발하고, 브라우저 기반 광고 캠페인의 효과를 측정하는 데 도움이 됩니다. [자세히 알아보기]%@";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Brave 설문조사 허용";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "동기화 체인 내 기기를 불러오는 중에 문제가 발생했습니다.";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "기기가 백업에서 복원된 것으로 보입니다. 이로 인해 Brave 동기화에 영향이 갈 수 있습니다. Brave 동기화를 계속 사용하려면 동기화 체인을 재설정하고 다시 참여해 주세요.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "복원 감지됨";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "동기화 체인 재설정";
 
 /* Sync device settings page title. */
 "sync.devices" = "동기화 체인에 있는 기기";

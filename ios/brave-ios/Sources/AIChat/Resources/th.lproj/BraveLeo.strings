@@ -226,9 +226,6 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo AI";
 
-/* An indicator to show page content refined is in progress */
-"aichat.leoPageContentRefineInProgress" = "กำลังหาส่วนที่เกี่ยวข้องที่สุดของเว็บเพจ…";
-
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "เปิดเพื่อถามเกี่ยวกับหน้านี้ เนื้อหาของหน้านี้จะถูกส่งไปให้ Brave Leo พร้อมกับข้อความของคุณ";
 

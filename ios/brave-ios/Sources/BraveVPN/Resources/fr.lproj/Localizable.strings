@@ -164,7 +164,7 @@
 "vpn.protocolPickerDescription" = "Veuillez sélectionner votre protocole de transport préféré. Une fois le protocole sélectionné, vos identifiants VPN seront effacés et nous vous reconnecterons dès qu'une connexion VPN est établie.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Impossible de changer de protocole de tunnel, veuillez réessayer plus tard.";
+"vpn.protocolPickerErrorMessage" = "Impossible de changer de protocole de tunnel. Veuillez réessayer plus tard.";
 
 /* Title for error when we fail to switch tunnel protocol for the user */
 "vpn.protocolPickerErrorTitle" = "Erreur de serveur";

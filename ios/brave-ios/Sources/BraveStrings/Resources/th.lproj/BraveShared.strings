@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "เปิดทั้งหมด";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "เปิดการตั้งค่าซิงค์";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "สัปดาห์ที่แล้ว เวลา %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "อุปกรณ์";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "ไม่มีแท็บที่ซิงค์ไว้";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "แท็บที่เปิดในอุปกรณ์อื่น";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "แท็บที่ซิงค์ไว้จะปรากฏที่นี่";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "ส่งไปยังอุปกรณ์ของคุณ";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "อนุญาตให้ Brave ปิดแท็บที่ไม่ได้ดูเมื่อเร็วๆ นี้โดยอัตโนมัติ";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "บล็อกสิ่งรบกวนบน YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "บล็อกสิ่งรบกวนบน YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "บล็อกไม่ให้แสดงวิดีโอถัดไปและป้ายท้ายคลิปบน youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "บล็อกเนื้อหาที่ YouTube แนะนำ";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "บล็อก Shorts ไม่ให้แสดงในหน้าแรก หน้ากำลังมาแรง และผลการค้นหาบน youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "บล็อก YouTube Shorts";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "การเล่นคุณภาพสูงสุด";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "ส่งปิงการใช้งานรายวันไปยัง Brave โดยอัตโนมัติ";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "อนุญาตให้ Brave แสดงลิงก์ไปยังแบบสำรวจส่วนตัวในหน้าแท็บใหม่ แบบสำรวจช่วยให้เราพัฒนาฟีเจอร์ที่ดียิ่งขึ้นและวัดประสิทธิภาพของแคมเปญโฆษณาผ่านเบราว์เซอร์ [เรียนรู้เพิ่มเติม](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "อนุญาตแบบสำรวจของ Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "มีบางอย่างผิดพลาดระหว่างการดึงอุปกรณ์ในซิงค์เชน";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "เหมือนว่าอุปกรณ์ของคุณถูกกู้คืนจากข้อมูลสำรอง ซึ่งอาจส่งผลต่อการทำงานของ Brave Sync หากต้องการใช้งาน Brave Sync ต่อ คุณควรรีเซ็ตและเข้าร่วมระบบซิงค์ใหม่อีกครั้ง";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "พบการกู้คืน";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "รีเซตซิงค์เชน";
 
 /* Sync device settings page title. */
 "sync.devices" = "อุปกรณ์ในซิงค์เชน";

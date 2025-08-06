@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Open alles";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Open synchronisatie-instellingen";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Vorige week om %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Apparaten";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Geen gesynchroniseerde tabbladen";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Tabbladen op andere apparaten";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Gesynchroniseerde tabbladen zie je hier";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Stuur naar je apparaat";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Sta Brave toe om tabbladen automatisch te sluiten als ze niet recent bekeken zijn.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Blokkeer afleidende YouTube-elementen";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Blokkeer afleidende YouTube-elementen";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Blokkeert de elementen voor de volgende content en aftiteling op youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Blokkeer aanbevolen YouTube-content";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Blokkeer Shorts op de startpagina, trendingpagina en zoekresultaten van youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "YouTube Shorts blokkeren";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Hoogste afspeelkwaliteit";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Stuur dagelijkse gebruiksping naar Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Hiermee sta je toe dat Brave links naar privé-enquêtes weergeeft op het nieuwe tabblad. Deze enquêtes helpen ons betere functies te ontwikkelen en de effectiviteit van advertentiecampagnes in de browser te meten. [Meer informatie](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Brave-enquêtes toestaan";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Er is iets misgegaan bij het ophalen van de apparaten uit de synchronisatieketen.";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Het lijkt erop dat je apparaat is hersteld met een reservekopie. Dit is mogelijk van invloed op Brave Sync. Als je Brave Sync verder wilt gebruiken, moet je de synchronisatieketen opnieuw instellen en er opnieuw aan deelnemen.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Herstel gedetecteerd";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Stel synchronisatieketen opnieuw in";
 
 /* Sync device settings page title. */
 "sync.devices" = "Apparaten in synchronisatieketen";

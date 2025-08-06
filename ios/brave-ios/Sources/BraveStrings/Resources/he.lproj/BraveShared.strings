@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "פתיחת הכול";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "פתיחת הגדרות סנכרון";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "השבוע שעבר %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "התקנים";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "אין כרטיסיות מסונכרנות";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "כרטיסיות ממכשירים אחרים";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "הכרטיסיות המסונכרנות שלך מופיעות כאן";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "שליחה למכשיר שלך";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "מאפשר ל-Brave לסגור אוטומטית כרטיסיות שלא נצפו לאחרונה.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "חסימת אלמנטים מסיחים ב-YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "חסימת רכיבים מסיחים ב-YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "חוסם את הרכיב ׳הבא׳ ואת כרטיסיות הסיום ב-youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "חסימת תוכן מומלץ ב-YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "חוסם את Shorts מדף הבית, דף trending ותוצאות החיפוש ב-youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "חסום YouTube Shorts";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "הפעלה באיכות הגבוהה ביותר";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "שלח/י PING של שימוש יומי ל-Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן. [למידע נוסף](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "הפעלת סקרי Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "משהו השתבש במהלך שליפת המכשירים בשרשרת הסנכרון.";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "נראה שהמכשיר שלך שוחזר מגיבוי, מה שעלול להשפיע על סנכרון Brave. כדי להמשיך להשתמש בסנכרון Brave, יש לאפס את שרשרת הסנכרון ולהצטרף אליה מחדש.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "שחזור זוהה";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "איפוס שרשרת סנכרון";
 
 /* Sync device settings page title. */
 "sync.devices" = "מכשירים בשרשרת הסנכרון";

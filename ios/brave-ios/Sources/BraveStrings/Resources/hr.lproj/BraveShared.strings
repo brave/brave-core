@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Otvori sve";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Otvori postavke sinkronizacije";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Prošli tjedan %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Uređaji";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Nema sinkroniziranih kartica";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Kartice na drugim uređajima";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Vaše sinkronizirane kartice pokazat će se ovdje";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Pošalji na svoj uređaj";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Dopustite pregledniku Brave automatsko zatvaranje kartica koje se nisu nedavno prikazivale.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Blokirajte elemente YouTubea koji odvlače pažnju";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Blokirajte elemente YouTubea koji odvlače pažnju";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Blokira sljedeće i završne elemente kartice na stranici youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Blokirajte preporučeni sadržaj YouTubea";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Blokirajte Shortse na početnoj stranici, stranici s trendovima i u rezultatima pretraživanja na stranici youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "Blokiraj kratke videozapise platforme YouTube";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Reprodukcija najviše kvalitete";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Automatski šalji ping dnevne uporabe Braveu";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Omogućuje Braveu da pokaže poveznice na anonimne ankete u novoj kartici. Ankete nam pomažu da izgradimo bolje funkcionalnosti i mjerimo učinkovitost oglašivačkih kampanja u pregledniku. [Doznajte više](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Omogući Braveove ankete";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Nešto nije u redu pri dohvaćanju uređaja u lancu sinkronizacije.";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Izgleda da je vaš uređaj obnovljen iz sigurnosne kopije što može utjecati na Brave Sync. Kako biste nastavili koristiti Brave Sync trebali biste ponovo postaviti lanac sinkronizacije i ponovo mu se pridružiti.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Prepoznato obnavljanje";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Ponovo postavi lanac sinkronizacije";
 
 /* Sync device settings page title. */
 "sync.devices" = "Uređaji u lancu sinkronizacije";

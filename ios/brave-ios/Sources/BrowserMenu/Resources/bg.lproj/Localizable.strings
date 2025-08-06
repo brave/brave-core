@@ -1,0 +1,54 @@
+/* A button title shown on the menu that presents the Brave News feature. */
+"ActionTitles.braveNews" = "Brave новини";
+
+/* A button title shown on the menu that opens a link to the Brave Talk feature. */
+"ActionTitles.braveTalk" = "Brave Talk";
+
+/* A button title shown on the menu that presents the Brave Leo AI feature. */
+"ActionTitles.leoAIChat" = "Чат с ИИ";
+
+/* A button title shown on the menu that presents the Brave Playlist feature */
+"ActionTitles.playlist" = "Плейлист";
+
+/* A button title shown on the menu that when tapped lets the user print the page they're viewing */
+"ActionTitles.print" = "Печат";
+
+/* A button title shown on the menu that presents the Brave Rewards feature. */
+"ActionTitles.rewards" = "Награди";
+
+/* A button title shown on the menu that when tapped lets the user share the current URL or document they're viewing */
+"ActionTitles.share" = "Споделяне…";
+
+/* A button title shown on the menu that translates the page into a different language. */
+"ActionTitles.translate" = "Превод на страницата";
+
+/* A button title shown on the menu that when tapped presents a Brave VPN paywall */
+"ActionTitles.vpn" = "VPN";
+
+/* The title of a button that presents the settings screen */
+"BrowserMenu.allSettingsButtonTitle" = "Всички настройки";
+
+/* A title shown at the top of the edit/cutsomize actions screen. */
+"BrowserMenu.customizeTitle" = "Персонализиране";
+
+/* A button title that when tapped dismisses the customize screen. */
+"BrowserMenu.doneButtonTitle" = "Готово";
+
+/* The title of a button that shows a screen that lets the user customize which actions are visible on the menu */
+"BrowserMenu.editButtonTitle" = "Редактиране";
+
+/* A title shown above the list of actions that are hidden on the menu but available for the user to make visible. */
+"BrowserMenu.hiddenActionsTitle" = "Налични действия";
+
+/* The title above a list of the users selected browser actions such as bookmarks, history, etc. */
+"BrowserMenu.myActions" = "Моите действия";
+
+/* A button title that when taps shows all actions that are hidden by default */
+"BrowserMenu.showAllButtonTitle" = "Показване на всички…";
+
+/* A title shown above the list of actions that are visible on the menu. */
+"BrowserMenu.visibleActionsTitle" = "Всички действия";
+
+/* A title on a button that lets the user switch the active VPN's selected region. */
+"BrowserMenu.vpnButtonTitle" = "VPN";
+
