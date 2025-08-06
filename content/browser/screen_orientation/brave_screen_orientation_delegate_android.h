@@ -9,11 +9,10 @@
 #include "content/browser/screen_orientation/screen_orientation_delegate_android.h"
 #include "content/common/content_export.h"
 #include "content/public/browser/screen_orientation_delegate.h"
+#include "content/public/browser/web_contents.h"
 #include "services/device/public/mojom/screen_orientation_lock_types.mojom-shared.h"
 
 namespace content {
-
-class WebContents;
 
 class CONTENT_EXPORT BraveScreenOrientationDelegateAndroid
     : public ScreenOrientationDelegateAndroid {

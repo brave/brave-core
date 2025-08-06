@@ -5,8 +5,6 @@
 
 #include "brave/content/browser/screen_orientation/brave_screen_orientation_delegate_android.h"
 
-#include "content/public/browser/web_contents.h"
-
 namespace content {
 
 BraveScreenOrientationDelegateAndroid::BraveScreenOrientationDelegateAndroid() =
