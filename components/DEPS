@@ -20,6 +20,10 @@ include_rules = [
 
   # This is equivalent to chrome/test/base
   "-brave/test/base",
+
+  # This should only be used in brave equivalents to chrome/* directories. Use
+  # `base::DIR_SRC_TEST_DATA_ROOT` instead
+  "-brave/components/constants/brave_paths.h",
 ]
 
 specific_include_rules = {
@@ -52,8 +56,15 @@ specific_include_rules = {
   "webcompat_exceptions_unittest\.cc": [
     "+chrome",
     "+content",
+    "!brave/components/constants/brave_paths.h",
   ],
   ".*test.*\.cc": [
     "!brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
+  # brave_paths.h overrides
+  ".*browsertest.*\.cc": [
+    # browser tests that are still in components can use brave_paths because
+    # they belong in brave/browser
+    "+brave/components/constants/brave_paths.h",
   ],
 }
