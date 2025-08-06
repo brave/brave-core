@@ -8,18 +8,10 @@ import '../brave_appearance_page/toolbar.js'
 
 import {
   html,
-  RegisterPolymerComponentReplacement,
   RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
 
-import { getTrustedHTML } from 'chrome://resources/js/static_types.js'
-
 import { loadTimeData } from '../i18n_setup.js'
-import { Router } from '../router.js'
-
-import {
-  SettingsAppearancePageElement
-} from '../appearance_page/appearance_page.js'
 
 
 const superReferralStringId = 'superReferralThemeName'
@@ -176,26 +168,14 @@ RegisterPolymerTemplateModifications({
     const section = templateContent.querySelector('settings-section')
     if (!section) {
       console.error(`[Settings] Couldn't find settings-section`)
-    } else {
-      // Append toolbar settings to the appearance section.
-      section.appendChild(html`
-        <settings-brave-appearance-toolbar
-          prefs="{{prefs}}">
-        </settings-brave-appearance-toolbar>
-      `)
-
-      // Append tabs and sidebar settings to the appearance page.
-      section.insertAdjacentHTML('afterend', getTrustedHTML`
-        <settings-brave-appearance-tabs
-          prefs="{{prefs}}"
-          in-search-mode="[[inSearchMode_]]">
-        </settings-brave-appearance-tabs>
-
-        <settings-brave-appearance-sidebar
-          prefs="{{prefs}}"
-          in-search-mode="[[inSearchMode_]]">
-        </settings-brave-appearance-sidebar>
-      `)
+      return
     }
+
+    // Append toolbar settings to the appearance section.
+    section.appendChild(html`
+      <settings-brave-appearance-toolbar
+        prefs="{{prefs}}">
+      </settings-brave-appearance-toolbar>
+    `)
   }
 })
