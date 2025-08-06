@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Åpne alle";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Åpne synkroniseringsinnstillingene";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Forrige uke %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Enheter";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Ingen synkroniserte faner";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Faner på andre enheter";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "De synkroniserte fanene dine vises her";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Send til enheten din";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "La Brave automatisk lukke faner som ikke har blitt vist i det siste.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Blokker distraherende elementer på YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Blokker distraherende elementer på YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Blokkerer «neste video» og sluttkort-elementene på youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Blokker anbefalinger på YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Blokkerer Shorts fra startsiden, emnesidene og søkeresultatene på youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "Blokker YouTube Shorts";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Avspilling med høyeste kvalitet";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Send automatisk ping om daglig bruk til Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Lar Brave vise linker til private spørreundersøkelser i nye faner. Undersøkelsene hjelper oss med å utvikle funksjoner og måle effekten av annonsene i nettleseren. [Les mer](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Tillat undersøkelser fra Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Det oppstod en feil ved uthenting av enheter i synkroniseringskjeden";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Det ser ut til at enheten din ble gjenopprettet fra en sikkerhetskopi, noe som kan påvirke Brave Sync. Hvis du vil fortsette å bruke Brave Sync, bør du tilbakestille og koble til synkroniseringskjeden igjen.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Gjenoppretting oppdaget";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Tilbakestill synkroniseringskjeden";
 
 /* Sync device settings page title. */
 "sync.devices" = "Enheter i synkroniseringskjede";

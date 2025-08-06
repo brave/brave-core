@@ -49,6 +49,18 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Έχετε ήδη κάνει αγορές στο brave.com;";
 
+/* A subtitle shown on the checkout button that denotes that this checkout option is full price */
+"paywall.appStoreCheckoutOptionSubtitle" = "Πλήρης τιμή";
+
+/* The checkout option that lets the user use Apple's standard App Store puchase flow */
+"paywall.appStoreCheckoutOptionTitle" = "App Store";
+
+/* A subtitle shown on the checkout button that denotes that this checkout option is discounted. The first `%@` is replaced with a promo code, the second `%@` is replaced by the discount percentage */
+"paywall.braveAccountCheckoutOptionSubtitle" = "Κωδικός **%1$@** για έκπτωση %2$@";
+
+/* The checkout option that lets the user use Brave's own purchase flow */
+"paywall.braveAccountCheckoutOptionTitle" = "Λογαριασμός Brave";
+
 /* Title label text for entering a promo code. */
 "paywall.havePromoCodeTitle" = "Έχετε κωδικό προσφοράς;";
 
@@ -57,6 +69,12 @@
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Ανανεώστε τα διαπιστευτήριά σας";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"paywall.startTrialSubtitle" = "Επιλέξτε τν τρόπο πληρωμής που σας βολεύει:";
+
+/* Text shown above buttons that give the user the option to start a trial */
+"paywall.startTrialTitle" = "Ξεκινήστε τη δωρεάν δοκιμή 7 ημερών";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
 "RecentlyClosedTabTitle" = "Εκ νέου άνοιγμα κλειστής καρτέλας";

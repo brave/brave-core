@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Buka Semua";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Buka Tetapan Penyegerakan";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "%@ Minggu Lalu";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Peranti";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Tiada Tab yang telah Disegerakkan";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Tab pada Peranti Lain";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Tab anda yang telah disegerakkan tertera di sini";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Hantar Ke Peranti Anda";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Benarkan Brave menutup tab secara automatik yang belum dilihat baru-baru ini.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Sekat Elemen YouTube yang Mengganggu";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Sekat Elemen YouTube yang Mengganggu ";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Menyekat elemen seterusnya dan tamatkan kad di youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Sekat Kandungan YouTube yang Disyorkan";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Menyekat Shorts daripada halaman utama, halaman yang trending dan hasil carian di youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "Sekat YouTube Shorts";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Main Semula Kualiti Paling Tinggi";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Hantar ping penggunaan harian secara automatik ke Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Membenarkan Brave memaparkan pautan ke tinjauan privet dalam halaman tab baru. Tinjauan membantu kami bina ciri-ciri lebih baik dan ukur keberkesanan kempen iklan berasaskan penyemak imbas. [Ketahui lebih lanjut](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Benarkan tinjauan Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Kesilapan telah berlaku semasa mendapatkan peranti dalam rantaian penyegerakan.";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Nampaknya peranti anda telah dipulihkan daripada sandaran, yang boleh menjejas Brave Sync. Untuk terus menggunakan Brave Sync, anda harus menetapkan semula dan menyertai semula rantaian penyegerakan.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Pemulihan Dikesan";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Tetapkan Semula Rantaian Penyegerakan";
 
 /* Sync device settings page title. */
 "sync.devices" = "Peranti pada rantaian penyegerakan";

@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Mở tất cả";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Mở cài đặt đồng bộ hóa";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Tuần trước %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Thiết bị";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Không có thẻ được đồng bộ";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Thẻ trên các thiết bị khác";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Thẻ được đồng bộ sẽ hiển thị ở đây";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Gửi đến thiết bị của bạn";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Cho phép Brave tự động đóng thẻ không được xem gần đây.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Chặn các yếu tố gây mất tập trung trên YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Chặn các yếu tố gây mất tập trung trên YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Chặn các thành phần thẻ tiếp theo và thẻ kết thúc trên youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Chặn nội dung được đề xuất trên YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Chặn các video ngắn khỏi trang chủ, trang thịnh hành và kết quả tìm kiếm trên youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "Chặn video ngắn trên YouTube";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Chất lượng phát cao nhất";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Tự động gửi ping sử dụng hằng ngày đến Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Cho phép Brave hiển thị liên kết đến các khảo sát riêng tư trên trang thẻ mới của bạn. Khảo sát giúp chúng tôi phát triển các tính năng tốt hơn và đo lường hiệu quả của các chiến dịch quảng cáo trên trình duyệt. [Tìm hiểu thêm](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Cho phép Brave thực hiện khảo sát";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Đã xảy ra sự cố khi truy xuất thiết bị trong chuỗi đồng bộ hóa.";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Có vẻ như thiết bị của bạn đã được khôi phục từ bản sao lưu, điều này có thể ảnh hưởng đến Brave Sync. Để tiếp tục sử dụng Brave Sync, bạn nên đặt lại và tham gia lại chuỗi đồng bộ.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Phát hiện khôi phục";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Đặt lại chuỗi đồng bộ";
 
 /* Sync device settings page title. */
 "sync.devices" = "Thiết bị trong chuỗi đồng bộ hóa";

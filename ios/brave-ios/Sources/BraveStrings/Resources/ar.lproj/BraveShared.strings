@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "فتح الكل";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "فتح إعدادات المزامنة";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "الأسبوع الماضي %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "الأجهزة";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "لا توجد علامات تبويب متزامنة";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "علامات التبويب من أجهزة أخرى";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "تظهر علامات التبويب المتزامنة هنا";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "إرسال إلى جهازك";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "السماح لـ Brave بإغلاق علامات التبويب التي لم يتم عرضها مؤخرًا تلقائيًا.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "حظر عناصر التشويش على YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "حظر عناصر التشويش على YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "يحظر عناصر البطاقة التالية والنهائية على youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "حظر المحتوى المقترح من YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "حظر Shorts من الصفحة الرئيسية، وصفحة الأحداث الرائجة، ونتائج البحث على موقع youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "حظر YouTube Shorts";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "تشغيل بأعلى جودة";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "السماح لـ Brave بإظهار الروابط لاستطلاعات الرأي الخاصة في صفحة علامة التبويب الجديدة. تساعدنا استطلاعات الرأي على إنشاء ميزات أفضل وقياس فعالية الحملات الإعلانية المستندة إلى المتصفح. [معرفة المزيد](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "السماح لاستطلاعات الرأي لـ Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "حدث خطأ ما أثناء استرداد الأجهزة في سلسلة المزامنة.";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "يبدو أن جهازك قد تم استعادته من النسخة الاحتياطية، مما قد يؤثر على مزامنة Brave. للاستمرار في استخدام مزامنة Brave، يجب عليك إعادة تعيين سلسلة المزامنة والانضمام إليها من جديد.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "تم اكتشاف الاستعادة";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "إعادة تعيين سلسلة المزامنة";
 
 /* Sync device settings page title. */
 "sync.devices" = "الأجهزة على سلسلة المزامنة";

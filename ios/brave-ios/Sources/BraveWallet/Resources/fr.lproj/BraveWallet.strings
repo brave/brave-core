@@ -170,7 +170,7 @@
 "wallet.backupRecoveryPhraseBackButtonTitle" = "Phrase de récupération";
 
 /* The subtitle of the backup recovery phrase screen */
-"wallet.backupRecoveryPhraseSubtitle" = "Votre phrase de récupération est la clé qui vous permet d'accéder à votre portefeuille en cas d'oubli de votre mot de passe ou de perte de votre appareil.\n\nConservez-la dans un endroit sûr qui n'est pas accessible à d'autres personnes et évitez de la partager avec qui que ce soit.";
+"wallet.backupRecoveryPhraseSubtitle" = "Votre phrase de récupération est la clé qui vous permet d'accéder à votre portefeuille en cas d'oubli de votre mot de passe ou de perte de votre appareil.\n\nConservez-la dans un endroit sécurisé et ne la communiquez à personne.";
 
 /* The title of the backup recovery phrase screen */
 "wallet.backupRecoveryPhraseTitle" = "Enregistrer la phrase de récupération";
@@ -301,9 +301,6 @@
 /* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
 "wallet.chartAxisPriceLabel" = "Prix";
 
-/* The description of one of the 'Coinbase Pay' provider. */
-"wallet.coinbaseNetworkProviderDescription" = "Achetez avec le nom le plus fiable en matière de cryptomonnaie.";
-
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "Données financières fournies par CoinGecko";
 
@@ -351,6 +348,12 @@
 
 /* A placeholder for unknown coin type. */
 "wallet.coinTypeUnknown" = "Inconnu";
+
+/* One of the coin types for users to create an account to store ZEC assets */
+"wallet.coinTypeZCash" = "ZCash";
+
+/* A description for ZCash coin type. */
+"wallet.coinTypeZCashDescription" = "Stocker des actifs ZEC";
 
 /* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
 "wallet.confirm" = "Confirmer";
@@ -944,16 +947,16 @@
 "wallet.learnMoreButton" = "En savoir plus";
 
 /* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
-"wallet.legalDescription" = "Nous vous demandons de prendre acte des éléments ci-dessous";
+"wallet.legalDescription" = "Veuillez prendre acte des éléments ci-dessous :";
 
 /* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
-"wallet.legalTermOfUse" = "J'ai lu et j'accepte les [conditions d'utilisation](%@)";
+"wallet.legalTermOfUse" = "J'ai lu et j'accepte les [conditions d'utilisation](%@).";
 
 /* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
 "wallet.legalTitle" = "Avant de commencer";
 
 /* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
-"wallet.legalUserResponsibility" = "Je comprends qu'il s'agit d'un portefeuille dont j'ai la garde, et que je suis le seul responsable des fonds, actifs ou comptes associés, et que je dois prendre les mesures appropriées pour sécuriser, protéger et sauvegarder mon portefeuille. Je comprends que Brave ne peut pas accéder à mon portefeuille ou inverser des transactions en mon nom, et que ma phrase de récupération est le SEUL moyen de retrouver l'accès en cas de perte du mot de passe, de vol de l'appareil ou de circonstances similaires.";
+"wallet.legalUserResponsibility" = "Je comprends qu'il s'agit d'un portefeuille dont j'ai la garde, que je suis la seule personne responsable des fonds, actifs ou comptes associés, et que je dois prendre les mesures appropriées pour sécuriser, protéger et sauvegarder mon portefeuille. Je comprends que Brave ne peut pas accéder à mon portefeuille ou inverser des transactions en mon nom, et que ma phrase de récupération est le SEUL moyen de retrouver l'accès en cas de perte du mot de passe, de vol de l'appareil ou de circonstances similaires.";
 
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Verrouiller";
@@ -995,13 +998,31 @@
 "wallet.manageSiteConnectionsRemoveAll" = "Tout supprimer";
 
 /* The page title that will display the top 250 tokens from the market via CoinGecko */
-"wallet.marketPageTitle" = "Au cours du marché";
+"wallet.marketPageTitle" = "Marché";
 
 /* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
 "wallet.maximumGasFee" = "Frais maximums";
 
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Frais de priorité max.";
+
+/* The header title of the section that user can pick an account in buy screen in Brave Wallet. */
+"wallet.meldAccountHeaderTitle" = "Compte";
+
+/* The header title of the section that user can pick a country in buy screen in Brave Wallet. */
+"wallet.meldCountryHeaderTitle" = "Pays";
+
+/* The header title of the section that user can pick a payment method in buy screen in Brave Wallet. */
+"wallet.meldPaymentMethodHeaderTitle" = "Mode de paiement";
+
+/* The title of the pop up when user first time open buy screen in Brave Wallet. */
+"wallet.meldTransactionPartner" = "Partenaire de transaction";
+
+/* The description of the pop up when user first time open buy screen in Brave Wallet. */
+"wallet.meldTransactionPartnerDescription" = "Le portefeuille Brave utilise Meld.io pour aider à agréger et à afficher divers fournisseurs de crypto-monnaies pour votre région. Nous partagerons des informations avec Meld.io pour effectuer la transaction, notamment l'adresse de votre portefeuille et le code de votre pays. Pour en savoir plus, consultez les conditions d'utilisation de Meld.";
+
+/* The description of the checkbox for the pop up when user first time open buy screen in Brave Wallet. */
+"wallet.meldTransactionPartnerLegal" = "J'ai lu et j'accepte les [conditions générales d'utilisation de Meld](%@).";
 
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
 "wallet.module" = "Portefeuille Brave";
@@ -1240,6 +1261,30 @@
 /* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.protocolFeeLabel" = "Frais de protocole : %@";
 
+/* A label that will display on the provider option to indicate this is the best option. */
+"wallet.providerListBestOption" = "MEILLEURE OPTION";
+
+/* The title of the button that user can use to open the link to buy crypto. */
+"wallet.providerListBuyWith" = "Acheter avec %@";
+
+/* One of title that displays under provider option. Exchange rate with fees that this provider offers. */
+"wallet.providerListExchangeRateWithFees" = "Taux de change avec frais";
+
+/* One of title that displays under provider option. The fees that provider will charge. */
+"wallet.providerListFees" = "Frais";
+
+/* The description that will show when there is no available provider with givin input. */
+"wallet.providerListNoProviderDescription" = "Essayez de rechercher un autre actif.";
+
+/* The title that will show when there is no available provider with givin input. */
+"wallet.providerListNoProviderTitle" = "Aucun fournisseur trouvé pour %@";
+
+/* One of title that displays under provider option. The price of the target currency on market. */
+"wallet.providerListPrice" = "Prix";
+
+/* One of title that displays under provider option. The total cost of this purchase. */
+"wallet.providerListTotal" = "Total";
+
 /* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
 "wallet.providerSelectionButtonTitle" = "Acheter avec %@";
 
@@ -1251,15 +1296,6 @@
 
 /* The title of the button for users to click to select a purchase method. */
 "wallet.purchaseMethodButtonTitle" = "Sélectionner une méthode d'achat";
-
-/* The description of one of the 'Ramp.Network' provider. */
-"wallet.rampNetworkProviderDescription" = "Achetez des cryptos avec une carte Visa ou Mastercard.";
-
-/* The name of one of the on ramp provider. */
-"wallet.rampNetworkProviderName" = "Ramp.Network";
-
-/* The short name of one of the on ramp provider. */
-"wallet.rampNetworkProviderShortName" = "Ramp";
 
 /* The message displayed when the user takes a screenshot of their recovery phrase */
 "wallet.recoveryPhraseScreenshotDetectedMessage" = "Avertissement : Une capture d'écran de votre phrase de récupération peut être sauvegardée sur un service de fichiers sur le cloud. Elle pourra être lue par n'importe quelle application disposant d'un accès aux photos. Brave vous recommande de ne pas enregistrer cette capture d'écran et de la supprimer dès que possible.";
@@ -1330,15 +1366,6 @@
 /* The title for the button to retry a failed transaction. */
 "wallet.retryTransactionButtonTitle" = "Réessayer la transaction";
 
-/* The description of one of the 'Sardine' provider. */
-"wallet.sardineProviderDescription" = "Achat instantané avec votre compte bancaire. Frais réduits.";
-
-/* The name of one of the on ramp provider. */
-"wallet.sardineProviderName" = "Sardine";
-
-/* The short name of one of the on ramp provider. */
-"wallet.sardineProviderShortName" = "Sardine";
-
 /* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
 "wallet.saveButtonTitle" = "Enregistrer";
 
@@ -1402,6 +1429,9 @@
 /* As in sending cryptocurrency to another account */
 "wallet.send" = "Envoyer";
 
+/* An error that appears below the send amount 4 grids when the user inputs an invalid amount format. */
+"wallet.sendAmountFormatError" = "Format non valide";
+
 /* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.sendCryptoAmountTitle" = "Saisir le montant de %@ à envoyer";
 
@@ -1428,6 +1458,21 @@
 
 /* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
 "wallet.sendErrorInvalidRecipientAddress" = "Adresse du destinataire non valide";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - network mismatch. */
+"wallet.sendErrorZecAddressNetworkMissmatch" = "Réseaux incompatibles";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - orchard part missing. */
+"wallet.sendErrorZecAddressOrchardPartMissing" = "Le composant Orchard est manquant";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - transparent part missing. */
+"wallet.sendErrorZecAddressTransparentPartMissing" = "Le composant transparent est manquant";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash address error - wrong transparent address. */
+"wallet.sendErrorZecAddressWrongTransparentAddress" = "Adresse publique incorrecte";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address. */
+"wallet.sendErrorZecAddressWrongUnifiedAddress" = "Format d'adresse unifié incorrect";
 
 /* A placeholder of the address text field. */
 "wallet.sendToCryptoAddressPlaceholder" = "Saisissez une adresse";
@@ -1742,7 +1787,7 @@
 "wallet.solanaSignTransactionDetails" = "Détails";
 
 /* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
-"wallet.solanaSignTransactionWarning" = "Notez que Brave ne peut pas vérifier ce qui se passera si vous signez. Une signature peut autoriser presque n'importe quelle opération sur votre compte ou en votre nom, y compris (mais sans s'y limiter) donner le contrôle total de votre compte et de vos actifs cryptos au site qui en fait la demande. Ne signez que si vous voulez vraiment effectuer cette action et si vous faites confiance au site demandeur.";
+"wallet.solanaSignTransactionWarning" = "Brave ne peut pas vérifier ce qui se passera si vous signez. Une signature peut autoriser presque n'importe quelle opération sur votre compte ou en votre nom, y compris (mais sans s'y limiter) donner le contrôle total de votre compte et de vos crypto-actifs au site qui en fait la demande. Ne signez que si vous voulez vraiment effectuer cette action et que vous faites confiance au site demandeur.";
 
 /* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
 "wallet.solanaSwapTransactionTitle" = "Transaction d'échange";
@@ -1791,12 +1836,6 @@
 
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "accélérer";
-
-/* The description of one of the 'Stripe' provider. */
-"wallet.stripeNetworkProviderDescription" = "Payez par crédit, débit, compte bancaire.";
-
-/* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
-"wallet.stripeNetworkProviderName" = "%1$@ par %2$@";
 
 /* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
 "wallet.submittedTransactionDescription" = "La transaction a bien été envoyée au réseau et est en attente de confirmation.";
@@ -1862,7 +1901,7 @@
 "wallet.swapLimitOrderType" = "À cours limité";
 
 /* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
-"wallet.swapMarketOrderType" = "Au cours du marché";
+"wallet.swapMarketOrderType" = "Marché";
 
 /* The type of order you want to place. Options are: 'Market' and 'Limit' */
 "wallet.swapOrderTypeLabel" = "Type d'ordre";
@@ -2011,15 +2050,6 @@
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: "Sent ETH" */
 "wallet.transactionUnknownSendTitle" = "%@ envoyés";
 
-/* The description of one of the 'Transak' provider. */
-"wallet.transakProviderDescription" = "Achat instantané avec votre compte bancaire. Frais réduits.";
-
-/* The name of one of the on ramp provider. */
-"wallet.transakProviderName" = "Transak";
-
-/* The short name of one of the on ramp provider. */
-"wallet.transakProviderShortName" = "Transak";
-
 /* Blockchain function name for Solana compressed NFT transfers. */
 "wallet.txFunctionTypeCompressedNFTTransfer" = "Transfert de NFT compressé";
 
@@ -2089,9 +2119,6 @@
 /* The message when a sign transaction is completed/confirmed on the blockchain. */
 "wallet.txStatusSignedConfirmedMsg" = "La transaction a été signée et va être envoyée au réseau par dapps en attendant la confirmation.";
 
-/* The text in the disclosure view in transaction status screen. */
-"wallet.txStatusSubmittedDisclosure" = "Vous pouvez ignorer cette fenêtre.";
-
 /* A message explains an ETH Swap transaction is confirmed on the blockchain. */
 "wallet.txStatusSwappedMsg" = "ont été ajoutés à ";
 
@@ -2109,6 +2136,12 @@
 
 /* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
 "wallet.txStatusViewInActivity" = "Afficher dans l'activité";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Vous pouvez ignorer cette fenêtre.";
+
+/* The title displays in confirmation screen when there is no more pending transaction. */
+"wallet.txConfirmationNoMorePendingTitle" = "Aucune transaction en attente";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave utilisera Infura pour résoudre les noms de domaine en .crypto (ainsi que ceux en %1$@) enregistrés sur Unstoppable Domains. Brave masque votre adresse IP. Si vous activez cette option, Infura verra que quelqu'un essaie d'accéder à ces domaines, mais n'aura accès à aucune autre information. Consultez les <a href=%2$@>%3$@</a> et la<a href=%4$@>%5$@</a> d'Infura.";
@@ -2189,7 +2222,7 @@
 "wallet.walletPanelSetupWalletDescription" = "Utilisez ce panneau pour accéder en toute sécurité au domaine web3 et à tous vos actifs crypto.";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.walletSettings" = "Paramètres de portefeuille";
+"wallet.walletSettings" = "Paramètres";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
 "wallet.walletTypeNone" = "Aucun";
@@ -2250,6 +2283,9 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Ajoutez automatiquement les NFT que vous possédez au portefeuille à l'aide d'API tierces. [En savoir plus](%@)";
+
+/* A description of an ZCash account, displayed in Accounts tab. */
+"wallet.zecAccountDescription" = "ZCash";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "De Z à A";

@@ -301,9 +301,6 @@
 /* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
 "wallet.chartAxisPriceLabel" = "Precio";
 
-/* The description of one of the 'Coinbase Pay' provider. */
-"wallet.coinbaseNetworkProviderDescription" = "Compra con el nombre más fiable en criptomonedas.";
-
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "Datos del precio ofrecidos por CoinGecko";
 
@@ -351,6 +348,12 @@
 
 /* A placeholder for unknown coin type. */
 "wallet.coinTypeUnknown" = "Desconocido";
+
+/* One of the coin types for users to create an account to store ZEC assets */
+"wallet.coinTypeZCash" = "ZCash";
+
+/* A description for ZCash coin type. */
+"wallet.coinTypeZCashDescription" = "Almacenar activo de ZEC";
 
 /* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
 "wallet.confirm" = "Confirmar";
@@ -1003,6 +1006,24 @@
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Tarifa máxima de prioridad";
 
+/* The header title of the section that user can pick an account in buy screen in Brave Wallet. */
+"wallet.meldAccountHeaderTitle" = "Cuenta";
+
+/* The header title of the section that user can pick a country in buy screen in Brave Wallet. */
+"wallet.meldCountryHeaderTitle" = "País";
+
+/* The header title of the section that user can pick a payment method in buy screen in Brave Wallet. */
+"wallet.meldPaymentMethodHeaderTitle" = "Método de pago";
+
+/* The title of the pop up when user first time open buy screen in Brave Wallet. */
+"wallet.meldTransactionPartner" = "Socio de transacciones";
+
+/* The description of the pop up when user first time open buy screen in Brave Wallet. */
+"wallet.meldTransactionPartnerDescription" = "La billetera de Brave utiliza Meld.io para ayudar a agregar y mostrar varios proveedores de criptomonedas para tu región. Compartiremos información con Meld.io para completar la transacción, incluida la dirección de tu billetera y el código de país. Para más información, lee los términos de uso de Meld.";
+
+/* The description of the checkbox for the pop up when user first time open buy screen in Brave Wallet. */
+"wallet.meldTransactionPartnerLegal" = "He leído y acepto los [términos de uso de Meld](%@)";
+
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
 "wallet.module" = "Cartera de Brave";
 
@@ -1240,6 +1261,30 @@
 /* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.protocolFeeLabel" = "Tasa de protocolo: %@";
 
+/* A label that will display on the provider option to indicate this is the best option. */
+"wallet.providerListBestOption" = "LA MEJOR OPCIÓN";
+
+/* The title of the button that user can use to open the link to buy crypto. */
+"wallet.providerListBuyWith" = "Comprar con %@";
+
+/* One of title that displays under provider option. Exchange rate with fees that this provider offers. */
+"wallet.providerListExchangeRateWithFees" = "Tipo de cambio con tarifas";
+
+/* One of title that displays under provider option. The fees that provider will charge. */
+"wallet.providerListFees" = "Tarifas";
+
+/* The description that will show when there is no available provider with givin input. */
+"wallet.providerListNoProviderDescription" = "Intenta buscar un activo diferente.";
+
+/* The title that will show when there is no available provider with givin input. */
+"wallet.providerListNoProviderTitle" = "No se encontraron proveedores para %@";
+
+/* One of title that displays under provider option. The price of the target currency on market. */
+"wallet.providerListPrice" = "Precio";
+
+/* One of title that displays under provider option. The total cost of this purchase. */
+"wallet.providerListTotal" = "Total";
+
 /* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
 "wallet.providerSelectionButtonTitle" = "Comprar con %@";
 
@@ -1251,15 +1296,6 @@
 
 /* The title of the button for users to click to select a purchase method. */
 "wallet.purchaseMethodButtonTitle" = "Seleccionar método de compra";
-
-/* The description of one of the 'Ramp.Network' provider. */
-"wallet.rampNetworkProviderDescription" = "Compra criptomonedas con Visa o Mastercard.";
-
-/* The name of one of the on ramp provider. */
-"wallet.rampNetworkProviderName" = "Ramp.Network";
-
-/* The short name of one of the on ramp provider. */
-"wallet.rampNetworkProviderShortName" = "Ramp";
 
 /* The message displayed when the user takes a screenshot of their recovery phrase */
 "wallet.recoveryPhraseScreenshotDetectedMessage" = "Advertencia: Es posible que la captura de pantalla con tu frase de recuperación se almacene en la nube, en cuyo caso podrán acceder a ella todas las aplicaciones que tengan permiso para acceder a tus fotos. Desde Brave te recomendamos que no guardes la captura de pantalla y la elimines en cuanto puedas. ";
@@ -1330,15 +1366,6 @@
 /* The title for the button to retry a failed transaction. */
 "wallet.retryTransactionButtonTitle" = "Reintentar la transacción\n";
 
-/* The description of one of the 'Sardine' provider. */
-"wallet.sardineProviderDescription" = "Compra al instante con tu cuenta bancaria. Con menos comisiones.";
-
-/* The name of one of the on ramp provider. */
-"wallet.sardineProviderName" = "Sardine";
-
-/* The short name of one of the on ramp provider. */
-"wallet.sardineProviderShortName" = "Sardine";
-
 /* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
 "wallet.saveButtonTitle" = "Guardar";
 
@@ -1402,6 +1429,9 @@
 /* As in sending cryptocurrency to another account */
 "wallet.send" = "Enviar";
 
+/* An error that appears below the send amount 4 grids when the user inputs an invalid amount format. */
+"wallet.sendAmountFormatError" = "Formato de monto no válido";
+
 /* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.sendCryptoAmountTitle" = "Introduce el importe en %@ que deseas enviar";
 
@@ -1428,6 +1458,21 @@
 
 /* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
 "wallet.sendErrorInvalidRecipientAddress" = "Dirección del destinatario no válida";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - network mismatch. */
+"wallet.sendErrorZecAddressNetworkMissmatch" = "No coincide con la red";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - orchard part missing. */
+"wallet.sendErrorZecAddressOrchardPartMissing" = "Falta la parte de Orchard";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - transparent part missing. */
+"wallet.sendErrorZecAddressTransparentPartMissing" = "Falta la parte transparente";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash address error - wrong transparent address. */
+"wallet.sendErrorZecAddressWrongTransparentAddress" = "Dirección transparente incorrecta";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address. */
+"wallet.sendErrorZecAddressWrongUnifiedAddress" = "Formato de dirección unificado incorrecto";
 
 /* A placeholder of the address text field. */
 "wallet.sendToCryptoAddressPlaceholder" = "Introduce la dirección";
@@ -1792,12 +1837,6 @@
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Speed Up";
 
-/* The description of one of the 'Stripe' provider. */
-"wallet.stripeNetworkProviderDescription" = "Pagar con tarjeta de crédito o débito o mediante cuenta bancaria.";
-
-/* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
-"wallet.stripeNetworkProviderName" = "%1$@ de %2$@";
-
 /* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
 "wallet.submittedTransactionDescription" = "La transacción se ha enviado correctamente a la red y se encuentra ya a la espera de confirmación.";
 
@@ -2011,15 +2050,6 @@
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: "Sent ETH" */
 "wallet.transactionUnknownSendTitle" = "Se han enviado %@";
 
-/* The description of one of the 'Transak' provider. */
-"wallet.transakProviderDescription" = "Compra al instante con tu cuenta bancaria. Con menos comisiones.";
-
-/* The name of one of the on ramp provider. */
-"wallet.transakProviderName" = "Transak";
-
-/* The short name of one of the on ramp provider. */
-"wallet.transakProviderShortName" = "Transak";
-
 /* Blockchain function name for Solana compressed NFT transfers. */
 "wallet.txFunctionTypeCompressedNFTTransfer" = "Transferencia de NFT comprimidos";
 
@@ -2089,9 +2119,6 @@
 /* The message when a sign transaction is completed/confirmed on the blockchain. */
 "wallet.txStatusSignedConfirmedMsg" = "Se ha firmado la transacción y se enviará a la red mediante aplicaciones descentralizadas; se encuentra ya a la espera de confirmación.";
 
-/* The text in the disclosure view in transaction status screen. */
-"wallet.txStatusSubmittedDisclosure" = "Puedes descartar esta ventana con total seguridad.";
-
 /* A message explains an ETH Swap transaction is confirmed on the blockchain. */
 "wallet.txStatusSwappedMsg" = "se ha añadido a tu";
 
@@ -2109,6 +2136,12 @@
 
 /* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
 "wallet.txStatusViewInActivity" = "Ver en Actividad";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Puedes descartar esta ventana con total seguridad.";
+
+/* The title displays in confirmation screen when there is no more pending transaction. */
+"wallet.txConfirmationNoMorePendingTitle" = "No hay más transacciones pendientes";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave utilizará Infura para resolver los nombres de dominio .crypto (así como %1$@) que están en Unstoppable Domains. Brave oculta tu dirección IP. Si lo activas, Infura verá que alguien está intentando visitar estos dominios, pero nada más. Consulta las <a href=%2$@>%3$@</a> y <a href=%4$@>%5$@</a> de Infura.";
@@ -2250,6 +2283,9 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Añade automáticamente NFT de tu propiedad a la cartera utilizando API de terceros. [Más información](%@)";
+
+/* A description of an ZCash account, displayed in Accounts tab. */
+"wallet.zecAccountDescription" = "ZCash";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "De Z a A";

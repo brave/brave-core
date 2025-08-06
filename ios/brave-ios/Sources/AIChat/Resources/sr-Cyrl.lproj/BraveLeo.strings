@@ -1,0 +1,441 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Ваша сесија налога на Brave-у је истекла. Посетите страницу налога да бисте освежили, а затим се вратите да користите премијум функције.";
+
+/* The title for button that submits feedback */
+"aichat.addFeedbackActionTitle" = "Дајте повратне информације";
+
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "Укључите да би вам се приказала пречица за покретање асистента Leo из траке за адресу.";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "Подразумевани модел";
+
+/* The title for the header for adjusting leo ai settings */
+"aichat.advancedSettingsHeaderTitle" = "Leo је паметни асистент заснован на вештачкој интелигенцији, уграђен директно у прегледач.";
+
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Повежите куповину у App Store-у са својим налогом на Brave-у да бисте користили асистента Leo на другим уређајима.";
+
+/* The title for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Повежите куповину са својим налогом на Brave-у";
+
+/* The description for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarDescription" = "Активира пречицу за покретање асистента Leo из брзе траке за претраживаче.";
+
+/* The title for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarTitle" = "Прикажи у брзој траци за претраживаче";
+
+/* The title for the label showing the date which subscription expires */
+"aichat.advancedSettingsSubscriptionExpiresTitle" = "Истиче";
+
+/* The title for the header for subscription details */
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "Претплата";
+
+/* The title for the label showing status if the subscription */
+"aichat.advancedSettingsSubscriptionStatusTitle" = "Статус";
+
+/* The title for the button that allows the user to view the App Store Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "Прикажи признаницу App Store-а";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Повезивање са App Store-ом није успело. Пробајте поново касније.";
+
+/* The title for the error showing there is an error from App Store */
+"aichat.appStoreErrorTitle" = "Грешка са App Store-ом";
+
+/* The title of the search bar suggestion when prompting to Ask Leo */
+"aichat.askLeoSearchSuggestionTitle" = "Питајте асистента Leo";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leo је тренутно презаузет. Пробајте поново за неколико минута.";
+
+/* The subtitle for intro view which triggers just chat */
+"aichat.chatIntroJustTalkSubTitle" = "Питајте ме било шта! Можемо разговарати о било којој теми коју желите. Увек учим и усавршавам се да бих дао што боље одговоре.";
+
+/* The title for intro view which triggers just chat */
+"aichat.chatIntroJustTalkTitle" = "Само желите да ћаскате?";
+
+/* The subtitle for intro view */
+"aichat.chatIntroSubTitle" = "Интелигентни асистент заснован на вештачкој интелигенцији, уграђен директно у Brave.";
+
+/* The title for intro view */
+"aichat.chatIntroTitle" = "Здраво, зовем се Leo!";
+
+/* The subtitle for intro view which triggers website help for article */
+"aichat.chatIntroWebsiteHelpSubtitleArticleSummarize" = "Могу вам помоћи да сумирате чланке, проширите садржај сајта и још много тога.";
+
+/* The subtitle for intro view which triggers website help for summary */
+"aichat.chatIntroWebsiteHelpSubtitlePageSummarize" = "Могу вам помоћи да сумирате чланке, проширите садржај сајта и још много тога. Нисте сигурни одакле да почнете? Пробајте овако:";
+
+/* The title for intro view which triggers website help */
+"aichat.chatIntroWebsiteHelpTitle" = "Треба вам помоћ око веб-сајта?";
+
+/* The title for the chat section in the menu */
+"aichat.chatMenuSectionTitle" = "Ћаскање";
+
+/* The title shown on limit reached error view, which is suggesting user to change default model */
+"aichat.contextLimitErrorTitle" = "Овај разговор је предугачак и не може се наставити.\nМожда постоје други модели помоћу којих Leo може да одржи тачност у дужим разговорима.";
+
+/* The title of the section where custom models are displayed as a list. */
+"aichat.customModelChatSectionTitle" = "Прилагођени модели";
+
+/* The title for the custom models section in the menu */
+"aichat.customModelsMenuSectionTitle" = "Прилагођени модели";
+
+/* The title of the section where chat models are displayed as a list. */
+"aichat.defaultModelChatSectionTitle" = "Ћаскање";
+
+/* The title of the section where language models are displayed as a list. */
+"aichat.defaultModelLanguageSectionTitle" = "ЈЕЗИЧКИ МОДЕЛИ";
+
+/* The title of the menu where user can change the default model */
+"aichat.defaultModelViewTitle" = "Подразумевани модел";
+
+/* The checkbox title for the privacy alert warning that will make it not warn the user again */
+"aichat.dontShowAgainTitle" = "Не приказуј поново";
+
+/* The text displayed under an edited user prompt/message beside a timestamp. */
+"aichat.editedMessageCaption" = "Измењено";
+
+/* The title for view which user type feedback */
+"aichat.feedbackInputViewTitle" = "Унесите повратне информације овде";
+
+/* The title for view which listsfeedback option list */
+"aichat.feedbackOptionsViewTitle" = "О чему су ваше повратне информације?";
+
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Нетачно";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Није од помоћи";
+
+/* The title for other feedback option */
+"aichat.feedbackOptionTitleOther" = "Друго";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Небезбедно/штетно";
+
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+"aichat.feedbackPremiumAdTitle" = "Leo Premium пружа приступ проширеном скупу језичких модела који пружа прецизније одговоре. [Сазнајте више](https://brave.com/) - [Одбаци](braveai://dismiss)";
+
+/* The title for the button that submits feedback */
+"aichat.feedbackSubmitActionTitle" = "Пошаљи";
+
+/* The title for feedback view when it fails to submit feedback */
+"aichat.feedbackSubmittedErrorTitle" = "Нешто није у реду. Пробајте поново.";
+
+/* The title for feedback view when it is submitted */
+"aichat.feedbackSubmittedTitle" = "Повратне информације су успешно послате";
+
+/* The title for feedback view when response is sucessfull but disliked */
+"aichat.feedbackSuccessAnswerDisLikedTitle" = "Одговор вам се не свиђа";
+
+/* The title for feedback view when response is sucessfull also liked */
+"aichat.feedbackSuccessAnswerLikedTitle" = "Одговор вам се свиђа";
+
+/* The title for view which user type feedback */
+"aichat.feedbackViewMainTitle" = "Пошаљите повратне информације о Brave AI-у";
+
+/* The button title for opening paywall screen */
+"aichat.goPremiumButtonTitle" = "Пређите на Premium";
+
+/* Description about answers are changing with page context */
+"aichat.infoAboutPageContext" = "Обликуј одговоре на основу садржаја странице";
+
+/* The title for view that shows an internal error screen. Suggests to try again later. */
+"aichat.internalErrorViewTitle" = "Дошло је до грешке приликом обраде вашег захтева. Пробајте поново касније.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeHaikuMessageDescription" = "Здраво, зовем се Leo. Brave ми је прокси, а покреће ме Claude Haiku, модел који је креирала компанија Anthropic, како би омогућила разговорне задатке и задатке обраде текста. Claude Haiku се хостује на Brave-овој сопственој безбедној инфраструктури.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Муњевито брзо ћаскање";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeInstantMessageDescription" = "Здраво, зовем се Leo. Brave ми је прокси, а покреће ме Claude Instant, модел који је креирала компанија Anthropic како би омогућила разговорне задатке и задатке обраде текста. Claude Instant се хостује на Brave-овој сопственој безбедној инфраструктури.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Здраво, зовем се Leo. Brave ми је прокси, а покреће ме Claude Sonnet, модел који је креирала компанија Anthropic како би омогућила разговорне задатке и задатке обраде текста. Claude Sonnet се хостује на Brave-овој сопственој безбедној инфраструктури.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Балансирана брзина и интелигенција";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageDeepSeekR1MessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме DeepSeek R1, модел који је креирала компанија DeepSeek за обављање задатака дубоког резоновања.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Модел за резоновање";
+
+/* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
+"aichat.introMessageGenericMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији којег је креирао Brave. Покреће ме %@. Питајте ме било шта и потрудићу се да одговорим.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме Llama 3.1 8B, модел који је креирала компанија Meta, како бих био ефикасан и применљив на многе случајеве употребе. Llama се хостује на Brave-овој сопственој безбедној инфраструктури.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "Ћаскање опште намене";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaVisionMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме Llama Vision, модел који је креирала компанија Meta како бих био ефикасан и применљив на многе случајеве употребе. Llama Vision се хостује на Brave-овој сопственој безбедној инфраструктури.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaVisionModelPurposeDescription" = "Визуелни модел опште намене";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageQwenMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме Qwen 14B, модел који је креирала компанија Alibaba Cloud како бих био ефикасан и применљив на многе случајеве употребе. Qwen се хостује на Brave-овој сопственој безбедној инфраструктури.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageQwenModelPurposeDescription" = "Ћаскање за општу сврху, кодирање и још тога";
+
+/* The title for intro message */
+"aichat.introMessageTitle" = "Ћаскање";
+
+/* The title for view that shows an invalid API key error screen. Suggests to try again later. */
+"aichat.invalidApiKeyErrorViewTitle" = "API кључ конфигурисан за овај модел је неважећи. Проверите конфигурацију и пробајте поново.";
+
+/* The title for view that shows an invalid endpoint error screen. Suggests to try again later. */
+"aichat.invalidEndpointErrorViewTitle" = "Овај модел има неважећу крајњу тачку. Проверите конфигурацију и пробајте поново.";
+
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The default title displayed above a code block when the language of the code is not known. */
+"aichat.leoCodeExampleDefaultTitle" = "Пример шифре";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
+"aichat.leoDisabledMessageDescription" = "Leo је тренутно искључен помоћу прекидача за функције. Да бисте га поново укључили, посетите brave://flags и укључите га.";
+
+/* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
+"aichat.leoDisabledMessageTitle" = "Leo је искључен";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leo тренутно није доступан у режиму приватног прегледања. Да бисте користили Leo, изађите из режима приватног прегледања и пробајте поново.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "Leo није доступан";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
+"aichat.leoDocumentPickerButtonAccessibilityTitle" = "Отпреми слику";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "Одговор је побољшан помоћу претраге";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Побољшавамо одговор помоћу Brave претраге...";
+
+/* The title of the advanced settings view */
+"aichat.leoNavigationTitle" = "Leo AI";
+
+/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Укључите да бисте поставили питања о овој страници. Његов садржај ће бити послат асистенту Brave Leo заједно са вашим порукама.";
+
+/* The accessibility text to read out loud when the user taps on the info icon on the page context view */
+"aichat.leoPageContextInfoIconAccessibilityTitle" = "Информације о контексту странице";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "Slash Tools";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "Ништа";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "Непознато";
+
+/* The title to display when the duration of the subscription is unknown */
+"aichat.leoSubscriptionUnknownDateTitle" = "Н. П.";
+
+/* The button title for managing subscriptions */
+"aichat.manageSubscriptionsButtonTitle" = "Управљање претплатама";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertDescription" = "Дозволите приступ микрофону у системским подешавањима iOS-а за Brave да бисте користили анонимни унос гласа.";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertTitle" = "Неопходан је приступ микрофону";
+
+/* Title showing monthly subscription */
+"aichat.monthlySubscriptionTitle" = "Месечна претплата";
+
+/* The title for view that shows network - connection error and suggesting to try again */
+"aichat.networkErrorViewTitle" = "Дошло је до проблема са мрежом приликом повезивања са асистентом Leo. Проверите везу и пробајте поново.";
+
+/* The title for button that starts a new chat */
+"aichat.newChatActionTitle" = "Ново ћаскање";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"aichat.paywallMonthlyPriceDividend" = "месец";
+
+/* Title indicating monthly subscription */
+"aichat.paywallMontlySubscriptionTitle" = "Месечно";
+
+/* The title for dismiss button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellDismissAction" = "Можда касније";
+
+/* The title for button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellPrimaryAction" = "Надоградите се";
+
+/* The title for premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellTitle" = "Осетите пуну снагу асистента Leo уз пакет Premium:";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionIntroOfferTitle" = "Испробајте 7 дана бесплатно";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionTitle" = "Надоградите се";
+
+/* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
+"aichat.paywallPurchaseDeepNote" = "Све претплате се аутоматски обнављају, али могу бити отказане у било ком тренутку пре обнове.";
+
+/* The error description when in app purcahse is erroneous. */
+"aichat.paywallPurchaseErrorDescription" = "Куповина није успешно обављена. Пробајте поново или проверите детаље за плаћање у Apple-у и пробајте поново.";
+
+/* The subtitle for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitSubTitle" = "Претплатите се на Premium да откључате већи лимит за одговоре или пробајте касније.";
+
+/* The title for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitTitle" = "Достигнут је лимит за одговоре";
+
+/* The subtitle accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicSubTitle" = "Добијте тачније одговоре и водите прецизније разговоре.";
+
+/* The title accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicTitle" = "Будите у току";
+
+/* The subtitle chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicSubTitle" = "Повећајте лимит за одговоре да бисте имали дуже разговоре.";
+
+/* The title chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicTitle" = "Ћаскајте дуже";
+
+/* The subtitle creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicSubTitle" = "Приступите моделима који су боље прилагођени креативним задацима и генерисању садржаја.";
+
+/* The title creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicTitle" = "Ослободите своју креативност";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Приоритетни приступ моћним моделима са различитим могућностима.";
+
+/* The title model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicTitle" = "Истражите различите моделе вештачке интелигенције";
+
+/* The title for paywall view */
+"aichat.paywallViewTitle" = "Leo Premium";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"aichat.paywallYearlyPriceDividend" = "година";
+
+/* The description indicating how valuable the yearly subscription is, compared to purchasing monthly */
+"aichat.paywallYearlySubscriptionDescription" = "НАЈБОЉА ВРЕДНОСТ";
+
+/* Title indicating yearly subscription */
+"aichat.paywallYearlySubscriptionTitle" = "Годину дана";
+
+/* The title of the badge where a model which can be used limited */
+"aichat.premiumModelStatusTitle" = "Premium";
+
+/* Title shown next to Leo in navigation bar when user has premium subcription */
+"aichat.premiumNavigationBarBadgeTitle" = "Premium";
+
+/* Title showing premium subscription - not determined monthly por yearly */
+"aichat.premiumSubscriptionTitle" = "Претплата на Premium";
+
+/* The text for placeholder on textfield for entering questions for AI, after the user has asked initial question */
+"aichat.promptFollowUpPlaceHolderDescription" = "Затражи коментар";
+
+/* The text for placeholder on textfield for entering questions for AI */
+"aichat.promptPlaceHolderDescription" = "Како вам могу помоћи данас?";
+
+/* The title of action for quick menu which displaying advanced settings */
+"aichat.quickMenuAdvancedSettingsActionTitle" = "Напредна подешавања";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"aichat.quickMenuGoPremiumActionTitle" = "Пређите на Premium";
+
+/* The title of action for quick menu which display subscription management view */
+"aichat.quickMenuManageSubscriptionActionTitle" = "Управљање претплатама";
+
+/* The title for error when rating a response is not success */
+"aichat.rateAnswerActionErrorText" = "Грешка приликом оцене одговора";
+
+/* The message for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningMessage" = "Ако дате свиђање или несвиђање на одговор, биће послата оцена, разговор, модел, језик, верзија и статус претплате на Premium како бисмо могли да побољшамо асистента Leo. [Сазнајте више](%@)";
+
+/* The title for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningTitle" = "Коментар на одговор";
+
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "Освежи";
+
+/* The title for the button where it triggers reset leo data */
+"aichat.resetLeoDataActionTitle" = "Ресетуј и избриши податке из асистента Leo";
+
+/* The title of a button that will reset data for leo */
+"aichat.resetLeoDataAlertButtonTitle" = "Ресетуј";
+
+/* The description for the error whre leo data reset */
+"aichat.resetLeoDataErrorDescription" = "Желите ли сигурно да ресетујете и избришете податке из асистента Leo?";
+
+/* The title for the error whre leo data reset */
+"aichat.resetLeoDataErrorTitle" = "Ресетуј податке из асистента Leo";
+
+/* The title for copying response to clipboard action */
+"aichat.responseContextMenuCopyTitle" = "Копирај";
+
+/* The title for disliking response to clipboard action */
+"aichat.responseContextMenuDislikeAnswerTitle" = "Не свиђа ми се одговор";
+
+/* The title for editing AI response action from context menu */
+"aichat.responseContextMenuEditAnswerTitle" = "Измени одговор";
+
+/* The title for editing user prompt action from context menu */
+"aichat.responseContextMenuEditPromptTitle" = "Измени упит";
+
+/* The title for liking response to clipboard action */
+"aichat.responseContextMenuLikeAnswerTitle" = "Свиђа ми се одговор";
+
+/* The title for regenerating response action from context menu */
+"aichat.responseContextMenuRegenerateTitle" = "Поново генериши";
+
+/* The button title for restoring ai-app purchse for Leo. */
+"aichat.restorePaywallButtonTitle" = "Поново отвори";
+
+/* The title for button for re-try */
+"aichat.retryActionTitle" = "Пробај поново";
+
+/* The title for view that shows a service overloaded error screen. Suggests to try again later. */
+"aichat.serviceOverloadedErrorViewTitle" = "Краја тачка је тренутно преоптерећена. Пробајте поново касније.";
+
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Brave не чува нити уступа ваше гласовне команде.";
+
+/* Title showing the user has no subscription. */
+"aichat.subscriptionNoneTitle" = "Ништа";
+
+/* The title for the button to generate suggestions */
+"aichat.suggestionsGenerationButtonTitle" = "Предложи питања...";
+
+/* The title for button that start summarizing page */
+"aichat.summarizePageActionTitle" = "Сажми ову страницу";
+
+/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+"aichat.termsConditionsApproveActionTitle" = "Разумем";
+
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leo је приватни паметни асистент заснован на вештачкој интелигенцији који побољшава ваше коришћење веба. Leo је бесплатан за коришћење уз ограничен приступ. Brave Leo Premium нуди више модела, веће лимите и даје претплатницима рани приступ новим функцијама. Погледајте Brave-ов **[Центар за помоћ](%1$@)** ако желите више детаља.\n\nПодразумевано, када поставите питање асистенту Leo, он може послати асистенту Brave Leo и користити садржај веб-странице коју прегледате или било који текст који истакнете на страници како би вам пружио одговор. У неким случајевима, Leo шаље упите изведене из вашег уноса у Brave претрагу и користи резултате претраге да би боље одговорио на ваше питање. Тачност одговора није загарантована и може да садржи нетачне, обмањујуће или лажне информације. Не шаљите осетљиве или приватне информације и будите опрезни са свим одговорима који се односе на здравље, финансије, личну безбедност или слично. Опције за асистента Leo можете променити у подешавањима у било ком тренутку. Идите на Подешавања > Leo.\n\nLeo не прикупља идентификаторе, као што је ваша IP адреса, који се могу повезати са вама. За тренирање модела вештачке интелигенције не користе се никакви подаци, нити модели вештачке интелигенције чувају податке о личности (осим модела Anthropic, који чува податке 30 дана пре него што их избрише). Више информација потражите у **[правилима за заштиту приватности](%2$@)**.";
+
+/* The title terms and conditions for AI chat usage */
+"aichat.termsConditionsTitle" = "Ћаскајте приватно са асистентом Brave Leo";
+
+/* The title of the badge where a model which can be used unlimited */
+"aichat.unlimitedModelStatusTitle" = "Неограничено";
+
+/* The accessibility description when pressing the microphone button to access voice entry. */
+"aichat.voiceInputButtonTitle" = "Гласовне команде";
+
+/* Title showing yearly subscription - annual */
+"aichat.yearlySubscriptionTitle" = "Годишња претплата";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "Ви";
+

@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Tout ouvrir";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Ouvrir les paramètres de synchronisation";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "%@ dernier à";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Appareils";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Aucun onglet synchronisé";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Onglets sur d'autres appareils";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Vos onglets synchronisés apparaîtront ici";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Envoyer vers un appareil";
@@ -2267,7 +2279,7 @@
 "rewards.disabledBody" = "Activez cette fonctionnalité pour soutenir Brave et la communauté BAT.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "En optant pour le programme de récompenses Brave, vous soutenez Brave et la communauté BAT.";
+"rewards.disabledStatusBody" = "En participant au programme de récompenses Brave, vous soutenez Brave et la communauté BAT.";
 
 /* Displayed when Brave Rewards is enabled */
 "rewards.enabledBody" = "Vous soutenez Brave et la communauté BAT.";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Autorisez Brave à fermer automatiquement les onglets qui n’ont pas été consultés récemment.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Bloque les éléments indésirables sur YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Bloquer les éléments indésirables sur YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Bloque les vidéos à suivre et les écrans de fin sur youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Bloquer les contenus recommandés par YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Bloque les shorts sur la page d'accueil, la page des tendances et les résultats de recherche sur youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "Bloquer les shorts YouTube";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Haute définition";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Envoyer automatiquement un signal d'utilisation quotidienne à Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Permet à Brave d'afficher des liens vers des enquêtes privées sur la page de nouvel onglet. Les enquêtes nous aident à développer de meilleures fonctionnalités et à mesurer l'efficacité des campagnes publicitaires dans le navigateur. [En savoir plus](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Autoriser les enquêtes Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Une erreur est survenue lors de la récupération des appareils dans la chaîne de synchronisation.";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Il semble que votre appareil ait été restauré à partir d'une sauvegarde, ce qui peut empêcher la synchronisation Brave de fonctionner correctement. Pour la rétablir, vous devez réinitialiser puis relancer la chaîne de synchronisation.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Restauration détectée";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Réinitialiser la chaîne de synchronisation";
 
 /* Sync device settings page title. */
 "sync.devices" = "Appareils de la chaîne de synchronisation";

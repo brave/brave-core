@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Deschide-le pe toate";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Deschide setările de sincronizare";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Săptămâna trecută %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Dispozitive";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Nu există file sincronizate";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "File deschise pe alte dispozitive";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Filele sincronizate apar aici";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Trimite pe dispozitivul tău";
@@ -2617,6 +2629,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Permite ca Brave să închidă automat filele care nu au fost vizualizate recent.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Blochează elementele care distrag atenția de pe YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Blochează elementele care distrag atenția de pe YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Blochează elementele up next și end card de pe youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Blochează conținutul recomandat de YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Blochează Shorts de pe pagina de pornire, pagina de tendințe și rezultatele căutării pe youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "Blocați videoclipurile scurte Youtube";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Redare de cea mai înaltă calitate";
 
@@ -2646,6 +2676,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Trimite automat către Brave ping-ul de utilizare zilnică";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Permite Brave să afișeze linkuri către sondaje private în pagina noii file. Sondajele ne ajută să creăm funcții mai bune și să măsurăm eficiența campaniilor publicitare bazate pe browser. [Află mai multe](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Permite sondaje Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,6 +3096,15 @@
 
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Ceva nu a mers bine în timpul recuperării dispozitivelor din lanțul de sincronizare.";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Se pare că dispozitivul tău a fost restaurat din backup, care poate afecta Brave Sync. Pentru a continua să utilizezi Brave Sync, trebuie să resetezi și să te reconectezi în lanțul de sincronizare.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Restaurare detectată";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Resetare lanț de sincronizare";
 
 /* Sync device settings page title. */
 "sync.devices" = "Dispozitive în lanțul de sincronizare";

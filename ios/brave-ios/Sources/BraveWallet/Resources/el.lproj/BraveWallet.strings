@@ -301,9 +301,6 @@
 /* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
 "wallet.chartAxisPriceLabel" = "Τιμή";
 
-/* The description of one of the 'Coinbase Pay' provider. */
-"wallet.coinbaseNetworkProviderDescription" = "Κάντε τις αγορές σας με το πιο αξιόπιστο όνομα στα κρυπτονομίσματα.";
-
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "Δεδομένα τιμής από την CoinGecko";
 
@@ -351,6 +348,12 @@
 
 /* A placeholder for unknown coin type. */
 "wallet.coinTypeUnknown" = "Άγνωστη";
+
+/* One of the coin types for users to create an account to store ZEC assets */
+"wallet.coinTypeZCash" = "ZCash";
+
+/* A description for ZCash coin type. */
+"wallet.coinTypeZCashDescription" = "Αποθήκευση στοιχείου ZEC";
 
 /* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
 "wallet.confirm" = "Επιβεβαίωση";
@@ -1003,6 +1006,24 @@
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Τέλος μέγιστης προτεραιότητας";
 
+/* The header title of the section that user can pick an account in buy screen in Brave Wallet. */
+"wallet.meldAccountHeaderTitle" = "Λογαριασμός";
+
+/* The header title of the section that user can pick a country in buy screen in Brave Wallet. */
+"wallet.meldCountryHeaderTitle" = "Χώρα";
+
+/* The header title of the section that user can pick a payment method in buy screen in Brave Wallet. */
+"wallet.meldPaymentMethodHeaderTitle" = "Τρόπος πληρωμής";
+
+/* The title of the pop up when user first time open buy screen in Brave Wallet. */
+"wallet.meldTransactionPartner" = "Συνεργάτης συναλλαγών";
+
+/* The description of the pop up when user first time open buy screen in Brave Wallet. */
+"wallet.meldTransactionPartnerDescription" = "Το Brave Wallet χρησιμοποιεί το Meld.io για να σας βοηθήσει να συγκεντρώσετε και να αναδείξετε διάφορους παρόχους κρυπτογράφησης για την περιοχή σας. Θα μοιραστούμε πληροφορίες με το Meld.io για την ολοκλήρωση της συναλλαγής, συμπεριλαμβανομένης της διεύθυνσης πορτοφολιού και του κωδικού χώρας σας. Για περισσότερες πληροφορίες διαβάστε τους όρους χρήσης της Meld.";
+
+/* The description of the checkbox for the pop up when user first time open buy screen in Brave Wallet. */
+"wallet.meldTransactionPartnerLegal" = "Έχω διαβάσει και συμφωνώ με τους [Όρους χρήσης της Meld](%@)";
+
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
 "wallet.module" = "Πορτοφόλι Brave";
 
@@ -1240,6 +1261,30 @@
 /* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.protocolFeeLabel" = "Τέλος πρωτοκόλλου: %@";
 
+/* A label that will display on the provider option to indicate this is the best option. */
+"wallet.providerListBestOption" = "ΚΑΛΥΤΕΡΗ ΕΠΙΛΟΓΗ";
+
+/* The title of the button that user can use to open the link to buy crypto. */
+"wallet.providerListBuyWith" = "Αγορά με %@";
+
+/* One of title that displays under provider option. Exchange rate with fees that this provider offers. */
+"wallet.providerListExchangeRateWithFees" = "Συναλλαγματική ισοτιμία με χρεώσεις";
+
+/* One of title that displays under provider option. The fees that provider will charge. */
+"wallet.providerListFees" = "Χρεώσεις";
+
+/* The description that will show when there is no available provider with givin input. */
+"wallet.providerListNoProviderDescription" = "Δοκιμάστε να αναζητήσετε ένα διαφορετικό στοιχείο.";
+
+/* The title that will show when there is no available provider with givin input. */
+"wallet.providerListNoProviderTitle" = "Δεν βρέθηκαν πάροχοι για %@";
+
+/* One of title that displays under provider option. The price of the target currency on market. */
+"wallet.providerListPrice" = "Τιμή";
+
+/* One of title that displays under provider option. The total cost of this purchase. */
+"wallet.providerListTotal" = "Σύνολο";
+
 /* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
 "wallet.providerSelectionButtonTitle" = "Αγορά με %@";
 
@@ -1251,15 +1296,6 @@
 
 /* The title of the button for users to click to select a purchase method. */
 "wallet.purchaseMethodButtonTitle" = "Επιλέξτε μέθοδο αγοράς";
-
-/* The description of one of the 'Ramp.Network' provider. */
-"wallet.rampNetworkProviderDescription" = "Αγοράστε κρυπτονομίσματα με Visa ή Mastercard.";
-
-/* The name of one of the on ramp provider. */
-"wallet.rampNetworkProviderName" = "Ramp.Network";
-
-/* The short name of one of the on ramp provider. */
-"wallet.rampNetworkProviderShortName" = "Ramp";
 
 /* The message displayed when the user takes a screenshot of their recovery phrase */
 "wallet.recoveryPhraseScreenshotDetectedMessage" = "Προειδοποίηση: Ενδέχεται να δημιουργηθεί αντίγραφο ασφαλείας ενός στιγμιοτύπου οθόνης της φράσης ανάκτησης σε μια υπηρεσία αρχείων cloud και να είναι αναγνώσιμο από οποιαδήποτε εφαρμογή με πρόσβαση στις φωτογραφίες. Η Brave συνιστά να μην αποθηκεύσετε αυτό το στιγμιότυπο οθόνης και να το διαγράψετε το συντομότερο δυνατό.";
@@ -1330,15 +1366,6 @@
 /* The title for the button to retry a failed transaction. */
 "wallet.retryTransactionButtonTitle" = "Επανάληψη Συναλλαγής";
 
-/* The description of one of the 'Sardine' provider. */
-"wallet.sardineProviderDescription" = "Άμεση αγορά με τον τραπεζικό σας λογαριασμό. Χαμηλότερα τέλη.";
-
-/* The name of one of the on ramp provider. */
-"wallet.sardineProviderName" = "Sardine";
-
-/* The short name of one of the on ramp provider. */
-"wallet.sardineProviderShortName" = "Sardine";
-
 /* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
 "wallet.saveButtonTitle" = "Αποθήκευση";
 
@@ -1402,6 +1429,9 @@
 /* As in sending cryptocurrency to another account */
 "wallet.send" = "Αποστολή";
 
+/* An error that appears below the send amount 4 grids when the user inputs an invalid amount format. */
+"wallet.sendAmountFormatError" = "Μη έγκυρη μορφή ποσού";
+
 /* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.sendCryptoAmountTitle" = "Εισαγάγετε ποσό %@ για αποστολή";
 
@@ -1428,6 +1458,21 @@
 
 /* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
 "wallet.sendErrorInvalidRecipientAddress" = "Μη έγκυρη διεύθυνση παραλήπτη";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - network mismatch. */
+"wallet.sendErrorZecAddressNetworkMissmatch" = "Αδυναμία αντιστοίχισης δικτύου";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - orchard part missing. */
+"wallet.sendErrorZecAddressOrchardPartMissing" = "Λείπει το τμήμα Orchard";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - transparent part missing. */
+"wallet.sendErrorZecAddressTransparentPartMissing" = "Λείπει το δημόσιο τμήμα";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash address error - wrong transparent address. */
+"wallet.sendErrorZecAddressWrongTransparentAddress" = "Λάθος διαφανής διεύθυνση";
+
+/* An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address. */
+"wallet.sendErrorZecAddressWrongUnifiedAddress" = "Λανθασμένη μορφή ενοποιημένης διεύθυνσης";
 
 /* A placeholder of the address text field. */
 "wallet.sendToCryptoAddressPlaceholder" = "Εισαγάγετε διεύθυνση";
@@ -1792,12 +1837,6 @@
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Επιτάχυνση";
 
-/* The description of one of the 'Stripe' provider. */
-"wallet.stripeNetworkProviderDescription" = "Πληρώστε με χρεωστική, πιστωτική, τραπεζικό λογαριασμό.";
-
-/* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
-"wallet.stripeNetworkProviderName" = "%1$@ από %2$@";
-
 /* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
 "wallet.submittedTransactionDescription" = "Για να συνεχίσετε να χρησιμοποιείτε τις Ανταμοιβές Brave, επιλέξτε τη χώρα σας, έτσι ώστε να σας δείξουμε τις σωστές επιλογές και διαφημίσεις για την περιοχή σας";
 
@@ -2011,15 +2050,6 @@
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: "Sent ETH" */
 "wallet.transactionUnknownSendTitle" = "Απεσταλμένα %@";
 
-/* The description of one of the 'Transak' provider. */
-"wallet.transakProviderDescription" = "Άμεση αγορά με τον τραπεζικό σας λογαριασμό. Χαμηλότερα τέλη.";
-
-/* The name of one of the on ramp provider. */
-"wallet.transakProviderName" = "Transak";
-
-/* The short name of one of the on ramp provider. */
-"wallet.transakProviderShortName" = "Transak";
-
 /* Blockchain function name for Solana compressed NFT transfers. */
 "wallet.txFunctionTypeCompressedNFTTransfer" = "Συμπιεσμένη μεταφορά NFT";
 
@@ -2089,9 +2119,6 @@
 /* The message when a sign transaction is completed/confirmed on the blockchain. */
 "wallet.txStatusSignedConfirmedMsg" = "Η συναλλαγή έχει υπογραφεί και θα σταλεί στο δίκτυο από τα dApp και περιμένει επιβεβαίωση.";
 
-/* The text in the disclosure view in transaction status screen. */
-"wallet.txStatusSubmittedDisclosure" = "Μπορείτε να κλείσετε με ασφάλεια αυτή την οθόνη.";
-
 /* A message explains an ETH Swap transaction is confirmed on the blockchain. */
 "wallet.txStatusSwappedMsg" = "έχει προστεθεί στο δικό σας";
 
@@ -2109,6 +2136,12 @@
 
 /* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
 "wallet.txStatusViewInActivity" = "Προβολή στη δραστηριότητα";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Μπορείτε να κλείσετε με ασφάλεια αυτή την οθόνη.";
+
+/* The title displays in confirmation screen when there is no more pending transaction. */
+"wallet.txConfirmationNoMorePendingTitle" = "Δεν υπάρχουν άλλες εκκρεμείς συναλλαγές";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Το Brave θα χρησιμοποιεί το Infura για την επίλυση ονομάτων τομέα .crypto (καθώς και %1$@) που βρίσκονται στο Unstoppable Domains. Το Brave αποκρύπτει τη διεύθυνση IP σας. Εάν ενεργοποιήσετε αυτή την επιλογή, το Infura θα βλέπει ότι κάποιος προσπαθεί να επισκεφτεί αυτούς τους τομείς, αλλά τίποτε άλλο. Ανατρέξτε στις ενότητες <a href=%2$@>%3$@</a> και <a href=%4$@>%5$@</a> του Infura.";
@@ -2250,6 +2283,9 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Προσθέστε αυτόματα NFT που σας ανήκουν στο Πορτοφόλι με χρήση API τρίτων. [Μάθετε περισσότερα](%@)";
+
+/* A description of an ZCash account, displayed in Accounts tab. */
+"wallet.zecAccountDescription" = "ZCash";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Ω έως Α";
