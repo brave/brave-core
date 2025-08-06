@@ -21,37 +21,38 @@ BraveScreenOrientationDelegateAndroid::
 void BraveScreenOrientationDelegateAndroid::Lock(
     WebContents* web_contents,
     device::mojom::ScreenOrientationLockType lock_orientation) {
-  // Check YouTube fullscreen state from NavigationEntry UserData
-  if (web_contents) {
-    NavigationEntry* entry =
-        web_contents->GetController().GetLastCommittedEntry();
-    if (entry) {
-      auto* data = static_cast<YouTubeFullscreenPageData*>(
-          entry->GetUserData(kYouTubeFullscreenPageDataKey));
-      if (data && data->fullscreen_requested()) {
-        return;
-      }
-    }
+  if (IsYouTubeFullscreenRequested(web_contents)) {
+    return;
   }
 
   ScreenOrientationDelegateAndroid::Lock(web_contents, lock_orientation);
 }
 
 void BraveScreenOrientationDelegateAndroid::Unlock(WebContents* web_contents) {
-  // Check YouTube fullscreen state from NavigationEntry UserData
-  if (web_contents) {
-    NavigationEntry* entry =
-        web_contents->GetController().GetLastCommittedEntry();
-    if (entry) {
-      auto* data = static_cast<YouTubeFullscreenPageData*>(
-          entry->GetUserData(kYouTubeFullscreenPageDataKey));
-      if (data && data->fullscreen_requested()) {
-        return;
-      }
-    }
+  if (IsYouTubeFullscreenRequested(web_contents)) {
+    return;
   }
 
   ScreenOrientationDelegateAndroid::Unlock(web_contents);
+}
+
+// static
+bool BraveScreenOrientationDelegateAndroid::IsYouTubeFullscreenRequested(
+    WebContents* web_contents) {
+  // Check YouTube fullscreen state from NavigationEntry UserData
+  if (!web_contents) {
+    return false;
+  }
+
+  NavigationEntry* entry =
+      web_contents->GetController().GetLastCommittedEntry();
+  if (!entry) {
+    return false;
+  }
+
+  auto* data = static_cast<YouTubeFullscreenPageData*>(
+      entry->GetUserData(kYouTubeFullscreenPageDataKey));
+  return data && data->fullscreen_requested();
 }
 
 }  // namespace content

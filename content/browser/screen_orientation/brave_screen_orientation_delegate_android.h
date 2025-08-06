@@ -48,6 +48,10 @@ class CONTENT_EXPORT BraveScreenOrientationDelegateAndroid
   void Lock(WebContents* web_contents,
             device::mojom::ScreenOrientationLockType lock_orientation) override;
   void Unlock(WebContents* web_contents) override;
+
+ private:
+  // Helper method to check if YouTube fullscreen is requested
+  static bool IsYouTubeFullscreenRequested(WebContents* web_contents);
 };
 
 }  // namespace content
