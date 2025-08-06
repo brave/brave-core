@@ -4,4 +4,4 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_shields_public_headers =
-    [ "//brave/ios/browser/brave_shields/brave_shields_utils_factory.h" ]
+    [ "//brave/ios/browser/brave_shields/brave_shields_settings_factory.h" ]
