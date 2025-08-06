@@ -24,12 +24,13 @@
     }
 
     button.primary {
-        color: white;
+      color: white;
     }
   }
 
   #needsRestart .flex:last-child {
-    text-align: right;  /* csschecker-disable-line left-right */
+    text-align: right;
+    /* csschecker-disable-line left-right */
   }
 
   .flex {
@@ -56,74 +57,64 @@
   }
 </style>
 
-<cr-view-manager id="viewManager" class="cr-centered-card-container"
-  show-all$="[[shouldShowAll]]">
-  <settings-section
-    id="extensions"
-    slot="view"
-    page-title="$i18n{braveDefaultExtensions}"
-    class="cr-centered-card-container">
-    <div hidden="[[isExtensionsManifestV2Routed_]]">
-      <settings-toggle-button id="googleLoginForExtensions" class="cr-row first"
-        pref="{{prefs.signin.allowed_on_next_startup}}" learn-more-url="$i18n{googleLoginLearnMoreURL}"
-        label="$i18n{googleLoginForExtensionsDesc}">
-        <template is="dom-if" if="[[shouldShowRestartForGoogleLogin_(
+<settings-section
+  id="extensions"
+  slot="view"
+  page-title="$i18n{braveDefaultExtensions}"
+  class="cr-centered-card-container">
+  <div hidden="[[isExtensionsManifestV2Routed_]]">
+    <settings-toggle-button id="googleLoginForExtensions" class="cr-row first"
+      pref="{{prefs.signin.allowed_on_next_startup}}" learn-more-url="$i18n{googleLoginLearnMoreURL}"
+      label="$i18n{googleLoginForExtensionsDesc}">
+      <template is="dom-if" if="[[shouldShowRestartForGoogleLogin_(
           prefs.signin.allowed_on_next_startup.value)]]">
-          <cr-button on-click="restartBrowser_" slot="more-actions">
-            $i18n{restart}
-          </cr-button>
-        </template>
-      </settings-toggle-button>
-      <settings-toggle-button id="mediaRouterEnabled" class="cr-row" pref="{{prefs.brave.enable_media_router_on_restart}}"
-        label="Media Router" sub-label="$i18n{mediaRouterEnabledDesc}">
-        <template is="dom-if" if="[[shouldShowRestartForMediaRouter_(
+        <cr-button on-click="restartBrowser_" slot="more-actions">
+          $i18n{restart}
+        </cr-button>
+      </template>
+    </settings-toggle-button>
+    <settings-toggle-button id="mediaRouterEnabled" class="cr-row" pref="{{prefs.brave.enable_media_router_on_restart}}"
+      label="Media Router" sub-label="$i18n{mediaRouterEnabledDesc}">
+      <template is="dom-if" if="[[shouldShowRestartForMediaRouter_(
           prefs.brave.enable_media_router_on_restart.value)]]">
-          <cr-button on-click="restartBrowser_" slot="more-actions">
-            $i18n{restart}
-          </cr-button>
-        </template>
-      </settings-toggle-button>
-      <settings-toggle-button id="widevineEnabled" class="cr-row" pref="[[widevineEnabledPref_]]" label="Widevine"
-        sub-label="$i18n{widevineEnabledDesc}" on-settings-boolean-control-change="onWidevineEnabledChange_">
-      </settings-toggle-button>
-      <div class="settings-row" id="manageV2ExtensionsRow" hidden="[[!isExtensionsManifestV2FeatureEnabled_]]">
-        <cr-link-row icon-class=" icon-external" label="$i18n{manageExtensionsV2Label}"
-          sub-label="$i18n{manageExtensionsV2SubLabel}" on-click="openManageV2ExtensionPage_"
-          id="manageV2Extensions">
-        </cr-link-row>
-      </div>
-      <div class="settings-row" id="manageExtensionsRow">
-        <cr-link-row icon-class="icon-external" label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
-        </cr-link-row>
-      </div>
-      <div class="settings-row" id="manageKeyboardShortcutsRow">
-        <cr-link-row icon-class="icon-external" label="$i18n{keyboardShortcuts}" on-click="openKeyboardShortcutsPage_">
-        </cr-link-row>
-      </div>
-      <div class="settings-row" id="getMoreExtensionsRow">
-        <cr-link-row label="$i18n{getMoreExtensionsLabel}" sub-label="$i18n{getMoreExtensionsSubLabel}"
-          on-click="openWebStoreUrl_" external>
-        </cr-link-row>
-      </div>
-      <template is="dom-if" if="{{ showRestartToast_ }}">
-        <div id="needsRestart">
-          <div class="flex-container">
-            <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
-            <div class="flex">
-              <button id="restartButton" class="primary" tabindex="9" on-click="restartBrowser_">
-                $i18n{relaunchButtonLabel}
-              </button>
-            </div>
+        <cr-button on-click="restartBrowser_" slot="more-actions">
+          $i18n{restart}
+        </cr-button>
+      </template>
+    </settings-toggle-button>
+    <settings-toggle-button id="widevineEnabled" class="cr-row" pref="[[widevineEnabledPref_]]" label="Widevine"
+      sub-label="$i18n{widevineEnabledDesc}" on-settings-boolean-control-change="onWidevineEnabledChange_">
+    </settings-toggle-button>
+    <div class="settings-row" id="manageV2ExtensionsRow" hidden="[[!isExtensionsManifestV2FeatureEnabled_]]">
+      <cr-link-row icon-class=" icon-external" label="$i18n{manageExtensionsV2Label}"
+        sub-label="$i18n{manageExtensionsV2SubLabel}" on-click="openManageV2ExtensionPage_"
+        id="manageV2Extensions">
+      </cr-link-row>
+    </div>
+    <div class="settings-row" id="manageExtensionsRow">
+      <cr-link-row icon-class="icon-external" label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
+      </cr-link-row>
+    </div>
+    <div class="settings-row" id="manageKeyboardShortcutsRow">
+      <cr-link-row icon-class="icon-external" label="$i18n{keyboardShortcuts}" on-click="openKeyboardShortcutsPage_">
+      </cr-link-row>
+    </div>
+    <div class="settings-row" id="getMoreExtensionsRow">
+      <cr-link-row label="$i18n{getMoreExtensionsLabel}" sub-label="$i18n{getMoreExtensionsSubLabel}"
+        on-click="openWebStoreUrl_" external>
+      </cr-link-row>
+    </div>
+    <template is="dom-if" if="{{ showRestartToast_ }}">
+      <div id="needsRestart">
+        <div class="flex-container">
+          <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
+          <div class="flex">
+            <button id="restartButton" class="primary" tabindex="9" on-click="restartBrowser_">
+              $i18n{relaunchButtonLabel}
+            </button>
           </div>
         </div>
-      </template>
-    </div>
-  </settings-section>
-  <settings-subpage
-    page-title="$i18n{manageExtensionsV2Label}"
-    slot="view"
-    id="extensions-v2-subpage"
-    data-parent-view-id="extensions">
-    <brave-extensions-v2-subpage prefs="{{prefs}}"></brave-extensions-v2-subpage>
-  </settings-subpage>
-</cr-view-manager>
+      </div>
+    </template>
+  </div>
+</settings-section>

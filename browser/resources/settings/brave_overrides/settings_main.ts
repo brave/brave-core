@@ -15,6 +15,8 @@ import '../getting_started_page/getting_started_page_index.js'
 import '../default_brave_shields_page/shields_page_index.js'
 import '../brave_wallet_page/wallet_page_index.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page_index.js'
+import '../brave_default_extensions_page/brave_extensions_page_index.js'
+import '../brave_sync_page/brave_sync_page_index.js'
 
 RegisterPolymerTemplateModifications({
   'settings-main': (templateContent) => {
@@ -151,10 +153,10 @@ RegisterPolymerTemplateModifications({
         <template is="dom-if" if="[[showPage_(pageVisibility_.extensions)]]">
           <div slot="view" id="extensions">
             <template is="dom-if" if="true">
-              <settings-brave-default-extensions-page
+              <settings-brave-extensions-page-index
                 prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
-              </settings-brave-default-extensions-page>
+              </settings-brave-extensions-page-index>
             </template>
           </div>
         </template>
