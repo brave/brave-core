@@ -131,6 +131,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
+import org.chromium.chrome.browser.externalnav.BraveExternalNavigationUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
@@ -481,6 +482,8 @@ public abstract class BraveActivity extends ChromeActivity
             enableSpeedreaderMode();
         } else if (id == R.id.brave_leo_id) {
             openBraveLeo();
+        } else if (id == R.id.brave_open_in_external_application) {
+            openInExternalApplication();
         } else {
             return false;
         }
@@ -2097,6 +2100,15 @@ public abstract class BraveActivity extends ChromeActivity
         } else {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         }
+    }
+
+    public void openInExternalApplication() {
+        final Tab currentTab = getActivityTab();
+        // assert currentTab != null;
+        BraveExternalNavigationUtils.openUrl(
+            currentTab.getUrl(),
+            getApplicationContext()
+        );
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {

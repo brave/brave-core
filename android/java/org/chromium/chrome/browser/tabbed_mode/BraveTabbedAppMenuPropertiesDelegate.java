@@ -20,6 +20,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import org.chromium.base.Log;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -33,6 +34,7 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
+import org.chromium.chrome.browser.externalnav.BraveExternalNavigationUtils;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -65,6 +67,7 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter;
 import org.chromium.ui.modelutil.PropertyModel;
+import org.chromium.url.GURL;
 
 import java.util.Arrays;
 import java.util.List;
@@ -331,6 +334,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mContext)) {
             modelList.add(buildSetDefaultBrowserItem());
         }
+        if (shouldShowOpenInExternalApplicationItem(mActivityTabProvider.get())) {
+            modelList.add(buildOpenInExternalApplicationItem());
+        }
+        
         if (!mJunitIsTesting) {
             if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
                 modelList.add(buildBraveVpnItem());
@@ -513,6 +520,30 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         BraveVpnPrefUtils.getRegionIsoCode(),
                         regionName));
         return new MVCListAdapter.ListItem(AppMenuItemType.TITLE_BUTTON, model);
+    }
+
+    private MVCListAdapter.ListItem buildOpenInExternalApplicationItem() {
+        return new MVCListAdapter.ListItem(
+                AppMenuHandler.AppMenuItemType.STANDARD,
+                buildModelForStandardMenuItem(
+                        R.id.brave_open_in_external_application,
+                        R.string.menu_open_in_external_application,
+                        shouldShowIconBeforeItem()
+                                ? R.drawable.ic_info : 0));
+    }
+
+    private boolean shouldShowOpenInExternalApplicationItem(@Nullable Tab currentTab) {
+        if (currentTab == null) return false;
+        try {
+            GURL url = currentTab.getUrl();
+            if (url == null || TextUtils.isEmpty(url.getSpec())) {
+                return false;
+            }
+            return BraveExternalNavigationUtils.canResolveUrl(url, mContext);
+        } catch (Exception e) {
+            Log.e("BraveTabbedAppMenuPropertiesDelegate", "Error checking if external application can handle URL: " + e.getMessage());
+            return false;
+        }
     }
 
     @Override
