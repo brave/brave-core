@@ -12,8 +12,7 @@ import type {CrViewManagerElement} from 'chrome://resources/cr_elements/cr_view_
 
 import {SettingsCheckboxElement} from '../controls/settings_checkbox.js';
 import {loadTimeData} from '../i18n_setup.js';
-import {Route, RouteObserverMixin, Router} from '../router.js';
-import {routes} from '../route.js';
+import {Router} from '../router.js';
 
 import {SettingsViewMixin, SettingsViewMixinInterface} from '../settings_page/settings_view_mixin.js';
 import {SearchableViewContainerMixin, SearchableViewContainerMixinInterface} from '../settings_page/searchable_view_container_mixin.js';
@@ -22,7 +21,7 @@ import {BraveDefaultExtensionsBrowserProxyImpl} from './brave_default_extensions
 import {getTemplate} from './brave_default_extensions_page.html.js'
 
 const SettingBraveDefaultExtensionsPageElementBase =
-  SearchableViewContainerMixin(SettingsViewMixin(SettingsViewMixin(WebUiListenerMixin(PrefsMixin(RouteObserverMixin(PolymerElement)))))) as {
+  SearchableViewContainerMixin(SettingsViewMixin(WebUiListenerMixin(PrefsMixin(PolymerElement)))) as {
   new (): PolymerElement & WebUiListenerMixinInterface & PrefsMixinInterface & SearchableViewContainerMixinInterface & SettingsViewMixinInterface
 }
 
@@ -57,11 +56,9 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
           return {}
         },
       },
-      isExtensionsManifestV2FeatureEnabled_: Boolean,
-      isExtensionsManifestV2Routed_: {
-        type: Boolean,
-        value: false,
-      },
+      isExtensionsManifestV2FeatureEnabled_: {
+        value: () => loadTimeData.getBoolean('extensionsManifestV2Feature'),
+      }
     }
   }
 
@@ -69,13 +66,9 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   declare showRestartToast_: boolean
   declare widevineEnabledPref_: chrome.settingsPrivate.PrefObject
   declare isExtensionsManifestV2FeatureEnabled_: boolean
-  declare isExtensionsManifestV2Routed_: boolean
 
   override ready() {
     super.ready()
-
-    this.isExtensionsManifestV2FeatureEnabled_ =
-      loadTimeData.getBoolean('extensionsManifestV2Feature')
 
     this.addWebUiListener(
       'brave-needs-restart-changed', (needsRestart: boolean) => {
@@ -92,37 +85,13 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
     this.browserProxy_.isWidevineEnabled().then(setWidevineEnabledPref)
   }
 
-  /** @protected */
-  override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
-    super.currentRouteChanged(newRoute, oldRoute);
-
-    const router = Router.getInstance();
-    this.isExtensionsManifestV2Routed_ =
-      router.getCurrentRoute() == router.getRoutes().EXTENSIONS_V2;
-    // Need to wait for currentRouteChanged observers on child views to run
-    // first, before switching views.
-    queueMicrotask(() => {
-      switch (newRoute) {
-        case routes.EXTENSIONS:
-          this.$.viewManager.switchView(
-              'extensions', 'no-animation', 'no-animation');
-          break;
-        case routes.EXTENSIONS_V2:
-          this.$.viewManager.switchView(
-              'extensions-v2-subpage', 'no-animation', 'no-animation');
-          break;
-        case routes.BASIC:
-          // Switch back to the default view in case they are part of search
-          // results.
-          this.$.viewManager.switchView(
-              'braveSync', 'no-animation', 'no-animation');
-          break;
-        default:
-          // Nothing to do. Other parent elements are responsible for updating
-          // the displayed contents.
-          break;
-      }
-    });
+  override getAssociatedControlFor(childViewId: string): HTMLElement {
+    switch (childViewId) {
+      case 'extensions-v2-subpage':
+        return this.shadowRoot!.querySelector('#manageV2Extensions')!;
+      default:
+        throw new Error(`Unknown child view id: ${childViewId}`)
+    }
   }
 
   restartBrowser_(e: Event) {
