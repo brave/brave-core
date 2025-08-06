@@ -102,6 +102,11 @@ class BraveShieldsTabHelper
  private:
   friend class content::WebContentsUserData<BraveShieldsTabHelper>;
 
+  struct TimeIntervalReloadsCounter {
+    base::Time start_time;
+    size_t reloads_count;
+  };
+
   explicit BraveShieldsTabHelper(content::WebContents* web_contents);
 
   // content::WebContentsObserver
@@ -127,7 +132,7 @@ class BraveShieldsTabHelper
       content::NavigationHandle* navigation_handle);
 
   bool ignore_force_reload_web_contents_ = false;
-  size_t reloads_ = 0;
+  std::optional<TimeIntervalReloadsCounter> time_interval_reloads_counter_;
   GURL last_navigated_url_;
 
   base::ObserverList<Observer> observer_list_;

@@ -17,6 +17,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -100,27 +101,39 @@ void BraveShieldsTabHelper::MaybeNotifyAfterRepeatedReloads(
     return;
   }
 
-  if (GetBraveShieldsAdBlockOnlyModeEnabled()) {
-    // Do not notify if shields ad block only mode is enabled.
-    reloads_ = 0;
+  if (navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
+    // Do not notify if the navigation is a restore.
     return;
   }
 
-  if (navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
-    // Do not notify if the navigation is a restore.
+  if (GetBraveShieldsAdBlockOnlyModeEnabled()) {
+    // Do not notify if shields ad block only mode is enabled.
     return;
   }
 
   if (!PageTransitionCoreTypeIs(navigation_handle->GetPageTransition(),
                                 ui::PAGE_TRANSITION_RELOAD)) {
     // Do not notify if the navigation is not a reload.
-    reloads_ = 0;
     return;
   }
 
-  reloads_++;
-  if (reloads_ >= 3 && reloads_ <= 5) {
-    // If the page is reloaded between 3 and 5 times, notify observers.
+  const base::Time current_time = base::Time::Now();
+  if (!time_interval_reloads_counter_ ||
+      current_time - time_interval_reloads_counter_->start_time >
+          features::kAdblockOnlyModeReloadsCountInterval.Get()) {
+    time_interval_reloads_counter_ = TimeIntervalReloadsCounter{
+        .start_time = current_time,
+        .reloads_count = 0,
+    };
+  }
+
+  time_interval_reloads_counter_->reloads_count++;
+  if (time_interval_reloads_counter_->reloads_count >=
+          features::kAdblockOnlyModeReloadsCountMin.Get() &&
+      time_interval_reloads_counter_->reloads_count <=
+          features::kAdblockOnlyModeReloadsCountMax.Get()) {
+    // If the page is reloaded between 3 and 5 times in 10 seconds, notify
+    // observers.
     for (Observer& observer : observer_list_) {
       observer.OnAfterRepeatedReloads();
     }
