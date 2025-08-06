@@ -60,6 +60,7 @@
 #include "services/network/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest-death-test.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -3619,6 +3620,159 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   ASSERT_FALSE(history.empty());
   const auto& last_turn = history.back();
   EXPECT_FALSE(last_turn->uploaded_files.has_value());
+
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       AssociateUnsentContentWithTurn_BasicAssociation) {
+  auto turn = mojom::ConversationTurn::New(
+      "test-turn-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+
+  // Initially, GetAssociatedContent should not have conversation_turn_uuid set
+  auto initial_content = conversation_handler_->associated_content_manager()
+                             ->GetAssociatedContent();
+  ASSERT_EQ(1u, initial_content.size());
+  EXPECT_FALSE(initial_content[0]->conversation_turn_uuid.has_value());
+
+  // Associate content with turn
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  // After association, GetAssociatedContent should have conversation_turn_uuid
+  // set
+  auto associated_content = conversation_handler_->associated_content_manager()
+                                ->GetAssociatedContent();
+  ASSERT_EQ(1u, associated_content.size());
+  EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
+  EXPECT_EQ("test-turn-uuid",
+            associated_content[0]->conversation_turn_uuid.value());
+  EXPECT_EQ(associated_content_->uuid(), associated_content[0]->uuid);
+
+  // GetCachedContentsMap should work without crashing and include the turn UUID
+  // as key
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map.contains("test-turn-uuid"));
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       AssociateUnsentContentWithTurn_MultipleContent) {
+  // Add a second content delegate
+  auto second_content = std::make_unique<NiceMock<MockAssociatedContent>>();
+  conversation_handler_->associated_content_manager()->AddContent(
+      second_content.get(), false, false);
+
+  auto turn = mojom::ConversationTurn::New(
+      "test-turn-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+
+  // Associate content with turn
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  // Both content items should be associated with the turn
+  auto associated_content = conversation_handler_->associated_content_manager()
+                                ->GetAssociatedContent();
+  ASSERT_EQ(2u, associated_content.size());
+
+  // Both should have the same conversation_turn_uuid
+  EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
+  EXPECT_TRUE(associated_content[1]->conversation_turn_uuid.has_value());
+  EXPECT_EQ("test-turn-uuid",
+            associated_content[0]->conversation_turn_uuid.value());
+  EXPECT_EQ("test-turn-uuid",
+            associated_content[1]->conversation_turn_uuid.value());
+
+  // UUIDs should be match
+  EXPECT_EQ(associated_content_->uuid(), associated_content[0]->uuid);
+  EXPECT_EQ(second_content->uuid(), associated_content[1]->uuid);
+
+  // GetCachedContentsMap should work and have both content items under the same
+  // turn UUID
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map.contains("test-turn-uuid"));
+  EXPECT_EQ(2u, contents_map.at("test-turn-uuid").size());
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       AssociateUnsentContentWithTurn_AlreadyAssociated) {
+  auto turn1 = mojom::ConversationTurn::New(
+      "test-turn-uuid-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "First human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "test-turn-uuid-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Second human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+
+  // Associate content with first turn
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn1);
+
+  // Verify association
+  auto content_after_first = conversation_handler_->associated_content_manager()
+                                 ->GetAssociatedContent();
+  ASSERT_EQ(1u, content_after_first.size());
+  EXPECT_EQ("test-turn-uuid-1",
+            content_after_first[0]->conversation_turn_uuid.value());
+
+  // Try to associate the same content with second turn - should be skipped
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn2);
+
+  // Content should still be associated with first turn
+  auto content_after_second =
+      conversation_handler_->associated_content_manager()
+          ->GetAssociatedContent();
+  ASSERT_EQ(1u, content_after_second.size());
+  EXPECT_EQ("test-turn-uuid-1",
+            content_after_second[0]->conversation_turn_uuid.value());
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       AssociateUnsentContentWithTurn_RequiresUuid) {
+  // Create turn without UUID - should crash
+  auto turn_without_uuid = mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+
+  EXPECT_DEATH(conversation_handler_->associated_content_manager()
+                   ->AssociateUnsentContentWithTurn(turn_without_uuid),
+               "");
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       AssociateUnsentContentWithTurn_AutomaticAssociation) {
+  // This test verifies that human turns are automatically associated when added
+  // to conversation history Initially content should not be associated
+  auto initial_content = conversation_handler_->associated_content_manager()
+                             ->GetAssociatedContent();
+  EXPECT_FALSE(initial_content[0]->conversation_turn_uuid.has_value());
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // Submit a human turn - this should automatically associate content
+  conversation_handler_->SubmitHumanConversationEntry("Test message",
+                                                      std::nullopt);
+
+  // Verify content is now associated with a turn
+  auto associated_content = conversation_handler_->associated_content_manager()
+                                ->GetAssociatedContent();
+  ASSERT_EQ(1u, associated_content.size());
+  EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
+
+  // GetCachedContentsMap should work without crashing
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_EQ(1u, contents_map.size());
 
   testing::Mock::VerifyAndClearExpectations(engine);
 }
