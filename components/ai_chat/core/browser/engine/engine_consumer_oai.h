@@ -85,6 +85,16 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest, BuildPageContentMessages);
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
                            BuildPageContentMessages_Truncates);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_PageContentsOrderedBeforeTurns);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_PageContentsExcludedForMissingTurns);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_MultiplePageContentsForSameTurn);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_EmptyPageContentsMap);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_NonExistentTurnId);
 
   base::Value::List BuildPageContentMessages(
       PageContents& page_contents,
@@ -98,7 +108,6 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       std::optional<base::Value::Dict> user_memory_message,
       const std::optional<std::string>& selected_text,
       const EngineConsumer::ConversationHistory& conversation_history);
-
 
   std::optional<base::Value::Dict> BuildUserMemoryMessage();
 

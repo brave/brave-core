@@ -205,14 +205,6 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
         last_turn->selected_text->substr(0, max_associated_content_length_);
   }
 
-  uint32_t remaining_length = max_associated_content_length_;
-  uint32_t selected_text_length = selected_text.value_or("").size();
-  if (selected_text_length > max_associated_content_length_) {
-    remaining_length = 0;
-  } else {
-    remaining_length -= selected_text_length;
-  }
-
   base::Value::List messages =
       BuildMessages(model_options_, page_contents, BuildUserMemoryMessage(),
                     selected_text, conversation_history);

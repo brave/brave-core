@@ -198,6 +198,9 @@ void ConversationHandler::OnArchiveContentUpdated(
 }
 
 void ConversationHandler::OnAssociatedContentUpdated() {
+  metadata_->associated_content =
+      associated_content_manager_->GetAssociatedContent();
+
   for (auto& client : conversation_ui_handlers_) {
     client->OnAssociatedContentInfoChanged(
         associated_content_manager_->GetAssociatedContent());

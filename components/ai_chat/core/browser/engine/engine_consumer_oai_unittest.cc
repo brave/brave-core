@@ -1234,4 +1234,193 @@ TEST_F(EngineConsumerOAIUnitTest,
   run_loop.Run();
 }
 
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildMessages_PageContentsOrderedBeforeTurns) {
+  PageContent page_content1("Test page 1 content", false);
+  PageContent page_content2("Test page 2 content", false);
+  PageContentsMap page_contents;
+  page_contents["turn-1"] = {std::cref(page_content1)};
+  page_contents["turn-3"] = {std::cref(page_content2)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  // Create a turn with the same UUID as in page_contents
+  auto turn1 = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 1", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn1));
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "Assistant message 1", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn2));
+
+  auto turn3 = mojom::ConversationTurn::New(
+      "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 2", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn3));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
+      std::nullopt, conversation_history);
+
+  // Check that messages are built correctly
+  // Expected order: system message, page content, human turn, assistant turn
+  ASSERT_GE(messages.size(), 6u);
+
+  // First should be system message
+  EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+  // Second should be the page content message
+  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+  std::string content = *messages[1].GetDict().FindString("content");
+  EXPECT_THAT(content, testing::HasSubstr("Test page 1 content"));
+  EXPECT_THAT(content, testing::HasSubstr("<page>"));
+
+  // Third should be the human turn
+  EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+  EXPECT_EQ(*messages[2].GetDict().Find("content"), "Human message 1");
+
+  // Fourth should be the assistant turn
+  EXPECT_EQ(*messages[3].GetDict().Find("role"), "assistant");
+  EXPECT_EQ(*messages[3].GetDict().Find("content"), "Assistant message 1");
+
+  // Fifth should be the second page content message
+  EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
+  content = *messages[4].GetDict().FindString("content");
+  EXPECT_THAT(content, testing::HasSubstr("Test page 2 content"));
+  EXPECT_THAT(content, testing::HasSubstr("<page>"));
+
+  // Sixth should be the second human turn
+  EXPECT_EQ(*messages[5].GetDict().Find("role"), "user");
+  EXPECT_EQ(*messages[5].GetDict().Find("content"), "Human message 2");
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildMessages_PageContentsExcludedForMissingTurns) {
+  PageContent page_content1("Content for existing turn", false);
+  PageContent page_content2("Content for missing turn", false);
+  PageContentsMap page_contents;
+  page_contents["existing-turn"] = {std::cref(page_content1)};
+  page_contents["missing-turn"] = {std::cref(page_content2)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  // Only create a turn for "existing-turn", not "missing-turn"
+  auto turn = mojom::ConversationTurn::New(
+      "existing-turn", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
+      std::nullopt, conversation_history);
+
+  // Convert messages to string for easier searching
+  std::string all_messages_json;
+  for (const auto& message : messages) {
+    std::string message_json;
+    base::JSONWriter::Write(message, &message_json);
+    all_messages_json += message_json;
+  }
+
+  // Should contain content for existing turn
+  EXPECT_THAT(all_messages_json,
+              testing::HasSubstr("Content for existing turn"));
+
+  // Should NOT contain content for missing turn
+  EXPECT_THAT(all_messages_json,
+              testing::Not(testing::HasSubstr("Content for missing turn")));
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildMessages_MultiplePageContentsForSameTurn) {
+  PageContent page_content1("First page content", false);
+  PageContent video_content("Video content", true);
+  PageContentsMap page_contents;
+  page_contents["turn-1"] = {std::cref(page_content1),
+                             std::cref(video_content)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  auto turn = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
+      std::nullopt, conversation_history);
+
+  // Should have system message + 2 page content messages + human turn
+  ASSERT_GE(messages.size(), 4u);
+
+  // Check that both page contents are included before the turn
+  std::string all_content;
+  for (size_t i = 1; i < messages.size() - 1;
+       ++i) {  // Skip system and last message
+    if (messages[i].GetDict().Find("role")->GetString() == "user") {
+      all_content += *messages[i].GetDict().FindString("content");
+    }
+  }
+
+  EXPECT_THAT(all_content, testing::HasSubstr("First page content"));
+  EXPECT_THAT(all_content, testing::HasSubstr("Video content"));
+  EXPECT_THAT(all_content, testing::HasSubstr("<page>"));
+  EXPECT_THAT(all_content, testing::HasSubstr("<transcript>"));
+}
+
+TEST_F(EngineConsumerOAIUnitTest, BuildMessages_EmptyPageContentsMap) {
+  PageContentsMap empty_page_contents;
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  auto turn = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), empty_page_contents,
+      std::nullopt, std::nullopt, conversation_history);
+
+  // Should only have system message + human turn
+  ASSERT_EQ(messages.size(), 2u);
+
+  EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+  EXPECT_EQ(*messages[1].GetDict().Find("content"), "Human message");
+}
+
+TEST_F(EngineConsumerOAIUnitTest, BuildMessages_NonExistentTurnId) {
+  PageContent page_content("This is a test page content", false);
+  PageContentsMap page_contents;
+  page_contents["non-existent-turn"] = {std::cref(page_content)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  auto turn = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
+      std::nullopt, conversation_history);
+
+  // Should only have system message + human turn
+  ASSERT_EQ(messages.size(), 2u);
+
+  EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+  EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+  EXPECT_EQ(*messages[1].GetDict().Find("content"), "Human message");
+}
+
 }  // namespace ai_chat
