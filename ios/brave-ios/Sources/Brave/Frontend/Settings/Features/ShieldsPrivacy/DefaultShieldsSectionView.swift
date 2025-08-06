@@ -72,16 +72,16 @@ struct DefaultShieldsSectionView: View {
         subtitle: Strings.autoRedirectTrackingURLsDescription,
         toggle: $settings.isDebounceEnabled
       )
-      OptionToggleView(
+
+      ToggleView(
         title: Strings.blockScripts,
         subtitle: Strings.blockScriptsDescription,
-        option: Preferences.Shields.blockScripts
+        toggle: $settings.isBlockScriptsEnabled
       )
-
-      OptionToggleView(
+      ToggleView(
         title: Strings.fingerprintingProtection,
         subtitle: Strings.fingerprintingProtectionDescription,
-        option: Preferences.Shields.fingerprintingProtection
+        toggle: $settings.isBlockFingerprintingEnabled
       )
 
       ToggleView(

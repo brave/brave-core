@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 
 /// A 3 part option for shield levels varying in strength of blocking content
@@ -35,6 +36,27 @@ public enum ShieldLevel: String, CaseIterable, Hashable {
     switch self {
     case .aggressive: return true
     case .disabled, .standard: return false
+    }
+  }
+
+  public var adBlockMode: BraveShields.AdBlockMode {
+    switch self {
+    case .aggressive: return .aggressive
+    case .standard: return .standard
+    case .disabled: return .allow
+    }
+  }
+}
+
+extension BraveShields.AdBlockMode {
+  public var shieldLevel: ShieldLevel {
+    switch self {
+    case .aggressive: return .aggressive
+    case .standard: return .standard
+    case .allow: return .disabled
+    @unknown default:
+      assertionFailure("Unexpected AdBlockMode")
+      return .standard
     }
   }
 }
