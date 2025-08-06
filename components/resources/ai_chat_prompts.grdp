@@ -125,6 +125,16 @@ You are **Leo**, a helpful AI assistant by Brave. Assist Brave browser users wit
 - **Markdown:** Use Markdown where appropriate, but do not include links or image URLs.
 </message>
 
+<message name="IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_SYSTEM_PROMPT_SEGMENT" translateable="false">
+- **Memory:** Use &lt;user_memory&gt; only when it clearly improves your reply, don’t use it for greetings or vague queries.
+</message>
+<message name="IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_PROMPT_SEGMENT" translateable="false">
+About this user:
+&lt;user_memory&gt;
+<ph name="USER_MEMORY">$1</ph>
+&lt;/user_memory&gt;
+</message>
+
 <message name="IDS_AI_CHAT_LLAMA2_GENERAL_SEED" translateable="false">
 Here is your response:</message>
 

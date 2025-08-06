@@ -21,6 +21,8 @@
 template <class T>
 class scoped_refptr;
 
+class PrefService;
+
 namespace api_request_helper {
 class APIRequestResult;
 }  // namespace api_request_helper
@@ -38,7 +40,8 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   explicit EngineConsumerOAIRemote(
       const mojom::CustomModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      ModelService* model_service);
+      ModelService* model_service,
+      PrefService* prefs);
   EngineConsumerOAIRemote(const EngineConsumerOAIRemote&) = delete;
   EngineConsumerOAIRemote& operator=(const EngineConsumerOAIRemote&) = delete;
   ~EngineConsumerOAIRemote() override;
@@ -87,6 +90,9 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       uint32_t max_associated_content_length,
       int video_message_id,
       int page_message_id);
+
+  std::optional<base::Value::Dict> BuildUserMemoryMessage();
+
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);
