@@ -7,7 +7,6 @@
 
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/json/json_reader.h"
@@ -445,6 +444,22 @@ std::unique_ptr<ValueTransform> CreateValueTransform(
   }
 
   return nullptr;
+}
+
+std::optional<std::string> ApplyTransforms(
+    const std::vector<std::unique_ptr<ValueTransform>>& transforms,
+    std::string_view input) {
+  std::optional<std::string> result(input);
+
+  for (const auto& transform : transforms) {
+    CHECK(transform);
+    result = transform->Process(*result);
+    if (!result) {
+      return std::nullopt;
+    }
+  }
+
+  return result;
 }
 
 }  // namespace web_discovery

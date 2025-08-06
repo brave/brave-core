@@ -69,15 +69,16 @@ class URLExtractor {
   URLExtractor& operator=(URLExtractor&&);
 
   // Identifies a URL and extracts query if present
-  std::optional<URLExtractResult> IdentifyURL(const GURL& url);
+  std::optional<URLExtractResult> IdentifyURL(const GURL& url) const;
 
  private:
   // Initializes the URL patterns
   void InitializePatterns();
 
   // Extracts query parameter from URL using the site details
-  std::optional<std::string> ExtractQuery(const GURL& url,
-                                          const RelevantSiteDetails& details);
+  std::optional<std::string> ExtractQuery(
+      const GURL& url,
+      const RelevantSiteDetails& details) const;
 
   std::vector<RelevantSiteDetails> site_details_;
 };

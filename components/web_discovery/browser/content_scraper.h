@@ -19,6 +19,8 @@
 
 namespace web_discovery {
 
+class URLExtractor;
+
 struct PageScrapeResult {
   PageScrapeResult(GURL url, std::string id);
   ~PageScrapeResult();
@@ -59,7 +61,8 @@ class ContentScraper {
       base::OnceCallback<void(std::unique_ptr<PageScrapeResult>)>;
 
   static std::unique_ptr<ContentScraper> Create(
-      const ServerConfigLoader* server_config_loader);
+      const ServerConfigLoader* server_config_loader,
+      const URLExtractor* url_extractor);
 
   virtual ~ContentScraper() = default;
 
