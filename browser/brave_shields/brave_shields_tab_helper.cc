@@ -17,6 +17,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -257,6 +258,13 @@ void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(
       GetPrefs(web_contents()), is_enabled ? AdBlockOnlyModeState::kEnabled
                                            : AdBlockOnlyModeState::kDisabled);
   ReloadWebContents();
+}
+
+void BraveShieldsTabHelper::OnBraveShieldsAdBlockOnlyModePromptDismissed() {
+  if (PrefService* prefs = GetPrefs(web_contents())) {
+    prefs->SetBoolean(
+        brave_shields::prefs::kAdblockAdBlockOnlyModePromptDismissed, true);
+  }
 }
 
 GURL BraveShieldsTabHelper::GetCurrentSiteURL() const {

@@ -269,19 +269,20 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
 }
 
 bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs) {
-  return prefs && prefs->GetInteger(kShieldsAdBlockOnlyModeState) ==
+  return prefs && prefs->GetInteger(prefs::kAdblockAdBlockOnlyModeState) ==
                       static_cast<int>(AdBlockOnlyModeState::kEnabled);
 }
 
 bool GetBraveShieldsAdBlockOnlyModeSupported(PrefService* prefs) {
-  return prefs && prefs->GetInteger(kShieldsAdBlockOnlyModeState) !=
+  return prefs && prefs->GetInteger(prefs::kAdblockAdBlockOnlyModeState) !=
                       static_cast<int>(AdBlockOnlyModeState::kNotSupported);
 }
 
 void SetBraveShieldsAdBlockOnlyModeState(PrefService* prefs,
                                          AdBlockOnlyModeState state) {
   if (prefs) {
-    prefs->SetInteger(kShieldsAdBlockOnlyModeState, static_cast<int>(state));
+    prefs->SetInteger(prefs::kAdblockAdBlockOnlyModeState,
+                      static_cast<int>(state));
   }
 }
 

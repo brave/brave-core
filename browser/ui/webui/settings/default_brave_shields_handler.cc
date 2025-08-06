@@ -15,6 +15,7 @@
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
@@ -136,7 +137,7 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
 
   pref_change_registrar_.Init(profile_->GetPrefs());
   pref_change_registrar_.Add(
-      kShieldsAdBlockOnlyModeState,
+      brave_shields::prefs::kAdblockAdBlockOnlyModeState,
       base::BindRepeating(
           &DefaultBraveShieldsHandler::OnAdBlockOnlyModePrefChanged,
           weak_ptr_factory_.GetWeakPtr()));

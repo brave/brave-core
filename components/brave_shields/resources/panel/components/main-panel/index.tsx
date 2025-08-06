@@ -27,7 +27,13 @@ const onDismissClick = (onDismiss?: () => void) => {
   }
 }
 
+const onDismissAdBlockOnlyModePromptClick = async () => {
+  await getPanelBrowserAPI().dataHandler.onBraveShieldsAdBlockOnlyModePromptDismissed()
+  getPanelBrowserAPI().panelHandler.closeUI()
+}
+
 const onEnableAdBlockOnlyModeClick = async () => {
+  // TODO(aseren): Both methods reload the page, we should only reload once!
   await getPanelBrowserAPI().dataHandler.setBraveShieldsAdBlockOnlyModeEnabled(true)
   await getPanelBrowserAPI().dataHandler.setBraveShieldsEnabled(true)
   getPanelBrowserAPI().panelHandler.closeUI()
@@ -51,10 +57,12 @@ function AreYouExperiencingIssuesAfterRepeatedReloads() {
           gap: 'var(--leo-spacing-m)'
         }}
       >
-        <Button kind="plain" size="medium" onClick={() => getPanelBrowserAPI().panelHandler.closeUI()}>
+        <Button kind="plain" size="medium" onClick={onDismissAdBlockOnlyModePromptClick}>
           {getLocale('braveShieldsDismissAlert')}
         </Button>
-        <Button size="medium" onClick={onEnableAdBlockOnlyModeClick}>{getLocale('braveShieldsEnableAdBlockOnlyMode')}</Button>
+        <Button size="medium" onClick={onEnableAdBlockOnlyModeClick}>
+          {getLocale('braveShieldsEnableAdBlockOnlyMode')}
+        </Button>
       </div>
     </div>
   );

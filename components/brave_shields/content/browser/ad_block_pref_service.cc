@@ -79,7 +79,7 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
   // Consider moving to local state usage only.
   SetBraveShieldsAdBlockOnlyModeState(prefs_, adblock_only_mode_state);
   pref_change_registrar_->Add(
-      kShieldsAdBlockOnlyModeState,
+      prefs::kAdblockAdBlockOnlyModeState,
       base::BindRepeating(&AdBlockPrefService::OnAdBlockOnlyModeChanged,
                           base::Unretained(this)));
 }

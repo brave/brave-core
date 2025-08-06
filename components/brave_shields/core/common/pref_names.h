@@ -29,6 +29,11 @@ inline constexpr char kAdBlockListSubscriptions[] =
     "brave.ad_block.list_subscriptions";
 inline constexpr char kAdBlockDeveloperMode[] = "brave.ad_block.developer_mode";
 
+inline constexpr char kAdblockAdBlockOnlyModeState[] =
+    "brave.ad_block.adblock_only_mode_state";
+inline constexpr char kAdblockAdBlockOnlyModePromptDismissed[] =
+    "brave.ad_block.adblock_only_mode_prompt_dismissed";
+
 inline constexpr char kFBEmbedControlType[] = "brave.fb_embed_default";
 inline constexpr char kTwitterEmbedControlType[] =
     "brave.twitter_embed_default";

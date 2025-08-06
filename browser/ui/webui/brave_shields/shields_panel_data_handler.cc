@@ -164,6 +164,14 @@ void ShieldsPanelDataHandler::SetBraveShieldsAdBlockOnlyModeEnabled(
       is_enabled);
 }
 
+void ShieldsPanelDataHandler::OnBraveShieldsAdBlockOnlyModePromptDismissed() {
+  if (!active_shields_data_controller_) {
+    return;
+  }
+  active_shields_data_controller_
+      ->OnBraveShieldsAdBlockOnlyModePromptDismissed();
+}
+
 void ShieldsPanelDataHandler::SetForgetFirstPartyStorageEnabled(
     bool is_enabled) {
   if (!active_shields_data_controller_) {

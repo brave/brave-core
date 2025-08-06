@@ -45,6 +45,7 @@ interface DataHandler {
   SetIsNoScriptsEnabled(bool is_enabled);
   SetBraveShieldsEnabled(bool is_enabled);
   SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
+  OnBraveShieldsAdBlockOnlyModePromptDismissed();
   SetForgetFirstPartyStorageEnabled(bool is_enabled);
   OpenWebCompatWindow();
   UpdateFavicon();
