@@ -13,12 +13,14 @@ import '../default_browser_page/default_browser_page.js'
 import '../on_startup_page/on_startup_page.js'
 import {getTemplate} from './getting_started.html.js'
 
+import {SettingsViewMixin, SettingsViewMixinInterface} from '../settings_page/settings_view_mixin.js'
+
 // <if expr="enable_pin_shortcut">
 import '../pin_shortcut_page/pin_shortcut_page.js'
 // </if>
 
 
-export class BraveSettingsGettingStarted extends PolymerElement {
+export class BraveSettingsGettingStarted extends SettingsViewMixin(PolymerElement) {
   static get is() {
     return 'brave-settings-getting-started'
   }
@@ -37,6 +39,15 @@ export class BraveSettingsGettingStarted extends PolymerElement {
   }
 
   declare private isBraveAccountEnabled_: boolean
+
+  override getAssociatedControlFor(childViewId: string): HTMLElement {
+    switch (childViewId) {
+      case 'manageProfile':
+        return this.shadowRoot!.querySelector('settings-people-page')!.shadowRoot!.querySelector('#edit-profile')!;
+      default:
+        throw new Error(`Unknown child view id: ${childViewId}`)
+    }
+  }
 }
 
 customElements.define(BraveSettingsGettingStarted.is, BraveSettingsGettingStarted);
