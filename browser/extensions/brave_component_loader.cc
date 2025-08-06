@@ -18,7 +18,7 @@
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
-#include "brave/components/web_discovery/common/util.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
@@ -43,12 +43,6 @@ BraveComponentLoader::BraveComponentLoader(Profile* profile)
       kWebDiscoveryEnabled,
       base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
                           base::Unretained(this)));
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  pref_change_registrar_.Add(
-      kWebDiscoveryDisabledByPolicy,
-      base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
-                          base::Unretained(this)));
-#endif
 }
 
 BraveComponentLoader::~BraveComponentLoader() = default;
@@ -65,8 +59,7 @@ bool BraveComponentLoader::UseBraveExtensionBackgroundPage() {
   native_enabled = base::FeatureList::IsEnabled(
       web_discovery::features::kBraveWebDiscoveryNative);
 #endif
-  return !native_enabled &&
-         web_discovery::IsWebDiscoveryEnabled(*profile_prefs_);
+  return !native_enabled && profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
 }
 
 void BraveComponentLoader::UpdateBraveExtension() {

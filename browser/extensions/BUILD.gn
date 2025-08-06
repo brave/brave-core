@@ -24,8 +24,7 @@ source_set("component_loader") {
   deps = [
     "//base",
     "//brave/components/brave_extension:static_resources",
-    "//brave/components/web_discovery/buildflags",
-    "//brave/components/web_discovery/common:util",
+    "//chrome/browser:browser_process",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",
     "//components/prefs",
@@ -137,7 +136,6 @@ source_set("extensions") {
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
     "//brave/components/web_discovery/buildflags",
-    "//brave/components/web_discovery/common:util",
     "//brave/components/webcompat_reporter/common",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",

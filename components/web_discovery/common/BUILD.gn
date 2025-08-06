@@ -6,9 +6,9 @@
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
-static_library("common") {
-  assert(enable_web_discovery_native)
+assert(enable_web_discovery_native)
 
+static_library("common") {
   sources = [
     "features.cc",
     "features.h",
@@ -21,20 +21,6 @@ static_library("common") {
 }
 
 mojom("mojom") {
-  assert(enable_web_discovery_native)
-
   sources = [ "web_discovery.mojom" ]
   deps = [ "//mojo/public/mojom/base" ]
-}
-
-static_library("util") {
-  sources = [
-    "util.cc",
-    "util.h",
-  ]
-
-  deps = [
-    "//brave/components/constants",
-    "//components/prefs",
-  ]
 }

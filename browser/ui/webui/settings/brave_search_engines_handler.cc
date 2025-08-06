@@ -14,6 +14,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/components/brave_origin/brave_origin_state.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -69,7 +71,16 @@ BraveSearchEnginesHandler::BraveSearchEnginesHandler(
     Profile* profile,
     regional_capabilities::RegionalCapabilitiesService* regional_capabilities)
     : SearchEnginesHandler(profile),
-      regional_capabilities_(regional_capabilities) {}
+      regional_capabilities_(regional_capabilities) {
+  profile_pref_change_registrar_.Init(profile->GetPrefs());
+  profile_pref_change_registrar_.Add(
+      kWebDiscoveryEnabled,
+      base::BindRepeating(
+          &BraveSearchEnginesHandler::OnWebDiscoveryEnabledChanged,
+          base::Unretained(this)));
+
+  brave_origin_state_observation_.Observe(BraveOriginState::GetInstance());
+}
 
 BraveSearchEnginesHandler::~BraveSearchEnginesHandler() = default;
 
@@ -85,6 +96,11 @@ void BraveSearchEnginesHandler::RegisterMessages() {
       "setDefaultPrivateSearchEngine",
       base::BindRepeating(
           &BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getIsWebDiscoveryHidden",
+      base::BindRepeating(
+          &BraveSearchEnginesHandler::HandleGetIsWebDiscoveryHidden,
           base::Unretained(this)));
 }
 
@@ -155,6 +171,31 @@ void BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine(
       template_url->sync_guid());
 
   OnModelChanged();
+}
+
+void BraveSearchEnginesHandler::HandleGetIsWebDiscoveryHidden(
+    const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  AllowJavascript();
+  bool hidden = IsWebDiscoveryHidden(profile_);
+  ResolveJavascriptCallback(args[0], base::Value(hidden));
+}
+
+void BraveSearchEnginesHandler::OnWebDiscoveryEnabledChanged() {
+  if (IsJavascriptAllowed()) {
+    bool hidden = IsWebDiscoveryHidden(profile_);
+    FireWebUIListener("web-discovery-hidden-changed", base::Value(hidden));
+  }
+}
+
+void BraveSearchEnginesHandler::OnBraveOriginStatusChanged() {
+  OnWebDiscoveryEnabledChanged();
+}
+
+// static
+bool BraveSearchEnginesHandler::IsWebDiscoveryHidden(Profile* profile) {
+  return profile->GetPrefs()->IsManagedPreference(kWebDiscoveryEnabled) ||
+         BraveOriginState::GetInstance()->IsBraveOriginUser();
 }
 
 base::Value::Dict BraveSearchEnginesHandler::GetSearchEnginesList() {

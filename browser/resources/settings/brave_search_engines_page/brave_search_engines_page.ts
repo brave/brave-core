@@ -49,7 +49,10 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
 
       // The label of the confirmation toast that is displayed when the user
       // chooses a default private search engine.
-      confirmationToastLabel_: String
+      confirmationToastLabel_: String,
+
+      // Whether web discovery is hidden from settings.
+      isWebDiscoveryHidden_: Boolean
     }
   }
 
@@ -57,6 +60,7 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   private declare showPrivateSearchEngineListDialog_: boolean
   private declare defaultPrivateSearchEngine_: SearchEngine|null
   private declare confirmationToastLabel_: string
+  private declare isWebDiscoveryHidden_: boolean
 
   browserProxy_ = BraveSearchEnginesPageBrowserProxyImpl.getInstance()
 
@@ -70,6 +74,14 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
     this.browserProxy_.getPrivateSearchEnginesList().then(updatePrivateSearchEngines)
     this.addWebUiListener(
       'private-search-engines-changed', updatePrivateSearchEngines)
+
+    // Initialize web discovery hidden status
+    const updateWebDiscoveryHidden = (hidden: boolean) => {
+      this.isWebDiscoveryHidden_ = hidden
+    }
+
+    this.browserProxy_.getIsWebDiscoveryHidden().then(updateWebDiscoveryHidden)
+    this.addWebUiListener('web-discovery-hidden-changed', updateWebDiscoveryHidden)
   }
 
   override currentRouteChanged() {
