@@ -270,7 +270,7 @@ build/commands/lib/branding.js @bridiver
 /components/constants @bridiver
 
 # changes to upstream content settings should be done as patches
-content_settings_registry.cc @content-settings-reviewers
+content_settings_registry.cc @brave/content-settings-reviewers
 
 # new content settings need review
-content_settings_types.mojom @content-settings-reviewers
+content_settings_types.mojom @brave/content-settings-reviewers
