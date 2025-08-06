@@ -1,13 +1,13 @@
-caption: Disable Stats Usage Ping
+caption: Enable Stats Usage Ping
 default: null
 desc: |-
-  Disable anonymous stats usage ping in Brave.
+  Enable anonymous stats usage ping in Brave.
 
   The anonymous stats usage ping is an opt-in feature that helps Brave estimate active user totals.
 
-  If this policy is set to true, the usage ping will always be disabled and all related UI elements will be hidden.
+  If this policy is set to true, the usage ping will be enabled.
 
-  If this policy is set to false, the usage ping will be enabled by default.
+  If this policy is set to false, the usage ping will be disabled.
 
   If you set this policy, users cannot change or override it.
 
@@ -20,11 +20,11 @@ features:
   per_profile: false
 items:
 - caption: Allow the user to decide (enabled by default)
-  value: false
-- caption: Disable usage ping functionality
-  value: true
-- caption: Allow the user to decide (enabled by default)
   value: null
+- caption: Enable usage ping functionality
+  value: true
+- caption: Disable usage ping functionality  
+  value: false
 owners:
 - bbondy@brave.com
 - clifton@brave.com
