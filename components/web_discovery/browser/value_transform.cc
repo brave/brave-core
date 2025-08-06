@@ -248,12 +248,12 @@ class SplitTransform : public ValueTransform {
   }
 
   SplitTransform(const std::string& split_on,
-                 int arr_pos,
+                 size_t arr_pos,
                  bool try_mode = false)
       : split_on_(split_on), arr_pos_(arr_pos), try_mode_(try_mode) {}
 
   std::optional<std::string> Process(std::string_view input) override {
-    std::vector<std::string> parts = base::SplitString(
+    auto parts = base::SplitStringUsingSubstr(
         input, split_on_, base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
     if (parts.size() == 1 && !try_mode_) {
