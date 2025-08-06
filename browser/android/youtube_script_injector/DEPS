@@ -1,4 +1,4 @@
 include_rules = [
   "+brave/components/script_injector/common",
-  "+brave/content/browser/screen_orientation",
+  "+brave/content/public/browser",
 ]

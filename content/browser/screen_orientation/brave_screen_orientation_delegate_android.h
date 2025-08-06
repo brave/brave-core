@@ -6,7 +6,7 @@
 #ifndef BRAVE_CONTENT_BROWSER_SCREEN_ORIENTATION_BRAVE_SCREEN_ORIENTATION_DELEGATE_ANDROID_H_
 #define BRAVE_CONTENT_BROWSER_SCREEN_ORIENTATION_BRAVE_SCREEN_ORIENTATION_DELEGATE_ANDROID_H_
 
-#include "base/supports_user_data.h"
+#include "brave/content/public/browser/youtube_fullscreen_page_data.h"
 #include "content/browser/screen_orientation/screen_orientation_delegate_android.h"
 #include "content/common/content_export.h"
 #include "content/public/browser/screen_orientation_delegate.h"
@@ -14,25 +14,6 @@
 #include "services/device/public/mojom/screen_orientation_lock_types.mojom-shared.h"
 
 namespace content {
-
-// Shared data structure for tracking YouTube fullscreen state
-struct CONTENT_EXPORT YouTubeFullscreenPageData
-    : public base::SupportsUserData::Data {
- public:
-  explicit YouTubeFullscreenPageData(bool fullscreen_requested = false)
-      : fullscreen_requested_(fullscreen_requested) {}
-
-  bool fullscreen_requested() const { return fullscreen_requested_; }
-  void set_fullscreen_requested(bool requested) {
-    fullscreen_requested_ = requested;
-  }
-
- private:
-  bool fullscreen_requested_;
-};
-
-// Key for storing YouTubeFullscreenPageData in NavigationEntry UserData
-CONTENT_EXPORT extern const char kYouTubeFullscreenPageDataKey[];
 
 class CONTENT_EXPORT BraveScreenOrientationDelegateAndroid
     : public ScreenOrientationDelegateAndroid {

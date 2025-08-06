@@ -14,7 +14,7 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/content/browser/screen_orientation/brave_screen_orientation_delegate_android.h"
+#include "brave/content/public/browser/youtube_fullscreen_page_data.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"

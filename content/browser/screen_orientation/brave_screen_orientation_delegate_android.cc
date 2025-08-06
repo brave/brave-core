@@ -10,9 +10,6 @@
 
 namespace content {
 
-// Define the key constant
-const char kYouTubeFullscreenPageDataKey[] = "youtube_fullscreen_page_data";
-
 BraveScreenOrientationDelegateAndroid::BraveScreenOrientationDelegateAndroid() =
     default;
 BraveScreenOrientationDelegateAndroid::
