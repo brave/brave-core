@@ -38,7 +38,6 @@
   id="shields"
   page-title="$i18n{braveShieldsTitle}">
 
-  <div hidden="[[isAdBlockRoute_]]">
   <div class="settings-box first">
     <div class="flex">
       <div class="label shields-primary-title">$i18n{braveShieldsDefaultsSectionTitle}</div>
@@ -134,7 +133,6 @@
       sub-label="$i18n{braveShieldsSaveContactInfoSublabel}"
       on-settings-boolean-control-change="onSaveContactInfoToggle_">
   </settings-toggle-button>
-  </div>
   <cr-link-row
     id="contentFiltersRow"
     class="hr"
@@ -144,5 +142,3 @@
   ></cr-link-row>
 
 </settings-section>
-
-<settings-social-blocking-page prefs="{{prefs}}"></settings-social-blocking-page>
