@@ -303,9 +303,7 @@ if (is_android) {
 
 if (is_mac) {
   group("framework_bundle_data") {
-    deps = [
-      "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data",
-    ]
+    deps = [ "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data" ]
   }
 }
 
