@@ -48,10 +48,6 @@ BravePrivacyHandler::BravePrivacyHandler() {
       p3a::kP3AEnabled,
       base::BindRepeating(&BravePrivacyHandler::OnP3AEnabledChanged,
                           base::Unretained(this)));
-  local_state_change_registrar_.Add(
-      p3a::kP3ADisabledByPolicy,
-      base::BindRepeating(&BravePrivacyHandler::OnP3AEnabledChanged,
-                          base::Unretained(this)));
 #if BUILDFLAG(IS_WIN)
   if (windows_recall::IsWindowsRecallAvailable()) {
     local_state_change_registrar_.Add(
@@ -137,9 +133,7 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isOpenAIChatFromBraveSearchEnabled",
       ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
           ai_chat::features::IsOpenAIChatFromBraveSearchEnabled());
-  auto* local_state = g_browser_process->local_state();
-  data_source->AddBoolean("isP3ADisabledByPolicy",
-                          local_state->GetBoolean(p3a::kP3ADisabledByPolicy));
+  data_source->AddBoolean("isP3AHidden", IsP3AHidden());
   data_source->AddBoolean("isStatsReportingHidden", IsStatsReportingHidden());
 
 #if BUILDFLAG(IS_WIN)
@@ -197,6 +191,13 @@ bool BravePrivacyHandler::IsStatsReportingHidden() {
          BraveOriginState::GetInstance()->IsBraveOriginUser();
 }
 
+// static
+bool BravePrivacyHandler::IsP3AHidden() {
+  PrefService* local_state = g_browser_process->local_state();
+  return local_state->IsManagedPreference(p3a::kP3AEnabled) ||
+         BraveOriginState::GetInstance()->IsBraveOriginUser();
+}
+
 void BravePrivacyHandler::OnStatsUsagePingEnabledChanged() {
   if (IsJavascriptAllowed()) {
     PrefService* local_state = g_browser_process->local_state();
@@ -223,9 +224,9 @@ void BravePrivacyHandler::OnP3AEnabledChanged() {
   if (IsJavascriptAllowed()) {
     PrefService* local_state = g_browser_process->local_state();
     bool user_enabled = local_state->GetBoolean(p3a::kP3AEnabled);
-    bool policy_disabled = local_state->GetBoolean(p3a::kP3ADisabledByPolicy);
+    bool hidden = IsP3AHidden();
 
-    FireWebUIListener("p3a-enabled-changed", user_enabled, policy_disabled);
+    FireWebUIListener("p3a-enabled-changed", user_enabled, hidden);
   }
 }
 

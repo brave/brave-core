@@ -52,6 +52,7 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler,
   void OnP3AEnabledChanged();
 
   static bool IsStatsReportingHidden();
+  static bool IsP3AHidden();
 
 #if BUILDFLAG(IS_WIN)
   void OnWindowsRecallDisabledChanged();

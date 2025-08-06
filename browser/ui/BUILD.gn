@@ -58,6 +58,7 @@ source_set("ui") {
     "//brave/browser/skus",
     "//brave/browser/ui/webui/brave_account",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_origin",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
     "//chrome/browser/ui:browser_navigator_params_headers",
