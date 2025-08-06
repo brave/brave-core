@@ -14,6 +14,7 @@ import {
 // Merge our interface additions with upstream's interface
 declare module '../page_visibility' {
   export interface PageVisibility {
+    adBlockOnlyMode?: boolean
     braveSync?: boolean
     braveWallet?: boolean
     // <if expr="enable_containers">

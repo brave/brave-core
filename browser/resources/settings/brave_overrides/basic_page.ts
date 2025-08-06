@@ -267,7 +267,7 @@ RegisterPolymerTemplateModifications({
       const sectionAdBlockOnlyMode = document.createElement('template')
       sectionAdBlockOnlyMode.setAttribute('is', 'dom-if')
       sectionAdBlockOnlyMode.setAttribute('restamp', 'true')
-      sectionAdBlockOnlyMode.setAttribute('if', '[[showPage_(pageVisibility.adBlockOnlyMode)]]')
+      sectionAdBlockOnlyMode.setAttribute('if', '[[showPage_(pageVisibility_.adBlockOnlyMode)]]')
       sectionAdBlockOnlyMode.content.appendChild(createNestedSectionElement(
         'adBlockOnlyMode',
         'shields',
