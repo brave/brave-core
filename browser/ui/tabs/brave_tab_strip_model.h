@@ -67,6 +67,7 @@ class BraveTabStripModel : public TabStripModel {
 
   BooleanPrefMember tree_tabs_enabled_;
   BooleanPrefMember vertical_tabs_enabled_;
+  bool in_tree_mode_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
