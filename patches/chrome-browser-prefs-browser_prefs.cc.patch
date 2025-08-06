@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index d016286d9cb7ab38dda90bd38f0f77fb61d484df..99f193db502d84b5a3b66db316a730b2f8fc605c 100644
+index 7e9b1e47eb8a1c60d8695b9c017c091d9e35422e..74c08c911ad6a207589fa81c70ad4edee0ee1a19 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1883,6 +1883,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1959,6 +1959,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #endif  // !BUILDFLAG(IS_ANDROID)
  
    // This is intentionally last.
@@ -10,10 +10,10 @@ index d016286d9cb7ab38dda90bd38f0f77fb61d484df..99f193db502d84b5a3b66db316a730b2
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2327,6 +2328,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
-   registry->RegisterDictionaryPref(prefs::kReportingEndpoints);
- 
-   registry->RegisterBooleanPref(prefs::kViewSourceLineWrappingEnabled, false);
+@@ -2412,6 +2413,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+       omnibox::kIsOmniboxInBottomPosition, false,
+       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+ #endif
 +  brave::RegisterProfilePrefs(registry);
  }
  

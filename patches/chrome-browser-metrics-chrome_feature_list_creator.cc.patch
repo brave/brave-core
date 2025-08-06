@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/metrics/chrome_feature_list_creator.cc b/chrome/browser/metrics/chrome_feature_list_creator.cc
-index 3a2f310be667f24d8ec6e3e7b4d352954cb24c74..ee0fcc93477172927bd64bdaaac3817c7c2ec27b 100644
+index bc6a4cc8e9a9a38f01025e6285a726021381a0e4..406cec21d72438acc525e7666ea64a33e315fe13 100644
 --- a/chrome/browser/metrics/chrome_feature_list_creator.cc
 +++ b/chrome/browser/metrics/chrome_feature_list_creator.cc
 @@ -337,5 +337,6 @@ void ChromeFeatureListCreator::SetupInitialPrefs() {
-     local_state_->SetInt64(variations::prefs::kVariationsSeedDate,
-                            base::Time::Now().ToInternalValue());
+     local_state_->SetTime(variations::prefs::kVariationsSeedDate,
+                           base::Time::Now());
    }
 +  BRAVE_CHROME_FEATURE_LIST_CREATOR_SETUP_INITIAL_PREFS
  #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
