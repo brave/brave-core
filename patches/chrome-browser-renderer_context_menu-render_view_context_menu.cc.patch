@@ -7,7 +7,7 @@ index 8ec26732777ec9d929887c9efc3fd537e6003083..1e6fb090a6daf6585de45384a10191b2
      return;
    }
 +  BRAVE_APPEND_SEARCH_PROVIDER
- 
+
    std::u16string printable_selection_text = PrintableSelectionText();
    EscapeAmpersands(&printable_selection_text);
 @@ -4876,29 +4877,32 @@ void RenderViewContextMenu::OpenLinkInSplitView() {
