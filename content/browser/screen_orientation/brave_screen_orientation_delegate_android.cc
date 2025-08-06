@@ -4,24 +4,22 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/content/browser/screen_orientation/brave_screen_orientation_delegate_android.h"
-#include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
-#include "content/browser/screen_orientation/screen_orientation_delegate_android.h"
 
-#include "content/browser/screen_orientation/screen_orientation_provider.h"
-#include "content/browser/web_contents/web_contents_impl.h"
-#include "ui/base/device_form_factor.h"
-
+#include "content/public/browser/web_contents.h"
 
 namespace content {
-BraveScreenOrientationDelegateAndroid::BraveScreenOrientationDelegateAndroid() = default;
-BraveScreenOrientationDelegateAndroid::~BraveScreenOrientationDelegateAndroid() = default;
+
+BraveScreenOrientationDelegateAndroid::BraveScreenOrientationDelegateAndroid() =
+    default;
+BraveScreenOrientationDelegateAndroid::
+    ~BraveScreenOrientationDelegateAndroid() = default;
 
 void BraveScreenOrientationDelegateAndroid::Lock(
     WebContents* web_contents,
     device::mojom::ScreenOrientationLockType lock_orientation) {
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
-  if (helper && helper->HasFullscreenBeenRequested()) {
+  // Check for a simple boolean flag stored as WebContents UserData
+  if (web_contents &&
+      web_contents->GetUserData("youtube_fullscreen_requested")) {
     return;
   }
 
@@ -29,13 +27,13 @@ void BraveScreenOrientationDelegateAndroid::Lock(
 }
 
 void BraveScreenOrientationDelegateAndroid::Unlock(WebContents* web_contents) {
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
-  if (helper && helper->HasFullscreenBeenRequested()) {
+  // Check for a simple boolean flag stored as WebContents UserData
+  if (web_contents &&
+      web_contents->GetUserData("youtube_fullscreen_requested")) {
     return;
   }
 
   ScreenOrientationDelegateAndroid::Unlock(web_contents);
 }
 
-} // namespace content
+}  // namespace content

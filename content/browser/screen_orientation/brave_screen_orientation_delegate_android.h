@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CONTENT_BROWSER_SCREEN_ORIENTATION_SCREEN_ORIENTATION_DELEGATE_ANDROID_H_
-#define BRAVE_CONTENT_BROWSER_SCREEN_ORIENTATION_SCREEN_ORIENTATION_DELEGATE_ANDROID_H_
+#ifndef BRAVE_CONTENT_BROWSER_SCREEN_ORIENTATION_BRAVE_SCREEN_ORIENTATION_DELEGATE_ANDROID_H_
+#define BRAVE_CONTENT_BROWSER_SCREEN_ORIENTATION_BRAVE_SCREEN_ORIENTATION_DELEGATE_ANDROID_H_
 
-#include "content/common/content_export.h"
 #include "content/browser/screen_orientation/screen_orientation_delegate_android.h"
+#include "content/common/content_export.h"
 #include "content/public/browser/screen_orientation_delegate.h"
 #include "services/device/public/mojom/screen_orientation_lock_types.mojom-shared.h"
 
@@ -21,8 +21,8 @@ class CONTENT_EXPORT BraveScreenOrientationDelegateAndroid
   BraveScreenOrientationDelegateAndroid();
   ~BraveScreenOrientationDelegateAndroid() override;
 
-  BraveScreenOrientationDelegateAndroid(const BraveScreenOrientationDelegateAndroid&) =
-      delete;
+  BraveScreenOrientationDelegateAndroid(
+      const BraveScreenOrientationDelegateAndroid&) = delete;
   BraveScreenOrientationDelegateAndroid& operator=(
       const BraveScreenOrientationDelegateAndroid&) = delete;
 
@@ -31,6 +31,6 @@ class CONTENT_EXPORT BraveScreenOrientationDelegateAndroid
   void Unlock(WebContents* web_contents) override;
 };
 
-} // namespace content
+}  // namespace content
 
-#endif  // BRAVE_CONTENT_BROWSER_SCREEN_ORIENTATION_SCREEN_ORIENTATION_DELEGATE_ANDROID_H_
+#endif  // BRAVE_CONTENT_BROWSER_SCREEN_ORIENTATION_BRAVE_SCREEN_ORIENTATION_DELEGATE_ANDROID_H_

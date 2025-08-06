@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/feature_list.h"
+#include "base/supports_user_data.h"
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
@@ -351,6 +352,15 @@ void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
   } else {
     entry->SetUserData(kYouTubeFullscreenPageDataKey,
                        std::make_unique<YouTubeFullscreenPageData>(requested));
+  }
+
+  // Set the boolean flag for screen orientation delegate
+  if (requested) {
+    web_contents()->SetUserData(
+        "youtube_fullscreen_requested",
+        std::make_unique<base::SupportsUserData::Data>());
+  } else {
+    web_contents()->RemoveUserData("youtube_fullscreen_requested");
   }
 }
 
