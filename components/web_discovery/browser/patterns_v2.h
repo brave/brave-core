@@ -48,18 +48,11 @@ struct PatternsV2InputGroup {
   PatternsV2InputGroup(PatternsV2InputGroup&&);
   PatternsV2InputGroup& operator=(PatternsV2InputGroup&&);
 
-  enum class Type {
-    kFirst,  // Extract from first matching element
-    kAll     // Extract from all matching elements
-  };
-
-  // The CSS selector
-  std::string selector;
-  // Whether to extract from first or all matching elements
-  Type type;
-  // Map of field names to vectors of extraction rules
-  base::flat_map<std::string, std::vector<PatternsV2ExtractionRule>>
-      extraction_rules;
+  // Whether to extract from all matching elements (true) or just the first
+  // (false)
+  bool select_all;
+  // Map of field names to extraction rules
+  base::flat_map<std::string, PatternsV2ExtractionRule> extraction_rules;
 };
 
 // Represents an output field definition
@@ -111,8 +104,8 @@ struct PatternsV2SitePattern {
   PatternsV2SitePattern(PatternsV2SitePattern&&);
   PatternsV2SitePattern& operator=(PatternsV2SitePattern&&);
 
-  // Vector of input groups (input section)
-  std::vector<PatternsV2InputGroup> input_groups;
+  // Map of CSS selectors to input groups (input section)
+  base::flat_map<std::string, PatternsV2InputGroup> input_groups;
   // Vector of output groups (output section)
   std::vector<PatternsV2OutputGroup> output_groups;
 };

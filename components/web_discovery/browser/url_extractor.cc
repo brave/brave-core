@@ -134,7 +134,8 @@ void URLExtractor::InitializePatterns() {
   }
 }
 
-std::optional<URLExtractResult> URLExtractor::IdentifyURL(const GURL& url) {
+std::optional<URLExtractResult> URLExtractor::IdentifyURL(
+    const GURL& url) const {
   if (!url.is_valid()) {
     return std::nullopt;
   }
@@ -158,7 +159,7 @@ std::optional<URLExtractResult> URLExtractor::IdentifyURL(const GURL& url) {
 
 std::optional<std::string> URLExtractor::ExtractQuery(
     const GURL& url,
-    const RelevantSiteDetails& details) {
+    const RelevantSiteDetails& details) const {
   if (!url.has_query() || details.query_params.empty()) {
     return std::nullopt;
   }

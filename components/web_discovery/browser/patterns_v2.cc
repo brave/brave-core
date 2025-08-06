@@ -16,23 +16,21 @@ namespace web_discovery {
 
 namespace {
 
-constexpr auto kSelectorTypeMap =
-    base::MakeFixedFlatMap<std::string_view, PatternsV2InputGroup::Type>({
-        {"first", PatternsV2InputGroup::Type::kFirst},
-        {"all", PatternsV2InputGroup::Type::kAll},
-    });
+// Selection type constants
+constexpr char kSelectionTypeFirst[] = "first";
+constexpr char kSelectionTypeAll[] = "all";
 
 // Dictionary keys used in JSON parsing
-constexpr std::string_view kInputKey = "input";
-constexpr std::string_view kOutputKey = "output";
-constexpr std::string_view kSelectKey = "select";
-constexpr std::string_view kAttrKey = "attr";
-constexpr std::string_view kTransformKey = "transform";
-constexpr std::string_view kKey = "key";
-constexpr std::string_view kSourceKey = "source";
-constexpr std::string_view kRequiredKeysKey = "requiredKeys";
-constexpr std::string_view kOptionalKey = "optional";
-constexpr std::string_view kFieldsKey = "fields";
+constexpr char kInputKey[] = "input";
+constexpr char kOutputKey[] = "output";
+constexpr char kSelectKey[] = "select";
+constexpr char kAttrKey[] = "attr";
+constexpr char kTransformKey[] = "transform";
+constexpr char kKey[] = "key";
+constexpr char kSourceKey[] = "source";
+constexpr char kRequiredKeysKey[] = "requiredKeys";
+constexpr char kOptionalKey[] = "optional";
+constexpr char kFieldsKey[] = "fields";
 
 // Parses an extraction rule object
 std::optional<PatternsV2ExtractionRule> ParseExtractionRule(
@@ -73,10 +71,8 @@ std::optional<PatternsV2ExtractionRule> ParseExtractionRule(
 
 // Parses an input group (input section)
 std::optional<PatternsV2InputGroup> ParseInputGroup(
-    const std::string& selector,
     const base::Value::Dict& group_dict) {
   PatternsV2InputGroup input_group;
-  input_group.selector = selector;
 
   if (group_dict.size() != 1) {
     VLOG(1) << "Input group must have exactly one key";
@@ -84,12 +80,17 @@ std::optional<PatternsV2InputGroup> ParseInputGroup(
   }
 
   auto group_dict_it = group_dict.begin();
-  const auto type_it = kSelectorTypeMap.find(group_dict_it->first);
-  if (type_it == kSelectorTypeMap.end()) {
-    VLOG(1) << "Unknown input type: " << group_dict_it->first;
+  const std::string& selection_type = group_dict_it->first;
+
+  // Set select_all based on the selection type
+  if (selection_type == kSelectionTypeAll) {
+    input_group.select_all = true;
+  } else if (selection_type == kSelectionTypeFirst) {
+    input_group.select_all = false;
+  } else {
+    VLOG(1) << "Unknown input selection type: " << selection_type;
     return std::nullopt;
   }
-  input_group.type = type_it->second;
 
   const auto* rules_dict = group_dict_it->second.GetIfDict();
   if (!rules_dict) {
@@ -110,8 +111,8 @@ std::optional<PatternsV2InputGroup> ParseInputGroup(
     if (!extraction_rule) {
       return std::nullopt;
     }
-    input_group.extraction_rules[field_name].emplace_back(
-        std::move(*extraction_rule));
+    input_group.extraction_rules.emplace(field_name,
+                                         std::move(*extraction_rule));
   }
 
   return input_group;
@@ -207,11 +208,11 @@ std::optional<PatternsV2SitePattern> ParseSitePattern(
       VLOG(1) << "Input value is not a dictionary";
       return std::nullopt;
     }
-    auto input_group = ParseInputGroup(selector, *selector_value);
+    auto input_group = ParseInputGroup(*selector_value);
     if (!input_group) {
       return std::nullopt;
     }
-    site_pattern.input_groups.emplace_back(std::move(*input_group));
+    site_pattern.input_groups.emplace(selector, std::move(*input_group));
   }
 
   for (auto it = output_dict->begin(); it != output_dict->end(); ++it) {
