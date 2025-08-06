@@ -29,6 +29,7 @@ source_set("app") {
 
   deps = [
     "//base",
+    "//brave/base/mac",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/ios/browser",
     "//brave/components/ai_chat/ios/common:mojom",
@@ -75,6 +76,7 @@ source_set("app") {
     "//brave/ios/browser/brave_ads",
     "//brave/ios/browser/skus",
     "//brave/ios/browser/ui/webui",
+    "//brave/ios/browser/variations/model",
     "//brave/ios/browser/web",
     "//build:blink_buildflags",
     "//components/browser_sync",
@@ -88,6 +90,7 @@ source_set("app") {
     "//components/sync/base",
     "//components/sync/service",
     "//components/variations",
+    "//components/variations/service",
     "//ios/chrome/app:app_internal",
     "//ios/chrome/app:tests_fake_hook",
     "//ios/chrome/app/startup",

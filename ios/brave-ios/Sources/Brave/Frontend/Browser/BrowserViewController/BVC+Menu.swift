@@ -57,7 +57,7 @@ extension BrowserViewController {
       feedDataSource: self.feedDataSource,
       rewards: self.rewards,
       windowProtection: self.windowProtection,
-      p3aUtils: self.braveCore.p3aUtils,
+      p3aUtils: self.p3aUtils,
       braveCore: self.profileController,
       attributionManager: attributionManager,
       keyringStore: keyringStore,

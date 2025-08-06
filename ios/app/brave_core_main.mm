@@ -25,6 +25,8 @@
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "base/types/fixed_array.h"
+#include "brave/base/mac/conversions.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/component_installer.h"
@@ -41,9 +43,11 @@
 #include "brave/ios/browser/api/p3a/brave_p3a_utils.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
+#include "brave/ios/browser/variations/model/brave_variations_seed_fetcher.h"
 #include "brave/ios/browser/web/brave_web_client.h"
 #import "build/blink_buildflags.h"
 #include "components/component_updater/component_updater_paths.h"
+#include "components/variations/service/variations_service.h"
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
@@ -73,12 +77,12 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;
   std::unique_ptr<BraveMainDelegate> _delegate;
-  std::vector<std::string> _argv_store;
-  std::unique_ptr<const char*[]> _raw_args;
   std::unique_ptr<web::WebMain> _webMain;
   scoped_refptr<p3a::P3AService> _p3a_service;
   scoped_refptr<p3a::HistogramsBraveizer> _histogram_braveizer;
 }
+@property(nonatomic) bool webMainStarted;
+@property(nonatomic) BraveVariationsSeedFetcher* variationsSeedFetcher;
 @property(nonatomic) BraveProfileController* profileController;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
 @property(nonatomic)
@@ -132,6 +136,25 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     // Register all providers before calling any Chromium code.
     [ProviderRegistration registerProviders];
 
+    // Parse Switches, Features, Arguments (Command-Line Arguments)
+    auto arguments = brave::ns_to_vector<std::string>(
+        [[NSProcessInfo processInfo] arguments]);
+    for (BraveCoreSwitch* sv in additionalSwitches) {
+      if (!sv.value) {
+        arguments.emplace_back(base::SysNSStringToUTF8(
+            [NSString stringWithFormat:@"--%@", sv.key]));
+      } else {
+        arguments.emplace_back(base::SysNSStringToUTF8(
+            [NSString stringWithFormat:@"--%@=%@", sv.key, sv.value]));
+      }
+    }
+
+    // Allocate Fixed Arguments Array - IOSChromeMain
+    base::FixedArray<const char*> argv(arguments.size());
+    for (std::size_t i = 0; i < arguments.size(); ++i) {
+      argv[i] = arguments[i].c_str();
+    }
+
     // Setup WebClient ([ClientRegistration registerClients])
     _webClient.reset(new BraveWebClient());
     web::SetWebClient(_webClient.get());
@@ -140,67 +163,96 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     // Start Main ([ChromeMainStarter startChromeMain])
     web::WebMainParams params(_delegate.get());
-
-    // Parse Switches, Features, Arguments (Command-Line Arguments)
-    NSMutableArray* arguments =
-        [[[NSProcessInfo processInfo] arguments] mutableCopy];
-    NSMutableArray* switches = [[NSMutableArray alloc] init];
-    for (BraveCoreSwitch* sv in additionalSwitches) {
-      if (!sv.value) {
-        [switches addObject:[NSString stringWithFormat:@"--%@", sv.key]];
-      } else {
-        [switches
-            addObject:[NSString stringWithFormat:@"--%@=%@", sv.key, sv.value]];
-      }
-    }
-    [arguments addObjectsFromArray:switches];
-    params.argc = [arguments count];
-
-    // Allocate memory to convert from iOS arguments to Native arguments
-    _raw_args.reset(new const char*[params.argc]);
-    _argv_store.resize([arguments count]);
-
-    for (NSUInteger i = 0; i < [arguments count]; i++) {
-      _argv_store[i] = base::SysNSStringToUTF8([arguments objectAtIndex:i]);
-      _raw_args[i] = _argv_store[i].c_str();
-    }
-    params.argv = _raw_args.get();
+    params.register_exit_manager = true;
+    params.argc = static_cast<int>(argv.size());
+    params.argv = argv.data();
 
     // Setup WebMain
     _webMain = std::make_unique<web::WebMain>(std::move(params));
-    _webMain->Startup();
 
     // Initialize the provider UI global state.
     ios::provider::InitializeUI();
-
-    // Setup WebUI (Sync Internals and other WebViews)
-    web::WebUIIOSControllerFactory::RegisterFactory(
-        BraveWebUIControllerFactory::GetInstance());
-
-    // TODO(darkdh): move _adblockService and _backgroundImageService to
-    // BraveWebMainParts::PreMainMessageLoopRun
-    // https://github.com/brave/brave-browser/issues/40567
-    component_updater::ComponentUpdateService* cus =
-        GetApplicationContext()->GetComponentUpdateService();
-
-    _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
   }
   return self;
 }
 
 - (void)dealloc {
   _profileController = nil;
+  _variationsSeedFetcher = nil;
 
   _webMain.reset();
-  _raw_args.reset();
-  _argv_store = {};
   _delegate.reset();
   _webClient.reset();
+}
+
+- (void)startup:(bool)shouldFetchVariationsSeed
+    withCompletion:(void (^)())completion {
+  if (shouldFetchVariationsSeed && !_variationsSeedFetcher) {
+    // Same as in ios/chrome/app/variations_app_state_agent.mm
+    double timestamp = [[NSUserDefaults standardUserDefaults]
+        doubleForKey:@"kLastVariationsSeedFetchTime"];
+    auto last_seed_fetch_time =
+        base::Time::FromSecondsSinceUnixEpoch(timestamp);
+
+    if (last_seed_fetch_time.is_null()) {
+      __weak BraveCoreMain* weakSelf = self;
+      _variationsSeedFetcher = [[BraveVariationsSeedFetcher alloc] init];
+      [_variationsSeedFetcher fetchSeedWithCompletion:^(bool success) {
+        [weakSelf initializeWebMainAndServices];
+        weakSelf.variationsSeedFetcher = nil;
+        completion();
+      }];
+
+      return;
+    }
+  }
+
+  [self initializeWebMainAndServices];
+  completion();
+}
+
+- (void)initializeWebMainAndServices {
+  // Start WebMain
+  _webMain->Startup();
+  _webMainStarted = true;
+
+  // Setup WebUI (Sync Internals and other WebViews)
+  web::WebUIIOSControllerFactory::RegisterFactory(
+      BraveWebUIControllerFactory::GetInstance());
+
+  // Other Startup:
+
+  // TODO(darkdh): move _adblockService and _backgroundImageService to
+  // BraveWebMainParts::PreMainMessageLoopRun
+  // https://github.com/brave/brave-browser/issues/40567
+  component_updater::ComponentUpdateService* cus =
+      GetApplicationContext()->GetComponentUpdateService();
+
+  _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
+}
+
+- (void)saveVariationsLastSeedFetchTime {
+  auto* context = GetApplicationContext();
+  if (context) {
+    const base::Time seed_fetch_time =
+        context->GetVariationsService()->GetLatestSeedFetchTime();
+
+    if (!seed_fetch_time.is_null()) {
+      [[NSUserDefaults standardUserDefaults]
+          setDouble:seed_fetch_time.InSecondsFSinceUnixEpoch()
+             forKey:@"kLastVariationsSeedFetchTime"];
+    }
+  }
 }
 
 - (void)onAppEnterBackground:(NSNotification*)notification {
   auto* context = GetApplicationContext();
   if (context) {
+    // Chromium saves the seed fetch time once fetching has completed AND the
+    // app has backgrounded. We can just do it once fetching is completed. No
+    // need to do it upon shutdown.
+    [self saveVariationsLastSeedFetchTime];
+
     context->OnAppEnterBackground();
     // Since we don't use the WebViewWebMainParts, local state is never commited
     // on app background
@@ -215,6 +267,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)onAppWillTerminate:(NSNotification*)notification {
+  // Chromium saves the seed fetch time once fetching has completed AND the app
+  // has backgrounded. We can just do it once fetching is completed. No need to
+  // do it upon shutdown.
+  [self saveVariationsLastSeedFetchTime];
+
   // ApplicationContextImpl doesn't get teardown call at the moment because we
   // cannot dealloc this class yet without crashing.
   GetApplicationContext()->GetLocalState()->CommitPendingWrite();
@@ -226,6 +283,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)scheduleLowPriorityStartupTasks {
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   // Install overrides
   ios::provider::InstallOverrides();
 
@@ -257,6 +316,8 @@ static bool CustomLogHandler(int severity,
 
 - (void)loadDefaultProfile:
     (void (^)(BraveProfileController*))completionHandler {
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   // Initialize and set the main browser state.
   auto* localState = GetApplicationContext()->GetLocalState();
   auto* profileManager = GetApplicationContext()->GetProfileManager();
@@ -284,6 +345,8 @@ static bool CustomLogHandler(int severity,
 #pragma mark -
 
 - (HTTPSUpgradeExceptionsService*)httpsUpgradeExceptionsService {
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   if (!_httpsUpgradeExceptionsService) {
     _httpsUpgradeExceptionsService =
         [[HTTPSUpgradeExceptionsService alloc] init];
@@ -292,6 +355,8 @@ static bool CustomLogHandler(int severity,
 }
 
 - (BraveUserAgentExceptionsIOS*)braveUserAgentExceptions {
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   if (!_braveUserAgentExceptions) {
     brave_user_agent::BraveUserAgentExceptions* brave_user_agent_exceptions =
         brave_user_agent::BraveUserAgentExceptions::GetInstance();
@@ -307,6 +372,8 @@ static bool CustomLogHandler(int severity,
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                       installationDate:(NSDate*)installDate {
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   _p3a_service = base::MakeRefCounted<p3a::P3AService>(
       *GetApplicationContext()->GetLocalState(),
       base::SysNSStringToUTF8(channel), base::Time::FromNSDate(installDate),
@@ -325,6 +392,8 @@ static bool CustomLogHandler(int severity,
 }
 
 - (BraveP3AUtils*)p3aUtils {
+  DCHECK(_webMainStarted) << "WebMain must finish starting up";
+
   if (!_p3aUtils) {
     _p3aUtils = [[BraveP3AUtils alloc]
         initWithLocalState:GetApplicationContext()->GetLocalState()
