@@ -399,6 +399,7 @@ Config.prototype.buildArgs = function () {
   versionParts = versionParts.split('.')
 
   let args = {
+    'import("//brave/build/args/brave_defaults.gni")': null,
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
@@ -406,20 +407,12 @@ Config.prototype.buildArgs = function () {
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
     is_msan: this.is_msan,
-    disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
-    root_extra_deps: ['//brave'],
     // TODO: Re-enable when chromium_src overrides work for files in relative
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
     is_component_build: this.isComponentBuild(),
     is_universal_binary: this.isUniversalBinary,
-    proprietary_codecs: true,
-    ffmpeg_branding: 'Chrome',
-    branding_path_component: 'brave',
-    branding_path_product: 'brave',
-    enable_glic: false,
-    enable_widevine: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
     ignore_missing_widevine_signing_cert: false,
     target_cpu: this.targetArch,
@@ -442,6 +435,10 @@ Config.prototype.buildArgs = function () {
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
     generate_about_credits: true,
+  }
+
+  if (this.targetOS !== 'ios') {
+    args['import("//brave/build/args/blink_platform_defaults.gni")'] = null
   }
 
   for (const key of this.forwardEnvArgsToGn) {
@@ -735,12 +732,6 @@ Config.prototype.buildArgs = function () {
 
     delete args.safebrowsing_api_endpoint
     delete args.safe_browsing_mode
-    delete args.proprietary_codecs
-    delete args.ffmpeg_branding
-    delete args.branding_path_component
-    delete args.branding_path_product
-    delete args.enable_glic
-    delete args.enable_widevine
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
