@@ -128,7 +128,6 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       const;
 
   std::unique_ptr<ConversationAPIClient> api_ = nullptr;
-  raw_ptr<PrefService> pref_service_ = nullptr;
 
   base::WeakPtrFactory<EngineConsumerConversationAPI> weak_ptr_factory_{this};
 };
