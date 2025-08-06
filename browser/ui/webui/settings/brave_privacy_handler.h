@@ -45,6 +45,8 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
   void GetP3AEnabled(const base::Value::List& args);
   void OnP3AEnabledChanged();
 
+  static bool IsP3AHidden();
+
 #if BUILDFLAG(IS_WIN)
   void OnWindowsRecallDisabledChanged();
 #endif
