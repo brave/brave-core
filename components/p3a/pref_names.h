@@ -12,8 +12,6 @@ inline constexpr char kP3AEnabled[] = "brave.p3a.enabled";
 inline constexpr char kP3ANoticeAcknowledged[] =
     "brave.p3a.notice_acknowledged";
 inline constexpr char kActivationDatesDictPref[] = "p3a.activation_dates";
-// Used to enable/disable P3A via a policy.
-inline constexpr char kP3ADisabledByPolicy[] = "brave.p3a.disabled_by_policy";
 
 // Metric log store preference names
 inline constexpr char kTypicalJsonLogPrefName[] = "p3a.logs";    // DEPRECATED
