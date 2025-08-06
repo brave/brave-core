@@ -3,16 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("profile") {
+source_set("prefs") {
   sources = [
-    "profile_bridge.h",
-    "profile_bridge_impl.h",
-    "profile_bridge_impl.mm",
+    "pref_change_registrar_bridge.h",
+    "pref_change_registrar_bridge.mm",
+    "pref_service_bridge.h",
+    "pref_service_bridge_impl.h",
+    "pref_service_bridge_impl.mm",
   ]
   deps = [
     "//base",
-    "//brave/ios/components/prefs",
+    "//brave/base/apple",
     "//components/prefs",
-    "//ios/chrome/browser/shared/model/profile",
   ]
 }

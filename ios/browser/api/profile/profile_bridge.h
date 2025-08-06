@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol PrefServiceBridge;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// A bridge to a Chromium Profile
@@ -15,6 +17,8 @@ NS_SWIFT_NAME(Profile)
 @protocol ProfileBridge
 /// The profiles name, empty if `isOffTheRecord` is true
 @property(readonly) NSString* name;
+/// The profile prefs
+@property(readonly) id<PrefServiceBridge> prefs;
 /// Whether or not this profile is a incongnito/private profile
 @property(readonly) BOOL isOffTheRecord;
 /// Returns the original profile (returns itself when the profile if not OTR)

@@ -95,6 +95,8 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/web_image/web_image.h",
   "//brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h",
   "//brave/ios/browser/api/version_info/version_info_ios.h",
+  "//brave/ios/components/prefs/pref_service_bridge.h",
+  "//brave/ios/components/prefs/pref_change_registrar_bridge.h",
 ]
 
 brave_core_public_headers += ads_public_headers
