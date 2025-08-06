@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/brave_features_internal_names.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"

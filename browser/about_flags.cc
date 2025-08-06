@@ -8,7 +8,6 @@
 #include <initializer_list>
 
 #include "brave/browser/brave_browser_features.h"
-#include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/updater/buildflags.h"
@@ -103,6 +102,10 @@
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/common/features.h"
 #endif
+
+inline constexpr char kPlaylistFeatureInternalName[] = "playlist";
+inline constexpr char kPlaylistFakeUAFeatureInternalName[] = "playlist-fake-ua";
+inline constexpr char kSplitViewFeatureInternalName[] = "brave-split-view";
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
 
