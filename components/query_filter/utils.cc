@@ -60,8 +60,6 @@ static constexpr auto kSimpleQueryStringTrackers =
             "fb_comment_id",
             // https://github.com/brave/brave-browser/issues/4239
             "fbclid",
-            // https://github.com/brave/brave-browser/issues/18758
-            "gbraid",
             // https://github.com/brave/brave-browser/issues/4239
             "gclid",
             // https://github.com/brave/brave-browser/issues/25691
