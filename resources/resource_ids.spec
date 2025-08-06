@@ -133,10 +133,6 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [34070],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-cookie_list_opt_in/cookie_list_opt_in.grd": {
-    "META": {"sizes": {"includes": [10]}},
-    "includes": [34080],
-  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_speedreader_toolbar/brave_speedreader_toolbar.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [34090],

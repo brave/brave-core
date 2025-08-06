@@ -106,6 +106,7 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   misc_metrics::UptimeMonitorImpl::RegisterPrefsForMigration(registry);
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
   brave_search_conversion::p3a::RegisterLocalStatePrefsForMigration(registry);
+  brave_shields::RegisterPrefsForAdBlockServiceForMigration(registry);
   brave_stats::RegisterLocalStatePrefsForMigration(registry);
   p3a::MetricLogStore::RegisterLocalStatePrefsForMigration(registry);
   p3a::RotationScheduler::RegisterLocalStatePrefsForMigration(registry);
