@@ -1252,22 +1252,22 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       // NINJA_CORE_* values. Set those limits separately. See docs for more
       // details:
       // https://chromium.googlesource.com/infra/infra/+/main/go/src/infra/build/siso/docs/environment_variables.md#siso_limits
-      const sisoLimits = {
+      const defaultSisoLimits = {
         remote: kRemoteLimit,
         rewrap: kRemoteLimit,
       }
-      // Parse and merge SISO_LIMITS from env.
-      const sisoLimitsStr = env.SISO_LIMITS || ''
-      const sisoLimitsMap = new Map(
-        sisoLimitsStr.split(',').map((item) => item.split('=')),
+      // Parse SISO_LIMITS from env if set.
+      const envSisoLimits = new Map(
+        env.SISO_LIMITS?.split(',').map((item) => item.split('=')) || [],
       )
-      Object.entries(sisoLimits).forEach(([key, value]) => {
-        sisoLimitsMap.set(
-          key,
-          Math.min(value, parseInt(sisoLimitsMap.get(key)) || value),
-        )
+      // Merge defaultSisoLimits with envSisoLimits ensuring that the values are
+      // not greater than the default values.
+      Object.entries(defaultSisoLimits).forEach(([key, defaultValue]) => {
+        const valueFromEnv = parseInt(envSisoLimits.get(key)) || defaultValue
+        envSisoLimits.set(key, Math.min(defaultValue, valueFromEnv))
       })
-      env.SISO_LIMITS = Array.from(sisoLimitsMap.entries())
+      // Set SISO_LIMITS env var.
+      env.SISO_LIMITS = Array.from(envSisoLimits.entries())
         .map(([key, value]) => `${key}=${value}`)
         .join(',')
 
