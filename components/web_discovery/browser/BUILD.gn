@@ -18,7 +18,6 @@ static_library("browser") {
     "//brave/components/constants",
     "//brave/components/web_discovery/common",
     "//brave/components/web_discovery/common:mojom",
-    "//brave/components/web_discovery/common:util",
     "//components/keyed_service/core",
     "//components/prefs",
     "//services/network/public/cpp",
