@@ -60,7 +60,10 @@ void BraveWebMainParts::PreMainMessageLoopRun() {
       application_context_->GetComponentUpdateService();
   DCHECK(cus);
   brave_component_updater::BraveOnDemandUpdater::GetInstance()
-      ->RegisterOnDemandUpdater(&cus->GetOnDemandUpdater());
+      ->RegisterOnDemandUpdater(
+          base::CommandLine::ForCurrentProcess()->HasSwitch(
+              "disable-component-update"),
+          &cus->GetOnDemandUpdater());
   RegisterComponentsForUpdate(cus);
 
   static_cast<BraveApplicationContextImpl*>(application_context_.get())

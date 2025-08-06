@@ -26,10 +26,12 @@ BraveOnDemandUpdater::~BraveOnDemandUpdater() = default;
 
 component_updater::OnDemandUpdater*
 BraveOnDemandUpdater::RegisterOnDemandUpdater(
+    bool is_component_update_disabled,
     component_updater::OnDemandUpdater* on_demand_updater) {
   if (!on_demand_updater) {
     CHECK_IS_TEST();
   }
+  is_component_update_disabled_ = is_component_update_disabled;
   return std::exchange(on_demand_updater_, on_demand_updater);
 }
 
@@ -37,6 +39,7 @@ void BraveOnDemandUpdater::EnsureInstalled(
     const std::string& id,
     component_updater::Callback callback) {
   CHECK(on_demand_updater_);
+  DCHECK(!is_component_update_disabled());
   on_demand_updater_->EnsureInstalled(id, std::move(callback));
 }
 
@@ -45,6 +48,7 @@ void BraveOnDemandUpdater::OnDemandUpdate(
     component_updater::OnDemandUpdater::Priority priority,
     component_updater::Callback callback) {
   CHECK(on_demand_updater_);
+  DCHECK(!is_component_update_disabled());
   on_demand_updater_->OnDemandUpdate(id, priority, std::move(callback));
 }
 
@@ -53,6 +57,7 @@ void BraveOnDemandUpdater::OnDemandUpdate(
     component_updater::OnDemandUpdater::Priority priority,
     component_updater::Callback callback) {
   CHECK(on_demand_updater_);
+  DCHECK(!is_component_update_disabled());
   on_demand_updater_->OnDemandUpdate(ids, priority, std::move(callback));
 }
 

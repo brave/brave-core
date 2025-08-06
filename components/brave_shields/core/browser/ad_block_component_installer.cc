@@ -148,7 +148,8 @@ void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback) {
   // In test, |cus| could be nullptr.
-  if (!cus) {
+  if (!cus ||
+      BraveOnDemandUpdater::GetInstance()->is_component_update_disabled()) {
     return;
   }
 
@@ -164,7 +165,8 @@ void RegisterAdBlockFilterListCatalogComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback) {
   // In test, |cus| could be nullptr.
-  if (!cus) {
+  if (!cus ||
+      BraveOnDemandUpdater::GetInstance()->is_component_update_disabled()) {
     return;
   }
 
@@ -184,7 +186,8 @@ void RegisterAdBlockFiltersComponent(
     const std::string& component_name,
     OnComponentReadyCallback callback) {
   // In test, |cus| could be nullptr.
-  if (!cus) {
+  if (!cus ||
+      BraveOnDemandUpdater::GetInstance()->is_component_update_disabled()) {
     return;
   }
 

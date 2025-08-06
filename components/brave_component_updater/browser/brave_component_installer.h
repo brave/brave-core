@@ -58,13 +58,6 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponentInstallerPolicy
   BraveComponent::ReadyCallback ready_callback_;
 };
 
-COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
-void RegisterComponent(component_updater::ComponentUpdateService* cus,
-                       const std::string& name,
-                       const std::string& base64_public_key,
-                       base::OnceClosure registered_callback,
-                       BraveComponent::ReadyCallback ready_callback);
-
 }  // namespace brave_component_updater
 
 #endif  // BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_BRAVE_COMPONENT_INSTALLER_H_

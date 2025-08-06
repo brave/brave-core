@@ -13,7 +13,7 @@ source_set("features") {
     "//base",
     "//brave/components/ai_chat/core/common",
     "//brave/components/brave_account:features",
-    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_search/common",
