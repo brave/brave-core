@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 122f6c3e696ff520b157d4fec8e5c86433cb9c48..706624bede27d4a71cb2da08ce352f905fbab5a6 100644
+index 18fc8bfae2df34f393e9687d6edcaa5258f1c2ab..c67c5e674c3d7d8d5b1fb9606d130814da966d60 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -74,6 +74,7 @@ class ChromeContextMenuItem {
+@@ -76,6 +76,7 @@ class ChromeContextMenuItem {
          Item.SHARE_PAGE,
          Item.PRINT_PAGE,
          Item.INSPECT_ELEMENT,
@@ -10,16 +10,16 @@ index 122f6c3e696ff520b157d4fec8e5c86433cb9c48..706624bede27d4a71cb2da08ce352f90
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -129,7 +130,7 @@ class ChromeContextMenuItem {
+@@ -133,7 +134,7 @@ class ChromeContextMenuItem {
          // Developer Group
-         int INSPECT_ELEMENT = 39;
+         int INSPECT_ELEMENT = 41;
          // ALWAYS UPDATE!
--        int NUM_ENTRIES = 40;
-+        int COPY_CLEAN_LINK = 40;int NUM_ENTRIES = 41;
+-        int NUM_ENTRIES = 42;
++        int COPY_CLEAN_LINK = 42;int NUM_ENTRIES = 43;
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -174,6 +175,7 @@ class ChromeContextMenuItem {
+@@ -180,6 +181,7 @@ class ChromeContextMenuItem {
          R.id.contextmenu_share_page, // Item.SHARE_PAGE
          R.id.contextmenu_print_page, // Item.PRINT_PAGE
          R.id.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
@@ -27,7 +27,7 @@ index 122f6c3e696ff520b157d4fec8e5c86433cb9c48..706624bede27d4a71cb2da08ce352f90
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -218,6 +220,7 @@ class ChromeContextMenuItem {
+@@ -226,6 +228,7 @@ class ChromeContextMenuItem {
          R.string.contextmenu_share_page, // Item.SHARE_PAGE
          R.string.contextmenu_print_page, // Item.PRINT_PAGE
          R.string.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
