@@ -124,7 +124,7 @@ class SolanaProviderScriptHandler: TabContentScript {
         replyHandler(result, error)
       case .request:
         guard let args = body.args,
-          let argDict = MojoBase.Value(jsonString: args)?.dictionaryValue,
+          let argDict = BaseValue(jsonString: args)?.dictionaryValue,
           let method = argDict[Keys.method.rawValue]?.stringValue
         else {
           replyHandler(nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
@@ -155,9 +155,9 @@ class SolanaProviderScriptHandler: TabContentScript {
         buildErrorJson(status: .internalError, errorMessage: Strings.Wallet.internalErrorMessage)
       )
     }
-    var param: [String: MojoBase.Value]?
+    var param: [String: BaseValue]?
     if let args = args {
-      param = MojoBase.Value(jsonString: args)?.dictionaryValue
+      param = BaseValue(jsonString: args)?.dictionaryValue
     }
 
     let (status, errorMessage, publicKey) = await provider.connect(arg: param)
@@ -174,7 +174,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   @MainActor func signAndSendTransaction(tab: some TabState, args: String?) async -> (Any?, String?)
   {
     guard let args = args,
-      let arguments = MojoBase.Value(jsonString: args)?.dictionaryValue,
+      let arguments = BaseValue(jsonString: args)?.dictionaryValue,
       let serializedMessage = arguments[Keys.serializedMessage.rawValue],
       let signatures = arguments[Keys.signatures.rawValue],
       let provider = tab.walletSolProvider
@@ -194,7 +194,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }
-    guard let encodedResult = MojoBase.Value(dictionaryValue: result).jsonObject else {
+    guard let encodedResult = BaseValue(dictionaryValue: result).jsonObject else {
       return (nil, buildErrorJson(status: .internalError, errorMessage: errorMessage))
     }
     return (encodedResult, nil)
@@ -205,7 +205,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   /// or an error dictionary for failures
   @MainActor func signMessage(tab: some TabState, args: String?) async -> (Any?, String?) {
     guard let args = args,
-      let argsList = MojoBase.Value(jsonString: args)?.listValue,
+      let argsList = BaseValue(jsonString: args)?.listValue,
       let blobMsg = argsList.first?.numberArray,
       let provider = tab.walletSolProvider
     else {
@@ -236,7 +236,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   /// or provide an error dictionary for failures
   @MainActor func request(tab: some TabState, args: String?) async -> (Any?, String?) {
     guard let args = args,
-      var argDict = MojoBase.Value(jsonString: args)?.dictionaryValue,
+      var argDict = BaseValue(jsonString: args)?.dictionaryValue,
       let method = argDict[Keys.method.rawValue]?.stringValue,
       let provider = tab.walletSolProvider
     else {
@@ -248,8 +248,8 @@ class SolanaProviderScriptHandler: TabContentScript {
     {
       // Convert from [UInt8] to data / blob (Mojo binaryValue).
       var updatedParamsDict = argDict[Keys.params.rawValue]?.dictionaryValue ?? [:]
-      updatedParamsDict[Keys.message.rawValue] = MojoBase.Value(binaryValue: blobMsg)
-      argDict[Keys.params.rawValue] = MojoBase.Value(dictionaryValue: updatedParamsDict)
+      updatedParamsDict[Keys.message.rawValue] = BaseValue(binaryValue: blobMsg)
+      argDict[Keys.params.rawValue] = BaseValue(dictionaryValue: updatedParamsDict)
     }
     let (status, errorMessage, result) = await provider.request(arg: argDict)
     guard status == .success else {
@@ -261,7 +261,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       await tab.browserData?.updateSolanaProperties()
       return (publicKey, nil)
     } else {
-      guard let encodedResult = MojoBase.Value(dictionaryValue: result).jsonObject else {
+      guard let encodedResult = BaseValue(dictionaryValue: result).jsonObject else {
         return (
           nil,
           buildErrorJson(status: .internalError, errorMessage: Strings.Wallet.internalErrorMessage)
@@ -275,7 +275,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   /// will encoded the response as a json object for success or provide an error dictionary for failures
   @MainActor func signTransaction(tab: some TabState, args: String?) async -> (Any?, String?) {
     guard let args = args,
-      let arguments = MojoBase.Value(jsonString: args)?.dictionaryValue,
+      let arguments = BaseValue(jsonString: args)?.dictionaryValue,
       let serializedMessage = arguments[Keys.serializedMessage.rawValue],
       let signatures = arguments[Keys.signatures.rawValue],
       let provider = tab.walletSolProvider
@@ -307,7 +307,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   /// will encoded the response as a json object for success or provide an error dictionary for failures
   @MainActor func signAllTransactions(tab: some TabState, args: String?) async -> (Any?, String?) {
     guard let args = args,
-      let transactions = MojoBase.Value(jsonString: args)?.listValue,
+      let transactions = BaseValue(jsonString: args)?.listValue,
       let provider = tab.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
@@ -333,7 +333,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }
-    let serializedTransactionDicts: [MojoBase.Value] = zip(serializedTxs, versions).compactMap {
+    let serializedTransactionDicts: [BaseValue] = zip(serializedTxs, versions).compactMap {
       serializedTx,
       versionInt in
       guard let version = BraveWallet.SolanaMessageVersion(rawValue: versionInt.intValue) else {
@@ -342,7 +342,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       return buildSerializedTxJson(serializedTx: serializedTx, version: version)
     }
     guard serializedTransactionDicts.count == serializedTxs.count,
-      let encodedSerializedTxDicts = MojoBase.Value(listValue: serializedTransactionDicts)
+      let encodedSerializedTxDicts = BaseValue(listValue: serializedTransactionDicts)
         .jsonObject
     else {
       return (
@@ -355,8 +355,8 @@ class SolanaProviderScriptHandler: TabContentScript {
 
   /// Helper function to build `SolanaSignTransactionParam` given the serializedMessage and signatures from the `solanaWeb3.Transaction`.
   private func createSignTransactionParam(
-    serializedMessage: MojoBase.Value,
-    signatures: MojoBase.Value
+    serializedMessage: BaseValue,
+    signatures: BaseValue
   ) -> BraveWallet.SolanaSignTransactionParam {
     // get the serialized message
     let serializedMessageValues = serializedMessage.listValue?.map { UInt8($0.intValue) } ?? []
@@ -377,11 +377,11 @@ class SolanaProviderScriptHandler: TabContentScript {
   private func buildSerializedTxJson(
     serializedTx: [NSNumber],
     version: BraveWallet.SolanaMessageVersion
-  ) -> MojoBase.Value {
-    let encodedSerializedTxMojoInts = serializedTx.map { MojoBase.Value(intValue: $0.int32Value) }
-    let encodedSerializedTx = MojoBase.Value(listValue: encodedSerializedTxMojoInts)
-    let versionMojoInt = MojoBase.Value(intValue: Int32(version.rawValue))
-    let dict = MojoBase.Value(dictionaryValue: [
+  ) -> BaseValue {
+    let encodedSerializedTxMojoInts = serializedTx.map { BaseValue(intValue: $0.int32Value) }
+    let encodedSerializedTx = BaseValue(listValue: encodedSerializedTxMojoInts)
+    let versionMojoInt = BaseValue(intValue: Int32(version.rawValue))
+    let dict = BaseValue(dictionaryValue: [
       Keys.serializedTx.rawValue: encodedSerializedTx,
       Keys.version.rawValue: versionMojoInt,
     ])
@@ -411,7 +411,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   }
 }
 
-extension MojoBase.Value {
+extension BaseValue {
   fileprivate var numberArray: [NSNumber]? {
     listValue?.map { NSNumber(value: $0.intValue) }
   }

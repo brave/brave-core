@@ -8,7 +8,7 @@
 #include <optional>
 
 #include "base/strings/sys_string_conversions.h"
-#include "brave/base/mac/conversions.h"
+#include "brave/base/apple/foundation_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/api/url/url_origin_ios+private.h"

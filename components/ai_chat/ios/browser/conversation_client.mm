@@ -6,7 +6,7 @@
 #include "brave/components/ai_chat/ios/browser/conversation_client.h"
 
 #include "base/strings/sys_string_conversions.h"
-#include "brave/base/mac/conversions.h"
+#include "brave/base/apple/foundation_util.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"

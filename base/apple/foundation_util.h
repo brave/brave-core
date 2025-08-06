@@ -1,16 +1,18 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BASE_MAC_CONVERSIONS_H_
-#define BRAVE_BASE_MAC_CONVERSIONS_H_
+#ifndef BRAVE_BASE_APPLE_FOUNDATION_UTIL_H_
+#define BRAVE_BASE_APPLE_FOUNDATION_UTIL_H_
 
 #import <Foundation/Foundation.h>
 
 #include <string>
 #include <type_traits>
 #include <vector>
+
+#include "base/strings/sys_string_conversions.h"
 
 /// This file is for converting from STL to Objective-C and vice-versa.
 namespace brave {
@@ -44,7 +46,7 @@ NSArray* vector_to_ns(const std::vector<T>& vector) {
       [array addObject:@(value)];
     } else if constexpr (std::is_same<T, std::string>::value) {
       /// Converts any `std::vector<std::string>` to `NSArray<NSString*>`
-      [array addObject:[NSString stringWithUTF8String:value.c_str()]];
+      [array addObject:base::SysUTF8ToNSString(value)];
     } else {
       return nullptr;
     }
@@ -118,7 +120,7 @@ std::vector<T> ns_to_vector(NSArray* array) {
   } else if constexpr (std::is_same<T, std::string>::value) {  // NOLINT
     /// Converts any `NSArray<NSString*>` to `std::vector<std::string>`
     for (NSString* value : array) {
-      vector.emplace_back([value UTF8String]);
+      vector.emplace_back(base::SysNSStringToUTF8(value));
     }
   }
   return vector;
@@ -126,4 +128,4 @@ std::vector<T> ns_to_vector(NSArray* array) {
 
 }  // namespace brave
 
-#endif  // BRAVE_BASE_MAC_CONVERSIONS_H_
+#endif  // BRAVE_BASE_APPLE_FOUNDATION_UTIL_H_

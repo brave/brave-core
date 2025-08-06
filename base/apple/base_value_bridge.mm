@@ -1,26 +1,22 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/build/ios/mojom/public/base/base_values.h"
+#include "brave/base/apple/base_value_bridge.h"
 
 #include <optional>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/build/ios/mojom/public/base/base_values+private.h"
+#include "brave/base/apple/base_value_bridge+private.h"
 
-#if !defined(__has_feature) || !__has_feature(objc_arc)
-#error "This file requires ARC support."
-#endif
-
-@interface MojoBaseValue ()
-@property(nonatomic, readwrite) MojoBaseValueTag tag;
+@interface BaseValueBridge ()
+@property(nonatomic, readwrite) BaseValueBridgeTag tag;
 @end
 
-@implementation MojoBaseValue
+@implementation BaseValueBridge
 
 @synthesize boolValue = _boolValue;
 @synthesize intValue = _intValue;
@@ -32,154 +28,154 @@
 
 - (instancetype)init {
   if ((self = [super init])) {
-    self.tag = MojoBaseValueTagNull;
+    self.tag = BaseValueBridgeTagNull;
   }
   return self;
 }
 
 - (instancetype)initWithBoolValue:(bool)value {
   if ((self = [super init])) {
-    self.tag = MojoBaseValueTagBoolValue;
+    self.tag = BaseValueBridgeTagBoolValue;
     self.boolValue = value;
   }
   return self;
 }
 
 - (bool)boolValue {
-  if (self.tag == MojoBaseValueTagBoolValue) {
+  if (self.tag == BaseValueBridgeTagBoolValue) {
     return _boolValue;
   }
   return 0;
 }
 
 - (void)setBoolValue:(bool)value {
-  self.tag = MojoBaseValueTagBoolValue;
+  self.tag = BaseValueBridgeTagBoolValue;
   _boolValue = value;
 }
 
 - (instancetype)initWithIntValue:(int32_t)value {
   if ((self = [super init])) {
-    self.tag = MojoBaseValueTagIntValue;
+    self.tag = BaseValueBridgeTagIntValue;
     self.intValue = value;
   }
   return self;
 }
 
 - (int32_t)intValue {
-  if (self.tag == MojoBaseValueTagIntValue) {
+  if (self.tag == BaseValueBridgeTagIntValue) {
     return _intValue;
   }
   return 0;
 }
 
 - (void)setIntValue:(int32_t)value {
-  self.tag = MojoBaseValueTagIntValue;
+  self.tag = BaseValueBridgeTagIntValue;
   _intValue = value;
 }
 
 - (instancetype)initWithDoubleValue:(double)value {
   if ((self = [super init])) {
-    self.tag = MojoBaseValueTagDoubleValue;
+    self.tag = BaseValueBridgeTagDoubleValue;
     self.doubleValue = value;
   }
   return self;
 }
 
 - (double)doubleValue {
-  if (self.tag == MojoBaseValueTagDoubleValue) {
+  if (self.tag == BaseValueBridgeTagDoubleValue) {
     return _doubleValue;
   }
   return 0;
 }
 
 - (void)setDoubleValue:(double)value {
-  self.tag = MojoBaseValueTagDoubleValue;
+  self.tag = BaseValueBridgeTagDoubleValue;
   _doubleValue = value;
 }
 
 - (instancetype)initWithStringValue:(NSString*)value {
   if ((self = [super init])) {
-    self.tag = MojoBaseValueTagStringValue;
+    self.tag = BaseValueBridgeTagStringValue;
     self.stringValue = value;
   }
   return self;
 }
 
 - (NSString*)stringValue {
-  if (self.tag == MojoBaseValueTagStringValue) {
+  if (self.tag == BaseValueBridgeTagStringValue) {
     return _stringValue;
   }
   return 0;
 }
 
 - (void)setStringValue:(NSString*)value {
-  self.tag = MojoBaseValueTagStringValue;
+  self.tag = BaseValueBridgeTagStringValue;
   _stringValue = [value copy];
 }
 
 - (instancetype)initWithBinaryValue:(NSArray<NSNumber*>*)value {
   if ((self = [super init])) {
-    self.tag = MojoBaseValueTagBinaryValue;
+    self.tag = BaseValueBridgeTagBinaryValue;
     self.binaryValue = value;
   }
   return self;
 }
 
 - (NSArray<NSNumber*>*)binaryValue {
-  if (self.tag == MojoBaseValueTagBinaryValue) {
+  if (self.tag == BaseValueBridgeTagBinaryValue) {
     return _binaryValue;
   }
   return 0;
 }
 
 - (void)setBinaryValue:(NSArray<NSNumber*>*)value {
-  self.tag = MojoBaseValueTagBinaryValue;
+  self.tag = BaseValueBridgeTagBinaryValue;
   _binaryValue = [value copy];
 }
 
 - (instancetype)initWithDictionaryValue:
-    (NSDictionary<NSString*, MojoBaseValue*>*)value {
+    (NSDictionary<NSString*, BaseValueBridge*>*)value {
   if ((self = [super init])) {
-    self.tag = MojoBaseValueTagDictionaryValue;
+    self.tag = BaseValueBridgeTagDictionaryValue;
     self.dictionaryValue = value;
   }
   return self;
 }
 
-- (NSDictionary<NSString*, MojoBaseValue*>*)dictionaryValue {
-  if (self.tag == MojoBaseValueTagDictionaryValue) {
+- (NSDictionary<NSString*, BaseValueBridge*>*)dictionaryValue {
+  if (self.tag == BaseValueBridgeTagDictionaryValue) {
     return _dictionaryValue;
   }
   return 0;
 }
 
-- (void)setDictionaryValue:(NSDictionary<NSString*, MojoBaseValue*>*)value {
-  self.tag = MojoBaseValueTagDictionaryValue;
+- (void)setDictionaryValue:(NSDictionary<NSString*, BaseValueBridge*>*)value {
+  self.tag = BaseValueBridgeTagDictionaryValue;
   _dictionaryValue = [value copy];
 }
 
 - (instancetype)initWithListValue:(NSArray*)value {
   if ((self = [super init])) {
-    self.tag = MojoBaseValueTagListValue;
+    self.tag = BaseValueBridgeTagListValue;
     self.listValue = value;
   }
   return self;
 }
 
-- (NSArray<MojoBaseValue*>*)listValue {
-  if (self.tag == MojoBaseValueTagListValue) {
+- (NSArray<BaseValueBridge*>*)listValue {
+  if (self.tag == BaseValueBridgeTagListValue) {
     return _listValue;
   }
   return 0;
 }
 
-- (void)setListValue:(NSArray<MojoBaseValue*>*)value {
-  self.tag = MojoBaseValueTagListValue;
+- (void)setListValue:(NSArray<BaseValueBridge*>*)value {
+  self.tag = BaseValueBridgeTagListValue;
   _listValue = [value copy];
 }
 
 - (id)copyWithZone:(nullable NSZone*)zone {
-  auto copy = [[MojoBaseValue alloc] init];
+  auto copy = [[BaseValueBridge alloc] init];
   copy.tag = self.tag;
   copy.boolValue = self.boolValue;
   copy.intValue = self.intValue;
@@ -223,42 +219,42 @@
         break;
       case base::Value::Type::NONE:
       default:
-        self.tag = MojoBaseValueTagNull;
+        self.tag = BaseValueBridgeTagNull;
         break;
     }
   }
   return self;
 }
 
-- (base::Value)cppObjPtr {
+- (base::Value)value {
   switch (self.tag) {
-    case MojoBaseValueTagBoolValue: {
+    case BaseValueBridgeTagBoolValue: {
       return base::Value(self.boolValue);
     }
-    case MojoBaseValueTagIntValue: {
+    case BaseValueBridgeTagIntValue: {
       return base::Value(self.intValue);
     }
-    case MojoBaseValueTagDoubleValue: {
+    case BaseValueBridgeTagDoubleValue: {
       return base::Value(self.doubleValue);
     }
-    case MojoBaseValueTagStringValue: {
+    case BaseValueBridgeTagStringValue: {
       return base::Value(
           base::SysNSStringToUTF8(static_cast<NSString*>(self.stringValue)));
     }
-    case MojoBaseValueTagBinaryValue: {
+    case BaseValueBridgeTagBinaryValue: {
       std::vector<uint8_t> blob;
       for (NSNumber* obj in self.binaryValue) {
         blob.push_back(obj.unsignedCharValue);
       }
       return base::Value(blob);
     }
-    case MojoBaseValueTagDictionaryValue: {
+    case BaseValueBridgeTagDictionaryValue: {
       return brave::BaseValueFromNSDictionary(self.dictionaryValue);
     }
-    case MojoBaseValueTagListValue: {
+    case BaseValueBridgeTagListValue: {
       return brave::BaseValueFromNSArray(self.listValue);
     }
-    case MojoBaseValueTagNull:
+    case BaseValueBridgeTagNull:
     default:
       return base::Value(base::Value::Type::NONE);
   }
@@ -266,7 +262,7 @@
 
 @end
 
-@implementation MojoBaseValue (JSON)
+@implementation BaseValueBridge (JSON)
 
 - (nullable instancetype)initWithJSONString:(NSString*)json {
   auto string = base::SysNSStringToUTF8(json);
@@ -281,8 +277,7 @@
 
 - (nullable NSString*)jsonString {
   std::string input_json;
-  if (!base::JSONWriter::Write(self.cppObjPtr, &input_json) ||
-      input_json.empty()) {
+  if (!base::JSONWriter::Write(self.value, &input_json) || input_json.empty()) {
     return nil;
   }
   return base::SysUTF8ToNSString(input_json);
@@ -308,68 +303,68 @@
 
 namespace brave {
 
-NSArray<MojoBaseValue*>* NSArrayFromBaseValue(base::Value value) {
+NSArray<BaseValueBridge*>* NSArrayFromBaseValue(base::Value value) {
   auto result = [[NSMutableArray alloc] init];
   for (auto&& item : value.GetList()) {
-    [result addObject:[[MojoBaseValue alloc] initWithValue:item.Clone()]];
+    [result addObject:[[BaseValueBridge alloc] initWithValue:item.Clone()]];
   }
   return result;
 }
 
-NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValue(
+NSDictionary<NSString*, BaseValueBridge*>* NSDictionaryFromBaseValue(
     base::Value value) {
   auto result = [[NSMutableDictionary alloc] init];
   for (auto kv : value.GetDict()) {
     result[base::SysUTF8ToNSString(kv.first)] =
-        [[MojoBaseValue alloc] initWithValue:kv.second.Clone()];
+        [[BaseValueBridge alloc] initWithValue:kv.second.Clone()];
   }
   return result;
 }
 
-base::Value BaseValueFromNSArray(NSArray<MojoBaseValue*>* array) {
+base::Value BaseValueFromNSArray(NSArray<BaseValueBridge*>* array) {
   base::Value value(base::Value::Type::LIST);
   base::Value::List& list = *value.GetIfList();
-  for (MojoBaseValue* obj in array) {
-    list.Append(obj.cppObjPtr);
+  for (BaseValueBridge* obj in array) {
+    list.Append(obj.value);
   }
   return value;
 }
 
-base::Value::List BaseValueListFromNSArray(NSArray<MojoBaseValue*>* array) {
+base::Value::List BaseValueListFromNSArray(NSArray<BaseValueBridge*>* array) {
   base::Value::List value;
-  for (MojoBaseValue* obj in array) {
-    value.Append(obj.cppObjPtr);
+  for (BaseValueBridge* obj in array) {
+    value.Append(obj.value);
   }
   return value;
 }
 
 base::Value BaseValueFromNSDictionary(
-    NSDictionary<NSString*, MojoBaseValue*>* dictionary) {
+    NSDictionary<NSString*, BaseValueBridge*>* dictionary) {
   base::Value result(base::Value::Type::DICT);
   base::Value::Dict& dict = result.GetDict();
   for (NSString* key in dictionary) {
-    MojoBaseValue* value = dictionary[key];
-    dict.Set(base::SysNSStringToUTF8(key), value.cppObjPtr);
+    BaseValueBridge* value = dictionary[key];
+    dict.Set(base::SysNSStringToUTF8(key), value.value);
   }
   return result;
 }
 
-NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValueDict(
+NSDictionary<NSString*, BaseValueBridge*>* NSDictionaryFromBaseValueDict(
     base::Value::Dict value) {
   auto result = [[NSMutableDictionary alloc] init];
   for (auto kv : value) {
     result[base::SysUTF8ToNSString(kv.first)] =
-        [[MojoBaseValue alloc] initWithValue:kv.second.Clone()];
+        [[BaseValueBridge alloc] initWithValue:kv.second.Clone()];
   }
   return result;
 }
 
 base::Value::Dict BaseValueDictFromNSDictionary(
-    NSDictionary<NSString*, MojoBaseValue*>* dictionary) {
+    NSDictionary<NSString*, BaseValueBridge*>* dictionary) {
   base::Value::Dict dict;
   for (NSString* key in dictionary) {
-    MojoBaseValue* value = dictionary[key];
-    dict.Set(base::SysNSStringToUTF8(key), value.cppObjPtr);
+    BaseValueBridge* value = dictionary[key];
+    dict.Set(base::SysNSStringToUTF8(key), value.value);
   }
   return dict;
 }

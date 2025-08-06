@@ -73,7 +73,7 @@ group("brave_ios") {
 }
 
 brave_core_public_headers = [
-  "//brave/build/ios/mojom/public/base/base_values.h",
+  "//brave/base/apple/base_value_bridge.h",
   "//brave/ios/app/brave_core_main.h",
   "//brave/ios/app/brave_profile_controller.h",
   "//brave/ios/app/brave_core_switches.h",

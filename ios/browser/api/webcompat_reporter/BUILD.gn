@@ -31,7 +31,7 @@ source_set("webcompat_reporter") {
 
   deps = [
     "//base",
-    "//brave/base/mac",
+    "//brave/base/apple",
     "//brave/components/webcompat_reporter/browser",
     "//brave/components/webcompat_reporter/common",
     "//brave/ios/browser/keyed_service",
