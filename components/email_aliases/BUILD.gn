@@ -40,10 +40,12 @@ static_library("service") {
     ":mojom",
     "//base",
     "//brave/components/email_aliases:features",
+    "//brave/components/resources:strings_grit",
     "//components/keyed_service/core",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/network/public/cpp",
+    "//ui/base",
   ]
   defines = [
     "BRAVE_ACCOUNT_API_ENDPOINT=\"${brave_account_api_endpoint}\"",
