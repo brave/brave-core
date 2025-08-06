@@ -177,19 +177,6 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
-                       StatsUpdaterUsagePingDisabledViaPolicyFirstCheck) {
-  g_browser_process->local_state()->SetBoolean(kStatsReportingDisabledByPolicy,
-                                               true);
-
-  WaitForReferralInitializeCallback();
-  WaitForStandardStatsUpdatedCallback();
-
-  EXPECT_EQ(GetUpdateURL().host(), "no-thanks.invalid");
-
-  EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
-}
-
 // Run the stats updater with no active referral and verify that the
 // update url specifies the default referral code
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,

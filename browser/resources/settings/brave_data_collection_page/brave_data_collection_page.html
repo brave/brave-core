@@ -7,7 +7,7 @@
       on-settings-boolean-control-change="onP3AEnabledChange_">
   </settings-toggle-button>
 </template>
-<template is="dom-if" if="[[!isStatsReportingDisabledByPolicy_]]">
+<template is="dom-if" if="[[!isStatsReportingHidden_]]">
   <settings-toggle-button id="statsUsagePingEnabled"
       class="cr-row"
       pref="[[statsUsagePingEnabledPref_]]"
