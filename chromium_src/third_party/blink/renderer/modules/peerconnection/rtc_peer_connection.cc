@@ -7,13 +7,12 @@
 #include "third_party/blink/renderer/platform/instrumentation/instance_counters.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
-#define IncrementCounter(...)                                 \
-  IncrementCounter(__VA_ARGS__);                              \
-  if (RuntimeEnabledFeatures::BraveIsInTorContextEnabled()) { \
-    exception_state.ThrowDOMException(                        \
-        DOMExceptionCode::kNotAllowedError,                   \
-        "RTCPeerConnection is not allowed in Tor windows.");  \
-    return;                                                   \
+#define IncrementCounter(...)                                              \
+  IncrementCounter(__VA_ARGS__);                                           \
+  if (RuntimeEnabledFeatures::BraveIsInTorContextEnabled()) {              \
+    exception_state.ThrowDOMException(DOMExceptionCode::kNotAllowedError,  \
+                                      "RTCPeerConnection is not allowed"); \
+    return;                                                                \
   }
 
 #include <third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc>
