@@ -24,7 +24,7 @@ source_set("containers") {
     "//brave/app:command_ids",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
-    "//brave/components/containers/core/mojom:mojom",
+    "//brave/components/containers/core/mojom",
     "//brave/components/vector_icons",
     "//chrome/app:generated_resources",
     "//ui/base",

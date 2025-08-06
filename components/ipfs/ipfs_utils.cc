@@ -12,11 +12,11 @@
 #include "base/check_op.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "components/base32/base32.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -107,9 +107,8 @@ bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain) {
       std::string new_host = gateway_url.host();
       std::string new_path = path;
       if (use_subdomain) {
-        new_host = base::StringPrintf("%s.%s.%s", cid.c_str(),
-                                      ipfs_scheme ? "ipfs" : "ipns",
-                                      gateway_url.host().c_str());
+        new_host = absl::StrFormat(
+            "%s.%s.%s", cid, ipfs_scheme ? "ipfs" : "ipns", gateway_url.host());
       } else {
         new_path = (ipfs_scheme ? "ipfs/" : "ipns/") + cid + path;
       }

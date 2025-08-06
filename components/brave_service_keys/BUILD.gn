@@ -35,7 +35,7 @@ static_library("brave_service_keys") {
     "//base",
     "//crypto",
     "//net",
-    "//url:url",
+    "//url",
   ]
 }
 source_set("unit_tests") {

@@ -16,6 +16,7 @@
 #include "ios/web/web_state/ui/crw_web_controller.h"
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "ios/web/web_state/web_state_impl.h"
+#include "ios/web_view/internal/cwv_back_forward_list_item_internal.h"
 #include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "ios/web_view/internal/web_view_browser_state.h"
@@ -141,6 +142,30 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
 
 - (NSDate*)lastActiveTime {
   return self.webState->GetLastActiveTime().ToNSDate();
+}
+
+- (NSArray<CWVBackForwardListItem*>*)backList {
+  std::vector<web::NavigationItem*> items =
+      self.webState->GetNavigationManager()->GetBackwardItems();
+  NSMutableArray* bridgedItems =
+      [[NSMutableArray alloc] initWithCapacity:items.size()];
+  for (const auto& item : items) {
+    [bridgedItems
+        addObject:[[CWVBackForwardListItem alloc] initWithNavigationItem:item]];
+  }
+  return [bridgedItems copy];
+}
+
+- (NSArray<CWVBackForwardListItem*>*)forwardList {
+  std::vector<web::NavigationItem*> items =
+      self.webState->GetNavigationManager()->GetForwardItems();
+  NSMutableArray* bridgedItems =
+      [[NSMutableArray alloc] initWithCapacity:items.size()];
+  for (const auto& item : items) {
+    [bridgedItems
+        addObject:[[CWVBackForwardListItem alloc] initWithNavigationItem:item]];
+  }
+  return [bridgedItems copy];
 }
 
 @end

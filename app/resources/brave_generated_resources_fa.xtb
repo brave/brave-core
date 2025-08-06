@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">فقط در صفحه زبانه جدید</translation>
 <translation id="6406506848690869874">همگام‌سازی</translation>
 <translation id="1544192797660353713">کیف پول</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">هوش مصنوعی Leo</translation>
 <translation id="8275068909952022340">بیشتر…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {بستن حالت مهمان}
+          other {بستن حالت مهمان}
+        }</translation>
 <translation id="1990886731975529483">Google Widevine را نصب و اجرا کنید</translation>
 <translation id="8926389886865778422">دوباره سؤال نشود</translation>
 <translation id="4900351245762303149">Google Widevine را نصب کنید</translation>
@@ -75,13 +79,20 @@
 <translation id="2808103541110899519">پنهان کردن نماد کیف پول Brave</translation>
 <translation id="7595540212376041331">نماد «کیف پول Brave» را پنهان می‌کند</translation>
 <translation id="3893997535859323951">مخفی کردن آیکون هوش مصنوعی Leo</translation>
+<translation id="8832245978592881387">باز کردن هوش مصنوعی Leo در یک زبانه جدید</translation>
+<translation id="4577675328803804820">باز کردن هوش مصنوعی Leo در نوار کناری</translation>
+<translation id="564305948667173847">مدیریت تنظیمات هوش مصنوعی Leo</translation>
 <translation id="6208515240323786457">مخفی کردن آیکون هوش مصنوعی Leo</translation>
-<translation id="2361906291514218784">هوش مصنوعی Leo</translation>
+<translation id="2169338740411893745">هوش مصنوعی Leo را در زبانه جدیدی باز کنید</translation>
+<translation id="3295805221342028003">هوش مصنوعی Leo را در نوار کناری باز کنید</translation>
+<translation id="7400808612454224939">تنظیمات هوش مصنوعی Leo را مدیریت کنید</translation>
+<translation id="5385064007245738696">درباره هوش مصنوعی Leo</translation>
 <translation id="4928988318462976765">فروشگاه افزونه‌های وب</translation>
 <translation id="9181207987584064303">مشاهده در «فروشگاه افزونه‌های وب»</translation>
 <translation id="3161744659507801211">هشدار: Brave نمی‌تواند مانع از ثبت سابقه مرورتان توسط افزونه‌ها شود.</translation>
 <translation id="2162109630536601963">اگر این افزونه درخواست‌های شبکه ارائه می‌دهد، از Tor یا حالت خصوصی استفاده نمی‌کند.</translation>
 <translation id="2725327089319971976">برای غیرفعال کردن این افزونه در حالت خصوصی و حالت Tor، این گزینه را لغو انتخاب کنید.</translation>
+<translation id="438106944087726695">متکی بر Brave</translation>
 <translation id="3371343170427636147">برنامه‌های Nightly مرورگر Brave</translation>
 <translation id="4097979995947147464">برنامه‌های Beta مرورگر Brave</translation>
 <translation id="8303432794159193481">برنامه‌های Dev مرورگر Brave</translation>
@@ -180,11 +191,6 @@
 <translation id="4394049700291259645">غیر فعال کردن</translation>
 <translation id="7142548388914389999">مجاز کردن تجزیه‌وتحلیل‌های محصول حفاظت‌کننده از حریم‌خصوصی (P3A)</translation>
 <translation id="2604698253988679506">این پاسخ‌های خصوصی به Brave کمک می‌کند تا استفاده کلی از برخی ویژگی‌ها را تخمین بزند و آنها را برای شما بهتر کند.</translation>
-<translation id="1947672064022327074">مایل هستید «کیف پول‌های رمزگذاری‌شده» را برای پشتیبانی از Ethereum راه‌اندازی کنید؟</translation>
-<translation id="7583735190612229830">برای داشتن تعامل با این برنامه و برنامه‌های دیگر مشابه آن، «کیف پول رمزنگاری‌شده» را تنظیم کنید.</translation>
-<translation id="8731422418734770661">راه‌اندازی Crypto Wallets</translation>
-<translation id="8199661191594897555">راه‌اندازی «کیف پول‌های رمزگذاری‌شده» و بارگیری مجدد</translation>
-<translation id="8428213095426709021">تنظیمات</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">دامنه‌های Web3</translation>
 <translation id="5046066249040287308">خدمات ابزار کیف پول Brave</translation>
@@ -334,6 +340,7 @@
 <translation id="7557539689487606886">تبدیل عضویت به Premium</translation>
 <translation id="1035309871698658326">وقتی این ویژگی باز شود، عناوین و مبدأ همه برگه‌های غیرخصوصی را به‌طور خودکار برای طبقه‌بندی به Leo ارسال می‌کند.</translation>
 <translation id="3435896845095436175">فعال کنید</translation>
+<translation id="1940221956626514677">سفارشی کردن نوار ابزار</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="1426410128494586442">بله</translation>
@@ -491,6 +498,8 @@
 <translation id="3540231253392253941">استفاده از سرویس‌های Google برای پیام‌رسانی فشاری</translation>
 <translation id="933652931229970927">ارسال خودکار گزارش‌های عیب‌یابی</translation>
 <translation id="4891600875049212418">هنگام بازدید از سایت‌های حساس، به «حالت خصوصی و محرمانه» بروید</translation>
+<translation id="509873765238158442">مسدود کردن فراخوانی Microsoft</translation>
+<translation id="4763421121695677716">قابلیت فراخوانی را در Microsoft Windows مسدود کنید تا به‌ صورت خودکار از زبانه‌های باز Brave عکس صفحه گرفته نشود.</translation>
 <translation id="1968895725257436430">جمع‌آوری داده</translation>
 <translation id="4846154056248462491">در برگه خروج</translation>
 <translation id="216468847346280584">پاک کردن داده‌های تبلیغات Brave...</translation>
@@ -652,10 +661,10 @@
 <translation id="2653659639078652383">ارائه</translation>
 <translation id="1294350054292274934">فقط آدرس‌های .onion را در ویندوز Tor به‌روزرسانی کنید</translation>
 <translation id="601227612175911475">سرویس‌های Onion خارج از پنجره‌های Tor در دسترس نخواهد بود.</translation>
-<translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
 <translation id="5249433283143453448">از مؤلفه مدیریت حقوق دیجیتال (DRM) Widevine برای مشاهده ویدیوی محافظت‌شده در حال پخش جریانی و سایر محتواها در مرورگر استفاده کنید.</translation>
 <translation id="1314131187310290315">افزونه‌های Manifest V2</translation>
 <translation id="2488433650767270565">افزونه‌های Manifest V2 زیر از فروشگاه وب Chrome حذف خواهند شد، اما همچنان در Brave پشتیبانی می‌شوند. برای دانلود و نصب یا حذف نصب تغییر حالت دهید.</translation>
+<translation id="6918225713618473646">Brave این افزونه‌های Manifest V2 را روی سرورهای خود میزبانی می‌کند، اما محتوا، امنیت یا رفتار آن‌ها را بررسی یا تأیید نمی‌کند. لطفاً برای دریافت راهنمایی به صفحه رسمی هر افزونه مراجعه کنید. برنامه‌‌های Brave را برای Manifest V2 <ph name="BEGIN_LINK"/>اینجا<ph name="END_LINK"/> مطالعه کنید؛.</translation>
 <translation id="578671172657727816">NoScript™ را فعال کنید</translation>
 <translation id="9068475464170522036">NoScript یک افزونه Manifest V2 است که به شما امکان می‎‌دهد اسکریپت‌های فردی را که در حال اجرا یا تلاش برای اجرا در یک صفحه خاص هستند مسدود و یا رفع انسداد کنید.</translation>
 <translation id="1394592156621788100">uBlock Origin™ را فعال کنید</translation>
@@ -670,7 +679,6 @@
 <translation id="7701023802820268122">کیف پول پیش‌فرض سولانا</translation>
 <translation id="8488282162676695335">کیف پول Brave</translation>
 <translation id="6942354363301686374">افزونه‌ها (بدون بازگشت)</translation>
-<translation id="1274962333945373242">کیف پول‌های رمز ارز (منسوخ)</translation>
 <translation id="702381242110464396">افزونه‌ها (بازگشت کیف پول Brave)</translation>
 <translation id="4718664830805652430">ارز پایه پیش‌فرض</translation>
 <translation id="7992507032049865603">رمزارز پایه پیش‌فرض</translation>
@@ -735,6 +743,7 @@
 <translation id="3095201688102519917">قبل از بستن پنجره‌ای با چندین زبانه، به من هشدار داده شود</translation>
 <translation id="7120553802660696133">هنگام بستن آخرین زبانه، پنجره بسته شود</translation>
 <translation id="3394171693948989253">نمایش یادآور تمام‌صفحه برای فشار دادن Esc هنگام خروج</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">نمایش آیکون Leo در نوار کناری</translation>
 <translation id="8055509865174199683">نمایش Leo در منوی زمینه در وب‌سایت‌ها</translation>
 <translation id="1529674267267221673">وقتی روی یک وب‌سایت کلیک راست می‌کنید، Leo در منوی زمینه ظاهر می‌شود. بدین ترتیب زمینه از صفحه وب فعلی به Leo ارسال می‌شود.</translation>
@@ -747,7 +756,6 @@
 <translation id="1335414530428321716">بازنشانی هوش مصنوعی Leo نیازمند این خواهد بود که شما در آینده مجدداً برای استفاده از هوش مصنوعی Brave Leo موافقت کنید و همچنین سابقه گفتگوهای شما پاک خواهد شد. پاک کردن سوابق گفتگو، تمام گفتگوهای قبلی شما با هوش مصنوعی Brave Leo را حذف خواهد کرد. این اقدام بازگشت‌ناپذیر است.</translation>
 <translation id="5574059574002819179">پیشنهادهای تکمیل خودکار را تنظیم کنید</translation>
 <translation id="7942415993090181327">سابقه گفتگو</translation>
-<translation id="5385064007245738696">درباره هوش مصنوعی Leo</translation>
 <translation id="5084498230659987096">Brave Leo سرویس چت مبتنی بر هوش مصنوعی و سایر قابلیت‌های مبتنی بر هوش مصنوعی را با رعایت حریم خصوصی در مرورگر ارائه می‌دهد. Leo هرگز از داده‌های شما برای یادگیری یا آموزش مدل استفاده نمی‌کند. تمام درخواست‌ها از طریق یک سرور ناشناس‌‌ساز منتقل می‌شوند.</translation>
 <translation id="6458721693611638005">برای کسب اطلاعات بیشتر درباره روش‌های محافظت Brave از حریم خصوصی شما هنگام استفاده از هوش مصنوعی، خط‌مشی حریم خصوصی Leo را بخوانید. <ph name="BEGIN_LINK"/>اطلاعات بیشتر<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">مدل پیش‌فرض برای مکالمات جدید</translation>
@@ -784,6 +792,9 @@
 <translation id="6304169450064541679">پرامپت سیستم</translation>
 <translation id="3081947790648024460">دستورالعمل‌ها و/یا زمینه‌های سفارشی که به مدل داده می‌شود تا پاسخ‌ها را در جهت یا سبک خاصی هدایت کند. وقتی می‌خواهید تاریخ و زمان فعلی درج شود، از %‎%datetime استفاده کنید.</translation>
 <translation id="5688878061573389791"><ph name="TOKENS_COUNT"/>≈ توکن</translation>
+<translation id="5985516785067818307">عضو پنل نظرسنجی</translation>
+<translation id="8347743943525229984">مجاز کردن نظرسنجی‌های Brave</translation>
+<translation id="3204080538332044581">به Brave اجازه می‌دهد که در صفحه زبانه جدید لینک‌های نظرسنجی‌های خصوصی را نمایش دهد. نظرسنجی‌ها به ما کمک می‌کنند تا قابلیت‌های بهتری بسازیم و اثربخشی کمپین‌های تبلیغاتی مرورگرمحور را ارزیابی کنیم. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">لیست پخش را فعال کنید</translation>
 <translation id="7903608716704052878">به‌طور خودکار فایل‌ها را برای مشاهده آفلاین اضافه کنید</translation>
 <translation id="4193768184502613558">این گزینه به‌طور خودکار فایل‌های رسانه‌ای را ذخیره می‌کند تا بتوانید آنها را بدون اتصال به اینترنت پخش کنید.</translation>

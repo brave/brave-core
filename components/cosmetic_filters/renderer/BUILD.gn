@@ -27,7 +27,7 @@ source_set("renderer") {
     "//brave/components/cosmetic_filters/common:mojom",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/de_amp/common",
-    "//components/content_settings/renderer:renderer",
+    "//components/content_settings/renderer",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

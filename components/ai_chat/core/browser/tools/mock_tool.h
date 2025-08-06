@@ -11,8 +11,11 @@
 #include <string_view>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace ai_chat {
 
@@ -26,7 +29,8 @@ class MockTool : public Tool {
       std::optional<base::Value::Dict> input_properties = std::nullopt,
       std::optional<std::vector<std::string>> required_properties =
           std::nullopt,
-      std::optional<base::Value::Dict> extra_params = std::nullopt);
+      std::optional<base::Value::Dict> extra_params = std::nullopt,
+      bool requires_user_interaction_before_handling = false);
   ~MockTool() override;
 
   std::string_view Name() const override;
@@ -35,6 +39,18 @@ class MockTool : public Tool {
   std::optional<base::Value::Dict> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
   std::optional<base::Value::Dict> ExtraParams() const override;
+  bool RequiresUserInteractionBeforeHandling() const override;
+
+  void set_requires_user_interaction_before_handling(
+      bool requires_user_interaction_before_handling) {
+    requires_user_interaction_before_handling_ =
+        requires_user_interaction_before_handling;
+  }
+
+  MOCK_METHOD(void,
+              UseTool,
+              (const std::string& input_json, UseToolCallback callback),
+              (override));
 
  private:
   std::string name_;
@@ -43,6 +59,7 @@ class MockTool : public Tool {
   std::optional<base::Value::Dict> input_properties_;
   std::optional<std::vector<std::string>> required_properties_;
   std::optional<base::Value::Dict> extra_params_;
+  bool requires_user_interaction_before_handling_;
 };
 
 }  // namespace ai_chat

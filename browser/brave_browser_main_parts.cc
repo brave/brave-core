@@ -26,6 +26,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
+#include "chrome/common/chrome_switches.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
@@ -77,6 +78,8 @@ ChromeBrowserMainParts::~ChromeBrowserMainParts() = default;
 int ChromeBrowserMainParts::PreMainMessageLoopRun() {
   brave_component_updater::BraveOnDemandUpdater::GetInstance()
       ->RegisterOnDemandUpdater(
+          base::CommandLine::ForCurrentProcess()->HasSwitch(
+              switches::kDisableComponentUpdate),
           &g_browser_process->component_updater()->GetOnDemandUpdater());
 
   return ChromeBrowserMainParts_ChromiumImpl::PreMainMessageLoopRun();

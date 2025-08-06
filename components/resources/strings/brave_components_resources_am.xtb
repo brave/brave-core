@@ -945,10 +945,6 @@
 <translation id="4324239559624557455">ለ 24 ሰዓት</translation>
 <translation id="9139452553033760558">ለ 1 ሳምንት</translation>
 <translation id="1658834457013045127">ለዘላለም</translation>
-<translation id="2770851145415891830">ነባር የክሪፕቶ ዋሌቶች ተገኝተዋል</translation>
-<translation id="2237759620789871865">ማስመጣትን ለመዝለል ከመረጡ እና የድሮውን የ Crypto ዋሌት ልምድን ከቀጠሉ፣ ወደ Brave Browser <ph name="LINK_BEFORE"/>ቅንብሮች<ph name="LINK_AFTER"/> ብቻ ይሂዱ፣ እና ነባሪውን ወደ Crypto Wallet ይቀይሩት። ማስመጣት፣ አዲሱን Brave Wallet መሞከር እና በማንኛውም ጊዜ መልሰው መቀየር ይችላሉ።</translation>
-<translation id="5590175005414413980">ወደ Brave ዋሌት ለማስመጣት ያለውን የክሪፕቶ ዋሌቶችዎን የይለፍ ቃል ያስገቡ። የክሪፕቶ ንብረቶችን ለማስተዳደር እና ከWeb3 DApps ጋር መስተጋብር ለመፍጠር ይበልጥ ፈጣን በሆነ እና ደህንነቱ በተጠበቀው መንገድ ይደሰቱ።</translation>
-<translation id="880619123281809987">የCrypto wallets ይለፍ ቃል ይተይቡ</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> ተገናኝቷል</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> ተቋርጧል</translation>
 <translation id="5317781812114905957">መመሪያዎች</translation>
@@ -1264,7 +1260,6 @@
 <translation id="396152018598329740">የ crypto wallet እንዴት መጠቀም ይቻላል?</translation>
 <translation id="7512061585041489067">በጣም ጥሩው የሆነ crypto wallet ምንድን ነው?</translation>
 <translation id="1342755158522323177">crypto ማሰሻ ምንድን ነው?</translation>
-<translation id="4702762916247565868">Crypto wallets 101</translation>
 <translation id="4674552515763857735">የመልሶ ማግኛ ሐረግ ምንድን ነው?</translation>
 <translation id="7328255859839881981">DApps ምንድን ናቸው?</translation>
 <translation id="3852489285890032403">ድር 3 ምንድን ነው?</translation>
@@ -1283,7 +1278,6 @@
 <translation id="5333225216561354793">ከታች ላሉት ነገሮች እውቅና እንዲሰጡ እንጠይቃለን።</translation>
 <translation id="1422451606553326863">Crypto ግዛ</translation>
 <translation id="3887541341068007345">የኪስ ቦርሳ ቅጥያዎችን በመፈተሽ ላይ...</translation>
-<translation id="3567994771568272606">ከድሮው Brave crypto wallets አስመጣ</translation>
 <translation id="8407091560429310499">ንብረት ይምረጡ</translation>
 <translation id="756590380936155533">የ<ph name="ASSET_TICKER"/> ግዢዎን ለመጨረስ ከአጋሮቻችን ውስጥ አንዱን ይምረጡ</translation>
 <translation id="7880860489474966219">ሲጠናቀቅ፣ የእርስዎ ገንዘቦች ወደ Brave Walletዎ ይተላለፋሉ</translation>
@@ -1469,6 +1463,7 @@
 <translation id="7758665172236842395">ተወዳጅ ምንጮችዎን በአንድ መረጃ መጋቢ ውስጥ ይከተሉ። በቀላሉ በ Brave ውስጥ ትር ይክፈቱ፣ ወደ ታች ይውረዱ እና… ይኸው!</translation>
 <translation id="2376542729617592331">የ Brave ዜና ግላዊ እና በማያጋልጡ ማስታወቂያዎች የተደገፈ ነው። <ph name="LINK_START"/>የበለጠ መረጃ።<ph name="LINK_END"/>።</translation>
 <translation id="1765217911817124376">የ Brave ዜናዎች ን ያንቁ</translation>
+<translation id="1772301834467143364">የBrave ዜናዎች</translation>
 <translation id="6265592479622441247">ወደ <ph name="BEGIN_BOLD"/>Dashboard<ph name="END_BOLD"/>ይመለሱ</translation>
 <translation id="8981973962043893066">ጣቢያ፣ ርዕስ ወይም RSS ግብአት ይፈልጉ</translation>
 <translation id="1498364270401875204">ሰርጦች</translation>
@@ -1775,7 +1770,6 @@
 <translation id="5642775487085641191">ውይይት ብቻ ነው የፈለጉት?</translation>
 <translation id="8857222718794549840">የፈለጉትን ይጠይቁኝ! ስለፈለጉት ርዕስ ማውራት እንችላለን። የተሻሉ መልሶችን ለመስጠት ሁልጊዜ እየተማርኩ እና እያሻሻልኩ ነው።</translation>
 <translation id="9051226419897869406">ከBrave Leo ጋር በግል ይነጋገሩ</translation>
-<translation id="8599503173207256429">ስለዚህ ገጽ ለመጠየቅ ያብሩ። ይዘቱ ከመልእክቶችዎ ጋር ለ Brave Leo ይላካል።</translation>
 <translation id="318819763888864209">ሁሉም የደንበኝነት ምዝገባዎች በራስ-የታደሱ ናቸው ነገርግን ከመታደሳቸው በፊት በማንኛውም ጊዜ ሊሰረዙ ይችላሉ።</translation>
 <translation id="5091223967610958">Leo ን የተሻለ ለማድረግ እንዲረዳን አሁን ያሉበትን ገጽ አስተናጋጅ ስም (<ph name="HOST_NAME"/>) ያጋሩ።</translation>
 <translation id="8732450785281947197">Leo AI መሳሪያዎች</translation>
@@ -1874,6 +1868,7 @@
 <translation id="546481172717459539">ከስርዓቱ ቅንብር ጋር አዛምድ</translation>
 <translation id="7799817062559422778">የብርሃን ሁነታ</translation>
 <translation id="4117637339509843559">የጨለማ ሁነታ</translation>
+<translation id="7207456302801184289">ወደ ብሬቭ እንኳን ደህና መጡ</translation>
 <translation id="958268166261124668">Brave VPN፦ ተገናኝቷል</translation>
 <translation id="6021669293402055982">Brave VPN፦ ግንኙነት ተቋርጧል</translation>
 <translation id="3541307549916475335">የBrave ቪፒኤን ፓነል ዩአይ</translation>

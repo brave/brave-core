@@ -17,7 +17,7 @@
   MenuConfig(const MenuConfig&); \
   static const MenuConfig& instance
 
-#include "src/ui/views/controls/menu/menu_config.h"  // IWYU pragma: export
+#include <ui/views/controls/menu/menu_config.h>  // IWYU pragma: export
 
 #undef instance
 

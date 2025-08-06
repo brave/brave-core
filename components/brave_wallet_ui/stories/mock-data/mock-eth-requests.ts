@@ -63,6 +63,7 @@ export const mockSignMessageRequest: BraveWallet.SignMessageRequest = {
       version: 1,
     },
     solanaSignData: undefined,
+    cardanoSignData: undefined,
   },
   coin: BraveWallet.CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID,

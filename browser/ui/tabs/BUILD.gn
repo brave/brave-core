@@ -10,7 +10,10 @@ assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 source_set("tabs_public") {
   sources = [ "public/brave_tab_features.h" ]
 
-  public_deps = [ "//chrome/browser/ui/tabs:tabs_public" ]
+  public_deps = [
+    "//brave/components/psst/buildflags",
+    "//chrome/browser/ui/tabs:tabs_public",
+  ]
 }
 
 if (!is_android) {
@@ -23,6 +26,7 @@ if (!is_android) {
       ":tabs_public",
       "//brave/browser/ai_chat",
       "//brave/browser/ui/side_panel",
+      "//brave/components/psst/browser/content",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/tabs:impl",
     ]

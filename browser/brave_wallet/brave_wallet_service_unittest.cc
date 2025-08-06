@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -49,12 +50,11 @@
 #include "build/build_config.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
-#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/storage_partition.h"
@@ -313,6 +313,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
     scoped_feature_list_.InitAndEnableFeature(
         features::kBraveWalletBitcoinFeature);
 
+    brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
+
 #if BUILDFLAG(IS_ANDROID)
     task_environment_.AdvanceClock(base::Days(2));
 #else
@@ -328,8 +330,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-    local_state_ = std::make_unique<ScopedTestingLocalState>(
-        TestingBrowserProcess::GetGlobal());
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
     builder.AddTestingFactory(
@@ -346,7 +346,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
                   BraveWalletServiceDelegate::Create(profile),
                   profile->GetPrefs(), local_state);
             },
-            shared_url_loader_factory_, local_state_->Get()));
+            shared_url_loader_factory_, &local_state_));
     profile_ = builder.Build();
     service_ = brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
         profile_.get());
@@ -464,7 +464,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return network_manager_->GetNetworkURL(chain_id, coin);
   }
 
-  TestingPrefServiceSimple* GetLocalState() { return local_state_->Get(); }
+  TestingPrefServiceSimple* GetLocalState() { return &local_state_; }
   BlockchainRegistry* GetRegistry() {
     return BlockchainRegistry::GetInstance();
   }
@@ -885,7 +885,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<ScopedTestingLocalState> local_state_;
+  TestingPrefServiceSimple local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   raw_ptr<BraveWalletService> service_ = nullptr;
@@ -2188,7 +2188,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, account_id.Clone(),
+      origin_info.Clone(), 0, account_id.Clone(),
       mojom::SignDataUnion::NewEthStandardSignData(
           mojom::EthStandardSignData::New(message)),
       mojom::CoinType::ETH, mojom::kMainnetChainId);
@@ -2205,16 +2205,16 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
   service_->NotifySignMessageRequestProcessed(
-      true, 1, expected_signature.Clone(), std::nullopt);
+      true, 0, expected_signature.Clone(), std::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   service_->NotifySignMessageRequestProcessed(
-      true, 1, expected_signature.Clone(), std::nullopt);
+      true, 0, expected_signature.Clone(), std::nullopt);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, account_id.Clone(),
+      origin_info.Clone(), 0, account_id.Clone(),
       mojom::SignDataUnion::NewEthStandardSignData(
           mojom::EthStandardSignData::New(message)),
       mojom::CoinType::ETH, mojom::kMainnetChainId);
@@ -2231,7 +2231,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
   service_->NotifySignMessageRequestProcessed(
-      false, 2, expected_signature.Clone(), expected_error);
+      false, 1, expected_signature.Clone(), expected_error);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
 }
@@ -2246,7 +2246,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, account_id.Clone(),
+      origin_info.Clone(), 0, account_id.Clone(),
       mojom::SignDataUnion::NewEthStandardSignData(
           mojom::EthStandardSignData::New(message)),
       mojom::CoinType::ETH, mojom::kMainnetChainId);
@@ -2262,15 +2262,15 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
         callback_is_called = true;
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
-  service_->NotifySignMessageRequestProcessed(true, 1, nullptr, std::nullopt);
+  service_->NotifySignMessageRequestProcessed(true, 0, nullptr, std::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
-  service_->NotifySignMessageRequestProcessed(true, 1, nullptr, std::nullopt);
+  service_->NotifySignMessageRequestProcessed(true, 0, nullptr, std::nullopt);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, account_id.Clone(),
+      origin_info.Clone(), 0, account_id.Clone(),
       mojom::SignDataUnion::NewEthStandardSignData(
           mojom::EthStandardSignData::New(message)),
       mojom::CoinType::ETH, mojom::kMainnetChainId);
@@ -2285,7 +2285,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
         callback_is_called = true;
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
-  service_->NotifySignMessageRequestProcessed(false, 2, nullptr, std::nullopt);
+  service_->NotifySignMessageRequestProcessed(false, 1, nullptr, std::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
 }
@@ -2447,7 +2447,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, account_id.Clone(),
+      origin_info.Clone(), 0, account_id.Clone(),
       mojom::SignDataUnion::NewEthStandardSignData(
           mojom::EthStandardSignData::New(message)),
       mojom::CoinType::ETH, mojom::kMainnetChainId);
@@ -2515,7 +2515,6 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kDefaultBaseCryptocurrency));
   EXPECT_TRUE(service_->sign_message_requests_.empty());
-  EXPECT_TRUE(service_->sign_message_callbacks_.empty());
   EXPECT_TRUE(service_->add_suggest_token_callbacks_.empty());
   EXPECT_TRUE(service_->add_suggest_token_requests_.empty());
 

@@ -12,7 +12,7 @@
 #define BRAVE_UNEXPORTED_KEY_METRICS_ALGORITHM_TO_STRING \
   case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
 
-#include "src/crypto/unexportable_key_metrics.cc"
+#include <crypto/unexportable_key_metrics.cc>
 
 #undef BRAVE_ALL_ALGORITHMS
 #undef BRAVE_MEASURE_VIRTUAL_TMP_OPERATIONS

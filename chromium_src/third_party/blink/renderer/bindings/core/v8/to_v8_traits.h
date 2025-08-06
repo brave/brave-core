@@ -11,11 +11,11 @@
   [[nodiscard]] static v8::Local<v8::Value> ToV8(ScriptState* script_state,    \
                                                  const ContainerType* value) { \
     if (!value)                                                                \
-      return v8::Null(script_state->GetIsolate());                             \
+      return v8::Null(v8::Isolate::GetCurrent());                              \
     return ToV8Traits<IDLSequence<T>>::ToV8(script_state, *value);             \
   }
 
-#include "src/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/bindings/core/v8/to_v8_traits.h>  // IWYU pragma: export
 
 #undef BRAVE_TO_V8_TRAITS_PAGE_GRAPH_OVERRIDE
 

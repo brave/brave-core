@@ -10,7 +10,7 @@
 #define ChromeContentClient() BraveContentClient()
 #define ChromeContentBrowserClient() BraveContentBrowserClient()
 #define ChromeContentRendererClient() BraveContentRendererClient()
-#include "src/chrome/test/base/chrome_render_view_test.cc"
+#include <chrome/test/base/chrome_render_view_test.cc>
 #undef ChromeContentClient
 #undef ChromeContentBrowserClient
 #undef ChromeContentRendererClient

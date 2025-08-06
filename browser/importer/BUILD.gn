@@ -43,7 +43,7 @@ if (!is_android) {
 
     deps = [
       "//base",
-      "//brave/common/importer:importer",
+      "//brave/common/importer",
       "//chrome/browser/importer",
       "//chrome/browser/ui",
       "//chrome/common:constants",

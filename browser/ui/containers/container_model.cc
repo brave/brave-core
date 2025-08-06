@@ -19,9 +19,11 @@ ui::ImageModel GetImageModelForContainer(const mojom::ContainerPtr& container,
                                          float scale_factor) {
   CHECK(container) << "Container must be valid";
   constexpr int kDipSize = 16;
+  constexpr int kDipIconSize = 12;
   return ui::ImageModel::FromImageGenerator(
       base::BindRepeating(&GenerateContainerIcon, container->icon,
-                          container->background_color, kDipSize, scale_factor),
+                          container->background_color, kDipSize, kDipIconSize,
+                          scale_factor),
       gfx::Size(kDipSize, kDipSize));
 }
 

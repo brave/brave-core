@@ -29,7 +29,7 @@ class SplitViewWithTabDialogBrowserTest;
   std::optional<bool> tab_is_activated_;                                       \
   void set_view_factory_for_testing
 
-#include "src/components/permissions/permission_request_manager.h"  // IWYU pragma: export
+#include <components/permissions/permission_request_manager.h>  // IWYU pragma: export
 
 #undef set_view_factory_for_testing
 

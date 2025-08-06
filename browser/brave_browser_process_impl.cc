@@ -25,6 +25,8 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/brave_channel_info.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
@@ -61,6 +63,10 @@
 #include "net/base/features.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+#include "brave/browser/ai_chat/ai_chat_agent_profile_manager.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/brave_tor_client_updater.h"
@@ -182,6 +188,12 @@ void BraveBrowserProcessImpl::Init() {
   // Initializes the internal static data on start up.
   windows_recall::IsWindowsRecallDisabled(local_state());
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  if (ai_chat::features::IsAIChatAgentProfileEnabled()) {
+    CreateAIChatAgentProfileManager();
+  }
+#endif
 }
 
 void BraveBrowserProcessImpl::PreMainMessageLoopRun() {
@@ -206,6 +218,9 @@ void BraveBrowserProcessImpl::StartTearDown() {
   if (p3a_service_) {
     p3a_service_->StartTeardown();
   }
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  ai_chat_agent_profile_manager_.reset();
 #endif
   brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
   BrowserProcessImpl::StartTearDown();
@@ -381,6 +396,14 @@ void BraveBrowserProcessImpl::UpdateBraveDarkMode() {
 void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
   UpdateBraveDarkMode();
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+void BraveBrowserProcessImpl::CreateAIChatAgentProfileManager() {
+  CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
+  ai_chat_agent_profile_manager_ =
+      std::make_unique<ai_chat::AIChatAgentProfileManager>(profile_manager());
+}
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 tor::BraveTorClientUpdater* BraveBrowserProcessImpl::tor_client_updater() {

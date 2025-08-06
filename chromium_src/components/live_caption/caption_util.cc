@@ -7,7 +7,7 @@
 
 #define IsLiveCaptionFeatureSupported IsLiveCaptionFeatureSupported_ChromiumImpl
 
-#include "src/components/live_caption/caption_util.cc"
+#include <components/live_caption/caption_util.cc>
 
 #undef IsLiveCaptionFeatureSupported
 

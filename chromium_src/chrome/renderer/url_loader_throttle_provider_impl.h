@@ -24,7 +24,7 @@
  public:                                                             \
   void SetOnline
 
-#include "src/chrome/renderer/url_loader_throttle_provider_impl.h"  // IWYU pragma: export
+#include <chrome/renderer/url_loader_throttle_provider_impl.h>  // IWYU pragma: export
 
 #undef SetOnline
 

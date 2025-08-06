@@ -13,11 +13,15 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -142,6 +146,59 @@ void ProcessContactInfo(
           : "");
 }
 
+std::vector<std::string> GetInstalledComponentIds(
+    webcompat_reporter::WebcompatReporterService::Delegate const*
+        service_delegate) {
+  std::vector<std::string> component_ids;
+  if (!service_delegate) {
+    return component_ids;
+  }
+
+  const auto components = service_delegate->GetComponentInfos();
+  component_ids.resize(components.size());
+
+  std::transform(components.begin(), components.end(), component_ids.begin(),
+                 [](auto c) { return c.id; });
+
+  return component_ids;
+}
+
+using WebcompatCategory = webcompat_reporter::mojom::WebcompatCategory;
+
+constexpr char kHideCookieNoticeCategoryForComponentId[] =
+    "cdbbhgbmjhfnhnmgeddbliobbofkgdhe";
+constexpr char kHideNewsletterCategoryForComponentId[] =
+    "kdddfellohomdnfkdhombbddhojklibj";
+constexpr char kHideSocialCategoryForComponentId[] =
+    "nbkknaieglghmocpollinelcggiehfco";
+constexpr char kHideChatCategoryForComponentId[] =
+    "cjoooeeofnfjohnalnghhmdlalopplja";
+
+bool HideIssueCategory(const std::vector<std::string>& component_ids,
+                       const WebcompatCategory category) {
+  if (category == WebcompatCategory::kCookieNotice &&
+      !base::Contains(component_ids, kHideCookieNoticeCategoryForComponentId)) {
+    return true;
+  }
+
+  if (category == WebcompatCategory::kNewsletter &&
+      !base::Contains(component_ids, kHideNewsletterCategoryForComponentId)) {
+    return true;
+  }
+
+  if (category == WebcompatCategory::kSocial &&
+      !base::Contains(component_ids, kHideSocialCategoryForComponentId)) {
+    return true;
+  }
+
+  if (category == WebcompatCategory::kChat &&
+      !base::Contains(component_ids, kHideChatCategoryForComponentId)) {
+    return true;
+  }
+
+  return false;
+}
+
 }  // namespace
 
 namespace webcompat_reporter {
@@ -196,10 +253,8 @@ void WebcompatReporterService::SetContactInfoSaveFlag(bool value) {
 
 void WebcompatReporterService::GetBrowserParams(
     GetBrowserParamsCallback callback) {
-  auto components = service_delegate_->GetComponentInfos();
-  std::vector<std::string> component_ids(components.size());
-  std::transform(components.begin(), components.end(), component_ids.begin(),
-                 [](auto c) { return c.id; });
+  std::vector<std::string> component_ids(GetInstalledComponentIds(
+      service_delegate_ ? service_delegate_.get() : nullptr));
 
   if (!profile_prefs_) {
     std::move(callback).Run(std::nullopt, false, std::move(component_ids));
@@ -220,6 +275,85 @@ void WebcompatReporterService::GetBrowserParams(
 
 void WebcompatReporterService::SetPrefServiceTest(PrefService* pref_service) {
   profile_prefs_ = pref_service;
+}
+
+void WebcompatReporterService::GetWebcompatCategories(
+    GetWebcompatCategoriesCallback callback) {
+  std::vector<std::string> component_ids(GetInstalledComponentIds(
+      service_delegate_ ? service_delegate_.get() : nullptr));
+
+  std::vector<mojom::WebcompatCategoryItemPtr> categories;
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kAds,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ADS)),
+      "ads"));
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kBlank,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_BLANK)),
+      "blank"));
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kScroll,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SCROLL)),
+      "scroll"));
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kForm,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_FORM)),
+      "form"));
+
+  if (!HideIssueCategory(component_ids, WebcompatCategory::kCookieNotice)) {
+    categories.emplace_back(mojom::WebcompatCategoryItem::New(
+        WebcompatCategory::kCookieNotice,
+        base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+            IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_COOKIE)),
+        "cookie notice"));
+  }
+
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kAntiAdblock,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ANTIADBLOCK)),
+      "anti adblock"));
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kTracking,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_TRACKING)),
+      "tracking"));
+
+  if (!HideIssueCategory(component_ids, WebcompatCategory::kNewsletter)) {
+    categories.emplace_back(mojom::WebcompatCategoryItem::New(
+        WebcompatCategory::kNewsletter,
+        base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+            IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_NEWSLETTER)),
+        "newsletter"));
+  }
+
+  if (!HideIssueCategory(component_ids, WebcompatCategory::kSocial)) {
+    categories.emplace_back(mojom::WebcompatCategoryItem::New(
+        WebcompatCategory::kSocial,
+        base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+            IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SOCIAL)),
+        "social"));
+  }
+
+  if (!HideIssueCategory(component_ids, WebcompatCategory::kChat)) {
+    categories.emplace_back(mojom::WebcompatCategoryItem::New(
+        WebcompatCategory::kChat,
+        base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+            IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_CHAT)),
+        "chat"));
+  }
+
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kOther,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_OTHER)),
+      "other"));
+
+  std::move(callback).Run(std::move(categories));
 }
 
 }  // namespace webcompat_reporter

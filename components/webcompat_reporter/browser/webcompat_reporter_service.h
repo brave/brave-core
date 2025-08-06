@@ -64,6 +64,8 @@ class WebcompatReporterService : public KeyedService,
 
   void GetBrowserParams(GetBrowserParamsCallback callback) override;
 
+  void GetWebcompatCategories(GetWebcompatCategoriesCallback callback) override;
+
  private:
   friend class WebcompatReporterServiceUnitTest;
   void SetPrefServiceTest(PrefService* pref_service);

@@ -6,12 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_BROWSER_CONTEXT_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_BROWSER_CONTEXT_H_
 
-#define IsOffTheRecord \
-  IsTor() const;       \
+#define IsOffTheRecord                \
+  IsTor() const;                      \
+  virtual bool IsAIChatAgent() const; \
   virtual bool IsOffTheRecord
-#include <optional>
+#include <content/public/browser/browser_context.h>  // IWYU pragma: export
 
-#include "src/content/public/browser/browser_context.h"  // IWYU pragma: export
+#include <optional>
 #undef IsOffTheRecord
 
 #include <string>

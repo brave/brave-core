@@ -30,6 +30,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
@@ -44,13 +45,12 @@
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
-#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/test/test_web_contents.h"
@@ -205,8 +205,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     // in some cases it was causing stack-use-after-return.
     SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>());
 
-    local_state_ = std::make_unique<ScopedTestingLocalState>(
-        TestingBrowserProcess::GetGlobal());
+    brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
+
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
     BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
@@ -219,7 +219,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(browser_context()), prefs(),
-        local_state_->Get());
+        &local_state_);
     ASSERT_TRUE(brave_wallet_service_.get());
     json_rpc_service()->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
@@ -638,39 +638,20 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   size_t GetSignMessageQueueSize() const {
-    size_t request_queue_size =
-        brave_wallet_service_->sign_message_requests_.size();
-    EXPECT_EQ(brave_wallet_service_->sign_message_callbacks_.size(),
-              request_queue_size);
-    return request_queue_size;
+    return brave_wallet_service_->sign_message_requests_.size();
   }
 
-  const mojom::SignMessageRequestPtr& GetSignMessageQueueFront() const {
-    return brave_wallet_service_->sign_message_requests_.front();
+  mojom::SignMessageRequestPtr GetSignMessageQueueFront() const {
+    return brave_wallet_service_->GetPendingSignMessageRequestsSync()
+        .front()
+        .Clone();
   }
   const mojom::SignMessageErrorPtr& GetSignMessageErrorQueueFront() const {
     return brave_wallet_service_->sign_message_errors_.front();
   }
 
   std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequests() {
-    base::RunLoop run_loop;
-    std::vector<mojom::SignMessageRequestPtr> requests_out;
-    brave_wallet_service_->GetPendingSignMessageRequests(
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::SignMessageRequestPtr> requests) {
-              for (const auto& request : requests) {
-                ASSERT_TRUE(request->sign_data->is_eth_standard_sign_data());
-                SCOPED_TRACE(
-                    request->sign_data->get_eth_standard_sign_data()->message);
-                EXPECT_EQ(request->chain_id,
-                          json_rpc_service()->GetChainIdSync(
-                              mojom::CoinType::ETH, GetOrigin()));
-                requests_out.push_back(request.Clone());
-              }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    return requests_out;
+    return brave_wallet_service_->GetPendingSignMessageRequestsSync();
   }
 
   std::vector<mojom::GetEncryptionPublicKeyRequestPtr>
@@ -925,7 +906,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
   std::unique_ptr<EthereumProviderImpl> provider_;
 
  private:
-  std::unique_ptr<ScopedTestingLocalState> local_state_;
+  TestingPrefServiceSimple local_state_;
   content::TestWebContentsFactory factory_;
   std::unique_ptr<content::TestWebContents> web_contents_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;

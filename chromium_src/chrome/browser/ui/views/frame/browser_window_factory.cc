@@ -9,6 +9,6 @@
 
 #define BrowserFrame BraveBrowserFrame
 #define BrowserView BraveBrowserView
-#include "src/chrome/browser/ui/views/frame/browser_window_factory.cc"
+#include <chrome/browser/ui/views/frame/browser_window_factory.cc>
 #undef BrowserView
 #undef BrowserFrame

@@ -6,7 +6,7 @@
 static_library("browser") {
   # Brave l10n components are deprecated. Use Chromium's functionality
   # unless no equivalent is available.
-  visibility = [ "//brave/components/l10n/common:common" ]
+  visibility = [ "//brave/components/l10n/common" ]
 
   sources = [ "default_locale_util.h" ]
 

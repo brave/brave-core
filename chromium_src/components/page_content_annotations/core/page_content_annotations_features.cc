@@ -8,7 +8,7 @@
 #define ShouldEnablePageContentAnnotations \
   ShouldEnablePageContentAnnotations_ChromiumImpl
 
-#include "src/components/page_content_annotations/core/page_content_annotations_features.cc"
+#include <components/page_content_annotations/core/page_content_annotations_features.cc>
 #undef ShouldEnablePageContentAnnotations
 
 namespace page_content_annotations::features {

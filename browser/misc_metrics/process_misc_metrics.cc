@@ -10,6 +10,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/misc_metrics/default_browser_monitor.h"
 #include "brave/browser/misc_metrics/vertical_tab_metrics.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
@@ -27,6 +28,9 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
   new_tab_metrics_ = std::make_unique<NewTabMetrics>(local_state);
   vertical_tab_metrics_ = std::make_unique<VerticalTabMetrics>(local_state);
   split_view_metrics_ = std::make_unique<SplitViewMetrics>(local_state);
+  default_browser_monitor_ =
+      std::make_unique<misc_metrics::DefaultBrowserMonitor>(local_state);
+  default_browser_monitor_->Start();
 #else
   privacy_hub_metrics_ =
       std::make_unique<misc_metrics::PrivacyHubMetrics>(local_state);

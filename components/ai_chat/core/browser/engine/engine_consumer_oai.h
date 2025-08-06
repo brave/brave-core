@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
@@ -19,6 +20,8 @@
 
 template <class T>
 class scoped_refptr;
+
+class PrefService;
 
 namespace api_request_helper {
 class APIRequestResult;
@@ -37,20 +40,19 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   explicit EngineConsumerOAIRemote(
       const mojom::CustomModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      ModelService* model_service);
+      ModelService* model_service,
+      PrefService* prefs);
   EngineConsumerOAIRemote(const EngineConsumerOAIRemote&) = delete;
   EngineConsumerOAIRemote& operator=(const EngineConsumerOAIRemote&) = delete;
   ~EngineConsumerOAIRemote() override;
 
   // EngineConsumer
   void GenerateQuestionSuggestions(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContents page_contents,
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
-      const bool& is_video,
-      const std::string& page_content,
+      PageContents page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       const std::vector<base::WeakPtr<Tool>>& tools,
@@ -79,6 +81,18 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void UpdateModelOptions(const mojom::ModelOptions& options) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest, BuildPageContentMessages);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildPageContentMessages_Truncates);
+
+  base::Value::List BuildPageContentMessages(
+      const PageContents& page_contents,
+      uint32_t max_associated_content_length,
+      int video_message_id,
+      int page_message_id);
+
+  std::optional<base::Value::Dict> BuildUserMemoryMessage();
+
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);

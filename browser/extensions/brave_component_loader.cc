@@ -11,28 +11,26 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "brave/components/brave_component_updater/browser/brave_component_installer.h"
-#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
-#include "chrome/browser/browser_process.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
+#include "brave/components/web_discovery/common/util.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/common/pref_names.h"
-#include "components/grit/brave_components_resources.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
-#include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/mojom/manifest.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
 
-using extensions::mojom::ManifestLocation;
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/common/features.h"
+#endif
 
 namespace extensions {
 
@@ -41,40 +39,19 @@ BraveComponentLoader::BraveComponentLoader(Profile* profile)
       profile_(profile),
       profile_prefs_(profile->GetPrefs()) {
   pref_change_registrar_.Init(profile_prefs_);
-
   pref_change_registrar_.Add(
       kWebDiscoveryEnabled,
       base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
                           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  pref_change_registrar_.Add(
+      kWebDiscoveryDisabledByPolicy,
+      base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
+                          base::Unretained(this)));
+#endif
 }
 
 BraveComponentLoader::~BraveComponentLoader() = default;
-
-void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()->EnsureInstalled(
-      extension_id);
-}
-
-void BraveComponentLoader::OnComponentReady(std::string extension_id,
-                                            bool allow_file_access,
-                                            const base::FilePath& install_dir,
-                                            const std::string& manifest) {
-  Add(manifest, install_dir);
-  if (allow_file_access) {
-    ExtensionPrefs::Get(profile_)->SetAllowFileAccess(extension_id, true);
-  }
-}
-
-void BraveComponentLoader::AddExtension(const std::string& extension_id,
-                                        const std::string& name,
-                                        const std::string& public_key) {
-  brave_component_updater::RegisterComponent(
-      g_browser_process->component_updater(), name, public_key,
-      base::BindOnce(&BraveComponentLoader::OnComponentRegistered,
-                     base::Unretained(this), extension_id),
-      base::BindRepeating(&BraveComponentLoader::OnComponentReady,
-                          base::Unretained(this), extension_id, true));
-}
 
 void BraveComponentLoader::AddDefaultComponentExtensions(
     bool skip_session_components) {
@@ -83,8 +60,13 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
 }
 
 bool BraveComponentLoader::UseBraveExtensionBackgroundPage() {
-  // Keep sync with `pref_change_registrar_` in the ctor.
-  return profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
+  bool native_enabled = false;
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  native_enabled = base::FeatureList::IsEnabled(
+      web_discovery::features::kBraveWebDiscoveryNative);
+#endif
+  return !native_enabled &&
+         web_discovery::IsWebDiscoveryEnabled(*profile_prefs_);
 }
 
 void BraveComponentLoader::UpdateBraveExtension() {

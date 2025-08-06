@@ -1,0 +1,13 @@
+diff --git a/chrome/test/base/testing_browser_process.cc b/chrome/test/base/testing_browser_process.cc
+index 693321f66c798fc35a8f3246d1257d03377d1798..a082af9280de8b279ddb222b12afe3d6ed6ecfcf 100644
+--- a/chrome/test/base/testing_browser_process.cc
++++ b/chrome/test/base/testing_browser_process.cc
+@@ -113,7 +113,7 @@ TestingBrowserProcess* TestingBrowserProcess::GetGlobal() {
+ // static
+ void TestingBrowserProcess::CreateInstance() {
+   DCHECK(!g_browser_process);
+-  TestingBrowserProcess* process = new TestingBrowserProcess;
++  TestingBrowserProcess* process = new TestingBrowserProcess_BraveImpl;
+   // Set |g_browser_process| before initializing the TestingBrowserProcess
+   // because some members may depend on |g_browser_process| (in particular,
+   // ChromeExtensionsBrowserClient).

@@ -30,6 +30,7 @@ source_set("constants") {
 
   public_deps = [
     ":brave_services_key",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/web_discovery/buildflags",
     "//extensions/buildflags",
   ]
@@ -43,8 +44,7 @@ source_set("brave_service_key_helper") {
   ]
 
   deps = [
-    ":constants",
-    "//brave/extensions:common",  # instead of //extensions/common, for iOS
+    "//base",
     "//url",
   ]
 }

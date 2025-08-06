@@ -4,17 +4,17 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as mojom from './mojom'
-import { AdType } from '../lib/app_state'
+
+import {
+  AdType,
+  Notification,
+  ExternalWalletDisconnectedNotification
+} from '../lib/app_state'
 
 import {
   ExternalWalletProvider,
   externalWalletProviderFromString
 } from '../../shared/lib/external_wallet'
-
-import {
-  Notification,
-  ExternalWalletDisconnectedNotification
-} from '../../shared/components/notifications'
 
 // Converts a mojo Time value to a JS time ms value.
 export function convertMojoTime(time: any) {

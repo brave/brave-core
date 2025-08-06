@@ -10,7 +10,7 @@
 // Chromium adds something new.
 #define TYPE_BOOKMARK \
   TYPE_BRAVE_COMMANDER = -1 << 0, TYPE_BRAVE_LEO = -1 << 1, TYPE_BOOKMARK
-#include "src/components/omnibox/browser/autocomplete_provider.h"  // IWYU pragma: export
+#include <components/omnibox/browser/autocomplete_provider.h>  // IWYU pragma: export
 #undef TYPE_BOOKMARK
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_PROVIDER_H_

@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/webui/flags/flags_state_unittest.cc"
-
 #include <algorithm>
 #include <string_view>
+
+#include <components/webui/flags/flags_state_unittest.cc>
 
 namespace flags_ui {
 

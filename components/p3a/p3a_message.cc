@@ -19,7 +19,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/p3a/metric_config.h"
@@ -28,6 +27,7 @@
 #include "brave/components/p3a/uploader.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #if !BUILDFLAG(IS_IOS)
 #include "brave/components/brave_referrals/common/pref_names.h"
@@ -77,8 +77,8 @@ constexpr auto kNotableCountries = base::MakeFixedFlatSet<std::string_view>(
 constexpr base::TimeDelta kDateOmissionThreshold = base::Days(31);
 
 std::string FormatUTCDateFromExploded(const base::Time::Exploded& exploded) {
-  return base::StringPrintf("%d-%02d-%02d", exploded.year, exploded.month,
-                            exploded.day_of_month);
+  return absl::StrFormat("%d-%02d-%02d", exploded.year, exploded.month,
+                         exploded.day_of_month);
 }
 
 std::string FormatUTCDateFromTime(const base::Time& time) {

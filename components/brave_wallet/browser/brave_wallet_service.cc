@@ -17,6 +17,7 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
@@ -44,6 +45,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -127,6 +129,27 @@ struct PendingGetEncryptPublicKeyRequest {
   mojom::EthereumProvider::RequestCallback encryption_public_key_callback;
   base::Value encryption_public_key_id;
 };
+
+struct PendingSignMessageRequest {
+  PendingSignMessageRequest();
+  PendingSignMessageRequest(
+      mojom::SignMessageRequestPtr request,
+      BraveWalletService::SignMessageRequestCallback callback);
+  ~PendingSignMessageRequest();
+  PendingSignMessageRequest(PendingSignMessageRequest&& other);
+
+  mojom::SignMessageRequestPtr request;
+  BraveWalletService::SignMessageRequestCallback callback;
+};
+
+PendingSignMessageRequest::PendingSignMessageRequest() = default;
+PendingSignMessageRequest::PendingSignMessageRequest(
+    mojom::SignMessageRequestPtr request,
+    BraveWalletService::SignMessageRequestCallback callback)
+    : request(std::move(request)), callback(std::move(callback)) {}
+PendingSignMessageRequest::~PendingSignMessageRequest() = default;
+PendingSignMessageRequest::PendingSignMessageRequest(
+    PendingSignMessageRequest&& other) = default;
 
 BraveWalletService::BraveWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -1133,19 +1156,18 @@ mojom::OriginInfoPtr BraveWalletService::GetActiveOriginSync() {
   return MakeOriginInfo(delegate_->GetActiveOrigin().value_or(url::Origin()));
 }
 
+std::vector<mojom::SignMessageRequestPtr>
+BraveWalletService::GetPendingSignMessageRequestsSync() {
+  std::vector<mojom::SignMessageRequestPtr> requests;
+  for (const auto& request : sign_message_requests_) {
+    requests.push_back(request.request.Clone());
+  }
+  return requests;
+}
+
 void BraveWalletService::GetPendingSignMessageRequests(
     GetPendingSignMessageRequestsCallback callback) {
-  std::vector<mojom::SignMessageRequestPtr> requests;
-  if (sign_message_requests_.empty()) {
-    std::move(callback).Run(std::move(requests));
-    return;
-  }
-
-  for (const auto& request : sign_message_requests_) {
-    requests.push_back(request.Clone());
-  }
-
-  std::move(callback).Run(std::move(requests));
+  std::move(callback).Run(GetPendingSignMessageRequestsSync());
 }
 
 void BraveWalletService::NotifySignMessageRequestProcessed(
@@ -1154,16 +1176,14 @@ void BraveWalletService::NotifySignMessageRequestProcessed(
     mojom::EthereumSignatureBytesPtr hw_signature,
     const std::optional<std::string>& error) {
   if (sign_message_requests_.empty() ||
-      sign_message_requests_.front()->id != id) {
-    VLOG(1) << "id: " << id << " is not expected, should be "
-            << sign_message_requests_.front()->id;
+      sign_message_requests_.front().request->id != id) {
     return;
   }
-  auto callback = std::move(sign_message_callbacks_.front());
-  sign_message_requests_.pop_front();
-  sign_message_callbacks_.pop_front();
 
-  std::move(callback).Run(approved, std::move(hw_signature), error);
+  auto request = std::move(sign_message_requests_.front());
+  sign_message_requests_.pop_front();
+
+  std::move(request.callback).Run(approved, std::move(hw_signature), error);
 }
 
 void BraveWalletService::GetPendingSignMessageErrors(
@@ -1317,11 +1337,11 @@ void BraveWalletService::AddSignMessageRequest(
     SignMessageRequestCallback callback) {
   DCHECK(CoinSupportsDapps(request->coin));
 
-  if (request->id < 0) {
-    request->id = sign_message_id_++;
-  }
-  sign_message_requests_.push_back(std::move(request));
-  sign_message_callbacks_.push_back(std::move(callback));
+  DCHECK_EQ(request->id, 0);
+  request->id = sign_message_id_++;
+  sign_message_requests_.emplace_back(std::move(request), std::move(callback));
+
+  sign_message_added_callback_list_.Notify();
 }
 
 void BraveWalletService::AddSignMessageError(mojom::SignMessageErrorPtr error) {
@@ -1814,10 +1834,10 @@ void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
 
 void BraveWalletService::CancelAllSignMessageCallbacks() {
   while (!sign_message_requests_.empty()) {
-    auto callback = std::move(sign_message_callbacks_.front());
+    auto request = std::move(sign_message_requests_.front());
     sign_message_requests_.pop_front();
-    sign_message_callbacks_.pop_front();
-    std::move(callback).Run(false, nullptr, std::nullopt);
+
+    std::move(request.callback).Run(false, nullptr, std::nullopt);
   }
 }
 
@@ -1939,6 +1959,32 @@ BraveWalletService::GetTransactionSimulationOptInStatusSync() {
 void BraveWalletService::SetTransactionSimulationOptInStatus(
     mojom::BlowfishOptInStatus status) {
   ::brave_wallet::SetTransactionSimulationOptInStatus(profile_prefs_, status);
+}
+
+void BraveWalletService::WriteToClipboard(const std::string& text,
+                                          bool is_sensitive) {
+  // We manually disable the iOS builds here because of an upstream bug in how
+  // Chromium is adding sources to the clipboard component. It only
+  // conditionally adds the iOS sources when use_blink=true, which unfortunately
+  // leads to a whole slew of unresolved symbols during linking.
+  // https://source.chromium.org/chromium/chromium/src/+/066b9c51bfb0a1eddcfefa7aa809348ea181f8ac:ui/base/clipboard/BUILD.gn;l=21-27
+#if !BUILDFLAG(IS_IOS)
+  ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
+  std::u16string out;
+  base::UTF8ToUTF16(text.data(), text.size(), &out);
+  scw.WriteText(out);
+  if (is_sensitive) {
+    scw.MarkAsConfidential();
+  }
+#else
+  NOTREACHED();
+#endif
+}
+
+base::CallbackListSubscription
+BraveWalletService::RegisterSignMessageRequestAddedCallback(
+    base::RepeatingClosure cb) {
+  return sign_message_added_callback_list_.Add(std::move(cb));
 }
 
 }  // namespace brave_wallet

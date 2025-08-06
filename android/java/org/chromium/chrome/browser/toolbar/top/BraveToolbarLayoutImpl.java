@@ -114,7 +114,9 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.feature_engagement.Tracker;
+import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.NavigationHandle;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistItem;
@@ -1598,9 +1600,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 homeButtonDisplay);
 
         BraveMenuButtonCoordinator.setMenuFromBottom(
-                isMenuButtonOnBottomControls()
-                        || (isToolbarPhone()
-                                && BottomToolbarConfiguration.isToolbarBottomAnchored()));
+                isMenuButtonOnBottomControls() || isMenuOnBottomWithBottomAddressBar());
     }
 
     public void updateWalletBadgeVisibility(boolean visible) {
@@ -1612,8 +1612,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             BraveMenuButtonCoordinator.setMenuFromBottom(mIsBottomControlsVisible);
         } else {
-            BraveMenuButtonCoordinator.setMenuFromBottom(
-                    isToolbarPhone() && BottomToolbarConfiguration.isToolbarBottomAnchored());
+            BraveMenuButtonCoordinator.setMenuFromBottom(isMenuOnBottomWithBottomAddressBar());
         }
     }
 
@@ -1691,8 +1690,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     // FullscreenManager.Observer method.
     @Override
     public void onEnterFullscreen(Tab tab, FullscreenOptions options) {
-        if (BraveYouTubeScriptInjectorNativeHelper.hasFullscreenBeenRequested(
-                tab.getWebContents())) {
+        final WebContents webContents = tab.getWebContents();
+        if (webContents != null
+                && BraveYouTubeScriptInjectorNativeHelper.hasFullscreenBeenRequested(webContents)) {
+            MediaSession mediaSession = MediaSession.fromWebContents(webContents);
+            if (mediaSession != null) {
+                mediaSession.resume();
+            }
             Activity activity = tab.getWindowAndroid().getActivity().get();
             if (activity != null) {
                 try {
@@ -1705,7 +1709,20 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    private boolean isToolbarPhone() {
-        return BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class);
+    private boolean isMenuOnBottomWithBottomAddressBar() {
+        // If address bar is not on bottom, then menu is not on bottom too.
+        if (!BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+            return false;
+        }
+        // Menu can be on bottom only with ToolbarPhone.
+        if (!BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)) {
+            return false;
+        }
+        // In overview mode the menu is on top.
+        Context context = getContext();
+        if (context instanceof BraveActivity && ((BraveActivity) context).isInOverviewMode()) {
+            return false;
+        }
+        return true;
     }
 }

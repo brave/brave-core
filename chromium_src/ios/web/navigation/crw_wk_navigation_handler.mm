@@ -9,20 +9,9 @@
 #import <WebKit/WebKit.h>
 
 #include "ios/web/common/user_agent.h"
+#import "ios/web/public/web_client.h"
 
-namespace web {
-class WebState;
-}
-
-namespace brave {
-bool ShouldBlockUniversalLinks(web::WebState* webState, NSURLRequest* request);
-bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request);
-NSString* GetUserAgentForRequest(web::WebState* webState,
-                                 web::UserAgentType userAgentType,
-                                 NSURLRequest* request);
-}  // namespace brave
-
-#include "src/ios/web/navigation/crw_wk_navigation_handler.mm"
+#include <ios/web/navigation/crw_wk_navigation_handler.mm>
 
 // Setup a CRWWKNavigationHandler subclass so that we may integrate Brave
 // features that Chrome does not support or expose access to (such as the
@@ -39,7 +28,7 @@ NSString* GetUserAgentForRequest(web::WebState* webState,
         // Check if we want to block JavaScript execution on the page
         // Typically this would go through `ContentSettingsType::JAVASCRIPT`,
         // but Chrome iOS does not support this yet.
-        bool shouldBlockJavaScript = brave::ShouldBlockJavaScript(
+        bool shouldBlockJavaScript = web::GetWebClient()->ShouldBlockJavaScript(
             static_cast<web::WebState*>(self.webStateImpl), action.request);
         if (shouldBlockJavaScript && preferences) {
           // Only ever update it to false
@@ -62,7 +51,7 @@ NSString* GetUserAgentForRequest(web::WebState* webState,
         const web::UserAgentType userAgentType =
             [self userAgentForNavigationAction:action webView:webView];
         if (userAgentType != web::UserAgentType::NONE) {
-          NSString* userAgent = brave::GetUserAgentForRequest(
+          NSString* userAgent = web::GetWebClient()->GetUserAgentForRequest(
               static_cast<web::WebState*>(self.webStateImpl), userAgentType,
               action.request);
           if (userAgent &&
@@ -73,8 +62,10 @@ NSString* GetUserAgentForRequest(web::WebState* webState,
 
         if (policy == WKNavigationActionPolicyAllow) {
           // Check if we want to explicitly block universal links
-          bool forceBlockUniversalLinks = brave::ShouldBlockUniversalLinks(
-              static_cast<web::WebState*>(self.webStateImpl), action.request);
+          bool forceBlockUniversalLinks =
+              web::GetWebClient()->ShouldBlockUniversalLinks(
+                  static_cast<web::WebState*>(self.webStateImpl),
+                  action.request);
           if (forceBlockUniversalLinks) {
             handler(web::kNavigationActionPolicyAllowAndBlockUniversalLinks,
                     preferences);

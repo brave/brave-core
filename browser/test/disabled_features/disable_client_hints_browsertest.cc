@@ -14,7 +14,6 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/scoped_feature_list.h"
@@ -27,6 +26,7 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "services/network/public/cpp/client_hints.h"
 #include "services/network/public/mojom/web_client_hints_types.mojom-shared.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/features.h"
 
 namespace {
@@ -299,6 +299,6 @@ INSTANTIATE_TEST_SUITE_P(
     ClientHintsBrowserTest,
     ::testing::Bool(),
     [](const testing::TestParamInfo<ClientHintsBrowserTest::ParamType>& info) {
-      return base::StringPrintf("ChromiumCHFeatures_%s",
-                                info.param ? "Enabled" : "Disabled");
+      return absl::StrFormat("ChromiumCHFeatures_%s",
+                             info.param ? "Enabled" : "Disabled");
     });

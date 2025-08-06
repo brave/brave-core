@@ -774,12 +774,10 @@ class TabManager: NSObject {
       let baseDomain = url.baseDomain
     else { return }
     forgetTasks[tab.isPrivate]?[baseDomain]?.cancel()
-    let siteDomain = Domain.getOrCreate(
-      forUrl: url,
-      persistent: !tab.isPrivate
-    )
+    let shredLevel =
+      tab.braveShieldsHelper?.shredLevel(for: url) ?? .never
 
-    switch siteDomain.shredLevel {
+    switch shredLevel {
     case .never:
       return
     case .appExit:
@@ -795,6 +793,16 @@ class TabManager: NSObject {
         return
       }
       forgetDataDelayed(for: url, in: tab, delay: 30)
+    }
+  }
+
+  @MainActor func shredAllTabsForCurrentMode() {
+    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+    let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
+    let urlsToShred = Set(tabs(isPrivate: isPrivateBrowsing).compactMap(\.visibleURL))
+    Task {
+      removeAllTabsForPrivateMode(isPrivate: isPrivateBrowsing)
+      await forgetData(for: Array(urlsToShred), dataStore: configuration.websiteDataStore)
     }
   }
 
@@ -1252,6 +1260,9 @@ class TabManager: NSObject {
       if let shouldShredDomain = shouldShredDomainCache[cacheKey] {
         shouldShredTab = shouldShredDomain
       } else {
+        // Don't access `shredLevel` directly, but `TabState` is unavailable
+        // to access via `BraveShieldsTabHelper`. Temporarily access here until
+        // we switch to using `BraveShieldsUtilsIOS` with brave-browser#47350
         let siteDomain = Domain.getOrCreate(
           forUrl: url,
           persistent: !isPrivate
@@ -1491,23 +1502,24 @@ class TabManager: NSObject {
       return nil
     }
 
-    // NTP should not be passed as Recently Closed item
-    let recentlyClosedURL = tab.visibleURL ?? SessionTab.from(tabId: tab.id)?.url
-
-    guard let tabUrl = recentlyClosedURL, tabUrl.isWebPage() else {
+    guard var recentlyClosedURL = tab.visibleURL ?? SessionTab.from(tabId: tab.id)?.url else {
       return nil
     }
 
-    // Convert any internal URLs to their real URL for the Recently Closed item
-    var fetchedTabURL = tabUrl
-    if let url = InternalURL(fetchedTabURL),
-      let actualURL = url.extractedUrlParam ?? url.originalURLFromErrorPage
-    {
-      fetchedTabURL = actualURL
+    if let internalURL = InternalURL(recentlyClosedURL) {
+      // NTP should not be passed as a Recently Closed item
+      if internalURL.isAboutHomeURL {
+        return nil
+      }
+
+      // Convert any internal URLs to their real URL for the Recently Closed item
+      if let actualURL = internalURL.extractedUrlParam ?? internalURL.originalURLFromErrorPage {
+        recentlyClosedURL = actualURL
+      }
     }
 
     return SavedRecentlyClosed(
-      url: fetchedTabURL,
+      url: recentlyClosedURL,
       title: tab.displayTitle,
       interactionState: tab.sessionData,
       order: -1

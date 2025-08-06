@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/containers/circular_deque.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
@@ -47,6 +48,7 @@ class KeyringService;
 class NetworkManager;
 class TxService;
 class AccountDiscoveryManager;
+struct PendingSignMessageRequest;
 struct PendingDecryptRequest;
 struct PendingGetEncryptPublicKeyRequest;
 
@@ -191,6 +193,7 @@ class BraveWalletService : public KeyedService,
   mojom::OriginInfoPtr GetActiveOriginSync();
   void GetPendingSignMessageRequests(
       GetPendingSignMessageRequestsCallback callback) override;
+  std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequestsSync();
   void GetPendingSignMessageErrors(
       GetPendingSignMessageErrorsCallback callback) override;
   void GetPendingSignSolTransactionsRequests(
@@ -266,6 +269,8 @@ class BraveWalletService : public KeyedService,
   void SetTransactionSimulationOptInStatus(
       mojom::BlowfishOptInStatus status) override;
 
+  void WriteToClipboard(const std::string& text, bool is_sensitive) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
@@ -316,6 +321,9 @@ class BraveWalletService : public KeyedService,
   BraveWalletServiceDelegate* GetDelegateForTesting() {
     return delegate_.get();
   }
+
+  base::CallbackListSubscription RegisterSignMessageRequestAddedCallback(
+      base::RepeatingClosure cb);
 
   NetworkManager* network_manager() { return network_manager_.get(); }
   JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
@@ -398,11 +406,11 @@ class BraveWalletService : public KeyedService,
 
   base::OnceClosure sign_tx_request_added_cb_for_testing_;
   base::OnceClosure sign_sol_txs_request_added_cb_for_testing_;
+  base::RepeatingClosureList sign_message_added_callback_list_;
 
   int sign_message_id_ = 0;
   int sign_sol_transactions_id_ = 0;
-  base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
-  base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
+  base::circular_deque<PendingSignMessageRequest> sign_message_requests_;
   base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;
   base::circular_deque<mojom::SignSolTransactionsRequestPtr>
       sign_sol_transactions_requests_;

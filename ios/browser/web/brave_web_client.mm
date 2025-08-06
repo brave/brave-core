@@ -19,6 +19,8 @@
 #import "ios/components/security_interstitials/safe_browsing/safe_browsing_error.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #import "ios/public/provider/chrome/browser/url_rewriters/url_rewriters_api.h"
+#include "ios/web/common/url_scheme_util.h"
+#include "ios/web/common/user_agent.h"
 #import "ios/web/public/navigation/browser_url_rewriter.h"
 #import "ios/web_view/internal/cwv_ssl_error_handler_internal.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
@@ -117,4 +119,65 @@ void BraveWebClient::BuildEditMenu(web::WebState* web_state,
                                          buildEditMenuWithBuilder:)]) {
     return [uiDelegate webView:webView buildEditMenuWithBuilder:builder];
   }
+}
+
+bool BraveWebClient::ShouldBlockJavaScript(web::WebState* webState,
+                                           NSURLRequest* request) {
+  if (!web::UrlHasWebScheme(request.URL)) {
+    return false;
+  }
+  BraveWebView* webView =
+      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  if (!webView) {
+    return false;
+  }
+  id<BraveWebViewNavigationDelegate> navigationDelegate =
+      webView.navigationDelegate;
+
+  if ([navigationDelegate respondsToSelector:@selector
+                          (webView:shouldBlockJavaScriptForRequest:)]) {
+    return [navigationDelegate webView:webView
+        shouldBlockJavaScriptForRequest:request];
+  }
+  return false;
+}
+
+bool BraveWebClient::ShouldBlockUniversalLinks(web::WebState* webState,
+                                               NSURLRequest* request) {
+  BraveWebView* webView =
+      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  if (!webView) {
+    return false;
+  }
+  id<BraveWebViewNavigationDelegate> navigationDelegate =
+      webView.navigationDelegate;
+
+  if ([navigationDelegate respondsToSelector:@selector
+                          (webView:shouldBlockUniversalLinksForRequest:)]) {
+    return [navigationDelegate webView:webView
+        shouldBlockUniversalLinksForRequest:request];
+  }
+  return false;
+}
+
+NSString* BraveWebClient::GetUserAgentForRequest(
+    web::WebState* webState,
+    web::UserAgentType userAgentType,
+    NSURLRequest* request) {
+  BraveWebView* webView =
+      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  if (!webView) {
+    return nil;
+  }
+
+  id<BraveWebViewNavigationDelegate> navigationDelegate =
+      webView.navigationDelegate;
+  if ([navigationDelegate respondsToSelector:@selector
+                          (webView:userAgentForUserAgentType:request:)]) {
+    return [navigationDelegate
+                          webView:webView
+        userAgentForUserAgentType:static_cast<CWVUserAgentType>(userAgentType)
+                          request:request];
+  }
+  return nil;
 }

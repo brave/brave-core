@@ -9,7 +9,6 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/time/time_delta_from_string.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
@@ -18,6 +17,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ntp_background_images {
 
@@ -144,8 +144,8 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     return;
   }
 
-  url_prefix = base::StringPrintf("%s://%s/", content::kChromeUIScheme,
-                                  kBrandedWallpaperHost);
+  url_prefix = absl::StrFormat("%s://%s/", content::kChromeUIScheme,
+                               kBrandedWallpaperHost);
   if (const std::string* const name = dict.FindString(kThemeNameKey)) {
     theme_name = *name;
     url_prefix += kSuperReferralPath;

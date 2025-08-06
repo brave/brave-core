@@ -17,7 +17,7 @@
 #define Cancel virtual Cancel
 #define CloseMojoHandles virtual CloseMojoHandles
 
-#include "src/chrome/browser/importer/external_process_importer_client.h"  // IWYU pragma: export
+#include <chrome/browser/importer/external_process_importer_client.h>  // IWYU pragma: export
 
 #undef BRAVE_EXTERNAL_PROCESS_IMPORTER_CLIENT_H
 #undef Start

@@ -5,8 +5,29 @@
 
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/side_panel/side_panel_web_ui_view_utils.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
+#include "content/public/browser/context_menu_params.h"
+#include "content/public/browser/render_frame_host.h"
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_web_ui_view.cc"
+#include <chrome/browser/ui/views/side_panel/side_panel_web_ui_view.cc>
+
+bool SidePanelWebUIView::HandleContextMenu(
+    content::RenderFrameHost& render_frame_host,
+    const content::ContextMenuParams& params) {
+  // For AI Chat, allow context menus to show (return false)
+  // This enables features like spell check, autocorrect, copy/paste, etc.
+  GURL url = contents_wrapper_
+                 ? contents_wrapper_->web_contents()->GetLastCommittedURL()
+                 : GURL();
+  if (brave::ShouldEnableContextMenu(url)) {
+    return false;  // Allow context menu
+  }
+
+  // For all other side panels, suppress context menu
+  return true;
+}
 
 void SidePanelWebUIView::AddedToWidget() {
   if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {

@@ -208,6 +208,19 @@ TEST(ProtoConversionTest, SerializeToolUseEvent_InvalidId) {
   EXPECT_EQ(proto_event.id(), "");
 }
 
+TEST(ProtoConversionTest, SerializeToolUseEvent_InvalidToolName) {
+  store::ToolUseEventProto proto_event;
+
+  auto mojom_event =
+      mojom::ToolUseEvent::New("", "tool_id_123", "{}", std::nullopt);
+  bool success = SerializeToolUseEvent(mojom_event, &proto_event);
+
+  EXPECT_FALSE(success);
+  // Did not do any serialization
+  EXPECT_EQ(proto_event.tool_name(), "");
+  EXPECT_EQ(proto_event.id(), "");
+}
+
 TEST(ProtoConversionTest, DeserializeToolUseEvent_InvalidContentBlocks) {
   // Create proto ToolUseEvent with invalid content blocks
   store::ToolUseEventProto proto_event;

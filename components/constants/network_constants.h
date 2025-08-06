@@ -8,10 +8,6 @@
 
 inline constexpr char kExtensionUpdaterDomain[] = "extensionupdater.brave.com";
 
-inline constexpr char kBraveProxyPattern[] = "https://*.brave.com/*";
-inline constexpr char kBraveSoftwareProxyPattern[] =
-    "https://*.bravesoftware.com/*";
-
 inline constexpr char kBraveUsageStandardPath[] = "/1/usage/brave-core";
 
 inline constexpr char kBraveReferralsInitPath[] = "/promo/initialize/nonua";

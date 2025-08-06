@@ -14,5 +14,5 @@
   OnCookieControlsIconStatusChanged(ICON_VISIBLE, PROTECTIONS_ON,            \
                                     BLOCKING_STATUS,                         \
                                     should_highlight && !should_highlight)
-#include "src/components/content_settings/browser/ui/cookie_controls_controller.cc"
+#include <components/content_settings/browser/ui/cookie_controls_controller.cc>
 #undef OnCookieControlsIconStatusChanged

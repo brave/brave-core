@@ -16,7 +16,6 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
@@ -34,6 +33,7 @@
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_util.h"
 
@@ -409,12 +409,12 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     std::string expiry_message;
     base::TimeDelta delta = (last_credential_expiry - base::Time::Now());
     if (delta.InHours() == 0) {
-      expiry_message = base::StringPrintf(
+      expiry_message = absl::StrFormat(
           "Out of credentials; check again in %d minutes.", delta.InMinutes());
     } else {
       int delta_hours = delta.InHours();
       base::TimeDelta delta_minutes = (delta - base::Hours(delta_hours));
-      expiry_message = base::StringPrintf(
+      expiry_message = absl::StrFormat(
           "Out of credentials; check again in %d hours %d minutes.",
           delta_hours, delta_minutes.InMinutes());
     }

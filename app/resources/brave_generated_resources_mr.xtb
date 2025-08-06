@@ -9,6 +9,11 @@
 <translation id="7630214457764713113">क्लीन लिंक कॉपी करा</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {जवळचा पाहुणा}
+          other {जवळचा पाहुणा}
+        }</translation>
 <translation id="1990886731975529483">गूगल वाइडवाइन इन्स्टॉल करा आणि चालू करा</translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
 <translation id="4900351245762303149">Google Widevine इन्स्टॉल करा</translation>
@@ -18,6 +23,13 @@
 <translation id="7658239707568436148">रद्द करा</translation>
 <translation id="4615489450165434530">बिघडलेली साइट नोंदवा</translation>
 <translation id="474217410105706308">टॅब निःशब्द करा</translation>
+<translation id="8832245978592881387">Leo AI नवीन टॅबमध्ये उघडा</translation>
+<translation id="4577675328803804820">Leo AI नवीन साईड बारमध्ये उघडा</translation>
+<translation id="564305948667173847">Leo AI सेटिंग्ज व्यवस्थापित करा</translation>
+<translation id="2169338740411893745">Leo AI नवीन टॅबमध्ये उघडा</translation>
+<translation id="3295805221342028003">Leo AI नवीन साईड बारमध्ये उघडा</translation>
+<translation id="7400808612454224939">Leo AI सेटिंग्ज व्यवस्थापित करा</translation>
+<translation id="438106944087726695">Braveने होस्ट केलेली</translation>
 <translation id="5039804452771397117">परवानगी द्या</translation>
 <translation id="7053983685419859001">अवरोधित करा</translation>
 <translation id="8915916167043355778">सर्व बंद करा</translation>
@@ -47,7 +59,6 @@
 <translation id="4877147287319222750">साइडबारमध्ये जोडा</translation>
 <translation id="8712637175834984815">समजले</translation>
 <translation id="4394049700291259645">अक्षम करा</translation>
-<translation id="8428213095426709021">सेटिंग्ज</translation>
 <translation id="4474155171896946103">सर्व टॅब बुकमार्क करा...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{टॅब म्यूट करा}one{टॅब म्यूट करा}other{टॅब म्यूट करा}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{टॅब अनम्यूट करा}one{टॅब अनम्यूट करा}other{टॅब अनम्यूट करा}}</translation>
@@ -86,6 +97,7 @@
 <translation id="6165508094623778733">अधिक जाणून घ्या</translation>
 <translation id="7557539689487606886">प्रीमियम घ्या</translation>
 <translation id="3435896845095436175">सक्षम करा</translation>
+<translation id="1940221956626514677">टूलबार कस्टमाईझ करा</translation>
 <translation id="9156965752763025780">तुम्ही पुढल्या वेळी Brave रीलाँच कराल तोपर्यंत तुमचे बदल प्रभावी होतील.</translation>
 <translation id="1426410128494586442">होय</translation>
 <translation id="4250680216510889253">नाही</translation>
@@ -132,6 +144,8 @@
 <translation id="8798099450830957504">डीफॉल्ट</translation>
 <translation id="933652931229970927">आपोआप निदान अहवाल पाठवा</translation>
 <translation id="1679356339067548863">Brave क्रॅश किंवा फ्रीझ होतो तेव्हा आपोआप डायग्नोस्टिक रिपोर्ट्स पाठवून Brave च्या उत्पादन स्थैर्यात सुधारणा करण्यास मदत करा.</translation>
+<translation id="509873765238158442">Microsoft रीकॉल ब्लॉक करा</translation>
+<translation id="4763421121695677716">कोणत्याही चालू Brave टॅब्सचे आपोआप स्क्रीनशॉट घेणाऱ्या Microsoft Windows कंप्युटर्स वरील रीकॉल फीचर ब्लॉक करा.</translation>
 <translation id="7702907602086592255">डोमेन</translation>
 <translation id="3202131003361292969">पथ</translation>
 <translation id="5390743329570580756">यासाठी पाठवा</translation>
@@ -159,14 +173,17 @@
 <translation id="2055363275850890030">गुप्त विंडो</translation>
 <translation id="2653659639078652383">सबमिट करा</translation>
 <translation id="5249433283143453448">ब्राऊझरमध्ये संरक्षित स्ट्रीमिंग व्हिडिओ आणि इतर काँटेंट पाहण्यासाठी Widevine डिजिटल अधिकार व्यवस्थापन (DRM) घटक वापरा.</translation>
+<translation id="6918225713618473646">Brave ही मॅनिफेस्ट V2 एक्स्टेन्शन्स Brave सर्व्हर्सवर होस्ट करतो, पण त्यांमधील मजकूर, सुरक्षितता किंवा वर्तन यांचा आढावा घेत नाही किंवा ती पडताळत नाही. कृपया मदतीसाठी प्रत्येक एक्स्टेन्शनचे अधिकृत पान पाहा. मॅनिफेस्ट V2 साठी Brave च्या योजना <ph name="BEGIN_LINK"/>इथे<ph name="END_LINK"/> वाचा.</translation>
 <translation id="8137559199583651773">विस्तार व्यवस्थापित करा</translation>
 <translation id="8488282162676695335">ब्रेव्ह वॉलेट</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">माझा संभाषण इतिहास जतन करा</translation>
 <translation id="6106701981952170121">सर्व Leo AI संभाषण डेटा काढून टाका</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="614530507403667291">नवीन संभाषणांसाठीचे डीफॉल्ट मॉडेल</translation>
 <translation id="1907126221851170941">मॉडेल जोडा</translation>
+<translation id="5985516785067818307">सर्वेक्षण पॅनेलिस्ट</translation>
+<translation id="8347743943525229984">Brave सर्वेक्षणांना अनुमती द्या</translation>
+<translation id="3204080538332044581">यामुळे Braveला नव्या टॅबच्या पानावर गोपनीय सर्वेक्षणांच्या लिंक्स दाखवता येतात. सर्वेक्षणांमधून आम्हाला जास्त चांगली वैशिष्ट्ये उभारण्यास आणि ब्राऊझर वर आधारित जाहिरात मोहिमांचा प्रभावीपणा मोजण्यास मदत होते. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
 <translation id="154702742922788359">उघडा मोड</translation>
 <translation id="2249111429176737533">टॅब केलेल्या विंडोत उघडा</translation>
 <translation id="7022756207310403729">ब्राउझरमध्ये उघडा</translation>

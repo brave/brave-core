@@ -14,13 +14,14 @@ source_set("model") {
   deps = [
     "//base",
     "//brave/components/brave_account:features",
-    "//brave/ios/browser/api/ai_chat",
+    "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/api/webcompat_reporter",
     "//brave/ios/browser/brave_account",
     "//brave/ios/browser/brave_ads",
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/debounce",
     "//brave/ios/browser/favicon",
+    "//brave/ios/browser/misc_metrics",
     "//brave/ios/browser/skus",
     "//brave/ios/browser/url_sanitizer",
   ]

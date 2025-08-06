@@ -6,12 +6,37 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/tor/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+namespace commands {
 
 class AcceleratorServiceUnitTest : public testing::Test {
  public:
@@ -248,3 +273,203 @@ TEST_F(AcceleratorServiceUnitTest, UnmodifiableDefaultsAreReset) {
     EXPECT_EQ("Control+KeyT", unmodifiable_accelerator->codes);
   }
 }
+
+TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
+  commands::AcceleratorService service(profile().GetPrefs(), {}, {});
+
+  // Test Brave News
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_CONFIGURE_BRAVE_NEWS));
+  profile().GetPrefs()->SetBoolean(
+      brave_news::prefs::kBraveNewsDisabledByPolicy, true);
+  EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_CONFIGURE_BRAVE_NEWS));
+  profile().GetPrefs()->SetBoolean(
+      brave_news::prefs::kBraveNewsDisabledByPolicy, false);
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_CONFIGURE_BRAVE_NEWS));
+
+  // Test Brave Talk
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_TALK));
+  profile().GetPrefs()->SetBoolean(kBraveTalkDisabledByPolicy, true);
+  EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_TALK));
+  profile().GetPrefs()->SetBoolean(kBraveTalkDisabledByPolicy, false);
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_TALK));
+
+  // Test Brave VPN (multiple commands)
+  const std::vector<int> vpn_commands = {IDC_SHOW_BRAVE_VPN_PANEL,
+                                         IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON,
+                                         IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
+                                         IDC_SEND_BRAVE_VPN_FEEDBACK,
+                                         IDC_ABOUT_BRAVE_VPN,
+                                         IDC_MANAGE_BRAVE_VPN_PLAN,
+                                         IDC_TOGGLE_BRAVE_VPN};
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  for (int command : vpn_commands) {
+    EXPECT_FALSE(service.IsCommandDisabledByPolicy(command));
+  }
+  profile().GetPrefs()->SetBoolean(brave_vpn::prefs::kManagedBraveVPNDisabled,
+                                   true);
+  for (int command : vpn_commands) {
+    EXPECT_TRUE(service.IsCommandDisabledByPolicy(command));
+  }
+  profile().GetPrefs()->SetBoolean(brave_vpn::prefs::kManagedBraveVPNDisabled,
+                                   false);
+#else
+  // VPN not compiled in, should always return true (disabled)
+  for (int command : vpn_commands) {
+    EXPECT_TRUE(service.IsCommandDisabledByPolicy(command));
+  }
+#endif
+
+  // Test Brave Wallet (multiple commands)
+  const std::vector<int> wallet_commands = {IDC_SHOW_BRAVE_WALLET,
+                                            IDC_SHOW_BRAVE_WALLET_PANEL,
+                                            IDC_CLOSE_BRAVE_WALLET_PANEL};
+  for (int command : wallet_commands) {
+    EXPECT_FALSE(service.IsCommandDisabledByPolicy(command));
+  }
+  profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
+                                   true);
+  for (int command : wallet_commands) {
+    EXPECT_TRUE(service.IsCommandDisabledByPolicy(command));
+  }
+  profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
+                                   false);
+
+  // Test Brave Rewards
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_REWARDS));
+  profile().GetPrefs()->SetBoolean(brave_rewards::prefs::kDisabledByPolicy,
+                                   true);
+  EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_REWARDS));
+  profile().GetPrefs()->SetBoolean(brave_rewards::prefs::kDisabledByPolicy,
+                                   false);
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_REWARDS));
+
+  // Test AI Chat (reverse logic - disabled when pref is false)
+  const std::vector<int> ai_chat_commands = {IDC_TOGGLE_AI_CHAT,
+                                             IDC_OPEN_FULL_PAGE_CHAT};
+  // Set AI Chat to disabled first (pref defaults may vary in test environment)
+  profile().GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy, false);
+  for (int command : ai_chat_commands) {
+    EXPECT_TRUE(
+        service.IsCommandDisabledByPolicy(command));  // Should be disabled
+  }
+  profile().GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy, true);
+  for (int command : ai_chat_commands) {
+    EXPECT_FALSE(service.IsCommandDisabledByPolicy(command));
+  }
+  profile().GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy, false);
+  for (int command : ai_chat_commands) {
+    EXPECT_TRUE(service.IsCommandDisabledByPolicy(command));
+  }
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  // Test Speedreader
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SPEEDREADER_ICON_ONCLICK));
+  profile().GetPrefs()->SetBoolean(speedreader::kSpeedreaderDisabledByPolicy,
+                                   true);
+  EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_SPEEDREADER_ICON_ONCLICK));
+  profile().GetPrefs()->SetBoolean(speedreader::kSpeedreaderDisabledByPolicy,
+                                   false);
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SPEEDREADER_ICON_ONCLICK));
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  // Test Wayback Machine
+  EXPECT_FALSE(
+      service.IsCommandDisabledByPolicy(IDC_SHOW_WAYBACK_MACHINE_BUBBLE));
+  profile().GetPrefs()->SetBoolean(kBraveWaybackMachineDisabledByPolicy, true);
+  EXPECT_TRUE(
+      service.IsCommandDisabledByPolicy(IDC_SHOW_WAYBACK_MACHINE_BUBBLE));
+  profile().GetPrefs()->SetBoolean(kBraveWaybackMachineDisabledByPolicy, false);
+  EXPECT_FALSE(
+      service.IsCommandDisabledByPolicy(IDC_SHOW_WAYBACK_MACHINE_BUBBLE));
+#endif
+
+  // Test unknown commands (should not be disabled by policy)
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_NEW_TAB));
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(99999));
+
+  // Test FilterCommandsByPolicy
+  commands::Accelerators test_accelerators = {
+      {IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}},
+      {IDC_CONFIGURE_BRAVE_NEWS, {commands::FromCodesString("Control+KeyN")}},
+      {IDC_SHOW_BRAVE_WALLET, {commands::FromCodesString("Control+KeyW")}},
+      {IDC_TOGGLE_AI_CHAT, {commands::FromCodesString("Control+KeyC")}},
+  };
+
+  // Disable some features and test filtering
+  profile().GetPrefs()->SetBoolean(
+      brave_news::prefs::kBraveNewsDisabledByPolicy, true);
+  profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
+                                   true);
+  profile().GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy,
+                                   false);  // Disable AI Chat
+
+  auto filtered = service.FilterCommandsByPolicy(test_accelerators);
+  // Only IDC_NEW_TAB should remain (not policy-controlled)
+  EXPECT_EQ(1u, filtered.size());
+  EXPECT_TRUE(filtered.contains(IDC_NEW_TAB));
+  EXPECT_FALSE(filtered.contains(IDC_CONFIGURE_BRAVE_NEWS));
+  EXPECT_FALSE(filtered.contains(IDC_SHOW_BRAVE_WALLET));
+  EXPECT_FALSE(filtered.contains(IDC_TOGGLE_AI_CHAT));
+
+  // Re-enable commands and test again
+  profile().GetPrefs()->SetBoolean(
+      brave_news::prefs::kBraveNewsDisabledByPolicy, false);
+  profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
+                                   false);
+  profile().GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy, true);
+
+  filtered = service.FilterCommandsByPolicy(test_accelerators);
+  // All commands should be present now
+  EXPECT_EQ(4u, filtered.size());
+  EXPECT_TRUE(filtered.contains(IDC_NEW_TAB));
+  EXPECT_TRUE(filtered.contains(IDC_CONFIGURE_BRAVE_NEWS));
+  EXPECT_TRUE(filtered.contains(IDC_SHOW_BRAVE_WALLET));
+  EXPECT_TRUE(filtered.contains(IDC_TOGGLE_AI_CHAT));
+}
+
+class AcceleratorServiceUnitTestWithLocalState : public testing::Test {
+ public:
+  AcceleratorServiceUnitTestWithLocalState()
+      : testing_local_state_(TestingBrowserProcess::GetGlobal()) {
+    features_.InitAndEnableFeature(commands::features::kBraveCommands);
+  }
+
+  ~AcceleratorServiceUnitTestWithLocalState() override = default;
+
+  TestingProfile& profile() { return profile_; }
+  PrefService* local_state() { return testing_local_state_.Get(); }
+
+ private:
+  content::BrowserTaskEnvironment task_environment_;
+  TestingProfile profile_;
+  base::test::ScopedFeatureList features_;
+  ScopedTestingLocalState testing_local_state_;
+};
+
+TEST_F(AcceleratorServiceUnitTestWithLocalState, PolicyFiltering) {
+  commands::AcceleratorService service(profile().GetPrefs(), {}, {});
+
+  // Test Tor-related commands (which use local state)
+  const std::vector<int> tor_commands = {IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+                                         IDC_NEW_TOR_CONNECTION_FOR_SITE};
+
+  // Initially, commands should not be disabled
+  for (int command : tor_commands) {
+    EXPECT_FALSE(service.IsCommandDisabledByPolicy(command));
+  }
+
+  // Disable Tor via policy (using local state)
+  local_state()->SetBoolean(tor::prefs::kTorDisabled, true);
+  for (int command : tor_commands) {
+    EXPECT_TRUE(service.IsCommandDisabledByPolicy(command));
+  }
+
+  // Re-enable Tor
+  local_state()->SetBoolean(tor::prefs::kTorDisabled, false);
+  for (int command : tor_commands) {
+    EXPECT_FALSE(service.IsCommandDisabledByPolicy(command));
+  }
+}
+
+}  // namespace commands

@@ -14,14 +14,14 @@ source_set("translate") {
 
   deps = [
     "//base",
-    "//components/language/ios/browser:browser",
+    "//components/language/ios/browser",
     "//components/resources:components_resources_grit",
     "//components/translate/ios/browser",
-    "//ios/web/annotations:annotations",
+    "//ios/web/annotations",
     "//ios/web/js_messaging",
     "//ios/web/navigation:navigation_feature",
-    "//ios/web/public/js_messaging:js_messaging",
-    "//ui/base:base",
+    "//ios/web/public/js_messaging",
+    "//ui/base",
   ]
 
   frameworks = [ "Foundation.framework" ]

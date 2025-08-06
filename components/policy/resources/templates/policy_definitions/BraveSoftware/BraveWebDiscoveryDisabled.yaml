@@ -1,0 +1,39 @@
+caption: Disable Web Discovery
+default: null
+desc: |-
+  Disable Web Discovery in Brave.
+
+  Web Discovery is an opt-in feature that helps improve Brave's search index in a privacy-preserving way.
+
+  If this policy is set to true, Web Discovery will always be disabled and all related UI elements will be hidden.
+
+  If this policy is set to false, Web Discovery will be disabled by default.
+
+  If you set this policy, users cannot change or override it.
+
+  If this policy is left unset, Web Discovery will be disabled by default (subject to user preferences).
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Allow the user to decide (disabled by default)
+  value: false
+- caption: Disable Web Discovery functionality
+  value: true
+- caption: Allow the user to decide (disabled by default)
+  value: null
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+- dandries@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:138-
+future_on:
+- android
+tags: []
+type: main 

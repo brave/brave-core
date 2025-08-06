@@ -102,9 +102,7 @@ def CheckWebDevStyle(input_api, output_api):
 
 
 def CheckChangeLintsClean(input_api, output_api):
-    return input_api.canned_checks.CheckChangeLintsClean(input_api,
-                                                         output_api,
-                                                         lint_filters=[])
+    return input_api.canned_checks.CheckChangeLintsClean(input_api, output_api)
 
 
 def CheckPylint(input_api, output_api):
@@ -392,6 +390,16 @@ _BANNED_CPP_FUNCTIONS += (
          'case that the exclusion for the inclusion line has in the C++ source '
          'has a mismatch with what is being included/excluded in the gn file.',
          ),
+        treat_as_error=False,
+    ),
+    BanRule(
+        'base::StringPrintf',
+        explanation=('Please use `absl::StrFormat` rather.', ),
+        treat_as_error=False,
+    ),
+    BanRule(
+        'base::StringAppendF',
+        explanation=('Please use `absl::StrAppendFormat` rather.', ),
         treat_as_error=False,
     ),
 )

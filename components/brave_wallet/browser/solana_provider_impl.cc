@@ -655,7 +655,7 @@ void SolanaProviderImpl::SignMessage(
     message = std::string(blob_msg.begin(), blob_msg.end());
   }
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account->account_id.Clone(),
+      MakeOriginInfo(delegate_->GetOrigin()), 0, account->account_id.Clone(),
       mojom::SignDataUnion::NewSolanaSignData(
           mojom::SolanaSignData::New(message, blob_msg)),
       mojom::CoinType::SOL,

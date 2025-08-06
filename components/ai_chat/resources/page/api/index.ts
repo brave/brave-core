@@ -18,6 +18,8 @@ export type State = Mojom.ServiceState & {
   isPremiumUserDisconnected: boolean
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
+  isAIChatAgentProfileFeatureEnabled: boolean
+  isAIChatAgentProfile: boolean
   actionList: Mojom.ActionGroup[]
   tabs: Mojom.TabData[]
 
@@ -39,6 +41,8 @@ export const defaultUIState: State = {
   canShowPremiumPrompt: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
+  isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean('isAIChatAgentProfileFeatureEnabled'),
+  isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
   actionList: [],
   tabs: []
 }

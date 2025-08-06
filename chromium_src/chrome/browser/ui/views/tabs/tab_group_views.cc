@@ -41,7 +41,7 @@
     return {min, max};                                                         \
   }
 
-#include "src/chrome/browser/ui/views/tabs/tab_group_views.cc"
+#include <chrome/browser/ui/views/tabs/tab_group_views.cc>
 
 #undef BRAVE_TAB_GROUP_VIEWS_GET_LEADING_TRAILING_GROUP_VIEWS
 #undef TabGroupHighlight

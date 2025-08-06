@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/strings/stringprintf.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -11,6 +10,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_test.h"
 #include "services/network/public/mojom/network_context.mojom.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/features.h"
 
 namespace {
@@ -46,9 +46,9 @@ class EphemeralStorageBlinkMemoryCacheBrowserTestBase
     auto* rfh = ui_test_utils::NavigateToURLWithDisposition(
         browser, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-    EXPECT_TRUE(content::ExecJs(
-        content::ChildFrameAt(rfh, 0),
-        base::StringPrintf(kLoadImgAsync, img_url.spec().c_str())));
+    EXPECT_TRUE(
+        content::ExecJs(content::ChildFrameAt(rfh, 0),
+                        absl::StrFormat(kLoadImgAsync, img_url.spec())));
   }
 
   void ClearHttpCache() {

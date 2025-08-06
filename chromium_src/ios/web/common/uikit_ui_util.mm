@@ -8,5 +8,5 @@
 // Replaces the strict cast to a standard cast since its possible for Brave to
 // have a non-window scene thanks to the CarPlay support
 #define ObjCCastStrict ObjCCast
-#include "src/ios/web/common/uikit_ui_util.mm"
+#include <ios/web/common/uikit_ui_util.mm>
 #undef ObjCCastStrict

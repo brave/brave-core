@@ -9,12 +9,12 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
 

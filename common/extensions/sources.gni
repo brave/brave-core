@@ -18,7 +18,6 @@ brave_chrome_common_extensions_sources = [
 ]
 
 brave_chrome_common_extensions_deps = [
-  "//brave/components/brave_component_updater/browser",
   "//brave/components/https_upgrade_exceptions/browser",
   "//brave/components/skus/common",
   "//components/component_updater",

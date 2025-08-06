@@ -8,11 +8,13 @@
 
 #include "ui/views/controls/webview/webview.h"
 
-#define ViewHierarchyChanged \
-  AddedToWidget() override;  \
+#define ViewHierarchyChanged                                                 \
+  AddedToWidget() override;                                                  \
+  bool HandleContextMenu(content::RenderFrameHost& render_frame_host,        \
+                         const content::ContextMenuParams& params) override; \
   void ViewHierarchyChanged
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h>  // IWYU pragma: export
 
 #undef ViewHierarchyChanged
 

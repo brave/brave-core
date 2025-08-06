@@ -48,7 +48,7 @@ source_set("browser_tests") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/brave_mobile_subscription/renderer/android",
     "//brave/components/brave_vpn/common",
-    "//brave/components/brave_vpn/common/buildflags:buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/skus/common",
     "//chrome/common",
     "//content/public/common",

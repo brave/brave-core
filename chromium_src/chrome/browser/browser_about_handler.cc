@@ -5,7 +5,7 @@
 
 #define HandleChromeAboutAndChromeSyncRewrite \
   HandleChromeAboutAndChromeSyncRewrite_ChromiumImpl
-#include "src/chrome/browser/browser_about_handler.cc"
+#include <chrome/browser/browser_about_handler.cc>
 #undef HandleChromeAboutAndChromeSyncRewrite
 
 #include "brave/components/constants/url_constants.h"

@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Helfen Sie mit, die Produktstabilität von Brave zu verbessern, indem Sie automatisch Diagnoseberichte senden, wenn der Brave-Browser abstürzt oder einfriert.</translation>
 <translation id="7977176350719484850">Geschätzte nicht heruntergeladene\nDatenmenge</translation>
 <translation id="9008534313521214777">Ca. Zeit\ngespart</translation>
+<translation id="8347743943525229984">Brave Umfragen erlauben</translation>
+<translation id="6022939994702081659">Erlaube Brave, Links zu privaten Umfragen auf der neuen Tab-Seite anzuzeigen. Umfragen helfen uns, bessere Funktionen zu entwickeln und die Wirksamkeit von browserbasierten Werbekampagnen zu messen.</translation>
+<translation id="7746496306508543965">Mehr über Brave Umfragen erfahren</translation>
 <translation id="410351446219883937">Autoplay</translation>
 <translation id="7445411102860286510">Automatische Wiedergabe stummgeschalteter Videos auf Websites zulassen (empfohlen)</translation>
 <translation id="7837721118676387834">Automatische Wiedergabe stummgeschalteter Videos für eine bestimmte Website zulassen.</translation>
@@ -632,7 +635,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3961126209136843111">Bestehende Wallet importieren</translation>
 <translation id="4811736040444856406">Formulierung zur Wiederherstellung anzeigen</translation>
 <translation id="4359319875297001084">Import aus alten Brave-Krypto-Wallets?</translation>
-<translation id="3157931365184549694">Wiederherstellen</translation>
 <translation id="5844138175312846408">Haben Sie bereits eine Wallet?</translation>
 <translation id="2502258949541727762">Bevor es losgeht</translation>
 <translation id="4303748097351941030">Unterstützte Netzwerke</translation>
@@ -794,7 +796,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1426320910664514906">Gaslimit</translation>
 <translation id="6389441740143786465">Freigabe-Hub deaktivieren</translation>
 <translation id="9065203028668620118">Bearbeiten</translation>
-<translation id="473775607612524610">Aktualisieren</translation>
 <translation id="479795390141144417">Kontoaktualisierung fehlgeschlagen.</translation>
 <translation id="8084782383392198011">Kontoname darf nicht leer sein.</translation>
 <translation id="5045550434625856497">Falsches Passwort</translation>

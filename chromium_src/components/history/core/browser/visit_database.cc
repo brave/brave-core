@@ -10,7 +10,7 @@
   case SOURCE_BRAVE_IMPORTED:  \
   case SOURCE_SAFARI_IMPORTED
 
-#include "src/components/history/core/browser/visit_database.cc"
+#include <components/history/core/browser/visit_database.cc>
 
 #undef SOURCE_SAFARI_IMPORTED
 

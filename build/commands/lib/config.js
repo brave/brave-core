@@ -44,6 +44,29 @@ const packageConfig = function (key, sourceDir = braveCoreDir) {
   return obj
 }
 
+const readArgsGn = (srcDir, outputDir) => {
+  const util = require('./util')
+  const gnHelpersPath = path.join(srcDir, 'build', 'gn_helpers.py')
+
+  const script = `
+import sys
+import os
+sys.path.insert(0, '${path.dirname(gnHelpersPath)}')
+import gn_helpers
+result = gn_helpers.ReadArgsGN('${outputDir}')
+import json
+print(json.dumps(result))
+`
+
+  const result = util.run('python3', ['-'], {
+    skipLogging: true,
+    input: script,
+    encoding: 'utf8',
+  })
+
+  return JSON.parse(result.stdout.toString().trim())
+}
+
 const getEnvConfig = (key, defaultValue = undefined) => {
   if (!envConfig) {
     envConfig = {}
@@ -62,8 +85,10 @@ const getEnvConfig = (key, defaultValue = undefined) => {
 
     // Convert 'true' and 'false' strings into booleans.
     for (const [key, value] of Object.entries(envConfig)) {
-      if (value === 'true' || value === 'false') {
-        envConfig[key] = value === 'true'
+      try {
+        envConfig[key] = JSON.parse(value)
+      } catch (e) {
+        envConfig[key] = value
       }
     }
   }
@@ -162,96 +187,6 @@ const Config = function () {
   this.targetEnvironment = getEnvConfig(['target_environment'])
   this.gypTargetArch = 'x64'
   this.targetAndroidBase = 'classic'
-  this.braveServicesProductionDomain = getEnvConfig([
-    'brave_services_production_domain',
-  ])
-  this.braveServicesStagingDomain = getEnvConfig([
-    'brave_services_staging_domain',
-  ])
-  this.braveServicesDevDomain = getEnvConfig(['brave_services_dev_domain'])
-  this.braveGoogleApiKey = getEnvConfig(['brave_google_api_key'])
-  this.googleApiEndpoint = getEnvConfig(['brave_google_api_endpoint'])
-  this.googleDefaultClientId = getEnvConfig(['google_default_client_id'])
-  this.googleDefaultClientSecret = getEnvConfig([
-    'google_default_client_secret',
-  ])
-  this.infuraProjectId = getEnvConfig(['brave_infura_project_id'])
-  this.sardineClientId = getEnvConfig(['sardine_client_id'])
-  this.sardineClientSecret = getEnvConfig(['sardine_client_secret'])
-  this.bitFlyerProductionClientId = getEnvConfig([
-    'bitflyer_production_client_id',
-  ])
-  this.bitFlyerProductionClientSecret = getEnvConfig([
-    'bitflyer_production_client_secret',
-  ])
-  this.bitFlyerProductionFeeAddress = getEnvConfig([
-    'bitflyer_production_fee_address',
-  ])
-  this.bitFlyerProductionUrl = getEnvConfig(['bitflyer_production_url'])
-  this.bitFlyerSandboxClientId = getEnvConfig(['bitflyer_sandbox_client_id'])
-  this.bitFlyerSandboxClientSecret = getEnvConfig([
-    'bitflyer_sandbox_client_secret',
-  ])
-  this.bitFlyerSandboxFeeAddress = getEnvConfig([
-    'bitflyer_sandbox_fee_address',
-  ])
-  this.bitFlyerSandboxUrl = getEnvConfig(['bitflyer_sandbox_url'])
-  this.geminiProductionApiUrl = getEnvConfig(['gemini_production_api_url'])
-  this.geminiProductionClientId = getEnvConfig(['gemini_production_client_id'])
-  this.geminiProductionClientSecret = getEnvConfig([
-    'gemini_production_client_secret',
-  ])
-  this.geminiProductionFeeAddress = getEnvConfig([
-    'gemini_production_fee_address',
-  ])
-  this.geminiProductionOauthUrl = getEnvConfig(['gemini_production_oauth_url'])
-  this.geminiSandboxApiUrl = getEnvConfig(['gemini_sandbox_api_url'])
-  this.geminiSandboxClientId = getEnvConfig(['gemini_sandbox_client_id'])
-  this.geminiSandboxClientSecret = getEnvConfig([
-    'gemini_sandbox_client_secret',
-  ])
-  this.geminiSandboxFeeAddress = getEnvConfig(['gemini_sandbox_fee_address'])
-  this.geminiSandboxOauthUrl = getEnvConfig(['gemini_sandbox_oauth_url'])
-  this.upholdProductionApiUrl = getEnvConfig(['uphold_production_api_url'])
-  this.upholdProductionClientId = getEnvConfig(['uphold_production_client_id'])
-  this.upholdProductionClientSecret = getEnvConfig([
-    'uphold_production_client_secret',
-  ])
-  this.upholdProductionFeeAddress = getEnvConfig([
-    'uphold_production_fee_address',
-  ])
-  this.upholdProductionOauthUrl = getEnvConfig(['uphold_production_oauth_url'])
-  this.upholdSandboxApiUrl = getEnvConfig(['uphold_sandbox_api_url'])
-  this.upholdSandboxClientId = getEnvConfig(['uphold_sandbox_client_id'])
-  this.upholdSandboxClientSecret = getEnvConfig([
-    'uphold_sandbox_client_secret',
-  ])
-  this.upholdSandboxFeeAddress = getEnvConfig(['uphold_sandbox_fee_address'])
-  this.upholdSandboxOauthUrl = getEnvConfig(['uphold_sandbox_oauth_url'])
-  this.zebPayProductionApiUrl = getEnvConfig(['zebpay_production_api_url'])
-  this.zebPayProductionClientId = getEnvConfig(['zebpay_production_client_id'])
-  this.zebPayProductionClientSecret = getEnvConfig([
-    'zebpay_production_client_secret',
-  ])
-  this.zebPayProductionOauthUrl = getEnvConfig(['zebpay_production_oauth_url'])
-  this.zebPaySandboxApiUrl = getEnvConfig(['zebpay_sandbox_api_url'])
-  this.zebPaySandboxClientId = getEnvConfig(['zebpay_sandbox_client_id'])
-  this.zebPaySandboxClientSecret = getEnvConfig([
-    'zebpay_sandbox_client_secret',
-  ])
-  this.zebPaySandboxOauthUrl = getEnvConfig(['zebpay_sandbox_oauth_url'])
-  this.braveSyncEndpoint = getEnvConfig(['brave_sync_endpoint'])
-  this.safeBrowsingApiEndpoint = getEnvConfig(['safebrowsing_api_endpoint'])
-  this.updaterProdEndpoint = getEnvConfig(['updater_prod_endpoint'])
-  this.updaterDevEndpoint = getEnvConfig(['updater_dev_endpoint'])
-  this.webcompatReportApiEndpoint = getEnvConfig([
-    'webcompat_report_api_endpoint',
-  ])
-  this.rewardsGrantDevEndpoint = getEnvConfig(['rewards_grant_dev_endpoint'])
-  this.rewardsGrantStagingEndpoint = getEnvConfig([
-    'rewards_grant_staging_endpoint',
-  ])
-  this.rewardsGrantProdEndpoint = getEnvConfig(['rewards_grant_prod_endpoint'])
   this.ignorePatchVersionNumber =
     !this.isBraveReleaseBuild()
     && getEnvConfig(['ignore_patch_version_number'], !this.isCI)
@@ -264,9 +199,6 @@ const Config = function () {
   this.mac_installer_signing_identifier =
     getEnvConfig(['mac_installer_signing_identifier']) || ''
   this.mac_signing_keychain = getEnvConfig(['mac_signing_keychain']) || 'login'
-  this.sparkleDSAPrivateKeyFile = getEnvConfig(['sparkle_dsa_private_key_file'])
-  this.sparkleEdDSAPrivateKey = getEnvConfig(['sparkle_eddsa_private_key'])
-  this.sparkleEdDSAPublicKey = getEnvConfig(['sparkle_eddsa_public_key'])
   this.notary_user = getEnvConfig(['notary_user'])
   this.notary_password = getEnvConfig(['notary_password'])
   this.channel = 'development'
@@ -275,12 +207,8 @@ const Config = function () {
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
-  // Make sure "src/" is a part of RBE "exec_root" to allow "src/" files as inputs.
-  this.rbeExecRoot = this.rootDir
   this.realRewrapperDir =
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
-  this.braveStatsApiKey = getEnvConfig(['brave_stats_api_key']) || ''
-  this.braveStatsUpdaterUrl = getEnvConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = false
   this.enable_pseudolocales = false
@@ -312,21 +240,89 @@ const Config = function () {
   this.braveAndroidKeyPassword = getEnvConfig(['brave_android_key_password'])
   this.braveAndroidPkcs11Provider = ''
   this.braveAndroidPkcs11Alias = ''
-  this.braveVariationsServerUrl = getEnvConfig(['brave_variations_server_url'])
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.useRemoteExec = getEnvConfig(['use_remoteexec']) || false
   this.offline = getEnvConfig(['offline']) || false
   this.use_libfuzzer = false
   this.androidAabToApk = false
   this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
-  this.brave_services_key_id = getEnvConfig(['brave_services_key_id'])
-  this.service_key_aichat = getEnvConfig(['service_key_aichat'])
   this.braveIOSDeveloperOptionsCode = getEnvConfig([
     'brave_ios_developer_options_code',
   ])
-  this.service_key_stt = getEnvConfig(['service_key_stt'])
   this.skip_download_rust_toolchain_aux =
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
+  this.is_msan = getEnvConfig(['is_msan'])
+  this.is_ubsan = getEnvConfig(['is_ubsan'])
+
+  this.forwardEnvArgsToGn = [
+    'bitflyer_production_client_id',
+    'bitflyer_production_client_secret',
+    'bitflyer_production_fee_address',
+    'bitflyer_production_url',
+    'bitflyer_sandbox_client_id',
+    'bitflyer_sandbox_client_secret',
+    'bitflyer_sandbox_fee_address',
+    'bitflyer_sandbox_url',
+    'brave_android_developer_options_code',
+    'brave_google_api_endpoint',
+    'brave_google_api_key',
+    'brave_infura_project_id',
+    'brave_safebrowsing_api_key',
+    'brave_services_dev_domain',
+    'brave_services_key_id',
+    'brave_services_production_domain',
+    'brave_services_staging_domain',
+    'brave_stats_api_key',
+    'brave_stats_updater_url',
+    'brave_sync_endpoint',
+    'brave_variations_server_url',
+    'concurrent_links',
+    'gemini_production_api_url',
+    'gemini_production_client_id',
+    'gemini_production_client_secret',
+    'gemini_production_fee_address',
+    'gemini_production_oauth_url',
+    'gemini_sandbox_api_url',
+    'gemini_sandbox_client_id',
+    'gemini_sandbox_client_secret',
+    'gemini_sandbox_fee_address',
+    'gemini_sandbox_oauth_url',
+    'google_default_client_id',
+    'google_default_client_secret',
+    'msan_track_origins',
+    'rewards_grant_dev_endpoint',
+    'rewards_grant_prod_endpoint',
+    'rewards_grant_staging_endpoint',
+    'safebrowsing_api_endpoint',
+    'sardine_client_id',
+    'sardine_client_secret',
+    'service_key_aichat',
+    'service_key_stt',
+    'sparkle_dsa_private_key_file',
+    'sparkle_eddsa_private_key',
+    'sparkle_eddsa_public_key',
+    'updater_dev_endpoint',
+    'updater_prod_endpoint',
+    'uphold_production_api_url',
+    'uphold_production_client_id',
+    'uphold_production_client_secret',
+    'uphold_production_fee_address',
+    'uphold_production_oauth_url',
+    'uphold_sandbox_api_url',
+    'uphold_sandbox_client_id',
+    'uphold_sandbox_client_secret',
+    'uphold_sandbox_fee_address',
+    'uphold_sandbox_oauth_url',
+    'webcompat_report_api_endpoint',
+    'zebpay_production_api_url',
+    'zebpay_production_client_id',
+    'zebpay_production_client_secret',
+    'zebpay_production_oauth_url',
+    'zebpay_sandbox_api_url',
+    'zebpay_sandbox_client_id',
+    'zebpay_sandbox_client_secret',
+    'zebpay_sandbox_oauth_url',
+  ]
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -337,10 +333,10 @@ Config.prototype.isBraveReleaseBuild = function () {
   const isBraveReleaseBuildValue = getEnvConfig(['is_brave_release_build'])
   if (isBraveReleaseBuildValue !== undefined) {
     assert(
-      isBraveReleaseBuildValue === '0' || isBraveReleaseBuildValue === '1',
+      isBraveReleaseBuildValue === 0 || isBraveReleaseBuildValue === 1,
       'Bad is_brave_release_build value (should be 0 or 1)',
     )
-    return isBraveReleaseBuildValue === '1'
+    return isBraveReleaseBuildValue === 1
   }
 
   return false
@@ -378,7 +374,9 @@ Config.prototype.isAsan = function () {
 }
 
 Config.prototype.isOfficialBuild = function () {
-  return this.isReleaseBuild() && !this.isAsan() && !this.is_ubsan
+  return (
+    this.isReleaseBuild() && !this.isAsan() && !this.is_msan && !this.is_ubsan
+  )
 }
 
 Config.prototype.getBraveLogoIconName = function () {
@@ -401,18 +399,16 @@ Config.prototype.buildArgs = function () {
   versionParts = versionParts.split('.')
 
   let args = {
-    sardine_client_id: this.sardineClientId,
-    sardine_client_secret: this.sardineClientSecret,
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
     is_ubsan: this.is_ubsan,
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
+    is_msan: this.is_msan,
     disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
     root_extra_deps: ['//brave'],
-    clang_unsafe_buffers_paths: '//brave/build/config/unsafe_buffers_paths.txt',
     // TODO: Re-enable when chromium_src overrides work for files in relative
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
@@ -432,81 +428,24 @@ Config.prototype.buildArgs = function () {
     dcheck_always_on:
       getEnvConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
-    brave_google_api_key: this.braveGoogleApiKey,
-    brave_google_api_endpoint: this.googleApiEndpoint,
-    google_default_client_id: this.googleDefaultClientId,
-    google_default_client_secret: this.googleDefaultClientSecret,
-    brave_infura_project_id: this.infuraProjectId,
-    bitflyer_production_client_id: this.bitFlyerProductionClientId,
-    bitflyer_production_client_secret: this.bitFlyerProductionClientSecret,
-    bitflyer_production_fee_address: this.bitFlyerProductionFeeAddress,
-    bitflyer_production_url: this.bitFlyerProductionUrl,
-    bitflyer_sandbox_client_id: this.bitFlyerSandboxClientId,
-    bitflyer_sandbox_client_secret: this.bitFlyerSandboxClientSecret,
-    bitflyer_sandbox_fee_address: this.bitFlyerSandboxFeeAddress,
-    bitflyer_sandbox_url: this.bitFlyerSandboxUrl,
-    gemini_production_api_url: this.geminiProductionApiUrl,
-    gemini_production_client_id: this.geminiProductionClientId,
-    gemini_production_client_secret: this.geminiProductionClientSecret,
-    gemini_production_fee_address: this.geminiProductionFeeAddress,
-    gemini_production_oauth_url: this.geminiProductionOauthUrl,
-    gemini_sandbox_api_url: this.geminiSandboxApiUrl,
-    gemini_sandbox_client_id: this.geminiSandboxClientId,
-    gemini_sandbox_client_secret: this.geminiSandboxClientSecret,
-    gemini_sandbox_fee_address: this.geminiSandboxFeeAddress,
-    gemini_sandbox_oauth_url: this.geminiSandboxOauthUrl,
-    uphold_production_api_url: this.upholdProductionApiUrl,
-    uphold_production_client_id: this.upholdProductionClientId,
-    uphold_production_client_secret: this.upholdProductionClientSecret,
-    uphold_production_fee_address: this.upholdProductionFeeAddress,
-    uphold_production_oauth_url: this.upholdProductionOauthUrl,
-    uphold_sandbox_api_url: this.upholdSandboxApiUrl,
-    uphold_sandbox_client_id: this.upholdSandboxClientId,
-    uphold_sandbox_client_secret: this.upholdSandboxClientSecret,
-    uphold_sandbox_fee_address: this.upholdSandboxFeeAddress,
-    uphold_sandbox_oauth_url: this.upholdSandboxOauthUrl,
-    zebpay_production_api_url: this.zebPayProductionApiUrl,
-    zebpay_production_client_id: this.zebPayProductionClientId,
-    zebpay_production_client_secret: this.zebPayProductionClientSecret,
-    zebpay_production_oauth_url: this.zebPayProductionOauthUrl,
-    zebpay_sandbox_api_url: this.zebPaySandboxApiUrl,
-    zebpay_sandbox_client_id: this.zebPaySandboxClientId,
-    zebpay_sandbox_client_secret: this.zebPaySandboxClientSecret,
-    zebpay_sandbox_oauth_url: this.zebPaySandboxOauthUrl,
     brave_version_major: versionParts[0],
     brave_version_minor: versionParts[1],
     brave_version_build: versionParts[2],
     chrome_version_string: this.chromeVersion,
-    brave_sync_endpoint: this.braveSyncEndpoint,
-    safebrowsing_api_endpoint: this.safeBrowsingApiEndpoint,
-    brave_variations_server_url: this.braveVariationsServerUrl,
-    updater_prod_endpoint: this.updaterProdEndpoint,
-    updater_dev_endpoint: this.updaterDevEndpoint,
-    webcompat_report_api_endpoint: this.webcompatReportApiEndpoint,
-    rewards_grant_dev_endpoint: this.rewardsGrantDevEndpoint,
-    rewards_grant_staging_endpoint: this.rewardsGrantStagingEndpoint,
-    rewards_grant_prod_endpoint: this.rewardsGrantProdEndpoint,
-    brave_stats_api_key: this.braveStatsApiKey,
-    brave_stats_updater_url: this.braveStatsUpdaterUrl,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     enable_pseudolocales: this.enable_pseudolocales,
     skip_signing: !this.shouldSign(),
-    sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
-    sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
-    sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_remoteexec: this.useRemoteExec,
     use_reclient: this.useRemoteExec,
-    use_siso: false,
+    use_siso: this.useSiso,
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
-    brave_services_production_domain: this.braveServicesProductionDomain,
-    brave_services_staging_domain: this.braveServicesStagingDomain,
-    brave_services_dev_domain: this.braveServicesDevDomain,
-    brave_services_key_id: this.brave_services_key_id,
-    service_key_aichat: this.service_key_aichat,
-    service_key_stt: this.service_key_stt,
     generate_about_credits: true,
+  }
+
+  for (const key of this.forwardEnvArgsToGn) {
+    args[key] = getEnvConfig([key])
   }
 
   if (this.isOfficialBuild()) {
@@ -601,11 +540,12 @@ Config.prototype.buildArgs = function () {
     args.enable_precompiled_headers = false
   }
 
-  if (this.useRemoteExec) {
-    args.rbe_exec_root = this.rbeExecRoot
-    args.reclient_bin_dir = path.join(this.nativeRedirectCCDir)
-  } else {
-    args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
+  if (!this.useSiso) {
+    if (this.useRemoteExec) {
+      args.reclient_bin_dir = path.join(this.nativeRedirectCCDir)
+    } else {
+      args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
+    }
   }
 
   // Adjust symbol_level in Linux builds:
@@ -660,27 +600,6 @@ Config.prototype.buildArgs = function () {
   if (['android', 'linux', 'mac'].includes(this.targetOS)) {
     // LSAN only works with ASAN and has very low overhead.
     args.is_lsan = args.is_asan
-  }
-
-  // Enable Page Graph only in desktop builds.
-  // Page Graph gn args should always be set explicitly, because they are parsed
-  // from out/<dir>/args.gn by Python scripts during the build. We do this to
-  // handle gn args in upstream build scripts without introducing git conflict.
-  if (this.targetOS !== 'android' && this.targetOS !== 'ios') {
-    args.enable_brave_page_graph = true
-  } else {
-    args.enable_brave_page_graph = false
-  }
-  // Enable Page Graph WebAPI probes only in dev/nightly builds.
-  if (
-    args.enable_brave_page_graph
-    && (!this.isBraveReleaseBuild()
-      || this.channel === 'dev'
-      || this.channel === 'nightly')
-  ) {
-    args.enable_brave_page_graph_webapi_probes = true
-  } else {
-    args.enable_brave_page_graph_webapi_probes = false
   }
 
   // Devtools: Now we patch devtools frontend, so it is useful to see
@@ -756,12 +675,21 @@ Config.prototype.buildArgs = function () {
       args.android_static_analysis = 'on'
     }
 
+    // Align DCHECKs with Java asserts
+    if (args.dcheck_always_on === false) {
+      args.enable_java_asserts = false
+    }
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_hangout_services_extension
   }
 
   if (this.targetOS === 'ios') {
+    // Configure unit tests to run outside of chromium infra
+    // https://source.chromium.org/chromium/chromium/src/+/main:ios/build/bots/scripts/README.md
+    args.enable_run_ios_unittests_with_xctest = true
+
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
@@ -769,16 +697,10 @@ Config.prototype.buildArgs = function () {
       args.brave_ios_marketing_version_patch =
         this.braveIOSMarketingPatchVersion
     }
-    args.enable_stripping = !this.isComponentBuild()
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
     args.ios_enable_code_signing = false
-    args.fatal_linker_warnings = !this.isComponentBuild()
-    // DCHECK's crash on Static builds without allowing the debugger to continue
-    // Can be removed when approprioate DCHECK's have been fixed:
-    // https://github.com/brave/brave-browser/issues/10334
-    args.dcheck_always_on = this.isComponentBuild()
 
     if (!args.is_official_build) {
       // When building locally iOS needs dSYMs in order for Xcode to map source
@@ -947,18 +869,14 @@ Config.prototype.getProjectRef = function (
   return defaultValue
 }
 
-Config.prototype.update = function (options) {
-  if (options.sardine_client_secret) {
-    this.sardineClientSecret = options.sardine_client_secret
-  }
-
-  if (options.sardine_client_id) {
-    this.sardineClientId = options.sardine_client_id
-  }
-
+Config.prototype.updateInternal = function (options) {
   if (options.universal) {
     this.targetArch = 'arm64'
     this.isUniversalBinary = true
+  }
+
+  if (options.target_cpu) {
+    options.target_arch = options.target_cpu
   }
 
   if (options.target_arch === 'x86') {
@@ -1012,7 +930,9 @@ Config.prototype.update = function (options) {
     this.is_asan = false
   }
 
-  this.is_ubsan = options.is_ubsan || false
+  if (options.is_ubsan) {
+    this.is_ubsan = true
+  }
 
   if (options.use_remoteexec !== undefined) {
     this.useRemoteExec = options.use_remoteexec
@@ -1147,6 +1067,28 @@ Config.prototype.update = function (options) {
   }
 }
 
+Config.prototype.fromGnArgs = function (options) {
+  if (options.C === undefined) {
+    Log.error(`You must specify output directory with -C to use --no_gn_gen`)
+    process.exit(1)
+  }
+  const gnArgs = readArgsGn(this.srcDir, options.C)
+  Log.warn(
+    '--no-gn-gen is experimental and only gn args that match command '
+      + 'line options will be processed',
+  )
+  this.updateInternal(Object.assign({}, gnArgs, { 'C': options.C }))
+  assert(!this.isCI)
+}
+
+Config.prototype.update = function (options) {
+  if (options.no_gn_gen == null) {
+    this.updateInternal(options)
+  } else {
+    this.fromGnArgs(options)
+  }
+}
+
 Object.defineProperty(Config.prototype, 'targetOS', {
   get: function () {
     if (this._targetOS) {
@@ -1170,6 +1112,18 @@ Object.defineProperty(Config.prototype, 'targetOS', {
 
 Config.prototype.getCachePath = function () {
   return this.git_cache_path || process.env.GIT_CACHE_PATH
+}
+
+Config.prototype.isIOS = function () {
+  return this.targetOS === 'ios'
+}
+
+Config.prototype.isAndroid = function () {
+  return this.targetOS === 'android'
+}
+
+Config.prototype.isMobile = function () {
+  return this.isIOS() || this.isAndroid()
 }
 
 Object.defineProperty(Config.prototype, 'defaultOptions', {
@@ -1279,13 +1233,46 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
     }
 
+    // These env vars are required during `build` stage.
     if (this.useRemoteExec) {
-      // These env vars are required during `build` stage.
+      // Restrict remote execution to 160 parallel jobs.
+      const kRemoteLimit = 160
+
+      // Prevent depot_tools from setting lower timeouts.
+      const kRbeTimeout = '10m'
+      env.RBE_exec_timeout = env.RBE_exec_timeout || kRbeTimeout
+      env.RBE_reclient_timeout = env.RBE_reclient_timeout || kRbeTimeout
 
       // Autoninja generates -j value when RBE is enabled, adjust limits for
       // Brave-specific setup.
       env.NINJA_CORE_MULTIPLIER = Math.min(20, env.NINJA_CORE_MULTIPLIER || 20)
-      env.NINJA_CORE_LIMIT = Math.min(160, env.NINJA_CORE_LIMIT || 160)
+      env.NINJA_CORE_LIMIT = Math.min(
+        kRemoteLimit,
+        env.NINJA_CORE_LIMIT || kRemoteLimit,
+      )
+
+      // Siso has its own limits for remote execution that do not depend on
+      // NINJA_CORE_* values. Set those limits separately. See docs for more
+      // details:
+      // https://chromium.googlesource.com/infra/infra/+/main/go/src/infra/build/siso/docs/environment_variables.md#siso_limits
+      const defaultSisoLimits = {
+        remote: kRemoteLimit,
+        rewrap: kRemoteLimit,
+      }
+      // Parse SISO_LIMITS from env if set.
+      const envSisoLimits = new Map(
+        env.SISO_LIMITS?.split(',').map((item) => item.split('=')) || [],
+      )
+      // Merge defaultSisoLimits with envSisoLimits ensuring that the values are
+      // not greater than the default values.
+      Object.entries(defaultSisoLimits).forEach(([key, defaultValue]) => {
+        const valueFromEnv = parseInt(envSisoLimits.get(key)) || defaultValue
+        envSisoLimits.set(key, Math.min(defaultValue, valueFromEnv))
+      })
+      // Set SISO_LIMITS env var.
+      env.SISO_LIMITS = Array.from(envSisoLimits.entries())
+        .map(([key, value]) => `${key}=${value}`)
+        .join(',')
 
       if (this.offline) {
         // Use all local resources in offline mode. RBE_local_resource_fraction
@@ -1348,7 +1335,11 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     if (this.targetOS && this.targetOS !== this.hostOS) {
       buildConfigDir = this.targetOS + '_' + buildConfigDir
     }
-    if (this.targetEnvironment && this.targetEnvironment !== 'device') {
+    if (
+      this.targetOS === 'ios'
+      && this.targetEnvironment
+      && this.targetEnvironment !== 'device'
+    ) {
       buildConfigDir = buildConfigDir + '_' + this.targetEnvironment
     }
     if (this.isChromium) {
@@ -1359,6 +1350,16 @@ Object.defineProperty(Config.prototype, 'outputDir', {
   },
   set: function (outputDir) {
     return (this.__outputDir = outputDir)
+  },
+})
+
+Object.defineProperty(Config.prototype, 'useSiso', {
+  get: function () {
+    return getEnvConfig(
+      ['use_siso'],
+      // Android fails with multiple reasons currently. Disable it for now.
+      this.hostOS === 'linux' && !this.isAndroid(),
+    )
   },
 })
 

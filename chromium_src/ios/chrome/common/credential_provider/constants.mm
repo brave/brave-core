@@ -5,6 +5,6 @@
 
 #define FrameworkBundle MainBundle
 
-#include "src/ios/chrome/common/credential_provider/constants.mm"
+#include <ios/chrome/common/credential_provider/constants.mm>
 
 #undef FrameworkBundle

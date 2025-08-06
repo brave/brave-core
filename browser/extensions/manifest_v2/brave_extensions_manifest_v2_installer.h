@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/containers/fixed_flat_set.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
@@ -28,22 +27,6 @@ class SimpleURLLoader;
 }  // namespace network
 
 namespace extensions_mv2 {
-
-inline constexpr char kNoScriptId[] = "bgkmgpgeempochogfoddiobpbhdfgkdi";
-inline constexpr char kUBlockId[] = "jcokkipkhhgiakinbnnplhkdbjbgcgpe";
-inline constexpr char kUMatrixId[] = "fplfeajmkijmaeldaknocljmmoebdgmk";
-inline constexpr char kAdGuardId[] = "ejoelgckfgogkoppbgkklbbjdkjdbmen";
-
-inline constexpr auto kPreconfiguredManifestV2Extensions =
-    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
-                                             {
-                                                 kNoScriptId,
-                                                 kAdGuardId,
-                                                 kUMatrixId,
-                                                 kUBlockId,
-                                             });
-
-bool IsKnownMV2Extension(const extensions::ExtensionId& id);
 
 class ExtensionManifestV2Installer {
  public:

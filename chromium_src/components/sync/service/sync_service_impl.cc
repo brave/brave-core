@@ -47,7 +47,7 @@ GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
 #define GetSyncServiceURL(...) \
   BraveGetSyncServiceURL(__VA_ARGS__, sync_client_->GetPrefService())
 
-#include "src/components/sync/service/sync_service_impl.cc"
+#include <components/sync/service/sync_service_impl.cc>
 
 #undef SyncAuthManager
 #undef SyncStoppedReporter

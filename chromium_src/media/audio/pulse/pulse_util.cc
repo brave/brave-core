@@ -5,5 +5,5 @@
 
 constexpr char kBrowserDisplayName[] = "brave-browser";
 #define PRODUCT_STRING "Brave"
-#include "src/media/audio/pulse/pulse_util.cc"
+#include <media/audio/pulse/pulse_util.cc>
 #undef PRODUCT_STRING

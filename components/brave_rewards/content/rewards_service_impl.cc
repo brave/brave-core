@@ -53,9 +53,9 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
@@ -910,13 +910,7 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
 
   if (base::FeatureList::IsEnabled(
           features::kAllowSelfCustodyProvidersFeature)) {
-    auto& self_custody_dict = prefs_->GetDict(prefs::kSelfCustodyAvailable);
-
-    if (auto solana_entry =
-            self_custody_dict.FindBool(internal::constant::kWalletSolana);
-        solana_entry && *solana_entry) {
-      providers.push_back(internal::constant::kWalletSolana);
-    }
+    providers.push_back(internal::constant::kWalletSolana);
   }
 
   return providers;

@@ -21,7 +21,6 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
@@ -34,6 +33,7 @@
 #include "sql/meta_table.h"
 #include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
 class AIChatDatabaseTest : public testing::Test,
@@ -551,16 +551,7 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
   "param2": 42,
   "param3": true
 })",
-                               std::vector<mojom::ContentBlockPtr>());
-  tool_event_first->output->emplace_back(
-      mojom::ContentBlock::NewTextContentBlock(
-          mojom::TextContentBlock::New("This is a text response")));
-  tool_event_first->output->emplace_back(
-      mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
-          GURL("data:image/"
-               "png;base64,"
-               "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+"
-               "A8AAQUBAScY42YAAAAASUVORK5CYII="))));
+                               std::nullopt);
 
   auto tool_event_second =
       mojom::ToolUseEvent::New("test_tool_2", "tool_id_456",
@@ -585,7 +576,7 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
   history[1]->events->emplace_back(
       mojom::ConversationEntryEvent::NewCompletionEvent(
           mojom::CompletionEvent::New("This is a completion event")));
-  history[1]->events->emplace_back(
+  auto& tool_event_first_event = history[1]->events->emplace_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(
           std::move(tool_event_first)));
   history[1]->events->emplace_back(
@@ -609,6 +600,27 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
   mojom::ConversationArchivePtr conversation_data =
       db_->GetConversationData(uuid);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+
+  // Add ouptut for the first tool use event and verify it is persisted
+  // on the correct event.
+  auto& tool_event_first_output =
+      tool_event_first_event->get_tool_use_event()->output;
+  tool_event_first_output = std::vector<mojom::ContentBlockPtr>();
+  tool_event_first_output->emplace_back(
+      mojom::ContentBlock::NewTextContentBlock(
+          mojom::TextContentBlock::New("This is a text response")));
+  tool_event_first_output->emplace_back(
+      mojom::ContentBlock::NewImageContentBlock(mojom::ImageContentBlock::New(
+          GURL("data:image/"
+               "png;base64,"
+               "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+"
+               "A8AAQUBAScY42YAAAAASUVORK5CYII="))));
+  EXPECT_TRUE(db_->UpdateToolUseEvent(
+      history[1]->uuid.value(), 2,
+      tool_event_first_event->get_tool_use_event()->Clone()));
+  conversation_data = db_->GetConversationData(uuid);
   ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
                                   history);
 }

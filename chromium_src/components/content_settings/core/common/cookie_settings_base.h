@@ -33,7 +33,7 @@
  public:                                                                      \
   bool IsCookieSessionOnly
 
-#include "src/components/content_settings/core/common/cookie_settings_base.h"  // IWYU pragma: export
+#include <components/content_settings/core/common/cookie_settings_base.h>  // IWYU pragma: export
 
 #undef IsCookieSessionOnly
 

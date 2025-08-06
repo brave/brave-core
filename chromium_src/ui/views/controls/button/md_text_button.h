@@ -21,34 +21,16 @@
  protected:                 \
   virtual void UpdateTextColor
 
-#include "src/ui/views/controls/button/md_text_button.h"  // IWYU pragma: export
+#include <ui/views/controls/button/md_text_button.h>  // IWYU pragma: export
 
 #undef UpdateTextColor
 #undef MdTextButton
 
 namespace views {
 
-namespace internal {
-
-// These colours are snapshots of specific alpha blends, to be able to use them
-// in a constexpr context. Check
-// chromium_src/ui/views/controls/button/md_text_button_constants_unittest.cc
-// for the recipes.
-inline constexpr SkColor kColorButtonBackgroundBlack = 4281478842u;
-inline constexpr SkColor kColorButtonBackgroundWhite = 4284834285u;
-inline constexpr SkColor kColorDividerInteractiveBlack = 2234792601u;
-inline constexpr SkColor kColorTextInteractiveBlack = 4281478842u;
-inline constexpr SkColor kColorDividerInteractiveWhite = 2241240571u;
-inline constexpr SkColor kColorTextInteractiveDarkWhite = 4288063487u;
-inline constexpr SkColor kColorTextSecondaryBlack = 4281482820u;
-inline constexpr SkColor kColorTextSecondaryDarkWhite = 4292994535u;
-
-}  // namespace internal
-
 // Make visual changes to MdTextButton in line with Brave visual style:
-//  - More rounded rectangle (for regular border, focus ring and ink drop)
 //  - Different hover text and boder color for non-prominent button
-//  - Differenet hover bg color for prominent background
+//  - Different hover bg color for prominent background
 //  - No shadow for prominent background
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   METADATA_HEADER(MdTextButton, views::MdTextButtonBase)
@@ -70,8 +52,6 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   MdTextButton(const MdTextButton&) = delete;
   MdTextButton& operator=(const MdTextButton&) = delete;
   ~MdTextButton() override;
-
-  SkPath GetHighlightPath() const;
 
   void SetIcon(const gfx::VectorIcon* icon, int icon_size = 0);
 

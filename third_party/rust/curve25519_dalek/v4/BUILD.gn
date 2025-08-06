@@ -96,6 +96,7 @@ cargo_crate("lib") {
     "alloc",
     "default",
     "digest",
+    "legacy_compatibility",
     "precomputed-tables",
     "rand_core",
     "serde",

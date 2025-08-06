@@ -19,11 +19,11 @@
 #include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/types/expected.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -362,8 +362,7 @@ bool DebounceRule::Apply(const GURL& original_url,
     std::string scheme = (prepend_scheme_ == kDebounceSchemePrependHttp)
                              ? url::kHttpScheme
                              : url::kHttpsScheme;
-    new_url_spec =
-        base::StringPrintf("%s://%s", scheme.c_str(), unescaped_value.c_str());
+    new_url_spec = absl::StrFormat("%s://%s", scheme, unescaped_value);
     new_url = GURL(new_url_spec);
     if (new_url.is_valid()) {
       DCHECK(new_url.scheme() == scheme);

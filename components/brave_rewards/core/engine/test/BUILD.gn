@@ -82,9 +82,9 @@ source_set("test") {
     "//brave/components/brave_rewards/core/mojom:engine",
     "//brave/components/challenge_bypass_ristretto",
     "//components/sync_preferences:test_support",
-    "//net:net",
-    "//sql:sql",
-    "//url:url",
+    "//net",
+    "//sql",
+    "//url",
   ]
 
   data = [ "data/" ]

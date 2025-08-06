@@ -34,6 +34,10 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterBooleanPref(kBraveAIChatToolbarButtonOpensFullPage,
                                   false);
     registry->RegisterBooleanPref(kBraveAIChatTabOrganizationEnabled, true);
+    registry->RegisterBooleanPref(kBraveAIChatUserCustomizationEnabled, true);
+    registry->RegisterBooleanPref(kBraveAIChatUserMemoryEnabled, true);
+    registry->RegisterDictionaryPref(kBraveAIChatUserCustomizations);
+    registry->RegisterListPref(kBraveAIChatUserMemories);
   }
   registry->RegisterBooleanPref(kEnabledByPolicy, true);
 }

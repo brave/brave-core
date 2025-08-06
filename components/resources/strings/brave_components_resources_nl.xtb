@@ -874,7 +874,7 @@
 <translation id="1939235910515558387">Ga in een handomdraai aan de slag met Brave Wallet.</translation>
 <translation id="5844138175312846408">Hebt u al een wallet?</translation>
 <translation id="772643556080081594">Ik heb een watch-only wallet nodig</translation>
-<translation id="4878034296528175352">©2024 Brave Software Inc. Brave en het Brave-logo zijn gedeponeerde handelsmerken van Brave. Andere productnamen en logo's zijn mogelijk handelsmerken van hun respectieve bedrijven. Alle rechten voorbehouden.</translation>
+<translation id="5324869722853875525">©2025 Brave Software Inc. Brave en het Brave-logo zijn gedeponeerde handelsmerken van Brave. Andere productnamen en logo's zijn mogelijk handelsmerken van hun respectieve bedrijven. Alle rechten voorbehouden.</translation>
 <translation id="7501957181231305652">of</translation>
 <translation id="375882617301124395">Back-up maken van je cryptowallet</translation>
 <translation id="5024543173656851695">Ik begrijp dat indien ik mijn herstelwoorden kwijtraak, ik geen toegang meer heb tot mijn cryptowallet.</translation>
@@ -1118,10 +1118,6 @@
 <translation id="4324239559624557455">24 uur</translation>
 <translation id="9139452553033760558">1 week</translation>
 <translation id="1658834457013045127">Altijd</translation>
-<translation id="2770851145415891830">Bestaande cryptowallets gedetecteerd</translation>
-<translation id="2237759620789871865">Als je het importeren liever wilt overslaan en de oude cryptowalletervaring wilt houden, navigeer je naar de <ph name="LINK_BEFORE"/>instellingen<ph name="LINK_AFTER"/> van de Brave-browser en stel je cryptowallets weer als standaard in. Je kunt ook importeren, de nieuwe Brave-wallet uitproberen en teruggaan wanneer je wilt.</translation>
-<translation id="5590175005414413980">Voer je bestaande cryptowallet-wachtwoord in om naar Brave Wallet te importeren. Profiteer van een snellere en veiligere manier om crypto-assets te beheren en om met Web3 DApps te communiceren.</translation>
-<translation id="880619123281809987">Wachtwoord van cryptowallet typen</translation>
 <translation id="6344138931392227467"><ph name="DEVICE_NAME"/> verbonden</translation>
 <translation id="7051244143160304048"><ph name="DEVICE_NAME"/> losgekoppeld</translation>
 <translation id="5317781812114905957">Instructies</translation>
@@ -1378,6 +1374,9 @@
 <translation id="5601436886921227795">Dapp-interactie</translation>
 <translation id="9104177294757104789"><ph name="VALUE"/> verzenden</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/> verruilen voor <ph name="TAKER"/></translation>
+<translation id="1748114617341025015">Gekoppeld tokenaccount maken</translation>
+<translation id="4418115887224983240">Er kon geen gekoppeld tokenaccount worden gemaakt</translation>
+<translation id="7165697599360786670">Gekoppeld tokenaccount gemaakt</translation>
 <translation id="8613144770663526433">Inloggen bij Brave Wallet</translation>
 <translation id="8813165409788097898">U meldt zich aan bij <ph name="ORIGIN"/>. Brave Wallet deelt uw wallet-adres met <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Gegevens bekijken</translation>
@@ -1511,7 +1510,6 @@
 <translation id="396152018598329740">Hoe gebruikt u een crypto-wallet?</translation>
 <translation id="7512061585041489067">Wat is de beste crypto-wallet?</translation>
 <translation id="1342755158522323177">Wat is een crypto-browser?</translation>
-<translation id="4702762916247565868">Alles over crypto-wallets</translation>
 <translation id="4674552515763857735">Wat is een herstelzin?</translation>
 <translation id="7328255859839881981">Wat zijn DApps?</translation>
 <translation id="3852489285890032403">Wat is web 3?</translation>
@@ -1529,7 +1527,6 @@
 <translation id="7877416315564177070">Controleer uw herstelzin en probeer het opnieuw.</translation>
 <translation id="6503538941917874992">Importeer met uw herstelzin</translation>
 <translation id="782167880151571109">MetaMask-wallet gedetecteerd!</translation>
-<translation id="3619071361843652814">Legacy-wallet gedetecteerd!</translation>
 <translation id="4634124774493850572">Wachtwoord gebruiken</translation>
 <translation id="7697478310235189459">Woord <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Voer uw herstelzin van 12-24 woorden van MetaMask in.</translation>
@@ -1542,7 +1539,6 @@
 <translation id="3604445540387095708">Ik heb de <ph name="LINK_BEFORE"/>gebruiksvoorwaarden<ph name="LINK_AFTER"/> gelezen en ga hiermee akkoord</translation>
 <translation id="1422451606553326863">Koop crypto</translation>
 <translation id="3887541341068007345">Controleren op wallet-extensies...</translation>
-<translation id="3567994771568272606">Importeren van oude Brave-crypto wallets</translation>
 <translation id="8407091560429310499">Selecteer een activum</translation>
 <translation id="756590380936155533">Selecteer een van onze partners om uw <ph name="ASSET_TICKER"/> aankoop te voltooien</translation>
 <translation id="7880860489474966219">Na voltooiing zal uw geld worden overgemaakt naar uw Brave-wallet</translation>
@@ -1745,6 +1741,7 @@
 <translation id="4583937519241190398">Geverifieerd door DappRadar</translation>
 <translation id="8713438253026855351">Overschakelen naar afgeschermd account</translation>
 <translation id="3526789880090101085">Account afschermen</translation>
+<translation id="3155166394760577549">Schakel afscherming in voor meer privacy bij transacties.</translation>
 <translation id="2298396008562701154">Momenteel ondersteunt dit account transparante transacties, waardoor ze voor iedereen zichtbaar zijn in de blockchain.</translation>
 <translation id="3987095760757102811">Als je upgradet naar een afgeschermd account, is de informatie over de afzender, de ontvanger en het bedrag verborgen in transacties.</translation>
 <translation id="3819528427777765709">Afgeschermd</translation>
@@ -1775,6 +1772,8 @@
 <translation id="99991973626409495">Bescherming controleren</translation>
 <translation id="3114681061018999547">Beschermen</translation>
 <translation id="8897189056319316783">ZEC beschermen</translation>
+<translation id="3382275793825152362">Saldo afschermen</translation>
+<translation id="8631765320256788981">Je stuurt een bedrag van je transparante account naar je afgeschermde account.</translation>
 <translation id="7144878232160441200">Opnieuw proberen</translation>
 <translation id="9094621390791852268">Geen transactievoorbeeld mogelijk.</translation>
 <translation id="4982713341035600933">Geschatte saldowijziging</translation>
@@ -1836,7 +1835,7 @@
 <translation id="7758665172236842395">Volg uw favoriete bronnen in één feed. Open een tabblad in Brave, scrol omlaag en... voilà!</translation>
 <translation id="2376542729617592331">Brave News maakt gebruik van privé- en geanonimiseerde advertenties. <ph name="LINK_START"/>Meer informatie.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Brave-nieuws inschakelen</translation>
-<translation id="5149018766422637336">Nieuws en RSS</translation>
+<translation id="1772301834467143364">Brave-nieuws</translation>
 <translation id="6265592479622441247">Terug naar <ph name="BEGIN_BOLD"/>Dashboard<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Ontdek</translation>
 <translation id="8981973962043893066">Zoek naar sites, onderwerpen of RSS-feeds</translation>
@@ -2107,10 +2106,18 @@
 <translation id="4885527781814382758">Brave Leo is je persoonlijke slimme AI-assistent waarmee je het web beter gebruikt. Leo kun je gratis gebruiken met beperkte toegang. Brave Leo Premium biedt meer modellen, hogere limieten en geeft abonnees vroegtijdige toegang tot nieuwe functies. Het standaardmodel zal van tijd tot tijd veranderen. Ga naar het <ph name="LINK_BEFORE"/>Brave Helpcentrum<ph name="LINK_AFTER"/> voor meer informatie.</translation>
 <translation id="7189603330209995455">Als u Leo een vraag stelt, wordt normaal gesproken de inhoud van de webpagina die u bekijkt of tekst die u hebt gemarkeerd op een pagina naar Brave Leo gestuurd om een antwoord te geven. De nauwkeurigheid van de antwoorden is niet gegarandeerd en kan misleidende, onjuiste of valse informatie bevatten. Leo gebruikt gegevens van Brave Zoeken om de kwaliteit van de antwoorden te verbeteren. Geef geen gevoelige of privé-informatie en wees voorzichtig met antwoorden die gaan over gezondheid, financiën, persoonlijke veiligheid en dergelijke. U kunt de instellingen van Leo op elk gewenst moment aanpassen. Ga hiervoor naar Instellingen &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo verzamelt geen identifiers die aan u kunnen worden gekoppeld, zoals uw IP-adres. Er worden geen gegevens gebruikt om de AI-modellen te trainen en de AI-model en modellen van derden bewaren geen persoonsgegevens (met uitzondering van Anthropic, dat gegevens 30 dagen bewaart alvorens deze te verwijderen). Ga naar het <ph name="LINK_BEFORE"/>privacybeleid<ph name="LINK_AFTER"/> voor meer informatie.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      one {}=1 {Stel een vraag over de inhoud van deze pagina}
+      other {Stel een vraag over de inhoud van deze pagina's}
+    }</translation>
 <translation id="6961721183181597848">Hoe kan ik je vandaag helpen?</translation>
 <translation id="2966135729673253768">Vervolgvragen stellen</translation>
 <translation id="4524675003624341892">Stel vragen voor...</translation>
 <translation id="4567071417854988869">Deze video samenvatten</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      one {}=1 {Deze pagina samenvatten}
+      other {Deze pagina's samenvatten}
+    }</translation>
 <translation id="7921782882718083488">Deze pagina samenvatten</translation>
 <translation id="7932221068776853847">Verbreek de verbinding om ervoor te zorgen dat deze pagina geen content meer naar Leo stuurt en start een nieuw gesprek</translation>
 <translation id="8743383817154663379">Er is iets misgegaan tijdens de verwerking van je verzoek. Probeer het later nog eens.</translation>
@@ -2125,15 +2132,15 @@
 <translation id="3282183392203936979">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Llama 3.1 8B, een efficiënt en breed inzetbaar model ontwikkeld door Meta. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Qwen 14B, een efficiënt en breed inzetbaar model ontwikkeld door Alibaba Cloud. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="8706248250250832190">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik word aangestuurd door DeepSeek R1, een model ontwikkeld door DeepSeek voor complexe redeneertaken. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="2575216739207798060">Hallo, ik ben Leo. Ik word geproxied door Brave en ben gebaseerd op Claude Instant, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="512933369128404654">Hallo, ik ben Leo. Ik word geproxied door Brave en ben gebaseerd op Claude Haiku, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="406499980300734922">Hallo, ik ben Leo. Ik word geproxied door Brave en ben gebaseerd op Claude Sonnet, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">Hallo, ik ben Leo. Ik werk via een proxy van Brave en ben gebaseerd op Claude Instant, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Dit model wordt gehost via de beveiligde infrastructuur van Brave.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Hallo, ik ben Leo. Ik werk via een proxy van Brave en ben gebaseerd op Claude Haiku, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Dit model wordt gehost via de beveiligde infrastructuur van Brave.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Hallo, ik ben Leo. Ik werk via een proxy van Brave en ben gebaseerd op Claude Sonnet, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Dit model wordt gehost via de beveiligde infrastructuur van Brave.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="1774712391633741125">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Llama Vision, een efficiënt en breed inzetbaar model ontwikkeld door Meta. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Volledige pagina openen</translation>
 <translation id="2961040541145689181">Nieuwe chat</translation>
-<translation id="7557539689487606886">Neem Premium</translation>
+<translation id="7557539689487606886">Koop Premium</translation>
 <translation id="1691256669639196606">Abonnement beheren</translation>
 <translation id="3840096463915153852">Gespreksgeschiedenis</translation>
 <translation id="2304783958703511257">Geavanceerde instellingen</translation>
@@ -2201,16 +2208,14 @@
 <translation id="8712637175834984815">Begrepen</translation>
 <translation id="1093419424466417703">Deze pagina is te lang voor Leo. Sommige context van het gesprek kan ontbreken. Leo heeft <ph name="PERCENTAGE"/> van de content op de pagina kunnen lezen.</translation>
 <translation id="4592293425457329338">Er kan wat context ontbreken in het gesprek. Leo kon <ph name="PERCENTAGE"/> van de relevante inhoud van het gesprek behouden.</translation>
-<translation id="2186990448773134544">De inhoud van de pagina is verfijnd door de meest relevante informatie uit de pagina te halen omdat deze te lang was voor Leo.</translation>
-<translation id="5140068729857132378">Relevante delen van de webpagina vinden...</translation>
 <translation id="4370698775470316661">Dit gesprek is te lang en kan niet verdergaan. Mogelijk kan Leo met andere, beschikbare modellen langere gesprekken correct uitvoeren.</translation>
 <translation id="5719170755629028558">Uw antwoord verbeteren met Brave Zoeken...</translation>
 <translation id="5794962229997281366">Verbeterde antwoorden zoeken voor <ph name="SEARCH_TERMS"/></translation>
 <translation id="7307396647043599949">Nog <ph name="COUNT"/>…</translation>
 <translation id="8103700533980268469">Bericht sluiten</translation>
 <translation id="3417835166382867856">Tabbladen doorzoeken</translation>
-<translation id="9090243919347147717">Bijlagen</translation>
-<translation id="4444978378117903684">Voeg je browsertabbladen toe om Leo meer context voor het gesprek te geven</translation>
+<translation id="1352836459737874921">Inhoud van andere tabbladen toevoegen</translation>
+<translation id="3028258613451571431">Stuur inhoud van je browsertabbladen om Leo meer context voor het gesprek te geven</translation>
 <translation id="4300920590112551536">Browsertabbladen</translation>
 <translation id="2315654674554095762">Leo onthoudt nu je gesprekken, zodat je ze later kunt bekijken. Ze worden versleuteld opgeslagen op je apparaat en je kunt ze altijd verwijderen.</translation>
 <translation id="7821251979960635244">Je gespreksgeschiedenis verschijnt hier zodra je een gesprek begint.</translation>
@@ -2233,8 +2238,8 @@
 <translation id="5642775487085641191">Wilt u chatten?</translation>
 <translation id="8857222718794549840">U kunt me alles vragen. We kunnen het over elk onderwerp hebben. Ik leer voortdurend zodat ik betere antwoorden kan geven.</translation>
 <translation id="9051226419897869406">Chat privé met Brave Leo</translation>
-<translation id="637548538907281147">Baseer antwoorden op de content van de pagina</translation>
-<translation id="8599503173207256429">Schakel dit in om vragen te stellen over deze pagina. De inhoud van de site en uw berichten worden naar Brave Leo gestuurd.</translation>
+<translation id="2414904697165579184">Antwoorden vormen op basis van de inhoud van tabbladen</translation>
+<translation id="8258324391302611485">De inhoud van deze pagina wordt samen met je berichten naar Leo verstuurd.</translation>
 <translation id="318819763888864209">Alle abonnementen worden automatisch verlengd, maar kunnen voor de verlengdatum op elk gewenst moment worden opgezegd.</translation>
 <translation id="5091223967610958">Deel de hostnaam van van de pagina waarop u zich bevindt (<ph name="HOST_NAME"/>) om ons te helpen Leo nog beter te maken.</translation>
 <translation id="8732450785281947197">AI-tools van Leo</translation>
@@ -2265,11 +2270,14 @@
 <translation id="9088751620363630236">Foto nemen...</translation>
 <translation id="4250229828105606438">Screenshot</translation>
 <translation id="6332876390231524389">Huidige tabbladinhoud</translation>
+<translation id="7742969455167760092">Tabbladen openen...</translation>
 <translation id="49269513399674318">Microfoon gebruiken</translation>
 <translation id="3895031624234442305">Aangepaste modellen</translation>
 <translation id="4572010449071015143">Nieuw gesprek beginnen</translation>
 <translation id="345901077335355561">Terug naar het actieve gesprek</translation>
 <translation id="6287023598025162715">Nieuw gesprek</translation>
+<translation id="7097822247923237815">Tijdelijke chat</translation>
+<translation id="7481750859362986254">Deze chat wordt niet opgeslagen in je geschiedenis en maakt geen gebruik van Leo's aanpassingen of herinneringen.</translation>
 <translation id="8370801182970639038">Automatisch (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Ingeschakelde zoekmachines</translation>
 <translation id="5355776323718420036">Topsites verbergen</translation>
@@ -2386,6 +2394,7 @@
 <translation id="6821108091726602352">Help ons het web beter te maken door deel te nemen aan het Web Discovery Project van Brave. Door volledig anoniem zoeksignalen te delen, kunt u Brave helpen de zoekindex uit te breiden.</translation>
 <translation id="6764845498618413165">Meer informatie.</translation>
 <translation id="7818938154803162778">Natuurlijk, ik wil helpen</translation>
+<translation id="7207456302801184289">Welkom bij Brave</translation>
 <translation id="3486480638399578250">Houd je persoonlijke e-mailadres privé</translation>
 <translation id="7765422154906712751">Maak unieke, willekeurige adressen die je altijd kunt verwijderen en laat je e-mailberichten doorsturen naar je Brave-account. Voorkom dat je je echte e-mailadres moet delen met adverteerders.</translation>
 <translation id="5222676887888702881">Uitloggen</translation>
@@ -2402,6 +2411,7 @@
 <translation id="1104500750724567895">Nieuwe alias</translation>
 <translation id="8072910658503112482">Andere e-mailalias voorstellen</translation>
 <translation id="7710361355427562228">Nieuwe alias genereren...</translation>
+<translation id="8013913032858654337">Fout bij het genereren van de alias. Controleer de internetverbinding en probeer het opnieuw.</translation>
 <translation id="4253168017788158739">Opmerking</translation>
 <translation id="7596996548739923550">Voer een opmerking voor je adres in (optioneel)</translation>
 <translation id="3810973564298564668">Beheren</translation>
@@ -2409,13 +2419,21 @@
 <translation id="3919357515365744684">E-mails worden doorgestuurd naar <ph name="MAIN_EMAIL"/></translation>
 <translation id="6063403442924238501">E-mailalias bewerken</translation>
 <translation id="8729265501883390499">Alias maken</translation>
+<translation id="7137645995703540578">Fout bij het opslaan van de alias. Controleer de internetverbinding en probeer het opnieuw.</translation>
+<translation id="1765544689721905747">E-mailalias verwijderen</translation>
+<translation id="646524615209870492">Als je de alias <ph name="ALIAS"/> verwijdert, kun je geen e-mails meer ontvangen.</translation>
+<translation id="8133100642915054515">Fout bij het verwijderen van de alias. Controleer de internetverbinding en probeer het opnieuw.</translation>
+<translation id="8465742443901727718">Deze actie kan niet ongedaan worden gemaakt. Weet je zeker dat je wilt doorgaan?</translation>
 <translation id="8662104432574824754">Ga aan de slag door in te loggen of een Brave-account te maken</translation>
 <translation id="8069030342700068465">Voer je e-mailadres in om een beveiligde inloglink te ontvangen. Als je op deze link klikt, maak je een Brave-account of krijg je toegang tot je account. Daarna kun je de gratis e-mailaliassen gebruiken.</translation>
 <translation id="2133391407495495735">Inloglink vragen</translation>
+<translation id="2650906829817220223">Fout bij aanvraag van authenticatie. Controleer de internetverbinding en probeer het opnieuw.</translation>
 <translation id="3699624789011381381">E-mailadres</translation>
 <translation id="8124939971041602970">We hebben een e-mail met een inloglink gestuurd naar <ph name="MAIN_EMAIL"/></translation>
 <translation id="8140361186431963982">Klik op de beveiligde inloglink in de e-mail om toegang te krijgen tot je account.</translation>
-<translation id="6549775668256477823">Zie je de e-mail niet? Controleer dan de spammap of <ph name="BEGIN_LINK"/>probeer het opnieuw<ph name="END_LINK"/>.</translation>
+<translation id="619122420105901711">Zie je de e-mail niet? Controleer dan de spammap of probeer het opnieuw.</translation>
+<translation id="3397336197747843396">Fout bij authenticatie met Brave-account. Probeer het opnieuw.</translation>
+<translation id="1340795582009113055">Opnieuw beginnen</translation>
 <translation id="958268166261124668">Brave VPN: verbonden</translation>
 <translation id="6021669293402055982">Brave VPN: geen verbinding</translation>
 <translation id="3541307549916475335">Gebruikersinterface Brave VPN-venster</translation>

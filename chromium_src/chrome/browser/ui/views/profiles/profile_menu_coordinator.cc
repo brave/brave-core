@@ -11,6 +11,6 @@
 
 #define IncognitoMenuView BraveIncognitoMenuView
 #define ProfileMenuView BraveProfileMenuView
-#include "src/chrome/browser/ui/views/profiles/profile_menu_coordinator.cc"
+#include <chrome/browser/ui/views/profiles/profile_menu_coordinator.cc>
 #undef IncognitoMenuView
 #undef ProfileMenuView

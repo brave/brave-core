@@ -45,7 +45,7 @@ static_library("misc_metrics_impl") {
     "//brave/components/time_period_storage",
     "//chrome/browser:browser_process",
     "//chrome/browser/autofill",
-    "//chrome/browser/profiles:profiles",
+    "//chrome/browser/profiles",
     "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/common:constants",
@@ -67,6 +67,7 @@ static_library("misc_metrics_impl") {
 
   if (!is_android) {
     sources += [
+      "//brave/browser/misc_metrics/default_browser_monitor.h",
       "//brave/browser/misc_metrics/theme_metrics.cc",
       "//brave/browser/misc_metrics/theme_metrics.h",
       "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
@@ -93,7 +94,7 @@ if (!is_android) {
 
     deps = [
       "//base",
-      "//chrome/browser/metrics/desktop_session_duration:desktop_session_duration",
+      "//chrome/browser/metrics/desktop_session_duration",
     ]
   }
 }
@@ -127,6 +128,7 @@ source_set("unit_tests") {
 
   if (!is_android) {
     sources += [
+      "default_browser_monitor_unittest.cc",
       "profile_new_tab_metrics_unittest.cc",
       "theme_metrics_unittest.cc",
       "usage_clock_unittest.cc",
@@ -135,7 +137,7 @@ source_set("unit_tests") {
     deps += [
       ":usage_clock",
       "//brave/browser/themes",
-      "//chrome/browser/metrics/desktop_session_duration:desktop_session_duration",
+      "//chrome/browser/metrics/desktop_session_duration",
       "//chrome/browser/themes",
     ]
   }

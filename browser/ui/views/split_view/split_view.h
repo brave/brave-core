@@ -9,7 +9,6 @@
 #include <memory>
 #include <vector>
 
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/types/pass_key.h"
@@ -136,7 +135,7 @@ class SplitView : public views::View,
  private:
   friend class SplitViewBrowserTest;
   friend class SplitViewLocationBarBrowserTest;
-  FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, SplitView);
+  friend class SpeedReaderWithSplitViewBrowserTest;
 
   tabs::TabHandle GetActiveTabHandle() const;
   bool IsActiveWebContentsTiled(const TabTile& tile) const;

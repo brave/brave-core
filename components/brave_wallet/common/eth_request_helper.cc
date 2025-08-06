@@ -19,13 +19,13 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/string_view_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/types/optional_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_requests.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/json_rpc_requests.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 namespace {
@@ -596,8 +596,7 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
   }
   // Only ERC20 is supported currently.
   if (*type != "ERC20") {
-    error_message =
-        base::StringPrintf("Asset of type '%s' not supported", type->c_str());
+    error_message = absl::StrFormat("Asset of type '%s' not supported", *type);
     return nullptr;
   }
 
@@ -615,8 +614,7 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
 
   const auto eth_addr = EthAddress::FromHex(*address);
   if (eth_addr.IsEmpty()) {
-    error_message =
-        base::StringPrintf("Invalid address '%s'", address->c_str());
+    error_message = absl::StrFormat("Invalid address '%s'", *address);
     return nullptr;
   }
 
@@ -629,10 +627,10 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
   // EIP-747 limits the symbol length to 5, but metamask uses 11, so we use
   // the same limit here for compatibility.
   if (symbol->size() == 0 || symbol->size() > 11) {
-    error_message = base::StringPrintf(
+    error_message = absl::StrFormat(
         "Invalid symbol '%s': symbol length should be greater than 0 and less "
         "than 12",
-        symbol->c_str());
+        *symbol);
     return nullptr;
   }
 
@@ -648,15 +646,15 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
   int decimals = decimals_value->is_int() ? decimals_value->GetInt() : 0;
   if (decimals_value->is_string() &&
       !base::StringToInt(decimals_value->GetString(), &decimals)) {
-    error_message = base::StringPrintf(
+    error_message = absl::StrFormat(
         "Invalid decimals '%s': decimals should be a number greater than 0 and "
         "less than 36",
-        decimals_value->GetString().c_str());
+        decimals_value->GetString());
     return nullptr;
   }
 
   if (decimals < 0 || decimals > 36) {
-    error_message = base::StringPrintf(
+    error_message = absl::StrFormat(
         "Invalid decimals '%d': decimals should be greater than 0 and less "
         "than 36",
         decimals);

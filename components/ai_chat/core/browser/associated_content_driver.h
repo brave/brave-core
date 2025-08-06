@@ -22,7 +22,6 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "url/gurl.h"
 
 FORWARD_DECLARE_TEST(AIChatUIBrowserTest, PrintPreviewFallback);
 class AIChatUIBrowserTest;
@@ -48,6 +47,11 @@ namespace ai_chat {
 // extracting the content of a web page.
 class AssociatedContentDriver : public AssociatedContentDelegate {
  public:
+  using FetchPageContentCallback =
+      base::OnceCallback<void(std::string page_content,
+                              bool is_video,
+                              std::string invalidation_token)>;
+
   explicit AssociatedContentDriver(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~AssociatedContentDriver() override;
@@ -56,12 +60,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   AssociatedContentDriver& operator=(const AssociatedContentDriver&) = delete;
 
   // AssociatedContentDelegate
-  int GetContentId() const override;
-  GURL GetURL() const override;
-  std::u16string GetTitle() const override;
   void GetContent(GetPageContentCallback callback) override;
-  std::string_view GetCachedTextContent() const override;
-  bool GetCachedIsVideo() const override;
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback) override;
 
   base::WeakPtr<AssociatedContentDriver> GetWeakPtr() {
@@ -72,8 +71,6 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   using GetSearchSummarizerKeyCallback =
       base::OnceCallback<void(const std::optional<std::string>&)>;
 
-  virtual GURL GetPageURL() const = 0;
-  virtual std::u16string GetPageTitle() const = 0;
   // Get summarizer-key meta tag content from Brave Search SERP if exists.
   virtual void GetSearchSummarizerKey(
       GetSearchSummarizerKeyCallback callback) = 0;
@@ -83,7 +80,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   // |invalidation_token| is an optional parameter received in a prior callback
   // response of this function against the same page. See GetPageContentCallback
   // for explanation.
-  virtual void GetPageContent(GetPageContentCallback callback,
+  virtual void GetPageContent(FetchPageContentCallback callback,
                               std::string_view invalidation_token) = 0;
 
   // Implementer should call this when the content is updated in a way that
@@ -91,9 +88,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   // For example for sites where GetPageContent does not read the live DOM but
   // reads static JS from HTML that doesn't change for same-page navigation and
   // we need to intercept new JS data from subresource loads.
-  void OnPageContentUpdated(std::string content,
-                            bool is_video,
-                            std::string invalidation_token);
+  void OnPageContentUpdated(PageContent content);
 
   // Implementer should call this when a page navigation is detected and a new
   // conversation is expected.
@@ -128,14 +123,7 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;
-  std::string cached_text_content_;
   std::string content_invalidation_token_;
-  bool is_video_ = false;
-
-  // Store the unique ID for each "page" so that
-  // we can ignore API async responses against any navigated-away-from
-  // documents.
-  int64_t current_navigation_id_;
 
   base::WeakPtrFactory<AssociatedContentDriver> weak_ptr_factory_{this};
 };

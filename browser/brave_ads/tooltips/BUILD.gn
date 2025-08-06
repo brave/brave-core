@@ -21,7 +21,7 @@ source_set("tooltips") {
       "//base",
       "//brave/browser/profiles:util",
       "//brave/browser/ui/brave_tooltips",
-      "//brave/components/brave_ads/browser:browser",
+      "//brave/components/brave_ads/browser",
       "//brave/components/resources:strings_grit",
       "//chrome/browser/profiles:profile",
       "//ui/base",

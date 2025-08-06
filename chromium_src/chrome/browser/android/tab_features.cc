@@ -7,6 +7,6 @@
 
 #define TabFeatures TabFeatures_Chromium
 
-#include "src/chrome/browser/android/tab_features.cc"
+#include <chrome/browser/android/tab_features.cc>
 
 #undef TabFeatures

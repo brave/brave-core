@@ -70,6 +70,7 @@ public class Migration {
     Preferences.migrateBookmarksButtonInToolbar()
     Preferences.migrateShortcutsButtonOniPad()
     Preferences.migrateReaderModeStyle()
+    Preferences.migrateYoutubeHighQualityDefault()
 
     if Preferences.General.isFirstLaunch.value {
       if UIDevice.current.userInterfaceIdiom == .phone {
@@ -284,6 +285,11 @@ extension Preferences {
       key: "migration.reader-mode-style",
       default: false
     )
+
+    static let youtubeHighQualityDefault = Option<Bool>(
+      key: "migration.youtube-high-quality-default",
+      default: false
+    )
   }
 
   /// Migrate a given key from `Prefs` into a specific option
@@ -474,6 +480,15 @@ extension Preferences {
     }
 
     Migration.migratedReaderModeStyle.value = true
+  }
+
+  fileprivate class func migrateYoutubeHighQualityDefault() {
+    guard !Migration.youtubeHighQualityDefault.value else {
+      return
+    }
+
+    Preferences.General.youtubeHighQuality.value = YoutubeHighQualityPreference.off.rawValue
+    Migration.youtubeHighQualityDefault.value = true
   }
 }
 

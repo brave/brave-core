@@ -50,6 +50,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   // mojom::AIChatUIHandler
   void OpenAIChatSettings() override;
   void OpenConversationFullPage(const std::string& conversation_uuid) override;
+  void OpenAIChatAgentProfile() override;
   void OpenURL(const GURL& url) override;
   void OpenStorageSupportUrl() override;
   void OpenModelSupportUrl() override;
@@ -98,7 +99,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void HandleWebContentsDestroyed();
 
   // AssociatedContentDelegate::Observer
-  void OnNavigated(AssociatedContentDelegate* delegate) override;
+  void OnRequestArchive(AssociatedContentDelegate* delegate) override;
 
   // UploadFileHelper::Observer
   void OnFilesSelected() override;

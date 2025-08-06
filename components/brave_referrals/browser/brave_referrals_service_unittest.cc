@@ -46,6 +46,8 @@ class BraveReferralsServiceTest : public testing::Test {
     // Set up environment for testing
     RegisterPrefsForBraveReferralsService(pref_service_.registry());
     pref_service_.registry()->RegisterBooleanPref(kStatsReportingEnabled, true);
+    pref_service_.registry()->RegisterBooleanPref(
+        kStatsReportingDisabledByPolicy, false);
 
     // Create a test promo code file
     auto promo_code_file_path = temp_dir_.GetPath().AppendASCII("promoCode");

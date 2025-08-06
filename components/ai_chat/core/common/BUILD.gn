@@ -13,6 +13,8 @@ component("common") {
     "features.h",
     "pref_names.cc",
     "pref_names.h",
+    "prefs.cc",
+    "prefs.h",
     "proto_conversion.cc",
     "proto_conversion.h",
     "utils.cc",
@@ -22,6 +24,7 @@ component("common") {
   deps = [
     "//base",
     "//brave/brave_domains",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/ai_chat/core/proto",
     "//components/prefs",
@@ -63,29 +66,27 @@ source_set("test_support") {
   ]
 }
 
-if (!is_ios) {
-  source_set("unit_tests") {
-    testonly = true
-    sources = [
-      "pref_names_unittest.cc",
-      "proto_conversion_unittest.cc",
-      "utils_unittest.cc",
-      "yt_util_unittest.cc",
-    ]
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "pref_names_unittest.cc",
+    "prefs_unittest.cc",
+    "proto_conversion_unittest.cc",
+    "utils_unittest.cc",
+    "yt_util_unittest.cc",
+  ]
 
-    deps = [
-      ":common_impl",
-      ":test_support",
-      "//base/test:test_support",
-      "//brave/components/ai_chat/core/common",
-      "//brave/components/ai_chat/core/common/mojom",
-      "//brave/components/ai_chat/core/proto",
-      "//components/prefs:test_support",
-      "//content/test:test_support",
-      "//services/data_decoder/public/cpp",
-      "//services/data_decoder/public/cpp:test_support",
-      "//testing/gtest:gtest",
-      "//url",
-    ]
-  }
+  deps = [
+    ":common_impl",
+    ":test_support",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/ai_chat/core/proto",
+    "//components/prefs:test_support",
+    "//services/data_decoder/public/cpp",
+    "//services/data_decoder/public/cpp:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
 }

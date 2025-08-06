@@ -72,7 +72,7 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
 
 #define WrapUnique WrapUnique(new autofill::BraveChromeAutofillClient(web_contents))); \
   if (0) std::unique_ptr<autofill::ChromeAutofillClient> dummy(
-#include "src/chrome/browser/ui/autofill/chrome_autofill_client.cc"
+#include <chrome/browser/ui/autofill/chrome_autofill_client.cc>
 #undef WrapUnique
 
 namespace autofill {

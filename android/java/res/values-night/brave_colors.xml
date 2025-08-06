@@ -18,6 +18,8 @@
     <!-- Theme colors -->
     <color name="brave_link">#A0A5EB</color>
     <color name="brave_button_pressed">#575CA4</color>
+    <color name="menu_icon_color">#F0F2FF</color>
+    <color name="url_text_primary">#e3e3e8</color>
 
     <color name="onboarding_text_color">#F0F2FF</color>
     <color name="onboarding_bg_color">#1E2029</color>

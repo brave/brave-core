@@ -13,5 +13,5 @@
   kGemini || template_url->starter_pack_id() == \
                  template_url_starter_pack_data::kAiMode
 
-#include "src/chrome/browser/ui/search_engines/template_url_table_model.cc"
+#include <chrome/browser/ui/search_engines/template_url_table_model.cc>
 #undef kGemini

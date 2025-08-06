@@ -16,7 +16,6 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/version.h"
 #include "brave/browser/ui/whats_new/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -29,6 +28,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/version_info/version_info.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 using version_info::Channel;
@@ -44,10 +44,9 @@ double g_testing_major_version = 0;
 std::optional<double> GetBraveMajorVersionAsDouble(
     const base::Version& version) {
   double brave_major_version;
-  CHECK(
-      base::StringToDouble(base::StringPrintf("%d.%d", version.components()[1],
-                                              version.components()[2]),
-                           &brave_major_version));
+  CHECK(base::StringToDouble(absl::StrFormat("%d.%d", version.components()[1],
+                                             version.components()[2]),
+                             &brave_major_version));
   return brave_major_version;
 }
 

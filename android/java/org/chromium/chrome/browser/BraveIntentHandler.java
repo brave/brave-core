@@ -24,6 +24,14 @@ import java.util.concurrent.Callable;
 public class BraveIntentHandler {
     private static final String TAG = "BraveIntentHandler";
 
+    /** An extra to indicate that the intent was triggered from an app widget Leo button. */
+    public static final String EXTRA_INVOKED_FROM_APP_WIDGET_LEO =
+            "com.android.brave.invoked_from_app_widget_leo";
+
+    /** An extra to indicate that the Leo voice prompt was executed from the app widget. */
+    public static final String EXTRA_LEO_VOICE_PROMPT_INVOKED =
+            "com.android.brave.leo_voice_prompt_invoked";
+
     public static final String CONNECTION_INFO_HELP_URL =
             "https://support.google.com/chrome?p=android_connection_info";
     public static final String BRAVE_CONNECTION_INFO_HELP_URL =

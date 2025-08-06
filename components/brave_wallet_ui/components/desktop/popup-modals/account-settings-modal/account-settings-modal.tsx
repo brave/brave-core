@@ -427,7 +427,10 @@ export const AccountSettingsModal = () => {
                   === BraveWallet.CoinType.FIL && (
                   <Alert type='warning'>{filPrivateKeyFormatDescription}</Alert>
                 )}
-                <CopyTooltip text={privateKey}>
+                <CopyTooltip
+                  text={privateKey}
+                  isConfidential={true}
+                >
                   <PrivateKeyBubble>{privateKey}</PrivateKeyBubble>
                 </CopyTooltip>
               </>

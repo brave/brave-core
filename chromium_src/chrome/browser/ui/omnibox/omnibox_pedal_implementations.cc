@@ -8,7 +8,7 @@
 #define kShareLinuxChromeRefreshIcon kShareIcon
 #define kShareChromeRefreshIcon kShareIcon
 
-#include "src/chrome/browser/ui/omnibox/omnibox_pedal_implementations.cc"
+#include <chrome/browser/ui/omnibox/omnibox_pedal_implementations.cc>
 
 #undef kShareMacChromeRefreshIcon
 #undef kShareWinChromeRefreshIcon

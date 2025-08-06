@@ -19,7 +19,7 @@ interface ContextMenuHumanProps {
   onClick: () => void
   onClose: () => void
   onEditQuestionClicked: () => void
-  onCopyQuestionClicked: () => void
+  onCopyQuestionClicked?: () => void
 }
 
 export default function ContextMenuHuman(props: ContextMenuHumanProps) {
@@ -46,7 +46,7 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
         >
           <Icon name='more-vertical' />
         </Button>
-        {conversationContext.canSubmitUserEntries && (
+        {conversationContext.canSubmitUserEntries && props.onEditQuestionClicked && (
           <leo-menu-item
             onClick={props.onEditQuestionClicked}
           >
@@ -54,12 +54,14 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
             <span>{getLocale(S.CHAT_UI_EDIT_PROMPT_BUTTON_LABEL)}</span>
           </leo-menu-item>
         )}
-        <leo-menu-item
-          onClick={props.onCopyQuestionClicked}
-        >
+        {props.onCopyQuestionClicked && (
+          <leo-menu-item
+            onClick={props.onCopyQuestionClicked}
+          >
           <Icon name='copy' />
-          <span>{getLocale(S.CHAT_UI_COPY_PROMPT_BUTTON_LABEL)}</span>
-        </leo-menu-item>
+            <span>{getLocale(S.CHAT_UI_COPY_PROMPT_BUTTON_LABEL)}</span>
+          </leo-menu-item>
+        )}
       </ButtonMenu>
     </>
   )

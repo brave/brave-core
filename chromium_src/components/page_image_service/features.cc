@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/page_image_service/features.cc"
-
 #include "base/feature_override.h"
+
+#include <components/page_image_service/features.cc>
 
 namespace page_image_service {
 

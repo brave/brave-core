@@ -20,7 +20,7 @@
   UpdateIcon_ChromiumImpl(); \
   void UpdateIcon
 
-#include "src/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h>  // IWYU pragma: export
 #undef UpdateIcon
 #undef ShouldShowEphemerallyInToolbar
 

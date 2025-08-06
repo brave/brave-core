@@ -31,6 +31,7 @@
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
+#include "brave/components/ai_chat/core/browser/customization_settings_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
@@ -89,6 +90,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/extensions/manifest_v2/features.h"
 #include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
 #endif
@@ -123,7 +125,8 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   web_ui->AddMessageHandler(
       std::make_unique<BraveTorSnowflakeExtensionHandler>());
-  if (base::FeatureList::IsEnabled(kExtensionsManifestV2)) {
+  if (base::FeatureList::IsEnabled(
+          extensions_mv2::features::kExtensionsManifestV2)) {
     web_ui->AddMessageHandler(
         std::make_unique<BraveExtensionsManifestV2Handler>());
   }
@@ -203,7 +206,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("enable_extensions", BUILDFLAG(ENABLE_EXTENSIONS));
 
   html_source->AddBoolean("extensionsManifestV2Feature",
-                          base::FeatureList::IsEnabled(kExtensionsManifestV2));
+                          base::FeatureList::IsEnabled(
+                              extensions_mv2::features::kExtensionsManifestV2));
 
   html_source->AddBoolean("isLeoAssistantAllowed",
                           ai_chat::IsAIChatEnabled(profile->GetPrefs()));
@@ -262,6 +266,15 @@ void BraveSettingsUI::BindInterface(
   auto helper = std::make_unique<ai_chat::AIChatSettingsHelper>(
       web_ui()->GetWebContents()->GetBrowserContext());
   mojo::MakeSelfOwnedReceiver(std::move(helper), std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::CustomizationSettingsHandler>
+        pending_receiver) {
+  auto handler = std::make_unique<ai_chat::CustomizationSettingsHandler>(
+      user_prefs::UserPrefs::Get(
+          web_ui()->GetWebContents()->GetBrowserContext()));
+  mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 
 void BraveSettingsUI::BindInterface(

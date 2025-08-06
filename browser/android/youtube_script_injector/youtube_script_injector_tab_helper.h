@@ -9,9 +9,11 @@
 #include "base/memory/weak_ptr.h"
 #include "base/supports_user_data.h"
 #include "base/values.h"
+#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 
 class YouTubeScriptInjectorTabHelper
     : public content::WebContentsObserver,
@@ -23,7 +25,7 @@ class YouTubeScriptInjectorTabHelper
   YouTubeScriptInjectorTabHelper& operator=(
       const YouTubeScriptInjectorTabHelper&) = delete;
   ~YouTubeScriptInjectorTabHelper() override;
-  bool IsYouTubeVideo() const;
+  bool IsYouTubeVideo(bool mobileOnly = false) const;
   void MaybeSetFullscreen();
 
   // Fullscreen state management using PageUserData
@@ -44,6 +46,10 @@ class YouTubeScriptInjectorTabHelper
   // Callback for when the fullscreen script completes.
   void OnFullscreenScriptComplete(content::GlobalRenderFrameHostToken token,
                                   base::Value value);
+
+  // The remote used to send the fullscreen script to the renderer.
+  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
+      script_injector_remote_;
 
   base::WeakPtrFactory<YouTubeScriptInjectorTabHelper> weak_factory_{this};
 };

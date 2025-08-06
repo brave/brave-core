@@ -86,7 +86,7 @@ extension Preferences {
     /// Controls whether or not youtube videos should play with the highest quality by default
     static let youtubeHighQuality = Option<String>(
       key: "general.youtube-high-quality",
-      default: "wifi"
+      default: YoutubeHighQualityPreference.off.rawValue
     )
     /// Controls whether or not to show the last visited bookmarks folder
     static let showLastVisitedBookmarksFolder = Option<Bool>(

@@ -167,7 +167,7 @@ public class BrowserViewController: UIViewController {
   var customSearchBarButtonItemGroup: UIBarButtonItemGroup?
 
   public let windowId: UUID
-  let profile: Profile
+  let profile: LegacyBrowserProfile
   let attributionManager: AttributionManager
   let braveCore: BraveCoreMain
   let profileController: BraveProfileController
@@ -276,7 +276,7 @@ public class BrowserViewController: UIViewController {
 
   public init(
     windowId: UUID,
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     attributionManager: AttributionManager,
     braveCore: BraveCoreMain,
     profileController: BraveProfileController,
@@ -2893,11 +2893,9 @@ extension BrowserViewController: PreferencesObserver {
       ])
       tabManager.reloadSelectedTab()
     case Preferences.General.youtubeHighQuality.key:
+      let status = Reachability.shared.status
       tabManager.allTabs.forEach {
-        YoutubeQualityScriptHandler.setEnabled(
-          option: Preferences.General.youtubeHighQuality,
-          for: $0
-        )
+        $0.youtubeQualityTabHelper?.setHighQuality(networkStatus: status)
       }
     case Preferences.Playlist.enablePlaylistURLBarButton.key:
       let selectedTab = tabManager.selectedTab

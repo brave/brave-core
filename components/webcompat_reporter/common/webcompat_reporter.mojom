@@ -32,9 +32,30 @@ struct ReportInfo {
   array<string>? webcompat_reporter_errors;
 };
 
+enum WebcompatCategory {
+    kAds,
+    kBlank,
+    kScroll,
+    kForm,
+    kCookieNotice,
+    kAntiAdblock,
+    kTracking,
+    kNewsletter,
+    kSocial,
+    kChat,
+    kOther,
+};
+
+struct WebcompatCategoryItem {
+    WebcompatCategory category;
+    string localized_title;
+    string value;
+};
+
 interface WebcompatReporterHandler {
   SubmitWebcompatReport(ReportInfo report_info);
   SetContactInfoSaveFlag(bool value);
   GetBrowserParams() => (string? contact_info, bool contact_info_save_flag,
     array<string> components);
+  GetWebcompatCategories() => (array<WebcompatCategoryItem> categories);
 };

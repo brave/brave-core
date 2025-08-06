@@ -240,7 +240,7 @@ void ConnectUpholdWallet::OnGetUserForEligibilityCheck(mojom::Result result,
     engine_->LogError(FROM_HERE) << "BAT is not allowed for the user";
 
     // kConnected ==> kLoggedOut
-    if (!engine_->uphold()->LogOutWallet(notifications::kUpholdBATNotAllowed)) {
+    if (!engine_->uphold()->LogOutWallet()) {
       engine_->LogError(FROM_HERE)
           << "Failed to disconnect " << constant::kWalletUphold << " wallet";
     }
@@ -283,8 +283,7 @@ void ConnectUpholdWallet::OnGetCapabilitiesForEligibilityCheck(
                                  << constant::kWalletUphold << " capabilities";
 
     // kConnected ==> kLoggedOut
-    if (!engine_->uphold()->LogOutWallet(
-            notifications::kUpholdInsufficientCapabilities)) {
+    if (!engine_->uphold()->LogOutWallet()) {
       engine_->LogError(FROM_HERE)
           << "Failed to disconnect " << constant::kWalletUphold << " wallet";
     }

@@ -9,7 +9,7 @@
 #define RedirectHeuristicTabHelper RedirectHeuristicTabHelper_ChromiumImpl
 #define MaybeRecordRedirectHeuristic virtual MaybeRecordRedirectHeuristic
 
-#include "src/content/browser/tpcd_heuristics/redirect_heuristic_tab_helper.h"  // IWYU pragma: export
+#include <content/browser/tpcd_heuristics/redirect_heuristic_tab_helper.h>  // IWYU pragma: export
 #undef MaybeRecordRedirectHeuristic
 #undef RedirectHeuristicTabHelper
 

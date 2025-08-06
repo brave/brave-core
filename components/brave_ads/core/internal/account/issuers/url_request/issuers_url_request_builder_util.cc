@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_builder_util.h"
 
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_ads {
 

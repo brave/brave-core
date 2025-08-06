@@ -15,7 +15,7 @@ source_set("browser_tests") {
 
     deps = [
       "//brave/components/brave_news/browser",
-      "//brave/components/brave_news/common:common",
+      "//brave/components/brave_news/common",
       "//brave/components/brave_news/common:mojom",
       "//brave/components/brave_rewards/content",
       "//brave/components/constants",
@@ -23,7 +23,7 @@ source_set("browser_tests") {
       "//chrome/browser:browser_process",
       "//chrome/browser/profiles",
       "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui:ui",
+      "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
       "//content/test:test_support",
       "//net:test_support",

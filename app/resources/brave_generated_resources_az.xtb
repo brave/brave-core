@@ -6,8 +6,19 @@
 <translation id="1209739344687072997">Nasaz sayt haqqında bildirin</translation>
 <translation id="6406506848690869874">Sinxronlaşdırma</translation>
 <translation id="1544192797660353713">Balans</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {Qonaq pəncərəsini bağla}
+          other {Qonaq pəncərəsini bağla}
+        }</translation>
 <translation id="1990886731975529483">Google Widevine quraşdırın və işə salın</translation>
 <translation id="7658239707568436148">Ləğv et</translation>
+<translation id="8832245978592881387">Leo Sİ-i yeni tab-vərəqədə aç</translation>
+<translation id="4577675328803804820">Leo Sİ-i kənar panelində aç</translation>
+<translation id="564305948667173847">Leo Sİ parametrlərini idarə et</translation>
+<translation id="2169338740411893745">Leo Sİ-i yeni tab-vərəqədə aç</translation>
+<translation id="3295805221342028003">Leo Sİ-i kənar panelində aç</translation>
+<translation id="7400808612454224939">Leo Sİ parametrlərini idarə et</translation>
+<translation id="438106944087726695">Brave tərəfindən təchiz edilən</translation>
 <translation id="5039804452771397117">İcazə ver</translation>
 <translation id="8915916167043355778">Hamısını bağla</translation>
 <translation id="4870911314065352661">Bütün tabulyasiyalar bağlansın?</translation>
@@ -16,13 +27,13 @@
 <translation id="5916664084637901428">Açıq</translation>
 <translation id="5860033963881614850">Bağlı</translation>
 <translation id="8712637175834984815">Anladım</translation>
-<translation id="8428213095426709021">Parametrlər</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4759238208242260848">Endirilənlər</translation>
 <translation id="9065203028668620118">Redaktə et</translation>
 <translation id="2079545284768500474">Ləğv et</translation>
 <translation id="6165508094623778733">Ətraflı məlumat</translation>
 <translation id="7557539689487606886">Premiuma keç</translation>
+<translation id="1940221956626514677">Alətlər panelini fərdiləşdir</translation>
 <translation id="1426410128494586442">Bəli</translation>
 <translation id="4250680216510889253">Xeyr</translation>
 <translation id="4472575034687746823">Başla</translation>
@@ -36,7 +47,13 @@
 <translation id="4618274268052410139">Aşağıdakı sahəyə bir sətirə bir olmaqla, yaratdığınız xüsusi filterləri əlavə edin. Adblock filter sintaksisindən <ph name="BEGIN_LINK"/>istifadə etməyinizə əmin olun<ph name="END_LINK"/>.</translation>
 <translation id="5327248766486351172">Ad</translation>
 <translation id="933652931229970927">Diaqnostika hesabatlarının avtomatik göndərilməsi</translation>
+<translation id="509873765238158442">Microsoft Recall-u blokla</translation>
+<translation id="4763421121695677716">Microsoft Windows kompüterlərindəki Recall xüsusiyyətinin hər hansı açıq Brave tab-vərəqələrinin ekran şəklini avtomatik çəkməməsi üçün onu bloklayın.</translation>
 <translation id="3858860766373142691">Ad</translation>
+<translation id="6918225713618473646">Brave, bu Manifest V2 genişləmələrini Brave serverlərində saxlayır, lakin onların məzmununu, təhlükəsizliyini, yaxud da davranışını nəzərdən keçirmir, və ya yoxlamır. Kömək üçün hər bir genişləmənin rəsmi səhifəsinə baxa bilərsiniz. Brave-in Manifest V2 planlarını <ph name="BEGIN_LINK"/>buradan<ph name="END_LINK"/> oxuyun.</translation>
 <translation id="8488282162676695335">Brave Balansı</translation>
 <translation id="614530507403667291">Yeni söhbətlər üçün standart model</translation>
+<translation id="5985516785067818307">Sorğu panelisti</translation>
+<translation id="8347743943525229984">Brave sorğularına icazə ver</translation>
+<translation id="3204080538332044581">Brave-ə keçidləri yeni tab-vərəqə səhifəsində məxfi sorğulara göstərməyə icazə verir. Sorğular daha yaxşı xüsusiyyətlər yaratmağımıza və brauzer əsaslı reklam kampaniyalarının effektivliyini ölçməyimizə kömək edir. <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/></translation>
 </translationbundle>

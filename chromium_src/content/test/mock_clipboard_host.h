@@ -12,7 +12,7 @@
   CommitWrite() override; \
   void SanitizeOnNextWriteText
 
-#include "src/content/test/mock_clipboard_host.h"  // IWYU pragma: export
+#include <content/test/mock_clipboard_host.h>  // IWYU pragma: export
 
 #undef CommitWrite
 

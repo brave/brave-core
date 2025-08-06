@@ -10,7 +10,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -33,6 +32,7 @@
 #include "content/public/test/test_utils.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using content::EvalJsResult;
 
@@ -41,14 +41,13 @@ namespace {
 constexpr char kSomeEndpoint[] = "https://some.endpoint.com/";
 
 std::string SelectInNetworkList(const std::string& selector) {
-  return base::StringPrintf(
-      "window.testing.walletNetworks60.querySelector(`%s`)", selector.c_str());
+  return absl::StrFormat("window.testing.walletNetworks60.querySelector(`%s`)",
+                         selector);
 }
 
 std::string SelectInAddNetworkDialog(const std::string& selector) {
-  return base::StringPrintf(
-      "window.testing.addWalletNetworkDialog.querySelector(`%s`)",
-      selector.c_str());
+  return absl::StrFormat(
+      "window.testing.addWalletNetworkDialog.querySelector(`%s`)", selector);
 }
 
 std::string DoubleClickOn(const std::string& element) {
@@ -83,13 +82,12 @@ std::string NetworksButton() {
 }
 
 std::string QuerySelectorJS(const std::string& selector) {
-  return base::StringPrintf(R"(document.querySelector(`%s`))",
-                            selector.c_str());
+  return absl::StrFormat(R"(document.querySelector(`%s`))", selector);
 }
 
 std::string Select(const std::string& selector1, const std::string& selector2) {
-  return base::StringPrintf(R"(document.querySelector(`%s %s`))",
-                            selector1.c_str(), selector2.c_str());
+  return absl::StrFormat(R"(document.querySelector(`%s %s`))", selector1,
+                         selector2);
 }
 
 void NonBlockingDelay(base::TimeDelta delay) {
@@ -202,8 +200,8 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
                                               .AsStringPiece());
           url_loader_factory_.ClearResponses();
           if (request_string.find("eth_chainId") != std::string::npos) {
-            const std::string response = base::StringPrintf(
-                R"({"jsonrpc":"2.0","id":1,"result":"%s"})", chain_id.c_str());
+            const std::string response = absl::StrFormat(
+                R"({"jsonrpc":"2.0","id":1,"result":"%s"})", chain_id);
             for (auto& url : network_urls) {
               url_loader_factory_.AddResponse(url.spec(), response);
             }

@@ -5,6 +5,7 @@
     "profile": "chrome-typical-mac",
     "extra-browser-args": [
       "--disable-component-update",
+      "--allow-brave-component-update",
       "--disable-backgrounding-occluded-windows",
     ],
     "extra-benchmark-args": [],

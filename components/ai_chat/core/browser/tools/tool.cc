@@ -45,4 +45,9 @@ std::optional<base::Value::Dict> Tool::ExtraParams() const {
   return std::nullopt;
 }
 
+void Tool::UseTool(const std::string& input_json,
+                   Tool::UseToolCallback callback) {
+  CHECK(false) << "UseTool called but not implemented";
+}
+
 }  // namespace ai_chat

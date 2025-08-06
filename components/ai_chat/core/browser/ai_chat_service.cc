@@ -549,7 +549,7 @@ void AIChatService::MaybeAssociateContent(
     int associated_content_id,
     base::WeakPtr<AssociatedContentDelegate> associated_content) {
   if (associated_content &&
-      kAllowedContentSchemes.contains(associated_content->GetURL().scheme())) {
+      kAllowedContentSchemes.contains(associated_content->url().scheme())) {
     conversation->associated_content_manager()->AddContent(
         associated_content.get(),
         /*notify_updated=*/true);
@@ -797,16 +797,17 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
 void AIChatService::OnConversationEntryAdded(
     ConversationHandler* handler,
     mojom::ConversationTurnPtr& entry,
-    std::optional<std::vector<std::string_view>> maybe_associated_content) {
+    std::optional<PageContents> maybe_associated_content) {
   auto conversation_it = conversations_.find(handler->get_conversation_uuid());
   CHECK(conversation_it != conversations_.end());
   mojom::ConversationPtr& conversation = conversation_it->second;
   std::optional<std::vector<std::string>> associated_content;
   if (maybe_associated_content.has_value()) {
     associated_content = std::vector<std::string>();
-    std::ranges::transform(maybe_associated_content.value(),
-                           std::back_inserter(associated_content.value()),
-                           [](const auto& view) { return std::string(view); });
+    std::ranges::transform(
+        maybe_associated_content.value(),
+        std::back_inserter(associated_content.value()),
+        [](const auto& page_content) { return page_content.get().content; });
   }
 
   if (!conversation->has_content) {
@@ -898,6 +899,18 @@ void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversationEntry))
         .WithArgs(entry_uuid);
+  }
+}
+
+void AIChatService::OnToolUseEventOutput(ConversationHandler* handler,
+                                         std::string_view entry_uuid,
+                                         size_t event_order,
+                                         mojom::ToolUseEventPtr tool_use) {
+  // Persist the tool use event
+  if (ai_chat_db_ && !handler->GetIsTemporary()) {
+    ai_chat_db_
+        .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateToolUseEvent))
+        .WithArgs(entry_uuid, event_order, std::move(tool_use));
   }
 }
 
@@ -1067,7 +1080,7 @@ void AIChatService::OpenConversationWithStagedEntries(
   }
 
   ConversationHandler* conversation = GetOrCreateConversationHandlerForContent(
-      associated_content->GetContentId(), associated_content);
+      associated_content->content_id(), associated_content);
   CHECK(conversation);
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
@@ -1090,7 +1103,7 @@ void AIChatService::MaybeAssociateContent(
     return;
   }
 
-  MaybeAssociateContent(conversation, content->GetContentId(),
+  MaybeAssociateContent(conversation, content->content_id(),
                         content->GetWeakPtr());
 }
 

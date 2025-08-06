@@ -26,7 +26,7 @@ static_library("ipfs") {
     "//base",
     "//brave/components/filecoin/rs:rust_lib",
     "//components/base32",
-    "//components/prefs:prefs",
+    "//components/prefs",
     "//net",
     "//url",
   ]

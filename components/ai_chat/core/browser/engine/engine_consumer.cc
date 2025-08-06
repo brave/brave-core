@@ -35,8 +35,8 @@ std::string EngineConsumer::GetPromptForEntry(
   return prompt_entry->prompt.value_or(prompt_entry->text);
 }
 
-EngineConsumer::EngineConsumer(ModelService* model_service)
-    : model_service_(model_service) {}
+EngineConsumer::EngineConsumer(ModelService* model_service, PrefService* prefs)
+    : model_service_(model_service), prefs_(prefs) {}
 EngineConsumer::~EngineConsumer() = default;
 
 bool EngineConsumer::SupportsDeltaTextResponses() const {

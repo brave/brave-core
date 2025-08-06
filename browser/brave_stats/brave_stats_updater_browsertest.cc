@@ -139,10 +139,6 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
     wait_for_standard_stats_updated_loop_->Run();
   }
 
-  void DisableStatsUsagePing() {
-    g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, false);
-  }
-
  private:
   std::unique_ptr<base::RunLoop> wait_for_referral_initialized_loop_;
   std::unique_ptr<base::RunLoop> wait_for_standard_stats_updated_loop_;
@@ -169,7 +165,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
 // The stats updater should not reach the endpoint
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        StatsUpdaterUsagePingDisabledFirstCheck) {
-  DisableStatsUsagePing();
+  g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, false);
 
   WaitForReferralInitializeCallback();
   WaitForStandardStatsUpdatedCallback();
@@ -178,6 +174,19 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   EXPECT_EQ(GetUpdateURL().host(), "no-thanks.invalid");
 
   // No prefs should be updated
+  EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
+                       StatsUpdaterUsagePingDisabledViaPolicyFirstCheck) {
+  g_browser_process->local_state()->SetBoolean(kStatsReportingDisabledByPolicy,
+                                               true);
+
+  WaitForReferralInitializeCallback();
+  WaitForStandardStatsUpdatedCallback();
+
+  EXPECT_EQ(GetUpdateURL().host(), "no-thanks.invalid");
+
   EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
 }
 

@@ -134,6 +134,10 @@ function syncChromium(program) {
     args.push('--force')
   }
 
+  if (program.history === false) {
+    args.push('--no-history')
+  }
+
   const latestSyncInfoFilePath = path.join(
     config.rootDir,
     '.brave_latest_successful_sync.json',

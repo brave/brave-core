@@ -8,6 +8,7 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/core/features.h"
@@ -64,11 +65,12 @@
     &brave_shields::features::kBraveShieldsElementPicker,               \
     &features::kNewAndroidOnboarding,                                   \
     &brave_ads::kNewTabPageAdFeature,                                   \
-    &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist
+    &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
+    &brave_account::features::kBraveAccount
 
 // clang-format on
 
-#include "src/chrome/browser/flags/android/chrome_feature_list.cc"
+#include <chrome/browser/flags/android/chrome_feature_list.cc>
 #undef kForceWebContentsDarkMode
 #undef BRAVE_AI_CHAT_FLAGS
 #undef BRAVE_WEB_DISCOVERY_FLAG

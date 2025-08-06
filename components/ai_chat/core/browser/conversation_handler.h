@@ -27,11 +27,11 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -77,10 +77,14 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnConversationEntryAdded(
         ConversationHandler* handler,
         mojom::ConversationTurnPtr& entry,
-        std::optional<std::vector<std::string_view>> associated_content_value) {
-    }
+        std::optional<PageContents> associated_content_value) {}
     virtual void OnConversationEntryRemoved(ConversationHandler* handler,
                                             std::string turn_uuid) {}
+
+    virtual void OnToolUseEventOutput(ConversationHandler* handler,
+                                      std::string_view entry_uuid,
+                                      size_t event_order,
+                                      mojom::ToolUseEventPtr tool_use) {}
 
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
@@ -167,7 +171,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SubmitHumanConversationEntryWithAction(
       const std::string& input,
       mojom::ActionType action_type) override;
-  void ModifyConversation(uint32_t turn_index,
+  void ModifyConversation(const std::string& entry_uuid,
                           const std::string& new_text) override;
   void RegenerateAnswer(const std::string& turn_uuid,
                         const std::string& model_key) override;
@@ -201,6 +205,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   size_t GetConversationHistorySize() override;
   void GetScreenshots(GetScreenshotsCallback callback) override;
 
+  // mojom::UntrustedConversationHandler
+  void RespondToToolUseRequest(
+      const std::string& tool_id,
+      std::vector<mojom::ContentBlockPtr> output_json) override;
+
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
   void MaybeFetchOrClearContentStagedConversation();
@@ -221,6 +230,11 @@ class ConversationHandler : public mojom::ConversationHandler,
     engine_ = std::move(engine_for_testing);
   }
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
+
+  void SetToolsForTesting(
+      std::vector<std::unique_ptr<Tool>> tools_for_testing) {
+    tools_for_testing_ = std::move(tools_for_testing);
+  }
 
   void SetChatHistoryForTesting(
       std::vector<mojom::ConversationTurnPtr> history) {
@@ -286,26 +300,28 @@ class ConversationHandler : public mojom::ConversationHandler,
   void UpdateAssociatedContentInfo();
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
-  void PerformAssistantGeneration(std::string page_content = "",
-                                  bool is_video = false,
-                                  std::string invalidation_token = "");
+  void PerformAssistantGenerationWithPossibleContent();
+
+  void PerformAssistantGeneration(PageContents page_contents);
   void SetAPIError(const mojom::APIError& error);
   void UpdateOrCreateLastAssistantEntry(
       EngineConsumer::GenerationResultData result);
   void MaybeSeedOrClearSuggestions();
-  void PerformQuestionGeneration(std::string page_content,
-                                 bool is_video,
-                                 std::string invalidation_token);
+  void PerformQuestionGeneration(PageContents page_contents);
 
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 
-  void GeneratePageContent(GetPageContentCallback callback);
-  // This method is the same as |GeneratePageContent| but without DCHECKs.
-  // Its used in tests.
-  void GeneratePageContentInternal(GetPageContentCallback callback);
-  void OnGeneratePageContentComplete(GetPageContentCallback callback,
-                                     std::string previous_content);
+  void GeneratePageContent(GetAllContentCallback callback);
+  // Same as above but without DCHECKS for testing.
+  void GeneratePageContentInternal(GetAllContentCallback callback);
+
+  void OnGeneratePageContentComplete(GetAllContentCallback callback,
+                                     bool content_changed);
+  void OnScreenshotsTaken(
+      GetAllContentCallback callback,
+      std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
+
   void OnEngineCompletionDataReceived(
       EngineConsumer::GenerationResultData result);
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
@@ -315,6 +331,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnModelDataChanged();
   void OnConversationDeleted();
   void OnHistoryUpdate(mojom::ConversationTurnPtr entry);
+  void OnToolUseEventOutput(mojom::ConversationTurn* entry,
+                            mojom::ToolUseEvent* tool_use);
   void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
   void OnConversationEntryRemoved(std::optional<std::string> turn_id);
   void OnSuggestedQuestionsChanged();
@@ -326,6 +344,20 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnSelectedLanguageChanged(const std::string& selected_language);
   void OnAPIRequestInProgressChanged();
   void OnStateForConversationEntriesChanged();
+
+  mojom::ToolUseEvent* GetToolUseEventForLastResponse(std::string_view tool_id);
+  void MaybeRespondToNextToolUseRequest();
+
+  // We don't own all the available tools for the conversation as:
+  // - The available tools can change over time.
+  // - Some tools are provided by other classes.
+  // Instead, we build a list from all the available tool sources, given
+  // the current conversation state.
+  std::vector<base::WeakPtr<Tool>> GetTools();
+
+  // Helper method to switch to vision model if needed
+  void MaybeSwitchToVisionModel(
+      const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files);
 
   std::unique_ptr<AssociatedContentManager> associated_content_manager_;
 
@@ -341,11 +373,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;
 
-  // TODO(petemill): Tracking whether the UI is open
-  // for a conversation might not be neccessary anymore as there
-  // are no automatic actions that occur anymore now that content
-  // fetching is on-deman.
-  // bool is_conversation_active_ = false;
+  // Are we currently performing a loop of tool uses?
+  bool is_tool_use_in_progress_ = false;
 
   // Keep track of whether we've generated suggested questions for the current
   // context. We cannot rely on counting the questions in |suggested_questions_|
@@ -358,10 +387,17 @@ class ConversationHandler : public mojom::ConversationHandler,
   // previous one.
   bool is_content_different_ = true;
 
+  // Whether further assistant responses should be appended to the last or
+  // created in a new sibling ConversationEntry.
+  bool needs_new_entry_ = false;
+
   bool is_print_preview_fallback_requested_ = false;
 
   std::unique_ptr<EngineConsumer> engine_ = nullptr;
   mojom::APIError current_error_ = mojom::APIError::None;
+
+  // For testing only
+  std::vector<std::unique_ptr<Tool>> tools_for_testing_;
 
   // Data store UUID for conversation
   raw_ptr<mojom::Conversation> metadata_;

@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "src/ios/web/webui/mojo_facade.mm"
-
 #include "base/check.h"
 #include "ios/components/webui/web_ui_url_constants.h"
+
+#include <ios/web/webui/mojo_facade.mm>
 
 namespace web {
 bool MojoFacade::IsWebUIMessageAllowedForFrame(const GURL& origin,
@@ -19,7 +19,7 @@ bool MojoFacade::IsWebUIMessageAllowedForFrame(const GURL& origin,
 
   // If the scheme is untrusted
   if (name_and_args.name == "Mojo.bindInterface" &&
-      origin.scheme() == kChromeUIUntrustedScheme) {
+      origin.scheme() == "chrome-untrusted") {
     const base::Value::Dict& args = name_and_args.args;
     const std::string* interface_name = args.FindString("interfaceName");
     CHECK(interface_name);

@@ -17,6 +17,7 @@
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/web_discovery/common/util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -58,12 +59,11 @@ SearchEngineP3A GetSearchEngineProvider(const GURL& search_engine_url,
     result = SearchEngineP3A::kYahooJP;
   } else if (type == SEARCH_ENGINE_BRAVE) {
     result = SearchEngineP3A::kBrave;
+  } else if (type == SEARCH_ENGINE_STARTPAGE) {
+    result = SearchEngineP3A::kStartpage;
   } else if (type == SEARCH_ENGINE_OTHER) {
-    if (base::EndsWith(search_engine_url.host(), "startpage.com",
+    if (base::EndsWith(search_engine_url.host(), "brave.com",
                        base::CompareCase::INSENSITIVE_ASCII)) {
-      result = SearchEngineP3A::kStartpage;
-    } else if (base::EndsWith(search_engine_url.host(), "brave.com",
-                              base::CompareCase::INSENSITIVE_ASCII)) {
       result = SearchEngineP3A::kBrave;
     }
   }
@@ -226,6 +226,11 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
           last_default_engine == SearchEngineP3A::kBrave) {
         brave_search_conversion::p3a::RecordDefaultEngineChurn(local_state_);
       }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+      // Update web discovery default engine metric when search engine changes
+      RecordWebDiscoveryEnabledP3A();
+#endif
     }
     RecordSwitchP3A(url);
   }
@@ -233,12 +238,20 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
-  bool enabled = profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
+  bool enabled = web_discovery::IsWebDiscoveryEnabled(*profile_prefs_);
   UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric, enabled);
   UMA_HISTOGRAM_BOOLEAN(
       kWebDiscoveryAndAdsMetric,
       enabled && profile_prefs_->GetBoolean(
                      brave_ads::prefs::kOptedInToNotificationAds));
+
+  // Record web discovery default engine metric
+  int answer = INT_MAX - 1;
+  if (enabled) {
+    answer = static_cast<int>(current_default_engine_);
+  }
+  UMA_HISTOGRAM_EXACT_LINEAR(kWebDiscoveryDefaultEngineMetric, answer,
+                             static_cast<int>(SearchEngineP3A::kMaxValue) + 1);
 }
 #endif
 

@@ -75,7 +75,7 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
 }  // namespace sync_preferences
 
 #define GetSyncablePrefMetadata GetSyncablePrefMetadata_ChromiumOriginalImpl
-#include "src/components/sync_preferences/common_syncable_prefs_database.cc"
+#include <components/sync_preferences/common_syncable_prefs_database.cc>
 #undef GetSyncablePrefMetadata
 
 namespace sync_preferences {

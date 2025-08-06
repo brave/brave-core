@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">僅在新索引標籤頁面</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">錢包</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">其他…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {關閉訪客}
+          other {關閉訪客}
+        }</translation>
 <translation id="1990886731975529483">安裝並執行 Google Widevine</translation>
 <translation id="8926389886865778422">不再詢問這個問題</translation>
 <translation id="4900351245762303149">安裝 Google Widevine</translation>
@@ -76,13 +80,20 @@
 <translation id="2808103541110899519">隱藏 Brave 錢包圖示</translation>
 <translation id="7595540212376041331">隱藏 Brave 錢包圖示</translation>
 <translation id="3893997535859323951">隱藏 Leo AI 圖示</translation>
+<translation id="8832245978592881387">在新分頁中開啟 Leo AI</translation>
+<translation id="4577675328803804820">在側邊欄開啟 Leo AI</translation>
+<translation id="564305948667173847">管理 Leo AI 設定</translation>
 <translation id="6208515240323786457">隱藏 Leo AI 圖示</translation>
-<translation id="2361906291514218784">Leo AI</translation>
+<translation id="2169338740411893745">在新分頁中開啟 Leo AI</translation>
+<translation id="3295805221342028003">在側邊欄開啟 Leo AI</translation>
+<translation id="7400808612454224939">管理 Leo AI 設定</translation>
+<translation id="5385064007245738696">關於 Leo AI</translation>
 <translation id="4928988318462976765">網路擴充功能商店</translation>
 <translation id="9181207987584064303">在「網路擴充功能商店」檢視</translation>
 <translation id="3161744659507801211">警告：Brave 無法防止擴充功能記錄您的瀏覽歷程記錄。</translation>
 <translation id="2162109630536601963">若此擴充功能提出網路要求，將不會使用 Tor 或私人模式。</translation>
 <translation id="2725327089319971976">若要在私人模式和 Tor 模式下停用此擴充功能，請取消選取此選項。</translation>
+<translation id="438106944087726695">由 Brave 託管</translation>
 <translation id="3371343170427636147">Brave 瀏覽器 Nightly 應用程式</translation>
 <translation id="4097979995947147464">Brave 瀏覽器 Beta 應用程式</translation>
 <translation id="8303432794159193481">Brave 瀏覽器 Dev 應用程式</translation>
@@ -181,11 +192,6 @@
 <translation id="4394049700291259645">停用</translation>
 <translation id="7142548388914389999">允許保護私隱的產品分析 (P3A)</translation>
 <translation id="2604698253988679506">這些私密回覆可協助 Brave 估計特定功能的整體使用量，並改善您的使用體驗。</translation>
-<translation id="1947672064022327074">您想開啟加密錢包以支援乙太坊嗎？</translation>
-<translation id="7583735190612229830">設定 Crypto Wallets 以與此應用程式和其他類似的應用程式互動。</translation>
-<translation id="8731422418734770661">設定加密錢包</translation>
-<translation id="8199661191594897555">啟動加密錢包並重新載入</translation>
-<translation id="8428213095426709021">設定</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 網域</translation>
 <translation id="5046066249040287308">Brave 錢包公用程式服務</translation>
@@ -335,6 +341,7 @@
 <translation id="7557539689487606886">訂閱 Premium</translation>
 <translation id="1035309871698658326">開啟時，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo，以便將它們分類。</translation>
 <translation id="3435896845095436175">啟用</translation>
+<translation id="1940221956626514677">自訂工具列</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="1426410128494586442">是</translation>
@@ -492,6 +499,8 @@
 <translation id="3540231253392253941">使用 Google 服務來推播訊息</translation>
 <translation id="933652931229970927">自動傳送診斷報告</translation>
 <translation id="4891600875049212418">造訪敏感網站時停止記錄</translation>
+<translation id="509873765238158442">阻止 Microsoft 召回</translation>
+<translation id="4763421121695677716">阻止 Microsoft Windows 電腦上的 Recall 功能自動為任何開啟的 Brave 分頁截圖。</translation>
 <translation id="1968895725257436430">資料集合</translation>
 <translation id="4846154056248462491">離開</translation>
 <translation id="216468847346280584">清除 Brave Ads 資料...</translation>
@@ -654,10 +663,10 @@
 <translation id="2653659639078652383">提交</translation>
 <translation id="1294350054292274934">只在 Tor 視窗中解析 .onion 位址</translation>
 <translation id="601227612175911475">Onion 服務無法在 Tor 視窗外使用。</translation>
-<translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
 <translation id="5249433283143453448">使用 Widevine 數位版權管理 (DRM) 元件以在瀏覽器中檢視受保護的串流影片與其他內容。</translation>
 <translation id="1314131187310290315">Manifest V2 擴充功能</translation>
 <translation id="2488433650767270565">下列 Manifest V2 擴充功能將從 Chrome 線上應用程式商店中移除，但在 Brave 中仍受到支援。請切換以下載並安裝此擴充功能，或解除安裝。</translation>
+<translation id="6918225713618473646">Brave 在 Brave 伺服器上託管這些 Manifest V2 擴充套件，但不會審查或驗證其內容、安全性或行為。請參閱每個擴充套件的官方網頁以獲得支援。在<ph name="BEGIN_LINK"/>;此處<ph name="END_LINK"/>閱讀 Brave 對 Manifest V2 的計畫。</translation>
 <translation id="578671172657727816">啟用 NoScript™</translation>
 <translation id="9068475464170522036">NoScript 是一種 Manifest V2 擴充功能，可讓您封鎖並解除封鎖正在執行或嘗試在指定頁面上執行的個別指令碼。</translation>
 <translation id="1394592156621788100">啟用 uBlock Origin™</translation>
@@ -672,7 +681,6 @@
 <translation id="7701023802820268122">預設 Solana 錢包</translation>
 <translation id="8488282162676695335">Brave 錢包</translation>
 <translation id="6942354363301686374">擴充功能 (無後援)</translation>
-<translation id="1274962333945373242">Crypto Wallets（已棄用）</translation>
 <translation id="702381242110464396">擴充功能 (Brave 錢包後援)</translation>
 <translation id="4718664830805652430">預設基礎貨幣</translation>
 <translation id="7992507032049865603">預設基礎加密貨幣</translation>
@@ -737,6 +745,7 @@
 <translation id="3095201688102519917">關閉已開啟多個分頁的視窗前顯示警告訊息</translation>
 <translation id="7120553802660696133">關閉最後一個分頁時關閉視窗</translation>
 <translation id="3394171693948989253">顯示全螢幕提醒，按 Esc 即可結束</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">在側邊欄顯示 Leo 圖示</translation>
 <translation id="8055509865174199683">在網站的內容選單中顯示 Leo</translation>
 <translation id="1529674267267221673">以滑鼠右鍵按一下網站，Leo 就會出現在內容選單中。這會將目前網頁的內容傳送給 Leo。</translation>
@@ -749,7 +758,6 @@
 <translation id="1335414530428321716">如果重設 Leo AI，日後必須重新選擇加入才能再次使用 Brave Leo AI，您的聊天紀錄也會一併清除。清除聊天紀錄會刪除您先前與 Brave Leo AI 的對話。此動作無法復原。</translation>
 <translation id="5574059574002819179">調整自動完成建議</translation>
 <translation id="7942415993090181327">聊天紀錄</translation>
-<translation id="5385064007245738696">關於 Leo AI</translation>
 <translation id="5084498230659987096">Brave Leo 在瀏覽器中提供隱私優先的 AI 聊天和其他 AI 驅動的介面。Leo 絕不會學習您的資料或將其使用於模型訓練。所有要求都會透過匿名伺服器代理。</translation>
 <translation id="6458721693611638005">閱讀更多有關 Brave 如何在 Leo 的隱私政策中保護您使用 AI 的資訊。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">新對話的預設模式</translation>
@@ -786,6 +794,9 @@
 <translation id="6304169450064541679">系統提示</translation>
 <translation id="3081947790648024460">提供給模型的自訂指示和/或內容，以引導其朝特定方向或風格做出回應。使用 %datetime% 來插入目前的日期和時間。</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> 代幣</translation>
+<translation id="5985516785067818307">調查小組成員</translation>
+<translation id="8347743943525229984">允許 Brave 調查</translation>
+<translation id="3204080538332044581">允許 Brave 在新分頁中顯示私人調查的連結。調查有助於我們建立更好的功能，並衡量基於瀏覽器的廣告活動其有效性。 <ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">啟用播放清單</translation>
 <translation id="7903608716704052878">自動加入檔案以供離線檢視</translation>
 <translation id="4193768184502613558">此選項將自動快取媒體檔，以讓您在沒有網路連線的情況下播放媒體檔。</translation>

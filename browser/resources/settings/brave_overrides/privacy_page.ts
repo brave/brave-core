@@ -277,8 +277,10 @@ RegisterPolymerTemplateModifications({
       const isNativeBraveWalletEnabled =
         loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       const isCardanoDappSupportFeatureEnabled =
-        loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')   
-      if (isNativeBraveWalletEnabled) {
+        loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
+      const isBraveWalletAllowed =
+        loadTimeData.getBoolean('isBraveWalletAllowed')
+      if (isNativeBraveWalletEnabled && isBraveWalletAllowed) {
         InsertEthereumSubpage(pages)
         InsertSolanaSubpage(pages)
         if (isCardanoDappSupportFeatureEnabled) {

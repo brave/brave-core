@@ -6,5 +6,5 @@
 #include "brave/browser/brave_shell_integration.h"
 
 #define DefaultBrowserWorker BraveDefaultBrowserWorker
-#include "src/chrome/browser/ui/startup/default_browser_prompt/default_browser_infobar_delegate.cc"
+#include <chrome/browser/ui/startup/default_browser_prompt/default_browser_infobar_delegate.cc>
 #undef DefaultBrowserWorker

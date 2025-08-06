@@ -106,17 +106,17 @@ import os
   private var subscriptions: [AnyCancellable] = []
   private let p3aUtilities: BraveP3AUtils
   private let deAmpPrefs: DeAmpPrefs
-  private let debounceService: DebounceService?
+  private let debounceService: (any DebounceService)?
   private let rewards: BraveRewards?
   private let clearDataCallback: ClearDataCallback
   private let webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?
   let tabManager: TabManager
 
   init(
-    profile: Profile,
+    profile: LegacyBrowserProfile,
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
-    debounceService: DebounceService?,
+    debounceService: (any DebounceService)?,
     braveCore: BraveProfileController,
     p3aUtils: BraveP3AUtils,
     rewards: BraveRewards?,

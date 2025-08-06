@@ -11,7 +11,7 @@
   static BrowserDesktopWindowTreeHost*             \
   CreateBrowserDesktopWindowTreeHost_Unused(__VA_ARGS__)
 
-#include "src/chrome/browser/ui/views/frame/browser_desktop_window_tree_host.h"  // IWYU pragma: export
+#include <chrome/browser/ui/views/frame/browser_desktop_window_tree_host.h>  // IWYU pragma: export
 
 #undef CreateBrowserDesktopWindowTreeHost
 

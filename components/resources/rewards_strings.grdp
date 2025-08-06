@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <message name="IDS_UTILITY_PROCESS_REWARDS_NAME" desc="The utility process running rewards">
+    Bat Rewards Service
+  </message>
+
   <!-- Rewards Reset -->
   <message name="IDS_BRAVE_UI_RESET" desc="">
     Reset
@@ -431,11 +435,17 @@
   <message name="IDS_REWARDS_TOS_UPDATE_TEXT" desc="">
     We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN">$1</ph>reset<ph name="LINK_END">$2</ph> Brave Rewards, which will disable the feature.
   </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_NTP_TEXT" desc="">
+    We’ve updated our Terms of Service. To keep using Brave Rewards, please review and agree to the updated terms.
+  </message>
   <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="">
     See <ph name="LINK_BEGIN">$1</ph>Brave Rewards Terms of Service<ph name="LINK_END">$2</ph>
   </message>
   <message name="IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL" desc="">
     I agree
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_NTP_BUTTON_LABEL" desc="">
+    Review Terms
   </message>
 
   <!-- Tip panel -->

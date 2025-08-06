@@ -8,11 +8,11 @@
 #include <map>
 #include <utility>
 
-#include "base/strings/stringprintf.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::internal {
 

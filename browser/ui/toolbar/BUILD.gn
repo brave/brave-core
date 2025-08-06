@@ -22,9 +22,9 @@ source_set("brave_app_menu_unit_test") {
     "//chrome/browser:browser_process",
     "//chrome/browser/sync",
     "//chrome/test:test_support",
-    "//components/constrained_window:constrained_window",
-    "//components/sync_preferences:sync_preferences",
-    "//components/sync_sessions:sync_sessions",
+    "//components/constrained_window",
+    "//components/sync_preferences",
+    "//components/sync_sessions",
     "//ui/views:test_support",
   ]
   if (enable_brave_vpn) {

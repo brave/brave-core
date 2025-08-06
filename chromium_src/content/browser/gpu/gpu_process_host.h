@@ -25,7 +25,7 @@
   void DidFailInitialize
 #endif
 
-#include "src/content/browser/gpu/gpu_process_host.h"  // IWYU pragma: export
+#include <content/browser/gpu/gpu_process_host.h>  // IWYU pragma: export
 
 #undef DidFailInitialize
 

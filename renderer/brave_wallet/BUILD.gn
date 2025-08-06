@@ -21,9 +21,9 @@ source_set("brave_wallet") {
 
   deps = [
     "//base",
-    "//brave/common:common",
+    "//brave/common",
     "//brave/common:mojo_bindings",
-    "//brave/components/brave_wallet/common:common",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/renderer",
     "//content/public/common",

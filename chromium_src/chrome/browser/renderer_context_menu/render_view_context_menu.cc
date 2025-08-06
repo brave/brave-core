@@ -20,6 +20,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
+#include "brave/browser/ui/ai_chat/utils.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
@@ -52,7 +53,6 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
@@ -135,7 +135,7 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
 #define RegisterMenuShownCallbackForTesting \
   RegisterMenuShownCallbackForTesting_unused
 
-#include "src/chrome/browser/renderer_context_menu/render_view_context_menu.cc"
+#include <chrome/browser/renderer_context_menu/render_view_context_menu.cc>
 
 #undef SpellingOptionsSubMenuObserver
 #undef RegisterMenuShownCallbackForTesting
@@ -313,10 +313,6 @@ void OnRewriteSuggestionCompleted(
     }
 
     // Show the error in Leo side panel UI.
-    Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
-    if (!browser) {
-      return;
-    }
     ai_chat::AIChatService* ai_chat_service =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(
             web_contents.get()->GetBrowserContext());
@@ -330,16 +326,13 @@ void OnRewriteSuggestionCompleted(
     }
     ai_chat::ConversationHandler* conversation =
         ai_chat_service->GetOrCreateConversationHandlerForContent(
-            helper->GetContentId(), helper->GetWeakPtr());
+            helper->content_id(), helper->GetWeakPtr());
     if (!conversation) {
       return;
     }
     conversation->MaybeUnlinkAssociatedContent();
 
-    auto* sidebar_controller = browser->GetFeatures().sidebar_controller();
-    CHECK(sidebar_controller);
-    sidebar_controller->ActivatePanelItem(
-        sidebar::SidebarItem::BuiltInItemType::kChatUI);
+    ai_chat::OpenAIChatForTab(web_contents.get());
 
     conversation->AddSubmitSelectedTextError(selected_text, action_type,
                                              result.error());
@@ -364,13 +357,13 @@ bool CanOpenSplitViewForWebContents(
 }
 
 void OpenLinkInSplitView(base::WeakPtr<content::WebContents> web_contents,
-                         const GURL& url) {
+                         content::OpenURLParams open_url_params) {
   if (!web_contents) {
     return;
   }
 
   Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
-  brave::NewSplitViewForTab(browser, std::nullopt, url);
+  brave::OpenLinkInSplitView(browser, std::move(open_url_params));
 }
 
 }  // namespace
@@ -506,10 +499,19 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           source_web_contents_, base::UTF16ToUTF8(params_.selection_text));
       break;
 #endif
-    case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
+    case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW: {
+      // Note that we must pass `initiator` so that cookies are not shared based
+      // on SameSite attributes.
+      // https://github.com/brave/brave-browser/issues/47642
+      auto open_url_params = GetOpenURLParamsWithExtraHeaders(
+          params_.link_url, /*referral=*/{}, params_.frame_origin,
+          WindowOpenDisposition::NEW_WINDOW, ui::PAGE_TRANSITION_LINK,
+          /*extra_headers=*/std::string(),
+          /*started_from_context_menu=*/true);
       ::OpenLinkInSplitView(source_web_contents_->GetWeakPtr(),
-                            params_.link_url);
+                            std::move(open_url_params));
       break;
+    }
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
           source_web_contents_);
@@ -546,12 +548,15 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
   // 3) Context menu rewrite in place feature is enabled.
   // 4) SSE is enabled, it is required otherwise the UI update will be too slow.
   // 5) The command is a rewrite command.
-  // 6) There's no in-progress in-place rewrite.
+  // 6) Not in the case of MimeHandlerView (ex: PDF) where
+  // embedder_web_contents_ is different from source_web_contents_.
+  // 7) There's no in-progress in-place rewrite.
   bool rewrite_in_place =
       params_.is_editable &&
       ai_chat::HasUserOptedIn(GetProfile()->GetPrefs()) &&
       ai_chat::features::IsContextMenuRewriteInPlaceEnabled() &&
       ai_chat::features::kAIChatSSE.Get() && IsRewriteCommand(command) &&
+      source_web_contents_ == embedder_web_contents_ &&
       !source_web_contents_->GetUserData(kAIChatRewriteDataKey);
 
   auto [action_type, p3a_action] = GetActionTypeAndP3A(command);
@@ -589,13 +594,8 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
                        source_web_contents_->GetWeakPtr(), selected_text,
                        action_type));
   } else {
-    if (!browser) {
-      VLOG(1) << "Can't get browser";
-      return;
-    }
-
     ai_chat::AIChatTabHelper* helper =
-        ai_chat::AIChatTabHelper::FromWebContents(source_web_contents_);
+        ai_chat::AIChatTabHelper::FromWebContents(embedder_web_contents_);
     if (!helper) {
       VLOG(1) << "Can't get AI chat tab helper";
       return;
@@ -603,8 +603,8 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
 
     ai_chat::ConversationHandler* conversation =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(
-            source_web_contents_->GetBrowserContext())
-            ->GetOrCreateConversationHandlerForContent(helper->GetContentId(),
+            embedder_web_contents_->GetBrowserContext())
+            ->GetOrCreateConversationHandlerForContent(helper->content_id(),
                                                        helper->GetWeakPtr());
     // Before trying to activate the panel, unlink page content if needed.
     // This needs to be called before activating the panel to check against the
@@ -612,10 +612,7 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     conversation->MaybeUnlinkAssociatedContent();
 
     // Active the panel.
-    auto* sidebar_controller = browser->GetFeatures().sidebar_controller();
-    CHECK(sidebar_controller);
-    sidebar_controller->ActivatePanelItem(
-        sidebar::SidebarItem::BuiltInItemType::kChatUI);
+    ai_chat::OpenAIChatForTab(embedder_web_contents_);
     conversation->SubmitSelectedText(selected_text, action_type);
   }
 

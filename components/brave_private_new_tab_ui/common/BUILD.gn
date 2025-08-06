@@ -1,3 +1,8 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//mojo/public/tools/bindings/mojom.gni")
 
 static_library("common") {
@@ -10,7 +15,7 @@ static_library("common") {
   deps = [
     "//base",
     "//brave/components/resources:strings",
-    "//components/prefs:prefs",
+    "//components/prefs",
     "//ui/base",
   ]
 }

@@ -8,8 +8,8 @@ source_set("unit_tests") {
   sources = [ "chrome_autocomplete_provider_client_unittest.cc" ]
   deps = [
     "//base/test:test_support",
-    "//brave/components/ai_chat/core/common:common",
-    "//components/omnibox/browser:browser",
-    "//testing/gtest:gtest",
+    "//brave/components/ai_chat/core/common",
+    "//components/omnibox/browser",
+    "//testing/gtest",
   ]
 }

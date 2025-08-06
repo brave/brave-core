@@ -14,7 +14,7 @@
       background_color_id, kBackgroundCornerRadius - 6))
 
 #define set_vertical_margin(...) set_vertical_margin(8)
-#include "src/chrome/browser/ui/views/toolbar/app_menu.cc"
+#include <chrome/browser/ui/views/toolbar/app_menu.cc>
 #undef set_vertical_margin
 #undef SetMenuItemBackground
 

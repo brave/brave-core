@@ -18,7 +18,7 @@
   bool isPointInStroke(ScriptState*, Path2D*, const double x, const double y); \
   void setGlobalCompositeOperation
 
-#include "src/third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.h"  // IWYU pragma: export
+#include <third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.h>  // IWYU pragma: export
 #undef setGlobalCompositeOperation
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_CANVAS_CANVAS2D_CANVAS_2D_RECORDER_CONTEXT_H_

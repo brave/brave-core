@@ -29,6 +29,8 @@
     <!-- Theme colors -->
     <color name="brave_white">@android:color/white</color>
     <color name="brave_link">#4C54D2</color>
+    <color name="menu_icon_color">#212529</color>
+    <color name="url_text_primary">#1b1b1f</color>
 
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_90">#F9C3B6</color>

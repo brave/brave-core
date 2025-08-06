@@ -20,7 +20,7 @@ using TabSearchPageHandler_BraveImpl = TabSearchPageHandler;
   friend TabSearchPageHandler_BraveImpl; \
   void MaybeShowUI
 
-#include "src/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h"  // IWYU pragma: export
+#include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.h>  // IWYU pragma: export
 
 #undef TabSearchPageHandler
 #undef MaybeShowUI

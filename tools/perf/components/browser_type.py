@@ -16,7 +16,7 @@ from components.common_options import CommonOptions
 from components.perf_test_utils import (DownloadArchiveAndUnpack, DownloadFile,
                                         GetProcessOutput, ToBravePlatformName,
                                         ToChromiumPlatformName)
-from components.version import BraveVersion
+from components.version import CHROME_VERSION_RE_PATTERN, BraveVersion
 
 
 def _GetBraveDownloadUrl(tag: str, filename: str) -> str:
@@ -56,7 +56,7 @@ def _DownloadWinInstallerAndExtract(out_dir: str, url: str,
   logging.info('Copy files to %s', out_dir)
   copy_tree(expected_install_path, out_dir)
   for file in os.listdir(expected_install_path):
-    if re.match(r'\d+\.\d+\.\d+.\d+', file):
+    if re.match(CHROME_VERSION_RE_PATTERN, file):
       assert (full_version is None)
       full_version = file
   assert (full_version is not None)

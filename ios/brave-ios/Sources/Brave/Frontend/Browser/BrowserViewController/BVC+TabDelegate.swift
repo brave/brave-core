@@ -337,11 +337,11 @@ extension BrowserViewController: TabDelegate {
   public func tab(_ tab: some TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
   {
     guard let documentTargetURL = request.mainDocumentURL else { return false }
-    let domainForShields = Domain.getOrCreate(
-      forUrl: documentTargetURL,
-      persistent: !tab.isPrivate
-    )
-    return domainForShields.isShieldExpected(.noScript, considerAllShieldsOption: true)
+    return tab.braveShieldsHelper?.isShieldExpected(
+      for: documentTargetURL,
+      shield: .noScript,
+      considerAllShieldsOption: true
+    ) ?? false
   }
 
   public func tab(

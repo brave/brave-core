@@ -17,7 +17,7 @@
   auto* _
 // Support for tab sync
 #define webViewNavigationProxy webViewNavigationProxy_ChromiumImpl
-#include "src/ios/web/web_state/ui/crw_web_controller.mm"
+#include <ios/web/web_state/ui/crw_web_controller.mm>
 #undef webViewNavigationProxy
 #undef _navigationHandler
 

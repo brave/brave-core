@@ -16,6 +16,6 @@
 #define SharedVersionIsGreaterThan(VERSION) \
   SharedVersionIsGreaterThan(mojo::shared_memory_version::kInvalidVersion)
 
-#include "src/third_party/blink/renderer/core/loader/cookie_jar.cc"  // IWYU pragma: export
+#include <third_party/blink/renderer/core/loader/cookie_jar.cc>  // IWYU pragma: export
 
 #undef SharedVersionIsGreaterThan

@@ -21,11 +21,17 @@ namespace {
 
 class ContainersIconImageSource : public gfx::CanvasImageSource {
  public:
-  ContainersIconImageSource(mojom::Icon icon, SkColor background, int dip_size)
+  ContainersIconImageSource(mojom::Icon icon,
+                            SkColor background,
+                            int dip_size,
+                            int dip_icon_size)
       : gfx::CanvasImageSource(gfx::Size(dip_size, dip_size)),
-        icon_(icon),
         background_(background),
-        dip_size_(dip_size) {}
+        dip_size_(dip_size),
+        dip_icon_size_(dip_icon_size),
+        icon_image_(gfx::CreateVectorIcon(GetVectorIconFromIconType(icon),
+                                          dip_icon_size,
+                                          SK_ColorWHITE)) {}
 
   void Draw(gfx::Canvas* canvas) override {
     DrawBackground(canvas);
@@ -42,13 +48,14 @@ class ContainersIconImageSource : public gfx::CanvasImageSource {
   }
 
   void DrawIcon(gfx::Canvas* canvas) const {
-    gfx::PaintVectorIcon(canvas, GetVectorIconFromIconType(icon_), dip_size_,
-                         SK_ColorWHITE);
+    canvas->DrawImageInt(icon_image_, (dip_size_ - dip_icon_size_) / 2,
+                         (dip_size_ - dip_icon_size_) / 2);
   }
 
-  const mojom::Icon icon_;
   const SkColor background_;
   const int dip_size_;
+  const int dip_icon_size_;
+  const gfx::ImageSkia icon_image_;
 };
 
 }  // namespace
@@ -91,10 +98,11 @@ const gfx::VectorIcon& GetVectorIconFromIconType(mojom::Icon icon) {
 gfx::ImageSkia GenerateContainerIcon(mojom::Icon icon,
                                      SkColor background,
                                      int dip_size,
+                                     int dip_icon_size,
                                      float scale_factor,
                                      const ui::ColorProvider* color_provider) {
-  auto image_source =
-      std::make_unique<ContainersIconImageSource>(icon, background, dip_size);
+  auto image_source = std::make_unique<ContainersIconImageSource>(
+      icon, background, dip_size, dip_icon_size);
   return gfx::ImageSkia(std::move(image_source), scale_factor);
 }
 

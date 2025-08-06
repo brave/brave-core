@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "build/build_config.h"
@@ -39,6 +38,7 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #if BUILDFLAG(IS_MAC)
 #include "content/public/common/content_features.h"
@@ -85,10 +85,9 @@ std::string Location(const std::string& path) {
 }
 
 std::string Amp(const GURL& custom_url) {
-  return base::StringPrintf(
+  return absl::StrFormat(
       kTestAmpBodyScaffolding,
-      base::StringPrintf(kTestAmpCanonicalLink, custom_url.spec().c_str())
-          .c_str());
+      absl::StrFormat(kTestAmpCanonicalLink, custom_url.spec()).c_str());
 }
 
 std::string Amp(const std::string& path) {
@@ -96,7 +95,7 @@ std::string Amp(const std::string& path) {
 }
 
 std::string Canonical(const std::string& custom_head = "It's canonical") {
-  return base::StringPrintf(kTestAmpBodyScaffolding, custom_head.c_str());
+  return absl::StrFormat(kTestAmpBodyScaffolding, custom_head);
 }
 
 }  // namespace
@@ -250,13 +249,12 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkWithinMax) {
   TogglePref(true);
   // Construct page with large <head>
-  const std::string large_string = base::StringPrintf(
-      "%s\n%s", std::string(kTestReadBufferSize, 'a').c_str(),
-      base::StringPrintf(kTestAmpCanonicalLink,
-                         Location(kTestCanonicalPage).c_str())
+  const std::string large_string = absl::StrFormat(
+      "%s\n%s", std::string(kTestReadBufferSize, 'a'),
+      absl::StrFormat(kTestAmpCanonicalLink, Location(kTestCanonicalPage))
           .c_str());
   const std::string amp_body_large =
-      base::StringPrintf(kTestAmpBodyScaffolding, large_string.c_str());
+      absl::StrFormat(kTestAmpBodyScaffolding, large_string);
 
   SetRequestHandler(kTestCanonicalPage, Canonical());
   SetRequestHandler(kTestAmpPage, amp_body_large);
@@ -269,13 +267,11 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkWithinMax) {
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkOutsideMax) {
   TogglePref(true);
   // Construct page with large <head>
-  const std::string large_string = base::StringPrintf(
-      "%s\n%s", std::string(3 * kTestReadBufferSize, 'a').c_str(),
-      base::StringPrintf(kTestAmpCanonicalLink,
-                         Location(kTestCanonicalPage).c_str())
-          .c_str());
+  const std::string large_string = absl::StrFormat(
+      "%s\n%s", std::string(3 * kTestReadBufferSize, 'a'),
+      absl::StrFormat(kTestAmpCanonicalLink, Location(kTestCanonicalPage)));
   const std::string amp_body_large =
-      base::StringPrintf(kTestAmpBodyScaffolding, large_string.c_str());
+      absl::StrFormat(kTestAmpBodyScaffolding, large_string);
 
   SetRequestHandler(kTestCanonicalPage, Canonical());
   SetRequestHandler(kTestAmpPage, amp_body_large);

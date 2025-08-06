@@ -33,6 +33,7 @@
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
@@ -230,21 +231,18 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   const bool use_rounded_corners =
       BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get());
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  reader_mode_toolbar_ =
-      contents_container_->AddChildView(std::make_unique<ReaderModeToolbarView>(
-          browser_->profile(), use_rounded_corners));
-
-  views::View* contents_view = contents_web_view_;
-  // MultiContentsView is contents view with SideBySide feature.
-  if (base::FeatureList::IsEnabled(features::kSideBySide)) {
-    contents_view = multi_contents_view_;
+  // When SideBySide is enabled, each ContentsContainerView in MultiContentsView
+  // own ReaderModeToolbarView.
+  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
+    reader_mode_toolbar_ = contents_container_->AddChildView(
+        std::make_unique<ReaderModeToolbarView>(browser_->profile(),
+                                                use_rounded_corners));
+    contents_container_->SetLayoutManager(
+        std::make_unique<BraveContentsLayoutManager>(
+            devtools_web_view(), devtools_scrim_view(), contents_web_view_,
+            lens_overlay_view_, contents_scrim_view(), /*border_view*/ nullptr,
+            watermark_view_.get(), reader_mode_toolbar_));
   }
-  CHECK(contents_view);
-  contents_container_->SetLayoutManager(
-      std::make_unique<BraveContentsLayoutManager>(
-          devtools_web_view(), devtools_scrim_view(), contents_view,
-          lens_overlay_view_, contents_scrim_view(), /*border_view*/ nullptr,
-          watermark_view_.get(), reader_mode_toolbar_));
 #endif
 
   if (use_rounded_corners) {
@@ -453,6 +451,15 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
 }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+ReaderModeToolbarView* BraveBrowserView::reader_mode_toolbar() {
+  if (base::FeatureList::IsEnabled(features::kSideBySide)) {
+    return GetBraveMultiContentsView()
+        ->GetActiveContentsContainerView()
+        ->reader_mode_toolbar();
+  }
+
+  return reader_mode_toolbar_;
+}
 
 speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
     speedreader::SpeedreaderTabHelper* tab_helper,
@@ -465,7 +472,7 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
       arrow = views::BubbleBorder::TOP_RIGHT;
       break;
     case speedreader::SpeedreaderBubbleLocation::kToolbar:
-      anchor = reader_mode_toolbar_->toolbar();
+      anchor = reader_mode_toolbar()->toolbar();
       arrow = views::BubbleBorder::TOP_LEFT;
       break;
   }
@@ -489,8 +496,18 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
     }
     return false;
   };
-  reader_mode_toolbar_->SetVisible(
+  reader_mode_toolbar()->SetVisible(
       is_distilled(browser()->tab_strip_model()->GetActiveWebContents()));
+
+  if (base::FeatureList::IsEnabled(features::kSideBySide)) {
+    // Need to update inactive split tabs' reader mode toolbar because
+    // it's also visible.
+    auto* contents_container =
+        GetBraveMultiContentsView()->GetInactiveContentsContainerView();
+    auto* reader_mode_toolbar = contents_container->reader_mode_toolbar();
+    reader_mode_toolbar->SetVisible(
+        is_distilled(contents_container->GetContentsView()->web_contents()));
+  }
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 

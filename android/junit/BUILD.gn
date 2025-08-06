@@ -24,11 +24,16 @@ if (is_android) {
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.toolbar") {
-    sources = [ "src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java" ]
+    resources_package = "org.chromium.chrome.browser.toolbar"
+    sources = [
+      "src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java",
+      "src/org/chromium/chrome/browser/toolbar/adaptive/settings/BraveAdaptiveToolbarSettingsFragmentTest.java",
+    ]
 
     deps = [
       "//brave/browser/ui/android/toolbar:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/settings:java",
     ]
   }
 }

@@ -521,6 +521,7 @@ provideStrings({
   braveWalletAccountSettings: 'Account settings',
   braveWalletPasswordIsRequiredToTakeThisAction:
     'Password is required to take this action.',
+  braveWalletAddToken: 'Add token',
 
   // Empty Token List State
   braveWalletNoAvailableAssets: 'No available assets',
@@ -824,6 +825,7 @@ provideStrings({
   braveWalletTransactionGasPremium: 'Gas Premium',
   braveWalletTransactionGasFeeCap: 'Gas Fee Cap',
   braveWalletNetworkFees: 'Network fees',
+  braveWalletNetworkFee: 'Network fee',
   braveWalletTransactionMayIncludeAccountCreationFee:
     'This transaction may include an account creation fee',
   braveWalletSystemProgramAssignWarningTitle:
@@ -831,6 +833,9 @@ provideStrings({
   braveWalletSystemProgramAssignWarningDescription:
     'This transaction will reassign ownership of the account to a new '
     + 'program. This action is irreversible and may result in loss of funds.',
+  braveSwapSlow: 'Slow',
+  braveSwapAverage: 'Average',
+  braveSwapFast: 'Fast',
 
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',

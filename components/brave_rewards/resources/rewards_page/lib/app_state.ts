@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
-import { Notification } from '../../shared/components/notifications'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { Optional } from '../../shared/lib/optional'
 
@@ -122,7 +121,33 @@ export interface CaptchaInfo {
   maxAttemptsExceeded: boolean
 }
 
-export { Notification }
+export type NotificationType =
+  'monthly-tip-completed' |
+  'external-wallet-disconnected'
+
+export interface Notification {
+  type: NotificationType
+  id: string
+  timeStamp: number
+}
+
+export interface ExternalWalletDisconnectedNotification extends Notification {
+  type: 'external-wallet-disconnected'
+  provider: ExternalWalletProvider
+}
+
+export type NotificationActionType =
+  'open-link' |
+  'reconnect-external-wallet'
+
+export interface NotificationAction {
+  type: NotificationActionType
+}
+
+export interface OpenLinkNotificationAction extends NotificationAction {
+  type: 'open-link'
+  url: string
+}
 
 export { ExternalWallet, ExternalWalletProvider }
 
@@ -158,6 +183,7 @@ export interface AppState {
   externalWalletProviders: ExternalWalletProvider[]
   balance: Optional<number>
   tosUpdateRequired: boolean
+  selfCustodyProviderInvites: ExternalWalletProvider[]
   selfCustodyInviteDismissed: boolean
   adsInfo: AdsInfo | null
   recurringContributions: RecurringContribution[]
@@ -185,6 +211,7 @@ export function defaultState(): AppState {
     externalWalletProviders: [],
     balance: new Optional(),
     tosUpdateRequired: false,
+    selfCustodyProviderInvites: [],
     selfCustodyInviteDismissed: false,
     adsInfo: null,
     recurringContributions: [],

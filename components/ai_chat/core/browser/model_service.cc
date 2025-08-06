@@ -224,6 +224,27 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Google DeepMind";
+      options->name = "gemma-3-12b-it";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = features::kFreemiumAvailable.Get()
+                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
+                            : mojom::ModelAccess::BASIC;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-gemma";
+      model->display_name = "Gemma 12B";
+      model->vision_support = true;
+      model->supports_tools = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
 
     return models;
   }());
@@ -731,12 +752,13 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     auto& leo_model_opts = model->options->get_leo_model_options();
     DVLOG(1) << "Started AI engine: conversation api";
     engine = std::make_unique<EngineConsumerConversationAPI>(
-        *leo_model_opts, url_loader_factory, credential_manager, this);
+        *leo_model_opts, url_loader_factory, credential_manager, this,
+        pref_service_);
   } else if (model->options->is_custom_model_options()) {
     auto& custom_model_opts = model->options->get_custom_model_options();
     DVLOG(1) << "Started AI engine: custom";
     engine = std::make_unique<EngineConsumerOAIRemote>(
-        *custom_model_opts, url_loader_factory, this);
+        *custom_model_opts, url_loader_factory, this, pref_service_);
   }
 
   return engine;

@@ -17,7 +17,7 @@
 
 // Use Brave's lists of per-country engines.
 #define GetPrepopulatedEngines GetPrepopulatedEngines_UnUsed
-#include "src/components/regional_capabilities/regional_capabilities_utils.cc"
+#include <components/regional_capabilities/regional_capabilities_utils.cc>
 #undef GetPrepopulatedEngines
 
 namespace regional_capabilities {

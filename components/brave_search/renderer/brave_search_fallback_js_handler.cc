@@ -24,8 +24,8 @@ BraveSearchFallbackJSHandler::BraveSearchFallbackJSHandler(
     v8::Local<v8::Context> v8_context,
     blink::ThreadSafeBrowserInterfaceBrokerProxy* broker)
     : broker_(broker),
-      context_(v8_context->GetIsolate(), v8_context),
-      isolate_(v8_context->GetIsolate()) {}
+      context_(v8::Isolate::GetCurrent(), v8_context),
+      isolate_(v8::Isolate::GetCurrent()) {}
 
 BraveSearchFallbackJSHandler::~BraveSearchFallbackJSHandler() = default;
 

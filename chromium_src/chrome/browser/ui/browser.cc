@@ -34,7 +34,7 @@
 #define BrowserActions(...) BraveBrowserActions(__VA_ARGS__)
 #define DeprecatedCreateOwnedForTesting DeprecatedCreateOwnedForTesting_Unused
 
-#include "src/chrome/browser/ui/browser.cc"
+#include <chrome/browser/ui/browser.cc>
 
 #undef DeprecatedCreateOwnedForTesting
 #undef BrowserActions

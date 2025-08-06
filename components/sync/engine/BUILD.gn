@@ -12,7 +12,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//components/sync:sync",
+    "//components/sync",
     "//components/sync:test_support",
     "//testing/gmock",
     "//testing/gtest",

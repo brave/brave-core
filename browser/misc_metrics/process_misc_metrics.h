@@ -20,6 +20,7 @@ class MenuMetrics;
 class NewTabMetrics;
 class VerticalTabMetrics;
 class SplitViewMetrics;
+class DefaultBrowserMonitor;
 #else
 class PrivacyHubMetrics;
 class TabMetrics;
@@ -54,6 +55,7 @@ class ProcessMiscMetrics {
   std::unique_ptr<NewTabMetrics> new_tab_metrics_;
   std::unique_ptr<VerticalTabMetrics> vertical_tab_metrics_;
   std::unique_ptr<SplitViewMetrics> split_view_metrics_;
+  std::unique_ptr<DefaultBrowserMonitor> default_browser_monitor_;
 #else
   std::unique_ptr<PrivacyHubMetrics> privacy_hub_metrics_;
   std::unique_ptr<TabMetrics> tab_metrics_;

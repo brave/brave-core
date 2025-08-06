@@ -16,7 +16,6 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -39,6 +38,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace brave {
@@ -122,7 +122,7 @@ class BraveNetworkAuditSearchAdTest : public InProcessBrowserTest {
     static constexpr char kAllowedBraveSearchTemplate[] =
         "https://search.brave.com:%s/";
     allowed_prefixes.push_back(
-        base::StringPrintf(kAllowedBraveSearchTemplate, port.c_str()));
+        absl::StrFormat(kAllowedBraveSearchTemplate, port));
     VerifyNetworkAuditLog(net_log_path_, audit_results_path_, allowed_prefixes);
   }
 

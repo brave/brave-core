@@ -11,7 +11,6 @@ import("//build/rust/cargo_crate.gni")
 cargo_crate("lib") {
   crate_name = "curve25519_dalek_derive"
   epoch = "0.1"
-  enabled = current_cpu == "x64"
   crate_type = "proc-macro"
   crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-v0_1/src/lib.rs"
   sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-v0_1/src/lib.rs" ]
@@ -23,14 +22,11 @@ cargo_crate("lib") {
   cargo_pkg_description = "curve25519-dalek Derives"
   cargo_pkg_version = "0.1.1"
 
-  deps = []
-  if (current_cpu == "x64") {
-    deps += [
-      "//brave/third_party/rust/proc_macro2/v1:lib",
-      "//brave/third_party/rust/quote/v1:lib",
-      "//brave/third_party/rust/syn/v2:lib",
-    ]
-  }
+  deps = [
+    "//brave/third_party/rust/proc_macro2/v1:lib",
+    "//brave/third_party/rust/quote/v1:lib",
+    "//brave/third_party/rust/syn/v2:lib",
+  ]
   rustenv = []
   rustflags = []
 

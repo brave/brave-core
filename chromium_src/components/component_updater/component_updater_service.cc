@@ -9,7 +9,7 @@
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service_internal.h"
 
-#include "src/components/component_updater/component_updater_service.cc"
+#include <components/component_updater/component_updater_service.cc>
 
 namespace component_updater {
 

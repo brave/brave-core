@@ -36,6 +36,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
@@ -52,6 +53,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -2510,7 +2512,7 @@ mojom::CardanoAddressPtr KeyringService::GetCardanoAddress(
                                      *payment_key_id);
 }
 
-std::optional<std::array<uint8_t, kCardanoSignatureSize>>
+std::optional<CardanoSignMessageResult>
 KeyringService::SignMessageByCardanoKeyring(
     const mojom::AccountIdPtr& account_id,
     const mojom::CardanoKeyIdPtr& key_id,
@@ -2525,6 +2527,48 @@ KeyringService::SignMessageByCardanoKeyring(
 
   return cardano_keyring->SignMessage(account_id->account_index, *key_id,
                                       message);
+}
+
+std::optional<base::Value::Dict>
+KeyringService::SignCip30MessageByCardanoKeyring(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::CardanoKeyIdPtr& key_id,
+    base::span<const uint8_t> message) {
+  CHECK(IsCardanoAccount(account_id));
+  CHECK(key_id);
+
+  auto* cardano_keyring = GetKeyring<CardanoHDKeyring>(account_id->keyring_id);
+  if (!cardano_keyring) {
+    return std::nullopt;
+  }
+
+  auto address =
+      cardano_keyring->GetAddress(account_id->account_index, *key_id);
+  if (!address) {
+    return std::nullopt;
+  }
+
+  auto cardano_address = CardanoAddress::FromString(address->address_string);
+  if (!cardano_address) {
+    return std::nullopt;
+  }
+
+  auto signature_pair = cardano_keyring->SignMessage(
+      account_id->account_index, *key_id,
+      CardanoCip30Serializer::SerializedSignPayload(*cardano_address, message));
+  if (!signature_pair) {
+    return std::nullopt;
+  }
+
+  base::Value::Dict result;
+  result.Set("key",
+             HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataKey(
+                 *cardano_address, signature_pair->pubkey)));
+  result.Set(
+      "signature",
+      HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataSignature(
+          *cardano_address, message, signature_pair->signature)));
+  return result;
 }
 
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(

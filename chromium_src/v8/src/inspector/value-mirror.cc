@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "src/v8/src/inspector/value-mirror.cc"
-
 #include "brave/components/brave_page_graph/common/buildflags.h"
+
+#include <v8/src/inspector/value-mirror.cc>
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
@@ -156,7 +156,7 @@ v8::Local<v8::Value> SerializeValue(v8::Local<v8::Context> context,
     return serialized_value;
   }
 
-  Isolate* isolate = context->GetIsolate();
+  Isolate* isolate = v8::Isolate::GetCurrent();
   serialized_value = Object::New(isolate);
 
   for (auto& mirror : properties.mirrors()) {
@@ -193,7 +193,7 @@ v8::Local<v8::Value> SerializeValue(v8::Local<v8::Context> context,
       }
 
       if (result->hasValue()) {
-        prop_value = ConvertProtocolValueToV8Value(context->GetIsolate(),
+        prop_value = ConvertProtocolValueToV8Value(v8::Isolate::GetCurrent(),
                                                    result->getValue(nullptr));
       } else if (result->hasUnserializableValue()) {
         prop_value = v8_inspector::toV8String(

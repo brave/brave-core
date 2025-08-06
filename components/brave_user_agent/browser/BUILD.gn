@@ -15,9 +15,9 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_user_agent/common",
-    "//components/component_updater:component_updater",
+    "//components/component_updater",
     "//crypto",
     "//net",
     "//url",
@@ -30,8 +30,8 @@ if (!is_ios) {
     sources = [ "brave_user_agent_exceptions_unittest.cc" ]
 
     deps = [
-      "//brave/components/brave_user_agent/browser:browser",
-      "//brave/components/brave_user_agent/common:common",
+      "//brave/components/brave_user_agent/browser",
+      "//brave/components/brave_user_agent/common",
       "//content/test:test_support",
       "//testing/gtest",
     ]

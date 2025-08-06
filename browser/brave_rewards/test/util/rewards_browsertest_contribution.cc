@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_helper.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_util.h"
@@ -21,6 +20,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::test_util {
 
@@ -133,7 +133,7 @@ void RewardsBrowserTestContribution::TipPublisher(
         site_banner_contents.get())[selection];
 
     // Select the tip amount (default is 1.000 BAT)
-    std::string amount_selector = base::StringPrintf(
+    std::string amount_selector = absl::StrFormat(
         "[data-test-id=tip-amount-options] [data-option-index='%u']",
         selection);
 
@@ -197,7 +197,7 @@ void RewardsBrowserTestContribution::VerifyTip(const double amount,
                                    : "[data-test-id=rewards-summary-one-time]";
 
   test_util::WaitForElementToContain(contents(), selector,
-                                     base::StringPrintf("%.2f BAT", amount));
+                                     absl::StrFormat("%.2f BAT", amount));
 }
 
 void RewardsBrowserTestContribution::IsBalanceCorrect() {

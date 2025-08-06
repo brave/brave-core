@@ -19,6 +19,6 @@ int PassThrough(int model_index) {
 // a split tab.
 #define GetIndexOfLastActiveTab(...) PassThrough(model_index)
 
-#include "src/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc"
+#include <chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc>
 
 #undef GetIndexOfLastActiveTab

@@ -7,10 +7,9 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TEST_MOCK_ASSOCIATED_CONTENT_H_
 
 #include <string>
-#include <string_view>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
 
@@ -21,35 +20,40 @@ class MockAssociatedContent : public AssociatedContentDelegate {
   MockAssociatedContent();
   ~MockAssociatedContent() override;
 
-  int GetContentId() const override { return content_id_; }
-
   void SetContentId(int id) { content_id_ = id; }
 
-  void GetContent(GetPageContentCallback callback) override;
+  void SetUrl(GURL url) { url_ = std::move(url); }
 
-  std::string_view GetCachedTextContent() const override {
-    return cached_text_content_;
+  void SetTextContent(std::string text_content) {
+    text_content_ = std::move(text_content);
   }
 
-  MOCK_METHOD(GURL, GetURL, (), (const, override));
-  MOCK_METHOD(std::u16string, GetTitle, (), (const, override));
-  MOCK_METHOD(bool, GetCachedIsVideo, (), (const, override));
+  void SetIsVideo(bool is_video) { is_video_ = is_video; }
 
-  MOCK_METHOD(std::string, GetTextContent, (), (const));
+  void SetTitle(std::u16string title);
+
+  // AssociatedContentDelegate:
+  void GetContent(GetPageContentCallback callback) override;
+  void OnNewPage(int64_t navigation_id) override;
 
   MOCK_METHOD(void,
               GetStagedEntriesFromContent,
               (GetStagedEntriesCallback),
               (override));
   MOCK_METHOD(bool, HasOpenAIChatPermission, (), (const, override));
+  MOCK_METHOD(void,
+              GetScreenshots,
+              (mojom::ConversationHandler::GetScreenshotsCallback),
+              (override));
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
 
  private:
-  int content_id_ = 0;
-  std::string cached_text_content_;
+  std::string text_content_;
+  bool is_video_ = false;
+
   base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
 };
 

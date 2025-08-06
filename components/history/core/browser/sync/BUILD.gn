@@ -9,7 +9,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//components/history/core/browser:browser",
+    "//components/history/core/browser",
     "//components/history/core/common",
     "//components/history/core/test",
     "//components/prefs:test_support",

@@ -445,7 +445,6 @@ base::SequencedTaskRunner* AdBlockService::GetTaskRunner() {
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(prefs::kAdBlockCookieListOptInShown, false);
   registry->RegisterBooleanPref(prefs::kAdBlockCookieListSettingTouched, false);
   registry->RegisterBooleanPref(
       prefs::kAdBlockMobileNotificationsListSettingTouched, false);
@@ -454,6 +453,15 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedAllDefaultRegions, false);
+}
+
+void RegisterPrefsForAdBlockServiceForMigration(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(prefs::kAdBlockCookieListOptInShown, false);
+}
+
+void MigrateObsoletePrefsForAdBlockService(PrefService* local_state) {
+  // Added 2025-07-11
+  local_state->ClearPref(prefs::kAdBlockCookieListOptInShown);
 }
 
 AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {

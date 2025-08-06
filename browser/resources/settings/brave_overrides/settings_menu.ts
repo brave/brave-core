@@ -264,14 +264,18 @@ RegisterPolymerTemplateModifications({
     }
 
     // Add web3 item
-    const web3El = createMenuElement(
-      loadTimeData.getString('braveWeb3'),
-      '/web3',
-      'product-brave-wallet',
-      'braveWeb3',
-    )
-    if (privacyEl && web3El) {
-      privacyEl.insertAdjacentElement('afterend', web3El)
+    const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
+    let web3El: HTMLElement | null = null
+    if (isBraveWalletAllowed) {
+      web3El = createMenuElement(
+        loadTimeData.getString('braveWeb3'),
+        '/web3',
+        'product-brave-wallet',
+        'braveWallet',
+      )
+      if (privacyEl && web3El) {
+        privacyEl.insertAdjacentElement('afterend', web3El)
+      }
     }
 
     // Add leo item
@@ -281,7 +285,11 @@ RegisterPolymerTemplateModifications({
       'product-brave-leo',
       'leoAssistant',
     )
-    web3El.insertAdjacentElement('afterend', leoAssistantEl)
+    if (web3El) {
+      web3El.insertAdjacentElement('afterend', leoAssistantEl)
+    } else if (privacyEl) {
+      privacyEl.insertAdjacentElement('afterend', leoAssistantEl)
+    }
 
     // Add Sync item
     const syncEl = createMenuElement(

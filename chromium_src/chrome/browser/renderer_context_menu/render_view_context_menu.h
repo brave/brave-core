@@ -33,7 +33,7 @@ class BraveRenderViewContextMenu;
   static void RegisterMenuShownCallbackForTesting_unused
 #define AppendReadingModeItem virtual AppendReadingModeItem
 #define AppendDeveloperItems virtual AppendDeveloperItems
-#include "src/chrome/browser/renderer_context_menu/render_view_context_menu.h"  // IWYU pragma: export
+#include <chrome/browser/renderer_context_menu/render_view_context_menu.h>  // IWYU pragma: export
 #undef AppendDeveloperItems
 #undef AppendReadingModeItem
 #undef RegisterMenuShownCallbackForTesting

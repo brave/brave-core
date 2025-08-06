@@ -167,7 +167,8 @@ void RegisterNTPSponsoredImagesComponentCallback(
 void RegisterNTPBackgroundImagesComponent(
     component_updater::ComponentUpdateService* component_update_service,
     OnComponentReadyCallback callback) {
-  if (!component_update_service) {
+  if (!component_update_service ||
+      BraveOnDemandUpdater::GetInstance()->is_component_update_disabled()) {
     // In test, `component_update_service` could be nullptr.
     return;
   }
@@ -188,7 +189,8 @@ void RegisterNTPSponsoredImagesComponent(
     const std::string& component_id,
     const std::string& component_name,
     OnComponentReadyCallback callback) {
-  if (!component_update_service) {
+  if (!component_update_service ||
+      BraveOnDemandUpdater::GetInstance()->is_component_update_disabled()) {
     // In test, `component_update_service` could be nullptr.
     return;
   }

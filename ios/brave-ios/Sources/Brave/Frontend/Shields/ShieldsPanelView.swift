@@ -28,7 +28,7 @@ struct ShieldsPanelView: View {
   }
 
   private let url: URL
-  private var tab: (any TabState)?
+  private var tab: any TabState
   private let displayHost: String
   @AppStorage("advancedShieldsExpanded") private var advancedShieldsExpanded = false
   @ObservedObject private var viewModel: ShieldsSettingsViewModel
@@ -42,7 +42,7 @@ struct ShieldsPanelView: View {
   ) {
     self.url = url
     self.tab = tab
-    self.viewModel = ShieldsSettingsViewModel(tab: tab, domain: domain)
+    self.viewModel = ShieldsSettingsViewModel(tab: tab)
     self.actionCallback = callback
     self.displayHost =
       "\u{200E}\(URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: url.strippingBlobURLAuth.absoluteString))"
@@ -243,7 +243,8 @@ struct ShieldsPanelView: View {
         NavigationLink {
           ShredSettingsView(
             url: url,
-            isPersistent: !viewModel.isPrivateBrowsing
+            isPersistent: !viewModel.isPrivateBrowsing,
+            tab: tab
           ) {
             actionCallback(.shredSiteData)
           }
@@ -259,7 +260,7 @@ struct ShieldsPanelView: View {
         .padding(.vertical, 4)
       }
     }
-    if FeatureList.kBraveIOSDebugAdblock.enabled, let contentBlocker = tab?.contentBlocker {
+    if FeatureList.kBraveIOSDebugAdblock.enabled, let contentBlocker = tab.contentBlocker {
       ShieldSettingRow {
         NavigationLink {
           AdblockBlockedRequestsView(

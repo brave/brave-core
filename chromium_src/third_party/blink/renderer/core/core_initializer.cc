@@ -10,5 +10,5 @@
   brave::BraveSessionCache::Init(); \
   BindingSecurity
 
-#include "src/third_party/blink/renderer/core/core_initializer.cc"
+#include <third_party/blink/renderer/core/core_initializer.cc>
 #undef BindingSecurity

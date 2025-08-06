@@ -179,6 +179,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common:pref_names",
     "//brave/components/brave_wallet/common:rust_lib",
     "//brave/components/brave_wallet/common:test_support",
     "//brave/components/resources:strings_grit",
@@ -192,7 +193,6 @@ source_set("unit_tests") {
   if (!is_android) {
     sources += [
       "brave_wallet_tab_helper_unittest.cc",
-      "cardano_provider_impl_unittest.cc",
       "ethereum_provider_impl_unittest.cc",
       "notifications/wallet_notification_service_unittest.cc",
       "solana_provider_impl_unittest.cc",

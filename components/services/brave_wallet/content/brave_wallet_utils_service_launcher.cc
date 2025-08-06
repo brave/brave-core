@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/grit/brave_generated_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/service_process_host.h"
 
 namespace brave_wallet {
@@ -17,7 +17,7 @@ void LaunchBraveWalletUtilsService(
   content::ServiceProcessHost::Launch(
       std::move(receiver),
       content::ServiceProcessHost::Options()
-          .WithDisplayName(IDS_UTILITY_PROCESS_WALLET_UTILS_NAME)
+          .WithDisplayName(IDS_BRAVE_WALLET_UTILITY_PROCESS_WALLET_UTILS_NAME)
           .Pass());
 }
 

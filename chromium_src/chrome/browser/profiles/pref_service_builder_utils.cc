@@ -13,7 +13,7 @@
 #include "ui/color/system_theme.h"
 
 #define RegisterProfilePrefs RegisterProfilePrefs_ChromiumImpl
-#include "src/chrome/browser/profiles/pref_service_builder_utils.cc"
+#include <chrome/browser/profiles/pref_service_builder_utils.cc>
 #undef RegisterProfilePrefs
 
 // Prefs for KeyedService

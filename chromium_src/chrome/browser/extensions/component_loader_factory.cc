@@ -11,5 +11,5 @@
 #include "extensions/browser/extensions_browser_client.h"
 
 #define WrapUnique(...) WrapUnique(new BraveComponentLoader(profile))
-#include "src/chrome/browser/extensions/component_loader_factory.cc"
+#include <chrome/browser/extensions/component_loader_factory.cc>
 #undef WrapUnique

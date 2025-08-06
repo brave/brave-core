@@ -9,7 +9,7 @@
 #include "brave/browser/ui/brave_scheme_utils.h"
 
 #define CreateOriginLabelFromStartUrl CreateOriginLabelFromStartUrl_ChromiumImpl
-#include "src/chrome/browser/ui/views/web_apps/web_app_views_utils.cc"
+#include <chrome/browser/ui/views/web_apps/web_app_views_utils.cc>
 #undef CreateOriginLabelFromStartUrl
 
 namespace web_app {

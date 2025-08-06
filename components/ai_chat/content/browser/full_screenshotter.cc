@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/logging.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
@@ -22,6 +21,7 @@
 #include "components/paint_preview/common/recording_map.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "mojo/public/cpp/base/proto_wrapper.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/geometry/rect.h"

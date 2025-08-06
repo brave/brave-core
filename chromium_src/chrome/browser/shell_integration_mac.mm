@@ -22,7 +22,7 @@
 
 #define GetPlatformSpecificDefaultWebClientSetPermission \
   GetPlatformSpecificDefaultWebClientSetPermission_Unused
-#include "src/chrome/browser/shell_integration_mac.mm"
+#include <chrome/browser/shell_integration_mac.mm>
 #undef GetPlatformSpecificDefaultWebClientSetPermission
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 

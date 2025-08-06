@@ -17,6 +17,6 @@
   });                                                               \
   more_recently_modified;
 
-#include "src/components/bookmarks/browser/bookmark_utils.cc"
+#include <components/bookmarks/browser/bookmark_utils.cc>
 
 #undef stable_sort

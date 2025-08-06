@@ -788,7 +788,7 @@ void JSSolanaProvider::OnSignAllTransactions(
   if (error == mojom::SolanaProviderError::kSuccess) {
     size_t serialized_txs_length = serialized_txs.size();
     v8::Local<v8::Array> tx_array =
-        v8::Array::New(context->GetIsolate(), serialized_txs_length);
+        v8::Array::New(v8::Isolate::GetCurrent(), serialized_txs_length);
     for (size_t i = 0; i < serialized_txs_length; ++i) {
       v8::Local<v8::Value> transaction =
           CreateTransaction(context, serialized_txs[i], versions[i]);
@@ -1071,7 +1071,7 @@ bool JSSolanaProvider::LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate) {
 v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
     v8::Local<v8::Context> context,
     const std::string& base58_str) {
-  v8::Isolate* isolate = context->GetIsolate();
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
@@ -1103,7 +1103,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
     v8::Local<v8::Context> context,
     const std::vector<uint8_t> serialized_tx,
     mojom::SolanaMessageVersion version) {
-  v8::Isolate* isolate = context->GetIsolate();
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
   if (!render_frame()) {
     return v8::Undefined(isolate);
   }

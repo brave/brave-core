@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/security_interstitials/core/insecure_form_util_unittest.cc"
+#include <components/security_interstitials/core/insecure_form_util_unittest.cc>
 
 TEST_F(InsecureFormUtilTest, IsInsecureFormActionOnOnionSource) {
   // Should work even without special-casing .onion
