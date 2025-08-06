@@ -54,7 +54,14 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
       content::WebContentsUserData<BraveShieldsTabHelper>(*web_contents) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
-  observation_.Observe(GetHostContentSettingsMap(web_contents));
+  auto* map = GetHostContentSettingsMap(web_contents);
+  observation_.Observe(map);
+  PrefService* profile_prefs =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext())
+          ->GetPrefs();
+  brave_shields_settings_ =
+      std::make_unique<brave_shields::BraveShieldsSettings>(
+          map, g_browser_process->local_state(), profile_prefs);
 }
 
 void BraveShieldsTabHelper::DidFinishNavigation(
@@ -175,14 +182,12 @@ BraveShieldsTabHelper::GetInvokedWebcompatFeatures() {
 }
 
 bool BraveShieldsTabHelper::GetBraveShieldsEnabled() {
-  return brave_shields::GetIsBraveShieldsEnabled(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+  return brave_shields_settings_->GetBraveShieldsEnabled(GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
-  auto* map = GetHostContentSettingsMap(web_contents());
-  brave_shields::SetIsBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL(),
-                                          g_browser_process->local_state());
+  brave_shields_settings_->SetBraveShieldsEnabled(is_enabled,
+                                                  GetCurrentSiteURL());
   ReloadWebContents();
 }
 
@@ -209,13 +214,11 @@ GURL BraveShieldsTabHelper::GetFaviconURL(bool refresh) {
 }
 
 AdBlockMode BraveShieldsTabHelper::GetAdBlockMode() {
-  auto* map = GetHostContentSettingsMap(web_contents());
-  return brave_shields::GetAdBlockMode(map, GetCurrentSiteURL());
+  return brave_shields_settings_->GetAdBlockMode(GetCurrentSiteURL());
 }
 
 FingerprintMode BraveShieldsTabHelper::GetFingerprintMode() {
-  return brave_shields::GetFingerprintMode(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+  return brave_shields_settings_->GetFingerprintMode(GetCurrentSiteURL());
 }
 
 CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
@@ -255,8 +258,7 @@ HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
 }
 
 bool BraveShieldsTabHelper::GetNoScriptEnabled() {
-  return brave_shields::GetNoScriptEnabled(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+  return brave_shields_settings_->GetNoScriptEnabled(GetCurrentSiteURL());
 }
 
 bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
@@ -265,25 +267,13 @@ bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
 }
 
 void BraveShieldsTabHelper::SetAdBlockMode(AdBlockMode mode) {
-  auto* map = GetHostContentSettingsMap(web_contents());
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
-
-  brave_shields::SetAdBlockMode(map, mode, GetCurrentSiteURL(),
-                                g_browser_process->local_state(),
-                                profile_prefs);
+  brave_shields_settings_->SetAdBlockMode(mode, GetCurrentSiteURL());
 
   ReloadWebContents();
 }
 
 void BraveShieldsTabHelper::SetFingerprintMode(FingerprintMode mode) {
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
-  brave_shields::SetFingerprintMode(
-      GetHostContentSettingsMap(web_contents()), mode, GetCurrentSiteURL(),
-      g_browser_process->local_state(), profile_prefs);
+  brave_shields_settings_->SetFingerprintMode(mode, GetCurrentSiteURL());
 
   ReloadWebContents();
 }
@@ -331,9 +321,8 @@ void BraveShieldsTabHelper::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
 }
 
 void BraveShieldsTabHelper::SetIsNoScriptEnabled(bool is_enabled) {
-  brave_shields::SetIsNoScriptEnabled(GetHostContentSettingsMap(web_contents()),
-                                      is_enabled, GetCurrentSiteURL(),
-                                      g_browser_process->local_state());
+  brave_shields_settings_->SetIsNoScriptEnabled(is_enabled,
+                                                GetCurrentSiteURL());
 
   ReloadWebContents();
 }

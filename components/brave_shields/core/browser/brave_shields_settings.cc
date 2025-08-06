@@ -13,33 +13,38 @@
 
 namespace brave_shields {
 
-void SetIsBraveShieldsEnabled(HostContentSettingsMap* map,
-                              bool is_enabled,
-                              const GURL& url,
-                              PrefService* local_state) {
-  brave_shields::SetBraveShieldsEnabled(map, is_enabled, url, local_state);
+BraveShieldsSettings::BraveShieldsSettings(
+    HostContentSettingsMap* host_content_settings_map,
+    PrefService* local_state,
+    PrefService* profile_state)
+    : host_content_settings_map_(host_content_settings_map),
+      local_state_(local_state),
+      profile_state_(profile_state) {
+  CHECK(host_content_settings_map_);
 }
 
-bool GetIsBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
-  return brave_shields::GetBraveShieldsEnabled(map, url);
+BraveShieldsSettings::~BraveShieldsSettings() = default;
+
+void BraveShieldsSettings::SetBraveShieldsEnabled(bool is_enabled,
+                                                  const GURL& url) {
+  brave_shields::SetBraveShieldsEnabled(host_content_settings_map_, is_enabled,
+                                        url, local_state_);
 }
 
-void SetDefaultAdBlockMode(HostContentSettingsMap* map,
-                           mojom::AdBlockMode mode,
-                           PrefService* local_state,
-                           PrefService* profile_state) {
-  SetAdBlockMode(map, mode, GURL(), local_state, profile_state);
+bool BraveShieldsSettings::GetBraveShieldsEnabled(const GURL& url) {
+  return brave_shields::GetBraveShieldsEnabled(host_content_settings_map_, url);
 }
 
-mojom::AdBlockMode GetDefaultAdBlockMode(HostContentSettingsMap* map) {
-  return GetAdBlockMode(map, GURL());
+void BraveShieldsSettings::SetDefaultAdBlockMode(mojom::AdBlockMode mode) {
+  SetAdBlockMode(mode, GURL());
 }
 
-void SetAdBlockMode(HostContentSettingsMap* map,
-                    mojom::AdBlockMode mode,
-                    const GURL& url,
-                    PrefService* local_state,
-                    PrefService* profile_state) {
+mojom::AdBlockMode BraveShieldsSettings::GetDefaultAdBlockMode() {
+  return GetAdBlockMode(GURL());
+}
+
+void BraveShieldsSettings::SetAdBlockMode(mojom::AdBlockMode mode,
+                                          const GURL& url) {
   ControlType control_type_ad;
   ControlType control_type_cosmetic;
 
@@ -57,18 +62,21 @@ void SetAdBlockMode(HostContentSettingsMap* map,
     control_type_cosmetic = ControlType::ALLOW;  // allow
   }
 
-  brave_shields::SetAdControlType(map, control_type_ad, url, local_state);
+  brave_shields::SetAdControlType(host_content_settings_map_, control_type_ad,
+                                  url, local_state_);
 
-  brave_shields::SetCosmeticFilteringControlType(
-      map, control_type_cosmetic, url, local_state, profile_state);
+  brave_shields::SetCosmeticFilteringControlType(host_content_settings_map_,
+                                                 control_type_cosmetic, url,
+                                                 local_state_, profile_state_);
 }
 
-mojom::AdBlockMode GetAdBlockMode(HostContentSettingsMap* map,
-                                  const GURL& url) {
-  ControlType control_type_ad = brave_shields::GetAdControlType(map, url);
+mojom::AdBlockMode BraveShieldsSettings::GetAdBlockMode(const GURL& url) {
+  ControlType control_type_ad =
+      brave_shields::GetAdControlType(host_content_settings_map_, url);
 
   ControlType control_type_cosmetic =
-      brave_shields::GetCosmeticFilteringControlType(map, url);
+      brave_shields::GetCosmeticFilteringControlType(host_content_settings_map_,
+                                                     url);
 
   if (control_type_ad == ControlType::ALLOW) {
     return mojom::AdBlockMode::ALLOW;
@@ -81,23 +89,18 @@ mojom::AdBlockMode GetAdBlockMode(HostContentSettingsMap* map,
   }
 }
 
-void SetDefaultFingerprintMode(HostContentSettingsMap* map,
-                               mojom::FingerprintMode mode,
-                               PrefService* local_state,
-                               PrefService* profile_state) {
-  SetFingerprintMode(map, mode, GURL(), local_state, profile_state);
+void BraveShieldsSettings::SetDefaultFingerprintMode(
+    mojom::FingerprintMode mode) {
+  SetFingerprintMode(mode, GURL());
 }
 
-mojom::FingerprintMode GetDefaultFingerprintMode(HostContentSettingsMap* map) {
-  return GetFingerprintMode(map, GURL());
+mojom::FingerprintMode BraveShieldsSettings::GetDefaultFingerprintMode() {
+  return GetFingerprintMode(GURL());
 }
 
-void SetFingerprintMode(HostContentSettingsMap* map,
-                        mojom::FingerprintMode mode,
-                        const GURL& url,
-                        PrefService* local_state,
-                        PrefService* profile_state) {
-#if !BUILDFLAG(IS_IOS)
+void BraveShieldsSettings::SetFingerprintMode(mojom::FingerprintMode mode,
+                                              const GURL& url) {
+#if BUILDFLAG(IS_IOS)
   /// Strict FingerprintMode is not supported on iOS
   DCHECK(mode != mojom::FingerprintMode::STRICT_MODE);
 #endif
@@ -112,14 +115,15 @@ void SetFingerprintMode(HostContentSettingsMap* map,
     control_type = ControlType::DEFAULT;  // STANDARD_MODE
   }
 
-  brave_shields::SetFingerprintingControlType(map, control_type, url,
-                                              local_state, profile_state);
+  brave_shields::SetFingerprintingControlType(host_content_settings_map_,
+                                              control_type, url, local_state_,
+                                              profile_state_);
 }
 
-mojom::FingerprintMode GetFingerprintMode(HostContentSettingsMap* map,
-                                          const GURL& url) {
-  ControlType control_type =
-      brave_shields::GetFingerprintingControlType(map, url);
+mojom::FingerprintMode BraveShieldsSettings::GetFingerprintMode(
+    const GURL& url) {
+  ControlType control_type = brave_shields::GetFingerprintingControlType(
+      host_content_settings_map_, url);
 
   if (control_type == ControlType::ALLOW) {
     return mojom::FingerprintMode::ALLOW_MODE;
@@ -130,27 +134,25 @@ mojom::FingerprintMode GetFingerprintMode(HostContentSettingsMap* map,
   }
 }
 
-void SetIsNoScriptEnabledByDefault(HostContentSettingsMap* map,
-                                   bool is_enabled,
-                                   PrefService* local_state) {
-  SetIsNoScriptEnabled(map, is_enabled, GURL(), local_state);
+void BraveShieldsSettings::SetIsNoScriptEnabledByDefault(bool is_enabled) {
+  SetIsNoScriptEnabled(is_enabled, GURL());
 }
 
-bool GetNoScriptEnabledByDefault(HostContentSettingsMap* map) {
-  return GetNoScriptEnabled(map, GURL());
+bool BraveShieldsSettings::GetNoScriptEnabledByDefault() {
+  return GetNoScriptEnabled(GURL());
 }
 
-void SetIsNoScriptEnabled(HostContentSettingsMap* map,
-                          bool is_enabled,
-                          const GURL& url,
-                          PrefService* local_state) {
+void BraveShieldsSettings::SetIsNoScriptEnabled(bool is_enabled,
+                                                const GURL& url) {
   ControlType control_type =
       is_enabled ? ControlType::BLOCK : ControlType::ALLOW;
-  brave_shields::SetNoScriptControlType(map, control_type, url, local_state);
+  brave_shields::SetNoScriptControlType(host_content_settings_map_,
+                                        control_type, url, local_state_);
 }
 
-bool GetNoScriptEnabled(HostContentSettingsMap* map, const GURL& url) {
-  ControlType control_type = brave_shields::GetNoScriptControlType(map, url);
+bool BraveShieldsSettings::GetNoScriptEnabled(const GURL& url) {
+  ControlType control_type =
+      brave_shields::GetNoScriptControlType(host_content_settings_map_, url);
 
   if (control_type == ControlType::ALLOW) {
     return false;

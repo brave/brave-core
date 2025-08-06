@@ -16,49 +16,40 @@ class PrefService;
 
 namespace brave_shields {
 
-void SetIsBraveShieldsEnabled(HostContentSettingsMap* map,
-                              bool enable,
-                              const GURL& url,
-                              PrefService* local_state = nullptr);
-bool GetIsBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
+class BraveShieldsSettings {
+ public:
+  explicit BraveShieldsSettings(
+      HostContentSettingsMap* host_content_settings_map,
+      PrefService* local_state = nullptr,
+      PrefService* profile_state = nullptr);
+  virtual ~BraveShieldsSettings();
 
-void SetDefaultAdBlockMode(HostContentSettingsMap* map,
-                           mojom::AdBlockMode mode,
-                           PrefService* local_state = nullptr,
-                           PrefService* profile_state = nullptr);
-mojom::AdBlockMode GetDefaultAdBlockMode(HostContentSettingsMap* map);
+  void SetBraveShieldsEnabled(bool enable, const GURL& url);
+  bool GetBraveShieldsEnabled(const GURL& url);
 
-void SetAdBlockMode(HostContentSettingsMap* map,
-                    mojom::AdBlockMode mode,
-                    const GURL& url,
-                    PrefService* local_state = nullptr,
-                    PrefService* profile_state = nullptr);
-mojom::AdBlockMode GetAdBlockMode(HostContentSettingsMap* map, const GURL& url);
+  void SetDefaultAdBlockMode(mojom::AdBlockMode mode);
+  mojom::AdBlockMode GetDefaultAdBlockMode();
 
-void SetDefaultFingerprintMode(HostContentSettingsMap* map,
-                               mojom::FingerprintMode mode,
-                               PrefService* local_state = nullptr,
-                               PrefService* profile_state = nullptr);
-mojom::FingerprintMode GetDefaultFingerprintMode(HostContentSettingsMap* map);
+  void SetAdBlockMode(mojom::AdBlockMode mode, const GURL& url);
+  mojom::AdBlockMode GetAdBlockMode(const GURL& url);
 
-void SetFingerprintMode(HostContentSettingsMap* map,
-                        mojom::FingerprintMode mode,
-                        const GURL& url,
-                        PrefService* local_state = nullptr,
-                        PrefService* profile_state = nullptr);
-mojom::FingerprintMode GetFingerprintMode(HostContentSettingsMap* map,
-                                          const GURL& url);
+  void SetDefaultFingerprintMode(mojom::FingerprintMode mode);
+  mojom::FingerprintMode GetDefaultFingerprintMode();
 
-void SetIsNoScriptEnabledByDefault(HostContentSettingsMap* map,
-                                   bool is_enabled,
-                                   PrefService* local_state = nullptr);
-bool GetNoScriptEnabledByDefault(HostContentSettingsMap* map);
+  void SetFingerprintMode(mojom::FingerprintMode mode, const GURL& url);
+  mojom::FingerprintMode GetFingerprintMode(const GURL& url);
 
-void SetIsNoScriptEnabled(HostContentSettingsMap* map,
-                          bool is_enabled,
-                          const GURL& url,
-                          PrefService* local_state = nullptr);
-bool GetNoScriptEnabled(HostContentSettingsMap* map, const GURL& url);
+  void SetIsNoScriptEnabledByDefault(bool is_enabled);
+  bool GetNoScriptEnabledByDefault();
+
+  void SetIsNoScriptEnabled(bool is_enabled, const GURL& url);
+  bool GetNoScriptEnabled(const GURL& url);
+
+ protected:
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_;  // NOT OWNED
+  raw_ptr<PrefService> local_state_;                           // NOT OWNED
+  raw_ptr<PrefService> profile_state_;                         // NOT OWNED
+};
 
 }  // namespace brave_shields
 

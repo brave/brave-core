@@ -7,9 +7,9 @@ import("//brave/build/ios/mojom/mojom_wrappers.gni")
 
 source_set("browser") {
   sources = [
-    "brave_shields_utils.h",
-    "brave_shields_utils_impl.h",
-    "brave_shields_utils_impl.mm",
+    "brave_shields_settings.h",
+    "brave_shields_settings_impl.h",
+    "brave_shields_settings_impl.mm",
   ]
   deps = [
     "//brave/components/brave_shields/core/browser",

@@ -14,6 +14,7 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
@@ -126,6 +127,7 @@ class BraveShieldsTabHelper
   base::flat_set<ContentSettingsType> webcompat_features_invoked_;
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       observation_{this};
+  std::unique_ptr<BraveShieldsSettings> brave_shields_settings_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

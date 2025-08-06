@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/ios/browser/brave_shields_utils_impl.h"
+#include "brave/components/brave_shields/ios/browser/brave_shields_settings_impl.h"
 
 #include <Foundation/Foundation.h>
 
@@ -14,10 +14,8 @@
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
-@implementation BraveShieldsUtilsImpl {
-  raw_ptr<HostContentSettingsMap> _map;
-  raw_ptr<PrefService> _localState;
-  raw_ptr<PrefService> _profilePrefs;
+@implementation BraveShieldsSettingsImpl {
+  std::unique_ptr<brave_shields::BraveShieldsSettings> _brave_shields_settings;
 }
 
 - (instancetype)initWithHostContentSettingsMap:(HostContentSettingsMap*)map
@@ -25,88 +23,85 @@
                                   profilePrefs:(PrefService*)profilePrefs {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    _map = map;
-    _localState = localState;
-    _profilePrefs = profilePrefs;
+    _brave_shields_settings =
+        std::make_unique<brave_shields::BraveShieldsSettings>(map, localState,
+                                                              profilePrefs);
   }
   return self;
 }
 
 - (bool)braveShieldsEnabledFor:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  return brave_shields::GetIsBraveShieldsEnabled(_map, gurl);
+  return _brave_shields_settings->GetBraveShieldsEnabled(gurl);
 }
 
 - (void)setBraveShieldsEnabled:(bool)isEnabled forURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  brave_shields::SetIsBraveShieldsEnabled(_map, isEnabled, gurl, _localState);
+  _brave_shields_settings->SetBraveShieldsEnabled(isEnabled, gurl);
 }
 
 - (BraveShieldsAdBlockMode)defaultAdBlockMode {
   return static_cast<BraveShieldsAdBlockMode>(
-      brave_shields::GetDefaultAdBlockMode(_map));
+      _brave_shields_settings->GetDefaultAdBlockMode());
 }
 
 - (BraveShieldsAdBlockMode)adBlockModeForURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
   return static_cast<BraveShieldsAdBlockMode>(
-      brave_shields::GetAdBlockMode(_map, gurl));
+      _brave_shields_settings->GetAdBlockMode(gurl));
 }
 
 - (void)setDefaultAdBlockMode:(BraveShieldsAdBlockMode)adBlockMode {
-  brave_shields::SetDefaultAdBlockMode(
-      _map, static_cast<brave_shields::mojom::AdBlockMode>(adBlockMode),
-      _localState, _profilePrefs);
+  _brave_shields_settings->SetDefaultAdBlockMode(
+      static_cast<brave_shields::mojom::AdBlockMode>(adBlockMode));
 }
 
 - (void)setAdBlockMode:(BraveShieldsAdBlockMode)adBlockMode forURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  brave_shields::SetAdBlockMode(
-      _map, static_cast<brave_shields::mojom::AdBlockMode>(adBlockMode), gurl,
-      _localState, _profilePrefs);
+  _brave_shields_settings->SetAdBlockMode(
+      static_cast<brave_shields::mojom::AdBlockMode>(adBlockMode), gurl);
 }
 
 - (bool)isBlockScriptsEnabledByDefault {
-  return brave_shields::GetNoScriptEnabledByDefault(_map);
+  return _brave_shields_settings->GetNoScriptEnabledByDefault();
 }
 
 - (bool)blockScriptsEnabledForURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  return brave_shields::GetNoScriptEnabled(_map, gurl);
+  return _brave_shields_settings->GetNoScriptEnabled(gurl);
 }
 
 - (void)setBlockScriptsEnabledByDefault:(bool)isEnabled {
-  brave_shields::SetIsNoScriptEnabledByDefault(_map, isEnabled, _localState);
+  _brave_shields_settings->SetIsNoScriptEnabledByDefault(isEnabled);
 }
 
 - (void)setBlockScriptsEnabled:(bool)isEnabled forURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  brave_shields::SetIsNoScriptEnabled(_map, isEnabled, gurl, _localState);
+  _brave_shields_settings->SetIsNoScriptEnabled(isEnabled, gurl);
 }
 
 - (BraveShieldsFingerprintMode)defaultFingerprintMode {
   return static_cast<BraveShieldsFingerprintMode>(
-      brave_shields::GetDefaultFingerprintMode(_map));
+      _brave_shields_settings->GetDefaultFingerprintMode());
 }
 
 - (BraveShieldsFingerprintMode)fingerprintModeForURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
   return static_cast<BraveShieldsFingerprintMode>(
-      brave_shields::GetFingerprintMode(_map, gurl));
+      _brave_shields_settings->GetFingerprintMode(gurl));
 }
 
 - (void)setDefaultFingerprintMode:(BraveShieldsFingerprintMode)fingerprintMode {
-  brave_shields::SetDefaultFingerprintMode(
-      _map, static_cast<brave_shields::mojom::FingerprintMode>(fingerprintMode),
-      _localState, _profilePrefs);
+  _brave_shields_settings->SetDefaultFingerprintMode(
+      static_cast<brave_shields::mojom::FingerprintMode>(fingerprintMode));
 }
 
 - (void)setFingerprintMode:(BraveShieldsFingerprintMode)fingerprintMode
                     forURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  brave_shields::SetFingerprintMode(
-      _map, static_cast<brave_shields::mojom::FingerprintMode>(fingerprintMode),
-      gurl, _localState, _profilePrefs);
+  _brave_shields_settings->SetFingerprintMode(
+      static_cast<brave_shields::mojom::FingerprintMode>(fingerprintMode),
+      gurl);
 }
 
 @end

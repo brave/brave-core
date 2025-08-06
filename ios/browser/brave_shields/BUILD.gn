@@ -5,8 +5,8 @@
 
 source_set("brave_shields") {
   sources = [
-    "brave_shields_utils_factory.h",
-    "brave_shields_utils_factory.mm",
+    "brave_shields_settings_factory.h",
+    "brave_shields_settings_factory.mm",
   ]
 
   deps = [

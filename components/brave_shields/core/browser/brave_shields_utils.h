@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -70,7 +69,6 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                      PrefService* profile_state = nullptr);
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                             const GURL& url);
-
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
 
