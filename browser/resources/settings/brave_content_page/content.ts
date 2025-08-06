@@ -15,6 +15,7 @@ import {BaseMixin} from '../base_mixin.js';
 import {loadTimeData} from '../i18n_setup.js'
 import {routes} from '../route.js';
 import {Router} from '../router.js';
+import {SettingsViewMixin, SettingsViewMixinInterface} from '../settings_page/settings_view_mixin.js';
 
 import {AppearanceBrowserProxy, AppearanceBrowserProxyImpl} from '../appearance_page/appearance_browser_proxy.js';
 import {getTemplate} from './content.html.js'
@@ -33,7 +34,7 @@ export interface SettingsBraveContentContentElement {
 }
 
 const SettingsBraveAppearanceContentElementBase =
-    I18nMixin(PrefsMixin(BaseMixin(PolymerElement)));
+    I18nMixin(PrefsMixin(BaseMixin(SettingsViewMixin(PolymerElement))));
 
 export class SettingsBraveContentContentElement extends SettingsBraveAppearanceContentElementBase {
   static get is() {
@@ -107,6 +108,15 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
 
     this.pageZoomLevels_ =
         JSON.parse(loadTimeData.getString('presetZoomFactors'));
+  }
+
+  override getAssociatedControlFor(childViewId: string): HTMLElement {
+    switch (childViewId) {
+      case 'fonts':
+        return this.shadowRoot!.querySelector('#customize-fonts-subpage-trigger')!;
+      default:
+        throw new Error(`Unknown child view id: ${childViewId}`)
+    }
   }
 
   private onCustomizeFontsClick_() {
