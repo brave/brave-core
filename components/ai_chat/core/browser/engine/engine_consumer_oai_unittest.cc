@@ -708,6 +708,301 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
+TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadPdf) {
+  EngineConsumer::ConversationHistory history;
+  auto* client = GetClient();
+  auto uploaded_pdfs =
+      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kPdf);
+  // Set filenames for the PDF files
+  uploaded_pdfs[0]->filename = "document1.pdf";
+  uploaded_pdfs[1]->filename = "document2.pdf";
+
+  constexpr char kTestPrompt[] = "What are these PDF files about?";
+  constexpr char kAssistantResponse[] =
+      "These PDFs contain technical documentation and user guides.";
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce(
+          [kTestPrompt, kAssistantResponse, &uploaded_pdfs](
+              const mojom::CustomModelOptions, base::Value::List messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback) {
+            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+            constexpr char kPdfJsonTemplate[] = R"({
+                 "content": [{
+                    "text": "$1",
+                    "type": "text"
+                 }, {
+                    "file": {
+                       "filename": "$2",
+                       "file_data": "$3"
+                    },
+                    "type": "file"
+                 }, {
+                    "file": {
+                       "filename": "$4",
+                       "file_data": "$5"
+                    },
+                    "type": "file"
+                 }],
+                 "role": "user"
+                }
+            )";
+
+            ASSERT_EQ(uploaded_pdfs.size(), 2u);
+            const std::string pdf_json_str = base::ReplaceStringPlaceholders(
+                kPdfJsonTemplate,
+                {"These PDFs are uploaded by the user", "document1.pdf",
+                 EngineConsumer::GetPdfDataURL(uploaded_pdfs[0]->data),
+                 "document2.pdf",
+                 EngineConsumer::GetPdfDataURL(uploaded_pdfs[1]->data)},
+                nullptr);
+            EXPECT_EQ(messages[1].GetDict(), ParseJsonDict(pdf_json_str));
+
+            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[2].GetDict().Find("content"), kTestPrompt);
+
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(kAssistantResponse)),
+                    std::nullopt /* model_key */)));
+          });
+
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "Analyze these PDF files", kTestPrompt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, Clone(uploaded_pdfs), false,
+      std::nullopt /* model_key */));
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+  engine_->GenerateAssistantResponse({}, history, "", {}, std::nullopt,
+                                     base::DoNothing(), future.GetCallback());
+  EXPECT_EQ(future.Take(),
+            EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(kAssistantResponse)),
+                std::nullopt /* model_key */));
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       GenerateAssistantResponseUploadPdfWithoutFilename) {
+  EngineConsumer::ConversationHistory history;
+  auto* client = GetClient();
+  auto uploaded_pdfs =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kPdf);
+  // Leave filename empty to test default behavior
+  uploaded_pdfs[0]->filename = "";
+
+  constexpr char kTestPrompt[] = "What is this PDF about?";
+  constexpr char kAssistantResponse[] =
+      "This PDF contains important information.";
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce([kTestPrompt, kAssistantResponse, &uploaded_pdfs](
+                    const mojom::CustomModelOptions, base::Value::List messages,
+                    EngineConsumer::GenerationDataCallback,
+                    EngineConsumer::GenerationCompletedCallback
+                        completed_callback) {
+        EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+        constexpr char kPdfJsonTemplate[] = R"({
+                 "content": [{
+                    "text": "$1",
+                    "type": "text"
+                 }, {
+                    "file": {
+                       "filename": "$2",
+                       "file_data": "$3"
+                    },
+                    "type": "file"
+                 }],
+                 "role": "user"
+                }
+            )";
+
+        ASSERT_EQ(uploaded_pdfs.size(), 1u);
+        const std::string pdf_json_str = base::ReplaceStringPlaceholders(
+            kPdfJsonTemplate,
+            {"These PDFs are uploaded by the user",
+             "uploaded.pdf",  // Should default to this when filename is empty
+             EngineConsumer::GetPdfDataURL(uploaded_pdfs[0]->data)},
+            nullptr);
+        EXPECT_EQ(messages[1].GetDict(), ParseJsonDict(pdf_json_str));
+
+        EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+        EXPECT_EQ(*messages[2].GetDict().Find("content"), kTestPrompt);
+
+        std::move(completed_callback)
+            .Run(base::ok(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(kAssistantResponse)),
+                std::nullopt /* model_key */)));
+      });
+
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "Analyze this PDF file", kTestPrompt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, Clone(uploaded_pdfs), false,
+      std::nullopt /* model_key */));
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+  engine_->GenerateAssistantResponse({}, history, "", {}, std::nullopt,
+                                     base::DoNothing(), future.GetCallback());
+  EXPECT_EQ(future.Take(),
+            EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(kAssistantResponse)),
+                std::nullopt /* model_key */));
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
+  EngineConsumer::ConversationHistory history;
+  auto* client = GetClient();
+
+  // Create mixed uploads: images, screenshots, and PDFs
+  auto uploaded_images =
+      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kImage);
+  auto screenshot_images =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot);
+  auto uploaded_pdfs =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kPdf);
+
+  uploaded_pdfs[0]->filename = "report.pdf";
+
+  // Combine all files
+  std::vector<mojom::UploadedFilePtr> all_files;
+  all_files.insert(all_files.end(),
+                   std::make_move_iterator(uploaded_images.begin()),
+                   std::make_move_iterator(uploaded_images.end()));
+  all_files.insert(all_files.end(),
+                   std::make_move_iterator(screenshot_images.begin()),
+                   std::make_move_iterator(screenshot_images.end()));
+  all_files.insert(all_files.end(),
+                   std::make_move_iterator(uploaded_pdfs.begin()),
+                   std::make_move_iterator(uploaded_pdfs.end()));
+
+  constexpr char kTestPrompt[] = "Analyze these mixed file types";
+  constexpr char kAssistantResponse[] =
+      "I can see images, screenshots, and a PDF document.";
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce([kTestPrompt, kAssistantResponse](
+                    const mojom::CustomModelOptions, base::Value::List messages,
+                    EngineConsumer::GenerationDataCallback,
+                    EngineConsumer::GenerationCompletedCallback
+                        completed_callback) {
+        EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+        // Should have 5 messages: system + uploaded images + screenshots +
+        // pdfs + user prompt
+        EXPECT_EQ(messages.size(), 5u);
+
+        // Check uploaded images message
+        EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+        const base::Value::List* images_content =
+            messages[1].GetDict().FindList("content");
+        ASSERT_TRUE(images_content);
+        EXPECT_EQ(images_content->size(), 3u);  // text + 2 images
+
+        // Verify first item is tex
+        const base::Value::Dict* text_item = (*images_content)[0].GetIfDict();
+        ASSERT_TRUE(text_item);
+        EXPECT_EQ(*text_item->FindString("type"), "text");
+        EXPECT_EQ(*text_item->FindString("text"),
+                  "These images are uploaded by the user");
+
+        // Verify second and third items are image_url types
+        const base::Value::Dict* image_item1 = (*images_content)[1].GetIfDict();
+        ASSERT_TRUE(image_item1);
+        EXPECT_EQ(*image_item1->FindString("type"), "image_url");
+        EXPECT_TRUE(image_item1->FindDict("image_url"));
+        EXPECT_TRUE(image_item1->FindDict("image_url")->FindString("url"));
+
+        const base::Value::Dict* image_item2 = (*images_content)[2].GetIfDict();
+        ASSERT_TRUE(image_item2);
+        EXPECT_EQ(*image_item2->FindString("type"), "image_url");
+        EXPECT_TRUE(image_item2->FindDict("image_url"));
+        EXPECT_TRUE(image_item2->FindDict("image_url")->FindString("url"));
+
+        // Check screenshots message
+        EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+        const base::Value::List* screenshots_content =
+            messages[2].GetDict().FindList("content");
+        ASSERT_TRUE(screenshots_content);
+        EXPECT_EQ(screenshots_content->size(), 2u);  // text + 1 screensho
+
+        // Verify first item is tex
+        const base::Value::Dict* screenshot_text_item =
+            (*screenshots_content)[0].GetIfDict();
+        ASSERT_TRUE(screenshot_text_item);
+        EXPECT_EQ(*screenshot_text_item->FindString("type"), "text");
+        EXPECT_EQ(*screenshot_text_item->FindString("text"),
+                  "These images are screenshots");
+
+        // Verify second item is image_url type
+        const base::Value::Dict* screenshot_item =
+            (*screenshots_content)[1].GetIfDict();
+        ASSERT_TRUE(screenshot_item);
+        EXPECT_EQ(*screenshot_item->FindString("type"), "image_url");
+        EXPECT_TRUE(screenshot_item->FindDict("image_url"));
+        EXPECT_TRUE(screenshot_item->FindDict("image_url")->FindString("url"));
+
+        // Check PDFs message
+        EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+        const base::Value::List* pdfs_content =
+            messages[3].GetDict().FindList("content");
+        ASSERT_TRUE(pdfs_content);
+        EXPECT_EQ(pdfs_content->size(), 2u);  // text + 1 pdf
+
+        // Verify first item is tex
+        const base::Value::Dict* pdf_text_item = (*pdfs_content)[0].GetIfDict();
+        ASSERT_TRUE(pdf_text_item);
+        EXPECT_EQ(*pdf_text_item->FindString("type"), "text");
+        EXPECT_EQ(*pdf_text_item->FindString("text"),
+                  "These PDFs are uploaded by the user");
+
+        // Verify second item is file type with filename and file_data
+        const base::Value::Dict* pdf_item = (*pdfs_content)[1].GetIfDict();
+        ASSERT_TRUE(pdf_item);
+        EXPECT_EQ(*pdf_item->FindString("type"), "file");
+        const base::Value::Dict* file_dict = pdf_item->FindDict("file");
+        ASSERT_TRUE(file_dict);
+        EXPECT_EQ(*file_dict->FindString("filename"), "report.pdf");
+        EXPECT_TRUE(file_dict->FindString("file_data"));
+        EXPECT_FALSE(file_dict->FindString("file_data")->empty());
+
+        // Check user prompt message
+        EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
+        EXPECT_EQ(*messages[4].GetDict().Find("content"), kTestPrompt);
+
+        std::move(completed_callback)
+            .Run(base::ok(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(kAssistantResponse)),
+                std::nullopt /* model_key */)));
+      });
+
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "What do you see in these files?", kTestPrompt, std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, Clone(all_files), false,
+      std::nullopt /* model_key */));
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+  engine_->GenerateAssistantResponse({}, history, "", {}, std::nullopt,
+                                     base::DoNothing(), future.GetCallback());
+  EXPECT_EQ(future.Take(),
+            EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(kAssistantResponse)),
+                std::nullopt /* model_key */));
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
 TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
   auto* client = GetClient();
   base::RunLoop run_loop;
