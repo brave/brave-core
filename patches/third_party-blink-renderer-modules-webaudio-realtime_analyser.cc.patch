@@ -1,36 +1,36 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-index df5865fc8c3449a5655d29e51f9cdd136e1f0c43..3d2055bd1872bfb6900796d50a341fdde2bcdcb0 100644
+index eb6f8d038baa648f968c4e10d4607cd6f0409b80..6427f399bf8c29bcec4689f2149d4bfbfdb5853a 100644
 --- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
 +++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-@@ -150,6 +150,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
+@@ -114,6 +114,7 @@ void RealtimeAnalyser::GetFloatFrequencyData(DOMFloat32Array* destination_array,
+     const float* source = magnitude_buffer_.Data();
+     float* destination = destination_array->Data();
  
-     unsigned write_index = GetWriteIndex();
++    BRAVE_REALTIMEANALYSER_CONVERTFLOATTODB
+     for (unsigned i = 0; i < len; ++i) {
+       const float linear_value = UNSAFE_TODO(source[i]);
+       const double db_mag = audio_utilities::LinearToDecibels(linear_value);
+@@ -149,6 +150,7 @@ void RealtimeAnalyser::GetByteFrequencyData(DOMUint8Array* destination_array,
+     const float* source = magnitude_buffer_.Data();
+     unsigned char* destination = destination_array->Data();
+ 
++    BRAVE_REALTIMEANALYSER_CONVERTTOBYTEDATA
+     for (unsigned i = 0; i < len; ++i) {
+       const float linear_value = UNSAFE_TODO(source[i]);
+       const double db_mag = audio_utilities::LinearToDecibels(linear_value);
+@@ -182,6 +184,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
+ 
+     const unsigned write_index = GetWriteIndex();
  
 +    BRAVE_REALTIMEANALYSER_GETFLOATTIMEDOMAINDATA
      for (unsigned i = 0; i < len; ++i) {
        // Buffer access is protected due to modulo operation.
        float value = UNSAFE_TODO(
-@@ -177,6 +178,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
+@@ -209,6 +212,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
  
-     unsigned write_index = GetWriteIndex();
+     const unsigned write_index = GetWriteIndex();
  
 +    BRAVE_REALTIMEANALYSER_GETBYTETIMEDOMAINDATA
      for (unsigned i = 0; i < len; ++i) {
        // Buffer access is protected due to modulo operation.
-       float value = UNSAFE_TODO(
-@@ -297,6 +299,7 @@ void RealtimeAnalyser::ConvertToByteData(DOMUint8Array* destination_array) {
-     const float* source = MagnitudeBuffer().Data();
-     unsigned char* destination = destination_array->Data();
- 
-+    BRAVE_REALTIMEANALYSER_CONVERTTOBYTEDATA
-     for (unsigned i = 0; i < len; ++i) {
-       float linear_value = UNSAFE_TODO(source[i]);
-       double db_mag = audio_utilities::LinearToDecibels(linear_value);
-@@ -321,6 +324,7 @@ void RealtimeAnalyser::ConvertFloatToDb(DOMFloat32Array* destination_array) {
-     const float* source = MagnitudeBuffer().Data();
-     float* destination = destination_array->Data();
- 
-+    BRAVE_REALTIMEANALYSER_CONVERTFLOATTODB
-     for (unsigned i = 0; i < len; ++i) {
-       float linear_value = UNSAFE_TODO(source[i]);
-       double db_mag = audio_utilities::LinearToDecibels(linear_value);
+       const float value = UNSAFE_TODO(
