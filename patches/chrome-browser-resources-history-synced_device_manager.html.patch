@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.html b/chrome/browser/resources/history/synced_device_manager.html
-index 054c5a8fea1014a1e5ad65ebefa04588f7fd2e27..b37a20308354db209974a4dcbad3842f62087e19 100644
+index 2e9d3cff68250ac4e84cecbcf9958b487fbfc6c3..09b72fed287b6772cea27f9818780a592accfb0b 100644
 --- a/chrome/browser/resources/history/synced_device_manager.html
 +++ b/chrome/browser/resources/history/synced_device_manager.html
 @@ -18,6 +18,7 @@
@@ -7,14 +7,14 @@ index 054c5a8fea1014a1e5ad65ebefa04588f7fd2e27..b37a20308354db209974a4dcbad3842f
    ${this.noSyncedTabsMessage_()}
  </div>
 +<!--
- <div id="sign-in-guide" ?hidden="${!this.showSignInGuide_()}">
-   <div id="illustration"></div>
-   <div id="turn-on-sync-promo">$i18n{turnOnSyncPromo}</div>
-@@ -27,6 +28,7 @@
+ <div id="sign-in-guide"
+     ?hidden="${!this.showSignInGuide_() || this.useHistorySyncOptinScreen_}">
+   <div id="sync-promo-illustration"></div>
+@@ -28,6 +29,7 @@
      $i18n{turnOnSyncButton}
    </cr-button>
  </div>
 +-->
  
- <cr-lazy-render-lit id="menu" .template='${() => html`
-   <cr-action-menu role-description="$i18n{menu}">
+ ${this.useHistorySyncOptinScreen_ ? html `
+   <div class="history-sync-optin">
