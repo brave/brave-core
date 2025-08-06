@@ -46,6 +46,12 @@ enum class DomainBlockingType {
   kAggressive,
 };
 
+enum AutoShredType {
+  NEVER = 0,
+  TAB_CLOSE,
+  APP_EXIT,
+};
+
 struct ShieldsSettingCounts;
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
@@ -153,6 +159,11 @@ ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map);
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
                                       const GURL& primary_url);
 base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
+
+void SetAutoShredType(HostContentSettingsMap* map,
+                      AutoShredType type,
+                      const GURL& url);
+AutoShredType GetAutoShredType(HostContentSettingsMap* map, const GURL& url);
 
 }  // namespace brave_shields
 

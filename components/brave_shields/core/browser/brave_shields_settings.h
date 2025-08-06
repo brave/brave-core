@@ -60,6 +60,16 @@ void SetIsNoScriptEnabled(HostContentSettingsMap* map,
                           PrefService* local_state = nullptr);
 bool GetNoScriptEnabled(HostContentSettingsMap* map, const GURL& url);
 
+void SetDefaultAutoShredMode(HostContentSettingsMap* map,
+                             mojom::AutoShredMode mode);
+mojom::AutoShredMode GetDefaultAutoShredMode(HostContentSettingsMap* map);
+
+void SetAutoShredMode(HostContentSettingsMap* map,
+                      mojom::AutoShredMode mode,
+                      const GURL& url);
+mojom::AutoShredMode GetAutoShredMode(HostContentSettingsMap* map,
+                                      const GURL& url);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_H_

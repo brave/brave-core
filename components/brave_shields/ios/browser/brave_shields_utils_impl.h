@@ -40,6 +40,11 @@ class PrefService;
 - (void)setFingerprintMode:(BraveShieldsFingerprintMode)fingerprintMode
                     forURL:(NSURL*)url;
 
+@property(nonatomic) BraveShieldsAutoShredMode defaultAutoShredMode;
+- (BraveShieldsAutoShredMode)autoShredModeForURL:(NSURL*)url;
+- (void)setAutoShredMode:(BraveShieldsAutoShredMode)autoShredMode
+                  forURL:(NSURL*)url;
+
 @end
 
 NS_ASSUME_NONNULL_END

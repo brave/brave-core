@@ -109,4 +109,28 @@
       gurl, _localState, _profilePrefs);
 }
 
+- (BraveShieldsAutoShredMode)defaultAutoShredMode {
+  return static_cast<BraveShieldsAutoShredMode>(
+      brave_shields::GetDefaultAutoShredMode(_map));
+}
+
+- (BraveShieldsAutoShredMode)autoShredModeForURL:(NSURL*)url {
+  GURL gurl = net::GURLWithNSURL(url);
+  return static_cast<BraveShieldsAutoShredMode>(
+      brave_shields::GetAutoShredMode(_map, gurl));
+}
+
+- (void)setDefaultAutoShredMode:(BraveShieldsAutoShredMode)autoShredMode {
+  brave_shields::SetDefaultAutoShredMode(
+      _map, static_cast<brave_shields::mojom::AutoShredMode>(autoShredMode));
+}
+
+- (void)setAutoShredMode:(BraveShieldsAutoShredMode)autoShredMode
+                  forURL:(NSURL*)url {
+  GURL gurl = net::GURLWithNSURL(url);
+  brave_shields::SetAutoShredMode(
+      _map, static_cast<brave_shields::mojom::AutoShredMode>(autoShredMode),
+      gurl);
+}
+
 @end
