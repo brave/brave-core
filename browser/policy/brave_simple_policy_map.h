@@ -73,7 +73,7 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveP3ADisabled, p3a::kP3ADisabledByPolicy,
      base::Value::Type::BOOLEAN},
-    {policy::key::kBraveStatsPingDisabled, kStatsReportingDisabledByPolicy,
+    {policy::key::kBraveStatsPingEnabled, kStatsReportingEnabled,
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveWebDiscoveryDisabled, kWebDiscoveryDisabledByPolicy,
      base::Value::Type::BOOLEAN},

@@ -12,7 +12,7 @@ _brave_policies = [
   "BraveSoftware/BraveShieldsDisabledForUrls.yaml",
   "BraveSoftware/BraveShieldsEnabledForUrls.yaml",
   "BraveSoftware/BraveSpeedreaderDisabled.yaml",
-  "BraveSoftware/BraveStatsPingDisabled.yaml",
+  "BraveSoftware/BraveStatsPingEnabled.yaml",
   "BraveSoftware/BraveSyncUrl.yaml",
   "BraveSoftware/BraveTalkDisabled.yaml",
   "BraveSoftware/BraveVPNDisabled.yaml",
