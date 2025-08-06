@@ -3,8 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { renderHook } from '@testing-library/react'
-import { useUntrustedFrameDragHandling } from './useUntrustedFrameDragHandling'
+import { untrustedFrameDragHandlingSetup } from './useUntrustedFrameDragHandling'
 
 // Mock the UntrustedConversationFrameAPI
 const mockAPI = {
@@ -20,7 +19,7 @@ jest.mock('../untrusted_conversation_frame_api', () => ({
   }
 }))
 
-describe('useUntrustedFrameDragHandling', () => {
+describe('untrustedFrameDragHandlingSetup', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     // Reset DOM event listeners
@@ -30,18 +29,9 @@ describe('useUntrustedFrameDragHandling', () => {
 
   describe('initialization', () => {
     it('sets up dragenter event listener', () => {
-      renderHook(() => useUntrustedFrameDragHandling())
+      untrustedFrameDragHandlingSetup()
 
       expect(document.addEventListener)
-        .toHaveBeenCalledWith('dragenter', expect.any(Function))
-    })
-
-    it('cleans up event listener on unmount', () => {
-      const { unmount } = renderHook(() => useUntrustedFrameDragHandling())
-
-      unmount()
-
-      expect(document.removeEventListener)
         .toHaveBeenCalledWith('dragenter', expect.any(Function))
     })
   })
@@ -50,7 +40,7 @@ describe('useUntrustedFrameDragHandling', () => {
     let dragEnterHandler: (e: DragEvent) => void
 
     beforeEach(() => {
-      renderHook(() => useUntrustedFrameDragHandling())
+      untrustedFrameDragHandlingSetup()
 
       // Extract the dragenter handler
       const addEventListenerCalls = (document.addEventListener as jest.Mock)

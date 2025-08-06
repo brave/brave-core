@@ -13,15 +13,17 @@ import {
   UntrustedConversationContextProvider
 } from './untrusted_conversation_context'
 import {
-  useUntrustedFrameDragHandling
+  untrustedFrameDragHandlingSetup
 } from './hooks/useUntrustedFrameDragHandling'
 
 import '../common/strings'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
+// Set up drag handling at module level
+untrustedFrameDragHandlingSetup()
+
 function App() {
-  useUntrustedFrameDragHandling()
 
   return (
     <UntrustedConversationContextProvider>

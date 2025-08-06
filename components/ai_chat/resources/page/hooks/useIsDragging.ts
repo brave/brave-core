@@ -22,6 +22,10 @@ export function useIsDragging({
 
   // Document-level drag detection
   React.useEffect(() => {
+    // Track the number of dragenter/dragleave events to handle nested DOM
+    // elements. When dragging over child elements, each element fires its own
+    // enter/leave events, so we need a counter to only clear the drag state
+    // when we've truly left the document.
     let dragCounter = 0
     let dragTimeoutId: number | null = null
 
@@ -107,5 +111,5 @@ export function useIsDragging({
       window.removeEventListener('blur', handleWindowBlur)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [setDragActive, setDragOver, clearDragState])
+  }, [])
 }

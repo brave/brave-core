@@ -30,5 +30,5 @@ export function useIframeDragHandling({
     return () => {
       api.conversationEntriesFrameObserver.removeListener(dragStartId)
     }
-  }, [setDragActive, setDragOver])
+  }, [])
 }

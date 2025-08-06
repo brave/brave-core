@@ -187,12 +187,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   // Drag state handlers
-  const setDragActive = React.useCallback((isDragActive: boolean) =>
-    setPartialContext({ isDragActive }), [])
-  const setDragOver = React.useCallback((isDragOver: boolean) =>
-    setPartialContext({ isDragOver }), [])
-  const clearDragState = React.useCallback(() =>
-    setPartialContext({ isDragActive: false, isDragOver: false }), [])
+  const setDragActive = (isDragActive: boolean) =>
+    setPartialContext({ isDragActive })
+  const setDragOver = (isDragOver: boolean) =>
+    setPartialContext({ isDragOver })
+  const clearDragState = () =>
+    setPartialContext({ isDragActive: false, isDragOver: false })
 
   // Document-level drag handling
   useIsDragging({ setDragActive, setDragOver, clearDragState })

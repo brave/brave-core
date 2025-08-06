@@ -31,9 +31,9 @@ interface ParentUIFrame {
   // the link.
   UserRequestedOpenGeneratedUrl(url.mojom.Url url);
 
-  // Drag events from the untrusted iframe to the parent frame.
-  // This allows the parent to handle drag UI states while the iframe
-  // detects the drag event.
+  // Notify the parent that the child has received a drag enter. We don't have
+  // a corresponding DragEnd because the parent should intercept the drag event
+  // with an overlay.
   DragStart();
 };
 

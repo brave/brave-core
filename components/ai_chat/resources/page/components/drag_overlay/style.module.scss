@@ -27,7 +27,7 @@
   padding: var(--leo-spacing-3xl);
   box-shadow: var(--leo-effect-elevation-03);
   text-align: center;
-  width: min(320px, calc(100vw - 2rem));
+  width: min(320px, calc(100vw - var(--leo-spacing-2xl)));
   display: flex;
   flex-direction: column;
   align-items: center;
