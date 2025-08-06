@@ -334,7 +334,7 @@ void CardanoApiImpl::GetCollateral(const std::string& amount,
 
 mojom::CardanoProviderErrorBundlePtr
 CardanoApiImpl::CheckSelectedAccountValid() {
-  auto account_id = GetCardanoAllowedSelectedAccount(
+  auto account_id = GetCardanoPereferedDappAccount(
       delegate(), brave_wallet_service_->keyring_service());
   if (!account_id) {
     return mojom::CardanoProviderErrorBundle::New(

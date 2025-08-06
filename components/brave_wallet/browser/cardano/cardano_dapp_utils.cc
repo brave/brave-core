@@ -27,7 +27,7 @@ std::vector<std::string> GetCardanoAccountPermissionIdentifiers(
   return ids;
 }
 
-mojom::AccountIdPtr GetCardanoAllowedSelectedAccount(
+mojom::AccountIdPtr GetCardanoPereferedDappAccount(
     BraveWalletProviderDelegate* delegate,
     KeyringService* keyring_service) {
   auto cardano_account_ids =
@@ -53,6 +53,9 @@ mojom::AccountIdPtr GetCardanoAllowedSelectedAccount(
     return selected_account->account_id.Clone();
   }
 
+  // Since there is no account selection when permissions are granted,
+  // we use first allowed account.
+  // Similar behavior implemented in EthereumProviderImpl.
   for (const auto& account : keyring_service->GetAllAccountInfos()) {
     bool is_account_allowed = base::Contains(
         *allowed_accounts, GetAccountPermissionIdentifier(account->account_id));

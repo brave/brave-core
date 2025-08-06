@@ -19,7 +19,7 @@ class KeyringService;
 std::vector<std::string> GetCardanoAccountPermissionIdentifiers(
     KeyringService* keyring_service);
 
-mojom::AccountIdPtr GetCardanoAllowedSelectedAccount(
+mojom::AccountIdPtr GetCardanoPereferedDappAccount(
     BraveWalletProviderDelegate* delegate,
     KeyringService* keyring_service);
 

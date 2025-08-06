@@ -175,13 +175,14 @@ void CardanoProviderImpl::OnRequestCardanoPermissions(
     }
   }
 
-  auto account_id = GetCardanoAllowedSelectedAccount(
+  auto account_id = GetCardanoPereferedDappAccount(
       delegate(), brave_wallet_service_->keyring_service());
 
   if (!account_id) {
     std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
         kAPIErrorRefused,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), nullptr));
+    return;
   }
 
   auto api_impl = std::make_unique<CardanoApiImpl>(
