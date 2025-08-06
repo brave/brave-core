@@ -104,6 +104,7 @@ brave_settings_ts_files = [
   "brave_overrides/personalization_options.ts",
   "brave_overrides/printing_page.ts",
   "brave_overrides/privacy_page.ts",
+  "brave_overrides/privacy_page_index.ts",
   "brave_overrides/reset_profile_dialog.ts",
   "brave_overrides/safety_check.ts",
   "brave_overrides/safety_check_passwords_child.ts",
