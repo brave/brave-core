@@ -562,11 +562,11 @@ extension TabBrowserData: BraveWalletEventsListener {
     )
   }
 
-  func messageEvent(subscriptionId: String, result: MojoBase.Value) {
-    let eventArgs = MojoBase.Value(dictionaryValue: [
-      "type": MojoBase.Value(stringValue: "eth_subscription"),
-      "data": MojoBase.Value(dictionaryValue: [
-        "subscription": MojoBase.Value(stringValue: subscriptionId),
+  func messageEvent(subscriptionId: String, result: BaseValue) {
+    let eventArgs = BaseValue(dictionaryValue: [
+      "type": BaseValue(stringValue: "eth_subscription"),
+      "data": BaseValue(dictionaryValue: [
+        "subscription": BaseValue(stringValue: subscriptionId),
         "result": result,
       ]),
     ])

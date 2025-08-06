@@ -292,15 +292,15 @@ class BaseValueMojoTypemap(MojoTypemap):
         return (mojom.IsUnionKind(kind) and
                 kind.qualified_name == 'mojo_base.mojom.Value')
     def ObjCWrappedType(self):
-        return "MojoBaseValue*"
+        return "BaseValueBridge*"
     def ExpectedCppType(self):
         return "base::Value"
     def DefaultObjCValue(self, default):
-        return "[[MojoBaseValue alloc] init]"
+        return "[[BaseValueBridge alloc] init]"
     def ObjCToCpp(self, accessor):
-        return "%s.cppObjPtr" % accessor
+        return "%s.value" % accessor
     def CppToObjC(self, accessor):
-        return "[[MojoBaseValue alloc] initWithValue:%s.Clone()]" % accessor
+        return "[[BaseValueBridge alloc] initWithValue:%s.Clone()]" % accessor
 
 class BaseDictionaryValueMojoTypemap(MojoTypemap):
     @staticmethod
@@ -309,7 +309,7 @@ class BaseDictionaryValueMojoTypemap(MojoTypemap):
                 kind.qualified_name == \
                     'mojo_base.mojom.DictionaryValue')
     def ObjCWrappedType(self):
-        return "NSDictionary<NSString*,MojoBaseValue*>*"
+        return "NSDictionary<NSString*,BaseValueBridge*>*"
     def ExpectedCppType(self):
         return "base::Value::Dict"
     def DefaultObjCValue(self, default):
@@ -326,7 +326,7 @@ class BaseListValueMojoTypemap(MojoTypemap):
                 kind.qualified_name == 'mojo_base.mojom.ListValue')
 
     def ObjCWrappedType(self):
-        return "NSArray<MojoBaseValue*>*"
+        return "NSArray<BaseValueBridge*>*"
 
     def ExpectedCppType(self):
         return "base::Value"

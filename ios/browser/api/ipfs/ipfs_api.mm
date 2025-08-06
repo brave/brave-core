@@ -6,7 +6,7 @@
 #include "brave/ios/browser/api/ipfs/ipfs_api.h"
 
 #include "base/memory/raw_ptr.h"
-#import "brave/base/mac/conversions.h"
+#import "brave/base/apple/foundation_util.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "components/user_prefs/user_prefs.h"
