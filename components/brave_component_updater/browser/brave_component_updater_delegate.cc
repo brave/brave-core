@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 
-#include "base/command_line.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_component_installer.h"
@@ -20,8 +19,6 @@ using component_updater::ComponentUpdateService;
 namespace brave_component_updater {
 
 namespace {
-// This is a temporary workaround to preserve existing behavior for perf tests
-constexpr char kAllowBraveComponentUpdate[] = "allow-brave-component-update";
 
 void RegisterComponent(component_updater::ComponentUpdateService* cus,
                        const std::string& name,
@@ -55,11 +52,7 @@ void BraveComponentUpdaterDelegate::Register(
     const std::string& component_base64_public_key,
     base::OnceClosure registered_callback,
     BraveComponent::ReadyCallback ready_callback) {
-  bool allow_brave_component_update =
-      base::CommandLine::ForCurrentProcess()->HasSwitch(
-          kAllowBraveComponentUpdate);
-  if (!BraveOnDemandUpdater::GetInstance()->is_component_update_disabled() ||
-      allow_brave_component_update) {
+  if (!BraveOnDemandUpdater::GetInstance()->is_component_update_disabled()) {
     RegisterComponent(base::to_address(component_updater_), component_name,
                       component_base64_public_key,
                       std::move(registered_callback),

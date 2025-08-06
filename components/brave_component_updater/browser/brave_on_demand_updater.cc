@@ -10,10 +10,16 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/command_line.h"
 #include "base/functional/callback.h"  // IWYU pragma: keep
 #include "base/no_destructor.h"
 
 namespace brave_component_updater {
+
+namespace {
+// This is a temporary workaround to preserve existing behavior for perf tests
+constexpr char kAllowBraveComponentUpdate[] = "allow-brave-component-update";
+}  // namespace
 
 BraveOnDemandUpdater* BraveOnDemandUpdater::GetInstance() {
   static base::NoDestructor<BraveOnDemandUpdater> instance;
@@ -31,7 +37,11 @@ BraveOnDemandUpdater::RegisterOnDemandUpdater(
   if (!on_demand_updater) {
     CHECK_IS_TEST();
   }
-  is_component_update_disabled_ = is_component_update_disabled;
+  bool allow_brave_component_update =
+      base::CommandLine::ForCurrentProcess()->HasSwitch(
+          kAllowBraveComponentUpdate);
+  is_component_update_disabled_ =
+      is_component_update_disabled && !allow_brave_component_update;
   return std::exchange(on_demand_updater_, on_demand_updater);
 }
 
