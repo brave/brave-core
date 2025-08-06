@@ -42,7 +42,7 @@ bool Profile::IsAIChatAgent() const {
   }
   return GetPath().BaseName().value() == brave::kAIChatAgentProfileDir;
 #else
-  NOTREACHED();
+  return false;
 #endif
 }
 
