@@ -63,6 +63,11 @@ export class SettingsWalletPageIndexElement extends
 
   declare prefs: {[key: string]: any};
 
+  private showDefaultViews_() {
+    this.$.viewManager.switchViews(
+        ['parent', 'web3Domains'], 'no-animation', 'no-animation');
+  }
+
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
     super.currentRouteChanged(newRoute, oldRoute);
 
@@ -71,22 +76,12 @@ export class SettingsWalletPageIndexElement extends
     queueMicrotask(() => {
       switch (newRoute) {
         case routes.BRAVE_WEB3:
-          this.$.viewManager.switchView(
-              'parent', 'no-animation', 'no-animation');
+        case routes.BASIC:
+          this.showDefaultViews_();
           break;
         case routes.BRAVE_WALLET_NETWORKS:
           this.$.viewManager.switchView(
               'networks', 'no-animation', 'no-animation');
-          break;
-        case routes.BASIC:
-          // Switch back to the default view in case they are part of search
-          // results.
-          this.$.viewManager.switchView(
-              'parent', 'no-animation', 'no-animation');
-          break;
-        default:
-          // Nothing to do. Other parent elements are responsible for updating
-          // the displayed contents.
           break;
       }
     });

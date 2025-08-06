@@ -13,6 +13,7 @@ import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {RouteObserverMixin, Router} from '../router.js'
+import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js'
 
 import {
   BraveWalletBrowserProxy,
@@ -38,7 +39,7 @@ interface CurrencyType {
 }
 
 const SettingsBraveWalletPageBase =
-  WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
+  WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(SettingsViewMixin(PolymerElement)))))
 
 class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   static get is() {
@@ -101,11 +102,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         type: Boolean
       },
 
-      isNetworkEditor_: {
-        type: Boolean,
-        value: false,
-      },
-
       isTransactionSimulationsFeatureEnabled: {
         type: Boolean,
         value: false,
@@ -136,7 +132,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   private declare cryptocurrency_list_: CurrencyType[]
   private declare currency_list_: CurrencyType[]
   private declare isNativeWalletEnabled_: boolean
-  private declare isNetworkEditor_: boolean
   private declare isTransactionSimulationsFeatureEnabled: boolean
   private declare isPrivateWindowsEnabled_: chrome.settingsPrivate.PrefObject<boolean>
   private declare showRestartToast_: boolean
@@ -255,14 +250,13 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
       every((item: CurrencyType) => assert(item.name === item.value))
   }
 
-  override currentRouteChanged() {
-    this.isNetworkEditor_ = this.isNetworkEditorRoute()
-  }
-
-  private isNetworkEditorRoute() {
-    const router = Router.getInstance()
-    return (router.getCurrentRoute() ===
-      router.getRoutes().BRAVE_WALLET_NETWORKS)
+  override getAssociatedControlFor(childViewId: string): HTMLElement {
+    switch (childViewId) {
+      case 'networks':
+        return this.shadowRoot!.querySelector('#walletNetworksLinkRow')!;
+      default:
+        throw new Error(`Unknown child view id: ${childViewId}`)
+    }
   }
 
   private onInputAutoLockMinutes_() {
