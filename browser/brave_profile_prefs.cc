@@ -449,7 +449,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   registry->RegisterBooleanPref(kWebDiscoveryEnabled, false);
-  registry->RegisterBooleanPref(kWebDiscoveryDisabledByPolicy, false);
   registry->RegisterDictionaryPref(kWebDiscoveryCTAState);
 #endif
 

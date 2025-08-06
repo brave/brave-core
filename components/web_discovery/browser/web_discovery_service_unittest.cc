@@ -54,8 +54,6 @@ class WebDiscoveryServiceTest : public testing::Test {
     WebDiscoveryService::RegisterLocalStatePrefs(local_state_.registry());
     WebDiscoveryService::RegisterProfilePrefs(profile_prefs_.registry());
     profile_prefs_.registry()->RegisterBooleanPref(kWebDiscoveryEnabled, false);
-    profile_prefs_.registry()->RegisterBooleanPref(
-        kWebDiscoveryDisabledByPolicy, false);
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   }
@@ -87,7 +85,6 @@ class WebDiscoveryServiceTest : public testing::Test {
 
 TEST_F(WebDiscoveryServiceTest, ServiceStartsWhenEnabled) {
   profile_prefs_.SetBoolean(kWebDiscoveryEnabled, true);
-  profile_prefs_.SetBoolean(kWebDiscoveryDisabledByPolicy, false);
 
   CreateService();
 
@@ -97,19 +94,6 @@ TEST_F(WebDiscoveryServiceTest, ServiceStartsWhenEnabled) {
 TEST_F(WebDiscoveryServiceTest, ServiceDoesNotStartWhenDisabled) {
   // Test disabled via enabled pref
   profile_prefs_.SetBoolean(kWebDiscoveryEnabled, false);
-  profile_prefs_.SetBoolean(kWebDiscoveryDisabledByPolicy, false);
-  CreateService();
-  EXPECT_FALSE(IsActive());
-
-  // Test disabled via policy pref
-  profile_prefs_.SetBoolean(kWebDiscoveryEnabled, true);
-  profile_prefs_.SetBoolean(kWebDiscoveryDisabledByPolicy, true);
-  CreateService();
-  EXPECT_FALSE(IsActive());
-
-  // Test both disabled
-  profile_prefs_.SetBoolean(kWebDiscoveryEnabled, false);
-  profile_prefs_.SetBoolean(kWebDiscoveryDisabledByPolicy, true);
   CreateService();
   EXPECT_FALSE(IsActive());
 }
@@ -131,18 +115,6 @@ TEST_F(WebDiscoveryServiceTest, ServiceTogglesOnPrefChange) {
   // Enable again
   profile_prefs_.SetBoolean(kWebDiscoveryEnabled, true);
   EXPECT_TRUE(IsActive());
-}
-
-TEST_F(WebDiscoveryServiceTest, ServiceDoesNotToggleWhenDisabledByPolicy) {
-  // Start with policy disabled
-  profile_prefs_.SetBoolean(kWebDiscoveryDisabledByPolicy, true);
-  profile_prefs_.SetBoolean(kWebDiscoveryEnabled, false);
-  CreateService();
-  EXPECT_FALSE(IsActive());
-
-  // Try to enable via user pref - should remain inactive due to policy
-  profile_prefs_.SetBoolean(kWebDiscoveryEnabled, true);
-  EXPECT_FALSE(IsActive());
 }
 
 }  // namespace web_discovery

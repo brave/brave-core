@@ -71,7 +71,7 @@
       sub-label="$i18n{searchSuggestDesc}">
   </settings-toggle-button>
 </template>
-<template is="dom-if" if="[[!prefs.brave.web_discovery_disabled_by_policy.value]]">
+<template is="dom-if" if="[[!isWebDiscoveryHidden_]]">
   <if expr="enable_extensions or enable_web_discovery_native">
     <settings-toggle-button id="webDiscoveryEnabledExtension"
         class="cr-row"

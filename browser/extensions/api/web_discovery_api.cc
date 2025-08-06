@@ -10,7 +10,6 @@
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
-#include "brave/components/web_discovery/common/util.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "extensions/browser/extension_function.h"
@@ -35,7 +34,7 @@ WebDiscoveryRetrieveBackupResultsFunction::
 ExtensionFunction::ResponseAction
 WebDiscoveryRetrieveBackupResultsFunction::Run() {
   auto* user_prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!user_prefs || !web_discovery::IsWebDiscoveryEnabled(*user_prefs)) {
+  if (!user_prefs || !user_prefs->GetBoolean(kWebDiscoveryEnabled)) {
     return RespondNow(Error("web discovery is not enabled"));
   }
   EXTENSION_FUNCTION_VALIDATE(has_args() && !args().empty());
@@ -82,7 +81,7 @@ WebDiscoveryIsWebDiscoveryExtensionEnabledFunction::Run() {
 
   auto* user_prefs = user_prefs::UserPrefs::Get(browser_context());
   bool result = !native_enabled && user_prefs &&
-                web_discovery::IsWebDiscoveryEnabled(*user_prefs);
+                user_prefs->GetBoolean(kWebDiscoveryEnabled);
 
   return RespondNow(WithArguments(result));
 }
