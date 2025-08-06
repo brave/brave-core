@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/containers/map_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_split.h"
@@ -15,8 +16,12 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/web_discovery/browser/document_extractor/lib.rs.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/patterns_v2.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
+#include "brave/components/web_discovery/browser/relevant_site.h"
+#include "brave/components/web_discovery/browser/url_extractor.h"
 #include "brave/components/web_discovery/browser/util.h"
+#include "brave/components/web_discovery/browser/value_transform.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 namespace web_discovery {
@@ -91,11 +96,13 @@ std::optional<std::string> RefineJsonExtract(const std::string& value,
 
 class ContentScraperImpl : public ContentScraper {
  public:
-  explicit ContentScraperImpl(const ServerConfigLoader* server_config_loader)
+  explicit ContentScraperImpl(const ServerConfigLoader* server_config_loader,
+                              const URLExtractor* url_extractor)
       : sequenced_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
             {base::TaskPriority::BEST_EFFORT,
              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})),
-        server_config_loader_(server_config_loader) {}
+        server_config_loader_(server_config_loader),
+        url_extractor_(url_extractor) {}
 
   ~ContentScraperImpl() override = default;
 
@@ -188,8 +195,58 @@ class ContentScraperImpl : public ContentScraper {
   void ParseAndScrapePageV2(const GURL& url,
                             std::string response_body,
                             PageScrapeResultCallback callback) override {
-    // TODO(djandries): Implement v2 pattern scraping
-    std::move(callback).Run(nullptr);
+    // Get the v2 patterns from server config loader
+    const auto& v2_patterns = server_config_loader_->GetLastV2Patterns();
+
+    // Use URLExtractor to identify the relevant site for this URL
+    auto url_result = url_extractor_->IdentifyURL(url);
+    if (!url_result) {
+      std::move(callback).Run(nullptr);
+      return;
+    }
+
+    const RelevantSite site = url_result->details->site;
+    const auto* site_pattern =
+        base::FindOrNull(v2_patterns.site_patterns, site);
+    if (!site_pattern) {
+      std::move(callback).Run(nullptr);
+      return;
+    }
+
+    // Get the site ID for the PageScrapeResult
+    auto site_id = RelevantSiteToID(site);
+    CHECK(site_id);
+    auto interim_result =
+        std::make_unique<PageScrapeResult>(url, std::string(*site_id));
+
+    // Convert v2 input groups to SelectRequest format
+    std::vector<SelectRequest> select_requests;
+    for (const auto& [selector, input_group] : site_pattern->input_groups) {
+      SelectRequest select_request;
+      select_request.root_selector = selector;
+      select_request.select_all = input_group.select_all;
+
+      // Convert extraction rules to attribute requests
+      for (const auto& [key, extraction_rule] : input_group.extraction_rules) {
+        SelectAttributeRequest attribute_request{
+            .sub_selector = extraction_rule.sub_selector.value_or(""),
+            .key = key,
+            .attribute = extraction_rule.attribute,
+        };
+        select_request.attribute_requests.push_back(
+            std::move(attribute_request));
+      }
+      select_requests.push_back(std::move(select_request));
+    }
+
+    // Use browser-based extraction (similar to ParseAndScrapePage)
+    sequenced_task_runner_->PostTaskAndReplyWithResult(
+        FROM_HERE,
+        base::BindOnce(&query_element_attributes, response_body,
+                       select_requests),
+        base::BindOnce(&ContentScraperImpl::OnBrowserParsedV2ElementAttributes,
+                       weak_ptr_factory_.GetWeakPtr(), site,
+                       std::move(interim_result), std::move(callback)));
   }
 
  private:
@@ -275,6 +332,60 @@ class ContentScraperImpl : public ContentScraper {
     std::move(callback).Run(std::move(scrape_result));
   }
 
+  void OnBrowserParsedV2ElementAttributes(
+      const RelevantSite& site,
+      std::unique_ptr<PageScrapeResult> scrape_result,
+      PageScrapeResultCallback callback,
+      rust::Vec<AttributeResult> attribute_results) {
+    // Get the v2 patterns to process results
+    const auto& v2_patterns = server_config_loader_->GetLastV2Patterns();
+    const auto* site_pattern =
+        base::FindOrNull(v2_patterns.site_patterns, site);
+    if (!site_pattern) {
+      std::move(callback).Run(nullptr);
+      return;
+    }
+
+    // Process extracted attributes according to v2 pattern rules
+    for (const auto& attribute_result : attribute_results) {
+      // Find the corresponding input group using the selector as key
+      const auto root_selector = std::string(attribute_result.root_selector);
+      const auto* input_group =
+          base::FindOrNull(site_pattern->input_groups, root_selector);
+      if (!input_group) {
+        continue;
+      }
+
+      // Process each attribute pair
+      base::Value::Dict attribute_values;
+      for (const auto& pair : attribute_result.attribute_pairs) {
+        std::string key(pair.key);
+        std::string value(pair.value);
+
+        // Apply transforms if defined in the extraction rules
+        const auto* extraction_rule =
+            base::FindOrNull(input_group->extraction_rules, key);
+        if (extraction_rule && !extraction_rule->transforms.empty()) {
+          auto transformed_value =
+              ApplyTransforms(extraction_rule->transforms, value);
+          if (!transformed_value) {
+            continue;
+          }
+          value = *transformed_value;
+        }
+
+        attribute_values.Set(key, value);
+      }
+
+      if (!attribute_values.empty()) {
+        scrape_result->fields[root_selector].push_back(
+            std::move(attribute_values));
+      }
+    }
+
+    std::move(callback).Run(std::move(scrape_result));
+  }
+
   std::optional<std::string> ExecuteRefineFunctions(
       const RefineFunctionList& function_list,
       std::string value) {
@@ -341,6 +452,7 @@ class ContentScraperImpl : public ContentScraper {
   scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
 
   raw_ptr<const ServerConfigLoader> server_config_loader_;
+  raw_ptr<const URLExtractor> url_extractor_;
 
   base::WeakPtrFactory<ContentScraperImpl> weak_ptr_factory_{this};
 };
@@ -348,8 +460,10 @@ class ContentScraperImpl : public ContentScraper {
 }  // namespace
 
 std::unique_ptr<ContentScraper> ContentScraper::Create(
-    const ServerConfigLoader* server_config_loader) {
-  return std::make_unique<ContentScraperImpl>(server_config_loader);
+    const ServerConfigLoader* server_config_loader,
+    const URLExtractor* url_extractor) {
+  return std::make_unique<ContentScraperImpl>(server_config_loader,
+                                              url_extractor);
 }
 
 PageScrapeResult::PageScrapeResult(GURL url, std::string id)

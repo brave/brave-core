@@ -10,6 +10,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/values.h"
 
@@ -29,6 +30,12 @@ class ValueTransform {
 // transform_definition[0] should be the transform name string
 std::unique_ptr<ValueTransform> CreateValueTransform(
     const base::Value::List& transform_definition);
+
+// Helper function to apply a sequence of transforms to a value
+// Returns nullopt if any transformation fails or should stop processing
+std::optional<std::string> ApplyTransforms(
+    const std::vector<std::unique_ptr<ValueTransform>>& transforms,
+    std::string_view input);
 
 }  // namespace web_discovery
 

@@ -20,6 +20,8 @@ struct SelectRequest {
   string root_selector;
   // Scrape requests for the selected element.
   array<SelectAttributeRequest> attribute_requests;
+  // If true, select all matching elements; if false, select only the first match.
+  bool select_all = false;
 };
 
 struct AttributeResult {

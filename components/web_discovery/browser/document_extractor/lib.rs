@@ -26,6 +26,8 @@ mod ffi {
         pub root_selector: String,
         /// Scrape requests for the selected element.
         pub attribute_requests: Vec<SelectAttributeRequest>,
+        /// If true, select all matching elements; if false, select only the first match.
+        pub select_all: bool,
     }
 
     pub struct AttributePair {
@@ -59,9 +61,15 @@ fn extract_attributes_from_nodes(
     root_selector: &str,
     attribute_requests: &[SelectAttributeRequest],
     selection: Select<'_, '_>,
+    select_all: bool,
     results: &mut Vec<AttributeResult>,
 ) {
-    for node in selection {
+    let nodes_to_process: Vec<_> = match select_all {
+        true => selection.collect(),
+        false => selection.take(1).collect(),
+    };
+
+    for node in nodes_to_process {
         let mut attribute_map = HashMap::new();
         for attribute_request in attribute_requests {
             let sub_node = match attribute_request.sub_selector.is_empty() {
@@ -110,6 +118,7 @@ pub fn query_element_attributes(
                 &request.root_selector,
                 &request.attribute_requests,
                 document.select(&selector),
+                request.select_all,
                 &mut results,
             );
         }
