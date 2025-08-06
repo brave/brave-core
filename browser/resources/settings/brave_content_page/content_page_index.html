@@ -3,12 +3,30 @@
   cr-view-manager[show-all] [slot=view][data-parent-view-id] {
     display: none;
   }
+
+  cr-view-manager [slot=view]:not(.closing) {
+    position: initial;
+  }
 </style>
 
 <cr-view-manager id="viewManager" class="cr-centered-card-container"
     show-all$="[[shouldShowAll]]">
   <settings-brave-content-content slot="view" id="parent" prefs="{{prefs}}">
   </settings-brave-content-content>
+
+  <settings-brave-content-playlist
+    id="playlist"
+    slot="view"
+    prefs="{{prefs}}"
+    in-search-mode="[[inSearchMode_]]">
+  </settings-brave-content-playlist>
+  
+  <settings-brave-content-speedreader
+    id="speedreader"
+    slot="view"
+    prefs="{{prefs}}"
+    in-search-mode="[[inSearchMode_]]">
+  </settings-brave-content-speedreader>
 
   <settings-appearance-fonts-page slot="view" id="fonts"
       data-parent-view-id="parent" prefs="{{prefs}}">
