@@ -179,6 +179,11 @@
 
       <!--Add new items to the appropriate sections below -->
 
+      <!-- Profile menu -->
+      <message name="IDS_PROFILE_MENU_BRAVE_PLACEHOLDER_PROFILE_NAME" desc="Placeholder profile name, used when the user did not enter a name for their profile.">
+        Personal
+      </message>
+
       <!-- App Menu -->
       <message name="IDS_SHOW_BRAVE_REWARDS" desc="The show Brave Rewards menu in the app menu">
         Brave Rewards
