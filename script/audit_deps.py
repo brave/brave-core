@@ -70,6 +70,10 @@ def main():
         print(f'Auditing (cargo) {p}')
         errors += cargo_audit_deps(os.path.join(args.source_root, p), args)
 
+    if args.output:
+        with open(args.output, 'w') as f:
+            json.dump(errors, f)
+
     return errors > 0
 
 
@@ -176,6 +180,7 @@ def parse_args():
     parser.add_argument('--audit_dev_deps',
                         action='store_true',
                         help='Audit dev dependencies')
+    parser.add_argument('--output', help='Output file')
     return parser.parse_args()
 
 

@@ -698,12 +698,16 @@ if (is_mac) {
 
 action("audit_deps") {
   script = "//brave/script/audit_deps.py"
+  output = "$target_gen_dir/audit_deps.json"
 
-  outputs = [ "$root_gen_dir/non-existent-audit_deps" ]
+  # Action must have outputs, and these outputs must be created, otherwise
+  # SISO will fail.
+  outputs = [ output ]
 
   args = [
     "--source_root=" + rebase_path("//brave"),
     "--cargo_audit_exe=" + rebase_path(cargo_audit_exe),
+    "--output=" + rebase_path(output),
   ]
 
   if (audit_dev_deps) {
