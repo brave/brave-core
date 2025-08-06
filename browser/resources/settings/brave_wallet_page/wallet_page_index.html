@@ -3,12 +3,23 @@
   cr-view-manager[show-all] [slot=view][data-parent-view-id] {
     display: none;
   }
+
+  cr-view-manager [slot=view]:not(.closing) {
+    position: initial;
+  }
 </style>
 
 <cr-view-manager id="viewManager" class="cr-centered-card-container"
     show-all$="[[shouldShowAll]]">
   <settings-brave-wallet-page slot="view" id="parent" prefs="{{prefs}}">
   </settings-brave-wallet-page>
+
+  <settings-brave-web3-domains-page
+    id="web3Domains"
+    slot="view"
+    prefs="{{prefs}}"
+    in-search-mode="[[inSearchMode_]]">
+  </settings-brave-web3-domains-page>
 
   <settings-wallet-networks-subpage slot="view" id="networks"
       data-parent-view-id="parent" prefs="{{prefs}}">
