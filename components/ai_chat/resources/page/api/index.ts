@@ -7,8 +7,6 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import API from '../../common/api'
 import * as Mojom from '../../common/mojom'
 
-const isAIChatAgentProfileFeatureEnabled = loadTimeData.getBoolean('isAIChatAgentProfileFeatureEnabled')
-
 // State that is owned by this class because it is global to the UI
 // (loadTimeData / Service / UIHandler).
 export type State = Mojom.ServiceState & {
@@ -43,9 +41,8 @@ export const defaultUIState: State = {
   canShowPremiumPrompt: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
-  isAIChatAgentProfileFeatureEnabled,
-  isAIChatAgentProfile: isAIChatAgentProfileFeatureEnabled &&
-    loadTimeData.getBoolean('isAIChatAgentProfile'),
+  isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean('isAIChatAgentProfileFeatureEnabled'),
+  isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
   actionList: [],
   tabs: []
 }

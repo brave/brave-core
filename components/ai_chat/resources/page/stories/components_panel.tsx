@@ -645,8 +645,8 @@ type CustomArgs = {
   suggestionStatus: keyof typeof Mojom.SuggestionGenerationStatus
   isMobile: boolean
   isHistoryEnabled: boolean
-  isContentAgentFeatureEnabled: boolean
-  isContentAgentSupportedInCurrentProfile: boolean
+  isAIChatAgentProfileFeatureEnabled: boolean
+  isAIChatAgentProfile: boolean
   isStandalone: boolean
   isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
@@ -683,8 +683,8 @@ const args: CustomArgs = {
   model: MODELS[0].key,
   isMobile: false,
   isHistoryEnabled: true,
-  isContentAgentFeatureEnabled: false,
-  isContentAgentSupportedInCurrentProfile: false,
+  isAIChatAgentProfileFeatureEnabled: false,
+  isAIChatAgentProfile: false,
   isStandalone: false,
   isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
@@ -800,8 +800,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     canShowPremiumPrompt: options.args.canShowPremiumPrompt,
     isMobile: options.args.isMobile,
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
-    isAIChatAgentProfileFeatureEnabled: options.args.isContentAgentFeatureEnabled,
-    isAIChatAgentProfile: options.args.isContentAgentSupportedInCurrentProfile,
+    isAIChatAgentProfileFeatureEnabled: options.args.isAIChatAgentProfileFeatureEnabled,
+    isAIChatAgentProfile: options.args.isAIChatAgentProfile,
     isStandalone: options.args.isStandalone,
     actionList: ACTIONS_LIST,
     tabs: [{
@@ -833,7 +833,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     dismissStorageNotice: () => { },
     dismissPremiumPrompt: () => { },
     userRefreshPremiumSession: () => { },
-    openAIChatAgenticProfile: () => { },
+    openAIChatAgentProfile: () => { },
     setEditingConversationId: (id: string | null) => setArgs({ editingConversationId: id }),
     setDeletingConversationId: (id: string | null) => setArgs({ deletingConversationId: id }),
     showSidebar: showSidebar,

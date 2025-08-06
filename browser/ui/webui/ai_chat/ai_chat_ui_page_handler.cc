@@ -263,7 +263,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
       {});
 }
 
-void AIChatUIPageHandler::OpenAIChatAgenticProfile() {
+void AIChatUIPageHandler::OpenAIChatAgentProfile() {
   CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   ai_chat::OpenBrowserWindowForAIChatAgentProfile(*profile_);

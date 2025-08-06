@@ -58,7 +58,7 @@ export default function BeginGeneration() {
           hasAcceptedAgreement: true,
           isAIChatAgentProfileFeatureEnabled: false,
           isAIChatAgentProfile: false,
-          openAIChatAgenticProfile: () => {},
+          openAIChatAgentProfile: () => {},
           isGenerating: context.isGenerating,
           handleStopGenerating: async () => {},
           removeImage: () => {},

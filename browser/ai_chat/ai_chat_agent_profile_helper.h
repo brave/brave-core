@@ -11,11 +11,8 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
 
-class Profile;
-
-#if !BUILDFLAG(IS_ANDROID)
 class Browser;
-#endif
+class Profile;
 
 namespace ai_chat {
 

@@ -51,7 +51,7 @@ type Props = Pick<
     | 'hasAcceptedAgreement'
     | 'getPluralString'
     | 'tabs'
-    | 'openAIChatAgenticProfile'>
+    | 'openAIChatAgentProfile'>
 
 export interface InputBoxProps {
   context: Props
@@ -144,7 +144,7 @@ function InputBox(props: InputBoxProps) {
   )
 
   const handleContentAgentToggle = () => {
-    props.context.openAIChatAgenticProfile()
+    props.context.openAIChatAgentProfile()
   }
 
   const showImageAttachments = props.context.pendingMessageImages.length > 0 || props.context.isUploadingFiles

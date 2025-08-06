@@ -27,7 +27,7 @@ type AIChatContextInternal = AIChatContextProps & {
   dismissStorageNotice: () => void
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
-  openAIChatAgenticProfile: () => void
+  openAIChatAgentProfile: () => void
   getPluralString: (key: string, count: number) => Promise<string>
   uiHandler?: Mojom.AIChatUIHandlerRemote
   service?: Mojom.ServiceRemote
@@ -54,7 +54,7 @@ export const defaultContext: AIChatContext = {
   dismissStorageNotice: () => { },
   dismissPremiumPrompt: () => { },
   userRefreshPremiumSession: () => { },
-  openAIChatAgenticProfile: () => { },
+  openAIChatAgentProfile: () => { },
 
   editingConversationId: null,
   setEditingConversationId: () => { },
@@ -94,7 +94,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
     dismissPremiumPrompt: () => api.service.dismissPremiumPrompt(),
     userRefreshPremiumSession: () => api.uiHandler.refreshPremiumSession(),
     handleAgreeClick: () => api.service.markAgreementAccepted(),
-    openAIChatAgenticProfile: () => api.uiHandler.openAIChatAgenticProfile(),
+    openAIChatAgentProfile: () => api.uiHandler.openAIChatAgentProfile(),
     uiHandler: api.uiHandler,
     service: api.service,
     editingConversationId,
