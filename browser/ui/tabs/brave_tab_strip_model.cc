@@ -183,19 +183,29 @@ void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
 void BraveTabStripModel::BuildTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
 
+  if (in_tree_mode_) {
+    return;
+  }
+
   auto* unpinned_collection = contents_data_->unpinned_collection();
   CHECK(unpinned_collection);
 
   TreeTabNode::BuildTreeTabs(*unpinned_collection);
+  in_tree_mode_ = true;
 }
 
 void BraveTabStripModel::FlattenTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
 
+  if (!in_tree_mode_) {
+    return;
+  }
+
   auto* unpinned_collection = contents_data_->unpinned_collection();
   CHECK(unpinned_collection);
 
   TreeTabNode::FlattenTreeTabs(*unpinned_collection);
+  in_tree_mode_ = false;
 }
 
 tabs::TabStripCollection&
