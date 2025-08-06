@@ -372,22 +372,6 @@ void ContentSettingsRegistry::BraveInit() {
       WebsiteSettingsRegistry::DESKTOP |
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
       WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
-
-  // Add iOS platform. Currently behind blink feature flag (6/2025).
-  content_settings_info_.erase(ContentSettingsType::JAVASCRIPT);
-  website_settings_registry_->UnRegister(ContentSettingsType::JAVASCRIPT);
-  Register(ContentSettingsType::JAVASCRIPT, "javascript", CONTENT_SETTING_ALLOW,
-           WebsiteSettingsInfo::SYNCABLE,
-           /*allowlisted_primary_schemes=*/
-           {kChromeUIScheme, kChromeDevToolsScheme, kExtensionScheme,
-            kChromeUIUntrustedScheme},
-           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
-           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
-           WebsiteSettingsRegistry::DESKTOP |
-               WebsiteSettingsRegistry::PLATFORM_ANDROID |
-               WebsiteSettingsRegistry::PLATFORM_IOS,
-           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
-           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 }
 
 }  // namespace content_settings
