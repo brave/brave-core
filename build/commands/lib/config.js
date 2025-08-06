@@ -1233,13 +1233,46 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
     }
 
+    // These env vars are required during `build` stage.
     if (this.useRemoteExec) {
-      // These env vars are required during `build` stage.
+      // Restrict remote execution to 160 parallel jobs.
+      const kRemoteLimit = 160
+
+      // Prevent depot_tools from setting lower timeouts.
+      const kRbeTimeout = '10m'
+      env.RBE_exec_timeout = env.RBE_exec_timeout || kRbeTimeout
+      env.RBE_reclient_timeout = env.RBE_reclient_timeout || kRbeTimeout
 
       // Autoninja generates -j value when RBE is enabled, adjust limits for
       // Brave-specific setup.
       env.NINJA_CORE_MULTIPLIER = Math.min(20, env.NINJA_CORE_MULTIPLIER || 20)
-      env.NINJA_CORE_LIMIT = Math.min(160, env.NINJA_CORE_LIMIT || 160)
+      env.NINJA_CORE_LIMIT = Math.min(
+        kRemoteLimit,
+        env.NINJA_CORE_LIMIT || kRemoteLimit,
+      )
+
+      // Siso has its own limits for remote execution that do not depend on
+      // NINJA_CORE_* values. Set those limits separately. See docs for more
+      // details:
+      // https://chromium.googlesource.com/infra/infra/+/main/go/src/infra/build/siso/docs/environment_variables.md#siso_limits
+      const defaultSisoLimits = {
+        remote: kRemoteLimit,
+        rewrap: kRemoteLimit,
+      }
+      // Parse SISO_LIMITS from env if set.
+      const envSisoLimits = new Map(
+        env.SISO_LIMITS?.split(',').map((item) => item.split('=')) || [],
+      )
+      // Merge defaultSisoLimits with envSisoLimits ensuring that the values are
+      // not greater than the default values.
+      Object.entries(defaultSisoLimits).forEach(([key, defaultValue]) => {
+        const valueFromEnv = parseInt(envSisoLimits.get(key)) || defaultValue
+        envSisoLimits.set(key, Math.min(defaultValue, valueFromEnv))
+      })
+      // Set SISO_LIMITS env var.
+      env.SISO_LIMITS = Array.from(envSisoLimits.entries())
+        .map(([key, value]) => `${key}=${value}`)
+        .join(',')
 
       if (this.offline) {
         // Use all local resources in offline mode. RBE_local_resource_fraction
