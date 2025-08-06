@@ -49,11 +49,14 @@ const char* GetProfileTypeString(ProfileType type) {
 }
 }  // namespace
 
-class AIChatProfileTest : public InProcessBrowserTest,
-                          public ::testing::WithParamInterface<ProfileType> {
+// Tests that confirm AI Chat and related features are only enabled in
+// the expected profiles.
+class AIChatProfilesEnabledTest
+    : public InProcessBrowserTest,
+      public ::testing::WithParamInterface<ProfileType> {
  public:
-  AIChatProfileTest() = default;
-  ~AIChatProfileTest() override = default;
+  AIChatProfilesEnabledTest() = default;
+  ~AIChatProfilesEnabledTest() override = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -91,7 +94,7 @@ class AIChatProfileTest : public InProcessBrowserTest,
   raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
 };
 
-IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SidebarCheck) {
+IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SidebarCheck) {
   auto* sidebar_model = browser_->GetFeatures().sidebar_controller()->model();
 
   bool is_in_sidebar = std::ranges::any_of(
@@ -106,7 +109,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SidebarCheck) {
   }
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatProfileTest, Autocomplete) {
+IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, Autocomplete) {
   auto* autocomplete_controller = browser_->window()
                                       ->GetLocationBar()
                                       ->GetOmniboxView()
@@ -124,7 +127,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfileTest, Autocomplete) {
   }
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatProfileTest, ContextMenu) {
+IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, ContextMenu) {
   content::ContextMenuParams params;
   params.is_editable = false;
   params.page_url = GURL("http://test.page/");
@@ -141,7 +144,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfileTest, ContextMenu) {
   }
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SidePanelRegistry) {
+IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SidePanelRegistry) {
   auto* registry = browser_->GetActiveTabInterface()
                        ->GetTabFeatures()
                        ->side_panel_registry();
@@ -154,7 +157,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SidePanelRegistry) {
   }
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SpeedreaderToolbar) {
+IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SpeedreaderToolbar) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser_, GURL(base::StrCat({content::kChromeUIScheme, "://",
                                    kSpeedreaderPanelHost}))));
@@ -170,9 +173,8 @@ IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SpeedreaderToolbar) {
 
 INSTANTIATE_TEST_SUITE_P(
     All,
-    AIChatProfileTest,
+    AIChatProfilesEnabledTest,
     testing::ValuesIn({ProfileType::kRegular, ProfileType::kGuest,
                        ProfileType::kPrivate, ProfileType::kTor}),
-    [](const testing::TestParamInfo<AIChatProfileTest::ParamType>& info) {
-      return GetProfileTypeString(info.param);
-    });
+    [](const testing::TestParamInfo<AIChatProfilesEnabledTest::ParamType>&
+           info) { return GetProfileTypeString(info.param); });

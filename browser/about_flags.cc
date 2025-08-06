@@ -126,7 +126,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 
 namespace {
 const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
-}
+}  // namespace
 
 #define SPEEDREADER_FEATURE_ENTRIES                                        \
   IF_BUILDFLAG(                                                            \
@@ -500,6 +500,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "specific actions.",                                                 \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatTools),                 \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-agent-profile",                                       \
+          "Brave AI Chat Agent Profile",                                       \
+          "Enables Leo's content agent features and only in a separate "       \
+          "built-in profile.",                                                 \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatAgentProfile),          \
       },                                                                       \
       {                                                                        \
           "brave-ai-host-specific-distillation",                               \

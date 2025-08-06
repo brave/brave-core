@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/memory/ref_counted.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "content/browser/blob_storage/chrome_blob_storage_context.h"
 #include "content/browser/dom_storage/dom_storage_context_wrapper.h"
 #include "content/browser/dom_storage/session_storage_namespace_impl.h"
@@ -61,6 +62,10 @@ std::string GetSessionStorageNamespaceId(WebContents* web_contents) {
 namespace content {
 bool BrowserContext::IsTor() const {
   return false;
+}
+
+bool BrowserContext::IsAIChatAgent() const {
+  NOTREACHED() << "Use Profile::IsAIChatAgent() instead";
 }
 }  // namespace content
 

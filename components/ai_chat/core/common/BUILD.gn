@@ -24,6 +24,7 @@ component("common") {
   deps = [
     "//base",
     "//brave/brave_domains",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/ai_chat/core/proto",
     "//components/prefs",

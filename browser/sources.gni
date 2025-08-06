@@ -42,6 +42,7 @@ import("//brave/browser/webcompat_reporter/sources.gni")
 import("//brave/build/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -635,6 +636,13 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
 ]
+
+if (enable_brave_ai_chat_agent_profile) {
+  brave_chrome_browser_deps +=
+      [ "//brave/browser/ai_chat:ai_chat_agent_profile_impl" ]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ai_chat:ai_chat_agent_profile_impl" ]
+}
 
 if (toolkit_views) {
   brave_chrome_browser_deps += [ "//brave/browser/ui/sidebar" ]

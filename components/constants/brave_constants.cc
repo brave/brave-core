@@ -5,10 +5,17 @@
 
 #include "brave/components/constants/brave_constants.h"
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+
 #define FPL FILE_PATH_LITERAL
 
 namespace brave {
 
 const base::FilePath::CharType kSessionProfileDir[] = FPL("session_profiles");
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+const base::FilePath::CharType kAIChatAgentProfileDir[] =
+    FPL("ai_chat_agent_profile");
+#endif
 
 }  // namespace brave

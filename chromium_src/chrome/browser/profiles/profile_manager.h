@@ -6,22 +6,29 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_MANAGER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_MANAGER_H_
 
+#define GetLastOpenedProfiles           \
+  GetLastOpenedProfiles_ChromiumImpl(); \
+  static std::vector<Profile*> GetLastOpenedProfiles
+#define GetNumberOfProfiles virtual GetNumberOfProfiles
 #define InitProfileUserPrefs virtual InitProfileUserPrefs
 #define DoFinalInitForServices virtual DoFinalInitForServices
 #define SetNonPersonalProfilePrefs virtual SetNonPersonalProfilePrefs
 #define IsAllowedProfilePath virtual IsAllowedProfilePath
 #define LoadProfileByPath virtual LoadProfileByPath
+#define SetProfileAsLastUsed virtual SetProfileAsLastUsed
 #define TestingProfileManager \
   TestingProfileManager;      \
   friend class BraveProfileManager
 
 #include <chrome/browser/profiles/profile_manager.h>  // IWYU pragma: export
 #undef TestingProfileManager
+#undef SetProfileAsLastUsed
 #undef LoadProfileByPath
 #undef IsAllowedProfilePath
 #undef SetNonPersonalProfilePrefs
 #undef DoFinalInitForServices
 #undef InitProfileUserPrefs
-#undef GetLastUsedProfileName
+#undef GetNumberOfProfiles
+#undef GetLastOpenedProfiles
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_MANAGER_H_
