@@ -214,7 +214,6 @@ brave_chrome_browser_deps = [
   "//brave/components/ntp_background_images/common",
   "//brave/components/ntp_tiles",
   "//brave/components/p3a",
-  "//brave/components/p3a:buildflags",
   "//brave/components/p3a_utils",
   "//brave/components/password_strength_meter:mojom",
   "//brave/components/playlist/common/buildflags",

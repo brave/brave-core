@@ -43,7 +43,6 @@
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
@@ -139,9 +138,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
   p3a_service();
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   histogram_braveizer_ = p3a::HistogramsBraveizer::Create();
-#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   // initialize ads stats helper
   ads_brave_stats_helper();
@@ -221,11 +218,9 @@ void BraveBrowserProcessImpl::StartTearDown() {
   if (ntp_background_images_service_) {
     ntp_background_images_service_->StartTearDown();
   }
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   if (p3a_service_) {
     p3a_service_->StartTeardown();
   }
-#endif
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   ai_chat_agent_profile_manager_.reset();
 #endif
@@ -450,7 +445,6 @@ void BraveBrowserProcessImpl::OnTorEnabledChanged() {
 #endif
 
 p3a::P3AService* BraveBrowserProcessImpl::p3a_service() {
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   if (p3a_service_) {
     return p3a_service_.get();
   }
@@ -460,9 +454,6 @@ p3a::P3AService* BraveBrowserProcessImpl::p3a_service() {
       p3a::P3AConfig::LoadFromCommandLine());
   p3a_service()->InitCallbacks();
   return p3a_service_.get();
-#else
-  return nullptr;
-#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 
 brave::BraveReferralsService*
