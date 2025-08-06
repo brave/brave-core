@@ -16,16 +16,16 @@ import 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
 import '/shared/settings/prefs/prefs.js';
 import '../settings_shared.css.js';
 
-import type {CrViewManagerElement} from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import type { CrViewManagerElement } from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
+import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
-import {routes} from '../route.js';
-import {RouteObserverMixin} from '../router.js';
-import type {Route} from '../router.js';
-import type {SettingsPlugin} from '../settings_main/settings_plugin.js';
-import {SearchableViewContainerMixin} from '../settings_page/searchable_view_container_mixin.js';
+import { routes } from '../route.js';
+import { RouteObserverMixin } from '../router.js';
+import type { Route } from '../router.js';
+import type { SettingsPlugin } from '../settings_main/settings_plugin.js';
+import { SearchableViewContainerMixin } from '../settings_page/searchable_view_container_mixin.js';
 
-import {getTemplate} from './shields_page_index.html.js';
+import { getTemplate } from './shields_page_index.html.js';
 
 // Subpages
 import './default_brave_shields_page.js';
@@ -39,10 +39,10 @@ export interface SettingsShieldsPageIndexElement {
 }
 
 const SettingsShieldsPageIndexElementBase =
-    SearchableViewContainerMixin(RouteObserverMixin(PolymerElement));
+  SearchableViewContainerMixin(RouteObserverMixin(PolymerElement));
 
 export class SettingsShieldsPageIndexElement extends
-    SettingsShieldsPageIndexElementBase implements SettingsPlugin {
+  SettingsShieldsPageIndexElementBase implements SettingsPlugin {
   static get is() {
     return 'settings-shields-page-index';
   }
@@ -57,7 +57,12 @@ export class SettingsShieldsPageIndexElement extends
     };
   }
 
-  declare prefs: {[key: string]: any};
+  declare prefs: { [key: string]: any };
+
+  private showDefaultViews_() {
+    this.$.viewManager.switchViews(
+      ['parent', 'socialBlocking'], 'no-animation', 'no-animation');
+  }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
     super.currentRouteChanged(newRoute, oldRoute);
@@ -67,26 +72,12 @@ export class SettingsShieldsPageIndexElement extends
     queueMicrotask(() => {
       switch (newRoute) {
         case routes.SHIELDS:
-          this.$.viewManager.switchView(
-              'parent', 'no-animation', 'no-animation');
+        case routes.BASIC:
+          this.showDefaultViews_();
           break;
         case routes.SHIELDS_ADBLOCK:
           this.$.viewManager.switchView(
-              'adblock', 'no-animation', 'no-animation');
-          break;
-        case routes.SOCIAL_BLOCKING:
-          this.$.viewManager.switchView(
-              'socialBlocking', 'no-animation', 'no-animation');
-          break;
-        case routes.BASIC:
-          // Switch back to the default view in case they are part of search
-          // results.
-          this.$.viewManager.switchView(
-              'parent', 'no-animation', 'no-animation');
-          break;
-        default:
-          // Nothing to do. Other parent elements are responsible for updating
-          // the displayed contents.
+            'adblock', 'no-animation', 'no-animation');
           break;
       }
     });

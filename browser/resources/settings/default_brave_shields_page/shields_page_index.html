@@ -3,6 +3,10 @@
   cr-view-manager[show-all] [slot=view][data-parent-view-id] {
     display: none;
   }
+
+  cr-view-manager [slot=view]:not(.closing) {
+    position: initial;
+  }
 </style>
 
 <cr-view-manager id="viewManager" class="cr-centered-card-container"
@@ -10,11 +14,10 @@
   <settings-default-brave-shields-page slot="view" id="parent" prefs="{{prefs}}">
   </settings-default-brave-shields-page>
 
+  <settings-social-blocking-page slot="view" id="socialBlocking" prefs="{{prefs}}">
+  </settings-social-blocking-page>
+
   <adblock-subpage slot="view" id="adblock"
       data-parent-view-id="parent" prefs="{{prefs}}">
   </adblock-subpage>
-
-  <settings-social-blocking-page slot="view" id="socialBlocking"
-      data-parent-view-id="parent" prefs="{{prefs}}">
-  </settings-social-blocking-page>
 </cr-view-manager>
