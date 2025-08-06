@@ -132,6 +132,8 @@ group("all") {
       "//brave/test:brave_junit_tests",
     ]
   }
+
+  write_file("$root_out_dir/all.json", deps, "json")
 }
 
 if (!is_ios) {
@@ -337,6 +339,8 @@ if (!is_ios) {
     if (use_libfuzzer) {
       deps += [ "//brave/fuzzers:brave_fuzzers" ]
     }
+
+    write_file("$root_out_dir/brave_tests.json", deps, "json")
   }
 }
 
