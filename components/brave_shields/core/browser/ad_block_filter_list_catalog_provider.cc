@@ -11,6 +11,7 @@
 #include "base/files/file_path.h"
 #include "base/task/thread_pool.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/brave_component_updater/browser/component_contents_reader.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 
 constexpr char kListCatalogFile[] = "list_catalog.json";
@@ -54,35 +55,36 @@ void AdBlockFilterListCatalogProvider::OnFilterListCatalogLoaded(
 }
 
 void AdBlockFilterListCatalogProvider::OnComponentReady(
-    const base::FilePath& path) {
+    std::unique_ptr<component_updater::ComponentContentsReader> reader) {
+  component_reader_ = std::move(reader);
+
   TRACE_EVENT("brave.adblock",
               "AdBlockFilterListCatalogProvider::OnComponentReady",
-              perfetto::Flow::FromPointer(this), "path", path.value());
-  component_path_ = path;
+              perfetto::Flow::FromPointer(this), "path",
+              component_reader_->GetComponentRootDeprecated());
 
-  // Load the filter list catalog (as a string)
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path_.AppendASCII(kListCatalogFile)),
-      base::BindOnce(
-          &AdBlockFilterListCatalogProvider::OnFilterListCatalogLoaded,
-          weak_factory_.GetWeakPtr()));
+  LoadFilterListCatalog(base::BindOnce(
+      &AdBlockFilterListCatalogProvider::OnFilterListCatalogLoaded,
+      weak_factory_.GetWeakPtr()));
 }
 
 void AdBlockFilterListCatalogProvider::LoadFilterListCatalog(
     base::OnceCallback<void(const std::string& catalog_json)> cb) {
-  if (component_path_.empty()) {
-    // If the path is not ready yet, don't run the callback. An update should be
-    // pushed soon.
+  if (!component_reader_) {
+    // If the component is not ready yet, don't run the callback. An update
+    // should be pushed soon.
     return;
   }
 
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path_.AppendASCII(kListCatalogFile)),
+  auto on_load = base::BindOnce(
+      [](base::OnceCallback<void(const std::string& catalog_json)> cb,
+         std::optional<std::string> data) {
+        std::move(cb).Run(std::move(data).value_or(std::string()));
+      },
       std::move(cb));
+
+  component_reader_->GetFileAsString(
+      base::FilePath::FromASCII(kListCatalogFile), std::move(on_load));
 }
 
 }  // namespace brave_shields

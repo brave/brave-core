@@ -19,12 +19,15 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
+#include "brave/components/brave_component_updater/browser/component_contents_reader.h"
+#include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -242,13 +245,27 @@ base::FilePath AdBlockServiceTest::MakeTestDataCopy(
   return temp_path.Append(source_location.BaseName());
 }
 
+brave_shields::AdBlockResourceProvider*
+AdBlockServiceTest::InstallDefaultAdBlockResources(
+    const base::FilePath& component_path) {
+  brave_shields::AdBlockService* service =
+      g_brave_browser_process->ad_block_service();
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  service->default_resource_provider()->OnComponentReady(
+      component_updater::ComponentContentsReader::CreateBypassForTesting(
+          component_path));
+  return service->default_resource_provider();
+}
+
 void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
   auto component_path = MakeFileInTempDir("resources.json", resources);
 
   brave_shields::AdBlockService* service =
       g_brave_browser_process->ad_block_service();
 
-  service->default_resource_provider()->OnComponentReady(component_path);
+  service->default_resource_provider()->OnComponentReady(
+      component_updater::ComponentContentsReader::CreateBypassForTesting(
+          component_path));
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
@@ -264,7 +281,9 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   std::string uuid = "default";
   auto& provider = component_providers.at(uuid);
   EXPECT_TRUE(provider);
-  provider->OnComponentReady(component_path);
+  provider->OnComponentReady(
+      component_updater::ComponentContentsReader::CreateBypassForTesting(
+          component_path));
 
   auto* engine = service->default_engine_.get();
   EngineTestObserver engine_observer(engine);
@@ -339,7 +358,9 @@ void AdBlockServiceTest::InstallComponent(
 
     auto& provider = component_providers.at(catalog_entry.uuid);
     EXPECT_TRUE(provider);
-    provider->OnComponentReady(component_path);
+    provider->OnComponentReady(
+        component_updater::ComponentContentsReader::CreateBypassForTesting(
+            component_path));
 
     auto* engine = catalog_entry.first_party_protections
                        ? service->default_engine_.get()
@@ -1648,6 +1669,59 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Custom1pBlocking) {
                          "setExpectations(0, 2, 0, 0);"
                          "addImage('https://thirdparty.com/ad_banner.png')"));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+}
+
+class AdBlockServiceSignedComponentsTest : public AdBlockServiceTest {
+ public:
+  AdBlockServiceSignedComponentsTest() {
+    feature_list_.InitAndEnableFeature(
+        brave_component_updater::kComponentContentsVerifier);
+  }
+  ~AdBlockServiceSignedComponentsTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSignedComponentsTest,
+                       SafeResourcesComponentAccess) {
+  const auto components_path =
+      GetTestDataDir().AppendASCII("adblock-components");
+  {
+    auto* resource_provider = InstallDefaultAdBlockResources(
+        components_path.AppendASCII("resources_ok"));
+    base::RunLoop run_loop;
+    resource_provider->LoadResources(
+        base::BindLambdaForTesting([&run_loop](const std::string& resources) {
+          constexpr const char kExpectedResources[] =
+              "[{\"name\":\"brave-fix.js\",\"aliases\":[],\"kind\":{\"mime\":"
+              "\"application/javascript\"}}]";
+          EXPECT_EQ(kExpectedResources, resources);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  {
+    auto* resource_provider = InstallDefaultAdBlockResources(
+        components_path.AppendASCII("resources_corrupted"));
+    base::RunLoop run_loop;
+    resource_provider->LoadResources(
+        base::BindLambdaForTesting([&run_loop](const std::string& resources) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+          constexpr const char kExpectedResources[] = "[]";
+#else
+          // In case of extensions are disabled we don't check the signature.
+          constexpr const char kExpectedResources[] =
+              "[{\"name\":\"edited.js\",\"aliases\":[],\"kind\":{\"mime\":"
+              "\"application/javascript\"}}]";
+#endif
+
+          EXPECT_EQ(kExpectedResources, resources);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
 }
 
 // Load a page with a script which uses a redirect data URL.

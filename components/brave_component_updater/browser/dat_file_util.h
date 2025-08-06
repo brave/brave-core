@@ -6,9 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_DAT_FILE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_DAT_FILE_UTIL_H_
 
-#include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/component_export.h"
@@ -16,7 +14,7 @@
 
 namespace brave_component_updater {
 
-using DATFileDataBuffer = std::vector<unsigned char>;
+using DATFileDataBuffer = std::vector<uint8_t>;
 
 COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
 std::string GetDATFileAsString(const base::FilePath& file_path);

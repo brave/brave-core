@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_FILTERS_PROVIDER_H_
 
+#include <memory>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -17,6 +18,7 @@ using brave_component_updater::DATFileDataBuffer;
 
 namespace component_updater {
 class ComponentUpdateService;
+class ComponentContentsReader;
 }  // namespace component_updater
 
 namespace base {
@@ -73,9 +75,11 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   friend class ::AdBlockServiceTest;
   friend class ::DebounceBrowserTest;
 
-  void OnComponentReady(const base::FilePath&);
+  void OnComponentReady(
+      std::unique_ptr<component_updater::ComponentContentsReader> reader);
 
-  base::FilePath component_path_;
+  std::unique_ptr<component_updater::ComponentContentsReader> component_reader_;
+
   std::string component_id_;
   uint8_t permission_mask_;
   const raw_ptr<component_updater::ComponentUpdateService>
