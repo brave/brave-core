@@ -28,8 +28,6 @@ static_library("browser") {
     "ad_block_subscription_service_manager_observer.h",
     "adblock_stub_response.cc",
     "adblock_stub_response.h",
-    "base_brave_shields_service.cc",
-    "base_brave_shields_service.h",
     "blocked_domain_1pes_lifetime.cc",
     "blocked_domain_1pes_lifetime.h",
     "brave_farbling_service.cc",
