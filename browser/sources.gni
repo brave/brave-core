@@ -163,6 +163,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_education:buildflags",
   "//brave/components/brave_new_tab_ui:mojom",
   "//brave/components/brave_news/common:mojom",
+  "//brave/components/brave_origin",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_private_new_tab_ui/common",
   "//brave/components/brave_private_new_tab_ui/common:mojom",
