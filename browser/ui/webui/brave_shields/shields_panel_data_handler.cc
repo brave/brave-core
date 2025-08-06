@@ -164,12 +164,12 @@ void ShieldsPanelDataHandler::SetBraveShieldsAdBlockOnlyModeEnabled(
       is_enabled);
 }
 
-void ShieldsPanelDataHandler::OnBraveShieldsAdBlockOnlyModePromptDismissed() {
+void ShieldsPanelDataHandler::SetBraveShieldsAdBlockOnlyModePromptDismissed() {
   if (!active_shields_data_controller_) {
     return;
   }
   active_shields_data_controller_
-      ->OnBraveShieldsAdBlockOnlyModePromptDismissed();
+      ->SetBraveShieldsAdBlockOnlyModePromptDismissed();
 }
 
 void ShieldsPanelDataHandler::SetForgetFirstPartyStorageEnabled(
@@ -266,6 +266,9 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_->GetBraveShieldsEnabled();
   site_block_info_.is_brave_shields_ad_block_only_mode_enabled =
       active_shields_data_controller_->GetBraveShieldsAdBlockOnlyModeEnabled();
+  site_block_info_.show_shields_disabled_ad_block_only_mode_prompt =
+      active_shields_data_controller_
+          ->GetShowShieldsDisabledAdBlockOnlyModePrompt();
   site_block_info_.is_brave_shields_managed =
       active_shields_data_controller_->IsBraveShieldsManaged();
   const auto& invoked_webcompat_set =

@@ -374,6 +374,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 false);
 
   registry->RegisterIntegerPref(
+      brave_shields::prefs::kAdblockShieldsDisabledCount, 0);
+  registry->RegisterIntegerPref(
       brave_shields::prefs::kAdblockAdBlockOnlyModeState,
       static_cast<int>(brave_shields::AdBlockOnlyModeState::kDisabled));
   registry->RegisterBooleanPref(

@@ -60,6 +60,8 @@ extern const base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec;
 
 BASE_DECLARE_FEATURE(kAdblockOnlyMode);
+inline constexpr base::FeatureParam<int> kAdblockOnlyModeShieldsDisabledCount{
+    &kAdblockOnlyMode, "shields_disabled_count", 5};
 inline constexpr base::FeatureParam<base::TimeDelta>
     kAdblockOnlyModeReloadsCountInterval{
         &kAdblockOnlyMode, "reloads_count_interval", base::Seconds(10)};

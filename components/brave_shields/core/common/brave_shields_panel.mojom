@@ -45,7 +45,7 @@ interface DataHandler {
   SetIsNoScriptsEnabled(bool is_enabled);
   SetBraveShieldsEnabled(bool is_enabled);
   SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
-  OnBraveShieldsAdBlockOnlyModePromptDismissed();
+  SetBraveShieldsAdBlockOnlyModePromptDismissed();
   SetForgetFirstPartyStorageEnabled(bool is_enabled);
   OpenWebCompatWindow();
   UpdateFavicon();
@@ -68,6 +68,7 @@ struct SiteBlockInfo {
   string host;
   int32 total_blocked_resources;
   bool is_brave_shields_ad_block_only_mode_enabled;
+  bool show_shields_disabled_ad_block_only_mode_prompt;
   bool is_brave_shields_enabled;
   bool is_brave_shields_managed;
   url.mojom.Url favicon_url;

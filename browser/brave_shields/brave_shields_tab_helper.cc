@@ -257,6 +257,17 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
   auto* map = GetHostContentSettingsMap(web_contents());
   brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL(),
                                         g_browser_process->local_state());
+
+  if (!is_enabled) {
+    if (PrefService* prefs = GetPrefs(web_contents()); prefs) {
+      prefs->SetInteger(
+          brave_shields::prefs::kAdblockShieldsDisabledCount,
+          prefs->GetInteger(
+              brave_shields::prefs::kAdblockShieldsDisabledCount) +
+              1);
+    }
+  }
+
   ReloadWebContents();
 }
 
@@ -273,7 +284,18 @@ void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(
   ReloadWebContents();
 }
 
-void BraveShieldsTabHelper::OnBraveShieldsAdBlockOnlyModePromptDismissed() {
+bool BraveShieldsTabHelper::GetShowShieldsDisabledAdBlockOnlyModePrompt() {
+  const PrefService* prefs = GetPrefs(web_contents());
+  if (!prefs) {
+    return false;
+  }
+  return !prefs->GetBoolean(
+             brave_shields::prefs::kAdblockAdBlockOnlyModePromptDismissed) &&
+         prefs->GetInteger(brave_shields::prefs::kAdblockShieldsDisabledCount) >
+             features::kAdblockOnlyModeShieldsDisabledCount.Get();
+}
+
+void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModePromptDismissed() {
   if (PrefService* prefs = GetPrefs(web_contents())) {
     prefs->SetBoolean(
         brave_shields::prefs::kAdblockAdBlockOnlyModePromptDismissed, true);

@@ -29,6 +29,8 @@ inline constexpr char kAdBlockListSubscriptions[] =
     "brave.ad_block.list_subscriptions";
 inline constexpr char kAdBlockDeveloperMode[] = "brave.ad_block.developer_mode";
 
+inline constexpr char kAdblockShieldsDisabledCount[] =
+    "brave.ad_block.shields_disabled_count";
 inline constexpr char kAdblockAdBlockOnlyModeState[] =
     "brave.ad_block.adblock_only_mode_state";
 inline constexpr char kAdblockAdBlockOnlyModePromptDismissed[] =

@@ -21,14 +21,15 @@ const handleLearnMoreClick = () => {
   chrome.tabs.create({ url: 'https://brave.com/privacy-features/', active: true })
 }
 
-const onDismissClick = (onDismiss?: () => void) => {
+const onDismissShieldsDisabledAdBlockOnlyModePromptClick = (onDismiss?: () => void) => {
+  getPanelBrowserAPI().dataHandler.setBraveShieldsAdBlockOnlyModePromptDismissed()
   if (onDismiss) {
     onDismiss()
   }
 }
 
-const onDismissAdBlockOnlyModePromptClick = async () => {
-  await getPanelBrowserAPI().dataHandler.onBraveShieldsAdBlockOnlyModePromptDismissed()
+const onDismissRepeatedReloadsAdBlockOnlyModePromptClick = async () => {
+  await getPanelBrowserAPI().dataHandler.setBraveShieldsAdBlockOnlyModePromptDismissed()
   getPanelBrowserAPI().panelHandler.closeUI()
 }
 
@@ -57,7 +58,7 @@ function AreYouExperiencingIssuesAfterRepeatedReloads() {
           gap: 'var(--leo-spacing-m)'
         }}
       >
-        <Button kind="plain" size="medium" onClick={onDismissAdBlockOnlyModePromptClick}>
+        <Button kind="plain" size="medium" onClick={onDismissRepeatedReloadsAdBlockOnlyModePromptClick}>
           {getLocale('braveShieldsDismissAlert')}
         </Button>
         <Button size="medium" onClick={onEnableAdBlockOnlyModeClick}>
@@ -91,7 +92,9 @@ function AreYouExperiencingIssuesAndDisabledShields({ onDismiss }: { onDismiss: 
             gap: 'var(--leo-spacing-m)'
           }}
         >
-          <Button kind="plain" size="medium" onClick={() => onDismissClick(onDismiss)}>{getLocale('braveShieldsDismissAlert')}</Button>
+          <Button kind="plain" size="medium" onClick={() => onDismissShieldsDisabledAdBlockOnlyModePromptClick(onDismiss)}>
+            {getLocale('braveShieldsDismissAlert')}
+          </Button>
           <Button size="medium" onClick={onEnableAdBlockOnlyModeClick}>{getLocale('braveShieldsEnableAdBlockOnlyMode')}</Button>
         </div>
       </Alert>
@@ -293,6 +296,7 @@ function MainPanel() {
       </S.StatusBox>
       {!siteBlockInfo?.isBraveShieldsEnabled &&
         !siteBlockInfo?.isBraveShieldsAdBlockOnlyModeEnabled &&
+        siteBlockInfo?.showShieldsDisabledAdBlockOnlyModePrompt &&
         !hasDismissedAreYouExperiencingIssuesAndDisabledShields && (
           <AreYouExperiencingIssuesAndDisabledShields onDismiss={() => setDismissedAreYouExperiencingIssuesAndDisabledShields(true)} />
         )}
