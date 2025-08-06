@@ -1,25 +1,25 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index b64ba7e8c782b1d5d117147795c48f69a14462e7..bc528aa0b9a728b4cf3e09e2885734af0a58e333 100644
+index 9e735befd4b93d81a66d6e2f1c69c74796564917..af89bd115be90432901ff0bf6b5c9988ee2cb66a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -220,6 +220,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             Action.PRINT_PAGE,
-             Action.INSPECT_ELEMENT,
+@@ -222,6 +222,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.SHOW_INTEREST_IN_ELEMENT,
+             Action.ENTER_PICTURE_IN_PICTURE,
+             Action.EXIT_PICTURE_IN_PICTURE,
 +            Action.COPY_CLEAN_LINK,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -272,7 +273,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             // int RELOAD = 46;  Deprecated since 05/2025.
-             int INSPECT_ELEMENT = 47;
+@@ -276,7 +277,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              int SHOW_INTEREST_IN_ELEMENT = 48;
--            int NUM_ENTRIES = 49;
-+            int COPY_CLEAN_LINK = 49;int NUM_ENTRIES = 50;
+             int ENTER_PICTURE_IN_PICTURE = 49;
+             int EXIT_PICTURE_IN_PICTURE = 50;
+-            int NUM_ENTRIES = 51;
++            int COPY_CLEAN_LINK = 51;int NUM_ENTRIES = 52;
          }
  
          // LINT.ThenChange(/tools/metrics/histograms/enums.xml:ContextMenuOptionAndroid)
-@@ -484,6 +485,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -488,6 +489,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));
