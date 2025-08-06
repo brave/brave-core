@@ -68,7 +68,9 @@
     <output filename="platform_locale_settings_en-XA.pak" type="data_package" lang="en-XA" />
   <output filename="platform_locale_settings_az.pak" type="data_package" lang="az" />
 <output filename="platform_locale_settings_ka.pak" type="data_package" lang="ka" />
+<output filename="platform_locale_settings_kk.pak" type="data_package" lang="kk" />
 <output filename="platform_locale_settings_km.pak" type="data_package" lang="km" />
+<output filename="platform_locale_settings_lo.pak" type="data_package" lang="lo" />
 <output filename="platform_locale_settings_mk.pak" type="data_package" lang="mk" />
 <output filename="platform_locale_settings_mn.pak" type="data_package" lang="mn" />
 <output filename="platform_locale_settings_my.pak" type="data_package" lang="my" />
