@@ -3,12 +3,23 @@
   cr-view-manager[show-all] [slot=view][data-parent-view-id] {
     display: none;
   }
+
+  cr-view-manager [slot=view]:not(.closing) {
+    position: initial;
+  }
 </style>
 
 <cr-view-manager id="viewManager" class="cr-centered-card-container"
     show-all$="[[shouldShowAll]]">
   <brave-settings-getting-started slot="view" id="parent" prefs="{{prefs}}">
   </brave-settings-getting-started>
+
+  <settings-brave-new-tab-page
+    slot="view"
+    id="newTab"
+    prefs="{{prefs}}"
+    in-search-mode="[[inSearchMode_]]">
+  </settings-brave-new-tab-page>
 
   <settings-manage-profile slot="view" id="manageProfile"
       data-parent-view-id="parent" prefs="{{prefs}}">
