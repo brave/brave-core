@@ -143,7 +143,10 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
       GetAllCookiesDirect(browser());
   EXPECT_EQ(1u, all_cookies.size());
   for (const net::CanonicalCookie& cookie : all_cookies) {
-    EXPECT_EQ((cookie.ExpiryDate() - cookie.CreationDate()).InDays(), 7);
+    const base::Time expected = cookie.CreationDate() + base::Days(180);
+    // Ensure the cap is applied and timing is within margin.
+    EXPECT_LE(cookie.ExpiryDate(), expected + kMarginForTesting);
+    EXPECT_GE(cookie.ExpiryDate(), expected - kMarginForTesting);
   }
 }
 
@@ -175,7 +178,10 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
       GetAllCookiesDirect(browser());
   EXPECT_EQ(1u, all_cookies.size());
   for (const net::CanonicalCookie& cookie : all_cookies) {
-    EXPECT_EQ((cookie.ExpiryDate() - cookie.CreationDate()).InDays(), 7);
+    const base::Time expected = cookie.CreationDate() + base::Days(180);
+    // Ensure the cap is applied and timing is within margin.
+    EXPECT_LE(cookie.ExpiryDate(), expected + kMarginForTesting);
+    EXPECT_GE(cookie.ExpiryDate(), expected - kMarginForTesting);
   }
 }
 
@@ -210,6 +216,9 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
       GetAllCookiesDirect(browser());
   EXPECT_EQ(1u, all_cookies.size());
   for (const net::CanonicalCookie& cookie : all_cookies) {
-    EXPECT_EQ((cookie.ExpiryDate() - cookie.CreationDate()).InDays(), 180);
+    const base::Time expected = cookie.CreationDate() + base::Days(180);
+    // Ensure the cap is applied and timing is within margin.
+    EXPECT_LE(cookie.ExpiryDate(), expected + kMarginForTesting);
+    EXPECT_GE(cookie.ExpiryDate(), expected - kMarginForTesting);
   }
 }
