@@ -5,6 +5,7 @@
 
 #include "brave/content/browser/screen_orientation/brave_screen_orientation_delegate_android.h"
 
+#include "brave/content/public/browser/youtube_fullscreen_page_data.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 

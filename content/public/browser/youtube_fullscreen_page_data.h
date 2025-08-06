@@ -12,7 +12,8 @@
 namespace content {
 
 // Shared data structure for tracking YouTube fullscreen state
-struct CONTENT_EXPORT YouTubeFullscreenPageData : public base::SupportsUserData::Data {
+struct CONTENT_EXPORT YouTubeFullscreenPageData
+    : public base::SupportsUserData::Data {
  public:
   explicit YouTubeFullscreenPageData(bool fullscreen_requested = false)
       : fullscreen_requested_(fullscreen_requested) {}
