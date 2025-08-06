@@ -19,5 +19,14 @@ specific_include_rules = {
   ],
   "content_scraper\.cc": [
     "+third_party/rust/cxx/v1/cxx.h",
-  ]
+  ],
+  "credential_manager_unittest\.cc": [
+    "!brave/components/constants/brave_paths.h",
+  ],
+  "patterns_unittest\.cc": [
+    "!brave/components/constants/brave_paths.h",
+  ],
+  "server_config_loader_unittest\.cc": [
+    "!brave/components/constants/brave_paths.h",
+  ],
 }
