@@ -5,7 +5,13 @@
 
 #include "brave/content/browser/screen_orientation/brave_screen_orientation_delegate_android.h"
 
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
+
 namespace content {
+
+// Define the key constant
+const char kYouTubeFullscreenPageDataKey[] = "youtube_fullscreen_page_data";
 
 BraveScreenOrientationDelegateAndroid::BraveScreenOrientationDelegateAndroid() =
     default;
@@ -15,20 +21,34 @@ BraveScreenOrientationDelegateAndroid::
 void BraveScreenOrientationDelegateAndroid::Lock(
     WebContents* web_contents,
     device::mojom::ScreenOrientationLockType lock_orientation) {
-  // Check for a simple boolean flag stored as WebContents UserData
-  if (web_contents &&
-      web_contents->GetUserData("youtube_fullscreen_requested")) {
-    return;
+  // Check YouTube fullscreen state from NavigationEntry UserData
+  if (web_contents) {
+    NavigationEntry* entry =
+        web_contents->GetController().GetLastCommittedEntry();
+    if (entry) {
+      auto* data = static_cast<YouTubeFullscreenPageData*>(
+          entry->GetUserData(kYouTubeFullscreenPageDataKey));
+      if (data && data->fullscreen_requested()) {
+        return;
+      }
+    }
   }
 
   ScreenOrientationDelegateAndroid::Lock(web_contents, lock_orientation);
 }
 
 void BraveScreenOrientationDelegateAndroid::Unlock(WebContents* web_contents) {
-  // Check for a simple boolean flag stored as WebContents UserData
-  if (web_contents &&
-      web_contents->GetUserData("youtube_fullscreen_requested")) {
-    return;
+  // Check YouTube fullscreen state from NavigationEntry UserData
+  if (web_contents) {
+    NavigationEntry* entry =
+        web_contents->GetController().GetLastCommittedEntry();
+    if (entry) {
+      auto* data = static_cast<YouTubeFullscreenPageData*>(
+          entry->GetUserData(kYouTubeFullscreenPageDataKey));
+      if (data && data->fullscreen_requested()) {
+        return;
+      }
+    }
   }
 
   ScreenOrientationDelegateAndroid::Unlock(web_contents);
