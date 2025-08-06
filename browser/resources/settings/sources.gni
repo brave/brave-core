@@ -84,6 +84,7 @@ brave_settings_ts_files = [
   "brave_overrides/about_page.ts",
   "brave_overrides/autofill_page.ts",
   "brave_overrides/appearance_page.ts",
+  "brave_overrides/appearance_page_index.ts",
   "brave_overrides/basic_page.ts",
   "brave_overrides/clear_browsing_data_dialog.ts",
   "brave_overrides/config.ts",
