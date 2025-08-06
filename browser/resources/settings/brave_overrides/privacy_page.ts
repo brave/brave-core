@@ -248,13 +248,6 @@ RegisterPolymerTemplateModifications({
       console.error(
         `[Brave Settings Overrides] Couldn't find privacy_page #pages`)
     } else {
-      const privacyGuidePromoTemplate = templateContent.
-        querySelector('template[is=dom-if][if="[[isPrivacyGuideAvailable]]"]')
-      if (privacyGuidePromoTemplate) {
-        privacyGuidePromoTemplate.remove()
-      } else {
-        throw new Error('[Settings] Missing privacyGuidePromoTemplate')
-      }
       if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
         const idleDetection = templateContent.querySelector(
           '[route-path="/content/idleDetection"]')
@@ -382,14 +375,14 @@ RegisterPolymerTemplateModifications({
       }
     }
 
-    const sotrageAccessTemplate = templateContent.querySelector(
+    const storageAccessTemplate = templateContent.querySelector(
       `template[is=dom-if][route-path='/content/storageAccess'`)
-    if (!sotrageAccessTemplate) {
+    if (!storageAccessTemplate) {
       console.error(
         '[Brave Settings Overrides] Could not find template with' +
         ' route-path=/content/storageAccess on privacy page.')
     } else {
-      sotrageAccessTemplate.remove()
+      storageAccessTemplate.remove()
     }
   },
 })
