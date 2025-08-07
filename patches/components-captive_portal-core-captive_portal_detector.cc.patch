@@ -1,0 +1,13 @@
+diff --git a/components/captive_portal/core/captive_portal_detector.cc b/components/captive_portal/core/captive_portal_detector.cc
+index 88e2c70df0980f6d3abbd7cabe9e56bb2a6a5d7c..e63ce47fed0b1f9c8e363a95b1c831fb91783391 100644
+--- a/components/captive_portal/core/captive_portal_detector.cc
++++ b/components/captive_portal/core/captive_portal_detector.cc
+@@ -21,7 +21,7 @@
+ namespace {
+ constexpr char kLegacyURL[] = "http://www.gstatic.com/generate_204";
+ constexpr char kDefaultURL[] =
+-    "http://connectivitycheck.gstatic.com/generate_204";
++    "http://detectportal.brave-http-only.com/";
+ }  // namespace
+ 
+ namespace captive_portal {
