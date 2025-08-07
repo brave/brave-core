@@ -59,6 +59,10 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
         return "Cardano Mainnet Account";
       case mojom::KeyringId::kCardanoTestnet:
         return "Cardano Testnet Account";
+      case mojom::KeyringId::kPolkadotMainnet:
+        return "Polkadot Mainnet Account";
+      case mojom::KeyringId::kPolkadotTestnet:
+        return "Polkadot Testnet Account";
     }
     NOTREACHED() << keyring_id;
   };

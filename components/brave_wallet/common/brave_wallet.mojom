@@ -972,6 +972,8 @@ enum KeyringId {
   kBitcoinHardwareTestnet = 11,
   kCardanoMainnet = 12,
   kCardanoTestnet = 13,
+  kPolkadotMainnet = 14,
+  kPolkadotTestnet = 15,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";

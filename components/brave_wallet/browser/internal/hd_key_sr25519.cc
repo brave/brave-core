@@ -39,13 +39,13 @@ HDKeySr25519 HDKeySr25519::GenerateFromSeed(
   return HDKeySr25519(std::move(mk));
 }
 
-std::array<uint8_t, kSr25519PublicKeySize> HDKeySr25519::GetPublicKey() {
+std::array<uint8_t, kSr25519PublicKeySize> HDKeySr25519::GetPublicKey() const {
   CHECK(IsBoxNonNull(keypair_));
   return keypair_->get_public_key();
 }
 
 std::array<uint8_t, kSr25519SignatureSize> HDKeySr25519::SignMessage(
-    base::span<const uint8_t> msg) {
+    base::span<const uint8_t> msg) const {
   CHECK(IsBoxNonNull(keypair_));
   base::AssertLongCPUWorkAllowed();
   auto bytes = base::SpanToRustSlice(msg);
@@ -54,7 +54,7 @@ std::array<uint8_t, kSr25519SignatureSize> HDKeySr25519::SignMessage(
 
 bool HDKeySr25519::VerifyMessage(
     base::span<uint8_t const, kSr25519SignatureSize> signature,
-    base::span<const uint8_t> message) {
+    base::span<const uint8_t> message) const {
   CHECK(IsBoxNonNull(keypair_));
   base::AssertLongCPUWorkAllowed();
   auto sig_bytes = base::SpanToRustSlice(signature);
@@ -63,7 +63,7 @@ bool HDKeySr25519::VerifyMessage(
 }
 
 HDKeySr25519 HDKeySr25519::DeriveHard(
-    base::span<const uint8_t> derive_junction) {
+    base::span<const uint8_t> derive_junction) const {
   CHECK(IsBoxNonNull(keypair_));
   base::AssertLongCPUWorkAllowed();
   return HDKeySr25519(
