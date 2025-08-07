@@ -180,8 +180,7 @@ class BraveBrowserView : public BrowserView,
       Browser::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
-  void UpdateDevToolsForContents(content::WebContents* web_contents,
-                                 bool update_devtools_web_contents) override;
+  bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void GetAccessiblePanes(std::vector<views::View*>* panes) override;
   void ShowSplitView(bool focus_active_view) override;

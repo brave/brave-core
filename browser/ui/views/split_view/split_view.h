@@ -80,7 +80,7 @@ class SplitView : public views::View,
                                   content::WebContents* old_contents,
                                   content::WebContents* new_contents);
 
-  // Called before/after BrowseView::UpdateDevToolsForContents() to avoid
+  // Called before/after BrowseView::MaybeUpdateDevtools() to avoid
   // holiding same WebContents from primary and secondary devtools webview.
   void WillUpdateDevToolsForActiveContents(BrowserViewKey);
   void DidUpdateDevToolsForActiveContents(BrowserViewKey);
