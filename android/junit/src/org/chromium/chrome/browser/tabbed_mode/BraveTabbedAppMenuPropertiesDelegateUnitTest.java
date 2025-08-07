@@ -403,6 +403,9 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         doReturn(false)
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldShowAutoDarkItem(any(Tab.class), eq(true));
+        doReturn(false)
+                .when(mTabbedAppMenuPropertiesDelegate)
+                .shouldShowContentFilterHelpCenterMenuItem(any(Tab.class));
 
         setUpIncognitoMocks();
     }
