@@ -27,82 +27,13 @@ import '../brave_survey_panelist_page/brave_survey_panelist_page.js'
 
 // <if expr="enable_containers">
 import '../brave_content_page/containers.js'
-import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
 // </if>
 
 import {
   html,
-  RegisterPolymerTemplateModifications,
   RegisterStyleOverride
 } from 'chrome://resources/brave/polymer_overriding.js'
 
-import {loadTimeData} from '../i18n_setup.js'
-
-const isGuest = loadTimeData.getBoolean('isGuest')
-
-export function getSectionElement (
-  templateContent: HTMLTemplateElement,
-  sectionName: string)
-{
-  const sectionEl = templateContent.querySelector(`template[if*='showPage_(pageVisibility_.${sectionName}']`) ||
-    templateContent.querySelector(`template[if*='pageVisibility_.${sectionName}']`) ||
-    templateContent.querySelector(`settings-section[section="${sectionName}"]`)
-  if (!sectionEl) {
-    console.error(`[Brave Settings Overrides] Could not find section '${sectionName}'`)
-  }
-  return sectionEl
-}
-
-/**
- * Creates a settings-section element with a single child and returns it.
- * @param {string} sectionName - value of the section attribute
- * @param {string} titleName - loadTimeData key for page-title
- * @param {string} childName - name of child element
- * @param {Object} childAttributes - key-value pairs of child element attributes
- * @returns {Element}
- */
-function createSectionElement (
-  sectionName: string,
-  titleName: string,
-  childName: string,
-  childAttributes: Record<string, string>)
-{
-  const childAttributesString = Object.keys(childAttributes).map(attribute =>
-      `${attribute}="${childAttributes[attribute]}"`)
-    .join(' ')
-  // This needs to be inside a template so that our components do not get created immediately.
-  // Otherwise the polymer bindings won't be setup correctly at first.
-  return html`
-    <settings-section page-title="${loadTimeData.getString(titleName)}" section="${sectionName}">
-      <${childName}
-        ${childAttributesString}
-      >
-      </${childName}>
-    </settings-section>
-  `
-}
-
-function createNestedSectionElement (
-  sectionName: string,
-  nestedUnder: string,
-  titleName: string,
-  childName: string,
-  childAttributes: Record<string, string>)
-{
-  const childAttributesString = Object.keys(childAttributes).map(attribute =>
-    `${attribute}="${childAttributes[attribute]}"`)
-    .join(' ')
-  // This needs to be inside a template so that our components do not get created immediately.
-  // Otherwise the polymer bindings won't be setup correctly at first.
-  return html`
-    <settings-section id='${sectionName}-section' page-title="${loadTimeData.getString(titleName)}" section="${sectionName}" nest-under-section="${nestedUnder}">
-      <${childName}
-        ${childAttributesString}
-      >
-      </${childName}>
-    </settings-section>
-  `
-}
 
 RegisterStyleOverride(
   'settings-basic-page',
@@ -115,63 +46,3 @@ RegisterStyleOverride(
   ` as HTMLTemplateElement
 )
 
-RegisterPolymerTemplateModifications({
-  'settings-basic-page': (templateContent) => {
-    // Add 'Getting Started' section
-    const basicPageEl = templateContent.querySelector('#basicPage')
-    if (!basicPageEl) {
-      throw new Error('[Settings] Missing basicPage element')
-    } else {
-      const sectionGetStarted = document.createElement('template')
-      sectionGetStarted.setAttribute('is', 'dom-if')
-      sectionGetStarted.setAttribute('restamp', 'true')
-      sectionGetStarted.setAttribute('if', '[[showPage_(pageVisibility_.getStarted)]]')
-      sectionGetStarted.content.appendChild(createSectionElement(
-        'getStarted',
-        'braveGetStartedTitle',
-        'brave-settings-getting-started',
-        {
-          prefs: '{{prefs}}',
-        }
-      ))
-      const sectionTabs = document.createElement('template')
-      sectionTabs.setAttribute('is', 'dom-if')
-      sectionTabs.setAttribute('restamp', 'true')
-      sectionTabs.setAttribute('if', '[[showPage_(pageVisibility_.appearance)]]')
-      sectionTabs.content.appendChild(createNestedSectionElement(
-        'tabs',
-        'appearance',
-        'appearanceSettingsTabsSection',
-        'settings-brave-appearance-tabs',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-      const sectionSidebar = document.createElement('template')
-      sectionSidebar.setAttribute('is', 'dom-if')
-      sectionSidebar.setAttribute('restamp', 'true')
-      sectionSidebar.setAttribute('if', '[[showPage_(pageVisibility_.appearance)]]')
-      sectionSidebar.content.appendChild(createNestedSectionElement(
-        'sidebar',
-        'appearance',
-        'sideBar',
-        'settings-brave-appearance-sidebar',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-      const sectionExtensions = document.createElement('template')
-      sectionExtensions.setAttribute('is', 'dom-if')
-      sectionExtensions.setAttribute('restamp', 'true')
-      sectionExtensions.setAttribute('if', '[[showPage_(pageVisibility_.extensions)]]')
-      sectionExtensions.content.appendChild(createSectionElement(
-        'extensions',
-        'braveDefaultExtensions',
-        'settings-brave-default-extensions-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-    }
-  }
-})
