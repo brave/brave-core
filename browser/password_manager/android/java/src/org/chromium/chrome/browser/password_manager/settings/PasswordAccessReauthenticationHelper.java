@@ -56,8 +56,8 @@ public class PasswordAccessReauthenticationHelper {
     }
 
     private final Context mContext;
-    private final FragmentManager mFragmentManager;
-    private @Nullable Callback<Boolean> mCallback;
+    protected final FragmentManager mFragmentManager;
+    protected @Nullable Callback<Boolean> mCallback;
 
     public PasswordAccessReauthenticationHelper(Context context, FragmentManager fragmentManager) {
         mContext = context;

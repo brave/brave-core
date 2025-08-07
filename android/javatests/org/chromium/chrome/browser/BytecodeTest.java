@@ -244,12 +244,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
-        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
-        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
-        // Assert.assertTrue(
-        //         classExists(
-        //
-        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
@@ -2024,18 +2018,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mSyncEverything"));
-        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
-        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
-        // Assert.assertTrue(
-        //         fieldExists(
-        //
-        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
-        //                 "mCallback"));
-        // Assert.assertTrue(
-        //         fieldExists(
-        //
-        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
-        //                 "mFragmentManager"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
