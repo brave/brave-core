@@ -354,6 +354,9 @@ are declared in tools/grit/grit_args.gni.
       <if expr="not use_titlecase">
         </if>
 
+      <message name="IDS_WEB_APP_INSTALL_NOT_SUPPORTED_DIALOG_TITLE_INCOGNITO_MODE" desc="Title for the dialog shown when a web app cannot be installed in Private Mode.">
+        Web app installs aren't supported in Private mode
+      </message>
       <if expr="not is_android">
         </if>
       <if expr="not use_titlecase">

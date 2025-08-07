@@ -4111,7 +4111,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         New window
       </message>
       <message name="IDS_MENU_NEW_INCOGNITO_WINDOW" desc="Menu item for opening a new private window. [CHAR_LIMIT=27]">
-        New private window
+        New Private window
+      </message>
+      <message name="IDS_MENU_INCOGNITO_WINDOW" desc="Short label of menu item for opening a new private window. [CHAR_LIMIT=27]">
+        Private window
       </message>
       <message name="IDS_MENU_MOVE_TO_OTHER_WINDOW" desc="Menu item for moving the current tab into the other window. [CHAR_LIMIT=27]">
         Move to other window
@@ -4214,21 +4217,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_READER_MODE_PREFS" desc="Menu item to show reader mode preferences pane, which allows users to change the appearance (font size, theme, etc.) of the page. [CHAR_LIMIT=27]">
         Appearance
-      </message>
-      <message name="IDS_READER_MODE_BOTTOM_SHEET_TITLE" desc="Title of the Reading Mode bottom sheet. [CHAR_LIMIT=27]">
-        Reading mode
-      </message>
-      <message name="IDS_READER_MODE_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet.">
-        Reading mode bottom sheet
-      </message>
-      <message name="IDS_READER_MODE_BOTTOM_SHEET_CLOSED_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when closed.">
-        Reading mode bottom sheet closed
-      </message>
-      <message name="IDS_READER_MODE_BOTTOM_SHEET_HALF_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when opened at half height.">
-        Reading mode bottom sheet opened at half height
-      </message>
-      <message name="IDS_READER_MODE_BOTTOM_SHEET_FULL_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when opened at full height.">
-        Reading mode bottom sheet opened at full height
       </message>
       <message name="IDS_MENU_SETTINGS" desc="Menu item for opening browser settings. [CHAR_LIMIT=27]">
         Settings
@@ -6957,6 +6945,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_SEARCH_LOUPE_TOOLTIP_TEXT" desc="Content description for opening up the tab search window, which allows users to search their tabs.">
         Open tab search
       </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_SUGGESTION_DESCRIPTION" desc="Content description for a tab group suggestion. Clicking the suggestion will open the tab group. TITLE_OF_GROUP is the title of the group. COLOR_NAME is the color of this group. URL_LIST is the list of tab urls in the group.">
+        Open <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>, with sites <ph name="URL_LIST">%3$s<ex>amazon.com</ex></ph>.
+      </message>
 
       <!-- Default browser promo -->
       <message name="IDS_DEFAULT_BROWSER_PROMO_CARD_TITLE" desc="Title of a promotion about setting Brave the default browser.">
@@ -6997,6 +6988,25 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Group tabs
       </message>
 
+      <!-- Reader mode -->
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_TITLE" desc="Title of the Reading Mode bottom sheet. [CHAR_LIMIT=27]">
+        Reading mode
+      </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet.">
+        Reading mode bottom sheet
+      </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_CLOSED_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when closed.">
+        Reading mode bottom sheet closed
+      </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_HALF_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when opened at half height.">
+        Reading mode bottom sheet opened at half height
+      </message>
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_FULL_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when opened at full height.">
+        Reading mode bottom sheet opened at full height
+      </message>
+      <message name="IDS_READER_MODE_UNAVAILABLE_SNACKBAR_MESSAGE" desc="Snackbar message that shown when the user attempts to enter reader mode, but content extraction fails.">
+        Reader mode is unavailable
+      </message>
     </messages>
   </release>
 </grit>

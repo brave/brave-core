@@ -493,6 +493,24 @@ are declared in tools/grit/grit_args.gni.
         To get your tabs from your other devices, turn on sync
       </message>
 
+<!-- TODO: crbug.com/418144047 - Remove translateable="false" once strings are finalized. -->
+      <message translateable="false" name="IDS_HISTORY_SYNC_HISTORY_PROMO" desc="Text of the sync hystory promo. This will show up if a user is not logged in and has no synced tabs.">
+        Browse across devices
+      </message>
+      <message translateable="false" name="IDS_HISTORY_SYNC_HISTORY_PROMO_DESC" desc="Description of the sync hystory promo. Further tells users to sign in and sync hystory to see synced tabs from other devices.">
+        To get your tabs from your other devices, sign in and sync history. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+      </message>
+      <message translateable="false" name="IDS_HISTORY_SIGNED_IN_SYNC_HISTORY_PROMO" desc="Text of the sync hystory promo. This will show up if a user is not logged in and has no synced tabs.">
+        Continue from another device
+      </message>
+      <message translateable="false" name="IDS_HISTORY_SIGNED_IN_SYNC_HISTORY_PROMO_DESC" desc="Description of the sync hystory promo. Further tells users to sign in and sync hystory to see synced tabs from other devices.">
+        To get your tabs from your other devices, sync your tabs and History to . You can stop syncing anytime in settings. Brave may personalize Search and other services based on your History.
+      </message>
+
+      <message translateable="false" name="IDS_HISTORY_SYNC_HISTORY_BUTTON" desc="Label displayed on a button to let user turn on sync history or sign in to Brave to get synced tab history.">
+        Sync history
+      </message>
+
       <!-- Generic terms -->
       <message name="IDS_EDIT" desc="Edit menu item">
         &amp;Edit
@@ -3180,6 +3198,14 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_BOOKMARK_APP_BUBBLE_OPEN_AS_TABBED_WINDOW" desc="Checkbox text for opening the bookmark app as a tabbed window.">
         Open as tabbed window
+      </message>
+
+      <!-- Web app install not supported dialog -->
+      <message name="IDS_WEB_APP_INSTALL_NOT_SUPPORTED_DIALOG_TITLE_INCOGNITO_MODE" desc="Title for the dialog shown when a web app cannot be installed in Private Mode.">
+        Web app installs aren't supported in Private mode
+      </message>
+      <message name="IDS_WEB_APP_INSTALL_NOT_SUPPORTED_DIALOG_TITLE_GUEST_MODE" desc="Title for the dialog shown when a web app cannot be installed in Guest Mode.">
+        Web app installs aren't supported in Guest mode
       </message>
 
       <!-- WebApp name/icon update dialog -->
@@ -8483,6 +8509,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_MICROSOFT_AUTHENTICATION_NAME" desc="Name of the Microsoft Authentication module as shown in various UIs.">
         Microsoft Authentication
       </message>
+      <message name="IDS_NTP_MODULES_TAB_GROUPS_INFO" desc="Text shown in the body of the info dialog of the Tab Groups module.">
+        You’re seeing your recently used tab groups to help you easily pick up where you left off.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        You can manage settings from the card menu or see more options in Customize Brave.
+      </message>
       <message name="IDS_NTP_MODULES_TAB_GROUPS_TITLE" desc="Title for Tab Groups NTP module on the new tab page.">
         Your tab groups
       </message>
@@ -11327,6 +11359,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_SPLIT_TAB_SWAP_BOTTOM_VIEW" translateable="false" desc="The label for a menu item that swaps the bottom view in the active split with the selected tab.">
           Swap with bottom view
         </message>
+        <message name="IDS_SPLIT_TAB_SEND_FEEDBACK" translateable="false" desc="The label for a menu item that opens a dialog to send feedback.">
+          Send feedback
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_PIN_SPLIT_TAB_TOGGLE" translateable="false" desc="In title case: pins the split tabs button to the toolbar when toggled on.">
@@ -11370,6 +11405,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_SPLIT_TAB_SWAP_BOTTOM_VIEW" translateable="false" desc="In title case: The label for a menu item that swaps the bottom view in the active split with the selected tab.">
           Swap with Bottom View
+        </message>
+        <message name="IDS_SPLIT_TAB_SEND_FEEDBACK" translateable="false" desc="The label for a menu item that opens a dialog to send feedback.">
+          Send Feedback
         </message>
       </if>
 
