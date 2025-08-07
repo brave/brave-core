@@ -5,6 +5,8 @@
 
 static_library("brave_account") {
   sources = [
+    "brave_account_navigation_throttle.cc",
+    "brave_account_navigation_throttle.h",
     "brave_account_service_factory.cc",
     "brave_account_service_factory.h",
   ]
@@ -13,7 +15,32 @@ static_library("brave_account") {
     "//base",
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
+    "//brave/components/constants",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
+    "//content/public/common",
+    "//net",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_account_navigation_throttle_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser/brave_account",
+    "//brave/components/brave_account:features",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
   ]
 }
