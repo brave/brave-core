@@ -1351,8 +1351,7 @@ Object.defineProperty(Config.prototype, 'useSiso', {
       // * iOS fails in siso+reproxy mode because of incorrect handling of
       //   input_root_absolute_path value.
       // * MacOS is opt-in, will be enabled later.
-      ['linux', 'win'].includes(this.hostOS)
-        && !this.isIOS(),
+      ['linux', 'win'].includes(this.hostOS) && !this.isIOS(),
     )
   },
 })
