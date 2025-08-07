@@ -7,6 +7,9 @@ import * as React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import Toggle from '@brave/leo/react/toggle'
 
+// Page API Proxy
+import getWalletPageApiProxy from '../../../page/wallet_page_api_proxy'
+
 // Selectors
 import { UISelectors } from '../../../common/selectors'
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
@@ -167,7 +170,12 @@ export const WalletSettingsMenu = (props: Props) => {
     history.push(route)
   }
 
-  const onClickBackup = () => {
+  const onClickBackup = React.useCallback(() => {
+    if (isAndroid) {
+      getWalletPageApiProxy().pageHandler.showWalletBackupUI()
+      return
+    }
+
     if (isPanel) {
       chrome.tabs.create(
         {
@@ -184,7 +192,7 @@ export const WalletSettingsMenu = (props: Props) => {
       return
     }
     history.push(WalletRoutes.Backup)
-  }
+  }, [isAndroid, isPanel, history])
 
   // Memos
   const accountSettingsOptions = React.useMemo(() => {
