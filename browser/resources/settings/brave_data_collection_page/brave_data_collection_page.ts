@@ -74,7 +74,7 @@ extends SettingBraveDataCollectionPageElementBase
       showRestartForMetricsReporting_: Boolean,
       showSurveyPanelist_: Boolean,
       isStatsReportingEnabledManaged_: Boolean,
-      isP3AHidden_: Boolean,
+      isP3AManaged_: Boolean,
     }
   }
 
@@ -84,7 +84,7 @@ extends SettingBraveDataCollectionPageElementBase
   private declare showRestartForMetricsReporting_: boolean
   private declare showSurveyPanelist_: boolean
   private declare isStatsReportingEnabledManaged_: boolean
-  private declare isP3AHidden_: boolean
+  private declare isP3AManaged_: boolean
 
   browserProxy_ = BraveDataCollectionBrowserProxyImpl.getInstance()
 
@@ -95,15 +95,15 @@ extends SettingBraveDataCollectionPageElementBase
     // Can't use `prefs` property of `settings-toggle-button` directly
     // because p3a enabled is a local state setting, but PrefControlMixin
     // checks for a pref being valid, so have to fake it, same as upstream.
-    const setP3AEnabledPref = (userEnabled: boolean, hidden: boolean) =>
-      this.setP3AEnabledPref_(userEnabled, hidden)
+    const setP3AEnabledPref = (userEnabled: boolean, isManaged: boolean) =>
+      this.setP3AEnabledPref_(userEnabled, isManaged)
 
     this.isStatsReportingEnabledManaged_ = loadTimeData.getBoolean('isStatsReportingEnabledManaged')
-    this.isP3AHidden_ = loadTimeData.getBoolean('isP3AHidden')
+    this.isP3AManaged_ = loadTimeData.getBoolean('isP3AManaged')
 
     this.addWebUiListener('p3a-enabled-changed', setP3AEnabledPref)
     this.browserProxy_.getP3AEnabled().then(
-      (enabled: boolean) => setP3AEnabledPref(enabled, this.isP3AHidden_))
+      (enabled: boolean) => setP3AEnabledPref(enabled, this.isP3AManaged_))
 
     const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
         this.setMetricsReportingPref_(metricsReporting)
@@ -120,14 +120,14 @@ extends SettingBraveDataCollectionPageElementBase
     this.showSurveyPanelist_ = loadTimeData.getBoolean('isSurveyPanelistAllowed')
   }
 
-  setP3AEnabledPref_(userEnabled: boolean, hidden: boolean) {
+  setP3AEnabledPref_(userEnabled: boolean, isManaged: boolean) {
     const pref = {
       key: '',
       type: chrome.settingsPrivate.PrefType.BOOLEAN,
       value: userEnabled,
     }
     this.p3aEnabledPref_ = pref
-    this.isP3AHidden_ = hidden
+    this.isP3AManaged_ = isManaged
   }
 
   onP3AEnabledChange_(event: Event) {

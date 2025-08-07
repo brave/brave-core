@@ -135,7 +135,8 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
   data_source->AddBoolean(
       "isStatsReportingEnabledManaged",
       local_state->IsManagedPreference(kStatsReportingEnabled));
-  data_source->AddBoolean("isP3AHidden", IsP3AHidden());
+  data_source->AddBoolean("isP3AManaged",
+                          local_state->IsManagedPreference(p3a::kP3AEnabled));
 
 #if BUILDFLAG(IS_WIN)
   {
@@ -185,13 +186,6 @@ void BravePrivacyHandler::GetStatsUsagePingEnabled(
   GetLocalStateBooleanEnabled(kStatsReportingEnabled, args);
 }
 
-// static
-bool BravePrivacyHandler::IsP3AHidden() {
-  PrefService* local_state = g_browser_process->local_state();
-  return local_state->IsManagedPreference(p3a::kP3AEnabled) ||
-         BraveOriginState::GetInstance()->IsBraveOriginUser();
-}
-
 void BravePrivacyHandler::OnStatsUsagePingEnabledChanged() {
   if (IsJavascriptAllowed()) {
     PrefService* local_state = g_browser_process->local_state();
@@ -215,9 +209,9 @@ void BravePrivacyHandler::OnP3AEnabledChanged() {
   if (IsJavascriptAllowed()) {
     PrefService* local_state = g_browser_process->local_state();
     bool user_enabled = local_state->GetBoolean(p3a::kP3AEnabled);
-    bool hidden = IsP3AHidden();
+    bool is_managed = local_state->IsManagedPreference(p3a::kP3AEnabled);
 
-    FireWebUIListener("p3a-enabled-changed", user_enabled, hidden);
+    FireWebUIListener("p3a-enabled-changed", user_enabled, is_managed);
   }
 }
 
