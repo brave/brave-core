@@ -105,6 +105,11 @@ def sign(zipalign_path,
                 print(f"  Stderr: {e.stderr}")
                 raise
 
+    # Create a result file to indicate completion
+    result_filename = unsigned_apk_path + '-sign-result'
+    with open(result_filename, 'w') as result_file:
+        result_file.write("APK signing process completed\n")
+
     print("APK signing process completed")
 
 
