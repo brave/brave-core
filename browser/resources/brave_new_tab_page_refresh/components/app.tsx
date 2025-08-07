@@ -66,9 +66,7 @@ export function App() {
         <div className='searchbox-container'>
           {
             searchLayoutReady &&
-              <SearchBox
-                onCustomizeSearchEngineList={() => setSettingsView('search')}
-              />
+              <SearchBox showSearchSettings={() => setSettingsView('search')} />
           }
         </div>
         <div className='spacer allow-background-pointer-events'>
