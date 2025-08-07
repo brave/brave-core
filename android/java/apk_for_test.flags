@@ -732,6 +732,14 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.settings.BraveFragmentDependencyProvider {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.settings.FragmentDependencyProvider {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.firstrun.BraveFreIntentCreator {
     public <init>(...);
 }
