@@ -54,6 +54,7 @@ public class BraveClassAdapter {
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveFeedSurfaceMediatorClassAdapter(chain);
         chain = new BraveForegroundServiceUtilsClassAdapter(chain);
+        chain = new BraveFragmentDependencyProviderClassAdapter(chain);
         chain = new BraveFreIntentCreatorClassAdapter(chain);
         chain = new BraveHelpAndFeedbackLauncherImplClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);

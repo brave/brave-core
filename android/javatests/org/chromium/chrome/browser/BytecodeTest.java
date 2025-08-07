@@ -352,6 +352,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/incognito/reauth/FullScreenIncognitoReauthCoordinator")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/settings/FragmentDependencyProvider"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/firstrun/FreIntentCreator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl"));
@@ -1783,6 +1785,15 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
                         "org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl",
                         Profile.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/settings/FragmentDependencyProvider",
+                        "org/chromium/chrome/browser/settings/BraveFragmentDependencyProvider",
+                        Context.class,
+                        Profile.class,
+                        OneshotSupplier.class,
+                        OneshotSupplier.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/firstrun/FreIntentCreator",
