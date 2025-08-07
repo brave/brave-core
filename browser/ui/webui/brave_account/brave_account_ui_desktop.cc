@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/check.h"
+#include "brave/browser/brave_account/allow_brave_account_tag.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
@@ -32,6 +33,12 @@ class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
     set_delete_on_close(false);
     set_dialog_content_url(GURL(kBraveAccountURL));
     set_show_dialog_title(false);
+  }
+
+  void OnDialogShown(content::WebUI* webui) override {
+    if (auto* web_contents = webui ? webui->GetWebContents() : nullptr) {
+      AllowBraveAccountTag::Mark(web_contents);
+    }
   }
 };
 

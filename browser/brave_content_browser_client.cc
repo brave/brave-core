@@ -19,6 +19,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/brave_account/brave_account_navigation_throttle.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
@@ -1178,6 +1179,8 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
   brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(registry);
+
+  BraveAccountNavigationThrottle::MaybeCreateAndAdd(registry);
 
   ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);
 

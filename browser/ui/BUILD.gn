@@ -51,6 +51,7 @@ source_set("ui") {
 
   deps = [
     "//brave/browser/ai_chat",
+    "//brave/browser/brave_account",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
