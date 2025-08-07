@@ -1,5 +1,5 @@
 diff --git a/components/cached_flags/BUILD.gn b/components/cached_flags/BUILD.gn
-index 6cfc1b4e020748ed5b313f4b7a9c5f6b0aedb4ea..2eb01ca7883b3543c2f5a487b5467edb3229d9fe 100644
+index 8e5299932e1822c0dae6065f669e2126bbf99f6e..a9397e5bb79b2ef8a2718f1af4098b99103ad1df 100644
 --- a/components/cached_flags/BUILD.gn
 +++ b/components/cached_flags/BUILD.gn
 @@ -27,6 +27,7 @@ android_library("java") {
