@@ -61,8 +61,6 @@ BravePrivacyHandler::BravePrivacyHandler() {
             base::Unretained(this)));
   }
 #endif
-
-  brave_origin_state_observation_.Observe(BraveOriginState::GetInstance());
 }
 
 BravePrivacyHandler::~BravePrivacyHandler() {
@@ -140,7 +138,9 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
   auto* local_state = g_browser_process->local_state();
   data_source->AddBoolean("isP3ADisabledByPolicy",
                           local_state->GetBoolean(p3a::kP3ADisabledByPolicy));
-  data_source->AddBoolean("isStatsReportingHidden", IsStatsReportingHidden());
+  data_source->AddBoolean(
+      "isStatsReportingManaged",
+      local_state->IsManagedPreference(kStatsReportingEnabled));
 
 #if BUILDFLAG(IS_WIN)
   {
@@ -190,25 +190,15 @@ void BravePrivacyHandler::GetStatsUsagePingEnabled(
   GetLocalStateBooleanEnabled(kStatsReportingEnabled, args);
 }
 
-// static
-bool BravePrivacyHandler::IsStatsReportingHidden() {
-  PrefService* local_state = g_browser_process->local_state();
-  return local_state->IsManagedPreference(kStatsReportingEnabled) ||
-         BraveOriginState::GetInstance()->IsBraveOriginUser();
-}
-
 void BravePrivacyHandler::OnStatsUsagePingEnabledChanged() {
   if (IsJavascriptAllowed()) {
     PrefService* local_state = g_browser_process->local_state();
     bool user_enabled = local_state->GetBoolean(kStatsReportingEnabled);
-    bool hidden = IsStatsReportingHidden();
+    bool is_managed = local_state->IsManagedPreference(kStatsReportingEnabled);
 
-    FireWebUIListener("stats-usage-ping-enabled-changed", user_enabled, hidden);
+    FireWebUIListener("stats-usage-ping-enabled-changed", user_enabled,
+                      is_managed);
   }
-}
-
-void BravePrivacyHandler::OnBraveOriginStatusChanged() {
-  OnStatsUsagePingEnabledChanged();
 }
 
 void BravePrivacyHandler::SetP3AEnabled(const base::Value::List& args) {

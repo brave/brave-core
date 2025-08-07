@@ -8,8 +8,6 @@
 
 #include <string>
 
-#include "base/scoped_observation.h"
-#include "brave/components/brave_origin/brave_origin_state.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -19,8 +17,7 @@ class WebUIDataSource;
 
 class Profile;
 
-class BravePrivacyHandler : public settings::SettingsPageUIHandler,
-                            public BraveOriginStateObserver {
+class BravePrivacyHandler : public settings::SettingsPageUIHandler {
  public:
   BravePrivacyHandler();
   BravePrivacyHandler(const BravePrivacyHandler&) = delete;
@@ -28,9 +25,6 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler,
   ~BravePrivacyHandler() override;
   static void AddLoadTimeData(content::WebUIDataSource* data_source,
                               Profile* profile);
-
-  // BraveOriginStateObserver:
-  void OnBraveOriginStatusChanged() override;
 
  private:
   // SettingsPageUIHandler overrides:
@@ -51,16 +45,12 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler,
   void GetP3AEnabled(const base::Value::List& args);
   void OnP3AEnabledChanged();
 
-  static bool IsStatsReportingHidden();
-
 #if BUILDFLAG(IS_WIN)
   void OnWindowsRecallDisabledChanged();
 #endif
 
   raw_ptr<Profile> profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;
-  base::ScopedObservation<BraveOriginState, BraveOriginStateObserver>
-      brave_origin_state_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_PRIVACY_HANDLER_H_
