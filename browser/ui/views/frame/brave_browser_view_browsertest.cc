@@ -59,16 +59,25 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, ScrimForTabModalDisabledTest) {
 
   // Check scrim view is always not visible.
   TabModalConfirmDialog::Create(std::move(delegate), contents);
-  EXPECT_FALSE(browser_view()->contents_scrim_view()->GetVisible());
+  EXPECT_FALSE(browser_view()
+                   ->GetActiveContentsContainerView()
+                   ->GetContentsScrimView()
+                   ->GetVisible());
 
   ASSERT_TRUE(
       AddTabAtIndex(1, GURL(url::kAboutBlankURL), ui::PAGE_TRANSITION_LINK));
-  EXPECT_FALSE(browser_view()->contents_scrim_view()->GetVisible());
+  EXPECT_FALSE(browser_view()
+                   ->GetActiveContentsContainerView()
+                   ->GetContentsScrimView()
+                   ->GetVisible());
 
   browser()->tab_strip_model()->ActivateTabAt(
       0, TabStripUserGestureDetails(
              TabStripUserGestureDetails::GestureType::kMouse));
-  EXPECT_FALSE(browser_view()->contents_scrim_view()->GetVisible());
+  EXPECT_FALSE(browser_view()
+                   ->GetActiveContentsContainerView()
+                   ->GetContentsScrimView()
+                   ->GetVisible());
 }
 
 // MacOS does not need views window scrim. We use sheet to show window modals
