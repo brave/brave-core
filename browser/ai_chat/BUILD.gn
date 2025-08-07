@@ -47,6 +47,7 @@ static_library("ai_chat") {
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
+    "//printing:printing_base",
     "//services/data_decoder/public/cpp",
     "//ui/base",
     "//ui/shell_dialogs",

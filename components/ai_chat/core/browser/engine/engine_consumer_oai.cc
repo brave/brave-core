@@ -102,6 +102,7 @@ base::Value::List BuildMessages(
     if (turn->uploaded_files) {
       base::Value::List content_uploaded_images;
       base::Value::List content_screenshots;
+      base::Value::List content_uploaded_pdfs;
       content_uploaded_images.Append(
           base::Value::Dict()
               .Set("type", "text")
@@ -110,21 +111,35 @@ base::Value::List BuildMessages(
           base::Value::Dict()
               .Set("type", "text")
               .Set("text", "These images are screenshots"));
+      content_uploaded_pdfs.Append(
+          base::Value::Dict()
+              .Set("type", "text")
+              .Set("text", "These PDFs are uploaded by the user"));
       for (const auto& uploaded_file : turn->uploaded_files.value()) {
-        if (uploaded_file->type != mojom::UploadedFileType::kImage &&
-            uploaded_file->type != mojom::UploadedFileType::kScreenshot) {
-          continue;
-        }
-        base::Value::Dict image;
-        image.Set("type", "image_url");
-        base::Value::Dict image_url_dict;
-        image_url_dict.Set(
-            "url", EngineConsumer::GetImageDataURL(uploaded_file->data));
-        image.Set("image_url", std::move(image_url_dict));
-        if (uploaded_file->type == mojom::UploadedFileType::kImage) {
-          content_uploaded_images.Append(std::move(image));
-        } else {
-          content_screenshots.Append(std::move(image));
+        if (uploaded_file->type == mojom::UploadedFileType::kImage ||
+            uploaded_file->type == mojom::UploadedFileType::kScreenshot) {
+          base::Value::Dict image;
+          image.Set("type", "image_url");
+          base::Value::Dict image_url_dict;
+          image_url_dict.Set(
+              "url", EngineConsumer::GetImageDataURL(uploaded_file->data));
+          image.Set("image_url", std::move(image_url_dict));
+          if (uploaded_file->type == mojom::UploadedFileType::kImage) {
+            content_uploaded_images.Append(std::move(image));
+          } else {
+            content_screenshots.Append(std::move(image));
+          }
+        } else if (uploaded_file->type == mojom::UploadedFileType::kPdf) {
+          base::Value::Dict pdf_file;
+          pdf_file.Set("type", "file");
+          base::Value::Dict file_dict;
+          file_dict.Set("filename", uploaded_file->filename.empty()
+                                        ? "uploaded.pdf"
+                                        : uploaded_file->filename);
+          file_dict.Set("file_data",
+                        EngineConsumer::GetPdfDataURL(uploaded_file->data));
+          pdf_file.Set("file", std::move(file_dict));
+          content_uploaded_pdfs.Append(std::move(pdf_file));
         }
       }
       if (content_uploaded_images.size() > 1) {
@@ -137,6 +152,11 @@ base::Value::List BuildMessages(
         messages.Append(base::Value::Dict()
                             .Set("role", "user")
                             .Set("content", std::move(content_screenshots)));
+      }
+      if (content_uploaded_pdfs.size() > 1) {
+        messages.Append(base::Value::Dict()
+                            .Set("role", "user")
+                            .Set("content", std::move(content_uploaded_pdfs)));
       }
     }
     base::Value::Dict message;

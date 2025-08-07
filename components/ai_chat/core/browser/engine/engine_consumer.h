@@ -131,6 +131,7 @@ class EngineConsumer {
   }
 
   static std::string GetImageDataURL(base::span<uint8_t> image_data);
+  static std::string GetPdfDataURL(base::span<uint8_t> pdf_data);
 
  protected:
   // Check if we should call GenerationCompletedCallback early based on the

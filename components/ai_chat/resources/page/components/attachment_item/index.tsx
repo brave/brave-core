@@ -16,6 +16,24 @@ import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
 import { getLocale } from '$web-common/locale'
 
+/**
+ * Formats file size in bytes to human readable format
+ * @param bytes - File size in bytes
+ * @returns Formatted string (e.g., "1.25 MB")
+ */
+export const formatFileSize = (bytes: number): string => {
+  const units = ['B', 'KB', 'MB', 'GB']
+  let index = 0
+  let size = bytes
+
+  while (size >= 1024 && index < units.length - 1) {
+    size /= 1024
+    index++
+  }
+
+  return `${size.toFixed(2)} ${units[index]}`
+}
+
 type Props = {
   icon: React.ReactNode
   title: string
@@ -63,44 +81,6 @@ export function AttachmentItem(props: Props) {
   )
 }
 
-export function AttachmentImageItem(props: {
-  remove?: () => void
-  uploadedImage: Mojom.UploadedFile
-}) {
-  const dataUrl = React.useMemo(() => {
-    const blob = new Blob([new Uint8Array(props.uploadedImage.data)], {
-      type: 'image/*'
-    })
-    return URL.createObjectURL(blob)
-  }, [props.uploadedImage])
-
-  const filesize = React.useMemo(() => {
-    let bytes = Number(props.uploadedImage.filesize)
-    const units = ['B', 'KB', 'MB', 'GB']
-    let index = 0
-
-    while (bytes >= 1024 && index < units.length - 1) {
-      bytes /= 1024
-      index++
-    }
-
-    return `${bytes.toFixed(2)} ${units[index]}`
-  }, [props.uploadedImage.filesize])
-
-  return (
-    <AttachmentItem
-      icon={
-        <img
-          className={styles.image}
-          src={dataUrl}
-        />
-      }
-      title={props.uploadedImage.filename}
-      subtitle={filesize}
-      remove={props.remove}
-    />
-  )
-}
 
 export function AttachmentSpinnerItem(props: { title: string }) {
   return (
@@ -138,4 +118,63 @@ export function AttachmentPageItem(props: { title: string, url: string, remove?:
       </Tooltip>
     </>}
     remove={props.remove} />
+}
+
+export function AttachmentUploadItems(props: {
+  uploadedFiles: Mojom.UploadedFile[]
+  remove?: (index: number) => void
+}) {
+  return (
+    <>
+      {props.uploadedFiles.map((file, index) => {
+        const isImage = file.type === Mojom.UploadedFileType.kImage ||
+                       file.type === Mojom.UploadedFileType.kScreenshot
+        const isPdf = file.type === Mojom.UploadedFileType.kPdf
+
+        if (isImage) {
+          const dataUrl = React.useMemo(() => {
+            const blob = new Blob([new Uint8Array(file.data)], {
+              type: 'image/*'
+            })
+            return URL.createObjectURL(blob)
+          }, [file])
+
+          const filesize = React.useMemo(() => {
+            return formatFileSize(Number(file.filesize))
+          }, [file.filesize])
+
+          return (
+            <AttachmentItem
+              key={`${file.filename}-${index}`}
+              icon={
+                <img
+                  className={styles.image}
+                  src={dataUrl}
+                />
+              }
+              title={file.filename}
+              subtitle={filesize}
+              remove={props.remove ? () => props.remove!(index) : undefined}
+            />
+          )
+        } else if (isPdf) {
+          const filesize = React.useMemo(() => {
+            return formatFileSize(Number(file.filesize))
+          }, [file.filesize])
+
+          return (
+            <AttachmentItem
+              key={`${file.filename}-${index}`}
+              icon={<Icon name='file' />}
+              title={file.filename}
+              subtitle={filesize}
+              remove={props.remove ? () => props.remove!(index) : undefined}
+            />
+          )
+        }
+
+        return null
+      })}
+    </>
+  )
 }

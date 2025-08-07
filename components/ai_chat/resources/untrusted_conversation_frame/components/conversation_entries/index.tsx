@@ -10,7 +10,7 @@ import { getLocale } from '$web-common/locale'
 import useLongPress from '$web-common/useLongPress'
 import * as Mojom from '../../../common/mojom'
 import ActionTypeLabel from '../../../common/components/action_type_label'
-import {  AttachmentImageItem, AttachmentPageItem  } from '../../../page/components/attachment_item'
+import { AttachmentPageItem, AttachmentUploadItems } from '../../../page/components/attachment_item'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantReasoning from '../assistant_reasoning'
 import ContextActionsAssistant from '../context_actions_assistant'
@@ -21,7 +21,6 @@ import AssistantResponse from '../assistant_response'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
 import { getReasoningText, groupConversationEntries } from './conversation_entries_utils'
-import { getImageFiles } from '../../../common/conversation_history_utils'
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
 import styles from './style.module.scss'
 
@@ -119,12 +118,9 @@ function ConversationEntries() {
 
           const handleCopyText = useConversationEventClipboardCopyHandler(firstEntryEdit)
 
-          const imageFiles =
-            getImageFiles(firstEntryEdit.uploadedFiles) || []
 
-          const hasImageAttachments = imageFiles.length > 0
           const hasTabAttachments = index === 0 && conversationContext.associatedContent.length > 0
-          const hasAttachments = hasImageAttachments || hasTabAttachments
+          const hasAttachments = !!firstEntryEdit.uploadedFiles?.length || hasTabAttachments
 
           return (
             <div
@@ -216,12 +212,7 @@ function ConversationEntries() {
                                 url={c.url.url}
                                 title={c.title}
                               />)}
-                                {imageFiles.map((img) => (
-                                  <AttachmentImageItem
-                                    key={img.filename}
-                                    uploadedImage={img}
-                                  />
-                                ))}
+                                <AttachmentUploadItems uploadedFiles={firstEntryEdit.uploadedFiles || []} />
                               </div>
                             }
                           </div>

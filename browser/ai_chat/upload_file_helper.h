@@ -11,6 +11,7 @@
 #include <tuple>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
@@ -42,11 +43,11 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
   UploadFileHelper(const UploadFileHelper&) = delete;
   UploadFileHelper& operator=(const UploadFileHelper&) = delete;
 
-  void UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
+  void UploadFile(std::unique_ptr<ui::SelectFilePolicy> policy,
 #if BUILDFLAG(IS_ANDROID)
-                   bool use_media_capture,
+                  bool use_media_capture,
 #endif
-                   mojom::AIChatUIHandler::UploadImageCallback callback);
+                  mojom::AIChatUIHandler::UploadFileCallback callback);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -58,9 +59,8 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
       const std::vector<ui::SelectedFileInfo>& files) override;
   void FileSelectionCanceled() override;
 
-  void OnImageRead(
-      std::tuple<std::optional<std::vector<uint8_t>>, std::string> result);
-  void OnImageSanitized(std::string filename, const SkBitmap& decoded_bitmap);
+  void OnFileRead(
+      std::tuple<std::optional<std::vector<uint8_t>>, base::FilePath> result);
   void OnImageEncoded(std::string filename,
                       std::optional<std::vector<uint8_t>> output);
 
@@ -68,7 +68,7 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
-  mojom::AIChatUIHandler::UploadImageCallback upload_image_callback_;
+  mojom::AIChatUIHandler::UploadFileCallback upload_file_callback_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<UploadFileHelper> weak_ptr_factory_{this};

@@ -15,6 +15,12 @@ import "url/mojom/url.mojom";
 // custom user actions and UI representations can be created.
 const string kUserChoiceToolName = "user_choice_tool";
 
+// File upload limits
+// https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Message.html#API_runtime_Message_Contents
+const uint32 MAX_IMAGES = 20;
+const uint32 MAX_DOCUMENTS = 5;
+const uint32 MAX_DOCUMENT_SIZE_BYTES = 4718592; // 4.5MB
+
 enum CharacterType {
   HUMAN,
   ASSISTANT
@@ -204,6 +210,7 @@ struct ConversationTitleEvent {
 enum UploadedFileType {
   kImage = 0,
   kScreenshot,
+  kPdf,
 };
 
 struct UploadedFile {
@@ -466,8 +473,8 @@ interface AIChatUIHandler {
   ShowSoftKeyboard();
   // use_media_capture is used on Android only currently. It could
   // be used on desktop as well in the future when a camera support is added.
-  UploadImage(bool use_media_capture)
-      => (array<UploadedFile>? uploaded_images);
+  UploadFile(bool use_media_capture)
+      => (array<UploadedFile>? uploaded_files);
 
   // Get a plural string for the given key and count.
   GetPluralString(string key, int32 count) => (string plural_string);
@@ -506,7 +513,7 @@ interface ChatUI {
   // if any.
   OnNewDefaultConversation(int32? content_id);
   OnChildFrameBound(pending_receiver<ParentUIFrame> receiver);
-  // Notifies that files are selected between AIChatUIHandler::UploadImage() is
+  // Notifies that files are selected between AIChatUIHandler::UploadFile() is
   // called and return of uploaded files after processed.
   OnUploadFilesSelected();
 };

@@ -6,34 +6,21 @@
 import * as React from 'react'
 import { render, screen } from '@testing-library/react'
 import InputBox, { InputBoxProps } from '.'
-import { ContentType } from '../../../common/mojom'
+import { ContentType, UploadedFileType } from '../../../common/mojom'
+import { defaultContext } from '../../state/conversation_context'
 
-const defaultContext: InputBoxProps['context'] = {
-  conversationHistory: [],
-  getScreenshots: () => {},
-  async handleStopGenerating() {},
-  hasAcceptedAgreement: true,
-  inputText: '',
-  inputTextCharCountDisplay: `0/1000`,
-  isCharLimitApproaching: false,
-  isCharLimitExceeded: false,
-  isGenerating: false,
+// Mock URL.createObjectURL for tests that include image files
+// This is needed because AttachmentUploadItems calls URL.createObjectURL to create blob URLs for images
+Object.defineProperty(URL, 'createObjectURL', {
+  writable: true,
+  value: jest.fn(() => 'mock-object-url')
+})
+
+const testContext: InputBoxProps['context'] = {
+  ...defaultContext,
+  // Override specific properties for testing
   isMobile: false,
-  isToolsMenuOpen: false,
-  pendingMessageImages: [],
-  removeImage: () => {},
-  resetSelectedActionType: () => {},
-  selectedActionType: undefined,
-  setInputText: () => {},
-  setIsToolsMenuOpen: () => {},
-  shouldDisableUserInput: false,
-  submitInputTextToAPI: () => {},
-  uploadImage: () => {},
-  associatedContentInfo: [],
-  handleVoiceRecognition: () => {},
-  isUploadingFiles: false,
-  disassociateContent: () => {},
-  associateDefaultContent: () => {},
+  hasAcceptedAgreement: true,
   getPluralString: () => Promise.resolve(''),
   tabs: [],
 }
@@ -43,7 +30,7 @@ describe('input box', () => {
     const { container } = render(
       <InputBox
         context={{
-          ...defaultContext,
+          ...testContext,
           associatedContentInfo: [{
             contentId: 1,
             contentType: ContentType.PageContent,
@@ -67,7 +54,7 @@ describe('input box', () => {
     const { container } = render(
       <InputBox
         context={{
-          ...defaultContext,
+          ...testContext,
           associatedContentInfo: [],
         }}
         conversationStarted={false}
@@ -84,7 +71,7 @@ describe('input box', () => {
     const { container } = render(
       <InputBox
         context={{
-          ...defaultContext,
+          ...testContext,
           associatedContentInfo: [{
             contentId: 1,
             contentType: ContentType.PageContent,
@@ -108,7 +95,7 @@ describe('input box', () => {
     const { container } = render(
       <InputBox
         context={{
-          ...defaultContext,
+          ...testContext,
           inputText: ''
         }}
         conversationStarted={false}
@@ -124,7 +111,7 @@ describe('input box', () => {
     const { container } = render(
       <InputBox
         context={{
-          ...defaultContext,
+          ...testContext,
           inputText: 'test'
         }}
         conversationStarted={false}
@@ -139,7 +126,7 @@ describe('input box', () => {
   it('streaming button is shown while generating', () => {
     const { container } = render(
       <InputBox
-        context={{ ...defaultContext, isGenerating: true }}
+        context={{ ...testContext, isGenerating: true }}
         conversationStarted={false}
       />
     )
@@ -169,7 +156,7 @@ describe('input box', () => {
   it.each(contentAgentParams)('Content Agent button is shown only if the feature is enabled', (params: ContentAgentParams) => {
     render(
       <InputBox
-        context={{ ...defaultContext, isAIChatAgentProfileFeatureEnabled: params.isAgentProfileFeatureEnabled, isAIChatAgentProfile: params.isAgentProfile }}
+        context={{ ...testContext, isAIChatAgentProfileFeatureEnabled: params.isAgentProfileFeatureEnabled, isAIChatAgentProfile: params.isAgentProfile }}
         conversationStarted={params.isConversationStarted}
       />
     )
@@ -187,5 +174,104 @@ describe('input box', () => {
       expect(contentAgentLaunchButton).not.toBeInTheDocument()
       expect(contentAgentTooltip).not.toBeInTheDocument()
     }
+  })
+
+  it('documents show up in attachment wrapper', () => {
+    const { container } = render(
+      <InputBox
+        context={{
+          ...testContext,
+          pendingMessageFiles: [{
+            filename: 'test.pdf',
+            data: new ArrayBuffer(0),
+            type: UploadedFileType.kPdf,
+            filesize: BigInt(1024)
+          }]
+        }}
+        conversationStarted={false}
+      />
+    )
+
+    expect(screen.getByText('test.pdf')).toBeInTheDocument()
+    const attachmentWrapper = container.querySelector('.attachmentWrapper')
+    expect(attachmentWrapper).toBeInTheDocument()
+  })
+
+  it('attachments are shown if only documents are available', () => {
+    const { container } = render(
+      <InputBox
+        context={{
+          ...testContext,
+          pendingMessageFiles: [{
+            filename: 'document1.pdf',
+            data: new ArrayBuffer(0),
+            type: UploadedFileType.kPdf,
+            filesize: BigInt(2048)
+          }, {
+            filename: 'document2.pdf',
+            data: new ArrayBuffer(0),
+            type: UploadedFileType.kPdf,
+            filesize: BigInt(1536)
+          }]
+        }}
+        conversationStarted={false}
+      />
+    )
+
+    const attachmentWrapper = container.querySelector('.attachmentWrapper')
+    expect(attachmentWrapper).toBeInTheDocument()
+    expect(screen.getByText('document1.pdf')).toBeInTheDocument()
+    expect(screen.getByText('document2.pdf')).toBeInTheDocument()
+    // Check that both documents are rendered as attachment items
+    const attachmentItems = container.querySelectorAll('.itemWrapper')
+    expect(attachmentItems.length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('combinations of associated content, images and documents show up', () => {
+    const { container } = render(
+      <InputBox
+        context={{
+          ...testContext,
+          associatedContentInfo: [{
+            contentId: 1,
+            contentType: ContentType.PageContent,
+            contentUsedPercentage: 0.5,
+            title: 'Page Content',
+            url: { url: 'https://example.com' },
+            uuid: '1234'
+          }],
+          pendingMessageFiles: [{
+            filename: 'image.jpg',
+            data: new ArrayBuffer(0),
+            type: UploadedFileType.kImage,
+            filesize: BigInt(1024)
+          }, {
+            filename: 'document.pdf',
+            data: new ArrayBuffer(0),
+            type: UploadedFileType.kPdf,
+            filesize: BigInt(2048)
+          }]
+        }}
+        conversationStarted={false}
+      />
+    )
+
+    const attachmentWrapper = container.querySelector('.attachmentWrapper')
+    expect(attachmentWrapper).toBeInTheDocument()
+
+    // Associated content
+    expect(screen.getByText('Page Content')).toBeInTheDocument()
+    expect(container.querySelector('img[src*="//favicon2"]')).toBeInTheDocument()
+
+    // Image file
+    expect(screen.getByText('image.jpg')).toBeInTheDocument()
+    expect(container.querySelector('img.image')).toBeInTheDocument()
+
+    // Document file
+    expect(screen.getByText('document.pdf')).toBeInTheDocument()
+
+    // Check that we have multiple attachment items (page content + files)
+    const attachmentItems = container.querySelectorAll('.itemWrapper')
+    expect(attachmentItems.length).toBeGreaterThanOrEqual(3)
   })
 })
