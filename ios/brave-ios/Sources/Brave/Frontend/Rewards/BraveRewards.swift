@@ -16,11 +16,12 @@ import Web
 public class BraveRewards: PreferencesObserver {
 
   /// Whether or not Brave Rewards is available/can be enabled
-  public static var isAvailable: Bool {
+  public static func isSupported(prefService: any PrefService) -> Bool {
+    let isSupportedFromPrefs = BraveRewardsAPI.isSupported(prefService)
     #if DEBUG
-    return true
+    return isSupportedFromPrefs
     #else
-    return DCDevice.current.isSupported
+    return isSupportedFromPrefs && DCDevice.current.isSupported
     #endif
   }
 
@@ -115,15 +116,21 @@ public class BraveRewards: PreferencesObserver {
       ads.isEnabled
     }
     set {
+      let wasEnabled = ads.isEnabled
+      if !wasEnabled && newValue {
+        Preferences.Rewards.adsEnabledTimestamp.value = Date()
+      } else if wasEnabled && !newValue {
+        Preferences.Rewards.adsDisabledTimestamp.value = Date()
+      }
+      if newValue == false && rewardsAPI == nil {
+        // The rewards service isn't set up, no need to start it and create a wallet if we're just
+        // disabling push ads
+        ads.isEnabled = newValue
+        return
+      }
       createWalletIfNeeded { [weak self] in
         guard let self = self else { return }
         Preferences.Rewards.rewardsToggledOnce.value = true
-        let wasEnabled = self.ads.isEnabled
-        if !wasEnabled && newValue {
-          Preferences.Rewards.adsEnabledTimestamp.value = Date()
-        } else if wasEnabled && !newValue {
-          Preferences.Rewards.adsDisabledTimestamp.value = Date()
-        }
         if !newValue {
           self.ads.isEnabled = newValue
           self.isTurningOnRewards = false

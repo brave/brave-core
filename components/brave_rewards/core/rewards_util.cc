@@ -19,22 +19,22 @@
 #include "brave/components/brave_rewards/core/features.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_rewards/core/pref_names.h"
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace brave_rewards {
 
 namespace {
 
 bool IsDisabledByPolicy(PrefService* prefs) {
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#if BUILDFLAG(IS_ANDROID)
+  return false;
+#else
   DCHECK(prefs);
   return prefs->IsManagedPreference(prefs::kDisabledByPolicy) &&
          prefs->GetBoolean(prefs::kDisabledByPolicy);
-#else
-  return false;
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#endif
 }
 
 bool IsDisabledByFeature() {

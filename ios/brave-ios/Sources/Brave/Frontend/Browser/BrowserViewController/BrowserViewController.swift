@@ -274,6 +274,8 @@ public class BrowserViewController: UIViewController {
 
   private let ntpP3AHelper: NewTabPageP3AHelper
 
+  private let prefsChangeRegistrar: PrefChangeRegistrar
+
   public init(
     windowId: UUID,
     profile: LegacyBrowserProfile,
@@ -295,6 +297,7 @@ public class BrowserViewController: UIViewController {
     self.crashedLastSession = crashedLastSession
     self.privateBrowsingManager = privateBrowsingManager
     self.feedDataSource = newsFeedDataSource
+    self.prefsChangeRegistrar = PrefChangeRegistrar(prefService: profileController.profile.prefs)
     feedDataSource.historyAPI = profileController.historyAPI
     backgroundDataSource = .init(
       service: profileController.backgroundImagesService,
@@ -322,7 +325,7 @@ public class BrowserViewController: UIViewController {
     // Setup ReaderMode Cache
     self.readerModeCache = ReaderModeScriptHandler.cache(for: tabManager.selectedTab)
 
-    if !BraveRewards.isAvailable {
+    if !BraveRewards.isSupported(prefService: profileController.profile.prefs), rewards.isEnabled {
       // Disable rewards services in case previous user already enabled
       // rewards in previous build
       rewards.isEnabled = false
@@ -349,7 +352,7 @@ public class BrowserViewController: UIViewController {
     }
 
     rewards.ads.captchaHandler = self
-    if rewards.isEnabled {
+    if rewards.isEnabled, BraveRewards.isSupported(prefService: profileController.profile.prefs) {
       rewards.startRewardsService(nil)
     } else {
       rewards.ads.initialize { _ in }
@@ -482,6 +485,12 @@ public class BrowserViewController: UIViewController {
     ShieldPreferences.blockAdsAndTrackingLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
     Preferences.Translate.translateEnabled.observe(from: self)
+
+    // Observe some Chromium prefs
+    prefsChangeRegistrar.addObserver(forPath: BraveRewardsDisabledByPolicyPrefName) {
+      [weak self] _ in
+      self?.updateRewardsButtonState()
+    }
 
     pageZoomListener = NotificationCenter.default.addObserver(
       forName: PageZoomView.notificationName,
