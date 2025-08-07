@@ -364,7 +364,7 @@ class SettingsViewController: TableViewController {
                   tabManager: self.tabManager,
                   feedDataSource: self.feedDataSource,
                   debounceService: DebounceServiceFactory.get(privateMode: false),
-                  braveShieldsSettings: BraveShieldsSettingsFactory.get(profile: braveCore.profile),
+                  braveShieldsSettings: BraveShieldsSettingsFactory.create(for: braveCore.profile),
                   braveCore: braveCore,
                   p3aUtils: p3aUtilities,
                   rewards: rewards,

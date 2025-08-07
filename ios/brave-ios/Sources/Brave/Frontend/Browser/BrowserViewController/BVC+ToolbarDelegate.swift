@@ -520,7 +520,7 @@ extension BrowserViewController: TopToolbarDelegate {
           tabManager: self.tabManager,
           feedDataSource: self.feedDataSource,
           debounceService: DebounceServiceFactory.get(privateMode: false),
-          braveShieldsSettings: BraveShieldsSettingsFactory.get(profile: profileController.profile),
+          braveShieldsSettings: BraveShieldsSettingsFactory.create(for: profileController.profile),
           braveCore: profileController,
           p3aUtils: braveCore.p3aUtils,
           rewards: rewards,
