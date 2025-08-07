@@ -13,7 +13,9 @@ namespace features {
 
 BASE_DECLARE_FEATURE(kBraveWalletWebUIIOS);
 
-}
+bool IsBraveWalletWebUIIOSEnabled();
+
+}  // namespace features
 }  // namespace brave_wallet
 
 #endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_FEATURES_H_
