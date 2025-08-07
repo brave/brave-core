@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/ssl/https_upgrades_util.cc b/chrome/browser/ssl/https_upgrades_util.cc
+index f03fb1f966d8616f58ff643f5eec70d8f5b2c673..3664337249582a1bcac42b1457b9777c1b49f773 100644
+--- a/chrome/browser/ssl/https_upgrades_util.cc
++++ b/chrome/browser/ssl/https_upgrades_util.cc
+@@ -72,11 +72,11 @@ ComputeInterstitialState(content::WebContents* web_contents, const GURL& url) {
+   security_interstitials::https_only_mode::HttpInterstitialState
+       interstitial_state;
+   interstitial_state.enabled_by_pref =
+-      prefs && prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled);
++      prefs && prefs->GetBooleanOr(prefs::kHttpsOnlyModeEnabled, NormalWindowHttpsOnly(url, profile));
+ 
+   if (base::FeatureList::IsEnabled(features::kHttpsFirstModeIncognito)) {
+     if (profile->IsIncognitoProfile() && prefs &&
+-        prefs->GetBoolean(prefs::kHttpsFirstModeIncognito)) {
++        prefs->GetBooleanOr(prefs::kHttpsFirstModeIncognito, NormalWindowHttpsOnly(url, profile))) {
+       interstitial_state.enabled_by_incognito = true;
+     }
+   }
