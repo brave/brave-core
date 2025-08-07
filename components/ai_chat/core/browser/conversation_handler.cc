@@ -559,6 +559,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
+  // Give tools a chance to reset their state for the next loop
+  InitToolsForNewGenerationLoop();
+  // Get any content and perform the response generation
   PerformAssistantGenerationWithPossibleContent();
 }
 
@@ -1021,6 +1024,19 @@ void ConversationHandler::AddToConversationHistory(
   chat_history_.push_back(std::move(turn));
 
   OnConversationEntryAdded(chat_history_.back());
+}
+
+void ConversationHandler::InitToolsForNewGenerationLoop() {
+  if (!features::IsToolsEnabled()) {
+    return;
+  }
+  // For now, all tools can be reset entirely, and we don't need to maintain
+  // state between loops. If this changes, we can store each tool in a separate
+  // class member, and handle individually.
+  conversation_tools_.clear();
+
+  // TODO: only for agent capability conversations
+  conversation_tools_.push_back(std::make_unique<TodoTool>());
 }
 
 void ConversationHandler::PerformAssistantGenerationWithPossibleContent() {
@@ -1670,7 +1686,6 @@ void ConversationHandler::OnStateForConversationEntriesChanged() {
 
 std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
   std::vector<base::WeakPtr<Tool>> tools;
-
   // Use test tools if they are set
   if (!tools_for_testing_.empty()) {
     std::ranges::transform(tools_for_testing_, std::back_inserter(tools),
@@ -1678,6 +1693,11 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
     return tools;
   }
 
+  // Add tools that are owned by the conversation
+  std::ranges::transform(conversation_tools_, std::back_inserter(tools),
+                         [](auto& tool) { return tool->GetWeakPtr(); });
+
+  // Add stateless static tools
   auto conversation_tools = GetToolsForConversation(
       associated_content_manager_->HasAssociatedContent(), GetCurrentModel());
   std::ranges::transform(conversation_tools, std::back_inserter(tools),

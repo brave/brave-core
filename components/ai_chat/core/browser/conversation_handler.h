@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/tools/todo_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -297,6 +298,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   };
 
   void InitEngine();
+
+  // Setup tools for the conversation. When a new user message is added, we
+  // can reset some of the state of the tools, ready for the next loop.
+  void InitToolsForNewGenerationLoop();
+
   void UpdateAssociatedContentInfo();
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
@@ -395,6 +401,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   std::unique_ptr<EngineConsumer> engine_ = nullptr;
   mojom::APIError current_error_ = mojom::APIError::None;
+
+  // Tools that the conversation owns
+  std::vector<std::unique_ptr<Tool>> conversation_tools_;
 
   // For testing only
   std::vector<std::unique_ptr<Tool>> tools_for_testing_;

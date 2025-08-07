@@ -133,6 +133,45 @@ const toolEvents: Mojom.ToolUseEvent[] = [
     toolName: 'user_choice_tool',
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: undefined,
+  },
+  {
+    id: 'todo123a',
+    toolName: 'todo_write',
+    argumentsJson: JSON.stringify({
+      merge: false,
+      todos: [
+        { id: 'auth-setup', content: 'Implement OAuth authentication system', status: 'completed' },
+        { id: 'db-design', content: 'Design user database schema', status: 'completed' },
+        { id: 'api-endpoints', content: 'Create REST API endpoints', status: 'in_progress' },
+        { id: 'frontend-ui', content: 'Build responsive user interface', status: 'pending' },
+        { id: 'testing', content: 'Add comprehensive unit tests', status: 'pending' },
+        { id: 'deployment', content: 'Set up production deployment pipeline', status: 'cancelled' }
+      ]
+    }),
+    output: [createTextContentBlock(JSON.stringify({
+      status: 'success',
+      total_todos: 6,
+      current_todos: [
+        { id: 'auth-setup', content: 'Implement OAuth authentication system', status: 'completed' },
+        { id: 'db-design', content: 'Design user database schema', status: 'completed' },
+        { id: 'api-endpoints', content: 'Create REST API endpoints', status: 'in_progress' },
+        { id: 'frontend-ui', content: 'Build responsive user interface', status: 'pending' },
+        { id: 'testing', content: 'Add comprehensive unit tests', status: 'pending' },
+        { id: 'deployment', content: 'Set up production deployment pipeline', status: 'cancelled' }
+      ]
+    }))],
+  },
+  {
+    id: 'todo123b',
+    toolName: 'todo_write',
+    argumentsJson: JSON.stringify({
+      merge: true,
+      todos: [
+        { id: 'bug-fix', content: 'Fix login validation bug', status: 'in_progress' },
+        { id: 'performance', content: 'Optimize database queries', status: 'pending' }
+      ]
+    }),
+    output: undefined,
   }
 ]
 

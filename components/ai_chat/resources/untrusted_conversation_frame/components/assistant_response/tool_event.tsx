@@ -10,6 +10,7 @@ import Tooltip from '@brave/leo/react/tooltip'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
+import ToolEventTodos from './tool_event_todos'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -79,6 +80,10 @@ function ToolEventContent(
 
   if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
     component = ToolEventContentUserChoice
+  }
+
+  if (toolUseEvent.toolName === 'todo_write') {
+    component = ToolEventTodos
   }
 
   if (component) {
