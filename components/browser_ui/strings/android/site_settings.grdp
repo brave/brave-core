@@ -131,6 +131,12 @@
   <message name="IDS_LOCAL_NETWORK_ACCESS_PERMISSION_TITLE" desc="Title of the permission for Local Network Access [CHAR_LIMIT=32]">
     Local network access
   </message>
+  <message name="IDS_WINDOW_MANAGEMENT_PERMISSION_TITLE" desc="Title of the permission for Window Management [CHAR_LIMIT=32]">
+    Window management
+  </message>
+  <message name="IDS_AUTO_PICTURE_IN_PICTURE_PERMISSION_TITLE" desc="Title of the permission for Automatic Picture-in-Picture [CHAR_LIMIT=32]">
+    Automatic picture-in-picture
+  </message>
 
   <!-- Site settings global toggles -->
 
@@ -183,6 +189,9 @@
   </message>
   <message name="IDS_WEBSITE_SETTINGS_CATEGORY_PERMISSION_TITLE" desc="Label as the title for the CPSS permission prompt.">
     How to show requests
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_REVOKE_PERMISSION" desc="Label for X button to revoke one time permission.">
+    Revoke permission
   </message>
 
   <!-- Site settings: general category strings -->
@@ -529,6 +538,10 @@
   </message>
   <message name="IDS_WEBSITE_SETTINGS_JAVASCRIPT_OPTIMIZER_BLOCKED" desc="Primary text corresponding to the block button in the V8 optimizer permission radio button group.">
     Do not speed up sites with Brave's V8 engine but make Brave slightly more resistant to attacks
+  </message>
+
+  <message name="IDS_WEBSITE_SETTINGS_JS_OPT_ADD_EXCEPTIONS_DISABLED_REASON" desc="Explains that the add-exception button is disabled because the Android device does not have enough RAM.">
+    Exceptions for specific websites disallowed because Android device does not have enough RAM.
   </message>
 
   <!-- Bluetooth -->
@@ -1218,6 +1231,46 @@
     Don’t allow sites to connect to any device on your local network
   </message>
 
+  <!-- Window Management -->
+  <message name="IDS_WEBSITE_SETTINGS_WINDOW_MANAGEMENT_PAGE_DESCRIPTION" desc="Description of the window management content setting.">
+    Sites can use this feature to manage windows on all your displays
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_WINDOW_MANAGEMENT_ASK" desc="Summary text explaining that sites need to ask for permission before they can manage windows on all user's displays.">
+    Sites can ask to manage windows on all your displays
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_WINDOW_MANAGEMENT_BLOCKED" desc="Summary text explaining that sites are blocked from making manage windows requests.">
+    Don’t allow sites to manage windows on all your displays
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_WINDOW_MANAGEMENT_A11Y" desc="The screen reader announcement describing a toggle with two states, controling whether sites can request permission to manage windows on all user's displays. It is important to keep this string as two full sentences terminated by a period.">
+    When on, sites can ask to manage windows on all your displays. When off, sites can’t manage windows on all your displays.
+  </message>
+
+  <message name="IDS_WEBSITE_SETTINGS_WINDOW_MANAGEMENT_ASK" desc="Primary text corresponding to the ask button in the window management permission radio button group.">
+    Sites can ask to manage windows on all your displays
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_WINDOW_MANAGEMENT_BLOCK" desc="Primary text corresponding to the block button in the window management permission radio button group.">
+    Don’t allow sites to manage windows on all your displays
+  </message>
+
+    <!-- Automatic Picture-in-Picture -->
+  <message name="IDS_WEBSITE_SETTINGS_AUTOMATIC_PICTURE_IN_PICTURE_PAGE_DESCRIPTION" desc="Description of the automatic picture-in-picture content setting.">
+    Sites use this feature to enter picture-in-picture automatically. This lets you continue watching a video, while freeing up your screen for other tasks.
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AUTOMATIC_PICTURE_IN_PICTURE_ALLOWED" desc="Summary text explaining that sites are alllowed to enter picture-in-picture automatically.">
+   Sites can enter picture-in-picture automatically
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AUTOMATIC_PICTURE_IN_PICTURE_BLOCKED" desc="Summary text explaining that sites are blocked from entering picture-in-picture automatically.">
+    Don't allow sites to enter picture-in-picture automatically
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AUTOMATIC_PICTURE_IN_PICTURE_A11Y" desc="The screen reader announcement describing a toggle with two states, controling whether sites can enter picture-in-picture automatically. It is important to keep this string as two full sentences terminated by a period.">
+    When on, sites can enter picture-in-picture automatically. When off, sites can’t enter picture-in-picture automatically.
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_AUTOMATIC_PICTURE_IN_PICTURE_ALLOW" desc="Primary text corresponding to the ask button in the automatic picture-in-picture permission radio button group.">
+    Sites can enter picture-in-picture automatically
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_AUTOMATIC_PICTURE_IN_PICTURE_BLOCK" desc="Primary text corresponding to the block button in the automatic picture-in-picture permission radio button group.">
+    Don't allow sites to enter picture-in-picture automatically
+  </message>
 
   <!-- Advanced protection -->
   <message name="IDS_SETTINGS_PRIVACY_AND_SECURITY_ADVANCED_PROTECTION_SECTION_TITLE" desc="Title for section on privacy settings page. Section displays information about how Android-OS advanced-protection 'on' setting affects Brave settings. Section is shown for for a few days after the user has turned on advanced-protection in Android-OS-settings.">
