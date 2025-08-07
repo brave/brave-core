@@ -1899,8 +1899,8 @@ public class BytecodeTest {
                         WebContents.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/components/signin/SystemAccountManagerDelegate",
-                        "org/chromium/components/signin/BraveSystemAccountManagerDelegate"));
+                        "org/chromium/components/signin/NullAccountManagerDelegate",
+                        "org/chromium/components/signin/BraveNullAccountManagerDelegate"));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/AutocompleteEditText",
