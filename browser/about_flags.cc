@@ -103,10 +103,6 @@
 #include "brave/components/psst/common/features.h"
 #endif
 
-inline constexpr char kPlaylistFeatureInternalName[] = "playlist";
-inline constexpr char kPlaylistFakeUAFeatureInternalName[] = "playlist-fake-ua";
-inline constexpr char kSplitViewFeatureInternalName[] = "brave-split-view";
-
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
 
 const flags_ui::FeatureEntry::FeatureParam
@@ -264,14 +260,14 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       ENABLE_PLAYLIST,                                                 \
       EXPAND_FEATURE_ENTRIES(                                          \
           {                                                            \
-              kPlaylistFeatureInternalName,                            \
+              "playlist",                                              \
               "Playlist",                                              \
               "Enables Playlist",                                      \
               kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
               FEATURE_VALUE_TYPE(playlist::features::kPlaylist),       \
           },                                                           \
           {                                                            \
-              kPlaylistFakeUAFeatureInternalName,                      \
+              "playlist-fake-ua",                                      \
               "PlaylistFakeUA",                                        \
               "Use fake UA for playlist",                              \
               kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
@@ -443,7 +439,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           MULTI_VALUE_TYPE(kVerticalTabCollapseDelayChoices),                  \
       },                                                                       \
       {                                                                        \
-          kSplitViewFeatureInternalName,                                       \
+          "brave-split-view",                                                  \
           "Enable split view",                                                 \
           "Enables split view",                                                \
           kOsWin | kOsMac | kOsLinux,                                          \
