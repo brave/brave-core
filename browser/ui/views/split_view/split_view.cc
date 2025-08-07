@@ -124,7 +124,6 @@ SplitView::SplitView(Browser& browser,
 
   secondary_contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
-          secondary_devtools_web_view_, secondary_devtools_scrim_view_,
           secondary_contents_web_view_, secondary_lens_overlay_view_,
           /*watermark_view=*/nullptr, secondary_reader_mode_toolbar_,
           secondary_contents_scrim_view_));
@@ -241,9 +240,9 @@ void SplitView::GetAccessiblePanes(BrowserViewKey,
 
 void SplitView::SetSecondaryContentsResizingStrategy(
     const DevToolsContentsResizingStrategy& strategy) {
-  static_cast<ContentsLayoutManager*>(
-      secondary_contents_container_->GetLayoutManager())
-      ->SetContentsResizingStrategy(strategy);
+  // static_cast<ContentsLayoutManager*>(
+  //     secondary_contents_container_->GetLayoutManager())
+  //     ->SetContentsResizingStrategy(strategy);
 }
 
 void SplitView::Layout(PassKey key) {
