@@ -15,6 +15,8 @@
 
 namespace brave_wallet {
 
+namespace {
+
 // Taken from:
 // https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/struct.MiniSecretKey.html#method.from_bytes
 inline constexpr uint8_t kSchnorrkelSeed[] = {
@@ -27,6 +29,8 @@ inline constexpr uint8_t kSchnorrkelSeed[] = {
 // `polkadot_sdk::sp_core::sr25519::Pair`.
 inline constexpr const char* kSchnorrkelPubKey =
     "44A996BEB1EEF7BDCAB976AB6D2CA26104834164ECF28FB375600576FCC6EB0F";
+
+}  // namespace
 
 TEST(HDKeySr25519, GenerateFromSeed) {
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
