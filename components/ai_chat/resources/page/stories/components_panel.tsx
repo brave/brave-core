@@ -917,7 +917,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isDragActive: options.args.isDragActive,
     isDragOver: options.args.isDragOver,
     clearDragState: () => {},
-    processDroppedImages: (images: Mojom.UploadedFile[]) => {}
+    attachImages: (images: Mojom.UploadedFile[]) => {}
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {

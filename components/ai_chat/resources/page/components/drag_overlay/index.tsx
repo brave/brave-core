@@ -15,7 +15,7 @@ export default function DragOverlay() {
     isDragActive,
     isDragOver,
     clearDragState,
-    processDroppedImages
+    attachImages
   } = useConversation()
   const handleOverlayDrop = async (e: React.DragEvent) => {
     e.preventDefault()
@@ -32,7 +32,7 @@ export default function DragOverlay() {
       const uploadedFiles = await Promise.all(
         files.map(file => convertFileToUploadedFile(file))
       )
-      processDroppedImages(uploadedFiles)
+      attachImages(uploadedFiles)
     } catch (error) {
       // Silently fail - error will be handled by the upload system
     }
