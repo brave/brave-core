@@ -10,6 +10,7 @@ import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
+import DragOverlay from '../drag_overlay'
 import * as Mojom from '../../../common/mojom'
 import { useConversation, useIsNewConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
@@ -56,11 +57,13 @@ const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
   Mojom.SuggestionGenerationStatus.IsGenerating
 ])
 
+
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
   const [isContentReady, setIsContentReady] = React.useState(false)
+  const { isDragActive, isDragOver } = conversationContext
 
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
@@ -185,16 +188,20 @@ function Main() {
     triggerCharacter: '/',
   })
 
+
+
   return (
     <main
       data-testid='main'
       className={classnames({
         [styles.main]: true,
         [styles.mainPanel]: !aiChatContext.isStandalone,
-        [styles.mainMobile]: aiChatContext.isMobile
+        [styles.mainMobile]: aiChatContext.isMobile,
+        [styles.dragOver]: isDragOver
       })}
       ref={setMainElement}
     >
+      <DragOverlay />
       {isConversationListOpen && !aiChatContext.isStandalone && (
         <div className={styles.conversationsList}>
           <div
@@ -248,7 +255,10 @@ function Main() {
                 )}
 
                 <div
-                  className={styles.aichatIframeContainer}
+                  className={classnames({
+                    [styles.aichatIframeContainer]: true,
+                    [styles.dragActive]: isDragActive
+                  })}
                   ref={scrollAnchor}
                 >
                   {!!conversationContext.conversationUuid &&

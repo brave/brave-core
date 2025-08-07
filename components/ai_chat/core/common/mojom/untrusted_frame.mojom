@@ -30,6 +30,11 @@ interface ParentUIFrame {
   // then deals with whether to display the modal or to continue opening
   // the link.
   UserRequestedOpenGeneratedUrl(url.mojom.Url url);
+
+  // Notify the parent that the child has received a drag enter. We don't have
+  // a corresponding DragEnd because the parent should intercept the drag event
+  // with an overlay.
+  DragStart();
 };
 
 // Browser-side handler for untrusted frame that handles rendering of
