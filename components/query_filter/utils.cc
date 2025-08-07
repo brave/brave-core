@@ -100,6 +100,10 @@ static constexpr auto kSimpleQueryStringTrackers =
             "sc_customer",
             "sc_eh",
             "sc_uid",
+            // https://github.com/brave/brave-browser/issues/48228
+            "sms_click",
+            "sms_source",
+            "sms_uph",
             // https://github.com/brave/brave-browser/issues/40912
             "srsltid",
             // https://github.com/brave/brave-browser/issues/24988
