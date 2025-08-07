@@ -63,7 +63,7 @@ function Main() {
   const conversationContext = useConversation()
   const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
   const [isContentReady, setIsContentReady] = React.useState(false)
-  const { isDragActive, isDragOver, clearDragState } = conversationContext
+  const { isDragActive, isDragOver } = conversationContext
 
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
@@ -201,12 +201,7 @@ function Main() {
       })}
       ref={setMainElement}
     >
-      <DragOverlay
-        isDragActive={isDragActive}
-        isDragOver={isDragOver}
-        clearDragState={clearDragState}
-        processDroppedImages={conversationContext.processDroppedImages}
-      />
+      <DragOverlay />
       {isConversationListOpen && !aiChatContext.isStandalone && (
         <div className={styles.conversationsList}>
           <div

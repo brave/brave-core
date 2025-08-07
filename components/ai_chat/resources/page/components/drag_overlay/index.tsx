@@ -8,6 +8,7 @@ import { getLocale } from '$web-common/locale'
 import styles from './style.module.scss'
 import { isImageFile } from '../../constants/file_types'
 import * as Mojom from '../../../common/mojom'
+import { useConversation } from '../../state/conversation_context'
 
 const convertFileToUploadedFile = (file: File): Promise<Mojom.UploadedFile> => {
   return new Promise((resolve, reject) => {
@@ -33,19 +34,13 @@ const convertFileToUploadedFile = (file: File): Promise<Mojom.UploadedFile> => {
   })
 }
 
-interface DragOverlayProps {
-  isDragActive: boolean
-  isDragOver: boolean
-  clearDragState: () => void
-  processDroppedImages: (files: Mojom.UploadedFile[]) => void
-}
-
-export default function DragOverlay({
-  isDragActive,
-  isDragOver,
-  clearDragState,
-  processDroppedImages
-}: DragOverlayProps) {
+export default function DragOverlay() {
+  const {
+    isDragActive,
+    isDragOver,
+    clearDragState,
+    processDroppedImages
+  } = useConversation()
   const handleOverlayDrop = async (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
