@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @interface AIChatUtils : NSObject
+/// Whether or not AI Chat/Leo should be accessible to the user within the UI.
+/// When this returns false, ensure that all instances of Leo are removed from
+/// the browser (such as settings, menu buttons, etc.)
 + (BOOL)isAIChatEnabledForPrefService:(id<PrefServiceBridge>)prefService
     NS_SWIFT_NAME(isAIChatEnabled(for:));
 - (instancetype)init NS_UNAVAILABLE;
