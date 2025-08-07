@@ -122,7 +122,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &content_settings::features::kUserBypassUI,
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
-      &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionManifestV2Disabled,
       &extensions_features::kExtensionManifestV2Unsupported,
       &extensions_features::kExtensionsManifestV3Only,
