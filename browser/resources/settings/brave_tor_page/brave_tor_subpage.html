@@ -33,76 +33,78 @@
   }
 </style>
 
-<settings-toggle-button id="torEnabled" class="cr-row" pref="[[torEnabledPref_]]" label="$i18n{torEnabledLabel}"
-  sub-label="$i18n{torEnabledDesc}" disabled="[[disableTorOption_]]"
-  learn-more-url="https://support.brave.com/hc/en-us/articles/360018121491-What-is-a-Private-Window-with-Tor-Connectivity-"
-  on-settings-boolean-control-change="onTorEnabledChange_">
-</settings-toggle-button>
-<settings-toggle-button id="onionOnlyInTorWindows" pref="{{prefs.tor.onion_only_in_tor_windows}}" class="cr-row" label="$i18n{onionOnlyInTorWindowsLabel}"
-  sub-label="$i18n{onionOnlyInTorWindowsDesc}">
-</settings-toggle-button>
-<if expr="enable_extensions">
-  <settings-toggle-button id="torSnowflake" pref="[[torSnowflakeExtensionEnabledPref_]]"
-    label="$i18n{torSnowflakeExtensionLabel}" sub-label="$i18n{torSnowflakeExtensionDesc}"
-    disabled="[[!torSnowflakeExtensionAllowed_]]" on-settings-boolean-control-change="onTorSnowflakeExtensionChange_"
-    learn-more-url="https://support.brave.com/hc/en-us/articles/9059440641421" class="cr-row">
+<settings-section page-title="$i18n{braveTor}">
+  <settings-toggle-button id="torEnabled" class="cr-row" pref="[[torEnabledPref_]]" label="$i18n{torEnabledLabel}"
+    sub-label="$i18n{torEnabledDesc}" disabled="[[disableTorOption_]]"
+    learn-more-url="https://support.brave.com/hc/en-us/articles/360018121491-What-is-a-Private-Window-with-Tor-Connectivity-"
+    on-settings-boolean-control-change="onTorEnabledChange_">
   </settings-toggle-button>
-</if>
-<settings-toggle-button id="useBridges" class="cr-row" label="$i18n{torUseBridgesTitle}"
-  sub-label="$i18n{torUseBridgesDesc}" learn-more-url="https://support.brave.com/hc/en-us/articles/7816553516045"
-  pref="{{isUsingBridgesPref_}}" disabled="[[!torEnabledPref_.value]]"
-  on-settings-boolean-control-change="onUseBridgesChange_">
-  <template is="dom-if" if="[[isConfigChanged_]]">
-    <cr-button id="apply" on-click="setBridgesConfig_" slot="more-actions">
-      $i18n{torApplyChangesButton}
-    </cr-button>
-  </template>
-</settings-toggle-button>
-<cr-radio-group id="bridgesGroup" selectable-elements="settings-collapse-radio-button" selected="{{useBridgesValue_}}"
-  on-selected-changed="onUseBridgesValueChanged_" hidden="[[!shouldShowBridgesGroup_]]">
-  <settings-collapse-radio-button id="useBuiltIn" name="useBuiltIn" label="$i18n{torSelectBuiltInRadio}" no-collapse
-    no-automatic-collapse expanded>
-    <div slot="collapse" on-click="onSlotClick_">
-      <select id="builtInBridgesType" class="md-select" on-change="onBuiltInBridgesSelect_"
-        disabled="[[!usageEqual_('useBuiltIn', useBridgesValue_)]]">
-        <template is="dom-repeat" items="[[builtInBridgesTypes_]]">
-          <option value="[[item.value]]" selected="[[builtInTypeEqual_(item.value, builtinBridges_)]]">
-            [[item.name]]
-          </option>
-        </template>
-      </select>
-    </div>
-  </settings-collapse-radio-button>
-  <settings-collapse-radio-button id="useRequested" name="useRequested" label="$i18n{torRequestBridgesRadio}"
-    no-collapse no-automatic-collapse expanded>
-    <div slot="collapse" on-click="onSlotClick_">
-      <textarea id="requestedBridges" multiline="true" rows="3" readonly="true" value="[[requestedBridges_]]"
-        placeholder="[[requestedBridgesPlaceholder_]]"
-        disabled="[[!usageEqual_('useRequested', useBridgesValue_)]]"></textarea>
-      <cr-button on-click="requestBridges_" disabled="[[!usageEqual_('useRequested', useBridgesValue_)]]">
-        $i18n{torRequestNewBridgeButton}</cr-button>
-    </div>
-  </settings-collapse-radio-button>
-  <settings-collapse-radio-button id="useProvided" name="useProvided" label="$i18n{torProvideBridgesRadio}" no-collapse
-    no-automatic-collapse expanded>
-    <div slot="collapse" on-click="onSlotClick_">
-      <div>$i18n{torEnterBridgeInfoLabel}</div>
-      <textarea id="providedBridges" multiline="true" rows="3" value="{{providedBridges_::input}}"
-        placeholder="[[providedBridgesPlaceholder_]]"
-        disabled="[[!usageEqual_('useProvided', useBridgesValue_)]]"></textarea>
-    </div>
-  </settings-collapse-radio-button>
-</cr-radio-group>
+  <settings-toggle-button id="onionOnlyInTorWindows" pref="{{prefs.tor.onion_only_in_tor_windows}}" class="cr-row" label="$i18n{onionOnlyInTorWindowsLabel}"
+    sub-label="$i18n{onionOnlyInTorWindowsDesc}">
+  </settings-toggle-button>
+  <if expr="enable_extensions">
+    <settings-toggle-button id="torSnowflake" pref="[[torSnowflakeExtensionEnabledPref_]]"
+      label="$i18n{torSnowflakeExtensionLabel}" sub-label="$i18n{torSnowflakeExtensionDesc}"
+      disabled="[[!torSnowflakeExtensionAllowed_]]" on-settings-boolean-control-change="onTorSnowflakeExtensionChange_"
+      learn-more-url="https://support.brave.com/hc/en-us/articles/9059440641421" class="cr-row">
+    </settings-toggle-button>
+  </if>
+  <settings-toggle-button id="useBridges" class="cr-row" label="$i18n{torUseBridgesTitle}"
+    sub-label="$i18n{torUseBridgesDesc}" learn-more-url="https://support.brave.com/hc/en-us/articles/7816553516045"
+    pref="{{isUsingBridgesPref_}}" disabled="[[!torEnabledPref_.value]]"
+    on-settings-boolean-control-change="onUseBridgesChange_">
+    <template is="dom-if" if="[[isConfigChanged_]]">
+      <cr-button id="apply" on-click="setBridgesConfig_" slot="more-actions">
+        $i18n{torApplyChangesButton}
+      </cr-button>
+    </template>
+  </settings-toggle-button>
+  <cr-radio-group id="bridgesGroup" selectable-elements="settings-collapse-radio-button" selected="{{useBridgesValue_}}"
+    on-selected-changed="onUseBridgesValueChanged_" hidden="[[!shouldShowBridgesGroup_]]">
+    <settings-collapse-radio-button id="useBuiltIn" name="useBuiltIn" label="$i18n{torSelectBuiltInRadio}" no-collapse
+      no-automatic-collapse expanded>
+      <div slot="collapse" on-click="onSlotClick_">
+        <select id="builtInBridgesType" class="md-select" on-change="onBuiltInBridgesSelect_"
+          disabled="[[!usageEqual_('useBuiltIn', useBridgesValue_)]]">
+          <template is="dom-repeat" items="[[builtInBridgesTypes_]]">
+            <option value="[[item.value]]" selected="[[builtInTypeEqual_(item.value, builtinBridges_)]]">
+              [[item.name]]
+            </option>
+          </template>
+        </select>
+      </div>
+    </settings-collapse-radio-button>
+    <settings-collapse-radio-button id="useRequested" name="useRequested" label="$i18n{torRequestBridgesRadio}"
+      no-collapse no-automatic-collapse expanded>
+      <div slot="collapse" on-click="onSlotClick_">
+        <textarea id="requestedBridges" multiline="true" rows="3" readonly="true" value="[[requestedBridges_]]"
+          placeholder="[[requestedBridgesPlaceholder_]]"
+          disabled="[[!usageEqual_('useRequested', useBridgesValue_)]]"></textarea>
+        <cr-button on-click="requestBridges_" disabled="[[!usageEqual_('useRequested', useBridgesValue_)]]">
+          $i18n{torRequestNewBridgeButton}</cr-button>
+      </div>
+    </settings-collapse-radio-button>
+    <settings-collapse-radio-button id="useProvided" name="useProvided" label="$i18n{torProvideBridgesRadio}" no-collapse
+      no-automatic-collapse expanded>
+      <div slot="collapse" on-click="onSlotClick_">
+        <div>$i18n{torEnterBridgeInfoLabel}</div>
+        <textarea id="providedBridges" multiline="true" rows="3" value="{{providedBridges_::input}}"
+          placeholder="[[providedBridgesPlaceholder_]]"
+          disabled="[[!usageEqual_('useProvided', useBridgesValue_)]]"></textarea>
+      </div>
+    </settings-collapse-radio-button>
+  </cr-radio-group>
 
-<template is="dom-if" if="[[showRequestBridgesDialog_]]" restamp>
-  <request-bridges-dialog id="requestBridgesDialog" on-close="showRequestBridgesDialogClosed_">
-  </request-bridges-dialog>
-</template>
-
-<if expr="enable_extensions">
-  <template is="dom-if" if="[[showTorSnowflakeInstallFailed_]]" restamp>
-    <tor-snowflake-install-failed-dialog id="torSnowflakeInstallFailedDialog"
-      on-close="torSnowflakeInstallFailedDialogClosed_">
-    </tor-snowflake-install-failed-dialog>
+  <template is="dom-if" if="[[showRequestBridgesDialog_]]" restamp>
+    <request-bridges-dialog id="requestBridgesDialog" on-close="showRequestBridgesDialogClosed_">
+    </request-bridges-dialog>
   </template>
-</if>
+
+  <if expr="enable_extensions">
+    <template is="dom-if" if="[[showTorSnowflakeInstallFailed_]]" restamp>
+      <tor-snowflake-install-failed-dialog id="torSnowflakeInstallFailedDialog"
+        on-close="torSnowflakeInstallFailedDialogClosed_">
+      </tor-snowflake-install-failed-dialog>
+    </template>
+  </if>
+</settings-section>

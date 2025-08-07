@@ -5,10 +5,10 @@
 
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-
 import { assert } from 'chrome://resources/js/assert.js'
 import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { SettingsViewMixin } from '../settings_page/settings_view_mixin.js'
 
 import {BraveDataCollectionBrowserProxyImpl} from './brave_data_collection_browser_proxy.js'
 import {getTemplate} from './brave_data_collection_page.html.js'
@@ -20,7 +20,7 @@ import {Router} from '../router.js'
 import {loadTimeData} from "../i18n_setup.js"
 
 const SettingBraveDataCollectionPageElementBase =
-  WebUiListenerMixin(PrefsMixin(PolymerElement))
+  WebUiListenerMixin(PrefsMixin(SettingsViewMixin(PolymerElement)))
 
 interface SettingsBraveDataCollectionPageElement {
   $: {
@@ -118,6 +118,15 @@ extends SettingBraveDataCollectionPageElementBase
       (enabled: boolean) => setStatsUsagePingEnabledPref(enabled, this.isStatsReportingDisabledByPolicy_))
 
     this.showSurveyPanelist_ = loadTimeData.getBoolean('isSurveyPanelistAllowed')
+  }
+
+  override getAssociatedControlFor(childViewId: string): HTMLElement {
+    switch (childViewId) {
+      case 'surveyPanelist':
+        return this.shadowRoot!.querySelector('#surveyPanelistLinkRow')!;
+      default:
+        throw new Error(`Unknown child view id: ${childViewId}`)
+    }
   }
 
   setP3AEnabledPref_(userEnabled: boolean, policyDisabled: boolean) {
