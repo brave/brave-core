@@ -16,6 +16,12 @@ const modelIcons = {
   'chat-qwen': 'qwen-color',
   'chat-basic': 'meta-color',
   'chat-gemma': 'gemma-color',
+  'chat-gpt-oss-20b': 'openai-color',
+  'chat-gpt-oss-120b': 'openai-color',
+  'chat-mistral-large': 'mistral-color',
+  'chat-pixtral-large': 'mistral-color',
+  'chat-llama-4-scout': 'meta-color',
+  'chat-llama-4-maverick': 'meta-color',
 }
 
 const fallbackModelIcon = 'product-brave-leo'
