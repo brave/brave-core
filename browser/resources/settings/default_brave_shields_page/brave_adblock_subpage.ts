@@ -108,6 +108,14 @@ class AdBlockSubpage extends AdBlockSubpageBase {
         this.customFilters_ = value
       }
     )
+    this.browserProxy_.addWebUiListener(
+      'brave_adblock.onCustomResourcesChanged',
+      () => {
+        this.browserProxy_.getCustomScriptlets().then((value: Scriptlet[]) => {
+          this.customScriptlets_ = value
+        })
+      },
+    )
   }
 
   private updateState_(
