@@ -11,6 +11,7 @@ let btnCreateEnabledText: string
 let btnCreateDisabledText: string
 let btnShowRulesBoxText: string
 let btnHideRulesBoxText: string
+const pickerStatusAttribute = 'picker-status'
 
 const api = {
   cosmeticFilterCreate: (selector: string) => {
@@ -374,6 +375,25 @@ const attachElementPicker = () => {
   document.addEventListener('keydown', elementPickerOnKeydown, true)
   window.addEventListener('resize', elementPickerViewportChanged)
   window.addEventListener('scroll', elementPickerViewportChanged)
+
+
+  const callback: MutationCallback = (mutationsList, observer) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'attributes') {
+        const targetElement = mutation.target as HTMLElement;
+        const newValue = targetElement.getAttribute(mutation.attributeName!);
+        setMinimizeState(shadowRoot!, newValue !== 'maximized')
+      }
+    }
+  }
+  const observer: MutationObserver = new MutationObserver(callback)
+  if (pickerDiv) {
+    const config: MutationObserverInit = {
+      attributes: true,
+      attributeFilter: [pickerStatusAttribute]
+    }
+    observer.observe(pickerDiv, config);
+  }
 
   return shadowRoot
 }
@@ -969,4 +989,6 @@ if (!active) {
         btnQuitText)
       launchElementPicker(root)
     });
+} else {
+  active.setAttribute(pickerStatusAttribute, 'maximized')
 }
