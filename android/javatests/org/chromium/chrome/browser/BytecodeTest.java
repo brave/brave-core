@@ -279,13 +279,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/top/ToolbarPhone"));
-        // TODO(alexeybarabash): PasswordSettings was removed at upstream,
-        // but we need to get it back
-        // Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
-        // Assert.assertTrue(
-        //         classExists(
-        //
-        // "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate")); // presubmit: ignore-long-line
