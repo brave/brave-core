@@ -36,6 +36,7 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
   void PopulateSidePanel(
       bool supress_animations,
       const UniqueKey& unique_key,
+      std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger,
       SidePanelEntry* entry,
       std::optional<std::unique_ptr<views::View>> content_view) override;
   void NotifyPinnedContainerOfActiveStateChange(SidePanelEntryKey key,
