@@ -68,6 +68,8 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   // Clears all content from the conversation.
   void ClearContent();
 
+  // Associates all content which doesn't have a turn with |turn|.
+  // Note: |turn| must have a non-empty |uuid| field.
   void AssociateUnsentContentWithTurn(const mojom::ConversationTurnPtr& turn);
 
   // Checks if the content has changed from what is stored in the cache.
@@ -82,6 +84,11 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   std::vector<mojom::AssociatedContentPtr> GetAssociatedContent() const;
 
   PageContents GetCachedContents() const;
+
+  // Gets a map of |turn_id| to a list of content associated with that turn.
+  // Note: Before calling this method, all content should be associated with a
+  // turn (i.e. via AssociateUnsentContentWithTurn) or you risk missing content
+  // in the map.
   PageContentsMap GetCachedContentsMap() const;
 
   bool HasOpenAIChatPermission() const;

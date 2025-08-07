@@ -2499,6 +2499,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_WithUploadedPdfFiles) {
   PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   // Create test uploaded PDF files
   auto uploaded_files =
@@ -2555,13 +2556,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   std::vector<mojom::ConversationTurnPtr> history;
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->uuid = "turn-1";
   turn->character_type = mojom::CharacterType::HUMAN;
   turn->text = "Can you analyze these PDFs?";
   turn->uploaded_files = std::move(uploaded_files);
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      page_contents, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2571,6 +2573,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_WithMixedUploadedFiles) {
   PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   // Create test uploaded files of different types
   auto uploaded_files = std::vector<mojom::UploadedFilePtr>();
@@ -2663,13 +2666,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   std::vector<mojom::ConversationTurnPtr> history;
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->uuid = "turn-1";
   turn->character_type = mojom::CharacterType::HUMAN;
   turn->text = "Can you analyze these files?";
   turn->uploaded_files = std::move(uploaded_files);
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      page_contents, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2725,6 +2729,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithOnlyPdfFiles) {
 
   std::vector<mojom::ConversationTurnPtr> history;
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->uuid = "turn-1";
   turn->character_type = mojom::CharacterType::HUMAN;
   turn->text = "What's in this PDF?";
   turn->uploaded_files = std::move(uploaded_files);
@@ -2741,6 +2746,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithOnlyPdfFiles) {
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_WithMultiplePdfFiles) {
   PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   // Create multiple PDF files
   auto uploaded_files =
@@ -2800,13 +2806,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   std::vector<mojom::ConversationTurnPtr> history;
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->uuid = "turn-1";
   turn->character_type = mojom::CharacterType::HUMAN;
   turn->text = "Can you compare these three PDFs?";
   turn->uploaded_files = std::move(uploaded_files);
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      page_contents, history, "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
