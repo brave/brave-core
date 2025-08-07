@@ -1695,6 +1695,7 @@ class Rebase(Task):
         version = []
         conflict = []
         gnrt = []
+        iwyu = []
         others = []
         for line in lines:
             if 'Update from Chromium ' in line:
@@ -1706,6 +1707,9 @@ class Rebase(Task):
             elif '`gnrt` run for Chromium ' in line:
                 gnrt.append(
                     line if not gnrt else line.replace('pick', 'squash'))
+            elif line.endswith('] IWYU fixes'):
+                iwyu.append(
+                    line if not iwyu else line.replace('pick', 'squash'))
             else:
                 others.append(line)
 
@@ -1717,6 +1721,8 @@ class Rebase(Task):
             for line in conflict:
                 file.write(line)
             for line in gnrt:
+                file.write(line)
+            for line in iwyu:
                 file.write(line)
             for line in others:
                 file.write(line)
