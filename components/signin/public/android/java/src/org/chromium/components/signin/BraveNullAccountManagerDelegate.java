@@ -7,18 +7,20 @@ package org.chromium.components.signin;
 
 import android.accounts.Account;
 
+import org.chromium.components.externalauth.ExternalAuthUtils;
+
 /**
- * That class extends upstream's SystemAccountManagerDelegate.java to be able run Brave on devices
+ * That class extends upstream's NullAccountManagerDelegate.java to be able run Brave on devices
  * without Google Play Services
  */
-public class BraveSystemAccountManagerDelegate extends SystemAccountManagerDelegate {
-    public BraveSystemAccountManagerDelegate() {
+public class BraveNullAccountManagerDelegate extends NullAccountManagerDelegate {
+    public BraveNullAccountManagerDelegate() {
         super();
     }
 
     @Override
-    public Account[] getAccountsSynchronous() throws AccountManagerDelegateException {
-        if (!isGooglePlayServicesAvailable()) {
+    public Account[] getAccountsSynchronous() {
+        if (!ExternalAuthUtils.getInstance().canUseGooglePlayServices()) {
             return new Account[] {};
         }
 

@@ -821,11 +821,11 @@
     protected <init>(...);
 }
 
--keep class org.chromium.components.signin.SystemAccountManagerDelegate {
+-keep class org.chromium.components.signin.NullAccountManagerDelegate {
     public <init>(...);
 }
 
--keep class org.chromium.components.signin.BraveSystemAccountManagerDelegate {
+-keep class org.chromium.components.signin.BraveNullAccountManagerDelegate {
     public <init>(...);
 }
 
