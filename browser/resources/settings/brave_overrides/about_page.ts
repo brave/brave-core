@@ -10,8 +10,6 @@ import {
   RegisterStyleOverride
 } from 'chrome://resources/brave/polymer_overriding.js'
 
-import {getSectionElement} from './basic_page.js'
-
 RegisterStyleOverride(
   'settings-about-page',
   html`
