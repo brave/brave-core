@@ -5,21 +5,76 @@
 
 import {
   RegisterPolymerTemplateModifications,
-} from 'chrome://resources/brave/polymer_overriding.js'
-import {
+  RegisterPolymerPrototypeModification,
   html
-} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+} from 'chrome://resources/brave/polymer_overriding.js'
+import type { Route } from '../router.js';
+import { routes } from '../route.js';
+import {loadTimeData} from "../i18n_setup.js"
+
+RegisterPolymerPrototypeModification({
+  'settings-privacy-page-index': (prototype) => {
+    const oldGetDefaultViews = prototype.getDefaultViews_;
+    prototype.getDefaultViews_ = function () {
+      const views = oldGetDefaultViews.call(this)
+        // Hide the privacy guide promo view.
+        .filter((v: string) => v !== 'privacyGuidePromo');
+
+      // Add tor and dataCollection views.
+      views.splice(1, 0, 'tor', 'dataCollection');
+      return views;
+    }
+
+    // Add the subroute for the survey panelist page.
+    const oldCurrentRouteChanged = prototype.currentRouteChanged;
+    prototype.currentRouteChanged = function (newRoute: Route, oldRoute: Route) {
+      if (newRoute === routes.BRAVE_SURVEY_PANELIST) {
+        queueMicrotask(() => {
+          this.$.viewManager.setCurrentView('surveyPanelist', 'no-animation', 'no-animation');
+        })
+        return;
+      }
+
+      oldCurrentRouteChanged.call(this, newRoute, oldRoute);
+    }
+  }
+})
 
 RegisterPolymerTemplateModifications({
   'settings-privacy-page-index': (templateContent) => {
-    // Hide the privacy guide promo (can't remove it entirely like we used to
-    // do, as the view manager expects it to exist)
+    const viewManager = templateContent.querySelector('#viewManager')
+    if (!viewManager) {
+      throw new Error("Couldn't find a view manager for settings-privacy-page-index!")
+    }
+
+    // Hide the privacy guide promo
     const privacyGuidePromoTemplate = templateContent.
       querySelector('template[is=dom-if][if="[[isPrivacyGuideAvailable]]"]')
     if (privacyGuidePromoTemplate) {
-      privacyGuidePromoTemplate.setAttribute('display', 'none')
+      privacyGuidePromoTemplate.remove()
     } else {
       throw new Error('[Settings] Missing privacyGuidePromoTemplate')
+    }
+
+    viewManager.appendChild(html`<settings-brave-tor-subpage
+      id="tor"
+      slot="view"
+      in-search-mode="[[inSearchMode_]]">
+    </settings-brave-tor-subpage>`)
+
+    viewManager.appendChild(html`<settings-brave-data-collection-subpage
+      id="dataCollection"
+      slot="view"
+      in-search-mode="[[inSearchMode_]]">
+    </settings-brave-data-collection-subpage>`)
+
+    if (loadTimeData.getBoolean('isSurveyPanelistAllowed')) {
+      viewManager.appendChild(html`<settings-brave-survey-panelist-page
+        id="surveyPanelist"
+        data-parent-view-id="dataCollection"
+        slot="view"
+        in-search-mode="[[inSearchMode_]]">
+      </settings-brave-survey-panelist-page>`)
     }
 
     // Move the safety hub to the end of the page

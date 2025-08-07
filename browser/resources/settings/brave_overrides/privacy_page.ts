@@ -357,24 +357,6 @@ RegisterPolymerTemplateModifications({
       }
     }
 
-    const showPrivacyGuideEntryPointTemplate =
-        templateContent.querySelector(`template[if*='isPrivacyGuideAvailable']`)
-    if (!showPrivacyGuideEntryPointTemplate) {
-      console.error(
-        '[Brave Settings Overrides] Could not find template with' +
-        ' if*=isPrivacyGuideAvailable on privacy page.')
-    } else {
-      const privacyGuideLinkRow = showPrivacyGuideEntryPointTemplate.content.
-        getElementById('privacyGuideLinkRow')
-      if (!privacyGuideLinkRow) {
-        console.error(
-          '[Brave Settings Overrides] Could not find privacyGuideLinkRow id' +
-          ' on privacy page.')
-      } else {
-        privacyGuideLinkRow.setAttribute('hidden', 'true')
-      }
-    }
-
     const storageAccessTemplate = templateContent.querySelector(
       `template[is=dom-if][route-path='/content/storageAccess'`)
     if (!storageAccessTemplate) {
