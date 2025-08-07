@@ -76,7 +76,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   <div class="leo-customization-form">
     <leo-input
       placeholder="$i18n{braveLeoAssistantCustomizationNamePlaceholder}"
-      value="[[nameInput_]]" on-change="onNameInputChanged_"
+      value="[[nameInput_]]" on-input="onNameInputChanged_"
       showErrors$="[[isTooLong(nameInput_)]]">
       <span class="label-text">$i18n{braveLeoAssistantCustomizationNameLabel}</span>
       <div slot="errors" class="error-message" hidden$="[[!isTooLong(nameInput_)]]">
@@ -86,7 +86,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     </leo-input>
     <leo-input
       placeholder="$i18n{braveLeoAssistantCustomizationJobPlaceholder}"
-      value="[[jobInput_]]" on-change="onJobInputChanged_"
+      value="[[jobInput_]]" on-input="onJobInputChanged_"
       showErrors$="[[isTooLong(jobInput_)]]">
       <span class="label-text">$i18n{braveLeoAssistantCustomizationJobLabel}</span>
       <div slot="errors" class="error-message" hidden$="[[!isTooLong(jobInput_)]]">
@@ -96,7 +96,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     </leo-input>
     <leo-input
       placeholder="$i18n{braveLeoAssistantCustomizationTonePlaceholder}"
-      value="[[toneInput_]]" on-change="onToneInputChanged_"
+      value="[[toneInput_]]" on-input="onToneInputChanged_"
       showErrors$="[[isTooLong(toneInput_)]]">
       <span class="label-text">$i18n{braveLeoAssistantCustomizationToneLabel}</span>
       <div slot="errors" class="error-message" hidden$="[[!isTooLong(toneInput_)]]">
@@ -106,7 +106,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     </leo-input>
     <leo-input
       placeholder="$i18n{braveLeoAssistantCustomizationOtherPlaceholder}"
-      value="[[otherInput_]]" on-change="onOtherInputChanged_"
+      value="[[otherInput_]]" on-input="onOtherInputChanged_"
       showErrors$="[[isTooLong(otherInput_)]]">
       <span class="label-text">$i18n{braveLeoAssistantCustomizationOtherLabel}</span>
       <div slot="errors" class="error-message" hidden$="[[!isTooLong(otherInput_)]]">
@@ -115,7 +115,16 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       </div>
     </leo-input>
     <div class="actions">
-      <leo-button kind="outline" on-click="onSave" isDisabled$="[[isSaveDisabled_]]">$i18n{braveLeoAssistantCustomizationSaveButton}</leo-button>
+      <leo-button
+        kind="outline"
+        on-click="onSave"
+        isDisabled$="[[isSaveDisabled_]]"
+      >
+        [[getSaveButtonText_(changesSaved_)]]
+        <template is="dom-if" if="[[changesSaved_]]" restamp>
+          <leo-icon name="check-circle-outline" slot="icon-after"></leo-icon>
+        </template>
+      </leo-button>
     </div>
   </div>
 </template>

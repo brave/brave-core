@@ -10,7 +10,7 @@ import { PolymerElement } from
 
 import { PrefsMixin, PrefsMixinInterface } from
   '/shared/settings/prefs/prefs_mixin.js'
-import { BaseMixin, BaseMixinInterface } from '../base_mixin.js'
+import { RouteObserverMixin, RouteObserverMixinInterface } from '../router.js'
 import {
   Customizations,
   CustomizationOperationError,
@@ -24,9 +24,9 @@ import { getTemplate } from './customization_subpage.html.js'
 import './memory_section.js'
 
 const BraveLeoCustomizationSubpageBase =
-    PrefsMixin(I18nMixin(BaseMixin(PolymerElement))) as {
+    PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))) as {
       new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
-        BaseMixinInterface
+        RouteObserverMixinInterface
     }
 
 class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
@@ -57,10 +57,13 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
         type: String,
         value: '',
       },
+      changesSaved_: {
+        type: Boolean,
+        value: false,
+      },
       isSaveDisabled_: {
         type: Boolean,
-        computed: 'computeIsSaveDisabled_(nameInput_, jobInput_, toneInput_, ' +
-          'otherInput_)',
+        value: true,
       },
     }
   }
@@ -73,10 +76,17 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
   declare jobInput_: string
   declare toneInput_: string
   declare otherInput_: string
+  declare changesSaved_: boolean
   declare isSaveDisabled_: boolean
 
   override ready() {
     super.ready()
+    this.setupCallbacks_()
+    this.loadCustomizations_()
+  }
+
+  override currentRouteChanged() {
+    this.changesSaved_ = false
     this.setupCallbacks_()
     this.loadCustomizations_()
   }
@@ -121,6 +131,9 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
       (result: { error: CustomizationOperationError | null }) => {
         if (result.error) {
           this.handleCustomizationError_(result.error)
+        } else {
+          this.changesSaved_ = true
+          this.isSaveDisabled_ = true
         }
       })
   }
@@ -143,18 +156,35 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
     return text.trim().length > MAX_RECORD_LENGTH
   }
 
+  handleSaveButtonState_() {
+    if (this.changesSaved_) {
+      this.changesSaved_ = false
+    }
+
+    this.isSaveDisabled_ = this.computeIsSaveDisabled_(
+      this.nameInput_,
+      this.jobInput_,
+      this.toneInput_,
+      this.otherInput_
+    )
+  }
+
   private onNameInputChanged_(event: { value: string }) {
     this.nameInput_ = event.value
+    this.handleSaveButtonState_()
   }
   private onJobInputChanged_(event: { value: string }) {
     this.jobInput_ = event.value
+    this.handleSaveButtonState_()
   }
   private onToneInputChanged_(event: { value: string }) {
     this.toneInput_ = event.value
+    this.handleSaveButtonState_()
   }
 
   private onOtherInputChanged_(event: { value: string }) {
     this.otherInput_ = event.value
+    this.handleSaveButtonState_()
   }
 
   private computeIsSaveDisabled_(
@@ -167,6 +197,12 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
            this.isTooLong(jobInput) ||
            this.isTooLong(toneInput) ||
            this.isTooLong(otherInput)
+  }
+
+  private getSaveButtonText_(changesSaved: boolean): string {
+    return changesSaved
+      ? this.i18n('braveLeoAssistantCustomizationChangesSaved')
+      : this.i18n('braveLeoAssistantCustomizationSaveButton')
   }
 }
 

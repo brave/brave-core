@@ -614,6 +614,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_OTHER_PLACEHOLDER},
       {"braveLeoAssistantCustomizationSaveButton",
        IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_SAVE_BUTTON},
+      {"braveLeoAssistantCustomizationChangesSaved",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_CHANGES_SAVED},
       {"braveLeoAssistantInputLengthError",
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_LENGTH_ERROR},
 
