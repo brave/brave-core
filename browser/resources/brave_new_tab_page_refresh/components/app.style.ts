@@ -131,6 +131,10 @@ export const style = scoped.css`
     flex: 1 1 auto;
     align-self: stretch;
 
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+
     @container (width > ${narrowBreakpoint}) {
       min-height: 200px;
     }
