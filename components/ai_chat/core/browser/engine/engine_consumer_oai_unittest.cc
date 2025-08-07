@@ -770,7 +770,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadPdf) {
           });
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "Analyze these PDF files", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_pdfs), false,
       std::nullopt /* model_key */));
@@ -842,7 +842,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       });
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "Analyze this PDF file", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_pdfs), false,
       std::nullopt /* model_key */));
@@ -986,7 +986,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
       });
 
   history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "What do you see in these files?", kTestPrompt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, Clone(all_files), false,
       std::nullopt /* model_key */));
@@ -1106,6 +1106,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   // Setup conversation history
   EngineConsumer::ConversationHistory history;
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+  entry->uuid = "turn-1";
   entry->character_type = mojom::CharacterType::HUMAN;
   entry->text = "What is my name?";
   history.push_back(std::move(entry));
@@ -1162,6 +1163,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   // Setup the history
   EngineConsumer::ConversationHistory history;
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+  entry->uuid = "turn-1";
   entry->character_type = mojom::CharacterType::HUMAN;
   entry->text = "What is my name?";
   history.push_back(std::move(entry));
@@ -1203,7 +1205,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       {*expected_user_memory_json}, nullptr);
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+  EXPECT_CALL(*client, PerformRequest)
       .WillOnce(
           [&](const mojom::CustomModelOptions, base::Value::List messages,
               EngineConsumer::GenerationDataCallback,

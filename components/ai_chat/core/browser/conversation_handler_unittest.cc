@@ -1904,7 +1904,8 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   if (std::ranges::any_of(
           uploaded_files, [](const mojom::UploadedFilePtr& file) {
             return file->type == mojom::UploadedFileType::kImage ||
-                   file->type == mojom::UploadedFileType::kScreenshot;
+                   file->type == mojom::UploadedFileType::kScreenshot ||
+                   file->type == mojom::UploadedFileType::kPdf;
           })) {
     EXPECT_CALL(client, OnModelDataChanged)
         .WillOnce(base::test::RunClosure(base::BindLambdaForTesting([&]() {
@@ -3987,9 +3988,10 @@ TEST_F(ConversationHandlerUnitTest,
       "Test human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
 
-  EXPECT_DEATH(conversation_handler_->associated_content_manager()
-                   ->AssociateUnsentContentWithTurn(turn_without_uuid),
-               "");
+  EXPECT_DEATH_IF_SUPPORTED(
+      conversation_handler_->associated_content_manager()
+          ->AssociateUnsentContentWithTurn(turn_without_uuid),
+      "");
 }
 
 TEST_F(ConversationHandlerUnitTest,
