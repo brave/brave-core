@@ -113,6 +113,11 @@ public class WalletStore {
   }
 
   public func webUIValidation(completion: @escaping (Bool) -> Void) {
+    guard FeatureList.kBraveWalletWebUIIOS.enabled
+    else {
+      completion(false)
+      return
+    }
     keyringStore.webUIValidation { validation in
       completion(validation)
     }
