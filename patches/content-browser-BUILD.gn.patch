@@ -1,5 +1,5 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index adce27e6feaed7172cac9bdcd1b2e83930eb0a77..d83426d65ce612d01fb15c5da58e0072923b73be 100644
+index 5e200f266ac60dcd4d7fb7945c9fb11d9993be30..36dc2e291f0ae74c7692df740ba2a41921ffd218 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
 @@ -3673,6 +3673,7 @@ source_set("browser") {
