@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/ios/browser/brave_shields_settings_impl.h"
+#include "brave/components/brave_shields/ios/browser/brave_shields_settings_bridge_impl.h"
 
 #include <Foundation/Foundation.h>
 
@@ -14,7 +14,7 @@
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
-@implementation BraveShieldsSettingsImpl {
+@implementation BraveShieldsSettingsBridgeImpl {
   std::unique_ptr<brave_shields::BraveShieldsSettings> _brave_shields_settings;
 }
 

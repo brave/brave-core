@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_BRIDGE_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_BRIDGE_H_
 
 #ifdef __cplusplus
 #include "brave/components/brave_shields/ios/common/shields_settings.mojom.objc.h"
@@ -12,7 +12,8 @@
 #import "shields_settings.mojom.objc.h"
 #endif
 
-@protocol BraveShieldsSettings
+NS_SWIFT_NAME(BraveShieldsSettings)
+@protocol BraveShieldsSettingsBridge
 
 - (BOOL)braveShieldsEnabledFor:(NSURL*)url
     NS_SWIFT_NAME(isBraveShieldsEnabled(for:));
@@ -36,4 +37,4 @@
                     forURL:(NSURL*)url;
 @end
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_BRIDGE_H_

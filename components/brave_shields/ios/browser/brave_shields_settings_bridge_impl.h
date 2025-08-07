@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_IMPL_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_IMPL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_BRIDGE_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_BRIDGE_IMPL_H_
 
 #import <Foundation/Foundation.h>
 
-#include "brave/components/brave_shields/ios/browser/brave_shields_settings.h"
+#include "brave/components/brave_shields/ios/browser/brave_shields_settings_bridge.h"
 #include "brave/components/brave_shields/ios/common/shields_settings.mojom.objc.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,7 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 class HostContentSettingsMap;
 class PrefService;
 
-@interface BraveShieldsSettingsImpl : NSObject <BraveShieldsSettings>
+@interface BraveShieldsSettingsBridgeImpl
+    : NSObject <BraveShieldsSettingsBridge>
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithHostContentSettingsMap:(HostContentSettingsMap*)map
@@ -44,4 +45,4 @@ class PrefService;
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_IMPL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_BRIDGE_IMPL_H_

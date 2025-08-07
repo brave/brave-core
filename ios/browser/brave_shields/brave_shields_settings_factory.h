@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol BraveShieldsSettings;
+@protocol BraveShieldsSettingsBridge;
 @protocol ProfileBridge;
 
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @interface BraveShieldsSettingsFactory : NSObject
-+ (id<BraveShieldsSettings>)getForProfile:(id<ProfileBridge>)profile
++ (id<BraveShieldsSettingsBridge>)getForProfile:(id<ProfileBridge>)profile
     NS_SWIFT_NAME(get(profile:));
 @end
 
