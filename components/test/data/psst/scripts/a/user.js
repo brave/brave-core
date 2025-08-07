@@ -8,10 +8,24 @@
     return "user1";
   };
 
+  const isInitial = () => {
+    const psst = window.parent.localStorage.getItem('psst');
+    if(!psst)
+      return true
+
+    const psstObj = JSON.parse(psst);
+    if(!psstObj)
+      return true
+
+    return psstObj.state === "completed"
+  }
+
   document.title = 'a_user-';
   return {
     user: getUserId(),
-    requests: [
+    is_initial: isInitial(),
+    name: 'a.test',
+    tasks: [
       { name: "privacy setting #1" },
       { name: "privacy setting #2" },
     ],

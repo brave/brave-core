@@ -6,12 +6,23 @@
 #ifndef BRAVE_COMPONENTS_PSST_COMMON_PSST_COMMON_H_
 #define BRAVE_COMPONENTS_PSST_COMMON_PSST_COMMON_H_
 
+#include <string>
+
+#include "base/values.h"
+
 namespace psst {
 
 enum class ConsentStatus {
   kAsk,    // show the popup dialog to ask user to apply privacy
   kAllow,  // continue to apply privacy with no prompts
   kBlock   // do not ask user any more
+};
+
+struct PsstPermissionInfo {
+  psst::ConsentStatus consent_status;
+  int script_version;
+  std::string user_id;
+  base::Value::List urls_to_skip;
 };
 
 }  // namespace psst

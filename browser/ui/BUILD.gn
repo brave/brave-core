@@ -110,10 +110,6 @@ source_set("ui") {
     "webui/untrusted_sanitized_image_source.h",
   ]
 
-  if (enable_psst) {
-    deps += [ "//brave/browser/psst" ]
-  }
-
   # It doesn't make sense to view the webcompat webui on iOS & Android.
   if (!is_android && !is_ios) {
     sources += [

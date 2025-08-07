@@ -4,14 +4,59 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("psst") {
-  public = [ "psst_dialog_delegate_impl.h" ]
+  public = [
+    "brave_psst_permission_context.h",
+    "brave_psst_permission_context_factory.h",
+    "psst_ui_delegate_impl.h",
+    "psst_ui_presenter.h",
+  ]
 
-  sources = [ "psst_dialog_delegate_impl.cc" ]
+  sources = [
+    "brave_psst_infobar_delegate.cc",
+    "brave_psst_infobar_delegate.h",
+    "brave_psst_permission_context.cc",
+    "brave_psst_permission_context_factory.cc",
+    "psst_ui_delegate_impl.cc",
+    "psst_ui_presenter.cc",
+  ]
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/constants",
+    "//brave/components/infobars/core",
     "//brave/components/psst/browser/content",
+    "//brave/components/psst/common",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/infobars",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui/webui:webui",
+    "//components/infobars/content",
+    "//components/permissions",
+    "//components/prefs:prefs",
     "//content/public/browser",
+    "//ui/web_dialogs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "brave_psst_permission_context_unittest.cc",
+    "psst_ui_delegate_impl_unittest.cc",
+  ]
+  deps = [
+    ":psst",
+    "//base",
+    "//brave/components/psst/common",
+    "//chrome/test:test_support",
+    "//components/content_settings/core/browser",
+    "//components/permissions",
+    "//components/sync_preferences:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//url:url",
   ]
 }
 
@@ -23,6 +68,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//brave/browser/psst",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/cosmetic_filters/browser",
     "//brave/components/psst/browser/content",
@@ -31,6 +77,7 @@ source_set("browser_tests") {
     "//brave/components/psst/common",
     "//chrome/test:test_support",
     "//components/component_updater:test_support",
+    "//components/infobars/content",
     "//content/test:test_support",
     "//net:test_support",
     "//url",

@@ -6,6 +6,7 @@
 #include "brave/components/psst/common/pref_names.h"
 
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "brave/components/psst/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -16,6 +17,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
     registry->RegisterBooleanPref(prefs::kPsstEnabled, true);
     registry->RegisterDictionaryPref(prefs::kPsstSettingsPref);
+    registry->RegisterBooleanPref(prefs::kShowPsstInfoBar, true);
   }
 }
 

@@ -13,6 +13,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -585,6 +586,10 @@ test("brave_unit_tests") {
 
   if (enable_omaha4) {
     deps += [ "//brave/browser/updater:unit_tests" ]
+  }
+
+  if (enable_psst) {
+    deps += [ "//brave/browser/psst:unit_tests" ]
   }
 }
 

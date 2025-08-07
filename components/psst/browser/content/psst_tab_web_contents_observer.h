@@ -12,7 +12,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
-#include "brave/components/psst/common/prefs.h"
 #include "content/public/browser/web_contents_observer.h"
 
 class PrefService;
@@ -21,7 +20,7 @@ namespace psst {
 
 class MatchedRule;
 class PsstRuleRegistry;
-class PsstDialogDelegate;
+class PsstUiDelegate;
 
 class PsstTabWebContentsObserver : public content::WebContentsObserver {
  public:
@@ -34,21 +33,10 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                                     InsertScriptInPageCallback cb) = 0;
   };
 
-  class PsstDialogDelegate {
-   public:
-    PsstDialogDelegate();
-    virtual ~PsstDialogDelegate();
-
-    virtual void SetProgress(const double value) {}
-    virtual void SetCompleted() {}
-    virtual void Show() {}
-    virtual void Close() {}
-  };
-
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       content::WebContents* contents,
       content::BrowserContext* browser_context,
-      std::unique_ptr<PsstDialogDelegate> delegate,
+      std::unique_ptr<PsstUiDelegate> delegate,
       PrefService* prefs,
       const int32_t world_id);
 
@@ -64,36 +52,30 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                              PsstRuleRegistry* registry,
                              PrefService* prefs,
                              std::unique_ptr<ScriptsInserter> script_handler,
-                             std::unique_ptr<PsstDialogDelegate> delegate);
+                             std::unique_ptr<PsstUiDelegate> ui_delegate);
 
-  bool ShouldInsertScriptForPage(int id);
-  void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);
+  bool ShouldInsertScriptForPage(int nav_entry_id);
+  void OnPsstRuleFound(int nav_entry_id, std::unique_ptr<MatchedRule> rule);
+  void InsertUserScript(int nav_entry_id, const bool is_infobar_accepted);
 
-  void OnUserScriptResult(int id,
-                          std::unique_ptr<MatchedRule> rule,
-                          base::Value script_result);
-  void OnPolicyScriptResult(int nav_entry_id,
-                            std::unique_ptr<MatchedRule> rule,
-                            base::Value script_result);
+  void OnUserScriptResult(int nav_entry_id, base::Value script_result);
+  void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
 
-  bool ShouldContinueSilently(const MatchedRule& rule,
-                              const std::string& user_id);
-  void OnUserDialogAction(int nav_entry_id,
-                          const bool is_initial,
-                          const std::string& user_id,
-                          std::unique_ptr<MatchedRule> rule,
-                          std::optional<base::Value> script_params,
-                          const ConsentStatus status,
-                          std::optional<base::Value::List> disabled_checks);
+  void OnUserAcceptedPsstSettings(
+      int nav_entry_id,
+      const bool is_initial,
+      std::optional<base::Value> script_params,
+      std::optional<base::Value::List> disabled_checks);
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;
   std::unique_ptr<ScriptsInserter> script_inserter_;
-  std::unique_ptr<PsstDialogDelegate> delegate_;
+  std::unique_ptr<PsstUiDelegate> ui_delegate_;
+  std::unique_ptr<MatchedRule> rule_;
 
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
 };
