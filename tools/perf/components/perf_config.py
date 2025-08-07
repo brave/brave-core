@@ -14,6 +14,7 @@ from enum import Enum
 
 from components.field_trials import FieldTrialsMode, ParseFieldTrialsMode
 from components.browser_type import BrowserType, ParseBrowserType
+from components.perf_test_utils import GetProcessOutput
 from components.version import BraveVersion
 
 
@@ -68,6 +69,19 @@ class RunnerConfig:
         raise RuntimeError(f'Unexpected {key} in configuration')
       setattr(self, key_, json[key])
 
+
+def ParseVersionFromBinary(binary: str) -> BraveVersion:
+  _, output = GetProcessOutput([binary, '--version'])
+  logging.info('Get binary version: %s for %s', output.strip(), binary)
+
+  version = re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', output.strip())
+  if version is None:
+    raise RuntimeError(f'Can parse version from binary {output}')
+
+  version = version.group(0).split('.')[1:]
+  return BraveVersion('v' + '.'.join(version))
+
+
 def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
   """
   Parse the version and location from the passed string `target`.
@@ -76,7 +90,11 @@ def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
   1. Brave tag (i.e. v1.62.1);
   2. Git hash;
   3. empty (for comparing builds when you don't need it).
+  4. binary path (version is parsed from the binary output)
   """
+
+  if os.path.exists(target):
+    return ParseVersionFromBinary(target), target
 
   m = re.match(r'^(v\d+\.\d+\.\d+|\w+)(?::(.+)|$)', target)
   if not m:
@@ -98,6 +116,8 @@ class BenchmarkConfig:
   pageset_repeat: int = 1
   stories: List[str]
   stories_exclude: List[str]
+  extra_benchmark_args: List[str] = []
+  extra_browser_args: List[str] = []
 
   def __init__(self, json: Optional[dict] = None):
     if not json:
@@ -108,6 +128,8 @@ class BenchmarkConfig:
       self.pageset_repeat = pageset_repeat
     self.stories = json.get('stories') or []
     self.stories_exclude = json.get('stories-exclude') or []
+    self.extra_benchmark_args = json.get('extra-benchmark-args') or []
+    self.extra_browser_args = json.get('extra-browser-args') or []
 
 
 class PerfConfig:

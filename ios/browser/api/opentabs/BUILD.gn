@@ -28,7 +28,7 @@ source_set("opentabs") {
   deps = [
     "//base",
     "//brave/ios/browser/api/web/web_state",
-    "//components/keyed_service/ios:ios",
+    "//components/keyed_service/ios",
     "//components/send_tab_to_self",
     "//components/sync/service",
     "//components/sync_sessions",
@@ -39,7 +39,7 @@ source_set("opentabs") {
     "//ios/chrome/browser/synced_sessions/model",
     "//ios/chrome/browser/tabs/model",
     "//ios/web/common:user_agent",
-    "//ios/web/public/session:session",
+    "//ios/web/public/session",
     "//ios/web/public/thread",
     "//ios/web/web_state",
     "//ios/web/web_state:web_state_impl_header",

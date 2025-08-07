@@ -5,9 +5,9 @@
 
 #include "brave/components/safe_builtins/renderer/safe_builtins_helpers.h"
 
-#include "base/strings/stringprintf.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "gin/converter.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "v8/include/v8-context.h"
@@ -46,8 +46,8 @@ std::string CreateExceptionString(v8::Local<v8::Context> context,
   auto maybe = message->GetLineNumber(context);
   line_number = maybe.IsJust() ? maybe.FromJust() : 0;
 
-  return base::StringPrintf("%s:%d: %s", resource_name.c_str(), line_number,
-                            error_message.c_str());
+  return absl::StrFormat("%s:%d: %s", resource_name, line_number,
+                         error_message);
 }
 
 v8::Local<v8::String> WrapSource(v8::Isolate* isolate,
@@ -130,10 +130,9 @@ v8::MaybeLocal<v8::Value> LoadScriptWithSafeBuiltins(
   // Wrapping script in function(...) {...}
   v8::Local<v8::Value> func_as_value = RunScript(context, wrapped_source);
   if (func_as_value.IsEmpty() || func_as_value->IsUndefined()) {
-    std::string message = base::StringPrintf("Bad source");
     web_frame->AddMessageToConsole(
         blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kError,
-                                 blink::WebString::FromUTF8(message)));
+                                 blink::WebString::FromUTF8("Bad source")));
     return v8::MaybeLocal<v8::Value>();
   }
 

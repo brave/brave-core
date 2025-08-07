@@ -8,7 +8,7 @@
 #include "base/apple/foundation_util.h"
 #include "base/hash/hash.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/base/mac/conversions.h"
+#include "brave/base/apple/foundation_util.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 
 @interface AdblockFilterListCatalogEntry ()

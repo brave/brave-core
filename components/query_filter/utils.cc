@@ -60,8 +60,6 @@ static constexpr auto kSimpleQueryStringTrackers =
             "fb_comment_id",
             // https://github.com/brave/brave-browser/issues/4239
             "fbclid",
-            // https://github.com/brave/brave-browser/issues/18758
-            "gbraid",
             // https://github.com/brave/brave-browser/issues/4239
             "gclid",
             // https://github.com/brave/brave-browser/issues/25691
@@ -102,10 +100,16 @@ static constexpr auto kSimpleQueryStringTrackers =
             "sc_customer",
             "sc_eh",
             "sc_uid",
+            // https://github.com/brave/brave-browser/issues/48228
+            "sms_click",
+            "sms_source",
+            "sms_uph",
             // https://github.com/brave/brave-browser/issues/40912
             "srsltid",
             // https://github.com/brave/brave-browser/issues/24988
             "ss_email_id",
+            // https://github.com/brave/brave-browser/issues/48226
+            "ttclid",
             // https://github.com/brave/brave-browser/issues/18020
             "twclid",
             // https://github.com/brave/brave-browser/issues/33172

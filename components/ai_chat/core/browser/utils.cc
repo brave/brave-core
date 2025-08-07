@@ -126,20 +126,14 @@ bool IsAIChatEnabled(PrefService* prefs) {
 }
 
 bool HasUserOptedIn(PrefService* prefs) {
-  if (!prefs) {
-    return false;
-  }
-
+  DCHECK(prefs);
   base::Time last_accepted_disclaimer =
       prefs->GetTime(prefs::kLastAcceptedDisclaimer);
   return !last_accepted_disclaimer.is_null();
 }
 
 void SetUserOptedIn(PrefService* prefs, bool opted_in) {
-  if (!prefs) {
-    return;
-  }
-
+  DCHECK(prefs);
   if (opted_in) {
     prefs->SetTime(prefs::kLastAcceptedDisclaimer, base::Time::Now());
   } else {

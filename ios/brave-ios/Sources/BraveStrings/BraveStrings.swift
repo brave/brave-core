@@ -3028,6 +3028,22 @@ extension Strings {
       "Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'."
   )
 
+  public static let braveAccount = NSLocalizedString(
+    "BraveAccount",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Brave Account",
+    comment: "Title for the Brave Account section in settings"
+  )
+
+  public static let getStarted = NSLocalizedString(
+    "GetStarted",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Get Started",
+    comment: "Button text to get started with Brave Account"
+  )
+
   public static let features = NSLocalizedString(
     "Features",
     tableName: "BraveShared",

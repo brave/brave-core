@@ -371,15 +371,6 @@ AdBlockService::AdBlockService(
 
 AdBlockService::~AdBlockService() = default;
 
-void AdBlockService::EnableDeveloperMode(bool enabled) {
-  if (custom_resource_provider()) {
-    custom_resource_provider()->EnableDeveloperMode(enabled);
-  }
-  if (custom_filters_provider()) {
-    custom_filters_provider()->EnableDeveloperMode(enabled);
-  }
-}
-
 void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Tags only need to be modified for the default engine.
@@ -445,7 +436,6 @@ base::SequencedTaskRunner* AdBlockService::GetTaskRunner() {
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(prefs::kAdBlockCookieListOptInShown, false);
   registry->RegisterBooleanPref(prefs::kAdBlockCookieListSettingTouched, false);
   registry->RegisterBooleanPref(
       prefs::kAdBlockMobileNotificationsListSettingTouched, false);
@@ -454,6 +444,15 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedAllDefaultRegions, false);
+}
+
+void RegisterPrefsForAdBlockServiceForMigration(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(prefs::kAdBlockCookieListOptInShown, false);
+}
+
+void MigrateObsoletePrefsForAdBlockService(PrefService* local_state) {
+  // Added 2025-07-11
+  local_state->ClearPref(prefs::kAdBlockCookieListOptInShown);
 }
 
 AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {

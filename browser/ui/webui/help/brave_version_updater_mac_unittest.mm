@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <limits.h>
+
+#include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/updater/features.h"
 #include "chrome/browser/ui/webui/help/version_updater.h"
@@ -27,7 +30,9 @@ TEST_F(BraveVersionUpdaterMacTest, UsesSparkleWhenFeatureDisabled) {
 }
 
 TEST_F(BraveVersionUpdaterMacTest, UsesOmaha4WhenFeatureEnabled) {
-  scoped_feature_list_.InitAndEnableFeature(
-      brave_updater::kBraveUseOmaha4Alpha);
+  scoped_feature_list_.InitAndEnableFeatureWithParameters(
+      brave_updater::kBraveUseOmaha4Alpha,
+      {{brave_updater::kLegacyFallbackIntervalDays.name,
+        base::NumberToString(INT_MAX)}});
   EXPECT_FALSE(UsesSparkle());
 }

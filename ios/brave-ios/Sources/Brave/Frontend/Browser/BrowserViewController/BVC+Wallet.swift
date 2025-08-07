@@ -117,6 +117,9 @@ extension BrowserViewController {
   /// Initializes a new WalletStore for displaying the wallet, setting up an observer to notify
   /// when the pending request is updated so we can update the wallet url bar button.
   func newWalletStore() -> WalletStore? {
+    if !profileController.braveWalletAPI.isAllowed {
+      return nil
+    }
     let privateMode = privateBrowsingManager.isPrivateBrowsing
     guard
       let walletStore = WalletStore.from(
@@ -559,11 +562,11 @@ extension TabBrowserData: BraveWalletEventsListener {
     )
   }
 
-  func messageEvent(subscriptionId: String, result: MojoBase.Value) {
-    let eventArgs = MojoBase.Value(dictionaryValue: [
-      "type": MojoBase.Value(stringValue: "eth_subscription"),
-      "data": MojoBase.Value(dictionaryValue: [
-        "subscription": MojoBase.Value(stringValue: subscriptionId),
+  func messageEvent(subscriptionId: String, result: BaseValue) {
+    let eventArgs = BaseValue(dictionaryValue: [
+      "type": BaseValue(stringValue: "eth_subscription"),
+      "data": BaseValue(dictionaryValue: [
+        "subscription": BaseValue(stringValue: subscriptionId),
         "result": result,
       ]),
     ])

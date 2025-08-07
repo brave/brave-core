@@ -16,8 +16,10 @@
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
+#include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_tokenizer.h"
 #include "base/strings/string_util.h"
@@ -28,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -48,9 +51,13 @@ using mojom::ConversationTurn;
 base::Value::List BuildMessages(
     const mojom::CustomModelOptions& model_options,
     base::Value::List page_content_messages,
+    std::optional<base::Value::Dict> user_memory_message,
     const std::optional<std::string>& selected_text,
     const EngineConsumer::ConversationHistory& conversation_history) {
   base::Value::List messages;
+
+  bool has_custom_system_prompt = model_options.model_system_prompt &&
+                                  !model_options.model_system_prompt->empty();
 
   // Append system message
   {
@@ -58,8 +65,7 @@ base::Value::List BuildMessages(
     std::string date_and_time_string =
         base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
 
-    if (model_options.model_system_prompt &&
-        !model_options.model_system_prompt->empty()) {
+    if (has_custom_system_prompt) {
       system_message = model_options.model_system_prompt.value();
       // Let the user optionally specify the datetime placeholder
       base::ReplaceSubstringsAfterOffset(&system_message, 0, "%datetime%",
@@ -69,6 +75,12 @@ base::Value::List BuildMessages(
           l10n_util::GetStringUTF8(
               IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT),
           {date_and_time_string}, nullptr);
+      if (user_memory_message) {
+        base::StrAppend(
+            &system_message,
+            {l10n_util::GetStringUTF8(
+                IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_SYSTEM_PROMPT_SEGMENT)});
+      }
     }
 
     base::Value::Dict message;
@@ -80,6 +92,10 @@ base::Value::List BuildMessages(
   // Append page content, if exists
   for (auto& message : page_content_messages) {
     messages.Append(std::move(message));
+  }
+
+  if (user_memory_message && !has_custom_system_prompt) {
+    messages.Append(std::move(*user_memory_message));
   }
 
   for (const mojom::ConversationTurnPtr& turn : conversation_history) {
@@ -149,8 +165,9 @@ base::Value::List BuildMessages(
 EngineConsumerOAIRemote::EngineConsumerOAIRemote(
     const mojom::CustomModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    ModelService* model_service)
-    : EngineConsumer(model_service) {
+    ModelService* model_service,
+    PrefService* prefs)
+    : EngineConsumer(model_service, prefs) {
   model_options_ = model_options;
   max_associated_content_length_ = model_options.max_associated_content_length;
 
@@ -308,9 +325,9 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   auto page_content_messages = BuildPageContentMessages(
       page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
       IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
-  base::Value::List messages =
-      BuildMessages(model_options_, std::move(page_content_messages),
-                    selected_text, conversation_history);
+  base::Value::List messages = BuildMessages(
+      model_options_, std::move(page_content_messages),
+      BuildUserMemoryMessage(), selected_text, conversation_history);
   api_->PerformRequest(model_options_, std::move(messages),
                        std::move(data_received_callback),
                        std::move(completed_callback));
@@ -358,6 +375,46 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
   }
 
   return messages;
+}
+
+std::optional<base::Value::Dict>
+EngineConsumerOAIRemote::BuildUserMemoryMessage() {
+  auto memories = prefs::GetUserMemoryDictFromPrefs(*prefs_);
+  if (!memories) {
+    return std::nullopt;
+  }
+
+  // HTML-escape individual string values to avoid breaking HTML-style tags
+  // in our prompts.
+  base::Value::Dict escaped_memories;
+  for (const auto [key, value] : *memories) {
+    if (value.is_string()) {
+      escaped_memories.Set(key, base::EscapeForHTML(value.GetString()));
+    } else if (value.is_list()) {
+      base::Value::List escaped_list;
+      for (const auto& item : value.GetList()) {
+        if (item.is_string()) {
+          escaped_list.Append(base::EscapeForHTML(item.GetString()));
+        }
+      }
+      escaped_memories.Set(key, std::move(escaped_list));
+    }
+  }
+
+  auto memories_json = base::WriteJson(escaped_memories);
+  if (!memories_json) {
+    return std::nullopt;
+  }
+
+  std::string prompt = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_PROMPT_SEGMENT),
+      {*memories_json}, nullptr);
+
+  base::Value::Dict message;
+  message.Set("role", "user");
+  message.Set("content", prompt);
+  return message;
 }
 
 }  // namespace ai_chat

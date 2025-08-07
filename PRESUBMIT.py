@@ -392,6 +392,16 @@ _BANNED_CPP_FUNCTIONS += (
          ),
         treat_as_error=False,
     ),
+    BanRule(
+        'base::StringPrintf',
+        explanation=('Please use `absl::StrFormat` rather.', ),
+        treat_as_error=False,
+    ),
+    BanRule(
+        'base::StringAppendF',
+        explanation=('Please use `absl::StrAppendFormat` rather.', ),
+        treat_as_error=False,
+    ),
 )
 
 

@@ -12,8 +12,8 @@
 #include "base/compiler_specific.h"
 #include "base/files/file_util.h"
 #include "base/i18n/time_formatting.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace {

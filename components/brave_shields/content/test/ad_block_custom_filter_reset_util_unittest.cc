@@ -10,8 +10,8 @@
 
 #include "base/containers/contains.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_shields {
 
@@ -43,7 +43,7 @@ void CheckCase(const std::string& host_pos0,
                const std::string& host_pos1,
                const std::string& reset_for_host) {
   const auto custom_filters_current_host =
-      base::StringPrintf(kTestCustomFiltersList, host_pos0, host_pos1);
+      absl::StrFormat(kTestCustomFiltersList, host_pos0, host_pos1);
   const auto resetted_cf_list =
       ResetCustomFiltersForHost(reset_for_host, custom_filters_current_host);
 

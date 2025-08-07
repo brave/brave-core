@@ -1502,23 +1502,24 @@ class TabManager: NSObject {
       return nil
     }
 
-    // NTP should not be passed as Recently Closed item
-    let recentlyClosedURL = tab.visibleURL ?? SessionTab.from(tabId: tab.id)?.url
-
-    guard let tabUrl = recentlyClosedURL, tabUrl.isWebPage() else {
+    guard var recentlyClosedURL = tab.visibleURL ?? SessionTab.from(tabId: tab.id)?.url else {
       return nil
     }
 
-    // Convert any internal URLs to their real URL for the Recently Closed item
-    var fetchedTabURL = tabUrl
-    if let url = InternalURL(fetchedTabURL),
-      let actualURL = url.extractedUrlParam ?? url.originalURLFromErrorPage
-    {
-      fetchedTabURL = actualURL
+    if let internalURL = InternalURL(recentlyClosedURL) {
+      // NTP should not be passed as a Recently Closed item
+      if internalURL.isAboutHomeURL {
+        return nil
+      }
+
+      // Convert any internal URLs to their real URL for the Recently Closed item
+      if let actualURL = internalURL.extractedUrlParam ?? internalURL.originalURLFromErrorPage {
+        recentlyClosedURL = actualURL
+      }
     }
 
     return SavedRecentlyClosed(
-      url: fetchedTabURL,
+      url: recentlyClosedURL,
       title: tab.displayTitle,
       interactionState: tab.sessionData,
       order: -1

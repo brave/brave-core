@@ -46,7 +46,7 @@ static_library("browser") {
     "//brave/components/p3a",
     "//brave/components/p3a_utils",
     "//brave/components/webcompat/core/common",
-    "//components/component_updater:component_updater",
+    "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/browser:cookie_settings",
     "//components/content_settings/core/common",
@@ -56,4 +56,19 @@ static_library("browser") {
     "//url",
   ]
   public_deps = [ "//base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "ad_block_custom_resource_provider_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base/test:test_support",
+    "//brave/components/brave_shields/core/common",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+  ]
 }

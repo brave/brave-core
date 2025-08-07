@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_helper.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_util.h"
@@ -21,6 +20,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_rewards::test_util {
 

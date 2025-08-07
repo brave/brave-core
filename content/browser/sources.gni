@@ -7,6 +7,7 @@ brave_content_browser_sources =
     [ "//brave/content/browser/devtools/adblock_devtools_instrumentation.cc" ]
 
 brave_content_browser_deps = [
+  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/brave_service_keys",
   "//brave/components/brave_shields/core/common:mojom",
   "//brave/components/speech_to_text",

@@ -8,9 +8,9 @@
 #include "base/check_op.h"
 #include "base/dcheck_is_on.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/installer/setup/brand_behaviors.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #define DoPostUninstallOperations DoPostUninstallOperations_UNUSED
 #include <chrome/installer/setup/google_chrome_behaviors.cc>
@@ -44,8 +44,8 @@ void DoPostUninstallOperations(const base::Version& version,
   const base::win::OSInfo* os_info = base::win::OSInfo::GetInstance();
   base::win::OSInfo::VersionNumber version_number = os_info->version_number();
   const std::wstring os_version = base::ASCIIToWide(
-      base::StringPrintf("%d.%d.%d", version_number.major, version_number.minor,
-                         version_number.build));
+      absl::StrFormat("%d.%d.%d", version_number.major, version_number.minor,
+                      version_number.build));
 
   const std::wstring survey_url = std::wstring(kBraveUninstallSurveyUrl);
 #if DCHECK_IS_ON()

@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
@@ -28,6 +27,7 @@
 #include "pdf/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #if BUILDFLAG(ENABLE_PDF)
 #include "components/pdf/browser/pdf_document_helper.h"
@@ -453,41 +453,6 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_NoFallbackWhenNotPDF) {
   EXPECT_TRUE(invalidation_token.empty());
 
   testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
-}
-
-TEST_P(AIChatTabHelperUnitTest,
-       GetPageContent_FallbackToPrintPreviewWhenNoPDFHelper) {
-  NavigateTo(GURL("https://www.brave.com"));
-  content::WebContentsTester::For(web_contents())
-      ->SetMainFrameMimeType(pdf::kPDFMimeType);
-#if BUILDFLAG(ENABLE_PDF)
-  ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents()));
-#endif  // BUILDFLAG(ENABLE_PDF)
-
-  const std::string expected_text =
-      is_print_preview_supported_ ? "PDF content from print preview" : "";
-  base::test::TestFuture<std::string, bool, std::string> future;
-
-  if (is_print_preview_supported_) {
-    EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
-    EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<0>(base::ok(expected_text)));
-  } else {
-    EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text, false, ""));
-  }
-
-  GetPageContent(future.GetCallback(), "");
-
-  auto [content, is_video, invalidation_token] = future.Get();
-  EXPECT_EQ(content, expected_text);
-  EXPECT_FALSE(is_video);
-  EXPECT_TRUE(invalidation_token.empty());
-
-  testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
-  if (is_print_preview_supported_) {
-    testing::Mock::VerifyAndClearExpectations(&print_preview_extractor_);
-  }
 }
 
 }  // namespace ai_chat

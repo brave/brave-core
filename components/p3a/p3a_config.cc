@@ -14,7 +14,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/brave_domains/service_domains.h"
-#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/switches.h"
 #include "url/url_constants.h"

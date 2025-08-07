@@ -5,8 +5,51 @@
 
 import("//extensions/buildflags/buildflags.gni")
 
+source_set("public") {
+  sources = [
+    "brave_on_demand_updater.h",
+    "dat_file_util.h",
+    "features.h",
+    "switches.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//components/component_updater",
+  ]
+}
+
 component("browser") {
   defines = [ "IS_BRAVE_COMPONENT_UPDATER_IMPL" ]
+
+  # DO NOT ADD NEW TARGETS TO THIS LIST
+  # All components should have their own InstallerPolicy and be
+  # registered in RegisterComponentsForUpdate
+  visibility = [
+    "//brave/browser/ephemeral_storage:browser_tests",
+    "//brave/browser/extensions:component_loader",
+    "//brave/browser/extensions:test_support",
+    "//brave/browser/farbling:browser_tests",
+    "//brave/browser/net:unit_tests",
+    "//brave/browser/permissions:browser_tests",
+    "//brave/browser/tor/test:browser_tests",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_component_updater/browser:test_support",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/content/test:test_support",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/debounce/core/browser",
+    "//brave/components/https_upgrade_exceptions/browser",
+    "//brave/components/localhost_permission",
+    "//brave/components/request_otr/browser",
+    "//brave/components/tor",
+    "//brave/components/url_sanitizer/browser",
+    "//brave/components/webcompat/content/browser",
+    "//brave/ios/app",
+    "//brave/ios/browser/application_context",
+    "//brave/test:*",
+    "//chrome/browser",
+  ]
 
   sources = [
     "brave_component.cc",
@@ -30,7 +73,7 @@ component("browser") {
 
   deps = [
     "//base",
-    "//components/component_updater:component_updater",
+    "//components/component_updater",
     "//components/crx_file",
     "//components/prefs",
     "//components/update_client",

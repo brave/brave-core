@@ -7,12 +7,13 @@
 
 #include "base/functional/callback.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/to_string.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/translate/core/common/brave_translate_constants.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "components/grit/brave_components_resources.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/resource/resource_bundle.h"
 
 namespace translate::google_apis {
@@ -53,11 +54,10 @@ void TranslateScript::Request(RequestCallback callback, bool is_incognito) {
 void TranslateScript::OnScriptFetchComplete(bool success,
                                             const std::string& data) {
   const std::string new_data = base::StrCat(
-      {base::StringPrintf(
-           "const useGoogleTranslateEndpoint = %s;",
-           translate::UseGoogleTranslateEndpoint() ? "true" : "false"),
-       base::StringPrintf("const braveTranslateStaticPath = '%s';",
-                          kBraveTranslateStaticPath),
+      {absl::StrFormat("const useGoogleTranslateEndpoint = %s;",
+                       base::ToString(translate::UseGoogleTranslateEndpoint())),
+       absl::StrFormat("const braveTranslateStaticPath = '%s';",
+                       kBraveTranslateStaticPath),
        ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
            IDR_BRAVE_TRANSLATE_JS),
        data});

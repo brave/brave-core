@@ -61,9 +61,9 @@ class EthereumProviderScriptHandler: TabContentScript {
 
   private struct SendPayload {
     var method: String
-    var params: MojoBase.Value?
+    var params: BaseValue?
     init?(payload: String) {
-      guard let jsonValue = MojoBase.Value(jsonString: payload)?.dictionaryValue,
+      guard let jsonValue = BaseValue(jsonString: payload)?.dictionaryValue,
         let method = jsonValue["method"]?.stringValue
       else { return nil }
       self.method = method
@@ -122,7 +122,7 @@ class EthereumProviderScriptHandler: TabContentScript {
 
     switch body.method {
     case .request:
-      guard let requestPayload = MojoBase.Value(jsonString: body.args) else {
+      guard let requestPayload = BaseValue(jsonString: body.args) else {
         replyHandler(nil, "Invalid args")
         return
       }
@@ -132,7 +132,7 @@ class EthereumProviderScriptHandler: TabContentScript {
     case .enable:
       provider.enable(completion: handleResponse)
     case .sendAsync:
-      guard let requestPayload = MojoBase.Value(jsonString: body.args) else {
+      guard let requestPayload = BaseValue(jsonString: body.args) else {
         replyHandler(nil, "Invalid args")
         return
       }

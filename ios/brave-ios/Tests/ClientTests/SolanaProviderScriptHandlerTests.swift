@@ -33,7 +33,7 @@ import XCTest
     let (publicKey, error) = await solProviderHelper.connect(tab: tab, args: nil)
     XCTAssertNil(publicKey)
     guard let error = error,  // dictionary's are unordered, need to check each value
-      let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
+      let errorDict = BaseValue(jsonString: error)?.dictionaryValue,
       let code = errorDict["code"]?.intValue, let message = errorDict["message"]?.stringValue
     else {
       XCTFail("Unexpected result to connect request")
@@ -66,8 +66,8 @@ import XCTest
   /// Test `connect()`, given json string `{onlyIfTrusted: Bool}`, the success flow will return a tuple `(result: Any?, error: String?)`
   /// with the result as type `String` (base58 encoded public key)
   func testConnectOnlyIfTrustedSuccess() async {
-    let argDict: [String: MojoBase.Value] = ["onlyIfTrusted": MojoBase.Value(boolValue: true)]
-    guard let args = MojoBase.Value(dictionaryValue: argDict).jsonString else {
+    let argDict: [String: BaseValue] = ["onlyIfTrusted": BaseValue(boolValue: true)]
+    guard let args = BaseValue(dictionaryValue: argDict).jsonString else {
       XCTFail("Unexpected test setup")
       return
     }
@@ -92,13 +92,13 @@ import XCTest
   /// Test `signAndSendTransaction()`, given a json string `{serializedMessage: [Uint8], signatures: [Buffer]}`,
   /// the error flow will return a tuple `(Any?, String?)` with the error populated as the given error dictionary
   func testSignAndSendTransactionFailure() async {
-    let argDict: [String: MojoBase.Value] = [
-      "serializedMessage": MojoBase.Value(
-        listValue: kSerializedMessage.map(MojoBase.Value.init(intValue:))
+    let argDict: [String: BaseValue] = [
+      "serializedMessage": BaseValue(
+        listValue: kSerializedMessage.map(BaseValue.init(intValue:))
       ),
-      "signatures": MojoBase.Value(listValue: []),
+      "signatures": BaseValue(listValue: []),
     ]
-    guard let args = MojoBase.Value(dictionaryValue: argDict).jsonString else {
+    guard let args = BaseValue(dictionaryValue: argDict).jsonString else {
       XCTFail("Unexpected test setup")
       return
     }
@@ -114,7 +114,7 @@ import XCTest
     let (result, error) = await solProviderHelper.signAndSendTransaction(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
-      let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
+      let errorDict = BaseValue(jsonString: error)?.dictionaryValue,
       let code = errorDict["code"]?.intValue, let message = errorDict["message"]?.stringValue
     else {
       XCTFail("Unexpected result to signAndSendTransaction request")
@@ -127,13 +127,13 @@ import XCTest
   /// Test `signAndSendTransaction()`, given a json string `{serializedMessage: [Uint8], signatures: [Buffer]}`, the success flow will
   /// return a tuple `(result: Any?, error: String?)` with the result as type `[String: String]` with the base 58 encoded public key and signature
   func testSignAndSendTransactionSuccess() async {
-    let argDict: [String: MojoBase.Value] = [
-      "serializedMessage": MojoBase.Value(
-        listValue: kSerializedMessage.map(MojoBase.Value.init(intValue:))
+    let argDict: [String: BaseValue] = [
+      "serializedMessage": BaseValue(
+        listValue: kSerializedMessage.map(BaseValue.init(intValue:))
       ),
-      "signatures": MojoBase.Value(listValue: []),
+      "signatures": BaseValue(listValue: []),
     ]
-    guard let args = MojoBase.Value(dictionaryValue: argDict).jsonString else {
+    guard let args = BaseValue(dictionaryValue: argDict).jsonString else {
       XCTFail("Unexpected test setup")
       return
     }
@@ -145,8 +145,8 @@ import XCTest
         .success,
         "",
         [
-          "publicKey": MojoBase.Value(stringValue: kTestPublicKey),
-          "signature": MojoBase.Value(stringValue: kTestSignature),
+          "publicKey": BaseValue(stringValue: kTestPublicKey),
+          "signature": BaseValue(stringValue: kTestSignature),
         ]
       )
     }
@@ -167,14 +167,14 @@ import XCTest
   /// Test `signAndSendTransaction()`, given a json string `{serializedMessage: [Uint8], signatures: [Buffer], sendOptions: [:]}`, the success
   /// flow will return a tuple `(result: Any?, error: String?)` with the result as type `[String: String]` with the base 58 encoded public key and signature
   func testSignAndSendTransactionWithSendOptionsSuccess() async {
-    let argDict: [String: MojoBase.Value] = [
-      "serializedMessage": MojoBase.Value(
-        listValue: kSerializedMessage.map(MojoBase.Value.init(intValue:))
+    let argDict: [String: BaseValue] = [
+      "serializedMessage": BaseValue(
+        listValue: kSerializedMessage.map(BaseValue.init(intValue:))
       ),
-      "signatures": MojoBase.Value(listValue: []),
-      "sendOptions": MojoBase.Value(dictionaryValue: [:]),
+      "signatures": BaseValue(listValue: []),
+      "sendOptions": BaseValue(dictionaryValue: [:]),
     ]
-    guard let args = MojoBase.Value(dictionaryValue: argDict).jsonString else {
+    guard let args = BaseValue(dictionaryValue: argDict).jsonString else {
       XCTFail("Unexpected test setup")
       return
     }
@@ -187,8 +187,8 @@ import XCTest
         .success,
         "",
         [
-          "publicKey": MojoBase.Value(stringValue: kTestPublicKey),
-          "signature": MojoBase.Value(stringValue: kTestSignature),
+          "publicKey": BaseValue(stringValue: kTestPublicKey),
+          "signature": BaseValue(stringValue: kTestSignature),
         ]
       )
     }
@@ -209,10 +209,10 @@ import XCTest
   /// Test `signMessage()`, given a json string `{[[UInt8]]}`, the error flow will return
   /// a tuple `(Any?, String?)` with the error populated as the given error dictionary
   func testSignMessageFailure() async {
-    let argArray: [MojoBase.Value] = [
-      MojoBase.Value(listValue: kMessageToSign.map { MojoBase.Value.init(intValue: $0) })
+    let argArray: [BaseValue] = [
+      BaseValue(listValue: kMessageToSign.map { BaseValue.init(intValue: $0) })
     ]
-    guard let args = MojoBase.Value(listValue: argArray).jsonString else {
+    guard let args = BaseValue(listValue: argArray).jsonString else {
       XCTFail("Unexpected test setup")
       return
     }
@@ -228,7 +228,7 @@ import XCTest
     let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
-      let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
+      let errorDict = BaseValue(jsonString: error)?.dictionaryValue,
       let code = errorDict["code"]?.intValue, let message = errorDict["message"]?.stringValue
     else {
       XCTFail("Unexpected result to signMessage request")
@@ -241,10 +241,10 @@ import XCTest
   /// Test `signMessage()`, given a json string `{[[UInt8]]}`, the success flow will return a tuple `(result: Any?, error: String?)`
   /// with the result as js object with the base 58 encoded public key and signature as decoded base 58 (array of UInt8).
   func testSignMessageSuccess() async {
-    let argArray: [MojoBase.Value] = [
-      MojoBase.Value(listValue: kMessageToSign.map { MojoBase.Value.init(intValue: $0) })
+    let argArray: [BaseValue] = [
+      BaseValue(listValue: kMessageToSign.map { BaseValue.init(intValue: $0) })
     ]
-    guard let args = MojoBase.Value(listValue: argArray).jsonString else {
+    guard let args = BaseValue(listValue: argArray).jsonString else {
       XCTFail("Unexpected test setup")
       return
     }
@@ -256,8 +256,8 @@ import XCTest
         .success,
         "",
         [
-          "publicKey": MojoBase.Value(stringValue: kTestPublicKey),
-          "signature": MojoBase.Value(stringValue: kTestSignature),
+          "publicKey": BaseValue(stringValue: kTestPublicKey),
+          "signature": BaseValue(stringValue: kTestSignature),
         ]
       )
     }
@@ -267,7 +267,7 @@ import XCTest
 
     let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(error)
-    guard let result = MojoBase.Value(jsonString: (result as? String) ?? "")?.dictionaryValue else {
+    guard let result = BaseValue(jsonString: (result as? String) ?? "")?.dictionaryValue else {
       XCTFail("Unexpected result to signMessage request")
       return
     }
@@ -283,11 +283,11 @@ import XCTest
   /// Test `signMessage()`, given a json string `{[[UInt8], String]}`, the success flow will return a tuple `(result: Any?, error: String?)`
   /// with the result as type `[String: Any]` with the base 58 encoded public key and signature as decoded base 58 (array of UInt8).
   func testSignMessageWithDisplayEncodingSuccess() async {
-    let argArray: [MojoBase.Value] = [
-      MojoBase.Value(listValue: kMessageToSign.map { MojoBase.Value.init(intValue: $0) }),
-      MojoBase.Value(stringValue: "hex"),
+    let argArray: [BaseValue] = [
+      BaseValue(listValue: kMessageToSign.map { BaseValue.init(intValue: $0) }),
+      BaseValue(stringValue: "hex"),
     ]
-    guard let args = MojoBase.Value(listValue: argArray).jsonString else {
+    guard let args = BaseValue(listValue: argArray).jsonString else {
       XCTFail("Unexpected test setup")
       return
     }
@@ -301,8 +301,8 @@ import XCTest
         .success,
         "",
         [
-          "publicKey": MojoBase.Value(stringValue: kTestPublicKey),
-          "signature": MojoBase.Value(stringValue: kTestSignature),
+          "publicKey": BaseValue(stringValue: kTestPublicKey),
+          "signature": BaseValue(stringValue: kTestSignature),
         ]
       )
     }
@@ -312,7 +312,7 @@ import XCTest
 
     let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(error)
-    guard let result = MojoBase.Value(jsonString: (result as? String) ?? "")?.dictionaryValue else {
+    guard let result = BaseValue(jsonString: (result as? String) ?? "")?.dictionaryValue else {
       XCTFail("Unexpected result to signMessage request")
       return
     }
@@ -328,15 +328,15 @@ import XCTest
   /// Test `signTransaction()`, given a json string `{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}`,
   /// the error flow will return a tuple `(Any?, String?)` with the error populated as the given error dictionary
   func testSignTransactionFailure() async {
-    let signature = MojoBase.Value(dictionaryValue: [
-      "publicKey": MojoBase.Value(stringValue: kTestPublicKey)
+    let signature = BaseValue(dictionaryValue: [
+      "publicKey": BaseValue(stringValue: kTestPublicKey)
     ])
-    let serializedMessage = MojoBase.Value(
-      listValue: kSerializedMessage.map { MojoBase.Value(intValue: $0) }
+    let serializedMessage = BaseValue(
+      listValue: kSerializedMessage.map { BaseValue(intValue: $0) }
     )
-    let transaction = MojoBase.Value(dictionaryValue: [
+    let transaction = BaseValue(dictionaryValue: [
       "serializedMessage": serializedMessage,
-      "signatures": MojoBase.Value(listValue: [signature]),
+      "signatures": BaseValue(listValue: [signature]),
     ])
     guard let args = transaction.jsonString else {
       XCTFail("Unexpected test setup")
@@ -354,7 +354,7 @@ import XCTest
     let (result, error) = await solProviderHelper.signTransaction(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
-      let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
+      let errorDict = BaseValue(jsonString: error)?.dictionaryValue,
       let code = errorDict["code"]?.intValue, let message = errorDict["message"]?.stringValue
     else {
       XCTFail("Unexpected result to signTransaction request")
@@ -367,15 +367,15 @@ import XCTest
   /// Test `signTransaction()`, given a json string `{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}`,
   /// the success flow will return a tuple `(result: Any?, error: String?)` with the result as type `String` containing a json array of UInt8
   func testSignTransactionSuccessLegacyTx() async {
-    let signature = MojoBase.Value(dictionaryValue: [
-      "publicKey": MojoBase.Value(stringValue: kTestPublicKey)
+    let signature = BaseValue(dictionaryValue: [
+      "publicKey": BaseValue(stringValue: kTestPublicKey)
     ])
-    let serializedMessage = MojoBase.Value(
-      listValue: kSerializedMessage.map { MojoBase.Value(intValue: $0) }
+    let serializedMessage = BaseValue(
+      listValue: kSerializedMessage.map { BaseValue(intValue: $0) }
     )
-    let transaction = MojoBase.Value(dictionaryValue: [
+    let transaction = BaseValue(dictionaryValue: [
       "serializedMessage": serializedMessage,
-      "signatures": MojoBase.Value(listValue: [signature]),
+      "signatures": BaseValue(listValue: [signature]),
     ])
     guard let args = transaction.jsonString else {
       XCTFail("Unexpected test setup")
@@ -406,15 +406,15 @@ import XCTest
   /// Test `signTransaction()`, given a json string `{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}`,
   /// the success flow will return a tuple `(result: Any?, error: String?)` with the result as type `String` containing a json array of UInt8
   func testSignTransactionSuccessVersionedTxV0() async {
-    let signature = MojoBase.Value(dictionaryValue: [
-      "publicKey": MojoBase.Value(stringValue: kTestPublicKey)
+    let signature = BaseValue(dictionaryValue: [
+      "publicKey": BaseValue(stringValue: kTestPublicKey)
     ])
-    let serializedMessage = MojoBase.Value(
-      listValue: kSerializedMessage.map { MojoBase.Value(intValue: $0) }
+    let serializedMessage = BaseValue(
+      listValue: kSerializedMessage.map { BaseValue(intValue: $0) }
     )
-    let transaction = MojoBase.Value(dictionaryValue: [
+    let transaction = BaseValue(dictionaryValue: [
       "serializedMessage": serializedMessage,
-      "signatures": MojoBase.Value(listValue: [signature]),
+      "signatures": BaseValue(listValue: [signature]),
     ])
     guard let args = transaction.jsonString else {
       XCTFail("Unexpected test setup")
@@ -445,17 +445,17 @@ import XCTest
   /// Test `signAllTransactions()`, given a json string `[{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}]`,
   /// the error flow will return a tuple `(Any?, String?)` with the error populated as the given error dictionary
   func testSignAllTransactionsFailure() async {
-    let signature = MojoBase.Value(dictionaryValue: [
-      "publicKey": MojoBase.Value(stringValue: kTestPublicKey)
+    let signature = BaseValue(dictionaryValue: [
+      "publicKey": BaseValue(stringValue: kTestPublicKey)
     ])
-    let serializedMessage = MojoBase.Value(
-      listValue: kSerializedMessage.map { MojoBase.Value(intValue: $0) }
+    let serializedMessage = BaseValue(
+      listValue: kSerializedMessage.map { BaseValue(intValue: $0) }
     )
-    let transaction = MojoBase.Value(dictionaryValue: [
+    let transaction = BaseValue(dictionaryValue: [
       "serializedMessage": serializedMessage,
-      "signatures": MojoBase.Value(listValue: [signature]),
+      "signatures": BaseValue(listValue: [signature]),
     ])
-    guard let args = MojoBase.Value(listValue: [transaction]).jsonString else {
+    guard let args = BaseValue(listValue: [transaction]).jsonString else {
       XCTFail("Unexpected test setup")
       return
     }
@@ -471,7 +471,7 @@ import XCTest
     let (result, error) = await solProviderHelper.signAllTransactions(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
-      let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
+      let errorDict = BaseValue(jsonString: error)?.dictionaryValue,
       let code = errorDict["code"]?.intValue, let message = errorDict["message"]?.stringValue
     else {
       XCTFail("Unexpected result to signAllTransactions request")
@@ -484,17 +484,17 @@ import XCTest
   /// Test `signAllTransactions()`, given a json string `[{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}]`,
   /// the success flow will return a tuple `(result: Any?, error: String?)` with the result as type `String` containing a json 2-dimensional array of Uint8.
   func testSignAllTransactionsSuccessLegacyTx() async {
-    let signature = MojoBase.Value(dictionaryValue: [
-      "publicKey": MojoBase.Value(stringValue: kTestPublicKey)
+    let signature = BaseValue(dictionaryValue: [
+      "publicKey": BaseValue(stringValue: kTestPublicKey)
     ])
-    let serializedMessage = MojoBase.Value(
-      listValue: kSerializedMessage.map { MojoBase.Value(intValue: $0) }
+    let serializedMessage = BaseValue(
+      listValue: kSerializedMessage.map { BaseValue(intValue: $0) }
     )
-    let transaction = MojoBase.Value(dictionaryValue: [
+    let transaction = BaseValue(dictionaryValue: [
       "serializedMessage": serializedMessage,
-      "signatures": MojoBase.Value(listValue: [signature]),
+      "signatures": BaseValue(listValue: [signature]),
     ])
-    guard let args = MojoBase.Value(listValue: [transaction]).jsonString else {
+    guard let args = BaseValue(listValue: [transaction]).jsonString else {
       XCTFail("Unexpected test setup")
       return
     }
@@ -530,17 +530,17 @@ import XCTest
   /// Test `signAllTransactions()`, given a json string `[{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}]`,
   /// the success flow will return a tuple `(result: Any?, error: String?)` with the result as type `String` containing a json 2-dimensional array of Uint8.
   func testSignAllTransactionsSuccessVersionedTxV0() async {
-    let signature = MojoBase.Value(dictionaryValue: [
-      "publicKey": MojoBase.Value(stringValue: kTestPublicKey)
+    let signature = BaseValue(dictionaryValue: [
+      "publicKey": BaseValue(stringValue: kTestPublicKey)
     ])
-    let serializedMessage = MojoBase.Value(
-      listValue: kSerializedMessage.map { MojoBase.Value(intValue: $0) }
+    let serializedMessage = BaseValue(
+      listValue: kSerializedMessage.map { BaseValue(intValue: $0) }
     )
-    let transaction = MojoBase.Value(dictionaryValue: [
+    let transaction = BaseValue(dictionaryValue: [
       "serializedMessage": serializedMessage,
-      "signatures": MojoBase.Value(listValue: [signature]),
+      "signatures": BaseValue(listValue: [signature]),
     ])
-    guard let args = MojoBase.Value(listValue: [transaction]).jsonString else {
+    guard let args = BaseValue(listValue: [transaction]).jsonString else {
       XCTFail("Unexpected test setup")
       return
     }

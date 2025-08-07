@@ -52,7 +52,7 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/brave_ads/core",
-    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_rewards/core",
     "//brave/components/constants",
     "//brave/components/ntp_background_images/buildflags",
@@ -64,7 +64,7 @@ static_library("browser") {
     "//components/content_settings/core/common",
     "//components/keyed_service/core",
     "//components/metrics",
-    "//components/pref_registry:pref_registry",
+    "//components/pref_registry",
     "//components/prefs",
     "//components/variations",
     "//components/variations/service",

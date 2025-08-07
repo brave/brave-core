@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_PREFS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_PREFS_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom-forward.h"
 
 class PrefService;
@@ -47,6 +49,9 @@ void DeleteMemoryFromPrefs(const std::string& memory, PrefService& prefs);
 // Resets the memories list in the pref.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void DeleteAllMemoriesFromPrefs(PrefService& prefs);
+
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(PrefService& prefs);
 
 }  // namespace ai_chat::prefs
 

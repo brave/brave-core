@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_builder_util.h"
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_ads {
 

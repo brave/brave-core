@@ -15,8 +15,8 @@ from .codegen_context import CodeGenContext
 from .codegen_format import format_template as _format
 
 # Get gn arg to enable WebAPI probes.
-_IS_PG_WEBAPI_PROBES_ENABLED = brave_chromium_utils.get_gn_arg(
-    "enable_brave_page_graph_webapi_probes")
+_IS_PG_WEBAPI_PROBES_ENABLED = brave_chromium_utils.get_json_value(
+    "gn_args_page_graph.json", "enable_brave_page_graph_webapi_probes")
 
 # Workaround attribute to set when is_observable_array codegen is active. This
 # codegen breaks "return value" assumption, i.e. it says that a return value

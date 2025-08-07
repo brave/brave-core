@@ -16,8 +16,12 @@
 <translation id="8294286161128352783">新しいタブページのみ</translation>
 <translation id="6406506848690869874">同期</translation>
 <translation id="1544192797660353713">ウォレット</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">詳細…</translation>
+<translation id="9092796350041759828">{0, plural,
+          =1 {ゲストウィンドウを閉じる}
+          other {ゲストウィンドウを閉じる}
+        }</translation>
 <translation id="1990886731975529483">Google Widevineをインストールして実行</translation>
 <translation id="8926389886865778422">再表示させない</translation>
 <translation id="4900351245762303149">Google Widevineをインストール</translation>
@@ -76,13 +80,20 @@
 <translation id="2808103541110899519">Braveウォレットのアイコンを非表示</translation>
 <translation id="7595540212376041331">Braveウォレットのアイコンを非表示</translation>
 <translation id="3893997535859323951">Leo AIアイコンを非表示</translation>
+<translation id="8832245978592881387">Leo AIを新しいタブで開く</translation>
+<translation id="4577675328803804820">Leo AIをサイドバーで開く</translation>
+<translation id="564305948667173847">Leo AI の設定を管理</translation>
 <translation id="6208515240323786457">Leo AIアイコンを非表示</translation>
-<translation id="2361906291514218784">Leo AI</translation>
+<translation id="2169338740411893745">Leo AI を新しいタブで開く</translation>
+<translation id="3295805221342028003">Leo AIをサイドバーで開く</translation>
+<translation id="7400808612454224939">Leo AI の設定を管理</translation>
+<translation id="5385064007245738696">Leo AI について</translation>
 <translation id="4928988318462976765">ウェブ拡張機能ストア</translation>
 <translation id="9181207987584064303">ウェブ拡張ストアを見る</translation>
 <translation id="3161744659507801211">警告：Braveは拡張機能が閲覧履歴を記録するのを防ぐことはできません。</translation>
 <translation id="2162109630536601963">この拡張機能がネットワーク要求を行う場合、Torまたはプライベートモードは使用されません。</translation>
 <translation id="2725327089319971976">プライベートモードとTorモードでこの拡張機能を無効にするには、このオプションの選択を解除します。</translation>
+<translation id="438106944087726695">Braveがホストする拡張機能</translation>
 <translation id="3371343170427636147">Brave Nightly</translation>
 <translation id="4097979995947147464">Brave Beta</translation>
 <translation id="8303432794159193481">Brave Dev</translation>
@@ -181,11 +192,6 @@
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
 <translation id="2604698253988679506">これらの個人的な回答は、Braveが特定の機能の全体的な使用状況を推定し、お客様にとってより良いものにするために役立ちます。</translation>
-<translation id="1947672064022327074">イーサリアムに対応した暗号資産ウォレットを使ってみますか？</translation>
-<translation id="7583735190612229830">暗号資産ウォレットを設定して、このアプリやそれと類似の他のアプリとやり取りをします。</translation>
-<translation id="8731422418734770661">暗号資産ウォレットを設定</translation>
-<translation id="8199661191594897555">暗号資産ウォレットを開始してリロード</translation>
-<translation id="8428213095426709021">設定</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3ドメイン</translation>
 <translation id="5046066249040287308">Braveウォレットユーティリティサービス</translation>
@@ -335,6 +341,7 @@
 <translation id="7557539689487606886">プレミアムプラン</translation>
 <translation id="1035309871698658326">これを開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。</translation>
 <translation id="3435896845095436175">有効にする</translation>
+<translation id="1940221956626514677">ツールバーをカスタマイズ</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="1426410128494586442">はい</translation>
@@ -492,6 +499,8 @@
 <translation id="3540231253392253941">プッシュメッセージングにGoogleサービスを使用</translation>
 <translation id="933652931229970927">診断レポートを自動送信する</translation>
 <translation id="4891600875049212418">機密性の高いサイトを訪問する場合はOTRモードに切り替える</translation>
+<translation id="509873765238158442">Microsoft Recallをブロック</translation>
+<translation id="4763421121695677716">Microsoft Windowsコンピュータのリコール機能をブロックして、開いているBraveタブのスクリーンショットを自動的に撮影できないようにします。</translation>
 <translation id="1968895725257436430">データコレクション</translation>
 <translation id="4846154056248462491">終了時に</translation>
 <translation id="216468847346280584">Brave広告のデータをクリア</translation>
@@ -653,10 +662,10 @@
 <translation id="2653659639078652383">送信</translation>
 <translation id="1294350054292274934">Torウィンドウで.onionアドレスのみを解決</translation>
 <translation id="601227612175911475">OnionサービスはTorウィンドウの外では利用できません。</translation>
-<translation id="2896916411183256228">WebTorrentを有効にして、直接Torrentファイルやマグネットリンクを表示</translation>
 <translation id="5249433283143453448">Widevineデジタル著作権管理 (DRM) コンポーネントを使用して、保護されたストリーミング動画と他のコンテンツをブラウザで表示しましょう。</translation>
 <translation id="1314131187310290315">Manifest V2拡張機能</translation>
 <translation id="2488433650767270565">以下のManifest V2拡張機能はChrome Web Storeから削除されますが、Braveでは引き続きサポートされています。ダウンロードとインストール、またはアンインストールするには、トグルします。</translation>
+<translation id="6918225713618473646">Braveは、これらのManifest V2拡張機能をBraveサーバー上でホストしていますが、その内容、セキュリティ、動作の確認や検証は行っていません。ヘルプが必要な場合は、各拡張機能の公式ページをご参照ください。マニフェストV2に関するBraveの計画については <ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>.でお読みください；。</translation>
 <translation id="578671172657727816">NoScript™を有効にする</translation>
 <translation id="9068475464170522036">NoScriptはManifest V2の拡張機能で、特定のページで実行されている、または実行しようとしている個々のスクリプトをブロックしたり、ブロック解除したりすることができます。</translation>
 <translation id="1394592156621788100">uBlock Origin™を有効にする</translation>
@@ -671,7 +680,6 @@
 <translation id="7701023802820268122">デフォルトの Solana ウォレット</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="6942354363301686374">拡張機能（フォールバックなし）</translation>
-<translation id="1274962333945373242">暗号資産ウォレット (非推奨)</translation>
 <translation id="702381242110464396">拡張機能（Braveウォレットのフォールバック）</translation>
 <translation id="4718664830805652430">デフォルトのベース通貨</translation>
 <translation id="7992507032049865603">デフォルトのベース暗号資産通貨</translation>
@@ -736,6 +744,7 @@
 <translation id="3095201688102519917">複数のタブでウィンドウを閉じる前に警告を表示する</translation>
 <translation id="7120553802660696133">最後のタブを閉じる際にウィンドウを閉じる</translation>
 <translation id="3394171693948989253">終了時にEscを押すよう、全画面でリマインダーを表示</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">サイドバーにLeoアイコンを表示</translation>
 <translation id="8055509865174199683">ウェブサイトのコンテキストメニューにLeoを表示</translation>
 <translation id="1529674267267221673">ウェブサイトを右クリックすると、コンテキストメニューにLeoが表示されます。これにより、現在のウェブページのコンテキストがLeoに送信されます。</translation>
@@ -749,7 +758,6 @@
 チャット履歴の消去は、以前のBrave Leo AIとの会話をすべて削除します。この操作を元に戻すことはできません。</translation>
 <translation id="5574059574002819179">オートコンプリートの候補を調整する</translation>
 <translation id="7942415993090181327">チャット履歴</translation>
-<translation id="5385064007245738696">Leo AI について</translation>
 <translation id="5084498230659987096">Brave Leoは、プライバシーファーストのAIチャットをはじめ、AIを搭載したインターフェースをブラウザ内で提供します。Leoがあなたのデータから学習したり、モデルのトレーニングに使用したりすることはありません。すべてのリクエストは匿名化サーバーを経由してプロキシされます。</translation>
 <translation id="6458721693611638005">BraveがあなたのAI使用をどのように保護するかについては、Leoのプライバシーポリシーをお読みください。 <ph name="BEGIN_LINK"/>詳細はこちら<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">新しい会話向けデフォルトモデル</translation>
@@ -786,6 +794,9 @@
 <translation id="6304169450064541679">システムプロンプト</translation>
 <translation id="3081947790648024460">モデルに特定の方向やスタイルで応答させるためのカスタム指示やコンテキストです。現在の日付や時刻を挿入したい場合は、%datetime%を使用してください。</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> トークン</translation>
+<translation id="5985516785067818307">調査パネリスト</translation>
+<translation id="8347743943525229984">Braveアンケートを許可</translation>
+<translation id="3204080538332044581">Braveに対し、新しいタブページに匿名アンケートへのリンクを表示することを許可します。こうした調査は、より良い機能の構築や、ブラウザベースの広告キャンペーンの効果測定などに役立ちます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">プレイリストを有効にする</translation>
 <translation id="7903608716704052878">オフラインでの閲覧用に自動でファイルを追加</translation>
 <translation id="4193768184502613558">このオプションは、メディアファイルを自動的にキャッシュし、インターネット接続がなくても再生できるようにします。</translation>

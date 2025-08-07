@@ -17,7 +17,7 @@
 <translation id="1181037720776840403">移除</translation>
 <translation id="1192844206376121885">此操作会删除 <ph name="ORIGIN"/> 存储的全部数据和 Cookie。</translation>
 <translation id="1201402288615127009">下一步</translation>
-<translation id="3251315496493761426">Brave 技巧</translation>
+<translation id="3251315496493761426">Brave 提示</translation>
 <translation id="1242008676835033345">嵌入来源：<ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">依次点按“应用”&gt;“默认应用”</translation>
 <translation id="1272079795634619415">停止</translation>
@@ -25,6 +25,7 @@
 <translation id="129382876167171263">网站保存的文件会显示在这里</translation>
 <translation id="131112695174432497">对广告个性化有影响的数据会被删除</translation>
 <translation id="1317194122196776028">移除此网站</translation>
+<translation id="1323433172918577554">展开</translation>
 <translation id="1333965224356556482">不允许网站查看您所在的位置</translation>
 <translation id="1343356790768851700">该网站会先判断您的喜好，然后向其他网站建议相关广告</translation>
 <translation id="1369915414381695676">网站 <ph name="SITE_NAME"/> 已添加</translation>
@@ -35,6 +36,7 @@
 <translation id="1409338233051621926">点按“应用”，然后点按“默认应用”</translation>
 <translation id="1415402041810619267">网址被截断了</translation>
 <translation id="1741136041592162279">允许 Brave 与您的设备分享您近期打开的标签页，以便在设备的应用列表和搜索结果中查看这些标签页。您可以在 Brave 设置中开启或关闭此功能。</translation>
+<translation id="1432650420699700107">网站可以请求连接到本地网络上的任何设备</translation>
 <translation id="1448064542941920355">缩小</translation>
 <translation id="1464044141348608623">不允许网站了解您何时在主动使用自己的设备</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> 个网站}other{<ph name="SITE_COUNT"/> 个网站}}</translation>
@@ -96,6 +98,7 @@
 <translation id="2182457891543959921">需先询问，得到许可后才允许网站为您的周边环境创建 3D 地图或跟踪摄像头位置（推荐）</translation>
 <translation id="2185965788978862351">此操作会删除网站或其在主屏幕中安装的应用所存储的 <ph name="DATASIZE"/> 数据和 Cookie。</translation>
 <translation id="2194856509914051091">注意事项</translation>
+<translation id="2202902749237646524">{NUM_DAYS,plural, =1{昨天}other{<ph name="NUM_DAYS_MANY"/> 天前}}</translation>
 <translation id="2215727959747642672">文件修改</translation>
 <translation id="2218389616572918761">网站可以请求使用麦克风</translation>
 <translation id="2228071138934252756">若要允许 <ph name="APP_NAME"/> 使用您的摄像头，您还需在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中开启摄像头。</translation>
@@ -125,6 +128,7 @@
 <translation id="2490684707762498678">由 <ph name="APP_NAME"/> 管理</translation>
 <translation id="2498359688066513246">帮助和反馈</translation>
 <translation id="2501278716633472235">返回</translation>
+<translation id="2533138527374486328">开启后，网站可以请求连接到本地网络上的任何设备。关闭后，网站无法连接到本地网络上的设备。</translation>
 <translation id="2546283357679194313">Cookie 和网站数据</translation>
 <translation id="2570922361219980984">此设备的位置信息使用权也已关闭；若想开启这项权限，请转到 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>。</translation>
 <translation id="257931822824936280">已展开 - 点击此处即可收起。</translation>
@@ -181,13 +185,14 @@
 <translation id="3167868116600277716">探索信息流</translation>
 <translation id="3198916472715691905">已存储 <ph name="STORAGE_AMOUNT"/> 数据</translation>
 <translation id="321187648315454507">若要允许 <ph name="APP_NAME"/> 向您发送通知，您还需在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中开启通知。</translation>
+<translation id="3223425961342298674">已拒绝授予位置信息使用权限</translation>
 <translation id="3227137524299004712">麦克风</translation>
 <translation id="3232293466644486101">删除浏览数据…</translation>
 <translation id="3242646949159196181">开启此设置后，网站可以播放声音。关闭此设置后，网站无法播放声音。</translation>
 <translation id="3273479183583863618">在标签页上显示降价通知</translation>
 <translation id="3277252321222022663">允许网站使用传感器（推荐）</translation>
 <translation id="3756573623297269122">Brave 会限制大多数网站使用第三方 Cookie 跟踪您在浏览时的活动。访问“设置”可<ph name="BEGIN_LINK"/>管理对第三方 Cookie 的使用权限<ph name="END_LINK"/>。</translation>
-<translation id="3285500645985761267">允许相关网站查看您在该群组中的活动记录</translation>
+<translation id="3285500645985761267">允许关联网站查看您在该群组中的活动记录</translation>
 <translation id="3295019059349372795">第 11 章：奥兹国神奇的翡翠城</translation>
 <translation id="3295602654194328831">隐藏信息</translation>
 <translation id="3328801116991980348">网站信息</translation>
@@ -247,12 +252,14 @@
 <translation id="3955321697524543127">不允许网站连接到 USB 设备</translation>
 <translation id="3965467402665811906">网站可以请求使用其保存的与您相关的信息</translation>
 <translation id="3967822245660637423">下载完毕</translation>
+<translation id="3969869202926863008">本地网络访问权限</translation>
 <translation id="3981465354637804599">网站通常会显示广告，以便能够免费提供内容或服务。但据我们所知，有些网站会展示侵扰性或误导性广告。</translation>
 <translation id="3987993985790029246">复制链接</translation>
 <translation id="3991845972263764475">已下载 <ph name="BYTES_DOWNLOADED_WITH_UNITS"/>，总大小不明</translation>
 <translation id="3992308058851451478"><ph name="SITE"/> 可以在您浏览以下网站时使用您的相关信息</translation>
 <translation id="3992684624889376114">关于此页面</translation>
 <translation id="4002066346123236978">标题</translation>
+<translation id="4031179711345676612">已允许使用麦克风</translation>
 <translation id="4046123991198612571">下一曲</translation>
 <translation id="4077310749977440510">网站通常会读取您的剪贴板内容以实现某些功能，例如保留您所复制文字的格式</translation>
 <translation id="4149890623864272035">确定要删除所有本地数据（包括 Cookie）并重置此网站的所有权限吗？</translation>
@@ -262,8 +269,10 @@
 <translation id="4169549551965910670">已连接 USB 设备</translation>
 <translation id="4194328954146351878">需先询问，得到许可后才允许网站查看和更改 NFC 设备上的信息（推荐）</translation>
 <translation id="4200726100658658164">打开位置信息设置</translation>
+<translation id="4203769790323223880">已拒绝授予摄像头使用权限</translation>
 <translation id="421742575134139848">网站可能会播放声音来为音乐、视频和其他媒体提供音频</translation>
 <translation id="4217710972110098902">已连接到串行端口</translation>
+<translation id="4223404254440398437">已拒绝授予麦克风使用权限</translation>
 <translation id="4226663524361240545">收到通知时设备会振动</translation>
 <translation id="4259722352634471385">已屏蔽 <ph name="URL"/></translation>
 <translation id="4274673989874969668">当您离开网站后，网站可保持同步以完成各项任务（例如上传照片或发送聊天消息）</translation>
@@ -294,6 +303,7 @@
 <translation id="4635969503923889910">不允许网站使用 NFC 设备</translation>
 <translation id="4644713492825682049">删除并重置</translation>
 <translation id="4645575059429386691">由您父母管理</translation>
+<translation id="4663373278480897665">已允许使用摄像头</translation>
 <translation id="4670064810192446073">虚拟现实</translation>
 <translation id="5652778654712411580">点按“浏览器应用”，然后点按“Brave”</translation>
 <translation id="4676059169848868271">若要允许 <ph name="APP_NAME"/> 使用手部跟踪功能，您还需在<ph name="BEGIN_LINK"/>系统设置<ph name="END_LINK"/>中开启手部跟踪功能。</translation>
@@ -315,6 +325,7 @@
 <translation id="4972737347717125191">网站可以请求使用虚拟现实设备和数据</translation>
 <translation id="497421865427891073">前进</translation>
 <translation id="4976702386844183910">上次访问日期：<ph name="DATE"/></translation>
+<translation id="4978178243417029856">详细了解探索信息流</translation>
 <translation id="4994033804516042629">找不到任何联系人</translation>
 <translation id="4996978546172906250">分享方式</translation>
 <translation id="5001526427543320409">第三方 Cookie</translation>
@@ -323,7 +334,7 @@
 <translation id="5048398596102334565">允许网站使用移动传感器（推荐）</translation>
 <translation id="5048841907079026162">管理浏览数据</translation>
 <translation id="5063480226653192405">空间占用量</translation>
-<translation id="5068293087784369013">自定义您的新标签页</translation>
+<translation id="5068293087784369013">自定义新标签页</translation>
 <translation id="5091013926750941408">移动网站</translation>
 <translation id="509133520954049755">请求获取桌面版视图</translation>
 <translation id="5091663350197390230">开启此设置后，网站可以使用 JavaScript。关闭此设置后，网站无法使用 JavaScript。</translation>
@@ -337,6 +348,7 @@
 <translation id="5216942107514965959">上次访问时间：今天</translation>
 <translation id="5225463052809312700">开启摄像头</translation>
 <translation id="5234764350956374838">关闭</translation>
+<translation id="5239623327352565343">已授予位置信息使用权限</translation>
 <translation id="5246825184569358663">此操作会删除所有本地数据（包括 Cookie）并重置 <ph name="DOMAIN"/> 及其下属所有网站的所有权限</translation>
 <translation id="5264323282659631142">移除“<ph name="CHIP_LABEL"/>”</translation>
 <translation id="528192093759286357">从顶部向下拖动并触摸“返回”按钮，即可退出全屏模式。</translation>
@@ -378,7 +390,9 @@
 <translation id="571222594670061844">网站可以显示来自身份服务的登录提示</translation>
 <translation id="5740126560802162366">网站可将数据保存在您的设备上</translation>
 <translation id="5743425052258407233">在您的所有设备上同步历史记录，以便您轻松继续未完成的操作</translation>
+<translation id="5749158352074143502">继续使用此标签页</translation>
 <translation id="5750869797196646528">手部跟踪</translation>
+<translation id="5753570386948603678">从下载记录中删除</translation>
 <translation id="5771720122942595109">已禁用“<ph name="PERMISSION_1"/>”权限</translation>
 <translation id="5804241973901381774">权限</translation>
 <translation id="5822675474983796325">自定义新标签页页面底部动作条已全屏打开</translation>
@@ -404,6 +418,7 @@
 <translation id="5968921426641056619">输入网址</translation>
 <translation id="5975083100439434680">缩小</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> - <ph name="WARNING_MESSAGE"/></translation>
+<translation id="5998071268779572583">开启探索信息流</translation>
 <translation id="6015775454662021376">控制此网站对您的设备的访问权限</translation>
 <translation id="6040143037577758943">关闭</translation>
 <translation id="6042308850641462728">展开</translation>
@@ -439,11 +454,13 @@
 <translation id="6527303717912515753">分享</translation>
 <translation id="6530703012083415527">开启此设置后，网站可以使用弹出式窗口和重定向。关闭此设置后，网站无法使用弹出式窗口和重定向。</translation>
 <translation id="6540488083026747005">您已允许此网站使用第三方 Cookie</translation>
+<translation id="6542770556219257399">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> 周前}other{<ph name="NUM_WEEKS_MANY"/> 周前}}</translation>
 <translation id="6545864417968258051">蓝牙扫描</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{已禁用“<ph name="PERMISSION_1"/>”权限、“<ph name="PERMISSION_2"/>”权限和另外 <ph name="NUM_MORE"/> 项权限}other{已禁用“<ph name="PERMISSION_1"/>”权限、“<ph name="PERMISSION_2"/>”权限和另外 <ph name="NUM_MORE"/> 项权限}}</translation>
 <translation id="6554732001434021288">上次访问时间：<ph name="NUM_DAYS"/> 天前</translation>
 <translation id="656065428026159829">查看更多</translation>
 <translation id="6561560012278703671">改用干扰性更低的提示方式（禁止网站发送通知，以免干扰）</translation>
+<translation id="6565144332292237355">网站可以使用此功能查找并连接到本地网络上的任何设备</translation>
 <translation id="6593061639179217415">桌面版网站</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{允许 <ph name="RWS_MEMBERS_COUNT"/> 个 <ph name="RWS_OWNER"/> 网站使用 Cookie}other{允许 <ph name="RWS_MEMBERS_COUNT"/> 个 <ph name="RWS_OWNER"/> 网站使用 Cookie}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -477,6 +494,7 @@
 <translation id="6992289844737586249">在允许网站使用您的麦克风前先询问（推荐）</translation>
 <translation id="7000754031042624318">已在 Android 设置中关闭</translation>
 <translation id="8683151724374457021">此网站会先判断您的喜好，然后向其他网站建议相关广告。此网站还会从 Brave 中了解您的广告主题，从而向您展示与您更相关的广告。</translation>
+<translation id="7044081119134178347">这次可以使用摄像头</translation>
 <translation id="7053983685419859001">禁止</translation>
 <translation id="7055552182600664515">网站可能需要使用一项内容保护服务，才能播放受版权保护的内容。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{已选择 1 项}other{已选择 # 项}}</translation>
@@ -488,8 +506,10 @@
 <translation id="7188508872042490670">设备端网站数据</translation>
 <translation id="7201549776650881587">此操作会删除 <ph name="ORIGIN"/> 下属所有网站或其在主屏幕中安装的应用存储的全部数据和 Cookie</translation>
 <translation id="7203150201908454328">已展开</translation>
+<translation id="7213166370492037743">不允许网站连接到本地网络上的任何设备</translation>
 <translation id="7219254577985949841">删除网站数据？</translation>
 <translation id="723171743924126238">选择图片</translation>
+<translation id="7243246278722455312">自定义新标签页页面底部动作条</translation>
 <translation id="7243308994586599757">选项在靠近屏幕底部的位置</translation>
 <translation id="7250468141469952378">已选择 <ph name="ITEM_COUNT"/> 项</translation>
 <translation id="7260727271532453612">已授予“<ph name="PERMISSION_1"/>”权限和“<ph name="PERMISSION_2"/>”权限</translation>
@@ -512,7 +532,9 @@
 <translation id="7554752735887601236">有一个网站正在使用您的麦克风</translation>
 <translation id="7561196759112975576">永远</translation>
 <translation id="7573594921350120855">网站通常会使用您的摄像头以实现通信功能（例如视频聊天）</translation>
+<translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> 个月前}other{<ph name="NUM_MONTHS_MANY"/> 个月前}}</translation>
 <translation id="757524316907819857">禁止网站播放受保护的内容</translation>
+<translation id="7586676035079382730">已拒绝授予通知权限</translation>
 <translation id="7594634374516752650">已连接到蓝牙设备</translation>
 <translation id="7617547684249261169">您可以删除部分或全部历史记录、Cookie、网站数据等</translation>
 <translation id="7649070708921625228">帮助</translation>
@@ -525,15 +547,16 @@
 <translation id="7759147511335618829">MIDI 设备控制和重新编程</translation>
 <translation id="7781829728241885113">昨天</translation>
 <translation id="7791543448312431591">添加</translation>
-<translation id="7801888679188438140">{TILE_COUNT,plural, =1{继续使用此标签页}other{继续使用这些标签页}}</translation>
 <translation id="780301667611848630">不用了，谢谢</translation>
 <translation id="7804248752222191302">有一个网站正在使用您的摄像头</translation>
 <translation id="6720480757902085971">由 Brave 提供</translation>
+<translation id="7815680994978050279">已屏蔽危险的下载内容</translation>
 <translation id="7835852323729233924">正在播放媒体</translation>
 <translation id="783819812427904514">将视频取消静音</translation>
 <translation id="7846076177841592234">取消选择</translation>
 <translation id="2353409725922994861">Brave 会限制大多数网站使用第三方 Cookie。不过，该网站已获准使用第三方 Cookie，因为它需要依赖这类 Cookie 来提供基本服务。\n\n访问“设置”可<ph name="BEGIN_LINK"/>管理对第三方 Cookie 的使用权限<ph name="END_LINK"/>。</translation>
 <translation id="7882806643839505685">允许特定网站播放声音。</translation>
+<translation id="7891547341794213004">隐藏“继续使用此标签页”卡片</translation>
 <translation id="789722939441020330">不允许网站自动下载多个文件</translation>
 <translation id="7940722705963108451">提醒我</translation>
 <translation id="7948081750384205628">详细了解“<ph name="SETTING_TITLE"/>”</translation>
@@ -541,7 +564,6 @@
 <translation id="7986741934819883144">选择联系人</translation>
 <translation id="7990211076305263060">开启此设置后，网站可以请求使用您的麦克风。关闭此设置后，网站无法使用您的麦克风。</translation>
 <translation id="8007176423574883786">已对此设备停用</translation>
-<translation id="8010630645305864042">{TILE_COUNT,plural, =1{隐藏“继续使用此标签页”卡片}other{隐藏“继续使用这些标签页”卡片}}</translation>
 <translation id="802154636333426148">下载失败</translation>
 <translation id="8042586301629853791">排序方式：</translation>
 <translation id="8051193500142930381">所有需要使用摄像头的功能都将无法正常运行</translation>
@@ -576,6 +598,7 @@
 <translation id="8380167699614421159">此网站会展示侵扰性或误导性广告</translation>
 <translation id="8394832520002899662">点按即可返回到网站</translation>
 <translation id="8409345997656833551">当文章能以简化版视图显示时通知我</translation>
+<translation id="8416874502399604126">这次可以使用麦克风</translation>
 <translation id="8423565414844018592">文字缩放比例目前设为 <ph name="TEXT_SCALING"/></translation>
 <translation id="8428213095426709021">设置</translation>
 <translation id="8441146129660941386">后退</translation>
@@ -643,12 +666,14 @@
 <translation id="9106233582039520022">删除 Cookie？</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{“<ph name="PERMISSION_1"/>”权限、“<ph name="PERMISSION_2"/>”权限和另外 <ph name="NUM_MORE"/> 项权限}other{“<ph name="PERMISSION_1"/>”权限、“<ph name="PERMISSION_2"/>”权限和另外 <ph name="NUM_MORE"/> 项权限}}</translation>
 <translation id="913657688200966289">在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中为 <ph name="APP_NAME"/> 开启这些权限。</translation>
+<translation id="9138037198177304356">已授予通知权限</translation>
 <translation id="9138217887606523162">当前缩放比例为 <ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="7359422048569205930">让 Brave 在设备的应用列表和搜索结果中显示您近期打开的标签页。您可以随时在 Brave 设置中关闭此功能。</translation>
 <translation id="9162462602695099906">这是一个危险网页</translation>
 <translation id="9182556968660520230">不允许网站播放受保护内容</translation>
 <translation id="947156494302904893">您访问的网站可以验证您是真人而非机器人</translation>
 <translation id="959682366969460160">让各项内容井井有条</translation>
+<translation id="961930410699694996">这次可以使用位置信息</translation>
 <translation id="967624055006145463">已存储的数据</translation>
 <translation id="969975166333045662">禁止网站使用 V8 优化工具。</translation>
 <translation id="3110967157686007724">私有标签页</translation>

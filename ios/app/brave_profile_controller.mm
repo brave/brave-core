@@ -7,9 +7,11 @@
 
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat+private.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_delegate.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat+private.h"
-#include "brave/ios/browser/api/ai_chat/ai_chat_delegate.h"
+#include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/ai_chat/model_service_factory.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
@@ -47,6 +49,8 @@
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
+#include "ios/chrome/browser/sessions/model/session_restoration_service.h"
+#include "ios/chrome/browser/sessions/model/session_restoration_service_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list.h"
@@ -66,6 +70,7 @@
 #include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #include "ios/web_view/internal/web_view_browser_state.h"
 #include "ios/web_view/internal/web_view_download_manager.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
 #include "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
@@ -103,6 +108,14 @@
 
 @implementation BraveProfileController
 
+- (void)setSessionIDForBrowser:(Browser*)browser {
+  const std::string identifier = "{SyntheticIdentifier}";
+
+  ProfileIOS* profile = browser->GetProfile();
+  SessionRestorationServiceFactory::GetForProfile(profile)->SetSessionID(
+      browser, identifier);
+}
+
 - (instancetype)initWithProfileKeepAlive:
     (ScopedProfileKeepAliveIOS)profileKeepAlive {
   if ((self = [super init])) {
@@ -117,12 +130,14 @@
     _browserList = BrowserListFactory::GetForProfile(_profile);
     _browser = Browser::Create(_profile, {});
     _browserList->AddBrowser(_browser.get());
+    [self setSessionIDForBrowser:_browser.get()];
 
     // Setup otr browser
     ProfileIOS* otr_last_used_profile = _profile->GetOffTheRecordProfile();
     _otr_browserList = BrowserListFactory::GetForProfile(otr_last_used_profile);
     _otr_browser = Browser::Create(otr_last_used_profile, {});
     _otr_browserList->AddBrowser(_otr_browser.get());
+    [self setSessionIDForBrowser:_otr_browser.get()];
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
     [self performFaviconsCleanup];
@@ -159,6 +174,8 @@
       BrowserListFactory::GetForProfile(_otr_browser->GetProfile());
   [_otr_browser->GetCommandDispatcher() prepareForShutdown];
   _otr_browserList->RemoveBrowser(_otr_browser.get());
+  SessionRestorationServiceFactory::GetForProfile(_otr_browser->GetProfile())
+      ->Disconnect(_otr_browser.get());
   CloseAllWebStates(*_otr_browser->GetWebStateList(),
                     WebStateList::CLOSE_NO_FLAGS);
   _otr_browser.reset();
@@ -166,6 +183,8 @@
   _browserList = BrowserListFactory::GetForProfile(_browser->GetProfile());
   [_browser->GetCommandDispatcher() prepareForShutdown];
   _browserList->RemoveBrowser(_browser.get());
+  SessionRestorationServiceFactory::GetForProfile(_browser->GetProfile())
+      ->Disconnect(_browser.get());
   CloseAllWebStates(*_browser->GetWebStateList(), WebStateList::CLOSE_NO_FLAGS);
   _browser.reset();
 
@@ -311,7 +330,14 @@
 }
 
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate {
-  return [[AIChat alloc] initWithProfileIOS:_profile delegate:delegate];
+  auto* modelService = ai_chat::ModelServiceFactory::GetForProfile(_profile);
+  auto* service = ai_chat::AIChatServiceFactory::GetForProfile(_profile);
+  return [[AIChat alloc]
+      initWithAIChatService:service
+               modelService:modelService
+               profilePrefs:_profile->GetPrefs()
+      sharedURLoaderFactory:_profile->GetSharedURLLoaderFactory()
+                   delegate:delegate];
 }
 
 - (DefaultHostContentSettings*)defaultHostContentSettings {

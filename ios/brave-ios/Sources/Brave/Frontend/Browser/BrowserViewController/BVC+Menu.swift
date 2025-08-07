@@ -432,7 +432,7 @@ extension BrowserViewController {
 
   private func destinationMenuActions(for pageURL: URL?) -> [Action] {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    return [
+    var actions: [Action] = [
       .init(id: .bookmarks) { @MainActor [unowned self] _ in
         let vc = BookmarksViewController(
           folder: bookmarkManager.lastVisitedFolder(),
@@ -471,11 +471,6 @@ extension BrowserViewController {
             }
           }
         }
-        return .none
-      },
-      .init(id: .braveWallet) { @MainActor [unowned self] _ in
-        // Present wallet already handles dismiss + present
-        self.presentWallet()
         return .none
       },
       .init(
@@ -528,6 +523,16 @@ extension BrowserViewController {
         return .none
       },
     ]
+    if profileController.braveWalletAPI.isAllowed {
+      actions.append(
+        .init(id: .braveWallet) { @MainActor [unowned self] _ in
+          // Present wallet already handles dismiss + present
+          self.presentWallet()
+          return .none
+        }
+      )
+    }
+    return actions
   }
 
 }

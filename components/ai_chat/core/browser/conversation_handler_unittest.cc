@@ -20,7 +20,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
@@ -3257,6 +3256,16 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
 
   // Final response should be present
   EXPECT_EQ(history.back()->text, "Final response after tools");
+}
+
+TEST_F(ConversationHandlerUnitTest, AssociatingContentTriggersGetContent) {
+  MockAssociatedContent content;
+  content.SetTextContent("content");
+
+  // We shouldn't have any content yet (because we haven't called |GetContent|).
+  EXPECT_EQ(content.cached_page_content().content, "");
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+  EXPECT_EQ(content.cached_page_content().content, "content");
 }
 
 struct EmptyContentTestData {

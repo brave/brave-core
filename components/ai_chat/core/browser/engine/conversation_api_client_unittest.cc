@@ -72,6 +72,7 @@ using ResponseConversionCallback =
 namespace ai_chat {
 
 using ConversationEventRole = ConversationAPIClient::ConversationEventRole;
+using ConversationEventType = ConversationAPIClient::ConversationEventType;
 
 namespace {
 
@@ -101,25 +102,25 @@ GetMockEventsAndExpectedEventsBody() {
 
   std::vector<ConversationAPIClient::ConversationEvent> events;
   events.emplace_back(
-      ConversationEventRole::User, ConversationAPIClient::UserMemory,
+      ConversationEventRole::kUser, ConversationEventType::kUserMemory,
       std::vector<std::string>{}, "",
       base::Value::Dict()
           .Set("name", "Jane")
           .Set("memories",
                base::Value::List().Append("memory1").Append("memory2")));
   events.emplace_back(
-      ConversationEventRole::User, ConversationAPIClient::PageText,
+      ConversationEventRole::kUser, ConversationEventType::kPageText,
       std::vector<std::string>{"This is a page about The Mandalorian."});
-  events.emplace_back(ConversationEventRole::User,
-                      ConversationAPIClient::PageExcerpt,
+  events.emplace_back(ConversationEventRole::kUser,
+                      ConversationEventType::kPageExcerpt,
                       std::vector<std::string>{"The Mandalorian"});
   events.emplace_back(
-      ConversationEventRole::User, ConversationAPIClient::ChatMessage,
+      ConversationEventRole::kUser, ConversationEventType::kChatMessage,
       std::vector<std::string>{"Est-ce lié à une série plus large?"});
 
   // Two tool use requests from the assistant
   events.emplace_back(
-      ConversationEventRole::Assistant, ConversationAPIClient::ChatMessage,
+      ConversationEventRole::kAssistant, ConversationEventType::kChatMessage,
       std::vector<std::string>{"Going to use a tool..."}, "", std::nullopt,
       MakeToolUseEvents(
           {mojom::ToolUseEvent::New("get_weather", "123",
@@ -130,7 +131,7 @@ GetMockEventsAndExpectedEventsBody() {
 
   // First answer from a tool
   events.emplace_back(
-      ConversationEventRole::Tool, ConversationAPIClient::ToolUse,
+      ConversationEventRole::kTool, ConversationEventType::kToolUse,
       MakeContentBlocks(
           {mojom::ContentBlock::NewTextContentBlock(
                mojom::TextContentBlock::New(
@@ -142,7 +143,7 @@ GetMockEventsAndExpectedEventsBody() {
 
   // Second answer from a tool
   events.emplace_back(
-      ConversationEventRole::Tool, ConversationAPIClient::ToolUse,
+      ConversationEventRole::kTool, ConversationEventType::kToolUse,
       MakeContentBlocks({mojom::ContentBlock::NewImageContentBlock(
           mojom::ImageContentBlock::New(
               GURL("data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
@@ -150,17 +151,17 @@ GetMockEventsAndExpectedEventsBody() {
       "", std::nullopt, MakeToolUseEvents({}), "456");
 
   events.emplace_back(
-      ConversationEventRole::User,
-      ConversationAPIClient::GetSuggestedTopicsForFocusTabs,
+      ConversationEventRole::kUser,
+      ConversationEventType::kGetSuggestedTopicsForFocusTabs,
       std::vector<std::string>{"GetSuggestedTopicsForFocusTabs"});
-  events.emplace_back(ConversationEventRole::User,
-                      ConversationAPIClient::DedupeTopics,
+  events.emplace_back(ConversationEventRole::kUser,
+                      ConversationEventType::kDedupeTopics,
                       std::vector<std::string>{"DedupeTopics"});
-  events.emplace_back(ConversationEventRole::User,
-                      ConversationAPIClient::GetFocusTabsForTopic,
+  events.emplace_back(ConversationEventRole::kUser,
+                      ConversationEventType::kGetFocusTabsForTopic,
                       std::vector<std::string>{"GetFocusTabsForTopics"}, "C++");
   events.emplace_back(
-      ConversationEventRole::User, ConversationAPIClient::UploadImage,
+      ConversationEventRole::kUser, ConversationEventType::kUploadImage,
       std::vector<std::string>{"data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
                                "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
                                "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"

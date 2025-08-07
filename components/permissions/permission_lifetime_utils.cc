@@ -15,12 +15,12 @@
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/features.h"
 #include "components/permissions/permission_request.h"
 #include "net/base/features.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace permissions {
@@ -43,7 +43,7 @@ std::optional<PermissionLifetimeOption> GetTestSecondsOption() {
     return std::nullopt;
   }
   return PermissionLifetimeOption(
-      base::UTF8ToUTF16(base::StringPrintf("%d seconds", *test_seconds)),
+      base::UTF8ToUTF16(absl::StrFormat("%d seconds", *test_seconds)),
       base::Seconds(*test_seconds));
 }
 

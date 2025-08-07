@@ -15,7 +15,6 @@
 #include "base/json/json_writer.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
-#include "base/strings/stringprintf.h"
 #include "base/trace_event/trace_event.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -25,6 +24,7 @@
 #include "gin/converter.h"
 #include "gin/function_template.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
@@ -694,10 +694,10 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
     const bool scriptlet_debug_enabled = base::FeatureList::IsEnabled(
         brave_shields::features::kBraveAdblockScriptletDebugLogs);
 
-    scriptlet_script = base::StringPrintf(
-        kScriptletInitScript,
-        scriptlet_debug_enabled ? "[[\"canDebug\", true]]" : "",
-        de_amp_enabled ? "true" : "false", scriptlet_script.c_str());
+    scriptlet_script =
+        absl::StrFormat(kScriptletInitScript,
+                        scriptlet_debug_enabled ? "[[\"canDebug\", true]]" : "",
+                        de_amp_enabled ? "true" : "false", scriptlet_script);
   }
   if (!scriptlet_script.empty()) {
     web_frame->ExecuteScriptInIsolatedWorld(
@@ -709,17 +709,16 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
   // Working on css rules
   generichide_ = resources_dict_->FindBool("generichide").value_or(false);
   namespace bf = brave_shields::features;
-  std::string cosmetic_filtering_init_script = base::StringPrintf(
+  std::string cosmetic_filtering_init_script = absl::StrFormat(
       kCosmeticFilteringInitScript, enabled_1st_party_cf_ ? "true" : "false",
       generichide_ ? "true" : "false",
       render_frame_->IsMainFrame()
           ? "undefined"
-          : bf::kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs.Get()
-                .c_str(),
-      bf::kCosmeticFilteringswitchToSelectorsPollingThreshold.Get().c_str(),
-      bf::kCosmeticFilteringFetchNewClassIdRulesThrottlingMs.Get().c_str());
-  std::string pre_init_script = base::StringPrintf(
-      kPreInitScript, cosmetic_filtering_init_script.c_str());
+          : bf::kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs.Get(),
+      bf::kCosmeticFilteringswitchToSelectorsPollingThreshold.Get(),
+      bf::kCosmeticFilteringFetchNewClassIdRulesThrottlingMs.Get());
+  std::string pre_init_script =
+      absl::StrFormat(kPreInitScript, cosmetic_filtering_init_script);
 
   web_frame->ExecuteScriptInIsolatedWorld(
       isolated_world_id_,
@@ -793,8 +792,8 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
         json_selectors = "[]";
       }
       // Building a script for stylesheet modifications
-      std::string new_selectors_script = base::StringPrintf(
-          kHideSelectorsInjectScript, json_selectors.c_str());
+      std::string new_selectors_script =
+          absl::StrFormat(kHideSelectorsInjectScript, json_selectors);
       web_frame->ExecuteScriptInIsolatedWorld(
           isolated_world_id_,
           blink::WebScriptSource(
@@ -871,7 +870,7 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
     }
     // Building a script for stylesheet modifications
     std::string new_selectors_script =
-        base::StringPrintf(kHideSelectorsInjectScript, json_selectors.c_str());
+        absl::StrFormat(kHideSelectorsInjectScript, json_selectors);
     if (hide_selectors->size() != 0) {
       web_frame->ExecuteScriptInIsolatedWorld(
           isolated_world_id_,

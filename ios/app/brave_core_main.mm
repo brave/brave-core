@@ -26,7 +26,6 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
-#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/component_installer.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -306,7 +305,6 @@ static bool CustomLogHandler(int severity,
 
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                       installationDate:(NSDate*)installDate {
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   _p3a_service = base::MakeRefCounted<p3a::P3AService>(
       *GetApplicationContext()->GetLocalState(),
       base::SysNSStringToUTF8(channel), base::Time::FromNSDate(installDate),
@@ -321,7 +319,6 @@ static bool CustomLogHandler(int severity,
   // in the future, move this call there.
   p3a::MaybeToggleP3AComponent(
       GetApplicationContext()->GetComponentUpdateService(), _p3a_service.get());
-#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 
 - (BraveP3AUtils*)p3aUtils {

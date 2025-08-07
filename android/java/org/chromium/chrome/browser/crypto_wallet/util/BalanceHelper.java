@@ -17,7 +17,6 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetBalanceResponseBaseContext;
@@ -237,8 +236,7 @@ public class BalanceHelper {
         if (JavaUtils.anyNull(
                 braveWalletService, blockchainRegistry, keyringService, jsonRpcService)) return;
 
-        boolean P3AEnabled =
-                BraveConfig.P3A_ENABLED && BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
+        boolean P3AEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
 
         HashMap<Integer, HashSet<String>> activeAddresses = new HashMap<Integer, HashSet<String>>();
         for (int coinType : Utils.P3ACoinTypes)

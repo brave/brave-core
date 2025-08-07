@@ -85,8 +85,10 @@ const getEnvConfig = (key, defaultValue = undefined) => {
 
     // Convert 'true' and 'false' strings into booleans.
     for (const [key, value] of Object.entries(envConfig)) {
-      if (value === 'true' || value === 'false') {
-        envConfig[key] = value === 'true'
+      try {
+        envConfig[key] = JSON.parse(value)
+      } catch (e) {
+        envConfig[key] = value
       }
     }
   }
@@ -224,6 +226,7 @@ const Config = function () {
   this.extraGnArgs = {}
   this.extraGnGenOpts = getEnvConfig(['brave_extra_gn_gen_opts']) || ''
   this.extraNinjaOpts = []
+  this.sisoJobsLimit = undefined
   this.braveAndroidSafeBrowsingApiKey = getEnvConfig([
     'brave_safebrowsing_api_key',
   ])
@@ -249,6 +252,7 @@ const Config = function () {
   ])
   this.skip_download_rust_toolchain_aux =
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
+  this.is_msan = getEnvConfig(['is_msan'])
   this.is_ubsan = getEnvConfig(['is_ubsan'])
 
   this.forwardEnvArgsToGn = [
@@ -273,6 +277,7 @@ const Config = function () {
     'brave_stats_updater_url',
     'brave_sync_endpoint',
     'brave_variations_server_url',
+    'concurrent_links',
     'gemini_production_api_url',
     'gemini_production_client_id',
     'gemini_production_client_secret',
@@ -285,6 +290,7 @@ const Config = function () {
     'gemini_sandbox_oauth_url',
     'google_default_client_id',
     'google_default_client_secret',
+    'msan_track_origins',
     'rewards_grant_dev_endpoint',
     'rewards_grant_prod_endpoint',
     'rewards_grant_staging_endpoint',
@@ -328,10 +334,10 @@ Config.prototype.isBraveReleaseBuild = function () {
   const isBraveReleaseBuildValue = getEnvConfig(['is_brave_release_build'])
   if (isBraveReleaseBuildValue !== undefined) {
     assert(
-      isBraveReleaseBuildValue === '0' || isBraveReleaseBuildValue === '1',
+      isBraveReleaseBuildValue === 0 || isBraveReleaseBuildValue === 1,
       'Bad is_brave_release_build value (should be 0 or 1)',
     )
-    return isBraveReleaseBuildValue === '1'
+    return isBraveReleaseBuildValue === 1
   }
 
   return false
@@ -369,7 +375,9 @@ Config.prototype.isAsan = function () {
 }
 
 Config.prototype.isOfficialBuild = function () {
-  return this.isReleaseBuild() && !this.isAsan() && !this.is_ubsan
+  return (
+    this.isReleaseBuild() && !this.isAsan() && !this.is_msan && !this.is_ubsan
+  )
 }
 
 Config.prototype.getBraveLogoIconName = function () {
@@ -392,26 +400,20 @@ Config.prototype.buildArgs = function () {
   versionParts = versionParts.split('.')
 
   let args = {
+    'import("//brave/build/args/brave_defaults.gni")': null,
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
     is_ubsan: this.is_ubsan,
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
-    disable_fieldtrial_testing_config: true,
+    is_msan: this.is_msan,
     safe_browsing_mode: 1,
-    root_extra_deps: ['//brave'],
     // TODO: Re-enable when chromium_src overrides work for files in relative
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
     is_component_build: this.isComponentBuild(),
     is_universal_binary: this.isUniversalBinary,
-    proprietary_codecs: true,
-    ffmpeg_branding: 'Chrome',
-    branding_path_component: 'brave',
-    branding_path_product: 'brave',
-    enable_glic: false,
-    enable_widevine: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
     ignore_missing_widevine_signing_cert: false,
     target_cpu: this.targetArch,
@@ -430,10 +432,14 @@ Config.prototype.buildArgs = function () {
     skip_signing: !this.shouldSign(),
     use_remoteexec: this.useRemoteExec,
     use_reclient: this.useRemoteExec,
-    use_siso: false,
+    use_siso: this.useSiso,
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
     generate_about_credits: true,
+  }
+
+  if (this.targetOS !== 'ios') {
+    args['import("//brave/build/args/blink_platform_defaults.gni")'] = null
   }
 
   for (const key of this.forwardEnvArgsToGn) {
@@ -532,10 +538,12 @@ Config.prototype.buildArgs = function () {
     args.enable_precompiled_headers = false
   }
 
-  if (this.useRemoteExec) {
-    args.reclient_bin_dir = path.join(this.nativeRedirectCCDir)
-  } else {
-    args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
+  if (!this.useSiso) {
+    if (this.useRemoteExec) {
+      args.reclient_bin_dir = path.join(this.nativeRedirectCCDir)
+    } else {
+      args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
+    }
   }
 
   // Adjust symbol_level in Linux builds:
@@ -590,27 +598,6 @@ Config.prototype.buildArgs = function () {
   if (['android', 'linux', 'mac'].includes(this.targetOS)) {
     // LSAN only works with ASAN and has very low overhead.
     args.is_lsan = args.is_asan
-  }
-
-  // Enable Page Graph only in desktop builds.
-  // Page Graph gn args should always be set explicitly, because they are parsed
-  // from out/<dir>/args.gn by Python scripts during the build. We do this to
-  // handle gn args in upstream build scripts without introducing git conflict.
-  if (this.targetOS !== 'android' && this.targetOS !== 'ios') {
-    args.enable_brave_page_graph = true
-  } else {
-    args.enable_brave_page_graph = false
-  }
-  // Enable Page Graph WebAPI probes only in dev/nightly builds.
-  if (
-    args.enable_brave_page_graph
-    && (!this.isBraveReleaseBuild()
-      || this.channel === 'dev'
-      || this.channel === 'nightly')
-  ) {
-    args.enable_brave_page_graph_webapi_probes = true
-  } else {
-    args.enable_brave_page_graph_webapi_probes = false
   }
 
   // Devtools: Now we patch devtools frontend, so it is useful to see
@@ -746,12 +733,6 @@ Config.prototype.buildArgs = function () {
 
     delete args.safebrowsing_api_endpoint
     delete args.safe_browsing_mode
-    delete args.proprietary_codecs
-    delete args.ffmpeg_branding
-    delete args.branding_path_component
-    delete args.branding_path_product
-    delete args.enable_glic
-    delete args.enable_widevine
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
@@ -1050,6 +1031,11 @@ Config.prototype.updateInternal = function (options) {
 
   if (options.ninja) {
     parseExtraInputs(options.ninja, this.extraNinjaOpts, (opts, key, value) => {
+      // Workaround siso unable to handle -j if REAPI is not configured.
+      if (key === 'j' && this.useSiso) {
+        this.sisoJobsLimit = parseInt(value)
+        return
+      }
       opts.push(`-${key}`)
       opts.push(value)
     })
@@ -1244,13 +1230,47 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
     }
 
+    // These env vars are required during `build` stage.
     if (this.useRemoteExec) {
-      // These env vars are required during `build` stage.
+      // Restrict remote execution to 160 parallel jobs.
+      const kRemoteLimit = 160
+
+      // Prevent depot_tools from setting lower timeouts.
+      const kRbeTimeout = '10m'
+      env.RBE_exec_timeout = env.RBE_exec_timeout || kRbeTimeout
+      env.RBE_reclient_timeout = env.RBE_reclient_timeout || kRbeTimeout
 
       // Autoninja generates -j value when RBE is enabled, adjust limits for
       // Brave-specific setup.
       env.NINJA_CORE_MULTIPLIER = Math.min(20, env.NINJA_CORE_MULTIPLIER || 20)
-      env.NINJA_CORE_LIMIT = Math.min(160, env.NINJA_CORE_LIMIT || 160)
+      env.NINJA_CORE_LIMIT = Math.min(
+        kRemoteLimit,
+        env.NINJA_CORE_LIMIT || kRemoteLimit,
+      )
+
+      // Siso has its own limits for remote execution that do not depend on
+      // NINJA_CORE_* values. Set those limits separately. See docs for more
+      // details:
+      // https://chromium.googlesource.com/infra/infra/+/main/go/src/infra/build/siso/docs/environment_variables.md#siso_limits
+      const defaultSisoLimits = {
+        local: this.sisoJobsLimit,
+        remote: this.sisoJobsLimit || kRemoteLimit,
+        rewrap: this.sisoJobsLimit || kRemoteLimit,
+      }
+      // Parse SISO_LIMITS from env if set.
+      const envSisoLimits = new Map(
+        env.SISO_LIMITS?.split(',').map((item) => item.split('=')) || [],
+      )
+      // Merge defaultSisoLimits with envSisoLimits ensuring that the values are
+      // not greater than the default values.
+      Object.entries(defaultSisoLimits).forEach(([key, defaultValue]) => {
+        const valueFromEnv = parseInt(envSisoLimits.get(key)) || defaultValue
+        envSisoLimits.set(key, Math.min(defaultValue, valueFromEnv))
+      })
+      // Set SISO_LIMITS env var.
+      env.SISO_LIMITS = Array.from(envSisoLimits.entries())
+        .map(([key, value]) => `${key}=${value}`)
+        .join(',')
 
       if (this.offline) {
         // Use all local resources in offline mode. RBE_local_resource_fraction
@@ -1328,6 +1348,21 @@ Object.defineProperty(Config.prototype, 'outputDir', {
   },
   set: function (outputDir) {
     return (this.__outputDir = outputDir)
+  },
+})
+
+Object.defineProperty(Config.prototype, 'useSiso', {
+  get: function () {
+    return getEnvConfig(
+      ['use_siso'],
+      // * Android fails with multiple reasons currently. Disable it for now.
+      // * iOS fails in siso+reproxy mode because of incorrect handling of
+      //   input_root_absolute_path value.
+      // * MacOS is opt-in, will be enabled later.
+      ['linux', 'win'].includes(this.hostOS)
+        && !this.isAndroid()
+        && !this.isIOS(),
+    )
   },
 })
 

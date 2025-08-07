@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
@@ -10,6 +11,7 @@ import("//extensions/buildflags/buildflags.gni")
 
 brave_chromium_src_chrome_browser_deps = [
   "//base",
+  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/commander/common/buildflags",
   "//brave/components/playlist/common/buildflags",

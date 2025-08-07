@@ -27,6 +27,7 @@
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_generated_resources_webui_strings.h"
@@ -49,6 +50,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
 namespace settings {
@@ -508,6 +513,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveLeoModelSubtitle-chat-claude-sonnet",
        IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE},
       {"braveLeoModelSubtitle-chat-qwen", IDS_CHAT_UI_CHAT_QWEN_SUBTITLE},
+      {"braveLeoModelSubtitle-chat-gemma", IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE},
       {"braveLeoModelSubtitle-chat-deepseek-r1",
        IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE},
       {"braveLeoAssistantManageUrlLabel",
@@ -608,6 +614,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_OTHER_PLACEHOLDER},
       {"braveLeoAssistantCustomizationSaveButton",
        IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_SAVE_BUTTON},
+      {"braveLeoAssistantCustomizationChangesSaved",
+       IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_CHANGES_SAVED},
       {"braveLeoAssistantInputLengthError",
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_LENGTH_ERROR},
 
@@ -1217,13 +1225,14 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShowStrictFingerprintingMode));
 
-  html_source->AddBoolean("braveNewsDisabledByPolicy",
-                          profile->GetPrefs()->GetBoolean(
-                              brave_news::prefs::kBraveNewsDisabledByPolicy));
-
   html_source->AddBoolean(
       "braveTalkDisabledByPolicy",
       profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
+
+#if BUILDFLAG(ENABLE_TOR)
+  html_source->AddBoolean("braveTorDisabledByPolicy",
+                          TorProfileServiceFactory::IsTorDisabled(profile));
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   html_source->AddBoolean(

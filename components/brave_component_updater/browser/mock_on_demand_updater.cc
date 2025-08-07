@@ -11,12 +11,12 @@ namespace brave_component_updater {
 
 MockOnDemandUpdater::MockOnDemandUpdater() {
   prev_on_demand_updater_ =
-      BraveOnDemandUpdater::GetInstance()->RegisterOnDemandUpdater(this);
+      BraveOnDemandUpdater::GetInstance()->RegisterOnDemandUpdater(false, this);
 }
 
 MockOnDemandUpdater::~MockOnDemandUpdater() {
   BraveOnDemandUpdater::GetInstance()->RegisterOnDemandUpdater(
-      prev_on_demand_updater_);
+      false, prev_on_demand_updater_);
 }
 
 }  // namespace brave_component_updater

@@ -8,6 +8,7 @@ import Icon from '@brave/leo/react/icon'
 
 import { SearchBox } from './search/search_box'
 import { Background } from './background/background'
+import { BackgroundClickRegion } from './background/background_click_region'
 import { BackgroundCaption } from './background/background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
 import { TopSites } from './top_sites/top_sites'
@@ -70,7 +71,9 @@ export function App() {
               />
           }
         </div>
-        <div className='spacer allow-background-pointer-events' />
+        <div className='spacer allow-background-pointer-events'>
+          <BackgroundClickRegion />
+        </div>
         <div className='caption-container'>
           <BackgroundCaption />
         </div>

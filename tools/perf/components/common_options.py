@@ -8,6 +8,7 @@
 from enum import Enum
 
 import argparse
+import logging
 import os
 import sys
 import tempfile
@@ -63,7 +64,7 @@ class CommonOptions:
         type=str,
         help='The path/URL to a config. See configs/**/.json for examples.'
         'Also could be set to "auto" to select the config by '
-        'machine-id + chromium')
+        'machine-id + chromium or "smoke" to run the smoke tests.')
     parser.add_argument(
         'targets',
         type=str,
@@ -146,22 +147,6 @@ class CommonOptions:
   @classmethod
   def from_args(cls, args) -> 'CommonOptions':
     options = CommonOptions()
-    if args.working_directory is None:
-      if options.ci_mode:
-        raise RuntimeError('Set --working-directory for --ci-mode')
-      options.working_directory = tempfile.mkdtemp(prefix='perf-test-')
-    else:
-      options.working_directory = os.path.expanduser(args.working_directory)
-
-    empty_target = args.targets is None or args.targets == ''
-    if args.mode == 'run':
-      options.mode = PerfMode.RUN
-    elif args.mode == 'compare' or (args.mode is None and empty_target):
-      options.mode = PerfMode.COMPARE
-    elif args.mode == 'update-profile':
-      options.mode = PerfMode.UPDATE_PROFILE
-    elif args.mode == 'record-wpr':
-      options.mode = PerfMode.RECORD_WPR
 
     options.verbose = args.verbose
     options.ci_mode = args.ci_mode
@@ -180,6 +165,41 @@ class CommonOptions:
         options.target_arch = 'arm64'
       else:
         options.target_arch = 'x64'
+
+    options.config = args.config
+    if options.config == 'auto':  # Select the config by machine_id and chromium
+      if options.machine_id is None:
+        raise RuntimeError('Set --machine-id to use config=auto')
+
+      prefix = 'chromium' if options.chromium else 'brave'
+      config = (f'{prefix}-{options.target_os}-' +
+                f'{options.target_arch}-{options.machine_id}.json5')
+      logging.info('Using %s as config=auto', config)
+      options.config = os.path.join(path_util.GetBravePerfConfigDir(), 'ci',
+                                    config)
+    elif options.config == 'smoke':
+      args.no_report = True
+      options.config = os.path.join(path_util.GetBravePerfConfigDir(),
+                                    'smoke.json5')
+      args.working_directory = os.path.join(path_util.GetSrcDir(),
+                                            'perf-test-smoke')
+
+    if args.working_directory is None:
+      if options.ci_mode:
+        raise RuntimeError('Set --working-directory for --ci-mode')
+      options.working_directory = tempfile.mkdtemp(prefix='perf-test-')
+    else:
+      options.working_directory = os.path.expanduser(args.working_directory)
+
+    empty_target = args.targets is None or args.targets == ''
+    if args.mode == 'run':
+      options.mode = PerfMode.RUN
+    elif args.mode == 'compare' or (args.mode is None and empty_target):
+      options.mode = PerfMode.COMPARE
+    elif args.mode == 'update-profile':
+      options.mode = PerfMode.UPDATE_PROFILE
+    elif args.mode == 'record-wpr':
+      options.mode = PerfMode.RECORD_WPR
 
     options.reboot_android = args.reboot_android or args.ci_mode
 

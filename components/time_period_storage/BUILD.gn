@@ -20,7 +20,7 @@ static_library("time_period_storage") {
   ]
 
   deps = [
-    "//base:base",
+    "//base",
     "//components/prefs",
   ]
 }

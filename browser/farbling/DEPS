@@ -9,4 +9,7 @@ specific_include_rules = {
     "+content/public/renderer/render_frame.h",
     "+third_party/blink/public",
   ],
+  ".*_browsertest\.cc": [
+    "+brave/components/brave_component_updater/browser/local_data_files_service.h",
+  ],
 }

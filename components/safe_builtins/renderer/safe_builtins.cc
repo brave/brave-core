@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
-#include "base/strings/stringprintf.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "v8/include/v8-context.h"
 #include "v8/include/v8-exception.h"
 #include "v8/include/v8-extension.h"
@@ -108,8 +108,8 @@ inline bool IsTrue(v8::Maybe<bool> maybe) {
 
 v8::Local<v8::Private> MakeKey(const char* name, v8::Isolate* isolate) {
   return v8::Private::ForApi(
-      isolate, ToV8StringUnsafe(
-                   isolate, base::StringPrintf("%s::%s", kClassName, name)));
+      isolate,
+      ToV8StringUnsafe(isolate, absl::StrFormat("%s::%s", kClassName, name)));
 }
 
 // GetProperty() family calls V8::Object::Get() and extracts a value from

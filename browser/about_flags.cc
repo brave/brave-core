@@ -126,7 +126,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 
 namespace {
 const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
-}
+}  // namespace
 
 #define SPEEDREADER_FEATURE_ENTRIES                                        \
   IF_BUILDFLAG(                                                            \
@@ -502,6 +502,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatTools),                 \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-agent-profile",                                       \
+          "Brave AI Chat Agent Profile",                                       \
+          "Enables Leo's content agent features and only in a separate "       \
+          "built-in profile.",                                                 \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatAgentProfile),          \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-host-specific-distillation",                               \
           "Brave AI Host-Specific Distillation",                               \
           "Enables support for host-specific distillation scripts",            \
@@ -681,16 +689,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveAdblockCookieListDefault),        \
-      },                                                                       \
-      {                                                                        \
-          "brave-adblock-cookie-list-opt-in",                                  \
-          "Show an opt-in bubble for the 'Easylist-Cookie List' filter",       \
-          "When enabled, a bubble will be displayed inviting the user to "     \
-          "enable the 'Easylist-Cookie List' filter for blocking cookie "      \
-          "consent dialogs",                                                   \
-          kOsDesktop | kOsAndroid,                                             \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_shields::features::kBraveAdblockCookieListOptIn),          \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cosmetic-filtering",                                  \

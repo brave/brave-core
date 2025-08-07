@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
 

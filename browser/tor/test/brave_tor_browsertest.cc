@@ -162,6 +162,11 @@ class BraveTorBrowserTest : public InProcessBrowserTest {
     DownloadTorComponent(tor::kTorPluggableTransportComponentId);
   }
 
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpDefaultCommandLine(command_line);
+    command_line->RemoveSwitch(switches::kDisableComponentUpdate);
+  }
+
   Profile* OpenTorWindow() {
     Browser* tor_browser =
         TorProfileManager::SwitchToTorProfile(browser()->profile());

@@ -28,6 +28,7 @@ declare module '../page_visibility' {
     socialBlocking?: boolean
     speedreader?: boolean
     surveyPanelist?: boolean,
+    braveTor?: boolean
   }
 }
 
@@ -58,6 +59,7 @@ function getPageVisibility () {
       socialBlocking: true,
       speedreader: false,
       surveyPanelist: false,
+      braveTor: false,
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of
@@ -89,6 +91,8 @@ function getPageVisibility () {
     playlist: loadTimeData.getBoolean('isPlaylistAllowed'),
     speedreader: loadTimeData.getBoolean('isSpeedreaderFeatureEnabled') &&
                  !loadTimeData.getBoolean('isSpeedreaderDisabledByPolicy'),
+    braveTor: !loadTimeData.getBoolean('braveTorDisabledByPolicy') ||
+              loadTimeData.getBoolean('shouldExposeElementsForTesting'),
   }
   // Proxy so we can respond to any other property
   return new Proxy(staticProps, {

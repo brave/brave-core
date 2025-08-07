@@ -8,7 +8,6 @@ import("//ios/build/config.gni")
 
 group("browser") {
   deps = [
-    "api/ai_chat",
     "api/bookmarks",
     "api/bookmarks/exporter",
     "api/bookmarks/importer",
@@ -46,8 +45,10 @@ group("browser") {
     "brave_wallet",
     "//brave/browser/sync",
     "//brave/components/constants",
+    "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/application_context",
     "//brave/ios/browser/brave_wallet",
+    "//brave/ios/browser/policy",
     "//brave/ios/browser/profile/model",
     "//brave/ios/browser/ui/webui",
     "//brave/ios/browser/web",

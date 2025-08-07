@@ -3,14 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/p3a/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//testing/test.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "BRAVE_P3A_ENABLED=$brave_p3a_enabled" ]
-}
 
 static_library("p3a") {
   sources = [
@@ -70,10 +64,9 @@ static_library("p3a") {
     "constellation/rs/cxx:rust_lib",
     "//base",
     "//brave/brave_domains",
-    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_stats/browser",
     "//brave/components/l10n/common",
-    "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
     "//brave/components/version_info",
     "//brave/vendor/brave_base",
@@ -122,10 +115,9 @@ source_set("unit_tests") {
     "//brave/components/brave_stats/browser",
     "//brave/components/constants",
     "//brave/components/p3a",
-    "//brave/components/p3a:buildflags",
     "//components/cbor",
     "//components/prefs:test_support",
-    "//net:net",
+    "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//testing/gtest",

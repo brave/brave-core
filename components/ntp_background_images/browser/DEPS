@@ -12,3 +12,9 @@ include_rules = [
   "+crypto",
   "+ui/gfx",
 ]
+
+specific_include_rules = {
+  "ntp_sponsored_source_test_util\.cc": [
+    "!brave/components/constants/brave_paths.h",
+  ],
+}

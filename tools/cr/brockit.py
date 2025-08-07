@@ -85,6 +85,8 @@ The following steps will take place:
   *Conflict-resolved patches from Chromium [from] to [to].*
 8. *Update patches from Chromium [from] to [to]* will be committed.
 9. *Updated strings for Chromium [to]* will be committed.
+10. `gnrt` will be rerun and the changes produced under `third_party/rust/` will
+    be committed.
 
 Steps 3-7 may end up being skipped altogether if no failures take place, or in
 part if resolution is possible without manual intervention.
@@ -98,8 +100,9 @@ tools/cr/brockit.py lift --to=135.0.7037.1 --from-ref=origin/master --restart
 
 ### `brockit.py regen`
 Additionally, *🚀Brockit!* can be run with `regen`. This is useful to generate
-the "Update patches" and "Updated strings" commits on their own when rebasing
-branches, regenerating these files as desired.
+the "Update patches", "Updated strings", and `gnrt` run commits on their own
+when rebasing branches, regenerating these files as desired. If you want to run
+these operations and yet, not commit any changes, you can use `--dry-run`.
 
 ```sh
 tools/cr/brockit.py update-version-issue
@@ -544,6 +547,31 @@ class Versioned(Task):
         repository.brave.git_commit(
             f'Updated strings for Chromium {self.target_version}.')
 
+    def _save_gnrt_rerun(self, dry_run=False):
+        """Creates the updated patches change
+
+    This function creates the third commit in the order of the update, saving
+    all patches that might have been changed or deleted. Untracked patches are
+    excluded from addition at this stage.
+    """
+        terminal.run([
+            'third_party/depot_tools/vpython3', './tools/crates/run_gnrt.py',
+            'vendor'
+        ],
+                     cwd=repository.chromium.path)
+        terminal.run([
+            'third_party/depot_tools/vpython3', './tools/crates/run_gnrt.py',
+            'gen'
+        ],
+                     cwd=repository.chromium.path)
+
+        if dry_run:
+            return
+
+        repository.brave.run_git('add', '-u', 'third_party/rust/')
+        repository.brave.git_commit(
+            f'`gnrt` run for Chromium {self.target_version}.')
+
     def status_message(self) -> str:
         raise NotImplementedError
 
@@ -559,16 +587,22 @@ class Regen(Versioned):
     def status_message(self):
         return "Updating patches and strings..."
 
-    def execute(self) -> bool:
+    def execute(self, dry_run=False) -> bool:
         terminal.log_task(
             f'Processing changes for Chromium {self.base_version} '
             f'to Chromium {self.target_version}.')
-        terminal.run_npm_command('init')
-        terminal.run_npm_command('update_patches')
-        self._save_updated_patches()
-        terminal.run_npm_command('chromium_rebase_l10n')
-        self._save_rebased_l10n()
 
+        terminal.run_npm_command('init')
+
+        terminal.run_npm_command('update_patches')
+        if not dry_run:
+            self._save_updated_patches()
+
+        terminal.run_npm_command('chromium_rebase_l10n')
+        if not dry_run:
+            self._save_rebased_l10n()
+
+        self._save_gnrt_rerun(dry_run=dry_run)
 
 class GitHubIssue(Versioned):
     """Creates a GitHub issue for the upgrade.
@@ -1539,6 +1573,8 @@ class Upgrade(Versioned):
                         target_version=self.target_version
                         ).create_or_update_version_issue(with_pr=False)
 
+        self._save_gnrt_rerun()
+
 
 def solve_git_ref(from_ref: str) -> str:
     """Solves the git reference.
@@ -1659,6 +1695,7 @@ class Rebase(Task):
         version = []
         conflict = []
         gnrt = []
+        iwyu = []
         others = []
         for line in lines:
             if 'Update from Chromium ' in line:
@@ -1670,6 +1707,9 @@ class Rebase(Task):
             elif '`gnrt` run for Chromium ' in line:
                 gnrt.append(
                     line if not gnrt else line.replace('pick', 'squash'))
+            elif line.endswith('] IWYU fixes'):
+                iwyu.append(
+                    line if not iwyu else line.replace('pick', 'squash'))
             else:
                 others.append(line)
 
@@ -1681,6 +1721,8 @@ class Rebase(Task):
             for line in conflict:
                 file.write(line)
             for line in gnrt:
+                file.write(line)
+            for line in iwyu:
                 file.write(line)
             for line in others:
                 file.write(line)
@@ -1925,10 +1967,14 @@ def main():
         'commit any longer.',
         dest='no_conflict')
 
-    subparsers.add_parser(
+    regen_parser = subparsers.add_parser(
         'regen',
         parents=[global_parser, base_version_parser],
         help='Regenerates all patches and strings for the current branch.')
+    regen_parser.add_argument(
+        '--dry-run',
+        action='store_true',
+        help='Nothing is commited to git with this flag.')
 
     rebase_parser = subparsers.add_parser(
         'rebase',
@@ -2048,7 +2094,7 @@ def main():
                          discard_regen_changes=args.discard_regen_changes,
                          squash_minor_bumps=args.squash_minor_bumps)
         if args.command == 'regen':
-            Regen(resolve_from_ref_flag_version()).run()
+            Regen(resolve_from_ref_flag_version()).run(dry_run=args.dry_run)
         if args.command == 'update-version-issue':
             GitHubIssue(resolve_from_ref_flag_version()).run()
         if args.command == 'reference':

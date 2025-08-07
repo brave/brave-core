@@ -645,6 +645,8 @@ type CustomArgs = {
   suggestionStatus: keyof typeof Mojom.SuggestionGenerationStatus
   isMobile: boolean
   isHistoryEnabled: boolean
+  isAIChatAgentProfileFeatureEnabled: boolean
+  isAIChatAgentProfile: boolean
   isStandalone: boolean
   isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
@@ -657,6 +659,8 @@ type CustomArgs = {
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
   isTemporaryChat: boolean
+  isDragActive: boolean
+  isDragOver: boolean
 }
 
 const args: CustomArgs = {
@@ -681,6 +685,8 @@ const args: CustomArgs = {
   model: MODELS[0].key,
   isMobile: false,
   isHistoryEnabled: true,
+  isAIChatAgentProfileFeatureEnabled: false,
+  isAIChatAgentProfile: false,
   isStandalone: false,
   isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
@@ -692,7 +698,9 @@ const args: CustomArgs = {
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
   ratingTurnUuid: undefined,
-  isTemporaryChat: false
+  isTemporaryChat: false,
+  isDragActive: false,
+  isDragOver: false
 }
 
 const meta: Meta<CustomArgs> = {
@@ -796,6 +804,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     canShowPremiumPrompt: options.args.canShowPremiumPrompt,
     isMobile: options.args.isMobile,
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
+    isAIChatAgentProfileFeatureEnabled: options.args.isAIChatAgentProfileFeatureEnabled,
+    isAIChatAgentProfile: options.args.isAIChatAgentProfile,
     isStandalone: options.args.isStandalone,
     actionList: ACTIONS_LIST,
     tabs: [{
@@ -827,6 +837,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     dismissStorageNotice: () => { },
     dismissPremiumPrompt: () => { },
     userRefreshPremiumSession: () => { },
+    openAIChatAgentProfile: () => { },
     setEditingConversationId: (id: string | null) => setArgs({ editingConversationId: id }),
     setDeletingConversationId: (id: string | null) => setArgs({ deletingConversationId: id }),
     showSidebar: showSidebar,
@@ -902,7 +913,11 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     setTemporary: (temporary: boolean) => {
       setArgs({ isTemporaryChat: temporary })
     },
-    disassociateContent: () => {}
+    disassociateContent: () => {},
+    isDragActive: options.args.isDragActive,
+    isDragOver: options.args.isDragOver,
+    clearDragState: () => {},
+    processDroppedImages: (images: Mojom.UploadedFile[]) => {}
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {

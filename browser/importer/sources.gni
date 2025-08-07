@@ -45,6 +45,6 @@ if (!is_android) {
     "//brave/common/importer:interfaces",
     "//content/public/browser",
     "//extensions/buildflags",
-    "//mojo/public/cpp/bindings:bindings",
+    "//mojo/public/cpp/bindings",
   ]
 }

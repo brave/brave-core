@@ -130,7 +130,6 @@ class AdBlockService {
   AdBlockCustomFiltersProvider* custom_filters_provider();
   AdBlockCustomResourceProvider* custom_resource_provider();
 
-  void EnableDeveloperMode(bool enabled);
   void EnableTag(const std::string& tag, bool enabled);
   void AddUserCosmeticFilter(const std::string& filter);
   void ResetCosmeticFilter(const std::string& host);
@@ -227,6 +226,12 @@ class AdBlockService {
 
 // Registers the local_state preferences used by Adblock
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry);
+
+// Registers local_state Adblock preferences needed for migration
+void RegisterPrefsForAdBlockServiceForMigration(PrefRegistrySimple* registry);
+
+// Migrates or clears obsolete local_state preferences used by Adblock
+void MigrateObsoletePrefsForAdBlockService(PrefService* local_state);
 
 }  // namespace brave_shields
 

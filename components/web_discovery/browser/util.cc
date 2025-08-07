@@ -8,10 +8,10 @@
 #include <utility>
 
 #include "base/command_line.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/web_discovery/common/features.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/url_util.h"
 
 namespace web_discovery {
@@ -71,8 +71,8 @@ std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url) {
 std::string FormatServerDate(const base::Time& date) {
   base::Time::Exploded exploded;
   date.UTCExplode(&exploded);
-  return base::StringPrintf("%04d%02d%02d", exploded.year, exploded.month,
-                            exploded.day_of_month);
+  return absl::StrFormat("%04d%02d%02d", exploded.year, exploded.month,
+                         exploded.day_of_month);
 }
 
 std::string DecodeURLComponent(const std::string_view value) {

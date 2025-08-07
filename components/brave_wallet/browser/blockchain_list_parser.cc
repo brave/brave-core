@@ -16,13 +16,13 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_schemas.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
 
@@ -524,7 +524,7 @@ bool ParseChainList(const std::string& json, ChainList* result) {
     if (!chain_id) {
       continue;
     }
-    network->chain_id = base::StringPrintf("0x%x", chain_id);
+    network->chain_id = absl::StrFormat("0x%x", chain_id);
 
     network->chain_name = EmptyIfNull(chain_item->FindString("name"));
     if (network->chain_name.empty()) {

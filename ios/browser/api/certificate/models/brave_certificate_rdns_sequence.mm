@@ -6,7 +6,7 @@
 #include "brave/ios/browser/api/certificate/models/brave_certificate_rdns_sequence.h"
 
 #include "base/strings/sys_string_conversions.h"
-#include "brave/base/mac/conversions.h"
+#include "brave/base/apple/foundation_util.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_x509_utils.h"
 #include "net/cert/x509_cert_types.h"

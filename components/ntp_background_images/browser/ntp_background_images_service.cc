@@ -20,7 +20,6 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
@@ -37,6 +36,7 @@
 #include "components/variations/pref_names.h"
 #include "components/variations/service/variations_service.h"
 #include "components/variations/service/variations_service_utils.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #if !BUILDFLAG(IS_IOS)
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -250,7 +250,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   RegisterNTPSponsoredImagesComponent(
       component_update_service_, std::string(data->component_base64_public_key),
       std::string(data->component_id),
-      base::StringPrintf("NTP Sponsored Images (%s)", data->region.data()),
+      absl::StrFormat("NTP Sponsored Images (%s)", data->region),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
           weak_factory_.GetWeakPtr(), false));
@@ -415,7 +415,7 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
 
   RegisterNTPSponsoredImagesComponent(
       component_update_service_, public_key, id,
-      base::StringPrintf("NTP Super Referral (%s)", theme_name.c_str()),
+      absl::StrFormat("NTP Super Referral (%s)", theme_name),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
           weak_factory_.GetWeakPtr(), true));

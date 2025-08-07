@@ -28,6 +28,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveOnDemandUpdater {
   BraveOnDemandUpdater& operator=(const BraveOnDemandUpdater&) = delete;
 
   component_updater::OnDemandUpdater* RegisterOnDemandUpdater(
+      bool is_component_update_disabled,
       component_updater::OnDemandUpdater* on_demand_updater);
 
   // Install the component with the given id. If the component is already
@@ -44,6 +45,8 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveOnDemandUpdater {
                       component_updater::OnDemandUpdater::Priority priority,
                       component_updater::Callback callback = base::DoNothing());
 
+  bool is_component_update_disabled() { return is_component_update_disabled_; }
+
  private:
   friend base::NoDestructor<BraveOnDemandUpdater>;
   BraveOnDemandUpdater();
@@ -51,6 +54,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveOnDemandUpdater {
 
   raw_ptr<component_updater::OnDemandUpdater, DanglingUntriaged>
       on_demand_updater_ = nullptr;
+  bool is_component_update_disabled_ = false;
 };
 
 }  // namespace brave_component_updater

@@ -196,4 +196,181 @@ TEST_F(AIChatPrefsTest, DeleteAllMemoriesFromPrefs) {
   EXPECT_TRUE(memories.empty());
 }
 
+TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_BothDisabled) {
+  // Both customization and memory features are disabled
+  pref_service_.SetBoolean(kBraveAIChatUserCustomizationEnabled, false);
+  pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, false);
+
+  // Set up customization data
+  auto customizations_dict = base::Value::Dict()
+                                 .Set("name", "John Doe")
+                                 .Set("job", "Software Engineer")
+                                 .Set("tone", "Professional")
+                                 .Set("other", "Loves coding");
+  pref_service_.SetDict(kBraveAIChatUserCustomizations,
+                        std::move(customizations_dict));
+
+  // Set up memory data
+  AddMemoryToPrefs("I work as a software engineer", pref_service_);
+
+  auto result = GetUserMemoryDictFromPrefs(pref_service_);
+
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_CustomizationOnly) {
+  // Only customization is enabled
+  pref_service_.SetBoolean(kBraveAIChatUserCustomizationEnabled, true);
+  pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, false);
+
+  // Set up customization data
+  auto customizations_dict = base::Value::Dict()
+                                 .Set("name", "John Doe")
+                                 .Set("job", "Software Engineer")
+                                 .Set("tone", "Professional")
+                                 .Set("other", "Loves coding");
+  pref_service_.SetDict(kBraveAIChatUserCustomizations,
+                        std::move(customizations_dict));
+
+  // Set up memory data
+  AddMemoryToPrefs("I work as a software engineer", pref_service_);
+
+  auto result = GetUserMemoryDictFromPrefs(pref_service_);
+
+  EXPECT_TRUE(result.has_value());
+  EXPECT_EQ(*result->FindString("name"), "John Doe");
+  EXPECT_EQ(*result->FindString("job"), "Software Engineer");
+  EXPECT_EQ(*result->FindString("tone"), "Professional");
+  EXPECT_EQ(*result->FindString("other"), "Loves coding");
+  EXPECT_FALSE(result->Find("memories"));
+}
+
+TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_MemoryOnly) {
+  // Only memory is enabled
+  pref_service_.SetBoolean(kBraveAIChatUserCustomizationEnabled, false);
+  pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, true);
+
+  // Set up customization data
+  auto customizations_dict = base::Value::Dict()
+                                 .Set("name", "John Doe")
+                                 .Set("job", "Software Engineer")
+                                 .Set("tone", "Professional")
+                                 .Set("other", "Loves coding");
+  pref_service_.SetDict(kBraveAIChatUserCustomizations,
+                        std::move(customizations_dict));
+
+  // Set up memory data
+  auto memories_list = base::Value::List();
+  memories_list.Append("I work as a software engineer");
+  memories_list.Append("I prefer dark mode");
+  pref_service_.SetList(kBraveAIChatUserMemories, std::move(memories_list));
+
+  auto result = GetUserMemoryDictFromPrefs(pref_service_);
+
+  EXPECT_TRUE(result.has_value());
+  EXPECT_FALSE(result->Find("name"));
+  EXPECT_FALSE(result->Find("job"));
+  EXPECT_FALSE(result->Find("tone"));
+  EXPECT_FALSE(result->Find("other"));
+
+  const base::Value::List* memories = result->FindList("memories");
+  EXPECT_TRUE(memories);
+  EXPECT_EQ(memories->size(), 2u);
+  EXPECT_EQ((*memories)[0].GetString(), "I work as a software engineer");
+  EXPECT_EQ((*memories)[1].GetString(), "I prefer dark mode");
+}
+
+TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_BothEnabled) {
+  // Both customization and memory are enabled
+  pref_service_.SetBoolean(kBraveAIChatUserCustomizationEnabled, true);
+  pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, true);
+
+  // Empty prefs should not have any value
+  auto result = GetUserMemoryDictFromPrefs(pref_service_);
+  EXPECT_FALSE(result.has_value());
+
+  // Set up customization data
+  auto customizations_dict = base::Value::Dict()
+                                 .Set("name", "Jane Smith")
+                                 .Set("job", "Designer")
+                                 .Set("tone", "Friendly")
+                                 .Set("other", "Enjoys art");
+  pref_service_.SetDict(kBraveAIChatUserCustomizations,
+                        std::move(customizations_dict));
+
+  // Set up memory data
+  AddMemoryToPrefs("I love creating beautiful designs", pref_service_);
+  AddMemoryToPrefs("I use Brave browser daily", pref_service_);
+
+  result = GetUserMemoryDictFromPrefs(pref_service_);
+
+  EXPECT_TRUE(result.has_value());
+  EXPECT_EQ(*result->FindString("name"), "Jane Smith");
+  EXPECT_EQ(*result->FindString("job"), "Designer");
+  EXPECT_EQ(*result->FindString("tone"), "Friendly");
+  EXPECT_EQ(*result->FindString("other"), "Enjoys art");
+
+  const base::Value::List* memories = result->FindList("memories");
+  ASSERT_TRUE(memories);
+  ASSERT_EQ(memories->size(), 2u);
+  EXPECT_EQ((*memories)[0].GetString(), "I love creating beautiful designs");
+  EXPECT_EQ((*memories)[1].GetString(), "I use Brave browser daily");
+}
+
+TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_EmptyCustomizations) {
+  // Customization enabled but with empty values
+  pref_service_.SetBoolean(kBraveAIChatUserCustomizationEnabled, true);
+  pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, false);
+
+  // Set up empty customization data
+  auto customizations_dict = base::Value::Dict()
+                                 .Set("name", "")
+                                 .Set("job", "")
+                                 .Set("tone", "")
+                                 .Set("other", "");
+  pref_service_.SetDict(kBraveAIChatUserCustomizations,
+                        std::move(customizations_dict));
+
+  auto result = GetUserMemoryDictFromPrefs(pref_service_);
+
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_PartialCustomizations) {
+  // Customization enabled but with only some fields filled
+  pref_service_.SetBoolean(kBraveAIChatUserCustomizationEnabled, true);
+  pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, false);
+
+  // Set up partial customization data
+  auto customizations_dict = base::Value::Dict()
+                                 .Set("name", "Alice")
+                                 .Set("job", "")
+                                 .Set("tone", "Casual")
+                                 .Set("other", "");
+  pref_service_.SetDict(kBraveAIChatUserCustomizations,
+                        std::move(customizations_dict));
+
+  auto result = GetUserMemoryDictFromPrefs(pref_service_);
+
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(*result->FindString("name"), "Alice");
+  EXPECT_EQ(*result->FindString("tone"), "Casual");
+  EXPECT_FALSE(result->Find("job"));
+  EXPECT_FALSE(result->Find("other"));
+}
+
+TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_EmptyMemories) {
+  // Memory enabled but with empty list
+  pref_service_.SetBoolean(kBraveAIChatUserCustomizationEnabled, false);
+  pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, true);
+
+  // Set up empty memory data
+  auto memories_list = base::Value::List();
+  pref_service_.SetList(kBraveAIChatUserMemories, std::move(memories_list));
+
+  auto result = GetUserMemoryDictFromPrefs(pref_service_);
+
+  EXPECT_FALSE(result.has_value());
+}
+
 }  // namespace ai_chat::prefs

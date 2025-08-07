@@ -23,6 +23,8 @@ class AssociatedContentSnapShotObserver
     observation_.Observe(delegate);
   }
 
+  void StopObserving() { observation_.Reset(); }
+
   // AssociatedContentDelegate::Observer
   MOCK_METHOD(void,
               OnDestroyed,
@@ -54,7 +56,7 @@ TEST(AssociatedContentDelegateTest, OnNewPage) {
   delegate.SetTextContent("Content 1");
   delegate.GetContent(base::DoNothing());
 
-  AssociatedContentSnapShotObserver observer;
+  testing::StrictMock<AssociatedContentSnapShotObserver> observer;
   EXPECT_CALL(observer, OnRequestArchive(&delegate))
       .WillOnce([&uuid](AssociatedContentDelegate* delegate) {
         // Observer should get the most up to date content id.
@@ -80,15 +82,13 @@ TEST(AssociatedContentDelegateTest, OnNewPage) {
 
   // UUID should not be changed.
   EXPECT_EQ(delegate.uuid(), uuid);
-
-  testing::Mock::VerifyAndClearExpectations(&observer);
 }
 
 TEST(AssociatedContentDelegateTest, DestroyNotificationShouldBeAbleToSnapshot) {
-  AssociatedContentSnapShotObserver observer;
+  testing::StrictMock<AssociatedContentSnapShotObserver> observer;
   std::string uuid;
   EXPECT_CALL(observer, OnDestroyed)
-      .WillOnce([&uuid](AssociatedContentDelegate* delegate) {
+      .WillOnce([&uuid, &observer](AssociatedContentDelegate* delegate) {
         // In the destroy notification, the observer should have the most up to
         // date content.
         EXPECT_EQ(delegate->title(), u"Brave");
@@ -97,6 +97,7 @@ TEST(AssociatedContentDelegateTest, DestroyNotificationShouldBeAbleToSnapshot) {
         EXPECT_EQ(delegate->cached_page_content(),
                   PageContent("Content 1", false));
         EXPECT_EQ(delegate->content_id(), 5);
+        observer.StopObserving();
       });
 
   {
@@ -115,18 +116,16 @@ TEST(AssociatedContentDelegateTest, DestroyNotificationShouldBeAbleToSnapshot) {
 
     observer.Observe(&delegate);
   }
-
-  testing::Mock::VerifyAndClearExpectations(&observer);
 }
 
 TEST(AssociatedContentDelegateTest, OnTitleChangedShouldProvideNewTitle) {
-  AssociatedContentSnapShotObserver observer;
+  MockAssociatedContent delegate;
+  testing::StrictMock<AssociatedContentSnapShotObserver> observer;
   EXPECT_CALL(observer, OnTitleChanged)
       .WillOnce([](AssociatedContentDelegate* delegate) {
         EXPECT_EQ(delegate->title(), u"Braverer");
       });
 
-  MockAssociatedContent delegate;
   delegate.SetTitle(u"Brave");
   observer.Observe(&delegate);
 

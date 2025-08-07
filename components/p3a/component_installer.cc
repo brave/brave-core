@@ -98,7 +98,9 @@ class P3AComponentInstallerPolicy
 
 void MaybeToggleP3AComponent(ComponentUpdateService* cus,
                              P3AService* p3a_service) {
-  if (!cus || !p3a_service) {
+  if (!cus || !p3a_service ||
+      brave_component_updater::BraveOnDemandUpdater::GetInstance()
+          ->is_component_update_disabled()) {
     return;
   }
 

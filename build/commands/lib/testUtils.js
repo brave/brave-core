@@ -6,6 +6,11 @@
 const fs = require('fs-extra')
 const path = require('path')
 
+// HACK: determines the executable path from the gn target name
+// Alternative: gn desc <buildDir> <target> outputs --format=json
+// TODO(https://github.com/brave/brave-browser/issues/48118): is there a better way of doing this?
+const gnTargetToExecutableName = (str) => str.split(':').at(-1).split('(')[0]
+
 const getTestBinary = (config, suite) => {
   let testBinary = suite
   if (testBinary === 'brave_java_unit_tests') {
@@ -28,16 +33,35 @@ const getChromiumTestsSuites = (config) => {
   return getTestsToRun(config, 'chromium_unit_tests').concat(['browser_tests'])
 }
 
-const getTestsToRun = (config, suite) => {
-  const testDepFile = path.join(config.outputDir, `${suite}.json`)
+const getTestGroupDeps = (testDepFile) => {
   if (fs.existsSync(testDepFile)) {
-    suiteDepNames = JSON.parse(
+    const suiteDepNames = JSON.parse(
       fs.readFileSync(testDepFile, { encoding: 'utf-8' }),
     )
-    return suiteDepNames.map((x) => x.split(':').at(-1))
+    return suiteDepNames.map(gnTargetToExecutableName)
+  } else {
+    return []
+  }
+}
+
+const getTestsToRun = (config, suite) => {
+  const testGroupDeps = getTestGroupDeps(
+    path.join(config.outputDir, `${suite}.json`),
+  )
+
+  const isLinuxCI = config.isCI && config.targetOS === 'linux'
+
+  const ciTests = isLinuxCI
+    ? getTestGroupDeps(path.join(config.outputDir, `${suite}_ci.json`))
+    : []
+
+  const testsToRun = [...testGroupDeps, ...ciTests]
+
+  if (testsToRun.length === 0) {
+    return [suite]
   }
 
-  return [suite]
+  return testsToRun
 }
 
 // Returns a list of paths to files containing all the filters that would apply
@@ -84,8 +108,9 @@ const getApplicableFilters = (config, suite) => {
 }
 
 module.exports = {
+  gnTargetToExecutableName,
   getTestBinary,
-  getChromiumTestsSuites,
   getTestsToRun,
   getApplicableFilters,
+  getChromiumTestsSuites,
 }

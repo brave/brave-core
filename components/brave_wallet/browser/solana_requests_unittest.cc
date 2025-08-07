@@ -7,10 +7,10 @@
 
 #include <optional>
 
-#include "base/strings/stringprintf.h"
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
 
@@ -124,17 +124,17 @@ TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
   ASSERT_EQ(base::test::ParseJsonDict(
                 getTokenAccountsByOwner("pubkey", "base64", "program")),
             base::test::ParseJsonDict(
-                base::StringPrintf(kExpectedJsonStringFormat, "base64")));
+                absl::StrFormat(kExpectedJsonStringFormat, "base64")));
 
   ASSERT_EQ(base::test::ParseJsonDict(
                 getTokenAccountsByOwner("pubkey", "base58", "program")),
             base::test::ParseJsonDict(
-                base::StringPrintf(kExpectedJsonStringFormat, "base58")));
+                absl::StrFormat(kExpectedJsonStringFormat, "base58")));
 
   ASSERT_EQ(base::test::ParseJsonDict(
                 getTokenAccountsByOwner("pubkey", "jsonParsed", "program")),
             base::test::ParseJsonDict(
-                base::StringPrintf(kExpectedJsonStringFormat, "jsonParsed")));
+                absl::StrFormat(kExpectedJsonStringFormat, "jsonParsed")));
 
   EXPECT_CHECK_DEATH(
       getTokenAccountsByOwner("pubkey", "invalid encoding", "program"));

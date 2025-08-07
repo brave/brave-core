@@ -25,9 +25,12 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/brave_channel_info.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_origin/brave_origin_state.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
@@ -40,7 +43,6 @@
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
@@ -61,6 +63,10 @@
 #include "net/base/features.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+#include "brave/browser/ai_chat/ai_chat_agent_profile_manager.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/brave_tor_client_updater.h"
@@ -132,9 +138,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
   p3a_service();
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   histogram_braveizer_ = p3a::HistogramsBraveizer::Create();
-#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   // initialize ads stats helper
   ads_brave_stats_helper();
@@ -148,6 +152,12 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
+
+  // Initialize the Brave Origin state once in the browser process only
+  // This must be done early but only in the browser process, not child
+  // processes
+  BraveOriginState::GetInstance()->Initialize();
+
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,
@@ -182,6 +192,12 @@ void BraveBrowserProcessImpl::Init() {
   // Initializes the internal static data on start up.
   windows_recall::IsWindowsRecallDisabled(local_state());
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  if (ai_chat::features::IsAIChatAgentProfileEnabled()) {
+    CreateAIChatAgentProfileManager();
+  }
+#endif
 }
 
 void BraveBrowserProcessImpl::PreMainMessageLoopRun() {
@@ -202,10 +218,11 @@ void BraveBrowserProcessImpl::StartTearDown() {
   if (ntp_background_images_service_) {
     ntp_background_images_service_->StartTearDown();
   }
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   if (p3a_service_) {
     p3a_service_->StartTeardown();
   }
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  ai_chat_agent_profile_manager_.reset();
 #endif
   brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
   BrowserProcessImpl::StartTearDown();
@@ -382,6 +399,14 @@ void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
   UpdateBraveDarkMode();
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+void BraveBrowserProcessImpl::CreateAIChatAgentProfileManager() {
+  CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
+  ai_chat_agent_profile_manager_ =
+      std::make_unique<ai_chat::AIChatAgentProfileManager>(profile_manager());
+}
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
 tor::BraveTorClientUpdater* BraveBrowserProcessImpl::tor_client_updater() {
   if (tor_client_updater_) {
@@ -420,7 +445,6 @@ void BraveBrowserProcessImpl::OnTorEnabledChanged() {
 #endif
 
 p3a::P3AService* BraveBrowserProcessImpl::p3a_service() {
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   if (p3a_service_) {
     return p3a_service_.get();
   }
@@ -430,9 +454,6 @@ p3a::P3AService* BraveBrowserProcessImpl::p3a_service() {
       p3a::P3AConfig::LoadFromCommandLine());
   p3a_service()->InitCallbacks();
   return p3a_service_.get();
-#else
-  return nullptr;
-#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 
 brave::BraveReferralsService*

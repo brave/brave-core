@@ -19,7 +19,6 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
@@ -28,6 +27,7 @@
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/lib.rs.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
 
@@ -55,7 +55,7 @@ std::optional<std::string> GetExportEncodedJSON(
   if (!protocol) {
     return std::nullopt;
   }
-  std::string json = base::StringPrintf(
+  std::string json = absl::StrFormat(
       "{\"Type\":\"%s\",\"PrivateKey\":\"%s\"}",
       protocol.value() == mojom::FilecoinAddressProtocol::BLS ? "bls"
                                                               : "secp256k1",

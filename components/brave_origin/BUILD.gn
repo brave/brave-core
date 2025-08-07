@@ -1,0 +1,18 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
+source_set("brave_origin") {
+  sources = [
+    "brave_origin_state.cc",
+    "brave_origin_state.h",
+    "features.cc",
+    "features.h",
+  ]
+
+  public_deps = [ "//base" ]
+}

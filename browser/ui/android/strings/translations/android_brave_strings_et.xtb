@@ -196,6 +196,9 @@
 <translation id="5987838417172370108">Aidake parandada Brave'i toote stabiilsust, saates automaatselt diagnostikaaruandeid, kui Brave'i brauser läheb krahhi või hangub.</translation>
 <translation id="7977176350719484850">Hin. andmed\nSalvestatud</translation>
 <translation id="9008534313521214777">Eeldatav\nsäästetud aeg</translation>
+<translation id="8347743943525229984">Lubage Brave'i uuringud</translation>
+<translation id="6022939994702081659">Võimaldab Brave'il näidata uuel vahelehel linke privaatsetele küsitlustele. Küsitlused aitavad meil luua paremaid funktsioone ja mõõta brauseripõhiste reklaamikampaaniate tõhusust.</translation>
+<translation id="7746496306508543965">Lisateave Brave'i uuringute kohta</translation>
 <translation id="410351446219883937">Automaatesitus</translation>
 <translation id="7445411102860286510">Luba saitidel vaigistatud videoid automaatselt esitada (soovitatav)</translation>
 <translation id="7837721118676387834">Lubage vaigistatud videote automaatne esitamine konkreetsel saidil.</translation>
@@ -633,7 +636,6 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="3961126209136843111">Olemasoleva rahakoti importimine</translation>
 <translation id="4811736040444856406">Näita taastamise lauset</translation>
 <translation id="4359319875297001084">Kas importida Brave'i pärand-krüptokontodelt?</translation>
-<translation id="3157931365184549694">Taasta</translation>
 <translation id="5844138175312846408">Teil on juba rahakott?</translation>
 <translation id="2502258949541727762">Enne kui me alustame</translation>
 <translation id="4303748097351941030">Toetatud võrk</translation>
@@ -795,7 +797,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="1426320910664514906">Gaasi ülemmäär</translation>
 <translation id="6389441740143786465">Keela jagamiskeskus</translation>
 <translation id="9065203028668620118">Muuda</translation>
-<translation id="473775607612524610">Värskenda</translation>
 <translation id="479795390141144417">Konto uuendamine nurjus.</translation>
 <translation id="8084782383392198011">Konto nimi ei tohi olla tühi.</translation>
 <translation id="5045550434625856497">Vale salasõna</translation>
