@@ -399,10 +399,14 @@ PageContentsMap AssociatedContentManager::GetCachedContentsMap() const {
   auto meta = GetAssociatedContent();
 
   for (size_t i = 0; i < contents.size(); ++i) {
-    CHECK(meta[i]->conversation_turn_uuid.has_value())
+    auto turn_id = meta[i]->conversation_turn_uuid;
+    DCHECK(turn_id)
         << "This method should only be called when all content has been "
-           "associated with a turn";
-    result[meta[i]->conversation_turn_uuid.value()].push_back(contents[i]);
+           "associated with a turn (i.e. via AssociateUnsentContentWithTurn)";
+    if (!turn_id) {
+      continue;
+    }
+    result[turn_id.value()].push_back(contents[i]);
   }
 
   return result;

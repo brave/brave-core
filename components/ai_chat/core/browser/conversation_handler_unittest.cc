@@ -59,8 +59,8 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "services/network/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest-death-test.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -1883,7 +1883,8 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   if (std::ranges::any_of(
           uploaded_files, [](const mojom::UploadedFilePtr& file) {
             return file->type == mojom::UploadedFileType::kImage ||
-                   file->type == mojom::UploadedFileType::kScreenshot;
+                   file->type == mojom::UploadedFileType::kScreenshot ||
+                   file->type == mojom::UploadedFileType::kPdf;
           })) {
     EXPECT_CALL(client, OnModelDataChanged)
         .WillOnce(base::test::RunClosure(base::BindLambdaForTesting([&]() {
