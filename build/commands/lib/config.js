@@ -226,6 +226,7 @@ const Config = function () {
   this.extraGnArgs = {}
   this.extraGnGenOpts = getEnvConfig(['brave_extra_gn_gen_opts']) || ''
   this.extraNinjaOpts = []
+  this.sisoJobsLimit = undefined
   this.braveAndroidSafeBrowsingApiKey = getEnvConfig([
     'brave_safebrowsing_api_key',
   ])
@@ -1030,6 +1031,11 @@ Config.prototype.updateInternal = function (options) {
 
   if (options.ninja) {
     parseExtraInputs(options.ninja, this.extraNinjaOpts, (opts, key, value) => {
+      // Workaround siso unable to handle -j if REAPI is not configured.
+      if (key === 'j' && this.useSiso) {
+        this.sisoJobsLimit = parseInt(value)
+        return
+      }
       opts.push(`-${key}`)
       opts.push(value)
     })
@@ -1247,8 +1253,9 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       // details:
       // https://chromium.googlesource.com/infra/infra/+/main/go/src/infra/build/siso/docs/environment_variables.md#siso_limits
       const defaultSisoLimits = {
-        remote: kRemoteLimit,
-        rewrap: kRemoteLimit,
+        local: this.sisoJobsLimit,
+        remote: this.sisoJobsLimit || kRemoteLimit,
+        rewrap: this.sisoJobsLimit || kRemoteLimit,
       }
       // Parse SISO_LIMITS from env if set.
       const envSisoLimits = new Map(
