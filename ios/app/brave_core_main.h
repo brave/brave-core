@@ -15,6 +15,7 @@
 @class HTTPSUpgradeExceptionsService;
 @class BraveUserAgentExceptionsIOS;
 @class BraveProfileController;
+@protocol PrefServiceBridge;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,7 +34,6 @@ typedef bool (^BraveCoreLogHandler)(BraveCoreLogSeverity severity,
 
 OBJC_EXPORT
 @interface BraveCoreMain : NSObject
-
 
 @property(nonatomic, readonly)
     HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
@@ -63,6 +63,8 @@ OBJC_EXPORT
                       installationDate:(NSDate*)installDate;
 
 @property(readonly) BraveP3AUtils* p3aUtils;
+
+@property(readonly) id<PrefServiceBridge> localState;
 
 @property(readonly, nullable) BraveProfileController* profileController;
 - (void)loadDefaultProfile:(void (^)(BraveProfileController*))completionHandler;

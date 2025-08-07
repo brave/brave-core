@@ -41,9 +41,11 @@
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "brave/ios/browser/web/brave_web_client.h"
+#include "brave/ios/components/prefs/pref_service_bridge_impl.h"
 #import "build/blink_buildflags.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "ios/chrome/app/startup/provider_registration.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -209,8 +211,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
 - (void)onAppEnterForeground:(NSNotification*)notification {
   auto* context = GetApplicationContext();
-  if (context)
+  if (context) {
     context->OnAppEnterForeground();
+  }
 }
 
 - (void)onAppWillTerminate:(NSNotification*)notification {
@@ -328,6 +331,11 @@ static bool CustomLogHandler(int severity,
                 p3aService:_p3a_service];
   }
   return _p3aUtils;
+}
+
+- (id<PrefServiceBridge>)localState {
+  return [[PrefServiceBridgeImpl alloc]
+      initWithPrefService:GetApplicationContext()->GetLocalState()];
 }
 
 + (bool)initializeICUForTesting {

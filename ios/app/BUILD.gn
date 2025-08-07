@@ -75,6 +75,7 @@ source_set("app") {
     "//brave/ios/browser/skus",
     "//brave/ios/browser/ui/webui",
     "//brave/ios/browser/web",
+    "//brave/ios/components/prefs",
     "//build:blink_buildflags",
     "//components/browser_sync",
     "//components/component_updater",
