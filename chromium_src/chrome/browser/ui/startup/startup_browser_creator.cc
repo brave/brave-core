@@ -56,6 +56,10 @@ BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(
 // If the --tor command line flag was provided, switch the profile to Tor mode
 // and then call the original Launch method.
 //
+// This switch is primarily used for testing and is not the same as using the
+// Tor browser. In particular, you will see some profile-wide network traffic
+// not going through the tor proxy (e.g. adblock list updates, P3A).
+//
 // Note that if the --tor switch is used together with --silent-launch, Tor
 // won't be launched.
 void BraveStartupBrowserCreatorImpl::Launch(
