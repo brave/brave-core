@@ -81,15 +81,13 @@ export const Box = styled.div`
   }
 `
 
-export const ActionBox = styled.div`
+export const ActionBox = styled.div.attrs({
+  'data-theme': 'light'
+})`
   display: flex;
   flex-direction: column;
   grid-gap: 10px;
   padding: 0 40px;
   max-width: 450px;
   margin: 0 auto 40px auto;
-
-  button {
-    color: white;
-  }
 `
