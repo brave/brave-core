@@ -172,54 +172,6 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
-      const sectionTor = document.createElement('template')
-      sectionTor.setAttribute('is', 'dom-if')
-      sectionTor.setAttribute('restamp', 'true')
-      sectionTor.setAttribute('if', '[[showPage_(pageVisibility_.braveTor)]]')
-      sectionTor.content.appendChild(createNestedSectionElement(
-        'tor',
-        'privacy',
-        'braveTor',
-        'settings-brave-tor-subpage',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-      const sectionDataCollection = document.createElement('template')
-      sectionDataCollection.setAttribute('is', 'dom-if')
-      sectionDataCollection.setAttribute('restamp', 'true')
-      sectionDataCollection.
-        setAttribute('if', '[[showPage_(pageVisibility_.braveDataCollection)]]')
-      sectionDataCollection.content.appendChild(createNestedSectionElement(
-        'dataCollection',
-        'privacy',
-        'braveDataCollection',
-        'settings-brave-data-collection-subpage',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-
-      const sectionSurveyPanelist = document.createElement('template')
-      sectionSurveyPanelist.setAttribute('is', 'dom-if')
-      sectionSurveyPanelist.setAttribute('restamp', 'true')
-      sectionSurveyPanelist
-        .setAttribute('if', '[[showPage_(pageVisibility_.surveyPanelist)]]')
-      sectionSurveyPanelist.content.appendChild(createSectionElement(
-        'surveyPanelist',
-        'surveyPanelist',
-        'settings-brave-survey-panelist-page',
-        {
-          prefs: '{{prefs}}'
-        }
-      ))
-
-      // Insert Tor
-      let last = basicPageEl.insertAdjacentElement('afterend', sectionTor)
-      // Insert Data collection
-      last = last.insertAdjacentElement('afterend', sectionDataCollection)
-      // Insert Surevy Panelist
-      last = last.insertAdjacentElement('afterend', sectionSurveyPanelist)
     }
   }
 })
