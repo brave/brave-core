@@ -8,7 +8,6 @@ import {sendWithPromise} from 'chrome://resources/js/cr.js'
 export interface BraveSearchEnginesPageBrowserProxy {
   getPrivateSearchEnginesList(): Promise<any[]> // TODO(petemill): Define the expected type
   setDefaultPrivateSearchEngine(modelIndex: number): void
-  getIsWebDiscoveryHidden(): Promise<boolean>
 }
  
 export class BraveSearchEnginesPageBrowserProxyImpl implements BraveSearchEnginesPageBrowserProxy {
@@ -17,9 +16,6 @@ export class BraveSearchEnginesPageBrowserProxyImpl implements BraveSearchEngine
   }
   setDefaultPrivateSearchEngine(modelIndex: number) {
     chrome.send('setDefaultPrivateSearchEngine', [modelIndex])
-  }
-  getIsWebDiscoveryHidden() {
-    return sendWithPromise('getIsWebDiscoveryHidden')
   }
   static getInstance() {
     return instance || (instance = new BraveSearchEnginesPageBrowserProxyImpl())
