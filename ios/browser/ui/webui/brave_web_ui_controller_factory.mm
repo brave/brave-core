@@ -16,6 +16,7 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/line_chart_ui.h"
@@ -110,7 +111,8 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return &NewWebUIIOS<BraveAccountUI>;
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
-  } else if (url_host == kWalletPageHost) {
+  } else if (url_host == kWalletPageHost &&
+             brave_wallet::features::IsBraveWalletWebUIIOSEnabled()) {
     return &NewWebUIIOS<WalletPageUI>;
   }
   return nullptr;

@@ -324,7 +324,7 @@ public struct CryptoView: View {
       if case .panelUnlockOrSetup = presentingContext, newValue == .crypto {
         dismissAction()
       }
-      if newValue == .crypto {
+      if newValue == .crypto, FeatureList.kBraveWalletWebUIIOS.enabled {
         if case .default(_) = presentingContext {
           if let walletURL = URL(string: "brave://wallet") {
             openWalletURLAction?(walletURL)
