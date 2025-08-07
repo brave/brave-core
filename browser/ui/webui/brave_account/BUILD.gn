@@ -5,6 +5,10 @@
 
 source_set("brave_account") {
   sources = [
+    "allow_brave_account_tag.cc",
+    "allow_brave_account_tag.h",
+    "brave_account_navigation_throttle.cc",
+    "brave_account_navigation_throttle.h",
     "brave_account_ui.cc",
     "brave_account_ui.h",
   ]

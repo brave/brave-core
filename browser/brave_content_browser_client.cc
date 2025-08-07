@@ -44,6 +44,7 @@
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
@@ -1178,6 +1179,9 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
   brave_rewards::RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(registry);
+
+  // Block direct navigations to brave://account unless from settings
+  BraveAccountNavigationThrottle::MaybeCreateAndAdd(registry);
 
   ChromeContentBrowserClient::CreateThrottlesForNavigation(registry);
 
