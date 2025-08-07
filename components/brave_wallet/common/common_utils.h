@@ -70,6 +70,8 @@ bool IsCardanoAccount(const mojom::AccountIdPtr& account_id);
 std::string GetNetworkForCardanoKeyring(const mojom::KeyringId& keyring_id);
 std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id);
 
+bool IsPolkadotKeyring(mojom::KeyringId keyring_id);
+
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
 
 mojom::CoinType GetCoinTypeFromTxDataUnion(

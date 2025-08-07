@@ -47,6 +47,7 @@ class FilTransaction;
 class JsonRpcService;
 class KeyringServiceUnitTest;
 class PasswordEncryptor;
+class PolkadotKeyring;
 class SolanaKeyring;
 class SolanaProviderImplUnitTest;
 class ZCashKeyring;
@@ -433,6 +434,9 @@ class KeyringService : public mojom::KeyringService {
 
   std::unique_ptr<CardanoHDKeyring> cardano_hd_mainnet_keyring_;
   std::unique_ptr<CardanoHDKeyring> cardano_hd_testnet_keyring_;
+
+  std::unique_ptr<PolkadotKeyring> polkadot_hd_mainnet_keyring_;
+  std::unique_ptr<PolkadotKeyring> polkadot_hd_testnet_keyring_;
 
   std::unique_ptr<PasswordEncryptor> encryptor_;
 
