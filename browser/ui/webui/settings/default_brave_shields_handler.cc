@@ -195,10 +195,13 @@ void DefaultBraveShieldsHandler::IsAdControlEnabled(
 
   ControlType setting = brave_shields::GetAdControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  const bool is_ad_control_enabled =
+      setting == ControlType::BLOCK &&
+      !brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+          profile_->GetPrefs());
 
   AllowJavascript();
-  ResolveJavascriptCallback(args[0],
-                            base::Value(setting == ControlType::BLOCK));
+  ResolveJavascriptCallback(args[0], base::Value(is_ad_control_enabled));
 }
 
 void DefaultBraveShieldsHandler::SetAdControlType(
@@ -360,7 +363,8 @@ void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
   CHECK(profile_);
 
   ControlType setting = brave_shields::GetHttpsUpgradeControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL(),
+      profile_->GetPrefs());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(ControlTypeToString(setting)));

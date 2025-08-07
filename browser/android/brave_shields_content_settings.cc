@@ -242,14 +242,16 @@ JNI_BraveShieldsContentSettings_GetHttpsUpgradeControlType(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
+  Profile* profile = Profile::FromJavaObject(j_profile);
+  CHECK(profile);
   brave_shields::ControlType control_type =
       brave_shields::GetHttpsUpgradeControlType(
-          HostContentSettingsMapFactory::GetForProfile(
-              Profile::FromJavaObject(j_profile)),
-          GURL(base::android::ConvertJavaStringToUTF8(env, url)));
+          HostContentSettingsMapFactory::GetForProfile(profile),
+          GURL(base::android::ConvertJavaStringToUTF8(env, url)),
+          profile->GetPrefs());
 
-  return base::android::ConvertUTF8ToJavaString(env,
-      brave_shields::ControlTypeToString(control_type));
+  return base::android::ConvertUTF8ToJavaString(
+      env, brave_shields::ControlTypeToString(control_type));
 }
 
 base::android::ScopedJavaLocalRef<jstring>

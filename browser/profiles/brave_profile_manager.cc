@@ -74,7 +74,7 @@ void MigrateHttpsUpgradeSettings(Profile* profile) {
     }
   } else {
     // Migrate backwards from HTTPS Upgrade Strict setting to HTTPS-Only Mode.
-    if (brave_shields::GetHttpsUpgradeControlType(map, GURL()) ==
+    if (brave_shields::GetHttpsUpgradeControlType(map, GURL(), prefs) ==
         ControlType::BLOCK) {
       prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
       brave_shields::SetHttpsUpgradeControlType(

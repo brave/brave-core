@@ -81,7 +81,7 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
       profile->GetPrefs(), ads_service, history_service,
       profile->GetURLLoaderFactory(),
       std::make_unique<DirectFeedFetcherDelegateImpl>(
-          host_content_settings_map));
+          profile->GetPrefs(), host_content_settings_map));
 }
 
 bool BraveNewsControllerFactory::ServiceIsNULLWhileTesting() const {

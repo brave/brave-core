@@ -752,7 +752,13 @@ void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
 }
 
 ControlType GetHttpsUpgradeControlType(HostContentSettingsMap* map,
-                                       const GURL& url) {
+                                       const GURL& url,
+                                       PrefService* pref_service) {
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
+    // HTTPS Only (prefer https)
+    return ControlType::BLOCK_THIRD_PARTY;
+  }
+
   if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
     // No upgrades happen for non-http(s) URLs.
     return ControlType::ALLOW;
@@ -778,7 +784,8 @@ bool ShouldUpgradeToHttps(
     HostContentSettingsMap* map,
     const GURL& url,
     https_upgrade_exceptions::HttpsUpgradeExceptionsService*
-        https_upgrade_exceptions_service) {
+        https_upgrade_exceptions_service,
+    PrefService* pref_service) {
   // Don't upgrade if we don't have an exceptions service.
   if (!https_upgrade_exceptions_service) {
     return false;
@@ -794,7 +801,8 @@ bool ShouldUpgradeToHttps(
   if (!GetBraveShieldsEnabled(map, url)) {
     return false;
   }
-  const ControlType control_type = GetHttpsUpgradeControlType(map, url);
+  const ControlType control_type =
+      GetHttpsUpgradeControlType(map, url, pref_service);
   // Always upgrade for Strict HTTPS Upgrade.
   if (control_type == ControlType::BLOCK) {
     return true;
@@ -807,9 +815,12 @@ bool ShouldUpgradeToHttps(
   return false;
 }
 
-bool ShouldForceHttps(HostContentSettingsMap* map, const GURL& url) {
+bool ShouldForceHttps(HostContentSettingsMap* map,
+                      const GURL& url,
+                      PrefService* pref_service) {
   return GetBraveShieldsEnabled(map, url) &&
-         GetHttpsUpgradeControlType(map, url) == ControlType::BLOCK;
+         GetHttpsUpgradeControlType(map, url, pref_service) ==
+             ControlType::BLOCK;
 }
 
 void SetNoScriptControlType(HostContentSettingsMap* map,

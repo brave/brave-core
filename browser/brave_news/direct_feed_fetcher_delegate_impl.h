@@ -14,12 +14,14 @@ class HttpsUpgradeExceptionsService;
 }  // namespace https_upgrade_exceptions
 
 class HostContentSettingsMap;
+class PrefService;
 
 namespace brave_news {
 
 class DirectFeedFetcherDelegateImpl : public DirectFeedFetcher::Delegate {
  public:
   explicit DirectFeedFetcherDelegateImpl(
+      PrefService* prefs,
       HostContentSettingsMap* host_content_settings_map);
   ~DirectFeedFetcherDelegateImpl() override;
 
@@ -34,6 +36,7 @@ class DirectFeedFetcherDelegateImpl : public DirectFeedFetcher::Delegate {
   base::WeakPtr<DirectFeedFetcher::Delegate> AsWeakPtr() override;
 
  private:
+  raw_ptr<PrefService> prefs_;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_;
   raw_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
       https_upgrade_exceptions_service_;

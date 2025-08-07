@@ -14,8 +14,10 @@
 namespace brave_news {
 
 DirectFeedFetcherDelegateImpl::DirectFeedFetcherDelegateImpl(
+    PrefService* prefs,
     HostContentSettingsMap* host_content_settings_map)
-    : host_content_settings_map_(host_content_settings_map),
+    : prefs_(prefs),
+      host_content_settings_map_(host_content_settings_map),
       https_upgrade_exceptions_service_(
           g_brave_browser_process->https_upgrade_exceptions_service()) {
   CHECK(host_content_settings_map_);
@@ -28,9 +30,10 @@ DirectFeedFetcher::Delegate::HTTPSUpgradeInfo
 DirectFeedFetcherDelegateImpl::GetURLHTTPSUpgradeInfo(const GURL& url) {
   HTTPSUpgradeInfo info;
   info.should_upgrade = brave_shields::ShouldUpgradeToHttps(
-      host_content_settings_map_, url, https_upgrade_exceptions_service_);
+      host_content_settings_map_, url, https_upgrade_exceptions_service_,
+      prefs_);
   info.should_force =
-      brave_shields::ShouldForceHttps(host_content_settings_map_, url);
+      brave_shields::ShouldForceHttps(host_content_settings_map_, url, prefs_);
   return info;
 }
 

@@ -32,7 +32,7 @@ bool NormalWindowHttpsOnly(content::NavigationHandle& handle,
   const GURL& request_url = handle.GetURL();
   HostContentSettingsMap* map =
       HostContentSettingsMapFactory::GetForProfile(profile);
-  return brave_shields::ShouldForceHttps(map, request_url);
+  return brave_shields::ShouldForceHttps(map, request_url, profile->GetPrefs());
 }
 
 }  // namespace

@@ -94,7 +94,7 @@
   <div hidden="[[!isHttpsByDefaultEnabled_]]" class="settings-box">
     <div class="start">$i18n{httpsUpgradeControlLabel}</div>
     <select id="httpsUpgradeControlType" class="md-select"
-        on-change="onHttpsUpgradeControlChange_">
+        on-change="onHttpsUpgradeControlChange_" disabled="[[isAdBlockOnlyModeEnabled_]]">
       <template is="dom-repeat" items="[[httpsUpgradeControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, httpsUpgradeControlType_)]]">
@@ -153,7 +153,8 @@
     label="$i18n{forgetFirstPartyStorageLabel}"
     sub-label="$i18n{forgetFirstPartyStorageSubLabel}"
     on-settings-boolean-control-change="onForgetFirstPartyStorageToggleChange_"
-    pref="[[isForgetFirstPartyStorageEnabled_]]">
+    pref="[[isForgetFirstPartyStorageEnabled_]]"
+    disabled="[[isAdBlockOnlyModeEnabled_]]">
   </settings-toggle-button>
   <template is="dom-if" if="[[isDeAmpFeatureEnabled_]]">
     <settings-toggle-button

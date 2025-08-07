@@ -253,7 +253,7 @@ void PageMetrics::ReportPagesLoaded() {
 void PageMetrics::ReportFailedHTTPSUpgrades() {
   brave_shields::ControlType https_upgrade_settings =
       brave_shields::GetHttpsUpgradeControlType(host_content_settings_map_,
-                                                GURL());
+                                                GURL(), profile_prefs_);
   if (https_upgrade_settings == brave_shields::ControlType::ALLOW) {
     if (local_state_->HasPrefPath(
             kMiscMetricsFailedHTTPSUpgradeMetricAddedTime)) {

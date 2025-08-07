@@ -388,7 +388,8 @@ bool BraveShieldsTabHelper::GetReduceLanguageEnabled() const {
 
 HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
   ControlType control_type = brave_shields::GetHttpsUpgradeControlType(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL(),
+      GetPrefs(web_contents()));
   if (control_type == ControlType::ALLOW) {
     return HttpsUpgradeMode::DISABLED_MODE;
   } else if (control_type == ControlType::BLOCK) {

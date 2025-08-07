@@ -125,13 +125,17 @@ void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
                                 const GURL& url,
                                 PrefService* local_state = nullptr);
 ControlType GetHttpsUpgradeControlType(HostContentSettingsMap* map,
-                                       const GURL& url);
+                                       const GURL& url,
+                                       PrefService* pref_service);
 bool ShouldUpgradeToHttps(
     HostContentSettingsMap* map,
     const GURL& url,
     https_upgrade_exceptions::HttpsUpgradeExceptionsService*
-        https_upgrade_exceptions_service);
-bool ShouldForceHttps(HostContentSettingsMap* map, const GURL& url);
+        https_upgrade_exceptions_service,
+    PrefService* pref_service);
+bool ShouldForceHttps(HostContentSettingsMap* map,
+                      const GURL& url,
+                      PrefService* pref_service);
 
 bool IsShowStrictFingerprintingModeEnabled();
 
