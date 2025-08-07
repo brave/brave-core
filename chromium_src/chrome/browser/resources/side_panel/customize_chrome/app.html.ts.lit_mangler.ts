@@ -77,3 +77,24 @@ mangle(
   },
   (template) => template.text.includes('sp-heading'),
 )
+
+// Add Brave Midnight(Darker) theme option
+mangle(
+  (element: DocumentFragment) => {
+    const appearance = element.querySelector('#appearance')
+    if (!appearance) {
+      throw new Error('[Customize Chrome] #appearance is gone.')
+    }
+
+    appearance.insertAdjacentHTML(
+      'beforeend',
+      /* html */ `
+      <brave-darker-theme-toggle ?hidden="\${
+        // @ts-expect-error This property is added by the app.ts file.
+        !this.shouldShowDarkerThemeToggle_
+      }"></brave-darker-theme-toggle>`
+    )
+  },
+  (template) => template.text.includes('id="appearance"'),
+)
+

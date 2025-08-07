@@ -10,6 +10,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/color/features.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -453,8 +454,18 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsWin | kOsMac | kOsLinux,                                          \
           FEATURE_VALUE_TYPE(tabs::features::kBraveTreeTab),                   \
       })
+
+#define BRAVE_MIDNIGHT_THEME_FEATURE_ENTRIES                    \
+  EXPAND_FEATURE_ENTRIES({                                      \
+      "brave-midnight-theme",                                   \
+      "Brave Midnight Theme",                                   \
+      "Enables the Brave Midnight(Darker) theme",               \
+      kOsWin | kOsMac | kOsLinux,                               \
+      FEATURE_VALUE_TYPE(color::features::kBraveMidnightTheme), \
+  })
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES
+#define BRAVE_MIDNIGHT_THEME_FEATURE_ENTRIES
 #endif
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
@@ -1141,6 +1152,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
+  BRAVE_MIDNIGHT_THEME_FEATURE_ENTRIES                                         \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \
