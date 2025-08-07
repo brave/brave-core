@@ -19,6 +19,8 @@ OBJC_EXPORT const CWVUserAgentType CWVUserAgentTypeAutomatic;
 OBJC_EXPORT const CWVUserAgentType CWVUserAgentTypeMobile;
 OBJC_EXPORT const CWVUserAgentType CWVUserAgentTypeDesktop;
 
+@class CWVBackForwardListItem;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Adds additional functionality to CWVWebView that is not be supported out
@@ -45,11 +47,17 @@ CWV_EXPORT
 /// The last time that the web view was active
 @property(readonly) NSDate* lastActiveTime;
 
+/// Returns a list of all non-redirected NavigationItems whose index precedes
+/// or follows the current index.
+@property(readonly) NSArray<CWVBackForwardListItem*>* backList;
+@property(readonly) NSArray<CWVBackForwardListItem*>* forwardList;
+
 #pragma mark -
 
 /// Creates a PDF of the current page
 ///
-/// Equivalent of -[WKWebView createPDFWithConfiguration:completionHandler:]
+/// Equivalent of -[WKWebView
+/// createPDFWithConfiguration:completionHandler:]
 - (void)createFullPagePDF:(void (^)(NSData* _Nullable))completionHandler;
 
 /// Whether or not you can create a snapshot using `takeSnapshotWithRect`

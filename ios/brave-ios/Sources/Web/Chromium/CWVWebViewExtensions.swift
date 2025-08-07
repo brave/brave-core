@@ -6,32 +6,6 @@
 import BraveCore
 import Foundation
 
-// Adds Sequence conformance to the `CWVBackForwardListItemArray` which under the hood is not
-// actually an `NSArray` and only conforms to the `NSFastEnumeration` protocol
-extension CWVBackForwardListItemArray: @retroactive Sequence {
-  public typealias Element = CWVBackForwardListItem
-
-  // A custom Iterator is used because `NSFastEnumerationIterator.Element` is `Any`, and we can't
-  // specialize it.
-  public struct Iterator: IteratorProtocol {
-    public typealias Element = CWVBackForwardListItem
-
-    private var enumerator: NSFastEnumerationIterator
-
-    fileprivate init(_ enumerable: CWVBackForwardListItemArray) {
-      self.enumerator = NSFastEnumerationIterator(enumerable)
-    }
-
-    public mutating func next() -> Element? {
-      return enumerator.next() as? Element
-    }
-  }
-
-  public func makeIterator() -> Iterator {
-    Iterator(self)
-  }
-}
-
 // Helper types to properly discern between core types and qualifiers within a PageTransition
 // mimics ui/base/page_transition_types.cc
 extension CWVNavigationType {
