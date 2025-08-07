@@ -459,7 +459,8 @@ void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
   CHECK(profile_);
 
   const bool result = brave_shields::GetForgetFirstPartyStorageEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL(),
+      profile_->GetPrefs());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(result));

@@ -312,10 +312,12 @@ jboolean JNI_BraveShieldsContentSettings_GetForgetFirstPartyStorageEnabled(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
+  Profile* profile = Profile::FromJavaObject(j_profile);
+  CHECK(profile);
   return brave_shields::GetForgetFirstPartyStorageEnabled(
-      HostContentSettingsMapFactory::GetForProfile(
-          Profile::FromJavaObject(j_profile)),
-      GURL(base::android::ConvertJavaStringToUTF8(env, url)));
+      HostContentSettingsMapFactory::GetForProfile(profile),
+      GURL(base::android::ConvertJavaStringToUTF8(env, url)),
+      profile->GetPrefs());
 }
 
 }  // namespace android

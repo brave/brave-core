@@ -875,7 +875,12 @@ void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
 }
 
 bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
-                                       const GURL& url) {
+                                       const GURL& url,
+                                       PrefService* pref_service) {
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
+    return false;
+  }
+
   ContentSetting setting = map->GetContentSetting(
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
 

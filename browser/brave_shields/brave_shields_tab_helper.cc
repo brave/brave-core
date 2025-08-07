@@ -415,7 +415,8 @@ bool BraveShieldsTabHelper::GetNoScriptEnabled() {
 
 bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
   return brave_shields::GetForgetFirstPartyStorageEnabled(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL(),
+      GetPrefs(web_contents()));
 }
 
 void BraveShieldsTabHelper::SetAdBlockMode(AdBlockMode mode) {
