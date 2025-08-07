@@ -42,7 +42,7 @@ void TabUIHelper::UpdateLastOrigin() {
   // If the origin has changed since the last time we got the title, reset the
   // custom title. This is to ensure that the custom title is not stale.
   const auto origin =
-      url::Origin::Create(web_contents()->GetLastCommittedURL());
+      web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   if (last_origin_.IsSameOriginWith(origin)) {
     return;
   }
