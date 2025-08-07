@@ -12,6 +12,7 @@
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -319,6 +320,8 @@ TEST_F(ListActionModifiersUnitTest,
   ASSERT_TRUE(brave_wallet::IsNativeWalletEnabled());
   ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
       Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+  ASSERT_TRUE(
+      !prefs()->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
 
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       *web_contents_, GetBasicActions());
@@ -330,10 +333,11 @@ TEST_F(ListActionModifiersUnitTest,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
                   EqId(ActionId::kShowVPN),
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-                  EqId(ActionId::kDevTools), EqId(ActionId::kShowReward)));
+                  EqId(ActionId::kDevTools), EqId(ActionId::kShowReward),
+                  EqId(ActionId::kShowBraveNews)));
 }
 
-TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories) {
+TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_Rewards) {
   // Create a vector of categories
   std::vector<side_panel::customize_chrome::mojom::CategoryPtr> categories;
 
@@ -353,6 +357,9 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories) {
   // added
   prefs()->SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
                           base::Value(true));
+  // Disables brave news to ensure it doesn't affect the result
+  prefs()->SetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy, true);
+
   ASSERT_TRUE(
       prefs()->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy));
   ASSERT_FALSE(brave_rewards::IsSupportedForProfile(
@@ -364,5 +371,44 @@ TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories) {
   it = std::ranges::find(
       categories, side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
       &side_panel::customize_chrome::mojom::Category::id);
+  EXPECT_EQ(it, categories.end());
+}
+
+TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_BraveNews) {
+  // Create a vector of categories
+  std::vector<side_panel::customize_chrome::mojom::CategoryPtr> categories;
+
+  // Append Brave specific categories
+  categories = customize_chrome::AppendBraveSpecificCategories(
+      *web_contents_, std::move(categories));
+
+  // Verify "Address bar" category is added when Brave News is enabled
+  ASSERT_FALSE(
+      prefs()->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+  auto it = std::ranges::find(
+      categories, side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
+      &side_panel::customize_chrome::mojom::Category::id);
+  EXPECT_NE(it, categories.end());
+
+  // When Brave News is disabled, check if Address bar category behavior
+  prefs()->SetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy, true);
+  ASSERT_TRUE(
+      prefs()->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+
+  // Also disable Brave Rewards to ensure only Brave News affects the result
+  prefs()->SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                          base::Value(true));
+  ASSERT_FALSE(brave_rewards::IsSupportedForProfile(
+      Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+
+  categories.clear();
+  categories = customize_chrome::AppendBraveSpecificCategories(
+      *web_contents_, std::move(categories));
+  it = std::ranges::find(
+      categories, side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
+      &side_panel::customize_chrome::mojom::Category::id);
+
+  // Address bar category should not be added when both Rewards and News are
+  // disabled
   EXPECT_EQ(it, categories.end());
 }

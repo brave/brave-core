@@ -41,6 +41,11 @@ void AddActionsForAddressBarCategory(Profile* profile,
   if (brave_rewards::IsSupportedForProfile(profile)) {
     brave_actions.push_back(kShowReward);
   }
+
+  if (!profile->GetPrefs()->GetBoolean(
+          brave_news::prefs::kBraveNewsDisabledByPolicy)) {
+    brave_actions.push_back(kShowBraveNews);
+  }
 }
 
 }  // namespace
@@ -147,6 +152,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   //   kShowVPN,
   // Address bar
   //   kShowReward
+  //   kShowBraveNews
   auto* prefs = user_prefs::UserPrefs::Get(web_contents.GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
 
