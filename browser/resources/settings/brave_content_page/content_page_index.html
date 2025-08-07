@@ -14,6 +14,17 @@
   <settings-brave-content-content slot="view" id="parent" prefs="{{prefs}}">
   </settings-brave-content-content>
 
+  <if expr="enable_containers">
+    <template is="dom-if" if="[[isContainersEnabled_]]">
+      <settings-brave-content-containers
+        id="containers"
+        slot="view"
+        prefs="{{prefs}}"
+        in-search-mode="[[inSearchMode_]]">
+      </settings-brave-content-containers>
+    </template>
+  </if>
+
   <settings-brave-content-playlist
     id="playlist"
     slot="view"
