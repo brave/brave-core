@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h b/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h
-index 060b0f1183a4e4d32dadb7cf607266d0355c2643..83d10c5ef414c53d30d3396f43cd624e4bd76736 100644
+index 4453bf15225aa4983792594b44f5847c5b768ab3..38e683faef2ac403d05dec96250434670906c9c0 100644
 --- a/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h
 +++ b/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h
 @@ -722,6 +722,7 @@ struct ToV8Traits<IDLNullable<IDLSequence<T>>> {

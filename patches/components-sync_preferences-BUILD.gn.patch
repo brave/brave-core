@@ -1,5 +1,5 @@
 diff --git a/components/sync_preferences/BUILD.gn b/components/sync_preferences/BUILD.gn
-index d741a1624ea0b2bcb13862750db41fc06f29b345..b4bace93bba7a1100af7fe950ceaf974d81a8934 100644
+index 094d0195f79d8a3646151c677dfaee29e7961de0..1e14d2c687f65ba8c7fc7cc25edecc42628e8e87 100644
 --- a/components/sync_preferences/BUILD.gn
 +++ b/components/sync_preferences/BUILD.gn
 @@ -68,6 +68,7 @@ source_set("common_syncable_prefs_database") {

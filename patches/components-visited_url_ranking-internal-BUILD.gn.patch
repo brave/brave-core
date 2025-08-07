@@ -1,5 +1,5 @@
 diff --git a/components/visited_url_ranking/internal/BUILD.gn b/components/visited_url_ranking/internal/BUILD.gn
-index 0dcd1f4ebe3789cd53425f09ea3d6f25095733f2..09784ef3219571fa6ced4a9b01598bfeeb9b6dd5 100644
+index abe26cb61a9ac333bd37a9ccbe0ba53e5959dbcd..4465b92927397c034868d89f5f2327178d261a4c 100644
 --- a/components/visited_url_ranking/internal/BUILD.gn
 +++ b/components/visited_url_ranking/internal/BUILD.gn
 @@ -121,6 +121,7 @@ source_set("test_support") {

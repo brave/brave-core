@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/net/proxy_config_monitor.h b/chrome/browser/net/proxy_config_monitor.h
-index c808604a9b586eb5524a10b7561987e5b29747ea..3403e25901b0f9b91e849adf9876d5cfa9d2a38e 100644
+index 6c060b52d25799c6a7c4e4ee86ed7490060560d6..1776145eb5b604ff1e13bb8319f4a9ebb9293adf 100644
 --- a/chrome/browser/net/proxy_config_monitor.h
 +++ b/chrome/browser/net/proxy_config_monitor.h
 @@ -66,7 +66,7 @@ class ProxyConfigMonitor : public net::ProxyConfigService::Observer,

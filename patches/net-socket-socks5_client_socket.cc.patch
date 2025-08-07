@@ -1,5 +1,5 @@
 diff --git a/net/socket/socks5_client_socket.cc b/net/socket/socks5_client_socket.cc
-index a908a11fa618d1258dc2f4dc8e733c1a3c7f99ff..19df92b59902376cc94a76fbbff466a8daddd82e 100644
+index 3eeeb7e204c3d0040ae9277fc1eecb4fb5b684de..2f68f69d889f3192ba814e346afb96fcaea2bf96 100644
 --- a/net/socket/socks5_client_socket.cc
 +++ b/net/socket/socks5_client_socket.cc
 @@ -224,6 +224,7 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {

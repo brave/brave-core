@@ -1,8 +1,8 @@
 diff --git a/build/config/unsafe_buffers_paths.txt b/build/config/unsafe_buffers_paths.txt
-index 94ce1c647dfed13b6ad2c8e602affc1b3dc18b18..346512aab8e816a991be44f8afa7e10c79638bb9 100644
+index 57c1d12d185851120de1170d50822591f7c928ec..ee5cbe8e3ba5f2704c52da0bf3395b9b4212a7a2 100644
 --- a/build/config/unsafe_buffers_paths.txt
 +++ b/build/config/unsafe_buffers_paths.txt
-@@ -28,3 +28,9 @@
+@@ -29,3 +29,9 @@
  -ui/gl/  # Unsafe generated files.
  -url/third_party/
  -v8/

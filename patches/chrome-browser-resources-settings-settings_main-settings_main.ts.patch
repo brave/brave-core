@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/settings_main/settings_main.ts b/chrome/browser/resources/settings/settings_main/settings_main.ts
-index 5abd2dbc4e24509977b4f62f47f668a27ed9c951..bc7ab849a0f5484814902c477a452a06163536c0 100644
+index 95d66322dfa8709392e67307af231a2694f9db15..deb30e8db88ddfda832f600b11366cbb537f14ee 100644
 --- a/chrome/browser/resources/settings/settings_main/settings_main.ts
 +++ b/chrome/browser/resources/settings/settings_main/settings_main.ts
-@@ -48,7 +48,7 @@ import type {SettingsPlugin} from './settings_plugin.js';
+@@ -49,7 +49,7 @@ import type {SettingsPlugin} from './settings_plugin.js';
  
  function getTopLevelRoute() {
    if (!loadTimeData.getBoolean('isGuest')) {

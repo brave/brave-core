@@ -1,5 +1,5 @@
 diff --git a/components/translate/core/common/BUILD.gn b/components/translate/core/common/BUILD.gn
-index 3bfbf5da1cec24cfbdecf9d93e893ce3b39e7c2a..e117994d055e71480caf690f61e4035dd4ef7e66 100644
+index 8ee97fbf459d7516c9037ca8da7afb1c35aaee01..d50c360f37a77a37b6832b7547a4fea06e5f5b68 100644
 --- a/components/translate/core/common/BUILD.gn
 +++ b/components/translate/core/common/BUILD.gn
 @@ -27,6 +27,8 @@ static_library("common") {

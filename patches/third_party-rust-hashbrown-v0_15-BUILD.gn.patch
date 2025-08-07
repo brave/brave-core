@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/hashbrown/v0_15/BUILD.gn b/third_party/rust/hashbrown/v0_15/BUILD.gn
-index 73a328a34997add34ea16bb2d0e92ecffbea4f77..5b402013c5c56af813c46f4b525b925b7e6e44f8 100644
+index 4f59f945b9b0e089def1cd79e37115da1a1f3800..e983926a805fb918970b5b3e46153bda63c4639e 100644
 --- a/third_party/rust/hashbrown/v0_15/BUILD.gn
 +++ b/third_party/rust/hashbrown/v0_15/BUILD.gn
 @@ -45,6 +45,7 @@ cargo_crate("lib") {
