@@ -1,0 +1,12 @@
+diff --git a/components/omnibox/browser/featured_search_provider.cc b/components/omnibox/browser/featured_search_provider.cc
+index 0f553dc87f01c02cac5ef8835b6bc8f30395ab18..bf29bc050e061570c7b042d03316a8ac02cd5c58 100644
+--- a/components/omnibox/browser/featured_search_provider.cc
++++ b/components/omnibox/browser/featured_search_provider.cc
+@@ -289,6 +289,7 @@ void FeaturedSearchProvider::AddFeaturedKeywordMatches(
+   for (TemplateURL* turl : turls) {
+     if (turl->starter_pack_id() > 0 &&
+         turl->is_active() == TemplateURLData::ActiveStatus::kTrue) {
++      BRAVE_FEATURED_SEARCH_PROVIDER_ADD_FEATURED_KEYWORD_MATCHES
+       // Skip @gemini if feature disabled.
+       if (turl->starter_pack_id() == template_url_starter_pack_data::kGemini &&
+           !OmniboxFieldTrial::IsStarterPackExpansionEnabled()) {
