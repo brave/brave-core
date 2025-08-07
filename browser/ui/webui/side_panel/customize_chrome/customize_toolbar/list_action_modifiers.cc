@@ -115,7 +115,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
     actions.insert(incognito_action_it + 1, std::move(tab_search_action));
   }
 
-  // 2. Update icons for existing actions.
+  // 2. Update icons/strings for existing actions.
   const auto& cp = web_contents.GetColorProvider();
 
   float scale_factor = 1.0f;
@@ -143,9 +143,19 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
         get_icon_url(kLeoProductPrivateWindowIcon);
   }
 
+  {
+    auto bookmark_panel_it =
+        std::ranges::find(actions, ActionId::kShowBookmarks, get_action_id);
+    CHECK(bookmark_panel_it != actions.end())
+        << "Bookmark panel action not found";
+    (*bookmark_panel_it)->display_name =
+        l10n_util::GetStringUTF8(IDS_CUSTOMIZE_TOOLBAR_TOGGLE_BOOKMARKS_PANEL);
+  }
+
   // 3. Add Brave specific actions.
   // Brave specific actions
   // Navigation
+  //   kShowAddBookmarkButton,
   //   kShowSidePanel,
   //   kShowWallet,
   //   kShowAIChat,
@@ -157,6 +167,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   CHECK(prefs) << "Browser context does not have prefs";
 
   std::vector<BraveAction> brave_actions;
+  brave_actions.push_back(kShowAddBookmarkButton);
   brave_actions.push_back(kShowSidePanelAction);
 
   // Followings are dynamic actions: anchor to TabSearchButton and append to
