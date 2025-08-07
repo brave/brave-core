@@ -16,6 +16,8 @@ import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
 import { AttachmentUploadItems, AttachmentSpinnerItem, AttachmentPageItem } from '../attachment_item'
 import usePromise from '$web-common/usePromise'
+import { isImageFile } from '../../constants/file_types'
+import { convertFileToUploadedFile } from '../../utils/file_utils'
 
 type Props = Pick<
   ConversationContext,
@@ -43,6 +45,7 @@ type Props = Pick<
   | 'disassociateContent'
   | 'associateDefaultContent'
   | 'setShowAttachments'
+  | 'attachImages'
 > &
   Pick<AIChatContext,
     | 'isMobile'
@@ -109,6 +112,34 @@ function InputBox(props: InputBoxProps) {
       props.context.selectedActionType
     ) {
       props.context.resetSelectedActionType()
+    }
+  }
+
+  const handleOnPaste = async (
+    e: React.ClipboardEvent<HTMLTextAreaElement>
+  ) => {
+    const clipboardData = e.clipboardData
+
+    if (!clipboardData || clipboardData.files.length === 0) {
+      return
+    }
+
+    const files = Array.from(clipboardData.files).filter(isImageFile)
+
+    if (files.length === 0) {
+      return
+    }
+
+    // Prevent the default paste behavior for images
+    e.preventDefault()
+
+    try {
+      const uploadedFiles = await Promise.all(
+        files.map(file => convertFileToUploadedFile(file))
+      )
+      props.context.attachImages(uploadedFiles)
+    } catch (error) {
+      // Silently fail - error will be handled by the upload system
     }
   }
 
@@ -199,6 +230,7 @@ function InputBox(props: InputBoxProps) {
           placeholder={placeholderText}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
+          onPaste={handleOnPaste}
           value={props.context.inputText}
           autoFocus
           rows={1}
