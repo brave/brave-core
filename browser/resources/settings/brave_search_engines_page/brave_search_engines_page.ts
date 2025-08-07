@@ -50,9 +50,6 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
       // The label of the confirmation toast that is displayed when the user
       // chooses a default private search engine.
       confirmationToastLabel_: String,
-
-      // Whether web discovery is hidden from settings.
-      isWebDiscoveryHidden_: Boolean
     }
   }
 
@@ -60,7 +57,6 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   private declare showPrivateSearchEngineListDialog_: boolean
   private declare defaultPrivateSearchEngine_: SearchEngine|null
   private declare confirmationToastLabel_: string
-  private declare isWebDiscoveryHidden_: boolean
 
   browserProxy_ = BraveSearchEnginesPageBrowserProxyImpl.getInstance()
 
@@ -74,14 +70,6 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
     this.browserProxy_.getPrivateSearchEnginesList().then(updatePrivateSearchEngines)
     this.addWebUiListener(
       'private-search-engines-changed', updatePrivateSearchEngines)
-
-    // Initialize web discovery hidden status
-    const updateWebDiscoveryHidden = (hidden: boolean) => {
-      this.isWebDiscoveryHidden_ = hidden
-    }
-
-    this.browserProxy_.getIsWebDiscoveryHidden().then(updateWebDiscoveryHidden)
-    this.addWebUiListener('web-discovery-hidden-changed', updateWebDiscoveryHidden)
   }
 
   override currentRouteChanged() {
@@ -114,17 +102,15 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
     // When default search engine is enforced, configured provider is not used.
     // If we install search provider extension, that extension will be used on normal and
     // private(tor) window. So, just hide this option.
-    return !loadTimeData.getBoolean('isGuest') && !this.isDefaultSearchEngineEnforced_(prefs)
+    return !loadTimeData.getBoolean('isGuest') && !this.isPrefManaged_(prefs)
+  }
+
+  private isPrefManaged_(pref: chrome.settingsPrivate.PrefObject) {
+    return pref.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED
   }
 
   private isWebDiscoveryNativeEnabled_() {
     return loadTimeData.getBoolean('isWebDiscoveryNativeEnabled');
-  }
-
-  private isDefaultSearchEngineEnforced_(
-    prefs: chrome.settingsPrivate.PrefObject)
-  {
-    return prefs.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED
   }
 
   private computeDefaultPrivateSearchEngine_() {
