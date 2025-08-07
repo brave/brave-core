@@ -8,7 +8,6 @@
 #include <initializer_list>
 
 #include "brave/browser/brave_browser_features.h"
-#include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/updater/buildflags.h"
@@ -261,14 +260,14 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       ENABLE_PLAYLIST,                                                 \
       EXPAND_FEATURE_ENTRIES(                                          \
           {                                                            \
-              kPlaylistFeatureInternalName,                            \
+              "playlist",                                              \
               "Playlist",                                              \
               "Enables Playlist",                                      \
               kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
               FEATURE_VALUE_TYPE(playlist::features::kPlaylist),       \
           },                                                           \
           {                                                            \
-              kPlaylistFakeUAFeatureInternalName,                      \
+              "playlist-fake-ua",                                      \
               "PlaylistFakeUA",                                        \
               "Use fake UA for playlist",                              \
               kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
@@ -440,7 +439,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           MULTI_VALUE_TYPE(kVerticalTabCollapseDelayChoices),                  \
       },                                                                       \
       {                                                                        \
-          kSplitViewFeatureInternalName,                                       \
+          "brave-split-view",                                                  \
           "Enable split view",                                                 \
           "Enables split view",                                                \
           kOsWin | kOsMac | kOsLinux,                                          \
