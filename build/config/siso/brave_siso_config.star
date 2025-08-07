@@ -5,7 +5,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Siso configuration adjustments for Brave browser."""
 
+load("@builtin//runtime.star", "runtime")
 load("@builtin//struct.star", "module", "struct")
+
+__HOST_OS_IS_LINUX = runtime.os == "linux"
 
 # Rules to disable remote execution.
 __RULES_TO_DISABLE_REMOTE = [
@@ -41,6 +44,14 @@ __BRAVE_CHROMIUM_SRC_FILE_EXTENSIONS = (
 # The path should be relative to working directory which is `out/<config>`.
 __PYTHON_REMOTE_WRAPPER = "../../buildtools/reclient_cfgs/python/python_remote_wrapper"
 
+# A remote wrapper for clang to handle cross-compilation. Generated during
+# runhooks by //brave/third_party/reclient_configs/src/configure_reclient.py.
+# The path should be relative to working directory which is `out/<config>`.
+__CLANG_REMOTE_WRAPPER = "../../buildtools/reclient_cfgs/chromium-browser-clang/clang_remote_wrapper"
+
+# A Linux clang binary to use for cross-compilation.
+__LINUX_CLANG_BINARY = "third_party/llvm-build/Release+Asserts_linux/bin/clang"
+
 # Set to True to enable debug logging for handlers in this file.
 __debug = False
 
@@ -64,8 +75,14 @@ def __adjust_handlers(ctx, step_config, handlers):
 
         # Disable remote execution for rules that need local processing.
         if rule_name in __RULES_TO_DISABLE_REMOTE:
-            rule["remote"] = False
-            rule.pop("reproxy_config", None)
+            __disable_remote_execution(rule)
+            continue
+
+        # Disable remote execution for rust rules on non-Linux platforms. Linux
+        # rust toolchain does not include cross-toolchains, so we can't use it
+        # the same way we use Linux clang toolchain for cross-compilation.
+        if not __HOST_OS_IS_LINUX and rule_name.startswith("rust"):
+            __disable_remote_execution(rule)
             continue
 
         if rule_name == "blink/generate_bindings":
@@ -81,6 +98,10 @@ def __adjust_handlers(ctx, step_config, handlers):
 
         if rule_name.startswith("clang"):
             __wrap_with_redirect_cc_handler(rule, handlers)
+            if not __HOST_OS_IS_LINUX:
+                rule["remote_wrapper"] = __CLANG_REMOTE_WRAPPER
+                __ensure_list(rule, "inputs").append(__LINUX_CLANG_BINARY)
+                __ensure_list(rule, "executables").append(__LINUX_CLANG_BINARY)
             continue
 
         if rule_name == "mojo/mojom_parser":
@@ -253,6 +274,21 @@ def __chromium_src_inputs_handler(ctx, cmd, fixed_inputs):
 
     ctx.actions.fix(inputs=new_inputs)
     return __evolve_struct(cmd, inputs=new_inputs)
+
+
+# Disables remote execution for a rule.
+def __disable_remote_execution(rule):
+    rule["remote"] = False
+    rule.pop("reproxy_config", None)
+
+
+# Ensures a list field exists in a dict and returns it.
+def __ensure_list(d, field_name):
+    val = d.get(field_name)
+    if val == None:
+        val = []
+        d[field_name] = val
+    return val
 
 
 # Creates a new struct with modified fields since Starlark structs are
