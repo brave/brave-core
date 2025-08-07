@@ -258,9 +258,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &features::kTabstripComboButton,
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
-#if BUILDFLAG(IS_ANDROID)
-      &omnibox::kRetainOmniboxOnFocus,
-#endif
 #if !BUILDFLAG(IS_ANDROID)
       &sharing_hub::kDesktopScreenshots,
 #endif
