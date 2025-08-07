@@ -5,8 +5,21 @@
 
 #include "components/captive_portal/core/captive_portal_detector.h"
 
-#define kDefaultURL                                           \
-  kDefaultURL[] = "http://detectportal.brave-http-only.com/"; \
-  const char kEmpty
+namespace {
+
+constexpr char kBraveDefaultURL[] = "http://detectportal.brave-http-only.com/";
+
+}  // namespace
+
+namespace captive_portal {
+
+// static
+const std::string_view CaptivePortalDetector::GetDefaultUrl() {
+  return kBraveDefaultURL;
+}
+
+}  // namespace captive_portal
+
+#define GetDefaultUrl GetDefaultUrl_ChromiumImpl
 #include <components/captive_portal/core/captive_portal_detector.cc>
-#undef kDefaultURL
+#undef GetDefaultUrl
