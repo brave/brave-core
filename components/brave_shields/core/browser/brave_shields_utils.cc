@@ -5,14 +5,11 @@
 
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 
-#include <map>
-#include <set>
 #include <string>
 #include <utility>
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/hash/hash.h"
-#include "base/no_destructor.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
@@ -21,7 +18,6 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
-#include "brave/components/webcompat/core/common/features.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -919,6 +915,10 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
   }
 
   return token;
+}
+
+bool IsDeveloperModeEnabled(PrefService* profile_state) {
+  return profile_state->GetBoolean(prefs::kAdBlockDeveloperMode);
 }
 
 }  // namespace brave_shields

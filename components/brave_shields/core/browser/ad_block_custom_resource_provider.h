@@ -11,12 +11,15 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
+#include "base/observer_list.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 
 namespace value_store {
 class ValueStoreFrontend;
 }  // namespace value_store
+
+class PrefService;
 
 namespace brave_shields {
 
@@ -31,6 +34,11 @@ class AdBlockCustomResourceProvider
     kNotFound,
   };
 
+  struct Observer : public base::CheckedObserver {
+    ~Observer() override = default;
+    virtual void OnCustomResourcesChanged() {}
+  };
+
   using GetCallback = base::OnceCallback<void(base::Value)>;
   using StatusCallback = base::OnceCallback<void(ErrorCode)>;
 
@@ -39,15 +47,20 @@ class AdBlockCustomResourceProvider
       std::unique_ptr<AdBlockResourceProvider> default_resource_provider);
   ~AdBlockCustomResourceProvider() override;
 
-  void EnableDeveloperMode(bool enabled);
-
   void GetCustomResources(GetCallback callback);
-  void AddResource(const base::Value& resource, StatusCallback on_complete);
-  void UpdateResource(const std::string& name,
+  void AddResource(PrefService* profile_prefs,
+                   const base::Value& resource,
+                   StatusCallback on_complete);
+  void UpdateResource(PrefService* profile_prefs,
+                      const std::string& name,
                       const base::Value& resource,
                       StatusCallback on_complete);
-  void RemoveResource(const std::string& resource_name,
+  void RemoveResource(PrefService* profile_prefs,
+                      const std::string& resource_name,
                       StatusCallback on_complete);
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
 
   // AdBlockResourceProvider:
   void LoadResources(
@@ -82,7 +95,7 @@ class AdBlockCustomResourceProvider
 
   std::unique_ptr<AdBlockResourceProvider> default_resource_provider_ = nullptr;
   std::unique_ptr<value_store::ValueStoreFrontend> storage_;
-  bool developer_mode_enabled_ = false;
+  base::ObserverList<Observer> observers_;
 
   base::WeakPtrFactory<AdBlockCustomResourceProvider> weak_ptr_factory_{this};
 };
