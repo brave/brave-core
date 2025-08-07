@@ -19,6 +19,7 @@ import type { SettingsPlugin } from '../settings_main/settings_plugin.js';
 import { SearchableViewContainerMixin } from '../settings_page/searchable_view_container_mixin.js';
 
 import { getTemplate } from './content_page_index.html.js';
+import {loadTimeData} from '../i18n_setup.js'
 
 export interface SettingsBraveContentPageIndexElement {
   $: {
@@ -42,14 +43,25 @@ export class SettingsBraveContentPageIndexElement extends
   static get properties() {
     return {
       prefs: Object,
+      isContainersEnabled_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean('isContainersEnabled'),
+      }
     };
   }
 
   declare prefs: { [key: string]: any };
+  declare isContainersEnabled_: boolean;
 
   private showDefaultViews_() {
-    this.$.viewManager.switchViews(
-      ['parent', 'playlist', 'speedreader'], 'no-animation', 'no-animation');
+    const views = ['parent'];
+// <if expr="enable_containers">
+    if (this.isContainersEnabled_) {
+      views.push('containers');
+    }
+// </if>
+    views.push('playlist', 'speedreader');
+    this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
   }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
