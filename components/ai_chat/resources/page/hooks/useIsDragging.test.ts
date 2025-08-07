@@ -6,6 +6,21 @@
 import { renderHook, act } from '@testing-library/react'
 import { useIsDragging } from './useIsDragging'
 
+// Mock the API module
+const mockAPI = {
+  conversationEntriesFrameObserver: {
+    dragStart: {
+      addListener: jest.fn(() => 'mock-listener-id'),
+    },
+    removeListener: jest.fn(),
+  }
+}
+
+jest.mock('../api', () => ({
+  __esModule: true,
+  default: () => mockAPI
+}))
+
 describe('useIsDragging', () => {
   const mockSetDragActive = jest.fn()
   const mockSetDragOver = jest.fn()
@@ -18,6 +33,9 @@ describe('useIsDragging', () => {
     document.addEventListener = jest.fn()
     window.removeEventListener = jest.fn()
     window.addEventListener = jest.fn()
+    // Reset API mock calls
+    mockAPI.conversationEntriesFrameObserver.dragStart.addListener.mockClear()
+    mockAPI.conversationEntriesFrameObserver.removeListener.mockClear()
     jest.useFakeTimers()
   })
 
@@ -375,6 +393,45 @@ describe('useIsDragging', () => {
       unmount()
 
       expect(clearTimeoutSpy).toHaveBeenCalled()
+    })
+  })
+
+  describe('iframe drag handling', () => {
+    it('sets up iframe drag listener on mount', () => {
+      renderUseIsDragging()
+
+      expect(mockAPI.conversationEntriesFrameObserver.dragStart.addListener)
+        .toHaveBeenCalled()
+    })
+
+    it('activates drag state when iframe drag starts', () => {
+      let dragStartCallback: () => void
+
+      mockAPI.conversationEntriesFrameObserver.dragStart.addListener
+        .mockImplementation((callback: () => void) => {
+        dragStartCallback = callback
+        return 'mock-listener-id'
+      })
+
+      renderUseIsDragging()
+
+      act(() => {
+        dragStartCallback()
+      })
+
+      expect(mockSetDragActive).toHaveBeenCalledWith(true)
+      expect(mockSetDragOver).toHaveBeenCalledWith(true)
+    })
+
+    it('removes iframe drag listener on unmount', () => {
+      // Ensure the addListener mock returns the expected ID
+      mockAPI.conversationEntriesFrameObserver.dragStart.addListener
+        .mockReturnValue('mock-listener-id')
+
+      const { unmount } = renderUseIsDragging()
+      unmount()
+      expect(mockAPI.conversationEntriesFrameObserver.removeListener)
+        .toHaveBeenCalledWith('mock-listener-id')
     })
   })
 })

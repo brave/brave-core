@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import getAPI from '../api'
 
 interface DocumentDragHandlers {
   setDragActive: (active: boolean) => void
@@ -12,13 +13,29 @@ interface DocumentDragHandlers {
 }
 
 /**
- * Hook that handles document-level drag events and updates drag state
+ * Hook that handles document-level and iframe drag events and updates drag
+ * state
  */
 export function useIsDragging({
   setDragActive,
   setDragOver,
   clearDragState
 }: DocumentDragHandlers) {
+
+  // Iframe drag detection
+  React.useEffect(() => {
+    const api = getAPI()
+
+    const dragStartId = api.conversationEntriesFrameObserver.dragStart
+      .addListener(() => {
+        setDragActive(true)
+        setDragOver(true)
+      })
+
+    return () => {
+      api.conversationEntriesFrameObserver.removeListener(dragStartId)
+    }
+  }, [])
 
   // Document-level drag detection
   React.useEffect(() => {

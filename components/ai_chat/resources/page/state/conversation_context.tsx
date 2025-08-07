@@ -19,7 +19,6 @@ import {
   updateConversationHistory, getImageFiles
 } from '../../common/conversation_history_utils'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
-import { useIframeDragHandling } from '../hooks/useIframeDragHandling'
 import { useIsDragging } from '../hooks/useIsDragging'
 
 const MAX_INPUT_CHAR = 20000
@@ -194,11 +193,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const clearDragState = () =>
     setPartialContext({ isDragActive: false, isDragOver: false })
 
-  // Document-level drag handling
+  // Document-level and iframe drag handling
   useIsDragging({ setDragActive, setDragOver, clearDragState })
-
-  // Iframe drag handling
-  useIframeDragHandling({ setDragActive, setDragOver })
 
   const getModelContext = (
     currentModelKey: string,

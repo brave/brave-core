@@ -44,7 +44,6 @@ import { useIsElementSmall } from '../../hooks/useIsElementSmall'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/tabs_menu'
-import { isImageFile } from '../../constants/file_types'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -58,30 +57,6 @@ const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
   Mojom.SuggestionGenerationStatus.IsGenerating
 ])
 
-// Utility function to convert File objects to UploadedFile format
-const convertFileToUploadedFile = (file: File): Promise<Mojom.UploadedFile> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const arrayBuffer = e.target?.result as ArrayBuffer
-      if (!arrayBuffer) {
-        reject(new Error('Failed to read file'))
-        return
-      }
-
-      const uint8Array = new Uint8Array(arrayBuffer)
-      const uploadedFile: Mojom.UploadedFile = {
-        filename: file.name,
-        filesize: file.size,
-        data: Array.from(uint8Array),
-        type: Mojom.UploadedFileType.kImage
-      }
-      resolve(uploadedFile)
-    }
-    reader.onerror = () => reject(new Error('Failed to read file'))
-    reader.readAsArrayBuffer(file)
-  })
-}
 
 function Main() {
   const aiChatContext = useAIChat()
@@ -214,30 +189,6 @@ function Main() {
   })
 
 
-  const handleOverlayDrop = async (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    clearDragState()
-
-    const files = Array.from(e.dataTransfer?.files || []).filter(isImageFile)
-
-    if (files.length === 0) {
-      return
-    }
-
-    try {
-      const uploadedFiles = await Promise.all(
-        files.map(file => convertFileToUploadedFile(file))
-      )
-      conversationContext.processDroppedImages(uploadedFiles)
-    } catch (error) {
-      // Silently fail - error will be handled by the upload system
-    }
-  }
-
-  const handleOverlayDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-  }
 
   return (
     <main
@@ -253,8 +204,8 @@ function Main() {
       <DragOverlay
         isDragActive={isDragActive}
         isDragOver={isDragOver}
-        onDragOver={handleOverlayDragOver}
-        onDrop={handleOverlayDrop}
+        clearDragState={clearDragState}
+        processDroppedImages={conversationContext.processDroppedImages}
       />
       {isConversationListOpen && !aiChatContext.isStandalone && (
         <div className={styles.conversationsList}>
