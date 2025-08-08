@@ -22,9 +22,9 @@
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -430,21 +430,21 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
 
 class AcceleratorServiceUnitTestWithLocalState : public testing::Test {
  public:
-  AcceleratorServiceUnitTestWithLocalState()
-      : testing_local_state_(TestingBrowserProcess::GetGlobal()) {
+  AcceleratorServiceUnitTestWithLocalState() {
     features_.InitAndEnableFeature(commands::features::kBraveCommands);
   }
 
   ~AcceleratorServiceUnitTestWithLocalState() override = default;
 
   TestingProfile& profile() { return profile_; }
-  PrefService* local_state() { return testing_local_state_.Get(); }
+  PrefService* local_state() {
+    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
+  }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile profile_;
   base::test::ScopedFeatureList features_;
-  ScopedTestingLocalState testing_local_state_;
 };
 
 TEST_F(AcceleratorServiceUnitTestWithLocalState, PolicyFiltering) {
