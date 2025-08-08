@@ -12,7 +12,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -26,8 +25,6 @@ namespace misc_metrics {
 class ThemeMetricsTest : public testing::Test {
  public:
   void SetUp() override {
-    local_state_ = std::make_unique<ScopedTestingLocalState>(
-        TestingBrowserProcess::GetGlobal());
     theme_service_ = ThemeServiceFactory::GetForProfile(&profile_);
     dark_mode::SetUseSystemDarkModeEnabledForTest(true);
     theme_metrics_ = std::make_unique<ThemeMetrics>(theme_service_);
@@ -35,7 +32,6 @@ class ThemeMetricsTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<ScopedTestingLocalState> local_state_;
   TestingProfile profile_;
   raw_ptr<ThemeService> theme_service_;
   std::unique_ptr<ThemeMetrics> theme_metrics_;
