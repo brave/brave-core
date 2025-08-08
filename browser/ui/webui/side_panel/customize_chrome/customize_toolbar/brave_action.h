@@ -37,6 +37,14 @@ struct BraveAction {
   RAW_PTR_EXCLUSION const gfx::VectorIcon& icon;
 };
 
+inline constexpr BraveAction kShowAddBookmarkButton = {
+    .id = side_panel::customize_chrome::mojom::ActionId::kShowAddBookmarkButton,
+    .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_BOOKMARK,
+    .anchor = side_panel::customize_chrome::mojom::ActionId::kForward,
+    .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
+    .pref_name = kShowBookmarksButton,
+    .icon = kLeoBrowserBookmarkNormalIcon};
+
 inline constexpr BraveAction kShowSidePanelAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowSidePanel,
     .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_SIDEBAR,
@@ -93,6 +101,7 @@ inline constexpr BraveAction kShowBraveNews = {
 inline constexpr auto kBraveActions =
     base::MakeFixedFlatMap<side_panel::customize_chrome::mojom::ActionId,
                            const BraveAction*>({
+        {kShowAddBookmarkButton.id, &kShowAddBookmarkButton},
         {kShowSidePanelAction.id, &kShowSidePanelAction},
         {kShowWalletAction.id, &kShowWalletAction},
         {kShowAIChatAction.id, &kShowAIChatAction},
