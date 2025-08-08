@@ -45,6 +45,7 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandBreakTile,
     CommandSwapTabsInTile,
     CommandOpenInContainer,
+    CommandRenameTab,
     CommandLast,
   };
 
@@ -73,6 +74,7 @@ class BraveTabMenuModel : public TabMenuModel {
  private:
   void Build(Browser* browser,
              TabStripModel* tab_strip_model,
+             int selected_index,
              const std::vector<int>& indices);
   void BuildItemsForSplitView(Browser* browser,
                               TabStripModel* tab_strip_model,
@@ -86,6 +88,9 @@ class BraveTabMenuModel : public TabMenuModel {
       containers::ContainersMenuModel::Delegate& containers_delegate,
       const std::vector<int>& indices);
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  // Build menu items for tab customization, such as renaming the tab.
+  void BuildItemForCustomization(TabStripModel* tab_strip_model, int tab_index);
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;

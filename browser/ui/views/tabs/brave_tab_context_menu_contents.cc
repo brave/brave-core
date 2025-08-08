@@ -233,6 +233,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandOpenInContainer:
       [[fallthrough]];
     case BraveTabMenuModel::CommandSwapTabsInTile:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandRenameTab:
       return true;
   }
   NOTREACHED() << "All commands are handled above";
@@ -286,6 +288,10 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
       return;
     case BraveTabMenuModel::CommandSwapTabsInTile:
       SwapTabsInTile();
+      return;
+    case BraveTabMenuModel::CommandRenameTab:
+      CHECK(controller_);
+      controller_->EnterTabRenameModeAt(tab_index_);
       return;
   }
   NOTREACHED() << "All commands are handled above";
