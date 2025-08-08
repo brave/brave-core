@@ -8,10 +8,10 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
@@ -44,7 +44,6 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
   void SetUp() override {
     ASSERT_TRUE(profile_manager_.SetUp());
     profile_ = profile_manager_.CreateTestingProfile(kTestProfileName);
-    local_state_ = TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
   }
@@ -52,7 +51,9 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
   void TearDown() override { web_contents_.reset(); }
 
   PrefService* user_prefs() { return user_prefs::UserPrefs::Get(profile_); }
-  PrefService* local_state() { return local_state_; }
+  PrefService* local_state() {
+    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
+  }
   content::WebContents* web_contents() { return web_contents_.get(); }
 
   // Helper that creates simple test guest profile.
@@ -71,7 +72,6 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
   TestingProfileManager profile_manager_;
   std::unique_ptr<content::WebContents> web_contents_;
   std::string locale_;
-  raw_ptr<TestingPrefServiceSimple> local_state_ = nullptr;
   raw_ptr<TestingProfile> profile_ = nullptr;
 };
 
@@ -132,8 +132,7 @@ class DecentralizedDnsNavigationThrottleSubframeTest
  public:
   DecentralizedDnsNavigationThrottleSubframeTest()
       : content::RenderViewHostTestHarness(
-            base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        local_state_(TestingBrowserProcess::GetGlobal()) {}
+            base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~DecentralizedDnsNavigationThrottleSubframeTest() override = default;
 
   void SetUp() override {
@@ -151,7 +150,9 @@ class DecentralizedDnsNavigationThrottleSubframeTest
   }
 
   PrefService* user_prefs() { return &prefs_; }
-  PrefService* local_state() { return local_state_.Get(); }
+  PrefService* local_state() {
+    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
+  }
   content::RenderFrameHost* subframe() { return subframe_; }
   std::string locale() { return kLocale; }
 
@@ -159,7 +160,6 @@ class DecentralizedDnsNavigationThrottleSubframeTest
   raw_ptr<content::RenderFrameHost> subframe_;
 
   sync_preferences::TestingPrefServiceSyncable prefs_;
-  ScopedTestingLocalState local_state_;
 };
 
 TEST_F(DecentralizedDnsNavigationThrottleSubframeTest, Subframe) {

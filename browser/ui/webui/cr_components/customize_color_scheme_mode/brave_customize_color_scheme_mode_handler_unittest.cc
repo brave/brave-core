@@ -11,7 +11,6 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -65,7 +64,6 @@ class BraveCustomizeColorSchemeModeHandlerUnitTest : public testing::Test {
   }
 
   content::BrowserTaskEnvironment task_environment_;
-  ScopedTestingLocalState local_state_{TestingBrowserProcess::GetGlobal()};
   TestingProfile testing_profile_;
   testing::NiceMock<MockClient> mock_client_;
 
