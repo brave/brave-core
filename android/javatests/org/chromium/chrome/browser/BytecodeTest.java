@@ -31,6 +31,7 @@ import android.widget.RadioGroup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.filters.SmallTest;
 
@@ -183,6 +184,7 @@ import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.components.permissions.PermissionDialogDelegate;
+import org.chromium.components.prefs.PrefService;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.components.variations.firstrun.VariationsSeedFetcher;
@@ -365,6 +367,9 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/identity_disc/IdentityDiscController"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/password_manager/settings/PasswordsPreference")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31"));
@@ -759,6 +764,14 @@ public class BytecodeTest {
                         "calculateButtonData",
                         MethodModifier.REGULAR,
                         void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/password_manager/settings/PasswordsPreference",
+                        "setUpPostDeprecationWarning",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        PreferenceViewHolder.class,
+                        PrefService.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView", // presubmit: ignore-long-line
@@ -1825,6 +1838,12 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController",
                         Context.class,
                         ObservableSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/password_manager/settings/PasswordsPreference",
+                        "org/chromium/chrome/browser/password_manager/settings/BravePasswordsPreference", // presubmit: ignore-long-line
+                        Context.class,
+                        AttributeSet.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs",

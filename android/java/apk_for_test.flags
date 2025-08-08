@@ -782,6 +782,10 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.password_manager.settings.PasswordsPreference {
+    *** setUpPostDeprecationWarning(...);
+}
+
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs {
     <init>(...);
 }
