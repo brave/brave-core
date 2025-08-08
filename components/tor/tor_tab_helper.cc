@@ -30,16 +30,12 @@ void TorTabHelper::MaybeCreateForWebContents(
 
 void TorTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
-#if BUILDFLAG(IS_MAC)
-  const bool should_disable_web_share = true;
-
   blink::web_pref::WebPreferences prefs =
       web_contents()->GetOrCreateWebPreferences();
-  if (prefs.disable_web_share != should_disable_web_share) {
-    prefs.disable_web_share = should_disable_web_share;
+  if (!prefs.is_tor_window) {
+    prefs.is_tor_window = true;
     web_contents()->SetWebPreferences(prefs);
   }
-#endif
 }
 
 void TorTabHelper::DidFinishNavigation(
