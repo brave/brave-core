@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_window/BUILD.gn b/chrome/browser/ui/browser_window/BUILD.gn
-index 86237816156adfb6c09d35a1c1f7d345c78a6194..c78577583f019d4a4b73f1b1624448b4b6bc8971 100644
+index ddcea7a739d8b5344e356c09eaac8898dedcdb6f..226f80ed97a59cd6e9aa9bae84f4bd84f07cd179 100644
 --- a/chrome/browser/ui/browser_window/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/BUILD.gn
 @@ -30,6 +30,7 @@ source_set("browser_window") {
@@ -9,4 +9,4 @@ index 86237816156adfb6c09d35a1c1f7d345c78a6194..c78577583f019d4a4b73f1b1624448b4
 +  deps += [ "//brave/browser/ui/browser_window" ]
  }
  
- # Android targets need to be guarded by is_android because:
+ source_set("create_browser_window") {
