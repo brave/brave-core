@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
@@ -18,8 +17,6 @@ class ExternalProtocolHandlerTest : public testing::Test {
   void SetUp() override { profile_ = std::make_unique<TestingProfile>(); }
 
   content::BrowserTaskEnvironment task_environment_;
-  ScopedTestingLocalState scoped_testing_local_state_{
-      TestingBrowserProcess::GetGlobal()};
   std::unique_ptr<TestingProfile> profile_;
 };
 

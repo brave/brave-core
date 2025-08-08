@@ -21,9 +21,9 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/common/pref_names.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/dns/public/secure_dns_mode.h"
@@ -45,7 +45,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
     BraveVpnDnsObserverFactory::GetInstance()->RegisterProfilePrefs(
         profile_pref_service_.registry());
     stub_resolver_config_reader_ = std::make_unique<StubResolverConfigReader>(
-        scoped_testing_local_state_.Get());
+        TestingBrowserProcess::GetGlobal()->GetTestingLocalState());
     SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
         stub_resolver_config_reader_.get());
     CreateDnsObserverService();
@@ -73,7 +73,9 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
         SystemNetworkContextManager::GetStubResolverConfigReader();
     config_reader->OverrideParentalControlsForTesting(value);
   }
-  PrefService* local_state() { return scoped_testing_local_state_.Get(); }
+  PrefService* local_state() {
+    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
+  }
   PrefService* pref_service() { return &profile_pref_service_; }
 
   void FireBraveVPNStateChange(mojom::ConnectionState state) {
@@ -138,7 +140,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   }
 
   void SetManagedMode(const std::string& value) {
-    scoped_testing_local_state_.Get()->SetManagedPref(
+    TestingBrowserProcess::GetGlobal()->GetTestingLocalState()->SetManagedPref(
         ::prefs::kDnsOverHttpsMode, base::Value(value));
   }
 
@@ -147,8 +149,6 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<BraveVpnDnsObserverService> dns_observer_service_;
   sync_preferences::TestingPrefServiceSyncable profile_pref_service_;
-  ScopedTestingLocalState scoped_testing_local_state_{
-      TestingBrowserProcess::GetGlobal()};
   std::unique_ptr<StubResolverConfigReader> stub_resolver_config_reader_;
 };
 

@@ -14,7 +14,6 @@
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_test_util.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
@@ -94,8 +93,6 @@ class WebDiscoveryCTATest : public testing::Test {
 
   base::SimpleTestClock test_clock_;
   content::BrowserTaskEnvironment task_environment_;
-  ScopedTestingLocalState scoped_testing_local_state_{
-      TestingBrowserProcess::GetGlobal()};
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   std::unique_ptr<TemplateURLServiceTestUtil> test_util_;
   std::unique_ptr<content::WebContents> web_contents_;
