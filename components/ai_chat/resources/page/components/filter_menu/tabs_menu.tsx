@@ -44,6 +44,10 @@ export default function TabsMenu() {
     .filter(t => !conversation.associatedContentInfo.some(c => c.contentId === t.contentId)),
     [aiChat.tabs, conversation.associatedContentInfo])
 
+  console.log('Tabs', aiChat.tabs)
+  console.log('Unselected Tabs', unselectedTabs)
+  console.log('Is Open', isOpen)
+
   return <FilterMenu
     categories={[{
       category: '',
