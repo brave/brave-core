@@ -167,7 +167,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
     // If the source cell is visible on the screen we'll include a snapshot of said cell to
     // animate from
     let sourceCell = containerView.collectionView.cellForItem(at: sourceIndexPath)
-    let sourceCellSnapshot = sourceCell?.snapshotView(afterScreenUpdates: true)
+    let sourceCellSnapshot = sourceCell?.snapshotView(afterScreenUpdates: false)
     if let sourceCell, let sourceCellSnapshot {
       context.containerView.insertSubview(sourceCellSnapshot, aboveSubview: dimmingView)
       sourceCellSnapshot.center = context.containerView.convert(
