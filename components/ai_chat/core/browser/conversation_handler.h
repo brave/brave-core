@@ -252,6 +252,12 @@ class ConversationHandler : public mojom::ConversationHandler,
     is_request_in_progress_ = in_progress;
   }
 
+  // Called by AIChatService when memories change
+  void NotifyMemoriesChanged(const std::vector<std::string>& memories);
+
+  // Called by AIChatService when memory feature is enabled/disabled
+  void NotifyMemoryEnabledChanged(bool enabled);
+
  protected:
   // ModelService::Observer
   void OnModelListUpdated() override;

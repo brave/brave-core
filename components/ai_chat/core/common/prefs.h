@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/component_export.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom-forward.h"
 
@@ -30,6 +31,7 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 void ResetCustomizationsPref(PrefService& prefs);
 
 // Returns the memories from the memories list in the pref.
+// An empty array would be returned if memory feature is disabled.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 std::vector<std::string> GetMemoriesFromPrefs(const PrefService& prefs);
 // Appends the memory to the memories list in the pref. Silently ignore
