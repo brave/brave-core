@@ -12,7 +12,6 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
-#include "ios/web/public/thread/web_thread.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
@@ -23,7 +22,6 @@
 - (instancetype)initWithBraveShieldsSettings:
     (std::unique_ptr<brave_shields::BraveShieldsSettings>)braveShieldsSettings {
   if ((self = [super init])) {
-    DCHECK_CURRENTLY_ON(web::WebThread::UI);
     _braveShieldsSettings = std::move(braveShieldsSettings);
   }
   return self;

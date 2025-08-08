@@ -26,23 +26,6 @@ class BraveShieldsSettings;
 - (instancetype)initWithBraveShieldsSettings:
     (std::unique_ptr<brave_shields::BraveShieldsSettings>)braveShieldsSettings;
 
-- (BOOL)braveShieldsEnabledFor:(NSURL*)url;
-- (void)setBraveShieldsEnabled:(BOOL)isEnabled forURL:(NSURL*)url;
-
-@property(nonatomic) BraveShieldsAdBlockMode defaultAdBlockMode;
-- (BraveShieldsAdBlockMode)adBlockModeForURL:(NSURL*)url;
-- (void)setAdBlockMode:(BraveShieldsAdBlockMode)adBlockMode forURL:(NSURL*)url;
-
-@property(nonatomic, getter=isBlockScriptsEnabledByDefault)
-    BOOL blockScriptsEnabledByDefault;
-- (BOOL)blockScriptsEnabledForURL:(NSURL*)url;
-- (void)setBlockScriptsEnabled:(BOOL)isEnabled forURL:(NSURL*)url;
-
-@property(nonatomic) BraveShieldsFingerprintMode defaultFingerprintMode;
-- (BraveShieldsFingerprintMode)fingerprintModeForURL:(NSURL*)url;
-- (void)setFingerprintMode:(BraveShieldsFingerprintMode)fingerprintMode
-                    forURL:(NSURL*)url;
-
 @end
 
 NS_ASSUME_NONNULL_END

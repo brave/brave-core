@@ -16,10 +16,10 @@ namespace brave_shields {
 BraveShieldsSettings::BraveShieldsSettings(
     HostContentSettingsMap* host_content_settings_map,
     PrefService* local_state,
-    PrefService* profile_state)
+    PrefService* profile_prefs)
     : host_content_settings_map_(host_content_settings_map),
       local_state_(local_state),
-      profile_state_(profile_state) {
+      profile_prefs_(profile_prefs) {
   CHECK(host_content_settings_map_);
 }
 
@@ -67,7 +67,7 @@ void BraveShieldsSettings::SetAdBlockMode(mojom::AdBlockMode mode,
 
   brave_shields::SetCosmeticFilteringControlType(host_content_settings_map_,
                                                  control_type_cosmetic, url,
-                                                 local_state_, profile_state_);
+                                                 local_state_, profile_prefs_);
 }
 
 mojom::AdBlockMode BraveShieldsSettings::GetAdBlockMode(const GURL& url) {
@@ -117,7 +117,7 @@ void BraveShieldsSettings::SetFingerprintMode(mojom::FingerprintMode mode,
 
   brave_shields::SetFingerprintingControlType(host_content_settings_map_,
                                               control_type, url, local_state_,
-                                              profile_state_);
+                                              profile_prefs_);
 }
 
 mojom::FingerprintMode BraveShieldsSettings::GetFingerprintMode(
@@ -160,11 +160,7 @@ bool BraveShieldsSettings::IsNoScriptEnabled(const GURL& url) {
   ControlType control_type =
       brave_shields::GetNoScriptControlType(host_content_settings_map_, url);
 
-  if (control_type == ControlType::ALLOW) {
-    return false;
-  }
-
-  return true;
+  return control_type != ControlType::ALLOW;
 }
 
 }  // namespace brave_shields

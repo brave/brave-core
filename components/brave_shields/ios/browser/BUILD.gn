@@ -16,7 +16,6 @@ source_set("browser") {
     "//brave/components/brave_shields/ios/common:mojom",
     "//components/content_settings/core/browser",
     "//components/prefs",
-    "//ios/web/public/thread",
     "//net",
     "//url",
   ]

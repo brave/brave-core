@@ -16,13 +16,14 @@
 
 @implementation BraveShieldsSettingsFactory
 
-+ (id<BraveShieldsSettingsBridge>)createForProfile:(id<ProfileBridge>)profile {
++ (id<BraveShieldsSettingsBridge>)createForProfile:
+    (id<ProfileBridge>)profileBridge {
   ProfileBridgeImpl* holder =
-      base::apple::ObjCCastStrict<ProfileBridgeImpl>(profile);
-  ProfileIOS* _profile = holder.profile;
-  auto* map = ios::HostContentSettingsMapFactory::GetForProfile(_profile);
+      base::apple::ObjCCastStrict<ProfileBridgeImpl>(profileBridge);
+  ProfileIOS* profile = holder.profile;
+  auto* map = ios::HostContentSettingsMapFactory::GetForProfile(profile);
   auto* localState = GetApplicationContext()->GetLocalState();
-  auto* profilePrefs = _profile->GetPrefs();
+  auto* profilePrefs = profile->GetPrefs();
   std::unique_ptr<brave_shields::BraveShieldsSettings> braveShieldsSettings =
       std::make_unique<brave_shields::BraveShieldsSettings>(map, localState,
                                                             profilePrefs);

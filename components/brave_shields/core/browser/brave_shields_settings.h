@@ -45,10 +45,10 @@ class BraveShieldsSettings {
   void SetNoScriptEnabled(bool is_enabled, const GURL& url);
   bool IsNoScriptEnabled(const GURL& url);
 
- protected:
+ private:
   raw_ptr<HostContentSettingsMap> host_content_settings_map_;  // NOT OWNED
   raw_ptr<PrefService> local_state_;                           // NOT OWNED
-  raw_ptr<PrefService> profile_state_;                         // NOT OWNED
+  raw_ptr<PrefService> profile_prefs_;                         // NOT OWNED
 };
 
 }  // namespace brave_shields
