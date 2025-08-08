@@ -204,10 +204,7 @@ struct CardanoProviderErrorBundle {
 };
 
 // https://cips.cardano.org/cip/CIP-30
-interface CardanoProvider {
-  Enable() => (CardanoProviderErrorBundle? error);
-  IsEnabled() => (bool enabled);
-
+interface CardanoApi {
   GetNetworkId() =>
     (int32 network_id, CardanoProviderErrorBundle? error);
   GetUsedAddresses() =>
@@ -230,7 +227,13 @@ interface CardanoProvider {
     (mojo_base.mojom.DictionaryValue? signature,
       CardanoProviderErrorBundle? error);
   GetCollateral(string amount) => (array<string>? utxos,
-      CardanoProviderErrorBundle? error);
+    CardanoProviderErrorBundle? error);
+};
+
+interface CardanoProvider {
+  Enable(pending_receiver<CardanoApi> incoming_connection) =>
+    (CardanoProviderErrorBundle? error);
+  IsEnabled() => (bool enabled);
 };
 
 struct ChainId {
