@@ -32,6 +32,15 @@
     </settings-brave-content-playlist>
   </template>
 
+  <template is="dom-if" if="[[showPage_(pageVisibility_.playlist)]]">
+    <settings-brave-content-playlist
+      id="playlist"
+      slot="view"
+      prefs="{{prefs}}"
+      in-search-mode="[[inSearchMode_]]">
+    </settings-brave-content-playlist>
+  </template>
+
   <settings-brave-content-speedreader
     id="speedreader"
     slot="view"
