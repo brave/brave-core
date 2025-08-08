@@ -44,6 +44,11 @@ export default function AttachmentButtonMenu(props: Props) {
             <Icon name='attachment' />
           </Button>
         </div>
+        <leo-menu-item onClick={console.log}>
+          <div className={styles.buttonContent}>
+            Click me
+          </div>
+        </leo-menu-item>
         <leo-menu-item onClick={() => props.uploadFile(false)}>
           <div className={styles.buttonContent}>
             <Icon
