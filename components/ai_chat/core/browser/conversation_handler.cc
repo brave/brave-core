@@ -1711,6 +1711,10 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
           }),
       tools.end());
 
+  // Add browser-level tools
+  auto browser_tools = ai_chat_service_->GetBrowserTools();
+  tools.insert(tools.end(), browser_tools.begin(), browser_tools.end());
+
   return tools;
 }
 

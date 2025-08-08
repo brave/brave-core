@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -56,6 +57,7 @@ namespace ai_chat {
 class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
+class Tool;
 
 // Main entry point for creating and consuming AI Chat conversations
 class AIChatService : public KeyedService,
@@ -120,6 +122,9 @@ class AIChatService : public KeyedService,
 
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
+
+  // Provides browser-level tools that can be used by conversations
+  std::vector<base::WeakPtr<Tool>> GetBrowserTools();
 
   ConversationHandler* GetConversation(std::string_view uuid);
   void GetConversation(std::string_view conversation_uuid,
@@ -295,6 +300,8 @@ class AIChatService : public KeyedService,
   void OnDataDeletedForDisabledStorage(bool success);
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
+  void OnMemoryEnabledChanged();
+  void InitializeBrowserTools();
 
   void GetEngineForTabOrganization(base::OnceClosure callback);
   void ContinueGetEngineForTabOrganization(base::OnceClosure callback,
@@ -331,6 +338,9 @@ class AIChatService : public KeyedService,
 
   // Engine for tab organization, created on demand and owned by AIChatService.
   std::unique_ptr<ai_chat::EngineConsumer> tab_organization_engine_;
+
+  // Browser-level tools that are available to all conversations
+  std::vector<std::unique_ptr<Tool>> browser_tools_;
 
   base::FilePath profile_path_;
 

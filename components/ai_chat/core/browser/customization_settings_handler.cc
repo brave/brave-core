@@ -14,6 +14,7 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
@@ -24,7 +25,7 @@ namespace ai_chat {
 // Validates if a string is not empty and within the maximum length to be stored
 // as customization or memory.
 bool IsValidMemoryLength(const std::string& value) {
-  return !value.empty() && value.size() <= mojom::kMaxRecordLength;
+  return !value.empty() && value.size() <= mojom::kMaxMemoryRecordLength;
 }
 
 CustomizationSettingsHandler::CustomizationSettingsHandler(PrefService* prefs)
@@ -61,10 +62,10 @@ void CustomizationSettingsHandler::SetCustomizations(
     mojom::CustomizationsPtr customizations,
     SetCustomizationsCallback callback) {
   // Check each field has less than max record length.
-  if (customizations->name.length() > mojom::kMaxRecordLength ||
-      customizations->job.length() > mojom::kMaxRecordLength ||
-      customizations->tone.length() > mojom::kMaxRecordLength ||
-      customizations->other.length() > mojom::kMaxRecordLength) {
+  if (customizations->name.length() > mojom::kMaxMemoryRecordLength ||
+      customizations->job.length() > mojom::kMaxMemoryRecordLength ||
+      customizations->tone.length() > mojom::kMaxMemoryRecordLength ||
+      customizations->other.length() > mojom::kMaxMemoryRecordLength) {
     std::move(callback).Run(mojom::CustomizationOperationError::kInvalidLength);
     return;
   }

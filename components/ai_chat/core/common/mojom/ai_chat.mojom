@@ -14,6 +14,10 @@ import "url/mojom/url.mojom";
 // Share some tool names between the browser and the UI so that
 // custom user actions and UI representations can be created.
 const string kUserChoiceToolName = "user_choice_tool";
+const string kMemoryStorageToolName = "memory_storage_tool";
+
+// Maximum length for memory and customization records.
+const int32 kMaxMemoryRecordLength = 512;
 
 // File upload limits
 // https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Message.html#API_runtime_Message_Contents

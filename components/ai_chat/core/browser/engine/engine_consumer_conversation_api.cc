@@ -475,6 +475,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     model_name = model_service_->GetLeoModelNameByKey(
         *conversation_history.back()->model_key);
   }
+
   api_->PerformRequest(std::move(conversation), selected_language,
                        ToolApiDefinitionsFromTools(tools), std::nullopt,
                        std::move(data_received_callback),

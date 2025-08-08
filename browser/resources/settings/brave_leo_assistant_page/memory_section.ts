@@ -17,9 +17,11 @@ import { PrefsMixin, PrefsMixinInterface } from
   '/shared/settings/prefs/prefs_mixin.js'
 import { BaseMixin, BaseMixinInterface } from '../base_mixin.js'
 import {
-  CustomizationOperationError,
-  MAX_RECORD_LENGTH
+  CustomizationOperationError
 } from '../customization_settings.mojom-webui.js'
+import {
+  MAX_MEMORY_RECORD_LENGTH
+} from '../ai_chat.mojom-webui.js'
 import {
   BraveLeoAssistantBrowserProxy,
   BraveLeoAssistantBrowserProxyImpl
@@ -179,7 +181,7 @@ class MemorySection extends MemorySectionBase {
   }
 
   private isTooLong(text: string) : boolean {
-    return text.trim().length > MAX_RECORD_LENGTH
+    return text.trim().length > MAX_MEMORY_RECORD_LENGTH
   }
 
   onDialogInput_(e: { value: string }) {
