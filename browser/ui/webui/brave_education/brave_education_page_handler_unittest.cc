@@ -12,7 +12,6 @@
 #include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 #include "brave/components/brave_education/education_urls.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
@@ -79,7 +78,6 @@ class BraveEducationPageHandlerTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  ScopedTestingLocalState local_state_{TestingBrowserProcess::GetGlobal()};
   mojo::Remote<brave_browser_command::mojom::BraveBrowserCommandHandler>
       remote_;
   std::unique_ptr<Profile> profile_;
