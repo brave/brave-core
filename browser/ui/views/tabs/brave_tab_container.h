@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
+#include "components/prefs/pref_member.h"
 #include "ui/gfx/canvas.h"
 
 class BraveTabContainer : public TabContainerImpl,
