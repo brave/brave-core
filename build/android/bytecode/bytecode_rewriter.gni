@@ -34,6 +34,7 @@ brave_bytecode_jars = [
   "obj/chrome/browser/password_manager/android/java.javac.jar",
   "obj/chrome/browser/preferences/java.javac.jar",
   "obj/chrome/browser/safe_browsing/android/java.javac.jar",
+  "obj/chrome/browser/safety_hub/android/java.javac.jar",
   "obj/chrome/browser/search_engines/android/java.javac.jar",
   "obj/chrome/browser/settings/factory_java.javac.jar",
   "obj/chrome/browser/settings/internal_java.javac.jar",

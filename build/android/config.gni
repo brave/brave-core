@@ -26,6 +26,7 @@ brave_chrome_java_deps = [
   "//brave/browser/download/android:java",
   "//brave/browser/notifications/android:brave_java",
   "//brave/browser/notifications/android:java",
+  "//brave/browser/password_entry_edit:public_java",
   "//brave/browser/quick_search_engines/android:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
   "//brave/browser/tab_group_sync:java",
@@ -76,6 +77,7 @@ brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
   "//brave/browser/download/internal/android:java",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
+  "//brave/browser/password_entry_edit/android/internal:java",
 ]
 
 # To use our overrided enum in java, put the header file of our overrided enum
