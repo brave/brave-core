@@ -11,6 +11,7 @@ let btnCreateEnabledText: string
 let btnCreateDisabledText: string
 let btnShowRulesBoxText: string
 let btnHideRulesBoxText: string
+const pickerStatusAttribute = 'picker-status'
 
 const api = {
   cosmeticFilterCreate: (selector: string) => {
@@ -348,7 +349,7 @@ const attachElementPicker = () => {
     'box-shadow: none',
     'color-scheme: light dark',
     'display: block',
-    'height: 100%',
+    'height: 100lvh',
     'left: 0',
     'margin: 0',
     'max-height: none',
@@ -373,6 +374,28 @@ const attachElementPicker = () => {
   document.addEventListener('keydown', elementPickerOnKeydown, true)
   window.addEventListener('resize', elementPickerViewportChanged)
   window.addEventListener('scroll', elementPickerViewportChanged)
+
+
+  const callback: MutationCallback = (mutationsList, observer) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'attributes' && shadowRoot) {
+        const targetElement = mutation.target as HTMLElement;
+        const newValue = targetElement.getAttribute(mutation.attributeName!);
+        const mainSection = shadowRoot.getElementById('main-section')
+        if (!mainSection) return;
+        mainSection.classList.toggle('minimized', newValue === `minimized`);
+
+      }
+    }
+  }
+  const observer: MutationObserver = new MutationObserver(callback)
+  if (pickerDiv) {
+    const config: MutationObserverInit = {
+      attributes: true,
+      attributeFilter: [pickerStatusAttribute]
+    }
+    observer.observe(pickerDiv, config);
+  }
 
   return shadowRoot
 }
@@ -560,10 +583,14 @@ const setShowRulesHiddenBtnState = (
   showRulesButton.textContent = show ? btnHideRulesBoxText : btnShowRulesBoxText
 }
 
-const setMinimizeState = (root: ShadowRoot, minimized: boolean) => {
-  const mainSection = root.getElementById('main-section')
-  if (!mainSection) return;
-  mainSection.classList.toggle('minimized', minimized);
+const setMinimizeState = (minimized: boolean) => {
+if (!pickerDiv) return
+
+if(minimized){
+  pickerDiv.setAttribute(pickerStatusAttribute, 'minimized')
+} else {
+  pickerDiv.removeAttribute(pickerStatusAttribute)
+}
 }
 
 const setupDragging = (root: ShadowRoot): void => {
@@ -615,7 +642,7 @@ const setupDragging = (root: ShadowRoot): void => {
 
     const currentTransform = parseTranslateY(
       window.getComputedStyle(mainSection).transform);
-    setMinimizeState(root, currentTransform > sectionHeight / 4)
+    setMinimizeState(currentTransform > sectionHeight / 4)
     mainSection.style.transform = '';
   };
 
@@ -686,11 +713,11 @@ const launchElementPicker = (root: ShadowRoot) => {
     })
     const minimizeButton = root.getElementById('minimize-dlg-btn')!
     minimizeButton.addEventListener('click', () => {
-      setMinimizeState(root, true)
+      setMinimizeState(true)
     })
     const maximizeButton = root.getElementById('desktop-min-icon-container')!
     maximizeButton.addEventListener('click', () => {
-      setMinimizeState(root, false);
+      setMinimizeState(false);
     })
   }
 
@@ -819,7 +846,7 @@ const launchElementPicker = (root: ShadowRoot) => {
   const oneClickEventHandler = (event: MouseEvent | TouchEvent) => {
     let elem: Element | null = null
 
-    setMinimizeState(root, false);
+    setMinimizeState(false);
 
     if (event instanceof MouseEvent) {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
@@ -968,4 +995,6 @@ if (!active) {
         btnQuitText)
       launchElementPicker(root)
     });
+} else {
+  active.removeAttribute(pickerStatusAttribute)
 }
