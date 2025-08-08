@@ -466,7 +466,11 @@ public class SearchViewController: UIViewController, LoaderListener {
         }
         make.bottom.equalTo(view.safeArea.bottom).offset(-offset)
       } else {
-        make.bottom.equalTo(view).offset(-keyboardHeight)
+        var offset: CGFloat = 0
+        if keyboardHeight > 0 {
+          offset = keyboardHeight - view.safeAreaInsets.bottom
+        }
+        make.bottom.equalTo(view.safeArea.bottom).offset(-offset)
       }
     }
   }
