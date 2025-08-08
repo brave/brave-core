@@ -40,4 +40,8 @@ source_set("brave_account") {
       "//url",
     ]
   }
+
+  if (is_android) {
+    deps += [ "//brave/build/android:jni_headers" ]
+  }
 }
