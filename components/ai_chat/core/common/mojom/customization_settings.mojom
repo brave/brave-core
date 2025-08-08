@@ -5,8 +5,6 @@
 
 module ai_chat.mojom;
 
-// Maximum length for customization and memory records.
-const int32 kMaxRecordLength = 512;
 
 // Supported customization fields, each field can be empty as it might not be
 // set.

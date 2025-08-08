@@ -58,6 +58,8 @@ static_library("browser") {
     "model_validator.h",
     "tab_tracker_service.cc",
     "tab_tracker_service.h",
+    "tools/memory_storage_tool.cc",
+    "tools/memory_storage_tool.h",
     "tools/tool.cc",
     "tools/tool.h",
     "tools/tool_input_properties.cc",

@@ -1684,7 +1684,12 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
       associated_content_manager_->HasAssociatedContent(), GetCurrentModel());
   std::ranges::transform(conversation_tools, std::back_inserter(tools),
                          [](auto& tool) { return tool->GetWeakPtr(); });
-  // TODO(petemill): Concat with tools from other areas (content, browser, etc.)
+
+  // Add browser-level tools
+  auto browser_tools = ai_chat_service_->GetBrowserTools();
+  tools.insert(tools.end(), browser_tools.begin(), browser_tools.end());
+
+  // TODO(petemill): Concat with tools from other areas (content, etc.)
   return tools;
 }
 
