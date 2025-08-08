@@ -16,7 +16,7 @@
 
 @implementation BraveShieldsSettingsFactory
 
-+ (id<BraveShieldsSettingsBridge>)getForProfile:(id<ProfileBridge>)profile {
++ (id<BraveShieldsSettingsBridge>)createForProfile:(id<ProfileBridge>)profile {
   ProfileBridgeImpl* holder =
       base::apple::ObjCCastStrict<ProfileBridgeImpl>(profile);
   ProfileIOS* _profile = holder.profile;
