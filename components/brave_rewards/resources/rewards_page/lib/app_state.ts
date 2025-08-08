@@ -158,6 +158,7 @@ export interface AppState {
   externalWalletProviders: ExternalWalletProvider[]
   balance: Optional<number>
   tosUpdateRequired: boolean
+  selfCustodyProviderInvites: ExternalWalletProvider[]
   selfCustodyInviteDismissed: boolean
   adsInfo: AdsInfo | null
   recurringContributions: RecurringContribution[]
@@ -185,6 +186,7 @@ export function defaultState(): AppState {
     externalWalletProviders: [],
     balance: new Optional(),
     tosUpdateRequired: false,
+    selfCustodyProviderInvites: [],
     selfCustodyInviteDismissed: false,
     adsInfo: null,
     recurringContributions: [],
