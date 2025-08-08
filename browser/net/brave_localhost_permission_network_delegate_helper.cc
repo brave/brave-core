@@ -14,6 +14,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/permission_controller.h"
 #include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/web_contents.h"

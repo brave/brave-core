@@ -20,6 +20,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/scroll_view.h"

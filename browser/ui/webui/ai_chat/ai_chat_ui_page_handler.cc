@@ -37,6 +37,7 @@
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
