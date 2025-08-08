@@ -61,6 +61,7 @@
 #include "services/network/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -345,6 +346,16 @@ class ConversationHandlerUnitTest_NoAssociatedContent
 
 MATCHER_P(ConversationEntriesStateIsGenerating, expected_is_generating, "") {
   return arg->is_generating == expected_is_generating;
+}
+
+MATCHER_P(ConversationEntriesStateHasVisualContentPercentage,
+          expected_percentage,
+          "") {
+  return arg->visual_content_used_percentage == expected_percentage;
+}
+
+MATCHER(ConversationEntriesStateHasAnyVisualContentPercentage, "") {
+  return arg->visual_content_used_percentage.has_value();
 }
 
 MATCHER_P(TurnHasText, expected_text, "") {
@@ -3632,6 +3643,229 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_FALSE(last_turn->uploaded_files.has_value());
 
   testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+// Test that auto-screenshots apply MAX_IMAGES limit and trigger UI state change
+TEST_F(ConversationHandlerUnitTest,
+       OnAutoScreenshotsTaken_AppliesMaxImagesLimit) {
+#if BUILDFLAG(IS_IOS)
+  // Set a vision support model to prevent model switching
+  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
+      kClaudeHaikuModelKey);
+#endif
+  // Mock associated content to return empty text content to trigger
+  // auto-screenshots
+  associated_content_->SetTextContent("");
+
+  // Create a large number of screenshots to exceed MAX_IMAGES
+  const size_t total_screenshots = mojom::MAX_IMAGES + 10;
+  std::vector<mojom::UploadedFilePtr> mock_screenshots;
+  for (size_t i = 0; i < total_screenshots; ++i) {
+    mock_screenshots.push_back(mojom::UploadedFile::New(
+        absl::StrFormat("screenshot_%zu.png", i), 1024,
+        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot));
+  }
+
+  // Mock GetScreenshots to return screenshots that exceed MAX_IMAGES
+  EXPECT_CALL(*associated_content_, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(Clone(mock_screenshots)));
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(base::test::RunOnceCallback<6>(
+          base::ok(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Response with screenshots")),
+              std::nullopt /* model_key */))));
+
+  // Create mock clients to verify API request progress and UI state changes
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
+      conversation_handler_.get());
+
+  // Expected visual content percentage: (20 * 100) / 30 = 66.67 -> 66
+  const uint32_t expected_percentage = static_cast<uint32_t>(
+      static_cast<float>(mojom::MAX_IMAGES) * 100.0f / total_screenshots);
+  EXPECT_EQ(expected_percentage, 66u);
+
+  // Allow any number of calls that don't match our specific expectation
+  EXPECT_CALL(untrusted_client, OnEntriesUIStateChanged(testing::_))
+      .Times(testing::AnyNumber());
+
+  // Verify that OnEntriesUIStateChanged is called with the expected visual
+  // content percentage
+  EXPECT_CALL(untrusted_client,
+              OnEntriesUIStateChanged(
+                  ConversationEntriesStateHasVisualContentPercentage(
+                      expected_percentage)))
+      .Times(testing::AtLeast(1));
+
+  // Submit empty string to trigger auto-screenshots
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("", std::nullopt);
+  loop.Run();
+
+  // Verify that the conversation history has screenshots limited to MAX_IMAGES
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
+  const auto& human_turn = history[0];  // Human turn (index 0)
+  EXPECT_TRUE(human_turn->uploaded_files.has_value());
+  EXPECT_EQ(human_turn->uploaded_files->size(), mojom::MAX_IMAGES);
+
+  // Verify all uploaded files are screenshots and in correct order
+  for (size_t i = 0; i < human_turn->uploaded_files->size(); ++i) {
+    const auto& file = (*human_turn->uploaded_files)[i];
+    EXPECT_EQ(file->type, mojom::UploadedFileType::kScreenshot);
+    EXPECT_EQ(file->filename, absl::StrFormat("screenshot_%zu.png", i));
+  }
+
+  // Verify that visual_content_used_percentage was set correctly
+  auto entries_state = conversation_handler_->GetStateForConversationEntries();
+  ASSERT_TRUE(entries_state->visual_content_used_percentage.has_value());
+  EXPECT_EQ(entries_state->visual_content_used_percentage.value(),
+            expected_percentage);
+}
+
+// Test that auto-screenshots don't trigger UI state change when under
+// MAX_IMAGES
+TEST_F(ConversationHandlerUnitTest,
+       OnAutoScreenshotsTaken_NoLimitWhenUnderMax) {
+#if BUILDFLAG(IS_IOS)
+  // Set a vision support model to prevent model switching
+  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
+      kClaudeHaikuModelKey);
+#endif
+  // Mock associated content to return empty text content to trigger
+  // auto-screenshots
+  associated_content_->SetTextContent("");
+
+  // Create fewer screenshots than MAX_IMAGES
+  const size_t total_screenshots = mojom::MAX_IMAGES - 5;
+  std::vector<mojom::UploadedFilePtr> mock_screenshots;
+  for (size_t i = 0; i < total_screenshots; ++i) {
+    mock_screenshots.push_back(mojom::UploadedFile::New(
+        absl::StrFormat("screenshot_%zu.png", i), 1024,
+        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot));
+  }
+
+  // Mock GetScreenshots to return screenshots under MAX_IMAGES
+  EXPECT_CALL(*associated_content_, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(Clone(mock_screenshots)));
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(base::test::RunOnceCallback<6>(
+          base::ok(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Response with screenshots")),
+              std::nullopt /* model_key */))));
+
+  // Create mock clients to verify API request progress and UI state changes
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
+      conversation_handler_.get());
+
+  // Allow normal OnEntriesUIStateChanged calls during API flow
+  EXPECT_CALL(untrusted_client, OnEntriesUIStateChanged(testing::_))
+      .Times(testing::AnyNumber());
+
+  // Verify that OnEntriesUIStateChanged is NEVER called with any visual content
+  // percentage when screenshots are under the limit (since no truncation occurs
+  // and percentage stays nullopt)
+  EXPECT_CALL(untrusted_client,
+              OnEntriesUIStateChanged(
+                  ConversationEntriesStateHasAnyVisualContentPercentage()))
+      .Times(0);
+
+  // Submit empty string to trigger auto-screenshots
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("", std::nullopt);
+  loop.Run();
+
+  // Verify that the conversation history has all screenshots preserved
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
+  const auto& human_turn = history[0];  // Human turn (index 0)
+  EXPECT_TRUE(human_turn->uploaded_files.has_value());
+  EXPECT_EQ(human_turn->uploaded_files->size(), total_screenshots);
+
+  // Verify all uploaded files are screenshots and in correct order
+  for (size_t i = 0; i < human_turn->uploaded_files->size(); ++i) {
+    const auto& file = (*human_turn->uploaded_files)[i];
+    EXPECT_EQ(file->type, mojom::UploadedFileType::kScreenshot);
+    EXPECT_EQ(file->filename, absl::StrFormat("screenshot_%zu.png", i));
+  }
+
+  // Verify that visual_content_used_percentage is not set (since we're under
+  // limit)
+  auto entries_state = conversation_handler_->GetStateForConversationEntries();
+  EXPECT_FALSE(entries_state->visual_content_used_percentage.has_value());
+}
+
+// Test that OnEntriesUIStateChanged is not called when visual content
+// percentage doesn't change (optimization test)
+TEST_F(ConversationHandlerUnitTest,
+       OnAutoScreenshotsTaken_SamePercentageNoUIUpdate) {
+#if BUILDFLAG(IS_IOS)
+  // Set a vision support model to prevent model switching
+  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
+      kClaudeHaikuModelKey);
+#endif
+
+  // Simulate that we already have a visual content percentage set to 66
+  // This mimics the state after a previous auto-screenshot operation
+  // Currently autoscreenshots won't be triggered twice if there are already
+  // screenshots in the context.
+  conversation_handler_->visual_content_used_percentage_ = 66;
+
+  // Create a callback that calculates the same percentage (66%)
+  // to test that no UI update is triggered when value doesn't change
+  const size_t total_screenshots = mojom::MAX_IMAGES + 10;
+  const uint32_t expected_same_percentage = 66;
+
+  // Verify the calculation would result in the same percentage
+  uint32_t calculated_percentage = static_cast<uint32_t>(
+      static_cast<float>(mojom::MAX_IMAGES) * 100.0f / total_screenshots);
+  EXPECT_EQ(calculated_percentage, expected_same_percentage);
+
+  // Directly call OnAutoScreenshotsTaken with screenshots that would
+  // result in the same percentage
+  std::vector<mojom::UploadedFilePtr> screenshots;
+  for (size_t i = 0; i < total_screenshots; ++i) {
+    screenshots.push_back(mojom::UploadedFile::New(
+        absl::StrFormat("screenshot_%zu.png", i), 1024,
+        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot));
+  }
+
+  // Create mock clients
+  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
+      conversation_handler_.get());
+
+  // Expect that OnEntriesUIStateChanged is NOT called since the percentage
+  // doesn't change (optimization test)
+  EXPECT_CALL(untrusted_client, OnEntriesUIStateChanged(testing::_)).Times(0);
+
+  // Call the callback directly with a no-op callback
+  auto noop_callback = base::BindOnce([](PageContents) {});
+  conversation_handler_->OnAutoScreenshotsTaken(
+      std::move(noop_callback), std::make_optional(std::move(screenshots)));
+
+  // Verify the percentage is still the same and no UI update was triggered
+  auto entries_state = conversation_handler_->GetStateForConversationEntries();
+  EXPECT_TRUE(entries_state->visual_content_used_percentage.has_value());
+  EXPECT_EQ(entries_state->visual_content_used_percentage.value(), 66u);
 }
 
 }  // namespace ai_chat

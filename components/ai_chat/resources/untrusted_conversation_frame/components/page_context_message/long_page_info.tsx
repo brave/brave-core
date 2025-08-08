@@ -11,11 +11,16 @@ import styles from './style.module.scss'
 
 export default function LongPageInfo() {
   const context = useUntrustedConversationContext()
+
   let warningText
   if (context.trimmedTokens > 0 && context.totalTokens > 0) {
       const percentage = 100 - Math.floor((Number(context.trimmedTokens) / Number(context.totalTokens)) * 100)
       warningText = formatLocale(S.CHAT_UI_TRIMMED_TOKENS_WARNING, {
         $1: percentage + '%'
+      })
+  } else if ((context.visualContentUsedPercentage ?? 100) < 100) {
+    warningText = formatLocale(S.CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING, {
+        $1: context.visualContentUsedPercentage + '%'
       })
   } else {
     warningText = formatLocale(S.CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING, {
