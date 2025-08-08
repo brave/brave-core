@@ -10,21 +10,19 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   page-title="$i18n{playlist}">
 
   <settings-toggle-button
-    class="cr-row hr"
+    class="cr-row first"
     pref="{{prefs.brave.playlist.enabled}}"
     label="$i18n{bravePlaylistEnablePlaylistLabel}">
   </settings-toggle-button>
   <template
     is="dom-if"
     if="[[prefs.brave.playlist.enabled.value]]">
-    <div class="cr-row continuation list-frame">
-      <settings-toggle-button
-	class="list-item"
-	pref="{{prefs.brave.playlist.cache}}"
-	label="$i18n{bravePlaylistCacheByDefaultLabel}"
-	sub-label="$i18n{bravePlaylistCacheByDefaultSubLabel}">
-      </settings-toggle-button>
-    </div>
+    <settings-toggle-button
+      class="cr-row"
+      pref="{{prefs.brave.playlist.cache}}"
+      label="$i18n{bravePlaylistCacheByDefaultLabel}"
+      sub-label="$i18n{bravePlaylistCacheByDefaultSubLabel}">
+    </settings-toggle-button>
   </template> <!-- playlist.enabled.value -->
 
 </settings-section>
