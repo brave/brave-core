@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -46,6 +47,8 @@ void BraveRegisterBrowserStatePrefs(
   brave_news::prefs::RegisterProfilePrefs(registry);
   ntp_background_images::RegisterProfilePrefs(registry);
   ntp_background_images::RegisterProfilePrefsForMigration(registry);
+  brave_shields::RegisterShieldsP3AProfilePrefs(registry);
+  brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
 }
 
 void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -76,6 +79,8 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       brave_shields::prefs::kAdBlockCheckedAllDefaultRegions, false);
   registry->RegisterBooleanPref(
       brave_shields::prefs::kAdBlockCheckedDefaultRegion, false);
+
+  brave_shields::RegisterShieldsP3ALocalPrefs(registry);
 }
 
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS \

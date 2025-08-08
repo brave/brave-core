@@ -29,6 +29,8 @@ static_library("browser") {
     "ad_block_service_helper.h",
     "brave_shields_p3a.cc",
     "brave_shields_p3a.h",
+    "brave_shields_settings.cc",
+    "brave_shields_settings.h",
     "brave_shields_utils.cc",
     "brave_shields_utils.h",
     "filter_list_catalog_entry.cc",

@@ -6,6 +6,7 @@
 import * as BraveShields from 'gen/brave/components/brave_shields/core/common/brave_shields_panel.mojom.m.js'
 // Provide access to all the generated types
 export * from 'gen/brave/components/brave_shields/core/common/brave_shields_panel.mojom.m.js'
+export * from 'gen/brave/components/brave_shields/core/common/shields_settings.mojom.m.js'
 
 interface API {
   panelHandler: BraveShields.PanelHandlerRemote
