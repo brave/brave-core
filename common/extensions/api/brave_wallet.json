@@ -12,36 +12,6 @@
     "events": [
     ],
     "functions": [
-      {
-        "name": "getWeb3ProviderList",
-        "type": "function",
-        "description": "Get available web3 providers",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "types",
-              "type": "string",
-              "description": "json stringified avalable web3 provider list"
-            }
-          ]
-        }
-      }, {
-        "name": "isNativeWalletEnabled",
-        "type": "function",
-        "description": "Determine if the native wallet is enabled",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "val",
-              "type": "boolean"
-            }
-          ]
-        }
-      }
     ],
     "types": [
     ],

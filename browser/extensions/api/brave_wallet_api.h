@@ -13,23 +13,6 @@ class Profile;
 namespace extensions {
 namespace api {
 
-class BraveWalletGetWeb3ProviderListFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.getWeb3ProviderList", UNKNOWN)
-
- protected:
-  ~BraveWalletGetWeb3ProviderListFunction() override {}
-  ResponseAction Run() override;
-};
-
-class BraveWalletIsNativeWalletEnabledFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.isNativeWalletEnabled", UNKNOWN)
-
- protected:
-  ~BraveWalletIsNativeWalletEnabledFunction() override {}
-  ResponseAction Run() override;
-};
 
 }  // namespace api
 }  // namespace extensions
