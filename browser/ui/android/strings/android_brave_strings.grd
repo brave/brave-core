@@ -2358,7 +2358,7 @@ Are you sure you want to do this?
     <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="YEARLY_AMOUNT">%1$s</ph> /year
     </message>
-    <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
+    <message name="IDS_BRAVE_SUBSCRIPTION_RENEWAL_TEXT" desc="Brave subscription renewal text">
       Subscriptions will be charged via your Google account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is canceled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.
     </message>
     <message name="IDS_ALREADY_PURCHASED" desc="Brave subscription plan page already purchased text">
@@ -3644,7 +3644,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_LEO_PREMIUM" desc="Title for Brave Leo plans dialog">
       Leo Premium
     </message>
-    <message name="IDS_YEARLY_SUBSCRIPTION_LEO" desc="Brave Leo yearly plan text">
+    <message name="IDS_ONE_YEAR_SUBSCRIPTION" desc="Brave Leo and Origin yearly plan text">
       One year
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION_LEO_BEST_VALUE" desc="Brave Leo yearly plan best value text">
@@ -4066,6 +4066,39 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_HOMEPAGE_MOBILE_BOOKMARKS_TEXT" desc="Text for `Mobile bookmarks` setting in `Homepage` settings">
       Mobile bookmarks
+    </message>
+    <message name="IDS_BRAVE_ORIGIN_PREMIUM" desc="Title for Origin Premium">
+      Origin
+    </message>
+    <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT_ORIGIN" desc="Brave Origin plan text">
+      <ph name="YEARLY_AMOUNT">%1$s</ph> /year
+    </message>
+    <message name="IDS_MONTHLY_SUBSCRIPTION_AMOUNT_ORIGIN" desc="Brave Origin plan text">
+      <ph name="MONTHLY_AMOUNT">%1$s</ph> /month
+    </message>
+    <message name="IDS_ORIGIN_SUBSCRIPTION_TRY_FREE_TRIAL" desc="Try free trial now button for Brave Origin subscription">
+      Try 7 days free
+    </message>
+    <message name="IDS_ORIGIN_PAYWALL_TEXT_1" desc="Brave Origin paywall text">
+      Support Brave's industry-leading work for Web privacy and open-source adblocking lists
+    </message>
+    <message name="IDS_ORIGIN_PAYWALL_TEXT_2" desc="Brave Origin paywall text">
+      Optimized for a more minimalist browser interface
+    </message>
+    <message name="IDS_ORIGIN_PAYWALL_TEXT_3" desc="Brave Origin paywall text">
+      A core of Brave Shields for adblock, privacy, and speed
+    </message>
+    <message name="IDS_ORIGIN_PAYWALL_TEXT_4" desc="Brave Origin paywall text">
+      Support for IT-managed policies at work
+    </message>
+    <message name="IDS_YEARLY_SUBSCRIPTION_BEST_VALUE" desc="Brave Origin yearly plan best value text">
+      best value
+    </message>
+    <message name="IDS_MONTHLY_SUBSCRIPTION_ORIGIN" desc="Brave Origin monthly subscription text">
+      Monthly subscription
+    </message>
+    <message name="IDS_LEARN_MORE_ABOUT_ORIGIN" desc="Brave Origin learn more about text">
+      Learn more about Origin
     </message>
   </messages>
   </release>

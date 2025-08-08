@@ -275,7 +275,7 @@
                     android:layout_height="wrap_content"
                     style="@style/SmallRegular"
                     android:layout_margin="16dp"
-                    android:text="@string/brave_vpn_renewal_text"
+                    android:text="@string/brave_subscription_renewal_text"
                     android:textColor="@color/text_color_30"
                     android:textAlignment="textStart"
                     android:layout_gravity="center"

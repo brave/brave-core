@@ -81,8 +81,7 @@
     "CheckForRelativeIncludes": ["chromium_src/"],
     "CheckLongLines": [
       "components/p3a/metric_names\\.h",
-      "android/java/res/values/.*\\.xml",
-      ".*/java/res/drawable/.*\\.xml",
+      ".*/res/.*/.*\\.xml",
     ],
     "CheckParseErrors": [
       ".*tsconfig\\.json",
@@ -177,6 +176,7 @@
       "android/feed/core/java/src/org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator.java",
       "android/java/org/chromium/chrome/browser/BraveAppHooks.java",
       "android/java/org/chromium/chrome/browser/app/BraveActivity.java",
+      "android/java/org/chromium/chrome/browser/brave_origin/BraveOriginPlansActivity.java",
       "android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
       "android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator.java",
       "android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerMediator.java",

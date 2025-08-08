@@ -86,6 +86,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/LinearLayoutManagerWrapper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/models/FeedItemCard.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/models/FeedItemsCard.java",
+  "../../brave/android/java/org/chromium/chrome/browser/brave_origin/BraveOriginPlansActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragment.java",

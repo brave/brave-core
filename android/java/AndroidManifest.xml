@@ -160,6 +160,12 @@
     android:noHistory="true"
     android:launchMode="singleTask"/>
 
+<activity
+    android:name="org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:noHistory="true"
+    android:launchMode="singleTask"/>
+
 <!-- Upgrade related -->
 <receiver android:name="org.chromium.chrome.browser.upgrade.BravePackageReplacedBroadcastReceiver"
     android:exported="false">

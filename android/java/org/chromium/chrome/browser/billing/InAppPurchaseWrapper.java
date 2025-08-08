@@ -51,8 +51,19 @@ public class InAppPurchaseWrapper {
     public static final String MANAGE_SUBSCRIPTION_PAGE =
             "https://play.google.com/store/account/subscriptions";
     private static final String TAG = "InAppPurchaseWrapper";
+    // Brave Leo AI Chat subscription product IDs
     private static final String LEO_MONTHLY_SUBSCRIPTION = "brave.leo.monthly";
     private static final String LEO_YEARLY_SUBSCRIPTION = "brave.leo.yearly";
+
+    // Brave Origin premium features subscription product IDs
+    private static final String ORIGIN_MONTHLY_SUBSCRIPTION = "brave.origin.monthly";
+    private static final String ORIGIN_YEARLY_SUBSCRIPTION = "brave.origin.yearly";
+
+    private static final String ORIGIN_NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.origin.monthly";
+    private static final String ORIGIN_NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.origin.yearly";
+
+    private static final String ORIGIN_BETA_MONTHLY_SUBSCRIPTION = "beta.origin.monthly";
+    private static final String ORIGIN_BETA_YEARLY_SUBSCRIPTION = "beta.origin.yearly";
 
     private static final String VPN_NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
     private static final String VPN_NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
@@ -75,45 +86,83 @@ public class InAppPurchaseWrapper {
         YEARLY
     }
 
+    /**
+     * Enumeration of available subscription products in Brave browser. Each product represents a
+     * different premium service offering.
+     */
     public enum SubscriptionProduct {
-        VPN,
-        LEO
+        VPN, // Brave VPN service for secure browsing
+        LEO, // Brave Leo AI Chat premium features
+        ORIGIN // Brave Origin premium privacy and advanced features
     }
 
+    // VPN monthly subscription product details
     private final MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsVPN =
             new MutableLiveData();
     private final LiveData<ProductDetails> mMonthlyProductDetailsVPN =
             mMutableMonthlyProductDetailsVPN;
+    // Leo monthly subscription product details
     private final MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsLeo =
             new MutableLiveData();
     private final LiveData<ProductDetails> mMonthlyProductDetailsLeo =
             mMutableMonthlyProductDetailsLeo;
+    // Origin monthly subscription product details
+    private final MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsOrigin =
+            new MutableLiveData();
+    private final LiveData<ProductDetails> mMonthlyProductDetailsOrigin =
+            mMutableMonthlyProductDetailsOrigin;
 
+    /**
+     * Sets the monthly subscription product details for the specified subscription product. Updates
+     * the appropriate LiveData based on the product type.
+     *
+     * @param productDetails The Google Play Billing product details
+     * @param product The subscription product type (VPN, LEO, or ORIGIN)
+     */
     private void setMonthlyProductDetails(
             ProductDetails productDetails, SubscriptionProduct product) {
         if (product.equals(SubscriptionProduct.LEO)) {
             mMutableMonthlyProductDetailsLeo.postValue(productDetails);
         } else if (product.equals(SubscriptionProduct.VPN)) {
             mMutableMonthlyProductDetailsVPN.postValue(productDetails);
+        } else if (product.equals(SubscriptionProduct.ORIGIN)) {
+            // Set Origin monthly subscription product details
+            mMutableMonthlyProductDetailsOrigin.postValue(productDetails);
         }
     }
 
+    /**
+     * Gets the LiveData containing monthly subscription product details for the specified product.
+     *
+     * @param product The subscription product type (VPN, LEO, or ORIGIN)
+     * @return LiveData containing the product details, defaults to VPN if product not recognized
+     */
     public LiveData<ProductDetails> getMonthlyProductDetails(SubscriptionProduct product) {
         if (product.equals(SubscriptionProduct.LEO)) {
             return mMonthlyProductDetailsLeo;
+        } else if (product.equals(SubscriptionProduct.ORIGIN)) {
+            // Return Origin monthly subscription product details
+            return mMonthlyProductDetailsOrigin;
         }
-
+        // Default to VPN product details
         return mMonthlyProductDetailsVPN;
     }
 
+    // VPN yearly subscription product details
     private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsVPN =
             new MutableLiveData();
     private final LiveData<ProductDetails> mYearlyProductDetailsVPN =
             mMutableYearlyProductDetailsVPN;
+    // Leo yearly subscription product details
     private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsLeo =
             new MutableLiveData();
     private final LiveData<ProductDetails> mYearlyProductDetailsLeo =
             mMutableYearlyProductDetailsLeo;
+    // Origin yearly subscription product details
+    private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsOrigin =
+            new MutableLiveData();
+    private final LiveData<ProductDetails> mYearlyProductDetailsOrigin =
+            mMutableYearlyProductDetailsOrigin;
 
     private void setYearlyProductDetails(
             ProductDetails productDetails, SubscriptionProduct product) {
@@ -121,12 +170,16 @@ public class InAppPurchaseWrapper {
             mMutableYearlyProductDetailsLeo.postValue(productDetails);
         } else if (product.equals(SubscriptionProduct.VPN)) {
             mMutableYearlyProductDetailsVPN.postValue(productDetails);
+        } else if (product.equals(SubscriptionProduct.ORIGIN)) {
+            mMutableYearlyProductDetailsOrigin.postValue(productDetails);
         }
     }
 
     public LiveData<ProductDetails> getYearlyProductDetails(SubscriptionProduct product) {
         if (product.equals(SubscriptionProduct.LEO)) {
             return mYearlyProductDetailsLeo;
+        } else if (product.equals(SubscriptionProduct.ORIGIN)) {
+            return mYearlyProductDetailsOrigin;
         }
         return mYearlyProductDetailsVPN;
     }
@@ -222,6 +275,21 @@ public class InAppPurchaseWrapper {
             return subscriptionType == SubscriptionType.MONTHLY
                     ? LEO_MONTHLY_SUBSCRIPTION
                     : LEO_YEARLY_SUBSCRIPTION;
+        } else if (product.equals(SubscriptionProduct.ORIGIN)) {
+            String bravePackageName = ContextUtils.getApplicationContext().getPackageName();
+            if (bravePackageName.equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
+                return subscriptionType == SubscriptionType.MONTHLY
+                        ? ORIGIN_MONTHLY_SUBSCRIPTION
+                        : ORIGIN_YEARLY_SUBSCRIPTION;
+            } else if (bravePackageName.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)) {
+                return subscriptionType == SubscriptionType.MONTHLY
+                        ? ORIGIN_BETA_MONTHLY_SUBSCRIPTION
+                        : ORIGIN_BETA_YEARLY_SUBSCRIPTION;
+            } else {
+                return subscriptionType == SubscriptionType.MONTHLY
+                        ? ORIGIN_NIGHTLY_MONTHLY_SUBSCRIPTION
+                        : ORIGIN_NIGHTLY_YEARLY_SUBSCRIPTION;
+            }
         } else {
             assert false;
             return "";
@@ -313,11 +381,14 @@ public class InAppPurchaseWrapper {
                                             List<String> productIds = purchase.getProducts();
                                             boolean isVPNProduct = isVPNProduct(productIds);
                                             boolean isLeoProduct = isLeoProduct(productIds);
+                                            boolean isOriginProduct = isOriginProduct(productIds);
                                             if ((isVPNProduct
                                                             && type.equals(SubscriptionProduct.VPN))
                                                     || (isLeoProduct
+                                                            && type.equals(SubscriptionProduct.LEO))
+                                                    || (isOriginProduct
                                                             && type.equals(
-                                                                    SubscriptionProduct.LEO))) {
+                                                                    SubscriptionProduct.ORIGIN))) {
                                                 activePurchaseModel =
                                                         new PurchaseModel(
                                                                 purchase.getPurchaseToken(),
@@ -380,6 +451,7 @@ public class InAppPurchaseWrapper {
         List<String> productIds = purchase.getProducts();
         boolean isVPNProduct = isVPNProduct(productIds);
         boolean isLeoProduct = isLeoProduct(productIds);
+        boolean isOriginProduct = isOriginProduct(productIds);
         if (!purchase.isAcknowledged()) {
             MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
             LiveData<Boolean> billingConnectionState = _billingConnectionState;
@@ -397,7 +469,11 @@ public class InAppPurchaseWrapper {
                                         if (billingResult.getResponseCode()
                                                 == BillingClient.BillingResponseCode.OK) {
                                             receiptAcknowledged(
-                                                    context, purchase, isVPNProduct, isLeoProduct);
+                                                    context,
+                                                    purchase,
+                                                    isVPNProduct,
+                                                    isLeoProduct,
+                                                    isOriginProduct);
                                         } else {
                                             showToast(
                                                     context.getResources()
@@ -411,13 +487,19 @@ public class InAppPurchaseWrapper {
             if (isVPNProduct) {
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
             } else if (isLeoProduct) {
-                receiptAcknowledged(context, purchase, false, true);
+                receiptAcknowledged(context, purchase, false, true, false);
+            } else if (isOriginProduct) {
+                receiptAcknowledged(context, purchase, false, false, true);
             }
         }
     }
 
     private void receiptAcknowledged(
-            Context context, Purchase purchase, boolean isVPNProduct, boolean isLeoProduct) {
+            Context context,
+            Purchase purchase,
+            boolean isVPNProduct,
+            boolean isLeoProduct,
+            boolean isOriginProduct) {
         BraveActivity activity = null;
         try {
             activity = BraveActivity.getBraveActivity();
@@ -442,6 +524,14 @@ public class InAppPurchaseWrapper {
                             BraveLeoUtils.bringMainActivityOnTop();
                         }
                     });
+        } else if (isOriginProduct && activity != null) {
+            activity.runOnUiThread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            // TODO(sergz): Add Origin subscription handling
+                        }
+                    });
         }
         showToast(context.getResources().getString(R.string.subscription_consumed));
     }
@@ -460,6 +550,21 @@ public class InAppPurchaseWrapper {
                 || productIds.contains(LEO_YEARLY_SUBSCRIPTION);
     }
 
+    /**
+     * Checks if the given product IDs contain any Brave Origin subscription products.
+     *
+     * @param productIds List of product IDs from the purchase
+     * @return true if any Origin product ID is found, false otherwise
+     */
+    private boolean isOriginProduct(List<String> productIds) {
+        return productIds.contains(ORIGIN_MONTHLY_SUBSCRIPTION)
+                || productIds.contains(ORIGIN_YEARLY_SUBSCRIPTION)
+                || productIds.contains(ORIGIN_NIGHTLY_MONTHLY_SUBSCRIPTION)
+                || productIds.contains(ORIGIN_NIGHTLY_YEARLY_SUBSCRIPTION)
+                || productIds.contains(ORIGIN_BETA_MONTHLY_SUBSCRIPTION)
+                || productIds.contains(ORIGIN_BETA_YEARLY_SUBSCRIPTION);
+    }
+
     private PurchasesUpdatedListener getPurchasesUpdatedListener(Context context) {
         return (billingResult, purchases) -> {
             endConnection();
@@ -473,15 +578,12 @@ public class InAppPurchaseWrapper {
                 }
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-                showToast(
-                        context.getResources().getString(R.string.already_subscribed));
+                showToast(context.getResources().getString(R.string.already_subscribed));
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.USER_CANCELED) {
-                showToast(
-                        context.getResources().getString(R.string.error_caused_by_user));
+                showToast(context.getResources().getString(R.string.error_caused_by_user));
             } else {
-                showToast(
-                        context.getResources().getString(R.string.purchased_failed));
+                showToast(context.getResources().getString(R.string.purchased_failed));
             }
         };
     }
