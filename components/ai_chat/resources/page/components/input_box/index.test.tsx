@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import InputBox, { InputBoxProps } from '.'
 import { ContentType, UploadedFileType } from '../../../common/mojom'
 import { defaultContext } from '../../state/conversation_context'
@@ -23,6 +23,7 @@ const testContext: InputBoxProps['context'] = {
   hasAcceptedAgreement: true,
   getPluralString: () => Promise.resolve(''),
   tabs: [],
+  attachImages: jest.fn(),
 }
 
 describe('input box', () => {
@@ -273,5 +274,76 @@ describe('input box', () => {
     // Check that we have multiple attachment items (page content + files)
     const attachmentItems = container.querySelectorAll('.itemWrapper')
     expect(attachmentItems.length).toBeGreaterThanOrEqual(3)
+  })
+
+  describe('paste event handling', () => {
+    const createMockFile = (name: string, type: string, size = 1024) => {
+      const file = new File(['mock content'], name, { type })
+      Object.defineProperty(file, 'size', { value: size })
+      return file
+    }
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+      global.FileReader = jest.fn().mockImplementation(function(this: any) {
+        this.onload = null
+        this.onerror = null
+        this.readAsArrayBuffer = jest.fn().mockImplementation(() => {
+          if (this.onload) {
+            this.onload({
+              target: {
+                result: new ArrayBuffer(8)
+              }
+            })
+          }
+        })
+        return this
+      })
+    })
+
+    it('filters image files and calls attachImages on paste', async () => {
+      const mockAttachImages = jest.fn()
+      const { container } = render(
+        <InputBox
+          context={{
+            ...testContext,
+            attachImages: mockAttachImages
+          }}
+          conversationStarted={false}
+        />
+      )
+
+      const textarea = container.querySelector('textarea')!
+      const imageFile = createMockFile('test.png', 'image/png')
+      const textFile = createMockFile('test.txt', 'text/plain')
+
+      await act(async () => {
+        fireEvent.paste(textarea, {
+          clipboardData: {
+            files: [imageFile, textFile],
+            items: [imageFile, textFile].map(file => ({
+              kind: 'file' as const,
+              type: file.type,
+              getAsFile: () => file
+            })),
+            types: ['Files'],
+            getData: jest.fn(),
+            setData: jest.fn()
+          },
+          preventDefault: jest.fn()
+        })
+      })
+
+      await waitFor(() => {
+        expect(mockAttachImages).toHaveBeenCalledWith([
+          expect.objectContaining({
+            filename: 'test.png',
+            filesize: 1024,
+            data: expect.any(Array),
+            type: UploadedFileType.kImage
+          })
+        ])
+      })
+    })
   })
 })
