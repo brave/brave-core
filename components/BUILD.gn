@@ -32,6 +32,7 @@ test("brave_components_unittests") {
     deps += [
       "//brave/components/psst/browser/content:unit_tests",
       "//brave/components/psst/browser/core:unit_tests",
+      "//brave/components/psst/common:unit_tests",
     ]
   }
 
