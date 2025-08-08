@@ -13,6 +13,8 @@ export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
   conversationHistory: Mojom.ConversationTurn[]
   isMobile: boolean
   associatedContent: Mojom.AssociatedContent[]
+  memories: string[]
+  memoryEnabled: boolean
 }
 
 // Default state before initial API call
@@ -28,7 +30,9 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   totalTokens: BigInt(0),
   canSubmitUserEntries: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
-  associatedContent: []
+  associatedContent: [],
+  memories: [],
+  memoryEnabled: false
 }
 
 // Updates a tool use event for a conversation entry in the history.
@@ -80,16 +84,22 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
   async initialize() {
     const [
       { conversationEntriesState },
-      { conversationHistory }
+      { conversationHistory },
+      { memories },
+      { enabled }
      ] = await Promise.all([
       this.conversationHandler.bindUntrustedConversationUI(
         this.conversationObserver.$.bindNewPipeAndPassRemote()
       ),
-      this.conversationHandler.getConversationHistory()
+      this.conversationHandler.getConversationHistory(),
+      this.uiHandler.getMemories(),
+      this.uiHandler.getMemoryEnabled()
     ])
     this.setPartialState({
       ...conversationEntriesState,
-      conversationHistory
+      conversationHistory,
+      memories,
+      memoryEnabled: enabled
     })
     this.conversationObserver.onConversationHistoryUpdate.addListener(
       async (entry?: Mojom.ConversationTurn) => {
@@ -124,6 +134,16 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
 
     this.conversationObserver.associatedContentChanged.addListener((content: Mojom.AssociatedContent[]) => {
       this.setPartialState({ associatedContent: content })
+    })
+
+    this.conversationObserver.onMemoriesChanged.addListener(
+      (memories: string[]) => {
+      this.setPartialState({ memories })
+    })
+
+    this.conversationObserver.onMemoryEnabledChanged.addListener(
+      (enabled: boolean) => {
+      this.setPartialState({ memoryEnabled: enabled })
     })
 
     // Set up communication with the parent frame
