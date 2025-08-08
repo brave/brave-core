@@ -33,3 +33,11 @@ bool BraveOriginState::IsBraveOriginUser() const {
   }
   return is_brave_origin_user_;
 }
+
+void BraveOriginState::AddObserver(BraveOriginStateObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void BraveOriginState::RemoveObserver(BraveOriginStateObserver* observer) {
+  observers_.RemoveObserver(observer);
+}
