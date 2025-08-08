@@ -616,6 +616,11 @@
 # We disable HATS
 -HatsHandlerTest.HandleSecurityPageHatsRequestPassesArgumentsToHatsService
 
+# This test fails because we override FinalizeNewProfileSetup call in
+# FirstRunService::FinishProfileSetUp to not change profile name on primary
+# account signin (because we disable kSignin consent level anyway).
+-FirstRunServiceTest.ShouldPopulateProfileNameFromPrimaryAccount
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
