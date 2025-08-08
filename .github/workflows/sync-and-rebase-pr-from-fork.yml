@@ -60,7 +60,6 @@ jobs:
               --draft \
               --base "$baseRefName" \
               --head "$contribHeadRefName" \
-              # --assignee "$headRepositoryOwnerLogin" \
               --title "CI run for contributor PR #$PR_NUMBER" \
               --body \
           "## Description
