@@ -12,6 +12,10 @@
 #include "base/sequence_checker.h"
 #include "base/task/sequenced_task_runner.h"
 
+namespace base {
+class Time;
+}  // namespace base
+
 namespace brave_rewards {
 
 // This class provides access to a diagnostic log file. If the file
