@@ -44,7 +44,11 @@ action("sign_app_convert_aab_to_apk") {
 action("sign_app") {
   script = "//brave/build/android/sign_apk.py"
 
-  deps = [ "//brave:create_symbols_dist" ]
+  deps = [
+    # Make sure we have a copy prior to signing.
+    ":brave",
+    "//brave:create_symbols_dist",
+  ]
 
   if (target_cpu == "arm64" || target_cpu == "x64") {
     if (target_android_output_format == "aab") {
@@ -72,7 +76,7 @@ action("sign_app") {
     }
   }
 
-  outputs = [ "$target_sign_app_path-singed" ]
+  outputs = [ "$brave_android_output-sign-result" ]
   args = [
     rebase_path(_zipalign, root_out_dir),
     rebase_path(_apksigner, root_out_dir),
@@ -80,7 +84,11 @@ action("sign_app") {
   ]
   args += [
     rebase_path(target_sign_app_path, root_out_dir),
-    rebase_path("$brave_android_keystore_path", root_out_dir),
+
+    # Sign the final output file as well as there is no garantee that copy will happen after the sign.
+    # Ideally we should combine `brave`, `sign_app` and `sign_app_convert_aab_to_apk` into one action and do what we need in the script depending on the flags.
+    rebase_path(brave_android_output, root_out_dir),
+    "$brave_android_keystore_path",
     "$brave_android_keystore_password",
     "$brave_android_key_password",
     "$brave_android_keystore_name",
