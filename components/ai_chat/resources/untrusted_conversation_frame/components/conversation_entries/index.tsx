@@ -92,7 +92,8 @@ function ConversationEntries() {
             index === 1 &&
             isAIAssistant &&
             ((conversationContext.contentUsedPercentage ?? 100) < 100 ||
-              (conversationContext.trimmedTokens > 0 && conversationContext.totalTokens > 0))
+              (conversationContext.trimmedTokens > 0 && conversationContext.totalTokens > 0) ||
+              (conversationContext.visualContentUsedPercentage ?? 100) < 100)
 
           const showEditInput = editInputId === index
           const showEditIndicator = !showEditInput && !!group[0].edits?.length
