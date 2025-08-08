@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/controls/webview/webview.h"
 #include "ui/views/view_utils.h"
 
 VerticalTabStripRootView::VerticalTabStripRootView(BrowserView* browser_view,
