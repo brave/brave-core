@@ -559,7 +559,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void onDidFinishNavigationInPrimaryMainFrame(
                             Tab tab, NavigationHandle navigation) {
-                        if (navigation.isInPrimaryMainFrame() && navigation.isSameDocument() && navigation.hasCommitted()) {
+                        if (navigation.isInPrimaryMainFrame()
+                                && navigation.isSameDocument()
+                                && navigation.hasCommitted()) {
                             showYouTubePipIcon(tab);
                         } else {
                             hideYouTubePipIcon();

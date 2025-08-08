@@ -216,7 +216,8 @@ void YouTubeScriptInjectorTabHelper::PrimaryPageChanged(content::Page& page) {
   SetFullscreenRequested(false);
 }
 
-void YouTubeScriptInjectorTabHelper::RenderFrameDeleted(content::RenderFrameHost* rfh) {
+void YouTubeScriptInjectorTabHelper::RenderFrameDeleted(
+    content::RenderFrameHost* rfh) {
   if (rfh->GetGlobalId() == bound_rfh_id_) {
     script_injector_remote_.reset();
     bound_rfh_id_ = {};
@@ -225,7 +226,7 @@ void YouTubeScriptInjectorTabHelper::RenderFrameDeleted(content::RenderFrameHost
 }
 
 void YouTubeScriptInjectorTabHelper::DidFinishNavigation(
-  content::NavigationHandle* navigation_handle) {
+    content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsSameDocument() &&
       navigation_handle->IsInMainFrame() && navigation_handle->HasCommitted()) {
     SetFullscreenRequested(false);
@@ -252,13 +253,13 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
 }
 
 void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
-  bool is_fullscreen) {
-if (is_fullscreen && HasFullscreenBeenRequested()) {
-  SetFullscreenRequested(false);
-  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE) {
-    ::youtube_script_injector::EnterPictureInPicture(web_contents());
+    bool is_fullscreen) {
+  if (is_fullscreen && HasFullscreenBeenRequested()) {
+    SetFullscreenRequested(false);
+    if (web_contents()->GetVisibility() == content::Visibility::VISIBLE) {
+      ::youtube_script_injector::EnterPictureInPicture(web_contents());
+    }
   }
-}
 }
 
 void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
@@ -363,17 +364,17 @@ void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
 void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
     content::GlobalRenderFrameHostToken token,
     base::Value value) {
-      // If the tab is visible, the script result indicates fullscreen was
-      // triggered, and the callback is for the current main frame, return early
-      // without resetting the fullscreen state. This prevents unnecessary state
-      // changes when fullscreen was successfully entered.
-      if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
-          value.is_string() && value.GetString() == "fullscreen_triggered" &&
-          token == web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()) {
-        return;
-      }
+  // If the tab is visible, the script result indicates fullscreen was
+  // triggered, and the callback is for the current main frame, return early
+  // without resetting the fullscreen state. This prevents unnecessary state
+  // changes when fullscreen was successfully entered.
+  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
+      value.is_string() && value.GetString() == "fullscreen_triggered" &&
+      token == web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()) {
+    return;
+  }
 
-      SetFullscreenRequested(false);
+  SetFullscreenRequested(false);
 }
 
 bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {
@@ -383,7 +384,8 @@ bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {
          web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame();
 }
 
-void YouTubeScriptInjectorTabHelper::EnsureBound(content::RenderFrameHost* rfh) {
+void YouTubeScriptInjectorTabHelper::EnsureBound(
+    content::RenderFrameHost* rfh) {
   DCHECK(rfh);
   DCHECK(rfh->IsRenderFrameLive());
 
@@ -392,7 +394,8 @@ void YouTubeScriptInjectorTabHelper::EnsureBound(content::RenderFrameHost* rfh) 
       bound_rfh_id_ != rfh->GetGlobalId()) {
     script_injector_remote_.reset();
     bound_rfh_id_ = rfh->GetGlobalId();
-    rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote_);
+    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
+        &script_injector_remote_);
     script_injector_remote_.reset_on_disconnect();
   }
 }

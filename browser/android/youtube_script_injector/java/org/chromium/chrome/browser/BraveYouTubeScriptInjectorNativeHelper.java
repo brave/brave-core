@@ -8,15 +8,15 @@ package org.chromium.chrome.browser;
 import android.app.Activity;
 import android.app.PictureInPictureParams;
 
-import org.chromium.base.Log;
-import org.chromium.content_public.browser.MediaSession;
-import org.chromium.ui.base.WindowAndroid;
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.ui.base.WindowAndroid;
 
 /**
  * Helper to interact with native methods. Check brave_youtube_script_injector_native_helper.{h|cc}.

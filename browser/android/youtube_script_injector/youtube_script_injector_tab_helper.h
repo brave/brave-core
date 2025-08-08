@@ -39,7 +39,7 @@ class YouTubeScriptInjectorTabHelper
   void PrimaryPageChanged(content::Page& page) override;
   void RenderFrameDeleted(content::RenderFrameHost* rfh) override;
   void DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) override;
+      content::NavigationHandle* navigation_handle) override;
   void PrimaryMainDocumentElementAvailable() override;
   void MediaEffectivelyFullscreenChanged(bool is_fullscreen) override;
 
