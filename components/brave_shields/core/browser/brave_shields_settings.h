@@ -39,11 +39,11 @@ class BraveShieldsSettings {
   void SetFingerprintMode(mojom::FingerprintMode mode, const GURL& url);
   mojom::FingerprintMode GetFingerprintMode(const GURL& url);
 
-  void SetIsNoScriptEnabledByDefault(bool is_enabled);
-  bool GetNoScriptEnabledByDefault();
+  void SetNoScriptEnabledByDefault(bool is_enabled);
+  bool IsNoScriptEnabledByDefault();
 
-  void SetIsNoScriptEnabled(bool is_enabled, const GURL& url);
-  bool GetNoScriptEnabled(const GURL& url);
+  void SetNoScriptEnabled(bool is_enabled, const GURL& url);
+  bool IsNoScriptEnabled(const GURL& url);
 
  protected:
   raw_ptr<HostContentSettingsMap> host_content_settings_map_;  // NOT OWNED

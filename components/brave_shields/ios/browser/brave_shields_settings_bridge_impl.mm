@@ -62,21 +62,21 @@
 }
 
 - (bool)isBlockScriptsEnabledByDefault {
-  return _braveShieldsSettings->GetNoScriptEnabledByDefault();
+  return _braveShieldsSettings->IsNoScriptEnabledByDefault();
 }
 
 - (bool)blockScriptsEnabledForURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  return _braveShieldsSettings->GetNoScriptEnabled(gurl);
+  return _braveShieldsSettings->IsNoScriptEnabled(gurl);
 }
 
 - (void)setBlockScriptsEnabledByDefault:(bool)isEnabled {
-  _braveShieldsSettings->SetIsNoScriptEnabledByDefault(isEnabled);
+  _braveShieldsSettings->SetNoScriptEnabledByDefault(isEnabled);
 }
 
 - (void)setBlockScriptsEnabled:(bool)isEnabled forURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  _braveShieldsSettings->SetIsNoScriptEnabled(isEnabled, gurl);
+  _braveShieldsSettings->SetNoScriptEnabled(isEnabled, gurl);
 }
 
 - (BraveShieldsFingerprintMode)defaultFingerprintMode {

@@ -249,7 +249,7 @@ HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
 }
 
 bool BraveShieldsTabHelper::GetNoScriptEnabled() {
-  return brave_shields_settings_->GetNoScriptEnabled(GetCurrentSiteURL());
+  return brave_shields_settings_->IsNoScriptEnabled(GetCurrentSiteURL());
 }
 
 bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
@@ -312,8 +312,7 @@ void BraveShieldsTabHelper::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
 }
 
 void BraveShieldsTabHelper::SetIsNoScriptEnabled(bool is_enabled) {
-  brave_shields_settings_->SetIsNoScriptEnabled(is_enabled,
-                                                GetCurrentSiteURL());
+  brave_shields_settings_->SetNoScriptEnabled(is_enabled, GetCurrentSiteURL());
 
   ReloadWebContents();
 }

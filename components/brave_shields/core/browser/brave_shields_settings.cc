@@ -140,23 +140,23 @@ mojom::FingerprintMode BraveShieldsSettings::GetFingerprintMode(
   }
 }
 
-void BraveShieldsSettings::SetIsNoScriptEnabledByDefault(bool is_enabled) {
-  SetIsNoScriptEnabled(is_enabled, GURL());
+void BraveShieldsSettings::SetNoScriptEnabledByDefault(bool is_enabled) {
+  SetNoScriptEnabled(is_enabled, GURL());
 }
 
-bool BraveShieldsSettings::GetNoScriptEnabledByDefault() {
-  return GetNoScriptEnabled(GURL());
+bool BraveShieldsSettings::IsNoScriptEnabledByDefault() {
+  return IsNoScriptEnabled(GURL());
 }
 
-void BraveShieldsSettings::SetIsNoScriptEnabled(bool is_enabled,
-                                                const GURL& url) {
+void BraveShieldsSettings::SetNoScriptEnabled(bool is_enabled,
+                                              const GURL& url) {
   ControlType control_type =
       is_enabled ? ControlType::BLOCK : ControlType::ALLOW;
   brave_shields::SetNoScriptControlType(host_content_settings_map_,
                                         control_type, url, local_state_);
 }
 
-bool BraveShieldsSettings::GetNoScriptEnabled(const GURL& url) {
+bool BraveShieldsSettings::IsNoScriptEnabled(const GURL& url) {
   ControlType control_type =
       brave_shields::GetNoScriptControlType(host_content_settings_map_, url);
 
