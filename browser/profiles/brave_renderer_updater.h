@@ -10,7 +10,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/common/brave_renderer_configuration.mojom-forward.h"
-#include "brave/components/playlist/browser/util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -65,7 +64,6 @@ class BraveRendererUpdater : public KeyedService {
   raw_ptr<PrefService> local_state_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
   PrefChangeRegistrar local_state_change_registrar_;
-  playlist::PlaylistEnabledChangeRegistrar playlist_enabled_registrar_;
 
   // Prefs that we sync to the renderers.
   IntegerPrefMember brave_wallet_ethereum_provider_;

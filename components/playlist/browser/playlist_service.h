@@ -20,9 +20,9 @@
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_streaming.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
-#include "brave/components/playlist/browser/util.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_member.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -342,7 +342,7 @@ class PlaylistService : public KeyedService,
           PlaylistMediaFileDownloadManager::DownloadResult,
           PlaylistMediaFileDownloadManager::DownloadFailureReason>& result);
 
-  void OnEnabledChanged();
+  void OnEnabledPrefChanged();
 
   // KeyedService overrides:
   void Shutdown() override;
@@ -384,8 +384,7 @@ class PlaylistService : public KeyedService,
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;
 
-  bool enabled_ = false;
-  PlaylistEnabledChangeRegistrar enabled_registrar_;
+  BooleanPrefMember enabled_pref_;
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;

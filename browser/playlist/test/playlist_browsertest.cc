@@ -371,45 +371,32 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, UIHiddenWhenDisabled) {
   auto* sidebar_service =
       sidebar::SidebarServiceFactory::GetForProfile(browser()->profile());
   ASSERT_TRUE(sidebar_service);
-
-  auto test_video = [this, sidebar_service]() {
-    const auto visible_items = sidebar_service->items();
-    const auto playlist_iter = std::ranges::find(
-        visible_items, sidebar::SidebarItem::BuiltInItemType::kPlaylist,
-        &sidebar::SidebarItem::built_in_item_type);
-
-    ASSERT_TRUE(content::NavigateToURL(
-        GetActiveWebContents(), GetURL("/playlist/site_with_video.html")));
-    base::RunLoop run_loop;
-    base::OneShotTimer timer;
-    timer.Start(FROM_HERE, base::Milliseconds(500), run_loop.QuitClosure());
-    run_loop.Run();
-
-    BrowserView* browser_view =
-        BrowserView::GetBrowserViewForBrowser(browser());
-    auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
-        browser_view->GetLocationBarView());
-    auto* playlist_action_icon_view =
-        location_bar_view->GetPlaylistActionIconView();
-    ASSERT_TRUE(playlist_action_icon_view);
-    EXPECT_FALSE(playlist_action_icon_view->GetVisible());
-
-    EXPECT_EQ(playlist_iter, visible_items.end())
-        << "Playlist item should not be visible when disabled";
-  };
-
   auto* prefs = browser()->profile()->GetPrefs();
 
   prefs->SetBoolean(playlist::kPlaylistEnabledPref, false);
-  EXPECT_FALSE(playlist::IsPlaylistEnabled(*prefs));
 
-  test_video();
+  const auto visible_items = sidebar_service->items();
+  const auto playlist_iter = std::ranges::find(
+      visible_items, sidebar::SidebarItem::BuiltInItemType::kPlaylist,
+      &sidebar::SidebarItem::built_in_item_type);
 
-  prefs->SetBoolean(playlist::kPlaylistEnabledPref, true);
-  prefs->SetBoolean(playlist::kPlaylistDisabledByPolicy, true);
-  EXPECT_FALSE(playlist::IsPlaylistEnabled(*prefs));
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
+                                     GetURL("/playlist/site_with_video.html")));
+  base::RunLoop run_loop;
+  base::OneShotTimer timer;
+  timer.Start(FROM_HERE, base::Milliseconds(500), run_loop.QuitClosure());
+  run_loop.Run();
 
-  test_video();
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
+      browser_view->GetLocationBarView());
+  auto* playlist_action_icon_view =
+      location_bar_view->GetPlaylistActionIconView();
+  ASSERT_TRUE(playlist_action_icon_view);
+  EXPECT_FALSE(playlist_action_icon_view->GetVisible());
+
+  EXPECT_EQ(playlist_iter, visible_items.end())
+      << "Playlist item should not be visible when disabled";
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
