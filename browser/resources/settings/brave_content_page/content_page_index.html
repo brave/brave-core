@@ -14,23 +14,23 @@
   <settings-brave-content-content slot="view" id="parent" prefs="{{prefs}}">
   </settings-brave-content-content>
 
-  <if expr="enable_containers">
-    <template is="dom-if" if="[[isContainersEnabled_]]">
-      <settings-brave-content-containers
-        id="containers"
-        slot="view"
-        prefs="{{prefs}}"
-        in-search-mode="[[inSearchMode_]]">
-      </settings-brave-content-containers>
-    </template>
-  </if>
+  <template is="dom-if" if="[[showPage_(pageVisibility_.containers)]]">
+    <settings-brave-content-containers
+      id="containers"
+      slot="view"
+      prefs="{{prefs}}"
+      in-search-mode="[[inSearchMode_]]">
+    </settings-brave-content-containers>
+  </template>
 
-  <settings-brave-content-playlist
-    id="playlist"
-    slot="view"
-    prefs="{{prefs}}"
-    in-search-mode="[[inSearchMode_]]">
-  </settings-brave-content-playlist>
+  <template is="dom-if" if="[[showPage_(pageVisibility_.playlist)]]">
+    <settings-brave-content-playlist
+      id="playlist"
+      slot="view"
+      prefs="{{prefs}}"
+      in-search-mode="[[inSearchMode_]]">
+    </settings-brave-content-playlist>
+  </template>
   
   <settings-brave-content-speedreader
     id="speedreader"
