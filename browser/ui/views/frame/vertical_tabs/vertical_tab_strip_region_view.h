@@ -21,6 +21,11 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/resize_area_delegate.h"
 
+namespace views {
+class LabelButton;
+class MenuRunner;
+}  // namespace views
+
 class BraveNewTabButton;
 class BrowserView;
 class FullscreenController;
