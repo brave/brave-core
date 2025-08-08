@@ -606,4 +606,19 @@
   <message name="IDS_AI_CHAT_TEMPORARY_CHAT_DESCRIPTION" desc="Description for temporary chat functionality" formatter_data="webui=AiChat">
     This chat won't be saved into your history or use any of Leo's customization or memories.
   </message>
+  <message name="IDS_CHAT_UI_MEMORY_UPDATED_LABEL" desc="Label indicating that memory has been updated with new information" formatter_data="webui=AiChat">
+    Memory updated:
+  </message>
+  <message name="IDS_CHAT_UI_MEMORY_UNDO_BUTTON_LABEL" desc="Button label to undo a memory update" formatter_data="webui=AiChat">
+    Undo
+  </message>
+  <message name="IDS_CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL" desc="Button label to manage all memories" formatter_data="webui=AiChat">
+    Manage all
+  </message>
+  <message name="IDS_CHAT_UI_MEMORY_UNDONE_LABEL" desc="Message shown after memory has been undone/removed" formatter_data="webui=AiChat">
+    Ok, I won't remember that
+  </message>
+  <message name="IDS_CHAT_UI_MEMORY_ERROR_LABEL" desc="Message shown when memory storage fails" formatter_data="webui=AiChat">
+    Failed to save memory. Please try again.
+  </message>
 </grit-part>

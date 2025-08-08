@@ -1,0 +1,128 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
+import {
+  useUntrustedConversationContext
+} from '../../untrusted_conversation_context'
+import * as Mojom from '../../../common/mojom'
+import '../../../common/strings'
+import styles from './memory_tool_event.module.scss'
+
+interface Props {
+  toolUseEvent: Mojom.ToolUseEvent
+}
+
+const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
+  const context = useUntrustedConversationContext()
+  const [hasUndone, setHasUndone] = React.useState(false)
+
+  // Parse the memory content from tool input
+  const memoryContent = React.useMemo(() => {
+    if (!toolUseEvent?.argumentsJson) return ''
+    try {
+      const input = JSON.parse(toolUseEvent.argumentsJson)
+      return input?.memory || ''
+    } catch (e) {
+      return ''
+    }
+  }, [toolUseEvent?.argumentsJson])
+
+  // Check if memory exists based on current context state
+  const memoryExists = React.useMemo(() => {
+    return context.memories.includes(memoryContent)
+  }, [context.memories, memoryContent])
+
+  // Non-empty string in textContentBlock indicates an error
+  const hasError = !!toolUseEvent.output?.[0]?.textContentBlock?.text
+
+  const handleUndo = async () => {
+    if (!memoryContent || hasUndone) return
+
+    await context.uiHandler?.deleteMemory(memoryContent)
+    setHasUndone(true)
+  }
+
+  const handleManageAll = () => {
+    context.uiHandler?.openAIChatCustomizationSettings?.()
+  }
+
+  // Don't render if no memory content or tool hasn't completed
+  if (!memoryContent || !toolUseEvent.output) {
+    return null
+  }
+
+  // Handle error state
+  if (hasError) {
+    return (
+      <div
+        className={styles.memoryToolEvent}
+        data-testid='memory-tool-event-error'
+      >
+        <Icon name='database' className={styles.icon} />
+        <span className={styles.textError}>
+          {getLocale(S.CHAT_UI_MEMORY_ERROR_LABEL)}
+          <button
+            className={`${styles.button} ${styles.buttonWithSpacing}`}
+            onClick={handleManageAll}
+            data-testid='memory-manage-button'
+          >
+            {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
+          </button>
+        </span>
+      </div>
+    )
+  }
+
+  // Handle undone state
+  if (hasUndone || !memoryExists) {
+    return (
+      <div
+        className={styles.memoryToolEvent}
+        data-testid='memory-tool-event-undone'
+      >
+        <Icon name='database' className={styles.icon} />
+        <span className={styles.textUndone}>
+          {getLocale(S.CHAT_UI_MEMORY_UNDONE_LABEL)}
+          <button
+            className={`${styles.button} ${styles.buttonWithSpacing}`}
+            onClick={handleManageAll}
+            data-testid='memory-manage-button'
+          >
+            {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
+          </button>
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <div className={styles.memoryToolEvent} data-testid='memory-tool-event'>
+      <Icon name='database' className={styles.icon} />
+      <span>
+        {getLocale(S.CHAT_UI_MEMORY_UPDATED_LABEL)} {memoryContent}{' '}
+        <button
+          className={styles.button}
+          onClick={handleUndo}
+          data-testid='memory-undo-button'
+        >
+          {getLocale(S.CHAT_UI_MEMORY_UNDO_BUTTON_LABEL)}
+        </button>
+        <span> - </span>
+        <button
+          className={styles.button}
+          onClick={handleManageAll}
+          data-testid='memory-manage-button'
+        >
+          {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
+        </button>
+      </span>
+    </div>
+  )
+}
+
+export default MemoryToolEvent

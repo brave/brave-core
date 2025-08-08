@@ -9,6 +9,8 @@ import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import * as Mojom from '../../../common/mojom'
 import { getCompletionEvent, getWebSourcesEvent } from '../../../common/test_data_utils'
+import { createTextContentBlock } from '../../../common/content_block'
+import MockContext from '../../mock_untrusted_conversation_context'
 import AssistantResponse from '.'
 
 test('AssistantResponse should include expandable sources', async () => {
@@ -54,4 +56,69 @@ test('AssistantResponse should include expandable sources', async () => {
   // There should be all items showing
   links = screen.getAllByRole('link')
   expect(links).toHaveLength(8)
+})
+
+test('AssistantResponse should render memory tool events inline', () => {
+  const memoryToolEvent: Mojom.ConversationEntryEvent = {
+    toolUseEvent: {
+      toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+      id: 'memory-tool-123',
+      argumentsJson: '{"memory": "Test memory content"}',
+      output: [createTextContentBlock('')]
+    }
+  }
+
+  const events = [
+    memoryToolEvent,
+    getCompletionEvent('I will remember that.')
+  ]
+
+  render(
+    <MockContext memoryEnabled={true} memories={['Test memory content']}>
+      <AssistantResponse
+        events={events}
+        isEntryInteractivityAllowed={false}
+        isLeoModel={true}
+        isEntryInProgress={false}
+        allowedLinks={[]}
+      />
+    </MockContext>
+  )
+
+  // Memory tool should render inline (success state)
+  expect(screen.getByTestId('memory-tool-event')).toBeInTheDocument()
+  expect(screen.getByText(/Test memory content/)).toBeInTheDocument()
+})
+
+test('AssistantResponse should not render memory tool when disabled', () => {
+  const memoryToolEvent: Mojom.ConversationEntryEvent = {
+    toolUseEvent: {
+      toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+      id: 'memory-tool-123',
+      argumentsJson: '{"memory": "Test memory content"}',
+      output: [createTextContentBlock('')]
+    }
+  }
+
+  const events = [
+    memoryToolEvent,
+    getCompletionEvent('I will remember that.')
+  ]
+
+  render(
+    <MockContext memoryEnabled={false}>
+      <AssistantResponse
+        events={events}
+        isEntryInteractivityAllowed={false}
+        isLeoModel={true}
+        isEntryInProgress={false}
+        allowedLinks={[]}
+      />
+    </MockContext>
+  )
+
+  // Memory tool should not render when disabled
+  expect(screen.queryByTestId('memory-tool-event')).not.toBeInTheDocument()
+  expect(screen.queryByTestId('memory-tool-event-error'))
+    .not.toBeInTheDocument()
 })
