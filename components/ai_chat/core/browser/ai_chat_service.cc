@@ -47,6 +47,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "build/build_config.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
@@ -138,6 +139,10 @@ AIChatService::AIChatService(
   pref_change_registrar_.Add(
       prefs::kUserDismissedStorageNotice,
       base::BindRepeating(&AIChatService::OnStateChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveAIChatUserMemories,
+      base::BindRepeating(&AIChatService::OnMemoriesChanged,
                           weak_ptr_factory_.GetWeakPtr()));
   pref_change_registrar_.Add(
       prefs::kBraveAIChatUserMemoryEnabled,
@@ -233,6 +238,27 @@ void AIChatService::OnMemoryEnabledChanged() {
   } else if (!memory_enabled && memory_tool_it != browser_tools_.end()) {
     // Memory disabled but tool exists, remove it.
     browser_tools_.erase(memory_tool_it);
+  }
+
+  // Notify all conversation handlers about memory enabled state change.
+  for (auto& [uuid, conversation_handler] : conversation_handlers_) {
+    conversation_handler->NotifyMemoryEnabledChanged(memory_enabled);
+  }
+
+  // Also notify about memory changes to sync the memories list. When enabled,
+  // it would be the list stored in the preference. When disabled, it would be
+  // an empty list.
+  OnMemoriesChanged();
+}
+
+void AIChatService::OnMemoriesChanged() {
+  // Get updated memories from prefs.
+  std::vector<std::string> memories =
+      ai_chat::prefs::GetMemoriesFromPrefs(*profile_prefs_);
+
+  // Notify all conversation handlers about memory changes.
+  for (auto& [uuid, conversation_handler] : conversation_handlers_) {
+    conversation_handler->NotifyMemoriesChanged(memories);
   }
 }
 

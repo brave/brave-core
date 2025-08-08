@@ -35,6 +35,9 @@ inline constexpr char kLeoModelSupportUrl[] =
 inline constexpr char kLeoGoPremiumUrl[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
 
+inline constexpr char kBraveAIChatCustomizationSubPage[] =
+    "leo-ai/customization";
+
 // Upon registering a custom model, users have the ability to explicitly
 // provide a context size (in tokens). When present, we'll use this value to
 // determine the max associated content length (in chars). We will assume 4

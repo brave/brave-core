@@ -301,6 +301,7 @@ class AIChatService : public KeyedService,
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
   void OnMemoryEnabledChanged();
+  void OnMemoriesChanged();
   void InitializeBrowserTools();
 
   void GetEngineForTabOrganization(base::OnceClosure callback);

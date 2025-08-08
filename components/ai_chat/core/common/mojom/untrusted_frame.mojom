@@ -56,4 +56,16 @@ interface UntrustedUIHandler {
   OpenURLFromResponse(url.mojom.Url url);
 
   BindParentPage(pending_receiver<ParentUIFrame> parent_frame);
+
+  // Delete a specific memory from user memory storage
+  DeleteMemory(string memory);
+
+  // Get all current memories from storage
+  GetMemories() => (array<string> memories);
+
+  // Check if memory feature is currently enabled
+  GetMemoryEnabled() => (bool enabled);
+
+  // Open AI Chat customization settings page
+  OpenAIChatCustomizationSettings();
 };

@@ -1541,6 +1541,22 @@ void ConversationHandler::OnToolUseEventOutput(mojom::ConversationTurn* entry,
   }
 }
 
+void ConversationHandler::NotifyMemoriesChanged(
+    const std::vector<std::string>& memories) {
+  // Notify all untrusted conversation UI handlers about memory changes
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnMemoriesChanged(memories);
+  }
+}
+
+void ConversationHandler::NotifyMemoryEnabledChanged(bool enabled) {
+  // Notify all untrusted conversation UI handlers about memory enabled state
+  // change
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnMemoryEnabledChanged(enabled);
+  }
+}
+
 void ConversationHandler::OnConversationEntryRemoved(
     std::optional<std::string> entry_uuid) {
   OnHistoryUpdate(nullptr);

@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "base/notimplemented.h"
 #include "base/strings/escape.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
@@ -21,13 +22,17 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
@@ -104,6 +109,30 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     CHECK(ai_chat_ui_controller);
 
     ai_chat_ui_controller->BindInterface(std::move(parent_ui_frame_receiver));
+  }
+
+  void DeleteMemory(const std::string& memory) override {
+    ai_chat::prefs::DeleteMemoryFromPrefs(
+        memory, *Profile::FromWebUI(web_ui_)->GetPrefs());
+  }
+
+  void GetMemories(GetMemoriesCallback callback) override {
+    std::move(callback).Run(ai_chat::prefs::GetMemoriesFromPrefs(
+        *Profile::FromWebUI(web_ui_)->GetPrefs()));
+  }
+
+  void GetMemoryEnabled(GetMemoryEnabledCallback callback) override {
+    std::move(callback).Run(Profile::FromWebUI(web_ui_)->GetPrefs()->GetBoolean(
+        ai_chat::prefs::kBraveAIChatUserMemoryEnabled));
+  }
+
+  void OpenAIChatCustomizationSettings() override {
+#if !BUILDFLAG(IS_ANDROID)
+    chrome::ShowSettingsSubPageForProfile(
+        Profile::FromWebUI(web_ui_), ai_chat::kBraveAIChatCustomizationSubPage);
+#else
+    NOTIMPLEMENTED();
+#endif
   }
 
  private:
