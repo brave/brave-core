@@ -17,6 +17,7 @@
 #include "chrome/common/pref_names.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/color/prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #endif
 
@@ -41,6 +42,7 @@ base::span<const base::cstring_view> GetBravePersistentPrefNames() {
       brave_tabs::kVerticalTabsOnRight,
       brave_tabs::kVerticalTabsShowScrollbar,
       brave_tabs::kSharedPinnedTab,
+      color::prefs::kBraveDarkerMode,
 #endif
 #if defined(TOOLKIT_VIEWS)
       sidebar::kSidePanelWidth,
