@@ -220,8 +220,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isPlaylistAllowed",
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-          !profile->GetPrefs()->GetBoolean(
-              playlist::kPlaylistDisabledByPolicy));
+          profile->GetPrefs()->GetBoolean(playlist::kPlaylistEnabledPref));
 #else
   html_source->AddBoolean("isPlaylistAllowed", false);
 #endif

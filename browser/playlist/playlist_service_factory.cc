@@ -262,7 +262,6 @@ void PlaylistServiceFactory::RegisterProfilePrefs(
 
   registry->RegisterDictionaryPref(kPlaylistItemsPref);
   registry->RegisterBooleanPref(kPlaylistEnabledPref, true);
-  registry->RegisterBooleanPref(kPlaylistDisabledByPolicy, false);
   registry->RegisterBooleanPref(kPlaylistCacheByDefault, true);
   registry->RegisterStringPref(kPlaylistDefaultSaveTargetListID,
                                kDefaultPlaylistID);
