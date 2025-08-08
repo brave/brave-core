@@ -7,7 +7,6 @@ include_rules = [
   "-components",
 
   # TODO(bridiver) - narrow this down
-  "+net",
   "+mojo/public",
   "+ui/base",
 

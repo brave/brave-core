@@ -6,6 +6,7 @@ include_rules = [
   "+components/prefs",
   "+content/public/browser",
   "+extensions/buildflags/buildflags.h",
+  "+net",
   "+services/network/test",
   "+services/service_manager/public/cpp",
   "+third_party/boringssl/src/include",
