@@ -146,9 +146,8 @@ if (enable_pin_shortcut) {
       [ "pin_shortcut_page/pin_shortcut_page_browser_proxy.ts" ]
 }
 
-brave_settings_ts_definitions = [
-  "//brave/components/definitions/chrome_brave_theme.d.ts",
-]
+brave_settings_ts_definitions =
+    [ "//brave/components/definitions/chrome_brave_theme.d.ts" ]
 
 brave_settings_ts_extra_deps =
     [ "//brave/browser/resources/settings:preprocess" ]
