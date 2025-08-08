@@ -15,7 +15,6 @@
 #include "brave/components/web_discovery/browser/payload_generator.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
-#include "brave/components/web_discovery/common/util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -44,10 +43,6 @@ WebDiscoveryService::WebDiscoveryService(
   pref_change_registrar_.Init(profile_prefs);
   pref_change_registrar_.Add(
       kWebDiscoveryEnabled,
-      base::BindRepeating(&WebDiscoveryService::OnEnabledChange,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      kWebDiscoveryDisabledByPolicy,
       base::BindRepeating(&WebDiscoveryService::OnEnabledChange,
                           base::Unretained(this)));
 
@@ -113,7 +108,7 @@ void WebDiscoveryService::ClearPrefs() {
 }
 
 bool WebDiscoveryService::IsWebDiscoveryEnabled() const {
-  return web_discovery::IsWebDiscoveryEnabled(*profile_prefs_);
+  return profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
 }
 
 void WebDiscoveryService::OnEnabledChange() {

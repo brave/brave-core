@@ -70,7 +70,6 @@ BraveSearchEnginesHandler::BraveSearchEnginesHandler(
     regional_capabilities::RegionalCapabilitiesService* regional_capabilities)
     : SearchEnginesHandler(profile),
       regional_capabilities_(regional_capabilities) {}
-
 BraveSearchEnginesHandler::~BraveSearchEnginesHandler() = default;
 
 void BraveSearchEnginesHandler::RegisterMessages() {
