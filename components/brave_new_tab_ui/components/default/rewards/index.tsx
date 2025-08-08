@@ -17,10 +17,7 @@ import {
 } from '../../../../brave_rewards/resources/shared/lib/optional'
 
 import {
-  externalWalletFromExtensionData,
-  isExternalWalletProviderAllowed,
-  externalWalletProviderFromString,
-  isSelfCustodyProvider
+  externalWalletFromExtensionData
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 import {
@@ -76,26 +73,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
     return getProviderPayoutStatus(payoutStatus, walletProvider)
   }
 
-  const showSelfCustodyInvite = () => {
-    if (props.userType !== 'unconnected') {
-      return false
-    }
-    if (props.selfCustodyInviteDismissed) {
-      return false
-    }
-    const { walletProviderRegions } = props.parameters
-    for (const name of (props.externalWalletProviders || [])) {
-      const provider = externalWalletProviderFromString(name)
-      if (provider && isSelfCustodyProvider(provider)) {
-        const regions = (walletProviderRegions || {})[provider] || null
-        if (isExternalWalletProviderAllowed(props.declaredCountry, regions)) {
-          return true
-        }
-      }
-    }
-    return false
-  }
-
   const openRewardsPanel = () => {
     chrome.braveRewards.recordNTPPanelTrigger()
     chrome.braveRewards.openRewardsPanel()
@@ -121,7 +98,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
           minEarningsLastMonth={adsInfo ? adsInfo.minEarningsLastMonth : 0}
           maxEarningsLastMonth={adsInfo ? adsInfo.maxEarningsLastMonth : 0}
           contributionsThisMonth={props.totalContribution}
-          showSelfCustodyInvite={showSelfCustodyInvite()}
+          showSelfCustodyInvite={false}
           isTermsOfServiceUpdateRequired={props.isTermsOfServiceUpdateRequired}
           publishersVisited={props.publishersVisitedCount || 0}
           onEnableRewards={openRewardsPanel}
