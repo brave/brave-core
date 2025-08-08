@@ -13,7 +13,6 @@
  #include <utility>
  #include <vector>
  
- /* "base/*" refers to the base folder inside chromium - https://github.com/chromium/chromium/tree/main/base */
  #include "base/files/file_path.h"
  #include "base/functional/callback.h"
  #include "base/memory/scoped_refptr.h"
@@ -64,9 +63,8 @@
          using InitializeCallback = base::OnceCallback<void(bool)>;
          virtual void Initialize(InitializeCallback callback);
  
-         '''
-         // Declare the functions for 'suggest tabs for group' feature here //
-         '''
+         
+         // DECLARE FUNCTIONS FOR TABS HERE //
  
          // Cancel all the pending tflite tasks on the embedder task runner.
          // Should be used right before the TextEmbedder is destroyed to avoid long
@@ -86,9 +84,10 @@
          absl::Status EmbedText(const std::string& text,
              tflite::task::processor::EmbeddingResult& embedding);
          
-         '''
-         // Declare the functions or variables for 'suggest tabs for group' feature here //
-         '''
+         
+         // Declare the functions or variables for 'suggest tabs for group' feature here
+         absl::Status EmbedTabs();
+
          // an array containing strings (tab-title + origin)
          // should we have a limit on the length of this array?
          std::vector<std::string> tabs_; 
