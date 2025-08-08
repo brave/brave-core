@@ -297,7 +297,7 @@
                                 android:layout_gravity="start"
                                 android:layout_marginBottom="2dp"
                                 android:gravity="start"
-                                android:text="@string/yearly_subscription_leo"
+                                android:text="@string/one_year_subscription"
                                 android:textAlignment="textStart"
                                 android:textColor="@android:color/white" />
 

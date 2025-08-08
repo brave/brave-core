@@ -286,7 +286,7 @@
                                 style="@style/HeadingH3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/yearly_subscription_leo"
+                                android:text="@string/one_year_subscription"
                                 android:textColor="@android:color/white"
                                 android:layout_gravity="start"
                                 android:gravity="start"

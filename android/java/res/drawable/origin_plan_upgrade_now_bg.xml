@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- Background drawable for main upgrade/purchase button in Origin paywall.
+
+     This drawable creates the primary call-to-action button that initiates
+     the subscription purchase flow. Design features:
+     - High contrast background to draw attention
+     - Rounded corners for button appearance
+     - Color chosen for strong call-to-action visibility
+
+     Used in: activity_brave_origin_plans.xml for the main upgrade button
+-->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:type="linear"
+        android:angle="90"
+        android:startColor="@color/leo_plan_upgrade_now_bt_bg_start"
+        android:endColor="@color/leo_plan_upgrade_now_bt_bg_end" />
+    <corners android:radius="24dp"/>
+</shape>
