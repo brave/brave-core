@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.password_manager;
 import android.content.Context;
 import android.os.Bundle;
 
+import org.chromium.base.Log;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -15,12 +16,11 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileKeyedMap;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.components.browser_ui.settings.SettingsCustomTabLauncher;
-import org.chromium.components.browser_ui.settings.SettingsNavigation.SettingsFragment;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 @NullMarked
 public class BravePasswordManagerHelper extends PasswordManagerHelper {
-
+    private static final String TAG = "BravePasswords";
     protected static @Nullable ProfileKeyedMap<PasswordManagerHelper> sProfileMap;
 
     BravePasswordManagerHelper(Profile profile) {
@@ -37,9 +37,21 @@ public class BravePasswordManagerHelper extends PasswordManagerHelper {
             SettingsCustomTabLauncher settingsCustomTabLauncher) {
         Bundle fragmentArgs = new Bundle();
         fragmentArgs.putInt(MANAGE_PASSWORDS_REFERRER, referrer);
-        context.startActivity(
-                SettingsNavigationFactory.createSettingsNavigation()
-                        .createSettingsIntent(context, SettingsFragment.PASSWORDS, fragmentArgs));
+
+        // PasswordSettings is nota available at current package.
+        // Upstream used to resolve it through SettingsNavigation.SettingsFragment.PASSWORDS
+        // enum. To avoid use patching, just use reflection, luckily we have
+        // settingsNavigation.createSettingsIntent which can accept Class argument.
+        try {
+            Class passwordSettingsClass =
+                    Class.forName(
+                            "org.chromium.chrome.browser.password_manager.settings.PasswordSettings"); // presubmit: ignore-long-line
+            context.startActivity(
+                    SettingsNavigationFactory.createSettingsNavigation()
+                            .createSettingsIntent(context, passwordSettingsClass, fragmentArgs));
+        } catch (Exception e) {
+            Log.e(TAG, "showPasswordSettings: ", e);
+        }
     }
 
     public static PasswordManagerHelper getForProfile(Profile profile) {
