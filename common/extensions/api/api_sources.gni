@@ -14,7 +14,6 @@ schema_sources_ = [
   "brave_theme.json",
   "rewards_notifications.json",
   "web_discovery.json",
-  "brave_wallet.json",
 ]
 
 brave_extensions_api_schema_sources = get_path_info(schema_sources_, "abspath")

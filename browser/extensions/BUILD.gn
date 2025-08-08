@@ -198,11 +198,6 @@ source_set("extensions") {
     deps += [ "//brave/components/windows_recall" ]
   }
 
-  # This API is still being used by the preferences page
-  sources += [
-    "api/brave_wallet_api.cc",
-    "api/brave_wallet_api.h",
-  ]
   deps += [
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common:buildflags",

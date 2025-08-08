@@ -14,7 +14,6 @@ json_features("api_features") {
   sources = [
     "_api_features.json",
     "_brave_talk_api_features.json",
-    "_brave_wallet_api_features.json",
   ]
 }
 

@@ -113,13 +113,11 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
   }
 
   getWeb3ProviderList () {
-    return new Promise<string>(
-      resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
+    return sendWithPromise('getWeb3ProviderList')
   }
 
   isNativeWalletEnabled() {
-    return new Promise<boolean>(
-      resolve => chrome.braveWallet.isNativeWalletEnabled(resolve))
+    return sendWithPromise('isNativeWalletEnabled')
   }
 
   getAutoLockMinutes () {

@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -142,6 +143,14 @@ void BraveWalletHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getWalletInPrivateWindowsEnabled",
       base::BindRepeating(&BraveWalletHandler::GetWalletInPrivateWindowsEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getWeb3ProviderList",
+      base::BindRepeating(&BraveWalletHandler::GetWeb3ProviderList,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isNativeWalletEnabled",
+      base::BindRepeating(&BraveWalletHandler::IsNativeWalletEnabled,
                           base::Unretained(this)));
 }
 
@@ -455,4 +464,34 @@ void BraveWalletHandler::GetWalletInPrivateWindowsEnabled(
       kBraveWalletPrivateWindowsEnabled);
   AllowJavascript();
   ResolveJavascriptCallback(args[0], enabled);
+}
+
+void BraveWalletHandler::GetWeb3ProviderList(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  base::Value::List list;
+  list.Append(MakeSelectValue(
+      l10n_util::GetStringUTF16(
+          IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS),
+      ::brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
+
+  list.Append(MakeSelectValue(
+      l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
+      ::brave_wallet::mojom::DefaultWallet::BraveWallet));
+
+  list.Append(MakeSelectValue(
+      l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
+      ::brave_wallet::mojom::DefaultWallet::None));
+
+  std::string json_string;
+  base::JSONWriter::Write(list, &json_string);
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(json_string));
+}
+
+void BraveWalletHandler::IsNativeWalletEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(
+      args[0], base::Value(::brave_wallet::IsNativeWalletEnabled()));
 }
