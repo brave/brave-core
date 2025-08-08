@@ -163,7 +163,7 @@ BraveSpoofCheckerLookalikeURLMatchType const
       lookalikes::GetDomainInfo(response_url);
   // Empty domain_and_registry happens on private domains.
   if (navigated_domain.domain_and_registry.empty() ||
-      lookalikes::IsTopDomain(response_url)) {
+      IsTopDomain(navigated_domain)) {
     return [[BraveURLSpoofCheckerResult alloc]
         initWithMatchType:lookalikes::LookalikeUrlMatchType::kNone
              suggestedURL:nil];
