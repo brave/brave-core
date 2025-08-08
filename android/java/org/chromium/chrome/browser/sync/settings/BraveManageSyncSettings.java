@@ -41,8 +41,6 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private ChromeSwitchPreference mPrefSyncPasswords;
     private ChromeSwitchPreference mSyncEverything;
 
-    // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
-    // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
     private BravePasswordAccessReauthenticationHelper mReauthenticationHelper;
 
     private Timer mPasswordsSummaryUpdater;
