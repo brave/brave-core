@@ -11,6 +11,7 @@
 #include "brave/components/email_aliases/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
+#include "content/public/browser/storage_partition.h"
 
 namespace email_aliases {
 
@@ -50,7 +51,9 @@ EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
   if (!base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
     return nullptr;
   }
-  return std::make_unique<EmailAliasesService>();
+  return std::make_unique<EmailAliasesService>(
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess());
 }
 
 }  // namespace email_aliases
