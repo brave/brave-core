@@ -86,16 +86,3 @@ struct SiteSettings {
   bool is_forget_first_party_storage_enabled;
   map<content_settings.mojom.ContentSettingsType, bool> webcompat_settings;
 };
-
-enum CookieBlockMode {
-  CROSS_SITE_BLOCKED,
-  BLOCKED,
-  ALLOW
-};
-
-enum HttpsUpgradeMode {
-  // STRICT clashes with Windows SDK
-  STRICT_MODE,
-  STANDARD_MODE,
-  DISABLED_MODE
-};
