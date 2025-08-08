@@ -113,8 +113,9 @@ describe('getReasoningText', () => {
 
 describe('removeReasoning', () => {
   it('Should remove reasoning text between start and end tags', () => {
-    const input = '<think>Reasoning text here.</think> Rest of the text.'
-    expect(removeReasoning(input)).toBe(' Rest of the text.')
+    const input = 'Before reasoning.<think>Reasoning text here.'
+      + '</think> Rest of the text.'
+    expect(removeReasoning(input)).toBe('Before reasoning. Rest of the text.')
   })
 
   it('Should not fail if there is an empty string', () => {
@@ -128,13 +129,13 @@ describe('removeReasoning', () => {
   })
 
   it('should not fail if there is not ending tag', () => {
-    const input = '<think>Reasoning text here.'
-    expect(removeReasoning(input)).toBe('<think>Reasoning text here.')
+    const input = 'Before reasoning.<think>Reasoning text here.'
+    expect(removeReasoning(input)).toBe('Before reasoning.')
   })
 
   it('should not fail if there is not starting tag', () => {
-    const input = 'Reasoning text here.</think>'
-    expect(removeReasoning(input)).toBe('Reasoning text here.</think>')
+    const input = 'Reasoning text here.</think> After reasoning.'
+    expect(removeReasoning(input)).toBe(' After reasoning.')
   })
 })
 
