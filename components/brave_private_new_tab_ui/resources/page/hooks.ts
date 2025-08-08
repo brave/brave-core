@@ -46,3 +46,14 @@ export function useHasDisclaimerDismissed () {
 
   return { hasDisclaimerDismissed }
 }
+
+export function useIsTorDisabled () {
+  const [isTorDisabled, setIsTorDisabled] = React.useState(false)
+
+  React.useEffect(() => {
+    getPageHandlerInstance().pageHandler.getIsTorDisabled()
+      .then(res => setIsTorDisabled(res.isDisabled))
+  }, [])
+
+  return { isTorDisabled }
+}

@@ -54,6 +54,7 @@ class BravePrivateNewTabPageHandler
   void SetDisclaimerDismissed(bool dismissed) override;
   void GetDisclaimerDismissed(GetDisclaimerDismissedCallback callback) override;
   void GetIsTorConnected(GetIsTorConnectedCallback callback) override;
+  void GetIsTorDisabled(GetIsTorDisabledCallback callback) override;
   void GoToBraveSearch(const std::string& input, bool open_new_tab) override;
   void GoToBraveSupport() override;
 
