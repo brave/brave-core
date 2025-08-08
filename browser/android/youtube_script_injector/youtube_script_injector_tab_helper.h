@@ -36,9 +36,12 @@ class YouTubeScriptInjectorTabHelper
   bool IsPictureInPictureAvailable() const;
 
   // content::WebContentsObserver overrides:
+  void PrimaryPageChanged(content::Page& page) override;
+  void RenderFrameDeleted(content::RenderFrameHost* rfh) override;
+  void DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) override;
   void PrimaryMainDocumentElementAvailable() override;
-  void DidToggleFullscreenModeForTab(bool entered_fullscreen,
-                                     bool will_cause_resize) override;
+  void MediaEffectivelyFullscreenChanged(bool is_fullscreen) override;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
@@ -47,9 +50,12 @@ class YouTubeScriptInjectorTabHelper
   void OnFullscreenScriptComplete(content::GlobalRenderFrameHostToken token,
                                   base::Value value);
 
+  void EnsureBound(content::RenderFrameHost* rfh);
+
   // The remote used to send the fullscreen script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
+  content::GlobalRenderFrameHostId bound_rfh_id_;
 
   base::WeakPtrFactory<YouTubeScriptInjectorTabHelper> weak_factory_{this};
 };

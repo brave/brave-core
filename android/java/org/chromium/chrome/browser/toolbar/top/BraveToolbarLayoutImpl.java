@@ -10,7 +10,6 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -65,8 +64,6 @@ import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.fullscreen.FullscreenOptions;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
@@ -114,9 +111,7 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.feature_engagement.Tracker;
-import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.NavigationHandle;
-import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistItem;
@@ -148,8 +143,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 BraveRewardsObserver,
                 BraveRewardsNativeWorker.PublisherObserver,
                 ConnectionErrorHandler,
-                PlaylistServiceObserverImplDelegate,
-                FullscreenManager.Observer {
+                PlaylistServiceObserverImplDelegate {
     private static final String TAG = "BraveToolbar";
 
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
@@ -207,7 +201,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Collections.synchronizedSet(new HashSet<Integer>());
 
     private PlaylistService mPlaylistService;
-    private FullscreenManager mFullscreenManager;
 
     private enum BigtechCompany {
         Google,
@@ -481,14 +474,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    public void setFullscreenManager(final FullscreenManager fullscreenManager) {
-        mFullscreenManager = fullscreenManager;
-        if (ChromeFeatureList.isEnabled(
-                BraveFeatureList.BRAVE_PICTURE_IN_PICTURE_FOR_YOUTUBE_VIDEOS)) {
-            mFullscreenManager.addObserver(this);
-        }
-    }
-
     public void setTabModelSelector(TabModelSelector selector) {
         // We might miss events before calling setTabModelSelector, so we need
         // to proactively update the shields button state here, otherwise shields
@@ -571,7 +556,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void onDidFinishNavigationInPrimaryMainFrame(
                             Tab tab, NavigationHandle navigation) {
-                        showYouTubePipIcon(tab);
+                        if (navigation.isInPrimaryMainFrame() && navigation.isSameDocument() && navigation.hasCommitted()) {
+                            showYouTubePipIcon(tab);
+                        } else {
+                            hideYouTubePipIcon();
+                        }
                         if (mBraveRewardsNativeWorker != null) {
                             mBraveRewardsNativeWorker.triggerOnNotifyFrontTabUrlChanged();
                         }
@@ -640,16 +629,20 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
 
+        // Return early if picture in picture is not supported
+        // or disabled in the OS settings.
+        if (!PictureInPicture.isEnabled(getContext())) {
+            mYouTubePipLayout.setVisibility(View.GONE);
+            return;
+        }
+
         // Hide the layout if the current tab is in a state where it doesn't support or allow PiP
         // mode. This can also happen when a tab is re-selected after a crash and it's showing
         // the crash custom view, or is in a frozen state (likely inactive or unloaded).
         final boolean available =
                 BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
                         tab.getWebContents());
-        final boolean enabled = PictureInPicture.isEnabled(getContext());
-
-        final boolean show = available && enabled;
-        mYouTubePipLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+        mYouTubePipLayout.setVisibility(available ? View.VISIBLE : View.GONE);
     }
 
     private void hideYouTubePipIcon() {
@@ -1165,6 +1158,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (currentTab != null
                     && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
                             currentTab.getWebContents())) {
+                if (!PictureInPicture.isEnabled(getContext())) {
+                    hideYouTubePipIcon();
+                    return;
+                }
                 BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
             }
         }
@@ -1674,37 +1671,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (ChromeSharedPreferences.getInstance()
                     .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
                 showPlaylistButton(playlistItems);
-            }
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        // Remove the observer when the layout is detached from the window.
-        if (mFullscreenManager != null) {
-            mFullscreenManager.removeObserver(this);
-        }
-    }
-
-    // FullscreenManager.Observer method.
-    @Override
-    public void onEnterFullscreen(Tab tab, FullscreenOptions options) {
-        final WebContents webContents = tab.getWebContents();
-        if (webContents != null
-                && BraveYouTubeScriptInjectorNativeHelper.hasFullscreenBeenRequested(webContents)) {
-            MediaSession mediaSession = MediaSession.fromWebContents(webContents);
-            if (mediaSession != null) {
-                mediaSession.resume();
-            }
-            Activity activity = tab.getWindowAndroid().getActivity().get();
-            if (activity != null) {
-                try {
-                    activity.enterPictureInPictureMode(
-                            new PictureInPictureParams.Builder().build());
-                } catch (IllegalStateException | IllegalArgumentException e) {
-                    Log.e(TAG, "Error entering picture in picture mode.", e);
-                }
             }
         }
     }
