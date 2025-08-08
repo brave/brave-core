@@ -28,7 +28,6 @@ inline constexpr auto kPrintPreviewRetrievalHosts =
         "watermark.silverchair.com",
     });
 
-inline constexpr uint8_t kMaxPreviewPages = 20;
 inline constexpr char kLeoModelSupportUrl[] =
     "https://support.brave.app/hc/en-us/articles/26727364100493-"
     "What-are-the-differences-between-Leo-s-AI-Models";
