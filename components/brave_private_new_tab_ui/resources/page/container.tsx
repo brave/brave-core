@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
@@ -12,7 +13,11 @@ import BackgroundView from './components/background-view'
 import SearchBox from './components/search-box'
 import DisclaimerDialog from './components/disclaimer-dialog'
 import BadgeTor from './components/badge-tor'
-import { useTorObserver, useHasDisclaimerDismissed } from './hooks'
+import {
+  useTorObserver,
+  useHasDisclaimerDismissed,
+  useIsTorDisabled
+} from './hooks'
 
 const CenterView = styled.div`
   width: 100%;
@@ -53,6 +58,7 @@ function Container () {
 
   const { isConnected, progress, message, connectionStatus } = useTorObserver()
   const { hasDisclaimerDismissed } = useHasDisclaimerDismissed()
+  const { isTorDisabled } = useIsTorDisabled()
 
   let badgeElement = (
     <BadgePrivateWindow>
@@ -64,8 +70,12 @@ function Container () {
   let dialogContent = (
     <p>
       {getLocale('headerText1')}
-      {' '}
-      {getLocale('headerText2')}
+      {!isTorDisabled && (
+        <>
+          {' '}
+          {getLocale('headerText2')}
+        </>
+      )}
     </p>
   )
 

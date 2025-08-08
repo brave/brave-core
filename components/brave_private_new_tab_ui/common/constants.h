@@ -18,7 +18,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"headerText2", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC2},
     {"headerButton", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON},
     {"headerTorTitle", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR},
-    {"headerTorText", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC},
     {"torStatus", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS},
     {"torStatusConnected",
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED},  // NOLINT
