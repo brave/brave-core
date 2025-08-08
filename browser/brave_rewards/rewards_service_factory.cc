@@ -20,6 +20,7 @@
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/storage_partition.h"
 #include "extensions/buildflags/buildflags.h"
@@ -62,6 +63,8 @@ RewardsServiceFactory::RewardsServiceFactory()
   DependsOn(extensions::EventRouterFactory::GetInstance());
 #endif
   DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
+  DependsOn(
+      regional_capabilities::RegionalCapabilitiesServiceFactory::GetInstance());
 }
 
 std::unique_ptr<KeyedService>
@@ -105,15 +108,16 @@ RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
       },
       profile);
 
-  std::unique_ptr<RewardsServiceImpl> rewards_service =
-      std::make_unique<RewardsServiceImpl>(
-          profile->GetPrefs(), profile->GetPath(),
-          FaviconServiceFactory::GetForProfile(
-              profile, ServiceAccessType::EXPLICIT_ACCESS),
-          request_image_callback, cancel_request_image_callback,
-          profile->GetDefaultStoragePartition(),
-          brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-              context));
+  std::unique_ptr<RewardsServiceImpl> rewards_service = std::make_unique<
+      RewardsServiceImpl>(
+      profile->GetPrefs(), profile->GetPath(),
+      FaviconServiceFactory::GetForProfile(profile,
+                                           ServiceAccessType::EXPLICIT_ACCESS),
+      request_image_callback, cancel_request_image_callback,
+      profile->GetDefaultStoragePartition(),
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context),
+      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+          profile));
   rewards_service->Init(std::move(extension_observer),
                         std::move(notification_observer));
   return rewards_service;

@@ -58,7 +58,8 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
-#include "components/regional_capabilities/regional_capabilities_prefs.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/url_data_source.h"
@@ -202,13 +203,16 @@ RewardsServiceImpl::RewardsServiceImpl(
     RequestImageCallback request_image_callback,
     CancelImageRequestCallback cancel_image_request_callback,
     content::StoragePartition* storage_partition,
-    brave_wallet::BraveWalletService* brave_wallet_service)
+    brave_wallet::BraveWalletService* brave_wallet_service,
+    regional_capabilities::RegionalCapabilitiesService*
+        regional_capabilities_service)
     : prefs_(prefs),
       favicon_service_(favicon_service),
       request_image_callback_(request_image_callback),
       cancel_image_request_callback_(cancel_image_request_callback),
       storage_partition_(storage_partition),
       brave_wallet_service_(brave_wallet_service),
+      regional_capabilities_service_(regional_capabilities_service),
       receiver_(this),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -487,11 +491,9 @@ std::string RewardsServiceImpl::GetCountryCode() const {
   std::string declared_geo = prefs_->GetString(prefs::kDeclaredGeo);
   return !declared_geo.empty()
              ? declared_geo
-             : std::string(
-                   country_codes::CountryId::Deserialize(
-                       prefs_->GetInteger(
-                           regional_capabilities::prefs::kCountryIDAtInstall))
-                       .CountryCode());
+             : std::string(regional_capabilities_service_->GetCountryId()
+                               .GetCountryCode()
+                               .CountryCode());
 }
 
 void RewardsServiceImpl::GetAvailableCountries(
