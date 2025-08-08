@@ -7,6 +7,7 @@ import * as React from 'react'
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
+import { networkSupportsAccount } from '../../../../../utils/network-utils'
 
 // Queries
 import {
@@ -30,24 +31,29 @@ import {
 import { Text, Row, Column, ScrollableColumn } from '../../../../shared/style'
 
 interface Props {
-  coin: BraveWallet.CoinType
+  accountId: BraveWallet.AccountId | undefined
   selectedNetwork?: BraveWallet.NetworkInfo
   onChangeNetwork: (network: BraveWallet.NetworkInfo) => void
 }
 
 export const DAppConnectionNetworks = (props: Props) => {
-  const { coin, selectedNetwork, onChangeNetwork } = props
+  const { accountId, selectedNetwork, onChangeNetwork } = props
 
   // Queries
   const { data: networkList = [] } = useGetVisibleNetworksQuery()
 
   // Memos
   const dappSupportedNetwork = React.useMemo(() => {
+    if (!accountId) {
+      return []
+    }
+
     return networkList.filter(
       (network) =>
-        DAppSupportedCoinTypes.includes(network.coin) && network.coin === coin,
+        DAppSupportedCoinTypes.includes(network.coin)
+        && networkSupportsAccount(network, accountId),
     )
-  }, [networkList, coin])
+  }, [networkList, accountId])
 
   const primaryNetworks = React.useMemo(() => {
     return dappSupportedNetwork.filter((network) =>

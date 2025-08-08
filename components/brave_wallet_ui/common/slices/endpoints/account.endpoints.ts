@@ -100,45 +100,22 @@ export const accountEndpoints = ({
       ],
     }),
 
-    getSelectedAccountId: query<BraveWallet.AccountId | null, void>({
-      queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
-        return {
-          data:
-            (await baseQuery(undefined).cache.getAllAccounts()).selectedAccount
-              ?.accountId || null,
-        }
+    getSelectedDappAccounts: query<
+      {
+        ethAccountId: BraveWallet.AccountId | undefined
+        solAccountId: BraveWallet.AccountId | undefined
+        adaAccountId: BraveWallet.AccountId | undefined
       },
-      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }],
-    }),
-
-    getSelectedSOLAccountId: query<BraveWallet.AccountId | null, void>({
+      void
+    >({
       queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+        const allAccounts = await baseQuery(undefined).cache.getAllAccounts()
         return {
-          data:
-            (await baseQuery(undefined).cache.getAllAccounts())
-              .solDappSelectedAccount?.accountId || null,
-        }
-      },
-      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }],
-    }),
-
-    getSelectedETHAccountId: query<BraveWallet.AccountId | null, void>({
-      queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
-        return {
-          data:
-            (await baseQuery(undefined).cache.getAllAccounts())
-              .ethDappSelectedAccount?.accountId || null,
-        }
-      },
-      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }],
-    }),
-
-    getSelectedADAAccountId: query<BraveWallet.AccountId | null, void>({
-      queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
-        return {
-          data:
-            (await baseQuery(undefined).cache.getAllAccounts())
-              .adaDappSelectedAccount?.accountId || null,
+          data: {
+            ethAccountId: allAccounts.ethDappSelectedAccount?.accountId,
+            solAccountId: allAccounts.solDappSelectedAccount?.accountId,
+            adaAccountId: allAccounts.adaDappSelectedAccount?.accountId,
+          },
         }
       },
       providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }],
