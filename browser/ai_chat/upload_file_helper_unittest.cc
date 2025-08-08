@@ -15,10 +15,10 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/common/pref_names.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/testing_pref_service.h"
 #include "content/public/test/file_system_chooser_test_helpers.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
@@ -71,15 +71,15 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
 
     auto* profile = Profile::FromBrowserContext(browser_context());
-    testing_local_state_ = std::make_unique<ScopedTestingLocalState>(
-        TestingBrowserProcess::GetGlobal());
 #if BUILDFLAG(IS_ANDROID)
-    testing_local_state_->Get()->registry()->RegisterBooleanPref(
-        prefs::kAllowFileSelectionDialogs, true);
+    TestingBrowserProcess::GetGlobal()
+        ->GetTestingLocalState()
+        ->registry()
+        ->RegisterBooleanPref(prefs::kAllowFileSelectionDialogs, true);
 #endif
     // To fulfill ChromeSelectFilePolicy::CanOpenSelectFileDialog()
-    testing_local_state_->Get()->SetBoolean(prefs::kAllowFileSelectionDialogs,
-                                            true);
+    TestingBrowserProcess::GetGlobal()->GetTestingLocalState()->SetBoolean(
+        prefs::kAllowFileSelectionDialogs, true);
     file_helper_ = std::make_unique<UploadFileHelper>(web_contents(), profile);
   }
 
@@ -108,7 +108,6 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
 
  protected:
   base::ScopedTempDir temp_dir_;
-  std::unique_ptr<ScopedTestingLocalState> testing_local_state_;
   std::unique_ptr<UploadFileHelper> file_helper_;
   // Must persist throughout TearDown().
   content::SelectFileDialogParams dialog_params_;

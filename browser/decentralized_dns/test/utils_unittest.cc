@@ -8,7 +8,6 @@
 #include "base/test/task_environment.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -17,14 +16,15 @@ namespace decentralized_dns {
 
 class UtilsUnitTest : public testing::Test {
  public:
-  UtilsUnitTest() : local_state_(TestingBrowserProcess::GetGlobal()) {}
+  UtilsUnitTest() = default;
   ~UtilsUnitTest() override = default;
 
-  PrefService* local_state() { return local_state_.Get(); }
+  PrefService* local_state() {
+    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
+  }
 
  private:
   base::test::TaskEnvironment task_environment_;
-  ScopedTestingLocalState local_state_;
 };
 
 TEST_F(UtilsUnitTest, IsUnstoppableDomainsTLD) {
