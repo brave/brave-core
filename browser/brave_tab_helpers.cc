@@ -36,6 +36,7 @@
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/user_prefs/user_prefs.h"
@@ -112,7 +113,17 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   YouTubeScriptInjectorTabHelper::CreateForWebContents(web_contents);
 #else
   // Add tab helpers here unless they are intended for android too
-  brave_shields::BraveShieldsTabHelper::CreateForWebContents(web_contents);
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(
+          web_contents->GetBrowserContext());
+  std::unique_ptr<brave_shields::BraveShieldsSettings> brave_shields_settings =
+      std::make_unique<brave_shields::BraveShieldsSettings>(
+          host_content_settings_map, g_browser_process->local_state(),
+          Profile::FromBrowserContext(web_contents->GetBrowserContext())
+              ->GetPrefs());
+  brave_shields::BraveShieldsTabHelper::CreateForWebContents(
+      web_contents, host_content_settings_map,
+      std::move(brave_shields_settings));
   ThumbnailTabHelper::CreateForWebContents(web_contents);
   BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
 #endif

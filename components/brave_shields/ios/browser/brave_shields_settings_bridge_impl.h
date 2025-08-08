@@ -8,21 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
+#include <memory>
+
 #include "brave/components/brave_shields/ios/browser/brave_shields_settings_bridge.h"
 #include "brave/components/brave_shields/ios/common/shields_settings.mojom.objc.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-class HostContentSettingsMap;
-class PrefService;
+namespace brave_shields {
+class BraveShieldsSettings;
+}
 
 @interface BraveShieldsSettingsBridgeImpl
     : NSObject <BraveShieldsSettingsBridge>
 
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithHostContentSettingsMap:(HostContentSettingsMap*)map
-                                    localState:(PrefService*)localState
-                                  profilePrefs:(PrefService*)profilePrefs;
+- (instancetype)initWithBraveShieldsSettings:
+    (std::unique_ptr<brave_shields::BraveShieldsSettings>)braveShieldsSettings;
 
 - (BOOL)braveShieldsEnabledFor:(NSURL*)url;
 - (void)setBraveShieldsEnabled:(BOOL)isEnabled forURL:(NSURL*)url;

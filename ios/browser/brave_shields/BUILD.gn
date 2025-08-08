@@ -11,6 +11,7 @@ source_set("brave_shields") {
 
   deps = [
     "//base",
+    "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/ios/browser",
     "//brave/ios/browser/api/profile",
     "//ios/chrome/browser/content_settings/model",

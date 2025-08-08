@@ -34,12 +34,6 @@ using net::AppendQueryParameter;
 
 namespace {
 
-HostContentSettingsMap* GetHostContentSettingsMap(
-    content::WebContents* web_contents) {
-  return HostContentSettingsMapFactory::GetForProfile(
-      web_contents->GetBrowserContext());
-}
-
 constexpr char kShieldsAllowScriptOnceHistogramName[] =
     "Brave.Shields.AllowScriptOnce";
 
@@ -49,19 +43,17 @@ namespace brave_shields {
 
 BraveShieldsTabHelper::~BraveShieldsTabHelper() = default;
 
-BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
+BraveShieldsTabHelper::BraveShieldsTabHelper(
+    content::WebContents* web_contents,
+    HostContentSettingsMap* host_content_settings_map,
+    std::unique_ptr<BraveShieldsSettings> brave_shields_settings)
     : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<BraveShieldsTabHelper>(*web_contents) {
+      content::WebContentsUserData<BraveShieldsTabHelper>(*web_contents),
+      host_content_settings_map_(host_content_settings_map),
+      brave_shields_settings_(std::move(brave_shields_settings)) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
-  auto* map = GetHostContentSettingsMap(web_contents);
-  observation_.Observe(map);
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext())
-          ->GetPrefs();
-  brave_shields_settings_ =
-      std::make_unique<brave_shields::BraveShieldsSettings>(
-          map, g_browser_process->local_state(), profile_prefs);
+  observation_.Observe(host_content_settings_map);
 }
 
 void BraveShieldsTabHelper::DidFinishNavigation(
@@ -226,8 +218,7 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
       Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
 
   const ControlType control_type = brave_shields::GetCookieControlType(
-      GetHostContentSettingsMap(web_contents()), cookie_settings.get(),
-      GetCurrentSiteURL());
+      host_content_settings_map_, cookie_settings.get(), GetCurrentSiteURL());
 
   switch (control_type) {
     case ControlType::ALLOW:
@@ -245,7 +236,7 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
 
 HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
   ControlType control_type = brave_shields::GetHttpsUpgradeControlType(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+      host_content_settings_map_, GetCurrentSiteURL());
   if (control_type == ControlType::ALLOW) {
     return HttpsUpgradeMode::DISABLED_MODE;
   } else if (control_type == ControlType::BLOCK) {
@@ -263,7 +254,7 @@ bool BraveShieldsTabHelper::GetNoScriptEnabled() {
 
 bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
   return brave_shields::GetForgetFirstPartyStorageEnabled(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+      host_content_settings_map_, GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::SetAdBlockMode(AdBlockMode mode) {
@@ -295,8 +286,8 @@ void BraveShieldsTabHelper::SetCookieBlockMode(CookieBlockMode mode) {
       break;
   }
 
-  brave_shields::SetCookieControlType(GetHostContentSettingsMap(web_contents()),
-                                      prefs, control_type, GetCurrentSiteURL(),
+  brave_shields::SetCookieControlType(host_content_settings_map_, prefs,
+                                      control_type, GetCurrentSiteURL(),
                                       g_browser_process->local_state());
 
   ReloadWebContents();
@@ -313,9 +304,9 @@ void BraveShieldsTabHelper::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
   } else {
     control_type = ControlType::DEFAULT;
   }
-  brave_shields::SetHttpsUpgradeControlType(
-      GetHostContentSettingsMap(web_contents()), control_type,
-      GetCurrentSiteURL(), g_browser_process->local_state());
+  brave_shields::SetHttpsUpgradeControlType(host_content_settings_map_,
+                                            control_type, GetCurrentSiteURL(),
+                                            g_browser_process->local_state());
 
   ReloadWebContents();
 }
@@ -329,8 +320,8 @@ void BraveShieldsTabHelper::SetIsNoScriptEnabled(bool is_enabled) {
 
 void BraveShieldsTabHelper::SetForgetFirstPartyStorageEnabled(bool is_enabled) {
   brave_shields::SetForgetFirstPartyStorageEnabled(
-      GetHostContentSettingsMap(web_contents()), is_enabled,
-      GetCurrentSiteURL(), g_browser_process->local_state());
+      host_content_settings_map_, is_enabled, GetCurrentSiteURL(),
+      g_browser_process->local_state());
 }
 
 void BraveShieldsTabHelper::BlockAllowedScripts(
@@ -362,8 +353,7 @@ bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
           ->GetPrefs();
 
   return brave_shields::IsBraveShieldsManaged(
-      profile_prefs, GetHostContentSettingsMap(web_contents()),
-      GetCurrentSiteURL());
+      profile_prefs, host_content_settings_map_, GetCurrentSiteURL());
 }
 
 bool BraveShieldsTabHelper::IsForgetFirstPartyStorageFeatureEnabled() const {
@@ -423,14 +413,13 @@ void BraveShieldsTabHelper::SetWebcompatEnabled(
     ContentSettingsType webcompat_settings_type,
     bool enabled) {
   brave_shields::SetWebcompatEnabled(
-      GetHostContentSettingsMap(web_contents()), webcompat_settings_type,
-      enabled, GetCurrentSiteURL(), g_browser_process->local_state());
+      host_content_settings_map_, webcompat_settings_type, enabled,
+      GetCurrentSiteURL(), g_browser_process->local_state());
   ReloadWebContents();
 }
 
 base::flat_map<ContentSettingsType, bool>
 BraveShieldsTabHelper::GetWebcompatSettings() {
-  auto* map = GetHostContentSettingsMap(web_contents());
   const GURL& current_site_url = GetCurrentSiteURL();
   base::flat_map<ContentSettingsType, bool> result;
   for (auto webcompat_settings_type = ContentSettingsType::BRAVE_WEBCOMPAT_NONE;
@@ -438,7 +427,7 @@ BraveShieldsTabHelper::GetWebcompatSettings() {
        webcompat_settings_type = static_cast<ContentSettingsType>(
            static_cast<int32_t>(webcompat_settings_type) + 1)) {
     const bool enabled = brave_shields::IsWebcompatEnabled(
-        map, webcompat_settings_type, current_site_url);
+        host_content_settings_map_, webcompat_settings_type, current_site_url);
     result[webcompat_settings_type] = enabled;
   }
   return result;
