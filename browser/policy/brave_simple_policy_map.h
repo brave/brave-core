@@ -79,7 +79,7 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kBraveP3ADisabled, p3a::kP3ADisabledByPolicy,
      base::Value::Type::BOOLEAN},
 #if BUILDFLAG(ENABLE_PLAYLIST)
-    {policy::key::kBravePlaylistDisabled, playlist::kPlaylistDisabledByPolicy,
+    {policy::key::kBravePlaylistEnabled, playlist::kPlaylistEnabledPref,
      base::Value::Type::BOOLEAN},
 #endif
     {policy::key::kBraveStatsPingDisabled, kStatsReportingDisabledByPolicy,

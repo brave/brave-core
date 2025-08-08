@@ -12,9 +12,9 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
-#include "brave/components/playlist/browser/util.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+#include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class Browser;
@@ -71,8 +71,7 @@ class PlaylistActionIconView : public PageActionIconView,
   playlist::PlaylistTabHelper* GetPlaylistTabHelper();
   void UpdateState();
 
-  playlist::PlaylistEnabledChangeRegistrar playlist_enabled_registrar_;
-  raw_ptr<Browser> browser_;
+  BooleanPrefMember playlist_enabled_;
 
   enum class State { kNone, kSaved, kFound } state_ = State::kNone;
 

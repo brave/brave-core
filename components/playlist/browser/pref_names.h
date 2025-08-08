@@ -12,11 +12,6 @@ namespace playlist {
 // the user.
 inline constexpr char kPlaylistEnabledPref[] = "brave.playlist.enabled";
 
-// A boolean preference indicates whether playlist feature is disabled by
-// admin policy.
-inline constexpr char kPlaylistDisabledByPolicy[] =
-    "brave.playlist.disabled_by_policy";
-
 // Set of playlists. Each playlist has ids of its items
 // so that playlists can share same item efficiently
 // Currently, List type preference always has to be updated entirely but there

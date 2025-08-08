@@ -11,13 +11,11 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/playlist/browser/util.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "components/prefs/pref_member.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-
-class PrefService;
 
 namespace content {
 class NavigationHandle;
@@ -106,9 +104,8 @@ class PlaylistTabHelper
   void UpdateSavedItemFromCurrentContents();
   void OnAddedItems(std::vector<mojom::PlaylistItemPtr> items);
 
-  void OnPlaylistEnabledChanged();
+  void OnPlaylistEnabledPrefChanged();
 
-  raw_ptr<PrefService> profile_prefs_;
   raw_ptr<PlaylistService> service_;
 
   bool is_adding_items_ = false;
@@ -121,8 +118,7 @@ class PlaylistTabHelper
   mojo::Receiver<mojom::PlaylistServiceObserver> playlist_observer_receiver_{
       this};
 
-  PlaylistEnabledChangeRegistrar playlist_enabled_registrar_;
-  bool playlist_enabled_ = false;
+  BooleanPrefMember playlist_enabled_;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 
