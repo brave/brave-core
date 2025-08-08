@@ -1358,10 +1358,7 @@ Object.defineProperty(Config.prototype, 'useSiso', {
       // * Android fails with multiple reasons currently. Disable it for now.
       // * iOS fails in siso+reproxy mode because of incorrect handling of
       //   input_root_absolute_path value.
-      // * MacOS is opt-in, will be enabled later.
-      ['linux', 'win'].includes(this.hostOS)
-        && !this.isAndroid()
-        && !this.isIOS(),
+      !this.isAndroid() && !this.isIOS(),
     )
   },
 })
