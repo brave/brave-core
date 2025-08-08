@@ -89,7 +89,10 @@ export default function FilterMenu<T>(props: Props<T>) {
         [styles.highlightFirstItem]: props.query !== null
       })}
       isOpen={props.isOpen}
-      onClose={() => props.setIsOpen(false)}
+      onClose={() => {
+        setTimeout(() => props.setIsOpen(false))
+        return false
+      }}
       placement="top"
     >
       {props.header}
