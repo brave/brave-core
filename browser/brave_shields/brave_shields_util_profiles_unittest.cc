@@ -7,7 +7,6 @@
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -36,8 +35,7 @@ namespace brave_shields {
 
 class BraveShieldsUtilProfilesTest : public testing::Test {
  public:
-  BraveShieldsUtilProfilesTest()
-      : local_state_(TestingBrowserProcess::GetGlobal()) {}
+  BraveShieldsUtilProfilesTest() = default;
   ~BraveShieldsUtilProfilesTest() override = default;
 
   TestingProfile* regular_profile() { return &profile_; }
@@ -84,7 +82,6 @@ class BraveShieldsUtilProfilesTest : public testing::Test {
  private:
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile profile_;
-  ScopedTestingLocalState local_state_;
 };
 
 TEST_F(BraveShieldsUtilProfilesTest, SetBraveShieldsEnabled) {
