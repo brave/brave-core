@@ -465,7 +465,6 @@ public class BraveToolbarManager extends ToolbarManager
         if (toolbarLayout instanceof BraveToolbarLayoutImpl) {
             final BraveToolbarLayoutImpl braveToolbarLayout =
                     (BraveToolbarLayoutImpl) toolbarLayout;
-            braveToolbarLayout.setFullscreenManager(mFullscreenManager);
             braveToolbarLayout.setTabModelSelector(mTabModelSelectorSupplier.get());
         }
     }
