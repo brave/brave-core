@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "mojo/public/cpp/bindings/unique_receiver_set.h"
 
 namespace brave_wallet {
 
@@ -74,6 +75,8 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
 
   mojo::Receiver<mojom::KeyringServiceObserver> keyring_observer_receiver_{
       this};
+
+  mojo::UniqueReceiverSet<mojom::CardanoApi> cardano_api_receivers_;
 
   base::WeakPtrFactory<CardanoProviderImpl> weak_ptr_factory_{this};
 };

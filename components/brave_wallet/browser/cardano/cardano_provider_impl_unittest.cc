@@ -133,6 +133,7 @@ class CardanoProviderImplUnitTest : public testing::Test {
   }
 
  private:
+  base::test::TaskEnvironment task_environment_;
   base::test::ScopedFeatureList feature_list_{
       features::kBraveWalletCardanoFeature};
 
@@ -143,8 +144,45 @@ class CardanoProviderImplUnitTest : public testing::Test {
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
 
   std::unique_ptr<CardanoProviderImpl> provider_;
-  base::test::TaskEnvironment task_environment_;
 };
+
+TEST_F(CardanoProviderImplUnitTest, Enable_PermissionApproved) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  ON_CALL(*delegate(), RequestPermissions(_, _, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+              MockBraveWalletProviderDelegate::RequestPermissionsCallback
+                  callback) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            std::move(callback).Run(
+                mojom::RequestPermissionsError::kNone,
+                std::vector<std::string>(
+                    {added_account->account_id->unique_key}));
+          });
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+  mojo::Remote<mojom::CardanoApi> api;
+  provider()->Enable(api.BindNewPipeAndPassReceiver(), future.GetCallback());
+  auto error = future.Take();
+  EXPECT_FALSE(error);
+}
 
 TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
   CreateWallet();

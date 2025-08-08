@@ -19,7 +19,6 @@
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
-#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
@@ -185,9 +184,11 @@ void CardanoProviderImpl::OnRequestCardanoPermissions(
     return;
   }
 
-  auto api_impl = std::make_unique<CardanoApiImpl>(
-      brave_wallet_service_.get(), delegate_factory_.Run(), account_id.Clone());
-  mojo::MakeSelfOwnedReceiver(std::move(api_impl), std::move(cardano_api));
+  cardano_api_receivers_.Add(std::make_unique<CardanoApiImpl>(
+                                 brave_wallet_service_.get(),
+                                 delegate_factory_.Run(), account_id.Clone()),
+                             std::move(cardano_api));
+
   std::move(callback).Run(nullptr);
 }
 
