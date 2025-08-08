@@ -148,45 +148,33 @@ class MockPrintPreviewPrintRenderFrame
   mojo::AssociatedReceiver<printing::mojom::PrintRenderFrame> receiver_{this};
 };
 
-class MockPreviewPageTextExtractor : public PreviewPageTextExtractor {
+class MockPreviewPageImageExtractor : public PreviewPageImageExtractor {
  public:
-  MockPreviewPageTextExtractor(base::ReadOnlySharedMemoryRegion expected_region,
-                               bool expected_error)
+  MockPreviewPageImageExtractor(
+      base::ReadOnlySharedMemoryRegion expected_region,
+      bool expected_error)
       : expected_region_(std::move(expected_region)),
         expected_error_(expected_error) {}
-  ~MockPreviewPageTextExtractor() override = default;
+  ~MockPreviewPageImageExtractor() override = default;
 
-  MockPreviewPageTextExtractor(const MockPreviewPageTextExtractor&) = delete;
-  MockPreviewPageTextExtractor& operator=(const MockPreviewPageTextExtractor&) =
-      delete;
+  MockPreviewPageImageExtractor(const MockPreviewPageImageExtractor&) = delete;
+  MockPreviewPageImageExtractor& operator=(
+      const MockPreviewPageImageExtractor&) = delete;
 
   void StartExtract(
       base::ReadOnlySharedMemoryRegion pdf_region,
-      PrintPreviewExtractor::Extractor::CallbackVariant callback,
+      PrintPreviewExtractor::Extractor::ImageCallback callback,
       std::optional<bool> pdf_use_skia_renderer_enabled) override {
     // verify the correct memory region is passed
     EXPECT_EQ(pdf_region.Map().GetMemoryAsSpan<const uint8_t>(),
               expected_region_.Map().GetMemoryAsSpan<const uint8_t>());
 
-    if (auto* text_cb =
-            std::get_if<PrintPreviewExtractor::Extractor::TextCallback>(
-                &callback)) {
-      if (!expected_error_) {
-        std::move(*text_cb).Run(base::ok("extracted text"));
-      } else {
-        std::move(*text_cb).Run(
-            base::unexpected("PreviewPageTextExtractor error"));
-      }
-    } else if (auto* image_cb =
-                   std::get_if<PrintPreviewExtractor::Extractor::ImageCallback>(
-                       &callback)) {
-      if (!expected_error_) {
-        std::vector<std::vector<uint8_t>> result = {{0xde, 0xad}, {0xbe, 0xef}};
-        std::move(*image_cb).Run(base::ok(std::move(result)));
-      } else {
-        std::move(*image_cb).Run(
-            base::unexpected("PreviewPageTextExtractor error"));
-      }
+    if (!expected_error_) {
+      std::vector<std::vector<uint8_t>> result = {{0xde, 0xad}, {0xbe, 0xef}};
+      std::move(callback).Run(base::ok(std::move(result)));
+    } else {
+      std::move(callback).Run(
+          base::unexpected("PreviewPageImageExtractor error"));
     }
   }
 
@@ -244,7 +232,6 @@ class MockPdfToBitmapConverter : public printing::mojom::PdfToBitmapConverter {
 
 using ImageResult =
     base::expected<std::vector<std::vector<uint8_t>>, std::string>;
-using TextResult = base::expected<std::string, std::string>;
 
 class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
  public:
@@ -265,13 +252,13 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
         web_contents(),
         base::BindRepeating([](content::WebContents* web_contents, bool is_pdf,
                                ai_chat::PrintPreviewExtractor::Extractor::
-                                   CallbackVariant&& variant)
+                                   ImageCallback&& callback)
                                 -> std::unique_ptr<
                                     ai_chat::PrintPreviewExtractor::Extractor> {
           return std::make_unique<ai_chat::PrintPreviewExtractorInternal>(
               web_contents,
               Profile::FromBrowserContext(web_contents->GetBrowserContext()),
-              is_pdf, std::move(variant),
+              is_pdf, std::move(callback),
               base::BindRepeating(
                   []() -> base::IDMap<printing::mojom::PrintPreviewUI*>& {
                     return printing::PrintPreviewUI::GetPrintPreviewUIIdMap();
@@ -321,7 +308,6 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
   // Intentionally setup a PrintRenderFrame error to stop early so we can
   // verify the print settings we pass is correct.
   void RunPrintSettingsTest(const std::string& mime_type,
-                            bool use_capture_pdf,
                             bool expect_preview_modifiable,
                             const base::Location& location = FROM_HERE) {
     SCOPED_TRACE(location.ToString());
@@ -374,21 +360,13 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
         MockPrintPreviewPrintRenderFrame::ExpectedError::kPrintPreviewFailed,
         std::move(on_complete));
 
-    if (use_capture_pdf) {
-      base::test::TestFuture<
-          base::expected<std::vector<std::vector<uint8_t>>, std::string>>
-          future;
-      pp_extractor_->CapturePdf(future.GetCallback());
-      auto result = future.Take();
-      ASSERT_FALSE(result.has_value());
-      EXPECT_EQ(result.error(), "PrintPreviewFailed");
-    } else {
-      base::test::TestFuture<base::expected<std::string, std::string>> future;
-      pp_extractor_->Extract(future.GetCallback());
-      auto result = future.Take();
-      ASSERT_FALSE(result.has_value());
-      EXPECT_EQ(result.error(), "PrintPreviewFailed");
-    }
+    base::test::TestFuture<
+        base::expected<std::vector<std::vector<uint8_t>>, std::string>>
+        future;
+    pp_extractor_->CaptureImages(future.GetCallback());
+    auto result = future.Take();
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), "PrintPreviewFailed");
 
     EXPECT_TRUE(
         printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap().empty());
@@ -414,7 +392,6 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
   // Test for all possible PrintRenderFrame errors
   void RunErrorTest(
       const std::string& mime_type,
-      bool use_capture_pdf,
       MockPrintPreviewPrintRenderFrame::ExpectedError expected_error,
       const std::string& expected_error_message,
       const base::Location& location = FROM_HERE) {
@@ -422,21 +399,13 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
 
     auto print_render_frame = SetupPrintPreviewTest(mime_type, expected_error);
 
-    if (use_capture_pdf) {
-      base::test::TestFuture<
-          base::expected<std::vector<std::vector<uint8_t>>, std::string>>
-          future;
-      pp_extractor_->CapturePdf(future.GetCallback());
-      auto result = future.Take();
-      ASSERT_FALSE(result.has_value());
-      EXPECT_EQ(result.error(), expected_error_message);
-    } else {
-      base::test::TestFuture<base::expected<std::string, std::string>> future;
-      pp_extractor_->Extract(future.GetCallback());
-      auto result = future.Take();
-      ASSERT_FALSE(result.has_value());
-      EXPECT_EQ(result.error(), expected_error_message);
-    }
+    base::test::TestFuture<
+        base::expected<std::vector<std::vector<uint8_t>>, std::string>>
+        future;
+    pp_extractor_->CaptureImages(future.GetCallback());
+    auto result = future.Take();
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), expected_error_message);
 
     EXPECT_TRUE(
         printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap().empty());
@@ -445,8 +414,8 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
 
   void SimulateFullFlow(bool extractor_error) {
     auto full_pdf_region = CreatePageRegion(64).region;
-    internal_extractor()->SetPreviewPageTextExtractorForTesting(
-        std::make_unique<MockPreviewPageTextExtractor>(
+    internal_extractor()->SetPreviewPageImageExtractorForTesting(
+        std::make_unique<MockPreviewPageImageExtractor>(
             full_pdf_region.Duplicate(), extractor_error));
 
     // Simulate page composition
@@ -461,12 +430,11 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
         full_pdf_region.Duplicate());
   }
 
-  // Test all possible flows with mocked PreviewPageTextExtractor that retruns
+  // Test all possible flows with mocked PreviewPageImageExtractor that returns
   // fixed successful results.
   template <typename T>
   void RunTestCase(base::test::TestFuture<T>& future,
                    const std::string& mime_type,
-                   bool use_capture_pdf,
                    const std::string& expected_error_msg,
                    bool extractor_error,
                    bool simulate_partial_composition) {
@@ -496,13 +464,11 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     if (expect_error) {
       ASSERT_FALSE(result.has_value())
           << "Expected error for mime_type=" << mime_type
-          << ", use_capture_pdf=" << use_capture_pdf
           << ", partial_composition=" << simulate_partial_composition;
       EXPECT_EQ(result.error(), expected_error_msg);
     } else {
       ASSERT_TRUE(result.has_value())
-          << "Expected success for mime_type=" << mime_type
-          << ", use_capture_pdf=" << use_capture_pdf;
+          << "Expected success for mime_type=" << mime_type;
       if constexpr (std::is_same_v<T, ImageResult>) {
         const std::vector<std::vector<uint8_t>> expected = {{0xde, 0xad},
                                                             {0xbe, 0xef}};
@@ -522,67 +488,65 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
   std::unique_ptr<PrintPreviewExtractor> pp_extractor_;
 };
 
-TEST_F(PrintPreviewExtractorTest, CapturePdfWithNotPdf) {
+TEST_F(PrintPreviewExtractorTest, CaptureImagesWithNonPdf) {
   content::WebContentsTester::For(web_contents())
       ->SetMainFrameMimeType("text/html");
+
+  auto print_render_frame = SetupPrintPreviewTest(
+      "text/html",
+      MockPrintPreviewPrintRenderFrame::ExpectedError::kPrintPreviewFailed);
+
   base::test::TestFuture<
       base::expected<std::vector<std::vector<uint8_t>>, std::string>>
       future;
-  pp_extractor_->CapturePdf(future.GetCallback());
+  pp_extractor_->CaptureImages(future.GetCallback());
   auto result = future.Take();
   ASSERT_FALSE(result.has_value());
-  EXPECT_EQ(result.error(), "Not pdf content");
+  EXPECT_EQ(result.error(), "PrintPreviewFailed");
 }
 
 TEST_F(PrintPreviewExtractorTest, PrintSettings) {
-  // Test with non-PDF content using Extract()
-  RunPrintSettingsTest("text/html", false, true);
+  // Test with non-PDF content
+  RunPrintSettingsTest("text/html", true);
 
-  // Test with PDF content using Extract()
-  RunPrintSettingsTest("application/pdf", false, false);
-
-  // Test with PDF content using CapturePdf()
-  RunPrintSettingsTest("application/pdf", true, false);
+  // Test with PDF content using CaptureImages()
+  RunPrintSettingsTest("application/pdf", false);
 }
 
 TEST_F(PrintPreviewExtractorTest, Errors) {
-  // Test Extract() with various errors
+  // Test CaptureImages() with various errors
   RunErrorTest(
-      "text/html", false,
+      "text/html",
       MockPrintPreviewPrintRenderFrame::ExpectedError::kPrintPreviewFailed,
       "PrintPreviewFailed");
   RunErrorTest(
-      "text/html", false,
+      "text/html",
       MockPrintPreviewPrintRenderFrame::ExpectedError::kPrintPreviewCanceled,
       "PrintPreviewCancelled");
   RunErrorTest(
-      "text/html", false,
+      "text/html",
       MockPrintPreviewPrintRenderFrame::ExpectedError::kPrinterSettingsInvalid,
       "PrinterSettingsInvalid");
 
-  // Test CapturePdf() with various errors
   RunErrorTest(
-      "application/pdf", true,
+      "application/pdf",
       MockPrintPreviewPrintRenderFrame::ExpectedError::kPrintPreviewFailed,
       "PrintPreviewFailed");
   RunErrorTest(
-      "application/pdf", true,
+      "application/pdf",
       MockPrintPreviewPrintRenderFrame::ExpectedError::kPrintPreviewCanceled,
       "PrintPreviewCancelled");
   RunErrorTest(
-      "application/pdf", true,
+      "application/pdf",
       MockPrintPreviewPrintRenderFrame::ExpectedError::kPrinterSettingsInvalid,
       "PrinterSettingsInvalid");
 
   // Test disabled print preview
   profile()->GetPrefs()->SetBoolean(::prefs::kPrintPreviewDisabled, true);
-  RunErrorTest("application/pdf", true,
+  RunErrorTest("application/pdf",
                MockPrintPreviewPrintRenderFrame::ExpectedError::kNone,
                "Print preview is disabled");
-  RunErrorTest("text/html", false,
-               MockPrintPreviewPrintRenderFrame::ExpectedError::kNone,
-               "Print preview is disabled");
-  RunErrorTest("application/pdf", false,
+  RunErrorTest("text/html",
                MockPrintPreviewPrintRenderFrame::ExpectedError::kNone,
                "Print preview is disabled");
 }
@@ -590,7 +554,6 @@ TEST_F(PrintPreviewExtractorTest, Errors) {
 TEST_F(PrintPreviewExtractorTest, PrintPreviewData) {
   struct TestParams {
     std::string mime_type;
-    bool use_capture_pdf;
     std::string expected_error_msg;  // Empty string means success
     bool extractor_error;
     bool simulate_partial_composition;
@@ -598,21 +561,21 @@ TEST_F(PrintPreviewExtractorTest, PrintPreviewData) {
 
   const TestParams kTestCases[] = {
       // Missing preview data cases - error on OnCompositeToPdfDone
-      {"text/html", false, "Failed to get preview data", false, false},
-      {"application/pdf", true, "Failed to get preview data", false, false},
+      {"text/html", "Failed to get preview data", false, false},
+      {"application/pdf", "Failed to get preview data", false, false},
 
       // Missing preview data cases - missing OnCompositePdfPageDone and error
       // on OnCompositeToPdfDone
-      {"text/html", false, "Failed to get preview data", false, true},
-      {"application/pdf", true, "Failed to get preview data", false, true},
+      {"text/html", "Failed to get preview data", false, true},
+      {"application/pdf", "Failed to get preview data", false, true},
 
       // Successful extraction cases
-      {"text/html", false, "", false, false},
-      {"application/pdf", true, "", false, false},
+      {"text/html", "", false, false},
+      {"application/pdf", "", false, false},
 
       // Extraction error cases
-      {"text/html", false, "PreviewPageTextExtractor error", true, false},
-      {"application/pdf", true, "PreviewPageTextExtractor error", true, false},
+      {"text/html", "PreviewPageImageExtractor error", true, false},
+      {"application/pdf", "PreviewPageImageExtractor error", true, false},
   };
 
   for (const auto& test_case : kTestCases) {
@@ -620,34 +583,26 @@ TEST_F(PrintPreviewExtractorTest, PrintPreviewData) {
         test_case.mime_type,
         MockPrintPreviewPrintRenderFrame::ExpectedError::kNone);
 
-    if (test_case.use_capture_pdf) {
-      base::test::TestFuture<ImageResult> future;
-      pp_extractor_->CapturePdf(future.GetCallback());
-      RunTestCase(future, test_case.mime_type, test_case.use_capture_pdf,
-                  test_case.expected_error_msg, test_case.extractor_error,
-                  test_case.simulate_partial_composition);
-    } else {
-      base::test::TestFuture<TextResult> future;
-      pp_extractor_->Extract(future.GetCallback());
-      RunTestCase(future, test_case.mime_type, test_case.use_capture_pdf,
-                  test_case.expected_error_msg, test_case.extractor_error,
-                  test_case.simulate_partial_composition);
-    }
+    base::test::TestFuture<ImageResult> future;
+    pp_extractor_->CaptureImages(future.GetCallback());
+    RunTestCase(future, test_case.mime_type, test_case.expected_error_msg,
+                test_case.extractor_error,
+                test_case.simulate_partial_composition);
   }
 }
 
-class PreviewPageTextExtractorTest : public testing::Test {
+class PreviewPageImageExtractorTest : public testing::Test {
  public:
-  PreviewPageTextExtractorTest() = default;
-  ~PreviewPageTextExtractorTest() override = default;
+  PreviewPageImageExtractorTest() = default;
+  ~PreviewPageImageExtractorTest() override = default;
 
   void SetUp() override {
-    extractor_ = std::make_unique<PreviewPageTextExtractor>();
+    extractor_ = std::make_unique<PreviewPageImageExtractor>();
     converter_ = std::make_unique<MockPdfToBitmapConverter>();
     extractor()->BindForTesting(converter()->Bind());
   }
 
-  PreviewPageTextExtractor* extractor() { return extractor_.get(); }
+  PreviewPageImageExtractor* extractor() { return extractor_.get(); }
 
   MockPdfToBitmapConverter* converter() { return converter_.get(); }
 
@@ -664,7 +619,7 @@ class PreviewPageTextExtractorTest : public testing::Test {
       EXPECT_EQ(result.error(), expected_error);
     }
     {
-      base::test::TestFuture<TextResult> future;
+      base::test::TestFuture<ImageResult> future;
       extractor()->StartExtract(CreatePageRegion(50).region,
                                 future.GetCallback(), std::nullopt);
       auto result = future.Take();
@@ -690,47 +645,18 @@ class PreviewPageTextExtractorTest : public testing::Test {
     }));
   }
 
-  // Testing text extraction with page count and inspect page separators are
-  // placed correctly or none for single page.
-  void RunExtractTextTest(uint32_t page_count,
-                          const base::Location& location = FROM_HERE) {
-    SCOPED_TRACE(location.ToString());
-    converter()->SetExpectedPageCount(page_count);
-    base::test::TestFuture<TextResult> future;
-    extractor()->StartExtract(CreatePageRegion(50).region, future.GetCallback(),
-                              std::nullopt);
-    auto result = future.Take();
-    ASSERT_TRUE(result.has_value());
-
-#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-    // OCR will fail intentionally so we are testing if each page is processed
-    // as expected.
-    std::string expected;
-    if (page_count == 1) {
-      expected = "";
-    } else if (page_count > kMaxPreviewPages) {
-      expected = std::string(kMaxPreviewPages - 1, '\n');
-    } else {
-      expected = std::string(page_count - 1, '\n');
-    }
-    EXPECT_EQ(result.value(), expected);
-#else
-    EXPECT_EQ(result.value(), "");
-#endif
-  }
-
  private:
   base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<PreviewPageTextExtractor> extractor_;
+  std::unique_ptr<PreviewPageImageExtractor> extractor_;
   std::unique_ptr<MockPdfToBitmapConverter> converter_;
 };
 
-TEST_F(PreviewPageTextExtractorTest, GetPdfPageCountError) {
+TEST_F(PreviewPageImageExtractorTest, GetPdfPageCountError) {
   converter()->SetExpectedPageCount(std::nullopt);
   RunErrorTest("Failed to get page count");
 }
 
-TEST_F(PreviewPageTextExtractorTest, GetBitmapError) {
+TEST_F(PreviewPageImageExtractorTest, GetBitmapError) {
   converter()->SetExpectedPageCount(1);
   converter()->SetExpectedEmptyBitmap(true);
   RunErrorTest("Invalid bitmap");
@@ -739,7 +665,7 @@ TEST_F(PreviewPageTextExtractorTest, GetBitmapError) {
   RunErrorTest("Invalid bitmap");
 }
 
-TEST_F(PreviewPageTextExtractorTest, CaptureImages) {
+TEST_F(PreviewPageImageExtractorTest, CaptureImages) {
   converter()->SetExpectedEmptyBitmap(false);
 
   // Test with single page
@@ -748,30 +674,11 @@ TEST_F(PreviewPageTextExtractorTest, CaptureImages) {
   // Test with multiple pages
   RunCaptureImageTest(3);
 
-  // Test with max pages
-  RunCaptureImageTest(kMaxPreviewPages);
+  // Test with many pages
+  RunCaptureImageTest(20);
 
-  // Test exceeding max pages
-  RunCaptureImageTest(kMaxPreviewPages + 1);
-}
-
-TEST_F(PreviewPageTextExtractorTest, ExtractText) {
-  converter()->SetExpectedEmptyBitmap(false);
-
-  // Test single page (empty string expected)
-  RunExtractTextTest(1);
-
-  // Test two pages (one newline)
-  RunExtractTextTest(2);
-
-  // Test max pages
-  RunExtractTextTest(kMaxPreviewPages);
-
-  // Test less than max pages
-  RunExtractTextTest(kMaxPreviewPages - 1);
-
-  // Test exceeding max pages (should be capped)
-  RunExtractTextTest(kMaxPreviewPages + 1);
+  // Test with even more pages
+  RunCaptureImageTest(25);
 }
 
 }  // namespace ai_chat
