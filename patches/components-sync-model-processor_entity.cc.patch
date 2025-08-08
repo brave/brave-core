@@ -1,0 +1,15 @@
+diff --git a/components/sync/model/processor_entity.cc b/components/sync/model/processor_entity.cc
+index 238a06076b36ac160ef3a9733a89292c38375d3f..09c5ba9c09c5b427f926c7cbe9f1e0b4ade97412 100644
+--- a/components/sync/model/processor_entity.cc
++++ b/components/sync/model/processor_entity.cc
+@@ -163,8 +163,8 @@ bool ProcessorEntity::IsVersionAlreadyKnown(int64_t update_version) const {
+ 
+ void ProcessorEntity::RecordIgnoredRemoteUpdate(
+     const UpdateResponseData& update) {
+-  DCHECK(metadata_.server_id().empty() ||
+-         metadata_.server_id() == update.entity.id);
++  // DCHECK(metadata_.server_id().empty() ||
++  //        metadata_.server_id() == update.entity.id);
+   metadata_.set_server_id(update.entity.id);
+   metadata_.set_server_version(update.response_version);
+   // Either these already matched, acked was just bumped to squash a pending

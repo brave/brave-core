@@ -1,0 +1,12 @@
+diff --git a/components/sessions/BUILD.gn b/components/sessions/BUILD.gn
+index 666913472276caa541e230ad41908569f16c28be..7bafa2ecd47f72b035bfaddb8057ac70814f4689 100644
+--- a/components/sessions/BUILD.gn
++++ b/components/sessions/BUILD.gn
+@@ -153,6 +153,7 @@ source_set("shared") {
+     "//ui/base",
+     "//ui/gfx",
+     "//url",
++    "//brave/components/partitioned_tabs/browser",
+   ]
+ }
+ 

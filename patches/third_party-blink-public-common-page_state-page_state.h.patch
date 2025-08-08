@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/public/common/page_state/page_state.h b/third_party/blink/public/common/page_state/page_state.h
+index 2bfc00602b26d86c171be766d0923af9e6de0067..4a1e7a40df3e648a7f56af1a62bd64e4989f5ba2 100644
+--- a/third_party/blink/public/common/page_state/page_state.h
++++ b/third_party/blink/public/common/page_state/page_state.h
+@@ -55,6 +55,9 @@ class BLINK_COMMON_EXPORT PageState {
+   PageState RemovePasswordData() const;
+   PageState RemoveScrollOffset() const;
+   PageState RemoveReferrer() const;
++  PageState PrefixURL(const std::string& prefix) const;
++  PageState RemoveAnyPrefixFromURL(
++      const std::vector<std::string>& prefixes) const;
+ 
+   // Support DCHECK_EQ(a, b), etc.
+   bool operator==(const PageState& other) const { return this->Equals(other); }
