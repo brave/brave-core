@@ -96,10 +96,7 @@ class BraveShieldsTabHelper
  private:
   friend class content::WebContentsUserData<BraveShieldsTabHelper>;
 
-  explicit BraveShieldsTabHelper(
-      content::WebContents* web_contents,
-      HostContentSettingsMap* host_content_settings_map,
-      std::unique_ptr<BraveShieldsSettings> brave_shields_settings);
+  explicit BraveShieldsTabHelper(content::WebContents* web_contents);
 
   // content::WebContentsObserver
   void DidFinishNavigation(
@@ -130,7 +127,7 @@ class BraveShieldsTabHelper
   base::flat_set<ContentSettingsType> webcompat_features_invoked_;
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       observation_{this};
-  raw_ptr<HostContentSettingsMap> host_content_settings_map_;
+  const raw_ref<HostContentSettingsMap> host_content_settings_map_;
   std::unique_ptr<BraveShieldsSettings> brave_shields_settings_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

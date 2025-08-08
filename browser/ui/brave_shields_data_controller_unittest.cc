@@ -60,13 +60,7 @@ class BraveShieldsDataControllerTest : public testing::Test {
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
     favicon::ContentFaviconDriver::CreateForWebContents(
         test_web_contents_.get(), nullptr);
-    auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-    std::unique_ptr<brave_shields::BraveShieldsSettings>
-        brave_shields_settings =
-            std::make_unique<brave_shields::BraveShieldsSettings>(
-                map, nullptr /* local_state */, nullptr /* profile_state */);
-    BraveShieldsTabHelper::CreateForWebContents(
-        test_web_contents_.get(), map, std::move(brave_shields_settings));
+    BraveShieldsTabHelper::CreateForWebContents(test_web_contents_.get());
   }
 
   void TearDown() override {
@@ -347,13 +341,7 @@ TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
       content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
   favicon::ContentFaviconDriver::CreateForWebContents(web_contents_2.get(),
                                                       nullptr);
-
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-  std::unique_ptr<brave_shields::BraveShieldsSettings> brave_shields_settings =
-      std::make_unique<brave_shields::BraveShieldsSettings>(
-          map, nullptr /* local_state */, nullptr /* profile_state */);
-  BraveShieldsTabHelper::CreateForWebContents(
-      web_contents_2.get(), map, std::move(brave_shields_settings));
+  BraveShieldsTabHelper::CreateForWebContents(web_contents_2.get());
   auto* ctrl_2 = BraveShieldsTabHelper::FromWebContents(web_contents_2.get());
   ctrl_2->AddObserver(&observer_2);
   content::WebContentsTester::For(web_contents_2.get())
@@ -368,12 +356,7 @@ TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
       content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
   favicon::ContentFaviconDriver::CreateForWebContents(web_contents_3.get(),
                                                       nullptr);
-  std::unique_ptr<brave_shields::BraveShieldsSettings>
-      brave_shields_settings_2 =
-          std::make_unique<brave_shields::BraveShieldsSettings>(
-              map, nullptr /* local_state */, nullptr /* profile_state */);
-  BraveShieldsTabHelper::CreateForWebContents(
-      web_contents_3.get(), map, std::move(brave_shields_settings_2));
+  BraveShieldsTabHelper::CreateForWebContents(web_contents_3.get());
   auto* ctrl_3 = BraveShieldsTabHelper::FromWebContents(web_contents_3.get());
   ctrl_3->AddObserver(&observer_3);
   content::WebContentsTester::For(web_contents_3.get())

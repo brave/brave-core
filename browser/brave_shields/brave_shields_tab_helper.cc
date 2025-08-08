@@ -43,17 +43,21 @@ namespace brave_shields {
 
 BraveShieldsTabHelper::~BraveShieldsTabHelper() = default;
 
-BraveShieldsTabHelper::BraveShieldsTabHelper(
-    content::WebContents* web_contents,
-    HostContentSettingsMap* host_content_settings_map,
-    std::unique_ptr<BraveShieldsSettings> brave_shields_settings)
+BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<BraveShieldsTabHelper>(*web_contents),
-      host_content_settings_map_(host_content_settings_map),
-      brave_shields_settings_(std::move(brave_shields_settings)) {
+      host_content_settings_map_(*HostContentSettingsMapFactory::GetForProfile(
+          web_contents->GetBrowserContext())) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
-  observation_.Observe(host_content_settings_map);
+  observation_.Observe(&*host_content_settings_map_);
+  PrefService* profile_prefs =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext())
+          ->GetPrefs();
+  brave_shields_settings_ =
+      std::make_unique<brave_shields::BraveShieldsSettings>(
+          *host_content_settings_map_, g_browser_process->local_state(),
+          profile_prefs);
 }
 
 void BraveShieldsTabHelper::DidFinishNavigation(
@@ -218,7 +222,7 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
       Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
 
   const ControlType control_type = brave_shields::GetCookieControlType(
-      host_content_settings_map_, cookie_settings.get(), GetCurrentSiteURL());
+      &*host_content_settings_map_, cookie_settings.get(), GetCurrentSiteURL());
 
   switch (control_type) {
     case ControlType::ALLOW:
@@ -236,7 +240,7 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
 
 HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
   ControlType control_type = brave_shields::GetHttpsUpgradeControlType(
-      host_content_settings_map_, GetCurrentSiteURL());
+      &*host_content_settings_map_, GetCurrentSiteURL());
   if (control_type == ControlType::ALLOW) {
     return HttpsUpgradeMode::DISABLED_MODE;
   } else if (control_type == ControlType::BLOCK) {
@@ -254,7 +258,7 @@ bool BraveShieldsTabHelper::GetNoScriptEnabled() {
 
 bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
   return brave_shields::GetForgetFirstPartyStorageEnabled(
-      host_content_settings_map_, GetCurrentSiteURL());
+      &*host_content_settings_map_, GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::SetAdBlockMode(AdBlockMode mode) {
@@ -286,7 +290,7 @@ void BraveShieldsTabHelper::SetCookieBlockMode(CookieBlockMode mode) {
       break;
   }
 
-  brave_shields::SetCookieControlType(host_content_settings_map_, prefs,
+  brave_shields::SetCookieControlType(&*host_content_settings_map_, prefs,
                                       control_type, GetCurrentSiteURL(),
                                       g_browser_process->local_state());
 
@@ -304,7 +308,7 @@ void BraveShieldsTabHelper::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
   } else {
     control_type = ControlType::DEFAULT;
   }
-  brave_shields::SetHttpsUpgradeControlType(host_content_settings_map_,
+  brave_shields::SetHttpsUpgradeControlType(&*host_content_settings_map_,
                                             control_type, GetCurrentSiteURL(),
                                             g_browser_process->local_state());
 
@@ -319,7 +323,7 @@ void BraveShieldsTabHelper::SetIsNoScriptEnabled(bool is_enabled) {
 
 void BraveShieldsTabHelper::SetForgetFirstPartyStorageEnabled(bool is_enabled) {
   brave_shields::SetForgetFirstPartyStorageEnabled(
-      host_content_settings_map_, is_enabled, GetCurrentSiteURL(),
+      &*host_content_settings_map_, is_enabled, GetCurrentSiteURL(),
       g_browser_process->local_state());
 }
 
@@ -352,7 +356,7 @@ bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
           ->GetPrefs();
 
   return brave_shields::IsBraveShieldsManaged(
-      profile_prefs, host_content_settings_map_, GetCurrentSiteURL());
+      profile_prefs, &*host_content_settings_map_, GetCurrentSiteURL());
 }
 
 bool BraveShieldsTabHelper::IsForgetFirstPartyStorageFeatureEnabled() const {
@@ -412,7 +416,7 @@ void BraveShieldsTabHelper::SetWebcompatEnabled(
     ContentSettingsType webcompat_settings_type,
     bool enabled) {
   brave_shields::SetWebcompatEnabled(
-      host_content_settings_map_, webcompat_settings_type, enabled,
+      &*host_content_settings_map_, webcompat_settings_type, enabled,
       GetCurrentSiteURL(), g_browser_process->local_state());
   ReloadWebContents();
 }
@@ -426,7 +430,8 @@ BraveShieldsTabHelper::GetWebcompatSettings() {
        webcompat_settings_type = static_cast<ContentSettingsType>(
            static_cast<int32_t>(webcompat_settings_type) + 1)) {
     const bool enabled = brave_shields::IsWebcompatEnabled(
-        host_content_settings_map_, webcompat_settings_type, current_site_url);
+        &*host_content_settings_map_, webcompat_settings_type,
+        current_site_url);
     result[webcompat_settings_type] = enabled;
   }
   return result;

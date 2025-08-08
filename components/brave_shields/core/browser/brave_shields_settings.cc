@@ -14,25 +14,24 @@
 namespace brave_shields {
 
 BraveShieldsSettings::BraveShieldsSettings(
-    HostContentSettingsMap* host_content_settings_map,
+    HostContentSettingsMap& host_content_settings_map,
     PrefService* local_state,
     PrefService* profile_prefs)
     : host_content_settings_map_(host_content_settings_map),
       local_state_(local_state),
-      profile_prefs_(profile_prefs) {
-  CHECK(host_content_settings_map_);
-}
+      profile_prefs_(profile_prefs) {}
 
 BraveShieldsSettings::~BraveShieldsSettings() = default;
 
 void BraveShieldsSettings::SetBraveShieldsEnabled(bool is_enabled,
                                                   const GURL& url) {
-  brave_shields::SetBraveShieldsEnabled(host_content_settings_map_, is_enabled,
-                                        url, local_state_);
+  brave_shields::SetBraveShieldsEnabled(&*host_content_settings_map_,
+                                        is_enabled, url, local_state_);
 }
 
 bool BraveShieldsSettings::GetBraveShieldsEnabled(const GURL& url) {
-  return brave_shields::GetBraveShieldsEnabled(host_content_settings_map_, url);
+  return brave_shields::GetBraveShieldsEnabled(&*host_content_settings_map_,
+                                               url);
 }
 
 void BraveShieldsSettings::SetDefaultAdBlockMode(mojom::AdBlockMode mode) {
@@ -62,21 +61,21 @@ void BraveShieldsSettings::SetAdBlockMode(mojom::AdBlockMode mode,
     control_type_cosmetic = ControlType::ALLOW;  // allow
   }
 
-  brave_shields::SetAdControlType(host_content_settings_map_, control_type_ad,
+  brave_shields::SetAdControlType(&*host_content_settings_map_, control_type_ad,
                                   url, local_state_);
 
-  brave_shields::SetCosmeticFilteringControlType(host_content_settings_map_,
+  brave_shields::SetCosmeticFilteringControlType(&*host_content_settings_map_,
                                                  control_type_cosmetic, url,
                                                  local_state_, profile_prefs_);
 }
 
 mojom::AdBlockMode BraveShieldsSettings::GetAdBlockMode(const GURL& url) {
   ControlType control_type_ad =
-      brave_shields::GetAdControlType(host_content_settings_map_, url);
+      brave_shields::GetAdControlType(&*host_content_settings_map_, url);
 
   ControlType control_type_cosmetic =
-      brave_shields::GetCosmeticFilteringControlType(host_content_settings_map_,
-                                                     url);
+      brave_shields::GetCosmeticFilteringControlType(
+          &*host_content_settings_map_, url);
 
   if (control_type_ad == ControlType::ALLOW) {
     return mojom::AdBlockMode::ALLOW;
@@ -115,7 +114,7 @@ void BraveShieldsSettings::SetFingerprintMode(mojom::FingerprintMode mode,
     control_type = ControlType::DEFAULT;  // STANDARD_MODE
   }
 
-  brave_shields::SetFingerprintingControlType(host_content_settings_map_,
+  brave_shields::SetFingerprintingControlType(&*host_content_settings_map_,
                                               control_type, url, local_state_,
                                               profile_prefs_);
 }
@@ -123,7 +122,7 @@ void BraveShieldsSettings::SetFingerprintMode(mojom::FingerprintMode mode,
 mojom::FingerprintMode BraveShieldsSettings::GetFingerprintMode(
     const GURL& url) {
   ControlType control_type = brave_shields::GetFingerprintingControlType(
-      host_content_settings_map_, url);
+      &*host_content_settings_map_, url);
 
   if (control_type == ControlType::ALLOW) {
     return mojom::FingerprintMode::ALLOW_MODE;
@@ -152,13 +151,13 @@ void BraveShieldsSettings::SetNoScriptEnabled(bool is_enabled,
                                               const GURL& url) {
   ControlType control_type =
       is_enabled ? ControlType::BLOCK : ControlType::ALLOW;
-  brave_shields::SetNoScriptControlType(host_content_settings_map_,
+  brave_shields::SetNoScriptControlType(&*host_content_settings_map_,
                                         control_type, url, local_state_);
 }
 
 bool BraveShieldsSettings::IsNoScriptEnabled(const GURL& url) {
   ControlType control_type =
-      brave_shields::GetNoScriptControlType(host_content_settings_map_, url);
+      brave_shields::GetNoScriptControlType(&*host_content_settings_map_, url);
 
   return control_type != ControlType::ALLOW;
 }

@@ -19,7 +19,7 @@ namespace brave_shields {
 class BraveShieldsSettings {
  public:
   explicit BraveShieldsSettings(
-      HostContentSettingsMap* host_content_settings_map,
+      HostContentSettingsMap& host_content_settings_map,
       PrefService* local_state = nullptr,
       PrefService* profile_state = nullptr);
   virtual ~BraveShieldsSettings();
@@ -46,9 +46,10 @@ class BraveShieldsSettings {
   bool IsNoScriptEnabled(const GURL& url);
 
  private:
-  raw_ptr<HostContentSettingsMap> host_content_settings_map_;  // NOT OWNED
-  raw_ptr<PrefService> local_state_;                           // NOT OWNED
-  raw_ptr<PrefService> profile_prefs_;                         // NOT OWNED
+  const raw_ref<HostContentSettingsMap>
+      host_content_settings_map_;       // NOT OWNED
+  raw_ptr<PrefService> local_state_;    // NOT OWNED
+  raw_ptr<PrefService> profile_prefs_;  // NOT OWNED
 };
 
 }  // namespace brave_shields

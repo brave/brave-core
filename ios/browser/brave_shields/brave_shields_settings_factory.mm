@@ -25,7 +25,7 @@
   auto* localState = GetApplicationContext()->GetLocalState();
   auto* profilePrefs = profile->GetPrefs();
   std::unique_ptr<brave_shields::BraveShieldsSettings> braveShieldsSettings =
-      std::make_unique<brave_shields::BraveShieldsSettings>(map, localState,
+      std::make_unique<brave_shields::BraveShieldsSettings>(*map, localState,
                                                             profilePrefs);
   return [[BraveShieldsSettingsBridgeImpl alloc]
       initWithBraveShieldsSettings:std::move(braveShieldsSettings)];
