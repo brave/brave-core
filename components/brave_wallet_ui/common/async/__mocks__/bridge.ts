@@ -718,7 +718,7 @@ export class MockedWalletApiProxy {
             assetTimeframeChange: '1',
             fromAsset: fromAssets[0],
             toAsset: toAssets[0],
-            price: '1234.56',
+            price: '3873.78',
           },
         ],
       }
