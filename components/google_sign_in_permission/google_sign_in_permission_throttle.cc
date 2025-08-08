@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/permission_controller_delegate.h"
 #include "content/public/browser/web_contents.h"
