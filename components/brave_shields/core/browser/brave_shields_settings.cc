@@ -102,7 +102,7 @@ void BraveShieldsSettings::SetFingerprintMode(mojom::FingerprintMode mode,
                                               const GURL& url) {
 #if BUILDFLAG(IS_IOS)
   /// Strict FingerprintMode is not supported on iOS
-  DCHECK(mode != mojom::FingerprintMode::STRICT_MODE);
+  CHECK(mode != mojom::FingerprintMode::STRICT_MODE);
 #endif
 
   ControlType control_type;
@@ -128,7 +128,13 @@ mojom::FingerprintMode BraveShieldsSettings::GetFingerprintMode(
   if (control_type == ControlType::ALLOW) {
     return mojom::FingerprintMode::ALLOW_MODE;
   } else if (control_type == ControlType::BLOCK) {
+#if BUILDFLAG(IS_IOS)
+    /// Strict FingerprintMode is not supported on iOS.
+    /// In case of sync'd setting, return standard mode.
+    return mojom::FingerprintMode::STANDARD_MODE;
+#else
     return mojom::FingerprintMode::STRICT_MODE;
+#endif
   } else {
     return mojom::FingerprintMode::STANDARD_MODE;
   }
