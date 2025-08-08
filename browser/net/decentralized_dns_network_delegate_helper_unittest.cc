@@ -27,7 +27,6 @@
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "build/build_config.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/testing_pref_service.h"
@@ -47,9 +46,7 @@ namespace decentralized_dns {
 
 class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
  public:
-  DecentralizedDnsNetworkDelegateHelperTest()
-      : local_state_(std::make_unique<ScopedTestingLocalState>(
-            TestingBrowserProcess::GetGlobal())) {}
+  DecentralizedDnsNetworkDelegateHelperTest() = default;
 
   ~DecentralizedDnsNetworkDelegateHelperTest() override = default;
 
@@ -70,12 +67,13 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
   void TearDown() override {
     json_rpc_service_ = nullptr;
     profile_.reset();
-    local_state_.reset();
   }
 
   content::BrowserContext* browser_context() { return profile_.get(); }
   TestingProfile* profile() { return profile_.get(); }
-  PrefService* local_state() { return local_state_->Get(); }
+  PrefService* local_state() {
+    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
+  }
   network::TestURLLoaderFactory& test_url_loader_factory() {
     return test_url_loader_factory_;
   }
@@ -84,7 +82,6 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
 
  private:
   std::unique_ptr<TestingProfile> profile_;
-  std::unique_ptr<ScopedTestingLocalState> local_state_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_ = nullptr;
