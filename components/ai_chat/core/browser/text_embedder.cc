@@ -13,7 +13,6 @@
  #include <type_traits>
  #include <utility>
  
- /* "base/*" refers to the base folder inside chromium - https://github.com/chromium/chromium/tree/main/base */
  #include "base/check.h"
  #include "base/check_is_test.h"
  #include "base/containers/span.h"
@@ -142,5 +141,6 @@
      }
      return absl::OkStatus();
  }
+} // namespace ai_chat
  
  

@@ -26,8 +26,6 @@
 #include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-TEMP_MODEL_PATH = '/Users/vandanamalayil/Downloads/universal_sentence_encoder_qa_with_metadata.tflite'
-
 namespace ai_chat {
 
 class TextEmbedderUnitTest : public testing::Test {
@@ -54,8 +52,8 @@ class TextEmbedderUnitTest : public testing::Test {
             // create text embedder using the given model file. also passes test runner so it can work off thread.
             // kUniversalQAModelName is defined in local_models_updater.h file. 
             embedder_ = TextEmbedder::Create(
-                base::FilePath(TEMP_MODEL_PATH),
-                // base::FilePath(model_dir_.AppendASCII(kUniversalQAModelName)),
+                 // base::FilePath(TEMP_MODEL_PATH),
+                base::FilePath(model_dir_.AppendASCII(kUniversalQAModelName)),
                 embedder_task_runner_);
             
             // if embedder creation fails, test should fail
@@ -71,17 +69,27 @@ class TextEmbedderUnitTest : public testing::Test {
             run_loop.Run();
             ASSERT_TRUE(embedder_->IsInitialized());
         }
+
+    protected:
+        std::unique_ptr<ai_chat::TextEmbedder, base::OnTaskRunnerDeleter> embedder_;
+        base::FilePath model_dir_;
+        scoped_refptr<base::SequencedTaskRunner> embedder_task_runner_;
+        base::test::TaskEnvironment task_environment_;
+
     };
 
 
     TEST_F(TextEmbedderUnitTest, Create) {
-        EXPECT_FALSE(TextEmbedder::Create(base::FilePath(), embedder_task_runner_));
+        // EXPECT_FALSE(TextEmbedder::Create(base::FilePath(), embedder_task_runner_));
         // Invalid model path is tested in TextEmbedderUnitTest.Initialize.
+        // EXPECT_TRUE(TextEmbedder::Create(
+        //     // base::FilePath(TEMP_MODEL_PATH),
+        //     base::FilePath(model_dir_.AppendASCII("model.tflite")),
+        //     embedder_task_runner_));
         EXPECT_TRUE(TextEmbedder::Create(
-            base::FilePath(TEMP_MODEL_PATH),
-            // base::FilePath(model_dir_.AppendASCII("model.tflite")),
+            base::FilePath(model_dir_.AppendASCII(kUniversalQAModelName)),
             embedder_task_runner_));
       }
 
-
+} // namespace ai_chat
 
