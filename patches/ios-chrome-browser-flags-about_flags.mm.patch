@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 21cc6ce974e632096a96cfcb32682298b8868f73..6bd5660fc0c4d5df97931583df3b249daa458fb3 100644
+index 2f7ffb70b31734ec0107c06d1c4a860a78403089..0b3b7ff5ec29b93dbfb05a3ec8e8ed3c11e55a9a 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1453,6 +1453,7 @@ const FeatureEntry::FeatureVariation kOmniboxAimShortcutTypedStateVariations[] =
+@@ -1427,6 +1427,7 @@ const FeatureEntry::FeatureVariation kOmniboxAimShortcutTypedStateVariations[] =
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {

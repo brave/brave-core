@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index c2310d082ebf546e9fcf2207f842a06405b823fa..830e3f3ec19416f1fbf0f1c7cbe2e97fc9460f66 100644
+index edd099547589f6f87f0ebe10f7d56e9fadb4c679..2277b24dbb4b6d032d4748f7653614da2cd764a4 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
 @@ -77,6 +77,8 @@ static_library("utility") {
