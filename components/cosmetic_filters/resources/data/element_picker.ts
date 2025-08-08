@@ -359,7 +359,6 @@ const attachElementPicker = () => {
     'padding: 0',
     'pointer-events: auto',
     'position: fixed',
-    'inset: 0;',
     'top: 0',
     'visibility: visible',
     'width: 100%',
@@ -379,10 +378,13 @@ const attachElementPicker = () => {
 
   const callback: MutationCallback = (mutationsList, observer) => {
     for (const mutation of mutationsList) {
-      if (mutation.type === 'attributes') {
+      if (mutation.type === 'attributes' && shadowRoot) {
         const targetElement = mutation.target as HTMLElement;
         const newValue = targetElement.getAttribute(mutation.attributeName!);
-        setMinimizeState(shadowRoot!, newValue !== 'maximized')
+        const mainSection = shadowRoot.getElementById('main-section')
+        if (!mainSection) return;
+        mainSection.classList.toggle('minimized', newValue === `minimized`);
+
       }
     }
   }
@@ -581,10 +583,14 @@ const setShowRulesHiddenBtnState = (
   showRulesButton.textContent = show ? btnHideRulesBoxText : btnShowRulesBoxText
 }
 
-const setMinimizeState = (root: ShadowRoot, minimized: boolean) => {
-  const mainSection = root.getElementById('main-section')
-  if (!mainSection) return;
-  mainSection.classList.toggle('minimized', minimized);
+const setMinimizeState = (minimized: boolean) => {
+if (!pickerDiv) return
+
+if(minimized){
+  pickerDiv.setAttribute(pickerStatusAttribute, 'minimized')
+} else {
+  pickerDiv.removeAttribute(pickerStatusAttribute)
+}
 }
 
 const setupDragging = (root: ShadowRoot): void => {
@@ -636,7 +642,7 @@ const setupDragging = (root: ShadowRoot): void => {
 
     const currentTransform = parseTranslateY(
       window.getComputedStyle(mainSection).transform);
-    setMinimizeState(root, currentTransform > sectionHeight / 4)
+    setMinimizeState(currentTransform > sectionHeight / 4)
     mainSection.style.transform = '';
   };
 
@@ -707,11 +713,11 @@ const launchElementPicker = (root: ShadowRoot) => {
     })
     const minimizeButton = root.getElementById('minimize-dlg-btn')!
     minimizeButton.addEventListener('click', () => {
-      setMinimizeState(root, true)
+      setMinimizeState(true)
     })
     const maximizeButton = root.getElementById('desktop-min-icon-container')!
     maximizeButton.addEventListener('click', () => {
-      setMinimizeState(root, false);
+      setMinimizeState(false);
     })
   }
 
@@ -840,7 +846,7 @@ const launchElementPicker = (root: ShadowRoot) => {
   const oneClickEventHandler = (event: MouseEvent | TouchEvent) => {
     let elem: Element | null = null
 
-    setMinimizeState(root, false);
+    setMinimizeState(false);
 
     if (event instanceof MouseEvent) {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
@@ -990,5 +996,5 @@ if (!active) {
       launchElementPicker(root)
     });
 } else {
-  active.setAttribute(pickerStatusAttribute, 'maximized')
+  active.removeAttribute(pickerStatusAttribute)
 }
