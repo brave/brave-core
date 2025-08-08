@@ -450,7 +450,9 @@ class SettingsViewController: TableViewController {
       )
     )
 
-    if !tabManager.privateBrowsingManager.isPrivateBrowsing && FeatureList.kAIChat.enabled {
+    if !tabManager.privateBrowsingManager.isPrivateBrowsing
+      && AIChatUtils.isAIChatEnabled(for: braveCore.profile.prefs)
+    {
       section.rows.append(leoSettingsRow)
     }
 

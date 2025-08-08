@@ -749,8 +749,11 @@ extension BrowserViewController: TopToolbarDelegate {
     if searchController != nil { return }
 
     // Setting up data source for SearchSuggestions
+    let isPrivate = tabManager.selectedTab?.isPrivate ?? false
     let searchDataSource = SearchSuggestionDataSource(
-      isPrivate: tabManager.selectedTab?.isPrivate ?? false,
+      isPrivate: isPrivate,
+      isAIChatAvailable: !isPrivate && Preferences.AIChat.leoInQuickSearchBarEnabled.value
+        && AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs),
       searchEngines: profile.searchEngines
     )
 

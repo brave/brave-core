@@ -31,6 +31,7 @@ class SearchSuggestionDataSource {
   }
 
   let isPrivate: Bool
+  let isAIChatAvailable: Bool
   let maxSearchSuggestions = 5
   var suggestions = [String]()
   private let maxPeriodBraveSearchPromotion = 15
@@ -68,12 +69,6 @@ class SearchSuggestionDataSource {
     return quickSearchEngines.count > 1
   }
 
-  var isAIChatAvailable: Bool {
-    !isPrivate
-      && Preferences.AIChat.leoInQuickSearchBarEnabled.value
-      && FeatureList.kAIChat.enabled
-  }
-
   var braveSearchPromotionAvailable: Bool {
     guard Preferences.Review.launchCount.value > 1,
       searchEngines?.defaultEngine(forType: isPrivate ? .privateMode : .standard)?
@@ -107,8 +102,9 @@ class SearchSuggestionDataSource {
 
   // MARK: - Initialization
 
-  init(isPrivate: Bool, searchEngines: SearchEngines?) {
+  init(isPrivate: Bool, isAIChatAvailable: Bool, searchEngines: SearchEngines?) {
     self.isPrivate = isPrivate
+    self.isAIChatAvailable = isAIChatAvailable
     self.searchEngines = searchEngines
   }
 

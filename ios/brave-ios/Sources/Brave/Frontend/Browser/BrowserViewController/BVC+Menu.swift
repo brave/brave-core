@@ -473,15 +473,6 @@ extension BrowserViewController {
         }
         return .none
       },
-      .init(
-        id: .braveLeo,
-        attributes: isPrivateBrowsing ? .disabled : []
-      ) { @MainActor [unowned self] _ in
-        self.dismiss(animated: true) {
-          self.openBraveLeo()
-        }
-        return .none
-      },
       .init(id: .playlist) { @MainActor [unowned self] _ in
         // presentPlaylistController already handles dismiss + present
         self.presentPlaylistController()
@@ -528,6 +519,19 @@ extension BrowserViewController {
         .init(id: .braveWallet) { @MainActor [unowned self] _ in
           // Present wallet already handles dismiss + present
           self.presentWallet()
+          return .none
+        }
+      )
+    }
+    if AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs) {
+      actions.append(
+        .init(
+          id: .braveLeo,
+          attributes: isPrivateBrowsing ? .disabled : []
+        ) { @MainActor [unowned self] _ in
+          self.dismiss(animated: true) {
+            self.openBraveLeo()
+          }
           return .none
         }
       )
