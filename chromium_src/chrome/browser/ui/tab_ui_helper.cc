@@ -8,6 +8,7 @@
 #include <string>
 
 #include "brave/browser/ui/tabs/features.h"
+#include "content/public/browser/navigation_controller.h"
 
 #define GetTitle GetTitle_ChromiumImpl
 
