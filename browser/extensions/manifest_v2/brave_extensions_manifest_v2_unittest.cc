@@ -75,15 +75,13 @@ class BraveExtensionsManifestV2DeprecationTest
 INSTANTIATE_TEST_SUITE_P(
     ,
     BraveExtensionsManifestV2DeprecationTest,
-    ::testing::Values(extensions::MV2ExperimentStage::kNone,
-                      extensions::MV2ExperimentStage::kDisableWithReEnable,
+    ::testing::Values(extensions::MV2ExperimentStage::kDisableWithReEnable,
                       extensions::MV2ExperimentStage::kUnsupported,
                       extensions::MV2ExperimentStage::kWarning));
 
 TEST_P(BraveExtensionsManifestV2DeprecationTest,
        KnownMV2ExtensionsNotDeprecated) {
   extensions::MV2DeprecationImpactChecker checker(
-      GetParam(),
       extensions::ExtensionManagementFactory::GetForBrowserContext(profile()));
 
   for (const auto& known_mv2 :

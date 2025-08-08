@@ -15,7 +15,6 @@
 #include "chrome/browser/custom_handlers/protocol_handler_registry_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -80,8 +79,7 @@ class BraveRenderViewContextMenuMock : public BraveRenderViewContextMenu {
 
 class BraveRenderViewContextMenuTest : public testing::Test {
  protected:
-  BraveRenderViewContextMenuTest()
-      : testing_local_state_(TestingBrowserProcess::GetGlobal()) {}
+  BraveRenderViewContextMenuTest() = default;
   content::WebContents* GetWebContents() { return web_contents_.get(); }
 
   // Returns a test context menu.
@@ -148,7 +146,6 @@ class BraveRenderViewContextMenuTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment browser_task_environment;
-  ScopedTestingLocalState testing_local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<custom_handlers::ProtocolHandlerRegistry> registry_;
   std::unique_ptr<Browser> browser_;

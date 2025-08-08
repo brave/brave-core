@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 77544a1f84731c65b41ed5eff4920a1874025a4d..8d98cd7ef9b1a2d5e3f4ba8118619572ede44f75 100644
+index 685f49e8ad603f0b30d94d1d0d303ab7bef57d2f..fdab935036b74e6e6717e98cae70793b3aa4556a 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -680,6 +680,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index 77544a1f84731c65b41ed5eff4920a1874025a4d..8d98cd7ef9b1a2d5e3f4ba8118619572
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1119,6 +1120,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1118,6 +1119,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 08/2025.
    registry->RegisterDictionaryPref(kInvalidationClientIDCache);
    registry->RegisterDictionaryPref(kInvalidationTopicsToHandler);

@@ -153,6 +153,7 @@ void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
 void BraveSidePanelCoordinator::PopulateSidePanel(
     bool supress_animations,
     const UniqueKey& unique_key,
+    std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger,
     SidePanelEntry* entry,
     std::optional<std::unique_ptr<views::View>> content_view) {
   CHECK(entry);
@@ -168,7 +169,8 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
   // Notify to give opportunity to observe another panel entries from
   // global or active tab's contextual registry.
   GetBraveBrowserView()->sidebar_container_view()->WillShowSidePanel();
-  SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key, entry,
+  SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key,
+                                          std::move(open_trigger), entry,
                                           std::move(content_view));
 }
 

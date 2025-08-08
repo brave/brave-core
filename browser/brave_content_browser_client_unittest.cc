@@ -11,9 +11,9 @@
 #include "brave/components/skus/common/skus_utils.h"
 #include "build/build_config.h"
 #include "chrome/browser/chrome_content_browser_client.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -81,14 +81,14 @@ TEST_F(BraveContentBrowserClientTest, GetOriginsRequiringDedicatedProcess) {
 
 TEST_F(BraveContentBrowserClientTest, IsWindowsRecallDisabled) {
   BraveContentBrowserClient client;
-  ScopedTestingLocalState testing_local_state(
-      TestingBrowserProcess::GetGlobal());
 #if BUILDFLAG(IS_WIN)
   base::test::ScopedOSInfoOverride win_version(
       base::test::ScopedOSInfoOverride::Type::kWin11Home);
   // Pref is registered.
-  EXPECT_TRUE(testing_local_state.Get()->FindPreference(
-      windows_recall::prefs::kWindowsRecallDisabled));
+  EXPECT_TRUE(
+      TestingBrowserProcess::GetGlobal()
+          ->GetTestingLocalState()
+          ->FindPreference(windows_recall::prefs::kWindowsRecallDisabled));
   // Disabled by default on Win11 or newer.
   EXPECT_TRUE(client.IsWindowsRecallDisabled());
 #else

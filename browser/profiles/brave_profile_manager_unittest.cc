@@ -19,7 +19,6 @@
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -71,8 +70,7 @@ class TestingBraveProfileManager : public BraveProfileManagerWithoutInit {
 
 class BraveProfileManagerTest : public testing::Test {
  public:
-  BraveProfileManagerTest()
-      : local_state_(TestingBrowserProcess::GetGlobal()) {}
+  BraveProfileManagerTest() = default;
 
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
@@ -95,7 +93,6 @@ class BraveProfileManagerTest : public testing::Test {
  private:
   base::ScopedTempDir temp_dir_;
   content::BrowserTaskEnvironment task_environment_;
-  ScopedTestingLocalState local_state_;
 };
 
 TEST_F(BraveProfileManagerTest, EnableMediaRouterOnRestartDefaultValue) {
