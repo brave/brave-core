@@ -88,7 +88,7 @@ action("sign_app") {
     # Sign the final output file as well as there is no garantee that copy will happen after the sign.
     # Ideally we should combine `brave`, `sign_app` and `sign_app_convert_aab_to_apk` into one action and do what we need in the script depending on the flags.
     rebase_path(brave_android_output, root_out_dir),
-    rebase_path("$brave_android_keystore_path", root_out_dir),
+    "$brave_android_keystore_path",
     "$brave_android_keystore_password",
     "$brave_android_key_password",
     "$brave_android_keystore_name",
