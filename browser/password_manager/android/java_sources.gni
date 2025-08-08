@@ -5,6 +5,7 @@
 
 brave_browser_password_manager_java_sources = [
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/BravePasswordManagerHelper.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/BravePasswordsPreference.java",
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/CallbackDelayer.java",
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/DialogManager.java",
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ExportErrorDialogFragment.java",

@@ -1351,6 +1351,7 @@ if (is_android) {
       "//components/omnibox/browser:browser_java",
       "//components/password_manager/core/browser:password_manager_java_enums",
       "//components/permissions/android:java",
+      "//components/prefs/android:java",
       "//components/search_engines/android:java",
       "//components/signin/public/android:java",
       "//components/sync/android:sync_java",
