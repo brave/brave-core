@@ -197,7 +197,10 @@ CHAR_LIMIT guidelines:
         New Private tab
       </message>
       <message name="IDS_MENU_NEW_INCOGNITO_WINDOW" desc="Menu item for opening a new private window. [CHAR_LIMIT=27]">
-        New private window
+        New Private window
+      </message>
+      <message name="IDS_MENU_INCOGNITO_WINDOW" desc="Short label of menu item for opening a new private window. [CHAR_LIMIT=27]">
+        Private window
       </message>
       <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new Private tab that facilitates pseudononymous browsing. [CHAR_LIMIT=27]" meaning="Android menu">
         New Private tab
