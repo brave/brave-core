@@ -10,6 +10,8 @@
 #include "base/command_line.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/web_discovery/browser/content_scraper.h"
+#include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/common/features.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/url_util.h"
@@ -103,6 +105,20 @@ std::optional<std::string> ExtractValueFromQueryString(
 
 void TransformToAlphanumeric(std::string& str) {
   std::erase_if(str, [](char c) { return !std::isalnum(c); });
+}
+
+std::optional<std::string> GetRequestValue(std::string_view attr_id,
+                                          const GURL& url,
+                                          const ServerConfig& server_config,
+                                          const PageScrapeResult& scrape_result) {
+  if (attr_id == kV1UrlAttrId || attr_id == kV2UrlAttrId) {
+    return url.spec();
+  } else if (attr_id == kCountryCodeAttrId) {
+    return server_config.location;
+  } else if (attr_id == kQueryAttrId) {
+    return scrape_result.query;
+  }
+  return std::nullopt;
 }
 
 }  // namespace web_discovery

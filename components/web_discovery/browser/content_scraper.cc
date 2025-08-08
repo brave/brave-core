@@ -29,8 +29,6 @@ namespace web_discovery {
 
 namespace {
 
-constexpr char kUrlAttrId[] = "url";
-constexpr char kCountryCodeAttrId[] = "ctry";
 constexpr char kFieldsValueKey[] = "fields";
 constexpr char kIdValueKey[] = "id";
 constexpr char kUrlValueKey[] = "url";
@@ -196,13 +194,13 @@ class ContentScraperImpl : public ContentScraper {
                            const std::string& root_selector,
                            const GURL& url,
                            PageScrapeResult* scrape_result) {
-    std::string value;
-    if (rule.attribute == kUrlAttrId) {
-      value = url.spec();
-    } else if (rule.attribute == kCountryCodeAttrId) {
-      value = server_config_loader_->GetLastServerConfig().location;
+    auto value = GetRequestValue(rule.attribute, url,
+                               server_config_loader_->GetLastServerConfig(),
+                               *scrape_result);
+    if (!value) {
+      return;
     }
-    auto refined_value = ExecuteRefineFunctions(rule.functions_applied, value);
+    auto refined_value = ExecuteRefineFunctions(rule.functions_applied, *value);
     if (!refined_value) {
       return;
     }
