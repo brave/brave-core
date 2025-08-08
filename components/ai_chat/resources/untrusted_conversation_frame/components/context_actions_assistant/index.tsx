@@ -57,6 +57,14 @@ export default function ContextActionsAssistant(
       model.key !== 'chat-automatic'
   )
 
+  const handleOpenCloseRegenerateAnswerMenu = React.useCallback(
+    (isOpen: boolean) => {
+      setIsRegenerateAnswerMenuOpen(isOpen)
+      conversationContext.parentUiFrame?.regenerateAnswerMenuIsOpen(isOpen)
+    },
+    [conversationContext],
+  )
+
   return (
     <div className={styles.actionsWrapper}>
       <CopyButton onClick={props.onCopyTextClicked} />
@@ -103,8 +111,8 @@ export default function ContextActionsAssistant(
       {props.turnModelKey &&(
         <RegenerateAnswerMenu
           isOpen={isRegenerateAnswerMenuOpen}
-          onOpen={() => setIsRegenerateAnswerMenuOpen(true)}
-          onClose={() => setIsRegenerateAnswerMenuOpen(false)}
+          onOpen={() => handleOpenCloseRegenerateAnswerMenu(true)}
+          onClose={() => handleOpenCloseRegenerateAnswerMenu(false)}
           onRegenerate={handleRegenerateAnswer}
           leoModels={leoModels}
           turnModelKey={props.turnModelKey}

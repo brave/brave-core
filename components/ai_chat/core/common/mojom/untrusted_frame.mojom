@@ -30,6 +30,12 @@ interface ParentUIFrame {
   // then deals with whether to display the modal or to continue opening
   // the link.
   UserRequestedOpenGeneratedUrl(url.mojom.Url url);
+
+  // This is sent to the parent trusted webui to allow settings the iframes
+  // wrapper position to relative while the Regenerate Answer Menu is open.
+  // Otherwise the menu can sometimes be overlapped by the Suggested question
+  // buttons.
+  RegenerateAnswerMenuIsOpen(bool is_open);
 };
 
 // Browser-side handler for untrusted frame that handles rendering of
