@@ -278,6 +278,10 @@ class ConversationHandler : public mojom::ConversationHandler,
                            SelectedLanguage);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest_NoAssociatedContent,
                            ContentReceipt);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           OnAutoScreenshotsTaken_AppliesMaxImagesLimit);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           OnAutoScreenshotsTaken_NoLimitWhenUnderMax);
 
   struct Suggestion {
     std::string title;
@@ -318,7 +322,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnGeneratePageContentComplete(GetAllContentCallback callback,
                                      bool content_changed);
-  void OnScreenshotsTaken(
+  void OnAutoScreenshotsTaken(
       GetAllContentCallback callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
 
@@ -386,6 +390,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // When this is true, the most recent content retrieval was different to the
   // previous one.
   bool is_content_different_ = true;
+
+  // Percentage of visual content used (0-100), tracks image truncation
+  // during screenshot capture due to MAX_IMAGES limits
+  std::optional<uint32_t> visual_content_used_percentage_;
 
   // Whether further assistant responses should be appended to the last or
   // created in a new sibling ConversationEntry.
