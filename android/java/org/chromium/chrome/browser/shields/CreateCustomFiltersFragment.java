@@ -36,7 +36,7 @@ import org.chromium.ui.widget.Toast;
 @NullMarked
 public class CreateCustomFiltersFragment extends BravePreferenceFragment {
     public static final String BRAVE_ADBLOCK_FILTER_SYNTAX_PAGE =
-            "https://support.brave.com/hc/en-us/articles/6449369961741";
+            "https://support.brave.app/hc/en-us/articles/6449369961741";
 
     private @Nullable FilterListAndroidHandler mFilterListAndroidHandler;
     private EditText mEtCustomFilters;
