@@ -8,7 +8,10 @@
 
 #include <memory>
 
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -60,6 +63,14 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
 #endif
 
+  void BindInterface(
+      mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver);
+
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::Service> receiver);
+
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::TabTrackerService>
+                         pending_receiver);
+
  private:
   std::unique_ptr<brave_new_tab_page_refresh::mojom::NewTabPageHandler>
       page_handler_;
@@ -67,6 +78,7 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
       rich_media_ad_event_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
   std::unique_ptr<brave_rewards::RewardsPageHandler> rewards_page_handler_;
+  std::unique_ptr<ai_chat::AIChatUIPageHandler> ai_chat_page_handler_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

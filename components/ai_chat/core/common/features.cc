@@ -139,4 +139,12 @@ bool IsTabOrganizationEnabled() {
   return base::FeatureList::IsEnabled(features::kTabOrganization);
 }
 
+BASE_FEATURE(kShowAIChatOnNewTabPage,
+             "BraveTabOrganization",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsShowAIChatOnNewTabPageEnabled() {
+  return base::FeatureList::IsEnabled(features::kShowAIChatOnNewTabPage);
+}
+
 }  // namespace ai_chat::features
