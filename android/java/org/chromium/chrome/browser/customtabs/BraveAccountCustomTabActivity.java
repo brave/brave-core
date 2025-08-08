@@ -27,11 +27,27 @@ import androidx.core.content.ContextCompat;
 import org.chromium.base.IntentUtils;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.brave_account.BraveAccountAllowTag;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.util.ColorUtils;
 
 @NullMarked
 public class BraveAccountCustomTabActivity extends CustomTabActivity {
     private static final int HORIZONTAL_MARGIN_DP = 12;
+
+    @Override
+    public void performPreInflationStartup() {
+        super.performPreInflationStartup();
+
+        getActivityTabProvider()
+                .addObserver(
+                        tab -> {
+                            if (tab == null) return;
+                            WebContents webContents = tab.getWebContents();
+                            if (webContents == null) return;
+                            BraveAccountAllowTag.mark(webContents);
+                        });
+    }
 
     @Override
     public void performPostInflationStartup() {
@@ -88,7 +104,7 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
     }
 
     public static void show(Activity activity) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("brave://account"));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("brave://account/"));
         intent.setClassName(activity, BraveAccountCustomTabActivity.class.getName());
         intent.putExtra(Browser.EXTRA_APPLICATION_ID, activity.getPackageName());
         intent.putExtra(

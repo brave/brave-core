@@ -25,6 +25,10 @@ static_library("brave_account") {
     "//ui/base",
     "//url",
   ]
+
+  if (is_android) {
+    deps += [ "//brave/build/android:jni_headers" ]
+  }
 }
 
 source_set("unit_tests") {
