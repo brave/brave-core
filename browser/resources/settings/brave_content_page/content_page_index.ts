@@ -21,6 +21,9 @@ import { SearchableViewContainerMixin } from '../settings_page/searchable_view_c
 import { getTemplate } from './content_page_index.html.js';
 import {loadTimeData} from '../i18n_setup.js'
 
+import {pageVisibility} from '../page_visibility.js';
+import type {PageVisibility} from '../page_visibility.js';
+
 export interface SettingsBraveContentPageIndexElement {
   $: {
     viewManager: CrViewManagerElement,
@@ -31,7 +34,7 @@ const SettingsBraveContentPageIndexElementBase =
   SearchableViewContainerMixin(RouteObserverMixin(PolymerElement));
 
 export class SettingsBraveContentPageIndexElement extends
-  SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
+SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
   static get is() {
     return 'settings-brave-content-page-index';
   }
@@ -43,25 +46,33 @@ export class SettingsBraveContentPageIndexElement extends
   static get properties() {
     return {
       prefs: Object,
-      isContainersEnabled_: {
-        type: Boolean,
-        value: () => loadTimeData.getBoolean('isContainersEnabled'),
-      }
+
+      pageVisibility_: {
+        type: Object,
+        value() {
+          return pageVisibility || {};
+        },
+      },
     };
   }
 
   declare prefs: { [key: string]: any };
-  declare isContainersEnabled_: boolean;
+  declare private pageVisibility_: PageVisibility;
 
   private showDefaultViews_() {
     const views = ['parent'];
-// <if expr="enable_containers">
-    if (this.isContainersEnabled_) {
+    if (this.pageVisibility_.containers) {
       views.push('containers');
     }
-// </if>
-    views.push('playlist', 'speedreader');
+    if (this.showPage_(this.pageVisibility_.playlist)) {
+      views.push('playlist');
+    }
+    views.push('speedreader');
     this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
+  }
+
+  private showPage_(visibility?: boolean): boolean {
+    return visibility !== false;
   }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {
