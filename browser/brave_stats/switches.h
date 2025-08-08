@@ -14,6 +14,10 @@ namespace switches {
 // testing against staging and for browser tests.
 inline constexpr char kBraveStatsUpdaterServer[] = "brave-stats-updater-server";
 
+// Allows setting a custom startup delay for stats updater in seconds.
+// Useful for browser tests to control timing.
+inline constexpr char kBraveStatsStartupDelay[] = "brave-stats-startup-delay";
+
 }  // namespace switches
 }  // namespace brave_stats
 
