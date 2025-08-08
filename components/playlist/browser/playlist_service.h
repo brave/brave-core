@@ -97,6 +97,8 @@ class PlaylistService : public KeyedService,
     virtual content::WebContents* GetActiveWebContents() = 0;
 
     virtual void EnabledStateChanged(bool enabled) = 0;
+
+    virtual void UpdateSidebarState(bool enabled) = 0;
   };
 
   using PlaylistId = base::StrongAlias<class PlaylistIdTag, std::string>;
@@ -211,8 +213,6 @@ class PlaylistService : public KeyedService,
   void OnResponseStarted(const std::string& url, const int64_t content_length);
   void OnDataReceived(api_request_helper::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
-
-  bool playlist_enabled() const { return *enabled_pref_; }
 
   const std::string& GetMediaSourceAPISuppressorScript() const;
   std::string GetMediaDetectorScript(const GURL& url) const;
