@@ -6,11 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_UTILS_H_
 
-#include <map>
 #include <string>
 
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
-#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
 namespace https_upgrade_exceptions {
@@ -150,6 +149,8 @@ ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map);
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
                                       const GURL& primary_url);
 base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
+
+bool IsDeveloperModeEnabled(PrefService* profile_state);
 
 }  // namespace brave_shields
 
