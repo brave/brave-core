@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/tab_ui/android/BUILD.gn b/chrome/browser/tab_ui/android/BUILD.gn
-index fb8d170271570bc241220a065f42bfee65a596af..44df6ef5a812d4fd54e559603631727ff632a080 100644
+index f707a8b937b1f1fd55560dfab386880b8a8a33c8..14bac97f0700affb58df21dc609938d0b50a59e5 100644
 --- a/chrome/browser/tab_ui/android/BUILD.gn
 +++ b/chrome/browser/tab_ui/android/BUILD.gn
 @@ -36,6 +36,7 @@ android_library("java") {

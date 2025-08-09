@@ -1,8 +1,8 @@
 diff --git a/chrome/android/features/tab_ui/BUILD.gn b/chrome/android/features/tab_ui/BUILD.gn
-index e95a37b451ba19d29fe1bdb5ce6a169a1fbd6f9e..a28b8704c8ee29521c959eac05de2c2cdd7a8dad 100644
+index 3bc5db7411ad04991e421b2aca31b6313480b638..670081713bdca128e9993dbc9cb0899573fb82ed 100644
 --- a/chrome/android/features/tab_ui/BUILD.gn
 +++ b/chrome/android/features/tab_ui/BUILD.gn
-@@ -122,6 +122,7 @@ android_resources("java_resources") {
+@@ -121,6 +121,7 @@ android_resources("java_resources") {
      "java/res/xml/tab_archive_time_delta_preference.xml",
      "java/res/xml/tabs_settings.xml",
    ]
