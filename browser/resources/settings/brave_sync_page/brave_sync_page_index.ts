@@ -41,7 +41,7 @@ SettingsViewMixin(SearchableViewContainerMixin(RouteObserverMixin(I18nMixin(WebU
     new(): PolymerElement
       & WebUiListenerMixinInterface
       & I18nMixinInterface
-      & RouteObserverMixinInterface 
+      & RouteObserverMixinInterface
       & SearchableViewContainerMixinInterface
       & SettingsViewMixinInterface
   }
