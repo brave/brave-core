@@ -15,8 +15,7 @@ namespace web_discovery {
 
 // Checks if a URL is likely to be private based on various criteria.
 // If true, the page should not be investigated or reported.
-bool IsPrivateURLLikely(const GURL& url,
-                        const PatternsURLDetails* matching_url_details);
+bool IsPrivateURLLikely(const GURL& url, bool is_search_engine);
 
 // Determines if a search query is likely to contain private information.
 // If true, the search query should not be investigated or reported.

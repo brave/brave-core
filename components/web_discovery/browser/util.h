@@ -74,10 +74,11 @@ std::optional<std::string> ExtractValueFromQueryString(
 void TransformToAlphanumeric(std::string& str);
 
 // Gets standard request values for common attribute IDs
-std::optional<std::string> GetRequestValue(std::string_view attr_id,
-                                          const GURL& url,
-                                          const ServerConfig& server_config,
-                                          const PageScrapeResult& scrape_result);
+std::optional<std::string> GetRequestValue(
+    std::string_view attr_id,
+    const GURL& url,
+    const ServerConfig& server_config,
+    const PageScrapeResult& scrape_result);
 
 }  // namespace web_discovery
 
