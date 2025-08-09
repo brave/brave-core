@@ -252,6 +252,8 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
       break;
     case mojom::CoinType::ADA:
       // TODO(apaymyshev): Cardano P3A
+    case mojom::CoinType::XEC:
+      // TODO(PiRK): eCash P3A
       return;
   }
 
@@ -305,6 +307,8 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
       break;
     case mojom::CoinType::ADA:
       // TODO(apaymyshev): Cardano P3A
+    case mojom::CoinType::XEC:
+      // TODO(PiRK): eCash P3A
       return;
   }
 
