@@ -122,6 +122,24 @@ function ConversationEntries(props: ConversationEntriesProps) {
     }
   }, [props.onHeightChanged, props.onIsContentReady])
 
+  React.useEffect(() => {
+    // Set the iframe position to relative when the regenerate
+    // answer menu is open. Otherwise the menu can sometimes be
+    // overlapped by the Suggested question buttons.
+    const listener = (isOpen: boolean) => {
+      document.body.style.setProperty(
+        '--iframe-position-for-menus',
+        isOpen ? 'relative' : 'unset',
+      )
+    }
+    const id = api.conversationEntriesFrameObserver.regenerateAnswerMenuIsOpen
+      .addListener(listener)
+
+    return () => {
+      api.conversationEntriesFrameObserver.removeListener(id)
+    }
+  }, [])
+
   return (
     <iframe
       sandbox='allow-scripts allow-same-origin'
