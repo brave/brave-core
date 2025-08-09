@@ -21,7 +21,7 @@
   </if>
 
   <!-- Subtitles of the ChromeOS version of the management page -->
-  <if expr="chromeos_ash">
+  <if expr="is_chromeos">
     <message name="IDS_MANAGEMENT_SUBTITLE_MANAGED" desc="Title of chrome://management page, shows when device is managed by an unknown manager">
       Your <ph name="DEVICE_NAME">$1<ex>Chromebook</ex></ph> is managed
     </message>
@@ -34,7 +34,7 @@
   </if>
 
   <!-- Subtitles of the browser version of the management page -->
-  <if expr="not chromeos_ash">
+  <if expr="not is_chromeos">
     <message name="IDS_MANAGEMENT_SUBTITLE_MANAGED_BY" desc="Title of chrome://management page, which shows the administrator's capabilities in a managed environment. MANAGER can be a domain or an email address.">
       Your browser is managed by <ph name="MANAGER">$1<ex>example.com</ex></ph>
     </message>
@@ -60,7 +60,7 @@
 
   <if expr="not is_ios">
     <!-- Browser managed status section -->
-    <if expr="not chromeos_ash">
+    <if expr="not is_chromeos">
       <if expr="_google_chrome">
         <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="Message shown when the (Brave-branded) Brave browser is managed, it indicates what the administrator can do on the browser.">
         Your administrator can make changes to your profile and browser remotely, analyze information about the browser through reporting, and perform other necessary tasks. Activity on this device may also be managed outside of Brave.  <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
@@ -484,5 +484,25 @@
   <!-- Managed profile required interstitial -->
   <message name="IDS_MANAGED_PROFILE_INTERSTITIAL_TAB_TITLE" desc="The title of the tab of the interstitial that tells the user that their organization requires them to sign in to Brave with their managed account in order to access it.">
     Profile management
+  </message>
+
+  <!-- Promotion banner -->
+  <message name="IDS_MANAGEMENT_BANNER_PROMOTION_TITLE" desc="The title of the promotion banner on chrome://management page.">
+    Easily manage how your employees browse the web
+  </message>
+  <message name="IDS_MANAGEMENT_BANNER_PROMOTION_DESC" desc="The description of the promotion banner on chrome://management page.">
+    Brave Enterprise Core lets you manage browser policies, apps, and extensions from the cloud
+  </message>
+  <message name="IDS_MANAGEMENT_BANNER_PROMOTION_BTN" desc="The text of the button to redirect to the guide page from the promotion banner on chrome://management page.">
+    Try Brave Enterprise Core
+  </message>
+  <message name="IDS_MANAGEMENT_BANNER_ARIA_LABEL" desc="The aria-label of the promotion banner on chrome://management page.">
+    Promotion banner
+  </message>
+  <message name="IDS_MANAGEMENT_BANNER_NEW_TAB_ARIA_DESCRIPTION" desc="The aria-label of the redirect button on the promotion banner on chrome://management page.">
+    Opens in new tab
+  </message>
+  <message name="IDS_MANAGEMENT_BANNER_DISMISS_ARIA_LABEL" desc="The aria-label of the dismiss/close button on the promotion banner on chrome://management page.">
+    Dismiss banner
   </message>
 </grit-part>
