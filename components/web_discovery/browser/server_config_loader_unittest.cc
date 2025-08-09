@@ -11,10 +11,12 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "brave/components/web_discovery/browser/web_discovery_service.h"
+#include "brave/components/web_discovery/common/features.h"
 #include "components/prefs/testing_pref_service.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -33,6 +35,9 @@ class WebDiscoveryServerConfigLoaderTest : public testing::Test {
 
   // testing::Test:
   void SetUp() override {
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        web_discovery::features::kBraveWebDiscoveryNative,
+        {{web_discovery::features::kPatternsVersionParam, "1"}});
     WebDiscoveryService::RegisterLocalStatePrefs(local_state_.registry());
 
     ASSERT_TRUE(install_dir_.CreateUniqueTempDir());
@@ -105,6 +110,7 @@ class WebDiscoveryServerConfigLoaderTest : public testing::Test {
   void HandlePatternsReady() { patterns_ready_calls_made_++; }
 
   base::test::TaskEnvironment task_environment_;
+  base::test::ScopedFeatureList scoped_feature_list_;
   TestingPrefServiceSimple local_state_;
 
   network::TestURLLoaderFactory url_loader_factory_;

@@ -13,7 +13,7 @@ BASE_FEATURE(kBraveWebDiscoveryNative,
 const base::FeatureParam<std::string> kPatternsPath{&kBraveWebDiscoveryNative,
                                                     "patterns_path", ""};
 const base::FeatureParam<int> kPatternsVersion{&kBraveWebDiscoveryNative,
-                                               "patterns_version", 2};
+                                               kPatternsVersionParam, 2};
 
 bool ShouldUseV2Patterns() {
   return kPatternsVersion.Get() >= 2;
