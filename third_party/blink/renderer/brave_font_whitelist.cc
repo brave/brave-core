@@ -1974,7 +1974,7 @@ base::span<const std::string_view> GetMainFontWhitelist() {
 #endif
 }
 
-bool AllowFontByFamilyName(const AtomicString& family_name,
+bool AllowFontByFamilyName(const blink::AtomicString& family_name,
                            WTF::String default_language) {
   auto fontWhitelist = GetMainFontWhitelist();
   if (g_simulate_empty_font_whitelist_for_testing) [[unlikely]] {
@@ -2002,7 +2002,7 @@ bool AllowFontByFamilyName(const AtomicString& family_name,
   return false;
 }
 
-bool IsFontAllowedForFarbling(const AtomicString& family_name) {
+bool IsFontAllowedForFarbling(const blink::AtomicString& family_name) {
   std::string lower_ascii_name = family_name.LowerASCII().Ascii();
   return kFontFarblingSet.contains(lower_ascii_name);
 }

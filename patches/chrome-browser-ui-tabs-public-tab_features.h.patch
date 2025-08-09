@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tabs/public/tab_features.h b/chrome/browser/ui/tabs/public/tab_features.h
+index 79e3f7c9ed1008aeb6128f9f6d939c87a9d89c5e..350612ac0f75479904ed2d11671272177d01872f 100644
+--- a/chrome/browser/ui/tabs/public/tab_features.h
++++ b/chrome/browser/ui/tabs/public/tab_features.h
+@@ -115,7 +115,7 @@ class TabCreationMetricsController;
+ class TabFeatures {
+  public:
+   TabFeatures();
+-  ~TabFeatures();
++  virtual ~TabFeatures();
+ 
+   TabFeatures(const TabFeatures&) = delete;
+   TabFeatures& operator=(const TabFeatures&) = delete;

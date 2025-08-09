@@ -151,7 +151,10 @@ TEST_F(BraveSyncPrefsTest, PasswordSyncAllowedExplicitValue) {
       /*registered_types=*/UserSelectableTypeSet::All(),
       /*selected_types=*/{UserSelectableType::kPasswords});
 
-  sync_prefs_->SetPasswordSyncAllowed(false);
+  // TODO(alexeybarabash): this test looks like needs to be removed.
+  // Maybe it require other changes
+  // Related upstream commit: 558ee269a65b72e02fd3e6f27cc0eed6836b9cae
+  // sync_prefs_->SetPasswordSyncAllowed(false);
 
   EXPECT_TRUE(sync_prefs_->GetSelectedTypesForSyncingUser().Has(
       UserSelectableType::kPasswords));

@@ -83,7 +83,7 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     suggestion.getImageUrl(),
                     suggestion.getImageDominantColor(),
                     suggestion.isDeletable(),
-                    suggestion.getPostContentType(),
+                    suggestion.getExtraHeaders().get("Content-Type"),
                     suggestion.getPostData(),
                     suggestion.getGroupId(),
                     suggestion.getClipboardImageData(),
@@ -92,7 +92,11 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     suggestion.allowedToBeDefaultMatch(),
                     suggestion.getInlineAutocompletion(),
                     suggestion.getAdditionalText(),
-                    suggestion.getTabGroupUuid());
+                    suggestion.getTabGroupUuid(),
+                    // TODO(alexeybarabash): the actual data can be obtained from private
+                    // suggestion.mSuggestTemplate
+                    // Upstream commit: e8ed5a481f4d4fa46b8575aff08532a9170e9777
+                    /* serializedSuggestTemplate */ null);
         }
         return suggestion;
     }

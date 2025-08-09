@@ -5,15 +5,17 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/shield/node_shield.h"
 
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
+
 namespace brave_page_graph {
 
-NodeShield::NodeShield(GraphItemContext* context, const String& type)
+NodeShield::NodeShield(GraphItemContext* context, const blink::String& type)
     : GraphNode(context), type_(type) {}
 
 NodeShield::~NodeShield() = default;
 
 ItemName NodeShield::GetItemName() const {
-  return type_ + " shield";
+  return blink::StrCat({type_, " shield"});
 }
 
 bool NodeShield::IsNodeShield() const {

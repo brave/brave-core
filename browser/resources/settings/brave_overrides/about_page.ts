@@ -10,8 +10,6 @@ import {
   RegisterStyleOverride
 } from 'chrome://resources/brave/polymer_overriding.js'
 
-import {getSectionElement} from './basic_page.js'
-
 RegisterStyleOverride(
   'settings-about-page',
   html`
@@ -52,13 +50,9 @@ const buildChromiumVersionElement = (chromiumVersion:string) => {
 
 RegisterPolymerTemplateModifications({
   'settings-about-page': (templateContent) => {
-    const section = getSectionElement(templateContent, 'about')
-    if (!section) {
-      console.error('[Settings] Could not find about section')
-      return
-    }
-    if (!section.querySelector('a#release-notes')) {
-      const version = section.querySelector('#updateStatusMessage ~ .secondary')
+    if (!templateContent.querySelector('a#release-notes')) {
+      const version =
+        templateContent.querySelector('#updateStatusMessage ~ .secondary')
       if (!version) {
         console.error('[Settings] Could not find version div')
         return
@@ -87,7 +81,7 @@ RegisterPolymerTemplateModifications({
 
     // Help link shown if update fails
     const updateStatusMessageLink =
-      section.querySelector<HTMLAnchorElement>('#updateStatusMessage a')
+      templateContent.querySelector('#updateStatusMessage a')
     if (updateStatusMessageLink) {
       // <if expr="is_win">
       updateStatusMessageLink.href =

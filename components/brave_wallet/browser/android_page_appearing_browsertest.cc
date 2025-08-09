@@ -39,6 +39,7 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_controller_factory.h"
 #include "content/public/browser/web_ui_controller_interface_binder.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -340,8 +341,8 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
         base::ReplaceStringPlaceholders(kPrintConsoleMarkerScript,
                                         {kConsoleMarker}, nullptr),
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1);
-    EXPECT_TRUE(result.error.empty())
-        << "Could not execute script: " << result.error;
+    EXPECT_TRUE(result.is_ok())
+        << "Could not execute script: " << result.ExtractError();
 
     EXPECT_TRUE(console_observer.Wait());
     VerifyConsoleOutputNoErrors(console_observer,

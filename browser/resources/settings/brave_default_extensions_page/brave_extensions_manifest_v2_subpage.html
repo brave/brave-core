@@ -44,30 +44,33 @@
   }
 </style>
 
-<div class="settings-box header">
-  <div class="flex">
-    <div class="label secondary">
-      <p>$i18nRaw{extensionsV2Warn}</p>
+<settings-subpage
+  page-title="$i18n{manageExtensionsV2Label}">
+  <div class="settings-box header">
+    <div class="flex">
+      <div class="label secondary">
+        <p>$i18nRaw{extensionsV2Warn}</p>
+      </div>
     </div>
   </div>
-</div>
 
-<template is="dom-repeat" items="[[braveV2Extensions_]]">
-  <settings-toggle-button id="[[item.id]]" class="cr-row"
-    label="[[item.name]]" sub-label="[[item.description]]" learn-more-url="[[item.sources]]"
-    on-settings-boolean-control-change="onExtensionV2EnabledChange_" checked="[[item.enabled]]"
-    pref="[[itemPref_(item.enabled)]]" no-pref-set disabled="[[installInProgress_]]">
-    <template is="dom-if" if="[[showRemoveButton_(item)]]" restamp>
-      <cr-button on-click="removeExtension_" id="[[item.id]]" slot="more-actions">
-        $i18n{extensionsV2RemoveButtonLabel}
-      </cr-button>
-    </template>
-  </settings-toggle-button>
-</template>
-<template is="dom-if" if="{{showErrorToast_}}">
-  <div id="errorMessage">
-    <div class="exclamation-icon"></div>
-    <div class="toast">{{toastMessage_}}</div>
-    <div class="close" on-click="closeToast_">$i18n{extensionsV2ToastConfirmButtonLabel}</div>
-  </div>
-</template>
+  <template is="dom-repeat" items="[[braveV2Extensions_]]">
+    <settings-toggle-button id="[[item.id]]" class="cr-row"
+      label="[[item.name]]" sub-label="[[item.description]]" learn-more-url="[[item.sources]]"
+      on-settings-boolean-control-change="onExtensionV2EnabledChange_" checked="[[item.enabled]]"
+      pref="[[itemPref_(item.enabled)]]" no-pref-set disabled="[[installInProgress_]]">
+      <template is="dom-if" if="[[showRemoveButton_(item)]]" restamp>
+        <cr-button on-click="removeExtension_" id="[[item.id]]" slot="more-actions">
+          $i18n{extensionsV2RemoveButtonLabel}
+        </cr-button>
+      </template>
+    </settings-toggle-button>
+  </template>
+  <template is="dom-if" if="{{showErrorToast_}}">
+    <div id="errorMessage">
+      <div class="exclamation-icon"></div>
+      <div class="toast">{{toastMessage_}}</div>
+      <div class="close" on-click="closeToast_">$i18n{extensionsV2ToastConfirmButtonLabel}</div>
+    </div>
+  </template>
+</settings-subpage>

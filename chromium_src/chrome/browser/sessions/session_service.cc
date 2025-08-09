@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/constants/pref_names.h"
+#include "components/prefs/pref_service.h"
 
 // Prevent detached tab has unnecessary tab restore steps.
 // When last window's last tab is closed, |has_open_trackable_browsers_|

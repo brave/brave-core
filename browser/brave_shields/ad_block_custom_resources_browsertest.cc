@@ -22,6 +22,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "url/gurl.h"
@@ -68,7 +69,7 @@ bool ClickAddCustomScriptlet(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "window.testing.adblockScriptletList.getElementById('add-"
                 "custom-scriptlet').click()")
-      .value.is_none();
+      .is_ok();
 }
 
 bool SetCustomScriptletValue(content::WebContents* web_contents,
@@ -85,7 +86,7 @@ bool SetCustomScriptletValue(content::WebContents* web_contents,
      })();
   )js";
   return EvalJs(web_contents, content::JsReplace(kSetValue, id, value))
-      .value.GetBool();
+      .ExtractBool();
 }
 
 bool SetCustomScriptletName(content::WebContents* web_contents,
@@ -104,7 +105,7 @@ std::string GetCustomScriptletValue(content::WebContents* web_contents,
   return EvalJs(web_contents,
                 "window.testing.adblockScriptletEditor.getElementById('" + id +
                     "').value")
-      .value.GetString();
+      .ExtractString();
 }
 
 std::string GetCustomScriptletName(content::WebContents* web_contents) {
@@ -121,7 +122,7 @@ bool ClickSaveCustomScriptlet(content::WebContents* web_contents,
   if (!EvalJs(web_contents,
               "window.testing.adblockScriptletEditor.getElementById('save')."
               "click()")
-           .value.is_none()) {
+           .is_ok()) {
     return false;
   }
   std::string id = name.starts_with("user-") ? name : "user-" + name;
@@ -144,7 +145,7 @@ bool ClickCustomScriplet(content::WebContents* web_contents,
      })();
   )js";
   return EvalJs(web_contents, content::JsReplace(kClick, name, "#" + button))
-      .value.is_none();
+      .is_ok();
 }
 
 }  // namespace

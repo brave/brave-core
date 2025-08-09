@@ -25,6 +25,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "erick.tryzelaar <erick.tryzelaar@gmail.com>, kwantam <kwantam@gmail.com>, Manish Goregaokar <manishsmail@gmail.com>"
   cargo_pkg_name = "unicode-xid"
   cargo_pkg_description = "Determine whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31."
+  cargo_pkg_repository = "https://github.com/unicode-rs/unicode-xid"
   cargo_pkg_version = "0.2.4"
 
   features = [ "default" ]

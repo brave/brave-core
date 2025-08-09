@@ -27,6 +27,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "utf-8"
   cargo_pkg_description =
       "Incremental, zero-copy UTF-8 decoding with error handling"
+  cargo_pkg_repository = "https://github.com/SimonSapin/rust-utf8"
   cargo_pkg_version = "0.7.6"
 
   rustenv = []

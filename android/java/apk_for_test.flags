@@ -49,7 +49,7 @@
     *** mLogoCoordinator;
     *** mInitialTileNum;
     *** mProfile;
-    *** insertSiteSectionView(...);
+    *** initializeSiteSectionView(...);
     *** setSearchProviderTopMargin(...);
     *** setSearchProviderBottomMargin(...);
     *** getLogoMargin(...);
@@ -58,7 +58,6 @@
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
     *** mTileGroup;
     public <init>(...);
-    *** updateTilePlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesMediator {
@@ -73,7 +72,7 @@
     *** mToolbarSupplier;
     *** mBottomSheetController;
     *** mTabStripHeightSupplier;
-    *** updateSearchProviderHasLogo(...);
+    *** updateSearchProvider(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
@@ -86,10 +85,12 @@
     *** mSyncEverything;
 }
 
--keep class org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper {
-    *** mCallback;
-    *** mFragmentManager;
-}
+# TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+# Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+#-keep class org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper {
+#    *** mCallback;
+#    *** mFragmentManager;
+#}
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
     *** mProfile;
@@ -190,6 +191,10 @@
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabmodel.RedirectTabCreator {
     public <init>(...);
 }
 
@@ -300,13 +305,16 @@
     <init>(...);
 }
 
--keep class org.chromium.chrome.browser.password_manager.settings.PasswordSettings {
-    public <init>(...);
-}
+# TODO(alexeybarabash): PasswordSettings was removed at upstream,
+# but we need to get it back
+# Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
+# -keep class org.chromium.chrome.browser.password_manager.settings.PasswordSettings {
+#     public <init>(...);
+# }
 
--keep class org.chromium.chrome.browser.password_manager.settings.BravePasswordSettingsBase {
-    public <init>(...);
-}
+# -keep class org.chromium.chrome.browser.password_manager.settings.BravePasswordSettingsBase {
+#     public <init>(...);
+# }
 
 -keep class org.chromium.chrome.browser.customtabs.CustomTabAppMenuPropertiesDelegate {
     public <init>(...);
@@ -502,7 +510,7 @@
 
 -keep class org.chromium.chrome.browser.multiwindow.MultiInstanceManagerApi31 {
     *** mInstanceId;
-    moveTabAction(...);
+    moveTabToWindow(...);
     handleMenuOrKeyboardAction(...);
     <init>(...);
 }
@@ -911,7 +919,6 @@
     *** mToolbarCoordinator;
     *** mTabController;
     *** mMinimizationManagerHolder;
-    *** mCustomTabFeatureOverridesManager;
     *** getAppHeaderCoordinator(...);
     *** getBrowserServicesThemeColorProvider(...);
     public <init>(...);

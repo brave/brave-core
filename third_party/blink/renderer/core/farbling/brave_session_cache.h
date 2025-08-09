@@ -55,7 +55,7 @@ CORE_EXPORT bool AllowFingerprinting(
     ExecutionContext* context,
     ContentSettingsType webcompat_settings_type);
 CORE_EXPORT bool AllowFontFamily(ExecutionContext* context,
-                                 const AtomicString& family_name);
+                                 const blink::AtomicString& family_name);
 CORE_EXPORT int FarbleInteger(ExecutionContext* context,
                               brave::FarbleKey key,
                               int spoof_value,
@@ -84,14 +84,14 @@ class CORE_EXPORT BraveSessionCache final
       ContentSettingsType webcompat_settings_type);
   void FarbleAudioChannel(base::span<float> dst);
   void PerturbPixels(base::span<uint8_t> data);
-  WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
+  WTF::String GenerateRandomString(std::string seed, blink::wtf_size_t length);
   WTF::String FarbledUserAgent(WTF::String real_user_agent);
   int FarbledInteger(FarbleKey key,
                      int spoof_value,
                      int min_random_offset,
                      int max_random_offset);
   bool AllowFontFamily(blink::WebContentSettingsClient* settings,
-                       const AtomicString& family_name);
+                       const blink::AtomicString& family_name);
   FarblingPRNG MakePseudoRandomGenerator(FarbleKey key = FarbleKey::kNone);
   std::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper();
 

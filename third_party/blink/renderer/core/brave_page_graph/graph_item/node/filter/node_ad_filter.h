@@ -14,11 +14,11 @@ namespace brave_page_graph {
 
 class NodeAdFilter : public NodeFilter {
  public:
-  NodeAdFilter(GraphItemContext* context, const String& rule);
+  NodeAdFilter(GraphItemContext* context, const blink::String& rule);
 
   ~NodeAdFilter() override;
 
-  const String& GetRule() const { return rule_; }
+  const blink::String& GetRule() const { return rule_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -29,7 +29,7 @@ class NodeAdFilter : public NodeFilter {
   bool IsNodeAdFilter() const override;
 
  private:
-  const String rule_;
+  const blink::String rule_;
 };
 
 }  // namespace brave_page_graph

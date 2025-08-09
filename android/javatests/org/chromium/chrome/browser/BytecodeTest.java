@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.view.Window;
 import android.widget.RadioGroup;
 
@@ -97,7 +96,6 @@ import org.chromium.chrome.browser.ntp.NewTabPageCreationTracker;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
 import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
-import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
@@ -133,6 +131,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.extensions.ExtensionToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.HomeButtonDisplay;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
@@ -143,7 +142,6 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
-import org.chromium.chrome.browser.ui.extensions.ExtensionService;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
@@ -244,13 +242,18 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
+        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+        // Assert.assertTrue(
+        //         classExists(
+        //
+        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper")); // presubmit: ignore-long-line
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings"));
+                        "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings"));
         Assert.assertTrue(classExists("org/chromium/base/CommandLineInitUtil"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ui/appmenu/AppMenu"));
         Assert.assertTrue(
@@ -273,15 +276,20 @@ public class BytecodeTest {
                 classExists(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/ChromeTabCreator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/RedirectTabCreator"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/safe_browsing/settings/StandardProtectionSettingsFragment"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/top/ToolbarPhone"));
-        Assert.assertTrue(
-                classExists(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
+        // TODO(alexeybarabash): PasswordSettings was removed at upstream,
+        // but we need to get it back
+        // Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
+        // Assert.assertTrue(
+        //         classExists(
+        //
+        // "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate")); // presubmit: ignore-long-line
@@ -371,8 +379,6 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/multiwindow/MultiWindowUtils"));
         Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/password_manager/settings/ExportFlow"));
-        Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment")); // presubmit: ignore-long-line
         Assert.assertTrue(
@@ -438,7 +444,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                        "insertSiteSectionView",
+                        "initializeSiteSectionView",
                         MethodModifier.REGULAR,
                         void.class));
         Assert.assertTrue(
@@ -659,7 +665,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPage",
-                        "updateSearchProviderHasLogo",
+                        "updateSearchProvider",
                         MethodModifier.REGULAR,
                         void.class));
         Assert.assertTrue(
@@ -668,12 +674,6 @@ public class BytecodeTest {
                         "get",
                         MethodModifier.STATIC,
                         VariationsSeedFetcher.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
-                        "updateTilePlaceholderVisibility",
-                        MethodModifier.REGULAR,
-                        void.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -786,7 +786,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
-                        "moveTabAction",
+                        "moveTabToWindow",
                         MethodModifier.REGULAR,
                         void.class,
                         getClassForPath("org/chromium/chrome/browser/multiwindow/InstanceInfo"),
@@ -812,8 +812,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
                         "canEnterMultiWindowMode",
                         MethodModifier.REGULAR,
-                        boolean.class,
-                        Activity.class));
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
@@ -847,6 +846,7 @@ public class BytecodeTest {
                         "showUndoBar",
                         MethodModifier.REGULAR,
                         void.class,
+                        List.class,
                         List.class,
                         boolean.class));
         Assert.assertTrue(
@@ -1123,9 +1123,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
-                        "shouldUseParentIds",
+                        "shouldGroupWithParent",
                         MethodModifier.REGULAR,
                         boolean.class,
+                        Tab.class,
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
@@ -1133,12 +1134,6 @@ public class BytecodeTest {
                         "isTabModelRestored",
                         MethodModifier.REGULAR,
                         boolean.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
-                        "runCreateFileOnDiskIntent",
-                        MethodModifier.REGULAR,
-                        void.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
@@ -1233,7 +1228,6 @@ public class BytecodeTest {
                         WebFeedSnackbarController.FeedLauncher.class,
                         ModalDialogManager.class,
                         SnackbarManager.class,
-                        ExtensionService.class,
                         OneshotSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
@@ -1247,7 +1241,8 @@ public class BytecodeTest {
                         boolean.class,
                         AsyncTabParamsManager.class,
                         Supplier.class,
-                        Supplier.class));
+                        Supplier.class,
+                        MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
@@ -1267,7 +1262,6 @@ public class BytecodeTest {
                         ActivityTabProvider.class,
                         ScrimManager.class,
                         ToolbarActionModeCallback.class,
-                        ExtensionService.class,
                         FindToolbarManager.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
@@ -1293,12 +1287,12 @@ public class BytecodeTest {
                         boolean.class,
                         BackPressManager.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class,
                         DesktopWindowStateManager.class,
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
                         MenuButtonCoordinator.VisibilityDelegate.class,
                         TopControlsStacker.class,
+                        ObservableSupplier.class,
                         ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1390,6 +1384,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         OneshotSupplier.class,
                         ObservableSupplier.class,
+                        ObservableSupplier.class,
                         StartupMetricsTracker.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1403,6 +1398,7 @@ public class BytecodeTest {
                         List.class,
                         OneshotSupplier.class,
                         ThemeColorProvider.class,
+                        IncognitoStateProvider.class,
                         MenuButtonCoordinator.class,
                         ObservableSupplier.class,
                         ToggleTabStackButtonCoordinator.class,
@@ -1424,7 +1420,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         BackButtonCoordinator.class,
-                        HomeButtonDisplay.class));
+                        HomeButtonDisplay.class,
+                        ExtensionToolbarCoordinator.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
@@ -1467,6 +1464,7 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         LocationBarDataProvider.class,
+                        Callback.class,
                         Callback.class,
                         Supplier.class,
                         BookmarkState.class,
@@ -1520,7 +1518,6 @@ public class BytecodeTest {
                         Resources.class,
                         UiConfig.class,
                         MostVisitedTilesLayout.class,
-                        ViewStub.class,
                         TileRenderer.class,
                         PropertyModel.class,
                         boolean.class,
@@ -1567,7 +1564,7 @@ public class BytecodeTest {
                         BackKeyBehaviorDelegate.class,
                         PageInfoAction.class,
                         Callback.class,
-                        BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
+                        Callback.class,
                         BraveLocationBarMediator.getOmniboxUmaClass(),
                         Supplier.class,
                         BookmarkState.class,
@@ -1583,8 +1580,7 @@ public class BytecodeTest {
                         Supplier.class,
                         OnLongClickListener.class,
                         BrowserControlsStateProvider.class,
-                        boolean.class,
-                        LocationBarCoordinator.OfflineDownloader.class));
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1601,13 +1597,11 @@ public class BytecodeTest {
                         WindowAndroid.class,
                         boolean.class,
                         BraveLocationBarMediator.getLensControllerClass(),
-                        BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
                         BraveLocationBarMediator.getOmniboxUmaClass(),
                         BooleanSupplier.class,
                         BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
                         ObservableSupplier.class,
-                        BrowserControlsStateProvider.class,
-                        LocationBarCoordinator.OfflineDownloader.class));
+                        BrowserControlsStateProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1682,12 +1676,13 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         ObservableSupplierImpl.class,
+                        ObservableSupplierImpl.class,
                         OneshotSupplierImpl.class,
                         int.class,
                         Supplier.class,
                         AppMenuDelegate.class,
                         StatusBarColorProvider.class,
-                        OneshotSupplierImpl.class,
+                        ObservableSupplierImpl.class,
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
@@ -1807,6 +1802,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
                         TabContextMenuItemDelegate.class,
                         Supplier.class,
+                        List.class,
                         int.class,
                         Context.class,
                         ContextMenuParams.class,
@@ -1821,7 +1817,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/identity_disc/IdentityDiscController",
                         "org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController",
                         Context.class,
-                        ActivityLifecycleDispatcher.class,
                         ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -2005,23 +2000,33 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/ntp/NewTabPage", "mTabStripHeightSupplier"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                fieldExists(
+                        "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                         "mTileGroup"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
+                fieldExists(
+                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mGoogleActivityControls"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncEncryption"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncEverything"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
-                        "mCallback"));
+                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
+                        "mSyncEncryption"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
-                        "mFragmentManager"));
+                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
+                        "mSyncEverything"));
+        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
+        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
+        // Assert.assertTrue(
+        //         fieldExists(
+        //
+        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
+        //                 "mCallback"));
+        // Assert.assertTrue(
+        //         fieldExists(
+        //
+        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
+        //                 "mFragmentManager"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
@@ -2378,10 +2383,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
                         "mMinimizationManagerHolder"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
-                        "mCustomTabFeatureOverridesManager"));
         Assert.assertFalse(
                 fieldExists(
                         "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController", // presubmit: ignore-long-line
@@ -2419,10 +2420,15 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
                         "android/widget/FrameLayout"));
-        Assert.assertTrue(
-                checkSuperName(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordSettings",
-                        "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase")); // presubmit: ignore-long-line
+        // TODO(alexeybarabash): PasswordSettings was removed at upstream,
+        // but we need to get it back
+        // Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
+        // Assert.assertTrue(
+        //         checkSuperName(
+        //                 "org/chromium/chrome/browser/password_manager/settings/PasswordSettings",
+        //
+        // "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase")); //
+        // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
@@ -2563,6 +2569,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/tab_group_sync/StartupHelper",
                         "org/chromium/chrome/browser/tab_group_sync/BraveStartupHelper"));
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/tabmodel/RedirectTabCreator",
+                        "org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
     }
 
     @Test
@@ -2637,6 +2647,7 @@ public class BytecodeTest {
             return false;
         }
         for (Method m : c.getDeclaredMethods()) {
+            boolean tryAnotherMethod = false;
             if (m.getName().equals(methodName)) {
                 Class<?> type = m.getReturnType();
                 if ((type == null && returnType != null)
@@ -2654,8 +2665,16 @@ public class BytecodeTest {
                 }
                 for (int i = 0; i < (types == null ? 0 : types.length); i++) {
                     if (!types[i].equals(parameterTypes[i])) {
-                        return false;
+                        // Handle case when class has overridden methods, see
+                        // MultiInstanceManagerApi31 class with
+                        //    moveTabToWindow(Activity, Tab, int) and
+                        //    moveTabToWindow(InstanceInfo, Tab, int)
+                        tryAnotherMethod = true;
                     }
+                }
+
+                if (tryAnotherMethod) {
+                    continue;
                 }
 
                 if (methodModifier == MethodModifier.STATIC

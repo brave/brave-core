@@ -1,10 +1,10 @@
 diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
-index 01f516fce5ebd25e0ef8fff4eee1c57135cd6d61..fccd6b9d281a9197a2c6485fb138145a040313f8 100644
+index 3f95d514c8348a880128d0bf14a723aa1283ce69..bcfb097fee4afea0ca01f8ab7ddc687e2bde3229 100644
 --- a/content/public/browser/BUILD.gn
 +++ b/content/public/browser/BUILD.gn
-@@ -762,6 +762,7 @@ source_set("browser_sources") {
+@@ -749,6 +749,7 @@ source_set("browser_sources") {
    if (enable_video_effects) {
-     public_deps += [ "//services/video_effects/public/mojom:mojom" ]
+     public_deps += [ "//services/video_effects/public/mojom" ]
    }
 +  import("//brave/content/public/browser/sources.gni") sources += brave_content_public_browser_sources
  }

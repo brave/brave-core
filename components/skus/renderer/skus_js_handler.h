@@ -44,7 +44,8 @@ class SkusJSHandler : public content::RenderFrameObserver,
   SkusJSHandler& operator=(const SkusJSHandler&) = delete;
   ~SkusJSHandler() override;
 
-  static gin::WrapperInfo kWrapperInfo;
+  static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
+                                                    gin::kSkusBindings};
 
   static void Install(content::RenderFrame* render_frame);
 
@@ -57,6 +58,7 @@ class SkusJSHandler : public content::RenderFrameObserver,
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
       v8::Isolate* isolate) override;
+  const gin::WrapperInfo* wrapper_info() const override;
 
   // window.chrome.braveSkus.refresh_order
   v8::Local<v8::Promise> RefreshOrder(v8::Isolate* isolate,
