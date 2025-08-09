@@ -242,4 +242,9 @@
   // added to the iframe.
   // See https://github.com/brave/brave-browser/issues/46042
   margin-bottom: calc(-1 * var(--iframe-additional-margin-for-menus));
+  // Position the iframe relative to the main content when the regenerate
+  // answer menu is open.
+  // Otherwise the menu can sometimes be overlapped by the Suggested question
+  // buttons.
+  position: var(--iframe-position-for-menus);
 }
