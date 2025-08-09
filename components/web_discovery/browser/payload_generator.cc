@@ -5,13 +5,17 @@
 
 #include "brave/components/web_discovery/browser/payload_generator.h"
 
+#include <algorithm>
+#include <iterator>
 #include <utility>
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/web_discovery/browser/patterns_v2.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
+#include "brave/components/web_discovery/browser/relevant_site.h"
 #include "brave/components/web_discovery/browser/util.h"
 
 namespace web_discovery {
@@ -56,25 +60,41 @@ bool AggregatedDictHasContent(const base::Value::Dict& dict) {
   return false;
 }
 
-bool IsPrivateResult(const PayloadRule& rule,
-                     const PatternsURLDetails* matching_url_details,
+bool IsPrivateResult(std::string_view key,
+                     bool is_search_engine,
                      const base::Value::Dict& dict) {
-  if (rule.key != kSearchResultKey) {
+  if (key != kSearchResultKey) {
     return false;
   }
   const auto* url = dict.FindString(kSearchResultURLKey);
   if (!url) {
     return false;
   }
-  return IsPrivateURLLikely(GURL(*url), matching_url_details);
+  return IsPrivateURLLikely(GURL(*url), is_search_engine);
 }
 
-bool ShouldDropSearchResultPayload(const PayloadRule& rule,
-                                   size_t result_size) {
-  if (rule.key != kSearchResultKey) {
+bool ShouldDropSearchResultPayload(std::string_view key, size_t result_size) {
+  if (key != kSearchResultKey) {
     return false;
   }
   return result_size < kMinSearchResultSize;
+}
+
+bool ValidateListResult(std::string_view field_key,
+                        bool is_query_action,
+                        const base::Value::Dict& results) {
+  if (!AggregatedDictHasContent(results)) {
+    VLOG(1) << "Skipped payload due to lack of content";
+    return false;
+  }
+  // Check if we have enough results for search results
+  if (is_query_action &&
+      ShouldDropSearchResultPayload(field_key, results.size())) {
+    VLOG(1) << "Skipped search result payload due to too few results";
+    return false;
+  }
+
+  return true;
 }
 
 base::Value::Dict CreatePayloadDict(const PayloadRuleGroup& rule_group,
@@ -96,19 +116,15 @@ std::optional<base::Value> GenerateClusteredJoinedPayload(
     if (value.empty()) {
       continue;
     }
-    if (is_query_action && IsPrivateResult(rule, matching_url_details, value)) {
+    if (is_query_action &&
+        IsPrivateResult(rule.key, matching_url_details->is_search_engine,
+                        value)) {
       VLOG(1) << "Omitting private search result";
       continue;
     }
     joined_data.Set(base::NumberToString(counter++), value.Clone());
   }
-  if (!AggregatedDictHasContent(joined_data)) {
-    VLOG(1) << "Skipped joined clustered payload due to lack of content";
-    return std::nullopt;
-  }
-  if (is_query_action &&
-      ShouldDropSearchResultPayload(rule, joined_data.size())) {
-    VLOG(1) << "Skipped search result payload due to too few results";
+  if (!ValidateListResult(rule.key, is_query_action, joined_data)) {
     return std::nullopt;
   }
   return base::Value(std::move(joined_data));
@@ -168,72 +184,69 @@ void GenerateSinglePayloads(const ServerConfig& server_config,
   }
 }
 
-
 std::optional<base::Value> ProcessV2List(
     const PatternsV2OutputField& field,
     const std::vector<base::Value::Dict>& scraped_values,
-    const std::vector<std::string>& required_keys) {
+    const PatternsV2InputGroup& input_group,
+    bool is_query_action,
+    bool is_search_engine) {
+  // Determine required keys: use field.required_keys if provided, otherwise all
+  // input group keys
+  std::vector<std::string> required_keys;
+  if (!field.required_keys.empty()) {
+    required_keys = field.required_keys;
+  } else {
+    // Extract keys from input group using transform
+    std::ranges::transform(input_group.extraction_rules,
+                           std::back_inserter(required_keys),
+                           [](const auto& pair) { return pair.first; });
+  }
+
   base::Value::Dict joined_results;
   size_t counter = 0;
-  
+
   for (const auto& scraped_item : scraped_values) {
-    // Validate required keys are present (non-blank strings)
-    bool has_all_required_keys = true;
-    for (const auto& required_key : required_keys) {
-      const auto* value = scraped_item.FindString(required_key);
-      if (!value || value->empty()) {
-        has_all_required_keys = false;
-        break;
-      }
+    counter++;
+
+    // Validate required keys are present using ValueHasContent
+    bool has_all_required_keys =
+        std::ranges::all_of(required_keys, [&](const auto& key) {
+          const auto* value = scraped_item.Find(key);
+          return value && ValueHasContent(*value);
+        });
+    if (!has_all_required_keys) {
+      continue;
     }
-    
-    if (has_all_required_keys) {
-      // Check for private results if this is a search result field
-      if (field.key == kSearchResultKey) {
-        PayloadRule temp_rule;
-        temp_rule.key = field.key;
-        if (IsPrivateResult(temp_rule, nullptr, scraped_item)) {
-          VLOG(1) << "Omitting private search result";
-          continue;
-        }
-      }
-      
-      joined_results.Set(base::NumberToString(counter++), 
-                         scraped_item.Clone());
+
+    // Check for private results if this is a query action
+    if (is_query_action &&
+        IsPrivateResult(field.key, is_search_engine, scraped_item)) {
+      VLOG(1) << "Omitting private search result";
+      continue;
     }
+
+    joined_results.Set(base::NumberToString(counter), scraped_item.Clone());
   }
-  
-  // Check if we have enough results for search results
-  if (field.key == kSearchResultKey) {
-    PayloadRule temp_rule;
-    temp_rule.key = field.key;
-    if (ShouldDropSearchResultPayload(temp_rule, joined_results.size())) {
-      return std::nullopt;
-    }
-  }
-  
-  if (!AggregatedDictHasContent(joined_results)) {
+
+  if (joined_results.empty() ||
+      !ValidateListResult(field.key, is_query_action, joined_results)) {
     return std::nullopt;
   }
-  
+
   return base::Value(std::move(joined_results));
 }
 
-std::optional<std::string> ProcessV2SingleValue(
-    const std::vector<base::Value::Dict>& scraped_values) {
+std::optional<base::Value> ProcessV2SingleValue(
+    const std::vector<base::Value::Dict>& scraped_values,
+    std::string_view field_name) {
   if (scraped_values.empty()) {
     return std::nullopt;
   }
-  
-  // Take the first scraped value
+
   const auto& first_value = scraped_values[0];
-  if (first_value.size() == 1) {
-    // Single key-value pair - extract the string value
-    auto it = first_value.begin();
-    const auto* str_value = it->second.GetIfString();
-    if (str_value && !str_value->empty()) {
-      return *str_value;
-    }
+  const auto* value = first_value.Find(field_name);
+  if (value && ValueHasContent(*value)) {
+    return value->Clone();
   }
   return std::nullopt;
 }
@@ -242,84 +255,56 @@ std::optional<base::Value> ProcessV2OutputField(
     const PatternsV2OutputField& field,
     const ServerConfig& server_config,
     const PageScrapeResult& scrape_result,
-    const std::string& output_group_name,
-    const PatternsV2SitePattern& site_pattern) {
-  if (field.source.has_value()) {
+    const PatternsV2SitePattern& site_pattern,
+    bool is_query_action,
+    bool is_search_engine) {
+  std::optional<base::Value> result;
+
+  if (field.source) {
     // Field has a source - look up scraped data
     const std::string& source_selector = field.source.value();
-    auto scraped_data_it = scrape_result.fields.find(source_selector);
-    
-    if (scraped_data_it == scrape_result.fields.end() ||
-        scraped_data_it->second.empty()) {
-      if (!field.optional) {
-        VLOG(1) << "Missing required source data for field: " << field.key
-                << " in output group: " << output_group_name;
-        return std::nullopt;
-      }
-      return base::Value(); // Skip optional field with no data
+    const auto* scraped_values =
+        base::FindOrNull(scrape_result.fields, source_selector);
+
+    if (!scraped_values || scraped_values->empty()) {
+      // No data for this source
+      VLOG(1) << "No data for source: " << source_selector;
+      return std::nullopt;
     }
-    
-    const auto& scraped_values = scraped_data_it->second;
-    
     // Find the input group for this selector to check select_all
-    auto input_group_it = site_pattern.input_groups.find(source_selector);
-    if (input_group_it == site_pattern.input_groups.end()) {
+    const auto* input_group =
+        base::FindOrNull(site_pattern.input_groups, source_selector);
+    if (!input_group) {
       VLOG(1) << "Input group not found for selector: " << source_selector;
-      if (!field.optional) {
-        return std::nullopt;
-      }
-      return base::Value();
+      return std::nullopt;
     }
-    
-    const auto& input_group = input_group_it->second;
-    
-    if (input_group.select_all) {
+    if (input_group->select_all) {
       // Use ProcessV2List for select_all=true
-      std::vector<std::string> required_keys;
-      
-      // If no required keys provided, use all keys from input rule
-      if (field.required_keys.empty()) {
-        for (const auto& [key, extraction_rule] : input_group.extraction_rules) {
-          required_keys.push_back(key);
-        }
-      } else {
-        required_keys = field.required_keys;
-      }
-      
-      auto processed_value = ProcessV2List(field, scraped_values, required_keys);
-      if (!processed_value.has_value()) {
-        if (!field.optional) {
-          VLOG(1) << "No valid content for required field: " << field.key
-                  << " in output group: " << output_group_name;
-          return std::nullopt;
-        }
-        return base::Value(); // Skip optional field with no valid content
-      }
-      return std::optional<base::Value>(std::move(processed_value.value()));
+      result = ProcessV2List(field, *scraped_values, *input_group,
+                             is_query_action, is_search_engine);
     } else {
       // Use ProcessV2SingleValue for select_all=false
-      auto string_value = ProcessV2SingleValue(scraped_values);
-      if (!string_value.has_value() && !field.optional) {
-        return std::nullopt;
-      }
-      if (string_value.has_value()) {
-        return std::optional<base::Value>(base::Value(*string_value));
-      }
-      return base::Value(); // Optional field with no value
+      result = ProcessV2SingleValue(*scraped_values, field.key);
     }
   } else {
     // Field has no source - handle special static fields
-    auto value = GetRequestValue(field.key, scrape_result.url, server_config, scrape_result);
-    if (!value) {
-      // Unknown static field - skip if optional
-      if (!field.optional) {
-        VLOG(1) << "Unknown static field: " << field.key;
-        return std::nullopt;
-      }
-      return base::Value(); // Skip optional field
+    auto value = GetRequestValue(field.key, scrape_result.url, server_config,
+                                 scrape_result);
+    if (value) {
+      result = base::Value(*value);
     }
-    return std::optional<base::Value>(base::Value(*value));
   }
+
+  // Handle optional check at the end
+  if (!result.has_value()) {
+    if (!field.optional) {
+      VLOG(1) << "No valid content for required field: " << field.key;
+      return std::nullopt;
+    }
+    return base::Value();  // Skip optional field with no content
+  }
+
+  return result;
 }
 
 }  // namespace
@@ -351,43 +336,53 @@ std::vector<base::Value::Dict> GenerateQueryPayloadsV2(
     const PatternsV2PatternsGroup& patterns_group,
     std::unique_ptr<PageScrapeResult> scrape_result) {
   std::vector<base::Value::Dict> payloads;
-  
-  // Iterate through all site patterns
-  for (const auto& [site, site_pattern] : patterns_group.site_patterns) {
-    // Process each output group for this site
-    for (const auto& output_group : site_pattern.output_groups) {
-      base::Value::Dict inner_payload;
-      bool has_required_data = true;
-      
-      // Process each field in the output group
-      for (const auto& field : output_group.fields) {
-        auto processed_field = ProcessV2OutputField(field, server_config, 
-                                                   *scrape_result, output_group.name,
-                                                   site_pattern);
-        if (!processed_field.has_value()) {
-          // Required field failed processing
-          has_required_data = false;
-          break;
-        }
-        
-        // Skip empty optional fields
-        if (processed_field->is_none()) {
-          continue;
-        }
-        
-        inner_payload.Set(field.key, std::move(processed_field.value()));
+
+  // Find the site pattern associated with this scrape result
+  auto relevant_site = RelevantSiteFromID(scrape_result->id);
+  if (!relevant_site.has_value()) {
+    VLOG(1) << "Unknown site ID: " << scrape_result->id;
+    return payloads;
+  }
+
+  // Determine if this site is a search engine
+  bool is_search_engine = IsRelevantSiteSearchEngine(*relevant_site);
+
+  const auto* site_pattern =
+      base::FindOrNull(patterns_group.site_patterns, *relevant_site);
+  if (!site_pattern) {
+    VLOG(1) << "No site pattern found for relevant site";
+    return payloads;
+  }
+
+  // Process each output group for this site
+  for (const auto& output_group : site_pattern->output_groups) {
+    base::Value::Dict inner_payload;
+
+    // Determine if this is a query action
+    bool is_query_action = kQueryActions.contains(output_group.name);
+
+    // Process each field in the output group
+    for (const auto& field : output_group.fields) {
+      auto processed_field = ProcessV2OutputField(
+          field, server_config, *scrape_result, *site_pattern, is_query_action,
+          is_search_engine);
+      if (!processed_field) {
+        // Required field failed processing
+        break;
       }
-      
-      // Create payload if we have all required data
-      if (has_required_data && !inner_payload.empty()) {
-        base::Value::Dict payload;
-        payload.Set(kActionKey, output_group.name);
-        payload.Set(kInnerPayloadKey, std::move(inner_payload));
-        payloads.push_back(std::move(payload));
-      }
+
+      inner_payload.Set(field.key, std::move(*processed_field));
+    }
+
+    // Create payload if we have all required data
+    if (inner_payload.size() == output_group.fields.size()) {
+      base::Value::Dict payload;
+      payload.Set(kActionKey, output_group.name);
+      payload.Set(kInnerPayloadKey, std::move(inner_payload));
+      payloads.push_back(std::move(payload));
     }
   }
-  
+
   return payloads;
 }
 

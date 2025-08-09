@@ -25,41 +25,35 @@ class WebDiscoveryPrivacyGuardTest : public testing::Test {
 };
 
 TEST_F(WebDiscoveryPrivacyGuardTest, IsPrivateURLLikely) {
-  EXPECT_FALSE(IsPrivateURLLikely(GURL("https://www.search1.com/search?q=test"),
-                                  &search_engine_pattern_));
+  EXPECT_FALSE(
+      IsPrivateURLLikely(GURL("https://www.search1.com/search?q=test"), true));
   EXPECT_FALSE(IsPrivateURLLikely(
 
-      GURL("https://search2.com/search?query=testing+a+nice+query"),
-      &search_engine_pattern_));
+      GURL("https://search2.com/search?query=testing+a+nice+query"), true));
   EXPECT_FALSE(IsPrivateURLLikely(
 
       GURL(
           "https://search2.com/search?query=quick+brown+fox+jumped&country=us"),
-      &search_engine_pattern_));
+      true));
   EXPECT_FALSE(
-      IsPrivateURLLikely(GURL("https://www.website.com/page/test"), nullptr));
+      IsPrivateURLLikely(GURL("https://www.website.com/page/test"), false));
 
   EXPECT_TRUE(
-      IsPrivateURLLikely(GURL("http://www.website.com/page/test"), nullptr));
+      IsPrivateURLLikely(GURL("http://www.website.com/page/test"), false));
+  EXPECT_TRUE(IsPrivateURLLikely(GURL("https://88.88.88.88/page/test"), false));
   EXPECT_TRUE(
-      IsPrivateURLLikely(GURL("https://88.88.88.88/page/test"), nullptr));
-  EXPECT_TRUE(
-      IsPrivateURLLikely(GURL("https://website.com:8443/page/test"), nullptr));
+      IsPrivateURLLikely(GURL("https://website.com:8443/page/test"), false));
   EXPECT_TRUE(IsPrivateURLLikely(
-      GURL("https://user:pass@website.com/page/test"), nullptr));
+      GURL("https://user:pass@website.com/page/test"), false));
   EXPECT_TRUE(IsPrivateURLLikely(
-      GURL("https://www.search1.com/search?q=test#ABCDEFGHIJK"),
-      &search_engine_pattern_));
+      GURL("https://www.search1.com/search?q=test#ABCDEFGHIJK"), true));
 
   EXPECT_TRUE(IsPrivateURLLikely(
-      GURL("https://a.nested.sub.domain.website.co.uk/test/page"),
-      &search_engine_pattern_));
-  EXPECT_TRUE(
-      IsPrivateURLLikely(GURL("https://abc192738284732929abc.com/test/page"),
-                         &search_engine_pattern_));
+      GURL("https://a.nested.sub.domain.website.co.uk/test/page"), true));
   EXPECT_TRUE(IsPrivateURLLikely(
-      GURL("https://a-long-hyphenated-web-site.com/test/page"),
-      &search_engine_pattern_));
+      GURL("https://abc192738284732929abc.com/test/page"), true));
+  EXPECT_TRUE(IsPrivateURLLikely(
+      GURL("https://a-long-hyphenated-web-site.com/test/page"), true));
 }
 
 TEST_F(WebDiscoveryPrivacyGuardTest, IsPrivateQueryLikely) {

@@ -68,4 +68,21 @@ std::optional<std::string_view> RelevantSiteToID(RelevantSite site) {
   return std::nullopt;
 }
 
+bool IsRelevantSiteSearchEngine(RelevantSite site) {
+  switch (site) {
+    case RelevantSite::kGoogleImages:
+    case RelevantSite::kGoogleVideos:
+    case RelevantSite::kGoogle:
+    case RelevantSite::kYahoo:
+    case RelevantSite::kBingImages:
+    case RelevantSite::kBing:
+    case RelevantSite::kAmazonSearch:
+    case RelevantSite::kDuckDuckGo:
+      return true;
+    case RelevantSite::kAmazonProduct:
+    case RelevantSite::kLinkedIn:
+      return false;
+  }
+}
+
 }  // namespace web_discovery
