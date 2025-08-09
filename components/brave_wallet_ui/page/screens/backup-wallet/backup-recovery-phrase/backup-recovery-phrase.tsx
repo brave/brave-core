@@ -71,7 +71,10 @@ export const BackupRecoveryPhrase = () => {
   const [report] = useReportOnboardingActionMutation()
 
   // custom hooks
-  const { isCopied, temporaryCopyToClipboard } = useTemporaryCopyToClipboard()
+  const { isCopied, temporaryCopyToClipboard } = useTemporaryCopyToClipboard(
+    undefined,
+    true,
+  )
 
   // methods
   const skipBackup = () => {

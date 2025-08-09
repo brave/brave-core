@@ -261,6 +261,8 @@ class BraveWalletService : public KeyedService,
   void SetTransactionSimulationOptInStatus(
       mojom::BlowfishOptInStatus status) override;
 
+  void WriteToClipboard(const std::string& text, bool is_sensitive) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
