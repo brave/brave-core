@@ -90,8 +90,7 @@ bool IsPrivateDomainLikely(std::string_view host) {
 
 }  // namespace
 
-bool IsPrivateURLLikely(const GURL& url,
-                        const PatternsURLDetails* matching_url_details) {
+bool IsPrivateURLLikely(const GURL& url, bool is_search_engine) {
   if (!url.SchemeIs("https")) {
     VLOG(1) << "Ignoring URL due to non-HTTPS scheme";
     return true;
@@ -108,7 +107,7 @@ bool IsPrivateURLLikely(const GURL& url,
     VLOG(1) << "Ignoring URL due to non-standard port";
     return true;
   }
-  if (matching_url_details && matching_url_details->is_search_engine) {
+  if (is_search_engine) {
     if (url.has_ref() && url.ref_piece().length() > kMaxSearchEngineRefLength) {
       VLOG(1) << "Ignoring search engine URL due to long ref";
       return true;

@@ -195,8 +195,8 @@ class ContentScraperImpl : public ContentScraper {
                            const GURL& url,
                            PageScrapeResult* scrape_result) {
     auto value = GetRequestValue(rule.attribute, url,
-                               server_config_loader_->GetLastServerConfig(),
-                               *scrape_result);
+                                 server_config_loader_->GetLastServerConfig(),
+                                 *scrape_result);
     if (!value) {
       return;
     }

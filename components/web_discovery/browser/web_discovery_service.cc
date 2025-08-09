@@ -208,7 +208,7 @@ bool WebDiscoveryService::ShouldExtractFromPage(
     if (matching_url_details) {
       VLOG(1) << "URL matched pattern " << matching_url_details->id << ": "
               << url;
-      result = !IsPrivateURLLikely(url, matching_url_details);
+      result = !IsPrivateURLLikely(url, matching_url_details->is_search_engine);
     }
   }
 
