@@ -7,33 +7,19 @@
 
 #include "brave/test/base/testing_brave_browser_process.h"
 
-#define TestingBrowserProcess TestingBrowserProcess_ChromiumImpl
-#include <chrome/test/base/testing_browser_process.cc>
-#undef TestingBrowserProcess
-
-TestingBrowserProcess::TestingBrowserProcess() = default;
-TestingBrowserProcess::~TestingBrowserProcess() = default;
-
-// static
-void TestingBrowserProcess::CreateInstance() {
-  TestingBrowserProcess_ChromiumImpl::CreateInstance();
+// These overrides are used to make sure a TestingBraveBrowserProcess instance
+// has a its life time matching the one for the global instance of
+// `TestingBraveBrowserProcess`. Therefore, we override all the methods involved
+// with creating and destroying the upstream instance.
+#define BRAVE_TESTING_BROWSER_PROCESS_CREATE_INSTANCE \
   TestingBraveBrowserProcess::CreateInstance();
-}
-
-// static
-void TestingBrowserProcess::DeleteInstance() {
-  TestingBrowserProcess_ChromiumImpl::DeleteInstance();
+#define BRAVE_TESTING_BROWSER_PROCESS_DELETE_INSTANCE \
   TestingBraveBrowserProcess::DeleteInstance();
-}
-
-// static
-void TestingBrowserProcess::TearDownAndDeleteInstance() {
-  TestingBrowserProcess_ChromiumImpl::TearDownAndDeleteInstance();
+#define BRAVE_TESTING_BROWSER_PROCESS_TEAR_DOWN_AND_DELETE_INSTANCE \
   TestingBraveBrowserProcess::TearDownAndDeleteInstance();
-}
 
-// static
-TestingBrowserProcess* TestingBrowserProcess::GetGlobal() {
-  return static_cast<TestingBrowserProcess*>(
-      TestingBrowserProcess_ChromiumImpl::GetGlobal());
-}
+#include <chrome/test/base/testing_browser_process.cc>
+
+#undef BRAVE_TESTING_BROWSER_PROCESS_CREATE_INSTANCE
+#undef BRAVE_TESTING_BROWSER_PROCESS_DELETE_INSTANCE
+#undef BRAVE_TESTING_BROWSER_PROCESS_TEAR_DOWN_AND_DELETE_INSTANCE
