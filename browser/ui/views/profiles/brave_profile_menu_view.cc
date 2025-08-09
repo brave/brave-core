@@ -24,28 +24,31 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 
-// We don't want feature buttons to manage google account
-void BraveProfileMenuView::BuildFeatureButtons() {
+void BraveProfileMenuView::MaybeBuildCloseBrowsersButton() {
   Profile* profile = browser().profile();
   int window_count = chrome::GetBrowserCount(profile);
-  if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile())
+  if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile()) {
     window_count += chrome::GetBrowserCount(
         profile->GetPrimaryOTRProfile(/*create_if_needed=*/true));
+  }
+
+  int button_title_id = IDS_PROFILE_MENU_CLOSE_PROFILE_X_WINDOWS_BUTTON;
   if (profile->IsGuestSession()) {
-    AddFeatureButton(
-        l10n_util::GetPluralStringFUTF16(IDS_GUEST_PROFILE_MENU_CLOSE_BUTTON,
-                                         window_count),
-        base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
-                            base::Unretained(this)),
-        vector_icons::kCloseIcon);
+    button_title_id = IDS_GUEST_PROFILE_MENU_CLOSE_X_WINDOWS_BUTTON;
   } else {
-    if (window_count > 1) {
-      AddFeatureButton(
-          l10n_util::GetPluralStringFUTF16(
-              IDS_PROFILE_MENU_CLOSE_PROFILE_X_WINDOWS_BUTTON, window_count),
-          base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
-                              base::Unretained(this)),
-          vector_icons::kCloseIcon);
+    if (window_count <= 1) {
+      return;
     }
   }
+
+  AddFeatureButton(
+      l10n_util::GetPluralStringFUTF16(button_title_id, window_count),
+      base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
+                          base::Unretained(this)),
+      vector_icons::kCloseIcon);
+}
+
+// We don't want feature buttons to manage google account
+void BraveProfileMenuView::BuildFeatureButtons() {
+  MaybeBuildCloseBrowsersButton();
 }
