@@ -312,6 +312,7 @@ export const {
   useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,
   useLazyGetZCashAccountInfoQuery,
+  useCopyToClipboardConfidentiallyMutation,
   useLockWalletMutation,
   useMakeAccountShieldedMutation,
   useNewUnapprovedTxAddedMutation,
