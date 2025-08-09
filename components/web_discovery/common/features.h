@@ -13,6 +13,9 @@
 
 namespace web_discovery::features {
 
+// Feature parameter key constants
+inline constexpr char kPatternsVersionParam[] = "patterns_version";
+
 // Enables the native re-implementation of the Web Discovery Project.
 // If enabled, the Web Discovery component of the extension should be disabled.
 BASE_DECLARE_FEATURE(kBraveWebDiscoveryNative);
