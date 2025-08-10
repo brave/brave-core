@@ -9,7 +9,7 @@ export interface BraveSearchEnginesPageBrowserProxy {
   getPrivateSearchEnginesList(): Promise<any[]> // TODO(petemill): Define the expected type
   setDefaultPrivateSearchEngine(modelIndex: number): void
 }
- 
+
 export class BraveSearchEnginesPageBrowserProxyImpl implements BraveSearchEnginesPageBrowserProxy {
   getPrivateSearchEnginesList() {
     return sendWithPromise('getPrivateSearchEnginesList')
