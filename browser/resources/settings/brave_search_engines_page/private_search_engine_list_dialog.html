@@ -12,8 +12,14 @@
     margin: 0 0 16px;
   }
 
+  .dialog-header {
+    padding: 0px 16px 8px 16px;
+  }
+
   .dialog-body {
     color: var(--cr-primary-text-color);
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+    border-top: 1px solid var(--leo-color-divider-subtle);
   }
 
   .search-engine {
@@ -21,6 +27,26 @@
     display: flex;
     flex-direction: row;
     gap: 16px;
+  }
+
+  #recommended {
+    background-color: var(--leo-color-blurple-10);
+    color: var(--leo-color-blurple-60);
+    border-radius: 6px;
+    padding: 0px 4px 0px 4px;
+    gap: 2px;
+    font-weight: 600;
+    font-size: 10px;
+  }
+
+  #name-description {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #description {
+    font-weight: 400;
+    font-size: 10px;
   }
 
   site-favicon {
@@ -61,10 +87,34 @@
       $i18n{searchEnginesSettingsDialogSubtitle}
     </div>
   </div>
+  <template is="dom-if" if="[[hasBraveSearchEngine_()]]">
+    <div slot="header" class="dialog-header">
+      <cr-radio-group selected="{{selectedEngineId_}}">
+        <cr-radio-button class="label-first" name="[[braveSearchEngine_.id]]">
+          <div class="search-engine">
+            <site-favicon favicon-url="[[braveSearchEngine_.iconURL]]"
+                url="[[braveSearchEngine_.url]]"
+                icon-path="[[braveSearchEngine_.iconPath]]">
+            </site-favicon>
+            <div id="name-description">
+              [[braveSearchEngine_.name]]
+              <div id="description">
+                $i18n{searchEngineListBraveSearchDescription}
+              </div>
+            </div>
+            <div id="recommended">
+              $i18n{searchEngineListBraveSearchRecommended}
+              </div>
+          </div>
+        </cr-radio-button>
+      </cr-radio-group>
+    </div>
+  </template>
   <div slot="body" class="dialog-body">
     <cr-radio-group selected="{{selectedEngineId_}}">
       <template is="dom-repeat" items="[[searchEngines]]">
-        <cr-radio-button class="label-first" name="[[item.id]]">
+        <cr-radio-button class="label-first" name="[[item.id]]"
+                         hidden="[[isBraveSearchEngine_(item)]]">
           <div class="search-engine">
             <site-favicon favicon-url="[[item.iconURL]]" url="[[item.url]]"
                  icon-path="[[item.iconPath]]">
