@@ -99,16 +99,26 @@ TEST_F(ChildProcessMonitorTest, ChildExit) {
   std::unique_ptr<ChildProcessMonitor> monitor =
       std::make_unique<ChildProcessMonitor>();
 
-  base::RunLoop run_loop;
   base::Process process = SpawnChild("FastSleepyChildProcess");
+
+  // Set up monitor before the child process has a chance to exit
+  base::RunLoop run_loop;
   monitor->Start(process.Duplicate(),
                  base::BindLambdaForTesting([&](base::ProcessId pid) {
                    EXPECT_TRUE(callback_runner_->RunsTasksInCurrentSequence());
                    EXPECT_EQ(pid, process.Pid());
                    run_loop.Quit();
                  }));
-  WaitForChildTermination(process.Handle());
+
+  // Wait for the callback with a reasonable timeout to prevent test hanging
+  base::RunLoop timeout_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, timeout_loop.QuitClosure(), TestTimeouts::action_timeout());
+
+  // Race the callback against the timeout
   run_loop.Run();
+
+  WaitForChildTermination(process.Handle());
 }
 
 MULTIPROCESS_TEST_MAIN(SleepyCrashChildProcess) {
@@ -129,6 +139,8 @@ TEST_F(ChildProcessMonitorTest, ChildCrash) {
       std::make_unique<ChildProcessMonitor>();
 
   base::Process process = SpawnChild("SleepyCrashChildProcess");
+
+  // Set up monitor immediately after spawning to avoid race condition
   base::RunLoop run_loop;
   monitor->Start(process.Duplicate(),
                  base::BindLambdaForTesting([&](base::ProcessId pid) {
@@ -136,8 +148,16 @@ TEST_F(ChildProcessMonitorTest, ChildCrash) {
                    EXPECT_EQ(pid, process.Pid());
                    run_loop.Quit();
                  }));
-  WaitForChildTermination(process.Handle());
+
+  // Wait for the callback with a reasonable timeout to prevent test hanging
+  base::RunLoop timeout_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, timeout_loop.QuitClosure(), TestTimeouts::action_timeout());
+
+  // Race the callback against the timeout
   run_loop.Run();
+
+  WaitForChildTermination(process.Handle());
 }
 
 }  // namespace brave
