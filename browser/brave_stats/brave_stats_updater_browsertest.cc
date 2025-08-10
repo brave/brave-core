@@ -215,32 +215,6 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   EXPECT_EQ(query_value, "BRV001");
 }
 
-// TODO(bridiver) - convert to a unit test
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
-                       DISABLED_StatsUpdaterMigration) {
-  // Create a pre 1.19 user.
-  // Has a download_id, kReferralCheckedForPromoCodeFile is set, has promo code.
-  ASSERT_FALSE(
-      g_browser_process->local_state()->GetBoolean(kReferralInitialization));
-  g_browser_process->local_state()->SetString(kReferralDownloadID, "migration");
-  g_browser_process->local_state()->SetString(kReferralPromoCode, "BRV001");
-  g_browser_process->local_state()->SetBoolean(kReferralCheckedForPromoCodeFile,
-                                               true);
-
-  WaitForStandardStatsUpdatedCallback();
-  // Verify that update url is valid
-  const GURL update_url = GetUpdateURL();
-  EXPECT_TRUE(update_url.is_valid());
-
-  // Verify that daily parameter is true
-  std::string query_value;
-  EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "daily", &query_value));
-  EXPECT_EQ(query_value, "true");
-
-  // Verify that there is no referral code
-  EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
-  EXPECT_EQ(query_value, "BRV001");
-}
 
 class BraveStatsUpdaterReferralCodeBrowserTest
     : public BraveStatsUpdaterBrowserTest {

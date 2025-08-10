@@ -21,6 +21,7 @@
 #include "brave/browser/brave_stats/features.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -32,6 +33,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/test/browser_task_environment.h"
+#include "net/base/url_util.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -822,4 +824,29 @@ TEST_F(BraveStatsUpdaterTest, RecordP3APing) {
       brave_stats::kP3AMonthlyPingHistogramName, 1, 1);
   histogram_tester_.ExpectUniqueSample(brave_stats::kP3ADailyPingHistogramName,
                                        1, 1);
+}
+
+TEST_F(BraveStatsUpdaterTest, StatsUpdaterMigration) {
+  // Create a pre 1.19 user.
+  // Has a download_id, kReferralCheckedForPromoCodeFile is set, has promo code.
+  ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralInitialization));
+  GetLocalState()->SetString(kReferralDownloadID, "migration");
+  GetLocalState()->SetString(kReferralPromoCode, "BRV001");
+  GetLocalState()->SetBoolean(kReferralCheckedForPromoCodeFile, true);
+
+  auto params = BuildUpdaterParams();
+  GURL base_url("http://localhost:8080");
+
+  // Verify that update url is valid
+  const GURL update_url = params->GetUpdateURL(base_url, "", "", "");
+  EXPECT_TRUE(update_url.is_valid());
+
+  // Verify that daily parameter is true
+  std::string query_value;
+  EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "daily", &query_value));
+  EXPECT_EQ(query_value, "true");
+
+  // Verify that there is the correct referral code
+  EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
+  EXPECT_EQ(query_value, "BRV001");
 }
