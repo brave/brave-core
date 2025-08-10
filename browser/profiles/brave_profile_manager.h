@@ -27,8 +27,6 @@ class BraveProfileManager : public ProfileManager {
   void DoFinalInitForServices(Profile* profile,
                               bool go_off_the_record) override;
 
- private:
-  void MigrateProfileNames();
 };
 
 class BraveProfileManagerWithoutInit : public BraveProfileManager {

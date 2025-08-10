@@ -108,7 +108,6 @@ void RecordInitialP3AValues(Profile* profile) {
 
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
     : ProfileManager(user_data_dir) {
-  MigrateProfileNames();
 }
 
 size_t BraveProfileManager::GetNumberOfProfiles() {
@@ -231,29 +230,6 @@ void BraveProfileManager::SetNonPersonalProfilePrefs(Profile* profile) {
   prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, false);
 }
 
-void BraveProfileManager::MigrateProfileNames() {
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
-  // If any profiles have a default name using an
-  // older version of the default name string format,
-  // then name it with the new default name string format.
-  // e.g. 'Person X' --> 'Profile X'.
-  ProfileAttributesStorage& storage = GetProfileAttributesStorage();
-  std::vector<ProfileAttributesEntry*> entries =
-      storage.GetAllProfilesAttributesSortedByNameWithCheck();
-  // Make sure we keep the numbering the same.
-  for (auto* entry : entries) {
-    // Rename the necessary profiles. Don't check for legacy names as profile
-    // info cache should have migrated them by now.
-    if (entry->IsUsingDefaultName() &&
-        !storage.IsDefaultProfileName(
-            entry->GetName(),
-            /*include_check_for_legacy_profile_name=*/false)) {
-      entry->SetLocalProfileName(storage.ChooseNameForNewProfile(),
-                                 /*is_default_name=*/true);
-    }
-  }
-#endif
-}
 
 BraveProfileManagerWithoutInit::BraveProfileManagerWithoutInit(
     const base::FilePath& user_data_dir)
