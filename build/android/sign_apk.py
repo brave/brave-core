@@ -97,6 +97,11 @@ def sign(zipalign_path,
                                text=True,
                                check=True)
                 print(f"Successfully signed: {unsigned_apk_path}")
+
+                # Create a result file to indicate completion
+                result_filename = unsigned_apk_path + '-sign-result'
+                with open(result_filename, 'w') as result_file:
+                    result_file.write("APK signing process completed\n")
             except subprocess.CalledProcessError as e:
                 print(f"ERROR: Signing failed for {unsigned_apk_path}")
                 print(f"  Command: {' '.join(cmd_args)}")
