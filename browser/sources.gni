@@ -378,7 +378,7 @@ if (enable_sparkle) {
     "//brave/browser/mac/sparkle_glue.mm",
     "//brave/browser/mac/su_updater.h",
   ]
-  brave_chrome_framework_contents += [ "Frameworks/Sparkle.framework" ]
+  brave_chrome_framework_contents += [ "Frameworks" ]
 }
 
 if (enable_omaha4) {
