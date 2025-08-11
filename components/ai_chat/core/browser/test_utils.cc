@@ -156,7 +156,8 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
     // query
     std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files;
     if (num_uploaded_files_per_query) {
-      uploaded_files = CreateSampleUploadedFiles(num_uploaded_files_per_query);
+      uploaded_files = CreateSampleUploadedFiles(
+          num_uploaded_files_per_query, mojom::UploadedFileType::kImage);
     }
     history.push_back(mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
