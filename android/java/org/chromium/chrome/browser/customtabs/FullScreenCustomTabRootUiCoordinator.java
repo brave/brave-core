@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntent
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabController;
+import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabProvider;
 import org.chromium.chrome.browser.customtabs.features.minimizedcustomtab.CustomTabMinimizeDelegate;
 import org.chromium.chrome.browser.customtabs.features.toolbar.BrowserServicesThemeColorProvider;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarCoordinator;
@@ -54,6 +55,7 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
             @NonNull AppCompatActivity activity,
             @NonNull ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             @NonNull ActivityTabProvider tabProvider,
+            @NonNull CustomTabActivityTabProvider customTabProvider,
             @NonNull ObservableSupplier<Profile> profileSupplier,
             @NonNull ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
@@ -94,6 +96,7 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
                 activity,
                 shareDelegateSupplier,
                 tabProvider,
+                customTabProvider,
                 profileSupplier,
                 bookmarkModelSupplier,
                 tabBookmarkerSupplier,
