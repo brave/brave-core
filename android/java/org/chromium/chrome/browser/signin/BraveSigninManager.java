@@ -86,7 +86,7 @@ public class BraveSigninManager implements SigninManager {
     static SigninManager create(
             long nativeSigninManagerAndroid,
             @JniType("Profile*") Profile profile,
-            PrefService prefService,
+            @JniType("PrefService*") PrefService prefService,
             @JniType("signin::IdentityManager*") IdentityManager identityManager,
             IdentityMutator identityMutator) {
         AccountInfoServiceProvider.init(identityManager);
