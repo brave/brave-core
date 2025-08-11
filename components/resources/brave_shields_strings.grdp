@@ -13,11 +13,11 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_UP" desc="Status label for when Brave Shields is enabled.">
-    <ph name="STATUS_BEFORE">$1</ph>Shields are UP<ph name="STATUS_AFTER">/$1</ph> for <ph name="HOST">$2</ph>
+    <ph name="STATUS_BEFORE">$1</ph>Shields are UP<ph name="STATUS_AFTER">/$1</ph> for this site
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_DOWN" desc="Status label for when Brave Shields is disabled.">
-    <ph name="STATUS_BEFORE">$1</ph>Shields are DOWN<ph name="STATUS_AFTER">/$1</ph> for <ph name="HOST">$2</ph>
+    <ph name="STATUS_BEFORE">$1</ph>Shields are DOWN<ph name="STATUS_AFTER">/$1</ph> for this site
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BROKEN" desc="A footnote below the main Shields switch button.">

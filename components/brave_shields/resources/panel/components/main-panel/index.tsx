@@ -27,7 +27,6 @@ function MainPanel () {
     ? 'braveShieldsUp'
     : 'braveShieldsDown', {
         $1: (content) => <span>{content}</span>,
-        $2: () => siteBlockInfo?.host
     })
 
   const braveShieldsBrokenText = formatLocale('braveShieldsBroken', {
