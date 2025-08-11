@@ -15,22 +15,14 @@ namespace ai_chat {
 
 std::vector<mojom::UploadedFilePtr> CreateSampleUploadedFiles(
     size_t number,
-    std::optional<mojom::UploadedFileType> type) {
+    mojom::UploadedFileType type) {
   std::vector<mojom::UploadedFilePtr> uploaded_files;
   for (size_t i = 0; i < number; ++i) {
     std::vector<uint8_t> file_data(base::RandGenerator(64));
     crypto::RandBytes(file_data);
-    mojom::UploadedFileType type_to_use;
-    if (!type) {
-      type_to_use = static_cast<mojom::UploadedFileType>(
-          base::RandInt(static_cast<int>(mojom::UploadedFileType::kMinValue),
-                        static_cast<int>(mojom::UploadedFileType::kMaxValue)));
-    } else {
-      type_to_use = type.value();
-    }
     uploaded_files.emplace_back(
         mojom::UploadedFile::New("filename" + base::NumberToString(i),
-                                 sizeof(file_data), file_data, type_to_use));
+                                 sizeof(file_data), file_data, type));
   }
   return uploaded_files;
 }

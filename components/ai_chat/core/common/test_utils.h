@@ -46,7 +46,7 @@ template <typename T>
 
 std::vector<mojom::UploadedFilePtr> CreateSampleUploadedFiles(
     size_t number,
-    std::optional<mojom::UploadedFileType> type = std::nullopt);
+    mojom::UploadedFileType type);
 
 }  // namespace ai_chat
 
