@@ -9,7 +9,7 @@ source_set("browser_tests") {
 
   sources = [
     "brave_tab_strip_model_browsertest.cc",
-    "tree_tab_browsertest.cc",
+    "tree_tabs_browsertest.cc",
   ]
 
   deps = [

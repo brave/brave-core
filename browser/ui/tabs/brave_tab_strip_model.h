@@ -53,7 +53,7 @@ class BraveTabStripModel : public TabStripModel {
   void UpdateWebContentsStateAt(int index, TabChangeType change_type) override;
 
  private:
-  friend class TreeTabBrowserTest;
+  friend class TreeTabsBrowserTest;
 
   void OnTreeTabRelatedPrefChanged();
   void BuildTreeTabs();
