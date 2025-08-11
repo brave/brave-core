@@ -8,6 +8,7 @@ import * as React from 'react'
 import { NewTabPageAdEventType, SponsoredImageBackground } from '../../state/background_state'
 import { openLink } from '../common/link'
 import { loadImage } from '../../lib/image_loader'
+import { useWidgetLayoutReady } from '../app_layout_ready'
 
 import {
   useBackgroundState,
@@ -89,11 +90,30 @@ function SponsoredRichMediaBackground(
   const actions = useBackgroundActions()
   const sponsoredRichMediaBaseUrl =
     useBackgroundState((s) => s.sponsoredRichMediaBaseUrl)
+  const widgetLayoutReady = useWidgetLayoutReady()
+  const frameHandleRef = React.useRef<IframeBackgroundHandle>()
+
+  React.useEffect(() => {
+    const frameHandle = frameHandleRef.current
+    if (!widgetLayoutReady || !frameHandle) {
+      return
+    }
+    const safeArea =
+      document.querySelector<HTMLDivElement>('.sponsored-background-safe-area')
+    if (safeArea) {
+      const rect = safeArea.getBoundingClientRect()
+      frameHandle.postMessage({
+        type: 'richMediaSafeRect',
+        value: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
+      })
+    }
+  }, [widgetLayoutReady])
 
   return (
     <IframeBackground
       url={props.background.imageUrl}
       expectedOrigin={new URL(sponsoredRichMediaBaseUrl).origin}
+      onReady={(handle) => frameHandleRef.current = handle}
       onMessage={(data) => {
         const eventType = getRichMediaEventType(data)
         if (eventType) {
@@ -125,9 +145,14 @@ function getRichMediaEventType(data: any): NewTabPageAdEventType | null {
   return null
 }
 
+interface IframeBackgroundHandle {
+  postMessage: (data: unknown) => void
+}
+
 interface IframeBackgroundProps {
   url: string
   expectedOrigin: string
+  onReady?: (handle: IframeBackgroundHandle) => void
   onMessage: (data: unknown) => void
 }
 
@@ -149,6 +174,18 @@ function IframeBackground(props: IframeBackgroundProps) {
     window.addEventListener('message', listener)
     return () => { window.removeEventListener('message', listener) }
   }, [props.expectedOrigin, props.onMessage])
+
+  React.useEffect(() => {
+    if (!props.onReady) {
+      return
+    }
+    props.onReady({
+      postMessage: (data) => {
+        const window = iframeRef.current?.contentWindow
+        window?.postMessage(data, props.expectedOrigin)
+      }
+    })
+  }, [props.onReady, props.expectedOrigin])
 
   return (
     <iframe
