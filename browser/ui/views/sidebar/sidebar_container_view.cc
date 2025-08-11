@@ -53,6 +53,7 @@
 #include "components/input/native_web_keyboard_event.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/common/input/web_mouse_event.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
@@ -175,6 +176,37 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
 
 bool SidebarContainerView::IsSidebarVisible() const {
   return sidebar_control_view_ && sidebar_control_view_->GetVisible();
+}
+
+bool SidebarContainerView::PreHandleMouseEvent(
+    const blink::WebMouseEvent& event) {
+  if (IsSidebarVisible()) {
+    return false;
+  }
+
+  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver ||
+      event.GetTypeAsUiEventType() != ui::EventType::kMouseMoved) {
+    return false;
+  }
+
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  gfx::RectF mouse_event_detect_bounds(
+      browser_view->GetContentsContainerForLayoutManager()
+          ->GetBoundsInScreen());
+  constexpr int kWidgetNarrowWidth = 7;
+  if (sidebar_on_left_) {
+    mouse_event_detect_bounds.set_width(kWidgetNarrowWidth);
+  } else {
+    mouse_event_detect_bounds.set_x(mouse_event_detect_bounds.right() -
+                                    kWidgetNarrowWidth);
+  }
+
+  if (mouse_event_detect_bounds.Contains(event.PositionInScreen())) {
+    ShowSidebarControlView();
+    return true;
+  }
+
+  return false;
 }
 
 void SidebarContainerView::WillShowSidePanel() {

@@ -34,6 +34,10 @@ namespace sidebar {
 class SidebarBrowserTest;
 }  // namespace sidebar
 
+namespace blink {
+class WebMouseEvent;
+}  // namespace blink
+
 class BraveBrowser;
 class SidePanelEntry;
 
@@ -71,6 +75,7 @@ class SidebarContainerView
   void SetSidebarOnLeft(bool sidebar_on_left);
 
   bool IsSidebarVisible() const;
+  bool PreHandleMouseEvent(const blink::WebMouseEvent& event);
 
   BraveSidePanel* side_panel() { return side_panel_; }
 

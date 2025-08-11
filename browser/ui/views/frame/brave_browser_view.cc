@@ -980,6 +980,21 @@ void BraveBrowserView::ReadyToListenFullscreenChanges() {
   }
 }
 
+bool BraveBrowserView::PreHandleMouseEvent(const blink::WebMouseEvent& event) {
+  if (BrowserView::PreHandleMouseEvent(event)) {
+    return true;
+  }
+
+  if (sidebar_container_view_ &&
+      sidebar_container_view_->PreHandleMouseEvent(event)) {
+    // If the sidebar container handles the event, we don't need to handle it
+    // further.
+    return true;
+  }
+
+  return false;
+}
+
 bool BraveBrowserView::IsSidebarVisible() const {
   return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
 }
