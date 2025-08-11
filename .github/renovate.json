@@ -3,5 +3,13 @@
   "extends": ["local>brave/renovate-config"],
   "addLabels": ["CI/skip", "dependencies", "renovate"],
   "draftPR": true,
-  "reviewersFromCodeOwners": true
+  "packageRules": [
+    {
+      "matchPaths": ["components/**"],
+      "enabled": false
+    }
+  ],
+  "ignorePaths": [
+    "components/**"
+  ]
 }
