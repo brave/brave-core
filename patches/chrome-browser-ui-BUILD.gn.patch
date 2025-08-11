@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 08ed584f529f787e4a19240fe7627441fd0f2d8a..519aa74da7169474bac95135a729573dd544d084 100644
+index dfd2ae440b697cd64781b99ac9bf74026df9473a..9b4d4f9b1058ae3f4d2071f6c50c2874ca6d68c8 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -748,6 +748,7 @@ static_library("ui") {
-     # from //chrome/browser/ui/webui, which are not modularized yet.
-     "//chrome/browser/ui/webui/about:impl",
+@@ -755,6 +755,7 @@ static_library("ui") {
+     # gets componentized.
+     "//chrome/browser/ui/extensions:impl",
    ]
 +  import("//brave/browser/sources.gni") public_deps += [ "//brave/browser/ui" ] deps += brave_chrome_browser_ui_allow_circular_includes_from allow_circular_includes_from += brave_chrome_browser_ui_allow_circular_includes_from
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3370,7 +3371,10 @@ static_library("ui") {
+@@ -3273,7 +3274,10 @@ static_library("ui") {
          "//chrome/updater/app/server/win:updater_legacy_idl",
        ]
      } else {
@@ -22,7 +22,7 @@ index 08ed584f529f787e4a19240fe7627441fd0f2d8a..519aa74da7169474bac95135a729573d
      }
    }
  
-@@ -5536,6 +5540,7 @@ static_library("ui_public_dependencies") {
+@@ -5345,6 +5349,7 @@ static_library("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
@@ -30,3 +30,11 @@ index 08ed584f529f787e4a19240fe7627441fd0f2d8a..519aa74da7169474bac95135a729573d
    if (!is_android) {
      public_deps += [
        "//build:branding_buildflags",
+@@ -5399,6 +5404,7 @@ source_set("layout_constants") {
+   if (is_chromeos) {
+     deps += [ "//chromeos/constants" ]
+   }
++  import("//brave/browser/sources.gni") public_deps += brave_chrome_browser_ui_layout_constants_public_deps allow_circular_includes_from = brave_chrome_browser_ui_layout_constants_allow_circular_includes_from
+ }
+ 
+ source_set("url_identity") {
