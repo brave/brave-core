@@ -54,7 +54,7 @@ class BraveTabStripModel : public TabStripModel {
   void CloseSelectedTabsWithSplitView() override;
 
  private:
-  friend class TreeTabBrowserTest;
+  friend class TreeTabsBrowserTest;
 
   void OnTreeTabRelatedPrefChanged();
   void BuildTreeTabs();
