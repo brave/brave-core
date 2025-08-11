@@ -9,6 +9,7 @@ import("//third_party/jni_zero/jni_zero.gni")
 source_set("youtube_script_injector") {
   sources = [
     "brave_youtube_script_injector_native_helper.cc",
+    "brave_youtube_script_injector_native_helper.h",
     "youtube_script_injector_tab_helper.cc",
     "youtube_script_injector_tab_helper.h",
   ]
@@ -38,6 +39,7 @@ android_library("java") {
     "//base:base_java",
     "//content/public/android:content_full_java",
     "//third_party/jni_zero:jni_zero_java",
+    "//ui/android:ui_no_recycler_view_java",
   ]
 
   resources_package = "org.chromium.chrome.browser"
