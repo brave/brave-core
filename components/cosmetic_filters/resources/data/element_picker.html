@@ -74,7 +74,7 @@
     height: auto;
   }
 
-  #main-section.desktop.minimized {
+  :host-context(#brave-element-picker.minimized) #main-section.desktop {
     width: 56px;
     padding: 0px;
     height: 56px;
@@ -101,7 +101,7 @@
     }
   }
 
-  .minimized:not(.desktop) {
+  :host-context(#brave-element-picker.minimized) #main-section:not(.desktop) {
     transition: transform 0.3s ease;
     transform: translateY(calc(100% - 28px));
   }
@@ -132,7 +132,7 @@
     border-radius: 2px;
   }
 
-  .desktop.minimized .drag-header,
+  :host-context(#brave-element-picker.minimized) .desktop .drag-header,
   .desktop .drag-indicator {
     display: none;
   }
@@ -175,7 +175,7 @@
     display: none;
   }
 
-  .desktop.minimized .minimized-icon {
+  :host-context(#brave-element-picker.minimized) .desktop .minimized-icon {
     display: block;
     height: 25px;
     width: 25px;
@@ -183,7 +183,7 @@
     margin: 15px;
   }
 
-  .desktop.minimized .minimized-icon path {
+  :host-context(#brave-element-picker.minimized) .desktop .minimized-icon path {
     fill: var(--dynamic-color-rgb);
   }
 
@@ -261,8 +261,8 @@
     padding-right: 6px;
   }
 
-  .desktop.minimized #slider-container,
-  .desktop.minimized #buttons {
+  :host-context(#brave-element-picker.minimized) .desktop #slider-container,
+  :host-context(#brave-element-picker.minimized) .desktop #buttons {
     display: none;;
   }
 

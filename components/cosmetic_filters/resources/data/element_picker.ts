@@ -11,7 +11,6 @@ let btnCreateEnabledText: string
 let btnCreateDisabledText: string
 let btnShowRulesBoxText: string
 let btnHideRulesBoxText: string
-const pickerStatusAttribute = 'picker-status'
 
 const api = {
   cosmeticFilterCreate: (selector: string) => {
@@ -375,28 +374,6 @@ const attachElementPicker = () => {
   window.addEventListener('resize', elementPickerViewportChanged)
   window.addEventListener('scroll', elementPickerViewportChanged)
 
-
-  const callback: MutationCallback = (mutationsList, observer) => {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'attributes' && shadowRoot) {
-        const targetElement = mutation.target as HTMLElement;
-        const newValue = targetElement.getAttribute(mutation.attributeName!);
-        const mainSection = shadowRoot.getElementById('main-section')
-        if (!mainSection) return;
-        mainSection.classList.toggle('minimized', newValue === `minimized`);
-
-      }
-    }
-  }
-  const observer: MutationObserver = new MutationObserver(callback)
-  if (pickerDiv) {
-    const config: MutationObserverInit = {
-      attributes: true,
-      attributeFilter: [pickerStatusAttribute]
-    }
-    observer.observe(pickerDiv, config);
-  }
-
   return shadowRoot
 }
 
@@ -585,12 +562,7 @@ const setShowRulesHiddenBtnState = (
 
 const setMinimizeState = (minimized: boolean) => {
 if (!pickerDiv) return
-
-if(minimized){
-  pickerDiv.setAttribute(pickerStatusAttribute, 'minimized')
-} else {
-  pickerDiv.removeAttribute(pickerStatusAttribute)
-}
+pickerDiv.classList.toggle('minimized', minimized)
 }
 
 const setupDragging = (root: ShadowRoot): void => {
@@ -996,5 +968,5 @@ if (!active) {
       launchElementPicker(root)
     });
 } else {
-  active.removeAttribute(pickerStatusAttribute)
+  active.classList.toggle('minimized', false)
 }
