@@ -17,12 +17,12 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 
-class TreeTabBrowserTest : public InProcessBrowserTest {
+class TreeTabsBrowserTest : public InProcessBrowserTest {
  protected:
-  TreeTabBrowserTest() {
+  TreeTabsBrowserTest() {
     feature_list_.InitAndEnableFeature(tabs::features::kBraveTreeTab);
   }
-  ~TreeTabBrowserTest() override = default;
+  ~TreeTabsBrowserTest() override = default;
 
   Profile* profile() { return browser()->profile(); }
   BraveTabStripModel& tab_strip_model() {
@@ -46,7 +46,7 @@ class TreeTabBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        BuildTreeTabs_NormalTabsShouldBeWrappedWithTreeTabNode) {
   // Add multiple tabs to the browser.
   for (int i = 0; i < 3; ++i) {
@@ -82,7 +82,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        FlattenTreeTabs_ConvertTreeNodesToFlatStructure) {
   // Add multiple tabs to the browser.
   for (int i = 0; i < 3; ++i) {
@@ -127,7 +127,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
   EXPECT_EQ(4u, unpinned_collection().TabCountRecursive());
 }
 
-IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        BuildAndFlattenTreeTabs_RoundTripPreservesOrder) {
   // Add tabs with specific order.
   for (int i = 0; i < 5; ++i) {
@@ -167,7 +167,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest, BuildTreeTabs_WithGroupedTabs) {
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, BuildTreeTabs_WithGroupedTabs) {
   // Add tabs to the browser.
   for (int i = 0; i < 4; ++i) {
     AddTab();
@@ -208,7 +208,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest, BuildTreeTabs_WithGroupedTabs) {
             tabs::TabCollection::Type::GROUP);
 }
 
-IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
   // Add tabs and create a group.
   for (int i = 0; i < 4; ++i) {
     AddTab();
@@ -252,7 +252,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
             tabs::TabCollection::Type::UNPINNED);
 }
 
-IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        TreeTabNode_OnlyAddedToUnpinnedCollection) {
   // Add a tab and build tree structure.
   AddTab();
@@ -286,7 +286,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
   EXPECT_EQ(1u, unpinned_collection().TabCountRecursive());
 }
 
-IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        TreeTabPrefsEnabled_AutomaticallyBuildsTreeStructure) {
   // Add multiple tabs to the browser.
   for (int i = 0; i < 3; ++i) {
@@ -316,7 +316,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        TreeTabPrefsDisabled_AutomaticallyFlattensStructure) {
   // Add multiple tabs.
   for (int i = 0; i < 3; ++i) {
@@ -354,7 +354,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(
-    TreeTabBrowserTest,
+    TreeTabsBrowserTest,
     VerticalTabPrefsDisabled_AutomaticallyFlattensStructure) {
   // Add tabs.
   for (int i = 0; i < 2; ++i) {
@@ -383,7 +383,7 @@ IN_PROC_BROWSER_TEST_F(
   }
 }
 
-IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        OnlyVerticalTabsEnabled_KeepsFlatStructure) {
   // Add tabs.
   for (int i = 0; i < 2; ++i) {
@@ -411,7 +411,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(TreeTabBrowserTest,
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        OnlyTreeTabsEnabled_KeepsFlatStructure) {
   // Add tabs.
   for (int i = 0; i < 2; ++i) {
