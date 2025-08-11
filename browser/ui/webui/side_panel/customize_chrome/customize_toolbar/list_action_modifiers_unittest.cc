@@ -20,6 +20,7 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
@@ -28,6 +29,7 @@
 #include "content/public/test/test_web_contents_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_provider.h"
 
@@ -63,6 +65,12 @@ class ListActionModifiersUnitTest : public testing::Test {
   GetBasicActions() {
     std::vector<side_panel::customize_chrome::mojom::ActionPtr> actions;
 
+    auto forward_action = side_panel::customize_chrome::mojom::Action::New();
+    forward_action->id = ActionId::kForward;
+    forward_action->category =
+        side_panel::customize_chrome::mojom::CategoryId::kNavigation;
+    actions.push_back(std::move(forward_action));
+
     auto incognito_action = side_panel::customize_chrome::mojom::Action::New();
     incognito_action->id = ActionId::kNewIncognitoWindow;
     incognito_action->category =
@@ -74,6 +82,12 @@ class ListActionModifiersUnitTest : public testing::Test {
     tab_search_action->category =
         side_panel::customize_chrome::mojom::CategoryId::kTools;
     actions.push_back(std::move(tab_search_action));
+
+    auto bookmark_panel = side_panel::customize_chrome::mojom::Action::New();
+    bookmark_panel->id = ActionId::kShowBookmarks;
+    bookmark_panel->category =
+        side_panel::customize_chrome::mojom::CategoryId::kTools;
+    actions.push_back(std::move(bookmark_panel));
 
     auto dev_tools_action = side_panel::customize_chrome::mojom::Action::New();
     dev_tools_action->id = ActionId::kDevTools;
@@ -205,6 +219,22 @@ TEST_F(ListActionModifiersUnitTest,
       << "New Incognito Window action icon URL does not match expected value.";
 }
 
+TEST_F(
+    ListActionModifiersUnitTest,
+    ApplyBraveSpecificModifications_ShowBookmarksShouldHaveCorrectDisplayName) {
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      *web_contents_, GetBasicActions());
+
+  auto show_bookmarks_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowBookmarks,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(show_bookmarks_action_it, modified_actions.end());
+
+  EXPECT_EQ(
+      (*show_bookmarks_action_it)->display_name,
+      l10n_util::GetStringUTF8(IDS_CUSTOMIZE_TOOLBAR_TOGGLE_BOOKMARKS_PANEL));
+}
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_VPNShouldNotBeAddedWhenDisabled) {
@@ -325,16 +355,18 @@ TEST_F(ListActionModifiersUnitTest,
 
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       *web_contents_, GetBasicActions());
-  EXPECT_THAT(modified_actions,
-              testing::ElementsAre(
-                  EqId(ActionId::kNewIncognitoWindow),
-                  EqId(ActionId::kShowSidePanel), EqId(ActionId::kTabSearch),
-                  EqId(ActionId::kShowWallet), EqId(ActionId::kShowAIChat),
+  EXPECT_THAT(
+      modified_actions,
+      testing::ElementsAre(
+          EqId(ActionId::kForward), EqId(ActionId::kShowAddBookmarkButton),
+          EqId(ActionId::kNewIncognitoWindow), EqId(ActionId::kShowSidePanel),
+          EqId(ActionId::kTabSearch), EqId(ActionId::kShowWallet),
+          EqId(ActionId::kShowAIChat),
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-                  EqId(ActionId::kShowVPN),
+          EqId(ActionId::kShowVPN),
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-                  EqId(ActionId::kDevTools), EqId(ActionId::kShowReward),
-                  EqId(ActionId::kShowBraveNews)));
+          EqId(ActionId::kShowBookmarks), EqId(ActionId::kDevTools),
+          EqId(ActionId::kShowReward), EqId(ActionId::kShowBraveNews)));
 }
 
 TEST_F(ListActionModifiersUnitTest, AppendBraveSpecificCategories_Rewards) {

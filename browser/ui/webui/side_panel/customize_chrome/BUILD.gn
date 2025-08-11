@@ -72,6 +72,7 @@ source_set("unit_tests") {
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common",
+    "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
     "//chrome/browser/ui/webui/util",
     "//chrome/test:test_support",
