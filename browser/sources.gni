@@ -369,6 +369,7 @@ if (is_mac) {
     "//chrome/app:generated_resources",
     "//chrome/common:non_code_constants",
   ]
+  brave_chrome_framework_contents = []
 }
 
 if (enable_sparkle) {
@@ -377,6 +378,7 @@ if (enable_sparkle) {
     "//brave/browser/mac/sparkle_glue.mm",
     "//brave/browser/mac/su_updater.h",
   ]
+  brave_chrome_framework_contents += [ "Frameworks/Sparkle.framework" ]
 }
 
 if (enable_omaha4) {
