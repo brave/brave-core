@@ -43,7 +43,7 @@ class RewardsServiceJPTest : public testing::Test {
             const GURL& url, base::OnceCallback<void(const SkBitmap& bitmap)>,
             const net::NetworkTrafficAnnotationTag& traffic_annotation)>(),
         base::RepeatingCallback<void(int)>(),
-        profile()->GetDefaultStoragePartition(), nullptr);
+        profile()->GetDefaultStoragePartition(), nullptr, nullptr);
     ASSERT_TRUE(rewards_service());
 
     profile()->GetPrefs()->SetString(prefs::kDeclaredGeo, "JP");
