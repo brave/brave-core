@@ -32,7 +32,8 @@ v8::Local<v8::Value> ConvertError(
 class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
                                  public content::RenderFrameObserver {
  public:
-  JSCardanoWalletApi(base::PassKey<class JSCardanoProvider> pass_key,
+  JSCardanoWalletApi(mojo::Remote<mojom::CardanoApi> remote,
+                     base::PassKey<class JSCardanoProvider> pass_key,
                      v8::Local<v8::Context> context,
                      v8::Isolate* isolate,
                      content::RenderFrame* render_frame);
@@ -103,7 +104,7 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
 
   v8::Local<v8::Promise> GetCollateral(gin::Arguments* args);
 
-  mojo::Remote<mojom::CardanoProvider> cardano_provider_;
+  mojo::Remote<mojom::CardanoApi> cardano_api_;
   base::WeakPtrFactory<JSCardanoWalletApi> weak_ptr_factory_{this};
 };
 
