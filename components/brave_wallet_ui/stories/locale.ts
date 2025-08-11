@@ -826,6 +826,7 @@ provideStrings({
   braveWalletTransactionGasFeeCap: 'Gas Fee Cap',
   braveWalletNetworkFees: 'Network fees',
   braveWalletNetworkFee: 'Network fee',
+  braveWalletCustomFeeAmount: 'Custom fee amount',
   braveWalletTransactionMayIncludeAccountCreationFee:
     'This transaction may include an account creation fee',
   braveWalletSystemProgramAssignWarningTitle:
@@ -1052,6 +1053,11 @@ provideStrings({
   braveWalletGasFeeLimitLowerThanBaseFeeWarning:
     'Fee limit is set lower than the base fee. '
     + 'Your transaction may take a long time or fail.',
+  braveWalletGasTipLimit: 'Gas tip limit',
+  braveWalletGasPriceLimit: 'Gas price limit',
+  braveWalletGasPrice: 'Gas price',
+  braveWalletEditGasEstimatedNetworkFee: 'Estimated network fee',
+  braveWalletUseDefault: 'Use default',
 
   // Advanced transaction settings
   braveWalletAdvancedTransactionSettings: 'Advanced settings',

@@ -12,6 +12,12 @@ import {
   SuggestedMaxPriorityFeeSelector, //
 } from './suggested_max_priority_fee_selector'
 
+// Utils
+import Amount from '../../../../utils/amount'
+import {
+  parseTransactionFeesWithoutPrices, //
+} from '../../../../utils/tx-utils'
+
 // Mocks
 import { mockEthMainnet } from '../../../../stories/mock-data/mock-networks'
 import {
@@ -48,6 +54,16 @@ jest.mock('../../../../common/slices/api.slice', () => {
 })
 
 describe('SuggestedMaxPriorityFeeSelector', () => {
+  const baseFeePerGas = '0x59682f00' // 1500000000 wei (1.5 gwei)
+  const transactionFees = parseTransactionFeesWithoutPrices(mockTransactionInfo)
+  const suggestedFees = mockSuggestedMaxPriorityFeeOptions.map((option) =>
+    new Amount(baseFeePerGas)
+      .plus(option.fee)
+      .times(transactionFees.gasLimit) // Wei-per-gas → Wei conversion
+      .divideByDecimals(mockEthMainnet.decimals) // Wei → ETH conversion
+      .format(4),
+  )
+
   const renderComponent = () => {
     const store = createMockStore({})
     return render(
@@ -56,7 +72,7 @@ describe('SuggestedMaxPriorityFeeSelector', () => {
           <SuggestedMaxPriorityFeeSelector
             transactionInfo={mockTransactionInfo}
             selectedNetwork={mockEthMainnet}
-            baseFeePerGas={'0x59682f00'} // 1500000000 wei (1.5 gwei)
+            baseFeePerGas={baseFeePerGas}
             suggestedMaxPriorityFee='average'
             suggestedMaxPriorityFeeOptions={mockSuggestedMaxPriorityFeeOptions}
             setSuggestedMaxPriorityFee={() => {}}
@@ -82,9 +98,15 @@ describe('SuggestedMaxPriorityFeeSelector', () => {
       expect(screen.getByText('1 min')).toBeInTheDocument()
 
       // Check if gas fees are displayed
-      expect(screen.getByText('0.003048 ETH')).toBeInTheDocument()
-      expect(screen.getByText('0.01171 ETH')).toBeInTheDocument()
-      expect(screen.getByText('0.02664 ETH')).toBeInTheDocument()
+      expect(
+        screen.getByText(suggestedFees[0] + ' ' + mockEthMainnet.symbol),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(suggestedFees[1] + ' ' + mockEthMainnet.symbol),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(suggestedFees[2] + ' ' + mockEthMainnet.symbol),
+      ).toBeInTheDocument()
 
       // Check if custom button is rendered
       expect(screen.getByText('braveWalletCustom')).toBeInTheDocument()

@@ -1088,6 +1088,12 @@
   <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_REFRESH" desc="NFTs tab empty state refreshing text">Refreshing</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FEES" desc="Label for blockchain network fees">Network fees</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FEE" desc="Label for blockchain network fee">Network fee</message>
+  <message name="IDS_BRAVE_WALLET_CUSTOM_FEE_AMOUNT" desc="Label for custom fee amount">Custom fee amount</message>
+  <message name="IDS_BRAVE_WALLET_GAS_TIP_LIMIT" desc="Label for gas tip limit">Gas tip limit</message>
+  <message name="IDS_BRAVE_WALLET_GAS_PRICE_LIMIT" desc="Label for gas price limit">Gas price limit</message>
+  <message name="IDS_BRAVE_WALLET_GAS_PRICE" desc="Label for gas price">Gas price</message>
+  <message name="IDS_BRAVE_WALLET_EDIT_GAS_ESTIMATED_NETWORK_FEE" desc="Label for estimated network fee">Estimated network fee</message>
+  <message name="IDS_BRAVE_WALLET_USE_DEFAULT" desc="Label for use default">Use default</message>
   <message name="IDS_WALLET_EIP6963_PROVIDER_NAME" desc="Provider name which will be return when announce ethereum provider">Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_RECEIVE" desc="Receive asset event title">Receive</message>
   <message name="IDS_BRAVE_WALLET_FROM" desc="From address label">From</message>
