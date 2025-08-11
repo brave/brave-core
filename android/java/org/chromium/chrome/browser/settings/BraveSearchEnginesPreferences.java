@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -88,58 +89,88 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     }
 
     private void updateSearchEnginePreference() {
+        // Check if fragment is still attached before updating preferences
+        Activity activity = getActivity();
+        if (activity == null || !isAdded() || activity.isFinishing() || getProfile() == null) {
+            return;
+        }
+
         Preference searchEnginePreference = findPreference(PREF_STANDARD_SEARCH_ENGINE);
-        searchEnginePreference.setEnabled(true);
-        searchEnginePreference.setSummary(
-                BraveSearchEngineUtils.getDSEShortName(getProfile(), false));
+        if (searchEnginePreference != null) {
+            searchEnginePreference.setEnabled(true);
+            searchEnginePreference.setSummary(
+                    BraveSearchEngineUtils.getDSEShortName(getProfile(), false));
+        }
 
         searchEnginePreference = findPreference(PREF_PRIVATE_SEARCH_ENGINE);
-        searchEnginePreference.setEnabled(true);
-        searchEnginePreference.setSummary(
-                BraveSearchEngineUtils.getDSEShortName(
-                        getProfile().getPrimaryOtrProfile(/* createIfNeeded= */ true), true));
+        if (searchEnginePreference != null) {
+            searchEnginePreference.setEnabled(true);
+            searchEnginePreference.setSummary(
+                    BraveSearchEngineUtils.getDSEShortName(
+                            getProfile().getPrimaryOtrProfile(/* createIfNeeded= */ true), true));
+        }
 
         mSearchSuggestions = (ChromeSwitchPreference) findPreference(PREF_SEARCH_SUGGESTIONS);
-        mSearchSuggestions.setOnPreferenceChangeListener(this);
-        mSearchSuggestions.setManagedPreferenceDelegate(mManagedPreferenceDelegate);
+        if (mSearchSuggestions != null) {
+            mSearchSuggestions.setOnPreferenceChangeListener(this);
+            mSearchSuggestions.setManagedPreferenceDelegate(mManagedPreferenceDelegate);
+        }
 
         mShowAutocompleteInAddressBar =
                 (ChromeSwitchPreference) findPreference(PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR);
-        mShowAutocompleteInAddressBar.setOnPreferenceChangeListener(this);
+        if (mShowAutocompleteInAddressBar != null) {
+            mShowAutocompleteInAddressBar.setOnPreferenceChangeListener(this);
+        }
 
         mAutocompleteTopSuggestions =
                 (ChromeSwitchPreference) findPreference(PREF_AUTOCOMPLETE_TOP_SUGGESTIONS);
-        mAutocompleteTopSuggestions.setOnPreferenceChangeListener(this);
+        if (mAutocompleteTopSuggestions != null) {
+            mAutocompleteTopSuggestions.setOnPreferenceChangeListener(this);
+        }
 
         boolean autocompleteEnabled =
                 UserPrefs.get(getProfile()).getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
-        mSearchSuggestions.setVisible(autocompleteEnabled);
-        mAutocompleteTopSuggestions.setVisible(autocompleteEnabled);
+        if (mSearchSuggestions != null) {
+            mSearchSuggestions.setVisible(autocompleteEnabled);
+        }
+        if (mAutocompleteTopSuggestions != null) {
+            mAutocompleteTopSuggestions.setVisible(autocompleteEnabled);
+        }
 
-        mShowAutocompleteInAddressBar.setChecked(autocompleteEnabled);
-        mSearchSuggestions.setChecked(
-                UserPrefs.get(getProfile()).getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
-        mAutocompleteTopSuggestions.setChecked(
-                UserPrefs.get(getProfile()).getBoolean(BravePref.TOP_SUGGESTIONS_ENABLED));
+        if (mShowAutocompleteInAddressBar != null) {
+            mShowAutocompleteInAddressBar.setChecked(autocompleteEnabled);
+        }
+        if (mSearchSuggestions != null) {
+            mSearchSuggestions.setChecked(
+                    UserPrefs.get(getProfile()).getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
+        }
+        if (mAutocompleteTopSuggestions != null) {
+            mAutocompleteTopSuggestions.setChecked(
+                    UserPrefs.get(getProfile()).getBoolean(BravePref.TOP_SUGGESTIONS_ENABLED));
+        }
 
         mAddOpenSearchEngines =
                 (ChromeSwitchPreference) findPreference(PREF_ADD_OPEN_SEARCH_ENGINES);
-        mAddOpenSearchEngines.setOnPreferenceChangeListener(this);
-        mAddOpenSearchEngines.setChecked(
-                UserPrefs.get(getProfile()).getBoolean(BravePref.ADD_OPEN_SEARCH_ENGINES));
+        if (mAddOpenSearchEngines != null) {
+            mAddOpenSearchEngines.setOnPreferenceChangeListener(this);
+            mAddOpenSearchEngines.setChecked(
+                    UserPrefs.get(getProfile()).getBoolean(BravePref.ADD_OPEN_SEARCH_ENGINES));
+        }
 
         if (BraveConfig.WEB_DISCOVERY_ENABLED) {
             mSendWebDiscovery = (ChromeSwitchPreference) findPreference(PREF_SEND_WEB_DISCOVERY);
-            mSendWebDiscovery.setOnPreferenceChangeListener(this);
+            if (mSendWebDiscovery != null) {
+                mSendWebDiscovery.setOnPreferenceChangeListener(this);
+            }
         } else {
             removePreferenceIfPresent(PREF_SEND_WEB_DISCOVERY);
         }
 
         if (mSendWebDiscovery != null) {
             mSendWebDiscovery.setTitle(
-                    getActivity().getResources().getString(R.string.send_web_discovery_title));
+                    activity.getResources().getString(R.string.send_web_discovery_title));
             mSendWebDiscovery.setSummary(
-                    getActivity().getResources().getString(R.string.send_web_discovery_summary));
+                    activity.getResources().getString(R.string.send_web_discovery_summary));
             mSendWebDiscovery.setChecked(
                     UserPrefs.get(getProfile())
                             .getBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED));
