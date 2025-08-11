@@ -53,7 +53,8 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   isCurrentModelLeo: boolean
   generatedUrlToBeOpened: Url | undefined
   isDragActive: boolean
-  isDragOver: boolean
+  isDragOver: boolean,
+  unassociatedTabs: Mojom.TabData[],
   clearDragState: () => void
   setCurrentModel: (model: Mojom.Model) => void
   switchToBasicModel: () => void
@@ -112,6 +113,7 @@ export const defaultContext: ConversationContext = {
   generatedUrlToBeOpened: undefined,
   isDragActive: false,
   isDragOver: false,
+  unassociatedTabs: [],
   clearDragState: () => { },
   setCurrentModel: () => { },
   switchToBasicModel: () => { },
@@ -172,6 +174,20 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const aiChatContext = useAIChat()
   const { conversationHandler, callbackRouter, selectedConversationId, updateSelectedConversationId } = useActiveChat()
   const sendFeedbackState = useSendFeedback(conversationHandler, getAPI().conversationEntriesFrameObserver)
+  const unassociatedTabs = React.useMemo(() => {
+    return aiChatContext
+      .tabs.filter(t => !context.associatedContentInfo
+        .find(c => c.contentId === t.contentId)?.conversationTurnUuid)
+  }, [aiChatContext.tabs, context.associatedContentInfo])
+
+  // If there are no unassociated tabs, hide the attachments picker.
+  React.useEffect(() => {
+    if (unassociatedTabs.length === 0) {
+      setPartialContext({
+        showAttachments: false
+      })
+    }
+  }, [unassociatedTabs])
 
   const [
     hasDismissedLongConversationInfo,
@@ -641,6 +657,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     inputTextCharCountDisplay,
     isCurrentModelLeo,
     shouldShowLongConversationInfo,
+    unassociatedTabs,
     dismissLongConversationInfo: () =>
       setHasDismissedLongConversationInfo(true),
     retryAPIRequest: () => conversationHandler.retryAPIRequest(),
@@ -693,11 +710,3 @@ export function useConversation() {
   return React.useContext(ConversationReactContext)
 }
 
-export function useIsNewConversation() {
-  const conversationContext = useConversation()
-  const aiChatContext = useAIChat()
-
-  // A conversation is new if it isn't in the list of conversations or doesn't have content
-  return !aiChatContext.conversations.find(
-    c => c.uuid === conversationContext.conversationUuid && c.hasContent)
-}
