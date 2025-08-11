@@ -3,15 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "build/build_config.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/password_manager/android/password_manager_android_util.h"
+#endif
+
 // Replace PasswordManagerSettingsService for Android with the same class as
 // desktop is using. This class was used by Brave Android before cr140.
 // This change is required to allow Android keep using Password Manager on cr140
 // and above.
-#define BRAVE_PASSWORD_MANAGER_SETTINGS_SERVICE_FACTORY_CREATE_SERVICE \
-  return std::make_unique<                                             \
-      password_manager::PasswordManagerSettingsServiceImpl>(           \
-      profile->GetPrefs());
+
+#define IsPasswordManagerAvailable(...)                        \
+IsPasswordManagerAvailable(__VA_ARGS__) || true) {             \
+    return std::make_unique<                                   \
+        password_manager::PasswordManagerSettingsServiceImpl>( \
+        profile->GetPrefs());                                  \
+  } else if (false /* NOLINT(readability/braces) */
 
 #include <chrome/browser/password_manager/password_manager_settings_service_factory.cc>
 
-#undef BRAVE_PASSWORD_MANAGER_SETTINGS_SERVICE_FACTORY_CREATE_SERVICE
+#undef IsPasswordManagerAvailable
