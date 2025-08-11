@@ -74,14 +74,9 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                             (BraveSuggestionHost) host,
                             textProvider,
                             mAutocompleteDelegate);
-            mBraveLeoSuggestionProcessor =
-                    new BraveLeoSuggestionProcessor(
-                            context,
-                            host,
-                            textProvider,
-                            mImageSupplier,
-                            mLeoAutocompleteDelegate,
-                            mActivityTabSupplier);
+            AutocompleteUIContext uiContext = createUIContext(context, host, textProvider);
+            mBraveLeoSuggestionProcessor = new BraveLeoSuggestionProcessor(uiContext);
+            mBraveLeoSuggestionProcessor.setBraveLeoAutocompleteDelegate(mLeoAutocompleteDelegate);
         }
     }
 

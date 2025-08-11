@@ -5,22 +5,14 @@
 
 package org.chromium.chrome.browser.omnibox.suggestions.editurl;
 
-import android.content.Context;
-
 import org.chromium.base.BraveReflectionUtil;
-import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
-import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
+import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
 import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionViewProcessor;
 import org.chromium.components.omnibox.AutocompleteMatch;
 
-import java.util.Optional;
-
 public abstract class BraveEditUrlSuggestionProcessorBase extends BaseSuggestionViewProcessor {
-    public BraveEditUrlSuggestionProcessorBase(
-            Context context,
-            SuggestionHost suggestionHost,
-            Optional<OmniboxImageSupplier> imageSupplier) {
-        super(context, suggestionHost, imageSupplier);
+    public BraveEditUrlSuggestionProcessorBase(AutocompleteUIContext uiContext) {
+        super(uiContext);
     }
 
     /*
