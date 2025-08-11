@@ -182,10 +182,7 @@ void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
 
 void BraveTabStripModel::BuildTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
-
-  if (in_tree_mode_) {
-    return;
-  }
+  CHECK(!in_tree_mode_);
 
   auto* unpinned_collection = contents_data_->unpinned_collection();
   CHECK(unpinned_collection);
