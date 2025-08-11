@@ -304,15 +304,13 @@ export const RouteOption = (props: Props) => {
                   ),
                   $2: (
                     <Text
-                      textSize='12px'
-                      isBold={false}
-                      textColor='tertiary'
+                      textSize='16px'
+                      isBold={true}
+                      textColor='primary'
                     >
                       {SwapProviderNameMapping[option.provider] ?? ''}
                     </Text>
                   ),
-                  $3: source.name,
-                  $4: SwapProviderNameMapping[option.provider] ?? '',
                 },
               )
               return (
@@ -339,9 +337,9 @@ export const RouteOption = (props: Props) => {
                       gap='4px'
                     >
                       <Text
-                        textSize='16px'
-                        isBold={true}
-                        textColor='primary'
+                        textSize='12px'
+                        isBold={false}
+                        textColor='tertiary'
                       >
                         {exchangeViaProvider}
                       </Text>
