@@ -831,4 +831,39 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     // Shouldn't be storing any private tabs
     XCTAssertEqual(storedTabs.count, 1)
   }
+
+  func testGetTabForURL() {
+    // mock all tabs 0-4 in standard mode, 5-9 in private mode
+    (0..<10).forEach { index in
+      guard let url = URL(string: "https://www.\(index).com") else { return }
+      let urlRequest = URLRequest(url: url)
+      manager.addTab(urlRequest, zombie: true, isPrivate: index > 4)
+    }
+    // add one more tab that existed in standard mode in private mode
+    guard let url = URL(string: "https://www.0.com") else { return }
+    let urlRequest = URLRequest(url: url)
+    manager.addTab(urlRequest, zombie: true, isPrivate: true)
+
+    if let urlZero = URL(string: "https://www.0.com") {
+      // looking for a tab exists in both standard mode and private mode
+      let standardTab = manager.getTabForURL(urlZero, isPrivate: false)
+      XCTAssertNotNil(standardTab)
+      let privateTab = manager.getTabForURL(urlZero, isPrivate: true)
+      XCTAssertNotNil(privateTab)
+    }
+    // looking for a tab only exists in standard mode
+    if let urlOne = URL(string: "https://www.1.com") {
+      let standardTab = manager.getTabForURL(urlOne, isPrivate: false)
+      XCTAssertNotNil(standardTab)
+      let privateTab = manager.getTabForURL(urlOne, isPrivate: true)
+      XCTAssertNil(privateTab)
+    }
+    // looking for a tab only exists in private mode
+    if let urlFive = URL(string: "https://www.5.com") {
+      let standardTab = manager.getTabForURL(urlFive, isPrivate: false)
+      XCTAssertNil(standardTab)
+      let privateTab = manager.getTabForURL(urlFive, isPrivate: true)
+      XCTAssertNotNil(privateTab)
+    }
+  }
 }

@@ -1211,7 +1211,7 @@ class TabManager: NSObject {
     assert(Thread.isMainThread)
 
     let tab = allTabs.filter {
-      guard let tabURL = $0.visibleURL, $0.isPrivate else {
+      guard let tabURL = $0.visibleURL, $0.isPrivate == isPrivate else {
         return false
       }
 
