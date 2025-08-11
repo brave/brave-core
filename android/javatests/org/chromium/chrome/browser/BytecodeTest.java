@@ -105,6 +105,7 @@ import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIphController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownEmbedder;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
@@ -1024,6 +1025,15 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         boolean.class,
                         int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder", // presubmit: ignore-long-line
+                        "createUIContext",
+                        MethodModifier.REGULAR,
+                        AutocompleteUIContext.class,
+                        Context.class,
+                        SuggestionHost.class,
+                        UrlBarEditingTextStateProvider.class));
     }
 
     @Test
@@ -1567,10 +1577,11 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
+                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder", // presubmit: ignore-long-line
                         Supplier.class,
-                        BookmarkState.class));
+                        BookmarkState.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
