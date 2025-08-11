@@ -11,51 +11,41 @@
 class BraveWaybackMachinePolicyTest : public testing::Test {
  public:
   BraveWaybackMachinePolicyTest() {
-    pref_service_.registry()->RegisterBooleanPref(
-        kBraveWaybackMachineDisabledByPolicy, false);
+    pref_service_.registry()->RegisterBooleanPref(kBraveWaybackMachineEnabled,
+                                                  true);
   }
 
  protected:
-  void SetWaybackMachineDisabledByPolicy(bool value) {
-    pref_service_.SetManagedPref(kBraveWaybackMachineDisabledByPolicy,
+  void SetWaybackMachineEnabledByPolicy(bool value) {
+    pref_service_.SetManagedPref(kBraveWaybackMachineEnabled,
                                  base::Value(value));
+  }
+
+  bool IsManaged() {
+    return pref_service_.IsManagedPreference(kBraveWaybackMachineEnabled);
   }
 
   sync_preferences::TestingPrefServiceSyncable pref_service_;
 };
 
 TEST_F(BraveWaybackMachinePolicyTest, PolicyDisablesWaybackMachine) {
-  // Initially, policy should not be disabled
-  EXPECT_FALSE(pref_service_.GetBoolean(kBraveWaybackMachineDisabledByPolicy));
-  EXPECT_FALSE(
-      pref_service_.IsManagedPreference(kBraveWaybackMachineDisabledByPolicy));
-  EXPECT_FALSE(IsDisabledByPolicy(&pref_service_));
+  // Initially, policy should not be managed
+  EXPECT_TRUE(pref_service_.GetBoolean(kBraveWaybackMachineEnabled));
+  EXPECT_FALSE(IsManaged());
 
   // Set policy to disable Wayback Machine
-  SetWaybackMachineDisabledByPolicy(true);
+  SetWaybackMachineEnabledByPolicy(false);
 
-  // Test that the policy preference is set correctly
-  EXPECT_TRUE(
-      pref_service_.FindPreference(kBraveWaybackMachineDisabledByPolicy));
-  EXPECT_TRUE(
-      pref_service_.IsManagedPreference(kBraveWaybackMachineDisabledByPolicy));
-  EXPECT_TRUE(pref_service_.GetBoolean(kBraveWaybackMachineDisabledByPolicy));
-
-  // Test that IsDisabledByPolicy function works
-  EXPECT_TRUE(IsDisabledByPolicy(&pref_service_));
+  // Test that the policy preference is managed and disabled
+  EXPECT_TRUE(IsManaged());
+  EXPECT_FALSE(pref_service_.GetBoolean(kBraveWaybackMachineEnabled));
 }
 
 TEST_F(BraveWaybackMachinePolicyTest, PolicyEnabledExplicitly) {
   // Set policy to enable Wayback Machine explicitly
-  SetWaybackMachineDisabledByPolicy(false);
+  SetWaybackMachineEnabledByPolicy(true);
 
-  // Test that the policy preference is set correctly
-  EXPECT_TRUE(
-      pref_service_.FindPreference(kBraveWaybackMachineDisabledByPolicy));
-  EXPECT_TRUE(
-      pref_service_.IsManagedPreference(kBraveWaybackMachineDisabledByPolicy));
-  EXPECT_FALSE(pref_service_.GetBoolean(kBraveWaybackMachineDisabledByPolicy));
-
-  // Test that IsDisabledByPolicy function works
-  EXPECT_FALSE(IsDisabledByPolicy(&pref_service_));
+  // Test that the policy preference is managed and enabled
+  EXPECT_TRUE(IsManaged());
+  EXPECT_TRUE(pref_service_.GetBoolean(kBraveWaybackMachineEnabled));
 }

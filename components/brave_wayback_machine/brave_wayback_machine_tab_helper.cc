@@ -54,13 +54,6 @@ BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
           &BraveWaybackMachineTabHelper::OnWaybackEnabledChanged,
           base::Unretained(this)));
 
-  // Unretained() is safe as |wayback_disabled_by_policy_| is owned by this
-  // class.
-  wayback_disabled_by_policy_.Init(
-      kBraveWaybackMachineDisabledByPolicy, &*pref_service_,
-      base::BindRepeating(
-          &BraveWaybackMachineTabHelper::OnWaybackEnabledChanged,
-          base::Unretained(this)));
 }
 
 BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() {
@@ -68,7 +61,7 @@ BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() {
 }
 
 void BraveWaybackMachineTabHelper::FetchWaybackURL() {
-  CHECK(wayback_enabled_.GetValue() && !IsDisabledByPolicy(&*pref_service_));
+  CHECK(wayback_enabled_.GetValue());
   SetWaybackState(WaybackState::kFetching);
   wayback_machine_url_fetcher_.Fetch(web_contents()->GetVisibleURL());
 }
@@ -88,7 +81,7 @@ void BraveWaybackMachineTabHelper::SetWaybackStateChangedCallback(
 
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!wayback_enabled_.GetValue() || IsDisabledByPolicy(&*pref_service_)) {
+  if (!wayback_enabled_.GetValue()) {
     ResetState();
     return;
   }
@@ -108,13 +101,13 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 
   ResetState();
 
-  if (IsWaybackMachineDisabledFor(navigation_handle->GetURL())) {
+  if (!IsWaybackMachineEnabledFor(navigation_handle->GetURL())) {
     return;
   }
 
   // Double check with user visible url to check user visible only schemes such
   // as "view-source:"
-  if (IsWaybackMachineDisabledFor(web_contents()->GetLastCommittedURL())) {
+  if (!IsWaybackMachineEnabledFor(web_contents()->GetLastCommittedURL())) {
     return;
   }
 
@@ -132,7 +125,7 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 void BraveWaybackMachineTabHelper::OnWaybackURLFetched(
     const GURL& latest_wayback_url) {
   // Ignore the result if disabled.
-  if (!wayback_enabled_.GetValue() || IsDisabledByPolicy(&*pref_service_)) {
+  if (!wayback_enabled_.GetValue()) {
     return;
   }
 
@@ -188,9 +181,8 @@ bool BraveWaybackMachineTabHelper::ShouldCheckWaybackMachine(
 
 void BraveWaybackMachineTabHelper::OnWaybackEnabledChanged(
     const std::string& pref_name) {
-  // Back to initial state when user disables this feature or policy disables
-  // it.
-  if (!wayback_enabled_.GetValue() || IsDisabledByPolicy(&*pref_service_)) {
+  // Back to initial state when user disables this feature.
+  if (!wayback_enabled_.GetValue()) {
     ResetState();
   }
 }

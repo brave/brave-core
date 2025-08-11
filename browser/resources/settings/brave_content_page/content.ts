@@ -72,15 +72,6 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
        */
       pageZoomLevels_: Array,
 
-      /**
-       * Whether wayback machine is disabled by policy.
-       */
-      isWaybackMachineDisabledByPolicy_: {
-        type: Boolean,
-        value() {
-          return loadTimeData.getBoolean('braveWaybackMachineDisabledByPolicy');
-        },
-      },
     }
   }
 
@@ -93,7 +84,6 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
   private declare fontSizeOptions_: DropdownMenuOptionList
   private declare pageZoomLevels_: number[]
   private declare defaultZoom_: number;
-  private declare isWaybackMachineDisabledByPolicy_: boolean;
   private appearanceBrowserProxy_: AppearanceBrowserProxy =
       AppearanceBrowserProxyImpl.getInstance();
 
@@ -111,6 +101,12 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
 
   private onCustomizeFontsClick_() {
     Router.getInstance().navigateTo(routes.FONTS);
+  }
+
+  private isWaybackMachineManaged_(
+      pref: chrome.settingsPrivate.PrefObject): boolean {
+    return pref &&
+        pref.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED;
   }
 
   /**

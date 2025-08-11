@@ -1234,11 +1234,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
                           TorProfileServiceFactory::IsTorDisabled(profile));
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  html_source->AddBoolean(
-      "braveWaybackMachineDisabledByPolicy",
-      profile->GetPrefs()->GetBoolean(kBraveWaybackMachineDisabledByPolicy));
-#endif
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {

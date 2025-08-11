@@ -12,22 +12,22 @@
 #include "url/gurl.h"
 
 TEST(BraveWaybackMachineUtilsTest, DisabledURLTest) {
-  EXPECT_TRUE(
-      IsWaybackMachineDisabledFor(GURL("https://web.archive.org/foobar.html")));
-  EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://localhost/index.html")));
-  EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://abcd.local")));
-  EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://abcd.onion")));
-  EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://127.0.0.1")));
-  EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://[::1]")));
-  EXPECT_TRUE(IsWaybackMachineDisabledFor(
-      GURL("http://127.0045.1.2:8080/index.html")));
-  EXPECT_TRUE(
-      IsWaybackMachineDisabledFor(GURL("view-source:https://www.brave.com")));
-  EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.local-news.com")));
-  EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.onion-news.com")));
-  EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.brave.com")));
   EXPECT_FALSE(
-      IsWaybackMachineDisabledFor(GURL("https://archive.org/foobar.html")));
+      IsWaybackMachineEnabledFor(GURL("https://web.archive.org/foobar.html")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://localhost/index.html")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://abcd.local")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://abcd.onion")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://127.0.0.1")));
+  EXPECT_FALSE(IsWaybackMachineEnabledFor(GURL("http://[::1]")));
+  EXPECT_FALSE(
+      IsWaybackMachineEnabledFor(GURL("http://127.0045.1.2:8080/index.html")));
+  EXPECT_FALSE(
+      IsWaybackMachineEnabledFor(GURL("view-source:https://www.brave.com")));
+  EXPECT_TRUE(IsWaybackMachineEnabledFor(GURL("http://www.local-news.com")));
+  EXPECT_TRUE(IsWaybackMachineEnabledFor(GURL("http://www.onion-news.com")));
+  EXPECT_TRUE(IsWaybackMachineEnabledFor(GURL("http://www.brave.com")));
+  EXPECT_TRUE(
+      IsWaybackMachineEnabledFor(GURL("https://archive.org/foobar.html")));
 }
 
 TEST(BraveWaybackMachineUtilsTest, FixupQueryURLTest) {
