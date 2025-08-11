@@ -17,7 +17,7 @@ import { getLocale } from '$web-common/locale'
 function TabItem({ tab }: { tab: TabData }) {
     const aiChat = useAIChat()
     const { conversationUuid, associatedContentInfo } = useConversation()
-    const content = React.useMemo(() => associatedContentInfo.find(c => c.contentId === tab.contentId), [associatedContentInfo, tab.contentId])
+    const content = React.useMemo(() => associatedContentInfo.find(c => c.contentId === tab.contentId), [associatedContentInfo, tab])
     return <Checkbox className={styles.tabItem} checked={!!content} onChange={(e) => {
         if (e.checked) {
             aiChat.uiHandler?.associateTab(tab, conversationUuid!)
@@ -31,11 +31,14 @@ function TabItem({ tab }: { tab: TabData }) {
 }
 
 export default function Attachments() {
-    const aiChat = useAIChat()
     const conversation = useConversation()
     const [search, setSearch] = React.useState('')
 
-    const tabs = aiChat.tabs.filter(t => t.title.toLowerCase().includes(search.toLowerCase()))
+    const tabs = React.useMemo(() => {
+        const searchLower = search.toLowerCase()
+        return conversation.unassociatedTabs
+          .filter(t => t.title.toLowerCase().includes(searchLower))
+    }, [conversation.unassociatedTabs, search])
     return <div className={styles.root}>
         <div className={styles.header}>
             <Flex direction='row' justify='space-between' align='center'>

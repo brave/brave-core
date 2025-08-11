@@ -71,7 +71,7 @@ export default function BeginGeneration() {
           disassociateContent: () => {},
           getPluralString: () => Promise.resolve(''),
           setShowAttachments: () => {},
-          tabs: [],
+          unassociatedTabs: [],
           attachImages: () => {}
         }} />
     </FiltersContainer>
