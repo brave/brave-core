@@ -210,7 +210,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
@@ -1899,13 +1898,9 @@ public class BytecodeTest {
                         AttributeSet.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
-                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
-                        Context.class,
-                        SuggestionHost.class,
-                        Optional.class,
-                        Supplier.class,
-                        Supplier.class));
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor", // presubmit: ignore-long-line
+                        AutocompleteUIContext.class));
 
         Assert.assertTrue(
                 constructorsMatch(
