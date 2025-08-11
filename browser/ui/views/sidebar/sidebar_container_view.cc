@@ -170,8 +170,6 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
   side_panel_->SetHorizontalAlignment(
       sidebar_on_left ? BraveSidePanel::HorizontalAlignment::kLeft
                       : BraveSidePanel::HorizontalAlignment::kRight);
-
-  GetEventDetectWidget()->SetSidebarOnLeft(sidebar_on_left_);
 }
 
 bool SidebarContainerView::IsSidebarVisible() const {
@@ -258,11 +256,6 @@ bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
 
 void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
   DVLOG(2) << __func__;
-
-  // Hide event detect widget when option is chaged from mouse over to others.
-  if (show_sidebar_option_ == ShowSidebarOption::kShowOnMouseOver) {
-    ShowOptionsEventDetectWidget(false);
-  }
 
   show_sidebar_option_ = show_option;
 
@@ -473,7 +466,6 @@ void SidebarContainerView::AnimationEnded(const gfx::Animation* animation) {
     // Otherwise, only panel is hidden.
     const bool did_hide_all = animation_end_width_ == 0;
     if (did_hide_all) {
-      ShowOptionsEventDetectWidget(true);
       sidebar_control_view_->SetVisible(false);
     } else {
       sidebar_control_view_->SetVisible(true);
@@ -524,28 +516,6 @@ void SidebarContainerView::OnItemRemoved(size_t index) {
   UpdateToolbarButtonVisibility();
 }
 
-SidebarShowOptionsEventDetectWidget*
-SidebarContainerView::GetEventDetectWidget() {
-  if (!show_options_widget_) {
-    show_options_widget_ =
-        std::make_unique<SidebarShowOptionsEventDetectWidget>(
-            *static_cast<BraveBrowserView*>(
-                BrowserView::GetBrowserViewForBrowser(browser_)),
-            *this);
-    show_options_widget_->Hide();
-  }
-
-  return show_options_widget_.get();
-}
-
-void SidebarContainerView::ShowOptionsEventDetectWidget(bool show) {
-  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
-    return;
-  }
-
-  show ? GetEventDetectWidget()->Show() : GetEventDetectWidget()->Hide();
-}
-
 void SidebarContainerView::ShowSidebarControlView() {
   DVLOG(1) << __func__;
   ShowSidebar(false);
@@ -582,9 +552,6 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
         side_panel_->GetPreferredSize().width() +
         side_panel_->GetProperty(views::kMarginsKey)->width();
   }
-
-  // Don't need event detect widget when sidebar gets visible.
-  ShowOptionsEventDetectWidget(false);
 
   DVLOG(1) << __func__ << ": show animation (start, end) width: ("
            << animation_start_width_ << ", " << animation_end_width_ << ")";
@@ -673,13 +640,6 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
 
   if (animation_start_width_ == animation_end_width_) {
     DVLOG(1) << __func__ << ": already at the target width.";
-
-    // At startup, make event detect widget visible even if children's
-    // visibility state is not changed.
-    if (animation_end_width_ == 0) {
-      ShowOptionsEventDetectWidget(true);
-    }
-
     sidebar_control_view_->SetVisible(!hide_sidebar_control);
     side_panel_->SetVisible(false);
     return;
@@ -700,9 +660,6 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
   }
 
   DVLOG(1) << __func__ << ": hide w/o animation";
-  if (animation_end_width_ == 0) {
-    ShowOptionsEventDetectWidget(true);
-  }
 
   sidebar_control_view_->SetVisible(!hide_sidebar_control);
   side_panel_->SetVisible(false);
