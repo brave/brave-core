@@ -91,7 +91,7 @@ RegisterPolymerTemplateModifications({
     if (updateStatusMessageLink) {
       // <if expr="is_win">
       updateStatusMessageLink.href =
-        'https://support.brave.com/hc/en-us/articles/360042816611-Why-isn-t-Brave-updating-automatically-on-Windows-'
+        'https://support.brave.app/hc/en-us/articles/360042816611-Why-isn-t-Brave-updating-automatically-on-Windows-'
       // </if>
 
       // <if expr="not is_win">

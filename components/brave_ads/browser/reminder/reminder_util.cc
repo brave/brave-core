@@ -19,7 +19,7 @@ namespace {
 constexpr char kReminderNotificationAdPlacementId[] =
     "e64373ac-2ca5-4f6b-b497-1f1d7ccd40c8";
 constexpr char kReminderNotificationAdTargetUrl[] =
-    "https://support.brave.com/hc/en-us/articles/14648356808845";
+    "https://support.brave.app/hc/en-us/articles/14648356808845";
 
 }  // namespace
 

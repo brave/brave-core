@@ -76,7 +76,7 @@ type Props = {
 // https://github.com/brave/brave-browser/issues/39708
 const onClickLearnMore = () => {
   window.open(
-    'https://support.brave.com/hc/en-us/articles/4409513799693',
+    'https://support.brave.app/hc/en-us/articles/4409513799693',
     '_blank',
     'noopener,noreferrer',
   )

@@ -35,7 +35,7 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
     private final Context mContext;
 
     private static final String AUTO_RECONNECT_VPN_LINK =
-            "https://support.brave.com/hc/en-us/articles/29918727663373-How-do-I-connect-to-Brave-VPN-automatically#tab-2";
+            "https://support.brave.app/hc/en-us/articles/29918727663373-How-do-I-connect-to-Brave-VPN-automatically#tab-2";
 
     private final List<Integer> mImageResources =
             Arrays.asList(

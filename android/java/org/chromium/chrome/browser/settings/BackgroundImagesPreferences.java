@@ -49,7 +49,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     public static final String PREF_SPONSORED_IMAGES_LEARN_MORE = "sponsored_images_learn_more";
 
     public static final String NEW_TAB_TAKEOVER_LEARN_MORE_LINK_URL =
-            "https://support.brave.com/hc/en-us/articles/35182999599501";
+            "https://support.brave.app/hc/en-us/articles/35182999599501";
 
     private ChromeSwitchPreference mShowBackgroundImagesPref;
     private ChromeSwitchPreference mShowSponsoredImagesPref;
