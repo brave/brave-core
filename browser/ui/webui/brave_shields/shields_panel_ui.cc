@@ -88,7 +88,7 @@ void ShieldsPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_shields::mojom::DataHandler>
         data_handler_receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
-  DCHECK(profile);
+  CHECK(profile);
   panel_handler_ = std::make_unique<ShieldsPanelHandler>(
       std::move(panel_receiver), this, profile);
   auto* browser = webui::GetBrowserWindowInterface(web_ui()->GetWebContents());

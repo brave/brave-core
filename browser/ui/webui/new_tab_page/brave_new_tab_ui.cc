@@ -179,7 +179,7 @@ BraveNewTabUI::~BraveNewTabUI() = default;
 void BraveNewTabUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
-  DCHECK(profile);
+  CHECK(profile);
   // Wire up JS mojom to service
   auto* brave_news_controller =
       brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile);
@@ -201,7 +201,7 @@ void BraveNewTabUI::BindInterface(
 void BraveNewTabUI::BindInterface(
     mojo::PendingReceiver<searchbox::mojom::PageHandler> pending_page_handler) {
   auto* profile = Profile::FromWebUI(web_ui());
-  DCHECK(profile);
+  CHECK(profile);
 
   realbox_handler_ = std::make_unique<RealboxHandler>(
       std::move(pending_page_handler), profile, web_ui()->GetWebContents(),

@@ -59,7 +59,7 @@ void BravePrivateNewTabPageHandler::SetClientPage(
 }
 
 void BravePrivateNewTabPageHandler::SetDisclaimerDismissed(bool dismissed) {
-  DCHECK(profile_);
+  CHECK(profile_);
 
   profile_->GetOriginalProfile()->GetPrefs()->SetBoolean(
       profile_->IsTor()
@@ -71,7 +71,7 @@ void BravePrivateNewTabPageHandler::SetDisclaimerDismissed(bool dismissed) {
 
 void BravePrivateNewTabPageHandler::GetDisclaimerDismissed(
     GetDisclaimerDismissedCallback callback) {
-  DCHECK(profile_);
+  CHECK(profile_);
 
   bool dismissed = profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(
       profile_->IsTor()
@@ -96,7 +96,7 @@ void BravePrivateNewTabPageHandler::GetIsTorConnected(
 
 void BravePrivateNewTabPageHandler::GetIsTorDisabled(
     GetIsTorDisabledCallback callback) {
-  DCHECK(profile_);
+  CHECK(profile_);
 #if BUILDFLAG(ENABLE_TOR)
   bool is_disabled = TorProfileServiceFactory::IsTorDisabled(profile_);
 #else
@@ -109,7 +109,7 @@ using ConnectionStatus = brave_private_new_tab::mojom::ConnectionStatus;
 
 void BravePrivateNewTabPageHandler::GoToBraveSearch(const std::string& input,
                                                     bool open_new_tab) {
-  DCHECK(profile_);
+  CHECK(profile_);
 
   auto provider_data = TemplateURLDataFromPrepopulatedEngine(
       profile_->IsTor() ? TemplateURLPrepopulateData::brave_search_tor

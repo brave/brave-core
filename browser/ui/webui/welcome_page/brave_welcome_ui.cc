@@ -87,7 +87,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWelcomeHelpWDPReject", IDS_BRAVE_WELCOME_HELP_WDP_REJECT}};
 
 void OpenJapanWelcomePage(Profile* profile) {
-  DCHECK(profile);
+  CHECK(profile);
   Browser* browser = chrome::FindBrowserWithProfile(profile);
   if (browser) {
     content::OpenURLParams open_params(
@@ -121,6 +121,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
                                                              // browser
 
   Profile* profile = Profile::FromWebUI(web_ui);
+  CHECK(profile);
   // added to allow front end to read/modify default search engine
   web_ui->AddMessageHandler(std::make_unique<
                             settings::BraveSearchEnginesHandler>(
