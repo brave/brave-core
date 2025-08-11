@@ -3,8 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_content_browser_sources =
-    [ "//brave/content/browser/devtools/adblock_devtools_instrumentation.cc" ]
+brave_content_browser_sources = [
+  "//brave/content/browser/devtools/adblock_devtools_instrumentation.cc",
+  "//brave/content/browser/screen_orientation/brave_screen_orientation_delegate_android.cc",
+  "//brave/content/browser/screen_orientation/brave_screen_orientation_delegate_android.h",
+]
 
 brave_content_browser_deps = [
   "//brave/components/ai_chat/core/common/buildflags",

@@ -9,10 +9,12 @@
 #include <string>
 
 #include "base/feature_list.h"
+#include "base/supports_user_data.h"
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/content/public/browser/fullscreen_page_data.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
@@ -26,24 +28,6 @@
 #include "url/url_util.h"
 
 namespace {
-
-constexpr char kYouTubeFullscreenPageDataKey[] = "youtube_fullscreen_page_data";
-
-// PageUserData to track fullscreen state for each page load
-struct YouTubeFullscreenPageData : public base::SupportsUserData::Data {
- public:
-  explicit YouTubeFullscreenPageData(bool fullscreen_requested = false)
-      : fullscreen_requested_(fullscreen_requested) {}
-
-  bool fullscreen_requested() const { return fullscreen_requested_; }
-  void set_fullscreen_requested(bool requested) {
-    fullscreen_requested_ = requested;
-  }
-
- private:
-  bool fullscreen_requested_;
-};
-
 constexpr char16_t kYoutubeBackgroundPlayback[] =
     uR"(
 (function() {
@@ -339,8 +323,8 @@ bool YouTubeScriptInjectorTabHelper::HasFullscreenBeenRequested() const {
     return false;
   }
 
-  auto* data = static_cast<YouTubeFullscreenPageData*>(
-      entry->GetUserData(kYouTubeFullscreenPageDataKey));
+  auto* data = static_cast<content::FullscreenPageData*>(
+      entry->GetUserData(content::kFullscreenPageDataKey));
   return data && data->fullscreen_requested();
 }
 
@@ -351,13 +335,13 @@ void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
     return;
   }
 
-  auto* data = static_cast<YouTubeFullscreenPageData*>(
-      entry->GetUserData(kYouTubeFullscreenPageDataKey));
+  auto* data = static_cast<content::FullscreenPageData*>(
+      entry->GetUserData(content::kFullscreenPageDataKey));
   if (data) {
     data->set_fullscreen_requested(requested);
   } else {
-    entry->SetUserData(kYouTubeFullscreenPageDataKey,
-                       std::make_unique<YouTubeFullscreenPageData>(requested));
+    entry->SetUserData(content::kFullscreenPageDataKey,
+                       std::make_unique<content::FullscreenPageData>(requested));
   }
 }
 

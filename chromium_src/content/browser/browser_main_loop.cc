@@ -4,6 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "ui/base/clipboard/clipboard.h"
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/content/browser/screen_orientation/brave_screen_orientation_delegate_android.h"
+#endif
 
 #define OnPreShutdownForCurrentThread() \
   OnPreShutdownForCurrentThread();      \
@@ -11,6 +14,12 @@
     parts_->PreShutdown();              \
   }
 
+#if BUILDFLAG(IS_ANDROID)
+#define ScreenOrientationDelegateAndroid BraveScreenOrientationDelegateAndroid
+#endif
 #include <content/browser/browser_main_loop.cc>  // IWYU pragma: export
 
+#if BUILDFLAG(IS_ANDROID)
+#undef ScreenOrientationDelegateAndroid
+#endif
 #undef OnPreShutdownForCurrentThread
