@@ -20,8 +20,10 @@ class Profile;
 using brave_shields::AdBlockSubscriptionServiceManager;
 using brave_shields::AdBlockSubscriptionServiceManagerObserver;
 
-class BraveAdBlockHandler : public settings::SettingsPageUIHandler,
-                            public AdBlockSubscriptionServiceManagerObserver {
+class BraveAdBlockHandler
+    : public settings::SettingsPageUIHandler,
+      public AdBlockSubscriptionServiceManagerObserver,
+      public brave_shields::AdBlockCustomResourceProvider::Observer {
  public:
   BraveAdBlockHandler();
   BraveAdBlockHandler(const BraveAdBlockHandler&) = delete;
@@ -34,6 +36,9 @@ class BraveAdBlockHandler : public settings::SettingsPageUIHandler,
 
   // brave_shields::AdblockSubscriptionServiceManagerObserver overrides:
   void OnServiceUpdateEvent() override;
+
+  // brave_shields::AdBlockCustomResourceProvider::Observer:
+  void OnCustomResourcesChanged() override;
 
   void OnJavascriptAllowed() override;
   void OnJavascriptDisallowed() override;
@@ -69,6 +74,11 @@ class BraveAdBlockHandler : public settings::SettingsPageUIHandler,
   base::ScopedObservation<AdBlockSubscriptionServiceManager,
                           AdBlockSubscriptionServiceManagerObserver>
       service_observer_{this};
+
+  base::ScopedObservation<
+      brave_shields::AdBlockCustomResourceProvider,
+      brave_shields::AdBlockCustomResourceProvider::Observer>
+      custom_resources_observer_{this};
 
   PrefChangeRegistrar pref_change_registrar_;
 

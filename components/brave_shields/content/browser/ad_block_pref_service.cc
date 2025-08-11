@@ -15,6 +15,8 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/proxy_config/pref_proxy_config_tracker.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 
 namespace brave_shields {
 
@@ -58,12 +60,6 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
   OnPreferenceChanged(prefs::kFBEmbedControlType);
   OnPreferenceChanged(prefs::kTwitterEmbedControlType);
   OnPreferenceChanged(prefs::kLinkedInEmbedControlType);
-
-  pref_change_registrar_->Add(
-      prefs::kAdBlockDeveloperMode,
-      base::BindRepeating(&AdBlockPrefService::OnDeveloperModeChanged,
-                          base::Unretained(this)));
-  OnDeveloperModeChanged();
 }
 
 AdBlockPrefService::~AdBlockPrefService() = default;
@@ -116,11 +112,6 @@ void AdBlockPrefService::OnPreferenceChanged(const std::string& pref_name) {
   }
   bool enabled = prefs_->GetBoolean(pref_name);
   ad_block_service_->EnableTag(tag, enabled);
-}
-
-void AdBlockPrefService::OnDeveloperModeChanged() {
-  const bool enabled = prefs_->GetBoolean(prefs::kAdBlockDeveloperMode);
-  ad_block_service_->EnableDeveloperMode(enabled);
 }
 
 void AdBlockPrefService::OnProxyConfigChanged(
