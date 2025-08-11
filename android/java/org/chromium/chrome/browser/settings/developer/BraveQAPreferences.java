@@ -38,7 +38,6 @@ import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.ProfileManager;
-import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -366,8 +365,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
         if (success) {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(
-                    BraveRewardsPanel.PREF_WAS_BRAVE_REWARDS_TURNED_ON, false);
             sharedPreferencesEditor.apply();
 
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())

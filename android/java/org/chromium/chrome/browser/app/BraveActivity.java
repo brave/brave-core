@@ -1848,16 +1848,6 @@ public abstract class BraveActivity extends ChromeActivity
                 .readBoolean(BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false);
     }
 
-    public void onRewardsPanelDismiss() {
-        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        layout.onRewardsPanelDismiss();
-    }
-
-    public void dismissRewardsPanel() {
-        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        layout.dismissRewardsPanel();
-    }
-
     public void dismissShieldsTooltip() {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         layout.dismissShieldsTooltip();
@@ -2165,11 +2155,7 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void showRewardsPage() {
-        if (BraveRewardsHelper.shouldShowNewRewardsUI()) {
-            getBraveToolbarLayout().showRewardsPage();
-        } else {
-            openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
-        }
+        getBraveToolbarLayout().showRewardsPage();
     }
 
     /**
@@ -2233,17 +2219,12 @@ public abstract class BraveActivity extends ChromeActivity
                 && (requestCode == BraveConstants.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
                         || requestCode == BraveConstants.USER_WALLET_ACTIVITY_REQUEST_CODE
                         || requestCode == BraveConstants.SITE_BANNER_REQUEST_CODE)) {
-            dismissRewardsPanel();
             if (data != null) {
                 String open_url = data.getStringExtra(BraveActivity.OPEN_URL);
                 if (!TextUtils.isEmpty(open_url)) {
                     openNewOrSelectExistingTab(open_url);
                 }
             }
-        } else if (resultCode == RESULT_OK
-                && requestCode == BraveConstants.MONTHLY_CONTRIBUTION_REQUEST_CODE) {
-            dismissRewardsPanel();
-
         } else if (resultCode == RESULT_OK
                 && requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
             // We don't need to anything with the result here.
