@@ -181,8 +181,6 @@ source_set("ui") {
       "brave_file_select_utils.h",
       "brave_icon_with_badge_image_source.cc",
       "brave_icon_with_badge_image_source.h",
-      "brave_layout_constants.cc",
-      "brave_layout_constants.h",
       "brave_pages.cc",
       "brave_pages.h",
       "brave_scheme_utils.cc",
@@ -209,8 +207,6 @@ source_set("ui") {
       "startup/brave_startup_tab_provider_impl.h",
       "tabs/brave_tab_color_mixer.cc",
       "tabs/brave_tab_color_mixer.h",
-      "tabs/brave_tab_layout_constants.cc",
-      "tabs/brave_tab_layout_constants.h",
       "tabs/brave_tab_menu_model.cc",
       "tabs/brave_tab_menu_model.h",
       "tabs/brave_tab_strip_model.cc",
@@ -332,6 +328,7 @@ source_set("ui") {
       "//chrome/browser/search",
       "//chrome/browser/sync",
       "//chrome/browser/themes",
+      "//chrome/browser/ui:layout_constants",
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/content_settings",
@@ -1385,6 +1382,24 @@ source_set("ui") {
       "//brave/components/containers/core/mojom",
     ]
   }
+}
+
+source_set("brave_layout_constants") {
+  visibility = [ "//chrome/browser/ui:layout_constants" ]
+  sources = [
+    "brave_layout_constants.cc",
+    "brave_layout_constants.h",
+    "tabs/brave_tab_layout_constants.cc",
+    "tabs/brave_tab_layout_constants.h",
+  ]
+
+  # Circular dependency on "//chrome/browser/ui:layout_constants" is addressed
+  # via brave_chrome_browser_ui_layout_constants_allow_circular_includes_from
+  # in brave/browser/sources.gni
+  deps = [
+    ":brave_tab_features",
+    "//ui/base",
+  ]
 }
 
 source_set("brave_tab_prefs") {
