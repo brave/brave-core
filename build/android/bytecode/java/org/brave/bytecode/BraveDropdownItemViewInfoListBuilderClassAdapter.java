@@ -19,5 +19,8 @@ public class BraveDropdownItemViewInfoListBuilderClassAdapter extends BraveClass
 
         redirectConstructor(
                 sDropdownItemViewInfoListBuilder, sBraveDropdownItemViewInfoListBuilder);
+
+        deleteMethod(sBraveDropdownItemViewInfoListBuilder, "createUIContext");
+        makePublicMethod(sDropdownItemViewInfoListBuilder, "createUIContext");
     }
 }

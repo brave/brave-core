@@ -10,15 +10,14 @@ package org.chromium.chrome.browser.omnibox.suggestions;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
-import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_leo.BraveLeoSuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
@@ -29,14 +28,12 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteInput;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.omnibox.GroupsProto.GroupConfig;
-import org.chromium.components.omnibox.OmniboxFeatures;
 import org.chromium.components.omnibox.suggestions.OmniboxSuggestionUiType;
 import org.chromium.ui.modelutil.PropertyModel;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuilder {
     private @Nullable BraveSearchBannerProcessor mBraveSearchBannerProcessor;
@@ -47,11 +44,12 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
             Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX");
     private AutocompleteDelegate mAutocompleteDelegate;
     private BraveLeoAutocompleteDelegate mLeoAutocompleteDelegate;
-    private @NonNull Optional<OmniboxImageSupplier> mImageSupplier;
 
     BraveDropdownItemViewInfoListBuilder(
-            @NonNull Supplier<Tab> tabSupplier, BookmarkState bookmarkState) {
-        super(tabSupplier, bookmarkState);
+            Supplier<@Nullable Tab> tabSupplier,
+            BookmarkState bookmarkState,
+            Supplier<Integer> toolbarPositionSupplier) {
+        super(tabSupplier, bookmarkState, toolbarPositionSupplier);
 
         mActivityTabSupplier = tabSupplier;
     }
@@ -76,10 +74,6 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                             (BraveSuggestionHost) host,
                             textProvider,
                             mAutocompleteDelegate);
-            mImageSupplier =
-                    OmniboxFeatures.isLowMemoryDevice()
-                            ? Optional.empty()
-                            : Optional.of(new OmniboxImageSupplier(context));
             mBraveLeoSuggestionProcessor =
                     new BraveLeoSuggestionProcessor(
                             context,
@@ -234,5 +228,14 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         } else {
             return false;
         }
+    }
+
+    @SuppressWarnings("UnusedVariable")
+    private AutocompleteUIContext createUIContext(
+            Context context, SuggestionHost host, UrlBarEditingTextStateProvider textProvider) {
+        assert false
+                : "This method will be deleted in bytecode. Method from the parent class will be"
+                        + " used instead.";
+        return null;
     }
 }
