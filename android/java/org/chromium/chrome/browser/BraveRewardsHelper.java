@@ -647,8 +647,4 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
                 index + spanLength,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
-
-    public static boolean shouldShowNewRewardsUI() {
-        return true;
-    }
 }
