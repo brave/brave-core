@@ -24,6 +24,7 @@
 #include "content/public/browser/web_contents.h"
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #endif
 
@@ -91,6 +92,17 @@ void BravePrivateNewTabPageHandler::GetIsTorConnected(
     is_connected = false;
 
   std::move(callback).Run(is_connected);
+}
+
+void BravePrivateNewTabPageHandler::GetIsTorDisabled(
+    GetIsTorDisabledCallback callback) {
+  DCHECK(profile_);
+#if BUILDFLAG(ENABLE_TOR)
+  bool is_disabled = TorProfileServiceFactory::IsTorDisabled(profile_);
+#else
+  bool is_disabled = true;
+#endif
+  std::move(callback).Run(is_disabled);
 }
 
 using ConnectionStatus = brave_private_new_tab::mojom::ConnectionStatus;
