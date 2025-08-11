@@ -30,6 +30,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
@@ -1872,7 +1873,17 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
       conversation_handler_->GetConversationHistory().back()->uploaded_files);
   testing::Mock::VerifyAndClearExpectations(&client);
 
-  auto uploaded_files = CreateSampleUploadedFiles(3);
+  // Create files for each UploadedFileType to exhaustively test all types
+  auto uploaded_files = std::vector<mojom::UploadedFilePtr>();
+  for (int type_int = base::to_underlying(mojom::UploadedFileType::kMinValue);
+       type_int <= base::to_underlying(mojom::UploadedFileType::kMaxValue);
+       ++type_int) {
+    auto type = static_cast<mojom::UploadedFileType>(type_int);
+    auto files = CreateSampleUploadedFiles(1, type);
+    uploaded_files.insert(uploaded_files.end(),
+                          std::make_move_iterator(files.begin()),
+                          std::make_move_iterator(files.end()));
+  }
 
   // There are uploaded images.
   // Note that this will need to be put at the end of this test suite
