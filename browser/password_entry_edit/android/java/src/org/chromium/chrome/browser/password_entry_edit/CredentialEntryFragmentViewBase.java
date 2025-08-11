@@ -30,10 +30,7 @@ public abstract class CredentialEntryFragmentViewBase extends PreferenceFragment
     @Nullable ComponentStateDelegate mComponentStateDelegate;
     @Nullable UiActionHandler mUiActionHandler;
 
-    /**
-     * To be implemented by classes which need to know about the fragment's state
-     * TODO(crbug.com/40749164): The coordinator should be made a LifecycleObserver instead.
-     */
+    /** To be implemented by classes which need to know about the fragment's state */
     interface ComponentStateDelegate {
         /** Called when the fragment is started. */
         void onStartFragment();

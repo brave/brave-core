@@ -36,12 +36,7 @@ public class PasswordAccessReauthenticationHelper {
     public static final String SETTINGS_REAUTHENTICATION_HISTOGRAM =
             "PasswordManager.ReauthToAccessPasswordInSettings";
 
-    /**
-     * The reason for the reauthentication.
-     *
-     * <p>TODO(crbug.com/40170183): Remove the edit reason once the password check credential editor
-     * is completely replaced with the new one.
-     */
+    /** The reason for the reauthentication. */
     @IntDef({ReauthReason.VIEW_PASSWORD, ReauthReason.EDIT_PASSWORD, ReauthReason.COPY_PASSWORD})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ReauthReason {
