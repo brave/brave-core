@@ -21,5 +21,5 @@ thiserror        = "1.0.30"
 url              = "2"
 
 [dev-dependencies]
-assert_approx_eq = "1.1.0"
-reqwest = { version = "0.11.6", features = ["blocking", "stream"] }
+assert_approx_eq = "=1.1.0"
+reqwest = { version = "=0.11.6", features = ["blocking", "stream"] }
