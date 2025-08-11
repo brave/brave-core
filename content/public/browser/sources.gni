@@ -5,6 +5,11 @@
 
 brave_content_public_browser_sources = [
   "//brave/content/public/browser/devtools/adblock_devtools_instumentation.h",
-  "//brave/content/public/browser/fullscreen_page_data.cc",
-  "//brave/content/public/browser/fullscreen_page_data.h",
 ]
+
+if (is_android) {
+  brave_content_public_browser_sources += [
+    "//brave/content/public/browser/fullscreen_page_data.cc",
+    "//brave/content/public/browser/fullscreen_page_data.h",
+  ]
+}
