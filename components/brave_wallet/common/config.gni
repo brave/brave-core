@@ -8,7 +8,6 @@ import("//build/config/features.gni")
 
 declare_args() {
   brave_infura_project_id = ""
-  enable_zcash_by_default = !is_ios && !is_android
 
   # Flag is used to allow future size difference calculation
   # iOS temporary disabled due build errors
