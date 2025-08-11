@@ -319,10 +319,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   ReorderChildView(find_bar_host_view_, -1);
 }
 
-views::View* BraveBrowserView::GetContentsBoundingView() const {
-  return contents_view();
-}
-
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == kTabsSearchShow) {
     UpdateSearchTabsButtonState();

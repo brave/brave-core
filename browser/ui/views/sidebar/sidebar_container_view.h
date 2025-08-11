@@ -73,6 +73,8 @@ class SidebarContainerView
   void SetSidebarOnLeft(bool sidebar_on_left);
 
   bool IsSidebarVisible() const;
+
+  // Return false if this mouse event can't make sidebar UI visible.
   bool PreHandleMouseEvent(const blink::WebMouseEvent& event);
 
   BraveSidePanel* side_panel() { return side_panel_; }

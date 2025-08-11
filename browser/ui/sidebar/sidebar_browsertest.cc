@@ -61,6 +61,7 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "third_party/blink/public/common/input/synthetic_web_input_event_builders.h"
 #include "ui/base/ui_base_features.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
@@ -103,12 +104,6 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   views::View* GetVerticalTabsContainer() const {
     auto* view = BrowserView::GetBrowserViewForBrowser(browser());
     return static_cast<BraveBrowserView*>(view)->vertical_tab_strip_host_view_;
-  }
-
-  views::Widget* GetEventDetectWidget() {
-    auto* sidebar_container_view =
-        static_cast<SidebarContainerView*>(controller()->sidebar());
-    return sidebar_container_view->GetEventDetectWidget()->widget_.get();
   }
 
   views::Widget* GetSidePanelResizeWidget() {
@@ -596,48 +591,67 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemDragIndicatorCalcTest) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
-  auto* widget = GetEventDetectWidget();
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ShowSidebarOnMouseOverTest) {
   auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
+  service->SetSidebarShowOption(
+      SidebarService::ShowSidebarOption::kShowOnMouseOver);
+
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* contents_container =
-      BraveBrowserView::From(browser_view)->GetContentsBoundingView();
+      browser_view->GetContentsContainerForLayoutManager();
   auto* prefs = browser()->profile()->GetPrefs();
   auto* sidebar_container = GetSidebarContainerView();
 
-  // Check widget is located on left side when sidebar on left.
+  // Check sidebar is not shown.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !sidebar_container->IsSidebarVisible(); }));
+
+  blink::WebMouseEvent move_event = blink::SyntheticWebMouseEventBuilder::Build(
+      blink::WebInputEvent::Type::kMouseMove, 0, 0,
+      blink::WebInputEvent::kNoModifiers);
+
+  // Set mouse position inside the mouse hover area to check sidebar UI is shown
+  // with that mouse position when sidebar is on right side.
+  auto contents_container_rect = contents_container->GetBoundsInScreen();
+  gfx::Point mouse_position = contents_container_rect.top_right();
+  mouse_position.Offset(-2, 2);
+  move_event.SetPositionInScreen(gfx::PointF(mouse_position));
+
+  EXPECT_TRUE(sidebar_container->PreHandleMouseEvent(move_event));
+  EXPECT_TRUE(sidebar_container->IsSidebarVisible());
+
+  // Check when sidebar on left.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
-  service->SetSidebarShowOption(
-      SidebarService::ShowSidebarOption::kShowOnMouseOver);
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return sidebar_container->width() == 0; }));
-  EXPECT_EQ(contents_container->GetBoundsInScreen().x(),
-            widget->GetWindowBoundsInScreen().x());
 
-  // Check widget is located on right side when sidebar on right.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return sidebar_container->width() == 0; }));
-  EXPECT_EQ(contents_container->GetBoundsInScreen().right(),
-            widget->GetWindowBoundsInScreen().right());
+  // Hide sidebar.
+  HideSidebar(true);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !sidebar_container->IsSidebarVisible(); }));
+  contents_container_rect = contents_container->GetBoundsInScreen();
+  mouse_position = contents_container_rect.origin();
 
-  auto* tab_strip_model = browser()->tab_strip_model();
-  brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model->GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model->GetTabAtIndex(1)->GetHandle()));
+  // Set mouse position inside the mouse hover area to check sidebar UI is shown
+  // with that mouse position when sidebar is on left side.
+  mouse_position.Offset(2, 2);
+  move_event.SetPositionInScreen(gfx::PointF(mouse_position));
 
-  // Check event detect widget position with split view.
-  EXPECT_EQ(contents_container->GetBoundsInScreen().right(),
-            widget->GetWindowBoundsInScreen().right());
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return sidebar_container->width() == 0; }));
-  EXPECT_EQ(contents_container->GetBoundsInScreen().x(),
-            widget->GetWindowBoundsInScreen().x());
+  EXPECT_TRUE(sidebar_container->PreHandleMouseEvent(move_event));
+  EXPECT_TRUE(sidebar_container->IsSidebarVisible());
+
+  // Hide sidebar.
+  HideSidebar(true);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !sidebar_container->IsSidebarVisible(); }));
+
+  contents_container_rect = contents_container->GetBoundsInScreen();
+  mouse_position = contents_container_rect.origin();
+
+  // Set mouse position outside of the mouse hover area to check sidebar UI is
+  // not shown with that mouse position when sidebar is on left side.
+  mouse_position.Offset(10, 10);
+  move_event.SetPositionInScreen(gfx::PointF(mouse_position));
+
+  EXPECT_FALSE(sidebar_container->PreHandleMouseEvent(move_event));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, HideSidebarUITest) {
