@@ -7,6 +7,7 @@
 
 #include "base/android/callback_android.h"
 #include "base/android/jni_string.h"
+#include "components/prefs/android/pref_service_android.h"
 #include "components/signin/public/identity_manager/identity_manager.h"
 
 // Must come after all headers that specialize FromJniType() / ToJniType().
