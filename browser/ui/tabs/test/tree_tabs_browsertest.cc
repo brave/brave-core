@@ -34,12 +34,21 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   tabs::UnpinnedTabCollection& unpinned_collection() {
     return *tab_strip_collection().unpinned_collection();
   }
-  void BuildTreeTabs() { tab_strip_model().BuildTreeTabs(); }
-  void FlattenTreeTabs() { tab_strip_model().FlattenTreeTabs(); }
   void AddTab() {
     auto contents = content::WebContents::Create(
         content::WebContents::CreateParams(profile()));
     tab_strip_model().AppendWebContents(std::move(contents), true);
+  }
+
+  void SetTreeTabsEnabled(bool enabled) {
+    profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, enabled);
+  }
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+
+    // Prerequisite for enabling tree tabs.
+    profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
   }
 
  private:
@@ -60,7 +69,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
               tabs::TabCollection::Type::UNPINNED);
   }
 
-  BuildTreeTabs();
+  SetTreeTabsEnabled(true);
 
   // Verify that each tab is wrapped in a TreeTabNode.
   for (int i = 0; i < tab_strip_model().count(); ++i) {
@@ -96,7 +105,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
               tabs::TabCollection::Type::UNPINNED);
   }
 
-  BuildTreeTabs();
+  SetTreeTabsEnabled(true);
 
   // Verify tree structure is created.
   for (int i = 0; i < tab_strip_model().count(); ++i) {
@@ -112,7 +121,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
     original_tabs.push_back(tab_strip_model().GetTabAtIndex(i));
   }
 
-  FlattenTreeTabs();
+  SetTreeTabsEnabled(false);
 
   // Verify tabs are back to flat structure.
   EXPECT_EQ(4, tab_strip_model().count());
@@ -146,7 +155,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
               tabs::TabCollection::Type::UNPINNED);
   }
 
-  BuildTreeTabs();
+  SetTreeTabsEnabled(true);
 
   // Verify tree structure.
   for (int i = 0; i < tab_strip_model().count(); ++i) {
@@ -155,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   }
 
   // Flatten back to original structure.
-  FlattenTreeTabs();
+  SetTreeTabsEnabled(false);
 
   // Verify original order is preserved.
   EXPECT_EQ(original_tab_order.size(),
@@ -179,7 +188,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, BuildTreeTabs_WithGroupedTabs) {
   // Verify group is created.
   ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
 
-  BuildTreeTabs();
+  SetTreeTabsEnabled(true);
 
   // Verify tabs outside group are wrapped in TreeTabNodes within unpinned
   // collection.
@@ -218,7 +227,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
   tab_groups::TabGroupId group_id =
       tab_strip_model().AddToNewGroup(group_indices);
 
-  BuildTreeTabs();
+  SetTreeTabsEnabled(true);
 
   // Store original tabs for verification.
   std::vector<tabs::TabInterface*> original_tabs;
@@ -226,7 +235,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
     original_tabs.push_back(tab_strip_model().GetTabAtIndex(i));
   }
 
-  FlattenTreeTabs();
+  SetTreeTabsEnabled(false);
 
   // Verify tabs are preserved in correct order
   EXPECT_EQ(5, tab_strip_model().count());
@@ -261,7 +270,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   // Verify we have 2 tabs (1 initial + 1 added).
   ASSERT_EQ(2, tab_strip_model().count());
 
-  BuildTreeTabs();
+  SetTreeTabsEnabled(true);
 
   // Verify that TreeTabNodes are created as children of unpinned collection.
   for (int i = 0; i < tab_strip_model().count(); ++i) {
@@ -390,23 +399,15 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
     AddTab();
   }
 
-  // Initially both preferences are disabled
+  // Initially tree tabs pref is disabled, but vertical tabs are enabled in the
+  // test
   ASSERT_FALSE(profile()->GetPrefs()->GetBoolean(brave_tabs::kTreeTabsEnabled));
-  ASSERT_FALSE(
+  ASSERT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_tabs::kVerticalTabsEnabled));
 
   // Verify flat structure.
   for (int i = 0; i < tab_strip_model().count(); ++i) {
     ASSERT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
-              tabs::TabCollection::Type::UNPINNED);
-  }
-
-  // Enable only vertical tabs (not tree tabs).
-  profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
-
-  // Should remain flat because both prefs must be true for tree structure.
-  for (int i = 0; i < tab_strip_model().count(); ++i) {
-    EXPECT_EQ(tab_strip_model().GetTabAtIndex(i)->GetParentCollection()->type(),
               tabs::TabCollection::Type::UNPINNED);
   }
 }
@@ -418,9 +419,9 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
     AddTab();
   }
 
-  // Initially both preferences are disabled
+  // Initially tree tabs are disabled, but vertical tabs are enabled.
   ASSERT_FALSE(profile()->GetPrefs()->GetBoolean(brave_tabs::kTreeTabsEnabled));
-  ASSERT_FALSE(
+  ASSERT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_tabs::kVerticalTabsEnabled));
 
   // Verify initial flat structure.
@@ -430,6 +431,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   }
 
   // Enable only tree tabs (not vertical tabs).
+  profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, false);
   profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, true);
 
   // Should remain flat because both prefs must be true for tree structure.
