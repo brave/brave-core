@@ -91,6 +91,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
   Profile* profile = Profile::FromBrowserContext(
       web_ui->GetWebContents()->GetBrowserContext());
+  CHECK(profile);
   if (host == kAdsInternalsHost) {
     return new AdsInternalsUI(
         web_ui, url.host(),

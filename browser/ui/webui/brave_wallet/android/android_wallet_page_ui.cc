@@ -131,7 +131,7 @@ void AndroidWalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
         meld_integration_service) {
   auto* profile = Profile::FromWebUI(web_ui());
-  DCHECK(profile);
+  CHECK(profile);
   page_handler_ = std::make_unique<AndroidWalletPageHandler>(
       std::move(page_receiver), profile, this);
   wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(

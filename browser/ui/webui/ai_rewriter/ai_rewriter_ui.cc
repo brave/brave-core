@@ -44,7 +44,7 @@ namespace ai_rewriter {
 
 AIRewriterUI::AIRewriterUI(content::WebUI* web_ui)
     : ConstrainedWebDialogUI(web_ui), profile_(Profile::FromWebUI(web_ui)) {
-  DCHECK(profile_);
+  CHECK(profile_);
   DCHECK(profile_->IsRegularProfile());
   DCHECK(features::IsAIRewriterEnabled());
 

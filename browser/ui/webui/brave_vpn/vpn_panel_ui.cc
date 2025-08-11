@@ -82,7 +82,7 @@ void VPNPanelUI::CreatePanelHandler(
         vpn_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
-  DCHECK(profile);
+  CHECK(profile);
 
   panel_handler_ = std::make_unique<VPNPanelHandler>(std::move(panel_receiver),
                                                      this, profile);

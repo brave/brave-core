@@ -73,7 +73,7 @@ content::WebContents* GetActiveWebContents(content::BrowserContext* context) {
 
 AIChatUI::AIChatUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui), profile_(Profile::FromWebUI(web_ui)) {
-  DCHECK(profile_);
+  CHECK(profile_);
   DCHECK(profile_->IsRegularProfile());
 
   // Create a URLDataSource and add resources.

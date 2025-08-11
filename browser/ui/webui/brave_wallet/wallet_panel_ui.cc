@@ -150,7 +150,7 @@ void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
         meld_integration_service) {
   auto* profile = Profile::FromWebUI(web_ui());
-  DCHECK(profile);
+  CHECK(profile);
 
   panel_handler_ = std::make_unique<WalletPanelHandler>(
       std::move(panel_receiver), this, active_web_contents_,

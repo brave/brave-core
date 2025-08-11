@@ -170,7 +170,7 @@ void WelcomeDOMHandler::HandleRecordP3A(const base::Value::List& args) {
 }
 
 void WelcomeDOMHandler::HandleOpenSettingsPage(const base::Value::List& args) {
-  DCHECK(profile_);
+  CHECK(profile_);
   Browser* browser = chrome::FindBrowserWithProfile(profile_);
   if (browser) {
     content::OpenURLParams open_params(
@@ -194,7 +194,7 @@ void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
 
 void WelcomeDOMHandler::HandleEnableWebDiscovery(
     const base::Value::List& args) {
-  DCHECK(profile_);
+  CHECK(profile_);
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   // Don't allow enabling web discovery if it's disabled by policy
   if (profile_->GetPrefs()->GetBoolean(kWebDiscoveryDisabledByPolicy)) {

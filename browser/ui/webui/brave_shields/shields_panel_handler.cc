@@ -68,14 +68,14 @@ void ShieldsPanelHandler::GetPosition(GetPositionCallback callback) {
 }
 
 void ShieldsPanelHandler::SetAdvancedViewEnabled(bool is_enabled) {
-  DCHECK(profile_);
+  CHECK(profile_);
 
   profile_->GetPrefs()->SetBoolean(kShieldsAdvancedViewEnabled, is_enabled);
 }
 
 void ShieldsPanelHandler::GetAdvancedViewEnabled(
     GetAdvancedViewEnabledCallback callback) {
-  DCHECK(profile_);
+  CHECK(profile_);
 
   bool is_enabled =
       profile_->GetPrefs()->GetBoolean(kShieldsAdvancedViewEnabled);
