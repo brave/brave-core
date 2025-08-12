@@ -3,142 +3,57 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  UserType,
-  userTypeFromString,
-} from '../../../brave_rewards/resources/shared/lib/user_type'
-
+import { loadTimeData } from '$web-common/loadTimeData'
 import {
   externalWalletFromExtensionData, //
 } from '../../../brave_rewards/resources/shared/lib/external_wallet'
 import { RewardsExternalWallet, WalletStatus } from '../../constants/types'
 import { BraveRewardsProxyOverrides } from '../../constants/testing_types'
+import { RewardsPageProxy } from '../../../brave_rewards/resources/rewards_page/webui/rewards_page_proxy'
 
 export class BraveRewardsProxy {
-  getRewardsEnabled = () => {
-    return new Promise<boolean>((resolve) =>
-      chrome.braveRewards.getRewardsEnabled((enabled) => {
-        resolve(enabled)
-      }),
+  private rewardsPageProxy: RewardsPageProxy | null = null
+
+  constructor() {
+    if (loadTimeData.getBoolean('rewardsFeatureEnabled')) {
+      this.rewardsPageProxy = RewardsPageProxy.getInstance()
+    }
+  }
+
+  getRewardsEnabled = async () => {
+    if (!this.rewardsPageProxy) {
+      return false
+    }
+    const { paymentId } =
+      await this.rewardsPageProxy.handler.getRewardsPaymentId()
+    return Boolean(paymentId)
+  }
+
+  getExternalWallet = async () => {
+    if (!this.rewardsPageProxy) {
+      return null
+    }
+    const result = await this.rewardsPageProxy.handler.getExternalWallet()
+    const externalWallet = externalWalletFromExtensionData(
+      result?.externalWallet,
     )
+    if (!externalWallet) {
+      return null
+    }
+    return <RewardsExternalWallet>{
+      ...externalWallet,
+      status: externalWallet.authenticated
+        ? WalletStatus.kConnected
+        : WalletStatus.kLoggedOut,
+    }
   }
 
-  fetchBalance = () => {
-    return new Promise<number | undefined>((resolve) =>
-      chrome.braveRewards.fetchBalance((balance) => {
-        resolve(balance)
-      }),
-    )
-  }
-
-  getBalanceReport = (month: number, year: number) => {
-    return new Promise<RewardsExtension.BalanceReport>((resolve) =>
-      chrome.braveRewards.getBalanceReport(month, year, (report) => {
-        resolve(report)
-      }),
-    )
-  }
-
-  getUserType = () => {
-    return new Promise<UserType>((resolve) => {
-      chrome.braveRewards.getUserType((userType) => {
-        resolve(userTypeFromString(userType))
-      })
-    })
-  }
-
-  getWalletExists = () => {
-    return new Promise<boolean>((resolve) => {
-      chrome.braveRewards.getWalletExists((exists) => {
-        resolve(exists)
-      })
-    })
-  }
-
-  getExternalWallet = () => {
-    return new Promise<RewardsExternalWallet | null>((resolve) => {
-      chrome.braveRewards.getExternalWallet((data) => {
-        const externalWallet = externalWalletFromExtensionData(data)
-        const rewardsWallet: RewardsExternalWallet | null = externalWallet
-          ? {
-              ...externalWallet,
-              status: externalWallet.authenticated
-                ? WalletStatus.kConnected
-                : WalletStatus.kLoggedOut,
-            }
-          : null
-        resolve(rewardsWallet)
-      })
-    })
-  }
-
-  isInitialized = () => {
-    return new Promise<boolean>((resolve) => {
-      chrome.braveRewards.isInitialized((initialized) => {
-        resolve(initialized)
-      })
-    })
-  }
-
-  isSupported = () => {
-    return new Promise<boolean>((resolve) => {
-      chrome.braveRewards.isSupported((isSupported) => {
-        resolve(isSupported)
-      })
-    })
-  }
-
-  onCompleteReset = chrome.braveRewards.onCompleteReset.addListener
-
-  onExternalWalletConnected =
-    chrome.braveRewards.onExternalWalletConnected.addListener
-
-  onExternalWalletLoggedOut =
-    chrome.braveRewards.onExternalWalletLoggedOut.addListener
-
-  onPublisherData = chrome.braveRewards.onPublisherData.addListener
-
-  onPublisherListNormalized =
-    chrome.braveRewards.onPublisherListNormalized.addListener
-
-  onReconcileComplete = chrome.braveRewards.onReconcileComplete.addListener
-
-  onRewardsWalletCreated =
-    chrome.braveRewards.onRewardsWalletCreated.addListener
-
-  openRewardsPanel = chrome.braveRewards.openRewardsPanel
-
-  onInitialized = (callback: () => any) =>
-    chrome.braveRewards.initialized.addListener((error) => {
-      if (error === RewardsExtension.Result.OK) {
-        callback()
-      } else {
-        console.error(`rewards onInitialized error: ${error}`)
-      }
-    })
-
-  getAvailableCountries = () => {
-    return new Promise<string[]>((resolve) =>
-      chrome.braveRewards.getAvailableCountries((countries) => {
-        resolve(countries)
-      }),
-    )
-  }
-
-  getRewardsParameters = () => {
-    return new Promise<RewardsExtension.RewardsParameters>((resolve) =>
-      chrome.braveRewards.getRewardsParameters((params) => {
-        resolve(params)
-      }),
-    )
-  }
-
-  getAllNotifications = () => {
-    return new Promise<RewardsExtension.Notification[]>((resolve) => {
-      chrome.braveRewards.getAllNotifications((notifications) => {
-        resolve(notifications)
-      })
-    })
+  fetchBalance = async () => {
+    if (!this.rewardsPageProxy) {
+      return 0
+    }
+    const result = await this.rewardsPageProxy.handler.getAvailableBalance()
+    return result?.balance ?? undefined
   }
 }
 
