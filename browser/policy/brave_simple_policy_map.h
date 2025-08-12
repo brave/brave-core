@@ -88,8 +88,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 #endif
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-    {policy::key::kBraveWaybackMachineDisabled,
-     kBraveWaybackMachineDisabledByPolicy, base::Value::Type::BOOLEAN},
+    {policy::key::kBraveWaybackMachineEnabled, kBraveWaybackMachineEnabled,
+     base::Value::Type::BOOLEAN},
 #endif
 #if BUILDFLAG(DEPRECATE_IPFS)
     {policy::key::kIPFSEnabled, ipfs::prefs::kIPFSEnabledByPolicy,

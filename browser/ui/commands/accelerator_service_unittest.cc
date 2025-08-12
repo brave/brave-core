@@ -376,10 +376,10 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   // Test Wayback Machine
   EXPECT_FALSE(
       service.IsCommandDisabledByPolicy(IDC_SHOW_WAYBACK_MACHINE_BUBBLE));
-  profile().GetPrefs()->SetBoolean(kBraveWaybackMachineDisabledByPolicy, true);
+  profile().GetPrefs()->SetBoolean(kBraveWaybackMachineEnabled, false);
   EXPECT_TRUE(
       service.IsCommandDisabledByPolicy(IDC_SHOW_WAYBACK_MACHINE_BUBBLE));
-  profile().GetPrefs()->SetBoolean(kBraveWaybackMachineDisabledByPolicy, false);
+  profile().GetPrefs()->SetBoolean(kBraveWaybackMachineEnabled, true);
   EXPECT_FALSE(
       service.IsCommandDisabledByPolicy(IDC_SHOW_WAYBACK_MACHINE_BUBBLE));
 #endif

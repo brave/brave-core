@@ -435,7 +435,7 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
 #endif
     case IDC_SHOW_WAYBACK_MACHINE_BUBBLE:
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-      return pref_service_->GetBoolean(kBraveWaybackMachineDisabledByPolicy);
+      return !pref_service_->GetBoolean(kBraveWaybackMachineEnabled);
 #else
       return true;  // Wayback Machine not compiled in, always disabled
 #endif
