@@ -116,8 +116,9 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
     SuggestedQuestionsCallback callback) {
   base::Value::List messages;
 
+  auto remaining_length = max_associated_content_length_;
   for (auto& message :
-       BuildPageContentMessages(page_contents, max_associated_content_length_,
+       BuildPageContentMessages(page_contents, remaining_length,
                                 IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT,
                                 IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT)) {
     messages.Append(std::move(message));
@@ -186,7 +187,7 @@ void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
 }
 
 void EngineConsumerOAIRemote::GenerateAssistantResponse(
-    PageContentsMap page_contents,
+    PageContentsMap&& page_contents,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     const std::vector<base::WeakPtr<Tool>>& tools,
@@ -234,8 +235,12 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
     int page_message_id) {
   base::Value::List messages;
   for (const auto& page_content : base::Reversed(page_contents)) {
+    LOG(ERROR) << "max_associated_content_length: "
+               << max_associated_content_length;
     std::string truncated_page_content =
         page_content.get().content.substr(0, max_associated_content_length);
+    uint32_t truncated_page_content_size = truncated_page_content.size();
+
     SanitizeInput(truncated_page_content);
     std::string prompt = base::ReplaceStringPlaceholders(
         l10n_util::GetStringUTF8(page_content.get().is_video ? video_message_id
@@ -245,12 +250,15 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
     base::Value::Dict message;
     message.Set("role", "user");
     message.Set("content", std::move(prompt));
+    LOG(ERROR) << "Message: " << message.DebugString();
     messages.Append(std::move(message));
 
-    if (truncated_page_content.size() > max_associated_content_length) {
+    if (truncated_page_content_size >= max_associated_content_length) {
       max_associated_content_length = 0;
+      break;
+    } else {
+      max_associated_content_length -= truncated_page_content_size;
     }
-    max_associated_content_length -= truncated_page_content.size();
   }
   return messages;
 }
@@ -273,8 +281,12 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
 
   // We iterate over the page contents in reverse order so that the most recent
   // content is preferred.
-  for (size_t i = conversation_history.size(); i > 0; i--) {
-    auto& turn = conversation_history[i - 1];
+  for (const auto& turn : base::Reversed(conversation_history)) {
+    // If we have no remaining content length, no point in continuing.
+    if (remaining_content_length == 0) {
+      break;
+    }
+
     auto page_content_it = page_contents.find(turn->uuid.value());
     if (page_content_it != page_contents.end()) {
       auto& messages = page_contents_messages[turn->uuid.value()];
@@ -283,15 +295,7 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
                IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
                IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT)) {
         messages.Append(std::move(message));
-
-        if (remaining_content_length == 0) {
-          break;
-        }
       }
-    }
-
-    if (remaining_content_length == 0) {
-      break;
     }
   }
 

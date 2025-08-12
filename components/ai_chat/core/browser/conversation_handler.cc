@@ -200,15 +200,23 @@ void ConversationHandler::OnArchiveContentUpdated(
 void ConversationHandler::OnAssociatedContentUpdated() {
   metadata_->associated_content =
       associated_content_manager_->GetAssociatedContent();
+  auto& associated_content = metadata_->associated_content;
+
+  // Clone the content to avoid multiple calls to GetAssociatedContent.
+  auto clone_content = [&associated_content]() {
+    std::vector<mojom::AssociatedContentPtr> cloned_content;
+    std::ranges::transform(
+        associated_content, std::back_inserter(cloned_content),
+        [](const auto& content) { return content->Clone(); });
+    return cloned_content;
+  };
 
   for (auto& client : conversation_ui_handlers_) {
-    client->OnAssociatedContentInfoChanged(
-        associated_content_manager_->GetAssociatedContent());
+    client->OnAssociatedContentInfoChanged(clone_content());
   }
 
   for (const auto& client : untrusted_conversation_ui_handlers_) {
-    client->AssociatedContentChanged(
-        associated_content_manager_->GetAssociatedContent());
+    client->AssociatedContentChanged(clone_content());
   }
 
   OnStateForConversationEntriesChanged();
@@ -828,10 +836,9 @@ void ConversationHandler::GenerateQuestions() {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ConversationHandler::PerformQuestionGeneration(
-    PageContents page_contents) {
+void ConversationHandler::PerformQuestionGeneration() {
   engine_->GenerateQuestionSuggestions(
-      std::move(page_contents), selected_language_,
+      associated_content_manager_->GetCachedContents(), selected_language_,
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -1037,13 +1044,11 @@ void ConversationHandler::PerformAssistantGenerationWithPossibleContent() {
 
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
-    PerformAssistantGeneration(
-        associated_content_manager_->GetCachedContents());
+    PerformAssistantGeneration();
   }
 }
 
-void ConversationHandler::PerformAssistantGeneration(
-    PageContents page_contents) {
+void ConversationHandler::PerformAssistantGeneration() {
   if (chat_history_.empty()) {
     DLOG(ERROR) << "Cannot generate assistant response without any history";
     return;
@@ -1238,9 +1243,9 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
              suggestions_[0].action_type == mojom::ActionType::SUMMARIZE_PAGE) {
     // The title for the summarize page suggestion needs to be updated when
     // the number of associated content items changes.
-    suggestions_[0].title =
-        l10n_util::GetPluralStringFUTF8(IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
-                                        associated_content_manager_->Count());
+    suggestions_[0].title = l10n_util::GetPluralStringFUTF8(
+        IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
+        associated_content_manager_->GetContentDelegateCount());
   }
   OnSuggestedQuestionsChanged();
 }
@@ -1291,8 +1296,6 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, true,
         std::nullopt /* model_key */));
-    associated_content_manager_->AssociateUnsentContentWithTurn(
-        chat_history_.back());
     OnConversationEntryAdded(chat_history_.back());
 
     std::vector<mojom::ConversationEntryEventPtr> events;
@@ -1365,7 +1368,7 @@ void ConversationHandler::OnGeneratePageContentComplete(
     }
   }
 
-  std::move(callback).Run(associated_content_manager_->GetCachedContents());
+  std::move(callback).Run();
 
   // Content-used percentage and is_video might have changed in addition to
   // content_type.
@@ -1863,7 +1866,7 @@ void ConversationHandler::OnAutoScreenshotsTaken(
   }
 
   // Continue with the original callback
-  std::move(callback).Run(associated_content_manager_->GetCachedContents());
+  std::move(callback).Run();
 }
 
 }  // namespace ai_chat

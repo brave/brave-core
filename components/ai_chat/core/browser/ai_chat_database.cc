@@ -56,7 +56,6 @@ void BindOptionalString(sql::Statement& statement,
 }
 
 bool MigrateFrom1To2(sql::Database* db) {
-  DVLOG(1) << __func__;
   // Add a new column to the associated_content table to store the content type.
   static constexpr char kAddPromptColumnQuery[] =
       "ALTER TABLE conversation_entry ADD COLUMN prompt BLOB";
@@ -66,7 +65,6 @@ bool MigrateFrom1To2(sql::Database* db) {
 }
 
 bool MigrateFrom2To3(sql::Database* db) {
-  DVLOG(1) << __func__;
   static constexpr char kAddTotalTokenColumnQuery[] =
       "ALTER TABLE conversation ADD COLUMN total_tokens INTEGER DEFAULT 0";
   static constexpr char kAddTrimmedTokenColumnQuery[] =
@@ -81,7 +79,6 @@ bool MigrateFrom2To3(sql::Database* db) {
 }
 
 bool MigrateFrom3to4(sql::Database* db) {
-  DVLOG(1) << __func__;
   // Check if column exists first
   static constexpr char kCheckColumnQuery[] =
       "PRAGMA table_info(conversation_entry_uploaded_files)";
@@ -103,7 +100,6 @@ bool MigrateFrom3to4(sql::Database* db) {
 }
 
 bool MigrateFrom4to5(sql::Database* db) {
-  DVLOG(1) << __func__;
   static constexpr char kAddModelKeyColumnQuery[] =
       "ALTER TABLE conversation_entry ADD COLUMN model_key TEXT DEFAULT NULL";
   sql::Statement statement(db->GetUniqueStatement(kAddModelKeyColumnQuery));
@@ -112,7 +108,6 @@ bool MigrateFrom4to5(sql::Database* db) {
 }
 
 bool MigrateFrom5to6(sql::Database* db) {
-  DVLOG(1) << __func__;
   static constexpr char kRemoveIsContentRefinedColumnQuery[] =
       "ALTER TABLE associated_content DROP COLUMN is_content_refined";
   sql::Statement statement(
@@ -122,7 +117,6 @@ bool MigrateFrom5to6(sql::Database* db) {
 }
 
 bool MigrateFrom6to7(sql::Database* db) {
-  DVLOG(1) << __func__;
   // Step 1: Add the column with a default value of the empty string.
   // We use the empty string as a default value because SQLite doesn't support
   // easily altering columns.
@@ -130,7 +124,7 @@ bool MigrateFrom6to7(sql::Database* db) {
       "ALTER TABLE associated_content ADD COLUMN conversation_entry_uuid TEXT "
       "NOT NULL DEFAULT ''"));
   if (!add_column_statement.is_valid() || !add_column_statement.Run()) {
-    LOG(ERROR) << "Bailed! " << add_column_statement.is_valid();
+    DVLOG(1) << "Bailed! " << add_column_statement.is_valid();
     return false;
   }
 
@@ -372,6 +366,17 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
           statement.ColumnInt(index++);
       associated_content->conversation_turn_uuid =
           statement.ColumnString(index++);
+
+      // If the migration didn't give us a `conversation_turn_uuid`, it means
+      // the migration failed because there are no turns in the conversation.
+      // Set the |conversation_turn_uuid| to |nullopt| and it'll be associated
+      // with the next turn in the conversation.
+      // In reality, this should never happen because we don't save associated
+      // content until the first turn is submitted.
+      if (associated_content->conversation_turn_uuid.value_or("").empty()) {
+        associated_content->conversation_turn_uuid = std::nullopt;
+        continue;
+      }
 
       conversation->associated_content.push_back(std::move(associated_content));
     }
@@ -722,13 +727,6 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
 
   CHECK(!conversation_uuid.empty());
   CHECK(!associated_content.empty());
-  CHECK(
-      std::ranges::all_of(associated_content,
-                          [](const auto& content) {
-                            return content->conversation_turn_uuid.has_value();
-                          }))
-      << "Tried to save associated content which was not associated with a "
-         "turn";
 
   // Check which content ids already exist for this conversation.
   base::flat_set<std::string> existing_ids_set;
@@ -794,6 +792,8 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
                                  content_text);
     insert_or_update_statement.BindInt(index++,
                                        content->content_used_percentage);
+    CHECK(content->conversation_turn_uuid)
+        << "Associated content must be associated with a conversation turn";
     insert_or_update_statement.BindString(
         index++, content->conversation_turn_uuid.value());
     insert_or_update_statement.BindString(index++, content->uuid);

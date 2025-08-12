@@ -195,8 +195,6 @@ void AssociatedContentManager::ClearContent() {
 
 void AssociatedContentManager::AssociateUnsentContentWithTurn(
     const mojom::ConversationTurnPtr& turn) {
-  DVLOG(1) << __func__;
-
   CHECK(turn->uuid.has_value());
 
   for (const auto& content : content_delegates_) {
@@ -392,7 +390,6 @@ PageContents AssociatedContentManager::GetCachedContents() const {
 }
 
 PageContentsMap AssociatedContentManager::GetCachedContentsMap() const {
-  DVLOG(1) << __func__;
   PageContentsMap result;
 
   auto contents = GetCachedContents();
@@ -438,9 +435,7 @@ bool AssociatedContentManager::IsVideo() const {
          content_delegates_[0]->cached_page_content().is_video;
 }
 
-size_t AssociatedContentManager::Count() const {
-  DVLOG(1) << __func__;
-
+size_t AssociatedContentManager::GetContentDelegateCount() const {
   return content_delegates_.size();
 }
 

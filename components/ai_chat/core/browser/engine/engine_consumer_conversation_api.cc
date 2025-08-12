@@ -153,6 +153,9 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
     SuggestedQuestionsCallback callback) {
   std::vector<ConversationEvent> conversation;
   uint32_t remaining_length = max_associated_content_length_;
+
+  // Note: We iterate in reverse so that we prefer more recent page content
+  // (i.e. the oldest content will be truncated when we run out of context).
   for (const auto& content : base::Reversed(page_contents)) {
     conversation.emplace_back(
         GetAssociatedContentConversationEvent(content, remaining_length));
@@ -214,7 +217,7 @@ EngineConsumerConversationAPI::GetUserMemoryEvent() const {
 }
 
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
-    PageContentsMap page_contents,
+    PageContentsMap&& page_contents,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     const std::vector<base::WeakPtr<Tool>>& tools,
@@ -251,15 +254,19 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
 
   // Step 1:
   //   - identify large tool results and remember which ones to remove.
-  //   - generate events for the page content which we're going to keep.
+  //   - generate events for the page contents which we're going to keep.
   absl::flat_hash_set<std::pair<size_t, size_t>> large_tool_result_remove_set;
   size_t large_tool_count = 0;
 
   for (size_t message_index = conversation_history.size(); message_index > 0;
        --message_index) {
     const auto& message = conversation_history[message_index - 1];
+    DCHECK(message->uuid) << "Tried to send a turn without a uuid";
+    if (!message->uuid) {
+      continue;
+    }
 
-    // If we have page content for this turn, generate an event for it.
+    // If we have page contents for this turn, generate an event for each.
     auto page_content_it = page_contents.find(message->uuid.value());
     if (page_content_it != page_contents.end() && remaining_length != 0) {
       auto& events = page_contents_messages[message->uuid.value()];
@@ -321,6 +328,9 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const auto& message = conversation_history[message_index];
 
     // Append associated content for the message (if any).
+    // Note: We don't create the events here because we want to keep the newest
+    // page contents until we run out of context, so they need to be built in
+    // reverse chronological order.
     auto page_content_it = page_contents_messages.find(message->uuid.value());
     if (page_content_it != page_contents_messages.end()) {
       for (auto& event : page_content_it->second) {

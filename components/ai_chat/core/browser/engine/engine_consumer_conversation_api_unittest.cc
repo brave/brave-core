@@ -242,8 +242,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {{{history.back()->uuid.value_or(""), {page_content}}}}, history, "", {},
-      std::nullopt, base::DoNothing(),
+      {{{"turn-1", {page_content}}}}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -310,8 +310,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {{{history.back()->uuid.value(), {page_content_1, page_content_2}}}},
-      history, "", {}, std::nullopt, base::DoNothing(),
+      {{{"turn-1", {page_content_1, page_content_2}}}}, history, "", {},
+      std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -361,8 +361,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {{{history.back()->uuid.value_or(""), {page_content}}}}, history, "", {},
-      std::nullopt, base::DoNothing(),
+      {{{"turn-1", {page_content}}}}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -425,8 +425,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::move(completion_event), std::nullopt)));
       });
   engine_->GenerateAssistantResponse(
-      {{{history.front()->uuid.value(), {page_content}}}}, history, "", {},
-      std::nullopt, base::DoNothing(),
+      {{{"turn-1", {page_content}}}}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -985,8 +985,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
             std::move(completion_event), std::nullopt)));
       });
   engine_->GenerateAssistantResponse(
-      {{{history.front()->uuid.value(), {page_content}}}}, history, "", {},
-      std::nullopt, base::DoNothing(),
+      {{{"turn-1", {page_content}}}}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1027,8 +1027,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   history.push_back(std::move(turn));
   PageContent page_content("This is a sample page content.", false);
   engine_->GenerateAssistantResponse(
-      {{{history.back()->uuid.value_or(""), {page_content}}}}, history, "", {},
-      std::nullopt, base::DoNothing(),
+      {{{"turn-1", {page_content}}}}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1091,9 +1091,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
       std::nullopt /* model_key */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse(PageContentsMap(), history, "", {},
-                                     std::nullopt, base::DoNothing(),
-                                     future.GetCallback());
+  engine_->GenerateAssistantResponse({}, history, "", {}, std::nullopt,
+                                     base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2303,8 +2302,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     std::vector<mojom::ConversationTurnPtr> history;
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
-    std::string id = "turn-1";
-    turn->uuid = id;
+    turn->uuid = "turn-1";
     turn->character_type = mojom::CharacterType::HUMAN;
     turn->text = "What is this about?";
     history.push_back(std::move(turn));
@@ -2314,7 +2312,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContents page_contents;
     page_contents.push_back(page_content);
     engine_->GenerateAssistantResponse(
-        {{id, {page_content}}}, std::move(history), "", {}, std::nullopt,
+        {{"turn-1", {page_content}}}, std::move(history), "", {}, std::nullopt,
         base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
@@ -2480,8 +2478,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     turn->uuid = "turn-1";
     history.push_back(std::move(turn));
     mock_engine_consumer->GenerateAssistantResponse(
-        {{{history.back()->uuid.value(), {page_content_1, page_content_2}}}},
-        history, "", {}, std::nullopt, base::DoNothing(), base::DoNothing());
+        {{{"turn-1", {page_content_1, page_content_2}}}}, history, "", {},
+        std::nullopt, base::DoNothing(), base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 
@@ -2499,7 +2497,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_WithUploadedPdfFiles) {
   PageContent page_content("This is a page about The Mandalorian.", false);
-  PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   // Create test uploaded PDF files
   auto uploaded_files =
@@ -2563,7 +2560,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      page_contents, history, "", {}, std::nullopt, base::DoNothing(),
+      {{"turn-1", {page_content}}}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2573,7 +2571,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_WithMixedUploadedFiles) {
   PageContent page_content("This is a page about The Mandalorian.", false);
-  PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   // Create test uploaded files of different types
   auto uploaded_files = std::vector<mojom::UploadedFilePtr>();
@@ -2673,7 +2670,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      page_contents, history, "", {}, std::nullopt, base::DoNothing(),
+      {{"turn-1", {page_content}}}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2746,7 +2744,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithOnlyPdfFiles) {
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_WithMultiplePdfFiles) {
   PageContent page_content("This is a page about The Mandalorian.", false);
-  PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   // Create multiple PDF files
   auto uploaded_files =
@@ -2813,7 +2810,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      page_contents, history, "", {}, std::nullopt, base::DoNothing(),
+      {{"turn-1", {page_content}}}, history, "", {}, std::nullopt,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2857,7 +2855,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       });
 
   PageContent page_content("Test page content", false);
-  PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn = mojom::ConversationTurn::New(
@@ -2867,7 +2864,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      std::move(page_contents), std::move(history), "", {}, std::nullopt,
+      {{"turn-1", {page_content}}}, std::move(history), "", {}, std::nullopt,
       base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::
@@ -2913,7 +2910,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // Create page content for a turn UUID that doesn't exist in conversation
   // history
   PageContent page_content("Content for missing turn", false);
-  PageContentsMap page_contents{{"missing-turn", {page_content}}};
 
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn = mojom::ConversationTurn::New(
@@ -2923,8 +2919,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      std::move(page_contents), std::move(history), "", {}, std::nullopt,
-      base::DoNothing(),
+      {{"missing-turn", {page_content}}}, std::move(history), "", {},
+      std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::
                   GenerationResult) { /* callback handled above */ }));
@@ -2977,7 +2973,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   PageContent page_content1("First page content", false);
   PageContent video_content("Video content", true);
-  PageContentsMap page_contents{{"turn-1", {page_content1, video_content}}};
 
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn = mojom::ConversationTurn::New(
@@ -2987,8 +2982,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      std::move(page_contents), std::move(history), "", {}, std::nullopt,
-      base::DoNothing(),
+      {{"turn-1", {page_content1, video_content}}}, std::move(history), "", {},
+      std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::
                   GenerationResult) { /* callback handled above */ }));
@@ -3041,8 +3036,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   PageContent page_content1("Content for first turn", false);
   PageContent page_content2("Content for second turn", false);
-  PageContentsMap page_contents{{"turn-1", {page_content1}},
-                                {"turn-2", {page_content2}}};
 
   std::vector<mojom::ConversationTurnPtr> history;
 
@@ -3068,8 +3061,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn2));
 
   engine_->GenerateAssistantResponse(
-      std::move(page_contents), std::move(history), "", {}, std::nullopt,
-      base::DoNothing(),
+      {{"turn-1", {page_content1}}, {"turn-2", {page_content2}}},
+      std::move(history), "", {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::
                   GenerationResult) { /* callback handled above */ }));

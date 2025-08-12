@@ -266,8 +266,7 @@ TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
   EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[1].GetDict().Find("content"),
             "This is a video "
-            "transcript:\n\n\u003Ctranscript>\nThis is content 2 "
-            "an\n\u003C/transcript>\n\n");
+            "transcript:\n\n\u003Ctranscript>\nThi\n\u003C/transcript>\n\n");
 }
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
@@ -393,12 +392,13 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
 
 TEST_F(EngineConsumerOAIUnitTest,
        GenerateAssistantResponseWithDefaultSystemPrompt) {
-  PageContent page_content;
+  PageContent page_content("Page content 1", false);
   // Create a set of options WITHOUT a custom system prompt.
   auto options = mojom::CustomModelOptions::New();
   options->endpoint = GURL("https://test.com/");
   options->model_request_name = "request_name";
   options->api_key = "api_key";
+  options->max_associated_content_length = 1000;
 
   // Build a new model with the prompt-less options.
   model_ = mojom::Model::New();
@@ -461,7 +461,7 @@ TEST_F(EngineConsumerOAIUnitTest,
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
                       "This is the text of a web "
-                      "page:\n\u003Cpage>\n\n\u003C/page>\n\n");
+                      "page:\n\u003Cpage>\nPage content 1\n\u003C/page>\n\n");
 
             EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[2].GetDict().Find("content"), human_input);
@@ -1360,21 +1360,78 @@ TEST_F(EngineConsumerOAIUnitTest,
       std::nullopt, conversation_history);
 
   // Should have system message + 2 page content messages + human turn
-  ASSERT_GE(messages.size(), 4u);
+  ASSERT_EQ(messages.size(), 4u);
 
-  // Check that both page contents are included before the turn
-  std::string all_content;
-  for (size_t i = 1; i < messages.size() - 1;
-       ++i) {  // Skip system and last message
-    if (messages[i].GetDict().Find("role")->GetString() == "user") {
-      all_content += *messages[i].GetDict().FindString("content");
-    }
-  }
+  EXPECT_EQ(*messages[0].GetDict().FindString("role"), "system");
 
-  EXPECT_THAT(all_content, testing::HasSubstr("First page content"));
-  EXPECT_THAT(all_content, testing::HasSubstr("Video content"));
-  EXPECT_THAT(all_content, testing::HasSubstr("<page>"));
-  EXPECT_THAT(all_content, testing::HasSubstr("<transcript>"));
+  // Check that video content is included
+  EXPECT_EQ(*messages[1].GetDict().FindString("role"), "user");
+  EXPECT_THAT(*messages[1].GetDict().FindString("content"),
+              testing::HasSubstr("Video content"));
+
+  // Check that the page content is included
+  EXPECT_EQ(*messages[2].GetDict().FindString("role"), "user");
+  EXPECT_THAT(*messages[2].GetDict().FindString("content"),
+              testing::HasSubstr("First page content"));
+
+  // Check that human turn is included after the page contents
+  EXPECT_EQ(*messages[3].GetDict().FindString("role"), "user");
+  EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message");
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildMessages_MultiplePageContents_MultipleTurns) {
+  PageContent page_1("Page 1", false);
+  PageContent page_2("Page 2", false);
+  PageContent page_3("Page 3", false);
+
+  PageContentsMap page_contents;
+  page_contents["turn-1"] = {std::cref(page_1)};
+  page_contents["turn-2"] = {std::cref(page_2), std::cref(page_3)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  auto turn1 = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 1", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn1));
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 2", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn2));
+
+  auto messages = engine_->BuildMessages(
+      *model_->options->get_custom_model_options(), page_contents, std::nullopt,
+      std::nullopt, conversation_history);
+
+  // Should have system message + 3 page content messages + 2 human turns
+  ASSERT_EQ(messages.size(), 6u);
+
+  EXPECT_EQ(*messages[0].GetDict().FindString("role"), "system");
+
+  // Check that page content is included before the first human turn
+  EXPECT_EQ(*messages[1].GetDict().FindString("role"), "user");
+  EXPECT_THAT(*messages[1].GetDict().FindString("content"),
+              testing::HasSubstr("Page 1"));
+
+  // turn-1
+  EXPECT_EQ(*messages[2].GetDict().FindString("role"), "user");
+  EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 1");
+
+  // Check that page 2 & 3 are included before the second human turn
+  EXPECT_EQ(*messages[3].GetDict().FindString("role"), "user");
+  EXPECT_THAT(*messages[3].GetDict().FindString("content"),
+              testing::HasSubstr("Page 3"));
+  EXPECT_EQ(*messages[4].GetDict().FindString("role"), "user");
+  EXPECT_THAT(*messages[4].GetDict().FindString("content"),
+              testing::HasSubstr("Page 2"));
+
+  // turn-2
+  EXPECT_EQ(*messages[5].GetDict().FindString("role"), "user");
+  EXPECT_EQ(*messages[5].GetDict().FindString("content"), "Human message 2");
 }
 
 TEST_F(EngineConsumerOAIUnitTest, BuildMessages_EmptyPageContentsMap) {
@@ -1423,6 +1480,313 @@ TEST_F(EngineConsumerOAIUnitTest, BuildMessages_NonExistentTurnId) {
   EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
   EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
   EXPECT_EQ(*messages[1].GetDict().Find("content"), "Human message");
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       BuildMessages_MultiplePageContents_MultipleTurns_TooLong) {
+  PageContent page_content_1("11111111111111111111111111111111111", false);
+  PageContent page_content_2("22222222222222222222222222222222222", false);
+  PageContent page_content_3("33333333333333333333333333333333333", false);
+
+  PageContentsMap page_contents;
+  page_contents["turn-1"] = {std::cref(page_content_1),
+                             std::cref(page_content_2)};
+  page_contents["turn-2"] = {std::cref(page_content_3)};
+
+  EngineConsumer::ConversationHistory conversation_history;
+
+  auto turn1 = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 1", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn1));
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 2", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  conversation_history.push_back(std::move(turn2));
+
+  // Max Length = 1000 (should include all the page contents)
+  {
+    engine_->SetMaxAssociatedContentLengthForTesting(1000);
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    // Should only have system message + 2 x human turn + 3 x page content
+    ASSERT_EQ(messages.size(), 6u);
+
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+    EXPECT_EQ(
+        *messages[1].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n22222222222222222222222222222222222\n</page>\n\n");
+    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+    EXPECT_EQ(
+        *messages[2].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n11111111111111111111111111111111111\n</page>\n\n");
+    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 1");
+    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
+    EXPECT_EQ(
+        *messages[4].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
+    EXPECT_EQ(*messages[5].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[5].GetDict().FindString("content"), "Human message 2");
+  }
+
+  // Max Length = 100 (should truncate some of page content 1)
+  {
+    engine_->SetMaxAssociatedContentLengthForTesting(100);
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    // Should only have system message + 2 x human turn + 3 x page content
+    ASSERT_EQ(messages.size(), 6u);
+
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+    EXPECT_EQ(
+        *messages[1].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n22222222222222222222222222222222222\n</page>\n\n");
+    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+
+    // Note: As the page content is too long this page content is truncated
+    // (each content is 35 chars long, so the last 5 are truncated).
+    EXPECT_EQ(*messages[2].GetDict().FindString("content"),
+              "This is the text of a web "
+              "page:\n<page>\n111111111111111111111111111111\n</page>\n\n");
+    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 1");
+    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
+    EXPECT_EQ(
+        *messages[4].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
+    EXPECT_EQ(*messages[5].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[5].GetDict().FindString("content"), "Human message 2");
+  }
+
+  // Max Length = 71 (should include all of page content 3 and all of page
+  // content 2 and 1 character of page content 1).
+  {
+    engine_->SetMaxAssociatedContentLengthForTesting(71);
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    // Should only have system message + 2 x human turn + 3 x page content
+    ASSERT_EQ(messages.size(), 6u);
+
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+    // Note: As the page content is too long this page content is truncated
+    // (each content is 35 chars long, so the last 5 are truncated).
+    EXPECT_EQ(
+        *messages[1].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n22222222222222222222222222222222222\n</page>\n\n");
+    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+    // Note: As the page content is too long this page content is truncated
+    // to 1 character.
+    EXPECT_EQ(*messages[2].GetDict().FindString("content"),
+              "This is the text of a web "
+              "page:\n<page>\n1\n</page>\n\n");
+    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 1");
+    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
+    EXPECT_EQ(
+        *messages[4].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
+    EXPECT_EQ(*messages[5].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[5].GetDict().FindString("content"), "Human message 2");
+  }
+
+  // Max Length = 70 (should include all of page content 3 and all of page
+  // content 2).
+  {
+    engine_->SetMaxAssociatedContentLengthForTesting(70);
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    // Should only have system message + 2 x human turn + 2 x page content
+    ASSERT_EQ(messages.size(), 5u);
+
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+    // Note: As the page content is too long this page content is truncated
+    // (each content is 35 chars long, so the last 5 are truncated).
+    EXPECT_EQ(
+        *messages[1].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n22222222222222222222222222222222222\n</page>\n\n");
+    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 1");
+    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+    EXPECT_EQ(
+        *messages[3].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
+    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[4].GetDict().FindString("content"), "Human message 2");
+  }
+
+  // Max Length = 65 (should include all of page content 3 and most of page
+  // content 2).
+  {
+    engine_->SetMaxAssociatedContentLengthForTesting(65);
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    // Should only have system message + 2 x human turn + 2 x page content
+    ASSERT_EQ(messages.size(), 5u);
+
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+    // Note: As the page content is too long this page content is truncated
+    // (each content is 35 chars long, so the last 5 are truncated).
+    EXPECT_EQ(*messages[1].GetDict().FindString("content"),
+              "This is the text of a web "
+              "page:\n<page>\n222222222222222222222222222222\n</page>\n\n");
+    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 1");
+    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+    EXPECT_EQ(
+        *messages[3].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
+    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[4].GetDict().FindString("content"), "Human message 2");
+  }
+
+  // Max Length = 36 (should include all of page content 3 and one character of
+  // page content 2).
+  {
+    engine_->SetMaxAssociatedContentLengthForTesting(36);
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    // Should only have system message + 2 x human turn + 2 x page content
+    ASSERT_EQ(messages.size(), 5u);
+
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+    // Note: As the page content is too long this page content is truncated
+    // to 1 character.
+    EXPECT_EQ(*messages[1].GetDict().FindString("content"),
+              "This is the text of a web "
+              "page:\n<page>\n2\n</page>\n\n");
+    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 1");
+    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+    EXPECT_EQ(
+        *messages[3].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
+    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[4].GetDict().FindString("content"), "Human message 2");
+  }
+
+  // Max Length = 35 (should include all of page content 3).
+  {
+    engine_->SetMaxAssociatedContentLengthForTesting(35);
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    // Should only have system message + 2 x human turn + 1 x page content
+    ASSERT_EQ(messages.size(), 4u);
+
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[1].GetDict().FindString("content"), "Human message 1");
+    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+    EXPECT_EQ(
+        *messages[2].GetDict().FindString("content"),
+        "This is the text of a web "
+        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
+    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 2");
+  }
+
+  // Max Length = 10 (should only include some of page content 3)
+  {
+    engine_->SetMaxAssociatedContentLengthForTesting(10);
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    // Should only have system message + 2 x human turn + 1 x page content
+    ASSERT_EQ(messages.size(), 4u);
+
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[1].GetDict().FindString("content"), "Human message 1");
+    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[2].GetDict().FindString("content"),
+              "This is the text of a web "
+              "page:\n<page>\n3333333333\n</page>\n\n");
+    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 2");
+  }
+
+  // Max Length = 1 (should include one char of page content 3).
+  {
+    engine_->SetMaxAssociatedContentLengthForTesting(1);
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    // Should only have system message + 2 x human turn + 1 x page content
+    ASSERT_EQ(messages.size(), 4u);
+
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[1].GetDict().FindString("content"), "Human message 1");
+    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[2].GetDict().FindString("content"),
+              "This is the text of a web "
+              "page:\n<page>\n3\n</page>\n\n");
+    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 2");
+  }
+
+  // Max Length = 0 (should include no page content)
+  {
+    engine_->SetMaxAssociatedContentLengthForTesting(0);
+    auto messages = engine_->BuildMessages(
+        *model_->options->get_custom_model_options(), page_contents,
+        std::nullopt, std::nullopt, conversation_history);
+
+    // Should only have system message + 2 x human turn
+    ASSERT_EQ(messages.size(), 3u);
+
+    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[1].GetDict().FindString("content"), "Human message 1");
+    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+    EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 2");
+  }
 }
 
 }  // namespace ai_chat

@@ -27,7 +27,7 @@ class ConversationHandler;
 
 using PageContents = std::vector<std::reference_wrapper<const PageContent>>;
 using PageContentsMap = base::flat_map<std::string, PageContents>;
-using GetAllContentCallback = base::OnceCallback<void(PageContents)>;
+using GetAllContentCallback = base::OnceCallback<void()>;
 
 // This class is responsible for managing the content associated with a
 // conversation. This includes:
@@ -68,8 +68,8 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   // Clears all content from the conversation.
   void ClearContent();
 
-  // Associates all content which doesn't have a turn with |turn|.
-  // Note: |turn| must have a non-empty |uuid| field.
+  // Associates all content which hasn't been associated with a turn with
+  // |turn|. Note: |turn| must have a non-empty |uuid| field.
   void AssociateUnsentContentWithTurn(const mojom::ConversationTurnPtr& turn);
 
   // Checks if the content has changed from what is stored in the cache.
@@ -101,7 +101,7 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   bool IsVideo() const;
 
   // The number of content delegates.
-  size_t Count() const;
+  size_t GetContentDelegateCount() const;
 
   // AssociatedContentDelegate::Observer:
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;

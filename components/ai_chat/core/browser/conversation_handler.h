@@ -252,6 +252,10 @@ class ConversationHandler : public mojom::ConversationHandler,
     is_request_in_progress_ = in_progress;
   }
 
+  const mojom::Conversation& GetMetadataForTesting() const {
+    return *metadata_;
+  }
+
  protected:
   // ModelService::Observer
   void OnModelListUpdated() override;
@@ -307,13 +311,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
   void PerformAssistantGenerationWithPossibleContent();
 
-  // TODO(fallaciousreasoning): This shouldn't take a PageContents.
-  void PerformAssistantGeneration(PageContents page_contents);
+  void PerformAssistantGeneration();
   void SetAPIError(const mojom::APIError& error);
   void UpdateOrCreateLastAssistantEntry(
       EngineConsumer::GenerationResultData result);
   void MaybeSeedOrClearSuggestions();
-  void PerformQuestionGeneration(PageContents page_contents);
+  void PerformQuestionGeneration();
 
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);

@@ -53,7 +53,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
-      PageContentsMap page_contents,
+      PageContentsMap&& page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       const std::vector<base::WeakPtr<Tool>>& tools,
@@ -92,9 +92,14 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
                            BuildMessages_MultiplePageContentsForSameTurn);
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildMessages_MultiplePageContents_MultipleTurns);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
                            BuildMessages_EmptyPageContentsMap);
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
                            BuildMessages_NonExistentTurnId);
+  FRIEND_TEST_ALL_PREFIXES(
+      EngineConsumerOAIUnitTest,
+      BuildMessages_MultiplePageContents_MultipleTurns_TooLong);
 
   base::Value::List BuildPageContentMessages(
       PageContents& page_contents,
