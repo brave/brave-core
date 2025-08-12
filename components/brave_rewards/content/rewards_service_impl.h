@@ -99,9 +99,7 @@ class RewardsServiceImpl final : public RewardsService,
 
   bool IsInitialized() override;
 
-  void Init(std::unique_ptr<RewardsServiceObserver> extension_observer,
-            std::unique_ptr<RewardsNotificationServiceObserver>
-                notification_observer);
+  void Init(std::unique_ptr<RewardsServiceObserver> extension_observer);
 
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;

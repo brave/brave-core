@@ -74,8 +74,6 @@ source_set("extensions") {
     "api/brave_theme_api.h",
     "api/identity/brave_web_auth_flow.cc",
     "api/identity/brave_web_auth_flow.h",
-    "api/rewards_notifications_api.cc",
-    "api/rewards_notifications_api.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
     "api/web_discovery_api.cc",
