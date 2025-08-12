@@ -55,11 +55,12 @@ std::array<uint8_t, kSr25519PublicKeySize> PolkadotKeyring::GetPublicKey(
   return keypair.GetPublicKey();
 }
 
-std::string PolkadotKeyring::GetUnifiedAddress(uint32_t account_index) {
+std::string PolkadotKeyring::GetAddress(uint32_t account_index,
+                                        uint16_t prefix) {
   auto& keypair = GetKeypairOrInsert(account_index);
 
   Ss58Address addr;
-  addr.prefix = 0;
+  addr.prefix = prefix;
   base::span(addr.public_key)
       .copy_from_nonoverlapping(
           base::span<uint8_t const>(keypair.GetPublicKey()));
