@@ -350,7 +350,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   ToggleVerticalTabStrip();
 
   // Pre-condition: Floating mode is enabled by default.
-  using State = VerticalTabStripRegionView::State;
+  using State = BraveVerticalTabStripRegionView::State;
   ASSERT_TRUE(tabs::utils::IsFloatingVerticalTabsEnabled(browser()));
   auto* widget_delegate_view =
       browser_view()->vertical_tab_strip_widget_delegate_view_.get();
@@ -494,7 +494,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
 
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
 
   auto* model = browser()->tab_strip_model();
   ASSERT_EQ(2, model->count());
@@ -522,7 +523,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
 
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
 
   auto* model = browser()->tab_strip_model();
   model->SetTabPinned(0, true);
@@ -601,7 +603,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
       prefs->GetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow));
 
   // When clicking the toggle button,
-  using State = VerticalTabStripRegionView::State;
+  using State = BraveVerticalTabStripRegionView::State;
   auto* region_view_1 = browser_view()
                             ->vertical_tab_strip_widget_delegate_view_
                             ->vertical_tab_strip_region_view();
@@ -656,7 +658,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedWidth) {
       prefs->GetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow));
 
   // When setting the expanded width,
-  using State = VerticalTabStripRegionView::State;
+  using State = BraveVerticalTabStripRegionView::State;
   auto* region_view_1 = browser_view()
                             ->vertical_tab_strip_widget_delegate_view_
                             ->vertical_tab_strip_region_view();
@@ -886,7 +888,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
 
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
 
   // Drag and drop a tab to reorder it -----------------------------------------
   GetTabStrip(browser())->StopAnimating(
@@ -1155,7 +1158,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   ASSERT_TRUE(region_view);
 
   region_view->ToggleState();
-  ASSERT_EQ(VerticalTabStripRegionView::State::kCollapsed,
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
             region_view->state());
 
   // The minimum width of the region view should be 4px, which is narrower than
