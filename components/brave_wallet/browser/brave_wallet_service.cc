@@ -17,6 +17,7 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
@@ -44,6 +45,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -1957,6 +1959,26 @@ BraveWalletService::GetTransactionSimulationOptInStatusSync() {
 void BraveWalletService::SetTransactionSimulationOptInStatus(
     mojom::BlowfishOptInStatus status) {
   ::brave_wallet::SetTransactionSimulationOptInStatus(profile_prefs_, status);
+}
+
+void BraveWalletService::WriteToClipboard(const std::string& text,
+                                          bool is_sensitive) {
+  // We manually disable the iOS builds here because of an upstream bug in how
+  // Chromium is adding sources to the clipboard component. It only
+  // conditionally adds the iOS sources when use_blink=true, which unfortunately
+  // leads to a whole slew of unresolved symbols during linking.
+  // https://source.chromium.org/chromium/chromium/src/+/066b9c51bfb0a1eddcfefa7aa809348ea181f8ac:ui/base/clipboard/BUILD.gn;l=21-27
+#if !BUILDFLAG(IS_IOS)
+  ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
+  std::u16string out;
+  base::UTF8ToUTF16(text.data(), text.size(), &out);
+  scw.WriteText(out);
+  if (is_sensitive) {
+    scw.MarkAsConfidential();
+  }
+#else
+  NOTREACHED();
+#endif
 }
 
 base::CallbackListSubscription

@@ -512,6 +512,16 @@ export const walletEndpoints = ({
         }
       },
     }),
+
+    copyToClipboardConfidentially: mutation<boolean, { text: string }>({
+      queryFn: async ({ text }, { endpoint }, extraOptions, baseQuery) => {
+        const { data: api } = baseQuery(undefined)
+        api.braveWalletService.writeToClipboard(text, true)
+        return {
+          data: true,
+        }
+      },
+    }),
   }
 }
 
