@@ -171,7 +171,7 @@ export const WalletSettingsMenu = (props: Props) => {
   }
 
   const onClickBackup = React.useCallback(() => {
-    if (isAndroid) {
+    if (isMobile) {
       getWalletPageApiProxy().pageHandler.showWalletBackupUI()
       return
     }
@@ -192,7 +192,7 @@ export const WalletSettingsMenu = (props: Props) => {
       return
     }
     history.push(WalletRoutes.Backup)
-  }, [isAndroid, isPanel, history])
+  }, [isMobile, isPanel, history])
 
   // Memos
   const accountSettingsOptions = React.useMemo(() => {
