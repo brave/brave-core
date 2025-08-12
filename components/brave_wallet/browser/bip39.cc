@@ -9,6 +9,7 @@
 #include "base/strings/strcat.h"
 #include "brave/third_party/bip39wally-core-native/include/wally_bip39.h"
 #include "crypto/kdf.h"
+#include "crypto/process_bound_string.h"
 
 namespace brave_wallet::bip39 {
 
@@ -19,7 +20,6 @@ inline constexpr uint32_t kMaxSupportedEntropySize = 32;
 
 // https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki#from-mnemonic-to-seed
 inline constexpr uint32_t kPBKDF2Iterations = 2048;
-inline constexpr uint32_t kSeedSize = 64;
 
 std::optional<std::string> GenerateMnemonicInternal(
     base::span<const uint8_t> entropy) {
@@ -91,6 +91,36 @@ bool IsValidMnemonic(std::string_view mnemonic) {
     return false;
   }
   return true;
+}
+
+// The polkadot-sdk derives seeds from mnemonics in a way divergent from
+// normal BIP-39 routines. Instead, it hashes the derived entropy instead of
+// the mnemonic so we need a special routine just for Polkadot:
+// https://github.com/paritytech/polkadot-sdk/blob/beb9030b249cc078b3955232074a8495e7e0302a/substrate/primitives/core/src/crypto.rs#L866-L883
+// https://github.com/paritytech/polkadot-sdk/blob/beb9030b249cc078b3955232074a8495e7e0302a/substrate/utils/substrate-bip39/src/lib.rs#L52-L70
+// https://wiki.polkadot.com/learn/learn-account-advanced/#portability
+std::optional<std::array<uint8_t, kSeedSize>> MnemonicToEntropyToSeed(
+    std::string_view mnemonic,
+    std::string_view password) {
+  auto entropy = bip39::MnemonicToEntropy(mnemonic);
+  if (!entropy) {
+    return std::nullopt;
+  }
+
+  crypto::SecureString salt;
+  salt.reserve(8 + password.size());
+  salt.append("mnemonic");
+  salt.append(password);
+
+  std::array<uint8_t, kSeedSize> seed = {};
+
+  if (!crypto::kdf::DeriveKeyPbkdf2HmacSha512({.iterations = kPBKDF2Iterations},
+                                              *entropy,
+                                              base::as_byte_span(salt), seed)) {
+    return std::nullopt;
+  }
+
+  return seed;
 }
 
 }  // namespace brave_wallet::bip39

@@ -23,7 +23,8 @@ inline constexpr const char* kDevPhrase =
     "bottom drive obey lake curtain smoke basket hold race lonely fit walk";
 
 inline constexpr char const* kDevSeed =
-    "FAC7959DBFE72F052E5A0C3C8D6530F202B02FD8F9F5CA3580EC8DEB7797479E";
+    "FAC7959DBFE72F052E5A0C3C8D6530F202B02FD8F9F5CA3580EC8DEB7797479E0B9F67282F"
+    "42D1214E457243B9EB38A0A5ED13DE66C01CFB213A6FE73CEDEF5A";
 
 inline constexpr char const* kDevPubKey =
     "46EBDDEF8CD9BB167DC30878D7113B7E168E6F0646BEFFD77D69D39BAD76B47A";
@@ -40,12 +41,13 @@ inline constexpr const char* kDevAddress =
 }  // namespace
 
 TEST(PolkadotKeyring, GenerateRoot) {
-  auto seed = PolkadotKeyring::MnemonicToSeed(kDevPhrase).value();
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   EXPECT_EQ(base::HexEncode(seed), kDevSeed);
 
   // Verify that our seed can be used to derive a keypair with a public key that
   // matches the test vector.
-  auto keypair = HDKeySr25519::GenerateFromSeed(seed);
+  auto keypair = HDKeySr25519::GenerateFromSeed(
+      base::span(seed).first<kSr25519SeedSize>());
   auto pubkey = keypair.GetPublicKey();
 
   // https://wiki.polkadot.com/learn/learn-account-advanced/#for-the-curious-how-prefixes-work
@@ -63,7 +65,8 @@ TEST(PolkadotKeyring, GenerateRoot) {
 }
 
 TEST(PolkadotKeyring, Constructor) {
-  auto seed = PolkadotKeyring::MnemonicToSeed(kDevPhrase).value();
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+
   PolkadotKeyring keyring(seed, mojom::KeyringId::kPolkadotMainnet);
   EXPECT_FALSE(keyring.IsTestNet());
 
@@ -90,7 +93,7 @@ TEST(PolkadotKeyring, GetUnifiedAddress) {
   //
   // clang-format on
 
-  auto seed = PolkadotKeyring::MnemonicToSeed(kDevPhrase).value();
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   PolkadotKeyring keyring(seed, mojom::KeyringId::kPolkadotMainnet);
 
   constexpr char const* kAddress0 =
@@ -134,7 +137,7 @@ TEST(PolkadotKeyring, GetPublicKey) {
   //
   // clang-format on
 
-  auto seed = PolkadotKeyring::MnemonicToSeed(kDevPhrase).value();
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   PolkadotKeyring keyring(seed, mojom::KeyringId::kPolkadotMainnet);
 
   auto pubkey = keyring.GetPublicKey(0);
@@ -145,7 +148,7 @@ TEST(PolkadotKeyring, GetPublicKey) {
 }
 
 TEST(PolkadotKeyring, SignAndVerifyMessage) {
-  auto seed = PolkadotKeyring::MnemonicToSeed(kDevPhrase).value();
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
   PolkadotKeyring keyring(seed, mojom::KeyringId::kPolkadotMainnet);
 
   std::string_view message = "hello, world!";
