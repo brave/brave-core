@@ -183,7 +183,8 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
   auto is_shields_down = IsBraveShieldsDown(primary_url, secondary_url);
   auto is_script_temporarily_allowed =
       IsScriptTemporarilyAllowed(secondary_url);
-  allow = allow || is_shields_down || is_script_temporarily_allowed;
+  allow = allow || is_shields_down || is_script_temporarily_allowed ||
+          IsShieldsAdBlockOnlyModeEnabled();
   if (!allow) {
     blocked_script_url_ = secondary_url;
   } else if (!is_shields_down) {
@@ -226,7 +227,8 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   auto is_shields_down = IsBraveShieldsDown(primary_url, secondary_url);
   auto is_script_temporarily_allowed =
       IsScriptTemporarilyAllowed(secondary_url);
-  allow = allow || is_shields_down || is_script_temporarily_allowed;
+  allow = allow || is_shields_down || is_script_temporarily_allowed ||
+          IsShieldsAdBlockOnlyModeEnabled();
 
   if (!allow) {
     blocked_script_url_ = secondary_url;
