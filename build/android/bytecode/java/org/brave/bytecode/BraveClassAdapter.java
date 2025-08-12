@@ -54,6 +54,7 @@ public class BraveClassAdapter {
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveFeedSurfaceMediatorClassAdapter(chain);
         chain = new BraveForegroundServiceUtilsClassAdapter(chain);
+        chain = new BraveFragmentDependencyProviderClassAdapter(chain);
         chain = new BraveFreIntentCreatorClassAdapter(chain);
         chain = new BraveHelpAndFeedbackLauncherImplClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);
@@ -89,8 +90,8 @@ public class BraveClassAdapter {
         chain = new BraveNotificationPlatformBridgeClassAdapter(chain);
         chain = new BraveOmniboxResourceProviderClassAdapter(chain);
         chain = new BravePartialCustomTabBottomSheetStrategyClassAdapter(chain);
-        chain = new BravePasswordAccessReauthenticationHelperClassAdapter(chain);
-        chain = new BravePasswordSettingsBaseClassAdapter(chain);
+        chain = new BravePasswordManagerHelperClassAdapter(chain);
+        chain = new BravePasswordsPreferenceClassAdapter(chain);
         chain = new BravePermissionDialogDelegateClassAdapter(chain);
         chain = new BravePermissionDialogModelClassAdapter(chain);
         chain = new BravePictureInPictureActivityClassAdapter(chain);
