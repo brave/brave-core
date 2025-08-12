@@ -10,47 +10,13 @@
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "crypto/kdf.h"
-#include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
 
-std::optional<std::array<uint8_t, kSr25519SeedSize>>
-PolkadotKeyring::MnemonicToSeed(std::string_view mnemonic,
-                                std::string_view password) {
-  // https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki#from-mnemonic-to-seed
-  constexpr uint32_t kPBKDF2Iterations = 2048;
-  constexpr uint32_t kSeedSize = 64;
-
-  auto entropy = bip39::MnemonicToEntropy(mnemonic);
-  if (!entropy) {
-    return std::nullopt;
-  }
-
-  crypto::SecureString salt;
-  salt.reserve(8 + password.size());
-  salt.append("mnemonic");
-  salt.append(password);
-
-  std::array<uint8_t, kSeedSize> seed = {};
-
-  if (!crypto::kdf::DeriveKeyPbkdf2HmacSha512({.iterations = kPBKDF2Iterations},
-                                              *entropy,
-                                              base::as_byte_span(salt), seed)) {
-    return std::nullopt;
-  }
-
-  std::array<uint8_t, kSr25519SeedSize> sr25519_seed = {};
-  base::span(sr25519_seed)
-      .copy_from_nonoverlapping(base::span(seed).first(kSr25519SeedSize));
-
-  return sr25519_seed;
-}
-
 PolkadotKeyring::PolkadotKeyring(
-    base::span<const uint8_t, kSr25519SeedSize> seed,
+    base::span<const uint8_t, bip39::kSeedSize> seed,
     mojom::KeyringId keyring_id)
-    : root_account_key_(HDKeySr25519::GenerateFromSeed(seed)),
+    : root_account_key_(HDKeySr25519::GenerateFromSeed(seed.first<32>())),
       keyring_id_(keyring_id) {
   // can be useful to remember:
   // https://wiki.polkadot.com/learn/learn-account-advanced/#derivation-paths
