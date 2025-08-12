@@ -174,19 +174,21 @@ void BraveBrowserViewLayout::LayoutTabStripRegion(gfx::Rect& available_bounds) {
   return BrowserViewLayout::LayoutTabStripRegion(available_bounds);
 }
 
-void BraveBrowserViewLayout::LayoutBookmarkAndInfoBars(
-    gfx::Rect& available_bounds,
-    int browser_view_y) {
+void BraveBrowserViewLayout::LayoutBookmarkBar(gfx::Rect& available_bounds) {
   if (!vertical_tab_strip_host_ || !ShouldPushBookmarkBarForVerticalTabs()) {
-    BrowserViewLayout::LayoutBookmarkAndInfoBars(available_bounds,
-                                                 browser_view_y);
+    BrowserViewLayout::LayoutBookmarkBar(available_bounds);
     return;
   }
 
-  available_bounds.Inset(GetInsetsConsideringVerticalTabHost());
-  BrowserViewLayout::LayoutBookmarkAndInfoBars(available_bounds,
-                                               browser_view_y);
-  return;
+  // Set insets for vertical tab and restore after finishing infobar layout.
+  // Each control's layout will consider vertical tab.
+  const auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
+  available_bounds.Inset(insets_for_vertical_tab);
+  BrowserViewLayout::LayoutBookmarkBar(available_bounds);
+  gfx::Outsets outsets_for_restore_insets;
+  outsets_for_restore_insets.set_left_right(insets_for_vertical_tab.left(),
+                                            insets_for_vertical_tab.right());
+  available_bounds.Outset(outsets_for_restore_insets);
 }
 
 void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
@@ -195,15 +197,15 @@ void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
     return;
   }
 
-  if (ShouldPushBookmarkBarForVerticalTabs()) {
-    // Insets are already applied from LayoutBookmarkAndInfoBar().
-    BrowserViewLayout::LayoutInfoBar(available_bounds);
-    return;
-  }
-
-  auto new_rect = available_bounds;
-  new_rect.Inset(GetInsetsConsideringVerticalTabHost());
-  BrowserViewLayout::LayoutInfoBar(new_rect);
+  // Set insets for vertical tab and restore after finishing infobar layout.
+  // Each control's layout will consider vertical tab.
+  const auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
+  available_bounds.Inset(insets_for_vertical_tab);
+  BrowserViewLayout::LayoutInfoBar(available_bounds);
+  gfx::Outsets outsets_for_restore_insets;
+  outsets_for_restore_insets.set_left_right(insets_for_vertical_tab.left(),
+                                            insets_for_vertical_tab.right());
+  available_bounds.Outset(outsets_for_restore_insets);
 }
 
 void BraveBrowserViewLayout::LayoutContentsContainerView(
