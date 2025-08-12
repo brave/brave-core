@@ -74,13 +74,39 @@
     height: auto;
   }
 
-  :host-context(#brave-element-picker.minimized) #main-section.desktop {
-    width: 56px;
-    padding: 0px;
-    height: 56px;
-    min-width: auto;
-    border-radius: 12px;
-    background-color: var(--primary);
+  :host-context(#brave-element-picker.minimized) {
+    #main-section.desktop {
+      width: 56px;
+      padding: 0px;
+      height: 56px;
+      min-width: auto;
+      border-radius: 12px;
+      background-color: var(--primary);
+    }
+
+    #main-section:not(.desktop) {
+      transition: transform 0.3s ease;
+      transform: translateY(calc(100% - 28px));
+    }
+
+    .desktop .drag-header {
+      display: none;
+    }
+
+    .desktop .minimized-icon {
+      display: block;
+      height: 25px;
+      width: 25px;
+      cursor: pointer;
+      margin: 15px;
+    }
+    .desktop .minimized-icon path {
+      fill: var(--dynamic-color-rgb);
+    }
+
+    .desktop #slider-container, .desktop #buttons {
+      display: none;;
+    }
   }
 
   @media (orientation: portrait) {
@@ -101,10 +127,6 @@
     }
   }
 
-  :host-context(#brave-element-picker.minimized) #main-section:not(.desktop) {
-    transition: transform 0.3s ease;
-    transform: translateY(calc(100% - 28px));
-  }
 
   .drag-header {
     position: absolute;
@@ -132,11 +154,10 @@
     border-radius: 2px;
   }
 
-  :host-context(#brave-element-picker.minimized) .desktop .drag-header,
   .desktop .drag-indicator {
-    display: none;
+      display: none;
   }
-
+  
   #title {
     display: none;
   }
@@ -173,18 +194,6 @@
 
   .minimized-icon {
     display: none;
-  }
-
-  :host-context(#brave-element-picker.minimized) .desktop .minimized-icon {
-    display: block;
-    height: 25px;
-    width: 25px;
-    cursor: pointer;
-    margin: 15px;
-  }
-
-  :host-context(#brave-element-picker.minimized) .desktop .minimized-icon path {
-    fill: var(--dynamic-color-rgb);
   }
 
   #main-section input {
@@ -259,11 +268,6 @@
     padding-top: 10px;
     padding-left: 4px;
     padding-right: 6px;
-  }
-
-  :host-context(#brave-element-picker.minimized) .desktop #slider-container,
-  :host-context(#brave-element-picker.minimized) .desktop #buttons {
-    display: none;;
   }
 
   .target {
