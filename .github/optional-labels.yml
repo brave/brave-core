@@ -20,6 +20,8 @@ CI/run-perf-smoke-tests:
   - changed-files:
     - any-glob-to-any-file:
       - brave/tools/perf/*
+      - brave/patches/tools-perf-*
+      - brave/patches/third_party/catapult/*
 
 CI/run-upstream-tests:
   - changed-files:
