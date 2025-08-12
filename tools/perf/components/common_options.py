@@ -95,7 +95,10 @@ class CommonOptions:
                         '--target_os',
                         type=str,
                         choices=['windows', 'mac', 'linux', 'android'])
-    parser.add_argument('--target-arch', type=str, choices=['x64', 'arm64'])
+    parser.add_argument('--target-arch',
+                        '--target_arch',
+                        type=str,
+                        choices=['x64', 'arm64', 'x86'])
     parser.add_argument(
         '--reboot-android',
         action='store_true',
