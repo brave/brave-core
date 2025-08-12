@@ -47,10 +47,6 @@ class AdblockScriptletList extends AdblockScriptletListBase {
     }
   }
 
-  static get observers() {
-    return ['onSctiptelsListChanged_(customScriptletsList_)']
-  }
-
   declare customScriptletsList_: Scriptlet[]
   declare editingScriptlet_: Scriptlet | null
   declare isEditing_: boolean
@@ -98,25 +94,14 @@ class AdblockScriptletList extends AdblockScriptletListBase {
       }
     }
 
-    this.browserProxy_
-      .removeCustomScriptlet(this.customScriptletsList_[e.model.index].name)
-      .then((_: ErrorCode) =>
-        this.browserProxy_.getCustomScriptlets().then((scriptlets) => {
-          this.customScriptletsList_ = scriptlets
-        })
-      )
+    this.browserProxy_.removeCustomScriptlet(
+      this.customScriptletsList_[e.model.index].name,
+    )
   }
 
   scriptletEditorClosed_(_: any) {
     this.editingScriptlet_ = null
     this.isEditing_ = false
-    this.browserProxy_.getCustomScriptlets().then((scriptlets) => {
-      this.customScriptletsList_ = scriptlets
-    })
-  }
-
-  private onSctiptelsListChanged_(scriptlets: Scriptlet[]) {
-    this.fire('list-changed', { value: scriptlets })
   }
 }
 
