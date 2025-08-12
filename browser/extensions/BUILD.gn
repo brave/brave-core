@@ -24,7 +24,6 @@ source_set("component_loader") {
   deps = [
     "//base",
     "//brave/components/brave_extension:static_resources",
-    "//chrome/browser:browser_process",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",
     "//components/prefs",
