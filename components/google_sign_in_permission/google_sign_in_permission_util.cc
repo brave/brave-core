@@ -159,6 +159,7 @@ bool GetPermissionAndMaybeCreatePrompt(
       return true;
     }
 
+    case blink::mojom::PermissionStatus::UNSATISFIED_OPTIONS:
     case blink::mojom::PermissionStatus::DENIED: {
       return false;
     }
