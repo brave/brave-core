@@ -50,7 +50,8 @@ void ContentSettingsRegistry::BraveInit() {
            /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
-               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+               WebsiteSettingsRegistry::PLATFORM_ANDROID |
+               WebsiteSettingsRegistry::PLATFORM_IOS,
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
@@ -60,7 +61,8 @@ void ContentSettingsRegistry::BraveInit() {
            /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
-               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+               WebsiteSettingsRegistry::PLATFORM_ANDROID |
+               WebsiteSettingsRegistry::PLATFORM_IOS,
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
@@ -113,7 +115,8 @@ void ContentSettingsRegistry::BraveInit() {
       /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
       WebsiteSettingsInfo::REQUESTING_ORIGIN_WITH_TOP_ORIGIN_EXCEPTIONS_SCOPE,
       WebsiteSettingsRegistry::DESKTOP |
-          WebsiteSettingsRegistry::PLATFORM_ANDROID,
+          WebsiteSettingsRegistry::PLATFORM_ANDROID |
+          WebsiteSettingsRegistry::PLATFORM_IOS,
       ContentSettingsInfo::INHERIT_IN_INCOGNITO,
       ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
@@ -124,7 +127,8 @@ void ContentSettingsRegistry::BraveInit() {
            {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
-               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+               WebsiteSettingsRegistry::PLATFORM_ANDROID |
+               WebsiteSettingsRegistry::PLATFORM_IOS,
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
@@ -134,7 +138,8 @@ void ContentSettingsRegistry::BraveInit() {
            /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
-               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+               WebsiteSettingsRegistry::PLATFORM_ANDROID |
+               WebsiteSettingsRegistry::PLATFORM_IOS,
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 

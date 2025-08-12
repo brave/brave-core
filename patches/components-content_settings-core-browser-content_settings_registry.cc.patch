@@ -1,8 +1,16 @@
 diff --git a/components/content_settings/core/browser/content_settings_registry.cc b/components/content_settings/core/browser/content_settings_registry.cc
-index 8385be32438c946ac763438dc4bc0dca9fdbac5e..6c7fb8cf398ef93d1f2123fb087c849e08716a8e 100644
+index 8385be32438c946ac763438dc4bc0dca9fdbac5e..bf5ea4cf5dfc3e72ade417be2f4cf2e6644633dd 100644
 --- a/components/content_settings/core/browser/content_settings_registry.cc
 +++ b/components/content_settings/core/browser/content_settings_registry.cc
-@@ -864,6 +864,7 @@ void ContentSettingsRegistry::Init() {
+@@ -114,6 +114,7 @@ void ContentSettingsRegistry::Init() {
+            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+            WebsiteSettingsRegistry::DESKTOP |
+                WebsiteSettingsRegistry::PLATFORM_ANDROID
++               | WebsiteSettingsRegistry::PLATFORM_IOS
+ #if BUILDFLAG(USE_BLINK)
+                | WebsiteSettingsRegistry::PLATFORM_IOS
+ #endif
+@@ -864,6 +865,7 @@ void ContentSettingsRegistry::Init() {
                 WebsiteSettingsRegistry::PLATFORM_ANDROID,
             ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
             ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
