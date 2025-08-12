@@ -21,34 +21,35 @@ class PolkadotKeyring {
                   mojom::KeyringId keyring_id);
   ~PolkadotKeyring();
 
-  // Get address of the account denoted by `//<network>//<key_id>`, which is the
-  // SS58-encoded public key for this particular derivation.
-  // Polkadot has migrated to using ss58-prefix 0 for all account addresses
-  // going forward, known as "unified addressing".
-  std::string GetUnifiedAddress(uint32_t key_id);
+  // Get address of the account denoted by `//<network>//<account_index>`, which
+  // is the SS58-encoded public key for this particular derivation. Polkadot has
+  // migrated to using ss58-prefix 0 for all account addresses going forward,
+  // known as "unified addressing".
+  std::string GetUnifiedAddress(uint32_t account_index);
 
   // Get the public key associated with the account denoted by
-  // `//<network>//<key_id>`.
-  std::array<uint8_t, kSr25519PublicKeySize> GetPublicKey(uint32_t key_id);
+  // `//<network>//<account_index>`.
+  std::array<uint8_t, kSr25519PublicKeySize> GetPublicKey(
+      uint32_t account_index);
 
-  // Use the derived account `key_id` to sign the provided message.
+  // Use the derived account `account_index` to sign the provided message.
   std::array<uint8_t, kSr25519SignatureSize> SignMessage(
       base::span<const uint8_t> message,
-      uint32_t key_id);
+      uint32_t account_index);
 
   // Verify that the provided signature is associated with the given message,
-  // for the account denoted by `key_id`.
+  // for the account denoted by `account_index`.
   [[nodiscard]] bool VerifyMessage(
       base::span<const uint8_t, kSr25519SignatureSize> signature,
       base::span<const uint8_t> message,
-      uint32_t key_id);
+      uint32_t account_index);
 
   // Helper that tells us if this keyring is intended for the `//polkadot`
   // mainnet or the `//westend` testnet.
   bool IsTestnet() const;
 
  private:
-  HDKeySr25519& GetKeypairOrInsert(uint32_t key_id);
+  HDKeySr25519& GetKeypairOrInsert(uint32_t account_index);
 
   HDKeySr25519 root_account_key_;
   mojom::KeyringId keyring_id_;
