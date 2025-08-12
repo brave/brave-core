@@ -139,6 +139,7 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
       return net::OK;
     }
 
+    case blink::mojom::PermissionStatus::UNSATISFIED_OPTIONS:
     case blink::mojom::PermissionStatus::DENIED: {
       return net::ERR_ACCESS_DENIED;
     }
