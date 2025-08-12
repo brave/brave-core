@@ -372,6 +372,17 @@ TEST(CommonUtils, GetNetworkForCardanoAccount) {
                 mojom::AccountKind::kDerived, 123)));
 }
 
+TEST(CommonUtils, IsPolkadotKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kPolkadotMainnet ||
+        keyring_id == mojom::KeyringId::kPolkadotTestnet) {
+      EXPECT_TRUE(IsPolkadotKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsPolkadotKeyring(keyring_id));
+    }
+  }
+}
+
 TEST(CommonUtils, GetActiveEndpointUrl) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
   EXPECT_EQ(GURL("https://url1.com"), GetActiveEndpointUrl(chain));
