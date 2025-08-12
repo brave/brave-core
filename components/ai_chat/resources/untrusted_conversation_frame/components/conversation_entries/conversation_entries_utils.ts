@@ -82,9 +82,33 @@ export function getReasoningText(text: string) {
 }
 
 export const removeReasoning = (text: string) => {
-  return text.includes('<think>') && text.includes('</think>')
-    ? text.split('</think>')[1]
-    : text
+  const openingTagIndex = text.indexOf('<think>')
+  const closingTagIndex = text.indexOf('</think>')
+
+  // If there is an opening tag but no closing tag,
+  // return the text before the opening tag.
+  if (openingTagIndex !== -1 && closingTagIndex === -1) {
+    return text.substring(0, openingTagIndex)
+  }
+
+  // If there is a closing tag but no opening tag,
+  // return the text after the closing tag.
+  if (closingTagIndex !== -1 && openingTagIndex === -1) {
+    return text.substring(closingTagIndex + '</think>'.length)
+  }
+
+  // If there is an opening tag and a closing tag,
+  // return the text before the opening tag and the text after the closing tag.
+  if (openingTagIndex !== -1 && closingTagIndex !== -1) {
+    const textBeforeOpeningTag = text.substring(0, openingTagIndex)
+    const textAfterClosingTag = text.substring(
+      closingTagIndex + '</think>'.length,
+    )
+    return textBeforeOpeningTag + textAfterClosingTag
+  }
+
+  // If there is no opening or closing tag, return the original text.
+  return text
 }
 
 export const removeCitationsWithMissingLinks = (
