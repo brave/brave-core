@@ -40,7 +40,21 @@ class CardanoProviderImpl final : public mojom::CardanoProvider,
 
 
  private:
+  enum class PermissionCheckResult {
+    kTabInactive,
+    kDeniedGlobally,
+    kWalletNotCreated,
+    kNoAccounts,
+    kWalletLocked,
+    kGetAllowedAccountsFailed,
+    kHasAllowedAccounts,
+    kNeedsPermissionRequest
+  };
+
   friend class CardanoProviderImplUnitTest;
+
+  PermissionCheckResult EvaluatePermissionsState(
+      std::vector<std::string>& allowed_accounts);
 
   mojom::AccountIdPtr GetAllowedSelectedAccount();
 
