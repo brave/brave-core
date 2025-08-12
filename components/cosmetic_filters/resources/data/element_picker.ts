@@ -561,8 +561,8 @@ const setShowRulesHiddenBtnState = (
 }
 
 const setMinimizeState = (minimized: boolean) => {
-if (!pickerDiv) return
-pickerDiv.classList.toggle('minimized', minimized)
+  if (!pickerDiv) return
+  pickerDiv.classList.toggle('minimized', minimized)
 }
 
 const setupDragging = (root: ShadowRoot): void => {
