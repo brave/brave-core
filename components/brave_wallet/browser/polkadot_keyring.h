@@ -45,7 +45,7 @@ class PolkadotKeyring {
 
   // Helper that tells us if this keyring is intended for the `//polkadot`
   // mainnet or the `//westend` testnet.
-  bool IsTestNet() const noexcept;
+  bool IsTestnet() const;
 
  private:
   HDKeySr25519& GetKeypairOrInsert(uint32_t key_id);

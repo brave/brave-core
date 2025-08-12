@@ -68,10 +68,10 @@ TEST(PolkadotKeyring, Constructor) {
   auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
 
   PolkadotKeyring keyring(seed, mojom::KeyringId::kPolkadotMainnet);
-  EXPECT_FALSE(keyring.IsTestNet());
+  EXPECT_FALSE(keyring.IsTestnet());
 
   PolkadotKeyring keyring2(seed, mojom::KeyringId::kPolkadotTestnet);
-  EXPECT_TRUE(keyring2.IsTestNet());
+  EXPECT_TRUE(keyring2.IsTestnet());
 }
 
 TEST(PolkadotKeyring, GetUnifiedAddress) {

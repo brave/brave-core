@@ -23,7 +23,7 @@ PolkadotKeyring::PolkadotKeyring(
 
   CHECK(IsPolkadotKeyring(keyring_id));
 
-  if (IsTestNet()) {
+  if (IsTestnet()) {
     root_account_key_ =
         root_account_key_.DeriveHard(base::as_byte_span("\x1c"
                                                         "westend"));
@@ -36,7 +36,7 @@ PolkadotKeyring::PolkadotKeyring(
 
 PolkadotKeyring::~PolkadotKeyring() = default;
 
-bool PolkadotKeyring::IsTestNet() const noexcept {
+bool PolkadotKeyring::IsTestnet() const {
   return keyring_id_ == mojom::KeyringId::kPolkadotTestnet;
 }
 
