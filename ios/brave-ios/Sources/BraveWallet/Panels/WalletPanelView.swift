@@ -350,7 +350,13 @@ struct WalletPanelView: View {
 
   private var fullscreenButton: some View {
     Button {
-      presentWalletWithContext(.default(.portfolio))
+      if FeatureList.kBraveWalletWebUIIOS.enabled,
+        let walletURL = URL(string: "brave://wallet/crypto/portfolio/assets")
+      {
+        openWalletURL(walletURL)
+      } else {
+        presentWalletWithContext(.default(.portfolio))
+      }
     } label: {
       Image(braveSystemName: "leo.expand")
         .foregroundColor(Color(.braveLabel))
@@ -543,7 +549,13 @@ struct WalletPanelView: View {
             Color(.braveLabel).opacity(0.6)
               .frame(width: pixelLength)
             Button {
-              presentWalletWithContext(.transactionHistory)
+              if FeatureList.kBraveWalletWebUIIOS.enabled,
+                let activityURL = URL(string: "brave://wallet/crypto/portfolio/activity")
+              {
+                openWalletURL(activityURL)
+              } else {
+                presentWalletWithContext(.transactionHistory)
+              }
             } label: {
               Image(braveSystemName: "leo.history")
                 .foregroundColor(Color(.braveLabel))

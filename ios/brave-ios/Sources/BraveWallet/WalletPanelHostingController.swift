@@ -54,13 +54,30 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
             self.dismiss(
               animated: true,
               completion: {
-                let walletHostingController = WalletHostingViewController(
-                  walletStore: walletStore,
-                  webImageDownloader: webImageDownloader,
-                  presentingContext: .walletAction(destination)
-                )
-                walletHostingController.delegate = self.delegate
-                self.present(walletHostingController, animated: true)
+                if FeatureList.kBraveWalletWebUIIOS.enabled {
+                  var actionURLString = ""
+                  switch destination.kind {
+                  case .buy:
+                    actionURLString = "brave://wallet/crypto/fund-wallet"
+                  case .send:
+                    actionURLString = "brave://wallet/send"
+                  case .swap:
+                    actionURLString = "brave://wallet/swap"
+                  case .deposit(let query):
+                    actionURLString = "brave://wallet/crypto/deposit-funds"
+                  }
+                  if let actionURL = URL(string: actionURLString) {
+                    self.delegate?.openDestinationURL(actionURL)
+                  }
+                } else {
+                  let walletHostingController = WalletHostingViewController(
+                    walletStore: walletStore,
+                    webImageDownloader: webImageDownloader,
+                    presentingContext: .walletAction(destination)
+                  )
+                  walletHostingController.delegate = self.delegate
+                  self.present(walletHostingController, animated: true)
+                }
               }
             )
           }

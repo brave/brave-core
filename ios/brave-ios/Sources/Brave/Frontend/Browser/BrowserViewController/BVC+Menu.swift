@@ -81,11 +81,11 @@ extension BrowserViewController {
       walletStore.webUIValidation { [weak self] valid in
         guard let self else { return }
         if valid {
-          if let url = tabManager.selectedTab?.visibleURL, isWalletURL(url) {
+          if let url = tabManager.selectedTab?.visibleURL, url.isWalletWebUIURL {
             // selected tab is a wallet webui page.
             // will get refreshed once wallet is freshly set up or unlocked
             self.dismiss(animated: true)
-          } else if let walletURL = URL(string: "brave://wallet") {
+          } else if let walletURL = URL(string: "brave://wallet/crypto/portfolio/assets") {
             switchToTabForURLOrOpen(
               walletURL,
               isPrivate: false,

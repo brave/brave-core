@@ -20,6 +20,7 @@ struct TransactionConfirmationView: View {
 
   @State private var isShowingGas: Bool = false
   @State private var isShowingAdvancedSettings: Bool = false
+  @Environment(\.openURL) private var openWalletURL
 
   private var transactionType: String {
     if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
@@ -173,8 +174,14 @@ struct TransactionConfirmationView: View {
                 confirmationStore.closeTxStatusStore()
               },
               onViewInActivity: {
-                onDismiss()
-                onViewInActivity()
+                if FeatureList.kBraveWalletWebUIIOS.enabled,
+                  let activityURL = URL(string: "brave://wallet/crypto/portfolio/activity")
+                {
+                  openWalletURL(activityURL)
+                } else {
+                  onDismiss()
+                  onViewInActivity()
+                }
               },
               onFollowUpTxCreated: { txId in
                 Task { @MainActor in
