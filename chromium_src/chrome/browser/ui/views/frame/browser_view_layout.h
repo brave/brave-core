@@ -11,7 +11,7 @@
   UnUsed();                            \
   friend class BraveBrowserViewLayout; \
   virtual void LayoutTabStripRegion
-#define LayoutBookmarkAndInfoBars virtual LayoutBookmarkAndInfoBars
+#define LayoutBookmarkBar virtual LayoutBookmarkBar
 #define LayoutInfoBar virtual LayoutInfoBar
 #define LayoutContentsContainerView virtual LayoutContentsContainerView
 #define UpdateSplitViewInsets virtual UpdateSplitViewInsets
@@ -29,7 +29,7 @@
 #undef UpdateSplitViewInsets
 #undef LayoutContentsContainerView
 #undef LayoutInfoBar
-#undef LayoutBookmarkAndInfoBars
+#undef LayoutBookmarkBar
 #undef LayoutTabStripRegion
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_LAYOUT_H_

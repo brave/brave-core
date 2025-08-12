@@ -152,6 +152,7 @@ class BraveBrowserView : public BrowserView,
   friend class VerticalTabStripDragAndDropBrowserTest;
   friend class SplitViewBrowserTest;
   friend class SplitViewLocationBarBrowserTest;
+  friend class BraveBrowserViewTest;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, Fullscreen);
