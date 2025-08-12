@@ -32,14 +32,14 @@ class FullscreenController;
 class TabStripScrollContainer;
 
 // Wraps TabStripRegion and show it vertically.
-class VerticalTabStripRegionView : public views::View,
-                                   public views::ResizeAreaDelegate,
-                                   public views::AnimationDelegateViews,
-                                   public views::WidgetObserver,
-                                   public FullscreenObserver,
-                                   public BrowserListObserver,
-                                   public views::ContextMenuController {
-  METADATA_HEADER(VerticalTabStripRegionView, views::View)
+class BraveVerticalTabStripRegionView : public views::View,
+                                        public views::ResizeAreaDelegate,
+                                        public views::AnimationDelegateViews,
+                                        public views::WidgetObserver,
+                                        public FullscreenObserver,
+                                        public BrowserListObserver,
+                                        public views::ContextMenuController {
+  METADATA_HEADER(BraveVerticalTabStripRegionView, views::View)
  public:
   // We have a state machine which cycles like:
   //
@@ -56,9 +56,9 @@ class VerticalTabStripRegionView : public views::View,
     kExpanded,
   };
 
-  VerticalTabStripRegionView(BrowserView* browser_view,
-                             TabStripRegionView* region_view);
-  ~VerticalTabStripRegionView() override;
+  BraveVerticalTabStripRegionView(BrowserView* browser_view,
+                                  TabStripRegionView* region_view);
+  ~BraveVerticalTabStripRegionView() override;
 
   State state() const { return state_; }
   State last_state() const { return last_state_; }
@@ -242,7 +242,7 @@ class VerticalTabStripRegionView : public views::View,
 
   std::unique_ptr<views::MenuRunner> menu_runner_;
 
-  base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
+  base::WeakPtrFactory<BraveVerticalTabStripRegionView> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TABS_VERTICAL_TAB_STRIP_REGION_VIEW_H_
