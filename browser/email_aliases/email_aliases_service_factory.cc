@@ -18,6 +18,9 @@ namespace email_aliases {
 // static
 EmailAliasesService* EmailAliasesServiceFactory::GetServiceForProfile(
     Profile* profile) {
+  if (!base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+    return nullptr;
+  }
   return static_cast<EmailAliasesService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
@@ -48,9 +51,6 @@ EmailAliasesServiceFactory::~EmailAliasesServiceFactory() = default;
 std::unique_ptr<KeyedService>
 EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
-    return nullptr;
-  }
   return std::make_unique<EmailAliasesService>(
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess());
