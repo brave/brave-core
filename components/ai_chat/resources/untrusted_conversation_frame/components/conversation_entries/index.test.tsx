@@ -324,7 +324,7 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
     assistantResponseMock.mockClear()
   })
 
-  test('should show LongPageInfo when visualContentUsedPercentage is less than 100', () => {
+  test('should show visual content warning when visualContentUsedPercentage is less than 100', () => {
     const { container } = render(
       <MockContext
         conversationHistory={[createHumanTurn(), createAssistantTurn()]}
@@ -337,13 +337,13 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
       </MockContext>
     )
 
-    // Should render LongPageInfo component when visual content is truncated
-    // We check for the info icon which is part of LongPageInfo
+    // Should render LongVisualContentWarning component when visual content is truncated
+    // We check for the info icon which is part of the warning components
     const infoElement = container.querySelector('leo-icon[name="info-outline"]')
     expect(infoElement).toBeInTheDocument()
   })
 
-  test('should show LongPageInfo when visualContentUsedPercentage is 0', () => {
+  test('should show visual content warning when visualContentUsedPercentage is 0', () => {
     const { container } = render(
       <MockContext
         conversationHistory={[createHumanTurn(), createAssistantTurn()]}
@@ -360,7 +360,7 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
     expect(infoElement).toBeInTheDocument()
   })
 
-  test('should not show LongPageInfo when visualContentUsedPercentage is 100', () => {
+  test('should not show content warning when visualContentUsedPercentage is 100', () => {
     const { container } = render(
       <MockContext
         conversationHistory={[createHumanTurn(), createAssistantTurn()]}
@@ -373,12 +373,12 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
       </MockContext>
     )
 
-    // Should not show LongPageInfo when no content truncation
+    // Should not show warning when no content truncation
     const infoElement = container.querySelector('leo-icon[name="info-outline"]')
     expect(infoElement).not.toBeInTheDocument()
   })
 
-  test('should not show LongPageInfo when visualContentUsedPercentage is undefined (defaults to 100)', () => {
+  test('should not show content warning when visualContentUsedPercentage is undefined (defaults to 100)', () => {
     const { container } = render(
       <MockContext
         conversationHistory={[createHumanTurn(), createAssistantTurn()]}
@@ -391,12 +391,12 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
       </MockContext>
     )
 
-    // Should not show LongPageInfo when visualContentUsedPercentage is undefined
+    // Should not show warning when visualContentUsedPercentage is undefined
     const infoElement = container.querySelector('leo-icon[name="info-outline"]')
     expect(infoElement).not.toBeInTheDocument()
   })
 
-  test('should show LongPageInfo when both contentUsedPercentage and visualContentUsedPercentage are truncated', () => {
+  test('should show visual content warning when both contentUsedPercentage and visualContentUsedPercentage are truncated', () => {
     const { container } = render(
       <MockContext
         conversationHistory={[createHumanTurn(), createAssistantTurn()]}
@@ -409,12 +409,12 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
       </MockContext>
     )
 
-    // Should show LongPageInfo (prioritizes visual content warning over page content warning)
+    // Should show visual content warning (prioritizes visual content warning over page content warning)
     const infoElement = container.querySelector('leo-icon[name="info-outline"]')
     expect(infoElement).toBeInTheDocument()
   })
 
-  test('should show LongPageInfo when visualContentUsedPercentage is fine but trimmed tokens exist', () => {
+  test('should show text content warning when visualContentUsedPercentage is fine but trimmed tokens exist', () => {
     const { container } = render(
       <MockContext
         conversationHistory={[createHumanTurn(), createAssistantTurn()]}
@@ -427,12 +427,12 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
       </MockContext>
     )
 
-    // Should show LongPageInfo due to trimmed tokens (highest priority)
+    // Should show text content warning due to trimmed tokens (highest priority)
     const infoElement = container.querySelector('leo-icon[name="info-outline"]')
     expect(infoElement).toBeInTheDocument()
   })
 
-  test('should only show LongPageInfo for assistant responses, not human turns', () => {
+  test('should only show content warnings for assistant responses, not human turns', () => {
     const { container } = render(
       <MockContext
         conversationHistory={[createHumanTurn()]} // Only human turn
@@ -445,7 +445,7 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
       </MockContext>
     )
 
-    // Should not show LongPageInfo for human-only conversation
+    // Should not show warnings for human-only conversation
     const infoElement = container.querySelector('leo-icon[name="info-outline"]')
     expect(infoElement).not.toBeInTheDocument()
   })
