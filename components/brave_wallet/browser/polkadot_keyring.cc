@@ -12,6 +12,18 @@
 
 namespace brave_wallet {
 
+namespace {
+
+inline constexpr char const kPolkadotTestnet[] =
+    "\x1c"
+    "westend";
+
+inline constexpr char const kPolkadotMainnet[] =
+    "\x20"
+    "polkadot";
+
+}  // namespace
+
 PolkadotKeyring::PolkadotKeyring(
     base::span<const uint8_t, bip39::kSeedSize> seed,
     mojom::KeyringId keyring_id)
@@ -24,12 +36,10 @@ PolkadotKeyring::PolkadotKeyring(
 
   if (IsTestnet()) {
     root_account_key_ =
-        root_account_key_.DeriveHard(base::as_byte_span("\x1c"
-                                                        "westend"));
+        root_account_key_.DeriveHard(base::as_byte_span(kPolkadotTestnet));
   } else {
     root_account_key_ =
-        root_account_key_.DeriveHard(base::as_byte_span("\x20"
-                                                        "polkadot"));
+        root_account_key_.DeriveHard(base::as_byte_span(kPolkadotMainnet));
   }
 }
 

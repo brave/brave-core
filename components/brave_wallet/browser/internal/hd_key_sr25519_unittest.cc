@@ -19,7 +19,7 @@ namespace {
 
 // Taken from:
 // https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/struct.MiniSecretKey.html#method.from_bytes
-inline constexpr uint8_t kSchnorrkelSeed[] = {
+constexpr uint8_t kSchnorrkelSeed[] = {
     157, 97,  177, 157, 239, 253, 90, 96,  186, 132, 74,
     244, 146, 236, 44,  196, 68,  73, 197, 105, 123, 50,
     105, 25,  112, 59,  172, 3,   28, 174, 127, 96,
@@ -27,7 +27,7 @@ inline constexpr uint8_t kSchnorrkelSeed[] = {
 
 // Manually derived from the polkadot-sdk using
 // `polkadot_sdk::sp_core::sr25519::Pair`.
-inline constexpr const char* kSchnorrkelPubKey =
+constexpr const char kSchnorrkelPubKey[] =
     "44A996BEB1EEF7BDCAB976AB6D2CA26104834164ECF28FB375600576FCC6EB0F";
 
 }  // namespace
