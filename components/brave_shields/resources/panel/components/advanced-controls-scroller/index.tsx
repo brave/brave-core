@@ -6,6 +6,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 
 import getPanelBrowserAPI from '../../api/panel_browser_api'
+import { color } from '@brave/leo/tokens/css/variables'
 
 interface Props extends React.PropsWithChildren {
   isExpanded: boolean
@@ -30,11 +31,11 @@ const ScrollBox = styled.div<ScrollBoxProps>`
   }
 
   &::-webkit-scrollbar-track {
-    background: ${p => p.theme.color.subtleBackground};
+    background: ${color.neutral[10]};
   }
 
   &::-webkit-scrollbar-thumb {
-    background: ${p => p.theme.color.subtle};
+    background: ${color.neutral[20]};
   }
 `
 
