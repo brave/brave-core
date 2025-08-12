@@ -191,12 +191,12 @@ bool SidebarContainerView::PreHandleMouseEvent(
   gfx::RectF mouse_event_detect_bounds(
       browser_view->GetContentsContainerForLayoutManager()
           ->GetBoundsInScreen());
-  constexpr int kWidgetNarrowWidth = 7;
+  constexpr int kHotCorenerWidth = 7;
   if (sidebar_on_left_) {
-    mouse_event_detect_bounds.set_width(kWidgetNarrowWidth);
+    mouse_event_detect_bounds.set_width(kHotCorenerWidth);
   } else {
     mouse_event_detect_bounds.set_x(mouse_event_detect_bounds.right() -
-                                    kWidgetNarrowWidth);
+                                    kHotCorenerWidth);
   }
 
   if (mouse_event_detect_bounds.Contains(event.PositionInScreen())) {
