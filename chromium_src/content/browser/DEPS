@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/components/ai_chat/core/common/buildflags",
   "+brave/components/brave_shields/core/common",
+  "+brave/content/browser/screen_orientation",
   "+content/public/browser",
   "+content/public/common",
   "+services/network/public/mojom/cookie_manager.mojom.h",
