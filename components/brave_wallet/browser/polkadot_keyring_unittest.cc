@@ -19,14 +19,14 @@ namespace {
 //   polkadot_sdk::sp_core::sr25519::Pair::from_string(
 //     DEV_PHRASE, None).unwrap();
 
-inline constexpr const char* kDevPhrase =
+constexpr const char kDevPhrase[] =
     "bottom drive obey lake curtain smoke basket hold race lonely fit walk";
 
-inline constexpr char const* kDevSeed =
+constexpr char const kDevSeed[] =
     "FAC7959DBFE72F052E5A0C3C8D6530F202B02FD8F9F5CA3580EC8DEB7797479E0B9F67282F"
     "42D1214E457243B9EB38A0A5ED13DE66C01CFB213A6FE73CEDEF5A";
 
-inline constexpr char const* kDevPubKey =
+constexpr char const* kDevPubKey =
     "46EBDDEF8CD9BB167DC30878D7113B7E168E6F0646BEFFD77D69D39BAD76B47A";
 
 // From:
@@ -35,7 +35,7 @@ inline constexpr char const* kDevPubKey =
 //
 // See also:
 // https://github.com/paritytech/polkadot-sdk/blob/0d765ce37b258640a6eeb575f6bff76d6a7b7c46/substrate/primitives/core/src/crypto.rs#L49
-inline constexpr const char* kDevAddress =
+constexpr const char kDevAddress[] =
     "5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV";
 
 }  // namespace
