@@ -85,13 +85,6 @@
     *** mSyncEverything;
 }
 
-# TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
-# Upstream change: 6875d2ce472e7f2097617525feec45313602e225
-#-keep class org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper {
-#    *** mCallback;
-#    *** mFragmentManager;
-#}
-
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
     *** mProfile;
     *** getSearchEngineSourceType(...);
@@ -304,17 +297,6 @@
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
     <init>(...);
 }
-
-# TODO(alexeybarabash): PasswordSettings was removed at upstream,
-# but we need to get it back
-# Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
-# -keep class org.chromium.chrome.browser.password_manager.settings.PasswordSettings {
-#     public <init>(...);
-# }
-
-# -keep class org.chromium.chrome.browser.password_manager.settings.BravePasswordSettingsBase {
-#     public <init>(...);
-# }
 
 -keep class org.chromium.chrome.browser.customtabs.CustomTabAppMenuPropertiesDelegate {
     public <init>(...);
@@ -750,6 +732,14 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.settings.BraveFragmentDependencyProvider {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.settings.FragmentDependencyProvider {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.firstrun.BraveFreIntentCreator {
     public <init>(...);
 }
@@ -790,6 +780,10 @@
 
 -keep class org.chromium.chrome.browser.identity_disc.BraveIdentityDiscController {
     public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.password_manager.settings.PasswordsPreference {
+    *** setUpPostDeprecationWarning(...);
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs {
@@ -872,6 +866,11 @@
 
 -keep class org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider {
     *** getToolbarSidePaddingForNtp(...);
+}
+
+-keep class org.chromium.chrome.browser.password_manager.PasswordManagerHelper {
+    *** getForProfile(...);
+    *** sProfileMap;
 }
 
 -keep class org.chromium.chrome.browser.notifications.NotificationPlatformBridge {
