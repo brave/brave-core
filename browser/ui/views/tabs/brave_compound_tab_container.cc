@@ -288,11 +288,12 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize(
       pinned_tab_container_->GetPreferredSize().height() +
       unpinned_tab_container_->GetPreferredSize().height();
 
-  // Traverse up the parent hierarchy to find the |VerticalTabStripRegionView|
+  // Traverse up the parent hierarchy to find the
+  // |BraveVerticalTabStripRegionView|
   for (auto* parent_view = parent(); parent_view;
        parent_view = parent_view->parent()) {
     auto* region_view =
-        views::AsViewClass<VerticalTabStripRegionView>(parent_view);
+        views::AsViewClass<BraveVerticalTabStripRegionView>(parent_view);
     if (!region_view) {
       continue;
     }
