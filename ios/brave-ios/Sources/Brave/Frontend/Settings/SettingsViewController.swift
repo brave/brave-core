@@ -329,7 +329,9 @@ class SettingsViewController: TableViewController {
             let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
             let container = UINavigationController(rootViewController: controller)
             controller.title = Strings.braveAccount
-            controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
+            var request = URLRequest(url: URL(string: "brave://account")!)
+            request.setValue("", forHTTPHeaderField: "Brave-Settings")
+            controller.webView.load(request)
             controller.navigationItem.rightBarButtonItem = .init(
               systemItem: .done,
               primaryAction: .init { [unowned container] _ in

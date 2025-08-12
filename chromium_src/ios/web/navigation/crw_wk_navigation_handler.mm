@@ -72,6 +72,14 @@
             return;
           }
         }
+
+        if (GURL url = net::GURLWithNSURL(action.request.URL);
+            url.SchemeIs("chrome") && url.host_piece() == "account" &&
+            ![action.request valueForHTTPHeaderField:@"Brave-Settings"]) {
+          handler(WKNavigationActionPolicyCancel, preferences);
+          return;
+        }
+
         handler(policy, preferences);
       };
   [super webView:webView
