@@ -18,8 +18,6 @@
 #import "ios/components/security_interstitials/ios_blocking_page_tab_helper.h"
 
 void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
-  const SessionID window_id = SessionID::NewUnique();
-  IOSChromeSyncedTabDelegate::CreateForWebState(web_state, window_id);
   WebSessionStateTabHelper::CreateForWebState(web_state);
   IOSTaskTabHelper::CreateForWebState(web_state);
 
