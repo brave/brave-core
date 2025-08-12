@@ -9,6 +9,7 @@
 
 #include <optional>
 
+#include "base/apple/foundation_util.h"
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/ios/ios_util.h"
@@ -27,12 +28,14 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/remote_worker.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
+#include "brave/components/brave_rewards/core/rewards_util.h"
 #import "brave/ios/browser/api/brave_rewards/rewards.mojom.objc+private.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_client_bridge.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_client_ios.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_notification.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_observer.h"
 #import "brave/ios/browser/api/common/common_operations.h"
+#include "brave/ios/components/prefs/pref_service_bridge_impl.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -107,6 +110,8 @@ class RewardsEngineWorker
 NSString* const BraveRewardsErrorDomain = @"BraveRewardsErrorDomain";
 NSNotificationName const BraveRewardsNotificationAdded =
     @"BATBraveRewardsNotificationAdded";
+NSString* const BraveRewardsDisabledByPolicyPrefName =
+    base::SysUTF8ToNSString(brave_rewards::prefs::kDisabledByPolicy);
 
 /// ---
 
@@ -140,6 +145,12 @@ NSNotificationName const BraveRewardsNotificationAdded =
 @end
 
 @implementation BraveRewardsAPI
+
++ (BOOL)isSupported:(id<PrefServiceBridge>)prefService {
+  PrefServiceBridgeImpl* holder =
+      base::apple::ObjCCastStrict<PrefServiceBridgeImpl>(prefService);
+  return brave_rewards::IsSupported(holder.prefService);
+}
 
 - (instancetype)initWithStateStoragePath:(NSString*)path {
   if ((self = [super init])) {

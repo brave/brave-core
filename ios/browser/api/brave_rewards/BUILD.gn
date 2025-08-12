@@ -33,6 +33,7 @@ source_set("brave_rewards") {
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/engine",
     "//brave/ios/browser/api/common",
+    "//brave/ios/components/prefs",
     "//components/os_crypt/sync",
     "//components/prefs",
     "//ios/chrome/browser/shared/model/application_context",

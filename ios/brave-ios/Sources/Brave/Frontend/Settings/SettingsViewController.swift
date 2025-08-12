@@ -411,7 +411,7 @@ class SettingsViewController: TableViewController {
       uuid: featureSectionUUID.uuidString
     )
 
-    if BraveRewards.isAvailable, let rewards = rewards {
+    if BraveRewards.isSupported(prefService: braveCore.profile.prefs), let rewards = rewards {
       section.rows += [
         Row(
           text: Strings.braveRewardsSettingsTitle,

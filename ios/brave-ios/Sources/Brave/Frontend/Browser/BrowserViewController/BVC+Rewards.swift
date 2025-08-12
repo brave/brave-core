@@ -21,7 +21,7 @@ public let adsRewardsLog = Logger(subsystem: Bundle.main.bundleIdentifier!, cate
 extension BrowserViewController {
   func updateRewardsButtonState() {
     if !isViewLoaded { return }
-    if !BraveRewards.isAvailable {
+    if !BraveRewards.isSupported(prefService: profileController.profile.prefs) {
       self.topToolbar.rewardsButton.isHidden = true
       return
     }
@@ -33,6 +33,10 @@ extension BrowserViewController {
   }
 
   func showBraveRewardsPanel() {
+    if !BraveRewards.isSupported(prefService: profileController.profile.prefs) {
+      return
+    }
+
     if !Preferences.FullScreenCallout.rewardsCalloutCompleted.value,
       Preferences.Onboarding.isNewRetentionUser.value == true,
       !Preferences.Rewards.rewardsToggledOnce.value

@@ -207,7 +207,9 @@ extension BrowserViewController {
 
   private func presentBraveRewardsScreenCallout(skipSafeGuards: Bool = false) {
     if !skipSafeGuards {
-      guard BraveRewards.isAvailable, !Preferences.Rewards.rewardsToggledOnce.value else {
+      guard BraveRewards.isSupported(prefService: profileController.profile.prefs),
+        !Preferences.Rewards.rewardsToggledOnce.value
+      else {
         return
       }
     }

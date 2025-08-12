@@ -7,6 +7,7 @@
 #define BRAVE_IOS_BROWSER_API_BRAVE_REWARDS_BRAVE_REWARDS_API_H_
 
 #import <Foundation/Foundation.h>
+
 #import "rewards.mojom.objc.h"
 
 @class RewardsObserver, RewardsNotification;
@@ -20,6 +21,8 @@ static ExternalWalletType const ExternalWalletTypeUphold = @"uphold";
 static ExternalWalletType const ExternalWalletTypeAnonymous = @"anonymous";
 static ExternalWalletType const ExternalWalletTypeUnblindedTokens = @"blinded";
 
+@protocol PrefServiceBridge;
+
 /// The error domain for rewards related errors
 OBJC_EXPORT NSString* const BraveRewardsErrorDomain;
 
@@ -32,8 +35,12 @@ OBJC_EXPORT BraveGeneralRewardsNotificationID const
 OBJC_EXPORT BraveGeneralRewardsNotificationID const
     BraveGeneralRewardsNotificationIDWalletDisconnected;
 
+OBJC_EXPORT NSString* const BraveRewardsDisabledByPolicyPrefName;
+
 OBJC_EXPORT
 @interface BraveRewardsAPI : NSObject
+
++ (BOOL)isSupported:(id<PrefServiceBridge>)prefService;
 
 /// Create a rewards engine that will read and write its state to the given path
 - (instancetype)initWithStateStoragePath:(NSString*)path;
