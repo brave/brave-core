@@ -157,7 +157,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
 
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
 
   auto check_split_tabs_has_same_y_position = [&]() {
     auto* model = browser()->tab_strip_model();
