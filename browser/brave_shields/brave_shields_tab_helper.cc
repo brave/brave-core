@@ -118,19 +118,19 @@ void BraveShieldsTabHelper::MaybeNotifyAfterRepeatedReloads(
   }
 
   const base::Time current_time = base::Time::Now();
-  if (!time_interval_reloads_counter_ ||
-      current_time - time_interval_reloads_counter_->start_time >
+  if (!repeated_reloads_counter_ ||
+      current_time - repeated_reloads_counter_->initial_reload_at >
           features::kAdblockOnlyModeReloadsCountInterval.Get()) {
-    time_interval_reloads_counter_ = TimeIntervalReloadsCounter{
-        .start_time = current_time,
+    repeated_reloads_counter_ = AfterRepeatedReloadsInfo{
+        .initial_reload_at = current_time,
         .reloads_count = 0,
     };
   }
 
-  time_interval_reloads_counter_->reloads_count++;
-  if (time_interval_reloads_counter_->reloads_count >=
+  repeated_reloads_counter_->reloads_count++;
+  if (repeated_reloads_counter_->reloads_count >=
           features::kAdblockOnlyModeReloadsCountMin.Get() &&
-      time_interval_reloads_counter_->reloads_count <=
+          repeated_reloads_counter_->reloads_count <=
           features::kAdblockOnlyModeReloadsCountMax.Get()) {
     // If the page is reloaded between 3 and 5 times in 10 seconds, notify
     // observers.
