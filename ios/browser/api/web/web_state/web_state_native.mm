@@ -59,9 +59,6 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
       std::move(web_state), WebStateList::InsertionParams::AtIndex(
                                 browser_->GetWebStateList()->count())
                                 .Activate());
-
-  // Finally Set the WebState WindowID
-  IOSChromeSyncedTabDelegate::CreateForWebState(web_state_, session_id_);
 }
 
 NativeWebState::~NativeWebState() {
