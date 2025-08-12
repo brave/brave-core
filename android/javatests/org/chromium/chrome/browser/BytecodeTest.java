@@ -31,6 +31,7 @@ import android.widget.RadioGroup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.filters.SmallTest;
 
@@ -108,8 +109,10 @@ import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdow
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.password_manager.PasswordManagerHelper;
 import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileKeyedMap;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
@@ -181,6 +184,7 @@ import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.components.permissions.PermissionDialogDelegate;
+import org.chromium.components.prefs.PrefService;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.components.variations.firstrun.VariationsSeedFetcher;
@@ -242,12 +246,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
-        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
-        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
-        // Assert.assertTrue(
-        //         classExists(
-        //
-        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
@@ -283,13 +281,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/top/ToolbarPhone"));
-        // TODO(alexeybarabash): PasswordSettings was removed at upstream,
-        // but we need to get it back
-        // Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
-        // Assert.assertTrue(
-        //         classExists(
-        //
-        // "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate")); // presubmit: ignore-long-line
@@ -363,6 +354,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/incognito/reauth/FullScreenIncognitoReauthCoordinator")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/settings/FragmentDependencyProvider"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/firstrun/FreIntentCreator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl"));
@@ -374,6 +367,9 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/identity_disc/IdentityDiscController"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/password_manager/settings/PasswordsPreference")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31"));
@@ -770,6 +766,14 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/password_manager/settings/PasswordsPreference",
+                        "setUpPostDeprecationWarning",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        PreferenceViewHolder.class,
+                        PrefService.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView", // presubmit: ignore-long-line
                         "getSharingAccountInfo",
                         MethodModifier.STATIC,
@@ -998,6 +1002,13 @@ public class BytecodeTest {
                         "getCustomizationSetting",
                         MethodModifier.STATIC,
                         int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/password_manager/PasswordManagerHelper",
+                        "getForProfile",
+                        MethodModifier.STATIC,
+                        PasswordManagerHelper.class,
+                        Profile.class));
     }
 
     @Test
@@ -1789,6 +1800,15 @@ public class BytecodeTest {
                         Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
+                        "org/chromium/chrome/browser/settings/FragmentDependencyProvider",
+                        "org/chromium/chrome/browser/settings/BraveFragmentDependencyProvider",
+                        Context.class,
+                        Profile.class,
+                        OneshotSupplier.class,
+                        OneshotSupplier.class,
+                        ObservableSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
                         "org/chromium/chrome/browser/firstrun/FreIntentCreator",
                         "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
         Assert.assertTrue(
@@ -1818,6 +1838,12 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController",
                         Context.class,
                         ObservableSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/password_manager/settings/PasswordsPreference",
+                        "org/chromium/chrome/browser/password_manager/settings/BravePasswordsPreference", // presubmit: ignore-long-line
+                        Context.class,
+                        AttributeSet.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs",
@@ -2015,18 +2041,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mSyncEverything"));
-        // TODO(alexeybarabash): backport PasswordAccessReauthenticationHelper
-        // Upstream change: 6875d2ce472e7f2097617525feec45313602e225
-        // Assert.assertTrue(
-        //         fieldExists(
-        //
-        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
-        //                 "mCallback"));
-        // Assert.assertTrue(
-        //         fieldExists(
-        //
-        // "org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper", // presubmit: ignore-long-line
-        //                 "mFragmentManager"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
@@ -2403,6 +2417,12 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/infobar/InfoBarContainerView",
                         "mEdgeToEdgeSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/password_manager/PasswordManagerHelper",
+                        "sProfileMap",
+                        true,
+                        ProfileKeyedMap.class));
     }
 
     @Test
@@ -2420,15 +2440,6 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
                         "android/widget/FrameLayout"));
-        // TODO(alexeybarabash): PasswordSettings was removed at upstream,
-        // but we need to get it back
-        // Upstream commit: 3662471ee9fabd6d1777b1d5316f0b9eede0f115
-        // Assert.assertTrue(
-        //         checkSuperName(
-        //                 "org/chromium/chrome/browser/password_manager/settings/PasswordSettings",
-        //
-        // "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase")); //
-        // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
