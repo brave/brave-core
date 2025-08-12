@@ -455,6 +455,8 @@ program
 
 program
   .command('run_perf_tests [perf_config] [targets]')
+  .option('--target_os <target_os>', 'target OS')
+  .option('--target_arch <target_arch>', 'target architecture')
   .allowUnknownOption(true)
   .description('Call npm run perf_tests -- --more-help for detailed help')
   .action(perfTests.runPerfTests.bind(null, parsedArgs.unknown))
