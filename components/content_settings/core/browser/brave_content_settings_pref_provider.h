@@ -13,6 +13,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "base/synchronization/lock.h"
 #include "base/thread_annotations.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/content_settings_origin_value_map.h"
@@ -114,23 +115,38 @@ class BravePrefProvider : public PrefProvider, public Observer {
       base::Value&& value,
       const ContentSettingConstraints& constraints,
       const PartitionKey& partition_key = PartitionKey::WipGetDefault());
+  std::unique_ptr<Rule> MaybeAdjustRuleForAdBlockOnlyMode(
+      std::unique_ptr<Rule> rule,
+      const GURL& primary_url,
+      ContentSettingsType content_type) const;
+  std::unique_ptr<Rule> MaybeSetRuleValueForAdBlockOnlyMode(
+      std::unique_ptr<Rule> rule,
+      const GURL& primary_url,
+      ContentSetting content_setting) const;
+
+  const OriginValueMap& GetCookieRules(bool off_the_record) const;
 
   // content_settings::Observer overrides:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
                                const ContentSettingsPattern& secondary_pattern,
                                ContentSettingsType content_type) override;
   void OnCookiePrefsChanged(const std::string& pref);
+  void OnAdBlockOnlyModeChanged();
 
   std::map<bool /* is_incognito */, OriginValueMap> cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_shield_down_rules_;
+  OriginValueMap ad_block_only_mode_cookie_rules_;
 
   bool initialized_;
   bool store_last_modified_;
 
   PrefChangeRegistrar pref_change_registrar_;
+
+  mutable base::Lock lock_;
+  bool ad_block_only_mode_enabled_ GUARDED_BY(lock_) = false;
 
   base::WeakPtrFactory<BravePrefProvider> weak_factory_;
 };

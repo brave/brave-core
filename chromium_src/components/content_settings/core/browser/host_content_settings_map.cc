@@ -14,7 +14,9 @@
 #include "components/content_settings/core/common/features.h"
 
 #if !BUILDFLAG(IS_IOS)
+#include "brave/components/content_settings/core/browser/brave_content_settings_default_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
+#define DefaultProvider BraveDefaultProvider
 #define PrefProvider BravePrefProvider
 #endif
 
@@ -59,6 +61,7 @@ bool IsMorePermissive_BraveImpl(ContentSettingsType content_type,
 #undef IsMorePermissive
 
 #if !BUILDFLAG(IS_IOS)
+#undef DefaultProvider
 #undef PrefProvider
 #undef PolicyProvider
 #endif
