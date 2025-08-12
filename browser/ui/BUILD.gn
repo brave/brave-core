@@ -315,6 +315,7 @@ source_set("ui") {
       "//brave/common",
       "//brave/components/brave_account:features",
       "//brave/components/brave_account/mojom",
+      "//brave/components/brave_wayback_machine/buildflags",
       "//brave/components/constants",
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:mojom",
