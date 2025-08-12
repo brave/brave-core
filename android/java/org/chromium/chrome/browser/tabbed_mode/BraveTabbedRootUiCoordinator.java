@@ -64,9 +64,9 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
-    private final AppCompatActivity mActivity;
+    private final AppCompatActivity mBraveActivity;
     private final OneshotSupplier<HubManager> mHubManagerSupplier;
-    private final ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
+    private final ObservableSupplier<EdgeToEdgeController> mBraveEdgeToEdgeControllerSupplier;
 
     public BraveTabbedRootUiCoordinator(
             @NonNull AppCompatActivity activity,
@@ -170,21 +170,21 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 bookmarkManagerOpenerSupplier,
                 xrSpaceModeObservableSupplier);
 
-        mActivity = activity;
+        mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
-        mEdgeToEdgeControllerSupplier = edgeToEdgeSupplier;
+        mBraveEdgeToEdgeControllerSupplier = edgeToEdgeSupplier;
     }
 
     @Override
     public void onPostInflationStartup() {
         super.onPostInflationStartup();
 
-        assert mActivity instanceof BraveActivity;
+        assert mBraveActivity instanceof BraveActivity;
 
-        if (mActivity instanceof BraveActivity) {
-            ((BraveActivity) mActivity)
+        if (mBraveActivity instanceof BraveActivity) {
+            ((BraveActivity) mBraveActivity)
                     .updateBottomSheetPosition(
-                            mActivity.getResources().getConfiguration().orientation);
+                            mBraveActivity.getResources().getConfiguration().orientation);
         }
     }
 
@@ -196,14 +196,14 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 hubManager -> {
                     // Make it negative to indicate that we adjust the bottom margin.
                     int bottomToolbarHeight =
-                            mActivity
+                            mBraveActivity
                                             .getResources()
                                             .getDimensionPixelSize(R.dimen.bottom_controls_height)
                                     * -1;
-                    if (EdgeToEdgeUtils.isEdgeToEdgeBottomChinEnabled(mActivity)
-                            && mEdgeToEdgeControllerSupplier.get() != null) {
+                    if (EdgeToEdgeUtils.isEdgeToEdgeBottomChinEnabled(mBraveActivity)
+                            && mBraveEdgeToEdgeControllerSupplier.get() != null) {
                         bottomToolbarHeight -=
-                                mEdgeToEdgeControllerSupplier.get().getBottomInsetPx();
+                                mBraveEdgeToEdgeControllerSupplier.get().getBottomInsetPx();
                     }
                     hubManager.setStatusIndicatorHeight(bottomToolbarHeight);
                 });
