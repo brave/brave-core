@@ -63,19 +63,19 @@ SpeedreaderService::~SpeedreaderService() = default;
 
 // static
 void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  bool enabled_by_deault = false;
+  bool enabled_by_default = false;
 
 #if DCHECK_IS_ON()
   // Enable speedreader by default if the data collector command line key is
   // specified.
   constexpr const char kCollectSwitch[] = "speedreader-collect-test-data";
-  enabled_by_deault =
+  enabled_by_default =
       base::CommandLine::ForCurrentProcess()->HasSwitch(kCollectSwitch);
 #endif
 
   registry->RegisterBooleanPref(kSpeedreaderPrefFeatureEnabled, true);
   registry->RegisterBooleanPref(kSpeedreaderPrefEnabledForAllSites,
-                                enabled_by_deault);
+                                enabled_by_default);
 
   registry->RegisterBooleanPref(kSpeedreaderPrefEverEnabled, false);
   registry->RegisterListPref(kSpeedreaderPrefToggleCount);

@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings;
 
 import static org.chromium.chrome.browser.settings.MainSettings.PREF_UI_THEME;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
@@ -15,7 +14,6 @@ import androidx.preference.Preference;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
@@ -162,7 +160,8 @@ public class AppearancePreferences extends BravePreferenceFragment
                 ((ChromeSwitchPreference) enableSpeedreader)
                         .setChecked(
                                 UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                        .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED_FOR_ALL_SITES));
+                                        .getBoolean(
+                                                BravePref.SPEEDREADER_PREF_ENABLED_FOR_ALL_SITES));
             }
         }
 
@@ -255,12 +254,13 @@ public class AppearancePreferences extends BravePreferenceFragment
             updatePreferenceSummary(
                     BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
                     !originalStatus ? R.string.text_on : R.string.text_off);
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, !originalStatus);
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(
+                            BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, !originalStatus);
             shouldRelaunch = true;
         } else if (PREF_SHOW_BRAVE_REWARDS_ICON.equals(key)) {
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    PREF_SHOW_BRAVE_REWARDS_ICON, !(boolean) newValue);
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(PREF_SHOW_BRAVE_REWARDS_ICON, !(boolean) newValue);
             shouldRelaunch = true;
         } else if (PREF_ADS_SWITCH.equals(key)) {
             setPrefAdsInBackgroundEnabled((boolean) newValue);
@@ -277,7 +277,8 @@ public class AppearancePreferences extends BravePreferenceFragment
                     .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
         } else if (PREF_BRAVE_ENABLE_SPEEDREADER.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                    .setBoolean(BravePref.SPEEDREADER_PREF_ENABLED_FOR_ALL_SITES, (boolean) newValue);
+                    .setBoolean(
+                            BravePref.SPEEDREADER_PREF_ENABLED_FOR_ALL_SITES, (boolean) newValue);
             shouldRelaunch = true;
         } else if (PREF_ENABLE_MULTI_WINDOWS.equals(key)) {
             if (!(boolean) newValue) {
@@ -320,13 +321,12 @@ public class AppearancePreferences extends BravePreferenceFragment
 
     /** Returns the user preference for whether the brave ads in background is enabled. */
     public static boolean getPrefAdsInBackgroundEnabled() {
-        return SharedPreferencesManager.getInstance().readBoolean(
-                PREF_ADS_SWITCH, false);
+        return ChromeSharedPreferences.getInstance().readBoolean(PREF_ADS_SWITCH, false);
     }
 
     /** Sets the user preference for whether the brave ads in background is enabled. */
     public void setPrefAdsInBackgroundEnabled(boolean enabled) {
-        SharedPreferencesManager.getInstance().writeBoolean(PREF_ADS_SWITCH, enabled);
+        ChromeSharedPreferences.getInstance().writeBoolean(PREF_ADS_SWITCH, enabled);
     }
 
     private void updatePreferenceIcon(String preferenceString, int drawable) {
