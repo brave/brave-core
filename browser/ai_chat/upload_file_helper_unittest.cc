@@ -74,6 +74,7 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
 #if BUILDFLAG(IS_ANDROID)
     TestingBrowserProcess::GetGlobal()
         ->GetTestingLocalState()
+        ->registry()
         ->RegisterBooleanPref(prefs::kAllowFileSelectionDialogs, true);
 #endif
     // To fulfill ChromeSelectFilePolicy::CanOpenSelectFileDialog()
