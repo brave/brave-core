@@ -8,8 +8,6 @@ brave_content_public_browser_sources = [
 ]
 
 if (is_android) {
-  brave_content_public_browser_sources += [
-    "//brave/content/public/browser/fullscreen_page_data.cc",
-    "//brave/content/public/browser/fullscreen_page_data.h",
-  ]
+  brave_content_public_browser_sources +=
+      [ "//brave/content/public/browser/fullscreen_page_data.h" ]
 }

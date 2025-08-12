@@ -27,7 +27,8 @@ struct CONTENT_EXPORT FullscreenPageData : public base::SupportsUserData::Data {
 };
 
 // Key for storing FullscreenPageData in NavigationEntry UserData.
-CONTENT_EXPORT extern const char kFullscreenPageDataKey[];
+CONTENT_EXPORT inline constexpr char kFullscreenPageDataKey[] =
+    "fullscreen_page_data";
 
 }  // namespace content
 
