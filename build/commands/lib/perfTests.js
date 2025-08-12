@@ -8,7 +8,12 @@ const config = require('../lib/config')
 const path = require('path')
 const fs = require('fs')
 
-const runPerfTests = (passthroughArgs, perfConfig, targetBuildConfig) => {
+const runPerfTests = (
+  passthroughArgs,
+  perfConfig,
+  targetBuildConfig,
+  options,
+) => {
   args = [
     path.join(config.braveCoreDir, 'tools', 'perf', 'run_perftests.py'),
     perfConfig,
@@ -16,7 +21,7 @@ const runPerfTests = (passthroughArgs, perfConfig, targetBuildConfig) => {
 
   if (['Static', 'Release', 'Component'].includes(targetBuildConfig)) {
     config.buildConfig = targetBuildConfig
-    config.update({})
+    config.update(options)
 
     binaryPath = path.join(config.outputDir, 'brave')
     if (process.platform === 'win32') {

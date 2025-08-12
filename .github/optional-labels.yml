@@ -16,6 +16,13 @@ CI/run-network-audit:
       - chromium_src/**/*features.cc
       - patches/chrome-VERSION.patch
 
+CI/run-perf-smoke-tests:
+  - changed-files:
+    - any-glob-to-any-file:
+      - brave/patches/third_party/catapult/*
+      - brave/patches/tools-perf-*
+      - brave/tools/perf/*
+
 CI/run-upstream-tests:
   - changed-files:
     - any-glob-to-any-file:
