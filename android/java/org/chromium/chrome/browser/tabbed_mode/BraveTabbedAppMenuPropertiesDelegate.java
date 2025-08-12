@@ -321,7 +321,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)
                 && UserPrefs.get(assumeNonNull(mTabModelSelector.getCurrentModel().getProfile()))
-                        .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED)) {
+                        .getBoolean(BravePref.SPEEDREADER_PREF_FEATURE_ENABLED)) {
             final Tab currentTab = mActivityTabProvider.get();
             if (currentTab != null && BraveSpeedReaderUtils.tabSupportsDistillation(currentTab)) {
                 addMenuItemAfter(
