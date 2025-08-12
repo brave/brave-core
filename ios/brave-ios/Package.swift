@@ -48,6 +48,7 @@ var package = Package(
     .library(name: "PlaylistUI", targets: ["PlaylistUI"]),
     .library(name: "BrowserMenu", targets: ["BrowserMenu"]),
     .library(name: "Web", targets: ["Web"]),
+    .library(name: "BraveTalk", targets: ["BraveTalk"]),
     .executable(name: "LeoAssetCatalogGenerator", targets: ["LeoAssetCatalogGenerator"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
@@ -75,8 +76,182 @@ var package = Package(
       url: "https://github.com/venmo/Static",
       revision: "622a6804d39515600ead16e6259cb5d5e50f40df"
     ),
+    .package(name: "JitsiMeet", path: "../third_party/JitsiMeet"),
   ],
   targets: [
+    .target(
+      name: "Brave",
+      dependencies: [
+        "BraveShared",
+        "Shared",
+        "BraveWallet",
+        "BraveCore",
+        "MaterialComponents",
+        "BraveUI",
+        "DesignSystem",
+        "Data",
+        "DataImporter",
+        "Storage",
+        "Fuzi",
+        "SnapKit",
+        "Static",
+        "SDWebImage",
+        "Then",
+        "BrowserIntentsModels",
+        "BraveWidgetsModels",
+        "BraveVPN",
+        "BraveNews",
+        "AIChat",
+        "BraveStore",
+        "Onboarding",
+        "Growth",
+        "SpeechRecognition",
+        "CodableHelpers",
+        "Preferences",
+        "Favicon",
+        "CertificateUtilities",
+        "Playlist",
+        "UserAgent",
+        .product(name: "Lottie", package: "lottie-spm"),
+        .product(name: "Collections", package: "swift-collections"),
+        "PlaylistUI",
+        "BrowserMenu",
+        "Web",
+        "BraveShields",
+        "BraveTalk",
+      ],
+      exclude: [
+        "Frontend/UserContent/UserScripts/AllFrames",
+        "Frontend/UserContent/UserScripts/MainFrame",
+        "Frontend/UserContent/UserScripts/Sandboxed",
+      ],
+      resources: [
+        .copy("Assets/About/Licenses.html"),
+        .copy("Assets/About/AboutHome.html"),
+        .copy("Assets/__firefox__.js"),
+        .copy("Assets/AllFramesAtDocumentEnd.js"),
+        .copy("Assets/AllFramesAtDocumentEndSandboxed.js"),
+        .copy("Assets/AllFramesAtDocumentStart.js"),
+        .copy("Assets/AllFramesAtDocumentStartSandboxed.js"),
+        .copy("Assets/MainFrameAtDocumentEnd.js"),
+        .copy("Assets/MainFrameAtDocumentEndSandboxed.js"),
+        .copy("Assets/MainFrameAtDocumentStart.js"),
+        .copy("Assets/MainFrameAtDocumentStartSandboxed.js"),
+        .copy("Assets/Fonts/FiraSans-Bold.ttf"),
+        .copy("Assets/Fonts/FiraSans-BoldItalic.ttf"),
+        .copy("Assets/Fonts/FiraSans-Book.ttf"),
+        .copy("Assets/Fonts/FiraSans-Italic.ttf"),
+        .copy("Assets/Fonts/FiraSans-Light.ttf"),
+        .copy("Assets/Fonts/FiraSans-Medium.ttf"),
+        .copy("Assets/Fonts/FiraSans-Regular.ttf"),
+        .copy("Assets/Fonts/FiraSans-SemiBold.ttf"),
+        .copy("Assets/Fonts/FiraSans-UltraLight.ttf"),
+        .copy("Assets/Fonts/NewYorkMedium-Bold.otf"),
+        .copy("Assets/Fonts/NewYorkMedium-BoldItalic.otf"),
+        .copy("Assets/Fonts/NewYorkMedium-Regular.otf"),
+        .copy("Assets/Fonts/NewYorkMedium-RegularItalic.otf"),
+        .copy("Assets/Interstitial Pages/Pages/BlockedDomain.html"),
+        .copy("Assets/Interstitial Pages/Pages/HTTPBlocked.html"),
+        .copy("Assets/Interstitial Pages/Pages/CertificateError.html"),
+        .copy("Assets/Interstitial Pages/Pages/GenericError.html"),
+        .copy("Assets/Interstitial Pages/Pages/NetworkError.html"),
+        .copy("Assets/Interstitial Pages/Pages/Web3Domain.html"),
+        .copy("Assets/Interstitial Pages/Images/Carret.png"),
+        .copy("Assets/Interstitial Pages/Images/Clock.svg"),
+        .copy("Assets/Interstitial Pages/Images/Cloud.svg"),
+        .copy("Assets/Interstitial Pages/Images/DarkWarning.svg"),
+        .copy("Assets/Interstitial Pages/Images/Generic.svg"),
+        .copy("Assets/Interstitial Pages/Images/Globe.svg"),
+        .copy("Assets/Interstitial Pages/Images/Info.svg"),
+        .copy("Assets/Interstitial Pages/Images/Warning.svg"),
+        .copy("Assets/Interstitial Pages/Images/warning-triangle-outline.svg"),
+        .copy("Assets/Interstitial Pages/Styles/BlockedDomain.css"),
+        .copy("Assets/Interstitial Pages/Styles/CertificateError.css"),
+        .copy("Assets/Interstitial Pages/Styles/InterstitialStyles.css"),
+        .copy("Assets/Interstitial Pages/Styles/NetworkError.css"),
+        .copy("Assets/Interstitial Pages/Styles/Web3Domain.css"),
+        .copy("Assets/Lottie/shred.json"),
+        .copy("Assets/SearchPlugins"),
+        .copy("Frontend/Reader/Reader.css"),
+        .copy("Frontend/Reader/Reader.html"),
+        .copy("Frontend/Reader/ReaderViewLoading.html"),
+        .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/corwin-prescott-3.jpg"),
+        .copy("Frontend/Browser/Favorites/Data/top_sites_by_region.json"),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSearchResultAdScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSearchScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSkusScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/PlaylistFolderSharingScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/FrameCheckWrapper.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/CookieControlScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/FarblingProtectionScript.js"
+        ),
+        .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/gpc.js"),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/MediaBackgroundingScript.js"
+        ),
+        .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistScript.js"),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistSwizzlerScript.js"
+        ),
+        .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/ReadyStateScript.js"),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/RequestBlockingScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/TrackingProtectionStats.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletEthereumProviderScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletSolanaProviderScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/YoutubeQualityScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/BraveLeoScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DarkReaderScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/BraveTranslateScript.js"
+        ),
+        .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DeAmpScript.js"),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/FaviconScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/ResourceDownloaderScript.js"
+        ),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SiteStateListenerScript.js"
+        ),
+        .copy("WebFilters/ContentBlocker/Lists/block-ads.json"),
+        .copy("WebFilters/ContentBlocker/Lists/block-cookies.json"),
+        .copy("WebFilters/ContentBlocker/Lists/block-trackers.json"),
+        .copy("WebFilters/ContentBlocker/Lists/mixed-content-upgrade.json"),
+        .copy("WebFilters/ShieldStats/Adblock/Resources/ABPFilterParserData.dat"),
+        .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveTalkScript.js"
+        ),
+      ],
+      plugins: ["LoggerPlugin"]
+    ),
     .target(
       name: "Shared",
       dependencies: [
@@ -463,203 +638,21 @@ var package = Package(
       capability: .buildTool()
     ),
     .executableTarget(name: "LeoAssetCatalogGenerator"),
-  ],
-  cxxLanguageStandard: .cxx17
-)
-
-var braveTarget: PackageDescription.Target = .target(
-  name: "Brave",
-  dependencies: [
-    "BraveShared",
-    "Shared",
-    "BraveWallet",
-    "BraveCore",
-    "MaterialComponents",
-    "BraveUI",
-    "DesignSystem",
-    "Data",
-    "DataImporter",
-    "Storage",
-    "Fuzi",
-    "SnapKit",
-    "Static",
-    "SDWebImage",
-    "Then",
-    "BrowserIntentsModels",
-    "BraveWidgetsModels",
-    "BraveVPN",
-    "BraveNews",
-    "AIChat",
-    "BraveStore",
-    "Onboarding",
-    "Growth",
-    "SpeechRecognition",
-    "CodableHelpers",
-    "Preferences",
-    "Favicon",
-    "CertificateUtilities",
-    "Playlist",
-    "UserAgent",
-    .product(name: "Lottie", package: "lottie-spm"),
-    .product(name: "Collections", package: "swift-collections"),
-    "PlaylistUI",
-    "BrowserMenu",
-    "Web",
-    "BraveShields",
-  ],
-  exclude: [
-    "Frontend/UserContent/UserScripts/AllFrames",
-    "Frontend/UserContent/UserScripts/MainFrame",
-    "Frontend/UserContent/UserScripts/Sandboxed",
-  ],
-  resources: [
-    .copy("Assets/About/Licenses.html"),
-    .copy("Assets/About/AboutHome.html"),
-    .copy("Assets/__firefox__.js"),
-    .copy("Assets/AllFramesAtDocumentEnd.js"),
-    .copy("Assets/AllFramesAtDocumentEndSandboxed.js"),
-    .copy("Assets/AllFramesAtDocumentStart.js"),
-    .copy("Assets/AllFramesAtDocumentStartSandboxed.js"),
-    .copy("Assets/MainFrameAtDocumentEnd.js"),
-    .copy("Assets/MainFrameAtDocumentEndSandboxed.js"),
-    .copy("Assets/MainFrameAtDocumentStart.js"),
-    .copy("Assets/MainFrameAtDocumentStartSandboxed.js"),
-    .copy("Assets/Fonts/FiraSans-Bold.ttf"),
-    .copy("Assets/Fonts/FiraSans-BoldItalic.ttf"),
-    .copy("Assets/Fonts/FiraSans-Book.ttf"),
-    .copy("Assets/Fonts/FiraSans-Italic.ttf"),
-    .copy("Assets/Fonts/FiraSans-Light.ttf"),
-    .copy("Assets/Fonts/FiraSans-Medium.ttf"),
-    .copy("Assets/Fonts/FiraSans-Regular.ttf"),
-    .copy("Assets/Fonts/FiraSans-SemiBold.ttf"),
-    .copy("Assets/Fonts/FiraSans-UltraLight.ttf"),
-    .copy("Assets/Fonts/NewYorkMedium-Bold.otf"),
-    .copy("Assets/Fonts/NewYorkMedium-BoldItalic.otf"),
-    .copy("Assets/Fonts/NewYorkMedium-Regular.otf"),
-    .copy("Assets/Fonts/NewYorkMedium-RegularItalic.otf"),
-    .copy("Assets/Interstitial Pages/Pages/BlockedDomain.html"),
-    .copy("Assets/Interstitial Pages/Pages/HTTPBlocked.html"),
-    .copy("Assets/Interstitial Pages/Pages/CertificateError.html"),
-    .copy("Assets/Interstitial Pages/Pages/GenericError.html"),
-    .copy("Assets/Interstitial Pages/Pages/NetworkError.html"),
-    .copy("Assets/Interstitial Pages/Pages/Web3Domain.html"),
-    .copy("Assets/Interstitial Pages/Images/Carret.png"),
-    .copy("Assets/Interstitial Pages/Images/Clock.svg"),
-    .copy("Assets/Interstitial Pages/Images/Cloud.svg"),
-    .copy("Assets/Interstitial Pages/Images/DarkWarning.svg"),
-    .copy("Assets/Interstitial Pages/Images/Generic.svg"),
-    .copy("Assets/Interstitial Pages/Images/Globe.svg"),
-    .copy("Assets/Interstitial Pages/Images/Info.svg"),
-    .copy("Assets/Interstitial Pages/Images/Warning.svg"),
-    .copy("Assets/Interstitial Pages/Images/warning-triangle-outline.svg"),
-    .copy("Assets/Interstitial Pages/Styles/BlockedDomain.css"),
-    .copy("Assets/Interstitial Pages/Styles/CertificateError.css"),
-    .copy("Assets/Interstitial Pages/Styles/InterstitialStyles.css"),
-    .copy("Assets/Interstitial Pages/Styles/NetworkError.css"),
-    .copy("Assets/Interstitial Pages/Styles/Web3Domain.css"),
-    .copy("Assets/Lottie/shred.json"),
-    .copy("Assets/SearchPlugins"),
-    .copy("Frontend/Reader/Reader.css"),
-    .copy("Frontend/Reader/Reader.html"),
-    .copy("Frontend/Reader/ReaderViewLoading.html"),
-    .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/corwin-prescott-3.jpg"),
-    .copy("Frontend/Browser/Favorites/Data/top_sites_by_region.json"),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSearchResultAdScript.js"
-    ),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSearchScript.js"
-    ),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSkusScript.js"
-    ),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/PlaylistFolderSharingScript.js"
-    ),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/FrameCheckWrapper.js"
-    ),
-    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/CookieControlScript.js"),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/FarblingProtectionScript.js"
-    ),
-    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/gpc.js"),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/MediaBackgroundingScript.js"
-    ),
-    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistScript.js"),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistSwizzlerScript.js"
-    ),
-    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/ReadyStateScript.js"),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/RequestBlockingScript.js"
-    ),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/TrackingProtectionStats.js"
-    ),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletEthereumProviderScript.js"
-    ),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletSolanaProviderScript.js"
-    ),
-    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/YoutubeQualityScript.js"),
-    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/BraveLeoScript.js"),
-    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DarkReaderScript.js"),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/BraveTranslateScript.js"
-    ),
-    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DeAmpScript.js"),
-    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/FaviconScript.js"),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/ResourceDownloaderScript.js"
-    ),
-    .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SiteStateListenerScript.js"
-    ),
-    .copy("WebFilters/ContentBlocker/Lists/block-ads.json"),
-    .copy("WebFilters/ContentBlocker/Lists/block-cookies.json"),
-    .copy("WebFilters/ContentBlocker/Lists/block-trackers.json"),
-    .copy("WebFilters/ContentBlocker/Lists/mixed-content-upgrade.json"),
-    .copy("WebFilters/ShieldStats/Adblock/Resources/ABPFilterParserData.dat"),
-  ],
-  plugins: ["LoggerPlugin"]
-)
-
-// Keeping this in case we need to disable it at any time
-// Can use `BRAVE_APPSTORE_BUILD` environment like before to disable only on Release builds as well
-let isNativeTalkEnabled = true
-
-if isNativeTalkEnabled {
-  // Not a release build, add BraveTalk integrations
-  braveTarget.dependencies.append("BraveTalk")
-  braveTarget.resources?.append(
-    PackageDescription.Resource.copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveTalkScript.js"
-    )
-  )
-  package.dependencies.append(
-    .package(name: "JitsiMeet", path: "../third_party/JitsiMeet")
-  )
-  package.products.append(.library(name: "BraveTalk", targets: ["BraveTalk"]))
-  package.targets.append(contentsOf: [
     .target(
       name: "BraveTalk",
-      dependencies: ["Shared", "Preferences", "JitsiMeet"],
+      dependencies: ["Shared", "Preferences", "JitsiMeet", "BraveCore"],
       plugins: ["LoggerPlugin"]
     ),
     .testTarget(
       name: "BraveTalkTests",
       dependencies: [
-        "BraveTalk", "Shared", "TestHelpers",
+        "BraveTalk", "Shared", "TestHelpers", "BraveCore",
         .product(name: "Collections", package: "swift-collections"),
       ]
     ),
-  ])
-}
-
-package.targets.append(braveTarget)
+  ],
+  cxxLanguageStandard: .cxx17
+)
 
 let iosRootDirectory = URL(string: #file)!.deletingLastPathComponent().absoluteString.dropLast()
 let isStripAbsolutePathsFromDebugSymbolsEnabled = {
