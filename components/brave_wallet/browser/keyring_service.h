@@ -435,9 +435,6 @@ class KeyringService : public mojom::KeyringService {
   std::unique_ptr<CardanoHDKeyring> cardano_hd_mainnet_keyring_;
   std::unique_ptr<CardanoHDKeyring> cardano_hd_testnet_keyring_;
 
-  std::unique_ptr<PolkadotKeyring> polkadot_hd_mainnet_keyring_;
-  std::unique_ptr<PolkadotKeyring> polkadot_hd_testnet_keyring_;
-
   std::unique_ptr<PasswordEncryptor> encryptor_;
 
   raw_ptr<JsonRpcService> json_rpc_service_;
