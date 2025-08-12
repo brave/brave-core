@@ -21,11 +21,11 @@ class PolkadotKeyring {
                   mojom::KeyringId keyring_id);
   ~PolkadotKeyring();
 
-  // Get address of the account denoted by `//<network>//<account_index>`, which
-  // is the SS58-encoded public key for this particular derivation. Polkadot has
-  // migrated to using ss58-prefix 0 for all account addresses going forward,
-  // known as "unified addressing".
-  std::string GetUnifiedAddress(uint32_t account_index);
+  // Get the address of the account denoted by `//<network>//<account_index>`,
+  // which is the SS58-encoded public key for this particular derivation. Many
+  // parachains use their own ss58 prefix, which the caller can supply.
+  // Unified addressing uses 0 as the default prefix.
+  std::string GetAddress(uint32_t account_index, uint16_t prefix);
 
   // Get the public key associated with the account denoted by
   // `//<network>//<account_index>`.

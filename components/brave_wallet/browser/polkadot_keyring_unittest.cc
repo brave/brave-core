@@ -102,22 +102,14 @@ TEST(PolkadotKeyring, GetUnifiedAddress) {
   constexpr char const* kAddress1 =
       "14QspRnocdHvoDfFnGvvYwskrsSWG8nneJ2BAQ2oSMcsQUxB";
 
-  {
-    auto addr = keyring.GetUnifiedAddress(0);
-    EXPECT_EQ(addr, kAddress0);
-  }
+  // https://github.com/paritytech/ss58-registry/blob/57344a5258f1abff8fdb4689e91ff594ca54f02d/ss58-registry.json#L14-L16
+  constexpr uint16_t const kPolkadotPrefix = 0;
 
-  {
-    auto addr = keyring.GetUnifiedAddress(1);
-    EXPECT_EQ(addr, kAddress1);
-  }
-
-  {
-    // This test exercises the caching codepath in the GetUnifiedAddress
-    // implementation.
-    auto addr = keyring.GetUnifiedAddress(0);
-    EXPECT_EQ(addr, kAddress0);
-  }
+  EXPECT_EQ(keyring.GetAddress(0, kPolkadotPrefix), kAddress0);
+  EXPECT_EQ(keyring.GetAddress(1, kPolkadotPrefix), kAddress1);
+  // This test exercises the caching codepath in the GetAddress
+  // implementation.
+  EXPECT_EQ(keyring.GetAddress(0, kPolkadotPrefix), kAddress0);
 }
 
 TEST(PolkadotKeyring, GetPublicKey) {
