@@ -443,6 +443,17 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void handleAnalyticsConsentPage() {
+        boolean isP3aManaged = BraveLocalState.get().isManagedPreference(BravePref.P3A_ENABLED);
+        boolean isCrashReportingManaged =
+                !PrivacyPreferencesManagerImpl.getInstance()
+                        .isUsageAndCrashReportingPermittedByPolicy();
+
+        // If both settings are managed by policy, skip this page entirely
+        if (isP3aManaged && isCrashReportingManaged) {
+            nextOnboardingStep();
+            return;
+        }
+
         mCurrentOnboardingPage = CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE;
         int margin = mIsTablet ? 250 : 60;
         setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
@@ -469,85 +480,92 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mBtnNegative.setVisibility(View.VISIBLE);
         }
 
-        // Handle crash reporting consent based on installation status
-        if (PackageUtils.isFirstInstall(this)
-                && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
-            // For first time installs, enable crash reporting by default
-            if (mCheckboxCrash != null) {
-                mCheckboxCrash.setChecked(true);
+        if (!isCrashReportingManaged) {
+            // Handle crash reporting consent based on installation status
+            if (PackageUtils.isFirstInstall(this)
+                    && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
+                // For first time installs, enable crash reporting by default
+                if (mCheckboxCrash != null) {
+                    mCheckboxCrash.setChecked(true);
+                }
+                // Update metrics reporting consent
+                UmaSessionStats.changeMetricsReportingConsent(
+                        true, ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
+                // Mark crash reporting message as shown
+                OnboardingPrefManager.getInstance().setP3aCrashReportingMessageShown(true);
+            } else {
+                // For existing installations, restore previous crash reporting preference
+                boolean isCrashReporting = false;
+                try {
+                    // Get current crash reporting permission status
+                    isCrashReporting =
+                            PrivacyPreferencesManagerImpl.getInstance()
+                                    .isUsageAndCrashReportingPermittedByUser();
+                } catch (Exception e) {
+                    Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
+                }
+                // Update checkbox to match current preference
+                if (mCheckboxCrash != null) {
+                    mCheckboxCrash.setChecked(isCrashReporting);
+                }
             }
-            // Update metrics reporting consent
-            UmaSessionStats.changeMetricsReportingConsent(
-                    true, ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
-            // Mark crash reporting message as shown
-            OnboardingPrefManager.getInstance().setP3aCrashReportingMessageShown(true);
-        } else {
-            // For existing installations, restore previous crash reporting preference
-            boolean isCrashReporting = false;
+
+            if (mCheckboxCrash != null) {
+                mCheckboxCrash.setOnCheckedChangeListener(
+                        new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(
+                                    CompoundButton buttonView, boolean isChecked) {
+                                try {
+                                    UmaSessionStats.changeMetricsReportingConsent(
+                                            isChecked,
+                                            ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
+                                } catch (Exception e) {
+                                    Log.e(TAG, "CrashReportingOnboarding: " + e.getMessage());
+                                }
+                            }
+                        });
+            }
+        }
+
+        if (!isP3aManaged) {
+            boolean isP3aEnabled = true;
+
             try {
-                // Get current crash reporting permission status
-                isCrashReporting =
-                        PrivacyPreferencesManagerImpl.getInstance()
-                                .isUsageAndCrashReportingPermittedByUser();
+                isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
             } catch (Exception e) {
-                Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
+                Log.e(TAG, "P3aOnboarding: " + e.getMessage());
             }
-            // Update checkbox to match current preference
-            if (mCheckboxCrash != null) {
-                mCheckboxCrash.setChecked(isCrashReporting);
+
+            if (mCheckboxP3a != null) {
+                mCheckboxP3a.setChecked(isP3aEnabled);
+                mCheckboxP3a.setOnCheckedChangeListener(
+                        new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(
+                                    CompoundButton buttonView, boolean isChecked) {
+                                try {
+                                    BraveLocalState.get()
+                                            .setBoolean(BravePref.P3A_ENABLED, isChecked);
+                                    BraveLocalState.get()
+                                            .setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
+                                    BraveLocalState.commitPendingWrite();
+                                } catch (Exception e) {
+                                    Log.e(TAG, "P3aOnboarding: " + e.getMessage());
+                                }
+                            }
+                        });
             }
-        }
-
-        if (mCheckboxCrash != null) {
-            mCheckboxCrash.setOnCheckedChangeListener(
-                    new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            try {
-                                UmaSessionStats.changeMetricsReportingConsent(
-                                        isChecked,
-                                        ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
-                            } catch (Exception e) {
-                                Log.e(TAG, "CrashReportingOnboarding: " + e.getMessage());
-                            }
-                        }
-                    });
-        }
-
-        boolean isP3aEnabled = true;
-
-        try {
-            isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
-        } catch (Exception e) {
-            Log.e(TAG, "P3aOnboarding: " + e.getMessage());
-        }
-
-        if (mCheckboxP3a != null) {
-            mCheckboxP3a.setChecked(isP3aEnabled);
-            mCheckboxP3a.setOnCheckedChangeListener(
-                    new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            try {
-                                BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, isChecked);
-                                BraveLocalState.get()
-                                        .setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
-                                BraveLocalState.commitPendingWrite();
-                            } catch (Exception e) {
-                                Log.e(TAG, "P3aOnboarding: " + e.getMessage());
-                            }
-                        }
-                    });
         }
 
         if (mTvCard != null) {
             mTvCard.setVisibility(View.VISIBLE);
         }
         if (mCheckboxCrash != null) {
-            mCheckboxCrash.setVisibility(View.VISIBLE);
+            mCheckboxCrash.setVisibility(isCrashReportingManaged ? View.GONE : View.VISIBLE);
         }
         if (mCheckboxP3a != null) {
-            mCheckboxP3a.setVisibility(View.VISIBLE);
+            mCheckboxP3a.setVisibility(isP3aManaged ? View.GONE : View.VISIBLE);
         }
         if (mLayoutCard != null) {
             mLayoutCard.setVisibility(View.VISIBLE);
