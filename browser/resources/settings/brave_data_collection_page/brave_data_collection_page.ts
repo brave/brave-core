@@ -74,7 +74,7 @@ extends SettingBraveDataCollectionPageElementBase
       showRestartForMetricsReporting_: Boolean,
       showSurveyPanelist_: Boolean,
       isStatsReportingEnabledManaged_: Boolean,
-      isP3AManaged_: Boolean,
+      isP3AEnabledManaged_: Boolean,
     }
   }
 
@@ -84,7 +84,7 @@ extends SettingBraveDataCollectionPageElementBase
   private declare showRestartForMetricsReporting_: boolean
   private declare showSurveyPanelist_: boolean
   private declare isStatsReportingEnabledManaged_: boolean
-  private declare isP3AManaged_: boolean
+  private declare isP3AEnabledManaged_: boolean
 
   browserProxy_ = BraveDataCollectionBrowserProxyImpl.getInstance()
 
@@ -99,11 +99,11 @@ extends SettingBraveDataCollectionPageElementBase
       this.setP3AEnabledPref_(userEnabled, isManaged)
 
     this.isStatsReportingEnabledManaged_ = loadTimeData.getBoolean('isStatsReportingEnabledManaged')
-    this.isP3AManaged_ = loadTimeData.getBoolean('isP3AManaged')
+    this.isP3AEnabledManaged_ = loadTimeData.getBoolean('isP3AEnabledManaged')
 
     this.addWebUiListener('p3a-enabled-changed', setP3AEnabledPref)
     this.browserProxy_.getP3AEnabled().then(
-      (enabled: boolean) => setP3AEnabledPref(enabled, this.isP3AManaged_))
+      (enabled: boolean) => setP3AEnabledPref(enabled, this.isP3AEnabledManaged_))
 
     const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
         this.setMetricsReportingPref_(metricsReporting)
@@ -127,7 +127,7 @@ extends SettingBraveDataCollectionPageElementBase
       value: userEnabled,
     }
     this.p3aEnabledPref_ = pref
-    this.isP3AManaged_ = isManaged
+    this.isP3AEnabledManaged_ = isManaged
   }
 
   onP3AEnabledChange_(event: Event) {
