@@ -439,13 +439,12 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
   constexpr bool kShouldBeDisabledInTor = !kDefaultValue || BUILDFLAG(IS_MAC);
 
   EXPECT_EQ((kShouldBeDisabledInTor ? false : true),
-            content::EvalJs(tor_contents, kCheckNavigatorShare).ExtractBool());
+            content::EvalJs(tor_contents, kCheckNavigatorShare));
 
   auto* regular_contents =
       ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab"));
-  EXPECT_EQ(
-      kDefaultValue,
-      content::EvalJs(regular_contents, kCheckNavigatorShare).ExtractBool());
+  EXPECT_EQ(kDefaultValue,
+            content::EvalJs(regular_contents, kCheckNavigatorShare));
 
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess);
   TorProfileManager::CloseTorProfileWindows(tor_profile);
@@ -475,11 +474,11 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanWebRTC) {
   auto* tor_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
   content::WaitForLoadStop(tor_contents);
 
-  EXPECT_FALSE(content::EvalJs(tor_contents, kCheckWebRTC).ExtractBool());
+  EXPECT_EQ(false, content::EvalJs(tor_contents, kCheckWebRTC));
 
   auto* regular_contents =
       ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab"));
-  EXPECT_TRUE(content::EvalJs(regular_contents, kCheckWebRTC).ExtractBool());
+  EXPECT_EQ(true, content::EvalJs(regular_contents, kCheckWebRTC));
 
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess);
   TorProfileManager::CloseTorProfileWindows(tor_profile);
