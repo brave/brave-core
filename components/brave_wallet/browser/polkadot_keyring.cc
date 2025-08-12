@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/polkadot_keyring.h"
 
 #include "base/containers/span.h"
-#include "base/sys_byteorder.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -77,7 +76,7 @@ HDKeySr25519& PolkadotKeyring::GetKeypairOrInsert(uint32_t key_id) {
   auto pos = secondary_keys_.find(key_id);
   if (pos == secondary_keys_.end()) {
     auto [it, inserted] = secondary_keys_.emplace(
-        key_id, root_account_key_.DeriveHard(base::U32ToLittleEndian(key_id)));
+        key_id, root_account_key_.DeriveHard(base::byte_span_from_ref(key_id)));
     pos = it;
   }
   return pos->second;
