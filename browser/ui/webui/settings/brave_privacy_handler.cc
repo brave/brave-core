@@ -139,7 +139,7 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
   data_source->AddBoolean("isP3ADisabledByPolicy",
                           local_state->GetBoolean(p3a::kP3ADisabledByPolicy));
   data_source->AddBoolean(
-      "isStatsReportingManaged",
+      "isStatsReportingEnabledManaged",
       local_state->IsManagedPreference(kStatsReportingEnabled));
 
 #if BUILDFLAG(IS_WIN)

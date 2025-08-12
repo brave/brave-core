@@ -74,7 +74,7 @@ extends SettingBraveDataCollectionPageElementBase
       showRestartForMetricsReporting_: Boolean,
       showSurveyPanelist_: Boolean,
       isP3ADisabledByPolicy_: Boolean,
-      isStatsReportingManaged_: Boolean,
+      isStatsReportingEnabledManaged_: Boolean,
     }
   }
 
@@ -84,7 +84,7 @@ extends SettingBraveDataCollectionPageElementBase
   private declare showRestartForMetricsReporting_: boolean
   private declare showSurveyPanelist_: boolean
   private declare isP3ADisabledByPolicy_: boolean
-  private declare isStatsReportingManaged_: boolean
+  private declare isStatsReportingEnabledManaged_: boolean
 
   browserProxy_ = BraveDataCollectionBrowserProxyImpl.getInstance()
 
@@ -99,7 +99,7 @@ extends SettingBraveDataCollectionPageElementBase
       this.setP3AEnabledPref_(userEnabled, policyDisabled)
 
     this.isP3ADisabledByPolicy_ = loadTimeData.getBoolean('isP3ADisabledByPolicy')
-    this.isStatsReportingManaged_ = loadTimeData.getBoolean('isStatsReportingManaged')
+    this.isStatsReportingEnabledManaged_ = loadTimeData.getBoolean('isStatsReportingEnabledManaged')
 
     this.addWebUiListener('p3a-enabled-changed', setP3AEnabledPref)
     this.browserProxy_.getP3AEnabled().then(
@@ -115,7 +115,7 @@ extends SettingBraveDataCollectionPageElementBase
     this.addWebUiListener(
       'stats-usage-ping-enabled-changed', setStatsUsagePingEnabledPref)
     this.browserProxy_.getStatsUsagePingEnabled().then(
-      (enabled: boolean) => setStatsUsagePingEnabledPref(enabled, this.isStatsReportingManaged_))
+      (enabled: boolean) => setStatsUsagePingEnabledPref(enabled, this.isStatsReportingEnabledManaged_))
 
     this.showSurveyPanelist_ = loadTimeData.getBoolean('isSurveyPanelistAllowed')
   }
@@ -143,7 +143,7 @@ extends SettingBraveDataCollectionPageElementBase
       value: userEnabled,
     }
     this.statsUsagePingEnabledPref_ = pref
-    this.isStatsReportingManaged_ = isManaged
+    this.isStatsReportingEnabledManaged_ = isManaged
   }
 
   onStatsUsagePingEnabledChange_(event: Event) {
