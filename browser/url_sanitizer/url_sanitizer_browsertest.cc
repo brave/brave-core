@@ -11,7 +11,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
