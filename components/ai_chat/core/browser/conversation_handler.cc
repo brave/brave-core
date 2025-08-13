@@ -1359,7 +1359,7 @@ void ConversationHandler::OnGeneratePageContentComplete(
     // Only take screenshots if no screenshots have been taken yet
     if (!has_screenshots) {
       associated_content_manager_->GetScreenshots(
-          base::BindOnce(&ConversationHandler::OnScreenshotsTaken,
+          base::BindOnce(&ConversationHandler::OnAutoScreenshotsTaken,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
       return;
     }
@@ -1596,6 +1596,8 @@ ConversationHandler::GetStateForConversationEntries() {
           ? std::make_optional(
                 metadata_->associated_content[0]->content_used_percentage)
           : std::nullopt;
+  entries_state->visual_content_used_percentage =
+      visual_content_used_percentage_;
   // Can't submit if not a premium user and the model is premium-only
   entries_state->can_submit_user_entries =
       !IsRequestInProgress() &&
@@ -1804,13 +1806,35 @@ void ConversationHandler::MaybeSwitchToVisionModel(
   }
 }
 
-void ConversationHandler::OnScreenshotsTaken(
+void ConversationHandler::OnAutoScreenshotsTaken(
     GetAllContentCallback callback,
     std::optional<std::vector<mojom::UploadedFilePtr>> screenshots) {
-  // Screenshots have been taken and are already in UploadedFile format
-  // Update the existing conversation turn with these uploaded files
+  // Apply MAX_IMAGES limit to automatic screenshots and calculate visual
+  // percentage This function is only called for automatic screenshot capture,
+  // never for user uploads
+  std::optional<uint32_t> calculated_visual_percentage;
 
   if (screenshots && !screenshots->empty()) {
+    size_t total_screenshots = screenshots->size();
+
+    // Apply MAX_IMAGES limit for automatic screenshots
+    if (total_screenshots > mojom::MAX_IMAGES) {
+      size_t discarded_count = total_screenshots - mojom::MAX_IMAGES;
+
+      // Calculate visual content percentage
+      calculated_visual_percentage = base::checked_cast<uint32_t>(
+          base::checked_cast<float>(mojom::MAX_IMAGES) * 100.0f /
+          total_screenshots);
+
+      // Truncate to MAX_IMAGES limit
+      screenshots->resize(mojom::MAX_IMAGES);
+      screenshots->shrink_to_fit();
+
+      DVLOG(1) << "Image truncation details - Total captured: "
+               << total_screenshots << ", Sent to model: " << mojom::MAX_IMAGES
+               << ", Discarded: " << discarded_count;
+    }
+
     // Auto-switch to vision model if needed
     MaybeSwitchToVisionModel(screenshots);
 
@@ -1828,6 +1852,15 @@ void ConversationHandler::OnScreenshotsTaken(
       // Notify UI about the updated conversation turn
       OnHistoryUpdate(chat_history_.back().Clone());
     }
+  }
+
+  // Store the calculated visual content percentage for UI display
+  const auto old = visual_content_used_percentage_;
+  visual_content_used_percentage_ = calculated_visual_percentage;
+
+  // Trigger UI state update only when visual content percentage has changed
+  if (old != visual_content_used_percentage_) {
+    OnStateForConversationEntriesChanged();
   }
 
   // Continue with the original callback

@@ -651,6 +651,7 @@ type CustomArgs = {
   isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
+  shouldShowLongVisualContentWarning: boolean
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
@@ -691,6 +692,7 @@ const args: CustomArgs = {
   isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
+  shouldShowLongVisualContentWarning: false,
   totalTokens: 0,
   trimmedTokens: 0,
   isGenerating: false,
@@ -926,6 +928,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isLeoModel: conversationContext.isCurrentModelLeo,
     contentUsedPercentage: options.args.shouldShowLongPageWarning
       ? 48 : 100,
+    visualContentUsedPercentage: options.args.shouldShowLongVisualContentWarning
+      ? 75 : undefined,
     totalTokens: BigInt(options.args.totalTokens),
     trimmedTokens: BigInt(options.args.trimmedTokens),
     canSubmitUserEntries: !conversationContext.shouldDisableUserInput,

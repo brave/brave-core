@@ -94,7 +94,7 @@ struct AssociatedContent {
 
   url.mojom.Url url;
 
-  // Percentage of the content that has been utilized by remote LLM (0-100)
+  // Percentage of the text content that has been utilized by remote LLM (0-100)
   int32 content_used_percentage;
 };
 
@@ -545,6 +545,10 @@ struct ConversationEntriesState {
   // How much of the content has been used by the AI engine, percentage,or null
   // if no content is associated.
   uint32? content_used_percentage;
+  // Percentage of the visual content that has been utilized by remote LLM
+  // (0-100)
+  // This tracks image/screenshot truncation due to MAX_IMAGES limits
+  uint32? visual_content_used_percentage;
   // Whether the UI should represent that the user cannot submit new messages
   // or edits to the conversation.
   bool can_submit_user_entries;
