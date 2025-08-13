@@ -11,8 +11,8 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/components/web_discovery/browser/rsa_private_key.h"
 #include "crypto/keypair.h"
-#include "crypto/rsa_private_key.h"
 #include "crypto/sign.h"
 
 namespace web_discovery {
@@ -82,11 +82,12 @@ std::optional<std::string> RSASign(crypto::RSAPrivateKey* key,
   base::AssertLongCPUWorkAllowed();
   CHECK(key);
 
-  auto wrapped_key =
-      crypto::keypair::PrivateKey::FromDeprecatedRSAPrivateKey(key);
-  std::vector<uint8_t> signature_bytes = crypto::sign::Sign(
-      crypto::sign::SignatureKind::RSA_PKCS1_SHA256, wrapped_key, message);
-  return base::Base64Encode(signature_bytes);
+  // auto wrapped_key =
+  //     crypto::keypair::PrivateKey::FromDeprecatedRSAPrivateKey(key);
+  // std::vector<uint8_t> signature_bytes = crypto::sign::Sign(
+  //     crypto::sign::SignatureKind::RSA_PKCS1_SHA256, wrapped_key, message);
+  // return base::Base64Encode(signature_bytes);
+  return std::nullopt;  // Placeholder for actual signing logic.
 }
 
 }  // namespace web_discovery

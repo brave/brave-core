@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "crypto/rsa_private_key.h"
+#include "brave/components/web_discovery/browser/rsa_private_key.h"
 
 namespace web_discovery {
 

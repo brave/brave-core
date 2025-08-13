@@ -11,7 +11,7 @@
 #include <string>
 
 #include "base/containers/span.h"
-#include "crypto/rsa_private_key.h"
+#include "brave/components/web_discovery/browser/rsa_private_key.h"
 
 namespace web_discovery {
 
