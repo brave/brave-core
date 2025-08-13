@@ -67,6 +67,8 @@ export function useProfileCount () {
 export const shouldPlayAnimations = loadTimeData.getBoolean('hardwareAccelerationEnabledAtStartup') &&
     !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+const WEB_DISCOVERY_MANAGED_KEY = 'isWebDiscoveryEnabledManaged'
+
 // This hook is a kind of finite state machine that helps transition between view types.
 // It's intended to put transition logic in one place, so that we can easily understand
 // what's going on and add or remove a state from the graph.
@@ -82,9 +84,11 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
   const { browserProfiles, currentSelectedBrowserProfiles} = React.useContext(DataContext)
 
   const states = React.useMemo(() => {
-    const isWebDiscoveryEnabledManaged = loadTimeData.getBoolean('isWebDiscoveryEnabledManaged')
-    // Skip HelpWDP if web discovery is managed
-    const nextAfterImport = isWebDiscoveryEnabledManaged ? ViewType.HelpImprove : ViewType.HelpWDP
+    const shouldSkipWDP = !loadTimeData.valueExists(WEB_DISCOVERY_MANAGED_KEY) ||
+                          loadTimeData.getBoolean(WEB_DISCOVERY_MANAGED_KEY)
+
+    // Skip HelpWDP if web discovery is managed or doesn't exist
+    const nextAfterImport = shouldSkipWDP ? ViewType.HelpImprove : ViewType.HelpWDP
 
     return {
       [ViewType.DefaultBrowser]: {  // The initial state view
