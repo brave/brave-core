@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_avatar_icon_util.cc b/chrome/browser/profiles/profile_avatar_icon_util.cc
-index 51070342d6ff7cefeda1c70fa8d7ba356646efcf..26ffdb39594959bffdcd5e963957ec054b90800e 100644
+index 356b86e5517e965202db44bc6535f231e2b58085..4229799234aefcf38a82974634c6d9f9839fcd9c 100644
 --- a/chrome/browser/profiles/profile_avatar_icon_util.cc
 +++ b/chrome/browser/profiles/profile_avatar_icon_util.cc
-@@ -413,7 +413,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;
+@@ -465,7 +465,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;
  #elif BUILDFLAG(IS_CHROMEOS)
  constexpr size_t kDefaultAvatarIconsCount = 27;
  #else
@@ -11,7 +11,7 @@ index 51070342d6ff7cefeda1c70fa8d7ba356646efcf..26ffdb39594959bffdcd5e963957ec05
  #endif
  
  #if !BUILDFLAG(IS_ANDROID)
-@@ -588,6 +588,7 @@ size_t GetPlaceholderAvatarIndex() {
+@@ -640,6 +640,7 @@ size_t GetPlaceholderAvatarIndex() {
  
  size_t GetModernAvatarIconStartIndex() {
  #if !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_ANDROID)
@@ -19,7 +19,7 @@ index 51070342d6ff7cefeda1c70fa8d7ba356646efcf..26ffdb39594959bffdcd5e963957ec05
    return GetPlaceholderAvatarIndex() + 1;
  #else
    // Only use the placeholder avatar on ChromeOS and Android.
-@@ -621,6 +622,7 @@ std::string GetPlaceholderAvatarIconUrl() {
+@@ -673,6 +674,7 @@ std::string GetPlaceholderAvatarIconUrl() {
  
  const IconResourceInfo* GetDefaultAvatarIconResourceInfo(size_t index) {
    CHECK_LT(index, kDefaultAvatarIconsCount);
@@ -27,7 +27,7 @@ index 51070342d6ff7cefeda1c70fa8d7ba356646efcf..26ffdb39594959bffdcd5e963957ec05
    static const std::array<IconResourceInfo, kDefaultAvatarIconsCount>
        resource_info = {{
    // Old avatar icons:
-@@ -932,6 +934,7 @@ base::Value::List GetIconsAndLabelsForProfileAvatarSelector(
+@@ -984,6 +986,7 @@ base::Value::List GetIconsAndLabelsForProfileAvatarSelector(
          selected_avatar_idx == GetPlaceholderAvatarIndex());
      avatars.Insert(avatars.begin(),
                     base::Value(std::move(generic_avatar_info)));
