@@ -17,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
@@ -26,10 +27,12 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.Feature;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.homepage.HomepageManager;
+import org.chromium.chrome.browser.homepage.HomepagePolicyManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
+import org.chromium.components.prefs.PrefService;
 import org.chromium.content_public.browser.test.util.TouchCommon;
 import org.chromium.ui.base.TestActivity;
 
@@ -39,6 +42,7 @@ import org.chromium.ui.base.TestActivity;
 public class BraveHomepageSettingsUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
+    @Mock public HomepagePolicyManager mMockHomepagePolicyManager;
     @Mock public Profile mProfile;
 
     private ActivityScenario<TestActivity> mActivityScenario;
@@ -56,6 +60,7 @@ public class BraveHomepageSettingsUnitTest {
     @SuppressWarnings("ActivityScenarioLaunch")
     @Before
     public void setUp() {
+        HomepagePolicyManager.setInstanceForTests(mMockHomepagePolicyManager);
         mActivityScenario = ActivityScenario.launch(TestActivity.class);
         mActivityScenario.onActivity(
                 activity -> {
@@ -64,6 +69,7 @@ public class BraveHomepageSettingsUnitTest {
                     mActivity.setTheme(R.style.Theme_BrowserUI_DayNight);
                 });
         ProfileManager.setLastUsedProfileForTesting(mProfile);
+        HomepagePolicyManager.setPrefServiceForTesting(Mockito.mock(PrefService.class));
     }
 
     @After
