@@ -439,13 +439,46 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
   constexpr bool kShouldBeDisabledInTor = !kDefaultValue || BUILDFLAG(IS_MAC);
 
   EXPECT_EQ((kShouldBeDisabledInTor ? false : true),
-            content::EvalJs(tor_contents, kCheckNavigatorShare).ExtractBool());
+            content::EvalJs(tor_contents, kCheckNavigatorShare));
 
   auto* regular_contents =
       ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab"));
-  EXPECT_EQ(
-      kDefaultValue,
-      content::EvalJs(regular_contents, kCheckNavigatorShare).ExtractBool());
+  EXPECT_EQ(kDefaultValue,
+            content::EvalJs(regular_contents, kCheckNavigatorShare));
+
+  EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess);
+  TorProfileManager::CloseTorProfileWindows(tor_profile);
+  ui_test_utils::WaitForBrowserToClose();
+}
+
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanWebRTC) {
+  testing::Mock::AllowLeak(GetTorLauncherFactory());
+  EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
+      .WillRepeatedly(testing::Return(true));
+
+  constexpr char kCheckWebRTC[] = R"js(
+    (function() {
+      try {
+        const peerConnection = new RTCPeerConnection();
+        return !!peerConnection;
+      } catch(e) {
+        return false;
+      }
+    })();
+  )js";
+
+  Browser* tor_browser = SwitchToTorProfile(
+      browser()->profile(), GetTorLauncherFactory(), 1, GURL("brave://newtab"));
+  Profile* tor_profile = tor_browser->profile();
+
+  auto* tor_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
+  content::WaitForLoadStop(tor_contents);
+
+  EXPECT_EQ(false, content::EvalJs(tor_contents, kCheckWebRTC));
+
+  auto* regular_contents =
+      ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab"));
+  EXPECT_EQ(true, content::EvalJs(regular_contents, kCheckWebRTC));
 
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess);
   TorProfileManager::CloseTorProfileWindows(tor_profile);

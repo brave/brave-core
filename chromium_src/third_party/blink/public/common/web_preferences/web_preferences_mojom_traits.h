@@ -31,8 +31,8 @@ struct BLINK_COMMON_EXPORT StructTraits<blink::mojom::WebPreferencesDataView,
     return r.page_in_reader_mode;
   }
 
-  static bool disable_web_share(const blink::web_pref::WebPreferences& r) {
-    return r.disable_web_share;
+  static bool is_tor_window(const blink::web_pref::WebPreferences& r) {
+    return r.is_tor_window;
   }
 
   static bool Read(blink::mojom::WebPreferencesDataView r,
