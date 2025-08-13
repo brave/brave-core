@@ -82,17 +82,21 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
   const { browserProfiles, currentSelectedBrowserProfiles} = React.useContext(DataContext)
 
   const states = React.useMemo(() => {
+    const isWebDiscoveryEnabledManaged = loadTimeData.getBoolean('isWebDiscoveryEnabledManaged')
+    // Skip HelpWDP if web discovery is managed
+    const nextAfterImport = isWebDiscoveryEnabledManaged ? ViewType.HelpImprove : ViewType.HelpWDP
+
     return {
       [ViewType.DefaultBrowser]: {  // The initial state view
         forward: !browserProfiles || browserProfiles.length === 0 ?
             ViewType.ImportSelectTheme : ViewType.ImportSelectBrowser
       },
       [ViewType.ImportSelectTheme]: {
-        forward: ViewType.HelpWDP
+        forward: nextAfterImport
       },
       [ViewType.ImportSelectBrowser]: {
         forward: currentSelectedBrowserProfiles && currentSelectedBrowserProfiles.length > 1 ? ViewType.ImportSelectProfile : ViewType.ImportInProgress,
-        skip: ViewType.HelpWDP,
+        skip: nextAfterImport,
       },
       [ViewType.ImportSelectProfile]: {
         forward: ViewType.ImportInProgress,
@@ -103,10 +107,10 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
         fail: ViewType.ImportFailed,
       },
       [ViewType.ImportSucceeded]: {
-        forward: ViewType.HelpWDP
+        forward: nextAfterImport
       },
       [ViewType.ImportFailed]: {
-        forward: ViewType.HelpWDP
+        forward: nextAfterImport
       },
       [ViewType.HelpWDP]: {
         forward: ViewType.HelpImprove
