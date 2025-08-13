@@ -53,6 +53,7 @@ import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.components.web_discovery.WebDiscoveryPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
@@ -237,7 +238,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     view -> {
                         if (mCurrentStep == 0 && !isDefaultBrowser()) {
                             setDefaultBrowserAndProceedToNextStep();
-                        } else if (isWDPEnabled()
+                        } else if (isWDPSettingAvailable()
                                 && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
                             UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
                                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
@@ -396,7 +397,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void handleWDPStep() {
-        if (!isWDPEnabled()) {
+        if (!isWDPSettingAvailable()) {
             nextOnboardingStep();
             return;
         }
@@ -408,8 +409,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         showWDPPage();
     }
 
-    private boolean isWDPEnabled() {
-        return BraveConfig.WEB_DISCOVERY_ENABLED;
+    private boolean isWDPSettingAvailable() {
+        if (!BraveConfig.WEB_DISCOVERY_ENABLED) {
+            return false;
+        }
+
+        return !UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
+                .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
     }
 
     private void showBrowserSelectionPage() {
