@@ -137,7 +137,9 @@ extension BrowserViewController {
     pageURL: URL?
   ) {
     var actions: [Action] = []
-    actions.append(vpnMenuAction)
+    if profileController.profile.prefs.isBraveVPNAvailable {
+      actions.append(vpnMenuAction)
+    }
     actions.append(contentsOf: destinationMenuActions(for: pageURL))
     actions.append(contentsOf: pageActions(for: pageURL, tab: tab))
     var pageActivities: Set<Action> = Set(

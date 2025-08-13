@@ -86,12 +86,6 @@ extension Preferences {
       key: "fullScreenCallout.full-screen-omnibox-callout-completed",
       default: false
     )
-
-    /// Whether the vpn promotion callout is shown.
-    public static let vpnUpdateBillingCalloutCompleted = Option<Bool>(
-      key: "fullScreenCallout.full-screen-vpn-billing-callout-completed",
-      default: false
-    )
   }
 }
 

@@ -42,8 +42,6 @@ extension BrowserViewController {
     switch type {
     case .p3a:
       presentP3AScreenCallout()
-    case .vpnUpdateBilling:
-      presentVPNUpdateBillingCallout(skipSafeGuards: skipSafeGuards)
     case .bottomBar:
       presentBottomBarCallout(skipSafeGuards: skipSafeGuards)
     case .defaultBrowser:
@@ -253,29 +251,6 @@ extension BrowserViewController {
     present(popup, animated: false)
   }
 
-  private func presentVPNUpdateBillingCallout(skipSafeGuards: Bool = false) {
-    if !skipSafeGuards {
-      // Checking subscription receipt is in retry period
-      guard let receiptStatus = Preferences.VPN.vpnReceiptStatus.value else {
-        return
-      }
-
-      if receiptStatus != BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue {
-        return
-      }
-    }
-
-    Task { @MainActor in
-      for await message in StoreKit.Message.messages {
-        guard let windowScene = currentScene else {
-          return
-        }
-
-        try? message.display(in: windowScene)
-      }
-    }
-  }
-
   // MARK: Helper Methods for Presentation
 
   private func presentVPNChurnPromoCallout(
@@ -317,9 +292,11 @@ extension BrowserViewController {
   // MARK: Non-Conditional Callouts Methods
 
   func presentVPNInAppEventCallout() {
-    // If the onboarding has not completed we do not show any promo screens.
+    // If the onboarding has not completed or VPN is not available we do not show any promo screens.
     // This will most likely be the case for users who have not installed the app yet.
-    if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+    if profileController.profile.prefs.isBraveVPNAvailable,
+      Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue
+    {
       return
     }
 
