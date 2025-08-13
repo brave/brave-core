@@ -52,7 +52,7 @@ final class PageDataTests: XCTestCase {
       // We get only entries of the main frame
       // NOTE: If we were to add some engines we might see additional types
       let expectedMainFrameTypes: Set<UserScriptType> = [
-        .siteStateListener, .nacl, .farblingProtection(etld: "example.com"),
+        .siteStateListener, .farblingProtection(etld: "example.com"),
         .gpc(ShieldPreferences.enableGPC.value),
       ]
       XCTAssertEqual(mainFrameRequestTypes, expectedMainFrameTypes)
@@ -83,7 +83,7 @@ final class PageDataTests: XCTestCase {
         isBlockFingerprintingEnabled: true
       )
       let expectedMainAndSubFrameTypes: Set<UserScriptType> = [
-        .siteStateListener, .nacl, .farblingProtection(etld: "example.com"),
+        .siteStateListener, .farblingProtection(etld: "example.com"),
         .gpc(ShieldPreferences.enableGPC.value),
       ]
       XCTAssertEqual(expectedMainAndSubFrameTypes, addedSubFrameFrameRequestTypes)
