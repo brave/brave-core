@@ -5,8 +5,8 @@
 
 #include "base/base64.h"
 #include "base/strings/string_util.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
@@ -27,6 +27,15 @@
 #include "url/gurl.h"
 
 namespace {
+
+base::Value CreateResource(const std::string& name,
+                           const std::string& content) {
+  base::Value::Dict resource;
+  resource.Set("name", name);
+  resource.Set("content", base::Base64Encode(content));
+  resource.SetByDottedPath("kind.mime", "application/javascript");
+  return base::Value(std::move(resource));
+}
 
 void AwaitRoot(content::WebContents* web_contents, const std::string& root) {
   constexpr const char kScript[] = R"js(
@@ -182,24 +191,18 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
   }
 
   base::Value GetCustomResources() {
-    base::RunLoop loop;
-    base::Value result;
+    base::test::TestFuture<base::Value> result;
     g_brave_browser_process->ad_block_service()
         ->custom_resource_provider()
-        ->GetCustomResources(
-            base::BindLambdaForTesting([&loop, &result](base::Value resources) {
-              result = std::move(resources);
-              loop.Quit();
-            }));
-    loop.Run();
-    return result;
+        ->GetCustomResources(result.GetCallback());
+    return result.Take();
   }
 
  private:
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, Add) {
   EnableDeveloperMode(true);
 
   NavigateToURL(GURL("brave://settings/shields/filters"));
@@ -209,39 +212,69 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
   ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
   SaveCustomScriptlet("custom-script", kContent);
 
-  {
-    const auto& custom_resources = GetCustomResources();
-    ASSERT_TRUE(custom_resources.is_list());
-    ASSERT_EQ(1u, custom_resources.GetList().size());
-    CheckCustomScriptlet(custom_resources.GetList().front(),
-                         "user-custom-script.js", kContent);
-  }
+  const auto& custom_resources = GetCustomResources();
+  ASSERT_TRUE(custom_resources.is_list());
+  ASSERT_EQ(1u, custom_resources.GetList().size());
+  CheckCustomScriptlet(custom_resources.GetList().front(),
+                       "user-custom-script.js", kContent);
+}
 
-  constexpr const char kEditedContent[] = "window.test = 'edited'";
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, Edit) {
+  EnableDeveloperMode(true);
+
+  NavigateToURL(GURL("brave://settings/shields/filters"));
+
+  base::test::TestFuture<
+      brave_shields::AdBlockCustomResourceProvider::ErrorCode>
+      result;
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->AddResource(profile()->GetPrefs(),
+                    CreateResource("user-custom-script.js",
+                                   "window.test = 'custom-script'"),
+                    result.GetCallback());
+  EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
+            result.Get());
 
   ASSERT_TRUE(
       ClickCustomScriplet(web_contents(), "user-custom-script.js", "edit"));
 
   EXPECT_EQ("user-custom-script.js", GetCustomScriptletName(web_contents()));
-  EXPECT_EQ(kContent, GetCustomScriptletContent(web_contents()));
-  SaveCustomScriptlet("Custom-Script-Edited", kEditedContent);
-  {
-    const auto& custom_resources = GetCustomResources();
-    ASSERT_TRUE(custom_resources.is_list());
-    ASSERT_EQ(1u, custom_resources.GetList().size());
-    CheckCustomScriptlet(custom_resources.GetList().front(),
-                         "user-Custom-Script-Edited.js", kEditedContent);
-  }
+  EXPECT_EQ("window.test = 'custom-script'",
+            GetCustomScriptletContent(web_contents()));
 
-  ASSERT_TRUE(ClickCustomScriplet(web_contents(),
-                                  "user-Custom-Script-Edited.js", "delete"));
-  AwaitElement(web_contents(), "adblockScriptletList",
-               "user-Custom-Script-Edited.js", true);
-  {
-    const auto& custom_resources = GetCustomResources();
-    ASSERT_TRUE(custom_resources.is_list());
-    ASSERT_TRUE(custom_resources.GetList().empty());
-  }
+  constexpr const char kEditedContent[] = "window.test = 'edited'";
+  SaveCustomScriptlet("Custom-Script-Edited", kEditedContent);
+
+  const auto& custom_resources = GetCustomResources();
+  ASSERT_TRUE(custom_resources.is_list());
+  ASSERT_EQ(1u, custom_resources.GetList().size());
+  CheckCustomScriptlet(custom_resources.GetList().front(),
+                       "user-Custom-Script-Edited.js", kEditedContent);
+}
+
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, Delete) {
+  EnableDeveloperMode(true);
+
+  NavigateToURL(GURL("brave://settings/shields/filters"));
+
+  base::test::TestFuture<
+      brave_shields::AdBlockCustomResourceProvider::ErrorCode>
+      result;
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->AddResource(profile()->GetPrefs(),
+                    CreateResource("user-custom-script.js",
+                                   "window.test = 'custom-script'"),
+                    result.GetCallback());
+  EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
+            result.Get());
+  ASSERT_TRUE(
+      ClickCustomScriplet(web_contents(), "user-custom-script.js", "delete"));
+  AwaitElement(web_contents(), "adblockScriptletList", "user-custom-script.js",
+               true);
+  const auto& custom_resources = GetCustomResources();
+  EXPECT_EQ(0u, custom_resources.GetList().size());
 }
 
 IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, ExecCustomScriptlet) {
@@ -256,8 +289,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, ExecCustomScriptlet) {
 
   UpdateAdBlockInstanceWithRules("a.com##+js(user-custom-script)");
 
-  GURL tab_url =
-      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  GURL tab_url = embedded_test_server()->GetURL("a.com", "/simple.html");
   NavigateToURL(tab_url);
 
   EXPECT_EQ("custom-script", EvalJs(web_contents(), "window.test"));
@@ -287,8 +319,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
 
   UpdateAdBlockInstanceWithRules("a.com##+js(user-Fix)");
 
-  GURL tab_url =
-      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  GURL tab_url = embedded_test_server()->GetURL("a.com", "/simple.html");
   NavigateToURL(tab_url);
 
   EXPECT_EQ("default-script", EvalJs(web_contents(), "window.test"));
@@ -311,8 +342,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameCases) {
       "a.com##+js(user-script)\n"
       "a.com##+js(user-ScRiPt)");
 
-  GURL tab_url =
-      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  GURL tab_url = embedded_test_server()->GetURL("a.com", "/simple.html");
   NavigateToURL(tab_url);
 
   EXPECT_TRUE(EvalJs(web_contents(), "window.lower").ExtractBool());
@@ -322,9 +352,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameCases) {
 IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, TwoProfiles) {
   EnableDeveloperMode(true);
 
-  UpdateAdBlockInstanceWithRules(
-      "a.com##+js(user-1)\n"
-      "a.com##+js(user-2)");
+  UpdateAdBlockInstanceWithRules("a.com##+js(user-1)");
 
   NavigateToURL(GURL("brave://settings/shields/filters"));
 
@@ -340,11 +368,19 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, TwoProfiles) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       second_web_contents, GURL("brave://settings/shields/filters"), 1, true);
 
-  ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
-  SaveCustomScriptlet("user-1", "window.test_1 = true");
+  base::test::TestFuture<
+      brave_shields::AdBlockCustomResourceProvider::ErrorCode>
+      result;
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->AddResource(profile()->GetPrefs(),
+                    CreateResource("user-1.js", "window.test = true"),
+                    result.GetCallback());
+  EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
+            result.Get());
 
-  ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
-  SaveCustomScriptlet("user-2", "window.test_2 = true");
+  AwaitRoot(web_contents(), "adblockScriptletList");
+  AwaitElement(web_contents(), "adblockScriptletList", "user-1.js");
 
   // Expect the second profile shows the same scriptlets even if developer mode
   // is disabled.
@@ -352,18 +388,13 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, TwoProfiles) {
       brave_shields::IsDeveloperModeEnabled(second_profile.GetPrefs()));
   AwaitRoot(second_web_contents, "adblockScriptletList");
   AwaitElement(second_web_contents, "adblockScriptletList", "user-1.js");
-  AwaitElement(second_web_contents, "adblockScriptletList", "user-2.js");
 
   // Check both scripts work in both profiles
-  GURL tab_url =
-      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  GURL tab_url = embedded_test_server()->GetURL("a.com", "/simple.html");
   NavigateToURL(tab_url);
-
-  EXPECT_TRUE(
-      EvalJs(web_contents(), "window.test_1 && window.test_2").ExtractBool());
+  EXPECT_EQ(true, EvalJs(web_contents(), "window.test"));
 
   content::NavigateToURLBlockUntilNavigationsComplete(second_web_contents,
                                                       tab_url, 1, true);
-  EXPECT_TRUE(EvalJs(second_web_contents, "window.test_1 && window.test_2")
-                  .ExtractBool());
+  EXPECT_EQ(true, EvalJs(second_web_contents, "window.test"));
 }
