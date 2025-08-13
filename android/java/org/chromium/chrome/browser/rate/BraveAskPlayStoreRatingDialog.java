@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -27,11 +26,14 @@ import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.tasks.Task;
 
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 
 public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
     public static final String TAG_FRAGMENT = "brave_ask_play_store_rating_dialog_tag";
     private static final String TAG = "AskPlayStoreRating";
+    private static final int DIALOG_DISMISS_DELAY_MS = 500;
     private ReviewManager mReviewManager;
     private ReviewInfo mReviewInfo;
     private boolean mIsFromSettings;
@@ -98,23 +100,23 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
 
     private void clickRateNowButton(View view) {
         Button rateNowButton = view.findViewById(R.id.rate_now_button);
-        rateNowButton.setOnClickListener((v) -> {
-            try {
-                if (mIsFromSettings) {
-                    RateUtils.getInstance().openPlaystore(mContext);
-                } else {
-                    launchReviewFlow();
-                }
-            } catch (NullPointerException e) {
-                Log.e(TAG, "In-App launch Review exception");
-            }
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    dismiss();
-                }
-            }, 500);
-        });
+        rateNowButton.setOnClickListener(
+                (v) -> {
+                    try {
+                        if (mIsFromSettings) {
+                            RateUtils.getInstance().openPlaystore(mContext);
+                        } else {
+                            launchReviewFlow();
+                        }
+                    } catch (NullPointerException e) {
+                        Log.e(TAG, "In-App launch Review exception");
+                    }
+                    // The delay gives time for the Play Store/review flow to launch
+                    // before dismissing the dialog and prevents visual glitches where
+                    // dialog disappears before external app launches.
+                    PostTask.postDelayedTask(
+                            TaskTraits.UI_DEFAULT, this::dismiss, DIALOG_DISMISS_DELAY_MS);
+                });
     }
 
     private void clickNotNowButton(View view) {
