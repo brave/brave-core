@@ -16,6 +16,7 @@ source_set("android") {
     "//brave/browser:browser_process",
     "//brave/browser/ntp_background",
     "//brave/build/android:jni_headers",
+    "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/ntp_background_images/browser",

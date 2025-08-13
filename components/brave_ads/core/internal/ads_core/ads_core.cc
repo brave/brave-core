@@ -35,19 +35,20 @@ Reactions& AdsCore::GetReactions() {
   return reactions_;
 }
 
-void AdsCore::UpdateP3aMetricsFallbackState(
+void AdsCore::UpdateReportMetricState(
     const std::string& creative_instance_id,
-    bool should_metrics_fallback_to_p3a) {
-  if (should_metrics_fallback_to_p3a) {
-    metrics_fallback_to_p3a_.insert(creative_instance_id);
+    mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
+  if (mojom_ad_metric_type == mojom::NewTabPageAdMetricType::kDisabled ||
+      mojom_ad_metric_type == mojom::NewTabPageAdMetricType::kP3A) {
+    disable_metrics_.insert(creative_instance_id);
   } else {
-    metrics_fallback_to_p3a_.erase(creative_instance_id);
+    disable_metrics_.erase(creative_instance_id);
   }
 }
 
-bool AdsCore::ShouldFallbackToP3aMetrics(
+bool AdsCore::ShouldReportMetric(
     const std::string& creative_instance_id) const {
-  return metrics_fallback_to_p3a_.contains(creative_instance_id);
+  return !disable_metrics_.contains(creative_instance_id);
 }
 
 }  // namespace brave_ads

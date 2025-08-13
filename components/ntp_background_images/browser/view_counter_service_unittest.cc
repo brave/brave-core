@@ -377,6 +377,7 @@ class ViewCounterServiceTest : public testing::Test {
   void VerifyGetNewTabTakeoverWallpaperExpectation() {
     EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
         .Times(GetInitialCountToBrandedWallpaper());
+    EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd);
     const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
     ON_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
         .WillByDefault(::testing::Return(ad));
@@ -399,6 +400,20 @@ class ViewCounterServiceTest : public testing::Test {
     const std::string* target_url =
         wallpaper->FindStringByDottedPath(kLogoDestinationURLPath);
     ASSERT_TRUE(target_url);
+  }
+
+  void VerifyDoNotGetNewTabTakeoverWallpaperWithGracePeriodExpectation() {
+    EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
+        .Times(GetInitialCountToBrandedWallpaper());
+    const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
+    EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd);
+    ON_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
+        .WillByDefault(::testing::Return(ad));
+    EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd);
+
+    const std::optional<base::Value::Dict> wallpaper =
+        CycleThroughPageViewsAndMaybeGetNewTabTakeoverWallpaper();
+    ASSERT_TRUE(wallpaper);
   }
 
   void VerifyDoNotGetNewTabTakeoverWallpaperExpectation() {
@@ -751,6 +766,10 @@ TEST_F(ViewCounterServiceTest,
       base::Minutes(1);
   task_environment_.AdvanceClock(base::Minutes(1));
 
+  EXPECT_CALL(ads_service_mock_,
+              PurgeOrphanedAdEventsForType(
+                  brave_ads::mojom::AdType::kNewTabPageAd, ::testing::_))
+      .Times(0);
   VerifyGetNewTabTakeoverWallpaperExpectation();
 }
 
@@ -763,10 +782,7 @@ TEST_F(ViewCounterServiceTest,
       base::Minutes(1);
   task_environment_.AdvanceClock(base::Seconds(59));
 
-  EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
+  VerifyDoNotGetNewTabTakeoverWallpaperWithGracePeriodExpectation();
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -777,10 +793,7 @@ TEST_F(ViewCounterServiceTest,
   background_images_service_->sponsored_images_data_->grace_period =
       base::Minutes(1);
 
-  EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
+  VerifyDoNotGetNewTabTakeoverWallpaperWithGracePeriodExpectation();
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -792,6 +805,10 @@ TEST_F(ViewCounterServiceTest,
       base::Minutes(1);
   task_environment_.AdvanceClock(base::Minutes(1));
 
+  EXPECT_CALL(ads_service_mock_,
+              PurgeOrphanedAdEventsForType(
+                  brave_ads::mojom::AdType::kNewTabPageAd, ::testing::_))
+      .Times(0);
   VerifyGetNewTabTakeoverWallpaperExpectation();
 }
 
@@ -804,10 +821,7 @@ TEST_F(ViewCounterServiceTest,
       base::Minutes(1);
   task_environment_.AdvanceClock(base::Seconds(59));
 
-  EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
+  VerifyDoNotGetNewTabTakeoverWallpaperWithGracePeriodExpectation();
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -818,10 +832,7 @@ TEST_F(ViewCounterServiceTest,
   background_images_service_->sponsored_images_data_->grace_period =
       base::Minutes(1);
 
-  EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
+  VerifyDoNotGetNewTabTakeoverWallpaperWithGracePeriodExpectation();
 }
 
 }  // namespace ntp_background_images

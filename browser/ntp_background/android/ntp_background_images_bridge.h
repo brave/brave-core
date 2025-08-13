@@ -11,6 +11,7 @@
 #include "base/android/jni_android.h"
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -48,7 +49,7 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
       const base::android::JavaParamRef<jstring>& jwallpaperId,
       const base::android::JavaParamRef<jstring>& jcreativeInstanceId,
       const base::android::JavaParamRef<jstring>& jdestinationUrl,
-      bool shouldMetricsFallbackToP3a);
+      int metricType);
   base::android::ScopedJavaLocalRef<jobject> GetCurrentWallpaper(
       JNIEnv* env,
       const base::android::JavaParamRef<jobject>& obj);

@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -123,12 +124,29 @@ TEST_F(
 
 TEST_F(
     BraveAdsAccountUtilTest,
-    DoNotAllowNewTabPageAdDepositsForNonRewardsUserIfCreativeInstanceShouldFallbackToP3A) {
+    DoNotAllowNewTabPageAdDepositsForNonRewardsUserWhenMetricTypeIsDisabled) {
   // Arrange
   test::DisableBraveRewards();
 
-  UpdateP3aMetricsFallbackState(test::kCreativeInstanceId,
-                                /*should_metrics_fallback_to_p3a=*/true);
+  UpdateReportMetricState(test::kCreativeInstanceId,
+                          mojom::NewTabPageAdMetricType::kDisabled);
+
+  // Act & Assert
+  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
+       ++i) {
+    EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
+                                    mojom::AdType::kNewTabPageAd,
+                                    static_cast<mojom::ConfirmationType>(i)));
+  }
+}
+
+TEST_F(BraveAdsAccountUtilTest,
+       DoNotAllowNewTabPageAdDepositsForNonRewardsUserWhenMetricTypeIsP3A) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  UpdateReportMetricState(test::kCreativeInstanceId,
+                          mojom::NewTabPageAdMetricType::kP3A);
 
   // Act & Assert
   for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);

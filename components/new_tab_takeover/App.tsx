@@ -64,7 +64,7 @@ export default function App(props: React.PropsWithChildren) {
         url: response.url.url,
         placementId: placementId,
         creativeInstanceId: creativeInstanceId,
-        shouldMetricsFallbackToP3a: response.shouldMetricsFallbackToP3a,
+        metricType: response.metricType,
         targetUrl: response.targetUrl.url
       }
       setSponsoredRichMediaBackgroundInfo(sponsoredRichMediaBackgroundInfo)
@@ -103,7 +103,7 @@ export default function App(props: React.PropsWithChildren) {
             sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
               sponsoredRichMediaBackgroundInfo.placementId,
               sponsoredRichMediaBackgroundInfo.creativeInstanceId,
-              sponsoredRichMediaBackgroundInfo.shouldMetricsFallbackToP3a,
+              sponsoredRichMediaBackgroundInfo.metricType,
               adEventType
             );
 

@@ -129,9 +129,10 @@ class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
     base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event))
         .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    GetAds().TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                      /*should_metrics_fallback_to_p3a=*/false,
-                                      mojom_ad_event_type, callback.Get());
+    GetAds().TriggerNewTabPageAdEvent(
+        placement_id, creative_instance_id,
+        mojom::NewTabPageAdMetricType::kConfirmation, mojom_ad_event_type,
+        callback.Get());
     run_loop.Run();
   }
 };
