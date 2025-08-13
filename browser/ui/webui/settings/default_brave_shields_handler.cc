@@ -107,6 +107,10 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "getNoScriptControlType",
+      base::BindRepeating(&DefaultBraveShieldsHandler::GetNoScriptControlType,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "getForgetFirstPartyStorageEnabled",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled,
@@ -391,6 +395,20 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
       value ? ControlType::BLOCK : ControlType::ALLOW, GURL(),
       g_browser_process->local_state());
+}
+
+void DefaultBraveShieldsHandler::GetNoScriptControlType(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  ControlType setting = brave_shields::GetNoScriptControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL(),
+      profile_->GetPrefs());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0],
+                            base::Value(setting == ControlType::BLOCK));
 }
 
 void DefaultBraveShieldsHandler::SetContactInfoSaveFlag(

@@ -124,7 +124,8 @@ class BravePrefProvider : public PrefProvider, public Observer {
       const GURL& primary_url,
       ContentSetting content_setting) const;
 
-  const OriginValueMap& GetCookieRules(bool off_the_record) const;
+  bool IsAdBlockOnlyModeEnabled() const;
+  void FillAdBlockOnlyModeRules();
 
   // content_settings::Observer overrides:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
@@ -138,7 +139,7 @@ class BravePrefProvider : public PrefProvider, public Observer {
       brave_cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_shield_down_rules_;
-  OriginValueMap ad_block_only_mode_cookie_rules_;
+  OriginValueMap ad_block_only_mode_rules_;
 
   bool initialized_;
   bool store_last_modified_;

@@ -120,6 +120,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       },
       fingerprintingControlType_: String,
       httpsUpgradeControlType_: String,
+      noScriptControlType_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: false,
+        }
+      },
       isAdBlockRoute_: {
         type: Boolean,
         value: false
@@ -187,6 +195,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare cookieControlTypes_: ControlType[]
   private declare cookieControlType_: string
   private declare httpsUpgradeControlType_: string
+  private declare noScriptControlType_: chrome.settingsPrivate.PrefObject<boolean>
   private declare isForgetFirstPartyStorageEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
   private declare isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
@@ -278,6 +287,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
     this.browserProxy_.getHttpsUpgradeControlType().then(value => {
       this.httpsUpgradeControlType_ = value
+    })
+
+    this.browserProxy_.getNoScriptControlType().then(value => {
+      this.noScriptControlType_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
     })
 
     this.browserProxy_.getForgetFirstPartyStorageEnabled().then(value => {

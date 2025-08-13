@@ -148,10 +148,13 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
 }
 
 bool BraveContentSettingsAgentImpl::IsShieldsAdBlockOnlyModeEnabled() {
-  if (!shields_settings_) {
-    return false;
-  }
-  return shields_settings_->ad_block_only_mode;
+  // TODO(aseren): Remove this method as we handle ad block only mode in
+  // BravePrefProvider.
+  return false;
+  // if (!shields_settings_) {
+  //   return false;
+  // }
+  // return shields_settings_->ad_block_only_mode;
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(

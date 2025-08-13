@@ -458,12 +458,12 @@ DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
     return DomainBlockingType::kNone;
   }
 
-  // Don't block if Brave Shields ad block only mode is enabled.
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
-    // TODO(tmancey): ...
-    // DCHECK(false) << "Checking that this is hit";
-    return DomainBlockingType::kNone;
-  }
+  // // Don't block if Brave Shields ad block only mode is enabled.
+  // if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
+  //   // TODO(tmancey): ...
+  //   // DCHECK(false) << "Checking that this is hit";
+  //   return DomainBlockingType::kNone;
+  // }
 
   // Don't block if Brave Shields is down (this also handles cases where
   // the URL is not HTTP(S))
@@ -667,9 +667,9 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                          const GURL& url,
                                          PrefService* pref_service) {
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
-    return ControlType::ALLOW;
-  }
+  // if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
+  //   return ControlType::ALLOW;
+  // }
 
   ContentSettingsForOneType fingerprinting_rules =
       map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
@@ -754,10 +754,10 @@ void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
 ControlType GetHttpsUpgradeControlType(HostContentSettingsMap* map,
                                        const GURL& url,
                                        PrefService* pref_service) {
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
-    // HTTPS Only (prefer https)
-    return ControlType::BLOCK_THIRD_PARTY;
-  }
+  // if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
+  //   // HTTPS Only (prefer https)
+  //   return ControlType::BLOCK_THIRD_PARTY;
+  // }
 
   if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
     // No upgrades happen for non-http(s) URLs.
@@ -845,9 +845,9 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url,
                                    PrefService* pref_service) {
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
-    return ControlType::ALLOW;
-  }
+  // if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
+  //   return ControlType::ALLOW;
+  // }
 
   ContentSetting setting =
       map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT);
@@ -877,9 +877,9 @@ void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
 bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
                                        const GURL& url,
                                        PrefService* pref_service) {
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
-    return false;
-  }
+  // if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
+  //   return false;
+  // }
 
   ContentSetting setting = map->GetContentSetting(
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
