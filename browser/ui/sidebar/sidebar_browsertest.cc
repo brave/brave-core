@@ -22,15 +22,17 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_widget.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
+#include "brave/browser/ui/views/split_view/split_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
@@ -46,10 +48,13 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/chrome_switches.h"
@@ -75,7 +80,7 @@ namespace sidebar {
 
 class SidebarBrowserTest : public InProcessBrowserTest {
  public:
-  SidebarBrowserTest() : scoped_features_(tabs::features::kBraveSplitView) {}
+  SidebarBrowserTest() = default;
   ~SidebarBrowserTest() override = default;
 
   void PreRunTestOnMainThread() override {
@@ -277,7 +282,6 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return std::distance(items.cbegin(), iter);
   }
 
-  base::test::ScopedFeatureList scoped_features_;
   raw_ptr<views::View, DanglingUntriaged> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
@@ -591,7 +595,58 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemDragIndicatorCalcTest) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ShowSidebarOnMouseOverTest) {
+class SidebarBrowserWithSplitViewTest
+    : public SidebarBrowserTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  SidebarBrowserWithSplitViewTest() {
+    if (IsSideBySideEnabled()) {
+      scoped_features_.InitWithFeatures(
+          /*enabled_features*/ {::features::kSideBySide}, {});
+    }
+  }
+  ~SidebarBrowserWithSplitViewTest() override = default;
+
+  void NewSplitTab() {
+    IsSideBySideEnabled() ? chrome::NewSplitTab(browser())
+                          : brave::NewSplitViewForTab(browser());
+  }
+
+  // Use this when left split view is active.
+  views::View* GetStartSplitContentsView() {
+    if (IsSideBySideEnabled()) {
+      return browser_view()
+          ->GetBraveMultiContentsView()
+          ->GetActiveContentsContainerView();
+    }
+
+    return browser_view()->split_view()->contents_container_;
+  }
+
+  // Use this when left split view is active.
+  views::View* GetEndSplitContentsView() {
+    if (IsSideBySideEnabled()) {
+      return browser_view()
+          ->GetBraveMultiContentsView()
+          ->GetInactiveContentsContainerView();
+    }
+
+    return browser_view()->split_view()->secondary_contents_container();
+  }
+
+  BraveBrowserView* browser_view() {
+    return BraveBrowserView::From(
+        BrowserView::GetBrowserViewForBrowser(browser()));
+  }
+
+  bool IsSideBySideEnabled() const { return GetParam(); }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
+                       ShowSidebarOnMouseOverTest) {
   auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
   service->SetSidebarShowOption(
       SidebarService::ShowSidebarOption::kShowOnMouseOver);
@@ -652,7 +707,45 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ShowSidebarOnMouseOverTest) {
   move_event.SetPositionInScreen(gfx::PointF(mouse_position));
 
   EXPECT_FALSE(sidebar_container->PreHandleMouseEvent(move_event));
+
+  // Test with split view.
+  // With sidebar on left, only left split view contents' left side hot
+  // corner should trigger split view.
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  // Make left split view as active to make secondary container put
+  // at right side(end).
+  tab_strip_model->ActivateTabAt(0);
+  auto* left_split_view = GetStartSplitContentsView();
+  auto* right_split_view = GetEndSplitContentsView();
+
+  // With Brave split view, need to wait as primary/secondary contents view
+  // are positioned in async based on active tab status.
+  if (!IsSideBySideEnabled()) {
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return left_split_view->bounds().x() < right_split_view->bounds().x();
+    }));
+  }
+
+  // Check left split view's left hot corner handles.
+  mouse_position = left_split_view->GetBoundsInScreen().origin();
+  mouse_position.Offset(2, 2);
+  move_event.SetPositionInScreen(gfx::PointF(mouse_position));
+  EXPECT_TRUE(sidebar_container->PreHandleMouseEvent(move_event));
+
+  // Check right split view's left hot corner doesn't handle.
+  mouse_position = right_split_view->GetBoundsInScreen().origin();
+  mouse_position.Offset(2, 2);
+  move_event.SetPositionInScreen(gfx::PointF(mouse_position));
+  EXPECT_FALSE(sidebar_container->PreHandleMouseEvent(move_event));
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SidebarBrowserWithSplitViewTest,
+    ::testing::Bool());
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, HideSidebarUITest) {
   auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
