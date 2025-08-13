@@ -18,7 +18,7 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
@@ -243,6 +243,9 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
 
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
   if (!images_data) {
+    ads_service_->PurgeOrphanedAdEventsForType(
+        brave_ads::mojom::AdType::kNewTabPageAd,
+        /*intentional*/ base::DoNothing());
     return std::nullopt;
   }
 
@@ -251,6 +254,21 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
   if (!background) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
                                                  ad->creative_instance_id);
+    return std::nullopt;
+  }
+
+  brave_ads::mojom::NewTabPageAdMetricType metric_type;
+  if (std::optional<int> value = background->FindInt(kWallpaperMetricTypeKey)) {
+    metric_type = static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
+  } else {
+    metric_type = brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+  }
+
+  if (!HasGracePeriodEnded(images_data) &&
+      metric_type != brave_ads::mojom::NewTabPageAdMetricType::kDisabled) {
+    ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
+                                                 ad->creative_instance_id);
+    return std::nullopt;
   }
 
   return background;
@@ -483,11 +501,7 @@ bool ViewCounterService::CanShowSponsoredImages() const {
     return false;
   }
 
-  if (!IsSponsoredImagesWallpaperOptedIn()) {
-    return false;
-  }
-
-  return HasGracePeriodEnded(images_data);
+  return IsSponsoredImagesWallpaperOptedIn();
 }
 
 bool ViewCounterService::CanShowBackgroundImages() const {

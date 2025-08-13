@@ -139,7 +139,7 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     : NTPSponsoredImagesData() {
   const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {
-    // Currently, only version 2 is supported. Update this code to maintain.
+    // Currently, only version 1 is supported. Update this code to maintain.
     return;
   }
 
@@ -201,7 +201,7 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
 
   const std::optional<int> campaign_version = dict.FindInt(kCampaignVersionKey);
   if (campaign_version != kExpectedCampaignVersion) {
-    // Currently, only version 1 is supported. Update this code to maintain
+    // Currently, only version 2 is supported. Update this code to maintain
     // backwards compatibility when adding new schema versions.
     return std::nullopt;
   }
@@ -213,9 +213,12 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
   }
   campaign.campaign_id = *campaign_id;
 
-  auto metric_type = brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+  brave_ads::mojom::NewTabPageAdMetricType metric_type =
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
   if (const std::string* const metrics = dict.FindString(kCampaignMetricsKey)) {
-    if (*metrics == "confirmation") {
+    if (*metrics == "disabled") {
+      metric_type = brave_ads::mojom::NewTabPageAdMetricType::kDisabled;
+    } else if (*metrics == "confirmation") {
       metric_type = brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
     } else if (*metrics == "p3a") {
       metric_type = brave_ads::mojom::NewTabPageAdMetricType::kP3A;

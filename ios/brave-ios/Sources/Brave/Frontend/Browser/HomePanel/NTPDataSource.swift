@@ -122,9 +122,7 @@ public class NTPDataSource {
     guard let sponsoredImageData = service.sponsoredImageData
     else { return nil }
 
-    if !hasGracePeriodEnded(sponsoredImageData) {
-      return nil
-    }
+    let gracePeriodEnded = !hasGracePeriodEnded(sponsoredImageData)
 
     guard let newTabPageAd = rewards?.ads.maybeGetPrefetchedNewTabPageAd()
     else { return nil }
@@ -138,9 +136,10 @@ public class NTPDataSource {
       }
 
       for creative in campaign.backgrounds {
-        if creative.logo.imagePath != nil
-          && creative.creativeInstanceId == newTabPageAd.creativeInstanceID
-          && (!creative.isVideoFile || isSponsoredVideoAllowed)
+        if gracePeriodEnded || creative.metricType == .disabled,
+          creative.logo.imagePath != nil,
+          creative.creativeInstanceId == newTabPageAd.creativeInstanceID,
+          !creative.isVideoFile || isSponsoredVideoAllowed
         {
           return NTPWallpaper.sponsoredMedia(creative)
         }

@@ -193,9 +193,7 @@ void AdsImpl::TriggerNewTabPageAdEvent(
         mojom_ad_event_type, std::move(callback)));
   }
 
-  UpdateP3aMetricsFallbackState(
-      creative_instance_id,
-      mojom_ad_metric_type == mojom::NewTabPageAdMetricType::kP3A);
+  UpdateReportMetricState(creative_instance_id, mojom_ad_metric_type);
 
   GetAdHandler().TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                           mojom_ad_event_type,
