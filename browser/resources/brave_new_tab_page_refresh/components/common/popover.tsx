@@ -15,7 +15,7 @@ interface Props {
 export function Popover(props: Props) {
   const elementRef = React.useRef<HTMLDivElement>(null)
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     elementRef.current?.setAttribute('popover', 'auto')
   }, [])
 
