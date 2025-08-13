@@ -981,7 +981,7 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.15.4"
+version = "0.15.5"
 dependencies = [
  "allocator-api2",
  "equivalent",
@@ -1130,7 +1130,7 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.174"
+version = "0.2.175"
 
 [[package]]
 name = "libm"
@@ -1603,7 +1603,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.95"
+version = "1.0.97"
 dependencies = [
  "unicode-ident",
 ]
@@ -1795,7 +1795,7 @@ dependencies = [
 
 [[package]]
 name = "rustversion"
-version = "1.0.21"
+version = "1.0.22"
 
 [[package]]
 name = "ryu"
