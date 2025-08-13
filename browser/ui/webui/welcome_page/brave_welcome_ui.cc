@@ -37,6 +37,7 @@
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/gpu_data_manager.h"
@@ -168,8 +169,9 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       "isWebDiscoveryEnabledManaged",
       profile->GetPrefs()->IsManagedPreference(kWebDiscoveryEnabled));
 #endif
-  source->AddBoolean("isStatsReportingEnabledManaged",
-                     local_state->IsManagedPreference(kStatsReportingEnabled));
+  source->AddBoolean("isMetricsReportingEnabledManaged",
+                     local_state->IsManagedPreference(
+                         metrics::prefs::kMetricsReportingEnabled));
   source->AddBoolean("isP3AEnabledManaged",
                      local_state->IsManagedPreference(p3a::kP3AEnabled));
 

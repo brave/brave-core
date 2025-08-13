@@ -67,8 +67,8 @@ function HelpImprove() {
   })
 
   // Show toggles only if the preference is not managed by policy
-  const [showStatsToggle] = React.useState(() => !loadTimeData.getBoolean('isStatsReportingEnabledManaged'))
-  const [showP3AToggle] = React.useState(() => !loadTimeData.getBoolean('isP3AEnabledManaged'))
+  const showMetricsToggle = !loadTimeData.getBoolean('isMetricsReportingEnabledManaged')
+  const showP3AToggle = !loadTimeData.getBoolean('isP3AEnabledManaged')
 
   const handleP3AChange = () => {
     setP3AEnabled(!isP3AEnabled)
@@ -83,7 +83,7 @@ function HelpImprove() {
     if (showP3AToggle) {
       WelcomeBrowserProxyImpl.getInstance().setP3AEnabled(isP3AEnabled)
     }
-    if (showStatsToggle) {
+    if (showMetricsToggle) {
       WelcomeBrowserProxyImpl.getInstance().setMetricsReportingEnabled(isMetricsReportingEnabled)
     }
     WelcomeBrowserProxyImpl.getInstance().recordP3A(P3APhase.Finished)
@@ -94,13 +94,13 @@ function HelpImprove() {
 
   // Auto-finish if both settings are managed (no toggles to show)
   React.useEffect(() => {
-    if (!showStatsToggle && !showP3AToggle) {
+    if (!showMetricsToggle && !showP3AToggle) {
       handleFinish()
     }
   }, [])
 
   // If both are managed, don't render anything since we auto-finish
-  if (!showStatsToggle && !showP3AToggle) {
+  if (!showMetricsToggle && !showP3AToggle) {
     return null
   }
 
@@ -113,7 +113,7 @@ function HelpImprove() {
       </div>
       <S.Grid>
         <div className="list">
-          {showStatsToggle && (
+          {showMetricsToggle && (
             <InputCheckbox
               id="metrics"
               onChange={handleMetricsReportingChange}
