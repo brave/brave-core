@@ -7,11 +7,11 @@ script/uplift.py @bsclifton
 /README.md @bsclifton
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
-rewrite/ @bridiver @cdesouza-chromium
+rewrite/ @brave/brave-core-owners
 
 # Views
 # Do not add to BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
-chromium_src/ui/views/view.h @bridiver @cdesouza-chromium
+chromium_src/ui/views/view.h @brave/brave-core-owners
 
 # brave/browser/ui/BUILD.gn should not have new source files added to it. see
 # https://github.com/brave/brave-core/blob/master/docs/gni_sources.md#circular-dependencies-circular-dependencies
@@ -20,7 +20,7 @@ browser/ui/BUILD.gn @bridiver
 # BraveBrowserProcess public interface
 # Global services should use GlobalDesktopFeatures
 # https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#structure_modularity
-browser/brave_browser_process.h @bridiver @goodov
+browser/brave_browser_process.h @brave/brave-core-owners
 
 # Deprecated - do not use
 BraveNewsUtils.java @bridiver
@@ -78,7 +78,7 @@ brave/components/brave_ads/core/internal/security/**/*.mm @brave/ads-client
 brave/components/l10n/ @tmancey @bridiver
 
 # Network
-browser/net/ @iefremov
+browser/net/ @brave/brave-core-owners
 chromium_src/chrome/browser/net/profile_network_context_service.cc @brave/sec-team
 chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc @brave/sec-team
 
@@ -146,17 +146,13 @@ components/sync/service/ @brave/sync-reviewers
 components/sync_device_info/ @brave/sync-reviewers
 ios/browser/api/sync/brave_sync_worker.* @brave/sync-reviewers
 
-# Speedreader
-browser/speedreader/ @iefremov
-components/speedreader/* @iefremov
-
 # P3A
 browser/p3a/ @brave/p3a-reviewers
 components/p3a/ @brave/p3a-reviewers
 components/time_period_storage/ @brave/p3a-reviewers
 
 # Perf predictor
-components/brave_perf_predictor/ @iefremov
+components/brave_perf_predictor/ @brave/adblock-team
 
 # Permissions
 browser/permissions/**/*expiration* @goodov
@@ -260,7 +256,7 @@ script/lib/l10n/requirements.txt @brave/sec-team
 components/skus/common/skus_utils.h @brave/sec-team
 
 # for brave_exec_script_allowlist
-build/dotfile_settings.gni @bridiver @goodov
+build/dotfile_settings.gni @brave/brave-core-owners
 
 docs/gni_sources.md @bridiver
 
