@@ -38,6 +38,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
+#include "brave/components/ai_chat/core/browser/mock_untrusted_conversation_handler_client.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
@@ -140,40 +141,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   mojo::Remote<mojom::ConversationHandler> conversation_handler_;
 };
 
-class MockUntrustedConversationHandlerClient
-    : public mojom::UntrustedConversationUI {
- public:
-  explicit MockUntrustedConversationHandlerClient(ConversationHandler* driver) {
-    driver->BindUntrustedConversationUI(
-        conversation_ui_receiver_.BindNewPipeAndPassRemote(),
-        base::DoNothing());
-  }
-
-  ~MockUntrustedConversationHandlerClient() override = default;
-
-  void Disconnect() { conversation_ui_receiver_.reset(); }
-
-  MOCK_METHOD(void,
-              OnConversationHistoryUpdate,
-              (mojom::ConversationTurnPtr),
-              (override));
-  MOCK_METHOD(void,
-              OnToolUseEventOutput,
-              (const std::string& entry_uuid, mojom::ToolUseEventPtr tool_use),
-              (override));
-  MOCK_METHOD(void,
-              OnEntriesUIStateChanged,
-              (mojom::ConversationEntriesStatePtr),
-              (override));
-  MOCK_METHOD(void,
-              AssociatedContentChanged,
-              (std::vector<mojom::AssociatedContentPtr>),
-              (override));
-
- private:
-  mojo::Receiver<mojom::UntrustedConversationUI> conversation_ui_receiver_{
-      this};
-};
 
 class MockAIChatFeedbackAPI : public AIChatFeedbackAPI {
  public:
@@ -3943,6 +3910,42 @@ TEST_F(ConversationHandlerUnitTest,
                                 ->GetAssociatedContent();
   ASSERT_EQ(1u, associated_content.size());
   EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
+}
+
+TEST_F(ConversationHandlerUnitTest, NotifyMemoriesChanged) {
+  // Set up mock untrusted client
+  MockUntrustedConversationHandlerClient untrusted_client(
+      conversation_handler_.get());
+
+  std::vector<std::string> test_memories = {
+      "User prefers TypeScript", "User likes cats", "User is a developer"};
+
+  base::RunLoop run_loop;
+  // Expect the client to receive memory change notification
+  EXPECT_CALL(untrusted_client, OnMemoriesChanged(test_memories))
+      .WillOnce(
+          [&run_loop](const std::vector<std::string>&) { run_loop.Quit(); });
+
+  // Notify memories changed
+  conversation_handler_->NotifyMemoriesChanged(test_memories);
+
+  // Wait for the callback to be called
+  run_loop.Run();
+}
+
+TEST_F(ConversationHandlerUnitTest, NotifyMemoryEnabledChanged) {
+  // Set up mock untrusted client
+  MockUntrustedConversationHandlerClient untrusted_client(
+      conversation_handler_.get());
+
+  base::RunLoop run_loop;
+  // Expect the client to receive memory enabled change notification (enabled)
+  EXPECT_CALL(untrusted_client, OnMemoryEnabledChanged(true))
+      .WillOnce([&run_loop](bool) { run_loop.Quit(); });
+
+  // Notify memory enabled
+  conversation_handler_->NotifyMemoryEnabledChanged(true);
+  run_loop.Run();
 }
 
 }  // namespace ai_chat
