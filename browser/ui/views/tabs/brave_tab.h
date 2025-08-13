@@ -58,14 +58,6 @@ class BraveTab : public Tab, public views::TextfieldController {
   friend class BraveTabTest;
   friend class BraveTabRenamingUnitTest;
 
-  FRIEND_TEST_ALL_PREFIXES(BraveTabRenamingUnitTest, EnterRenameMode);
-  FRIEND_TEST_ALL_PREFIXES(BraveTabRenamingUnitTest, ExitRenameMode);
-  FRIEND_TEST_ALL_PREFIXES(BraveTabRenamingUnitTest, CommitRename);
-  FRIEND_TEST_ALL_PREFIXES(BraveTabRenamingUnitTest, ExitRename);
-  FRIEND_TEST_ALL_PREFIXES(BraveTabRenamingUnitTest, EnterKeyCommitsRename);
-  FRIEND_TEST_ALL_PREFIXES(BraveTabRenamingUnitTest, EscapeKeyExitsRenameMode);
-  FRIEND_TEST_ALL_PREFIXES(BraveTabRenamingUnitTest,
-                           ClickingOutsideRenamingTabCommitsRename);
   FRIEND_TEST_ALL_PREFIXES(BraveTabRenamingUnitTest,
                            ClickingOutsideRenamingTabCommitsRename);
 
@@ -103,6 +95,7 @@ class BraveTab : public Tab, public views::TextfieldController {
     return rename_textfield_ && rename_textfield_->GetVisible();
   }
 
+  // Reveals the title label which is in base class member.
   views::Label* title_for_test() const { return title_; }
 
   raw_ptr<RenameTextfield> rename_textfield_ = nullptr;
