@@ -8,11 +8,20 @@ import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 source_set("brave_origin") {
   sources = [
+    "brave_origin_policy_provider.cc",
+    "brave_origin_policy_provider.h",
     "brave_origin_state.cc",
     "brave_origin_state.h",
     "features.cc",
     "features.h",
+    "pref_names.cc",
+    "pref_names.h",
   ]
 
   public_deps = [ "//base" ]
+
+  deps = [
+    "//components/policy/core/common",
+    "//components/prefs",
+  ]
 }

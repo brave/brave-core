@@ -1,0 +1,13 @@
+diff --git a/components/enterprise/browser/reporting/policy_info.cc b/components/enterprise/browser/reporting/policy_info.cc
+index a25575b5b0c4116c342f2dd08c90556b9c3dc78b..671fd8d9b675830fe94ba24b0b50a7ea0c589c0b 100644
+--- a/components/enterprise/browser/reporting/policy_info.cc
++++ b/components/enterprise/browser/reporting/policy_info.cc
+@@ -51,6 +51,8 @@ em::Policy_PolicySource GetSource(const base::Value& policy) {
+       static_cast<policy::PolicySource>(*policy.GetDict().FindInt("source"))) {
+     case policy::POLICY_SOURCE_ENTERPRISE_DEFAULT:
+       return em::Policy_PolicySource_SOURCE_ENTERPRISE_DEFAULT;
++    case policy::POLICY_SOURCE_BRAVE_ORIGIN:
++      return em::Policy_PolicySource_SOURCE_UNKNOWN;
+     case policy::POLICY_SOURCE_COMMAND_LINE:
+       return em::Policy_PolicySource_SOURCE_COMMAND_LINE;
+     case policy::POLICY_SOURCE_CLOUD:

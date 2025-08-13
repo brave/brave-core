@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/policy/profile_policy_connector.cc b/chrome/browser/policy/profile_policy_connector.cc
+index 95f9790fecee8b66483242154ac52c65045b7256..56b5c282724c6dc8c330772ac547e4c25688e9d6 100644
+--- a/chrome/browser/policy/profile_policy_connector.cc
++++ b/chrome/browser/policy/profile_policy_connector.cc
+@@ -429,6 +429,8 @@ void ProfilePolicyConnector::Init(
+   }
+ #endif
+ 
++  BRAVE_PROFILE_POLICY_CONNECTOR_INIT
++
+   std::vector<std::unique_ptr<PolicyMigrator>> migrators;
+ #if BUILDFLAG(IS_WIN)
+   migrators.push_back(
+@@ -497,6 +499,8 @@ void ProfilePolicyConnector::Shutdown() {
+     special_user_policy_provider_->Shutdown();
+ #endif
+ 
++  BRAVE_PROFILE_POLICY_CONNECTOR_SHUTDOWN
++
+ #if BUILDFLAG(IS_CHROMEOS)
+   if (restricted_mgs_policy_provider)
+     restricted_mgs_policy_provider->Shutdown();

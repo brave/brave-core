@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/policy/profile_policy_connector.h b/chrome/browser/policy/profile_policy_connector.h
+index be27f7b2b482db460e50762c2a147433e3c54b8e..145268dde7e451f09babad20951dd65f99db6926 100644
+--- a/chrome/browser/policy/profile_policy_connector.h
++++ b/chrome/browser/policy/profile_policy_connector.h
+@@ -197,6 +197,8 @@ class ProfilePolicyConnector final : public PolicyService::Observer {
+   std::unique_ptr<ConfigurationPolicyProvider> restricted_mgs_policy_provider;
+ #endif
+ 
++  std::unique_ptr<ConfigurationPolicyProvider> brave_origin_policy_provider_;
++
+   // |policy_providers_| contains a list of the policy providers available for
+   // the PolicyService of this connector, in decreasing order of priority.
+   //

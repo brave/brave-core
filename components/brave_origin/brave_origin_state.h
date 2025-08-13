@@ -6,8 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_STATE_H_
 #define BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_STATE_H_
 
-#include "base/files/file_path.h"
-#include "base/values.h"
+namespace brave_origin {
 
 class BraveOriginState {
  public:
@@ -28,5 +27,7 @@ class BraveOriginState {
   bool is_brave_origin_user_;
   bool initialized_;
 };
+
+}  // namespace brave_origin
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_STATE_H_

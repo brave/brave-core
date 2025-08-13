@@ -156,7 +156,7 @@ void BraveBrowserProcessImpl::Init() {
   // Initialize the Brave Origin state once in the browser process only
   // This must be done early but only in the browser process, not child
   // processes
-  BraveOriginState::GetInstance()->Initialize();
+  brave_origin::BraveOriginState::GetInstance()->Initialize();
 
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(

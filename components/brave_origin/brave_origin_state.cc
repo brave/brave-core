@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_origin/brave_origin_state.h"
 
-#include "base/logging.h"
+#include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_origin/features.h"
+
+namespace brave_origin {
 
 BraveOriginState::BraveOriginState()
     : is_brave_origin_user_(false), initialized_(false) {}
@@ -22,8 +24,7 @@ BraveOriginState* BraveOriginState::GetInstance() {
 void BraveOriginState::Initialize() {
   // TODO(https://github.com/brave/brave-browser/issues/47463)
   // Get the actual purchase state from SKU service.
-  is_brave_origin_user_ =
-      base::FeatureList::IsEnabled(brave_origin::features::kBraveOrigin);
+  is_brave_origin_user_ = base::FeatureList::IsEnabled(features::kBraveOrigin);
   initialized_ = true;
 }
 
@@ -33,3 +34,5 @@ bool BraveOriginState::IsBraveOriginUser() const {
   }
   return is_brave_origin_user_;
 }
+
+}  // namespace brave_origin
