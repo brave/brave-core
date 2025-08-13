@@ -1698,6 +1698,9 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_SAVE_BUTTON" desc="Label for the save changes button in Leo customization">
     Save changes
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_CHANGES_SAVED" desc="Label for the save changes button in Leo customization when the changes are saved">
+    Changes saved
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_LENGTH_ERROR" desc="General error message shown when any input exceeds the maximum length">
     Input is too long
   </message>
