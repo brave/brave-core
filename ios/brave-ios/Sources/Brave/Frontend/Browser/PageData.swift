@@ -97,7 +97,6 @@ import WebKit
     // Note: The added farbling protection script based on the document url, not the frame's url.
     // It is also added for every frame, including subframes.
     if isBlockFingerprintingEnabled, let baseDomain = mainFrameURL.baseDomain {
-      userScriptTypes.insert(.nacl)  // dependency for `farblingProtection`
       userScriptTypes.insert(.farblingProtection(etld: baseDomain))
     }
 

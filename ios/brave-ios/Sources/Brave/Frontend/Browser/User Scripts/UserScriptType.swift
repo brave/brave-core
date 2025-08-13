@@ -45,10 +45,7 @@ enum UserScriptType: Hashable {
 
   /// A script that informs iOS of site state changes
   case siteStateListener
-  /// A symple encryption library to be used by other scripts
-  case nacl
   /// This type does farbling protection and is customized for the provided eTLD+1
-  /// Has a dependency on `nacl`
   case farblingProtection(etld: String)
   /// Scripts specific to certain domains
   case domainUserScript(DomainUserScript)
@@ -65,7 +62,6 @@ enum UserScriptType: Hashable {
   /// The order in which we want to inject the scripts
   var order: Int {
     switch self {
-    case .nacl: return 0
     case .farblingProtection: return 1
     case .domainUserScript: return 2
     case .siteStateListener: return 3
@@ -85,8 +81,6 @@ extension UserScriptType: CustomDebugStringConvertible {
       return "engineScript(\(configuration.frameURL))"
     case .farblingProtection(let etld):
       return "farblingProtection(\(etld))"
-    case .nacl:
-      return "nacl"
     case .gpc(let isEnabled):
       return "gpc(\(isEnabled))"
     case .siteStateListener:
