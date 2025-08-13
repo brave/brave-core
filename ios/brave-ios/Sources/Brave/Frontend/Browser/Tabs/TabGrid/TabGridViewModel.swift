@@ -113,19 +113,21 @@ class TabGridViewModel {
 
   func closeSelectedTab() {
     guard let tab = tabManager.selectedTab else { return }
-    withAnimation {
-      tabManager.removeTab(tab)
-    }
+    closeTab(tab)
   }
 
   func closeTab(_ tab: any TabState) {
     withAnimation {
+      tabManager.addTabToRecentlyClosed(tab)
       tabManager.removeTab(tab)
     }
   }
 
   func closeAllTabs() {
     withAnimation {
+      if !isPrivateBrowsing {
+        tabManager.addAllTabsToRecentlyClosed(isActiveTabIncluded: true)
+      }
       tabManager.removeAllTabsForPrivateMode(isPrivate: isPrivateBrowsing)
     }
   }
