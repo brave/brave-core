@@ -8,13 +8,11 @@
 window.__firefox__.execute(function($) {
   (function() {
     const args = $<farbling_protection_args>;
-    const braveNacl = window.nacl
 
     // 1. Farble audio
     // Adds slight randization when reading data for audio files
     // Randomization is determined by the fudge factor
     const farbleAudio = $((fudgeFactor) => {
-      delete window.nacl
       if (window.AudioBuffer === undefined) { return }
 
       const farbleArrayData = (destination) => {
@@ -47,13 +45,6 @@ window.__firefox__.execute(function($) {
         return Array.from(unsignedBytes)
           .map(byte => byteToHex(byte))
           .join('')
-      }
-
-      // Hash an array
-      const hashArray = (a) => {
-        const byteArray = new Uint8Array(a.buffer)
-        const hexArray = braveNacl.hash(byteArray)
-        return toHexString(hexArray)
       }
 
       // 1. Farble `getChannelData`

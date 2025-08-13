@@ -126,15 +126,6 @@ class ScriptFactory {
         in: .page
       )
 
-    case .nacl:
-      let source = try makeScriptSource(of: .nacl)
-      resultingScript = WKUserScript(
-        source: source,
-        injectionTime: .atDocumentStart,
-        forMainFrameOnly: false,
-        in: .page
-      )
-
     case .gpc(let isEnabled):
       let source = try makeScriptSource(of: .gpc)
         .replacingOccurrences(of: "$<is_enabled>", with: isEnabled ? "true" : "false")
