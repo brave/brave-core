@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc b/chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc
-index 667f004af2057dfeed5d26776fe3d8cf44f7de09..b66e9b030d101a76f4e661b86c12493f660cb567 100644
+index 044bc94d0379742262fd0620ab50224c92a788f0..79f61d10f1d2e25014001999bda8b4538edbae1f 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc
-@@ -320,6 +320,7 @@ ExtensionsMenuViewController::ExtensionsMenuViewController(
+@@ -312,6 +312,7 @@ ExtensionsMenuViewController::ExtensionsMenuViewController(
  ExtensionsMenuViewController::~ExtensionsMenuViewController() = default;
  
  void ExtensionsMenuViewController::OpenMainPage() {

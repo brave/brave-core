@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index a026395875cedd4421825077ec45c0dc510611f6..c1a1deb99273d9452ebf89d8b5a909a423d9f840 100644
+index 46bc378cb09b6c1f987c43db949331de22002f2c..790fa1a90febd115fdc6404cbede6666815459a8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -65,7 +65,7 @@ import org.chromium.chrome.browser.ui.signin.SigninUtils;
+@@ -66,7 +66,7 @@ import org.chromium.chrome.browser.ui.signin.SigninUtils;
  import org.chromium.chrome.browser.ui.signin.SignoutButtonPreference;
  import org.chromium.chrome.browser.ui.signin.history_sync.HistorySyncHelper;
  import org.chromium.chrome.browser.ui.theme.ChromeSemanticColorUtils;
@@ -11,7 +11,7 @@ index a026395875cedd4421825077ec45c0dc510611f6..c1a1deb99273d9452ebf89d8b5a909a4
  import org.chromium.components.browser_ui.settings.ChromeBasePreference;
  import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
  import org.chromium.components.browser_ui.settings.SettingsUtils;
-@@ -697,7 +697,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -720,7 +720,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
                                                  ? ConsentLevel.SIGNIN
                                                  : ConsentLevel.SYNC));
          // May happen if account is removed from the device while this screen is shown.

@@ -39,7 +39,7 @@ index 972382ea6c9043e06779330a11de90f87e2a11cd..60472a4a024dcd3ca4fc576b4282b34f
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -1006,6 +1009,9 @@
+@@ -1026,6 +1029,9 @@
      # Big alignment at start of section.
      "messages": [7020],
    },
@@ -49,7 +49,7 @@ index 972382ea6c9043e06779330a11de90f87e2a11cd..60472a4a024dcd3ca4fc576b4282b34f
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1506,11 +1512,11 @@
+@@ -1519,11 +1525,11 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {
