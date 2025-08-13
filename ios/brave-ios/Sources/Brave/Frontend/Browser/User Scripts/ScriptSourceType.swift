@@ -10,7 +10,6 @@ import Foundation
 /// - Warning: Some of these scripts are not usable "as-is". Rather, you should be using `UserScriptType`.
 enum ScriptSourceType {
   /// This script farbles certian system methods to output slightly randomized output.
-  /// This script has a dependency on `nacl`.
   case farblingProtection
   /// This script wraps engine scripts and executes them for the correct frame
   case frameCheckWrapper

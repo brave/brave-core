@@ -46,7 +46,6 @@ enum UserScriptType: Hashable {
   /// A script that informs iOS of site state changes
   case siteStateListener
   /// This type does farbling protection and is customized for the provided eTLD+1
-  /// Has a dependency on `nacl`
   case farblingProtection(etld: String)
   /// Scripts specific to certain domains
   case domainUserScript(DomainUserScript)
