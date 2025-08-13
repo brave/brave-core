@@ -5,17 +5,15 @@
 
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler.h"
 
-#include "brave/ios/web/webui/brave_webui_messaging_tab_helper.h"
-#include "brave/ios/web/webui/brave_webui_messaging_tab_helper_delegate.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/brave_wallet_communication_tab_helper+private.h"
 #include "ios/web/public/web_state.h"
 
 namespace {
-id<BraveWebUIMessagingTabHelperDelegate> GetNativeInterface(
+id<BraveWalletCommunicationProtocol> GetNativeInterface(
     web::WebState* web_state) {
   if (auto* tab_helper =
-          BraveWebUIMessagingTabHelper::FromWebState(web_state)) {
-    if (id<BraveWebUIMessagingTabHelperDelegate> delegate =
-            tab_helper->GetBridgingDelegate()) {
+          [BraveWalletCommunicationController fromWebState:web_state]) {
+    if (id<BraveWalletCommunicationProtocol> delegate = [tab_helper delegate]) {
       return delegate;
     }
   }

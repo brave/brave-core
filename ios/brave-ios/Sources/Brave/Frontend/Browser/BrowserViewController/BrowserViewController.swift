@@ -2479,39 +2479,6 @@ extension BrowserViewController: TabMiscDelegate {
   }
 }
 
-extension BrowserViewController: TabWebUIDelegate {
-  public func showWalletApprovePanelUI(_ tab: some TabState) {
-    print("SHOWING APPROVED WALLET PANEL UI")
-  }
-
-  public func showWalletBackupUI(_ tab: some TabState) {
-    print("SHOWING WALLET BACKUP UI")
-  }
-
-  public func unlockWallet(_ tab: some TabState) {
-    print("UNLOCKING WALLET")
-  }
-}
-
-extension BrowserViewController: TabWebUIDelegate {
-  public func showWalletApprovePanelUI(_ tab: some TabState) {
-    guard
-      let origin = tab.browserData?.getOrigin(),
-      let tabDappStore = tab.tabDappStore
-    else { return }
-    presentWalletPanel(from: origin, with: tabDappStore)
-    updateURLBarWalletButton()
-  }
-
-  public func showWalletBackupUI(_ tab: some TabState) {
-    presentWallet(presentingContext: .webUI(action: .backup))
-  }
-
-  public func unlockWallet(_ tab: some TabState) {
-    presentWallet(presentingContext: .webUI(action: .unlock))
-  }
-}
-
 extension BrowserViewController: SearchViewControllerDelegate {
   func searchViewController(
     _ searchViewController: SearchViewController,

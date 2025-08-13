@@ -724,3 +724,22 @@ extension TabBrowserData: BraveWalletKeyringServiceObserver {
   func accountsAdded(addedAccounts: [BraveWallet.AccountInfo]) {
   }
 }
+
+extension BrowserViewController: TabWebUIDelegate {
+  public func showWalletApprovePanelUI(_ tab: some TabState) {
+    guard
+      let origin = tab.browserData?.getOrigin(),
+      let tabDappStore = tab.tabDappStore
+    else { return }
+    presentWalletPanel(from: origin, with: tabDappStore)
+    updateURLBarWalletButton()
+  }
+
+  public func showWalletBackupUI(_ tab: some TabState) {
+    presentWallet(presentingContext: .webUI(action: .backup))
+  }
+
+  public func unlockWallet(_ tab: some TabState) {
+    presentWallet(presentingContext: .webUI(action: .unlock))
+  }
+}

@@ -5,7 +5,7 @@
 
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 
-#include "brave/ios/web/webui/brave_webui_messaging_tab_helper.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/brave_wallet_communication_tab_helper+private.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "ios/chrome/browser/complex_tasks/model/ios_task_tab_helper.h"
 #include "ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.h"
@@ -28,5 +28,6 @@ void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
   security_interstitials::IOSBlockingPageTabHelper::CreateForWebState(
       web_state);
 
-  BraveWebUIMessagingTabHelper::CreateForWebState(web_state);
+  // Brave Tab-Helpers
+  [BraveWalletCommunicationController createForWebState:web_state];
 }

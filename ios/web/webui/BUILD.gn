@@ -20,6 +20,8 @@ source_set("webui") {
     "brave_webui_utils.mm",
     "favicon_source.h",
     "favicon_source.mm",
+    "plural_string_handler.h",
+    "plural_string_handler.mm",
     "sanitized_image_source.h",
     "sanitized_image_source.mm",
     "untrusted_sanitized_image_source.h",

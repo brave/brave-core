@@ -11,7 +11,7 @@ public protocol TabWebUIDelegate: AnyObject {
   func unlockWallet(_ tab: some TabState)
 }
 
-class TabWebUIHandler: NSObject, BraveWebUIMessagingTabHelperDelegate {
+class TabWebUIHandler: NSObject, BraveWalletCommunicationProtocol {
   private weak var tab: ChromiumTabState?
   weak var delegate: TabWebUIDelegate?
 

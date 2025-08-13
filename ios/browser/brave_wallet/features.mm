@@ -16,5 +16,5 @@ bool IsBraveWalletWebUIIOSEnabled() {
   return base::FeatureList::IsEnabled(kBraveWalletWebUIIOS);
 }
 
-}
+}  // namespace features
 }  // namespace brave_wallet

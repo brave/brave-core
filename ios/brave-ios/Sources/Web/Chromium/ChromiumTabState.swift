@@ -243,7 +243,7 @@ class ChromiumTabState: TabState, TabStateImpl {
     )
     webView.navigationDelegate = navigationHandler
     webView.uiDelegate = uiHandler
-    webView.webUIDelegate = webUiHandler
+    webView.walletController?.delegate = webUiHandler
     webView.allowsBackForwardNavigationGestures = true
     webView.allowsLinkPreview = true
 
@@ -354,7 +354,7 @@ class ChromiumTabState: TabState, TabStateImpl {
       let coder = try NSKeyedUnarchiver(forReadingFrom: sessionData)
       coder.requiresSecureCoding = false
       webView.decodeRestorableState(with: coder)
-      webView.webUIDelegate = webUiHandler
+      webView.walletController?.delegate = webUiHandler
     } catch {
       Logger.module.error("Failed to restore web view with session data: \(error)")
     }
