@@ -12,14 +12,14 @@
   <if expr="not is_ios">
     </if>
 
-  <if expr="chromeos_ash">
+  <if expr="is_chromeos">
     </if>
 
-  <if expr="not chromeos_ash">
+  <if expr="not is_chromeos">
     </if>
 
   <if expr="not is_ios">
-    <if expr="not chromeos_ash">
+    <if expr="not is_chromeos">
       <if expr="_google_chrome">
         </if>
       <if expr="not _google_chrome">
