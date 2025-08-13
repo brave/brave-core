@@ -13,8 +13,8 @@
 // For remote URLs going to Google we want to point users to our community site
 // instead.
 void ShowSingletonTab(Browser* browser, const GURL& url) {
-  GURL new_url = url.DomainIs("google.com") ?
-    GURL("https://community.brave.app/") : url;
+  GURL new_url =
+      url.DomainIs("google.com") ? GURL("https://community.brave.app/") : url;
 
   ShowSingletonTab_ChromiumImpl(browser, new_url);
 }
