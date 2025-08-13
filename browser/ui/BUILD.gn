@@ -1004,6 +1004,7 @@ source_set("ui") {
     deps += [
       "//brave/components/speedreader",
       "//chrome/browser/ui/views/location_bar",
+      "//chrome/browser/ui/views/page_action",
     ]
 
     sources += [
