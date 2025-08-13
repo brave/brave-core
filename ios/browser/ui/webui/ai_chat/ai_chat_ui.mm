@@ -24,11 +24,11 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/ai_chat/ios/browser/tab_data_web_state_observer.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webui/webui_resources.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
@@ -91,6 +91,9 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddBoolean("isMobile", kIsMobile);
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
+  source->AddBoolean("isAIChatAgentProfileFeatureEnabled",
+                     ai_chat::features::IsAIChatAgentProfileEnabled());
+  source->AddBoolean("isAIChatAgentProfile", false);
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

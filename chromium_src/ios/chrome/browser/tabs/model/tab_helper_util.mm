@@ -6,7 +6,7 @@
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/ios/browser/tab_data_web_state_observer.h"
+#include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_communication_tab_helper+private.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "ios/chrome/browser/complex_tasks/model/ios_task_tab_helper.h"
