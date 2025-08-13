@@ -7,7 +7,7 @@ _brave_policies = [
   "BraveSoftware/.group.details.yaml",
   "BraveSoftware/BraveAIChatEnabled.yaml",
   "BraveSoftware/BraveNewsDisabled.yaml",
-  "BraveSoftware/BraveP3ADisabled.yaml",
+  "BraveSoftware/BraveP3AEnabled.yaml",
   "BraveSoftware/BraveRewardsDisabled.yaml",
   "BraveSoftware/BraveShieldsDisabledForUrls.yaml",
   "BraveSoftware/BraveShieldsEnabledForUrls.yaml",
