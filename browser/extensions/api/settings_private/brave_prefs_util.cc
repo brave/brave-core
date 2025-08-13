@@ -20,6 +20,7 @@
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+#include "brave/components/p3a/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -187,15 +188,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #endif
   (*s_brave_allowlist)[ai_chat::prefs::kEnabledByPolicy] =
       settings_api::PrefType::kBoolean;
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  (*s_brave_allowlist)[kBraveWaybackMachineDisabledByPolicy] =
-      settings_api::PrefType::kBoolean;
-#endif
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  (*s_brave_allowlist)[speedreader::kSpeedreaderDisabledByPolicy] =
-      settings_api::PrefType::kBoolean;
-#endif
   (*s_brave_allowlist)[brave_wallet::prefs::kDisabledByPolicy] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[p3a::kP3AEnabled] = settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kStatsReportingEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
 

@@ -68,21 +68,19 @@ void SetupBraveOriginProfilePrefs(Profile* profile) {
                                base::Value(true));
     prefs->SetDefaultPrefValue(kBraveTalkDisabledByPolicy, base::Value(true));
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-    prefs->SetDefaultPrefValue(speedreader::kSpeedreaderDisabledByPolicy,
-                               base::Value(true));
+    prefs->SetDefaultPrefValue(speedreader::kSpeedreaderPrefFeatureEnabled,
+                               base::Value(false));
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-    prefs->SetDefaultPrefValue(kBraveWaybackMachineDisabledByPolicy,
-                               base::Value(true));
+    prefs->SetDefaultPrefValue(kBraveWaybackMachineEnabled, base::Value(false));
 #endif
-    prefs->SetDefaultPrefValue(kWebDiscoveryDisabledByPolicy,
-                               base::Value(true));
+    prefs->SetDefaultPrefValue(kWebDiscoveryEnabled, base::Value(false));
 
     // Local state (spans all profiles)
+    g_browser_process->local_state()->SetDefaultPrefValue(p3a::kP3AEnabled,
+                                                          base::Value(false));
     g_browser_process->local_state()->SetDefaultPrefValue(
-        p3a::kP3ADisabledByPolicy, base::Value(true));
-    g_browser_process->local_state()->SetDefaultPrefValue(
-        kStatsReportingDisabledByPolicy, base::Value(true));
+        kStatsReportingEnabled, base::Value(false));
     g_browser_process->local_state()->SetDefaultPrefValue(
         metrics::prefs::kMetricsReportingEnabled, base::Value(false));
 #if BUILDFLAG(ENABLE_TOR)
