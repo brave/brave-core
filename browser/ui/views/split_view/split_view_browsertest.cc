@@ -925,19 +925,20 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
         BrowserView::GetBrowserViewForBrowser(browser()));
   }
 
-  views::View& secondary_contents_container() {
-    return *browser_view().split_view_->secondary_contents_container_;
-  }
-
-  ScrimView& secondary_contents_scrim_view() {
-    return *browser_view().split_view_->secondary_contents_scrim_view_;
+  ContentsContainerView& secondary_contents_container() {
+    return *browser_view().split_view_->secondary_contents_container_view_;
   }
 
   views::WebView& secondary_contents_view() {
-    return *browser_view().split_view_->secondary_contents_web_view_;
+    return *browser_view().split_view_->secondary_contents_web_view();
   }
+
+  ScrimView& secondary_contents_scrim_view() {
+    return *secondary_contents_container().GetContentsScrimView();
+  }
+
   views::WebView& secondary_dev_tools() {
-    return *browser_view().split_view_->secondary_devtools_web_view_;
+    return *secondary_contents_container().GetDevtoolsWebView();
   }
 
   SplitView& split_view() { return *browser_view().split_view_; }
