@@ -91,7 +91,6 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
 
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
   registry->RegisterDictionaryPref(kActivationDatesDictPref);
-  registry->RegisterBooleanPref(kP3ADisabledByPolicy, false);
 }
 
 void P3AService::InitCallback(std::string_view histogram_name) {
@@ -166,8 +165,7 @@ base::CallbackListSubscription P3AService::RegisterMetricCycledCallback(
 }
 
 bool P3AService::IsP3AEnabled() const {
-  return local_state_->GetBoolean(kP3AEnabled) &&
-         !local_state_->GetBoolean(kP3ADisabledByPolicy);
+  return local_state_->GetBoolean(kP3AEnabled);
 }
 
 void P3AService::Init(
@@ -186,7 +184,6 @@ void P3AService::Init(
     auto callback = base::BindRepeating(&P3AService::OnP3AEnabledChanged,
                                         base::Unretained(this));
     pref_change_registrar_.Add(kP3AEnabled, callback);
-    pref_change_registrar_.Add(kP3ADisabledByPolicy, callback);
   }
 
   if (initialized_ || !url_loader_factory_ ||
