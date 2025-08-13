@@ -484,15 +484,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
             content::EvalJs(contents(), kGetImageDataScript));
 }
 
-// This test currently fails on Linux platforms due to an upstream bug when
-// SwANGLE is used, see upstream bug at http://crbug.com/1192632.
-#if BUILDFLAG(IS_LINUX)
-#define MAYBE_WebGLReadPixels DISABLED_WebGLReadPixels
-#else
-#define MAYBE_WebGLReadPixels WebGLReadPixels
-#endif
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       MAYBE_WebGLReadPixels) {
+                       WebGLReadPixels) {
   std::string origin = "a.test";
   std::string path = "/webgl/readpixels.html";
 
