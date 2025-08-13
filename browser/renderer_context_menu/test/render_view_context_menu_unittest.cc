@@ -94,8 +94,8 @@ class BraveRenderViewContextMenuTest : public testing::Test {
     Browser::CreateParams create_params(
         is_pwa_browser ? Browser::Type::TYPE_APP : Browser::Type::TYPE_NORMAL,
         profile_.get(), true);
-    browser_window_ = std::make_unique<TestBrowserWindow>();
-    create_params.window = browser_window_.get();
+    auto browser_window = std::make_unique<TestBrowserWindow>();
+    create_params.window = browser_window.release();
     browser_.reset(Browser::Create(create_params));
     menu->SetBrowser(browser_.get());
 
@@ -103,10 +103,7 @@ class BraveRenderViewContextMenuTest : public testing::Test {
     return menu;
   }
 
-  void ResetBrowser() {
-    browser_.reset();
-    browser_window_.reset();
-  }
+  void ResetBrowser() { browser_.reset(); }
 
   void SetUp() override {
     TestingProfile::Builder builder;
@@ -149,7 +146,6 @@ class BraveRenderViewContextMenuTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<custom_handlers::ProtocolHandlerRegistry> registry_;
   std::unique_ptr<Browser> browser_;
-  std::unique_ptr<TestBrowserWindow> browser_window_;
   std::unique_ptr<ChromeAutocompleteProviderClient> client_;
   std::unique_ptr<content::WebContents> web_contents_;
 };

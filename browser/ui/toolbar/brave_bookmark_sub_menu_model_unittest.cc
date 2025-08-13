@@ -74,8 +74,9 @@ class BraveBookmarkSubMenuModelUnitTest : public testing::Test {
   Browser* GetBrowser() {
     if (!browser_) {
       Browser::CreateParams params(profile_.get(), true);
-      test_window_ = std::make_unique<TestBrowserWindow>();
-      params.window = test_window_.get();
+      // Browser takes ownership of test_window
+      auto test_window = std::make_unique<TestBrowserWindow>();
+      params.window = test_window.release();
       browser_.reset(Browser::Create(params));
     }
     return browser_.get();
@@ -93,7 +94,6 @@ class BraveBookmarkSubMenuModelUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   TestSimpleMenuDelegate delegate_;
   std::unique_ptr<Browser> browser_;
-  std::unique_ptr<TestBrowserWindow> test_window_;
   std::unique_ptr<TestingProfile> profile_;
 };
 
