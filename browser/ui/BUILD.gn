@@ -337,6 +337,7 @@ source_set("ui") {
       "//chrome/browser/ui/prefs",
       "//chrome/browser/ui/profiles",
       "//chrome/browser/ui/tabs:tab_menu",
+      "//chrome/browser/ui/views/page_action",
       "//chrome/browser/ui/views/side_panel",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/settings",
@@ -1003,7 +1004,6 @@ source_set("ui") {
 
   if (enable_speedreader) {
     deps += [ "//brave/browser/ui/speedreader" ]
-
     if (toolkit_views) {
       deps += [ "//brave/browser/ui/views/speedreader" ]
     }
