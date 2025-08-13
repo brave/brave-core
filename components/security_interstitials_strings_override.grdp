@@ -55,4 +55,7 @@
     You are seeing this warning because this site does not support HTTPS and you are in Private mode. <ph name="BEGIN_LEARN_MORE_LINK">&lt;a href="#" id="learn-more-link"&gt;</ph>Learn more about this warning<ph name="END_LEARN_MORE_LINK">&lt;/a&gt;</ph>
   </message>
 
+  <message name="IDS_ABH_PROMPT_INCOGNITO_PRIMARY_PARAGRAPH" desc="Main paragrpah of the Ask-before-HTTP warning dialog. This warning is shown when the browser tries to upgrade a navigation to a site to HTTPS but the site does not support HTTPS. The user is seeing this warning because they are browsing in Private mode.">
+    You are seeing this warning because this site does not support HTTPS and you are in Private mode. <ph name="LEARN_MORE">$1<ex>Learn more about this warning</ex></ph>
+  </message>
   </grit-part>
