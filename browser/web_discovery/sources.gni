@@ -23,7 +23,6 @@ if (enable_extensions || enable_web_discovery_native) {
     "//brave/common",
     "//brave/components/constants",
     "//brave/components/search_engines",
-    "//brave/components/web_discovery/common:util",
     "//chrome/browser/profiles",
     "//chrome/browser/ui",
     "//components/infobars/content",
