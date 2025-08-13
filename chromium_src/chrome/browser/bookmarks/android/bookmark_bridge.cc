@@ -17,6 +17,7 @@
 #include "components/user_data_importer/common/imported_bookmark_entry.h"
 #include "components/user_data_importer/common/importer_data_types.h"
 #include "components/user_data_importer/content/content_bookmark_parser.h"
+#include "components/user_data_importer/utility/bookmark_parser.h"
 
 #define BraveBookmarkBridge BookmarkBridge
 #include "chrome/android/chrome_jni_headers/BraveBookmarkBridge_jni.h"
@@ -118,6 +119,7 @@ void BookmarkBridge::ImportBookmarks(
     const base::android::JavaParamRef<jobject>& obj,
     const base::android::JavaParamRef<jobject>& java_window,
     const base::android::JavaParamRef<jstring>& j_import_path) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ui::WindowAndroid* window =
       ui::WindowAndroid::FromJavaWindowAndroid(java_window);
   CHECK(window);
@@ -125,35 +127,49 @@ void BookmarkBridge::ImportBookmarks(
   std::u16string import_path =
       base::android::ConvertJavaStringToUTF16(env, j_import_path);
 
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&BookmarkBridge::ImportBookmarksReader,
-                     base::Unretained(this), import_path),
-      base::BindOnce(&BookmarkBridge::ImportBookmarksImpl,
-                     weak_ptr_factory_.GetWeakPtr()));
+  bookmark_parser_ =
+      std::make_unique<user_data_importer::ContentBookmarkParser>();
+  origin_sequence_task_runner_ = base::SequencedTaskRunner::GetCurrentDefault();
+  background_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE});
+
+  background_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&BookmarkBridge::ParseBookmarks,
+                                base::Unretained(this), import_path));
 }
 
-user_data_importer::BookmarkParser::BookmarkParsingResult
-BookmarkBridge::ImportBookmarksReader(std::u16string import_file_path) {
-  user_data_importer::BookmarkParser::BookmarkParsingResult returned_result;
-
-  user_data_importer::MakeBookmarkParser()->Parse(
-      base::FilePath::FromUTF16Unsafe(import_file_path),
-      base::BindOnce(
-          [](user_data_importer::BookmarkParser::BookmarkParsingResult*
-                 returned_result,
-             user_data_importer::BookmarkParser::BookmarkParsingResult result) {
-            // We can do this only because we know that
-            // ContentBookmarkParser::Parse invokes the callback at the same
-            // thread
-            *returned_result = std::move(result);
-          },
-          &returned_result));
-  return returned_result;
+void BookmarkBridge::ParseBookmarks(std::u16string import_file_path) {
+  bookmark_parser_->Parse(base::FilePath::FromUTF16Unsafe(import_file_path),
+                          base::BindOnce(&BookmarkBridge::OnParseFinishedAtIO,
+                                         weak_ptr_factory_.GetWeakPtr()));
 }
 
-void BookmarkBridge::ImportBookmarksImpl(
+void BookmarkBridge::OnParseFinishedAtIO(
     user_data_importer::BookmarkParser::BookmarkParsingResult result) {
+  bookmark_parser_.reset();
+
+  origin_sequence_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](BookmarkBridge* self,
+             user_data_importer::BookmarkParser::BookmarkParsingResult result) {
+            DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+            auto weak = self->weak_ptr_factory_.GetWeakPtr();
+            // There is BookmarkBridge::weak_ptr_factory_ which has a
+            // sequence checker. This is why we can't from IO thread do
+            // BindOnce(OnParseFinishedAtUI, weak_ptr_factory_.GetWeakPtr()),
+            // it will cause sequence violation error, as
+            // BookmarkBridge::weak_ptr_factory_ was created at UI thread.
+            if (weak) {
+              weak->OnParseFinishedAtUI(std::move(result));
+            }
+          },
+          base::Unretained(this), std::move(result)));
+}
+
+void BookmarkBridge::OnParseFinishedAtUI(
+    user_data_importer::BookmarkParser::BookmarkParsingResult result) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   bool import_succeeded = result.has_value();
   if (import_succeeded) {
     std::vector<user_data_importer::ImportedBookmarkEntry>& bookmarks =
