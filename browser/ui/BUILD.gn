@@ -1001,7 +1001,10 @@ source_set("ui") {
   }
 
   if (enable_speedreader && !is_android) {
-    deps += [ "//brave/components/speedreader" ]
+    deps += [
+      "//brave/components/speedreader",
+      "//chrome/browser/ui/views/location_bar",
+    ]
 
     sources += [
       "speedreader/speedreader_bubble_view.h",
