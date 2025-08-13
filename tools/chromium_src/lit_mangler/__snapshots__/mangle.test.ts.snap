@@ -393,7 +393,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -  <cr-button id=\\"profileCardButton\\" @click=\\"\${this.onProfileClick_}\\"
 -      ?disabled=\\"\${this.disabled}\\"
 -      aria-label=\\"\${this.profileState.profileCardButtonLabel}\\">
-+  <cr-button id=\\"profileCardButton\\" @click=\\"\${this.onProfileClick_}\\" aria-label=\\"\${this.profileState.profileCardButtonLabel}\\" class=\\"plain\\">
++  <cr-button id=\\"profileCardButton\\" @click=\\"\${this.onProfileClick_}\\" ?disabled=\\"\${this.disabled}\\" aria-label=\\"\${this.profileState.profileCardButtonLabel}\\" class=\\"plain\\">
      <div id=\\"avatarContainer\\">
        <img class=\\"profile-avatar\\" alt=\\"\\" .src=\\"\${this.profileState.avatarIcon}\\">
 -      <div id=\\"iconContainer\\"
@@ -456,7 +456,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 +++ gen/chrome/browser/resources/signin/profile_picker/preprocessed/profile_picker_main_view.html.ts
-@@ -14,53 +14,35 @@
+@@ -14,10 +14,9 @@
      }
    }()}
  <div class=\\"flex-container\\">
@@ -468,14 +468,9 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      <div class=\\"subtitle\\" .innerHTML=\\"\${this.getSubtitle_()}\\"></div>
    </div>
    <div id=\\"profilesWrapper\\" ?hidden=\\"\${(this.shouldHideProfilesWrapper_())}\\">
-     <div id=\\"profilesContainer\\" class=\\"custom-scrollbar\\">
-       \${this.profilesList_.map((item, index) => html\`
--        <profile-card class=\\"profile-item\\" data-index=\\"\${index}\\"
--            .profileState=\\"\${item}\\" .disabled=\\"\${this.pickerButtonsDisabled_}\\"
--            @toggle-drag=\\"\${this.toggleDrag_}\\"
--            @disable-all-picker-buttons=\\"\${this.disableAllPickerButtons_}\\">
-+        <profile-card class=\\"profile-item\\" .profileState=\\"\${item}\\"
-+            data-index=\\"\${index}\\">
+@@ -28,39 +27,24 @@
+             @toggle-drag=\\"\${this.toggleDrag_}\\"
+             @disable-all-picker-buttons=\\"\${this.disableAllPickerButtons_}\\">
          </profile-card>
        \`)}
 -      <cr-button id=\\"addProfile\\" class=\\"profile-item\\"
@@ -485,7 +480,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -          aria-labelledby=\\"addProfileButtonLabel\\">
 -        <div id=\\"addProfileButtonLabel\\"
 -            class=\\"profile-card-info prominent-text\\">
-+      <cr-button id=\\"addProfile\\" class=\\"profile-item plain\\" @click=\\"\${this.onAddProfileClick_}\\" ?hidden=\\"\${!this.profileCreationAllowed_}\\" aria-labelledby=\\"addProfileButtonLabel\\">
++      <cr-button id=\\"addProfile\\" class=\\"profile-item plain\\" @click=\\"\${this.onAddProfileClick_}\\" ?hidden=\\"\${!this.profileCreationAllowed_}\\" ?disabled=\\"\${this.pickerButtonsDisabled_}\\" aria-labelledby=\\"addProfileButtonLabel\\">
 +        <div id=\\"addProfileButtonLabel\\" class=\\"profile-card-info prominent-text\\">
            $i18n{addSpaceButton}
          </div>
@@ -506,7 +501,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      @click=\\"\${this.onLaunchGuestProfileClick_}\\"
 -      ?hidden=\\"\${!this.guestModeEnabled_}\\"
 -      ?disabled=\\"\${this.pickerButtonsDisabled_}\\">
-+  <cr-button id=\\"browseAsGuestButton\\" @click=\\"\${this.onLaunchGuestProfileClick_}\\" ?hidden=\\"\${!this.guestModeEnabled_}\\">
++  <cr-button id=\\"browseAsGuestButton\\" @click=\\"\${this.onLaunchGuestProfileClick_}\\" ?hidden=\\"\${!this.guestModeEnabled_}\\" ?disabled=\\"\${this.pickerButtonsDisabled_}\\">
      <cr-icon icon=\\"profiles:account-circle\\" slot=\\"prefix-icon\\"></cr-icon>
      $i18n{browseAsGuestButton}
    </cr-button>
@@ -518,7 +513,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    </cr-checkbox>
  </div>
  
-@@ -70,15 +52,12 @@
+@@ -70,15 +54,12 @@
    <div slot=\\"body\\" id=\\"dialog-body\\" class=\\"warning-message\\">
      \${this.forceSigninErrorDialogBody_}
    </div>
