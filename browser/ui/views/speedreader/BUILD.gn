@@ -30,6 +30,7 @@ source_set("speedreader") {
     "//chrome/app:generated_resources",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
+    "//chrome/browser/ui/views/location_bar",
     "//ui/base",
     "//ui/views",
     "//ui/views/controls/webview",
