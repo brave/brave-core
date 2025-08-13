@@ -48,7 +48,7 @@ include_rules += [
   "+components/page_info/core/features.h",
   "+components/performance_manager/public/features.h",
   "+components/permissions/features.h",
-  "+components/plus_addresses/features.h",
+  "+components/plus_addresses/core/common/features.h",
   "+components/privacy_sandbox/privacy_sandbox_features.h",
   "+components/safe_browsing/core/common/features.h",
   "+components/search/ntp_features.h",
