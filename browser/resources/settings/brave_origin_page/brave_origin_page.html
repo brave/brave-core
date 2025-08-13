@@ -142,12 +142,11 @@
 
   <if expr="enable_speedreader">
     <settings-toggle-button id="toggleSpeedreaderButton"
-        pref="{{prefs.brave.speedreader.disabled_by_policy}}"
+        pref="{{prefs.brave.speedreader.feature_enabled}}"
         label="$i18n{braveOriginSpeedReaderToggleTitle}"
         sub-label="[[speedreaderEnabledSubLabel_]]"
         on-settings-boolean-control-change="toggleButtonChange_"
-        icon="product-speedreader"
-        inverted>
+        icon="product-speedreader">
     </settings-toggle-button>
   </if>
 
@@ -200,22 +199,20 @@
 
   <if expr="enable_brave_wayback_machine">
     <settings-toggle-button id="toggleWaybackMachineButton"
-        pref="{{prefs.brave.wayback_machine.disabled_by_policy}}"
+        pref="{{prefs.brave.wayback_machine_enabled}}"
         label="$i18n{braveOriginWaybackMachineToggleTitle}"
         sub-label="[[waybackMachineEnabledSubLabel_]]"
         on-settings-boolean-control-change="toggleButtonChange_"
-        icon="window-404"
-        inverted>
+        icon="window-404">
     </settings-toggle-button>
   </if>
 
   <settings-toggle-button id="toggleWebDiscoveryProjectButton"
-      pref="{{prefs.brave.web_discovery_disabled_by_policy}}"
+      pref="{{prefs.brave.web_discovery_enabled}}"
       label="$i18n{braveOriginWebDiscoveryProjectToggleTitle}"
       sub-label="[[webDiscoveryProjectEnabledSubLabel_]]"
       on-settings-boolean-control-change="toggleButtonChange_"
-      icon="brave-icon-search"
-      inverted>
+      icon="brave-icon-search">
   </settings-toggle-button>
 
   <cr-link-row class="hr"

@@ -71,12 +71,11 @@ constexpr PrefConfig kProfilePrefs[] = {
      "news-enabled-changed"},
     {kBraveTalkDisabledByPolicy, true, "talk", "talk-enabled-changed"},
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-    {speedreader::kSpeedreaderDisabledByPolicy, true, "speedreader",
+    {speedreader::kSpeedreaderPrefFeatureEnabled, false, "speedreader",
      "speedreader-enabled-changed"},
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-    {kBraveWaybackMachineDisabledByPolicy, true, "wayback",
-     "wayback-enabled-changed"},
+    {kBraveWaybackMachineEnabled, false, "wayback", "wayback-enabled-changed"},
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     {brave_vpn::prefs::kManagedBraveVPNDisabled, true, "vpn",
@@ -84,14 +83,14 @@ constexpr PrefConfig kProfilePrefs[] = {
 #endif
     {brave_wallet::prefs::kDisabledByPolicy, true, "wallet",
      "wallet-enabled-changed"},
-    {kWebDiscoveryDisabledByPolicy, true, "webDiscovery",
+    {kWebDiscoveryEnabled, false, "webDiscovery",
      "web-discovery-enabled-changed"},
 };
 
 // Local state preferences configuration
 constexpr PrefConfig kLocalStatePrefs[] = {
-    {p3a::kP3ADisabledByPolicy, true, "p3a", "p3a-enabled-changed"},
-    {kStatsReportingDisabledByPolicy, true, "statsReporting",
+    {p3a::kP3AEnabled, false, "p3a", "p3a-enabled-changed"},
+    {kStatsReportingEnabled, false, "statsReporting",
      "statsReporting-enabled-changed"},
     {kMetricsReportingEnabled, false, "crashReporting",
      "crashReporting-enabled-changed"},
@@ -106,8 +105,8 @@ constexpr auto kToggleLocalStateMap =
 #if BUILDFLAG(ENABLE_TOR)
         {"tor", tor::prefs::kTorDisabled},
 #endif
-        {"p3a", p3a::kP3ADisabledByPolicy},
-        {"statsReporting", kStatsReportingDisabledByPolicy},
+        {"p3a", p3a::kP3AEnabled},
+        {"statsReporting", kStatsReportingEnabled},
         {"crashReporting", kMetricsReportingEnabled}});
 
 // Helper function to get preference value with inversion handling
