@@ -113,8 +113,9 @@ void BraveTabStripModel::CloseTabs(base::span<int> indices,
   TabStripModel::CloseTabs(contentses, close_types);
 }
 
-void BraveTabStripModel::SetCustomTitleForTab(int index,
-                                              const std::u16string& title) {
+void BraveTabStripModel::SetCustomTitleForTab(
+    int index,
+    const std::optional<std::u16string>& title) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
 
   auto* tab_interface = GetTabAtIndex(index);
@@ -124,8 +125,9 @@ void BraveTabStripModel::SetCustomTitleForTab(int index,
   tab_ui_helper->SetCustomTitle(title);
 
   for (auto& observer : observers_) {
-    observer.TabCustomTitleChanged(GetWebContentsAt(index),
-                                   base::UTF16ToUTF8(title));
+    observer.TabCustomTitleChanged(
+        GetWebContentsAt(index),
+        title.has_value() ? base::UTF16ToUTF8(*title) : std::string());
   }
 
   NotifyTabChanged(tab_interface, TabChangeType::kAll);

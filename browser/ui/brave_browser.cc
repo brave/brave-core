@@ -174,8 +174,9 @@ void BraveBrowser::RunFileChooser(
 #endif
 }
 
-void BraveBrowser::TabCustomTitleChanged(content::WebContents* contents,
-                                         const std::string& custom_title) {
+void BraveBrowser::TabCustomTitleChanged(
+    content::WebContents* contents,
+    const std::optional<std::string>& custom_title) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
 
   SessionService* session_service =
@@ -183,9 +184,10 @@ void BraveBrowser::TabCustomTitleChanged(content::WebContents* contents,
   if (session_service) {
     sessions::SessionTabHelper* session_tab_helper =
         sessions::SessionTabHelper::FromWebContents(contents);
-    session_service->AddTabExtraData(
-        session_id(), session_tab_helper->session_id(),
-        tabs::kBraveTabCustomTitleExtraDataKey, custom_title);
+    session_service->AddTabExtraData(session_id(),
+                                     session_tab_helper->session_id(),
+                                     tabs::kBraveTabCustomTitleExtraDataKey,
+                                     custom_title.value_or(std::string()));
   }
 }
 

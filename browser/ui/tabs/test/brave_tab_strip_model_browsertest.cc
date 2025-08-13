@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 
+#include <optional>
+
 #include "base/run_loop.h"
 #include "base/task/current_thread.h"
 #include "base/test/bind.h"
@@ -201,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
   EXPECT_TRUE(
       TabRendererData::FromTabInModel(tab_strip_model, 0).is_custom_title);
 
-  tab_strip_model->SetCustomTitleForTab(0, u"");
+  tab_strip_model->SetCustomTitleForTab(0, std::nullopt);
   EXPECT_EQ(TabRendererData::FromTabInModel(tab_strip_model, 0).title,
             u"about:blank");
   EXPECT_FALSE(

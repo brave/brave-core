@@ -15,18 +15,15 @@
 
 #undef GetTitle
 
-void TabUIHelper::SetCustomTitle(const std::u16string& title) {
+void TabUIHelper::SetCustomTitle(const std::optional<std::u16string>& title) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
 
   if (title == custom_title_) {
     return;
   }
 
-  if (title.empty()) {
-    custom_title_.reset();
-    return;
-  }
-
+  CHECK(!title.has_value() || !title->empty())
+      << "Custom title should be std::nullopt or non-empty string";
   custom_title_ = title;
 }
 

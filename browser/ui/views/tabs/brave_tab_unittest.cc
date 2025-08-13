@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
+#include <optional>
 #include <string>
 
 #include "base/test/scoped_feature_list.h"
@@ -112,7 +113,7 @@ class BraveTabRenamingUnitTest : public BraveTabTest {
     // FakeTabSlotController overrides:
     MOCK_METHOD(void,
                 SetCustomTitleForTab,
-                (Tab * tab, const std::u16string& title),
+                (Tab * tab, const std::optional<std::u16string>& title),
                 (override));
   };
 
@@ -180,7 +181,8 @@ TEST_F(BraveTabRenamingUnitTest, CommitRename) {
 
   // Check that the custom title is set.
   EXPECT_CALL(*tab_slot_controller(),
-              SetCustomTitleForTab(tab(), std::u16string(kNewTitle)));
+              SetCustomTitleForTab(
+                  tab(), std::make_optional(std::u16string(kNewTitle))));
   CommitRename();
 
   EXPECT_FALSE(in_renaming_mode());
@@ -217,7 +219,8 @@ TEST_F(BraveTabRenamingUnitTest, EnterKeyCommitsRename) {
 
   // Check that the custom title is set.
   EXPECT_CALL(*tab_slot_controller(),
-              SetCustomTitleForTab(tab(), std::u16string(kNewTitle)));
+              SetCustomTitleForTab(
+                  tab(), std::make_optional(std::u16string(kNewTitle))));
   // Simulate pressing Enter key to commit the rename.
   rename_textfield().OnEvent(new ui::KeyEvent(ui::EventType::kKeyPressed,
                                               ui::VKEY_RETURN, ui::EF_NONE));
@@ -258,7 +261,8 @@ TEST_F(BraveTabRenamingUnitTest, ClickingOutsideRenamingTabCommitsRename) {
 
   // Check that the custom title is set.
   EXPECT_CALL(*tab_slot_controller(),
-              SetCustomTitleForTab(tab(), std::u16string(kNewTitle)));
+              SetCustomTitleForTab(
+                  tab(), std::make_optional(std::u16string(kNewTitle))));
 
   // Simulate clicking outside the textfield to commit the rename.
   static_cast<BraveTab::RenameTextfield*>(&rename_textfield())

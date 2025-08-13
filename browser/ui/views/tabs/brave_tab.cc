@@ -313,8 +313,10 @@ bool BraveTab::HandleKeyEvent(views::Textfield* sender,
 }
 
 void BraveTab::CommitRename() {
+  auto text = rename_textfield_->GetText();
   controller_->SetCustomTitleForTab(
-      this, std::u16string(rename_textfield_->GetText()));
+      this,
+      text.empty() ? std::nullopt : std::make_optional(std::u16string(text)));
   ExitRenameMode();
 }
 

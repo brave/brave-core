@@ -9,9 +9,9 @@
 // Add TabCustomTitleChanged() callback to TabStripModelObserver.
 // BraveBrowser will make sure that the custom title is stored in the session
 // service so that it can be restored even after browser restarts.
-#define TabPinnedStateChanged                               \
-  TabCustomTitleChanged(content::WebContents* contents,     \
-                        const std::string& custom_title) {} \
+#define TabPinnedStateChanged                                              \
+  TabCustomTitleChanged(content::WebContents* contents,                    \
+                        const std::optional<std::string>& custom_title) {} \
   virtual void TabPinnedStateChanged
 
 #include <chrome/browser/ui/tabs/tab_strip_model_observer.h>  // IWYU pragma: export

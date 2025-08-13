@@ -41,7 +41,9 @@ class BraveTabStrip : public TabStrip {
       BrowserFrameActiveState active_state) const override;
   bool IsTabTiled(const Tab* tab) const override;
   bool IsFirstTabInTile(const Tab* tab) const override;
-  void SetCustomTitleForTab(Tab* tab, const std::u16string& title) override;
+  void SetCustomTitleForTab(
+      Tab* tab,
+      const std::optional<std::u16string>& title) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);

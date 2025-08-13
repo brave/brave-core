@@ -32,7 +32,8 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   void EnterTabRenameModeAt(int index);
 
   // Sets the custom title for the tab at the specified index.
-  void SetCustomTitleForTab(int index, const std::u16string& title);
+  void SetCustomTitleForTab(int index,
+                            const std::optional<std::u16string>& title);
 
   // BrowserTabStripController overrides:
   void ShowContextMenuForTab(Tab* tab,

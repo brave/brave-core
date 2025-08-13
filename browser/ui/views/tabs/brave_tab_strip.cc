@@ -259,8 +259,9 @@ bool BraveTabStrip::IsFirstTabInTile(const Tab* tab) const {
   return browser->tab_strip_model()->GetIndexOfTab(tile->first.Get()) == *index;
 }
 
-void BraveTabStrip::SetCustomTitleForTab(Tab* tab,
-                                         const std::u16string& title) {
+void BraveTabStrip::SetCustomTitleForTab(
+    Tab* tab,
+    const std::optional<std::u16string>& title) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
   auto index = GetModelIndexOf(tab);
   CHECK(index);

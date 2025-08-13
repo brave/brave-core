@@ -43,7 +43,8 @@ class BraveTabStripModel : public TabStripModel {
       uint32_t close_flags = TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
 
   // Sets the custom title for the tab at the specified index.
-  void SetCustomTitleForTab(int index, const std::u16string& title);
+  void SetCustomTitleForTab(int index,
+                            const std::optional<std::u16string>& title);
 
   // TabStripModel:
   void SelectRelativeTab(TabRelativeDirection direction,
