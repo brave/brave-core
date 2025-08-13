@@ -24,6 +24,8 @@ static_library("speedreader") {
     "speedreader_extended_info_handler.h",
     "speedreader_metrics.cc",
     "speedreader_metrics.h",
+    "speedreader_pref_migration.cc",
+    "speedreader_pref_migration.h",
     "speedreader_pref_names.h",
     "speedreader_rewriter_service.cc",
     "speedreader_rewriter_service.h",

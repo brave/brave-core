@@ -7,11 +7,11 @@
     <if expr="not is_android">
       <message name="IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE" desc="Accessible text shown when a page is in Reader Mode">Turn off Speedreader</message>
       <message name="IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE" desc="Accessible text shown when a page can be distilled">Turn on Speedreader</message>
-      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_LABEL" desc="Used for a toogle button label">Always use Speedreader for this site</message>
+      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_LABEL" desc="Used for a toggle button label">Always use Speedreader for this site</message>
       <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_ACC" desc="Accessible text for the toggle to enable or disable Speedreader per site">
         Toggle to turn on/off Speedreader for this website.
       </message>
-      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_LABEL" desc="Used for a toogble button label">Always use Speedreader for all sites</message>
+      <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_LABEL" desc="Used for a toogble button label">Automatically use Speedreader when possible on all sites</message>
       <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_ACC" desc="Accessible text for the toggle to enable or disable Speedreader per site">
         Toggle to turn on/off Speedreader for all websites.
       </message>
