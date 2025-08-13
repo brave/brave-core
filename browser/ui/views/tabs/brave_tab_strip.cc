@@ -262,7 +262,6 @@ bool BraveTabStrip::IsFirstTabInTile(const Tab* tab) const {
 void BraveTabStrip::SetCustomTitleForTab(
     Tab* tab,
     const std::optional<std::u16string>& title) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
   auto index = GetModelIndexOf(tab);
   CHECK(index);
 
@@ -280,7 +279,6 @@ TabTiledState BraveTabStrip::GetTiledStateForTab(int index) const {
 }
 
 void BraveTabStrip::EnterTabRenameModeAt(int index) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
   auto* tab = tab_at(index);
   CHECK(tab);
   static_cast<BraveTab*>(tab)->EnterRenameMode();

@@ -16,8 +16,6 @@
 #undef GetTitle
 
 void TabUIHelper::SetCustomTitle(const std::optional<std::u16string>& title) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
-
   if (title == custom_title_) {
     return;
   }

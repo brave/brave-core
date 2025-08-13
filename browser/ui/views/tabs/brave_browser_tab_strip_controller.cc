@@ -41,7 +41,6 @@ void BraveBrowserTabStripController::EnterTabRenameModeAt(int index) {
 void BraveBrowserTabStripController::SetCustomTitleForTab(
     int index,
     const std::optional<std::u16string>& title) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
   static_cast<BraveTabStripModel*>(model_.get())
       ->SetCustomTitleForTab(index, title);
 }

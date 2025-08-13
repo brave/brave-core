@@ -177,8 +177,6 @@ void BraveBrowser::RunFileChooser(
 void BraveBrowser::TabCustomTitleChanged(
     content::WebContents* contents,
     const std::optional<std::string>& custom_title) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
-
   SessionService* session_service =
       SessionServiceFactory::GetForProfileIfExisting(profile());
   if (session_service) {
