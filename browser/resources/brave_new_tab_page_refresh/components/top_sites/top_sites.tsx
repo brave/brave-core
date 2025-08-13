@@ -8,6 +8,7 @@ import Icon from '@brave/leo/react/icon'
 
 import { TopSite, TopSitesListKind } from '../../state/top_sites_state'
 import { useTopSitesState, useTopSitesActions } from '../../context/top_sites_context'
+import { usePersistedJSON } from '$web-common/usePersistedState'
 import { getString } from '../../lib/strings'
 import { RemoveToast } from './remove_toast'
 import { TopSitesGrid } from './top_sites_grid'
@@ -23,15 +24,17 @@ export function TopSites() {
   const listKind = useTopSitesState((s) => s.topSitesListKind)
   const topSites = useTopSitesState((s) => s.topSites)
 
-  const [expanded, setExpanded] = React.useState(loadExpandedState())
+  // TODO(https://github.com/brave/brave-browser/issues/45697): Use a pref to
+  // persist the expanded state.
+  const [expanded, setExpanded] =
+    usePersistedJSON('ntp-top-sites-expanded', Boolean)
+
   const [showEditSite, setShowEditSite] = React.useState(false)
   const [editSite, setEditSite] = React.useState<TopSite | null>(null)
   const [showTopSitesMenu, setShowTopSitesMenu] = React.useState(false)
   const [contextMenuSite, setContextMenuSite] =
       React.useState<TopSite | null>(null)
   const [showRemoveToast, setShowRemoveToast] = React.useState(false)
-
-  React.useEffect(() => { saveExpandedState(expanded) }, [expanded])
 
   const rootRef = React.useRef<HTMLDivElement>(null)
 
@@ -187,18 +190,4 @@ export function TopSites() {
       </div>
     </div>
   )
-}
-
-// TODO(https://github.com/brave/brave-browser/issues/45697): Use a pref to
-// persist the expanded state.
-const expandedStorageKey = 'ntp-top-sites-expanded'
-
-function loadExpandedState(): boolean {
-  const value = localStorage.getItem(expandedStorageKey)
-  try { return Boolean(JSON.parse(value || '')) }
-  catch { return false }
-}
-
-function saveExpandedState(expanded: boolean) {
-  localStorage.setItem(expandedStorageKey, JSON.stringify(expanded))
 }
