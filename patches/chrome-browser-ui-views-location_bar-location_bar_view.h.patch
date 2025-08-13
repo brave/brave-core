@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index 98a005a9521c9dcebf9995b9fb0de36335f600b3..576cb15320576fd34eb1b73d9e5bbbdf98a3999d 100644
+index 2af0adb7138e1474ca95ecc2f9e485e3f8d440dd..12d7bc53782de0bf95680623aef7cf1c652363ff 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
 @@ -131,6 +131,7 @@ class LocationBarView
@@ -18,7 +18,7 @@ index 98a005a9521c9dcebf9995b9fb0de36335f600b3..576cb15320576fd34eb1b73d9e5bbbdf
    void Update(content::WebContents* contents);
  
    // Clears the location bar's state for |contents|.
-@@ -284,6 +286,7 @@ class LocationBarView
+@@ -285,6 +287,7 @@ class LocationBarView
    GetContentSettingViewsForTest() {
      return content_setting_views_;
    }

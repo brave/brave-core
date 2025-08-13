@@ -1,5 +1,5 @@
 diff --git a/components/policy/resources/webui/policy_base.ts b/components/policy/resources/webui/policy_base.ts
-index af0b2948172adb75a97b183d7298117149551e93..90ba491e56325956164457fe05952e8c7dc65297 100644
+index af0b2948172adb75a97b183d7298117149551e93..f87f47d214e95d120b7052af98894f8c5d0393e7 100644
 --- a/components/policy/resources/webui/policy_base.ts
 +++ b/components/policy/resources/webui/policy_base.ts
 @@ -198,7 +198,7 @@ export class Page {

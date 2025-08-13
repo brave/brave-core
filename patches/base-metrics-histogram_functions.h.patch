@@ -1,5 +1,5 @@
 diff --git a/base/metrics/histogram_functions.h b/base/metrics/histogram_functions.h
-index 20ca685ec430c00760a72da425a3c32ece12b28c..dfea10f252e9a2413ff60cf18d7e911ae60cdb00 100644
+index 5df0663a06021fecb429c09f40be7dd8215b63e1..2b9277e748abc874dea8b5231df74cdf7fea6f3e 100644
 --- a/base/metrics/histogram_functions.h
 +++ b/base/metrics/histogram_functions.h
 @@ -80,6 +80,7 @@ void UmaHistogramEnumeration(std::string_view name, T sample) {
