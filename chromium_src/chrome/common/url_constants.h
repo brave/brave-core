@@ -74,7 +74,7 @@ inline constexpr char kChooserUsbOverviewURL[] =
 
 // Link to the forum for Chrome Beta.
 inline constexpr char kChromeBetaForumURL[] =
-    "https://community.brave.com/c/beta-builds";
+    "https://community.brave.app/c/beta-builds";
 
 // The URL for the help center article to fix Chrome update problems.
 inline constexpr char16_t kChromeFixUpdateProblems[] =
@@ -559,7 +559,7 @@ inline constexpr char kPrivacyPolicyEmbeddedDarkModeURLPathChina[] =
 // "Learn more" URL for the enhanced playback notification dialog.
 inline constexpr char kEnhancedPlaybackNotificationLearnMoreURL[] =
     // Keep in sync with chrome/android/java/strings/android_chrome_strings.grd
-    "https://community.brave.com";
+    "https://community.brave.app";
 #endif
 
 #if BUILDFLAG(IS_MAC)

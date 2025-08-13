@@ -96,7 +96,7 @@ RegisterPolymerTemplateModifications({
 
       // <if expr="not is_win">
         updateStatusMessageLink.href =
-          'https://community.brave.com?p=update_error'
+          'https://community.brave.app?p=update_error'
       // </if>
     }
   }
