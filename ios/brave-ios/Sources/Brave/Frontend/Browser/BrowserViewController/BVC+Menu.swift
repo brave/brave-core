@@ -478,28 +478,6 @@ extension BrowserViewController {
         self.presentPlaylistController()
         return .none
       },
-      .init(id: .braveNews) { @MainActor [unowned self] _ in
-        self.dismiss(animated: true) {
-          if pageURL == nil,
-            let newTabPageController = self.tabManager.selectedTab?.newTabPageViewController
-          {
-            // Already on NTP
-            newTabPageController.scrollToBraveNews()
-          } else {
-            // Make a new tab and scroll to it
-            self.openBlankNewTab(
-              attemptLocationFieldFocus: false,
-              isPrivate: false,
-              isExternal: true
-            )
-            self.popToBVC()
-            if let newTabPageController = self.tabManager.selectedTab?.newTabPageViewController {
-              newTabPageController.scrollToBraveNews()
-            }
-          }
-        }
-        return .none
-      },
       .init(id: .braveTalk) { @MainActor [unowned self] _ in
         self.dismiss(animated: true) {
           guard let url = URL(string: "https://talk.brave.com/") else { return }
@@ -534,6 +512,32 @@ extension BrowserViewController {
           }
           return .none
         }
+      )
+    }
+    if profileController.profile.prefs.isBraveNewsAvailable {
+      actions.append(
+        .init(id: .braveNews) { @MainActor [unowned self] _ in
+          self.dismiss(animated: true) {
+            if pageURL == nil,
+               let newTabPageController = self.tabManager.selectedTab?.newTabPageViewController
+            {
+              // Already on NTP
+              newTabPageController.scrollToBraveNews()
+            } else {
+              // Make a new tab and scroll to it
+              self.openBlankNewTab(
+                attemptLocationFieldFocus: false,
+                isPrivate: false,
+                isExternal: true
+              )
+              self.popToBVC()
+              if let newTabPageController = self.tabManager.selectedTab?.newTabPageViewController {
+                newTabPageController.scrollToBraveNews()
+              }
+            }
+          }
+          return .none
+        },
       )
     }
     return actions

@@ -425,30 +425,32 @@ class SettingsViewController: TableViewController {
       ]
     }
 
-    section.rows.append(
-      Row(
-        text: Strings.BraveNews.braveNewsTitle,
-        selection: { [unowned self] in
-          let controller = NewsSettingsViewController(
-            dataSource: self.feedDataSource,
-            openURL: { [weak self] url in
-              guard let self else { return }
-              self.dismiss(animated: true)
-              self.settingsDelegate?.settingsOpenURLs([url], loadImmediately: true)
+    if braveCore.profile.prefs.isBraveNewsAvailable {
+      section.rows.append(
+        Row(
+          text: Strings.BraveNews.braveNewsTitle,
+          selection: { [unowned self] in
+            let controller = NewsSettingsViewController(
+              dataSource: self.feedDataSource,
+              openURL: { [weak self] url in
+                guard let self else { return }
+                self.dismiss(animated: true)
+                self.settingsDelegate?.settingsOpenURLs([url], loadImmediately: true)
+              }
+            )
+            controller.viewDidDisappear = {
+              if Preferences.Review.braveNewsCriteriaPassed.value {
+                AppReviewManager.shared.isRevisedReviewRequired = true
+                Preferences.Review.braveNewsCriteriaPassed.value = false
+              }
             }
-          )
-          controller.viewDidDisappear = {
-            if Preferences.Review.braveNewsCriteriaPassed.value {
-              AppReviewManager.shared.isRevisedReviewRequired = true
-              Preferences.Review.braveNewsCriteriaPassed.value = false
-            }
-          }
-          self.navigationController?.pushViewController(controller, animated: true)
-        },
-        image: UIImage(braveSystemNamed: "leo.product.brave-news"),
-        accessory: .disclosureIndicator
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          image: UIImage(braveSystemNamed: "leo.product.brave-news"),
+          accessory: .disclosureIndicator
+        )
       )
-    )
+    }
 
     if !tabManager.privateBrowsingManager.isPrivateBrowsing
       && AIChatUtils.isAIChatEnabled(for: braveCore.profile.prefs)

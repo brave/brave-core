@@ -1496,7 +1496,7 @@ public class BrowserViewController: UIViewController {
     if selectedTab.newTabPageViewController == nil {
       let ntpController = NewTabPageViewController(
         tab: selectedTab,
-        profile: profile,
+        profilePrefs: profileController.profile.prefs,
         dataSource: backgroundDataSource,
         feedDataSource: feedDataSource,
         rewards: rewards,
