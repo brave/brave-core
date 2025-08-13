@@ -166,7 +166,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kNumber;
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  (*s_brave_allowlist)[speedreader::kSpeedreaderPrefEnabled] =
+  (*s_brave_allowlist)[speedreader::kSpeedreaderPrefFeatureEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[speedreader::kSpeedreaderPrefEnabledForAllSites] =
       settings_api::PrefType::kBoolean;
 #endif
   // De-AMP feature

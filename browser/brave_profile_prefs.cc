@@ -86,6 +86,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_pref_migration.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #endif
 
@@ -319,6 +320,11 @@ void RegisterProfilePrefsForMigration(
   // Added 2025-05
 #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(kWebTorrentEnabled, false);
+#endif
+
+  // Added 2025-08 - Speedreader preference migration
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::RegisterProfilePrefsForMigration(registry);
 #endif
 }
 

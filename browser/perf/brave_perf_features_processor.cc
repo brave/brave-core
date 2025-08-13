@@ -75,8 +75,11 @@ void MaybeEnableBraveFeatureForPerfTesting(Profile* profile) {
   profile->GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  // Speedreader
-  profile->GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefEnabled, true);
+  // Speedreader - enable both the feature toggle and all-sites setting
+  profile->GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefFeatureEnabled,
+                                  true);
+  profile->GetPrefs()->SetBoolean(
+      speedreader::kSpeedreaderPrefEnabledForAllSites, true);
 #endif
 
   profile->GetPrefs()->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,

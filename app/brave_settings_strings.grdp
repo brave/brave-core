@@ -246,10 +246,19 @@
   <message name="IDS_SETTINGS_TABS_SEARCH_SHOW" desc="The button for searching tabs on the left of tab strip region.">
     Show tab search button
   </message>
-  <message name="IDS_SETTINGS_SPEEDREADER_LABEL" desc="The label to activate Speedreader">
+  <message name="IDS_SETTINGS_SPEEDREADER_SETTING_LABEL" desc="The main label for the Speedreader settings section">
     Speedreader
   </message>
-  <message name="IDS_SETTINGS_SPEEDREADER_SUB_LABEL" desc="The sub-label describing Speedreader">
+  <message name="IDS_SETTINGS_SPEEDREADER_FEATURE_LABEL" desc="The label for the Speedreader feature toggle">
+    Speedreader
+  </message>
+  <message name="IDS_SETTINGS_SPEEDREADER_FEATURE_SUB_LABEL" desc="The sub-label describing the Speedreader feature">
+    Enable the Speedreader feature
+  </message>
+  <message name="IDS_SETTINGS_SPEEDREADER_ENABLED_FOR_ALL_SITES_LABEL" desc="The label for enabling Speedreader on all sites">
+    Automatically use Speedreader when possible
+  </message>
+  <message name="IDS_SETTINGS_SPEEDREADER_ENABLED_FOR_ALL_SITES_SUB_LABEL" desc="The sub-label for enabling Speedreader on all sites">
     Articles automatically load in reader mode, saving you time
   </message>
   <message name="IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS" desc="The text for the settings option for disabling clickable tab mute indicators">
