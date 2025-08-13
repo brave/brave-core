@@ -15,5 +15,5 @@ Follow [@brave](https://twitter.com/brave) on Twitter for important announcement
 
 You can ask questions and interact with the community in the following
 locations:
-- [Brave Community](https://community.brave.com/)
+- [Brave Community](https://community.brave.app/)
 - [`community`](https://bravesoftware.slack.com) channel on Brave Software's Slack

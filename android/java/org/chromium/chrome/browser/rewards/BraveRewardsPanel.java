@@ -105,7 +105,7 @@ public class BraveRewardsPanel
     public static final String NEW_SIGNUP_DISABLED_URL =
             "https://support.brave.app/hc/en-us/articles/9312922941069";
     private static final String ADS_PAYOUT_STATUS_URL =
-            "https://community.brave.com/t/ads-payout-status-update/287895";
+            "https://community.brave.app/t/ads-payout-status-update/287895";
     private static final String SUPPORT_URL = "https://support.brave.app";
     private static final String BRAVE_REWARDS_PAGE = "https://brave.com/rewards";
     private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://brave.com/rewards-changes";

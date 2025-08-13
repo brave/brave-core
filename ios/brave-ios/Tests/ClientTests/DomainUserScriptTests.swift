@@ -26,7 +26,7 @@ class DomainUserScriptTests: XCTestCase {
     let badURLs = [
       URL(string: "https://talk.brave.com"),
       URL(string: "https://search.brave.software.com"),
-      URL(string: "https://community.brave.com"),
+      URL(string: "https://community.brave.app"),
       URL(string: "https://subdomain.search.brave.com"),
       URL(string: "https://brave.com"),
     ].compactMap { $0 }
@@ -52,7 +52,7 @@ class DomainUserScriptTests: XCTestCase {
       URL(string: "https://search-dev.brave.com"),
       URL(string: "https://search.brave.com/custom/path"),
       URL(string: "https://search-dev.brave.com/custom/path"),
-      URL(string: "https://community.brave.com"),
+      URL(string: "https://community.brave.app"),
       URL(string: "https://subdomain.brave.com"),
       URL(string: "https://brave.com"),
     ].compactMap { $0 }

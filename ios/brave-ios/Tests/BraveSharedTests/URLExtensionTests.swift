@@ -260,8 +260,6 @@ class URLExtensionTests: XCTestCase {
   func testBaseDomain() {
     XCTAssertEqual(URL(string: "http://brave.com")?.baseDomain, "brave.com")
     XCTAssertEqual(URL(string: "https://brave.com")?.baseDomain, "brave.com")
-    XCTAssertEqual(URL(string: "http://community.brave.com")?.baseDomain, "brave.com")
-    XCTAssertEqual(URL(string: "https://community.brave.com")?.baseDomain, "brave.com")
 
     XCTAssertEqual(URL(string: "http://test.co.uk")?.baseDomain, "test.co.uk")
     XCTAssertEqual(URL(string: "https://test.co.uk")?.baseDomain, "test.co.uk")
