@@ -151,6 +151,18 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelTest, TabClosingWhileMRUCycling) {
 
 class BraveTabStripModelRenamingTabBrowserTest : public BraveTabStripModelTest {
  public:
+  static std::unique_ptr<net::test_server::HttpResponse> ServeTestPage(
+      const net::test_server::HttpRequest& request) {
+    auto http_response =
+        std::make_unique<net::test_server::BasicHttpResponse>();
+    http_response->set_content_type("text/html");
+    http_response->set_content(
+        "<!DOCTYPE html><html><head>"
+        "<title>Test Page</title></head>"
+        "<body>Test Content</body></html>");
+    return http_response;
+  }
+
   BraveTabStripModelRenamingTabBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
         tabs::features::kBraveRenamingTabs);
@@ -160,17 +172,7 @@ class BraveTabStripModelRenamingTabBrowserTest : public BraveTabStripModelTest {
   void SetUpOnMainThread() override {
     host_resolver()->AddRule("*", "127.0.0.1");
     auto request_handler = base::BindRepeating(
-        [](const net::test_server::HttpRequest& request)
-            -> std::unique_ptr<net::test_server::HttpResponse> {
-          auto http_response =
-              std::make_unique<net::test_server::BasicHttpResponse>();
-          http_response->set_content_type("text/html");
-          http_response->set_content(
-              "<!DOCTYPE html><html><head>"
-              "<title>Test Page</title></head>"
-              "<body>Test Content</body></html>");
-          return http_response;
-        });
+        &BraveTabStripModelRenamingTabBrowserTest::ServeTestPage);
     embedded_test_server()->RegisterDefaultHandler(
         base::BindRepeating(request_handler));
     ASSERT_TRUE(embedded_test_server()->Start());
