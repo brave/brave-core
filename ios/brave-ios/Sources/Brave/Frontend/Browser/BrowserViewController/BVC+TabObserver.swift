@@ -53,7 +53,7 @@ extension BrowserViewController: TabObserver {
       injectedScripts.append(contentBlocker)
     }
 
-    if braveTalkJitsiCoordinator.isIntegrationEnabled {
+    if profileController.profile.prefs.isBraveTalkAvailable {
       injectedScripts.append(
         BraveTalkScriptHandler(
           rewards: rewards,
