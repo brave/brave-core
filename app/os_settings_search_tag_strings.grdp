@@ -650,6 +650,12 @@
   <message name="IDS_OS_SETTINGS_TAG_POWER_ADAPTIVE_CHARGING" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to enable adaptive charging.">
     Adaptive charging
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_POWER_OPTIMIZED_CHARGING" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to enable optimized charging." translateable="false">
+    Optimized charging
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_POWER_CHARGE_LIMIT" desc="Text for search result item which, when clicked, navigates the user to power settings, with an option to enable a charge limit." translateable="false">
+    Charge limit
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD" desc="Text for search result item which, when clicked, navigates the user to touchpad settings. Alternate phrase for: 'Trackpad'">
     Touchpad
   </message>
@@ -854,45 +860,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_UNIT_CONVERSION" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the Quick Answers unit conversion functionality.">
     Quick Answers unit conversion
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings.">
-    Brave Assistant
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_RELATED_INFO" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable letting Assistant show info related to what's on the screen.">
-    Brave Assistant related information
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_QUICK_ANSWERS" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable letting Assistant show related info when the user right-clicks.">
-    Brave Assistant quick answers
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_OK_GOOGLE" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable letting users summon the Assistant by saying 'Ok Brave' out loud. Alternate phrase for: 'Okay Brave', 'Hey Brave'">
-    Brave Assistant "Ok Brave"
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_OK_GOOGLE_ALT1" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable letting users summon the Assistant by saying 'Ok Brave' out loud. Alternate phrase for: 'Brave Assistant 'Ok Brave'', 'Hey Brave'">
-    Okay Brave
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_OK_GOOGLE_ALT2" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable letting users summon the Assistant by saying 'Ok Brave' out loud. Alternate phrase for: 'Brave Assistant 'Ok Brave'', 'Okay Brave'">
-    Hey Brave
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_NOTIFICATIONS" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable Assistant notifications.">
-    Brave Assistant Notifications
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_PREFERRED_INPUT" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with a toggle to enable/disable having the preferred input be voice instead of keyboard.">
-    Brave Assistant voice input
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to turn functionality off. Alternate phrase for: 'Disable Brave Assistant'">
-    Turn off Brave Assistant
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to turn functionality off. Alternate phrase for: 'Turn off Brave Assistant'">
-    Disable Brave Assistant
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to turn functionality on. Alternate phrase for: 'Enable Brave Assistant'">
-    Turn on Brave Assistant
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to turn functionality on. Alternate phrase for: 'Turn on Brave Assistant'">
-    Enable Brave Assistant
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_ASSISTANT_TRAIN_VOICE_MODEL" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings, with an option to train a voice model to listen for commands such as 'Okay Brave' or 'Hey Brave'">
-    Train Brave Assistant voice model
   </message>
 
   <message name="IDS_OS_SETTINGS_TAG_MAGIC_BOOST" desc="Text for search result item which, when clicked, navigates the user to Brave AI settings, with an option to turn functionality on.">

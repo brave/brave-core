@@ -196,6 +196,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new Private browser tab.">
         New Private tab
       </message>
+      <message name="IDS_MENU_NEW_INCOGNITO_WINDOW" desc="Menu item for opening a new private window. [CHAR_LIMIT=27]">
+        New private window
+      </message>
       <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new Private tab that facilitates pseudononymous browsing. [CHAR_LIMIT=27]" meaning="Android menu">
         New Private tab
       </message>
@@ -226,6 +229,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_INCOGNITO_BADGE" desc="Text appearing in the private badge on toolbar indicating that the user is in Private mode.">
         Private
       </message>
+
+      <if expr="enable_extensions_core">
+        </if>
 
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_STANDARD" desc="Content description for the Private tabs toggle button when viewing standard tabs.">
         Enter Private mode
