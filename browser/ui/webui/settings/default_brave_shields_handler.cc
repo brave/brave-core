@@ -17,6 +17,9 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/de_amp/browser/de_amp_util.h"
+#include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -133,6 +136,30 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       base::BindRepeating(
           &DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getDeAmpEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::GetDeAmpEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setDeAmpEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::SetDeAmpEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getDebounceEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::GetDebounceEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setDebounceEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::SetDebounceEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getReduceLanguageEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::GetReduceLanguageEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setReduceLanguageEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::SetReduceLanguageEnabled,
+                          base::Unretained(this)));
 
   content_settings_observation_.Observe(
       HostContentSettingsMapFactory::GetForProfile(profile_));
@@ -482,4 +509,73 @@ void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(result));
+}
+
+void DefaultBraveShieldsHandler::GetDeAmpEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool de_amp_enabled = de_amp::IsDeAmpEnabled(
+      profile_->GetPrefs(),
+      HostContentSettingsMapFactory::GetForProfile(profile_));
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(de_amp_enabled));
+}
+
+void DefaultBraveShieldsHandler::SetDeAmpEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool value = args[0].GetBool();
+  profile_->GetPrefs()->SetBoolean(de_amp::kDeAmpPrefEnabled, value);
+}
+
+void DefaultBraveShieldsHandler::GetDebounceEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool debounce_enabled =
+      profile_->GetPrefs()->GetBoolean(debounce::prefs::kDebounceEnabled) &&
+      !brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+          profile_->GetPrefs());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(debounce_enabled));
+}
+
+void DefaultBraveShieldsHandler::SetDebounceEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  bool value = args[0].GetBool();
+  profile_->GetPrefs()->SetBoolean(debounce::prefs::kDebounceEnabled, value);
+}
+
+void DefaultBraveShieldsHandler::GetReduceLanguageEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool reduce_language_enabled =
+      brave_shields::IsReduceLanguageEnabledForProfile(
+          HostContentSettingsMapFactory::GetForProfile(profile_), GURL(),
+          profile_->GetPrefs());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(reduce_language_enabled));
+}
+
+void DefaultBraveShieldsHandler::SetReduceLanguageEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  bool value = args[0].GetBool();
+  profile_->GetPrefs()->SetBoolean(brave_shields::prefs::kReduceLanguageEnabled,
+                                   value);
 }

@@ -6,6 +6,8 @@
 import './brave_adblock_subpage.js'
 import '//resources/cr_elements/md_select.css.js'
 
+import { assert } from 'chrome://resources/js/assert.js'
+
 import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
@@ -32,6 +34,9 @@ interface BraveShieldsPage {
     httpsUpgradeControlType: HTMLSelectElement,
     noScriptControlType: SettingsToggleButtonElement,
     setContactInfoSaveFlagToggle: SettingsToggleButtonElement,
+    deAmpToggle: SettingsToggleButtonElement,
+    debounceToggle: SettingsToggleButtonElement,
+    reduceLanguageToggle: SettingsToggleButtonElement,
   }
 }
 
@@ -179,12 +184,36 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           return loadTimeData.getBoolean('isDeAmpFeatureEnabled')
         },
       },
+      isDeAmpEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
+        }
+      },
       isDebounceFeatureEnabled_: {
         readOnly: true,
         type: Boolean,
         value: function () {
           return loadTimeData.getBoolean('isDebounceFeatureEnabled')
         },
+      },
+      isDebounceEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
+        }
+      },
+      isReduceLanguageEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
+        }
       },
     }
   }
@@ -208,8 +237,11 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare showStrictFingerprintingMode_: boolean
   private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
   private declare isAdBlockOnlyModeEnabled_: boolean
-  private declare isDebounceFeatureEnabled_: boolean
   private declare isDeAmpFeatureEnabled_: boolean
+  private declare isDeAmpEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+  private declare isDebounceFeatureEnabled_: boolean
+  private declare isDebounceEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+  private declare isReduceLanguageEnabled_: chrome.settingsPrivate.PrefObject<boolean>
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
     DefaultBraveShieldsBrowserProxyImpl.getInstance()
@@ -311,8 +343,33 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         value: value.contactInfoSaveFlag,
       }
     })
+
     this.browserProxy_.getAdBlockOnlyModeEnabled().then(value => {
       this.isAdBlockOnlyModeEnabled_ = value
+    })
+
+    this.browserProxy_.getDeAmpEnabled().then(value => {
+      this.isDeAmpEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
+    })
+
+    this.browserProxy_.getDebounceEnabled().then(value => {
+      this.isDebounceEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
+    })
+
+    this.browserProxy_.getReduceLanguageEnabled().then(value => {
+      this.isReduceLanguageEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
     })
   }
 
@@ -357,6 +414,21 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     this.browserProxy_.setContactInfoSaveFlag(
       this.$.setContactInfoSaveFlagToggle.checked
     )
+  }
+
+  onDeAmpToggleChange_(event: Event) {
+    assert(event.target instanceof SettingsToggleButtonElement)
+    this.browserProxy_.setDeAmpEnabled(event.target.checked)
+  }
+
+  onDebounceToggleChange_(event: Event) {
+    assert(event.target instanceof SettingsToggleButtonElement)
+    this.browserProxy_.setDebounceEnabled(event.target.checked)
+  }
+
+  onReduceLanguageToggleChange_(event: Event) {
+    assert(event.target instanceof SettingsToggleButtonElement)
+    this.browserProxy_.setReduceLanguageEnabled(event.target.checked)
   }
 }
 

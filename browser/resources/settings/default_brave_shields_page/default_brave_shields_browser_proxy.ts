@@ -44,6 +44,15 @@ export interface DefaultBraveShieldsBrowserProxy {
   getContactInfo: () => Promise<ContactInfo>
 
   getHideBlockAllCookieTogle: () => Promise<boolean>
+
+  getDeAmpEnabled: () => Promise<boolean>
+  setDeAmpEnabled: (value: boolean) => void
+
+  getDebounceEnabled: () => Promise<boolean>
+  setDebounceEnabled: (value: boolean) => void
+
+  getReduceLanguageEnabled: () => Promise<boolean>
+  setReduceLanguageEnabled: (value: boolean) => void
 }
 
 export class DefaultBraveShieldsBrowserProxyImpl
@@ -134,6 +143,30 @@ implements DefaultBraveShieldsBrowserProxy {
 
   getHideBlockAllCookieTogle () {
     return sendWithPromise('getHideBlockAllCookieTogle')
+  }
+
+  getDeAmpEnabled () {
+    return sendWithPromise('getDeAmpEnabled')
+  }
+
+  setDeAmpEnabled (value: boolean) {
+    chrome.send('setDeAmpEnabled', [value])
+  }
+
+  getDebounceEnabled () {
+    return sendWithPromise('getDebounceEnabled')
+  }
+
+  setDebounceEnabled (value: boolean) {
+    chrome.send('setDebounceEnabled', [value])
+  }
+
+  getReduceLanguageEnabled () {
+    return sendWithPromise('getReduceLanguageEnabled')
+  }
+
+  setReduceLanguageEnabled (value: boolean) {
+    chrome.send('setReduceLanguageEnabled', [value])
   }
 
   static getInstance(): DefaultBraveShieldsBrowserProxy {

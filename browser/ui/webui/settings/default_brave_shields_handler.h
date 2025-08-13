@@ -74,6 +74,12 @@ class DefaultBraveShieldsHandler
                         const std::optional<std::string>& contact_info,
                         const bool contact_info_save_flag,
                         const std::vector<std::string>& components);
+  void GetDeAmpEnabled(const base::Value::List& args);
+  void SetDeAmpEnabled(const base::Value::List& args);
+  void GetDebounceEnabled(const base::Value::List& args);
+  void SetDebounceEnabled(const base::Value::List& args);
+  void GetReduceLanguageEnabled(const base::Value::List& args);
+  void SetReduceLanguageEnabled(const base::Value::List& args);
 
   raw_ptr<Profile> profile_ = nullptr;
 
