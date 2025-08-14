@@ -143,10 +143,17 @@ void BraveBrowser::TabStripEmpty() {
   }
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), /*index=*/-1,
-                     /*foreground=*/true, /*group=*/std::nullopt,
-                     /*pinned=*/false));
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<BraveBrowser> browser) {
+                       if (browser) {
+                         chrome::AddTabAt(browser.get(),
+                                          browser->GetNewTabURL(),
+                                          /*index=*/-1, /*foreground=*/true,
+                                          /*group=*/std::nullopt,
+                                          /*pinned=*/false);
+                       }
+                     },
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveBrowser::RunFileChooser(
