@@ -789,15 +789,6 @@ public class BytecodeTest {
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
-                        "moveTabToWindow",
-                        MethodModifier.REGULAR,
-                        void.class,
-                        getClassForPath("org/chromium/chrome/browser/multiwindow/InstanceInfo"),
-                        Tab.class,
-                        int.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
                         "isOpenInOtherWindowSupported",
                         MethodModifier.REGULAR,
