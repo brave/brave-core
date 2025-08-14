@@ -4,8 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 import Button from '@brave/leo/react/button'
+
+// types
+import { WalletRoutes } from '../../../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../../../common/locale'
@@ -47,6 +50,36 @@ export const OnboardingContentLayout = ({
 }: Props) => {
   // routing
   const history = useHistory()
+  const { pathname } = useLocation()
+
+  // computed
+  const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
+
+  // methods
+  const handleBackButtonClick = React.useCallback(() => {
+    // Handle onboarding back button
+    if (
+      isOnboarding
+      && pathname === WalletRoutes.OnboardingBackupRecoveryPhrase
+    ) {
+      history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
+      return
+    }
+    // Handle backup wallet back button
+    if (pathname === WalletRoutes.Backup) {
+      history.push(WalletRoutes.Portfolio)
+      return
+    }
+    if (pathname === WalletRoutes.BackupExplainRecoveryPhrase) {
+      history.push(WalletRoutes.Backup)
+      return
+    }
+    if (pathname === WalletRoutes.BackupRecoveryPhrase) {
+      history.push(WalletRoutes.BackupExplainRecoveryPhrase)
+      return
+    }
+    history.goBack()
+  }, [history, pathname, isOnboarding])
 
   return (
     <StyledWrapper>
@@ -68,7 +101,7 @@ export const OnboardingContentLayout = ({
             <Button
               kind='plain'
               size='small'
-              onClick={() => history.goBack()}
+              onClick={handleBackButtonClick}
             >
               <BackButtonIcon />
             </Button>
