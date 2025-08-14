@@ -6,7 +6,7 @@
 #include "base/feature_override.h"
 #include "build/build_config.h"
 
-#include <components/plus_addresses/features.cc>
+#include <components/plus_addresses/core/common/features.cc>
 
 namespace plus_addresses::features {
 
