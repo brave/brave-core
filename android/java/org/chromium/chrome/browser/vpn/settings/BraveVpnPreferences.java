@@ -13,8 +13,6 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
@@ -30,6 +28,8 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
@@ -260,10 +260,11 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         if (mLinkSubscriptionPreference != null) {
             mLinkSubscriptionPreference.setVisible(
                     ChromeFeatureList.isEnabled(
-                            BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
-                    && BraveVpnPrefUtils.isSubscriptionPurchase());
+                                    BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
+                            && BraveVpnPrefUtils.isSubscriptionPurchase());
         }
-        new Handler().post(() -> updateSummaries());
+        // Ensures preference screen is fully loaded before updating summaries
+        PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateSummaries);
     }
 
     private void updateSummary(String preferenceString, String summary) {
@@ -339,27 +340,17 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 @Override
                 public void onAvailable(Network network) {
                     BraveVpnUtils.dismissProgressDialog();
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                new Handler().post(() -> updateSummaries());
-                            }
-                        });
-                    }
+                    // Run updateSummaries on UI thread
+                    PostTask.postTask(
+                            TaskTraits.UI_DEFAULT, BraveVpnPreferences.this::updateSummaries);
                 }
 
                 @Override
                 public void onLost(Network network) {
                     BraveVpnUtils.dismissProgressDialog();
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                new Handler().post(() -> updateSummaries());
-                            }
-                        });
-                    }
+                    // Run updateSummaries on UI thread
+                    PostTask.postTask(
+                            TaskTraits.UI_DEFAULT, BraveVpnPreferences.this::updateSummaries);
                 }
             };
 
@@ -483,7 +474,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             Toast.makeText(getActivity(), R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
                     .show();
             BraveVpnUtils.dismissProgressDialog();
-            new Handler().post(() -> updateSummaries());
+            PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateSummaries);
         }
     }
 
@@ -498,7 +489,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                     }
                     WireguardConfigUtils.deleteConfig(getActivity());
                     if (!WireguardConfigUtils.isConfigExist(getActivity())) {
-                        WireguardConfigUtils.createConfig(getActivity(),
+                        WireguardConfigUtils.createConfig(
+                                getActivity(),
                                 braveVpnWireguardProfileCredentials.getMappedIpv4Address(),
                                 mBraveVpnPrefModel.getHostname(),
                                 mBraveVpnPrefModel.getClientPrivateKey(),
@@ -512,7 +504,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 mBraveVpnPrefModel.setApiAuthToken(
                         braveVpnWireguardProfileCredentials.getApiAuthToken());
                 BraveVpnPrefUtils.setPrefModel(mBraveVpnPrefModel);
-                new Handler(Looper.getMainLooper()).post(() -> updateSummaries());
+                PostTask.postTask(TaskTraits.UI_DEFAULT, BraveVpnPreferences.this::updateSummaries);
             }
         }.start();
     }
@@ -551,12 +543,15 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 BraveVpnPrefUtils.getApiAuthToken());
         BraveVpnUtils.showProgressDialog(
                 getActivity(), getResources().getString(R.string.resetting_config));
-        new Handler().postDelayed(() -> {
-            if (isResumed()) {
-                BraveVpnUtils.resetProfileConfiguration(getActivity());
-                new Handler().post(() -> updateSummaries());
-            }
-        }, INVALIDATE_CREDENTIAL_TIMER_COUNT);
+        PostTask.postDelayedTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    if (isResumed()) {
+                        BraveVpnUtils.resetProfileConfiguration(getActivity());
+                        PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateSummaries);
+                    }
+                },
+                INVALIDATE_CREDENTIAL_TIMER_COUNT);
     }
 
     @Override

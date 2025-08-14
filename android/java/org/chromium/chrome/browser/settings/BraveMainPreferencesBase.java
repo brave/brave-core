@@ -10,13 +10,14 @@ import static org.chromium.build.NullUtil.assumeNonNull;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -127,13 +128,16 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
-        // Run updateBravePreferences() after fininshing MainPreferences::updatePreferences().
+        // Run updateBravePreferences() after finishing MainPreferences::updatePreferences().
         // Otherwise, some prefs could be added after finishing updateBravePreferences().
-        new Handler().post(() -> updateBravePreferences());
+        // Defers execution until after the current call stack completes.
+        // Allows the fragment lifecycle to fully complete before updating preferences.
+        // Prevents timing issues where preferences might not be fully initialized yet.
+        PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateBravePreferences);
         if (mNotificationClicked
                 && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(getActivity())
                 && !OnboardingPrefManager.getInstance()
-                            .isNotificationPermissionEnablingDialogShownFromSetting()) {
+                        .isNotificationPermissionEnablingDialogShownFromSetting()) {
             mNotificationClicked = false;
             if (BravePermissionUtils.hasNotificationPermission(getActivity())) {
                 showNotificationWarningDialog();
