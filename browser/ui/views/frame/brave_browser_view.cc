@@ -319,10 +319,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   ReorderChildView(find_bar_host_view_, -1);
 }
 
-views::View* BraveBrowserView::GetContentsBoundingView() const {
-  return contents_view();
-}
-
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == kTabsSearchShow) {
     UpdateSearchTabsButtonState();
@@ -978,6 +974,21 @@ void BraveBrowserView::ReadyToListenFullscreenChanges() {
   if (split_view_) {
     split_view_->ListenFullscreenChanges();
   }
+}
+
+bool BraveBrowserView::PreHandleMouseEvent(const blink::WebMouseEvent& event) {
+  if (BrowserView::PreHandleMouseEvent(event)) {
+    return true;
+  }
+
+  if (sidebar_container_view_ &&
+      sidebar_container_view_->PreHandleMouseEvent(event)) {
+    // If the sidebar container handles the event, we don't need to handle it
+    // further.
+    return true;
+  }
+
+  return false;
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {
