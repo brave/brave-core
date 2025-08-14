@@ -12,6 +12,8 @@
  #include <string_view>
  #include <type_traits>
  #include <utility>
+ #include <vector>
+#include <iostream>
  
  #include "base/check.h"
  #include "base/check_is_test.h"
@@ -128,7 +130,7 @@
  absl::Status TextEmbedder::EmbedTabs() {
      DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
      if (tabs_.empty()) {
-       return absl::FailedPreconditionError("No segments to embed.");
+       return absl::FailedPreconditionError("No tabs to embed.");
      }
      embeddings_.clear();
      for (const auto& tab : tabs_) {
@@ -141,6 +143,126 @@
      }
      return absl::OkStatus();
  }
+
+ // Given an array of tab embeddings, find their centroid, which is the mean of all embeddings (across each dimension)
+ absl::StatusOr<tflite::task::processor::EmbeddingResult> TextEmbedder::CalculateTabGroupCentroid() {
+    DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
+
+    // check if there are any embeddings
+    if (embeddings_.empty()) {
+        return absl::FailedPreconditionError("No tab embeddings to find centroid.");
+    }
+
+    // num of embeddings (tabs) in the group
+    size_t num_embeddings = embeddings_.size();
+    // dimensionality of an embedding
+    size_t embed_size = embeddings_[0].embeddings(0).feature_vector().value_float().size();
+    // create a dummy centroid and initialize it to all 0s
+    tflite::task::processor::EmbeddingResult centroid;
+    centroid = embeddings_[0];
+
+    for (size_t i=0; i<embed_size; ++i){
+        centroid.mutable_embeddings(0)->mutable_feature_vector()->set_value_float(i, 0.0f);
+    }
+
+    // Sum all the embeddings
+    for (const auto& embedding : embeddings_) {
+        for (size_t i = 0; i < embed_size; ++i) {
+            centroid.mutable_embeddings(0)->mutable_feature_vector()->set_value_float(i, 
+                centroid.embeddings(0).feature_vector().value_float(i) + embedding.embeddings(0).feature_vector().value_float(i));
+        }
+    }
+
+    // Compute the average (centroid)
+    for (size_t i=0; i<embed_size; ++i){
+        centroid.mutable_embeddings(0)->mutable_feature_vector()->set_value_float(i,
+            centroid.embeddings(0).feature_vector().value_float(i) / num_embeddings);
+        }
+    return centroid;
+}
+
+// Given 2 arrays, (1) containing strings (tab title + origin) for all tabs in a group and 
+// (2) containing strings of all open tabs (candidates), output indices for top 3 candidates.
+absl::StatusOr<std::vector<size_t>> TextEmbedder::SuggestTabsForGroup(
+    std::vector<std::string> group_tabs_,
+    std::vector<std::string> candidate_tabs_) 
+{
+    // get embeddings for group tabs
+    tabs_.clear();
+    tabs_ = group_tabs_;
+    auto status_group = EmbedTabs();
+    if (!status_group.ok()) {
+        return absl::FailedPreconditionError("Error generating embeddings for tabs in the group");
+    }
+
+    // get centroid of group tabs
+    tflite::task::processor::EmbeddingResult group_centroid;
+    auto group_centroid_output = CalculateTabGroupCentroid();
+    if (!group_centroid_output.ok()) {
+        return absl::FailedPreconditionError("Error generating centroid for tab group");
+    }
+    else {
+        group_centroid = group_centroid_output.value();
+    }
+
+    // get embeddings for candidate tabs
+    tabs_.clear();
+    tabs_ = candidate_tabs_;
+    auto status = EmbedTabs();
+    if (!status.ok()) {
+        return absl::FailedPreconditionError("Error generating embeddings for candidate tabs");
+    }
+
+    // save these embeddings
+    std::vector<tflite::task::processor::EmbeddingResult> candidate_embeddings_;
+    candidate_embeddings_ = embeddings_;
+
+    std::vector<double> sim_scores;
+
+    // get cosine simularity of each candiate tab with centroid
+    for (size_t i = 0; i < candidate_embeddings_.size(); ++i) {
+        auto maybe_similarity = tflite_text_embedder_->CosineSimilarity(
+            candidate_embeddings_[i].embeddings(0).feature_vector(),
+            group_centroid.embeddings(0).feature_vector());
+        if (!maybe_similarity.ok()) {
+            return absl::FailedPreconditionError("Error calculating cosine similarity.");
+            }
+            sim_scores.push_back(maybe_similarity.value());
+        }
+
+    std::vector<size_t> top_indices;
+
+    top_indices = getMostSimilarTabIndices(sim_scores);
+
+    return top_indices;
+
+}
+
+std::vector<size_t> TextEmbedder::getMostSimilarTabIndices(const std::vector<double>& vec) {
+    // Create pairs of (value, index) for values above threshold
+    std::vector<std::pair<double, size_t>> filtered_pairs;
+
+    for (size_t i = 0; i < vec.size(); ++i) {
+        if (vec[i] > COSINE_SIM_THRESHOLD) {
+            filtered_pairs.emplace_back(vec[i], i);
+        }
+    }
+
+    // Sort by value in descending order
+    std::sort(filtered_pairs.begin(), filtered_pairs.end(),
+              [](const auto& a, const auto& b) { 
+                  return a.first > b.first;  // Sort by value descending
+              });
+
+    // Extract sorted indices
+    std::vector<size_t> indices_above_threshold;
+    for (const auto& pair : filtered_pairs) {
+        indices_above_threshold.push_back(pair.second);
+    }
+
+    return indices_above_threshold;
+}
+
 } // namespace ai_chat
  
  
