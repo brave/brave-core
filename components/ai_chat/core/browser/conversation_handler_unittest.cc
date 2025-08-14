@@ -3948,4 +3948,41 @@ TEST_F(ConversationHandlerUnitTest, NotifyMemoryEnabledChanged) {
   run_loop.Run();
 }
 
+TEST_F(ConversationHandlerUnitTest,
+       GetTools_MemoryToolFilteredForTemporaryConversations) {
+  // Test that memory tools are not available in temporary conversations
+
+  // Enable memory feature so memory tool would normally be available
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+
+  // Test 1: Memory tool should be available in regular (non-temporary)
+  // conversation
+  conversation_handler_->SetTemporary(false);
+  auto regular_tools = conversation_handler_->GetTools();
+
+  bool memory_tool_found_regular = false;
+  for (auto& tool : regular_tools) {
+    if (tool && tool->Name() == mojom::kMemoryStorageToolName) {
+      memory_tool_found_regular = true;
+      break;
+    }
+  }
+  EXPECT_TRUE(memory_tool_found_regular)
+      << "Memory tool should be available in regular conversations";
+
+  // Test 2: Memory tool should NOT be available in temporary conversation
+  conversation_handler_->SetTemporary(true);
+  auto temp_tools = conversation_handler_->GetTools();
+
+  bool memory_tool_found_temp = false;
+  for (auto& tool : temp_tools) {
+    if (tool && tool->Name() == mojom::kMemoryStorageToolName) {
+      memory_tool_found_temp = true;
+      break;
+    }
+  }
+  EXPECT_FALSE(memory_tool_found_temp)
+      << "Memory tool should NOT be available in temporary conversations";
+}
+
 }  // namespace ai_chat
