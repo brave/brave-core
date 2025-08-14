@@ -478,7 +478,11 @@ extension BrowserViewController: TabPolicyDecider {
 
     if requestURL.scheme?.contains("brave") == true || requestURL.scheme?.contains("chrome") == true
     {
-      return .allow
+      // brave://account should not be treated as a regular WebUI page.
+      // It is part of the Settings UI and is intended to be opened only
+      // from within Settings – much like you cannot open a new tab
+      // and directly navigate to a settings screen (e.g. for Page Zoom).
+      return requestURL.host == "account" ? .cancel : .allow
     }
 
     // Standard schemes are handled in previous if-case.
