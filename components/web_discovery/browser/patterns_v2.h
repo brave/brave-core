@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/values.h"
 #include "brave/components/web_discovery/browser/relevant_site.h"
 #include "brave/components/web_discovery/browser/value_transform.h"
 
@@ -51,8 +50,10 @@ struct PatternsV2InputGroup {
   // Whether to extract from all matching elements (true) or just the first
   // (false)
   bool select_all;
-  // Map of field names to extraction rules
-  base::flat_map<std::string, PatternsV2ExtractionRule> extraction_rules;
+  // Map of field names to extraction rules (supports multiple rules via
+  // firstMatch)
+  base::flat_map<std::string, std::vector<PatternsV2ExtractionRule>>
+      extraction_rules;
 };
 
 // Represents an output field definition
