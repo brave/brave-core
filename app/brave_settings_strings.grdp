@@ -594,10 +594,10 @@
     Customize your browser while still supporting Brave
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION1" desc="The first paragraph of descriptive text inside the Brave Origin heading section in settings">
-    Brave Origin helps you tune brave to your liking and removes all in-app promotional offers, branded advertisements and even our anonymous analytics that you may have enabled during installation.
+    Brave Origin helps you tune Brave to your liking and removes all in-app promotional offers, branded advertisements and even our anonymous analytics that you may have enabled during installation.
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION2" desc="The second paragraph of descriptive text inside the Brave Origin heading section in settings">
-    Any add-ons or features that you have previously enabled or used will remain visible and integrated, while the rest will get disabled. Continue to tune brave as we deliver new features into the browser. They will appear silently and hidden by default in the Brave Origin control panel.
+    Any add-ons or features that you have previously enabled or used will remain visible and integrated, while the rest will get disabled. Continue to tune Brave as we deliver new features into the browser. They will appear silently and hidden by default in the Brave Origin control panel.
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION3" desc="The third paragraph of descriptive text inside the Brave Origin heading section in settings">
     Note: Brave Origin will not disable browser features that you currently use. You can always enable or disable features using the Origin panel.

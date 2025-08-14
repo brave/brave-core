@@ -86,6 +86,10 @@ export class SettingsBraveOriginPageElement
         type: String,
         value: '',
       },
+      crashReportingManaged_: {
+        type: Boolean,
+        value: false,
+      },
       leoAiEnabledSubLabel_: {
         type: String,
         value: '',
@@ -102,6 +106,10 @@ export class SettingsBraveOriginPageElement
         type: String,
         value: '',
       },
+      p3aManaged_: {
+        type: Boolean,
+        value: false,
+      },
       // <if expr="enable_speedreader">
       speedreaderEnabledSubLabel_: {
         type: String,
@@ -116,6 +124,10 @@ export class SettingsBraveOriginPageElement
         type: String,
         value: '',
       },
+      statsReportingManaged_: {
+        type: Boolean,
+        value: false,
+      },
       talkEnabledSubLabel_: {
         type: String,
         value: '',
@@ -128,6 +140,10 @@ export class SettingsBraveOriginPageElement
       torEnabledSubLabel_: {
         type: String,
         value: '',
+      },
+      torManaged_: {
+        type: Boolean,
+        value: false,
       },
       // </if>
       // <if expr="enable_brave_vpn">

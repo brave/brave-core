@@ -130,6 +130,7 @@ source_set("extensions") {
     "//brave/components/debounce/core/common",
     "//brave/components/decentralized_dns/core",
     "//brave/components/ntp_background_images/common",
+    "//brave/components/p3a",
     "//brave/components/request_otr/common",
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
