@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/containers/fixed_flat_map.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
@@ -31,6 +30,7 @@ constexpr char kSourceKey[] = "source";
 constexpr char kRequiredKeysKey[] = "requiredKeys";
 constexpr char kOptionalKey[] = "optional";
 constexpr char kFieldsKey[] = "fields";
+constexpr char kFirstMatchKey[] = "firstMatch";
 
 // Parses an extraction rule object
 std::optional<PatternsV2ExtractionRule> ParseExtractionRule(
@@ -67,6 +67,41 @@ std::optional<PatternsV2ExtractionRule> ParseExtractionRule(
   }
 
   return rule;
+}
+
+// Parses extraction rules for a single field, handling both single rules and
+// firstMatch arrays
+std::optional<std::vector<PatternsV2ExtractionRule>> ParseExtractionRules(
+    const base::Value::Dict& field_dict) {
+  std::vector<const base::Value::Dict*> rule_dicts;
+
+  if (const auto* first_match_list = field_dict.FindList(kFirstMatchKey)) {
+    rule_dicts.reserve(first_match_list->size());
+    for (const auto& rule_value : *first_match_list) {
+      const auto* rule_dict = rule_value.GetIfDict();
+      if (!rule_dict) {
+        return std::nullopt;
+      }
+      rule_dicts.push_back(rule_dict);
+    }
+  } else {
+    // Single rule - use the field_dict itself
+    rule_dicts.push_back(&field_dict);
+  }
+
+  // Parse all collected rule dictionaries
+  std::vector<PatternsV2ExtractionRule> field_rules;
+  field_rules.reserve(rule_dicts.size());
+
+  for (const auto* rule_dict : rule_dicts) {
+    auto extraction_rule = ParseExtractionRule(*rule_dict);
+    if (!extraction_rule) {
+      return std::nullopt;
+    }
+    field_rules.emplace_back(std::move(*extraction_rule));
+  }
+
+  return field_rules;
 }
 
 // Parses an input group (input section)
@@ -107,12 +142,15 @@ std::optional<PatternsV2InputGroup> ParseInputGroup(
       VLOG(1) << "Field value is not a dictionary";
       return std::nullopt;
     }
-    auto extraction_rule = ParseExtractionRule(*field_dict);
-    if (!extraction_rule) {
+
+    VLOG(2) << "Parsing extraction rules for field: " << field_name;
+    auto extraction_rules = ParseExtractionRules(*field_dict);
+    if (!extraction_rules) {
       return std::nullopt;
     }
+
     input_group.extraction_rules.emplace(field_name,
-                                         std::move(*extraction_rule));
+                                         std::move(*extraction_rules));
   }
 
   return input_group;
@@ -208,6 +246,7 @@ std::optional<PatternsV2SitePattern> ParseSitePattern(
       VLOG(1) << "Input value is not a dictionary";
       return std::nullopt;
     }
+    VLOG(2) << "Parsing input group for selector: " << selector;
     auto input_group = ParseInputGroup(*selector_value);
     if (!input_group) {
       return std::nullopt;

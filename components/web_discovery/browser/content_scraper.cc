@@ -113,10 +113,12 @@ class ContentScraperImpl : public ContentScraper {
           continue;
         }
         SelectAttributeRequest attribute_request{
-            .sub_selector = rule->sub_selector.value_or(""),
             .key = report_key,
-            .attribute = rule->attribute,
-        };
+            .options = {SelectAttributeOption{
+                .sub_selector = rule->sub_selector.value_or(""),
+                .attribute = rule->attribute,
+            }}};
+
         select_request.attribute_requests.push_back(
             std::move(attribute_request));
       }
@@ -166,12 +168,20 @@ class ContentScraperImpl : public ContentScraper {
       select_request.select_all = input_group.select_all;
 
       // Convert extraction rules to attribute requests
-      for (const auto& [key, extraction_rule] : input_group.extraction_rules) {
+      for (const auto& [key, extraction_rules] : input_group.extraction_rules) {
         SelectAttributeRequest attribute_request{
-            .sub_selector = extraction_rule.sub_selector.value_or(""),
             .key = key,
-            .attribute = extraction_rule.attribute,
         };
+
+        // Convert each extraction rule to a SelectAttributeOption
+        for (const auto& extraction_rule : extraction_rules) {
+          SelectAttributeOption option{
+              .sub_selector = extraction_rule.sub_selector.value_or(""),
+              .attribute = extraction_rule.attribute,
+          };
+          attribute_request.options.push_back(std::move(option));
+        }
+
         select_request.attribute_requests.push_back(
             std::move(attribute_request));
       }
@@ -299,21 +309,33 @@ class ContentScraperImpl : public ContentScraper {
       base::Value::Dict attribute_values;
       for (const auto& pair : attribute_result.attribute_pairs) {
         std::string key(pair.key);
-        std::string value(pair.value);
+        base::Value value;
 
         // Apply transforms if defined in the extraction rules
-        const auto* extraction_rule =
+        const auto* extraction_rules =
             base::FindOrNull(input_group->extraction_rules, key);
-        if (extraction_rule && !extraction_rule->transforms.empty()) {
-          auto transformed_value =
-              ApplyTransforms(extraction_rule->transforms, value);
-          if (!transformed_value) {
+        if (!extraction_rules) {
+          continue;
+        }
+        if (!pair.value.empty()) {
+          // Use the option_index to get the specific rule that was used
+          size_t rule_index = static_cast<size_t>(pair.option_index);
+          if (rule_index >= extraction_rules->size()) {
             continue;
           }
-          value = *transformed_value;
+          const auto& extraction_rule = (*extraction_rules)[rule_index];
+          if (!extraction_rule.transforms.empty()) {
+            auto transformed_value = ApplyTransforms(extraction_rule.transforms,
+                                                     std::string(pair.value));
+            if (transformed_value) {
+              value = base::Value(*transformed_value);
+            }
+          } else {
+            value = base::Value(std::string(pair.value));
+          }
         }
 
-        attribute_values.Set(key, value);
+        attribute_values.Set(key, std::move(value));
       }
 
       if (!attribute_values.empty()) {
