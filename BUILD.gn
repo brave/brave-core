@@ -94,9 +94,7 @@ group("brave_all_unit_tests") {
              "json")
 
   # Add additional tests you want to run exclusively on CI here
-  write_file("$root_out_dir/brave_all_unit_tests_ci.json",
-             [],
-             "json")
+  write_file("$root_out_dir/brave_all_unit_tests_ci.json", [], "json")
 }
 
 # This target serves as a canonical place to define all code that has to be
