@@ -28,7 +28,7 @@ class BraveShieldsSettingsService : public KeyedService {
   ~BraveShieldsSettingsService() override;
 
   void SetBraveShieldsEnabled(bool enable, const GURL& url);
-  bool GetBraveShieldsEnabled(const GURL& url);
+  bool IsBraveShieldsEnabled(const GURL& url);
 
   void SetDefaultAdBlockMode(mojom::AdBlockMode mode);
   mojom::AdBlockMode GetDefaultAdBlockMode();

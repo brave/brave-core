@@ -29,7 +29,7 @@
 
 - (bool)braveShieldsEnabledFor:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  return _braveShieldsSettings->GetBraveShieldsEnabled(gurl);
+  return _braveShieldsSettings->IsBraveShieldsEnabled(gurl);
 }
 
 - (void)setBraveShieldsEnabled:(bool)isEnabled forURL:(NSURL*)url {

@@ -266,7 +266,7 @@ BraveShieldsTabHelper::GetInvokedWebcompatFeatures() {
 }
 
 bool BraveShieldsTabHelper::GetBraveShieldsEnabled() {
-  return brave_shields_settings_->GetBraveShieldsEnabled(GetCurrentSiteURL());
+  return brave_shields_settings_->IsBraveShieldsEnabled(GetCurrentSiteURL());
 }
 
 bool BraveShieldsTabHelper::GetAllowElementBlockerInPrivateModeEnabled() {
