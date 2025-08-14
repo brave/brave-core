@@ -35,6 +35,16 @@ if (!is_android) {
       "//chrome/browser/ui/tabs:impl",
     ]
   }
+
+  # This source set is counterpart to the upstream `tab_strip` source set.
+  source_set("tab_strip") {
+    sources = [
+      "brave_tab_strip_model.cc",
+      "brave_tab_strip_model.h",
+    ]
+
+    deps = [ "//chrome/browser/ui/tabs:tab_strip" ]
+  }
 }
 
 source_set("split_view") {
