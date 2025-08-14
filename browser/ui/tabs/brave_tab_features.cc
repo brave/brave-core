@@ -13,6 +13,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
+#include "brave/browser/psst/psst_dialog_delegate_impl.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
@@ -70,8 +71,9 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #if BUILDFLAG(ENABLE_PSST)
   psst_web_contents_observer_ =
       psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
-          tab.GetContents(), profile, profile->GetPrefs(),
-          ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+          tab.GetContents(), profile,
+          std::make_unique<psst::PsstDialogDelegateImpl>(tab.GetContents()),
+          profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #endif
 }
 
