@@ -121,7 +121,10 @@ initializeDetector(() => {
     }
 
     if (currentPathType === 'channel' || currentPathType === 'channel-name') {
-      let header = document.querySelector<HTMLElement>('#page-header')
+      let header = document.querySelector<HTMLElement>([
+        '#page-header',
+        'ytm-browse yt-page-header-view-model'
+      ].join(','))
       if (header) {
         let matches = header.innerText.match(/@[\w]+/)
         if (matches && matches.length > 0) {

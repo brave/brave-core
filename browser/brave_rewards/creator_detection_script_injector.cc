@@ -35,6 +35,7 @@ constexpr auto kScriptMap = base::MakeFixedFlatMap<std::string_view, int>(
      {"www.reddit.com", IDR_CREATOR_DETECTION_REDDIT_BUNDLE_JS},
      {"twitch.tv", IDR_CREATOR_DETECTION_TWITCH_BUNDLE_JS},
      {"www.twitch.tv", IDR_CREATOR_DETECTION_TWITCH_BUNDLE_JS},
+     {"m.twitch.tv", IDR_CREATOR_DETECTION_TWITCH_BUNDLE_JS},
      {"twitter.com", IDR_CREATOR_DETECTION_TWITTER_BUNDLE_JS},
      {"x.com", IDR_CREATOR_DETECTION_TWITTER_BUNDLE_JS},
      {"vimeo.com", IDR_CREATOR_DETECTION_VIMEO_BUNDLE_JS},
