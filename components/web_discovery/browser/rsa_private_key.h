@@ -24,7 +24,7 @@ namespace crypto {
 // Encapsulates an RSA private key. Can be used to generate new keys, export
 // keys to other formats, or to extract a public key.
 // TODO(https://crbug.com/425863216): Delete this.
-class CRYPTO_EXPORT RSAPrivateKey {
+class /*CRYPTO_EXPORT*/ RSAPrivateKey {
  public:
   RSAPrivateKey(const RSAPrivateKey&) = delete;
   RSAPrivateKey& operator=(const RSAPrivateKey&) = delete;
