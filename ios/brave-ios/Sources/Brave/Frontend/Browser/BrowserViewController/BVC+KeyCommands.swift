@@ -418,6 +418,17 @@ extension BrowserViewController {
       ),
     ]
 
+    // Find in Page Key Commands, find next & previous key commands are automatically handled by the
+    // underlying UIFindInteraction once find in page is active.
+    let findTextCommands = [
+      UIKeyCommand(
+        title: Strings.Hotkey.findInPageTitle,
+        action: #selector(findInPageKeyCommand),
+        input: "f",
+        modifierFlags: .command
+      )
+    ]
+
     // Share With Key Command
     let shareCommands = [
       UIKeyCommand(
@@ -439,8 +450,8 @@ extension BrowserViewController {
     ]
 
     var keyCommandList =
-      navigationCommands + tabNavigationCommands + bookmarkEditingCommands + shareCommands
-      + additionalPriorityCommandKeys
+      navigationCommands + tabNavigationCommands + bookmarkEditingCommands + findTextCommands
+      + shareCommands + additionalPriorityCommandKeys
 
     // URL completion and Override Key commands
     let searchLocationCommands = [
