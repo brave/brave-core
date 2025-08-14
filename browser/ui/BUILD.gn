@@ -440,7 +440,6 @@ source_set("ui") {
       "commander/commander_service.h",
       "commander/commander_service_factory.cc",
       "commander/commander_service_factory.h",
-      "commander/commander_service_factory.h",
       "commander/entity_match.cc",
       "commander/entity_match.h",
       "commander/open_url_command_source.cc",
