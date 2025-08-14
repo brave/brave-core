@@ -213,8 +213,8 @@
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
 using brave_shields::ControlType;
-using brave_shields::GetBraveShieldsEnabled;
 using brave_shields::GetFingerprintingControlType;
+using brave_shields::IsBraveShieldsEnabled;
 using content::BrowserThread;
 using content::ContentBrowserClient;
 using content::RenderFrameHost;
@@ -1323,7 +1323,7 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   Profile* profile = Profile::FromBrowserContext(browser_context);
   const bool allow_referrers = brave_shields::AreReferrersAllowed(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);
-  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
+  const bool shields_up = brave_shields::IsBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);
 
   content::Referrer new_referrer;
@@ -1515,7 +1515,7 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
   const GURL url =
       main_frame_site.GetSecurityPrincipal().GetDeprecatedSiteURL();
   const bool shields_up =
-      brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
+      brave_shields::IsBraveShieldsEnabled(host_content_settings_map, url);
   auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
       host_content_settings_map, url);
   // https://github.com/brave/brave-browser/issues/15265

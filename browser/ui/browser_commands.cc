@@ -514,7 +514,7 @@ void ToggleShieldsEnabled(Browser* browser) {
     return;
   }
 
-  shields->SetBraveShieldsEnabled(!shields->GetBraveShieldsEnabled());
+  shields->SetBraveShieldsEnabled(!shields->IsBraveShieldsEnabled());
 }
 
 void ToggleJavascriptEnabled(Browser* browser) {

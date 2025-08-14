@@ -181,7 +181,7 @@ BraveShieldsActionController::GetImageSource(
       badge_text = count > 99 ? "99+" : base::NumberToString(count);
     }
 
-    is_enabled = shields_data_controller->GetBraveShieldsEnabled() &&
+    is_enabled = shields_data_controller->IsBraveShieldsEnabled() &&
                  !IsPageInReaderMode(web_contents);
 
     if (!badge_text.empty()) {

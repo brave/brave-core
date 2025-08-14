@@ -235,7 +235,7 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
   }
 }
 
-bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
+bool IsBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
   if (base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
       url.SchemeIs(kChromeExtensionScheme)) {
@@ -373,7 +373,7 @@ bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
 
   // Don't reduce language if Brave Shields is down (this also handles cases
   // where the URL is not HTTP(S))
-  if (!brave_shields::GetBraveShieldsEnabled(map, url)) {
+  if (!brave_shields::IsBraveShieldsEnabled(map, url)) {
     return false;
   }
 
@@ -402,7 +402,7 @@ DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
 
   // Don't block if Brave Shields is down (this also handles cases where
   // the URL is not HTTP(S))
-  if (!brave_shields::GetBraveShieldsEnabled(map, url)) {
+  if (!brave_shields::IsBraveShieldsEnabled(map, url)) {
     return DomainBlockingType::kNone;
   }
 
@@ -707,7 +707,7 @@ bool ShouldUpgradeToHttps(
     return false;
   }
   // Don't upgrade if shields are down.
-  if (!GetBraveShieldsEnabled(map, url)) {
+  if (!IsBraveShieldsEnabled(map, url)) {
     return false;
   }
   const ControlType control_type = GetHttpsUpgradeControlType(map, url);
@@ -724,7 +724,7 @@ bool ShouldUpgradeToHttps(
 }
 
 bool ShouldForceHttps(HostContentSettingsMap* map, const GURL& url) {
-  return GetBraveShieldsEnabled(map, url) &&
+  return IsBraveShieldsEnabled(map, url) &&
          GetHttpsUpgradeControlType(map, url) == ControlType::BLOCK;
 }
 
@@ -801,7 +801,7 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
     return brave_shields::mojom::FarblingLevel::OFF;
   }
 
-  const bool shields_up = GetBraveShieldsEnabled(map, primary_url);
+  const bool shields_up = IsBraveShieldsEnabled(map, primary_url);
   if (!shields_up) {
     return brave_shields::mojom::FarblingLevel::OFF;
   }

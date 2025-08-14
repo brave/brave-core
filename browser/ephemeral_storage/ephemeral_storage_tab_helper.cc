@@ -233,7 +233,7 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
     return;
   }
   const bool shields_enabled =
-      brave_shields::GetBraveShieldsEnabled(host_content_settings_map_, url);
+      brave_shields::IsBraveShieldsEnabled(host_content_settings_map_, url);
   const bool cookies_restricted =
       brave_shields::GetCookieControlType(host_content_settings_map_,
                                           cookie_settings_.get(), url) !=

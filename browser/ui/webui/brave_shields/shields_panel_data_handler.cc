@@ -301,7 +301,7 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
   site_block_info_.http_redirects_list =
       active_shields_data_controller_->GetHttpRedirectsList();
   site_block_info_.is_brave_shields_enabled =
-      active_shields_data_controller_->GetBraveShieldsEnabled();
+      active_shields_data_controller_->IsBraveShieldsEnabled();
   site_block_info_.is_brave_shields_ad_block_only_mode_enabled =
       active_shields_data_controller_->IsBraveShieldsAdBlockOnlyModeEnabled();
   site_block_info_.show_shields_disabled_ad_block_only_mode_prompt =

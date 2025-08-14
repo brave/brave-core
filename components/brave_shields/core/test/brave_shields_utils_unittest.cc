@@ -218,16 +218,16 @@ TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
   brave_shields::SetBraveShieldsEnabled(map, true, host2);
 
   // setting should not be changed.
-  EXPECT_FALSE(brave_shields::GetBraveShieldsEnabled(map, host2));
+  EXPECT_FALSE(brave_shields::IsBraveShieldsEnabled(map, host2));
 
   // setting should apply enabled to origin.
-  EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(map, host1));
+  EXPECT_TRUE(brave_shields::IsBraveShieldsEnabled(map, host1));
   brave_shields::SetBraveShieldsEnabled(map, false, host1);
   // setting should not be changed.
-  EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(map, host1));
+  EXPECT_TRUE(brave_shields::IsBraveShieldsEnabled(map, host1));
 
   // setting should not apply to default
-  EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(map, GURL()));
+  EXPECT_TRUE(brave_shields::IsBraveShieldsEnabled(map, GURL()));
 }
 
 TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
@@ -274,32 +274,31 @@ TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
 TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_IsNotHttpHttps) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   auto setting =
-      brave_shields::GetBraveShieldsEnabled(map, GURL("chrome://preferences"));
+      brave_shields::IsBraveShieldsEnabled(map, GURL("chrome://preferences"));
   EXPECT_EQ(false, setting);
   brave_shields::SetBraveShieldsEnabled(map, ControlType::ALLOW,
                                         GURL("chrome://preferences"));
   setting =
-      brave_shields::GetBraveShieldsEnabled(map, GURL("chrome://preferences"));
+      brave_shields::IsBraveShieldsEnabled(map, GURL("chrome://preferences"));
   EXPECT_EQ(false, setting);
 
-  setting = brave_shields::GetBraveShieldsEnabled(map, GURL("about:blank"));
+  setting = brave_shields::IsBraveShieldsEnabled(map, GURL("about:blank"));
   EXPECT_EQ(false, setting);
   brave_shields::SetBraveShieldsEnabled(map, ControlType::ALLOW,
                                         GURL("about:blank"));
-  setting = brave_shields::GetBraveShieldsEnabled(map, GURL("about:blank"));
+  setting = brave_shields::IsBraveShieldsEnabled(map, GURL("about:blank"));
   EXPECT_EQ(false, setting);
 }
 
-TEST_F(BraveShieldsUtilTest, GetBraveShieldsEnabled_ForOrigin) {
+TEST_F(BraveShieldsUtilTest, IsBraveShieldsEnabled_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetBraveShieldsEnabled(map, GURL());
+  auto setting = brave_shields::IsBraveShieldsEnabled(map, GURL());
+  EXPECT_EQ(true, setting);
+  setting = brave_shields::IsBraveShieldsEnabled(map, GURL("http://brave.com"));
   EXPECT_EQ(true, setting);
   setting =
-      brave_shields::GetBraveShieldsEnabled(map, GURL("http://brave.com"));
-  EXPECT_EQ(true, setting);
-  setting =
-      brave_shields::GetBraveShieldsEnabled(map, GURL("https://brave.com"));
+      brave_shields::IsBraveShieldsEnabled(map, GURL("https://brave.com"));
   EXPECT_EQ(true, setting);
 
   /* BLOCK */
@@ -308,24 +307,24 @@ TEST_F(BraveShieldsUtilTest, GetBraveShieldsEnabled_ForOrigin) {
       ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
       CONTENT_SETTING_BLOCK);
   setting =
-      brave_shields::GetBraveShieldsEnabled(map, GURL("http://brave.com/*"));
+      brave_shields::IsBraveShieldsEnabled(map, GURL("http://brave.com/*"));
   EXPECT_EQ(false, setting);
   // https in unchanged
   setting =
-      brave_shields::GetBraveShieldsEnabled(map, GURL("https://brave.com"));
+      brave_shields::IsBraveShieldsEnabled(map, GURL("https://brave.com"));
   EXPECT_EQ(true, setting);
   // default is unchanged
-  setting = brave_shields::GetBraveShieldsEnabled(map, GURL());
+  setting = brave_shields::IsBraveShieldsEnabled(map, GURL());
   EXPECT_EQ(true, setting);
 }
 
-TEST_F(BraveShieldsUtilTest, GetBraveShieldsEnabled_IsNotHttpHttps) {
+TEST_F(BraveShieldsUtilTest, IsBraveShieldsEnabled_IsNotHttpHttps) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   auto setting =
-      brave_shields::GetBraveShieldsEnabled(map, GURL("chrome://preferences"));
+      brave_shields::IsBraveShieldsEnabled(map, GURL("chrome://preferences"));
   EXPECT_EQ(false, setting);
 
-  setting = brave_shields::GetBraveShieldsEnabled(map, GURL("about:blank"));
+  setting = brave_shields::IsBraveShieldsEnabled(map, GURL("about:blank"));
   EXPECT_EQ(false, setting);
 }
 
