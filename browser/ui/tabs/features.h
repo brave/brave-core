@@ -29,6 +29,8 @@ BASE_DECLARE_FEATURE(kBraveSplitView);
 
 BASE_DECLARE_FEATURE(kBraveTreeTab);
 
+BASE_DECLARE_FEATURE(kBraveRenamingTabs);
+
 bool HorizontalTabsUpdateEnabled();
 bool IsBraveSplitViewEnabled();
 

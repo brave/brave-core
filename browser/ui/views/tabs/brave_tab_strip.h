@@ -26,6 +26,8 @@ class BraveTabStrip : public TabStrip {
   bool IsVerticalTabsFloating() const;
   TabTiledState GetTiledStateForTab(int index) const;
 
+  void EnterTabRenameModeAt(int index);
+
   // TabStrip:
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
@@ -39,6 +41,9 @@ class BraveTabStrip : public TabStrip {
       BrowserFrameActiveState active_state) const override;
   bool IsTabTiled(const Tab* tab) const override;
   bool IsFirstTabInTile(const Tab* tab) const override;
+  void SetCustomTitleForTab(
+      Tab* tab,
+      const std::optional<std::u16string>& title) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
