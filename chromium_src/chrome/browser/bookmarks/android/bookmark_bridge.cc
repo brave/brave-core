@@ -135,21 +135,21 @@ void BookmarkBridge::ImportBookmarks(
   background_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE});
 
+  auto bookmarks_parser_callback = base::BindOnce(
+      &BookmarkBridge::OnParseFinished, weak_ptr_factory_.GetWeakPtr());
+  auto bookmarks_parser_callback_on_thread = base::BindPostTask(
+      origin_sequence_task_runner_, std::move(bookmarks_parser_callback));
+
   bookmark_parser_ =
       base::SequenceBound<std::unique_ptr<ContentBookmarkParser>>(
           background_task_runner_, std::make_unique<ContentBookmarkParser>());
 
+  base::FilePath import_file_path =
+      base::FilePath::FromUTF16Unsafe(import_path);
+
   bookmark_parser_.AsyncCall(&ContentBookmarkParser::Parse)
-      .WithArgs(base::FilePath::FromUTF16Unsafe(import_path))
-      .Then(base::BindOnce(
-          [](base::WeakPtr<BookmarkBridge> bridge,
-             BookmarkParser::BookmarkParsingResult result) {
-            if (!bridge) {
-              return;
-            }
-            bridge->OnParseFinished(std::move(result));
-          },
-          weak_ptr_factory_.GetWeakPtr()));
+      .WithArgs(std::move(import_file_path),
+                std::move(bookmarks_parser_callback_on_thread));
 }
 
 void BookmarkBridge::OnParseFinished(
