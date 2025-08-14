@@ -85,6 +85,11 @@ void PsstUiDelegateImpl::OnInfobarAccepted(InfobarCallback callback,
     return;
   }
 
+  if(!is_accepted) {
+    prefs_->SetBoolean(prefs::kPsstEnabled, false);
+    return;
+  }
+
   std::move(callback).Run(is_accepted);
 }
 
