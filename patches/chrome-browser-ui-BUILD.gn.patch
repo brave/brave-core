@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 19a44ac19d43689bfc59fbc98a6dd28afd273fed..dcb79868b7c4b3da16df0023e9f592cfaec75cc1 100644
+index f8487f97694896402edeef63c923c88b9764d072..56219742fae2cf18f03f0eb96ea14186a65c0e36 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -747,6 +747,7 @@ static_library("ui") {
-     # from //chrome/browser/ui/webui, which are not modularized yet.
-     "//chrome/browser/ui/webui/about:impl",
+@@ -758,6 +758,7 @@ static_library("ui") {
+     # gets componentized.
+     "//chrome/browser/ui/extensions:impl",
    ]
 +  import("//brave/browser/sources.gni") public_deps += [ "//brave/browser/ui" ] deps += brave_chrome_browser_ui_allow_circular_includes_from allow_circular_includes_from += brave_chrome_browser_ui_allow_circular_includes_from
-
+ 
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3369,7 +3370,10 @@ static_library("ui") {
+@@ -3250,7 +3251,10 @@ static_library("ui") {
          "//chrome/updater/app/server/win:updater_legacy_idl",
        ]
      } else {
@@ -21,8 +21,8 @@ index 19a44ac19d43689bfc59fbc98a6dd28afd273fed..dcb79868b7c4b3da16df0023e9f592cf
 +      }
      }
    }
-
-@@ -5535,6 +5539,7 @@ static_library("ui_public_dependencies") {
+ 
+@@ -5385,6 +5389,7 @@ static_library("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
@@ -30,11 +30,11 @@ index 19a44ac19d43689bfc59fbc98a6dd28afd273fed..dcb79868b7c4b3da16df0023e9f592cf
    if (!is_android) {
      public_deps += [
        "//build:branding_buildflags",
-@@ -5512,6 +5517,7 @@ source_set("layout_constants") {
-
+@@ -5434,6 +5439,7 @@ source_set("layout_constants") {
+ 
    if (!is_android) {
      deps += [ "//chrome/browser/ui/tabs:features" ]
 +    import("//brave/browser/sources.gni") public_deps += brave_chrome_browser_ui_layout_constants_public_deps allow_circular_includes_from = brave_chrome_browser_ui_layout_constants_allow_circular_includes_from
    }
-
+ 
    if (is_chromeos) {
