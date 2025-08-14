@@ -76,10 +76,10 @@ static_library("browser") {
     ]
   }
 
-  public_deps = [ 
+  public_deps = [
     ":text_embedder",
     "//base",
-    ]
+  ]
 
   deps = [
     ":generated_brave_search_responses",
@@ -164,8 +164,8 @@ source_set("unit_tests") {
     "model_service_unittest.cc",
     "model_validator_unittest.cc",
     "tab_tracker_service_unittest.cc",
-    "tools/tool_input_properties_unittest.cc",
     "text_embedder_unittest.cc",
+    "tools/tool_input_properties_unittest.cc",
     "utils_unittest.cc",
   ]
 
