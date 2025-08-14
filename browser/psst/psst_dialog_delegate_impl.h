@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_PSST_PSST_DIALOG_DELEGATE_IMPL_H_
 
 #include "base/memory/raw_ptr.h"
+#include "brave/browser/psst/brave_psst_permission_context.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 
 namespace content {
@@ -21,10 +22,16 @@ class PsstDialogDelegateImpl
   explicit PsstDialogDelegateImpl(content::WebContents* contents);
   ~PsstDialogDelegateImpl() override;
 
-  void Show() override;
+  void Show(
+      PsstTabWebContentsObserver::ShowDialogData show_dialog_data) override;
+
+  std::optional<PsstPermissionInfo> GetPsstPermissionInfo(
+      const url::Origin& origin,
+      const std::string& user_id) override;
 
  private:
   raw_ptr<content::WebContents> web_contents_;
+  std::unique_ptr<BravePsstPermissionContext> psst_permission_context_;
 };
 
 }  // namespace psst

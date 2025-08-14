@@ -18,6 +18,8 @@ extern const base::FilePath::CharType kSessionProfileDir[];
 extern const base::FilePath::CharType kAIChatAgentProfileDir[];
 #endif
 
+inline constexpr char kBravePsstPermissionName[] = "bravePsst";
+
 }  // namespace brave
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_BRAVE_CONSTANTS_H_

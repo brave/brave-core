@@ -9,8 +9,6 @@ static_library("common") {
     "features.h",
     "pref_names.cc",
     "pref_names.h",
-    "prefs.cc",
-    "prefs.h",
     "psst_common.h",
   ]
 
@@ -18,19 +16,5 @@ static_library("common") {
     "//base",
     "//components/pref_registry",
     "//components/prefs",
-  ]
-}
-
-source_set("unit_tests") {
-  testonly = true
-
-  sources = [ "prefs_unittest.cc" ]
-
-  deps = [
-    ":common",
-    "//base/test:test_support",
-    "//components/prefs:test_support",
-    "//testing/gmock",
-    "//testing/gtest",
   ]
 }

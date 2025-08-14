@@ -14,7 +14,6 @@
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
-#include "brave/components/psst/common/prefs.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
@@ -88,6 +87,21 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
 
 PsstTabWebContentsObserver::PsstDialogDelegate::PsstDialogDelegate() = default;
 PsstTabWebContentsObserver::PsstDialogDelegate::~PsstDialogDelegate() = default;
+
+PsstTabWebContentsObserver::ShowDialogData::ShowDialogData(
+    const std::string& user_id,
+    const int script_version,
+    ConsentCallback apply_changes_callback)
+    : user_id(user_id),
+      script_version(script_version),
+      apply_changes_callback(std::move(apply_changes_callback)) {}
+PsstTabWebContentsObserver::ShowDialogData::~ShowDialogData() = default;
+
+PsstTabWebContentsObserver::ShowDialogData::ShowDialogData(
+    ShowDialogData&&) noexcept = default;
+PsstTabWebContentsObserver::ShowDialogData&
+PsstTabWebContentsObserver::ShowDialogData::operator=(
+    ShowDialogData&&) noexcept = default;
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
@@ -171,30 +185,39 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
-  auto urls_to_skip = prefs::GetUrlsToSkip(rule->name(), *user_id, *prefs_);
-
-  if (ShouldContinueSilently(*rule, *user_id)) {
-    OnUserDialogAction(nav_entry_id, false, *user_id, std::move(rule),
-                       std::move(user_script_result), ConsentStatus::kAllow,
-                       std::move(urls_to_skip));
+  const auto permission_info = delegate_->GetPsstPermissionInfo(
+      url::Origin::Create(web_contents()->GetLastCommittedURL()), *user_id);
+  if (permission_info &&
+      permission_info->consent_status == ConsentStatus::kBlock) {
     return;
   }
 
-  delegate_->Show();
+  if (ShouldContinueSilently(*rule, permission_info)) {
+    OnUserDialogAction(nav_entry_id, false, *user_id, std::move(rule),
+                       std::move(user_script_result),
+                       permission_info->consent_status,
+                       permission_info->urls_to_skip.Clone());
+    return;
+  }
+
+  delegate_->Show(
+      {*user_id, rule->version(),
+       base::BindOnce(&PsstTabWebContentsObserver::OnUserDialogAction,
+                      weak_factory_.GetWeakPtr(), nav_entry_id, true, *user_id,
+                      std::move(rule), std::move(user_script_result))});
 }
 
 bool PsstTabWebContentsObserver::ShouldContinueSilently(
     const MatchedRule& rule,
-    const std::string& user_id) {
-  const auto consent_status =
-      prefs::GetConsentStatus(rule.name(), user_id, *prefs_);
-  const auto script_version =
-      prefs::GetScriptVersion(rule.name(), user_id, *prefs_);
+    const std::optional<PsstPermissionInfo>& permission_info) {
+  if (!permission_info.has_value()) {
+    return false;
+  }
 
-  bool show_prompt = !consent_status || consent_status == ConsentStatus::kAsk;
+  bool show_prompt = permission_info->consent_status == ConsentStatus::kAsk;
   bool prompt_for_new_version =
-      consent_status && consent_status == ConsentStatus::kAllow &&
-      script_version && rule.version() > script_version;
+      permission_info->consent_status == ConsentStatus::kAllow &&
+      rule.version() > permission_info->script_version;
 
   return !show_prompt && !prompt_for_new_version;
 }
@@ -210,10 +233,6 @@ void PsstTabWebContentsObserver::OnUserDialogAction(
   if (!rule || !ShouldInsertScriptForPage(nav_entry_id)) {
     return;
   }
-
-  prefs::SetPsstSettings(rule->name(), user_id, status, rule->version(),
-                         disabled_checks->Clone(), *prefs_);
-
   if (status == ConsentStatus::kAllow) {
     PrepareParametersForPolicyExecution(script_params, disabled_checks,
                                         is_initial);

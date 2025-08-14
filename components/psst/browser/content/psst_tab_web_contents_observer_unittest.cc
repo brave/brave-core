@@ -19,7 +19,7 @@
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
-#include "brave/components/psst/common/prefs.h"
+#include "brave/components/psst/common/psst_common.h"
 #include "build/build_config.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/navigation_controller.h"
@@ -157,9 +157,16 @@ class MockPsstDialogDelegate
   MockPsstDialogDelegate() = default;
   ~MockPsstDialogDelegate() override = default;
 
-  MOCK_METHOD(void, Show, (), (override));
+  MOCK_METHOD(void,
+              Show,
+              (PsstTabWebContentsObserver::ShowDialogData show_dialog_data),
+              (override));
   MOCK_METHOD(void, SetCompleted, (), (override));
   MOCK_METHOD(void, SetProgress, (const double value), (override));
+  MOCK_METHOD(std::optional<PsstPermissionInfo>,
+              GetPsstPermissionInfo,
+              (const url::Origin& origin, const std::string& user_id),
+              (override));
 };
 
 class PsstTabWebContentsObserverUnitTestBase
@@ -221,12 +228,10 @@ class PsstTabWebContentsObserverUnitTest
 };
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
-  EXPECT_NE(
-      PsstTabWebContentsObserver::MaybeCreateForWebContents(
-          web_contents(), browser_context(),
-          std::make_unique<PsstTabWebContentsObserver::PsstDialogDelegate>(),
-          prefs(), 2),
-      nullptr);
+  EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
+                web_contents(), browser_context(),
+                std::make_unique<MockPsstDialogDelegate>(), prefs(), 2),
+            nullptr);
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -237,12 +242,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto web_contents = content::WebContentsTester::CreateTestWebContents(
       &otr_browser_context, site_instance);
 
-  EXPECT_EQ(
-      PsstTabWebContentsObserver::MaybeCreateForWebContents(
-          web_contents.get(), &otr_browser_context,
-          std::make_unique<PsstTabWebContentsObserver::PsstDialogDelegate>(),
-          prefs(), 2),
-      nullptr);
+  EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
+                web_contents.get(), &otr_browser_context,
+                std::make_unique<MockPsstDialogDelegate>(), prefs(), 2),
+            nullptr);
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -528,11 +531,15 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const GURL url("https://example1.com");
   const bool result{true};
 
-  prefs::SetPsstSettings(kName, kUserId, ConsentStatus::kAllow, 1,
-                         base::Value::List(), *prefs());
-
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_dialog_delegate(), Show()).Times(0);
+  EXPECT_CALL(psst_dialog_delegate(), Show(_)).Times(0);
+  EXPECT_CALL(psst_dialog_delegate(),
+              GetPsstPermissionInfo(url::Origin::Create(url), kUserId))
+      .WillOnce([](const url::Origin& origin, const std::string& user_id) {
+        PsstPermissionInfo info{psst::ConsentStatus::kAllow, 1, user_id,
+                                base::Value::List()};
+        return info;
+      });
   EXPECT_CALL(psst_dialog_delegate(), SetCompleted()).Times(1);
   EXPECT_CALL(psst_dialog_delegate(), SetProgress(kProgress)).Times(1);
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
@@ -595,20 +602,45 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShowDialog) {
   const std::string user_script = "user";
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
+  const bool result{true};
 
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_dialog_delegate(), Show()).Times(1);
+  EXPECT_CALL(psst_dialog_delegate(), Show(_))
+      .WillOnce(
+          [](PsstTabWebContentsObserver::ShowDialogData show_dialog_data) {
+            EXPECT_EQ(show_dialog_data.user_id, kUserId);
+            EXPECT_FALSE(show_dialog_data.apply_changes_callback.is_null());
+
+            std::move(show_dialog_data.apply_changes_callback)
+                .Run(ConsentStatus::kAllow,
+                     base::Value::List().Append(
+                         "https://x.com/settings/ads_preferences"));
+          });
+  EXPECT_CALL(psst_dialog_delegate(),
+              GetPsstPermissionInfo(url::Origin::Create(url), kUserId))
+      .WillOnce([](const url::Origin& origin, const std::string& user_id) {
+        PsstPermissionInfo info{psst::ConsentStatus::kAsk, 1, user_id,
+                                base::Value::List()};
+        return info;
+      });
+  EXPECT_CALL(psst_dialog_delegate(), SetProgress(kProgress)).Times(1);
+  EXPECT_CALL(psst_dialog_delegate(), SetCompleted()).Times(1);
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::RunLoop user_script_insert_loop;
+  base::RunLoop policy_script_insert_loop;
 
   base::Value user_script_result_dict =
       CreateUserScriptResult(kUserId, kShareExperienceLink, kName);
+  auto value = CreatePolicyScriptResult(kProgress, result);
 
   EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(user_script_result_dict)));
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
+                                           std::move(value)));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -620,13 +652,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShowDialog) {
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
-       DoNotShowDialogAsScriptDoesntReturnUserId) {
+       DoNotShowDialogAsScriptDoesNotReturnUserId) {
   const std::string user_script = "user";
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
 
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_dialog_delegate(), Show()).Times(0);
+  EXPECT_CALL(psst_dialog_delegate(), Show(_)).Times(0);
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
@@ -649,18 +681,22 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
-       DoNotSetProgressAndCompletedIsPolicyScriptResultIsWrong) {
+       DoNotSetProgressAndCompletedIfPolicyScriptResultIsWrong) {
   const std::string user_script = "user";
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
 
-  prefs::SetPsstSettings(kName, kUserId, ConsentStatus::kAllow, 1,
-                         base::Value::List(), *prefs());
-
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_dialog_delegate(), Show()).Times(0);
+  EXPECT_CALL(psst_dialog_delegate(), Show(_)).Times(0);
   EXPECT_CALL(psst_dialog_delegate(), SetCompleted()).Times(0);
   EXPECT_CALL(psst_dialog_delegate(), SetProgress(_)).Times(0);
+  EXPECT_CALL(psst_dialog_delegate(),
+              GetPsstPermissionInfo(url::Origin::Create(url), kUserId))
+      .WillOnce([](const url::Origin& origin, const std::string& user_id) {
+        PsstPermissionInfo info{psst::ConsentStatus::kAllow, 1, user_id,
+                                base::Value::List()};
+        return info;
+      });
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
@@ -700,12 +736,10 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 };
 
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
-  EXPECT_EQ(
-      PsstTabWebContentsObserver::MaybeCreateForWebContents(
-          web_contents(), browser_context(),
-          std::make_unique<PsstTabWebContentsObserver::PsstDialogDelegate>(),
-          prefs(), 2),
-      nullptr);
+  EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
+                web_contents(), browser_context(),
+                std::make_unique<MockPsstDialogDelegate>(), prefs(), 2),
+            nullptr);
 }
 
 }  // namespace psst

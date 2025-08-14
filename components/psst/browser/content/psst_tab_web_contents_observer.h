@@ -12,7 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
-#include "brave/components/psst/common/prefs.h"
+#include "brave/components/psst/common/psst_common.h"
 #include "content/public/browser/web_contents_observer.h"
 
 class PrefService;
@@ -34,6 +34,25 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                                     InsertScriptInPageCallback cb) = 0;
   };
 
+  using ConsentCallback = base::OnceCallback<void(
+      const ConsentStatus status,
+      std::optional<base::Value::List> disabled_checks)>;
+  struct ShowDialogData {
+    ShowDialogData(const std::string& user_id,
+                   const int script_version,
+                   ConsentCallback apply_changes_callback);
+    ~ShowDialogData();
+
+    ShowDialogData(ShowDialogData&&) noexcept;
+    ShowDialogData& operator=(ShowDialogData&&) noexcept;
+
+    ShowDialogData(const ShowDialogData&) = delete;
+    ShowDialogData& operator=(const ShowDialogData&) = delete;
+
+    std::string user_id;
+    int script_version;
+    ConsentCallback apply_changes_callback;
+  };
   class PsstDialogDelegate {
    public:
     PsstDialogDelegate();
@@ -41,8 +60,11 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
 
     virtual void SetProgress(const double value) {}
     virtual void SetCompleted() {}
-    virtual void Show() {}
+    virtual void Show(ShowDialogData show_dialog_data) {}
     virtual void Close() {}
+    virtual std::optional<PsstPermissionInfo> GetPsstPermissionInfo(
+        const url::Origin& origin,
+        const std::string& user_id) = 0;
   };
 
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
@@ -80,8 +102,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
 
-  bool ShouldContinueSilently(const MatchedRule& rule,
-                              const std::string& user_id);
+  bool ShouldContinueSilently(
+      const MatchedRule& rule,
+      const std::optional<PsstPermissionInfo>& permission_info);
   void OnUserDialogAction(int nav_entry_id,
                           const bool is_initial,
                           const std::string& user_id,

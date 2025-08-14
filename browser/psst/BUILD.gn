@@ -4,14 +4,42 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("psst") {
-  public = [ "psst_dialog_delegate_impl.h" ]
+  public = [
+    "brave_psst_permission_context.h",
+    "psst_dialog_delegate_impl.h",
+  ]
 
-  sources = [ "psst_dialog_delegate_impl.cc" ]
+  sources = [
+    "brave_psst_permission_context.cc",
+    "psst_dialog_delegate_impl.cc",
+  ]
 
   deps = [
     "//base",
     "//brave/components/psst/browser/content",
+    "//brave/components/psst/common",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/profiles",
+    "//components/permissions",
     "//content/public/browser",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_psst_permission_context_unittest.cc" ]
+  deps = [
+    ":psst",
+    "//base",
+    "//brave/components/psst/common",
+    "//chrome/test:test_support",
+    "//components/content_settings/core/browser",
+    "//components/permissions",
+    "//components/sync_preferences:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//url:url",
   ]
 }
 

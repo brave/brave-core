@@ -9,6 +9,7 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/constants/brave_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
 #include "net/base/features.h"
@@ -371,6 +372,13 @@ void ContentSettingsRegistry::BraveInit() {
       WebsiteSettingsInfo::REQUESTING_SCHEMEFUL_SITE_ONLY_SCOPE,
       WebsiteSettingsRegistry::DESKTOP |
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
+      WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
+  website_settings_registry_->Register(
+      ContentSettingsType::BRAVE_PSST, brave::kBravePsstPermissionName,
+      base::Value(), WebsiteSettingsInfo::UNSYNCABLE,
+      WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::REQUESTING_SCHEMEFUL_SITE_ONLY_SCOPE,
+      WebsiteSettingsRegistry::DESKTOP,
       WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
 }
 
