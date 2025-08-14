@@ -7,12 +7,13 @@ package org.chromium.chrome.browser.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 
 import androidx.preference.Preference;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
@@ -60,7 +61,11 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
-        new Handler().post(() -> updateSearchEnginePreference());
+        // updateSearchEnginePreference method does a lot of preference finding,
+        // listener setting, and state updates. There are native callse inside.
+        // Defer it's execution to ensure that preference screen is fully
+        // inflated before complex updates.
+        PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateSearchEnginePreference);
     }
 
     @Override
