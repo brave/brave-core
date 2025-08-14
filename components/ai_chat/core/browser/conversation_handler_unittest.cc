@@ -2680,6 +2680,18 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
 
+  // Set up test tools that match the tool names used in the test
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  auto tool2 =
+      std::make_unique<NiceMock<MockTool>>("test_tool2", "Test tool 2");
+  tool1->set_requires_user_interaction_before_handling(false);
+  tool2->set_requires_user_interaction_before_handling(false);
+
+  std::vector<std::unique_ptr<Tool>> tools;
+  tools.push_back(std::move(tool1));
+  tools.push_back(std::move(tool2));
+  conversation_handler_->SetToolsForTesting(std::move(tools));
+
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
   // Mock engine to return partial tool use events
@@ -3303,6 +3315,93 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
 
   // Final response should be present
   EXPECT_EQ(history.back()->text, "Final response after tools");
+}
+
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
+  // Test that requesting a non-existent tool returns proper error message
+  conversation_handler_->associated_content_manager()->ClearContent();
+  auto* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  MockUntrustedConversationHandlerClient untrusted_client(
+      conversation_handler_.get());
+
+  base::RunLoop run_loop;
+
+  // Set up engine to return a response with a tool use request for non-existent
+  // tool, then expect a second call after tool error is handled
+  testing::Sequence seq;
+
+  // First call: returns tool use event for non-existent tool
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          // Send completion event first (like working test)
+          testing::WithArg<5>(
+              [](EngineConsumer::GenerationDataCallback data_callback) {
+                data_callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Let me help you...")),
+                    std::nullopt));
+              }),
+          // Then send tool use event via data callback
+          testing::WithArg<5>(
+              [](EngineConsumer::GenerationDataCallback data_callback) {
+                data_callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("nonexistent_tool",
+                                                 "test_tool_id", "{}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          // Complete with empty completion event (like working test)
+          testing::WithArg<6>([](EngineConsumer::GenerationCompletedCallback
+                                     completion_callback) {
+            std::move(completion_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt)));
+          })));
+
+  // Second call: after tool error is handled, should continue generation
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<5>(
+              [](EngineConsumer::GenerationDataCallback data_callback) {
+                data_callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(
+                            "Final response after handling tool error")),
+                    std::nullopt));
+              }),
+          testing::WithArg<6>([&](EngineConsumer::GenerationCompletedCallback
+                                      completion_callback) {
+            std::move(completion_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt)));
+            run_loop.QuitWhenIdle();
+          })));
+
+  // Expect the error message when tool is not found
+  EXPECT_CALL(untrusted_client, OnToolUseEventOutput)
+      .WillOnce(testing::WithArg<1>([&](mojom::ToolUseEventPtr tool_use_event) {
+        EXPECT_EQ(tool_use_event->tool_name, "nonexistent_tool");
+        EXPECT_EQ(tool_use_event->id, "test_tool_id");
+
+        ASSERT_TRUE(tool_use_event->output.has_value());
+        const std::string& error_text =
+            tool_use_event->output->at(0)->get_text_content_block()->text;
+        EXPECT_EQ(error_text, "The nonexistent_tool tool is not available.");
+      }));
+
+  // Trigger generation which will cause tool lookup
+  conversation_handler_->SubmitHumanConversationEntry("Help me with something",
+                                                      std::nullopt);
+  run_loop.Run();
 }
 
 TEST_F(ConversationHandlerUnitTest, AssociatingContentTriggersGetContent) {
