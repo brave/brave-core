@@ -132,7 +132,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
       base::BindRepeating(&BravePrefProvider::OnCookiePrefsChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeState,
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled,
       base::BindRepeating(&BravePrefProvider::OnAdBlockOnlyModeChanged,
                           base::Unretained(this)));
 

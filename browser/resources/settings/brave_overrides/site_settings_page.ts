@@ -5,6 +5,8 @@
 
 import './config.js'
 
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
+
 import {
   RegisterPolymerComponentReplacement,
   RegisterPolymerTemplateModifications
@@ -30,6 +32,18 @@ const CONTENT_ADVANCED_REMOVE_IDS = [
 
 RegisterPolymerTemplateModifications({
   'settings-site-settings-page': (templateContent) => {
+    const showUnusedSitePermissions = templateContent.
+        querySelector('template[is=dom-if][if="[[showUnusedSitePermissions_]]"]')
+    if (showUnusedSitePermissions) {
+      showUnusedSitePermissions.insertAdjacentHTML(
+        'afterend',
+        getTrustedHTML`
+          <div class="cr-row first line-only">
+            <h2>Hello</h2>
+          </div>
+        `)
+    }
+
     const allSites = templateContent.querySelector('#allSites')
     if (!allSites) {
       console.error('[Settings] Could not find all sites list')
@@ -59,7 +73,7 @@ RegisterPolymerTemplateModifications({
 
 RegisterPolymerComponentReplacement(
   'settings-site-settings-page',
-  class BraveSiteSettingsComponent extends SettingsSiteSettingsPageElement {
+  class BraveSiteSettingsComponent extends PrefsMixin(SettingsSiteSettingsPageElement) {
     static override get properties() {
       const properties = SettingsSiteSettingsPageElement.properties
       if (!properties || !properties.lists_ || !properties.lists_.value) {

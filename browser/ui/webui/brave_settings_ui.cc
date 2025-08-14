@@ -148,7 +148,8 @@ BraveSettingsUI::~BraveSettingsUI() = default;
 
 // static
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
-                                   Profile* profile) {
+                                   Profile* profile,
+                                   const std::string& locale) {
   html_source->AddResourcePaths(kBraveSettingsResources);
 
   html_source->AddBoolean("isSyncDisabled", !syncer::IsSyncAllowedByFlag());
@@ -223,8 +224,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean(
       "isAdBlockOnlyModeSupported",
-      brave_shields::GetBraveShieldsAdBlockOnlyModeSupported(
-          profile->GetPrefs()));
+      brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+          brave_shields::IsAdblockOnlyModeSupportedForLocale(locale));
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(

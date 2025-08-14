@@ -226,7 +226,7 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   DCHECK(!uuid.empty());
   DCHECK(local_state_);
 
-  if (GetAdBlockOnlyModeSupported() && GetAdBlockOnlyModeEnabled() &&
+  if (GetAdBlockOnlyModeSupported() && GetAdBlockOnlyModeGloballyDefaulted() &&
       !IsAdBlockOnlyModeFilterList(uuid)) {
     return false;
   }
@@ -280,7 +280,7 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
     return;
   }
 
-  if (GetAdBlockOnlyModeSupported() && GetAdBlockOnlyModeEnabled() &&
+  if (GetAdBlockOnlyModeSupported() && GetAdBlockOnlyModeGloballyDefaulted() &&
       !IsAdBlockOnlyModeFilterList(uuid)) {
     return;
   }
@@ -387,20 +387,23 @@ base::Value::List AdBlockComponentServiceManager::GetRegionalLists() {
   return list;
 }
 
-void AdBlockComponentServiceManager::EnableAdBlockOnlyMode(bool enabled) {
+void AdBlockComponentServiceManager::SetAdBlockOnlyModeGloballyDefaulted(
+    bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (local_state_) {
-    local_state_->SetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled, enabled);
+    local_state_->SetBoolean(prefs::kAdBlockAdblockOnlyModeGloballyDefaulted,
+                             enabled);
   }
 
   component_filters_providers_.clear();
   LoadComponentFiltersProviders();
 }
 
-bool AdBlockComponentServiceManager::GetAdBlockOnlyModeEnabled() const {
+bool AdBlockComponentServiceManager::GetAdBlockOnlyModeGloballyDefaulted()
+    const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return local_state_ &&
-         local_state_->GetBoolean(prefs::kAdBlockAdblockOnlyModeEnabled);
+  return local_state_ && local_state_->GetBoolean(
+                             prefs::kAdBlockAdblockOnlyModeGloballyDefaulted);
 }
 
 bool AdBlockComponentServiceManager::GetAdBlockOnlyModeSupported() const {

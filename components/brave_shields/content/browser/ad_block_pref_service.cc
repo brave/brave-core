@@ -68,18 +68,14 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
                           base::Unretained(this)));
   OnDeveloperModeChanged();
 
-  AdBlockOnlyModeState adblock_only_mode_state =
-      AdBlockOnlyModeState::kNotSupported;
-  if (ad_block_service_->GetAdBlockOnlyModeSupported()) {
-    adblock_only_mode_state = ad_block_service_->GetAdBlockOnlyModeEnabled()
-                                  ? AdBlockOnlyModeState::kEnabled
-                                  : AdBlockOnlyModeState::kDisabled;
-  }
+  const bool adblock_only_mode_enabled =
+      ad_block_service_->GetAdBlockOnlyModeSupported() &&
+      ad_block_service_->GetAdBlockOnlyModeGloballyDefaulted();
   // TODO(aseren): Currently we use both local state and content settings.
   // Consider moving to local state usage only.
-  SetBraveShieldsAdBlockOnlyModeState(prefs_, adblock_only_mode_state);
+  SetBraveShieldsAdBlockOnlyModeEnabled(prefs_, adblock_only_mode_enabled);
   pref_change_registrar_->Add(
-      prefs::kAdblockAdBlockOnlyModeState,
+      prefs::kAdblockAdBlockOnlyModeEnabled,
       base::BindRepeating(&AdBlockPrefService::OnAdBlockOnlyModeChanged,
                           base::Unretained(this)));
 }
@@ -143,7 +139,7 @@ void AdBlockPrefService::OnDeveloperModeChanged() {
 
 void AdBlockPrefService::OnAdBlockOnlyModeChanged() {
   const bool enabled = GetBraveShieldsAdBlockOnlyModeEnabled(prefs_);
-  ad_block_service_->EnableAdBlockOnlyMode(enabled);
+  ad_block_service_->SetAdBlockOnlyModeGloballyDefaulted(enabled);
 }
 
 void AdBlockPrefService::OnProxyConfigChanged(

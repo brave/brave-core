@@ -22,12 +22,6 @@ struct ShieldsSettingCounts {
   int aggressive;
 };
 
-enum class AdBlockOnlyModeState {
-  kDisabled = 0,
-  kEnabled = 1,
-  kNotSupported = 2,
-};
-
 ContentSetting GetBraveFPContentSettingFromRules(
     const ContentSettingsForOneType& fp_rules,
     const GURL& primary_url);
@@ -47,9 +41,7 @@ bool IsAdblockOnlyModeFeatureEnabled();
 bool IsAdblockOnlyModeSupportedForLocale(const std::string& locale);
 
 bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs);
-bool GetBraveShieldsAdBlockOnlyModeSupported(PrefService* prefs);
-void SetBraveShieldsAdBlockOnlyModeState(PrefService* prefs,
-                                         AdBlockOnlyModeState state);
+void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs, bool enabled);
 
 std::string GetLanguageCodeFromLocale(const std::string& locale);
 

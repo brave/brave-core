@@ -62,8 +62,8 @@ class AdBlockComponentServiceManager
 
   void UpdateFilterLists(base::OnceCallback<void(bool)> callback);
 
-  void EnableAdBlockOnlyMode(bool enabled);
-  bool GetAdBlockOnlyModeEnabled() const;
+  void SetAdBlockOnlyModeGloballyDefaulted(bool enabled);
+  bool GetAdBlockOnlyModeGloballyDefaulted() const;
   bool GetAdBlockOnlyModeSupported() const;
 
   // AdBlockFilterListCatalogProvider::Observer

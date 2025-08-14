@@ -96,13 +96,14 @@ void BraveShieldsTabHelper::MaybeNotifyAfterRepeatedReloads(
     return;
   }
 
-  if (!brave_shields::GetBraveShieldsAdBlockOnlyModeSupported(
-          GetPrefs(web_contents()))) {
+  if (navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
+    // Do not notify if the navigation is a restore.
     return;
   }
 
-  if (navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
-    // Do not notify if the navigation is a restore.
+  if (!IsAdblockOnlyModeFeatureEnabled() ||
+      !IsAdblockOnlyModeSupportedForLocale(
+          g_browser_process->GetApplicationLocale())) {
     return;
   }
 
@@ -278,9 +279,8 @@ bool BraveShieldsTabHelper::GetBraveShieldsAdBlockOnlyModeEnabled() {
 
 void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(
     bool is_enabled) {
-  brave_shields::SetBraveShieldsAdBlockOnlyModeState(
-      GetPrefs(web_contents()), is_enabled ? AdBlockOnlyModeState::kEnabled
-                                           : AdBlockOnlyModeState::kDisabled);
+  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(GetPrefs(web_contents()),
+                                                       is_enabled);
   ReloadWebContents();
 }
 

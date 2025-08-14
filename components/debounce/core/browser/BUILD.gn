@@ -17,6 +17,7 @@ source_set("browser") {
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/debounce/core/common",
     "//brave/extensions:common",
     "//components/content_settings/core/browser",

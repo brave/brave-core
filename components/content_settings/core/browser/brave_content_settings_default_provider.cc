@@ -27,7 +27,7 @@ BraveDefaultProvider::BraveDefaultProvider(PrefService* prefs,
   pref_change_registrar_.Init(prefs);
 
   pref_change_registrar_.Add(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeState,
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled,
       base::BindRepeating(&BraveDefaultProvider::OnAdBlockOnlyModeChanged,
                           base::Unretained(this)));
 }
@@ -63,9 +63,6 @@ std::unique_ptr<Rule> BraveDefaultProvider::MaybeAdjustRuleForAdBlockOnlyMode(
     case ContentSettingsType::COOKIES:
       return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule), primary_url,
                                                  CONTENT_SETTING_ALLOW);
-    case ContentSettingsType::BRAVE_COOKIES:
-      return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule), primary_url,
-                                                 CONTENT_SETTING_ALLOW);
     default:
       break;
   }
@@ -81,7 +78,7 @@ std::unique_ptr<Rule> BraveDefaultProvider::MaybeSetRuleValueForAdBlockOnlyMode(
       primary_url.SchemeIsHTTPOrHTTPS()) {
     LOG(ERROR) << "FOOBAR.BraveDefaultProvider: " << primary_url.spec() << " "
                << content_setting;
-    // rule->value = ContentSettingToValue(content_setting);
+    rule->value = ContentSettingToValue(content_setting);
   }
 
   return rule;

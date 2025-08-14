@@ -126,20 +126,12 @@ bool IsAdblockOnlyModeSupportedForLocale(const std::string& locale) {
 }
 
 bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs) {
-  return prefs && prefs->GetInteger(prefs::kAdblockAdBlockOnlyModeState) ==
-                      static_cast<int>(AdBlockOnlyModeState::kEnabled);
+  return prefs && prefs->GetBoolean(prefs::kAdblockAdBlockOnlyModeEnabled);
 }
 
-bool GetBraveShieldsAdBlockOnlyModeSupported(PrefService* prefs) {
-  return prefs && prefs->GetInteger(prefs::kAdblockAdBlockOnlyModeState) !=
-                      static_cast<int>(AdBlockOnlyModeState::kNotSupported);
-}
-
-void SetBraveShieldsAdBlockOnlyModeState(PrefService* prefs,
-                                         AdBlockOnlyModeState state) {
+void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs, bool enabled) {
   if (prefs) {
-    prefs->SetInteger(prefs::kAdblockAdBlockOnlyModeState,
-                      static_cast<int>(state));
+    prefs->SetBoolean(prefs::kAdblockAdBlockOnlyModeEnabled, enabled);
   }
 }
 

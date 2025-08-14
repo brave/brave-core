@@ -399,14 +399,14 @@ bool AdBlockService::AreAnyBlockedElementsPresent(const std::string& host) {
   return custom_filters_provider_->AreAnyBlockedElementsPresent(host);
 }
 
-void AdBlockService::EnableAdBlockOnlyMode(bool enabled) {
+void AdBlockService::SetAdBlockOnlyModeGloballyDefaulted(bool defaulted) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  component_service_manager_->EnableAdBlockOnlyMode(enabled);
+  component_service_manager_->SetAdBlockOnlyModeGloballyDefaulted(defaulted);
 }
 
-bool AdBlockService::GetAdBlockOnlyModeEnabled() const {
+bool AdBlockService::GetAdBlockOnlyModeGloballyDefaulted() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return component_service_manager_->GetAdBlockOnlyModeEnabled();
+  return component_service_manager_->GetAdBlockOnlyModeGloballyDefaulted();
 }
 
 bool AdBlockService::GetAdBlockOnlyModeSupported() const {
@@ -469,7 +469,8 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedAllDefaultRegions, false);
-  registry->RegisterBooleanPref(prefs::kAdBlockAdblockOnlyModeEnabled, false);
+  registry->RegisterBooleanPref(prefs::kAdBlockAdblockOnlyModeGloballyDefaulted,
+                                false);
 }
 
 AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {

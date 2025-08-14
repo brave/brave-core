@@ -169,7 +169,7 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
 
   pref_change_registrar_.Init(profile_->GetPrefs());
   pref_change_registrar_.Add(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeState,
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled,
       base::BindRepeating(
           &DefaultBraveShieldsHandler::OnAdBlockOnlyModePrefChanged,
           weak_ptr_factory_.GetWeakPtr()));
@@ -383,10 +383,8 @@ void DefaultBraveShieldsHandler::SetAdBlockOnlyModeEnabled(
   CHECK(profile_);
 
   const bool enabled = args[0].GetBool();
-  brave_shields::SetBraveShieldsAdBlockOnlyModeState(
-      profile_->GetPrefs(),
-      enabled ? brave_shields::AdBlockOnlyModeState::kEnabled
-              : brave_shields::AdBlockOnlyModeState::kDisabled);
+  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(profile_->GetPrefs(),
+                                                       enabled);
 }
 
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(

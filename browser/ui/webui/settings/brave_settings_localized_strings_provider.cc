@@ -1088,7 +1088,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
 void BraveAddResources(content::WebUIDataSource* html_source,
                        Profile* profile) {
-  BraveSettingsUI::AddResources(html_source, profile);
+  BraveSettingsUI::AddResources(html_source, profile,
+                                g_browser_process->GetApplicationLocale());
 }
 
 void BraveAddAboutStrings(content::WebUIDataSource* html_source,

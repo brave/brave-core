@@ -15,6 +15,7 @@ static_library("browser") {
     "//base",
     "//brave/components/body_sniffer",
     "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/de_amp/common",
     "//components/content_settings/core/browser",
     "//components/prefs",

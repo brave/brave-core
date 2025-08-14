@@ -19,8 +19,8 @@ inline constexpr char kAdBlockCookieListSettingTouched[] =
     "brave.ad_block.cookie_list_setting_touched";
 inline constexpr char kAdBlockMobileNotificationsListSettingTouched[] =
     "brave.ad_block.mobile_notifications_list_setting_touched";
-inline constexpr char kAdBlockAdblockOnlyModeEnabled[] =
-    "brave.ad_block.adblock_only_mode_enabled";
+inline constexpr char kAdBlockAdblockOnlyModeGloballyDefaulted[] =
+    "brave.ad_block.adblock_only_mode_globally_defaulted";
 
 inline constexpr char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
 inline constexpr char kAdBlockRegionalFilters[] =
@@ -31,8 +31,8 @@ inline constexpr char kAdBlockDeveloperMode[] = "brave.ad_block.developer_mode";
 
 inline constexpr char kAdblockShieldsDisabledCount[] =
     "brave.ad_block.shields_disabled_count";
-inline constexpr char kAdblockAdBlockOnlyModeState[] =
-    "brave.ad_block.adblock_only_mode_state";
+inline constexpr char kAdblockAdBlockOnlyModeEnabled[] =
+    "brave.ad_block.adblock_only_mode_enabled";
 inline constexpr char kAdblockAdBlockOnlyModePromptDismissed[] =
     "brave.ad_block.adblock_only_mode_prompt_dismissed";
 
