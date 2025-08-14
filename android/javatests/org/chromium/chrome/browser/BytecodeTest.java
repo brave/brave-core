@@ -1840,12 +1840,6 @@ public class BytecodeTest {
                         ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/password_manager/settings/PasswordsPreference",
-                        "org/chromium/chrome/browser/password_manager/settings/BravePasswordsPreference", // presubmit: ignore-long-line
-                        Context.class,
-                        AttributeSet.class));
-        Assert.assertTrue(
-                constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkUiPrefs",
                         SharedPreferencesManager.class));
