@@ -19,13 +19,8 @@
  #include "base/memory/weak_ptr.h"
  #include "base/synchronization/lock.h"
  #include "base/task/sequenced_task_runner.h"
- #include "base/types/expected.h"
- 
- /* During build, the .pb.h is generated from the .proto at
- https://github.com/tensorflow/tflite-support/blob/master/tensorflow_lite_support/cc/task/processor/proto/embedding.proto */
+ #include "base/types/expected.h" 
  #include "tensorflow_lite_support/cc/task/processor/proto/embedding.pb.h"
- 
- /* from https://source.chromium.org/chromium/chromium/src/+/main:third_party/ */
  #include "third_party/abseil-cpp/absl/status/status.h"
  #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/text_embedder.h"
  
@@ -62,9 +57,10 @@
          // model file and pass it through file content.
          using InitializeCallback = base::OnceCallback<void(bool)>;
          virtual void Initialize(InitializeCallback callback);
- 
-         
-         // DECLARE FUNCTIONS FOR TABS HERE //
+
+         absl::StatusOr<std::vector<size_t>> SuggestTabsForGroup(
+            std::vector<std::string> group_tabs_,
+            std::vector<std::string> candidate_tabs_); 
  
          // Cancel all the pending tflite tasks on the embedder task runner.
          // Should be used right before the TextEmbedder is destroyed to avoid long
@@ -81,19 +77,18 @@
  
          void InitializeEmbedder(base::OnceCallback<void(bool)> callback);
  
+         std::vector<tflite::task::processor::EmbeddingResult> embeddings_;
          absl::Status EmbedText(const std::string& text,
              tflite::task::processor::EmbeddingResult& embedding);
-         
-         
-         // Declare the functions or variables for 'suggest tabs for group' feature here
-         absl::Status EmbedTabs();
 
-         // an array containing strings (tab-title + origin)
-         // should we have a limit on the length of this array?
          std::vector<std::string> tabs_; 
- 
-         std::vector<tflite::task::processor::EmbeddingResult> embeddings_;
- 
+         absl::Status EmbedTabs();
+         
+         absl::StatusOr<tflite::task::processor::EmbeddingResult> CalculateTabGroupCentroid();
+         
+         static constexpr float COSINE_SIM_THRESHOLD = 0.8f;
+         std::vector<size_t> getMostSimilarTabIndices(const std::vector<double>& vec);
+
          // Lock used to ensure mutual exclusive access to |tflite_text_embedder_|
          // when setting unique_ptr and accessing it from |owner_task_runner_|.
          mutable base::Lock lock_;
