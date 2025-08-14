@@ -12,6 +12,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 
 class GURL;
+class PrefService;
 
 namespace brave_shields {
 
@@ -19,6 +20,12 @@ struct ShieldsSettingCounts {
   int allow;
   int standard;
   int aggressive;
+};
+
+enum class AdBlockOnlyModeState {
+  kDisabled = 0,
+  kEnabled = 1,
+  kNotSupported = 2,
 };
 
 ContentSetting GetBraveFPContentSettingFromRules(
@@ -37,8 +44,12 @@ ShieldsSettingCounts GetAdsSettingCountFromRules(
     const ContentSettingsForOneType& ads_rules);
 
 bool IsAdblockOnlyModeFeatureEnabled();
-
 bool IsAdblockOnlyModeSupportedForLocale(const std::string& locale);
+
+bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs);
+bool GetBraveShieldsAdBlockOnlyModeSupported(PrefService* prefs);
+void SetBraveShieldsAdBlockOnlyModeState(PrefService* prefs,
+                                         AdBlockOnlyModeState state);
 
 std::string GetLanguageCodeFromLocale(const std::string& locale);
 

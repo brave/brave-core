@@ -36,6 +36,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"

@@ -130,7 +130,7 @@ void BraveShieldsTabHelper::MaybeNotifyAfterRepeatedReloads(
   repeated_reloads_counter_->reloads_count++;
   if (repeated_reloads_counter_->reloads_count >=
           features::kAdblockOnlyModeReloadsCountMin.Get() &&
-          repeated_reloads_counter_->reloads_count <=
+      repeated_reloads_counter_->reloads_count <=
           features::kAdblockOnlyModeReloadsCountMax.Get()) {
     // If the page is reloaded between 3 and 5 times in 10 seconds, notify
     // observers.

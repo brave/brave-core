@@ -10,6 +10,7 @@
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "components/prefs/pref_service.h"

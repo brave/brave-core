@@ -268,24 +268,6 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
   return setting == CONTENT_SETTING_BLOCK ? false : true;
 }
 
-bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs) {
-  return prefs && prefs->GetInteger(prefs::kAdblockAdBlockOnlyModeState) ==
-                      static_cast<int>(AdBlockOnlyModeState::kEnabled);
-}
-
-bool GetBraveShieldsAdBlockOnlyModeSupported(PrefService* prefs) {
-  return prefs && prefs->GetInteger(prefs::kAdblockAdBlockOnlyModeState) !=
-                      static_cast<int>(AdBlockOnlyModeState::kNotSupported);
-}
-
-void SetBraveShieldsAdBlockOnlyModeState(PrefService* prefs,
-                                         AdBlockOnlyModeState state) {
-  if (prefs) {
-    prefs->SetInteger(prefs::kAdblockAdBlockOnlyModeState,
-                      static_cast<int>(state));
-  }
-}
-
 void SetAdControlType(HostContentSettingsMap* map,
                       ControlType type,
                       const GURL& url,

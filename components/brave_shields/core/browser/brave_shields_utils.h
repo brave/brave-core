@@ -45,12 +45,6 @@ enum class DomainBlockingType {
   kAggressive,
 };
 
-enum class AdBlockOnlyModeState {
-  kDisabled = 0,
-  kEnabled = 1,
-  kNotSupported = 2,
-};
-
 struct ShieldsSettingCounts;
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
@@ -62,11 +56,6 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
                             const GURL& url,
                             PrefService* local_state = nullptr);
 bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
-
-bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs);
-bool GetBraveShieldsAdBlockOnlyModeSupported(PrefService* prefs);
-void SetBraveShieldsAdBlockOnlyModeState(PrefService* prefs,
-                                         AdBlockOnlyModeState state);
 
 void SetAdControlType(HostContentSettingsMap* map,
                       ControlType type,

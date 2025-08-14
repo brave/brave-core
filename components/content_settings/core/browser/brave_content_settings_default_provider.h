@@ -38,11 +38,11 @@ class BraveDefaultProvider : public DefaultProvider {
   ~BraveDefaultProvider() override;
 
   std::unique_ptr<Rule> GetRule(
-    const GURL& primary_url,
-    const GURL& secondary_url,
-    ContentSettingsType content_type,
-    bool off_the_record,
-    const PartitionKey& partition_key) const override;
+      const GURL& primary_url,
+      const GURL& secondary_url,
+      ContentSettingsType content_type,
+      bool off_the_record,
+      const PartitionKey& partition_key) const override;
 
  private:
   void OnAdBlockOnlyModeChanged();

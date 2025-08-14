@@ -12,6 +12,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"

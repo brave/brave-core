@@ -1,11 +1,11 @@
 /* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_default_provider.h"
 
-#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_partition_key.h"
@@ -58,16 +58,13 @@ std::unique_ptr<Rule> BraveDefaultProvider::MaybeAdjustRuleForAdBlockOnlyMode(
     ContentSettingsType content_type) const {
   switch (content_type) {
     case ContentSettingsType::JAVASCRIPT:
-      return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule),
-                                                 primary_url,
+      return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule), primary_url,
                                                  CONTENT_SETTING_ALLOW);
     case ContentSettingsType::COOKIES:
-      return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule),
-                                                 primary_url,
+      return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule), primary_url,
                                                  CONTENT_SETTING_ALLOW);
     case ContentSettingsType::BRAVE_COOKIES:
-      return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule),
-                                                 primary_url,
+      return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule), primary_url,
                                                  CONTENT_SETTING_ALLOW);
     default:
       break;
@@ -80,11 +77,11 @@ std::unique_ptr<Rule> BraveDefaultProvider::MaybeSetRuleValueForAdBlockOnlyMode(
     const GURL& primary_url,
     ContentSetting content_setting) const {
   base::AutoLock lock(lock_);
-  if (ad_block_only_mode_enabled_ && rule &&
-      primary_url.is_valid() && primary_url.SchemeIsHTTPOrHTTPS()) {
-    LOG(ERROR) << "FOOBAR.BraveDefaultProvider: "
-               << primary_url.spec() << " " << content_setting;
-    //rule->value = ContentSettingToValue(content_setting);
+  if (ad_block_only_mode_enabled_ && rule && primary_url.is_valid() &&
+      primary_url.SchemeIsHTTPOrHTTPS()) {
+    LOG(ERROR) << "FOOBAR.BraveDefaultProvider: " << primary_url.spec() << " "
+               << content_setting;
+    // rule->value = ContentSettingToValue(content_setting);
   }
 
   return rule;

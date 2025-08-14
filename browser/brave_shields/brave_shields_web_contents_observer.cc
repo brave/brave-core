@@ -16,6 +16,7 @@
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/constants/pref_names.h"

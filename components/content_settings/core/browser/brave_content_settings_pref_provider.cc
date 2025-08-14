@@ -21,8 +21,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
@@ -664,16 +664,17 @@ std::unique_ptr<Rule> BravePrefProvider::MaybeAdjustRuleForAdBlockOnlyMode(
     ContentSettingsType content_type) const {
   switch (content_type) {
     // case ContentSettingsType::JAVASCRIPT: {
-    //   return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule), primary_url,
+    //   return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule),
+    //   primary_url,
     //                                            CONTENT_SETTING_ALLOW);
     // }
     case ContentSettingsType::COOKIES: {
       return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule), primary_url,
-                                               CONTENT_SETTING_ALLOW);
+                                                 CONTENT_SETTING_ALLOW);
     }
     case ContentSettingsType::BRAVE_COOKIES: {
       return MaybeSetRuleValueForAdBlockOnlyMode(std::move(rule), primary_url,
-                                               CONTENT_SETTING_ALLOW);
+                                                 CONTENT_SETTING_ALLOW);
     }
     default:
       break;
@@ -687,19 +688,20 @@ std::unique_ptr<Rule> BravePrefProvider::MaybeSetRuleValueForAdBlockOnlyMode(
     const GURL& primary_url,
     ContentSetting content_setting) const {
   base::AutoLock lock(lock_);
-  if (ad_block_only_mode_enabled_ && rule &&
-      primary_url.is_valid() && primary_url.SchemeIsHTTPOrHTTPS()) {
-        //LOG(ERROR) << "BravePrefProvider " << primary_url.spec();
-        rule->value = ContentSettingToValue(content_setting);
+  if (ad_block_only_mode_enabled_ && rule && primary_url.is_valid() &&
+      primary_url.SchemeIsHTTPOrHTTPS()) {
+    // LOG(ERROR) << "BravePrefProvider " << primary_url.spec();
+    rule->value = ContentSettingToValue(content_setting);
   }
 
   // if (!rule) {
   //   // Create a default rule.
   //   return std::make_unique<Rule>(
-  //       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+  //       ContentSettingsPattern::Wildcard(),
+  //       ContentSettingsPattern::Wildcard(),
   //       ContentSettingToValue(content_setting), RuleMetaData{});
   // }
-  //rule->value = ContentSettingToValue(content_setting);
+  // rule->value = ContentSettingToValue(content_setting);
 
   return rule;
 }
@@ -795,7 +797,8 @@ std::unique_ptr<Rule> BravePrefProvider::GetRule(
     // LOG(ERROR) << "BravePrefProvider GetRule ad_block_only_mode_rules_ "
     //            << primary_url.host() << " " << content_type;
     base::AutoLock auto_lock(ad_block_only_mode_rules_.GetLock());
-    return ad_block_only_mode_rules_.GetRule(primary_url, secondary_url, content_type);
+    return ad_block_only_mode_rules_.GetRule(primary_url, secondary_url,
+                                             content_type);
   }
 
   std::unique_ptr<Rule> rule;
@@ -811,7 +814,8 @@ std::unique_ptr<Rule> BravePrefProvider::GetRule(
   }
 
   return rule;
-  //return MaybeAdjustRuleForAdBlockOnlyMode(std::move(rule), primary_url, content_type);
+  // return MaybeAdjustRuleForAdBlockOnlyMode(std::move(rule), primary_url,
+  // content_type);
 }
 
 BravePrefProvider::CookieType BravePrefProvider::GetCookieType(
@@ -987,7 +991,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     // There is no global shields rule, so if we have one ignore it. It would
     // get replaced with EnsureNoWildcardEntries().
     if (shield_rule->primary_pattern.MatchesAllHosts()) {
-      //LOG(ERROR) << "Found a wildcard shields rule which matches all hosts.";
+      // LOG(ERROR) << "Found a wildcard shields rule which matches all hosts.";
       continue;
     }
 

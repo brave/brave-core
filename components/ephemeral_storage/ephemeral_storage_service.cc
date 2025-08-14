@@ -15,7 +15,6 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/url_storage_checker.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -305,8 +304,9 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
     return false;
   }
 
-  if (!brave_shields::GetForgetFirstPartyStorageEnabled(
-          host_content_settings_map_, url, prefs_)) {
+  if (host_content_settings_map_->GetContentSetting(
+          url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE) !=
+      CONTENT_SETTING_BLOCK) {
     return false;
   }
 
