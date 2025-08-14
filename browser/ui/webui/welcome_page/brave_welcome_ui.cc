@@ -164,10 +164,12 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
 
   // Add managed state information for welcome flow logic
   PrefService* local_state = g_browser_process->local_state();
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   source->AddBoolean(
       "isWebDiscoveryEnabledManaged",
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
       profile->GetPrefs()->IsManagedPreference(kWebDiscoveryEnabled));
+#else
+      false);
 #endif
   source->AddBoolean("isMetricsReportingEnabledManaged",
                      local_state->IsManagedPreference(

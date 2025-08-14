@@ -8,7 +8,6 @@ type LoadTimeData = {
   getStringF: (key: string, ...varArgs: string[]) => string
   getInteger: (key: string) => number
   getBoolean: (key: string) => boolean
-  valueExists: (key: string) => boolean
   set: (value: Record<string, string>) => void
   data_: Record<string, string>
 }
