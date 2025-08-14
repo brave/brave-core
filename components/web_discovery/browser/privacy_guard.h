@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "brave/components/web_discovery/browser/patterns.h"
 #include "url/gurl.h"
 
 namespace web_discovery {
@@ -31,12 +30,12 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
 // Checks if a URL should be dropped due to its length or content.
 // Currently only used for determining whether to mask a URL
 // in the function below.
-bool ShouldMaskURL(const GURL& url);
+bool ShouldMaskURL(const GURL& url, bool relaxed);
 
 // Masks a URL to protect privacy. Returns nullopt if URL is invalid.
 // Resolves nested Google URLs and replaces the URL path with a
 // placeholder token, if applicable.
-std::optional<std::string> MaskURL(const GURL& url);
+std::optional<std::string> MaskURL(const GURL& url, bool relaxed);
 
 }  // namespace web_discovery
 
