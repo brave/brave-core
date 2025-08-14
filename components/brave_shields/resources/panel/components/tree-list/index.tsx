@@ -17,7 +17,7 @@ import {
 } from '../../state/component_types'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
-import { ToggleListContainer, ScriptsInfo, Footer, ScriptsList, ListDescription } from './style'
+import { ToggleListContainer, ScriptsInfo, Footer, ScriptsList, ListDescription, Link } from './style'
 import { ContentSettingsType } from 'gen/components/content_settings/core/common/content_settings_types.mojom.m.js';
 
 
@@ -157,9 +157,9 @@ function TreeList (props: Props) {
           <ScriptsInfo>
             <span>{allowedList.length}</span>
             <span>{props.totalAllowedTitle}</span>
-            <span>{<a href="#" onClick={handleBlockAllScripts}>
+            <span>{<Link href="#" onClick={handleBlockAllScripts}>
               {getLocale('braveShieldsBlockScriptsAll')}
-            </a>
+            </Link>
             }</span>
           </ScriptsInfo>
           <ScriptsList>
@@ -179,9 +179,9 @@ function TreeList (props: Props) {
         <span>{props.blockedList.length}</span>
         <span>{props.totalBlockedTitle}</span>
         {props.allowedList && (<span>
-          {<a href="#" onClick={handleAllowAllScripts}>
+          {<Link href="#" onClick={handleAllowAllScripts}>
             {getLocale('braveShieldsAllowScriptsAll')}
-          </a>
+          </Link>
           }</span>
         )}
       </ScriptsInfo>
@@ -224,7 +224,7 @@ export function ToggleList (props: {
       <span>{props.totalBlockedTitle}</span>
     </ScriptsInfo>
     <ListDescription>{props.listDescription}</ListDescription>
-    <ListDescription><a href="#" onClick={handleLearnMoreClick}>{props.learnMoreText}</a></ListDescription>
+    <ListDescription><Link href="#" onClick={handleLearnMoreClick}>{props.learnMoreText}</Link></ListDescription>
     <ToggleListContainer>
       {entries.map(([name, value]: [string, number]) => (
         <label key={name}>
