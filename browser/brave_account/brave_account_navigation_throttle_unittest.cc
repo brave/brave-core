@@ -45,10 +45,11 @@ class BraveAccountNavigationThrottleUnitTest
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
-  content::BrowserTaskEnvironment task_environment;
+  content::BrowserTaskEnvironment task_environment_;
 };
 
-TEST_P(BraveAccountNavigationThrottleUnitTest, NavigationThrottleBehavior) {
+TEST_P(BraveAccountNavigationThrottleUnitTest,
+       BlockNavigationUnlessAutoToplevel) {
   const TestCase& test_case = GetParam();
 
   TestingProfile profile;
