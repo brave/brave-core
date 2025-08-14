@@ -378,6 +378,7 @@ struct TabGridView: View {
       Menu {
         Button(role: .destructive) {
           viewModel.closeAllTabs()
+          dismiss()
         } label: {
           Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
         }
