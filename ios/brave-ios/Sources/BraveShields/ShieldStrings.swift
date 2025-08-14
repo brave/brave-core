@@ -439,6 +439,19 @@ extension Strings.Shields {
       """
   )
 
+  /// A message for a confirmation window that appears when a user clicks on 'Shred' with multiple
+  /// tabs selected.
+  public static let shredSiteSelectedTabsConfirmationMessage = NSLocalizedString(
+    "ShredSiteDataConfirmationMessage",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Shredding will close the selected tabs, and delete all site data. This cannot be undone.",
+    comment: """
+      A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected.
+      """
+  )
+
   /// A list row label for accessing the shred settings screen
   public static let shredDataButtonTitle = NSLocalizedString(
     "ShredDataButtonTitle",

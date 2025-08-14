@@ -139,11 +139,8 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       privateBrowsingManager: privateBrowsingManager
     )
     privateBrowsingManager.isPrivateBrowsing = false
-  }
-
-  override func tearDown() {
-    privateBrowsingManager.isPrivateBrowsing = false
-    super.tearDown()
+    Preferences.Privacy.persistentPrivateBrowsing.reset()
+    Preferences.Privacy.privateBrowsingOnly.reset()
   }
 
   private func setPersistentPrivateMode(_ isPersistent: Bool) {
@@ -290,13 +287,9 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       2,
       "The original normal tab and the new one should both still exist"
     )
-
-    setPersistentPrivateMode(false)
   }
 
   func testDeletePrivateTabsOnNonPersistenceExit() {
-    setPersistentPrivateMode(false)
-
     // create one private and one normal tab
     let tab = manager.addTestTab(isPrivate: false)
     manager.selectTab(tab)
@@ -368,13 +361,9 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     XCTAssertEqual(manager.tabs(isPrivate: true).count, 1, "There should be 1 private tab")
     manager.removeTab(tab)
     XCTAssertEqual(manager.tabs(isPrivate: false).count, 1, "There should be 1 normal tab")
-
-    setPersistentPrivateMode(false)
   }
 
   func testTogglePBMDeleteNonPersistent() {
-    setPersistentPrivateMode(false)
-
     let tab = manager.addTestTab(isPrivate: false)
     manager.selectTab(tab)
     manager.selectTab(manager.addTestTab(isPrivate: false))
@@ -405,8 +394,6 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   }
 
   func testDeleteSelectedTab() {
-    let delegate = MockTabManagerDelegate()
-
     func addTab(_ visit: Bool) -> TabState {
       return manager.addTab(
         zombie: true,
@@ -518,13 +505,9 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
     // check
     delegate.verify("Not all delegate methods were called")
-
-    setPersistentPrivateMode(false)
   }
 
   func testDelegatesCalledWhenRemovingPrivateTabsNonPersistence() {
-    setPersistentPrivateMode(false)
-
     //setup
     let delegate = MockTabManagerDelegate()
 
@@ -865,5 +848,134 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       let privateTab = manager.getTabForURL(urlFive, isPrivate: true)
       XCTAssertNotNil(privateTab)
     }
+  }
+
+  func testMoveMultipleTabsToEnd() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let thirdTab = manager.addTestTab(isPrivate: false)
+    let fourthTab = manager.addTestTab(isPrivate: false)
+    manager.selectTab(firstTab)
+
+    // Move first and second tabs to the end (index 2 in current mode)
+    manager.moveTabs([firstTab.id, secondTab.id], toIndex: 2)
+
+    let reorderedTabs = manager.tabs(isPrivate: false)
+    XCTAssertEqual(
+      [thirdTab, fourthTab, firstTab, secondTab].map(\.id),
+      reorderedTabs.map(\.id),
+      "First two tabs should now be at the end"
+    )
+    XCTAssertEqual(manager.selectedTab?.id, firstTab.id, "First tab should still be selected")
+  }
+
+  func testMoveMultipleTabsToBeginning() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let thirdTab = manager.addTestTab(isPrivate: false)
+    let fourthTab = manager.addTestTab(isPrivate: false)
+    manager.selectTab(thirdTab)
+
+    // Move third and fourth tabs to the beginning
+    manager.moveTabs([thirdTab.id, fourthTab.id], toIndex: 0)
+
+    let reorderedTabs = manager.tabs(isPrivate: false)
+    XCTAssertEqual(
+      [thirdTab, fourthTab, firstTab, secondTab].map(\.id),
+      reorderedTabs.map(\.id),
+      "Last two tabs should now be at the beginning"
+    )
+    XCTAssertEqual(manager.selectedTab?.id, thirdTab.id, "Third tab should still be selected")
+  }
+
+  func testMoveMultipleTabsToMiddle() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let thirdTab = manager.addTestTab(isPrivate: false)
+    let fourthTab = manager.addTestTab(isPrivate: false)
+    let fifthTab = manager.addTestTab(isPrivate: false)
+    manager.selectTab(firstTab)
+
+    // Move first and second tabs to index 2 (between third and fourth)
+    manager.moveTabs([firstTab.id, secondTab.id], toIndex: 2)
+
+    let reorderedTabs = manager.tabs(isPrivate: false)
+    XCTAssertEqual(
+      [thirdTab, fourthTab, firstTab, secondTab, fifthTab].map(\.id),
+      reorderedTabs.map(\.id),
+      "First two tabs should be inserted at index 2"
+    )
+    XCTAssertEqual(manager.selectedTab?.id, firstTab.id, "First tab should still be selected")
+  }
+
+  func testMoveTabsWithPrivateMixed() {
+    setPersistentPrivateMode(true)
+
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let privateTab = manager.addTestTab(isPrivate: true)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let thirdTab = manager.addTestTab(isPrivate: false)
+    manager.selectTab(firstTab)
+
+    // Move first tab to the end, should ignore private tab
+    manager.moveTabs([firstTab.id], toIndex: 2)
+
+    let regularTabs = manager.tabs(isPrivate: false)
+    XCTAssertEqual(
+      [secondTab, thirdTab, firstTab].map(\.id),
+      regularTabs.map(\.id),
+      "First tab should move to end of regular tabs"
+    )
+
+    // Private tab should remain in its original position in allTabs
+    let allTabIds = manager.allTabs.map(\.id)
+    XCTAssertTrue(allTabIds.contains(privateTab.id), "Private tab should still exist")
+    XCTAssertEqual(manager.selectedTab?.id, firstTab.id, "First tab should still be selected")
+  }
+
+  func testMoveTabsOffByOneScenario() {
+    // Test the specific scenario that was failing: moving tab from index 0 to index 2
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+    let thirdTab = manager.addTestTab(isPrivate: false)
+    manager.selectTab(firstTab)
+
+    // Move first tab to index 2 (should end up at the end)
+    manager.moveTabs([firstTab.id], toIndex: 2)
+
+    let reorderedTabs = manager.tabs(isPrivate: false)
+    XCTAssertEqual(
+      [secondTab, thirdTab, firstTab].map(\.id),
+      reorderedTabs.map(\.id),
+      "First tab should be moved to the end, not middle"
+    )
+    XCTAssertEqual(manager.selectedTab?.id, firstTab.id, "First tab should still be selected")
+  }
+
+  func testMoveTabsEmptyArray() {
+    manager.addTestTab(isPrivate: false)
+    manager.addTestTab(isPrivate: false)
+    let originalOrder = manager.tabs(isPrivate: false).map(\.id)
+
+    // Moving empty array should not change anything
+    manager.moveTabs([], toIndex: 1)
+
+    let newOrder = manager.tabs(isPrivate: false).map(\.id)
+    XCTAssertEqual(originalOrder, newOrder, "Tab order should remain unchanged")
+  }
+
+  func testMoveTabsInvalidIndex() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let secondTab = manager.addTestTab(isPrivate: false)
+
+    // Move to index beyond array bounds should place at end
+    manager.moveTabs([firstTab.id], toIndex: 100)
+
+    let reorderedTabs = manager.tabs(isPrivate: false)
+    XCTAssertEqual(
+      [secondTab, firstTab].map(\.id),
+      reorderedTabs.map(\.id),
+      "Tab should be moved to the end when index is out of bounds"
+    )
   }
 }

@@ -1276,6 +1276,13 @@ extension Strings {
       value: "Private Tabs Settings",
       comment: "A button title which when tapped will present settings for private tabs"
     )
+    public static let selectTabsButtonTitle = NSLocalizedString(
+      "tabGrid.selectTabsButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Select Tabs",
+      comment: "A button title which when tapped will allow the user to select multiple tabs in the tab grid"
+    )
     public static let moreMenuButtonTitle = NSLocalizedString(
       "tabGrid.moreMenuButtonTitle",
       tableName: "BraveShared",
@@ -1310,6 +1317,13 @@ extension Strings {
       bundle: .module,
       value: "Shred Selected Tab",
       comment: "A button title that when tapped allows users to shred the currently selected tab"
+    )
+    public static let shredSelectedTabsButtonTitle = NSLocalizedString(
+      "tabGrid.shredSelectedTabsButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Shred",
+      comment: "A button title that when tapped allows users to shred the currently selected tabs"
     )
     public static let shredAllTabsButtonTitle = NSLocalizedString(
       "tabGrid.shredAllTabsButtonTitle",
@@ -1394,6 +1408,13 @@ extension Strings {
       bundle: .module,
       value: "Brave VPN encrypts and protects anything you do online, even outside the Brave browser.",
       comment: "A bullet point explaining the benefits of Brave VPN"
+    )
+    public static let selectedTabs = NSLocalizedString(
+      "tabGrid.selectedTabs",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Selected tabs",
+      comment: "A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. \"Selected tabs: 4\""
     )
   }
 }

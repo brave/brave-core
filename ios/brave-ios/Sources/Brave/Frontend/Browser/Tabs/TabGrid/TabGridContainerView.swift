@@ -19,13 +19,20 @@ enum TabCollectionViewSelectSource {
 protocol TabCollectionViewDelegate: AnyObject {
   func didSelectTab(_ tab: any TabState, source: TabCollectionViewSelectSource)
   func didRemoveTab(_ tab: any TabState)
-  func didMoveTab(_ tab: any TabState, to index: Int)
+  func didMoveTab(_ tabIDs: [TabState.ID], to index: Int)
+  func selectedTabListChanged(_ tabs: [TabState.ID])
 }
 
 /// A view that can display tabs in a grid formation
 class TabGridContainerView: UIView {
   let collectionView: UICollectionView
   var isPrivateBrowsing: Bool
+  var isEditing: Bool = false {
+    didSet {
+      collectionView.isEditing = isEditing
+      collectionView.dragInteractionEnabled = !isEditing || supportsMultiSelectMoves
+    }
+  }
   var maskInsets: UIEdgeInsets = .zero {
     didSet {
       updateContentInsets()
@@ -41,6 +48,12 @@ class TabGridContainerView: UIView {
   weak var delegate: TabCollectionViewDelegate?
 
   private(set) var dataSource: UICollectionViewDiffableDataSource<Int, TabState.ID>!
+
+  // At the moment there seems to be a bug in iOS/UICollectionView which prohibits multi-item drag
+  // within from working correctly. It will stop live updating and then not call the drop delegate
+  // `performDrop` method despite returning a move operation with the intent to insert at the
+  // destination index path.
+  private let supportsMultiSelectMoves = false
 
   init(isPrivateBrowsing: Bool) {
     self.isPrivateBrowsing = isPrivateBrowsing
@@ -143,8 +156,11 @@ class TabGridContainerView: UIView {
     collectionView.backgroundColor = .clear
     collectionView.dataSource = dataSource
     collectionView.delegate = self
+    collectionView.dragInteractionEnabled = true
     collectionView.dragDelegate = self
     collectionView.dropDelegate = self
+    collectionView.allowsSelectionDuringEditing = true
+    collectionView.allowsMultipleSelectionDuringEditing = true
     collectionView.backgroundView = {
       let view = UIView()
       view.backgroundColor = .clear
@@ -160,10 +176,18 @@ class TabGridContainerView: UIView {
   }
 
   private func updateContentInsets() {
-    var adjustedInsets = maskInsets
-    adjustedInsets.top += TabGridSearchBar.defaultHeight + TabGridSearchBar.padding
-    collectionView.contentInset = adjustedInsets
-    collectionView.scrollIndicatorInsets = maskInsets
+    let isScrolledToTop =
+      collectionView.contentOffset.y == -collectionView.contentInset.top
+      || collectionView.contentOffset.y
+        == (-collectionView.contentInset.top + TabGridSearchBar.defaultHeight
+          + TabGridSearchBar.padding)
+    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.1, delay: 0) { [self] in
+      collectionView.contentInset = maskInsets
+      collectionView.scrollIndicatorInsets = maskInsets
+      if isScrolledToTop {
+        collectionView.contentOffset.y = -maskInsets.top
+      }
+    }
   }
 
   private func applyTabsSnapshot(animated: Bool) {
@@ -225,9 +249,29 @@ extension TabGridContainerView: UICollectionViewDelegate {
     targetContentOffset.pointee = proposedContentOffset
   }
 
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    canPerformPrimaryActionForItemAt indexPath: IndexPath
+  ) -> Bool {
+    return !collectionView.isEditing && !collectionView.hasActiveDrag
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    performPrimaryActionForItemAt indexPath: IndexPath
+  ) {
     guard let tab = tabs[safe: indexPath.item] else { return }
     delegate?.didSelectTab(tab, source: .tappedCell)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let selectedIndexPaths = collectionView.indexPathsForSelectedItems ?? []
+    delegate?.selectedTabListChanged(selectedIndexPaths.compactMap(dataSource.itemIdentifier(for:)))
+  }
+
+  func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    let selectedIndexPaths = collectionView.indexPathsForSelectedItems ?? []
+    delegate?.selectedTabListChanged(selectedIndexPaths.compactMap(dataSource.itemIdentifier(for:)))
   }
 
   func collectionView(
@@ -254,6 +298,13 @@ extension TabGridContainerView: UICollectionViewDelegate {
 }
 
 extension TabGridContainerView: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    dragSessionIsRestrictedToDraggingApplication session: any UIDragSession
+  ) -> Bool {
+    return true
+  }
+
   private func dragPreviewParameters(
     collectionView: UICollectionView,
     indexPath: IndexPath
@@ -277,12 +328,31 @@ extension TabGridContainerView: UICollectionViewDragDelegate, UICollectionViewDr
     at indexPath: IndexPath
   ) -> [UIDragItem] {
     guard let tabID = dataSource.itemIdentifier(for: indexPath) else { return [] }
-
-    UIImpactFeedbackGenerator(style: .medium).vibrate()
-
     let dragItem = UIDragItem(itemProvider: NSItemProvider())
     dragItem.localObject = tabID
     return [dragItem]
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    itemsForAddingTo session: any UIDragSession,
+    at indexPath: IndexPath,
+    point: CGPoint
+  ) -> [UIDragItem] {
+    if !supportsMultiSelectMoves {
+      return []
+    }
+    guard let tabID = dataSource.itemIdentifier(for: indexPath) else { return [] }
+    let dragItem = UIDragItem(itemProvider: NSItemProvider())
+    dragItem.localObject = tabID
+    return [dragItem]
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    dragSessionWillBegin session: any UIDragSession
+  ) {
+    UIImpactFeedbackGenerator(style: .medium).vibrate()
   }
 
   func collectionView(
@@ -296,14 +366,16 @@ extension TabGridContainerView: UICollectionViewDragDelegate, UICollectionViewDr
     _ collectionView: UICollectionView,
     performDropWith coordinator: UICollectionViewDropCoordinator
   ) {
-    guard let dragItem = coordinator.items.first?.dragItem,
-      let tabID = dragItem.localObject as? TabState.ID,
-      let tab = tabs.first(where: { $0.id == tabID }),
+    guard
+      case let tabIDs = coordinator.items.compactMap({ $0.dragItem.localObject as? TabState.ID }),
+      !tabIDs.isEmpty,
       let destinationIndexPath = coordinator.destinationIndexPath
     else { return }
 
-    delegate?.didMoveTab(tab, to: destinationIndexPath.item)
-    coordinator.drop(dragItem, toItemAt: destinationIndexPath)
+    delegate?.didMoveTab(tabIDs, to: destinationIndexPath.item)
+    for item in coordinator.items {
+      coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+    }
   }
 
   func collectionView(
@@ -311,15 +383,15 @@ extension TabGridContainerView: UICollectionViewDragDelegate, UICollectionViewDr
     dropSessionDidUpdate session: UIDropSession,
     withDestinationIndexPath destinationIndexPath: IndexPath?
   ) -> UICollectionViewDropProposal {
-
     guard let localDragSession = session.localDragSession,
-      let item = localDragSession.items.first,
-      let tabID = item.localObject as? TabState.ID
+      case let tabIDs = localDragSession.items.compactMap({ $0.localObject as? TabState.ID }),
+      !tabIDs.isEmpty
     else {
       return .init(operation: .forbidden)
     }
 
-    if dataSource.indexPath(for: tabID) == nil {
+    let indexPaths = tabIDs.compactMap(dataSource.indexPath(for:))
+    if tabIDs.count != indexPaths.count {
       return .init(operation: .cancel)
     }
 
@@ -333,6 +405,7 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
   var tabs: [any TabState]
   var isPrivateBrowsing: Bool
   var insets: EdgeInsets
+  @Binding var selectedTabList: [TabState.ID]
 
   func makeUIView(context: Context) -> TabGridContainerView {
     let view =
@@ -345,6 +418,7 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     context.coordinator.dismissAction = context.environment.dismiss
     context.coordinator.containerView = uiView
     uiView.isPrivateBrowsing = isPrivateBrowsing
+    uiView.isEditing = context.environment.editMode?.wrappedValue == .active
     uiView.updateTabs(tabs, transaction: context.transaction)
     uiView.maskInsets = .init(
       top: insets.top,
@@ -355,7 +429,7 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
   }
 
   func makeCoordinator() -> Coordinator {
-    .init(viewModel: viewModel)
+    .init(viewModel: viewModel, selectedTabList: $selectedTabList)
   }
 
   @MainActor
@@ -363,9 +437,11 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     var viewModel: TabGridViewModel
     var dismissAction: DismissAction?
     var containerView: TabGridContainerView?
+    @Binding var selectedTabList: [TabState.ID]
 
-    init(viewModel: TabGridViewModel) {
+    init(viewModel: TabGridViewModel, selectedTabList: Binding<[TabState.ID]>) {
       self.viewModel = viewModel
+      self._selectedTabList = selectedTabList
     }
 
     func didSelectTab(_ tab: any TabState, source: TabCollectionViewSelectSource) {
@@ -386,9 +462,13 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
       }
     }
 
-    func didMoveTab(_ tab: any TabState, to index: Int) {
-      viewModel.moveTab(tab, to: index)
+    func didMoveTab(_ tabs: [TabState.ID], to index: Int) {
+      viewModel.moveTabs(tabs, to: index)
       containerView?.updateTabs(viewModel.tabs, transaction: .init(animation: .default))
+    }
+
+    func selectedTabListChanged(_ tabs: [TabState.ID]) {
+      selectedTabList = tabs
     }
   }
 }
