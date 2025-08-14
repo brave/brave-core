@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import globalIconUrl from '../../../../../web-components/icons/globe.svg'
 import managedIconUrl from '../../../../../web-components/icons/managed.svg'
+import { color } from '@brave/leo/tokens/css/variables'
 
 interface CaratIconProps {
   isExpanded: boolean
@@ -16,20 +17,20 @@ interface ShieldsIconProps {
 }
 
 export const Box = styled.div`
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${color.container.background};
   width: 100%;
   height: 100%;
   font-family: ${(p) => p.theme.fontFamily.heading};
 
   a {
     font-family: ${(p) => p.theme.fontFamily.heading};
-    color: ${(p) => p.theme.color.interactive05};
+    color: ${color.text.interactive};
     text-decoration: underline;
   }
 `
 
 export const HeaderBox = styled.section`
-  background-color: ${(p) => p.theme.color.background03};
+  background-color: ${color.neutral[10]};
   padding: 22px 17px 22px 17px;
 `
 
@@ -53,7 +54,7 @@ export const FavIconBox = styled.i`
 `
 
 export const SiteTitle = styled.h1`
-  color: ${(p) => p.theme.color.text01};
+  color: ${color.text.primary};
   font-size: 20px;
   line-height: 1.4;
   font-weight: 500;
@@ -79,7 +80,7 @@ export const CountBox = styled.section`
 export const BlockCount = styled.span`
   font-size: 38px;
   line-height: 1;
-  color: ${(p) => p.theme.color.text01};
+  color: ${color.text.primary};
   grid-column: 3;
   text-align: right;
 `
@@ -88,7 +89,7 @@ export const BlockNote = styled.span`
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${color.text.primary};
   grid-column: 2;
 `
 
@@ -104,7 +105,7 @@ export const ControlBox = styled.div`
 `
 
 export const ShieldsIcon = styled.i<ShieldsIconProps>`
-  --fill-color: #5E6175;
+  --fill-color: ${color.icon.disabled};
   width: 100%;
   height: auto;
   grid-column: 1;
@@ -114,7 +115,7 @@ export const ShieldsIcon = styled.i<ShieldsIconProps>`
   }
 
   ${p => p.isActive && css`
-    --fill-color: ${(p) => p.theme.color.interactive02};
+    --fill-color: ${color.icon.interactive};
   `}
 `
 
@@ -122,7 +123,7 @@ export const StatusText = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${color.text.primary};
   grid-column: 2;
   word-break: break-word;
   display: -webkit-box;
@@ -150,12 +151,12 @@ export const StatusFootnoteBox = styled.div`
 `
 
 export const Footnote = styled.div`
-  color: ${(p) => p.theme.color.text01};
+  color: ${color.text.primary};
   text-align: left;
   grid-column: 2;
 
   span {
-    color: ${(p) => p.theme.color.text03};
+    color: ${color.text.tertiary};
     display: block;
   }
 `
@@ -166,7 +167,7 @@ export const ReportSiteBox = styled.div`
   p {
     max-width: 35ch;
     margin: 0 0 10px 0;
-    color: ${(p) => p.theme.color.warningIcon};
+    color: ${color.systemfeedback.warningIcon};
   }
 `
 
@@ -177,7 +178,7 @@ export const ReportSiteAction = styled.div`
   span {
     font-weight: 500;
     font-size: 14px;
-    color: ${(p) => p.theme.color.text03};
+    color: ${color.text.tertiary};
     margin-bottom: 16px;
   }
 `
@@ -193,10 +194,10 @@ export const PanelContent = styled.section`
 
 export const AdvancedControlsButton = styled.button`
   --border: 3px solid transparent;
-  --svg-color: ${(p) => p.theme.color.interactive05};
-  --text-color: ${(p) => p.theme.color.interactive06};
+  --svg-color: ${color.icon.interactive};
+  --text-color: ${color.text.interactive};
 
-  background-color: ${(p) => p.theme.color.background03};
+  background-color: ${color.neutral[10]};
   font-family: ${(p) => p.theme.fontFamily.heading};
   font-size: 14px;
   font-weight: 500;
@@ -224,18 +225,18 @@ export const AdvancedControlsButton = styled.button`
   }
 
   &:hover {
-    --text-color: ${(p) => p.theme.color.interactive07};
-    --svg-color: ${(p) => p.theme.color.interactive08};
+    --text-color: ${color.primary[60]};
+    --svg-color: ${color.primary[60]};
   }
 
   &:focus-visible {
-    --border: 3px solid ${(p) => p.theme.color.focusBorder};
+    --border: 3px solid ${color.divider.interactive};
   }
 `
 
 export const GlobalDefaultsButton = styled(AdvancedControlsButton)``
 
-export const CaratIcon = styled(CaratStrongDownIcon)<CaratIconProps>`
+export const CaratIcon = styled(CaratStrongDownIcon) <CaratIconProps>`
   --rotate: rotate(0deg);
 
   width: 16px;
@@ -283,8 +284,7 @@ export const ManagedText = styled.div`
   /* identical to box height, or 154% */
   text-align: center;
 
-  /* Light Theme/Brand/interactive06 */
-  color: #737ADE;
+  color: ${color.text.interactive};
 
   /* Inside auto layout */
   flex: none;
