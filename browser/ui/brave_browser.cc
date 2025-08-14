@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
 
 #include "base/check.h"
@@ -21,10 +22,13 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
+#include "chrome/browser/sessions/session_service.h"
+#include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -37,6 +41,7 @@
 #include "chrome/common/webui_url_constants.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/sessions/content/session_tab_helper.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_entry.h"
@@ -81,7 +86,6 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
 }
 
 BraveBrowser::~BraveBrowser() = default;
-
 
 void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
                                     unsigned changed_flags) {
@@ -168,6 +172,21 @@ void BraveBrowser::RunFileChooser(
   }
   Browser::RunFileChooser(render_frame_host, listener, *new_params);
 #endif
+}
+
+void BraveBrowser::TabCustomTitleChanged(
+    content::WebContents* contents,
+    const std::optional<std::string>& custom_title) {
+  SessionService* session_service =
+      SessionServiceFactory::GetForProfileIfExisting(profile());
+  if (session_service) {
+    sessions::SessionTabHelper* session_tab_helper =
+        sessions::SessionTabHelper::FromWebContents(contents);
+    session_service->AddTabExtraData(session_id(),
+                                     session_tab_helper->session_id(),
+                                     tabs::kBraveTabCustomTitleExtraDataKey,
+                                     custom_title.value_or(std::string()));
+  }
 }
 
 bool BraveBrowser::ShouldDisplayFavicon(
