@@ -13,7 +13,6 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/market_display/resources/grit/market_display_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/grit/browser_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
@@ -23,6 +22,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/resources/grit/webui_resources.h"
 #include "ui/webui/webui_util.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/webui/theme_source.h"
+#endif
 
 namespace market {
 
@@ -75,8 +78,10 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
   Profile* profile = Profile::FromWebUI(web_ui);
   content::URLDataSource::Add(
       profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
+#if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile,
                               std::make_unique<ThemeSource>(profile, true));
+#endif
 }
 
 UntrustedMarketUI::~UntrustedMarketUI() = default;

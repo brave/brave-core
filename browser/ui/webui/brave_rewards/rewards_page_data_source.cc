@@ -17,7 +17,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
-#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -26,6 +25,10 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/webui/webui_util.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/webui/theme_source.h"
+#endif
 
 namespace brave_rewards {
 
@@ -332,7 +335,9 @@ void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
 
+#if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
+#endif
 }
 
 }  // namespace brave_rewards
