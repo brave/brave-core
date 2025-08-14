@@ -68,7 +68,7 @@ group("chromium_unit_tests") {
   testonly = true
   data_deps = chromium_unit_tests_deps
   write_file("$root_out_dir/chromium_unit_tests.json",
-             chromium_unit_tests_deps,
+             [],
              "json")
 }
 
