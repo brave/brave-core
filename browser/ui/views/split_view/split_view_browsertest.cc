@@ -335,17 +335,17 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
 }
 
-class SplitViewWithTabDialogBrowserTest
-    : public InProcessBrowserTest,
-      public testing::WithParamInterface<bool> {
+// Use for testing brave split view and SideBySide together.
+class SplitViewCommonBrowserTest : public InProcessBrowserTest,
+                                   public testing::WithParamInterface<bool> {
  public:
-  SplitViewWithTabDialogBrowserTest() {
+  SplitViewCommonBrowserTest() {
     if (IsSideBySideEnabled()) {
       scoped_features_.InitWithFeatures(
           /*enabled_features*/ {features::kSideBySide}, {});
     }
   }
-  ~SplitViewWithTabDialogBrowserTest() override = default;
+  ~SplitViewCommonBrowserTest() override = default;
 
   bool GetIsTabHiddenFromPermissionManagerFromTabAt(int index) {
     auto* tab_strip_model = browser()->tab_strip_model();
@@ -438,7 +438,7 @@ class SplitViewWithTabDialogBrowserTest
   base::test::ScopedFeatureList scoped_features_;
 };
 
-IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest, SplitTabInsetsTest) {
+IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitTabInsetsTest) {
   brave::ToggleVerticalTabStrip(browser());
 
   auto* tab_strip_model = browser()->tab_strip_model();
@@ -519,8 +519,7 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest, SplitTabInsetsTest) {
 }
 
 // Check split view works with pinned tabs.
-IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
-                       SplitViewWithPinnedTabTest) {
+IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewWithPinnedTabTest) {
   auto* tab_strip_model = browser()->tab_strip_model();
   tab_strip_model->SetTabPinned(0, true);
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
@@ -539,8 +538,7 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
   chrome::PinTab(browser());
 }
 
-IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
-                       BookmarksBarVisibilityTest) {
+IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
   auto* prefs = browser()->profile()->GetPrefs();
   auto* tab_strip_model = browser()->tab_strip_model();
   NewSplitTab();
@@ -571,7 +569,7 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_P(
-    SplitViewWithTabDialogBrowserTest,
+    SplitViewCommonBrowserTest,
     JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView) {
   NewSplitTab();
   auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
@@ -617,7 +615,7 @@ IN_PROC_BROWSER_TEST_P(
 #endif
 
 IN_PROC_BROWSER_TEST_P(
-    SplitViewWithTabDialogBrowserTest,
+    SplitViewCommonBrowserTest,
     MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab) {
   brave::ToggleVerticalTabStrip(browser());
   NewSplitTab();
@@ -640,8 +638,7 @@ IN_PROC_BROWSER_TEST_P(
   EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
 }
 
-IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest,
-                       InactiveSplitTabTest) {
+IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, InactiveSplitTabTest) {
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
 
@@ -751,7 +748,7 @@ class LoadObserver : public content::WebContentsObserver {
 
 }  // namespace
 
-IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest, SplitViewReloadTest) {
+IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewReloadTest) {
   NewSplitTab();
   content::WaitForLoadStop(GetWebContentsAt(0));
   content::WaitForLoadStop(GetWebContentsAt(1));
@@ -837,7 +834,7 @@ IN_PROC_BROWSER_TEST_P(SplitViewWithTabDialogBrowserTest, SplitViewReloadTest) {
 
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
-    SplitViewWithTabDialogBrowserTest,
+    SplitViewCommonBrowserTest,
     ::testing::Bool());
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
