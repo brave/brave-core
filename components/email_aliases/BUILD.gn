@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
 
 declare_args() {
   brave_account_api_endpoint = "DUMMY_API_ENDPOINT"
@@ -22,6 +23,11 @@ mojom_component("mojom") {
   public_deps = [ "//mojo/public/mojom/base" ]
 }
 
+generated_types("email_aliases_api_types") {
+  sources = [ "email_aliases_api.idl" ]
+  root_namespace = "email_aliases"
+}
+
 static_library("features") {
   sources = [
     "features.cc",
@@ -37,8 +43,10 @@ static_library("service") {
     "email_aliases_service.h",
   ]
   deps = [
+    ":email_aliases_api_types",
     ":mojom",
     "//base",
+    "//brave/brave_domains",
     "//brave/components/email_aliases:features",
     "//brave/components/resources:strings_grit",
     "//components/keyed_service/core",

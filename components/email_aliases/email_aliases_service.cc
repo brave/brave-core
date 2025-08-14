@@ -12,7 +12,9 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "brave/brave_domains/service_domains.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -26,34 +28,21 @@ namespace email_aliases {
 
 namespace {
 
-const char* GetAccountsServiceBaseURL() {
-#if defined(BRAVE_ACCOUNT_API_ENDPOINT)
-  return BRAVE_ACCOUNT_API_ENDPOINT;
-#else
-  return "https://accounts.bsg.bravesoftware.com/v2";
-#endif
+std::string GetAccountsServiceBaseURL() {
+  return "https://" + brave_domains::GetServicesDomain("accounts.bsg") + "/v2";
 }
 
 const char kAccountsServiceRequestPath[] = "/verify/init";
 const char kAccountsServiceVerifyPath[] = "/verify/result";
 
-const char* GetBraveApiKey() {
-#if defined(BRAVE_ACCOUNT_API_KEY)
-  return BRAVE_ACCOUNT_API_KEY;
-#else
-  return "";
-#endif
-}
-
 const net::NetworkTrafficAnnotationTag traffic_annotation =
-    net::DefineNetworkTrafficAnnotation("email_aliases_mapping_service", R"(
+    net::DefineNetworkTrafficAnnotation("brave_accounts_service", R"(
       semantics {
         sender: "Email Aliases service"
         description:
-          "Call Email Aliases Mapping Service API"
+          "Call Brave Accounts Service API"
         trigger:
-          "When the user connects to the Email Mapping Service, to "
-          "Generate, Create, Read, Update, or Delete Email Aliases. "
+          "When the user requests to authenticate with Email Aliases"
         destination: BRAVE_OWNED_SERVICE
       }
       policy {
@@ -62,15 +51,15 @@ const net::NetworkTrafficAnnotationTag traffic_annotation =
 
 constexpr int kMaxResponseLength = 32768;
 
-}  // namespace
-
 std::string GetAccountsServiceRequestURL() {
-  return std::string(GetAccountsServiceBaseURL()) + kAccountsServiceRequestPath;
+  return GetAccountsServiceBaseURL() + kAccountsServiceRequestPath;
 }
 
 std::string GetAccountsServiceVerifyURL() {
-  return std::string(GetAccountsServiceBaseURL()) + kAccountsServiceVerifyPath;
+  return GetAccountsServiceBaseURL() + kAccountsServiceVerifyPath;
 }
+
+}  // namespace
 
 EmailAliasesService::EmailAliasesService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -98,33 +87,6 @@ void EmailAliasesService::NotifyObserversAuthStateChanged(
   }
 }
 
-void EmailAliasesService::ApiFetch(
-    const GURL& url,
-    const char* method,
-    const std::optional<std::string>& bearer_token,
-    const base::Value::Dict& bodyValue,
-    BodyAsStringCallback download_to_string_callback) {
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = url;
-  resource_request->method = method;
-  if (bearer_token) {
-    resource_request->headers.SetHeader(
-        "Authorization", std::string("Bearer ") + bearer_token.value());
-  }
-  resource_request->headers.SetHeader("X-API-key", GetBraveApiKey());
-  simple_url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), traffic_annotation);
-  if (!bodyValue.empty() && method != net::HttpRequestHeaders::kGetMethod &&
-      method != net::HttpRequestHeaders::kHeadMethod) {
-    auto body = base::WriteJson(bodyValue);
-    CHECK(body);
-    simple_url_loader_->AttachStringForUpload(body.value(), "application/json");
-  }
-  simple_url_loader_->DownloadToString(url_loader_factory_.get(),
-                                       std::move(download_to_string_callback),
-                                       kMaxResponseLength);
-}
-
 void EmailAliasesService::RequestAuthentication(
     const std::string& auth_email,
     RequestAuthenticationCallback callback) {
@@ -134,19 +96,30 @@ void EmailAliasesService::RequestAuthentication(
         l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_EMAIL_PROVIDED));
     return;
   }
-  const auto body_value = base::Value::Dict()
-                              .Set("email", auth_email)
-                              .Set("intent", "auth_token")
-                              .Set("service", "email-aliases");
-  ApiFetch(GURL(GetAccountsServiceRequestURL()),
-           net::HttpRequestHeaders::kPostMethod, std::nullopt, body_value,
-           base::BindOnce(&EmailAliasesService::OnRequestAuthenticationResponse,
-                          weak_factory_.GetWeakPtr(), std::move(callback)));
+  AuthenticationRequest auth_request;
+  auth_request.email = auth_email;
+  auth_request.intent = "auth_token";
+  auth_request.service = "email-aliases";
+  const auto body_value = auth_request.ToValue();
+  std::string body = base::WriteJson(body_value).value_or("");
+  auto resource_request = std::make_unique<network::ResourceRequest>();
+  resource_request->url = GURL(GetAccountsServiceRequestURL());
+  resource_request->method = net::HttpRequestHeaders::kPostMethod;
+  verify_init_simple_url_loader_ = network::SimpleURLLoader::Create(
+      std::move(resource_request), traffic_annotation);
+  verify_init_simple_url_loader_->AttachStringForUpload(body,
+                                                        "application/json");
+  verify_init_simple_url_loader_->DownloadToString(
+      url_loader_factory_.get(),
+      base::BindOnce(&EmailAliasesService::OnRequestAuthenticationResponse,
+                     weak_factory_.GetWeakPtr(), std::move(callback)),
+      kMaxResponseLength);
 }
 
 void EmailAliasesService::OnRequestAuthenticationResponse(
     RequestAuthenticationCallback callback,
     std::optional<std::string> response_body) {
+  verify_init_simple_url_loader_.reset();
   if (!response_body) {
     std::move(callback).Run(
         l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_RESPONSE_BODY));
@@ -158,31 +131,46 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
         IDS_EMAIL_ALIASES_ERROR_INVALID_RESPONSE_BODY));
     return;
   }
-  const auto* verification_token_ptr =
-      response_body_dict->GetDict().FindString("verificationToken");
-  if (!verification_token_ptr) {
+  auto parsed_auth =
+      AuthenticationResponse::FromValue(response_body_dict->GetDict());
+  if (!parsed_auth || parsed_auth->verification_token.empty()) {
     std::move(callback).Run(l10n_util::GetStringUTF8(
         IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN));
     return;
   }
   // Success
-  verification_token_ = *verification_token_ptr;
+  verification_token_ = parsed_auth->verification_token;
   NotifyObserversAuthStateChanged(mojom::AuthenticationStatus::kAuthenticating);
   std::move(callback).Run(std::nullopt);
   RequestSession();
 }
 
 void EmailAliasesService::RequestSession() {
-  auto body_value = base::Value::Dict().Set("wait", true);
-  ApiFetch(GURL(GetAccountsServiceVerifyURL()),
-           net::HttpRequestHeaders::kPostMethod, verification_token_,
-           body_value,
-           base::BindOnce(&EmailAliasesService::OnRequestSessionResponse,
-                          weak_factory_.GetWeakPtr()));
+  SessionRequest session_request;
+  session_request.wait = true;
+  auto body_value = session_request.ToValue();
+  std::string body = base::WriteJson(body_value).value_or("");
+  auto resource_request = std::make_unique<network::ResourceRequest>();
+  resource_request->url = GURL(GetAccountsServiceVerifyURL());
+  resource_request->method = net::HttpRequestHeaders::kPostMethod;
+  if (!verification_token_.empty()) {
+    resource_request->headers.SetHeader(
+        "Authorization", std::string("Bearer ") + verification_token_);
+  }
+  verify_result_simple_url_loader_ = network::SimpleURLLoader::Create(
+      std::move(resource_request), traffic_annotation);
+  verify_result_simple_url_loader_->AttachStringForUpload(body,
+                                                          "application/json");
+  verify_result_simple_url_loader_->DownloadToString(
+      url_loader_factory_.get(),
+      base::BindOnce(&EmailAliasesService::OnRequestSessionResponse,
+                     weak_factory_.GetWeakPtr()),
+      kMaxResponseLength);
 }
 
 void EmailAliasesService::OnRequestSessionResponse(
     std::optional<std::string> response_body) {
+  verify_result_simple_url_loader_.reset();
   if (!response_body) {
     return;
   }
@@ -190,13 +178,13 @@ void EmailAliasesService::OnRequestSessionResponse(
   if (!response_body_dict || !response_body_dict->is_dict()) {
     return;
   }
-  const auto* auth_token_ptr =
-      response_body_dict->GetDict().FindString("authToken");
-  if (!auth_token_ptr) {
+  auto parsed_session =
+      SessionResponse::FromValue(response_body_dict->GetDict());
+  if (!parsed_session || parsed_session->auth_token.empty()) {
     RequestSession();
     return;
   }
-  auth_token_ = *auth_token_ptr;
+  auth_token_ = parsed_session->auth_token;
   NotifyObserversAuthStateChanged(mojom::AuthenticationStatus::kAuthenticated);
 }
 

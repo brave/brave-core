@@ -81,12 +81,10 @@ class EmailAliasesService : public KeyedService,
   std::string auth_token_;
   std::string auth_email_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
+  std::unique_ptr<network::SimpleURLLoader> verify_init_simple_url_loader_;
+  std::unique_ptr<network::SimpleURLLoader> verify_result_simple_url_loader_;
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
-
-std::string GetAccountsServiceRequestURL();
-std::string GetAccountsServiceVerifyURL();
 
 }  // namespace email_aliases
 
