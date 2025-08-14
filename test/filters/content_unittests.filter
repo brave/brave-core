@@ -12,6 +12,12 @@
 # `BravePrivacySandboxSettings::IsAttributionReportingAllowed`
 -AttributionStorageSqlNavigationRetryTest.AdjustNavigationRetryEventReportTimes
 
+# These tests fail because we override FileSystemAccessHandleBase::DoMove to
+# only allow moving temp files.
+-FileSystemAccessFileHandleImplMoveTest.HasDestWriteAccess
+-FileSystemAccessFileHandleImplMoveTest.NoDestWriteAccess
+-FileSystemAccessFileHandleImplRenameTest.HasWriteAccess
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AdAuctionServiceImplBAndATest.*
 -AdAuctionServiceImplPrivateAggregationEnabledTest.*
