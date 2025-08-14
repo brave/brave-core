@@ -22,16 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BraveAutocompleteCoordinator {
-    public ViewProvider<SuggestionListViewHolder> createViewProvider(
-            boolean forcePhoneStyleOmnibox) {
+    public ViewProvider<SuggestionListViewHolder> createViewProvider() {
         ViewProvider<SuggestionListViewHolder> provider =
                 (ViewProvider<SuggestionListViewHolder>)
                         BraveReflectionUtil.invokeMethod(
-                                AutocompleteCoordinator.class,
-                                this,
-                                "createViewProvider",
-                                boolean.class,
-                                forcePhoneStyleOmnibox);
+                                AutocompleteCoordinator.class, this, "createViewProvider");
 
         return new ViewProvider<SuggestionListViewHolder>() {
             private List<Callback<SuggestionListViewHolder>> mCallbacks = new ArrayList<>();

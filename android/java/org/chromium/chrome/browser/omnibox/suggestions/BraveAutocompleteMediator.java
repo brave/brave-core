@@ -70,7 +70,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             ActivityLifecycleDispatcher lifecycleDispatcher,
             OmniboxSuggestionsDropdownEmbedder embedder,
             WindowAndroid windowAndroid,
-            DeferredIMEWindowInsetApplicationCallback deferredIMEWindowInsetApplicationCallback) {
+            DeferredIMEWindowInsetApplicationCallback deferredIMEWindowInsetApplicationCallback,
+            boolean forcePhoneStyleOmnibox) {
         super(
                 context,
                 delegate,
@@ -89,7 +90,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                 lifecycleDispatcher,
                 embedder,
                 windowAndroid,
-                deferredIMEWindowInsetApplicationCallback);
+                deferredIMEWindowInsetApplicationCallback,
+                forcePhoneStyleOmnibox);
 
         mDelegate = delegate;
         mActivityTabSupplier = activityTabSupplier;
