@@ -10,8 +10,16 @@ class Profile;
 
 namespace perf {
 
-// A handler for --enable-brave-features-for-perf-testing switch.
-void MaybeEnableBraveFeatureForPerfTesting(Profile* profile);
+// Handlers for --enable-brave-features-for-perf-testing switch.
+// They are split into two because the first is invoked from
+// BraveProfileManager::InitProfileUserPrefs and cannot instantiate services
+// that rely on identity manager because ProfileImpl::OnLocaleReady expects
+// identity manager not to be initialized before browser context services are
+// created. The second one is invoked from
+// BraveProfileManager::DoFinalInitForServices.
+void MaybeEnableBraveFeaturesPrefsForPerfTesting(Profile* profile);
+void MaybeEnableBraveFeaturesServicesAndComponentsForPerfTesting(
+    Profile* profile);
 
 }  // namespace perf
 
