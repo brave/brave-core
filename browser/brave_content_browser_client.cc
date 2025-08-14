@@ -19,6 +19,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/brave_account/brave_account_navigation_throttle.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
@@ -1174,6 +1175,9 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   content::NavigationHandle& navigation_handle = registry.GetNavigationHandle();
   content::BrowserContext* context =
       navigation_handle.GetWebContents()->GetBrowserContext();
+
+  BraveAccountNavigationThrottle::MaybeCreateAndAdd(registry);
+
 #if !BUILDFLAG(IS_ANDROID)
   NewTabShowsNavigationThrottle::MaybeCreateAndAdd(registry);
 #endif
