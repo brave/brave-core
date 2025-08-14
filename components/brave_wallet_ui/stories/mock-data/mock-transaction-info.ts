@@ -125,6 +125,117 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   swapInfo: undefined,
 }
 
+export const mockSOLTXInstructions: SerializableTransactionInfo = {
+  chainId: BraveWallet.SOLANA_MAINNET,
+  fromAccountId: mockSolanaAccount.accountId,
+  id: 'sol-tx',
+  txArgs: [],
+  txDataUnion: {
+    ethTxData1559: undefined,
+    ethTxData: undefined,
+    solanaTxData: {
+      addressTableLookups: [],
+      amount: '0',
+      feePayer: '6ZpxVa8QbhoLhLUvsXUQJECZ6tRQsc7SUbeVk5HTJQEo',
+      feeEstimation: {
+        baseFee: BigInt(12),
+        computeUnits: 1000000,
+        feePerComputeUnit: BigInt(12),
+      },
+      instructions: [
+        {
+          programId: 'ComputeBudget111111111111111111111111111111',
+          accountMetas: [],
+          data: [2, 240, 1, 0, 0],
+          decodedData: undefined,
+        },
+        {
+          programId: 'ComputeBudget111111111111111111111111111111',
+          accountMetas: [],
+          data: [3, 1, 0, 0, 0, 0, 0, 0],
+          decodedData: undefined,
+        },
+        {
+          programId: '11111111111111111111111111111111',
+          accountMetas: [
+            {
+              pubkey: mockSolanaAccountInfo.address,
+              addrTableLookupIndex: undefined,
+              isSigner: true,
+              isWritable: true,
+            },
+            {
+              pubkey: mockSolanaAccountInfo.address,
+              addrTableLookupIndex: undefined,
+              isSigner: false,
+              isWritable: true,
+            },
+          ],
+          data: [2, 0, 0, 0, 96, 224, 200, 180, 5, 0, 0, 0],
+          decodedData: {
+            instructionType: 2,
+            accountParams: [
+              {
+                localizedName: 'From account',
+                name: 'from_account',
+              },
+              {
+                localizedName: 'To account',
+                name: 'to_account',
+              },
+            ],
+            params: [
+              {
+                name: 'lamports',
+                value: '2039280',
+                type: 2,
+                localizedName: 'lamports',
+              },
+            ],
+          },
+        },
+      ],
+      lamports: '100',
+      lastValidBlockHeight: '1',
+      messageHeader: {
+        numReadonlySignedAccounts: 1,
+        numReadonlyUnsignedAccounts: 1,
+        numRequiredSignatures: 1,
+      },
+      recentBlockhash: '1',
+      sendOptions: {
+        preflightCommitment: '',
+        skipPreflight: undefined,
+        maxRetries: { maxRetries: 1 },
+      },
+      signTransactionParam: {
+        encodedSerializedMsg: '',
+        signatures: [],
+      },
+      tokenAddress: '',
+      staticAccountKeys: [],
+      toWalletAddress: mockSolanaAccountInfo.address,
+      txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+      version: 1,
+    },
+    filTxData: undefined,
+    btcTxData: undefined,
+    zecTxData: undefined,
+  },
+  txHash:
+    '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
+  txStatus: 0,
+  txParams: ['address', 'amount'],
+  txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+  createdTime: { microseconds: 0 },
+  submittedTime: { microseconds: 0 },
+  confirmedTime: { microseconds: 0 },
+  originInfo: mockOriginInfo,
+  effectiveRecipient: undefined,
+  isRetriable: false,
+  swapInfo: undefined,
+}
+
 export const mockATAInstruction = {
   programId: BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID,
   accountMetas: [
@@ -301,8 +412,24 @@ export const mockBtcSendTransaction = {
     btcTxData: {
       amount: BigInt(10000000000000),
       fee: BigInt(10000000),
-      inputs: [],
-      outputs: [],
+      inputs: [
+        {
+          address: mockBtcAccount.address,
+          value: BigInt(10000000000000),
+          outpointIndex: 14,
+          outpointTxid: 'btc-send-tx',
+        },
+      ],
+      outputs: [
+        {
+          address: 'another-btc-address',
+          value: BigInt(10000000000000),
+        },
+        {
+          address: 'another-btc-address',
+          value: BigInt(10000000000000),
+        },
+      ],
       sendingMaxAmount: false,
       to: 'another-btc-address',
     },
@@ -330,20 +457,34 @@ export const mockBtcSendTransaction = {
   swapInfo: undefined,
 }
 
-export const mockZecSendTransaction = {
+export const mockZecSendTransaction: SerializableTransactionInfo = {
   id: 'Zec-send-tx-1',
-  fromAddress: mockZecAccount.address,
   fromAccountId: mockZecAccount.accountId,
   txHash: 'Zec-send-tx',
   txDataUnion: {
     zecTxData: {
       amount: BigInt(10000000000000),
       fee: BigInt(10000000),
-      inputs: [],
-      outputs: [],
+      inputs: [
+        {
+          address: mockZecAccount.address,
+          value: BigInt(10000000000000),
+        },
+      ],
+      outputs: [
+        {
+          address: 'another-zec-address',
+          value: BigInt(10000000000000),
+        },
+        {
+          address: 'another-zec-address',
+          value: BigInt(10000000000000),
+        },
+      ],
       to: 'another-Zec-address',
       useShieldedPool: false,
       memo: undefined,
+      sendingMaxAmount: false,
     },
   },
   txStatus: 4,
@@ -367,6 +508,52 @@ export const mockZecSendTransaction = {
   effectiveRecipient: mockZecAccount.accountId.address,
   isRetriable: false,
   swapInfo: undefined,
+}
+
+export const mockERC20TransferTransaction: SerializableTransactionInfo = {
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
+  confirmedTime: { microseconds: 0 },
+  createdTime: { microseconds: 1755121283613000 },
+  effectiveRecipient: mockEthAccount.accountId.address,
+  fromAccountId: mockEthAccount.accountId,
+  id: 'ERC20-transfer-tx-1',
+  isRetriable: false,
+  originInfo: mockOriginInfo,
+  submittedTime: { microseconds: 0 },
+  swapInfo: undefined,
+  txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
+  txDataUnion: {
+    ethTxData1559: {
+      chainId: BraveWallet.MAINNET_CHAIN_ID,
+      maxPriorityFeePerGas: '0x2faf080',
+      maxFeePerGas: '0x2faf092',
+      gasEstimation: {
+        slowMaxPriorityFeePerGas: '0x2',
+        slowMaxFeePerGas: '0x14',
+        avgMaxPriorityFeePerGas: '0x2faf080',
+        avgMaxFeePerGas: '0x2faf092',
+        fastMaxPriorityFeePerGas: '0x59682f00',
+        fastMaxFeePerGas: '0x59682f12',
+        baseFeePerGas: '0x12',
+      },
+      baseData: {
+        nonce: '0xb',
+        gasPrice: '0x0',
+        gasLimit: '0x5208',
+        to: mockEthAccount.accountId.address,
+        value: '0x5543df729c0000',
+        data: [
+          168, 0, 5, 168, 0, 5, 168, 0, 5, 168, 0, 5, 168, 0, 5, 168, 0, 5,
+        ],
+        signOnly: false,
+        signedTransaction: 'mockSignedTx',
+      },
+    },
+  },
+  txHash: 'ERC20-transfer-tx-hash',
+  txParams: ['address', 'uint256'],
+  txStatus: BraveWallet.TransactionStatus.Unapproved,
+  txType: BraveWallet.TransactionType.ERC20Transfer,
 }
 
 export const createMockERC20TransferTxArgs = ({
