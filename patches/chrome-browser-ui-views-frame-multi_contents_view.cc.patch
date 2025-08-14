@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/multi_contents_view.cc b/chrome/browser/ui/views/frame/multi_contents_view.cc
-index a801b7a39a41b2ea6117e1ae7335b4b246ab53ae..00ddee01eb5dcacb98e6e584466df104d81f8c02 100644
+index 725962fff461e2ae8c87b40face904d3d5385c7d..15b66edd9aac4cee841d985aa3eaef3f29e8501a 100644
 --- a/chrome/browser/ui/views/frame/multi_contents_view.cc
 +++ b/chrome/browser/ui/views/frame/multi_contents_view.cc
-@@ -50,7 +50,7 @@ MultiContentsView::MultiContentsView(
+@@ -44,7 +44,7 @@ MultiContentsView::MultiContentsView(
        is_drag_and_drop_enabled_(SupportsSplitViewDragAndDrop()) {
    SetLayoutManager(std::make_unique<views::DelegatingLayoutManager>(this));
    contents_container_views_.push_back(
@@ -11,12 +11,12 @@ index a801b7a39a41b2ea6117e1ae7335b4b246ab53ae..00ddee01eb5dcacb98e6e584466df104
    contents_container_views_[0]
        ->GetContentsView()
        ->set_is_primary_web_contents_for_window(true);
-@@ -61,7 +61,7 @@ MultiContentsView::MultiContentsView(
+@@ -53,7 +53,7 @@ MultiContentsView::MultiContentsView(
    resize_area_->SetVisible(false);
  
    contents_container_views_.push_back(
 -      AddChildView(std::make_unique<ContentsContainerView>(browser_view_)));
 +      AddChildView(std::make_unique<BraveContentsContainerView>(browser_view_)));
    contents_container_views_[1]->SetVisible(false);
-   contents_container_views_[1]->GetInactiveSplitScrimView()->SetProperty(
-       views::kElementIdentifierKey, kEndContainerViewScrimElementId);
+ 
+   for (auto* contents_container_view : contents_container_views_) {
