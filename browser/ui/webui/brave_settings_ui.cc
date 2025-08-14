@@ -143,8 +143,7 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   }
 #endif
   if (BraveOriginState::GetInstance()->IsBraveOriginUser()) {
-    web_ui->AddMessageHandler(
-        std::make_unique<BraveOriginHandler>(Profile::FromWebUI(web_ui)));
+    web_ui->AddMessageHandler(std::make_unique<BraveOriginHandler>());
   }
 }
 

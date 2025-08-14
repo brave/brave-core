@@ -129,29 +129,7 @@ void SetPrefValue(PrefService* prefs,
 
 }  // namespace
 
-BraveOriginHandler::BraveOriginHandler(Profile* profile) : profile_(profile) {
-  // Register profile preference change listeners
-  pref_change_registrar_.Init(profile_->GetPrefs());
-  for (const auto& config : kProfilePrefs) {
-    pref_change_registrar_.Add(
-        config.pref_name,
-        base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                            base::Unretained(this)));
-  }
-
-  // Register local state preference change listeners
-  local_state_change_registrar_.Init(g_browser_process->local_state());
-  for (const auto& config : kLocalStatePrefs) {
-    local_state_change_registrar_.Add(
-        config.pref_name,
-        base::BindRepeating(&BraveOriginHandler::OnValueChanged,
-                            base::Unretained(this)));
-  }
-
-  // Store initial values for restart detection
-  StoreInitialValues();
-}
-
+BraveOriginHandler::BraveOriginHandler() = default;
 BraveOriginHandler::~BraveOriginHandler() = default;
 
 void BraveOriginHandler::StoreInitialValues() {
@@ -172,6 +150,8 @@ void BraveOriginHandler::StoreInitialValues() {
 }
 
 void BraveOriginHandler::RegisterMessages() {
+  profile_ = Profile::FromWebUI(web_ui());
+
   web_ui()->RegisterMessageCallback(
       "getInitialState",
       base::BindRepeating(&BraveOriginHandler::HandleGetInitialState,
@@ -183,6 +163,27 @@ void BraveOriginHandler::RegisterMessages() {
       "resetToDefaults",
       base::BindRepeating(&BraveOriginHandler::HandleResetToDefaults,
                           base::Unretained(this)));
+
+  // Register profile preference change listeners
+  pref_change_registrar_.Init(profile_->GetPrefs());
+  for (const auto& config : kProfilePrefs) {
+    pref_change_registrar_.Add(
+        config.pref_name,
+        base::BindRepeating(&BraveOriginHandler::OnValueChanged,
+                            base::Unretained(this)));
+  }
+
+  // Register local state preference change listeners
+  local_state_change_registrar_.Init(g_browser_process->local_state());
+  for (const auto& config : kLocalStatePrefs) {
+    local_state_change_registrar_.Add(
+        config.pref_name,
+        base::BindRepeating(&BraveOriginHandler::OnValueChanged,
+                            base::Unretained(this)));
+  }
+
+  // Store initial values for restart detection
+  StoreInitialValues();
 }
 
 // Make a dictionary w/ local state available to the UI.

@@ -21,7 +21,9 @@
 // allows folks to turn on or off features (and can prompt for restart).
 class BraveOriginHandler : public settings::SettingsPageUIHandler {
  public:
-  explicit BraveOriginHandler(Profile* profile);
+  BraveOriginHandler();
+  BraveOriginHandler(const BraveOriginHandler&) = delete;
+  BraveOriginHandler& operator=(const BraveOriginHandler&) = delete;
   ~BraveOriginHandler() override;
 
  private:
@@ -43,7 +45,7 @@ class BraveOriginHandler : public settings::SettingsPageUIHandler {
   PrefChangeRegistrar pref_change_registrar_;
   PrefChangeRegistrar local_state_change_registrar_;
 
-  const raw_ptr<Profile, DanglingUntriaged> profile_;
+  raw_ptr<Profile> profile_ = nullptr;
 
   // Map to store initial preference values for restart detection
   std::unordered_map<std::string_view, bool> initial_values_;
