@@ -326,6 +326,9 @@ const Config = function () {
     'zebpay_sandbox_client_id',
     'zebpay_sandbox_client_secret',
     'zebpay_sandbox_oauth_url',
+    'use_clang_coverage',
+    'coverage_instrumentation_input_file',
+    'use_clang_profiling_inside_sandbox'
   ]
 }
 
