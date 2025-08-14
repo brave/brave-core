@@ -327,6 +327,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         Integer[] expectedItems = {
             R.id.new_tab_menu_id,
             R.id.new_incognito_tab_menu_id,
+            R.id.add_to_group_menu_id,
             R.id.divider_line_id,
             R.id.open_history_menu_id,
             R.id.downloads_menu_id,
@@ -361,6 +362,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
         expectedItems.add(R.id.new_tab_menu_id);
         expectedItems.add(R.id.new_incognito_tab_menu_id);
+        expectedItems.add(R.id.add_to_group_menu_id);
         expectedItems.add(R.id.divider_line_id);
         expectedItems.add(R.id.open_history_menu_id);
         expectedItems.add(R.id.downloads_menu_id);
