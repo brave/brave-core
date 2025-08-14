@@ -24,6 +24,8 @@ import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateMa
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+import java.util.List;
+
 @NullUnmarked // Waiting for upstream parent class to be NullMarked
 class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
 
@@ -58,9 +60,10 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
     }
 
     @Override
-    public void moveTabToWindow(InstanceInfo info, Tab tab, int tabAtIndex) {
-        super.moveTabToWindow(info, tab, tabAtIndex);
-        if (mIsMoveTabsFromSettings) {
+    public void moveTabsToWindow(InstanceInfo info, List<Tab> tabs, int tabAtIndex) {
+        super.moveTabsToWindow(info, tabs, tabAtIndex);
+
+        if (mIsMoveTabsFromSettings && tabs != null && !tabs.isEmpty()) {
             mIsMoveTabsFromSettings = false;
             TabModelSelector selector =
                     TabWindowManagerSingleton.getInstance().getTabModelSelectorById(mInstanceId);
@@ -91,8 +94,9 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                                         null)
                                 .setSingleLine(false)
                                 .setDuration(10000);
+                Tab firstTab = tabs.get(0);
                 SnackbarManager snackbarManager =
-                        SnackbarManagerProvider.from(tab.getWindowAndroid());
+                        SnackbarManagerProvider.from(firstTab.getWindowAndroid());
                 snackbarManager.showSnackbar(snackbar);
             }
         }
