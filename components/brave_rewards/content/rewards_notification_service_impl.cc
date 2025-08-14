@@ -19,6 +19,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_rewards/content/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -33,17 +34,6 @@ RewardsNotificationServiceImpl::RewardsNotificationServiceImpl(
 
 RewardsNotificationServiceImpl::~RewardsNotificationServiceImpl() {
   StoreRewardsNotifications();
-  if (extension_observer_) {
-    RemoveObserver(extension_observer_.get());
-  }
-}
-
-void RewardsNotificationServiceImpl::Init(
-    std::unique_ptr<RewardsNotificationServiceObserver> extension_observer) {
-  if (extension_observer) {
-    extension_observer_ = std::move(extension_observer);
-    AddObserver(extension_observer_.get());
-  }
 }
 
 void RewardsNotificationServiceImpl::AddNotification(
