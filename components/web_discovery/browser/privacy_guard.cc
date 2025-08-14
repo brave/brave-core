@@ -180,7 +180,7 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
                     prefix.value_or(kDefaultSearchPrefix), query_encoded_str}));
 }
 
-bool ShouldMaskURL(const GURL& url) {
+bool ShouldMaskURL(const GURL& url, bool relaxed) {
   if (RegexUtil::GetInstance()->CheckForEmail(url.spec())) {
     return true;
   }
@@ -212,7 +212,7 @@ bool ShouldMaskURL(const GURL& url) {
     if (path_part.length() > kMaxPathPartLength) {
       return true;
     }
-    if (path_part.length() >= kMinPathPartHashCheckLength &&
+    if (!relaxed && path_part.length() >= kMinPathPartHashCheckLength &&
         IsHashLikely(path_part)) {
       return true;
     }
@@ -223,7 +223,8 @@ bool ShouldMaskURL(const GURL& url) {
   for (const auto& path_segment : path_segments) {
     std::string alphanumeric_path_segment = path_segment;
     TransformToAlphanumeric(alphanumeric_path_segment);
-    if (alphanumeric_path_segment.length() >= kMinSegmentHashCheckLength &&
+    if (!relaxed &&
+        alphanumeric_path_segment.length() >= kMinSegmentHashCheckLength &&
         IsHashLikely(alphanumeric_path_segment)) {
       return true;
     }
@@ -231,12 +232,12 @@ bool ShouldMaskURL(const GURL& url) {
   return ContainsForbiddenKeywords(url);
 }
 
-std::optional<std::string> MaskURL(const GURL& url) {
+std::optional<std::string> MaskURL(const GURL& url, bool relaxed) {
   if (!url.SchemeIsHTTPOrHTTPS() || !url.is_valid()) {
     return std::nullopt;
   }
 
-  if (!ShouldMaskURL(url)) {
+  if (!ShouldMaskURL(url, relaxed)) {
     return url.spec();
   }
 
@@ -249,7 +250,7 @@ std::optional<std::string> MaskURL(const GURL& url) {
       if (!decoded_embedded_url.is_valid()) {
         return std::nullopt;
       }
-      return MaskURL(decoded_embedded_url);
+      return MaskURL(decoded_embedded_url, relaxed);
     }
   }
 

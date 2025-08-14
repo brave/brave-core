@@ -215,9 +215,7 @@ class MaskUTransform : public ValueTransform {
     if (!url.is_valid()) {
       return std::nullopt;
     }
-    // TODO(djandries): Use "relaxed" option once available in `MaskURL`.
-    VLOG(1) << "MaskUTransform: " << relaxed_;
-    return MaskURL(url);
+    return MaskURL(url, relaxed_);
   }
 
  private:
