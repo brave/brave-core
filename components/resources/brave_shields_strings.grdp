@@ -33,7 +33,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_THIS_SITE_DESC" desc="Description for the alert if the user is experiencing issues with the site.">
-    We're trying out an experiment to increase site compatibility, where we only keep ad-blocking on and reduce some privacy protections. Do you want to try it out? You can always undo and return to your regular Shields experience. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$1</ph>
+    We're trying out an experiment to increase site compatibility, where we only keep ad-blocking on and reduce some privacy protections. Do you want to try it out? You can always undo and return to your regular Shields experience. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_SHIELDS_TITLE" desc="Title for the alert if the user is experiencing issues with Shields.">
@@ -41,7 +41,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ARE_YOU_EXPERIENCING_ISSUES_WITH_SHIELDS_DESC" desc="Description for the alert if the user is experiencing issues with Shields.">
-    We're trying out an experiment to increase site compatibility, where we only keep ad-blocking on and reduce privacy protections. Do you want to try it out? You can always undo and return to your regular Shields experience. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$1</ph>
+    We're trying out an experiment to increase site compatibility, where we only keep ad-blocking on and reduce privacy protections. Do you want to try it out? You can always undo and return to your regular Shields experience. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ENABLE_AD_BLOCK_ONLY_MODE" desc="A button label to enable ad block only mode.">

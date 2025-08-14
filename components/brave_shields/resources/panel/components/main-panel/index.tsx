@@ -48,7 +48,7 @@ function AreYouExperiencingIssuesAfterRepeatedReloads() {
       </div>
       <div style={{ padding: 'var(--leo-spacing-xl) 0', font: 'var(--leo-font-default-regular)' }}>
         {formatLocale(`braveShieldsAreYouExperiencingIssuesWithThisSiteDesc`, {
-          $1: content => <a href="#" onClick={handleLearnMoreClick}>{content}</a>
+          $1: content => <a href="#" onClick={handleLearnMoreClick} style={{ color: 'var(--leo-color-text-secondary)' }}>{content}</a>
         })}
       </div>
       <div
@@ -58,7 +58,7 @@ function AreYouExperiencingIssuesAfterRepeatedReloads() {
           gap: 'var(--leo-spacing-m)'
         }}
       >
-        <Button kind="plain" size="medium" onClick={onDismissRepeatedReloadsAdBlockOnlyModePromptClick}>
+        <Button kind="outline" size="medium" onClick={onDismissRepeatedReloadsAdBlockOnlyModePromptClick}>
           {getLocale('braveShieldsDismissAlert')}
         </Button>
         <Button size="medium" onClick={onEnableAdBlockOnlyModeClick}>
@@ -92,10 +92,10 @@ function AreYouExperiencingIssuesAndDisabledShields({ onDismiss }: { onDismiss: 
             gap: 'var(--leo-spacing-m)'
           }}
         >
+          <Button size="medium" onClick={onEnableAdBlockOnlyModeClick}>{getLocale('braveShieldsEnableAdBlockOnlyMode')}</Button>
           <Button kind="plain" size="medium" onClick={() => onDismissShieldsDisabledAdBlockOnlyModePromptClick(onDismiss)}>
             {getLocale('braveShieldsDismissAlert')}
           </Button>
-          <Button size="medium" onClick={onEnableAdBlockOnlyModeClick}>{getLocale('braveShieldsEnableAdBlockOnlyMode')}</Button>
         </div>
       </Alert>
     </div>
