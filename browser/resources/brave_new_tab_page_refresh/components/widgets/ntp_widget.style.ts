@@ -10,7 +10,7 @@ export const style = scoped.css`
   & {
     color: ${color.text.primary};
     border-radius: 16px;
-    background: rgba(0, 0, 0, 0.50);
+    background: ${color.material.thin};
     backdrop-filter: blur(50px);
     display: flex;
     align-items: stretch;
