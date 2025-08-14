@@ -493,7 +493,6 @@
 
 -keep class org.chromium.chrome.browser.multiwindow.MultiInstanceManagerApi31 {
     *** mInstanceId;
-    moveTabToWindow(...);
     handleMenuOrKeyboardAction(...);
     <init>(...);
 }
