@@ -56,12 +56,12 @@ class BraveShieldsSettingsTest : public testing::Test {
 };
 
 TEST_F(BraveShieldsSettingsTest, BraveShieldsEnabled) {
-  EXPECT_TRUE(brave_shields_settings()->GetBraveShieldsEnabled(kTestUrl));
+  EXPECT_TRUE(brave_shields_settings()->IsBraveShieldsEnabled(kTestUrl));
   brave_shields_settings()->SetBraveShieldsEnabled(false, kTestUrl);
-  EXPECT_FALSE(brave_shields_settings()->GetBraveShieldsEnabled(kTestUrl));
+  EXPECT_FALSE(brave_shields_settings()->IsBraveShieldsEnabled(kTestUrl));
 
   // verify other urls unchanged
-  EXPECT_TRUE(brave_shields_settings()->GetBraveShieldsEnabled(
+  EXPECT_TRUE(brave_shields_settings()->IsBraveShieldsEnabled(
       GURL("https://example.com")));
 }
 
