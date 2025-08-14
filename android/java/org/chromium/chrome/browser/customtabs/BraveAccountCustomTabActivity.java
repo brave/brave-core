@@ -27,6 +27,8 @@ import androidx.core.content.ContextCompat;
 import org.chromium.base.IntentUtils;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.IntentHandler;
+import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.util.ColorUtils;
 
 @NullMarked
@@ -94,6 +96,7 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
         intent.putExtra(
                 CustomTabsIntent.EXTRA_COLOR_SCHEME,
                 ColorUtils.inNightMode(activity) ? COLOR_SCHEME_DARK : COLOR_SCHEME_LIGHT);
+        intent.putExtra(IntentHandler.EXTRA_PAGE_TRANSITION_TYPE, PageTransition.AUTO_TOPLEVEL);
         IntentUtils.addTrustedIntentExtras(intent);
         activity.startActivity(intent);
     }
