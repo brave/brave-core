@@ -152,7 +152,9 @@ export const VerifyRecoveryPhrase = () => {
       />
       <BackButton
         onClick={() =>
-          history.push(WalletRoutes.OnboardingBackupRecoveryPhrase)
+          isOnboarding
+            ? history.push(WalletRoutes.OnboardingBackupRecoveryPhrase)
+            : history.push(WalletRoutes.BackupRecoveryPhrase)
         }
       >
         {getLocale('braveWalletVerifyRecoveryPhraseGoBack')}
