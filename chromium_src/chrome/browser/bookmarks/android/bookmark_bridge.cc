@@ -5,9 +5,11 @@
 
 #include "chrome/browser/bookmarks/android/bookmark_bridge.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/check.h"
+#include "base/task/bind_post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/thread.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
@@ -28,14 +30,16 @@
 #include <chrome/browser/bookmarks/android/bookmark_bridge.cc>
 
 using base::android::JavaParamRef;
+using user_data_importer::BookmarkParser;
+using user_data_importer::ContentBookmarkParser;
 using user_data_importer::SearchEngineInfo;
 
 namespace internal {
 
 // Returns true if |url| has a valid scheme that we allow to import. We
 // filter out the URL with a unsupported scheme.
-// Taken from src/chrome/utility/importer/bookmarks_file_importer.cc because the
-// file is not compiled on Android,
+// Taken from src/chrome/utility/importer/bookmarks_file_importer.cc because
+// the file is not compiled on Android,
 bool CanImportURL(const GURL& url) {
   // The URL is not valid.
   if (!url.is_valid()) {
@@ -127,47 +131,28 @@ void BookmarkBridge::ImportBookmarks(
   std::u16string import_path =
       base::android::ConvertJavaStringToUTF16(env, j_import_path);
 
-  bookmark_parser_ =
-      std::make_unique<user_data_importer::ContentBookmarkParser>();
   origin_sequence_task_runner_ = base::SequencedTaskRunner::GetCurrentDefault();
   background_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE});
 
-  background_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&BookmarkBridge::ParseBookmarks,
-                                base::Unretained(this), import_path));
-}
+  bookmark_parser_ =
+      base::SequenceBound<std::unique_ptr<ContentBookmarkParser>>(
+          background_task_runner_, std::make_unique<ContentBookmarkParser>());
 
-void BookmarkBridge::ParseBookmarks(std::u16string import_file_path) {
-  bookmark_parser_->Parse(base::FilePath::FromUTF16Unsafe(import_file_path),
-                          base::BindOnce(&BookmarkBridge::OnParseFinishedAtIO,
-                                         weak_ptr_factory_.GetWeakPtr()));
-}
-
-void BookmarkBridge::OnParseFinishedAtIO(
-    user_data_importer::BookmarkParser::BookmarkParsingResult result) {
-  bookmark_parser_.reset();
-
-  origin_sequence_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](BookmarkBridge* self,
-             user_data_importer::BookmarkParser::BookmarkParsingResult result) {
-            DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-            auto weak = self->weak_ptr_factory_.GetWeakPtr();
-            // There is BookmarkBridge::weak_ptr_factory_ which has a
-            // sequence checker. This is why we can't from IO thread do
-            // BindOnce(OnParseFinishedAtUI, weak_ptr_factory_.GetWeakPtr()),
-            // it will cause sequence violation error, as
-            // BookmarkBridge::weak_ptr_factory_ was created at UI thread.
-            if (weak) {
-              weak->OnParseFinishedAtUI(std::move(result));
+  bookmark_parser_.AsyncCall(&ContentBookmarkParser::Parse)
+      .WithArgs(base::FilePath::FromUTF16Unsafe(import_path))
+      .Then(base::BindOnce(
+          [](base::WeakPtr<BookmarkBridge> bridge,
+             BookmarkParser::BookmarkParsingResult result) {
+            if (!bridge) {
+              return;
             }
+            bridge->OnParseFinished(std::move(result));
           },
-          base::Unretained(this), std::move(result)));
+          weak_ptr_factory_.GetWeakPtr()));
 }
 
-void BookmarkBridge::OnParseFinishedAtUI(
+void BookmarkBridge::OnParseFinished(
     user_data_importer::BookmarkParser::BookmarkParsingResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   bool import_succeeded = result.has_value();
