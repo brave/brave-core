@@ -1030,11 +1030,10 @@ public class BytecodeTest {
                         Intent.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
+                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator", // presubmit: ignore-long-line
                         "createViewProvider",
                         MethodModifier.REGULAR,
-                        ViewProvider.class,
-                        boolean.class));
+                        ViewProvider.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
@@ -1464,8 +1463,8 @@ public class BytecodeTest {
                         DataSharingTabManager.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator",
+                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator", // presubmit: ignore-long-line
                         Context.class,
                         AutocompleteDelegate.class,
                         UrlBarEditingTextStateProvider.class,
@@ -1483,7 +1482,8 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         OmniboxSuggestionsDropdownEmbedder.class,
                         WindowAndroid.class,
-                        DeferredIMEWindowInsetApplicationCallback.class));
+                        DeferredIMEWindowInsetApplicationCallback.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
