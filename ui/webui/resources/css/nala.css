@@ -4,7 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 /* This file has been written by hand - these transforms should not ever change,
- * as they just map a nala color name to a chromium color name. */
+ * as they just map a nala color name to a chromium color name.
+ * Note: Android doesn't support Theme source, so we just directly use the Nala
+ * varaibles there by copying `variables.css` to `nala.css`. */
 
 @import "//theme/colors.css?sets=ui";
 @import "//resources/brave/leo/css/variables.css";
