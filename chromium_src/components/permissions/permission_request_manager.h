@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_MANAGER_H_
 
 class WidevinePermissionAndroidTest;
-class SplitViewWithTabDialogBrowserTest;
+class SplitViewCommonBrowserTest;
 
 #define set_view_factory_for_testing                                           \
   AcceptDenyCancel(const std::vector<PermissionRequest*>& accepted_requests,   \
@@ -20,7 +20,7 @@ class SplitViewWithTabDialogBrowserTest;
   void UpdateTabIsHiddenWithTabActivationState();                              \
   bool ShouldBeGrouppedInRequests(PermissionRequest* a) const;                 \
   friend class ::WidevinePermissionAndroidTest;                                \
-  friend class ::SplitViewWithTabDialogBrowserTest;                            \
+  friend class ::SplitViewCommonBrowserTest;                                   \
   bool tab_is_hidden_for_testing() const {                                     \
     return tab_is_hidden_;                                                     \
   }                                                                            \
