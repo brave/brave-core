@@ -12,7 +12,6 @@
 
 #include "base/values.h"
 #include "brave/components/brave_rewards/content/rewards_notification_service.h"
-#include "brave/components/brave_rewards/content/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "extensions/buildflags/buildflags.h"
@@ -31,8 +30,6 @@ class RewardsNotificationServiceImpl final : public RewardsNotificationService,
       const RewardsNotificationServiceImpl&) = delete;
   ~RewardsNotificationServiceImpl() override;
 
-  void Init(
-      std::unique_ptr<RewardsNotificationServiceObserver> extension_observer);
   void AddNotification(RewardsNotificationType type,
                        RewardsNotificationArgs args,
                        RewardsNotificationID id = "",
@@ -81,7 +78,6 @@ class RewardsNotificationServiceImpl final : public RewardsNotificationService,
   raw_ptr<PrefService> prefs_ = nullptr;
   RewardsNotificationsMap rewards_notifications_;
   std::vector<RewardsNotificationID> rewards_notifications_displayed_;
-  std::unique_ptr<RewardsNotificationServiceObserver> extension_observer_;
 };
 
 }  // namespace brave_rewards

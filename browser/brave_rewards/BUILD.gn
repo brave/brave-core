@@ -55,8 +55,6 @@ source_set("brave_rewards_impl") {
 
   if (enable_extensions) {
     sources += [
-      "extension_rewards_notification_service_observer.cc",
-      "extension_rewards_notification_service_observer.h",
       "extension_rewards_service_observer.cc",
       "extension_rewards_service_observer.h",
     ]
