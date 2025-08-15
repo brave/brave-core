@@ -43,6 +43,7 @@ export function createStateProvider<State, Actions>(
   interface ProviderProps {
     name?: string
     createHandler?: (store: Store<State>) => Actions
+    stateOverrides?: Partial<State>
     children: React.ReactNode
   }
 
@@ -58,6 +59,12 @@ export function createStateProvider<State, Actions>(
         exposeState(props.name, value.store)
       }
     }, [props.name, value])
+
+    React.useEffect(() => {
+      if (props.stateOverrides) {
+        value.store.update(props.stateOverrides)
+      }
+    }, [props.stateOverrides])
 
     return React.createElement(context.Provider, { value }, props.children)
   }

@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
+import { useNewTabState } from '../context/new_tab_context'
 import { SearchBox } from './search/search_box'
 import { Background } from './background/background'
 import { BackgroundClickRegion } from './background/background_click_region'
@@ -66,7 +67,7 @@ export function App() {
         <div className='searchbox-container'>
           {
             searchLayoutReady &&
-              <SearchBox showSearchSettings={() => setSettingsView('search')} />
+              <Search showSearchSettings={() => setSettingsView('search')} />
           }
         </div>
         <div className='
@@ -105,4 +106,14 @@ export function App() {
       />
     </div>
   )
+}
+
+const QueryBox = React.lazy(() => import('./query_box/query_box'))
+
+function Search(props: { showSearchSettings: () => void }) {
+  const aiChatInputEnabled = useNewTabState((s) => s.aiChatInputEnabled)
+  if (aiChatInputEnabled) {
+    return <QueryBox showSearchSettings={props.showSearchSettings} />
+  }
+  return <SearchBox showSearchSettings={props.showSearchSettings} />
 }

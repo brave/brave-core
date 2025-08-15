@@ -16,6 +16,7 @@ export interface NewTabState {
   showTalkWidget: boolean
   talkFeatureEnabled: boolean
   newsFeatureEnabled: boolean
+  aiChatInputEnabled: boolean
 }
 
 export function defaultNewTabState(): NewTabState {
@@ -27,7 +28,8 @@ export function defaultNewTabState(): NewTabState {
     shieldsStats: null,
     showTalkWidget: false,
     talkFeatureEnabled: false,
-    newsFeatureEnabled: false
+    newsFeatureEnabled: false,
+    aiChatInputEnabled: false
   }
 }
 
