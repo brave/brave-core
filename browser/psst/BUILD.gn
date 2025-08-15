@@ -10,10 +10,7 @@ static_library("psst") {
 
   deps = [
     "//base",
-    "//brave/app:brave_generated_resources_grit",
-    "//brave/components/constants",
     "//brave/components/psst/browser/content",
-    "//brave/components/psst/common",
   ]
 }
 
