@@ -51,9 +51,6 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
 
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      std::string("style-src 'self' 'unsafe-inline';"));
-  untrusted_source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src 'self' 'unsafe-inline' "
                   "chrome-untrusted://resources chrome-untrusted://theme;"));
   untrusted_source->OverrideContentSecurityPolicy(
