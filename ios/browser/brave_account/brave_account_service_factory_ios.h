@@ -28,7 +28,7 @@ class BraveAccountServiceFactoryIOS : public ProfileKeyedServiceFactoryIOS {
       const BraveAccountServiceFactoryIOS&) = delete;
 
   static BraveAccountServiceFactoryIOS* GetInstance();
-  static BraveAccountService* GetForBrowserState(web::BrowserState* state);
+  static BraveAccountService* GetFor(web::BrowserState* state);
 
  private:
   friend base::NoDestructor<BraveAccountServiceFactoryIOS>;

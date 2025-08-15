@@ -18,7 +18,7 @@ export function getHtml(this: BraveAccountDialogs) {
     case Dialog.ENTRY:
       return html`
         <brave-account-entry-dialog
-          @close-button-clicked=${this.onCloseButtonClicked}
+          @close-dialog=${this.onCloseDialog}
           @create-button-clicked=${() => (this.dialog = Dialog.CREATE)}
           @self-custody-button-clicked=${() => (this.dialog = Dialog.NONE)}
           @sign-in-button-clicked=${() => (this.dialog = Dialog.SIGN_IN)}
@@ -29,8 +29,7 @@ export function getHtml(this: BraveAccountDialogs) {
       return html`
         <brave-account-create-dialog
           @back-button-clicked=${this.onBackButtonClicked}
-          @close-button-clicked=${this.onCloseButtonClicked}
-          @create-account-button-clicked=${() => (this.dialog = Dialog.NONE)}
+          @close-dialog=${this.onCloseDialog}
         >
         </brave-account-create-dialog>
       `
@@ -38,7 +37,7 @@ export function getHtml(this: BraveAccountDialogs) {
       return html`
         <brave-account-sign-in-dialog
           @back-button-clicked=${this.onBackButtonClicked}
-          @close-button-clicked=${this.onCloseButtonClicked}
+          @close-dialog=${this.onCloseDialog}
           @forgot-password-button-clicked=${() =>
             (this.dialog = Dialog.FORGOT_PASSWORD)}
           @sign-in-button-clicked=${() => {
@@ -52,7 +51,7 @@ export function getHtml(this: BraveAccountDialogs) {
       return html`
         <brave-account-forgot-password-dialog
           @back-button-clicked=${this.onBackButtonClicked}
-          @close-button-clicked=${this.onCloseButtonClicked}
+          @close-dialog=${this.onCloseDialog}
         </brave-account-forgot-password-dialog>
       `
   }

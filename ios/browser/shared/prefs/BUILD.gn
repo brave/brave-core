@@ -8,6 +8,7 @@ source_set("prefs") {
   deps = [
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
+    "//brave/components/brave_account",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
