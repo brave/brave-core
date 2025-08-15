@@ -1461,6 +1461,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_CUSTOMIZE_MENU_TOOLBAR_LABEL" desc="The label for the option to customize toolbar icons in the customization menu on the New Tab Page. This is a button which opens a panel for customizing toolbar icons when clicked.">
         Customize toolbar
       </message>
+      <message name="IDS_BRAVE_NTP_CUSTOMIZE_APPEARANCE_LABEL" desc="The label for header of the customize appearance section in customize chrome side panel">
+        Theme and colors
+      </message>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>
