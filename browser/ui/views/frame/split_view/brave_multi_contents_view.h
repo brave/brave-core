@@ -33,6 +33,7 @@ class BraveMultiContentsView : public MultiContentsView,
   ~BraveMultiContentsView() override;
 
   void UpdateSecondaryLocationBar();
+  void UpdateCornerRadius();
 
   BraveContentsContainerView* GetActiveContentsContainerView();
   BraveContentsContainerView* GetInactiveContentsContainerView();
