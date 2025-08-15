@@ -63,6 +63,7 @@
     &brave_shields::features::kBraveLocalhostAccessPermission,          \
     &brave_shields::features::kBlockAllCookiesToggle,                   \
     &brave_shields::features::kBraveShieldsElementPicker,               \
+    &features::kBraveAndroidDynamicColors,                              \
     &features::kNewAndroidOnboarding,                                   \
     &brave_ads::kNewTabPageAdFeature,                                   \
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
