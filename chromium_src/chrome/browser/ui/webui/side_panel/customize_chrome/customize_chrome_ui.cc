@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h"
 
 #include "brave/browser/ui/webui/cr_components/customize_color_scheme_mode/brave_customize_color_scheme_mode_handler.h"
+#include "chrome/grit/generated_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 #define AddLocalizedStrings(...)                               \
@@ -16,8 +17,14 @@
 #define CreateCustomizeColorSchemeModeHandler \
   CreateCustomizeColorSchemeModeHandler_Unused
 
+// Replaces IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL with a Brave-specific label.
+#undef IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL
+#define IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL \
+  IDS_BRAVE_NTP_CUSTOMIZE_APPEARANCE_LABEL
+
 #include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc>
 
+#undef IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL
 #undef CreateCustomizeColorSchemeModeHandler
 #undef CreatePageHandler
 #undef AddLocalizedStrings
