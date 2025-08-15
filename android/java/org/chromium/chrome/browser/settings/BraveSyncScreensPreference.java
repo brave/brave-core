@@ -76,6 +76,7 @@ import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.sync.SyncService;
+import org.chromium.ui.base.Clipboard;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.io.IOException;
@@ -621,13 +622,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             }
         } else if (mCopyButton == v) {
             if (null != mBraveSyncAddDeviceCodeWords) {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(
-                        Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("", mBraveSyncAddDeviceCodeWords.getText());
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(getActivity().getApplicationContext(),
-                             getResources().getString(R.string.brave_sync_copied_text),
-                             Toast.LENGTH_LONG)
+                Clipboard.getInstance()
+                        .setPassword(mBraveSyncAddDeviceCodeWords.getText().toString());
+
+                Toast.makeText(
+                                getActivity().getApplicationContext(),
+                                getResources().getString(R.string.brave_sync_copied_text),
+                                Toast.LENGTH_LONG)
                         .show();
             }
         } else if (mConfirmCodeWordsButton == v) {
