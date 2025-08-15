@@ -24,57 +24,77 @@ inline constexpr auto kAllowedUrlProtocols =
         "blob",
     });
 
-// Before adding to this list, get approval from the security team.
-inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
-    // allowed because it 307's to https://componentupdater.brave.com
-    "https://componentupdater.brave.com/service/update2",
-    "https://crxdownload.brave.com/crx/blobs/",
+// Before adding to the lists below, get approval from the security team.
 
-    // Omaha/Sparkle
-    "https://updates.bravesoftware.com/",
+// List of URL prefixes that are used in functionality not controlled via
+// admin policies.
+inline constexpr auto kBaseAllowedUrlPrefixes =
+    std::to_array<std::string_view>({
+        // allowed because it 307's to https://componentupdater.brave.com
+        "https://componentupdater.brave.com/service/update2",
+        "https://crxdownload.brave.com/crx/blobs/",
 
-    // stats/referrals
-    "https://usage-ping.brave.com/",
+        // Omaha/Sparkle
+        "https://updates.bravesoftware.com/",
 
-    // needed for DoH on Mac build machines
-    "https://dns.google/dns-query",
+        // needed for DoH on Mac build machines
+        "https://dns.google/dns-query",
 
-    // needed for DoH on Mac build machines
-    "https://chrome.cloudflare-dns.com/dns-query",
+        // needed for DoH on Mac build machines
+        "https://chrome.cloudflare-dns.com/dns-query",
 
-    // for fetching tor client updater component
-    "https://tor.bravesoftware.com/",
+        // brave A/B testing
+        "https://variations.brave.com/seed",
 
-    // brave sync v2 production
-    "https://sync-v2.brave.com/v2",
+        // Brave's Privacy-focused CDN
+        "https://pcdn.brave.com/",
 
-    // brave sync v2 staging
-    "https://sync-v2.bravesoftware.com/v2",
+        // brave sync v2 production
+        "https://sync-v2.brave.com/v2",
 
-    // brave sync v2 dev
-    "https://sync-v2.brave.software/v2",
+        // brave sync v2 staging
+        "https://sync-v2.bravesoftware.com/v2",
 
-    // brave A/B testing
-    "https://variations.brave.com/seed",
+        // brave sync v2 dev
+        "https://sync-v2.brave.software/v2",
 
-    // Brave News (production)
-    "https://brave-today-cdn.brave.com/",
+        // Other
+        "https://brave-core-ext.s3.brave.com/",
+        "https://dict.brave.com/",
+        "https://go-updater.brave.com/",
+        "https://redirector.brave.com/",
+        "https://safebrowsing.brave.com/",
+        "https://static.brave.com/",
+        "https://static1.brave.com/",
+    });
 
-    // Brave's Privacy-focused CDN
-    "https://pcdn.brave.com/",
+// List of URL prefixes that are used in functionality controlled via
+// admin policies.
+inline constexpr auto kOtherAllowedUrlPrefixes =
+    std::to_array<std::string_view>({
+        // stats/referrals
+        "https://usage-ping.brave.com/",
+        "https://usage-ping.bravesoftware.com/",
 
-    // p3a
-    "https://star-randsrv.bsg.brave.com/",
+        // for fetching tor client updater component
+        "https://tor.bravesoftware.com/",
 
-    // Other
-    "https://brave-core-ext.s3.brave.com/",
-    "https://dict.brave.com/",
-    "https://go-updater.brave.com/",
-    "https://redirector.brave.com/",
-    "https://safebrowsing.brave.com/",
-    "https://static.brave.com/",
-    "https://static1.brave.com/",
-});
+        // Brave News (production)
+        "https://brave-today-cdn.brave.com/",
+
+        // p3a
+        "https://star-randsrv.bsg.brave.com/",
+        "https://collector.bsg.brave.com/",
+    });
+
+// List of URL prefixes that are used in opt-in telemetry functionality.
+inline constexpr auto kOptInTelemetryAllowedUrlPrefixes =
+    std::to_array<std::string_view>({
+        // web discovery
+        "https://collector.wdp.brave.com/",
+        "https://quorum.wdp.brave.com/",
+        "https://patterns.wdp.brave.com/",
+    });
 
 }  // namespace brave
 

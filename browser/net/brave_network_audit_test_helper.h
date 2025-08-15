@@ -12,11 +12,20 @@
 #include "base/files/file_util.h"
 
 namespace brave {
+
+// Allowlist levels for network audit testing
+enum class AllowListLevel {
+  kBase,          // Base functionality only
+  kBaseAndOther,  // Base and other functionality
+  kFull,          // All functionality including opt-in telemetry
+};
+
 // Verify that the netlog file was written, appears to be well formed, and
 // includes the requested level of data.
 void VerifyNetworkAuditLog(
     const base::FilePath& net_log_path,
     const base::FilePath& audit_results_path,
+    AllowListLevel allow_list_level,
     const std::vector<std::string>& extra_allowed_prefixes);
 }  // namespace brave
 
