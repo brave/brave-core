@@ -16,6 +16,7 @@ import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
@@ -108,6 +109,10 @@ source_set("ui") {
     "webui/untrusted_sanitized_image_source.cc",
     "webui/untrusted_sanitized_image_source.h",
   ]
+
+  if (enable_psst) {
+    deps += [ "//brave/browser/psst" ]
+  }
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
   if (!is_android && !is_ios) {
