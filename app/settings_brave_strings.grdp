@@ -127,11 +127,6 @@ Brave understands forms better and can autofill them faster for you. This settin
     </if>
   </if>
 
-  <!-- Delete Browsing Data -->
-  <message name="IDS_SETTINGS_MANAGE_PASSWORDS_SUB_LABEL" desc="Sub-label for the 'Manage other Data' subpage entrypoint in the 'Delete Browsing Data' dialog, explaining to the user that passwords can only be deleted outside of Brave.">
-    Passwords can only be deleted outside Brave
-  </message>
-
   <!-- Preloading Page-->
   <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_WHEN_ON_BULLET_TWO" desc="Bullet point in the standard preloading and when on column. Informs the user about what the standard preloading setting does.">
     Brave preloads pages you're likely to visit, so that they load more quickly when you visit them
@@ -160,6 +155,9 @@ Brave understands forms better and can autofill them faster for you. This settin
     </message>
     <message name="IDS_SETTINGS_SIGNIN_ALLOWED_DESC" desc="The description of the preference to allow to sign-in to Brave">
     By turning this off, you can sign in to Brave sites like Gmail without signing in to Brave
+    </message>
+    <message name="IDS_SETTINGS_SIGNIN_ALLOWED_DESC_2" desc="The description of the preference to allow to sign-in to Brave">
+    Shows prompts to sign in to Brave
     </message>
   </if>
 
@@ -333,8 +331,11 @@ Brave understands forms better and can autofill them faster for you. This settin
   <message name="IDS_SETTINGS_SIGNIN_CHROME_SIGNIN_OPTIONS_DESC" desc="Description of the settings that controls whether a user gets signed in to Brave when signing in to Brave Services.">
     When signing into Brave services like Gmail or Youtube with <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>, you can automatically sign in to Brave with the same account
   </message>
+  <message name="IDS_SETTINGS_PEOPLE_SIGNIN_SECTION_SIGNED_OUT_TITLE" desc="The text displayed to prompt users to sign in to Brave. Shown on top of the account card in the people settings page when the user is signed out.">
+    Make Brave your own
+  </message>
 
-  <!-- Sync Page -->
+  <!-- Sync Page / Account Settings Page -->
   <message name="IDS_SETTINGS_SYNC_DATA_ENCRYPTED_TEXT" desc="Text alerting the user that synced data is encrypted.">
     For added security, Brave will encrypt your data.
   </message>
@@ -376,6 +377,18 @@ Brave understands forms better and can autofill them faster for you. This settin
   </message>
   <message name="IDS_SETTINGS_SIGN_OUT" desc="The text label of the Sign out of Brave button in the settings page.">
     Sign out of Brave
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_DATA_DASHBOARD" desc="This string is found in the Account settings page in Brave settings to let a user manage the Brave data that they've saved in their Brave sync chain. It is important that it is consistent with the destination's title 'Brave data in your account' (except using 'Brave' instead of 'Brave') (TC ID 2983573066282140756).">
+    Brave data in your account
+  </message>
+  <message name="IDS_SETTINGS_ENCRYPT_ACCOUNT_DATA_WITH_PASSPHRASE_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with a user-provided password.">
+    Use your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>own passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to encrypt all the Brave data in your Brave sync chain. Payment methods and addresses from Google Pay won’t be encrypted. Browsing history from Brave won’t sync.
+  </message>
+  <message name="IDS_SETTINGS_ENCRYPT_ACCOUNT_DATA_WITH_PASSPHRASE_EXPLANATION_TEXT" desc="Message shown when explicit passphrase is selected.">
+    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you’ll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>delete the Brave data in your account<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_PASSPHRASE_RESET_HINT_ACCOUNT_DATA_ENCRYPTION" desc="Informs user how to change their encryption setting.">
+    If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>delete the Brave data in your account<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
 
   <!-- Page content -->
