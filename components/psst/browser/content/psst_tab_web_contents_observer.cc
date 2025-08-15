@@ -34,11 +34,13 @@ std::unique_ptr<PsstTabWebContentsObserver>
 PsstTabWebContentsObserver::MaybeCreateForWebContents(
     content::WebContents* contents,
     content::BrowserContext* browser_context,
+    std::unique_ptr<PsstUiDelegate> delegate,
     PrefService* prefs,
     const int32_t world_id) {
   CHECK(contents);
   CHECK(browser_context);
   CHECK(prefs);
+  CHECK(delegate);
 
   if (browser_context->IsOffTheRecord() ||
       !base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
@@ -48,18 +50,24 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
   return base::WrapUnique<PsstTabWebContentsObserver>(
       new PsstTabWebContentsObserver(
           contents, PsstRuleRegistry::GetInstance(), prefs,
-          std::make_unique<PsstScriptsInserterImpl>(contents, world_id)));
+          std::make_unique<PsstScriptsInserterImpl>(contents, world_id),
+          std::move(delegate)));
 }
+
+PsstTabWebContentsObserver::PsstUiDelegate::PsstUiDelegate() = default;
+PsstTabWebContentsObserver::PsstUiDelegate::~PsstUiDelegate() = default;
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
     PsstRuleRegistry* registry,
     PrefService* prefs,
-    std::unique_ptr<ScriptsInserter> script_inserter)
+    std::unique_ptr<ScriptsInserter> script_inserter,
+    std::unique_ptr<PsstUiDelegate> delegate)
     : WebContentsObserver(web_contents),
       registry_(registry),
       prefs_(prefs),
-      script_inserter_(std::move(script_inserter)) {}
+      script_inserter_(std::move(script_inserter)),
+      psst_ui_delegate_(std::move(delegate)) {}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
@@ -124,7 +132,19 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   }
 
   script_inserter_->InsertScriptInPage(
-      policy_script, std::move(user_script_result), base::DoNothing());
+      policy_script, std::move(user_script_result),
+      base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
+                     weak_factory_.GetWeakPtr(), id));
+}
+
+void PsstTabWebContentsObserver::OnPolicyScriptResult(
+    int nav_entry_id,
+    base::Value script_result) {
+  if (!script_result.is_dict() || !ShouldInsertScriptForPage(nav_entry_id)) {
+    return;
+  }
+
+  psst_ui_delegate_->Close();
 }
 
 }  // namespace psst
