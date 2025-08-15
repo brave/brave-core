@@ -189,7 +189,7 @@ TextEmbedder::CalculateTabGroupCentroid() {
 // Given 2 arrays, (1) containing strings (tab title + origin) for all tabs in a
 // group and (2) containing strings of all open tabs (candidates), output
 // indices for top 3 candidates.
-absl::StatusOr<std::vector<size_t>> TextEmbedder::SuggestTabsForGroup(
+absl::StatusOr<std::vector<int>> TextEmbedder::SuggestTabsForGroup(
     std::vector<std::pair<int, std::string>> group_tabs,
     std::vector<std::pair<int, std::string>> candidate_tabs) {
 
@@ -223,7 +223,7 @@ absl::StatusOr<std::vector<size_t>> TextEmbedder::SuggestTabsForGroup(
   tabs_.clear();
   tab_titles.clear();
 
-  std::vector<std::int> tab_ids;
+  std::vector<int> tab_ids;
   
   for (const auto& tab : candidate_tabs) {
     tab_ids.push_back(tab.first);
@@ -255,16 +255,16 @@ absl::StatusOr<std::vector<size_t>> TextEmbedder::SuggestTabsForGroup(
     sim_scores.push_back(maybe_similarity.value());
   }
 
-  std::vector<size_t> top_indices;
+  std::vector<int> top_indices;
 
   top_indices = getMostSimilarTabIndices(sim_scores, tab_ids);
 
   return top_indices;
 }
 
-std::vector<size_t> TextEmbedder::getMostSimilarTabIndices(
+std::vector<int> TextEmbedder::getMostSimilarTabIndices(
     const std::vector<double>& vec,
-    const std::vector<std::int>& id) {
+    const std::vector<int>& id) {
   // Create pairs of (value, index) for values above threshold
   std::vector<std::pair<double, size_t>> filtered_pairs;
 
@@ -281,7 +281,7 @@ std::vector<size_t> TextEmbedder::getMostSimilarTabIndices(
             });
 
   // Extract sorted indices
-  std::vector<size_t> indices_above_threshold;
+  std::vector<int> indices_above_threshold;
   for (const auto& pair : filtered_pairs) {
     indices_above_threshold.push_back(pair.second);
   }

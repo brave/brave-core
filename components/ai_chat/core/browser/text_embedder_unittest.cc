@@ -108,10 +108,10 @@ class TextEmbedderUnitTest : public testing::Test {
     return std::vector<double>(value_float.begin(), value_float.end());
   }
 
-  absl::StatusOr<std::vector<size_t>> VerifySuggestTabsForGroup(
-      std::vector<std::string> group_tabs,
-      std::vector<std::string> candiate_tabs) {
-    absl::StatusOr<std::vector<size_t>> result;
+  absl::StatusOr<std::vector<int>> VerifySuggestTabsForGroup(
+      std::vector<std::pair<int, std::string>> group_tabs,
+      std::vector<std::pair<int, std::string>> candiate_tabs) {
+    absl::StatusOr<std::vector<int>> result;
 
     base::RunLoop run_loop;
     embedder_task_runner_->PostTask(
@@ -239,11 +239,11 @@ TEST_F(TextEmbedderUnitTest, VerifySuggestTabsForGroup) {
       "Visiting Italy in October: all you need to know mamalovesitaly.com"}, {9,
       "Review of hotels in Venice booking.com"}};
 
-  absl::StatusOr<std::vector<size_t>> result;
+  absl::StatusOr<std::vector<int>> result;
   result = VerifySuggestTabsForGroup(travel_group_tabs, candidate_tabs);
 
   const auto& indices = result.value();
-  std::vector<size_t> expected = {candidate_tabs[4].first, candidate_tabs[3].first};
+  std::vector<int> expected = {candidate_tabs[4].first, candidate_tabs[3].first};
 
   EXPECT_EQ(indices, expected);
 }
