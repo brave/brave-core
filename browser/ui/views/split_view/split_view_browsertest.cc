@@ -41,6 +41,7 @@
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
+#include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -602,8 +603,11 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
   brave::SetBookmarkState(brave::BookmarkBarState::kNever, prefs);
   ASSERT_TRUE(IsSplitWebContents(GetWebContentsAt(0)));
   ASSERT_TRUE(IsSplitWebContents(GetWebContentsAt(1)));
-  EXPECT_FALSE(IsShowingNTP_ChromiumImpl(GetWebContentsAt(0)));
-  EXPECT_TRUE(IsShowingNTP_ChromiumImpl(GetWebContentsAt(1)));
+
+  // Wait newly created tab to get its valid url via GetLastCommittedURL().
+  EXPECT_TRUE(content::WaitForLoadStop(GetWebContentsAt(1)));
+  EXPECT_FALSE(NewTabUI::IsNewTab(GetWebContentsAt(0)->GetLastCommittedURL()));
+  EXPECT_TRUE(NewTabUI::IsNewTab(GetWebContentsAt(1)->GetLastCommittedURL()));
   EXPECT_EQ(1, tab_strip_model->active_index());
   EXPECT_EQ(BookmarkBar::HIDDEN,
             BookmarkBarController::From(browser())->bookmark_bar_state());

@@ -9,9 +9,9 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service.h"
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
@@ -53,5 +53,6 @@ bool BookmarkPrefsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
 
 void BookmarkPrefsServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(kAlwaysShowBookmarkBarOnNTP, true);
+  registry->RegisterBooleanPref(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP,
+                                true);
 }

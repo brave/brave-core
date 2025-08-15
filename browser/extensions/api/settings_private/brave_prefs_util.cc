@@ -28,6 +28,7 @@
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
 #include "chrome/common/pref_names.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
@@ -217,7 +218,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[browsing_data::prefs::kDeleteBraveLeoHistoryOnExit] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kAlwaysShowBookmarkBarOnNTP] =
+  (*s_brave_allowlist)[bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kMRUCyclingEnabled] = settings_api::PrefType::kBoolean;
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)

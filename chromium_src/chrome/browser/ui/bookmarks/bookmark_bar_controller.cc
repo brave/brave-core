@@ -5,34 +5,29 @@
 
 #include "chrome/browser/ui/bookmarks/bookmark_bar_controller.h"
 
-#include "brave/components/constants/pref_names.h"
+#include "chrome/browser/ui/sad_tab.h"
+#include "components/bookmarks/browser/bookmark_model.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/web_contents.h"
 
-// We have three bookmarks bar options - Always, Never, Always only on NTP.
-// Always only on NTP is our own option.
-// As upstream doesn't show bookmarks on NTP when bookmarks bar empty we need
-// to patch below code before checking bookmark model's emptiness.
-//
-// Also, bookmarks bar on NTP should be shown when "Always" and "Always only on
-// NTP". With SideBySide, bookmarks bar is shown when one of split tab is NTP.
-#define BRAVE_BOOKMARK_BAR_CONTROLLER_SHOULD_SHOW_BOOKMARK_BAR              \
-  if (const tabs::TabInterface* active_tab =                                \
-          tab_strip_model_->GetActiveTab()) {                               \
-    if (active_tab->GetContents() &&                                        \
-        active_tab->GetContents()->IsFullscreen()) {                        \
-      return false;                                                         \
-    }                                                                       \
-    return std::any_of(                                                     \
-        tabs.begin(), tabs.end(), [&prefs](const tabs::TabInterface* tab) { \
-          return tab->GetContents() && IsShowingNTP(tab->GetContents()) &&  \
-                 (prefs->GetBoolean(kAlwaysShowBookmarkBarOnNTP) ||         \
-                  prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar));   \
-        });                                                                 \
-  }
+bool ShowBookmarkBarEnabled(content::WebContents* web_contents) {
+  PrefService* prefs =
+      user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
+  return prefs->GetBoolean(::bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP) ||
+         prefs->GetBoolean(::bookmarks::prefs::kShowBookmarkBar);
+}
+
+#define ShouldShow(...) \
+  ShouldShow(__VA_ARGS__) || !ShowBookmarkBarEnabled(web_contents)
+
+// To prevent early return due to empty items in bookmark bar.
+// We want to show bookmark bar with import instruction when it's empty.
+#define HasBookmarks() HasBookmarks() || true
 
 #include <chrome/browser/ui/bookmarks/bookmark_bar_controller.cc>
 
-#undef BRAVE_BOOKMARK_BAR_CONTROLLER_SHOULD_SHOW_BOOKMARK_BAR
-
-bool IsShowingNTP_ChromiumImpl(content::WebContents* web_contents) {
-  return IsShowingNTP(web_contents);
-}
+#undef HasBookmarks
+#undef ShouldShow

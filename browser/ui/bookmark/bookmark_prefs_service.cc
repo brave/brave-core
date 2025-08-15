@@ -5,19 +5,19 @@
 
 #include "brave/browser/ui/bookmark/bookmark_prefs_service.h"
 
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/bookmarks/bookmark_bar_controller.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
 
 BookmarkPrefsService::BookmarkPrefsService(Profile* profile)
     : profile_(profile),
       prefs_(profile->GetPrefs()) {
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
-      kAlwaysShowBookmarkBarOnNTP,
+      bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP,
       base::BindRepeating(&BookmarkPrefsService::OnPreferenceChanged,
                           base::Unretained(this)));
 }
