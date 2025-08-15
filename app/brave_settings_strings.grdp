@@ -1509,7 +1509,7 @@
     Show Leo in the context menu on websites
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC" desc="The description for settings option to show Leo in context menu">
-    Leo will appear in the context menu when you right-click on a website. This will send context from the current web page to Leo
+    Leo will appear in the context menu when you right-click on a website. This will send context from the current web page to Leo.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_LABEL" desc="The text for settings option to enable tab focus mode">
     Tab Focus Mode
