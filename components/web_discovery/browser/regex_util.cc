@@ -17,6 +17,8 @@ constexpr char kLongNumberRegexSuffix[] = ",}";
 constexpr char kEmailRegex[] =
     "[a-z0-9\\-_@]+(@|%40|%(25)+40)[a-z0-9\\-_]+\\.[a-z0-9\\-_]";
 constexpr char kHttpPasswordRegex[] = "[^:]+:[^@]+@";
+constexpr char kEuroLongWordPatternRegex[] = "^[a-zA-ZäöüéÄÖÜ][a-zäöüéß]+$";
+constexpr char kWhitespaceRegex[] = "\\s+";
 
 constexpr std::array<std::string_view, 10> kPathAndQueryStringCheckRegexes = {
     "(?i)\\/admin([\\/\\?#=]|$)",
@@ -106,6 +108,22 @@ bool RegexUtil::CheckQueryHTTPCredentials(std::string_view str) {
     http_password_regex_.emplace(kHttpPasswordRegex);
   }
   return re2::RE2::PartialMatch(str, *http_password_regex_);
+}
+
+bool RegexUtil::CheckForEuroLongWord(std::string_view str) {
+  if (!long_word_regex_) {
+    long_word_regex_.emplace(kEuroLongWordPatternRegex);
+  }
+  return re2::RE2::FullMatch(str, *long_word_regex_);
+}
+
+std::string RegexUtil::NormalizeWhitespace(std::string_view str) {
+  if (!whitespace_regex_) {
+    whitespace_regex_.emplace(kWhitespaceRegex);
+  }
+  std::string result(str);
+  re2::RE2::GlobalReplace(&result, *whitespace_regex_, " ");
+  return result;
 }
 
 }  // namespace web_discovery
