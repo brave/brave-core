@@ -105,11 +105,6 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
   private showCommandsInOmnibox_() {
     return loadTimeData.getBoolean('showCommandsInOmnibox')
   }
-
-  private shouldShowBraveNewsButton_() {
-    // Only show the Brave News button toggle if it's not disabled by policy
-    return !loadTimeData.getBoolean('braveNewsDisabledByPolicy')
-  }
 }
 
 customElements.define(SettingsBraveAppearanceToolbarElement.is, SettingsBraveAppearanceToolbarElement)
