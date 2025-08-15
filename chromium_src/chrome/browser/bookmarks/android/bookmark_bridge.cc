@@ -131,25 +131,25 @@ void BookmarkBridge::ImportBookmarks(
   std::u16string import_path =
       base::android::ConvertJavaStringToUTF16(env, j_import_path);
 
-  origin_sequence_task_runner_ = base::SequencedTaskRunner::GetCurrentDefault();
-  background_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE});
-
-  auto bookmarks_parser_callback = base::BindOnce(
-      &BookmarkBridge::OnParseFinished, weak_ptr_factory_.GetWeakPtr());
-  auto bookmarks_parser_callback_on_thread = base::BindPostTask(
-      origin_sequence_task_runner_, std::move(bookmarks_parser_callback));
-
   bookmark_parser_ =
       base::SequenceBound<std::unique_ptr<ContentBookmarkParser>>(
           background_task_runner_, std::make_unique<ContentBookmarkParser>());
 
-  base::FilePath import_file_path =
-      base::FilePath::FromUTF16Unsafe(import_path);
-
   bookmark_parser_.AsyncCall(&ContentBookmarkParser::Parse)
-      .WithArgs(std::move(import_file_path),
-                std::move(bookmarks_parser_callback_on_thread));
+      .WithArgs(base::FilePath::FromUTF16Unsafe(import_path),
+                base::BindOnce([](BookmarkParser::BookmarkParsingResult result)
+                                   -> BookmarkParser::BookmarkParsingResult {
+                  return result;
+                }))
+      .Then(base::BindOnce(
+          [](base::WeakPtr<BookmarkBridge> bridge,
+             BookmarkParser::BookmarkParsingResult result) {
+            if (!bridge) {
+              return;
+            }
+            bridge->OnParseFinished(std::move(result));
+          },
+          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BookmarkBridge::OnParseFinished(
