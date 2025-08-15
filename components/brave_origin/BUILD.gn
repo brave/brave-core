@@ -14,5 +14,18 @@ source_set("brave_origin") {
     "features.h",
   ]
 
+  deps = [
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/tor/buildflags",
+  ]
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader" ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    deps += [ "//brave/components/brave_wayback_machine" ]
+  }
+
   public_deps = [ "//base" ]
 }

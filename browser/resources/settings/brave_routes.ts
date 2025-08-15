@@ -24,6 +24,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       r.IMPORT_DATA.section = 'getStarted'
     }
   }
+  if (pageVisibility.origin) {
+    r.ORIGIN = r.BASIC.createSection('/origin', 'origin')
+  }
   r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
   r.SHIELDS_ADBLOCK = r.SHIELDS.createChild('/shields/filters')
   if (loadTimeData.getBoolean('areShortcutsSupported')) {
