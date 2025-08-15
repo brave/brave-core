@@ -24,16 +24,29 @@ class PsstRuleRegistry;
 class PsstTabWebContentsObserver : public content::WebContentsObserver {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
-  class ScriptsHandler {
+  class ScriptsInserter {
    public:
-    virtual ~ScriptsHandler() = default;
+    virtual ~ScriptsInserter() = default;
     virtual void InsertScriptInPage(const std::string& script,
+                                    std::optional<base::Value> value,
                                     InsertScriptInPageCallback cb) = 0;
+  };
+
+  class PsstUiDelegate {
+   public:
+    PsstUiDelegate();
+    virtual ~PsstUiDelegate();
+
+    PsstUiDelegate(const PsstUiDelegate&) = delete;
+    PsstUiDelegate& operator=(const PsstUiDelegate&) = delete;
+
+    virtual void Close() = 0;
   };
 
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       content::WebContents* contents,
       content::BrowserContext* browser_context,
+      std::unique_ptr<PsstUiDelegate> delegate,
       PrefService* prefs,
       const int32_t world_id);
 
@@ -48,7 +61,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstTabWebContentsObserver(content::WebContents* web_contents,
                              PsstRuleRegistry* registry,
                              PrefService* prefs,
-                             std::unique_ptr<ScriptsHandler> script_handler);
+                             std::unique_ptr<ScriptsInserter> script_inserter,
+                             std::unique_ptr<PsstUiDelegate> delegate);
 
   bool ShouldInsertScriptForPage(int id);
   void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);
@@ -56,6 +70,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   void OnUserScriptResult(int id,
                           const std::string& policy_script,
                           base::Value script_result);
+  void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
@@ -63,7 +78,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;
-  std::unique_ptr<ScriptsHandler> script_handler_;
+  std::unique_ptr<ScriptsInserter> script_inserter_;
+  std::unique_ptr<PsstUiDelegate> psst_ui_delegate_;
 
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
 };

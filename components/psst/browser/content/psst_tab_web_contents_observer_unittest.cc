@@ -37,6 +37,51 @@ using ::testing::InvokeArgument;
 
 namespace psst {
 
+namespace {
+constexpr char kUserId[] = "user12345";
+constexpr char kShareExperienceLink[] = "http://test.link/post=$1";
+constexpr char kName[] = "a";
+constexpr double kProgress{5};
+
+base::Value CreateUserScriptResult(const std::string& user_id,
+                                   const std::string& share_experience_link,
+                                   const std::string& name,
+                                   const bool is_initial) {
+  return base::Value(
+      base::Value::Dict()
+          .Set("user", user_id)
+          .Set("share_experience_link", share_experience_link)
+          .Set("name", name)
+          .Set("is_initial", is_initial)
+          .Set("tasks",
+               base::Value::List().Append(
+                   base::Value::Dict()
+                       .Set("url", "https://x.com/settings/ads_preferences")
+                       .Set("description", "Disable personalized ads"))));
+}
+
+base::Value CreatePolicyScriptResult(const double progress, const bool result) {
+  return base::Value(
+      base::Value::Dict()
+          .Set("psst",
+               base::Value::Dict()
+                   .Set("applied",
+                        base::Value::List().Append(
+                            base::Value::Dict()
+                                .Set("description",
+                                     "Disable attaching location information "
+                                     "to posts")
+                                .Set("url", "https://x.com/settings/location")))
+                   .Set("current_task", base::Value())
+                   .Set("errors", base::Value::Dict())
+                   .Set("progress", progress)
+                   .Set("start_url", "https://x.com/home")
+                   .Set("state", "started")
+                   .Set("tasks_list", base::Value::List()))
+          .Set("result", result));
+}
+
+}  // namespace
 class DocumentOnLoadObserver : public content::WebContentsObserver {
  public:
   explicit DocumentOnLoadObserver(content::WebContents* web_contents)
@@ -82,15 +127,16 @@ ACTION_P(CheckIfMatchFailsCallback, loop) {
   loop->Quit();
 }
 
-class MockPsstScriptsHandler
-    : public PsstTabWebContentsObserver::ScriptsHandler {
+class MockPsstScriptsInserter
+    : public PsstTabWebContentsObserver::ScriptsInserter {
  public:
-  MockPsstScriptsHandler() = default;
-  ~MockPsstScriptsHandler() override = default;
+  MockPsstScriptsInserter() = default;
+  ~MockPsstScriptsInserter() override = default;
 
   MOCK_METHOD(void,
               InsertScriptInPage,
               (const std::string& script,
+               std::optional<base::Value> value,
                PsstTabWebContentsObserver::InsertScriptInPageCallback cb),
               (override));
 };
@@ -99,10 +145,18 @@ class MockPsstScriptsHandler
 // define our own gMock action to run the 2nd argument.
 ACTION_P(InsertScriptInPageCallback, loop, value) {
   std::move(
-      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1))
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg2))
       .Run(value.Clone());
   loop->Quit();
 }
+
+class MockPsstUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
+ public:
+  MockPsstUiDelegate() = default;
+  ~MockPsstUiDelegate() override = default;
+
+  MOCK_METHOD(void, Close, (), (override));
+};
 
 class PsstTabWebContentsObserverUnitTestBase
     : public content::RenderViewHostTestHarness {
@@ -111,21 +165,25 @@ class PsstTabWebContentsObserverUnitTestBase
     content::RenderViewHostTestHarness::SetUp();
 
     psst::RegisterProfilePrefs(prefs_.registry());
-    scripts_handler_ = new MockPsstScriptsHandler();
+    scripts_handler_ = new MockPsstScriptsInserter();
+    psst_ui_delegate_ = new MockPsstUiDelegate();
     rule_registry_ = std::make_unique<MockPsstRuleRegistry>();
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(
             web_contents(), rule_registry_.get(), &prefs_,
-            base::WrapUnique<MockPsstScriptsHandler>(scripts_handler_)));
+            base::WrapUnique<MockPsstScriptsInserter>(scripts_handler_),
+            base::WrapUnique<MockPsstUiDelegate>(psst_ui_delegate_)));
   }
 
   void TearDown() override {
     content::RenderViewHostTestHarness::TearDown();
     scripts_handler_ = nullptr;
+    psst_ui_delegate_ = nullptr;
   }
 
   MockPsstRuleRegistry& psst_rule_registry() { return *rule_registry_.get(); }
-  MockPsstScriptsHandler& scripts_handler() { return *scripts_handler_; }
+  MockPsstScriptsInserter& scripts_handler() { return *scripts_handler_; }
+  MockPsstUiDelegate& psst_ui_delegate() { return *psst_ui_delegate_; }
   PrefService* prefs() { return &prefs_; }
 
   MatchedRule* CreateMatchedRule(const std::string& user_script,
@@ -137,7 +195,8 @@ class PsstTabWebContentsObserverUnitTestBase
   base::test::ScopedFeatureList feature_list_;
 
  private:
-  raw_ptr<MockPsstScriptsHandler> scripts_handler_;  // not owned
+  raw_ptr<MockPsstScriptsInserter> scripts_handler_;  // not owned
+  raw_ptr<MockPsstUiDelegate> psst_ui_delegate_;      // not owned
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -154,7 +213,8 @@ class PsstTabWebContentsObserverUnitTest
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
   EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents(), browser_context(), prefs(), 2),
+                web_contents(), browser_context(),
+                std::make_unique<MockPsstUiDelegate>(), prefs(), 2),
             nullptr);
 }
 
@@ -167,7 +227,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       &otr_browser_context, site_instance);
 
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents.get(), &otr_browser_context, prefs(), 2),
+                web_contents.get(), &otr_browser_context,
+                std::make_unique<MockPsstUiDelegate>(), prefs(), 2),
             nullptr);
 }
 
@@ -239,7 +300,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           CreateMatchedRule(first_nav_user_script, policy_script)));
 
   base::RunLoop first_nav_user_script_insert_loop;
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(first_nav_user_script, _))
+  EXPECT_CALL(scripts_handler(),
+              InsertScriptInPage(first_nav_user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&first_nav_user_script_insert_loop,
                                            base::Value()));
 
@@ -260,10 +322,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           CreateMatchedRule(second_nav_user_script, policy_script)));
 
   base::RunLoop second_nav_user_script_insert_loop;
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(second_nav_user_script, _))
+  EXPECT_CALL(scripts_handler(),
+              InsertScriptInPage(second_nav_user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&second_nav_user_script_insert_loop,
                                            base::Value()));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
@@ -288,10 +352,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
 
   base::RunLoop user_script_insert_loop;
   auto value = base::Value();
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(value)));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   auto simulator =
@@ -402,10 +467,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::RunLoop user_script_insert_loop;
   auto value = base::Value();
 
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+  EXPECT_CALL(psst_ui_delegate(), Close()).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(value)));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -427,10 +494,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::RunLoop user_script_insert_loop;
   auto value = base::Value();
 
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+  EXPECT_CALL(psst_ui_delegate(), Close()).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(value)));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -446,19 +515,24 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   const std::string user_script = "user";
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
+  const bool result{true};
+
   base::RunLoop check_loop;
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::RunLoop user_script_insert_loop;
   base::RunLoop policy_script_insert_loop;
-  auto dict = base::Value(base::Value::Dict());
-  auto value = base::Value();
+  base::Value user_script_result_dict =
+      CreateUserScriptResult(kUserId, kShareExperienceLink, kName, true);
 
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+  auto value = CreatePolicyScriptResult(kProgress, result);
+
+  EXPECT_CALL(psst_ui_delegate(), Close()).Times(1);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
-                                           std::move(dict)));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _))
+                                           std::move(user_script_result_dict)));
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
                                            std::move(value)));
 
@@ -485,10 +559,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto dict = base::Value(base::Value::Dict());
   auto value = base::Value();
 
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+  EXPECT_CALL(psst_ui_delegate(), Close()).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(dict)));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -510,7 +586,8 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents(), browser_context(), prefs(), 2),
+                web_contents(), browser_context(),
+                std::make_unique<MockPsstUiDelegate>(), prefs(), 2),
             nullptr);
 }
 
