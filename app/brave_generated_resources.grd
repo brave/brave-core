@@ -880,7 +880,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Automatically send daily usage ping to Brave
       </message>
       <message name="IDS_BRAVE_STATS_USAGE_PING_SETTING_SUBITEM" desc="Description that shows under main toggle setting for usage pings">
-        This private ping lets Brave estimate active users.
+        This private ping lets Brave estimate active users
       </message>
 
       <!-- P3A -->
@@ -897,7 +897,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
-        These private responses help Brave estimate the overall usage of certain features and make them better for you.
+        These private responses help Brave estimate the overall usage of certain features and make them better for you
       </message>
 
       <!-- Web3 detection -->

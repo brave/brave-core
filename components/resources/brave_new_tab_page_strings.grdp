@@ -226,7 +226,7 @@
   </message>
 
   <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TEXT" desc="Description text for Brave Talk widget">
-    Encrypted video calls with Brave Talk.
+    Encrypted video calls with Brave Talk
   </message>
 
   <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TITLE" desc="Description title for Brave Talk widget">
