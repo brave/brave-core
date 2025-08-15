@@ -565,7 +565,9 @@ extension SceneDelegate {
 
       return
     case ActivityType.openBraveNews.identifier:
-      if let browserViewController = scene.browserViewController {
+      let isNewsAvailable =
+        AppState.shared.braveCore.profileController?.profile.prefs.isBraveNewsAvailable ?? true
+      if isNewsAvailable, let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(
           type: .openBraveNews,
           using: browserViewController
