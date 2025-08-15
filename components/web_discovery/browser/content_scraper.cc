@@ -159,6 +159,7 @@ class ContentScraperImpl : public ContentScraper {
     CHECK(site_id);
     auto interim_result =
         std::make_unique<PageScrapeResult>(url, std::string(*site_id));
+    interim_result->query = url_result->query;
 
     // Convert v2 input groups to SelectRequest format
     std::vector<SelectRequest> select_requests;

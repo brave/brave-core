@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
@@ -117,7 +118,11 @@ std::optional<std::string> GetRequestValue(
   } else if (attr_id == kCountryCodeAttrId) {
     return server_config.location;
   } else if (attr_id == kQueryAttrId) {
-    return scrape_result.query;
+    auto result = scrape_result.query;
+    if (result) {
+      base::ReplaceSubstringsAfterOffset(&result.value(), 0, "%20", " ");
+    }
+    return result;
   }
   return std::nullopt;
 }
