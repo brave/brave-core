@@ -140,16 +140,8 @@ std::optional<URLExtractResult> URLExtractor::IdentifyURL(
     return std::nullopt;
   }
 
-  std::string url_string = url.spec();
-
-  // TODO(djandries): check if we need the following:
-  // Workaround for encoding issue - preserve original search terms
-  // by converting '+' to explicit whitespace encoding
-  //   base::ReplaceChars(url_string, "+", "%20", &url_string);
-  //   GURL processed_url(url_string);
-
   for (const auto& details : site_details_) {
-    if (re2::RE2::PartialMatch(url_string, *details.regex)) {
+    if (re2::RE2::PartialMatch(url.spec(), *details.regex)) {
       return URLExtractResult(&details, ExtractQuery(url, details));
     }
   }
@@ -165,6 +157,8 @@ std::optional<std::string> URLExtractor::ExtractQuery(
   }
 
   std::string query_string = url.query();
+
+  base::ReplaceSubstringsAfterOffset(&query_string, 0, "+", "%20");
 
   // Try each query parameter for this site
   for (const auto& param : details.query_params) {
