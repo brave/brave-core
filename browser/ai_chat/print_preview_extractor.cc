@@ -26,29 +26,12 @@ PrintPreviewExtractor::PrintPreviewExtractor(content::WebContents* web_contents,
 
 PrintPreviewExtractor::~PrintPreviewExtractor() = default;
 
-void PrintPreviewExtractor::Extract(ExtractCallback callback) {
-  // Overwrite any existing extraction in progress, cancelling the operation.
-  // If AIChatTabHelper for this WebContents is asking for a new extraction
-  // then it has navigated, or the previous extraction failed to report itself
-  // somehow.
-  extractor_ = create_extractor_callback_.Run(
-      web_contents_, IsPdf(web_contents_),
-      Extractor::CallbackVariant(base::BindOnce(
-          &PrintPreviewExtractor::OnComplete<ExtractCallback, std::string>,
-          weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
-  extractor_->CreatePrintPreview();
-}
-
-void PrintPreviewExtractor::CapturePdf(CapturePdfCallback callback) {
-  if (!IsPdf(web_contents_)) {
-    std::move(callback).Run(base::unexpected("Not pdf content"));
-    return;
-  }
+void PrintPreviewExtractor::CaptureImages(CaptureImagesCallback callback) {
   // Overwrite any existing extraction in progress, cancelling the operation.
   extractor_ = create_extractor_callback_.Run(
       web_contents_, IsPdf(web_contents_),
-      Extractor::CallbackVariant(base::BindOnce(
-          &PrintPreviewExtractor::OnComplete<CapturePdfCallback,
+      Extractor::ImageCallback(base::BindOnce(
+          &PrintPreviewExtractor::OnComplete<CaptureImagesCallback,
                                              std::vector<std::vector<uint8_t>>>,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
   extractor_->CreatePrintPreview();

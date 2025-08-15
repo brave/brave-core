@@ -53,18 +53,13 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // Delegate to extract print preview content
   class PrintPreviewExtractionDelegate {
    public:
-    // Result is extracted text or error
-    using ExtractCallback =
-        base::OnceCallback<void(base::expected<std::string, std::string>)>;
-    // Result is image data of pdf pages or error
-    using CapturePdfCallback = base::OnceCallback<void(
+    // Result is image data of pages or error
+    using CaptureImagesCallback = base::OnceCallback<void(
         base::expected<std::vector<std::vector<uint8_t>>, std::string>)>;
 
     virtual ~PrintPreviewExtractionDelegate() = default;
-    // Get the current text from the WebContents using Print Preview and OCR
-    virtual void Extract(ExtractCallback callback) = 0;
-    // Capture images of pdf without doing OCR
-    virtual void CapturePdf(CapturePdfCallback callback) = 0;
+    // Capture images of content without doing OCR
+    virtual void CaptureImages(CaptureImagesCallback callback) = 0;
   };
 
   class PageContentFetcherDelegate {
@@ -151,10 +146,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
                                   bool is_video,
                                   std::string invalidation_token);
 
-  void OnExtractPrintPreviewContentComplete(
-      FetchPageContentCallback callback,
-      base::expected<std::string, std::string>);
-
 #if BUILDFLAG(ENABLE_PDF)
   void OnPDFDocumentLoadComplete(FetchPageContentCallback callback);
 
@@ -168,7 +159,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
       const std::vector<std::pair<size_t, std::string>>& page_texts);
 #endif  // BUILDFLAG(ENABLE_PDF)
 
-  bool MaybePrintPreviewExtract(FetchPageContentCallback& callback);
 
   void SetPendingGetContentCallback(FetchPageContentCallback callback);
 
