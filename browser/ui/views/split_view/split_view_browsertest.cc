@@ -438,6 +438,9 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest,
   base::test::ScopedFeatureList scoped_features_;
 };
 
+IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, FullscreenStateTest) {
+}
+
 IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitTabInsetsTest) {
   brave::ToggleVerticalTabStrip(browser());
 

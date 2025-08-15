@@ -54,9 +54,11 @@
 #define HideSplitView virtual HideSplitView
 #define UpdateActiveTabInSplitView virtual UpdateActiveTabInSplitView
 #define UpdateContentsInSplitView virtual UpdateContentsInSplitView
+#define FullscreenStateChanged virtual FullscreenStateChanged
 
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
 
+#undef FullscreenStateChanged
 #undef UpdateActiveTabInSplitView
 #undef UpdateContentsInSplitView
 #undef HideSplitView

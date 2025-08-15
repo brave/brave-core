@@ -825,6 +825,15 @@ void BraveBrowserView::UpdateActiveTabInSplitView() {
   GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
 }
 
+void BraveBrowserView::FullscreenStateChanged() {
+  BrowserView::FullscreenStateChanged();
+
+  // Need to handle rounded corners whenever changes fullscreen state.
+  if (multi_contents_view_) {
+    GetBraveMultiContentsView()->UpdateCornerRadius();
+  }
+}
+
 void BraveBrowserView::UpdateContentsInSplitView(
     const std::vector<std::pair<tabs::TabInterface*, int>>& prev_tabs,
     const std::vector<std::pair<tabs::TabInterface*, int>>& new_tabs) {

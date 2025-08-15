@@ -190,6 +190,7 @@ class BraveBrowserView : public BrowserView,
   void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;
   void UpdateActiveTabInSplitView() override;
+  void FullscreenStateChanged() override;
 
   void UpdateContentsInSplitView(
       const std::vector<std::pair<tabs::TabInterface*, int>>& prev_tabs,
