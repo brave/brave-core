@@ -82,15 +82,16 @@ ACTION_P(CheckIfMatchFailsCallback, loop) {
   loop->Quit();
 }
 
-class MockPsstScriptsHandler
-    : public PsstTabWebContentsObserver::ScriptsHandler {
+class MockPsstScriptsInserter
+    : public PsstTabWebContentsObserver::ScriptsInserter {
  public:
-  MockPsstScriptsHandler() = default;
-  ~MockPsstScriptsHandler() override = default;
+  MockPsstScriptsInserter() = default;
+  ~MockPsstScriptsInserter() override = default;
 
   MOCK_METHOD(void,
               InsertScriptInPage,
               (const std::string& script,
+               std::optional<base::Value> value,
                PsstTabWebContentsObserver::InsertScriptInPageCallback cb),
               (override));
 };
@@ -99,7 +100,7 @@ class MockPsstScriptsHandler
 // define our own gMock action to run the 2nd argument.
 ACTION_P(InsertScriptInPageCallback, loop, value) {
   std::move(
-      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1))
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg2))
       .Run(value.Clone());
   loop->Quit();
 }
@@ -111,12 +112,12 @@ class PsstTabWebContentsObserverUnitTestBase
     content::RenderViewHostTestHarness::SetUp();
 
     psst::RegisterProfilePrefs(prefs_.registry());
-    scripts_handler_ = new MockPsstScriptsHandler();
+    scripts_handler_ = new MockPsstScriptsInserter();
     rule_registry_ = std::make_unique<MockPsstRuleRegistry>();
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(
             web_contents(), rule_registry_.get(), &prefs_,
-            base::WrapUnique<MockPsstScriptsHandler>(scripts_handler_)));
+            base::WrapUnique<MockPsstScriptsInserter>(scripts_handler_)));
   }
 
   void TearDown() override {
@@ -125,7 +126,7 @@ class PsstTabWebContentsObserverUnitTestBase
   }
 
   MockPsstRuleRegistry& psst_rule_registry() { return *rule_registry_.get(); }
-  MockPsstScriptsHandler& scripts_handler() { return *scripts_handler_; }
+  MockPsstScriptsInserter& scripts_handler() { return *scripts_handler_; }
   PrefService* prefs() { return &prefs_; }
 
   MatchedRule* CreateMatchedRule(const std::string& user_script,
@@ -137,7 +138,7 @@ class PsstTabWebContentsObserverUnitTestBase
   base::test::ScopedFeatureList feature_list_;
 
  private:
-  raw_ptr<MockPsstScriptsHandler> scripts_handler_;  // not owned
+  raw_ptr<MockPsstScriptsInserter> scripts_handler_;  // not owned
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -239,7 +240,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           CreateMatchedRule(first_nav_user_script, policy_script)));
 
   base::RunLoop first_nav_user_script_insert_loop;
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(first_nav_user_script, _))
+  EXPECT_CALL(scripts_handler(),
+              InsertScriptInPage(first_nav_user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&first_nav_user_script_insert_loop,
                                            base::Value()));
 
@@ -260,10 +262,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           CreateMatchedRule(second_nav_user_script, policy_script)));
 
   base::RunLoop second_nav_user_script_insert_loop;
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(second_nav_user_script, _))
+  EXPECT_CALL(scripts_handler(),
+              InsertScriptInPage(second_nav_user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&second_nav_user_script_insert_loop,
                                            base::Value()));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
@@ -288,10 +292,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
 
   base::RunLoop user_script_insert_loop;
   auto value = base::Value();
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(value)));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   auto simulator =
@@ -402,10 +407,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::RunLoop user_script_insert_loop;
   auto value = base::Value();
 
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(value)));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -427,10 +433,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::RunLoop user_script_insert_loop;
   auto value = base::Value();
 
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(value)));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -455,10 +462,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto dict = base::Value(base::Value::Dict());
   auto value = base::Value();
 
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(dict)));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _))
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
                                            std::move(value)));
 
@@ -485,10 +492,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto dict = base::Value(base::Value::Dict());
   auto value = base::Value();
 
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _))
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(user_script, _, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(dict)));
-  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _)).Times(0);
+  EXPECT_CALL(scripts_handler(), InsertScriptInPage(policy_script, _, _))
+      .Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),

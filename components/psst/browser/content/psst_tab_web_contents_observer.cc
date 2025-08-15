@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/psst/browser/content/psst_scripts_handler_impl.h"
+#include "brave/components/psst/browser/content/psst_scripts_inserter_impl.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
@@ -48,18 +48,18 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
   return base::WrapUnique<PsstTabWebContentsObserver>(
       new PsstTabWebContentsObserver(
           contents, PsstRuleRegistry::GetInstance(), prefs,
-          std::make_unique<PsstScriptsHandlerImpl>(contents, world_id)));
+          std::make_unique<PsstScriptsInserterImpl>(contents, world_id)));
 }
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
     PsstRuleRegistry* registry,
     PrefService* prefs,
-    std::unique_ptr<ScriptsHandler> script_handler)
+    std::unique_ptr<ScriptsInserter> script_inserter)
     : WebContentsObserver(web_contents),
       registry_(registry),
       prefs_(prefs),
-      script_handler_(std::move(script_handler)) {}
+      script_inserter_(std::move(script_inserter)) {}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
@@ -97,7 +97,7 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
 bool PsstTabWebContentsObserver::ShouldInsertScriptForPage(int id) {
   auto* entry = web_contents()->GetController().GetLastCommittedEntry();
   auto* data = entry->GetUserData(kShouldProcessKey);
-  return script_handler_ && data &&
+  return script_inserter_ && data &&
          static_cast<PsstNavigationData*>(data)->id == id;
 }
 
@@ -108,8 +108,8 @@ void PsstTabWebContentsObserver::InsertUserScript(
     return;
   }
 
-  script_handler_->InsertScriptInPage(
-      rule->user_script(),
+  script_inserter_->InsertScriptInPage(
+      rule->user_script(), std::nullopt /* no params */,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
                      weak_factory_.GetWeakPtr(), id, rule->policy_script()));
 }
@@ -122,7 +122,9 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
       !user_script_result.is_dict()) {
     return;
   }
-  script_handler_->InsertScriptInPage(policy_script, base::DoNothing());
+
+  script_inserter_->InsertScriptInPage(
+      policy_script, std::move(user_script_result), base::DoNothing());
 }
 
 }  // namespace psst

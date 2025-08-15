@@ -24,10 +24,11 @@ class PsstRuleRegistry;
 class PsstTabWebContentsObserver : public content::WebContentsObserver {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
-  class ScriptsHandler {
+  class ScriptsInserter {
    public:
-    virtual ~ScriptsHandler() = default;
+    virtual ~ScriptsInserter() = default;
     virtual void InsertScriptInPage(const std::string& script,
+                                    std::optional<base::Value> value,
                                     InsertScriptInPageCallback cb) = 0;
   };
 
@@ -48,7 +49,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstTabWebContentsObserver(content::WebContents* web_contents,
                              PsstRuleRegistry* registry,
                              PrefService* prefs,
-                             std::unique_ptr<ScriptsHandler> script_handler);
+                             std::unique_ptr<ScriptsInserter> script_handler);
 
   bool ShouldInsertScriptForPage(int id);
   void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);
@@ -63,7 +64,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;
-  std::unique_ptr<ScriptsHandler> script_handler_;
+  std::unique_ptr<ScriptsInserter> script_inserter_;
 
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
 };
