@@ -8,7 +8,9 @@ import styled from 'styled-components'
 import hillBgUrl from '../../assets/hill.webp'
 import pyramidBgUrl from '../../assets/pyramid.webp'
 
-export const Box = styled.div`
+export const Box = styled.div.attrs({
+  'data-theme': 'light'
+})`
   .content-box {
     position: fixed;
     width: 100%;
