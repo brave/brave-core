@@ -5,6 +5,7 @@
 
 import '../brave_search_engines_page/brave_search_engines_page.js'
 
+import '../brave_search_engines_page/normal_search_engine_list_dialog.js'
 import '../brave_search_engines_page/private_search_engine_list_dialog.js'
 
 import {
@@ -20,6 +21,31 @@ import {loadTimeData} from '../i18n_setup.js'
 
 RegisterPolymerTemplateModifications({
   'settings-search-page': (templateContent) => {
+    const searchEngineListDialogTemplate = templateContent.querySelector(
+        'template[is=dom-if][if="[[showSearchEngineListDialog_]]"]')
+    if (!searchEngineListDialogTemplate) {
+      console.error(
+          `[Settings] Couldn't find search engine list dialog template`)
+    } else {
+      const searchEngineListDialog =
+          searchEngineListDialogTemplate.content.querySelector(
+            'settings-search-engine-list-dialog')
+      if (!searchEngineListDialog) {
+        console.error(
+            `[Settings] Couldn't find search engine list dialog`)
+      } else {
+        searchEngineListDialog.insertAdjacentHTML(
+          'beforebegin',
+          getTrustedHTML`
+            <settings-normal-search-engine-list-dialog
+              search-engines="[[searchEngines_]]"
+              on-close="onSearchEngineListDialogClose_"
+              on-search-engine-changed="onDefaultSearchEngineChangedInDialog_">
+            </settings-normal-search-engine-list-dialog>`)
+        searchEngineListDialog.remove()
+      }
+    }
+
     const enginesSubpageTrigger =
       templateContent.getElementById('enginesSubpageTrigger')
     if (!enginesSubpageTrigger) {
