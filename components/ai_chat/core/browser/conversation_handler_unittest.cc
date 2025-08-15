@@ -38,6 +38,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
+#include "brave/components/ai_chat/core/browser/mock_untrusted_conversation_handler_client.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
@@ -131,40 +132,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   mojo::Remote<mojom::ConversationHandler> conversation_handler_;
 };
 
-class MockUntrustedConversationHandlerClient
-    : public mojom::UntrustedConversationUI {
- public:
-  explicit MockUntrustedConversationHandlerClient(ConversationHandler* driver) {
-    driver->BindUntrustedConversationUI(
-        conversation_ui_receiver_.BindNewPipeAndPassRemote(),
-        base::DoNothing());
-  }
-
-  ~MockUntrustedConversationHandlerClient() override = default;
-
-  void Disconnect() { conversation_ui_receiver_.reset(); }
-
-  MOCK_METHOD(void,
-              OnConversationHistoryUpdate,
-              (mojom::ConversationTurnPtr),
-              (override));
-  MOCK_METHOD(void,
-              OnToolUseEventOutput,
-              (const std::string& entry_uuid, mojom::ToolUseEventPtr tool_use),
-              (override));
-  MOCK_METHOD(void,
-              OnEntriesUIStateChanged,
-              (mojom::ConversationEntriesStatePtr),
-              (override));
-  MOCK_METHOD(void,
-              AssociatedContentChanged,
-              (std::vector<mojom::AssociatedContentPtr>),
-              (override));
-
- private:
-  mojo::Receiver<mojom::UntrustedConversationUI> conversation_ui_receiver_{
-      this};
-};
 
 class MockAIChatFeedbackAPI : public AIChatFeedbackAPI {
  public:
@@ -2658,6 +2625,18 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
 
+  // Set up test tools that match the tool names used in the test
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  auto tool2 =
+      std::make_unique<NiceMock<MockTool>>("test_tool2", "Test tool 2");
+  tool1->set_requires_user_interaction_before_handling(false);
+  tool2->set_requires_user_interaction_before_handling(false);
+
+  std::vector<std::unique_ptr<Tool>> tools;
+  tools.push_back(std::move(tool1));
+  tools.push_back(std::move(tool2));
+  conversation_handler_->SetToolsForTesting(std::move(tools));
+
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
   // Mock engine to return partial tool use events
@@ -3280,6 +3259,93 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   EXPECT_EQ(history.back()->text, "Final response after tools");
 }
 
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
+  // Test that requesting a non-existent tool returns proper error message
+  conversation_handler_->associated_content_manager()->ClearContent();
+  auto* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  MockUntrustedConversationHandlerClient untrusted_client(
+      conversation_handler_.get());
+
+  base::RunLoop run_loop;
+
+  // Set up engine to return a response with a tool use request for non-existent
+  // tool, then expect a second call after tool error is handled
+  testing::Sequence seq;
+
+  // First call: returns tool use event for non-existent tool
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          // Send completion event first (like working test)
+          testing::WithArg<5>(
+              [](EngineConsumer::GenerationDataCallback data_callback) {
+                data_callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Let me help you...")),
+                    std::nullopt));
+              }),
+          // Then send tool use event via data callback
+          testing::WithArg<5>(
+              [](EngineConsumer::GenerationDataCallback data_callback) {
+                data_callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("nonexistent_tool",
+                                                 "test_tool_id", "{}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          // Complete with empty completion event (like working test)
+          testing::WithArg<6>([](EngineConsumer::GenerationCompletedCallback
+                                     completion_callback) {
+            std::move(completion_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt)));
+          })));
+
+  // Second call: after tool error is handled, should continue generation
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<5>(
+              [](EngineConsumer::GenerationDataCallback data_callback) {
+                data_callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(
+                            "Final response after handling tool error")),
+                    std::nullopt));
+              }),
+          testing::WithArg<6>([&](EngineConsumer::GenerationCompletedCallback
+                                      completion_callback) {
+            std::move(completion_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt)));
+            run_loop.QuitWhenIdle();
+          })));
+
+  // Expect the error message when tool is not found
+  EXPECT_CALL(untrusted_client, OnToolUseEventOutput)
+      .WillOnce(testing::WithArg<1>([&](mojom::ToolUseEventPtr tool_use_event) {
+        EXPECT_EQ(tool_use_event->tool_name, "nonexistent_tool");
+        EXPECT_EQ(tool_use_event->id, "test_tool_id");
+
+        ASSERT_TRUE(tool_use_event->output.has_value());
+        const std::string& error_text =
+            tool_use_event->output->at(0)->get_text_content_block()->text;
+        EXPECT_EQ(error_text, "The nonexistent_tool tool is not available.");
+      }));
+
+  // Trigger generation which will cause tool lookup
+  conversation_handler_->SubmitHumanConversationEntry("Help me with something",
+                                                      std::nullopt);
+  run_loop.Run();
+}
+
 TEST_F(ConversationHandlerUnitTest, AssociatingContentTriggersGetContent) {
   MockAssociatedContent content;
   content.SetTextContent("content");
@@ -3866,6 +3932,79 @@ TEST_F(ConversationHandlerUnitTest,
   auto entries_state = conversation_handler_->GetStateForConversationEntries();
   EXPECT_TRUE(entries_state->visual_content_used_percentage.has_value());
   EXPECT_EQ(entries_state->visual_content_used_percentage.value(), 66u);
+}
+
+TEST_F(ConversationHandlerUnitTest, NotifyMemoriesChanged) {
+  // Set up mock untrusted client
+  MockUntrustedConversationHandlerClient untrusted_client(
+      conversation_handler_.get());
+
+  std::vector<std::string> test_memories = {
+      "User prefers TypeScript", "User likes cats", "User is a developer"};
+
+  base::RunLoop run_loop;
+  // Expect the client to receive memory change notification
+  EXPECT_CALL(untrusted_client, OnMemoriesChanged(test_memories))
+      .WillOnce(
+          [&run_loop](const std::vector<std::string>&) { run_loop.Quit(); });
+
+  // Notify memories changed
+  conversation_handler_->NotifyMemoriesChanged(test_memories);
+
+  // Wait for the callback to be called
+  run_loop.Run();
+}
+
+TEST_F(ConversationHandlerUnitTest, NotifyMemoryEnabledChanged) {
+  // Set up mock untrusted client
+  MockUntrustedConversationHandlerClient untrusted_client(
+      conversation_handler_.get());
+
+  base::RunLoop run_loop;
+  // Expect the client to receive memory enabled change notification (enabled)
+  EXPECT_CALL(untrusted_client, OnMemoryEnabledChanged(true))
+      .WillOnce([&run_loop](bool) { run_loop.Quit(); });
+
+  // Notify memory enabled
+  conversation_handler_->NotifyMemoryEnabledChanged(true);
+  run_loop.Run();
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       GetTools_MemoryToolFilteredForTemporaryConversations) {
+  // Test that memory tools are not available in temporary conversations
+
+  // Enable memory feature so memory tool would normally be available
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+
+  // Test 1: Memory tool should be available in regular (non-temporary)
+  // conversation
+  conversation_handler_->SetTemporary(false);
+  auto regular_tools = conversation_handler_->GetTools();
+
+  bool memory_tool_found_regular = false;
+  for (auto& tool : regular_tools) {
+    if (tool && tool->Name() == mojom::kMemoryStorageToolName) {
+      memory_tool_found_regular = true;
+      break;
+    }
+  }
+  EXPECT_TRUE(memory_tool_found_regular)
+      << "Memory tool should be available in regular conversations";
+
+  // Test 2: Memory tool should NOT be available in temporary conversation
+  conversation_handler_->SetTemporary(true);
+  auto temp_tools = conversation_handler_->GetTools();
+
+  bool memory_tool_found_temp = false;
+  for (auto& tool : temp_tools) {
+    if (tool && tool->Name() == mojom::kMemoryStorageToolName) {
+      memory_tool_found_temp = true;
+      break;
+    }
+  }
+  EXPECT_FALSE(memory_tool_found_temp)
+      << "Memory tool should NOT be available in temporary conversations";
 }
 
 }  // namespace ai_chat

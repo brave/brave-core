@@ -11,6 +11,7 @@
 
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
@@ -119,7 +120,7 @@ TEST_F(CustomizationSettingsHandlerTest, SetCustomizations_Valid) {
 TEST_F(CustomizationSettingsHandlerTest, SetCustomizations_InvalidLength) {
   auto customizations = mojom::Customizations::New();
   customizations->name =
-      std::string(mojom::kMaxRecordLength + 1, 'a');  // Too long
+      std::string(mojom::kMaxMemoryRecordLength + 1, 'a');  // Too long
   customizations->job = "Software Engineer";
   customizations->tone = "Professional";
   customizations->other = "Loves coding";
@@ -189,7 +190,7 @@ TEST_F(CustomizationSettingsHandlerTest, AddMemory_Empty) {
 TEST_F(CustomizationSettingsHandlerTest, AddMemory_TooLong) {
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
       future;
-  handler_->AddMemory(std::string(mojom::kMaxRecordLength + 1, 'a'),
+  handler_->AddMemory(std::string(mojom::kMaxMemoryRecordLength + 1, 'a'),
                       future.GetCallback());
   EXPECT_TRUE(future.Get().has_value());
   EXPECT_EQ(future.Get().value(),
@@ -282,7 +283,7 @@ TEST_F(CustomizationSettingsHandlerTest, EditMemory_NewMemoryTooLong) {
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
       future2;
   handler_->EditMemory("Old memory",
-                       std::string(mojom::kMaxRecordLength + 1, 'a'),
+                       std::string(mojom::kMaxMemoryRecordLength + 1, 'a'),
                        future2.GetCallback());
   EXPECT_TRUE(future2.Get().has_value());
   EXPECT_EQ(future2.Get().value(),

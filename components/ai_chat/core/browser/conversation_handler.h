@@ -252,6 +252,12 @@ class ConversationHandler : public mojom::ConversationHandler,
     is_request_in_progress_ = in_progress;
   }
 
+  // Called by AIChatService when memories change
+  void NotifyMemoriesChanged(const std::vector<std::string>& memories);
+
+  // Called by AIChatService when memory feature is enabled/disabled
+  void NotifyMemoryEnabledChanged(bool enabled);
+
  protected:
   // ModelService::Observer
   void OnModelListUpdated() override;
@@ -284,6 +290,9 @@ class ConversationHandler : public mojom::ConversationHandler,
                            OnAutoScreenshotsTaken_NoLimitWhenUnderMax);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            OnAutoScreenshotsTaken_SamePercentageNoUIUpdate);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      GetTools_MemoryToolFilteredForTemporaryConversations);
 
   struct Suggestion {
     std::string title;

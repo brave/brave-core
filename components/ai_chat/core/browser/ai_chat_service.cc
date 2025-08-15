@@ -38,6 +38,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
+#include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -45,6 +46,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "build/build_config.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
@@ -114,6 +116,10 @@ AIChatService::AIChatService(
       credential_manager_(std::move(ai_chat_credential_manager)),
       profile_path_(profile_path) {
   DCHECK(profile_prefs_);
+
+  // Initialize browser-level tools based on current pref settings
+  InitializeBrowserTools();
+
   pref_change_registrar_.Init(profile_prefs_);
   pref_change_registrar_.Add(
       prefs::kLastAcceptedDisclaimer,
@@ -130,6 +136,14 @@ AIChatService::AIChatService(
   pref_change_registrar_.Add(
       prefs::kUserDismissedStorageNotice,
       base::BindRepeating(&AIChatService::OnStateChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveAIChatUserMemories,
+      base::BindRepeating(&AIChatService::OnMemoriesChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveAIChatUserMemoryEnabled,
+      base::BindRepeating(&AIChatService::OnMemoryEnabledChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
@@ -192,6 +206,64 @@ ConversationHandler* AIChatService::CreateConversation() {
 
   // Return the raw pointer
   return GetConversation(conversation_uuid);
+}
+
+std::vector<base::WeakPtr<Tool>> AIChatService::GetBrowserTools() {
+  std::vector<base::WeakPtr<Tool>> tools;
+  for (const auto& tool : browser_tools_) {
+    tools.push_back(tool->GetWeakPtr());
+  }
+  return tools;
+}
+
+void AIChatService::OnMemoryEnabledChanged() {
+  bool memory_enabled =
+      profile_prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled);
+
+  // Check if memory tool already exists.
+  auto memory_tool_it =
+      std::find_if(browser_tools_.begin(), browser_tools_.end(),
+                   [](const std::unique_ptr<Tool>& tool) {
+                     return tool->Name() == mojom::kMemoryStorageToolName;
+                   });
+
+  if (memory_enabled && memory_tool_it == browser_tools_.end()) {
+    // Memory enabled but tool doesn't exist, add it.
+    browser_tools_.push_back(
+        std::make_unique<MemoryStorageTool>(profile_prefs_));
+  } else if (!memory_enabled && memory_tool_it != browser_tools_.end()) {
+    // Memory disabled but tool exists, remove it.
+    browser_tools_.erase(memory_tool_it);
+  }
+
+  // Notify all conversation handlers about memory enabled state change.
+  for (auto& [uuid, conversation_handler] : conversation_handlers_) {
+    conversation_handler->NotifyMemoryEnabledChanged(memory_enabled);
+  }
+
+  // Also notify about memory changes to sync the memories list. When enabled,
+  // it would be the list stored in the preference. When disabled, it would be
+  // an empty list.
+  OnMemoriesChanged();
+}
+
+void AIChatService::OnMemoriesChanged() {
+  // Get updated memories from prefs.
+  std::vector<std::string> memories =
+      ai_chat::prefs::GetMemoriesFromPrefs(*profile_prefs_);
+
+  // Notify all conversation handlers about memory changes.
+  for (auto& [uuid, conversation_handler] : conversation_handlers_) {
+    conversation_handler->NotifyMemoriesChanged(memories);
+  }
+}
+
+void AIChatService::InitializeBrowserTools() {
+  // Add memory storage tool if memory is enabled.
+  if (profile_prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
+    browser_tools_.push_back(
+        std::make_unique<MemoryStorageTool>(profile_prefs_));
+  }
 }
 
 ConversationHandler* AIChatService::GetConversation(

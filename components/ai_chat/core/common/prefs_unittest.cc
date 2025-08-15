@@ -113,6 +113,22 @@ TEST_F(AIChatPrefsTest, GetMemoriesFromPrefs_WithData) {
   EXPECT_EQ(memories[2], "I use Brave browser");
 }
 
+TEST_F(AIChatPrefsTest, GetMemoriesFromPrefs_MemoryDisabled) {
+  // Set up test data
+  auto list = base::Value::List();
+  list.Append("I work as a software engineer");
+  list.Append("I prefer dark mode");
+  pref_service_.SetList(kBraveAIChatUserMemories, std::move(list));
+
+  // Disable memory feature
+  pref_service_.SetBoolean(kBraveAIChatUserMemoryEnabled, false);
+
+  auto memories = GetMemoriesFromPrefs(pref_service_);
+
+  // Should return empty list when memory feature is disabled
+  EXPECT_TRUE(memories.empty());
+}
+
 TEST_F(AIChatPrefsTest, AddMemoryToPrefs_NewMemory) {
   AddMemoryToPrefs("I love coding", pref_service_);
   AddMemoryToPrefs("I love coding2", pref_service_);

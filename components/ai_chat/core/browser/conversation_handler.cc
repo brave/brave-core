@@ -1518,6 +1518,22 @@ void ConversationHandler::OnToolUseEventOutput(mojom::ConversationTurn* entry,
   }
 }
 
+void ConversationHandler::NotifyMemoriesChanged(
+    const std::vector<std::string>& memories) {
+  // Notify all untrusted conversation UI handlers about memory changes
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnMemoriesChanged(memories);
+  }
+}
+
+void ConversationHandler::NotifyMemoryEnabledChanged(bool enabled) {
+  // Notify all untrusted conversation UI handlers about memory enabled state
+  // change
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnMemoryEnabledChanged(enabled);
+  }
+}
+
 void ConversationHandler::OnConversationEntryRemoved(
     std::optional<std::string> entry_uuid) {
   OnHistoryUpdate(nullptr);
@@ -1684,7 +1700,20 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
       associated_content_manager_->HasAssociatedContent(), GetCurrentModel());
   std::ranges::transform(conversation_tools, std::back_inserter(tools),
                          [](auto& tool) { return tool->GetWeakPtr(); });
-  // TODO(petemill): Concat with tools from other areas (content, browser, etc.)
+
+  // Add browser-level tools
+  auto browser_tools = ai_chat_service_->GetBrowserTools();
+
+  // Filter out memory tool for temporary conversations
+  if (GetIsTemporary()) {
+    std::erase_if(browser_tools, [](const auto& tool) {
+      return tool && tool->Name() == mojom::kMemoryStorageToolName;
+    });
+  }
+
+  tools.insert(tools.end(), browser_tools.begin(), browser_tools.end());
+
+  // TODO(petemill): Concat with tools from other areas (content, etc.)
   return tools;
 }
 
@@ -1735,21 +1764,58 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         // already handled
         continue;
       }
+
+      // Skip partial events that would be combined (empty tool name).
+      if (tool_use_event->tool_name.empty()) {
+        continue;
+      }
+
+      bool tool_found = false;
       for (auto& tool : GetTools()) {
-        if (tool->Name() == tool_use_event->tool_name &&
-            !tool->RequiresUserInteractionBeforeHandling()) {
-          is_tool_use_in_progress_ = true;
-          OnAPIRequestInProgressChanged();
-          // Tool use will be handled by the Tool itself
-          DVLOG(0) << __func__ << " calling UseTool for tool: " << tool->Name();
-          tool->UseTool(
-              tool_use_event->arguments_json,
-              base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
-                             weak_ptr_factory_.GetWeakPtr(),
-                             tool_use_event->id));
+        if (!tool) {
+          // Defensive check to avoid dereferencing invalid WeakPtr
+          DVLOG(1) << "Skipping invalid tool weak_ptr during execution";
+          continue;
+        }
+
+        if (tool->Name() == tool_use_event->tool_name) {
+          tool_found = true;
+          if (!tool->RequiresUserInteractionBeforeHandling()) {
+            is_tool_use_in_progress_ = true;
+            OnAPIRequestInProgressChanged();
+            // Tool use will be handled by the Tool itself
+            DVLOG(0) << __func__
+                     << " calling UseTool for tool: " << tool->Name();
+            tool->UseTool(
+                tool_use_event->arguments_json,
+                base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
+                               weak_ptr_factory_.GetWeakPtr(),
+                               tool_use_event->id));
+          }
           break;
         }
       }
+
+      if (!tool_found) {
+        DVLOG(1) << "Tool not found or unavailable: "
+                 << tool_use_event->tool_name;
+
+        // Set these to mark that we're in progress of handling this event, and
+        // follow the code path as tool founded case above, which calls
+        // RespondToToolUseRequest, just with the error message being the
+        // result.
+        is_tool_use_in_progress_ = true;
+        OnAPIRequestInProgressChanged();
+
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(
+                base::StrCat({"The ", tool_use_event->tool_name,
+                              " tool is not available."}))));
+
+        RespondToToolUseRequest(tool_use_event->id, std::move(result));
+      }
+
       if (is_tool_use_in_progress_) {
         break;
       }

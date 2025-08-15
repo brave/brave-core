@@ -44,6 +44,11 @@ void ResetCustomizationsPref(PrefService& prefs) {
 }
 
 std::vector<std::string> GetMemoriesFromPrefs(const PrefService& prefs) {
+  // Return empty list if memory feature is disabled
+  if (!prefs.GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
+    return std::vector<std::string>();
+  }
+
   const base::Value::List& memories_list =
       prefs.GetList(prefs::kBraveAIChatUserMemories);
   std::vector<std::string> memories;
