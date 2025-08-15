@@ -25,12 +25,14 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
@@ -113,7 +115,8 @@ UntrustedPlayerUI::UntrustedPlayerUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src chrome-untrusted://resources "
-                  "chrome-untrusted://brave-resources 'unsafe-inline';"));
+                  "chrome-untrusted://brave-resources chrome-untrusted://theme "
+                  "'unsafe-inline';"));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       std::string("img-src 'self' chrome-untrusted://playlist-data "
@@ -123,6 +126,10 @@ UntrustedPlayerUI::UntrustedPlayerUI(content::WebUI* web_ui)
       std::string("font-src 'self' chrome-untrusted://resources;"));
 
   AddLocalizedStrings(source);
+
+  content::URLDataSource::Add(
+      Profile::FromWebUI(web_ui),
+      std::make_unique<ThemeSource>(Profile::FromWebUI(web_ui), true));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -155,8 +162,9 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui)
   // Allow to load untrusted resources.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      std::string("style-src chrome-untrusted://resources "
-                  "'unsafe-inline';"));
+      std::string(
+          "style-src chrome-untrusted://resources chrome-untrusted://theme "
+          "'unsafe-inline';"));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       std::string("script-src 'self' "
@@ -174,6 +182,10 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       base::StrCat({"frame-src ", kPlaylistPlayerURL, ";"}));
+
+  content::URLDataSource::Add(
+      Profile::FromWebUI(web_ui),
+      std::make_unique<ThemeSource>(Profile::FromWebUI(web_ui), true));
 }
 
 PlaylistUI::~PlaylistUI() = default;

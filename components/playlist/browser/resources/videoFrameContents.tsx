@@ -13,7 +13,6 @@ import store from './store'
 import Player from './components/player'
 import startReceivingAPIRequest from './playerApiSink'
 import { setIconBasePath } from '@brave/leo/react/icon'
-import '@brave/leo/tokens/css/variables.css'
 
 function initialize () {
   render(

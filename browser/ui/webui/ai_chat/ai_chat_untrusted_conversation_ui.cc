@@ -43,6 +43,7 @@
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
 #else
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #endif
 
 namespace {
@@ -173,7 +174,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "script-src 'self' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
+      "style-src 'self' 'unsafe-inline' chrome-untrusted://resources "
+      "chrome-untrusted://theme;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' blob: chrome-untrusted://resources "
@@ -194,6 +196,10 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
                                   /*serve_untrusted=*/true));
   content::URLDataSource::Add(
       profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
+#if !BUILDFLAG(IS_ANDROID)
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(
+                                           profile, /*serve_untrusted=*/true));
+#endif
 }
 
 AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;

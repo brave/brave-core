@@ -26,6 +26,10 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/webui/webui_util.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/webui/theme_source.h"
+#endif
+
 namespace brave_rewards {
 
 namespace {
@@ -330,6 +334,10 @@ void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
 
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
+
+#if !BUILDFLAG(IS_ANDROID)
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
+#endif
 }
 
 }  // namespace brave_rewards
