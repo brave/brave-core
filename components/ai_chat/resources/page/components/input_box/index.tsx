@@ -252,7 +252,6 @@ function InputBox(props: InputBoxProps) {
           <Button
             fab
             kind='plain-faint'
-            size='large'
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
