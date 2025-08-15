@@ -19,6 +19,7 @@ include_rules = [
   "+content/public/common",
   "+content/public/test",
   "+crypto",
+  "+net",
   "+services/data_decoder/public/cpp",
   "+services/network/public/cpp",
   "+services/network/public/mojom",

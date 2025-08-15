@@ -11,10 +11,6 @@
 #include "base/logging.h"
 #include "base/strings/string_split.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
-#include "brave/components/skus/common/skus_sdk.mojom.h"
-#include "net/base/load_flags.h"
-#include "net/http/http_status_code.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
 
 namespace skus {
@@ -58,8 +54,9 @@ void SkusUrlLoaderImpl::BeginFetch(
     std::vector<std::string> lines =
         base::SplitString(static_cast<std::string>(header), ": ",
                           base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-    if (lines.size() != 2)
+    if (lines.size() != 2) {
       continue;
+    }
 
     headers[lines.front()] = lines.back();
   }
