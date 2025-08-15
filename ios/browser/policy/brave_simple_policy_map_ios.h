@@ -9,6 +9,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
@@ -29,6 +30,11 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {
         policy::key::kBraveRewardsDisabled,
         brave_rewards::prefs::kDisabledByPolicy,
+        base::Value::Type::BOOLEAN,
+    },
+    {
+        policy::key::kBraveTalkDisabled,
+        kBraveTalkDisabledByPolicy,
         base::Value::Type::BOOLEAN,
     },
 };

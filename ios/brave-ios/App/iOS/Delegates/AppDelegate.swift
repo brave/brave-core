@@ -10,6 +10,7 @@ import BraveNews
 import BraveShared
 import BraveShields
 import BraveStore
+import BraveTalk
 import BraveVPN
 import BraveWallet
 import BraveWidgetsModels
@@ -31,10 +32,6 @@ import StoreKit
 import UserAgent
 import UserNotifications
 import os
-
-#if canImport(BraveTalk)
-import BraveTalk
-#endif
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -283,12 +280,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     SceneDelegate.shouldHandleUrpLookup = true
     SceneDelegate.shouldHandleInstallAttributionFetch = true
 
-    #if canImport(BraveTalk)
-    BraveTalkJitsiCoordinator.sendAppLifetimeEvent(
-      .didFinishLaunching(options: launchOptions ?? [:])
-    )
-    #endif
-
     if Preferences.P3A.installationDate.value == nil {
       let dauInstallDate = Preferences.DAU.installationDate.value
       Preferences.P3A.installationDate.value = {
@@ -348,25 +339,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return shouldPerformAdditionalDelegateHandling
   }
 
-  #if canImport(BraveTalk)
   func application(
     _ application: UIApplication,
     continue userActivity: NSUserActivity,
     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
   ) -> Bool {
+    guard let prefService = AppState.shared.braveCore.profileController?.profile.prefs else {
+      return false
+    }
     return BraveTalkJitsiCoordinator.sendAppLifetimeEvent(
-      .continueUserActivity(userActivity, restorationHandler: restorationHandler)
+      .continueUserActivity(userActivity, restorationHandler: restorationHandler),
+      prefService: prefService
     )
   }
-
-  func application(
-    _ app: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-  ) -> Bool {
-    return BraveTalkJitsiCoordinator.sendAppLifetimeEvent(.openURL(url, options: options))
-  }
-  #endif
 
   func applicationWillTerminate(_ application: UIApplication) {
     SKPaymentQueue.default().remove(BraveVPN.iapObserver)

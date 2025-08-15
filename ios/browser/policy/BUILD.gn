@@ -12,6 +12,7 @@ source_set("policy") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_wallet/common:pref_names",
+    "//brave/components/constants",
     "//components/policy/core/browser",
     "//ios/chrome/browser/policy/model",
   ]

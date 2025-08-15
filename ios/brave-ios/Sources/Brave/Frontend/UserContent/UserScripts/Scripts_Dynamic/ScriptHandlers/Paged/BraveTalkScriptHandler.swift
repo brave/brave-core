@@ -3,17 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Web
-
-#if canImport(BraveTalk)
-
-import Foundation
-import WebKit
-import Shared
-import BraveShared
 import BraveCore
-import os.log
+import BraveShared
 import BraveTalk
+import Foundation
+import Shared
+import Web
+import WebKit
+import os.log
 
 class BraveTalkScriptHandler: TabContentScript {
   private weak var rewards: BraveRewards?
@@ -147,5 +144,3 @@ class BraveTalkScriptHandler: TabContentScript {
     tab.miscDelegate?.showRequestRewardsPanel(tab)
   }
 }
-
-#endif

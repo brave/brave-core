@@ -44,7 +44,7 @@ NS_SWIFT_NAME(PrefService)
 - (void)setString:(NSString*)value
           forPath:(NSString*)path NS_SWIFT_NAME(set(_:forPath:));
 - (void)setFilePath:(NSString*)value
-            forPath:(NSString*)path NS_SWIFT_NAME(set(_:forPath:));
+            forPath:(NSString*)path NS_SWIFT_NAME(set(filePath:forPath:));
 - (void)setValue:(BaseValueBridge*)value
          forPath:(NSString*)path NS_SWIFT_NAME(set(_:forPath:));
 - (void)setDictionary:(NSDictionary<NSString*, BaseValueBridge*>*)dict
@@ -68,7 +68,7 @@ NS_SWIFT_NAME(PrefService)
 - (NSTimeInterval)timeDeltaForPath:(NSString*)path
     NS_SWIFT_NAME(timeDelta(forPath:));
 - (void)setTimeDelta:(NSTimeInterval)delta
-             forPath:(NSString*)path NS_SWIFT_NAME(set(_:forPath:));
+             forPath:(NSString*)path NS_SWIFT_NAME(set(timeDelta:forPath:));
 
 /// Removes a user pref and restores the pref to its default value
 - (void)clearPrefForPath:(NSString*)path NS_SWIFT_NAME(clearPref(forPath:));

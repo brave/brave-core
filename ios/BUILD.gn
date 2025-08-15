@@ -100,6 +100,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/version_info/version_info_ios.h",
   "//brave/ios/components/prefs/pref_service_bridge.h",
   "//brave/ios/components/prefs/pref_change_registrar_bridge.h",
+  "//brave/ios/components/constants/pref_names_bridge.h",
 ]
 
 brave_core_public_headers += ads_public_headers
@@ -190,6 +191,7 @@ ios_framework_bundle("brave_core_ios_framework") {
     ":brave_core_plist",
     ":brave_core_umbrella_header",
     "//brave/ios/app",
+    "//brave/ios/components/constants",
     "//brave/ios/web_view",
   ]
 

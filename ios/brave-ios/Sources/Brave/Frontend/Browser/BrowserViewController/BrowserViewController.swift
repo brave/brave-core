@@ -7,6 +7,7 @@ import BraveCore
 import BraveNews
 import BraveShared
 import BraveShields
+import BraveTalk
 import BraveUI
 import BraveVPN
 import BraveWallet
@@ -32,14 +33,6 @@ import WebKit
 import os.log
 
 import class Combine.AnyCancellable
-
-#if canImport(BraveTalk)
-import BraveTalk
-#endif
-
-#if canImport(BraveTalk)
-import BraveTalk
-#endif
 
 public class BrowserViewController: UIViewController {
   let webViewContainer = UIView()
@@ -258,10 +251,8 @@ public class BrowserViewController: UIViewController {
   var widgetFaviconFetchers: [Task<Favicon, Error>] = []
   let deviceCheckClient: DeviceCheckClient?
 
-  #if canImport(BraveTalk)
   // Brave Talk native implementations
-  let braveTalkJitsiCoordinator = BraveTalkJitsiCoordinator()
-  #endif
+  let braveTalkJitsiCoordinator: BraveTalkJitsiCoordinator
 
   /// The currently open WalletStore
   weak var walletStore: WalletStore?
@@ -298,6 +289,7 @@ public class BrowserViewController: UIViewController {
     self.privateBrowsingManager = privateBrowsingManager
     self.feedDataSource = newsFeedDataSource
     self.prefsChangeRegistrar = PrefChangeRegistrar(prefService: profileController.profile.prefs)
+    self.braveTalkJitsiCoordinator = .init(prefService: profileController.profile.prefs)
     feedDataSource.historyAPI = profileController.historyAPI
     backgroundDataSource = .init(
       service: profileController.backgroundImagesService,
@@ -442,9 +434,7 @@ public class BrowserViewController: UIViewController {
 
     coordinator.animate(
       alongsideTransition: { context in
-        #if canImport(BraveTalk)
         self.braveTalkJitsiCoordinator.resetPictureInPictureBounds(.init(size: size))
-        #endif
       }
     )
   }
