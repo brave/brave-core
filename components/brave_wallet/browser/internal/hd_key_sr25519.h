@@ -43,18 +43,18 @@ class HDKeySr25519 {
       base::span<const uint8_t, kSr25519SeedSize> seed);
 
   // Get the public key portion of the keypair as a simple 32-byte array.
-  std::array<uint8_t, kSr25519PublicKeySize> GetPublicKey();
+  std::array<uint8_t, kSr25519PublicKeySize> GetPublicKey() const;
 
   // Sign the provided binary blob and get the 64-byte signature that can be
   // used for verification.
   std::array<uint8_t, kSr25519SignatureSize> SignMessage(
-      base::span<const uint8_t> message);
+      base::span<const uint8_t> message) const;
 
   // Verify a given message using the provided signature and the internal public
   // key.
   [[nodiscard]] bool VerifyMessage(
       base::span<const uint8_t, kSr25519SignatureSize> signature,
-      base::span<const uint8_t> message);
+      base::span<const uint8_t> message) const;
 
   // Hard-derive a child key from a provided "derive junction" which is a
   // SCALE-encoded path segment i.e. given "<mnemonic>//Alice", "Alice" is a
@@ -62,7 +62,7 @@ class HDKeySr25519 {
   // line with:
   // https://github.com/paritytech/polkadot-sdk/blob/7304295748b1d85eb9fc2b598eba43d9f7971f22/substrate/primitives/core/src/crypto.rs#L138-L151
   // coded result is: { 20, 'A', 'l', 'i', 'c', 'e' }
-  HDKeySr25519 DeriveHard(base::span<const uint8_t> derive_junction);
+  HDKeySr25519 DeriveHard(base::span<const uint8_t> derive_junction) const;
 
  private:
   explicit HDKeySr25519(rust::Box<CxxSchnorrkelKeyPair> keypair);

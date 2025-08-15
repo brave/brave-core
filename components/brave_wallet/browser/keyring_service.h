@@ -47,6 +47,7 @@ class FilTransaction;
 class JsonRpcService;
 class KeyringServiceUnitTest;
 class PasswordEncryptor;
+class PolkadotKeyring;
 class SolanaKeyring;
 class SolanaProviderImplUnitTest;
 class ZCashKeyring;
