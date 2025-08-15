@@ -14,7 +14,6 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_origin/brave_origin_state.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -33,8 +32,7 @@ bool IsDisabledByPolicy(PrefService* prefs) {
   return false;
 #else
   DCHECK(prefs);
-  return (BraveOriginState::GetInstance()->IsBraveOriginUser() ||
-          prefs->IsManagedPreference(prefs::kDisabledByPolicy)) &&
+  return prefs->IsManagedPreference(prefs::kDisabledByPolicy) &&
          prefs->GetBoolean(prefs::kDisabledByPolicy);
 #endif
 }
