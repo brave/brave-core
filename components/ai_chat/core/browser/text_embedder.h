@@ -60,8 +60,8 @@ class TextEmbedder {
   virtual void Initialize(InitializeCallback callback);
 
   absl::StatusOr<std::vector<size_t>> SuggestTabsForGroup(
-      std::vector<std::string> group_tabs,
-      std::vector<std::string> candidate_tabs);
+    std::vector<std::pair<int, std::string>> group_tabs,
+    std::vector<std::pair<int, std::string>> candidate_tabs);
 
   // Cancel all the pending tflite tasks on the embedder task runner.
   // Should be used right before the TextEmbedder is destroyed to avoid long
@@ -89,7 +89,8 @@ class TextEmbedder {
   CalculateTabGroupCentroid();
 
   static constexpr float COSINE_SIM_THRESHOLD = 0.8f;
-  std::vector<size_t> getMostSimilarTabIndices(const std::vector<double>& vec);
+  std::vector<size_t> getMostSimilarTabIndices(const std::vector<double>& vec,
+                                             const std::vector<std::int>& id);
 
   // Lock used to ensure mutual exclusive access to |tflite_text_embedder_|
   // when setting unique_ptr and accessing it from |owner_task_runner_|.

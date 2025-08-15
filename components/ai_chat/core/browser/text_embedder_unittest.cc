@@ -226,24 +226,24 @@ TEST_F(TextEmbedderUnitTest, InspectEmbedding) {
 }
 
 TEST_F(TextEmbedderUnitTest, VerifySuggestTabsForGroup) {
-  std::vector<std::string> travel_group_tabs = {
-      "Top 10 places to visit in Italy travelblog.com",
-      "Flight comparison: Rome vs Venice skyscanner.com",
-      "Train travel tips across Europe eurotripadvisor.net",
-      "Travel insurance for international trips safetravel.com",
-      "Visa requirements for Schengen countries visaguide.world"};
-  std::vector<std::string> candidate_tabs = {
-      "Compare savings accounts interest rates bankrate.com",
-      "Tips to improve credit score nerdwallet.com",
-      "Live coverage of Formula 1 race formula1.com",
-      "Visiting Italy in October: all you need to know mamalovesitaly.com",
-      "Review of hotels in Venice booking.com"};
+    std::vector<std::pair<int, std::string>> travel_group_tabs = {{1,
+      "Top 10 places to visit in Italy travelblog.com"},{3, 
+      "Flight comparison: Rome vs Venice skyscanner.com"},{4,
+      "Train travel tips across Europe eurotripadvisor.net"},{6,
+      "Travel insurance for international trips safetravel.com"},{7,
+      "Visa requirements for Schengen countries visaguide.world"}};
+      std::vector<std::pair<int, std::string>> candidate_tabs = {{0,
+      "Compare savings accounts interest rates bankrate.com"},{10,
+      "Tips to improve credit score nerdwallet.com"},{2,
+      "Live coverage of Formula 1 race formula1.com"},{5,
+      "Visiting Italy in October: all you need to know mamalovesitaly.com"}, {9,
+      "Review of hotels in Venice booking.com"}};
 
   absl::StatusOr<std::vector<size_t>> result;
   result = VerifySuggestTabsForGroup(travel_group_tabs, candidate_tabs);
 
   const auto& indices = result.value();
-  std::vector<size_t> expected = {4, 3};
+  std::vector<size_t> expected = {candidate_tabs[4].first, candidate_tabs[3].first};
 
   EXPECT_EQ(indices, expected);
 }

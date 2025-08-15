@@ -190,11 +190,19 @@ TextEmbedder::CalculateTabGroupCentroid() {
 // group and (2) containing strings of all open tabs (candidates), output
 // indices for top 3 candidates.
 absl::StatusOr<std::vector<size_t>> TextEmbedder::SuggestTabsForGroup(
-    std::vector<std::string> group_tabs,
-    std::vector<std::string> candidate_tabs) {
+    std::vector<std::pair<int, std::string>> group_tabs,
+    std::vector<std::pair<int, std::string>> candidate_tabs) {
+
   // get embeddings for group tabs
   tabs_.clear();
-  tabs_ = group_tabs;
+
+  // extract only the strings
+  std::vector<std::string> tab_titles;
+  for (const auto& tab : group_tabs) {
+    tab_titles.push_back(tab.second);
+  }
+
+  tabs_ = tab_titles;
   auto status_group = EmbedTabs();
   if (!status_group.ok()) {
     return absl::FailedPreconditionError(
@@ -213,7 +221,16 @@ absl::StatusOr<std::vector<size_t>> TextEmbedder::SuggestTabsForGroup(
 
   // get embeddings for candidate tabs
   tabs_.clear();
-  tabs_ = candidate_tabs;
+  tab_titles.clear();
+
+  std::vector<std::int> tab_ids;
+  
+  for (const auto& tab : candidate_tabs) {
+    tab_ids.push_back(tab.first);
+    tab_titles.push_back(tab.second);
+  }
+
+  tabs_ = tab_titles;
   auto status = EmbedTabs();
   if (!status.ok()) {
     return absl::FailedPreconditionError(
@@ -240,19 +257,20 @@ absl::StatusOr<std::vector<size_t>> TextEmbedder::SuggestTabsForGroup(
 
   std::vector<size_t> top_indices;
 
-  top_indices = getMostSimilarTabIndices(sim_scores);
+  top_indices = getMostSimilarTabIndices(sim_scores, tab_ids);
 
   return top_indices;
 }
 
 std::vector<size_t> TextEmbedder::getMostSimilarTabIndices(
-    const std::vector<double>& vec) {
+    const std::vector<double>& vec,
+    const std::vector<std::int>& id) {
   // Create pairs of (value, index) for values above threshold
   std::vector<std::pair<double, size_t>> filtered_pairs;
 
   for (size_t i = 0; i < vec.size(); ++i) {
     if (vec[i] > COSINE_SIM_THRESHOLD) {
-      filtered_pairs.emplace_back(vec[i], i);
+      filtered_pairs.emplace_back(vec[i], id[i]);
     }
   }
 
