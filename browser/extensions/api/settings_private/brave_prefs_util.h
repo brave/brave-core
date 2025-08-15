@@ -31,6 +31,9 @@ class BravePrefsUtil : public PrefsUtil {
 
   std::optional<api::settings_private::PrefObject> GetPref(
       const std::string& name) override;
+
+  settings_private::SetPrefResult SetPref(const std::string& name,
+                                          const base::Value* value) override;
 };
 
 }  // namespace extensions

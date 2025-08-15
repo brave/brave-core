@@ -105,6 +105,16 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
 
   private isWaybackMachineManaged_(
       pref: chrome.settingsPrivate.PrefObject): boolean {
+    if (pref) {
+      console.log('Wayback Machine pref check:', {
+        key: pref.key,
+        value: pref.value,
+        enforcement: pref.enforcement,
+        controlledBy: pref.controlledBy,
+        extensionId: pref.extensionId,
+      });
+    }
+
     return pref &&
         pref.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED;
   }
