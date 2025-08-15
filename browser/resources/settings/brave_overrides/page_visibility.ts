@@ -89,8 +89,7 @@ function getPageVisibility () {
     // </if>
     content: alwaysTrueProxy,
     playlist: loadTimeData.getBoolean('isPlaylistAllowed'),
-    speedreader: loadTimeData.getBoolean('isSpeedreaderFeatureEnabled') &&
-                 !loadTimeData.getBoolean('isSpeedreaderDisabledByPolicy'),
+    speedreader: loadTimeData.getBoolean('isSpeedreaderAllowed'),
     braveTor: !loadTimeData.getBoolean('braveTorDisabledByPolicy') ||
               loadTimeData.getBoolean('shouldExposeElementsForTesting'),
   }

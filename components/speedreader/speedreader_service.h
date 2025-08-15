@@ -31,8 +31,8 @@ namespace features {
 bool IsSpeedreaderEnabled();
 }
 
-// Returns true if Speedreader is disabled by policy.
-bool IsDisabledByPolicy(PrefService* prefs);
+// Returns true if Speedreader feature is enabled.
+bool IsSpeedreaderFeatureEnabled(PrefService* prefs);
 
 class SpeedreaderService : public KeyedService {
  public:

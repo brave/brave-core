@@ -22,65 +22,58 @@ class SpeedreaderPolicyTest : public testing::Test {
   }
 
  protected:
-  void SetSpeedreaderDisabledByPolicy(bool value) {
-    pref_service_.SetManagedPref(kSpeedreaderDisabledByPolicy,
+  void SetSpeedreaderFeatureEnabledByPolicy(bool value) {
+    pref_service_.SetManagedPref(kSpeedreaderPrefFeatureEnabled,
                                  base::Value(value));
+  }
+
+  bool IsManaged() {
+    return pref_service_.IsManagedPreference(kSpeedreaderPrefFeatureEnabled);
   }
 
   sync_preferences::TestingPrefServiceSyncable pref_service_;
 };
 
 TEST_F(SpeedreaderPolicyTest, PolicyDisablesSpeedreader) {
-  // Initially, policy should not be disabled
-  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderDisabledByPolicy));
-  EXPECT_FALSE(pref_service_.IsManagedPreference(kSpeedreaderDisabledByPolicy));
-  EXPECT_FALSE(IsDisabledByPolicy(&pref_service_));
+  // Initially, feature should be enabled by default and not managed
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
+  EXPECT_FALSE(IsManaged());
 
   // Set policy to disable Speedreader
-  SetSpeedreaderDisabledByPolicy(true);
+  SetSpeedreaderFeatureEnabledByPolicy(false);
 
-  // Test that the policy preference is set correctly
-  EXPECT_TRUE(pref_service_.FindPreference(kSpeedreaderDisabledByPolicy));
-  EXPECT_TRUE(pref_service_.IsManagedPreference(kSpeedreaderDisabledByPolicy));
-  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderDisabledByPolicy));
-
-  // Test that IsDisabledByPolicy function works
-  EXPECT_TRUE(IsDisabledByPolicy(&pref_service_));
+  // Test that the policy preference is managed and disabled
+  EXPECT_TRUE(IsManaged());
+  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
 }
 
 TEST_F(SpeedreaderPolicyTest, PolicyEnablesSpeedreader) {
-  // Set policy to explicitly enable Speedreader (policy value false = not
-  // disabled)
-  SetSpeedreaderDisabledByPolicy(false);
+  // Set policy to explicitly enable Speedreader
+  SetSpeedreaderFeatureEnabledByPolicy(true);
 
-  // Test that the policy preference is set correctly
-  EXPECT_TRUE(pref_service_.FindPreference(kSpeedreaderDisabledByPolicy));
-  EXPECT_TRUE(pref_service_.IsManagedPreference(kSpeedreaderDisabledByPolicy));
-  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderDisabledByPolicy));
-
-  // Test that IsDisabledByPolicy function works
-  EXPECT_FALSE(IsDisabledByPolicy(&pref_service_));
+  // Test that the policy preference is managed and enabled
+  EXPECT_TRUE(IsManaged());
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
 }
 
 TEST_F(SpeedreaderPolicyTest, DefaultValueWhenNotManaged) {
-  // When not managed by policy, should be false by default
-  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderDisabledByPolicy));
-  EXPECT_FALSE(pref_service_.IsManagedPreference(kSpeedreaderDisabledByPolicy));
-  EXPECT_FALSE(IsDisabledByPolicy(&pref_service_));
+  // When not managed by policy, feature should be enabled by default
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
+  EXPECT_FALSE(IsManaged());
 }
 
 TEST_F(SpeedreaderPolicyTest, PolicyChangesAreReflected) {
-  // Start with policy allowing speedreader
-  SetSpeedreaderDisabledByPolicy(false);
-  EXPECT_FALSE(IsDisabledByPolicy(&pref_service_));
+  // Start with policy enabling speedreader
+  SetSpeedreaderFeatureEnabledByPolicy(true);
+  EXPECT_TRUE(IsSpeedreaderFeatureEnabled(&pref_service_));
 
   // Change policy to disable speedreader
-  SetSpeedreaderDisabledByPolicy(true);
-  EXPECT_TRUE(IsDisabledByPolicy(&pref_service_));
+  SetSpeedreaderFeatureEnabledByPolicy(false);
+  EXPECT_FALSE(IsSpeedreaderFeatureEnabled(&pref_service_));
 
-  // Change back to allowing speedreader
-  SetSpeedreaderDisabledByPolicy(false);
-  EXPECT_FALSE(IsDisabledByPolicy(&pref_service_));
+  // Change back to enabling speedreader
+  SetSpeedreaderFeatureEnabledByPolicy(true);
+  EXPECT_TRUE(IsSpeedreaderFeatureEnabled(&pref_service_));
 }
 
 TEST_F(SpeedreaderPolicyTest, PolicyWorksWithDefaultsWrite) {
@@ -88,15 +81,15 @@ TEST_F(SpeedreaderPolicyTest, PolicyWorksWithDefaultsWrite) {
   // where the preference is set but not marked as managed
 
   // Manually set the preference value without using SetManagedPref
-  pref_service_.SetBoolean(kSpeedreaderDisabledByPolicy, true);
+  pref_service_.SetBoolean(kSpeedreaderPrefFeatureEnabled, false);
 
   // Verify the preference is set but not marked as managed
-  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderDisabledByPolicy));
-  EXPECT_FALSE(pref_service_.IsManagedPreference(kSpeedreaderDisabledByPolicy));
+  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
+  EXPECT_FALSE(IsManaged());
 
-  // IsDisabledByPolicy should still return true since we just check the
-  // preference value
-  EXPECT_TRUE(IsDisabledByPolicy(&pref_service_));
+  // IsSpeedreaderFeatureEnabled should return false since preference is
+  // disabled
+  EXPECT_FALSE(IsSpeedreaderFeatureEnabled(&pref_service_));
 }
 
 class SpeedreaderPrefMigrationTest : public testing::Test {
