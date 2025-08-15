@@ -9,11 +9,6 @@ import Introspect
 import Strings
 import SwiftUI
 
-enum OnboardingSetupOption {
-  case new
-  case restore
-}
-
 struct SetupCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
   // Used to dismiss all of Wallet

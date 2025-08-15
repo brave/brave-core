@@ -267,19 +267,38 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         self?.updateInfo()
       },
       _accountsChanged: { [weak self] in
+        // Ignore while setting up wallet / creating accounts
+        guard self?.isCreatingWallet == false else { return }
         self?.updateInfo()
       },
-      _selectedWalletAccountChanged: { [weak self] _ in
+      _selectedWalletAccountChanged: { [weak self] selectedAccount in
+        // Ignore while setting up wallet / creating accounts
+        guard self?.isCreatingWallet == false else { return }
         self?.updateInfo()
       },
       _selectedDappAccountChanged: { [weak self] _, _ in
+        // Ignore while setting up wallet / creating accounts
+        guard self?.isCreatingWallet == false else { return }
         self?.updateInfo()
       }
     )
     self.rpcServiceObserver = JsonRpcServiceObserver(
       rpcService: rpcService,
-      _chainChangedEvent: { [weak self] _, _, _ in
-        self?.updateInfo()
+      _chainChangedEvent: { [weak self] chainId, coin, _ in
+        Task { @MainActor [self] in
+          // Ignore while setting up wallet / creating accounts
+          guard self?.isCreatingWallet == false else { return }
+          // Verify correct account is selected for the new network.
+          // This could occur from Eth Switch Chain request when Solana account selected.
+          let accountId = await self?.walletService.ensureSelectedAccountForChain(
+            coin: coin,
+            chainId: chainId
+          )
+          if accountId == nil {
+            assertionFailure("Should not have a nil selectedAccount for any network.")
+          }
+          await self?.updateInfo()
+        }
       }
     )
   }
@@ -345,6 +364,15 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         self.selectedAccount = account
       }
     }
+  }
+
+  /// Returns the networks used in onboarding. Currently this only uses pre-loaded networks,
+  /// but in the future this will include a larger list of networks.
+  @MainActor func onboardingNetworks() async -> [Selectable<BraveWallet.NetworkInfo>] {
+    await rpcService.allNetworksForSupportedCoins(respectHiddenNetworksPreference: false)
+      .map { network in
+        Selectable(isSelected: !network.isKnownTestnet, model: network)
+      }
   }
 
   func markOnboardingCompleted() {
@@ -414,32 +442,99 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  func createWallet(password: String, completion: ((String?) -> Void)? = nil) {
+  @MainActor func createWallet(
+    password: String,
+    networks: [Selectable<BraveWallet.NetworkInfo>]
+  ) async -> String? {
     guard !isCreatingWallet else {
-      completion?(nil)
-      return
+      return nil
     }
     isOnboarding = true
     isCreatingWallet = true
-    keyringService.isWalletCreated { [weak self] isWalletCreated in
-      guard let self else { return }
-      guard !isWalletCreated else {
-        // Wallet was created already (possible with multi-window) #8425
-        self.isOnboarding = false
-        self.isCreatingWallet = false
-        // Dismiss onboarding if wallet is already setup
-        self.isOnboardingVisible = false
-        return
-      }
-      keyringService.createWallet(password: password) { mnemonic in
-        self.isCreatingWallet = false
-        self.updateInfo()
-        if mnemonic != nil {
-          self.passwordToSaveInBiometric = password
+    await showOrHideNetworks(networks)
+    let isWalletCreated = await keyringService.isWalletCreated()
+    guard !isWalletCreated else {
+      // Wallet was created already (possible with multi-window) #8425
+      isOnboarding = false
+      isCreatingWallet = false
+      // Dismiss onboarding if wallet is already setup
+      isOnboardingVisible = false
+      return nil
+    }
+    let mnemonic = await keyringService.createWallet(password: password)
+    if mnemonic != nil {
+      self.passwordToSaveInBiometric = password
+      let selectedNetworks = networks.compactMap { $0.isSelected ? $0.model : nil }
+      await setupAccounts(selectedNetworks: selectedNetworks)
+    }
+    isCreatingWallet = false
+    await updateInfo()
+    return mnemonic
+  }
+
+  /// Force show/hide each network in a list of network depending on `isSelected` value. For onboarding use ONLY.
+  private func showOrHideNetworks(_ networks: [Selectable<BraveWallet.NetworkInfo>]) async {
+    await withTaskGroup(of: Void.self) { [rpcService] group in
+      for selectableNetwork in networks {
+        group.addTask {
+          if selectableNetwork.isSelected {
+            await rpcService.removeHiddenNetwork(
+              coin: selectableNetwork.model.coin,
+              chainId: selectableNetwork.model.chainId
+            )
+          } else {
+            await rpcService.addHiddenNetwork(
+              coin: selectableNetwork.model.coin,
+              chainId: selectableNetwork.model.chainId
+            )
+          }
         }
-        completion?(mnemonic)
       }
     }
+  }
+
+  /// Create account(s) as needed for selected networks
+  private func setupAccounts(selectedNetworks: [BraveWallet.NetworkInfo]) async {
+    let allAccounts = await keyringService.allAccounts()
+    var networksNeedingAccount = selectedNetworks
+    // Remove networks already containing an account
+    networksNeedingAccount.removeAll(where: { selectedNetwork in
+      allAccounts.accounts.contains(where: { account in
+        selectedNetwork.supportedKeyrings.contains(.init(value: account.keyringId.rawValue))
+      })
+    })
+    var createdAccountsForKeyrings = Set<BraveWallet.KeyringId>()
+    // Create a default account for each selected network needing an account
+    for network in networksNeedingAccount {
+      let keyringIdForNetwork = BraveWallet.KeyringId.keyringId(
+        for: network.coin,
+        on: network.chainId
+      )
+      guard !createdAccountsForKeyrings.contains(keyringIdForNetwork) else {
+        continue
+      }
+      let accountName = defaultAccountName(
+        for: network.coin,
+        chainId: network.chainId
+      )
+      let accountInfo = await keyringService.addAccount(
+        coin: network.coin,
+        keyringId: keyringIdForNetwork,
+        accountName: accountName
+      )
+      if let accountInfo {
+        // store that we created an account for this network/coin type
+        // to only create 1 for each keyring
+        createdAccountsForKeyrings.insert(accountInfo.keyringId)
+      }
+    }
+    // Select Ethereum account by default (if Eth Mainnet selected)
+    guard let selectedAccount = allAccounts.selectedAccount,
+      selectedNetworks.contains(where: { $0.chainId == BraveWallet.MainnetChainId }),
+      selectedAccount.coin != .eth,
+      let firstEthAccount = allAccounts.accounts.first(where: { $0.coin == .eth })
+    else { return }
+    _ = await keyringService.setSelectedAccount(accountId: firstEthAccount.accountId)
   }
 
   func recoveryPhrase(password: String, completion: @escaping ([RecoveryWord]) -> Void) {
@@ -457,58 +552,56 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  func restoreWallet(
+  @MainActor func restoreWallet(
     words: [String],
     password: String,
     isLegacyEthSeedFormat: Bool,
-    completion: ((Bool) -> Void)? = nil
-  ) {
-    restoreWallet(
+    networks: [Selectable<BraveWallet.NetworkInfo>]
+  ) async -> Bool {
+    await restoreWallet(
       phrase: words.joined(separator: " "),
       password: password,
       isLegacyEthSeedFormat: isLegacyEthSeedFormat,
-      completion: completion
+      networks: networks
     )
   }
 
-  func restoreWallet(
+  @MainActor func restoreWallet(
     phrase: String,
     password: String,
     isLegacyEthSeedFormat: Bool,
-    completion: ((Bool) -> Void)? = nil
-  ) {
+    networks: [Selectable<BraveWallet.NetworkInfo>]
+  ) async -> Bool {
     guard !isRestoringWallet else {  // wallet is already being restored.
-      completion?(false)
-      return
+      return false
     }
     isOnboarding = true
     isRestoringWallet = true
-    keyringService.restoreWallet(
+    await showOrHideNetworks(networks)
+    let isMnemonicValid = await keyringService.restoreWallet(
       mnemonic: phrase,
       password: password,
       isLegacyEthSeedFormat: isLegacyEthSeedFormat
-    ) { [weak self] isMnemonicValid in
-      guard let self = self else { return }
-      self.isRestoringWallet = false
-      if isMnemonicValid {
-        // Restoring from wallet means you already have your phrase backed up
-        self.passwordToSaveInBiometric = password
-        self.notifyWalletBackupComplete()
-        self.updateInfo()
-        self.resetKeychainStoredPassword()
-      }
-      // only coin types support dapps have permission management
-      for coin in WalletConstants.supportedCoinTypes(.dapps) {
-        Domain.clearAllWalletPermissions(for: coin)
-      }
-      Preferences.Wallet.sortOrderFilter.reset()
-      Preferences.Wallet.isHidingSmallBalancesFilter.reset()
-      Preferences.Wallet.isHidingUnownedNFTsFilter.reset()
-      Preferences.Wallet.isShowingNFTNetworkLogoFilter.reset()
-      Preferences.Wallet.nonSelectedAccountsFilter.reset()
-      Preferences.Wallet.nonSelectedNetworksFilter.reset()
-      completion?(isMnemonicValid)
+    )
+    isRestoringWallet = false
+    if isMnemonicValid {
+      // Restoring from wallet means you already have your phrase backed up
+      passwordToSaveInBiometric = password
+      notifyWalletBackupComplete()
+      await updateInfo()
+      resetKeychainStoredPassword()
     }
+    // only coin types support dapps have permission management
+    for coin in WalletConstants.supportedCoinTypes(.dapps) {
+      await Domain.clearAllWalletPermissions(for: coin)
+    }
+    Preferences.Wallet.sortOrderFilter.reset()
+    Preferences.Wallet.isHidingSmallBalancesFilter.reset()
+    Preferences.Wallet.isHidingUnownedNFTsFilter.reset()
+    Preferences.Wallet.isShowingNFTNetworkLogoFilter.reset()
+    Preferences.Wallet.nonSelectedAccountsFilter.reset()
+    Preferences.Wallet.nonSelectedNetworksFilter.reset()
+    return isMnemonicValid
   }
 
   @MainActor func addPrimaryAccount(
