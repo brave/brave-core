@@ -6,14 +6,10 @@
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
-source_set("brave_origin") {
+source_set("policy") {
   sources = [
-    "brave_origin_state.cc",
-    "brave_origin_state.h",
-    "features.cc",
-    "features.h",
-    "pref_names.cc",
-    "pref_names.h",
+    "brave_origin_policy_provider.cc",
+    "brave_origin_policy_provider.h",
   ]
 
   public_deps = [ "//base" ]
@@ -21,6 +17,7 @@ source_set("brave_origin") {
   deps = [
     "//brave/components/ai_chat/core/common",
     "//brave/components/brave_news/common",
+    "//brave/components/brave_origin",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_wallet/common:pref_names",
@@ -29,6 +26,7 @@ source_set("brave_origin") {
     "//brave/components/p3a",
     "//brave/components/speedreader",
     "//brave/components/tor:pref_names",
+    "//components/policy/core/common",
     "//components/prefs",
   ]
 }
