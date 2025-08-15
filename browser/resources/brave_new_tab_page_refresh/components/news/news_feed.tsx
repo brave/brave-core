@@ -6,12 +6,16 @@
 import * as React from 'react'
 
 import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
-import OptIn from '../../../../../components/brave_news/browser/resources/OptIn'
-import NewsPage from '../../../../../components/brave_news/browser/resources/Page'
-import CustomizeModal from '../../../../../components/brave_news/browser/resources/customize/Modal'
 import { useNewTabState } from '../../context/new_tab_context'
 
 import { style } from './news_feed.style'
+
+const OptIn = React.lazy(() => import(
+  '../../../../../components/brave_news/browser/resources/OptIn'))
+const NewsPage = React.lazy(() => import(
+  '../../../../../components/brave_news/browser/resources/Page'))
+const CustomizeModal = React.lazy(() => import(
+  '../../../../../components/brave_news/browser/resources/customize/Modal'))
 
 export function NewsFeed() {
   const braveNews = useBraveNews()
@@ -30,9 +34,9 @@ export function NewsFeed() {
     {
       braveNews.isShowOnNTPPrefEnabled &&
         <div data-css-scope={style.scope}>
-          {braveNews.isOptInPrefEnabled
-            ? shouldRenderNews && <NewsPage />
-            : <OptIn />}
+          {shouldRenderNews &&
+            (braveNews.isOptInPrefEnabled ? <NewsPage /> : <OptIn />)
+          }
         </div>
     }
     {braveNews.customizePage && <CustomizeModal />}
