@@ -28,10 +28,7 @@ AssociatedContentDriverIOS::AssociatedContentDriverIOS(
     id<AIChatDelegate> delegate)
     : AssociatedContentDriver(url_loader_factory), bridge_(delegate) {}
 
-AssociatedContentDriverIOS::~AssociatedContentDriverIOS() {
-  // Let the AssociatedContentManager know that we've been destroyed.
-  OnNewPage(-1);
-}
+AssociatedContentDriverIOS::~AssociatedContentDriverIOS() = default;
 
 std::u16string AssociatedContentDriverIOS::GetPageTitle() const {
   NSString* title = [bridge_ getPageTitle];
