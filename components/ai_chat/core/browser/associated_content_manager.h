@@ -27,7 +27,6 @@ class ConversationHandler;
 
 using PageContents = std::vector<std::reference_wrapper<const PageContent>>;
 using PageContentsMap = base::flat_map<std::string, PageContents>;
-using GetAllContentCallback = base::OnceCallback<void()>;
 
 // This class is responsible for managing the content associated with a
 // conversation. This includes:

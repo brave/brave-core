@@ -255,18 +255,19 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   size_t content_length = kTestingMaxAssociatedContentLength / 2 + 10;
   PageContent page_content_1(std::string(content_length, 'a'), false);
   PageContent page_content_2(std::string(content_length, 'b'), false);
-  std::string expected_page_content_1(content_length, 'a');
+  // First content should be truncated to the remaining available space (as we
+  // truncate the oldest page content first).
+  std::string expected_page_content_1(
+      kTestingMaxAssociatedContentLength - content_length, 'a');
+  std::string expected_page_content_2(content_length, 'b');
 
-  // Second content should be truncated to the remaining available space
-  std::string expected_page_content_2(
-      kTestingMaxAssociatedContentLength - content_length, 'b');
   std::string expected_user_message_content =
       "Tell the user which show is this about?";
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": ")" +
-                                expected_page_content_1 + R"("},
-    {"role": "user", "type": "pageText", "content": ")" +
                                 expected_page_content_2 + R"("},
+    {"role": "user", "type": "pageText", "content": ")" +
+                                expected_page_content_1 + R"("},
     {"role": "user", "type": "chatMessage", "content": ")" +
                                 expected_user_message_content + R"("}
   ])";
@@ -287,9 +288,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
         EXPECT_EQ(conversation[1].type, ConversationEventType::kPageText);
         EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
-                  expected_page_content_1);
-        EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
                   expected_page_content_2);
+        EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
+                  expected_page_content_1);
         EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
         // Match entire structure
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
@@ -2895,9 +2896,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                   "Human message");
 
         // Verify no page content was included
-        for (const auto& event : conversation) {
-          EXPECT_NE(event.type, ConversationEventType::kPageText);
-        }
+        EXPECT_TRUE(std::ranges::all_of(conversation, [](const auto& event) {
+          return event.type != ConversationEventType::kPageText;
+        }));
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2945,18 +2946,18 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Should have both page contents before the human turn
         EXPECT_GE(conversation.size(), 3u);
 
-        // First event should be page content
+        // First event should be video content
         EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
-        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
-        EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
-                  "First page content");
-
-        // Second event should be video content
-        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
-        EXPECT_EQ(conversation[1].type,
+        EXPECT_EQ(conversation[0].type,
                   ConversationEventType::kVideoTranscript);
-        EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
+        EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
                   "Video content");
+
+        // Second event should be page content
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[1].type, ConversationEventType::kPageText);
+        EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
+                  "First page content");
 
         // Third event should be the human turn
         EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
@@ -3069,6 +3070,131 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateEvents_MultiplePageContents_MultipleTurns_TooLong) {
+  // Create page contents with specific lengths for truncation testing
+  // Using lengths that will trigger truncation behavior similar to the OAI test
+  PageContent page_content_1(std::string(35, '1'), false);
+  PageContent page_content_2(std::string(35, '2'), false);
+  PageContent page_content_3(std::string(35, '3'), false);
+
+  // Create conversation history with multiple turns
+  std::vector<mojom::ConversationTurnPtr> history;
+
+  auto turn1 = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 1", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  history.push_back(std::move(turn1));
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Human message 2", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+  history.push_back(std::move(turn2));
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  auto test_content_truncation = [&](uint32_t max_length,
+                                     std::vector<std::string> event_contents) {
+    SCOPED_TRACE(
+        absl::StrFormat("Testing Truncation with max length: %d", max_length));
+    engine_->SetMaxAssociatedContentLengthForTesting(max_length);
+
+    base::RunLoop run_loop;
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), event_contents.size());
+          for (size_t i = 0; i < event_contents.size(); ++i) {
+            SCOPED_TRACE(absl::StrFormat("Checking event %zu (max length: %d)",
+                                         i, max_length));
+            EXPECT_EQ(GetContentStrings(conversation[i].content)[0],
+                      event_contents[i]);
+          }
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New(""));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+          run_loop.Quit();
+        });
+
+    engine_->GenerateAssistantResponse(
+        {{"turn-1", {page_content_1, page_content_2}},
+         {"turn-2", {page_content_3}}},
+        history, "", {}, std::nullopt, base::DoNothing(), base::DoNothing());
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  };
+
+  // Test case: Max Length = 105 (should include all page contents)
+  // Total content: 35 + 35 + 35 = 105 chars
+  test_content_truncation(105, {
+                                   std::string(35, '2'),
+                                   std::string(35, '1'),
+                                   "Human message 1",
+                                   std::string(35, '3'),
+                                   "Human message 2",
+                               });
+
+  // Test case: Max Length = 100 (should include all of content 3, all of
+  // content 2, partial content 1) Content 3: 35 + Content 2: 35 + Content 1: 30
+  // chars = 100 chars exactly
+  test_content_truncation(100, {
+                                   std::string(35, '2'),
+                                   std::string(30, '1'),
+                                   "Human message 1",
+                                   std::string(35, '3'),
+                                   "Human message 2",
+                               });
+
+  // Test case: Max Length = 70 (should include page content 3 + page content 2,
+  // page content 1 gets omitted) Content 3: 35 chars + Content 2: 35 chars = 70
+  // chars exactly
+  test_content_truncation(70, {
+                                  std::string(35, '2'),
+                                  "Human message 1",
+                                  std::string(35, '3'),
+                                  "Human message 2",
+                              });
+
+  // Test case: Max Length = 65 (should include all of content 3, most of
+  // content 2, omit content 1) Content 3: 35 + Content 2: 30 chars = 65 chars
+  // exactly
+  test_content_truncation(65, {
+                                  std::string(30, '2'),
+                                  "Human message 1",
+                                  std::string(35, '3'),
+                                  "Human message 2",
+                              });
+
+  // Test case: Max Length = 35 (should include only page content 3)
+  test_content_truncation(35, {
+                                  "Human message 1",
+                                  std::string(35, '3'),
+                                  "Human message 2",
+                              });
+
+  // Test case: Max Length = 10 (should include only partial content 3, omit
+  // others)
+  test_content_truncation(10, {
+                                  "Human message 1",
+                                  std::string(10, '3'),
+                                  "Human message 2",
+                              });
+
+  // Test case: Max Length = 0 (all page content omitted)
+  test_content_truncation(0, {
+                                 "Human message 1",
+                                 "Human message 2",
+                             });
 }
 
 }  // namespace ai_chat

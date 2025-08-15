@@ -235,8 +235,6 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
     int page_message_id) {
   base::Value::List messages;
   for (const auto& page_content : base::Reversed(page_contents)) {
-    LOG(ERROR) << "max_associated_content_length: "
-               << max_associated_content_length;
     std::string truncated_page_content =
         page_content.get().content.substr(0, max_associated_content_length);
     uint32_t truncated_page_content_size = truncated_page_content.size();
@@ -250,7 +248,6 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
     base::Value::Dict message;
     message.Set("role", "user");
     message.Set("content", std::move(prompt));
-    LOG(ERROR) << "Message: " << message.DebugString();
     messages.Append(std::move(message));
 
     if (truncated_page_content_size >= max_associated_content_length) {

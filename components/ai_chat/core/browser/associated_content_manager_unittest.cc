@@ -187,8 +187,11 @@ TEST_F(AssociatedContentManagerUnitTest,
 
 TEST_F(AssociatedContentManagerUnitTest,
        AssociateUnsentContentWithTurn_MultipleContent_MultipleTurns) {
-  NiceMock<MockAssociatedContent> content;
-  conversation_handler_->associated_content_manager()->AddContent(&content);
+  NiceMock<MockAssociatedContent> first_content;
+  first_content.SetTextContent("Page 1 content");
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &first_content);
 
   auto turn1 = mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
@@ -210,9 +213,11 @@ TEST_F(AssociatedContentManagerUnitTest,
   EXPECT_EQ("turn-1", associated_content[0]->conversation_turn_uuid);
 
   // Add a second content delegate
-  auto second_content = std::make_unique<NiceMock<MockAssociatedContent>>();
+  NiceMock<MockAssociatedContent> second_content;
+  second_content.SetTextContent("Page 2 content");
+
   conversation_handler_->associated_content_manager()->AddContent(
-      second_content.get());
+      &second_content);
   conversation_handler_->associated_content_manager()
       ->AssociateUnsentContentWithTurn(turn2);
 
@@ -221,8 +226,9 @@ TEST_F(AssociatedContentManagerUnitTest,
                            ->GetAssociatedContent();
   ASSERT_EQ(2u, associated_content.size());
 
-  // Both should have the same conversation_turn_uuid
+  // First content should be associated with turn 1.
   EXPECT_EQ("turn-1", associated_content[0]->conversation_turn_uuid);
+  // Second content should be associated with turn 2.
   EXPECT_EQ("turn-2", associated_content[1]->conversation_turn_uuid);
 
   // GetCachedContentsMap should work and have both content items under their
@@ -230,10 +236,12 @@ TEST_F(AssociatedContentManagerUnitTest,
   auto contents_map = conversation_handler_->associated_content_manager()
                           ->GetCachedContentsMap();
   EXPECT_TRUE(base::Contains(contents_map, "turn-1"));
-  EXPECT_EQ(1u, contents_map.at("turn-1").size());
+  ASSERT_EQ(1u, contents_map.at("turn-1").size());
+  EXPECT_EQ("Page 1 content", contents_map.at("turn-1")[0].get().content);
 
   EXPECT_TRUE(base::Contains(contents_map, "turn-2"));
-  EXPECT_EQ(1u, contents_map.at("turn-2").size());
+  ASSERT_EQ(1u, contents_map.at("turn-2").size());
+  EXPECT_EQ("Page 2 content", contents_map.at("turn-2")[0].get().content);
 }
 
 TEST_F(AssociatedContentManagerUnitTest,

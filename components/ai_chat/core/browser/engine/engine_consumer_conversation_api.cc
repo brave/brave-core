@@ -270,14 +270,18 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     auto page_content_it = page_contents.find(message->uuid.value());
     if (page_content_it != page_contents.end() && remaining_length != 0) {
       auto& events = page_contents_messages[message->uuid.value()];
-      for (const auto& content : page_content_it->second) {
+      for (const auto& content : base::Reversed(page_content_it->second)) {
+        if (remaining_length == 0) {
+          break;
+        }
+
         events.push_back(
             GetAssociatedContentConversationEvent(content, remaining_length));
         if (content.get().content.size() > remaining_length) {
           remaining_length = 0;
-          break;
+        } else {
+          remaining_length -= content.get().content.size();
         }
-        remaining_length -= content.get().content.size();
       }
     }
 

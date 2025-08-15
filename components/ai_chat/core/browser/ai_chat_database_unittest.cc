@@ -1000,6 +1000,74 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
             expected_contents[0]);
 }
 
+TEST_P(AIChatDatabaseTest, DeleteConversationEntryWithAssociatedContent) {
+  const std::string uuid = "test_conversation";
+  const GURL page_url = GURL("https://example.com/page");
+
+  // Create conversation with multiple turns
+  auto history = CreateSampleChatHistory(3u);
+
+  // Create associated content linked to different turns
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  associated_content.push_back(mojom::AssociatedContent::New(
+      "content_turn_1", mojom::ContentType::PageContent, "page title 1", 1,
+      page_url, 62, history[0]->uuid.value()));
+  associated_content.push_back(mojom::AssociatedContent::New(
+      "content_turn_3", mojom::ContentType::PageContent, "page title 3", 2,
+      page_url, 65, history[2]->uuid.value()));
+
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, false, std::move(associated_content));
+
+  std::vector<std::string> expected_contents = {"Content for turn 1",
+                                                "Content for turn 3"};
+
+  // Add conversation with first turn
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), expected_contents,
+                                   history[0]->Clone()));
+
+  // Add remaining turns
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
+
+  // Verify all data is persisted
+  mojom::ConversationArchivePtr archive_result = db_->GetConversationData(uuid);
+  ASSERT_EQ(archive_result->entries.size(), 3u);
+  ASSERT_EQ(archive_result->associated_content.size(), 2u);
+
+  // Verify associated content exists for both turns
+  EXPECT_EQ(archive_result->associated_content[0]->conversation_turn_uuid,
+            history[0]->uuid.value());
+  EXPECT_EQ(archive_result->associated_content[1]->conversation_turn_uuid,
+            history[2]->uuid.value());
+
+  // Delete the first turn (which has associated content)
+  EXPECT_TRUE(db_->DeleteConversationEntry(history[0]->uuid.value()));
+
+  // Verify the turn and its associated content are deleted
+  archive_result = db_->GetConversationData(uuid);
+  ASSERT_EQ(archive_result->entries.size(), 2u);
+  ASSERT_EQ(archive_result->associated_content.size(), 1u);
+
+  // Verify only the associated content for turn 3 remains
+  EXPECT_EQ(archive_result->associated_content[0]->conversation_turn_uuid,
+            history[2]->uuid.value());
+  EXPECT_EQ(archive_result->associated_content[0]->content_uuid,
+            "content_turn_3");
+
+  // Delete the third turn (which also has associated content)
+  EXPECT_TRUE(db_->DeleteConversationEntry(history[2]->uuid.value()));
+
+  // Verify the turn and its associated content are deleted
+  archive_result = db_->GetConversationData(uuid);
+  ASSERT_EQ(archive_result->entries.size(), 1u);
+  EXPECT_EQ(archive_result->associated_content.size(), 0u);
+
+  // Verify the middle turn (without associated content) remains
+  EXPECT_EQ(archive_result->entries[0]->uuid.value(), history[1]->uuid.value());
+}
+
 // Test the migration for each version upgrade
 class AIChatDatabaseMigrationTest : public testing::Test,
                                     public testing::WithParamInterface<int> {

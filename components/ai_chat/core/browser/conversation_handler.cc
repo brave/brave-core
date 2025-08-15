@@ -1311,7 +1311,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
   }
 }
 
-void ConversationHandler::GeneratePageContent(GetAllContentCallback callback) {
+void ConversationHandler::GeneratePageContent(base::OnceClosure callback) {
   VLOG(1) << __func__;
   CHECK(associated_content_manager_->HasAssociatedContent())
       << "Shouldn't have been asked to generate page text when "
@@ -1325,14 +1325,14 @@ void ConversationHandler::GeneratePageContent(GetAllContentCallback callback) {
 }
 
 void ConversationHandler::GeneratePageContentInternal(
-    GetAllContentCallback callback) {
+    base::OnceClosure callback) {
   associated_content_manager_->HasContentUpdated(
       base::BindOnce(&ConversationHandler::OnGeneratePageContentComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ConversationHandler::OnGeneratePageContentComplete(
-    GetAllContentCallback callback,
+    base::OnceClosure callback,
     bool content_changed) {
   // Keep is_content_different_ as true if it's the initial state
   is_content_different_ = is_content_different_ || content_changed;
@@ -1809,7 +1809,7 @@ void ConversationHandler::MaybeSwitchToVisionModel(
 }
 
 void ConversationHandler::OnAutoScreenshotsTaken(
-    GetAllContentCallback callback,
+    base::OnceClosure callback,
     std::optional<std::vector<mojom::UploadedFilePtr>> screenshots) {
   // Apply MAX_IMAGES limit to automatic screenshots and calculate visual
   // percentage This function is only called for automatic screenshot capture,

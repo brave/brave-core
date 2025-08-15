@@ -367,17 +367,6 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
       associated_content->conversation_turn_uuid =
           statement.ColumnString(index++);
 
-      // If the migration didn't give us a `conversation_turn_uuid`, it means
-      // the migration failed because there are no turns in the conversation.
-      // Set the |conversation_turn_uuid| to |nullopt| and it'll be associated
-      // with the next turn in the conversation.
-      // In reality, this should never happen because we don't save associated
-      // content until the first turn is submitted.
-      if (associated_content->conversation_turn_uuid.value_or("").empty()) {
-        associated_content->conversation_turn_uuid = std::nullopt;
-        continue;
-      }
-
       conversation->associated_content.push_back(std::move(associated_content));
     }
   }
@@ -1267,6 +1256,20 @@ bool AIChatDatabase::DeleteConversationEntry(
     DVLOG(0) << "Transaction cannot begin\n";
     return false;
   }
+
+  // Delete from associated_content
+  {
+    sql::Statement delete_statement(GetDB().GetUniqueStatement(
+        "DELETE FROM associated_content WHERE conversation_entry_uuid=?"));
+    CHECK(delete_statement.is_valid());
+    delete_statement.BindString(0, conversation_entry_uuid);
+    if (!delete_statement.Run()) {
+      DLOG(ERROR) << "Failed to delete from associated_content for turn uuid: "
+                  << conversation_entry_uuid;
+      return false;
+    }
+  }
+
   // Delete from conversation_entry_event_completion
   {
     sql::Statement delete_statement(GetDB().GetUniqueStatement(
@@ -1538,8 +1541,8 @@ bool AIChatDatabase::CreateSchema() {
       // Encrypted optional user-invisible override prompt
       "prompt BLOB,"
       "character_type INTEGER NOT NULL,"
-      // editing_entry points to the ConversationEntry row that is being edited.
-      // Edits can be sorted by date.
+      // editing_entry points to the ConversationEntry row that is being
+      // edited. Edits can be sorted by date.
       "editing_entry_uuid TEXT,"
       "action_type INTEGER,"
       // Encrypted selected text
@@ -1554,10 +1557,10 @@ bool AIChatDatabase::CreateSchema() {
     return false;
   }
 
-  // TODO(petemill): Consider storing all conversation entry events in a single
-  // table, with serialized data in protocol buffers format. If we need to add
-  // search capability for the encrypted data, we could store some generic
-  // embeddings in a separate table or column.
+  // TODO(petemill): Consider storing all conversation entry events in a
+  // single table, with serialized data in protocol buffers format. If we need
+  // to add search capability for the encrypted data, we could store some
+  // generic embeddings in a separate table or column.
 
   static constexpr char kCreateConversationEntryTextTableQuery[] =
       "CREATE TABLE IF NOT EXISTS conversation_entry_event_completion("

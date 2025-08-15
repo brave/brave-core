@@ -321,14 +321,14 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 
-  void GeneratePageContent(GetAllContentCallback callback);
+  void GeneratePageContent(base::OnceClosure callback);
   // Same as above but without DCHECKS for testing.
-  void GeneratePageContentInternal(GetAllContentCallback callback);
+  void GeneratePageContentInternal(base::OnceClosure callback);
 
-  void OnGeneratePageContentComplete(GetAllContentCallback callback,
+  void OnGeneratePageContentComplete(base::OnceClosure callback,
                                      bool content_changed);
   void OnAutoScreenshotsTaken(
-      GetAllContentCallback callback,
+      base::OnceClosure callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
 
   void OnEngineCompletionDataReceived(

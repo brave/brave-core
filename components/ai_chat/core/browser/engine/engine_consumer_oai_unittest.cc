@@ -39,6 +39,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -1484,9 +1485,9 @@ TEST_F(EngineConsumerOAIUnitTest, BuildMessages_NonExistentTurnId) {
 
 TEST_F(EngineConsumerOAIUnitTest,
        BuildMessages_MultiplePageContents_MultipleTurns_TooLong) {
-  PageContent page_content_1("11111111111111111111111111111111111", false);
-  PageContent page_content_2("22222222222222222222222222222222222", false);
-  PageContent page_content_3("33333333333333333333333333333333333", false);
+  PageContent page_content_1(std::string(35, '1'), false);
+  PageContent page_content_2(std::string(35, '2'), false);
+  PageContent page_content_3(std::string(35, '3'), false);
 
   PageContentsMap page_contents;
   page_contents["turn-1"] = {std::cref(page_content_1),
@@ -1507,286 +1508,116 @@ TEST_F(EngineConsumerOAIUnitTest,
       base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
   conversation_history.push_back(std::move(turn2));
 
-  // Max Length = 1000 (should include all the page contents)
-  {
-    engine_->SetMaxAssociatedContentLengthForTesting(1000);
+  // Gets the content of a page content event
+  auto get_page_content_event = [](char c, int length) {
+    return "This is the text of a web "
+           "page:\n<page>\n" +
+           std::string(length, c) + "\n</page>\n\n";
+  };
+
+  auto test_content_truncation = [&](uint32_t max_length,
+                                     std::vector<std::string> event_contents) {
+    SCOPED_TRACE(
+        absl::StrFormat("Testing Truncation with max length: %d", max_length));
+    engine_->SetMaxAssociatedContentLengthForTesting(max_length);
+
     auto messages = engine_->BuildMessages(
         *model_->options->get_custom_model_options(), page_contents,
         std::nullopt, std::nullopt, conversation_history);
 
-    // Should only have system message + 2 x human turn + 3 x page content
-    ASSERT_EQ(messages.size(), 6u);
-
+    ASSERT_EQ(messages.size(), event_contents.size() + 1);
     EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
 
-    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-    EXPECT_EQ(
-        *messages[1].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n22222222222222222222222222222222222\n</page>\n\n");
-    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-    EXPECT_EQ(
-        *messages[2].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n11111111111111111111111111111111111\n</page>\n\n");
-    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 1");
-    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
-    EXPECT_EQ(
-        *messages[4].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
-    EXPECT_EQ(*messages[5].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[5].GetDict().FindString("content"), "Human message 2");
-  }
+    for (size_t i = 0; i < event_contents.size(); ++i) {
+      SCOPED_TRACE(absl::StrFormat("Checking event %zu (max length: %d)", i,
+                                   max_length));
+      EXPECT_EQ(*messages[i + 1].GetDict().Find("role"), "user");
+      EXPECT_EQ(*messages[i + 1].GetDict().FindString("content"),
+                event_contents[i]);
+    }
+  };
+
+  // Max Length = 1000 (should include all the page contents)
+  test_content_truncation(1000, {
+                                    get_page_content_event('2', 35),
+                                    get_page_content_event('1', 35),
+                                    "Human message 1",
+                                    get_page_content_event('3', 35),
+                                    "Human message 2",
+                                });
 
   // Max Length = 100 (should truncate some of page content 1)
-  {
-    engine_->SetMaxAssociatedContentLengthForTesting(100);
-    auto messages = engine_->BuildMessages(
-        *model_->options->get_custom_model_options(), page_contents,
-        std::nullopt, std::nullopt, conversation_history);
-
-    // Should only have system message + 2 x human turn + 3 x page content
-    ASSERT_EQ(messages.size(), 6u);
-
-    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-    EXPECT_EQ(
-        *messages[1].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n22222222222222222222222222222222222\n</page>\n\n");
-    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-
-    // Note: As the page content is too long this page content is truncated
-    // (each content is 35 chars long, so the last 5 are truncated).
-    EXPECT_EQ(*messages[2].GetDict().FindString("content"),
-              "This is the text of a web "
-              "page:\n<page>\n111111111111111111111111111111\n</page>\n\n");
-    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 1");
-    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
-    EXPECT_EQ(
-        *messages[4].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
-    EXPECT_EQ(*messages[5].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[5].GetDict().FindString("content"), "Human message 2");
-  }
+  test_content_truncation(100, {
+                                   get_page_content_event('2', 35),
+                                   get_page_content_event('1', 30),
+                                   "Human message 1",
+                                   get_page_content_event('3', 35),
+                                   "Human message 2",
+                               });
 
   // Max Length = 71 (should include all of page content 3 and all of page
   // content 2 and 1 character of page content 1).
-  {
-    engine_->SetMaxAssociatedContentLengthForTesting(71);
-    auto messages = engine_->BuildMessages(
-        *model_->options->get_custom_model_options(), page_contents,
-        std::nullopt, std::nullopt, conversation_history);
-
-    // Should only have system message + 2 x human turn + 3 x page content
-    ASSERT_EQ(messages.size(), 6u);
-
-    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-    // Note: As the page content is too long this page content is truncated
-    // (each content is 35 chars long, so the last 5 are truncated).
-    EXPECT_EQ(
-        *messages[1].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n22222222222222222222222222222222222\n</page>\n\n");
-    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-    // Note: As the page content is too long this page content is truncated
-    // to 1 character.
-    EXPECT_EQ(*messages[2].GetDict().FindString("content"),
-              "This is the text of a web "
-              "page:\n<page>\n1\n</page>\n\n");
-    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 1");
-    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
-    EXPECT_EQ(
-        *messages[4].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
-    EXPECT_EQ(*messages[5].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[5].GetDict().FindString("content"), "Human message 2");
-  }
+  test_content_truncation(71, {
+                                  get_page_content_event('2', 35),
+                                  get_page_content_event('1', 1),
+                                  "Human message 1",
+                                  get_page_content_event('3', 35),
+                                  "Human message 2",
+                              });
 
   // Max Length = 70 (should include all of page content 3 and all of page
   // content 2).
-  {
-    engine_->SetMaxAssociatedContentLengthForTesting(70);
-    auto messages = engine_->BuildMessages(
-        *model_->options->get_custom_model_options(), page_contents,
-        std::nullopt, std::nullopt, conversation_history);
-
-    // Should only have system message + 2 x human turn + 2 x page content
-    ASSERT_EQ(messages.size(), 5u);
-
-    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-    // Note: As the page content is too long this page content is truncated
-    // (each content is 35 chars long, so the last 5 are truncated).
-    EXPECT_EQ(
-        *messages[1].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n22222222222222222222222222222222222\n</page>\n\n");
-    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 1");
-    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-    EXPECT_EQ(
-        *messages[3].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
-    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[4].GetDict().FindString("content"), "Human message 2");
-  }
+  test_content_truncation(70, {
+                                  get_page_content_event('2', 35),
+                                  "Human message 1",
+                                  get_page_content_event('3', 35),
+                                  "Human message 2",
+                              });
 
   // Max Length = 65 (should include all of page content 3 and most of page
   // content 2).
-  {
-    engine_->SetMaxAssociatedContentLengthForTesting(65);
-    auto messages = engine_->BuildMessages(
-        *model_->options->get_custom_model_options(), page_contents,
-        std::nullopt, std::nullopt, conversation_history);
-
-    // Should only have system message + 2 x human turn + 2 x page content
-    ASSERT_EQ(messages.size(), 5u);
-
-    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-    // Note: As the page content is too long this page content is truncated
-    // (each content is 35 chars long, so the last 5 are truncated).
-    EXPECT_EQ(*messages[1].GetDict().FindString("content"),
-              "This is the text of a web "
-              "page:\n<page>\n222222222222222222222222222222\n</page>\n\n");
-    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 1");
-    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-    EXPECT_EQ(
-        *messages[3].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
-    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[4].GetDict().FindString("content"), "Human message 2");
-  }
+  test_content_truncation(65, {
+                                  get_page_content_event('2', 30),
+                                  "Human message 1",
+                                  get_page_content_event('3', 35),
+                                  "Human message 2",
+                              });
 
   // Max Length = 36 (should include all of page content 3 and one character of
   // page content 2).
-  {
-    engine_->SetMaxAssociatedContentLengthForTesting(36);
-    auto messages = engine_->BuildMessages(
-        *model_->options->get_custom_model_options(), page_contents,
-        std::nullopt, std::nullopt, conversation_history);
-
-    // Should only have system message + 2 x human turn + 2 x page content
-    ASSERT_EQ(messages.size(), 5u);
-
-    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-    // Note: As the page content is too long this page content is truncated
-    // to 1 character.
-    EXPECT_EQ(*messages[1].GetDict().FindString("content"),
-              "This is the text of a web "
-              "page:\n<page>\n2\n</page>\n\n");
-    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 1");
-    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-    EXPECT_EQ(
-        *messages[3].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
-    EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[4].GetDict().FindString("content"), "Human message 2");
-  }
+  test_content_truncation(36, {
+                                  get_page_content_event('2', 1),
+                                  "Human message 1",
+                                  get_page_content_event('3', 35),
+                                  "Human message 2",
+                              });
 
   // Max Length = 35 (should include all of page content 3).
-  {
-    engine_->SetMaxAssociatedContentLengthForTesting(35);
-    auto messages = engine_->BuildMessages(
-        *model_->options->get_custom_model_options(), page_contents,
-        std::nullopt, std::nullopt, conversation_history);
-
-    // Should only have system message + 2 x human turn + 1 x page content
-    ASSERT_EQ(messages.size(), 4u);
-
-    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[1].GetDict().FindString("content"), "Human message 1");
-    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-    EXPECT_EQ(
-        *messages[2].GetDict().FindString("content"),
-        "This is the text of a web "
-        "page:\n<page>\n33333333333333333333333333333333333\n</page>\n\n");
-    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 2");
-  }
+  test_content_truncation(35, {
+                                  "Human message 1",
+                                  get_page_content_event('3', 35),
+                                  "Human message 2",
+                              });
 
   // Max Length = 10 (should only include some of page content 3)
-  {
-    engine_->SetMaxAssociatedContentLengthForTesting(10);
-    auto messages = engine_->BuildMessages(
-        *model_->options->get_custom_model_options(), page_contents,
-        std::nullopt, std::nullopt, conversation_history);
-
-    // Should only have system message + 2 x human turn + 1 x page content
-    ASSERT_EQ(messages.size(), 4u);
-
-    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[1].GetDict().FindString("content"), "Human message 1");
-    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[2].GetDict().FindString("content"),
-              "This is the text of a web "
-              "page:\n<page>\n3333333333\n</page>\n\n");
-    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 2");
-  }
+  test_content_truncation(10, {
+                                  "Human message 1",
+                                  get_page_content_event('3', 10),
+                                  "Human message 2",
+                              });
 
   // Max Length = 1 (should include one char of page content 3).
-  {
-    engine_->SetMaxAssociatedContentLengthForTesting(1);
-    auto messages = engine_->BuildMessages(
-        *model_->options->get_custom_model_options(), page_contents,
-        std::nullopt, std::nullopt, conversation_history);
-
-    // Should only have system message + 2 x human turn + 1 x page content
-    ASSERT_EQ(messages.size(), 4u);
-
-    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[1].GetDict().FindString("content"), "Human message 1");
-    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[2].GetDict().FindString("content"),
-              "This is the text of a web "
-              "page:\n<page>\n3\n</page>\n\n");
-    EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[3].GetDict().FindString("content"), "Human message 2");
-  }
+  test_content_truncation(1, {
+                                 "Human message 1",
+                                 get_page_content_event('3', 1),
+                                 "Human message 2",
+                             });
 
   // Max Length = 0 (should include no page content)
-  {
-    engine_->SetMaxAssociatedContentLengthForTesting(0);
-    auto messages = engine_->BuildMessages(
-        *model_->options->get_custom_model_options(), page_contents,
-        std::nullopt, std::nullopt, conversation_history);
-
-    // Should only have system message + 2 x human turn
-    ASSERT_EQ(messages.size(), 3u);
-
-    EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-
-    EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[1].GetDict().FindString("content"), "Human message 1");
-    EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-    EXPECT_EQ(*messages[2].GetDict().FindString("content"), "Human message 2");
-  }
+  test_content_truncation(0, {
+                                 "Human message 1",
+                                 "Human message 2",
+                             });
 }
 
 }  // namespace ai_chat
