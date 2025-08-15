@@ -23,6 +23,9 @@
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/p3a/pref_names.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -34,6 +37,7 @@
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/gpu_data_manager.h"
@@ -157,6 +161,21 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean(
       "hardwareAccelerationEnabledAtStartup",
       content::GpuDataManager::GetInstance()->HardwareAccelerationEnabled());
+
+  // Add managed state information for welcome flow logic
+  PrefService* local_state = g_browser_process->local_state();
+  source->AddBoolean(
+      "isWebDiscoveryEnabledManaged",
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+      profile->GetPrefs()->IsManagedPreference(kWebDiscoveryEnabled));
+#else
+      false);
+#endif
+  source->AddBoolean("isMetricsReportingEnabledManaged",
+                     local_state->IsManagedPreference(
+                         metrics::prefs::kMetricsReportingEnabled));
+  source->AddBoolean("isP3AEnabledManaged",
+                     local_state->IsManagedPreference(p3a::kP3AEnabled));
 
   profile->GetPrefs()->SetBoolean(
       brave::welcome_ui::prefs::kHasSeenBraveWelcomePage, true);
