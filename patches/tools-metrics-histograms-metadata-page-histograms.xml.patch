@@ -1,8 +1,8 @@
 diff --git a/tools/metrics/histograms/metadata/page/histograms.xml b/tools/metrics/histograms/metadata/page/histograms.xml
-index f9e17925142e67a5f26a4c12c44890fd9ad87c8a..697db003e99c4fec201bfc1dbacc8926742ed8c5 100644
+index 07a46b30b9854669b01b4aaa70defd2b269f06b8..7964c089816ecd11f27d57ed0b68eefc2d67dbbe 100644
 --- a/tools/metrics/histograms/metadata/page/histograms.xml
 +++ b/tools/metrics/histograms/metadata/page/histograms.xml
-@@ -270,6 +270,17 @@ chromium-metrics-reviews@google.com.
+@@ -262,6 +262,17 @@ chromium-metrics-reviews@google.com.
    <variant name=".TabSearch"/>
    <variant name=".UserEducation"/>
    <variant name=".UserNotesSidePanel"/>

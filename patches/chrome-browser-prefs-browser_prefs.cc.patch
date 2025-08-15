@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 0e758242353860f8aeb37ffc6225b44e7393a1b8..0b0c0da67220e480c39bb652067d29ba8228c8a3 100644
+index 1cb3324dd8562b268914bcdab5e018098eba152b..3cd6659d3af94cb89a5022987e8f3b425c572f0c 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1882,6 +1882,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1895,6 +1895,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #endif  // !BUILDFLAG(IS_ANDROID)
  
    // This is intentionally last.
@@ -10,7 +10,7 @@ index 0e758242353860f8aeb37ffc6225b44e7393a1b8..0b0c0da67220e480c39bb652067d29ba
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2325,6 +2326,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2341,6 +2342,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
    registry->RegisterDictionaryPref(prefs::kReportingEndpoints);
  
    registry->RegisterBooleanPref(prefs::kViewSourceLineWrappingEnabled, false);
