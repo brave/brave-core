@@ -81,9 +81,7 @@ export const Box = styled.div`
   }
 `
 
-export const ActionBox = styled.div.attrs({
-  'data-theme': 'light'
-})`
+export const ActionBox = styled.div`
   display: flex;
   flex-direction: column;
   grid-gap: 10px;
