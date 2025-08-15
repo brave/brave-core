@@ -320,7 +320,7 @@ struct BuyTokenView: View {
                 .font(.callout)
                 .foregroundColor(Color(braveSystemName: .textPrimary))
               HStack(spacing: 8) {
-                LegalCheckbox(isChecked: $hasReadAgreementBoxChecked)
+                WalletCheckbox(isChecked: $hasReadAgreementBoxChecked)
                   .font(.title2)
                 Text(
                   LocalizedStringKey(
