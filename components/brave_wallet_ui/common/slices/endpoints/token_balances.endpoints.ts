@@ -633,21 +633,23 @@ export const tokenBalancesEndpoints = ({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
-          const { balance, errorMessage } =
+          const { result: balance } =
             await api.bitcoinWalletService.getBalance(arg)
 
-          if (errorMessage || balance === null) {
-            throw new Error(errorMessage || 'Unknown error')
+          if (!balance.success) {
+            throw new Error(balance.failure || 'Unknown error')
           }
           return {
             data: {
               availableBalance: Amount.normalize(
-                balance.availableBalance.toString(),
+                balance.success.availableBalance.toString(),
               ),
               pendingBalance: Amount.normalize(
-                balance.pendingBalance.toString(),
+                balance.success.pendingBalance.toString(),
               ),
-              totalBalance: Amount.normalize(balance.totalBalance.toString()),
+              totalBalance: Amount.normalize(
+                balance.success.totalBalance.toString(),
+              ),
             },
           }
         } catch (error) {
@@ -756,16 +758,15 @@ async function fetchAccountCurrentNativeBalance({
     }
 
     case BraveWallet.CoinType.BTC: {
-      const { balance, errorMessage } =
-        await bitcoinWalletService.getBalance(accountId)
+      const { result } = await bitcoinWalletService.getBalance(accountId)
 
-      if (errorMessage || balance === null) {
+      if (!result.success) {
         throw new Error(
-          `getBalance (BTC) error: ${errorMessage || 'Unknown error'}`,
+          `getBalance (BTC) error: ${result.failure || 'Unknown error'}`,
         )
       }
 
-      return Amount.normalize(balance.totalBalance.toString())
+      return Amount.normalize(result.success.toString())
     }
 
     case BraveWallet.CoinType.ZEC: {
