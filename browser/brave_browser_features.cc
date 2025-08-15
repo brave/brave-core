@@ -55,6 +55,13 @@ BASE_FEATURE(kBraveDayZeroExperiment,
 BASE_FEATURE(kNewAndroidOnboarding,
              "NewAndroidOnboarding",
              base::FEATURE_DISABLED_BY_DEFAULT);
+
+// Enable dynamic colors on Android, which allows the app to adapt its
+// color scheme based on the user's wallpaper and system theme.
+// This feature is only available on Android 12 and above.
+BASE_FEATURE(kBraveAndroidDynamicColors,
+             "BraveAndroidDynamicColors",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 // The variant of the "day zero" experiment. i.e. A, B, C, D, etc.
