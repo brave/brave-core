@@ -34,6 +34,8 @@ class RegexUtil {
   bool CheckPathAndQueryStringKeywords(std::string_view path_and_query);
   bool CheckQueryStringOrRefKeywords(std::string_view str);
   bool CheckQueryHTTPCredentials(std::string_view str);
+  bool CheckForEuroLongWord(std::string_view str);
+  std::string NormalizeWhitespace(std::string_view str);
 
  private:
   friend class base::NoDestructor<RegexUtil>;
@@ -46,6 +48,8 @@ class RegexUtil {
   std::deque<re2::RE2> query_string_and_ref_keyword_regexes_;
   std::optional<re2::RE2> http_password_regex_;
   std::optional<re2::RE2> non_alphanumeric_regex_;
+  std::optional<re2::RE2> long_word_regex_;
+  std::optional<re2::RE2> whitespace_regex_;
 };
 
 }  // namespace web_discovery
