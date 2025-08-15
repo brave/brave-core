@@ -57,7 +57,7 @@ const BeforeSendingEmailForm = ({ suggestedAuthEmail, emailAliasesService }:
     <div>{getLocale('emailAliasesEnterEmailToGetLoginLink')}</div>
     <LoginRow>
       <StretchyInput autofocus
-        onChange={(detail) => setEmail(detail.value)}
+        onInput={(detail) => setEmail(detail.value)}
         onKeyDown={onEnterKeyForInput(requestAuthentication)}
         name='email'
         type='text'
