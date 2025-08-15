@@ -8,14 +8,32 @@
 
 #include "build/build_config.h"
 
-// Add new collection Type enum value for Tree tab feature on Desktop.
 #if !BUILDFLAG(IS_ANDROID)
+// Add new collection Type enum value for Tree tab feature on Desktop.
 #define SPLIT SPLIT, TREE_NODE
+
+// Make static version of GetPassKey() and GetChildren() available for
+// TreeTabNode to build/flatten tree tabs.
+#define OnTabRemovedFromTree()                                                \
+  OnTabRemovedFromTab_Unused() {}                                             \
+                                                                              \
+ protected:                                                                   \
+  static base::PassKey<TabCollection> GetPassKeyStatic() {                    \
+    return {};                                                                \
+  }                                                                           \
+  static const ChildrenVector& GetChildrenStatic(TabCollection& collection) { \
+    return collection.GetChildren();                                          \
+  }                                                                           \
+                                                                              \
+ public:                                                                      \
+  void OnTabRemovedFromTree()
+
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #include <components/tabs/public/tab_collection.h>  // IWYU pragma: export
 
 #if !BUILDFLAG(IS_ANDROID)
+#undef OnTabRemovedFromTree
 #undef SPLIT
 #endif  // !BUILDFLAG(IS_ANDROID)
 
