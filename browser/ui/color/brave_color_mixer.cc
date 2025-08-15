@@ -740,8 +740,6 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabDividerFrameInactive] = {kColorTabDividerFrameActive};
 
   if (key.color_mode == ui::ColorProviderKey::ColorMode::kDark) {
-    mixer[kColorTabBackgroundActiveFrameActive] = {
-        nala::kColorDesktopbrowserTabbarActiveTabHorizontal};
     mixer[kColorTabBackgroundInactiveHoverFrameActive] = {
         nala::kColorDesktopbrowserTabbarHoverTabHorizontal};
   }
