@@ -341,6 +341,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION" desc="Label for shields status on site settings.">
     Shields can block trackers, ads, and fingerprinting
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION_ADBLOCK_ONLY_MODE" desc="Label for shields status on site settings when adblock only mode is enabled.">
+    Shields can block ads
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP" desc="Label for shields status up site settings.">
     Shields Up
   </message>

@@ -33,21 +33,6 @@
     cursor: pointer;
     color: red;
   }
-  .shields-options-disabled-container {
-    padding-bottom: var(--leo-spacing-xl);
-  }
-  .shields-options-disabled-container leo-alert {
-    padding-top: var(--leo-spacing-m);
-  }
-  .shields-options-disabled-alert-title {
-    font: var(--leo-font-heading-h4);
-  }
-  .shields-options-disabled-alert-content {
-    font: var(--leo-font-default-regular);
-  }
-  .shields-options-disabled-alert-button {
-    padding-top: var(--leo-spacing-xl);
-  }
   .md-select:disabled {
     background-color: var(--leo-color-container-disabled) !important;
   }
@@ -60,18 +45,10 @@
         <p>$i18n{braveShieldsDefaultsSectionDescription1}</p>
         <p>$i18n{braveShieldsDefaultsSectionDescription2}</p>
       </div>
-      <div class="shields-options-disabled-container">
-        <template is="dom-if" if="[[isAdBlockOnlyModeEnabled_]]">
-          <leo-alert type="info" hideIcon="true" has-actions="false">
-            <div class="shields-options-disabled-alert-title">Shields options are currently disabled</div>
-            <div class="shields-options-disabled-alert-content">Ad block only mode only enables ad blocking rules to prevent
-              possible web breakages. If you would like to enable
-              standard shields, please disable this mode.</div>
-            <leo-button on-click="onTurnOffAdBlockOnlyMode_" class="shields-options-disabled-alert-button">Turn off ad block only
-              mode</leo-button>
-          </leo-alert>
-        </template>
-      </div>
+      <settings-ad-block-only-mode-alert
+       id="adBlockOnlyModeAlert"
+       prefs="{{prefs}}">
+      </settings-ad-block-only-mode-alert>
     </div>
   </div>
   <settings-toggle-button

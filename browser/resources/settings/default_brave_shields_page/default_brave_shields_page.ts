@@ -17,6 +17,8 @@ import {loadTimeData} from '../i18n_setup.js'
 import {RouteObserverMixin, Router} from '../router.js'
 import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
 
+import '../ad_block_only_mode_page/ad_block_only_mode_alert.js'
+
 import {
   DefaultBraveShieldsBrowserProxy,
   DefaultBraveShieldsBrowserProxyImpl
@@ -259,10 +261,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     const router = Router.getInstance()
     this.isAdBlockRoute_ =
       (router.getCurrentRoute() === router.getRoutes().SHIELDS_ADBLOCK)
-  }
-
-  onTurnOffAdBlockOnlyMode_() {
-    this.browserProxy_.setAdBlockOnlyModeEnabled(false)
   }
 
   onAdblockPageClick_() {
