@@ -611,6 +611,14 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       .Add<brave_rewards::mojom::RewardsPageHandler>();
 
 #if !BUILDFLAG(IS_ANDROID)
+  registry.ForWebUI<WalletPageUI>()
+      .Add<brave_wallet::mojom::PageHandlerFactory>()
+      .Add<brave_rewards::mojom::RewardsPageHandler>();
+
+  registry.ForWebUI<WalletPanelUI>()
+      .Add<brave_wallet::mojom::PanelHandlerFactory>()
+      .Add<brave_rewards::mojom::RewardsPageHandler>();
+
   auto ntp_refresh_registration =
       registry.ForWebUI<BraveNewTabPageUI>()
           .Add<brave_new_tab_page_refresh::mojom::NewTabPageHandler>()
@@ -826,10 +834,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<

@@ -79,6 +79,9 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
 
+  // Rewards UI features are not currently supported on Android.
+  source->AddBoolean("rewardsFeatureEnabled", false);
+
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
