@@ -101,7 +101,8 @@ describe('conversation entries', () => {
             contentUsedPercentage: 0.5,
             title: 'Associated Content',
             url: { url: 'https://example.com' },
-            uuid: '1234'
+            uuid: '1234',
+            conversationTurnUuid: '111'
           }
         ]}
       >
@@ -125,7 +126,8 @@ describe('conversation entries', () => {
             contentUsedPercentage: 0.5,
             title: 'Associated Content',
             url: { url: 'https://example.com' },
-            uuid: '1234'
+            uuid: '1234',
+            conversationTurnUuid: '111'
           }
         ]}
         conversationHistory={[
@@ -165,7 +167,8 @@ describe('conversation entries', () => {
             contentUsedPercentage: 0.5,
             title: 'Associated Content',
             url: { url: 'https://example.com' },
-            uuid: '1234'
+            uuid: '1234',
+            conversationTurnUuid: '111'
           }
         ]}
         conversationHistory={[

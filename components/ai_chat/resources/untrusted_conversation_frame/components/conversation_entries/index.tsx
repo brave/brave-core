@@ -124,8 +124,8 @@ function ConversationEntries() {
           const handleCopyText = useConversationEventClipboardCopyHandler(firstEntryEdit)
 
 
-          const hasTabAttachments = index === 0 && conversationContext.associatedContent.length > 0
-          const hasAttachments = !!firstEntryEdit.uploadedFiles?.length || hasTabAttachments
+          const tabAttachments = conversationContext.associatedContent.filter(c => c.conversationTurnUuid === firstEntryEdit.uuid)
+          const hasAttachments = !!firstEntryEdit.uploadedFiles?.length || tabAttachments.length > 0
 
           return (
             <div
@@ -212,7 +212,7 @@ function ConversationEntries() {
                             </div>
                             {hasAttachments &&
                               <div className={styles.attachmentsContainer}>
-                              {conversationContext.associatedContent.map(c => <AttachmentPageItem
+                              {tabAttachments.map(c => <AttachmentPageItem
                                 key={c.contentId}
                                 url={c.url.url}
                                 title={c.title}

@@ -96,6 +96,11 @@ struct AssociatedContent {
 
   // Percentage of the text content that has been utilized by remote LLM (0-100)
   int32 content_used_percentage;
+
+  // If set, the conversation turn that this content is associated with.
+  // If |nullopt| this indicates that the user has staged the content but it
+  // hasn't been submitted yet (i.e. its in the input box).
+  string? conversation_turn_uuid;
 };
 
 struct Conversation {
@@ -132,6 +137,9 @@ struct Conversation {
 struct ContentArchive {
   string content_uuid;
   string content;
+
+  // The turn this Content was sent with.
+  string conversation_turn_uuid;
 };
 
 struct ConversationArchive {

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 
+#include <cstddef>
 #include <functional>
 #include <memory>
 #include <string>
@@ -25,7 +26,7 @@ namespace ai_chat {
 class ConversationHandler;
 
 using PageContents = std::vector<std::reference_wrapper<const PageContent>>;
-using GetAllContentCallback = base::OnceCallback<void(PageContents)>;
+using PageContentsMap = base::flat_map<std::string, PageContents>;
 
 // This class is responsible for managing the content associated with a
 // conversation. This includes:
@@ -66,6 +67,10 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   // Clears all content from the conversation.
   void ClearContent();
 
+  // Associates all content which hasn't been associated with a turn with
+  // |turn|. Note: |turn| must have a non-empty |uuid| field.
+  void AssociateUnsentContentWithTurn(const mojom::ConversationTurnPtr& turn);
+
   // Checks if the content has changed from what is stored in the cache.
   void HasContentUpdated(base::OnceCallback<void(bool)> callback);
 
@@ -79,6 +84,12 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
 
   PageContents GetCachedContents() const;
 
+  // Gets a map of |turn_id| to a list of content associated with that turn.
+  // Note: Before calling this method, all content should be associated with a
+  // turn (i.e. via AssociateUnsentContentWithTurn) or you risk missing content
+  // in the map.
+  PageContentsMap GetCachedContentsMap() const;
+
   bool HasOpenAIChatPermission() const;
   bool HasNonArchiveContent() const;
   bool HasAssociatedContent() const;
@@ -87,6 +98,9 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   // Deprecated: Instead use the |type| field on the associated content.
   // TODO(fallaciousreasoning): Remove this method.
   bool IsVideo() const;
+
+  // The number of content delegates.
+  size_t GetContentDelegateCount() const;
 
   // AssociatedContentDelegate::Observer:
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
@@ -103,6 +117,7 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   raw_ptr<ConversationHandler> conversation_;
 
   std::vector<AssociatedContentDelegate*> content_delegates_;
+  base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
 
   // Used for ownership - still stored in the above array.
   std::vector<std::unique_ptr<AssociatedArchiveContent>> archive_content_;

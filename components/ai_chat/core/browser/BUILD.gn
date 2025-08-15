@@ -132,6 +132,7 @@ source_set("unit_tests") {
     "ai_chat_tab_focus_metrics_unittest.cc",
     "associated_content_delegate_unittest.cc",
     "associated_content_driver_unittest.cc",
+    "associated_content_manager_unittest.cc",
     "conversation_handler_unittest.cc",
     "customization_settings_handler_unittest.cc",
     "engine/conversation_api_client_unittest.cc",
