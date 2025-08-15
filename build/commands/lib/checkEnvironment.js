@@ -3,11 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+const fs = require('fs')
+const path = require('path')
 const semver = require('semver')
 const Log = require('./logging')
 
 checkNodeVersion()
 checkNpmVersion()
+checkWorkingDirectoryChainOnWindows()
 
 function checkNodeVersion() {
   const nodeVersion = process.versions.node
@@ -43,5 +46,43 @@ function checkVersion(type, version, requiredVersion, instruction) {
       `Error: ${type} version must be "${requiredVersion}". Current version: ${version}\n${instruction}`,
     )
     process.exit(1)
+  }
+}
+
+// Check that the working directory and all parent directories are not symlinks
+// or junctions on Windows. Upstream doesn't support such setup, so we check
+// this early to avoid cryptic errors down the line.
+function checkWorkingDirectoryChainOnWindows() {
+  if (process.platform !== 'win32') {
+    return
+  }
+
+  let currentDir = process.cwd()
+  const workingDirectoryDev = fs.statSync(currentDir).dev
+
+  while (currentDir && currentDir !== path.dirname(currentDir)) {
+    // Use lstat to not follow symlinks.
+    const stats = fs.lstatSync(currentDir)
+
+    // Check if it's a symlink.
+    if (stats.isSymbolicLink()) {
+      Log.error(
+        `Directory chain contains a symlink: ${currentDir}. This is not supported.`,
+      )
+      process.exit(1)
+    }
+
+    // Check if directory device ID does not match the working directory device
+    // ID. This can happen if a drive is attached as a directory.
+    if (stats.dev !== workingDirectoryDev) {
+      Log.error(
+        `Is ${currentDir} a junction pointing to a different drive than ${process.cwd()}? `
+          + 'This is not supported.',
+      )
+      process.exit(1)
+    }
+
+    // Check the parent directory.
+    currentDir = path.dirname(currentDir)
   }
 }
