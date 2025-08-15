@@ -29,7 +29,7 @@ void BraveShieldsSettings::SetBraveShieldsEnabled(bool is_enabled,
                                         is_enabled, url, local_state_);
 }
 
-bool BraveShieldsSettings::GetBraveShieldsEnabled(const GURL& url) {
+bool BraveShieldsSettings::IsBraveShieldsEnabled(const GURL& url) {
   return brave_shields::GetBraveShieldsEnabled(&*host_content_settings_map_,
                                                url);
 }
