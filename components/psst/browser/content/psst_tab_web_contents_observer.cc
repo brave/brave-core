@@ -6,9 +6,14 @@
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
-#include "brave/components/psst/browser/content/psst_scripts_handler_impl.h"
+#include "base/containers/contains.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
+#include "brave/components/psst/browser/content/psst_scripts_inserter_impl.h"
+#include "brave/components/psst/browser/content/psst_ui_delegate.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
@@ -19,8 +24,42 @@
 #include "content/public/browser/navigation_handle.h"
 
 namespace psst {
+namespace {
+const char kUserScriptResultUserPropName[] = "user";
+const char kUserScriptResultTasksPropName[] = "tasks";
+const char kUserScriptResultSiteNamePropName[] = "name";
+const char kUserScriptIsInitialPropName[] = "is_initial";
+const char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
+const char kUserScriptResultTaskItemUrlPropName[] = "url";
+
+const char kPolicyScriptResultPsstPropName[] = "psst";
+const char kPolicyScriptResultProgressPropName[] = "progress";
 
 const char kShouldProcessKey[] = "should_process_key";
+
+void PrepareParametersForPolicyExecution(
+    std::optional<base::Value>& params,
+    std::optional<base::Value::List>& disabled_checks,
+    const bool is_initial) {
+  if (!params || !params->is_dict() || !disabled_checks ||
+      disabled_checks->empty()) {
+    return;
+  }
+
+  if (auto* tasks =
+          params->GetDict().FindList(kUserScriptResultTasksPropName)) {
+    tasks->EraseIf([&](const base::Value& v) {
+      const auto& item_dict = v.GetDict();
+      const auto* url =
+          item_dict.FindString(kUserScriptResultTaskItemUrlPropName);
+      return url && disabled_checks->contains(*url);
+    });
+  }
+
+  params->GetDict().Set(kUserScriptResultInitialExecutionPropName, is_initial);
+}
+
+}  // namespace
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
  public:
@@ -34,6 +73,7 @@ std::unique_ptr<PsstTabWebContentsObserver>
 PsstTabWebContentsObserver::MaybeCreateForWebContents(
     content::WebContents* contents,
     content::BrowserContext* browser_context,
+    std::unique_ptr<PsstUiDelegate> delegate,
     PrefService* prefs,
     const int32_t world_id) {
   CHECK(contents);
@@ -48,18 +88,21 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
   return base::WrapUnique<PsstTabWebContentsObserver>(
       new PsstTabWebContentsObserver(
           contents, PsstRuleRegistry::GetInstance(), prefs,
-          std::make_unique<PsstScriptsHandlerImpl>(contents, world_id)));
+          std::make_unique<PsstScriptsInserterImpl>(contents, world_id),
+          std::move(delegate)));
 }
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
     PsstRuleRegistry* registry,
     PrefService* prefs,
-    std::unique_ptr<ScriptsHandler> script_handler)
+    std::unique_ptr<ScriptsInserter> script_handler,
+    std::unique_ptr<PsstUiDelegate> ui_delegate)
     : WebContentsObserver(web_contents),
       registry_(registry),
       prefs_(prefs),
-      script_handler_(std::move(script_handler)) {}
+      script_inserter_(std::move(script_handler)),
+      ui_delegate_(std::move(ui_delegate)) {}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
@@ -90,39 +133,137 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
 
   registry_->CheckIfMatch(
       web_contents()->GetLastCommittedURL(),
-      base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
+      base::BindOnce(&PsstTabWebContentsObserver::OnPsstRuleFound,
                      weak_factory_.GetWeakPtr(), id));
 }
 
 bool PsstTabWebContentsObserver::ShouldInsertScriptForPage(int id) {
   auto* entry = web_contents()->GetController().GetLastCommittedEntry();
   auto* data = entry->GetUserData(kShouldProcessKey);
-  return script_handler_ && data &&
+  return script_inserter_ && data &&
          static_cast<PsstNavigationData*>(data)->id == id;
 }
 
-void PsstTabWebContentsObserver::InsertUserScript(
-    int id,
+void PsstTabWebContentsObserver::OnPsstRuleFound(
+    int nav_entry_id,
     std::unique_ptr<MatchedRule> rule) {
-  if (!rule || !ShouldInsertScriptForPage(id)) {
+  if (!rule || !ShouldInsertScriptForPage(nav_entry_id)) {
     return;
   }
 
-  script_handler_->InsertScriptInPage(
-      rule->user_script(),
+  rule_ = std::move(rule);
+
+  ui_delegate_->ShowPsstInfobar(
+      base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
+                     weak_factory_.GetWeakPtr(), nav_entry_id));
+}
+
+void PsstTabWebContentsObserver::InsertUserScript(
+    int nav_entry_id,
+    const bool is_infobar_accepted) {
+  if (!rule_ || !ShouldInsertScriptForPage(nav_entry_id) ||
+      !is_infobar_accepted) {
+    return;
+  }
+
+  // If the user has already accepted the PSST, we can inject user script
+  auto user_script = rule_->user_script();
+  script_inserter_->InsertScriptInPage(
+      user_script, std::nullopt /* no params */,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
-                     weak_factory_.GetWeakPtr(), id, rule->policy_script()));
+                     weak_factory_.GetWeakPtr(), nav_entry_id));
 }
 
 void PsstTabWebContentsObserver::OnUserScriptResult(
-    int id,
-    const std::string& policy_script,
+    int nav_entry_id,
     base::Value user_script_result) {
-  if (!ShouldInsertScriptForPage(id) || policy_script.empty() ||
+  if (!rule_ || !ShouldInsertScriptForPage(nav_entry_id) ||
       !user_script_result.is_dict()) {
     return;
   }
-  script_handler_->InsertScriptInPage(policy_script, base::DoNothing());
+
+  const auto& params = user_script_result.GetDict();
+  const std::string* user_id = params.FindString(kUserScriptResultUserPropName);
+  if (!user_id || user_id->empty()) {
+    return;
+  }
+
+  const auto permission_info = ui_delegate_->GetPsstPermissionInfo(
+      url::Origin::Create(web_contents()->GetLastCommittedURL()), *user_id);
+  if (permission_info &&
+      permission_info->consent_status == ConsentStatus::kBlock) {
+    return;
+  }
+  const auto* tasks = params.FindList(kUserScriptResultTasksPropName);
+  if (!tasks || tasks->empty()) {
+    return;
+  }
+  const auto* site_name = params.FindString(kUserScriptResultSiteNamePropName);
+  if (!site_name) {
+    return;
+  }
+  const auto is_initial = params.FindBool(kUserScriptIsInitialPropName);
+  if (!is_initial.has_value()) {
+    return;
+  }
+
+  if (!is_initial.value() && permission_info &&
+      permission_info->consent_status == ConsentStatus::kAllow) {
+    // If permission is granted and it is not the initial iteration (i.e. it is
+    // not the first applied PSST setting), call we don't need to show the
+    // dialog again.
+    OnUserAcceptedPsstSettings(nav_entry_id, false,
+                               std::move(user_script_result),
+                               permission_info->urls_to_skip.Clone());
+    return;
+  }
+
+  ui_delegate_->Show(
+      {*user_id, *site_name, tasks->Clone(), rule_->version(),
+       base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
+                      weak_factory_.GetWeakPtr(), nav_entry_id, true,
+                      std::move(user_script_result))});
+}
+
+void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
+    int nav_entry_id,
+    const bool is_initial,
+    std::optional<base::Value> script_params,
+    std::optional<base::Value::List> disabled_checks) {
+  if (!rule_ || !ShouldInsertScriptForPage(nav_entry_id)) {
+    return;
+  }
+
+  PrepareParametersForPolicyExecution(script_params, disabled_checks,
+                                      is_initial);
+
+  const auto policy_script = rule_->policy_script();
+  script_inserter_->InsertScriptInPage(
+      policy_script, std::move(script_params),
+      base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
+                     weak_factory_.GetWeakPtr(), nav_entry_id));
+}
+
+void PsstTabWebContentsObserver::OnPolicyScriptResult(
+    int nav_entry_id,
+    base::Value script_result) {
+  if (!script_result.is_dict() || !rule_ || rule_->policy_script().empty() ||
+      !ShouldInsertScriptForPage(nav_entry_id)) {
+    return;
+  }
+
+  const auto* psst =
+      script_result.GetDict().FindDict(kPolicyScriptResultPsstPropName);
+  if (!psst) {
+    return;
+  }
+  if (const auto percent =
+          psst->FindDouble(kPolicyScriptResultProgressPropName);
+      percent.has_value()) {
+    ui_delegate_->SetProgress(*percent);
+  }
+
+  ui_delegate_->SetCompleted();
 }
 
 }  // namespace psst

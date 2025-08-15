@@ -13,7 +13,10 @@ class PrefRegistrySimple;
 namespace psst {
 
 namespace prefs {
+inline constexpr char kPsstSettingsPref[] = "brave.psst.settings";
 inline constexpr char kPsstEnabled[] = "brave.psst.settings.enable_psst";
+inline constexpr char kShowPsstInfoBar[] =
+    "brave.psst.settings.show_psst_infobar";
 }  // namespace prefs
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
