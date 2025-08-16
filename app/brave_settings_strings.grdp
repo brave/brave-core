@@ -387,7 +387,7 @@
     Prevent sites from fingerprinting me based on my language preferences
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_SUBITEM" desc="Description that shows under main toggle setting for reduce language control setting label">
-    Enabling this setting reduces how much web sites can learn about your language preferences.
+    Enabling this setting reduces how much web sites can learn about your language preferences
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave block cross-site trackers control setting label">
     Trackers &amp; ads blocking
@@ -458,7 +458,7 @@
     Content filtering
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTER_LABEL_DESCRIPTION" desc="Long description describing what Content Filtering does">
-    Enable custom filters that block regional and language-specific trackers and Annoyances.
+    Enable custom filters that block regional and language-specific trackers and Annoyances
   </message>
   <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_LABEL" desc="Label for custom filters lists section">
     Add custom filter lists
@@ -658,7 +658,7 @@
     Automatically send diagnostic reports
   </message>
   <message name="IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF_DESC" desc="The description of the checkbox to enable/disable sending diagnostic reports (crashes, hangs).">
-    Help improve Brave's product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.
+    Help improve Brave's product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes
   </message>
   <!-- Request OTR -->
   <if expr="enable_request_otr">
@@ -1096,7 +1096,7 @@
     Index other search engines
   </message>
   <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_DESC" desc="The description for the settings switch controlling the addition of custom search engines">
-    Automatically indexes websites that follow the OpenSearch spec.
+    Automatically indexes websites that follow the OpenSearch spec
   </message>
   <message name="IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the search engine setting.">
     Search engine used in the address bar.
@@ -1125,13 +1125,13 @@
     Allow Google login for extensions
   </message>
   <message name="IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC" desc="The description for media router switch in settings">
-    Media router enables cast feature in the browser.
+    Media router enables cast feature in the browser
   </message>
   <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_DESC" desc="The description for how to handle Unstoppable Domains">
     Resolve Unstoppable Domains domain names
   </message>
   <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC" desc="The sub-description for how to handle Unstoppable Domains">
-    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about Unstoppable Domains privacy considerations.
+    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about Unstoppable Domains privacy considerations
   </message>
   <message name="IDS_SETTINGS_RESOLVE_ENS_DESC" desc="The description for how to handle ENS">
     Resolve Ethereum Name Service (ENS) domain names
@@ -1218,10 +1218,10 @@
     Only resolve .onion addresses in Tor windows
   </message>
   <message name="IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_DESC" desc="">
-    Onion services won't be available outside of Tor windows.
+    Onion services won't be available outside of Tor windows
   </message>
   <message name="IDS_SETTINGS_ENABLE_WIDEVINE_DESC" desc="Text fragment for enabling widevine component. 'Widevine' is the name of a plugin and should not be translated.">
-    Use Widevine digital rights management (DRM) component to view protected streaming video and other content in the browser.
+    Use Widevine digital rights management (DRM) component to view protected streaming video and other content in the browser
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_LABEL" desc="The label of manage v2 extensions link in settings">
     Manifest V2 extensions
@@ -1310,10 +1310,10 @@
     Automatically add NFTs you own to the Wallet using third party APIs.
   </message>
   <message name="IDS_SETTINGS_ENABLE_BRAVE_WALLET_IN_PRIVATE_WINDOWS_LABEL" desc="The label for enabling private window support">
-    Enable Brave Wallet in Private Windows.
+    Enable Brave Wallet in Private Windows
   </message>
   <message name="IDS_SETTINGS_ENABLE_BRAVE_WALLET_IN_PRIVATE_WINDOWS_DESC" desc="The description for enabling private window support">
-    Warning: Reusing a wallet address in a private window session can enable a site to link a private window session to a non-private window session.
+    Warning: Reusing a wallet address in a private window session can enable a site to link a private window session to a non-private window session
   </message>
   <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES" desc="The title for the amount of minutes it takes for the Brave Wallet to automatically lock">
     Automatically lock Brave Wallet
@@ -1771,7 +1771,7 @@
     Automatically add files for offline viewing
   </message>
   <message name="IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_SUB_LABEL" desc="A description for setting to en/disable media cache behavior">
-    This option will automatically cache media files so you can play them without an Internet connection.
+    This option will automatically cache media files so you can play them without an Internet connection
   </message>
 
   <!-- Settings / Secure DNS -->
