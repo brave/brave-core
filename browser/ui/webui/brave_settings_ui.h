@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
@@ -50,7 +51,8 @@ class BraveSettingsUI : public settings::SettingsUI {
   ~BraveSettingsUI() override;
 
   static void AddResources(content::WebUIDataSource* html_source,
-                           Profile* profile);
+                           Profile* profile,
+                           const std::string& locale);
   static bool& ShouldExposeElementsForTesting();
 
   void BindInterface(

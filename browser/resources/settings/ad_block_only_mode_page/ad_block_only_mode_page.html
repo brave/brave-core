@@ -1,0 +1,30 @@
+<style include="settings-shared md-select">
+  .label.shields-lite-description {
+    padding: 1em 0;
+  }
+
+  .flex-center {
+    align-items: center;
+    display: flex;
+  }
+</style>
+
+<settings-section
+  id="adBlockOnlyMode"
+  page-title="$i18n{adBlockOnlyMode}">
+
+  <div class="settings-box first">
+    <div class="flex">
+      <div class="label secondary shields-lite-description">
+        <p>$i18nRaw{adBlockOnlyModeDesc}</p>
+      </div>
+    </div>
+  </div>
+  <settings-toggle-button id="adBlockOnlyModeEmbedControlType"
+      class="cr-row"
+      pref="[[isAdBlockOnlyModeEnabled_]]"
+      on-settings-boolean-control-change="onAdBlockOnlyModeChange_"
+      label="$i18n{adBlockOnlyModeLabel}">
+  </settings-toggle-button>
+
+</settings-section>

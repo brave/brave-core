@@ -1,5 +1,7 @@
 include_rules = [
   "+components/content_settings",
   "+components/grit/brave_components_strings.h",
+  "+components/prefs/pref_service.h",
+  "+components/pref_registry/pref_registry_syncable.h",
   "+ui/base",
 ]

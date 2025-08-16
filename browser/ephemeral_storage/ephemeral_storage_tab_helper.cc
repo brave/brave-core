@@ -13,6 +13,7 @@
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
@@ -157,15 +158,18 @@ void EphemeralStorageTabHelper::CreateProvisionalTLDEphemeralLifetime(
 }
 
 void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
-  if (!host_content_settings_map_ || !tld_ephemeral_lifetime_) {
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  if (!profile || !host_content_settings_map_ || !tld_ephemeral_lifetime_) {
     return;
   }
+
   const bool shields_enabled =
       brave_shields::GetBraveShieldsEnabled(host_content_settings_map_, url);
   const bool cookies_restricted =
-      brave_shields::GetCookieControlType(host_content_settings_map_,
-                                          cookie_settings_.get(), url) !=
-      brave_shields::ControlType::ALLOW;
+      brave_shields::GetCookieControlType(
+          host_content_settings_map_, cookie_settings_.get(), url,
+          profile->GetPrefs()) != brave_shields::ControlType::ALLOW;
   tld_ephemeral_lifetime_->SetShieldsStateOnHost(
       url.host(), shields_enabled && cookies_restricted);
 }

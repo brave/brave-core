@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_PREF_NAMES_H_
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
 namespace brave_shields {
 namespace prefs {
 
@@ -19,6 +23,8 @@ inline constexpr char kAdBlockCookieListSettingTouched[] =
     "brave.ad_block.cookie_list_setting_touched";
 inline constexpr char kAdBlockMobileNotificationsListSettingTouched[] =
     "brave.ad_block.mobile_notifications_list_setting_touched";
+inline constexpr char kAdBlockAdblockOnlyModeGloballyDefaulted[] =
+    "brave.ad_block.adblock_only_mode_globally_defaulted";
 
 inline constexpr char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
 inline constexpr char kAdBlockRegionalFilters[] =
@@ -26,6 +32,13 @@ inline constexpr char kAdBlockRegionalFilters[] =
 inline constexpr char kAdBlockListSubscriptions[] =
     "brave.ad_block.list_subscriptions";
 inline constexpr char kAdBlockDeveloperMode[] = "brave.ad_block.developer_mode";
+
+inline constexpr char kAdblockShieldsDisabledCount[] =
+    "brave.ad_block.shields_disabled_count";
+inline constexpr char kAdblockAdBlockOnlyModeEnabled[] =
+    "brave.ad_block.adblock_only_mode_enabled";
+inline constexpr char kAdblockAdBlockOnlyModePromptDismissed[] =
+    "brave.ad_block.adblock_only_mode_prompt_dismissed";
 
 inline constexpr char kFBEmbedControlType[] = "brave.fb_embed_default";
 inline constexpr char kTwitterEmbedControlType[] =
@@ -35,6 +48,9 @@ inline constexpr char kLinkedInEmbedControlType[] =
 inline constexpr char kReduceLanguageEnabled[] = "brave.reduce_language";
 
 }  // namespace prefs
+
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_PREF_NAMES_H_

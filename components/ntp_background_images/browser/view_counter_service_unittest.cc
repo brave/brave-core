@@ -23,6 +23,7 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -196,6 +197,7 @@ class ViewCounterServiceTest : public testing::Test {
     brave_rewards::RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefs(prefs_.registry());
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
+    brave_shields::RegisterProfilePrefs(prefs_.registry());
 
     brave::RegisterPrefsForBraveReferralsService(local_state_.registry());
     NTPBackgroundImagesService::RegisterLocalStatePrefs(

@@ -11,6 +11,8 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -21,8 +23,11 @@ namespace debounce {
 
 DebounceService::DebounceService(
     DebounceComponentInstaller* component_installer,
-    PrefService* prefs)
-    : component_installer_(component_installer), prefs_(prefs) {}
+    PrefService* prefs,
+    HostContentSettingsMap* host_content_settings_map)
+    : component_installer_(component_installer),
+      prefs_(prefs),
+      host_content_settings_map_(host_content_settings_map) {}
 
 DebounceService::~DebounceService() = default;
 
@@ -56,8 +61,11 @@ void DebounceService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kDebounceEnabled, true);  // default on
 }
 
-bool DebounceService::IsEnabled() {
-  return prefs_->GetBoolean(prefs::kDebounceEnabled);
+bool DebounceService::IsEnabled(const GURL& url) {
+  return prefs_->GetBoolean(prefs::kDebounceEnabled) &&
+         brave_shields::GetBraveShieldsEnabled(host_content_settings_map_,
+                                               url) &&
+         !brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(prefs_);
 }
 
 void DebounceService::SetIsEnabled(const bool isEnabled) {

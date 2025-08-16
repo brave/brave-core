@@ -37,11 +37,13 @@ bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url) {
 
 bool MaybeChangeReferrer(bool allow_referrers,
                          bool shields_up,
+                         bool shields_ad_block_only_mode_enabled,
                          const GURL& current_referrer,
                          const GURL& target_url,
                          Referrer* output_referrer) {
   DCHECK(output_referrer);
-  if (allow_referrers || !shields_up || current_referrer.is_empty()) {
+  if (allow_referrers || !shields_up || shields_ad_block_only_mode_enabled ||
+      current_referrer.is_empty()) {
     return false;
   }
 

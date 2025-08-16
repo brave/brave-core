@@ -42,6 +42,8 @@ class AdBlockPrefService : public KeyedService,
 
   void OnPreferenceChanged(const std::string& pref_name);
   void OnDeveloperModeChanged();
+  void OnAdBlockOnlyModeChanged();
+  void OnAdBlockOnlyModeGlobalDefaultChanged();
 
   // net::ProxyConfigService::Observer:
   void OnProxyConfigChanged(
@@ -52,6 +54,8 @@ class AdBlockPrefService : public KeyedService,
   raw_ptr<PrefService> prefs_ = nullptr;                // not owned
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
+  std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
+      local_state_change_registrar_;
 
   std::unique_ptr<PrefProxyConfigTracker> pref_proxy_config_tracker_;
   std::unique_ptr<net::ProxyConfigService> proxy_config_service_;

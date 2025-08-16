@@ -18,7 +18,9 @@ int OnBeforeStartTransaction_GlobalPrivacyControlWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  headers->SetHeader(kSecGpcHeader, "1");
+  if (!ctx->shields_ad_block_only_mode_enabled) {
+    headers->SetHeader(kSecGpcHeader, "1");
+  }
   return net::OK;
 }
 

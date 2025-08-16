@@ -52,7 +52,7 @@ export class SettingsShieldsPageIndexElement extends
 
   private showDefaultViews_() {
     this.$.viewManager.switchViews(
-      ['parent', 'socialBlocking'], 'no-animation', 'no-animation');
+      ['parent', 'adBlockOnlyMode', 'socialBlocking'], 'no-animation', 'no-animation');
   }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {

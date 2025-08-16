@@ -17,6 +17,9 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -24,6 +27,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/favicon/content/content_favicon_driver.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
@@ -36,6 +40,16 @@ namespace {
 
 constexpr char kShieldsAllowScriptOnceHistogramName[] =
     "Brave.Shields.AllowScriptOnce";
+
+PrefService* GetPrefs(content::WebContents* web_contents) {
+  CHECK(web_contents);
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  if (!profile) {
+    return nullptr;
+  }
+  return profile->GetPrefs();
+}
 
 }  // namespace
 
@@ -51,13 +65,10 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext())
-          ->GetPrefs();
   brave_shields_settings_ =
       std::make_unique<brave_shields::BraveShieldsSettings>(
           *host_content_settings_map_, g_browser_process->local_state(),
-          profile_prefs);
+          GetPrefs(web_contents));
 }
 
 void BraveShieldsTabHelper::DidFinishNavigation(
@@ -70,6 +81,62 @@ void BraveShieldsTabHelper::DidFinishNavigation(
       webcompat_features_invoked_.clear();
     }
     ClearAllResourcesList();
+
+    MaybeNotifyAfterRepeatedReloads(navigation_handle);
+  }
+}
+
+void BraveShieldsTabHelper::MaybeNotifyAfterRepeatedReloads(
+    content::NavigationHandle* navigation_handle) {
+  last_navigated_url_ = navigation_handle->GetURL();
+
+  if (ignore_force_reload_web_contents_) {
+    ignore_force_reload_web_contents_ = false;
+    return;
+  }
+
+  if (navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
+    // Do not notify if the navigation is a restore.
+    return;
+  }
+
+  if (!IsAdblockOnlyModeFeatureEnabled() ||
+      !IsAdblockOnlyModeSupportedForLocale(
+          g_browser_process->GetApplicationLocale())) {
+    return;
+  }
+
+  if (GetBraveShieldsAdBlockOnlyModeEnabled()) {
+    // Do not notify if shields ad block only mode is enabled.
+    return;
+  }
+
+  if (!PageTransitionCoreTypeIs(navigation_handle->GetPageTransition(),
+                                ui::PAGE_TRANSITION_RELOAD)) {
+    // Do not notify if the navigation is not a reload.
+    return;
+  }
+
+  const base::Time current_time = base::Time::Now();
+  if (!repeated_reloads_counter_ ||
+      current_time - repeated_reloads_counter_->initial_reload_at >
+          features::kAdblockOnlyModeReloadsCountInterval.Get()) {
+    repeated_reloads_counter_ = AfterRepeatedReloadsInfo{
+        .initial_reload_at = current_time,
+        .reloads_count = 0,
+    };
+  }
+
+  repeated_reloads_counter_->reloads_count++;
+  if (repeated_reloads_counter_->reloads_count >=
+          features::kAdblockOnlyModeReloadsCountMin.Get() &&
+      repeated_reloads_counter_->reloads_count <=
+          features::kAdblockOnlyModeReloadsCountMax.Get()) {
+    // If the page is reloaded between 3 and 5 times in 10 seconds, notify
+    // observers.
+    for (Observer& observer : observer_list_) {
+      observer.OnAfterRepeatedReloads();
+    }
   }
 }
 
@@ -104,6 +171,8 @@ void BraveShieldsTabHelper::OnFaviconUpdated(
 }
 
 void BraveShieldsTabHelper::ReloadWebContents() {
+  ignore_force_reload_web_contents_ = true;
+
   web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
 }
 
@@ -184,10 +253,51 @@ bool BraveShieldsTabHelper::GetBraveShieldsEnabled() {
 void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
   brave_shields_settings_->SetBraveShieldsEnabled(is_enabled,
                                                   GetCurrentSiteURL());
+
+  if (!is_enabled) {
+    if (PrefService* prefs = GetPrefs(web_contents()); prefs) {
+      prefs->SetInteger(
+          brave_shields::prefs::kAdblockShieldsDisabledCount,
+          prefs->GetInteger(
+              brave_shields::prefs::kAdblockShieldsDisabledCount) +
+              1);
+    }
+  }
+
   ReloadWebContents();
 }
 
-GURL BraveShieldsTabHelper::GetCurrentSiteURL() {
+bool BraveShieldsTabHelper::GetBraveShieldsAdBlockOnlyModeEnabled() {
+  return brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+      GetPrefs(web_contents()));
+}
+
+void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(
+    bool is_enabled) {
+  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(GetPrefs(web_contents()),
+                                                       is_enabled);
+  ReloadWebContents();
+}
+
+bool BraveShieldsTabHelper::GetShowShieldsDisabledAdBlockOnlyModePrompt() {
+  const PrefService* prefs = GetPrefs(web_contents());
+  if (!prefs) {
+    return false;
+  }
+  return !prefs->GetBoolean(
+             brave_shields::prefs::kAdblockAdBlockOnlyModePromptDismissed) &&
+         prefs->GetInteger(brave_shields::prefs::kAdblockShieldsDisabledCount) >
+             features::kAdblockOnlyModeShieldsDisabledCount.Get();
+}
+
+void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModePromptDismissed() {
+  if (PrefService* prefs = GetPrefs(web_contents())) {
+    prefs->SetBoolean(
+        brave_shields::prefs::kAdblockAdBlockOnlyModePromptDismissed, true);
+  }
+}
+
+GURL BraveShieldsTabHelper::GetCurrentSiteURL() const {
   return web_contents()->GetLastCommittedURL();
 }
 
@@ -222,7 +332,8 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
       Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
 
   const ControlType control_type = brave_shields::GetCookieControlType(
-      &*host_content_settings_map_, cookie_settings.get(), GetCurrentSiteURL());
+      &*host_content_settings_map_, cookie_settings.get(), GetCurrentSiteURL(),
+      GetPrefs(web_contents()));
 
   switch (control_type) {
     case ControlType::ALLOW:
@@ -236,6 +347,12 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
   }
   NOTREACHED() << "Unexpected value for control_type: "
                << base::to_underlying(control_type);
+}
+
+bool BraveShieldsTabHelper::GetReduceLanguageEnabled() const {
+  return brave_shields::IsReduceLanguageEnabledForProfile(
+      &*host_content_settings_map_, GetCurrentSiteURL(),
+      GetPrefs(web_contents()));
 }
 
 HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
@@ -274,8 +391,6 @@ void BraveShieldsTabHelper::SetFingerprintMode(FingerprintMode mode) {
 }
 
 void BraveShieldsTabHelper::SetCookieBlockMode(CookieBlockMode mode) {
-  auto* prefs = Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-                    ->GetPrefs();
   ControlType control_type = ControlType::BLOCK;
 
   switch (mode) {
@@ -290,9 +405,9 @@ void BraveShieldsTabHelper::SetCookieBlockMode(CookieBlockMode mode) {
       break;
   }
 
-  brave_shields::SetCookieControlType(&*host_content_settings_map_, prefs,
-                                      control_type, GetCurrentSiteURL(),
-                                      g_browser_process->local_state());
+  brave_shields::SetCookieControlType(
+      &*host_content_settings_map_, GetPrefs(web_contents()), control_type,
+      GetCurrentSiteURL(), g_browser_process->local_state());
 
   ReloadWebContents();
 }
@@ -351,12 +466,9 @@ void BraveShieldsTabHelper::AllowScriptsOnce(
 }
 
 bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
-
-  return brave_shields::IsBraveShieldsManaged(
-      profile_prefs, &*host_content_settings_map_, GetCurrentSiteURL());
+  return brave_shields::IsBraveShieldsManaged(GetPrefs(web_contents()),
+                                              &*host_content_settings_map_,
+                                              GetCurrentSiteURL());
 }
 
 bool BraveShieldsTabHelper::IsForgetFirstPartyStorageFeatureEnabled() const {

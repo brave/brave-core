@@ -142,19 +142,21 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsCookiesClearing) {
   // The default is not changed.
   EXPECT_EQ(brave_shields::ControlType::ALLOW,
             brave_shields::GetCookieControlType(map(), cookie_settings.get(),
-                                                GURL()));
+                                                GURL(), profile()->GetPrefs()));
 
   // Default after clearing on the example.com.
   EXPECT_EQ(brave_shields::ControlType::ALLOW,
             brave_shields::GetCookieControlType(map(), cookie_settings.get(),
-                                                GURL("https://example.com")));
+                                                GURL("https://example.com"),
+                                                profile()->GetPrefs()));
 
   // Changing the default settings affects example.com
   brave_shields::SetCookieControlType(map(), profile()->GetPrefs(),
                                       brave_shields::BLOCK, GURL());
   EXPECT_EQ(brave_shields::ControlType::BLOCK,
             brave_shields::GetCookieControlType(map(), cookie_settings.get(),
-                                                GURL("https://example.com")));
+                                                GURL("https://example.com"),
+                                                profile()->GetPrefs()));
 }
 
 TEST_F(BraveBrowsingDataRemoverDelegateTest, FingerpintV2ClearBalancedPattern) {

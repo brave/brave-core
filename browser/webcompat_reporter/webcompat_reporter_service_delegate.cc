@@ -21,10 +21,12 @@ namespace webcompat_reporter {
 WebcompatReporterServiceDelegateImpl::WebcompatReporterServiceDelegateImpl(
     component_updater::ComponentUpdateService* component_update_service,
     brave_shields::AdBlockService* adblock_service,
+    PrefService* prefs,
     HostContentSettingsMap* host_content_settings_map,
     scoped_refptr<content_settings::CookieSettings> content_settings)
     : WebcompatReporterServiceDelegateBase(component_update_service),
       adblock_service_(adblock_service),
+      prefs_(prefs),
       host_content_settings_map_(host_content_settings_map),
       cookie_settings_(content_settings) {}
 
@@ -71,7 +73,7 @@ WebcompatReporterServiceDelegateImpl::GetCookiePolicy(
 
   return brave_shields::ControlTypeToString(brave_shields::GetCookieControlType(
       host_content_settings_map_, cookie_settings_.get(),
-      GURL(current_url.value())));
+      GURL(current_url.value()), prefs_));
 }
 
 std::optional<std::string>

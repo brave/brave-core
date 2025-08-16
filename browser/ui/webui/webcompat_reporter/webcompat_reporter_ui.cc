@@ -30,7 +30,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
@@ -173,8 +172,6 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
   PrefService* profile_prefs = profile->GetPrefs();
   pending_report_->languages =
       profile_prefs->GetString(language::prefs::kAcceptLanguages);
-  pending_report_->language_farbling = BoolToString(
-      profile_prefs->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled));
   pending_report_->channel = brave::GetChannelName();
 }
 
@@ -339,6 +336,8 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   const base::Value* contact_arg = submission_args.Find(kContactField);
   pending_report_->shields_enabled = BoolToString(
       submission_args.FindBool(kShieldsEnabledField).value_or(false));
+  pending_report_->language_farbling = BoolToString(
+      submission_args.FindBool(kLanguageFarblingField).value_or(true));
 
   const auto ui_source_int = submission_args.FindInt(kUISourceField);
   if (ui_source_int) {

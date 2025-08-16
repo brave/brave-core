@@ -15,6 +15,8 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "url/gurl.h"
 
+class HostContentSettingsMap;
+
 namespace de_amp {
 
 // Handler for AMP HTML detection.
@@ -25,7 +27,8 @@ class DeAmpBodyHandler : public body_sniffer::BodyHandler {
 
   static std::unique_ptr<DeAmpBodyHandler> Create(
       const network::ResourceRequest& request,
-      const content::WebContents::Getter& wc_getter);
+      const content::WebContents::Getter& wc_getter,
+      HostContentSettingsMap* host_content_settings_map);
 
   bool OnRequest(network::ResourceRequest* request) override;
   bool ShouldProcess(const GURL& response_url,

@@ -154,6 +154,24 @@ void ShieldsPanelDataHandler::SetBraveShieldsEnabled(bool is_enabled) {
   active_shields_data_controller_->SetBraveShieldsEnabled(is_enabled);
 }
 
+void ShieldsPanelDataHandler::SetBraveShieldsAdBlockOnlyModeEnabled(
+    bool is_enabled) {
+  if (!active_shields_data_controller_) {
+    return;
+  }
+
+  active_shields_data_controller_->SetBraveShieldsAdBlockOnlyModeEnabled(
+      is_enabled);
+}
+
+void ShieldsPanelDataHandler::SetBraveShieldsAdBlockOnlyModePromptDismissed() {
+  if (!active_shields_data_controller_) {
+    return;
+  }
+  active_shields_data_controller_
+      ->SetBraveShieldsAdBlockOnlyModePromptDismissed();
+}
+
 void ShieldsPanelDataHandler::SetForgetFirstPartyStorageEnabled(
     bool is_enabled) {
   if (!active_shields_data_controller_) {
@@ -246,6 +264,11 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_->GetHttpRedirectsList();
   site_block_info_.is_brave_shields_enabled =
       active_shields_data_controller_->GetBraveShieldsEnabled();
+  site_block_info_.is_brave_shields_ad_block_only_mode_enabled =
+      active_shields_data_controller_->GetBraveShieldsAdBlockOnlyModeEnabled();
+  site_block_info_.show_shields_disabled_ad_block_only_mode_prompt =
+      active_shields_data_controller_
+          ->GetShowShieldsDisabledAdBlockOnlyModePrompt();
   site_block_info_.is_brave_shields_managed =
       active_shields_data_controller_->IsBraveShieldsManaged();
   const auto& invoked_webcompat_set =

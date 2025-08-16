@@ -12,6 +12,7 @@
 #include "base/test/task_environment.h"
 #include "base/token.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -26,6 +27,7 @@ class BraveFarblingServiceTest : public testing::Test {
 
   void SetUp() override {
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
+    brave_shields::RegisterProfilePrefs(prefs_.registry());
     settings_map_ = new HostContentSettingsMap(
         &prefs_, false /* is_off_the_record */, false /* store_last_modified */,
         false /* restore_session */, false /* should_record_metrics */);

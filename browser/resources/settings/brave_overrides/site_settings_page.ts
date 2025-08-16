@@ -5,16 +5,22 @@
 
 import './config.js'
 
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
+
 import {
   RegisterPolymerComponentReplacement,
   RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
+import type {CategoryListItem} from '../site_settings_page/site_settings_list.js';
+
 import {loadTimeData} from '../i18n_setup.js'
 import {routes} from '../route.js'
 import {ContentSettingsTypes} from '../site_settings/constants.js'
 import {SettingsSiteSettingsPageElement} from '../site_settings_page/site_settings_page.js'
+
+import '../ad_block_only_mode_page/ad_block_only_mode_alert.js'
 
 const PERMISSIONS_BASIC_REMOVE_IDS = [
   ContentSettingsTypes.STORAGE_ACCESS,
@@ -38,11 +44,17 @@ RegisterPolymerTemplateModifications({
     allSites.insertAdjacentHTML(
       'afterend',
       getTrustedHTML`
-        <div class="cr-row first line-only">
-          <h2 id="siteSettingsShields"></h2>
+        <div class="cr-row first">
+          <div class="flex">
+            <h2 id="siteSettingsShields"></h2>
+            <settings-ad-block-only-mode-alert
+              id="adBlockOnlyModeAlert"
+              prefs="{{prefs}}">
+            </settings-ad-block-only-mode-alert>
+          </div>
         </div>
         <settings-site-settings-list id="basicShieldsList"
-          category-list="[[lists_.shieldsBasic]]"
+          category-list="[[braveLists_.shieldsBasic]]"
           focus-config="[[focusConfig]]">
         </settings-site-settings-list>
       `)
@@ -59,7 +71,11 @@ RegisterPolymerTemplateModifications({
 
 RegisterPolymerComponentReplacement(
   'settings-site-settings-page',
-  class BraveSiteSettingsComponent extends SettingsSiteSettingsPageElement {
+  class BraveSiteSettingsComponent extends PrefsMixin(SettingsSiteSettingsPageElement) {
+    declare private braveLists_: {
+      shieldsBasic: CategoryListItem[],
+    }
+
     static override get properties() {
       const properties = SettingsSiteSettingsPageElement.properties
       if (!properties || !properties.lists_ || !properties.lists_.value) {
@@ -198,20 +214,54 @@ RegisterPolymerComponentReplacement(
             }
           }
         }
-        (lists as any).shieldsBasic = [
-          {
-            route: routes.SITE_SETTINGS_SHIELDS_STATUS,
-            id: ContentSettingsTypes.BRAVE_SHIELDS,
-            label: 'siteSettingsShieldsStatus',
-            icon: 'shield-done',
-            enabledLabel: 'siteSettingsShieldsDescription',
-            disabledLabel: 'siteSettingsShieldsDown'
-          }
-        ]
 
         return lists
       }
-      return properties
+
+      return {
+        ...properties,
+        braveLists_: {
+          type: Object,
+          value: function () {
+            return {
+              shieldsBasic: [
+                {
+                  route: routes.SITE_SETTINGS_SHIELDS_STATUS,
+                  id: ContentSettingsTypes.BRAVE_SHIELDS,
+                  label: 'siteSettingsShieldsStatus',
+                  icon: 'shield-done',
+                  enabledLabel: 'siteSettingsShieldsDescription',
+                  disabledLabel: 'siteSettingsShieldsDown'
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+
+    static get observers() {
+      return [
+        'updateShieldsLabel_(prefs.brave.ad_block.adblock_only_mode_enabled.value)'
+      ]
+    }
+
+    updateShieldsLabel_() {
+      const index =
+        this.braveLists_.shieldsBasic.map(e => e.id).indexOf(ContentSettingsTypes.BRAVE_SHIELDS);
+      // The third-party cookies might not be part of the current
+      // site-settings-list but the class always observes the preference.
+      if (index === -1) {
+        return;
+      }
+
+      if (this.getPref('brave.ad_block.adblock_only_mode_enabled').value) {
+        this.braveLists_.shieldsBasic[index].enabledLabel =
+            'siteSettingsShieldsDescriptionAdblockOnlyMode';
+      } else {
+        this.braveLists_.shieldsBasic[index].enabledLabel =
+            'siteSettingsShieldsDescription';
+      }
     }
   }
 )

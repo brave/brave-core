@@ -74,7 +74,7 @@ WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
       prefs,
       std::make_unique<WebcompatReporterServiceDelegateImpl>(
           g_browser_process->component_updater(),
-          g_brave_browser_process->ad_block_service(),
+          g_brave_browser_process->ad_block_service(), prefs,
           HostContentSettingsMapFactory::GetForProfile(context),
           CookieSettingsFactory::GetForProfile(
               Profile::FromBrowserContext(context))),

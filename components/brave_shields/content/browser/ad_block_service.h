@@ -135,6 +135,10 @@ class AdBlockService {
   void ResetCosmeticFilter(const std::string& host);
   bool AreAnyBlockedElementsPresent(const std::string& host);
 
+  void SetAdBlockOnlyModeGloballyDefaulted(bool defaulted);
+  bool GetAdBlockOnlyModeGloballyDefaulted() const;
+  bool GetAdBlockOnlyModeSupported() const;
+
   // Methods for brave://adblock-internals.
   using GetDebugInfoCallback =
       base::OnceCallback<void(base::Value::Dict, base::Value::Dict)>;

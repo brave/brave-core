@@ -9,6 +9,7 @@
 
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/prefs/testing_pref_service.h"
@@ -25,6 +26,7 @@ class SpeedreaderMetricsTest : public testing::Test {
   void SetUp() override {
     SpeedreaderMetrics::RegisterPrefs(local_state_.registry());
     HostContentSettingsMap::RegisterProfilePrefs(profile_prefs_.registry());
+    brave_shields::RegisterProfilePrefs(profile_prefs_.registry());
 
     host_content_settings_map_ =
         new HostContentSettingsMap(&profile_prefs_, /*is_off_the_record*/ false,

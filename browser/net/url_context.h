@@ -80,6 +80,7 @@ struct BraveRequestInfo {
   std::string new_url_spec;
   // TODO(iefremov): rename to shields_up.
   bool allow_brave_shields = true;
+  bool shields_ad_block_only_mode_enabled = false;
   bool allow_ads = false;
   // Whether or not Shields "aggressive" mode was enabled where the request was
   // initiated.

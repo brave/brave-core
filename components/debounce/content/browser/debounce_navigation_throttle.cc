@@ -95,7 +95,8 @@ void DebounceNavigationThrottle::MaybeCreateAndAdd(
     return;
   }
 
-  if (!debounce_service->IsEnabled()) {
+  const GURL& url = registry.GetNavigationHandle().GetURL();
+  if (!debounce_service->IsEnabled(url)) {
     return;
   }
 
