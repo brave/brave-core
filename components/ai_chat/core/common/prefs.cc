@@ -44,11 +44,6 @@ void ResetCustomizationsPref(PrefService& prefs) {
 }
 
 std::vector<std::string> GetMemoriesFromPrefs(const PrefService& prefs) {
-  // Return empty list if memory feature is disabled
-  if (!prefs.GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
-    return std::vector<std::string>();
-  }
-
   const base::Value::List& memories_list =
       prefs.GetList(prefs::kBraveAIChatUserMemories);
   std::vector<std::string> memories;
@@ -85,6 +80,17 @@ bool UpdateMemoryInPrefs(const std::string& old_memory,
 void DeleteMemoryFromPrefs(const std::string& memory, PrefService& prefs) {
   ScopedListPrefUpdate update(&prefs, prefs::kBraveAIChatUserMemories);
   update->EraseValue(base::Value(memory));
+}
+
+bool HasMemoryFromPrefs(const std::string& memory, const PrefService& prefs) {
+  const base::Value::List& memories_list =
+      prefs.GetList(prefs::kBraveAIChatUserMemories);
+  for (const auto& item : memories_list) {
+    if (item.is_string() && item.GetString() == memory) {
+      return true;
+    }
+  }
+  return false;
 }
 
 void DeleteAllMemoriesFromPrefs(PrefService& prefs) {

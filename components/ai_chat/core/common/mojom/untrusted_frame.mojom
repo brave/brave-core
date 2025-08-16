@@ -60,11 +60,8 @@ interface UntrustedUIHandler {
   // Delete a specific memory from user memory storage
   DeleteMemory(string memory);
 
-  // Get all current memories from storage
-  GetMemories() => (array<string> memories);
-
-  // Check if memory feature is currently enabled
-  GetMemoryEnabled() => (bool enabled);
+  // Check if a specific memory exists in storage
+  HasMemory(string memory) => (bool exists);
 
   // Open AI Chat customization settings page
   OpenAIChatCustomizationSettings();

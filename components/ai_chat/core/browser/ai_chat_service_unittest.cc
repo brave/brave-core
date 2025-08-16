@@ -1518,14 +1518,9 @@ TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_EnabledToDisabled) {
 
   base::RunLoop run_loop;
 
-  // Expect OnMemoryEnabledChanged(false) and OnMemoriesChanged(empty)
-  {
-    testing::Sequence seq;
-    EXPECT_CALL(untrusted_client, OnMemoryEnabledChanged(false));
-    EXPECT_CALL(untrusted_client, OnMemoriesChanged(std::vector<std::string>{}))
-        .WillOnce(
-            [&run_loop](const std::vector<std::string>&) { run_loop.Quit(); });
-  }
+  // Expect OnMemoryEnabledChanged(false)
+  EXPECT_CALL(untrusted_client, OnMemoryEnabledChanged(false))
+      .WillOnce([&run_loop](bool) { run_loop.Quit(); });
 
   // Disable memory
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
@@ -1556,15 +1551,9 @@ TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_DisabledToEnabled) {
 
   base::RunLoop run_loop;
 
-  // Expect OnMemoryEnabledChanged(true) and OnMemoriesChanged(empty since no
-  // memories set)
-  {
-    testing::Sequence seq;
-    EXPECT_CALL(untrusted_client, OnMemoryEnabledChanged(true));
-    EXPECT_CALL(untrusted_client, OnMemoriesChanged(std::vector<std::string>{}))
-        .WillOnce(
-            [&run_loop](const std::vector<std::string>&) { run_loop.Quit(); });
-  }
+  // Expect OnMemoryEnabledChanged(true)
+  EXPECT_CALL(untrusted_client, OnMemoryEnabledChanged(true))
+      .WillOnce([&run_loop](bool) { run_loop.Quit(); });
 
   // Enable memory
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);

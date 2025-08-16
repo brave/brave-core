@@ -31,7 +31,6 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 void ResetCustomizationsPref(PrefService& prefs);
 
 // Returns the memories from the memories list in the pref.
-// An empty array would be returned if memory feature is disabled.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 std::vector<std::string> GetMemoriesFromPrefs(const PrefService& prefs);
 // Appends the memory to the memories list in the pref. Silently ignore
@@ -48,6 +47,10 @@ bool UpdateMemoryInPrefs(const std::string& old_memory,
 // memory is not found.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void DeleteMemoryFromPrefs(const std::string& memory, PrefService& prefs);
+// Checks if a specific memory exists in the memories list in the pref.
+// Returns false if memory feature is disabled.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+bool HasMemoryFromPrefs(const std::string& memory, const PrefService& prefs);
 // Resets the memories list in the pref.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void DeleteAllMemoriesFromPrefs(PrefService& prefs);

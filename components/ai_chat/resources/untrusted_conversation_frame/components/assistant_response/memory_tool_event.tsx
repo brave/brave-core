@@ -19,7 +19,7 @@ interface Props {
 
 const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
   const context = useUntrustedConversationContext()
-  const [hasUndone, setHasUndone] = React.useState(false)
+  const [memoryExists, setMemoryExists] = React.useState<boolean | null>(null)
 
   // Parse the memory content from tool input
   const memoryContent = React.useMemo(() => {
@@ -32,27 +32,44 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
     }
   }, [toolUseEvent?.argumentsJson])
 
-  // Check if memory exists based on current context state
-  const memoryExists = React.useMemo(() => {
-    return context.memories.includes(memoryContent)
-  }, [context.memories, memoryContent])
+  // Check if memory exists using HasMemory API and subscribe to changes
+  React.useEffect(() => {
+    if (!memoryContent) return
+
+    // Initial check
+    context.uiHandler?.hasMemory(memoryContent).then(({ exists }) => {
+      setMemoryExists(exists)
+    })
+
+    // Subscribe to memory changes
+    const id = context.conversationObserver?.onMemoriesChanged.addListener(
+      (memories: string[]) => {
+        const exists = memories.includes(memoryContent)
+        setMemoryExists(exists)
+      }
+    )
+
+    return () => {
+      context.conversationObserver?.removeListener(id)
+    }
+  }, [memoryContent])
 
   // Non-empty string in textContentBlock indicates an error
   const hasError = !!toolUseEvent.output?.[0]?.textContentBlock?.text
 
   const handleUndo = async () => {
-    if (!memoryContent || hasUndone) return
+    if (!memoryContent) return
 
     await context.uiHandler?.deleteMemory(memoryContent)
-    setHasUndone(true)
   }
 
   const handleManageAll = () => {
     context.uiHandler?.openAIChatCustomizationSettings?.()
   }
 
-  // Don't render if no memory content or tool hasn't completed
-  if (!memoryContent || !toolUseEvent.output) {
+  // Don't render if no memory content, tool hasn't completed, or still
+  // checking memory existence initially.
+  if (!memoryContent || !toolUseEvent.output || memoryExists === null) {
     return null
   }
 
@@ -79,14 +96,14 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
   }
 
   // Handle undone state
-  if (hasUndone || !memoryExists) {
+  if (!memoryExists) {
     return (
       <div
         className={styles.memoryToolEvent}
         data-testid='memory-tool-event-undone'
       >
         <Icon name='database' className={styles.icon} />
-        <span className={styles.textUndone}>
+        <span className={styles.textUndone} title={memoryContent}>
           {getLocale(S.CHAT_UI_MEMORY_UNDONE_LABEL)}
           <button
             className={`${styles.button} ${styles.buttonWithSpacing}`}

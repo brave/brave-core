@@ -13,8 +13,6 @@ export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
   conversationHistory: Mojom.ConversationTurn[]
   isMobile: boolean
   associatedContent: Mojom.AssociatedContent[]
-  memories: string[]
-  memoryEnabled: boolean
 }
 
 // Default state before initial API call
@@ -30,9 +28,7 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   totalTokens: BigInt(0),
   canSubmitUserEntries: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
-  associatedContent: [],
-  memories: [],
-  memoryEnabled: false
+  associatedContent: []
 }
 
 // Updates a tool use event for a conversation entry in the history.
@@ -73,7 +69,7 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
   public parentUIFrame: Mojom.ParentUIFrameRemote
     = new Mojom.ParentUIFrameRemote()
 
-  private conversationObserver: Mojom.UntrustedConversationUICallbackRouter
+  public conversationObserver: Mojom.UntrustedConversationUICallbackRouter
     = new Mojom.UntrustedConversationUICallbackRouter
 
   constructor() {
@@ -84,22 +80,16 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
   async initialize() {
     const [
       { conversationEntriesState },
-      { conversationHistory },
-      { memories },
-      { enabled }
+      { conversationHistory }
      ] = await Promise.all([
       this.conversationHandler.bindUntrustedConversationUI(
         this.conversationObserver.$.bindNewPipeAndPassRemote()
       ),
-      this.conversationHandler.getConversationHistory(),
-      this.uiHandler.getMemories(),
-      this.uiHandler.getMemoryEnabled()
+      this.conversationHandler.getConversationHistory()
     ])
     this.setPartialState({
       ...conversationEntriesState,
-      conversationHistory,
-      memories,
-      memoryEnabled: enabled
+      conversationHistory
     })
     this.conversationObserver.onConversationHistoryUpdate.addListener(
       async (entry?: Mojom.ConversationTurn) => {
@@ -136,15 +126,6 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
       this.setPartialState({ associatedContent: content })
     })
 
-    this.conversationObserver.onMemoriesChanged.addListener(
-      (memories: string[]) => {
-      this.setPartialState({ memories })
-    })
-
-    this.conversationObserver.onMemoryEnabledChanged.addListener(
-      (enabled: boolean) => {
-      this.setPartialState({ memoryEnabled: enabled })
-    })
 
     // Set up communication with the parent frame
     this.uiHandler.bindParentPage(this.parentUIFrame.$.bindNewPipeAndPassReceiver())

@@ -244,11 +244,6 @@ void AIChatService::OnMemoryEnabledChanged() {
   for (auto& [uuid, conversation_handler] : conversation_handlers_) {
     conversation_handler->NotifyMemoryEnabledChanged(memory_enabled);
   }
-
-  // Also notify about memory changes to sync the memories list. When enabled,
-  // it would be the list stored in the preference. When disabled, it would be
-  // an empty list.
-  OnMemoriesChanged();
 }
 
 void AIChatService::OnMemoriesChanged() {

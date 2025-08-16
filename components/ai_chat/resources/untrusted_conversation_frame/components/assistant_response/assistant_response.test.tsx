@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import '@testing-library/jest-dom'
-import {render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import * as Mojom from '../../../common/mojom'
 import { getCompletionEvent, getWebSourcesEvent } from '../../../common/test_data_utils'
@@ -58,7 +58,9 @@ test('AssistantResponse should include expandable sources', async () => {
   expect(links).toHaveLength(8)
 })
 
-test('AssistantResponse should render memory tool events inline', () => {
+test('AssistantResponse should render memory tool events inline', async () => {
+  const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
+
   const memoryToolEvent: Mojom.ConversationEntryEvent = {
     toolUseEvent: {
       toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
@@ -74,7 +76,11 @@ test('AssistantResponse should render memory tool events inline', () => {
   ]
 
   render(
-    <MockContext memoryEnabled={true} memories={['Test memory content']}>
+    <MockContext
+      uiHandler={{
+        hasMemory: mockHasMemory
+      } as unknown as Mojom.UntrustedUIHandlerRemote}
+    >
       <AssistantResponse
         events={events}
         isEntryInteractivityAllowed={false}
@@ -86,11 +92,18 @@ test('AssistantResponse should render memory tool events inline', () => {
   )
 
   // Memory tool should render inline (success state)
-  expect(screen.getByTestId('memory-tool-event')).toBeInTheDocument()
+  await waitFor(() => {
+    expect(screen.getByTestId('memory-tool-event')).toBeInTheDocument()
+  })
   expect(screen.getByText(/Test memory content/)).toBeInTheDocument()
 })
 
-test('AssistantResponse should not render memory tool when disabled', () => {
+test(
+  'AssistantResponse should render memory tool in undone state when memory ' +
+    'does not exist',
+     async () => {
+  const mockHasMemory = jest.fn().mockResolvedValue({ exists: false })
+
   const memoryToolEvent: Mojom.ConversationEntryEvent = {
     toolUseEvent: {
       toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
@@ -106,7 +119,11 @@ test('AssistantResponse should not render memory tool when disabled', () => {
   ]
 
   render(
-    <MockContext memoryEnabled={false}>
+    <MockContext
+      uiHandler={{
+        hasMemory: mockHasMemory
+      } as unknown as Mojom.UntrustedUIHandlerRemote}
+    >
       <AssistantResponse
         events={events}
         isEntryInteractivityAllowed={false}
@@ -117,8 +134,9 @@ test('AssistantResponse should not render memory tool when disabled', () => {
     </MockContext>
   )
 
-  // Memory tool should not render when disabled
+  // Memory tool should render in undone state when memory doesn't exist
+  await waitFor(() => {
+    expect(screen.getByTestId('memory-tool-event-undone')).toBeInTheDocument()
+  })
   expect(screen.queryByTestId('memory-tool-event')).not.toBeInTheDocument()
-  expect(screen.queryByTestId('memory-tool-event-error'))
-    .not.toBeInTheDocument()
 })

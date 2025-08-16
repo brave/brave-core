@@ -17,6 +17,7 @@ export type UntrustedConversationContext = ConversationEntriesUIState & {
   conversationHandler?: Mojom.UntrustedConversationHandlerRemote
   uiHandler?: Mojom.UntrustedUIHandlerRemote
   parentUiFrame?: Mojom.ParentUIFrameRemote
+  conversationObserver?: Mojom.UntrustedConversationUICallbackRouter
 }
 
 export const defaultContext: UntrustedConversationContext = {
@@ -34,7 +35,8 @@ export function UntrustedConversationContextProvider(props: React.PropsWithChild
     ...context,
     conversationHandler: api.conversationHandler,
     uiHandler: api.uiHandler,
-    parentUiFrame: api.parentUIFrame
+    parentUiFrame: api.parentUIFrame,
+    conversationObserver: api.conversationObserver
   }
 
   return (

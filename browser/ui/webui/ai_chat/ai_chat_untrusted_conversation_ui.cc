@@ -116,14 +116,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
         memory, *Profile::FromWebUI(web_ui_)->GetPrefs());
   }
 
-  void GetMemories(GetMemoriesCallback callback) override {
-    std::move(callback).Run(ai_chat::prefs::GetMemoriesFromPrefs(
-        *Profile::FromWebUI(web_ui_)->GetPrefs()));
-  }
-
-  void GetMemoryEnabled(GetMemoryEnabledCallback callback) override {
-    std::move(callback).Run(Profile::FromWebUI(web_ui_)->GetPrefs()->GetBoolean(
-        ai_chat::prefs::kBraveAIChatUserMemoryEnabled));
+  void HasMemory(const std::string& memory,
+                 HasMemoryCallback callback) override {
+    std::move(callback).Run(ai_chat::prefs::HasMemoryFromPrefs(
+        memory, *Profile::FromWebUI(web_ui_)->GetPrefs()));
   }
 
   void OpenAIChatCustomizationSettings() override {
