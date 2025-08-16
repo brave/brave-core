@@ -20,10 +20,10 @@
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -34,8 +34,7 @@ namespace brave_vpn {
 
 class BraveVpnButtonUnitTest : public testing::Test {
  public:
-  BraveVpnButtonUnitTest()
-      : testing_local_state_(TestingBrowserProcess::GetGlobal()) {}
+  BraveVpnButtonUnitTest() = default;
 
   BraveVpnButtonUnitTest(const BraveVpnButtonUnitTest&) = delete;
   BraveVpnButtonUnitTest& operator=(const BraveVpnButtonUnitTest&) = delete;
@@ -43,8 +42,8 @@ class BraveVpnButtonUnitTest : public testing::Test {
   Browser* GetBrowser() {
     if (!browser_) {
       Browser::CreateParams params(profile(), true);
-      test_window_ = std::make_unique<TestBrowserWindow>();
-      params.window = test_window_.get();
+      auto test_window = std::make_unique<TestBrowserWindow>();
+      params.window = test_window.release();
       browser_.reset(Browser::Create(params));
     }
     return browser_.get();
@@ -67,7 +66,8 @@ class BraveVpnButtonUnitTest : public testing::Test {
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
     auto manager = std::make_unique<BraveVPNConnectionManager>(
-        shared_url_loader_factory_, testing_local_state_.Get(),
+        shared_url_loader_factory_,
+        TestingBrowserProcess::GetGlobal()->GetTestingLocalState(),
         base::NullCallback());
     manager->SetConnectionAPIImplForTesting(
         std::make_unique<ConnectionAPIImplSim>(manager.get(),
@@ -122,9 +122,7 @@ class BraveVpnButtonUnitTest : public testing::Test {
   ChromeLayoutProvider layout_provider_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  ScopedTestingLocalState testing_local_state_;
   std::unique_ptr<Browser> browser_;
-  std::unique_ptr<TestBrowserWindow> test_window_;
   std::unique_ptr<TestingProfile> profile_;
 };
 

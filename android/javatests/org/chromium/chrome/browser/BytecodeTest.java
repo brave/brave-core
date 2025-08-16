@@ -105,6 +105,7 @@ import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIphController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownEmbedder;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
@@ -209,7 +210,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
@@ -789,15 +789,6 @@ public class BytecodeTest {
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
-                        "moveTabToWindow",
-                        MethodModifier.REGULAR,
-                        void.class,
-                        getClassForPath("org/chromium/chrome/browser/multiwindow/InstanceInfo"),
-                        Tab.class,
-                        int.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
                         "isOpenInOtherWindowSupported",
                         MethodModifier.REGULAR,
@@ -1009,6 +1000,15 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         PasswordManagerHelper.class,
                         Profile.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder", // presubmit: ignore-long-line
+                        "createUIContext",
+                        MethodModifier.REGULAR,
+                        AutocompleteUIContext.class,
+                        Context.class,
+                        SuggestionHost.class,
+                        UrlBarEditingTextStateProvider.class));
     }
 
     @Test
@@ -1030,11 +1030,10 @@ public class BytecodeTest {
                         Intent.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
+                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator", // presubmit: ignore-long-line
                         "createViewProvider",
                         MethodModifier.REGULAR,
-                        ViewProvider.class,
-                        boolean.class));
+                        ViewProvider.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
@@ -1464,8 +1463,8 @@ public class BytecodeTest {
                         DataSharingTabManager.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator",
+                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator", // presubmit: ignore-long-line
                         Context.class,
                         AutocompleteDelegate.class,
                         UrlBarEditingTextStateProvider.class,
@@ -1483,7 +1482,8 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         OmniboxSuggestionsDropdownEmbedder.class,
                         WindowAndroid.class,
-                        DeferredIMEWindowInsetApplicationCallback.class));
+                        DeferredIMEWindowInsetApplicationCallback.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
@@ -1546,10 +1546,11 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter"));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
+                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder", // presubmit: ignore-long-line
                         Supplier.class,
-                        BookmarkState.class));
+                        BookmarkState.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
@@ -1878,8 +1879,8 @@ public class BytecodeTest {
                         WebContents.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/components/signin/SystemAccountManagerDelegate",
-                        "org/chromium/components/signin/BraveSystemAccountManagerDelegate"));
+                        "org/chromium/components/signin/NullAccountManagerDelegate",
+                        "org/chromium/components/signin/BraveNullAccountManagerDelegate"));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/AutocompleteEditText",
@@ -1888,13 +1889,9 @@ public class BytecodeTest {
                         AttributeSet.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
-                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
-                        Context.class,
-                        SuggestionHost.class,
-                        Optional.class,
-                        Supplier.class,
-                        Supplier.class));
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor", // presubmit: ignore-long-line
+                        AutocompleteUIContext.class));
 
         Assert.assertTrue(
                 constructorsMatch(

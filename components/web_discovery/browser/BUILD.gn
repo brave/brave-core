@@ -55,6 +55,8 @@ source_set("internal") {
     "request_queue.h",
     "rsa.cc",
     "rsa.h",
+    "rsa_private_key.cc",
+    "rsa_private_key.h",
     "server_config_loader.cc",
     "server_config_loader.h",
     "signature_basename.cc",

@@ -492,7 +492,6 @@
 
 -keep class org.chromium.chrome.browser.multiwindow.MultiInstanceManagerApi31 {
     *** mInstanceId;
-    moveTabToWindow(...);
     handleMenuOrKeyboardAction(...);
     <init>(...);
 }
@@ -577,6 +576,7 @@
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
     <init>(...);
+    *** createUIContext(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListBuilder {
@@ -821,11 +821,11 @@
     protected <init>(...);
 }
 
--keep class org.chromium.components.signin.SystemAccountManagerDelegate {
+-keep class org.chromium.components.signin.NullAccountManagerDelegate {
     public <init>(...);
 }
 
--keep class org.chromium.components.signin.BraveSystemAccountManagerDelegate {
+-keep class org.chromium.components.signin.BraveNullAccountManagerDelegate {
     public <init>(...);
 }
 

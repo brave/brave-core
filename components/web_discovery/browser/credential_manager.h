@@ -17,8 +17,8 @@
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/web_discovery/browser/background_credential_helper.h"
 #include "brave/components/web_discovery/browser/credential_signer.h"
+#include "brave/components/web_discovery/browser/rsa_private_key.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
-#include "crypto/rsa_private_key.h"
 #include "net/base/backoff_entry.h"
 
 class PrefService;

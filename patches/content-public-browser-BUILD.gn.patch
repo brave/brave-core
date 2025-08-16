@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
-index 3f95d514c8348a880128d0bf14a723aa1283ce69..bcfb097fee4afea0ca01f8ab7ddc687e2bde3229 100644
+index b0968acbc414a9cb213c53a1d6c2a4006a684a14..bdc4bd9cd126e4330a3a41c8e320dcada0e060d8 100644
 --- a/content/public/browser/BUILD.gn
 +++ b/content/public/browser/BUILD.gn
-@@ -749,6 +749,7 @@ source_set("browser_sources") {
+@@ -747,6 +747,7 @@ source_set("browser_sources") {
    if (enable_video_effects) {
      public_deps += [ "//services/video_effects/public/mojom" ]
    }

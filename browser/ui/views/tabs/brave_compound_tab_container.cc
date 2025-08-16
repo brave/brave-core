@@ -20,6 +20,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/scroll_view.h"
@@ -287,11 +288,12 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize(
       pinned_tab_container_->GetPreferredSize().height() +
       unpinned_tab_container_->GetPreferredSize().height();
 
-  // Traverse up the parent hierarchy to find the |VerticalTabStripRegionView|
+  // Traverse up the parent hierarchy to find the
+  // |BraveVerticalTabStripRegionView|
   for (auto* parent_view = parent(); parent_view;
        parent_view = parent_view->parent()) {
     auto* region_view =
-        views::AsViewClass<VerticalTabStripRegionView>(parent_view);
+        views::AsViewClass<BraveVerticalTabStripRegionView>(parent_view);
     if (!region_view) {
       continue;
     }

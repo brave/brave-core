@@ -438,6 +438,7 @@
 -PrerenderDataSaverProtocolTest.CheckReportedDisabledByDataSaverPreloadingState
 -RealboxSearchPreloadWithSearchStatsBrowserTest.SearchPreloadSuccess
 -RealboxSearchPreloadWithoutSearchStatsBrowserTest.SearchPreloadSuccess
+-RemovePurposeHeaderVariations/NoStatePrefetchPurposeHeaderBrowserTest.PurposeHeaderIsSet/*
 -SafeBrowsingBlockingPageAsyncChecksPrerenderingTest.PostCommitInterstitialReportThreatDetails_DontContainPrerenderingInfo
 -SearchPreloadBrowserTest.*
 -SearchPreloadBrowserTest_ErrorBackoffDuration.*
@@ -720,6 +721,8 @@
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
 -CookieClearOnExitMigrationNoticeBrowserTest.*
 -CookieClearOnExitMigrationNoticePixelTest.*
+-DiceMigrationServiceBrowserTestWithWebApps.NoDialogShown
+-DiceMigrationServiceRestoreFromBackupBrowserTestReMigration.PostRestore
 -DiceMigrationServiceSyncTest.MigrateUser
 -DogfoodOptimizationGuideKeyedServiceBrowserTest.LoggingDisabledByEnterprisePolicy_Dogfood_*
 -EnclaveAuthenticatorBrowserTest.*
@@ -1124,6 +1127,7 @@
 
 # These tests fail because we change the default value for kPromptForDownload to
 # true.
+-All/PDFExtensionTest.SandboxedPdfIframeNavigationDownloads/*
 -WebViewTests/WebViewTest.DownloadCookieIsolation_CrossSession/SiteIsolationForGuestsDisabled
 -WebViewTests/WebViewTest.DownloadCookieIsolation_CrossSession/SiteIsolationForGuestsEnabled
 
@@ -1521,10 +1525,13 @@
 -ExtensionTelemetryServiceBrowserTest.*
 -ExtensionTelemetryServiceBrowserTestWithInterceptRemoteHostsContactedInRendererEnabled.DetectsWebRequestFromContentScript
 -ExtensionTelemetryServiceBrowserTestWithInterceptRemoteHostsContactedInRendererEnabled.InterceptsRemoteHostContactedSignalInRenderer
+-SerpPageLoadMetricsObserverBrowserTest.Serp
 -V4SafeBrowsingServiceTest.NotificationsAcceptedReportSentWithCorrectOrigins
 -V4SafeBrowsingServiceTest.NotificationsAcceptedReportSentWithReferrerChain
 
 # These tests crash because we have kOptimizationHints feature disabled.
+-Aiv4ModelLanguageDetectionTest/Aiv4ModelLanguageDetectionBrowserTest.CheckLanguageDetectionHistogramStatus/*
+-Aiv4ModelTimeoutBrowserTest.PassageEmbedderTestTimeout
 -All/PageContentAnnotationsServiceContentExtractionResponseCodeTest.SameDocumentNonErrorNavigation/*
 -HintsFetcherPre3pcdBrowserTest.HintsFetcherDoesntFetchOnNSP
 -LoadingPredictorExtensionBrowserTest.PrefetchBlockedByExtension
@@ -1546,6 +1553,7 @@
 -NotificationContentDetectionLoggingEnabledBrowserTest.ReportWarnedNotificationAsSpam
 -PageContentAnnotationsService*.*
 -PageInfoBubbleViewAboutThisSiteAllowNonMsbbBrowserTest.AboutThisSiteWithoutOptinAndWithNonMsbbUsers
+-PasswordChangeBrowserTestWithLoginCheck.PasswordChangeStartsUserIsLoggedIn
 -SegmentationPlatformTest.NullModelUpdateForUnknownModelShouldBeNoOp
 -SegmentationPlatformTest.ReceiveModelUpdateFromOptimizationGuide
 -SegmentationPlatformTest.ReceiveNullModelUpdateFromOptimizationGuide
@@ -1655,6 +1663,7 @@
 -IsClipboardPasteAllowedTest.BitmapBlocked
 -IsClipboardPasteAllowedTest.SomeFilesBlocked
 -IsClipboardPasteAllowedTest.TextBlocked
+-ReferrerChainActiveUserEmailBrowserTest.ContentAreaUserProvider/*
 
 # Thread profiler is disabled in Brave.
 -ThreadProfilerBrowserTest.*
@@ -1765,6 +1774,7 @@
 -LensOverlayControllerInnerTextAndApc.*
 -LensOverlayControllerInnerTextEnabledSmallByteLimitTest.*
 -LensOverlayControllerOverlaySearchbox.OverlaySearchboxPageClassificationAndState
+-LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerSplitTab
 
 # This test fails because we don't implement an accent color for titlebars or
 # tabs on Windows
@@ -1819,6 +1829,7 @@
 -BreadcrumbManagerTabHelperSecurityStateBrowserTest.BrokenAuthentication
 
 # These fail because we disable history_clusters::internal::kJourneys.
+-HistoryClustersSidePanelCoordinatorBrowserTest.ShowRespectsManagedPolicy
 -HistoryClustersPolicyTest.HistoryClustersVisible
 -RenameJourneys/HistoryClustersPolicyTest.HistoryClustersVisible/*
 
@@ -2171,7 +2182,7 @@
 -CastToolbarButtonControllerBrowserTest.*
 -ChromeLabsMultipleFeaturesUiTest.InvokeUi_default
 -ChromeLabsUiTest.InvokeUi_default
--CollaborationMessagingObserverBrowserTest.InstantMessageManagesSharingWithClosedGroup
+-CollaborationMessagingObserverBrowserTest.InstantMessageManagesSharingWithClosedGroup/*
 -RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionFocusTab
 -RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionReopenTab
 -SendTabToSelfBubbleTest.BubbleTriggersCorrectlyWhenPinned
@@ -2372,6 +2383,10 @@
 # optimization_guide::PredictionManager
 -LanguageDetectionModelServiceBrowserTest.*
 -PreloadingModelKeyedServiceTest.Score
+
+# This test fails because they hardcode "Incognito" in the expected window
+# title (and we have "Private")
+-WebInstallCurrentDocumentBrowserTest.NotSupportedDialogInIncognito
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
@@ -3082,7 +3097,7 @@
 -WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothPersistentIds
 -WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothPersistentServices
 -WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothScanningIdsNotPersistent
--WebInstallCurrentDocumentBrowserTest.UserAcceptsOpenDialog/*
+-WebInstallCurrentDocumentBrowserTest.UserAcceptsOpenDialog
 -WebNavigationApiBackForwardCacheTest.*
 -WebRtcDesktopCaptureBrowserTest.*
 -WebrtcLoggingPrivateApiBrowserTest.*

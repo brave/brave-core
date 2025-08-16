@@ -11,7 +11,6 @@
 #include "brave/components/permissions/permission_widevine_utils.h"
 #include "chrome/browser/download/download_permission_request.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/permissions/permission_prompt.h"

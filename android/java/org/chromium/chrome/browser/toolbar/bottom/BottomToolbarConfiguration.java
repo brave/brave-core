@@ -13,9 +13,8 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.app.ChromeActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class BottomToolbarConfiguration {
@@ -68,10 +67,7 @@ public class BottomToolbarConfiguration {
     }
 
     public static boolean isToolbarTopAnchored() {
-        return ChromeSharedPreferences.getInstance()
-                .readBoolean(
-                        ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED,
-                        ChromeFeatureList.sAndroidBottomToolbarDefaultToTop.getValue());
+        return AddressBarPreference.isToolbarConfiguredToShowOnTop();
     }
 
     public static boolean isToolbarBottomAnchored() {

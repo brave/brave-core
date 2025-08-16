@@ -7,10 +7,9 @@
 
 // We disable starter pack expansion to hide @gemini search keyword. Piggy back
 // on it to also disable @aimode.
-#define IsStarterPackExpansionEnabled                                    \
-  IsStarterPackExpansionEnabled()) ||                                    \
-  (turl->starter_pack_id() == template_url_starter_pack_data::kAiMode && \
-  !OmniboxFieldTrial::IsStarterPackExpansionEnabled
-
+#define BRAVE_FEATURED_SEARCH_PROVIDER_ADD_FEATURED_KEYWORD_MATCHES         \
+  if (turl->starter_pack_id() == template_url_starter_pack_data::kAiMode && \
+      !OmniboxFieldTrial::IsStarterPackExpansionEnabled())                  \
+    continue;
 #include <components/omnibox/browser/featured_search_provider.cc>
-#undef IsStarterPackExpansionEnabled
+#undef BRAVE_FEATURED_SEARCH_PROVIDER_ADD_FEATURED_KEYWORD_MATCHES

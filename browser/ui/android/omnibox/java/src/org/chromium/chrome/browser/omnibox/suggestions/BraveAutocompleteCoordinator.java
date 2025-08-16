@@ -1,8 +1,8 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved. This Source Code Form is subject to
- * the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with
- * this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 package org.chromium.chrome.browser.omnibox.suggestions;
 
 import android.view.LayoutInflater;
@@ -22,16 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BraveAutocompleteCoordinator {
-    public ViewProvider<SuggestionListViewHolder> createViewProvider(
-            boolean forcePhoneStyleOmnibox) {
+    public ViewProvider<SuggestionListViewHolder> createViewProvider() {
         ViewProvider<SuggestionListViewHolder> provider =
                 (ViewProvider<SuggestionListViewHolder>)
                         BraveReflectionUtil.invokeMethod(
-                                AutocompleteCoordinator.class,
-                                this,
-                                "createViewProvider",
-                                boolean.class,
-                                forcePhoneStyleOmnibox);
+                                AutocompleteCoordinator.class, this, "createViewProvider");
 
         return new ViewProvider<SuggestionListViewHolder>() {
             private List<Callback<SuggestionListViewHolder>> mCallbacks = new ArrayList<>();
@@ -42,11 +37,8 @@ public class BraveAutocompleteCoordinator {
                 provider.whenLoaded(
                         (holder) -> {
                             OmniboxSuggestionsDropdown dropdown = holder.dropdown;
-                            if (dropdown != null
-                                    && dropdown.getAdapter() != null
-                                    && dropdown.getAdapter()
-                                            instanceof OmniboxSuggestionsDropdownAdapter) {
-                                addTypes((OmniboxSuggestionsDropdownAdapter) dropdown.getAdapter());
+                            if (dropdown != null && dropdown.getAdapter() != null) {
+                                addTypes(dropdown.getAdapter());
                                 mHolder = holder;
                                 for (int i = 0; i < mCallbacks.size(); i++) {
                                     mCallbacks.get(i).onResult(holder);
