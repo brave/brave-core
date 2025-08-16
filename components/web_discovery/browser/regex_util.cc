@@ -19,6 +19,7 @@ constexpr char kEmailRegex[] =
 constexpr char kHttpPasswordRegex[] = "[^:]+:[^@]+@";
 constexpr char kEuroLongWordPatternRegex[] = "^[a-zA-ZäöüéÄÖÜ][a-zäöüéß]+$";
 constexpr char kWhitespaceRegex[] = "\\s+";
+constexpr char kISSNRegex[] = "^[0-9]{4}-?[0-9]{3}[0-9xX]$";
 
 constexpr std::array<std::string_view, 10> kPathAndQueryStringCheckRegexes = {
     "(?i)\\/admin([\\/\\?#=]|$)",
@@ -124,6 +125,14 @@ std::string RegexUtil::NormalizeWhitespace(std::string_view str) {
   std::string result(str);
   re2::RE2::GlobalReplace(&result, *whitespace_regex_, " ");
   return result;
+}
+
+bool RegexUtil::FindAndConsumeISSN(re2::StringPiece* input,
+                                   std::string* match) {
+  if (!issn_regex_) {
+    issn_regex_.emplace(kISSNRegex);
+  }
+  return re2::RE2::FindAndConsume(input, *issn_regex_, match);
 }
 
 }  // namespace web_discovery
