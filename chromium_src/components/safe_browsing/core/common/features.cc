@@ -11,7 +11,9 @@
 namespace safe_browsing {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kClientSideDetectionClipboardCopyApi, base::FEATURE_DISABLED_BY_DEFAULT},
     {kGooglePlayProtectInApkTelemetry, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNotificationTelemetry, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace safe_browsing
