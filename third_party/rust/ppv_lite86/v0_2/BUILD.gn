@@ -29,6 +29,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "ppv-lite86"
   cargo_pkg_description =
       "Cross-platform cryptography-oriented low-level SIMD library."
+  cargo_pkg_repository = "https://github.com/cryptocorrosion/cryptocorrosion"
   cargo_pkg_version = "0.2.21"
 
   deps = [ "//brave/third_party/rust/zerocopy/v0_8:lib" ]

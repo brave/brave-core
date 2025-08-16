@@ -26,11 +26,11 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
                          InfoBarContainerView* infobar_container,
                          views::View* contents_container,
                          MultiContentsView* multi_contents_view,
+                         views::View* vertical_tab_strip_container,
                          views::View* left_aligned_side_panel_separator,
                          views::View* unified_side_panel,
                          views::View* right_aligned_side_panel_separator,
                          views::View* side_panel_rounded_corner,
-                         ImmersiveModeController* immersive_mode_controller,
                          views::View* contents_separator);
   ~BraveBrowserViewLayout() override;
 
@@ -59,10 +59,10 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
 
   // BrowserViewLayout:
   void Layout(views::View* host) override;
-  int LayoutTabStripRegion(int top) override;
-  int LayoutBookmarkAndInfoBars(int top, int browser_view_y) override;
-  int LayoutInfoBar(int top) override;
-  void LayoutContentsContainerView(int top, int bottom) override;
+  void LayoutTabStripRegion(gfx::Rect& available_bounds) override;
+  void LayoutBookmarkBar(gfx::Rect& available_bounds) override;
+  void LayoutInfoBar(gfx::Rect& available_bounds) override;
+  void LayoutContentsContainerView(const gfx::Rect& available_bounds) override;
   void UpdateSplitViewInsets() override;
 
  private:

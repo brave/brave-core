@@ -28,6 +28,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "merlin"
   cargo_pkg_description =
       "Composable proof transcripts for public-coin arguments of knowledge"
+  cargo_pkg_repository = "https://github.com/zkcrypto/merlin"
   cargo_pkg_version = "3.0.0"
 
   deps = [

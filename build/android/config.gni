@@ -26,6 +26,7 @@ brave_chrome_java_deps = [
   "//brave/browser/download/android:java",
   "//brave/browser/notifications/android:brave_java",
   "//brave/browser/notifications/android:java",
+  "//brave/browser/password_entry_edit:public_java",
   "//brave/browser/quick_search_engines/android:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
   "//brave/browser/tab_group_sync:java",
@@ -53,12 +54,12 @@ brave_chrome_java_deps = [
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:com_github_bumptech_glide_java",
   "//brave/third_party/android_deps:com_google_android_play_integrity_java",
-  "//brave/third_party/android_deps:com_google_code_gson_gson_java",
   "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar",
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/zxing:zxing_java",
   "//third_party/android_deps:com_android_support_support_annotations_java",
+  "//third_party/android_deps:com_google_code_gson_gson_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",
   "//third_party/android_deps:org_jetbrains_kotlinx_kotlinx_coroutines_android_java",
@@ -76,6 +77,7 @@ brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
   "//brave/browser/download/internal/android:java",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
+  "//brave/browser/password_entry_edit/android/internal:java",
 ]
 
 # To use our overrided enum in java, put the header file of our overrided enum

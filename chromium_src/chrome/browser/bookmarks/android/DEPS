@@ -1,5 +1,3 @@
-specific_include_rules = {
-  "bookmark_bridge\.cc": [
-    "!chrome/utility/importer/bookmark_html_reader.h"
-  ]
-}
+include_rules = [
+  "+components/user_data_importer",
+]

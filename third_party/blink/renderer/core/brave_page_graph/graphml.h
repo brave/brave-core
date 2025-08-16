@@ -20,7 +20,7 @@ namespace brave_page_graph {
 class GraphMLAttr {
  public:
   GraphMLAttr(const GraphMLAttrForType for_value,
-              const String& name,
+              const blink::String& name,
               const GraphMLAttrType type = kGraphMLAttrTypeString);
 
   const GraphMLId& GetGraphMLId() const;
@@ -32,7 +32,7 @@ class GraphMLAttr {
                     std::string_view value) const;
   void AddValueNode(xmlDocPtr doc,
                     xmlNodePtr parent_node,
-                    const String& value) const;
+                    const blink::String& value) const;
   void AddValueNode(xmlDocPtr doc,
                     xmlNodePtr parent_node,
                     const int value) const;
@@ -58,7 +58,7 @@ class GraphMLAttr {
                            const xmlChar* value) const;
 
   const GraphMLAttrForType for_;
-  const String name_;
+  const blink::String name_;
   const GraphMLAttrType type_;
   const GraphMLId graphml_id_;
 };

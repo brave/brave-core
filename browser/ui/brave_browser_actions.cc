@@ -5,11 +5,12 @@
 
 #include "brave/browser/ui/brave_browser_actions.h"
 
+#include "base/types/to_address.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_action_callback.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_key.h"
@@ -30,10 +31,10 @@ actions::ActionItem::ActionItemBuilder SidePanelAction(
     int tooltip_id,
     const gfx::VectorIcon& icon,
     actions::ActionId action_id,
-    Browser* browser,
+    BrowserWindowInterface* bwi,
     bool is_pinnable) {
-  return actions::ActionItem::Builder(CreateToggleSidePanelActionCallback(
-                                          SidePanelEntryKey(id), browser))
+  return actions::ActionItem::Builder(
+             CreateToggleSidePanelActionCallback(SidePanelEntryKey(id), bwi))
       .SetActionId(action_id)
       .SetText(l10n_util::GetStringUTF16(title_id))
       .SetTooltipText(l10n_util::GetStringUTF16(tooltip_id))
@@ -43,14 +44,14 @@ actions::ActionItem::ActionItemBuilder SidePanelAction(
 
 }  // namespace
 
-BraveBrowserActions::BraveBrowserActions(Browser& browser)
-    : BrowserActions(browser) {}
+BraveBrowserActions::BraveBrowserActions(BrowserWindowInterface* bwi)
+    : BrowserActions(bwi) {}
 
 BraveBrowserActions::~BraveBrowserActions() = default;
 
 void BraveBrowserActions::InitializeBrowserActions() {
   BrowserActions::InitializeBrowserActions();
-  Browser* browser = &(browser_.get());
+  BrowserWindowInterface* const bwi = base::to_address(bwi_);
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
@@ -58,17 +59,16 @@ void BraveBrowserActions::InitializeBrowserActions() {
         SidePanelAction(
             SidePanelEntryId::kPlaylist, IDS_SIDEBAR_PLAYLIST_ITEM_TITLE,
             IDS_SIDEBAR_PLAYLIST_ITEM_TITLE, kLeoProductPlaylistIcon,
-            kActionSidePanelShowPlaylist, browser, true)
+            kActionSidePanelShowPlaylist, bwi, true)
             .Build());
   }
 #endif
 
-  Profile* profile = browser_->profile();
-  if (ai_chat::IsAIChatEnabled(profile->GetPrefs())) {
+  if (ai_chat::IsAIChatEnabled(profile_->GetPrefs())) {
     root_action_item_->AddChild(
         SidePanelAction(SidePanelEntryId::kChatUI, IDS_CHAT_UI_TITLE,
                         IDS_CHAT_UI_TITLE, kLeoProductBraveLeoIcon,
-                        kActionSidePanelShowChatUI, browser, false)
+                        kActionSidePanelShowChatUI, bwi, false)
             .Build());
   }
 }

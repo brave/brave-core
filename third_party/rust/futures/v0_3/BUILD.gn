@@ -20,6 +20,7 @@ cargo_crate("lib") {
   edition = "2018"
   cargo_pkg_name = "futures"
   cargo_pkg_description = "An implementation of futures and streams featuring zero allocations, composability, and iterator-like interfaces."
+  cargo_pkg_repository = "https://github.com/rust-lang/futures-rs"
   cargo_pkg_version = "0.3.31"
 
   deps = [

@@ -134,8 +134,10 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     }
 
     private void showScreenLockToast() {
-        Toast.makeText(ContextUtils.getApplicationContext(),
-                     R.string.password_sync_type_set_screen_lock, Toast.LENGTH_LONG)
+        Toast.makeText(
+                        ContextUtils.getApplicationContext(),
+                        R.string.password_sync_type_set_screen_lock,
+                        Toast.LENGTH_LONG)
                 .show();
     }
 

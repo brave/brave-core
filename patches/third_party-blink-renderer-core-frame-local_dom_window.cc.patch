@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/local_dom_window.cc b/third_party/blink/renderer/core/frame/local_dom_window.cc
-index 47d4a455aec76c00d51d11fb2b678b0d4d52b5ca..deb0a0d3761a487becffebed08dbccc2dabf25df 100644
+index 23a95863dc888a9ffb4b09c2b034665ef1186f7c..b9734e0a3e0e95aa1f5bd19cc5e67bae3c93fbfb 100644
 --- a/third_party/blink/renderer/core/frame/local_dom_window.cc
 +++ b/third_party/blink/renderer/core/frame/local_dom_window.cc
-@@ -497,6 +497,7 @@ bool LocalDOMWindow::CanExecuteScripts(
+@@ -513,6 +513,7 @@ bool LocalDOMWindow::CanExecuteScripts(
      return false;
    }
    bool script_enabled = GetFrame()->ScriptEnabled();

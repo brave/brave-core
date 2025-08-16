@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/num_traits/v0_2/BUILD.gn b/third_party/rust/num_traits/v0_2/BUILD.gn
-index fd27af8cfa04dc5538f6fcd9aca3a12e7ab9e8bb..fb3879970149b0344146c8c6bc8fdca8398def4a 100644
+index 00f46bf261ec96b5d1875d65fbac2c817d8e7af6..11e5a927001c2363ff9f031e9415b9d1d4cc86d1 100644
 --- a/third_party/rust/num_traits/v0_2/BUILD.gn
 +++ b/third_party/rust/num_traits/v0_2/BUILD.gn
-@@ -47,7 +47,7 @@ cargo_crate("lib") {
+@@ -48,7 +48,7 @@ cargo_crate("lib") {
    allow_unsafe = true
  
    build_deps = [ "//third_party/rust/autocfg/v1:buildrs_support" ]

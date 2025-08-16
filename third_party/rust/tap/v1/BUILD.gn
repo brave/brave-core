@@ -28,6 +28,7 @@ cargo_crate("lib") {
       "Elliott Linder <elliott.darfink@gmail.com>, myrrlyn <self@myrrlyn.dev>"
   cargo_pkg_name = "tap"
   cargo_pkg_description = "Generic extensions for tapping values in Rust"
+  cargo_pkg_repository = "https://github.com/myrrlyn/tap"
   cargo_pkg_version = "1.0.1"
 
   rustenv = []

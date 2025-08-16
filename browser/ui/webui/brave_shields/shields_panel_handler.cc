@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
+#include "components/prefs/pref_service.h"
 #include "ui/gfx/geometry/vector2d.h"
 
 ShieldsPanelHandler::ShieldsPanelHandler(

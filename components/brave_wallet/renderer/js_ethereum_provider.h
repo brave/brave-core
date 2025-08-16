@@ -29,8 +29,11 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
                                  public content::RenderFrameObserver,
                                  public mojom::EventsListener {
  public:
-  static gin::WrapperInfo kWrapperInfo;
+  static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
+                                                    gin::kEthereumProvider};
 
+  explicit JSEthereumProvider(content::RenderFrame* render_frame);
+  ~JSEthereumProvider() override;
   JSEthereumProvider(const JSEthereumProvider&) = delete;
   JSEthereumProvider& operator=(const JSEthereumProvider&) = delete;
 
@@ -41,7 +44,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
       v8::Isolate* isolate) override;
-  const char* GetTypeName() override;
+  const gin::WrapperInfo* wrapper_info() const override;
 
   // mojom::EventsListener
   void AccountsChangedEvent(const std::vector<std::string>& accounts) override;
@@ -50,12 +53,10 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
                     base::Value result) override;
 
  private:
-  explicit JSEthereumProvider(content::RenderFrame* render_frame);
-  ~JSEthereumProvider() override;
-
   class MetaMask final : public gin::Wrappable<MetaMask> {
    public:
-    static gin::WrapperInfo kWrapperInfo;
+    static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
+                                                      gin::kMetaMask};
 
     explicit MetaMask(content::RenderFrame*);
     ~MetaMask() override;
@@ -65,7 +66,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
     // gin::WrappableBase
     gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
         v8::Isolate* isolate) override;
-    const char* GetTypeName() override;
+    const gin::WrapperInfo* wrapper_info() const override;
     v8::Local<v8::Promise> IsUnlocked(v8::Isolate* isolate);
 
    private:

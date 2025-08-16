@@ -56,12 +56,8 @@
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 
 -keep class org.chromium.chrome.browser.tabmodel.TabGroupModelFilterImpl {
-    *** shouldUseParentIds(...);
+    *** shouldGroupWithParent(...);
     *** isTabModelRestored(...);
-}
-
--keep class org.chromium.chrome.browser.password_manager.settings.ExportFlow {
-    *** runCreateFileOnDiskIntent(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {

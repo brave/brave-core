@@ -12,8 +12,10 @@ import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 
 import {loadTimeData} from '../i18n_setup.js'
-import {RouteObserverMixin, Router} from '../router.js'
+import { Router} from '../router.js'
 import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
+
+import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js';
 
 import {
   DefaultBraveShieldsBrowserProxy,
@@ -21,6 +23,8 @@ import {
 } from './default_brave_shields_browser_proxy.js'
 
 import {getTemplate} from './default_brave_shields_page.html.js'
+
+import '../social_blocking_page/social_blocking_page.js';
 
 interface BraveShieldsPage {
   $: {
@@ -41,7 +45,7 @@ type ControlType = {
 }
 
 const BraveShieldsPageBase =
-  WebUiListenerMixin(I18nMixin(PrefsMixin(RouteObserverMixin(PolymerElement))))
+  WebUiListenerMixin(I18nMixin(PrefsMixin(SettingsViewMixin(PolymerElement))))
 
 /**
  * 'settings-default-brave-shields-page' is the settings page containing brave's
@@ -193,10 +197,13 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       () => { this.onShieldsSettingsChanged_() })
   }
 
-  override currentRouteChanged () {
-    const router = Router.getInstance()
-    this.isAdBlockRoute_ =
-      (router.getCurrentRoute() === router.getRoutes().SHIELDS_ADBLOCK)
+  override getAssociatedControlFor(childViewId: string): HTMLElement {
+    switch (childViewId) {
+      case 'adblock':
+        return this.shadowRoot!.querySelector('#contentFiltersRow')!;
+      default:
+        throw new Error(`Unknown child view id: ${childViewId}`)
+    }
   }
 
   onAdblockPageClick_() {

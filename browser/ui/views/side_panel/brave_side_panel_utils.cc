@@ -91,7 +91,7 @@ void RegisterContextualSidePanel(SidePanelRegistry* registry,
         SidePanelEntry::Key(SidePanelEntry::Id::kChatUI),
         base::BindRepeating(&CreateAIChatSidePanelWebView,
                             Profile::FromBrowserContext(context)->GetWeakPtr()),
-        SidePanelEntry::kSidePanelDefaultContentWidth));
+        /*default_content_width_callback=*/base::NullCallback()));
   }
 }
 

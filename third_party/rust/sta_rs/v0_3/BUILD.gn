@@ -25,6 +25,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "sta-rs"
   cargo_pkg_description =
       "Distributed Secret-Sharing for Threshold Aggregation Reporting"
+  cargo_pkg_repository = "https://github.com/brave/sta-rs"
   cargo_pkg_version = "0.3.2"
 
   deps = [

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
+index 77fec75f06f7ad02840ce764da2ef984cb0f6346..25f94b70597e2b68ee744ec3ccfdfbb53915ea67 100644
+--- a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
++++ b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
+@@ -173,7 +173,7 @@ bool BookmarkBarController::ShouldShowBookmarkBar() const {
+ 
+   // The bookmark bar is only shown if the user has added something to it.
+   if (!has_bookmarks && !has_saved_tab_groups) {
+-    return false;
++    // return false;
+   }
+ 
+   // Prevent the bookmark bar from showing itself when entering fullscreen if

@@ -20,11 +20,6 @@ import org.chromium.chrome.browser.password_manager.settings.ReauthenticationMan
  */
 public class BravePasswordAccessReauthenticationHelper
         extends PasswordAccessReauthenticationHelper {
-    // Both fields below belong to PasswordAccessReauthenticationHelper and required to make
-    // protected with BravePasswordAccessReauthenticationHelperClassAdapter
-    private Callback<Boolean> mCallback;
-    private FragmentManager mFragmentManager;
-
     public BravePasswordAccessReauthenticationHelper(
             Context context, FragmentManager fragmentManager) {
         super(context, fragmentManager);

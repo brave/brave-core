@@ -41,7 +41,7 @@ bool ClickExtensionToggle(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "window.testing.extensionsV2Subpage.getElementById('"
                 "bgkmgpgeempochogfoddiobpbhdfgkdi').click()")
-      .value.is_none();
+      .is_ok();
 }
 
 bool ClickExtensionRemove(content::WebContents* web_contents) {
@@ -49,14 +49,14 @@ bool ClickExtensionRemove(content::WebContents* web_contents) {
                 "window.testing.extensionsV2Subpage.getElementById('"
                 "bgkmgpgeempochogfoddiobpbhdfgkdi').querySelector('#"
                 "bgkmgpgeempochogfoddiobpbhdfgkdi').click()")
-      .value.is_none();
+      .is_ok();
 }
 
 bool IsExtensionToggled(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "window.testing.extensionsV2Subpage.getElementById('"
                 "bgkmgpgeempochogfoddiobpbhdfgkdi').checked")
-      .value.GetBool();
+      .ExtractBool();
 }
 
 bool IsExtensionToggleEnabled(content::WebContents* web_contents) {
@@ -64,7 +64,7 @@ bool IsExtensionToggleEnabled(content::WebContents* web_contents) {
                 "!window.testing.extensionsV2Subpage.getElementById('"
                 "bgkmgpgeempochogfoddiobpbhdfgkdi')."
                 "disabled")
-      .value.GetBool();
+      .ExtractBool();
 }
 
 void NonBlockingDelay(base::TimeDelta delay) {

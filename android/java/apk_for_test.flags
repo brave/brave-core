@@ -49,7 +49,7 @@
     *** mLogoCoordinator;
     *** mInitialTileNum;
     *** mProfile;
-    *** insertSiteSectionView(...);
+    *** initializeSiteSectionView(...);
     *** setSearchProviderTopMargin(...);
     *** setSearchProviderBottomMargin(...);
     *** getLogoMargin(...);
@@ -58,7 +58,6 @@
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
     *** mTileGroup;
     public <init>(...);
-    *** updateTilePlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesMediator {
@@ -73,7 +72,7 @@
     *** mToolbarSupplier;
     *** mBottomSheetController;
     *** mTabStripHeightSupplier;
-    *** updateSearchProviderHasLogo(...);
+    *** updateSearchProvider(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
@@ -84,11 +83,6 @@
     *** mGoogleActivityControls;
     *** mSyncEncryption;
     *** mSyncEverything;
-}
-
--keep class org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper {
-    *** mCallback;
-    *** mFragmentManager;
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
@@ -190,6 +184,10 @@
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabmodel.RedirectTabCreator {
     public <init>(...);
 }
 
@@ -298,14 +296,6 @@
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
     <init>(...);
-}
-
--keep class org.chromium.chrome.browser.password_manager.settings.PasswordSettings {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.password_manager.settings.BravePasswordSettingsBase {
-    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.customtabs.CustomTabAppMenuPropertiesDelegate {
@@ -502,7 +492,7 @@
 
 -keep class org.chromium.chrome.browser.multiwindow.MultiInstanceManagerApi31 {
     *** mInstanceId;
-    moveTabAction(...);
+    moveTabToWindow(...);
     handleMenuOrKeyboardAction(...);
     <init>(...);
 }
@@ -742,6 +732,14 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.settings.BraveFragmentDependencyProvider {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.settings.FragmentDependencyProvider {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.firstrun.BraveFreIntentCreator {
     public <init>(...);
 }
@@ -782,6 +780,10 @@
 
 -keep class org.chromium.chrome.browser.identity_disc.BraveIdentityDiscController {
     public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.password_manager.settings.PasswordsPreference {
+    *** setUpPostDeprecationWarning(...);
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs {
@@ -866,6 +868,11 @@
     *** getToolbarSidePaddingForNtp(...);
 }
 
+-keep class org.chromium.chrome.browser.password_manager.PasswordManagerHelper {
+    *** getForProfile(...);
+    *** sProfileMap;
+}
+
 -keep class org.chromium.chrome.browser.notifications.NotificationPlatformBridge {
     *** dispatchNotificationEvent(...);
     *** prepareNotificationBuilder(...);
@@ -911,7 +918,6 @@
     *** mToolbarCoordinator;
     *** mTabController;
     *** mMinimizationManagerHolder;
-    *** mCustomTabFeatureOverridesManager;
     *** getAppHeaderCoordinator(...);
     *** getBrowserServicesThemeColorProvider(...);
     public <init>(...);

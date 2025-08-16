@@ -212,13 +212,18 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
                        SettingCustomTabTitle_LiveTabShouldHaveExtraData) {
-  ASSERT_TRUE(browser()->live_tab_context()->GetExtraDataForTab(0).empty());
+  ASSERT_TRUE(browser()
+                  ->GetFeatures()
+                  .live_tab_context()
+                  ->GetExtraDataForTab(0)
+                  .empty());
 
   BraveTabStripModel* tab_strip_model =
       static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
   tab_strip_model->SetCustomTitleForTab(0, u"Custom Title");
 
-  auto extra_data = browser()->live_tab_context()->GetExtraDataForTab(0);
+  auto extra_data =
+      browser()->GetFeatures().live_tab_context()->GetExtraDataForTab(0);
 
   auto custom_tab_it = extra_data.find(tabs::kBraveTabCustomTitleExtraDataKey);
   ASSERT_NE(custom_tab_it, extra_data.end());
