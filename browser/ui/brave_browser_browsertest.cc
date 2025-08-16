@@ -245,7 +245,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BookmarkBarOnNTPTest) {
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   // Check Bookmark bar is hidden by default for non NTP.
-  EXPECT_FALSE(IsShowingNTP_ChromiumImpl(contents));
+  EXPECT_FALSE(NewTabUI::IsNewTab(contents->GetLastCommittedURL()));
   EXPECT_EQ(BookmarkBar::HIDDEN,
             BookmarkBarController::From(browser())->bookmark_bar_state());
 
@@ -255,7 +255,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BookmarkBarOnNTPTest) {
   // Loading NTP.
   EXPECT_TRUE(
       content::NavigateToURL(contents, GURL(chrome::kChromeUINewTabURL)));
-  EXPECT_TRUE(IsShowingNTP_ChromiumImpl(contents));
+  EXPECT_TRUE(NewTabUI::IsNewTab(contents->GetLastCommittedURL()));
 
   // Check bookmark bar on NTP is shown even if bookmark bar is empty.
   EXPECT_EQ(BookmarkBar::SHOW,
@@ -292,7 +292,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BookmarkBarOnNTPTestIncognito) {
   auto* contents = incognito->tab_strip_model()->GetActiveWebContents();
 
   // Check Bookmark bar is hidden by default for non NTP.
-  EXPECT_FALSE(IsShowingNTP_ChromiumImpl(contents));
+  EXPECT_FALSE(NewTabUI::IsNewTab(contents->GetLastCommittedURL()));
   EXPECT_EQ(BookmarkBar::HIDDEN,
             BookmarkBarController::From(incognito)->bookmark_bar_state());
 
@@ -302,7 +302,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BookmarkBarOnNTPTestIncognito) {
   // Loading NTP.
   EXPECT_TRUE(
       content::NavigateToURL(contents, GURL(chrome::kChromeUINewTabURL)));
-  EXPECT_TRUE(IsShowingNTP_ChromiumImpl(contents));
+  EXPECT_TRUE(NewTabUI::IsNewTab(contents->GetLastCommittedURL()));
 
   // Check bookmark bar on NTP is shown even if bookmark bar is empty.
   EXPECT_EQ(BookmarkBar::SHOW,
