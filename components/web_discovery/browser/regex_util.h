@@ -35,6 +35,7 @@ class RegexUtil {
   bool CheckQueryStringOrRefKeywords(std::string_view str);
   bool CheckQueryHTTPCredentials(std::string_view str);
   bool CheckForEuroLongWord(std::string_view str);
+  bool FindAndConsumeISSN(re2::StringPiece* input, std::string* match);
   std::string NormalizeWhitespace(std::string_view str);
 
  private:
@@ -50,6 +51,7 @@ class RegexUtil {
   std::optional<re2::RE2> non_alphanumeric_regex_;
   std::optional<re2::RE2> long_word_regex_;
   std::optional<re2::RE2> whitespace_regex_;
+  std::optional<re2::RE2> issn_regex_;
 };
 
 }  // namespace web_discovery
