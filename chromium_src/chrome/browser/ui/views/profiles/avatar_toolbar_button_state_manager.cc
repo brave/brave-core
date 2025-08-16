@@ -26,6 +26,10 @@ std::unique_ptr<StateProvider> CreateBraveStateProvider(
 // Tor, Incognito, and Guest profiles to show different icons for these. So
 // in these cases, we use Brave-specific state providers and do not add any
 // other state providers.
+// Note that in these cases, we don't add any other state providers than the
+// Brave-specific ones. This is because we don't show any other state in those
+// profiles. i.e., we don't have special avatar button for "signed-in", "sync
+// error", and etc for these profiles.
 #define IsRegularProfile()                                                 \
   IsTor() || profile->IsIncognitoProfile() || profile->IsGuestSession()) { \
     states_[ButtonState::kNormal] =                                        \
