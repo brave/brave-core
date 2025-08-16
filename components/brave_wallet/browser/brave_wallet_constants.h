@@ -1766,6 +1766,7 @@ inline constexpr char kEthereumPrefKey[] = "ethereum";
 inline constexpr char kFilecoinPrefKey[] = "filecoin";
 inline constexpr char kSolanaPrefKey[] = "solana";
 inline constexpr char kCardanoPrefKey[] = "cardano";
+inline constexpr char kECashPrefKey[] = "ecash";
 
 inline constexpr char kEthereumBlockTagEarliest[] = "earliest";
 inline constexpr char kEthereumBlockTagLatest[] = "latest";
