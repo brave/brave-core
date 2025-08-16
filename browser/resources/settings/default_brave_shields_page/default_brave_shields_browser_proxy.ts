@@ -26,9 +26,15 @@ export interface DefaultBraveShieldsBrowserProxy {
   getFingerprintingBlockEnabled: () => Promise<boolean>
   setFingerprintingBlockEnabled: (value: boolean) => void
 
+  getAdBlockOnlyModeEnabled: () => Promise<boolean>
+  setAdBlockOnlyModeEnabled: (value: boolean) => void
+
+  getAdBlockOnlyModeSupported: () => Promise<boolean>
+
   getHttpsUpgradeControlType: () => Promise<string>
   setHttpsUpgradeControlType: (value: string) => void
 
+  getNoScriptControlType: () => Promise<boolean>
   setNoScriptControlType: (value: boolean) => void
 
   getForgetFirstPartyStorageEnabled: () => Promise<boolean>
@@ -38,6 +44,15 @@ export interface DefaultBraveShieldsBrowserProxy {
   getContactInfo: () => Promise<ContactInfo>
 
   getHideBlockAllCookieTogle: () => Promise<boolean>
+
+  getDeAmpEnabled: () => Promise<boolean>
+  setDeAmpEnabled: (value: boolean) => void
+
+  getDebounceEnabled: () => Promise<boolean>
+  setDebounceEnabled: (value: boolean) => void
+
+  getReduceLanguageEnabled: () => Promise<boolean>
+  setReduceLanguageEnabled: (value: boolean) => void
 }
 
 export class DefaultBraveShieldsBrowserProxyImpl
@@ -82,12 +97,28 @@ implements DefaultBraveShieldsBrowserProxy {
     chrome.send('setFingerprintingBlockEnabled', [value])
   }
 
+  getAdBlockOnlyModeEnabled () {
+    return sendWithPromise('getAdBlockOnlyModeEnabled')
+  }
+
+  setAdBlockOnlyModeEnabled (value: boolean) {
+    chrome.send('setAdBlockOnlyModeEnabled', [value])
+  }
+
+  getAdBlockOnlyModeSupported () {
+    return sendWithPromise('getAdBlockOnlyModeSupported')
+  }
+
   getHttpsUpgradeControlType () {
     return sendWithPromise('getHttpsUpgradeControlType')
   }
 
   setHttpsUpgradeControlType (value: string) {
     chrome.send('setHttpsUpgradeControlType', [value])
+  }
+
+  getNoScriptControlType () {
+    return sendWithPromise('getNoScriptControlType')
   }
 
   setNoScriptControlType (value: boolean) {
@@ -112,6 +143,30 @@ implements DefaultBraveShieldsBrowserProxy {
 
   getHideBlockAllCookieTogle () {
     return sendWithPromise('getHideBlockAllCookieTogle')
+  }
+
+  getDeAmpEnabled () {
+    return sendWithPromise('getDeAmpEnabled')
+  }
+
+  setDeAmpEnabled (value: boolean) {
+    chrome.send('setDeAmpEnabled', [value])
+  }
+
+  getDebounceEnabled () {
+    return sendWithPromise('getDebounceEnabled')
+  }
+
+  setDebounceEnabled (value: boolean) {
+    chrome.send('setDebounceEnabled', [value])
+  }
+
+  getReduceLanguageEnabled () {
+    return sendWithPromise('getReduceLanguageEnabled')
+  }
+
+  setReduceLanguageEnabled (value: boolean) {
+    chrome.send('setReduceLanguageEnabled', [value])
   }
 
   static getInstance(): DefaultBraveShieldsBrowserProxy {

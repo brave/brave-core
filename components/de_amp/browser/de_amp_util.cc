@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -41,9 +42,10 @@ RE2::Options InitRegexOptions() {
 
 }  // namespace
 
-bool IsDeAmpEnabled(PrefService* prefs) {
+bool IsDeAmpEnabled(PrefService* prefs, HostContentSettingsMap* map) {
   return base::FeatureList::IsEnabled(features::kBraveDeAMP) &&
-         prefs->GetBoolean(de_amp::kDeAmpPrefEnabled);
+         prefs->GetBoolean(de_amp::kDeAmpPrefEnabled) &&
+         !brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(prefs);
 }
 
 bool VerifyCanonicalAmpUrl(const GURL& canonical_link,

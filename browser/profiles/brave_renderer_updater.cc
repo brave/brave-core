@@ -21,6 +21,7 @@
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/features.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_process_host.h"
@@ -229,7 +230,10 @@ void BraveRendererUpdater::UpdateRenderer(
       is_wallet_allowed_for_context_;
 
   PrefService* pref_service = profile_->GetPrefs();
-  bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(profile_);
+  bool de_amp_enabled =
+      de_amp::IsDeAmpEnabled(pref_service, host_content_settings_map);
   bool onion_only_in_tor_windows = true;
 #if BUILDFLAG(ENABLE_TOR)
   onion_only_in_tor_windows =

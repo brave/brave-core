@@ -62,12 +62,19 @@ class AdBlockComponentServiceManager
 
   void UpdateFilterLists(base::OnceCallback<void(bool)> callback);
 
+  void SetAdBlockOnlyModeGloballyDefaulted(bool enabled);
+  bool GetAdBlockOnlyModeGloballyDefaulted() const;
+  bool GetAdBlockOnlyModeSupported() const;
+
   // AdBlockFilterListCatalogProvider::Observer
   void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
 
  private:
   friend class ::AdBlockServiceTest;
+  void OnAdBlockOnlyModePrefChanged();
+
   void StartRegionalServices();
+  void LoadComponentFiltersProviders();
   void UpdateFilterListPrefs(const std::string& uuid, bool enabled);
 
   void RecordP3ACookieListEnabled();

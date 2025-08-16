@@ -318,6 +318,7 @@ source_set("ui") {
       "//brave/components/brave_account/mojom",
       "//brave/components/brave_wayback_machine/buildflags",
       "//brave/components/constants",
+      "//brave/components/de_amp/browser",
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:mojom",
       "//brave/components/misc_metrics",

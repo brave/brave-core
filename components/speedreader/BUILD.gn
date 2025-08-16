@@ -75,6 +75,7 @@ source_set("unit_tests") {
     ":speedreader",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/constants",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",

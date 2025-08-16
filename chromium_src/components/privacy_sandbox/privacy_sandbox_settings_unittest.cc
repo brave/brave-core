@@ -7,6 +7,7 @@
 
 #include "base/json/values_util.h"
 #include "base/test/gtest_util.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/privacy_sandbox/brave_privacy_sandbox_settings.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -134,6 +135,7 @@ class PrivacySandboxSettingsTest : public testing::Test {
     content_settings::CookieSettings::RegisterProfilePrefs(prefs()->registry());
     HostContentSettingsMap::RegisterProfilePrefs(prefs()->registry());
     privacy_sandbox::RegisterProfilePrefs(prefs()->registry());
+    brave_shields::RegisterProfilePrefs(prefs()->registry());
 
     host_content_settings_map_ = new HostContentSettingsMap(
         &prefs_, false /* is_off_the_record */, false /* store_last_modified */,

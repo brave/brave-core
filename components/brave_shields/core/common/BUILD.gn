@@ -12,6 +12,7 @@ static_library("common") {
     "brave_shield_utils.h",
     "features.cc",
     "features.h",
+    "pref_names.cc",
     "pref_names.h",
   ]
 
@@ -25,6 +26,7 @@ static_library("common") {
     "//base",
     "//brave/components/webcompat/core/common",
     "//components/content_settings/core/common",
+    "//components/pref_registry",
     "//components/prefs",
     "//net",
     "//ui/base",

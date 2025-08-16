@@ -14,7 +14,9 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/body_sniffer",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/de_amp/common",
+    "//components/content_settings/core/browser",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",

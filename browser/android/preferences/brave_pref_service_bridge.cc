@@ -86,9 +86,12 @@ void JNI_BravePrefServiceBridge_SetCookiesBlockType(
 
 base::android::ScopedJavaLocalRef<jstring>
 JNI_BravePrefServiceBridge_GetCookiesBlockType(JNIEnv* env) {
+  Profile* profile = GetOriginalProfile();
+  CHECK(profile);
   brave_shields::ControlType control_type = brave_shields::GetCookieControlType(
-      HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-      CookieSettingsFactory::GetForProfile(GetOriginalProfile()).get(), GURL());
+      HostContentSettingsMapFactory::GetForProfile(profile),
+      CookieSettingsFactory::GetForProfile(profile).get(), GURL(),
+      profile->GetPrefs());
   return base::android::ConvertUTF8ToJavaString(
       env, brave_shields::ControlTypeToString(control_type));
 }

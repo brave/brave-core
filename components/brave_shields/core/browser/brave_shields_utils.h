@@ -72,7 +72,9 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
 
-bool IsReduceLanguageEnabledForProfile(PrefService* pref_service);
+bool IsReduceLanguageEnabledForProfile(HostContentSettingsMap* map,
+                                       const GURL& url,
+                                       PrefService* pref_service);
 
 bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
                             const GURL& url,
@@ -89,7 +91,8 @@ void SetCookieControlType(HostContentSettingsMap* map,
 ControlType GetCookieControlType(
     HostContentSettingsMap* map,
     content_settings::CookieSettings* cookie_settings,
-    const GURL& url);
+    const GURL& url,
+    PrefService* pref_service);
 
 void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   ControlType type,

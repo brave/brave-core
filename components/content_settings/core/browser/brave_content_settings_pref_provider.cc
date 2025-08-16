@@ -22,7 +22,10 @@
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/content_settings/core/browser/ad_block_only_mode_content_settings_utils.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
@@ -41,6 +44,7 @@
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "url/gurl.h"
 
 namespace content_settings {
 
@@ -115,11 +119,18 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
       kGoogleLoginControlType,
       base::BindRepeating(&BravePrefProvider::OnCookiePrefsChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled,
+      base::BindRepeating(&BravePrefProvider::OnAdBlockOnlyModeChanged,
+                          base::Unretained(this)));
 
   MigrateShieldsSettings(off_the_record_);
   MigrateFingerprintingSetingsToOriginScoped();
 
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
+
+  FillAdBlockOnlyModeRules(ad_block_only_mode_rules_);
+  OnAdBlockOnlyModeChanged();
 
   // Enable change notifications after initial setup to avoid notification spam
   initialized_ = true;
@@ -635,10 +646,19 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
                                          constraints, partition_key);
 }
 
+bool BravePrefProvider::IsAdBlockOnlyModeEnabled() const {
+  return ad_block_only_mode_enabled_.load(std::memory_order_relaxed);
+}
+
 std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
     ContentSettingsType content_type,
     bool incognito,
     const PartitionKey& partition_key) const {
+  if (IsAdBlockOnlyModeContentSettingsType(content_type, incognito) &&
+      IsAdBlockOnlyModeEnabled()) {
+    return ad_block_only_mode_rules_.GetRuleIterator(content_type);
+  }
+
   if (content_type == ContentSettingsType::COOKIES) {
     const auto& rules = cookie_rules_.at(incognito);
     return rules.GetRuleIterator(content_type);
@@ -653,6 +673,13 @@ std::unique_ptr<Rule> BravePrefProvider::GetRule(
     ContentSettingsType content_type,
     bool off_the_record,
     const PartitionKey& partition_key) const {
+  if (IsAdBlockOnlyModeContentSettingsType(content_type, off_the_record) &&
+      IsAdBlockOnlyModeEnabled()) {
+    base::AutoLock auto_lock(ad_block_only_mode_rules_.GetLock());
+    return ad_block_only_mode_rules_.GetRule(primary_url, secondary_url,
+                                             content_type);
+  }
+
   if (content_type == ContentSettingsType::COOKIES) {
     const auto& rules = cookie_rules_.at(off_the_record);
     base::AutoLock auto_lock(rules.GetLock());
@@ -922,6 +949,14 @@ void BravePrefProvider::NotifyChanges(
 
 void BravePrefProvider::OnCookiePrefsChanged(const std::string& pref) {
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
+}
+
+void BravePrefProvider::OnAdBlockOnlyModeChanged() {
+  const bool ad_block_only_mode_enabled =
+      brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(prefs_);
+  ad_block_only_mode_enabled_.store(ad_block_only_mode_enabled,
+                                    std::memory_order_relaxed);
 }
 
 void BravePrefProvider::OnCookieSettingsChanged(

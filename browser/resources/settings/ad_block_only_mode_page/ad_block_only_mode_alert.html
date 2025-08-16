@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="chrome://resources/brave/leo/css/variables.css">
+<style include="settings-shared md-select">
+  .shields-options-disabled-container {
+    padding-bottom: var(--leo-spacing-xl);
+  }
+  .shields-options-disabled-container leo-alert {
+    padding-top: var(--leo-spacing-m);
+  }
+  .shields-options-disabled-alert-title {
+    font: var(--leo-font-heading-h4);
+  }
+  .shields-options-disabled-alert-content {
+    font: var(--leo-font-default-regular);
+  }
+  .shields-options-disabled-alert-button {
+    padding-top: var(--leo-spacing-xl);
+  }
+  .md-select:disabled {
+    background-color: var(--leo-color-container-disabled) !important;
+  }
+</style>
+
+<template is="dom-if" if="[[prefs.brave.ad_block.adblock_only_mode_enabled.value]]">
+  <div class="shields-options-disabled-container">
+    <leo-alert type="info" hideIcon="true" has-actions="false">
+      <div class="shields-options-disabled-alert-title">$i18n{adBlockOnlyModeAlertTitle}</div>
+      <div class="shields-options-disabled-alert-content">$i18n{adBlockOnlyModeAlertDesc}</div>
+      <leo-button on-click="onTurnOffAdBlockOnlyMode_" class="shields-options-disabled-alert-button">$i18n{adBlockOnlyModeAlertTurnOffButton}</leo-button>
+    </leo-alert>
+  </div>
+</template>

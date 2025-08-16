@@ -139,7 +139,7 @@ TEST_F(BraveShieldsUtilProfilesTest, SetCookieControlType) {
   auto get = [this](HostContentSettingsMap* map) {
     return GetCookieControlType(
         map, CookieSettingsFactory::GetForProfile(regular_profile()).get(),
-        kTestUrl);
+        kTestUrl, regular_profile()->GetPrefs());
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));

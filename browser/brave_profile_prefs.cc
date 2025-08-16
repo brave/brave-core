@@ -142,6 +142,9 @@ namespace brave {
 
 namespace {
 
+// Added 2025-08
+constexpr char kNoScriptControlType[] = "brave.no_script_default";
+
 void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(IS_ANDROID)
   // Clear default popular sites
@@ -326,6 +329,9 @@ void RegisterProfilePrefsForMigration(
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::RegisterProfilePrefsForMigration(registry);
 #endif
+
+  // Added 2025-08
+  registry->RegisterBooleanPref(kNoScriptControlType, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -349,6 +355,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
+  brave_shields::RegisterProfilePrefs(registry);
+
   brave_news::prefs::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
@@ -358,7 +366,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kAskEnableWidvine, true);
 
   // Default Brave shields
-  registry->RegisterBooleanPref(kNoScriptControlType, false);
   registry->RegisterBooleanPref(kAdControlType, true);
   registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled, false);
 
@@ -369,14 +376,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(kShieldsStatsBadgeVisible, true);
   registry->RegisterBooleanPref(kGoogleLoginControlType, true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kFBEmbedControlType,
-                                true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kTwitterEmbedControlType,
-                                true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
-                                false);
-  registry->RegisterBooleanPref(brave_shields::prefs::kAdBlockDeveloperMode,
-                                false);
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);

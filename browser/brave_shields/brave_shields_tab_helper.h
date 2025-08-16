@@ -23,6 +23,7 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "url/gurl.h"
 
 using brave_shields::mojom::AdBlockMode;
 using brave_shields::mojom::CookieBlockMode;
@@ -48,6 +49,8 @@ class BraveShieldsTabHelper
     virtual void OnResourcesChanged() = 0;
     virtual void OnFaviconUpdated() {}
     virtual void OnShieldsEnabledChanged() {}
+    virtual void OnShieldsAdBlockOnlyModeEnabledChanged() {}
+    virtual void OnAfterRepeatedReloads() {}
   };
 
   void HandleItemBlocked(const std::string& block_type,
@@ -65,13 +68,18 @@ class BraveShieldsTabHelper
   std::vector<GURL> GetFingerprintsList();
   bool GetBraveShieldsEnabled();
   void SetBraveShieldsEnabled(bool is_enabled);
-  GURL GetCurrentSiteURL();
+  bool GetBraveShieldsAdBlockOnlyModeEnabled();
+  void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
+  bool GetShowShieldsDisabledAdBlockOnlyModePrompt();
+  void SetBraveShieldsAdBlockOnlyModePromptDismissed();
+  GURL GetCurrentSiteURL() const;
   GURL GetFaviconURL(bool refresh);
   const base::flat_set<ContentSettingsType>& GetInvokedWebcompatFeatures();
 
   AdBlockMode GetAdBlockMode();
   FingerprintMode GetFingerprintMode();
   CookieBlockMode GetCookieBlockMode();
+  bool GetReduceLanguageEnabled() const;
   bool IsBraveShieldsManaged();
   bool IsForgetFirstPartyStorageFeatureEnabled() const;
   HttpsUpgradeMode GetHttpsUpgradeMode();
@@ -96,6 +104,11 @@ class BraveShieldsTabHelper
  private:
   friend class content::WebContentsUserData<BraveShieldsTabHelper>;
 
+  struct AfterRepeatedReloadsInfo {
+    base::Time initial_reload_at;
+    size_t reloads_count = 0;
+  };
+
   explicit BraveShieldsTabHelper(content::WebContents* web_contents);
 
   // content::WebContentsObserver
@@ -117,6 +130,12 @@ class BraveShieldsTabHelper
                         const gfx::Image& image) override;
 
   void ReloadWebContents();
+  void MaybeNotifyAfterRepeatedReloads(
+      content::NavigationHandle* navigation_handle);
+
+  bool ignore_force_reload_web_contents_ = false;
+  std::optional<AfterRepeatedReloadsInfo> repeated_reloads_counter_;
+  GURL last_navigated_url_;
 
   base::ObserverList<Observer> observer_list_;
   std::set<GURL> resource_list_blocked_ads_;

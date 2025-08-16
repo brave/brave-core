@@ -15,6 +15,7 @@
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/user_prefs/user_prefs.h"
+#include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/browser_state.h"
@@ -63,7 +64,9 @@ std::unique_ptr<KeyedService> DebounceServiceFactory::BuildServiceInstanceFor(
   std::unique_ptr<debounce::DebounceService> service =
       std::make_unique<debounce::DebounceService>(
           braveContext->debounce_component_installer(),
-          user_prefs::UserPrefs::Get(context));
+          user_prefs::UserPrefs::Get(context),
+          ios::HostContentSettingsMapFactory::GetForProfile(
+              ProfileIOS::FromBrowserState(context)));
 
   return service;
 }
