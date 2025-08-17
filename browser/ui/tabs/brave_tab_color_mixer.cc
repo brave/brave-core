@@ -38,8 +38,8 @@ SkColor GetActiveVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
   color_utils::HSL hsl;
   color_utils::SkColorToHSL(*key.user_color, &hsl);
 
-  hsl.s = 0.6;  // A little more saturation as default color is grayish.
-  hsl.l = 0.485;  // Leave lightness unchanged.
+  hsl.s = 0.6;    // A little more saturation as default color is grayish.
+  hsl.l = 0.485;  // A little bit darker
 
   return color_utils::HSLShift(default_color, hsl);
 }
