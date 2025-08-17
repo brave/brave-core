@@ -12,13 +12,9 @@
 
 #include "base/containers/span.h"
 #include "base/feature_list.h"
-<<<<<<< HEAD
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_window.h"
-    =======
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-    >>>>>>> 09fc26924b3 (Implement BuildTreeTabs() and FlattenTreeTabs())
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
@@ -35,10 +31,10 @@
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
 
-    BraveTabStripModel::BraveTabStripModel(
-        TabStripModelDelegate* delegate,
-        Profile* profile,
-        TabGroupModelFactory* group_model_factory)
+BraveTabStripModel::BraveTabStripModel(
+    TabStripModelDelegate* delegate,
+    Profile* profile,
+    TabGroupModelFactory* group_model_factory)
     : TabStripModel(delegate, profile, group_model_factory) {
   if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab) &&
       delegate->IsNormalWindow()) {
