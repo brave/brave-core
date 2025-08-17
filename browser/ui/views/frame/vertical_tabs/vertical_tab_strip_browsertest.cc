@@ -779,12 +779,16 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
   AddTabToExistingGroup(browser(), 3, group);
 
   browser()->tab_strip_model()->SetTabPinned(1, true);
+  browser_view()->tabstrip()->StopAnimating(true);
   EXPECT_EQ(GetTabStrip(browser())->tab_at(0)->group(), std::nullopt);
 
   browser()->tab_strip_model()->SetTabPinned(2, true);
+  browser_view()->tabstrip()->StopAnimating(true);
   EXPECT_EQ(GetTabStrip(browser())->tab_at(1)->group(), std::nullopt);
 
+  ASSERT_TRUE(GetTabStrip(browser())->tab_at(2)->group().has_value());
   EXPECT_EQ(GetTabStrip(browser())->tab_at(2)->group().value(), group);
+  ASSERT_TRUE(GetTabStrip(browser())->tab_at(3)->group().has_value());
   EXPECT_EQ(GetTabStrip(browser())->tab_at(3)->group().value(), group);
 }
 
