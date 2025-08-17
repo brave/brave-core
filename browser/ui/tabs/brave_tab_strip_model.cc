@@ -31,10 +31,10 @@
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
 
-    BraveTabStripModel::BraveTabStripModel(
-        TabStripModelDelegate* delegate,
-        Profile* profile,
-        TabGroupModelFactory* group_model_factory)
+BraveTabStripModel::BraveTabStripModel(
+    TabStripModelDelegate* delegate,
+    Profile* profile,
+    TabGroupModelFactory* group_model_factory)
     : TabStripModel(delegate, profile, group_model_factory) {
   if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab) &&
       delegate->IsNormalWindow()) {
