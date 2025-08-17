@@ -6,16 +6,45 @@
 #include "brave/browser/ui/tabs/brave_tab_color_mixer.h"
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
+#include "base/logging.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/ui/color/nala/nala_color_id.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_mixer.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_provider_key.h"
 #include "ui/color/color_recipe.h"
 #include "ui/color/color_transform.h"
+#include "ui/gfx/color_utils.h"
 
 namespace tabs {
+
+namespace {
+
+SkColor GetActiveVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
+                                            SkColor input,
+                                            const ui::ColorMixer& mixer) {
+  const auto default_color =
+      mixer.GetResultColor(nala::kColorDesktopbrowserTabbarActiveTabVertical);
+  if (!key.user_color.has_value()) {
+    return default_color;
+  }
+
+  // Extract Hue of tab foreground color and apply Saturation and Lightness for
+  // vertical tabs.
+  color_utils::HSL hsl;
+  color_utils::SkColorToHSL(*key.user_color, &hsl);
+
+  hsl.s = 0.7;  // A little more saturation as default color is grayish.
+  hsl.l = 0.5;  // Leave lightness unchanged.
+
+  return color_utils::HSLShift(default_color, hsl);
+}
+
+}  // namespace
 
 void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
                                 const ui::ColorProviderKey& key) {
@@ -44,7 +73,7 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
     mixer[kColorBraveSplitViewTileDivider] = {
         nala::kColorDesktopbrowserTabbarSplitViewDivider};
     mixer[kColorBraveVerticalTabActiveBackground] = {
-        nala::kColorDesktopbrowserTabbarActiveTabVertical};
+        base::BindRepeating(&GetActiveVerticalTabBackgroundColor, key)};
     mixer[kColorBraveVerticalTabHoveredBackground] = {
         nala::kColorDesktopbrowserTabbarHoverTabVertical};
   }
