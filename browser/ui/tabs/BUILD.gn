@@ -43,7 +43,10 @@ if (!is_android) {
       "brave_tab_strip_model.h",
     ]
 
-    deps = [ "//chrome/browser/ui/tabs:tab_strip" ]
+    deps = [
+      "//brave/browser/ui:brave_tab_features",
+      "//chrome/browser/ui/tabs:tab_strip",
+    ]
   }
 }
 
