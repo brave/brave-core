@@ -614,6 +614,13 @@ inline constexpr char kChromeRootStoreSettingsHelpCenterURL[] =
     "chrome_root_store/root_store.md";
 #endif
 
+#if BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
+// TODO(crbug.com/436926181): Make sure the URL is not a dead link.
+// "Learn more" URL for how to save PDF to Google Drive from the PDF viewer.
+inline constexpr char kPdfViewerSaveToDriveHelpCenterURL[] =
+    "https://support.brave.app/";
+#endif
+
 }  // namespace chrome
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_COMMON_URL_CONSTANTS_H_
