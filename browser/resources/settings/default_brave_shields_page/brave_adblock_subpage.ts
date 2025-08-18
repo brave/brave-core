@@ -135,11 +135,6 @@ class AdBlockSubpage extends AdBlockSubpageBase {
       (customFilters.trim().length > 0 || devMode)
   }
 
-  private handleSciptletsChanged_(e: CustomEvent) {
-    const value = e.detail.value as Scriptlet[]
-    this.customScriptlets_ = value
-  }
-
   private handleShowList_() {
     if (!this.hasListExpanded_) {
       this.hasListExpanded_ = true
