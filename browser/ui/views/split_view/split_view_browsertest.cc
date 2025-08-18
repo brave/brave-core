@@ -150,7 +150,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
   chrome::PinTab(browser());
 
-  tab_strip()->StopAnimating(/* layout= */ true);
+  tab_strip()->StopAnimating();
   auto* widget_delegate_view =
       brave_browser_view()->vertical_tab_strip_widget_delegate_view();
   ASSERT_TRUE(widget_delegate_view);
