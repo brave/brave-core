@@ -304,6 +304,7 @@ struct TabGridView: View {
               isShredAnimationVisible = false
               activeShredMode = nil
               editMode = .inactive
+              selectedTabs = []
             }
             if dismissAfterShred {
               dismiss()
@@ -508,6 +509,7 @@ struct TabGridView: View {
       Spacer()
       Button {
         withAnimation {
+          selectedTabs = []
           editMode = .inactive
         }
       } label: {
@@ -536,6 +538,7 @@ struct TabGridView: View {
           let dismissAfterClose = selectedTabs.count == viewModel.tabs.count
           editMode = .inactive
           viewModel.closeTabs(selectedTabs)
+          selectedTabs = []
           if dismissAfterClose {
             dismiss()
           }
