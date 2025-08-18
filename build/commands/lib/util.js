@@ -650,23 +650,27 @@ const util = {
     // block.
     let buildStats = ''
 
+    // Parse output to display the build status and exact failure location.
     if (config.isTeamcity) {
-      // Parse output to display the build status and exact failure location.
-      let hasError = false
+      // Teamcity error lines limit to display on the Overview page is 1000.
+      // Left 50 lines for other possible build output (python, node, etc.).
+      const maxErrorLines = 950
+      let printedErrorLines = 0
       let lastStatusTime = Date.now()
       options.onStdOutLine = (line) => {
-        if (!hasError && line.startsWith('FAILED: ')) {
-          hasError = true
-        }
-        if (hasError) {
+        if (
+          (printedErrorLines > 0 || line.startsWith('FAILED: '))
+          && printedErrorLines < maxErrorLines
+        ) {
           Log.error(line)
+          printedErrorLines++
         } else if (buildStats || /^(RBE Stats:|metric\s+count|build finished)\s+/.test(line)) {
           buildStats += line + '\n'
         } else {
           console.log(line)
           if (Date.now() - lastStatusTime > 5000) {
-            // Extract the status message from the ninja output.
-            const match = line.match(/^\[\d+ processes, (.+?) : .+?\s\]/)
+            // Extract the status message from the siso output.
+            const match = line.match(/^\[(.+?)\]/)
             if (match) {
               lastStatusTime = Date.now()
               Log.status(`build ${targets} ${match[1]}`)
