@@ -42,7 +42,6 @@ base::span<const base::cstring_view> GetBravePersistentPrefNames() {
       brave_tabs::kVerticalTabsOnRight,
       brave_tabs::kVerticalTabsShowScrollbar,
       brave_tabs::kSharedPinnedTab,
-      color::prefs::kBraveDarkerMode,
 #endif
 #if defined(TOOLKIT_VIEWS)
       sidebar::kSidePanelWidth,
