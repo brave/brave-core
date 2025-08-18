@@ -9,7 +9,8 @@
 // executed when the ThemeService doesn't exist.
 #define BRAVE_THEME_SOURCE_CHECK_THEME_SERVICE_EXISTS \
   if (!theme_service) {                               \
-  } else
+    CHECK(profile_->IsSystemProfile());               \
+  } else  // NOLINT(readability/braces)
 
 #include <chrome/browser/ui/webui/theme_source.cc>
 

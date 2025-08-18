@@ -76,8 +76,8 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
   content::URLDataSource::Add(
       profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
 #if !BUILDFLAG(IS_ANDROID)
-  content::URLDataSource::Add(profile,
-                              std::make_unique<ThemeSource>(profile, true));
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(
+                                           profile, /*serve_untrusted=*/true));
 #endif
 }
 

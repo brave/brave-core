@@ -65,8 +65,8 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
   content::URLDataSource::Add(
       profile, std::make_unique<FaviconSource>(
                    profile, chrome::FaviconUrlFormat::kFavicon2));
-  content::URLDataSource::Add(profile,
-                              std::make_unique<ThemeSource>(profile, true));
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(
+                                           profile, /*serve_untrusted=*/true));
 }
 
 VPNPanelUI::~VPNPanelUI() = default;
