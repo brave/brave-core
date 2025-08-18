@@ -38,6 +38,14 @@ public class BraveHubToolbarView extends HubToolbarView {
     }
 
     @Override
+    void setPaneSwitcherIndex(int index) {
+        super.setPaneSwitcherIndex(index);
+
+        // Update visibility of action and menu buttons based on the switching panes.
+        updateButtonsVisibility();
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Context context = getContext();
