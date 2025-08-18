@@ -353,10 +353,6 @@ class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
 // view.
 IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
                        TabFullscreenStateTest) {
-  FullscreenController* fullscreen_controller = browser()
-                                                    ->GetFeatures()
-                                                    .exclusive_access_manager()
-                                                    ->fullscreen_controller();
   auto* contents_container = brave_browser_view()->contents_container();
   auto* contents_view = brave_browser_view()->GetContentsView();
 
@@ -365,6 +361,11 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
             gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
   EXPECT_EQ(contents_view->layer()->rounded_corner_radii(),
             gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
+
+  FullscreenController* fullscreen_controller = browser()
+                                                    ->GetFeatures()
+                                                    .exclusive_access_manager()
+                                                    ->fullscreen_controller();
 
   // Check rounded corners are cleared in tab fullscreen.
   fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
