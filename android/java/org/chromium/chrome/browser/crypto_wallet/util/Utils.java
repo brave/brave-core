@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -50,6 +49,7 @@ import org.chromium.base.Callbacks;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -72,6 +72,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -198,15 +199,13 @@ public class Utils {
     }
 
     public static boolean shouldShowCryptoOnboarding() {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        return mSharedPreferences.getBoolean(PREF_CRYPTO_ONBOARDING, true);
+        SharedPreferencesManager preferencesManager = ChromeSharedPreferences.getInstance();
+        return preferencesManager.readBoolean(PREF_CRYPTO_ONBOARDING, true);
     }
 
     public static void setCryptoOnboarding(boolean enabled) {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_CRYPTO_ONBOARDING, enabled);
-        sharedPreferencesEditor.apply();
+        SharedPreferencesManager preferencesManager = ChromeSharedPreferences.getInstance();
+        preferencesManager.writeBoolean(PREF_CRYPTO_ONBOARDING, enabled);
     }
 
     /**
