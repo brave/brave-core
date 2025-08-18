@@ -30,7 +30,11 @@ public class MarkdownParser {
     useHLJS: Bool,
     isDarkTheme: Bool
   ) -> [StringBlock]? {
-    guard let string = try? AttributedString(markdown: string, preferredFont: .init(preferredFont))
+    guard
+      let string = try? AttributedString(
+        markdown: string,
+        preferredFont: .init(preferredFont)
+      )
     else {
       return nil
     }

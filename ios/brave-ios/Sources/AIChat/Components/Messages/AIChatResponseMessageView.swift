@@ -37,11 +37,15 @@ struct AIChatResponseMessageView: View {
   let lastEdited: Date?
   let isEditingMessage: Bool
   var focusedField: FocusState<AIChatView.Field?>.Binding
+  var isContentAssociated: Bool
   let cancelEditing: () -> Void
   let submitEditedText: (String) -> Void
 
   @Environment(\.colorScheme)
   private var colorScheme
+
+  @Environment(\.openURL)
+  private var openURL
 
   private var options: AttributedString.MarkdownParsingOptions {
     var result = AttributedString.MarkdownParsingOptions()
@@ -74,6 +78,15 @@ struct AIChatResponseMessageView: View {
       .joined(separator: "")
   }
 
+  private var allowedURLs: Set<URL> {
+    let events = (turn.edits?.last ?? turn)?.events ?? []
+    return Set(
+      events.flatMap {
+        $0.sourcesEvent?.sources.compactMap(\.url) ?? []
+      }
+    )
+  }
+
   var body: some View {
     if isEditingMessage {
       AIChatEditingMessageView(
@@ -96,6 +109,17 @@ struct AIChatResponseMessageView: View {
       ForEach((turn.edits?.last ?? turn)?.events ?? [], id: \.self) { event in
         if event.tag == .completionEvent {
           renderMarkdown(text: event.completionEvent?.completion ?? "")
+            .environment(
+              \.openURL,
+              OpenURLAction { url in
+                if isContentAssociated && !allowedURLs.contains(url) {
+                  return .discarded
+                }
+
+                openURL(url)
+                return .handled
+              }
+            )
         } else if event.tag == .searchStatusEvent && isEntryInProgress && !hasCompletionStarted {
           HStack {
             ProgressView()
@@ -345,6 +369,7 @@ struct AIChatResponseMessageView_Previews: PreviewProvider {
       lastEdited: Date(),
       isEditingMessage: false,
       focusedField: $focusedField,
+      isContentAssociated: false,
       cancelEditing: {},
       submitEditedText: { _ in }
     )
