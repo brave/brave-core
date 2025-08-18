@@ -1058,8 +1058,8 @@ void ConversationHandler::PerformAssistantGeneration(
   needs_new_entry_ = true;
 
   engine_->GenerateAssistantResponse(
-      std::move(page_contents), chat_history_, selected_language_, GetTools(),
-      std::nullopt /* preferred_tool_name */,
+      std::move(page_contents), chat_history_, selected_language_,
+      IsTemporaryChat(), GetTools(), std::nullopt /* preferred_tool_name */,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1784,6 +1784,10 @@ void ConversationHandler::SetTemporary(bool temporary) {
   }
 
   metadata_->temporary = temporary;
+}
+
+bool ConversationHandler::IsTemporaryChat() const {
+  return metadata_->temporary;
 }
 
 void ConversationHandler::MaybeSwitchToVisionModel(
