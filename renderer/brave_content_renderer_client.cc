@@ -177,7 +177,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature) &&
-      !IsIncognitoProcess()) {
+      !process_state::IsIncognitoProcess()) {
     new skus::SkusRenderFrameObserver(render_frame);
   }
 
@@ -198,7 +198,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-      !IsIncognitoProcess()) {
+      !process_state::IsIncognitoProcess()) {
     new playlist::PlaylistRenderFrameObserver(
         render_frame, base::BindRepeating([] {
           return BraveRenderThreadObserver::GetDynamicParams().playlist_enabled;
@@ -207,7 +207,8 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 #endif
 
-  if (ai_chat::features::IsAIChatEnabled() && !IsIncognitoProcess()) {
+  if (ai_chat::features::IsAIChatEnabled() &&
+      !process_state::IsIncognitoProcess()) {
     new ai_chat::PageContentExtractor(render_frame, registry,
                                       content::ISOLATED_WORLD_ID_GLOBAL,
                                       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
@@ -222,7 +223,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   if (base::FeatureList::IsEnabled(
           web_discovery::features::kBraveWebDiscoveryNative) &&
-      !IsIncognitoProcess()) {
+      !process_state::IsIncognitoProcess()) {
     new web_discovery::BlinkDocumentExtractor(render_frame, registry);
   }
 #endif
