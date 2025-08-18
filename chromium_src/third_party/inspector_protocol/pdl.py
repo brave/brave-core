@@ -76,14 +76,15 @@ def _merge_events(extended_domain, protocol_domain):
         raise RuntimeError("Unsupported event merge: ", extended_event)
 
 
-def _merge_protocol(protocol, file_name):
+def _merge_protocol(protocol, file_name, map_binary_to_string, source_set):
     chromium_src_file = brave_chromium_utils.get_chromium_src_override(
         file_name)
     if not os.path.exists(chromium_src_file):
         return
     with open(chromium_src_file, "r") as input_file:
         extended_protocol = _original_parse(input_file.read(),
-                                            chromium_src_file)
+                                            chromium_src_file,
+                                            map_binary_to_string, source_set)
 
     for extended_domain in extended_protocol['domains']:
         protocol_domain = None
@@ -101,7 +102,9 @@ def _merge_protocol(protocol, file_name):
             protocol['domains'].append(extended_domain)
 
 @override_utils.override_function(globals())
-def parse(original_function, data, file_name, map_binary_to_string=False):
-    protocol = original_function(data, file_name, map_binary_to_string)
-    _merge_protocol(protocol, file_name)
+def parse(original_function, data, file_name, map_binary_to_string,
+          source_set):
+    protocol = original_function(data, file_name, map_binary_to_string,
+                                 source_set)
+    _merge_protocol(protocol, file_name, map_binary_to_string, source_set)
     return protocol
