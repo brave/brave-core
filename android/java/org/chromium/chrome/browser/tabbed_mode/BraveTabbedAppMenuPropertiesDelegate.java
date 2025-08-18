@@ -26,7 +26,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
-import org.chromium.brave.browser.customize_menu.CustomizableBraveMenu;
+import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
@@ -258,7 +258,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         maybeReplaceIcons(modelList);
 
         // Customize menu item visibility.
-        CustomizableBraveMenu.applyCustomization(modelList, R.id.brave_customize_menu_id);
+        CustomizeBraveMenu.applyCustomization(modelList, R.id.brave_customize_menu_id);
 
         return modelList;
     }
