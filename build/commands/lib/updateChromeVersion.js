@@ -33,7 +33,7 @@ function updateChromeVersion() {
       assert(versionLines[line].startsWith('MAJOR='))
       versionLines[line] = versionLines[line].replace(
         versionLineRegex,
-        `$1=999}`,
+        `$1=999`,
       )
     } else {
       // Set MINOR, BUILD, PATCH to Brave version.
