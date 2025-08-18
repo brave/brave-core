@@ -93,12 +93,13 @@ class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {
 
   override render() {
     return html`
-        <div id="darker-theme-toggle-container"">
+        <div id="darker-theme-toggle-container">
           <leo-icon name="theme-darker"></leo-icon>
           <span>${this.i18n('CUSTOMIZE_CHROME_DARKER_THEME_TOGGLE_LABEL')}</span>
-          <leo-toggle
+          <!-- Use cr-toggle instead of leo-toggle in order to inherit style -->
+          <cr-toggle
             .checked="${this.usingDarkerTheme_}"
-            @change="${this.onDarkerThemeToggleChange}"></leo-toggle>
+            @change="${this.onDarkerThemeToggleChange}"></cr-toggle>
         </div>
     `
   }
