@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
@@ -261,10 +262,8 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
 
   SetupTestScriptExpectations();
 
-  auto* bubble = browser()
-                     ->GetFeatures()
-                     .translate_bubble_controller()
-                     ->GetTranslateBubble();
+  auto* bubble = CHECK_DEREF(TranslateBubbleController::From(browser()))
+                     .GetTranslateBubble();
   ASSERT_TRUE(bubble);
 
   // Check that the we see the translation bubble (not about the extension
@@ -326,10 +325,8 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, NoAutoTranslate) {
       browser(), embedded_test_server()->GetURL("/espanol_page.html")));
   WaitUntilLanguageDetermined();
 
-  auto* bubble = browser()
-                     ->GetFeatures()
-                     .translate_bubble_controller()
-                     ->GetTranslateBubble();
+  auto* bubble = CHECK_DEREF(TranslateBubbleController::From(browser()))
+                     .GetTranslateBubble();
   ASSERT_TRUE(bubble);
 
   // Check that the we see BEFORE translation bubble (not in-progress bubble).
