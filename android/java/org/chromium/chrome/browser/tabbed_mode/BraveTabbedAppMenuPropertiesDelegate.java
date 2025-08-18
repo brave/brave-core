@@ -212,6 +212,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         AppMenuItemProperties.ICON,
                         AppCompatResources.getDrawable(
                                 mBraveContext, R.drawable.brave_menu_new_private_tab));
+            } else if (itemId == R.id.new_tab_group_menu_id
+                    || itemId == R.id.add_to_group_menu_id) {
+                item.model.set(
+                        AppMenuItemProperties.ICON,
+                        AppCompatResources.getDrawable(mBraveContext, R.drawable.browser_group));
             } else if (itemId == R.id.all_bookmarks_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
