@@ -16,6 +16,7 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
@@ -35,6 +36,7 @@
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
 #include "content/public/browser/web_ui.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 
@@ -106,6 +108,10 @@ void BraveSyncHandler::RegisterMessages() {
       "SyncGetWordsCount",
       base::BindRepeating(&BraveSyncHandler::HandleSyncGetWordsCount,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "SyncCopySyncCodeToClipboard",
+      base::BindRepeating(&BraveSyncHandler::HandleCopySyncCodeToClipboard,
+                          base::Unretained(this)));
 }
 
 void BraveSyncHandler::OnJavascriptAllowed() {
@@ -153,6 +159,22 @@ void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
                       time_limited_sync_code.error());
     RejectJavascriptCallback(args[0], base::Value());
   }
+}
+
+void BraveSyncHandler::HandleCopySyncCodeToClipboard(
+    const base::Value::List& args) {
+  AllowJavascript();
+  CHECK_EQ(2U, args.size());
+  CHECK(args[1].is_string());
+  const std::string time_limited_sync_code = args[1].GetString();
+
+  {
+    ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
+    scw.WriteText(base::UTF8ToUTF16(time_limited_sync_code));
+    scw.MarkAsConfidential();
+  }
+
+  ResolveJavascriptCallback(args[0].Clone(), base::Value());
 }
 
 void BraveSyncHandler::HandleGetPureSyncCode(const base::Value::List& args) {
