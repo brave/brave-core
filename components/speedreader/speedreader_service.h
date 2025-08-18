@@ -14,6 +14,7 @@
 #include "brave/components/speedreader/speedreader_metrics.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class HostContentSettingsMap;
 class PrefRegistrySimple;
@@ -38,6 +39,7 @@ class SpeedreaderService : public KeyedService {
  public:
   class Observer : public base::CheckedObserver {
    public:
+    virtual void OnFeatureStateChanged(bool enabled) {}
     virtual void OnSiteEnableSettingChanged(content::WebContents* site,
                                             bool enabled_on_site) {}
     virtual void OnAllSitesEnableSettingChanged(bool enabled_on_all_sites) {}
@@ -54,6 +56,9 @@ class SpeedreaderService : public KeyedService {
                      HostContentSettingsMap* content_rules);
   ~SpeedreaderService() override;
 
+  // KeyedService:
+  void Shutdown() override;
+
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
@@ -65,11 +70,6 @@ class SpeedreaderService : public KeyedService {
 
   // Returns |true| if Speedreader is turned on for all sites.
   bool IsEnabledForAllSites();
-
-  // Returns content setting if the user has explicitally enabled/disabled
-  // Speedreader on the domain.
-  ContentSetting GetEnabledForSiteSetting(const GURL& url);
-  ContentSetting GetEnabledForSiteSetting(content::WebContents* contents);
 
   // Returns |true| if IsEnabledForAllSites is true or/and
   // GetEnabledForSiteSetting is ALLOW.
@@ -107,10 +107,20 @@ class SpeedreaderService : public KeyedService {
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;
 
  private:
+  struct Setting {
+    bool is_default = false;
+    ContentSetting setting;
+  };
+  Setting GetEnabledForSiteSetting(const GURL& url);
+
+  void OnEnabledForAllSitesPrefChanged();
+  void OnFeatureEnabledPrefChanged();
+
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
   raw_ptr<HostContentSettingsMap> content_rules_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
   base::ObserverList<Observer> observers_;
+  PrefChangeRegistrar pref_change_registrar_;
   SpeedreaderMetrics metrics_;
 };
 

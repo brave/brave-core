@@ -166,6 +166,14 @@ void SpeedreaderTabHelper::ProcessIconClick() {
   }
 }
 
+DistillState SpeedreaderTabHelper::PageDistillState() const {
+  auto* speedreader_service = GetSpeedreaderService();
+  if (!speedreader_service || !speedreader_service->IsFeatureEnabled()) {
+    return {};
+  }
+  return distill_state_;
+}
+
 SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {
   return speedreader_bubble_;
 }
@@ -335,7 +343,7 @@ void SpeedreaderTabHelper::ProcessNavigation(
     // site.
     const bool explicit_enabled_for_size =
         !homepage && kSpeedreaderExplicitPref.Get() &&
-        GetSpeedreaderService()->GetEnabledForSiteSetting(
+        GetSpeedreaderService()->IsExplicitlyEnabledForSite(
             navigation_handle->GetURL());
     if (url_looks_readable || explicit_enabled_for_size) {
       // Speedreader enabled for this page.
@@ -529,6 +537,10 @@ void SpeedreaderTabHelper::OnReadingProgress(content::WebContents* web_contents,
       script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
+void SpeedreaderTabHelper::OnFeatureStateChanged(bool enabled) {
+  UpdateUI();
+}
+
 void SpeedreaderTabHelper::OnSiteEnableSettingChanged(
     content::WebContents* site,
     bool enabled_on_site) {
@@ -547,7 +559,9 @@ void SpeedreaderTabHelper::OnSiteEnableSettingChanged(
 
 void SpeedreaderTabHelper::OnAllSitesEnableSettingChanged(
     bool enabled_on_all_sites) {
-  if (!is_visible_ || !GetSpeedreaderService()) {
+  if (!is_visible_ || !GetSpeedreaderService() ||
+      !rewriter_service_->URLLooksReadable(
+          web_contents()->GetLastCommittedURL())) {
     return;
   }
   OnSiteEnableSettingChanged(
@@ -621,7 +635,7 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
       DistillStates::Distilling(DistillStates::Distilling::Reason::kManual));
 }
 
-SpeedreaderService* SpeedreaderTabHelper::GetSpeedreaderService() {
+SpeedreaderService* SpeedreaderTabHelper::GetSpeedreaderService() const {
   return SpeedreaderServiceFactory::GetForBrowserContext(
       web_contents()->GetBrowserContext());
 }
