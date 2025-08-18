@@ -302,10 +302,9 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   }
 
   if (tabs::features::IsBraveSplitViewEnabled() && browser_->is_type_normal()) {
-    split_view_ =
-        contents_container_->parent()->AddChildView(std::make_unique<SplitView>(
-            *browser_, contents_container_,
-            contents_container_view_->GetContentsView()));
+    split_view_ = contents_container_->parent()->AddChildView(
+        std::make_unique<SplitView>(*browser_, contents_container_,
+                                    contents_container_view_->contents_view()));
     set_contents_view(split_view_);
   }
 
@@ -514,7 +513,7 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
         GetBraveMultiContentsView()->GetInactiveContentsContainerView();
     auto* reader_mode_toolbar = contents_container->reader_mode_toolbar();
     reader_mode_toolbar->SetVisible(
-        is_distilled(contents_container->GetContentsView()->web_contents()));
+        is_distilled(contents_container->contents_view()->web_contents()));
   }
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
