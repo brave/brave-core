@@ -157,6 +157,17 @@ void AdBlockServiceTest::SetUpOnMainThread() {
 void AdBlockServiceTest::PreRunTestOnMainThread() {
   PlatformBrowserTest::PreRunTestOnMainThread();
   WaitForAdBlockServiceThreads();
+
+  // Wait for initial engine creation to complete, especially on slower
+  // platforms
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    auto counts = histogram_tester_.GetTotalCountsForPrefix(
+        "Brave.Adblock.MakeEngineWithRules.Default");
+    return counts.find("Brave.Adblock.MakeEngineWithRules.Default") !=
+               counts.end() &&
+           counts.at("Brave.Adblock.MakeEngineWithRules.Default") >= 1;
+  })) << "Timeout waiting for initial engine creation";
+
   histogram_tester_.ExpectTotalCount(
       "Brave.Adblock.MakeEngineWithRules.Default", 1);
   InstallDefaultAdBlockComponent();
