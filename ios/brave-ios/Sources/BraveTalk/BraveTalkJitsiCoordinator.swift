@@ -3,58 +3,57 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import JitsiMeetSDK
 import Preferences
 import Shared
 
 /// Handles coordinating when to use the Jitsi SDK for better Brave Talk integration
-///
-/// Currently relies on AppConstants.buildChannel
 @MainActor public class BraveTalkJitsiCoordinator: Sendable {
   /// Whether or not the jitsi SDK integration is enabled
-  static var isIntegrationEnabled: Bool {
-    // If needed to disable for certain build channels, check AppConstants.buildChannel here
-    return true
+  static func isIntegrationEnabled(for prefs: PrefService) -> Bool {
+    // Currently the Jitsi SDK integration is available as long as the feature itself is available
+    return prefs.isBraveTalkAvailable
   }
 
-  public init() {
+  public init(prefService: PrefService) {
+    self.prefService = prefService
+
     if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
       JitsiMeetLogger.add(BraveTalkJitsiLogHandler())
     }
   }
 
   public enum AppLifetimeEvent {
-    case didFinishLaunching(options: [UIApplication.LaunchOptionsKey: Any] = [:])
     case continueUserActivity(
       NSUserActivity,
       restorationHandler: (([UIUserActivityRestoring]) -> Void)? = nil
     )
-    case openURL(URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:])
   }
 
   @discardableResult
-  public static func sendAppLifetimeEvent(_ event: AppLifetimeEvent) -> Bool {
-    guard Self.isIntegrationEnabled else { return false }
+  public static func sendAppLifetimeEvent(
+    _ event: AppLifetimeEvent,
+    prefService: PrefService
+  ) -> Bool {
+    guard Self.isIntegrationEnabled(for: prefService) else { return false }
     let application = UIApplication.shared
     // Warning: Grabbing this shared instance automatically creates a React Native bridge
     let meet = JitsiMeet.sharedInstance()
     meet.destroyReactNativeBridge()
     // --
     switch event {
-    case .didFinishLaunching(let options):
-      return meet.application(application, didFinishLaunchingWithOptions: options)
     case .continueUserActivity(let activity, let restorationHandler):
       return meet.application(
         application,
         continue: activity,
         restorationHandler: restorationHandler
       )
-    case .openURL(let url, let options):
-      return meet.application(application, open: url, options: options)
     }
   }
 
+  private let prefService: PrefService
   private var pipViewCoordinator: PiPViewCoordinator?
   private var jitsiMeetView: JitsiMeetView?
   public private(set) var jitsiTranscriptProcessor: BraveTalkJitsiTranscriptProcessor?
@@ -63,8 +62,12 @@ import Shared
   public private(set) var isBraveTalkInPiPMode: Bool = false
   public private(set) var isCallActive: Bool = false
 
+  public var isIntegrationEnabled: Bool {
+    Self.isIntegrationEnabled(for: prefService)
+  }
+
   public func toggleMute() {
-    guard Self.isIntegrationEnabled else { return }
+    guard isIntegrationEnabled else { return }
     // The SDK doesn't seem to call `audioMutedChanged` when we call setAudioMuted below…
     isMuted.toggle()
     jitsiMeetView?.setAudioMuted(isMuted)
@@ -75,7 +78,9 @@ import Shared
   }
 
   public func handleResponderPresses(presses: Set<UIPress>, phase: KeyboardPressPhase) {
-    guard Self.isIntegrationEnabled, isCallActive, !isBraveTalkInPiPMode else { return }
+    guard isIntegrationEnabled, isCallActive, !isBraveTalkInPiPMode else {
+      return
+    }
     let isSpacebarPressed = presses.contains(where: { $0.key?.keyCode == .keyboardSpacebar })
     switch phase {
     case .began:
@@ -113,7 +118,7 @@ import Shared
     onEnterCall: @escaping () -> Void,
     onExitCall: @escaping () -> Void
   ) {
-    guard Self.isIntegrationEnabled else { return }
+    guard isIntegrationEnabled else { return }
 
     // Only create the RN bridge when the user joins a call
     JitsiMeet.sharedInstance().instantiateReactNativeBridge()
@@ -184,7 +189,7 @@ import Shared
   }
 
   public func resetPictureInPictureBounds(_ bounds: CGRect) {
-    guard Self.isIntegrationEnabled, let pip = pipViewCoordinator else { return }
+    guard isIntegrationEnabled, let pip = pipViewCoordinator else { return }
     pip.resetBounds(bounds: bounds)
   }
 }

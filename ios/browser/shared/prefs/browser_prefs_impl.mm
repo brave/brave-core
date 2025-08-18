@@ -15,6 +15,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
@@ -49,6 +50,8 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
   ntp_background_images::RegisterProfilePrefsForMigration(registry);
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
   brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
+
+  registry->RegisterBooleanPref(kBraveTalkDisabledByPolicy, false);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

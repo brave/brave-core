@@ -10,7 +10,6 @@ import Web
 
 extension BrowserViewController {
   func launchNativeBraveTalk(tab: (any TabState)?, room: String, token: String) {
-    #if canImport(BraveTalk)
     guard let host = tab?.lastCommittedURL?.host else { return }
     braveTalkJitsiCoordinator.launchNativeBraveTalk(
       for: room,
@@ -34,6 +33,5 @@ extension BrowserViewController {
         }
       }
     )
-    #endif
   }
 }

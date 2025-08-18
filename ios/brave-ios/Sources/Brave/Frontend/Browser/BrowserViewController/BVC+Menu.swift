@@ -500,19 +500,6 @@ extension BrowserViewController {
         }
         return .none
       },
-      .init(id: .braveTalk) { @MainActor [unowned self] _ in
-        self.dismiss(animated: true) {
-          guard let url = URL(string: "https://talk.brave.com/") else { return }
-          self.popToBVC()
-          if pageURL == nil {
-            // Already on NTP
-            self.finishEditingAndSubmit(url)
-          } else {
-            self.openURLInNewTab(url, isPrivileged: false)
-          }
-        }
-        return .none
-      },
     ]
     if profileController.braveWalletAPI.isAllowed {
       actions.append(
@@ -531,6 +518,23 @@ extension BrowserViewController {
         ) { @MainActor [unowned self] _ in
           self.dismiss(animated: true) {
             self.openBraveLeo()
+          }
+          return .none
+        }
+      )
+    }
+    if profileController.profile.prefs.isBraveTalkAvailable {
+      actions.append(
+        .init(id: .braveTalk) { @MainActor [unowned self] _ in
+          self.dismiss(animated: true) {
+            guard let url = URL(string: "https://talk.brave.com/") else { return }
+            self.popToBVC()
+            if pageURL == nil {
+              // Already on NTP
+              self.finishEditingAndSubmit(url)
+            } else {
+              self.openURLInNewTab(url, isPrivileged: false)
+            }
           }
           return .none
         }

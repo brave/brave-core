@@ -10,9 +10,7 @@ import WebKit
 
 enum DomainUserScript: CaseIterable {
   case braveSearchHelper
-  #if canImport(BraveTalk)
   case braveTalkHelper
-  #endif
   case braveSkus
   case bravePlaylistFolderSharingHelper
 
@@ -47,14 +45,12 @@ enum DomainUserScript: CaseIterable {
         "safesearch.brave.software", "safesearch.bravesoftware.com",
         "search-dev-local.brave.com",
       ])
-    #if canImport(BraveTalk)
     case .braveTalkHelper:
       return Set([
         "talk.brave.com",
         "talk.bravesoftware.com",
         "talk.brave.software",
       ])
-    #endif
     case .bravePlaylistFolderSharingHelper:
       return Set(["playlist.bravesoftware.com", "playlist.brave.com"])
     case .braveSkus:

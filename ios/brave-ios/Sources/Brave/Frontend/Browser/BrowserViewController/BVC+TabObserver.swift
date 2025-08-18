@@ -53,16 +53,16 @@ extension BrowserViewController: TabObserver {
       injectedScripts.append(contentBlocker)
     }
 
-    #if canImport(BraveTalk)
-    injectedScripts.append(
-      BraveTalkScriptHandler(
-        rewards: rewards,
-        launchNativeBraveTalk: { [weak self] tab, room, token in
-          self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
-        }
+    if profileController.profile.prefs.isBraveTalkAvailable {
+      injectedScripts.append(
+        BraveTalkScriptHandler(
+          rewards: rewards,
+          launchNativeBraveTalk: { [weak self] tab, room, token in
+            self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
+          }
+        )
       )
-    )
-    #endif
+    }
 
     // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
     if !tab.isPrivate {
