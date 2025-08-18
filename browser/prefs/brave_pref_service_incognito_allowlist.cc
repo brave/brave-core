@@ -17,7 +17,6 @@
 #include "chrome/common/pref_names.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/color/prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #endif
 

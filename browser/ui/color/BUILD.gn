@@ -7,7 +7,7 @@ source_set("color") {
   sources = [
     "features.cc",
     "features.h",
-    "prefs.h",
+    "pref_names.h",
   ]
 
   deps = [ "//base" ]

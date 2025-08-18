@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.h"
 
-#include "brave/browser/ui/color/prefs.h"
+#include "brave/browser/ui/color/pref_names.h"
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h"
 
 #define CustomizeChromePageHandler CustomizeChromePageHandler_Chromium
