@@ -29,14 +29,9 @@
     gap: 16px;
   }
 
-  #recommended {
-    background-color: var(--leo-color-blurple-10);
-    color: var(--leo-color-blurple-60);
-    border-radius: 6px;
-    padding: 0px 4px 0px 4px;
-    gap: 2px;
-    font-weight: 600;
-    font-size: 10px;
+  leo-label {
+    --leo-label-font-text: var(--leo-font-small-regular);
+    --leo-label-padding: var(--leo-spacing-s);
   }
 
   #name-description {
@@ -45,8 +40,7 @@
   }
 
   #description {
-    font-weight: 400;
-    font-size: 10px;
+    font: var(--leo-font-x-small-regular);
   }
 
   site-favicon {
@@ -102,9 +96,9 @@
                 $i18n{searchEngineListBraveSearchDescription}
               </div>
             </div>
-            <div id="recommended">
+            <leo-label mode="default" color="purple">
               $i18n{searchEngineListBraveSearchRecommended}
-              </div>
+            </leo-label>
           </div>
         </cr-radio-button>
       </cr-radio-group>
