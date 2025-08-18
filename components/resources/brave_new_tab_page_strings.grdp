@@ -121,6 +121,10 @@
     How does it work?
   </message>
 
+  <message name="IDS_NEW_TAB_REWARDS_PAYOUT_DETAILS_LINK" desc="Text for link to more information about Rewards payouts">
+    Details
+  </message>
+
   <message name="IDS_NEW_TAB_REWARDS_WIDGET_TITLE" desc="Title of the Rewards NTP widget">
     REWARDS
   </message>

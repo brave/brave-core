@@ -123,6 +123,18 @@ export const style = scoped.css`
     }
   }
 
+  .payout-status {
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font: ${font.xSmall.regular};
+
+    a {
+      color: inherit;
+    }
+  }
+
   .ads-viewed {
     --leo-icon-size: 14px;
 

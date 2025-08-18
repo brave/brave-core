@@ -44,6 +44,9 @@ export type StringKey =
   'rewardsLoginTitle' |
   'rewardsOnboardingButtonLabel' |
   'rewardsOnboardingLink' |
+  'rewardsPayoutCompletedText' |
+  'rewardsPayoutDetailsLink' |
+  'rewardsPayoutProcessingText' |
   'rewardsTosUpdateButtonLabel' |
   'rewardsTosUpdateText' |
   'rewardsTosUpdateTitle' |

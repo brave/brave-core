@@ -14,6 +14,7 @@ import { usePluralString } from '../../lib/plural_string'
 import { Link, openLink } from '../common/link'
 import { WalletProviderIcon } from '../../../../../components/brave_rewards/resources/shared/components/icons/wallet_provider_icon'
 import { getExternalWalletProviderName } from '../../../../../components/brave_rewards/resources/shared/lib/external_wallet'
+import { getProviderPayoutStatus } from '../../../../../components/brave_rewards/resources/shared/lib/provider_payout_status'
 import formatMessage from '$web-common/formatMessage'
 
 import * as urls from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'
@@ -30,11 +31,23 @@ const exchangeAmountFormatter = new Intl.NumberFormat(undefined, {
   maximumFractionDigits: 2
 })
 
+const monthNameFormatter = new Intl.DateTimeFormat(undefined, {
+  month: 'long'
+})
+
+function getPayoutMonth() {
+  const date = new Date()
+  const lastMonth = new Date(date.getFullYear(), date.getMonth() - 1)
+  return monthNameFormatter.format(lastMonth)
+}
+
 export function RewardsWidget() {
   const rewardsEnabled = useRewardsState((s) => s.rewardsEnabled)
   const externalWallet = useRewardsState((s) => s.rewardsExternalWallet)
   const balance = useRewardsState((s) => s.rewardsBalance)
   const exchangeRate = useRewardsState((s) => s.rewardsExchangeRate)
+  const payoutStatus = useRewardsState((s) => s.payoutStatus)
+  const earnings = useRewardsState((s) => s.minEarningsPreviousMonth)
   const tosUpdateRequired = useRewardsState((s) => s.tosUpdateRequired)
   const adsViewed = useRewardsState((s) => s.rewardsAdsViewed)
   const adsViewedString =
@@ -169,6 +182,67 @@ export function RewardsWidget() {
     )
   }
 
+  function renderPayoutStatus() {
+    if (earnings <= 0 || !externalWallet) {
+      return null
+    }
+    const status =
+      getProviderPayoutStatus(payoutStatus, externalWallet.provider)
+    if (status === 'complete') {
+      return (
+        <div className='payout-status'>
+          {
+            formatMessage(getString('rewardsPayoutCompletedText'), [
+              getPayoutMonth()
+            ])
+          }
+        </div>
+      )
+    }
+    if (status === 'processing') {
+      return (
+        <div className='payout-status'>
+          {
+            formatMessage(getString('rewardsPayoutProcessingText'), [
+              getPayoutMonth()
+            ])
+          }
+          <Link url={urls.payoutStatusURL}>
+            {getString('rewardsPayoutDetailsLink')}
+          </Link>
+        </div>
+      )
+    }
+    return null
+  }
+
+  function renderAdsViewed() {
+    if (adsViewed === null) {
+      return null
+    }
+    return (
+      <div className='ads-viewed'>
+        {
+          formatMessage(adsViewedString, {
+            tags: {
+              $1: (content) => (
+                <span key='ad-count' className='ad-count'>
+                  {content}
+                </span>
+              )
+            }
+          })
+        }
+        <Tooltip mode='default'>
+          <Icon name='info-outline' />
+          <div slot='content'>
+            {getString('rewardsAdsViewedTooltip')}
+          </div>
+        </Tooltip>
+      </div>
+    )
+  }
+
   if (!rewardsEnabled) {
     return renderOnboarding()
   }
@@ -214,28 +288,7 @@ export function RewardsWidget() {
               </>
             }
           </div>
-          {
-            adsViewed !== null &&
-              <div className='ads-viewed'>
-                {
-                  formatMessage(adsViewedString, {
-                    tags: {
-                      $1: (content) => (
-                        <span key='ad-count' className='ad-count'>
-                          {content}
-                        </span>
-                      )
-                    }
-                  })
-                }
-                <Tooltip mode='default'>
-                  <Icon name='info-outline' />
-                  <div slot='content'>
-                    {getString('rewardsAdsViewedTooltip')}
-                  </div>
-                </Tooltip>
-              </div>
-          }
+          {renderPayoutStatus() || renderAdsViewed()}
         </div>
       </div>
     </div>
