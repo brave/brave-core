@@ -899,11 +899,10 @@ public class BytecodeTest {
                         Context.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarPositionController",
+                        "org/chromium/chrome/browser/toolbar/ToolbarPositionController", // presubmit: ignore-long-line
                         "calculateStateTransition",
                         MethodModifier.STATIC,
                         int.class,
-                        boolean.class,
                         boolean.class,
                         boolean.class,
                         boolean.class,
