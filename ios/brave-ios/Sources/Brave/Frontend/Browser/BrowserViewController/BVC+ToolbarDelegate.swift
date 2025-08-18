@@ -368,6 +368,7 @@ extension BrowserViewController: TopToolbarDelegate {
       "ads-internals",
       "credits",
       "sync-internals",
+      "policy",
     ]
     guard let host = url.host, supportedPages.contains(host) else {
       return false
