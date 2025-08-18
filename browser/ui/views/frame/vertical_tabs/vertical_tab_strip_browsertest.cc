@@ -501,7 +501,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
   ASSERT_EQ(2, model->count());
   model->SetTabPinned(0, true);
 
-  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+  browser_view()->tabstrip()->StopAnimating();
 
   // Test if every tabs are laid out inside tab strip region -------------------
   // This is a regression test for
@@ -530,11 +530,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   model->SetTabPinned(0, true);
   ASSERT_EQ(1, model->count());
 
-  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+  browser_view()->tabstrip()->StopAnimating();
 
   int contents_view_height = region_view->contents_view_->height();
   AppendTab(browser());
-  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+  browser_view()->tabstrip()->StopAnimating();
 
   // When first tab is added, height should have tab's height plus top & bottom
   // margin.
@@ -545,7 +545,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   }));
 
   AppendTab(browser());
-  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+  browser_view()->tabstrip()->StopAnimating();
 
   // When second tab is added, height should be increased with tab height plus
   // tab spacing.
@@ -781,11 +781,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
   AddTabToExistingGroup(browser(), 3, group);
 
   browser()->tab_strip_model()->SetTabPinned(1, true);
-  browser_view()->tabstrip()->StopAnimating(true);
+  browser_view()->tabstrip()->StopAnimating();
   EXPECT_EQ(GetTabStrip(browser())->tab_at(0)->group(), std::nullopt);
 
   browser()->tab_strip_model()->SetTabPinned(2, true);
-  browser_view()->tabstrip()->StopAnimating(true);
+  browser_view()->tabstrip()->StopAnimating();
   EXPECT_EQ(GetTabStrip(browser())->tab_at(1)->group(), std::nullopt);
 
   ASSERT_TRUE(GetTabStrip(browser())->tab_at(2)->group().has_value());
@@ -892,9 +892,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
             region_view->state());
 
   // Drag and drop a tab to reorder it -----------------------------------------
-  GetTabStrip(browser())->StopAnimating(
-      /* layout= */ true);  // Drag-and-drop doesn't start when animation is
-                            // running.
+  GetTabStrip(browser())->StopAnimating();  // Drag-and-drop doesn't start when
+                                            // animation is running.
   auto* pressed_tab = GetTabAt(browser(), 0);
   PressTabAt(browser(), 0);
   auto point_to_move_to = GetCenterPointInScreen(GetTabAt(browser(), 1));
@@ -916,8 +915,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
 
   EXPECT_TRUE(IsDraggingTabStrip(browser()));
   ReleaseMouse();
-  GetTabStrip(browser())->StopAnimating(
-      true);  // Drag-and-drop doesn't start when animation is running.
+  GetTabStrip(browser())->StopAnimating();  // Drag-and-drop doesn't start when
+                                            // animation is running.
   {
     // Regression test for https://github.com/brave/brave-browser/issues/28488
     // Check if the tab is positioned properly after drag-and-drop.
@@ -938,8 +937,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
   AppendTab(browser());
 
   // Drag a tab out of tab strip to create browser -----------------------------
-  GetTabStrip(browser())->StopAnimating(
-      true);  // Drag-and-drop doesn't start when animation is running.
+  GetTabStrip(browser())->StopAnimating();  // Drag-and-drop doesn't start when
+                                            // animation is running.
   PressTabAt(browser(), 0);
   gfx::Point point_out_of_tabstrip =
       GetCenterPointInScreen(GetTabAt(browser(), 0));
