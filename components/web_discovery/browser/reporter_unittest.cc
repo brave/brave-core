@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "brave/components/web_discovery/browser/web_discovery_service.h"
@@ -39,6 +40,15 @@ class WebDiscoveryReporterTest : public testing::Test {
 
   // testing::Test:
   void SetUp() override {
+    // Credentials are granted for each UTC day.
+    // If the mock clock rolls over to the next UTC day during a test,
+    // `TestCredentialHelper::CredentialExistsForToday` may return false,
+    // causing test requests to fail. Advance the clock to UTC midnight on the
+    // next day to remove this risk.
+    auto now = base::Time::Now();
+    auto target_time = (now + base::Days(1)).UTCMidnight();
+    task_environment_.AdvanceClock(target_time - now);
+
     WebDiscoveryService::RegisterProfilePrefs(profile_prefs_.registry());
     auto server_config = std::make_unique<ServerConfig>();
 
