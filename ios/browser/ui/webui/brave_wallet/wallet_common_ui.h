@@ -10,10 +10,6 @@
 
 class ProfileIOS;
 
-namespace url {
-class Origin;
-}  // namespace url
-
 namespace brave_wallet {
 
 void AddBlockchainTokenImageSource(ProfileIOS* profile);
