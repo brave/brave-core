@@ -28,7 +28,7 @@ import java.util.Locale;
  * screen where a user can toggle the visibility of supported items.
  */
 @NullMarked
-public class CustomizableBraveMenu {
+public class CustomizeBraveMenu {
 
     public static void applyCustomization(
             final MVCListAdapter.ModelList modelList, @IdRes int customizeMenuId) {

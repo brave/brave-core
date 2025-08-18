@@ -75,7 +75,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.brave.browser.customize_menu.CustomizableBraveMenu;
+import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
@@ -505,7 +505,7 @@ public abstract class BraveActivity extends ChromeActivity
         } else if (id == R.id.brave_leo_id) {
             openBraveLeo();
         } else if (id == R.id.brave_customize_menu_id) {
-            CustomizableBraveMenu.openCustomizeMenuSettings(this);
+            CustomizeBraveMenu.openCustomizeMenuSettings(this);
         } else {
             return false;
         }
