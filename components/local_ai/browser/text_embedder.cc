@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/browser/text_embedder.h"
+#include "brave/components/local_ai/browser/text_embedder.h"
 
 #include <algorithm>
 #include <cmath>
@@ -39,7 +39,7 @@ using TFLiteTextEmbedder = tflite::task::text::TextEmbedder;
 using TFLiteTextEmbedderOptions = tflite::task::text::TextEmbedderOptions;
 using tflite::task::text::CreateTextOpResolver;
 
-namespace ai_chat {
+namespace local_ai {
 
 // static
 std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> TextEmbedder::Create(
@@ -192,7 +192,6 @@ TextEmbedder::CalculateTabGroupCentroid() {
 absl::StatusOr<std::vector<int>> TextEmbedder::SuggestTabsForGroup(
     std::vector<std::pair<int, std::string>> group_tabs,
     std::vector<std::pair<int, std::string>> candidate_tabs) {
-
   // get embeddings for group tabs
   tabs_.clear();
 
@@ -224,7 +223,7 @@ absl::StatusOr<std::vector<int>> TextEmbedder::SuggestTabsForGroup(
   tab_titles.clear();
 
   std::vector<int> tab_ids;
-  
+
   for (const auto& tab : candidate_tabs) {
     tab_ids.push_back(tab.first);
     tab_titles.push_back(tab.second);
@@ -289,4 +288,4 @@ std::vector<int> TextEmbedder::getMostSimilarTabIndices(
   return indices_above_threshold;
 }
 
-}  // namespace ai_chat
+}  // namespace local_ai

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/browser/text_embedder.h"
+#include "brave/components/local_ai/browser/text_embedder.h"
 
 #include <string.h>
 
@@ -22,12 +22,12 @@
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/local_ai/browser/local_models_updater.h"
 #include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace ai_chat {
+namespace local_ai {
 
 class TextEmbedderUnitTest : public testing::Test {
  public:
@@ -49,9 +49,9 @@ class TextEmbedderUnitTest : public testing::Test {
             .AppendASCII("test")
             .AppendASCII("data");
 
-    // constructs sub path like ../leo/local-models-updater
+    // constructs sub path like ../local-ai/local-models-updater
     model_dir_ =
-        test_dir.AppendASCII("leo").AppendASCII("local-models-updater");
+        test_dir.AppendASCII("local-ai").AppendASCII("local-models-updater");
 
     // create text embedder using the given model file. also passes test runner
     // so it can work off thread. kUniversalQAModelName is defined in
@@ -74,12 +74,12 @@ class TextEmbedderUnitTest : public testing::Test {
     ASSERT_TRUE(embedder_->IsInitialized());
   }
 
-  void SetTabs(ai_chat::TextEmbedder* embedder,
+  void SetTabs(local_ai::TextEmbedder* embedder,
                const std::vector<std::string>& tabs) {
     embedder->tabs_ = tabs;
   }
 
-  absl::Status EmbedTabs(ai_chat::TextEmbedder* embedder) {
+  absl::Status EmbedTabs(local_ai::TextEmbedder* embedder) {
     absl::Status status;
     base::RunLoop run_loop;
     embedder_task_runner_->PostTask(FROM_HERE,
@@ -124,7 +124,7 @@ class TextEmbedderUnitTest : public testing::Test {
   }
 
  protected:
-  std::unique_ptr<ai_chat::TextEmbedder, base::OnTaskRunnerDeleter> embedder_;
+  std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter> embedder_;
   base::FilePath model_dir_;
   scoped_refptr<base::SequencedTaskRunner> embedder_task_runner_;
   base::test::TaskEnvironment task_environment_;
@@ -226,26 +226,27 @@ TEST_F(TextEmbedderUnitTest, InspectEmbedding) {
 }
 
 TEST_F(TextEmbedderUnitTest, VerifySuggestTabsForGroup) {
-    std::vector<std::pair<int, std::string>> travel_group_tabs = {{1,
-      "Top 10 places to visit in Italy travelblog.com"},{3, 
-      "Flight comparison: Rome vs Venice skyscanner.com"},{4,
-      "Train travel tips across Europe eurotripadvisor.net"},{6,
-      "Travel insurance for international trips safetravel.com"},{7,
-      "Visa requirements for Schengen countries visaguide.world"}};
-      std::vector<std::pair<int, std::string>> candidate_tabs = {{0,
-      "Compare savings accounts interest rates bankrate.com"},{10,
-      "Tips to improve credit score nerdwallet.com"},{2,
-      "Live coverage of Formula 1 race formula1.com"},{5,
-      "Visiting Italy in October: all you need to know mamalovesitaly.com"}, {9,
-      "Review of hotels in Venice booking.com"}};
+  std::vector<std::pair<int, std::string>> travel_group_tabs = {
+      {1, "Top 10 places to visit in Italy travelblog.com"},
+      {3, "Flight comparison: Rome vs Venice skyscanner.com"},
+      {4, "Train travel tips across Europe eurotripadvisor.net"},
+      {6, "Travel insurance for international trips safetravel.com"},
+      {7, "Visa requirements for Schengen countries visaguide.world"}};
+  std::vector<std::pair<int, std::string>> candidate_tabs = {
+      {0, "Compare savings accounts interest rates bankrate.com"},
+      {10, "Tips to improve credit score nerdwallet.com"},
+      {2, "Live coverage of Formula 1 race formula1.com"},
+      {5, "Visiting Italy in October: all you need to know mamalovesitaly.com"},
+      {9, "Review of hotels in Venice booking.com"}};
 
   absl::StatusOr<std::vector<int>> result;
   result = VerifySuggestTabsForGroup(travel_group_tabs, candidate_tabs);
 
   const auto& indices = result.value();
-  std::vector<int> expected = {candidate_tabs[4].first, candidate_tabs[3].first};
+  std::vector<int> expected = {candidate_tabs[4].first,
+                               candidate_tabs[3].first};
 
   EXPECT_EQ(indices, expected);
 }
 
-}  // namespace ai_chat
+}  // namespace local_ai

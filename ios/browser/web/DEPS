@@ -3,4 +3,5 @@ include_rules = [
   # Try to componentize zxcvbn_data_component_installer.{h,cc}, and upstream the change.
   # That's technically not a layering violation, as there's nothing browser-specific in:
   "+chrome/browser/component_updater/zxcvbn_data_component_installer.h",
+  "+brave/components/local_ai/browser",
 ]
