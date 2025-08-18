@@ -3,8 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 
 source_set("policy") {
   sources = [
@@ -19,14 +21,30 @@ source_set("policy") {
     "//brave/components/brave_news/common",
     "//brave/components/brave_origin",
     "//brave/components/brave_rewards/core",
-    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common:pref_names",
-    "//brave/components/brave_wayback_machine",
+    "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/p3a",
-    "//brave/components/speedreader",
-    "//brave/components/tor:pref_names",
+    "//brave/components/speedreader/common/buildflags",
+    "//brave/components/tor/buildflags",
     "//components/policy/core/common",
     "//components/prefs",
   ]
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    deps += [ "//brave/components/brave_wayback_machine" ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader" ]
+  }
+
+  if (enable_tor) {
+    deps += [ "//brave/components/tor:pref_names" ]
+  }
 }

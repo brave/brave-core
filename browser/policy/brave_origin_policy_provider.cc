@@ -14,13 +14,13 @@
 #include "brave/components/brave_origin/brave_origin_state.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
-#include "brave/components/brave_wayback_machine/pref_names.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
-#include "brave/components/speedreader/speedreader_pref_names.h"
-#include "brave/components/tor/pref_names.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_service.h"
@@ -28,6 +28,22 @@
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
 
 namespace brave_origin {
 
@@ -97,12 +113,16 @@ policy::PolicyBundle BraveOriginPolicyProvider::LoadPolicies() {
       local_state_->GetDict(prefs::kBraveOriginPolicySettings);
 
   // Set all BraveOrigin policies with user preferences or defaults
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   SetBraveOriginPolicyWithPreference(
       policy_map, policy_settings, policy::key::kBraveWaybackMachineEnabled,
       kBraveWaybackMachineEnabled, base::Value(false));
+#endif
+#if BUILDFLAG(ENABLE_TOR)
   SetBraveOriginPolicyWithPreference(
       policy_map, policy_settings, policy::key::kTorDisabled,
       tor::prefs::kTorDisabled, base::Value(true));
+#endif
   SetBraveOriginPolicyWithPreference(
       policy_map, policy_settings, policy::key::kBraveStatsPingEnabled,
       kStatsReportingEnabled, base::Value(false));
@@ -118,15 +138,19 @@ policy::PolicyBundle BraveOriginPolicyProvider::LoadPolicies() {
   SetBraveOriginPolicyWithPreference(
       policy_map, policy_settings, policy::key::kBraveAIChatEnabled,
       ai_chat::prefs::kEnabledByPolicy, base::Value(false));
+#if BUILDFLAG(ENABLE_SPEEDREADER)
   SetBraveOriginPolicyWithPreference(
       policy_map, policy_settings, policy::key::kBraveSpeedreaderDisabled,
       speedreader::kSpeedreaderDisabledByPolicy, base::Value(true));
+#endif
   SetBraveOriginPolicyWithPreference(
       policy_map, policy_settings, policy::key::kBraveNewsDisabled,
       brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value(true));
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   SetBraveOriginPolicyWithPreference(
       policy_map, policy_settings, policy::key::kBraveVPNDisabled,
       brave_vpn::prefs::kManagedBraveVPNDisabled, base::Value(true));
+#endif
   SetBraveOriginPolicyWithPreference(
       policy_map, policy_settings, policy::key::kBraveTalkDisabled,
       kBraveTalkDisabledByPolicy, base::Value(true));
