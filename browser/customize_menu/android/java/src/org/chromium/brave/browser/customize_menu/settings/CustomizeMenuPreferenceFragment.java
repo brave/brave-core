@@ -39,4 +39,9 @@ public class CustomizeMenuPreferenceFragment extends ChromeBaseSettingsFragment 
     public ObservableSupplier<String> getPageTitle() {
         return mPageTitle;
     }
+
+    @Override
+    public @AnimationType int getAnimationType() {
+        return AnimationType.PROPERTY;
+    }
 }
