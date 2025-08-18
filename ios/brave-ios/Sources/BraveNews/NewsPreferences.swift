@@ -3,8 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import Preferences
+
+extension PrefService {
+  /// Whether or not the Brave News feature in general is available to use and the UI should display
+  /// buttons/settings for it.
+  public var isBraveNewsAvailable: Bool {
+    // The feature is only unavailable when disabled by policy
+    let isDisabledByPolicy =
+      isManagedPreference(forPath: kBraveNewsDisabledByPolicyPrefName)
+      && boolean(forPath: kBraveNewsDisabledByPolicyPrefName)
+    return !isDisabledByPolicy
+  }
+}
 
 extension Preferences {
   public final class BraveNews {

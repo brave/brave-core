@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/ai_chat/core/common",
+  "+brave/components/brave_news/common",
   "+brave/components/brave_rewards/core",
   "+brave/components/brave_wallet/common",
   "+brave/components/constants",
