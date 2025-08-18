@@ -8,8 +8,6 @@ package org.chromium.brave.browser.customize_menu;
 import static org.chromium.base.BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT;
 
 import android.content.Context;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import androidx.annotation.IdRes;
 
@@ -17,8 +15,11 @@ import org.chromium.brave.browser.customize_menu.settings.CustomizeMenuPreferenc
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
+import org.chromium.ui.modelutil.MVCListAdapter;
 
+import java.util.Iterator;
 import java.util.Locale;
 
 /**
@@ -28,19 +29,12 @@ import java.util.Locale;
  */
 @NullMarked
 public class CustomizableBraveMenu {
-    private final Menu mMenu;
 
-    public CustomizableBraveMenu(final Menu menu) {
-        mMenu = menu;
-    }
-
-    public void applyCustomization() {
-        android.util.Log.d("SIMONE", "applyCustomization");
-
-        for (int i = 0; i < mMenu.size(); i++) {
-            MenuItem menuItem = mMenu.getItem(i);
-            // Skip current item if already invisible.
-            if (!menuItem.isVisible()) {
+    public static void applyCustomization(final MVCListAdapter.ModelList modelList, @IdRes int customizeMenuId) {
+        for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
+            MVCListAdapter.ListItem item = it.next();
+            // Skip current item it matches the customize menu id.
+            if (customizeMenuId == item.model.get(AppMenuItemProperties.MENU_ITEM_ID)) {
                 continue;
             }
             boolean visible =
@@ -49,19 +43,12 @@ public class CustomizableBraveMenu {
                                     String.format(
                                             Locale.ENGLISH,
                                             CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
-                                            menuItem.getItemId()),
+                                            item.model.get(AppMenuItemProperties.MENU_ITEM_ID)),
                                     true);
-            menuItem.setVisible(visible);
-
-            int itemId = menuItem.getItemId();
-            String title = menuItem.getTitle() != null ? menuItem.getTitle().toString() : "";
-            android.util.Log.d(
-                    "SIMONE", "Menu Item: " + title + ", ID: " + itemId + ", visible: " + visible);
+            if (!visible) {
+                it.remove();
+            }
         }
-    }
-
-    public void removeItem(@IdRes int id) {
-        mMenu.removeItem(id);
     }
 
     public static void openCustomizeMenuSettings(final Context context) {
