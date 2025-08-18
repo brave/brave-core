@@ -20,7 +20,7 @@ namespace brave_origin {
 
 // The policy provider for Brave Origin users. This provider supplies
 // policies based on whether the user is identified as a Brave Origin user.
-class POLICY_EXPORT BraveOriginPolicyProvider
+class BraveOriginPolicyProvider
     : public policy::ConfigurationPolicyProvider {
  public:
   explicit BraveOriginPolicyProvider(PrefService* local_state,
