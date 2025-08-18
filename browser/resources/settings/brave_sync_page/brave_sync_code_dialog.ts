@@ -120,13 +120,17 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
     }, 0)
   }
 
-  handleSyncCodeCopy_() {
+  async handleSyncCodeCopy_() {
     if (!this.syncCode) {
       console.warn('Skip handleSyncCodeCopy because code words are empty')
       return
     }
     window.clearTimeout(this.hasCopiedSyncCodeTimer_)
-    navigator.clipboard.writeText(this.syncCode)
+    try {
+      await this.syncBrowserProxy_.copySyncCodeToClipboard(this.syncCode)
+    } catch (e) {
+      console.error('copySyncCodeToClipboard failed', e)
+    }
     this.hasCopiedSyncCode_ = true
     this.hasCopiedSyncCodeTimer_ = window.setTimeout(() => {
       this.hasCopiedSyncCode_ = false
