@@ -23,6 +23,7 @@
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
 
@@ -124,7 +125,8 @@ TEST_F(MemoryStorageToolTest, UseTool_EmptyMemoryField) {
 TEST_F(MemoryStorageToolTest, UseTool_TooLongMemory) {
   // Create a string longer than kMaxMemoryRecordLength characters
   std::string long_memory(mojom::kMaxMemoryRecordLength + 1, 'a');
-  const std::string input_json = R"({"memory": ")" + long_memory + R"("})";
+  const std::string input_json =
+      absl::StrFormat(R"({"memory": "%s"})", long_memory);
 
   base::test::TestFuture<Tool::ToolResult> future;
   memory_tool_->UseTool(input_json, future.GetCallback());

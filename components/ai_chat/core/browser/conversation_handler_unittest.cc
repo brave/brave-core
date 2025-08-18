@@ -4059,13 +4059,10 @@ TEST_F(ConversationHandlerUnitTest,
   conversation_handler_->SetTemporary(false);
   auto regular_tools = conversation_handler_->GetTools();
 
-  bool memory_tool_found_regular = false;
-  for (auto& tool : regular_tools) {
-    if (tool && tool->Name() == mojom::kMemoryStorageToolName) {
-      memory_tool_found_regular = true;
-      break;
-    }
-  }
+  bool memory_tool_found_regular =
+      std::ranges::any_of(regular_tools, [](const auto& tool) {
+        return tool && tool->Name() == mojom::kMemoryStorageToolName;
+      });
   EXPECT_TRUE(memory_tool_found_regular)
       << "Memory tool should be available in regular conversations";
 
@@ -4073,13 +4070,10 @@ TEST_F(ConversationHandlerUnitTest,
   conversation_handler_->SetTemporary(true);
   auto temp_tools = conversation_handler_->GetTools();
 
-  bool memory_tool_found_temp = false;
-  for (auto& tool : temp_tools) {
-    if (tool && tool->Name() == mojom::kMemoryStorageToolName) {
-      memory_tool_found_temp = true;
-      break;
-    }
-  }
+  bool memory_tool_found_temp =
+      std::ranges::any_of(temp_tools, [](const auto& tool) {
+        return tool && tool->Name() == mojom::kMemoryStorageToolName;
+      });
   EXPECT_FALSE(memory_tool_found_temp)
       << "Memory tool should NOT be available in temporary conversations";
 }

@@ -252,7 +252,7 @@ void AIChatService::OnMemoriesChanged() {
       ai_chat::prefs::GetMemoriesFromPrefs(*profile_prefs_);
 
   // Notify all conversation handlers about memory changes.
-  for (auto& [uuid, conversation_handler] : conversation_handlers_) {
+  for (auto& [_, conversation_handler] : conversation_handlers_) {
     conversation_handler->NotifyMemoriesChanged(memories);
   }
 }
