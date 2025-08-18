@@ -156,8 +156,6 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
         (async () => {
           console.log("Entered insert image script");
           const img = document.createElement('img');
-          img.src = $1;
-          document.body.appendChild(img);
           return await new Promise((resolve) => {
             img.addEventListener("load", () => {
               resolve(true);
@@ -165,6 +163,8 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
             img.addEventListener("error", () => {
               resolve(false);
             }, {once: true});
+            img.src = $1;
+            document.body.appendChild(img);
           });
         })();
         )",
