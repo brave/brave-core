@@ -60,3 +60,13 @@ static_library("service") {
     "BRAVE_ACCOUNT_API_KEY=\"${brave_account_api_key}\"",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "email_aliases_service_unittest.cc" ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/email_aliases:service",
+    "//components/prefs:test_support",
+  ]
+}
