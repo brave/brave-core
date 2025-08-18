@@ -27,6 +27,8 @@ struct SaferSignTransactionContainerView: View {
 
   /// The token being swapped for.
   let toToken: BraveWallet.BlockchainToken?
+  /// The network of `toToken` for bridge tx
+  let toNetwork: BraveWallet.NetworkInfo?
   /// Minimum amount being bought of the `toToken`.
   let minBuyAmount: String?
   /// The gas fee for the transaction
@@ -54,11 +56,13 @@ struct SaferSignTransactionContainerView: View {
       self.fromToken = details.fromToken
       self.fromAmount = details.fromAmount
       self.toToken = details.toToken
+      self.toNetwork = details.toNetwork
       self.minBuyAmount = details.minBuyAmount
     } else {
       self.fromToken = nil
       self.fromAmount = nil
       self.toToken = nil
+      self.toNetwork = nil
       self.minBuyAmount = nil
     }
     self.gasFee = parsedTransaction.gasFee
@@ -80,6 +84,7 @@ struct SaferSignTransactionContainerView: View {
         fromTokenContractAddress: fromToken?.contractAddress,
         fromAmount: fromAmount,
         toToken: toToken,
+        toNetwork: toNetwork,
         toTokenContractAddress: toToken?.contractAddress,
         minBuyAmount: minBuyAmount
       )
