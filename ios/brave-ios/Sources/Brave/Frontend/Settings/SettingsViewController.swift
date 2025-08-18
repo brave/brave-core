@@ -837,7 +837,7 @@ class SettingsViewController: TableViewController {
       )
     }
 
-    display.rows.append(contentsOf: [
+    display.rows.append(
       Row(
         text: Strings.ShortcutButton.shortcutButtonTitle,
         selection: { [weak self] in
@@ -848,13 +848,18 @@ class SettingsViewController: TableViewController {
         image: UIImage(braveSystemNamed: "leo.launch"),
         accessory: .disclosureIndicator,
         cellClass: MultilineValue1Cell.self
-      ),
-      .boolRow(
-        title: Strings.hideRewardsIcon,
-        option: Preferences.Rewards.hideRewardsIcon,
-        image: UIImage(braveSystemNamed: "leo.product.bat-outline")
-      ),
-    ])
+      )
+    )
+
+    if BraveRewards.isSupported(prefService: braveCore.profile.prefs) {
+      display.rows.append(
+        .boolRow(
+          title: Strings.hideRewardsIcon,
+          option: Preferences.Rewards.hideRewardsIcon,
+          image: UIImage(braveSystemNamed: "leo.product.bat-outline")
+        )
+      )
+    }
 
     return display
   }()
