@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TEXT_EMBEDDER_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TEXT_EMBEDDER_H_
+#ifndef BRAVE_COMPONENTS_LOCAL_AI_BROWSER_TEXT_EMBEDDER_H_
+#define BRAVE_COMPONENTS_LOCAL_AI_BROWSER_TEXT_EMBEDDER_H_
 
 #include <stddef.h>
 
@@ -37,7 +37,7 @@ namespace base {
 class SequencedTaskRunner;
 }  // namespace base
 
-namespace ai_chat {
+namespace local_ai {
 // TextEmbedder is a wrapper class for tflite::task::text::TextEmbedder.and
 // runs all the operations on a separate sequence task runner to avoid blocking
 // owner sequence runner ex. brwoser UI thread.
@@ -60,8 +60,8 @@ class TextEmbedder {
   virtual void Initialize(InitializeCallback callback);
 
   absl::StatusOr<std::vector<int>> SuggestTabsForGroup(
-    std::vector<std::pair<int, std::string>> group_tabs,
-    std::vector<std::pair<int, std::string>> candidate_tabs);
+      std::vector<std::pair<int, std::string>> group_tabs,
+      std::vector<std::pair<int, std::string>> candidate_tabs);
 
   // Cancel all the pending tflite tasks on the embedder task runner.
   // Should be used right before the TextEmbedder is destroyed to avoid long
@@ -90,7 +90,7 @@ class TextEmbedder {
 
   static constexpr float COSINE_SIM_THRESHOLD = 0.8f;
   std::vector<int> getMostSimilarTabIndices(const std::vector<double>& vec,
-                                             const std::vector<int>& id);
+                                            const std::vector<int>& id);
 
   // Lock used to ensure mutual exclusive access to |tflite_text_embedder_|
   // when setting unique_ptr and accessing it from |owner_task_runner_|.
@@ -103,5 +103,5 @@ class TextEmbedder {
 
   base::WeakPtrFactory<TextEmbedder> weak_ptr_factory_{this};
 };
-}  // namespace ai_chat
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TEXT_EMBEDDER_H_
+}  // namespace local_ai
+#endif  // BRAVE_COMPONENTS_LOCAL_AI_BROWSER_TEXT_EMBEDDER_H_

@@ -6,7 +6,9 @@
 #include "chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h"
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "brave/components/local_ai/common/features.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/views/bubble_menu_item_factory.h"
@@ -71,6 +73,11 @@ void TabGroupEditorBubbleView::SuggestedTabsPressed() {
 }
 
 void TabGroupEditorBubbleView::MaybeAddSuggestedTabsButton() {
+  // Only add the button if the Local AI Tab Grouping feature is enabled
+  if (!base::FeatureList::IsEnabled(local_ai::features::kLocalAITabGrouping)) {
+    return;
+  }
+
   // Find the position after "New tab in group" button and insert our button
   for (size_t i = 0; i < simple_menu_items_.size(); ++i) {
     if (simple_menu_items_[i]->GetID() ==

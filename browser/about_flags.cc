@@ -28,6 +28,7 @@
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
+#include "brave/components/local_ai/common/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -596,6 +597,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #else
 #define BRAVE_AI_REWRITER
 #endif
+
+#define BRAVE_LOCAL_AI_FEATURE_ENTRIES                             \
+  EXPAND_FEATURE_ENTRIES({                                         \
+      "brave-local-ai-tab-grouping",                               \
+      "Brave Local AI Tab Grouping",                               \
+      "Enables tab group management powered by on device AI",      \
+      kOsWin | kOsMac | kOsLinux,                                  \
+      FEATURE_VALUE_TYPE(local_ai::features::kLocalAITabGrouping), \
+  })
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
   EXPAND_FEATURE_ENTRIES(                                                     \
@@ -1198,6 +1208,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_REWRITER                                                            \
+  BRAVE_LOCAL_AI_FEATURE_ENTRIES                                               \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
