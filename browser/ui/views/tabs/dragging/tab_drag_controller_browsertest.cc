@@ -66,7 +66,7 @@ IN_PROC_BROWSER_TEST_F(TabDragControllerTest,
       ui::EventType::kMousePressed, tab_group_header_center,
       tab_group_header_center, base::TimeTicks(), ui::EF_LEFT_MOUSE_BUTTON,
       ui::EF_LEFT_MOUSE_BUTTON);
-  tab_strip->StopAnimating(true);
+  tab_strip->StopAnimating();
   tab_strip->MaybeStartDrag(tab_group_header, mouse_pressed_event,
                             tab_strip->GetSelectionModel());
 
