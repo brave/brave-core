@@ -6,12 +6,6 @@
 import BraveCore
 import SwiftUI
 
-private let braveCoreMain: BraveCoreMain = {
-  let main = BraveCoreMain(userAgent: nil)
-  main.scheduleLowPriorityStartupTasks()
-  return main
-}()
-
 // Basic nav delegate to test some Brave specific features in the web shell app
 private class NavDelegate: NSObject, BraveWebViewNavigationDelegate {
   func webView(_ webView: CWVWebView, shouldBlockJavaScriptFor request: URLRequest) -> Bool {
@@ -79,11 +73,15 @@ struct WebView: UIViewRepresentable {
 }
 
 struct ContentView: View {
-  @StateObject private var model: WebViewModel = .init(
-    webView: .init(frame: .zero, configuration: braveCoreMain.defaultWebViewConfiguration)
-  )
+  @StateObject private var model: WebViewModel
   @State private var isPresentingAlert: Bool = false
   @State private var urlSubmitText: String = ""
+
+  init(configuration: CWVWebViewConfiguration) {
+    self._model = StateObject(
+      wrappedValue: WebViewModel(webView: .init(frame: .zero, configuration: configuration))
+    )
+  }
 
   var body: some View {
     NavigationStack {
@@ -186,8 +184,4 @@ struct ContentView: View {
       }
     }
   }
-}
-
-#Preview {
-  ContentView()
 }
