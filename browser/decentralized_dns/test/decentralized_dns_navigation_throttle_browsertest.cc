@@ -326,13 +326,21 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
                               "!proceedClicksEnabled")
                   .ExtractBool());
 
-  base::RunLoop run_loop;
-  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(), base::Milliseconds(600));
-  run_loop.Run();
-
-  EXPECT_TRUE(
-      content::EvalJs(main_frame, "proceedClicksEnabled").ExtractBool());
+  // Wait for proceedClicksEnabled to become true
+  EXPECT_TRUE(content::EvalJs(main_frame, R"(
+    new Promise((resolve) => {
+      function checkCondition() {
+        if (typeof proceedClicksEnabled !== 'undefined' &&
+            proceedClicksEnabled) {
+          resolve(true);
+        } else {
+          setTimeout(checkCondition, 50);
+        }
+      }
+      checkCondition();
+    })
+  )")
+                  .ExtractBool());
 }
 
 class DecentralizedDnsNavigationThrottlePolicyTest
