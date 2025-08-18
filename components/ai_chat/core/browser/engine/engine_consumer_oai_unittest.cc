@@ -478,7 +478,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Initiate the test
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      {page_content}, history, "", false, {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &assistant_response](
                                      EngineConsumer::GenerationResult result) {
         EXPECT_EQ(result.value(),
@@ -559,7 +559,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   }
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             EXPECT_EQ(result.value(),
@@ -607,7 +607,7 @@ TEST_F(EngineConsumerOAIUnitTest,
           });
 
   engine_->GenerateAssistantResponse(
-      {}, GetHistoryWithModifiedReply(), "", {}, std::nullopt,
+      {}, GetHistoryWithModifiedReply(), "", false, {}, std::nullopt,
       base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
@@ -698,7 +698,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
       base::Time::Now(), std::nullopt, Clone(uploaded_images), false,
       std::nullopt /* model_key */));
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({}, history, "", {}, std::nullopt,
+  engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -777,7 +777,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadPdf) {
       std::nullopt /* model_key */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({}, history, "", {}, std::nullopt,
+  engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -849,7 +849,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       std::nullopt /* model_key */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({}, history, "", {}, std::nullopt,
+  engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -993,7 +993,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
       std::nullopt /* model_key */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
-  engine_->GenerateAssistantResponse({}, history, "", {}, std::nullopt,
+  engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -1038,7 +1038,7 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   PageContent page_content("This is a page.", false);
   engine_->GenerateAssistantResponse(
-      {page_content}, history, "", {}, std::nullopt, base::DoNothing(),
+      {page_content}, history, "", false, {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -1070,7 +1070,7 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
     std::vector<mojom::ConversationTurnPtr> history;
     history.push_back(mojom::ConversationTurn::New());
     mock_engine_consumer->GenerateAssistantResponse(
-        {page_content_1, page_content_2}, history, "", {}, std::nullopt,
+        {page_content_1, page_content_2}, history, "", false, {}, std::nullopt,
         base::DoNothing(), base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
@@ -1129,7 +1129,7 @@ TEST_F(EngineConsumerOAIUnitTest,
           });
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -1224,11 +1224,83 @@ TEST_F(EngineConsumerOAIUnitTest,
           });
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
   run_loop.Run();
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       GenerateAssistantResponse_TemporaryChatExcludesMemory) {
+  // Setup the model options to not have a custom system prompt
+  auto options = mojom::CustomModelOptions::New();
+  options->endpoint = GURL("https://test.com/");
+  options->model_request_name = "request_name";
+  options->api_key = "api_key";
+  options->model_system_prompt = std::nullopt;
+
+  model_ = mojom::Model::New();
+  model_->key = "test_model_key";
+  model_->display_name = "Test Model Display Name";
+  model_->options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(options));
+
+  engine_ = std::make_unique<EngineConsumerOAIRemote>(
+      *model_->options->get_custom_model_options(), nullptr, nullptr,
+      &pref_service_);
+  engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
+
+  // Setup user memory to ensure it's available but should be excluded
+  auto customizations = mojom::Customizations::New();
+  customizations->name = "John Doe";
+  customizations->other = "Software Engineer";
+  prefs::SetCustomizationsToPrefs(std::move(customizations), pref_service_);
+  prefs::AddMemoryToPrefs("I like to eat apple", pref_service_);
+
+  EngineConsumer::ConversationHistory history;
+  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->text = "What is my name?";
+  history.push_back(std::move(entry));
+
+  auto* client = GetClient();
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce(
+          [&](const mojom::CustomModelOptions, base::Value::List messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback) {
+            // Should only have 2 messages: system prompt and user message
+            // NO user memory message should be present
+            ASSERT_EQ(messages.size(), 2u);
+            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+            // The system message should contain the default system prompt
+            // but NOT include user memory instruction segment
+            std::string* content = messages[0].GetDict().FindString("content");
+            ASSERT_TRUE(content);
+            EXPECT_THAT(*content, testing::Not(testing::HasSubstr("memory")));
+            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[1].GetDict().Find("content"),
+                      "What is my name?");
+
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt /* model_key */)));
+          });
+
+  engine_->GenerateAssistantResponse(
+      {}, history, "",
+      true,  // is_temporary_chat = true
+      {}, std::nullopt, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client);
 }
 
 }  // namespace ai_chat

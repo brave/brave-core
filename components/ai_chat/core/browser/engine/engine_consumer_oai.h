@@ -55,6 +55,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       PageContents page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
+      bool is_temporary_chat,
       const std::vector<base::WeakPtr<Tool>>& tools,
       std::optional<std::string_view> preferred_tool_name,
       GenerationDataCallback data_received_callback,
@@ -91,7 +92,8 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       int video_message_id,
       int page_message_id);
 
-  std::optional<base::Value::Dict> BuildUserMemoryMessage();
+  std::optional<base::Value::Dict> BuildUserMemoryMessage(
+      bool is_temporary_chat);
 
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,

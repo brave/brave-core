@@ -147,6 +147,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 
+  // Return if this is a temporary chat.
+  bool IsTemporaryChat() const;
+
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;

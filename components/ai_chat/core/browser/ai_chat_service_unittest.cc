@@ -468,6 +468,7 @@ TEST_P(AIChatServiceUnitTest,
           [&resolve](PageContents page_contents,
                      const std::vector<mojom::ConversationTurnPtr>& history,
                      const std::string& selected_language,
+                     bool is_temporary_chat,
                      const std::vector<base::WeakPtr<Tool>>& tools,
                      std::optional<std::string_view> preferred_tool_name,
                      base::RepeatingCallback<void(
