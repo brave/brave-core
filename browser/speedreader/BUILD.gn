@@ -40,5 +40,8 @@ source_set("unit_tests") {
 
   sources = [ "speedreader_service_unittest.cc" ]
 
-  deps = [ ":speedreader" ]
+  deps = [
+    ":speedreader",
+    "//testing/gtest",
+  ]
 }

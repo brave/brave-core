@@ -50,12 +50,9 @@ SpeedreaderServiceFactory::BuildServiceInstanceForBrowserContext(
   }
 
 
-  auto* content_settings =
-      HostContentSettingsMapFactory::GetForProfile(context);
-  CHECK(content_settings);
-
   return std::make_unique<SpeedreaderService>(
-      context, g_browser_process->local_state(), content_settings);
+      context, g_browser_process->local_state(),
+      HostContentSettingsMapFactory::GetForProfile(context));
 }
 
 }  // namespace speedreader
