@@ -44,7 +44,11 @@ void PluralStringHandler::HandleGetPluralString(const base::Value::List& args) {
 
   const base::Value& callback_id = args[0];
   const std::string& message_name = args[1].GetString();
-  int count = args[2].GetInt();
+  int count = 0;
+  const auto& val = args[2];
+  if (val.is_int()) {
+    count = val.GetInt();
+  }
 
   auto string = GetPluralizedStringForMessageName(message_name, count);
 
