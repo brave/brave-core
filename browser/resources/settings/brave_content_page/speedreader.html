@@ -9,7 +9,8 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     pref="{{prefs.brave.speedreader.feature_enabled}}"
     label="$i18n{speedreaderFeatureLabel}"
     sub-label="$i18n{speedreaderFeatureSubLabel}"
-    learn-more-url="$i18n{speedreaderLearnMoreURL}">
+    learn-more-url="$i18n{speedreaderLearnMoreURL}"
+    hidden="[[isSpeedreaderFeatureManaged_(prefs.brave.speedreader.feature_enabled)]]">
 </settings-toggle-button>
 
 <template is="dom-if" if="[[prefs.brave.speedreader.feature_enabled.value]]">

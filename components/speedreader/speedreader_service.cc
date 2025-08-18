@@ -45,8 +45,8 @@ bool IsSpeedreaderEnabled() {
 
 }  // namespace features
 
-bool IsDisabledByPolicy(PrefService* prefs) {
-  return prefs->GetBoolean(kSpeedreaderDisabledByPolicy);
+bool IsSpeedreaderFeatureEnabled(PrefService* prefs) {
+  return prefs->GetBoolean(kSpeedreaderPrefFeatureEnabled);
 }
 
 SpeedreaderService::SpeedreaderService(content::BrowserContext* browser_context,
@@ -91,7 +91,6 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSpeedreaderPrefTtsVoice, "");
   registry->RegisterIntegerPref(kSpeedreaderPrefTtsSpeed,
                                 static_cast<int>(PlaybackSpeed::k100));
-  registry->RegisterBooleanPref(kSpeedreaderDisabledByPolicy, false);
 }
 
 // static
@@ -108,9 +107,7 @@ void SpeedreaderService::RemoveObserver(Observer* observer) {
 }
 
 bool SpeedreaderService::IsFeatureEnabled() {
-  bool disabled_by_policy = speedreader::IsDisabledByPolicy(prefs_);
-  bool feature_enabled = prefs_->GetBoolean(kSpeedreaderPrefFeatureEnabled);
-  return !disabled_by_policy && feature_enabled;
+  return speedreader::IsSpeedreaderFeatureEnabled(prefs_);
 }
 
 bool SpeedreaderService::IsEnabledForAllSites() {

@@ -428,8 +428,8 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
 #endif
     case IDC_SPEEDREADER_ICON_ONCLICK:
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-      return pref_service_->GetBoolean(
-          speedreader::kSpeedreaderDisabledByPolicy);
+      return !pref_service_->GetBoolean(
+          speedreader::kSpeedreaderPrefFeatureEnabled);
 #else
       return true;  // Speedreader not compiled in, always disabled
 #endif
