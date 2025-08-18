@@ -1,13 +1,13 @@
-caption: Disable Speedreader
+caption: Enable Speedreader
 default: null
 desc: |-
-  Disable Speedreader in Brave.
+  Enable Speedreader in Brave.
 
   Speedreader is a feature that provides a clutter-free reading experience by automatically cleaning up articles and simplifying page layouts.
 
-            If this policy is set to true, Speedreader will always be disabled and all related UI elements will be hidden.
+            If this policy is set to true, Speedreader will always be enabled.
 
-            If this policy is set to false, Speedreader will always be enabled.
+            If this policy is set to false, Speedreader will always be disabled and all related UI elements will be hidden.
 
             If you set this policy, users cannot change or override it.
 
@@ -20,9 +20,9 @@ features:
   per_profile: true
 items:
 - caption: Enable Speedreader
-  value: false
-- caption: Disable Speedreader
   value: true
+- caption: Disable Speedreader
+  value: false
 - caption: Allow the user to decide
   value: null
 owners:
