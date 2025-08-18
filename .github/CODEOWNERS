@@ -204,6 +204,8 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 
 # Deprecated android util directory
 android/java/org/chromium/chrome/browser/util @bridiver
+# This file should be removed once our UI is adjusted to Dynamic Colors
+android/java/org/chromium/chrome/browser/util/BraveDynamicColors.java @brave/Android
 
 # These rules are last to take precedence over directory rules.Do not add any
 # new rules below this line without checking with @bridiver
