@@ -88,6 +88,7 @@ class EngineConsumer {
       PageContents page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
+      bool is_temporary_chat,
       const std::vector<base::WeakPtr<Tool>>& tools,
       std::optional<std::string_view> preferred_tool_name,
       GenerationDataCallback data_received_callback,

@@ -299,6 +299,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
     PageContents page_contents,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
+    bool is_temporary_chat,
     const std::vector<base::WeakPtr<Tool>>& tools,
     std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
@@ -325,9 +326,10 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   auto page_content_messages = BuildPageContentMessages(
       page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
       IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
-  base::Value::List messages = BuildMessages(
-      model_options_, std::move(page_content_messages),
-      BuildUserMemoryMessage(), selected_text, conversation_history);
+  base::Value::List messages =
+      BuildMessages(model_options_, std::move(page_content_messages),
+                    BuildUserMemoryMessage(is_temporary_chat), selected_text,
+                    conversation_history);
   api_->PerformRequest(model_options_, std::move(messages),
                        std::move(data_received_callback),
                        std::move(completed_callback));
@@ -378,7 +380,10 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
 }
 
 std::optional<base::Value::Dict>
-EngineConsumerOAIRemote::BuildUserMemoryMessage() {
+EngineConsumerOAIRemote::BuildUserMemoryMessage(bool is_temporary_chat) {
+  if (is_temporary_chat) {
+    return std::nullopt;
+  }
   auto memories = prefs::GetUserMemoryDictFromPrefs(*prefs_);
   if (!memories) {
     return std::nullopt;
