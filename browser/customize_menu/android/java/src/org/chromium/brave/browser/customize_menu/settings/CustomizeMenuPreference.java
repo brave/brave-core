@@ -1,3 +1,8 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 package org.chromium.brave.browser.customize_menu.settings;
 
 import android.content.Context;
@@ -7,29 +12,31 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import org.chromium.brave.browser.customize_menu.R;
 
+import org.chromium.brave.browser.customize_menu.R;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 
 /**
- * Brave custom menu preference hosted by {@link CustomizeMenuPreferenceFragment}. It shows
- * all the items that can be hidden from the main menu.
+ * Brave custom menu preference hosted by {@link CustomizeMenuPreferenceFragment}. It shows all the
+ * items that can be hidden from the main menu.
  */
+@NullMarked
 public class CustomizeMenuPreference extends Preference {
-   private RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
-   public CustomizeMenuPreference(Context context, @Nullable AttributeSet attrs) {
-      super(context, attrs);
-   }
+    public CustomizeMenuPreference(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-   @Override
-   public void onBindViewHolder(PreferenceViewHolder holder) {
-      super.onBindViewHolder(holder);
+    @Override
+    public void onBindViewHolder(PreferenceViewHolder holder) {
+        super.onBindViewHolder(holder);
 
-      mRecyclerView = (RecyclerView) holder.findViewById(R.id.menu_item_list);
+        mRecyclerView = (RecyclerView) holder.findViewById(R.id.menu_item_list);
 
-      if (mRecyclerView != null) {
-         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-      }
-   }
+        if (mRecyclerView != null) {
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
+    }
 }

@@ -30,7 +30,8 @@ import java.util.Locale;
 @NullMarked
 public class CustomizableBraveMenu {
 
-    public static void applyCustomization(final MVCListAdapter.ModelList modelList, @IdRes int customizeMenuId) {
+    public static void applyCustomization(
+            final MVCListAdapter.ModelList modelList, @IdRes int customizeMenuId) {
         for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
             MVCListAdapter.ListItem item = it.next();
             // Skip current item it matches the customize menu id.
