@@ -1075,6 +1075,8 @@ provideStrings({
   braveWalletEditPermissionsButton: 'Edit permissions',
   braveWalletEditPermissionsProposedAllowance: 'Proposed allowance',
   braveWalletEditPermissionsCustomAllowance: 'Custom allowance',
+  braveWalletProposedSpendLimit: 'Proposed spend limit',
+  braveWalletCustomSpendLimit: 'Custom spend limit',
 
   // Send Input Errors
   braveWalletNotValidFilAddress: 'Not a valid FIL address',

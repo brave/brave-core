@@ -514,6 +514,8 @@
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_BUTTON" desc="Edit allowance panel button">Edit permissions</message>
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_PROPOSED_ALLOWANCE" desc="Edit allowance panel button">Proposed allowance</message>
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_CUSTOM_ALLOWANCE" desc="Edit allowance panel button">Custom allowance</message>
+  <message name="IDS_BRAVE_WALLET_PROPOSED_SPEND_LIMIT" desc="Edit allowance proposed spend limit label">Proposed spend limit</message>
+  <message name="IDS_BRAVE_WALLET_CUSTOM_SPEND_LIMIT" desc="Edit allowance custom spend limit label">Custom spend limit</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">Not a valid ETH address</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_SOL_ADDRESS" desc="Send input not valid SOL address error">Not a valid SOL address</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ADDRESS" desc="Send input not valid address error">Not a valid <ph name="COIN_TYPE_SYMBOL"><ex>ETH</ex>$1</ph> address.</message>
