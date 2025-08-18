@@ -81,9 +81,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
   // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
       &aggregation_service::kAggregationServiceMultipleCloudProviders,
-#if BUILDFLAG(IS_ANDROID)
-      &android_webview::features::kWebViewMediaIntegrityApiBlinkExtension,
-#endif
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillAiServerModel,
       &autofill::features::kAutofillEnableAmountExtractionDesktop,
