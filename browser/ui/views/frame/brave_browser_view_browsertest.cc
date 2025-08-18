@@ -186,14 +186,14 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, ScrimForTabModalDisabledTest) {
   TabModalConfirmDialog::Create(std::move(delegate), contents);
   EXPECT_FALSE(browser_view()
                    ->GetActiveContentsContainerView()
-                   ->GetContentsScrimView()
+                   ->contents_scrim_view()
                    ->GetVisible());
 
   ASSERT_TRUE(
       AddTabAtIndex(1, GURL(url::kAboutBlankURL), ui::PAGE_TRANSITION_LINK));
   EXPECT_FALSE(browser_view()
                    ->GetActiveContentsContainerView()
-                   ->GetContentsScrimView()
+                   ->contents_scrim_view()
                    ->GetVisible());
 
   browser()->tab_strip_model()->ActivateTabAt(
@@ -201,7 +201,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, ScrimForTabModalDisabledTest) {
              TabStripUserGestureDetails::GestureType::kMouse));
   EXPECT_FALSE(browser_view()
                    ->GetActiveContentsContainerView()
-                   ->GetContentsScrimView()
+                   ->contents_scrim_view()
                    ->GetVisible());
 }
 
