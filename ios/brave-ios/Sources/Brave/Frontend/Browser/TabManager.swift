@@ -846,11 +846,12 @@ class TabManager: NSObject {
     }
   }
 
-  @MainActor func shredDataForTabs(_ tabs: [any TabState]) {
+  /// Shreds data for a set of tabs and returns tabs that are to be shredded/removed.
+  @MainActor func shredDataForTabs(_ tabs: [any TabState]) -> Set<TabState.ID> {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
     let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
     let urlsToShred = Set(tabs.compactMap(\.visibleURL?.urlToShred))
-    var tabsToRemove = allTabs.filter({
+    let tabsToRemove = allTabs.filter({
       if let url = $0.visibleURL?.urlToShred {
         return urlsToShred.contains(url)
       }
@@ -860,6 +861,7 @@ class TabManager: NSObject {
       removeTabs(tabsToRemove)
       await forgetData(for: Array(urlsToShred), dataStore: configuration.websiteDataStore)
     }
+    return Set(tabsToRemove.map(\.id))
   }
 
   @MainActor func shredAllTabsForCurrentMode() {

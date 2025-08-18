@@ -287,12 +287,16 @@ struct TabGridView: View {
           .resizable()
           .playing(loopMode: .playOnce)
           .animationDidFinish { _ in
-            let dismissAfterShred = viewModel.tabs.count == 1 || shredMode == .allTabs
+            let originalTabIDs = Set(viewModel.tabs.map(\.id))
+            var dismissAfterShred = originalTabIDs.count == 1 || shredMode == .allTabs
             switch shredMode {
             case .selectedTab:
               viewModel.shredSelectedTab()
             case .selectedTabs:
-              viewModel.shredSelectedTabs(selectedTabs)
+              let affectedTabsIDs = viewModel.shredSelectedTabs(Set(selectedTabs))
+              if !dismissAfterShred {
+                dismissAfterShred = originalTabIDs.count == affectedTabsIDs.count
+              }
             case .allTabs:
               viewModel.shredAllTabs()
             }
@@ -529,8 +533,12 @@ struct TabGridView: View {
       .disabled(selectedTabs.isEmpty || !viewModel.isShredAvailableForSelectedTabs(selectedTabs))
       Button {
         withAnimation {
+          let dismissAfterClose = selectedTabs.count == viewModel.tabs.count
           editMode = .inactive
           viewModel.closeTabs(selectedTabs)
+          if dismissAfterClose {
+            dismiss()
+          }
         }
       } label: {
         Label(Strings.close, braveSystemImage: "leo.close")

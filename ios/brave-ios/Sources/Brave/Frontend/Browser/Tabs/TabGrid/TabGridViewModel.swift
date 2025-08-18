@@ -158,8 +158,8 @@ class TabGridViewModel {
     tabManager.shredData(for: url, in: tab)
   }
 
-  func shredSelectedTabs(_ tabs: [TabState.ID]) {
-    tabManager.shredDataForTabs(tabs.compactMap({ tabManager[$0] }))
+  func shredSelectedTabs(_ tabs: Set<TabState.ID>) -> Set<TabState.ID> {
+    return tabManager.shredDataForTabs(tabs.compactMap({ tabManager[$0] }))
   }
 
   func shredAllTabs() {
