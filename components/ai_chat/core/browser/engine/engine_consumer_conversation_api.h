@@ -60,6 +60,7 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       PageContents page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
+      bool is_temporary_chat,
       const std::vector<base::WeakPtr<Tool>>& tools,
       std::optional<std::string_view> preferred_tool_name,
       GenerationDataCallback data_received_callback,
@@ -124,11 +125,10 @@ class EngineConsumerConversationAPI : public EngineConsumer {
   ConversationAPIClient::ConversationEvent
   GetAssociatedContentConversationEvent(const PageContent& content,
                                         uint32_t remaining_length);
-  std::optional<ConversationAPIClient::ConversationEvent> GetUserMemoryEvent()
-      const;
+  std::optional<ConversationAPIClient::ConversationEvent> GetUserMemoryEvent(
+      bool is_temporary_chat) const;
 
   std::unique_ptr<ConversationAPIClient> api_ = nullptr;
-  raw_ptr<PrefService> pref_service_ = nullptr;
 
   base::WeakPtrFactory<EngineConsumerConversationAPI> weak_ptr_factory_{this};
 };

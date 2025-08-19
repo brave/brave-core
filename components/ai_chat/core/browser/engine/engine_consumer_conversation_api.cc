@@ -32,8 +32,7 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
-#include "components/prefs/pref_service.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -56,8 +55,8 @@ EngineConsumerConversationAPI::EngineConsumerConversationAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager,
     ModelService* model_service,
-    PrefService* pref_service)
-    : EngineConsumer(model_service), pref_service_(pref_service) {
+    PrefService* prefs)
+    : EngineConsumer(model_service, prefs) {
   DCHECK(!model_options.name.empty());
   model_name_ = model_options.name;
   api_ = std::make_unique<ConversationAPIClient>(
@@ -200,52 +199,13 @@ void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
 }
 
 std::optional<ConversationEvent>
-EngineConsumerConversationAPI::GetUserMemoryEvent() const {
-  bool customization_enabled =
-      pref_service_->GetBoolean(prefs::kBraveAIChatUserCustomizationEnabled);
-  bool memory_enabled =
-      pref_service_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled);
-  if (!customization_enabled && !memory_enabled) {
+EngineConsumerConversationAPI::GetUserMemoryEvent(
+    bool is_temporary_chat) const {
+  if (is_temporary_chat) {
     return std::nullopt;
   }
-
-  base::Value::Dict user_memory;
-  if (customization_enabled) {
-    const base::Value::Dict& customizations_dict =
-        pref_service_->GetDict(prefs::kBraveAIChatUserCustomizations);
-
-    // Only set values when they have actual content
-    if (const std::string* name = customizations_dict.FindString("name")) {
-      if (!name->empty()) {
-        user_memory.Set("name", *name);
-      }
-    }
-    if (const std::string* job = customizations_dict.FindString("job")) {
-      if (!job->empty()) {
-        user_memory.Set("job", *job);
-      }
-    }
-    if (const std::string* tone = customizations_dict.FindString("tone")) {
-      if (!tone->empty()) {
-        user_memory.Set("tone", *tone);
-      }
-    }
-    if (const std::string* other = customizations_dict.FindString("other")) {
-      if (!other->empty()) {
-        user_memory.Set("other", *other);
-      }
-    }
-  }
-
-  if (memory_enabled) {
-    const base::Value::List& memories =
-        pref_service_->GetList(prefs::kBraveAIChatUserMemories);
-    if (!memories.empty()) {
-      user_memory.Set("memories", memories.Clone());
-    }
-  }
-
-  if (user_memory.empty()) {
+  auto user_memory_dict = prefs::GetUserMemoryDictFromPrefs(*prefs_);
+  if (!user_memory_dict.has_value()) {
     return std::nullopt;
   }
 
@@ -253,13 +213,14 @@ EngineConsumerConversationAPI::GetUserMemoryEvent() const {
                            ConversationEventType::UserMemory,
                            std::vector<std::string>(),  // Empty content
                            "",                          // Empty topic
-                           std::move(user_memory));
+                           std::move(*user_memory_dict));
 }
 
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
     PageContents page_contents,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
+    bool is_temporary_chat,
     const std::vector<base::WeakPtr<Tool>>& tools,
     std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
@@ -273,7 +234,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   int remaining_length = max_associated_content_length_;
 
   // user memory
-  if (auto event = GetUserMemoryEvent()) {
+  if (auto event = GetUserMemoryEvent(is_temporary_chat)) {
     conversation.push_back(std::move(*event));
   }
 

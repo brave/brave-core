@@ -86,4 +86,56 @@ void DeleteAllMemoriesFromPrefs(PrefService& prefs) {
   prefs.ClearPref(prefs::kBraveAIChatUserMemories);
 }
 
+std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(
+    PrefService& prefs) {
+  bool customization_enabled =
+      prefs.GetBoolean(prefs::kBraveAIChatUserCustomizationEnabled);
+  bool memory_enabled = prefs.GetBoolean(prefs::kBraveAIChatUserMemoryEnabled);
+  if (!customization_enabled && !memory_enabled) {
+    return std::nullopt;
+  }
+
+  base::Value::Dict user_memory;
+  if (customization_enabled) {
+    const base::Value::Dict& customizations_dict =
+        prefs.GetDict(prefs::kBraveAIChatUserCustomizations);
+
+    // Only set values when they have actual content
+    if (const std::string* name = customizations_dict.FindString("name")) {
+      if (!name->empty()) {
+        user_memory.Set("name", *name);
+      }
+    }
+    if (const std::string* job = customizations_dict.FindString("job")) {
+      if (!job->empty()) {
+        user_memory.Set("job", *job);
+      }
+    }
+    if (const std::string* tone = customizations_dict.FindString("tone")) {
+      if (!tone->empty()) {
+        user_memory.Set("tone", *tone);
+      }
+    }
+    if (const std::string* other = customizations_dict.FindString("other")) {
+      if (!other->empty()) {
+        user_memory.Set("other", *other);
+      }
+    }
+  }
+
+  if (memory_enabled) {
+    const base::Value::List& memories =
+        prefs.GetList(prefs::kBraveAIChatUserMemories);
+    if (!memories.empty()) {
+      user_memory.Set("memories", memories.Clone());
+    }
+  }
+
+  if (user_memory.empty()) {
+    return std::nullopt;
+  }
+
+  return user_memory;
+}
+
 }  // namespace ai_chat::prefs

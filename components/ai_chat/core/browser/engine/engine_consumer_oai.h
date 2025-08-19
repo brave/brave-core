@@ -21,6 +21,8 @@
 template <class T>
 class scoped_refptr;
 
+class PrefService;
+
 namespace api_request_helper {
 class APIRequestResult;
 }  // namespace api_request_helper
@@ -38,7 +40,8 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   explicit EngineConsumerOAIRemote(
       const mojom::CustomModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      ModelService* model_service);
+      ModelService* model_service,
+      PrefService* prefs);
   EngineConsumerOAIRemote(const EngineConsumerOAIRemote&) = delete;
   EngineConsumerOAIRemote& operator=(const EngineConsumerOAIRemote&) = delete;
   ~EngineConsumerOAIRemote() override;
@@ -52,6 +55,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       PageContents page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
+      bool is_temporary_chat,
       const std::vector<base::WeakPtr<Tool>>& tools,
       std::optional<std::string_view> preferred_tool_name,
       GenerationDataCallback data_received_callback,
@@ -87,6 +91,10 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       uint32_t max_associated_content_length,
       int video_message_id,
       int page_message_id);
+
+  std::optional<base::Value::Dict> BuildUserMemoryMessage(
+      bool is_temporary_chat);
+
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);

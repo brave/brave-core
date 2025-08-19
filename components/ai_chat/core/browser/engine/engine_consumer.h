@@ -19,6 +19,8 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
+class PrefService;
+
 namespace ai_chat {
 class Tool;
 
@@ -72,7 +74,7 @@ class EngineConsumer {
 
   static std::string GetPromptForEntry(const mojom::ConversationTurnPtr& entry);
 
-  explicit EngineConsumer(ModelService* model_service);
+  EngineConsumer(ModelService* model_service, PrefService* prefs);
   EngineConsumer(const EngineConsumer&) = delete;
   EngineConsumer& operator=(const EngineConsumer&) = delete;
   virtual ~EngineConsumer();
@@ -86,6 +88,7 @@ class EngineConsumer {
       PageContents page_contents,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
+      bool is_temporary_chat,
       const std::vector<base::WeakPtr<Tool>>& tools,
       std::optional<std::string_view> preferred_tool_name,
       GenerationDataCallback data_received_callback,
@@ -139,6 +142,7 @@ class EngineConsumer {
   uint32_t max_associated_content_length_ = 0;
   std::string model_name_ = "";
   raw_ptr<ModelService> model_service_;
+  raw_ptr<PrefService> prefs_ = nullptr;
 };
 
 }  // namespace ai_chat
