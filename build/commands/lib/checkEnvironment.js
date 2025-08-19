@@ -73,8 +73,11 @@ function checkWorkingDirectoryChainOnWindows() {
     }
 
     // Check if directory device ID does not match the working directory device
-    // ID. This can happen if a drive is attached as a directory.
-    if (stats.dev !== workingDirectoryDev) {
+    // ID. This can happen if a drive is attached as a directory. ReFS (Dev
+    // Drive) has `dev` value change for each directory, but NTFS has it set to
+    // 0 for on-device directories. Check only NTFS drives as there's no native
+    // way of checking if a drive is attached as a directory in Node.js.
+    if (workingDirectoryDev === 0 && stats.dev !== workingDirectoryDev) {
       Log.error(
         `Is ${currentDir} a junction pointing to a different drive than ${process.cwd()}? `
           + 'This is not supported.',
