@@ -1267,6 +1267,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   EngineConsumer::ConversationHistory history;
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+  entry->uuid = "turn-1";
   entry->character_type = mojom::CharacterType::HUMAN;
   entry->text = "What is my name?";
   history.push_back(std::move(entry));

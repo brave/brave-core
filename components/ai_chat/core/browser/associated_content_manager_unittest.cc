@@ -297,4 +297,139 @@ TEST_F(AssociatedContentManagerUnitTest,
       "");
 }
 
+TEST_F(AssociatedContentManagerUnitTest, GetCachedContentsMap_Empty) {
+  // GetCachedContentsMap should return an empty map when there's no content
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map.empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       GetCachedContentsMap_UnassociatedContent) {
+  // Add content but don't associate it with any turn
+  NiceMock<MockAssociatedContent> content;
+  content.SetTextContent("Unassociated content");
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+
+  auto associated_content = conversation_handler_->associated_content_manager()
+                                ->GetAssociatedContent();
+  ASSERT_EQ(1u, associated_content.size());
+  EXPECT_FALSE(associated_content[0]->conversation_turn_uuid.has_value());
+
+  EXPECT_DEATH_IF_SUPPORTED(conversation_handler_->associated_content_manager()
+                                ->GetCachedContentsMap(),
+                            "");
+}
+
+TEST_F(AssociatedContentManagerUnitTest, GetCachedContentsMap_MultipleContent) {
+  NiceMock<MockAssociatedContent> content1;
+  content1.SetTextContent("Content 1");
+  conversation_handler_->associated_content_manager()->AddContent(&content1);
+
+  NiceMock<MockAssociatedContent> content2;
+  content2.SetTextContent("Content 2");
+  conversation_handler_->associated_content_manager()->AddContent(&content2);
+
+  auto turn = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  ASSERT_TRUE(contents_map.contains("turn-1"));
+  ASSERT_EQ(2u, contents_map.at("turn-1").size());
+  EXPECT_EQ("Content 1", contents_map.at("turn-1")[0].get().content);
+  EXPECT_EQ("Content 2", contents_map.at("turn-1")[1].get().content);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       GetCachedContentsMap_MultipleContent_MultipleTurns) {
+  NiceMock<MockAssociatedContent> content1;
+  content1.SetTextContent("Content 1");
+  conversation_handler_->associated_content_manager()->AddContent(&content1);
+
+  NiceMock<MockAssociatedContent> content2;
+  content2.SetTextContent("Content 2");
+  conversation_handler_->associated_content_manager()->AddContent(&content2);
+
+  // Associate content 1 & 2 with turn 1
+  auto turn1 = mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn1);
+
+  NiceMock<MockAssociatedContent> content3;
+  content3.SetTextContent("Content 3");
+  conversation_handler_->associated_content_manager()->AddContent(&content3);
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+
+  // Associate content 3 with turn 2
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn2);
+
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+
+  ASSERT_TRUE(contents_map.contains("turn-1"));
+  ASSERT_EQ(2u, contents_map.at("turn-1").size());
+  EXPECT_EQ("Content 1", contents_map.at("turn-1")[0].get().content);
+  EXPECT_EQ("Content 2", contents_map.at("turn-1")[1].get().content);
+
+  ASSERT_TRUE(contents_map.contains("turn-2"));
+  ASSERT_EQ(1u, contents_map.at("turn-2").size());
+  EXPECT_EQ("Content 3", contents_map.at("turn-2")[0].get().content);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       GetCachedContentsMap_WithRemovedContent) {
+  // Test that removed content doesn't appear in the cached contents map
+  NiceMock<MockAssociatedContent> content_to_keep;
+  content_to_keep.SetTextContent("Keep this content");
+  NiceMock<MockAssociatedContent> content_to_remove;
+  content_to_remove.SetTextContent("Remove this content");
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &content_to_keep);
+  conversation_handler_->associated_content_manager()->AddContent(
+      &content_to_remove);
+
+  auto turn = mojom::ConversationTurn::New(
+      "removal-turn", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Removal test", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, false, std::nullopt);
+
+  // Associate both content items with the turn
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  // Verify both are in the map initially
+  auto contents_map_before = conversation_handler_->associated_content_manager()
+                                 ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map_before.contains("removal-turn"));
+  EXPECT_EQ(2u, contents_map_before.at("removal-turn").size());
+
+  // Remove one content item
+  conversation_handler_->associated_content_manager()->RemoveContent(
+      &content_to_remove);
+
+  // Verify only the kept content remains in the map
+  auto contents_map_after = conversation_handler_->associated_content_manager()
+                                ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map_after.contains("removal-turn"));
+  ASSERT_EQ(1u, contents_map_after.at("removal-turn").size());
+  EXPECT_EQ("Keep this content",
+            contents_map_after.at("removal-turn")[0].get().content);
+}
+
 }  // namespace ai_chat
