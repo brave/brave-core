@@ -124,7 +124,7 @@ void CreateGoogleSignInPermissionRequest(
     content::PermissionControllerDelegate* permission_controller,
     content::RenderFrameHost* rfh,
     const GURL& request_initiator_url,
-    base::OnceCallback<void(const std::vector<blink::mojom::PermissionStatus>&)>
+    base::OnceCallback<void(const std::vector<content::PermissionResult>&)>
         callback) {
   if (!rfh->IsDocumentOnLoadCompletedInMainFrame()) {
     return;
@@ -146,7 +146,7 @@ bool GetPermissionAndMaybeCreatePrompt(
     content::WebContents* contents,
     const GURL& request_initiator_url,
     bool* defer,
-    base::OnceCallback<void(const std::vector<blink::mojom::PermissionStatus>&)>
+    base::OnceCallback<void(const std::vector<content::PermissionResult>&)>
         permission_result_callback) {
   // Check current permission status
   content::PermissionControllerDelegate* permission_controller =
@@ -186,10 +186,10 @@ GURL GetRequestInitiatingUrlFromRequest(
 // permission.
 void ReloadTab(
     base::WeakPtr<content::WebContents> contents,
-    const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
+    const std::vector<content::PermissionResult>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
   if (contents &&
-      permission_statuses[0] == blink::mojom::PermissionStatus::GRANTED) {
+      permission_statuses[0].status == content::PermissionStatus::GRANTED) {
     contents->GetController().Reload(content::ReloadType::NORMAL, true);
   }
 }

@@ -79,7 +79,7 @@ void GoogleSignInPermissionThrottle::WillStartRequest(
 
 void GoogleSignInPermissionThrottle::OnPermissionRequestStatus(
     content::NavigationEntry* pending_entry,
-    const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
+    const std::vector<content::PermissionResult>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
 
   auto* contents = wc_getter_.Run();

@@ -26,7 +26,7 @@ namespace brave {
 
 void OnPermissionRequestStatus(
     content::FrameTreeNodeId frame_tree_node_id,
-    const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
+    const std::vector<content::PermissionResult>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
   // Once permission status has been updated, reload the page.
   // We do this so as to let the user know that they should retry
@@ -34,7 +34,7 @@ void OnPermissionRequestStatus(
   auto* contents =
       content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
   if (contents &&
-      permission_statuses[0] == blink::mojom::PermissionStatus::GRANTED) {
+      permission_statuses[0].status == content::PermissionStatus::GRANTED) {
     contents->GetController().Reload(content::ReloadType::NORMAL, true);
   }
 }

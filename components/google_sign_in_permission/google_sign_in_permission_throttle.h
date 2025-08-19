@@ -15,6 +15,10 @@
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "third_party/blink/public/mojom/permissions/permission_status.mojom.h"
 
+namespace content {
+struct PermissionResult;
+}  // namespace content
+
 namespace google_sign_in_permission {
 
 class GoogleSignInPermissionThrottle : public blink::URLLoaderThrottle {
@@ -40,7 +44,7 @@ class GoogleSignInPermissionThrottle : public blink::URLLoaderThrottle {
  private:
   void OnPermissionRequestStatus(
       content::NavigationEntry* pending_entry,
-      const std::vector<blink::mojom::PermissionStatus>& permission_statuses);
+      const std::vector<content::PermissionResult>& permission_statuses);
 
   const content::WebContents::Getter wc_getter_;
   base::WeakPtrFactory<GoogleSignInPermissionThrottle> weak_factory_{this};

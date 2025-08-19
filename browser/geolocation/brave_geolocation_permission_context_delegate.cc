@@ -27,7 +27,9 @@ bool BraveGeolocationPermissionContextDelegate::DecidePermission(
     permissions::BrowserPermissionCallback* callback,
     permissions::GeolocationPermissionContext* context) {
   if (profile_->IsTor()) {
-    std::move(*callback).Run(content::PermissionStatus::DENIED);
+    std::move(*callback).Run(content::PermissionResult(
+        blink::mojom::PermissionStatus::DENIED,
+        content::PermissionStatusSource::UNSPECIFIED));
     return true;
   }
 
