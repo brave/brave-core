@@ -99,6 +99,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   void AppendExtraCommandLineSwitches(base::CommandLine* command_line,
                                       int child_process_id) override;
 
+  bool IsJitDisabledForSite(content::BrowserContext* browser_context,
+                            const GURL& site_url) override;
+
   std::vector<std::unique_ptr<blink::URLLoaderThrottle>>
   CreateURLLoaderThrottles(
       const network::ResourceRequest& request,

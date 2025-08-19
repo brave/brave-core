@@ -1379,3 +1379,17 @@ bool BraveContentBrowserClient::AllowSignedExchange(
   // exchanges.
   return false;
 }
+
+bool BraveContentBrowserClient::IsJitDisabledForSite(
+    content::BrowserContext* browser_context,
+    const GURL& site_url) {
+  // When v8-optimizer-is-jit flag is enabled, V8 optimizer
+  // settings should disable JIT completely, not just optimizations
+  if (AreV8OptimizationsDisabledForSite(browser_context, site_url) && 
+      !base::FeatureList::IsEnabled(features::kBraveV8OptimizerJit)) {
+    return true;
+  }
+  
+  return ChromeContentBrowserClient::IsJitDisabledForSite(browser_context, 
+                                                          site_url);
+}
