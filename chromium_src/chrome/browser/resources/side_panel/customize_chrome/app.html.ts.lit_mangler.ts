@@ -90,7 +90,6 @@ mangle(
       'beforeend',
       /* html */ `
       <brave-darker-theme-toggle ?hidden="\${
-        // @ts-expect-error This property is added by the app.ts file.
         !this.shouldShowDarkerThemeToggle_
       }"></brave-darker-theme-toggle>`
     )

@@ -12,6 +12,13 @@ import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { AppElement } from './app-chromium.js';
 export * from './app-chromium.js'
 
+declare module './app-chromium.js' {
+  interface AppElement {
+    shouldShowDarkerThemeToggle_: boolean
+  }
+}
+
+AppElement.prototype.shouldShowDarkerThemeToggle_ = loadTimeData.getBoolean('shouldShowDarkerThemeToggle');
 
 class ClosePanelButton extends CrLitElement {
   static get is() {
@@ -40,10 +47,6 @@ declare global {
 }
 
 customElements.define(ClosePanelButton.is, ClosePanelButton)
-
-
-// @ts-expect-error We're adding a custom property to the AppElements for hiding the "Darker theme" toggle.
-AppElement.prototype.shouldShowDarkerThemeToggle_ = loadTimeData.getBoolean('shouldShowDarkerThemeToggle');
 
 // A component to toggle the "Darker theme" setting in the Customize Chrome side panel.
 class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {

@@ -67,7 +67,7 @@ and modify the prototype of the upstream class.
 ```ts
 import { FancyElement } from './fancy-chromium.js'
 
-declare module './item-chromium.js' {
+declare module './fancy-chromium.js' {
   interface FancyElement {
     isBraveAndFancy: () => boolean
   }
