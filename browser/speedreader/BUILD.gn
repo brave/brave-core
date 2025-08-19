@@ -39,3 +39,29 @@ source_set("speedreader") {
     deps += [ "//brave/build/android:jni_headers" ]
   }
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "speedreader_browsertest.cc" ]
+
+  deps = [
+    ":speedreader",
+    "//brave/app:generate_command_metadata",
+    "//brave/browser/speedreader",
+    "//brave/browser/ui/views/frame/split_view",
+    "//brave/browser/ui/views/split_view",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/brave_wallet/browser:utils",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/test:test_support_ui",
+    "//components/language/core/browser",
+    "//components/network_session_configurator/common",
+    "//content/test:test_support",
+    "//net:test_support",
+  ]
+}
