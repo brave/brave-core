@@ -26,6 +26,7 @@ inline constexpr char kBraveShields[] = "braveShields";
 inline constexpr char kBraveShieldsMetadata[] = "braveShieldsMetadata";
 inline constexpr char kReferrers[] = "referrers";
 inline constexpr char kCookies[] = "shieldsCookiesV3";
+inline constexpr char kBraveAutoShred[] = "braveAutoShred";
 
 // Prefs:
 inline constexpr char kFacebookEmbeds[] = "fb-embeds";

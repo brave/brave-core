@@ -879,4 +879,60 @@ bool IsDeveloperModeEnabled(PrefService* profile_state) {
   return profile_state->GetBoolean(prefs::kAdBlockDeveloperMode);
 }
 
+// Builds a `base::Value::Dict` from the given `AutoShredType`.
+// This should be used in conjuction with `GetAutoShredTypeFromDict`.
+base::Value GetDictFromAutoShredType(AutoShredType type) {
+  base::Value dict(base::Value::Type::DICT);
+  dict.GetDict().Set("value", static_cast<int>(type));
+  return dict;
+}
+
+/// Finds the `AutoShredType` from the given single-value dict.
+/// This should be used in conjunction with `GetDictFromAutoShredType`.
+AutoShredType GetAutoShredTypeFromDict(base::Value dict) {
+  if (!dict.is_dict()) {
+    return AutoShredType::NEVER;
+  }
+
+  const base::Value* value = dict.GetDict().Find("value");
+  if (value && value->is_int()) {
+    int auto_shred_type_int = value->GetInt();
+    AutoShredType auto_shred_type =
+        static_cast<AutoShredType>(auto_shred_type_int);
+
+    if (auto_shred_type_int >= 0 &&
+        auto_shred_type_int <= static_cast<int>(AutoShredType::APP_EXIT)) {
+      return auto_shred_type;
+    }
+  }
+
+  // if unknown, return default value.
+  return AutoShredType::NEVER;
+}
+
+void SetAutoShredType(HostContentSettingsMap* map,
+                      AutoShredType type,
+                      const GURL& url) {
+  auto primary_pattern = content_settings::CreateDomainPattern(url);
+
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  // We want to store Auto Shred setting using our `AutoShredType` enum, however
+  // this requires registering with `PermissionSettingsRegistry` for non-dict
+  // `base::Value` types. Instead we store using a single-value dict to mask
+  // this internally so we can use our `AutoShredType` enum.
+  map->SetWebsiteSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_AUTO_SHRED, GetDictFromAutoShredType(type));
+}
+
+AutoShredType GetAutoShredType(HostContentSettingsMap* map, const GURL& url) {
+  base::Value value = map->GetWebsiteSetting(
+      url, GURL(), ContentSettingsType::BRAVE_AUTO_SHRED);
+
+  return GetAutoShredTypeFromDict(std::move(value));
+}
+
 }  // namespace brave_shields

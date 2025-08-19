@@ -47,6 +47,12 @@ class BraveShieldsSettingsService : public KeyedService {
   void SetNoScriptEnabled(bool is_enabled, const GURL& url);
   bool IsNoScriptEnabled(const GURL& url);
 
+  void SetDefaultAutoShredMode(mojom::AutoShredMode mode);
+  mojom::AutoShredMode GetDefaultAutoShredMode();
+
+  void SetAutoShredMode(mojom::AutoShredMode mode, const GURL& url);
+  mojom::AutoShredMode GetAutoShredMode(const GURL& url);
+
  private:
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;       // NOT OWNED
