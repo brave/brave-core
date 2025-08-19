@@ -7,6 +7,8 @@
 
 #include <optional>
 
+#include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace psst {
@@ -19,13 +21,15 @@ TEST(PsstScriptsUtilsUnitTest, GetScriptWithParamsCombinesParamsAndScript) {
   constexpr char kParamKey[] = "param1";
   constexpr char kParamValue[] = "value1";
 
-  auto result = GetScriptWithParams(
-      kTestScript,
-      base::Value(base::Value::Dict().Set(kParamKey, kParamValue)));
+  base::Value params(base::Value::Dict().Set(kParamKey, kParamValue));
 
-  EXPECT_NE(result.find("const params ="), std::string::npos);
-  EXPECT_NE(result.find("\"param1\": \"value1\""), std::string::npos);
-  EXPECT_NE(result.find(kTestScript), std::string::npos);
+  EXPECT_EQ(
+      GetScriptWithParams(kTestScript, params.Clone()),
+      base::StrCat({"const params = ",
+                    base::WriteJsonWithOptions(
+                        params.Clone(), base::JSONWriter::OPTIONS_PRETTY_PRINT)
+                        .value(),
+                    ";\n", kTestScript}));
 }
 
 TEST(PsstScriptsUtilsUnitTest, GetScriptWithParamsWrongCases) {
