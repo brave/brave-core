@@ -67,12 +67,18 @@ export class SettingsPrivateSearchEngineListDialogElement extends
          type: Object,
          computed: 'computeBraveSearchEngine_(searchEngines)',
        },
+
+       hasBraveSearchEngine_: {
+         type: Boolean,
+         computed: 'computeHasBraveSearchEngine_(braveSearchEngine_)'
+       }
     }
   }
 
   declare searchEngines: SearchEngine[]
 
   private declare braveSearchEngine_: SearchEngine|null
+  private declare hasBraveSearchEngine_: boolean
   private declare selectedEngineId_: string
   private browserProxy_: BraveSearchEnginesPageBrowserProxy =
       BraveSearchEnginesPageBrowserProxyImpl.getInstance()
@@ -114,16 +120,16 @@ export class SettingsPrivateSearchEngineListDialogElement extends
         && engine.isPrepopulated === true;
   }
 
-  private computeBraveSearchEngine_() {
-    if (!this.searchEngines.length) {
+  private computeBraveSearchEngine_(searchEngines: Array<SearchEngine>) {
+    if (!searchEngines?.length) {
       return null;
     }
-    return this.searchEngines.find(this.isBraveSearchEngine_)!
+    return searchEngines.find(this.isBraveSearchEngine_)!
   }
 
-  private hasBraveSearchEngine_(): boolean {
-    // this.braveSearchEngine_ can be undefined (hence !=)
-    return this.braveSearchEngine_ != null
+  private computeHasBraveSearchEngine_(
+      braveSearchEngine: SearchEngine|null): boolean {
+    return braveSearchEngine !== null
   }
 }
 
