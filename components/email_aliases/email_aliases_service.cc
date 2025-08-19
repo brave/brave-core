@@ -228,7 +228,7 @@ void EmailAliasesService::AddObserver(
   auto* remote = observers_.Get(id);
   if (remote) {
     remote->OnAuthStateChanged(mojom::AuthState::New(
-        mojom::AuthenticationStatus::kUnauthenticated, "", std::nullopt));
+        mojom::AuthenticationStatus::kUnauthenticated, /*email=*/"", /*error_message=*/std::nullopt));
   }
 }
 
