@@ -10,6 +10,7 @@ module.exports = (program) =>
     .option('--build_type [build_type]', 'build with coverage information ')
     .option('--target_arch [target_arch]', 'target architecture')
     .option('--target_os <target_os>', 'target OS')
+    .option('--tests [testSuites...]', 'testsuites to consider')
     .description('generates a coverage report')
     .action(async (args) => {
       if (args.buildConfig) {
