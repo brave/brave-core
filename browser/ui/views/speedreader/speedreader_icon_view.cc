@@ -8,8 +8,8 @@
 #include <string>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
