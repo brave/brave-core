@@ -142,7 +142,7 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
         std::make_unique<BraveVpnHandler>(Profile::FromWebUI(web_ui)));
   }
 #endif
-  if (BraveOriginState::GetInstance()->IsBraveOriginUser()) {
+  if (brave_origin::BraveOriginState::GetInstance()->IsBraveOriginUser()) {
     web_ui->AddMessageHandler(std::make_unique<BraveOriginHandler>());
   }
 }
@@ -245,8 +245,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isTreeTabsFlagEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
-  html_source->AddBoolean("isBraveOriginEnabled",
-                          BraveOriginState::GetInstance()->IsBraveOriginUser());
+  html_source->AddBoolean(
+      "isBraveOriginEnabled",
+      brave_origin::BraveOriginState::GetInstance()->IsBraveOriginUser());
 }
 
 // static

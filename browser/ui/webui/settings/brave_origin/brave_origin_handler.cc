@@ -192,8 +192,9 @@ void BraveOriginHandler::HandleGetInitialState(const base::Value::List& args) {
   AllowJavascript();
 
   base::Value::Dict initial_state;
-  initial_state.Set("enabled",
-                    BraveOriginState::GetInstance()->IsBraveOriginUser());
+  initial_state.Set(
+      "enabled",
+      brave_origin::BraveOriginState::GetInstance()->IsBraveOriginUser());
 
   auto* local_state = g_browser_process->local_state();
 
