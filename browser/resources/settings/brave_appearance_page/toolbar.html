@@ -9,6 +9,7 @@
   }
 </style>
 <settings-toggle-button elide-label
+  class="cr-row"
   hidden="[[!pageVisibility.homeButton]]"
   pref="{{prefs.browser.show_home_button}}"
   label="$i18n{showHomeButton}"
@@ -51,6 +52,14 @@
 </settings-toggle-button>
 <settings-brave-appearance-bookmark-bar prefs="{{prefs}}">
 </settings-brave-appearance-bookmark-bar>
+<settings-toggle-button class="hr" id="showSavedTabGroups"
+    pref="{{prefs.bookmark_bar.show_tab_groups}}"
+    label="$i18n{showTabGroupsInBookmarksBar}">
+</settings-toggle-button>
+<settings-toggle-button class="hr" id="autoPinNewTabGroups"
+    pref="{{prefs.auto_pin_new_tab_groups}}"
+    label="$i18n{autoPinNewTabGroups}">
+</settings-toggle-button>
 <settings-toggle-button
   id="autocomplete-suggestion-sources"
   class="cr-row"

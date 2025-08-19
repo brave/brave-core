@@ -191,5 +191,19 @@ RegisterPolymerTemplateModifications({
           </settings-brave-appearance-toolbar>
         `)
     }
+
+    // Remove a couple of items to from appearance page as we have them in
+    // <settings-brave-appearance-toolbar>
+    // - showSavedTabGroups and autoPinNewTabGroups should be after bookmark bar setting
+    const removeElementWithId = (id: string) => {
+      const elem = templateContent.querySelector(`#${id}`)
+      if (!elem) {
+        console.error(`[Settings] Couldn't find element with id: ${id}`)
+      } else {
+        elem.remove()
+      }
+    }
+    removeElementWithId('showSavedTabGroups')
+    removeElementWithId('autoPinNewTabGroups')
   }
 })
