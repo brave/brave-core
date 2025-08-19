@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -179,4 +180,41 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
 
   EXPECT_EQ(browser()->tab_strip_model()->count(), tab_count + 1);
   EXPECT_EQ(incognito_browser->tab_strip_model()->count(), incognito_tab_count);
+}
+
+class BraveTabContextMenuWithSideBySideTest
+    : public BraveTabContextMenuContentsTest {
+ public:
+  BraveTabContextMenuWithSideBySideTest() {
+    scoped_features_.InitWithFeatures(
+        /*enabled_features*/ {features::kSideBySide}, {});
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveTabContextMenuWithSideBySideTest,
+                       SplitViewMenuCustomizationTest) {
+  auto menu = CreateMenu();
+  auto* menu_model_ = menu->model_.get();
+  bool split_view_menu_checked = false;
+
+  // One of these three commands should be added.
+  if (auto index = menu_model_->GetIndexOfCommandId(
+          TabStripModel::CommandSwapWithActiveSplit)) {
+    split_view_menu_checked = true;
+    EXPECT_FALSE(menu_model_->IsNewFeatureAt(*index));
+  }
+  if (auto index =
+          menu_model_->GetIndexOfCommandId(TabStripModel::CommandAddToSplit)) {
+    split_view_menu_checked = true;
+    EXPECT_FALSE(menu_model_->IsNewFeatureAt(*index));
+  }
+  if (auto index = menu_model_->GetIndexOfCommandId(
+          TabStripModel::CommandArrangeSplit)) {
+    split_view_menu_checked = true;
+    EXPECT_FALSE(menu_model_->IsNewFeatureAt(*index));
+  }
+  EXPECT_TRUE(split_view_menu_checked);
 }
