@@ -101,7 +101,6 @@ brave_chrome_browser_sources = [
   "//brave/browser/metrics/brave_metrics_service_accessor.h",
   "//brave/browser/metrics/metrics_reporting_util.cc",
   "//brave/browser/metrics/metrics_reporting_util.h",
-  "//brave/browser/policy/brave_simple_policy_map.h",
   "//brave/browser/prefs/brave_pref_service_incognito_allowlist.cc",
   "//brave/browser/prefs/brave_pref_service_incognito_allowlist.h",
   "//brave/browser/translate/brave_translate_prefs_migration.cc",
@@ -126,6 +125,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_ads:impl",
   "//brave/browser/brave_ads/creatives/search_result_ad",
   "//brave/browser/brave_ads/tabs",
+  "//brave/browser/brave_origin",
   "//brave/browser/brave_rewards:brave_rewards_impl",
   "//brave/browser/brave_rewards:util",
   "//brave/browser/brave_search",
@@ -637,6 +637,7 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/ui",
   "//brave/browser/brave_ads:impl",
   "//brave/browser/brave_ads/creatives/search_result_ad",
+  "//brave/browser/brave_origin",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
 ]

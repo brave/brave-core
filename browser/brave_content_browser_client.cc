@@ -63,6 +63,7 @@
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
+#include "brave/components/brave_origin/common/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -894,6 +895,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         containers::mojom::ContainersSettingsHandler, BraveSettingsUI>(map);
   }
 #endif
+
+  // Register BraveOrigin handler for settings WebUI
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_origin::mojom::BraveOriginSettingsHandler, BraveSettingsUI>(map);
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
