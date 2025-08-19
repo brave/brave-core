@@ -72,7 +72,8 @@ void BraveSyncAuthManager::RequestAccessToken() {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-SyncAccountInfo BraveSyncAuthManager::DetermineAccountToUse() const {
+SyncAccountInfo BraveSyncAuthManager::DetermineAccountToUse(
+    const signin::IdentityManager* identity_manager) const {
   if (!public_key_.empty()) {
     const std::string client_id =
         base::HexEncode(public_key_.data(), public_key_.size());
