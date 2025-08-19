@@ -11,6 +11,7 @@ group("ui") {
 
   if (!is_android) {
     deps += [
+      "//brave/browser/ui/color",
       "//chrome/browser/ui/tabs:tab_strip",
       "//components/tabs:public",
       "//content/public/browser",
