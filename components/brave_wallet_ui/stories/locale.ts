@@ -760,6 +760,11 @@ provideStrings({
   braveWalletResources: 'Resources',
   braveWalletSecurityRiskDetected: 'Security risk detected',
 
+  // Transaction Details Labels
+  braveWalletInput: 'Input',
+  braveWalletOutput: 'Output',
+  braveWalletValue: 'Value',
+
   // Encryption Key Panel
   braveWalletProvideEncryptionKeyTitle:
     'A DApp is requesting your public encryption key',
