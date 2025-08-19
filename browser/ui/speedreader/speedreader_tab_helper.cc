@@ -216,12 +216,10 @@ void SpeedreaderTabHelper::RemoveObserver(Observer* observer) {
 void SpeedreaderTabHelper::ShowSpeedreaderBubble(
     SpeedreaderBubbleLocation location) {
 #if !BUILDFLAG(IS_ANDROID)
-  auto* contents = web_contents();
-  Browser* browser = chrome::FindBrowserWithTab(contents);
-  DCHECK(browser);
-
-  speedreader_bubble_ = BraveBrowserWindow::From(browser->window())
-                            ->ShowSpeedreaderBubble(this, location);
+  if (auto* browser_window = BraveBrowserWindow::From(
+          BrowserWindow::FindBrowserWindowWithWebContents(web_contents()))) {
+    speedreader_bubble_ = browser_window->ShowSpeedreaderBubble(this, location);
+  }
 #endif
 }
 
@@ -358,10 +356,9 @@ void SpeedreaderTabHelper::UpdateUI() {
     return;
   }
 #if !BUILDFLAG(IS_ANDROID)
-  if (const auto* browser = chrome::FindBrowserWithTab(web_contents())) {
-    BraveBrowserWindow::From(browser->window())->UpdateReaderModeToolbar();
-    browser->window()->UpdatePageActionIcon(
-        brave::kSpeedreaderPageActionIconType);
+  if (auto* browser_window = BraveBrowserWindow::From(
+          BrowserWindow::FindBrowserWindowWithWebContents(web_contents()))) {
+    browser_window->UpdatePageActionIcon(brave::kSpeedreaderPageActionIconType);
   }
 #endif
 }
