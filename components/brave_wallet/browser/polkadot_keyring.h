@@ -7,17 +7,18 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_KEYRING_H_
 
 #include "base/containers/flat_map.h"
-#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
+inline constexpr size_t kPolkadotSeedSize = 32;
+
 class PolkadotKeyring {
  public:
   // Construct the keyring for Polkadot using the provided seed, derived from
   // the bip39::MnemonicToEntropyToSeed() method.
-  PolkadotKeyring(base::span<const uint8_t, bip39::kSeedSize> seed,
+  PolkadotKeyring(base::span<const uint8_t, kPolkadotSeedSize> seed,
                   mojom::KeyringId keyring_id);
   ~PolkadotKeyring();
 

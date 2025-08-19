@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -67,10 +68,12 @@ TEST(PolkadotKeyring, GenerateRoot) {
 TEST(PolkadotKeyring, Constructor) {
   auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
 
-  PolkadotKeyring keyring(seed, mojom::KeyringId::kPolkadotMainnet);
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
   EXPECT_FALSE(keyring.IsTestnet());
 
-  PolkadotKeyring keyring2(seed, mojom::KeyringId::kPolkadotTestnet);
+  PolkadotKeyring keyring2(base::span(seed).first<kPolkadotSeedSize>(),
+                           mojom::KeyringId::kPolkadotTestnet);
   EXPECT_TRUE(keyring2.IsTestnet());
 }
 
@@ -94,7 +97,8 @@ TEST(PolkadotKeyring, GetUnifiedAddress) {
   // clang-format on
 
   auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring keyring(seed, mojom::KeyringId::kPolkadotMainnet);
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
 
   constexpr char const* kAddress0 =
       "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb";
@@ -130,7 +134,8 @@ TEST(PolkadotKeyring, GetPublicKey) {
   // clang-format on
 
   auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring keyring(seed, mojom::KeyringId::kPolkadotMainnet);
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
 
   auto pubkey = keyring.GetPublicKey(0);
 
@@ -141,7 +146,8 @@ TEST(PolkadotKeyring, GetPublicKey) {
 
 TEST(PolkadotKeyring, SignAndVerifyMessage) {
   auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring keyring(seed, mojom::KeyringId::kPolkadotMainnet);
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
 
   std::string_view message = "hello, world!";
   auto signature = keyring.SignMessage(base::as_byte_span(message), 0);

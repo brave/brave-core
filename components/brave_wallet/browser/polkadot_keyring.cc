@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/polkadot_keyring.h"
 
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 
@@ -25,9 +24,9 @@ inline constexpr char const kPolkadotMainnet[] =
 }  // namespace
 
 PolkadotKeyring::PolkadotKeyring(
-    base::span<const uint8_t, bip39::kSeedSize> seed,
+    base::span<const uint8_t, kPolkadotSeedSize> seed,
     mojom::KeyringId keyring_id)
-    : root_account_key_(HDKeySr25519::GenerateFromSeed(seed.first<32>())),
+    : root_account_key_(HDKeySr25519::GenerateFromSeed(seed)),
       keyring_id_(keyring_id) {
   // can be useful to remember:
   // https://wiki.polkadot.com/learn/learn-account-advanced/#derivation-paths
