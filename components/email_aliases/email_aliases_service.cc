@@ -131,8 +131,8 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
         l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_RESPONSE_BODY));
     return;
   }
-  const auto response_body_dict = base::JSONReader::Read(*response_body);
-  if (!response_body_dict || !response_body_dict->is_dict()) {
+  const auto response_body_dict = base::JSONReader::ReadDict(*response_body);
+  if (!response_body_dict) {
     std::move(callback).Run(l10n_util::GetStringUTF8(
         IDS_EMAIL_ALIASES_ERROR_INVALID_RESPONSE_BODY));
     return;
@@ -180,8 +180,8 @@ void EmailAliasesService::OnRequestSessionResponse(
   if (!response_body) {
     return;
   }
-  const auto response_body_dict = base::JSONReader::Read(*response_body);
-  if (!response_body_dict || !response_body_dict->is_dict()) {
+  const auto response_body_dict = base::JSONReader::ReadDict(*response_body);
+  if (!response_body_dict) {
     return;
   }
   auto parsed_session =
