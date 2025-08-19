@@ -162,4 +162,39 @@ bool BraveShieldsSettings::IsNoScriptEnabled(const GURL& url) {
   return control_type != ControlType::ALLOW;
 }
 
+void BraveShieldsSettings::SetDefaultAutoShredMode(mojom::AutoShredMode mode) {
+  SetAutoShredMode(mode, GURL());
+}
+
+mojom::AutoShredMode BraveShieldsSettings::GetDefaultAutoShredMode() {
+  return GetAutoShredMode(GURL());
+}
+
+void BraveShieldsSettings::SetAutoShredMode(mojom::AutoShredMode mode,
+                                            const GURL& url) {
+  brave_shields::AutoShredType auto_shred_type;
+  if (mode == mojom::AutoShredMode::APP_EXIT) {
+    auto_shred_type = AutoShredType::APP_EXIT;
+  } else if (mode == mojom::AutoShredMode::TAB_CLOSE) {
+    auto_shred_type = AutoShredType::TAB_CLOSE;
+  } else {
+    auto_shred_type = AutoShredType::NEVER;
+  }
+
+  brave_shields::SetAutoShredType(&*host_content_settings_map_, auto_shred_type,
+                                  url);
+}
+
+mojom::AutoShredMode BraveShieldsSettings::GetAutoShredMode(const GURL& url) {
+  brave_shields::AutoShredType type =
+      brave_shields::GetAutoShredType(&*host_content_settings_map_, url);
+  if (type == AutoShredType::APP_EXIT) {
+    return mojom::AutoShredMode::APP_EXIT;
+  } else if (type == AutoShredType::TAB_CLOSE) {
+    return mojom::AutoShredMode::TAB_CLOSE;
+  } else {
+    return mojom::AutoShredMode::NEVER;
+  }
+}
+
 }  // namespace brave_shields
