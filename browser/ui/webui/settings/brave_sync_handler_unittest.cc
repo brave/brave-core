@@ -16,6 +16,7 @@
 #include "content/public/test/test_web_ui.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/clipboard/clipboard.h"
+#include "ui/base/clipboard/test/test_clipboard.h"
 
 class BraveSyncHandlerUnittest : public testing::Test {
  public:
@@ -38,6 +39,8 @@ class BraveSyncHandlerUnittest : public testing::Test {
     handler_->set_web_ui(nullptr);
     handler_.reset();
   }
+
+  void SetUp() override { ui::TestClipboard::CreateForCurrentThread(); }
 
  protected:
   content::TestWebUI* web_ui() { return &test_web_ui_; }

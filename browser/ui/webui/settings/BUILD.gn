@@ -33,6 +33,7 @@ source_set("unit_tests") {
       "//content/test:test_support",
       "//testing/gtest",
       "//ui/base/clipboard",
+      "//ui/base/clipboard:clipboard_test_support",
     ]
   }
 }
