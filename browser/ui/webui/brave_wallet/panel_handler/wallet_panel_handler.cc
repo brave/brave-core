@@ -115,7 +115,7 @@ void WalletPanelHandler::RequestPermission(
       {brave_wallet::GetAccountPermissionIdentifier(account_id)},
       base::BindOnce(
           [](RequestPermissionCallback cb,
-             const std::vector<blink::mojom::PermissionStatus>& responses) {
+             const std::vector<content::PermissionResult>& responses) {
             if (responses.empty() || responses.size() != 1u) {
               std::move(cb).Run(false);
             } else {

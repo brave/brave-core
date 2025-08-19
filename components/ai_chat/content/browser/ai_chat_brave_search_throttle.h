@@ -24,6 +24,10 @@ namespace content {
 class WebContents;
 }
 
+namespace content {
+struct PermissionResult;
+}  // namespace content
+
 class PrefService;
 
 namespace ai_chat {
@@ -61,7 +65,7 @@ class AIChatBraveSearchThrottle : public content::NavigationThrottle {
 
  private:
   void OnGetOpenAIChatButtonNonce(const std::optional<std::string>& nonce);
-  void OnPermissionPromptResult(blink::mojom::PermissionStatus status);
+  void OnPermissionPromptResult(content::PermissionResult status);
   void OnOpenAIChat();
 
   void OpenAIChatWithStagedEntries();
