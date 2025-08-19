@@ -13,18 +13,23 @@ source_set("speedreader") {
     "page_distiller.h",
     "speedreader_service_factory.cc",
     "speedreader_service_factory.h",
-    "speedreader_tab_helper.cc",
-    "speedreader_tab_helper.h",
   ]
 
   deps = [
     "//base",
+    "//brave/browser:browser_process",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles",
+    "//chrome/common",
+    "//components/keyed_service/content",
+    "//components/user_prefs",
     "//content/public/browser",
   ]
 
   public_deps = [
     "//brave/components/speedreader",
+    "//brave/components/speedreader/common",
     "//brave/components/speedreader/common:mojom",
   ]
 
@@ -40,5 +45,12 @@ source_set("unit_tests") {
 
   sources = [ "speedreader_service_unittest.cc" ]
 
-  deps = [ ":speedreader" ]
+  deps = [
+    ":speedreader",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
 }

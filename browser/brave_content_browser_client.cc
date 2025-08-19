@@ -202,7 +202,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/speedreader_body_distiller.h"
 #include "brave/components/speedreader/speedreader_distilled_page_producer.h"
 #include "brave/components/speedreader/speedreader_util.h"
