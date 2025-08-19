@@ -34,8 +34,6 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     super.init(frame: .zero)
     setupAccessibility()
 
-    backgroundColor = privateBrowsingManager.browserColors.chromeBackground
-
     addSubview(contentView)
     addSubview(line)
     helper = ToolbarHelper(toolbar: self)
@@ -58,7 +56,6 @@ class BottomToolbarView: UIView, ToolbarProtocol {
       .receive(on: RunLoop.main)
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         guard let self = self else { return }
-        self.updateColors()
         self.helper?.updateForTraitCollection(
           self.traitCollection,
           browserColors: privateBrowsingManager.browserColors,
@@ -71,14 +68,9 @@ class BottomToolbarView: UIView, ToolbarProtocol {
       browserColors: privateBrowsingManager.browserColors,
       isBottomToolbar: true
     )
-
-    updateColors()
   }
 
   private var privateModeCancellable: AnyCancellable?
-  private func updateColors() {
-    backgroundColor = privateBrowsingManager.browserColors.chromeBackground
-  }
 
   private var isSearchButtonEnabled: Bool = false {
     didSet {
