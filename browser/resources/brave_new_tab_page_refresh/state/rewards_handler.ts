@@ -35,7 +35,8 @@ export function createRewardsHandler(
     const { rewardsParameters } = await rewardsHandler.getRewardsParameters()
     if (rewardsParameters) {
       store.update({
-        rewardsExchangeRate: rewardsParameters.rate
+        rewardsExchangeRate: rewardsParameters.rate,
+        payoutStatus: rewardsParameters.payoutStatus
       })
     }
   }
@@ -57,7 +58,7 @@ export function createRewardsHandler(
     store.update({ rewardsBalance: balance })
   }
 
-  async function updateAdsViewed() {
+  async function updateAdsData() {
     const { statement } = await rewardsHandler.getAdsStatement()
     if (statement) {
       let rewardsAdsViewed = 0
@@ -66,9 +67,15 @@ export function createRewardsHandler(
           rewardsAdsViewed += value
         }
       })
-      store.update({ rewardsAdsViewed })
+      store.update({
+        rewardsAdsViewed,
+        minEarningsPreviousMonth: statement.minEarningsPreviousMonth
+      })
     } else {
-      store.update({ rewardsAdsViewed: null })
+      store.update({
+        rewardsAdsViewed: null,
+        minEarningsPreviousMonth: 0
+      })
     }
   }
 
@@ -90,7 +97,7 @@ export function createRewardsHandler(
     store.update({ initialized: true })
 
     updateBalance()
-    updateAdsViewed()
+    updateAdsData()
   }
 
   newTabProxy.addListeners({

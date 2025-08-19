@@ -26,6 +26,8 @@ export function createRewardsHandler(
       name: 'Joe',
       url: 'https://brave.com'
     },
+    minEarningsPreviousMonth: 0,
+    payoutStatus: {},
     tosUpdateRequired: false,
     rewardsAdsViewed: 1
   })
