@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "absl/strings/str_format.h"
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -28,12 +29,23 @@ namespace email_aliases {
 
 namespace {
 
-std::string GetAccountsServiceBaseURL() {
-  return "https://" + brave_domains::GetServicesDomain("accounts.bsg") + "/v2";
+constexpr char kAccountServiceEndpoint[] = "https://%s/v2/%s";
+constexpr char kAccountsServiceVerifyInitPath[] = "verify/init";
+constexpr char kAccountsServiceVerifyResultPath[] = "verify/result";
+
+std::string GetAccountsServiceVerifyInitURL() {
+  return absl::StrFormat(
+      kAccountServiceEndpoint,
+      brave_domains::GetServicesDomain("accounts.bsg").c_str(),
+      kAccountsServiceVerifyInitPath);
 }
 
-const char kAccountsServiceRequestPath[] = "/verify/init";
-const char kAccountsServiceVerifyPath[] = "/verify/result";
+std::string GetAccountsServiceVerifyResultURL() {
+  return absl::StrFormat(
+      kAccountServiceEndpoint,
+      brave_domains::GetServicesDomain("accounts.bsg").c_str(),
+      kAccountsServiceVerifyResultPath);
+}
 
 const net::NetworkTrafficAnnotationTag traffic_annotation =
     net::DefineNetworkTrafficAnnotation("brave_accounts_service", R"(
@@ -51,20 +63,14 @@ const net::NetworkTrafficAnnotationTag traffic_annotation =
 
 constexpr int kMaxResponseLength = 32768;
 
-std::string GetAccountsServiceRequestURL() {
-  return GetAccountsServiceBaseURL() + kAccountsServiceRequestPath;
-}
-
-std::string GetAccountsServiceVerifyURL() {
-  return GetAccountsServiceBaseURL() + kAccountsServiceVerifyPath;
-}
-
 }  // namespace
 
 EmailAliasesService::EmailAliasesService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
+  verify_init_url_ = GetAccountsServiceVerifyInitURL();
+  verify_result_url_ = GetAccountsServiceVerifyResultURL();
 }
 
 EmailAliasesService::~EmailAliasesService() = default;
@@ -103,7 +109,7 @@ void EmailAliasesService::RequestAuthentication(
   const auto body_value = auth_request.ToValue();
   std::string body = base::WriteJson(body_value).value_or("");
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(GetAccountsServiceRequestURL());
+  resource_request->url = GURL(verify_init_url_);
   resource_request->method = net::HttpRequestHeaders::kPostMethod;
   verify_init_simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
@@ -151,7 +157,7 @@ void EmailAliasesService::RequestSession() {
   auto body_value = session_request.ToValue();
   std::string body = base::WriteJson(body_value).value_or("");
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(GetAccountsServiceVerifyURL());
+  resource_request->url = GURL(verify_result_url_);
   resource_request->method = net::HttpRequestHeaders::kPostMethod;
   if (!verification_token_.empty()) {
     resource_request->headers.SetHeader(

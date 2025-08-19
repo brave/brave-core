@@ -83,6 +83,9 @@ class EmailAliasesService : public KeyedService,
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> verify_init_simple_url_loader_;
   std::unique_ptr<network::SimpleURLLoader> verify_result_simple_url_loader_;
+  // Cached URLs computed once per service lifetime
+  std::string verify_init_url_;
+  std::string verify_result_url_;
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
 

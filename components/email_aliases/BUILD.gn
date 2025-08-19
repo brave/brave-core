@@ -57,7 +57,12 @@ source_set("unit_tests") {
   sources = [ "email_aliases_service_unittest.cc" ]
   deps = [
     "//base/test:test_support",
+    "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:service",
+    "//brave/components/resources:strings_grit",
     "//components/prefs:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//ui/base:base",
   ]
 }
