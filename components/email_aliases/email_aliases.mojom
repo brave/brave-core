@@ -50,6 +50,7 @@ interface EmailAliasesServiceObserver {
 };
 
 // Interface for managing email aliases
+// TODO(https://github.com/brave/brave-browser/issues/48515)
 interface EmailAliasesService {
 
   // Initiate authentication using the user's auth email.
