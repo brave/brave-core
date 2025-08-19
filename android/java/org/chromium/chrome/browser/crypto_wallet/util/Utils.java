@@ -45,6 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.Callbacks;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
@@ -145,7 +146,8 @@ public class Utils {
      * @param context Context used to retrieve the clipboard service.
      * @param textToCopy Text that will be copied to clipboard.
      * @param textToShow String resource ID to display in the toast, or -1 to disable the toast.
-     * @param scheduleClear {@code true} to clear the clipboard after {@link
+     * @param treatAsPasword {@code true} copy to the clipboard with
+     *     ClipDescription.EXTRA_IS_SENSITIVE flag and then clear the clipboard after {@link
      *     #CLEAR_CLIPBOARD_INTERVAL}.
      */
     public static void saveTextToClipboard(
@@ -194,7 +196,7 @@ public class Utils {
     public static void clearClipboard(final String textToCompare) {
         String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
         if (textToCompare.equals(clipboardText)) {
-            saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
+            BraveReflectionUtil.invokeMethod(Clipboard.class, Clipboard.getInstance(), "clear");
         }
     }
 
