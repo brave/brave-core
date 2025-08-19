@@ -90,6 +90,10 @@ void BraveMultiContentsView::UpdateSecondaryLocationBar() {
   separator->ShowMenuButtonWidget();
 }
 
+void BraveMultiContentsView::UpdateCornerRadius() {
+  UpdateContentsBorderAndOverlay();
+}
+
 BraveContentsContainerView*
 BraveMultiContentsView::GetActiveContentsContainerView() {
   return BraveContentsContainerView::From(

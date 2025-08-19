@@ -17,6 +17,7 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
@@ -129,7 +130,7 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
     return brave_multi_contents_view()->secondary_location_bar_widget_.get();
   }
 
- private:
+ protected:
   base::test::ScopedFeatureList scoped_features_;
 };
 
@@ -333,6 +334,54 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_EQ(3, tab_strip()->GetActiveIndex());
   EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
   EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
+}
+
+class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
+ public:
+  SideBySideWithRoundedCornersTest() {
+    // Reset to have different features config with base test class.
+    scoped_features_.Reset();
+    scoped_features_.InitWithFeatures(
+        /*enabled_features*/ {features::kSideBySide,
+                              features::kBraveWebViewRoundedCorners},
+        {});
+  }
+  ~SideBySideWithRoundedCornersTest() override = default;
+};
+
+// Test multi contents view's rounded corners with fullscreen state w/o split
+// view.
+IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
+                       TabFullscreenStateTest) {
+  auto* contents_container = brave_browser_view()->contents_container();
+  auto* contents_view = brave_browser_view()->GetContentsView();
+
+  // Check it has rounded corners.
+  EXPECT_EQ(contents_container->layer()->rounded_corner_radii(),
+            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
+  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(),
+            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
+
+  FullscreenController* fullscreen_controller = browser()
+                                                    ->GetFeatures()
+                                                    .exclusive_access_manager()
+                                                    ->fullscreen_controller();
+
+  // Check rounded corners are cleared in tab fullscreen.
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
+  brave_browser_view()->UpdateWebViewRoundedCorners();
+  EXPECT_EQ(contents_container->layer()->rounded_corner_radii(),
+            gfx::RoundedCornersF());
+  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(),
+            gfx::RoundedCornersF());
+
+  // Check it has rounded corners again.
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
+  brave_browser_view()->UpdateWebViewRoundedCorners();
+  EXPECT_EQ(contents_container->layer()->rounded_corner_radii(),
+            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
+  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(),
+            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
 }
 
 // Use for testing brave split view and SideBySide together.
