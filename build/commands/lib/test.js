@@ -42,7 +42,7 @@ const test = async (
     return
   }
 
-  //await buildTests(testsToRun, Config, options)
+  await buildTests(testsToRun, Config, options)
   await runTests(passthroughArgs, { suite, testsToRun }, Config, options)
 }
 
