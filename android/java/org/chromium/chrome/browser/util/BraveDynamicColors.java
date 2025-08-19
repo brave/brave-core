@@ -11,11 +11,13 @@ import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.FeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 
 public class BraveDynamicColors {
     public static void applyToActivityIfAvailable(Activity activity) {
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)) {
+        if (!FeatureList.isNativeInitialized()
+                || !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)) {
             // We disable dynamic colors as it causes styling issues with Brave theme.
             return;
         }
@@ -25,7 +27,8 @@ public class BraveDynamicColors {
 
     public static void applyToActivityIfAvailable(
             Activity activity, DynamicColorsOptions dynamicColorsOptions) {
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)) {
+        if (!FeatureList.isNativeInitialized()
+                || !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)) {
             // We disable dynamic colors as it causes styling issues with Brave theme.
             return;
         }
