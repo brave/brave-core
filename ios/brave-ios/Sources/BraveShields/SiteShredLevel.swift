@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 
 /// A setting that will shred site data at various times
@@ -21,6 +22,33 @@ public enum SiteShredLevel: String, CaseIterable, Hashable {
       return false
     case .appExit:
       return true
+    }
+  }
+
+  public var autoShredMode: BraveShields.AutoShredMode {
+    switch self {
+    case .never:
+      return .never
+    case .whenSiteClosed:
+      return .lastTabClosed
+    case .appExit:
+      return .appExit
+    }
+  }
+}
+
+extension BraveShields.AutoShredMode {
+  public var siteShredLevel: SiteShredLevel {
+    switch self {
+    case .never:
+      return .never
+    case .lastTabClosed:
+      return .whenSiteClosed
+    case .appExit:
+      return .appExit
+    @unknown default:
+      assertionFailure("Unexpected AutoShredMode")
+      return .never
     }
   }
 }
