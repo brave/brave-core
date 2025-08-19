@@ -55,6 +55,11 @@ function openTab(url: string) {
   window.open(url, '__blank', 'noopener noreferrer')
 }
 
+function isValidWeb3URL(url: string) {
+  try { return new URL(url).protocol === 'https:' } catch {}
+  return false
+}
+
 function createModelForUnsupportedRegion(): AppModel {
   const stateManager = createStateManager<AppState>(defaultState())
   stateManager.update({
@@ -263,7 +268,8 @@ export function createModel(): AppModel {
           title: publisherBanner?.title || '',
           description: publisherBanner?.description || '',
           background: publisherBanner?.background || '',
-          web3URL: publisherBanner?.web3Url || ''
+          web3URL:isValidWeb3URL(publisherBanner?.web3Url ?? '') ?
+            publisherBanner?.web3Url ?? '' : ''
         },
         supportedWalletProviders:
           walletProvidersFromPublisherStatus(publisherInfo.status)
