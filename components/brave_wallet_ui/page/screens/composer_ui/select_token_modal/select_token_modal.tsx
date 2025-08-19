@@ -241,7 +241,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       }),
     })
 
-    const { data: combinedTokenRegistry } = useGetCombinedTokensRegistryQuery()
+    const {
+      data: combinedTokenRegistry,
+      isLoading: isLoadingCombinedTokenRegistry,
+    } = useGetCombinedTokensRegistryQuery()
 
     const fullVisibleFungibleTokensList = React.useMemo(() => {
       if (!combinedTokenRegistry) {
@@ -398,8 +401,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
       useGetTokenSpotPricesQuery(
-        !isLoadingBalances
-          && tokenPriceIds.length
+        tokenPriceIds.length
           && defaultFiatCurrency
           && selectedSendOption !== '#nft'
           ? {
@@ -671,7 +673,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       !isLoadingBalances && tokensBySearchValue.length === 0
 
     const tokenList = React.useMemo(() => {
-      if (isLoadingBalances || isLoadingSpotPrices) {
+      if (isLoadingCombinedTokenRegistry) {
         return (
           <TokenListItemSkeleton
             isNFT={selectedSendOption === SendPageTabHashes.nft}
@@ -706,7 +708,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         />
       )
     }, [
-      isLoadingBalances,
       emptyTokensList,
       selectedSendOption,
       handleSelectAsset,
@@ -716,6 +717,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       tokensBySearchValue,
       spotPriceRegistry,
       isLoadingSpotPrices,
+      isLoadingCombinedTokenRegistry,
       firstNoBalanceTokenKey,
       modalType,
       getAllAccountsWithBalance,
