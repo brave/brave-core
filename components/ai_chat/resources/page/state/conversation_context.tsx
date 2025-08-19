@@ -20,6 +20,7 @@ import {
 } from '../../common/conversation_history_utils'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useIsDragging } from '../hooks/useIsDragging'
+import { clearInput, setInputText } from '../components/input_box/ranges'
 
 const MAX_INPUT_CHAR = 20000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -334,6 +335,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
   }, [conversationHandler, callbackRouter])
 
+  React.useEffect(() => {
+    clearInput()
+  }, [context.conversationUuid])
+
   // Update the location when the conversation has been started
   const hasConversationStarted =
     useHasConversationStarted(context.conversationUuid)
@@ -432,7 +437,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
 
     if (context.inputText.startsWith('/')) {
-      update.inputText = ''
+      clearInput()
     }
 
     setPartialContext(update)
@@ -465,9 +470,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
 
     setPartialContext({
-      inputText: '',
       pendingMessageFiles: []
     })
+    clearInput()
     resetSelectedActionType()
   }
 
@@ -505,6 +510,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setPartialContext({
       inputText: turn.text
     })
+    setInputText(turn.text)
   }
 
   const handleStopGenerating = async () => {
@@ -514,6 +520,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       setPartialContext({
         inputText: humanEntry.text
       })
+      setInputText(humanEntry.text)
     }
   }
 
