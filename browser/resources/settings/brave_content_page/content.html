@@ -44,7 +44,7 @@
     class="cr-row"
     pref="{{prefs.brave.wayback_machine_enabled}}"
     label="$i18n{braveWaybackMachineLabel}"
-    hidden="[[isWaybackMachineDisabledByPolicy_]]">
+    hidden="[[isWaybackMachineManaged_(prefs.brave.wayback_machine_enabled)]]">
   </settings-toggle-button>
 </if>
 

@@ -20,27 +20,31 @@
 #include "url/gurl.h"
 #include "url/url_util.h"
 
-bool IsWaybackMachineDisabledFor(const GURL& url) {
+bool IsWaybackMachineEnabledFor(const GURL& url) {
   if (net::IsLocalhost(url))
-    return true;
+    return false;
 
   if (url.host().ends_with(".local")) {
-    return true;
+    return false;
   }
 
   if (url.host().ends_with(".onion")) {
-    return true;
+    return false;
   }
 
   // Disable on web.archive.org
   if (url.host() == kWaybackHost)
-    return true;
+    return false;
 
   if (url.SchemeIs(content::kViewSourceScheme)) {
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
+}
+
+bool IsWaybackMachineEnabled(PrefService* prefs) {
+  return prefs->GetBoolean(kBraveWaybackMachineEnabled);
 }
 
 GURL FixupWaybackQueryURL(const GURL& url) {
@@ -74,6 +78,3 @@ GURL FixupWaybackQueryURL(const GURL& url) {
   return url.ReplaceComponents(replacements);
 }
 
-bool IsDisabledByPolicy(PrefService* prefs) {
-  return prefs->GetBoolean(kBraveWaybackMachineDisabledByPolicy);
-}

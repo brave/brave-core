@@ -178,11 +178,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           profile->GetPrefs()->GetBoolean(
                               speedreader::kSpeedreaderDisabledByPolicy));
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  html_source->AddBoolean(
-      "braveWaybackMachineDisabledByPolicy",
-      profile->GetPrefs()->GetBoolean(kBraveWaybackMachineDisabledByPolicy));
-#endif
   html_source->AddBoolean(
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(

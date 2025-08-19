@@ -1224,12 +1224,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "braveTalkDisabledByPolicy",
       profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
 
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  html_source->AddBoolean(
-      "braveWaybackMachineDisabledByPolicy",
-      profile->GetPrefs()->GetBoolean(kBraveWaybackMachineDisabledByPolicy));
-#endif
-
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
     const webui::LocalizedString kSessionOnlyToEphemeralStrings[] = {
