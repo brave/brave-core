@@ -81,8 +81,9 @@ TEST(PolkadotKeyring, GetUnifiedAddress) {
   // Derived from the polkadot-sdk using:
   // clang-format off
   //
-  // polkadot_sdk::sp_core::crypto::set_default_ss58_version(Ss58AddressFormat::from(
-  //     polkadot_sdk::sp_core::crypto::Ss58AddressFormatRegistry::PolkadotAccount,
+  // polkadot_sdk::sp_core::crypto::set_default_ss58_version(
+  //     Ss58AddressFormat::from(
+  //         sp_core::crypto::Ss58AddressFormatRegistry::PolkadotAccount
   // ));
   //
   // let pair = polkadot_sdk::sp_core::sr25519::Pair::from_string(

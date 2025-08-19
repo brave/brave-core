@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_KEYRING_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_KEYRING_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_KEYRING_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_KEYRING_H_
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
@@ -58,4 +58,4 @@ class PolkadotKeyring {
 };
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_KEYRING_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_KEYRING_H_
