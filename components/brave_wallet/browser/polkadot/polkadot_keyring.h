@@ -50,7 +50,7 @@ class PolkadotKeyring {
   bool IsTestnet() const;
 
  private:
-  HDKeySr25519& GetKeypairOrInsert(uint32_t account_index);
+  HDKeySr25519& EnsureKeyPair(uint32_t account_index);
 
   HDKeySr25519 root_account_key_;
   mojom::KeyringId keyring_id_;

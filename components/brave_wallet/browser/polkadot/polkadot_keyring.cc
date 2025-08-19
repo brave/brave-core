@@ -50,13 +50,13 @@ bool PolkadotKeyring::IsTestnet() const {
 
 std::array<uint8_t, kSr25519PublicKeySize> PolkadotKeyring::GetPublicKey(
     uint32_t account_index) {
-  auto const& keypair = GetKeypairOrInsert(account_index);
+  auto const& keypair = EnsureKeyPair(account_index);
   return keypair.GetPublicKey();
 }
 
 std::string PolkadotKeyring::GetAddress(uint32_t account_index,
                                         uint16_t prefix) {
-  auto& keypair = GetKeypairOrInsert(account_index);
+  auto& keypair = EnsureKeyPair(account_index);
 
   Ss58Address addr;
   addr.prefix = prefix;
@@ -70,7 +70,7 @@ std::string PolkadotKeyring::GetAddress(uint32_t account_index,
 std::array<uint8_t, kSr25519SignatureSize> PolkadotKeyring::SignMessage(
     base::span<const uint8_t> message,
     uint32_t account_index) {
-  auto const& keypair = GetKeypairOrInsert(account_index);
+  auto const& keypair = EnsureKeyPair(account_index);
   return keypair.SignMessage(message);
 }
 
@@ -78,11 +78,11 @@ std::array<uint8_t, kSr25519SignatureSize> PolkadotKeyring::SignMessage(
     base::span<const uint8_t, kSr25519SignatureSize> signature,
     base::span<const uint8_t> message,
     uint32_t account_index) {
-  auto const& keypair = GetKeypairOrInsert(account_index);
+  auto const& keypair = EnsureKeyPair(account_index);
   return keypair.VerifyMessage(signature, message);
 }
 
-HDKeySr25519& PolkadotKeyring::GetKeypairOrInsert(uint32_t account_index) {
+HDKeySr25519& PolkadotKeyring::EnsureKeyPair(uint32_t account_index) {
   auto pos = secondary_keys_.find(account_index);
   if (pos == secondary_keys_.end()) {
     auto [it, inserted] = secondary_keys_.emplace(
