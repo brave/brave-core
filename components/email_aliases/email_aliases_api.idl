@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Email Aliases – authentication/session JSON types
+// https://brave.github.io/accounts/#/Email%20verification
 namespace email_aliases {
 
 // Body for POST /verify/init
