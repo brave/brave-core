@@ -1004,7 +1004,6 @@ source_set("ui") {
   if (enable_speedreader) {
     deps += [
       "//brave/browser/speedreader",
-      "//brave/components/speedreader",
       "//components/dom_distiller/content/browser",
     ]
 
@@ -1023,6 +1022,11 @@ source_set("ui") {
         "views/speedreader/speedreader_icon_view.cc",
         "views/speedreader/speedreader_icon_view.h",
       ]
+    }
+    if (is_android) {
+      sources += [ "android/speedreader/speedreader_utils.cc" ]
+
+      deps += [ "//ui/android" ]
     }
   }
 
