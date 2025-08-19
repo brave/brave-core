@@ -105,7 +105,10 @@ import os
   }
   @Published var shredLevel: SiteShredLevel {
     didSet {
-      // TODO: Support AutoShred via content settings brave-browser#47753
+      if FeatureList.kBraveShieldsContentSettings.enabled {
+        braveShieldsSettings.defaultAutoShredMode = shredLevel.autoShredMode
+      }
+      // Also assign to existing pref until deprecated so reverse migration is not required
       ShieldPreferences.shredLevel = shredLevel
     }
   }
@@ -165,16 +168,16 @@ import os
       self.isBlockScriptsEnabled = braveShieldsSettings.isBlockScriptsEnabledByDefault
       self.isBlockFingerprintingEnabled =
         braveShieldsSettings.defaultFingerprintMode == .standardMode
+      self.shredLevel = braveShieldsSettings.defaultAutoShredMode.siteShredLevel
     } else {
       self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
       self.isBlockScriptsEnabled = Preferences.Shields.blockScripts.value
       self.isBlockFingerprintingEnabled = Preferences.Shields.fingerprintingProtection.value
+      self.shredLevel = ShieldPreferences.shredLevel
     }
     self.httpsUpgradeLevel = ShieldPreferences.httpsUpgradeLevel
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
-    // TODO: Support AutoShred via content settings brave-browser#47753
-    self.shredLevel = ShieldPreferences.shredLevel
     self.webcompatReporterHandler = webcompatReporterHandler
     self.isSurveyPanelistEnabled = rewards?.ads.isSurveyPanelistEnabled ?? false
 

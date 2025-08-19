@@ -1328,14 +1328,22 @@ class TabManager: NSObject {
       if let shouldShredDomain = shouldShredDomainCache[cacheKey] {
         shouldShredTab = shouldShredDomain
       } else {
-        // Don't access `shredLevel` directly, but `TabState` is unavailable
-        // to access via `BraveShieldsTabHelper`. Temporarily access here until
-        // we switch to using `BraveShieldsSettings` with brave-browser#47350
-        let siteDomain = Domain.getOrCreate(
-          forUrl: url,
-          persistent: !isPrivate
-        )
-        shouldShredTab = siteDomain.shredLevel.shredOnAppExit
+        if FeatureList.kBraveShieldsContentSettings.enabled {
+          guard let braveCore = self.braveCore else { return false }
+          let profile = isPrivate ? braveCore.profile.offTheRecordProfile : braveCore.profile
+          let braveShieldsSettings = BraveShieldsSettingsFactory.create(for: profile)
+          shouldShredTab =
+            braveShieldsSettings.autoShredMode(for: url).siteShredLevel.shredOnAppExit
+        } else {
+          // Don't access `shredLevel` directly, but `TabState` is unavailable
+          // to access via `BraveShieldsTabHelper`. Deprecated access here until
+          // `kBraveShieldsContentSettings` feature flag is removed.
+          let siteDomain = Domain.getOrCreate(
+            forUrl: url,
+            persistent: !isPrivate
+          )
+          shouldShredTab = siteDomain.shredLevel.shredOnAppExit
+        }
         shouldShredDomainCache[cacheKey] = shouldShredTab
       }
       return shouldShredTab
