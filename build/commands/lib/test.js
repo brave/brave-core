@@ -42,7 +42,7 @@ const test = async (
     return
   }
 
-  await buildTests(testsToRun, Config, options)
+  //await buildTests(testsToRun, Config, options)
   await runTests(passthroughArgs, { suite, testsToRun }, Config, options)
 }
 
@@ -264,6 +264,13 @@ const runTests = async (
         console.error(`Missing test runner executable ${testRunner}`)
         progStatus = 1
       } else {
+        // this defines where coverage raw data is stored.
+        // %4m uses a pool of 4 files to write into and is used by chromium.
+        // note: that more files will take up more space but might be slightly faster
+        // https://clang.llvm.org/docs/SourceBasedCodeCoverage.html#running-the-instrumented-program
+        // this has no effect if project is built without coverage.
+        runOptions.env.LLVM_PROFILE_FILE = runOptions.env.LLVM_PROFILE_FILE 
+          || `${Config.outputDir}/coverage/${testSuite}/%4m.profraw`
         progStatus = util.run(testRunner, runArgs, runOptions).status
       }
     }

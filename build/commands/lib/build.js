@@ -37,6 +37,10 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.update(options)
   checkVersionsMatch()
 
+
+  if (config.isCoverage()) {
+    await util.generateInstrumentationFile();
+  }
   util.touchOverriddenFiles()
   branding.update()
   await util.buildNativeRedirectCC()
@@ -51,6 +55,7 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
     if (!config.use_no_gn_gen) {
       await util.generateNinjaFiles()
     }
+
     await util.buildTargets()
   }
 }
