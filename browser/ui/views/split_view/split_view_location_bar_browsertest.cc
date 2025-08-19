@@ -33,8 +33,10 @@ class SplitViewLocationBarBrowserTest
       public testing::WithParamInterface<bool> {
  public:
   SplitViewLocationBarBrowserTest() {
-    if (IsSideBySideEnabled()) {
-      scoped_features_.InitAndEnableFeature(::features::kSideBySide);
+    if (!IsSideBySideEnabled()) {
+      scoped_features_.InitWithFeatures(
+          /*enabled_features*/ {tabs::features::kBraveSplitView},
+          /*disabled_features*/ {features::kSideBySide});
     }
   }
   ~SplitViewLocationBarBrowserTest() override = default;

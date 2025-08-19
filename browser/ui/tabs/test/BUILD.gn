@@ -31,6 +31,7 @@ source_set("browser_tests") {
     ]
     deps += [
       "//brave/browser/ui/tabs:split_view",
+      "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/toasts",
       "//chrome/test:test_support",

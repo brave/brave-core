@@ -22,6 +22,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -606,9 +607,10 @@ class SidebarBrowserWithSplitViewTest
       public testing::WithParamInterface<bool> {
  public:
   SidebarBrowserWithSplitViewTest() {
-    if (IsSideBySideEnabled()) {
+    if (!IsSideBySideEnabled()) {
       scoped_features_.InitWithFeatures(
-          /*enabled_features*/ {::features::kSideBySide}, {});
+          /*enabled_features*/ {tabs::features::kBraveSplitView},
+          /*disabled_features*/ {::features::kSideBySide});
     }
   }
   ~SidebarBrowserWithSplitViewTest() override = default;

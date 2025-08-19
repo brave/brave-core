@@ -95,8 +95,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     feature_list_.InitWithFeaturesAndParameters(
         {{speedreader::kSpeedreaderFeature,
           {{speedreader::kSpeedreaderTTS.name, "true"}}},
-         {ai_chat::features::kAIChat, {{}}},
-         {tabs::features::kBraveSplitView, {{}}}},
+         {ai_chat::features::kAIChat, {{}}}},
         {});
   }
 
@@ -811,7 +810,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 
   auto* page = ActiveWebContents();
   auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
-                           ->reader_mode_toolbar_.get();
+                           ->reader_mode_toolbar();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
   WaitElement(toolbar, "appearance");
 
@@ -883,7 +882,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
   NavigateToPageSynchronously(kTestPageReadable);
 
   auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
-                           ->reader_mode_toolbar_.get();
+                           ->reader_mode_toolbar();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
 
   static constexpr char kGetLang[] = R"js( navigator.languages.toString() )js";
@@ -1068,9 +1067,10 @@ class SpeedReaderWithSplitViewBrowserTest
       public testing::WithParamInterface<bool> {
  public:
   SpeedReaderWithSplitViewBrowserTest() {
-    if (IsSideBySideEnabled()) {
+    if (!IsSideBySideEnabled()) {
       scoped_features_.InitWithFeatures(
-          /*enabled_features*/ {features::kSideBySide}, {});
+          /*enabled_features*/ {tabs::features::kBraveSplitView},
+          /*disabled_features*/ {features::kSideBySide});
     }
   }
   ~SpeedReaderWithSplitViewBrowserTest() override = default;

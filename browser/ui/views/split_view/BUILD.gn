@@ -65,6 +65,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/browser/ui/views/split_view",
     "//chrome/browser/ui",
+    "//chrome/browser/ui:ui_features",
     "//chrome/test:test_support",
     "//content/test:test_support",
     "//testing/gtest",

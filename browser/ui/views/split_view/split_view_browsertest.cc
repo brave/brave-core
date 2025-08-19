@@ -73,17 +73,9 @@ ui::MouseEvent GetDummyEvent() {
 }
 }  // namespace
 
-class SplitViewDisabledBrowserTest : public InProcessBrowserTest {
- public:
-  SplitViewDisabledBrowserTest() {
-    scoped_features_.InitAndDisableFeature(tabs::features::kBraveSplitView);
-  }
-  ~SplitViewDisabledBrowserTest() override = default;
+using SplitViewDisabledBrowserTest = InProcessBrowserTest;
 
- private:
-  base::test::ScopedFeatureList scoped_features_;
-};
-
+// Check brave split view is disabled by default.
 IN_PROC_BROWSER_TEST_F(SplitViewDisabledBrowserTest,
                        SplitViewDisabledStateTest) {
   auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
@@ -94,7 +86,7 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
  public:
   SideBySideEnabledBrowserTest() {
     scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kSideBySide},
+        /*enabled_features*/ {},
         /*disabled_features*/ {features::kBraveWebViewRoundedCorners});
   }
   ~SideBySideEnabledBrowserTest() override = default;
@@ -347,9 +339,7 @@ class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
     // Reset to have different features config with base test class.
     scoped_features_.Reset();
     scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kSideBySide,
-                              features::kBraveWebViewRoundedCorners},
-        {});
+        /*enabled_features*/ {features::kBraveWebViewRoundedCorners}, {});
   }
   ~SideBySideWithRoundedCornersTest() override = default;
 };
@@ -394,9 +384,10 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest,
                                    public testing::WithParamInterface<bool> {
  public:
   SplitViewCommonBrowserTest() {
-    if (IsSideBySideEnabled()) {
+    if (!IsSideBySideEnabled()) {
       scoped_features_.InitWithFeatures(
-          /*enabled_features*/ {features::kSideBySide}, {});
+          /*enabled_features*/ {tabs::features::kBraveSplitView},
+          /*disabled_features*/ {features::kSideBySide});
     }
   }
   ~SplitViewCommonBrowserTest() override = default;
@@ -921,7 +912,11 @@ INSTANTIATE_TEST_SUITE_P(
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
  public:
-  SplitViewBrowserTest() = default;
+  SplitViewBrowserTest() {
+    scoped_features_.InitWithFeatures(
+        /*enabled_features*/ {tabs::features::kBraveSplitView},
+        /*disabled_features*/ {features::kSideBySide});
+  }
   ~SplitViewBrowserTest() override = default;
 
   BraveBrowserView& browser_view() {
@@ -964,6 +959,9 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   }
 
   TabStripModel& tab_strip_model() { return *(browser()->tab_strip_model()); }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
 };
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
