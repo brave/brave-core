@@ -60,6 +60,13 @@ public class BrowserViewController: UIViewController {
   }()
 
   // These views wrap the top and bottom toolbars to provide background effects on them
+  let topBarsBackgroundView: UIVisualEffectView = .init(
+    effect: UIBlurEffect(style: .systemThinMaterial)
+  )
+  let bottomBarsBackgroundView: UIVisualEffectView = .init(
+    effect: UIBlurEffect(style: .systemThinMaterial)
+  )
+
   private(set) lazy var header = HeaderContainerView(privateBrowsingManager: privateBrowsingManager)
   private let headerHeightLayoutGuide = UILayoutGuide()
 
@@ -603,7 +610,9 @@ public class BrowserViewController: UIViewController {
     super.viewSafeAreaInsetsDidChange()
 
     topTouchArea.isEnabled = view.safeAreaInsets.top > 0
-    statusBarOverlay.isHidden = view.safeAreaInsets.top.isZero
+    if isStatusBarOverlayNeeded {
+      statusBarOverlay.isHidden = view.safeAreaInsets.top.isZero
+    }
   }
 
   fileprivate func updateToolbarStateForTraitCollection(
@@ -669,7 +678,7 @@ public class BrowserViewController: UIViewController {
       alongsideTransition: { context in
         if self.isViewLoaded {
           self.updateStatusBarOverlayColor()
-          self.bottomBarKeyboardBackground.backgroundColor = self.topToolbar.backgroundColor
+          self.updateBrowserColors(traitCollection: newCollection)
           self.setNeedsStatusBarAppearanceUpdate()
         }
       }
@@ -766,6 +775,7 @@ public class BrowserViewController: UIViewController {
 
   private(set) var isUsingBottomBar: Bool = false {
     didSet {
+      topBarsBackgroundView.isHidden = isUsingBottomBar
       header.isUsingBottomBar = isUsingBottomBar
       collapsedURLBarView.isUsingBottomBar = isUsingBottomBar
       searchController?.isUsingBottomBar = isUsingBottomBar
@@ -775,6 +785,20 @@ public class BrowserViewController: UIViewController {
       updateStatusBarOverlayColor()
       updateViewConstraints()
     }
+  }
+
+  private var isStatusBarOverlayNeeded: Bool {
+    if #unavailable(iOS 26) {
+      return true
+    }
+    guard
+      let requiredCompatability = Bundle.main.infoDictionary?["UIDesignRequiresCompatibility"]
+        as? Bool
+    else {
+      // No key means its running without compatibility mode
+      return false
+    }
+    return requiredCompatability
   }
 
   override public func viewDidLoad() {
@@ -789,6 +813,7 @@ public class BrowserViewController: UIViewController {
     // Add views
     view.addSubview(webViewContainerBackdrop)
     view.addSubview(webViewContainer)
+
     header.expandedBarStackView.addArrangedSubview(topToolbar)
     header.collapsedBarContainerView.addSubview(collapsedURLBarView)
 
@@ -803,13 +828,20 @@ public class BrowserViewController: UIViewController {
     view.addSubview(bottomTouchArea)
     view.addSubview(topTouchArea)
     view.addSubview(bottomBarKeyboardBackground)
+    view.addSubview(bottomBarsBackgroundView)
     view.addSubview(footer)
-    view.addSubview(statusBarOverlay)
+    if isStatusBarOverlayNeeded {
+      view.addSubview(statusBarOverlay)
+    }
+    view.addSubview(topBarsBackgroundView)
     view.addSubview(header)
 
     // For now we hide some elements so they are not visible
     header.isHidden = true
+    header.backgroundView.isHidden = true
     footer.isHidden = true
+
+    updateBrowserColors()
 
     // Setup constraints
     setupConstraints()
@@ -940,8 +972,7 @@ public class BrowserViewController: UIViewController {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         guard let self = self else { return }
         self.updateStatusBarOverlayColor()
-        self.bottomBarKeyboardBackground.backgroundColor = self.topToolbar.backgroundColor
-        self.collapsedURLBarView.browserColors = self.privateBrowsingManager.browserColors
+        self.updateBrowserColors()
       })
 
     appReviewCancelable = AppReviewManager.shared
@@ -1141,14 +1172,27 @@ public class BrowserViewController: UIViewController {
       make.bottom.left.right.equalTo(self.view)
       make.height.equalTo(44)
     }
+
+    bottomBarsBackgroundView.snp.makeConstraints {
+      $0.top.equalTo(pageOverlayLayoutGuide.snp.bottom)
+      $0.left.right.bottom.equalTo(view)
+    }
+
+    topBarsBackgroundView.snp.makeConstraints {
+      $0.bottom.equalTo(pageOverlayLayoutGuide.snp.top)
+      $0.left.right.top.equalTo(view)
+    }
+
+    if isStatusBarOverlayNeeded {
+      statusBarOverlay.snp.makeConstraints { make in
+        make.top.left.right.equalTo(self.view)
+        make.bottom.equalTo(view.safeArea.top)
+      }
+    }
   }
 
   override public func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    statusBarOverlay.snp.remakeConstraints { make in
-      make.top.left.right.equalTo(self.view)
-      make.bottom.equalTo(view.safeArea.top)
-    }
 
     toolbarVisibilityViewModel.transitionDistance =
       header.expandedBarStackView.bounds.height - header.collapsedBarContainerView.bounds.height
@@ -1166,6 +1210,26 @@ public class BrowserViewController: UIViewController {
     }
     searchController?.additionalSafeAreaInsets = additionalInsets
     favoritesController?.additionalSafeAreaInsets = additionalInsets
+
+    if #available(iOS 26.0, *), let webViewProxy = tabManager.selectedTab?.webViewProxy {
+      var webViewInsets: UIEdgeInsets = .zero
+      if isUsingBottomBar {
+        let unifiedToolbarHeight = view.bounds.height - header.frame.minY
+        webViewInsets.top = view.safeAreaInsets.top
+        webViewInsets.bottom = unifiedToolbarHeight
+      } else {
+        webViewInsets.top = header.frame.maxY
+        webViewInsets.bottom = view.bounds.height - footer.frame.minY
+      }
+      webViewInsets.left = view.safeAreaInsets.left
+      webViewInsets.right = view.safeAreaInsets.right
+      if webViewProxy.obscuredContentInsets != webViewInsets {
+        // For some reason its required that you set both obscuredContentInsets _and_ contentInset
+        webViewProxy.obscuredContentInsets = webViewInsets
+        webViewProxy.scrollView?.contentInset = webViewInsets
+        webViewProxy.scrollView?.scrollIndicatorInsets = webViewInsets
+      }
+    }
   }
 
   override public var canBecomeFirstResponder: Bool {
@@ -1296,22 +1360,28 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    webViewContainer.snp.remakeConstraints { make in
-      make.left.right.equalTo(self.view)
-
-      if self.isUsingBottomBar {
-        webViewContainerTopOffset =
-          make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide.snp.top)
-          .constraint
-      } else {
-        webViewContainerTopOffset =
-          make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
+    if #available(iOS 26.0, *) {
+      webViewContainer.snp.remakeConstraints { make in
+        make.edges.equalTo(self.view)
       }
+    } else {
+      webViewContainer.snp.remakeConstraints { make in
+        make.left.right.equalTo(self.view)
 
-      if self.isUsingBottomBar {
-        make.bottom.equalTo(self.header.snp.top)
-      } else {
-        make.bottom.equalTo(self.footer.snp.top)
+        if self.isUsingBottomBar {
+          webViewContainerTopOffset =
+            make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide.snp.top)
+            .constraint
+        } else {
+          webViewContainerTopOffset =
+            make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
+        }
+
+        if self.isUsingBottomBar {
+          make.bottom.equalTo(self.header.snp.top)
+        } else {
+          make.bottom.equalTo(self.footer.snp.top)
+        }
       }
     }
 
@@ -1491,7 +1561,7 @@ public class BrowserViewController: UIViewController {
       activeNewTabPageViewController = ntpController
 
       addChild(ntpController)
-      let subview = isUsingBottomBar ? header : statusBarOverlay
+      let subview = isUsingBottomBar ? header : topBarsBackgroundView
       view.insertSubview(ntpController.view, belowSubview: subview)
       ntpController.didMove(toParent: self)
 
@@ -1499,6 +1569,8 @@ public class BrowserViewController: UIViewController {
         $0.edges.equalTo(pageOverlayLayoutGuide)
       }
       ntpController.view.layoutIfNeeded()
+
+      updateBrowserColors()
 
       self.webViewContainer.accessibilityElementsHidden = true
       UIAccessibility.post(notification: .screenChanged, argument: nil)
@@ -1530,6 +1602,8 @@ public class BrowserViewController: UIViewController {
       self.showReaderModeBar(animated: false)
       self.updatePlaylistURLBar(tab: tab, state: state, item: tab.playlistItem)
     }
+
+    updateBrowserColors()
   }
 
   func updateInContentHomePanel(_ url: URL?) {
@@ -1977,7 +2051,7 @@ public class BrowserViewController: UIViewController {
 
   func clearPageZoomDialog() {
     pageZoomBar?.view.removeFromSuperview()
-    updateViewConstraints()
+    view.setNeedsUpdateConstraints()
     pageZoomBar = nil
   }
 
@@ -2023,16 +2097,33 @@ public class BrowserViewController: UIViewController {
   }
 
   public override var preferredStatusBarStyle: UIStatusBarStyle {
-    if isUsingBottomBar, let tab = tabManager.selectedTab,
-      tab.visibleURL.map(InternalURL.isValid) == false,
-      let color = tab.sampledPageTopColor
-    {
-      return color.isLight ? .darkContent : .lightContent
-    }
-    return super.preferredStatusBarStyle
+    return .default
+  }
+
+  func updateBrowserColors(traitCollection: UITraitCollection? = nil) {
+    let traitCollection = traitCollection ?? self.traitCollection
+    self.bottomBarKeyboardBackground.backgroundColor = self.topToolbar.backgroundColor
+    self.collapsedURLBarView.browserColors = self.privateBrowsingManager.browserColors
+
+    let isNewTabPageVisible = self.activeNewTabPageViewController?.parent != nil
+    let backgroundViewColor = privateBrowsingManager.browserColors.chromeBackground
+      .withAlphaComponent(
+        isNewTabPageVisible ? 1 : (traitCollection.userInterfaceStyle == .dark ? 0.8 : 0.6)
+      )
+    let backgroundViewEffect = UIBlurEffect(
+      style: privateBrowsingManager.isPrivateBrowsing
+        ? .systemChromeMaterialDark : .systemChromeMaterial
+    )
+    self.topBarsBackgroundView.contentView.backgroundColor = backgroundViewColor
+    self.topBarsBackgroundView.effect = backgroundViewEffect
+    self.bottomBarsBackgroundView.contentView.backgroundColor = backgroundViewColor
+    self.bottomBarsBackgroundView.effect = backgroundViewEffect
   }
 
   func updateStatusBarOverlayColor() {
+    if !isStatusBarOverlayNeeded {
+      return
+    }
     defer { setNeedsStatusBarAppearanceUpdate() }
     guard isUsingBottomBar, let tab = tabManager.selectedTab,
       tab.visibleURL.map(InternalURL.isValid) == false,

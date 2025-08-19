@@ -107,7 +107,7 @@ extension BrowserViewController: TabManagerDelegate {
 
       webViewContainer.addSubview(tab.view)
       tab.view.snp.remakeConstraints { make in
-        make.left.right.top.bottom.equalTo(self.webViewContainer)
+        make.edges.equalTo(self.webViewContainer)
       }
 
       // Add ScreenTime above the WebView

@@ -530,7 +530,20 @@ class ChromiumTabState: TabState, TabStateImpl {
   var policyDeciders: OrderedSet<AnyTabPolicyDecider> = []
 }
 
-extension CWVWebView: WebViewProxy {}
+extension CWVWebView: WebViewProxy {
+  #if compiler(>=6.2)
+  @available(iOS 26.0, *)
+  public var obscuredContentInsets: UIEdgeInsets {
+    get { internalWebView?.obscuredContentInsets ?? .zero }
+    set { internalWebView?.obscuredContentInsets = newValue }
+  }
+  #else
+  public var obscuredContentInsets: UIEdgeInsets {
+    get { .zero }
+    set {}
+  }
+  #endif
+}
 
 extension CWVUserAgentType {
   init(_ userAgentType: UserAgentType) {

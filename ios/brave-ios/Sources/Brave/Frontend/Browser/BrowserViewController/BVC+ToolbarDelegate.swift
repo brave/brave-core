@@ -398,11 +398,13 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView) {
+    header.backgroundView.isHidden = false
     updateTabsBarVisibility()
     displayFavoritesController()
   }
 
   func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView) {
+    header.backgroundView.isHidden = true
     hideSearchController()
     hideFavoritesController()
     updateScreenTimeUrl(tabManager.selectedTab?.visibleURL)
@@ -804,7 +806,7 @@ extension BrowserViewController: TopToolbarDelegate {
       // Two different behaviors here:
       // 1. For bottom bar we do not want to show the status bar color
       // 2. For top bar we do so it matches the address bar background
-      let subview = isUsingBottomBar ? statusBarOverlay : footer
+      let subview = isUsingBottomBar ? topBarsBackgroundView : footer
       view.insertSubview(favoritesController.view, aboveSubview: subview)
     }
   }
