@@ -264,6 +264,7 @@ test("brave_unit_tests") {
     "//brave/components/skus/browser:unit_tests",
     "//brave/components/skus/common",
     "//brave/components/skus/renderer:unit_tests",
+    "//brave/components/static_redirect_helper:unit_tests",
     "//brave/components/sync/engine:unit_tests",
     "//brave/components/sync/service:unit_tests",
     "//brave/components/time_period_storage",
