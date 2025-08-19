@@ -1069,9 +1069,11 @@ test("brave_browser_tests") {
 
   if (enable_speedreader && toolkit_views) {
     deps += [
-      "//brave/browser/speedreader",  # brave_perf_features_processor_browsertest.cc
       "//brave/browser/speedreader:browser_tests",
-      "//brave/components/speedreader",  # brave_perf_features_processor_browsertest.cc
+
+      # Required for brave_perf_features_processor_browsertest.cc
+      "//brave/browser/speedreader",
+      "//brave/components/speedreader",
     ]
   }
 

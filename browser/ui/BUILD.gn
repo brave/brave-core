@@ -1014,7 +1014,7 @@ source_set("ui") {
       "speedreader/speedreader_tab_helper.h",
     ]
 
-    if (!is_android) {
+    if (toolkit_views) {
       sources += [
         "speedreader/speedreader_bubble_view.h",
         "views/speedreader/reader_mode_bubble.cc",
