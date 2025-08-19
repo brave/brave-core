@@ -19,6 +19,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "base/threading/thread_restrictions.h"
@@ -156,6 +157,17 @@ void AdBlockServiceTest::SetUpOnMainThread() {
 void AdBlockServiceTest::PreRunTestOnMainThread() {
   PlatformBrowserTest::PreRunTestOnMainThread();
   WaitForAdBlockServiceThreads();
+
+  // Wait for initial engine creation to complete, especially on slower
+  // platforms
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    auto counts = histogram_tester_.GetTotalCountsForPrefix(
+        "Brave.Adblock.MakeEngineWithRules.Default");
+    return counts.find("Brave.Adblock.MakeEngineWithRules.Default") !=
+               counts.end() &&
+           counts.at("Brave.Adblock.MakeEngineWithRules.Default") >= 1;
+  })) << "Timeout waiting for initial engine creation";
+
   histogram_tester_.ExpectTotalCount(
       "Brave.Adblock.MakeEngineWithRules.Default", 1);
   InstallDefaultAdBlockComponent();
@@ -779,21 +791,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
-// These tests fail intermittently on macOS; see
-// https://github.com/brave/brave-browser/issues/15912
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_CnameCloakedRequestsGetBlocked \
-  DISABLED_CnameCloakedRequestsGetBlocked
-#define MAYBE_CnameCloakedRequestsCanBeExcepted \
-  DISABLED_CnameCloakedRequestsCanBeExcepted
-#define MAYBE_NoRemoveparamOnCnameUncloakedUrl \
-  DISABLED_NoRemoveparamOnCnameUncloakedUrl
-#else
-#define MAYBE_CnameCloakedRequestsGetBlocked CnameCloakedRequestsGetBlocked
-#define MAYBE_CnameCloakedRequestsCanBeExcepted \
-  CnameCloakedRequestsCanBeExcepted
-#define MAYBE_NoRemoveparamOnCnameUncloakedUrl NoRemoveparamOnCnameUncloakedUrl
-#endif
 
 // A test observer that allows blocking waits for the
 // AdBlockSubscriptionServiceManager to update the status of any registered
@@ -1031,8 +1028,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToListUrlTwice) {
 
 // Make sure that CNAME cloaked network requests get blocked correctly and
 // issue the correct number of DNS resolutions
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       MAYBE_CnameCloakedRequestsGetBlocked) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsGetBlocked) {
   UpdateAdBlockInstanceWithRules("||cname-cloak-endpoint.tracking.com^");
   GURL tab_url = embedded_test_server()->GetURL("a.com", kAdBlockTestPage);
   GURL direct_resource_url =
@@ -1078,6 +1074,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 direct_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Note one resolution for the root document
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return inner_resolver->num_resolve() >= 2ULL;
+  })) << "Timeout waiting for DNS resolution count to reach 2";
   ASSERT_EQ(2ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked with
@@ -1088,6 +1087,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 "xhr($1)",
                                                 chain_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return inner_resolver->num_resolve() >= 3ULL;
+  })) << "Timeout waiting for DNS resolution count to reach 3";
   ASSERT_EQ(3ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
@@ -1097,6 +1099,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 "xhr($1)",
                                                 safe_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return inner_resolver->num_resolve() >= 4ULL;
+  })) << "Timeout waiting for DNS resolution count to reach 4";
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 
   // XHR request directly to a blocked third-party endpoint.
@@ -1106,13 +1111,15 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 "xhr($1)",
                                                 bad_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return inner_resolver->num_resolve() >= 4ULL;
+  })) << "Timeout waiting for DNS resolution count to reach 4";
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 }
 
 // Make sure that an exception for a URL can apply to a blocking decision made
 // to its CNAME-uncloaked equivalent.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       MAYBE_CnameCloakedRequestsCanBeExcepted) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
   UpdateAdBlockInstanceWithRules(
       "||cname-cloak-endpoint.tracking.com^\n"
       "@@a.com*/logo.png?unblock^");
@@ -1162,6 +1169,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 direct_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Note one resolution for the root document
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return inner_resolver->num_resolve() >= 2ULL;
+  })) << "Timeout waiting for DNS resolution count to reach 2";
   ASSERT_EQ(2ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked with
@@ -1172,6 +1182,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 "xhr($1)",
                                                 chain_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return inner_resolver->num_resolve() >= 3ULL;
+  })) << "Timeout waiting for DNS resolution count to reach 3";
   ASSERT_EQ(3ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
@@ -1181,6 +1194,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 "xhr($1)",
                                                 safe_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return inner_resolver->num_resolve() >= 4ULL;
+  })) << "Timeout waiting for DNS resolution count to reach 4";
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 
   // XHR request directly to a blocked third-party endpoint.
@@ -1190,6 +1206,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 "xhr($1)",
                                                 bad_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return inner_resolver->num_resolve() >= 4ULL;
+  })) << "Timeout waiting for DNS resolution count to reach 4";
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 
   // The original URL only matches an exception.
@@ -1206,8 +1225,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
 // `$removeparam` should happen for the original URL, not the CNAME-uncloaked
 // one
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       MAYBE_NoRemoveparamOnCnameUncloakedUrl) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoRemoveparamOnCnameUncloakedUrl) {
   UpdateAdBlockInstanceWithRules(
       "||frame.com^$subdocument,removeparam=evil\n"
       "||assets.cdn.net^$subdocument,removeparam=test");

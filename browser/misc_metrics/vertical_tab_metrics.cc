@@ -102,7 +102,11 @@ size_t VerticalTabBrowserMetrics::GetTabCount(TabCountType count_type) const {
   if (!vertical_tabs_enabled_) {
     return 0;
   }
-  return counts_.at(count_type);
+  auto it = counts_.find(count_type);
+  if (it == counts_.end()) {
+    return 0;
+  }
+  return it->second;
 }
 
 void VerticalTabBrowserMetrics::UpdateEnabledStatus() {

@@ -351,7 +351,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // Remove Item at index 0 to change active index.
   sidebar_service->RemoveItemAt(0);
   active_item_index--;
-  EXPECT_EQ(--expected_count, model()->GetAllSidebarItems().size());
+  --expected_count;
+
+  // Wait for sidebar item removal to complete before navigation.
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return model()->GetAllSidebarItems().size() == expected_count;
+  }));
+  EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   // If current active tab is not NTP, we can add current url to sidebar.
