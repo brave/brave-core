@@ -15,9 +15,7 @@ namespace {
 constexpr char kTestScript[] = "console.log('test script');";
 }  // namespace
 
-class PsstScriptsUtilsUnitTest : public testing::Test {};
-
-TEST_F(PsstScriptsUtilsUnitTest, GetScriptWithParamsCombinesParamsAndScript) {
+TEST(PsstScriptsUtilsUnitTest, GetScriptWithParamsCombinesParamsAndScript) {
   constexpr char kParamKey[] = "param1";
   constexpr char kParamValue[] = "value1";
 
@@ -30,7 +28,7 @@ TEST_F(PsstScriptsUtilsUnitTest, GetScriptWithParamsCombinesParamsAndScript) {
   EXPECT_NE(result.find(kTestScript), std::string::npos);
 }
 
-TEST_F(PsstScriptsUtilsUnitTest, GetScriptWithParamsWrongCases) {
+TEST(PsstScriptsUtilsUnitTest, GetScriptWithParamsWrongCases) {
   EXPECT_EQ(GetScriptWithParams(kTestScript, std::nullopt), kTestScript);
   EXPECT_EQ(GetScriptWithParams(kTestScript, base::Value()), kTestScript);
 }

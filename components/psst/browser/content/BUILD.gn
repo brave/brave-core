@@ -15,8 +15,6 @@ static_library("content") {
   sources = [
     "psst_script_utils.cc",
     "psst_script_utils.h",
-    "psst_scripts_inserter_impl.cc",
-    "psst_scripts_inserter_impl.h",
     "psst_tab_web_contents_observer.cc",
   ]
 
