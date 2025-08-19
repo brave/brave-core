@@ -1067,11 +1067,13 @@ test("brave_browser_tests") {
     deps += [ "//brave/components/brave_wayback_machine" ]
   }
 
-  if (enable_speedreader && toolkit_views) {
-    deps += [
-      "//brave/browser/speedreader:browser_tests",
+  if (enable_speedreader) {
+    if (toolkit_views) {
+      deps += [ "//brave/browser/speedreader:browser_tests" ]
+    }
 
-      # Required for brave_perf_features_processor_browsertest.cc
+    deps += [
+      # Required for brave_perf_features_processor_browsertest.cc & ad_block_service_browsertest.cc
       "//brave/browser/speedreader",
       "//brave/components/speedreader",
     ]
