@@ -1119,8 +1119,8 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINE_LIST_BRAVE_SEARCH_DESCRIPTION" desc="The description shown with the Brave Search radio button in the search engines list.">
     Brave Search is recommended for the best browsing experience while using Brave browser.
   </message>
-  <message name="IDS_SETTINGS_SEARCH_ENGINE_LIST_BRAVE_SEARCH_RECOMMENDED" desc="The label (in all caps) shown in the Brave Search radio button in the search engines list.">
-    RECOMMENDED
+  <message name="IDS_SETTINGS_SEARCH_ENGINE_LIST_BRAVE_SEARCH_RECOMMENDED" desc="The label shown in the Brave Search radio button in the search engines list.">
+    Recommended
   </message>
 
   <!-- Settings / Extensions -->
