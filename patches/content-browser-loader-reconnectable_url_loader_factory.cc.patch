@@ -1,5 +1,5 @@
 diff --git a/content/browser/loader/reconnectable_url_loader_factory.cc b/content/browser/loader/reconnectable_url_loader_factory.cc
-index 1a82d44aade7d4c2648d9f8a370cbee97fc4163c..f52909192d834fefc7fc41987bbe922679056cf5 100644
+index 1a82d44aade7d4c2648d9f8a370cbee97fc4163c..f90d449d0cc5468df6183c6b1d87e37e987ba333 100644
 --- a/content/browser/loader/reconnectable_url_loader_factory.cc
 +++ b/content/browser/loader/reconnectable_url_loader_factory.cc
 @@ -10,6 +10,7 @@
@@ -10,6 +10,15 @@ index 1a82d44aade7d4c2648d9f8a370cbee97fc4163c..f52909192d834fefc7fc41987bbe9226
  
  namespace content {
  
+@@ -29,7 +30,7 @@ void ReconnectableURLLoaderFactory::CreateLoaderAndStart(
+     const net::MutableNetworkTrafficAnnotationTag& traffic_annotation) {
+   if (network::mojom::URLLoaderFactory* factory = GetURLLoaderFactory()) {
+     factory->CreateLoaderAndStart(std::move(receiver), request_id, options,
+-                                  url_request, std::move(client),
++                                  network::SystemRequestHandler::GetInstance()->OnBeforeSystemRequest(url_request), std::move(client),
+                                   traffic_annotation);
+   }
+ }
 @@ -136,7 +137,7 @@ class ReconnectableURLLoaderFactoryForIOThread::URLLoaderFactoryForIOThread
        override {
      DCHECK(BrowserThread::CurrentlyOn(BrowserThread::IO));
