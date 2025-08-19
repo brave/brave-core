@@ -5,16 +5,29 @@
 
 (() => {
   const getUserId = () => {
-    return "user1"
+    return "user1";
+  };
+
+  const isInitial = () => {
+    const psst = window.parent.localStorage.getItem('psst');
+    if(!psst)
+      return true
+
+    const psstObj = JSON.parse(psst);
+    if(!psstObj)
+      return true
+
+    return psstObj.state === "completed"
   }
-  return new Promise((resolve) => {
-    document.title = 'a_user-';
-    resolve({
-      "user": getUserId(),
-      "requests": [
-        {"name": "privacy setting #1"},
-        {"name": "privacy setting #2"},
-      ]
-    })
-  })
+
+  document.title = 'a_user-';
+  return {
+    user: getUserId(),
+    is_initial: isInitial(),
+    name: 'a.test',
+    tasks: [
+      { name: "privacy setting #1" },
+      { name: "privacy setting #2" },
+    ],
+  };
 })();

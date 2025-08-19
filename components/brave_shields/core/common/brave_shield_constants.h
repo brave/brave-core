@@ -24,6 +24,7 @@ inline constexpr char kCookies[] = "shieldsCookiesV3";
 inline constexpr char kFacebookEmbeds[] = "fb-embeds";
 inline constexpr char kTwitterEmbeds[] = "twitter-embeds";
 inline constexpr char kLinkedInEmbeds[] = "linked-in-embeds";
+inline constexpr char kBravePsst[] = "bravePsst";
 
 // Values used before the migration away from ResourceIdentifier, kept around
 // for migration purposes only.
