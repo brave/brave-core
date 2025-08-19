@@ -118,7 +118,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_SUBLABEL" desc="Shields panel toggle sublabel that would forget first party website storage when enabled.">
-    Clears cookies and other site data when you close a site.
+    Clears cookies and other site data when you close a site
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL" desc="Shields panel toggle label that would save webcompat report contact info data when enabled.">

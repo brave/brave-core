@@ -80,7 +80,7 @@ const localeStrings: Record<StringKey, string>  = {
   statsBandwidthSavedText: 'Bandwidth saved',
   statsTimeSavedText: 'Time saved',
   statsTitle: 'STATS',
-  talkDescriptionText: 'Encrypted video calls with Brave Talk.',
+  talkDescriptionText: 'Encrypted video calls with Brave Talk',
   talkDescriptionTitle: 'Privacy-First Calls',
   talkStartCallLabel: 'Start call',
   talkWidgetTitle: 'TALK',
