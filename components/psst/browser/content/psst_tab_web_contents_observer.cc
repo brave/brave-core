@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/psst/browser/content/psst_script_utils.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
@@ -133,7 +134,9 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
-  inject_script_callback_.Run(policy_script, base::DoNothing());
+  inject_script_callback_.Run(
+      GetScriptWithParams(policy_script, std::move(user_script_result)),
+      base::DoNothing());
 }
 
 }  // namespace psst

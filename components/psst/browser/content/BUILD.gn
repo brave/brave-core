@@ -12,7 +12,11 @@ static_library("content") {
 
   friend = [ ":unit_tests" ]
 
-  sources = [ "psst_tab_web_contents_observer.cc" ]
+  sources = [
+    "psst_script_utils.cc",
+    "psst_script_utils.h",
+    "psst_tab_web_contents_observer.cc",
+  ]
 
   public_deps = [
     "//base",
@@ -31,7 +35,10 @@ static_library("content") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "psst_tab_web_contents_observer_unittest.cc" ]
+  sources = [
+    "psst_script_utils_unittest.cc",
+    "psst_tab_web_contents_observer_unittest.cc",
+  ]
 
   deps = [
     "//brave/components/psst/browser/content",
