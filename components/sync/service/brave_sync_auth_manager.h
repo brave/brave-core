@@ -35,7 +35,8 @@ class BraveSyncAuthManager : public SyncAuthManager {
   void OnRefreshTokensLoaded() override {}
 
  private:
-  SyncAccountInfo DetermineAccountToUse() const override;
+  SyncAccountInfo DetermineAccountToUse(
+      const signin::IdentityManager* identity_manager) const override;
   std::string GenerateAccessToken(const std::string& timestamp);
   void OnNetworkTimeFetched(const base::Time& time);
 
