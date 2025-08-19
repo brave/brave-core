@@ -106,14 +106,14 @@ void EmailAliasesService::RequestAuthentication(
   auth_request.email = auth_email;
   auth_request.intent = "auth_token";
   auth_request.service = "email-aliases";
-  const auto body_value = auth_request.ToValue();
-  std::string body = base::WriteJson(body_value).value_or("");
+  std::optional<std::string> body = base::WriteJson(auth_request.ToValue());
+  CHECK(body);
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(verify_init_url_);
   resource_request->method = net::HttpRequestHeaders::kPostMethod;
   verify_init_simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
-  verify_init_simple_url_loader_->AttachStringForUpload(body,
+  verify_init_simple_url_loader_->AttachStringForUpload(*body,
                                                         "application/json");
   verify_init_simple_url_loader_->DownloadToString(
       url_loader_factory_.get(),
@@ -154,8 +154,8 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
 void EmailAliasesService::RequestSession() {
   SessionRequest session_request;
   session_request.wait = true;
-  auto body_value = session_request.ToValue();
-  std::string body = base::WriteJson(body_value).value_or("");
+  std::optional<std::string> body = base::WriteJson(session_request.ToValue());
+  CHECK(body);
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(verify_result_url_);
   resource_request->method = net::HttpRequestHeaders::kPostMethod;
@@ -165,7 +165,7 @@ void EmailAliasesService::RequestSession() {
   }
   verify_result_simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
-  verify_result_simple_url_loader_->AttachStringForUpload(body,
+  verify_result_simple_url_loader_->AttachStringForUpload(*body,
                                                           "application/json");
   verify_result_simple_url_loader_->DownloadToString(
       url_loader_factory_.get(),
