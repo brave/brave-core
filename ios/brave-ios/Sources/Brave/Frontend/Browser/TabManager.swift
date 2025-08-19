@@ -1262,7 +1262,7 @@ class TabManager: NSObject {
       } else {
         // Don't access `shredLevel` directly, but `TabState` is unavailable
         // to access via `BraveShieldsTabHelper`. Temporarily access here until
-        // we switch to using `BraveShieldsUtilsIOS` with brave-browser#47350
+        // we switch to using `BraveShieldsSettings` with brave-browser#47350
         let siteDomain = Domain.getOrCreate(
           forUrl: url,
           persistent: !isPrivate

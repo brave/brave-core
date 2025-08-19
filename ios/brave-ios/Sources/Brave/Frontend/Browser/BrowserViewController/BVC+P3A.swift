@@ -158,6 +158,8 @@ extension BrowserViewController {
   }
 
   @MainActor private func recordShieldsLevelUpdateP3A(buckets: [Bucket]) {
+    // if the flag is enabled, P3A is recorded in core shields functions.
+    guard FeatureList.kBraveShieldsContentSettings.enabled else { return }
     // Q51 On how many domains has the user set the adblock setting to be lower (block less) than the default?
     let adsBelowGlobalCount = Domain.totalDomainsWithAdblockShieldsLoweredFromGlobal()
     UmaHistogramRecordValueToBucket(
@@ -175,6 +177,8 @@ extension BrowserViewController {
   }
 
   func recordFinterprintProtectionP3A(buckets: [Bucket]) {
+    // if the flag is enabled, P3A is recorded in core shields functions.
+    guard FeatureList.kBraveShieldsContentSettings.enabled else { return }
     // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
     let fingerprintingBelowGlobalCount =
       Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
@@ -194,6 +198,8 @@ extension BrowserViewController {
   }
 
   func recordGlobalAdBlockShieldsP3A() {
+    // if the flag is enabled, P3A is recorded in core shields functions.
+    guard FeatureList.kBraveShieldsContentSettings.enabled else { return }
     // Q46 What is the global ad blocking shields setting?
     enum Answer: Int, CaseIterable {
       case disabled = 0
@@ -213,6 +219,8 @@ extension BrowserViewController {
   }
 
   func recordGlobalFingerprintingShieldsP3A() {
+    // if the flag is enabled, P3A is recorded in core shields functions.
+    guard FeatureList.kBraveShieldsContentSettings.enabled else { return }
     // Q47 What is the global fingerprinting shields setting?
     enum Answer: Int, CaseIterable {
       case disabled = 0
