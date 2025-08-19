@@ -10,7 +10,6 @@ module.exports = (program) =>
     .option('--build_type [build_type]', 'build with coverage information ')
     .option('--target_arch [target_arch]', 'target architecture')
     .option('--target_os <target_os>', 'target OS')
-    .option('--tests [testSuites...]', 'testSuites')
     .description('generates a coverage report')
     .action(async (args) => {
       if (args.buildConfig) {
@@ -19,8 +18,13 @@ module.exports = (program) =>
       config.update(args)
 
       const out = `${config.outputDir}/coverage`;
-      const allTestExecutables = (args.tests?.split(',')||['brave_browser_tests']).map(x => `${config.outputDir}/${x}`)
       const recordings = await Array.fromAsync(glob(`${out}/**/*.profraw`))
+
+      const testSuites = [...new Set(recordings
+        .map(x =>x.replace(out+'/',''))
+        .map(x => x.split('/'))
+        .filter(x => x.length > 1)
+        .map(x => x[0]))].map(x => `${config.outputDir}/${x}`)
 
       if (!recordings.length) {
         console.error(`glob ${out}/**/*.profraw yield any recordings!`)
@@ -38,7 +42,7 @@ module.exports = (program) =>
         `-instr-profile=${out}/coverage.profdata`,
         "-format=html",
         `-output-dir=${out}/report`,
-        ...allTestExecutables
+        ...testSuites
       ]);
 
       const output = await utils.runAsync("llvm-cov", [
@@ -46,7 +50,7 @@ module.exports = (program) =>
         `-compilation-dir=${config.outputDir}`,
         `-instr-profile=${out}/coverage.profdata`,
         "--summary-only",
-        ...allTestExecutables
+        ...testSuites
       ], {stdio: 'pipe'});
 
       try {
