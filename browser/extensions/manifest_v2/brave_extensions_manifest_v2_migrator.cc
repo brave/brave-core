@@ -222,18 +222,11 @@ void ImportExtensionSettingsOnFileThread(
   const auto webstore_extension_id =
       *extensions_mv2::GetWebStoreHostedExtensionId(brave_hosted_extension_id);
 
-  const auto webstore_extension_version =
-      GetBackupVersion(webstore_extension_id, profile_dir);
-
   const auto backup_path = profile_dir.Append(kExtensionMV2BackupDir)
                                .AppendASCII(webstore_extension_id);
   // Remove backup in any case.
   base::ScopedClosureRunner remove_backup(
       base::GetDeletePathRecursivelyCallback(backup_path));
-
-  if (webstore_extension_version != brave_hosted_extension_version) {
-    return;
-  }
 
   base::ScopedClosureRunner clear_settings_on_error(base::BindOnce(
       [](const extensions::ExtensionId& brave_hosted_extension_id,
@@ -374,8 +367,11 @@ void ExtensionsManifestV2Migrator::BackupExtensionSettings(
 void ExtensionsManifestV2Migrator::OnSettingsImported(
     const extensions::ExtensionId& brave_hosted_extension_id) {
   CHECK(extensions_mv2::IsKnownBraveHostedExtension(brave_hosted_extension_id));
-  extensions::ExtensionRegistrar::Get(profile_)->EnableExtension(
-      brave_hosted_extension_id);
+
+  extensions::ExtensionRegistrar::Get(profile_)
+      ->RemoveDisableReasonAndMaybeEnable(
+          brave_hosted_extension_id,
+          extensions::disable_reason::DISABLE_RELOAD);
 }
 
 //-----------------------------------------------------------------------------
