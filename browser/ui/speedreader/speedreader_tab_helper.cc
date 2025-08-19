@@ -358,6 +358,7 @@ void SpeedreaderTabHelper::UpdateUI() {
 #if !BUILDFLAG(IS_ANDROID)
   if (auto* browser_window = BraveBrowserWindow::From(
           BrowserWindow::FindBrowserWindowWithWebContents(web_contents()))) {
+    browser_window->UpdateReaderModeToolbar();
     browser_window->UpdatePageActionIcon(brave::kSpeedreaderPageActionIconType);
   }
 #endif
