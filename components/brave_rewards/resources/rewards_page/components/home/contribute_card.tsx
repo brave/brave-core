@@ -52,6 +52,12 @@ export function ContributeCard() {
     )
   }
 
+  function creatorAcceptsContributions() {
+    return creator && (
+      creator.supportedWalletProviders.length > 0 || creator.banner.web3URL
+    )
+  }
+
   function onContributeClick() {
     if (!hasMatchingCustodialProvider() && creator?.banner.web3URL) {
       tabOpener.openTab(creator.banner.web3URL)
@@ -75,13 +81,16 @@ export function ContributeCard() {
             {renderOrigin()}
           </span>
         </div>
-        <Button
-          kind={externalWallet ? 'filled' : 'outline'}
-          onClick={onContributeClick}
-          className='contribute-button'
-        >
-          {getString('contributeButtonLabel')}
-        </Button>
+        {
+          creatorAcceptsContributions() &&
+            <Button
+              kind={externalWallet ? 'filled' : 'outline'}
+              onClick={onContributeClick}
+              className='contribute-button'
+            >
+              {getString('contributeButtonLabel')}
+            </Button>
+        }
       </section>
     </div>
   )
