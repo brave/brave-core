@@ -68,7 +68,9 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     : WebContentsObserver(web_contents),
       registry_(registry),
       prefs_(prefs),
-      inject_script_callback_(std::move(inject_script_callback)) {}
+      inject_script_callback_(std::move(inject_script_callback)) {
+  CHECK(!inject_script_callback_.is_null());
+}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
@@ -106,8 +108,7 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
 bool PsstTabWebContentsObserver::ShouldInsertScriptForPage(int id) {
   auto* entry = web_contents()->GetController().GetLastCommittedEntry();
   auto* data = entry->GetUserData(kShouldProcessKey);
-  return !inject_script_callback_.is_null() && data &&
-         static_cast<PsstNavigationData*>(data)->id == id;
+  return data && static_cast<PsstNavigationData*>(data)->id == id;
 }
 
 void PsstTabWebContentsObserver::InsertUserScript(
