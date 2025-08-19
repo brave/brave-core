@@ -876,6 +876,7 @@ test("brave_browser_tests") {
     "//brave/browser/web_discovery:browser_tests",
     "//brave/common",
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/renderer:browser_tests",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
@@ -1067,14 +1068,10 @@ test("brave_browser_tests") {
   }
 
   if (enable_speedreader && toolkit_views) {
-    sources += [ "//brave/browser/speedreader/speedreader_browsertest.cc" ]
     deps += [
-      "//brave/browser/speedreader",
-      "//brave/browser/ui/views/frame/split_view/",
-      "//brave/browser/ui/views/split_view/",
-      "//brave/components/ai_chat/core/common",
-      "//chrome/browser/ui/browser_window",
-      "//components/language/core/browser",
+      "//brave/browser/speedreader",  # brave_perf_features_processor_browsertest.cc
+      "//brave/browser/speedreader:browser_tests",
+      "//brave/components/speedreader",  # brave_perf_features_processor_browsertest.cc
     ]
   }
 
