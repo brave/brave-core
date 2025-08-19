@@ -119,7 +119,7 @@ describe('input box', () => {
       <InputBox
         context={{
           ...testContext,
-          inputText: '',
+          inputText: [],
         }}
         conversationStarted={false}
       />,
@@ -135,7 +135,7 @@ describe('input box', () => {
       <InputBox
         context={{
           ...testContext,
-          inputText: 'test',
+          inputText: ['test'],
         }}
         conversationStarted={false}
       />,
@@ -387,12 +387,12 @@ describe('input box', () => {
         />,
       )
 
-      const textarea = container.querySelector('textarea')!
+      const editable = container.querySelector('[data-editor]')!
       const imageFile = createMockFile('test.png', 'image/png')
       const textFile = createMockFile('test.txt', 'text/plain')
 
       await act(async () => {
-        fireEvent.paste(textarea, {
+        fireEvent.paste(editable, {
           clipboardData: {
             files: [imageFile, textFile],
             items: [imageFile, textFile].map((file) => ({

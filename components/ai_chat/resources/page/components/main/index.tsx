@@ -47,6 +47,7 @@ import { useIsElementSmall } from '../../hooks/useIsElementSmall'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/tabs_menu'
+import { stringifyContent } from '../input_box/editable'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -212,10 +213,13 @@ function Main() {
     return false
   }
 
-  const extractedQuery = useExtractedQuery(conversationContext.inputText, {
-    onlyAtStart: true,
-    triggerCharacter: '/',
-  })
+  const extractedQuery = useExtractedQuery(
+    stringifyContent(conversationContext.inputText),
+    {
+      onlyAtStart: true,
+      triggerCharacter: '/',
+    },
+  )
 
   return (
     <main
