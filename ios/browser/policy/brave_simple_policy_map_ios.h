@@ -7,6 +7,7 @@
 #define BRAVE_IOS_BROWSER_POLICY_BRAVE_SIMPLE_POLICY_MAP_IOS_H_
 
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
@@ -35,6 +36,11 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {
         policy::key::kBraveTalkDisabled,
         kBraveTalkDisabledByPolicy,
+        base::Value::Type::BOOLEAN,
+    },
+    {
+        policy::key::kBraveNewsDisabled,
+        brave_news::prefs::kBraveNewsDisabledByPolicy,
         base::Value::Type::BOOLEAN,
     },
 };

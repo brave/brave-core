@@ -166,10 +166,11 @@ class NewTabPageViewController: UIViewController {
   private let privateBrowsingManager: PrivateBrowsingManager
 
   private let p3aHelper: NewTabPageP3AHelper
+  private let profilePrefs: any PrefService
 
   init(
     tab: some TabState,
-    profile: LegacyBrowserProfile,
+    profilePrefs: any PrefService,
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards,
@@ -177,11 +178,13 @@ class NewTabPageViewController: UIViewController {
     p3aHelper: NewTabPageP3AHelper
   ) {
     self.browserTab = tab
+    self.profilePrefs = profilePrefs
     self.rewards = rewards
     self.feedDataSource = feedDataSource
     self.privateBrowsingManager = privateBrowsingManager
     self.backgroundButtonsView = NewTabPageBackgroundButtonsView(
-      privateBrowsingManager: privateBrowsingManager
+      privateBrowsingManager: privateBrowsingManager,
+      profilePrefs: profilePrefs
     )
     self.p3aHelper = p3aHelper
     background = NewTabPageBackground(dataSource: dataSource, rewards: rewards)
@@ -257,7 +260,7 @@ class NewTabPageViewController: UIViewController {
       sections.insert(ntpDefaultBrowserCalloutProvider, at: 0)
     }
 
-    if !privateBrowsingManager.isPrivateBrowsing {
+    if !privateBrowsingManager.isPrivateBrowsing, profilePrefs.isBraveNewsAvailable {
       sections.append(
         BraveNewsSectionProvider(
           dataSource: feedDataSource,
@@ -1207,7 +1210,7 @@ extension NewTabPageViewController: PreferencesObserver {
 // MARK: - UIScrollViewDelegate
 extension NewTabPageViewController {
   var isBraveNewsVisible: Bool {
-    return !privateBrowsingManager.isPrivateBrowsing
+    return profilePrefs.isBraveNewsAvailable && !privateBrowsingManager.isPrivateBrowsing
       && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
   }
 
@@ -1264,6 +1267,9 @@ extension NewTabPageViewController {
 
   /// Moves New Tab Page Scroll to start of Brave News - Used for shortcut
   func scrollToBraveNews() {
+    if !profilePrefs.isBraveNewsAvailable {
+      return
+    }
     // Offset of where Brave News starts
     let todayStart =
       collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
