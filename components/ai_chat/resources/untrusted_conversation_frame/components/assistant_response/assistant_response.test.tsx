@@ -60,6 +60,12 @@ test('AssistantResponse should include expandable sources', async () => {
 
 test('AssistantResponse should render memory tool events inline', async () => {
   const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
+  const mockUIObserver = {
+    onMemoriesChanged: {
+      addListener: jest.fn().mockReturnValue('listener-id')
+    },
+    removeListener: jest.fn()
+  }
 
   const memoryToolEvent: Mojom.ConversationEntryEvent = {
     toolUseEvent: {
@@ -80,6 +86,7 @@ test('AssistantResponse should render memory tool events inline', async () => {
       uiHandler={{
         hasMemory: mockHasMemory
       } as unknown as Mojom.UntrustedUIHandlerRemote}
+      uiObserver={mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter}
     >
       <AssistantResponse
         events={events}

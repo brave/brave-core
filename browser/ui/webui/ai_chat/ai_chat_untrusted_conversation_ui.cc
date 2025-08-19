@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
 #include "base/strings/escape.h"
@@ -32,6 +33,7 @@
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/url_data_source.h"
@@ -39,6 +41,8 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
@@ -60,7 +64,17 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
  public:
   UIHandler(content::WebUI* web_ui,
             mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver)
-      : web_ui_(web_ui), receiver_(this, std::move(receiver)) {}
+      : web_ui_(web_ui), receiver_(this, std::move(receiver)) {
+    // Set up pref change observer for memory changes
+    PrefService* prefs = Profile::FromWebUI(web_ui_)->GetPrefs();
+    pref_change_registrar_.Init(prefs);
+    pref_change_registrar_.Add(
+        ai_chat::prefs::kBraveAIChatUserMemories,
+        base::BindRepeating(&UIHandler::OnMemoriesChanged,
+                            // It's safe because we own pref_change_registrar_.
+                            base::Unretained(this)));
+  }
+
   UIHandler(const UIHandler&) = delete;
   UIHandler& operator=(const UIHandler&) = delete;
 
@@ -122,6 +136,11 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
         memory, *Profile::FromWebUI(web_ui_)->GetPrefs()));
   }
 
+  void BindUntrustedUI(
+      mojo::PendingRemote<ai_chat::mojom::UntrustedUI> untrusted_ui) override {
+    untrusted_ui_.Bind(std::move(untrusted_ui));
+  }
+
   void OpenAIChatCustomizationSettings() override {
 #if !BUILDFLAG(IS_ANDROID)
     chrome::ShowSettingsSubPageForProfile(
@@ -151,8 +170,23 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 #endif
   }
 
+  void OnMemoriesChanged() {
+    if (!untrusted_ui_.is_bound()) {
+      return;
+    }
+
+    // Get updated memories from prefs
+    std::vector<std::string> memories = ai_chat::prefs::GetMemoriesFromPrefs(
+        *Profile::FromWebUI(web_ui_)->GetPrefs());
+
+    // Notify the UI
+    untrusted_ui_->OnMemoriesChanged(memories);
+  }
+
   raw_ptr<content::WebUI> web_ui_ = nullptr;
   mojo::Receiver<ai_chat::mojom::UntrustedUIHandler> receiver_;
+  mojo::Remote<ai_chat::mojom::UntrustedUI> untrusted_ui_;
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace

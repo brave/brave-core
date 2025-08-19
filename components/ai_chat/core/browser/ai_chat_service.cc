@@ -141,10 +141,6 @@ AIChatService::AIChatService(
       base::BindRepeating(&AIChatService::OnStateChanged,
                           weak_ptr_factory_.GetWeakPtr()));
   pref_change_registrar_.Add(
-      prefs::kBraveAIChatUserMemories,
-      base::BindRepeating(&AIChatService::OnMemoriesChanged,
-                          weak_ptr_factory_.GetWeakPtr()));
-  pref_change_registrar_.Add(
       prefs::kBraveAIChatUserMemoryEnabled,
       base::BindRepeating(&AIChatService::OnMemoryEnabledChanged,
                           weak_ptr_factory_.GetWeakPtr()));
@@ -238,22 +234,6 @@ void AIChatService::OnMemoryEnabledChanged() {
   } else if (!memory_enabled && memory_tool_it != browser_tools_.end()) {
     // Memory disabled but tool exists, remove it.
     browser_tools_.erase(memory_tool_it);
-  }
-
-  // Notify all conversation handlers about memory enabled state change.
-  for (auto& [uuid, conversation_handler] : conversation_handlers_) {
-    conversation_handler->NotifyMemoryEnabledChanged(memory_enabled);
-  }
-}
-
-void AIChatService::OnMemoriesChanged() {
-  // Get updated memories from prefs.
-  std::vector<std::string> memories =
-      ai_chat::prefs::GetMemoriesFromPrefs(*profile_prefs_);
-
-  // Notify all conversation handlers about memory changes.
-  for (auto& [_, conversation_handler] : conversation_handlers_) {
-    conversation_handler->NotifyMemoriesChanged(memories);
   }
 }
 

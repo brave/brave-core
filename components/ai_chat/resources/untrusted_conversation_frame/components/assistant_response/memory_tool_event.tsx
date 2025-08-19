@@ -41,8 +41,8 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
       setMemoryExists(exists)
     })
 
-    // Subscribe to memory changes
-    const id = context.conversationObserver?.onMemoriesChanged.addListener(
+    // Subscribe to memory changes via UI observer
+    const id = context.uiObserver?.onMemoriesChanged.addListener(
       (memories: string[]) => {
         const exists = memories.includes(memoryContent)
         setMemoryExists(exists)
@@ -50,7 +50,7 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
     )
 
     return () => {
-      context.conversationObserver?.removeListener(id)
+      context.uiObserver?.removeListener(id)
     }
   }, [memoryContent])
 

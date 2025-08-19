@@ -72,12 +72,20 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
   public conversationObserver: Mojom.UntrustedConversationUICallbackRouter
     = new Mojom.UntrustedConversationUICallbackRouter
 
+  public uiObserver: Mojom.UntrustedUICallbackRouter
+    = new Mojom.UntrustedUICallbackRouter
+
   constructor() {
     super(defaultConversationEntriesUIState)
     this.initialize()
   }
 
   async initialize() {
+    // Bind UntrustedUI for memory notifications
+    this.uiHandler.bindUntrustedUI(
+      this.uiObserver.$.bindNewPipeAndPassRemote()
+    )
+
     const [
       { conversationEntriesState },
       { conversationHistory }

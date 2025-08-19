@@ -4011,42 +4011,6 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
 }
 
-TEST_F(ConversationHandlerUnitTest, NotifyMemoriesChanged) {
-  // Set up mock untrusted client
-  MockUntrustedConversationHandlerClient untrusted_client(
-      conversation_handler_.get());
-
-  std::vector<std::string> test_memories = {
-      "User prefers TypeScript", "User likes cats", "User is a developer"};
-
-  base::RunLoop run_loop;
-  // Expect the client to receive memory change notification
-  EXPECT_CALL(untrusted_client, OnMemoriesChanged(test_memories))
-      .WillOnce(
-          [&run_loop](const std::vector<std::string>&) { run_loop.Quit(); });
-
-  // Notify memories changed
-  conversation_handler_->NotifyMemoriesChanged(test_memories);
-
-  // Wait for the callback to be called
-  run_loop.Run();
-}
-
-TEST_F(ConversationHandlerUnitTest, NotifyMemoryEnabledChanged) {
-  // Set up mock untrusted client
-  MockUntrustedConversationHandlerClient untrusted_client(
-      conversation_handler_.get());
-
-  base::RunLoop run_loop;
-  // Expect the client to receive memory enabled change notification (enabled)
-  EXPECT_CALL(untrusted_client, OnMemoryEnabledChanged(true))
-      .WillOnce([&run_loop](bool) { run_loop.Quit(); });
-
-  // Notify memory enabled
-  conversation_handler_->NotifyMemoryEnabledChanged(true);
-  run_loop.Run();
-}
-
 TEST_F(ConversationHandlerUnitTest,
        GetTools_MemoryToolFilteredForTemporaryConversations) {
   // Test that memory tools are not available in temporary conversations

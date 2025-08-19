@@ -40,11 +40,6 @@ class MockUntrustedConversationHandlerClient
               AssociatedContentChanged,
               (std::vector<mojom::AssociatedContentPtr>),
               (override));
-  MOCK_METHOD(void,
-              OnMemoriesChanged,
-              (const std::vector<std::string>&),
-              (override));
-  MOCK_METHOD(void, OnMemoryEnabledChanged, (bool), (override));
 
  private:
   mojo::Receiver<mojom::UntrustedConversationUI> conversation_ui_receiver_{

@@ -22,7 +22,7 @@ describe('MemoryToolEvent', () => {
     output
   })
 
-  const createMockObserver = (
+  const createMockUIObserver = (
     memoryListener?: (memories: string[]) => void
   ) => {
     let listener = memoryListener
@@ -95,15 +95,15 @@ describe('MemoryToolEvent', () => {
 
   test('should render success state when memory exists', async () => {
     const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
-    const mockObserver = createMockObserver()
+    const mockUIObserver = createMockUIObserver()
 
     render(
       <MockContext
         uiHandler={{
           hasMemory: mockHasMemory
         } as unknown as Mojom.UntrustedUIHandlerRemote}
-        conversationObserver={
-          mockObserver as unknown as Mojom.UntrustedConversationUICallbackRouter
+        uiObserver={
+          mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
       >
         <MemoryToolEvent
@@ -128,15 +128,15 @@ describe('MemoryToolEvent', () => {
     'should render undone state when memory does not exist',
     async () => {
     const mockHasMemory = jest.fn().mockResolvedValue({ exists: false })
-    const mockObserver = createMockObserver()
+    const mockUIObserver = createMockUIObserver()
 
     render(
       <MockContext
         uiHandler={{
           hasMemory: mockHasMemory
         } as unknown as Mojom.UntrustedUIHandlerRemote}
-        conversationObserver={
-          mockObserver as unknown as Mojom.UntrustedConversationUICallbackRouter
+        uiObserver={
+          mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
       >
         <MemoryToolEvent
@@ -159,7 +159,7 @@ describe('MemoryToolEvent', () => {
   test('should call deleteMemory when undo button is clicked', async () => {
     const mockDeleteMemory = jest.fn().mockResolvedValue(undefined)
     const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
-    const mockObserver = createMockObserver()
+    const mockUIObserver = createMockUIObserver()
 
     render(
       <MockContext
@@ -167,8 +167,8 @@ describe('MemoryToolEvent', () => {
           deleteMemory: mockDeleteMemory,
           hasMemory: mockHasMemory
         } as unknown as Mojom.UntrustedUIHandlerRemote}
-        conversationObserver={
-          mockObserver as unknown as Mojom.UntrustedConversationUICallbackRouter
+        uiObserver={
+          mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
       >
         <MemoryToolEvent
@@ -193,10 +193,11 @@ describe('MemoryToolEvent', () => {
   })
 
   test('should show undone state after undo button is clicked', async () => {
-    const mockObserver = createMockObserver()
+    const mockUIObserver = createMockUIObserver()
     const mockDeleteMemory = jest.fn().mockImplementation(async () => {
       // Simulate memory deletion by calling the listener
-      mockObserver.fireMemoryChange([]) // Empty array means memory was deleted
+      // Empty array means memory was deleted
+      mockUIObserver.fireMemoryChange([])
     })
     const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
 
@@ -206,8 +207,8 @@ describe('MemoryToolEvent', () => {
           deleteMemory: mockDeleteMemory,
           hasMemory: mockHasMemory
         } as unknown as Mojom.UntrustedUIHandlerRemote}
-        conversationObserver={
-          mockObserver as unknown as Mojom.UntrustedConversationUICallbackRouter
+        uiObserver={
+          mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
       >
         <MemoryToolEvent
@@ -241,7 +242,7 @@ describe('MemoryToolEvent', () => {
        async () => {
     const mockOpenSettings = jest.fn()
     const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
-    const mockObserver = createMockObserver()
+    const mockUIObserver = createMockUIObserver()
 
     render(
       <MockContext
@@ -249,8 +250,8 @@ describe('MemoryToolEvent', () => {
           openAIChatCustomizationSettings: mockOpenSettings,
           hasMemory: mockHasMemory
         } as unknown as Mojom.UntrustedUIHandlerRemote}
-        conversationObserver={
-          mockObserver as unknown as Mojom.UntrustedConversationUICallbackRouter
+        uiObserver={
+          mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
       >
         <MemoryToolEvent
@@ -309,9 +310,10 @@ describe('MemoryToolEvent', () => {
   })
 
   test('should not allow undo if already undone', async () => {
-    const mockObserver = createMockObserver()
+    const mockUIObserver = createMockUIObserver()
     const mockDeleteMemory = jest.fn().mockImplementation(async () => {
-      mockObserver.fireMemoryChange([]) // Empty array means memory was deleted
+      // Empty array means memory was deleted
+      mockUIObserver.fireMemoryChange([])
     })
     const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
 
@@ -321,8 +323,8 @@ describe('MemoryToolEvent', () => {
           deleteMemory: mockDeleteMemory,
           hasMemory: mockHasMemory
         } as unknown as Mojom.UntrustedUIHandlerRemote}
-        conversationObserver={
-          mockObserver as unknown as Mojom.UntrustedConversationUICallbackRouter
+        uiObserver={
+          mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
       >
         <MemoryToolEvent

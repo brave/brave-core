@@ -42,7 +42,6 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
-#include "brave/components/ai_chat/core/browser/mock_untrusted_conversation_handler_client.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
@@ -1465,40 +1464,6 @@ TEST_P(AIChatServiceUnitTest, InitializeBrowserTools_MemoryEnabled) {
   EXPECT_EQ(tools[0]->Name(), mojom::kMemoryStorageToolName);
 }
 
-TEST_P(AIChatServiceUnitTest, OnMemoriesChanged) {
-  // Set up memories in prefs
-  base::Value::List memories_list;
-  memories_list.Append("Memory 1");
-  memories_list.Append("Memory 2");
-  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories_list));
-
-  // Create conversation handler
-  ConversationHandler* conversation1 = CreateConversation();
-  auto client1 = CreateConversationClient(conversation1);
-
-  // Create untrusted client to verify memory notifications
-  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
-      conversation1);
-
-  // Set expectations for OnMemoriesChanged calls
-  std::vector<std::string> expected_memories{
-      "Updated Memory 1", "Updated Memory 2", "New Memory 3"};
-  base::RunLoop run_loop;
-
-  EXPECT_CALL(untrusted_client, OnMemoriesChanged(expected_memories))
-      .WillOnce(
-          [&run_loop](const std::vector<std::string>&) { run_loop.Quit(); });
-
-  // Trigger OnMemoriesChanged by changing the pref
-  base::Value::List new_memories_list;
-  for (const auto& memory : expected_memories) {
-    new_memories_list.Append(memory);
-  }
-  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(new_memories_list));
-
-  run_loop.Run();
-}
-
 TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_EnabledToDisabled) {
   // Start with memory enabled
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
@@ -1508,24 +1473,8 @@ TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_EnabledToDisabled) {
   auto tools = ai_chat_service_->GetBrowserTools();
   EXPECT_EQ(tools.size(), 1u);
 
-  // Create conversation handler
-  ConversationHandler* conversation1 = CreateConversation();
-  auto client1 = CreateConversationClient(conversation1);
-
-  // Create untrusted client to verify notifications
-  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
-      conversation1);
-
-  base::RunLoop run_loop;
-
-  // Expect OnMemoryEnabledChanged(false)
-  EXPECT_CALL(untrusted_client, OnMemoryEnabledChanged(false))
-      .WillOnce([&run_loop](bool) { run_loop.Quit(); });
-
   // Disable memory
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
-
-  run_loop.Run();
 
   // Verify memory tool is removed
   tools = ai_chat_service_->GetBrowserTools();
@@ -1541,24 +1490,8 @@ TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_DisabledToEnabled) {
   auto tools = ai_chat_service_->GetBrowserTools();
   EXPECT_TRUE(tools.empty());
 
-  // Create conversation handler
-  ConversationHandler* conversation1 = CreateConversation();
-  auto client1 = CreateConversationClient(conversation1);
-
-  // Create untrusted client to verify notifications
-  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
-      conversation1);
-
-  base::RunLoop run_loop;
-
-  // Expect OnMemoryEnabledChanged(true)
-  EXPECT_CALL(untrusted_client, OnMemoryEnabledChanged(true))
-      .WillOnce([&run_loop](bool) { run_loop.Quit(); });
-
   // Enable memory
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
-
-  run_loop.Run();
 
   // Verify memory tool is added
   tools = ai_chat_service_->GetBrowserTools();
