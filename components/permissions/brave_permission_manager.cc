@@ -31,7 +31,7 @@ void BravePermissionManager::RequestPermissionsForOrigin(
     content::RenderFrameHost* render_frame_host,
     const GURL& requesting_origin,
     bool user_gesture,
-    base::OnceCallback<void(const std::vector<blink::mojom::PermissionStatus>&)>
+    base::OnceCallback<void(const std::vector<content::PermissionResult>&)>
         callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   base::AutoReset<GURL> auto_reset_requesting_origin(&forced_requesting_origin_,
