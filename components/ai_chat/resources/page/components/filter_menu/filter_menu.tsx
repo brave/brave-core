@@ -82,6 +82,12 @@ export default function FilterMenu<T>(props: Props<T>) {
 
   return (
     <ButtonMenu
+      // This is weird but there seems to be a bug in Nala where the menu is not
+      // being opened/closed after the Attachments sidebar is shown.
+      // https://github.com/brave/brave-browser/issues/48262#issuecomment-3166296480
+      // This should be removed once the underlying issue in Nala is fixed.
+      // https://github.com/brave/leo/issues/1170
+      key={props.isOpen.toString()}
       ref={ref}
       className={classnames({
         [styles.buttonMenu]: true,

@@ -93,11 +93,8 @@ group("brave_all_unit_tests") {
              brave_all_unit_tests_deps,
              "json")
 
-  # This is a workaround to prevent upstream component units from
-  # building or running by default for except on CI
-  write_file("$root_out_dir/brave_all_unit_tests_ci.json",
-             chromium_unit_tests_deps,
-             "json")
+  # Add additional tests you want to run exclusively on CI here
+  write_file("$root_out_dir/brave_all_unit_tests_ci.json", [], "json")
 }
 
 # This target serves as a canonical place to define all code that has to be

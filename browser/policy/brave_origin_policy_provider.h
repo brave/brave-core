@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_POLICY_BRAVE_ORIGIN_POLICY_PROVIDER_H_
 
 #include "components/policy/core/common/configuration_policy_provider.h"
-#include "components/policy/policy_export.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -20,8 +19,7 @@ namespace brave_origin {
 
 // The policy provider for Brave Origin users. This provider supplies
 // policies based on whether the user is identified as a Brave Origin user.
-class BraveOriginPolicyProvider
-    : public policy::ConfigurationPolicyProvider {
+class BraveOriginPolicyProvider : public policy::ConfigurationPolicyProvider {
  public:
   explicit BraveOriginPolicyProvider(PrefService* local_state,
                                      policy::PolicyService* policy_service);

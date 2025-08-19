@@ -25,7 +25,6 @@
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/browser/brave_rewards/extension_rewards_notification_service_observer.h"
 #include "brave/browser/brave_rewards/extension_rewards_service_observer.h"
 #include "extensions/browser/event_router_factory.h"
 #endif
@@ -68,14 +67,10 @@ std::unique_ptr<KeyedService>
 RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   std::unique_ptr<RewardsServiceObserver> extension_observer = nullptr;
-  std::unique_ptr<RewardsNotificationServiceObserver> notification_observer =
-      nullptr;
   auto* profile = Profile::FromBrowserContext(context);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_observer =
       std::make_unique<ExtensionRewardsServiceObserver>(profile);
-  notification_observer =
-      std::make_unique<ExtensionRewardsNotificationServiceObserver>(profile);
 #endif
 
   // BitmapFetcherServiceFactory has private ProfileKeyedServiceFactory so we
@@ -114,8 +109,7 @@ RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
           profile->GetDefaultStoragePartition(),
           brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
               context));
-  rewards_service->Init(std::move(extension_observer),
-                        std::move(notification_observer));
+  rewards_service->Init(std::move(extension_observer));
   return rewards_service;
 }
 

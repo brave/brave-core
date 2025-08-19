@@ -12,7 +12,6 @@ schema_sources_ = [
   "brave_rewards.json",
   "brave_talk.json",
   "brave_theme.json",
-  "rewards_notifications.json",
   "web_discovery.json",
 ]
 

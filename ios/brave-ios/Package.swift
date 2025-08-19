@@ -574,9 +574,6 @@ var braveTarget: PackageDescription.Target = .target(
       "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSkusScript.js"
     ),
     .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/nacl.min.js"
-    ),
-    .copy(
       "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/PlaylistFolderSharingScript.js"
     ),
     .copy(

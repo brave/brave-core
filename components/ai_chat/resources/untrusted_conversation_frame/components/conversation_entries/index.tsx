@@ -16,7 +16,11 @@ import AssistantReasoning from '../assistant_reasoning'
 import ContextActionsAssistant from '../context_actions_assistant'
 import ContextMenuHuman from '../context_menu_human'
 import Quote from '../quote'
-import LongPageInfo from '../page_context_message/long_page_info'
+import {
+  LongPageContentWarning,
+  LongTextContentWarning,
+  LongVisualContentWarning
+} from '../page_context_message/long_page_info'
 import AssistantResponse from '../assistant_response'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
@@ -92,7 +96,8 @@ function ConversationEntries() {
             index === 1 &&
             isAIAssistant &&
             ((conversationContext.contentUsedPercentage ?? 100) < 100 ||
-              (conversationContext.trimmedTokens > 0 && conversationContext.totalTokens > 0))
+              (conversationContext.trimmedTokens > 0 && conversationContext.totalTokens > 0) ||
+              (conversationContext.visualContentUsedPercentage ?? 100) < 100)
 
           const showEditInput = editInputId === index
           const showEditIndicator = !showEditInput && !!group[0].edits?.length
@@ -233,7 +238,23 @@ function ConversationEntries() {
                           <ActionTypeLabel actionType={firstEntryEdit.actionType} />
                         )}
                         {firstEntryEdit.selectedText && <Quote text={firstEntryEdit.selectedText} />}
-                        {showLongPageContentInfo && <LongPageInfo />}
+                        {showLongPageContentInfo && (() => {
+                          if (conversationContext.trimmedTokens > 0 &&
+                              conversationContext.totalTokens > 0) {
+                            const percentage = 100 - Math.floor(
+                              (Number(conversationContext.trimmedTokens) /
+                               Number(conversationContext.totalTokens)) * 100)
+                            return <LongTextContentWarning
+                              percentageUsed={percentage} />
+                          } else if ((conversationContext.visualContentUsedPercentage ?? 100) < 100) {
+                            return <LongVisualContentWarning
+                              visualContentUsedPercentage={conversationContext.visualContentUsedPercentage!} />
+                          } else if ((conversationContext.contentUsedPercentage ?? 100) < 100) {
+                            return <LongPageContentWarning
+                              contentUsedPercentage={conversationContext.contentUsedPercentage!} />
+                          }
+                          return null
+                        })()}
                       </React.Fragment>
                     )
                   })}

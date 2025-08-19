@@ -9,7 +9,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 
-constexpr char kBraveCommunitySupportUrl[] = "https://community.brave.com/";
+constexpr char kBraveCommunitySupportUrl[] = "https://community.brave.app/";
 
 BraveBrowserContentSettingBubbleModelDelegate::
 BraveBrowserContentSettingBubbleModelDelegate(Browser* browser) :

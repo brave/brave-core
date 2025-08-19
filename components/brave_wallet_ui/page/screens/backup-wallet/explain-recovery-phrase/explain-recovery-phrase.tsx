@@ -84,6 +84,7 @@ export const RecoveryPhraseExplainer = () => {
       <OnboardingContentLayout
         title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
         subTitle=''
+        showBackButton={!isOnboarding}
       >
         <Subtitle>
           {getLocale(

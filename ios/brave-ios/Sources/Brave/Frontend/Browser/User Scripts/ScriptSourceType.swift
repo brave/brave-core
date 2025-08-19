@@ -9,11 +9,7 @@ import Foundation
 ///
 /// - Warning: Some of these scripts are not usable "as-is". Rather, you should be using `UserScriptType`.
 enum ScriptSourceType {
-  /// A simple encryption library found here:
-  /// https://www.npmjs.com/package/tweetnacl
-  case nacl
   /// This script farbles certian system methods to output slightly randomized output.
-  /// This script has a dependency on `nacl`.
   case farblingProtection
   /// This script wraps engine scripts and executes them for the correct frame
   case frameCheckWrapper
@@ -22,7 +18,6 @@ enum ScriptSourceType {
 
   var fileName: String {
     switch self {
-    case .nacl: return "nacl.min"
     case .farblingProtection: return "FarblingProtectionScript"
     case .frameCheckWrapper: return "FrameCheckWrapper"
     case .gpc: return "gpc"

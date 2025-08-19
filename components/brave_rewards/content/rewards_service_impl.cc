@@ -254,9 +254,7 @@ bool RewardsServiceImpl::IsInitialized() {
 }
 
 void RewardsServiceImpl::Init(
-    std::unique_ptr<RewardsServiceObserver> extension_observer,
-    std::unique_ptr<RewardsNotificationServiceObserver> notification_observer) {
-  notification_service_->Init(std::move(notification_observer));
+    std::unique_ptr<RewardsServiceObserver> extension_observer) {
   AddObserver(notification_service_.get());
 
   if (extension_observer) {

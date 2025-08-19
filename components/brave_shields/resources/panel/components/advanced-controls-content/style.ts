@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+import { color } from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 export const SettingsBox = styled.div`
@@ -22,8 +23,8 @@ export const FooterActionBox = styled.div`
   }
 
   button {
-    --svg-color: ${(p) => p.theme.color.interactive05};
-    --text-color: ${(p) => p.theme.color.interactive06};
+    --svg-color: ${color.icon.interactive};
+    --text-color: ${color.text.interactive};
     background-color: transparent;
     padding: 0;
     margin: 0;
@@ -41,8 +42,8 @@ export const FooterActionBox = styled.div`
     }
 
     &:hover {
-      --text-color: ${(p) => p.theme.color.interactive07};
-      --svg-color: ${(p) => p.theme.color.interactive08};
+      --text-color: ${color.primary[60]};
+      --svg-color: ${color.primary[60]};
     }
   }
   
@@ -64,7 +65,7 @@ export const SettingsDesc = styled.section`
     grid-column: 2;
     margin: 0;
     font-size: 12px;
-    color: ${(p) => p.theme.color.text03};
+    color: ${color.text.tertiary};
   }
 `
 
@@ -92,7 +93,7 @@ export const ControlGroup = styled.div`
     justify-content: space-between;
     font-family: ${(p) => p.theme.fontFamily.heading};
     font-size: 12px;
-    color: ${(p) => p.theme.color.text01};
+    color: ${color.text.primary};
     text-indent: 8px;
     cursor: pointer;
 
@@ -110,7 +111,7 @@ export const CountButton = styled.button`
   font-family: ${(p) => p.theme.fontFamily.heading};
   font-size: 18px;
   font-weight: 500;
-  color: ${(p) => p.theme.color.interactive06};
+  color: ${color.text.interactive};
   padding: 5px 6px;
   max-width: 100%;
   border-radius: 4px;
@@ -118,16 +119,16 @@ export const CountButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: ${(p) => p.theme.color.background03};
+    background-color: ${color.neutral[10]};
   }
 
   &:focus-visible {
-    border-color: ${(p) => p.theme.color.focusBorder};
+    border-color: ${color.divider.interactive};
   }
 
   &:disabled,
   [disabled] {
-    color: ${(p) => p.theme.color.disabled};
+    color: ${color.text.disabled};
     pointer-events: none; /* This disables native title tooltip */
 
     &:hover {

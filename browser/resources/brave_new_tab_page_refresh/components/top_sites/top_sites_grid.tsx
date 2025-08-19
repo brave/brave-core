@@ -10,6 +10,7 @@ import NavDots from '@brave/leo/react/navdots'
 import { TopSite } from '../../state/top_sites_state'
 import { useTopSitesState, useTopSitesActions } from '../../context/top_sites_context'
 import { getString } from '../../lib/strings'
+import { usePersistedJSON } from '$web-common/usePersistedState'
 import { TopSitesTile } from './top_site_tile'
 import { createTileDragHandler } from './tile_drag_handler'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
@@ -39,7 +40,9 @@ export function TopSitesGrid(props: Props) {
   const columnsPerPage = useColumnsPerPage(
     props.expanded ? maxTileColumnCount : collapsedTileColumnCount)
   const scrollRef = React.useRef<HTMLDivElement>(null)
-  const [scrollPage, setScrollPage] = React.useState(0)
+
+  const [scrollPage, setScrollPage] =
+    usePersistedJSON('ntp-top-sites-page', (data) => Number(data) || 0)
 
   const [dragHandler] = React.useState(() => createTileDragHandler({
     tileSelector: 'a',
@@ -64,6 +67,10 @@ export function TopSitesGrid(props: Props) {
     }
     return dragHandler.observe(elem)
   }, [dragHandler])
+
+  React.useEffect(() => {
+    scrollToPage(scrollPage, 'instant')
+  }, [])
 
   React.useEffect(() => {
     dragHandler.setCallbacks({
@@ -91,13 +98,16 @@ export function TopSitesGrid(props: Props) {
     setScrollPage(Math.round(scrollLeft / pageWidth))
   }
 
-  function scrollToPage(page: number) {
+  function scrollToPage(page: number, scrollBehavior?: ScrollBehavior) {
     if (page < 0) {
       page = 0
     } else if (page >= pages.length) {
       page = pages.length - 1
     }
-    scrollRef.current?.scrollTo({ left: page * pageWidth, behavior: 'smooth' })
+    scrollRef.current?.scrollTo({
+      left: page * pageWidth,
+      behavior: scrollBehavior ?? 'smooth'
+    })
   }
 
   function contextMenuHandler(topSite: TopSite) {

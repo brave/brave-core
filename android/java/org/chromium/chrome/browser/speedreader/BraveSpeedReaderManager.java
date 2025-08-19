@@ -169,7 +169,7 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
 
         boolean isPrefEnabled =
                 UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                        .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED);
+                        .getBoolean(BravePref.SPEEDREADER_PREF_FEATURE_ENABLED);
         return isPrefEnabled;
     }
 }

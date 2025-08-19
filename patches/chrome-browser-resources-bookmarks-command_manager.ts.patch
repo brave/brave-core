@@ -7,7 +7,7 @@ index c6135de9d60bc8e7cfb2e64b1eae0b33892f76e1..5221828219b26a17c924cfeb53146781
          break;
        case Command.HELP_CENTER:
 -        window.open('https://support.google.com/chrome/?p=bookmarks');
-+        window.open('https://community.brave.com', undefined, 'noreferrer');
++        window.open('https://community.brave.app', undefined, 'noreferrer');
          break;
        default:
          assertNotReached();

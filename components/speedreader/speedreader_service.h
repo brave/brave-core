@@ -60,6 +60,9 @@ class SpeedreaderService : public KeyedService {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  // Returns |true| if the Speedreader feature is enabled globally.
+  bool IsFeatureEnabled();
+
   // Returns |true| if Speedreader is turned on for all sites.
   bool IsEnabledForAllSites();
 

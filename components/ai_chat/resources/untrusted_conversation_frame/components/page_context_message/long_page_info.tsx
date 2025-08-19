@@ -6,23 +6,9 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import { formatLocale } from '$web-common/locale'
-import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './style.module.scss'
 
-export default function LongPageInfo() {
-  const context = useUntrustedConversationContext()
-  let warningText
-  if (context.trimmedTokens > 0 && context.totalTokens > 0) {
-      const percentage = 100 - Math.floor((Number(context.trimmedTokens) / Number(context.totalTokens)) * 100)
-      warningText = formatLocale(S.CHAT_UI_TRIMMED_TOKENS_WARNING, {
-        $1: percentage + '%'
-      })
-  } else {
-    warningText = formatLocale(S.CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING, {
-        $1: context.contentUsedPercentage + '%'
-      })
-  }
-
+function LongPageInfoInternal({ warningText }: { warningText: string }) {
   return (
     <div className={styles.info}>
       <Icon name='info-outline' />
@@ -30,3 +16,37 @@ export default function LongPageInfo() {
     </div>
   )
 }
+
+export function LongVisualContentWarning({
+  visualContentUsedPercentage
+}: {
+  visualContentUsedPercentage: number
+}) {
+  return <LongPageInfoInternal warningText={formatLocale(
+    S.CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING, {
+      $1: visualContentUsedPercentage + '%'
+    })} />
+}
+
+export function LongTextContentWarning({
+  percentageUsed
+}: {
+  percentageUsed: number
+}) {
+  return <LongPageInfoInternal warningText={formatLocale(
+    S.CHAT_UI_TRIMMED_TOKENS_WARNING, {
+      $1: percentageUsed + '%'
+    })} />
+}
+
+export function LongPageContentWarning({
+  contentUsedPercentage
+}: {
+  contentUsedPercentage: number
+}) {
+  return <LongPageInfoInternal warningText={formatLocale(
+    S.CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING, {
+      $1: contentUsedPercentage + '%'
+    })} />
+}
+

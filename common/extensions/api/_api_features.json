@@ -33,21 +33,6 @@
       ]
     }
   ],
-  "rewardsNotifications": [{
-    "channel": "stable",
-    "dependencies": [],
-    "component_extensions_auto_granted": false,
-    "contexts": ["privileged_extension"],
-    "allowlist": [
-      "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"
-    ]
-  }, {
-    "channel": "stable",
-    "contexts": ["webui"],
-    "matches": [
-      "chrome://rewards-panel.top-chrome/*"
-    ]
-  }],
   "braveTheme": [{
     "channel": "stable",
     "component_extensions_auto_granted": false,

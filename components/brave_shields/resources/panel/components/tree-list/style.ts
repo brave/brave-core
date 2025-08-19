@@ -2,10 +2,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+import { color } from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 export const Box = styled.div`
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${color.container.background};
   width: 100%;
   height: 100%;
   position: absolute;
@@ -20,7 +21,6 @@ export const Box = styled.div`
 `
 
 export const Footer = styled.div`
-  background-color: ${(p) => p.theme.color.background02};
   padding: 19px 22px;
   position: absolute;
   bottom: 0;
@@ -34,6 +34,7 @@ export const Footer = styled.div`
 `
 
 export const HeaderBox = styled.section`
+  background-color: ${color.neutral[10]};
   width: 100%;
   padding: 24px 17px 0 17px;
 `
@@ -41,7 +42,6 @@ export const HeaderBox = styled.section`
 export const Scroller = styled.section`
   --offset-top: 46px;
   --footer-height: 78px;
-  background-color: ${(p) => p.theme.color.background02};
   overflow: auto;
   height: calc(100% - var(--offset-top) - var(--footer-height));
   position: relative;
@@ -49,13 +49,13 @@ export const Scroller = styled.section`
 `
 
 export const ScriptsInfo = styled.div`
-    background-color: ${(p) => p.theme.color.background01};
+    background-color: ${color.neutral[10]};
     display: grid;
     grid-template-columns: auto auto 1fr;
     gap: 8px;
     align-items: center;
     font-family: ${(p) => p.theme.fontFamily.heading};
-    color: ${(p) => p.theme.color.text01};
+    color: ${color.text.primary};
     font-size: 14px;
     font-weight: 600;
     padding: 16px 17px 16px 17px;
@@ -68,8 +68,16 @@ export const ScriptsInfo = styled.div`
     }
 `
 
+export const Link = styled.a`
+  color: ${color.text.interactive};
+
+  &:hover {
+    color: ${color.primary[60]};
+  }
+`
+
 export const ListDescription = styled.div`
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${color.neutral[10]};
   padding: 0px 17px 16px 17px;
 `
 
@@ -85,7 +93,7 @@ export const SiteTitleBox = styled.div`
 `
 
 export const SiteTitle = styled.span`
-  color: ${(p) => p.theme.color.text01};
+  color: ${color.text.primary};
   font-family: ${(p) => p.theme.fontFamily.heading};
   font-size: 14px;
   font-weight: 500;
@@ -110,10 +118,10 @@ export const BackButton = styled.button`
   width: 100%;
 
   background-color: transparent;
-  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border: 1px solid ${color.divider.interactive};
   border-radius: 48px;
 
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${color.text.interactive};
   font-family: ${(p) => p.theme.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;
@@ -154,7 +162,7 @@ export const ToggleListContainer = styled.div`
     justify-content: space-between;
     font-family: ${(p) => p.theme.fontFamily.heading};
     font-size: 12px;
-    color: ${(p) => p.theme.color.text01};
+    color: ${color.text.primary};
     text-indent: 8px;
     cursor: pointer;
 

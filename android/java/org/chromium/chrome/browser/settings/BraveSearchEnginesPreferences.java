@@ -7,12 +7,14 @@ package org.chromium.chrome.browser.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 
 import androidx.preference.Preference;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -40,7 +42,7 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mSearchSuggestions;
     private ChromeSwitchPreference mAutocompleteTopSuggestions;
     private ChromeSwitchPreference mAddOpenSearchEngines;
-    private ChromeSwitchPreference mSendWebDiscovery;
+    private @Nullable ChromeSwitchPreference mSendWebDiscovery;
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -59,7 +61,11 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
-        new Handler().post(() -> updateSearchEnginePreference());
+        // updateSearchEnginePreference method does a lot of preference finding,
+        // listener setting, and state updates. There are native callse inside.
+        // Defer it's execution to ensure that preference screen is fully
+        // inflated before complex updates.
+        PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateSearchEnginePreference);
     }
 
     @Override
@@ -158,12 +164,17 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         }
 
         if (BraveConfig.WEB_DISCOVERY_ENABLED) {
-            mSendWebDiscovery = (ChromeSwitchPreference) findPreference(PREF_SEND_WEB_DISCOVERY);
-            if (mSendWebDiscovery != null) {
-                mSendWebDiscovery.setOnPreferenceChangeListener(this);
+            // Check if web discovery is managed by policy
+            boolean isWebDiscoveryManaged =
+                    UserPrefs.get(getProfile())
+                            .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
+            if (!isWebDiscoveryManaged) {
+                mSendWebDiscovery =
+                        (ChromeSwitchPreference) findPreference(PREF_SEND_WEB_DISCOVERY);
+                if (mSendWebDiscovery != null) {
+                    mSendWebDiscovery.setOnPreferenceChangeListener(this);
+                }
             }
-        } else {
-            removePreferenceIfPresent(PREF_SEND_WEB_DISCOVERY);
         }
 
         if (mSendWebDiscovery != null) {
@@ -174,6 +185,8 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
             mSendWebDiscovery.setChecked(
                     UserPrefs.get(getProfile())
                             .getBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED));
+        } else {
+            removePreferenceIfPresent(PREF_SEND_WEB_DISCOVERY);
         }
     }
 

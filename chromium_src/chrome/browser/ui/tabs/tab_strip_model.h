@@ -12,9 +12,11 @@
 
 #define DraggingTabsSession DraggingTabsSessionChromium
 #define IsReadLaterSupportedForAny virtual IsReadLaterSupportedForAny
+#define UpdateWebContentsStateAt virtual UpdateWebContentsStateAt
 
 #include <chrome/browser/ui/tabs/tab_strip_model.h>  // IWYU pragma: export
 
+#undef UpdateWebContentsStateAt
 #undef IsReadLaterSupportedForAny
 #undef DraggingTabsSession
 #undef SelectRelativeTab

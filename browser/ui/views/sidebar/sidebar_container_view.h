@@ -15,7 +15,6 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
-#include "brave/browser/ui/views/sidebar/sidebar_show_options_event_detect_widget.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
@@ -34,6 +33,10 @@ namespace sidebar {
 class SidebarBrowserTest;
 }  // namespace sidebar
 
+namespace blink {
+class WebMouseEvent;
+}  // namespace blink
+
 class BraveBrowser;
 class SidePanelEntry;
 
@@ -51,7 +54,6 @@ class SidebarContainerView
       public SidebarControlView::Delegate,
       public views::View,
       public views::AnimationDelegateViews,
-      public SidebarShowOptionsEventDetectWidget::Delegate,
       public sidebar::SidebarModel::Observer,
       public SidePanelEntryObserver,
       public TabStripModelObserver {
@@ -71,6 +73,9 @@ class SidebarContainerView
   void SetSidebarOnLeft(bool sidebar_on_left);
 
   bool IsSidebarVisible() const;
+
+  // Return false if this mouse event can't make sidebar UI visible.
+  bool PreHandleMouseEvent(const blink::WebMouseEvent& event);
 
   BraveSidePanel* side_panel() { return side_panel_; }
 
@@ -109,9 +114,6 @@ class SidebarContainerView
   void AnimationProgressed(const gfx::Animation* animation) override;
   void AnimationEnded(const gfx::Animation* animation) override;
 
-  // SidebarShowOptionsEventDetectWidget::Delegate overrides:
-  void ShowSidebarControlView() override;
-
   // sidebar::SidebarModel::Observer overrides:
   void OnItemAdded(const sidebar::SidebarItem& item,
                    size_t index,
@@ -142,8 +144,8 @@ class SidebarContainerView
 
   void AddChildViews();
   void UpdateBackground();
-  void ShowOptionsEventDetectWidget(bool show);
   bool ShouldUseAnimation();
+  void ShowSidebarControlView();
 
   // Show control view. panel's visibility depends on |show_side_panel|.
   void ShowSidebar(bool show_side_panel);
@@ -162,7 +164,6 @@ class SidebarContainerView
   // Call this when want to hide and only want to consider show opton.
   void HideSidebarForShowOption();
 
-  SidebarShowOptionsEventDetectWidget* GetEventDetectWidget();
   bool ShouldForceShowSidebar() const;
   void UpdateToolbarButtonVisibility();
 
@@ -208,7 +209,6 @@ class SidebarContainerView
   int animation_end_width_ = 0;
   std::unique_ptr<BrowserWindowEventObserver> browser_window_event_observer_;
   std::unique_ptr<views::EventMonitor> browser_window_event_monitor_;
-  std::unique_ptr<SidebarShowOptionsEventDetectWidget> show_options_widget_;
   BooleanPrefMember show_side_panel_button_;
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>

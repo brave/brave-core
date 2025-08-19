@@ -58,6 +58,7 @@ source_set("ui") {
     "//brave/browser/skus",
     "//brave/browser/ui/webui/brave_account",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_origin",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
     "//chrome/browser/ui:browser_navigator_params_headers",
@@ -269,6 +270,8 @@ source_set("ui") {
       "webui/settings/brave_import_data_handler.h",
       "webui/settings/brave_importer_observer.cc",
       "webui/settings/brave_importer_observer.h",
+      "webui/settings/brave_origin/brave_origin_handler.cc",
+      "webui/settings/brave_origin/brave_origin_handler.h",
       "webui/settings/brave_privacy_handler.cc",
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/brave_search_engines_handler.cc",
@@ -314,6 +317,8 @@ source_set("ui") {
       "//brave/common",
       "//brave/components/brave_account:features",
       "//brave/components/brave_account/mojom",
+      "//brave/components/brave_origin",
+      "//brave/components/brave_wallet/common:pref_names",
       "//brave/components/constants",
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:mojom",
@@ -1050,8 +1055,6 @@ source_set("ui") {
       "views/sidebar/sidebar_items_contents_view.h",
       "views/sidebar/sidebar_items_scroll_view.cc",
       "views/sidebar/sidebar_items_scroll_view.h",
-      "views/sidebar/sidebar_show_options_event_detect_widget.cc",
-      "views/sidebar/sidebar_show_options_event_detect_widget.h",
     ]
   }
 

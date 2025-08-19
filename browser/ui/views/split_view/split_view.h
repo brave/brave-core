@@ -35,6 +35,10 @@ namespace views {
 class WebView;
 }  // namespace views
 
+namespace sidebar {
+class SidebarBrowserWithSplitViewTest;
+}  // namespace sidebar
+
 class BraveBrowserView;
 class Browser;
 class ContentsWebView;
@@ -136,6 +140,7 @@ class SplitView : public views::View,
   friend class SplitViewBrowserTest;
   friend class SplitViewLocationBarBrowserTest;
   friend class SpeedReaderWithSplitViewBrowserTest;
+  friend class sidebar::SidebarBrowserWithSplitViewTest;
 
   tabs::TabHandle GetActiveTabHandle() const;
   bool IsActiveWebContentsTiled(const TabTile& tile) const;

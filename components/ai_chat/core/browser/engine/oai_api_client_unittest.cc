@@ -55,7 +55,6 @@ base::Value ParseOrStringValue(const std::string& json) {
   }
   return std::move(maybe_json.value());
 }
-}  // namespace
 
 class MockCallbacks {
  public:
@@ -66,6 +65,7 @@ class MockCallbacks {
 class MockAPIRequestHelper : public api_request_helper::APIRequestHelper {
  public:
   using api_request_helper::APIRequestHelper::APIRequestHelper;
+  ~MockAPIRequestHelper() override = default;
   MOCK_METHOD(Ticket,
               RequestSSE,
               (const std::string&,
@@ -94,6 +94,8 @@ class TestOAIAPIClient : public OAIAPIClient {
     return static_cast<MockAPIRequestHelper*>(GetAPIRequestHelperForTesting());
   }
 };
+
+}  // namespace
 
 class OAIAPIUnitTest : public testing::Test {
  public:
