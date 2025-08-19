@@ -11,6 +11,7 @@
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
+#include "brave/components/brave_origin/common/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
@@ -72,6 +73,10 @@ class BraveSettingsUI : public settings::SettingsUI {
 
   void BindInterface(
       mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService>
+          pending_receiver);
+
+  void BindInterface(
+      mojo::PendingReceiver<brave_origin::mojom::BraveOriginSettingsHandler>
           pending_receiver);
 
  private:

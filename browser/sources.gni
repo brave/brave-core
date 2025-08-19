@@ -126,6 +126,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_ads:impl",
   "//brave/browser/brave_ads/creatives/search_result_ad",
   "//brave/browser/brave_ads/tabs",
+  "//brave/browser/brave_origin",
   "//brave/browser/brave_rewards:brave_rewards_impl",
   "//brave/browser/brave_rewards:util",
   "//brave/browser/brave_search",
@@ -637,6 +638,9 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/ui",
   "//brave/browser/brave_ads:impl",
   "//brave/browser/brave_ads/creatives/search_result_ad",
+
+  # policy/profile_policy_connector.cc is in chrome/browser target
+  "//brave/browser/brave_origin",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
 ]

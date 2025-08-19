@@ -12,6 +12,20 @@ import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.
 
 import {SettingsUiElement} from '../settings_ui/settings_ui.js'
 import {setGlobalScrollTarget, resetGlobalScrollTargetForTesting} from '../global_scroll_target_mixin.js';
+import * as BraveOriginMojom from '../brave_origin_settings.mojom-webui.js';
+
+// Expose BraveOriginHandler to window object for devtools console access
+function initializeBraveOriginHandler() {
+  const handler = BraveOriginMojom.BraveOriginSettingsHandler.getRemote();
+  (window as any).BraveOriginHandler = handler;
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeBraveOriginHandler);
+} else {
+  initializeBraveOriginHandler();
+}
 
 // TODO: move throttle utility to a chrome://resources module
 function throttle (callback: () => void, maxWaitTime: number = 30) {

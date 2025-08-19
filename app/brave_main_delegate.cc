@@ -15,6 +15,7 @@
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
@@ -45,6 +46,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "components/signin/public/base/account_consistency_method.h"
 #endif
+
 namespace {
 
 constexpr char kBraveOriginTrialsPublicKey[] =
@@ -224,6 +226,9 @@ std::optional<int> BraveMainDelegate::PostEarlyInitialization(
                       "falling back to the default Brave-hosted Sync server.";
     }
   }
+
+  // Initialize BraveOriginPrefs singleton before policy providers are created
+  brave_origin::BraveOriginServiceFactory::InitializeBraveOriginPrefs();
 
   return result;
 }

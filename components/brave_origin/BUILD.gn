@@ -3,16 +3,38 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
 
 source_set("brave_origin") {
   sources = [
-    "brave_origin_state.cc",
-    "brave_origin_state.h",
+    "brave_origin_constants.h",
+    "brave_origin_handler.cc",
+    "brave_origin_handler.h",
+    "brave_origin_pref_definitions.cc",
+    "brave_origin_pref_definitions.h",
+    "brave_origin_pref_info.cc",
+    "brave_origin_pref_info.h",
+    "brave_origin_prefs.cc",
+    "brave_origin_prefs.h",
+    "brave_origin_service.cc",
+    "brave_origin_service.h",
+    "brave_origin_utils.cc",
+    "brave_origin_utils.h",
     "features.cc",
     "features.h",
+    "profile_id.cc",
+    "profile_id.h",
   ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//brave/components/brave_origin/common/mojom",
+  ]
+
+  deps = [
+    "//components/keyed_service/core",
+    "//components/policy/core/common",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+  ]
 }
