@@ -47,6 +47,11 @@ class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
     } else {
       scrollView.refreshControl = nil
     }
+    if #unavailable(iOS 26) {
+      // Ensure we disable clipsToBounds again as its re-enabled when you set `refreshControl` and
+      // we want it disabled to have a stylistic blur shown below the toolbars
+      scrollView.clipsToBounds = false
+    }
   }
 
   func tabDidUpdateURL(_ tab: some TabState) {
