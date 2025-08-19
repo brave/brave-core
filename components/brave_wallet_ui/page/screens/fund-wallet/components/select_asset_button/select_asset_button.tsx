@@ -58,6 +58,7 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
 
   // Computed
   const assetSymbol = selectedAsset ? getAssetSymbol(selectedAsset) : ''
+  const assetURL = selectedAsset?.symbolImageUrl ?? ''
 
   return (
     <Column alignItems='flex-start'>
@@ -76,7 +77,7 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
                   <AssetIcon
                     size='40px'
                     src={`chrome://image?url=${
-                      selectedAsset?.symbolImageUrl
+                      encodeURIComponent(assetURL)
                     }&staticEncode=true`}
                   />
                   {tokensNetwork && (
