@@ -5,4 +5,9 @@ include_rules += [
   "+brave/components/vector_icons",
   "+brave/components/commander/common",
   "+brave/components/constants",
+  "+brave/components/brave_origin",
+  "+brave/browser/brave_origin",
+  "+chrome/browser/enterprise/util",
+  "+chrome/browser/ui/managed_ui.h",
+  "+chrome/browser/ui/managed_ui.cc",
 ]

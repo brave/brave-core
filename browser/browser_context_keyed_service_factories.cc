@@ -12,6 +12,7 @@
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
@@ -99,6 +100,7 @@ namespace brave {
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetInstance();
   brave_ads::AdsServiceFactory::GetInstance();
+  brave_origin::BraveOriginServiceFactory::GetInstance();
   brave_perf_predictor::NamedThirdPartyRegistryFactory::GetInstance();
   brave_rewards::RewardsServiceFactory::GetInstance();
   brave_shields::AdBlockPrefServiceFactory::GetInstance();
