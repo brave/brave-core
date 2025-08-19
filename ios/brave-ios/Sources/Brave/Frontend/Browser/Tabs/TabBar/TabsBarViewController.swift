@@ -70,7 +70,7 @@ class TabsBarViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    collectionView.backgroundColor = view.backgroundColor
+    collectionView.backgroundColor = .clear
     tabManager?.addDelegate(self)
 
     // Can't get view.frame inside of lazy property, need to put this code here.
@@ -367,10 +367,7 @@ class TabsBarViewController: UIViewController {
   private func addScrollHint(for side: HintSide, maskLayer: CAGradientLayer) {
     maskLayer.removeFromSuperlayer()
 
-    guard
-      let barsColor = collectionView.backgroundColor?.resolvedColor(with: traitCollection)
-        ?? view.backgroundColor
-    else {
+    guard let barsColor = view.backgroundColor else {
       // If not setup now, will be at some point, and then this can be flushed
       return
     }
