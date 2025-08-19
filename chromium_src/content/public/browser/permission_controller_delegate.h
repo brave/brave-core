@@ -8,20 +8,20 @@
 
 #include "content/public/browser/permission_controller.h"
 
-#define UnsubscribeFromPermissionStatusChange                               \
-  PermissionControllerDelegateNotUsed() {}                                  \
-  virtual void RequestPermissionsForOrigin(                                 \
-      const std::vector<blink::PermissionType>& permissions,                \
-      content::RenderFrameHost* render_frame_host,                          \
-      const GURL& requesting_origin, bool user_gesture,                     \
-      base::OnceCallback<void(                                              \
-          const std::vector<blink::mojom::PermissionStatus>&)> callback) {} \
-                                                                            \
-  virtual blink::mojom::PermissionStatus GetPermissionStatusForOrigin(      \
-      blink::PermissionType permission,                                     \
-      content::RenderFrameHost* render_frame_host,                          \
-      const GURL& requesting_origin);                                       \
-                                                                            \
+#define UnsubscribeFromPermissionStatusChange                                 \
+  PermissionControllerDelegateNotUsed() {}                                    \
+  virtual void RequestPermissionsForOrigin(                                   \
+      const std::vector<blink::PermissionType>& permissions,                  \
+      content::RenderFrameHost* render_frame_host,                            \
+      const GURL& requesting_origin, bool user_gesture,                       \
+      base::OnceCallback<void(const std::vector<content::PermissionResult>&)> \
+          callback) {}                                                        \
+                                                                              \
+  virtual blink::mojom::PermissionStatus GetPermissionStatusForOrigin(        \
+      blink::PermissionType permission,                                       \
+      content::RenderFrameHost* render_frame_host,                            \
+      const GURL& requesting_origin);                                         \
+                                                                              \
   virtual void UnsubscribeFromPermissionStatusChange
 
 #include <content/public/browser/permission_controller_delegate.h>  // IWYU pragma: export

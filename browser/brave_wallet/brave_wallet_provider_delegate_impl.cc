@@ -38,12 +38,12 @@ bool IsAccountInAllowedList(const std::vector<std::string>& allowed_accounts,
 void OnRequestPermissions(
     const std::vector<std::string>& accounts,
     BraveWalletProviderDelegate::RequestPermissionsCallback callback,
-    const std::vector<blink::mojom::PermissionStatus>& responses) {
+    const std::vector<content::PermissionResult>& responses) {
   DCHECK(responses.empty() || responses.size() == accounts.size());
 
   std::vector<std::string> granted_accounts;
   for (size_t i = 0; i < responses.size(); i++) {
-    if (responses[i] == blink::mojom::PermissionStatus::GRANTED) {
+    if (responses[i].status == blink::mojom::PermissionStatus::GRANTED) {
       granted_accounts.push_back(accounts[i]);
     }
   }
