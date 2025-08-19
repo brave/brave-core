@@ -12,11 +12,7 @@ static_library("content") {
 
   friend = [ ":unit_tests" ]
 
-  sources = [
-    "psst_scripts_handler_impl.cc",
-    "psst_scripts_handler_impl.h",
-    "psst_tab_web_contents_observer.cc",
-  ]
+  sources = [ "psst_tab_web_contents_observer.cc" ]
 
   public_deps = [
     "//base",

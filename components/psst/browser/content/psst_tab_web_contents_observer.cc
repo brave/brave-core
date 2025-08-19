@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/psst/browser/content/psst_scripts_handler_impl.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
@@ -17,6 +17,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/web_contents.h"
 
 namespace psst {
 
@@ -45,21 +46,31 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
     return nullptr;
   }
 
+  auto inject_script_callback = base::BindRepeating(
+      [](content::WebContents* web_contents, int32_t world_id,
+         const std::string& script,
+         PsstTabWebContentsObserver::InsertScriptInPageCallback cb) {
+        web_contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+            base::UTF8ToUTF16(script), std::move(cb), world_id);
+      },
+      contents, world_id);
+
   return base::WrapUnique<PsstTabWebContentsObserver>(
-      new PsstTabWebContentsObserver(
-          contents, PsstRuleRegistry::GetInstance(), prefs,
-          std::make_unique<PsstScriptsHandlerImpl>(contents, world_id)));
+      new PsstTabWebContentsObserver(contents, PsstRuleRegistry::GetInstance(),
+                                     prefs, std::move(inject_script_callback)));
 }
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
     PsstRuleRegistry* registry,
     PrefService* prefs,
-    std::unique_ptr<ScriptsHandler> script_handler)
+    InjectScriptCallback inject_script_callback)
     : WebContentsObserver(web_contents),
       registry_(registry),
       prefs_(prefs),
-      script_handler_(std::move(script_handler)) {}
+      inject_script_callback_(std::move(inject_script_callback)) {
+  CHECK(!inject_script_callback_.is_null());
+}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
@@ -97,8 +108,7 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
 bool PsstTabWebContentsObserver::ShouldInsertScriptForPage(int id) {
   auto* entry = web_contents()->GetController().GetLastCommittedEntry();
   auto* data = entry->GetUserData(kShouldProcessKey);
-  return script_handler_ && data &&
-         static_cast<PsstNavigationData*>(data)->id == id;
+  return data && static_cast<PsstNavigationData*>(data)->id == id;
 }
 
 void PsstTabWebContentsObserver::InsertUserScript(
@@ -108,7 +118,7 @@ void PsstTabWebContentsObserver::InsertUserScript(
     return;
   }
 
-  script_handler_->InsertScriptInPage(
+  inject_script_callback_.Run(
       rule->user_script(),
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
                      weak_factory_.GetWeakPtr(), id, rule->policy_script()));
@@ -122,7 +132,8 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
       !user_script_result.is_dict()) {
     return;
   }
-  script_handler_->InsertScriptInPage(policy_script, base::DoNothing());
+
+  inject_script_callback_.Run(policy_script, base::DoNothing());
 }
 
 }  // namespace psst
