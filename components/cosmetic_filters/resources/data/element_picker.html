@@ -85,15 +85,21 @@
     }
 
     #main-section:not(.desktop) {
-      transition: transform 0.3s ease;
-      transform: translateY(calc(100% - 28px));
+      width: 56px;
+      padding: 0px;
+      height: 56px;
+      left: 44%;
+      margin-bottom: 24px;
+      min-width: auto;
+      border-radius: 28px;
+      background-color: var(--dynamic-color-rgb);
     }
 
-    .desktop .drag-header {
+    .drag-header {
       display: none;
     }
 
-    .desktop .minimized-icon {
+    .minimized-icon {
       display: block;
       height: 25px;
       width: 25px;
@@ -104,7 +110,10 @@
       fill: var(--dynamic-color-rgb);
     }
 
-    .desktop #slider-container, .desktop #buttons {
+    .minimized-icon path:not(.desktop) {
+      fill: var(--primary);
+    }
+    .desktop #slider-container, #buttons {
       display: none;;
     }
   }
