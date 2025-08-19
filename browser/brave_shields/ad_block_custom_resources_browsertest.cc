@@ -327,26 +327,41 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
 
 IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameCases) {
   EnableDeveloperMode(true);
-  NavigateToURL(GURL("brave://settings/shields/filters"));
+  auto* provider =
+      g_brave_browser_process->ad_block_service()->custom_resource_provider();
 
-  constexpr const char kContentA[] = "window.lower = true";
-  constexpr const char kContentB[] = "window.upper = true";
-
-  ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
-  SaveCustomScriptlet("user-script", kContentA);
-
-  ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
-  SaveCustomScriptlet("user-ScRiPt", kContentB);
+  {
+    base::test::TestFuture<
+        brave_shields::AdBlockCustomResourceProvider::ErrorCode>
+        result;
+    provider->AddResource(
+        profile()->GetPrefs(),
+        CreateResource("user-script.js", "window.lower = true"),
+        result.GetCallback());
+    EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
+              result.Get());
+  }
+  {
+    base::test::TestFuture<
+        brave_shields::AdBlockCustomResourceProvider::ErrorCode>
+        result;
+    provider->AddResource(
+        profile()->GetPrefs(),
+        CreateResource("user-ScRiPt.js", "window.upper = true"),
+        result.GetCallback());
+    EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
+              result.Get());
+  }
 
   UpdateAdBlockInstanceWithRules(
       "a.com##+js(user-script)\n"
       "a.com##+js(user-ScRiPt)");
 
-  GURL tab_url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  const GURL tab_url = embedded_test_server()->GetURL("a.com", "/simple.html");
   NavigateToURL(tab_url);
 
-  EXPECT_TRUE(EvalJs(web_contents(), "window.lower").ExtractBool());
-  EXPECT_TRUE(EvalJs(web_contents(), "window.upper").ExtractBool());
+  EXPECT_EQ(true, EvalJs(web_contents(), "window.lower"));
+  EXPECT_EQ(true, EvalJs(web_contents(), "window.upper"));
 }
 
 IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, TwoProfiles) {
