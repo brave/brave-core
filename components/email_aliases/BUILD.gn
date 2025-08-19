@@ -6,11 +6,6 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
-declare_args() {
-  brave_account_api_endpoint = "DUMMY_API_ENDPOINT"
-  brave_account_api_key = "DUMMY_API_KEY"
-}
-
 mojom_component("mojom") {
   output_prefix = "email_aliases_mojom"
   macro_prefix = "EMAIL_ALIASES_MOJOM"
@@ -54,10 +49,6 @@ static_library("service") {
     "//net",
     "//services/network/public/cpp",
     "//ui/base",
-  ]
-  defines = [
-    "BRAVE_ACCOUNT_API_ENDPOINT=\"${brave_account_api_endpoint}\"",
-    "BRAVE_ACCOUNT_API_KEY=\"${brave_account_api_key}\"",
   ]
 }
 
