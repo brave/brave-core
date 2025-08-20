@@ -12,8 +12,7 @@
 namespace content {
 
 // Shared data structure for tracking fullscreen state.
-struct CONTENT_EXPORT FullscreenPageData
-    : public base::SupportsUserData::Data {
+struct CONTENT_EXPORT FullscreenPageData : public base::SupportsUserData::Data {
  public:
   explicit FullscreenPageData(bool fullscreen_requested = false)
       : fullscreen_requested_(fullscreen_requested) {}

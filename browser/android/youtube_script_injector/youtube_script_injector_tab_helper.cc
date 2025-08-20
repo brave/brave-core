@@ -340,8 +340,9 @@ void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
   if (data) {
     data->set_fullscreen_requested(requested);
   } else {
-    entry->SetUserData(content::kFullscreenPageDataKey,
-                       std::make_unique<content::FullscreenPageData>(requested));
+    entry->SetUserData(
+        content::kFullscreenPageDataKey,
+        std::make_unique<content::FullscreenPageData>(requested));
   }
 }
 
