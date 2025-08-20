@@ -233,8 +233,6 @@ test("brave_unit_tests") {
     "//brave/components/constants",
     "//brave/components/de_amp/browser/test:unit_tests",
     "//brave/components/debounce/core/browser/test:unit_tests",
-    "//brave/components/email_aliases:features",
-    "//brave/components/email_aliases:service",
     "//brave/components/embedder_support:unit_tests",
     "//brave/components/history/core/browser:unit_tests",
     "//brave/components/history/core/browser/sync:unit_tests",
