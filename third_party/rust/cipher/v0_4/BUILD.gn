@@ -32,6 +32,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "cipher"
   cargo_pkg_description =
       "Traits for describing block ciphers and stream ciphers"
+  cargo_pkg_repository = "https://github.com/RustCrypto/traits"
   cargo_pkg_version = "0.4.4"
 
   deps = [

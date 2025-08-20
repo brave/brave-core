@@ -7,8 +7,4 @@
 
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 
-#define ContentsContainerView BraveContentsContainerView
-
 #include <chrome/browser/ui/views/frame/multi_contents_view.cc>
-
-#undef ContentsContainerView

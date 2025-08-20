@@ -69,12 +69,9 @@ gin::ObjectTemplateBuilder JSCardanoWalletApi::GetObjectTemplateBuilder(
       .SetMethod("getCollateral", &JSCardanoWalletApi::GetCollateral);
 }
 
-const char* JSCardanoWalletApi::GetTypeName() {
-  return "JSCardanoWalletApi";
+const gin::WrapperInfo* JSCardanoWalletApi::wrapper_info() const {
+  return &kWrapperInfo;
 }
-
-// JSCardanoProvider
-gin::WrapperInfo JSCardanoWalletApi::kWrapperInfo = {gin::kEmbedderNativeGin};
 
 JSCardanoWalletApi::~JSCardanoWalletApi() = default;
 

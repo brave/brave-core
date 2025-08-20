@@ -22,11 +22,13 @@ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.extensions.ExtensionToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.optional_button.ButtonDataProvider;
@@ -61,6 +63,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             List<ButtonDataProvider> buttonDataProviders,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ThemeColorProvider normalThemeColorProvider,
+            IncognitoStateProvider incognitoStateProvider,
             MenuButtonCoordinator browsingModeMenuButtonCoordinator,
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
             ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
@@ -83,7 +86,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<@Nullable Tab> tabSupplier,
             ObservableSupplier<Boolean> toolbarNavControlsEnabledSupplier,
             @Nullable BackButtonCoordinator backButtonCoordinator,
-            HomeButtonDisplay homeButtonDisplay) {
+            @Nullable HomeButtonDisplay homeButtonDisplay,
+            @Nullable ExtensionToolbarCoordinator extensionToolbarCoordinator) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -93,6 +97,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 buttonDataProviders,
                 layoutStateProviderSupplier,
                 normalThemeColorProvider,
+                incognitoStateProvider,
                 browsingModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier,
                 tabSwitcherButtonCoordinator,
@@ -114,7 +119,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 tabSupplier,
                 toolbarNavControlsEnabledSupplier,
                 backButtonCoordinator,
-                homeButtonDisplay);
+                homeButtonDisplay,
+                extensionToolbarCoordinator);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;

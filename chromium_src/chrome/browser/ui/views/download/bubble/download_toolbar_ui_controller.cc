@@ -8,32 +8,40 @@
 #include "chrome/browser/download/bubble/download_bubble_update_service.h"
 #include "chrome/browser/download/bubble/download_bubble_update_service_factory.h"
 #include "chrome/browser/download/download_ui_model.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "components/vector_icons/vector_icons.h"
+#include "ui/base/models/image_model.h"
 
-#define DownloadToolbarUIController DownloadToolbarUIController_ChromiumImpl
-#include <chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc>
-#undef DownloadToolbarUIController
+namespace {
 
-SkColor DownloadToolbarUIController_ChromiumImpl::GetIconColor(
-    bool is_dormant,
-    DownloadDisplay::IconActive active,
-    const ui::ColorProvider* color_provider) const {
-  return ::GetIconColor(is_dormant, active, color_provider);
-}
-
-SkColor DownloadToolbarUIController::GetIconColor(
-    bool is_dormant,
-    DownloadDisplay::IconActive active,
-    const ui::ColorProvider* color_provider) const {
+SkColor GetIconColor(SkColor chromium_color,
+                     DownloadDisplay::IconState state,
+                     DownloadDisplay::IconActive active,
+                     const ui::ColorProvider* color_provider) {
   // Apply active color only when download is completed and user doesn't
   // interact with this button.
-  if (state_ == IconState::kComplete && active == IconActive::kActive) {
+  if (state == DownloadDisplay::IconState::kComplete &&
+      active == DownloadDisplay::IconActive::kActive) {
     return color_provider->GetColor(kColorDownloadToolbarButtonActive);
   }
 
   // Otherwise, always use inactive color.
   return color_provider->GetColor(kColorDownloadToolbarButtonInactive);
 }
+
+}  // namespace
+
+#define DownloadToolbarUIController DownloadToolbarUIController_ChromiumImpl
+
+// Update upstream color with our own. Pass COLOR in so that icon_color variable
+// in the original file isn't flagged as unused by the compiler.
+#define FromVectorIcon(ICON, COLOR)                         \
+  FromVectorIcon(ICON, GetIconColor(COLOR, state_, active_, \
+                                    browser_view_->GetColorProvider()))
+
+#include <chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc>
+#undef FromVectorIcon
+#undef DownloadToolbarUIController
 
 void DownloadToolbarUIController::UpdateIcon() {
   DownloadToolbarUIController_ChromiumImpl::UpdateIcon();

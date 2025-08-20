@@ -10,9 +10,7 @@
 
 #include "components/signin/public/webdata/token_web_data.h"
 
-#if BUILDFLAG(ENABLE_BOUND_SESSION_CREDENTIALS)
 #include "components/signin/internal/identity_manager/token_binding_helper.h"
-#endif  // BUILDFLAG(ENABLE_BOUND_SESSION_CREDENTIALS)
 
 BraveMutableProfileOAuth2TokenServiceDelegate::
     BraveMutableProfileOAuth2TokenServiceDelegate(
@@ -22,9 +20,7 @@ BraveMutableProfileOAuth2TokenServiceDelegate::
         scoped_refptr<TokenWebData> token_web_data,
         signin::AccountConsistencyMethod account_consistency,
         RevokeAllTokensOnLoad revoke_all_tokens_on_load,
-#if BUILDFLAG(ENABLE_BOUND_SESSION_CREDENTIALS)
         std::unique_ptr<TokenBindingHelper> token_binding_helper,
-#endif  // BUILDFLAG(ENABLE_BOUND_SESSION_CREDENTIALS)
         FixRequestErrorCallback fix_request_error_callback)
     : MutableProfileOAuth2TokenServiceDelegate(client,
                                                account_tracker_service,
@@ -32,9 +28,7 @@ BraveMutableProfileOAuth2TokenServiceDelegate::
                                                token_web_data,
                                                account_consistency,
                                                revoke_all_tokens_on_load,
-#if BUILDFLAG(ENABLE_BOUND_SESSION_CREDENTIALS)
                                                std::move(token_binding_helper),
-#endif  // BUILDFLAG(ENABLE_BOUND_SESSION_CREDENTIALS)
                                                fix_request_error_callback),
       account_tracker_service_(account_tracker_service) {
 }

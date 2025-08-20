@@ -81,17 +81,17 @@
     Search Tabs button, activate to search tabs
   </message>
 
-  <message name="IDS_STARTER_PACK_AI_MODE_ACTION_HINT" desc="The button label for an omnibox action that invokes the ai mode keyword.">
-    Ask AI Mode
+  <message name="IDS_STARTER_PACK_AI_MODE_ACTION_HINT" desc="The button label for an omnibox action that invokes the AI mode keyword.">
+    Ask Brave AI Mode
   </message>
-  <message name="IDS_STARTER_PACK_AI_MODE_ACTION_SUGGESTION_CONTENTS" desc="The button hover tooltip text to describe omnibox action that invokes the ai mode keyword.">
-    Ask AI Mode
+  <message name="IDS_STARTER_PACK_AI_MODE_ACTION_SUGGESTION_CONTENTS" desc="The button hover tooltip text to describe omnibox action that invokes the AI mode keyword.">
+    Ask Brave AI Mode
   </message>
-  <message name="IDS_ACC_STARTER_PACK_AI_MODE_ACTION_SUFFIX" desc="Suffix for spoken suggestion description with omnibox action button, to explain keystroke used to invoke ai mode.">
-    <ph name="STARTER_PACK_AI_MODE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Enter to ask AI Mode
+  <message name="IDS_ACC_STARTER_PACK_AI_MODE_ACTION_SUFFIX" desc="Suffix for spoken suggestion description with omnibox action button, to explain keystroke used to invoke AI mode.">
+    <ph name="STARTER_PACK_AI_MODE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Enter to ask Brave AI Mode
   </message>
   <message name="IDS_ACC_STARTER_PACK_AI_MODE_ACTION" desc="Announcement when AI Mode action button is focused">
-    AI Mode button, activate to ask AI Mode
+    AI Mode button, activate to ask Brave AI Mode
   </message>
 
   <message name="IDS_EMPTY_KEYWORD_VALUE" desc="Shown in the location bar drop down when the user enters a string that matches a chrome keyword, but they haven't entered any text following the chrome keyword">
@@ -351,6 +351,12 @@
   <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_REVIEWS_CONTENTS" desc="The button hover tooltip text to describe action.">
     Read customer evaluations of products, services, or experiences to help inform your decisions with reviews.
   </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_AIM_HINT" desc="Label for Omnibox Action button that opens the AIM webpage" meaning="Length: 12em">
+    AI Mode
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_AIM_CONTENTS" desc="The button hover tooltip text to describe action.">
+    Open AI Mode with this suggestion.
+  </message>
   <message name="IDS_OMNIBOX_ACTION_IN_SUGGEST_WEBSITE_HINT" desc="Label for Omnibox Action button that opens the POI website." meaning="Length: 12em">
     Website
   </message>
@@ -504,7 +510,7 @@
     Page
   </message>
   <message name="IDS_SEARCH_ENGINES_STARTER_PACK_AI_MODE_NAME" desc="The name of the Brave AI Mode search engine as it appears on chrome://settings/searchEngines.">
-    AI Mode
+    Brave AI Mode
   </message>
   <message name="IDS_SEARCH_ENGINES_STARTER_PACK_AI_MODE_KEYWORD" desc="The keyword required to trigger the Brave AI Mode search engine. This will be stripped of whitespace and prepended with an '@'.">
     AI Mode
@@ -557,6 +563,10 @@
   </message>
   <message name="IDS_ACC_OMNIBOX_IPH_LINK_SELECTED" desc="Announcement when an IPH Brave Tip link is selected.">
     Brave Tip link, press Enter to open <ph name="IPH_LINK_FOCUSED_LINK_TEXT">$1<ex>Learn more</ex></ph>
+  </message>
+
+  <message name="IDS_ACC_OMNIBOX_TOOLBELT_NEXT_SUFFIX" desc="Additional text announcement when a match preceding the toolbelt is selected.">
+    <ph name="TOOLBELT_PRECEDING_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab for more search shortcuts available after this search suggestion
   </message>
 
   <message name="IDS_OMNIBOX_HISTORY_SCOPE_PROMO_IPH" desc="The string displayed as the last row in the Omnibox as IPH encouraging users to try the @history scope.">

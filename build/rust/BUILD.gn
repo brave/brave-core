@@ -8,7 +8,7 @@ import("//build/config/sanitizers/sanitizers.gni")
 
 group("framework_exports") {
   output = [
-    "_ChromeAppModeStart_v7",
+    "_ChromeAppModeStart_v8",
     "_ChromeMain",
   ]
 

@@ -11,8 +11,9 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/threading/thread_restrictions.h"
+#include "crypto/keypair.h"
 #include "crypto/rsa_private_key.h"
-#include "crypto/signature_creator.h"
+#include "crypto/sign.h"
 
 namespace web_discovery {
 
@@ -81,20 +82,11 @@ std::optional<std::string> RSASign(crypto::RSAPrivateKey* key,
   base::AssertLongCPUWorkAllowed();
   CHECK(key);
 
-  std::vector<uint8_t> signature;
-  auto signature_creator = crypto::SignatureCreator::Create(
-      key, crypto::SignatureCreator::HashAlgorithm::SHA256);
-  if (!signature_creator) {
-    return std::nullopt;
-  }
-  if (!signature_creator->Update(message.data(), message.size())) {
-    return std::nullopt;
-  }
-  if (!signature_creator->Final(&signature)) {
-    return std::nullopt;
-  }
-
-  return base::Base64Encode(signature);
+  auto wrapped_key =
+      crypto::keypair::PrivateKey::FromDeprecatedRSAPrivateKey(key);
+  std::vector<uint8_t> signature_bytes = crypto::sign::Sign(
+      crypto::sign::SignatureKind::RSA_PKCS1_SHA256, wrapped_key, message);
+  return base::Base64Encode(signature_bytes);
 }
 
 }  // namespace web_discovery

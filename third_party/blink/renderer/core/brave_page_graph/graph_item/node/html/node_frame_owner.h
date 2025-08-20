@@ -16,7 +16,7 @@ class NodeFrameOwner final : public NodeHTMLElement {
  public:
   NodeFrameOwner(GraphItemContext* context,
                  const blink::DOMNodeId dom_node_id,
-                 const String& tag_name);
+                 const blink::String& tag_name);
 
   ItemName GetItemName() const override;
 

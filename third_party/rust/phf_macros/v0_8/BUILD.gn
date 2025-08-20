@@ -21,6 +21,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Steven Fackler <sfackler@gmail.com>"
   cargo_pkg_name = "phf_macros"
   cargo_pkg_description = "Macros to generate types in the phf crate"
+  cargo_pkg_repository = "https://github.com/sfackler/rust-phf"
   cargo_pkg_version = "0.8.0"
 
   deps = [

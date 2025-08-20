@@ -8,8 +8,8 @@
 
 #include "components/page_info/page_info_ui.h"
 
-#define SetCookieInfo                                            \
-  SetCookieInfo_ChromiumImpl(const CookiesNewInfo& cookie_info); \
+#define SetCookieInfo                                         \
+  SetCookieInfo_ChromiumImpl(const CookiesInfo& cookie_info); \
   void SetCookieInfo
 
 #include <chrome/browser/ui/views/page_info/page_info_cookies_content_view.h>  // IWYU pragma: export

@@ -52,7 +52,8 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
 
   // views::ViewObserver:
   void OnViewVisibilityChanged(views::View* observed_view,
-                               views::View* starting_view) override;
+                               views::View* starting_view,
+                               bool visible) override;
   void OnViewBoundsChanged(views::View* observed_view) override;
   void OnViewIsDeleting(views::View* observed_view) override;
 

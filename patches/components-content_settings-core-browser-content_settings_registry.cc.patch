@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/browser/content_settings_registry.cc b/components/content_settings/core/browser/content_settings_registry.cc
-index 8385be32438c946ac763438dc4bc0dca9fdbac5e..6c7fb8cf398ef93d1f2123fb087c849e08716a8e 100644
+index c9b9e27bc415b80f608706ef8110be52f17fc5cc..95f472718acfe582bef09a9a3a31ed51c41d18da 100644
 --- a/components/content_settings/core/browser/content_settings_registry.cc
 +++ b/components/content_settings/core/browser/content_settings_registry.cc
-@@ -864,6 +864,7 @@ void ContentSettingsRegistry::Init() {
-                WebsiteSettingsRegistry::PLATFORM_ANDROID,
-            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
-            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
+@@ -872,6 +872,7 @@ void ContentSettingsRegistry::Init() {
+            WebsiteSettingsRegistry::PLATFORM_CHROMEOS,
+            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
 +  BRAVE_INIT
  }
  

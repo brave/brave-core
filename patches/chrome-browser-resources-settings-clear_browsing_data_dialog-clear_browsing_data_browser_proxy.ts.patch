@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts
-index 19cf28a26137112d74fb2b6c0d34b9e2d91df14d..7d08dc229582f95ae5cefd42a4cc4a10175e35f3 100644
+index 06ee59bb164f056e507aee6af5a3847a77ef3266..ee2bff5ee19098c264fee600bf5325f605911877 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts
 @@ -43,6 +43,7 @@ export enum BrowsingDataType {

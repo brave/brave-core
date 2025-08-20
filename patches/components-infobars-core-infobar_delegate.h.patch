@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 2448b526c845fcfb05a6199f352d55bba4e6aece..63ed6a04283ce8759a45577cf27b0ab83557db7f 100644
+index cd937895253fd3a51de8437b776367cd5dd7386a..08691b531a0b4d7dd2fe24e13a8c838ffecfe98a 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -192,6 +192,7 @@ class InfoBarDelegate {
-     INSTALLER_DOWNLOADER_INFOBAR_DELEGATE = 124,
+@@ -193,6 +193,7 @@ class InfoBarDelegate {
      COLLABORATION_GROUP_UPDATE_INFOBAR_DELEGATE = 125,
      COLLABORATION_OUT_OF_DATE_INFOBAR_DELEGATE = 126,
+     PIN_INFOBAR_DELEGATE = 127,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/browser/enums.xml:InfoBarIdentifier)

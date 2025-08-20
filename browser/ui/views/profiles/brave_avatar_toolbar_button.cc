@@ -14,7 +14,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/color_palette.h"
-#include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button_delegate.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -140,6 +139,10 @@ void BraveAvatarToolbarButton::OnThemeChanged() {
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveAvatarButtonHighlightPathGenerator>(
                 weak_ptr_factory_.GetWeakPtr(), radius));
+}
+
+int BraveAvatarToolbarButton::GetIconSize() const {
+  return GetLayoutConstant(LOCATION_BAR_ICON_SIZE);
 }
 
 void BraveAvatarToolbarButton::UpdateColorsAndInsets() {

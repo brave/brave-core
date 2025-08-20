@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/signing/commands.py b/chrome/installer/mac/signing/commands.py
-index c1f121213a1f1ce6ad1b996c8ca9c2aa731084ef..b21c23c24d5a518d297fd67efa9bd6b9da055450 100644
+index 6b653b4a6c19f02b7c741dc037d66de1921b2703..e50ea1d21cec1068e9a7cc829d4162831bb11fd8 100644
 --- a/chrome/installer/mac/signing/commands.py
 +++ b/chrome/installer/mac/signing/commands.py
-@@ -216,3 +216,4 @@ class WorkDirectory(object):
+@@ -227,3 +227,4 @@ class WorkDirectory(object):
  
      def __exit__(self, exc_type, value, traceback):
          shutil.rmtree(self._workdir)

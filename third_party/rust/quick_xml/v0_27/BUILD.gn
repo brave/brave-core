@@ -47,6 +47,7 @@ cargo_crate("lib") {
   edition = "2018"
   cargo_pkg_name = "quick-xml"
   cargo_pkg_description = "High performance xml reader and writer"
+  cargo_pkg_repository = "https://github.com/tafia/quick-xml"
   cargo_pkg_version = "0.27.1"
 
   deps = [

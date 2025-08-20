@@ -250,7 +250,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
-#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
+#include "components/omnibox/browser/searchbox.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -1310,9 +1310,6 @@ void BraveContentBrowserClient::OverrideWebPreferences(
   ChromeContentBrowserClient::OverrideWebPreferences(
       web_contents, main_frame_site, web_prefs);
   PreventDarkModeFingerprinting(web_contents, main_frame_site, web_prefs);
-  // This will stop NavigatorPlugins from returning fixed plugins data and will
-  // allow us to return our farbled data
-  web_prefs->allow_non_empty_navigator_plugins = true;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (playlist::PlaylistBackgroundWebContentsHelper::FromWebContents(
