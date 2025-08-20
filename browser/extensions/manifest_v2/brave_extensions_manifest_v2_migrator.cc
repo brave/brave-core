@@ -26,6 +26,8 @@
 
 namespace {
 
+constexpr char kVersion[] = "version";
+
 constexpr base::FilePath::CharType kExtensionMV2BackupDir[] =
     FILE_PATH_LITERAL("MV2Backup");
 
@@ -37,54 +39,21 @@ base::FilePath::StringType ASCIIToPathStringType(std::string_view str) {
 }
 
 base::FilePath GetLocalSettings(const extensions::ExtensionId& extension_id,
-                                const base::FilePath& profile_dir) {
+                                const base::FilePath& source_path) {
   const auto path =
-      profile_dir.Append(extensions::kLocalExtensionSettingsDirectoryName)
+      source_path.Append(extensions::kLocalExtensionSettingsDirectoryName)
           .AppendASCII(extension_id);
   return !base::IsDirectoryEmpty(path) ? path : base::FilePath();
 }
 
-base::FilePath GetLocalSettingsForImport(
-    const extensions::ExtensionId& brave_hosted_extension_id,
-    const base::FilePath& profile_dir) {
-  CHECK(extensions_mv2::IsKnownBraveHostedExtension(brave_hosted_extension_id));
-  const auto webstore_extension_id =
-      extensions_mv2::GetWebStoreHostedExtensionId(brave_hosted_extension_id);
-  if (!webstore_extension_id) {
-    return {};
-  }
-  const auto backup =
-      profile_dir.Append(kExtensionMV2BackupDir)
-          .AppendASCII(*webstore_extension_id)
-          .Append(extensions::kLocalExtensionSettingsDirectoryName)
-          .AppendASCII(*webstore_extension_id);
-  return !base::IsDirectoryEmpty(backup) ? backup : base::FilePath();
-}
-
 base::FileEnumerator GetIndexedSettings(
     const extensions::ExtensionId& extension_id,
-    const base::FilePath& profile_dir) {
+    const base::FilePath& source_path) {
   const auto pattern = ASCIIToPathStringType(
       base::StrCat({"chrome-extension_", extension_id, "_*indexeddb*"}));
-  return base::FileEnumerator(profile_dir.Append(kIndexedDBDir), false,
+  return base::FileEnumerator(source_path.Append(kIndexedDBDir),
+                              /*recursive=*/false,
                               base::FileEnumerator::DIRECTORIES, pattern);
-}
-
-base::FileEnumerator GetIndexedSettingsForImport(
-    const extensions::ExtensionId& brave_hosted_extension_id,
-    const base::FilePath& profile_dir) {
-  CHECK(extensions_mv2::IsKnownBraveHostedExtension(brave_hosted_extension_id));
-  const auto webstore_extension_id =
-      extensions_mv2::GetWebStoreHostedExtensionId(brave_hosted_extension_id);
-  CHECK(webstore_extension_id);
-
-  const auto pattern = ASCIIToPathStringType(base::StrCat(
-      {"chrome-extension_", *webstore_extension_id, "_*indexeddb*"}));
-  return base::FileEnumerator(profile_dir.Append(kExtensionMV2BackupDir)
-                                  .AppendASCII(*webstore_extension_id)
-                                  .Append(kIndexedDBDir),
-                              false, base::FileEnumerator::DIRECTORIES,
-                              pattern);
 }
 
 bool IsBackupAvailableFor(
@@ -100,17 +69,15 @@ bool IsBackupAvailableFor(
 
   if (!base::PathExists(profile_dir.Append(kExtensionMV2BackupDir)
                             .AppendASCII(*webstore_extension_id)
-                            .AppendASCII("version"))) {
+                            .AppendASCII(kVersion))) {
     return false;
   }
 
-  if (!GetLocalSettingsForImport(brave_hosted_extension_id, profile_dir)
-           .empty()) {
+  if (!GetLocalSettings(brave_hosted_extension_id, profile_dir).empty()) {
     return true;
   }
 
-  auto indexed =
-      GetIndexedSettingsForImport(brave_hosted_extension_id, profile_dir);
+  auto indexed = GetIndexedSettings(brave_hosted_extension_id, profile_dir);
   if (!indexed.Next().empty()) {
     return true;
   }
@@ -122,71 +89,12 @@ base::Version GetBackupVersion(
     const base::FilePath& profile_dir) {
   const auto version_path = profile_dir.Append(kExtensionMV2BackupDir)
                                 .AppendASCII(webstore_extension_id)
-                                .AppendASCII("version");
+                                .AppendASCII(kVersion);
   if (std::string content;
       base::ReadFileToStringWithMaxSize(version_path, &content, 256)) {
     return base::Version(content);
   }
   return base::Version();
-}
-
-base::Version BackupExtensionSettingsOnFileThread(
-    const extensions::ExtensionId& webstore_extension_id,
-    const base::Version& version,
-    const base::FilePath& profile_dir) {
-  CHECK(extensions_mv2::IsKnownWebStoreHostedExtension(webstore_extension_id));
-
-  const auto backup_path = profile_dir.Append(kExtensionMV2BackupDir)
-                               .AppendASCII(webstore_extension_id);
-
-  if (base::PathExists(backup_path.AppendASCII("version"))) {
-    // We already have backup for this extension.
-    return GetBackupVersion(webstore_extension_id, profile_dir);
-  }
-
-  base::ScopedClosureRunner remove_backup_on_error(
-      base::GetDeletePathRecursivelyCallback(backup_path));
-
-  const auto local_settings_path =
-      profile_dir.Append(extensions::kLocalExtensionSettingsDirectoryName)
-          .AppendASCII(webstore_extension_id);
-  if (base::PathExists(local_settings_path)) {
-    const auto local_settings_backup_path =
-        backup_path.Append(extensions::kLocalExtensionSettingsDirectoryName);
-    if (!base::DeletePathRecursively(local_settings_backup_path) ||
-        !base::CreateDirectory(local_settings_backup_path) ||
-        !base::CopyDirectory(local_settings_path, local_settings_backup_path,
-                             true)) {
-      return base::Version();
-    }
-  }
-
-  const auto indexeddb_settings_backup_path = backup_path.Append(kIndexedDBDir);
-  if (!base::CreateDirectory(indexeddb_settings_backup_path)) {
-    return base::Version();
-  }
-
-  bool error = false;
-  GetIndexedSettings(webstore_extension_id, profile_dir)
-      .ForEach([&error,
-                &indexeddb_settings_backup_path](const base::FilePath& path) {
-        if (error) {
-          return;
-        }
-        const auto destination =
-            indexeddb_settings_backup_path.Append(path.BaseName());
-        if (!base::DeletePathRecursively(destination) ||
-            !base::CopyDirectory(path, destination, true)) {
-          error = true;
-        }
-      });
-  if (error || !base::WriteFile(backup_path.AppendASCII("version"),
-                                version.GetString())) {
-    return base::Version();
-  }
-
-  remove_backup_on_error.ReplaceClosure(base::DoNothing());
-  return version;
 }
 
 bool ClearExtensionSettingsOnFileThread(
@@ -211,6 +119,90 @@ bool ClearExtensionSettingsOnFileThread(
   return !error;
 }
 
+bool MoveExtensionSettings(const extensions::ExtensionId& source_extension_id,
+                           const base::FilePath& source_dir,
+                           const extensions::ExtensionId& target_extension_id,
+                           const base::FilePath& target_dir,
+                           bool delete_source) {
+  base::ScopedClosureRunner remove_source(
+      (delete_source ? base::GetDeletePathRecursivelyCallback(source_dir)
+                     : base::DoNothing()));
+
+  const auto local_settings_source_path =
+      source_dir.Append(extensions::kLocalExtensionSettingsDirectoryName)
+          .AppendASCII(source_extension_id);
+  if (base::PathExists(local_settings_source_path)) {
+    const auto local_settings_target_path =
+        target_dir.Append(extensions::kLocalExtensionSettingsDirectoryName);
+    if (!base::DeletePathRecursively(local_settings_target_path) ||
+        !base::CreateDirectory(local_settings_target_path) ||
+        !base::CopyDirectory(local_settings_source_path,
+                             local_settings_target_path,
+                             /*recursive=*/true)) {
+      return false;
+    }
+  }
+
+  const auto indexeddb_settings_target_path = target_dir.Append(kIndexedDBDir);
+  if (!base::CreateDirectory(indexeddb_settings_target_path)) {
+    return false;
+  }
+
+  const bool change_name = source_extension_id != target_extension_id;
+  bool error = false;
+  GetIndexedSettings(source_extension_id, source_dir)
+      .ForEach([&error, change_name, &source_extension_id, &target_extension_id,
+                &indexeddb_settings_target_path](const base::FilePath& path) {
+        if (error) {
+          return;
+        }
+
+        auto name = path.BaseName().value();
+        if (change_name) {
+          base::ReplaceFirstSubstringAfterOffset(
+              &name, 0, ASCIIToPathStringType(source_extension_id),
+              ASCIIToPathStringType(target_extension_id));
+        }
+        const auto destination = indexeddb_settings_target_path.Append(name);
+        if (!base::DeletePathRecursively(destination) ||
+            !base::CreateDirectory(destination) ||
+            !base::CopyDirectory(path, destination, /*recursive=*/true)) {
+          error = true;
+        }
+      });
+  return error;
+}
+
+base::Version BackupExtensionSettingsOnFileThread(
+    const extensions::ExtensionId& webstore_extension_id,
+    const base::Version& version,
+    const base::FilePath& profile_dir) {
+  CHECK(extensions_mv2::IsKnownWebStoreHostedExtension(webstore_extension_id));
+
+  const auto backup_path = profile_dir.Append(kExtensionMV2BackupDir)
+                               .AppendASCII(webstore_extension_id);
+
+  if (base::PathExists(backup_path.AppendASCII(kVersion))) {
+    // We already have backup for this extension.
+    return GetBackupVersion(webstore_extension_id, profile_dir);
+  }
+
+  base::ScopedClosureRunner remove_backup_on_error(
+      base::GetDeletePathRecursivelyCallback(backup_path));
+
+  const bool error =
+      MoveExtensionSettings(webstore_extension_id, profile_dir,
+                            webstore_extension_id, backup_path, false);
+
+  if (error || !base::WriteFile(backup_path.AppendASCII(kVersion),
+                                version.GetString())) {
+    return base::Version();
+  }
+
+  remove_backup_on_error.ReplaceClosure(base::DoNothing());
+  return version;
+}
+
 void ImportExtensionSettingsOnFileThread(
     const extensions::ExtensionId& brave_hosted_extension_id,
     const base::Version& brave_hosted_extension_version,
@@ -224,9 +216,6 @@ void ImportExtensionSettingsOnFileThread(
 
   const auto backup_path = profile_dir.Append(kExtensionMV2BackupDir)
                                .AppendASCII(webstore_extension_id);
-  // Remove backup in any case.
-  base::ScopedClosureRunner remove_backup(
-      base::GetDeletePathRecursivelyCallback(backup_path));
 
   base::ScopedClosureRunner clear_settings_on_error(base::BindOnce(
       [](const extensions::ExtensionId& brave_hosted_extension_id,
@@ -236,37 +225,10 @@ void ImportExtensionSettingsOnFileThread(
       },
       brave_hosted_extension_id, profile_dir));
 
-  if (!ClearExtensionSettingsOnFileThread(brave_hosted_extension_id,
-                                          profile_dir)) {
-    return;
-  }
+  const bool error = MoveExtensionSettings(webstore_extension_id, backup_path,
+                                           brave_hosted_extension_id,
+                                           profile_dir, /*delete_source=*/true);
 
-  const auto local_settings_backup =
-      GetLocalSettingsForImport(brave_hosted_extension_id, profile_dir);
-  if (!local_settings_backup.empty()) {
-    if (!base::Move(
-            local_settings_backup,
-            profile_dir.Append(extensions::kLocalExtensionSettingsDirectoryName)
-                .AppendASCII(brave_hosted_extension_id))) {
-      return;
-    }
-  }
-
-  bool error = false;
-  GetIndexedSettingsForImport(brave_hosted_extension_id, profile_dir)
-      .ForEach([&error, &profile_dir, &brave_hosted_extension_id,
-                &webstore_extension_id](const base::FilePath& path) {
-        if (error) {
-          return;
-        }
-        auto name = path.BaseName().value();
-        base::ReplaceFirstSubstringAfterOffset(
-            &name, 0, ASCIIToPathStringType(webstore_extension_id),
-            ASCIIToPathStringType(brave_hosted_extension_id));
-        if (!base::Move(path, profile_dir.Append(kIndexedDBDir).Append(name))) {
-          error = true;
-        }
-      });
   if (!error) {
     clear_settings_on_error.ReplaceClosure(base::DoNothing());
   }
