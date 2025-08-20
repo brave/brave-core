@@ -238,15 +238,15 @@ absl::StatusOr<std::vector<int>> TextEmbedder::SuggestTabsForGroup(
   }
 
   // save these embeddings
-  std::vector<tflite::task::processor::EmbeddingResult> candidate_embeddings_;
-  candidate_embeddings_ = embeddings_;
+  std::vector<tflite::task::processor::EmbeddingResult> candidate_embeddings;
+  candidate_embeddings = embeddings_;
 
   std::vector<double> sim_scores;
 
   // get cosine simularity of each candiate tab with centroid
-  for (size_t i = 0; i < candidate_embeddings_.size(); ++i) {
+  for (size_t i = 0; i < candidate_embeddings.size(); ++i) {
     auto maybe_similarity = tflite_text_embedder_->CosineSimilarity(
-        candidate_embeddings_[i].embeddings(0).feature_vector(),
+        candidate_embeddings[i].embeddings(0).feature_vector(),
         group_centroid.embeddings(0).feature_vector());
     if (!maybe_similarity.ok()) {
       return absl::FailedPreconditionError(
