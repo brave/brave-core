@@ -9,10 +9,16 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "chrome/browser/profiles/profile.h"
+
+#if BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL)
+#include "brave/browser/ai_chat/tools/tab_management_tool.h"
+#endif
 
 namespace ai_chat {
 
-BrowserToolProvider::BrowserToolProvider() {
+BrowserToolProvider::BrowserToolProvider(Profile* profile) : profile_(profile) {
   CreateTools();
 }
 
@@ -20,12 +26,18 @@ BrowserToolProvider::~BrowserToolProvider() = default;
 
 std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
   std::vector<base::WeakPtr<Tool>> tool_ptrs;
-  // TODO(petemill): Return some tools
+
+#if BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL)
+  tool_ptrs.push_back(tab_management_tool_->GetWeakPtr());
+#endif
+
   return tool_ptrs;
 }
 
 void BrowserToolProvider::CreateTools() {
-  // TODO(petemill): Construct some tools and own them
+#if BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL)
+  tab_management_tool_ = std::make_unique<TabManagementTool>(profile_);
+#endif
 }
 
 }  // namespace ai_chat

@@ -44,6 +44,7 @@ class MemoryStorageTool : public Tool {
   bool SupportsConversation(bool is_temporary,
                             bool has_untrusted_content) const override;
   void UseTool(const std::string& input_json,
+               std::optional<base::Value> client_data,
                UseToolCallback callback) override;
 
  private:

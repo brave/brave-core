@@ -363,7 +363,7 @@ TEST_P(AIChatDatabaseTest, ToolUseEvent) {
       "param2": 42,
       "param3": true
     })",
-                                 std::vector<mojom::ContentBlockPtr>());
+                                 std::vector<mojom::ContentBlockPtr>(), false);
 
     tool_event_first->output->emplace_back(
         mojom::ContentBlock::NewTextContentBlock(
@@ -381,7 +381,7 @@ TEST_P(AIChatDatabaseTest, ToolUseEvent) {
       "param2": 43,
       "param3": false
     })",
-                                 std::vector<mojom::ContentBlockPtr>());
+                                 std::vector<mojom::ContentBlockPtr>(), false);
 
     tool_event_second->output->emplace_back(
         mojom::ContentBlock::NewTextContentBlock(
@@ -399,7 +399,7 @@ TEST_P(AIChatDatabaseTest, ToolUseEvent) {
       "param2": 44,
       "param3": true
     })",
-                                 std::vector<mojom::ContentBlockPtr>());
+                                 std::vector<mojom::ContentBlockPtr>(), false);
 
     tool_event_third->output->emplace_back(
         mojom::ContentBlock::NewTextContentBlock(
@@ -454,7 +454,7 @@ TEST_P(AIChatDatabaseTest, ToolUseEvent_Invalid) {
       "param2": 42,
       "param3": true
     })",
-                                 std::vector<mojom::ContentBlockPtr>());
+                                 std::vector<mojom::ContentBlockPtr>(), false);
 
     tool_event_first->output->emplace_back(
         mojom::ContentBlock::NewTextContentBlock(
@@ -473,7 +473,7 @@ TEST_P(AIChatDatabaseTest, ToolUseEvent_Invalid) {
       "param2": 43,
       "param3": false
     })",
-                                 std::vector<mojom::ContentBlockPtr>());
+                                 std::vector<mojom::ContentBlockPtr>(), false);
 
     tool_event_second->output->emplace_back(
         mojom::ContentBlock::NewTextContentBlock(
@@ -492,7 +492,7 @@ TEST_P(AIChatDatabaseTest, ToolUseEvent_Invalid) {
       "param2": 43,
       "param3": false
     })",
-                                 std::nullopt);
+                                 std::nullopt, false);
 
     history[1]->events->clear();
     history[1]->events->emplace_back(
@@ -552,7 +552,7 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
   "param2": 42,
   "param3": true
 })",
-                               std::nullopt);
+                               std::nullopt, false);
 
   auto tool_event_second =
       mojom::ToolUseEvent::New("test_tool_2", "tool_id_456",
@@ -565,7 +565,7 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
     "param2": 43
   }
 })",
-                               std::vector<mojom::ContentBlockPtr>());
+                               std::vector<mojom::ContentBlockPtr>(), false);
   tool_event_second->output->emplace_back(
       mojom::ContentBlock::NewTextContentBlock(
           mojom::TextContentBlock::New("This is a second text response")));

@@ -119,20 +119,37 @@ const toolEvents: Mojom.ToolUseEvent[] = [
   {
     id: 'abc123d',
     toolName: 'user_choice_tool',
+    requiresUserInteraction: true,
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: [createTextContentBlock('7:00pm')],
   },
   {
     id: 'abc123e',
     toolName: 'user_choice_tool',
+    requiresUserInteraction: true,
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: undefined,
   },
   {
     id: 'abc123f',
     toolName: 'user_choice_tool',
+    requiresUserInteraction: true,
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: undefined,
+  },
+  {
+    id: 'abc123f',
+    toolName: 'tab_management',
+    requiresUserInteraction: true,
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: undefined,
+  },
+  {
+    id: 'abc123f',
+    toolName: 'tab_management',
+    requiresUserInteraction: false,
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: [createTextContentBlock('Tab 1 moved to Tab 2')],
   }
 ]
 

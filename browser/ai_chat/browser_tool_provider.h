@@ -11,8 +11,12 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "chrome/browser/profiles/profile.h"
 
 namespace ai_chat {
+
+class TabManagementTool;
 
 // Implementation of ToolProvider that provides browser-specific
 // tools for conversations.
@@ -20,7 +24,7 @@ namespace ai_chat {
 // that the tools for a conversation perform actions on.
 class BrowserToolProvider : public ToolProvider {
  public:
-  BrowserToolProvider();
+  explicit BrowserToolProvider(Profile* profile);
 
   ~BrowserToolProvider() override;
 
@@ -32,6 +36,12 @@ class BrowserToolProvider : public ToolProvider {
 
  private:
   void CreateTools();
+
+  // Browser-specific tools owned by this provider
+#if BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL)
+  std::unique_ptr<TabManagementTool> tab_management_tool_ = nullptr;
+#endif
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace ai_chat

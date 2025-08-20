@@ -26,7 +26,8 @@ describe('ToolEvent', () => {
               toolName: 'user_choice_tool',
               id: '123',
               argumentsJson: '{"choices": ["first", "second", "third"]}',
-              output: undefined
+              output: undefined,
+              requiresUserInteraction: false
             }
           }
           isEntryActive={true}
