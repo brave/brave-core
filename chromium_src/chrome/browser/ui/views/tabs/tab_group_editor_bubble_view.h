@@ -30,7 +30,6 @@
   /* Member variables for TextEmbedder functionality */                 \
   std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter>    \
       text_embedder_{nullptr, base::OnTaskRunnerDeleter(nullptr)};      \
-  scoped_refptr<base::SequencedTaskRunner> embedder_task_runner_;       \
   bool suggestion_in_progress_ = false;                                 \
                                                                         \
   void RebuildMenuContents

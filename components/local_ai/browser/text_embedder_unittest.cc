@@ -22,6 +22,7 @@
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/local_ai/browser/local_models_updater.h"
 #include "build/build_config.h"
@@ -63,14 +64,9 @@ class TextEmbedderUnitTest : public testing::Test {
     // if embedder creation fails, test should fail
     ASSERT_TRUE(embedder_);
 
-    base::RunLoop run_loop;
-    embedder_->Initialize(
-        base::BindLambdaForTesting([&run_loop](bool initialized) {
-          ASSERT_TRUE(initialized);
-          run_loop.Quit();
-        }));
-
-    run_loop.Run();
+    base::test::TestFuture<bool> init_future;
+    embedder_->Initialize(init_future.GetCallback());
+    ASSERT_TRUE(init_future.Get());
     ASSERT_TRUE(embedder_->IsInitialized());
   }
 
@@ -109,33 +105,21 @@ class TextEmbedderUnitTest : public testing::Test {
   }
 
   absl::StatusOr<std::vector<int>> VerifySuggestTabsForGroup(
-      std::vector<std::pair<int, std::string>> group_tabs,
-      std::vector<std::pair<int, std::string>> candiate_tabs) {
-    absl::StatusOr<std::vector<int>> result;
-
-    base::RunLoop run_loop;
-    embedder_task_runner_->PostTask(
-        FROM_HERE, base::BindLambdaForTesting([&]() {
-          result = embedder_->SuggestTabsForGroup(group_tabs, candiate_tabs);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return result;
+      std::vector<std::string> group_tabs,
+      std::vector<std::pair<int, std::string>> candidate_tabs) {
+    base::test::TestFuture<absl::StatusOr<std::vector<int>>> future;
+    embedder_->SuggestTabsForGroup(
+        std::move(group_tabs), std::move(candidate_tabs), future.GetCallback());
+    return future.Get();
   }
 
   absl::StatusOr<int> VerifySuggestGroupForTab(
       std::pair<int, std::string> candidate_tab,
-      std::vector<std::vector<std::pair<int, std::string>>> group_tabs) {
-    absl::StatusOr<int> result;
-
-    base::RunLoop run_loop;
-    embedder_task_runner_->PostTask(
-        FROM_HERE, base::BindLambdaForTesting([&]() {
-          result = embedder_->SuggestGroupForTab(candidate_tab, group_tabs);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return result;
+      std::vector<std::vector<std::string>> group_tabs) {
+    base::test::TestFuture<absl::StatusOr<int>> future;
+    embedder_->SuggestGroupForTab(std::move(candidate_tab),
+                                  std::move(group_tabs), future.GetCallback());
+    return future.Get();
   }
 
  protected:
@@ -161,13 +145,9 @@ TEST_F(TextEmbedderUnitTest, Initialize) {
   auto embedder = TextEmbedder::Create(
       model_dir_.AppendASCII(kUniversalQAModelName), embedder_task_runner_);
   ASSERT_TRUE(embedder);
-  base::RunLoop run_loop;
-  embedder->Initialize(
-      base::BindLambdaForTesting([&run_loop](bool initialized) {
-        EXPECT_TRUE(initialized);
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  base::test::TestFuture<bool> future;
+  embedder->Initialize(future.GetCallback());
+  EXPECT_TRUE(future.Get());
   EXPECT_TRUE(embedder->IsInitialized());
 }
 
@@ -242,17 +222,17 @@ TEST_F(TextEmbedderUnitTest, InspectEmbedding) {
 
 TEST_F(TextEmbedderUnitTest, VerifySuggestTabsForGroup) {
   struct {
-    std::vector<std::pair<int, std::string>> grouped_tabs;
+    std::vector<std::string> grouped_tabs;
     std::vector<std::pair<int, std::string>> candidate_tabs;
     std::vector<int> expected;
   } test_cases[] = {
       {// test case 1
 
-       {{1, "Top 10 places to visit in Italy travelblog.com"},
-        {3, "Flight comparison: Rome vs Venice skyscanner.com"},
-        {4, "Train travel tips across Europe eurotripadvisor.net"},
-        {6, "Travel insurance for international trips safetravel.com"},
-        {7, "Visa requirements for Schengen countries visaguide.world"}},
+       {"Top 10 places to visit in Italy travelblog.com",
+        "Flight comparison: Rome vs Venice skyscanner.com",
+        "Train travel tips across Europe eurotripadvisor.net",
+        "Travel insurance for international trips safetravel.com",
+        "Visa requirements for Schengen countries visaguide.world"},
 
        {{0, "Compare savings accounts interest rates bankrate.com"},
         {10, "Tips to improve credit score nerdwallet.com"},
@@ -278,41 +258,42 @@ TEST_F(TextEmbedderUnitTest, VerifySuggestTabsForGroup) {
 TEST_F(TextEmbedderUnitTest, VerifySuggestGroupForTab) {
   struct {
     std::pair<int, std::string> candidate_tab;
-    std::vector<std::vector<std::pair<int, std::string>>> group_tabs;
+    std::vector<std::vector<std::string>> group_tabs;
     absl::StatusOr<int> expected;
-  } test_cases[] = {
-    {
-        // test case 1
-        {10, "Compare savings accounts interest rates bankrate.com"},
+  } test_cases[] = {{
+      // test case 1
+      {10, "Compare savings accounts interest rates bankrate.com"},
 
-        // group - travel
-        {{{1, "Top 10 places to visit in Italy travelblog.com"},
-        {3, "Flight comparison: Rome vs Venice skyscanner.com"},
-        {4, "Train travel tips across Europe eurotripadvisor.net"},
-        {6, "Travel insurance for international trips safetravel.com"},
-        {7, "Visa requirements for Schengen countries visaguide.world"}},
+      // group - travel
+      {{"Top 10 places to visit in Italy travelblog.com",
+        "Flight comparison: Rome vs Venice skyscanner.com",
+        "Train travel tips across Europe eurotripadvisor.net",
+        "Travel insurance for international trips safetravel.com",
+        "Visa requirements for Schengen countries visaguide.world"},
 
-        // group - weather
-        {{5, "Woking, Surrey, United Kingdom Current Weather | AccuWeather accuweather.com"},
-        {10, "London - BBC Weather bbc.co.uk"}},
+       // group - weather
+       {"Woking, Surrey, United Kingdom Current Weather | AccuWeather "
+        "accuweather.com",
+        "London - BBC Weather bbc.co.uk"},
 
-        // group finance
-        {{2, "Personal Savings Allowance moneysavingexpert.com"},
-        {8, "What is the Personal Savings Allowance? | Barclays barclays.co.uk"}},
+       // group finance
+       {"Personal Savings Allowance moneysavingexpert.com",
+        "What is the Personal Savings Allowance? | Barclays barclays.co.uk"},
 
-        // group - sports
-        {{11, "Football Scores & Fixtures - Today's Schedule of Football skysports.com"}}},
+       // group - sports
+       {"Football Scores & Fixtures - Today's Schedule of Football "
+        "skysports.com"}},
 
-        2,
-    }
+      2,
+  }
 
   };
 
   for (size_t i = 0; i < sizeof(test_cases) / sizeof(test_cases[0]); ++i) {
     SCOPED_TRACE("Test case index: " + base::NumberToString(i));
     auto result =
-    VerifySuggestGroupForTab(UNSAFE_TODO(test_cases[i]).candidate_tab,
-                                  UNSAFE_TODO(test_cases[i]).group_tabs);
+        VerifySuggestGroupForTab(UNSAFE_TODO(test_cases[i]).candidate_tab,
+                                 UNSAFE_TODO(test_cases[i]).group_tabs);
     EXPECT_EQ(result, UNSAFE_TODO(test_cases[i]).expected);
   }
 }

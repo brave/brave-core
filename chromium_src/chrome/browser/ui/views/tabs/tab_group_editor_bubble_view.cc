@@ -102,10 +102,10 @@ void TabGroupEditorBubbleView::SuggestedTabsPressed() {
 
   // Create TextEmbedder if needed
   if (!text_embedder_) {
-    embedder_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+    auto embedder_task_runner = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_BLOCKING});
     text_embedder_ = local_ai::TextEmbedder::Create(
-        state->GetUniversalQAModel(), embedder_task_runner_);
+        state->GetUniversalQAModel(), embedder_task_runner);
 
     if (!text_embedder_) {
       CleanupAndClose();
@@ -181,7 +181,7 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
   }
 
   // Collect tabs in the current group and candidate tabs
-  std::vector<std::pair<int, std::string>> group_tabs;
+  std::vector<std::string> group_tabs;
   std::vector<std::pair<int, std::string>> candidate_tabs;
 
   for (int i = 0; i < tab_strip_model->count(); ++i) {
@@ -201,8 +201,8 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
         tab_strip_model->GetTabGroupForTab(i);
 
     if (tab_group.has_value() && tab_group.value() == group_) {
-      // Tab is in the current group
-      group_tabs.emplace_back(i, std::move(tab_description));
+      // Tab is in the current group - only need the description
+      group_tabs.push_back(tab_description);
     } else if (!tab_group.has_value()) {
       // Tab is not in any group - candidate for addition
       candidate_tabs.emplace_back(i, std::move(tab_description));
@@ -215,30 +215,11 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
     return;
   }
 
-  // Get suggestions on background thread using our stored task runner
-  embedder_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter>*
-                 text_embedder,
-             std::vector<std::pair<int, std::string>> group_tabs,
-             std::vector<std::pair<int, std::string>> candidate_tabs,
-             base::OnceCallback<void(absl::StatusOr<std::vector<int>>)>
-                 ui_callback) {
-            if (!*text_embedder) {
-              std::move(ui_callback)
-                  .Run(absl::InternalError("TextEmbedder not available"));
-              return;
-            }
-
-            auto result = (*text_embedder)
-                              ->SuggestTabsForGroup(group_tabs, candidate_tabs);
-            std::move(ui_callback).Run(std::move(result));
-          },
-          &text_embedder_, std::move(group_tabs), std::move(candidate_tabs),
-          base::BindPostTaskToCurrentDefault(
-              base::BindOnce(&TabGroupEditorBubbleView::OnTabSuggestionResult,
-                             base::Unretained(this)))));
+  // Use the new async API
+  text_embedder_->SuggestTabsForGroup(
+      std::move(group_tabs), std::move(candidate_tabs),
+      base::BindOnce(&TabGroupEditorBubbleView::OnTabSuggestionResult,
+                     base::Unretained(this)));
 }
 
 void TabGroupEditorBubbleView::OnTabSuggestionResult(
@@ -267,9 +248,9 @@ void TabGroupEditorBubbleView::OnTabSuggestionResult(
 
 void TabGroupEditorBubbleView::CleanupTextEmbedder() {
   if (text_embedder_) {
+    text_embedder_->CancelAllTasks();
     text_embedder_.reset();
   }
-  embedder_task_runner_.reset();
   suggestion_in_progress_ = false;
 }
 
