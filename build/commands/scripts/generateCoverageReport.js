@@ -27,7 +27,7 @@ module.exports = (program) =>
         .filter(x => x.length > 1)
         .map(x => x[0]))
       ]
-      .filter( x => x.includes('brave'))
+      .filter( x => x.includes('brave_browser_tests'))
       .map(x => `${config.outputDir}/${x}`)
       
 
