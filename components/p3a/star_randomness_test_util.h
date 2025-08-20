@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_P3A_STAR_RANDOMNESS_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_P3A_STAR_RANDOMNESS_TEST_UTIL_H_
 
+#include <stdint.h>
+
 #include <string>
 
 #include "brave/components/p3a/metric_log_type.h"
