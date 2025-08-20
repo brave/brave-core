@@ -120,6 +120,10 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;
 
+  // Conversations are not content associated in standalone mode or in
+  // global side panel mode.
+  bool conversations_are_content_associated_ = false;
+
   base::WeakPtrFactory<AIChatUIPageHandler> weak_ptr_factory_{this};
 };
 

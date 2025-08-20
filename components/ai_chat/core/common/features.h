@@ -61,6 +61,12 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsToolsEnabled();
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatAgentProfile);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatAgentProfileEnabled();
 
+// Enables global side panel for any window type (not only agentic)
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatGlobalSidePanelEverywhere);
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+bool IsAIChatGlobalSidePanelEverywhereEnabled();
+
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kCustomSiteDistillerScripts);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsCustomSiteDistillerScriptsEnabled();

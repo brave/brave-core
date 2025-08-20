@@ -68,7 +68,7 @@ void BraveBrowserActions::InitializeBrowserActions() {
     root_action_item_->AddChild(
         SidePanelAction(SidePanelEntryId::kChatUI, IDS_CHAT_UI_TITLE,
                         IDS_CHAT_UI_TITLE, kLeoProductBraveLeoIcon,
-                        kActionSidePanelShowChatUI, bwi, false)
+                        kActionSidePanelShowChatUI, bwi, true)
             .Build());
   }
 }

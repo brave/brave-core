@@ -15,7 +15,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
-#include "base/functional/callback_helpers.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -179,6 +178,17 @@ AIChatUIPageHandler::AIChatUIPageHandler(
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
+
+    // When conversations should not be content associated, we still
+    // keep a reference to the WebContents of the active content, but:
+    // TODO(https://github.com/brave/brave-browser/issues/48524): We probably
+    // want to reference the TabStripModel so that we can offer the user to
+    // attach the current active tab or start a new conversation on active tab
+    // change or navigation.
+    conversations_are_content_associated_ =
+        !profile_->IsAIChatAgent() &&
+        !features::IsAIChatGlobalSidePanelEverywhereEnabled();
+
     associated_content_delegate_observation_.Observe(active_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
@@ -368,7 +378,8 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
 void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  if (!active_chat_tab_helper_) {
+  // For global panel, don't recall conversations by their associated tab
+  if (!active_chat_tab_helper_ || !conversations_are_content_associated_) {
     ConversationHandler* conversation =
         AIChatServiceFactory::GetForBrowserContext(profile_)
             ->CreateConversation();
@@ -421,7 +432,9 @@ void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   ConversationHandler* conversation;
-  if (active_chat_tab_helper_) {
+  // For standalone or global panel, don't recall conversations by their
+  // associated tab.
+  if (active_chat_tab_helper_ && conversations_are_content_associated_) {
     conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
                        ->CreateConversationHandlerForContent(
                            active_chat_tab_helper_->content_id(),
