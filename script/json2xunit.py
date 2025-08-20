@@ -64,10 +64,10 @@ def transform(input_json):
         iteration = pick_iteration(test_case, iterations)
 
         output[test_suite]['test_count'] += 1
-        elapsed_time_ms = int(iteration["elapsed_time_ms"])
-        output[test_suite]['xml'] += (
-            f'<testcase name="{test_case}" '
-            f'time="{0 if elapsed_time_ms == 0 else elapsed_time_ms/100.0}">')
+        elapsed_time_ms = int(
+            iteration["elapsed_time_ms"]) if iteration["elapsed_time_ms"] else 0
+        output[test_suite]['xml'] += (f'<testcase name="{test_case}" '
+                                      f'time="{elapsed_time_ms/100.0}">')
         if iteration['status'] == 'SUCCESS':
             if iteration['output_snippet']:
                 sanitized_output = ''.join(
