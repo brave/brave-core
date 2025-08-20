@@ -1011,6 +1011,7 @@
 -Aiv4ModelLanguageDetectionTest/Aiv4ModelLanguageDetectionBrowserTest.CheckLanguageDetectionHistogramStatus/*
 -Aiv4ModelPredictionServiceBrowserTestBase.Aiv4ModelHandlerDefined
 -Aiv4ModelTest/Aiv4ModelPredictionServiceBrowserTest.*/*
+-Aiv4ModelTimeoutBrowserTest.*
 -All/LoadingPredictorNetworkIsolationKeyBrowserTest.*
 -All/SearchNavigationPrefetchDefaultMatchBrowserTest.NotDefaultMatch/0
 -All/NavigationPredictorSiteIsolationBrowserTest.PageWithSameOriginIframeInCrossOriginIframe/*
@@ -1819,7 +1820,10 @@
 -BreadcrumbManagerTabHelperSecurityStateBrowserTest.BrokenAuthentication
 
 # These fail because we disable history_clusters::internal::kJourneys.
+-HistoryClustersInternalsBrowserTest.*
+-HistoryClustersInternalsDisabledBrowserTest.*
 -HistoryClustersPolicyTest.HistoryClustersVisible
+-HistoryClustersSidePanelCoordinatorBrowserTest.*
 -RenameJourneys/HistoryClustersPolicyTest.HistoryClustersVisible/*
 
 # These fail because we disable history clusters and the tests can't get the
@@ -1839,10 +1843,6 @@
 -All/PageInfoBubbleViewBrowserTestTrackingProtectionSubpage.*
 -PageInfoBubbleViewBrowserTest.InteractedWithCookiesButton
 -PageInfoBubbleViewCookiesSubpageBrowserTest.*
-
-# These tests fail because we disable Journeys via
-# history_clusters::internal::kJourneys
--RenameJourneys/HistoryClustersPolicyTest.HistoryClustersVisible/*
 
 # These tests fail because we disable the
 # privacy_sandbox::kEnforcePrivacySandboxAttestations feature
@@ -2624,8 +2624,6 @@
 -HintsFetcherBrowserTest.*
 -HintsFetcherSearchPageBrowserTest.*
 -HistoryBrowserTest.*
--HistoryClustersInternalsBrowserTest.*
--HistoryClustersInternalsDisabledBrowserTest.*
 -HTMLCSSNoStatePrefetchBrowserTest.*
 -HTMLCSSScriptNoStatePrefetchBrowserTest.*
 -HTMLCSSSyncScriptFontNoStatePrefetchBrowserTest.*
@@ -2666,6 +2664,7 @@
 -IntentChipButtonBrowserTest.*
 -IntentChipButtonSkipIntentPickerBrowserTest.ClickingChipOpensApp
 -IntentChipButtonSkipIntentPickerBrowserTest.ShowsIntentChipCollapsed
+-InteractiveBrowserTestCodeCoverageBrowsertest.TestCoverageEmits/*
 -IsolatedOriginWebViewTest.IsolatedOriginInWebview
 -IsolatedOriginWebViewTest.LoadIsolatedOriginInWebviewAfterLoadingInRegularTab
 -JavascriptFrameworksUkmObserverBrowserTest.*
