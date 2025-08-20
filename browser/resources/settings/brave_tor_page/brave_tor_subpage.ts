@@ -6,17 +6,30 @@
 import './brave_tor_bridges_dialog.js'
 import './brave_tor_snowflake_install_failed_dialog.js'
 
-import type {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
-import type {CrRadioGroupElement} from 'chrome://resources/cr_elements/cr_radio_group/cr_radio_group.js'
-import type {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
-import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import type {
+  CrInputElement
+} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
+
+import type {
+  CrRadioGroupElement
+} from 'chrome://resources/cr_elements/cr_radio_group/cr_radio_group.js'
+
+import type {
+  SettingsToggleButtonElement
+} from '../controls/settings_toggle_button.js'
+
+import {
+  WebUiListenerMixin
+} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {loadTimeData} from '../i18n_setup.js'
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {RouteObserverMixin} from '../router.js'
-
 import type {RequestBridgesDialog} from './brave_tor_bridges_dialog.js'
 
 import {
@@ -169,24 +182,24 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     ]
   }
 
-  private declare loadedConfig_: any
-  private declare useBridges_: number
-  private declare useBridgesValue_: string
-  private declare builtInBridgesTypes_: { name: string, value: number }[]
-  private declare builtinBridges_: number
-  private declare requestedBridges_: string
-  private declare providedBridges_: string
-  private declare isUsingBridgesPref_: chrome.settingsPrivate.PrefObject
-  private declare shouldShowBridgesGroup_: boolean
-  private declare requestedBridgesPlaceholder_: string
-  private declare providedBridgesPlaceholder_: string
-  private declare disableTorOption_: boolean
-  private declare torEnabledPref_: chrome.settingsPrivate.PrefObject
-  private declare torSnowflakeExtensionEnabledPref_: chrome.settingsPrivate.PrefObject
-  private declare torSnowflakeExtensionAllowed_: boolean
-  private declare showRequestBridgesDialog_: boolean
-  private declare isConfigChanged_: boolean
-  private declare showTorSnowflakeInstallFailed_: boolean
+  declare private loadedConfig_: any
+  declare private useBridges_: number
+  declare private useBridgesValue_: string
+  declare private builtInBridgesTypes_: { name: string, value: number }[]
+  declare private builtinBridges_: number
+  declare private requestedBridges_: string
+  declare private providedBridges_: string
+  declare private isUsingBridgesPref_: chrome.settingsPrivate.PrefObject
+  declare private shouldShowBridgesGroup_: boolean
+  declare private requestedBridgesPlaceholder_: string
+  declare private providedBridgesPlaceholder_: string
+  declare private disableTorOption_: boolean
+  declare private torEnabledPref_: chrome.settingsPrivate.PrefObject
+  declare private torSnowflakeExtensionEnabledPref_: chrome.settingsPrivate.PrefObject
+  declare private torSnowflakeExtensionAllowed_: boolean
+  declare private showRequestBridgesDialog_: boolean
+  declare private isConfigChanged_: boolean
+  declare private showTorSnowflakeInstallFailed_: boolean
 
   private browserProxy_: BraveTorBrowserProxy =
     BraveTorBrowserProxyImpl.getInstance()
@@ -262,15 +275,15 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   private computeUseBridgesValue_() {
     switch (this.useBridges_) {
-      case Usage.NOT_USED:
-      default:
-        return ''
       case Usage.USE_BUILT_IN:
         return 'useBuiltIn'
       case Usage.USE_REQUESTED:
         return 'useRequested'
       case Usage.USE_PROVIDED:
         return 'useProvided'
+      case Usage.NOT_USED:
+      default:
+        return ''
     }
   }
 

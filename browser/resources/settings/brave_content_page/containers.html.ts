@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+
 import { html, nothing } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import { SettingsBraveContentContainersElement } from './containers.js'
 import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'

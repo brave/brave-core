@@ -294,6 +294,7 @@ RegisterPolymerTemplateModifications({
         console.error(
           '[Brave Settings Overrides] Couldn\'t find permissionsLinkRow')
       } else {
+        // eslint-disable-next-line no-unsanitized/method
         permissionsLinkRow.insertAdjacentHTML(
           'afterend',
           getTrustedHTML`

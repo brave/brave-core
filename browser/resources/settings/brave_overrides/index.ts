@@ -10,7 +10,6 @@
 // optimized (rollup controls the order in which modules are executed).
 
 import './config.js'
-import '../site_settings/constants.js'
 import './a11y_page.js'
 import './a11y_page_index.js'
 import './all_sites.js'

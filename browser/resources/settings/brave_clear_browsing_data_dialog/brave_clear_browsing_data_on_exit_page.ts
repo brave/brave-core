@@ -5,7 +5,9 @@
 
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {BaseMixin} from '../base_mixin.js'
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {loadTimeData} from '../i18n_setup.js'
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
@@ -70,7 +72,7 @@ extends SettingsBraveClearBrowsingDataOnExitPageElementBase {
 
   public isModified_: boolean
 
-  private counters: {[k: string]: string} = {}
+  private counters: { [k: string]: string } = {}
   private isChildAccount_: boolean
   private isAIChatAndHistoryAllowed_: boolean
 
@@ -85,7 +87,7 @@ extends SettingsBraveClearBrowsingDataOnExitPageElementBase {
   }
 
   public getChangedSettings() {
-    let changed: Array<{key: string, value: boolean}> = []
+    let changed: Array<{ key: string, value: boolean }> = []
     const boxes = this.$.checkboxes.querySelectorAll('settings-checkbox')
     boxes.forEach((checkbox) => {
       if (checkbox.checked !== this.get(checkbox.pref!.key, this.prefs).value) {

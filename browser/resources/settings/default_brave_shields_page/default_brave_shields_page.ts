@@ -6,16 +6,22 @@
 import './brave_adblock_subpage.js'
 import '//resources/cr_elements/md_select.css.js'
 
-import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  PolymerElement
+} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {
+  WebUiListenerMixin
+} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 
 import {loadTimeData} from '../i18n_setup.js'
-import { Router} from '../router.js'
-import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
+import {Router} from '../router.js'
+import {
+  SettingsToggleButtonElement
+} from '../controls/settings_toggle_button.js'
 
-import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js';
+import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js'
 
 import {
   DefaultBraveShieldsBrowserProxy,
@@ -168,21 +174,35 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   private declare adControlTypes_: ControlType[]
+
   private declare adControlType_: 'allow' | 'block' | 'block_third_party'
+
   private declare isAdBlockRoute_: boolean
+
   private declare cookieControlTypes_: ControlType[]
+
   private declare cookieControlType_: string
+
   private declare httpsUpgradeControlType_: string
+
   private declare isForgetFirstPartyStorageEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
+
   private declare isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+
   private declare isContactInfoSaveFlagEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
+
   private declare fingerprintingControlTypes_: ControlType[]
+
   private declare fingerprintingControlType_: string
+
   private declare httpsUpgradeControlTypes_: ControlType[]
+
   private declare isHttpsByDefaultEnabled_: boolean
+
   private declare showStrictFingerprintingMode_: boolean
+
   private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
@@ -200,7 +220,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   override getAssociatedControlFor(childViewId: string): HTMLElement {
     switch (childViewId) {
       case 'adblock':
-        return this.shadowRoot!.querySelector('#contentFiltersRow')!;
+        return this.shadowRoot!.querySelector('#contentFiltersRow')!
       default:
         throw new Error(`Unknown child view id: ${childViewId}`)
     }

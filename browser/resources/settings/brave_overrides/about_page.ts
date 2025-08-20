@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  html
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {
   RegisterPolymerTemplateModifications,
@@ -23,7 +25,7 @@ RegisterStyleOverride(
 )
 
 const extractVersions = (versionElement: Element) => {
-  const [ _, braveVersion, chromiumVersion, build ] = versionElement
+  const [ , braveVersion, chromiumVersion, build ] = versionElement
     .textContent?.match(/(\d+\.\d+(?:\.\d+)*)\D+(\d+\.\d+(?:\.\d+)*)(.*)/) ?? []
 
   return { braveVersion, build, chromiumVersion }
@@ -75,7 +77,8 @@ RegisterPolymerTemplateModifications({
       const braveVersionLink = buildBraveVersionLink(braveVersion, build)
       version.parentNode?.replaceChild(braveVersionLink, version)
 
-      const chromiumVersionElement = buildChromiumVersionElement(chromiumVersion)
+      const chromiumVersionElement =
+        buildChromiumVersionElement(chromiumVersion)
       braveVersionLink.after(chromiumVersionElement)
     }
 

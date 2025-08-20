@@ -8,13 +8,14 @@ import '//resources/mojo/skia/public/mojom/skcolor.mojom-webui.js'
 
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { assert } from '//resources/js/assert.js'
-import { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import {
-  CrLitElement,
-  PropertyValues,
-} from 'chrome://resources/lit/v3_0/lit.rollup.js'
+  CrInputElement
+} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
+import { CrLitElement } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 
-import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
+import {
+  ContainersStrings
+} from '../brave_generated_resources_webui_strings.js'
 import {
   Container,
   ContainerOperationError,
@@ -25,7 +26,9 @@ import backgroundColors from './background_colors.js'
 import { getCss } from './containers.css.js'
 import { getHtml } from './containers.html.js'
 import type { ColorSelectedEvent } from './containers_background_chip.js'
-import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
+import {
+  ContainersSettingsHandlerBrowserProxy
+} from './containers_browser_proxy.js'
 import type { IconSelectedEvent } from './containers_icon.js'
 
 const SettingsBraveContentContainersElementBase = I18nMixinLit(CrLitElement)
@@ -33,7 +36,8 @@ const SettingsBraveContentContainersElementBase = I18nMixinLit(CrLitElement)
 /**
  * 'settings-brave-content-containers' is the settings page containing settings for Containers
  */
-export class SettingsBraveContentContainersElement extends SettingsBraveContentContainersElementBase {
+export class SettingsBraveContentContainersElement
+extends SettingsBraveContentContainersElementBase {
   static get is() {
     return 'settings-brave-content-containers'
   }
@@ -102,6 +106,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   onEditContainerClick_(e: Event) {
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     const id = (e.currentTarget as HTMLElement).dataset['id']
     assert(id)
     this.editingContainer_ = this.containersList_.find((c) => c.id === id)
@@ -109,6 +114,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   onDeleteContainerClick_(e: Event) {
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     const id = (e.currentTarget as HTMLElement).dataset['id']
     assert(id)
     this.deletingContainer_ = this.containersList_.find((c) => c.id === id)
