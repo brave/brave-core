@@ -7,7 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query'
 import ProgressRingReact from '@brave/leo/react/progressRing'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
-import ControlItem from '@brave/leo/react/controlItem'
+import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
 
 // redux
 import { useDispatch, useSelector } from 'react-redux'
@@ -191,12 +191,12 @@ export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
             }}
           >
             {zcashAddressOptions.map((option) => (
-              <ControlItem
+              <SegmentedControlItem
                 key={option.addressType}
                 value={option.addressType}
               >
                 {getLocale(option.label)}
-              </ControlItem>
+              </SegmentedControlItem>
             ))}
           </SegmentedControl>
         </ControlsWrapper>

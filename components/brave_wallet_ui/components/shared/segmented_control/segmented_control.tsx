@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import ControlItem from '@brave/leo/react/controlItem'
+import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
 
 // Types
 import { NavOption } from '../../../constants/types'
@@ -50,12 +50,12 @@ export const SegmentedControl = ({ navOptions, maxWidth }: Props) => {
         }}
       >
         {navOptions.map((option) => (
-          <ControlItem
+          <SegmentedControlItem
             key={option.name}
             value={option.route}
           >
             <ControlItemWrapper>{getLocale(option.name)}</ControlItemWrapper>
-          </ControlItem>
+          </SegmentedControlItem>
         ))}
       </StyledSegmentedControl>
     </StyledWrapper>
