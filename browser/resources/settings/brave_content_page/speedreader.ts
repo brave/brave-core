@@ -24,6 +24,12 @@ class SettingsBraveContentSpeedreaderElement extends SpeedreaderBase {
   static get template () {
     return getTemplate()
   }
+
+  private isSpeedreaderFeatureManaged_(
+      pref: chrome.settingsPrivate.PrefObject): boolean {
+    return pref &&
+        pref.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED;
+  }
 }
 
 customElements.define(SettingsBraveContentSpeedreaderElement.is, SettingsBraveContentSpeedreaderElement)

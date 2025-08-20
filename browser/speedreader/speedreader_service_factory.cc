@@ -52,10 +52,6 @@ SpeedreaderServiceFactory::BuildServiceInstanceForBrowserContext(
     return {};
   }
 
-  // Don't create service if disabled by policy
-  if (speedreader::IsDisabledByPolicy(user_prefs::UserPrefs::Get(context))) {
-    return {};
-  }
 
   return std::make_unique<SpeedreaderService>(
       context, g_browser_process->local_state(),
