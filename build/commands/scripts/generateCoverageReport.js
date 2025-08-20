@@ -26,8 +26,8 @@ module.exports = (program) =>
         .map(x => x.split('/'))
         .filter(x => x.length > 1)
         .map(x => x[0]))
-      ]
-      .filter( x => x.includes('brave_browser_tests'))
+      ] // seems like some binaries cause the html report to fail but not the json export?!
+      .filter( x => x.includes('brave_browser_tests') || x.includes('brave_unit_tests') )
       .map(x => `${config.outputDir}/${x}`)
       
 
@@ -61,7 +61,7 @@ module.exports = (program) =>
 
       try {
         const summary = JSON.parse(output);
-        await writeJSON(`${out}/coverage.json`, output);
+        await writeJSON(`${out}/report/coverage.json`, output);
         console.log(summary.data[0].totals);
       } catch (e) {
         console.error(e)

@@ -21,9 +21,7 @@ process.setMaxListeners(0)
 
 async function generateInstrumentationFile(instrumentationFile='../out/files-to-instrument.txt', folders = ['base', 'browser', 'components', 'common', 'chromium_src']) {
   const folderList = folders.join(',');
-  const files = await Array.fromAsync(glob(`{${folderList}}/**/*.{cc,c,h,cpp,hpp}`, {
-    ignore: ['**/*test*'] // we don't care about code coverage of test files
-  }));
+  const files = await Array.fromAsync(glob(`**/*.{cc,c,h,cpp,hpp}`));
 
   const paths = files.map(x => `../../brave/${x}`)  
   await writeFile(`${instrumentationFile}`, paths.join('\n'), 'utf-8');
