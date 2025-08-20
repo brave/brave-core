@@ -6,7 +6,6 @@
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 
 #include <algorithm>
-#include <cctype>
 #include <optional>
 
 #include "base/logging.h"
@@ -27,25 +26,23 @@ namespace {
 constexpr size_t kMaxSearchEngineRefLength = 8;
 constexpr size_t kMaxQueryLength = 120;
 constexpr size_t kMaxQueryLengthWithLogograms = 50;
-constexpr size_t kMaxQueryNumberLength = 7;
 constexpr size_t kMinQueryWordsForCheck = 9;
 constexpr size_t kMaxLongWords = 16;
 constexpr size_t kMinLongWordLength = 4;
 constexpr size_t kMaxWordLength = 45;
 constexpr size_t kMinWordLengthForEuroCheck = 20;
 
-constexpr size_t kMinNumberLength = 3;
+constexpr size_t kMinNumberLengthToCheck = 3;
+constexpr size_t kMaxNumberLength = 7;
 
 constexpr size_t kMaxQueryStringLength = 30;
 constexpr size_t kMaxQueryStringParts = 4;
-constexpr size_t kMaxQueryStringOrPathNumberLength = 12;
 constexpr size_t kMaxPathPartLength = 18;
 constexpr size_t kMinPathPartHashCheckLength = 13;
 constexpr size_t kMinSegmentHashCheckLength = 16;
 
 constexpr size_t kMaxDotSplitDomainSize = 6;
 constexpr size_t kMaxHyphenSplitDomainSize = 4;
-constexpr size_t kMaxDomainNumberLength = 5;
 
 constexpr char kDefaultSearchPrefix[] = "search?q=";
 
@@ -155,15 +152,13 @@ bool IsValidEAN13(std::string_view ean) {
 }
 
 std::optional<std::string> FindValidISSN(std::string_view str) {
-  re2::StringPiece input(str);
   std::string issn_candidate;
 
   // Loop through all ISSN candidates until we find one with valid checksum
-  while (
-      RegexUtil::GetInstance()->FindAndConsumeISSN(&input, &issn_candidate)) {
+  while (RegexUtil::GetInstance()->FindAndConsumeISSN(str, &issn_candidate)) {
     // Validate checksum
     int checksum = 0;
-    int position = 0;  // Zero-based position in the 8-digit sequence
+    size_t position = 0;
 
     for (char c : issn_candidate) {
       if (c == '-') {
@@ -176,8 +171,8 @@ std::optional<std::string> FindValidISSN(std::string_view str) {
         break;  // We're done once we process the check digit
       } else {
         checksum += (c - '0') * (8 - position);
-        position++;
       }
+      position++;
     }
 
     if (checksum % 11 == 0) {
@@ -188,40 +183,27 @@ std::optional<std::string> FindValidISSN(std::string_view str) {
   return std::nullopt;  // No valid ISSN found
 }
 
-bool HasLongNumber(std::string str, size_t max_length) {
+bool HasLongNumber(std::string str) {
   // Find and remove valid ISSN (as per reference implementation)
   auto valid_issn = FindValidISSN(str);
   if (valid_issn) {
     size_t pos = str.find(*valid_issn);
     if (pos != std::string::npos) {
-      str.replace(pos, valid_issn->length(),
-                  std::string(valid_issn->length(), ' '));
+      str.replace(pos, valid_issn->length(), " ");
     }
   }
 
-  // Extract digit sequences from the full string, ignoring non-alphanumeric
-  // characters
+  // Extract digit sequences using regex to find number fragments
   std::vector<std::string> numbers;
-  std::string current_number;
+  std::string digits_only;
 
-  for (char c : str) {
-    if (std::isdigit(c)) {
-      current_number += c;
-    } else if (!std::isalnum(c)) {
-      // Ignore non-alphanumeric characters
-      continue;
-    } else {
-      // Hit a non-digit alphanumeric (letter), treat this like a delimiter
-      if (current_number.length() >= kMinNumberLength) {
-        numbers.push_back(current_number);
-      }
-      current_number.clear();
+  while (RegexUtil::GetInstance()->FindAndConsumeNumberFragment(str,
+                                                                &digits_only)) {
+    // Add to numbers if long enough (filtering already done in
+    // FindAndConsumeNumberFragment)
+    if (digits_only.length() >= kMinNumberLengthToCheck) {
+      numbers.push_back(digits_only);
     }
-  }
-
-  // Don't forget the last number if string ends with digits
-  if (current_number.length() >= kMinNumberLength) {
-    numbers.push_back(current_number);
   }
 
   // Special handling for single 13-digit number (EAN-13 check)
@@ -230,13 +212,8 @@ bool HasLongNumber(std::string str, size_t max_length) {
   }
 
   // Check if any number exceeds max_length
-  for (const auto& num : numbers) {
-    if (num.length() > max_length) {
-      return true;
-    }
-  }
-
-  return false;
+  return std::ranges::any_of(
+      numbers, [](const auto& num) { return num.length() > kMaxNumberLength; });
 }
 
 bool IsPrivateDomainLikely(std::string_view host) {
@@ -244,9 +221,6 @@ bool IsPrivateDomainLikely(std::string_view host) {
       base::SplitString(host, ".", base::WhitespaceHandling::KEEP_WHITESPACE,
                         base::SPLIT_WANT_ALL);
   if (dot_split.size() > kMaxDotSplitDomainSize) {
-    return true;
-  }
-  if (HasLongNumber(std::string(host), kMaxDomainNumberLength)) {
     return true;
   }
   auto hyphen_split =
@@ -322,7 +296,7 @@ bool IsPrivateQueryLikely(const std::string& query) {
     return true;
   }
 
-  if (HasLongNumber(normalized_query, kMaxQueryNumberLength)) {
+  if (HasLongNumber(normalized_query)) {
     VLOG(1) << "Ignoring query due to long number";
     return true;
   }
@@ -364,16 +338,6 @@ bool ShouldMaskURL(const GURL& url, bool relaxed) {
         url.query_piece(), "&;", base::WhitespaceHandling::KEEP_WHITESPACE,
         base::SplitResult::SPLIT_WANT_ALL);
     if (query_parts.size() > kMaxQueryStringParts) {
-      return true;
-    }
-    if (HasLongNumber(std::string(url.query_piece()),
-                      kMaxQueryStringOrPathNumberLength)) {
-      return true;
-    }
-  }
-  if (!url.path_piece().empty()) {
-    if (HasLongNumber(std::string(url.path_piece()),
-                      kMaxQueryStringOrPathNumberLength)) {
       return true;
     }
   }

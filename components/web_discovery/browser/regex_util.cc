@@ -20,6 +20,8 @@ constexpr char kHttpPasswordRegex[] = "[^:]+:[^@]+@";
 constexpr char kEuroLongWordPatternRegex[] = "^[a-zA-ZäöüéÄÖÜ][a-zäöüéß]+$";
 constexpr char kWhitespaceRegex[] = "\\s+";
 constexpr char kISSNRegex[] = "^[0-9]{4}-?[0-9]{3}[0-9xX]$";
+constexpr char kNumberFragmentRegex[] = "[^\\p{L}\\s]+";
+constexpr char kNonDigitRegex[] = "[^0-9]";
 
 constexpr std::array<std::string_view, 10> kPathAndQueryStringCheckRegexes = {
     "(?i)\\/admin([\\/\\?#=]|$)",
@@ -127,12 +129,31 @@ std::string RegexUtil::NormalizeWhitespace(std::string_view str) {
   return result;
 }
 
-bool RegexUtil::FindAndConsumeISSN(re2::StringPiece* input,
-                                   std::string* match) {
+bool RegexUtil::FindAndConsumeISSN(std::string_view input, std::string* match) {
   if (!issn_regex_) {
     issn_regex_.emplace(kISSNRegex);
   }
-  return re2::RE2::FindAndConsume(input, *issn_regex_, match);
+  return re2::RE2::FindAndConsume(&input, *issn_regex_, match);
+}
+
+bool RegexUtil::FindAndConsumeNumberFragment(std::string_view input,
+                                             std::string* match) {
+  if (!number_fragment_regex_) {
+    number_fragment_regex_.emplace(kNumberFragmentRegex);
+  }
+  if (!non_digit_regex_) {
+    non_digit_regex_.emplace(kNonDigitRegex);
+  }
+
+  std::string raw_fragment;
+  if (!re2::RE2::FindAndConsume(&input, *number_fragment_regex_,
+                                &raw_fragment)) {
+    return false;
+  }
+  // Filter out non-digit characters using GlobalReplace
+  *match = raw_fragment;
+  re2::RE2::GlobalReplace(match, *non_digit_regex_, "");
+  return true;
 }
 
 }  // namespace web_discovery

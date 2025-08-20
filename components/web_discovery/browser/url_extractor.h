@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/web_discovery/browser/relevant_site.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"

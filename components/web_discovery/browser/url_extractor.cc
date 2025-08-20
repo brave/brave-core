@@ -142,7 +142,8 @@ std::optional<URLExtractResult> URLExtractor::IdentifyURL(
 
   for (const auto& details : site_details_) {
     if (re2::RE2::PartialMatch(url.spec(), *details.regex)) {
-      return URLExtractResult(&details, ExtractQuery(url, details));
+      return std::make_optional<URLExtractResult>(&details,
+                                                  ExtractQuery(url, details));
     }
   }
 
