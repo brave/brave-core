@@ -612,6 +612,7 @@ source_set("ui") {
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",
+      "//chrome/browser/sharing_hub",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/javascript_dialogs",
