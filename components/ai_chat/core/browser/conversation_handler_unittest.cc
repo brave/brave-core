@@ -1875,6 +1875,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
              const std::string& selected_language, bool is_temporary_chat,
              const std::vector<base::WeakPtr<Tool>>& tools,
              std::optional<std::string_view> preferred_tool_name,
+             mojom::ConversationCapability conversation_capability,
              EngineConsumer::GenerationDataCallback callback,
              EngineConsumer::GenerationCompletedCallback done_callback) {
             std::move(done_callback)
@@ -2620,7 +2621,7 @@ TEST_F(ConversationHandlerUnitTest,
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
                                                  "{\"location\":\"New York\"}",
-                                                 std::nullopt)),
+                                                 std::nullopt, false)),
                     std::nullopt));
               }),
           testing::WithArg<7>(

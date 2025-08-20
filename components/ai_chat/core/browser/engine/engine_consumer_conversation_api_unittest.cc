@@ -243,7 +243,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -363,7 +363,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -427,7 +427,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       });
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -485,7 +485,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
   response_events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
-          std::move(tool_output_content_blocks))));
+          std::move(tool_output_content_blocks), false)));
 
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
@@ -543,7 +543,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
       });
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -570,7 +571,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
   response_events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_temperature", "call_123", "{\"location\":\"Santa Barbara\"}",
-          std::move(temperature_tool_output_content_blocks))));
+          std::move(temperature_tool_output_content_blocks), false)));
 
   std::vector<mojom::ContentBlockPtr> wind_tool_output_content_blocks;
   wind_tool_output_content_blocks.push_back(
@@ -579,7 +580,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
   response_events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_wind", "call_1234", "{\"location\":\"Santa Barbara\"}",
-          std::move(wind_tool_output_content_blocks))));
+          std::move(wind_tool_output_content_blocks), false)));
 
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
@@ -657,7 +658,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
       });
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -837,7 +839,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -902,7 +905,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
       });
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -987,7 +991,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
       });
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1029,7 +1033,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   PageContent page_content("This is a sample page content.", false);
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1093,6 +1097,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
+                                     mojom::ConversationCapability::CHAT,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -2439,7 +2444,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   auto history = CreateSampleChatHistory(2);
 
   engine_->GenerateAssistantResponse(
-      {}, std::move(history), "", false, {}, std::nullopt, base::DoNothing(),
+      {}, std::move(history), "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2536,7 +2542,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
     mock_engine_consumer->GenerateAssistantResponse(
         {{{"turn-1", {page_content_1, page_content_2}}}}, history, "", false,
-        {}, std::nullopt, base::DoNothing(), base::DoNothing());
+        {}, std::nullopt, mojom::ConversationCapability::CHAT,
+        base::DoNothing(), base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 

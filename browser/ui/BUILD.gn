@@ -1083,6 +1083,7 @@ source_set("ui") {
       "//brave/components/version_info",
       "//chrome/app:branded_strings",
       "//chrome/browser/ui/tabs:tab_enums",
+      "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/webui/top_chrome",
       "//components/input",
       "//components/sync_device_info",

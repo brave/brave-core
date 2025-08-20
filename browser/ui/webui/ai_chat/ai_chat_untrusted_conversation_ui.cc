@@ -24,10 +24,13 @@
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/thumbnails/thumbnail_tracker.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/util/image_util.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
@@ -55,7 +58,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
  public:
   UIHandler(content::WebUI* web_ui,
             mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver)
-      : web_ui_(web_ui), receiver_(this, std::move(receiver)) {}
+      : web_ui_(web_ui),
+        receiver_(this, std::move(receiver)),
+        thumbnail_tracker_(base::BindRepeating(&UIHandler::ThumbnailUpdated,
+                                               base::Unretained(this))) {}
   UIHandler(const UIHandler&) = delete;
   UIHandler& operator=(const UIHandler&) = delete;
 
@@ -85,6 +91,42 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       return;
     }
     OpenURL(url);
+  }
+
+  void AddTabToThumbnailTracker(int32_t tab_id) override {
+#if !BUILDFLAG(IS_ANDROID)
+    auto* tab_handle = tabs::TabHandle(tab_id).Get();
+    if (!tab_handle) {
+      DLOG(ERROR) << "Failed to get tab handle for tab id: " << tab_id;
+      return;
+    }
+    auto* contents = tab_handle->GetContents();
+    if (!contents) {
+      DLOG(ERROR) << "Failed to get contents for tab id: " << tab_id;
+      return;
+    }
+    thumbnail_tracker_.AddTab(contents);
+#endif
+  }
+
+  void RemoveTabFromThumbnailTracker(int32_t tab_id) override {
+#if !BUILDFLAG(IS_ANDROID)
+    auto* tab_handle = tabs::TabHandle(tab_id).Get();
+    if (!tab_handle) {
+      DLOG(ERROR) << "Failed to get tab handle for tab id: " << tab_id;
+      return;
+    }
+    auto* contents = tab_handle->GetContents();
+    if (!contents) {
+      DLOG(ERROR) << "Failed to get contents for tab id: " << tab_id;
+      return;
+    }
+    thumbnail_tracker_.RemoveTab(contents);
+#endif
+  }
+
+  void BindUI(mojo::PendingRemote<ai_chat::mojom::UntrustedUI> ui) override {
+    ui_.Bind(std::move(ui));
   }
 
   void BindParentPage(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
@@ -126,8 +168,29 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 #endif
   }
 
+#if !BUILDFLAG(IS_ANDROID)
+  void ThumbnailUpdated(content::WebContents* contents,
+                        ThumbnailTracker::CompressedThumbnailData image) {
+    if (!image) {
+      return;
+    }
+    auto tab_id =
+        tabs::TabInterface::GetFromContents(contents)->GetHandle().raw_value();
+    std::string data_uri;
+    data_uri = webui::MakeDataURIForImage(base::span(image->data), "jpeg");
+    LOG(ERROR) << "ThumbnailUpdated: " << data_uri;
+    ui_->ThumbnailUpdated(tab_id, data_uri);
+  }
+#endif
+
   raw_ptr<content::WebUI> web_ui_ = nullptr;
   mojo::Receiver<ai_chat::mojom::UntrustedUIHandler> receiver_;
+  mojo::Remote<ai_chat::mojom::UntrustedUI> ui_;
+
+// Match //chrome/browser/ui/thumbnails guard
+#if !BUILDFLAG(IS_ANDROID)
+  ThumbnailTracker thumbnail_tracker_;
+#endif
 };
 
 }  // namespace
@@ -176,7 +239,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src 'self' blob: chrome-untrusted://resources "
+      "img-src 'self' blob: data: chrome-untrusted://resources "
       "chrome-untrusted://image chrome-untrusted://favicon2;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,

@@ -43,6 +43,13 @@ interface ParentUIFrame {
   RegenerateAnswerMenuIsOpen(bool is_open);
 };
 
+// UI-side handler for messages from the browser WebUI
+interface UntrustedUI {
+  // Called with a new thumbnail for the tab only if the tab_id is added to the
+  // thumbnail tracker via AddTabToThumbnailTracker.
+  ThumbnailUpdated(int32 tab_id, string data_uri);
+};
+
 // Browser-side handler for untrusted frame that handles rendering of
 // conversation entries.
 interface UntrustedUIHandler {
@@ -55,5 +62,13 @@ interface UntrustedUIHandler {
   // response. Could be any http/https destination.
   OpenURLFromResponse(url.mojom.Url url);
 
+  // Registers a tab to receive thumbnail updates for. Also immediately requests
+  // the current thumbnail.
+  AddTabToThumbnailTracker(int32 tab_id);
+  // Always call RemoveTabFromThumbnailTracker when it's no longer needed in the
+  // UI.
+  RemoveTabFromThumbnailTracker(int32 tab_id);
+
+  BindUI(pending_remote<UntrustedUI> ui);
   BindParentPage(pending_receiver<ParentUIFrame> parent_frame);
 };

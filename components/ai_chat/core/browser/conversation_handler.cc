@@ -121,6 +121,22 @@ ConversationHandler::ConversationHandler(
       credential_manager_(credential_manager),
       feedback_api_(feedback_api),
       url_loader_factory_(url_loader_factory) {
+  // TODO(petemill): This is temporary whilst content agent conversations are
+  // 1) not toggleable by the user and
+  // 2) only for specific profiles
+  // When this is toggleable by the user, we should have some client function
+  // that changes the conversation capability.
+  // And when this is not global to a Profile, we should not have the service
+  // make the determination.
+  if (ai_chat_service_->GetIsContentAgentAllowed()) {
+    conversation_capability_ = mojom::ConversationCapability::CONTENT_AGENT;
+  }
+
+  // Observe tool providers
+  for (const auto& tool_provider : tool_providers_) {
+    tool_provider->AddObserver(this);
+  }
+
   // When a client disconnects, let observers know
   receivers_.set_disconnect_handler(
       base::BindRepeating(&ConversationHandler::OnClientConnectionChanged,
@@ -152,6 +168,9 @@ ConversationHandler::ConversationHandler(
 
 ConversationHandler::~ConversationHandler() {
   OnConversationDeleted();
+  for (const auto& tool_provider : tool_providers_) {
+    tool_provider->RemoveObserver(this);
+  }
 }
 
 void ConversationHandler::AddObserver(Observer* observer) {
@@ -1035,13 +1054,8 @@ void ConversationHandler::AddToConversationHistory(
 }
 
 void ConversationHandler::InitToolsForNewGenerationLoop() {
-  // TODO(https://github.com/brave/brave-browser/issues/48535): This is the
-  // main place to create stateful tools that this Conversation creates.
-
-  // We can also reset any already-created tools that don't want state to
+  // We can reset any already-created tools that don't want state to
   // survive between loops (i.e. when a new user message is received).
-
-  // Tool providers may want to do the same
   for (auto& tool_provider : tool_providers_) {
     tool_provider->OnNewGenerationLoop();
   }
@@ -1082,7 +1096,7 @@ void ConversationHandler::PerformAssistantGeneration() {
   engine_->GenerateAssistantResponse(
       associated_content_manager_->GetCachedContentsMap(), chat_history_,
       selected_language_, IsTemporaryChat(), GetTools(),
-      std::nullopt /* preferred_tool_name */,
+      std::nullopt /* preferred_tool_name */, conversation_capability_,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1493,6 +1507,12 @@ void ConversationHandler::OnModelRemoved(const std::string& removed_key) {
   InitEngine();
 }
 
+void ConversationHandler::OnContentTaskStarted(tabs::TabHandle tab_handle) {
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->ContentTaskStarted(tab_handle.raw_value());
+  }
+}
+
 void ConversationHandler::OnModelDataChanged() {
   const std::vector<mojom::ModelPtr>& models = model_service_->GetModels();
 
@@ -1626,6 +1646,7 @@ ConversationHandler::GetStateForConversationEntries() {
       (ai_chat_service_->IsPremiumStatus() || !is_leo_model ||
        model.options->get_leo_model_options()->access !=
            mojom::ModelAccess::PREMIUM);
+  entries_state->conversation_capability = conversation_capability_;
   return entries_state;
 }
 
@@ -1701,15 +1722,13 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
 
   // Filter tools not supported
   auto& model = GetCurrentModel();
-  tools.erase(
-      std::remove_if(
-          tools.begin(), tools.end(),
-          [&](auto& tool) {
-            return (!tool->IsSupportedByModel(model) ||
-                    (tool->IsContentAssociationRequired() &&
-                     !associated_content_manager_->HasAssociatedContent()));
-          }),
-      tools.end());
+  tools.erase(std::remove_if(tools.begin(), tools.end(),
+                             [&](auto& tool) {
+                               return (!tool->IsSupportedByModel(model) ||
+                                       !tool->SupportsConversationCapability(
+                                           conversation_capability_));
+                             }),
+              tools.end());
 
   return tools;
 }
