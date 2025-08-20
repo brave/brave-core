@@ -99,10 +99,10 @@ void ContentSettingsRegistry::BraveInit() {
 
   Register(
       ContentSettingsType::BRAVE_COOKIES, brave_shields::kCookies,
-      CONTENT_SETTING_DEFAULT, WebsiteSettingsInfo::SYNCABLE,
+      CONTENT_SETTING_ALLOW, WebsiteSettingsInfo::SYNCABLE,
       /*allowlisted_schemes=*/{kChromeUIScheme, kChromeDevToolsScheme},
       /*valid_settings=*/
-      {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_DEFAULT},
+      {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
       WebsiteSettingsInfo::REQUESTING_ORIGIN_WITH_TOP_ORIGIN_EXCEPTIONS_SCOPE,
       WebsiteSettingsRegistry::DESKTOP |
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
