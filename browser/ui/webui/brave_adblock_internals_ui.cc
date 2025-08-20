@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/byte_count.h"
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
@@ -96,7 +97,7 @@ class BraveAdblockInternalsMessageHandler
       if (value) {
         mem_info.Set(
             std::string(metric.dump_name) + "/" + metric.metric + "_kb",
-            base::NumberToString(*value / 1024));
+            base::NumberToString(base::ByteCount(*value).InKiB()));
       }
     }
 

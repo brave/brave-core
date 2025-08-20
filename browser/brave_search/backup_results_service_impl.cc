@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/byte_count.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -57,7 +58,7 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
       }
     )");
 
-constexpr size_t kMaxResponseSize = 5 * 1024 * 1024;
+constexpr base::ByteCount kMaxResponseSize = base::MiB(5);
 constexpr base::TimeDelta kTimeout = base::Seconds(5);
 
 class BackupResultsWebContentsObserver
@@ -291,7 +292,7 @@ void BackupResultsServiceImpl::MakeSimpleURLLoaderRequest(
       pending_request->shared_url_loader_factory.get(),
       base::BindOnce(&BackupResultsServiceImpl::HandleURLLoaderResponse,
                      base::Unretained(this), pending_request),
-      kMaxResponseSize);
+      kMaxResponseSize.InBytes());
 }
 
 void BackupResultsServiceImpl::HandleURLLoaderResponse(
