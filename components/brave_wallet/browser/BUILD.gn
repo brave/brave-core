@@ -832,6 +832,7 @@ source_set("unit_tests") {
   }
 
   data = [
+    "//brave/components/test/data/brave_wallet",
     # Test vectors for
     # BitcoinSerializer.AddressToScriptPubkey_BitcoinCoreTestVectors test.
     "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json",
