@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
-index 4a716046a0cf0b8c3dd2a1ec107a4bf5673c2666..145579eabb5203b631b59d9d1c451fe773c49c50 100644
+index b60cf718bf1b9e4269e376989f14a962a1def1f7..d6c8055241f8a1283b022602e41ab9b8a1e3ea23 100644
 --- a/chrome/browser/resources/settings/route.ts
 +++ b/chrome/browser/resources/settings/route.ts
 @@ -9,6 +9,7 @@ import {pageVisibility} from './page_visibility.js';
@@ -18,3 +18,12 @@ index 4a716046a0cf0b8c3dd2a1ec107a4bf5673c2666..145579eabb5203b631b59d9d1c451fe7
    return r as unknown as SettingsRoutes;
  }
  
+@@ -381,7 +383,7 @@ export let routes: SettingsRoutes = Router.getInstance().getRoutes();
+ // Returns the "effective" route when at chrome://settings/.
+ export function getTopLevelRoute(): Route {
+   if (!loadTimeData.getBoolean('isGuest')) {
+-    return routes.PEOPLE;
++    return routes.GET_STARTED;
+   }
+ 
+   let guestTopLevelRoute = routes.SEARCH;
