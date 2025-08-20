@@ -1900,8 +1900,8 @@ public class BytecodeTest {
 
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/ui/system/StatusBarColorController",
-                        "org/chromium/chrome/browser/ui/system/BraveStatusBarColorController",
+                        "org/chromium/chrome/browser/ui/system/StatusBarColorController", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/ui/system/BraveStatusBarColorController", // presubmit: ignore-long-line
                         Window.class,
                         boolean.class,
                         Context.class,
@@ -1912,7 +1912,8 @@ public class BytecodeTest {
                         TopUiThemeColorProvider.class,
                         EdgeToEdgeSystemBarColorHelper.class,
                         OneshotSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment", // presubmit: ignore-long-line
