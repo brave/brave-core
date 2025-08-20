@@ -20,14 +20,13 @@ namespace location_bar_model {
 
 const gfx::VectorIcon& GetSecurityVectorIcon(
     security_state::SecurityLevel security_level,
-    security_state::MaliciousContentStatus malicious_content_status) {
+    security_state::VisibleSecurityState* visible_security_state) {
 #if (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_VR)) && !BUILDFLAG(IS_IOS)
   if (security_level == security_state::SECURE) {
     return kLeoTuneSmallIcon;
   }
 #endif
-  return GetSecurityVectorIcon_Chromium(security_level,
-                                        malicious_content_status);
+  return GetSecurityVectorIcon_Chromium(security_level, visible_security_state);
 }
 
 }  // namespace location_bar_model
