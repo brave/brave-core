@@ -59,13 +59,18 @@ class TextEmbedder {
   using InitializeCallback = base::OnceCallback<void(bool)>;
   virtual void Initialize(InitializeCallback callback);
 
-  absl::StatusOr<std::vector<int>> SuggestTabsForGroup(
-      std::vector<std::pair<int, std::string>> group_tabs,
-      std::vector<std::pair<int, std::string>> candidate_tabs);
+  using SuggestTabsForGroupCallback =
+      base::OnceCallback<void(absl::StatusOr<std::vector<int>>)>;
+  void SuggestTabsForGroup(
+      std::vector<std::string> group_tabs,
+      std::vector<std::pair<int, std::string>> candidate_tabs,
+      SuggestTabsForGroupCallback callback);
 
-  absl::StatusOr<int> SuggestGroupForTab(
-      std::pair<int, std::string> candidate_tab,
-      std::vector<std::vector<std::pair<int, std::string>>> group_tabs);
+  using SuggestGroupForTabCallback =
+      base::OnceCallback<void(absl::StatusOr<int>)>;
+  void SuggestGroupForTab(std::pair<int, std::string> candidate_tab,
+                          std::vector<std::vector<std::string>> group_tabs,
+                          SuggestGroupForTabCallback callback);
 
   // Cancel all the pending tflite tasks on the embedder task runner.
   // Should be used right before the TextEmbedder is destroyed to avoid long
@@ -81,6 +86,15 @@ class TextEmbedder {
   friend class TextEmbedderUnitTest;
 
   void InitializeEmbedder(base::OnceCallback<void(bool)> callback);
+
+  void SuggestTabsForGroupImpl(
+      std::vector<std::string> group_tabs,
+      std::vector<std::pair<int, std::string>> candidate_tabs,
+      SuggestTabsForGroupCallback callback);
+
+  void SuggestGroupForTabImpl(std::pair<int, std::string> candidate_tab,
+                              std::vector<std::vector<std::string>> group_tabs,
+                              SuggestGroupForTabCallback callback);
 
   std::vector<tflite::task::processor::EmbeddingResult> embeddings_;
   absl::Status EmbedText(const std::string& text,

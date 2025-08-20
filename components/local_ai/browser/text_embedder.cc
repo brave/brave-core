@@ -189,40 +189,50 @@ TextEmbedder::CalculateTabGroupCentroid() {
 // Given 2 arrays, (1) containing strings (tab title + origin) for all tabs in a
 // group and (2) containing strings of all open tabs (candidates), output
 // indices for top 3 candidates.
-absl::StatusOr<std::vector<int>> TextEmbedder::SuggestTabsForGroup(
-    std::vector<std::pair<int, std::string>> group_tabs,
-    std::vector<std::pair<int, std::string>> candidate_tabs) {
+void TextEmbedder::SuggestTabsForGroup(
+    std::vector<std::string> group_tabs,
+    std::vector<std::pair<int, std::string>> candidate_tabs,
+    SuggestTabsForGroupCallback callback) {
+  DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
+
+  embedder_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&TextEmbedder::SuggestTabsForGroupImpl,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(group_tabs),
+                     std::move(candidate_tabs),
+                     base::BindPostTaskToCurrentDefault(std::move(callback))));
+}
+
+void TextEmbedder::SuggestTabsForGroupImpl(
+    std::vector<std::string> group_tabs,
+    std::vector<std::pair<int, std::string>> candidate_tabs,
+    SuggestTabsForGroupCallback callback) {
   DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
+
   // get embeddings for group tabs
   tabs_.clear();
-
-  // extract only the strings
-  std::vector<std::string> tab_titles;
-  for (const auto& tab : group_tabs) {
-    tab_titles.push_back(tab.second);
-  }
-
-  tabs_ = tab_titles;
+  tabs_ = group_tabs;
   auto status_group = EmbedTabs();
   if (!status_group.ok()) {
-    return absl::FailedPreconditionError(
-        "Error generating embeddings for tabs in the group");
+    std::move(callback).Run(absl::FailedPreconditionError(
+        "Error generating embeddings for tabs in the group"));
+    return;
   }
 
   // get centroid of group tabs
   tflite::task::processor::EmbeddingResult group_centroid;
   auto group_centroid_output = CalculateTabGroupCentroid();
   if (!group_centroid_output.ok()) {
-    return absl::FailedPreconditionError(
-        "Error generating centroid for tab group");
+    std::move(callback).Run(absl::FailedPreconditionError(
+        "Error generating centroid for tab group"));
+    return;
   } else {
     group_centroid = group_centroid_output.value();
   }
 
   // get embeddings for candidate tabs
   tabs_.clear();
-  tab_titles.clear();
-
+  std::vector<std::string> tab_titles;
   std::vector<int> tab_ids;
 
   for (const auto& tab : candidate_tabs) {
@@ -233,8 +243,9 @@ absl::StatusOr<std::vector<int>> TextEmbedder::SuggestTabsForGroup(
   tabs_ = tab_titles;
   auto status = EmbedTabs();
   if (!status.ok()) {
-    return absl::FailedPreconditionError(
-        "Error generating embeddings for candidate tabs");
+    std::move(callback).Run(absl::FailedPreconditionError(
+        "Error generating embeddings for candidate tabs"));
+    return;
   }
 
   // save these embeddings
@@ -249,17 +260,28 @@ absl::StatusOr<std::vector<int>> TextEmbedder::SuggestTabsForGroup(
         candidate_embeddings[i].embeddings(0).feature_vector(),
         group_centroid.embeddings(0).feature_vector());
     if (!maybe_similarity.ok()) {
-      return absl::FailedPreconditionError(
-          "Error calculating cosine similarity.");
+      std::move(callback).Run(absl::FailedPreconditionError(
+          "Error calculating cosine similarity."));
+      return;
     }
     sim_scores.push_back(maybe_similarity.value());
   }
 
   std::vector<int> top_indices;
-
   top_indices = getMostSimilarTabIndices(sim_scores, tab_ids);
 
-  return top_indices;
+  // Return the successful result
+  std::move(callback).Run(std::move(top_indices));
+}
+
+void TextEmbedder::CancelAllTasks() {
+  DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
+  base::AutoLock auto_lock(lock_);
+  // Calling from owner task runner intentionally so we can stop tflite
+  // interpretor running on embedder task runner.
+  if (tflite_text_embedder_) {
+    tflite_text_embedder_->Cancel();
+  }
 }
 
 std::vector<int> TextEmbedder::getMostSimilarTabIndices(
@@ -293,13 +315,30 @@ std::vector<int> TextEmbedder::getMostSimilarTabIndices(
 /* Given a tab, find which existing group it belongs to. If no match with any
  * existing group, then no op*/
 
-absl::StatusOr<int> TextEmbedder::SuggestGroupForTab(
+void TextEmbedder::SuggestGroupForTab(
     std::pair<int, std::string> candidate_tab,
-    std::vector<std::vector<std::pair<int, std::string>>> group_tabs) {
+    std::vector<std::vector<std::string>> group_tabs,
+    SuggestGroupForTabCallback callback) {
+  DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
+
+  embedder_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&TextEmbedder::SuggestGroupForTabImpl,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(candidate_tab),
+                     std::move(group_tabs),
+                     base::BindPostTaskToCurrentDefault(std::move(callback))));
+}
+
+void TextEmbedder::SuggestGroupForTabImpl(
+    std::pair<int, std::string> candidate_tab,
+    std::vector<std::vector<std::string>> group_tabs,
+    SuggestGroupForTabCallback callback) {
   DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
 
   if (group_tabs.empty()) {
-    return absl::FailedPreconditionError("No tab groups found.");
+    std::move(callback).Run(
+        absl::FailedPreconditionError("No tab groups found."));
+    return;
   }
 
   // for each group, find centroid embedding
@@ -308,16 +347,14 @@ absl::StatusOr<int> TextEmbedder::SuggestGroupForTab(
 
   for (const auto& group_tab : group_tabs) {
     tabs_.clear();
-
-    for (const auto& tab : group_tab) {
-      tabs_.push_back(tab.second);
-    }
+    tabs_ = group_tab;
 
     auto status_group = EmbedTabs();
 
     if (!status_group.ok()) {
-      return absl::FailedPreconditionError(
-          "Error generating embeddings for tabs in the group");
+      std::move(callback).Run(absl::FailedPreconditionError(
+          "Error generating embeddings for tabs in the group"));
+      return;
     }
 
     // get centroid of each group
@@ -325,8 +362,9 @@ absl::StatusOr<int> TextEmbedder::SuggestGroupForTab(
     auto group_centroid_output = CalculateTabGroupCentroid();
 
     if (!group_centroid_output.ok()) {
-      return absl::FailedPreconditionError(
-          "Error generating centroid for tab group");
+      std::move(callback).Run(absl::FailedPreconditionError(
+          "Error generating centroid for tab group"));
+      return;
     } else {
       group_centroid = group_centroid_output.value();
       all_centroids.push_back(group_centroid);
@@ -337,7 +375,8 @@ absl::StatusOr<int> TextEmbedder::SuggestGroupForTab(
   tflite::task::processor::EmbeddingResult candidate_embedding;
   auto status = EmbedText(candidate_tab.second, candidate_embedding);
   if (!status.ok()) {
-    return status;
+    std::move(callback).Run(status);
+    return;
   }
 
   // find cosine sim between candidate and all centroids
@@ -348,8 +387,9 @@ absl::StatusOr<int> TextEmbedder::SuggestGroupForTab(
         all_centroids[i].embeddings(0).feature_vector(),
         candidate_embedding.embeddings(0).feature_vector());
     if (!maybe_similarity.ok()) {
-      return absl::FailedPreconditionError(
-          "Error calculating cosine similarity.");
+      std::move(callback).Run(absl::FailedPreconditionError(
+          "Error calculating cosine similarity."));
+      return;
     }
     sim_scores.push_back(maybe_similarity.value());
   }
@@ -360,12 +400,12 @@ absl::StatusOr<int> TextEmbedder::SuggestGroupForTab(
   float max_value = *max_it;
 
   if (max_value < COSINE_SIM_THRESHOLD) {
-    return absl::FailedPreconditionError("No groups to suggest.");
+    std::move(callback).Run(
+        absl::FailedPreconditionError("No groups to suggest."));
+    return;
   } else {
-
-  int max_index = std::distance(sim_scores.begin(), max_it);
-
-  return max_index;
+    int max_index = std::distance(sim_scores.begin(), max_it);
+    std::move(callback).Run(max_index);
   }
 }
 
