@@ -38,17 +38,16 @@ static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
 namespace ai_chat {
 
-using ExtractCallback = PrintPreviewExtractor::ExtractCallback;
-using CapturePdfCallback = PrintPreviewExtractor::CapturePdfCallback;
+using CaptureImagesCallback = PrintPreviewExtractor::CaptureImagesCallback;
 
-class PreviewPageTextExtractor {
+class PreviewPageImageExtractor {
  public:
-  PreviewPageTextExtractor();
-  virtual ~PreviewPageTextExtractor();
+  PreviewPageImageExtractor();
+  virtual ~PreviewPageImageExtractor();
 
   virtual void StartExtract(
       base::ReadOnlySharedMemoryRegion pdf_region,
-      PrintPreviewExtractor::Extractor::CallbackVariant callback,
+      PrintPreviewExtractor::Extractor::ImageCallback callback,
       std::optional<bool> pdf_use_skia_renderer_enabled);
 
   void BindForTesting(
@@ -58,19 +57,17 @@ class PreviewPageTextExtractor {
   void ScheduleNextPageOrComplete();
   void OnGetPageCount(std::optional<uint32_t> page_count);
   void OnGetBitmap(const SkBitmap& bitmap);
-  void ProcessNextTextPage(std::string page_content);
   void ProcessNextBitmapPage(const SkBitmap& bitmap);
   void BitmapConverterDisconnected();
 
-  std::string preview_text_;
   size_t current_page_index_ = 0;
   size_t total_page_count_ = 0;
   base::ReadOnlySharedMemoryRegion pdf_region_;
-  PrintPreviewExtractor::Extractor::CallbackVariant callback_;
+  PrintPreviewExtractor::Extractor::ImageCallback callback_;
   // raw bytes data of captured pdf pages
   std::vector<std::vector<uint8_t>> pdf_pages_image_data_;
   mojo::Remote<printing::mojom::PdfToBitmapConverter> pdf_to_bitmap_converter_;
-  base::WeakPtrFactory<PreviewPageTextExtractor> weak_ptr_factory_{this};
+  base::WeakPtrFactory<PreviewPageImageExtractor> weak_ptr_factory_{this};
 };
 
 class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
@@ -84,7 +81,7 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
       content::WebContents* web_contents,
       Profile* profile,
       bool is_pdf,
-      PrintPreviewExtractor::Extractor::CallbackVariant callback,
+      PrintPreviewExtractor::Extractor::ImageCallback callback,
       GetPrintPreviewUIIdMapCallback id_map_callback,
       GetPrintPreviewUIRequestIdMapCallback request_id_map_callback);
 
@@ -98,8 +95,8 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
 
   std::optional<int32_t> GetPrintPreviewUIIdForTesting() override;
 
-  void SetPreviewPageTextExtractorForTesting(
-      std::unique_ptr<PreviewPageTextExtractor> extractor);
+  void SetPreviewPageImageExtractorForTesting(
+      std::unique_ptr<PreviewPageImageExtractor> extractor);
 
   void SendError(const std::string& error);
 
@@ -167,14 +164,12 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
 
   void OnPreviewReady();
 
-  void OnGetOCRResult(base::expected<std::string, std::string> result);
-
   void OnCaptureBitmapResult(
       base::expected<std::vector<std::vector<uint8_t>>, std::string> result);
 
  private:
   bool is_pdf_ = false;
-  PrintPreviewExtractor::Extractor::CallbackVariant callback_;
+  PrintPreviewExtractor::Extractor::ImageCallback callback_;
   GetPrintPreviewUIIdMapCallback id_map_callback_;
   GetPrintPreviewUIRequestIdMapCallback request_id_map_callback_;
   // unique id to avoid conflicts with other print preview UIs
@@ -182,7 +177,7 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
   mojo::AssociatedReceiver<PrintPreviewUI> print_preview_ui_receiver_{this};
 
   int preview_request_id_ = -1;
-  std::unique_ptr<PreviewPageTextExtractor> preview_page_text_extractor_;
+  std::unique_ptr<PreviewPageImageExtractor> preview_page_image_extractor_;
   mojo::AssociatedRemote<printing::mojom::PrintRenderFrame> print_render_frame_;
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;

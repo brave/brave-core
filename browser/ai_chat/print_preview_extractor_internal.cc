@@ -9,7 +9,6 @@
 #include <optional>
 #include <string>
 #include <utility>
-#include <variant>
 #include <vector>
 
 #include "base/check.h"
@@ -18,14 +17,11 @@
 #include "base/logging.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/memory/weak_ptr.h"
-#include "base/strings/strcat.h"
 #include "base/types/expected.h"
 #include "brave/browser/ai_chat/print_preview_extractor.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "chrome/browser/pdf/pdf_pref_names.h"
 #include "chrome/browser/printing/print_compositor_util.h"
 #include "chrome/browser/printing/print_preview_data_service.h"
@@ -62,8 +58,6 @@ using printing::mojom::PrintPreviewUI;
 
 namespace ai_chat {
 
-using CallbackVariant = PrintPreviewExtractor::Extractor::CallbackVariant;
-using TextCallback = PrintPreviewExtractor::Extractor::TextCallback;
 using ImageCallback = PrintPreviewExtractor::Extractor::ImageCallback;
 
 namespace {
@@ -90,13 +84,13 @@ content::RenderFrameHost* GetRenderFrameHostToUse(
 
 }  // namespace
 
-PreviewPageTextExtractor::PreviewPageTextExtractor() = default;
+PreviewPageImageExtractor::PreviewPageImageExtractor() = default;
 
-PreviewPageTextExtractor::~PreviewPageTextExtractor() = default;
+PreviewPageImageExtractor::~PreviewPageImageExtractor() = default;
 
-void PreviewPageTextExtractor::StartExtract(
+void PreviewPageImageExtractor::StartExtract(
     base::ReadOnlySharedMemoryRegion pdf_region,
-    CallbackVariant callback,
+    ImageCallback callback,
     std::optional<bool> pdf_use_skia_renderer_enabled) {
   pdf_region_ = std::move(pdf_region);
   callback_ = std::move(callback);
@@ -105,110 +99,63 @@ void PreviewPageTextExtractor::StartExtract(
         pdf_to_bitmap_converter_.BindNewPipeAndPassReceiver());
   }
   pdf_to_bitmap_converter_.set_disconnect_handler(
-      base::BindOnce(&PreviewPageTextExtractor::BitmapConverterDisconnected,
+      base::BindOnce(&PreviewPageImageExtractor::BitmapConverterDisconnected,
                      base::Unretained(this)));
   if (pdf_use_skia_renderer_enabled.has_value()) {
     pdf_to_bitmap_converter_->SetUseSkiaRendererPolicy(
         pdf_use_skia_renderer_enabled.value());
   }
   current_page_index_ = 0;
-  preview_text_.clear();
+  // No text preview to clear for image extraction
   pdf_to_bitmap_converter_->GetPdfPageCount(
       pdf_region_.Duplicate(),
-      base::BindOnce(&PreviewPageTextExtractor::OnGetPageCount,
+      base::BindOnce(&PreviewPageImageExtractor::OnGetPageCount,
                      base::Unretained(this)));
 }
 
-void PreviewPageTextExtractor::BindForTesting(
+void PreviewPageImageExtractor::BindForTesting(
     mojo::PendingRemote<printing::mojom::PdfToBitmapConverter> converter) {
   CHECK_IS_TEST();
   pdf_to_bitmap_converter_.Bind(std::move(converter));
 }
 
-void PreviewPageTextExtractor::ScheduleNextPageOrComplete() {
+void PreviewPageImageExtractor::ScheduleNextPageOrComplete() {
   DCHECK_GT(total_page_count_, 0u);
   if (current_page_index_ < total_page_count_) {
-    if (current_page_index_ &&
-        std::holds_alternative<TextCallback>(callback_)) {
-      base::StrAppend(&preview_text_, {"\n"});
-    }
     pdf_to_bitmap_converter_->GetBitmap(
         pdf_region_.Duplicate(), current_page_index_,
-        base::BindOnce(&PreviewPageTextExtractor::OnGetBitmap,
+        base::BindOnce(&PreviewPageImageExtractor::OnGetBitmap,
                        base::Unretained(this)));
   } else {
-    if (auto* text_cb = std::get_if<TextCallback>(&callback_)) {
-      std::move(*text_cb).Run(base::ok(preview_text_));
-    } else if (auto* image_cb = std::get_if<ImageCallback>(&callback_)) {
-      std::move(*image_cb).Run(base::ok(std::move(pdf_pages_image_data_)));
-    }
+    std::move(callback_).Run(base::ok(std::move(pdf_pages_image_data_)));
   }
 }
 
-void PreviewPageTextExtractor::OnGetPageCount(
+void PreviewPageImageExtractor::OnGetPageCount(
     std::optional<uint32_t> page_count) {
   if (!page_count.has_value() || !page_count.value()) {
-    if (auto* text_cb = std::get_if<TextCallback>(&callback_)) {
-      std::move(*text_cb).Run(base::unexpected("Failed to get page count"));
-    } else if (auto* image_cb = std::get_if<ImageCallback>(&callback_)) {
-      std::move(*image_cb).Run(base::unexpected("Failed to get page count"));
-    }
+    std::move(callback_).Run(base::unexpected("Failed to get page count"));
     return;
   }
   total_page_count_ = page_count.value();
   ScheduleNextPageOrComplete();
 }
 
-void PreviewPageTextExtractor::OnGetBitmap(const SkBitmap& bitmap) {
+void PreviewPageImageExtractor::OnGetBitmap(const SkBitmap& bitmap) {
   if (bitmap.drawsNothing()) {
-    if (auto* text_cb = std::get_if<TextCallback>(&callback_)) {
-      std::move(*text_cb).Run(base::unexpected("Invalid bitmap"));
-    } else if (auto* image_cb = std::get_if<ImageCallback>(&callback_)) {
-      std::move(*image_cb).Run(base::unexpected("Invalid bitmap"));
-    }
+    std::move(callback_).Run(base::unexpected("Invalid bitmap"));
     return;
   }
 
-  if (std::holds_alternative<ImageCallback>(callback_)) {
-    ProcessNextBitmapPage(bitmap);
-  } else if (std::holds_alternative<TextCallback>(callback_)) {
-#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-    GetOCRText(bitmap,
-               base::BindOnce(&PreviewPageTextExtractor::ProcessNextTextPage,
-                              weak_ptr_factory_.GetWeakPtr()));
-#else
-    auto* text_cb = std::get_if<TextCallback>(&callback_);
-    std::move(*text_cb).Run(base::ok(""));
-#endif
-  }
+  ProcessNextBitmapPage(bitmap);
 }
 
-void PreviewPageTextExtractor::ProcessNextTextPage(std::string page_content) {
-  auto* text_cb = std::get_if<TextCallback>(&callback_);
-  DCHECK(text_cb);
-  VLOG(4) << "Page index(" << current_page_index_
-          << ") content: " << page_content;
-  base::StrAppend(&preview_text_, {page_content});
-
-  // Stop processing if we have reached the maximum number of pages
-  if (current_page_index_ + 1 >= kMaxPreviewPages) {
-    std::move(*text_cb).Run(base::ok(preview_text_));
-    return;
-  }
-
-  ++current_page_index_;
-  ScheduleNextPageOrComplete();
-}
-
-void PreviewPageTextExtractor::ProcessNextBitmapPage(const SkBitmap& bitmap) {
-  auto* image_cb = std::get_if<ImageCallback>(&callback_);
-  DCHECK(image_cb);
-
+void PreviewPageImageExtractor::ProcessNextBitmapPage(const SkBitmap& bitmap) {
   // Encode bitmap to PNG for capture
   auto png_data =
       gfx::PNGCodec::EncodeBGRASkBitmap(ScaleDownBitmap(bitmap), false);
   if (!png_data) {
-    std::move(*image_cb).Run(base::unexpected("Failed to encode the bitmap"));
+    std::move(callback_).Run(base::unexpected("Failed to encode the bitmap"));
     return;
   } else {
     pdf_pages_image_data_.push_back(*png_data);
@@ -218,19 +165,15 @@ void PreviewPageTextExtractor::ProcessNextBitmapPage(const SkBitmap& bitmap) {
   ScheduleNextPageOrComplete();
 }
 
-void PreviewPageTextExtractor::BitmapConverterDisconnected() {
-  if (auto* text_cb = std::get_if<TextCallback>(&callback_)) {
-    std::move(*text_cb).Run(base::unexpected("Bitmap converter disconnected"));
-  } else if (auto* image_cb = std::get_if<ImageCallback>(&callback_)) {
-    std::move(*image_cb).Run(base::unexpected("Bitmap converter disconnected"));
-  }
+void PreviewPageImageExtractor::BitmapConverterDisconnected() {
+  std::move(callback_).Run(base::unexpected("Bitmap converter disconnected"));
 }
 
 PrintPreviewExtractorInternal::PrintPreviewExtractorInternal(
     content::WebContents* web_contents,
     Profile* profile,
     bool is_pdf,
-    CallbackVariant callback,
+    ImageCallback callback,
     GetPrintPreviewUIIdMapCallback id_map_callback,
     GetPrintPreviewUIRequestIdMapCallback request_id_map_callback)
     : is_pdf_(is_pdf),
@@ -320,19 +263,15 @@ PrintPreviewExtractorInternal::GetPrintPreviewUIIdForTesting() {
   return print_preview_ui_id_;
 }
 
-void PrintPreviewExtractorInternal::SetPreviewPageTextExtractorForTesting(
-    std::unique_ptr<PreviewPageTextExtractor> extractor) {
+void PrintPreviewExtractorInternal::SetPreviewPageImageExtractorForTesting(
+    std::unique_ptr<PreviewPageImageExtractor> extractor) {
   CHECK_IS_TEST();
-  preview_page_text_extractor_ = std::move(extractor);
+  preview_page_image_extractor_ = std::move(extractor);
 }
 
 void PrintPreviewExtractorInternal::SendError(const std::string& error) {
   PreviewCleanup();
-  if (auto* text_cb = std::get_if<ExtractCallback>(&callback_)) {
-    std::move(*text_cb).Run(base::unexpected(error));
-  } else if (auto* image_cb = std::get_if<CapturePdfCallback>(&callback_)) {
-    std::move(*image_cb).Run(base::unexpected(error));
-  }
+  std::move(callback_).Run(base::unexpected(error));
 }
 
 void PrintPreviewExtractorInternal::SetOptionsFromDocument(
@@ -584,44 +523,22 @@ void PrintPreviewExtractorInternal::OnPreviewReady() {
         prefs->GetBoolean(::prefs::kPdfUseSkiaRendererEnabled);
   }
 
-  // Create the appropriate callback based on the variant type
-  CallbackVariant callback;
-  if (std::holds_alternative<ExtractCallback>(callback_)) {
-    callback = base::BindOnce(&PrintPreviewExtractorInternal::OnGetOCRResult,
-                              weak_ptr_factory_.GetWeakPtr());
-  } else if (std::holds_alternative<CapturePdfCallback>(callback_)) {
-    callback =
-        base::BindOnce(&PrintPreviewExtractorInternal::OnCaptureBitmapResult,
-                       weak_ptr_factory_.GetWeakPtr());
+  if (!preview_page_image_extractor_) {
+    preview_page_image_extractor_ =
+        std::make_unique<PreviewPageImageExtractor>();
   }
-
-  if (!preview_page_text_extractor_) {
-    preview_page_text_extractor_ = std::make_unique<PreviewPageTextExtractor>();
-  }
-  preview_page_text_extractor_->StartExtract(std::move(pdf_region.region),
-                                             std::move(callback),
-                                             pdf_use_skia_renderer_enabled);
-}
-
-void PrintPreviewExtractorInternal::OnGetOCRResult(
-    base::expected<std::string, std::string> result) {
-  if (result.has_value()) {
-    PreviewCleanup();
-    if (auto* text_cb = std::get_if<ExtractCallback>(&callback_)) {
-      std::move(*text_cb).Run(std::move(result));
-    }
-  } else {
-    SendError(result.error());
-  }
+  preview_page_image_extractor_->StartExtract(
+      std::move(pdf_region.region),
+      base::BindOnce(&PrintPreviewExtractorInternal::OnCaptureBitmapResult,
+                     weak_ptr_factory_.GetWeakPtr()),
+      pdf_use_skia_renderer_enabled);
 }
 
 void PrintPreviewExtractorInternal::OnCaptureBitmapResult(
     base::expected<std::vector<std::vector<uint8_t>>, std::string> result) {
   if (result.has_value()) {
     PreviewCleanup();
-    if (auto* image_cb = std::get_if<CapturePdfCallback>(&callback_)) {
-      std::move(*image_cb).Run(std::move(result));
-    }
+    std::move(callback_).Run(std::move(result));
   } else {
     SendError(result.error());
   }
