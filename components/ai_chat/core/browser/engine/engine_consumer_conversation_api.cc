@@ -143,7 +143,8 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
                             ConversationEventType::kRequestRewrite,
                             /*Content=*/std::vector<std::string>{question});
   api_->PerformRequest(std::move(conversation), selected_language, std::nullopt,
-                       std::nullopt, std::move(received_callback),
+                       std::nullopt, mojom::ConversationCapability::CHAT,
+                       std::move(received_callback),
                        std::move(completed_callback));
 }
 
@@ -174,8 +175,8 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_->PerformRequest(std::move(conversation), selected_language, std::nullopt,
-                       std::nullopt, base::NullCallback(),
-                       std::move(on_response));
+                       std::nullopt, mojom::ConversationCapability::CHAT,
+                       base::NullCallback(), std::move(on_response));
 }
 
 void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
@@ -227,6 +228,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     bool is_temporary_chat,
     const std::vector<base::WeakPtr<Tool>>& tools,
     std::optional<std::string_view> preferred_tool_name,
+    mojom::ConversationCapability conversation_capability,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -478,6 +480,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
 
   api_->PerformRequest(std::move(conversation), selected_language,
                        ToolApiDefinitionsFromTools(tools), std::nullopt,
+                       conversation_capability,
                        std::move(data_received_callback),
                        std::move(completed_callback), model_name);
 }
@@ -526,7 +529,8 @@ void EngineConsumerConversationAPI::DedupeTopics(
            base::WriteJson(topic_list).value_or(std::string())}});
   api_->PerformRequest(
       std::move(conversation), "" /* selected_language */, std::nullopt,
-      std::nullopt, base::NullCallback() /* data_received_callback */,
+      std::nullopt, mojom::ConversationCapability::CHAT,
+      base::NullCallback() /* data_received_callback */,
       base::BindOnce(
           [](GetSuggestedTopicsCallback callback,
              EngineConsumer::GenerationResult result) {
@@ -574,6 +578,7 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
 
     api_->PerformRequest(std::move(conversation), "" /* selected_language */,
                          std::nullopt, std::nullopt,
+                         mojom::ConversationCapability::CHAT,
                          base::NullCallback() /* data_received_callback */,
                          barrier_callback /* data_completed_callback */);
   }

@@ -152,6 +152,7 @@ class ConversationAPIClient {
       const std::string& selected_language,
       std::optional<base::Value::List> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
+      mojom::ConversationCapability conversation_capability,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback,
       const std::optional<std::string>& model_name = std::nullopt);
@@ -168,6 +169,7 @@ class ConversationAPIClient {
       const std::string& selected_language,
       std::optional<base::Value::List> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
+      mojom::ConversationCapability conversation_capability,
       const std::optional<std::string>& model_name,
       const bool is_sse_enabled);
 
@@ -185,6 +187,7 @@ class ConversationAPIClient {
       const std::string& selected_language,
       std::optional<base::Value::List> oai_tool_definitions,
       const std::optional<std::string>& preferred_tool_name,
+      mojom::ConversationCapability conversation_capability,
       const std::optional<std::string>& model_name,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback,

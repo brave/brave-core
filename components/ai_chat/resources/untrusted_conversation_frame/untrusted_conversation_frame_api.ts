@@ -13,6 +13,7 @@ export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
   conversationHistory: Mojom.ConversationTurn[]
   isMobile: boolean
   associatedContent: Mojom.AssociatedContent[]
+  contentTaskTabId?: number
 }
 
 // Default state before initial API call
@@ -29,6 +30,7 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   canSubmitUserEntries: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
   associatedContent: [],
+  conversationCapability: Mojom.ConversationCapability.CHAT,
 }
 
 // Updates a tool use event for a conversation entry in the history.
@@ -74,6 +76,9 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
 
   public uiObserver: Mojom.UntrustedUICallbackRouter =
     new Mojom.UntrustedUICallbackRouter()
+
+  public uiObserver: Mojom.UntrustedUICallbackRouter
+    = new Mojom.UntrustedUICallbackRouter
 
   constructor() {
     super(defaultConversationEntriesUIState)
@@ -128,11 +133,17 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
       },
     )
 
-    this.conversationObserver.onEntriesUIStateChanged.addListener(
-      (state: Mojom.ConversationEntriesState) => {
-        this.setPartialState(state)
-      },
+    this.conversationObserver.contentTaskStarted.addListener(
+      (tabId: number) => {
+        // Get event from Conversation and ask UI Handler for thumbnails
+        this.setPartialState({ contentTaskTabId: tabId })
+        this.uiHandler.addTabToThumbnailTracker(tabId);
+      }
     )
+
+    this.conversationObserver.onEntriesUIStateChanged.addListener((state: Mojom.ConversationEntriesState) => {
+      this.setPartialState(state)
+    })
 
     this.conversationObserver.associatedContentChanged.addListener(
       (content: Mojom.AssociatedContent[]) => {

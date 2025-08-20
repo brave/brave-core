@@ -22,6 +22,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
@@ -57,6 +58,7 @@ AIChatServiceFactory::AIChatServiceFactory()
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kOriginalOnly)
               .Build()) {
+  DependsOn(actor::ActorKeyedServiceFactory::GetInstance());
   DependsOn(skus::SkusServiceFactory::GetInstance());
   DependsOn(ModelServiceFactory::GetInstance());
   DependsOn(TabTrackerServiceFactory::GetInstance());
@@ -81,9 +83,18 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
           context);
 
+  bool is_actor_allowed = features::IsAIChatAgentProfileEnabled() &&
+                          Profile::FromBrowserContext(context)->IsAIChatAgent();
+
+  auto* actor_service =
+      is_actor_allowed
+          ? actor::ActorKeyedServiceFactory::GetActorKeyedService(context)
+          : nullptr;
+
   std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories;
   tool_provider_factories.push_back(
-      std::make_unique<BrowserToolProviderFactory>());
+      std::make_unique<BrowserToolProviderFactory>(
+          Profile::FromBrowserContext(context), actor_service));
 
   return std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
