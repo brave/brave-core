@@ -13,14 +13,13 @@
 
 namespace ai_chat {
 
-BrowserToolProviderFactory::BrowserToolProviderFactory(
-    content::BrowserContext* browser_context)
-    : browser_context_(browser_context) {}
+BrowserToolProviderFactory::BrowserToolProviderFactory(Profile* profile)
+    : profile_(profile) {}
 
 BrowserToolProviderFactory::~BrowserToolProviderFactory() = default;
 
 std::unique_ptr<ToolProvider> BrowserToolProviderFactory::CreateToolProvider() {
-  return std::make_unique<BrowserToolProvider>(browser_context_);
+  return std::make_unique<BrowserToolProvider>(profile_);
 }
 
 }  // namespace ai_chat
