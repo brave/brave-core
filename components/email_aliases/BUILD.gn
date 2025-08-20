@@ -64,6 +64,6 @@ source_set("unit_tests") {
     "//components/prefs:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
-    "//ui/base:base",
+    "//ui/base",
   ]
 }
