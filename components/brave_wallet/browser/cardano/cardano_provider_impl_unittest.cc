@@ -184,6 +184,130 @@ TEST_F(CardanoProviderImplUnitTest, Enable_PermissionApproved) {
   EXPECT_FALSE(error);
 }
 
+TEST_F(CardanoProviderImplUnitTest, IsEnabled) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  TestFuture<bool> future;
+  provider()->IsEnabled(future.GetCallback());
+  EXPECT_TRUE(future.Take());
+}
+
+TEST_F(CardanoProviderImplUnitTest, IsEnabled_AllowedAccountsFailed) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::nullopt;
+          });
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  TestFuture<bool> future;
+  provider()->IsEnabled(future.GetCallback());
+  EXPECT_FALSE(future.Take());
+}
+
+TEST_F(CardanoProviderImplUnitTest, IsEnabled_TabNotVisible) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return false; });
+
+  TestFuture<bool> future;
+  provider()->IsEnabled(future.GetCallback());
+  EXPECT_FALSE(future.Take());
+}
+
+TEST_F(CardanoProviderImplUnitTest, IsEnabled_WalletNotCreated) {
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  TestFuture<bool> future;
+  provider()->IsEnabled(future.GetCallback());
+  EXPECT_FALSE(future.Take());
+}
+
+TEST_F(CardanoProviderImplUnitTest, IsEnabled_AccountNotCreated) {
+  CreateWallet();
+  UnlockWallet();
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  TestFuture<bool> future;
+  provider()->IsEnabled(future.GetCallback());
+  EXPECT_FALSE(future.Take());
+}
+
+TEST_F(CardanoProviderImplUnitTest, IsEnabled_NoAllowedAccounts) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>();
+          });
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  TestFuture<bool> future;
+  provider()->IsEnabled(future.GetCallback());
+  EXPECT_FALSE(future.Take());
+}
+
+TEST_F(CardanoProviderImplUnitTest, IsEnabled_WalletLocked) {
+  CreateWallet();
+  keyring_service()->Lock();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  TestFuture<bool> future;
+  provider()->IsEnabled(future.GetCallback());
+  EXPECT_FALSE(future.Take());
+}
+
 TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
   CreateWallet();
   auto added_account = AddAccount();

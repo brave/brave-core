@@ -47,23 +47,14 @@ CardanoProviderImpl::~CardanoProviderImpl() = default;
 
 // mojom::CardanoProvider
 void CardanoProviderImpl::IsEnabled(IsEnabledCallback callback) {
-  NOTIMPLEMENTED_LOG_ONCE();
-
-  // Mocked values for development usage.
-  std::move(callback).Run(true);
+  std::vector<std::string> allowed_accounts;
+  auto result = EvaluatePermissionsState(allowed_accounts);
+  std::move(callback).Run(result == PermissionCheckResult::kHasAllowedAccounts);
 }
 
 void CardanoProviderImpl::Enable(
     mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
     EnableCallback callback) {
-  if (!delegate_->IsTabVisible()) {
-    std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
-        kAPIErrorRefused, kTabNotVisibleError, nullptr));
-    return;
-  }
-
-  delegate_->WalletInteractionDetected();
-
   RequestCardanoPermissions(std::move(cardano_api), std::move(callback),
                             delegate_->GetOrigin());
 }
@@ -72,79 +63,120 @@ void CardanoProviderImpl::RequestCardanoPermissions(
     mojo::PendingReceiver<mojom::CardanoApi> cardano_api,
     EnableCallback callback,
     const url::Origin& origin) {
+  std::vector<std::string> allowed_accounts;
+  auto state = EvaluatePermissionsState(allowed_accounts);
+
+  switch (state) {
+    case PermissionCheckResult::kTabInactive:
+      return std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
+          kAPIErrorRefused, kTabNotVisibleError, nullptr));
+
+    case PermissionCheckResult::kDeniedGlobally:
+      return std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
+          kAPIErrorRefused,
+          l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), nullptr));
+
+    case PermissionCheckResult::kWalletNotCreated:
+      if (!wallet_page_shown_) {
+        delegate_->ShowWalletOnboarding();
+        wallet_page_shown_ = true;
+      }
+      std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
+          kAPIErrorRefused,
+          l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), nullptr));
+      return;
+
+    case PermissionCheckResult::kNoAccounts:
+      if (!wallet_page_shown_) {
+        delegate_->ShowAccountCreation(mojom::CoinType::ADA);
+        wallet_page_shown_ = true;
+      }
+      std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
+          kAPIErrorRefused,
+          l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), nullptr));
+      return;
+
+    case PermissionCheckResult::kWalletLocked:
+      // If there already was a request to unlock the wallet we drop pending
+      // requests.
+      if (pending_request_cardano_permissions_callback_) {
+        std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
+            kAPIErrorRefused,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
+            nullptr));
+        return;
+      }
+      pending_cardano_api_ = std::move(cardano_api);
+      pending_request_cardano_permissions_callback_ = std::move(callback);
+      pending_request_cardano_permissions_origin_ = origin;
+
+      brave_wallet_service_->keyring_service()->RequestUnlock();
+      delegate_->ShowPanel();
+      return;
+
+    case PermissionCheckResult::kGetAllowedAccountsFailed:
+      return std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
+          kAPIErrorInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), nullptr));
+
+    case PermissionCheckResult::kHasAllowedAccounts:
+      return OnRequestCardanoPermissions(
+          std::move(cardano_api), std::move(callback), origin,
+          mojom::RequestPermissionsError::kNone, allowed_accounts);
+
+    case PermissionCheckResult::kNeedsPermissionRequest:
+      auto cardano_account_ids = GetCardanoAccountPermissionIdentifiers(
+          brave_wallet_service_->keyring_service());
+      return delegate_->RequestPermissions(
+          mojom::CoinType::ADA, cardano_account_ids,
+          base::BindOnce(&CardanoProviderImpl::OnRequestCardanoPermissions,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(cardano_api),
+                         std::move(callback), origin));
+  }
+}
+
+CardanoProviderImpl::PermissionCheckResult
+CardanoProviderImpl::EvaluatePermissionsState(
+    std::vector<std::string>& allowed_accounts) {
+  if (!delegate_->IsTabVisible()) {
+    return PermissionCheckResult::kTabInactive;
+  }
+
+  delegate_->WalletInteractionDetected();
+
   if (delegate_->IsPermissionDenied(mojom::CoinType::ADA)) {
-    std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
-        kAPIErrorRefused,
-        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), nullptr));
-    return;
+    return PermissionCheckResult::kDeniedGlobally;
   }
 
   if (!brave_wallet_service_->keyring_service()->IsWalletCreatedSync()) {
-    if (!wallet_page_shown_) {
-      delegate_->ShowWalletOnboarding();
-      wallet_page_shown_ = true;
-    }
-    std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
-        kAPIErrorRefused,
-        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), nullptr));
-    return;
+    return PermissionCheckResult::kWalletNotCreated;
   }
 
   auto cardano_account_ids = GetCardanoAccountPermissionIdentifiers(
       brave_wallet_service_->keyring_service());
 
   if (cardano_account_ids.empty()) {
-    if (!wallet_page_shown_) {
-      delegate_->ShowAccountCreation(mojom::CoinType::ADA);
-      wallet_page_shown_ = true;
-    }
-    std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
-        kAPIErrorRefused,
-        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), nullptr));
-    return;
+    return PermissionCheckResult::kNoAccounts;
   }
 
   if (brave_wallet_service_->keyring_service()->IsLockedSync()) {
-    // If there already was a request to unlock the wallet we drop pending
-    // requests.
-    if (pending_request_cardano_permissions_callback_) {
-      std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
-          kAPIErrorRefused,
-          l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), nullptr));
-      return;
-    }
-    pending_cardano_api_ = std::move(cardano_api);
-    pending_request_cardano_permissions_callback_ = std::move(callback);
-    pending_request_cardano_permissions_origin_ = origin;
-
-    brave_wallet_service_->keyring_service()->RequestUnlock();
-    delegate_->ShowPanel();
-    return;
+    return PermissionCheckResult::kWalletLocked;
   }
 
-  const auto allowed_accounts =
+  auto allowed_accounts_value =
       delegate_->GetAllowedAccounts(mojom::CoinType::ADA, cardano_account_ids);
-  const bool success = allowed_accounts.has_value();
 
-  if (!success) {
-    std::move(callback).Run(mojom::CardanoProviderErrorBundle::New(
-        kAPIErrorInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), nullptr));
-    return;
+  if (!allowed_accounts_value) {
+    return PermissionCheckResult::kGetAllowedAccountsFailed;
   }
 
-  if (success && !allowed_accounts->empty()) {
-    OnRequestCardanoPermissions(std::move(cardano_api), std::move(callback),
-                                origin, mojom::RequestPermissionsError::kNone,
-                                allowed_accounts);
-  } else {
-    // Request accounts if no accounts are connected.
-    delegate_->RequestPermissions(
-        mojom::CoinType::ADA, cardano_account_ids,
-        base::BindOnce(&CardanoProviderImpl::OnRequestCardanoPermissions,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(cardano_api),
-                       std::move(callback), origin));
+  if (allowed_accounts_value->empty()) {
+    return PermissionCheckResult::kNeedsPermissionRequest;
   }
+
+  allowed_accounts = *allowed_accounts_value;
+
+  return PermissionCheckResult::kHasAllowedAccounts;
 }
 
 void CardanoProviderImpl::OnRequestCardanoPermissions(
