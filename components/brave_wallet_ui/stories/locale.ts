@@ -1157,6 +1157,12 @@ provideStrings({
   // Transaction Details
   braveWalletOn: 'On',
 
+  // Transaction Queue Selector
+  braveWalletPendingTransactionsNumber: 'Pending ($1)',
+  braveWalletNextTransaction: 'Next transaction',
+  braveWalletPreviousTransaction: 'Previous transaction',
+  braveWalletRejectTransactions: 'Reject $1 transactions',
+
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',
   braveWalletNFTDetailTokenStandard: 'Token standard',
