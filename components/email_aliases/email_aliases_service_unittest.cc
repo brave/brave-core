@@ -72,9 +72,8 @@ class EmailAliasesServiceTest : public ::testing::Test {
   std::optional<std::string> RequestAuthenticationWithResponse(
       const std::string& email,
       const std::string& response_body) {
-    static constexpr char kVerifyInitUrl[] =
-        "https://accounts.bsg.bravesoftware.com/v2/verify/init";
-    test_url_loader_factory_.AddResponse(kVerifyInitUrl, response_body);
+    test_url_loader_factory_.AddResponse(
+        service_->GetAccountsServiceVerifyInitURL(), response_body);
     bool called = false;
     std::optional<std::string> error;
     service_->RequestAuthentication(
@@ -128,7 +127,7 @@ class EmailAliasesServiceTest : public ::testing::Test {
     }
     for (const auto& body : responses) {
       test_url_loader_factory_.AddResponse(
-          "https://accounts.bsg.bravesoftware.com/v2/verify/result", body);
+          service_->GetAccountsServiceVerifyResultURL(), body);
     }
     EXPECT_TRUE(observer_->WaitFor(expected_status));
   }

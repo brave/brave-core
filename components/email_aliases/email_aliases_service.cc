@@ -33,20 +33,6 @@ constexpr char kAccountServiceEndpoint[] = "https://%s/v2/%s";
 constexpr char kAccountsServiceVerifyInitPath[] = "verify/init";
 constexpr char kAccountsServiceVerifyResultPath[] = "verify/result";
 
-std::string GetAccountsServiceVerifyInitURL() {
-  return absl::StrFormat(
-      kAccountServiceEndpoint,
-      brave_domains::GetServicesDomain("accounts.bsg").c_str(),
-      kAccountsServiceVerifyInitPath);
-}
-
-std::string GetAccountsServiceVerifyResultURL() {
-  return absl::StrFormat(
-      kAccountServiceEndpoint,
-      brave_domains::GetServicesDomain("accounts.bsg").c_str(),
-      kAccountsServiceVerifyResultPath);
-}
-
 const net::NetworkTrafficAnnotationTag traffic_annotation =
     net::DefineNetworkTrafficAnnotation("brave_accounts_service", R"(
       semantics {
@@ -65,12 +51,27 @@ constexpr int kMaxResponseLength = 32768;
 
 }  // namespace
 
+// static
+std::string EmailAliasesService::GetAccountsServiceVerifyInitURL() {
+  return absl::StrFormat(
+      kAccountServiceEndpoint,
+      brave_domains::GetServicesDomain("accounts.bsg").c_str(),
+      kAccountsServiceVerifyInitPath);
+}
+
+std::string EmailAliasesService::GetAccountsServiceVerifyResultURL() {
+  return absl::StrFormat(
+      kAccountServiceEndpoint,
+      brave_domains::GetServicesDomain("accounts.bsg").c_str(),
+      kAccountsServiceVerifyResultPath);
+}
+
 EmailAliasesService::EmailAliasesService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(url_loader_factory) {
+    : url_loader_factory_(url_loader_factory),
+      verify_init_url_(GetAccountsServiceVerifyInitURL()),
+      verify_result_url_(GetAccountsServiceVerifyResultURL()) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
-  verify_init_url_ = GetAccountsServiceVerifyInitURL();
-  verify_result_url_ = GetAccountsServiceVerifyResultURL();
 }
 
 EmailAliasesService::~EmailAliasesService() = default;

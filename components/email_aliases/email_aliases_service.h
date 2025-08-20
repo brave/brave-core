@@ -66,6 +66,9 @@ class EmailAliasesService : public KeyedService,
 
   std::string GetAuthTokenForTesting() const;
 
+  static std::string GetAccountsServiceVerifyInitURL();
+  static std::string GetAccountsServiceVerifyResultURL();
+
  private:
   void ApiFetch(const GURL& url,
                 const char* method,
