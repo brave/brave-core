@@ -123,8 +123,8 @@ class AIChatService : public KeyedService,
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
 
-  // Provides browser-level tools that can be used by conversations
-  std::vector<base::WeakPtr<Tool>> GetBrowserTools();
+  // Provides tools that can be used by conversations
+  std::vector<base::WeakPtr<Tool>> GetTools();
 
   ConversationHandler* GetConversation(std::string_view uuid);
   void GetConversation(std::string_view conversation_uuid,
@@ -301,7 +301,7 @@ class AIChatService : public KeyedService,
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
   void OnMemoryEnabledChanged();
-  void InitializeBrowserTools();
+  void InitializeTools();
 
   void GetEngineForTabOrganization(base::OnceClosure callback);
   void ContinueGetEngineForTabOrganization(base::OnceClosure callback,
@@ -339,8 +339,8 @@ class AIChatService : public KeyedService,
   // Engine for tab organization, created on demand and owned by AIChatService.
   std::unique_ptr<ai_chat::EngineConsumer> tab_organization_engine_;
 
-  // Browser-level tools that are available to all conversations
-  std::vector<std::unique_ptr<Tool>> browser_tools_;
+  // Tools that are available and shared across all conversations.
+  std::vector<std::unique_ptr<Tool>> tools_;
 
   base::FilePath profile_path_;
 

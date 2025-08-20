@@ -1445,21 +1445,21 @@ TEST_P(AIChatServiceUnitTest,
   EXPECT_EQ(handler->GetMetadataForTesting().associated_content.size(), 1u);
 }
 
-TEST_P(AIChatServiceUnitTest, InitializeBrowserTools_MemoryDisabled) {
+TEST_P(AIChatServiceUnitTest, InitializeTools_MemoryDisabled) {
   // Test that no memory tool is created when memory is disabled
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
   ResetService();
 
-  auto tools = ai_chat_service_->GetBrowserTools();
+  auto tools = ai_chat_service_->GetTools();
   EXPECT_TRUE(tools.empty());
 }
 
-TEST_P(AIChatServiceUnitTest, InitializeBrowserTools_MemoryEnabled) {
+TEST_P(AIChatServiceUnitTest, InitializeTools_MemoryEnabled) {
   // Test that memory tool is created when memory is enabled
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
   ResetService();
 
-  auto tools = ai_chat_service_->GetBrowserTools();
+  auto tools = ai_chat_service_->GetTools();
   EXPECT_EQ(tools.size(), 1u);
   EXPECT_EQ(tools[0]->Name(), mojom::kMemoryStorageToolName);
 }
@@ -1470,14 +1470,14 @@ TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_EnabledToDisabled) {
   ResetService();
 
   // Verify memory tool exists
-  auto tools = ai_chat_service_->GetBrowserTools();
+  auto tools = ai_chat_service_->GetTools();
   EXPECT_EQ(tools.size(), 1u);
 
   // Disable memory
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
 
   // Verify memory tool is removed
-  tools = ai_chat_service_->GetBrowserTools();
+  tools = ai_chat_service_->GetTools();
   EXPECT_TRUE(tools.empty());
 }
 
@@ -1487,14 +1487,14 @@ TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_DisabledToEnabled) {
   ResetService();
 
   // Verify no memory tool exists
-  auto tools = ai_chat_service_->GetBrowserTools();
+  auto tools = ai_chat_service_->GetTools();
   EXPECT_TRUE(tools.empty());
 
   // Enable memory
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
 
   // Verify memory tool is added
-  tools = ai_chat_service_->GetBrowserTools();
+  tools = ai_chat_service_->GetTools();
   EXPECT_EQ(tools.size(), 1u);
   EXPECT_EQ(tools[0]->Name(), mojom::kMemoryStorageToolName);
 }

@@ -1711,16 +1711,16 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
           }),
       tools.end());
 
-  // Add browser-level tools
-  auto browser_tools = ai_chat_service_->GetBrowserTools();
+  // Add tools managed by ai_chat_service
+  auto service_tools = ai_chat_service_->GetTools();
 
   // Filter out tools that don't support this conversation
-  std::erase_if(browser_tools,
+  std::erase_if(service_tools,
                 [is_temporary = GetIsTemporary()](const auto& tool) {
                   return !tool || !tool->SupportsConversation(is_temporary);
                 });
 
-  tools.insert(tools.end(), browser_tools.begin(), browser_tools.end());
+  tools.insert(tools.end(), service_tools.begin(), service_tools.end());
 
   return tools;
 }
