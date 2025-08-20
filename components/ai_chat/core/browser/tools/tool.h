@@ -86,7 +86,9 @@ class Tool {
 
   // Implementers should handle tool execution unless it is a built-in
   // tool handled directly by the ConversationHandler.
-  virtual void UseTool(const std::string& input_json, UseToolCallback callback);
+  virtual void UseTool(const std::string& input_json,
+                       std::optional<base::Value> client_data,
+                       UseToolCallback callback);
 
   base::WeakPtr<Tool> GetWeakPtr() { return weak_ptr_factory_.GetWeakPtr(); }
 

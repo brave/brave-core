@@ -6,7 +6,7 @@ Tools are defined in the `Tool` class but have the following variations:
 
 ### Self-executing
 
-The tool implements `UseTool(input_json, callback)` where it verifies JSON
+The tool implements `UseTool(input_json, client_data, callback)` where it verifies JSON
 parameters and sends an array of message content blocks to the callback. The agentic loop will automatically and immediately call the tool upon receiving a tool use request with the tool's name.
 
 Use for:
