@@ -1,4 +1,4 @@
-/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -17,25 +17,24 @@ import {assert} from 'chrome://resources/js/assert.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {loadTimeData} from '../i18n_setup.js'
 
-import type {SearchEngine} from '../search_page/search_engines_browser_proxy.js'
-import type {BraveSearchEnginesPageBrowserProxy} from './brave_search_engines_page_browser_proxy.js'
-import {BraveSearchEnginesPageBrowserProxyImpl} from './brave_search_engines_page_browser_proxy.js'
+import type {SearchEngine, SearchEnginesBrowserProxy} from '../search_page/search_engines_browser_proxy.js'
+import {ChoiceMadeLocation, SearchEnginesBrowserProxyImpl} from '../search_page/search_engines_browser_proxy.js'
 
-import {getTemplate} from './private_search_engine_list_dialog.html.js'
+import {getTemplate} from './normal_search_engine_list_dialog.html.js'
 
-export interface SettingsPrivateSearchEngineListDialogElement {
+export interface SettingsNormalSearchEngineListDialogElement {
   $: {
     dialog: CrDialogElement,
   }
 }
 
-const SettingsPrivateSearchEngineListDialogElementBase =
+const SettingsNormalSearchEngineListDialogElementBase =
   WebUiListenerMixin(PolymerElement)
 
-export class SettingsPrivateSearchEngineListDialogElement extends
-    SettingsPrivateSearchEngineListDialogElementBase {
+export class SettingsNormalSearchEngineListDialogElement extends
+    SettingsNormalSearchEngineListDialogElementBase {
   static get is() {
-    return 'settings-private-search-engine-list-dialog'
+    return 'settings-normal-search-engine-list-dialog'
   }
 
   static get template() {
@@ -61,6 +60,25 @@ export class SettingsPrivateSearchEngineListDialogElement extends
       },
 
       /**
+       * Whether the checkbox to save the search engine choice in guest mode
+       * should be shown.
+       */
+      showSaveGuestChoice_: {
+        type: Boolean,
+        computed: 'computeShowSaveGuestChoice_(saveGuestChoice_)',
+      },
+
+      /**
+       * State of the checkbox to save the search engine in guest mode. Null if
+       * checkbox is not displayed.
+       */
+      saveGuestChoice_: {
+        type: Boolean,
+        value: null,
+        notify: true,
+      },
+
+      /**
        * Brave search engine
        */
        braveSearchEngine_: {
@@ -74,17 +92,30 @@ export class SettingsPrivateSearchEngineListDialogElement extends
 
   private declare braveSearchEngine_: SearchEngine|undefined
   private declare selectedEngineId_: string
-  private browserProxy_: BraveSearchEnginesPageBrowserProxy =
-      BraveSearchEnginesPageBrowserProxyImpl.getInstance()
+  private declare showSaveGuestChoice_: boolean
+  private declare saveGuestChoice_: boolean|null
+  private browserProxy_: SearchEnginesBrowserProxy =
+      SearchEnginesBrowserProxyImpl.getInstance();
+
+  override ready() {
+    super.ready()
+
+    this.browserProxy_.getSaveGuestChoice().then(
+      (saveGuestChoice: boolean|null) => {
+        this.saveGuestChoice_ = saveGuestChoice
+      })
+  }
 
   private onSetAsDefaultClick_() {
     const searchEngine = this.searchEngines.find(
       engine => engine.id === parseInt(this.selectedEngineId_))
     assert(searchEngine)
 
-    this.browserProxy_.setDefaultPrivateSearchEngine(searchEngine.modelIndex)
+    this.browserProxy_.setDefaultSearchEngine(
+      searchEngine.modelIndex, ChoiceMadeLocation.SEARCH_SETTINGS,
+      this.saveGuestChoice_)
 
-    this.dispatchEvent(new CustomEvent('private-search-engine-changed', {
+    this.dispatchEvent(new CustomEvent('search-engine-changed', {
       bubbles: true,
       composed: true,
       detail: {
@@ -109,6 +140,10 @@ export class SettingsPrivateSearchEngineListDialogElement extends
     this.selectedEngineId_ = defaultSearchEngine.id.toString()
   }
 
+  private computeShowSaveGuestChoice_(saveGuestChoice: boolean|null): boolean {
+    return saveGuestChoice !== null
+  }
+
   private isBraveSearchEngine_(engine: SearchEngine): boolean {
     return engine.name === loadTimeData.getString('braveSearchEngineName')
         && engine.isPrepopulated === true;
@@ -125,11 +160,11 @@ export class SettingsPrivateSearchEngineListDialogElement extends
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-private-search-engine-list-dialog':
-    SettingsPrivateSearchEngineListDialogElement
+    'settings-normal-search-engine-list-dialog':
+     SettingsNormalSearchEngineListDialogElement;
   }
 }
 
 customElements.define(
-    SettingsPrivateSearchEngineListDialogElement.is,
-    SettingsPrivateSearchEngineListDialogElement)
+    SettingsNormalSearchEngineListDialogElement.is,
+    SettingsNormalSearchEngineListDialogElement);
