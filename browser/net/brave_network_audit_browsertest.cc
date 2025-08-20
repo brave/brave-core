@@ -246,7 +246,7 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
 // Loads brave://welcome first to simulate a first run and then loads another
 // URL, waiting some time after each load to allow gathering network requests.
 IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
-  allow_list_level_ = AllowListLevel::kFullWithoutOptInTelemetry;
+  allow_list_level_ = AllowListLevel::kBaseAndOther;
   RunTestTasks();
 }
 
@@ -259,20 +259,18 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTestsWithOptInTelemetry) {
 // Ensures that network logs are reduced when Brave Origin is enabled.
 IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest,
                        BasicTestsWithAdminPoliciesEnabled) {
-  enable_web_discovery_ = true;
   allow_list_level_ = AllowListLevel::kBase;
   audit_results_path_ = audit_results_path_.DirName().AppendASCII(
       "network_audit_origin_results.json");
 
-  profile()->GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy, true);
+  profile()->GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy, false);
 #if BUILDFLAG(ENABLE_TOR)
   g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, true);
 #endif
-  g_browser_process->local_state()->SetBoolean(kStatsReportingDisabledByPolicy,
-                                               true);
-  g_browser_process->local_state()->SetBoolean(p3a::kP3ADisabledByPolicy, true);
+  g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, false);
+  g_browser_process->local_state()->SetBoolean(p3a::kP3AEnabled, false);
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE) || BUILDFLAG(ENABLE_EXTENSIONS)
-  profile()->GetPrefs()->SetBoolean(kWebDiscoveryDisabledByPolicy, true);
+  profile()->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, false);
 #endif
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
@@ -284,8 +282,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest,
       brave_news::prefs::kBraveNewsDisabledByPolicy, true);
   profile()->GetPrefs()->SetBoolean(kBraveTalkDisabledByPolicy, true);
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  profile()->GetPrefs()->SetBoolean(speedreader::kSpeedreaderDisabledByPolicy,
-                                    true);
+  profile()->GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefFeatureEnabled,
+                                    false);
 #endif
 #endif
 
