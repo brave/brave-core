@@ -10,12 +10,13 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_writer.h"
 #include "base/memory/ptr_util.h"
 #include "base/run_loop.h"
+#include "base/strings/strcat.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
-#include "brave/components/psst/browser/content/psst_script_utils.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
@@ -441,14 +442,84 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::RunLoop user_script_insert_loop;
   base::RunLoop policy_script_insert_loop;
+  auto dict = base::Value(base::Value::Dict().Set("prop", "value"));
+  auto value = base::Value();
+
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(
+          InsertScriptInPageCallback(&user_script_insert_loop, dict.Clone()));
+
+  const auto script_with_parameters =
+      base::StrCat({"const params = ",
+                    base::WriteJsonWithOptions(
+                        dict.Clone(), base::JSONWriter::OPTIONS_PRETTY_PRINT)
+                        .value(),
+                    ";\n", policy_script});
+  EXPECT_CALL(inject_script_callback(), Run(script_with_parameters, _))
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
+                                           std::move(value)));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  user_script_insert_loop.Run();
+  policy_script_insert_loop.Run();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptReturnsEmptyDictNoPolicyScriptParams) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+  base::RunLoop user_script_insert_loop;
+  base::RunLoop policy_script_insert_loop;
   auto dict = base::Value(base::Value::Dict());
   auto value = base::Value();
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
                                            std::move(dict)));
-  EXPECT_CALL(inject_script_callback(),
-              Run(GetScriptWithParams(policy_script, dict.Clone()), _))
+  EXPECT_CALL(inject_script_callback(), Run(policy_script, _))
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
+                                           std::move(value)));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  user_script_insert_loop.Run();
+  policy_script_insert_loop.Run();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptReturnsWrongDictValuesNoPolicyScriptParams) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+  base::RunLoop user_script_insert_loop;
+  base::RunLoop policy_script_insert_loop;
+  auto dict = base::Value(base::Value::Dict().Set(
+      "prop", base::Value(base::Value::BlobStorage{0x01, 0x02, 0x03})));
+  auto value = base::Value();
+
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+                                           std::move(dict)));
+
+  EXPECT_CALL(inject_script_callback(), Run(policy_script, _))
       .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
                                            std::move(value)));
 

@@ -8,8 +8,8 @@
 #include <memory>
 #include <utility>
 
+#include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/psst/browser/content/psst_script_utils.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
@@ -22,6 +22,8 @@
 
 namespace psst {
 
+namespace {
+
 const char kShouldProcessKey[] = "should_process_key";
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
@@ -30,6 +32,23 @@ struct PsstNavigationData : public base::SupportsUserData::Data {
 
   int id;
 };
+
+std::string GetScriptWithParams(const std::string& script, base::Value params) {
+  const auto* params_dict = params.GetIfDict();
+  if (!params_dict || params_dict->empty()) {
+    return script;
+  }
+
+  std::optional<std::string> params_json = base::WriteJsonWithOptions(
+      *params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
+  if (!params_json) {
+    return script;
+  }
+
+  return base::StrCat({"const params = ", *params_json, ";\n", script});
+}
+
+}  // namespace
 
 // static
 std::unique_ptr<PsstTabWebContentsObserver>
