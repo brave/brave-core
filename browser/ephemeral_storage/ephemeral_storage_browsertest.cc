@@ -622,7 +622,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, LocalStorageIsShared) {
     EXPECT_EQ("a.com", site_a_tab2_values.iframe_1.local_storage);
     EXPECT_EQ("a.com", site_a_tab2_values.iframe_2.local_storage);
 
-    EXPECT_EQ(nullptr, site_a_tab2_values.main_frame.session_storage);
+      EXPECT_EQ(nullptr, site_a_tab2_values.main_frame.session_storage);
     EXPECT_EQ(nullptr, site_a_tab2_values.iframe_1.session_storage);
     EXPECT_EQ(nullptr, site_a_tab2_values.iframe_2.session_storage);
 
