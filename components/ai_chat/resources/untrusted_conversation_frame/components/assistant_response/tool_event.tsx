@@ -10,6 +10,7 @@ import Tooltip from '@brave/leo/react/tooltip'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
+import ToolEventTabManagement from './tool_event_tab_management'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -17,11 +18,18 @@ interface Props {
   isEntryActive: boolean
 }
 
-// Content customizable for each known tool type
+/** Content customizable for each known tool type */
 export interface ToolUseContent {
+  /** The main content to display for the tool use event */
   toolText: JSX.Element
+
+  /** Optional tooltip content to display when hovering over the toolText content */
   tooltipContent: JSX.Element | null
+
+  /** Element to display in the icon position when the tool use event is complete and has output */
   statusIcon: JSX.Element
+
+  /** Element to display in the icon position when the tool use event is in progress or has no output */
   progressIcon: JSX.Element
 }
 
@@ -75,14 +83,20 @@ function ToolEventContent(
   }
 
   // If we have a tool-specific component, use it, otherwise use the default
-  let component: ToolComponent | null = null
-
   if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
-    component = ToolEventContentUserChoice
+    return <ToolEventContentUserChoice
+      {...props}
+      toolInput={input}
+      content={content}
+    />
   }
 
-  if (component) {
-    return component({ ...props, toolInput: input, content })
+  if (toolUseEvent.toolName === Mojom.TAB_MANAGEMENT_TOOL_NAME) {
+    return <ToolEventTabManagement
+      {...props}
+      toolInput={input}
+      content={content}
+    />
   }
 
   // default

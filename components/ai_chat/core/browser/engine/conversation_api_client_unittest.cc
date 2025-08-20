@@ -122,12 +122,12 @@ GetMockEventsAndExpectedEventsBody() {
   events.emplace_back(
       ConversationEventRole::kAssistant, ConversationEventType::kChatMessage,
       std::vector<std::string>{"Going to use a tool..."}, "", std::nullopt,
-      MakeToolUseEvents(
-          {mojom::ToolUseEvent::New("get_weather", "123",
-                                    "{\"location\":\"New York\"}",
-                                    std::nullopt),
-           mojom::ToolUseEvent::New("get_screenshot", "456",
-                                    "{\"type\":\"tab\"}", std::nullopt)}));
+      MakeToolUseEvents({mojom::ToolUseEvent::New("get_weather", "123",
+                                                  "{\"location\":\"New York\"}",
+                                                  std::nullopt, false),
+                         mojom::ToolUseEvent::New("get_screenshot", "456",
+                                                  "{\"type\":\"tab\"}",
+                                                  std::nullopt, false)}));
 
   // First answer from a tool
   events.emplace_back(
@@ -819,7 +819,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
         EXPECT_MOJOM_EQ(result.event->get_tool_use_event(),
                         mojom::ToolUseEvent::New("get_weather", "call_123",
                                                  "{\"location\":\"New York\"}",
-                                                 std::nullopt));
+                                                 std::nullopt, false));
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived)
@@ -827,10 +827,11 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
       .WillOnce([&](EngineConsumer::GenerationResultData result) {
         ASSERT_TRUE(result.event);
         ASSERT_TRUE(result.event->is_tool_use_event());
-        EXPECT_MOJOM_EQ(result.event->get_tool_use_event(),
-                        mojom::ToolUseEvent::New(
-                            "search_web", "call_456",
-                            "{\"query\":\"Hello, world!\"}", std::nullopt));
+        EXPECT_MOJOM_EQ(
+            result.event->get_tool_use_event(),
+            mojom::ToolUseEvent::New("search_web", "call_456",
+                                     "{\"query\":\"Hello, world!\"}",
+                                     std::nullopt, false));
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
