@@ -20,6 +20,7 @@ describe('ToolEvent', () => {
             id: '123',
             argumentsJson: '',
             output: undefined,
+            requiresUserInteraction: false,
           }}
           isEntryActive={false}
         />

@@ -147,6 +147,8 @@ struct ToolUseEvent {
   // Output from the Tool. When null, the Tool
   // has not yet run or completed.
   array<ContentBlock>? output;
+
+  bool requires_user_interaction = false;
 };
 
 struct SearchQueriesEvent {

@@ -136,22 +136,38 @@ const toolEvents: Mojom.ToolUseEvent[] = [
   {
     id: 'abc123d',
     toolName: 'user_choice_tool',
+    requiresUserInteraction: true,
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: [createTextContentBlock('7:00pm')],
   },
   {
     id: 'abc123e',
     toolName: 'user_choice_tool',
+    requiresUserInteraction: true,
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: undefined,
   },
   {
     id: 'abc123f',
     toolName: 'user_choice_tool',
+    requiresUserInteraction: true,
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: undefined,
   },
   {
+    id: 'abc123f',
+    toolName: 'tab_management',
+    requiresUserInteraction: true,
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: undefined,
+  },
+  {
+    id: 'abc123f',
+    toolName: 'tab_management',
+    requiresUserInteraction: false,
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: [createTextContentBlock('Tab 1 moved to Tab 2')],
+  },
     id: 'abc123g',
     toolName: Mojom.NAVIGATE_TOOL_NAME,
     argumentsJson: JSON.stringify({ website_url: 'https://www.example.com' }),
@@ -191,6 +207,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
           id: 'memory-1',
           toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
           argumentsJson: '{"memory": "works as a software engineer"}',
+          requiresUserInteraction: false,
           output: [
             {
               textContentBlock: { text: '' },
@@ -237,6 +254,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
           id: 'memory-2',
           toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
           argumentsJson: '{"memory": "Likes cats"}',
+          requiresUserInteraction: false,
           output: [
             {
               textContentBlock: { text: '' },
@@ -283,6 +301,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
           id: 'memory-3',
           toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
           argumentsJson: '{"memory": "favorite hobby is hiking"}',
+          requiresUserInteraction: false,
           output: [
             {
               textContentBlock: { text: 'Memory storage failed' },
