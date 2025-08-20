@@ -93,9 +93,16 @@ void EmailAliasesService::NotifyObserversAuthStateChanged(
   }
 }
 
+void EmailAliasesService::ResetVerificationFlow() {
+  verification_simple_url_loader_.reset();
+  verification_token_.clear();
+  auth_token_.clear();
+}
+
 void EmailAliasesService::RequestAuthentication(
     const std::string& auth_email,
     RequestAuthenticationCallback callback) {
+  ResetVerificationFlow();
   auth_email_ = auth_email;
   if (auth_email.empty()) {
     std::move(callback).Run(
@@ -111,11 +118,11 @@ void EmailAliasesService::RequestAuthentication(
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(verify_init_url_);
   resource_request->method = net::HttpRequestHeaders::kPostMethod;
-  verify_init_simple_url_loader_ = network::SimpleURLLoader::Create(
+  verification_simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
-  verify_init_simple_url_loader_->AttachStringForUpload(*body,
-                                                        "application/json");
-  verify_init_simple_url_loader_->DownloadToString(
+  verification_simple_url_loader_->AttachStringForUpload(*body,
+                                                         "application/json");
+  verification_simple_url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&EmailAliasesService::OnRequestAuthenticationResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)),
@@ -125,7 +132,6 @@ void EmailAliasesService::RequestAuthentication(
 void EmailAliasesService::OnRequestAuthenticationResponse(
     RequestAuthenticationCallback callback,
     std::optional<std::string> response_body) {
-  verify_init_simple_url_loader_.reset();
   if (!response_body) {
     std::move(callback).Run(
         l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_RESPONSE_BODY));
@@ -137,8 +143,7 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
         IDS_EMAIL_ALIASES_ERROR_INVALID_RESPONSE_BODY));
     return;
   }
-  auto parsed_auth =
-      AuthenticationResponse::FromValue(response_body_dict->GetDict());
+  auto parsed_auth = AuthenticationResponse::FromValue(*response_body_dict);
   if (!parsed_auth || parsed_auth->verification_token.empty()) {
     std::move(callback).Run(l10n_util::GetStringUTF8(
         IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN));
@@ -163,11 +168,11 @@ void EmailAliasesService::RequestSession() {
     resource_request->headers.SetHeader(
         "Authorization", std::string("Bearer ") + verification_token_);
   }
-  verify_result_simple_url_loader_ = network::SimpleURLLoader::Create(
+  verification_simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
-  verify_result_simple_url_loader_->AttachStringForUpload(*body,
-                                                          "application/json");
-  verify_result_simple_url_loader_->DownloadToString(
+  verification_simple_url_loader_->AttachStringForUpload(*body,
+                                                         "application/json");
+  verification_simple_url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&EmailAliasesService::OnRequestSessionResponse,
                      weak_factory_.GetWeakPtr()),
@@ -176,7 +181,6 @@ void EmailAliasesService::RequestSession() {
 
 void EmailAliasesService::OnRequestSessionResponse(
     std::optional<std::string> response_body) {
-  verify_result_simple_url_loader_.reset();
   if (!response_body) {
     return;
   }
@@ -184,8 +188,7 @@ void EmailAliasesService::OnRequestSessionResponse(
   if (!response_body_dict) {
     return;
   }
-  auto parsed_session =
-      SessionResponse::FromValue(response_body_dict->GetDict());
+  auto parsed_session = SessionResponse::FromValue(*response_body_dict);
   if (!parsed_session || parsed_session->auth_token.empty()) {
     RequestSession();
     return;
@@ -196,11 +199,10 @@ void EmailAliasesService::OnRequestSessionResponse(
 
 void EmailAliasesService::CancelAuthenticationOrLogout(
     CancelAuthenticationOrLogoutCallback callback) {
-  verification_token_.clear();
-  auth_token_.clear();
+  ResetVerificationFlow();
+  std::move(callback).Run();
   NotifyObserversAuthStateChanged(
       mojom::AuthenticationStatus::kUnauthenticated);
-  std::move(callback).Run();
 }
 
 void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
@@ -227,8 +229,9 @@ void EmailAliasesService::AddObserver(
   auto id = observers_.Add(std::move(observer));
   auto* remote = observers_.Get(id);
   if (remote) {
-    remote->OnAuthStateChanged(mojom::AuthState::New(
-        mojom::AuthenticationStatus::kUnauthenticated, /*email=*/"", /*error_message=*/std::nullopt));
+    remote->OnAuthStateChanged(
+        mojom::AuthState::New(mojom::AuthenticationStatus::kUnauthenticated,
+                              /*email=*/"", /*error_message=*/std::nullopt));
   }
 }
 

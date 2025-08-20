@@ -74,6 +74,7 @@ class EmailAliasesService : public KeyedService,
                 BodyAsStringCallback download_to_string_callback);
   void RequestSession();
   void NotifyObserversAuthStateChanged(mojom::AuthenticationStatus status);
+  void ResetVerificationFlow();
 
   mojo::ReceiverSet<mojom::EmailAliasesService> receivers_;
   mojo::RemoteSet<mojom::EmailAliasesServiceObserver> observers_;
@@ -81,8 +82,7 @@ class EmailAliasesService : public KeyedService,
   std::string auth_token_;
   std::string auth_email_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> verify_init_simple_url_loader_;
-  std::unique_ptr<network::SimpleURLLoader> verify_result_simple_url_loader_;
+  std::unique_ptr<network::SimpleURLLoader> verification_simple_url_loader_;
   // Cached URLs computed once per service lifetime
   std::string verify_init_url_;
   std::string verify_result_url_;
