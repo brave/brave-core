@@ -31,6 +31,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -107,7 +108,8 @@ class ConversationHandler : public mojom::ConversationHandler,
       ModelService* model_service,
       AIChatCredentialManager* credential_manager,
       AIChatFeedbackAPI* feedback_api,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::vector<std::unique_ptr<ToolProvider>> tool_providers);
 
   ConversationHandler(
       mojom::Conversation* conversation,
@@ -116,6 +118,7 @@ class ConversationHandler : public mojom::ConversationHandler,
       AIChatCredentialManager* credential_manager,
       AIChatFeedbackAPI* feedback_api,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::vector<std::unique_ptr<ToolProvider>> tool_providers,
       std::optional<mojom::ConversationArchivePtr> initial_state);
 
   ~ConversationHandler() override;
@@ -234,9 +237,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   }
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
 
-  void SetToolsForTesting(
-      std::vector<std::unique_ptr<Tool>> tools_for_testing) {
-    tools_for_testing_ = std::move(tools_for_testing);
+  ToolProvider* GetFirstToolProviderForTesting() {
+    if (tool_providers_.empty()) {
+      return nullptr;
+    }
+    return tool_providers_[0].get();
   }
 
   void SetChatHistoryForTesting(
@@ -310,6 +315,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   };
 
   void InitEngine();
+
+  // Setup tools for the conversation. When a new user message is added, we
+  // can reset some of the state of the tools, ready for the next loop.
+  void InitToolsForNewGenerationLoop();
+
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
   void PerformAssistantGenerationWithPossibleContent();
@@ -412,8 +422,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   std::unique_ptr<EngineConsumer> engine_ = nullptr;
   mojom::APIError current_error_ = mojom::APIError::None;
 
-  // For testing only
-  std::vector<std::unique_ptr<Tool>> tools_for_testing_;
+  // Tools that this conversation creates
+  std::vector<std::unique_ptr<Tool>> conversation_tools_;
+
+  // Tools that external providers create
+  std::vector<std::unique_ptr<ToolProvider>> tool_providers_;
 
   // Data store UUID for conversation
   raw_ptr<mojom::Conversation> metadata_;

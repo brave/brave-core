@@ -101,7 +101,8 @@ AIChatService::AIChatService(
     os_crypt_async::OSCryptAsync* os_crypt_async,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::string_view channel_string,
-    base::FilePath profile_path)
+    base::FilePath profile_path,
+    std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories)
     : model_service_(model_service),
       tab_tracker_service_(tab_tracker_service),
       profile_prefs_(profile_prefs),
@@ -112,6 +113,7 @@ AIChatService::AIChatService(
           std::make_unique<AIChatFeedbackAPI>(url_loader_factory_,
                                               std::string(channel_string))),
       credential_manager_(std::move(ai_chat_credential_manager)),
+      tool_provider_factories_(std::move(tool_provider_factories)),
       profile_path_(profile_path) {
   DCHECK(profile_prefs_);
   pref_change_registrar_.Init(profile_prefs_);
@@ -175,7 +177,8 @@ ConversationHandler* AIChatService::CreateConversation() {
   std::unique_ptr<ConversationHandler> conversation_handler =
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
-          feedback_api_.get(), url_loader_factory_);
+          feedback_api_.get(), url_loader_factory_,
+          CreateToolProvidersForNewConversation());
   conversation_observations_.AddObservation(conversation_handler.get());
 
   // Own it
@@ -256,7 +259,8 @@ void AIChatService::OnConversationDataReceived(
   std::unique_ptr<ConversationHandler> conversation_handler =
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
-          feedback_api_.get(), url_loader_factory_, std::move(data));
+          feedback_api_.get(), url_loader_factory_,
+          CreateToolProvidersForNewConversation(), std::move(data));
   conversation_observations_.AddObservation(conversation_handler.get());
   conversation_handlers_.insert_or_assign(conversation_uuid,
                                           std::move(conversation_handler));
@@ -1163,6 +1167,15 @@ void AIChatService::OnGetFocusTabs(
     ai_chat_metrics_->tab_focus_metrics()->RecordUsage(result.value().size());
   }
   std::move(callback).Run(std::move(result));
+}
+
+std::vector<std::unique_ptr<ToolProvider>>
+AIChatService::CreateToolProvidersForNewConversation() {
+  std::vector<std::unique_ptr<ToolProvider>> tool_providers;
+  for (const auto& factory : tool_provider_factories_) {
+    tool_providers.push_back(factory->CreateToolProvider());
+  }
+  return tool_providers;
 }
 
 void AIChatService::GetEngineForTabOrganization(base::OnceClosure callback) {

@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/browser/ai_chat/browser_tool_provider_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -80,6 +81,10 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
           context);
 
+  std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories;
+  tool_provider_factories.push_back(
+      std::make_unique<BrowserToolProviderFactory>());
+
   return std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
       TabTrackerServiceFactory::GetForBrowserContext(context),
@@ -88,7 +93,8 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
       g_browser_process->os_crypt_async(),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
-      version_info::GetChannelString(chrome::GetChannel()), context->GetPath());
+      version_info::GetChannelString(chrome::GetChannel()), context->GetPath(),
+      std::move(tool_provider_factories));
 }
 
 }  // namespace ai_chat

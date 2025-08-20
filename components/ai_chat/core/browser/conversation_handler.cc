@@ -93,13 +93,15 @@ ConversationHandler::ConversationHandler(
     ModelService* model_service,
     AIChatCredentialManager* credential_manager,
     AIChatFeedbackAPI* feedback_api,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::vector<std::unique_ptr<ToolProvider>> tool_providers)
     : ConversationHandler(conversation,
                           ai_chat_service,
                           model_service,
                           credential_manager,
                           feedback_api,
                           url_loader_factory,
+                          std::move(tool_providers),
                           std::nullopt) {}
 
 ConversationHandler::ConversationHandler(
@@ -109,9 +111,11 @@ ConversationHandler::ConversationHandler(
     AIChatCredentialManager* credential_manager,
     AIChatFeedbackAPI* feedback_api,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::vector<std::unique_ptr<ToolProvider>> tool_providers,
     std::optional<mojom::ConversationArchivePtr> initial_state)
     : associated_content_manager_(
           std::make_unique<AssociatedContentManager>(this)),
+      tool_providers_(std::move(tool_providers)),
       metadata_(conversation),
       ai_chat_service_(ai_chat_service),
       model_service_(model_service),
@@ -566,6 +570,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
+  // Give tools a chance to reset their state for the next loop
+  InitToolsForNewGenerationLoop();
+  // Get any content and perform the response generation
   PerformAssistantGenerationWithPossibleContent();
 }
 
@@ -1026,6 +1033,22 @@ void ConversationHandler::AddToConversationHistory(
   chat_history_.push_back(std::move(turn));
 
   OnConversationEntryAdded(chat_history_.back());
+}
+
+void ConversationHandler::InitToolsForNewGenerationLoop() {
+  // TODO(https://github.com/brave/brave-browser/issues/48535): This is the
+  // main place to create stateful tools that this Conversation creates.
+
+  // We can also reset any already-created tools that don't want state to
+  // survive between loops (i.e. when a new user message is received).
+
+  // For now that's all tools
+  conversation_tools_.clear();
+
+  // Tool providers may want to do the same
+  for (auto& tool_provider : tool_providers_) {
+    tool_provider->OnNewGenerationLoop();
+  }
 }
 
 void ConversationHandler::PerformAssistantGenerationWithPossibleContent() {
@@ -1675,19 +1698,23 @@ void ConversationHandler::OnStateForConversationEntriesChanged() {
 
 std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
   std::vector<base::WeakPtr<Tool>> tools;
+  // Add tools that are owned by this conversation
+  std::ranges::transform(conversation_tools_, std::back_inserter(tools),
+                         [](auto& tool) { return tool->GetWeakPtr(); });
 
-  // Use test tools if they are set
-  if (!tools_for_testing_.empty()) {
-    std::ranges::transform(tools_for_testing_, std::back_inserter(tools),
-                           [](auto& tool) { return tool->GetWeakPtr(); });
-    return tools;
-  }
-
+  // Add stateless static tools
   auto conversation_tools = GetToolsForConversation(
       associated_content_manager_->HasAssociatedContent(), GetCurrentModel());
   std::ranges::transform(conversation_tools, std::back_inserter(tools),
                          [](auto& tool) { return tool->GetWeakPtr(); });
-  // TODO(petemill): Concat with tools from other areas (content, browser, etc.)
+
+  // Get externally-provided tools
+  for (auto& tool_provider : tool_providers_) {
+    auto provider_tools = tool_provider->GetTools();
+    std::ranges::transform(provider_tools, std::back_inserter(tools),
+                           [](auto* tool) { return tool->GetWeakPtr(); });
+  }
+
   return tools;
 }
 
