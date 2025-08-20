@@ -17,8 +17,8 @@ import {assert} from 'chrome://resources/js/assert.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {loadTimeData} from '../i18n_setup.js'
 
-import type {SearchEngine, SearchEnginesBrowserProxy} from '../search_engines_page/search_engines_browser_proxy.js'
-import {ChoiceMadeLocation, SearchEnginesBrowserProxyImpl} from '../search_engines_page/search_engines_browser_proxy.js'
+import type {SearchEngine, SearchEnginesBrowserProxy} from '../search_page/search_engines_browser_proxy.js'
+import {ChoiceMadeLocation, SearchEnginesBrowserProxyImpl} from '../search_page/search_engines_browser_proxy.js'
 
 import {getTemplate} from './normal_search_engine_list_dialog.html.js'
 
