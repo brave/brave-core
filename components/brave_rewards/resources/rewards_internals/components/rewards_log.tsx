@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useAppState, useAppActions, useLocale } from '../lib/app_model_context'
@@ -67,14 +66,15 @@ export function RewardsLog() {
   return (
     <div className='content-card' data-css-scope={style.scope}>
       <h4>
-        <span>Rewards Log</span>
+        <span className='title'>Rewards Log</span>
         <span className='auto-refresh'>
           <Toggle
             size='small'
             checked={autoRefresh}
             onChange={() => setAutoRefresh(!autoRefresh)}
-          />
-          <Icon name='refresh' />
+          >
+            Auto-refresh
+          </Toggle>
         </span>
         <Button size='small' onClick={download}>Download</Button>
         <Button size='small' onClick={clearLog}>Clear</Button>
