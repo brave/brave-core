@@ -833,6 +833,8 @@ source_set("unit_tests") {
 
   data = [
     "//brave/components/test/data/brave_wallet",
+    "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_cip30/test_vectors.json",
+
     # Test vectors for
     # BitcoinSerializer.AddressToScriptPubkey_BitcoinCoreTestVectors test.
     "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json",
