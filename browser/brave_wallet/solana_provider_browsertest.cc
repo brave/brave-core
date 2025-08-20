@@ -840,11 +840,12 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectRequestInProgress) {
     }
   })()
   )");
-  ASSERT_TRUE(result.error.empty());
-  ASSERT_TRUE(result.value.is_dict());
-  EXPECT_EQ(*result.value.GetDict().FindInt("code"),
+  ASSERT_TRUE(result.is_ok());
+  ASSERT_TRUE(result.is_dict());
+  const base::Value::Dict& dict = result.ExtractDict();
+  EXPECT_EQ(*dict.FindInt("code"),
             static_cast<int>(mojom::SolanaProviderError::kResourceUnavailable));
-  EXPECT_EQ(*result.value.GetDict().FindString("message"),
+  EXPECT_EQ(*dict.FindString("message"),
             l10n_util::GetStringUTF8(
                 IDS_WALLET_REQUESTED_RESOURCE_NOT_AVAILABLE_ERROR));
 }

@@ -11,8 +11,8 @@
 #include "build/branding_buildflags.h"
 #include "build/build_config.h"
 #include "chrome/common/webui_url_constants.h"
+#include "content/public/common/buildflags.h"
 #include "net/net_buildflags.h"
-#include "ppapi/buildflags/buildflags.h"
 
 namespace chrome {
 
@@ -297,6 +297,10 @@ inline constexpr char kInsecureDownloadBlockingLearnMoreUrl[] =
 
 // "myactivity.google.com" URL for the history checkbox in ClearBrowsingData.
 inline constexpr char16_t kMyActivityUrlInClearBrowsingData[] =
+    u"https://support.brave.app/";
+
+// The URL for "Your Gemini Apps Activity" page.
+inline constexpr char16_t kMyActivityGeminiAppsUrl[] =
     u"https://support.brave.app/";
 
 // Help URL for the Omnibox setting.

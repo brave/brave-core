@@ -11,6 +11,7 @@ import { PolymerElement } from
 import { PrefsMixin, PrefsMixinInterface } from
   '/shared/settings/prefs/prefs_mixin.js'
 import { RouteObserverMixin, RouteObserverMixinInterface } from '../router.js'
+import { SettingsViewMixin } from '../settings_page/settings_view_mixin.js'
 import {
   Customizations,
   CustomizationOperationError,
@@ -24,7 +25,7 @@ import { getTemplate } from './customization_subpage.html.js'
 import './memory_section.js'
 
 const BraveLeoCustomizationSubpageBase =
-    PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))) as {
+    SettingsViewMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement)))) as {
       new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
         RouteObserverMixinInterface
     }

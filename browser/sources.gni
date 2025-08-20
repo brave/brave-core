@@ -217,7 +217,6 @@ brave_chrome_browser_deps = [
   "//brave/components/password_strength_meter:mojom",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
-  "//brave/components/psst/buildflags",
   "//brave/components/request_otr/common/buildflags",
   "//brave/components/resources",
   "//brave/components/skus/browser",
@@ -317,6 +316,7 @@ if (!is_android) {
     "//brave/browser/user_education:features",
     "//brave/components/brave_account/mojom",
     "//chrome/browser/regional_capabilities",
+    "//chrome/browser/ui/thumbnails",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
     "//components/feed/mojom:mojo_bindings",
@@ -427,6 +427,8 @@ if (enable_brave_vpn) {
 if (is_android) {
   brave_chrome_browser_sources += [
     "//brave/browser/android/brave_init_android.cc",
+    "//brave/browser/password_manager/android/password_ui_view_android.cc",
+    "//brave/browser/password_manager/android/password_ui_view_android.h",
     "//brave/browser/sync/brave_sync_devices_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.h",
     "//chrome/browser/bookmarks/bookmark_html_writer.cc",
@@ -450,10 +452,12 @@ if (is_android) {
     "//brave/browser/brave_ads/android",
     "//brave/browser/download/android:jni_headers",
     "//brave/browser/ntp_background/android",
+    "//brave/browser/password_entry_edit/android",
     "//brave/browser/ui/webui/new_tab_takeover/android:new_tab_takeover",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//chrome/android:jni_headers",
+    "//chrome/browser/password_manager/android:jni_headers",
     "//components/sync_device_info",
   ]
 } else {
@@ -553,6 +557,7 @@ brave_chrome_browser_public_deps = [
   "//brave/browser:browser_process",
   "//brave/common/importer:interfaces",
   "//brave/components/brave_sync:constants",
+  "//brave/components/psst/buildflags",
   "//brave/components/variations",
 ]
 

@@ -18,6 +18,7 @@
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "ui/views/view_observer.h"
 #include "url/gurl.h"
@@ -34,7 +35,8 @@ class InstructionViewVisibilityObserver : public views::ViewObserver {
 
   // views::ViewObserver
   void OnViewVisibilityChanged(views::View* observed_view,
-                               views::View* starting_view) override;
+                               views::View* starting_view,
+                               bool visible) override;
 
  protected:
   bool visibility_changed_ = false;
@@ -53,7 +55,8 @@ InstructionViewVisibilityObserver::~InstructionViewVisibilityObserver() {
 
 void InstructionViewVisibilityObserver::OnViewVisibilityChanged(
     views::View* observed_view,
-    views::View* starting_view) {
+    views::View* starting_view,
+    bool visible) {
   visibility_changed_ = true;
   if (run_loop_.running()) {
     run_loop_.Quit();

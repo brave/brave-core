@@ -31,9 +31,10 @@ import {
 } from './brave_leo_assistant_browser_proxy.js'
 import './customization_subpage.js'
 import { getTemplate } from './personalization.html.js'
+import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js'
 
 const BraveLeoPersonalizationBase =
-  PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
+  PrefsMixin(I18nMixin(BaseMixin(SettingsViewMixin(PolymerElement))))
 
 class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
   static get is() {
@@ -111,6 +112,15 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
     window.addEventListener('focus', () => {
       this.updateCurrentPremiumStatus()
     })
+  }
+
+  override getAssociatedControlFor(childViewId: string): HTMLElement {
+    switch (childViewId) {
+      case 'customization':
+        return this.shadowRoot!.querySelector('#manageCustomization')!;
+      default:
+        throw new Error(`Unknown child view id: ${childViewId}`)
+    }
   }
 
   private fetchModelsWithSubtitles_() {

@@ -56,80 +56,84 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   }
 </style>
 
-<settings-section section="customization">
-<div class="settings-box header">
-  <div class="flex">
-    <div class="main-header">$i18n{braveLeoAssistantCustomizationTitle}</div>
-    <div class="label secondary">
-      <span>$i18nRaw{braveLeoAssistantCustomizationDescription}</span>
+<settings-subpage
+      page-title="$i18n{braveLeoAssistantCustomizationPageTitle}"
+      class="multi-card">
+  <settings-section section="customization">
+  <div class="settings-box header">
+    <div class="flex">
+      <div class="main-header">$i18n{braveLeoAssistantCustomizationTitle}</div>
+      <div class="label secondary">
+        <span>$i18nRaw{braveLeoAssistantCustomizationDescription}</span>
+      </div>
     </div>
   </div>
-</div>
 
-<settings-toggle-button
-    icon="tune"
-    pref="{{prefs.brave.ai_chat.user_customization_enabled}}"
-    label="$i18n{braveLeoAssistantCustomizationEnabledLabel}">
-</settings-toggle-button>
+  <settings-toggle-button
+      icon="tune"
+      pref="{{prefs.brave.ai_chat.user_customization_enabled}}"
+      label="$i18n{braveLeoAssistantCustomizationEnabledLabel}">
+  </settings-toggle-button>
 
-<template is="dom-if" if="[[prefs.brave.ai_chat.user_customization_enabled.value]]" restamp>
-  <div class="leo-customization-form">
-    <leo-input
-      placeholder="$i18n{braveLeoAssistantCustomizationNamePlaceholder}"
-      value="[[nameInput_]]" on-input="onNameInputChanged_"
-      showErrors$="[[isTooLong(nameInput_)]]">
-      <span class="label-text">$i18n{braveLeoAssistantCustomizationNameLabel}</span>
-      <div slot="errors" class="error-message" hidden$="[[!isTooLong(nameInput_)]]">
-        <leo-icon name="warning-triangle-filled"></leo-icon>
-        <span>$i18n{braveLeoAssistantInputLengthError}</span>
+  <template is="dom-if" if="[[prefs.brave.ai_chat.user_customization_enabled.value]]" restamp>
+    <div class="leo-customization-form">
+      <leo-input
+        placeholder="$i18n{braveLeoAssistantCustomizationNamePlaceholder}"
+        value="[[nameInput_]]" on-input="onNameInputChanged_"
+        showErrors$="[[isTooLong(nameInput_)]]">
+        <span class="label-text">$i18n{braveLeoAssistantCustomizationNameLabel}</span>
+        <div slot="errors" class="error-message" hidden$="[[!isTooLong(nameInput_)]]">
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          <span>$i18n{braveLeoAssistantInputLengthError}</span>
+        </div>
+      </leo-input>
+      <leo-input
+        placeholder="$i18n{braveLeoAssistantCustomizationJobPlaceholder}"
+        value="[[jobInput_]]" on-input="onJobInputChanged_"
+        showErrors$="[[isTooLong(jobInput_)]]">
+        <span class="label-text">$i18n{braveLeoAssistantCustomizationJobLabel}</span>
+        <div slot="errors" class="error-message" hidden$="[[!isTooLong(jobInput_)]]">
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          <span>$i18n{braveLeoAssistantInputLengthError}</span>
+        </div>
+      </leo-input>
+      <leo-input
+        placeholder="$i18n{braveLeoAssistantCustomizationTonePlaceholder}"
+        value="[[toneInput_]]" on-input="onToneInputChanged_"
+        showErrors$="[[isTooLong(toneInput_)]]">
+        <span class="label-text">$i18n{braveLeoAssistantCustomizationToneLabel}</span>
+        <div slot="errors" class="error-message" hidden$="[[!isTooLong(toneInput_)]]">
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          <span>$i18n{braveLeoAssistantInputLengthError}</span>
+        </div>
+      </leo-input>
+      <leo-input
+        placeholder="$i18n{braveLeoAssistantCustomizationOtherPlaceholder}"
+        value="[[otherInput_]]" on-input="onOtherInputChanged_"
+        showErrors$="[[isTooLong(otherInput_)]]">
+        <span class="label-text">$i18n{braveLeoAssistantCustomizationOtherLabel}</span>
+        <div slot="errors" class="error-message" hidden$="[[!isTooLong(otherInput_)]]">
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          <span>$i18n{braveLeoAssistantInputLengthError}</span>
+        </div>
+      </leo-input>
+      <div class="actions">
+        <leo-button
+          kind="outline"
+          on-click="onSave"
+          isDisabled$="[[isSaveDisabled_]]"
+        >
+          [[getSaveButtonText_(changesSaved_)]]
+          <template is="dom-if" if="[[changesSaved_]]" restamp>
+            <leo-icon name="check-circle-outline" slot="icon-after"></leo-icon>
+          </template>
+        </leo-button>
       </div>
-    </leo-input>
-    <leo-input
-      placeholder="$i18n{braveLeoAssistantCustomizationJobPlaceholder}"
-      value="[[jobInput_]]" on-input="onJobInputChanged_"
-      showErrors$="[[isTooLong(jobInput_)]]">
-      <span class="label-text">$i18n{braveLeoAssistantCustomizationJobLabel}</span>
-      <div slot="errors" class="error-message" hidden$="[[!isTooLong(jobInput_)]]">
-        <leo-icon name="warning-triangle-filled"></leo-icon>
-        <span>$i18n{braveLeoAssistantInputLengthError}</span>
-      </div>
-    </leo-input>
-    <leo-input
-      placeholder="$i18n{braveLeoAssistantCustomizationTonePlaceholder}"
-      value="[[toneInput_]]" on-input="onToneInputChanged_"
-      showErrors$="[[isTooLong(toneInput_)]]">
-      <span class="label-text">$i18n{braveLeoAssistantCustomizationToneLabel}</span>
-      <div slot="errors" class="error-message" hidden$="[[!isTooLong(toneInput_)]]">
-        <leo-icon name="warning-triangle-filled"></leo-icon>
-        <span>$i18n{braveLeoAssistantInputLengthError}</span>
-      </div>
-    </leo-input>
-    <leo-input
-      placeholder="$i18n{braveLeoAssistantCustomizationOtherPlaceholder}"
-      value="[[otherInput_]]" on-input="onOtherInputChanged_"
-      showErrors$="[[isTooLong(otherInput_)]]">
-      <span class="label-text">$i18n{braveLeoAssistantCustomizationOtherLabel}</span>
-      <div slot="errors" class="error-message" hidden$="[[!isTooLong(otherInput_)]]">
-        <leo-icon name="warning-triangle-filled"></leo-icon>
-        <span>$i18n{braveLeoAssistantInputLengthError}</span>
-      </div>
-    </leo-input>
-    <div class="actions">
-      <leo-button
-        kind="outline"
-        on-click="onSave"
-        isDisabled$="[[isSaveDisabled_]]"
-      >
-        [[getSaveButtonText_(changesSaved_)]]
-        <template is="dom-if" if="[[changesSaved_]]" restamp>
-          <leo-icon name="check-circle-outline" slot="icon-after"></leo-icon>
-        </template>
-      </leo-button>
     </div>
-  </div>
-</template>
-</settings-section>
+  </template>
+  </settings-section>
 
-<settings-section section="memories">
-  <memory-section prefs="{{prefs}}"></memory-section>
-</settings-section>
+  <settings-section section="memories">
+    <memory-section prefs="{{prefs}}"></memory-section>
+  </settings-section>
+</settings-subpage>

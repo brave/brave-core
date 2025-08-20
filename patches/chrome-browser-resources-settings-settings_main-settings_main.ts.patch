@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/settings/settings_main/settings_main.ts b/chrome/browser/resources/settings/settings_main/settings_main.ts
+index 95d66322dfa8709392e67307af231a2694f9db15..deb30e8db88ddfda832f600b11366cbb537f14ee 100644
+--- a/chrome/browser/resources/settings/settings_main/settings_main.ts
++++ b/chrome/browser/resources/settings/settings_main/settings_main.ts
+@@ -49,7 +49,7 @@ import type {SettingsPlugin} from './settings_plugin.js';
+ 
+ function getTopLevelRoute() {
+   if (!loadTimeData.getBoolean('isGuest')) {
+-    return routes.PEOPLE;
++    return routes.GET_STARTED;
+   }
+ 
+   let guestTopLevelRoute = routes.SEARCH;

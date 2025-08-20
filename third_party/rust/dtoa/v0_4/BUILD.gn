@@ -27,6 +27,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "dtoa"
   cargo_pkg_description =
       "Fast functions for printing floating-point primitives to an io::Write"
+  cargo_pkg_repository = "https://github.com/dtolnay/dtoa"
   cargo_pkg_version = "0.4.8"
 
   rustenv = []

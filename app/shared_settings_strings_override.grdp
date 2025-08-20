@@ -13,8 +13,6 @@
   <if expr="is_chromeos">
     </if>
 
-  <if expr="chromeos_ash">
-    </if>
   <if expr="is_chromeos">
     </if>
 </grit-part>

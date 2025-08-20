@@ -10,7 +10,7 @@ using PageInfoCookiesContentViewBaseTestClassBraveOverrides =
 
 TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
        ThirdPartyCoookiesInfoIsHidden) {
-  PageInfoCookiesContentView::CookiesNewInfo cookie_info =
+  PageInfoCookiesContentView::CookiesInfo cookie_info =
       DefaultCookieInfoForTests();
   content_view()->SetCookieInfo(cookie_info);
 
@@ -20,7 +20,7 @@ TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
 
 TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
        ThirdPartyCoookiesInfoIsHiddenInIncognitoMode) {
-  PageInfoCookiesContentView::CookiesNewInfo cookie_info =
+  PageInfoCookiesContentView::CookiesInfo cookie_info =
       DefaultCookieInfoForTests();
   cookie_info.controls_state = CookieControlsState::kAllowed3pc;
   cookie_info.blocking_status = CookieBlocking3pcdStatus::kAll;

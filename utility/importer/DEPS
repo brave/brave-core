@@ -2,6 +2,7 @@ include_rules = [
   "+brave/components/constants/brave_paths.h",
   "+components/password_manager/core/common",
   "+components/user_data_importer/common",
+  "+components/user_data_importer/content",
   "+components/webdata/common",
 ]
 

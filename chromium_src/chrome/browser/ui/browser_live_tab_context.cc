@@ -26,7 +26,8 @@ std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab(
   }
 
   // Add custom title data to extra data for tabs if it exists.
-  auto* tab_interface = browser_->tab_strip_model()->GetTabAtIndex(index);
+  auto* tab_interface =
+      browser_->GetFeatures().tab_strip_model()->GetTabAtIndex(index);
   CHECK(tab_interface);
   auto* tab_ui_helper = tab_interface->GetTabFeatures()->tab_ui_helper();
   CHECK(tab_ui_helper);

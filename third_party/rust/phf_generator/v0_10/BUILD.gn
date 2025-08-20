@@ -24,6 +24,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "Steven Fackler <sfackler@gmail.com>"
   cargo_pkg_name = "phf_generator"
   cargo_pkg_description = "PHF generation logic"
+  cargo_pkg_repository = "https://github.com/sfackler/rust-phf"
   cargo_pkg_version = "0.10.0"
 
   deps = [

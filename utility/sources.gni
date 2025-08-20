@@ -25,16 +25,10 @@ brave_utility_deps = [
 ]
 
 if (is_android) {
-  brave_utility_sources += [
-    "//chrome/utility/importer/bookmark_html_reader.cc",
-    "//chrome/utility/importer/bookmark_html_reader.h",
-  ]
-
-  brave_utility_deps += [
-    "//chrome/common/importer",
-    "//chrome/common/importer:interfaces",
-    "//components/favicon_base",
-  ]
+  # This deps is only to suppress gn check error:
+  # ERROR at //chrome/utility/services.cc:56:11: Include not allowed.
+  #  #include "chrome/common/importer/profile_import.mojom.h"
+  brave_utility_deps += [ "//chrome/common/importer:interfaces" ]
 }
 
 brave_utility_deps += brave_utility_importer_deps

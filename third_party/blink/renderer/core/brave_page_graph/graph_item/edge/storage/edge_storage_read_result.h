@@ -24,7 +24,7 @@ class EdgeStorageReadResult final : public EdgeStorage {
                         NodeStorage* out_node,
                         NodeActor* in_node,
                         const FrameId& frame_id,
-                        const String& key,
+                        const blink::String& key,
                         const blink::PageGraphValue& value);
 
   ~EdgeStorageReadResult() override;

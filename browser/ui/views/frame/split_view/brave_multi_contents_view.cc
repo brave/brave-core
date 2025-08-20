@@ -61,7 +61,9 @@ void BraveMultiContentsView::Layout(PassKey) {
 
 void BraveMultiContentsView::OnDoubleClicked() {
   // Give same width on both contents view.
-  delegate_->ResizeWebContents(0.5);
+  // Pass true to make delegate save ratio in session service like resizing
+  // complete.
+  delegate_->ResizeWebContents(0.5, /*done_resizing=*/true);
 }
 
 void BraveMultiContentsView::UpdateSecondaryLocationBar() {

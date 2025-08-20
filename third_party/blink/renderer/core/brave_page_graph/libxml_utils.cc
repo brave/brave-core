@@ -16,6 +16,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversion_utils.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_utf8_adaptor.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_view.h"
 
 namespace brave_page_graph {
 
@@ -46,10 +47,11 @@ XmlUtf8String::XmlUtf8String(std::string_view str) {
       xmlCharStrndup(str.data(), base::saturated_cast<int>(str.size()));
 }
 
-XmlUtf8String::XmlUtf8String(const String& str)
-    : XmlUtf8String(
-          StringUTF8Adaptor(str, Utf8ConversionMode::kStrictReplacingErrors)
-              .AsStringView()) {}
+XmlUtf8String::XmlUtf8String(const blink::String& str)
+    : XmlUtf8String(blink::StringUtf8Adaptor(
+                        str,
+                        blink::Utf8ConversionMode::kStrictReplacingErrors)
+                        .AsStringView()) {}
 
 XmlUtf8String::XmlUtf8String(int value)
     : XmlUtf8String(base::NumberToString(value)) {}

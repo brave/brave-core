@@ -41,12 +41,13 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
   JSCardanoWalletApi(const JSCardanoWalletApi&) = delete;
   JSCardanoWalletApi& operator=(const JSCardanoWalletApi&) = delete;
 
-  static gin::WrapperInfo kWrapperInfo;
+  static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
+                                                    gin::kCardanoWalletApi};
 
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
       v8::Isolate* isolate) override;
-  const char* GetTypeName() override;
+  const gin::WrapperInfo* wrapper_info() const override;
 
  private:
   bool EnsureConnected();

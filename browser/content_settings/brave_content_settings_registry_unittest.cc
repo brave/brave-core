@@ -42,7 +42,7 @@ TEST_F(BraveContentSettingsRegistryTest, Properties) {
       registry()->Get(ContentSettingsType::BRAVE_COOKIES);
   ASSERT_TRUE(info);
 
-  EXPECT_THAT(info->allowlisted_primary_schemes(),
+  EXPECT_THAT(info->permission_settings_info()->allowlisted_primary_schemes(),
               ElementsAre("chrome", "devtools"));
 
   // Check the other properties are populated correctly.
@@ -59,9 +59,7 @@ TEST_F(BraveContentSettingsRegistryTest, Properties) {
             website_settings_info->pref_name());
   EXPECT_EQ("profile.default_content_setting_values.shieldsCookiesV3",
             website_settings_info->default_value_pref_name());
-  ASSERT_TRUE(website_settings_info->initial_default_value().is_int());
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT,
-            website_settings_info->initial_default_value().GetInt());
+  ASSERT_TRUE(website_settings_info->initial_default_value().is_none());
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   EXPECT_EQ(PrefRegistry::NO_REGISTRATION_FLAGS,
             website_settings_info->GetPrefRegistrationFlags());

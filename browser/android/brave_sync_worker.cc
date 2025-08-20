@@ -346,7 +346,7 @@ std::string GetWordsFromSeedHex(const std::string& str_seed_hex) {
   std::string sync_code_words;
   if (base::HexStringToBytes(str_seed_hex, &bytes)) {
     DCHECK_EQ(bytes.size(), SEED_BYTES_COUNT);
-    if (bytes.size(), SEED_BYTES_COUNT) {
+    if (bytes.size() == SEED_BYTES_COUNT) {
       sync_code_words = brave_sync::crypto::PassphraseFromBytes32(bytes);
       if (sync_code_words.empty()) {
         VLOG(1) << __func__ << " PassphraseFromBytes32 failed for "

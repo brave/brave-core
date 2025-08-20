@@ -109,9 +109,9 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
   }
 
   // Avoid blocking fingerprinting in WebUI, extensions, etc.
-  const String protocol = context->GetSecurityOrigin()
-                              ->GetOriginOrPrecursorOriginIfOpaque()
-                              ->Protocol();
+  const blink::String protocol = context->GetSecurityOrigin()
+                                     ->GetOriginOrPrecursorOriginIfOpaque()
+                                     ->Protocol();
   static constexpr const char* kExcludedProtocols[] = {
       url::kFileScheme,
       "chrome-extension",
@@ -166,7 +166,7 @@ bool AllowFingerprinting(ExecutionContext* context,
 }
 
 bool AllowFontFamily(ExecutionContext* context,
-                     const AtomicString& family_name) {
+                     const blink::AtomicString& family_name) {
   if (!context) {
     return true;
   }
@@ -350,7 +350,7 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
 }
 
 WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
-                                                    wtf_size_t length) {
+                                                    blink::wtf_size_t length) {
   uint8_t key[32];
   crypto::HMAC h(crypto::HMAC::SHA256);
   const auto farbling_token_bytes =
@@ -371,7 +371,7 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
 
 WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
   FarblingPRNG prng = MakePseudoRandomGenerator();
-  WTF::StringBuilder result;
+  blink::StringBuilder result;
   result.Append(real_user_agent);
   int extra = prng() % kFarbledUserAgentMaxExtraSpaces;
   for (int i = 0; i < extra; i++) {
@@ -399,7 +399,7 @@ int BraveSessionCache::FarbledInteger(FarbleKey key,
 
 bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
-    const AtomicString& family_name) {
+    const blink::AtomicString& family_name) {
   if (!settings ||
       GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_FONT) ==
           BraveFarblingLevel::OFF ||

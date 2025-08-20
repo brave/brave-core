@@ -21,6 +21,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "universal-hash"
   cargo_pkg_description = "Traits which describe the functionality of universal hash functions (UHFs)"
+  cargo_pkg_repository = "https://github.com/RustCrypto/traits"
   cargo_pkg_version = "0.5.1"
 
   deps = [

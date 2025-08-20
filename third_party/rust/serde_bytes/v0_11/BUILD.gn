@@ -29,6 +29,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "serde_bytes"
   cargo_pkg_description =
       "Optimized handling of `&[u8]` and `Vec<u8>` for Serde"
+  cargo_pkg_repository = "https://github.com/serde-rs/bytes"
   cargo_pkg_version = "0.11.17"
 
   deps = [ "//brave/third_party/rust/serde/v1:lib" ]

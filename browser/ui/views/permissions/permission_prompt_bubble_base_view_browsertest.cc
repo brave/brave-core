@@ -46,6 +46,7 @@ class MockPermissionPromptDelegate
   void Deny() override {}
   void Dismiss() override {}
   void Ignore() override {}
+  void SetPromptOptions(PromptOptions prompt_options) override {}
   void FinalizeCurrentRequests() override {}
   void OpenHelpCenterLink(const ui::Event& event) override {}
   void PreIgnoreQuietPrompt() override {}
@@ -90,7 +91,6 @@ class MockPermissionPromptBubbleBaseView
       base::WeakPtr<permissions::PermissionPrompt::Delegate> delegate)
       : PermissionPromptBubbleBaseView(browser,
                                        delegate,
-                                       base::TimeTicks::Now(),
                                        PermissionPromptStyle::kBubbleOnly) {
     CreateWidget();
     ShowWidget();
