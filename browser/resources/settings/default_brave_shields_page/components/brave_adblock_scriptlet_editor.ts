@@ -4,12 +4,16 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
-import { CrDialogElement } from 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
+import {
+  CrDialogElement
+} from 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
 import 'chrome://resources/cr_elements/cr_input/cr_input.js'
 
 import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import { getTemplate } from './brave_adblock_scriptlet_editor.html.js'
 
@@ -59,7 +63,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
     super.ready()
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
-      window.testing[`adblockScriptletEditor`] = this.shadowRoot
+      window.testing.adblockScriptletEditor = this.shadowRoot
     }
 
     this.oldScriptletName_ = this.scriptlet.name
@@ -73,9 +77,9 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
     this.updateError(ErrorCode.kOK)
   }
 
-  updateError(error_code: ErrorCode) {
-    this.isScriptletValid_ = error_code === ErrorCode.kOK
-    switch (error_code) {
+  updateError(errorCode: ErrorCode) {
+    this.isScriptletValid_ = errorCode === ErrorCode.kOK
+    switch (errorCode) {
       case ErrorCode.kOK:
         this.scriptletErrorMessage_ = ''
         break
@@ -135,7 +139,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   }
 
   startsWithCaseInsensitive(str: string, prefix: string): boolean {
-    return str.slice(0, prefix.length).toLowerCase() == prefix.toLowerCase()
+    return str.slice(0, prefix.length).toLowerCase() === prefix.toLowerCase()
   }
 
   updateScriptletBeforeSave_() {

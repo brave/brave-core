@@ -21,12 +21,11 @@ import type {OriginToggleButtonElement} from './origin_toggle_button.js'
 
 const SettingsBraveOriginPageElementBase =
   PrefsMixin(BaseMixin(I18nMixin(WebUiListenerMixin(
-    PolymerElement)))) as {
-    new(): PolymerElement &
-           PrefsMixinInterface &
-           WebUiListenerMixinInterface &
-           I18nMixinInterface
-  }
+    PolymerElement)))) as new() =>
+      PolymerElement &
+         PrefsMixinInterface &
+         WebUiListenerMixinInterface &
+         I18nMixinInterface
 
 /**
  * 'settings-brave-origin-page' is the settings page containing
@@ -62,7 +61,7 @@ export class SettingsBraveOriginPageElement
       const toggleElement = toggle as OriginToggleButtonElement;
       if (toggleElement.checked) {
         // Set to off (accounting for inverted toggles)
-        const valueToSet = toggleElement.inverted ? true : false;
+        const valueToSet = toggleElement.inverted
         await this.braveOriginHandler_.setPolicyValue(
             toggleElement.policyKey, valueToSet);
       }

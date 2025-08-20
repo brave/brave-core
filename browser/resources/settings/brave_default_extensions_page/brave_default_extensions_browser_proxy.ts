@@ -16,15 +16,15 @@ export type ExtensionV2 = {
 }
 
 export interface BraveDefaultExtensionsBrowserProxy  {
-  setWidevineEnabled(value: boolean): void
-  setMediaRouterEnabled(value: boolean): void
-  isWidevineEnabled(): Promise<boolean>
-  getRestartNeeded(): Promise<boolean>
-  wasSignInEnabledAtStartup(): boolean
-  isMediaRouterEnabled(): boolean
-  getExtensionsManifestV2(): Promise<ExtensionV2[]>
-  enableExtensionManifestV2(id: string, enabled: boolean): Promise<boolean>
-  removeExtensionManifestV2(id: string): Promise<boolean>
+  setWidevineEnabled: (value: boolean) => void
+  setMediaRouterEnabled: (value: boolean) => void
+  isWidevineEnabled: () => Promise<boolean>
+  getRestartNeeded: () => Promise<boolean>
+  wasSignInEnabledAtStartup: () => boolean
+  isMediaRouterEnabled: () => boolean
+  getExtensionsManifestV2: () => Promise<ExtensionV2[]>
+  enableExtensionManifestV2: (id: string, enabled: boolean) => Promise<boolean>
+  removeExtensionManifestV2: (id: string) => Promise<boolean>
 }
 
 export class BraveDefaultExtensionsBrowserProxyImpl implements BraveDefaultExtensionsBrowserProxy {

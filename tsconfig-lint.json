@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig",
   "include": [
+    "./browser/resources/settings/**/*",
     "./components/**/*",
     "./chromium_src/**/*",
     "./build/commands/**/*",

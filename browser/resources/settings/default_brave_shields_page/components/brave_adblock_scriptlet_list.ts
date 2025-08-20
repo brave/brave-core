@@ -8,7 +8,9 @@ import 'chrome://resources/cr_elements/icons.html.js'
 
 import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import { BaseMixin } from '../../base_mixin.js'
 
@@ -18,8 +20,7 @@ import { loadTimeData } from '../../i18n_setup.js'
 
 import {
   Scriptlet,
-  BraveAdblockBrowserProxyImpl,
-  ErrorCode
+  BraveAdblockBrowserProxyImpl
 } from '../brave_adblock_browser_proxy.js'
 
 import './brave_adblock_scriptlet_editor.js'
@@ -58,7 +59,7 @@ class AdblockScriptletList extends AdblockScriptletListBase {
 
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
-      window.testing[`adblockScriptletList`] = this.shadowRoot
+      window.testing.adblockScriptletList = this.shadowRoot
     }
 
     this.isEditing_ = false

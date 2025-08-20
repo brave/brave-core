@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  html
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import { SiteListEntryElement } from '../site_settings/site_list_entry.js'
 
@@ -31,7 +33,6 @@ RegisterPolymerTemplateModifications({
         'template[is="dom-if"][if="[[shouldShowResetButton_(model, readOnlyList)]]"]')
     if (!resetSiteTemplate) {
       console.error('[Settings] Could not find resetSite template')
-      return
     } else {
       const resetSite = resetSiteTemplate.content.querySelector('#resetSite')
       if (!resetSite) {

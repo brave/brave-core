@@ -36,7 +36,6 @@ import '../brave_content_page/containers.js'
 import {
   html,
   RegisterStyleOverride,
-  RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
 
 

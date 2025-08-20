@@ -33,7 +33,7 @@
     "list_affected_tests": "node ./build/commands/scripts/commands.js list_affected_tests",
     "test:scripts": "jest build/commands/lib build/commands/scripts",
     "tslint": "npm run eslint",
-    "eslint": "eslint ./components ./build",
+    "eslint": "eslint ./components ./build ./browser/resources/settings/**/*.ts",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui-gen-tsconfig": "node build/commands/scripts/genTsConfig",

@@ -13,15 +13,13 @@
  export * from '../customization_settings.mojom-webui.js'
 
  export interface BraveLeoAssistantBrowserProxy {
-  resetLeoData(): void
-  getLeoIconVisibility(): Promise<boolean>
-  toggleLeoIcon(): void
-  getSettingsHelper(): mojom.AIChatSettingsHelperRemote
-  getCallbackRouter(): mojom.SettingsPageCallbackRouter
-  getCustomizationSettingsHandler():
-    mojomCustomizationSettings.CustomizationSettingsHandlerRemote
-  getCustomizationSettingsCallbackRouter():
-    mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
+  resetLeoData: () => void
+  getLeoIconVisibility: () => Promise<boolean>
+  toggleLeoIcon: () => void
+  getSettingsHelper: () => mojom.AIChatSettingsHelperRemote
+  getCallbackRouter: () => mojom.SettingsPageCallbackRouter
+  getCustomizationSettingsHandler: () => mojomCustomizationSettings.CustomizationSettingsHandlerRemote
+  getCustomizationSettingsCallbackRouter: () => mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
  }
 
  export class BraveLeoAssistantBrowserProxyImpl
@@ -30,6 +28,7 @@
    callbackRouter: mojom.SettingsPageCallbackRouter
    customizationSettingsHandler:
      mojomCustomizationSettings.CustomizationSettingsHandlerRemote
+
    customizationSettingsCallbackRouter:
      mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
 

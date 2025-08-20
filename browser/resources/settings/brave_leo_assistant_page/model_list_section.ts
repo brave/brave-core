@@ -10,7 +10,9 @@ import 'chrome://resources/cr_elements/icons.html.js'
 
 import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import { BaseMixin } from '../base_mixin.js'
 
@@ -51,6 +53,7 @@ class ModelListSection extends ModelListSectionBase {
 
   browserProxy_: BraveLeoAssistantBrowserProxy =
     BraveLeoAssistantBrowserProxyImpl.getInstance()
+
   declare customModelsList_: Model[]
   declare isEditingModelIndex_: number | null
   declare showModelConfig_: boolean
@@ -76,7 +79,8 @@ class ModelListSection extends ModelListSectionBase {
     // Need to do explicit null check because 0 is a valid index
     const isEditing = this.isEditingModelIndex_ !== null
 
-    // Since model-config-ui is conditionally rendered, we use this.$$ API to access the element
+    // Since model-config-ui is conditionally rendered, we use this.$$ API to
+    // access the element
     const modelConfigElement: any = this.$$('#model-config-ui')
 
     if (!e.detail.modelConfig.options.customModelOptions) {
@@ -90,7 +94,7 @@ class ModelListSection extends ModelListSectionBase {
         .getSettingsHelper()
         .saveCustomModel(
           this
-            .isEditingModelIndex_ as number /* We can be confident that this is a number because of the null check */,
+            .isEditingModelIndex_! /* We can be confident that this is a number because of the null check */,
           e.detail.modelConfig
         )
     } else {

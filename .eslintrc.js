@@ -8,12 +8,12 @@ module.exports = {
   'extends': ['love', 'prettier'],
   'ignorePatterns': [
     '.storybook/*',
-    'browser/*',
     'ui/webui/resources/*',
     '*.js',
     '*.d.ts',
     'tools/chromium_src/lit_mangler/*.ts',
     '!build/**/*.js', // check brave/build/ js files
+    'build/rustup/**/star-wasm/www/**/*.js',
     '!components/playlist/resources/media_detector/*.js' /* allow js scripts which will be bundled into playlist */
   ],
   'env': {
@@ -122,7 +122,7 @@ module.exports = {
     '@typescript-eslint/prefer-readonly': 0,
     '@typescript-eslint/key-spacing': 0,
     'import/no-absolute-path': 0,
-    '@typescript-eslint/class-literal-property-style': 1,
+    '@typescript-eslint/class-literal-property-style': 0,
     /* TODO(nullhook): ENABLE the below rules in the future */
     'no-useless-call': 0,
     '@typescript-eslint/consistent-type-assertions': 0,
