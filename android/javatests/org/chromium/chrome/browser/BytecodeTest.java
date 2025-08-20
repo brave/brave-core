@@ -1618,7 +1618,8 @@ public class BytecodeTest {
                         BooleanSupplier.class,
                         BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
                         ObservableSupplier.class,
-                        BrowserControlsStateProvider.class));
+                        BrowserControlsStateProvider.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
