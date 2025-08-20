@@ -11,14 +11,22 @@ import {
   type NetworkInfo,
 } from './brave_wallet_browser_proxy.js'
 
-import type {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js'
-import type {CrLazyRenderElement} from 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.js'
-import type {IronListElement} from 'chrome://resources/polymer/v3_0/iron-list/iron-list.js'
+import type {
+  CrActionMenuElement
+} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js'
+import type {
+  CrLazyRenderElement
+} from 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.js'
+import type {
+  IronListElement
+} from 'chrome://resources/polymer/v3_0/iron-list/iron-list.js'
 
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {RouteObserverMixin} from '../router.js'
 import type {Route} from '../router.js'
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {BaseMixin} from '../base_mixin.js'
 import {getTemplate} from './wallet_networks_list.html.js'
 import {loadTimeData} from '../i18n_setup.js'
@@ -100,19 +108,19 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     }
   }
 
-  private declare addNewAllowed: boolean
-  private declare coin: number
-  private declare listTitle: string
-  private declare networks: NetworkInfo[]
-  private declare knownNetworks: string[]
-  private declare customNetworks: string[]
-  private declare hiddenNetworks: string[]
-  private declare showAddWalletNetworkDialog_: boolean
-  private declare selectedNetwork: NetworkInfo | Record<string, never>
-  private declare defaultNetwork: string
-  private declare isDefaultNetwork: boolean
-  private declare canRemoveNetwork: boolean
-  private declare canResetNetwork: boolean
+  declare private addNewAllowed: boolean
+  declare private coin: number
+  declare private listTitle: string
+  declare private networks: NetworkInfo[]
+  declare private knownNetworks: string[]
+  declare private customNetworks: string[]
+  declare private hiddenNetworks: string[]
+  declare private showAddWalletNetworkDialog_: boolean
+  declare private selectedNetwork: NetworkInfo | Record<string, never>
+  declare private defaultNetwork: string
+  declare private isDefaultNetwork: boolean
+  declare private canRemoveNetwork: boolean
+  declare private canResetNetwork: boolean
 
   browserProxy_ = BraveWalletBrowserProxyImpl.getInstance()
 
@@ -266,7 +274,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     this.showAddWalletNetworkDialog_ = true
   }
 
-  private onItemDoubleClick(event: Event&{model: {item: NetworkInfo}}) {
+  private onItemDoubleClick(event: Event&{ model: { item: NetworkInfo } }) {
     this.selectedNetwork = event.model.item
     this.showAddWalletNetworkDialog_ = true
   }
@@ -295,7 +303,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     this.updateNetworks()
   }
 
-  private onHideButtonClicked_(event: Event&{model: {item: NetworkInfo}}) {
+  private onHideButtonClicked_(event: Event&{ model: { item: NetworkInfo } }) {
     const chainId = event.model.item.chainId
     if (this.hiddenNetworks.includes(event.model.item.chainId)) {
       this.browserProxy_.
@@ -310,7 +318,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     }
   }
 
-  private onNetworkMenuTapped_(event: Event&{model: {item: NetworkInfo}}) {
+  private onNetworkMenuTapped_(event: Event&{ model: { item: NetworkInfo } }) {
     this.selectedNetwork = event.model.item
     this.isDefaultNetwork =
       this.checkIsDefaultNetwork(this.selectedNetwork.chainId)

@@ -1,22 +1,34 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * you can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  WebUiListenerMixin
+} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {RouteObserverMixin, Router} from '../router.js'
 import {routes} from '../route.js'
 import {loadTimeData} from '../i18n_setup.js'
-import {BraveSearchEnginesPageBrowserProxyImpl} from './brave_search_engines_page_browser_proxy.js'
+import {
+  BraveSearchEnginesPageBrowserProxyImpl
+} from './brave_search_engines_page_browser_proxy.js'
 import {getTemplate} from './brave_search_engines_page.html.js'
-import type {CrToastElement} from 'chrome://resources/cr_elements/cr_toast/cr_toast.js'
-import type {SearchEngine} from '../search_page/search_engines_browser_proxy.js'
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import type {
+  CrToastElement
+} from 'chrome://resources/cr_elements/cr_toast/cr_toast.js'
+import type {
+  SearchEngine
+} from '../search_page/search_engines_browser_proxy.js'
+import {
+  PrefsMixin
+} from '/shared/settings/prefs/prefs_mixin.js'
 
 const BraveSearchEnginesPageBase =
   WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
@@ -67,7 +79,8 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
       this.set('privateSearchEngines_', list)
     }
 
-    this.browserProxy_.getPrivateSearchEnginesList().then(updatePrivateSearchEngines)
+    this.browserProxy_.getPrivateSearchEnginesList().
+      then(updatePrivateSearchEngines)
     this.addWebUiListener(
       'private-search-engines-changed', updatePrivateSearchEngines)
   }
@@ -100,8 +113,8 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
     prefs: chrome.settingsPrivate.PrefObject)
   {
     // When default search engine is enforced, configured provider is not used.
-    // If we install search provider extension, that extension will be used on normal and
-    // private(tor) window. So, just hide this option.
+    // If we install search provider extension, that extension will be used on
+    // normal and private(tor) window. So, just hide this option.
     return !loadTimeData.getBoolean('isGuest') && !this.isPrefManaged_(prefs)
   }
 
@@ -110,7 +123,7 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   }
 
   private isWebDiscoveryNativeEnabled_() {
-    return loadTimeData.getBoolean('isWebDiscoveryNativeEnabled');
+    return loadTimeData.getBoolean('isWebDiscoveryNativeEnabled')
   }
 
   private computeDefaultPrivateSearchEngine_() {

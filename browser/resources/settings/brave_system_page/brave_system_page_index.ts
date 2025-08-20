@@ -11,7 +11,7 @@ import type { CrViewManagerElement } from 'chrome://resources/cr_elements/cr_vie
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import { loadTimeData } from '../i18n_setup.js'
 
-import { PerformanceBrowserProxy, PerformanceBrowserProxyImpl } from '../performance_page/performance_browser_proxy.js'
+import { PerformanceBrowserProxyImpl } from '../performance_page/performance_browser_proxy.js'
 
 import { routes } from '../route.js';
 import { RouteObserverMixin, Router } from '../router.js';

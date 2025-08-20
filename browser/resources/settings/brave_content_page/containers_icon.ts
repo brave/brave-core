@@ -27,7 +27,8 @@ const iconsMap = new Map<Icon, string>([
   [Icon.kMessaging, 'container-messaging'],
 ])
 
-export class SettingsBraveContentContainersIconElement extends CrLitElement {
+export class SettingsBraveContentContainersIconElement
+extends CrLitElement {
   static get is() {
     return 'settings-brave-content-containers-icon'
   }
@@ -57,6 +58,7 @@ export class SettingsBraveContentContainersIconElement extends CrLitElement {
     }
     return icon
   }
+
   accessor backgroundColor: string = 'magenta' // Debug color that should never be visible
   accessor selected: boolean = false
 

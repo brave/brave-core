@@ -5,19 +5,28 @@
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {
+  I18nMixin,
+  I18nMixinInterface
+} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {BaseMixin} from '../base_mixin.js'
 import {loadTimeData} from '../i18n_setup.js'
-import {NetworkInfo, BraveWalletBrowserProxy, BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.js';
-import {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
+import {
+  NetworkInfo,
+  BraveWalletBrowserProxy,
+  BraveWalletBrowserProxyImpl
+} from './brave_wallet_browser_proxy.js';
+import {
+  CrInputElement
+} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import {getTemplate} from './add_wallet_network_dialog.html.js'
 import '../ui/searchable_drop_down_cros.js';
 
 const SettingsBraveAddWalletNetworkDialogElementBase =
-  I18nMixin(BaseMixin(PolymerElement)) as {
-    new(): PolymerElement & I18nMixinInterface
-  }
+  I18nMixin(BaseMixin(PolymerElement)) as new() => PolymerElement & I18nMixinInterface
 
 export interface Url {
   value: string;
@@ -35,7 +44,8 @@ declare global {
   }
 }
 
-export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAddWalletNetworkDialogElementBase {
+export class SettingsBraveAddWalletNetworkDialogElement
+extends SettingsBraveAddWalletNetworkDialogElementBase {
   static get is() {
     return 'add-wallet-network-dialog'
   }
@@ -205,14 +215,14 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
     super.connectedCallback()
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
-      window.testing['addWalletNetworkDialog'] = this.shadowRoot
+      window.testing.addWalletNetworkDialog = this.shadowRoot
     }
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback()
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
-      delete window.testing['addWalletNetworkDialog']
+      delete window.testing.addWalletNetworkDialog
     }
   }
 
@@ -235,7 +245,7 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
 
   validateURL(value: string) {
     const url_ = value
-    if (url_.trim() == '') {
+    if (url_.trim() === '') {
       return false;
     }
     let url;
@@ -264,7 +274,7 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
 
   isInvalidInputForList_(value: string, list: string) {
     if (value.trim() === '') {
-      return (list === 'icon' || list === 'block') ? false : true
+      return !(list === 'icon' || list === 'block')
     }
     return !this.validateURL(value)
   }
@@ -294,7 +304,9 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
   updateSubmitButtonState_() {
     for (const inputElement of this.shadowRoot!.querySelectorAll('.mandatory')) {
       const input = inputElement as CrInputElement
-      if (input && (input.invalid || !input.value || (input.value.trim && input.value.trim() === ''))) {
+      if (input &&
+          (input.invalid || !input.value ||
+           (input.value.trim && input.value.trim() === ''))) {
         this.isSubmitButtonEnabled_ = false
         return;
       }
@@ -334,8 +346,10 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
     element.invalid = this.isInvalidInputForList_(element.value, list)
     this.updateSubmitButtonState_()
     const empty = element.value.trim() === ''
-    if (list == 'rpc' && element.invalid) {
-      const text = empty && !this.hasValidRPCUrls() ? this.i18n('walletAddNetworkMandarotyFieldError')
+    if (list === 'rpc' && element.invalid) {
+      const text =
+        empty && !this.hasValidRPCUrls()
+        ? this.i18n('walletAddNetworkMandarotyFieldError')
         : this.i18n('walletAddNetworkInvalidURLInput')
       element.setAttribute('error-message', text)
     }
@@ -406,14 +420,14 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
         this.setSubmissionResult(success, errorMessage)
         if (success) {
           this.dispatchEvent(new CustomEvent('close'));
-          return
         }
       })
   }
 
   getHexNumber(value: string) {
-    if (!isNaN(Number(value)))
+    if (!isNaN(Number(value))) {
       return '0x' + Number(value).toString(16)
+    }
     return value
   }
 
@@ -436,20 +450,23 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
     }
     payload.coin = this.coin
     payload.rpcUrls = this.transformListForSerializaion_(this.rpcUrls)
-    payload.activeRpcEndpointIndex = payload.rpcUrls.findIndex((it: string) => it === this.selectedRpcUrl)
+    payload.activeRpcEndpointIndex =
+      payload.rpcUrls.findIndex((it: string) => it === this.selectedRpcUrl)
     if (payload.activeRpcEndpointIndex < 0)
       payload.activeRpcEndpointIndex = 0
-    payload.blockExplorerUrls = this.transformListForSerializaion_(this.blockUrls)
+    payload.blockExplorerUrls =
+      this.transformListForSerializaion_(this.blockUrls)
     payload.iconUrls = this.transformListForSerializaion_(this.iconUrls)
     if (this.networks.find(element => { return element.chainId === payload.chainId })) {
       if (!window.confirm(this.i18n('walletAddNetworkDialogReplaceNetwork'))) {
         return
       }
-      this.browserProxy_.removeChain(payload.chainId, this.coin).then((success) => {
-        if (!success)
-          return;
-        this.addNewNetwork(payload)
-      })
+      this.browserProxy_.
+        removeChain(payload.chainId, this.coin).then((success) => {
+          if (!success)
+            return;
+          this.addNewNetwork(payload)
+        })
       return
     }
     this.addNewNetwork(payload)
@@ -458,7 +475,8 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
   onSearchValueChanged_(newValue: string) {
     if (!newValue)
       return
-    const found = this.prepopulatedNetworks_.find(item => item.searchString === newValue)
+    const found =
+      this.prepopulatedNetworks_.find(item => item.searchString === newValue)
     if (found) {
       this.chainIdValue_ = found.chainId
       this.invalidChainIdMessage_ = ''
@@ -472,11 +490,15 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
         this.currencyDecimalsValue_ = decimals
       }
       this.rpcUrls = found.rpcUrls.map(value => { return { value } })
-      this.selectedRpcUrl = found.rpcUrls[found.activeRpcEndpointIndex] || found.rpcUrls[0]
-      if (found.iconUrls.length)
+      this.selectedRpcUrl =
+        found.rpcUrls[found.activeRpcEndpointIndex] || found.rpcUrls[0]
+      if (found.iconUrls.length) {
         this.iconUrls = found.iconUrls.map(value => { return { value } })
-      if (found.blockExplorerUrls.length)
-        this.blockUrls = found.blockExplorerUrls.map(value => { return { value } })
+      }
+      if (found.blockExplorerUrls.length) {
+        this.blockUrls =
+          found.blockExplorerUrls.map(value => { return { value } })
+      }
       this.isSubmitButtonEnabled_ = true
       this.updatePlusButtonState('rpc')
       this.updatePlusButtonState('icon')
@@ -488,4 +510,5 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
 }
 
 customElements.define(
-  SettingsBraveAddWalletNetworkDialogElement.is, SettingsBraveAddWalletNetworkDialogElement)
+  SettingsBraveAddWalletNetworkDialogElement.is,
+  SettingsBraveAddWalletNetworkDialogElement)

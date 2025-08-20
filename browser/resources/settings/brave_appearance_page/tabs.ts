@@ -6,20 +6,31 @@
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
-import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
-import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {OpenWindowProxyImpl} from 'chrome://resources/js/open_window_proxy.js';
+import {
+  PrefsMixin,
+  PrefsMixinInterface
+} from '/shared/settings/prefs/prefs_mixin.js'
+import {
+  I18nMixin,
+  I18nMixinInterface
+} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  OpenWindowProxyImpl
+} from 'chrome://resources/js/open_window_proxy.js'
 
 import {loadTimeData} from '../i18n_setup.js'
 
 import {getTemplate} from './tabs.html.js'
 
-const SettingsBraveAppearanceTabsElementBase = PrefsMixin(I18nMixin(PolymerElement)) as {
-  new (): PolymerElement & I18nMixinInterface & PrefsMixinInterface
-}
+const SettingsBraveAppearanceTabsElementBase =
+  PrefsMixin(I18nMixin(PolymerElement)) as new () =>
+    PolymerElement & I18nMixinInterface & PrefsMixinInterface
 
-export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceTabsElementBase {
+export class SettingsBraveAppearanceTabsElement
+extends SettingsBraveAppearanceTabsElementBase {
   static get is() {
     return 'settings-brave-appearance-tabs'
   }
@@ -46,7 +57,8 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
             },
             {
               value: 0,
-              name: loadTimeData.getString('appearanceSettingsTabHoverModeTooltip')
+              name: loadTimeData.
+                getString('appearanceSettingsTabHoverModeTooltip')
             }
           ]
         }
@@ -55,7 +67,7 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
   }
 
   declare private tabTooltipModes_:
-      Array<{value: number, name: string}>
+      Array<{ value: number, name: string }>
 
   private isSharedPinnedTabsEnabled_() {
     return loadTimeData.getBoolean('isSharedPinnedTabsEnabled')
@@ -63,11 +75,11 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
 
   private onDiscardRingTreatmentLearnMoreLinkClick_() {
     OpenWindowProxyImpl.getInstance().openUrl(
-      loadTimeData.getString('discardRingTreatmentLearnMoreUrl'));
+      loadTimeData.getString('discardRingTreatmentLearnMoreUrl'))
   }
 
   private isTreeTabsFlagEnabled() {
-    return loadTimeData.getBoolean('isTreeTabsFlagEnabled');
+    return loadTimeData.getBoolean('isTreeTabsFlagEnabled')
   }
 
   private isHideVerticalTabCompletelyFlagEnabled() {
@@ -75,4 +87,6 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
   }
 }
 
-customElements.define(SettingsBraveAppearanceTabsElement.is, SettingsBraveAppearanceTabsElement)
+customElements.define(
+  SettingsBraveAppearanceTabsElement.is,
+  SettingsBraveAppearanceTabsElement)

@@ -7,13 +7,14 @@ import type {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polym
 import {dedupingMixin} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {loadTimeData} from '../i18n_setup.js'
 
-const AD_BLOCK_ONLY_MODE_ENABLED_PREF = 'brave.shields.adblock_only_mode_enabled'
+const AD_BLOCK_ONLY_MODE_ENABLED_PREF =
+  'brave.shields.adblock_only_mode_enabled'
 
-type Constructor<T> = new (...args: any[]) => T;
+type Constructor<T> = new (...args: any[]) => T
 
 export interface AdBlockOnlyModeMixinInterface {
-  setAdBlockOnlyModeEnabled(enabled: boolean): void;
-  isAdBlockOnlyModeEnabled_: boolean;
+  setAdBlockOnlyModeEnabled: (enabled: boolean) => void
+  isAdBlockOnlyModeEnabled_: boolean
 }
 
 export const AdBlockOnlyModeMixin = dedupingMixin(
@@ -41,21 +42,24 @@ export const AdBlockOnlyModeMixin = dedupingMixin(
 
           chrome.settingsPrivate.onPrefsChanged.addListener(
               (prefs: chrome.settingsPrivate.PrefObject[]) => {
-                const pref = prefs.find(p => p.key === AD_BLOCK_ONLY_MODE_ENABLED_PREF)
+                const pref =
+                  prefs.find(p => p.key === AD_BLOCK_ONLY_MODE_ENABLED_PREF)
                 if (pref) {
                   this.onAdBlockOnlyModeEnabledPrefChanged(pref)
                 }
               })
         }
 
-        onAdBlockOnlyModeEnabledPrefChanged(pref: chrome.settingsPrivate.PrefObject): void {
-          this.isAdBlockOnlyModeEnabled_ =
+        onAdBlockOnlyModeEnabledPrefChanged(
+          pref: chrome.settingsPrivate.PrefObject): void {
+            this.isAdBlockOnlyModeEnabled_ =
               pref.value &&
               loadTimeData.getBoolean('isAdBlockOnlyModeFeatureEnabled')
           }
 
         setAdBlockOnlyModeEnabled(enabled: boolean): void {
-          chrome.settingsPrivate.setPref(AD_BLOCK_ONLY_MODE_ENABLED_PREF, enabled);
+          chrome.settingsPrivate.setPref(
+            AD_BLOCK_ONLY_MODE_ENABLED_PREF, enabled)
         }
       }
 

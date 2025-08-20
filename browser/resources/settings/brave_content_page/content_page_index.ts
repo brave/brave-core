@@ -8,18 +8,23 @@ import '/shared/settings/prefs/prefs.js';
 
 import '../settings_shared.css.js';
 
-import type { CrViewManagerElement } from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import type {
+  CrViewManagerElement
+} from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import { RouteObserverMixin } from '../router.js';
 import type { Route } from '../router.js';
 import { routes } from '../route.js';
 
 import type { SettingsPlugin } from '../settings_main/settings_plugin.js';
-import { SearchableViewContainerMixin } from '../settings_page/searchable_view_container_mixin.js';
+import {
+  SearchableViewContainerMixin
+} from '../settings_page/searchable_view_container_mixin.js';
 
 import { getTemplate } from './content_page_index.html.js';
-import {loadTimeData} from '../i18n_setup.js'
 
 import {pageVisibility} from '../page_visibility.js';
 import type {PageVisibility} from '../page_visibility.js';
@@ -89,7 +94,8 @@ SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
           this.showDefaultViews_();
           break;
         case routes.FONTS:
-          this.$.viewManager.switchView('fonts', 'no-animation', 'no-animation');
+          this.$.viewManager.
+            switchView('fonts', 'no-animation', 'no-animation');
           break;
       }
     });
@@ -103,4 +109,5 @@ declare global {
 }
 
 customElements.define(
-  SettingsBraveContentPageIndexElement.is, SettingsBraveContentPageIndexElement);
+  SettingsBraveContentPageIndexElement.is,
+  SettingsBraveContentPageIndexElement);
