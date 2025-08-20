@@ -3,20 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {sendWithPromise} from 'chrome://resources/js/cr.js';
+import {sendWithPromise} from 'chrome://resources/js/cr.js'
 
 export interface BraveVPNBrowserProxy {
-  isWireguardServiceInstalled(): Promise<boolean>;
-  isBraveVpnConnected(): Promise<boolean>;
+  isWireguardServiceInstalled: () => Promise<boolean>
+  isBraveVpnConnected: () => Promise<boolean>
 }
 
 export class BraveVPNBrowserProxyImpl implements BraveVPNBrowserProxy {
   isWireguardServiceInstalled () {
-    return sendWithPromise('isWireguardServiceInstalled');
+    return sendWithPromise('isWireguardServiceInstalled')
   }
 
   isBraveVpnConnected () {
-    return sendWithPromise('isBraveVpnConnected');
+    return sendWithPromise('isBraveVpnConnected')
   }
 
   static getInstance(): BraveVPNBrowserProxy {

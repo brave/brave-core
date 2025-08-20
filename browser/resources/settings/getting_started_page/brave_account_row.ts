@@ -37,6 +37,7 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
+
   protected accessor signedIn: boolean = false
 }
 

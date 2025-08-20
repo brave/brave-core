@@ -28,10 +28,8 @@ import {
 } from './brave_leo_assistant_browser_proxy.js'
 import { getTemplate } from './memory_section.html.js'
 
-const MemorySectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement))) as {
-  new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
-    BaseMixinInterface
-}
+const MemorySectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement))) as new () =>
+  PolymerElement & PrefsMixinInterface & I18nMixinInterface & BaseMixinInterface
 
 class MemorySection extends MemorySectionBase {
   static get is() {
@@ -81,6 +79,7 @@ class MemorySection extends MemorySectionBase {
 
   browserProxy_: BraveLeoAssistantBrowserProxy =
     BraveLeoAssistantBrowserProxyImpl.getInstance()
+
   declare memoriesList_: string[]
   declare editingMemoryItem_: string | null
   declare showMemoryDialog_: boolean
@@ -149,7 +148,7 @@ class MemorySection extends MemorySectionBase {
     }
   }
 
-  handleDelete_(e: { model: { item: string | null }}) {
+  handleDelete_(e: { model: { item: string | null } }) {
     this.deleteMemoryItem_ = e.model.item
     this.showDeleteDialog_ = true
   }
@@ -168,7 +167,7 @@ class MemorySection extends MemorySectionBase {
     this.deleteMemoryItem_ = null
   }
 
-  handleEdit_(e: { model: { item: string | null }}) {
+  handleEdit_(e: { model: { item: string | null } }) {
     this.editingMemoryItem_ = e.model.item
     this.editingMemory_ = e.model.item || ''
     this.showMemoryDialog_ = true

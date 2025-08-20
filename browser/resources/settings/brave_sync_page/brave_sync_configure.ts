@@ -3,32 +3,44 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import './brave_sync_code_dialog.js';
-import './brave_sync_delete_account_dialog.js';
+import './brave_sync_code_dialog.js'
+import './brave_sync_delete_account_dialog.js'
 
-import {SyncStatus} from '/shared/settings/people_page/sync_browser_proxy.js';
-import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
-import {DomRepeatEvent, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {SyncStatus} from '/shared/settings/people_page/sync_browser_proxy.js'
+import {
+  I18nMixin,
+  I18nMixinInterface
+} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {
+  WebUiListenerMixin,
+  WebUiListenerMixinInterface
+} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {
+  DomRepeatEvent,
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {BaseMixin} from '../base_mixin.js'
-import {Route, Router} from '../router.js';
+import {Route, Router} from '../router.js'
 
-import {BraveDeviceInfo, BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+import {
+  BraveDeviceInfo,
+  BraveSyncBrowserProxy
+} from './brave_sync_browser_proxy.js'
 import {getTemplate} from './brave_sync_configure.html.js'
 
 /**
  * @fileoverview
- * 'settings-brave-sync-configure' is the set of controls which fetches, displays
- * and updates the sync configuration.
+ * 'settings-brave-sync-configure' is the set of controls which fetches,
+ * displays and updates the sync configuration.
  */
 
 const SettingsBraveSyncConfigureElementBase =
-  I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement))) as {
-    new(): PolymerElement & WebUiListenerMixinInterface & I18nMixinInterface
-  }
+  I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement))) as new () =>
+    PolymerElement & WebUiListenerMixinInterface & I18nMixinInterface
 
-export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigureElementBase {
+export class SettingsBraveSyncConfigureElement
+extends SettingsBraveSyncConfigureElementBase {
   static get is() {
     return 'settings-brave-sync-configure'
   }
@@ -57,7 +69,8 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
        */
       deviceList_: Array,
       /**
-       * Sync code dialog type. Can only have 1 at a time, so use a single property.
+       * Sync code dialog type. Can only have 1 at a time, so use a single
+       * property.
        * 'qr' | 'words' | 'input' | 'choose' | null
        * @private
        */
@@ -69,16 +82,16 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
         type: Boolean,
         value: false
       },
-    };
+    }
   }
 
-  private declare syncStatus: SyncStatus;
-  private declare syncCode: string | undefined;
-  private declare deviceList_: BraveDeviceInfo[];
-  private declare syncCodeDialogType_: string | null;
-  private declare syncDoingDeleteAccount_: Boolean | false;
+  private declare syncStatus: SyncStatus
+  private declare syncCode: string | undefined
+  private declare deviceList_: BraveDeviceInfo[]
+  private declare syncCodeDialogType_: string | null
+  private declare syncDoingDeleteAccount_: Boolean | false
 
-  browserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
+  browserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance()
 
   override async connectedCallback() {
     super.connectedCallback()
@@ -103,8 +116,9 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
    * when sync chain reset
    */
   async ensureSetSyncCode_() {
-    if (!!this.syncCode)
+    if (this.syncCode !== undefined) {
       return
+    }
     const syncCode = await this.browserProxy_.getSyncCode()
     this.syncCode = syncCode
   }
@@ -129,12 +143,12 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
     if (!shouldReset) {
       return
     }
-    await this.browserProxy_.resetSyncChain();
+    await this.browserProxy_.resetSyncChain()
     // Clear sync code because user might use the same page to create a new sync
     // chain without reload
     this.syncCode = undefined
-    const router = Router.getInstance();
-    router.navigateTo((router.getRoutes() as {BRAVE_SYNC: Route}).BRAVE_SYNC);
+    const router = Router.getInstance()
+    router.navigateTo((router.getRoutes() as { BRAVE_SYNC: Route }).BRAVE_SYNC)
   }
 
   onPermanentlyDeleteSyncAccount_() {
@@ -142,7 +156,7 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
     // use the same page to create a new sync chain without reload. In worse
     // case, we will reload the sync code
     this.syncCode = undefined
-    this.syncDoingDeleteAccount_ = true;
+    this.syncDoingDeleteAccount_ = true
   }
 
   async onDeleteDevice_(e: DomRepeatEvent<BraveDeviceInfo>) {
@@ -152,7 +166,7 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
       return
     }
     const device: BraveDeviceInfo = e.model.item
-    await this.browserProxy_.deleteDevice(device.guid);
+    await this.browserProxy_.deleteDevice(device.guid)
   }
 }
 

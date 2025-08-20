@@ -5,7 +5,7 @@
 
 import {loadTimeData} from "../i18n_setup.js"
 
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {AddSiteDialogElement} from '../site_settings/add_site_dialog.js'
 
 // Extend AddSiteDialog to change placeholder message for Shields.
@@ -18,12 +18,15 @@ export class BraveAddSiteDialogElement extends BaseElement {
     })
     return extended
   }
+
   sitePlaceholder: string
+
   override ready() {
     super.ready()
-    const is_brave_shields = this.category === 'braveShields'
-    const resource_id = is_brave_shields ? 'braveShieldsExampleTemplate'
-                                         : 'addSiteExceptionPlaceholder'
-    this.sitePlaceholder = loadTimeData.getString(resource_id)
+    const isBraveShields= this.category === 'braveShields'
+    const resourceId =
+      isBraveShields ? 'braveShieldsExampleTemplate'
+      : 'addSiteExceptionPlaceholder'
+    this.sitePlaceholder = loadTimeData.getString(resourceId)
   }
 }

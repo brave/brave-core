@@ -3,16 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import '../settings_shared.css.js';
+import '../settings_shared.css.js'
 
-import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import 'chrome://resources/cr_elements/cr_button/cr_button.js';
-import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
+import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
+import 'chrome://resources/cr_elements/cr_button/cr_button.js'
+import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js'
 
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  I18nMixin,
+  I18nMixinInterface
+} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {BaseMixin} from '../base_mixin.js'
-import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js'
 import {getTemplate} from './brave_sync_code_dialog.html.js'
 
 /**
@@ -24,11 +29,11 @@ import {getTemplate} from './brave_sync_code_dialog.html.js'
  */
 
 const SettingsBraveSyncCodeDialogElementBase =
-  I18nMixin(BaseMixin(PolymerElement)) as {
-    new(): PolymerElement & I18nMixinInterface
-  }
+  I18nMixin(BaseMixin(PolymerElement)) as new() =>
+    PolymerElement & I18nMixinInterface
 
-export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDialogElementBase {
+export class SettingsBraveSyncCodeDialogElement
+extends SettingsBraveSyncCodeDialogElementBase {
   static get is() {
     return 'settings-brave-sync-code-dialog'
   }
@@ -68,25 +73,25 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
         type: String,
         value: null
       },
-    };
+    }
   }
 
   static get observers() {
     return [
       'getQRCode_(syncCode, codeType)',
       'computeSyncCodeWordCount_(syncCode, codeType)',
-    ];
+    ]
   }
 
-  private declare syncCode: string | undefined;
-  private declare codeType: 'qr' | 'words' | 'choose' | 'input' | null;
-  private declare syncCodeValidationError: string;
-  private declare syncCodeWordCount_: number;
-  private declare hasCopiedSyncCode_: boolean;
-  private declare qrCodeImageUrl_: string;
-  private hasCopiedSyncCodeTimer_: ReturnType<typeof window.setTimeout>;
+  private declare syncCode: string | undefined
+  private declare codeType: 'qr' | 'words' | 'choose' | 'input' | null
+  private declare syncCodeValidationError: string
+  private declare syncCodeWordCount_: number
+  private declare hasCopiedSyncCode_: boolean
+  private declare qrCodeImageUrl_: string
+  private hasCopiedSyncCodeTimer_: ReturnType<typeof window.setTimeout>
 
-  syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
+  syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance()
 
   async computeSyncCodeWordCount_() {
     if (this.codeType !== 'words' && this.codeType !== 'input') {
@@ -146,7 +151,8 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
       return
     }
     try {
-      this.qrCodeImageUrl_ = await this.syncBrowserProxy_.getQRCode(this.syncCode)
+      this.qrCodeImageUrl_ =
+        await this.syncBrowserProxy_.getQRCode(this.syncCode)
     } catch (e) {
       console.error('getQRCode failed', e)
     }

@@ -6,15 +6,22 @@
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  WebUiListenerMixin
+} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {BaseMixin} from '../base_mixin.js'
 import {loadTimeData} from '../i18n_setup.js'
 
-import {BraveDefaultExtensionsBrowserProxyImpl, ExtensionV2} from './brave_default_extensions_browser_proxy.js'
+import {
+  BraveDefaultExtensionsBrowserProxyImpl,
+  ExtensionV2
+} from './brave_default_extensions_browser_proxy.js'
 import {getTemplate} from './brave_extensions_manifest_v2_subpage.html.js'
 
 const BraveExtensionsV2SubpageBase =
@@ -54,12 +61,12 @@ class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
     super.ready()
 
     if (!loadTimeData.getBoolean('extensionsManifestV2Feature')) {
-      return;
+      return
     }
 
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
-      window.testing[`extensionsV2Subpage`] = this.shadowRoot
+      window.testing.extensionsV2Subpage = this.shadowRoot
     }
 
     this.addWebUiListener('brave-extension-manifest-v2-changed',
@@ -81,7 +88,7 @@ class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
     e.stopPropagation()
 
     this.closeToast_()
-    this.installInProgress_ = e.target.checked;
+    this.installInProgress_ = e.target.checked
     this.browserProxy_
       .enableExtensionManifestV2(e.target.id, e.target.checked)
       .catch((reason: string) => {

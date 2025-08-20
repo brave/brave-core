@@ -3,14 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { afterNextRender, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { I18nMixin, I18nMixinInterface } from 'chrome://resources/cr_elements/i18n_mixin.js'
-import { PrefsMixin, PrefsMixinInterface } from '/shared/settings/prefs/prefs_mixin.js'
+import {
+  afterNextRender,
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
+import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { loadTimeData } from "../i18n_setup.js"
 import { getTemplate } from './toolbar.html.js'
-import { BraveWalletBrowserProxy, BraveWalletBrowserProxyImpl } from '../brave_wallet_page/brave_wallet_browser_proxy.js';
-import {Route, RouteObserverMixin, Router} from '../router.js';
-import {routes} from '../route.js';
+import {
+  BraveWalletBrowserProxy,
+  BraveWalletBrowserProxyImpl
+} from '../brave_wallet_page/brave_wallet_browser_proxy.js'
+import {Route, RouteObserverMixin, Router} from '../router.js'
+import {routes} from '../route.js'
 
 
 import '../settings_shared.css.js'
@@ -25,7 +31,8 @@ const SettingsBraveAppearanceToolbarElementBase = RouteObserverMixin(
  * 'settings-brave-appearance-toolbar' is the settings page area containing
  * brave's appearance settings related to the toolbar.
  */
-class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolbarElementBase {
+class SettingsBraveAppearanceToolbarElement
+extends SettingsBraveAppearanceToolbarElementBase {
   static get is() {
     return 'settings-brave-appearance-toolbar'
   }
@@ -44,14 +51,15 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
   }
 
   private declare isNativeWalletEnabled_: boolean
-  private walletBrowserProxy_: BraveWalletBrowserProxy = BraveWalletBrowserProxyImpl.getInstance()
+  private walletBrowserProxy_: BraveWalletBrowserProxy =
+    BraveWalletBrowserProxyImpl.getInstance()
 
   override ready() {
     super.ready()
 
     this.walletBrowserProxy_.isNativeWalletEnabled().then(val => {
       this.isNativeWalletEnabled_ = val
-    });
+    })
   }
 
   /**
@@ -59,11 +67,12 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
    */
   override currentRouteChanged(route: Route) {
     if (route !== routes.APPEARANCE) {
-      return;
+      return
     }
-    const elemToHighlight = Router.getInstance().getQueryParameters().get('highlight');
+    const elemToHighlight =
+      Router.getInstance().getQueryParameters().get('highlight')
     if (!elemToHighlight) {
-      return;
+      return
     }
 
     const elem = this.shadowRoot?.querySelector(elemToHighlight)
@@ -82,12 +91,12 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
   private getShowHomeSubLabel_(
     showHomepage: boolean, isNtp: boolean, homepageValue: string): string {
     if (!showHomepage) {
-      return this.i18n('homeButtonDisabled');
+      return this.i18n('homeButtonDisabled')
     }
     if (isNtp) {
-      return this.i18n('homePageNtp');
+      return this.i18n('homePageNtp')
     }
-    return homepageValue || this.i18n('customWebAddress');
+    return homepageValue || this.i18n('customWebAddress')
   }
 
   private isBraveRewardsSupported_() {
@@ -107,4 +116,6 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
   }
 }
 
-customElements.define(SettingsBraveAppearanceToolbarElement.is, SettingsBraveAppearanceToolbarElement)
+customElements.define(
+  SettingsBraveAppearanceToolbarElement.is,
+  SettingsBraveAppearanceToolbarElement)

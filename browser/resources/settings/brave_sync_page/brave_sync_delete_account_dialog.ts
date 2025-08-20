@@ -3,16 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import '../settings_shared.css.js';
+import '../settings_shared.css.js'
 
-import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import 'chrome://resources/cr_elements/cr_button/cr_button.js';
-import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
+import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
+import 'chrome://resources/cr_elements/cr_button/cr_button.js'
+import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js'
 
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  I18nMixin,
+  I18nMixinInterface
+} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {BaseMixin} from '../base_mixin.js'
-import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js'
 import {getTemplate} from './brave_sync_delete_account_dialog.html.js'
 
 /**
@@ -23,12 +28,11 @@ import {getTemplate} from './brave_sync_delete_account_dialog.html.js'
  */
 
 const SettingsBraveSyncDeleteAccountDialogElementBase =
-  I18nMixin(BaseMixin(PolymerElement)) as {
-    new(): PolymerElement & I18nMixinInterface
-  }
+  I18nMixin(BaseMixin(PolymerElement)) as new() =>
+    PolymerElement & I18nMixinInterface
 
 export class SettingsBraveSyncCodeDialogElement
-             extends SettingsBraveSyncDeleteAccountDialogElementBase {
+extends SettingsBraveSyncDeleteAccountDialogElementBase {
   static get is() {
     return 'settings-brave-sync-delete-account-dialog'
   }
@@ -65,15 +69,15 @@ export class SettingsBraveSyncCodeDialogElement
         value: false,
         notify: true
       },
-    };
+    }
   }
 
-  private declare deleteAccountError: string;
-  private declare deleteIsInProgress: boolean;
-  private declare doingDeleteAccount: boolean;
+  private declare deleteAccountError: string
+  private declare deleteIsInProgress: boolean
+  private declare doingDeleteAccount: boolean
 
   syncBrowserProxy_: BraveSyncBrowserProxy =
-                                            BraveSyncBrowserProxy.getInstance();
+    BraveSyncBrowserProxy.getInstance()
 
   async handleDeleteAccount_() {
     let errorText = ''

@@ -6,18 +6,26 @@
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
-import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
-import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {DropdownMenuOptionList, SettingsDropdownMenuElement} from '../controls/settings_dropdown_menu.js';
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {
+  DropdownMenuOptionList,
+  SettingsDropdownMenuElement
+} from '../controls/settings_dropdown_menu.js';
 
 import {BaseMixin} from '../base_mixin.js';
 import {loadTimeData} from '../i18n_setup.js'
 import {routes} from '../route.js';
 import {Router} from '../router.js';
-import {SettingsViewMixin, SettingsViewMixinInterface} from '../settings_page/settings_view_mixin.js';
+import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js';
 
-import {AppearanceBrowserProxy, AppearanceBrowserProxyImpl} from '../appearance_page/appearance_browser_proxy.js';
+import {
+  AppearanceBrowserProxy,
+  AppearanceBrowserProxyImpl
+} from '../appearance_page/appearance_browser_proxy.js';
 import {getTemplate} from './content.html.js'
 
 /**
@@ -36,7 +44,8 @@ export interface SettingsBraveContentContentElement {
 const SettingsBraveAppearanceContentElementBase =
     I18nMixin(PrefsMixin(BaseMixin(SettingsViewMixin(PolymerElement))));
 
-export class SettingsBraveContentContentElement extends SettingsBraveAppearanceContentElementBase {
+export class SettingsBraveContentContentElement
+extends SettingsBraveAppearanceContentElementBase {
   static get is() {
     return 'settings-brave-content-content'
   }
@@ -103,7 +112,8 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
   override getAssociatedControlFor(childViewId: string): HTMLElement {
     switch (childViewId) {
       case 'fonts':
-        return this.shadowRoot!.querySelector('#customize-fonts-subpage-trigger')!;
+        return this.shadowRoot!.
+          querySelector('#customize-fonts-subpage-trigger')!;
       default:
         throw new Error(`Unknown child view id: ${childViewId}`)
     }
@@ -145,4 +155,6 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
   }
 }
 
-customElements.define(SettingsBraveContentContentElement.is, SettingsBraveContentContentElement)
+customElements.define(
+  SettingsBraveContentContentElement.is,
+  SettingsBraveContentContentElement)

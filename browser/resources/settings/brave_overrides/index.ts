@@ -10,7 +10,6 @@
 // optimized (rollup controls the order in which modules are executed).
 
 import './config.js'
-import { ContentSettingsTypes } from '../site_settings/constants.js'
 import './a11y_page.js'
 import './all_sites.js'
 import './about_page.js'
