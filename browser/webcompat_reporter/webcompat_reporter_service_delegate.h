@@ -25,6 +25,7 @@ class WebcompatReporterServiceDelegateImpl
   explicit WebcompatReporterServiceDelegateImpl(
       component_updater::ComponentUpdateService* component_update_service,
       brave_shields::AdBlockService* adblock_service,
+      PrefService* prefs,
       HostContentSettingsMap* host_content_settings_map,
       scoped_refptr<content_settings::CookieSettings> content_settings);
   WebcompatReporterServiceDelegateImpl(
@@ -43,6 +44,7 @@ class WebcompatReporterServiceDelegateImpl
 
  private:
   const raw_ptr<brave_shields::AdBlockService> adblock_service_;
+  const raw_ptr<PrefService> prefs_;
   const raw_ptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 };

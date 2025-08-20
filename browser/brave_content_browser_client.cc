@@ -76,6 +76,7 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
@@ -686,11 +687,12 @@ bool BraveContentBrowserClient::CanThirdPartyStoragePartitioningBeDisabled(
     return false;
   }
   const auto url = origin.GetURL();
+  PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
   return !brave_shields::GetBraveShieldsEnabled(host_content_settings_map,
                                                 url) ||
-         brave_shields::GetCookieControlType(host_content_settings_map,
-                                             cookie_settings.get(), url) ==
-             brave_shields::ControlType::ALLOW;
+         brave_shields::GetCookieControlType(
+             host_content_settings_map, cookie_settings.get(), url,
+             pref_service) == brave_shields::ControlType::ALLOW;
 }
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(

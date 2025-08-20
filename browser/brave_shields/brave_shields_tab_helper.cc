@@ -218,11 +218,14 @@ FingerprintMode BraveShieldsTabHelper::GetFingerprintMode() {
 }
 
 CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
-  auto cookie_settings = CookieSettingsFactory::GetForProfile(
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  CHECK(profile);
+  auto cookie_settings = CookieSettingsFactory::GetForProfile(profile);
 
   const ControlType control_type = brave_shields::GetCookieControlType(
-      &*host_content_settings_map_, cookie_settings.get(), GetCurrentSiteURL());
+      &*host_content_settings_map_, cookie_settings.get(), GetCurrentSiteURL(),
+      profile->GetPrefs());
 
   switch (control_type) {
     case ControlType::ALLOW:

@@ -377,6 +377,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 false);
   registry->RegisterBooleanPref(brave_shields::prefs::kAdBlockDeveloperMode,
                                 false);
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, false);
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);

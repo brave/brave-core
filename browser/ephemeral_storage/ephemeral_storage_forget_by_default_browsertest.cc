@@ -63,7 +63,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
       brave_shields::GetCookieControlType(
           content_settings(),
           CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
-          a_site_ephemeral_storage_url_),
+          a_site_ephemeral_storage_url_, browser()->profile()->GetPrefs()),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
   brave_shields::SetForgetFirstPartyStorageEnabled(
@@ -91,7 +91,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
       brave_shields::GetCookieControlType(
           content_settings(),
           CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
-          a_site_ephemeral_storage_url_),
+          a_site_ephemeral_storage_url_, browser()->profile()->GetPrefs()),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
   brave_shields::SetForgetFirstPartyStorageEnabled(
@@ -124,7 +124,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
       brave_shields::GetCookieControlType(
           content_settings(),
           CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
-          sub_a_site_ephemeral_storage_url),
+          sub_a_site_ephemeral_storage_url, browser()->profile()->GetPrefs()),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
   brave_shields::SetForgetFirstPartyStorageEnabled(
@@ -154,7 +154,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
       brave_shields::GetCookieControlType(
           content_settings(),
           CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
-          sub_a_site_ephemeral_storage_url),
+          sub_a_site_ephemeral_storage_url, browser()->profile()->GetPrefs()),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
   brave_shields::SetForgetFirstPartyStorageEnabled(
@@ -187,7 +187,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
               incognito_browser->profile()),
           CookieSettingsFactory::GetForProfile(incognito_browser->profile())
               .get(),
-          a_site_ephemeral_storage_url_),
+          a_site_ephemeral_storage_url_,
+          incognito_browser->profile()->GetPrefs()),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
   brave_shields::SetForgetFirstPartyStorageEnabled(
@@ -570,7 +571,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledBrowserTest,
       brave_shields::GetCookieControlType(
           content_settings(),
           CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
-          a_site_set_cookie_url),
+          a_site_set_cookie_url, browser()->profile()->GetPrefs()),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
   EXPECT_EQ(0u, GetAllCookies().size());
@@ -610,7 +611,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledBrowserTest,
       brave_shields::GetCookieControlType(
           content_settings(),
           CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
-          a_com_empty),
+          a_com_empty, browser()->profile()->GetPrefs()),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
   EXPECT_EQ(1u, GetAllCookies().size());
