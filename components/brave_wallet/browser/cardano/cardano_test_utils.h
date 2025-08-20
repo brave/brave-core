@@ -60,6 +60,10 @@ class CardanoTestRpcServer {
 
   scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory();
 
+  const std::map<std::string,
+                 std::vector<cardano_rpc::blockfrost_api::UnspentOutput>>&
+  GetUtxos();
+
  private:
   void RequestInterceptor(const network::ResourceRequest& request);
   std::string ExtractApiRequestPath(const GURL& request_url);
