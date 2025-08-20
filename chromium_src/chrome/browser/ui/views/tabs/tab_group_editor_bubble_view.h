@@ -6,7 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_EDITOR_BUBBLE_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_EDITOR_BUBBLE_VIEW_H_
 
-// Forward declarations for TextEmbedder functionality
+#include <memory>
+
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/local_ai/browser/text_embedder.h"
 
@@ -24,6 +25,7 @@
   void OnTextEmbedderInitialized(bool initialized);                     \
   void ProcessTabSuggestion();                                          \
   void OnTabSuggestionResult(absl::StatusOr<std::vector<int>> result);  \
+  void ShowSuggestionDialog(std::vector<int> suggested_tab_indices);    \
   void CleanupTextEmbedder();                                           \
   void CleanupAndClose();                                               \
                                                                         \
