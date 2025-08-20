@@ -9,6 +9,7 @@ import { formatLocale, getLocale } from '$web-common/locale'
 import ConversationAreaButton from '../../../common/components/conversation_area_button'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
+import { getToolPermissionImplications } from '../assistant_response/get_tool_permission_implications'
 import styles from './tool_permission_challenge.module.scss'
 
 interface Props {
@@ -30,6 +31,9 @@ interface Props {
 
 export default function ToolPermissionChallenge(props: Props) {
   const conversationContext = useUntrustedConversationContext()
+  const toolPermissionImplications = getToolPermissionImplications(
+    props.toolUseEvent.toolName,
+  )
 
   if (!props.toolUseEvent.permissionChallenge) {
     return null
@@ -63,9 +67,12 @@ export default function ToolPermissionChallenge(props: Props) {
         )}
 
         {props.toolUseEvent.permissionChallenge?.plan && (
-          <p className={styles.assessment}>
-            {props.toolUseEvent.permissionChallenge?.plan}
-          </p>
+          <>
+            {toolPermissionImplications && <p>{toolPermissionImplications}</p>}
+            <p className={styles.assessment}>
+              {props.toolUseEvent.permissionChallenge?.plan}
+            </p>
+          </>
         )}
 
         <ConversationAreaButton
