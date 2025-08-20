@@ -906,4 +906,13 @@
   <message name="IDS_CHAT_UI_CODE_EXECUTION_OUTPUT_LABEL" desc="Label for output section in code execution tool" formatter_data="webui=AiChat">
     Output:
   </message>
+  <message name="IDS_AI_CHAT_TOOL_TAB_MANAGEMENT_PERMISSION_DESCRIPTION" desc="Instruction for the user to grant or deny permission to share their list of Tabs with AI and have AI able to perform movement operations on those Tabs" formatter_data="webui=AiChat">
+    Leo wants to manage your tabs. Allowing this will send the <ph name="URL_FORMAT_START">$1<ex>&lt;b&gt;</ex></ph>URL<ph name="URL_FORMAT_END">/$1<ex>&lt;/b&gt;</ex></ph> and <ph name="TITLE_FORMAT_START">$2<ex>&lt;b&gt;</ex></ph>Title<ph name="TITLE_FORMAT_END">/$2<ex>&lt;/b&gt;</ex></ph> of all your Tabs and Tab Groups, and allow Leo to move them around. This permission applies only to this conversation.
+  </message>
+  <message name="IDS_AI_CHAT_TOOL_TAB_MANAGEMENT_ACTIVE_STATE_DESCRIPTION" desc="Description for the active state of the AI tab management tool" formatter_data="webui=AiChat">
+    Leo is moving your tabs around
+  </message>
+  <message name="IDS_AI_CHAT_TOOL_TAB_MANAGEMENT_COMPLETED_STATE_DESCRIPTION" desc="Description for the completed state of the AI tab management tool" formatter_data="webui=AiChat">
+    Leo asked to move some tabs around
+  </message>
 </grit-part>

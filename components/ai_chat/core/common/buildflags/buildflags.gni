@@ -7,6 +7,7 @@ import("//brave/components/brave_origin/buildflags/buildflags.gni")
 
 declare_args() {
   enable_ai_chat = !is_brave_origin_branded
+  enable_tab_management_tool = !is_android
 }
 
 declare_args() {

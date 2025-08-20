@@ -12,6 +12,7 @@ import { getToolLabel } from './get_tool_label'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
 import ToolEventContentAssistantDetailStorage from './tool_event_content_assistant_detail_storage'
 import ToolEventCodeExecution from './tool_event_code_execution'
+import ToolEventTabManagement from './tool_event_tab_management'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -132,6 +133,10 @@ function ToolEventContent(
 
   if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
     Component = ToolEventContentAssistantDetailStorage
+  }
+
+  if (toolUseEvent.toolName === Mojom.TAB_MANAGEMENT_TOOL_NAME) {
+    component = ToolEventTabManagement
   }
 
   if (toolUseEvent.toolName === Mojom.CODE_EXECUTION_TOOL_NAME) {
