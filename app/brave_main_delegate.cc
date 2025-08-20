@@ -10,12 +10,10 @@
 #include <string>
 
 #include "base/base_switches.h"
-#include "base/feature_list.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -24,7 +22,6 @@
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/update_client/buildflags.h"
-#include "brave/components/v8/buildflags/buildflags.h"
 #include "brave/components/variations/command_line_utils.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
@@ -40,7 +37,6 @@
 #include "components/sync/base/command_line_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
 #include "services/network/public/cpp/is_potentially_trustworthy.h"
-#include "third_party/blink/public/common/switches.h"
 
 #if BUILDFLAG(IS_LINUX)
 #include "base/linux_util.h"
@@ -139,7 +135,6 @@ void BraveMainDelegate::AppendCommandLineOptions() {
 
 std::optional<int> BraveMainDelegate::BasicStartupComplete() {
   BraveMainDelegate::AppendCommandLineOptions();
-
   return ChromeMainDelegate::BasicStartupComplete();
 }
 
@@ -192,16 +187,6 @@ std::optional<int> BraveMainDelegate::PostEarlyInitialization(
     // An exit code is set. Stop initialization.
     return result;
   }
-
-  // Enable WebAssembly jitless mode when the feature flag is enabled and
-  // DrumBrake is available (v8_enable_drumbrake build flag)
-#if BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
-  if (base::FeatureList::IsEnabled(features::kBraveWebAssemblyJitless)) {
-    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
-                                    "--wasm-jitless");
-  }
-#endif  // BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
 
   auto* command_line = base::CommandLine::ForCurrentProcess();
   std::string update_url = GetUpdateURLHost();

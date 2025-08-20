@@ -153,6 +153,7 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
+#include "third_party/blink/public/common/switches.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -922,6 +923,13 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
     int child_process_id) {
   ChromeContentBrowserClient::AppendExtraCommandLineSwitches(command_line,
                                                              child_process_id);
+  // TODO: get site_url and browser_context
+  // TODO: guard for BRAVE_V8_ENABLE_DRUMBRAKE
+  //if (IsJitDisabledForSite(browser_context, site_url)) {
+    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags, 
+      "--wasm-jitless");
+  //}
+
   std::string process_type =
       command_line->GetSwitchValueASCII(switches::kProcessType);
   if (process_type == switches::kRendererProcess) {
