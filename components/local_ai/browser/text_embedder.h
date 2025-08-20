@@ -63,6 +63,10 @@ class TextEmbedder {
       std::vector<std::pair<int, std::string>> group_tabs,
       std::vector<std::pair<int, std::string>> candidate_tabs);
 
+  absl::StatusOr<int> SuggestGroupForTab(
+      std::pair<int, std::string> candidate_tab,
+      std::vector<std::vector<std::pair<int, std::string>>> group_tabs);
+
   // Cancel all the pending tflite tasks on the embedder task runner.
   // Should be used right before the TextEmbedder is destroyed to avoid long
   // running tflite tasks blocking shutdown.

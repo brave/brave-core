@@ -123,6 +123,21 @@ class TextEmbedderUnitTest : public testing::Test {
     return result;
   }
 
+  absl::StatusOr<int> VerifySuggestGroupForTab(
+      std::pair<int, std::string> candidate_tab,
+      std::vector<std::vector<std::pair<int, std::string>>> group_tabs) {
+    absl::StatusOr<int> result;
+
+    base::RunLoop run_loop;
+    embedder_task_runner_->PostTask(
+        FROM_HERE, base::BindLambdaForTesting([&]() {
+          result = embedder_->SuggestGroupForTab(candidate_tab, group_tabs);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return result;
+  }
+
  protected:
   std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter> embedder_;
   base::FilePath model_dir_;
@@ -226,27 +241,80 @@ TEST_F(TextEmbedderUnitTest, InspectEmbedding) {
 }
 
 TEST_F(TextEmbedderUnitTest, VerifySuggestTabsForGroup) {
-  std::vector<std::pair<int, std::string>> travel_group_tabs = {
-      {1, "Top 10 places to visit in Italy travelblog.com"},
-      {3, "Flight comparison: Rome vs Venice skyscanner.com"},
-      {4, "Train travel tips across Europe eurotripadvisor.net"},
-      {6, "Travel insurance for international trips safetravel.com"},
-      {7, "Visa requirements for Schengen countries visaguide.world"}};
-  std::vector<std::pair<int, std::string>> candidate_tabs = {
-      {0, "Compare savings accounts interest rates bankrate.com"},
-      {10, "Tips to improve credit score nerdwallet.com"},
-      {2, "Live coverage of Formula 1 race formula1.com"},
-      {5, "Visiting Italy in October: all you need to know mamalovesitaly.com"},
-      {9, "Review of hotels in Venice booking.com"}};
+  struct {
+    std::vector<std::pair<int, std::string>> grouped_tabs;
+    std::vector<std::pair<int, std::string>> candidate_tabs;
+    std::vector<int> expected;
+  } test_cases[] = {
+      {// test case 1
 
-  absl::StatusOr<std::vector<int>> result;
-  result = VerifySuggestTabsForGroup(travel_group_tabs, candidate_tabs);
+       {{1, "Top 10 places to visit in Italy travelblog.com"},
+        {3, "Flight comparison: Rome vs Venice skyscanner.com"},
+        {4, "Train travel tips across Europe eurotripadvisor.net"},
+        {6, "Travel insurance for international trips safetravel.com"},
+        {7, "Visa requirements for Schengen countries visaguide.world"}},
 
-  const auto& indices = result.value();
-  std::vector<int> expected = {candidate_tabs[4].first,
-                               candidate_tabs[3].first};
+       {{0, "Compare savings accounts interest rates bankrate.com"},
+        {10, "Tips to improve credit score nerdwallet.com"},
+        {2, "Live coverage of Formula 1 race formula1.com"},
+        {5,
+         "Visiting Italy in October: all you need to know mamalovesitaly.com"},
+        {9, "Review of hotels in Venice booking.com"}},
 
-  EXPECT_EQ(indices, expected);
+       {9, 5}},
+
+  };
+
+  for (size_t i = 0; i < sizeof(test_cases) / sizeof(test_cases[0]); ++i) {
+    SCOPED_TRACE("Test case index: " + base::NumberToString(i));
+    auto result =
+        VerifySuggestTabsForGroup(UNSAFE_TODO(test_cases[i]).grouped_tabs,
+                                  UNSAFE_TODO(test_cases[i]).candidate_tabs);
+    const auto& indices = result.value();
+    EXPECT_EQ(indices, UNSAFE_TODO(test_cases[i]).expected);
+  }
+}
+
+TEST_F(TextEmbedderUnitTest, VerifySuggestGroupForTab) {
+  struct {
+    std::pair<int, std::string> candidate_tab;
+    std::vector<std::vector<std::pair<int, std::string>>> group_tabs;
+    absl::StatusOr<int> expected;
+  } test_cases[] = {
+    {
+        // test case 1
+        {10, "Compare savings accounts interest rates bankrate.com"},
+
+        // group - travel
+        {{{1, "Top 10 places to visit in Italy travelblog.com"},
+        {3, "Flight comparison: Rome vs Venice skyscanner.com"},
+        {4, "Train travel tips across Europe eurotripadvisor.net"},
+        {6, "Travel insurance for international trips safetravel.com"},
+        {7, "Visa requirements for Schengen countries visaguide.world"}},
+
+        // group - weather
+        {{5, "Woking, Surrey, United Kingdom Current Weather | AccuWeather accuweather.com"},
+        {10, "London - BBC Weather bbc.co.uk"}},
+
+        // group finance
+        {{2, "Personal Savings Allowance moneysavingexpert.com"},
+        {8, "What is the Personal Savings Allowance? | Barclays barclays.co.uk"}},
+
+        // group - sports
+        {{11, "Football Scores & Fixtures - Today's Schedule of Football skysports.com"}}},
+
+        2,
+    }
+
+  };
+
+  for (size_t i = 0; i < sizeof(test_cases) / sizeof(test_cases[0]); ++i) {
+    SCOPED_TRACE("Test case index: " + base::NumberToString(i));
+    auto result =
+    VerifySuggestGroupForTab(UNSAFE_TODO(test_cases[i]).candidate_tab,
+                                  UNSAFE_TODO(test_cases[i]).group_tabs);
+    EXPECT_EQ(result, UNSAFE_TODO(test_cases[i]).expected);
+  }
 }
 
 }  // namespace local_ai

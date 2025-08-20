@@ -192,6 +192,7 @@ TextEmbedder::CalculateTabGroupCentroid() {
 absl::StatusOr<std::vector<int>> TextEmbedder::SuggestTabsForGroup(
     std::vector<std::pair<int, std::string>> group_tabs,
     std::vector<std::pair<int, std::string>> candidate_tabs) {
+  DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
   // get embeddings for group tabs
   tabs_.clear();
 
@@ -264,6 +265,7 @@ absl::StatusOr<std::vector<int>> TextEmbedder::SuggestTabsForGroup(
 std::vector<int> TextEmbedder::getMostSimilarTabIndices(
     const std::vector<double>& vec,
     const std::vector<int>& id) {
+  DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
   // Create pairs of (value, index) for values above threshold
   std::vector<std::pair<double, size_t>> filtered_pairs;
 
@@ -286,6 +288,85 @@ std::vector<int> TextEmbedder::getMostSimilarTabIndices(
   }
 
   return indices_above_threshold;
+}
+
+/* Given a tab, find which existing group it belongs to. If no match with any
+ * existing group, then no op*/
+
+absl::StatusOr<int> TextEmbedder::SuggestGroupForTab(
+    std::pair<int, std::string> candidate_tab,
+    std::vector<std::vector<std::pair<int, std::string>>> group_tabs) {
+  DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
+
+  if (group_tabs.empty()) {
+    return absl::FailedPreconditionError("No tab groups found.");
+  }
+
+  // for each group, find centroid embedding
+  std::vector<tflite::task::processor::EmbeddingResult> all_centroids;
+  tflite::task::processor::EmbeddingResult group_centroid;
+
+  for (const auto& group_tab : group_tabs) {
+    tabs_.clear();
+
+    for (const auto& tab : group_tab) {
+      tabs_.push_back(tab.second);
+    }
+
+    auto status_group = EmbedTabs();
+
+    if (!status_group.ok()) {
+      return absl::FailedPreconditionError(
+          "Error generating embeddings for tabs in the group");
+    }
+
+    // get centroid of each group
+
+    auto group_centroid_output = CalculateTabGroupCentroid();
+
+    if (!group_centroid_output.ok()) {
+      return absl::FailedPreconditionError(
+          "Error generating centroid for tab group");
+    } else {
+      group_centroid = group_centroid_output.value();
+      all_centroids.push_back(group_centroid);
+    }
+  }
+
+  // get embedding for candidate tab
+  tflite::task::processor::EmbeddingResult candidate_embedding;
+  auto status = EmbedText(candidate_tab.second, candidate_embedding);
+  if (!status.ok()) {
+    return status;
+  }
+
+  // find cosine sim between candidate and all centroids
+  std::vector<double> sim_scores;
+
+  for (size_t i = 0; i < all_centroids.size(); ++i) {
+    auto maybe_similarity = tflite_text_embedder_->CosineSimilarity(
+        all_centroids[i].embeddings(0).feature_vector(),
+        candidate_embedding.embeddings(0).feature_vector());
+    if (!maybe_similarity.ok()) {
+      return absl::FailedPreconditionError(
+          "Error calculating cosine similarity.");
+    }
+    sim_scores.push_back(maybe_similarity.value());
+  }
+
+  auto max_it = std::max_element(sim_scores.begin(), sim_scores.end());
+
+  // if max cosine sim value is less than threshold, then no groups to suggest
+  float max_value = *max_it;
+
+  if (max_value < COSINE_SIM_THRESHOLD) {
+    return absl::FailedPreconditionError("No groups to suggest.");
+  } else {
+
+  int max_index = std::distance(sim_scores.begin(), max_it);
+
+  return max_index;
+  }
 }
 
 }  // namespace local_ai
