@@ -25,12 +25,17 @@ module.exports = (program) =>
         .map(x =>x.replace(out+'/',''))
         .map(x => x.split('/'))
         .filter(x => x.length > 1)
-        .map(x => x[0]))].map(x => `${config.outputDir}/${x}`)
+        .map(x => x[0]))
+      ]
+      .filter( x => x.includes('brave'))
+      .map(x => `${config.outputDir}/${x}`)
+      
 
       if (!recordings.length) {
         console.error(`glob ${out}/**/*.profraw yield any recordings!`)
         return;
       }
+
 
       process.env.CWD = config.outputDir
       process.env.PATH = `${process.env.PATH}:${config.srcDir}/third_party/llvm-build/Release+Asserts/bin`
