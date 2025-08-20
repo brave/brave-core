@@ -18,6 +18,8 @@
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/test/test_clipboard.h"
 
+using ui::Clipboard;
+
 class BraveSyncHandlerUnittest : public testing::Test {
  public:
   BraveSyncHandlerUnittest() {
@@ -29,7 +31,7 @@ class BraveSyncHandlerUnittest : public testing::Test {
 
     test_web_ui_.set_web_contents(web_contents_.get());
 
-    handler_ = std::make_unique<BraveSyncHandler>(/*profile_.get()*/);
+    handler_ = std::make_unique<BraveSyncHandler>();
     handler_->set_web_ui(&test_web_ui_);
     handler_->RegisterMessages();
   }
@@ -40,9 +42,23 @@ class BraveSyncHandlerUnittest : public testing::Test {
     handler_.reset();
   }
 
-  void SetUp() override { ui::TestClipboard::CreateForCurrentThread(); }
+  void SetUp() override {
+    // In order to use IsMarkedByOriginatorAsConfidential we cannot use
+    // TestClipboard class. TestClipboard is platform independent and the
+    // method IsMarkedByOriginatorAsConfidential always gives false.
+    // IsMarkedByOriginatorAsConfidential works only on mac, so
+    // we use platform clipboard. It requires gentle release on Teardown,
+    // see PlatformClipboardTraits::Destroy
+    clipboard_ = Clipboard::GetForCurrentThread();
+  }
+
+  void TearDown() override {
+    ASSERT_EQ(Clipboard::GetForCurrentThread(), clipboard_.ExtractAsDangling());
+    Clipboard::DestroyClipboardForCurrentThread();
+  }
 
  protected:
+  Clipboard& clipboard() { return *clipboard_; }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
   BraveSyncHandler* handler() { return handler_.get(); }
 
@@ -52,6 +68,8 @@ class BraveSyncHandlerUnittest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<content::WebContents> web_contents_;
   content::TestWebUI test_web_ui_;
+  // Clipboard has a protected destructor, so scoped_ptr doesn't work here.
+  raw_ptr<Clipboard> clipboard_ = nullptr;
 };
 
 TEST_F(BraveSyncHandlerUnittest, CopySyncCodeToClipboard) {
@@ -62,14 +80,12 @@ TEST_F(BraveSyncHandlerUnittest, CopySyncCodeToClipboard) {
   handler()->HandleCopySyncCodeToClipboard(args);
 
   std::string ascii_text;
-  ui::Clipboard::GetForCurrentThread()->ReadAsciiText(
-      ui::ClipboardBuffer::kCopyPaste,
-      /* data_dst = */ nullptr, &ascii_text);
+  clipboard().ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
+                            /* data_dst = */ nullptr, &ascii_text);
   EXPECT_EQ(ascii_text, kSyncCodeExample);
 
 #if BUILDFLAG(IS_MAC)
   // IsMarkedByOriginatorAsConfidential is implemented for mac only
-  EXPECT_TRUE(ui::Clipboard::GetForCurrentThread()
-                  ->IsMarkedByOriginatorAsConfidential());
+  EXPECT_TRUE(clipboard().IsMarkedByOriginatorAsConfidential());
 #endif  // BUILDFLAG(IS_MAC)
 }
