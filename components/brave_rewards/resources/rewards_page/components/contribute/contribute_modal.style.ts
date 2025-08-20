@@ -10,7 +10,6 @@ import successBackground1URL from '../../assets/success_background_1.svg'
 import successBackground1DarkURL from '../../assets/success_background_1_dark.svg'
 
 import successBackground2URL from '../../assets/success_background_2.svg'
-import successBackground2DarkURL from '../../assets/success_background_2_dark.svg'
 
 export const style = scoped.css`
   & {
@@ -29,7 +28,7 @@ export const backgroundStyle = scoped.css`
 
     @media (prefers-color-scheme: dark) {
       --success-background-1-url: url(${successBackground1DarkURL});
-      --success-background-2-url: url(${successBackground2DarkURL});
+      --success-background-2-url: none;
     }
   }
 
