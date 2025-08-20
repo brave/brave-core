@@ -6,12 +6,12 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
+import styles from './memory_tool_event.module.scss'
 import {
   useUntrustedConversationContext
 } from '../../untrusted_conversation_context'
 import * as Mojom from '../../../common/mojom'
 import '../../../common/strings'
-import styles from './memory_tool_event.module.scss'
 
 interface Props {
   toolUseEvent: Mojom.ToolUseEvent

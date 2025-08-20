@@ -1714,12 +1714,11 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
   // Add browser-level tools
   auto browser_tools = ai_chat_service_->GetBrowserTools();
 
-  // Filter out memory tool for temporary conversations
-  if (GetIsTemporary()) {
-    std::erase_if(browser_tools, [](const auto& tool) {
-      return tool && tool->Name() == mojom::kMemoryStorageToolName;
-    });
-  }
+  // Filter out tools that don't support this conversation
+  std::erase_if(browser_tools,
+                [is_temporary = GetIsTemporary()](const auto& tool) {
+                  return !tool || !tool->SupportsConversation(is_temporary);
+                });
 
   tools.insert(tools.end(), browser_tools.begin(), browser_tools.end());
 

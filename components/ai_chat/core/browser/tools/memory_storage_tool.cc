@@ -72,6 +72,10 @@ bool MemoryStorageTool::RequiresUserInteractionBeforeHandling() const {
   return false;
 }
 
+bool MemoryStorageTool::SupportsConversation(bool is_temporary) const {
+  return !is_temporary;
+}
+
 void MemoryStorageTool::UseTool(const std::string& input_json,
                                 UseToolCallback callback) {
   ToolResult result;

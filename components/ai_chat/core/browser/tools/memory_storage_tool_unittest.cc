@@ -144,4 +144,12 @@ TEST_F(MemoryStorageToolTest, UseTool_TooLongMemory) {
   EXPECT_EQ(memories.size(), 0u);
 }
 
+TEST_F(MemoryStorageToolTest, SupportsConversation_NonTemporary) {
+  EXPECT_TRUE(memory_tool_->SupportsConversation(false));
+}
+
+TEST_F(MemoryStorageToolTest, SupportsConversation_Temporary) {
+  EXPECT_FALSE(memory_tool_->SupportsConversation(true));
+}
+
 }  // namespace ai_chat
