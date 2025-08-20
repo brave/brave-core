@@ -360,6 +360,8 @@ if (is_mac) {
     "//brave/browser/mac/keystone_glue.mm",
     "//brave/browser/mac/keystone_registration.h",
     "//brave/browser/mac/keystone_registration.mm",
+    "//brave/browser/upgrade_detector/upgrade_when_idle.cc",
+    "//brave/browser/upgrade_detector/upgrade_when_idle.h",
   ]
   brave_chrome_browser_deps += [
     "//brave/app:command_ids",
