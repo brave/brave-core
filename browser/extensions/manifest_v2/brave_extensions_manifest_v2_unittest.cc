@@ -165,6 +165,24 @@ class BraveExtensionsManifestV2SettingsBackupTest
         profile()->GetPath(), true));
   }
 
+  base::FilePath GetBackupPath(std::string_view name) {
+    return profile()
+        ->GetPath()
+        .AppendASCII("MV2Backup")
+        .AppendASCII(extensions_mv2::kWebStoreUBlockId)
+        .AppendASCII(name);
+  }
+
+#if BUILDFLAG(IS_WIN)
+  base::FilePath GetBackupPath(base::FilePath::StringViewType name) {
+    return profile()
+        ->GetPath()
+        .AppendASCII("MV2Backup")
+        .AppendASCII(extensions_mv2::kWebStoreUBlockId)
+        .Append(name);
+  }
+#endif
+
   base::FilePath GetRelative(const base::FilePath& prefix,
                              const base::FilePath& absolute) {
     auto prefix_components = prefix.GetComponents();
@@ -252,29 +270,16 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
 
     if (GetParam().backup_enabled) {
       std::string version;
-      base::ReadFileToString(profile()
-                                 ->GetPath()
-                                 .AppendASCII("MV2Backup")
-                                 .AppendASCII(extensions_mv2::kWebStoreUBlockId)
-                                 .AppendASCII("version"),
-                             &version);
+      base::ReadFileToString(GetBackupPath("version"), &version);
       EXPECT_EQ("1.65.0", version);
       // Check extensions settings are saved in the backup dir.
-      EXPECT_TRUE(AreDirectoriesEqual(
-          profile()->GetPath().AppendASCII("IndexedDB"),
-          profile()
-              ->GetPath()
-              .AppendASCII("MV2Backup")
-              .AppendASCII(extensions_mv2::kWebStoreUBlockId)
-              .AppendASCII("IndexedDB")));
+      EXPECT_TRUE(
+          AreDirectoriesEqual(profile()->GetPath().AppendASCII("IndexedDB"),
+                              GetBackupPath("IndexedDB")));
       EXPECT_TRUE(AreDirectoriesEqual(
           profile()->GetPath().Append(
               extensions::kLocalExtensionSettingsDirectoryName),
-          profile()
-              ->GetPath()
-              .AppendASCII("MV2Backup")
-              .AppendASCII(extensions_mv2::kWebStoreUBlockId)
-              .Append(extensions::kLocalExtensionSettingsDirectoryName)));
+          GetBackupPath(extensions::kLocalExtensionSettingsDirectoryName)));
     } else {
       EXPECT_FALSE(
           base::PathExists(profile()->GetPath().AppendASCII("MV2Backup")));
@@ -301,31 +306,13 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
     if (GetParam().import_enabled || !GetParam().backup_enabled) {
       // Settings are moved from backup to the extension prefs with the
       // brave-hosted id.
+      EXPECT_TRUE(base::IsDirectoryEmpty(GetBackupPath("IndexedDB")));
       EXPECT_TRUE(base::IsDirectoryEmpty(
-          profile()
-              ->GetPath()
-              .AppendASCII("MV2Backup")
-              .AppendASCII(extensions_mv2::kWebStoreUBlockId)
-              .AppendASCII("IndexedDB")));
-      EXPECT_TRUE(base::IsDirectoryEmpty(
-          profile()
-              ->GetPath()
-              .AppendASCII("MV2Backup")
-              .AppendASCII(extensions_mv2::kWebStoreUBlockId)
-              .Append(extensions::kLocalExtensionSettingsDirectoryName)));
+          GetBackupPath(extensions::kLocalExtensionSettingsDirectoryName)));
     } else {
+      EXPECT_FALSE(base::IsDirectoryEmpty(GetBackupPath("IndexedDB")));
       EXPECT_FALSE(base::IsDirectoryEmpty(
-          profile()
-              ->GetPath()
-              .AppendASCII("MV2Backup")
-              .AppendASCII(extensions_mv2::kWebStoreUBlockId)
-              .AppendASCII("IndexedDB")));
-      EXPECT_FALSE(base::IsDirectoryEmpty(
-          profile()
-              ->GetPath()
-              .AppendASCII("MV2Backup")
-              .AppendASCII(extensions_mv2::kWebStoreUBlockId)
-              .Append(extensions::kLocalExtensionSettingsDirectoryName)));
+          GetBackupPath(extensions::kLocalExtensionSettingsDirectoryName)));
     }
 
     if (GetParam().backup_enabled && GetParam().import_enabled) {
@@ -357,21 +344,13 @@ TEST_P(BraveExtensionsManifestV2SettingsBackupTest, BackupSettings) {
           base::FilePath(extensions::kLocalExtensionSettingsDirectoryName));
     } else if (GetParam().backup_enabled) {
       // Check extensions settings are still in the backup dir.
-      EXPECT_TRUE(AreDirectoriesEqual(
-          profile()->GetPath().AppendASCII("IndexedDB"),
-          profile()
-              ->GetPath()
-              .AppendASCII("MV2Backup")
-              .AppendASCII(extensions_mv2::kWebStoreUBlockId)
-              .AppendASCII("IndexedDB")));
+      EXPECT_TRUE(
+          AreDirectoriesEqual(profile()->GetPath().AppendASCII("IndexedDB"),
+                              GetBackupPath("IndexedDB")));
       EXPECT_TRUE(AreDirectoriesEqual(
           profile()->GetPath().Append(
               extensions::kLocalExtensionSettingsDirectoryName),
-          profile()
-              ->GetPath()
-              .AppendASCII("MV2Backup")
-              .AppendASCII(extensions_mv2::kWebStoreUBlockId)
-              .Append(extensions::kLocalExtensionSettingsDirectoryName)));
+          GetBackupPath(extensions::kLocalExtensionSettingsDirectoryName)));
     }
   }
 }

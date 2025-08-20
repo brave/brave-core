@@ -67,17 +67,18 @@ bool IsBackupAvailableFor(
     return false;
   }
 
-  if (!base::PathExists(profile_dir.Append(kExtensionMV2BackupDir)
-                            .AppendASCII(*webstore_extension_id)
-                            .AppendASCII(kVersion))) {
+  const auto backup_path = profile_dir.Append(kExtensionMV2BackupDir)
+                               .AppendASCII(*webstore_extension_id);
+
+  if (!base::PathExists(backup_path.AppendASCII(kVersion))) {
     return false;
   }
 
-  if (!GetLocalSettings(brave_hosted_extension_id, profile_dir).empty()) {
+  if (!GetLocalSettings(*webstore_extension_id, backup_path).empty()) {
     return true;
   }
 
-  auto indexed = GetIndexedSettings(brave_hosted_extension_id, profile_dir);
+  auto indexed = GetIndexedSettings(*webstore_extension_id, backup_path);
   if (!indexed.Next().empty()) {
     return true;
   }
@@ -124,6 +125,8 @@ bool MoveExtensionSettings(const extensions::ExtensionId& source_extension_id,
                            const extensions::ExtensionId& target_extension_id,
                            const base::FilePath& target_dir,
                            bool delete_source) {
+  const bool change_name = source_extension_id != target_extension_id;
+
   base::ScopedClosureRunner remove_source(
       (delete_source ? base::GetDeletePathRecursivelyCallback(source_dir)
                      : base::DoNothing()));
@@ -133,9 +136,10 @@ bool MoveExtensionSettings(const extensions::ExtensionId& source_extension_id,
           .AppendASCII(source_extension_id);
   if (base::PathExists(local_settings_source_path)) {
     const auto local_settings_target_path =
-        target_dir.Append(extensions::kLocalExtensionSettingsDirectoryName);
+        target_dir.Append(extensions::kLocalExtensionSettingsDirectoryName)
+            .AppendASCII(target_extension_id);
     if (!base::DeletePathRecursively(local_settings_target_path) ||
-        !base::CreateDirectory(local_settings_target_path) ||
+        !base::CreateDirectory(local_settings_target_path.DirName()) ||
         !base::CopyDirectory(local_settings_source_path,
                              local_settings_target_path,
                              /*recursive=*/true)) {
@@ -148,7 +152,6 @@ bool MoveExtensionSettings(const extensions::ExtensionId& source_extension_id,
     return false;
   }
 
-  const bool change_name = source_extension_id != target_extension_id;
   bool error = false;
   GetIndexedSettings(source_extension_id, source_dir)
       .ForEach([&error, change_name, &source_extension_id, &target_extension_id,
@@ -165,7 +168,6 @@ bool MoveExtensionSettings(const extensions::ExtensionId& source_extension_id,
         }
         const auto destination = indexeddb_settings_target_path.Append(name);
         if (!base::DeletePathRecursively(destination) ||
-            !base::CreateDirectory(destination) ||
             !base::CopyDirectory(path, destination, /*recursive=*/true)) {
           error = true;
         }
