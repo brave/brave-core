@@ -155,6 +155,10 @@ source_set("unit_tests") {
     sources += [ "ai_chat_database_unittest.cc" ]
   }
 
+  data = [
+    "//brave/components/test/data/ai_chat"
+  ]
+
   deps = [
     ":test_support",
     "//base/test:test_support",
