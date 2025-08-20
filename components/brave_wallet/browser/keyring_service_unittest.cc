@@ -3984,11 +3984,14 @@ TEST_F(KeyringServiceUnitTest, SignCip30MessageByCardanoKeyring) {
 }
 
 #if BUILDFLAG(IS_ANDROID)
-#define MAYBE_SignCip30MessageByCardanoKeyring_TestVectors DISABLED_SignCip30MessageByCardanoKeyring_TestVectors
+#define MAYBE_SignCip30MessageByCardanoKeyring_TestVectors \
+  DISABLED_SignCip30MessageByCardanoKeyring_TestVectors
 #else
-#define MAYBE_SignCip30MessageByCardanoKeyring_TestVectors SignCip30MessageByCardanoKeyring_TestVectors
+#define MAYBE_SignCip30MessageByCardanoKeyring_TestVectors \
+  SignCip30MessageByCardanoKeyring_TestVectors
 #endif  // BUILDFLAG(IS_ANDROID)
-TEST_F(KeyringServiceUnitTest, MAYBE_SignCip30MessageByCardanoKeyring_TestVectors) {
+TEST_F(KeyringServiceUnitTest,
+       MAYBE_SignCip30MessageByCardanoKeyring_TestVectors) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   AccountUtils(&service).CreateWallet(kMnemonicAbandonAbandon,
                                       kTestWalletPassword);
