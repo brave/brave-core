@@ -1014,8 +1014,40 @@ void ConversationHandler::RespondToToolUseRequest(
     PerformAssistantGenerationWithPossibleContent();
   } else {
     DVLOG(0) << "Tool use request handled, but still have more to handle";
-    // Still have more tool use requests to handle.
+    // Still have more tool use requests to handle, so execute the next one
+    // or wait for the next user interaction.
     MaybeRespondToNextToolUseRequest();
+  }
+}
+
+void ConversationHandler::UseToolWithClientData(
+    const std::string& tool_use_id,
+    std::optional<base::Value> client_data) {
+  auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
+  if (!tool_use) {
+    DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
+    return;
+  }
+
+  // Doesn't require user interaction anymore
+  tool_use->requires_user_interaction = false;
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnToolUseEventOutput(chat_history_.back()->uuid.value(),
+                                 tool_use->Clone());
+  }
+
+  // Find tool
+  for (auto& tool : GetTools()) {
+    if (tool->Name() == tool_use->tool_name) {
+      // We don't need to check Tool::RequiresUserInteractionBeforeHandling
+      // because this function is called from the UI client.
+      tool->UseTool(
+          tool_use->arguments_json,
+          base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
+                         weak_ptr_factory_.GetWeakPtr(), tool_use_id),
+          std::move(client_data));
+      break;
+    }
   }
 }
 
@@ -1761,21 +1793,41 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         // already handled
         continue;
       }
+      if (tool_use_event->requires_user_interaction) {
+        // Already started waiting for user interaction,
+        // don't need to ask again.
+        continue;
+      }
+      // Find the Tool that handles this request
       for (auto& tool : GetTools()) {
-        if (tool->Name() == tool_use_event->tool_name &&
-            !tool->RequiresUserInteractionBeforeHandling()) {
+        if (tool->Name() == tool_use_event->tool_name) {
+          if (tool->RequiresUserInteractionBeforeHandling()) {
+            tool_use_event->requires_user_interaction = true;
+            for (auto& client : untrusted_conversation_ui_handlers_) {
+              client->OnToolUseEventOutput(last_entry->uuid.value(),
+                                           tool_use_event->Clone());
+            }
+
+            // Wait for the user interaction to happen or the user to skip via
+            // a new message.
+            break;
+          }
           is_tool_use_in_progress_ = true;
           OnAPIRequestInProgressChanged();
           // Tool use will be handled by the Tool itself
-          DVLOG(0) << __func__ << " calling UseTool for tool: " << tool->Name();
-          tool->UseTool(
-              tool_use_event->arguments_json,
-              base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
-                             weak_ptr_factory_.GetWeakPtr(),
-                             tool_use_event->id));
+          DVLOG(0) << __func__ << " calling UseTool for tool: " << tool->Name()
+                   << " with arguments: " << tool_use_event->arguments_json;
+          tool->UseTool(tool_use_event->arguments_json,
+                        base::BindOnce(
+                            &ConversationHandler::RespondToToolUseRequest,
+                            weak_ptr_factory_.GetWeakPtr(), tool_use_event->id),
+                        std::nullopt);
           break;
         }
       }
+      // Only execute one tool use request at a time. If we were to allow
+      // parallel execution, we'd likely need to make sure the same tool, or
+      // same category of tool cannot execute in parallel.
       if (is_tool_use_in_progress_) {
         break;
       }

@@ -14,6 +14,7 @@ import "url/mojom/url.mojom";
 // Share some tool names between the browser and the UI so that
 // custom user actions and UI representations can be created.
 const string kUserChoiceToolName = "user_choice_tool";
+const string kTabManagementToolName = "tab_management";
 
 // File upload limits
 // https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Message.html#API_runtime_Message_Contents
@@ -260,6 +261,8 @@ struct ToolUseEvent {
   // Output from the Tool. When null, the Tool
   // has not yet run or completed.
   array<ContentBlock>? output;
+
+  bool requires_user_interaction = false;
 };
 
 // Events that occur during a conversation turn (only assistant for now)
@@ -644,7 +647,17 @@ interface UntrustedConversationHandler {
 
   // Allows a client to provide an answer to a tool use request
   // as a result of a user action.
-  RespondToToolUseRequest(string tool_id, array<ContentBlock> output_json);
+  RespondToToolUseRequest(string tool_use_id, array<ContentBlock> output_json);
+
+  // Allows a client to determine execution of the tool use request by adding
+  // extra information, such as permissions or options. This can only be used
+  // if the tool use request is active and the tool has requested client data.
+  // Example: Providing user permission to execute a tool.
+  // The tool itself should provide the actual result to the conversation based
+  // on the client data.
+  // If the client does not execute this function for a required tool request
+  // then the "cancelled" response will be sent.
+  UseToolWithClientData(string tool_use_id, mojo_base.mojom.Value? client_data);
 
   // Regenerate answer using specified model.
   RegenerateAnswer(string turn_uuid, string model_key);
