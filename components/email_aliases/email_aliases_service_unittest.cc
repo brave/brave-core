@@ -11,6 +11,7 @@
 
 #include "base/functional/bind.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/email_aliases/features.h"
@@ -31,25 +32,14 @@ class TestObserver : public email_aliases::mojom::EmailAliasesServiceObserver {
  public:
   void OnAuthStateChanged(email_aliases::mojom::AuthStatePtr state) override {
     last_state = state->status;
-    if (last_state == expected_status_) {
-      run_loop_->Quit();
-    }
   }
-  void StartRunLoop(AuthenticationStatus expected_status) {
-    run_loop_ = std::make_unique<base::RunLoop>();
-    expected_status_ = expected_status;
-  }
-  void WaitForExpectedStatus() {
-    run_loop_->Run();
-    run_loop_.reset();
+  bool WaitFor(AuthenticationStatus expected) {
+    return base::test::RunUntil([&]() { return last_state == expected; });
   }
   void OnAliasesUpdated(std::vector<email_aliases::mojom::AliasPtr>) override {}
   AuthenticationStatus last_state = AuthenticationStatus::kUnauthenticated;
   mojo::Receiver<email_aliases::mojom::EmailAliasesServiceObserver> receiver_{
       this};
-  std::unique_ptr<base::RunLoop> run_loop_;
-  AuthenticationStatus expected_status_ =
-      AuthenticationStatus::kUnauthenticated;
   void BindReceiver(
       mojo::PendingReceiver<email_aliases::mojom::EmailAliasesServiceObserver>
           pending) {
@@ -87,36 +77,27 @@ class EmailAliasesServiceTest : public ::testing::Test {
     test_url_loader_factory_.AddResponse(kVerifyInitUrl, response_body);
     bool called = false;
     std::optional<std::string> error;
-    base::RunLoop run_loop;
     service_->RequestAuthentication(
         email, base::BindOnce(
                    [](bool* called, std::optional<std::string>* error,
-                      base::RunLoop* run_loop,
                       const std::optional<std::string>& result) {
                      *called = true;
                      *error = result;
-                     run_loop->Quit();
                    },
-                   &called, &error, &run_loop));
-    run_loop.Run();
-    EXPECT_TRUE(called);
+                   &called, &error));
+    EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
     return error;
   }
 
   void CancelAuthenticationOrLogout() {
-    observer_->StartRunLoop(
-        email_aliases::mojom::AuthenticationStatus::kUnauthenticated);
+    const auto expected =
+        email_aliases::mojom::AuthenticationStatus::kUnauthenticated;
     bool logout_called = false;
-    base::RunLoop run_loop;
-    service_->CancelAuthenticationOrLogout(base::BindOnce(
-        [](bool* called, base::RunLoop* run_loop) {
-          *called = true;
-          run_loop->Quit();
-        },
-        &logout_called, &run_loop));
-    run_loop.Run();
-    EXPECT_TRUE(logout_called);
-    observer_->WaitForExpectedStatus();
+    service_->CancelAuthenticationOrLogout(
+        base::BindOnce([](bool* called) { *called = true; }, &logout_called));
+    EXPECT_TRUE(
+        base::test::RunUntil([&logout_called]() { return logout_called; }));
+    EXPECT_TRUE(observer_->WaitFor(expected));
   }
 
   void CallRequestAuthenticationAndCheck(
@@ -124,7 +105,7 @@ class EmailAliasesServiceTest : public ::testing::Test {
       const std::string& response_body,
       AuthenticationStatus expected_status,
       const std::optional<std::string>& expected_error = std::nullopt) {
-    observer_->StartRunLoop(expected_status);
+    const auto expected = expected_status;
     auto error = RequestAuthenticationWithResponse(email, response_body);
     if (expected_error) {
       EXPECT_TRUE(error.has_value());
@@ -132,20 +113,24 @@ class EmailAliasesServiceTest : public ::testing::Test {
     } else {
       EXPECT_FALSE(error.has_value());
     }
-    observer_->WaitForExpectedStatus();
+    EXPECT_TRUE(observer_->WaitFor(expected));
   }
 
   void RunRequestSessionTest(const std::vector<std::string>& responses,
                              AuthenticationStatus expected_status) {
-    observer_->StartRunLoop(expected_status);
     auto error = RequestAuthenticationWithResponse(
         "test@example.com", "{\"verificationToken\":\"token123\"}");
     EXPECT_FALSE(error.has_value());
+    // After verify/init success we should transition to Authenticating.
+    EXPECT_TRUE(observer_->WaitFor(AuthenticationStatus::kAuthenticating));
+    if (expected_status == AuthenticationStatus::kAuthenticating) {
+      return;
+    }
     for (const auto& body : responses) {
       test_url_loader_factory_.AddResponse(
           "https://accounts.bsg.bravesoftware.com/v2/verify/result", body);
     }
-    observer_->WaitForExpectedStatus();
+    EXPECT_TRUE(observer_->WaitFor(expected_status));
   }
 
   base::test::ScopedFeatureList feature_list_;
