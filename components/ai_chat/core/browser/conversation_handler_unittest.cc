@@ -3337,7 +3337,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
       .InSequence(seq)
       .WillOnce(testing::DoAll(
           // Send completion event first (like working test)
-          testing::WithArg<5>(
+          testing::WithArg<6>(
               [](EngineConsumer::GenerationDataCallback data_callback) {
                 data_callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -3345,7 +3345,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
                     std::nullopt));
               }),
           // Then send tool use event via data callback
-          testing::WithArg<5>(
+          testing::WithArg<6>(
               [](EngineConsumer::GenerationDataCallback data_callback) {
                 data_callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -3355,7 +3355,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
                     std::nullopt));
               }),
           // Complete with empty completion event (like working test)
-          testing::WithArg<6>([](EngineConsumer::GenerationCompletedCallback
+          testing::WithArg<7>([](EngineConsumer::GenerationCompletedCallback
                                      completion_callback) {
             std::move(completion_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
@@ -3368,7 +3368,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<5>(
+          testing::WithArg<6>(
               [](EngineConsumer::GenerationDataCallback data_callback) {
                 data_callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -3376,7 +3376,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
                             "Final response after handling tool error")),
                     std::nullopt));
               }),
-          testing::WithArg<6>([&](EngineConsumer::GenerationCompletedCallback
+          testing::WithArg<7>([&](EngineConsumer::GenerationCompletedCallback
                                       completion_callback) {
             std::move(completion_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
