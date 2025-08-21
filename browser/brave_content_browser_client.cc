@@ -923,16 +923,19 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
     int child_process_id) {
   ChromeContentBrowserClient::AppendExtraCommandLineSwitches(command_line,
                                                              child_process_id);
-  // TODO: get site_url and browser_context
-  // TODO: guard for BRAVE_V8_ENABLE_DRUMBRAKE
-  //if (IsJitDisabledForSite(browser_context, site_url)) {
-    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags, 
-      "--wasm-jitless");
-  //}
 
   std::string process_type =
       command_line->GetSwitchValueASCII(switches::kProcessType);
   if (process_type == switches::kRendererProcess) {
+    if (BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE) &&
+        base::FeatureList::IsEnabled(features::kBraveWebAssemblyJitless)) {
+      content::RenderProcessHost* process =
+          content::RenderProcessHost::FromID(child_process_id);
+      if (process && process->IsJitDisabled()) {
+        command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags, 
+          "--wasm-jitless");
+      }
+    }
     // Command line parameters from the browser process are propagated to the
     // renderers *after* ContentBrowserClient::AppendExtraCommandLineSwitches()
     // is called from RenderProcessHostImpl::AppendRendererCommandLine(). This
