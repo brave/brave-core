@@ -22,7 +22,6 @@
 #include "net/cookies/canonical_cookie.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
-#include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -124,6 +123,13 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   JSDocumentCookieWriteCookie(
       browser(), "max-age=" + base::NumberToString(less_than_max.InSeconds()));
+
+  // Verify cookie is readable via JS.
+  EXPECT_TRUE(
+      content::EvalJs(browser()->tab_strip_model()->GetActiveWebContents(),
+                      "document.cookie.includes('name=Test')")
+          .ExtractBool());
+
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
   EXPECT_EQ(1u, all_cookies.size());
@@ -139,6 +145,13 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   JSDocumentCookieWriteCookie(
       browser(), "max-age=" + base::NumberToString(k4YearsInDays.InSeconds()));
+
+  // Verify cookie is readable via JS.
+  EXPECT_TRUE(
+      content::EvalJs(browser()->tab_strip_model()->GetActiveWebContents(),
+                      "document.cookie.includes('name=Test')")
+          .ExtractBool());
+
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
   EXPECT_EQ(1u, all_cookies.size());
