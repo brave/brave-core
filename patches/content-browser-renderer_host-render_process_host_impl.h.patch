@@ -1,0 +1,17 @@
+diff --git a/content/browser/renderer_host/render_process_host_impl.h b/content/browser/renderer_host/render_process_host_impl.h
+index 1f89856c5bfdfa5f9d75c0757af61eb3de0d67da..2af7adfe7e427dc07c1c25c6daa8df8266336259 100644
+--- a/content/browser/renderer_host/render_process_host_impl.h
++++ b/content/browser/renderer_host/render_process_host_impl.h
+@@ -219,6 +219,12 @@ class CONTENT_EXPORT RenderProcessHostImpl
+       BrowserContext* browser_context,
+       SiteInstanceImpl* site_instance);
+ 
++  // Helper function to build JavaScript flags based on JIT and V8 optimization settings.
++  // This is a static function to make it easily testable.
++  static std::string BuildJavaScriptFlags(bool jit_disabled, 
++                                           bool v8_optimizations_disabled, 
++                                           const std::string& existing_flags);
++
+   ~RenderProcessHostImpl() override;
+ 
+   RenderProcessHostImpl(const RenderProcessHostImpl& other) = delete;
