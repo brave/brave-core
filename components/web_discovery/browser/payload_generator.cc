@@ -60,9 +60,7 @@ bool AggregatedDictHasContent(const base::Value::Dict& dict) {
   return false;
 }
 
-bool IsPrivateResult(std::string_view key,
-                     bool is_search_engine,
-                     const base::Value::Dict& dict) {
+bool IsPrivateResult(std::string_view key, const base::Value::Dict& dict) {
   if (key != kSearchResultKey) {
     return false;
   }
@@ -70,7 +68,7 @@ bool IsPrivateResult(std::string_view key,
   if (!url) {
     return false;
   }
-  return IsPrivateURLLikely(GURL(*url), is_search_engine);
+  return ShouldDropURL(GURL(*url));
 }
 
 bool ShouldDropSearchResultPayload(std::string_view key, size_t result_size) {
@@ -116,9 +114,7 @@ std::optional<base::Value> GenerateClusteredJoinedPayload(
     if (value.empty()) {
       continue;
     }
-    if (is_query_action &&
-        IsPrivateResult(rule.key, matching_url_details->is_search_engine,
-                        value)) {
+    if (is_query_action && IsPrivateResult(rule.key, value)) {
       VLOG(1) << "Omitting private search result";
       continue;
     }
@@ -219,9 +215,7 @@ std::optional<base::Value> ProcessV2List(
     }
 
     // Check for private results if this is a query action
-    // TODO(djandries): Don't use IsPrivateURLLikely here, use MaskURL instead
-    if (is_query_action &&
-        IsPrivateResult(field.key, is_search_engine, scraped_item)) {
+    if (is_query_action && IsPrivateResult(field.key, scraped_item)) {
       VLOG(1) << "Omitting private search result";
       continue;
     }

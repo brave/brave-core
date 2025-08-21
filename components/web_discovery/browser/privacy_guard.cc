@@ -23,7 +23,6 @@ namespace web_discovery {
 
 namespace {
 
-constexpr size_t kMaxSearchEngineRefLength = 8;
 constexpr size_t kMaxQueryLength = 120;
 constexpr size_t kMaxQueryLengthWithLogograms = 50;
 constexpr size_t kMinQueryWordsForCheck = 9;
@@ -75,15 +74,8 @@ constexpr auto kRiskyUrlPathParts = base::MakeFixedFlatSet<std::string_view>({
     "weblogic",
 });
 
-constexpr size_t kMaxDotSplitDomainSize = 6;
-constexpr size_t kMaxHyphenSplitDomainSize = 4;
-
 constexpr char kDefaultSearchPrefix[] = "search?q=";
-
-constexpr char kOnionSiteSuffix[] = ".onion";
-constexpr char kLocalDomainSuffix[] = ".local";
 constexpr char kLocalhost[] = "localhost";
-
 constexpr char kProtectedSuffix[] = " (PROTECTED)";
 
 bool HasLogograms(std::u16string_view str) {
@@ -228,22 +220,6 @@ bool CheckForLongNumber(std::string str) {
       numbers, [](const auto& num) { return num.length() > kMaxNumberLength; });
 }
 
-bool IsPrivateDomainLikely(std::string_view host) {
-  auto dot_split =
-      base::SplitString(host, ".", base::WhitespaceHandling::KEEP_WHITESPACE,
-                        base::SPLIT_WANT_ALL);
-  if (dot_split.size() > kMaxDotSplitDomainSize) {
-    return true;
-  }
-  auto hyphen_split =
-      base::SplitString(host, "-", base::WhitespaceHandling::KEEP_WHITESPACE,
-                        base::SPLIT_WANT_ALL);
-  if (hyphen_split.size() > kMaxHyphenSplitDomainSize) {
-    return true;
-  }
-  return false;
-}
-
 bool CheckPathAndQueryParts(const GURL& url,
                             const std::vector<std::string>& path_parts,
                             const std::vector<std::string>& query_parts) {
@@ -281,42 +257,6 @@ bool CheckPathAndQueryParts(const GURL& url,
 }
 
 }  // namespace
-
-bool IsPrivateURLLikely(const GURL& url, bool is_search_engine) {
-  if (!url.SchemeIs("https")) {
-    VLOG(1) << "Ignoring URL due to non-HTTPS scheme";
-    return true;
-  }
-  if (url.HostIsIPAddress()) {
-    VLOG(1) << "Ignoring URL due to IP address host";
-    return true;
-  }
-  if (url.has_username() || url.has_password()) {
-    VLOG(1) << "Ignoring URL due to inclusion of credentials";
-    return true;
-  }
-  if (url.has_port() && url.port_piece() != "443") {
-    VLOG(1) << "Ignoring URL due to non-standard port";
-    return true;
-  }
-  if (is_search_engine) {
-    if (url.has_ref() && url.ref_piece().length() > kMaxSearchEngineRefLength) {
-      VLOG(1) << "Ignoring search engine URL due to long ref";
-      return true;
-    }
-  }
-  auto host_piece = url.host_piece();
-  if (host_piece.ends_with(kOnionSiteSuffix) ||
-      host_piece.ends_with(kLocalDomainSuffix) || host_piece == kLocalhost) {
-    VLOG(1) << "Ignoring URL due a local host or onion site";
-    return true;
-  }
-  if (IsPrivateDomainLikely(url.host_piece())) {
-    VLOG(1) << "Ignoring URL due likely private domain";
-    return true;
-  }
-  return false;
-}
 
 bool IsPrivateQueryLikely(const std::string& query) {
   // First, normalize white spaces

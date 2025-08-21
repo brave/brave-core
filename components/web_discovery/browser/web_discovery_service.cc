@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/payload_generator.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
@@ -194,12 +193,10 @@ bool WebDiscoveryService::ShouldExtractFromPage(
               << RelevantSiteToID(extract_result->details->site).value_or("")
               << ": " << url;
       // Check for private query using the extracted query
-      // TODO(djandries): Determine if we need another check if query is empty
       // TODO(djandries): determine what we should do for non search engine
-      // pages
+      // pages. maybe call IsPrivateURLLikely?
       result = !extract_result->query ||
                !IsPrivateQueryLikely(*extract_result->query);
-      // TODO(djandries): Add check for private URL, but use MaskURL heuristic
     }
   } else {
     // Use patterns for v1
@@ -211,7 +208,7 @@ bool WebDiscoveryService::ShouldExtractFromPage(
     if (matching_url_details) {
       VLOG(1) << "URL matched pattern " << matching_url_details->id << ": "
               << url;
-      result = !IsPrivateURLLikely(url, matching_url_details->is_search_engine);
+      result = !ShouldDropURL(url);
     }
   }
 

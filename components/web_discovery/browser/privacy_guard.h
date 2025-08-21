@@ -12,13 +12,6 @@
 
 namespace web_discovery {
 
-// Checks if a URL is likely to be private based on various criteria.
-// If true, the page should not be investigated or reported.
-// This corresponds to the removed `isSuspiciousUrl` function in
-// the extension/reference implementation. It should only be used with
-// v1 patterns.
-bool IsPrivateURLLikely(const GURL& url, bool is_search_engine);
-
 // Determines if a search query is likely to contain private information.
 // If true, the search query should not be investigated or reported.
 bool IsPrivateQueryLikely(const std::string& query);
