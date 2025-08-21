@@ -26,9 +26,7 @@
 }
 
 .button {
-  background: none;
-  border: none;
-  padding: 0;
+  all:unset;
   color: var(--leo-color-text-tertiary);
   text-decoration: underline;
   cursor: pointer;

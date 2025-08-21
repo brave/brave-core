@@ -10,8 +10,28 @@ import * as Mojom from '../../../common/mojom'
 import * as React from 'react'
 import MockContext from '../../mock_untrusted_conversation_context'
 import MemoryToolEvent from './memory_tool_event'
+import { setupMemoryToolStringConstants } from './test_utils'
+
+// Mock the locale functions for MemoryToolEvent
+jest.mock('$web-common/locale', () => ({
+  ...jest.requireActual('$web-common/locale'),
+  getLocale: (key: string) => key,
+  formatLocale: (key: string, params?: Record<string, string>) => {
+    if (key === 'CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL') {
+      return `Memory updated: ${params?.$1}`
+    }
+    return key
+  }
+}))
 
 describe('MemoryToolEvent', () => {
+  beforeEach(() => {
+    setupMemoryToolStringConstants()
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
   const createToolUseEvent = (
     argumentsJson: string,
     output?: any[]

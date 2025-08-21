@@ -606,8 +606,8 @@
   <message name="IDS_AI_CHAT_TEMPORARY_CHAT_DESCRIPTION" desc="Description for temporary chat functionality" formatter_data="webui=AiChat">
     This chat won't be saved into your history or use any of Leo's customization or memories.
   </message>
-  <message name="IDS_CHAT_UI_MEMORY_UPDATED_LABEL" desc="Label indicating that memory has been updated with new information" formatter_data="webui=AiChat">
-    Memory updated:
+  <message name="IDS_CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL" desc="Label indicating that memory has been updated with specific content, with placeholder for the memory content" formatter_data="webui=AiChat">
+    Memory updated: <ph name="MEMORY_CONTENT">$1<ex>User prefers dark mode themes</ex></ph>
   </message>
   <message name="IDS_CHAT_UI_MEMORY_UNDO_BUTTON_LABEL" desc="Button label to undo a memory update" formatter_data="webui=AiChat">
     Undo

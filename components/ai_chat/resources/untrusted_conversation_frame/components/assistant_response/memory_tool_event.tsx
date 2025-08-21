@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import styles from './memory_tool_event.module.scss'
 import {
   useUntrustedConversationContext
@@ -73,71 +73,55 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
     return null
   }
 
-  // Handle error state
-  if (hasError) {
-    return (
-      <div
-        className={styles.memoryToolEvent}
-        data-testid='memory-tool-event-error'
-      >
-        <Icon name='database' className={styles.icon} />
-        <span className={styles.textError}>
-          {getLocale(S.CHAT_UI_MEMORY_ERROR_LABEL)}
-          <button
-            className={`${styles.button} ${styles.buttonWithSpacing}`}
-            onClick={handleManageAll}
-            data-testid='memory-manage-button'
-          >
-            {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
-          </button>
-        </span>
-      </div>
-    )
-  }
+  // Common manage button (with different styling for success case)
+  const manageButton = (className: string) => (
+    <button
+      className={className}
+      onClick={handleManageAll}
+      data-testid='memory-manage-button'
+    >
+      {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
+    </button>
+  )
 
-  // Handle undone state
-  if (!memoryExists) {
-    return (
-      <div
-        className={styles.memoryToolEvent}
-        data-testid='memory-tool-event-undone'
-      >
-        <Icon name='database' className={styles.icon} />
-        <span className={styles.textUndone} title={memoryContent}>
-          {getLocale(S.CHAT_UI_MEMORY_UNDONE_LABEL)}
-          <button
-            className={`${styles.button} ${styles.buttonWithSpacing}`}
-            onClick={handleManageAll}
-            data-testid='memory-manage-button'
-          >
-            {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
-          </button>
-        </span>
-      </div>
-    )
+  const getTestId = () => {
+    if (hasError) return 'memory-tool-event-error'
+    if (!memoryExists) return 'memory-tool-event-undone'
+    return 'memory-tool-event'
   }
 
   return (
-    <div className={styles.memoryToolEvent} data-testid='memory-tool-event'>
+    <div
+      className={styles.memoryToolEvent}
+      data-testid={getTestId()}
+    >
       <Icon name='database' className={styles.icon} />
-      <span>
-        {getLocale(S.CHAT_UI_MEMORY_UPDATED_LABEL)} {memoryContent}{' '}
-        <button
-          className={styles.button}
-          onClick={handleUndo}
-          data-testid='memory-undo-button'
-        >
-          {getLocale(S.CHAT_UI_MEMORY_UNDO_BUTTON_LABEL)}
-        </button>
-        <span> - </span>
-        <button
-          className={styles.button}
-          onClick={handleManageAll}
-          data-testid='memory-manage-button'
-        >
-          {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
-        </button>
-      </span>
+      {hasError ? (
+        <span className={styles.textError}>
+          {getLocale(S.CHAT_UI_MEMORY_ERROR_LABEL)}
+          {manageButton(`${styles.button} ${styles.buttonWithSpacing}`)}
+        </span>
+      ) : !memoryExists ? (
+        <span className={styles.textUndone} title={memoryContent}>
+          {getLocale(S.CHAT_UI_MEMORY_UNDONE_LABEL)}
+          {manageButton(`${styles.button} ${styles.buttonWithSpacing}`)}
+        </span>
+      ) : (
+        <span>
+          {formatLocale(S.CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL, {
+            $1: memoryContent
+          })}{' '}
+          <button
+            className={styles.button}
+            onClick={handleUndo}
+            data-testid='memory-undo-button'
+          >
+            {getLocale(S.CHAT_UI_MEMORY_UNDO_BUTTON_LABEL)}
+          </button>
+          <span> - </span>
+          {manageButton(styles.button)}
+        </span>
+      )}
     </div>
   )
 }
