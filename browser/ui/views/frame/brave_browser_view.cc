@@ -141,6 +141,10 @@ class ContentsBackground : public views::View {
   ContentsBackground() {
     SetBackground(views::CreateSolidBackground(kColorToolbar));
     SetEnabled(false);
+
+    // Prevent to eat any events that goes to web contents because web contents
+    // could be behind this background.
+    SetCanProcessEventsWithinSubtree(false);
   }
 };
 BEGIN_METADATA(ContentsBackground)
