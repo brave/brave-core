@@ -1,0 +1,34 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_account/endpoints/endpoints.h"
+
+#include "base/no_destructor.h"
+#include "base/strings/strcat.h"
+#include "brave/brave_domains/service_domains.h"
+#include "url/url_constants.h"
+
+namespace {
+constexpr char kHostnamePart[] = "accounts.bsg";
+
+const GURL& Host() {
+  static const base::NoDestructor<GURL> kHost(
+      base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                    brave_domains::GetServicesDomain(kHostnamePart)}));
+  return *kHost;
+}
+}  // namespace
+
+namespace brave_account::endpoints {
+
+GURL Endpoint<requests::PasswordInit>::URL() {
+  return Host().Resolve("/v2/accounts/password/init");
+}
+
+GURL Endpoint<requests::PasswordFinalize>::URL() {
+  return Host().Resolve("/v2/accounts/password/finalize");
+}
+
+}  // namespace brave_account::endpoints
