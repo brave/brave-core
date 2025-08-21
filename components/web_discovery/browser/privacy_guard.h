@@ -14,6 +14,9 @@ namespace web_discovery {
 
 // Checks if a URL is likely to be private based on various criteria.
 // If true, the page should not be investigated or reported.
+// This corresponds to the removed `isSuspiciousUrl` function in
+// the extension/reference implementation. It should only be used with
+// v1 patterns.
 bool IsPrivateURLLikely(const GURL& url, bool is_search_engine);
 
 // Determines if a search query is likely to contain private information.
@@ -27,14 +30,14 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
                               const std::string& query,
                               std::optional<std::string_view> prefix);
 
-// Checks if a URL should be dropped due to its length or content.
-// Currently only used for determining whether to mask a URL
-// in the function below.
-bool ShouldMaskURL(const GURL& url, bool relaxed);
+// Checks if a URL should be dropped entirely due to security/privacy concerns.
+bool ShouldDropURL(const GURL& url);
 
-// Masks a URL to protect privacy. Returns nullopt if URL is invalid.
-// Resolves nested Google URLs and replaces the URL path with a
-// placeholder token, if applicable.
+// Checks if a URL should be masked/truncated due to its length or content.
+bool ShouldMaskURL(const GURL& url);
+
+// Masks a URL to protect privacy. Returns nullopt if URL should be dropped.
+// Replaces the URL path with a placeholder token, if applicable.
 std::optional<std::string> MaskURL(const GURL& url, bool relaxed);
 
 }  // namespace web_discovery

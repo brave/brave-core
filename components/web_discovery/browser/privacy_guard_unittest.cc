@@ -145,6 +145,7 @@ TEST_F(WebDiscoveryPrivacyGuardTest, MaskURL) {
   EXPECT_EQ(*masked_url, "https://www.website.com/ (PROTECTED)");
 
   EXPECT_FALSE(MaskURL(GURL("file:///etc")));
+  // TODO(djandries): add test for 127.0.0.1, 0.0.0.0 and localhost
 }
 
 }  // namespace web_discovery

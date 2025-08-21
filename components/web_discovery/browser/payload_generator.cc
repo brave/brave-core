@@ -219,6 +219,7 @@ std::optional<base::Value> ProcessV2List(
     }
 
     // Check for private results if this is a query action
+    // TODO(djandries): Don't use IsPrivateURLLikely here, use MaskURL instead
     if (is_query_action &&
         IsPrivateResult(field.key, is_search_engine, scraped_item)) {
       VLOG(1) << "Omitting private search result";

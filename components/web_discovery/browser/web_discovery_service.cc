@@ -195,8 +195,11 @@ bool WebDiscoveryService::ShouldExtractFromPage(
               << ": " << url;
       // Check for private query using the extracted query
       // TODO(djandries): Determine if we need another check if query is empty
+      // TODO(djandries): determine what we should do for non search engine
+      // pages
       result = !extract_result->query ||
                !IsPrivateQueryLikely(*extract_result->query);
+      // TODO(djandries): Add check for private URL, but use MaskURL heuristic
     }
   } else {
     // Use patterns for v1

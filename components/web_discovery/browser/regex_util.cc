@@ -7,13 +7,10 @@
 
 #include <array>
 
-#include "base/strings/strcat.h"
-#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 
 namespace {
 
-constexpr char kLongNumberRegexPrefix[] = "[0-9]{";
-constexpr char kLongNumberRegexSuffix[] = ",}";
 constexpr char kEmailRegex[] =
     "[a-z0-9\\-_@]+(@|%40|%(25)+40)[a-z0-9\\-_]+\\.[a-z0-9\\-_]";
 constexpr char kHttpPasswordRegex[] = "[^:]+:[^@]+@";
@@ -22,31 +19,16 @@ constexpr char kWhitespaceRegex[] = "\\s+";
 constexpr char kISSNRegex[] = "^[0-9]{4}-?[0-9]{3}[0-9xX]$";
 constexpr char kNumberFragmentRegex[] = "[^\\p{L}\\s]+";
 constexpr char kNonDigitRegex[] = "[^0-9]";
+constexpr char kSafeUrlParameterRegex[] = "^[a-z-_]{1,18}$";
 
-constexpr std::array<std::string_view, 10> kPathAndQueryStringCheckRegexes = {
-    "(?i)\\/admin([\\/\\?#=]|$)",
-    "(?i)\\/wp-admin([\\/\\?#=]|$)",
-    "(?i)\\/edit([\\/\\?#=]|$)",
-    "(?i)[&\\?#\\/]share([\\/\\?#=]|$)",
-    "(?i)[&\\?#\\/;]sharing([\\/\\?#=]|$)",
-    "(?i)[&\\?#\\/;]logout([\\/\\?#=]|$)",
-    "(?i)WebLogic",
-    "(?i)[&\\?#\\/;]token([\\/\\?#=_;]|$)",
-    "(?i)[&\\?#\\/;]trk([\\/\\?#=_]|$)",
-    "[&\\?#\\/=;](http|https)(:\\/|\\%3A\\%2F)"};
-
-constexpr std::array<std::string_view, 20> kQueryStringAndRefCheckRegexes = {
-    "(?i)[&\\?#_\\-;]user",     "(?i)[&\\?#_\\-;]token",
-    "(?i)[&\\?#_\\-;]auth",     "(?i)[&\\?#_\\-;]uid",
-    "(?i)[&\\?#_\\-;]email",    "(?i)[&\\?#_\\-;]usr",
-    "(?i)[&\\?#_\\-;]pin",      "(?i)[&\\?#_\\-;]pwd",
-    "(?i)[&\\?#_\\-;]password", "(?i)[&\\?#;]u[=#]",
-    "(?i)[&\\?#;]url[=#]",      "(?i)[&\\?#_\\-;]http",
-    "(?i)[&\\?#_\\-;]ref[=#]",  "(?i)[&\\?#_\\-;]red[=#]",
-    "(?i)[&\\?#_\\-;]trk",      "(?i)[&\\?#_\\-;]track",
-    "(?i)[&\\?#_\\-;]shar",     "(?i)[&\\?#_\\-;]login",
-    "(?i)[&\\?#_\\-;]logout",   "(?i)[&\\?#_\\-;]session",
-};
+constexpr std::array<std::string_view, 6> kMiscPrivateUrlCheckRegexes = {
+    "(?i)[&?]redirect(?:-?url)?=",
+    "(?i)[&?#/=;](?:http|https)(?:[/]|%3A%2F)",
+    "(?i)[/]order[/].",
+    "(?i)[/]auth[/]realms[/]",
+    "(?i)[/]protocol[/]openid-connect[/]",
+    "(?i)((maps|route[^r-]).*|@)\\d{1,2}[^\\d]-?\\d{6}.+\\d{1,2}[^\\d]-?\\d{"
+    "6}"};
 
 }  // anonymous namespace
 
@@ -65,45 +47,6 @@ bool RegexUtil::CheckForEmail(std::string_view str) {
     email_regex_.emplace(kEmailRegex);
   }
   return re2::RE2::PartialMatch(str, *email_regex_);
-}
-
-bool RegexUtil::CheckForLongNumber(std::string_view str, size_t max_length) {
-  if (!long_number_regexes_.contains(max_length)) {
-    auto regex_str = base::StrCat({kLongNumberRegexPrefix,
-                                   base::NumberToString(max_length + 1),
-                                   kLongNumberRegexSuffix});
-    long_number_regexes_[max_length] = std::make_unique<re2::RE2>(regex_str);
-  }
-  return re2::RE2::PartialMatch(str, *long_number_regexes_[max_length]);
-}
-
-bool RegexUtil::CheckPathAndQueryStringKeywords(
-    std::string_view path_and_query) {
-  if (path_and_query_string_keyword_regexes_.empty()) {
-    for (const auto& regex_str : kPathAndQueryStringCheckRegexes) {
-      path_and_query_string_keyword_regexes_.emplace_back(regex_str);
-    }
-  }
-  for (const auto& regex : path_and_query_string_keyword_regexes_) {
-    if (re2::RE2::PartialMatch(path_and_query, regex)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-bool RegexUtil::CheckQueryStringOrRefKeywords(std::string_view str) {
-  if (query_string_and_ref_keyword_regexes_.empty()) {
-    for (const auto& regex_str : kQueryStringAndRefCheckRegexes) {
-      query_string_and_ref_keyword_regexes_.emplace_back(regex_str);
-    }
-  }
-  for (const auto& regex : query_string_and_ref_keyword_regexes_) {
-    if (re2::RE2::PartialMatch(str, regex)) {
-      return true;
-    }
-  }
-  return false;
 }
 
 bool RegexUtil::CheckQueryHTTPCredentials(std::string_view str) {
@@ -154,6 +97,27 @@ bool RegexUtil::FindAndConsumeNumberFragment(std::string_view input,
   *match = raw_fragment;
   re2::RE2::GlobalReplace(match, *non_digit_regex_, "");
   return true;
+}
+
+bool RegexUtil::CheckForMiscPrivateUrls(std::string_view str) {
+  if (misc_private_url_regexes_.empty()) {
+    for (const auto& regex_str : kMiscPrivateUrlCheckRegexes) {
+      misc_private_url_regexes_.emplace_back(regex_str);
+    }
+  }
+  for (const auto& regex : misc_private_url_regexes_) {
+    if (re2::RE2::PartialMatch(str, regex)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool RegexUtil::CheckForSafeUrlParameter(std::string_view value) {
+  if (!safe_url_parameter_regex_) {
+    safe_url_parameter_regex_.emplace(kSafeUrlParameterRegex);
+  }
+  return re2::RE2::FullMatch(value, *safe_url_parameter_regex_);
 }
 
 }  // namespace web_discovery
