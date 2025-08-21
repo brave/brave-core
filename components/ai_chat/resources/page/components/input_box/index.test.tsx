@@ -24,10 +24,13 @@ const testContext: InputBoxProps['context'] = {
   getPluralString: () => Promise.resolve(''),
   tabs: [],
   attachImages: jest.fn(),
+  isAIChatAgentProfileFeatureEnabled: false,
+  isAIChatAgentProfile: false,
+  openAIChatAgentProfile: () => { },
 }
 
 describe('input box', () => {
-  it('associated content is rendered in input box before conversation starts if should send contents is true', () => {
+  it('associated content is rendered in input box when not associated with a turn', () => {
     const { container } = render(
       <InputBox
         context={{
@@ -38,7 +41,8 @@ describe('input box', () => {
             contentUsedPercentage: 0.5,
             title: 'Associated Content',
             url: { url: 'https://example.com' },
-            uuid: '1234'
+            uuid: '1234',
+            conversationTurnUuid: undefined
           }],
         }}
         conversationStarted={false}
@@ -68,7 +72,7 @@ describe('input box', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('associated content is not rendered in input box after the conversation has started', () => {
+  it('associated content is not rendered in input box after being associated with a turn', () => {
     const { container } = render(
       <InputBox
         context={{
@@ -79,7 +83,8 @@ describe('input box', () => {
             contentUsedPercentage: 0.5,
             title: 'Associated Content',
             url: { url: 'https://example.com' },
-            uuid: '1234'
+            uuid: '1234',
+            conversationTurnUuid: 'turn-1'
           }],
         }}
         conversationStarted

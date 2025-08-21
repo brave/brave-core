@@ -465,7 +465,7 @@ TEST_P(AIChatServiceUnitTest,
   base::OnceClosure resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(
-          [&resolve](PageContents page_contents,
+          [&resolve](PageContentsMap page_contents,
                      const std::vector<mojom::ConversationTurnPtr>& history,
                      const std::string& selected_language,
                      bool is_temporary_chat,
@@ -1309,7 +1309,11 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
 
     base::RunLoop run_loop_2;
     data[i].conversation_handler->GeneratePageContentInternal(
-        base::BindLambdaForTesting([&](PageContents page_contents) {
+        base::BindLambdaForTesting([&]() {
+          auto page_contents =
+              data[i]
+                  .conversation_handler->associated_content_manager()
+                  ->GetCachedContents();
           if (i == 1) {
             EXPECT_TRUE(page_contents.empty()) << i << " content was not empty";
           } else {
@@ -1417,6 +1421,26 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
   EXPECT_CALL(*mock_db_ptr, UpdateConversationModelKey).Times(1);
   DisconnectConversationClient(client2.get());
   testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
+}
+
+TEST_P(AIChatServiceUnitTest,
+       OnConversationEntryAdded_GetsLatestAssociatedContent) {
+  NiceMock<MockAssociatedContent> associated_content;
+  associated_content.SetUrl(GURL("https://example.com"));
+
+  ConversationHandler* handler = CreateConversation();
+  auto client = CreateConversationClient(handler);
+
+  // Don't notify listeners the content has been updated.
+  handler->associated_content_manager()->AddContent(&associated_content,
+                                                    /*notify_updated=*/false);
+
+  // |associated_content| shouldn't have been updated on the metadata yet.
+  EXPECT_EQ(handler->GetMetadataForTesting().associated_content.size(), 0u);
+
+  handler->SubmitHumanConversationEntry("Human message", {});
+
+  EXPECT_EQ(handler->GetMetadataForTesting().associated_content.size(), 1u);
 }
 
 }  // namespace ai_chat

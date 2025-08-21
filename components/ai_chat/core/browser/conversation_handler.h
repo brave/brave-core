@@ -255,6 +255,10 @@ class ConversationHandler : public mojom::ConversationHandler,
     is_request_in_progress_ = in_progress;
   }
 
+  const mojom::Conversation& GetMetadataForTesting() const {
+    return *metadata_;
+  }
+
  protected:
   // ModelService::Observer
   void OnModelListUpdated() override;
@@ -306,29 +310,28 @@ class ConversationHandler : public mojom::ConversationHandler,
   };
 
   void InitEngine();
-  void UpdateAssociatedContentInfo();
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
   void PerformAssistantGenerationWithPossibleContent();
 
-  void PerformAssistantGeneration(PageContents page_contents);
+  void PerformAssistantGeneration();
   void SetAPIError(const mojom::APIError& error);
   void UpdateOrCreateLastAssistantEntry(
       EngineConsumer::GenerationResultData result);
   void MaybeSeedOrClearSuggestions();
-  void PerformQuestionGeneration(PageContents page_contents);
+  void PerformQuestionGeneration();
 
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 
-  void GeneratePageContent(GetAllContentCallback callback);
+  void GeneratePageContent(base::OnceClosure callback);
   // Same as above but without DCHECKS for testing.
-  void GeneratePageContentInternal(GetAllContentCallback callback);
+  void GeneratePageContentInternal(base::OnceClosure callback);
 
-  void OnGeneratePageContentComplete(GetAllContentCallback callback,
+  void OnGeneratePageContentComplete(base::OnceClosure callback,
                                      bool content_changed);
   void OnAutoScreenshotsTaken(
-      GetAllContentCallback callback,
+      base::OnceClosure callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
 
   void OnEngineCompletionDataReceived(
