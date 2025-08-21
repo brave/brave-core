@@ -34,7 +34,12 @@ import 'emptykit.css'
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
+import { rawr } from "gen/brave/web-ui-opaque_ke/brave_wallet_ui_wasm.bundle.js"
+console.log("I should see this first...");
+console.log(`and then here's the thunder: ${rawr()}`);
+
 function App() {
+
   React.useEffect(() => {
     /** Sets FAVICON for Wallet Pages */
     let link: HTMLLinkElement = document.querySelector("link[rel~='icon']")!

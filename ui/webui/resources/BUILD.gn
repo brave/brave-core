@@ -107,17 +107,18 @@ transpile_web_ui("opaque_ke") {
   generate_grdp = true
   resource_path_prefix = "brave"
 
-  entry_points = [ [
-        "opaque_ke",
-        rebase_path("wasm/opaque_ke/index.js"),
-      ] ]
+  entry_points = [
+    [ "opaque_ke", rebase_path("wasm/opaque_ke/index.js") ],
+    [ "brave_wallet_ui_wasm", rebase_path("wasm/brave_wallet_ui_wasm/index.js") ]
+  ]
 
   inputs = [
     rebase_path("wasm/Cargo.lock"),
     rebase_path("wasm/opaque_ke/src/lib.rs"),
+    rebase_path("wasm/brave_wallet_ui_wasm/src/lib.rs"),
   ]
 
-  rust_packages = [ rebase_path("wasm/opaque_ke/Cargo.toml") ]
+  rust_packages = [ rebase_path("wasm/opaque_ke/Cargo.toml"), rebase_path("wasm/brave_wallet_ui_wasm/Cargo.toml") ]
 
   no_iife = true
   output_module = true

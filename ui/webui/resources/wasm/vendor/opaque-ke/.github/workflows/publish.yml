@@ -1,0 +1,30 @@
+name: Publish
+
+on:
+  release:
+    types: [published] # Only publish to crates.io when we formally publish a release
+  # For more on how to formally release on Github, read https://help.github.com/en/articles/creating-releases
+
+jobs:
+  publish:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        rust: [stable]
+
+    steps:
+    - uses: hecrj/setup-rust-action@v2
+      with:
+        rust-version: ${{ matrix.rust }}
+    - uses: actions/checkout@main
+    - name: Login to crates.io
+      run: cargo login $CRATES_IO_TOKEN
+      env:
+        CRATES_IO_TOKEN: ${{ secrets.crates_io_token }} # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
+    - name: Dry run publish opaque-ke
+      run: cargo publish --dry-run --manifest-path Cargo.toml
+    - name: Publish opaque-ke
+      run: cargo publish --manifest-path Cargo.toml
+      env:
+        CARGO_REGISTRY_TOKEN: ${{ secrets.crates_io_token }}

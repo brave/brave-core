@@ -12,6 +12,12 @@ import { isEmailValid } from './brave_account_common.js'
 // @ts-expect-error
 import { Login } from 'chrome://resources/brave/opaque_ke.bundle.js'
 
+// @ts-expect-error
+import { rawr } from 'chrome://resources/brave/brave_wallet_ui_wasm.bundle.js'
+
+console.log("I should see this first...");
+console.log(`and then here's the thunder: ${rawr()}`);
+
 export class BraveAccountSignInDialogElement extends CrLitElement {
   static get is() {
     return 'brave-account-sign-in-dialog'
