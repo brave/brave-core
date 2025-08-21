@@ -19,8 +19,8 @@ import styles from './style.module.scss'
 
 type Props = Pick<ConversationContext, 'uploadFile' | 'getScreenshots' |
   'conversationHistory' | 'associatedContentInfo' | 'setShowAttachments'
-  | 'associateDefaultContent'> &
-  Pick<AIChatContext, 'isMobile' | 'tabs'> & {
+  | 'associateDefaultContent' | 'unassociatedTabs'> &
+  Pick<AIChatContext, 'isMobile'> & {
     conversationStarted: boolean
   }
 
@@ -74,28 +74,26 @@ export default function AttachmentButtonMenu(props: Props) {
             </div>
           </leo-menu-item>
         }
-        {!props.conversationStarted && <>
-          {props.associateDefaultContent && (
-            <leo-menu-item onClick={() => props.associateDefaultContent?.()}>
-              <div className={styles.buttonContent}>
-                <Icon
-                  className={styles.buttonIcon}
-                  name='window-tab'
-                />
-                {getLocale(S.AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL)}
-              </div>
-            </leo-menu-item>
-          )}
-          {props.tabs.length > 0 && (<leo-menu-item onClick={() => props.setShowAttachments(true)}>
+        {props.associateDefaultContent && (
+          <leo-menu-item onClick={() => props.associateDefaultContent?.()}>
             <div className={styles.buttonContent}>
               <Icon
                 className={styles.buttonIcon}
-                name='window-tabs'
+                name='window-tab'
               />
-              {getLocale(S.AI_CHAT_ATTACH_OPEN_TABS_BUTTON_LABEL)}
+              {getLocale(S.AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL)}
             </div>
-          </leo-menu-item>)}
-        </>}
+          </leo-menu-item>
+        )}
+        {props.unassociatedTabs.length > 0 && (<leo-menu-item onClick={() => props.setShowAttachments(true)}>
+          <div className={styles.buttonContent}>
+            <Icon
+              className={styles.buttonIcon}
+              name='window-tabs'
+            />
+            {getLocale(S.AI_CHAT_ATTACH_OPEN_TABS_BUTTON_LABEL)}
+          </div>
+        </leo-menu-item>)}
       </ButtonMenu>
     </>
   )
