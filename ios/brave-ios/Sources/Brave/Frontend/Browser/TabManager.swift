@@ -588,6 +588,56 @@ class TabManager: NSObject {
     saveTabOrder()
   }
 
+  func moveTabs(_ tabs: [TabState.ID], toIndex index: Int) {
+    assert(Thread.isMainThread)
+
+    let tabsToMove = tabs.compactMap { id in
+      allTabs.first(where: { $0.id == id })
+    }
+    let isPrivate = tabsToMove.first?.isPrivate ?? false
+
+    guard !tabsToMove.isEmpty, tabsToMove.allSatisfy({ $0.isPrivate == isPrivate }) else { return }
+
+    // Save the selected tab before updating the tabs list
+    let previouslySelectedTab = selectedTab
+
+    // Remove all tabs to move from their current positions (in reverse order to maintain indices)
+    var removedTabs: [any TabState] = []
+    for tabToMove in tabsToMove.reversed() {
+      if let fromIndex = allTabs.firstIndex(where: { $0 === tabToMove }) {
+        let tab = allTabs.remove(at: fromIndex)
+        removedTabs.insert(tab, at: 0)
+      }
+    }
+
+    // Calculate insertion index in the current mode tabs after removals
+    let currentTabsAfterRemovals = tabsForCurrentMode
+    let insertionIndex = min(index, currentTabsAfterRemovals.count)
+
+    // Find the corresponding index in allTabs
+    let adjustedIndex: Int
+    if insertionIndex >= currentTabsAfterRemovals.count {
+      // Insert at the end of this mode's tabs
+      adjustedIndex = allTabs.count
+    } else {
+      // Insert before the tab at the insertion index
+      let targetTab = currentTabsAfterRemovals[insertionIndex]
+      adjustedIndex = allTabs.firstIndex(where: { $0 === targetTab }) ?? allTabs.count
+    }
+
+    // Insert all tabs at the target position
+    allTabs.insert(contentsOf: removedTabs, at: adjustedIndex)
+
+    // Restore the selected index if needed
+    if let previouslySelectedTab = previouslySelectedTab,
+      let previousSelectedIndex = allTabs.firstIndex(where: { $0 === previouslySelectedTab })
+    {
+      _selectedIndex = previousSelectedIndex
+    }
+
+    saveTabOrder()
+  }
+
   private func saveTabOrder() {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (privateBrowsingManager.isPrivateBrowsing
@@ -794,6 +844,24 @@ class TabManager: NSObject {
       }
       forgetDataDelayed(for: url, in: tab, delay: 30)
     }
+  }
+
+  /// Shreds data for a set of tabs and returns tabs that are to be shredded/removed.
+  @MainActor func shredDataForTabs(_ tabs: [any TabState]) -> Set<TabState.ID> {
+    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+    let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
+    let urlsToShred = Set(tabs.compactMap(\.visibleURL?.urlToShred))
+    let tabsToRemove = allTabs.filter({
+      if let url = $0.visibleURL?.urlToShred {
+        return urlsToShred.contains(url)
+      }
+      return false
+    })
+    Task {
+      removeTabs(tabsToRemove)
+      await forgetData(for: Array(urlsToShred), dataStore: configuration.websiteDataStore)
+    }
+    return Set(tabsToRemove.map(\.id))
   }
 
   @MainActor func shredAllTabsForCurrentMode() {

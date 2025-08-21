@@ -7,6 +7,7 @@ import BraveCore
 import BraveShared
 import BraveStrings
 import BraveUI
+import DesignSystem
 import Foundation
 import LocalAuthentication
 import Lottie
@@ -56,6 +57,9 @@ struct TabGridView: View {
   @Environment(\.colorScheme) private var colorScheme
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
+  @State private var editMode: EditMode = .inactive
+  @State private var selectedTabs: [TabState.ID] = []
+
   @ObservedObject private var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
 
   private enum DestinationSheet: Int, Identifiable, Hashable {
@@ -70,6 +74,7 @@ struct TabGridView: View {
 
   private enum ActiveShredMode: Equatable {
     case selectedTab
+    case selectedTabs
     case allTabs
   }
 
@@ -103,6 +108,19 @@ struct TabGridView: View {
     return UINavigationController(rootViewController: controller)
   }
 
+  private var gridMaskInsets: EdgeInsets {
+    var insets = self.insets
+    if !isSearchBarHidden {
+      insets.top += TabGridSearchBar.defaultHeight + TabGridSearchBar.padding
+    }
+    return insets
+  }
+
+  private var isSearchBarHidden: Bool {
+    (viewModel.isPrivateBrowsing && viewModel.tabs.isEmpty && !viewModel.isSearching)
+      || editMode == .active
+  }
+
   var body: some View {
     VStack {
       if viewModel.isPrivateBrowsing, viewModel.tabs.isEmpty, !viewModel.isSearching {
@@ -124,10 +142,12 @@ struct TabGridView: View {
           containerView: containerView,
           tabs: viewModel.tabs,
           isPrivateBrowsing: viewModel.isPrivateBrowsing,
-          insets: insets
+          insets: gridMaskInsets,
+          selectedTabList: $selectedTabs
         )
       }
     }
+    .environment(\.editMode, $editMode)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .mask {
       // TODO: Test Performance of this mask w/ and w/o drawingGroup
@@ -150,21 +170,26 @@ struct TabGridView: View {
     .background(Color(uiColor: browserColors.tabSwitcherBackground))
     .overlay(alignment: .top) {
       VStack {
-        headerBar
-          .onGeometryChange(for: CGFloat.self, of: \.size.height) {
-            insets.top = $0
+        VStack {
+          let isHeaderDisabled = viewModel.isSearching || editMode == .active
+          headerBar
+            .animation(
+              .default,
+              body: { content in
+                content
+                  .opacity(isHeaderDisabled ? 0.5 : 1)
+                  .disabled(isHeaderDisabled)
+              }
+            )
+          if editMode == .active {
+            editModeHeaderBar
+              .transition(.blurReplace())
           }
-          .animation(
-            .default,
-            body: { content in
-              content
-                .opacity(viewModel.isSearching ? 0.5 : 1)
-                .disabled(viewModel.isSearching)
-            }
-          )
-          .contentShape(.rect)  // Dont trigger background tap from tapping empty area
-        let isSearchBarHidden =
-          viewModel.isPrivateBrowsing && viewModel.tabs.isEmpty && !viewModel.isSearching
+        }
+        .onGeometryChange(for: CGFloat.self, of: \.size.height) {
+          insets.top = $0
+        }
+        .contentShape(.rect)  // Dont trigger background tap from tapping empty area
         if !isSearchBarHidden {
           TabGridSearchBar(
             text: $viewModel.searchQuery,
@@ -176,13 +201,20 @@ struct TabGridView: View {
       }
     }
     .overlay(alignment: .bottom) {
-      if !viewModel.isSearching {
-        footerBar
-          .onGeometryChange(for: CGFloat.self, of: \.size.height) {
-            insets.bottom = $0
+      Group {
+        if editMode == .active {
+          editModeFooterBar
+        } else {
+          if !viewModel.isSearching {
+            footerBar
           }
-          .contentShape(.rect)  // Dont trigger background tap from tapping empty area
+        }
       }
+      .transition(.blurReplace())
+      .onGeometryChange(for: CGFloat.self, of: \.size.height) {
+        insets.bottom = $0
+      }
+      .contentShape(.rect)  // Dont trigger background tap from tapping empty area
     }
     .onChange(of: viewModel.isSearching) { oldValue, newValue in
       // Reset the bottom inset since we hide the footer when searching
@@ -192,7 +224,7 @@ struct TabGridView: View {
     }
     .background {
       orphanKeyboardShortcuts
-        .disabled(viewModel.isSearching)
+        .disabled(viewModel.isSearching || editMode == .active)
     }
     .sheet(item: $destinationSheet) { item in
       switch item {
@@ -232,11 +264,16 @@ struct TabGridView: View {
         .keyboardShortcut(.defaultAction)
       },
       message: { shredMode in
-        Text(
-          shredMode == .allTabs
-            ? Strings.Shields.shredSiteAllTabsConfirmationMessage
-            : Strings.Shields.shredSiteDataConfirmationMessage
-        )
+        let message =
+          switch shredMode {
+          case .allTabs:
+            Strings.Shields.shredSiteAllTabsConfirmationMessage
+          case .selectedTabs:
+            Strings.Shields.shredSiteSelectedTabsConfirmationMessage
+          case .selectedTab:
+            Strings.Shields.shredSiteDataConfirmationMessage
+          }
+        Text(message)
       }
     )
     .overlay {
@@ -250,16 +287,24 @@ struct TabGridView: View {
           .resizable()
           .playing(loopMode: .playOnce)
           .animationDidFinish { _ in
-            let dismissAfterShred = viewModel.tabs.count == 1 || shredMode == .allTabs
+            let originalTabIDs = Set(viewModel.tabs.map(\.id))
+            var dismissAfterShred = originalTabIDs.count == 1 || shredMode == .allTabs
             switch shredMode {
             case .selectedTab:
               viewModel.shredSelectedTab()
+            case .selectedTabs:
+              let affectedTabsIDs = viewModel.shredSelectedTabs(Set(selectedTabs))
+              if !dismissAfterShred {
+                dismissAfterShred = originalTabIDs.count == affectedTabsIDs.count
+              }
             case .allTabs:
               viewModel.shredAllTabs()
             }
             withAnimation {
               isShredAnimationVisible = false
               activeShredMode = nil
+              editMode = .inactive
+              selectedTabs = []
             }
             if dismissAfterShred {
               dismiss()
@@ -376,12 +421,6 @@ struct TabGridView: View {
   var footerBar: some View {
     HStack {
       Menu {
-        Button(role: .destructive) {
-          viewModel.closeAllTabs()
-          dismiss()
-        } label: {
-          Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
-        }
         if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
           Section {
             Button {
@@ -391,10 +430,31 @@ struct TabGridView: View {
             }
           }
         }
+        Section {
+          if !viewModel.tabs.isEmpty {
+            Button {
+              withAnimation {
+                editMode = .active
+              }
+            } label: {
+              Label(
+                Strings.TabGrid.selectTabsButtonTitle,
+                braveSystemImage: "leo.check.circle-outline"
+              )
+            }
+            Button(role: .destructive) {
+              viewModel.closeAllTabs()
+              dismiss()
+            } label: {
+              Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
+            }
+          }
+        }
       } label: {
         Text(Strings.TabGrid.moreMenuButtonTitle)
           .padding(4)
       }
+      .menuOrder(.fixed)
       Spacer()
       Button {
         viewModel.addTab()
@@ -434,6 +494,64 @@ struct TabGridView: View {
     .padding(.horizontal, 16)
     .padding(.vertical, 8)
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
+  }
+
+  var editModeHeaderBar: some View {
+    HStack {
+      HStack {
+        Text(Strings.TabGrid.selectedTabs)
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
+        Text(selectedTabs.count, format: .number)
+          .foregroundStyle(Color(braveSystemName: .textTertiary))
+      }
+      .accessibilityElement()
+      .font(.title3.weight(.semibold))
+      Spacer()
+      Button {
+        withAnimation {
+          selectedTabs = []
+          editMode = .inactive
+        }
+      } label: {
+        Text(Strings.CancelString)
+          .fontWeight(.medium)
+          .foregroundStyle(Color(braveSystemName: .textSecondary))
+      }
+    }
+    .padding(.horizontal, 16)
+    .padding(.vertical, 4)
+  }
+
+  var editModeFooterBar: some View {
+    HStack {
+      Button {
+        isShredAlertPresented = true
+        activeShredMode = .selectedTabs
+      } label: {
+        Label(Strings.TabGrid.shredSelectedTabsButtonTitle, braveSystemImage: "leo.shred.data")
+          .frame(maxWidth: .infinity)
+      }
+      .buttonStyle(BraveOutlineButtonStyle(size: .normal))
+      .disabled(selectedTabs.isEmpty || !viewModel.isShredAvailableForSelectedTabs(selectedTabs))
+      Button {
+        withAnimation {
+          let dismissAfterClose = selectedTabs.count == viewModel.tabs.count
+          editMode = .inactive
+          viewModel.closeTabs(selectedTabs)
+          selectedTabs = []
+          if dismissAfterClose {
+            dismiss()
+          }
+        }
+      } label: {
+        Label(Strings.close, braveSystemImage: "leo.close")
+          .frame(maxWidth: .infinity)
+      }
+      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .disabled(selectedTabs.isEmpty)
+    }
+    .padding(.horizontal, 16)
+    .padding(.vertical, 8)
   }
 }
 
