@@ -13,6 +13,7 @@ import { BackgroundCaption } from './background/background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
 import { TopSites } from './top_sites/top_sites'
 import { Clock } from './common/clock'
+import { LazyNewsFeed } from './news/lazy_news_feed'
 import { WidgetStack } from './widgets/widget_stack'
 import { useSearchLayoutReady, useWidgetLayoutReady } from './app_layout_ready'
 import useMediaQuery from '$web-common/useMediaQuery'
@@ -20,8 +21,6 @@ import useMediaQuery from '$web-common/useMediaQuery'
 import { style, threeColumnBreakpoint } from './app.style'
 
 const threeColumnQuery = `(width > ${threeColumnBreakpoint})`
-
-const NewsFeed = React.lazy(() => import('./news/news_feed'))
 
 export function App() {
   const searchLayoutReady = useSearchLayoutReady()
@@ -97,9 +96,7 @@ export function App() {
         </div>
       </main>
       <div className='news-container'>
-        <React.Suspense>
-          <NewsFeed />
-        </React.Suspense>
+        <LazyNewsFeed />
       </div>
       <SettingsModal
         isOpen={settingsView !== null}
