@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { Redirect, Route, Switch, useHistory, useParams } from 'react-router'
-import ControlItem from '@brave/leo/react/controlItem'
+import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
 
 // Selectors
 import {
@@ -749,12 +749,12 @@ function DepositAccount() {
             }}
           >
             {zcashAddressOptions.map((option) => (
-              <ControlItem
+              <SegmentedControlItem
                 key={option.addressType}
                 value={option.addressType}
               >
                 {getLocale(option.label)}
-              </ControlItem>
+              </SegmentedControlItem>
             ))}
           </SegmentedControl>
         </ControlsWrapper>
