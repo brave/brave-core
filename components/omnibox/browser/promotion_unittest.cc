@@ -24,7 +24,7 @@
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_result.h"
-#include "components/omnibox/browser/mock_autocomplete_provider_client.h"
+#include "components/omnibox/browser/fake_autocomplete_provider_client.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -38,7 +38,6 @@
 
 using brave_search_conversion::ConversionType;
 using brave_search_conversion::GetPromoURL;
-using brave_search_conversion::RegisterPrefs;
 using ::testing::Eq;
 using ::testing::NiceMock;
 using ::testing::Return;
@@ -84,13 +83,15 @@ class OmniboxPromotionTest : public testing::Test {
   ~OmniboxPromotionTest() override = default;
 
   void SetUp() override {
-    RegisterPrefs(pref_service_.registry());
-    omnibox::RegisterProfilePrefs(pref_service_.registry());
-    omnibox::RegisterBraveProfilePrefs(pref_service_.registry());
-    pref_service_.SetBoolean(omnibox::kTopSuggestionsEnabled, false);
-
     scoped_default_locale_ =
         std::make_unique<brave_l10n::test::ScopedDefaultLocale>("en_US");
+  }
+
+  void RegisterAndInitializePrefs(TestingPrefServiceSimple* pref_service) {
+    brave_search_conversion::RegisterPrefs(pref_service->registry());
+    omnibox::RegisterProfilePrefs(pref_service->registry());
+    omnibox::RegisterBraveProfilePrefs(pref_service->registry());
+    pref_service->SetBoolean(omnibox::kTopSuggestionsEnabled, false);
   }
 
   std::unique_ptr<AutocompleteController> CreateController(
@@ -107,13 +108,20 @@ class OmniboxPromotionTest : public testing::Test {
     template_url_service->SetUserSelectedDefaultSearchProvider(
         bing_template_url.get());
 
-    auto client_mock = std::make_unique<MockAutocompleteProviderClient>();
-    client_mock->set_template_url_service(template_url_service);
-    ON_CALL(*client_mock, GetPrefs()).WillByDefault(Return(&pref_service_));
-    ON_CALL(*client_mock, IsOffTheRecord()).WillByDefault(Return(incognito));
+    // Use `FakeAutocompleteProviderClient` as it provides stub implementations
+    // that are needed beyond what `MockAutocompleteProviderClient` provides.
+    // Also, since it has its own `TestingPrefService`, use it when registering
+    // our prefs.
+    auto client_fake = std::make_unique<FakeAutocompleteProviderClient>();
+    auto* client_prefs =
+        static_cast<TestingPrefServiceSimple*>(client_fake->GetPrefs());
+    RegisterAndInitializePrefs(client_prefs);
+    client_fake->set_template_url_service(template_url_service);
+    ON_CALL(*client_fake, GetPrefs()).WillByDefault(Return(client_prefs));
+    ON_CALL(*client_fake, IsOffTheRecord()).WillByDefault(Return(incognito));
     std::unique_ptr<AutocompleteController> controller =
         std::make_unique<AutocompleteController>(
-            std::move(client_mock), AutocompleteProvider::TYPE_SEARCH);
+            std::move(client_fake), AutocompleteProvider::TYPE_SEARCH);
     controller->providers_.push_back(
         new DummyProvider(AutocompleteProvider::TYPE_SEARCH));
     controller->providers_.push_back(
@@ -145,7 +153,6 @@ class OmniboxPromotionTest : public testing::Test {
 
   content::BrowserTaskEnvironment browser_task_environment_;
   TestSchemeClassifier classifier_;
-  TestingPrefServiceSimple pref_service_;
   std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 };
 
