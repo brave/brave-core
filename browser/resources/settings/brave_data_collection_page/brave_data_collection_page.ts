@@ -73,8 +73,8 @@ extends SettingBraveDataCollectionPageElementBase
       },
       showRestartForMetricsReporting_: Boolean,
       showSurveyPanelist_: Boolean,
-      isP3ADisabledByPolicy_: Boolean,
-      isStatsReportingDisabledByPolicy_: Boolean,
+      isStatsReportingEnabledManaged_: Boolean,
+      isP3AEnabledManaged_: Boolean,
     }
   }
 
@@ -83,8 +83,8 @@ extends SettingBraveDataCollectionPageElementBase
   private declare metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>
   private declare showRestartForMetricsReporting_: boolean
   private declare showSurveyPanelist_: boolean
-  private declare isP3ADisabledByPolicy_: boolean
-  private declare isStatsReportingDisabledByPolicy_: boolean
+  private declare isStatsReportingEnabledManaged_: boolean
+  private declare isP3AEnabledManaged_: boolean
 
   browserProxy_ = BraveDataCollectionBrowserProxyImpl.getInstance()
 
@@ -95,39 +95,39 @@ extends SettingBraveDataCollectionPageElementBase
     // Can't use `prefs` property of `settings-toggle-button` directly
     // because p3a enabled is a local state setting, but PrefControlMixin
     // checks for a pref being valid, so have to fake it, same as upstream.
-    const setP3AEnabledPref = (userEnabled: boolean, policyDisabled: boolean) =>
-      this.setP3AEnabledPref_(userEnabled, policyDisabled)
+    const setP3AEnabledPref = (userEnabled: boolean, isManaged: boolean) =>
+      this.setP3AEnabledPref_(userEnabled, isManaged)
 
-    this.isP3ADisabledByPolicy_ = loadTimeData.getBoolean('isP3ADisabledByPolicy')
-    this.isStatsReportingDisabledByPolicy_ = loadTimeData.getBoolean('isStatsReportingDisabledByPolicy')
+    this.isStatsReportingEnabledManaged_ = loadTimeData.getBoolean('isStatsReportingEnabledManaged')
+    this.isP3AEnabledManaged_ = loadTimeData.getBoolean('isP3AEnabledManaged')
 
     this.addWebUiListener('p3a-enabled-changed', setP3AEnabledPref)
     this.browserProxy_.getP3AEnabled().then(
-      (enabled: boolean) => setP3AEnabledPref(enabled, this.isP3ADisabledByPolicy_))
+      (enabled: boolean) => setP3AEnabledPref(enabled, this.isP3AEnabledManaged_))
 
     const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
         this.setMetricsReportingPref_(metricsReporting)
     this.addWebUiListener('metrics-reporting-change', setMetricsReportingPref)
     this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref)
 
-    const setStatsUsagePingEnabledPref = (userEnabled: boolean, policyDisabled: boolean) =>
-      this.setStatsUsagePingEnabledPref_(userEnabled, policyDisabled)
+    const setStatsUsagePingEnabledPref = (userEnabled: boolean, isManaged: boolean) =>
+      this.setStatsUsagePingEnabledPref_(userEnabled, isManaged)
     this.addWebUiListener(
       'stats-usage-ping-enabled-changed', setStatsUsagePingEnabledPref)
     this.browserProxy_.getStatsUsagePingEnabled().then(
-      (enabled: boolean) => setStatsUsagePingEnabledPref(enabled, this.isStatsReportingDisabledByPolicy_))
+      (enabled: boolean) => setStatsUsagePingEnabledPref(enabled, this.isStatsReportingEnabledManaged_))
 
     this.showSurveyPanelist_ = loadTimeData.getBoolean('isSurveyPanelistAllowed')
   }
 
-  setP3AEnabledPref_(userEnabled: boolean, policyDisabled: boolean) {
+  setP3AEnabledPref_(userEnabled: boolean, isManaged: boolean) {
     const pref = {
       key: '',
       type: chrome.settingsPrivate.PrefType.BOOLEAN,
       value: userEnabled,
     }
     this.p3aEnabledPref_ = pref
-    this.isP3ADisabledByPolicy_ = policyDisabled
+    this.isP3AEnabledManaged_ = isManaged
   }
 
   onP3AEnabledChange_(event: Event) {
@@ -136,14 +136,14 @@ extends SettingBraveDataCollectionPageElementBase
     this.browserProxy_.setP3AEnabled(target.checked)
   }
 
-  setStatsUsagePingEnabledPref_(userEnabled: boolean, policyDisabled: boolean) {
-    const pref = {
+  setStatsUsagePingEnabledPref_(userEnabled: boolean, isManaged: boolean) {
+    const pref: any = {
       key: '',
       type: chrome.settingsPrivate.PrefType.BOOLEAN,
       value: userEnabled,
     }
     this.statsUsagePingEnabledPref_ = pref
-    this.isStatsReportingDisabledByPolicy_ = policyDisabled
+    this.isStatsReportingEnabledManaged_ = isManaged
   }
 
   onStatsUsagePingEnabledChange_(event: Event) {

@@ -1,4 +1,4 @@
-<template is="dom-if" if="[[!isP3ADisabledByPolicy_]]">
+<template is="dom-if" if="[[!isP3AEnabledManaged_]]">
   <settings-toggle-button id="p3aEnabled"
       class="cr-row"
       pref="[[p3aEnabledPref_]]"
@@ -7,7 +7,7 @@
       on-settings-boolean-control-change="onP3AEnabledChange_">
   </settings-toggle-button>
 </template>
-<template is="dom-if" if="[[!isStatsReportingDisabledByPolicy_]]">
+<template is="dom-if" if="[[!isStatsReportingEnabledManaged_]]">
   <settings-toggle-button id="statsUsagePingEnabled"
       class="cr-row"
       pref="[[statsUsagePingEnabledPref_]]"

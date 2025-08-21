@@ -71,11 +71,11 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 #endif
     {policy::key::kBraveAIChatEnabled, ai_chat::prefs::kEnabledByPolicy,
      base::Value::Type::BOOLEAN},
-    {policy::key::kBraveP3ADisabled, p3a::kP3ADisabledByPolicy,
+    {policy::key::kBraveP3AEnabled, p3a::kP3AEnabled,
      base::Value::Type::BOOLEAN},
-    {policy::key::kBraveStatsPingDisabled, kStatsReportingDisabledByPolicy,
+    {policy::key::kBraveStatsPingEnabled, kStatsReportingEnabled,
      base::Value::Type::BOOLEAN},
-    {policy::key::kBraveWebDiscoveryDisabled, kWebDiscoveryDisabledByPolicy,
+    {policy::key::kBraveWebDiscoveryEnabled, kWebDiscoveryEnabled,
      base::Value::Type::BOOLEAN},
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {policy::key::kBraveNewsDisabled,
