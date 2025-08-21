@@ -53,17 +53,15 @@ constexpr int kMaxResponseLength = 32768;
 
 // static
 std::string EmailAliasesService::GetAccountsServiceVerifyInitURL() {
-  return absl::StrFormat(
-      kAccountServiceEndpoint,
-      brave_domains::GetServicesDomain("accounts.bsg"),
-      kAccountsServiceVerifyInitPath);
+  return absl::StrFormat(kAccountServiceEndpoint,
+                         brave_domains::GetServicesDomain("accounts.bsg"),
+                         kAccountsServiceVerifyInitPath);
 }
 
 std::string EmailAliasesService::GetAccountsServiceVerifyResultURL() {
-  return absl::StrFormat(
-      kAccountServiceEndpoint,
-      brave_domains::GetServicesDomain("accounts.bsg"),
-      kAccountsServiceVerifyResultPath);
+  return absl::StrFormat(kAccountServiceEndpoint,
+                         brave_domains::GetServicesDomain("accounts.bsg"),
+                         kAccountsServiceVerifyResultPath);
 }
 
 EmailAliasesService::EmailAliasesService(
