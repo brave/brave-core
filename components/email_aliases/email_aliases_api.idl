@@ -27,12 +27,16 @@ dictionary SessionRequest {
 // Response of POST /verify/result
 dictionary SessionResponse {
   DOMString authToken;
+  DOMString? email;
+  DOMString service;
+  boolean verified;
 };
 
 // Generic error shape returned by backend
 dictionary ErrorResponse {
   DOMString error;
   long code;
+  long status;
 };
 
 };

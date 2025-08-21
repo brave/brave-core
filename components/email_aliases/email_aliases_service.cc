@@ -85,10 +85,11 @@ void EmailAliasesService::BindInterface(
 }
 
 void EmailAliasesService::NotifyObserversAuthStateChanged(
-    mojom::AuthenticationStatus status) {
+    mojom::AuthenticationStatus status,
+    const std::optional<std::string>& error_message) {
   for (auto& observer : observers_) {
     observer->OnAuthStateChanged(
-        mojom::AuthState::New(status, auth_email_, std::nullopt));
+        mojom::AuthState::New(status, auth_email_, error_message));
   }
 }
 
@@ -142,13 +143,21 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
         IDS_EMAIL_ALIASES_ERROR_INVALID_RESPONSE_BODY));
     return;
   }
+  auto error_message = ErrorResponse::FromValue(*response_body_dict);
+  if (error_message) {
+    LOG(ERROR) << "Email Aliases verification error: " << error_message->error;
+    std::move(callback).Run(l10n_util::GetStringUTF8(
+      IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN));
+    return;
+  }
   auto parsed_auth = AuthenticationResponse::FromValue(*response_body_dict);
   if (!parsed_auth || parsed_auth->verification_token.empty()) {
+    LOG(ERROR) << "Email Aliases verification error: No verification token";
     std::move(callback).Run(l10n_util::GetStringUTF8(
         IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN));
     return;
   }
-  // Success
+  // Success; set the verification token and notify observers.
   verification_token_ = parsed_auth->verification_token;
   NotifyObserversAuthStateChanged(mojom::AuthenticationStatus::kAuthenticating);
   std::move(callback).Run(std::nullopt);
@@ -181,17 +190,39 @@ void EmailAliasesService::RequestSession() {
 void EmailAliasesService::OnRequestSessionResponse(
     std::optional<std::string> response_body) {
   if (!response_body) {
+    // No response body, log it and ignore.
+    LOG(ERROR) << "Email Aliases service error: No response body";
     return;
   }
   const auto response_body_dict = base::JSONReader::ReadDict(*response_body);
   if (!response_body_dict) {
+    // Invalid response body, log it and ignore.
+    LOG(ERROR) << "Email Aliases service error: Invalid response body";
+    return;
+  }
+  auto error_message = ErrorResponse::FromValue(*response_body_dict);
+  if (error_message) {
+    // An error has occurred, indicating that verification failed. Log it and
+    // notify observers.
+    LOG(ERROR) << "Email Aliases service error: " << error_message->error;
+    NotifyObserversAuthStateChanged(
+        mojom::AuthenticationStatus::kUnauthenticated,
+        /*error_message=*/l10n_util::GetStringUTF8(
+          IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED));
     return;
   }
   auto parsed_session = SessionResponse::FromValue(*response_body_dict);
-  if (!parsed_session || parsed_session->auth_token.empty()) {
+  if (!parsed_session) {
+    // No error message but unparseable response, log it and ignore.
+    LOG(ERROR) << "Email Aliases service verification error: Parse error but no error message";
+    return;
+  }
+  if (!parsed_session->verified) {
+    // Verification still in progress, poll again.
     RequestSession();
     return;
   }
+  // Success; set the auth token and notify observers.
   auth_token_ = parsed_session->auth_token;
   NotifyObserversAuthStateChanged(mojom::AuthenticationStatus::kAuthenticated);
 }

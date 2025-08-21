@@ -99,7 +99,9 @@ class EmailAliasesService : public KeyedService,
   // the authentication flow. Retries until an auth token is returned.
   void RequestSession();
   // Notifies all registered observers of an authentication state change.
-  void NotifyObserversAuthStateChanged(mojom::AuthenticationStatus status);
+  void NotifyObserversAuthStateChanged(
+      mojom::AuthenticationStatus status,
+      const std::optional<std::string>& error_message = std::nullopt);
   // Cancels in-flight verification requests and clears verification/auth
   // tokens to reset the authentication flow to a clean state.
   void ResetVerificationFlow();
