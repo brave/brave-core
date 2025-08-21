@@ -30,6 +30,7 @@ group("grdp") {
     ":icons_grdp",
     ":leo_web_components",
     ":opaque_ke",
+    ":brave_wallet_ui_wasm",
     ":static_grdp",
   ]
   if (include_polymer) {
@@ -109,16 +110,35 @@ transpile_web_ui("opaque_ke") {
 
   entry_points = [
     [ "opaque_ke", rebase_path("wasm/opaque_ke/index.js") ],
-    [ "brave_wallet_ui_wasm", rebase_path("wasm/brave_wallet_ui_wasm/index.js") ]
   ]
 
   inputs = [
     rebase_path("wasm/Cargo.lock"),
     rebase_path("wasm/opaque_ke/src/lib.rs"),
+  ]
+
+  rust_packages = [ rebase_path("wasm/opaque_ke/Cargo.toml") ]
+
+  no_iife = true
+  output_module = true
+  public_asset_path = "chrome://resources/brave/"
+}
+
+transpile_web_ui("brave_wallet_ui_wasm") {
+  resource_name = "brave_wallet_ui_wasm"
+  generate_grdp = true
+  resource_path_prefix = "brave"
+
+  entry_points = [
+    [ "brave_wallet_ui_wasm", rebase_path("wasm/brave_wallet_ui_wasm/index.js") ],
+  ]
+
+  inputs = [
+    rebase_path("wasm/Cargo.lock"),
     rebase_path("wasm/brave_wallet_ui_wasm/src/lib.rs"),
   ]
 
-  rust_packages = [ rebase_path("wasm/opaque_ke/Cargo.toml"), rebase_path("wasm/brave_wallet_ui_wasm/Cargo.toml") ]
+  rust_packages = [ rebase_path("wasm/brave_wallet_ui_wasm/Cargo.toml") ]
 
   no_iife = true
   output_module = true

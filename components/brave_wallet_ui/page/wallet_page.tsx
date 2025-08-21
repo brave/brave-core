@@ -34,7 +34,8 @@ import 'emptykit.css'
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
-import { rawr } from "gen/brave/web-ui-opaque_ke/brave_wallet_ui_wasm.bundle.js"
+// @ts-expect-error
+import { rawr } from 'chrome://resources/brave/brave_wallet_ui_wasm.bundle.js'
 console.log("I should see this first...");
 console.log(`and then here's the thunder: ${rawr()}`);
 
@@ -76,4 +77,10 @@ function initialize() {
   store.dispatch(WalletActions.initialize())
 }
 
-document.addEventListener('DOMContentLoaded', initialize)
+// document.addEventListener('DOMContentLoaded', initialize)
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initialize);
+} else {
+  initialize(); // DOM already loaded
+}
