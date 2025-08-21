@@ -240,6 +240,8 @@ sql::InitStatus AIChatDatabase::InitInternal() {
 
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
+      // Cannot raze inside a transaction
+      transaction.Rollback();
       if (db_.Raze()) {
         return InitInternal();
       }
