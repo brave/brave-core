@@ -158,12 +158,20 @@ const getAdditionalGenLocation = () => {
   return ''
 }
 
+const normalizeCommand = (cmd, args) => {
+  if (process.platform === 'win32') {
+    args = ['/c', cmd, ...args]
+    cmd = 'cmd'
+  }
+  return [ cmd, args ]
+}
+
 const util = {
   runProcess: (cmd, args = [], options = {}, skipLogging = false) => {
     if (!skipLogging) {
       Log.command(options.cwd, cmd, args)
     }
-    return spawnSync(cmd, args, options)
+    return spawnSync(...normalizeCommand(cmd, args), options)
   },
 
   run: (cmd, args = [], options = {}) => {
@@ -200,7 +208,7 @@ const util = {
       Log.command(cmdOptions.cwd, cmd, args)
     }
     return new Promise((resolve, reject) => {
-      const prog = spawn(cmd, args, cmdOptions)
+      const prog = spawn(...normalizeCommand(cmd, args), cmdOptions)
       const signalsToForward = ['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGHUP']
       const signalHandler = (s) => {
         prog.kill(s)

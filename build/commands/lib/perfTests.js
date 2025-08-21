@@ -50,15 +50,7 @@ const runPerfTests = (
   args.push(...passthroughArgs)
   console.log(args)
 
-  let cmdOptions = {
-    ...config.defaultOptions,
-    shell: false,
-  }
-  if (process.platform === 'win32') {
-    util.run('cmd.exe', ['/c', 'vpython3.bat', ...args], cmdOptions)
-  } else {
-    util.run('vpython3', args, cmdOptions)
-  }
+  util.run('vpython3', args, config.defaultOptions)
 }
 
 module.exports = { runPerfTests }
