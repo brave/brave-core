@@ -85,10 +85,10 @@
     }
 
     #main-section:not(.desktop) {
-      width: 56px;
+      width: 30px;
       padding: 0px;
-      height: 56px;
-      left: 44%;
+      height: 30px;
+      left: 47%;
       margin-bottom: 24px;
       min-width: auto;
       border-radius: 28px;
@@ -101,18 +101,25 @@
 
     .minimized-icon {
       display: block;
+      height: 18px;
+      width: 18px;
+      cursor: pointer;
+      margin: 6px;
+    }
+    .minimized-icon path {
+      fill: var(--primary);
+    }
+
+    .desktop .minimized-icon {
       height: 25px;
       width: 25px;
-      cursor: pointer;
       margin: 15px;
     }
+
     .desktop .minimized-icon path {
       fill: var(--dynamic-color-rgb);
     }
 
-    .minimized-icon path:not(.desktop) {
-      fill: var(--primary);
-    }
     .desktop #slider-container, #buttons {
       display: none;;
     }
@@ -157,10 +164,14 @@
   }
 
   .drag-indicator {
-    width: 36px;
-    height: 4px;
-    background-color: #AAAAAA;
-    border-radius: 2px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--dynamic-color-rgb);
+    border-radius: 15px;
+    margin-bottom: 28px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--primary);
   }
 
   .desktop .drag-indicator {
@@ -268,6 +279,13 @@
     position: absolute;
   }
 
+  .drag-indicator svg {
+    position: static;
+  }
+  .drag-indicator svg path{
+    fill: var(--primary);
+  }
+
   #darken {
     fill: rgba(0, 0, 0, 0.5);
   }
@@ -336,7 +354,11 @@
 <section id="main-section">
   <div id="drag-header" class="drag-header">
     <div id="title">Block Element</div>
-    <div class="drag-indicator"></div>
+    <div class="drag-indicator">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" fill="none">
+        <path fill="currentColor" fill-rule="evenodd" d="M18.4714 20.7634C18.2111 21.0237 17.7889 21.0237 17.5286 20.7634L12.9453 16.1801C12.6849 15.9197 12.6849 15.4976 12.9453 15.2373C13.2056 14.9769 13.6277 14.9769 13.8881 15.2373L18 19.3492L22.1119 15.2373C22.3723 14.9769 22.7944 14.9769 23.0547 15.2373C23.3151 15.4976 23.3151 15.9197 23.0547 16.1801L18.4714 20.7634Z" fill="#46464A"/>
+      </svg>
+    </div>
     <div id="minimize-dlg-btn" class="title-control-btn minimize-dlg-btn">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <path fill="currentColor" fill-rule="evenodd"
