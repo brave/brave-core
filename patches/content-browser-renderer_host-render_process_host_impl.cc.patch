@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index 2e5e7c71a529f3d9708c7f6c53cc89f03bdb842e..57b5c742c48215d6f0ef107121f8c7c9aba7bad2 100644
+index 2e5e7c71a529f3d9708c7f6c53cc89f03bdb842e..d7489e81441124ad69a2bf84a6011324461a0738 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
-@@ -3338,6 +3338,27 @@ static void AppendCompositorCommandLineFlags(base::CommandLine* command_line) {
+@@ -3338,6 +3338,25 @@ static void AppendCompositorCommandLineFlags(base::CommandLine* command_line) {
      command_line->AppendSwitch(switches::kEnableMainFrameBeforeActivation);
  }
  
@@ -11,26 +11,24 @@ index 2e5e7c71a529f3d9708c7f6c53cc89f03bdb842e..57b5c742c48215d6f0ef107121f8c7c9
 +    bool jit_disabled, 
 +    bool v8_optimizations_disabled, 
 +    const std::string& existing_flags) {
-+  std::string js_flags;
-+  if (jit_disabled) {
-+    js_flags = "--jitless";
-+  } else if (v8_optimizations_disabled) {
-+    js_flags = "--disable-optimizing-compilers";
++  // Determine the primary flag based on priority (JIT disabled takes precedence)
++  std::string primary_flag = jit_disabled ? "--jitless" 
++                           : v8_optimizations_disabled ? "--disable-optimizing-compilers" 
++                           : "";
++  
++  // If no special flags are needed, return existing flags unchanged
++  if (primary_flag.empty()) {
++    return existing_flags;
 +  }
-+  if (!js_flags.empty()) {
-+    if (!existing_flags.empty()) {
-+      base::StrAppend(&js_flags, {",", existing_flags});
-+    }
-+  } else {
-+    // If no special flags are needed, return the existing flags unchanged
-+    js_flags = existing_flags;
-+  }
-+  return js_flags;
++  
++  // Combine primary flag with existing flags
++  return existing_flags.empty() ? primary_flag 
++                                : base::StrCat({primary_flag, ",", existing_flags});
 +}
  void RenderProcessHostImpl::AppendRendererCommandLine(
      base::CommandLine* command_line) {
    // Pass the process type first, so it shows first in process listings.
-@@ -3379,12 +3400,14 @@ void RenderProcessHostImpl::AppendRendererCommandLine(
+@@ -3379,12 +3398,14 @@ void RenderProcessHostImpl::AppendRendererCommandLine(
      command_line->AppendSwitch(switches::kNoZygote);
    }
  
