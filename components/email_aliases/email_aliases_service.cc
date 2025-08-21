@@ -34,6 +34,11 @@ constexpr char kAccountServiceEndpoint[] = "https://%s/v2/%s";
 constexpr char kAccountsServiceVerifyInitPath[] = "verify/init";
 constexpr char kAccountsServiceVerifyResultPath[] = "verify/result";
 
+// Minimum interval between verify/result polls
+constexpr base::TimeDelta kMinSessionPollInterval = base::Seconds(2);
+// Maximum total polling duration for a single verification flow.
+constexpr base::TimeDelta kMaxSessionPollDuration = base::Minutes(30);
+
 const net::NetworkTrafficAnnotationTag traffic_annotation =
     net::DefineNetworkTrafficAnnotation("brave_accounts_service", R"(
       semantics {
@@ -99,8 +104,8 @@ void EmailAliasesService::ResetVerificationFlow() {
   session_request_timer_.Stop();
   verification_token_.clear();
   auth_token_.clear();
-  session_poll_attempts_ = 0;
   last_session_request_time_ = base::TimeTicks();
+  session_poll_start_time_ = base::TimeTicks();
 }
 
 void EmailAliasesService::RequestAuthentication(
@@ -165,12 +170,13 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
   verification_token_ = parsed_auth->verification_token;
   NotifyObserversAuthStateChanged(mojom::AuthenticationStatus::kAuthenticating);
   std::move(callback).Run(std::nullopt);
+  // Begin the polling window.
+  session_poll_start_time_ = base::TimeTicks::Now();
   RequestSession();
 }
 
 void EmailAliasesService::RequestSession() {
   // Enforce a minimum interval between verify/result polls.
-  constexpr base::TimeDelta kMinSessionPollInterval = base::Seconds(2);
   const base::TimeTicks now = base::TimeTicks::Now();
   const base::TimeDelta since_last =
       last_session_request_time_.is_null()
@@ -194,11 +200,12 @@ void EmailAliasesService::RequestSession() {
 }
 
 void EmailAliasesService::RequestSessionInternal() {
-  // Cap the total number of polls to avoid infinite retries.
-  static constexpr int kMaxSessionPollAttempts = 100;
-  if (session_poll_attempts_ >= kMaxSessionPollAttempts) {
+  // Cap the total polling time to avoid infinite retries.
+  const base::TimeTicks now = base::TimeTicks::Now();
+  if (!session_poll_start_time_.is_null() &&
+      now - session_poll_start_time_ > kMaxSessionPollDuration) {
     LOG(ERROR) << "Email Aliases service verification error: exceeded max "
-                  "poll attempts";
+                  "poll duration";
     NotifyObserversAuthStateChanged(
         mojom::AuthenticationStatus::kUnauthenticated,
         /*error_message=*/l10n_util::GetStringUTF8(
@@ -226,7 +233,6 @@ void EmailAliasesService::RequestSessionInternal() {
                      weak_factory_.GetWeakPtr()),
       kMaxResponseLength);
   last_session_request_time_ = base::TimeTicks::Now();
-  ++session_poll_attempts_;
 }
 
 void EmailAliasesService::OnRequestSessionResponse(

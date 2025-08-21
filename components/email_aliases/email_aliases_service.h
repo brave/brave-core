@@ -134,9 +134,9 @@ class EmailAliasesService : public KeyedService,
   // One-shot timer used to delay subsequent verify/result polls so that they
   // are not issued more frequently than the minimum interval.
   base::OneShotTimer session_request_timer_;
-  // Number of verify/result polls issued for the current verification flow.
-  // Used to cap the total number of polls to avoid infinite retries.
-  int session_poll_attempts_ = 0;
+  // Start timestamp for the current verification polling window. Used to
+  // enforce a maximum total polling duration.
+  base::TimeTicks session_poll_start_time_;
   // WeakPtrFactory to safely bind callbacks that may outlive this instance.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
