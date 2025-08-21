@@ -1269,6 +1269,9 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       // Merge defaultSisoLimits with envSisoLimits ensuring that the values are
       // not greater than the default values.
       Object.entries(defaultSisoLimits).forEach(([key, defaultValue]) => {
+        if (defaultValue === undefined) {
+          return
+        }
         const valueFromEnv = parseInt(envSisoLimits.get(key)) || defaultValue
         envSisoLimits.set(key, Math.min(defaultValue, valueFromEnv))
       })
