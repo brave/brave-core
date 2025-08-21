@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_CHROME_BROWSER_MAIN_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_CHROME_BROWSER_MAIN_H_
 
+#include "build/build_config.h"
+
 #define ChromeBrowserMainParts ChromeBrowserMainParts_ChromiumImpl
 #include <chrome/browser/chrome_browser_main.h>  // IWYU pragma: export
 #undef ChromeBrowserMainParts
@@ -16,11 +18,15 @@ class CommandLine;
 
 class Profile;
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+    BUILDFLAG(IS_CHROMEOS)
 // Processes theme command line switches for the specified profile.
 // Desktop platforms only (Windows, macOS, Linux, ChromeOS).
 void ProcessThemeCommandLineSwitchesForProfile(
     const base::CommandLine* command_line,
     Profile* profile);
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
+        // BUILDFLAG(IS_CHROMEOS)
 
 class ChromeBrowserMainParts : public ChromeBrowserMainParts_ChromiumImpl {
  public:
