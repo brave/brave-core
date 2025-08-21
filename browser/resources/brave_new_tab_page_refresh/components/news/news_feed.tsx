@@ -38,3 +38,5 @@ export function NewsFeed() {
     {braveNews.customizePage && <CustomizeModal />}
   </>
 }
+
+export default NewsFeed
