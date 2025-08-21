@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index 2e5e7c71a529f3d9708c7f6c53cc89f03bdb842e..59c152ce47b511fcc788cc2c5bb9fc1bab3f29f7 100644
+index 2e5e7c71a529f3d9708c7f6c53cc89f03bdb842e..57b5c742c48215d6f0ef107121f8c7c9aba7bad2 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
-@@ -3338,6 +3338,24 @@ static void AppendCompositorCommandLineFlags(base::CommandLine* command_line) {
+@@ -3338,6 +3338,27 @@ static void AppendCompositorCommandLineFlags(base::CommandLine* command_line) {
      command_line->AppendSwitch(switches::kEnableMainFrameBeforeActivation);
  }
  
@@ -21,13 +21,16 @@ index 2e5e7c71a529f3d9708c7f6c53cc89f03bdb842e..59c152ce47b511fcc788cc2c5bb9fc1b
 +    if (!existing_flags.empty()) {
 +      base::StrAppend(&js_flags, {",", existing_flags});
 +    }
++  } else {
++    // If no special flags are needed, return the existing flags unchanged
++    js_flags = existing_flags;
 +  }
 +  return js_flags;
 +}
  void RenderProcessHostImpl::AppendRendererCommandLine(
      base::CommandLine* command_line) {
    // Pass the process type first, so it shows first in process listings.
-@@ -3379,12 +3397,14 @@ void RenderProcessHostImpl::AppendRendererCommandLine(
+@@ -3379,12 +3400,14 @@ void RenderProcessHostImpl::AppendRendererCommandLine(
      command_line->AppendSwitch(switches::kNoZygote);
    }
  
