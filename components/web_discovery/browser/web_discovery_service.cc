@@ -193,10 +193,12 @@ bool WebDiscoveryService::ShouldExtractFromPage(
               << RelevantSiteToID(extract_result->details->site).value_or("")
               << ": " << url;
       // Check for private query using the extracted query
-      // TODO(djandries): determine what we should do for non search engine
-      // pages. maybe call IsPrivateURLLikely?
-      result = !extract_result->query ||
-               !IsPrivateQueryLikely(*extract_result->query);
+      if (extract_result->details->is_search_engine) {
+        result = extract_result->query &&
+                 !IsPrivateQueryLikely(*extract_result->query);
+      } else {
+        result = !ShouldDropURL(url);
+      }
     }
   } else {
     // Use patterns for v1
@@ -232,13 +234,13 @@ void WebDiscoveryService::StartExtractingFromPage(
   // For v2 patterns, immediately schedule double fetch
   if (features::ShouldUseV2Patterns()) {
     auto extract_result = url_extractor_->IdentifyURL(url);
+    GURL double_fetch_url = url;
     if (extract_result && extract_result->query &&
         extract_result->details->is_search_engine) {
-      GURL private_search_url = GeneratePrivateSearchURL(
+      double_fetch_url = GeneratePrivateSearchURL(
           url, *extract_result->query, extract_result->details->prefix);
-      double_fetcher_->ScheduleDoubleFetch(private_search_url, base::Value());
     }
-    // TODO(djandries): decide how we should handle non search pages
+    double_fetcher_->ScheduleDoubleFetch(double_fetch_url, base::Value());
     return;
   }
 
