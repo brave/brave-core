@@ -1773,11 +1773,6 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         continue;
       }
 
-      // Skip partial events that would be combined (empty tool name).
-      if (tool_use_event->tool_name.empty()) {
-        continue;
-      }
-
       bool tool_found = false;
       for (auto& tool : GetTools()) {
         if (!tool) {
@@ -1786,7 +1781,8 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
           continue;
         }
 
-        if (tool->Name() == tool_use_event->tool_name) {
+        if (!tool_use_event->tool_name.empty() &&
+            tool->Name() == tool_use_event->tool_name) {
           tool_found = true;
           if (!tool->RequiresUserInteractionBeforeHandling()) {
             is_tool_use_in_progress_ = true;
@@ -1809,7 +1805,7 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
                  << tool_use_event->tool_name;
 
         // Set these to mark that we're in progress of handling this event, and
-        // follow the code path as tool founded case above, which calls
+        // follow the same code path as the tool found case above, which calls
         // RespondToToolUseRequest, just with the error message being the
         // result.
         is_tool_use_in_progress_ = true;
