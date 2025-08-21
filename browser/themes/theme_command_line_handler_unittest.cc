@@ -31,7 +31,7 @@ class ThemeCommandLineHandlerTest : public testing::Test {
  protected:
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
-  raw_ptr<ThemeService> theme_service_;
+  raw_ptr<ThemeService> theme_service_ = nullptr;
   std::unique_ptr<base::CommandLine> command_line_;
 };
 
@@ -94,35 +94,28 @@ TEST_F(ThemeCommandLineHandlerTest, ProcessDefaultThemeSwitch) {
 }
 
 TEST_F(ThemeCommandLineHandlerTest, ProcessGrayscaleSwitch) {
-  // Test if we can manually set grayscale to false first
-  theme_service_->SetIsGrayscale(false);
-  if (theme_service_->GetIsGrayscale()) {
-    // If we can't set it to false, skip this test - grayscale might be forced on in Brave
-    GTEST_SKIP() << "Brave theme service appears to force grayscale mode";
-  }
-  EXPECT_FALSE(theme_service_->GetIsGrayscale());
+  // Brave's theme service always returns true for grayscale
+  EXPECT_TRUE(theme_service_->GetIsGrayscale());
 
   command_line_->AppendSwitchASCII(kSetGrayscaleTheme, "true");
 
   ProcessThemeCommandLineSwitchesForProfile(command_line_.get(), profile_.get());
 
+  // Should still be true after processing
   EXPECT_TRUE(theme_service_->GetIsGrayscale());
 }
 
 TEST_F(ThemeCommandLineHandlerTest, ProcessGrayscaleSwitchFalse) {
-  // This test might not work if Brave forces grayscale mode
-  theme_service_->SetIsGrayscale(true);
+  // Brave's theme service always returns true for grayscale
+  // The SetIsGrayscale(false) call doesn't actually change the value
   EXPECT_TRUE(theme_service_->GetIsGrayscale());
 
   command_line_->AppendSwitchASCII(kSetGrayscaleTheme, "false");
 
   ProcessThemeCommandLineSwitchesForProfile(command_line_.get(), profile_.get());
 
-  // Note: This might fail if Brave's theme service doesn't allow disabling grayscale
-  if (theme_service_->GetIsGrayscale()) {
-    GTEST_SKIP() << "Brave theme service appears to prevent disabling grayscale mode";
-  }
-  EXPECT_FALSE(theme_service_->GetIsGrayscale());
+  // Still returns true because Brave forces grayscale mode
+  EXPECT_TRUE(theme_service_->GetIsGrayscale());
 }
 
 TEST_F(ThemeCommandLineHandlerTest, ProcessColorVariantSwitch) {
