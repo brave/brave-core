@@ -26,7 +26,7 @@ dictionary SessionRequest {
 
 // Response of POST /verify/result
 dictionary SessionResponse {
-  DOMString authToken;
+  DOMString? authToken;
   DOMString? email;
   DOMString service;
   boolean verified;

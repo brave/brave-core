@@ -5,6 +5,7 @@
 
 #include "brave/components/email_aliases/email_aliases_service.h"
 
+#include <iostream>
 #include <memory>
 #include <utility>
 
@@ -95,8 +96,11 @@ void EmailAliasesService::NotifyObserversAuthStateChanged(
 
 void EmailAliasesService::ResetVerificationFlow() {
   verification_simple_url_loader_.reset();
+  session_request_timer_.Stop();
   verification_token_.clear();
   auth_token_.clear();
+  session_poll_attempts_ = 0;
+  last_session_request_time_ = base::TimeTicks();
 }
 
 void EmailAliasesService::RequestAuthentication(
@@ -165,6 +169,42 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
 }
 
 void EmailAliasesService::RequestSession() {
+  // Enforce a minimum interval between verify/result polls.
+  constexpr base::TimeDelta kMinSessionPollInterval = base::Seconds(2);
+  const base::TimeTicks now = base::TimeTicks::Now();
+  const base::TimeDelta since_last =
+      last_session_request_time_.is_null()
+          ? kMinSessionPollInterval
+          : (now - last_session_request_time_);
+  if (since_last >= kMinSessionPollInterval) {
+    RequestSessionInternal();
+    return;
+  }
+  // Schedule the next request after the remaining delay.
+  const base::TimeDelta delay = kMinSessionPollInterval - since_last;
+  if (!session_request_timer_.IsRunning()) {
+    session_request_timer_.Start(
+        FROM_HERE, delay,
+        base::BindOnce(&EmailAliasesService::RequestSessionInternal,
+                       weak_factory_.GetWeakPtr()));
+  } else {
+    // If already running, let the existing timer fire; we don't reschedule to
+    // avoid churn.
+  }
+}
+
+void EmailAliasesService::RequestSessionInternal() {
+  // Cap the total number of polls to avoid infinite retries.
+  static constexpr int kMaxSessionPollAttempts = 100;
+  if (session_poll_attempts_ >= kMaxSessionPollAttempts) {
+    LOG(ERROR) << "Email Aliases service verification error: exceeded max "
+                  "poll attempts";
+    NotifyObserversAuthStateChanged(
+        mojom::AuthenticationStatus::kUnauthenticated,
+        /*error_message=*/l10n_util::GetStringUTF8(
+            IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED));
+    return;
+  }
   SessionRequest session_request;
   session_request.wait = true;
   std::optional<std::string> body = base::WriteJson(session_request.ToValue());
@@ -185,6 +225,8 @@ void EmailAliasesService::RequestSession() {
       base::BindOnce(&EmailAliasesService::OnRequestSessionResponse,
                      weak_factory_.GetWeakPtr()),
       kMaxResponseLength);
+  last_session_request_time_ = base::TimeTicks::Now();
+  ++session_poll_attempts_;
 }
 
 void EmailAliasesService::OnRequestSessionResponse(
@@ -211,20 +253,25 @@ void EmailAliasesService::OnRequestSessionResponse(
             IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED));
     return;
   }
-  auto parsed_session = SessionResponse::FromValue(*response_body_dict);
+  // Remove null authToken from the response so parsing succeeds.
+  base::Value::Dict sanitized = response_body_dict->Clone();
+  if (const base::Value* v = sanitized.Find("authToken"); v && v->is_none()) {
+    sanitized.Remove("authToken");
+  }
+  auto parsed_session = SessionResponse::FromValue(sanitized);
   if (!parsed_session) {
     // No error message but unparseable response, log it and ignore.
     LOG(ERROR) << "Email Aliases service verification error: Parse error but "
                   "no error message";
     return;
   }
-  if (!parsed_session->verified) {
+  if (!parsed_session->verified || !parsed_session->auth_token) {
     // Verification still in progress, poll again.
     RequestSession();
     return;
   }
   // Success; set the auth token and notify observers.
-  auth_token_ = parsed_session->auth_token;
+  auth_token_ = *parsed_session->auth_token;
   NotifyObserversAuthStateChanged(mojom::AuthenticationStatus::kAuthenticated);
 }
 

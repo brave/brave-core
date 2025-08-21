@@ -179,7 +179,7 @@ TEST_F(EmailAliasesServiceTest, RequestSession_InvalidJson) {
 TEST_F(EmailAliasesServiceTest, RequestSession_RetryOnMissingAuthToken) {
   RunRequestSessionTest(
       {
-          "{\"authToken\":\"\", \"verified\":false, "
+          "{\"authToken\":null, \"verified\":false, "
           "\"service\":\"email-aliases\"}",  // triggers retry
           "{\"authToken\":\"auth456\", \"verified\":true, "
           "\"service\":\"email-aliases\"}"  // success

@@ -10,6 +10,8 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -96,6 +98,9 @@ class EmailAliasesService : public KeyedService,
   // Posts a request to the verify/result endpoint to wait for completion of
   // the authentication flow. Retries until an auth token is returned.
   void RequestSession();
+  // Issues the network request to the verify/result endpoint immediately,
+  // without applying any rate limiting.
+  void RequestSessionInternal();
   // Notifies all registered observers of an authentication state change.
   void NotifyObserversAuthStateChanged(
       mojom::AuthenticationStatus status,
@@ -122,7 +127,17 @@ class EmailAliasesService : public KeyedService,
   // Cached URLs computed once per service lifetime
   // Cached fully-qualified verify/init URLs.
   std::string verify_init_url_;
+  // Cached fully-qualified verify/result URL.
   std::string verify_result_url_;
+  // Timestamp of the last verify/result request to rate-limit polling.
+  base::TimeTicks last_session_request_time_;
+  // One-shot timer used to delay subsequent verify/result polls so that they
+  // are not issued more frequently than the minimum interval.
+  base::OneShotTimer session_request_timer_;
+  // Number of verify/result polls issued for the current verification flow.
+  // Used to cap the total number of polls to avoid infinite retries.
+  int session_poll_attempts_ = 0;
+  // WeakPtrFactory to safely bind callbacks that may outlive this instance.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
 
