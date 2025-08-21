@@ -70,11 +70,6 @@ class EmailAliasesService : public KeyedService,
   static std::string GetAccountsServiceVerifyResultURL();
 
  private:
-  void ApiFetch(const GURL& url,
-                const char* method,
-                const std::optional<std::string>& bearer_token,
-                const base::Value::Dict& bodyValue,
-                BodyAsStringCallback download_to_string_callback);
   void RequestSession();
   void NotifyObserversAuthStateChanged(mojom::AuthenticationStatus status);
   void ResetVerificationFlow();
