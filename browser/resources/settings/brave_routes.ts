@@ -50,7 +50,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   r.SOCIAL_BLOCKING.hasMigratedToPlugin = true
 
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
+  r.EXTENSIONS.hasMigratedToPlugin = true
   r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
+  r.EXTENSIONS_V2.hasMigratedToPlugin = true
   if (pageVisibility.braveSync) {
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
     r.BRAVE_SYNC.hasMigratedToPlugin = true
