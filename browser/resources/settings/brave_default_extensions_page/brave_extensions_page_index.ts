@@ -66,7 +66,7 @@ export class SettingsBraveExtensionsPageIndexElement extends
           break;
         case routes.EXTENSIONS_V2:
           this.$.viewManager.switchView(
-            'manageProfile', 'no-animation', 'no-animation');
+            'manageV2Extensions', 'no-animation', 'no-animation');
           break;
       }
     });
