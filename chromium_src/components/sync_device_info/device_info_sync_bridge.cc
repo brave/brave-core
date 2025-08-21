@@ -143,4 +143,13 @@ void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded() {
   RefreshLocalDeviceInfoIfNeeded_ChromiumImpl();
 }
 
+// Tucking this function away here because `DeviceInfoTracker` has not
+// translation unit, and the clang plugin wont allow the definition in the
+// header. This function has to provide a dead definition, otherwise there are
+// certain types of breakages that require patching upstream code.
+std::vector<std::unique_ptr<BraveDeviceInfo>>
+DeviceInfoTracker::GetAllBraveDeviceInfo() const {
+  NOTREACHED() << "This function must be overriden";
+}
+
 }  // namespace syncer
