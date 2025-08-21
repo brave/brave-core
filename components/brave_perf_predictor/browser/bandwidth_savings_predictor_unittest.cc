@@ -81,7 +81,7 @@ TEST_F(BandwidthSavingsPredictorTest, FeaturiseResourceLoading) {
   auto fp_style = predictors::CreateResourceLoadInfo(
       "https://brave.com/style.css",
       network::mojom::RequestDestination::kStyle);
-  fp_style->raw_body_bytes = 1000;
+  fp_style->raw_body_bytes = base::ByteCount(1000);
   predictor_->OnResourceLoadComplete(main_frame, *fp_style);
   EXPECT_EQ(predictor_->feature_map_["resources.third-party.requestCount"], 0);
   EXPECT_EQ(predictor_->feature_map_["resources.stylesheet.requestCount"], 1);
@@ -90,7 +90,7 @@ TEST_F(BandwidthSavingsPredictorTest, FeaturiseResourceLoading) {
   auto tp_style = predictors::CreateResourceLoadInfo(
       "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.js",
       network::mojom::RequestDestination::kScript);
-  tp_style->raw_body_bytes = 1001;
+  tp_style->raw_body_bytes = base::ByteCount(1001);
   predictor_->OnResourceLoadComplete(main_frame, *tp_style);
 
   EXPECT_EQ(predictor_->feature_map_["resources.third-party.requestCount"], 1);
@@ -120,7 +120,7 @@ TEST_F(BandwidthSavingsPredictorTest, PredictZeroBadFrame) {
   auto res = predictors::CreateResourceLoadInfo(
       "https://brave.com/style.css",
       network::mojom::RequestDestination::kStyle);
-  res->raw_body_bytes = 1000;
+  res->raw_body_bytes = base::ByteCount(1000);
   predictor_->OnResourceLoadComplete(main_frame, *res);
 
   EXPECT_EQ(predictor_->PredictSavingsBytes(), 0);
@@ -131,7 +131,7 @@ TEST_F(BandwidthSavingsPredictorTest, PredictZeroNoBlocks) {
   auto res = predictors::CreateResourceLoadInfo(
       "https://brave.com/style.css",
       network::mojom::RequestDestination::kStyle);
-  res->raw_body_bytes = 1000;
+  res->raw_body_bytes = base::ByteCount(1000);
   predictor_->OnResourceLoadComplete(main_frame, *res);
 
   EXPECT_EQ(predictor_->PredictSavingsBytes(), 0);
@@ -142,8 +142,8 @@ TEST_F(BandwidthSavingsPredictorTest, PredictNonZero) {
   auto res = predictors::CreateResourceLoadInfo(
       "https://brave.com/style.css",
       network::mojom::RequestDestination::kStyle);
-  res->raw_body_bytes = 200000;
-  res->total_received_bytes = 200000;
+  res->raw_body_bytes = base::ByteCount(200000);
+  res->total_received_bytes = base::ByteCount(200000);
   predictor_->OnResourceLoadComplete(main_frame, *res);
 
   predictor_->OnSubresourceBlocked("https://google-analytics.com/ga.js");
@@ -151,7 +151,7 @@ TEST_F(BandwidthSavingsPredictorTest, PredictNonZero) {
   auto blocked = predictors::CreateResourceLoadInfo(
       "https://google-analytics.com/ga.js",
       network::mojom::RequestDestination::kScript);
-  blocked->raw_body_bytes = 0;
+  blocked->raw_body_bytes = base::ByteCount(0);
   predictor_->OnResourceLoadComplete(main_frame, *blocked);
 
   EXPECT_NE(predictor_->PredictSavingsBytes(), 0);
