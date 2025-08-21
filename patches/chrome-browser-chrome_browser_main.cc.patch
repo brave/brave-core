@@ -1,0 +1,47 @@
+diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
+index c7c59fa540499..4d94009375b0e 100644
+--- a/chrome/browser/chrome_browser_main.cc
++++ b/chrome/browser/chrome_browser_main.cc
+@@ -54,6 +54,9 @@
+ #include "chrome/browser/sessions/chrome_serialized_navigation_driver.h"
+ #include "chrome/browser/shell_integration.h"
+ #include "chrome/browser/startup_data.h"
++#include "chrome/browser/themes/theme_command_line_handler.h"
++#include "chrome/browser/themes/theme_service.h"
++#include "chrome/browser/themes/theme_service_factory.h"
+ #include "chrome/browser/translate/chrome_translate_client.h"
+ #include "chrome/browser/translate/translate_service.h"
+ #include "chrome/browser/ui/actions/chrome_actions.h"
+@@ -463,6 +466,19 @@ void ProcessSingletonNotificationCallbackImpl(
+       "ProfilePicker.StartupReason.NotificationCallback",
+       startup_profile_path_info.reason);
+ 
++  // The themes target is only built on desktop platforms.
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
++    BUILDFLAG(IS_CHROMEOS)
++  ProfileManager* profile_manager = g_browser_process->profile_manager();
++  if (profile_manager) {
++    Profile* profile =
++        profile_manager->GetProfileByPath(startup_profile_path_info.path);
++    if (profile) {
++      ThemeCommandLineHandler::ProcessForProfile(&command_line, profile);
++    }
++  }
++#endif
++
+   StartupBrowserCreator::ProcessCommandLineAlreadyRunning(
+       command_line, current_directory, startup_profile_path_info);
+ 
+@@ -1234,6 +1250,12 @@ void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
+   for (auto& chrome_extra_part : chrome_extra_parts_)
+     chrome_extra_part->PostProfileInit(profile, is_initial_profile);
+ 
++#if !BUILDFLAG(IS_ANDROID)
++  // Process theme command line switches after profile initialization.
++  ThemeCommandLineHandler::ProcessForProfile(
++      base::CommandLine::ForCurrentProcess(), profile);
++#endif
++
+ #if BUILDFLAG(IS_WIN)
+   // Verify that the profile is not on a network share and if so prepare to show
+   // notification to the user.
