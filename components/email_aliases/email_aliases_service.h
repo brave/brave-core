@@ -25,9 +25,6 @@ class SimpleURLLoader;
 
 class GURL;
 
-using BodyAsStringCallback =
-    base::OnceCallback<void(std::optional<std::string> response_body)>;
-
 namespace email_aliases {
 
 class EmailAliasesService : public KeyedService,
