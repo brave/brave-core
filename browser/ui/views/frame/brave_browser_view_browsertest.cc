@@ -102,7 +102,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
 
   // Infobar is visible at first run.
   // Update this test if it's not visible at first run.
-  EXPECT_TRUE(infobar_container()->GetVisible());
+  // Wait till infobar's positioning is finished.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return infobar_container()->GetVisible() &&
+           (infobar_container()->bounds().bottom_left() ==
+            contents_container()->bounds().origin());
+  }));
+
   EXPECT_EQ(infobar_container()->bounds().bottom_left(),
             contents_container()->bounds().origin());
 
