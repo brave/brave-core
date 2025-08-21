@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/render_process_host_impl.h b/content/browser/renderer_host/render_process_host_impl.h
-index 1f89856c5bfdfa5f9d75c0757af61eb3de0d67da..2af7adfe7e427dc07c1c25c6daa8df8266336259 100644
+index 1f89856c5bfdfa5f9d75c0757af61eb3de0d67da..f8395058c3acbc55c31950494534f258ad2b5c9c 100644
 --- a/content/browser/renderer_host/render_process_host_impl.h
 +++ b/content/browser/renderer_host/render_process_host_impl.h
-@@ -219,6 +219,12 @@ class CONTENT_EXPORT RenderProcessHostImpl
+@@ -219,6 +219,11 @@ class CONTENT_EXPORT RenderProcessHostImpl
        BrowserContext* browser_context,
        SiteInstanceImpl* site_instance);
  
@@ -11,7 +11,6 @@ index 1f89856c5bfdfa5f9d75c0757af61eb3de0d67da..2af7adfe7e427dc07c1c25c6daa8df82
 +  static std::string BuildJavaScriptFlags(bool jit_disabled, 
 +                                           bool v8_optimizations_disabled, 
 +                                           const std::string& existing_flags);
-+
    ~RenderProcessHostImpl() override;
  
    RenderProcessHostImpl(const RenderProcessHostImpl& other) = delete;
