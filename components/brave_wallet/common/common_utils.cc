@@ -280,6 +280,11 @@ std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id) {
   return GetNetworkForCardanoKeyring(account_id->keyring_id);
 }
 
+bool IsPolkadotKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kPolkadotMainnet ||
+         keyring_id == mojom::KeyringId::kPolkadotTestnet;
+}
+
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
   if (IsEthereumKeyring(keyring_id)) {
     return mojom::CoinType::ETH;
