@@ -14,28 +14,26 @@ export type ContentNode = string | {
   id: string,
   text: string
 }
-export type Content = {
-  children: ContentNode[]
-}
+export type Content = ContentNode[]
 
 const assignContent = (el: HTMLElement, content: Content) => {
-  const nodes = content.children.map(createNode)
+  const nodes = content.map(createNode)
   el.replaceChildren(...nodes)
 }
 
 const parseContent = (editable: HTMLElement): Content => {
-  const children: ContentNode[] = []
+  const content: ContentNode[] = []
   for (const child of editable.childNodes) {
     if (child.nodeType === Node.TEXT_NODE) {
-      children.push(child.textContent ?? '')
+      content.push(child.textContent ?? '')
     } else if (child.nodeType === Node.ELEMENT_NODE) {
-      children.push({
+      content.push({
         ...(child as HTMLElement).dataset,
       } as any)
     }
   }
 
-  return { children }
+  return content
 }
 
 export interface EditableProps {

@@ -222,9 +222,9 @@ function InputBox(props: InputBoxProps) {
       <Editable
         ref={maybeAutofocus}
         placeholder={placeholderText}
-        initialContent={{ children: [props.context.inputText] }}
+        initialContent={[props.context.inputText]}
         onContentChange={e => {
-          props.context.setInputText(e.children.find(c => typeof c === 'string') ?? '')
+          props.context.setInputText(e.find(c => typeof c === 'string') ?? '')
         }}
         onPaste={handleOnPaste}
       />
