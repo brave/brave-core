@@ -10,13 +10,20 @@ export const createNode = (node: ContentNode) => {
     return document.createTextNode(node)
   }
 
-  const span = document.createElement('span')
-  span.contentEditable = 'false'
-  span.dataset.text = node.text
-  span.dataset.type = node.type
-  span.dataset.id = node.id
-  span.textContent = `@${node.text}`
-  return span
+  // Ideally we'd use a leo-label here, but shadowRoot does not play nice with
+  // contenteditable.
+  if (node.type === 'associated-content') {
+    const el = document.createElement('span')
+    el.contentEditable = 'false'
+    el.dataset.text = node.text
+    el.dataset.type = node.type
+    el.dataset.id = node.id
+    el.textContent = `@${node.text}`
+
+    return el
+  }
+
+  throw new Error('Unknown content type: ' + JSON.stringify(node))
 }
 
 export const findParentEditable = (node: Node | null): HTMLElement | undefined => {
@@ -93,34 +100,4 @@ export const replaceRange = (range: Range, content: ContentNode) => {
 
   selection.removeAllRanges()
   selection.addRange(range)
-}
-
-export const clearInput = (editable?: HTMLElement) => {
-  const selection = window.getSelection()
-  if (!selection || !selection.rangeCount) return
-
-  if (!editable) {
-    editable = findParentEditable(selection.anchorNode)
-      ?? document.querySelector('[data-editor]') as HTMLElement
-    if (!editable) return
-  }
-
-  const range = selection.getRangeAt(0)
-  range.selectNodeContents(editable)
-  range.deleteContents()
-}
-
-export const setInputText = (text: string, editable?: HTMLElement, ) => {
-  const selection = window.getSelection()
-  if (!selection) return
-
-  if (!editable) {
-    editable = document.querySelector('[data-editor]') as HTMLElement
-    if (!editable) return
-  }
-
-  const range = selection.getRangeAt(0)
-  range.selectNodeContents(editable)
-  range.insertNode(document.createTextNode(text))
-  range.collapse()
 }

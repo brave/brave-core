@@ -20,7 +20,7 @@ import {
 } from '../../common/conversation_history_utils'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useIsDragging } from '../hooks/useIsDragging'
-import { clearInput, setInputText } from '../components/input_box/ranges'
+import { Content, stringifyContent } from '../components/input_box/editable'
 
 const MAX_INPUT_CHAR = 20000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -48,7 +48,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   shouldDisableUserInput: boolean
   shouldShowLongPageWarning: boolean
   shouldShowLongConversationInfo: boolean
-  inputText: string
+  inputText: Content
   selectedActionType: Mojom.ActionType | undefined
   isToolsMenuOpen: boolean
   isCurrentModelLeo: boolean
@@ -64,7 +64,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   retryAPIRequest: () => void
   handleResetError: () => void
   handleStopGenerating: () => Promise<void>
-  setInputText: (text: string) => void
+  setInputText: (text: Content) => void
   submitInputTextToAPI: () => void
   resetSelectedActionType: () => void
   handleActionTypeClick: (actionType: Mojom.ActionType) => void
@@ -107,7 +107,7 @@ export const defaultContext: ConversationContext = {
   currentError: Mojom.APIError.None,
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,
-  inputText: '',
+  inputText: [],
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
@@ -335,10 +335,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
   }, [conversationHandler, callbackRouter])
 
-  React.useEffect(() => {
-    clearInput()
-  }, [context.conversationUuid])
-
   // Update the location when the conversation has been started
   const hasConversationStarted =
     useHasConversationStarted(context.conversationUuid)
@@ -436,8 +432,11 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       isToolsMenuOpen: false
     }
 
-    if (context.inputText.startsWith('/')) {
-      clearInput()
+    const firstContent = context.inputText[0]
+    if (typeof firstContent === 'string' && firstContent.startsWith('/')) {
+      setPartialContext({
+        inputText: []
+      })
     }
 
     setPartialContext(update)
@@ -460,19 +459,19 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
     if (context.selectedActionType) {
       conversationHandler.submitHumanConversationEntryWithAction(
-        context.inputText,
+        stringifyContent(context.inputText),
         context.selectedActionType
       )
     } else {
       conversationHandler.submitHumanConversationEntry(
-        context.inputText,
+        stringifyContent(context.inputText),
         context.pendingMessageFiles)
     }
 
     setPartialContext({
-      pendingMessageFiles: []
+      pendingMessageFiles: [],
+      inputText: []
     })
-    clearInput()
     resetSelectedActionType()
   }
 
@@ -508,9 +507,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const handleResetError = async () => {
     const { turn } = await conversationHandler.clearErrorAndGetFailedMessage()
     setPartialContext({
-      inputText: turn.text
+      inputText: [turn.text]
     })
-    setInputText(turn.text)
   }
 
   const handleStopGenerating = async () => {
@@ -518,9 +516,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       await conversationHandler.stopGenerationAndMaybeGetHumanEntry()
     if (humanEntry) {
       setPartialContext({
-        inputText: humanEntry.text
+        inputText: [humanEntry.text]
       })
-      setInputText(humanEntry.text)
     }
   }
 

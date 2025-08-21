@@ -7,7 +7,6 @@ import {
   createNode,
   findParentEditable,
   getRangeToTriggerChar,
-  clearInput,
   replaceRange
 } from './ranges'
 import { ContentNode } from './editable'
@@ -343,64 +342,6 @@ describe('ranges utilities', () => {
       // Check that the range contains everything from first '@' to cursor
       const rangeContent = result.toString()
       expect(rangeContent).toBe('@ then another @ here')
-    })
-  })
-
-  describe('clearInput', () => {
-    it('clears content of specified editable element', () => {
-      const { editable, textNode } = setupEditableWithText('Hello world')
-
-      // Create a selection within the editable
-      createSelectionAt(textNode, 0)
-
-      clearInput(editable)
-
-      expect(editable.textContent).toBe('')
-      expect(editable.childNodes.length).toBe(0)
-    })
-
-    it('finds and clears editable element when not specified', () => {
-      const { editable, textNode } = setupEditableWithText('Hello world')
-
-      // Create a selection within the editable
-      createSelectionAt(textNode, 5)
-
-      clearInput() // No editable parameter
-
-      expect(editable.textContent).toBe('')
-    })
-
-    it('does nothing when no selection exists', () => {
-      const { editable } = setupEditableWithText('Hello world')
-
-      // Clear selection
-      clearSelection()
-
-      clearInput()
-
-      // Content should remain unchanged
-      expect(editable.textContent).toBe('Hello world')
-    })
-
-    it('clears complex content with multiple nodes', () => {
-      const editable = createEditableElement()
-      const textNode1 = document.createTextNode('Hello ')
-      const spanNode = document.createElement('span')
-      spanNode.textContent = '@mention'
-      const textNode2 = document.createTextNode(' world')
-
-      editable.appendChild(textNode1)
-      editable.appendChild(spanNode)
-      editable.appendChild(textNode2)
-      document.body.appendChild(editable)
-
-      // Create selection
-      createSelectionAt(textNode1, 0)
-
-      clearInput(editable)
-
-      expect(editable.textContent).toBe('')
-      expect(editable.childNodes.length).toBe(0)
     })
   })
 

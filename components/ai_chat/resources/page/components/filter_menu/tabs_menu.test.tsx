@@ -62,7 +62,8 @@ describe('TabsMenu', () => {
         },
         contentType: ContentType.PageContent,
         contentUsedPercentage: 0,
-        uuid: '1'
+        uuid: '1',
+        conversationTurnUuid: '1'
       }
     ]} tabs={[{
       contentId: 1,
@@ -87,7 +88,7 @@ describe('TabsMenu', () => {
   })
 
   it('should be open when query starts with @', () => {
-    const { container } = render(<MockContext inputText='@'>
+    const { container } = render(<MockContext inputText={['@']}>
       <TabsMenu />
     </MockContext>)
 
@@ -97,12 +98,12 @@ describe('TabsMenu', () => {
   })
 
   it('should be close when @ is removed', () => {
-    render(<MockContext inputText='@'>
+    render(<MockContext inputText={['@']}>
       <TabsMenu />
     </MockContext>)
 
 
-    const { container } = render(<MockContext inputText='hi'>
+    const { container } = render(<MockContext inputText={['hi']}>
       <TabsMenu />
     </MockContext>)
 
@@ -112,7 +113,7 @@ describe('TabsMenu', () => {
   })
 
   it('should filter by text after @', () => {
-    const { queryByText } = render(<MockContext inputText='@2' tabs={[{
+    const { queryByText } = render(<MockContext inputText={['@2']} tabs={[{
       contentId: 1,
       title: 'Test 1',
       url: {
@@ -146,7 +147,7 @@ describe('TabsMenu', () => {
     }
     const { queryByText } = render(<MockContext
       conversationUuid='1'
-      inputText='@'
+      inputText={['@']}
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       uiHandler={{
         associateTab,

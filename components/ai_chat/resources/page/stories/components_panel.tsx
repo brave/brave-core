@@ -36,6 +36,7 @@ import WarningPremiumDisconnected from '../components/alerts/warning_premium_dis
 import Attachments from '../components/attachments'
 import { createTextContentBlock } from '../../common/content_block'
 import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
+import { Content } from '../components/input_box/editable'
 
 // TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
@@ -759,7 +760,7 @@ type CustomArgs = {
   initialized: boolean
   currentErrorState: keyof typeof Mojom.APIError
   model: string
-  inputText: string
+  inputText: Content
   hasConversation: boolean
   editingConversationId: string | null
   deletingConversationId: string | null
@@ -799,7 +800,7 @@ type CustomArgs = {
 
 const args: CustomArgs = {
   initialized: true,
-  inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
+  inputText: [`Write a Star Trek poem about Data's life on board the Enterprise`],
   hasConversation: true,
   conversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
@@ -907,10 +908,6 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
   const switchToBasicModel = () => {
     const nonPremiumModel = MODELS.find(model => model.options.leoModelOptions?.access === Mojom.ModelAccess.BASIC)
     setArgs({ model: nonPremiumModel?.key })
-  }
-
-  const setInputText = (inputText: string) => {
-    setArgs({ inputText })
   }
 
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
@@ -1023,7 +1020,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     ratingTurnUuid: options.args.ratingTurnUuid,
     isUploadingFiles: false,
     isTemporaryChat: options.args.isTemporaryChat,
-    setInputText,
+    setInputText: (content) => setArgs({ inputText: content }),
     setCurrentModel: () => { },
     switchToBasicModel,
     generateSuggestedQuestions: () => { },

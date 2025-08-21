@@ -42,8 +42,8 @@
 }
 
 .editable [data-type="associated-content"] {
-  background-color: var(--leo-color-divider-subtle);
+  background-color: var(--leo-color-primary-10);
+  color: var(--leo-color-primary-60);
+  border-radius: 6px;
   padding: 0 var(--leo-spacing-s);
-  border-radius: var(--leo-radius-s);
-  margin-inline: 0.1em;
 }

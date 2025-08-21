@@ -11,7 +11,7 @@ import { useExtractedQuery, matches } from "./query";
 import { useAIChat } from "../../state/ai_chat_context";
 import { useConversation } from "../../state/conversation_context";
 import { getLocale } from "$web-common/locale";
-import { clearInput } from "../input_box/ranges";
+import { stringifyContent } from "../input_box/editable";
 
 function matchesQuery(query: string, entry: TabData) {
   return matches(query, entry.title) || matches(query, entry.url.url)
@@ -21,7 +21,7 @@ export default function TabsMenu() {
   const aiChat = useAIChat()
   const conversation = useConversation()
 
-  const query = useExtractedQuery(conversation.inputText, {
+  const query = useExtractedQuery(stringifyContent(conversation.inputText), {
     onlyAtStart: true,
     triggerCharacter: '@',
   })
@@ -31,7 +31,7 @@ export default function TabsMenu() {
     if (!isOpen) {
       const editable: HTMLElement = document.querySelector('[data-editor]')!
       if (editable) {
-        clearInput(editable)
+        conversation.setInputText([])
         editable.focus()
       }
     }

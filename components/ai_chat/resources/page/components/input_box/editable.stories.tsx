@@ -10,13 +10,11 @@ import { Meta } from '@storybook/react'
 
 export const _Editable = {
   render: () => {
-    const [content, setContent] = React.useState<Content>({
-      children: ['Hello', {
+    const [content, setContent] = React.useState<Content>(['Hello', {
         type: 'associated-content',
         id: '1',
         text: 'My Tab'
-      }, 'World']
-    })
+      }, 'World'])
 
     return <div onKeyDown={e => {
       if (e.key === 'Tab') {
@@ -31,7 +29,7 @@ export const _Editable = {
       }
     }
     } >
-      <Editable placeholder='Type something...' initialContent={content} onContentChange={setContent} />
+      <Editable placeholder='Type something...' content={content} onContentChange={setContent} />
     </div >
   },
 }

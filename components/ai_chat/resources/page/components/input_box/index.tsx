@@ -19,7 +19,7 @@ import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
 import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
-import Editable from './editable'
+import Editable, { stringifyContent } from './editable'
 
 type Props = Pick<
   ConversationContext,
@@ -106,7 +106,7 @@ function InputBox(props: InputBoxProps) {
 
     if (
       e.key === 'Backspace' &&
-      props.context.inputText === '' &&
+      stringifyContent(props.context.inputText) === '' &&
       props.context.selectedActionType
     ) {
       props.context.resetSelectedActionType()
@@ -180,7 +180,7 @@ function InputBox(props: InputBoxProps) {
   const pendingContent = props.context.associatedContentInfo
     .filter(c => !c.conversationTurnUuid)
   const isSendButtonDisabled =
-    props.context.shouldDisableUserInput || props.context.inputText === ''
+    props.context.shouldDisableUserInput || stringifyContent(props.context.inputText) === ''
 
   return (
     <form className={styles.form} onKeyDownCapture={handleOnKeyDown}>
@@ -222,9 +222,9 @@ function InputBox(props: InputBoxProps) {
       <Editable
         ref={maybeAutofocus}
         placeholder={placeholderText}
-        initialContent={[props.context.inputText]}
+        content={props.context.inputText}
         onContentChange={e => {
-          props.context.setInputText(e.find(c => typeof c === 'string') ?? '')
+          props.context.setInputText(e)
         }}
         onPaste={handleOnPaste}
       />
