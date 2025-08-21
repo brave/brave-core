@@ -370,8 +370,12 @@ Config.prototype.enableCDMHostVerification = function () {
 }
 
 Config.prototype.isDrumBrakeEnabled = function () {
-  return (this.targetArch === 'x64' || this.targetArch === 'arm64') &&
-    (this.targetOS === 'win' || this.targetOS === 'linux' || this.targetOS === 'mac')
+  return (
+    (this.targetArch === 'x64' || this.targetArch === 'arm64')
+    && (this.targetOS === 'win'
+      || this.targetOS === 'linux'
+      || this.targetOS === 'mac')
+  )
 }
 
 Config.prototype.isAsan = function () {

@@ -932,8 +932,8 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
       content::RenderProcessHost* process =
           content::RenderProcessHost::FromID(child_process_id);
       if (process && process->IsJitDisabled()) {
-        command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags, 
-          "--wasm-jitless");
+        command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
+                                        "--wasm-jitless");
       }
     }
     // Command line parameters from the browser process are propagated to the
@@ -1396,11 +1396,11 @@ bool BraveContentBrowserClient::IsJitDisabledForSite(
     const GURL& site_url) {
   // When v8-optimizer-is-jit flag is enabled, V8 optimizer
   // settings should disable JIT completely, not just optimizations
-  if (AreV8OptimizationsDisabledForSite(browser_context, site_url) && 
+  if (AreV8OptimizationsDisabledForSite(browser_context, site_url) &&
       !base::FeatureList::IsEnabled(features::kBraveV8OptimizerJit)) {
     return true;
   }
-  
-  return ChromeContentBrowserClient::IsJitDisabledForSite(browser_context, 
+
+  return ChromeContentBrowserClient::IsJitDisabledForSite(browser_context,
                                                           site_url);
 }

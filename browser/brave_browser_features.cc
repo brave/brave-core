@@ -58,8 +58,8 @@ BASE_FEATURE(kBraveWebAssemblyJitless,
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
 
-// Controls V8 optimization (JIT compilation). When disabled, V8 runs in jitless mode,
-// which reduces performance but improves security.
+// Controls V8 optimization (JIT compilation). When disabled, V8 runs in jitless
+// mode, which reduces performance but improves security.
 BASE_FEATURE(kBraveV8OptimizerJit,
              "BraveV8OptimizerJit",
              base::FEATURE_ENABLED_BY_DEFAULT);
