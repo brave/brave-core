@@ -211,8 +211,8 @@ ConversationHandler* AIChatService::CreateConversation() {
 
 std::vector<base::WeakPtr<Tool>> AIChatService::GetTools() {
   std::vector<base::WeakPtr<Tool>> tools;
-  for (const auto& tool : tools_) {
-    tools.push_back(tool->GetWeakPtr());
+  if (memory_tool_) {
+    tools.push_back(memory_tool_->GetWeakPtr());
   }
   return tools;
 }
@@ -221,25 +221,19 @@ void AIChatService::OnMemoryEnabledChanged() {
   bool memory_enabled =
       profile_prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled);
 
-  // Check if memory tool already exists.
-  auto memory_tool_it = std::find_if(
-      tools_.begin(), tools_.end(), [](const std::unique_ptr<Tool>& tool) {
-        return tool->Name() == mojom::kMemoryStorageToolName;
-      });
-
-  if (memory_enabled && memory_tool_it == tools_.end()) {
+  if (memory_enabled && !memory_tool_) {
     // Memory enabled but tool doesn't exist, add it.
-    tools_.push_back(std::make_unique<MemoryStorageTool>(profile_prefs_));
-  } else if (!memory_enabled && memory_tool_it != tools_.end()) {
+    memory_tool_ = std::make_unique<MemoryStorageTool>(profile_prefs_);
+  } else if (!memory_enabled && memory_tool_) {
     // Memory disabled but tool exists, remove it.
-    tools_.erase(memory_tool_it);
+    memory_tool_.reset();
   }
 }
 
 void AIChatService::InitializeTools() {
   // Add memory storage tool if memory is enabled.
   if (profile_prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
-    tools_.push_back(std::make_unique<MemoryStorageTool>(profile_prefs_));
+    memory_tool_ = std::make_unique<MemoryStorageTool>(profile_prefs_);
   }
 }
 

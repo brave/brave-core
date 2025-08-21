@@ -58,6 +58,7 @@ class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
 class Tool;
+class MemoryStorageTool;
 
 // Main entry point for creating and consuming AI Chat conversations
 class AIChatService : public KeyedService,
@@ -339,8 +340,8 @@ class AIChatService : public KeyedService,
   // Engine for tab organization, created on demand and owned by AIChatService.
   std::unique_ptr<ai_chat::EngineConsumer> tab_organization_engine_;
 
-  // Tools that are available and shared across all conversations.
-  std::vector<std::unique_ptr<Tool>> tools_;
+  // Memory tool that is available and shared across all conversations.
+  std::unique_ptr<MemoryStorageTool> memory_tool_;
 
   base::FilePath profile_path_;
 
