@@ -147,7 +147,7 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
   if (error_message) {
     LOG(ERROR) << "Email Aliases verification error: " << error_message->error;
     std::move(callback).Run(l10n_util::GetStringUTF8(
-      IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN));
+        IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN));
     return;
   }
   auto parsed_auth = AuthenticationResponse::FromValue(*response_body_dict);
@@ -208,13 +208,14 @@ void EmailAliasesService::OnRequestSessionResponse(
     NotifyObserversAuthStateChanged(
         mojom::AuthenticationStatus::kUnauthenticated,
         /*error_message=*/l10n_util::GetStringUTF8(
-          IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED));
+            IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED));
     return;
   }
   auto parsed_session = SessionResponse::FromValue(*response_body_dict);
   if (!parsed_session) {
     // No error message but unparseable response, log it and ignore.
-    LOG(ERROR) << "Email Aliases service verification error: Parse error but no error message";
+    LOG(ERROR) << "Email Aliases service verification error: Parse error but "
+                  "no error message";
     return;
   }
   if (!parsed_session->verified) {

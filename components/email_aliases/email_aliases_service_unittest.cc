@@ -166,9 +166,9 @@ TEST_F(EmailAliasesServiceTest, RequestAuthentication_Success) {
 }
 
 TEST_F(EmailAliasesServiceTest, RequestSession_Success) {
-  RunRequestSessionTest(
-      {"{\"authToken\":\"auth456\", \"verified\":true, \"service\":\"email-aliases\"}"},
-      AuthenticationStatus::kAuthenticated);
+  RunRequestSessionTest({"{\"authToken\":\"auth456\", \"verified\":true, "
+                         "\"service\":\"email-aliases\"}"},
+                        AuthenticationStatus::kAuthenticated);
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "auth456");
 }
 
@@ -179,8 +179,10 @@ TEST_F(EmailAliasesServiceTest, RequestSession_InvalidJson) {
 TEST_F(EmailAliasesServiceTest, RequestSession_RetryOnMissingAuthToken) {
   RunRequestSessionTest(
       {
-          "{\"authToken\":\"\", \"verified\":false, \"service\":\"email-aliases\"}",  // triggers retry
-          "{\"authToken\":\"auth456\", \"verified\":true, \"service\":\"email-aliases\"}"  // success
+          "{\"authToken\":\"\", \"verified\":false, "
+          "\"service\":\"email-aliases\"}",  // triggers retry
+          "{\"authToken\":\"auth456\", \"verified\":true, "
+          "\"service\":\"email-aliases\"}"  // success
       },
       email_aliases::mojom::AuthenticationStatus::kAuthenticated);
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "auth456");
@@ -200,7 +202,8 @@ TEST_F(EmailAliasesServiceTest,
        CancelAuthenticationOrLogout_ClearsStateAndNotifies) {
   // Authenticate
   RunRequestSessionTest(
-      {"{\"authToken\":\"auth456\", \"verified\":true, \"service\":\"email-aliases\"}"},
+      {"{\"authToken\":\"auth456\", \"verified\":true, "
+       "\"service\":\"email-aliases\"}"},
       email_aliases::mojom::AuthenticationStatus::kAuthenticated);
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "auth456");
 
