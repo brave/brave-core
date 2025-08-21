@@ -1,27 +1,50 @@
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index 2e5e7c71a529f3d9708c7f6c53cc89f03bdb842e..7cebbc5d186b7cf48e2ab1822ec9035c0cb4120c 100644
+index 2e5e7c71a529f3d9708c7f6c53cc89f03bdb842e..59c152ce47b511fcc788cc2c5bb9fc1bab3f29f7 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
-@@ -3379,12 +3379,19 @@ void RenderProcessHostImpl::AppendRendererCommandLine(
-     command_line->AppendSwitch(switches::kNoZygote);
-   }
+@@ -3338,6 +3338,24 @@ static void AppendCompositorCommandLineFlags(base::CommandLine* command_line) {
+     command_line->AppendSwitch(switches::kEnableMainFrameBeforeActivation);
+ }
  
++// static
++std::string RenderProcessHostImpl::BuildJavaScriptFlags(
++    bool jit_disabled, 
++    bool v8_optimizations_disabled, 
++    const std::string& existing_flags) {
 +  std::string js_flags;
-   if (IsJitDisabled()) {
--    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
--                                    "--jitless");
++  if (jit_disabled) {
 +    js_flags = "--jitless";
-   } else if (AreV8OptimizationsDisabled()) {
++  } else if (v8_optimizations_disabled) {
 +    js_flags = "--disable-optimizing-compilers";
 +  }
 +  if (!js_flags.empty()) {
-+    if (command_line->HasSwitch(blink::switches::kJavaScriptFlags)) {
-+      base::StrAppend(&js_flags, {",", command_line->GetSwitchValueASCII(
-+                                            blink::switches::kJavaScriptFlags)});
++    if (!existing_flags.empty()) {
++      base::StrAppend(&js_flags, {",", existing_flags});
 +    }
-     command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
++  }
++  return js_flags;
++}
+ void RenderProcessHostImpl::AppendRendererCommandLine(
+     base::CommandLine* command_line) {
+   // Pass the process type first, so it shows first in process listings.
+@@ -3379,12 +3397,14 @@ void RenderProcessHostImpl::AppendRendererCommandLine(
+     command_line->AppendSwitch(switches::kNoZygote);
+   }
+ 
+-  if (IsJitDisabled()) {
+-    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
+-                                    "--jitless");
+-  } else if (AreV8OptimizationsDisabled()) {
+-    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
 -                                    "--disable-optimizing-compilers");
-+                                    js_flags);
++  std::string existing_js_flags;
++  if (command_line->HasSwitch(blink::switches::kJavaScriptFlags)) {
++    existing_js_flags = command_line->GetSwitchValueASCII(blink::switches::kJavaScriptFlags);
++  }
++  
++  std::string js_flags = BuildJavaScriptFlags(IsJitDisabled(), AreV8OptimizationsDisabled(), existing_js_flags);
++  if (!js_flags.empty()) {
++    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags, js_flags);
    }
  
    if (DisallowV8FeatureFlagOverrides()) {

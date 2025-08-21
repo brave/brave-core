@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/render_process_host_unittest.cc b/content/browser/renderer_host/render_process_host_unittest.cc
-index ba3801dc192b90118c77cb261bdf842936b7e84c..b926637c291079ca556290299540472dccd8a909 100644
+index ba3801dc192b90118c77cb261bdf842936b7e84c..41e5d1898c38c817528eca9c85856c47de166d20 100644
 --- a/content/browser/renderer_host/render_process_host_unittest.cc
 +++ b/content/browser/renderer_host/render_process_host_unittest.cc
 @@ -34,6 +34,7 @@
@@ -10,30 +10,11 @@ index ba3801dc192b90118c77cb261bdf842936b7e84c..b926637c291079ca556290299540472d
  #include "third_party/blink/public/common/tokens/tokens.h"
  #include "third_party/blink/public/mojom/frame/frame_owner_properties.mojom.h"
  #include "ui/webui/untrusted_web_ui_browsertest_util.h"
-@@ -1610,4 +1611,140 @@ TEST_F(SpareRenderProcessHostUnitTest, AtProcessLimit) {
+@@ -1610,4 +1611,91 @@ TEST_F(SpareRenderProcessHostUnitTest, AtProcessLimit) {
              contents2->GetPrimaryMainFrame()->GetProcess());
  }
  
-+// Custom mock for testing JavaScript flags handling
-+class TestableRenderProcessHost : public MockRenderProcessHost {
-+ public:
-+  explicit TestableRenderProcessHost(BrowserContext* browser_context)
-+      : MockRenderProcessHost(browser_context), 
-+        jit_disabled_(false), 
-+        v8_optimizations_disabled_(false) {}
-+
-+  bool IsJitDisabled() override { return jit_disabled_; }
-+  bool AreV8OptimizationsDisabled() override { return v8_optimizations_disabled_; }
-+
-+  void set_jit_disabled(bool disabled) { jit_disabled_ = disabled; }
-+  void set_v8_optimizations_disabled(bool disabled) { v8_optimizations_disabled_ = disabled; }
-+
-+ private:
-+  bool jit_disabled_;
-+  bool v8_optimizations_disabled_;
-+};
-+
-+// Tests for JavaScript flags handling in AppendRendererCommandLine
++// Tests for JavaScript flags handling using the extracted BuildJavaScriptFlags helper function
 +class RenderProcessHostJavaScriptFlagsTest : public RenderProcessHostUnitTest {
 + public:
 +  void SetUp() override {
@@ -44,32 +25,12 @@ index ba3801dc192b90118c77cb261bdf842936b7e84c..b926637c291079ca556290299540472d
 +                                   bool v8_optimizations_disabled,
 +                                   const std::string& existing_flags,
 +                                   const std::string& expected_flags) {
-+    // Create a testable render process host with specific flags
-+    auto mock_host = std::make_unique<TestableRenderProcessHost>(browser_context());
++    // Call the extracted static helper function directly
++    std::string result = RenderProcessHostImpl::BuildJavaScriptFlags(
++        jit_disabled, v8_optimizations_disabled, existing_flags);
 +    
-+    // Set up the mock to return the desired JIT/V8 optimization states
-+    mock_host->set_jit_disabled(jit_disabled);
-+    mock_host->set_v8_optimizations_disabled(v8_optimizations_disabled);
-+
-+    // Create a command line and optionally add existing JavaScript flags
-+    base::CommandLine command_line(base::CommandLine::NO_PROGRAM);
-+    if (!existing_flags.empty()) {
-+      command_line.AppendSwitchASCII(blink::switches::kJavaScriptFlags,
-+                                     existing_flags);
-+    }
-+
-+    // Call AppendRendererCommandLine
-+    static_cast<RenderProcessHostImpl*>(mock_host.get())
-+        ->AppendRendererCommandLine(&command_line);
-+
 +    // Verify the result
-+    if (expected_flags.empty()) {
-+      EXPECT_FALSE(command_line.HasSwitch(blink::switches::kJavaScriptFlags));
-+    } else {
-+      EXPECT_TRUE(command_line.HasSwitch(blink::switches::kJavaScriptFlags));
-+      EXPECT_EQ(expected_flags,
-+                command_line.GetSwitchValueASCII(blink::switches::kJavaScriptFlags));
-+    }
++    EXPECT_EQ(expected_flags, result);
 +  }
 +};
 +
@@ -136,18 +97,8 @@ index ba3801dc192b90118c77cb261bdf842936b7e84c..b926637c291079ca556290299540472d
 +
 +TEST_F(RenderProcessHostJavaScriptFlagsTest, EmptyExistingFlagsString) {
 +  // Test with empty string as existing flags (edge case)
-+  // When the command line already has an empty JavaScript flags switch
-+  base::CommandLine command_line(base::CommandLine::NO_PROGRAM);
-+  command_line.AppendSwitchASCII(blink::switches::kJavaScriptFlags, "");
-+
-+  auto mock_host = std::make_unique<TestableRenderProcessHost>(browser_context());
-+  mock_host->set_jit_disabled(true);
-+  
-+  static_cast<RenderProcessHostImpl*>(mock_host.get())
-+      ->AppendRendererCommandLine(&command_line);
-+
-+  EXPECT_TRUE(command_line.HasSwitch(blink::switches::kJavaScriptFlags));
-+  EXPECT_EQ("--jitless,",
-+            command_line.GetSwitchValueASCII(blink::switches::kJavaScriptFlags));
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/true, /*v8_optimizations_disabled=*/false,
++      /*existing_flags=*/"", /*expected_flags=*/"--jitless");
 +}
  }  // namespace content
