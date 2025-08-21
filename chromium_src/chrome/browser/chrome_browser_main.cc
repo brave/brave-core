@@ -5,6 +5,7 @@
 
 #include "chrome/browser/chrome_browser_main.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/themes/theme_command_line_handler.h"
 
 #include "base/command_line.h"
 #include "base/containers/fixed_flat_map.h"
@@ -107,6 +108,11 @@ void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
 #endif
   }
 
+}  // namespace
+
+namespace brave {
+namespace themes {
+
 // Processes theme command line switches for the specified profile.
 // Gets the ThemeService for the profile and applies the switches.
 void ProcessThemeCommandLineSwitchesForProfile(
@@ -127,7 +133,8 @@ void ProcessThemeCommandLineSwitchesForProfile(
 #endif
 }
 
-}  // namespace
+}  // namespace themes
+}  // namespace brave
 
 // Macro injected into ProcessSingletonNotificationCallbackImpl to handle
 // theme switches when Chrome is already running and receives new command line args.
@@ -138,7 +145,7 @@ void ProcessThemeCommandLineSwitchesForProfile(
     Profile* profile = \
         profile_manager->GetProfileByPath(startup_profile_path_info.path); \
     if (profile) { \
-      ProcessThemeCommandLineSwitchesForProfile(&command_line, profile); \
+      brave::themes::ProcessThemeCommandLineSwitchesForProfile(&command_line, profile); \
     } \
   }
 #else
@@ -149,7 +156,7 @@ void ProcessThemeCommandLineSwitchesForProfile(
 // initial profile setup after Chrome startup.
 #if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_POST_PROFILE_INIT \
-  ProcessThemeCommandLineSwitchesForProfile( \
+  brave::themes::ProcessThemeCommandLineSwitchesForProfile( \
       base::CommandLine::ForCurrentProcess(), profile);
 #else
 #define BRAVE_POST_PROFILE_INIT

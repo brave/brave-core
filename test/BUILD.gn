@@ -492,6 +492,11 @@ test("brave_unit_tests") {
     deps += [ "//brave/browser/ui/webui/brave_education:unit_tests" ]
   }
 
+  # Theme command line switches are desktop-only
+  if (is_win || is_mac || is_linux || is_chromeos) {
+    sources += [ "//brave/browser/themes/theme_command_line_handler_unittest.cc" ]
+  }
+
   # On Windows, brave_install_static_unittests covers channel test.
   if (is_mac || is_linux) {
     sources += [ "//brave/common/brave_channel_info_unittest.cc" ]
