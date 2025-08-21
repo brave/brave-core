@@ -1,0 +1,77 @@
+[package]
+name = "elliptic-curve"
+version = "0.13.8"
+description = """
+General purpose Elliptic Curve Cryptography (ECC) support, including types
+and traits for representing various elliptic curve forms, scalars, points,
+and public/secret keys composed thereof.
+"""
+authors = ["RustCrypto Developers"]
+license = "Apache-2.0 OR MIT"
+repository = "https://github.com/RustCrypto/traits/tree/master/elliptic-curve"
+readme = "README.md"
+categories = ["cryptography", "no-std"]
+keywords = ["crypto", "ecc", "elliptic", "weierstrass"]
+edition = "2021"
+rust-version = "1.65"
+
+[dependencies]
+base16ct = "0.2"
+crypto-bigint = { version = "0.5", default-features = false, features = ["rand_core", "generic-array", "zeroize"] }
+generic-array = { version = "0.14.6", default-features = false, features = ["zeroize"] }
+rand_core = { version = "0.6.4", default-features = false }
+subtle = { version = "2", default-features = false }
+zeroize = { version = "1.7", default-features = false }
+
+# optional dependencies
+base64ct = { version = "1", optional = true, default-features = false, features = ["alloc"] }
+digest = { version = "0.10", optional = true }
+ff = { version = "0.13", optional = true, default-features = false }
+group = { version = "0.13", optional = true, default-features = false }
+hkdf = { version = "0.12.1", optional = true, default-features = false }
+hex-literal = { version = "0.4", optional = true }
+pem-rfc7468 = { version = "0.7", optional = true, features = ["alloc"] }
+pkcs8 = { version = "0.10.2", optional = true, default-features = false }
+sec1 = { version = "0.7.1", optional = true, features = ["subtle", "zeroize"] }
+serdect = { version = "0.2", optional = true, default-features = false, features = ["alloc"] }
+serde_json = { version = "1.0.47", optional = true, default-features = false, features = ["alloc"] }
+tap = { version = "1.0.1", optional = true, default-features = false } # hack for minimal-versions support for `bits`
+
+[dev-dependencies]
+hex-literal = "0.4"
+sha2 = "0.10"
+sha3 = "0.10"
+
+[features]
+default = ["arithmetic"]
+alloc = [
+    "base16ct/alloc",
+    "ff?/alloc",
+    "group?/alloc",
+    "pkcs8?/alloc",
+    "sec1?/alloc",
+    "zeroize/alloc"
+]
+std = [
+    "alloc",
+    "rand_core/std",
+    "pkcs8?/std",
+    "sec1?/std"
+]
+
+arithmetic = ["group"]
+bits = ["arithmetic", "ff/bits", "dep:tap"]
+dev = ["arithmetic", "dep:hex-literal", "pem", "pkcs8"]
+hash2curve = ["arithmetic", "digest"]
+ecdh = ["arithmetic", "digest", "dep:hkdf"]
+group = ["dep:group", "ff"]
+hazmat = []
+jwk = ["dep:base64ct", "dep:serde_json", "alloc", "serde", "zeroize/alloc"]
+pkcs8 = ["dep:pkcs8", "sec1"]
+pem = ["dep:pem-rfc7468", "alloc", "arithmetic", "pkcs8", "sec1/pem"]
+serde = ["dep:serdect", "alloc", "pkcs8", "sec1/serde"]
+voprf = ["digest"]
+
+[package.metadata.docs.rs]
+features = ["bits", "ecdh", "hash2curve", "jwk", "pem", "std", "voprf"]
+rustdoc-args = ["--cfg", "docsrs"]
