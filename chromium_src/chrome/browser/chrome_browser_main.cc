@@ -39,14 +39,14 @@ void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
       return;
     }
 
-    if (command_line->HasSwitch(switches::kSetDefaultTheme)) {
+    if (command_line->HasSwitch(kSetDefaultTheme)) {
       theme_service->UseDefaultTheme();
       return;
     }
 
-    if (command_line->HasSwitch(switches::kSetUserColor)) {
+    if (command_line->HasSwitch(kSetUserColor)) {
       std::string value =
-          command_line->GetSwitchValueASCII(switches::kSetUserColor);
+          command_line->GetSwitchValueASCII(kSetUserColor);
       std::vector<std::string> rgb = base::SplitString(
           value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
       if (rgb.size() == 3) {
@@ -63,9 +63,9 @@ void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
       }
     }
 
-    if (command_line->HasSwitch(switches::kSetColorScheme)) {
+    if (command_line->HasSwitch(kSetColorScheme)) {
       std::string scheme =
-          command_line->GetSwitchValueASCII(switches::kSetColorScheme);
+          command_line->GetSwitchValueASCII(kSetColorScheme);
       static constexpr auto kSchemeMap =
           base::MakeFixedFlatMap<std::string_view,
                                  ThemeService::BrowserColorScheme>({
@@ -80,16 +80,16 @@ void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
       }
     }
 
-    if (command_line->HasSwitch(switches::kSetGrayscaleTheme)) {
+    if (command_line->HasSwitch(kSetGrayscaleTheme)) {
       std::string value =
-          command_line->GetSwitchValueASCII(switches::kSetGrayscaleTheme);
+          command_line->GetSwitchValueASCII(kSetGrayscaleTheme);
       bool is_grayscale = (value == "true");
       theme_service->SetIsGrayscale(is_grayscale);
     }
 
-    if (command_line->HasSwitch(switches::kSetColorVariant)) {
+    if (command_line->HasSwitch(kSetColorVariant)) {
       std::string variant =
-          command_line->GetSwitchValueASCII(switches::kSetColorVariant);
+          command_line->GetSwitchValueASCII(kSetColorVariant);
       static constexpr auto kVariantMap =
           base::MakeFixedFlatMap<std::string_view,
                                  ui::mojom::BrowserColorVariant>({
