@@ -14,6 +14,8 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
+#include "build/build_config.h"
+#include "build/buildflag.h"
 #include "components/prefs/pref_service.h"
 
 namespace ai_chat {
@@ -73,7 +75,11 @@ bool MemoryStorageTool::RequiresUserInteractionBeforeHandling() const {
 }
 
 bool MemoryStorageTool::SupportsConversation(bool is_temporary) const {
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+  return false;
+#else
   return !is_temporary;
+#endif
 }
 
 void MemoryStorageTool::UseTool(const std::string& input_json,

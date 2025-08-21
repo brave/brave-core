@@ -21,6 +21,8 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
+#include "build/build_config.h"
+#include "build/buildflag.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -145,7 +147,11 @@ TEST_F(MemoryStorageToolTest, UseTool_TooLongMemory) {
 }
 
 TEST_F(MemoryStorageToolTest, SupportsConversation_NonTemporary) {
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+  EXPECT_FALSE(memory_tool_->SupportsConversation(false));
+#else
   EXPECT_TRUE(memory_tool_->SupportsConversation(false));
+#endif
 }
 
 TEST_F(MemoryStorageToolTest, SupportsConversation_Temporary) {

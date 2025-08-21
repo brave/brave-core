@@ -50,6 +50,8 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "build/build_config.h"
+#include "build/buildflag.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
@@ -4027,8 +4029,13 @@ TEST_F(ConversationHandlerUnitTest,
       std::ranges::any_of(regular_tools, [](const auto& tool) {
         return tool && tool->Name() == mojom::kMemoryStorageToolName;
       });
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+  EXPECT_FALSE(memory_tool_found_regular)
+      << "Memory tool should NOT be available on Android/iOS platforms";
+#else
   EXPECT_TRUE(memory_tool_found_regular)
       << "Memory tool should be available in regular conversations";
+#endif
 
   // Test 2: Memory tool should NOT be available in temporary conversation
   conversation_handler_->SetTemporary(true);
