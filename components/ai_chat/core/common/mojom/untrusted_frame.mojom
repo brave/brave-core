@@ -52,6 +52,9 @@ interface UntrustedUI {
 // Browser-side handler for untrusted frame that handles rendering of
 // conversation entries.
 interface UntrustedUIHandler {
+  // Bind UntrustedUI for callbacks
+  BindUntrustedUI(pending_remote<UntrustedUI> untrusted_ui);
+
   // Open a URL for the web search query the assistant used for a response
   OpenSearchURL(string query);
 
@@ -61,6 +64,9 @@ interface UntrustedUIHandler {
   // response. Could be any http/https destination.
   OpenURLFromResponse(url.mojom.Url url);
 
+  // Open AI Chat customization settings page
+  OpenAIChatCustomizationSettings();
+
   BindParentPage(pending_receiver<ParentUIFrame> parent_frame);
 
   // Delete a specific memory from user memory storage
@@ -68,10 +74,4 @@ interface UntrustedUIHandler {
 
   // Check if a specific memory exists in storage
   HasMemory(string memory) => (bool exists);
-
-  // Bind UntrustedUI for callbacks
-  BindUntrustedUI(pending_remote<UntrustedUI> untrusted_ui);
-
-  // Open AI Chat customization settings page
-  OpenAIChatCustomizationSettings();
 };
