@@ -6,4 +6,5 @@ include_rules = [
   "+components/prefs",
   "+services/network/public/cpp",
   "+services/network/public/mojom",
+  "+services/network/test",
 ]

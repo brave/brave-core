@@ -6,13 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 
-#include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_account/endpoints/password_finalize.h"
+#include "brave/components/brave_account/endpoints/password_init.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -23,11 +26,6 @@ class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace brave_account {
-
-namespace endpoints {
-class PasswordInit;
-class PasswordFinalize;
-}  // namespace endpoints
 
 class BraveAccountService : public KeyedService {
  public:
@@ -52,16 +50,18 @@ class BraveAccountService : public KeyedService {
  private:
   void OnRegisterInitialize(
       mojom::PageHandler::RegisterInitializeCallback callback,
-      api_request_helper::APIRequestResult result);
+      base::expected<std::optional<endpoints::PasswordInit::Response>,
+                     std::optional<endpoints::PasswordInit::Error>> reply);
 
-  void OnRegisterFinalize(mojom::PageHandler::RegisterFinalizeCallback callback,
-                          const std::string& encrypted_verification_token,
-                          api_request_helper::APIRequestResult result);
+  void OnRegisterFinalize(
+      mojom::PageHandler::RegisterFinalizeCallback callback,
+      const std::string& encrypted_verification_token,
+      base::expected<std::optional<endpoints::PasswordFinalize::Response>,
+                     std::optional<endpoints::PasswordFinalize::Error>> reply);
 
   const raw_ptr<PrefService> pref_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<endpoints::PasswordInit> password_init_;
-  std::unique_ptr<endpoints::PasswordFinalize> password_finalize_;
+  api_request_helper::APIRequestHelper api_request_helper_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };
 
