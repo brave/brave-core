@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/no_destructor.h"
+#include "brave/components/ai_chat/core/browser/tools/todo_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
