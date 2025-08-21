@@ -10,6 +10,18 @@
 #include <chrome/browser/chrome_browser_main.h>  // IWYU pragma: export
 #undef ChromeBrowserMainParts
 
+namespace base {
+class CommandLine;
+}
+
+class Profile;
+
+// Processes theme command line switches for the specified profile.
+// Desktop platforms only (Windows, macOS, Linux, ChromeOS).
+void ProcessThemeCommandLineSwitchesForProfile(
+    const base::CommandLine* command_line,
+    Profile* profile);
+
 class ChromeBrowserMainParts : public ChromeBrowserMainParts_ChromiumImpl {
  public:
   ChromeBrowserMainParts(bool is_integration_test, StartupData* startup_data);
