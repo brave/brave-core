@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_SWITCHES_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_SWITCHES_H_
+
 #include <chrome/common/chrome_switches.h>
 
 // Sets the browser color scheme for all running Chrome windows.
@@ -23,3 +26,5 @@ inline constexpr char kSetGrayscaleTheme[] = "set-grayscale-theme";
 // Sets the user color for Chrome Refresh theming.
 // The format is "r,g,b", where r, g, b are numeric values from 0 to 255.
 inline constexpr char kSetUserColor[] = "set-user-color";
+
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_SWITCHES_H_
