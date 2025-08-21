@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_FILTER_LIST_CATALOG_ENTRY_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_FILTER_LIST_CATALOG_ENTRY_H_
 
+#include <stdint.h>
+
 #include <functional>
 #include <string>
 #include <vector>

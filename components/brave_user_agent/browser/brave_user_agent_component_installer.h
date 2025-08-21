@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_USER_AGENT_BROWSER_BRAVE_USER_AGENT_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_BRAVE_USER_AGENT_BROWSER_BRAVE_USER_AGENT_COMPONENT_INSTALLER_H_
 
+#include <stdint.h>
+
 #include "base/files/file_path.h"
 
 namespace component_updater {

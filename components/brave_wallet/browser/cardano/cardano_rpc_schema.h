@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_RPC_SCHEMA_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_RPC_SCHEMA_H_
 
+#include <stdint.h>
+
 #include <array>
 #include <optional>
 #include <vector>

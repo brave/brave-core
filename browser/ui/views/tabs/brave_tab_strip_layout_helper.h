@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_LAYOUT_HELPER_H_
 
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"

@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_COMPILED_INSTRUCTION_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_COMPILED_INSTRUCTION_H_
 
+#include <stdint.h>
+
 #include <optional>
 #include <string>
 #include <vector>
