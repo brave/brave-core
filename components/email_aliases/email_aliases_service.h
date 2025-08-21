@@ -23,8 +23,6 @@ class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
-class GURL;
-
 namespace email_aliases {
 
 // The EmailAliasesService is responsible for managing the email aliases for a
