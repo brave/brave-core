@@ -100,6 +100,7 @@ module.exports = async function (env, argv) {
     devtool: isDevMode ? 'inline-source-map' : false,
     output,
     resolve,
+    target: ["web", "es2020"],
     optimization: {
       // We are providing chunk and module IDs via a plugin instead of a default
       chunkIds: false,
@@ -114,6 +115,9 @@ module.exports = async function (env, argv) {
           if (/^chrome(\-untrusted)?:\/\//.test(request)) {
             return callback(null, 'module ' + request);
           }
+        }
+        if (/^chrome:\/\/resources\/brave\/brave_wallet_ui_wasm/.test(request)) {
+          return callback(null, 'module ' + request);
         }
         callback();
       },
