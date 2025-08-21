@@ -253,7 +253,7 @@ const runTests = async (
             'summary',
           ],
           {
-            ...config.defaultOptions,
+            ...runOptions,
             cwd: config.braveCoreDir,
           },
         )
@@ -276,7 +276,7 @@ const runTests = async (
           'vpython3',
           [path.join('script', 'json2xunit.py')],
           {
-            ...config.defaultOptions,
+            ...runOptions,
             cwd: config.braveCoreDir,
             stdio: [
               fs.openSync(inputFilename, 'r'),
