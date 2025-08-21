@@ -42,12 +42,6 @@ ui::ImageModel BraveSplitTabMenuModel::GetIconForCommandId(
     int command_id) const {
   const CommandId id = GetCommandIdEnum(command_id);
 
-  if (id == CommandId::kReversePosition) {
-    return ui::ImageModel::FromVectorIcon(
-        kLeoSwapHorizontalIcon, ui::kColorMenuIcon,
-        ui::SimpleMenuModel::kDefaultIconSize);
-  }
-
   if (id == CommandId::kExitSplit) {
     return ui::ImageModel::FromVectorIcon(
         kLeoBrowserSplitViewUnsplitIcon, ui::kColorMenuIcon,
