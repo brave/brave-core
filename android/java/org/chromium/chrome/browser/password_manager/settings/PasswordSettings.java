@@ -28,7 +28,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceGroup;
 
-import org.chromium.base.BuildInfo;
+import org.chromium.base.DeviceInfo;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -287,7 +287,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     }
 
     private boolean shouldShowAutoSigninOption() {
-        return !BuildInfo.getInstance().isAutomotive;
+        return !DeviceInfo.isAutomotive();
     }
 
     /**
