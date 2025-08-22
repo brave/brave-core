@@ -8,7 +8,6 @@ import("//build/config/android/rules.gni")
 android_library("java") {
   sources = [
     "java/src/org/chromium/brave/browser/customize_menu/CustomizeBraveMenu.java",
-    "java/src/org/chromium/brave/browser/customize_menu/settings/BraveCustomizeMenuPreference.java",
     "java/src/org/chromium/brave/browser/customize_menu/settings/BraveCustomizeMenuPreferenceFragment.java",
   ]
 
@@ -16,13 +15,13 @@ android_library("java") {
     ":java_resources",
     "//base:base_java",
     "//brave/build/android:android_brave_strings_grd",
+    "//chrome/android:chrome_app_java_resources",
     "//chrome/browser/preferences:java",
     "//chrome/browser/settings:java",
     "//chrome/browser/ui/android/appmenu:java",
     "//components/browser_ui/settings/android:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_preference_preference_java",
-    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
     "//ui/android:ui_no_recycler_view_java",
   ]
 
@@ -31,7 +30,6 @@ android_library("java") {
 
 android_resources("java_resources") {
   sources = [
-    "java/res/layout/customize_menu_preference_layout.xml",
     "java/res/xml/brave_customize_menu_preferences.xml",
   ]
 }

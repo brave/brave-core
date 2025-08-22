@@ -5,7 +5,10 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreference
-        android:key="pref_brave_customize_menu"
-        android:layout="@layout/customize_menu_preference_layout" />
+    <PreferenceCategory
+        android:title="@string/customize_main_menu_section_title"
+        android:key="main_menu_section"
+        android:order="1">
+
+    </PreferenceCategory>
 </PreferenceScreen>
