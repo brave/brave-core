@@ -11,7 +11,11 @@
 namespace brave_rewards::internal {
 
 EnvironmentConfig::EnvironmentConfig(RewardsEngine& engine)
-    : RewardsEngineHelper(engine) {}
+    : RewardsEngineHelper(engine) {
+  if (engine.options().is_testing) {
+    allow_default_values_for_testing_ = true;
+  }
+}
 
 EnvironmentConfig::~EnvironmentConfig() = default;
 
