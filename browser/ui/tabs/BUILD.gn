@@ -47,6 +47,8 @@ if (!is_android) {
       "//brave/browser/ui:brave_tab_features",
       "//chrome/browser/ui/tabs:tab_strip",
     ]
+
+    public_deps = [ "//chrome/browser:browser_public_dependencies" ]
   }
 }
 
