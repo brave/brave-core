@@ -9,13 +9,16 @@
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/cookie_access_details.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -26,6 +29,27 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
+
+// Waits for JavaScript cookie operations to complete.
+class CookieObserver : public content::WebContentsObserver {
+ public:
+  explicit CookieObserver(content::WebContents* web_contents, const GURL& url)
+      : content::WebContentsObserver(web_contents), monitored_url_(url) {}
+
+  [[nodiscard]] bool Wait() { return future_.Wait(); }
+
+ private:
+  void OnCookiesAccessed(content::RenderFrameHost* render_frame_host,
+                         const content::CookieAccessDetails& details) override {
+    if (details.type == content::CookieAccessDetails::Type::kChange &&
+        details.url == monitored_url_) {
+      future_.SetValue(details);
+    }
+  }
+
+  GURL monitored_url_;
+  base::test::TestFuture<content::CookieAccessDetails> future_;
+};
 
 constexpr base::TimeDelta k4YearsInDays = base::Days(1461);
 // There might be a gap of a few milliseconds between setting the cookie and it
@@ -121,14 +145,12 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
 
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  CookieObserver observer(browser()->tab_strip_model()->GetActiveWebContents(),
+                          url);
   JSDocumentCookieWriteCookie(
       browser(), "max-age=" + base::NumberToString(less_than_max.InSeconds()));
-
-  // Verify cookie is readable via JS.
-  EXPECT_TRUE(
-      content::EvalJs(browser()->tab_strip_model()->GetActiveWebContents(),
-                      "document.cookie.includes('name=Test')")
-          .ExtractBool());
+  ASSERT_TRUE(observer.Wait());
 
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
@@ -143,14 +165,12 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForDocumentCookieMoreThanMax) {
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  CookieObserver observer(browser()->tab_strip_model()->GetActiveWebContents(),
+                          url);
   JSDocumentCookieWriteCookie(
       browser(), "max-age=" + base::NumberToString(k4YearsInDays.InSeconds()));
-
-  // Verify cookie is readable via JS.
-  EXPECT_TRUE(
-      content::EvalJs(browser()->tab_strip_model()->GetActiveWebContents(),
-                      "document.cookie.includes('name=Test')")
-          .ExtractBool());
+  ASSERT_TRUE(observer.Wait());
 
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
@@ -168,8 +188,12 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
   auto less_than_max = base::Days(2);
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  CookieObserver observer(browser()->tab_strip_model()->GetActiveWebContents(),
+                          url);
   JSCookieStoreWriteCookie(
       browser(), base::NumberToString(less_than_max.InMilliseconds()));
+  ASSERT_TRUE(observer.Wait());
 
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
@@ -184,8 +208,12 @@ IN_PROC_BROWSER_TEST_F(CookieExpirationTest,
                        CheckExpiryForCookieStoreMoreThanMax) {
   GURL url = https_server_->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  CookieObserver observer(browser()->tab_strip_model()->GetActiveWebContents(),
+                          url);
   JSCookieStoreWriteCookie(
       browser(), base::NumberToString(k4YearsInDays.InMilliseconds()));
+  ASSERT_TRUE(observer.Wait());
 
   std::vector<net::CanonicalCookie> all_cookies =
       GetAllCookiesDirect(browser());
