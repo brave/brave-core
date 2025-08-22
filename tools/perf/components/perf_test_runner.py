@@ -325,7 +325,7 @@ class RunableConfiguration:
 
     run_tests_ok = self.RunTests()
     if self.common_options.do_report:
-      if run_tests_ok or self.common_options.report_on_failure:
+      if run_tests_ok:
         report_ok = self.ReportToDashboard()
     self.logs.append(self.TakeStatusLine())
     if run_tests_ok and report_ok and not self.config.save_artifacts:

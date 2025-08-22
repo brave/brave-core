@@ -299,18 +299,25 @@ def _RunUpdateProfileForConfig(config: perf_config.PerfConfig,
   if len(config.runners) != 1:
     raise RuntimeError('Only one configuration should be specified.')
   options.do_report = False
-  config.runners[0].profile_rebase = perf_config.ProfileRebaseType.NONE
+  runner = config.runners[0]
+  runner.profile_rebase = perf_config.ProfileRebaseType.NONE
+
+  # Remove --disable-component-update to get all the components
+  runner.extra_browser_args = [
+      arg for arg in runner.extra_browser_args
+      if arg != '--disable-component-update'
+  ]
   config.benchmarks = [
       perf_config.BenchmarkConfig({
           'name': 'brave_utils.online',
-          'pageset-repeat': 3,
+          'pageset-repeat': 2,
           'stories': ['UpdateProfile'],
           'stories_exclude': [],
       })
   ]
 
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-      options.targets, config.runners[0])
+      options.targets, runner)
   assert len(configurations) == 1
   PreRebaseCleanup(configurations[0], options)
   if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
