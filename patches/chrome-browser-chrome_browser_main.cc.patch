@@ -2,12 +2,10 @@ diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_brows
 index c7c59fa540499..c5748150b5394 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
-@@ -463,6 +463,8 @@ void ProcessSingletonNotificationCallbackImpl(
+@@ -463,6 +463,7 @@ void ProcessSingletonNotificationCallbackImpl(
        "ProfilePicker.StartupReason.NotificationCallback",
        startup_profile_path_info.reason);
  
 +  BRAVE_PROCESS_SINGLETON_NOTIFICATION_CALLBACK_IMPL
-+
    StartupBrowserCreator::ProcessCommandLineAlreadyRunning(
        command_line, current_directory, startup_profile_path_info);
- 
