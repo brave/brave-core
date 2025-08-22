@@ -18,15 +18,15 @@
 namespace web_discovery {
 
 // Represents a single extraction rule within a selector
-struct PatternsV2ExtractionRule {
-  PatternsV2ExtractionRule();
-  ~PatternsV2ExtractionRule();
+struct V2ExtractionRule {
+  V2ExtractionRule();
+  ~V2ExtractionRule();
 
-  PatternsV2ExtractionRule(const PatternsV2ExtractionRule&) = delete;
-  PatternsV2ExtractionRule& operator=(const PatternsV2ExtractionRule&) = delete;
+  V2ExtractionRule(const V2ExtractionRule&) = delete;
+  V2ExtractionRule& operator=(const V2ExtractionRule&) = delete;
 
-  PatternsV2ExtractionRule(PatternsV2ExtractionRule&&);
-  PatternsV2ExtractionRule& operator=(PatternsV2ExtractionRule&&);
+  V2ExtractionRule(V2ExtractionRule&&);
+  V2ExtractionRule& operator=(V2ExtractionRule&&);
 
   // Optional sub-selector for nested elements
   std::optional<std::string> sub_selector;
@@ -37,40 +37,40 @@ struct PatternsV2ExtractionRule {
 };
 
 // Represents an input group with its extraction rules
-struct PatternsV2InputGroup {
-  PatternsV2InputGroup();
-  ~PatternsV2InputGroup();
+struct V2InputGroup {
+  V2InputGroup();
+  ~V2InputGroup();
 
-  PatternsV2InputGroup(const PatternsV2InputGroup&) = delete;
-  PatternsV2InputGroup& operator=(const PatternsV2InputGroup&) = delete;
+  V2InputGroup(const V2InputGroup&) = delete;
+  V2InputGroup& operator=(const V2InputGroup&) = delete;
 
-  PatternsV2InputGroup(PatternsV2InputGroup&&);
-  PatternsV2InputGroup& operator=(PatternsV2InputGroup&&);
+  V2InputGroup(V2InputGroup&&);
+  V2InputGroup& operator=(V2InputGroup&&);
 
   // Whether to extract from all matching elements (true) or just the first
   // (false)
   bool select_all;
   // Map of field names to extraction rules (supports multiple rules via
   // firstMatch)
-  base::flat_map<std::string, std::vector<PatternsV2ExtractionRule>>
+  base::flat_map<std::string, std::vector<V2ExtractionRule>>
       extraction_rules;
 };
 
 // Represents an output field definition
-struct PatternsV2OutputField {
-  PatternsV2OutputField();
-  ~PatternsV2OutputField();
+struct V2OutputField {
+  V2OutputField();
+  ~V2OutputField();
 
-  PatternsV2OutputField(const PatternsV2OutputField&) = delete;
-  PatternsV2OutputField& operator=(const PatternsV2OutputField&) = delete;
+  V2OutputField(const V2OutputField&) = delete;
+  V2OutputField& operator=(const V2OutputField&) = delete;
 
-  PatternsV2OutputField(PatternsV2OutputField&&);
-  PatternsV2OutputField& operator=(PatternsV2OutputField&&);
+  V2OutputField(V2OutputField&&);
+  V2OutputField& operator=(V2OutputField&&);
 
   // The field key/name
   std::string key;
   // Source selector (if specified)
-  std::optional<std::string> source;
+  std::optional<std::string> source_selector;
   // Required keys for validation
   std::vector<std::string> required_keys;
   // Whether this field is optional
@@ -78,56 +78,56 @@ struct PatternsV2OutputField {
 };
 
 // Represents an output group definition
-struct PatternsV2OutputGroup {
-  PatternsV2OutputGroup();
-  ~PatternsV2OutputGroup();
+struct V2OutputGroup {
+  V2OutputGroup();
+  ~V2OutputGroup();
 
-  PatternsV2OutputGroup(const PatternsV2OutputGroup&) = delete;
-  PatternsV2OutputGroup& operator=(const PatternsV2OutputGroup&) = delete;
+  V2OutputGroup(const V2OutputGroup&) = delete;
+  V2OutputGroup& operator=(const V2OutputGroup&) = delete;
 
-  PatternsV2OutputGroup(PatternsV2OutputGroup&&);
-  PatternsV2OutputGroup& operator=(PatternsV2OutputGroup&&);
+  V2OutputGroup(V2OutputGroup&&);
+  V2OutputGroup& operator=(V2OutputGroup&&);
 
   // The output group name/key
-  std::string name;
+  std::string action;
   // List of fields in this output group
-  std::vector<PatternsV2OutputField> fields;
+  std::vector<V2OutputField> fields;
 };
 
 // Represents a complete site pattern configuration
-struct PatternsV2SitePattern {
-  PatternsV2SitePattern();
-  ~PatternsV2SitePattern();
+struct V2SitePattern {
+  V2SitePattern();
+  ~V2SitePattern();
 
-  PatternsV2SitePattern(const PatternsV2SitePattern&) = delete;
-  PatternsV2SitePattern& operator=(const PatternsV2SitePattern&) = delete;
+  V2SitePattern(const V2SitePattern&) = delete;
+  V2SitePattern& operator=(const V2SitePattern&) = delete;
 
-  PatternsV2SitePattern(PatternsV2SitePattern&&);
-  PatternsV2SitePattern& operator=(PatternsV2SitePattern&&);
+  V2SitePattern(V2SitePattern&&);
+  V2SitePattern& operator=(V2SitePattern&&);
 
   // Map of CSS selectors to input groups (input section)
-  base::flat_map<std::string, PatternsV2InputGroup> input_groups;
+  base::flat_map<std::string, V2InputGroup> input_groups;
   // Vector of output groups (output section)
-  std::vector<PatternsV2OutputGroup> output_groups;
+  std::vector<V2OutputGroup> output_groups;
 };
 
 // The complete v2 patterns configuration
-struct PatternsV2PatternsGroup {
-  PatternsV2PatternsGroup();
-  ~PatternsV2PatternsGroup();
+struct V2PatternsGroup {
+  V2PatternsGroup();
+  ~V2PatternsGroup();
 
-  PatternsV2PatternsGroup(const PatternsV2PatternsGroup&) = delete;
-  PatternsV2PatternsGroup& operator=(const PatternsV2PatternsGroup&) = delete;
+  V2PatternsGroup(const V2PatternsGroup&) = delete;
+  V2PatternsGroup& operator=(const V2PatternsGroup&) = delete;
 
-  PatternsV2PatternsGroup(PatternsV2PatternsGroup&&);
-  PatternsV2PatternsGroup& operator=(PatternsV2PatternsGroup&&);
+  V2PatternsGroup(V2PatternsGroup&&);
+  V2PatternsGroup& operator=(V2PatternsGroup&&);
 
   // Map of RelevantSite to their patterns
-  base::flat_map<RelevantSite, PatternsV2SitePattern> site_patterns;
+  base::flat_map<RelevantSite, V2SitePattern> site_patterns;
 };
 
 // Parses v2 patterns JSON. Returns nullptr if parsing fails.
-std::unique_ptr<PatternsV2PatternsGroup> ParseV2Patterns(
+std::unique_ptr<V2PatternsGroup> ParseV2Patterns(
     std::string_view patterns_json);
 
 }  // namespace web_discovery

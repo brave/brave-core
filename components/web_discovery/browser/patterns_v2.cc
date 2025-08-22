@@ -33,9 +33,9 @@ constexpr char kFieldsKey[] = "fields";
 constexpr char kFirstMatchKey[] = "firstMatch";
 
 // Parses an extraction rule object
-std::optional<PatternsV2ExtractionRule> ParseExtractionRule(
+std::optional<V2ExtractionRule> ParseExtractionRule(
     const base::Value::Dict& rule_dict) {
-  PatternsV2ExtractionRule rule;
+  V2ExtractionRule rule;
 
   // Parse attribute (required)
   const auto* attr = rule_dict.FindString(kAttrKey);
@@ -71,7 +71,7 @@ std::optional<PatternsV2ExtractionRule> ParseExtractionRule(
 
 // Parses extraction rules for a single field, handling both single rules and
 // firstMatch arrays
-std::optional<std::vector<PatternsV2ExtractionRule>> ParseExtractionRules(
+std::optional<std::vector<V2ExtractionRule>> ParseExtractionRules(
     const base::Value::Dict& field_dict) {
   std::vector<const base::Value::Dict*> rule_dicts;
 
@@ -90,7 +90,7 @@ std::optional<std::vector<PatternsV2ExtractionRule>> ParseExtractionRules(
   }
 
   // Parse all collected rule dictionaries
-  std::vector<PatternsV2ExtractionRule> field_rules;
+  std::vector<V2ExtractionRule> field_rules;
   field_rules.reserve(rule_dicts.size());
 
   for (const auto* rule_dict : rule_dicts) {
@@ -105,9 +105,9 @@ std::optional<std::vector<PatternsV2ExtractionRule>> ParseExtractionRules(
 }
 
 // Parses an input group (input section)
-std::optional<PatternsV2InputGroup> ParseInputGroup(
+std::optional<V2InputGroup> ParseInputGroup(
     const base::Value::Dict& group_dict) {
-  PatternsV2InputGroup input_group;
+  V2InputGroup input_group;
 
   if (group_dict.size() != 1) {
     VLOG(1) << "Input group must have exactly one key";
@@ -157,9 +157,9 @@ std::optional<PatternsV2InputGroup> ParseInputGroup(
 }
 
 // Parses an output field
-std::optional<PatternsV2OutputField> ParseOutputField(
+std::optional<V2OutputField> ParseOutputField(
     const base::Value::Dict& field_dict) {
-  PatternsV2OutputField field;
+  V2OutputField field;
 
   // Parse key (required)
   const auto* key = field_dict.FindString(kKey);
@@ -171,7 +171,7 @@ std::optional<PatternsV2OutputField> ParseOutputField(
 
   // Parse source (optional)
   if (const auto* source = field_dict.FindString(kSourceKey)) {
-    field.source = *source;
+    field.source_selector = *source;
   }
 
   // Parse required keys (optional)
@@ -196,11 +196,11 @@ std::optional<PatternsV2OutputField> ParseOutputField(
 }
 
 // Parses an output group
-std::optional<PatternsV2OutputGroup> ParseOutputGroup(
+std::optional<V2OutputGroup> ParseOutputGroup(
     const std::string& group_name,
     const base::Value::Dict& group_dict) {
-  PatternsV2OutputGroup output_group;
-  output_group.name = group_name;
+  V2OutputGroup output_group;
+  output_group.action = group_name;
 
   // Parse fields
   const auto* fields = group_dict.FindList(kFieldsKey);
@@ -226,9 +226,9 @@ std::optional<PatternsV2OutputGroup> ParseOutputGroup(
 }
 
 // Parses a site pattern
-std::optional<PatternsV2SitePattern> ParseSitePattern(
+std::optional<V2SitePattern> ParseSitePattern(
     const base::Value::Dict& site_dict) {
-  PatternsV2SitePattern site_pattern;
+  V2SitePattern site_pattern;
 
   // Parse input section
   const auto* input_dict = site_dict.FindDict(kInputKey);
@@ -274,50 +274,50 @@ std::optional<PatternsV2SitePattern> ParseSitePattern(
 }  // namespace
 
 // PatternsV2ExtractionRule implementation
-PatternsV2ExtractionRule::PatternsV2ExtractionRule() = default;
-PatternsV2ExtractionRule::~PatternsV2ExtractionRule() = default;
-PatternsV2ExtractionRule::PatternsV2ExtractionRule(PatternsV2ExtractionRule&&) =
+V2ExtractionRule::V2ExtractionRule() = default;
+V2ExtractionRule::~V2ExtractionRule() = default;
+V2ExtractionRule::V2ExtractionRule(V2ExtractionRule&&) =
     default;
-PatternsV2ExtractionRule& PatternsV2ExtractionRule::operator=(
-    PatternsV2ExtractionRule&&) = default;
+V2ExtractionRule& V2ExtractionRule::operator=(
+    V2ExtractionRule&&) = default;
 
 // PatternsV2InputGroup implementation
-PatternsV2InputGroup::PatternsV2InputGroup() = default;
-PatternsV2InputGroup::~PatternsV2InputGroup() = default;
-PatternsV2InputGroup::PatternsV2InputGroup(PatternsV2InputGroup&&) = default;
-PatternsV2InputGroup& PatternsV2InputGroup::operator=(PatternsV2InputGroup&&) =
+V2InputGroup::V2InputGroup() = default;
+V2InputGroup::~V2InputGroup() = default;
+V2InputGroup::V2InputGroup(V2InputGroup&&) = default;
+V2InputGroup& V2InputGroup::operator=(V2InputGroup&&) =
     default;
 
 // PatternsV2OutputField implementation
-PatternsV2OutputField::PatternsV2OutputField() = default;
-PatternsV2OutputField::~PatternsV2OutputField() = default;
-PatternsV2OutputField::PatternsV2OutputField(PatternsV2OutputField&&) = default;
-PatternsV2OutputField& PatternsV2OutputField::operator=(
-    PatternsV2OutputField&&) = default;
+V2OutputField::V2OutputField() = default;
+V2OutputField::~V2OutputField() = default;
+V2OutputField::V2OutputField(V2OutputField&&) = default;
+V2OutputField& V2OutputField::operator=(
+    V2OutputField&&) = default;
 
 // PatternsV2OutputGroup implementation
-PatternsV2OutputGroup::PatternsV2OutputGroup() = default;
-PatternsV2OutputGroup::~PatternsV2OutputGroup() = default;
-PatternsV2OutputGroup::PatternsV2OutputGroup(PatternsV2OutputGroup&&) = default;
-PatternsV2OutputGroup& PatternsV2OutputGroup::operator=(
-    PatternsV2OutputGroup&&) = default;
+V2OutputGroup::V2OutputGroup() = default;
+V2OutputGroup::~V2OutputGroup() = default;
+V2OutputGroup::V2OutputGroup(V2OutputGroup&&) = default;
+V2OutputGroup& V2OutputGroup::operator=(
+    V2OutputGroup&&) = default;
 
 // PatternsV2SitePattern implementation
-PatternsV2SitePattern::PatternsV2SitePattern() = default;
-PatternsV2SitePattern::~PatternsV2SitePattern() = default;
-PatternsV2SitePattern::PatternsV2SitePattern(PatternsV2SitePattern&&) = default;
-PatternsV2SitePattern& PatternsV2SitePattern::operator=(
-    PatternsV2SitePattern&&) = default;
+V2SitePattern::V2SitePattern() = default;
+V2SitePattern::~V2SitePattern() = default;
+V2SitePattern::V2SitePattern(V2SitePattern&&) = default;
+V2SitePattern& V2SitePattern::operator=(
+    V2SitePattern&&) = default;
 
 // PatternsV2PatternsGroup implementation
-PatternsV2PatternsGroup::PatternsV2PatternsGroup() = default;
-PatternsV2PatternsGroup::~PatternsV2PatternsGroup() = default;
-PatternsV2PatternsGroup::PatternsV2PatternsGroup(PatternsV2PatternsGroup&&) =
+V2PatternsGroup::V2PatternsGroup() = default;
+V2PatternsGroup::~V2PatternsGroup() = default;
+V2PatternsGroup::V2PatternsGroup(V2PatternsGroup&&) =
     default;
-PatternsV2PatternsGroup& PatternsV2PatternsGroup::operator=(
-    PatternsV2PatternsGroup&&) = default;
+V2PatternsGroup& V2PatternsGroup::operator=(
+    V2PatternsGroup&&) = default;
 
-std::unique_ptr<PatternsV2PatternsGroup> ParseV2Patterns(
+std::unique_ptr<V2PatternsGroup> ParseV2Patterns(
     std::string_view patterns_json) {
   auto json_value = base::JSONReader::Read(patterns_json);
   if (!json_value.has_value() || !json_value->is_dict()) {
@@ -325,7 +325,7 @@ std::unique_ptr<PatternsV2PatternsGroup> ParseV2Patterns(
     return nullptr;
   }
 
-  auto patterns_group = std::make_unique<PatternsV2PatternsGroup>();
+  auto patterns_group = std::make_unique<V2PatternsGroup>();
   const auto& root_dict = json_value->GetDict();
 
   // Parse each site pattern

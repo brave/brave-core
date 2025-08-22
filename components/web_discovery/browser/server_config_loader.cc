@@ -130,7 +130,7 @@ ParseSourceMapActionConfigs(const base::Value::Dict& configs_dict) {
 
 ParsedPatternsVariant NullPatternsVariant() {
   if (features::ShouldUseV2Patterns()) {
-    return ParsedPatternsVariant(std::unique_ptr<PatternsV2PatternsGroup>{});
+    return ParsedPatternsVariant(std::unique_ptr<V2PatternsGroup>{});
   } else {
     return ParsedPatternsVariant(std::unique_ptr<PatternsGroup>{});
   }
@@ -165,7 +165,7 @@ ParsedPatternsVariant ParseAndWritePatternsFile(base::FilePath patterns_path,
 
   // Check if parsing failed (helper function returns null variant on failure)
   if (features::ShouldUseV2Patterns()) {
-    if (!std::get<std::unique_ptr<PatternsV2PatternsGroup>>(result)) {
+    if (!std::get<std::unique_ptr<V2PatternsGroup>>(result)) {
       return result;  // Already contains null variant from helper
     }
   } else {
@@ -312,7 +312,7 @@ const PatternsGroup& ServerConfigLoader::GetLastPatterns() const {
   return *last_loaded_patterns_;
 }
 
-const PatternsV2PatternsGroup& ServerConfigLoader::GetLastV2Patterns() const {
+const V2PatternsGroup& ServerConfigLoader::GetLastV2Patterns() const {
   CHECK(last_loaded_v2_patterns_);
   return *last_loaded_v2_patterns_;
 }
@@ -507,7 +507,7 @@ void ServerConfigLoader::OnPatternsParsed(bool is_stored,
   // Move the patterns immediately based on feature flag
   if (features::ShouldUseV2Patterns()) {
     last_loaded_v2_patterns_ =
-        std::move(std::get<std::unique_ptr<PatternsV2PatternsGroup>>(patterns));
+        std::move(std::get<std::unique_ptr<V2PatternsGroup>>(patterns));
   } else {
     last_loaded_patterns_ =
         std::move(std::get<std::unique_ptr<PatternsGroup>>(patterns));

@@ -30,7 +30,7 @@ std::vector<base::Value::Dict> GenerateQueryPayloads(
 // Generates "query" messages for v2 patterns
 std::vector<base::Value::Dict> GenerateQueryPayloadsV2(
     const ServerConfig& server_config,
-    const PatternsV2PatternsGroup& patterns_group,
+    const V2PatternsGroup& patterns_group,
     std::unique_ptr<PageScrapeResult> scrape_result);
 
 // Generates an "alive" message to indicate an opted-in

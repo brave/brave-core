@@ -33,7 +33,7 @@ namespace web_discovery {
 using KeyMap = base::flat_map<std::string, std::vector<uint8_t>>;
 using ParsedPatternsVariant =
     std::variant<std::unique_ptr<PatternsGroup>,
-                 std::unique_ptr<PatternsV2PatternsGroup>>;
+                 std::unique_ptr<V2PatternsGroup>>;
 
 struct SourceMapActionConfig {
   SourceMapActionConfig();
@@ -105,7 +105,7 @@ class ServerConfigLoader {
   const PatternsGroup& GetLastPatterns() const;
   // Returns the v2 pattern config. May only call after the patterns_callback is
   // triggered.
-  const PatternsV2PatternsGroup& GetLastV2Patterns() const;
+  const V2PatternsGroup& GetLastV2Patterns() const;
 
   void SetLastServerConfigForTesting(
       std::unique_ptr<ServerConfig> server_config);
@@ -148,7 +148,7 @@ class ServerConfigLoader {
 
   std::unique_ptr<ServerConfig> last_loaded_server_config_;
   std::unique_ptr<PatternsGroup> last_loaded_patterns_;
-  std::unique_ptr<PatternsV2PatternsGroup> last_loaded_v2_patterns_;
+  std::unique_ptr<V2PatternsGroup> last_loaded_v2_patterns_;
 
   base::WeakPtrFactory<ServerConfigLoader> weak_ptr_factory_{this};
 };

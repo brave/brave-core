@@ -181,9 +181,9 @@ void GenerateSinglePayloads(const ServerConfig& server_config,
 }
 
 std::optional<base::Value> ProcessV2List(
-    const PatternsV2OutputField& field,
+    const V2OutputField& field,
     const std::vector<base::Value::Dict>& scraped_values,
-    const PatternsV2InputGroup& input_group,
+    const V2InputGroup& input_group,
     bool is_query_action,
     bool is_search_engine) {
   // Determine required keys: use field.required_keys if provided, otherwise all
@@ -245,17 +245,17 @@ std::optional<base::Value> ProcessV2SingleValue(
 }
 
 std::optional<base::Value> ProcessV2OutputField(
-    const PatternsV2OutputField& field,
+    const V2OutputField& field,
     const ServerConfig& server_config,
     const PageScrapeResult& scrape_result,
-    const PatternsV2SitePattern& site_pattern,
+    const V2SitePattern& site_pattern,
     bool is_query_action,
     bool is_search_engine) {
   std::optional<base::Value> result;
 
-  if (field.source) {
+  if (field.source_selector) {
     // Field has a source - look up scraped data
-    const std::string& source_selector = field.source.value();
+    const std::string& source_selector = field.source_selector.value();
     const auto* scraped_values =
         base::FindOrNull(scrape_result.fields, source_selector);
 
@@ -326,7 +326,7 @@ std::vector<base::Value::Dict> GenerateQueryPayloads(
 
 std::vector<base::Value::Dict> GenerateQueryPayloadsV2(
     const ServerConfig& server_config,
-    const PatternsV2PatternsGroup& patterns_group,
+    const V2PatternsGroup& patterns_group,
     std::unique_ptr<PageScrapeResult> scrape_result) {
   std::vector<base::Value::Dict> payloads;
 
@@ -352,7 +352,7 @@ std::vector<base::Value::Dict> GenerateQueryPayloadsV2(
     base::Value::Dict inner_payload;
 
     // Determine if this is a query action
-    bool is_query_action = kQueryActions.contains(output_group.name);
+    bool is_query_action = kQueryActions.contains(output_group.action);
 
     // Process each field in the output group
     for (const auto& field : output_group.fields) {
@@ -370,7 +370,7 @@ std::vector<base::Value::Dict> GenerateQueryPayloadsV2(
     // Create payload if we have all required data
     if (inner_payload.size() == output_group.fields.size()) {
       base::Value::Dict payload;
-      payload.Set(kActionKey, output_group.name);
+      payload.Set(kActionKey, output_group.action);
       payload.Set(kInnerPayloadKey, std::move(inner_payload));
       payloads.push_back(std::move(payload));
     }
