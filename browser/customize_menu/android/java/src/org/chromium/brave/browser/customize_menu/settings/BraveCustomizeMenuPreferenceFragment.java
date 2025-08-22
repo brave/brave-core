@@ -20,7 +20,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
  * items from main menu.
  */
 @NullMarked
-public class CustomizeMenuPreferenceFragment extends ChromeBaseSettingsFragment {
+public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFragment {
     private static final String TAG = "CustomizeMenuPreferenceFragment";
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
