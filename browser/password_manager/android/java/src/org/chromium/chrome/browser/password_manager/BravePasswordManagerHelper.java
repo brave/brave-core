@@ -23,6 +23,11 @@ public class BravePasswordManagerHelper extends PasswordManagerHelper {
     private static final String TAG = "BravePasswords";
     protected static @Nullable ProfileKeyedMap<PasswordManagerHelper> sProfileMap;
 
+    // Key for the argument with which PasswordsSettings will be launched. The value for
+    // this argument should be part of the ManagePasswordsReferrer enum, which contains
+    // all points of entry to the passwords settings.
+    public static final String MANAGE_PASSWORDS_REFERRER = "manage-passwords-referrer";
+
     BravePasswordManagerHelper(Profile profile) {
         super(profile);
     }
