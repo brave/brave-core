@@ -8,6 +8,8 @@
 #include <memory>
 #include <utility>
 
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
@@ -33,15 +35,36 @@ struct PsstNavigationData : public base::SupportsUserData::Data {
   int id;
 };
 
-std::string GetScriptWithParams(const std::string& script, base::Value params) {
-  const auto* params_dict = params.GetIfDict();
-  if (!params_dict || params_dict->empty()) {
+// Adds the dictionary of parameters returned by the user.js script to the
+// policy.js script, before it is executed. Empty parameters dictionary or in
+// case when parameters dictionary cannot be serialized to JSON, means that
+// script should be executed without any parameters. In case of success, the
+// function returns: const params = {
+//    "tasks": [ {
+//       "description": "Ads Preferences",
+//       "url": "https://a.test/settings/ads_preferences"
+//    } ]
+// };
+// <policy script, which uses parameters to apply PSST settings selected by the
+// user>;
+//
+// @param script The JavaScript code which expects parameters as a string.
+// @param params_dict A dictionary of parameters to be passed to the script.
+// @return The modified script with parameters prepended, or the original script
+// if no parameters are provided.
+std::string MaybeAddParamsToScript(const std::string& script,
+                                   base::Value::Dict params_dict) {
+  if (params_dict.empty()) {
+    SCOPED_CRASH_KEY_STRING64("Psst", "params_dict", "empty");
+    base::debug::DumpWithoutCrashing();
     return script;
   }
 
   std::optional<std::string> params_json = base::WriteJsonWithOptions(
-      *params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
+      params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
   if (!params_json) {
+    SCOPED_CRASH_KEY_STRING64("Psst", "params_dict", "could not be serialized");
+    base::debug::DumpWithoutCrashing();
     return script;
   }
 
@@ -154,7 +177,8 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   }
 
   inject_script_callback_.Run(
-      GetScriptWithParams(policy_script, std::move(user_script_result)),
+      MaybeAddParamsToScript(policy_script,
+                             std::move(user_script_result).TakeDict()),
       base::DoNothing());
 }
 
