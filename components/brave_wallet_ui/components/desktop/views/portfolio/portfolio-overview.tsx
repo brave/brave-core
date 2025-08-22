@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { useHistory, useLocation } from 'react-router'
+import { useHistory, useLocation, } from 'react-router'
 import { Route, Switch } from 'react-router-dom'
 
 // Selectors
@@ -132,6 +132,23 @@ import {
 import {
   selectAllVisibleFungibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
+
+// @ts-expect-error
+import { rawr, get_pubkey } from 'chrome://resources/brave/brave_wallet_ui_wasm.bundle.js'
+
+function SchnorrDemoButton() {
+  const [pubkey, setPubKey] = React.useState('');
+
+  const onClick = () => {
+    setPubKey(get_pubkey());
+  };
+
+  return (<>
+    <button onClick={onClick}>Click to generate your Schnorr-derived pubkey!</button>
+    <button onClick={() => { setPubKey('') }}>Clear pubkey</button>
+    <span style={{ color: '#ffffff' }}>{pubkey}</span>
+  </>);
+}
 
 export const PortfolioOverview = () => {
   // routing
@@ -267,9 +284,9 @@ export const PortfolioOverview = () => {
         || visiblePortfolioNetworks.length === 0
         ? skipToken
         : {
-            accounts: usersFilteredAccounts,
-            networks: visiblePortfolioNetworks,
-          },
+          accounts: usersFilteredAccounts,
+          networks: visiblePortfolioNetworks,
+        },
     )
 
   // This will scrape all the user's accounts and combine the asset balances
@@ -319,8 +336,8 @@ export const PortfolioOverview = () => {
         assetBalance:
           getIsRewardsToken(asset) && rewardsBalance
             ? new Amount(rewardsBalance)
-                .multiplyByDecimals(asset.decimals)
-                .format()
+              .multiplyByDecimals(asset.decimals)
+              .format()
             : fullAssetBalance(asset),
       }
     })
@@ -359,11 +376,11 @@ export const PortfolioOverview = () => {
       && defaultFiat
       && !hidePortfolioGraph
       ? {
-          tokens: visibleTokensForFilteredChains,
-          timeframe: selectedTimeframe,
-          vsAsset: defaultFiat,
-          tokenBalancesRegistry,
-        }
+        tokens: visibleTokensForFilteredChains,
+        timeframe: selectedTimeframe,
+        vsAsset: defaultFiat,
+        tokenBalancesRegistry,
+      }
       : skipToken,
   )
 
@@ -492,12 +509,12 @@ export const PortfolioOverview = () => {
               !tokenBalancesRegistry
                 ? ''
                 : selectedGroupAssetsByItem === AccountsGroupByOption.id
-                    && !getIsRewardsToken(item.asset)
+                  && !getIsRewardsToken(item.asset)
                   ? getBalance(
-                      account?.accountId,
-                      item.asset,
-                      tokenBalancesRegistry,
-                    )
+                    account?.accountId,
+                    item.asset,
+                    tokenBalancesRegistry,
+                  )
                   : item.assetBalance
             }
             account={
@@ -510,9 +527,9 @@ export const PortfolioOverview = () => {
             spotPrice={
               spotPrices
                 ? getTokenPriceAmountFromRegistry(
-                    spotPrices,
-                    item.asset,
-                  ).format()
+                  spotPrices,
+                  item.asset,
+                ).format()
                 : tokenBalancesRegistry
                   ? '0'
                   : ''
@@ -559,6 +576,7 @@ export const PortfolioOverview = () => {
         >
           <Banners />
         </Column>
+        <SchnorrDemoButton />
         {!isCollectionView && (
           <>
             <BalanceAndLineChartWrapper

@@ -35,9 +35,10 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
 // @ts-expect-error
-import { rawr } from 'chrome://resources/brave/brave_wallet_ui_wasm.bundle.js'
+import { rawr, get_pubkey } from 'chrome://resources/brave/brave_wallet_ui_wasm.bundle.js'
 console.log("I should see this first...");
 console.log(`and then here's the thunder: ${rawr()}`);
+console.log(`would this happen to be a pubkey????? ${get_pubkey()}`);
 
 function App() {
 
