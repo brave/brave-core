@@ -27,11 +27,12 @@ bool CanPatternBeConvertedToWildcardSchemeAndPort(
   // like "http://*:80/*" should be left alone.
   if (pattern == ContentSettingsPattern::Wildcard() ||
       pattern == ContentSettingsPattern::FromString("https://firstParty/*") ||
-      pattern.GetScheme() == ContentSettingsPattern::SCHEME_FILE ||
-      pattern.MatchesAllHosts() || pattern.GetHost().empty())
+      pattern.GetSchemeType() == ContentSettingsPattern::SCHEME_FILE ||
+      pattern.MatchesAllHosts() || pattern.GetHost().empty()) {
     return false;
+  }
   // Check for the case when the scheme is wildcard, but the port isn't.
-  if (pattern.GetScheme() == ContentSettingsPattern::SCHEME_WILDCARD) {
+  if (pattern.GetSchemeType() == ContentSettingsPattern::SCHEME_WILDCARD) {
     GURL check_for_port_url("http://" + pattern.ToString());
     return check_for_port_url.has_port();
   }
