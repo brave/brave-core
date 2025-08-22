@@ -69,8 +69,11 @@ class Profile;
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
     BUILDFLAG(IS_CHROMEOS)
 void ProcessBrowserWideThemeCommandLineSwitches();
-void ProcessBrowserWideThemeCommandLineSwitches(const base::CommandLine* command_line);
-void ProcessBrowserWideThemeCommandLineSwitches(const base::CommandLine* command_line, Profile* single_profile);
+void ProcessBrowserWideThemeCommandLineSwitches(
+    const base::CommandLine* command_line);
+void ProcessBrowserWideThemeCommandLineSwitches(
+    const base::CommandLine* command_line,
+    Profile* single_profile);
 #endif
 
 // Processes per-profile theme command line switches for the specified profile.
