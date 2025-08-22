@@ -1,0 +1,37 @@
+language: rust
+
+rust:
+  - stable
+  - nightly
+
+env:
+  - TEST_COMMAND=test FEATURES=''
+
+matrix:
+  include:
+    # We use the 64-bit optimised curve backend by default, so also test with
+    # the 32-bit backend (this also exercises testing with `no_std`):
+    # TODO: re-enable u32_backend
+    #- rust: nightly
+    #  env: TEST_COMMAND=build FEATURES='--no-default-features --features=u32_backend'
+    # Test any nightly gated features on nightly:
+    - rust: nightly
+      env: TEST_COMMAND=test FEATURES='--features=nightly'
+    # Test serde support on stable, assuming that if it works there it'll work everywhere:
+    - rust: stable
+      env: TEST_COMMAND=test FEATURE='--features=serde'
+
+install:
+  - rustup component add clippy
+
+script:
+  # lint
+  - cargo clippy --version
+  - cargo clippy --all
+
+  # check
+  - cargo check --no-default-features --features "u64_backend" # no_std
+  - cargo check --tests --benches                              # compilation
+
+  # test
+  - cargo $TEST_COMMAND $FEATURES

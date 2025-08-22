@@ -1,6 +1,0 @@
-Name: opaque-ke
-URL: https://crates.io/crates/opaque-ke
-Version: 3.0.0
-License: Apache-2.0
-License File: //brave/ui/webui/resources/wasm/vendor/opaque-ke/LICENSE-APACHE
-Description: An implementation of the OPAQUE password-authenticated key exchange protocol.
