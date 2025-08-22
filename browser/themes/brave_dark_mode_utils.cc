@@ -14,10 +14,10 @@
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
+#include "brave/browser/ui/themes/switches.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "brave/browser/ui/themes/switches.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/themes/theme_service.h"
@@ -215,23 +215,27 @@ base::Value::List GetBraveDarkModeTypeList() {
 void ProcessBrowserWideThemeCommandLineSwitches() {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
     BUILDFLAG(IS_CHROMEOS)
-  ProcessBrowserWideThemeCommandLineSwitches(base::CommandLine::ForCurrentProcess());
+  ProcessBrowserWideThemeCommandLineSwitches(
+      base::CommandLine::ForCurrentProcess());
 #endif
 }
 
-// Processes browser-wide theme command line switches with specific command line.
-// Used for both startup and running instance scenarios.
-void ProcessBrowserWideThemeCommandLineSwitches(const base::CommandLine* command_line) {
+// Processes browser-wide theme command line switches with specific command
+// line. Used for both startup and running instance scenarios.
+void ProcessBrowserWideThemeCommandLineSwitches(
+    const base::CommandLine* command_line) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
     BUILDFLAG(IS_CHROMEOS)
   ProcessBrowserWideThemeCommandLineSwitches(command_line, nullptr);
 #endif
 }
 
-// Processes browser-wide theme command line switches with specific command line and optional single profile.
-// If single_profile is provided (test scenario), only that profile is affected.
-// Otherwise, all loaded profiles are affected.
-void ProcessBrowserWideThemeCommandLineSwitches(const base::CommandLine* command_line, Profile* single_profile) {
+// Processes browser-wide theme command line switches with specific command line
+// and optional single profile. If single_profile is provided (test scenario),
+// only that profile is affected. Otherwise, all loaded profiles are affected.
+void ProcessBrowserWideThemeCommandLineSwitches(
+    const base::CommandLine* command_line,
+    Profile* single_profile) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
     BUILDFLAG(IS_CHROMEOS)
   if (!command_line) {
@@ -244,7 +248,8 @@ void ProcessBrowserWideThemeCommandLineSwitches(const base::CommandLine* command
   if (command_line->HasSwitch(kSetDefaultTheme)) {
     if (single_profile) {
       // Test scenario - just affect the single test profile
-      ThemeService* theme_service = ThemeServiceFactory::GetForProfile(single_profile);
+      ThemeService* theme_service =
+          ThemeServiceFactory::GetForProfile(single_profile);
       if (theme_service) {
         theme_service->UseDefaultTheme();
       }
@@ -253,11 +258,12 @@ void ProcessBrowserWideThemeCommandLineSwitches(const base::CommandLine* command
       if (!g_browser_process || !g_browser_process->profile_manager()) {
         return;
       }
-      
+
       ProfileManager* profile_manager = g_browser_process->profile_manager();
       for (Profile* profile : profile_manager->GetLoadedProfiles()) {
         if (profile) {
-          ThemeService* theme_service = ThemeServiceFactory::GetForProfile(profile);
+          ThemeService* theme_service =
+              ThemeServiceFactory::GetForProfile(profile);
           if (theme_service) {
             theme_service->UseDefaultTheme();
           }
@@ -282,80 +288,79 @@ void ProcessBrowserWideThemeCommandLineSwitches(const base::CommandLine* command
 
 namespace {
 
-// Processes per-profile theme command line switches and applies them to the ThemeService.
-// These switches are per-profile:
+// Processes per-profile theme command line switches and applies them to the
+// ThemeService. These switches are per-profile:
 // - kSetUserColor: Sets the seed color for Material You dynamic theming (GM3)
 // - kSetColorScheme: Controls light/dark mode preference
-// - kSetColorVariant: Sets Material You color variant (tonal_spot, neutral, vibrant, expressive)
-// - kSetGrayscaleTheme: Enables grayscale overlay (boolean flag - presence = true)
+// - kSetColorVariant: Sets Material You color variant (tonal_spot, neutral,
+// vibrant, expressive)
+// - kSetGrayscaleTheme: Enables grayscale overlay (boolean flag - presence =
+// true)
 //
 // Note: kSetDefaultTheme is processed browser-wide, not here.
 void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
                                      ThemeService* theme_service) {
-    if (!command_line || !theme_service) {
-      return;
-    }
+  if (!command_line || !theme_service) {
+    return;
+  }
 
-    using namespace brave::themes::switches;
+  using namespace brave::themes::switches;
 
-    if (command_line->HasSwitch(kSetUserColor)) {
-      std::string value =
-          command_line->GetSwitchValueASCII(kSetUserColor);
-      std::vector<std::string> rgb = base::SplitString(
-          value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-      if (rgb.size() == 3) {
-        int r_int, g_int, b_int;
-        uint8_t r, g, b;
-        if (base::StringToInt(rgb[0], &r_int) && 
-            base::StringToInt(rgb[1], &g_int) &&
-            base::StringToInt(rgb[2], &b_int) &&
-            base::CheckedNumeric<uint8_t>(r_int).AssignIfValid(&r) &&
-            base::CheckedNumeric<uint8_t>(g_int).AssignIfValid(&g) &&
-            base::CheckedNumeric<uint8_t>(b_int).AssignIfValid(&b)) {
-          theme_service->SetUserColor(SkColorSetRGB(r, g, b));
-        }
-      }
-    }
-
-    if (command_line->HasSwitch(kSetColorScheme)) {
-      std::string scheme =
-          command_line->GetSwitchValueASCII(kSetColorScheme);
-      static constexpr auto kSchemeMap =
-          base::MakeFixedFlatMap<std::string_view,
-                                 ThemeService::BrowserColorScheme>({
-              {"system", ThemeService::BrowserColorScheme::kSystem},
-              {"light", ThemeService::BrowserColorScheme::kLight},
-              {"dark", ThemeService::BrowserColorScheme::kDark},
-          });
-
-      const auto* color_scheme = base::FindOrNull(kSchemeMap, scheme);
-      if (color_scheme) {
-        theme_service->SetBrowserColorScheme(*color_scheme);
-      }
-    }
-
-    if (command_line->HasSwitch(kSetGrayscaleTheme)) {
-      theme_service->SetIsGrayscale(true);
-    }
-
-    if (command_line->HasSwitch(kSetColorVariant)) {
-      std::string variant =
-          command_line->GetSwitchValueASCII(kSetColorVariant);
-      static constexpr auto kVariantMap =
-          base::MakeFixedFlatMap<std::string_view,
-                                 ui::mojom::BrowserColorVariant>({
-              {"tonal_spot", ui::mojom::BrowserColorVariant::kTonalSpot},
-              {"neutral", ui::mojom::BrowserColorVariant::kNeutral},
-              {"vibrant", ui::mojom::BrowserColorVariant::kVibrant},
-              {"expressive", ui::mojom::BrowserColorVariant::kExpressive},
-          });
-
-      const auto* color_variant = base::FindOrNull(kVariantMap, variant);
-      if (color_variant) {
-        theme_service->SetBrowserColorVariant(*color_variant);
+  if (command_line->HasSwitch(kSetUserColor)) {
+    std::string value = command_line->GetSwitchValueASCII(kSetUserColor);
+    std::vector<std::string> rgb = base::SplitString(
+        value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+    if (rgb.size() == 3) {
+      int r_int, g_int, b_int;
+      uint8_t r, g, b;
+      if (base::StringToInt(rgb[0], &r_int) &&
+          base::StringToInt(rgb[1], &g_int) &&
+          base::StringToInt(rgb[2], &b_int) &&
+          base::CheckedNumeric<uint8_t>(r_int).AssignIfValid(&r) &&
+          base::CheckedNumeric<uint8_t>(g_int).AssignIfValid(&g) &&
+          base::CheckedNumeric<uint8_t>(b_int).AssignIfValid(&b)) {
+        theme_service->SetUserColor(SkColorSetRGB(r, g, b));
       }
     }
   }
+
+  if (command_line->HasSwitch(kSetColorScheme)) {
+    std::string scheme = command_line->GetSwitchValueASCII(kSetColorScheme);
+    static constexpr auto kSchemeMap =
+        base::MakeFixedFlatMap<std::string_view,
+                               ThemeService::BrowserColorScheme>({
+            {"system", ThemeService::BrowserColorScheme::kSystem},
+            {"light", ThemeService::BrowserColorScheme::kLight},
+            {"dark", ThemeService::BrowserColorScheme::kDark},
+        });
+
+    const auto* color_scheme = base::FindOrNull(kSchemeMap, scheme);
+    if (color_scheme) {
+      theme_service->SetBrowserColorScheme(*color_scheme);
+    }
+  }
+
+  if (command_line->HasSwitch(kSetGrayscaleTheme)) {
+    theme_service->SetIsGrayscale(true);
+  }
+
+  if (command_line->HasSwitch(kSetColorVariant)) {
+    std::string variant = command_line->GetSwitchValueASCII(kSetColorVariant);
+    static constexpr auto kVariantMap =
+        base::MakeFixedFlatMap<std::string_view,
+                               ui::mojom::BrowserColorVariant>({
+            {"tonal_spot", ui::mojom::BrowserColorVariant::kTonalSpot},
+            {"neutral", ui::mojom::BrowserColorVariant::kNeutral},
+            {"vibrant", ui::mojom::BrowserColorVariant::kVibrant},
+            {"expressive", ui::mojom::BrowserColorVariant::kExpressive},
+        });
+
+    const auto* color_variant = base::FindOrNull(kVariantMap, variant);
+    if (color_variant) {
+      theme_service->SetBrowserColorVariant(*color_variant);
+    }
+  }
+}
 
 }  // namespace
 
@@ -364,16 +369,16 @@ void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
 void ProcessThemeCommandLineSwitchesForProfile(
     const base::CommandLine* command_line,
     Profile* profile) {
-    if (!command_line || !profile) {
-      return;
-    }
+  if (!command_line || !profile) {
+    return;
+  }
 
-    ThemeService* theme_service = ThemeServiceFactory::GetForProfile(profile);
-    if (!theme_service) {
-      return;
-    }
+  ThemeService* theme_service = ThemeServiceFactory::GetForProfile(profile);
+  if (!theme_service) {
+    return;
+  }
 
-    ProcessThemeCommandLineSwitches(command_line, theme_service);
+  ProcessThemeCommandLineSwitches(command_line, theme_service);
 }
 
 #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
