@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/public/tab_features.h b/chrome/browser/ui/tabs/public/tab_features.h
-index 5e15f58954c3310692e6c225b8b69605be79ce4f..ae0fae68c75ea1f51316a7cac49c8f7da99d5db4 100644
+index fb901fbc90b3f7a875e3962fd9753f3db4c50a8b..9a09621ea5ae6f120adebec59b92584503d7e34d 100644
 --- a/chrome/browser/ui/tabs/public/tab_features.h
 +++ b/chrome/browser/ui/tabs/public/tab_features.h
-@@ -115,7 +115,7 @@ class TabCreationMetricsController;
+@@ -124,7 +124,7 @@ class TabCreationMetricsController;
  class TabFeatures {
   public:
    TabFeatures();

@@ -1,8 +1,8 @@
 diff --git a/components/history/core/browser/BUILD.gn b/components/history/core/browser/BUILD.gn
-index 3fe01e3af095229f0e942b287b526a249bff5e6b..714137c5b5031a8e249d9197446d3c50b304d887 100644
+index c55b3fc415539364b5ab639ffb628ce88ac00e53..8eb2fc96a245bad3dea518275638e8d1124e0b95 100644
 --- a/components/history/core/browser/BUILD.gn
 +++ b/components/history/core/browser/BUILD.gn
-@@ -134,6 +134,7 @@ static_library("browser") {
+@@ -147,6 +147,7 @@ static_library("browser") {
      "//ui/gfx",
      "//url",
    ]

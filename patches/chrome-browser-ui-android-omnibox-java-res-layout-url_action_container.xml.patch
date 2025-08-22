@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-index a697389da0a5fba2dd2c414faf32e0cee990f35b..7644faedf8998147fa6898b789aa269aa090369c 100644
+index 12c3f39c481a26c517eba873eddc6430319e7864..97aa2be382ce7b69360a2203fe1c2c5f87e416a7 100644
 --- a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
 +++ b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
 @@ -26,6 +26,7 @@ found in the LICENSE file.

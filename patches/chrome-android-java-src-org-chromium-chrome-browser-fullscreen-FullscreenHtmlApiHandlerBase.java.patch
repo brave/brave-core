@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index e803ba6d8885462955eb4fba72120b684abae835..6d55349640847b666a6a4938f9889263d7d59e40 100644
+index c37e9f47620b0daff918c560140cb865e876ee07..1169df7c4cf2b6585ef6d37199881b96b1d0423e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-@@ -314,6 +314,7 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -315,6 +315,7 @@ public abstract class FullscreenHtmlApiHandlerBase
  
                      @Override
                      public void onHidden(Tab tab, @TabHidingType int reason) {

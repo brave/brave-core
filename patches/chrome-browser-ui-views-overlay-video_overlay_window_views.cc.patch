@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
-index df6326f6ab2fd87abe4bf04834683f7ab500dd60..76e67d00361ea70064f505ad3ca87835bde2ec1b 100644
+index fcb7d2c18f39acb174fc456362de51c484de398c..5301e90983d9083af78066aff850330e7d24ca58 100644
 --- a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 +++ b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 @@ -382,7 +382,7 @@ std::unique_ptr<VideoOverlayWindowViews> VideoOverlayWindowViews::Create(
@@ -11,7 +11,7 @@ index df6326f6ab2fd87abe4bf04834683f7ab500dd60..76e67d00361ea70064f505ad3ca87835
  
    // The 2024 updated controls use dark mode colors.
    if (Use2024UI()) {
-@@ -994,6 +994,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
+@@ -1017,6 +1017,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
  
    max_size_ = new_max_size;
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 2d15968db4a872adcfa6d13a458b83ea2d0cd98e..2f95b5fc8d984132bb821ec885e3bc79b3f8be8f 100644
+index 67518195be66d695e52396ea4ca6485b6d6d14f7..9b5b6edea7bd85fad63e34c5d6bc8079bd4c32ce 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -361,6 +361,7 @@ void Tab::Layout(PassKey) {
+@@ -362,6 +362,7 @@ void Tab::Layout(PassKey) {
    // indicator, but visually it will be smaller at kFaviconSize wide.
    gfx::Rect favicon_bounds(start, contents_rect.y(), 0, 0);
    if (showing_icon_) {
@@ -10,7 +10,7 @@ index 2d15968db4a872adcfa6d13a458b83ea2d0cd98e..2f95b5fc8d984132bb821ec885e3bc79
      if (center_icon_) {
        // When centering the favicon, the favicon is allowed to escape the normal
        // contents rect.
-@@ -459,6 +460,7 @@ void Tab::Layout(PassKey) {
+@@ -460,6 +461,7 @@ void Tab::Layout(PassKey) {
      int title_right = contents_rect.right();
      if (showing_alert_indicator_) {
        title_right = alert_indicator_button_->x() - after_title_padding;
@@ -18,7 +18,7 @@ index 2d15968db4a872adcfa6d13a458b83ea2d0cd98e..2f95b5fc8d984132bb821ec885e3bc79
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
-@@ -1181,6 +1183,7 @@ void Tab::UpdateIconVisibility() {
+@@ -1183,6 +1185,7 @@ void Tab::UpdateIconVisibility() {
          !controller_->IsLockedForOnTask() &&
  #endif
          large_enough_for_close_button;

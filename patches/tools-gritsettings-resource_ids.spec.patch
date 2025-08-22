@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 8868f755131ccdcf5cb62a28e1d8a7cf0be8bf1e..efe207d28ab8e3949a8589bcf5c4dfca7630af0f 100644
+index e2899d5b568fb70e1cbe53a871208bfa860bacd4..9da6f97e6f2ceceffdd2d4eda64d9b2c29f70425 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
@@ -39,7 +39,7 @@ index 8868f755131ccdcf5cb62a28e1d8a7cf0be8bf1e..efe207d28ab8e3949a8589bcf5c4dfca
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -1030,6 +1033,9 @@
+@@ -1045,6 +1048,9 @@
      # Big alignment at start of section.
      "messages": [7020],
    },
@@ -49,7 +49,7 @@ index 8868f755131ccdcf5cb62a28e1d8a7cf0be8bf1e..efe207d28ab8e3949a8589bcf5c4dfca
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1523,11 +1529,11 @@
+@@ -1538,11 +1544,11 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {
