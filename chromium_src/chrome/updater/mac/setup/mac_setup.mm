@@ -9,10 +9,13 @@
 // differently: Sparkle checks for updates in the browser, while Omaha 4
 // registers a wake job that runs periodically in the background, also when the
 // browser isn't running. We must prevent Omaha 4 and Sparkle from running at
-// the same time. We do this by not registering Omaha 4's wake job, and instead
-// invoking its on-demand API from inside the browser instead of Sparkle. Once
-// the migration to Sparkle is complete, we will re-enable the wake job by
-// releasing a new version of Omaha 4 itself.
+// the same time. We do this here by preventing Omaha 4's wake job from being
+// registered, and instead invoke its on-demand API from inside the browser
+// instead of Sparkle. Once the migration to Sparkle is complete and we have
+// background updates on macOS, we should re-enable the wake job by removing
+// this code and releasing a new version of Omaha 4 itself. When we do this, we
+// should also re-enable the outdated build detector in
+// upgrade_detector_impl.cc.
 #define GetWakeTaskPlistPath(scope) \
   std::nullopt;                     \
   return true;
