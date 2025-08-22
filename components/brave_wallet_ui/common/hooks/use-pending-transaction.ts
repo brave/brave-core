@@ -65,7 +65,11 @@ import {
 import { useIsAccountSyncing } from './use_is_account_syncing'
 
 // Constants
-import { BraveWallet, emptyProviderErrorCodeUnion } from '../../constants/types'
+import {
+  BraveWallet,
+  emptyProviderErrorCodeUnion,
+  MaxPriorityFeeOptionType,
+} from '../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType,
@@ -333,8 +337,29 @@ export const usePendingTransactions = () => {
     })
   }, [nativeBalance, gasFee])
 
-  const { suggestedMaxPriorityFeeChoices, baseFeePerGas } = React.useMemo(
+  const {
+    suggestedMaxPriorityFeeOptions,
+    suggestedMaxPriorityFeeChoices,
+    baseFeePerGas,
+  } = React.useMemo(
     () => ({
+      suggestedMaxPriorityFeeOptions: [
+        {
+          id: 'slow',
+          fee: gasEstimates?.slowMaxPriorityFeePerGas || '0',
+          duration: '',
+        },
+        {
+          id: 'average',
+          fee: gasEstimates?.avgMaxPriorityFeePerGas || '0',
+          duration: '',
+        },
+        {
+          id: 'fast',
+          fee: gasEstimates?.fastMaxPriorityFeePerGas || '0',
+          duration: '',
+        },
+      ] as MaxPriorityFeeOptionType[],
       suggestedMaxPriorityFeeChoices: [
         gasEstimates?.slowMaxPriorityFeePerGas || '0',
         gasEstimates?.avgMaxPriorityFeePerGas || '0',
@@ -407,6 +432,25 @@ export const usePendingTransactions = () => {
       nextIndex === pendingTransactions.length // at end of list?
         ? pendingTransactions[0]?.id // go to first item in list
         : pendingTransactions[nextIndex]?.id // go to next item in list
+
+    dispatch(UIActions.setPendingTransactionId(newSelectedPendingTransactionId))
+  }, [selectedPendingTransactionId, pendingTransactions, dispatch])
+
+  const queuePreviousTransaction = React.useCallback(() => {
+    // if id hasn't been set, start at beginning of tx list
+    const currentIndex = selectedPendingTransactionId
+      ? pendingTransactions.findIndex(
+          (tx) => tx.id === selectedPendingTransactionId,
+        )
+      : 0
+
+    const previousIndex = currentIndex - 1
+
+    const newSelectedPendingTransactionId =
+      previousIndex < 0 // at end of list?
+        ? // go to last item in list
+          pendingTransactions[pendingTransactions.length - 1]?.id
+        : pendingTransactions[previousIndex]?.id // go to next item in list
 
     dispatch(UIActions.setPendingTransactionId(newSelectedPendingTransactionId))
   }, [selectedPendingTransactionId, pendingTransactions, dispatch])
@@ -662,6 +706,8 @@ export const usePendingTransactions = () => {
     onEditAllowanceSave,
     queueNextTransaction,
     rejectAllTransactions,
+    queuePreviousTransaction,
+    suggestedMaxPriorityFeeOptions,
     suggestedMaxPriorityFeeChoices,
     toOrb,
     transactionDetails,

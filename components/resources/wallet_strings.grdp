@@ -384,6 +384,10 @@
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_CURRENT_ALLOWANCE" desc="Allow spend panel current approval limit">Current allowance</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_PROPOSED_ALLOWANCE" desc="Allow spend panel proposed approval">Proposed allowance</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_UNLIMITED_WARNING_TITLE" desc="Allow spend panel unlimited approval warning">Unlimited approval requested</message>
+  <message name="IDS_BRAVE_WALLET_SPEND_LIMIT" desc="Allow spend panel spend limit label">Spend limit</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_TARGET" desc="Allow spend panel approval target label">Approval target</message>
+  <message name="IDS_BRAVE_WALLET_CURRENT_APPROVAL_LIMIT" desc="Allow spend panel current approval limit label">Current approval limit</message>
+  <message name="IDS_BRAVE_WALLET_PROPOSED_APPROVAL_LIMIT" desc="Allow spend panel proposed approval limit label">Proposed approval limit</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_TITLE" desc="Add network panel title">Allow this site to add a network?</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_DESCRIPTION" desc="Add network panel description">This will allow this network to be used within Brave Wallet.</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_LEARN_MORE_BUTTON" desc="Add network panel learn more button">Learn more.</message>

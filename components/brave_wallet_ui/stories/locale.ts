@@ -790,6 +790,10 @@ provideStrings({
   braveWalletAllowSpendRejectButton: 'Reject',
   braveWalletAllowSpendConfirmButton: 'Confirm',
   braveWalletAllowSpendUnlimitedWarningTitle: 'Unlimited approval requested',
+  braveWalletSpendLimit: 'Spend limit',
+  braveWalletApprovalTarget: 'Approval target',
+  braveWalletCurrentApprovalLimit: 'Current approval limit',
+  braveWalletProposedApprovalLimit: 'Proposed approval limit',
 
   // Allow Add or Change Network Panel
   braveWalletAllowAddNetworkTitle: 'Allow this site to add a network?',
