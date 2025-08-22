@@ -481,6 +481,11 @@ public class BrowserViewController: UIViewController {
       [weak self] _ in
       self?.updateRewardsButtonState()
     }
+    prefsChangeRegistrar.addObserver(forPath: kManagedBraveVPNDisabledPrefName) { [weak self] _ in
+      self?.disconnectVPNIfDisabledByPolicy()
+    }
+
+    disconnectVPNIfDisabledByPolicy()
 
     pageZoomListener = NotificationCenter.default.addObserver(
       forName: PageZoomView.notificationName,
@@ -758,6 +763,14 @@ public class BrowserViewController: UIViewController {
     stopVoiceSearch()
   }
 
+  private func disconnectVPNIfDisabledByPolicy() {
+    if !profileController.profile.prefs.isBraveVPNAvailable,
+      BraveVPN.isConnected || BraveVPN.isConnecting
+    {
+      BraveVPN.disconnect(skipChecks: true)
+    }
+  }
+
   @objc func vpnConfigChanged() {
     // Load latest changes to the vpn.
     NEVPNManager.shared().loadFromPreferences { _ in }
@@ -894,12 +907,14 @@ public class BrowserViewController: UIViewController {
         name: .adsOrRewardsToggledInSettings,
         object: nil
       )
-      $0.addObserver(
-        self,
-        selector: #selector(vpnConfigChanged),
-        name: .NEVPNConfigurationChange,
-        object: nil
-      )
+      if profileController.profile.prefs.isBraveVPNAvailable {
+        $0.addObserver(
+          self,
+          selector: #selector(vpnConfigChanged),
+          name: .NEVPNConfigurationChange,
+          object: nil
+        )
+      }
     }
 
     BraveGlobalShieldStats.shared.$adblock
@@ -936,22 +951,24 @@ public class BrowserViewController: UIViewController {
 
     // Adding a small delay before fetching gives more reliability to it,
     // epsecially when you are connected to a VPN.
-    Task.delayed(bySeconds: 1.0) { @MainActor in
-      // Refresh Skus VPN Credentials before loading VPN state
-      await BraveSkusManager(isPrivateMode: self.privateBrowsingManager.isPrivateBrowsing)?
-        .refreshVPNCredentials()
+    if profileController.profile.prefs.isBraveVPNAvailable {
+      Task.delayed(bySeconds: 1.0) { @MainActor in
+        // Refresh Skus VPN Credentials before loading VPN state
+        await BraveSkusManager(isPrivateMode: self.privateBrowsingManager.isPrivateBrowsing)?
+          .refreshVPNCredentials()
 
-      self.vpnProductInfo.load()
-      if let customCredential = Preferences.VPN.skusCredential.value,
-        let customCredentialDomain = Preferences.VPN.skusCredentialDomain.value,
-        let vpnCredential = BraveSkusWebHelper.fetchVPNCredential(
-          customCredential,
-          domain: customCredentialDomain
-        )
-      {
-        BraveVPN.initialize(customCredential: vpnCredential)
-      } else {
-        BraveVPN.initialize(customCredential: nil)
+        self.vpnProductInfo.load()
+        if let customCredential = Preferences.VPN.skusCredential.value,
+          let customCredentialDomain = Preferences.VPN.skusCredentialDomain.value,
+          let vpnCredential = BraveSkusWebHelper.fetchVPNCredential(
+            customCredential,
+            domain: customCredentialDomain
+          )
+        {
+          BraveVPN.initialize(customCredential: vpnCredential)
+        } else {
+          BraveVPN.initialize(customCredential: nil)
+        }
       }
     }
 

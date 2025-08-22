@@ -5,20 +5,14 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
-source_set("policy") {
+source_set("brave_vpn") {
   sources = [
-    "brave_simple_policy_map_ios.h",
-    "configuration_policy_handler_list_factory_impl.mm",
+    "brave_vpn_pref_names_bridge.h",
+    "brave_vpn_pref_names_bridge.mm",
   ]
   deps = [
-    "//brave/components/ai_chat/core/common",
-    "//brave/components/brave_news/common",
-    "//brave/components/brave_rewards/core",
+    "//base",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_wallet/common:pref_names",
-    "//brave/components/constants",
-    "//components/policy/core/browser",
-    "//ios/chrome/browser/policy/model",
   ]
   if (enable_brave_vpn) {
     deps += [ "//brave/components/brave_vpn/common" ]

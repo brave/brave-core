@@ -143,12 +143,14 @@ class SettingsViewController: TableViewController {
     view.tintColor = .braveBlurpleTint
     navigationController?.view.backgroundColor = .braveGroupedBackground
 
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(vpnConfigChanged(notification:)),
-      name: .NEVPNStatusDidChange,
-      object: nil
-    )
+    if braveCore.profile.prefs.isBraveVPNAvailable {
+      NotificationCenter.default.addObserver(
+        self,
+        selector: #selector(vpnConfigChanged(notification:)),
+        name: .NEVPNStatusDidChange,
+        object: nil
+      )
+    }
 
     self.altIconsModel.$selectedAltAppIcon
       .dropFirst()
@@ -230,6 +232,10 @@ class SettingsViewController: TableViewController {
     }
 
     let shouldShowVPNSection = { () -> Bool in
+      if !braveCore.profile.prefs.isBraveVPNAvailable {
+        return false
+      }
+
       if !BraveVPNProductInfo.isComplete || Preferences.VPN.vpnSettingHeaderWasDismissed.value {
         return false
       }
@@ -459,7 +465,9 @@ class SettingsViewController: TableViewController {
       section.rows.append(leoSettingsRow)
     }
 
-    section.rows.append(vpnSettingsRow)
+    if braveCore.profile.prefs.isBraveVPNAvailable {
+      section.rows.append(vpnSettingsRow)
+    }
 
     section.rows.append(
       Row(

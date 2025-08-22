@@ -13,19 +13,17 @@ public enum FullScreenCalloutType: CaseIterable {
   //
   // Priority:
   // - P3A
-  // - VPN Update Billing
   // - Bottom Bar
   // - VPN Promotion
   // - Default Browser
   // - Rewards
   // - VPN Link Receipt
-  case p3a, vpnUpdateBilling, bottomBar, defaultBrowser, rewards, vpnLinkReceipt
+  case p3a, bottomBar, defaultBrowser, rewards, vpnLinkReceipt
 
   /// The number of days passed to show certain type of callout
   var period: Int {
     switch self {
     case .p3a: return 0
-    case .vpnUpdateBilling: return 0
     case .bottomBar: return 0
     case .defaultBrowser: return Locale.current.isNewOnboardingRegion ? 7 : 10
     case .rewards: return 8
@@ -38,8 +36,6 @@ public enum FullScreenCalloutType: CaseIterable {
     switch self {
     case .p3a:
       return Preferences.Onboarding.p3aOnboardingShown
-    case .vpnUpdateBilling:
-      return Preferences.FullScreenCallout.vpnUpdateBillingCalloutCompleted
     case .bottomBar:
       return Preferences.FullScreenCallout.bottomBarCalloutCompleted
     case .defaultBrowser:
