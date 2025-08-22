@@ -316,9 +316,17 @@ TEST_F(AssociatedContentManagerUnitTest,
   ASSERT_EQ(1u, associated_content.size());
   EXPECT_FALSE(associated_content[0]->conversation_turn_uuid.has_value());
 
+#if DCHECK_IS_ON()
+  // This will only crash if DCHECK is on.
   EXPECT_DEATH_IF_SUPPORTED(conversation_handler_->associated_content_manager()
                                 ->GetCachedContentsMap(),
                             "");
+#else
+  // If DCHECK is off, the map should be empty.
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map.empty());
+#endif
 }
 
 TEST_F(AssociatedContentManagerUnitTest, GetCachedContentsMap_MultipleContent) {
