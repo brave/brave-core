@@ -196,11 +196,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, ScrimForTabModalDisabledTest) {
   EXPECT_FALSE(browser_view()->contents_scrim_view()->GetVisible());
 }
 
-class BraveBrowserViewWithRoundedCordersTest
+class BraveBrowserViewWithRoundedCornersTest
     : public BraveBrowserViewTest,
       public testing::WithParamInterface<std::tuple<bool, bool, bool>> {
  public:
-  BraveBrowserViewWithRoundedCordersTest() {
+  BraveBrowserViewWithRoundedCornersTest() {
     scoped_features_.InitWithFeatureStates(
         {{features::kBraveWebViewRoundedCorners, IsRoundedCornersEnabled()},
          {tabs::features::kBraveSplitView, IsBraveSplitViewEnabled()},
@@ -217,7 +217,7 @@ class BraveBrowserViewWithRoundedCordersTest
   base::test::ScopedFeatureList scoped_features_;
 };
 
-IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCordersTest,
+IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        ContentsBackgroundEventHandleTest) {
   if (!IsRoundedCornersEnabled()) {
     EXPECT_FALSE(brave_browser_view()->contents_background_view_);
@@ -237,7 +237,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCordersTest,
 
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
-    BraveBrowserViewWithRoundedCordersTest,
+    BraveBrowserViewWithRoundedCornersTest,
     testing::Values(std::make_tuple(false, false, false),
                     std::make_tuple(true, true, true),
                     std::make_tuple(true, true, false),
