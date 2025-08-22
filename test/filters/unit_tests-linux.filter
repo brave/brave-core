@@ -16,6 +16,7 @@
 # These fail because OsIntegrationTestOverride::GetShortcutPath and
 # OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux hard-codes "chrome-"
 # into the shortcut name but our shortcut starts with "brave-".
+-All/ShortcutSubManagerExecuteTest.*
 -RunOnOsLoginSubManagerExecuteTest.*
 -ShortcutCreatorLinuxTest.ShortcutCreatedWithCorrectFile
 -ShortcutSubManagerExecuteTest.*
