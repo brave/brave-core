@@ -31,9 +31,8 @@ class SimpleURLLoader;
 namespace web_discovery {
 
 using KeyMap = base::flat_map<std::string, std::vector<uint8_t>>;
-using ParsedPatternsVariant =
-    std::variant<std::unique_ptr<PatternsGroup>,
-                 std::unique_ptr<V2PatternsGroup>>;
+using ParsedPatternsVariant = std::variant<std::unique_ptr<PatternsGroup>,
+                                           std::unique_ptr<V2PatternsGroup>>;
 
 struct SourceMapActionConfig {
   SourceMapActionConfig();

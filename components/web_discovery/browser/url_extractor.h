@@ -36,8 +36,10 @@ struct RelevantSiteDetails {
   RelevantSite site;
   bool is_search_engine;
   std::unique_ptr<re2::RE2> regex;
+  // List of query parameters to process in order to extract the query
   std::vector<std::string_view> query_params;
-  std::optional<std::string_view> prefix;
+  // Used for generating a private search URL
+  std::optional<std::string_view> private_query_prefix;
 };
 
 // Result of URL identification

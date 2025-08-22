@@ -238,7 +238,8 @@ void WebDiscoveryService::StartExtractingFromPage(
     if (extract_result && extract_result->query &&
         extract_result->details->is_search_engine) {
       double_fetch_url = GeneratePrivateSearchURL(
-          url, *extract_result->query, extract_result->details->prefix);
+          url, *extract_result->query,
+          extract_result->details->private_query_prefix);
     }
     double_fetcher_->ScheduleDoubleFetch(double_fetch_url, base::Value());
     return;

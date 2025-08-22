@@ -276,46 +276,38 @@ std::optional<V2SitePattern> ParseSitePattern(
 // PatternsV2ExtractionRule implementation
 V2ExtractionRule::V2ExtractionRule() = default;
 V2ExtractionRule::~V2ExtractionRule() = default;
-V2ExtractionRule::V2ExtractionRule(V2ExtractionRule&&) =
-    default;
-V2ExtractionRule& V2ExtractionRule::operator=(
-    V2ExtractionRule&&) = default;
+V2ExtractionRule::V2ExtractionRule(V2ExtractionRule&&) = default;
+V2ExtractionRule& V2ExtractionRule::operator=(V2ExtractionRule&&) = default;
 
 // PatternsV2InputGroup implementation
 V2InputGroup::V2InputGroup() = default;
 V2InputGroup::~V2InputGroup() = default;
 V2InputGroup::V2InputGroup(V2InputGroup&&) = default;
-V2InputGroup& V2InputGroup::operator=(V2InputGroup&&) =
-    default;
+V2InputGroup& V2InputGroup::operator=(V2InputGroup&&) = default;
 
 // PatternsV2OutputField implementation
 V2OutputField::V2OutputField() = default;
 V2OutputField::~V2OutputField() = default;
 V2OutputField::V2OutputField(V2OutputField&&) = default;
-V2OutputField& V2OutputField::operator=(
-    V2OutputField&&) = default;
+V2OutputField& V2OutputField::operator=(V2OutputField&&) = default;
 
 // PatternsV2OutputGroup implementation
 V2OutputGroup::V2OutputGroup() = default;
 V2OutputGroup::~V2OutputGroup() = default;
 V2OutputGroup::V2OutputGroup(V2OutputGroup&&) = default;
-V2OutputGroup& V2OutputGroup::operator=(
-    V2OutputGroup&&) = default;
+V2OutputGroup& V2OutputGroup::operator=(V2OutputGroup&&) = default;
 
 // PatternsV2SitePattern implementation
 V2SitePattern::V2SitePattern() = default;
 V2SitePattern::~V2SitePattern() = default;
 V2SitePattern::V2SitePattern(V2SitePattern&&) = default;
-V2SitePattern& V2SitePattern::operator=(
-    V2SitePattern&&) = default;
+V2SitePattern& V2SitePattern::operator=(V2SitePattern&&) = default;
 
 // PatternsV2PatternsGroup implementation
 V2PatternsGroup::V2PatternsGroup() = default;
 V2PatternsGroup::~V2PatternsGroup() = default;
-V2PatternsGroup::V2PatternsGroup(V2PatternsGroup&&) =
-    default;
-V2PatternsGroup& V2PatternsGroup::operator=(
-    V2PatternsGroup&&) = default;
+V2PatternsGroup::V2PatternsGroup(V2PatternsGroup&&) = default;
+V2PatternsGroup& V2PatternsGroup::operator=(V2PatternsGroup&&) = default;
 
 std::unique_ptr<V2PatternsGroup> ParseV2Patterns(
     std::string_view patterns_json) {

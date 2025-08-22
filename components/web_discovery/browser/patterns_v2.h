@@ -52,8 +52,7 @@ struct V2InputGroup {
   bool select_all;
   // Map of field names to extraction rules (supports multiple rules via
   // firstMatch)
-  base::flat_map<std::string, std::vector<V2ExtractionRule>>
-      extraction_rules;
+  base::flat_map<std::string, std::vector<V2ExtractionRule>> extraction_rules;
 };
 
 // Represents an output field definition

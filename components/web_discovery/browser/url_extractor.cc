@@ -101,7 +101,7 @@ RelevantSiteDetails::RelevantSiteDetails(
       is_search_engine(is_search_engine),
       regex(std::move(regex)),
       query_params(std::move(query_params)),
-      prefix(prefix) {}
+      private_query_prefix(prefix) {}
 RelevantSiteDetails::~RelevantSiteDetails() = default;
 
 RelevantSiteDetails::RelevantSiteDetails(RelevantSiteDetails&&) = default;
