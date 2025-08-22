@@ -1079,7 +1079,7 @@ Config.prototype.fromGnArgs = function (options) {
     '--no-gn-gen is experimental and only gn args that match command '
       + 'line options will be processed',
   )
-  this.updateInternal(Object.assign({}, gnArgs, { 'C': options.C }))
+  this.updateInternal(Object.assign({}, gnArgs, options))
   assert(!this.isCI)
 }
 
