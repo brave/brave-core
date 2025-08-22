@@ -105,7 +105,7 @@ void EmailAliasesService::ResetVerificationFlow() {
   verification_token_.clear();
   auth_token_.clear();
   last_session_request_time_ = base::TimeTicks();
-  session_poll_start_time_ = base::TimeTicks();
+  session_poll_elapsed_timer_.reset();
 }
 
 void EmailAliasesService::RequestAuthentication(
@@ -129,6 +129,10 @@ void EmailAliasesService::RequestAuthentication(
   resource_request->method = net::HttpRequestHeaders::kPostMethod;
   verification_simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
+  verification_simple_url_loader_->SetRetryOptions(
+        /* max_retries=*/3,
+        network::SimpleURLLoader::RETRY_ON_5XX |
+            network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE);
   verification_simple_url_loader_->AttachStringForUpload(*body,
                                                          "application/json");
   verification_simple_url_loader_->DownloadToString(
@@ -171,7 +175,7 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
   NotifyObserversAuthStateChanged(mojom::AuthenticationStatus::kAuthenticating);
   std::move(callback).Run(std::nullopt);
   // Begin the polling window.
-  session_poll_start_time_ = base::TimeTicks::Now();
+  session_poll_elapsed_timer_.emplace();
   RequestSession();
 }
 
@@ -200,9 +204,8 @@ void EmailAliasesService::RequestSession() {
 
 void EmailAliasesService::RequestSessionInternal() {
   // Cap the total polling time to avoid infinite retries.
-  const base::TimeTicks now = base::TimeTicks::Now();
-  if (!session_poll_start_time_.is_null() &&
-      now - session_poll_start_time_ > kMaxSessionPollDuration) {
+  if (session_poll_elapsed_timer_.has_value() &&
+      session_poll_elapsed_timer_->Elapsed() > kMaxSessionPollDuration) {
     LOG(ERROR) << "Email Aliases service verification error: exceeded max "
                   "poll duration";
     NotifyObserversAuthStateChanged(
@@ -252,6 +255,7 @@ void EmailAliasesService::OnRequestSessionResponse(
     // An error has occurred, indicating that verification failed. Log it and
     // notify observers.
     LOG(ERROR) << "Email Aliases service error: " << error_message->error;
+    session_poll_elapsed_timer_.reset();
     NotifyObserversAuthStateChanged(
         mojom::AuthenticationStatus::kUnauthenticated,
         /*error_message=*/l10n_util::GetStringUTF8(
@@ -272,6 +276,7 @@ void EmailAliasesService::OnRequestSessionResponse(
   }
   // Success; set the auth token and notify observers.
   auth_token_ = *parsed_session->auth_token;
+  session_poll_elapsed_timer_.reset();
   NotifyObserversAuthStateChanged(mojom::AuthenticationStatus::kAuthenticated);
 }
 

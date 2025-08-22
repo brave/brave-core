@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/timer/elapsed_timer.h"
 #include "base/values.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -136,7 +137,7 @@ class EmailAliasesService : public KeyedService,
   base::OneShotTimer session_request_timer_;
   // Start timestamp for the current verification polling window. Used to
   // enforce a maximum total polling duration.
-  base::TimeTicks session_poll_start_time_;
+  std::optional<base::ElapsedTimer> session_poll_elapsed_timer_;
   // WeakPtrFactory to safely bind callbacks that may outlive this instance.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
