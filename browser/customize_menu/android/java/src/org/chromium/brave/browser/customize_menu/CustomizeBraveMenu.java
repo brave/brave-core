@@ -24,8 +24,8 @@ import java.util.Locale;
 
 /**
  * A Brave menu to handle customization logic for all those items that can be hidden from Settings >
- * Appearance > Customize menu. See {@link BraveCustomizeMenuPreferenceFragment} to inspect the settings
- * screen where a user can toggle the visibility of supported items.
+ * Appearance > Customize menu. See {@link BraveCustomizeMenuPreferenceFragment} to inspect the
+ * settings screen where a user can toggle the visibility of supported items.
  */
 @NullMarked
 public class CustomizeBraveMenu {

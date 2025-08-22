@@ -16,16 +16,15 @@ import org.chromium.brave.browser.customize_menu.R;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
-import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.jspecify.annotations.NonNull;
 
 /**
  * Customize menu preference settings fragment where a user can toggle the visibility of supported
  * items from main menu.
  */
 @NullMarked
-public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFragment implements Preference.OnPreferenceChangeListener {
+public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFragment
+        implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "CustomizeMenuPreferenceFragment";
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
@@ -43,14 +42,14 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
 
         PreferenceCategory mainMenuSection = findPreference("main_menu_section");
         if (mainMenuSection != null) {
-//            ChromeSwitchPreference braveTranslateFeaturePreference =
-//                    new ChromeSwitchPreference(getContext());
-//            braveTranslateFeaturePreference.setTitle(
-//                    getResources().getString(R.string.use_brave_translate));
-//            braveTranslateFeaturePreference.setChecked(true);
-//            braveTranslateFeaturePreference.setIcon(R.drawable.ic_brave_ai);
-//            braveTranslateFeaturePreference.setOnPreferenceChangeListener(this);
-//            mainMenuSection.addPreference(braveTranslateFeaturePreference);
+            //            ChromeSwitchPreference braveTranslateFeaturePreference =
+            //                    new ChromeSwitchPreference(getContext());
+            //            braveTranslateFeaturePreference.setTitle(
+            //                    getResources().getString(R.string.use_brave_translate));
+            //            braveTranslateFeaturePreference.setChecked(true);
+            //            braveTranslateFeaturePreference.setIcon(R.drawable.ic_brave_ai);
+            //            braveTranslateFeaturePreference.setOnPreferenceChangeListener(this);
+            //            mainMenuSection.addPreference(braveTranslateFeaturePreference);
         }
     }
 
