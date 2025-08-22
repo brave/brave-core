@@ -58,4 +58,20 @@ bool HasCachedSystemDarkModeType();
 
 }  // namespace dark_mode
 
+namespace base {
+class CommandLine;
+}
+
+class Profile;
+
+// Processes theme command line switches for the specified profile.
+// Desktop platforms only (Windows, macOS, Linux, ChromeOS).
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+    BUILDFLAG(IS_CHROMEOS)
+void ProcessThemeCommandLineSwitchesForProfile(
+    const base::CommandLine* command_line,
+    Profile* profile);
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
+        // BUILDFLAG(IS_CHROMEOS)
+
 #endif  // BRAVE_BROWSER_THEMES_BRAVE_DARK_MODE_UTILS_H_
