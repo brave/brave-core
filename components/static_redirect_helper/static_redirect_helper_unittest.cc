@@ -55,4 +55,22 @@ TEST_F(StaticRedirectHelperUnitTest, DontMatchGstaticImages) {
   EXPECT_EQ(new_url.spec(), "");
 }
 
+TEST_F(StaticRedirectHelperUnitTest, FaviconServicePartialMatch) {
+  GURL old_url = GURL("https://t0.gstatic.com/faviconV");
+  GURL new_url;
+
+  brave::StaticRedirectHelper(old_url, &new_url);
+
+  EXPECT_EQ(new_url.spec(), "");
+}
+
+TEST_F(StaticRedirectHelperUnitTest, FaviconServiceCloseButNoMatch) {
+  GURL old_url = GURL("https://t0.gstatic.com/faviconV1");
+  GURL new_url;
+
+  brave::StaticRedirectHelper(old_url, &new_url);
+
+  EXPECT_EQ(new_url.spec(), "");
+}
+
 }  // namespace brave
