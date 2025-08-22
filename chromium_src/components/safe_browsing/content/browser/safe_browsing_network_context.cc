@@ -5,4 +5,9 @@
 
 #include "brave/services/network/public/cpp/system_request_handler.h"
 
+#define BRAVE_CREATE_LOADER_AND_START \
+  network::SystemRequestHandler::GetInstance()->OnBeforeSystemRequest(request)
+
 #include <components/safe_browsing/content/browser/safe_browsing_network_context.cc>
+
+#undef BRAVE_CREATE_LOADER_AND_START
