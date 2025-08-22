@@ -33,7 +33,7 @@ public class CustomizeMenuPreferenceFragment extends ChromeBaseSettingsFragment 
     }
 
     @Override
-    public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_customize_menu_preferences);
     }
 
