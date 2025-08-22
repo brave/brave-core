@@ -9,6 +9,7 @@
 #include <stddef.h>
 
 #include <cstdint>
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -21,9 +22,11 @@
 #include "base/synchronization/lock.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/expected.h"
+#include "components/tab_groups/tab_group_id.h"
 #include "tensorflow_lite_support/cc/task/processor/proto/embedding.pb.h"
 #include "third_party/abseil-cpp/absl/status/status.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/text_embedder.h"
+#include "url/gurl.h"
 
 namespace tflite {
 namespace task {
@@ -59,18 +62,36 @@ class TextEmbedder {
   using InitializeCallback = base::OnceCallback<void(bool)>;
   virtual void Initialize(InitializeCallback callback);
 
+  // Structure to represent a tab with separate title and URL
+  struct TabInfo {
+    std::u16string title;
+    GURL url;
+  };
+
+  // Structure to represent a candidate tab with index and tab info
+  struct CandidateTab {
+    int index;
+    TabInfo tab_info;
+  };
+
   using SuggestTabsForGroupCallback =
       base::OnceCallback<void(absl::StatusOr<std::vector<int>>)>;
-  void SuggestTabsForGroup(
-      std::vector<std::string> group_tabs,
-      std::vector<std::pair<int, std::string>> candidate_tabs,
-      SuggestTabsForGroupCallback callback);
+  // Suggest tabs to add to a group based on semantic similarity.
+  // IMPORTANT: TextEmbedder must be initialized before calling this method.
+  // Check IsInitialized() or call Initialize() first.
+  void SuggestTabsForGroup(std::vector<TabInfo> group_tabs,
+                           std::vector<CandidateTab> candidate_tabs,
+                           SuggestTabsForGroupCallback callback);
 
   using SuggestGroupForTabCallback =
-      base::OnceCallback<void(absl::StatusOr<int>)>;
-  void SuggestGroupForTab(std::pair<int, std::string> candidate_tab,
-                          std::vector<std::vector<std::string>> group_tabs,
-                          SuggestGroupForTabCallback callback);
+      base::OnceCallback<void(absl::StatusOr<tab_groups::TabGroupId>)>;
+  // Suggest which existing group a tab should be added to.
+  // IMPORTANT: TextEmbedder must be initialized before calling this method.
+  // Check IsInitialized() or call Initialize() first.
+  void SuggestGroupForTab(
+      CandidateTab candidate_tab,
+      std::map<tab_groups::TabGroupId, std::vector<TabInfo>> group_tabs,
+      SuggestGroupForTabCallback callback);
 
   // Cancel all the pending tflite tasks on the embedder task runner.
   // Should be used right before the TextEmbedder is destroyed to avoid long
@@ -87,14 +108,17 @@ class TextEmbedder {
 
   void InitializeEmbedder(base::OnceCallback<void(bool)> callback);
 
-  void SuggestTabsForGroupImpl(
-      std::vector<std::string> group_tabs,
-      std::vector<std::pair<int, std::string>> candidate_tabs,
-      SuggestTabsForGroupCallback callback);
+  // Helper method to serialize TabInfo to string for embedding
+  std::string SerializeTabInfo(const TabInfo& tab_info);
 
-  void SuggestGroupForTabImpl(std::pair<int, std::string> candidate_tab,
-                              std::vector<std::vector<std::string>> group_tabs,
-                              SuggestGroupForTabCallback callback);
+  void SuggestTabsForGroupImpl(std::vector<TabInfo> group_tabs,
+                               std::vector<CandidateTab> candidate_tabs,
+                               SuggestTabsForGroupCallback callback);
+
+  void SuggestGroupForTabImpl(
+      CandidateTab candidate_tab,
+      std::map<tab_groups::TabGroupId, std::vector<TabInfo>> group_tabs,
+      SuggestGroupForTabCallback callback);
 
   std::vector<tflite::task::processor::EmbeddingResult> embeddings_;
   absl::Status EmbedText(const std::string& text,
@@ -106,7 +130,7 @@ class TextEmbedder {
   absl::StatusOr<tflite::task::processor::EmbeddingResult>
   CalculateTabGroupCentroid();
 
-  static constexpr float COSINE_SIM_THRESHOLD = 0.8f;
+  static constexpr float COSINE_SIM_THRESHOLD = 0.75f;
   std::vector<int> getMostSimilarTabIndices(const std::vector<double>& vec,
                                             const std::vector<int>& id);
 

@@ -363,8 +363,8 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
   }
 
   // Collect tabs in the current group and candidate tabs
-  std::vector<std::string> group_tabs;
-  std::vector<std::pair<int, std::string>> candidate_tabs;
+  std::vector<local_ai::TextEmbedder::TabInfo> group_tabs;
+  std::vector<local_ai::TextEmbedder::CandidateTab> candidate_tabs;
 
   for (int i = 0; i < tab_strip_model->count(); ++i) {
     content::WebContents* web_contents = tab_strip_model->GetWebContentsAt(i);
@@ -372,22 +372,24 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
       continue;
     }
 
-    // Get tab title and origin
+    // Get tab title and URL
     std::u16string title = web_contents->GetTitle();
     GURL url = web_contents->GetVisibleURL();
-    std::string tab_description =
-        base::StrCat({base::UTF16ToUTF8(title), " | ", url.spec()});
+    local_ai::TextEmbedder::TabInfo tab_info = {title, url};
 
     // Check if this tab is in any group
     std::optional<tab_groups::TabGroupId> tab_group =
         tab_strip_model->GetTabGroupForTab(i);
 
     if (tab_group.has_value() && tab_group.value() == group_) {
-      // Tab is in the current group - only need the description
-      group_tabs.push_back(tab_description);
+      // Tab is in the current group
+      group_tabs.push_back(tab_info);
     } else if (!tab_group.has_value()) {
       // Tab is not in any group - candidate for addition
-      candidate_tabs.emplace_back(i, std::move(tab_description));
+      local_ai::TextEmbedder::CandidateTab candidate;
+      candidate.index = i;
+      candidate.tab_info = tab_info;
+      candidate_tabs.push_back(candidate);
     }
   }
 
