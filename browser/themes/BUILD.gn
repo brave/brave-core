@@ -37,3 +37,24 @@ source_set("themes") {
     ]
   }
 }
+
+source_set("unit_tests") {
+  testonly = true
+  
+  if (!is_android) {
+    sources = [ "theme_command_line_handler_unittest.cc" ]
+    
+    deps = [
+      ":themes",
+      "//base",
+      "//base/test:test_support",
+      "//brave/browser/ui/themes",
+      "//chrome/browser",
+      "//chrome/browser/themes",
+      "//chrome/test:test_support",
+      "//content/test:test_support",
+      "//testing/gtest",
+      "//ui/base",
+    ]
+  }
+}

@@ -4,20 +4,21 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/ui/themes/switches.h"
 #include "build/build_config.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/themes/theme_service_test_utils.h"
-#include "chrome/common/chrome_switches.h"
-#include "brave/chromium_src/chrome/common/chrome_switches.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/mojom/themes.mojom.h"
-#include "chrome/browser/chrome_browser_main.h"
 
 namespace {
+
+using namespace brave::themes::switches;
 
 class ThemeCommandLineHandlerTest : public testing::Test {
  public:
@@ -97,7 +98,8 @@ TEST_F(ThemeCommandLineHandlerTest, ProcessGrayscaleSwitch) {
   // Brave's theme service always returns true for grayscale
   EXPECT_TRUE(theme_service_->GetIsGrayscale());
 
-  command_line_->AppendSwitchASCII(kSetGrayscaleTheme, "true");
+  // kSetGrayscaleTheme is now a boolean flag - presence means true
+  command_line_->AppendSwitch(kSetGrayscaleTheme);
 
   ProcessThemeCommandLineSwitchesForProfile(command_line_.get(), profile_.get());
 
@@ -105,12 +107,12 @@ TEST_F(ThemeCommandLineHandlerTest, ProcessGrayscaleSwitch) {
   EXPECT_TRUE(theme_service_->GetIsGrayscale());
 }
 
-TEST_F(ThemeCommandLineHandlerTest, ProcessGrayscaleSwitchFalse) {
+TEST_F(ThemeCommandLineHandlerTest, ProcessGrayscaleSwitchAbsent) {
   // Brave's theme service always returns true for grayscale
-  // The SetIsGrayscale(false) call doesn't actually change the value
+  // Test when the switch is absent (no change expected)
   EXPECT_TRUE(theme_service_->GetIsGrayscale());
 
-  command_line_->AppendSwitchASCII(kSetGrayscaleTheme, "false");
+  // Don't add the switch - it should remain unchanged
 
   ProcessThemeCommandLineSwitchesForProfile(command_line_.get(), profile_.get());
 
