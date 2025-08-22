@@ -181,6 +181,7 @@ source_set("unit_tests") {
       ":command_ids",
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
+      "//chrome/browser/ui/toasts",
       "//chrome/common:chrome_features",
       "//components/translate/core/common",
       "//extensions/common",

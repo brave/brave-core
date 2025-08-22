@@ -70,6 +70,7 @@
 #else
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
+#include "chrome/browser/ui/toasts/toast_features.h"
 #include "components/device_signals/core/common/signals_features.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
@@ -238,6 +239,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,
 #if !BUILDFLAG(IS_ANDROID)
+      &toast_features::kPinnedTabToastOnClose,
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif
       &webapps::features::kWebAppsEnableMLModelForPromotion,
