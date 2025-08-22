@@ -75,11 +75,11 @@ void BraveAccountService::RegisterInitialize(
         base::unexpected(mojom::RegisterFailureReason::kInitializeUnexpected));
   }
 
-  requests::PasswordInit request;
+  endpoints::PasswordInitRequest request;
   request.blinded_message = blinded_message;
   request.new_account_email = email;
   request.serialize_response = true;
-  endpoints::Send(
+  endpoints::Client<endpoints::PasswordInit>::Send(
       api_request_helper_, request,
       base::BindOnce(&BraveAccountService::OnRegisterInitialize,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
@@ -106,9 +106,9 @@ void BraveAccountService::RegisterFinalize(
   base::flat_map<std::string, std::string> headers;
   headers.emplace("Authorization",
                   base::StrCat({"Bearer ", verification_token}));
-  requests::PasswordFinalize request;
+  endpoints::PasswordFinalizeRequest request;
   request.serialized_record = serialized_record;
-  endpoints::Send(
+  endpoints::Client<endpoints::PasswordFinalize>::Send(
       api_request_helper_, request,
       base::BindOnce(&BraveAccountService::OnRegisterFinalize,
                      weak_factory_.GetWeakPtr(), std::move(callback),
@@ -119,7 +119,7 @@ void BraveAccountService::RegisterFinalize(
 void BraveAccountService::OnRegisterInitialize(
     mojom::PageHandler::RegisterInitializeCallback callback,
     int response_code,
-    std::optional<responses::PasswordInit> response) {
+    std::optional<endpoints::PasswordInitResponse> response) {
   switch (response_code) {
     case 200:
       break;
@@ -167,7 +167,7 @@ void BraveAccountService::OnRegisterFinalize(
     mojom::PageHandler::RegisterFinalizeCallback callback,
     const std::string& encrypted_verification_token,
     int response_code,
-    std::optional<responses::PasswordFinalize> response) {
+    std::optional<endpoints::PasswordFinalizeResponse> response) {
   switch (response_code) {
     case 200:
       break;

@@ -50,12 +50,13 @@ class BraveAccountService : public KeyedService {
   void OnRegisterInitialize(
       mojom::PageHandler::RegisterInitializeCallback callback,
       int response_code,
-      std::optional<responses::PasswordInit> response);
+      std::optional<endpoints::PasswordInitResponse> response);
 
-  void OnRegisterFinalize(mojom::PageHandler::RegisterFinalizeCallback callback,
-                          const std::string& encrypted_verification_token,
-                          int response_code,
-                          std::optional<responses::PasswordFinalize> response);
+  void OnRegisterFinalize(
+      mojom::PageHandler::RegisterFinalizeCallback callback,
+      const std::string& encrypted_verification_token,
+      int response_code,
+      std::optional<endpoints::PasswordFinalizeResponse> response);
 
   const raw_ptr<PrefService> pref_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

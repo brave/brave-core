@@ -23,11 +23,11 @@ const GURL& Host() {
 
 namespace brave_account::endpoints {
 
-GURL Endpoint<requests::PasswordInit>::URL() {
+GURL PasswordInit::URL() {
   return Host().Resolve("/v2/accounts/password/init");
 }
 
-GURL Endpoint<requests::PasswordFinalize>::URL() {
+GURL PasswordFinalize::URL() {
   return Host().Resolve("/v2/accounts/password/finalize");
 }
 
