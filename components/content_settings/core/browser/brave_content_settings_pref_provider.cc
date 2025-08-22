@@ -119,8 +119,8 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
       base::BindRepeating(&BravePrefProvider::OnCookiePrefsChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled,
-      base::BindRepeating(&BravePrefProvider::OnAdBlockOnlyModeChanged,
+      brave_shields::prefs::kAdBlockOnlyModeEnabled,
+      base::BindRepeating(&BravePrefProvider::UpdateAdBlockOnlyModeEnabledFlag,
                           base::Unretained(this)));
 
   MigrateShieldsSettings(off_the_record_);
@@ -128,8 +128,8 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
 
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
 
-  FillAdBlockOnlyModeRules(ad_block_only_mode_rules_);
-  OnAdBlockOnlyModeChanged();
+  SetAdBlockOnlyModeRules(ad_block_only_mode_rules_);
+  UpdateAdBlockOnlyModeEnabledFlag();
 
   // Enable change notifications after initial setup to avoid notification spam
   initialized_ = true;
@@ -653,7 +653,7 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
     ContentSettingsType content_type,
     bool incognito,
     const PartitionKey& partition_key) const {
-  if (IsAdBlockOnlyModeContentSettingsType(content_type, incognito) &&
+  if (IsAdBlockOnlyModeType(content_type, incognito) &&
       IsAdBlockOnlyModeEnabled()) {
     return ad_block_only_mode_rules_.GetRuleIterator(content_type);
   }
@@ -672,7 +672,7 @@ std::unique_ptr<Rule> BravePrefProvider::GetRule(
     ContentSettingsType content_type,
     bool off_the_record,
     const PartitionKey& partition_key) const {
-  if (IsAdBlockOnlyModeContentSettingsType(content_type, off_the_record) &&
+  if (IsAdBlockOnlyModeType(content_type, off_the_record) &&
       IsAdBlockOnlyModeEnabled()) {
     base::AutoLock auto_lock(ad_block_only_mode_rules_.GetLock());
     return ad_block_only_mode_rules_.GetRule(primary_url, secondary_url,
@@ -950,9 +950,9 @@ void BravePrefProvider::OnCookiePrefsChanged(const std::string& pref) {
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
 }
 
-void BravePrefProvider::OnAdBlockOnlyModeChanged() {
+void BravePrefProvider::UpdateAdBlockOnlyModeEnabledFlag() {
   const bool ad_block_only_mode_enabled =
-      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(prefs_);
+      brave_shields::IsBraveShieldsAdBlockOnlyModeEnabled(prefs_);
   ad_block_only_mode_enabled_.store(ad_block_only_mode_enabled,
                                     std::memory_order_relaxed);
 }

@@ -9,6 +9,7 @@
 #include <set>
 #include <string>
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -114,16 +115,18 @@ ShieldsSettingCounts GetAdsSettingCountFromRules(
   return result;
 }
 
-bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs) {
-  return base::FeatureList::IsEnabled(features::kAdblockOnlyMode) && prefs &&
-         prefs->FindPreference(prefs::kAdblockAdBlockOnlyModeEnabled) &&
-         prefs->GetBoolean(prefs::kAdblockAdBlockOnlyModeEnabled);
+bool IsBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs) {
+  CHECK(prefs);
+  // PrefService::FindPreference call is needed because the
+  // kAdBlockOnlyModeEnabled preference might not be registered for tests.
+  return base::FeatureList::IsEnabled(features::kAdblockOnlyMode) &&
+         prefs->FindPreference(prefs::kAdBlockOnlyModeEnabled) &&
+         prefs->GetBoolean(prefs::kAdBlockOnlyModeEnabled);
 }
 
 void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs, bool enabled) {
-  if (prefs) {
-    prefs->SetBoolean(prefs::kAdblockAdBlockOnlyModeEnabled, enabled);
-  }
+  CHECK(prefs);
+  prefs->SetBoolean(prefs::kAdBlockOnlyModeEnabled, enabled);
 }
 
 }  // namespace brave_shields

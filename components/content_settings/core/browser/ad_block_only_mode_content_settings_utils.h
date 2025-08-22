@@ -12,10 +12,10 @@ namespace content_settings {
 
 class OriginValueMap;
 
-bool IsAdBlockOnlyModeContentSettingsType(ContentSettingsType content_type,
-                                          bool is_off_the_record);
+bool IsAdBlockOnlyModeType(ContentSettingsType content_type,
+                           bool is_off_the_record);
 
-void FillAdBlockOnlyModeRules(OriginValueMap& ad_block_only_mode_rules);
+void SetAdBlockOnlyModeRules(OriginValueMap& ad_block_only_mode_rules);
 
 }  // namespace content_settings
 

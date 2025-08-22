@@ -772,7 +772,7 @@ TEST_F(BravePrefProviderTest, AdblockOnlyModeContentSettingsDefaultValues) {
   https_upgrade_settings.CheckSettingsAreDefault(url);
 
   testing_profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, true);
 
   // Verify that adblock only mode overrides settings.
   shields_cookie_settings.CheckSettingsWouldAllow(url);
@@ -784,7 +784,8 @@ TEST_F(BravePrefProviderTest, AdblockOnlyModeContentSettingsDefaultValues) {
   provider.ShutdownOnUIThread();
 }
 
-TEST_F(BravePrefProviderTest, AdblockOnlyModeContentSettings_FeatureDisabled) {
+TEST_F(BravePrefProviderTest,
+       AdblockOnlyModeContentSettingsWhenFeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndDisableFeature(brave_shields::features::kAdblockOnlyMode);
 
@@ -808,7 +809,7 @@ TEST_F(BravePrefProviderTest, AdblockOnlyModeContentSettings_FeatureDisabled) {
   https_upgrade_settings.CheckSettingsAreDefault(url);
 
   testing_profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, true);
 
   // Verify that adblock only mode doesn't override settings.
   shields_cookie_settings.CheckSettingsAreDefault(url);
@@ -820,7 +821,7 @@ TEST_F(BravePrefProviderTest, AdblockOnlyModeContentSettings_FeatureDisabled) {
   provider.ShutdownOnUIThread();
 }
 
-TEST_F(BravePrefProviderTest, NonAdblockOnlyModeContentSettings_DefaultValues) {
+TEST_F(BravePrefProviderTest, NonAdblockOnlyModeContentSettingsDefaultValues) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
 
@@ -838,15 +839,14 @@ TEST_F(BravePrefProviderTest, NonAdblockOnlyModeContentSettings_DefaultValues) {
 
   // Verify that adblock only mode doesn't override settings.
   testing_profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, true);
   enabled_settings.CheckSettingsAreDefault(url);
   httpse_settings.CheckSettingsAreDefault(url);
 
   provider.ShutdownOnUIThread();
 }
 
-TEST_F(BravePrefProviderTest,
-       AdblockOnlyModeContentSettings_UserDefinedValues) {
+TEST_F(BravePrefProviderTest, AdblockOnlyModeContentSettingsUserDefinedValues) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
 
@@ -874,7 +874,7 @@ TEST_F(BravePrefProviderTest,
       ContentSettingsPattern::FromURL(url), CONTENT_SETTING_BLOCK);
 
   testing_profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, true);
 
   // Verify that adblock only mode overrides settings.
   shields_cookie_settings.CheckSettingsWouldAllow(url);
@@ -887,7 +887,7 @@ TEST_F(BravePrefProviderTest,
 }
 
 TEST_F(BravePrefProviderTest,
-       AdblockOnlyModeContentSettings_DefaultValues_OffTheRecord) {
+       AdblockOnlyModeContentSettingsDefaultValuesWhenOffTheRecord) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
 
@@ -909,7 +909,7 @@ TEST_F(BravePrefProviderTest,
   script_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
 
   testing_profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, true);
 
   // Verify that adblock only mode overrides settings.
   shields_cookie_settings.CheckIncognitoSettings(url, CONTENT_SETTING_ALLOW);
@@ -921,7 +921,7 @@ TEST_F(BravePrefProviderTest,
 }
 
 TEST_F(BravePrefProviderTest,
-       NonAdblockOnlyModeContentSettings_DefaultValues_OffTheRecord) {
+       NonAdblockOnlyModeContentSettingsDefaultValuesWhenOffTheRecord) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
 
@@ -939,7 +939,7 @@ TEST_F(BravePrefProviderTest,
 
   // Verify that adblock only mode doesn't override settings.
   testing_profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, true);
   enabled_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
   httpse_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
 
@@ -947,7 +947,7 @@ TEST_F(BravePrefProviderTest,
 }
 
 TEST_F(BravePrefProviderTest,
-       AdblockOnlyModeContentSettings_UserDefinedValues_OffTheRecord) {
+       AdblockOnlyModeContentSettingsUserDefinedValuesWhenOffTheRecord) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
 
@@ -975,7 +975,7 @@ TEST_F(BravePrefProviderTest,
       ContentSettingsPattern::FromURL(url), CONTENT_SETTING_BLOCK);
 
   testing_profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, true);
 
   // Verify that adblock only mode overrides settings.
   shields_cookie_settings.CheckIncognitoSettings(url, CONTENT_SETTING_ALLOW);

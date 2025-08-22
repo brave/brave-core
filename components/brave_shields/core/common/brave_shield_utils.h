@@ -36,7 +36,7 @@ ShieldsSettingCounts GetFPSettingCountFromRules(
 ShieldsSettingCounts GetAdsSettingCountFromRules(
     const ContentSettingsForOneType& ads_rules);
 
-bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs);
+bool IsBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs);
 void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs, bool enabled);
 
 }  // namespace brave_shields

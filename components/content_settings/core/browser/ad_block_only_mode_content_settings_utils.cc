@@ -14,29 +14,33 @@
 
 namespace content_settings {
 
-bool IsAdBlockOnlyModeContentSettingsType(ContentSettingsType content_type,
-                                          bool is_off_the_record) {
-  static constexpr auto kAdBlockOnlyModeContentSettingsTypes =
-      base::MakeFixedFlatSet<ContentSettingsType>({
-          ContentSettingsType::JAVASCRIPT,
-          ContentSettingsType::COOKIES,
-          ContentSettingsType::BRAVE_COOKIES,
-          ContentSettingsType::BRAVE_REFERRERS,
-          ContentSettingsType::BRAVE_ADS,
-          ContentSettingsType::BRAVE_TRACKERS,
-          ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-          ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
-          ContentSettingsType::BRAVE_HTTPS_UPGRADE,
-      });
+namespace {
 
-  // These types are off the record aware so we don't override them in off the
-  // record mode.
-  static constexpr auto kOffTheRecordAwareTypes =
-      base::MakeFixedFlatSet<ContentSettingsType>({
-          ContentSettingsType::BRAVE_HTTPS_UPGRADE,
-      });
+constexpr auto kAdBlockOnlyModeContentSettingsTypes =
+    base::MakeFixedFlatSet<ContentSettingsType>({
+        ContentSettingsType::JAVASCRIPT,
+        ContentSettingsType::COOKIES,
+        ContentSettingsType::BRAVE_COOKIES,
+        ContentSettingsType::BRAVE_REFERRERS,
+        ContentSettingsType::BRAVE_ADS,
+        ContentSettingsType::BRAVE_TRACKERS,
+        ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+        ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+        ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
+        ContentSettingsType::BRAVE_HTTPS_UPGRADE,
+    });
 
+// These types are off the record aware so we don't override them in off the
+// record mode.
+static constexpr auto kOffTheRecordAwareTypes =
+    base::MakeFixedFlatSet<ContentSettingsType>({
+        ContentSettingsType::BRAVE_HTTPS_UPGRADE,
+    });
+
+}  // namespace
+
+bool IsAdBlockOnlyModeType(ContentSettingsType content_type,
+                           bool is_off_the_record) {
   if (!kAdBlockOnlyModeContentSettingsTypes.contains(content_type)) {
     return false;
   }
@@ -48,7 +52,7 @@ bool IsAdBlockOnlyModeContentSettingsType(ContentSettingsType content_type,
   return true;
 }
 
-void FillAdBlockOnlyModeRules(OriginValueMap& ad_block_only_mode_rules) {
+void SetAdBlockOnlyModeRules(OriginValueMap& ad_block_only_mode_rules) {
   RuleMetaData metadata;
   metadata.SetExpirationAndLifetime(base::Time(), base::TimeDelta());
   metadata.set_session_model(mojom::SessionModel::DURABLE);

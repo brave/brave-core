@@ -22,188 +22,143 @@ class AdBlockOnlyModeContentSettingsUtilsTest : public testing::Test {
   AdBlockOnlyModeContentSettingsUtilsTest() = default;
   ~AdBlockOnlyModeContentSettingsUtilsTest() override = default;
 
-  void CheckMetadata(const RuleMetaData& metadata) {
+  void VerifyAdBlockOnlyModeTypes(bool is_off_the_record) {
+    EXPECT_TRUE(IsAdBlockOnlyModeType(ContentSettingsType::JAVASCRIPT,
+                                      is_off_the_record));
+    EXPECT_TRUE(
+        IsAdBlockOnlyModeType(ContentSettingsType::COOKIES, is_off_the_record));
+    EXPECT_TRUE(IsAdBlockOnlyModeType(ContentSettingsType::BRAVE_COOKIES,
+                                      is_off_the_record));
+    EXPECT_TRUE(IsAdBlockOnlyModeType(ContentSettingsType::BRAVE_REFERRERS,
+                                      is_off_the_record));
+    EXPECT_TRUE(IsAdBlockOnlyModeType(ContentSettingsType::BRAVE_ADS,
+                                      is_off_the_record));
+    EXPECT_TRUE(IsAdBlockOnlyModeType(ContentSettingsType::BRAVE_TRACKERS,
+                                      is_off_the_record));
+    EXPECT_TRUE(IsAdBlockOnlyModeType(
+        ContentSettingsType::BRAVE_COSMETIC_FILTERING, is_off_the_record));
+    EXPECT_TRUE(IsAdBlockOnlyModeType(
+        ContentSettingsType::BRAVE_FINGERPRINTING_V2, is_off_the_record));
+    EXPECT_TRUE(IsAdBlockOnlyModeType(
+        ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, is_off_the_record));
+
+    if (!is_off_the_record) {
+      EXPECT_TRUE(IsAdBlockOnlyModeType(
+          ContentSettingsType::BRAVE_HTTPS_UPGRADE, is_off_the_record));
+    } else {
+      EXPECT_FALSE(IsAdBlockOnlyModeType(
+          ContentSettingsType::BRAVE_HTTPS_UPGRADE, is_off_the_record));
+    }
+  }
+
+  void VerifyNonAdBlockOnlyModeTypes(bool is_off_the_record) {
+    EXPECT_FALSE(IsAdBlockOnlyModeType(ContentSettingsType::GEOLOCATION,
+                                       is_off_the_record));
+    EXPECT_FALSE(IsAdBlockOnlyModeType(ContentSettingsType::NOTIFICATIONS,
+                                       is_off_the_record));
+    EXPECT_FALSE(
+        IsAdBlockOnlyModeType(ContentSettingsType::IMAGES, is_off_the_record));
+    EXPECT_FALSE(IsAdBlockOnlyModeType(ContentSettingsType::BRAVE_SHIELDS,
+                                       is_off_the_record));
+  }
+
+  void VerifyMetaDataExpectation(const RuleMetaData& metadata) {
     EXPECT_EQ(metadata.session_model(), mojom::SessionModel::DURABLE);
     EXPECT_EQ(metadata.expiration(), base::Time());
     EXPECT_EQ(metadata.lifetime(), base::TimeDelta());
   }
+
+  void VerifyAdBlockOnlyModeRule(OriginValueMap& ad_block_only_mode_rules,
+                                 ContentSettingsType type,
+                                 ContentSetting value) {
+    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
+    auto rule = ad_block_only_mode_rules.GetRule(
+        GURL("https://example.com"), GURL("https://example.com"), type);
+    EXPECT_TRUE(rule);
+    EXPECT_EQ(ValueToContentSetting(rule->value), value);
+    VerifyMetaDataExpectation(rule->metadata);
+  }
+
+  void VerifyNonAdBlockOnlyModeRule(OriginValueMap& ad_block_only_mode_rules,
+                                    ContentSettingsType type) {
+    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
+    auto rule = ad_block_only_mode_rules.GetRule(
+        GURL("https://example.com"), GURL("https://example.com"), type);
+    EXPECT_FALSE(rule);
+  }
 };
 
-TEST_F(AdBlockOnlyModeContentSettingsUtilsTest,
-       IsAdBlockOnlyModeContentSettingsType) {
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::JAVASCRIPT, /*is_off_the_record*/ false));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::COOKIES, /*is_off_the_record*/ false));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_COOKIES, /*is_off_the_record*/ false));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_REFERRERS, /*is_off_the_record*/ false));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_ADS, /*is_off_the_record*/ false));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_TRACKERS, /*is_off_the_record*/ false));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      /*is_off_the_record*/ false));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-      /*is_off_the_record*/ false));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
-      /*is_off_the_record*/ false));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_HTTPS_UPGRADE, /*is_off_the_record*/ false));
-
-  EXPECT_FALSE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::GEOLOCATION, /*is_off_the_record*/ false));
-  EXPECT_FALSE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::NOTIFICATIONS, /*is_off_the_record*/ false));
-  EXPECT_FALSE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::IMAGES, /*is_off_the_record*/ false));
-  EXPECT_FALSE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_SHIELDS, /*is_off_the_record*/ false));
+TEST_F(AdBlockOnlyModeContentSettingsUtilsTest, IsAdBlockOnlyModeType) {
+  VerifyAdBlockOnlyModeTypes(/*is_off_the_record*/ false);
+  VerifyNonAdBlockOnlyModeTypes(/*is_off_the_record*/ false);
 }
 
 TEST_F(AdBlockOnlyModeContentSettingsUtilsTest,
-       IsAdBlockOnlyModeContentSettingsType_OffTheRecord) {
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::JAVASCRIPT, /*is_off_the_record*/ true));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(ContentSettingsType::COOKIES,
-                                                   /*is_off_the_record*/ true));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_COOKIES, /*is_off_the_record*/ true));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_REFERRERS, /*is_off_the_record*/ true));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_ADS, /*is_off_the_record*/ true));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_TRACKERS, /*is_off_the_record*/ true));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      /*is_off_the_record*/ true));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-      /*is_off_the_record*/ true));
-  EXPECT_TRUE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
-      /*is_off_the_record*/ true));
-
-  EXPECT_FALSE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_HTTPS_UPGRADE, /*is_off_the_record*/ true));
-  EXPECT_FALSE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::GEOLOCATION, /*is_off_the_record*/ true));
-  EXPECT_FALSE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::NOTIFICATIONS, /*is_off_the_record*/ true));
-  EXPECT_FALSE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::IMAGES, /*is_off_the_record*/ true));
-  EXPECT_FALSE(IsAdBlockOnlyModeContentSettingsType(
-      ContentSettingsType::BRAVE_SHIELDS, /*is_off_the_record*/ true));
+       IsAdBlockOnlyModeTypeWhenOffTheRecord) {
+  VerifyAdBlockOnlyModeTypes(/*is_off_the_record*/ true);
+  VerifyNonAdBlockOnlyModeTypes(/*is_off_the_record*/ true);
 }
 
-TEST_F(AdBlockOnlyModeContentSettingsUtilsTest, FillAdBlockOnlyModeRules) {
+TEST_F(AdBlockOnlyModeContentSettingsUtilsTest, VerifyAdBlockOnlyModeRules) {
   OriginValueMap ad_block_only_mode_rules;
-  FillAdBlockOnlyModeRules(ad_block_only_mode_rules);
+  SetAdBlockOnlyModeRules(ad_block_only_mode_rules);
 
-  {
-    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
-    auto rule = ad_block_only_mode_rules.GetRule(
-        GURL("https://example.com"), GURL("https://example.com"),
-        ContentSettingsType::JAVASCRIPT);
-    ASSERT_TRUE(rule);
-    EXPECT_EQ(ValueToContentSetting(rule->value), CONTENT_SETTING_ALLOW);
-    CheckMetadata(rule->metadata);
-  }
+  VerifyAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                            ContentSettingsType::JAVASCRIPT,
+                            CONTENT_SETTING_ALLOW);
 
-  {
-    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
-    auto rule = ad_block_only_mode_rules.GetRule(GURL("https://example.com"),
-                                                 GURL("https://example.com"),
-                                                 ContentSettingsType::COOKIES);
-    ASSERT_TRUE(rule);
-    EXPECT_EQ(ValueToContentSetting(rule->value), CONTENT_SETTING_ALLOW);
-    CheckMetadata(rule->metadata);
-  }
+  VerifyAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                            ContentSettingsType::COOKIES,
+                            CONTENT_SETTING_ALLOW);
 
-  {
-    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
-    auto rule = ad_block_only_mode_rules.GetRule(
-        GURL("https://example.com"), GURL("https://example.com"),
-        ContentSettingsType::BRAVE_COOKIES);
-    ASSERT_TRUE(rule);
-    EXPECT_EQ(ValueToContentSetting(rule->value), CONTENT_SETTING_ALLOW);
-    CheckMetadata(rule->metadata);
-  }
+  VerifyAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                            ContentSettingsType::BRAVE_COOKIES,
+                            CONTENT_SETTING_ALLOW);
 
-  {
-    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
-    auto rule = ad_block_only_mode_rules.GetRule(
-        GURL("https://example.com"), GURL("https://example.com"),
-        ContentSettingsType::BRAVE_REFERRERS);
-    ASSERT_TRUE(rule);
-    EXPECT_EQ(ValueToContentSetting(rule->value), CONTENT_SETTING_ALLOW);
-    CheckMetadata(rule->metadata);
-  }
+  VerifyAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                            ContentSettingsType::BRAVE_REFERRERS,
+                            CONTENT_SETTING_ALLOW);
 
-  {
-    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
-    auto rule = ad_block_only_mode_rules.GetRule(
-        GURL("https://example.com"), GURL("https://example.com"),
-        ContentSettingsType::BRAVE_ADS);
-    ASSERT_TRUE(rule);
-    EXPECT_EQ(ValueToContentSetting(rule->value), CONTENT_SETTING_BLOCK);
-    CheckMetadata(rule->metadata);
-  }
+  VerifyAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                            ContentSettingsType::BRAVE_ADS,
+                            CONTENT_SETTING_BLOCK);
 
-  {
-    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
-    auto rule = ad_block_only_mode_rules.GetRule(
-        GURL("https://example.com"), GURL("https://example.com"),
-        ContentSettingsType::BRAVE_TRACKERS);
-    ASSERT_TRUE(rule);
-    EXPECT_EQ(ValueToContentSetting(rule->value), CONTENT_SETTING_ALLOW);
-    CheckMetadata(rule->metadata);
-  }
+  VerifyAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                            ContentSettingsType::BRAVE_TRACKERS,
+                            CONTENT_SETTING_ALLOW);
 
-  {
-    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
-    auto rule = ad_block_only_mode_rules.GetRule(
-        GURL("https://example.com"), GURL("https://example.com"),
-        ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-    ASSERT_TRUE(rule);
-    EXPECT_EQ(ValueToContentSetting(rule->value), CONTENT_SETTING_ALLOW);
-    CheckMetadata(rule->metadata);
-  }
+  VerifyAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                            ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+                            CONTENT_SETTING_ALLOW);
 
-  {
-    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
-    auto rule = ad_block_only_mode_rules.GetRule(
-        GURL("https://example.com"), GURL("https://example.com"),
-        ContentSettingsType::BRAVE_FINGERPRINTING_V2);
-    ASSERT_TRUE(rule);
-    EXPECT_EQ(ValueToContentSetting(rule->value), CONTENT_SETTING_ALLOW);
-    CheckMetadata(rule->metadata);
-  }
+  VerifyAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                            ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                            CONTENT_SETTING_ALLOW);
 
-  {
-    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
-    auto rule = ad_block_only_mode_rules.GetRule(
-        GURL("https://example.com"), GURL("https://example.com"),
-        ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
-    ASSERT_TRUE(rule);
-    EXPECT_EQ(ValueToContentSetting(rule->value), CONTENT_SETTING_ALLOW);
-    CheckMetadata(rule->metadata);
-  }
+  VerifyAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                            ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
+                            CONTENT_SETTING_ALLOW);
 
-  {
-    base::AutoLock auto_lock(ad_block_only_mode_rules.GetLock());
-    auto rule = ad_block_only_mode_rules.GetRule(
-        GURL("https://example.com"), GURL("https://example.com"),
-        ContentSettingsType::BRAVE_HTTPS_UPGRADE);
-    ASSERT_TRUE(rule);
-    EXPECT_EQ(ValueToContentSetting(rule->value), CONTENT_SETTING_ASK);
-    CheckMetadata(rule->metadata);
-  }
+  VerifyAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                            ContentSettingsType::BRAVE_HTTPS_UPGRADE,
+                            CONTENT_SETTING_ASK);
+}
+
+TEST_F(AdBlockOnlyModeContentSettingsUtilsTest, VerifyNonAdBlockOnlyModeRules) {
+  OriginValueMap ad_block_only_mode_rules;
+  SetAdBlockOnlyModeRules(ad_block_only_mode_rules);
+
+  VerifyNonAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                               ContentSettingsType::GEOLOCATION);
+
+  VerifyNonAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                               ContentSettingsType::NOTIFICATIONS);
+
+  VerifyNonAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                               ContentSettingsType::IMAGES);
+
+  VerifyNonAdBlockOnlyModeRule(ad_block_only_mode_rules,
+                               ContentSettingsType::BRAVE_SHIELDS);
 }
 
 }  // namespace content_settings

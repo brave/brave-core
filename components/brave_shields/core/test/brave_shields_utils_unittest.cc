@@ -691,7 +691,7 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_AdBlockOnlyModeEnabled) {
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, true);
   setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL(),
                                                 profile()->GetPrefs());
   EXPECT_EQ(ControlType::ALLOW, setting);
@@ -724,7 +724,7 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_AdBlockOnlyModeDisabled) {
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, false);
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, false);
   setting = brave_shields::GetCookieControlType(
       map, cookies.get(), GURL("https://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
@@ -757,7 +757,7 @@ TEST_F(BraveShieldsUtilTest,
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, true);
   setting = brave_shields::GetCookieControlType(
       map, cookies.get(), GURL("https://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);

@@ -123,7 +123,7 @@ class BravePrefProvider : public PrefProvider, public Observer {
                                const ContentSettingsPattern& secondary_pattern,
                                ContentSettingsType content_type) override;
   void OnCookiePrefsChanged(const std::string& pref);
-  void OnAdBlockOnlyModeChanged();
+  void UpdateAdBlockOnlyModeEnabledFlag();
 
   std::map<bool /* is_incognito */, OriginValueMap> cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>

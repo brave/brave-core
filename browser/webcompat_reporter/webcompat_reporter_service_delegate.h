@@ -13,6 +13,8 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
+class PrefService;
+
 namespace brave_shields {
 class AdBlockService;
 }  // namespace brave_shields

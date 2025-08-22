@@ -557,7 +557,7 @@ ControlType GetCookieControlType(
   DCHECK(map);
   DCHECK(cookie_settings);
 
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
+  if (IsBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
     return ControlType::ALLOW;
   }
 
