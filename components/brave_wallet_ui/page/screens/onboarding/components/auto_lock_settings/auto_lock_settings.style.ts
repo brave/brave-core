@@ -15,7 +15,7 @@ export const LockIconContainer = styled.div`
   justify-content: center;
   min-width: 30px;
   height: 30px;
-  background-color: ${leo.color.purple[10]};
+  background-color: ${leo.color.container.interactive};
   border-radius: 50%;
 `
 
@@ -23,7 +23,7 @@ export const LockIcon = styled(Icon).attrs({
   name: 'lock',
 })`
   --leo-icon-size: ${leo.icon.xs};
-  color: ${leo.color.purple[30]};
+  color: ${leo.color.icon.interactive};
 `
 
 export const SettingDescription = styled.div`
