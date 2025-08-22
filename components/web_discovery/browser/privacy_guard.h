@@ -14,13 +14,13 @@ namespace web_discovery {
 
 // Determines if a search query is likely to contain private information.
 // If true, the search query should not be investigated or reported.
-bool IsPrivateQueryLikely(const std::string& query);
+bool IsPrivateQueryLikely(std::string_view query);
 
 // Generates a simple search URL (without additional query parameters)
 // based on the original search URL and query. Used for the double fetch
 // to ensure that the user's profile is not involved in the query.
 GURL GeneratePrivateSearchURL(const GURL& original_url,
-                              const std::string& query,
+                              std::string_view query,
                               std::optional<std::string_view> prefix);
 
 // Checks if a URL should be dropped entirely due to security/privacy concerns.

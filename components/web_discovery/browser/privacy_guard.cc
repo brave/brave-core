@@ -221,8 +221,8 @@ bool CheckForLongNumber(std::string str) {
 }
 
 bool CheckPathAndQueryParts(const GURL& url,
-                            const std::vector<std::string>& path_parts,
-                            const std::vector<std::string>& query_parts) {
+                            const std::vector<std::string_view>& path_parts,
+                            const std::vector<std::string_view>& query_parts) {
   // Check for risky path parts
   for (const auto& path_part : path_parts) {
     std::string normalized = base::ToLowerASCII(path_part);
@@ -235,9 +235,9 @@ bool CheckPathAndQueryParts(const GURL& url,
 
   // Check URL parameters for suspicious content
   for (const auto& param : query_parts) {
-    auto key_value =
-        base::SplitString(param, "=", base::WhitespaceHandling::KEEP_WHITESPACE,
-                          base::SplitResult::SPLIT_WANT_ALL);
+    auto key_value = base::SplitStringPiece(
+        param, "=", base::WhitespaceHandling::KEEP_WHITESPACE,
+        base::SplitResult::SPLIT_WANT_ALL);
     if (key_value.size() != 2) {
       continue;
     }
@@ -258,7 +258,7 @@ bool CheckPathAndQueryParts(const GURL& url,
 
 }  // namespace
 
-bool IsPrivateQueryLikely(const std::string& query) {
+bool IsPrivateQueryLikely(std::string_view query) {
   // First, normalize white spaces
   auto normalized_query = RegexUtil::GetInstance()->NormalizeWhitespace(query);
 
@@ -301,7 +301,7 @@ bool IsPrivateQueryLikely(const std::string& query) {
 }
 
 GURL GeneratePrivateSearchURL(const GURL& original_url,
-                              const std::string& query,
+                              std::string_view query,
                               std::optional<std::string_view> prefix) {
   url::RawCanonOutputT<char> query_encoded;
   url::EncodeURIComponent(query, &query_encoded);
@@ -328,14 +328,14 @@ bool ShouldMaskURL(const GURL& url) {
     return true;
   }
 
-  std::vector<std::string> query_parts;
+  std::vector<std::string_view> query_parts;
   if (!url.query_piece().empty()) {
     if (url.query_piece().length() > kMaxUrlSearchLength) {
       return true;
     }
-    query_parts = base::SplitString(url.query_piece(), "&",
-                                    base::WhitespaceHandling::KEEP_WHITESPACE,
-                                    base::SplitResult::SPLIT_WANT_ALL);
+    query_parts = base::SplitStringPiece(
+        url.query_piece(), "&", base::WhitespaceHandling::KEEP_WHITESPACE,
+        base::SplitResult::SPLIT_WANT_ALL);
     if (query_parts.size() > kMaxUrlSearchParams) {
       return true;
     }
@@ -348,9 +348,9 @@ bool ShouldMaskURL(const GURL& url) {
   }
 
   // Check path parts count
-  auto path_parts = base::SplitString(url.path_piece(), "/",
-                                      base::WhitespaceHandling::KEEP_WHITESPACE,
-                                      base::SPLIT_WANT_ALL);
+  auto path_parts = base::SplitStringPiece(
+      url.path_piece(), "/", base::WhitespaceHandling::KEEP_WHITESPACE,
+      base::SPLIT_WANT_ALL);
   if (path_parts.size() > kMaxUrlPathParts) {
     return true;
   }

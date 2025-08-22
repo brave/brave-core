@@ -202,8 +202,6 @@ std::optional<base::Value> ProcessV2List(
   size_t counter = 0;
 
   for (const auto& scraped_item : scraped_values) {
-    auto index = counter++;
-
     // Validate required keys are present using ValueHasContent
     bool has_all_required_keys =
         std::ranges::all_of(required_keys, [&](const auto& key) {
@@ -220,7 +218,7 @@ std::optional<base::Value> ProcessV2List(
       continue;
     }
 
-    joined_results.Set(base::NumberToString(index), scraped_item.Clone());
+    joined_results.Set(base::NumberToString(counter++), scraped_item.Clone());
   }
 
   if (joined_results.empty() ||

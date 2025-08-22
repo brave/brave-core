@@ -66,7 +66,6 @@ class DecodeURIComponentTransform : public ValueTransform {
 
   std::optional<std::string> Process(std::string_view input) override {
     std::string output = DecodeURLComponent(input);
-
     // Count '%25' sequences in input (these should decode to '%' in output)
     size_t input_percent25_count = 0;
     size_t pos = 0;
@@ -177,10 +176,11 @@ class RemoveParamsTransform : public ValueTransform {
 
     // Use GURL::Replacements to modify the clone
     GURL::Replacements replacements;
+    std::string new_query;
     if (kept_params.empty()) {
       replacements.ClearQuery();
     } else {
-      std::string new_query = base::JoinString(kept_params, "&");
+      new_query = base::JoinString(kept_params, "&");
       replacements.SetQueryStr(new_query);
     }
 
@@ -251,7 +251,7 @@ class SplitTransform : public ValueTransform {
       : split_on_(split_on), arr_pos_(arr_pos), try_mode_(try_mode) {}
 
   std::optional<std::string> Process(std::string_view input) override {
-    auto parts = base::SplitStringUsingSubstr(
+    auto parts = base::SplitStringPieceUsingSubstr(
         input, split_on_, base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
     if (parts.size() == 1 && !try_mode_) {
@@ -262,7 +262,7 @@ class SplitTransform : public ValueTransform {
       return try_mode_ ? std::optional<std::string>(input) : std::nullopt;
     }
 
-    return parts[arr_pos_];
+    return std::string(parts[arr_pos_]);
   }
 
  private:
