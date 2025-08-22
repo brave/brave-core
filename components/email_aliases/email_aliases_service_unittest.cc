@@ -225,4 +225,110 @@ TEST_F(EmailAliasesServiceTest,
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "");
 }
 
+// Timing-specific tests use a separate fixture with MOCK_TIME to validate
+// rate limiting and total polling duration.
+class EmailAliasesServiceTimingTest : public ::testing::Test {
+ protected:
+  EmailAliasesServiceTimingTest()
+      : url_loader_factory_(/*no args*/ ),
+        url_loader_wrapper_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &url_loader_factory_)) {}
+
+  void SetUp() override {
+    feature_list_.InitAndEnableFeature(email_aliases::kEmailAliases);
+    service_ = std::make_unique<EmailAliasesService>(url_loader_wrapper_);
+    observer_ = std::make_unique<TestObserver>();
+    mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver>
+        remote;
+    observer_->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
+    service_->AddObserver(std::move(remote));
+  }
+
+  // Starts auth and captures verify/result request times via interceptor.
+  void StartAuthAndCaptureRequests(const std::string& init_body,
+                                   const std::string& result_body) {
+    // Intercept verify/result requests and record timestamps.
+    const std::string verify_result_url =
+        EmailAliasesService::GetAccountsServiceVerifyResultURL();
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          if (request.url.spec() == verify_result_url) {
+            verify_result_request_times_.push_back(task_environment_.NowTicks());
+          }
+        }));
+
+    // Provide canned responses for init and result endpoints.
+    url_loader_factory_.AddResponse(
+        EmailAliasesService::GetAccountsServiceVerifyInitURL(), init_body);
+    url_loader_factory_.AddResponse(verify_result_url, result_body);
+
+    // Kick off authentication.
+    bool called = false;
+    std::optional<std::string> error;
+    service_->RequestAuthentication(
+        "test@example.com",
+        base::BindOnce(
+            [](bool* called_out, std::optional<std::string>* out,
+               const std::optional<std::string>& result) {
+              *called_out = true;
+              *out = result;
+            },
+            &called, &error));
+    EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
+    EXPECT_FALSE(error.has_value());
+  }
+
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  base::test::ScopedFeatureList feature_list_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_wrapper_;
+  std::unique_ptr<EmailAliasesService> service_;
+  std::unique_ptr<TestObserver> observer_;
+  std::vector<base::TimeTicks> verify_result_request_times_;
+};
+
+TEST_F(EmailAliasesServiceTimingTest, VerifyResult_IsRateLimitedByTwoSeconds) {
+  // First poll happens immediately; subsequent polls are delayed by 2s.
+  const std::string init_body = "{\"verificationToken\":\"token123\"}";
+  const std::string pending_body =
+      "{\"authToken\":null,\"service\":\"email-aliases\",\"verified\":false}";
+  StartAuthAndCaptureRequests(init_body, pending_body);
+
+  // Wait for the first verify/result request.
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return verify_result_request_times_.size() >= 1; }));
+
+  // Advance exactly 2 seconds to allow the next scheduled poll.
+  task_environment_.FastForwardBy(base::Seconds(2));
+
+  // Wait for the second request to be issued.
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return verify_result_request_times_.size() >= 2; }));
+
+  ASSERT_GE(verify_result_request_times_.size(), 2u);
+  const base::TimeDelta delta = verify_result_request_times_[1] -
+                                verify_result_request_times_[0];
+  EXPECT_GE(delta, base::Seconds(2));
+}
+
+TEST_F(EmailAliasesServiceTimingTest, VerifyResult_StopsAfterMaxDuration) {
+  // Provide a perpetually pending response; after 30 minutes total, polling
+  // should stop and we should transition to Unauthenticated with an error.
+  const std::string init_body = "{\"verificationToken\":\"token123\"}";
+  const std::string pending_body =
+      "{\"authToken\":null,\"service\":\"email-aliases\",\"verified\":false}";
+  StartAuthAndCaptureRequests(init_body, pending_body);
+
+  // 30 minutes * 60 seconds / 2 seconds + 1 = 901
+  const unsigned long expected_requests = 30 * 60 / 2 + 1;
+
+  EXPECT_EQ(verify_result_request_times_.size(), expected_requests);
+
+  EXPECT_EQ(observer_->last_state,
+            email_aliases::mojom::AuthenticationStatus::kUnauthenticated);
+
+}
+
 }  // namespace email_aliases
