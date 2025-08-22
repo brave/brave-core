@@ -12,6 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
+#include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "build/build_config.h"
@@ -84,35 +85,28 @@ bool MemoryStorageTool::SupportsConversation(bool is_temporary) const {
 
 void MemoryStorageTool::UseTool(const std::string& input_json,
                                 UseToolCallback callback) {
-  ToolResult result;
   // Parse the input JSON
   auto input_dict = base::JSONReader::ReadDict(input_json);
   if (!input_dict.has_value()) {
-    result.push_back(
-        mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
-            "Error: Invalid JSON input, input must be a JSON object")));
-    std::move(callback).Run(std::move(result));
+    std::move(callback).Run(CreateContentBlocksForText(
+        "Error: Invalid JSON input, input must be a JSON object"));
     return;
   }
 
   const std::string* memory_content = input_dict->FindString("memory");
 
   if (!memory_content || memory_content->empty()) {
-    result.push_back(
-        mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
-            "Error: Missing or empty 'memory' field")));
-    std::move(callback).Run(std::move(result));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: Missing or empty 'memory' field"));
     return;
   }
 
   // Validate memory length
   if (memory_content->length() > mojom::kMaxMemoryRecordLength) {
-    result.push_back(
-        mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
-            base::StrCat({"Error: Memory content exceeds ",
-                          base::NumberToString(mojom::kMaxMemoryRecordLength),
-                          " character limit"}))));
-    std::move(callback).Run(std::move(result));
+    std::move(callback).Run(CreateContentBlocksForText(
+        base::StrCat({"Error: Memory content exceeds ",
+                      base::NumberToString(mojom::kMaxMemoryRecordLength),
+                      " character limit"})));
     return;
   }
 
@@ -120,9 +114,7 @@ void MemoryStorageTool::UseTool(const std::string& input_json,
   prefs::AddMemoryToPrefs(*memory_content, *pref_service_);
 
   // Return empty result to signal the completion of this tool to AI agents.
-  result.push_back(mojom::ContentBlock::NewTextContentBlock(
-      mojom::TextContentBlock::New("")));
-  std::move(callback).Run(std::move(result));
+  std::move(callback).Run(CreateContentBlocksForText(""));
 }
 
 }  // namespace ai_chat
