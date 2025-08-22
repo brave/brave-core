@@ -22,10 +22,11 @@ import org.chromium.build.annotations.Nullable;
  * items that can be hidden from the main menu.
  */
 @NullMarked
-public class CustomizeMenuPreference extends Preference {
+public class BraveCustomizeMenuPreference extends Preference {
+    @Nullable
     private RecyclerView mRecyclerView;
 
-    public CustomizeMenuPreference(Context context, @Nullable AttributeSet attrs) {
+    public BraveCustomizeMenuPreference(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
