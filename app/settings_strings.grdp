@@ -917,6 +917,12 @@
   <message name="IDS_SETTINGS_MANAGE_OTHER_DATA_SUB_LABEL" desc="Sub-label for the 'Manage other Brave Data' option in the 'Delete Browsing Data' dialog, explaining to the user that search history and passwords can be deleted outside of Brave in their respective management settings.">
     Search history and passwords can be deleted in their management settings
   </message>
+   <message name="IDS_SETTINGS_MANAGE_PASSWORDS_SUB_LABEL" desc="Sub-label for the 'Manage other Data' subpage entrypoint in the 'Delete Browsing Data' dialog, explaining to the user that passwords can only be deleted in their management settings.">
+    Passwords can be deleted in their management settings
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_GEMINI_PASSWORDS_OTHER_DATA_SUB_LABEL" desc="Sub-label for the 'Manage Other Brave Data' option in the 'Delete Browsing Data' dialog, explaining to the user that search history, Gemini history, and passwords can be deleted outside of Brave in their respective management settings.">
+    Search history, Gemini history, and passwords can be deleted in their management settings
+  </message>
   <message name="IDS_SETTINGS_OTHER_DATA_DESCRIPTION" desc="Description text at the top of the 'Other Brave data' subpage in the 'Delete browsing data' settings dialog. It informs users that data linked in this page are not managed or deleted in Brave.">
     To delete this data, go to its management settings
   </message>
@@ -1621,33 +1627,6 @@
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_HEADER" desc="Header of the cookies card in the 'Privacy guide'.">
     Choose your third-party cookie preferences
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_SUBHEADER" desc="A subheader for the cookies card of the 'Privacy guide', for blocking third party cookies in private.">
-    Block third-party cookies in Private
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_FEATURE_DESCRIPTION1" desc="A part of the feature description of the third party cookie blocking in private section of the cookies card in the 'Privacy guide'.">
-    Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_FEATURE_DESCRIPTION2" desc="A part of the feature description of the third party cookie blocking in private section of the cookies card in the 'Privacy guide'.">
-    Features on some sites may not work in Private
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the third party cookie blocking in private section of the cookies card in the 'Privacy guide'.">
-    Sites can use cookies to see your browsing activity across different sites, for example, to personalize ads
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of the third party cookie blocking in private section of the cookies card in the 'Privacy guide'.">
-    When you’re in Private mode, sites can only use cookies to see your browsing activity on their own site. Cookies are deleted at the end of the Private session.
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_SUBHEADER" desc="A subheader for the cookies card of the 'Privacy guide', for blocking third party cookies.">
-    Block all third-party cookies
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_FEATURE_DESCRIPTION1" desc="A part of the feature description of the third party cookie blocking section of the cookies card in the 'Privacy guide'.">
-    Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_FEATURE_DESCRIPTION2" desc="A part of the feature description of the third party cookie blocking section of the cookies card in the 'Privacy guide'.">
-    Features on some sites may not work
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the third party cookie blocking section of the cookies card in the 'Privacy guide'.">
-    Sites can only use cookies to see your browsing activity on their own site
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_HEADER" desc="Header of the safe browsing card in the 'Privacy guide'.">
     Choose your Safe Browsing protection
@@ -2977,24 +2956,6 @@
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_DESCRIPTION" desc="An explanation of what third-party cookies are that appear beneath the page title: 'Third-party cookies'. * 'embed': A site you visit uses HTML to construct the page. HTML tags include references to images, like img src='filename.jpg', that are used to show an image. 'filename.jpg' can be a local file owned by the site you visit or a site can embed an external file with something like img src='www.third-party-site.com/images/filename.jpg'. This image is embedded into the site you visit and www.third-party-site.com can set a third-party cookie onto your device.">
     A site you visit can embed content from other sites, for example, images, ads, and text. Cookies set by these other sites are called third-party cookies.
   </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_DEFAULT_BEHAVIOR_HEADING" desc="A label on a permissions page. For example, see the Microphone permission at chrome://settings/content/microphone.">
-    Default behavior
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_ALIGNED_PAGE_DESCRIPTION" desc="Descriptive text on the 'Third-party cookies' settings page explaining that controls on the page are for managing information sites can use for tracking.">
-    Manage the types of information sites can use to track you as you browse.
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_DEFAULT_BEHAVIOR_DESCRIPTION" desc="A description of what 'Default behavior' means. For example, see the Microphone permission at chrome://settings/content/microphone.">
-    Sites automatically follow this setting when you visit them
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_CUSTOMIZED_BEHAVIOR_HEADING" desc="A label on a permissions page. For example, see the Microphone permission at chrome://settings/content/microphone.">
-    Customized behaviors
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_CUSTOMIZED_BEHAVIOR_DESCRIPTION" desc="A description of 'customized behaviors' that appear beneath the 'Customized behaviors' title. For example, see the Microphone permission at chrome://settings/content/microphone.">
-    Sites listed below follow a custom setting instead of the default
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_ALLOW_EXCEPTIONS_SUB_HEADING" desc="A description of an exception bucket">
-    Allowed to use third-party cookies
-  </message>
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_TITLE" desc="The title of a new page. Today, Brave has a 'Cookies and other site data' page at chrome://settings/cookies. As part of the Privacy Sandbox project (see below), Brave is deprecating third-party cookies but maintaining first-party cookies. As a step towards the ultimate deprecation of third-party cookies, we're first separating them from other forms of 'site data', making it easier to eventually remove this page completely. Cookies are often used for honorable objectives, and the difference between first and third-party cookies is important (see any of the many resources online such as https://termly.io/resources/articles/first-party-cookies-vs-third-party-cookies/.">
     Third-party cookies
   </message>
@@ -3004,50 +2965,14 @@
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_SUB_LABEL_ENABLED" desc="1 of 3 possible states for the Third-party cookies setting. This text appears beneath the 'Third-party cookies' button label.">
     Third-party cookies are allowed
   </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_SUB_LABEL_DISABLED_INCOGNITO" desc="2 of 3 possible states for the Third-party cookies setting. This text appears beneath the 'Third-party cookies' button label.">
-    Third-party cookies are blocked in Private mode
-  </message>
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_SUB_LABEL_DISABLED" desc="3 of 3 possible states for the Third-party cookies setting. This text appears beneath the 'Third-party cookies' button label.">
     Third-party cookies are blocked
   </message>
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_ALLOW_RADIO_LABEL" desc="1 of 3 options the user has to configure cookies. See the cookies page for context: chrome://settings/cookies.">
     Allow third-party cookies
   </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_ALLOW_EXPAND_A11Y_LABEL" desc="This text is read by screenreaders and helps users find more info about this choice.">
-    More about allowing third-party cookies
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_ALLOW_BULLET_1" desc="1 of 2 bullets that describes the 'Allow all cookies' option.">
-    Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_ALLOW_BULLET_2" desc="2 of 2 bullets that describes the 'Allow all cookies' option. Sites use third-party cookies to 'see your browsing activity across different sites'. Third-party cookies aren't necessarily bad. 1) Personalized ads can be useful to the user (though the tracking that generally accompanies the use of third-party cookies for ads isn't). But 2) third-party cookies are also used for spam protection and for anti-tracking efforts.">
-    Sites can use cookies to see your browsing activity across different sites, for example, to personalize ads
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_RADIO_LABEL" desc="2 of 3 options the user has to configure cookies. See the cookies page for context: chrome://settings/cookies. For more about Private mode, see Brave's Help Center.">
-    Block third-party cookies in Private mode
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_EXPAND_A11Y_LABEL" desc="This text is read by screenreaders and helps users find more info about this choice.">
-    More about blocking third-party cookies in Private mode
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_BULLET_1" desc="1 of 2 bullets that describes the 'Block third-party cookies in Private mode' option.">
-    Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_BULLET_2" desc="2 of 2 bullets that describes the 'Block third-party cookies in Private mode' option.">
-    While in Private, sites can't use your cookies to see your browsing activity across sites. Your browsing activity isn't used for things like personalizing ads. Features on some sites may not work.
-  </message>
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_RADIO_LABEL" desc="3 of 3 options the user has to configure cookies. See the cookies page for context: chrome://settings/cookies">
     Block third-party cookies
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_EXPAND_A11Y_LABEL" desc="This text is read by screenreaders and helps users find more info about this choice.">
-    More about blocking third-party cookies
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_BULLET_1" desc="1 of 2 bullets that describes the 'Block third-party cookies' option.">
-    Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
-  </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_BULLET_2" desc="2 of 2 bullets that describe the 'Block third-party cookies' option">
-    Sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may not work
-  </message>
-  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO_RWS" desc="Description for the first bullet of block third party cookies in Private radio toggle">
-    While in Private, sites can't use your cookies to see your browsing activity across sites, even related sites. Your browsing activity isn't used for things like personalizing ads. Features on some sites may not work.
   </message>
   <message name="IDS_SETTINGS_COOKIES_RELATED_WEBSITE_SETS_TOGGLE_LABEL" desc="Label for the toggle that allows the user to control related website sets enabled sharing between related sites">
     Allow related sites to see your activity in the group
@@ -3135,27 +3060,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHOW_BLOCKED_NOTIFICATIONS_INDICATOR" desc="The label in notifications site settings -- a setting that enables showing a blocked indicator in the address bar when notifications are blocked for all sites. It can be set by the user or automatically set by Brave when a user has denied notifications several times.">
     Show an indicator in the address bar when notification are blocked
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_ALLOW" desc="The sub-label for links to manage cookies when the current cookie setting is allow.">
-    {COUNT, plural,
-     =0 {Cookies are allowed}
-     =1 {Cookies are allowed, 1 exception}
-     other {Cookies are allowed, {COUNT} exceptions}}
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK" desc="The sub-label for links to manage cookies when the current cookie setting is allow.">
-    {COUNT, plural,
-     =0 {Cookies are blocked}
-     =1 {Cookies are blocked, 1 exception}
-     other {Cookies are blocked, {COUNT} exceptions}}
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies.">
-    Third-party cookies are blocked
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies in Private.">
-    Third-party cookies are blocked in Private mode
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_ALLOW_SITES" desc="The 'allow cookies' label in site settings.">
-    Allow sites to save and read cookie data
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_HANDLERS_ASK_RECOMMENDED" desc="The allow label for protocol handlers in site settings (with the 'recommended' suffix).">
     Allow sites to ask to become default handlers for protocols (recommended)

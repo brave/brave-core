@@ -204,7 +204,14 @@
       Save
     </message>
   </if>
-
+  <if expr="is_ios">
+    <message name="IDS_AUTOFILL_SAVE_CVC_PROMPT_EXPLANATION_UPLOAD_IOS" desc="Explanation text for the Autofill save CVC prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission on IOS devices.">
+      For faster checkout, save this CVC in your account, <ph name="ACCOUNT_EMAIL">$1<ex>youraccount@email.com</ex></ph>
+    </message>
+    <message name="IDS_AUTOFILL_SAVE_CVC_PROMPT_EXPLANATION_LOCAL_SAVE_IOS" desc="Explanation text for the Autofill save CVC prompt that offers to save CVC to this device for existing local cards. This prompt is shown if a CVC is detected for an existing local card on form submission on IOS devices.">
+      For faster checkout, save this CVC on your device
+    </message>
+  </if>
   <if expr="is_ios">
     <then>
       <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CARDHOLDER_NAME" desc="The label text for the cardholder name textfield.">
@@ -562,6 +569,12 @@
     </message>
     <message name="IDS_PAYMENTS_AUTOFILL_ENABLE_MANDATORY_REAUTH_TOGGLE_SUBLABEL" desc="Sublabel for a toggle that allows users to turn on mandatory authentication when managing credit cards. This sublabel explains when the toggle is turned off Autofill will still request authentication occasionally.">
       For added protection, always use your fingerprint, face, or other screen lock when you pay using autofill
+    </message>
+    <message name="IDS_PAYMENTS_AUTOFILL_ENABLE_SAVE_SECURITY_CODES_LABEL" desc="Label for a button that allows the users to manage security code (also known as CVC) autofill and/or delete saved CVCs.">
+      Save security codes
+    </message>
+    <message name="IDS_PAYMENTS_AUTOFILL_ENABLE_SAVE_SECURITY_CODES_SUBLABEL" desc="Sublabel for a button that allows the users to manage security code (also known as CVC) autofill and/or delete saved CVCs">
+      Check out faster when your CVCs are saved
     </message>
     <if expr="_google_chrome">
       <message name="IDS_PAYMENTS_AUTOFILL_FILLING_MANDATORY_REAUTH" desc="Text that appears in the payments autofill mandatory re-authentication popup as the sublabel, asking the user to authenticate using biometric or device unlock before filling.">
@@ -1103,10 +1116,6 @@
     <ph name="TOS_TITLE">$1<ex>Link account and pay with Affirm?</ex></ph> <ph name="LOGO_DESCRIPTION">$2<ex>Google Pay, Affirm logo</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog.">
-    After you review your order, you must sign into or create an <ph name="BNPL_ISSUER_NAME">$1</ph> account. This account will be automatically linked to Google Pay.
-  </message>
-  <!--TODO(crbug.com/424259928): Remove V2 text and edit original ToS review text string after mergeback is submitted.-->
-  <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT_V2" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog." translateable="false">
     After you review your order, you must sign into or create an account with <ph name="BNPL_ISSUER_NAME">$1</ph>. This account will be automatically linked to Google Pay.
   </message>
   <message name="IDS_AUTOFILL_BNPL_TOS_APPROVE_TEXT" desc="The text informing the user that that BNPL issuer will check and approve their eligibility in the Buy-Now-Pay-Later Terms of Service dialog.">
@@ -1412,7 +1421,7 @@
       Delete saved security codes
     </message>
   </if>
-  <if expr="not is_android">
+ <if expr="not is_ios and not is_android">
     <message name="IDS_AUTOFILL_CVC_SUGGESTION_MAIN_TEXT" desc="The main text shown in the credit card suggestion list when the CVC field is focused. It will be the main text which is on the first line of suggestion. If the user hovers over the suggestion, the credit card will be previewed. If the user clicks on the suggestion, credit card will be filled.">
       CVC
     </message>
@@ -1420,6 +1429,11 @@
   <if expr="is_android">
     <message name="IDS_AUTOFILL_CVC_SUGGESTION_MAIN_TEXT" desc="The main text shown in the credit card suggestion list when the CVC field is focused. It will be the main text which is on the first line of suggestion. If the user clicks on the suggestion, credit card will be filled.">
       CVC for <ph name="CARD_NAME">$1<ex>Visa</ex></ph>
+    </message>
+  </if>
+  <if expr="is_ios">
+    <message name="IDS_AUTOFILL_CVC_SUGGESTION_MAIN_TEXT" desc="The main text shown in the credit card suggestion list when the CVC field is focused. It will be the main text which is on the first line of suggestion. If the user clicks on the suggestion, credit card will be filled.">
+      Security code
     </message>
   </if>
   <message name="IDS_AUTOFILL_SETTINGS_PAGE_CVC_SAVED_LABEL" desc="Label for a credit card on the payment settings page when the user has stored the cvc." formatter_data="android_java">

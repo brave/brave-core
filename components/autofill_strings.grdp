@@ -38,23 +38,29 @@
     <message name="IDS_AUTOFILL_DELETE_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Text in a dialog to confirm that the user wants to delete an address from Autofill.">
       Remove address from Brave?
     </message>
-    </if>
-    <message name="IDS_AUTOFILL_REMOVE_HOME_PROFILE_SUGGESTION_CONFIRMATION_TITLE" desc="Title in a dialog to confirm that the user wants to delete their Home address from Autofill.">
+  </if>
+  <message name="IDS_AUTOFILL_REMOVE_HOME_PROFILE_SUGGESTION_CONFIRMATION_TITLE" desc="Title in a dialog to confirm that the user wants to delete their Home address from Autofill." formatter_data="android_java">
     Remove home address from Brave autofill?
-    </message>
-    <message name="IDS_AUTOFILL_REMOVE_HOME_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Text in a dialog to confirm that the user wants to delete their Home address from Autofill.">
+  </message>
+  <message name="IDS_AUTOFILL_REMOVE_HOME_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Text in a dialog to confirm that the user wants to delete their Home address from Autofill." formatter_data="android_java">
     Your home address can help you get things done across Brave services, like more relevant Search results and directions in Brave Maps. You can edit or delete your address <ph name="BEGIN_LINK">&lt;link&gt;</ph>in your Brave sync chain <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph><ph name="END_LINK">&lt;/link&gt;</ph>.
-    </message>
-    <message name="IDS_AUTOFILL_REMOVE_WORK_PROFILE_SUGGESTION_CONFIRMATION_TITLE" desc="Title in a dialog to confirm that the user wants to delete their Work address from Autofill.">
+  </message>
+  <message name="IDS_AUTOFILL_REMOVE_WORK_PROFILE_SUGGESTION_CONFIRMATION_TITLE" desc="Title in a dialog to confirm that the user wants to delete their Work address from Autofill." formatter_data="android_java">
     Remove work address from Brave autofill?
-    </message>
-      <message name="IDS_AUTOFILL_REMOVE_WORK_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Title in a dialog to confirm that the user wants to delete their Work address from Autofill.">
+  </message>
+  <message name="IDS_AUTOFILL_REMOVE_WORK_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Title in a dialog to confirm that the user wants to delete their Work address from Autofill." formatter_data="android_java">
     Your work address can help you get things done across Brave services, like more relevant Search results and directions in Brave Maps. You can edit or delete your address <ph name="BEGIN_LINK">&lt;link&gt;</ph>in your Brave sync chain <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph><ph name="END_LINK">&lt;/link&gt;</ph>.
   </message>
-  <message name="IDS_AUTOFILL_REMOVE_SUGGESTION_BUTTON" desc="Text in a remove button for Autofill suggestion.">
+  <message name="IDS_AUTOFILL_REMOVE_ACCOUNT_NAME_AND_EMAIL_PROFILE_SUGGESTION_CONFIRMATION_TITLE" desc="Title in a dialog to confirm that the user wants to delete their account name and email from Autofill." formatter_data="android_java">
+    Remove this info from Brave autofill?
+  </message>
+  <message name="IDS_AUTOFILL_REMOVE_ACCOUNT_NAME_AND_EMAIL_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Title in a dialog to confirm that the user wants to delete their account name and email address from Autofill." formatter_data="android_java">
+    You can edit your name <ph name="BEGIN_LINK">&lt;link&gt;</ph>in your Brave sync chain <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph><ph name="END_LINK">&lt;/link&gt;</ph>.
+  </message>
+  <message name="IDS_AUTOFILL_REMOVE_SUGGESTION_BUTTON" desc="Text in a remove button for Autofill suggestion." formatter_data="android_java">
     Remove
   </message>
-  <message name="IDS_AUTOFILL_DELETE_SUGGESTION_BUTTON" desc="Text in a delete button for Autofill suggestion.">
+  <message name="IDS_AUTOFILL_DELETE_SUGGESTION_BUTTON" desc="Text in a delete button for Autofill suggestion." formatter_data="android_java">
     Delete
   </message>
   <message name="IDS_AUTOFILL_DELETE_AUTOCOMPLETE_SUGGESTION_TOOLTIP" desc="Tooltip shown when hovering over a small button with a trash-can logo next to an Autocomplete entry in the Autofill popup.">
@@ -377,6 +383,12 @@
   <message name="IDS_AUTOFILL_ADDRESS_WILL_BE_SAVED_IN_ACCOUNT_RECORD_TYPE_NOTICE" desc="The footer message used to notify user that their address will be saved in their account." formatter_data="android_java">
     You can use saved addresses across Brave products. This address will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
+  <message name="IDS_AUTOFILL_ADDRESS_HOME_RECORD_TYPE_NOTICE" desc="The footer message used to notify user that their home address won't be modified and a new address will be added to their Brave sync chain.">
+    You can use saved addresses across Brave products. This won’t change your existing home address. It’ll be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+  </message>
+  <message name="IDS_AUTOFILL_ADDRESS_WORK_RECORD_TYPE_NOTICE" desc="The footer message used to notify user that their work address won't be modified and a new address will be added to their Brave sync chain.">
+    You can use saved addresses across Brave products. This won’t change your existing work address. It’ll be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+  </message>
   <message name="IDS_AUTOFILL_ADDRESS_HOME_AND_WORK_RECORD_TYPE_NOTICE" desc="The footer message used to notify user that their Home/Work address is used to fill forms faster in Brave." formatter_data="android_java">
     Info from your Brave sync chain <ph name="ACCOUNT">$1<ex>elisa.beckett@gmail.com</ex></ph> can help you fill forms faster in Brave
   </message>
@@ -499,6 +511,9 @@
   <message name="IDS_AUTOFILL_SAVE_ADDRESS_PROMPT_OK_BUTTON_LABEL" desc="Label of the OK button in the prompt that offers the user to save a new address.">
     Save
   </message>
+  <message name="IDS_AUTOFILL_SAVE_ADDRESS_WITH_MORE_INFO_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to save a new address which is an extented version of an already existing home or work address.">
+      Save address with more info
+    </message>
   <message name="IDS_AUTOFILL_SAVE_ADDRESS_PROMPT_MIGRATION_OK_BUTTON_LABEL" desc="Label of the OK button in the prompt that offers the user to migrate a new address to their Brave account.">
     Save in account
   </message>
@@ -507,6 +522,9 @@
   </message>
   <message name="IDS_AUTOFILL_UPDATE_ADDRESS_PROMPT_OK_BUTTON_LABEL" desc="Label of the OK button in the prompt that offers the user to update an existing address.">
     Update
+  </message>
+  <message name="IDS_AUTOFILL_ADD_NEW_INFO_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to add additional info to an existing address.">
+    Add new info to saved address
   </message>
   <message name="IDS_AUTOFILL_UPDATE_ADDRESS_ADD_NEW_INFO_PROMPT_OK_BUTTON_LABEL" desc="Label of the OK button in the prompt that offers the user to add new info to an existing address.">
     Add
@@ -573,11 +591,17 @@
     <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_MESSAGE_TITLE" desc="Title shown in the message that offers the user to proceed with saving a new address." meaning="In Title Case for iOS">
       Save address?
     </message>
+    <message name="IDS_IOS_AUTOFILL_SAVE_HOME_WORK_ADDRESS_MESSAGE_TITLE" desc="Title shown in the message that offers the user to proceed with saving a new address by updating home and work address." meaning="In Title Case for iOS">
+      Save address
+    </message>
    <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_IN_ACCOUNT_MESSAGE_TITLE" desc="Title shown in the message that offers the user to proceed with saving a new address in the google account" meaning="In Title Case for iOS">
       Save address in account?
     </message>
     <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_MESSAGE_PRIMARY_ACTION" desc="Label of the primary action button in the message that offers the user to proceed with saving a new address.">
       Save…
+    </message>
+    <message name="IDS_IOS_AUTOFILL_SAVE_HOME_WORK_ADDRESS_MESSAGE_PRIMARY_ACTION" desc="Label of the primary action button in the message that offers the user to proceed with saving a new address by updating a home or work address.">
+      Save
     </message>
     <message name="IDS_IOS_AUTOFILL_UPDATE_ADDRESS_MESSAGE_TITLE" desc="Title shown in the message that offers the user to proceed with updating an existing address." meaning="In Title Case for iOS">
       Update address?
@@ -626,9 +650,6 @@
     </message>
     <message name="IDS_AUTOFILL_UPDATE_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to update an existing address.">
       Update address?
-    </message>
-    <message name="IDS_AUTOFILL_ADD_NEW_INFO_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to add additional info to an existing address.">
-      Add new info to saved address
     </message>
     <message name="IDS_AUTOFILL_UPDATE_ADDRESS_ADD_NEW_INFO_PROMPT_CANCEL_BUTTON_LABEL" desc="Label of the Cancel button in the dialog that adds new info to an existing profile.">
       Cancel
