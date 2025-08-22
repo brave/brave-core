@@ -60,6 +60,8 @@ void StaticRedirectHelper(const GURL& request_url, GURL* new_url) {
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRXDownloadPrefix);
   static base::NoDestructor<URLPattern> autofill_pattern(
       URLPattern::SCHEME_HTTPS, kAutofillPrefix);
+  static base::NoDestructor<URLPattern> favicon_pattern(
+      URLPattern::SCHEME_HTTPS, "https://t0.gstatic.com/faviconV2*");
   static base::NoDestructor<URLPattern> gvt1_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, "*://*.gvt1.com/*");
   static base::NoDestructor<URLPattern> googleDl_pattern(
@@ -114,6 +116,12 @@ void StaticRedirectHelper(const GURL& request_url, GURL* new_url) {
   if (autofill_pattern->MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr(kBraveStaticProxy);
+    *new_url = request_url.ReplaceComponents(replacements);
+    return;
+  }
+
+  if (favicon_pattern->MatchesURL(request_url)) {
+    replacements.SetHostStr("favicons.proxy.brave.com");
     *new_url = request_url.ReplaceComponents(replacements);
     return;
   }
