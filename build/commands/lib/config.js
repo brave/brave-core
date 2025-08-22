@@ -254,6 +254,7 @@ const Config = function () {
     getEnvConfig(['skip_download_rust_toolchain_aux']) || false
   this.is_msan = getEnvConfig(['is_msan'])
   this.is_ubsan = getEnvConfig(['is_ubsan'])
+  this.no_gn_gen = getEnvConfig(['no_gn_gen'])
 
   this.forwardEnvArgsToGn = [
     'bitflyer_production_client_id',
@@ -326,6 +327,10 @@ const Config = function () {
     'zebpay_sandbox_client_secret',
     'zebpay_sandbox_oauth_url',
   ]
+}
+
+Config.prototype.useNoGnGen = function () {
+  return this.no_gn_gen != null
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -1070,10 +1075,6 @@ Config.prototype.updateInternal = function (options) {
 }
 
 Config.prototype.fromGnArgs = function (options) {
-  if (options.C === undefined) {
-    Log.error(`You must specify output directory with -C to use --no_gn_gen`)
-    process.exit(1)
-  }
   const gnArgs = readArgsGn(this.srcDir, options.C)
   Log.warn(
     '--no-gn-gen is experimental and only gn args that match command '
@@ -1084,10 +1085,10 @@ Config.prototype.fromGnArgs = function (options) {
 }
 
 Config.prototype.update = function (options) {
-  if (options.no_gn_gen == null) {
-    this.updateInternal(options)
-  } else {
+  if (this.useNoGnGen()) {
     this.fromGnArgs(options)
+  } else {
+    this.updateInternal(options)
   }
 }
 
@@ -1324,6 +1325,11 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
 Object.defineProperty(Config.prototype, 'outputDir', {
   get: function () {
+    if (this.useNoGnGen() && this.__outputDir == null) {
+      Log.error(`You must specify output directory with -C to use --no_gn_gen`)
+      process.exit(1)
+    }
+
     const baseDir = path.join(this.srcDir, 'out')
     if (this.__outputDir) {
       if (path.isAbsolute(this.__outputDir)) {
