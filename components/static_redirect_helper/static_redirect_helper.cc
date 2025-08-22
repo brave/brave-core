@@ -121,7 +121,6 @@ void StaticRedirectHelper(const GURL& request_url, GURL* new_url) {
   }
 
   if (favicon_pattern->MatchesURL(request_url)) {
-    replacements.SetSchemeStr("https");
     replacements.SetHostStr("favicons.proxy.brave.com");
     *new_url = request_url.ReplaceComponents(replacements);
     return;
