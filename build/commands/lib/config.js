@@ -330,7 +330,7 @@ const Config = function () {
 }
 
 Config.prototype.useNoGnGen = function () {
-  return this.no_gn_gen != null
+  return this.no_gn_gen
 }
 
 Config.prototype.isReleaseBuild = function () {
