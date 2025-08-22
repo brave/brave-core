@@ -242,10 +242,8 @@ void ProcessBrowserWideThemeCommandLineSwitches(
     return;
   }
 
-  using namespace brave::themes::switches;
-
   // kSetDefaultTheme is browser-wide and affects all profiles
-  if (command_line->HasSwitch(kSetDefaultTheme)) {
+  if (command_line->HasSwitch(brave::themes::switches::kSetDefaultTheme)) {
     if (single_profile) {
       // Test scenario - just affect the single test profile
       ThemeService* theme_service =
@@ -304,10 +302,8 @@ void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
     return;
   }
 
-  using namespace brave::themes::switches;
-
-  if (command_line->HasSwitch(kSetUserColor)) {
-    std::string value = command_line->GetSwitchValueASCII(kSetUserColor);
+  if (command_line->HasSwitch(brave::themes::switches::kSetUserColor)) {
+    std::string value = command_line->GetSwitchValueASCII(brave::themes::switches::kSetUserColor);
     std::vector<std::string> rgb = base::SplitString(
         value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
     if (rgb.size() == 3) {
@@ -324,8 +320,8 @@ void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
     }
   }
 
-  if (command_line->HasSwitch(kSetColorScheme)) {
-    std::string scheme = command_line->GetSwitchValueASCII(kSetColorScheme);
+  if (command_line->HasSwitch(brave::themes::switches::kSetColorScheme)) {
+    std::string scheme = command_line->GetSwitchValueASCII(brave::themes::switches::kSetColorScheme);
     static constexpr auto kSchemeMap =
         base::MakeFixedFlatMap<std::string_view,
                                ThemeService::BrowserColorScheme>({
@@ -340,12 +336,12 @@ void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
     }
   }
 
-  if (command_line->HasSwitch(kSetGrayscaleTheme)) {
+  if (command_line->HasSwitch(brave::themes::switches::kSetGrayscaleTheme)) {
     theme_service->SetIsGrayscale(true);
   }
 
-  if (command_line->HasSwitch(kSetColorVariant)) {
-    std::string variant = command_line->GetSwitchValueASCII(kSetColorVariant);
+  if (command_line->HasSwitch(brave::themes::switches::kSetColorVariant)) {
+    std::string variant = command_line->GetSwitchValueASCII(brave::themes::switches::kSetColorVariant);
     static constexpr auto kVariantMap =
         base::MakeFixedFlatMap<std::string_view,
                                ui::mojom::BrowserColorVariant>({
