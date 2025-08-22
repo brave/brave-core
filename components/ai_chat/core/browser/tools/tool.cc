@@ -46,7 +46,8 @@ std::optional<base::Value::Dict> Tool::ExtraParams() const {
 }
 
 void Tool::UseTool(const std::string& input_json,
-                   Tool::UseToolCallback callback) {
+                   Tool::UseToolCallback callback,
+                   std::optional<base::Value> client_data) {
   CHECK(false) << "UseTool called but not implemented";
 }
 
