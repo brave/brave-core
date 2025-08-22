@@ -1,6 +1,0 @@
-Name: wasm-bindgen
-URL: https://crates.io/crates/wasm-bindgen
-Version: 0.2.100
-License: Apache-2.0
-License File: //brave/ui/webui/resources/wasm/vendor/wasm-bindgen/LICENSE-APACHE
-Description: Easy support for interacting between JS and Rust.
