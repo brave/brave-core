@@ -165,6 +165,8 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest, GetMinimumWidth);
+  FRIEND_TEST_ALL_PREFIXES(BraveBrowserViewWithRoundedCornersTest,
+                           ContentsBackgroundEventHandleTest);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 

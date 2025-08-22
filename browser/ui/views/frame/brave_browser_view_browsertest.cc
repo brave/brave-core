@@ -8,8 +8,11 @@
 #include <string>
 
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -19,6 +22,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_user_gesture_details.h"
 #include "chrome/browser/ui/test/test_browser_ui.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -191,6 +195,54 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, ScrimForTabModalDisabledTest) {
              TabStripUserGestureDetails::GestureType::kMouse));
   EXPECT_FALSE(browser_view()->contents_scrim_view()->GetVisible());
 }
+
+class BraveBrowserViewWithRoundedCornersTest
+    : public BraveBrowserViewTest,
+      public testing::WithParamInterface<std::tuple<bool, bool, bool>> {
+ public:
+  BraveBrowserViewWithRoundedCornersTest() {
+    scoped_features_.InitWithFeatureStates(
+        {{features::kBraveWebViewRoundedCorners, IsRoundedCornersEnabled()},
+         {tabs::features::kBraveSplitView, IsBraveSplitViewEnabled()},
+         {features::kSideBySide, IsSideBySideEnabled()}});
+  }
+
+  bool IsRoundedCornersEnabled() const { return std::get<0>(GetParam()); }
+
+  bool IsBraveSplitViewEnabled() const { return std::get<1>(GetParam()); }
+
+  bool IsSideBySideEnabled() const { return std::get<1>(GetParam()); }
+
+ protected:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
+                       ContentsBackgroundEventHandleTest) {
+  if (!IsRoundedCornersEnabled()) {
+    EXPECT_FALSE(brave_browser_view()->contents_background_view_);
+    return;
+  }
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  gfx::Point screen_point = web_contents->GetContainerBounds().CenterPoint();
+
+  // Check contents background is not event handler for web contents region
+  // point.
+  views::View::ConvertPointFromScreen(browser_view(), &screen_point);
+  EXPECT_NE(brave_browser_view()->contents_background_view_,
+            browser_view()->GetEventHandlerForPoint(screen_point));
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    BraveBrowserViewWithRoundedCornersTest,
+    testing::Values(std::make_tuple(false, false, false),
+                    std::make_tuple(true, true, true),
+                    std::make_tuple(true, true, false),
+                    std::make_tuple(true, false, true),
+                    std::make_tuple(true, false, false)));
 
 // MacOS does not need views window scrim. We use sheet to show window modals
 // (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.
