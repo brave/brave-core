@@ -70,7 +70,7 @@ class BraveBookmarkBridge extends BookmarkBridge {
                     TaskTraits.BEST_EFFORT_MAY_BLOCK,
                     () -> {
                         ThreadUtils.assertOnBackgroundThread();
-                        boolean result = isSuccess;
+                        boolean result = true;
                         try {
                             moveInternalFileToDownloads(
                                     mWindowAndroid.getContext().get(), mExportFilePath);
