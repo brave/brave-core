@@ -18,7 +18,6 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.password_manager.ManagePasswordsReferrer;
-import org.chromium.chrome.browser.password_manager.PasswordManagerHelper;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
@@ -36,7 +35,8 @@ public class BravePasswordSettingsTest {
     @Before
     public void setUp() throws Exception {
         Bundle fragmentArgs = new Bundle();
-        fragmentArgs.putInt(PasswordManagerHelper.MANAGE_PASSWORDS_REFERRER,
+        fragmentArgs.putInt(
+                BravePasswordManagerHelper.MANAGE_PASSWORDS_REFERRER,
                 ManagePasswordsReferrer.CHROME_SETTINGS);
         mSettingsActivityTestRule.startSettingsActivity(fragmentArgs);
         mSavePasswordPreferences = mSettingsActivityTestRule.getFragment();
