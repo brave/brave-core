@@ -12,7 +12,6 @@ import { getCompletionEvent, getWebSourcesEvent } from '../../../common/test_dat
 import { createTextContentBlock } from '../../../common/content_block'
 import MockContext from '../../mock_untrusted_conversation_context'
 import AssistantResponse from '.'
-import { setupMemoryToolStringConstants } from './test_utils'
 
 // Mock the locale functions for MemoryToolEvent
 jest.mock('$web-common/locale', () => ({
@@ -72,9 +71,8 @@ test('AssistantResponse should include expandable sources', async () => {
 })
 
 test('AssistantResponse should render memory tool events inline', async () => {
-  setupMemoryToolStringConstants()
 
-  const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
+  const mockHasMemory = () => Promise.resolve({ exists: true })
   const mockUIObserver = {
     onMemoriesChanged: {
       addListener: jest.fn().mockReturnValue('listener-id')
@@ -124,9 +122,8 @@ test(
   'AssistantResponse should render memory tool in undone state when memory ' +
     'does not exist',
      async () => {
-  setupMemoryToolStringConstants()
 
-  const mockHasMemory = jest.fn().mockResolvedValue({ exists: false })
+  const mockHasMemory = () => Promise.resolve({ exists: false })
 
   const memoryToolEvent: Mojom.ConversationEntryEvent = {
     toolUseEvent: {

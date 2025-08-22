@@ -10,7 +10,6 @@ import * as Mojom from '../../../common/mojom'
 import * as React from 'react'
 import MockContext from '../../mock_untrusted_conversation_context'
 import MemoryToolEvent from './memory_tool_event'
-import { setupMemoryToolStringConstants } from './test_utils'
 
 // Mock the locale functions for MemoryToolEvent
 jest.mock('$web-common/locale', () => ({
@@ -25,13 +24,7 @@ jest.mock('$web-common/locale', () => ({
 }))
 
 describe('MemoryToolEvent', () => {
-  beforeEach(() => {
-    setupMemoryToolStringConstants()
-  })
 
-  afterEach(() => {
-    jest.restoreAllMocks()
-  })
   const createToolUseEvent = (
     argumentsJson: string,
     output?: any[]

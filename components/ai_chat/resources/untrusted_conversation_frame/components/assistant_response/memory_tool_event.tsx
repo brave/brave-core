@@ -73,16 +73,6 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
     return null
   }
 
-  // Common manage button (with different styling for success case)
-  const manageButton = (className: string) => (
-    <button
-      className={className}
-      onClick={handleManageAll}
-      data-testid='memory-manage-button'
-    >
-      {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
-    </button>
-  )
 
   const getTestId = () => {
     if (hasError) return 'memory-tool-event-error'
@@ -96,21 +86,41 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
       data-testid={getTestId()}
     >
       <Icon name='database' className={styles.icon} />
-      {hasError ? (
-        <span className={styles.textError}>
-          {getLocale(S.CHAT_UI_MEMORY_ERROR_LABEL)}
-          {manageButton(`${styles.button} ${styles.buttonWithSpacing}`)}
-        </span>
-      ) : !memoryExists ? (
-        <span className={styles.textUndone} title={memoryContent}>
-          {getLocale(S.CHAT_UI_MEMORY_UNDONE_LABEL)}
-          {manageButton(`${styles.button} ${styles.buttonWithSpacing}`)}
-        </span>
-      ) : (
-        <span>
-          {formatLocale(S.CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL, {
-            $1: memoryContent
-          })}{' '}
+      {hasError &&
+        <div className={styles.actions}>
+          <span className={styles.textError}>
+            {getLocale(S.CHAT_UI_MEMORY_ERROR_LABEL)}
+          </span>
+          <button
+            className={styles.button}
+            onClick={handleManageAll}
+            data-testid='memory-manage-button'
+          >
+            {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
+          </button>
+        </div>
+      }
+      {!hasError && !memoryExists &&
+        <div className={styles.actions}>
+          <span className={styles.textUndone} title={memoryContent}>
+            {getLocale(S.CHAT_UI_MEMORY_UNDONE_LABEL)}
+          </span>
+          <button
+            className={styles.button}
+            onClick={handleManageAll}
+            data-testid='memory-manage-button'
+          >
+            {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
+          </button>
+        </div>
+      }
+      {!hasError && memoryExists &&
+        <div className={styles.actions}>
+          <span>
+            {formatLocale(S.CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL, {
+              $1: memoryContent
+            })}
+          </span>
           <button
             className={styles.button}
             onClick={handleUndo}
@@ -118,10 +128,15 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
           >
             {getLocale(S.CHAT_UI_MEMORY_UNDO_BUTTON_LABEL)}
           </button>
-          <span> - </span>
-          {manageButton(styles.button)}
-        </span>
-      )}
+          <button
+            className={styles.button}
+            onClick={handleManageAll}
+            data-testid='memory-manage-button'
+          >
+            {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
+          </button>
+        </div>
+      }
     </div>
   )
 }

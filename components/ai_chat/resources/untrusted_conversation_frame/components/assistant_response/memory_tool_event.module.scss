@@ -37,6 +37,8 @@
   }
 }
 
-.buttonWithSpacing {
-  margin-left: var(--leo-spacing-m);
+.actions {
+  display: inline-flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-m);
 }
