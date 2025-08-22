@@ -230,7 +230,7 @@ TEST_F(EmailAliasesServiceTest,
 class EmailAliasesServiceTimingTest : public ::testing::Test {
  protected:
   EmailAliasesServiceTimingTest()
-      : url_loader_factory_(/*no args*/ ),
+      : url_loader_factory_(/*no args*/),
         url_loader_wrapper_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {}
@@ -254,7 +254,8 @@ class EmailAliasesServiceTimingTest : public ::testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           if (request.url.spec() == verify_result_url) {
-            verify_result_request_times_.push_back(task_environment_.NowTicks());
+            verify_result_request_times_.push_back(
+                task_environment_.NowTicks());
           }
         }));
 
@@ -308,8 +309,8 @@ TEST_F(EmailAliasesServiceTimingTest, VerifyResult_IsRateLimitedByTwoSeconds) {
       [&]() { return verify_result_request_times_.size() >= 2; }));
 
   ASSERT_GE(verify_result_request_times_.size(), 2u);
-  const base::TimeDelta delta = verify_result_request_times_[1] -
-                                verify_result_request_times_[0];
+  const base::TimeDelta delta =
+      verify_result_request_times_[1] - verify_result_request_times_[0];
   EXPECT_GE(delta, base::Seconds(2));
 }
 
@@ -328,7 +329,6 @@ TEST_F(EmailAliasesServiceTimingTest, VerifyResult_StopsAfterMaxDuration) {
 
   EXPECT_EQ(observer_->last_state,
             email_aliases::mojom::AuthenticationStatus::kUnauthenticated);
-
 }
 
 }  // namespace email_aliases

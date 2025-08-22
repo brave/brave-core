@@ -178,10 +178,9 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
 void EmailAliasesService::RequestSession() {
   // Enforce a minimum interval between verify/result polls.
   const base::TimeTicks now = base::TimeTicks::Now();
-  const base::TimeDelta since_last =
-      last_session_request_time_.is_null()
-          ? kMinSessionPollInterval
-          : (now - last_session_request_time_);
+  const base::TimeDelta since_last = last_session_request_time_.is_null()
+                                         ? kMinSessionPollInterval
+                                         : (now - last_session_request_time_);
   if (since_last >= kMinSessionPollInterval) {
     RequestSessionInternal();
     return;
