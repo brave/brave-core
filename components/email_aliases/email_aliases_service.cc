@@ -258,12 +258,7 @@ void EmailAliasesService::OnRequestSessionResponse(
             IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED));
     return;
   }
-  // Remove null authToken from the response so parsing succeeds.
-  base::Value::Dict sanitized = response_body_dict->Clone();
-  if (const base::Value* v = sanitized.Find("authToken"); v && v->is_none()) {
-    sanitized.Remove("authToken");
-  }
-  auto parsed_session = SessionResponse::FromValue(sanitized);
+  auto parsed_session = SessionResponse::FromValue(*response_body_dict);
   if (!parsed_session) {
     // No error message but unparseable response, log it and ignore.
     LOG(ERROR) << "Email Aliases service verification error: Parse error but "
