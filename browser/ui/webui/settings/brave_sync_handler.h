@@ -70,9 +70,7 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
 
   base::WeakPtrFactory<BraveSyncHandler> weak_ptr_factory_;
 
- private:
   friend class BraveSyncHandlerUnittest;
-  FRIEND_TEST_ALL_PREFIXES(BraveSyncHandlerUnittest, CopySyncCodeToClipboard);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_

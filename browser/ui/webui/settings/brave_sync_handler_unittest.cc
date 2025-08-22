@@ -58,9 +58,9 @@ class BraveSyncHandlerUnittest : public testing::Test {
   }
 
  protected:
+  void CallHandleCopySyncCodeToClipboard(const base::Value::List& args);
   Clipboard& clipboard() { return *clipboard_; }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
-  BraveSyncHandler* handler() { return handler_.get(); }
 
  private:
   std::unique_ptr<BraveSyncHandler> handler_;
@@ -72,12 +72,17 @@ class BraveSyncHandlerUnittest : public testing::Test {
   raw_ptr<Clipboard> clipboard_ = nullptr;
 };
 
+void BraveSyncHandlerUnittest::CallHandleCopySyncCodeToClipboard(
+    const base::Value::List& args) {
+  handler_->HandleCopySyncCodeToClipboard(args);
+}
+
 TEST_F(BraveSyncHandlerUnittest, CopySyncCodeToClipboard) {
   base::Value::List args;
   constexpr char kSyncCodeExample[] = "the sync code";
   args.Append(base::Value("id"));
   args.Append(base::Value(kSyncCodeExample));
-  handler()->HandleCopySyncCodeToClipboard(args);
+  CallHandleCopySyncCodeToClipboard(args);
 
   std::string ascii_text;
   clipboard().ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
