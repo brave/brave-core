@@ -264,6 +264,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     return *metadata_;
   }
 
+  std::vector<base::WeakPtr<Tool>> GetToolsForTesting() { return GetTools(); }
+
  protected:
   // ModelService::Observer
   void OnModelListUpdated() override;
@@ -422,10 +424,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   std::unique_ptr<EngineConsumer> engine_ = nullptr;
   mojom::APIError current_error_ = mojom::APIError::None;
 
-  // Tools that this conversation creates
-  std::vector<std::unique_ptr<Tool>> conversation_tools_;
-
-  // Tools that external providers create
+  // Tool providers for this conversation. This allows those providers or their
+  // tools to optionally store state that is only for this conversation. If they
+  // want to store global state and share between-conversations then the
+  // ToolProvider can obtain its base::WeakPtr<Tool> instances from elsewhere
+  // (e.g. a KeyedService, or global singleton).
   std::vector<std::unique_ptr<ToolProvider>> tool_providers_;
 
   // Data store UUID for conversation

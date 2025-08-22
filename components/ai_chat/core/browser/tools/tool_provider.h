@@ -8,6 +8,8 @@
 
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
+
 namespace ai_chat {
 
 class Tool;
@@ -41,8 +43,15 @@ class ToolProvider {
   virtual void OnNewGenerationLoop() {}
 
   // Returns the list of tools available for the conversation.
-  // The returned pointers are valid as long as the ToolProvider exists.
-  virtual std::vector<Tool*> GetTools() = 0;
+  // The returned pointers *should* be valid as long as the ToolProvider exists
+  // until either the ToolProvider is destroyed, or `OnNewGenerationLoop` is
+  // called. Implementors should aim to not destroy any tools outside of
+  // `OnNewGenerationLoop`, so that Tools don't go away mid-loop and leave
+  // conversations hanging waiting for a response or not finding a tool that's
+  // been requested.
+  // Note: any filtering conditions required by ToolProviders can be added as
+  // params here.
+  virtual std::vector<base::WeakPtr<Tool>> GetTools() = 0;
 };
 
 }  // namespace ai_chat

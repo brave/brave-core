@@ -37,7 +37,6 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
-#include "brave/components/ai_chat/core/browser/conversation_tools.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -1042,9 +1041,6 @@ void ConversationHandler::InitToolsForNewGenerationLoop() {
   // We can also reset any already-created tools that don't want state to
   // survive between loops (i.e. when a new user message is received).
 
-  // For now that's all tools
-  conversation_tools_.clear();
-
   // Tool providers may want to do the same
   for (auto& tool_provider : tool_providers_) {
     tool_provider->OnNewGenerationLoop();
@@ -1698,22 +1694,22 @@ void ConversationHandler::OnStateForConversationEntriesChanged() {
 
 std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
   std::vector<base::WeakPtr<Tool>> tools;
-  // Add tools that are owned by this conversation
-  std::ranges::transform(conversation_tools_, std::back_inserter(tools),
-                         [](auto& tool) { return tool->GetWeakPtr(); });
-
-  // Add stateless static tools
-  auto conversation_tools = GetToolsForConversation(
-      associated_content_manager_->HasAssociatedContent(), GetCurrentModel());
-  std::ranges::transform(conversation_tools, std::back_inserter(tools),
-                         [](auto& tool) { return tool->GetWeakPtr(); });
-
-  // Get externally-provided tools
+  // Get provided tools
   for (auto& tool_provider : tool_providers_) {
-    auto provider_tools = tool_provider->GetTools();
-    std::ranges::transform(provider_tools, std::back_inserter(tools),
-                           [](auto* tool) { return tool->GetWeakPtr(); });
+    std::ranges::move(tool_provider->GetTools(), std::back_inserter(tools));
   }
+
+  // Filter tools not supported
+  auto& model = GetCurrentModel();
+  tools.erase(
+      std::remove_if(
+          tools.begin(), tools.end(),
+          [&](auto& tool) {
+            return (!tool->IsSupportedByModel(model) ||
+                    (tool->IsContentAssociationRequired() &&
+                     !associated_content_manager_->HasAssociatedContent()));
+          }),
+      tools.end());
 
   return tools;
 }

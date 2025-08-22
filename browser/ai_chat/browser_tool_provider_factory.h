@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
 
@@ -26,9 +25,6 @@ class BrowserToolProviderFactory : public ToolProviderFactory {
 
   // ToolProviderFactory implementation
   std::unique_ptr<ToolProvider> CreateToolProvider() override;
-
- private:
-  base::WeakPtrFactory<BrowserToolProviderFactory> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat

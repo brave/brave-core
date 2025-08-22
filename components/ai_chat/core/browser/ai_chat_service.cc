@@ -36,6 +36,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/conversation_tools.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -1172,9 +1173,14 @@ void AIChatService::OnGetFocusTabs(
 std::vector<std::unique_ptr<ToolProvider>>
 AIChatService::CreateToolProvidersForNewConversation() {
   std::vector<std::unique_ptr<ToolProvider>> tool_providers;
+
   for (const auto& factory : tool_provider_factories_) {
     tool_providers.push_back(factory->CreateToolProvider());
   }
+
+  // Basic set of tools that we can provide
+  tool_providers.push_back(std::make_unique<ConversationToolProvider>());
+
   return tool_providers;
 }
 
