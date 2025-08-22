@@ -136,9 +136,10 @@ TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithWalletHostName) {
   EXPECT_TRUE(ShouldSupportUrl(GURL("chrome://wallet")));
 }
 
-TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithWalletHostNameAndPath) {
+TEST(BraveAdsUrlUtilTest,
+     ShouldNotSupportBraveSchemeWithWalletHostNameAndPath) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportUrl(GURL("chrome://wallet/foo")));
+  EXPECT_FALSE(ShouldSupportUrl(GURL("chrome://wallet/foo")));
 }
 
 TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithSyncHostName) {
@@ -146,9 +147,9 @@ TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithSyncHostName) {
   EXPECT_TRUE(ShouldSupportUrl(GURL("chrome://sync")));
 }
 
-TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithSyncHostNameAndPath) {
+TEST(BraveAdsUrlUtilTest, ShouldNotSupportBraveSchemeWithSyncHostNameAndPath) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportUrl(GURL("chrome://sync/foo")));
+  EXPECT_FALSE(ShouldSupportUrl(GURL("chrome://sync/foo")));
 }
 
 TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithRewardsHostName) {
@@ -156,9 +157,10 @@ TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithRewardsHostName) {
   EXPECT_TRUE(ShouldSupportUrl(GURL("chrome://rewards")));
 }
 
-TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithRewardsHostNameAndPath) {
+TEST(BraveAdsUrlUtilTest,
+     ShouldNotSupportBraveSchemeWithRewardsHostNameAndPath) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportUrl(GURL("chrome://rewards/foo")));
+  EXPECT_FALSE(ShouldSupportUrl(GURL("chrome://rewards/foo")));
 }
 
 TEST(BraveAdsUrlUtilTest, ShouldNotSupportBraveSchemeWithSettingsHostName) {
