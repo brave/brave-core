@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index c7c59fa540499..4d94009375b0e 100644
+index c7c59fa540499..c5748150b5394 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
 @@ -463,6 +463,8 @@ void ProcessSingletonNotificationCallbackImpl(
@@ -11,12 +11,3 @@ index c7c59fa540499..4d94009375b0e 100644
    StartupBrowserCreator::ProcessCommandLineAlreadyRunning(
        command_line, current_directory, startup_profile_path_info);
  
-@@ -1234,6 +1236,8 @@ void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
-   for (auto& chrome_extra_part : chrome_extra_parts_)
-     chrome_extra_part->PostProfileInit(profile, is_initial_profile);
- 
-+  BRAVE_POST_PROFILE_INIT
-+
- #if BUILDFLAG(IS_WIN)
-   // Verify that the profile is not on a network share and if so prepare to show
-   // notification to the user.
