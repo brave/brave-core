@@ -9,7 +9,7 @@
 
 // Macro injected into ProcessSingletonNotificationCallbackImpl to handle
 // theme switches when Chrome is already running and receives new command line args.
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
+#if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_PROCESS_SINGLETON_NOTIFICATION_CALLBACK_IMPL \
   ProcessBrowserWideThemeCommandLineSwitches(&command_line); \
   ProfileManager* profile_manager = g_browser_process->profile_manager(); \
@@ -22,7 +22,7 @@
   }
 #else
 #define BRAVE_PROCESS_SINGLETON_NOTIFICATION_CALLBACK_IMPL
-#endif  // #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #define BrowserProcessImpl BraveBrowserProcessImpl
 #define ChromeBrowserMainParts ChromeBrowserMainParts_ChromiumImpl
