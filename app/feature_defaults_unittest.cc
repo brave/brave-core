@@ -164,7 +164,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kScrimForBrowserWindowModal,
       &features::KScrimForTabModal,
       &features::kServiceWorkerAutoPreload,
-      &features::kSideBySide,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kTrustSafetySentimentSurvey,
@@ -261,6 +260,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
 #endif
+      &features::kSideBySide,
       &features::kTabstripComboButton,
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,

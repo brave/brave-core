@@ -14,14 +14,18 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class SplitViewBrowserDataBrowserTest : public InProcessBrowserTest {
  public:
-  SplitViewBrowserDataBrowserTest()
-      : feature_list_(tabs::features::kBraveSplitView) {}
+  SplitViewBrowserDataBrowserTest() {
+    feature_list_.InitWithFeatures(
+        /*enabled_features*/ {tabs::features::kBraveSplitView},
+        /*disabled_features*/ {features::kSideBySide});
+  }
   ~SplitViewBrowserDataBrowserTest() override = default;
 
   SplitViewBrowserData& data() {
