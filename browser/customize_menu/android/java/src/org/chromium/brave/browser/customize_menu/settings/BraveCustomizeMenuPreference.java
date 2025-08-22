@@ -18,7 +18,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 
 /**
- * Brave custom menu preference hosted by {@link CustomizeMenuPreferenceFragment}. It shows all the
+ * Brave custom menu preference hosted by {@link BraveCustomizeMenuPreferenceFragment}. It shows all the
  * items that can be hidden from the main menu.
  */
 @NullMarked

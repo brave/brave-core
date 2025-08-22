@@ -9,7 +9,7 @@ android_library("java") {
   sources = [
     "java/src/org/chromium/brave/browser/customize_menu/CustomizeBraveMenu.java",
     "java/src/org/chromium/brave/browser/customize_menu/settings/BraveCustomizeMenuPreference.java",
-    "java/src/org/chromium/brave/browser/customize_menu/settings/CustomizeMenuPreferenceFragment.java",
+    "java/src/org/chromium/brave/browser/customize_menu/settings/BraveCustomizeMenuPreferenceFragment.java",
   ]
 
   deps = [
