@@ -42,7 +42,10 @@ source_set("unit_tests") {
   testonly = true
   
   if (!is_android) {
-    sources = [ "theme_command_line_handler_unittest.cc" ]
+    sources = [ 
+      "brave_theme_service_unittest.cc",
+      "theme_command_line_handler_unittest.cc" 
+    ]
     
     deps = [
       ":themes",
