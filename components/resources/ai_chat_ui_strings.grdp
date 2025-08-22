@@ -606,4 +606,10 @@
   <message name="IDS_AI_CHAT_TEMPORARY_CHAT_DESCRIPTION" desc="Description for temporary chat functionality" formatter_data="webui=AiChat">
     This chat won't be saved into your history or use any of Leo's customization or memories.
   </message>
+  <message name="IDS_AI_CHAT_TASK_PROGRESS_LABEL" desc="Label for the task progress tab in the assistant response" formatter_data="webui=AiChat">
+    Progress
+  </message>
+  <message name="IDS_AI_CHAT_TASK_STEPS_LABEL" desc="Label for the task steps tab in the assistant response" formatter_data="webui=AiChat">
+    Steps
+  </message>
 </grit-part>

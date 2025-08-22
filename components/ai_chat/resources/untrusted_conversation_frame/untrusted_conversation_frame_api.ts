@@ -13,6 +13,7 @@ export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
   conversationHistory: Mojom.ConversationTurn[]
   isMobile: boolean
   associatedContent: Mojom.AssociatedContent[]
+  contentTaskTabId?: number
 }
 
 // Default state before initial API call
@@ -28,7 +29,8 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   totalTokens: BigInt(0),
   canSubmitUserEntries: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
-  associatedContent: []
+  associatedContent: [],
+  conversationCapability: Mojom.ConversationCapability.CHAT,
 }
 
 // Updates a tool use event for a conversation entry in the history.
@@ -71,6 +73,9 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
 
   private conversationObserver: Mojom.UntrustedConversationUICallbackRouter
     = new Mojom.UntrustedConversationUICallbackRouter
+
+  public uiObserver: Mojom.UntrustedUICallbackRouter
+    = new Mojom.UntrustedUICallbackRouter
 
   constructor() {
     super(defaultConversationEntriesUIState)
@@ -118,6 +123,14 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
       }
     )
 
+    this.conversationObserver.contentTaskStarted.addListener(
+      (tabId: number) => {
+        // Get event from Conversation and ask UI Handler for thumbnails
+        this.setPartialState({ contentTaskTabId: tabId })
+        this.uiHandler.addTabToThumbnailTracker(tabId);
+      }
+    )
+
     this.conversationObserver.onEntriesUIStateChanged.addListener((state: Mojom.ConversationEntriesState) => {
       this.setPartialState(state)
     })
@@ -128,6 +141,8 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
 
     // Set up communication with the parent frame
     this.uiHandler.bindParentPage(this.parentUIFrame.$.bindNewPipeAndPassReceiver())
+
+    this.uiHandler.bindUI(this.uiObserver.$.bindNewPipeAndPassRemote())
 
     // Send document height to parent frame
     window.addEventListener('resize', () => this.sendDocumentHeight())

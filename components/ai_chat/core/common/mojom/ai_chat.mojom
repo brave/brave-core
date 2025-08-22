@@ -14,6 +14,9 @@ import "url/mojom/url.mojom";
 // Share some tool names between the browser and the UI so that
 // custom user actions and UI representations can be created.
 const string kUserChoiceToolName = "user_choice_tool";
+const string kTodoToolName = "todo_write";
+const string kNavigateToolName = "web_page_navigator";
+const string kAssistantDetailStorageToolName = "assistant_detail_storage";
 
 // File upload limits
 // https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Message.html#API_runtime_Message_Contents
@@ -24,6 +27,11 @@ const uint32 MAX_DOCUMENT_SIZE_BYTES = 4718592; // 4.5MB
 enum CharacterType {
   HUMAN,
   ASSISTANT
+};
+
+enum ConversationCapability {
+  CHAT,
+  CONTENT_AGENT
 };
 
 enum APIError {
@@ -564,6 +572,7 @@ struct ConversationEntriesState {
   uint64 total_tokens;
   // Indicates the number of tokens that were trimmed from the conversation
   uint64 trimmed_tokens;
+  ConversationCapability conversation_capability;
 };
 
 // Browser-side handler for a Conversation
@@ -656,6 +665,8 @@ interface UntrustedConversationUI {
   OnConversationHistoryUpdate(ConversationTurn? entry);
   OnToolUseEventOutput(string entry_uuid, ToolUseEvent tool_use);
   OnEntriesUIStateChanged(ConversationEntriesState state);
+
+  ContentTaskStarted(int32 tab_id);
 
   // Called when the associated content is changed - called when the untrusted
   // conversation frame is attached and when the content is changed.

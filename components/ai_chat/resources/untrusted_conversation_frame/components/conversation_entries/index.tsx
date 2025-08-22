@@ -27,6 +27,7 @@ import EditIndicator from '../edit_indicator'
 import { getReasoningText, groupConversationEntries } from './conversation_entries_utils'
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
 import styles from './style.module.scss'
+import AssistantTask from '../assistant_response/assistant_task'
 
 function ConversationEntries() {
   const conversationContext = useUntrustedConversationContext()
@@ -127,6 +128,11 @@ function ConversationEntries() {
           const tabAttachments = conversationContext.associatedContent.filter(c => c.conversationTurnUuid === firstEntryEdit.uuid)
           const hasAttachments = !!firstEntryEdit.uploadedFiles?.length || tabAttachments.length > 0
 
+          // We're a task if we have multiple assistant entries
+          // (which means tool use has occured).
+          const groupIsTask = conversationContext.conversationCapability === Mojom.ConversationCapability.CONTENT_AGENT &&
+            group.length && group[0].events?.some(event => !!event && event.toolUseEvent)
+
           return (
             <div
               key={firstEntryEdit.uuid || index}
@@ -150,7 +156,14 @@ function ConversationEntries() {
                     isAIAssistant ? styles.message : styles.humanMessage
                   }
                 >
-                  {group.map((entry, i) => {
+                  {groupIsTask && (
+                    <AssistantTask
+                      assistantEntries={group}
+                      isActiveTask={isLastGroup}
+                      isGenerating={conversationContext.isGenerating}
+                    />
+                  )}
+                  {!groupIsTask &&group.map((entry, i) => {
                     const isEntryInProgress = isEntryInProgressButGroup && (i === group.length - 1)
                     const isLastEntryInLastGroup = isLastGroup && (i === group.length - 1)
                     const currentEntryEdit = entry.edits?.at(-1) ?? entry
@@ -259,10 +272,10 @@ function ConversationEntries() {
                     )
                   })}
                 </div>
-                {isAIAssistant && showEditIndicator && (
+                {!groupIsTask && isAIAssistant && showEditIndicator && (
                   <EditIndicator time={lastEditedTime} />
                 )}
-                {isAIAssistant &&
+                {!groupIsTask && isAIAssistant &&
                   conversationContext.isLeoModel &&
                   !firstEntryEdit.selectedText &&
                   !showEditInput && (
