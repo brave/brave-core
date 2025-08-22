@@ -24,29 +24,9 @@
 #define BRAVE_PROCESS_SINGLETON_NOTIFICATION_CALLBACK_IMPL
 #endif  // #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 
-// Macro injected into PostBrowserStart to handle browser-wide theme switches.
-#if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_POST_BROWSER_START \
-  ProcessBrowserWideThemeCommandLineSwitches();
-#else
-#define BRAVE_POST_BROWSER_START
-#endif  // !BUILDFLAG(IS_ANDROID)
-
-// Macro injected into PostProfileInit to handle theme switches during
-// initial profile setup after Chrome startup.
-#if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_POST_PROFILE_INIT \
-  ProcessThemeCommandLineSwitchesForProfile( \
-      base::CommandLine::ForCurrentProcess(), profile);
-#else
-#define BRAVE_POST_PROFILE_INIT
-#endif  // !BUILDFLAG(IS_ANDROID)
-
 #define BrowserProcessImpl BraveBrowserProcessImpl
 #define ChromeBrowserMainParts ChromeBrowserMainParts_ChromiumImpl
 #include <chrome/browser/chrome_browser_main.cc>
 #undef ChromeBrowserMainParts
 #undef BrowserProcessImpl
 #undef BRAVE_PROCESS_SINGLETON_NOTIFICATION_CALLBACK_IMPL
-#undef BRAVE_POST_BROWSER_START
-#undef BRAVE_POST_PROFILE_INIT

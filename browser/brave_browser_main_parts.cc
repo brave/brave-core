@@ -12,6 +12,7 @@
 #include "base/command_line.h"
 #include "base/path_service.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -195,6 +196,12 @@ void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
                                              bool is_initial_profile) {
   ChromeBrowserMainParts_ChromiumImpl::PostProfileInit(profile,
                                                        is_initial_profile);
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Process theme command line switches for this profile
+  ProcessThemeCommandLineSwitchesForProfile(
+      base::CommandLine::ForCurrentProcess(), profile);
+#endif
 
 #if BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(
