@@ -6,6 +6,25 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
 
+#include "third_party/abseil-cpp/absl/status/statusor.h"
+
+#define CommandCommerceProductSpecifications \
+  CommandAddTabToSuggestedGroup, CommandCommerceProductSpecifications
+
+#define ExecuteContextMenuCommand                                        \
+  ExecuteContextMenuCommand_ChromiumImpl(int context_index,              \
+                                         ContextMenuCommand command_id); \
+  void HandleAddTabToSuggestedGroupCommand(int context_index);           \
+  void OnSuggestGroupForTabResult(std::vector<int> tab_indices,          \
+                                  int context_index,                     \
+                                  absl::StatusOr<int> result);           \
+  void ExecuteContextMenuCommand
+
+#define IsContextMenuCommandEnabled                            \
+  IsContextMenuCommandEnabled_ChromiumImpl(                    \
+      int context_index, ContextMenuCommand command_id) const; \
+  bool IsContextMenuCommandEnabled
+
 #define SelectRelativeTab(...)            \
   virtual SelectRelativeTab(__VA_ARGS__); \
   friend class BraveTabStripModel
@@ -27,5 +46,8 @@
 #undef DraggingTabsSession
 #undef CloseSelectedTabs
 #undef SelectRelativeTab
+#undef IsContextMenuCommandEnabled
+#undef ExecuteContextMenuCommand
+#undef CommandCommerceProductSpecifications
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
