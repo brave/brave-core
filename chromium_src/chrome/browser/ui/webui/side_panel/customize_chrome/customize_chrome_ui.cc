@@ -8,11 +8,15 @@
 #include "brave/browser/ui/webui/cr_components/customize_color_scheme_mode/brave_customize_color_scheme_mode_handler.h"
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "ui/webui/webui_util.h"
 
 #define AddLocalizedStrings(...)                               \
   AddLocalizedStrings(__VA_ARGS__);                            \
   source->AddLocalizedString("braveCustomizeMenuToolbarLabel", \
                              IDS_BRAVE_CUSTOMIZE_MENU_TOOLBAR_LABEL)
+#define SetupWebUIDataSource(...)    \
+  SetupWebUIDataSource(__VA_ARGS__); \
+  source->AddBoolean("showDeviceThemeToggle", false)
 #define CreatePageHandler CreatePageHandlerChromium
 #define CreateCustomizeColorSchemeModeHandler \
   CreateCustomizeColorSchemeModeHandler_Unused
@@ -27,6 +31,7 @@
 #undef IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL
 #undef CreateCustomizeColorSchemeModeHandler
 #undef CreatePageHandler
+#undef SetupWebUIDataSource
 #undef AddLocalizedStrings
 
 void CustomizeChromeUI::CreatePageHandler(
