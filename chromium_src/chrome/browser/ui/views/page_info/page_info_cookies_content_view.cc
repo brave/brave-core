@@ -23,23 +23,28 @@
 void PageInfoCookiesContentView::SetCookieInfo(const CookiesInfo& cookie_info) {
   SetCookieInfo_ChromiumImpl(cookie_info);
 
-  // Hide cookies description and link to settings.
-  cookies_description_label_->SetVisible(false);
-  third_party_cookies_container_->SetVisible(false);
+  // Remove cookies description child view
+  if (auto* parent = cookies_description_label_->parent()) {
+    parent->RemoveChildViewT(cookies_description_label_);
+  }
+
+  // Remove third-party cookies container with child view
+  if (auto* parent = third_party_cookies_container_->parent()) {
+    parent->RemoveChildViewT(third_party_cookies_container_);
+  }
 
   // Remove separator.
   // cookies_buttons_container_view_'s children are:
   // [0]: separator
   // [1]: on-site data button row, which we want to keep
-  if (cookies_buttons_container_view_) {
-    if (cookies_buttons_container_view_->children().size() > 0) {
-      // Setting `cookies_dialog_button_` to nullptr as removing the first child
-      // view below will result in this pointer being invalidated.
-      cookies_dialog_button_ = nullptr;
+  if (cookies_buttons_container_view_ &&
+      cookies_buttons_container_view_->children().size() > 0) {
+    // Setting `cookies_dialog_button_` to nullptr as removing the first child
+    // view below will result in this pointer being invalidated.
+    cookies_dialog_button_ = nullptr;
 
-      cookies_buttons_container_view_->RemoveChildViewT(
-          cookies_buttons_container_view_->children()[0]);
-    }
+    cookies_buttons_container_view_->RemoveChildViewT(
+        cookies_buttons_container_view_->children()[0]);
   }
   PreferredSizeChanged();
 }
