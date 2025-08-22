@@ -10,10 +10,13 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/components/local_ai/browser/local_models_updater.h"
+#include "brave/components/local_ai/common/features.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -152,6 +155,9 @@ void BraveTabMenuModel::Build(Browser* browser,
   if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
     BuildItemForCustomization(tab_strip_model, selected_index);
   }
+
+  // Add AI-powered tab group suggestion menu item
+  MaybeAddSuggestedGroupMenuItem(tab_strip_model, indices);
 }
 
 void BraveTabMenuModel::BuildItemsForSplitView(
@@ -220,4 +226,75 @@ void BraveTabMenuModel::BuildItemForCustomization(
 
   const auto index = *GetIndexOfCommandId(TabStripModel::CommandReload) + 1;
   InsertItemWithStringIdAt(index, CommandRenameTab, IDS_TAB_CXMENU_RENAME_TAB);
+}
+
+void BraveTabMenuModel::MaybeAddSuggestedGroupMenuItem(
+    TabStripModel* tab_strip_model,
+    const std::vector<int>& indices) {
+  // Only add if Local AI Tab Grouping feature is enabled
+  if (!base::FeatureList::IsEnabled(local_ai::features::kLocalAITabGrouping)) {
+    return;
+  }
+
+  // Check if the text embedder model is available
+  auto* state = local_ai::LocalModelsUpdaterState::GetInstance();
+  if (state->GetInstallDir().empty()) {
+    return;
+  }
+
+  // Only suggest for tabs that are not already in groups
+  std::vector<int> ungrouped_indices;
+  for (int index : indices) {
+    if (!tab_strip_model->GetTabGroupForTab(index).has_value()) {
+      ungrouped_indices.push_back(index);
+    }
+  }
+
+  if (ungrouped_indices.empty()) {
+    return;  // No ungrouped tabs to suggest for
+  }
+
+  // Check if there are existing groups to suggest
+  bool has_existing_groups = false;
+  for (int i = 0; i < tab_strip_model->count(); ++i) {
+    if (tab_strip_model->GetTabGroupForTab(i).has_value()) {
+      has_existing_groups = true;
+      break;
+    }
+  }
+
+  if (!has_existing_groups) {
+    return;  // No existing groups to suggest adding to
+  }
+
+  int num_tabs = ungrouped_indices.size();
+
+  // Find the position after the group-related items to insert our item
+  int insert_position = -1;
+  auto add_to_group_index =
+      GetIndexOfCommandId(TabStripModel::CommandAddToNewGroup);
+  auto add_to_existing_group_index =
+      GetIndexOfCommandId(TabStripModel::CommandAddToExistingGroup);
+  auto remove_from_group_index =
+      GetIndexOfCommandId(TabStripModel::CommandRemoveFromGroup);
+
+  if (add_to_group_index.has_value()) {
+    insert_position = add_to_group_index.value() + 1;
+  } else if (add_to_existing_group_index.has_value()) {
+    insert_position = add_to_existing_group_index.value() + 1;
+  } else if (remove_from_group_index.has_value()) {
+    insert_position = remove_from_group_index.value() + 1;
+  }
+
+  if (insert_position == -1) {
+    // Fallback: add before separators at the end
+    insert_position = GetItemCount();
+  }
+
+  std::u16string label = l10n_util::GetPluralStringFUTF16(
+      num_tabs == 1 ? IDS_TAB_CXMENU_ADD_TAB_TO_SUGGESTED_GROUP
+                    : IDS_TAB_CXMENU_ADD_TABS_TO_SUGGESTED_GROUPS,
+      num_tabs);
+
+  InsertItemAt(insert_position, CommandAddTabToSuggestedGroup, label);
 }

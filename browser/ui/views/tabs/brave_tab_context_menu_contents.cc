@@ -235,6 +235,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandSwapTabsInTile:
       [[fallthrough]];
     case BraveTabMenuModel::CommandRenameTab:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandAddTabToSuggestedGroup:
       return true;
   }
   NOTREACHED() << "All commands are handled above";
@@ -292,6 +294,11 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandRenameTab:
       CHECK(controller_);
       controller_->EnterTabRenameModeAt(tab_index_);
+      return;
+    case BraveTabMenuModel::CommandAddTabToSuggestedGroup:
+      // Delegate to TabStripModel's CommandAddTabToSuggestedGroup handling
+      controller_->model()->ExecuteContextMenuCommand(
+          tab_index_, TabStripModel::CommandAddTabToSuggestedGroup);
       return;
   }
   NOTREACHED() << "All commands are handled above";

@@ -976,6 +976,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_ADD_SUGGESTED_TABS" desc="The label of the tab group header context menu item for adding AI-suggested tabs to the current group.">
           Add suggested tabs in group
         </message>
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_SUGGESTED_GROUP" desc="The label of the tab context menu item for adding a tab to an AI-suggested group.">
+          Add tab to suggested group
+        </message>
+        <message name="IDS_TAB_CXMENU_ADD_TABS_TO_SUGGESTED_GROUPS" desc="The label of the tab context menu item for adding tabs to AI-suggested groups.">
+          Add tabs to suggested groups
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -1013,6 +1019,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_ADD_SUGGESTED_TABS" desc="In Title Case: The label of the tab group header context menu item for adding AI-suggested tabs to the current group.">
           Add Suggested Tabs in Group
+        </message>
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_SUGGESTED_GROUP" desc="In Title Case: The label of the tab context menu item for adding a tab to an AI-suggested group.">
+          Add Tab to Suggested Group
+        </message>
+        <message name="IDS_TAB_CXMENU_ADD_TABS_TO_SUGGESTED_GROUPS" desc="In Title Case: The label of the tab context menu item for adding tabs to AI-suggested groups.">
+          Add Tabs to Suggested Groups
         </message>
       </if>
 

@@ -46,6 +46,7 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandSwapTabsInTile,
     CommandOpenInContainer,
     CommandRenameTab,
+    CommandAddTabToSuggestedGroup,
     CommandLast,
   };
 
@@ -91,6 +92,10 @@ class BraveTabMenuModel : public TabMenuModel {
 
   // Build menu items for tab customization, such as renaming the tab.
   void BuildItemForCustomization(TabStripModel* tab_strip_model, int tab_index);
+
+  // Build menu item for AI-powered tab group suggestions.
+  void MaybeAddSuggestedGroupMenuItem(TabStripModel* tab_strip_model,
+                                      const std::vector<int>& indices);
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
