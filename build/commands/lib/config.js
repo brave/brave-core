@@ -1256,7 +1256,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       // Siso has its own limits for remote execution that do not depend on
       // NINJA_CORE_* values. Set those limits separately. See docs for more
       // details:
-      // https://chromium.googlesource.com/infra/infra/+/main/go/src/infra/build/siso/docs/environment_variables.md#siso_limits
+      // https://chromium.googlesource.com/build/+/refs/heads/main/siso/docs/environment_variables.md#siso_limits
       const defaultSisoLimits = {
         local: this.sisoJobsLimit,
         remote: this.sisoJobsLimit || kRemoteLimit,
