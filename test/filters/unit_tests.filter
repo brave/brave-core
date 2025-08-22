@@ -61,7 +61,7 @@
 
 # This test fails because we have different than expected default number of
 # prepopulated search engines
-=TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram
+-TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram
 
 # These tests crash because pinned_toolbar_actions_container_ in
 # BraveToolbarView is set to nullptr
