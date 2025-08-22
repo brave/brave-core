@@ -17,7 +17,11 @@
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/browser/ui/themes/switches.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/common/channel_info.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -206,34 +210,86 @@ base::Value::List GetBraveDarkModeTypeList() {
 
 }  // namespace dark_mode
 
+// Processes browser-wide theme command line switches.
+// This should be called once during browser startup.
+void ProcessBrowserWideThemeCommandLineSwitches() {
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+    BUILDFLAG(IS_CHROMEOS)
+  ProcessBrowserWideThemeCommandLineSwitches(base::CommandLine::ForCurrentProcess());
+#endif
+}
+
+// Processes browser-wide theme command line switches with specific command line.
+// Used for both startup and running instance scenarios.
+void ProcessBrowserWideThemeCommandLineSwitches(const base::CommandLine* command_line) {
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+    BUILDFLAG(IS_CHROMEOS)
+  ProcessBrowserWideThemeCommandLineSwitches(command_line, nullptr);
+#endif
+}
+
+// Processes browser-wide theme command line switches with specific command line and optional single profile.
+// If single_profile is provided (test scenario), only that profile is affected.
+// Otherwise, all loaded profiles are affected.
+void ProcessBrowserWideThemeCommandLineSwitches(const base::CommandLine* command_line, Profile* single_profile) {
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+    BUILDFLAG(IS_CHROMEOS)
+  if (!command_line) {
+    return;
+  }
+
+  using namespace brave::themes::switches;
+
+  // kSetDefaultTheme is browser-wide and affects all profiles
+  if (command_line->HasSwitch(kSetDefaultTheme)) {
+    if (single_profile) {
+      // Test scenario - just affect the single test profile
+      ThemeService* theme_service = ThemeServiceFactory::GetForProfile(single_profile);
+      if (theme_service) {
+        theme_service->UseDefaultTheme();
+      }
+    } else {
+      // Production scenario - affect all loaded profiles
+      if (!g_browser_process || !g_browser_process->profile_manager()) {
+        return;
+      }
+      
+      ProfileManager* profile_manager = g_browser_process->profile_manager();
+      for (Profile* profile : profile_manager->GetLoadedProfiles()) {
+        if (profile) {
+          ThemeService* theme_service = ThemeServiceFactory::GetForProfile(profile);
+          if (theme_service) {
+            theme_service->UseDefaultTheme();
+          }
+        }
+      }
+    }
+  }
+#endif
+}
+
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
     BUILDFLAG(IS_CHROMEOS)
 
-#include "base/command_line.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/numerics/checked_math.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "brave/browser/ui/themes/switches.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/themes/theme_service.h"
-#include "chrome/browser/themes/theme_service_factory.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/mojom/themes.mojom.h"
 
 namespace {
 
-// Processes theme command line switches and applies them to the ThemeService.
-// These switches work together:
-// - kSetDefaultTheme: Resets to system default (takes precedence, returns early)
+// Processes per-profile theme command line switches and applies them to the ThemeService.
+// These switches are per-profile:
 // - kSetUserColor: Sets the seed color for Material You dynamic theming (GM3)
 // - kSetColorScheme: Controls light/dark mode preference
 // - kSetColorVariant: Sets Material You color variant (tonal_spot, neutral, vibrant, expressive)
 // - kSetGrayscaleTheme: Enables grayscale overlay (boolean flag - presence = true)
 //
-// They can be combined, e.g.:
-// --set-user-color="100,150,200" --set-color-scheme="dark" --set-color-variant="vibrant"
+// Note: kSetDefaultTheme is processed browser-wide, not here.
 void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
                                      ThemeService* theme_service) {
     if (!command_line || !theme_service) {
@@ -241,11 +297,6 @@ void ProcessThemeCommandLineSwitches(const base::CommandLine* command_line,
     }
 
     using namespace brave::themes::switches;
-
-    if (command_line->HasSwitch(kSetDefaultTheme)) {
-      theme_service->UseDefaultTheme();
-      return;
-    }
 
     if (command_line->HasSwitch(kSetUserColor)) {
       std::string value =
