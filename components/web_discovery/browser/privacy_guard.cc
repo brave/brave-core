@@ -159,7 +159,7 @@ std::optional<std::string> FindValidISSN(std::string_view str) {
   std::string issn_candidate;
 
   // Loop through all ISSN candidates until we find one with valid checksum
-  while (RegexUtil::GetInstance()->FindAndConsumeISSN(str, &issn_candidate)) {
+  while (RegexUtil::GetInstance()->FindAndConsumeISSN(&str, &issn_candidate)) {
     // Validate checksum
     int checksum = 0;
     size_t position = 0;
@@ -200,8 +200,9 @@ bool CheckForLongNumber(std::string str) {
   // Extract digit sequences using regex to find number fragments
   std::vector<std::string> numbers;
   std::string digits_only;
+  std::string_view input = str;
 
-  while (RegexUtil::GetInstance()->FindAndConsumeNumberFragment(str,
+  while (RegexUtil::GetInstance()->FindAndConsumeNumberFragment(&input,
                                                                 &digits_only)) {
     // Add to numbers if long enough (filtering already done in
     // FindAndConsumeNumberFragment)
@@ -350,7 +351,7 @@ bool ShouldMaskURL(const GURL& url) {
   // Check path parts count
   auto path_parts = base::SplitStringPiece(
       url.path_piece(), "/", base::WhitespaceHandling::KEEP_WHITESPACE,
-      base::SPLIT_WANT_ALL);
+      base::SplitResult::SPLIT_WANT_NONEMPTY);
   if (path_parts.size() > kMaxUrlPathParts) {
     return true;
   }

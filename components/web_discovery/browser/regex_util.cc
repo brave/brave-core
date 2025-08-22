@@ -16,8 +16,8 @@ constexpr char kEmailRegex[] =
 constexpr char kHttpPasswordRegex[] = "[^:]+:[^@]+@";
 constexpr char kEuroLongWordPatternRegex[] = "^[a-zA-ZäöüéÄÖÜ][a-zäöüéß]+$";
 constexpr char kWhitespaceRegex[] = "\\s+";
-constexpr char kISSNRegex[] = "^[0-9]{4}-?[0-9]{3}[0-9xX]$";
-constexpr char kNumberFragmentRegex[] = "[^\\p{L}\\s]+";
+constexpr char kISSNRegex[] = "([0-9]{4}-?[0-9]{3}[0-9xX])";
+constexpr char kNumberFragmentRegex[] = "([^\\p{L}\\s]+)";
 constexpr char kNonDigitRegex[] = "[^0-9]";
 constexpr char kSafeUrlParameterRegex[] = "^[a-z-_]{1,18}$";
 
@@ -72,14 +72,15 @@ std::string RegexUtil::NormalizeWhitespace(std::string_view str) {
   return result;
 }
 
-bool RegexUtil::FindAndConsumeISSN(std::string_view input, std::string* match) {
+bool RegexUtil::FindAndConsumeISSN(std::string_view* input,
+                                   std::string* match) {
   if (!issn_regex_) {
     issn_regex_.emplace(kISSNRegex);
   }
-  return re2::RE2::FindAndConsume(&input, *issn_regex_, match);
+  return re2::RE2::FindAndConsume(input, *issn_regex_, match);
 }
 
-bool RegexUtil::FindAndConsumeNumberFragment(std::string_view input,
+bool RegexUtil::FindAndConsumeNumberFragment(std::string_view* input,
                                              std::string* match) {
   if (!number_fragment_regex_) {
     number_fragment_regex_.emplace(kNumberFragmentRegex);
@@ -89,7 +90,7 @@ bool RegexUtil::FindAndConsumeNumberFragment(std::string_view input,
   }
 
   std::string raw_fragment;
-  if (!re2::RE2::FindAndConsume(&input, *number_fragment_regex_,
+  if (!re2::RE2::FindAndConsume(input, *number_fragment_regex_,
                                 &raw_fragment)) {
     return false;
   }

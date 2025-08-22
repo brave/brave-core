@@ -32,8 +32,9 @@ class RegexUtil {
   bool CheckForEmail(std::string_view str);
   bool CheckQueryHTTPCredentials(std::string_view str);
   bool CheckForEuroLongWord(std::string_view str);
-  bool FindAndConsumeISSN(std::string_view input, std::string* match);
-  bool FindAndConsumeNumberFragment(std::string_view input, std::string* match);
+  bool FindAndConsumeISSN(std::string_view* input, std::string* match);
+  bool FindAndConsumeNumberFragment(std::string_view* input,
+                                    std::string* match);
   std::string NormalizeWhitespace(std::string_view str);
   bool CheckForMiscPrivateUrls(std::string_view str);
   bool CheckForSafeUrlParameter(std::string_view value);
