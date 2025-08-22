@@ -131,6 +131,17 @@ TEST(BraveAdsUrlUtilTest, ShouldNotSupportBraveSchemeWithFooBarHostName) {
   EXPECT_FALSE(ShouldSupportUrl(GURL("chrome://foobar")));
 }
 
+TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithGettingStartedHostName) {
+  // Act & Assert
+  EXPECT_TRUE(ShouldSupportUrl(GURL("chrome://getting-started")));
+}
+
+TEST(BraveAdsUrlUtilTest,
+     ShouldNotSupportBraveSchemeWithGettingStartedHostNameAndPath) {
+  // Act & Assert
+  EXPECT_FALSE(ShouldSupportUrl(GURL("chrome://getting-started/foo")));
+}
+
 TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithWalletHostName) {
   // Act & Assert
   EXPECT_TRUE(ShouldSupportUrl(GURL("chrome://wallet")));
@@ -161,6 +172,16 @@ TEST(BraveAdsUrlUtilTest,
      ShouldNotSupportBraveSchemeWithRewardsHostNameAndPath) {
   // Act & Assert
   EXPECT_FALSE(ShouldSupportUrl(GURL("chrome://rewards/foo")));
+}
+
+TEST(BraveAdsUrlUtilTest, ShouldSupportBraveSchemeWithLeoAiHostName) {
+  // Act & Assert
+  EXPECT_TRUE(ShouldSupportUrl(GURL("chrome://leo-ai")));
+}
+
+TEST(BraveAdsUrlUtilTest, ShouldNotSupportBraveSchemeWithLeoAiHostNameAndPath) {
+  // Act & Assert
+  EXPECT_FALSE(ShouldSupportUrl(GURL("chrome://leo-ai/foo")));
 }
 
 TEST(BraveAdsUrlUtilTest, ShouldNotSupportBraveSchemeWithSettingsHostName) {

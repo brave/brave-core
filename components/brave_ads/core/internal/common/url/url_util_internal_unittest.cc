@@ -67,6 +67,19 @@ TEST(BraveAdsUrlUtilInternalTest,
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
+     ShouldSupportInternalUrlWithBraveSchemeAndGettingStartedHostName) {
+  // Act & Assert
+  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("chrome://getting-started")));
+}
+
+TEST(
+    BraveAdsUrlUtilInternalTest,
+    ShouldNotSupportInternalUrlWithBraveSchemeAndGettingStartedHostNameAndPath) {
+  // Act & Assert
+  EXPECT_FALSE(ShouldSupportInternalUrl(GURL("chrome://getting-started/foo")));
+}
+
+TEST(BraveAdsUrlUtilInternalTest,
      ShouldSupportInternalUrlWithBraveSchemeAndWalletHostName) {
   // Act & Assert
   EXPECT_TRUE(ShouldSupportInternalUrl(GURL("chrome://wallet")));
@@ -88,6 +101,18 @@ TEST(BraveAdsUrlUtilInternalTest,
      ShouldNotSupportInternalUrlWithBraveSchemeAndSyncHostNameAndPath) {
   // Act & Assert
   EXPECT_FALSE(ShouldSupportInternalUrl(GURL("chrome://sync/foo")));
+}
+
+TEST(BraveAdsUrlUtilInternalTest,
+     ShouldSupportInternalUrlWithBraveSchemeAndLeoAiHostName) {
+  // Act & Assert
+  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("chrome://leo-ai")));
+}
+
+TEST(BraveAdsUrlUtilInternalTest,
+     ShouldNotSupportInternalUrlWithBraveSchemeAndLeoAiHostNameAndPath) {
+  // Act & Assert
+  EXPECT_FALSE(ShouldSupportInternalUrl(GURL("chrome://leo-ai/foo")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
