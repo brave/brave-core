@@ -15,9 +15,9 @@
   ExecuteContextMenuCommand_ChromiumImpl(int context_index,              \
                                          ContextMenuCommand command_id); \
   void HandleAddTabToSuggestedGroupCommand(int context_index);           \
-  void OnSuggestGroupForTabResult(std::vector<int> tab_indices,          \
-                                  int context_index,                     \
-                                  absl::StatusOr<int> result);           \
+  void OnSuggestGroupForTabResult(                                       \
+      std::vector<int> tab_indices, int context_index,                   \
+      absl::StatusOr<tab_groups::TabGroupId> result);                    \
   void ExecuteContextMenuCommand
 
 #define IsContextMenuCommandEnabled                            \

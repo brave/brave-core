@@ -118,31 +118,23 @@ void TabStripModel::HandleAddTabToSuggestedGroupCommand(int context_index) {
   }
 
   // Collect existing groups first (shared across all tab processing)
-  std::vector<std::vector<std::string>> group_tabs;
-  std::set<tab_groups::TabGroupId> processed_groups;
+  std::map<tab_groups::TabGroupId, std::vector<local_ai::TextEmbedder::TabInfo>>
+      group_tabs;
 
   for (int i = 0; i < count(); ++i) {
     auto group_id = GetTabGroupForTab(i);
-    if (group_id.has_value() &&
-        processed_groups.find(group_id.value()) == processed_groups.end()) {
-      processed_groups.insert(group_id.value());
-
-      std::vector<std::string> current_group_tabs;
-      for (int j = 0; j < count(); ++j) {
-        auto tab_group = GetTabGroupForTab(j);
-        if (tab_group.has_value() && tab_group.value() == group_id.value()) {
-          content::WebContents* group_web_contents = GetWebContentsAt(j);
-          if (group_web_contents) {
-            std::u16string group_title = group_web_contents->GetTitle();
-            GURL group_url = group_web_contents->GetVisibleURL();
-            std::string group_tab_description = base::StrCat(
-                {base::UTF16ToUTF8(group_title), " | ", group_url.spec()});
-            current_group_tabs.push_back(group_tab_description);
-          }
-        }
+    if (group_id.has_value()) {
+      // Initialize the group if we haven't seen it yet
+      if (group_tabs.find(group_id.value()) == group_tabs.end()) {
+        group_tabs[group_id.value()] =
+            std::vector<local_ai::TextEmbedder::TabInfo>();
       }
-      if (!current_group_tabs.empty()) {
-        group_tabs.push_back(std::move(current_group_tabs));
+
+      content::WebContents* group_web_contents = GetWebContentsAt(i);
+      if (group_web_contents) {
+        std::u16string group_title = group_web_contents->GetTitle();
+        GURL group_url = group_web_contents->GetVisibleURL();
+        group_tabs[group_id.value()].push_back({group_title, group_url});
       }
     }
   }
@@ -156,7 +148,8 @@ void TabStripModel::HandleAddTabToSuggestedGroupCommand(int context_index) {
       [](base::WeakPtr<TabStripModel> model,
          std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter>
              embedder,
-         std::vector<std::vector<std::string>> group_tabs,
+         std::map<tab_groups::TabGroupId,
+                  std::vector<local_ai::TextEmbedder::TabInfo>> group_tabs,
          std::vector<int> ungrouped_indices, int context_index, bool success) {
         if (!model || !success) {
           return;
@@ -165,7 +158,7 @@ void TabStripModel::HandleAddTabToSuggestedGroupCommand(int context_index) {
         // Use barrier callback to wait for all tab suggestions to complete
         struct TabSuggestionResult {
           int tab_index;
-          absl::StatusOr<int> suggested_group;
+          absl::StatusOr<tab_groups::TabGroupId> suggested_group;
         };
 
         auto barrier_callback = base::BarrierCallback<TabSuggestionResult>(
@@ -178,13 +171,15 @@ void TabStripModel::HandleAddTabToSuggestedGroupCommand(int context_index) {
                   }
 
                   // Group tabs by their suggested group and add them
-                  std::map<int, std::vector<int>> tabs_by_group;
+                  std::map<tab_groups::TabGroupId, std::vector<int>>
+                      tabs_by_group;
                   for (const auto& result : results) {
                     if (result.suggested_group.ok()) {
-                      int group_index = result.suggested_group.value();
-                      tabs_by_group[group_index].push_back(result.tab_index);
+                      tab_groups::TabGroupId group_id =
+                          result.suggested_group.value();
+                      tabs_by_group[group_id].push_back(result.tab_index);
                       VLOG(1) << "Tab " << result.tab_index << " -> Group "
-                              << group_index;
+                              << group_id;
                     } else {
                       VLOG(1)
                           << "No suggestion for tab " << result.tab_index
@@ -193,10 +188,10 @@ void TabStripModel::HandleAddTabToSuggestedGroupCommand(int context_index) {
                   }
 
                   // Add tabs to their suggested groups
-                  for (const auto& [group_index, tab_indices] : tabs_by_group) {
+                  for (const auto& [group_id, tab_indices] : tabs_by_group) {
                     model->OnSuggestGroupForTabResult(
                         tab_indices, context_index,
-                        absl::StatusOr<int>(group_index));
+                        absl::StatusOr<tab_groups::TabGroupId>(group_id));
                   }
                 },
                 model, context_index));
@@ -214,15 +209,18 @@ void TabStripModel::HandleAddTabToSuggestedGroupCommand(int context_index) {
 
           std::u16string title = web_contents->GetTitle();
           GURL url = web_contents->GetVisibleURL();
-          std::string tab_description =
-              base::StrCat({base::UTF16ToUTF8(title), " | ", url.spec()});
+
+          local_ai::TextEmbedder::CandidateTab candidate_tab;
+          candidate_tab.index = tab_index;
+          candidate_tab.tab_info = {title, url};
 
           embedder->SuggestGroupForTab(
-              std::make_pair(tab_index, tab_description), group_tabs,
+              candidate_tab, group_tabs,
               base::BindOnce(
                   [](base::RepeatingCallback<void(TabSuggestionResult)>
                          callback,
-                     int tab_index, absl::StatusOr<int> result) {
+                     int tab_index,
+                     absl::StatusOr<tab_groups::TabGroupId> result) {
                     callback.Run({tab_index, result});
                   },
                   barrier_callback, tab_index));
@@ -232,34 +230,15 @@ void TabStripModel::HandleAddTabToSuggestedGroupCommand(int context_index) {
       std::move(group_tabs), ungrouped_indices, context_index));
 }
 
-void TabStripModel::OnSuggestGroupForTabResult(std::vector<int> tab_indices,
-                                               int context_index,
-                                               absl::StatusOr<int> result) {
+void TabStripModel::OnSuggestGroupForTabResult(
+    std::vector<int> tab_indices,
+    int context_index,
+    absl::StatusOr<tab_groups::TabGroupId> result) {
   if (!result.ok()) {
     return;  // Error occurred
   }
 
-  int suggested_group_index = result.value();
-
-  // Find the actual tab group ID for the suggested group index
-  std::vector<tab_groups::TabGroupId> existing_groups;
-  std::set<tab_groups::TabGroupId> processed_groups;
-
-  for (int i = 0; i < count(); ++i) {
-    auto group_id = GetTabGroupForTab(i);
-    if (group_id.has_value() &&
-        processed_groups.find(group_id.value()) == processed_groups.end()) {
-      processed_groups.insert(group_id.value());
-      existing_groups.push_back(group_id.value());
-    }
-  }
-
-  if (suggested_group_index < 0 ||
-      suggested_group_index >= static_cast<int>(existing_groups.size())) {
-    return;  // Invalid group index
-  }
-
-  tab_groups::TabGroupId target_group = existing_groups[suggested_group_index];
+  tab_groups::TabGroupId target_group = result.value();
 
   // Filter and validate tab indices
   std::vector<int> valid_indices;

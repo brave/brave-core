@@ -26,6 +26,7 @@
 #include "base/metrics/histogram_functions_internal_overloads.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/bind_post_task.h"
 #include "base/timer/elapsed_timer.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/port/statusor.h"
@@ -110,6 +111,23 @@ void TextEmbedder::InitializeEmbedder(InitializeCallback callback) {
   std::move(callback).Run(true);
 }
 
+std::string TextEmbedder::SerializeTabInfo(const TabInfo& tab_info) {
+  DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
+
+  // Extract host from GURL for cleaner embeddings
+  std::string url_part;
+  if (tab_info.url.is_valid() && tab_info.url.has_host()) {
+    url_part = tab_info.url.host();
+  } else if (tab_info.url.is_valid()) {
+    // Fallback to spec if no host (e.g., for file:// URLs)
+    url_part = tab_info.url.spec();
+  } else {
+    url_part = "unknown";
+  }
+
+  return base::StrCat({base::UTF16ToUTF8(tab_info.title), " | ", url_part});
+}
+
 absl::Status TextEmbedder::EmbedText(
     const std::string& text,
     tflite::task::processor::EmbeddingResult& embedding) {
@@ -189,11 +207,16 @@ TextEmbedder::CalculateTabGroupCentroid() {
 // Given 2 arrays, (1) containing strings (tab title + origin) for all tabs in a
 // group and (2) containing strings of all open tabs (candidates), output
 // indices for top 3 candidates.
-void TextEmbedder::SuggestTabsForGroup(
-    std::vector<std::string> group_tabs,
-    std::vector<std::pair<int, std::string>> candidate_tabs,
-    SuggestTabsForGroupCallback callback) {
+void TextEmbedder::SuggestTabsForGroup(std::vector<TabInfo> group_tabs,
+                                       std::vector<CandidateTab> candidate_tabs,
+                                       SuggestTabsForGroupCallback callback) {
   DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
+
+  if (!IsInitialized()) {
+    std::move(callback).Run(absl::FailedPreconditionError(
+        "TextEmbedder is not initialized. Call Initialize() first."));
+    return;
+  }
 
   embedder_task_runner_->PostTask(
       FROM_HERE,
@@ -204,14 +227,16 @@ void TextEmbedder::SuggestTabsForGroup(
 }
 
 void TextEmbedder::SuggestTabsForGroupImpl(
-    std::vector<std::string> group_tabs,
-    std::vector<std::pair<int, std::string>> candidate_tabs,
+    std::vector<TabInfo> group_tabs,
+    std::vector<CandidateTab> candidate_tabs,
     SuggestTabsForGroupCallback callback) {
   DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
 
-  // get embeddings for group tabs
+  // Serialize group tabs for embedding
   tabs_.clear();
-  tabs_ = group_tabs;
+  for (const auto& tab_info : group_tabs) {
+    tabs_.push_back(SerializeTabInfo(tab_info));
+  }
   auto status_group = EmbedTabs();
   if (!status_group.ok()) {
     std::move(callback).Run(absl::FailedPreconditionError(
@@ -232,15 +257,12 @@ void TextEmbedder::SuggestTabsForGroupImpl(
 
   // get embeddings for candidate tabs
   tabs_.clear();
-  std::vector<std::string> tab_titles;
   std::vector<int> tab_ids;
 
-  for (const auto& tab : candidate_tabs) {
-    tab_ids.push_back(tab.first);
-    tab_titles.push_back(tab.second);
+  for (const auto& candidate : candidate_tabs) {
+    tab_ids.push_back(candidate.index);
+    tabs_.push_back(SerializeTabInfo(candidate.tab_info));
   }
-
-  tabs_ = tab_titles;
   auto status = EmbedTabs();
   if (!status.ok()) {
     std::move(callback).Run(absl::FailedPreconditionError(
@@ -316,10 +338,16 @@ std::vector<int> TextEmbedder::getMostSimilarTabIndices(
  * existing group, then no op*/
 
 void TextEmbedder::SuggestGroupForTab(
-    std::pair<int, std::string> candidate_tab,
-    std::vector<std::vector<std::string>> group_tabs,
+    CandidateTab candidate_tab,
+    std::map<tab_groups::TabGroupId, std::vector<TabInfo>> group_tabs,
     SuggestGroupForTabCallback callback) {
   DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
+
+  if (!IsInitialized()) {
+    std::move(callback).Run(absl::FailedPreconditionError(
+        "TextEmbedder is not initialized. Call Initialize() first."));
+    return;
+  }
 
   embedder_task_runner_->PostTask(
       FROM_HERE,
@@ -330,8 +358,8 @@ void TextEmbedder::SuggestGroupForTab(
 }
 
 void TextEmbedder::SuggestGroupForTabImpl(
-    std::pair<int, std::string> candidate_tab,
-    std::vector<std::vector<std::string>> group_tabs,
+    CandidateTab candidate_tab,
+    std::map<tab_groups::TabGroupId, std::vector<TabInfo>> group_tabs,
     SuggestGroupForTabCallback callback) {
   DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
 
@@ -343,11 +371,15 @@ void TextEmbedder::SuggestGroupForTabImpl(
 
   // for each group, find centroid embedding
   std::vector<tflite::task::processor::EmbeddingResult> all_centroids;
+  std::vector<tab_groups::TabGroupId> group_ids;
   tflite::task::processor::EmbeddingResult group_centroid;
 
-  for (const auto& group_tab : group_tabs) {
+  for (const auto& [group_id, group_tab_infos] : group_tabs) {
+    group_ids.push_back(group_id);
     tabs_.clear();
-    tabs_ = group_tab;
+    for (const auto& tab_info : group_tab_infos) {
+      tabs_.push_back(SerializeTabInfo(tab_info));
+    }
 
     auto status_group = EmbedTabs();
 
@@ -373,7 +405,8 @@ void TextEmbedder::SuggestGroupForTabImpl(
 
   // get embedding for candidate tab
   tflite::task::processor::EmbeddingResult candidate_embedding;
-  auto status = EmbedText(candidate_tab.second, candidate_embedding);
+  std::string candidate_serialized = SerializeTabInfo(candidate_tab.tab_info);
+  auto status = EmbedText(candidate_serialized, candidate_embedding);
   if (!status.ok()) {
     std::move(callback).Run(status);
     return;
@@ -405,7 +438,7 @@ void TextEmbedder::SuggestGroupForTabImpl(
     return;
   } else {
     int max_index = std::distance(sim_scores.begin(), max_it);
-    std::move(callback).Run(max_index);
+    std::move(callback).Run(group_ids[max_index]);
   }
 }
 
