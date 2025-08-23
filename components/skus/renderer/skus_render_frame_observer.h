@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SKUS_RENDERER_SKUS_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_COMPONENTS_SKUS_RENDERER_SKUS_RENDER_FRAME_OBSERVER_H_
 
-#include <memory>
-
 #include "brave/components/skus/renderer/skus_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -25,15 +23,17 @@ namespace skus {
 // See `browser/brave_content_browser_client.cc` for more information.
 class SkusRenderFrameObserver : public content::RenderFrameObserver {
  public:
-  explicit SkusRenderFrameObserver(content::RenderFrame* render_frame);
+  static SkusRenderFrameObserver* Create(content::RenderFrame* render_frame);
   SkusRenderFrameObserver(const SkusRenderFrameObserver&) = delete;
   SkusRenderFrameObserver& operator=(const SkusRenderFrameObserver&) = delete;
-  ~SkusRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
   void DidClearWindowObject() override;
 
  private:
+  explicit SkusRenderFrameObserver(content::RenderFrame* render_frame);
+  ~SkusRenderFrameObserver() override;
+
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
