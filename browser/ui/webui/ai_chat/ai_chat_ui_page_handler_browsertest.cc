@@ -11,6 +11,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/gtest_util.h"
 #include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
@@ -208,6 +209,47 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
 
   // Close the WebUI while the association is in progress
   ai_chat_contents->Close();
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessImageFile) {
+  auto* ai_chat_contents = web_contents();
+  ASSERT_TRUE(ai_chat_contents);
+
+  auto* page_handler = GetPageHandler(ai_chat_contents);
+  ASSERT_TRUE(page_handler);
+
+  // Test with invalid image data - should result in null
+  std::vector<uint8_t> invalid_data = {1, 2, 3, 4};
+  base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future_invalid;
+
+  page_handler->ProcessImageFile(invalid_data, "test.png",
+                                 future_invalid.GetCallback());
+
+  auto invalid_result = future_invalid.Take();
+  EXPECT_FALSE(invalid_result);  // Should be null for invalid data
+
+  // Test with valid PNG image data - should succeed
+  constexpr uint8_t kValidPng[] = {
+      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
+      0x0d, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+      0x00, 0x01, 0x08, 0x02, 0x00, 0x00, 0x00, 0x90, 0x77, 0x53, 0xde,
+      0x00, 0x00, 0x00, 0x10, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9c, 0x62,
+      0x5a, 0xc4, 0x5e, 0x08, 0x08, 0x00, 0x00, 0xff, 0xff, 0x02, 0x71,
+      0x01, 0x1d, 0xcd, 0xd0, 0xd6, 0x62, 0x00, 0x00, 0x00, 0x00, 0x49,
+      0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82};
+
+  std::vector<uint8_t> valid_data(std::begin(kValidPng), std::end(kValidPng));
+  base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future_valid;
+
+  page_handler->ProcessImageFile(valid_data, "valid.png",
+                                 future_valid.GetCallback());
+
+  auto valid_result = future_valid.Take();
+  ASSERT_TRUE(valid_result);  // Should succeed with valid PNG data
+  EXPECT_EQ(valid_result->filename, "valid.png");
+  EXPECT_EQ(valid_result->type, ai_chat::mojom::UploadedFileType::kImage);
+  EXPECT_GT(valid_result->data.size(), 0u);
+  EXPECT_EQ(valid_result->filesize, valid_result->data.size());
 }
 
 }  // namespace ai_chat

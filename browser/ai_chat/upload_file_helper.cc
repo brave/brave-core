@@ -106,16 +106,6 @@ void OnImageDecoded(
                                                std::move(callback));
 }
 
-void ProcessImageData(
-    std::vector<uint8_t> image_data,
-    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback) {
-  data_decoder::DecodeImage(
-      GetDataDecoder(), std::move(image_data),
-      data_decoder::mojom::ImageCodec::kDefault, true,
-      data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
-      base::BindOnce(&OnImageDecoded, std::move(callback)));
-}
-
 }  // namespace
 
 UploadFileHelper::UploadFileHelper(content::WebContents* web_contents,
@@ -160,6 +150,16 @@ void UploadFileHelper::AddObserver(Observer* observer) {
 
 void UploadFileHelper::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
+}
+
+// static
+void UploadFileHelper::ProcessImageData(
+    const std::vector<uint8_t>& image_data,
+    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback) {
+  data_decoder::DecodeImage(
+      GetDataDecoder(), image_data, data_decoder::mojom::ImageCodec::kDefault,
+      true, data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
+      base::BindOnce(&OnImageDecoded, std::move(callback)));
 }
 
 void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
@@ -244,8 +244,8 @@ void UploadFileHelper::MultiFilesSelected(
           } else if (file_type_opt &&
                      *file_type_opt == mojom::UploadedFileType::kImage) {
             // For images, process them as before
-            ProcessImageData(
-                std::move(*file_data),
+            UploadFileHelper::ProcessImageData(
+                *file_data,
                 base::BindOnce(
                     [](base::OnceCallback<void(
                            std::tuple<std::optional<std::vector<uint8_t>>,
@@ -303,10 +303,10 @@ void UploadFileHelper::OnFileRead(
   } else if (file_type_opt &&
              *file_type_opt == mojom::UploadedFileType::kImage) {
     // For images, process them as before
-    ProcessImageData(std::move(*file_data),
-                     base::BindOnce(&UploadFileHelper::OnImageEncoded,
-                                    weak_ptr_factory_.GetWeakPtr(),
-                                    std::get<1>(result).AsUTF8Unsafe()));
+    UploadFileHelper::ProcessImageData(
+        *file_data, base::BindOnce(&UploadFileHelper::OnImageEncoded,
+                                   weak_ptr_factory_.GetWeakPtr(),
+                                   std::get<1>(result).AsUTF8Unsafe()));
   } else {
     // Fail if we cannot handle this file type
     std::move(upload_file_callback_).Run(std::nullopt);
