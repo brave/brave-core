@@ -8,36 +8,30 @@
 
 #include <string>
 
-#include "brave/components/web_discovery/browser/patterns.h"
 #include "url/gurl.h"
 
 namespace web_discovery {
 
-// Checks if a URL is likely to be private based on various criteria.
-// If true, the page should not be investigated or reported.
-bool IsPrivateURLLikely(const GURL& url,
-                        const PatternsURLDetails* matching_url_details);
-
 // Determines if a search query is likely to contain private information.
 // If true, the search query should not be investigated or reported.
-bool IsPrivateQueryLikely(const std::string& query);
+bool IsPrivateQueryLikely(std::string_view query);
 
 // Generates a simple search URL (without additional query parameters)
 // based on the original search URL and query. Used for the double fetch
 // to ensure that the user's profile is not involved in the query.
 GURL GeneratePrivateSearchURL(const GURL& original_url,
-                              const std::string& query,
-                              const PatternsURLDetails& matching_url_details);
+                              std::string_view query,
+                              std::optional<std::string_view> prefix);
 
-// Checks if a URL should be dropped due to its length or content.
-// Currently only used for determining whether to mask a URL
-// in the function below.
+// Checks if a URL should be dropped entirely due to security/privacy concerns.
+bool ShouldDropURL(const GURL& url);
+
+// Checks if a URL should be masked/truncated due to its length or content.
 bool ShouldMaskURL(const GURL& url);
 
-// Masks a URL to protect privacy. Returns nullopt if URL is invalid.
-// Resolves nested Google URLs and replaces the URL path with a
-// placeholder token, if applicable.
-std::optional<std::string> MaskURL(const GURL& url);
+// Masks a URL to protect privacy. Returns nullopt if URL should be dropped.
+// Replaces the URL path with a placeholder token, if applicable.
+std::optional<std::string> MaskURL(const GURL& url, bool relaxed);
 
 }  // namespace web_discovery
 

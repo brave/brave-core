@@ -55,7 +55,6 @@ bool AggregatedDictHasContent(const base::Value::Dict& dict) {
 }
 
 bool IsPrivateResult(const PayloadRule& rule,
-                     const PatternsURLDetails* matching_url_details,
                      const base::Value::Dict& dict) {
   if (rule.key != kSearchResultKey) {
     return false;
@@ -64,7 +63,7 @@ bool IsPrivateResult(const PayloadRule& rule,
   if (!url) {
     return false;
   }
-  return IsPrivateURLLikely(GURL(*url), matching_url_details);
+  return ShouldDropURL(GURL(*url));
 }
 
 bool ShouldDropSearchResultPayload(const PayloadRule& rule,
@@ -86,7 +85,6 @@ base::Value::Dict CreatePayloadDict(const PayloadRuleGroup& rule_group,
 std::optional<base::Value> GenerateClusteredJoinedPayload(
     bool is_query_action,
     const PayloadRule& rule,
-    const PatternsURLDetails* matching_url_details,
     const std::vector<base::Value::Dict>& attribute_values) {
   base::Value::Dict joined_data;
   size_t counter = 0;
@@ -94,7 +92,7 @@ std::optional<base::Value> GenerateClusteredJoinedPayload(
     if (value.empty()) {
       continue;
     }
-    if (is_query_action && IsPrivateResult(rule, matching_url_details, value)) {
+    if (is_query_action && IsPrivateResult(rule, value)) {
       VLOG(1) << "Omitting private search result";
       continue;
     }
@@ -129,7 +127,7 @@ std::optional<base::Value::Dict> GenerateClusteredPayload(
     }
     if (rule.is_join) {
       auto joined_payload = GenerateClusteredJoinedPayload(
-          kQueryActions.contains(rule_group.action), rule, matching_url_details,
+          kQueryActions.contains(rule_group.action), rule,
           attribute_values_it->second);
       if (!joined_payload) {
         VLOG(1) << "Skipped joined clustered payload, action = "

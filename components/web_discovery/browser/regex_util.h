@@ -30,10 +30,14 @@ class RegexUtil {
   RegexUtil& operator=(const RegexUtil&) = delete;
 
   bool CheckForEmail(std::string_view str);
-  bool CheckForLongNumber(std::string_view str, size_t max_length);
-  bool CheckPathAndQueryStringKeywords(std::string_view path_and_query);
-  bool CheckQueryStringOrRefKeywords(std::string_view str);
   bool CheckQueryHTTPCredentials(std::string_view str);
+  bool CheckForEuroLongWord(std::string_view str);
+  bool FindAndConsumeISSN(std::string_view* input, std::string* match);
+  bool FindAndConsumeNumberFragment(std::string_view* input,
+                                    std::string* match);
+  std::string NormalizeWhitespace(std::string_view str);
+  bool CheckForMiscPrivateUrls(std::string_view str);
+  bool CheckForSafeUrlParameter(std::string_view value);
 
  private:
   friend class base::NoDestructor<RegexUtil>;
@@ -42,10 +46,15 @@ class RegexUtil {
   std::optional<re2::RE2> email_regex_;
   // key is long number map length
   base::flat_map<size_t, std::unique_ptr<re2::RE2>> long_number_regexes_;
-  std::deque<re2::RE2> path_and_query_string_keyword_regexes_;
-  std::deque<re2::RE2> query_string_and_ref_keyword_regexes_;
+  std::deque<re2::RE2> misc_private_url_regexes_;
   std::optional<re2::RE2> http_password_regex_;
   std::optional<re2::RE2> non_alphanumeric_regex_;
+  std::optional<re2::RE2> long_word_regex_;
+  std::optional<re2::RE2> whitespace_regex_;
+  std::optional<re2::RE2> issn_regex_;
+  std::optional<re2::RE2> number_fragment_regex_;
+  std::optional<re2::RE2> non_digit_regex_;
+  std::optional<re2::RE2> safe_url_parameter_regex_;
 };
 
 }  // namespace web_discovery
