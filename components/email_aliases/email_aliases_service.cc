@@ -130,9 +130,9 @@ void EmailAliasesService::RequestAuthentication(
   verification_simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
   verification_simple_url_loader_->SetRetryOptions(
-        /* max_retries=*/3,
-        network::SimpleURLLoader::RETRY_ON_5XX |
-            network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE);
+      /* max_retries=*/3,
+      network::SimpleURLLoader::RETRY_ON_5XX |
+          network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE);
   verification_simple_url_loader_->AttachStringForUpload(*body,
                                                          "application/json");
   verification_simple_url_loader_->DownloadToString(
@@ -259,8 +259,8 @@ void EmailAliasesService::OnRequestSessionResponse(
     // Enforce a minimum interval between verify/result polls.
     const base::TimeTicks now = base::TimeTicks::Now();
     const base::TimeDelta since_last = last_session_request_time_.is_null()
-                                          ? kMinSessionPollInterval
-                                          : (now - last_session_request_time_);
+                                           ? kMinSessionPollInterval
+                                           : (now - last_session_request_time_);
     if (since_last >= kMinSessionPollInterval) {
       RequestSession();
       return;
@@ -271,7 +271,7 @@ void EmailAliasesService::OnRequestSessionResponse(
       session_request_timer_.Start(
           FROM_HERE, delay,
           base::BindOnce(&EmailAliasesService::RequestSession,
-                        weak_factory_.GetWeakPtr()));
+                         weak_factory_.GetWeakPtr()));
     } else {
       // If already running, let the existing timer fire; we don't reschedule to
       // avoid churn.
