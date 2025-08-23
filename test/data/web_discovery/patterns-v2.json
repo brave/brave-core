@@ -1,0 +1,94 @@
+{
+  "search-bi": {
+    "input": {
+      "#b .result1": {
+        "all": {
+          "t": {
+            "select": "a",
+            "attr": "textContent"
+          },
+          "u": {
+            "select": "a",
+            "attr": "href",
+            "transform": [
+              ["trySplit", "#", 0],
+              ["requireURL"]
+            ]
+          }
+        }
+      },
+      "#b": {
+        "first": {
+          "q": {
+            "select": "#query",
+            "attr": "textContent"
+          }
+        }
+      },
+      "#result2": {
+        "first": {
+          "extraUrl": {
+            "select": "a",
+            "attr": "href",
+            "transform": [
+              ["requireURL"]
+            ]
+          },
+          "extraTitle": {
+            "select": "a",
+            "attr": "textContent"
+          },
+          "inputValue": {
+            "select": "#input1",
+            "attr": "value"
+          }
+        }
+      }
+    },
+    "output": {
+      "query": {
+        "fields": [
+          {
+            "key": "r",
+            "source": "#b .result1",
+            "requiredKeys": [
+              "t",
+              "u"
+            ]
+          },
+          {
+            "key": "q",
+            "source": "#b"
+          },
+          {
+            "key": "qurl"
+          },
+          {
+            "key": "ctry"
+          }
+        ]
+      },
+      "extraData": {
+        "fields": [
+          {
+            "key": "extraUrl",
+            "source": "#result2"
+          },
+          {
+            "key": "extraTitle",
+            "source": "#result2"
+          },
+          {
+            "key": "inputValue",
+            "source": "#result2",
+            "optional": true
+          }
+        ]
+      }
+    }
+  },
+  "search-bii": {
+    "input": {},
+    "output": {}
+  }
+}
