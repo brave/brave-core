@@ -322,8 +322,8 @@ TEST_F(EmailAliasesServiceTimingTest, VerifyResult_StopsAfterMaxDuration) {
       "{\"authToken\":null,\"service\":\"email-aliases\",\"verified\":false}";
   StartAuthAndCaptureRequests(init_body, pending_body);
 
-  // 30 minutes * 60 seconds / 2 seconds + 1 = 901
-  const unsigned long expected_requests = 30 * 60 / 2 + 1;
+  // 30 minutes * 60 seconds / 2 seconds + 2 = 902
+  const unsigned long expected_requests = 30 * 60 / 2 + 2;
 
   EXPECT_EQ(verify_result_request_times_.size(), expected_requests);
 

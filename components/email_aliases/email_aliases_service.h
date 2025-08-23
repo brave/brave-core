@@ -53,35 +53,28 @@ class EmailAliasesService : public KeyedService,
   // polling.
   void RequestAuthentication(const std::string& auth_email,
                              RequestAuthenticationCallback callback) override;
+
   // Cancels any in-flight verification requests, clears authentication state,
   // transitions to kUnauthenticated, and acknowledges via |callback|.
   void CancelAuthenticationOrLogout(
       CancelAuthenticationOrLogoutCallback callback) override;
+
   // Not implemented yet.
   void GenerateAlias(GenerateAliasCallback callback) override;
+
   // Not implemented yet.
   void UpdateAlias(const std::string& alias_email,
                    const std::optional<std::string>& note,
                    UpdateAliasCallback callback) override;
+
   // Not implemented yet.
   void DeleteAlias(const std::string& alias_email,
                    DeleteAliasCallback callback) override;
+
   // Registers |observer| to receive authentication state updates. The observer
   // will immediately receive the current state upon registration.
   void AddObserver(mojo::PendingRemote<mojom::EmailAliasesServiceObserver>
                        observer) override;
-
-  // Response handlers
-  // Handles the response to the verify/init request. Parses a verification
-  // token and, if present, proceeds to poll the session endpoint. Invokes
-  // |callback| with an optional error message.
-  void OnRequestAuthenticationResponse(
-      RequestAuthenticationCallback callback,
-      std::optional<std::string> response_body);
-  // Handles the response to the verify/result polling request. Extracts the
-  // auth token and transitions to kAuthenticated, or schedules another poll
-  // when authentication is still pending.
-  void OnRequestSessionResponse(std::optional<std::string> response_body);
 
   // Binds the mojom interface to this service
   // Adds a new receiver for the EmailAliasesService Mojo interface.
@@ -96,46 +89,77 @@ class EmailAliasesService : public KeyedService,
   static std::string GetAccountsServiceVerifyResultURL();
 
  private:
+  // Response handlers
+  // Handles the response to the verify/init request. Parses a verification
+  // token and, if present, proceeds to poll the session endpoint. Invokes
+  // |callback| with an optional error message.
+  void OnRequestAuthenticationResponse(
+      RequestAuthenticationCallback callback,
+      std::optional<std::string> response_body);
+
+  // Handles the response to the verify/result polling request. Extracts the
+  // auth token and transitions to kAuthenticated, or schedules another poll
+  // when authentication is still pending.
+  void OnRequestSessionResponse(std::optional<std::string> response_body);
+
   // Posts a request to the verify/result endpoint to wait for completion of
-  // the authentication flow. Retries until an auth token is returned.
+  // the authentication flow.
   void RequestSession();
+
+  // Decides whether to call RequestSession again, depending on the whether
+  // the polling window has elapsed. Adds a delay if the minimum interval
+  // between requests has not yet elapsed.
+  void MaybeRequestSessionAgain();
+
   // Notifies all registered observers of an authentication state change.
   void NotifyObserversAuthStateChanged(
       mojom::AuthenticationStatus status,
       const std::optional<std::string>& error_message = std::nullopt);
+
   // Cancels in-flight verification requests and clears verification/auth
   // tokens to reset the authentication flow to a clean state.
   void ResetVerificationFlow();
 
   // Bound Mojo receivers for the EmailAliasesService interface.
   mojo::ReceiverSet<mojom::EmailAliasesService> receivers_;
+
   // Connected observers that receive authentication state updates.
   mojo::RemoteSet<mojom::EmailAliasesServiceObserver> observers_;
+
   // Temporary token returned by verify/init and used to authorize polling.
   std::string verification_token_;
+
   // Long-lived token returned by verify/result upon successful authentication.
   std::string auth_token_;
+
   // The email address used for the current authentication attempt.
   std::string auth_email_;
+
   // URL loader factory used to issue network requests to Brave Accounts.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+
   // Single SimpleURLLoader instance used for both verify/init and
   // verify/result requests. Recreated for each new request.
   std::unique_ptr<network::SimpleURLLoader> verification_simple_url_loader_;
+
   // Cached URLs computed once per service lifetime
   // Cached fully-qualified verify/init URLs.
   std::string verify_init_url_;
+
   // Cached fully-qualified verify/result URL.
   std::string verify_result_url_;
+
   // Timestamp of the last verify/result request to rate-limit polling.
   base::TimeTicks last_session_request_time_;
+
   // One-shot timer used to delay subsequent verify/result polls so that they
   // are not issued more frequently than the minimum interval.
   base::OneShotTimer session_request_timer_;
+
   // Start timestamp for the current verification polling window. Used to
-  // enforce a maximum total polling duration. If null, polling has not
-  // started yet or has been cancelled.
+  // enforce a maximum total polling duration.
   std::optional<base::ElapsedTimer> session_poll_elapsed_timer_;
+
   // WeakPtrFactory to safely bind callbacks that may outlive this instance.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
