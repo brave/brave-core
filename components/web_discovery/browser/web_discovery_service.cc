@@ -181,7 +181,7 @@ bool WebDiscoveryService::ShouldExtractFromPage(
     return false;
   }
   VLOG(1) << "URL matched pattern " << matching_url_details->id << ": " << url;
-  if (IsPrivateURLLikely(url, matching_url_details)) {
+  if (ShouldDropURL(url)) {
     return false;
   }
   return true;
@@ -224,7 +224,8 @@ void WebDiscoveryService::OnContentScraped(
       if (IsPrivateQueryLikely(*result->query)) {
         return;
       }
-      url = GeneratePrivateSearchURL(url, *result->query, *strict_url_details);
+      url = GeneratePrivateSearchURL(
+          url, *result->query, strict_url_details->search_template_prefix);
       VLOG(1) << "Double fetching search page: " << url;
       double_fetcher_->ScheduleDoubleFetch(url, result->SerializeToValue());
     }
