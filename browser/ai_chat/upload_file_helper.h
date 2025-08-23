@@ -52,6 +52,11 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  // Process image data (sanitization and resizing)
+  static void ProcessImageData(
+      const std::vector<uint8_t>& image_data,
+      base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback);
+
  private:
   // ui::SelectFileDialog::Listener
   void FileSelected(const ui::SelectedFileInfo& file, int index) override;

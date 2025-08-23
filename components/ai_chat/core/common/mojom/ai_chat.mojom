@@ -488,6 +488,10 @@ interface AIChatUIHandler {
   UploadFile(bool use_media_capture)
       => (array<UploadedFile>? uploaded_files);
 
+  // Process image files using backend processing (resizing and sanitization)
+  ProcessImageFile(array<uint8> file_data, string filename)
+      => (UploadedFile? processed_file);
+
   // Get a plural string for the given key and count.
   GetPluralString(string key, int32 count) => (string plural_string);
 
