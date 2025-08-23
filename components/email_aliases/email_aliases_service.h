@@ -13,7 +13,6 @@
 #include "base/time/time.h"
 #include "base/timer/elapsed_timer.h"
 #include "base/timer/timer.h"
-#include "base/values.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -89,7 +88,6 @@ class EmailAliasesService : public KeyedService,
   static std::string GetAccountsServiceVerifyResultURL();
 
  private:
-  // Response handlers
   // Handles the response to the verify/init request. Parses a verification
   // token and, if present, proceeds to poll the session endpoint. Invokes
   // |callback| with an optional error message.
@@ -97,14 +95,14 @@ class EmailAliasesService : public KeyedService,
       RequestAuthenticationCallback callback,
       std::optional<std::string> response_body);
 
-  // Handles the response to the verify/result polling request. Extracts the
-  // auth token and transitions to kAuthenticated, or schedules another poll
-  // when authentication is still pending.
-  void OnRequestSessionResponse(std::optional<std::string> response_body);
-
   // Posts a request to the verify/result endpoint to wait for completion of
   // the authentication flow.
   void RequestSession();
+
+  // Handles the response to the verify/result polling request. Extracts the
+  // auth token and transitions to kAuthenticated, or calls
+  // MaybeRequestSessionAgain when authentication is still pending.
+  void OnRequestSessionResponse(std::optional<std::string> response_body);
 
   // Decides whether to call RequestSession again, depending on the whether
   // the polling window has elapsed. Adds a delay if the minimum interval
@@ -156,7 +154,7 @@ class EmailAliasesService : public KeyedService,
   // are not issued more frequently than the minimum interval.
   base::OneShotTimer session_request_timer_;
 
-  // Start timestamp for the current verification polling window. Used to
+  // Elapsed timer for the current verification polling window. Used to
   // enforce a maximum total polling duration.
   std::optional<base::ElapsedTimer> session_poll_elapsed_timer_;
 
