@@ -125,7 +125,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="2841164160723712537">Mejore los resultados de búsqueda</translation>
 <translation id="4639001639513524869">Búsqueda de Brave brinda mejores resultados que DuckDuckGo en la mayoría de los casos. Y es 100 % privado.</translation>
 <translation id="5240031343741051161">Prueba Brave Search</translation>
-<translation id="5234764350956374838">Dismiss</translation>
+<translation id="5234764350956374838">Descartar</translation>
 <translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
 <translation id="2370739752330685659">Quizás más tarde</translation>
 <translation id="5100490448228945668">Descartar la conversión de la búsqueda de Brave, pulse Intro para eliminar esta sugerencia</translation>
@@ -291,7 +291,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> elementos seleccionados</translation>
 <translation id="3596306474342941843">Eliminar lista de reproducción</translation>
 <translation id="7110726588168439924">¿Seguro que quieres eliminar esta lista de reproducción y todo su contenido? Esta acción es irreversible.</translation>
-<translation id="8261506727792406068">Delete</translation>
+<translation id="8261506727792406068">Eliminar</translation>
 <translation id="8152485753254079984">Nueva lista de reproducción</translation>
 <translation id="5397019762993984652">Añadir de la carpeta Reproducir más tarde</translation>
 <translation id="7525067979554623046">Crear</translation>
@@ -334,7 +334,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="8012125596344613514">Temas sugeridos</translation>
 <translation id="7529120186020617755">Introduce un tema en el que concentrarte...</translation>
 <translation id="6847541693235449912">Ir</translation>
-<translation id="2079545284768500474">Deshacer</translation>
+<translation id="2079545284768500474">Cancelar</translation>
 <translation id="1533980864758658574">Nueva ventana creada para <ph name="TOPIC"/></translation>
 <translation id="7985042437720138349">Esta función envía datos sobre tus pestañas abiertas a Leo, el asistente del navegador con tecnología de IA de Brave.</translation>
 <translation id="6165508094623778733">Más información</translation>
@@ -659,7 +659,7 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="6924425739431382319">Contactando BridgeDB. Espera...</translation>
 <translation id="811745063252080651">Resuelve el CAPTCHA para solicitar un puente.</translation>
 <translation id="6936835573742749135">No se puede solicitar un CAPTCHA. Vuelve a intentarlo más tarde.</translation>
-<translation id="2653659639078652383">Submit</translation>
+<translation id="2653659639078652383">Enviar</translation>
 <translation id="1294350054292274934">Resolver únicamente las direcciones .onion en las ventanas de Tor</translation>
 <translation id="601227612175911475">Los servicios onion no estarán disponibles fuera de las ventanas de Tor.</translation>
 <translation id="5249433283143453448">Usa el componente de gestión de derechos digitales (DRM) Widevine para ver transmisiones de vídeo y otros contenidos protegidos en el navegador.</translation>
