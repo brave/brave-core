@@ -30,6 +30,53 @@ std::unique_ptr<ValueTransform> CreateTransform(const std::string& json_def) {
 
 }  // namespace
 
+TEST(WebDiscoveryValueTransformTest, DecodeURIComponentTransform) {
+  // Test regular decodeURIComponent
+  auto transform = CreateTransform(R"(["decodeURIComponent"])");
+  ASSERT_TRUE(transform);
+
+  // Test successful decoding
+  auto result = transform->Process("Hello%20World");
+  EXPECT_EQ(result, "Hello World");
+
+  // Test already decoded string
+  result = transform->Process("Hello World");
+  EXPECT_EQ(result, "Hello World");
+
+  // Test complex encoding
+  result = transform->Process("Hello%20%26%20Goodbye");
+  EXPECT_EQ(result, "Hello & Goodbye");
+
+  // Test double encoding (%25 -> %)
+  result = transform->Process("Hello%2520World");
+  EXPECT_EQ(result, "Hello%20World");
+
+  result = transform->Process("Hello%25%ZZWorld");
+  EXPECT_EQ(result, std::nullopt);
+
+  // Test invalid encoding (should fail in regular mode)
+  result = transform->Process("Hello%ZZWorld");
+  EXPECT_EQ(result, std::nullopt);
+}
+
+TEST(WebDiscoveryValueTransformTest, TryDecodeURIComponentTransform) {
+  // Test tryDecodeURIComponent
+  auto transform = CreateTransform(R"(["tryDecodeURIComponent"])");
+  ASSERT_TRUE(transform);
+
+  // Test successful decoding
+  auto result = transform->Process("Hello%20World");
+  EXPECT_EQ(result, "Hello World");
+
+  // Test invalid encoding (should return original in try mode)
+  result = transform->Process("Hello%ZZWorld");
+  EXPECT_EQ(result, "Hello%ZZWorld");
+
+  // Test already decoded string
+  result = transform->Process("Hello World");
+  EXPECT_EQ(result, "Hello World");
+}
+
 TEST(WebDiscoveryValueTransformTest, FilterExactTransform) {
   // Test filterExact with allowed strings
   auto transform =
@@ -60,6 +107,37 @@ TEST(WebDiscoveryValueTransformTest, FilterExactTransform) {
   auto invalid_transform =
       CreateTransform(R"(["filterExact", ["apple", 123, "cherry"]])");
   EXPECT_FALSE(invalid_transform);
+}
+
+TEST(WebDiscoveryValueTransformTest, RemoveParamsTransform) {
+  // Test removeParams
+  auto transform = CreateTransform(
+      R"(["removeParams", ["utm_source", "utm_medium", "fbclid"]])");
+  ASSERT_TRUE(transform);
+
+  // Test URL with params to remove
+  auto result = transform->Process(
+      "https://"
+      "example.com?utm_source=google&param1=value1&utm_medium=cpc&param2="
+      "value2");
+  EXPECT_EQ(result, "https://example.com/?param1=value1&param2=value2");
+
+  // Test URL with no query params
+  result = transform->Process("https://example.com");
+  EXPECT_EQ(result, "https://example.com");
+
+  // Test URL with all params removed
+  result = transform->Process(
+      "https://example.com?utm_source=google&utm_medium=cpc");
+  EXPECT_EQ(result, "https://example.com/");
+
+  // Test invalid URL
+  result = transform->Process("not-a-url");
+  EXPECT_EQ(result, std::nullopt);
+
+  // Test URL with no matching params
+  result = transform->Process("https://example.com?other_param=value");
+  EXPECT_EQ(result, "https://example.com/?other_param=value");
 }
 
 TEST(WebDiscoveryValueTransformTest, MaskUTransform) {
@@ -205,6 +283,102 @@ TEST(WebDiscoveryValueTransformTest, TrimTransform) {
   // Test tabs and newlines
   result = transform->Process("\t\nhello world\n\t");
   EXPECT_EQ(result, "hello world");
+}
+
+TEST(WebDiscoveryValueTransformTest, JsonTransform) {
+  // Test basic json extraction
+  auto transform = CreateTransform(R"(["json", "name"])");
+  ASSERT_TRUE(transform);
+
+  // Test string value extraction
+  auto result = transform->Process(R"({"name": "John", "age": 30})");
+  EXPECT_EQ(result, "John");
+
+  // Test nested path
+  transform = CreateTransform(R"(["json", "user.name"])");
+  ASSERT_TRUE(transform);
+  result = transform->Process(R"({"user": {"name": "Jane", "age": 25}})");
+  EXPECT_EQ(result, "Jane");
+
+  // Test integer value
+  transform = CreateTransform(R"(["json", "age"])");
+  ASSERT_TRUE(transform);
+  result = transform->Process(R"({"name": "John", "age": 30})");
+  EXPECT_EQ(result, "30");
+
+  // Test boolean value
+  transform = CreateTransform(R"(["json", "active"])");
+  ASSERT_TRUE(transform);
+  result = transform->Process(R"({"active": true})");
+  EXPECT_EQ(result, "true");
+
+  result = transform->Process(R"({"active": false})");
+  EXPECT_EQ(result, "false");
+
+  // Test missing path
+  transform = CreateTransform(R"(["json", "missing"])");
+  ASSERT_TRUE(transform);
+  result = transform->Process(R"({"name": "John"})");
+  EXPECT_EQ(result, "");
+
+  // Test invalid JSON
+  result = transform->Process("invalid json");
+  EXPECT_EQ(result, "");
+
+  // Test object extraction with extract_objects flag
+  transform = CreateTransform(R"(["json", "user", true])");
+  ASSERT_TRUE(transform);
+  result = transform->Process(R"({"user": {"name": "Jane", "age": 25}})");
+  EXPECT_NE(result, std::nullopt);
+  // Should return JSON representation of the object
+  EXPECT_TRUE(result->find("name") != std::string::npos);
+  EXPECT_TRUE(result->find("Jane") != std::string::npos);
+}
+
+TEST(WebDiscoveryValueTransformTest, QueryParamTransform) {
+  // Test queryParam
+  auto transform = CreateTransform(R"(["queryParam", "q"])");
+  ASSERT_TRUE(transform);
+
+  // Test simple query parameter extraction
+  auto result = transform->Process("q=hello%20world&other=value");
+  EXPECT_EQ(result, "hello world");
+
+  // Test parameter not found
+  result = transform->Process("other=value&another=test");
+  EXPECT_EQ(result, std::nullopt);
+
+  // Test parameter with no value
+  result = transform->Process("q=&other=value");
+  EXPECT_EQ(result, "");
+
+  // Test parameter at end
+  result = transform->Process("other=value&q=test");
+  EXPECT_EQ(result, "test");
+}
+
+TEST(WebDiscoveryValueTransformTest, RequireURLTransform) {
+  // Test requireURL
+  auto transform = CreateTransform(R"(["requireURL"])");
+  ASSERT_TRUE(transform);
+
+  // Test valid URLs
+  auto result = transform->Process("https://example.com");
+  EXPECT_EQ(result, "https://example.com");
+
+  result = transform->Process("http://test.com/path?param=value");
+  EXPECT_EQ(result, "http://test.com/path?param=value");
+
+  // Test invalid URLs
+  result = transform->Process("not-a-url");
+  EXPECT_EQ(result, std::nullopt);
+
+  result = transform->Process(
+      "ftp://example.com");  // Might be valid depending on GURL implementation
+  // Result depends on GURL's validation rules
+
+  result = transform->Process("");
+  EXPECT_EQ(result, std::nullopt);
 }
 
 TEST(WebDiscoveryValueTransformTest, TransformSequence) {
