@@ -180,34 +180,15 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
 }
 
 void EmailAliasesService::RequestSession() {
-  // Enforce a minimum interval between verify/result polls.
-  const base::TimeTicks now = base::TimeTicks::Now();
-  const base::TimeDelta since_last = last_session_request_time_.is_null()
-                                         ? kMinSessionPollInterval
-                                         : (now - last_session_request_time_);
-  if (since_last >= kMinSessionPollInterval) {
-    RequestSessionInternal();
+  // Cap the total polling time to avoid infinite retries.
+  if (!session_poll_elapsed_timer_.has_value()) {
+    // Polling has been cancelled; ignore.
     return;
   }
-  // Schedule the next request after the remaining delay.
-  const base::TimeDelta delay = kMinSessionPollInterval - since_last;
-  if (!session_request_timer_.IsRunning()) {
-    session_request_timer_.Start(
-        FROM_HERE, delay,
-        base::BindOnce(&EmailAliasesService::RequestSessionInternal,
-                       weak_factory_.GetWeakPtr()));
-  } else {
-    // If already running, let the existing timer fire; we don't reschedule to
-    // avoid churn.
-  }
-}
-
-void EmailAliasesService::RequestSessionInternal() {
-  // Cap the total polling time to avoid infinite retries.
-  if (session_poll_elapsed_timer_.has_value() &&
-      session_poll_elapsed_timer_->Elapsed() > kMaxSessionPollDuration) {
+  if (session_poll_elapsed_timer_->Elapsed() > kMaxSessionPollDuration) {
     LOG(ERROR) << "Email Aliases service verification error: exceeded max "
                   "poll duration";
+    session_poll_elapsed_timer_.reset();
     NotifyObserversAuthStateChanged(
         mojom::AuthenticationStatus::kUnauthenticated,
         /*error_message=*/l10n_util::GetStringUTF8(
@@ -239,6 +220,10 @@ void EmailAliasesService::RequestSessionInternal() {
 
 void EmailAliasesService::OnRequestSessionResponse(
     std::optional<std::string> response_body) {
+  if (!session_poll_elapsed_timer_.has_value()) {
+    // Polling has been cancelled; ignore.
+    return;
+  }
   if (!response_body) {
     // No response body, log it and ignore.
     LOG(ERROR) << "Email Aliases service error: No response body";
@@ -270,8 +255,27 @@ void EmailAliasesService::OnRequestSessionResponse(
     return;
   }
   if (!parsed_session->verified || !parsed_session->auth_token) {
-    // Verification still in progress, poll again.
-    RequestSession();
+    // Verification still in progress; no auth token yet. Poll again.
+    // Enforce a minimum interval between verify/result polls.
+    const base::TimeTicks now = base::TimeTicks::Now();
+    const base::TimeDelta since_last = last_session_request_time_.is_null()
+                                          ? kMinSessionPollInterval
+                                          : (now - last_session_request_time_);
+    if (since_last >= kMinSessionPollInterval) {
+      RequestSession();
+      return;
+    }
+    // Schedule the next request after the remaining delay.
+    const base::TimeDelta delay = kMinSessionPollInterval - since_last;
+    if (!session_request_timer_.IsRunning()) {
+      session_request_timer_.Start(
+          FROM_HERE, delay,
+          base::BindOnce(&EmailAliasesService::RequestSession,
+                        weak_factory_.GetWeakPtr()));
+    } else {
+      // If already running, let the existing timer fire; we don't reschedule to
+      // avoid churn.
+    }
     return;
   }
   // Success; set the auth token and notify observers.

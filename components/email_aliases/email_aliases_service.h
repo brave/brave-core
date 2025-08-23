@@ -99,9 +99,6 @@ class EmailAliasesService : public KeyedService,
   // Posts a request to the verify/result endpoint to wait for completion of
   // the authentication flow. Retries until an auth token is returned.
   void RequestSession();
-  // Issues the network request to the verify/result endpoint immediately,
-  // without applying any rate limiting.
-  void RequestSessionInternal();
   // Notifies all registered observers of an authentication state change.
   void NotifyObserversAuthStateChanged(
       mojom::AuthenticationStatus status,
@@ -136,7 +133,8 @@ class EmailAliasesService : public KeyedService,
   // are not issued more frequently than the minimum interval.
   base::OneShotTimer session_request_timer_;
   // Start timestamp for the current verification polling window. Used to
-  // enforce a maximum total polling duration.
+  // enforce a maximum total polling duration. If null, polling has not
+  // started yet or has been cancelled.
   std::optional<base::ElapsedTimer> session_poll_elapsed_timer_;
   // WeakPtrFactory to safely bind callbacks that may outlive this instance.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
