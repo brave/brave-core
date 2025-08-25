@@ -136,8 +136,10 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
 
   logging.info('Packing profile %s to %s', profile_dir, profile_zip)
   # strict_timestamps=False because Chromium makes files with empty timestamps.
-  with zipfile.ZipFile(profile_zip, "w", zipfile.ZIP_DEFLATED,
-                        strict_timestamps=False) as zip_file:
+  with zipfile.ZipFile(profile_zip,
+                       "w",
+                       zipfile.ZIP_DEFLATED,
+                       strict_timestamps=False) as zip_file:
     with scoped_cwd(profile_dir):
       for root, _, filenames in os.walk('.'):
         for f in filenames:
