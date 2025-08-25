@@ -55,10 +55,9 @@ class BrowsingDataRemovalWatcher
 
 // See ClearBrowsingDataHandler::HandleClearBrowsingData which constructs the
 // remove_mask and the origin_mask for the same functionality not on exit.
-bool GetClearBrowsingDataOnExitSettings(
-    const Profile* profile,
-    uint64_t* remove_mask,
-    uint64_t* origin_mask) {
+bool GetClearBrowsingDataOnExitSettings(const Profile* profile,
+                                        uint64_t* remove_mask,
+                                        uint64_t* origin_mask) {
   DCHECK(remove_mask);
   DCHECK(origin_mask);
   const PrefService* prefs = profile->GetPrefs();
