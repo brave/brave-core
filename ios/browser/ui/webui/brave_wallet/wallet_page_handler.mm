@@ -46,3 +46,9 @@ void WalletPageHandler::UnlockWalletUI() {
     [delegate webUIUnlockWallet];
   }
 }
+
+void WalletPageHandler::ShowOnboarding(bool is_new_account) {
+  if (auto delegate = GetNativeInterface(web_state_)) {
+    [delegate webUIShowOnboarding:is_new_account];
+  }
+}
