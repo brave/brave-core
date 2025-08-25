@@ -267,6 +267,8 @@ public class BrowserViewController: UIViewController {
 
   private let prefsChangeRegistrar: PrefChangeRegistrar
 
+  let defaultBrowserHelper: DefaultBrowserHelper = .init()
+
   public init(
     windowId: UUID,
     profile: LegacyBrowserProfile,
