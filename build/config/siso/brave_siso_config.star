@@ -115,13 +115,20 @@ def __adjust_handlers(ctx, step_config, handlers):
     # C/C++ source file overrides from chromium_src directory.
     if not found_clang_rule:
         if __HOST_OS_IS_WINDOWS:
-            command_prefix = "..\\..\\third_party\\llvm-build\\Release+Asserts\\bin\\clang"
+            clang_command_prefix = "..\\..\\third_party\\llvm-build\\Release+Asserts\\bin\\clang"
+            clang_coverage_command_prefix = "python3.exe ../../build/toolchain/clang_code_coverage_wrapper.py"
         else:
-            command_prefix = "../../third_party/llvm-build/Release+Asserts/bin/clang"
+            clang_command_prefix = "../../third_party/llvm-build/Release+Asserts/bin/clang"
+            clang_coverage_command_prefix = "\"python3\" ../../build/toolchain/clang_code_coverage_wrapper.py"
         step_config["rules"].extend([
             {
                 "name": "clang_redirect_cc",
-                "command_prefix": command_prefix,
+                "command_prefix": clang_command_prefix,
+                "handler": "redirect_cc",
+            },
+            {
+                "name": "clang_coverage_redirect_cc",
+                "command_prefix": clang_coverage_command_prefix,
                 "handler": "redirect_cc",
             },
         ])
