@@ -12,7 +12,7 @@ import SwiftUI
 import struct Shared.AppConstants
 
 struct RestoreWalletView: View {
-  @ObservedObject var keyringStore: KeyringStore
+  var keyringStore: KeyringStore
   // Used to dismiss all of Wallet
   let dismissAction: () -> Void
 
@@ -100,6 +100,7 @@ struct RestoreWalletView: View {
   }
 
   var body: some View {
+    let _ = Self._printChanges()
     ScrollView {
       VStack(spacing: 40) {
         VStack(spacing: 14) {
@@ -244,23 +245,20 @@ struct RestoreWalletView: View {
         }
       }
     })
-    .sheet(isPresented: $isShowingCreateNewPassword) {
-      NavigationView {
-        CreateWalletView(
+    .background(
+      NavigationLink(
+        destination: CreateWalletView(
           keyringStore: keyringStore,
           setupOption: .restore,
           onValidPasswordEntered: restoreWallet,
           dismissAction: dismissAction
-        )
-        .toolbar {
-          ToolbarItemGroup(placement: .destructiveAction) {
-            Button(Strings.CancelString) {
-              isShowingCreateNewPassword = false
-            }
-          }
+        ),
+        isActive: $isShowingCreateNewPassword,
+        label: {
+          EmptyView()
         }
-      }
-    }
+      )
+    )
     .transparentUnlessScrolledNavigationAppearance()
     .onAppear {
       keyringStore.reportP3AOnboarding(action: .startRestore)
