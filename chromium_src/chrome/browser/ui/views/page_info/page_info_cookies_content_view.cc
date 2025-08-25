@@ -23,14 +23,28 @@
 void PageInfoCookiesContentView::SetCookieInfo(const CookiesInfo& cookie_info) {
   SetCookieInfo_ChromiumImpl(cookie_info);
 
-  // Remove cookies description child view
-  if (auto* parent = cookies_description_label_->parent()) {
-    parent->RemoveChildViewT(cookies_description_label_);
+  // Remove cookies description wrapper child view
+  if (auto* parent = cookies_description_wrapper_->parent()) {
+    // cookies_description_label_ is a child of the wrapper, so reset the
+    // raw_ptr before the wrapper gets deleted to avoid a dangling pointer.
+    cookies_description_label_ = nullptr;
+    auto* ptr = cookies_description_wrapper_.get();
+    cookies_description_wrapper_ = nullptr;
+    parent->RemoveChildViewT(ptr);
   }
 
   // Remove third-party cookies container with child view
   if (auto* parent = third_party_cookies_container_->parent()) {
-    parent->RemoveChildViewT(third_party_cookies_container_);
+    // Reset children raw_ptrs
+    third_party_cookies_label_wrapper_ = nullptr;
+    third_party_cookies_description_ = nullptr;
+    third_party_cookies_row_ = nullptr;
+    third_party_cookies_toggle_subtitle_ = nullptr;
+    third_party_cookies_toggle_ = nullptr;
+    tracking_protection_button_ = nullptr;
+    auto* ptr = third_party_cookies_container_.get();
+    third_party_cookies_container_ = nullptr;
+    parent->RemoveChildViewT(ptr);
   }
 
   // Remove separator.
