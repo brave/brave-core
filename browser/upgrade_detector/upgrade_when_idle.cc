@@ -5,6 +5,7 @@
 
 #include "brave/browser/upgrade_detector/upgrade_when_idle.h"
 
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/time/time.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
@@ -40,7 +41,7 @@ bool AreAnyBrowsersOpen() {
 bool AreAnyClearDataOnExitSettingsEnabled() {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   if (!profile_manager) {
-    // This can happen during tests.
+    CHECK_IS_TEST();
     return false;
   }
   for (Profile* profile : profile_manager->GetLoadedProfiles()) {
