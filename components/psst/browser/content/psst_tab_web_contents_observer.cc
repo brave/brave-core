@@ -48,27 +48,31 @@ struct PsstNavigationData : public base::SupportsUserData::Data {
 // <policy script, which uses parameters to apply PSST settings selected by the
 // user>;
 //
-// @param script The JavaScript code which expects parameters as a string.
+// @param rule Psst rule used for current URL to apply privacy settings.
 // @param params_dict A dictionary of parameters to be passed to the script.
 // @return The modified script with parameters prepended, or the original script
 // if no parameters are provided.
-std::string MaybeAddParamsToScript(const std::string& script,
+std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
                                    base::Value::Dict params_dict) {
   if (params_dict.empty()) {
     SCOPED_CRASH_KEY_STRING64("Psst", "params_dict", "empty");
+    SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
+    SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
     base::debug::DumpWithoutCrashing();
-    return script;
+    return rule->policy_script();
   }
 
   std::optional<std::string> params_json = base::WriteJsonWithOptions(
       params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
   if (!params_json) {
-    SCOPED_CRASH_KEY_STRING64("Psst", "params_dict", "could not be serialized");
+    SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
+    SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
     base::debug::DumpWithoutCrashing();
-    return script;
+    return rule->policy_script();
   }
 
-  return base::StrCat({"const params = ", *params_json, ";\n", script});
+  return base::StrCat(
+      {"const params = ", *params_json, ";\n", rule->policy_script()});
 }
 
 }  // namespace
@@ -161,23 +165,24 @@ void PsstTabWebContentsObserver::InsertUserScript(
     return;
   }
 
+  const std::string user_script = rule->user_script();
   inject_script_callback_.Run(
-      rule->user_script(),
+      user_script,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
-                     weak_factory_.GetWeakPtr(), id, rule->policy_script()));
+                     weak_factory_.GetWeakPtr(), id, std::move(rule)));
 }
 
 void PsstTabWebContentsObserver::OnUserScriptResult(
     int id,
-    const std::string& policy_script,
+    std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result) {
-  if (!ShouldInsertScriptForPage(id) || policy_script.empty() ||
-      !user_script_result.is_dict()) {
+  if (!rule || !ShouldInsertScriptForPage(id) ||
+      rule->policy_script().empty() || !user_script_result.is_dict()) {
     return;
   }
 
   inject_script_callback_.Run(
-      MaybeAddParamsToScript(policy_script,
+      MaybeAddParamsToScript(std::move(rule),
                              std::move(user_script_result).TakeDict()),
       base::DoNothing());
 }
