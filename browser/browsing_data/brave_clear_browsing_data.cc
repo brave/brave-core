@@ -41,9 +41,6 @@ class BrowsingDataRemovalWatcher
   void OnBrowsingDataRemoverDone(uint64_t failed_data_types) override;
 
  private:
-  bool GetClearBrowsingDataOnExitSettings(const Profile* profile,
-                                          uint64_t* remove_mask,
-                                          uint64_t* origin_mask);
   void Wait();
 
   int num_profiles_to_clear_ = 0;
@@ -58,7 +55,7 @@ class BrowsingDataRemovalWatcher
 
 // See ClearBrowsingDataHandler::HandleClearBrowsingData which constructs the
 // remove_mask and the origin_mask for the same functionality not on exit.
-bool BrowsingDataRemovalWatcher::GetClearBrowsingDataOnExitSettings(
+bool GetClearBrowsingDataOnExitSettings(
     const Profile* profile,
     uint64_t* remove_mask,
     uint64_t* origin_mask) {
@@ -192,6 +189,13 @@ void BraveClearBrowsingData::ClearOnExit() {
   }
   BrowsingDataRemovalWatcher watcher;
   watcher.ClearBrowsingDataForLoadedProfiles(on_exit_testing_callback_);
+}
+
+bool BraveClearBrowsingData::WillClearOnExit(Profile* profile) {
+  uint64_t remove_mask;
+  uint64_t origin_mask;
+  return GetClearBrowsingDataOnExitSettings(profile, &remove_mask,
+                                            &origin_mask);
 }
 
 // static

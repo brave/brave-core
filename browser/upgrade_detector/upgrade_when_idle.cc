@@ -7,6 +7,7 @@
 
 #include "base/command_line.h"
 #include "base/time/time.h"
+#include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/upgrade_util.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
@@ -14,8 +15,6 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/upgrade_detector/upgrade_detector.h"
 #include "chrome/common/chrome_switches.h"
-#include "components/browsing_data/core/pref_names.h"
-#include "components/prefs/pref_service.h"
 #include "ui/base/idle/idle.h"
 
 namespace {
@@ -45,17 +44,7 @@ bool AreAnyClearDataOnExitSettingsEnabled() {
     return false;
   }
   for (Profile* profile : profile_manager->GetLoadedProfiles()) {
-    PrefService* prefs = profile->GetPrefs();
-    // Check if any of the "clear on exit" preferences are enabled
-    if (prefs->GetBoolean(browsing_data::prefs::kDeleteBrowsingHistoryOnExit) ||
-        prefs->GetBoolean(browsing_data::prefs::kDeleteDownloadHistoryOnExit) ||
-        prefs->GetBoolean(browsing_data::prefs::kDeleteCacheOnExit) ||
-        prefs->GetBoolean(browsing_data::prefs::kDeleteCookiesOnExit) ||
-        prefs->GetBoolean(browsing_data::prefs::kDeletePasswordsOnExit) ||
-        prefs->GetBoolean(browsing_data::prefs::kDeleteFormDataOnExit) ||
-        prefs->GetBoolean(browsing_data::prefs::kDeleteHostedAppsDataOnExit) ||
-        prefs->GetBoolean(browsing_data::prefs::kDeleteSiteSettingsOnExit) ||
-        prefs->GetBoolean(browsing_data::prefs::kDeleteBraveLeoHistoryOnExit)) {
+    if (content::BraveClearBrowsingData::WillClearOnExit(profile)) {
       return true;
     }
   }
