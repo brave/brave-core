@@ -141,7 +141,7 @@ export function TopSitesGrid(props: Props) {
                         <Icon name='plus-add' />
                       </span>
                       <span className='top-site-title'>
-                        {getString('addTopSiteLabel')}
+                        {getString(S.NEW_TAB_ADD_TOP_SITE_LABEL)}
                       </span>
                     </button>
                   :
