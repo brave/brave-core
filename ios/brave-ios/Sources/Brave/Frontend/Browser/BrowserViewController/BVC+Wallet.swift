@@ -177,8 +177,12 @@ extension BrowserViewController: BraveWalletDelegate {
       // dismiss to show the new tab
       self.dismiss(animated: true)
     }
-    if let url = tabManager.selectedTab?.visibleURL, InternalURL.isValid(url: url) {
-      select(url: destinationURL, isUserDefinedURLNavigation: false)
+    if let url = tabManager.selectedTab?.visibleURL {
+      if url.isWalletWebUIURL, url.schemelessAbsoluteString == "wallet/crypto/onboarding/complete" {
+        tabManager.selectedTab?.loadRequest(URLRequest(url: destinationURL))
+      } else if InternalURL.isValid(url: url) {
+        select(url: destinationURL, isUserDefinedURLNavigation: false)
+      }
     } else if destinationURL.isWalletWebUIURL {
       switchToTabForURLOrOpen(destinationURL, isPrivate: false, isPrivileged: false)
     } else {
@@ -741,5 +745,9 @@ extension BrowserViewController: TabWebUIDelegate {
 
   public func unlockWallet(_ tab: some TabState) {
     presentWallet(presentingContext: .webUI(action: .unlock))
+  }
+
+  public func showWalletOnboarding(_ tab: some TabState, isNewAccount: Bool) {
+    presentWallet(presentingContext: .webUI(action: .onboarding(isNewAccount: isNewAccount)))
   }
 }

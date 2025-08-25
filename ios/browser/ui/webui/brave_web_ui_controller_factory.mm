@@ -37,27 +37,6 @@ using web::WebUIIOSController;
 namespace brave {
 const char kChromeUIUntrustedScheme[] = "chrome-untrusted";
 
-bool ShouldBlockWalletWebUI(ProfileIOS* profile, const GURL& url) {
-  if (!url.is_valid() || url.host() != kWalletPageHost) {
-    return false;
-  }
-
-  if (!profile) {
-    return false;
-  }
-
-  auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForState(profile);
-  if (!brave_wallet_service) {
-    return true;
-  }
-
-  // Support to unlock Wallet has been extended also through WebUI,
-  // so we block only when Wallet hasn't been created yet, as onboarding
-  // is offered only via native Andrioid UI.
-  return !brave_wallet_service->keyring_service()->IsWalletCreatedSync();
-}
-
 // A function for creating a new WebUIIOS.
 using WebUIIOSFactoryFunction =
     std::unique_ptr<WebUIIOSController> (*)(WebUIIOS* web_ui, const GURL& url);
@@ -142,10 +121,6 @@ BraveWebUIControllerFactory::CreateWebUIIOSControllerForURL(
   if (!function) {
     return ChromeWebUIIOSControllerFactory::CreateWebUIIOSControllerForURL(
         web_ui, url);
-  }
-
-  if (brave::ShouldBlockWalletWebUI(ProfileIOS::FromWebUIIOS(web_ui), url)) {
-    return nullptr;
   }
 
   return (*function)(web_ui, url);

@@ -58,10 +58,10 @@ public enum PresentingContext {
   case webUI(action: WalletWebUIAction)
 }
 
-public enum WalletWebUIAction {
-  case setup
+public enum WalletWebUIAction: Equatable {
   case backup
   case unlock
+  case onboarding(isNewAccount: Bool)
 }
 
 /// The initial wallet controller to present when the user wants to view their wallet

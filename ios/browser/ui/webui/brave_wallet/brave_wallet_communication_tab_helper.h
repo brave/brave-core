@@ -18,6 +18,7 @@ OBJC_EXPORT
 - (void)webUIShowWalletApprovePanelUI;
 - (void)webUIShowWalletBackupUI;
 - (void)webUIUnlockWallet;
+- (void)webUIShowOnboarding:(BOOL)isNewAccount;
 @end
 
 OBJC_EXPORT

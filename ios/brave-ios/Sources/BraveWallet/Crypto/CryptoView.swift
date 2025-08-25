@@ -287,7 +287,14 @@ public struct CryptoView: View {
           .zIndex(2)  // Needed or the dismiss animation messes up
         } else {
           UIKitNavigationView {
-            SetupCryptoView(keyringStore: keyringStore, dismissAction: dismissAction)
+            if case .webUI(let action) = presentingContext,
+              case .onboarding(let isNewAccount) = action
+            {
+              LegalView(
+                keyringStore: keyringStore,
+                setupOption: isNewAccount ? .new : .restore,
+                dismissAction: dismissAction
+              )
               .toolbar {
                 ToolbarItemGroup(placement: .destructiveAction) {
                   Button {
@@ -297,6 +304,21 @@ public struct CryptoView: View {
                   }
                 }
               }
+            } else {
+              SetupCryptoView(
+                keyringStore: keyringStore,
+                dismissAction: dismissAction
+              )
+              .toolbar {
+                ToolbarItemGroup(placement: .destructiveAction) {
+                  Button {
+                    dismissAction()
+                  } label: {
+                    Text(Strings.CancelString)
+                  }
+                }
+              }
+            }
           }
           .transition(.move(edge: .bottom))
           .zIndex(3)  // Needed or the dismiss animation messes up
@@ -330,8 +352,12 @@ public struct CryptoView: View {
             openWalletURLAction?(walletURL)
           }
         } else if case .webUI(let action) = presentingContext {
-          if action != .backup {
+          if action == .unlock {
             dismissAction()
+          } else if case .onboarding(_) = action {
+            if let walletURL = URL(string: "brave://wallet/crypto/portfolio/assets") {
+              openWalletURLAction?(walletURL)
+            }
           }
         }
       }
