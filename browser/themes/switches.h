@@ -3,11 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_THEMES_SWITCHES_H_
-#define BRAVE_BROWSER_UI_THEMES_SWITCHES_H_
+#ifndef BRAVE_BROWSER_THEMES_SWITCHES_H_
+#define BRAVE_BROWSER_THEMES_SWITCHES_H_
 
-namespace brave {
-namespace themes {
 namespace switches {
 
 // Sets the browser color scheme for all running Chrome windows.
@@ -30,7 +28,5 @@ inline constexpr char kSetGrayscaleTheme[] = "set-grayscale-theme";
 inline constexpr char kSetUserColor[] = "set-user-color";
 
 }  // namespace switches
-}  // namespace themes
-}  // namespace brave
 
-#endif  // BRAVE_BROWSER_UI_THEMES_SWITCHES_H_
+#endif  // BRAVE_BROWSER_THEMES_SWITCHES_H_

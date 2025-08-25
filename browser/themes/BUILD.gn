@@ -51,7 +51,6 @@ source_set("unit_tests") {
       ":themes",
       "//base",
       "//base/test:test_support",
-      "//brave/browser/ui/themes",
       "//chrome/browser",
       "//chrome/browser/themes",
       "//chrome/test:test_support",

@@ -12,6 +12,11 @@
 #include "build/build_config.h"
 
 class PrefRegistrySimple;
+class Profile;
+
+namespace base {
+class CommandLine;
+}
 
 namespace dark_mode {
 
@@ -56,34 +61,21 @@ void CacheSystemDarkModePrefs(bool prefer_dark_theme);
 bool HasCachedSystemDarkModeType();
 #endif
 
-}  // namespace dark_mode
-
-namespace base {
-class CommandLine;
-}
-
-class Profile;
-
 // Processes browser-wide theme command line switches.
 // This should be called once during browser startup.
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
-    BUILDFLAG(IS_CHROMEOS)
 void ProcessBrowserWideThemeCommandLineSwitches();
 void ProcessBrowserWideThemeCommandLineSwitches(
     const base::CommandLine* command_line);
 void ProcessBrowserWideThemeCommandLineSwitches(
     const base::CommandLine* command_line,
     Profile* single_profile);
-#endif
 
 // Processes per-profile theme command line switches for the specified profile.
 // Desktop platforms only (Windows, macOS, Linux, ChromeOS).
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
-    BUILDFLAG(IS_CHROMEOS)
 void ProcessThemeCommandLineSwitchesForProfile(
     const base::CommandLine* command_line,
     Profile* profile);
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
-        // BUILDFLAG(IS_CHROMEOS)
+
+}  // namespace dark_mode
 
 #endif  // BRAVE_BROWSER_THEMES_BRAVE_DARK_MODE_UTILS_H_
