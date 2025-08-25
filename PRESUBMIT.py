@@ -573,14 +573,14 @@ def CheckTodoBugReferences(_original_check, input_api, output_api):
                                           files_to_skip=files_to_skip)
 
     # Check for bug link in TODO comments.
-    pattern = input_api.re.compile(r'.*\bTODO\([^\)0-9]*([0-9]+)\).*')
+    pattern = input_api.re.compile(r'.*\bTODO\((.+)\).*')
     problems = []
     for f in input_api.AffectedSourceFiles(_FilterFile):
         for line_number, line in f.ChangedContents():
             match = pattern.match(line)
-            if match and 'https://github.com/brave/brave-browser/issues' not in match.group(
-                    0):
-                problems.append(f"{f.LocalPath()}: {line_number}\n    {line}")
+            if match and 'https://github.com/brave/brave-browser/issues/' not in match.group(
+                    1):
+                problems.append(f"{f.LocalPath()}:{line_number}\n    {line}")
 
     if problems:
         return [
