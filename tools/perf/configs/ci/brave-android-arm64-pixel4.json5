@@ -56,9 +56,8 @@
       "name": "speedometer2",
       "pageset-repeat": 1
     },
-    // temporarily disabled: https://github.com/brave/brave-browser/issues/46786
-    // {
-    //   "name": "apk_size",
-    // },
+    {
+      "name": "apk_size",
+    },
   ]
 }
