@@ -164,10 +164,11 @@ class AdBlockSubpage extends AdBlockSubpageBase {
       return null
     }
 
-    return (item: SubscriptionInfo) => {
+    return (item: FilterList) => {
       this.hasListExpanded_ = true
       title = title.toLowerCase()
-      return (item.title?.toLowerCase().includes(title))
+      return (item.title?.toLowerCase().includes(title) ||
+              item.desc?.toLowerCase().includes(title))
     }
   }
 
