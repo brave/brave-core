@@ -60,7 +60,7 @@ hooks = [
     'name': 'bootstrap_ios',
     'pattern': '.',
     'condition': 'checkout_ios and host_os == "mac"',
-    'action': ['python3', 'script/ios_bootstrap.py']
+    'action': ['vpython3', 'script/ios_bootstrap.py']
   },
   {
     # Download hermetic xcode for goma
