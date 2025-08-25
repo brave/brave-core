@@ -88,7 +88,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.setMargins(CLOSE_BUTTON_MARGIN, CLOSE_BUTTON_MARGIN, 0, 0);
 
-        ViewGroup parentView = findViewById(android.R.id.content);
+        ViewGroup parentView = getContentView();
         ImageView closeImg = new ImageView(FullScreenCustomTabActivity.this);
         closeImg.setPadding(
                 CLOSE_BUTTON_PADDING,
