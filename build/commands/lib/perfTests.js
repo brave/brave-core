@@ -25,7 +25,6 @@ const runPerfTests = (
     util.run('vpython3', ['-m', 'unittest', 'discover', '-p', '*_test.py'], {
       ...config.defaultOptions,
       cwd: perfDir,
-      shell: false,
     })
   }
 
