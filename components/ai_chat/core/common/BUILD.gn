@@ -7,6 +7,14 @@ component("common") {
   output_name = "ai_chat_common"
   defines = [ "IS_AI_CHAT_COMMON_IMPL" ]
 
+  data = [
+    "//brave/components/web-components/"
+  ]
+
+  data_deps = [ 
+    "//brave/components/ai_chat/resources:ai_chat_ui"
+  ]
+
   sources = [
     "constants.h",
     "features.cc",
