@@ -1,13 +1,13 @@
-caption: Disable AI Chat
+caption: Enable AI Chat
 default: null
 desc: |-
-  Disable AI Chat in Brave.
+  Enable AI Chat in Brave.
 
   The smart AI assistant built right into your browser. Ask questions, summarize pages, create new content, and more. Privately.
 
-            If this policy is set to true, AI Chat will always be disabled.
+            If this policy is set to true, AI Chat will always be enabled.
 
-            If this policy is set to false, AI Chat will always be enabled.
+            If this policy is set to false, AI Chat will always be disabled.
 
             If you set this policy, users cannot change or override it.
 
@@ -20,9 +20,9 @@ features:
   per_profile: true
 items:
 - caption: Enable AI Chat
-  value: false
-- caption: Disable AI Chat
   value: true
+- caption: Disable AI Chat
+  value: false
 - caption: Allow the user to decide
   value: null
 owners:
