@@ -27,6 +27,7 @@ namespace psst {
 namespace {
 
 const char kShouldProcessKey[] = "should_process_key";
+const char kSignedUserId[] = "user";
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
  public:
@@ -36,10 +37,10 @@ struct PsstNavigationData : public base::SupportsUserData::Data {
 };
 
 // Adds the dictionary of parameters returned by the user.js script to the
-// policy.js script, before it is executed. Empty parameters dictionary or in
-// case when parameters dictionary cannot be serialized to JSON, means that
-// script should be executed without any parameters. In case of success, the
-// function returns: const params = {
+// policy.js script, before it is executed. In case when parameters dictionary
+// cannot be serialized to JSON, means that script should be executed without
+// any parameters. In case of success, the function returns:
+// const params = {
 //    "tasks": [ {
 //       "description": "Ads Preferences",
 //       "url": "https://a.test/settings/ads_preferences"
@@ -54,16 +55,11 @@ struct PsstNavigationData : public base::SupportsUserData::Data {
 // if no parameters are provided.
 std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
                                    base::Value::Dict params_dict) {
-  SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
-  SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
-  if (params_dict.empty()) {
-    base::debug::DumpWithoutCrashing();
-    return rule->policy_script();
-  }
-
   std::optional<std::string> params_json = base::WriteJsonWithOptions(
       params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
   if (!params_json) {
+    SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
+    SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
     base::debug::DumpWithoutCrashing();
     return rule->policy_script();
   }
@@ -173,8 +169,17 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     int id,
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result) {
+  // We should break the flow in case of policy script is not available or user
+  // script result is not a dictionary
   if (!rule || !ShouldInsertScriptForPage(id) ||
       rule->policy_script().empty() || !user_script_result.is_dict()) {
+    return;
+  }
+
+  // We should break the flow in case of signed-in user ID is not available
+  if (const auto* user_id =
+          user_script_result.GetDict().FindString(kSignedUserId);
+      !user_id || user_id->empty()) {
     return;
   }
 
