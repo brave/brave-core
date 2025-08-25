@@ -264,6 +264,8 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
       /*redirect_list*/ history::RedirectList(),
       /*transition*/ ui::PAGE_TRANSITION_TYPED,
       /*hidden=*/false, /*visit_source*/ history::VisitSource::SOURCE_BROWSED,
+      /*response_code_category*/
+      history::VisitResponseCodeCategory::kNot404,
       /*did_replace_entry=*/false, /*consider_for_ntp_most_visited=*/true,
       /*is_ephemeral*/ false,
       /*title*/ base::SysNSStringToUTF16(history.title));
