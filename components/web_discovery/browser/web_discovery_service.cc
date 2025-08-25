@@ -10,11 +10,12 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/payload_generator.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
+#include "brave/components/web_discovery/browser/url_extractor.h"
+#include "brave/components/web_discovery/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -87,6 +88,9 @@ void WebDiscoveryService::Start() {
         profile_prefs_, shared_url_loader_factory_.get(),
         server_config_loader_.get());
   }
+  if (!url_extractor_) {
+    url_extractor_ = std::make_unique<URLExtractor>();
+  }
 }
 
 void WebDiscoveryService::Stop() {
@@ -96,6 +100,7 @@ void WebDiscoveryService::Stop() {
   content_scraper_ = nullptr;
   credential_manager_ = nullptr;
   server_config_loader_ = nullptr;
+  url_extractor_ = nullptr;
 }
 
 void WebDiscoveryService::ClearPrefs() {
@@ -126,7 +131,8 @@ void WebDiscoveryService::OnConfigChange() {
 
 void WebDiscoveryService::OnPatternsLoaded() {
   if (!content_scraper_) {
-    content_scraper_ = ContentScraper::Create(server_config_loader_.get());
+    content_scraper_ = ContentScraper::Create(server_config_loader_.get(),
+                                              url_extractor_.get());
   }
   if (!double_fetcher_) {
     double_fetcher_ = std::make_unique<DoubleFetcher>(
@@ -150,41 +156,73 @@ void WebDiscoveryService::OnDoubleFetched(
   if (!response_body) {
     return;
   }
-  auto prev_scrape_result = PageScrapeResult::FromValue(associated_data);
-  if (!prev_scrape_result) {
-    return;
+
+  if (features::ShouldUseV2Patterns()) {
+    content_scraper_->ParseAndScrapePageV2(
+        url, *response_body,
+        base::BindOnce(&WebDiscoveryService::OnContentScraped,
+                       base::Unretained(this), true));
+  } else {
+    auto prev_scrape_result = PageScrapeResult::FromValue(associated_data);
+    if (!prev_scrape_result) {
+      return;
+    }
+    content_scraper_->ParseAndScrapePage(
+        url, true, std::move(prev_scrape_result), *response_body,
+        base::BindOnce(&WebDiscoveryService::OnContentScraped,
+                       base::Unretained(this), true));
   }
-  content_scraper_->ParseAndScrapePage(
-      url, true, std::move(prev_scrape_result), *response_body,
-      base::BindOnce(&WebDiscoveryService::OnContentScraped,
-                     base::Unretained(this), true));
 }
 
 bool WebDiscoveryService::ShouldExtractFromPage(
     const GURL& url,
     content::RenderFrameHost* render_frame_host) {
-  if (!content_scraper_) {
+  if (!content_scraper_ || !url_extractor_) {
     return false;
   }
-  const auto* matching_url_details =
-      server_config_loader_->GetLastPatterns().GetMatchingURLPattern(url,
-                                                                     false);
-  if (!matching_url_details || !matching_url_details->is_search_engine) {
-    if (!current_page_count_hour_key_.empty()) {
-      ScopedDictPrefUpdate page_count_update(profile_prefs_, kPageCounts);
-      auto existing_count =
-          page_count_update->FindInt(current_page_count_hour_key_).value_or(0);
-      page_count_update->Set(current_page_count_hour_key_, existing_count + 1);
+
+  bool result = false;
+  bool should_update_page_count = false;
+
+  if (features::ShouldUseV2Patterns()) {
+    auto extract_result = url_extractor_->IdentifyURL(url);
+    should_update_page_count =
+        !extract_result || !extract_result->details->is_search_engine;
+    if (extract_result) {
+      VLOG(1) << "URL matched pattern "
+              << RelevantSiteToID(extract_result->details->site).value_or("")
+              << ": " << url;
+      // Check for private query using the extracted query
+      if (extract_result->details->is_search_engine) {
+        result = extract_result->query &&
+                 !IsPrivateQueryLikely(*extract_result->query);
+      } else {
+        result = !ShouldDropURL(url);
+      }
+    }
+  } else {
+    // Use patterns for v1
+    const auto* matching_url_details =
+        server_config_loader_->GetLastPatterns().GetMatchingURLPattern(url,
+                                                                       false);
+    should_update_page_count =
+        !matching_url_details || !matching_url_details->is_search_engine;
+    if (matching_url_details) {
+      VLOG(1) << "URL matched pattern " << matching_url_details->id << ": "
+              << url;
+      result = !ShouldDropURL(url);
     }
   }
-  if (!matching_url_details) {
-    return false;
+
+  // Update page count once if needed
+  if (should_update_page_count && !current_page_count_hour_key_.empty()) {
+    ScopedDictPrefUpdate page_count_update(profile_prefs_, kPageCounts);
+    auto existing_count =
+        page_count_update->FindInt(current_page_count_hour_key_).value_or(0);
+    page_count_update->Set(current_page_count_hour_key_, existing_count + 1);
   }
-  VLOG(1) << "URL matched pattern " << matching_url_details->id << ": " << url;
-  if (ShouldDropURL(url)) {
-    return false;
-  }
-  return true;
+
+  return result;
 }
 
 void WebDiscoveryService::StartExtractingFromPage(
@@ -192,6 +230,21 @@ void WebDiscoveryService::StartExtractingFromPage(
     mojo::Remote<mojom::DocumentExtractor> document_extractor) {
   auto remote_id =
       document_extractor_remotes_.Add(std::move(document_extractor));
+
+  // For v2 patterns, immediately schedule double fetch
+  if (features::ShouldUseV2Patterns()) {
+    auto extract_result = url_extractor_->IdentifyURL(url);
+    GURL double_fetch_url = url;
+    if (extract_result && extract_result->query &&
+        extract_result->details->is_search_engine) {
+      double_fetch_url = GeneratePrivateSearchURL(
+          url, *extract_result->query,
+          extract_result->details->private_query_prefix);
+    }
+    double_fetcher_->ScheduleDoubleFetch(double_fetch_url, base::Value());
+    return;
+  }
+
   // We use a WeakPtr within the ContentScraper for callbacks from the renderer,
   // so using Unretained is fine here.
   CHECK(content_scraper_);
@@ -207,32 +260,39 @@ void WebDiscoveryService::OnContentScraped(
   if (!result) {
     return;
   }
-  const auto& patterns = server_config_loader_->GetLastPatterns();
-  auto* original_url_details =
-      patterns.GetMatchingURLPattern(result->url, is_strict);
-  if (!original_url_details) {
-    return;
-  }
-  if (!is_strict && original_url_details->is_search_engine) {
-    auto* strict_url_details =
-        patterns.GetMatchingURLPattern(result->url, true);
-    if (strict_url_details) {
-      auto url = result->url;
-      if (!result->query) {
-        return;
-      }
-      if (IsPrivateQueryLikely(*result->query)) {
-        return;
-      }
-      url = GeneratePrivateSearchURL(
-          url, *result->query, strict_url_details->search_template_prefix);
-      VLOG(1) << "Double fetching search page: " << url;
-      double_fetcher_->ScheduleDoubleFetch(url, result->SerializeToValue());
+
+  std::vector<base::Value::Dict> payloads;
+  if (features::ShouldUseV2Patterns()) {
+    CHECK(is_strict);
+    // TODO(djandries): Generate v2 payloads from the double-fetched page
+  } else {
+    const auto& patterns = server_config_loader_->GetLastPatterns();
+    auto* original_url_details =
+        patterns.GetMatchingURLPattern(result->url, is_strict);
+    if (!original_url_details) {
+      return;
     }
+    if (!is_strict && original_url_details->is_search_engine) {
+      auto* strict_url_details =
+          patterns.GetMatchingURLPattern(result->url, true);
+      if (strict_url_details) {
+        auto url = result->url;
+        if (!result->query) {
+          return;
+        }
+        if (IsPrivateQueryLikely(*result->query)) {
+          return;
+        }
+        url = GeneratePrivateSearchURL(
+            url, *result->query, strict_url_details->search_template_prefix);
+        VLOG(1) << "Double fetching search page: " << url;
+        double_fetcher_->ScheduleDoubleFetch(url, result->SerializeToValue());
+      }
+    }
+    payloads =
+        GenerateQueryPayloads(server_config_loader_->GetLastServerConfig(),
+                              original_url_details, std::move(result));
   }
-  auto payloads =
-      GenerateQueryPayloads(server_config_loader_->GetLastServerConfig(),
-                            original_url_details, std::move(result));
   for (auto& payload : payloads) {
     reporter_->ScheduleSend(std::move(payload));
   }

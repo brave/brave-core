@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/time/time.h"
 #include "net/base/backoff_entry.h"
@@ -17,11 +18,20 @@
 
 namespace web_discovery {
 
+struct ServerConfig;
+struct PageScrapeResult;
+
 inline constexpr size_t kMaxResponseSize = 16 * 1024;
 inline constexpr char kCollectorHostSwitch[] = "wdp-collector-host";
 inline constexpr char kPatternsURLSwitch[] = "wdp-patterns-url";
 inline constexpr char kVersionHeader[] = "Version";
 inline constexpr int kCurrentVersion = 1;
+
+// Standard attribute IDs used across pattern versions
+inline constexpr char kV1UrlAttrId[] = "url";
+inline constexpr char kV2UrlAttrId[] = "qurl";
+inline constexpr char kCountryCodeAttrId[] = "ctry";
+inline constexpr char kQueryAttrId[] = "q";
 
 // The default backoff policy to use for scheduling retry requests.
 inline constexpr net::BackoffEntry::Policy kBackoffPolicy = {
@@ -62,6 +72,13 @@ std::optional<std::string> ExtractValueFromQueryString(
 
 // Strips non-alphanumeric characters from string
 void TransformToAlphanumeric(std::string& str);
+
+// Gets standard request values for common attribute IDs
+std::optional<std::string> GetRequestValue(
+    std::string_view attr_id,
+    const GURL& url,
+    const ServerConfig& server_config,
+    const PageScrapeResult& scrape_result);
 
 }  // namespace web_discovery
 
