@@ -178,7 +178,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature) &&
       !IsIncognitoProcess()) {
-    new skus::SkusRenderFrameObserver(render_frame);
+    skus::SkusRenderFrameObserver::Create(render_frame);
   }
 
 #if BUILDFLAG(IS_ANDROID)
