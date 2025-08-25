@@ -17,6 +17,7 @@
 #include "brave/components/web_discovery/browser/double_fetcher.h"
 #include "brave/components/web_discovery/browser/reporter.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
+#include "brave/components/web_discovery/browser/url_extractor.h"
 #include "brave/components/web_discovery/common/web_discovery.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -117,6 +118,7 @@ class WebDiscoveryService : public KeyedService {
   std::unique_ptr<ContentScraper> content_scraper_;
   std::unique_ptr<DoubleFetcher> double_fetcher_;
   std::unique_ptr<Reporter> reporter_;
+  std::unique_ptr<URLExtractor> url_extractor_;
 
   base::Time current_page_count_start_time_;
   std::string current_page_count_hour_key_;
