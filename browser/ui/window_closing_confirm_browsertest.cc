@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/byte_count.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
@@ -296,7 +297,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   GURL url = embedded_test_server()->GetURL("/large_file");
 
   content::TestDownloadHttpResponse::Parameters parameters;
-  parameters.size = 1024 * 1024 * 32; /* 32MB file. */
+  parameters.size = base::MiB(32).InBytes(); /* 32MB file. */
   content::TestDownloadHttpResponse::StartServing(parameters, url);
 
   // Ensure that we have enough disk space to download the large file.

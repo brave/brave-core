@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/byte_count.h"
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "components/language/core/browser/pref_names.h"
@@ -21,7 +22,7 @@ namespace brave_education {
 
 namespace {
 
-constexpr int64_t kMaxDownloadBytes = 1024 * 1024;
+constexpr base::ByteCount kMaxDownload = base::MiB(1);
 constexpr base::TimeDelta kTimeoutDuration = base::Seconds(2);
 
 constexpr auto kTrafficAnnotation =
@@ -97,7 +98,7 @@ void BraveEducationServerChecker::IsServerPageAvailable(
 
   url_loader_ptr->DownloadToString(url_loader_factory_.get(),
                                    std::move(download_callback),
-                                   kMaxDownloadBytes);
+                                   kMaxDownload.InBytes());
 }
 
 void BraveEducationServerChecker::OnURLResponse(
