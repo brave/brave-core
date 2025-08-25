@@ -48,11 +48,6 @@ struct PsstNavigationData : public base::SupportsUserData::Data {
 // };
 // <policy script, which uses parameters to apply PSST settings selected by the
 // user>;
-//
-// @param rule Psst rule used for current URL to apply privacy settings.
-// @param params_dict A dictionary of parameters to be passed to the script.
-// @return The modified script with parameters prepended, or the original script
-// if no parameters are provided.
 std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
                                    base::Value::Dict params_dict) {
   std::optional<std::string> params_json = base::WriteJsonWithOptions(
