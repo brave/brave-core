@@ -177,7 +177,6 @@ program
     collect,
     [],
   )
-  .option('--no_gn_gen', 'Build without running gn gen')
   .option('--notarize', 'notarize targets that support it with Apple')
   .option('--offline', 'use offline mode for RBE')
   .option(
@@ -358,7 +357,6 @@ program
   .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--filter <filter>', 'set test filter')
-  .option('--no_gn_gen', 'Use args.gn as default values')
   .option(
     '--base [targetCommitRef]',
     'use this commit/branch/tag as reference for change detection',
