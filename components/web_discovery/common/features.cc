@@ -12,5 +12,11 @@ BASE_FEATURE(kBraveWebDiscoveryNative,
              base::FEATURE_DISABLED_BY_DEFAULT);
 const base::FeatureParam<std::string> kPatternsPath{&kBraveWebDiscoveryNative,
                                                     "patterns_path", ""};
+const base::FeatureParam<int> kPatternsVersion{&kBraveWebDiscoveryNative,
+                                               kPatternsVersionParam, 2};
+
+bool ShouldUseV2Patterns() {
+  return kPatternsVersion.Get() >= 2;
+}
 
 }  // namespace web_discovery::features
