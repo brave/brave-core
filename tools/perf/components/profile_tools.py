@@ -9,6 +9,7 @@ import os
 import re
 import shutil
 import json
+import zipfile
 
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -133,14 +134,15 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
     logging.info('Adding extra %s to %s', extra_dir, target_dir)
     shutil.copytree(extra_dir, target_dir, dirs_exist_ok=True)
 
-  # Fix issue "ZIP does not support timestamps before 1980":
-  for f in Path(profile_dir).glob('**/*'):
-    if f.is_file() and f.stat().st_mtime < 1980:
-        f.touch()
-
   logging.info('Packing profile %s to %s', profile_dir, profile_zip)
-  with scoped_cwd(profile_dir):
-    make_zip(profile_zip, files=[], dirs=['.'])
+  # strict_timestamps=False because Chromium makes files with empty timestamps.
+  with zipfile.ZipFile(profile_zip, "w", zipfile.ZIP_DEFLATED,
+                        strict_timestamps=False) as zip_file:
+    with scoped_cwd(profile_dir):
+      for root, _, filenames in os.walk('.'):
+        for f in filenames:
+          print('adding', os.path.join(root, f))
+          zip_file.write(os.path.join(root, f))
 
   with open(profile_zip_sizes, 'w', encoding='utf-8') as f:
     f.write(GetProfileStats(profile_dir).toText())
