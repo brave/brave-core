@@ -9,10 +9,23 @@ using PageInfoCookiesContentViewBaseTestClassBraveOverrides =
     PageInfoCookiesContentViewBaseTestClass;
 
 TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
-       ThirdPartyCoookiesInfoIsRemoved) {
-  // PageInfoCookiesContentViewBaseTestClass::SetUp already creates the view,
-  // so the container and the label should be removed by now.
-  EXPECT_EQ(nullptr, third_party_cookies_container());
-  EXPECT_EQ(nullptr, third_party_cookies_description_wrapper());
-  EXPECT_EQ(nullptr, third_party_cookies_description_label());
+       ThirdPartyCoookiesInfoIsHidden) {
+  PageInfoCookiesContentView::CookiesInfo cookie_info =
+      DefaultCookieInfoForTests();
+  content_view()->SetCookieInfo(cookie_info);
+
+  EXPECT_FALSE(third_party_cookies_container()->GetVisible());
+  EXPECT_FALSE(third_party_cookies_description_wrapper()->GetVisible());
+}
+
+TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
+       ThirdPartyCoookiesInfoIsHiddenInIncognitoMode) {
+  PageInfoCookiesContentView::CookiesInfo cookie_info =
+      DefaultCookieInfoForTests();
+  cookie_info.controls_state = CookieControlsState::kAllowed3pc;
+  cookie_info.blocking_status = CookieBlocking3pcdStatus::kAll;
+  cookie_info.is_incognito = true;
+  content_view()->SetCookieInfo(cookie_info);
+  EXPECT_FALSE(third_party_cookies_container()->GetVisible());
+  EXPECT_FALSE(third_party_cookies_description_wrapper()->GetVisible());
 }
