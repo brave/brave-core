@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/android/whats_new/BUILD.gn b/chrome/browser/ui/android/whats_new/BUILD.gn
+index 7d91e92166b7847e86a36d47dd51812b3d8a51ad..ed2fbd5ec0403bf2b2af49da1367516424f1f0f8 100644
+--- a/chrome/browser/ui/android/whats_new/BUILD.gn
++++ b/chrome/browser/ui/android/whats_new/BUILD.gn
+@@ -15,8 +15,7 @@ android_library("feature_list_java") {
+   ]
+   deps = [
+     "//base:resetters_java",
+-    "//chrome/android:chrome_app_java_resources",
+-    "//third_party/androidx:androidx_annotation_annotation_java",
++    "//third_party/androidx:androidx_annotation_annotation_jvm_java",
+   ]
+ }
+ 
