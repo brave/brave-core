@@ -264,7 +264,10 @@ void WebDiscoveryService::OnContentScraped(
   std::vector<base::Value::Dict> payloads;
   if (features::ShouldUseV2Patterns()) {
     CHECK(is_strict);
-    // TODO(djandries): Generate v2 payloads from the double-fetched page
+    const auto& patterns_group = server_config_loader_->GetLastV2Patterns();
+    payloads =
+        GenerateQueryPayloadsV2(server_config_loader_->GetLastServerConfig(),
+                                patterns_group, std::move(result));
   } else {
     const auto& patterns = server_config_loader_->GetLastPatterns();
     auto* original_url_details =
