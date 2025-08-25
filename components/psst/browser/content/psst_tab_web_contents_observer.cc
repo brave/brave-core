@@ -54,9 +54,9 @@ struct PsstNavigationData : public base::SupportsUserData::Data {
 // if no parameters are provided.
 std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
                                    base::Value::Dict params_dict) {
+  SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
+  SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
   if (params_dict.empty()) {
-    SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
-    SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
     base::debug::DumpWithoutCrashing();
     return rule->policy_script();
   }
@@ -64,8 +64,6 @@ std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
   std::optional<std::string> params_json = base::WriteJsonWithOptions(
       params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
   if (!params_json) {
-    SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
-    SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
     base::debug::DumpWithoutCrashing();
     return rule->policy_script();
   }
