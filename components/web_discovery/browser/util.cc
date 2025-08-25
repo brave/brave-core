@@ -8,8 +8,11 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/web_discovery/browser/content_scraper.h"
+#include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/common/features.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/url_util.h"
@@ -21,6 +24,7 @@ constexpr char kCollectorHostPrefix[] = "collector.wdp";
 constexpr char kQuorumHostPrefix[] = "quorum.wdp";
 constexpr char kPatternsHostPrefix[] = "patterns.wdp";
 constexpr char kPatternsPath[] = "patterns.gz";
+constexpr char kV2PatternsPath[] = "patterns-v2.gz";
 }  // namespace
 
 std::string GetDirectHPNHost() {
@@ -50,7 +54,8 @@ GURL GetPatternsEndpoint() {
   } else {
     auto patterns_path = features::kPatternsPath.Get();
     if (patterns_path.empty()) {
-      patterns_path = kPatternsPath;
+      patterns_path =
+          features::ShouldUseV2Patterns() ? kV2PatternsPath : kPatternsPath;
     }
     patterns_url_str =
         base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
@@ -101,6 +106,25 @@ std::optional<std::string> ExtractValueFromQueryString(
 
 void TransformToAlphanumeric(std::string& str) {
   std::erase_if(str, [](char c) { return !std::isalnum(c); });
+}
+
+std::optional<std::string> GetRequestValue(
+    std::string_view attr_id,
+    const GURL& url,
+    const ServerConfig& server_config,
+    const PageScrapeResult& scrape_result) {
+  if (attr_id == kV1UrlAttrId || attr_id == kV2UrlAttrId) {
+    return url.spec();
+  } else if (attr_id == kCountryCodeAttrId) {
+    return server_config.location;
+  } else if (attr_id == kQueryAttrId) {
+    auto result = scrape_result.query;
+    if (result) {
+      base::ReplaceSubstringsAfterOffset(&result.value(), 0, "%20", " ");
+    }
+    return result;
+  }
+  return std::nullopt;
 }
 
 }  // namespace web_discovery
