@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import formatMessage from '$web-common/formatMessage'
+import { formatString } from '$web-common/locale'
 import { Link } from '../common/link'
 import { getString } from '../../lib/strings'
 import { BraveBackground, SponsoredImageBackground } from '../../state/background_state'
@@ -46,7 +46,7 @@ function BraveBackgroundCredits(props: BraveBackgroundCreditsProps) {
   }
   return (
     <Link className='photo-credits' url={link}>
-      {formatMessage(getString('photoCreditsText'), [author])}
+      {formatString(getString(S.NEW_TAB_PHOTO_CREDITS_TEXT), [author])}
     </Link>
   )
 }

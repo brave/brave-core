@@ -40,11 +40,11 @@ export function BackgroundTypePanel(props: Props) {
   function panelTitle() {
     switch (type) {
       case SelectedBackgroundType.kCustom:
-        return getString('customBackgroundTitle')
+        return getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)
       case SelectedBackgroundType.kGradient:
-        return getString('gradientBackgroundTitle')
+        return getString(S.NEW_TAB_GRADIENT_BACKGROUND_LABEL)
       case SelectedBackgroundType.kSolid:
-        return getString('solidBackgroundTitle')
+        return getString(S.NEW_TAB_SOLID_BACKGROUND_LABEL)
       default:
         return ''
     }
@@ -86,7 +86,7 @@ export function BackgroundTypePanel(props: Props) {
       </button>
     </h4>
     <div className='control-row'>
-      <label>{getString('randomizeBackgroundLabel')}</label>
+      <label>{getString(S.NEW_TAB_RANDOMIZE_BACKGROUND_LABEL)}</label>
       <Toggle
         size='small'
         checked={selectedBackground.type === type && !selectedBackground.value}

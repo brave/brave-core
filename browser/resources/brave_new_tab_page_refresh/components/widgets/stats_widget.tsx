@@ -39,11 +39,11 @@ export function StatsWidget() {
     <div data-css-scope={style.scope}>
       <WidgetMenu>
         <leo-menu-item onClick={() => actions.setShowShieldsStats(false)}>
-          <Icon name='eye-off' /> {getString('hideStatsWidgetLabel')}
+          <Icon name='eye-off' /> {getString(S.NEW_TAB_HIDE_STATS_WIDGET_LABEL)}
         </leo-menu-item>
       </WidgetMenu>
       <div className='title'>
-        {getString('statsTitle')}
+        {getString(S.NEW_TAB_STATS_TITLE)}
       </div>
       <div className='data'>
         <div>
@@ -51,20 +51,20 @@ export function StatsWidget() {
             <div className='value'>
               {stats && adsBlockedFormatter.format(stats.adsBlocked)}
             </div>
-            {getString('statsAdsBlockedText')}
+            {getString(S.NEW_TAB_STATS_ADS_BLOCKED_TEXT)}
           </div>
           <div className='bandwidth-saved'>
             <div className='value'>
               {stats && renderUnits(formatBandwidth(stats.bandwidthSavedBytes))}
             </div>
-            {getString('statsBandwidthSavedText')}
+            {getString(S.NEW_TAB_STATS_BANDWIDTH_SAVED_TEXT)}
           </div>
           <div className='time-saved'>
             <div className='value'>
               {stats &&
                 renderUnits(formatTimeSaved(getTimeSaved(stats.adsBlocked)))}
             </div>
-            {getString('statsTimeSavedText')}
+            {getString(S.NEW_TAB_STATS_TIME_SAVED_TEXT)}
           </div>
         </div>
       </div>

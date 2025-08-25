@@ -25,7 +25,7 @@ export function SearchPanel() {
   return (
     <div data-css-scope={style.scope}>
       <div className='control-row'>
-        <label>{getString('showSearchBoxLabel')}</label>
+        <label>{getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}</label>
         <Toggle
           size='small'
           checked={showSearchBox}
@@ -35,7 +35,7 @@ export function SearchPanel() {
       {
         showSearchBox &&
           <div className='search-engines'>
-            <h4>{getString('enabledSearchEnginesLabel')}</h4>
+            <h4>{getString(S.NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL)}</h4>
             <div className='search-engine-list'>
               {
                 searchEngines.map((engine) => (
@@ -57,7 +57,7 @@ export function SearchPanel() {
                 className='customize-link'
                 url='chrome://settings/searchEngines'
               >
-                {getString('customizeSearchEnginesLink')}
+                {getString(S.NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK)}
                 <Icon name='launch' />
               </Link>
             </div>

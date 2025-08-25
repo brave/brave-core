@@ -47,7 +47,7 @@ export function SearchEnginePicker(props: Props) {
           onClick={props.onCustomizeClick}
           data-customize='customize'
         >
-          {getString('searchCustomizeEngineListText')}
+          {getString(S.NEW_TAB_SEARCH_CUSTOMIZE_ENGINE_LIST_TEXT)}
         </leo-menu-item>
       </ButtonMenu>
     </div>

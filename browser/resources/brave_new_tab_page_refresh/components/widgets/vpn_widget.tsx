@@ -33,25 +33,26 @@ export function VpnWidget() {
         <div className='title'>
           <span>
             <Icon name='product-vpn' />
-            {getString('vpnWidgetTitle')}
+            {getString(S.NEW_TAB_VPN_WIDGET_TITLE)}
           </span>
           <span className='provider'>
-            {getString('vpnPoweredByText')} <img src={guardianLogoURL} />
+            {getString(S.NEW_TAB_VPN_POWERED_BY_TEXT)}
+            <img src={guardianLogoURL} />
           </span>
         </div>
         <div className='content'>
           <div className='features'>
             <div>
               <Icon name='shield-done' />
-              <span>{getString('vpnFeatureText1')}</span>
+              <span>{getString(S.NEW_TAB_VPN_FEATURE_TEXT1)}</span>
             </div>
             <div>
               <Icon name='shield-done' />
-              <span>{getString('vpnFeatureText2')}</span>
+              <span>{getString(S.NEW_TAB_VPN_FEATURE_TEXT2)}</span>
             </div>
             <div>
               <Icon name='shield-done' />
-              <span>{getString('vpnFeatureText3')}</span>
+              <span>{getString(S.NEW_TAB_VPN_FEATURE_TEXT3)}</span>
             </div>
           </div>
           <div className='purchase-actions'>
@@ -59,13 +60,13 @@ export function VpnWidget() {
               size='small'
               onClick={() => actions.startVpnTrial()}
             >
-              {getString('vpnStartTrialLabel')}
+              {getString(S.NEW_TAB_VPN_START_TRIAL_LABEL)}
             </Button>
             <button
               className='restore'
               onClick={() => actions.restoreVpnPurchase()}
             >
-              {getString('vpnRestorePurchaseLabel')}
+              {getString(S.NEW_TAB_VPN_RESTORE_PURCHASE_LABEL)}
             </button>
           </div>
         </div>
@@ -84,13 +85,13 @@ export function VpnWidget() {
   function connectionStateText() {
     switch (connectionState) {
       case ConnectionState.CONNECTED:
-        return getString('vpnStatusConnected')
+        return getString(S.NEW_TAB_VPN_STATUS_CONNECTED)
       case ConnectionState.DISCONNECTED:
-        return getString('vpnStatusDisconnected')
+        return getString(S.NEW_TAB_VPN_STATUS_DISCONNECTED)
       case ConnectionState.CONNECTING:
-        return getString('vpnStatusConnecting')
+        return getString(S.NEW_TAB_VPN_STATUS_CONNECTING)
       case ConnectionState.DISCONNECTING:
-        return getString('vpnStatusDisconnecting')
+        return getString(S.NEW_TAB_VPN_STATUS_DISCONNECTING)
       default:
         console.error('Unhandled ConnectionState', connectionState)
         return ''
@@ -107,13 +108,13 @@ export function VpnWidget() {
         <div className='country'>
           {region.country}
           <button onClick={() => actions.openVpnPanel()}>
-            {getString('vpnChangeRegionLabel')}
+            {getString(S.NEW_TAB_VPN_CHANGE_REGION_LABEL)}
           </button>
         </div>
         <div>
           {
             region.namePretty === region.country
-              ? getString('vpnOptimalText')
+              ? getString(S.NEW_TAB_VPN_OPTIMAL_TEXT)
               : region.namePretty
           }
         </div>
@@ -127,7 +128,7 @@ export function VpnWidget() {
 
   return (
     <VpnWidgetContainer>
-      <div className='title'>{getString('vpnWidgetTitle')}</div>
+      <div className='title'>{getString(S.NEW_TAB_VPN_WIDGET_TITLE)}</div>
       <div
         className={classNames({
           'content': true,
@@ -160,7 +161,7 @@ function VpnWidgetContainer(props: React.PropsWithChildren) {
     <div data-css-scope={style.scope}>
       <WidgetMenu>
         <leo-menu-item onClick={() => actions.setShowVpnWidget(false)}>
-          <Icon name='eye-off' /> {getString('hideVpnWidgetLabel')}
+          <Icon name='eye-off' /> {getString(S.NEW_TAB_HIDE_VPN_WIDGET_LABEL)}
         </leo-menu-item>
       </WidgetMenu>
       {props.children}
