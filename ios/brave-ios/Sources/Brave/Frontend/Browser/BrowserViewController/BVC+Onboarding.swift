@@ -286,17 +286,24 @@ extension BrowserViewController {
       return
     }
 
+    // Perform accurate check to get fresh default browser status
+    defaultBrowserHelper.performAccurateDefaultCheckIfNeeded()
+
+    // Check if user is already default before showing onboarding
+    let isDefault = defaultBrowserHelper.status == .defaulted
     let controller = OnboardingController(
       environment: .init(
         p3aUtils: braveCore.p3aUtils,
         attributionManager: attributionManager
       ),
+      steps: isDefault ? .alreadyDefaultBrowserSteps : .allSteps,
       onCompletion: {
         Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
         Preferences.AppState.shouldDeferPromotedPurchase.value = false
         Preferences.FocusOnboarding.focusOnboardingFinished.value = true
       }
     )
+
     present(controller, animated: false)
 
     Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
