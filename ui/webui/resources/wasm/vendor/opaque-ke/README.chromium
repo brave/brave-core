@@ -1,0 +1,6 @@
+Name: rand
+URL: https://crates.io/crates/rand
+Version: 0.8.5
+License: Apache-2.0
+License File: //brave/ui/webui/resources/wasm/vendor/rand/LICENSE-APACHE
+Description: Random number generators and other randomness functionality.
