@@ -667,7 +667,7 @@ let isStripAbsolutePathsFromDebugSymbolsEnabled = {
 }()
 
 if isStripAbsolutePathsFromDebugSymbolsEnabled {
-  for target in package.targets where target.type == .regular {
+  for target in package.targets where target.type == .regular || target.type == .test {
     var settings = target.swiftSettings ?? []
     settings.append(
       .unsafeFlags(
