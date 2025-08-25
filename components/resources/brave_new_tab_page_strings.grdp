@@ -1,391 +1,391 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
 
-  <message name="IDS_NEW_TAB_ADD_TOP_SITE_LABEL" desc="Label button that opens the Add Site dialog">
+  <message name="IDS_NEW_TAB_ADD_TOP_SITE_LABEL" desc="Label button that opens the Add Site dialog" formatter_data="webui=BraveNewTabPage">
     Add site
   </message>
 
-  <message name="IDS_NEW_TAB_ADD_TOP_SITE_TITLE" desc="Title of the Add Site dialog">
+  <message name="IDS_NEW_TAB_ADD_TOP_SITE_TITLE" desc="Title of the Add Site dialog" formatter_data="webui=BraveNewTabPage">
     Add site
   </message>
 
-  <message name="IDS_NEW_TAB_BACKGROUND_SETTINGS_TITLE" desc="Title for background image settings">
+  <message name="IDS_NEW_TAB_BACKGROUND_SETTINGS_TITLE" desc="Title for background image settings" formatter_data="webui=BraveNewTabPage">
     Background Image
   </message>
 
-  <message name="IDS_NEW_TAB_BRAVE_BACKGROUND_LABEL" desc="Label for Brave background option">
+  <message name="IDS_NEW_TAB_BRAVE_BACKGROUND_LABEL" desc="Label for Brave background option" formatter_data="webui=BraveNewTabPage">
     Brave backgrounds
   </message>
 
-  <message name="IDS_NEW_TAB_CANCEL_BUTTON_LABEL" desc="Label for cancel button">
+  <message name="IDS_NEW_TAB_CANCEL_BUTTON_LABEL" desc="Label for cancel button" formatter_data="webui=BraveNewTabPage">
     Cancel
   </message>
 
-  <message name="IDS_NEW_TAB_CLOCK_FORMAT_LABEL" desc="Label for the clock format drop-down on the settings dialog">
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_LABEL" desc="Label for the clock format drop-down on the settings dialog" formatter_data="webui=BraveNewTabPage">
     Format
   </message>
 
-  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION12HOUR_TEXT" desc="Text for the 12-hour clock format option">
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION12HOUR_TEXT" desc="Text for the 12-hour clock format option" formatter_data="webui=BraveNewTabPage">
     12-hour clock
   </message>
 
-  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION24HOUR_TEXT" desc="Text for the 24-hour clock format option">
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION24HOUR_TEXT" desc="Text for the 24-hour clock format option" formatter_data="webui=BraveNewTabPage">
     24-hour clock
   </message>
 
-  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION_AUTOMATIC_TEXT" desc="Text for the automatic clock format option">
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION_AUTOMATIC_TEXT" desc="Text for the automatic clock format option" formatter_data="webui=BraveNewTabPage">
     Automatic (<ph name="LOCALE">$1<ex>en-US</ex></ph>)
   </message>
 
-  <message name="IDS_NEW_TAB_CLOCK_SETTINGS_TITLE" desc="Title of the clock settings panel">
+  <message name="IDS_NEW_TAB_CLOCK_SETTINGS_TITLE" desc="Title of the clock settings panel" formatter_data="webui=BraveNewTabPage">
     Clock
   </message>
 
-  <message name="IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL" desc="Label for custom background option">
+  <message name="IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL" desc="Label for custom background option" formatter_data="webui=BraveNewTabPage">
     Use your own
   </message>
 
-  <message name="IDS_NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK" desc="Link text for customizing available search engines in settings">
+  <message name="IDS_NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK" desc="Link text for customizing available search engines in settings" formatter_data="webui=BraveNewTabPage">
     Customize available engines
   </message>
 
-  <message name="IDS_NEW_TAB_EDIT_TOP_SITE_LABEL" desc="Label for button that opens the Edit Site dialog">
+  <message name="IDS_NEW_TAB_EDIT_TOP_SITE_LABEL" desc="Label for button that opens the Edit Site dialog" formatter_data="webui=BraveNewTabPage">
     Edit site
   </message>
 
-  <message name="IDS_NEW_TAB_EDIT_TOP_SITE_TITLE" desc="Title of the Edit Site dialog">
+  <message name="IDS_NEW_TAB_EDIT_TOP_SITE_TITLE" desc="Title of the Edit Site dialog" formatter_data="webui=BraveNewTabPage">
     Edit site
   </message>
 
-  <message name="IDS_NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL" desc="Label for the list of search engines">
+  <message name="IDS_NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL" desc="Label for the list of search engines" formatter_data="webui=BraveNewTabPage">
     Enabled search engines
   </message>
 
-  <message name="IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL" desc="Gradient background colors title">
+  <message name="IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL" desc="Gradient background colors title" formatter_data="webui=BraveNewTabPage">
     Gradients
   </message>
 
-  <message name="IDS_NEW_TAB_HIDE_REWARDS_WIDGET_LABEL" desc="Label for button that hides the Rewards widget">
+  <message name="IDS_NEW_TAB_HIDE_REWARDS_WIDGET_LABEL" desc="Label for button that hides the Rewards widget" formatter_data="webui=BraveNewTabPage">
     Hide Rewards card
   </message>
 
-  <message name="IDS_NEW_TAB_HIDE_STATS_WIDGET_LABEL" desc="Label for button that hides the Rewards widget">
+  <message name="IDS_NEW_TAB_HIDE_STATS_WIDGET_LABEL" desc="Label for button that hides the Rewards widget" formatter_data="webui=BraveNewTabPage">
     Hide stats card
   </message>
 
-  <message name="IDS_NEW_TAB_HIDE_TALK_WIDGET_LABEL" desc="Label for button that hides the Talk widget">
+  <message name="IDS_NEW_TAB_HIDE_TALK_WIDGET_LABEL" desc="Label for button that hides the Talk widget" formatter_data="webui=BraveNewTabPage">
     Hide Talk card
   </message>
 
-  <message name="IDS_NEW_TAB_HIDE_TOP_SITES_LABEL" desc="Label for button that hides the top sites UI">
+  <message name="IDS_NEW_TAB_HIDE_TOP_SITES_LABEL" desc="Label for button that hides the top sites UI" formatter_data="webui=BraveNewTabPage">
     Hide top sites
   </message>
 
-  <message name="IDS_NEW_TAB_HIDE_VPN_WIDGET_LABEL" desc="Label for button that hides the VPN widget">
+  <message name="IDS_NEW_TAB_HIDE_VPN_WIDGET_LABEL" desc="Label for button that hides the VPN widget" formatter_data="webui=BraveNewTabPage">
     Hide VPN card
   </message>
 
-  <message name="IDS_NEW_TAB_NEWS_CUSTOMIZE_BUTTON_LABEL" desc="Label for button that opens the News settings modal">
+  <message name="IDS_NEW_TAB_NEWS_CUSTOMIZE_BUTTON_LABEL" desc="Label for button that opens the News settings modal" formatter_data="webui=BraveNewTabPage">
     Customize News
   </message>
 
-  <message name="IDS_NEW_TAB_NEWS_DISABLE_BUTTON_LABEL" desc="Label for button that disables News on the NTP">
+  <message name="IDS_NEW_TAB_NEWS_DISABLE_BUTTON_LABEL" desc="Label for button that disables News on the NTP" formatter_data="webui=BraveNewTabPage">
     Disable News
   </message>
 
-  <message name="IDS_NEW_TAB_NEWS_HIDE_BUTTON_LABEL" desc="Label for button that hides News on the NTP">
+  <message name="IDS_NEW_TAB_NEWS_HIDE_BUTTON_LABEL" desc="Label for button that hides News on the NTP" formatter_data="webui=BraveNewTabPage">
     Hide News
   </message>
 
-  <message name="IDS_NEW_TAB_NEWS_WIDGET_TITLE" desc="Title for Brave News widget">
+  <message name="IDS_NEW_TAB_NEWS_WIDGET_TITLE" desc="Title for Brave News widget" formatter_data="webui=BraveNewTabPage">
     NEWS
   </message>
 
-  <message name="IDS_NEW_TAB_PHOTO_CREDITS_TEXT" desc="Photographer credits for Brave background images">
+  <message name="IDS_NEW_TAB_PHOTO_CREDITS_TEXT" desc="Photographer credits for Brave background images" formatter_data="webui=BraveNewTabPage">
     Photo by <ph name="AUTHOR">$1</ph>
   </message>
 
-  <message name="IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL" desc="Label for random toggle button">
+  <message name="IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL" desc="Label for random toggle button" formatter_data="webui=BraveNewTabPage">
     Refresh on every new tab
   </message>
 
-  <message name="IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL" desc="Label for button that removes a top site">
+  <message name="IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL" desc="Label for button that removes a top site" formatter_data="webui=BraveNewTabPage">
     Remove
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_BALANCE_TITLE" desc="Title for balance section on Rewards NTP widget">
+  <message name="IDS_NEW_TAB_REWARDS_BALANCE_TITLE" desc="Title for balance section on Rewards NTP widget" formatter_data="webui=BraveNewTabPage">
     Rewards balance
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_CONNECT_BUTTON_LABEL" desc="Label for button to connect a Rewards payment account">
+  <message name="IDS_NEW_TAB_REWARDS_CONNECT_BUTTON_LABEL" desc="Label for button to connect a Rewards payment account" formatter_data="webui=BraveNewTabPage">
     Connect
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_CONNECT_TEXT" desc="Text for connect account section of the Rewards NTP widget">
+  <message name="IDS_NEW_TAB_REWARDS_CONNECT_TEXT" desc="Text for connect account section of the Rewards NTP widget" formatter_data="webui=BraveNewTabPage">
     Connect a payout account
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_CONNECT_TITLE" desc="Title for connect account section of the Rewards NTP widget">
+  <message name="IDS_NEW_TAB_REWARDS_CONNECT_TITLE" desc="Title for connect account section of the Rewards NTP widget" formatter_data="webui=BraveNewTabPage">
     Ready to start earning?
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_LOGIN_BUTTON_LABEL" desc="Label for button allowing users to reconnect to their account">
+  <message name="IDS_NEW_TAB_REWARDS_LOGIN_BUTTON_LABEL" desc="Label for button allowing users to reconnect to their account" formatter_data="webui=BraveNewTabPage">
     Log in
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_LOGIN_TEXT" desc="Text describing action needed to reconnect a Rewards account">
+  <message name="IDS_NEW_TAB_REWARDS_LOGIN_TEXT" desc="Text describing action needed to reconnect a Rewards account" formatter_data="webui=BraveNewTabPage">
     Log in to your <ph name="PROVIDER">$1</ph> account to see your balance
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_LOGIN_TITLE" desc="Title for action needed to reconnect a Rewards account">
+  <message name="IDS_NEW_TAB_REWARDS_LOGIN_TITLE" desc="Title for action needed to reconnect a Rewards account" formatter_data="webui=BraveNewTabPage">
     Log in to see your balance
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL" desc="Label for the Rewards onboarding button">
+  <message name="IDS_NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL" desc="Label for the Rewards onboarding button" formatter_data="webui=BraveNewTabPage">
     Start using Brave Rewards
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_ONBOARDING_LINK" desc="Text for Rewards onboarding link">
+  <message name="IDS_NEW_TAB_REWARDS_ONBOARDING_LINK" desc="Text for Rewards onboarding link" formatter_data="webui=BraveNewTabPage">
     How does it work?
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_PAYOUT_DETAILS_LINK" desc="Text for link to more information about Rewards payouts">
+  <message name="IDS_NEW_TAB_REWARDS_PAYOUT_DETAILS_LINK" desc="Text for link to more information about Rewards payouts" formatter_data="webui=BraveNewTabPage">
     Details
   </message>
 
-  <message name="IDS_NEW_TAB_REWARDS_WIDGET_TITLE" desc="Title of the Rewards NTP widget">
+  <message name="IDS_NEW_TAB_REWARDS_WIDGET_TITLE" desc="Title of the Rewards NTP widget" formatter_data="webui=BraveNewTabPage">
     REWARDS
   </message>
 
-  <message name="IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL" desc="Label for button that saves changes">
+  <message name="IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL" desc="Label for button that saves changes" formatter_data="webui=BraveNewTabPage">
     Save changes
   </message>
 
-  <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT" desc="Placeholder text for when Brave is not the selected search engine">
+  <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT" desc="Placeholder text for when Brave is not the selected search engine" formatter_data="webui=BraveNewTabPage">
     Search the web
   </message>
 
-  <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT_BRAVE" desc="Placeholder text for when Brave is the selected search engine">
+  <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT_BRAVE" desc="Placeholder text for when Brave is the selected search engine" formatter_data="webui=BraveNewTabPage">
     Ask Brave Search
   </message>
 
-  <message name="IDS_NEW_TAB_SEARCH_CUSTOMIZE_ENGINE_LIST_TEXT" desc="Label for the customize list action">
+  <message name="IDS_NEW_TAB_SEARCH_CUSTOMIZE_ENGINE_LIST_TEXT" desc="Label for the customize list action" formatter_data="webui=BraveNewTabPage">
     Customize list
   </message>
 
-  <message name="IDS_NEW_TAB_SEARCH_SETTINGS_TITLE" desc="Title for search settings">
+  <message name="IDS_NEW_TAB_SEARCH_SETTINGS_TITLE" desc="Title for search settings" formatter_data="webui=BraveNewTabPage">
     Search
   </message>
 
-  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_DISMISS_BUTTON_LABEL" desc="Label for button to dismiss the search suggestions prompt">
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_DISMISS_BUTTON_LABEL" desc="Label for button to dismiss the search suggestions prompt" formatter_data="webui=BraveNewTabPage">
     No thanks
   </message>
 
-  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_ENABLE_BUTTON_LABEL" desc="Label for button to enable search suggestions">
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_ENABLE_BUTTON_LABEL" desc="Label for button to enable search suggestions" formatter_data="webui=BraveNewTabPage">
     Enable
   </message>
 
-  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TEXT" desc="Text describing search suggestions">
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TEXT" desc="Text describing search suggestions" formatter_data="webui=BraveNewTabPage">
     When you search, what you type will be sent to your search engine for better suggestions.
   </message>
 
-  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TITLE" desc="Title for search suggestions prompt">
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TITLE" desc="Title for search suggestions prompt" formatter_data="webui=BraveNewTabPage">
     Enable search suggestions?
   </message>
 
-  <message name="IDS_NEW_TAB_SETTINGS_TITLE" desc="Title for settings dialog">
+  <message name="IDS_NEW_TAB_SETTINGS_TITLE" desc="Title for settings dialog" formatter_data="webui=BraveNewTabPage">
     Customize New Tab Page
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL" desc="Text for settings background option">
+  <message name="IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL" desc="Text for settings background option" formatter_data="webui=BraveNewTabPage">
     Show Background Images
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_CLOCK_LABEL" desc="Label for enabling the clock on the NTP">
+  <message name="IDS_NEW_TAB_SHOW_CLOCK_LABEL" desc="Label for enabling the clock on the NTP" formatter_data="webui=BraveNewTabPage">
     Show clock
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL" desc="Label for enabling the Rewards widget on the NTP">
+  <message name="IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL" desc="Label for enabling the Rewards widget on the NTP" formatter_data="webui=BraveNewTabPage">
     Brave Rewards
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL" desc="Label for enabling the searchbox on the NTP">
+  <message name="IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL" desc="Label for enabling the searchbox on the NTP" formatter_data="webui=BraveNewTabPage">
     Show search widget in new tabs
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT" desc="Text describing earning for new tab page ads">
-    With <ph name="LINK_BEGIN">$1</ph>Brave Rewards<ph name="LINK_END">$2</ph>, you can earn for seeing new tab page ads.
+  <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT" desc="Text describing earning for new tab page ads" formatter_data="webui=BraveNewTabPage">
+    With <ph name="LINK_BEGIN">$1</ph>Brave Rewards<ph name="LINK_END">/$1</ph>, you can earn for seeing new tab page ads.
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">
+  <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page" formatter_data="webui=BraveNewTabPage">
     Show new tab page ads
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="Label for showing or hiding Brave Stats on the NTP">
+  <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="Label for showing or hiding Brave Stats on the NTP" formatter_data="webui=BraveNewTabPage">
     Brave Stats
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_TALK_WIDGET_LABEL" desc="Label for showing or hiding the Brave Talk widget on the NTP">
+  <message name="IDS_NEW_TAB_SHOW_TALK_WIDGET_LABEL" desc="Label for showing or hiding the Brave Talk widget on the NTP" formatter_data="webui=BraveNewTabPage">
     Brave Talk
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_TOP_SITES_LABEL" desc="Label for control that toggles top sites visibility">
+  <message name="IDS_NEW_TAB_SHOW_TOP_SITES_LABEL" desc="Label for control that toggles top sites visibility" formatter_data="webui=BraveNewTabPage">
     Show top sites
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_VPN_WIDGET_LABEL" desc="Label for showing or hiding the Brave VPN NTP widget">
+  <message name="IDS_NEW_TAB_SHOW_VPN_WIDGET_LABEL" desc="Label for showing or hiding the Brave VPN NTP widget" formatter_data="webui=BraveNewTabPage">
     Brave VPN
   </message>
 
-  <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title">
+  <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title" formatter_data="webui=BraveNewTabPage">
     Solid colors
   </message>
 
-  <message name="IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT" desc="Text for trackers and ads blocked stat">
+  <message name="IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT" desc="Text for trackers and ads blocked stat" formatter_data="webui=BraveNewTabPage">
     Trackers &amp; ads blocked
   </message>
 
-  <message name="IDS_NEW_TAB_STATS_BANDWIDTH_SAVED_TEXT" desc="Text for bandwidth saved stat">
+  <message name="IDS_NEW_TAB_STATS_BANDWIDTH_SAVED_TEXT" desc="Text for bandwidth saved stat" formatter_data="webui=BraveNewTabPage">
     Bandwidth saved
   </message>
 
-  <message name="IDS_NEW_TAB_STATS_TIME_SAVED_TEXT" desc="Text for time saved stat">
+  <message name="IDS_NEW_TAB_STATS_TIME_SAVED_TEXT" desc="Text for time saved stat" formatter_data="webui=BraveNewTabPage">
     Time saved
   </message>
 
-  <message name="IDS_NEW_TAB_STATS_TITLE" desc="Title for Brave Stats widget">
+  <message name="IDS_NEW_TAB_STATS_TITLE" desc="Title for Brave Stats widget" formatter_data="webui=BraveNewTabPage">
     STATS
   </message>
 
-  <message name="IDS_NEW_TAB_TALK_ABOUT_DATA_LINK" desc="Text for link to page describing Brave Talk data policies">
+  <message name="IDS_NEW_TAB_TALK_ABOUT_DATA_LINK" desc="Text for link to page describing Brave Talk data policies" formatter_data="webui=BraveNewTabPage">
     About your data
   </message>
 
-  <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TEXT" desc="Description text for Brave Talk widget">
+  <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TEXT" desc="Description text for Brave Talk widget" formatter_data="webui=BraveNewTabPage">
     Encrypted video calls with Brave Talk
   </message>
 
-  <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TITLE" desc="Description title for Brave Talk widget">
+  <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TITLE" desc="Description title for Brave Talk widget" formatter_data="webui=BraveNewTabPage">
     Privacy-First Calls
   </message>
 
-  <message name="IDS_NEW_TAB_TALK_START_CALL_LABEL" desc="Label for button that starts a Talk call">
+  <message name="IDS_NEW_TAB_TALK_START_CALL_LABEL" desc="Label for button that starts a Talk call" formatter_data="webui=BraveNewTabPage">
     Start call
   </message>
 
-  <message name="IDS_NEW_TAB_TALK_WIDGET_TITLE" desc="Title for Brave Talk NTP widget">
+  <message name="IDS_NEW_TAB_TALK_WIDGET_TITLE" desc="Title for Brave Talk NTP widget" formatter_data="webui=BraveNewTabPage">
     TALK
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT" desc="Text displayed when a top site is removed">
+  <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT" desc="Text displayed when a top site is removed" formatter_data="webui=BraveNewTabPage">
     Top site removed
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT" desc="Text that describes custom top sites option">
+  <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT" desc="Text that describes custom top sites option" formatter_data="webui=BraveNewTabPage">
     Top sites are curated by you
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE" desc="Title for custom top sites option">
+  <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE" desc="Title for custom top sites option" formatter_data="webui=BraveNewTabPage">
     Favorites
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TEXT" desc="Text that describes most visited top sites option">
+  <message name="IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TEXT" desc="Text that describes most visited top sites option" formatter_data="webui=BraveNewTabPage">
     Top sites are suggested based on websites you visit often.
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE" desc="Title for most visited top sites option">
+  <message name="IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE" desc="Title for most visited top sites option" formatter_data="webui=BraveNewTabPage">
     Frequently Visited
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_SETTINGS_TITLE" desc="Title of top sites settings panel">
+  <message name="IDS_NEW_TAB_TOP_SITES_SETTINGS_TITLE" desc="Title of top sites settings panel" formatter_data="webui=BraveNewTabPage">
     Top Sites
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL" desc="Label for button that switches top sites to favorites mode">
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL" desc="Label for button that switches top sites to favorites mode" formatter_data="webui=BraveNewTabPage">
     Show favorites
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_LESS_LABEL" desc="Label for button collapses the top sites component">
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_LESS_LABEL" desc="Label for button collapses the top sites component" formatter_data="webui=BraveNewTabPage">
     Show fewer items
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MORE_LABEL" desc="Label for button that expands the top sites component">
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MORE_LABEL" desc="Label for button that expands the top sites component" formatter_data="webui=BraveNewTabPage">
     Show more items
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL" desc="Label for button that switches top sites to most visited mode">
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL" desc="Label for button that switches top sites to most visited mode" formatter_data="webui=BraveNewTabPage">
     Show frequently visited
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_TITLE_LABEL" desc="Label for top site name input">
+  <message name="IDS_NEW_TAB_TOP_SITES_TITLE_LABEL" desc="Label for top site name input" formatter_data="webui=BraveNewTabPage">
     Name
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITES_URL_LABEL" desc="Label for top site URL input">
+  <message name="IDS_NEW_TAB_TOP_SITES_URL_LABEL" desc="Label for top site URL input" formatter_data="webui=BraveNewTabPage">
     URL
   </message>
 
-  <message name="IDS_NEW_TAB_UNDO_BUTTON_LABEL" desc="Label for button that performs an undo operation">
+  <message name="IDS_NEW_TAB_UNDO_BUTTON_LABEL" desc="Label for button that performs an undo operation" formatter_data="webui=BraveNewTabPage">
     Undo
   </message>
 
-  <message name="IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL" desc="Text for custom background option upload">
+  <message name="IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL" desc="Text for custom background option upload" formatter_data="webui=BraveNewTabPage">
     Upload from device
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_CHANGE_REGION_LABEL" desc="Label for button to change the VPN region">
+  <message name="IDS_NEW_TAB_VPN_CHANGE_REGION_LABEL" desc="Label for button to change the VPN region" formatter_data="webui=BraveNewTabPage">
     Change
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT1" desc="Brave VPN product feature text item 1">
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT1" desc="Brave VPN product feature text item 1" formatter_data="webui=BraveNewTabPage">
     Extra privacy &amp; security online
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT2" desc="Brave VPN product feature text item 2">
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT2" desc="Brave VPN product feature text item 2" formatter_data="webui=BraveNewTabPage">
     Hide your IP &amp; change your location
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT3" desc="Brave VPN product feature text item 3">
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT3" desc="Brave VPN product feature text item 3" formatter_data="webui=BraveNewTabPage">
     Protect every app on your device
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_RESTORE_PURCHASE_LABEL" desc="Label for button to restore a VPN purchase">
+  <message name="IDS_NEW_TAB_VPN_RESTORE_PURCHASE_LABEL" desc="Label for button to restore a VPN purchase" formatter_data="webui=BraveNewTabPage">
     Already purchased?
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_START_TRIAL_LABEL" desc="Label for button to start a Brave VPN free trial">
+  <message name="IDS_NEW_TAB_VPN_START_TRIAL_LABEL" desc="Label for button to start a Brave VPN free trial" formatter_data="webui=BraveNewTabPage">
     Start free trial
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_OPTIMAL_TEXT" desc="Text indicating an optimal VPN connection">
+  <message name="IDS_NEW_TAB_VPN_OPTIMAL_TEXT" desc="Text indicating an optimal VPN connection" formatter_data="webui=BraveNewTabPage">
     Optimal
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_POWERED_BY_TEXT" desc="Text introducing the underlying VPN service provider logo">
+  <message name="IDS_NEW_TAB_VPN_POWERED_BY_TEXT" desc="Text introducing the underlying VPN service provider logo" formatter_data="webui=BraveNewTabPage">
     Powered by
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_STATUS_CONNECTED" desc="Text indicating that the VPN is connected">
+  <message name="IDS_NEW_TAB_VPN_STATUS_CONNECTED" desc="Text indicating that the VPN is connected" formatter_data="webui=BraveNewTabPage">
     Connected
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_STATUS_CONNECTING" desc="Text indicating that the VPN is connecting">
+  <message name="IDS_NEW_TAB_VPN_STATUS_CONNECTING" desc="Text indicating that the VPN is connecting" formatter_data="webui=BraveNewTabPage">
     Connecting
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_STATUS_DISCONNECTED" desc="Text indicating that the VPN is disconnected">
+  <message name="IDS_NEW_TAB_VPN_STATUS_DISCONNECTED" desc="Text indicating that the VPN is disconnected" formatter_data="webui=BraveNewTabPage">
     Disconnected
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_STATUS_DISCONNECTING" desc="Text indicating that the VPN is disconnecting">
+  <message name="IDS_NEW_TAB_VPN_STATUS_DISCONNECTING" desc="Text indicating that the VPN is disconnecting" formatter_data="webui=BraveNewTabPage">
     Disconnecting
   </message>
 
-  <message name="IDS_NEW_TAB_VPN_WIDGET_TITLE" desc="Title of the Brave VPN NTP widget">
+  <message name="IDS_NEW_TAB_VPN_WIDGET_TITLE" desc="Title of the Brave VPN NTP widget" formatter_data="webui=BraveNewTabPage">
     BRAVE VPN
   </message>
 
-  <message name="IDS_NEW_TAB_WIDGET_SETTINGS_TITLE" desc="Title of widgets settings panel">
+  <message name="IDS_NEW_TAB_WIDGET_SETTINGS_TITLE" desc="Title of widgets settings panel" formatter_data="webui=BraveNewTabPage">
     Cards
   </message>
 

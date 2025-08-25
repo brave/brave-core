@@ -29,7 +29,7 @@ export function WidgetsPanel() {
   return (
     <div data-css-scope={style.scope}>
       <div className='control-row'>
-        <label>{getString('showStatsLabel')}</label>
+        <label>{getString(S.NEW_TAB_SHOW_STATS_LABEL)}</label>
         <Toggle
           size='small'
           checked={showStats}
@@ -41,7 +41,7 @@ export function WidgetsPanel() {
       {
         vpnFeatureEnabled &&
           <div className='control-row'>
-            <label>{getString('showVpnWidgetLabel')}</label>
+            <label>{getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}</label>
             <Toggle
               size='small'
               checked={showVpnWidget}
@@ -54,7 +54,7 @@ export function WidgetsPanel() {
       {
         rewardsFeatureEnabled &&
           <div className='control-row'>
-            <label>{getString('showRewardsWidgetLabel')}</label>
+            <label>{getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}</label>
             <Toggle
               size='small'
               checked={showRewardsWidget}
@@ -67,7 +67,7 @@ export function WidgetsPanel() {
       {
         talkFeatureEnabled &&
           <div className='control-row'>
-            <label>{getString('showTalkWidgetLabel')}</label>
+            <label>{getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}</label>
             <Toggle
               size='small'
               checked={showTalkWidget}
