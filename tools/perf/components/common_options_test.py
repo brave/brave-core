@@ -16,24 +16,24 @@ def _parse_cmd_args(args) -> CommonOptions:
   return CommonOptions.from_args(parser.parse_args(args))
 
 
+_CI_ARGS = [
+    '--ci-mode', '--working-directory', 'fake-dir', '--target_os', 'mac',
+    '--machine-id', 'mac-mini1-sf', '--target_arch', 'arm64'
+]
+
+
 class TestCommonOptions(unittest.TestCase):
 
   def test_ci(self):
-    args = [
-        'auto', 'v1.87.1', '--ci-mode', '--working-directory', 'fake-dir',
-        '--machine-id', 'mac-mini1-sf'
-    ]
+    args = ['auto', 'v1.87.1', *_CI_ARGS]
     options = _parse_cmd_args(args)
     self.assertEqual(options.mode, PerfMode.RUN)
     config = load_config(options)
     self.assertEqual(config['configurations'][0]['profile'],
                      'brave-typical-mac')
 
-  def test_ci(self):
-    args = [
-        'auto', 'v1.87.1', '--ci-mode', '--working-directory', 'fake-dir',
-        '--machine-id', 'mac-mini1-sf', '--chromium'
-    ]
+  def test_ci_chromium(self):
+    args = ['auto', 'v1.87.1', '--chromium', *_CI_ARGS]
     options = _parse_cmd_args(args)
     self.assertEqual(options.mode, PerfMode.RUN)
     config = load_config(options)
@@ -42,9 +42,8 @@ class TestCommonOptions(unittest.TestCase):
 
   def test_update_profile(self):
     args = [
-        'auto', 'v1.87.1', '--ci-mode', '--working-directory', 'fake-dir',
-        '--machine-id', 'mac-mini1-sf', '--mode', 'update-profile', '--upload',
-        'true', '--upload-branch', 'fake-branch'
+        'auto', 'v1.87.1', '--mode', 'update-profile', '--upload', 'true',
+        '--upload-branch', 'fake-branch', *_CI_ARGS
     ]
     options = _parse_cmd_args(args)
     self.assertEqual(options.mode, PerfMode.UPDATE_PROFILE)
@@ -57,7 +56,7 @@ class TestCommonOptions(unittest.TestCase):
     self.assertTrue(load_config(options))
 
   def test_smoke(self):
-    args = ['smoke', 'Static', '--ci-mode', '--working-directory', 'fake-dir']
+    args = ['smoke', 'Static', *_CI_ARGS]
     options = _parse_cmd_args(args)
     self.assertEqual(options.mode, PerfMode.RUN)
     self.assertEqual(options.chromium, False)
