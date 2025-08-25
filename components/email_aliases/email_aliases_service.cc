@@ -5,7 +5,6 @@
 
 #include "brave/components/email_aliases/email_aliases_service.h"
 
-#include <iostream>
 #include <memory>
 #include <utility>
 
@@ -35,7 +34,7 @@ constexpr char kAccountsServiceVerifyInitPath[] = "verify/init";
 constexpr char kAccountsServiceVerifyResultPath[] = "verify/result";
 
 // Minimum interval between verify/result polls
-constexpr base::TimeDelta kMinSessionPollInterval = base::Seconds(2);
+constexpr base::TimeDelta kSessionPollInterval = base::Seconds(2);
 // Maximum total polling duration for a single verification flow.
 constexpr base::TimeDelta kMaxSessionPollDuration = base::Minutes(30);
 
@@ -104,7 +103,6 @@ void EmailAliasesService::ResetVerificationFlow() {
   session_request_timer_.Stop();
   verification_token_.clear();
   auth_token_.clear();
-  last_session_request_time_ = base::TimeTicks();
 }
 
 void EmailAliasesService::RequestAuthentication(
@@ -200,7 +198,6 @@ void EmailAliasesService::RequestSession() {
       base::BindOnce(&EmailAliasesService::OnRequestSessionResponse,
                      weak_factory_.GetWeakPtr()),
       kMaxResponseLength);
-  last_session_request_time_ = base::TimeTicks::Now();
 }
 
 void EmailAliasesService::OnRequestSessionResponse(
@@ -263,19 +260,10 @@ void EmailAliasesService::MaybeRequestSessionAgain() {
             IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED));
     return;
   }
-  const base::TimeTicks now = base::TimeTicks::Now();
-  const base::TimeDelta since_last = last_session_request_time_.is_null()
-                                         ? kMinSessionPollInterval
-                                         : (now - last_session_request_time_);
-  if (since_last >= kMinSessionPollInterval) {
-    RequestSession();
-    return;
-  }
-  // Schedule the next request after the remaining delay.
-  const base::TimeDelta delay = kMinSessionPollInterval - since_last;
+  // Schedule the next request after a short interval.
   if (!session_request_timer_.IsRunning()) {
     session_request_timer_.Start(
-        FROM_HERE, delay,
+        FROM_HERE, kSessionPollInterval,
         base::BindOnce(&EmailAliasesService::RequestSession,
                        weak_factory_.GetWeakPtr()));
   } else {
