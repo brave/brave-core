@@ -102,7 +102,6 @@ import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
-import org.chromium.chrome.browser.omnibox.status.PageInfoIphController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
@@ -182,7 +181,6 @@ import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.components.offline_items_collection.OfflineItem;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
-import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.components.permissions.PermissionDialogDelegate;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.search_engines.TemplateUrl;
@@ -298,7 +296,6 @@ public class BytecodeTest {
                 classExists("org/chromium/components/permissions/PermissionDialogDelegate"));
         Assert.assertTrue(
                 classExists("org/chromium/components/permissions/PermissionDialogModelFactory"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/status/StatusMediator"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator"));
@@ -1374,21 +1371,6 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/components/browser_ui/notifications/NotificationManagerProxyImpl",
                         "org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl"));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/omnibox/status/StatusMediator",
-                        "org/chromium/chrome/browser/omnibox/status/BraveStatusMediator", // presubmit: ignore-long-line
-                        PropertyModel.class,
-                        Context.class,
-                        UrlBarEditingTextStateProvider.class,
-                        boolean.class,
-                        LocationBarDataProvider.class,
-                        PermissionDialogController.class,
-                        OneshotSupplier.class,
-                        ObservableSupplier.class,
-                        PageInfoIphController.class,
-                        WindowAndroid.class,
-                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/ntp/NewTabPage",

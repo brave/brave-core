@@ -376,14 +376,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.status.StatusMediator {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.omnibox.status.BraveStatusMediator {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
     *** mActivity;
     *** mNtpHeader;

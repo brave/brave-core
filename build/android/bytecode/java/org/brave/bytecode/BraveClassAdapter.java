@@ -116,7 +116,6 @@ public class BraveClassAdapter {
         chain = new BraveSiteSettingsPreferencesBaseClassAdapter(chain);
         chain = new BraveStartupHelperClassAdapter(chain);
         chain = new BraveStatusBarColorControllerClassAdapter(chain);
-        chain = new BraveStatusMediatorClassAdapter(chain);
         chain = new BraveStrictPreferenceKeyCheckerClassAdapter(chain);
         chain = new BraveTabCardThemeUtilClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
