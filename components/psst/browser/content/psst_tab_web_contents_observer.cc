@@ -55,7 +55,6 @@ struct PsstNavigationData : public base::SupportsUserData::Data {
 std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
                                    base::Value::Dict params_dict) {
   if (params_dict.empty()) {
-    SCOPED_CRASH_KEY_STRING64("Psst", "params_dict", "empty");
     SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
     SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
     base::debug::DumpWithoutCrashing();
