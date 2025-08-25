@@ -91,6 +91,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (pageVisibility.surveyPanelist) {
     r.BRAVE_SURVEY_PANELIST =
       r.BASIC.createSection('/surveyPanelist', 'surveyPanelist')
+    r.BRAVE_SURVEY_PANELIST.hasMigratedToPlugin = true
   }
   if (r.SEARCH) {
     r.DEFAULT_SEARCH = r.SEARCH.createChild('defaultSearch')
