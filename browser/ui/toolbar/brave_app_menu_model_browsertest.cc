@@ -214,10 +214,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
   };
 
   if (!syncer::IsSyncAllowedByFlag()) {
-    more_tools_in_order.erase(
-        std::remove(more_tools_in_order.begin(), more_tools_in_order.end(),
-                    IDC_SHOW_BRAVE_SYNC),
-        commands_in_order_for_normal_profile.end());
+    std::erase(more_tools_in_order, IDC_SHOW_BRAVE_SYNC);
     more_tools_in_order.push_back(IDC_SHOW_BRAVE_SYNC);
   }
 
@@ -263,10 +260,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
                                          help_commands_in_order);
 
   // SHOW_APPS_PAGE isn't available in incognito
-  more_tools_in_order.erase(
-      std::remove(more_tools_in_order.begin(), more_tools_in_order.end(),
-                  IDC_SHOW_APPS_PAGE),
-      more_tools_in_order.end());
+  std::erase(more_tools_in_order, IDC_SHOW_APPS_PAGE);
   CheckMoreToolsCommandsAreInOrderInMenuModel(private_browser,
                                               more_tools_in_order);
 
