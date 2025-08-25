@@ -56,6 +56,7 @@
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/enterprise/watermark/watermark_view.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -69,6 +70,7 @@
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -369,7 +371,8 @@ void BraveBrowserView::UpdateSearchTabsButtonState() {
       tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
     }
   } else if (auto* tab_search_button =
-                 tab_strip_region_view_->GetTabSearchButton()) {
+                 BrowserElementsViews::From(browser())
+                     ->GetViewAs<TabSearchButton>(kTabSearchButtonElementId)) {
     tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
   }
 }
