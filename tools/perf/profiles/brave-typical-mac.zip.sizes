@@ -1,12 +1,12 @@
-Total size 83109K
+Total size 83130K
 
-GROUP Adblock [9029K total]
+GROUP Adblock [9033K total]
    237K Brave Ad Block Updater (Brave First Party Adblock Filters (plaintext)) 1.0.405 [adcocjohghhfpidemphmcmlmhnfgikei]
-    58K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.14786 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1476K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.16560 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+    58K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.14796 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1477K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.16572 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
     99K Brave Ad Block Updater (Regional Catalog) 1.0.80 [gkboaolpopklhgplhaaiboijnklogmbc]
-  4362K Brave Ad Block Updater (Brave Default Adblock Filters (plaintext)) 1.0.14377 [iodkpdagapdfkphljnddpjlldadblomo]
-  1540K Brave Ad Block Updater (Brave Default Privacy Filters (plaintext)) 1.0.737 [kihnoaefogbkmblfimmibknnmkllbhlf]
+  4365K Brave Ad Block Updater (Brave Default Adblock Filters (plaintext)) 1.0.14389 [iodkpdagapdfkphljnddpjlldadblomo]
+  1540K Brave Ad Block Updater (Brave Default Privacy Filters (plaintext)) 1.0.749 [kihnoaefogbkmblfimmibknnmkllbhlf]
   1253K Brave Ad Block Updater (Resources) 1.0.111 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22972K total]
@@ -15,13 +15,13 @@ GROUP Ads [22972K total]
 
 GROUP Ntp [12089K total]
  11624K Brave NTP background images 1.0.19 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   465K Brave NTP sponsored images 1.0.2141 [gccbbckogglekeggclmmekihdgdpdgoe]
+   465K Brave NTP sponsored images 1.0.2142 [gccbbckogglekeggclmmekihdgdpdgoe]
 
 GROUP Other [131K total]
    131K Brave Local Data Files Updater 1.0.1245 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [28622K total]
+GROUP large_files [28640K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
   6541K Default/RewardsCreators.db
-  1866K Safe Browsing/ChromeExtMalware.store.32_13400526042559059
- 16952K Safe Browsing/UrlSoceng.store.4_13400526342275753
+  1866K Safe Browsing/ChromeExtMalware.store.32_13400570827758563
+ 16970K Safe Browsing/UrlSoceng.store.4_13400571538021487
