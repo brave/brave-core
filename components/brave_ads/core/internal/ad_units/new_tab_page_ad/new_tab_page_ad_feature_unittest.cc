@@ -18,7 +18,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, IsEnabled) {
 
 TEST(BraveAdsNewTabPageAdFeatureTest, ShouldSupportNewTabPageAdConfirmations) {
   // Act & Assert
-  EXPECT_FALSE(kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get());
+  EXPECT_TRUE(kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get());
 }
 
 TEST(BraveAdsNewTabPageAdFeatureTest,
