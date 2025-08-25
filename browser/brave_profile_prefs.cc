@@ -7,11 +7,14 @@
 
 #include <string>
 
+#include "base/feature_list.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
+#include "brave/browser/ui/color/features.h"
+#include "brave/browser/ui/color/pref_names.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -514,6 +517,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   containers::RegisterProfilePrefs(registry);
 #endif
+
+  if (base::FeatureList::IsEnabled(color::features::kBraveDarkerTheme)) {
+    registry->RegisterBooleanPref(color::prefs::kBraveDarkerMode, false);
+  }
 
   OverrideDefaultPrefValues(registry);
 }

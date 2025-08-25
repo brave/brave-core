@@ -1,0 +1,18 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_BROWSER_UI_COLOR_FEATURES_H_
+#define BRAVE_BROWSER_UI_COLOR_FEATURES_H_
+
+#include "base/feature_list.h"
+
+namespace color::features {
+
+// Feature to enable "Darker Theme"
+BASE_DECLARE_FEATURE(kBraveDarkerTheme);
+
+}  // namespace color::features
+
+#endif  // BRAVE_BROWSER_UI_COLOR_FEATURES_H_

@@ -9,6 +9,7 @@
 
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/color/features.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -479,8 +480,18 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsWin | kOsMac | kOsLinux,                                          \
           FEATURE_VALUE_TYPE(tabs::features::kBraveRenamingTabs),              \
       })
+
+#define BRAVE_DARKER_THEME_FEATURE_ENTRIES                    \
+  EXPAND_FEATURE_ENTRIES({                                    \
+      "brave-darker-theme",                                   \
+      "Brave Darker Theme",                                   \
+      "Enables the Brave Darker theme",                       \
+      kOsWin | kOsMac | kOsLinux,                             \
+      FEATURE_VALUE_TYPE(color::features::kBraveDarkerTheme), \
+  })
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES
+#define BRAVE_DARKER_THEME_FEATURE_ENTRIES
 #endif
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
@@ -1169,6 +1180,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_ANDROID_OPEN_PDF_INLINE                                                \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
+  BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \
