@@ -887,6 +887,21 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               brave_shields::features::kBraveShieldsElementPicker),            \
       },                                                                       \
       {                                                                        \
+          "brave-farbling",                                                    \
+          "Enable Brave Farbling",                                             \
+          "Enables randomization of fingerprinting-susceptible WebAPIs",       \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveFarbling),         \
+      },                                                                       \
+      {                                                                        \
+          "brave-provisional-tld-ephemeral-lifetime",                          \
+          "Enable Provisional TLDEphemeralLifetime",                           \
+          "Cleanup third party cookies set during redirects",                  \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              net::features::kBraveProvisionalTLDEphemeralLifetime),           \
+      },                                                                       \
+      {                                                                        \
           "brave-super-referral",                                              \
           "Enable Brave Super Referral",                                       \
           "Use custom theme for Brave Super Referral",                         \
