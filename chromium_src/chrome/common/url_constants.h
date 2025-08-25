@@ -314,8 +314,8 @@ inline constexpr char kPageInfoHelpCenterURL[] =
     "360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
 
 // Help center article URL for automated password change.
-inline constexpr char kPasswordChangeLearnMoreURL[] =
-    "https://support.brave.app/";
+inline constexpr char16_t kPasswordChangeLearnMoreURL[] =
+    u"https://support.brave.app/";
 
 // Help URL for the bulk password check.
 inline constexpr char kPasswordCheckLearnMoreURL[] =
