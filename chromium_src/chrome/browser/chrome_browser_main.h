@@ -10,9 +10,6 @@
 #include <chrome/browser/chrome_browser_main.h>  // IWYU pragma: export
 #undef ChromeBrowserMainParts
 
-// Include the header that has ProcessThemeCommandLineSwitchesForProfile
-#include "brave/browser/themes/brave_dark_mode_utils.h"
-
 class ChromeBrowserMainParts : public ChromeBrowserMainParts_ChromiumImpl {
  public:
   ChromeBrowserMainParts(bool is_integration_test, StartupData* startup_data);

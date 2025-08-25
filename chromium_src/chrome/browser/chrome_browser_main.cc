@@ -7,24 +7,26 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "chrome/browser/buildflags.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 
 // Macro injected into ProcessSingletonNotificationCallbackImpl to handle
 // theme switches when Chrome is already running and receives new command line
 // args.
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_PROCESS_SINGLETON)
 #define BRAVE_PROCESS_SINGLETON_NOTIFICATION_CALLBACK_IMPL                 \
-  ProcessBrowserWideThemeCommandLineSwitches(&command_line);               \
+  dark_mode::ProcessBrowserWideThemeCommandLineSwitches(&command_line);    \
   ProfileManager* profile_manager = g_browser_process->profile_manager();  \
   if (profile_manager) {                                                   \
     Profile* profile =                                                     \
         profile_manager->GetProfileByPath(startup_profile_path_info.path); \
     if (profile) {                                                         \
-      ProcessThemeCommandLineSwitchesForProfile(&command_line, profile);   \
+      dark_mode::ProcessThemeCommandLineSwitchesForProfile(&command_line,  \
+                                                           profile);       \
     }                                                                      \
   }
-#else
-#define BRAVE_PROCESS_SINGLETON_NOTIFICATION_CALLBACK_IMPL
-#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_PROCESS_SINGLETON)
 
 #define BrowserProcessImpl BraveBrowserProcessImpl
 #define ChromeBrowserMainParts ChromeBrowserMainParts_ChromiumImpl

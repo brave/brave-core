@@ -199,7 +199,7 @@ void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
 
 #if !BUILDFLAG(IS_ANDROID)
   // Process theme command line switches for this profile
-  ProcessThemeCommandLineSwitchesForProfile(
+  dark_mode::ProcessThemeCommandLineSwitchesForProfile(
       base::CommandLine::ForCurrentProcess(), profile);
 #endif
 
