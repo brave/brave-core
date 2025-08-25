@@ -133,6 +133,11 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
     logging.info('Adding extra %s to %s', extra_dir, target_dir)
     shutil.copytree(extra_dir, target_dir, dirs_exist_ok=True)
 
+  # Fix issue "ZIP does not support timestamps before 1980":
+  for f in Path(profile_dir).glob('**/*'):
+    if f.is_file() and f.stat().st_mtime < 1980:
+        f.touch()
+
   logging.info('Packing profile %s to %s', profile_dir, profile_zip)
   with scoped_cwd(profile_dir):
     make_zip(profile_zip, files=[], dirs=['.'])
