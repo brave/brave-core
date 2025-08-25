@@ -23,6 +23,7 @@
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_p3a.h"
+#include "brave/components/sidebar/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -348,6 +349,10 @@ TEST(SidebarItemTest, SidebarItemValidation) {
   EXPECT_TRUE(web_item.IsValidItem());
   web_item.built_in_item_type = SidebarItem::BuiltInItemType::kBookmarks;
   EXPECT_FALSE(web_item.IsValidItem());
+}
+
+TEST(SidebarFeaturesTest, DefaultTest) {
+  EXPECT_FALSE(base::FeatureList::IsEnabled(features::kSidebarWebPanel));
 }
 
 TEST_F(SidebarServiceTest, UpdateItem) {
