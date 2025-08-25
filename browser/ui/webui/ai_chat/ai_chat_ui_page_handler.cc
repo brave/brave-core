@@ -160,7 +160,10 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver)
     : owner_web_contents_(owner_web_contents),
       profile_(profile),
-      receiver_(this, std::move(receiver)) {
+      receiver_(this, std::move(receiver)),
+      conversations_are_content_associated_(
+          !profile_->IsAIChatAgent() &&
+          !features::IsAIChatGlobalSidePanelEverywhereEnabled()) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_contents is nullptr in that case
   const bool is_standalone = chat_context_web_contents == nullptr;
@@ -178,16 +181,6 @@ AIChatUIPageHandler::AIChatUIPageHandler(
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
-
-    // When conversations should not be content associated, we still
-    // keep a reference to the WebContents of the active content, but:
-    // TODO(https://github.com/brave/brave-browser/issues/48524): We probably
-    // want to reference the TabStripModel so that we can offer the user to
-    // attach the current active tab or start a new conversation on active tab
-    // change or navigation.
-    conversations_are_content_associated_ =
-        !profile_->IsAIChatAgent() &&
-        !features::IsAIChatGlobalSidePanelEverywhereEnabled();
 
     associated_content_delegate_observation_.Observe(active_chat_tab_helper_);
     chat_context_observer_ =

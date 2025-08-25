@@ -23,12 +23,6 @@ BEGIN_TEMPLATE_METADATA(SidePanelWebUIViewT_AIChatUI, SidePanelWebUIViewT)
 END_METADATA
 
 // static
-bool AIChatSidePanelWebView::ShouldCreateGlobalSidePanel(Profile* profile) {
-  return profile->IsAIChatAgent() ||
-         ai_chat::features::IsAIChatGlobalSidePanelEverywhereEnabled();
-}
-
-// static
 std::unique_ptr<views::View> AIChatSidePanelWebView::CreateView(
     base::WeakPtr<Profile> profile,
     bool is_tab_associated,

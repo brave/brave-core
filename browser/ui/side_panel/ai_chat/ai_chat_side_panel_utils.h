@@ -9,6 +9,7 @@
 #include "content/public/browser/web_contents.h"
 
 class Browser;
+class Profile;
 
 namespace ai_chat {
 
@@ -16,6 +17,10 @@ namespace ai_chat {
 // https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/side_panel/companion/companion_side_panel_controller_utils.h;l=19;drc=e87fd2634a1140a87d59c7aa72668d16e4c102c2
 Browser* GetBrowserForWebContents(content::WebContents* web_contents);
 void ClosePanel(content::WebContents* web_contents);
+
+// Returns true if the side panel should be global for all tabs in a tab strip,
+// or false if it should be per-tab.
+bool ShouldSidePanelBeGlobal(Profile* profile);
 
 }  // namespace ai_chat
 

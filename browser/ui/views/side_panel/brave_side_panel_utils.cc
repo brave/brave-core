@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/views/side_panel/ai_chat_side_panel_web_view.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -22,8 +23,7 @@ void RegisterContextualSidePanel(SidePanelRegistry* registry,
   // TODO(https://github.com/brave/brave-browser/issues/48526): Remove
   // this when the feature flag is removed.
   if (ai_chat::AIChatServiceFactory::GetForBrowserContext(context) &&
-      !AIChatSidePanelWebView::ShouldCreateGlobalSidePanel(
-          Profile::FromBrowserContext(context))) {
+      !ai_chat::ShouldSidePanelBeGlobal(Profile::FromBrowserContext(context))) {
     // If |registry| already has it, it's no-op.
     registry->Register(std::make_unique<SidePanelEntry>(
         SidePanelEntry::Key(SidePanelEntry::Id::kChatUI),

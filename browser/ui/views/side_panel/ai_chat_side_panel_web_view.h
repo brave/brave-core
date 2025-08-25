@@ -17,9 +17,6 @@ class Profile;
 // A custom web view to set focus correctly when the side panel is shown.
 class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
  public:
-  // Helper to determine if the side panel should be global or per-tab
-  static bool ShouldCreateGlobalSidePanel(Profile* profile);
-
   // Factory method to create and configure an AIChatSidePanelWebView.
   // If `is_tab_associated` is true, the side panel will be related
   // to the active tab and will change conversation when the tab navigates.
