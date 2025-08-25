@@ -113,13 +113,16 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
   if options.mode == PerfMode.UPDATE_PROFILE:
     if options.chromium:
       return 0  # A build with !options.chromium will update the both profiles
-    options.chromium = True
-    chromium_config = perf_config.PerfConfig(json_config)
-    chromium_config.runners[0].label = 'chromium-rebase'
     args.chromium = False
     options = CommonOptions.from_args(args)
-    brave_config = perf_config.PerfConfig(json_config)
+    brave_config = perf_config.PerfConfig(load_config(options))
     brave_config.runners[0].label = 'brave-rebase'
+
+    args.chromium = True
+    options = CommonOptions.from_args(args)
+    chromium_config = perf_config.PerfConfig(load_config(options))
+    chromium_config.runners[0].label = 'chromium-rebase'
+
     return 0 if profile_tools.RunUpdateProfile(brave_config, chromium_config,
                                                options) else 1
 
