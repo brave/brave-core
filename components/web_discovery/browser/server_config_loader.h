@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <variant>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -16,6 +17,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/patterns_v2.h"
 #include "net/base/backoff_entry.h"
 #include "url/gurl.h"
 
@@ -29,6 +31,8 @@ class SimpleURLLoader;
 namespace web_discovery {
 
 using KeyMap = base::flat_map<std::string, std::vector<uint8_t>>;
+using ParsedPatternsVariant = std::variant<std::unique_ptr<PatternsGroup>,
+                                           std::unique_ptr<V2PatternsGroup>>;
 
 struct SourceMapActionConfig {
   SourceMapActionConfig();
@@ -98,6 +102,9 @@ class ServerConfigLoader {
   // Returns the pattern config. May only call after the patterns_callback is
   // triggered.
   const PatternsGroup& GetLastPatterns() const;
+  // Returns the v2 pattern config. May only call after the patterns_callback is
+  // triggered.
+  const V2PatternsGroup& GetLastV2Patterns() const;
 
   void SetLastServerConfigForTesting(
       std::unique_ptr<ServerConfig> server_config);
@@ -112,8 +119,7 @@ class ServerConfigLoader {
   void SchedulePatternsRequest();
   void RequestPatterns();
   void OnPatternsResponse(std::optional<std::string> response_body);
-  void OnStoredPatternsParsed(std::unique_ptr<PatternsGroup> parsed_patterns);
-  void OnNewPatternsParsed(std::unique_ptr<PatternsGroup> parsed_patterns);
+  void OnPatternsParsed(bool is_stored, ParsedPatternsVariant patterns);
   void HandlePatternsStatus(bool result);
 
   const raw_ptr<PrefService> local_state_;
@@ -141,6 +147,7 @@ class ServerConfigLoader {
 
   std::unique_ptr<ServerConfig> last_loaded_server_config_;
   std::unique_ptr<PatternsGroup> last_loaded_patterns_;
+  std::unique_ptr<V2PatternsGroup> last_loaded_v2_patterns_;
 
   base::WeakPtrFactory<ServerConfigLoader> weak_ptr_factory_{this};
 };
