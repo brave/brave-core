@@ -14,6 +14,9 @@ namespace sidebar::features {
 // Whether to show the sidebar always on stable channel.
 BASE_DECLARE_FEATURE(kSidebarShowAlwaysOnStable);
 
+// Load panel item url in a dedicated split view.
+BASE_DECLARE_FEATURE(kSidebarWebPanel);
+
 // Whether to open the Leo panel only once.
 extern const base::FeatureParam<bool> kOpenOneShotLeoPanel;
 
