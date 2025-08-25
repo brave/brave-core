@@ -62,7 +62,7 @@ bool ShouldSupportInternalUrl(const GURL& url) {
   if (host_name == kRewardsHostName || host_name == kSyncHostName ||
       host_name == kWalletHostName) {
     // Support chrome://rewards, chrome://sync, and chrome://wallet hosts.
-    return true;
+    return url.path() == "/";
   }
 
   if (host_name != kSettingsHostName) {
