@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSelectorRecycle
 import org.chromium.chrome.browser.crypto_wallet.listeners.AccountSelectorItemListener;
 import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.base.BraveClipboardHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +90,7 @@ public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder
         }
         holder.itemView.setOnLongClickListener(
                 v -> {
-                    Utils.saveTextToClipboard(
+                    BraveClipboardHelper.saveTextToClipboard(
                             context,
                             accountSelectorItemModel.getSubTitle(),
                             R.string.address_has_been_copied,

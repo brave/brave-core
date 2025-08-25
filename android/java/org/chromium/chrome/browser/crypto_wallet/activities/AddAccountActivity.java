@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.ui.base.BraveClipboardHelper;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -232,9 +233,10 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private void handleImportAccount(boolean result, boolean fromJson) {
         if (result) {
             setResult(Activity.RESULT_OK);
-            Utils.clearClipboard(mPrivateKeyControl.getText().toString());
+            BraveClipboardHelper.clearClipboard(mPrivateKeyControl.getText().toString());
             if (fromJson) {
-                Utils.clearClipboard(mImportAccountPasswordText.getText().toString());
+                BraveClipboardHelper.clearClipboard(
+                        mImportAccountPasswordText.getText().toString());
             }
             finish();
         } else {

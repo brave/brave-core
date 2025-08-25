@@ -62,7 +62,6 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.back_press.BackPressHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
@@ -75,6 +74,7 @@ import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.sync.SyncService;
+import org.chromium.ui.base.BraveClipboardHelper;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.io.IOException;
@@ -611,14 +611,15 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         } else if (mPasteButton == v) {
             if (null != mCodeWords) {
                 String codeWordsAtClipboard =
-                        Utils.getTextFromClipboard(getActivity().getApplicationContext());
+                        BraveClipboardHelper.getTextFromClipboard(
+                                getActivity().getApplicationContext());
                 if (codeWordsAtClipboard != null) {
                     mCodeWords.setText(codeWordsAtClipboard);
                 }
             }
         } else if (mCopyButton == v) {
             if (null != mBraveSyncAddDeviceCodeWords) {
-                Utils.saveTextToClipboard(
+                BraveClipboardHelper.saveTextToClipboard(
                         getActivity().getApplicationContext(),
                         mBraveSyncAddDeviceCodeWords.getText().toString(),
                         R.string.brave_sync_copied_text,
