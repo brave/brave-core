@@ -9,6 +9,7 @@ load("@builtin//runtime.star", "runtime")
 load("@builtin//struct.star", "module", "struct")
 
 __HOST_OS_IS_LINUX = runtime.os == "linux"
+__HOST_OS_IS_WINDOWS = runtime.os == "windows"
 
 # Rules to disable remote execution.
 __RULES_TO_DISABLE_REMOTE = [
@@ -68,6 +69,7 @@ def __configure(ctx, step_config, handlers):
 def __adjust_handlers(ctx, step_config, handlers):
     # Register the default redirect_cc handler.
     handlers["redirect_cc"] = __redirect_cc_handler
+    found_clang_rule = False
 
     # Adjust rules.
     for rule in step_config["rules"]:
@@ -97,6 +99,7 @@ def __adjust_handlers(ctx, step_config, handlers):
             continue
 
         if rule_name.startswith("clang"):
+            found_clang_rule = True
             __wrap_with_redirect_cc_handler(rule, handlers)
             if not __HOST_OS_IS_LINUX:
                 rule["remote_wrapper"] = __CLANG_REMOTE_WRAPPER
@@ -107,6 +110,21 @@ def __adjust_handlers(ctx, step_config, handlers):
         if rule_name == "mojo/mojom_parser":
             __wrap_python_with_chromium_src_inputs_handler(rule, handlers, [])
             continue
+
+    # If no clang rule was found, add one with redirect_cc handler to handle
+    # C/C++ source file overrides from chromium_src directory.
+    if not found_clang_rule:
+        if __HOST_OS_IS_WINDOWS:
+            command_prefix = "..\\..\\third_party\\llvm-build\\Release+Asserts\\bin\\clang"
+        else:
+            command_prefix = "../../third_party/llvm-build/Release+Asserts/bin/clang"
+        step_config["rules"].extend([
+            {
+                "name": "clang_redirect_cc",
+                "command_prefix": command_prefix,
+                "handler": "redirect_cc",
+            },
+        ])
 
 
 # Removes labels from platform configurations, because they are not supported by
