@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/patterns_v2.h"
 
 namespace web_discovery {
 
@@ -24,6 +25,12 @@ inline constexpr char kInnerPayloadKey[] = "payload";
 std::vector<base::Value::Dict> GenerateQueryPayloads(
     const ServerConfig& server_config,
     const PatternsURLDetails* url_details,
+    std::unique_ptr<PageScrapeResult> scrape_result);
+
+// Generates "query" messages for v2 patterns
+std::vector<base::Value::Dict> GenerateQueryPayloadsV2(
+    const ServerConfig& server_config,
+    const V2PatternsGroup& patterns_group,
     std::unique_ptr<PageScrapeResult> scrape_result);
 
 // Generates an "alive" message to indicate an opted-in
