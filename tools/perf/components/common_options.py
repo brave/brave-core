@@ -47,7 +47,6 @@ class CommonOptions:
   do_report: bool = False
   upload: bool = True
   upload_branch: Optional[str] = None
-  report_on_failure: bool = False
   local_run: bool = False
   retry_count = 2
   targets: List[str] = []
@@ -127,10 +126,6 @@ class CommonOptions:
                         action='store_true',
                         help='[ci-mode] Don\'t to the dashboard')
     parser.add_argument(
-        '--report-on-failure',
-        action='store_true',
-        help='[ci-mode] Report to the dashboard despite test failures')
-    parser.add_argument(
         '--upload',
         type=lambda x: x.lower() == 'true',
         default=True,
@@ -206,8 +201,7 @@ class CommonOptions:
 
     options.reboot_android = args.reboot_android or args.ci_mode
 
-    options.report_on_failure = args.report_on_failure
-    if args.targets is not None:
+    if args.targets is not None and args.targets != '':
       options.targets = args.targets.split(',')
 
     options.local_run = args.local_run or options.mode != PerfMode.RUN

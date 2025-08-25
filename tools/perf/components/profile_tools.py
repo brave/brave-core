@@ -9,6 +9,7 @@ import os
 import re
 import shutil
 import json
+import zipfile
 
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -134,8 +135,16 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
     shutil.copytree(extra_dir, target_dir, dirs_exist_ok=True)
 
   logging.info('Packing profile %s to %s', profile_dir, profile_zip)
-  with scoped_cwd(profile_dir):
-    make_zip(profile_zip, files=[], dirs=['.'])
+  # strict_timestamps=False because Chromium makes files with empty timestamps.
+  with zipfile.ZipFile(profile_zip,
+                       "w",
+                       zipfile.ZIP_DEFLATED,
+                       strict_timestamps=False) as zip_file:
+    with scoped_cwd(profile_dir):
+      for root, _, filenames in os.walk('.'):
+        for f in filenames:
+          print('adding', os.path.join(root, f))
+          zip_file.write(os.path.join(root, f))
 
   with open(profile_zip_sizes, 'w', encoding='utf-8') as f:
     f.write(GetProfileStats(profile_dir).toText())
@@ -299,18 +308,25 @@ def _RunUpdateProfileForConfig(config: perf_config.PerfConfig,
   if len(config.runners) != 1:
     raise RuntimeError('Only one configuration should be specified.')
   options.do_report = False
-  config.runners[0].profile_rebase = perf_config.ProfileRebaseType.NONE
+  runner = config.runners[0]
+  runner.profile_rebase = perf_config.ProfileRebaseType.NONE
+
+  # Remove --disable-component-update to get all the components
+  runner.extra_browser_args = [
+      arg for arg in runner.extra_browser_args
+      if arg != '--disable-component-update'
+  ]
   config.benchmarks = [
       perf_config.BenchmarkConfig({
           'name': 'brave_utils.online',
-          'pageset-repeat': 3,
+          'pageset-repeat': 2,
           'stories': ['UpdateProfile'],
           'stories_exclude': [],
       })
   ]
 
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-      options.targets, config.runners[0])
+      options.targets, runner)
   assert len(configurations) == 1
   PreRebaseCleanup(configurations[0], options)
   if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
