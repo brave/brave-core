@@ -29,6 +29,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -78,7 +79,10 @@ class AIChatService : public KeyedService,
       os_crypt_async::OSCryptAsync* os_crypt_async,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::string_view channel_string,
-      base::FilePath profile_path);
+      base::FilePath profile_path,
+      // Factories of ToolProviders from other layers
+      std::vector<std::unique_ptr<ToolProviderFactory>>
+          tool_provider_factories = {});
 
   ~AIChatService() override;
   AIChatService(const AIChatService&) = delete;
@@ -308,6 +312,8 @@ class AIChatService : public KeyedService,
   void OnGetFocusTabs(
       GetFocusTabsCallback callback,
       base::expected<std::vector<std::string>, mojom::APIError> result);
+  std::vector<std::unique_ptr<ToolProvider>>
+  CreateToolProvidersForNewConversation();
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -319,6 +325,9 @@ class AIChatService : public KeyedService,
 
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
+
+  // Factories of ToolProviders from other layers
+  std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories_;
 
   // Engine for tab organization, created on demand and owned by AIChatService.
   std::unique_ptr<ai_chat::EngineConsumer> tab_organization_engine_;

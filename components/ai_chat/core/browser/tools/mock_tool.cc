@@ -61,4 +61,12 @@ bool MockTool::RequiresUserInteractionBeforeHandling() const {
   return requires_user_interaction_before_handling_;
 }
 
+bool MockTool::IsSupportedByModel(const mojom::Model& model) const {
+  return is_supported_by_model_;
+}
+
+bool MockTool::IsContentAssociationRequired() const {
+  return requires_content_association_;
+}
+
 }  // namespace ai_chat

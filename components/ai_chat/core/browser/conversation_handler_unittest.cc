@@ -84,6 +84,15 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               (override));
 };
 
+class MockToolProvider : public ToolProvider {
+ public:
+  MockToolProvider() = default;
+  ~MockToolProvider() override = default;
+
+  MOCK_METHOD(void, OnNewGenerationLoop, (), (override));
+  MOCK_METHOD(std::vector<base::WeakPtr<Tool>>, GetTools, (), (override));
+};
+
 class MockConversationHandlerClient : public mojom::ConversationUI {
  public:
   explicit MockConversationHandlerClient(ConversationHandler* driver) {
@@ -221,10 +230,23 @@ class ConversationHandlerUnitTest : public testing::Test {
         "uuid", "title", base::Time::Now(), false, std::nullopt, 0, 0, false,
         std::vector<mojom::AssociatedContentPtr>());
 
+    std::vector<std::unique_ptr<ToolProvider>> tool_providers;
+    tool_providers.push_back(std::make_unique<NiceMock<MockToolProvider>>());
+
     conversation_handler_ = std::make_unique<ConversationHandler>(
         conversation_.get(), ai_chat_service_.get(), model_service_.get(),
         ai_chat_service_->GetCredentialManagerForTesting(),
-        mock_feedback_api_.get(), shared_url_loader_factory_);
+        mock_feedback_api_.get(), shared_url_loader_factory_,
+        std::move(tool_providers));
+
+    mock_tool_provider_ = static_cast<MockToolProvider*>(
+        conversation_handler_->GetFirstToolProviderForTesting());
+    ASSERT_TRUE(mock_tool_provider_);
+
+    // No tools by default
+    ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([]() {
+      return std::vector<base::WeakPtr<Tool>>();
+    });
 
     conversation_handler_->SetEngineForTesting(
         std::make_unique<NiceMock<MockEngineConsumer>>());
@@ -248,7 +270,10 @@ class ConversationHandlerUnitTest : public testing::Test {
 
   void EmulateUserOptedOut() { ::ai_chat::SetUserOptedIn(&prefs_, false); }
 
-  void TearDown() override { ai_chat_service_.reset(); }
+  void TearDown() override {
+    mock_tool_provider_ = nullptr;
+    ai_chat_service_.reset();
+  }
 
   void SetAssociatedContentStagedEntries(bool empty = false,
                                          bool multi = false) {
@@ -321,6 +346,7 @@ class ConversationHandlerUnitTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   std::unique_ptr<NiceMock<MockAssociatedContent>> associated_content_;
   mojom::ConversationPtr conversation_;
+  raw_ptr<MockToolProvider> mock_tool_provider_;
   std::unique_ptr<ConversationHandler> conversation_handler_;
   std::unique_ptr<NiceMock<MockAIChatFeedbackAPI>> mock_feedback_api_;
   bool is_opted_in_ = true;
@@ -2557,11 +2583,12 @@ TEST_F(ConversationHandlerUnitTest,
 
   auto tool1 =
       std::make_unique<NiceMock<MockTool>>("weather_tool", "Get weather");
-  auto* tool1_ptr = tool1.get();
   tool1->set_requires_user_interaction_before_handling(false);
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
 
   bool tool_response_generation_started = false;
 
@@ -2605,7 +2632,7 @@ TEST_F(ConversationHandlerUnitTest,
                         std::nullopt)));
               })));
 
-  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"New York\"}"), _))
+  EXPECT_CALL(*tool1, UseTool(StrEq("{\"location\":\"New York\"}"), _))
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
@@ -2652,6 +2679,33 @@ TEST_F(ConversationHandlerUnitTest,
 
   EXPECT_EQ(conversation_handler_->current_error(),
             mojom::APIError::ConnectionIssue);
+}
+
+TEST_F(ConversationHandlerUnitTest, GetTools_FiltersUnsupportedTools) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  ASSERT_FALSE(conversation_handler_->associated_content_manager()
+                   ->HasAssociatedContent());
+
+  auto tool1 =
+      std::make_unique<NiceMock<MockTool>>("not_supported_by_model", "");
+  auto tool2 =
+      std::make_unique<NiceMock<MockTool>>("requires_content_association", "");
+  auto tool3 = std::make_unique<NiceMock<MockTool>>("supported", "");
+
+  tool1->set_is_supported_by_model(false);
+  tool2->set_requires_content_association(true);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    tools.push_back(tool3->GetWeakPtr());
+    return tools;
+  });
+
+  auto tools = conversation_handler_->GetToolsForTesting();
+  EXPECT_EQ(tools.size(), 1u);
+  EXPECT_EQ(tools[0]->Name(), "supported");
 }
 
 TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
@@ -2739,16 +2793,15 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
       std::make_unique<NiceMock<MockTool>>("weather_tool", "Get weather");
   auto tool2 = std::make_unique<NiceMock<MockTool>>("calculator", "Do math");
 
-  auto* tool1_ptr = tool1.get();
-  auto* tool2_ptr = tool2.get();
-
   tool1->set_requires_user_interaction_before_handling(false);
   tool2->set_requires_user_interaction_before_handling(false);
 
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  tools.push_back(std::move(tool2));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
@@ -2814,7 +2867,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
       }));
 
   // Only the weather_tool UseTool should be called
-  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"New York\"}"), _))
+  EXPECT_CALL(*tool1, UseTool(StrEq("{\"location\":\"New York\"}"), _))
       .InSequence(seq)
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
@@ -2858,7 +2911,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
         EXPECT_TRUE(second_generation_started);
       }));
 
-  EXPECT_CALL(*tool2_ptr, UseTool).Times(0);
+  EXPECT_CALL(*tool2, UseTool).Times(0);
 
   // Submit a human entry to trigger the tool use
   conversation_handler_->SubmitHumanConversationEntry(
@@ -2892,16 +2945,16 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
   auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
   auto tool2 =
       std::make_unique<NiceMock<MockTool>>("test_tool2", "Test tool 2");
-  auto* tool1_ptr = tool1.get();
-  auto* tool2_ptr = tool2.get();
 
   tool1->set_requires_user_interaction_before_handling(false);
   tool2->set_requires_user_interaction_before_handling(false);
 
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  tools.push_back(std::move(tool2));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
@@ -2943,7 +2996,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
               })));
 
   // Setup tool use results
-  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"NYC\"}"), _))
+  EXPECT_CALL(*tool1, UseTool(StrEq("{\"location\":\"NYC\"}"), _))
       .InSequence(seq)
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
@@ -2952,7 +3005,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
         std::move(callback).Run(std::move(result));
       }));
 
-  EXPECT_CALL(*tool2_ptr, UseTool(StrEq("{\"input1\":\"val1\"}"), _))
+  EXPECT_CALL(*tool2, UseTool(StrEq("{\"input1\":\"val1\"}"), _))
       .InSequence(seq)
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
@@ -3030,12 +3083,13 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Setup a tool that requires user interaction before handling
   auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
-  auto* tool1_ptr = tool1.get();
   tool1->set_requires_user_interaction_before_handling(true);
 
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
@@ -3066,7 +3120,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Tool should not be called since there is no explicit call via user
   // interaction.
-  EXPECT_CALL(*tool1_ptr, UseTool).Times(0);
+  EXPECT_CALL(*tool1, UseTool).Times(0);
 
   // When the user instead decides to send a new human entry, before the tool
   // use request is handled, the tool use request should be discarded.
@@ -3133,16 +3187,19 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   auto tool1 = std::make_unique<NiceMock<MockTool>>("tool1", "First tool");
   auto tool2 = std::make_unique<NiceMock<MockTool>>("tool2", "Second tool");
 
-  auto* tool1_ptr = tool1.get();
-  auto* tool2_ptr = tool2.get();
-
   tool1->set_requires_user_interaction_before_handling(false);
   tool2->set_requires_user_interaction_before_handling(false);
 
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  tools.push_back(std::move(tool2));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
+
+  // Expect our tool provider will be informed of the new generation loop
+  // starting.
+  EXPECT_CALL(*mock_tool_provider_, OnNewGenerationLoop).Times(1);
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
@@ -3174,7 +3231,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                         std::nullopt)));
               })));
 
-  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"param1\":\"value1\"}"), _))
+  EXPECT_CALL(*tool1, UseTool(StrEq("{\"param1\":\"value1\"}"), _))
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
@@ -3182,7 +3239,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
         std::move(callback).Run(std::move(result));
       }));
 
-  EXPECT_CALL(*tool2_ptr, UseTool(StrEq("{\"param2\":\"value2\"}"), _))
+  EXPECT_CALL(*tool2, UseTool(StrEq("{\"param2\":\"value2\"}"), _))
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(

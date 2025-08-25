@@ -74,7 +74,8 @@ class AssociatedContentManagerUnitTest : public testing::Test {
     conversation_handler_ = std::make_unique<ConversationHandler>(
         conversation_.get(), ai_chat_service_.get(), model_service_.get(),
         ai_chat_service_->GetCredentialManagerForTesting(), &feedback_api_,
-        shared_url_loader_factory_);
+        shared_url_loader_factory_,
+        std::vector<std::unique_ptr<ToolProvider>>());
 
     conversation_handler_->SetEngineForTesting(
         std::make_unique<NiceMock<MockEngineConsumer>>());
