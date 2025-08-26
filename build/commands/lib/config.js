@@ -359,8 +359,6 @@ Config.prototype.maybeEnableCDMHostVerification = function () {
     && fs.existsSync(this.signature_generator)
   if (enable) {
     console.log('Widevine cdm host verification is enabled')
-  } else {
-    console.log('Widevine cdm host verification is disabled')
   }
   return enable ? true : undefined
 }
