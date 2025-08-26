@@ -59,11 +59,73 @@ void BraveMultiContentsView::Layout(PassKey) {
   BraveBrowserView::From(browser_view_)->NotifyDialogPositionRequiresUpdate();
 }
 
+void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
+  if (!contents_container_view_for_web_panel_) {
+    contents_container_view_for_web_panel_ = AddChildView(
+        std::make_unique<BraveContentsContainerView>(browser_view_));
+    contents_container_view_for_web_panel_->SetVisible(false);
+  }
+}
+
+void BraveMultiContentsView::SetWebPanelWidth(int width) {
+  web_panel_width_ = width;
+  InvalidateLayout();
+}
+
+void BraveMultiContentsView::SetWebPanelOnLeft(bool left) {
+  web_panel_on_left_ = left;
+  InvalidateLayout();
+}
+
+views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
+    const views::SizeBounds& size_bounds) const {
+  if (!size_bounds.is_fully_bounded() ||
+      !contents_container_view_for_web_panel_) {
+    return MultiContentsView::CalculateProposedLayout(size_bounds);
+  }
+
+  views::SizeBounds new_size_bounds = size_bounds;
+  const int web_panel_width = GetWebPanelWidth();
+
+  // Negative to shrink to make room for web panel.
+  new_size_bounds.Enlarge(-web_panel_width, 0);
+  views::ProposedLayout layouts =
+      MultiContentsView::CalculateProposedLayout(new_size_bounds);
+
+  if (web_panel_on_left_) {
+    for (auto& layout : layouts.child_layouts) {
+      // Move all other views to right to put web panel on left side.
+      layout.bounds.Offset(web_panel_width, 0);
+    }
+  }
+
+  int host_width = size_bounds.width().value();
+  int host_height = size_bounds.height().value();
+  const int web_panel_x = web_panel_on_left_ ? 0 : host_width - web_panel_width;
+  gfx::Rect web_panel_rect(web_panel_x, 0, web_panel_width, host_height);
+  layouts.child_layouts.emplace_back(
+      contents_container_view_for_web_panel_.get(),
+      contents_container_view_for_web_panel_->GetVisible(), web_panel_rect);
+
+  layouts.host_size = gfx::Size(host_width, host_height);
+  return layouts;
+}
+
 void BraveMultiContentsView::OnDoubleClicked() {
   // Give same width on both contents view.
   // Pass true to make delegate save ratio in session service like resizing
   // complete.
   delegate_->ResizeWebContents(0.5, /*done_resizing=*/true);
+}
+
+int BraveMultiContentsView::GetWebPanelWidth() const {
+  CHECK(contents_container_view_for_web_panel_);
+
+  if (!contents_container_view_for_web_panel_->GetVisible()) {
+    return 0;
+  }
+
+  return web_panel_width_;
 }
 
 void BraveMultiContentsView::UpdateSecondaryLocationBar() {

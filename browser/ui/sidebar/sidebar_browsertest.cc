@@ -757,6 +757,81 @@ INSTANTIATE_TEST_SUITE_P(
     SidebarBrowserWithSplitViewTest,
     ::testing::Bool());
 
+class SidebarBrowserWithWebPanelTest
+    : public SidebarBrowserTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  SidebarBrowserWithWebPanelTest() {
+    if (IsWebPanelEnabled()) {
+      scoped_features_.InitWithFeatures(
+          /*enabled_features*/ {sidebar::features::kSidebarWebPanel},
+          /*disabled_features*/ {});
+    }
+  }
+  ~SidebarBrowserWithWebPanelTest() override = default;
+
+  BraveMultiContentsView* GetBraveMultiContentsView() {
+    return browser_view()->GetBraveMultiContentsView();
+  }
+
+  BraveBrowserView* browser_view() {
+    return BraveBrowserView::From(
+        BrowserView::GetBrowserViewForBrowser(browser()));
+  }
+
+  bool IsWebPanelEnabled() const { return GetParam(); }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest,
+                       ContentsContainerViewForWebPanelTest) {
+  auto contents_container_view_for_web_panel =
+      GetBraveMultiContentsView()->contents_container_view_for_web_panel_;
+  if (!IsWebPanelEnabled()) {
+    EXPECT_FALSE(contents_container_view_for_web_panel);
+    return;
+  }
+
+  EXPECT_TRUE(contents_container_view_for_web_panel);
+  EXPECT_FALSE(contents_container_view_for_web_panel->GetVisible());
+  EXPECT_GT(GetBraveMultiContentsView()->web_panel_width_, 0);
+  EXPECT_EQ(GetBraveMultiContentsView()->GetWebPanelWidth(), 0);
+  EXPECT_EQ(contents_container_view_for_web_panel->width(), 0);
+  EXPECT_FALSE(GetBraveMultiContentsView()->web_panel_on_left_);
+  EXPECT_EQ(
+      GetBraveMultiContentsView()->width(),
+      GetBraveMultiContentsView()->GetActiveContentsContainerView()->width());
+
+  contents_container_view_for_web_panel->SetVisible(true);
+  EXPECT_GT(GetBraveMultiContentsView()->GetWebPanelWidth(), 0);
+  GetBraveMultiContentsView()->InvalidateLayout();
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return contents_container_view_for_web_panel->width() ==
+           GetBraveMultiContentsView()->web_panel_width_;
+  }));
+  EXPECT_EQ(contents_container_view_for_web_panel->bounds().origin(),
+            GetBraveMultiContentsView()
+                ->GetActiveContentsContainerView()
+                ->bounds()
+                .top_right());
+
+  GetBraveMultiContentsView()->SetWebPanelOnLeft(true);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return contents_container_view_for_web_panel->bounds().top_right() ==
+           GetBraveMultiContentsView()
+               ->GetActiveContentsContainerView()
+               ->bounds()
+               .origin();
+  }));
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SidebarBrowserWithWebPanelTest,
+    ::testing::Bool());
+
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, HideSidebarUITest) {
   auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
   auto* sidebar_container = GetSidebarContainerView();
