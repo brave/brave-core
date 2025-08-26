@@ -202,7 +202,11 @@ TEST_F(ModelServiceTest, ChangeOldDefaultKey) {
 TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
   static constexpr char kRequestName[] = "request_name";
   static constexpr char kModelSystemPrompt[] = "model_system_prompt";
-  static const GURL kEndpoint = GURL("http://brave.com");
+  // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+  // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+  // added in the meantime to fix the build error. Remove this attribute and
+  // provide a proper fix.
+  [[clang::no_destroy]] static const GURL kEndpoint = GURL("http://brave.com");
   static constexpr char kAPIKey[] = "foo_api_key";
   static constexpr char kDisplayName[] = "Custom display name";
 

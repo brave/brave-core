@@ -38,12 +38,17 @@ const SignedSeedData& GetBraveSignedSeedData() {
       "xmQaBThr1i8ARQ1rKEinHluXeR7ve5fqy7L4AIgNym2PbtlL+9142+"
       "T8gUjjEsoT28J3HqE4IEa1eFvKLw=";
 
-  static const SignedSeedData kBraveTestSeedData{study_names,
-                                                 kBase64UncompressedData,
-                                                 kBase64CompressedData,
-                                                 kBase64Signature,
-                                                 /*in_compressed_data=*/{},
-                                                 /*in_compressed_data_size=*/0};
+  // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+  // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+  // added in the meantime to fix the build error. Remove this attribute and
+  // provide a proper fix.
+  [[clang::no_destroy]] static const SignedSeedData kBraveTestSeedData{
+      study_names,
+      kBase64UncompressedData,
+      kBase64CompressedData,
+      kBase64Signature,
+      /*in_compressed_data=*/{},
+      /*in_compressed_data_size=*/0};
   return kBraveTestSeedData;
 }
 

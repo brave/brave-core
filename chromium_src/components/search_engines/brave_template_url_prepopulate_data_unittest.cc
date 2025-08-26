@@ -41,8 +41,12 @@ using namespace TemplateURLPrepopulateData;  // NOLINT
 
 const PrepopulatedEngine* const kBraveAddedEngines[] = {};
 
-const std::unordered_set<std::u16string_view> kOverriddenEnginesNames = {
-    u"DuckDuckGo", u"Qwant", u"Startpage"};
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const std::unordered_set<std::u16string_view>
+    kOverriddenEnginesNames = {u"DuckDuckGo", u"Qwant", u"Startpage"};
 
 }  // namespace
 
