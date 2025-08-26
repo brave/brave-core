@@ -9,8 +9,6 @@
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
-#include "brave/components/brave_shields/core/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -117,19 +115,13 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_DEFAULT);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_DEFAULT);
+            CONTENT_SETTING_ASK);
 
   /* ALLOW */
   controller->SetAdBlockMode(AdBlockMode::ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_ALLOW);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
             CONTENT_SETTING_ALLOW);
 
   /* STANDARD */
@@ -137,19 +129,13 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_ALLOW);
+            CONTENT_SETTING_ASK);
 
   /* ALLOW */
   controller->SetAdBlockMode(AdBlockMode::ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_ALLOW);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
             CONTENT_SETTING_ALLOW);
 
   /* AGGRESSIVE */
@@ -158,18 +144,12 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
             CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_BLOCK);
 
   /* ALLOW */
   controller->SetAdBlockMode(AdBlockMode::ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_ALLOW);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
             CONTENT_SETTING_ALLOW);
 }
 
@@ -181,20 +161,14 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_2) {
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_DEFAULT);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_DEFAULT);
+            CONTENT_SETTING_ASK);
 
   /* STANDARD */
   controller->SetAdBlockMode(AdBlockMode::STANDARD);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_ALLOW);
+            CONTENT_SETTING_ASK);
 
   /* ALLOW */
   controller->SetAdBlockMode(AdBlockMode::ALLOW);
@@ -202,19 +176,13 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_2) {
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
             CONTENT_SETTING_ALLOW);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_ALLOW);
 
   /* STANDARD */
   controller->SetAdBlockMode(AdBlockMode::STANDARD);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_ALLOW);
+            CONTENT_SETTING_ASK);
 
   /* AGGRESSIVE */
   controller->SetAdBlockMode(AdBlockMode::AGGRESSIVE);
@@ -222,19 +190,13 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_2) {
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
             CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_BLOCK);
 
   /* STANDARD */
   controller->SetAdBlockMode(AdBlockMode::STANDARD);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_ALLOW);
+            CONTENT_SETTING_ASK);
 }
 
 TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_3) {
@@ -245,19 +207,13 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_3) {
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_DEFAULT);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_DEFAULT);
+            CONTENT_SETTING_ASK);
 
   /* AGGRESSIVE */
   controller->SetAdBlockMode(AdBlockMode::AGGRESSIVE);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
             CONTENT_SETTING_BLOCK);
 
   /* ALLOW */
@@ -266,18 +222,12 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_3) {
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
             CONTENT_SETTING_ALLOW);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_ALLOW);
 
   /* AGGRESSIVE */
   controller->SetAdBlockMode(AdBlockMode::AGGRESSIVE);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
             CONTENT_SETTING_BLOCK);
 
   /* STANDARD */
@@ -285,19 +235,13 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_3) {
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
-            CONTENT_SETTING_ALLOW);
+            CONTENT_SETTING_ASK);
 
   /* AGGRESSIVE */
   controller->SetAdBlockMode(AdBlockMode::AGGRESSIVE);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                                 GURL("https://firstParty/")),
             CONTENT_SETTING_BLOCK);
 }
 
@@ -315,17 +259,13 @@ TEST_F(BraveShieldsDataControllerTest, GetAdBlockMode_ForOrigin) {
   /* STANDARD */
   SetContentSettingFor(ContentSettingsType::BRAVE_ADS, CONTENT_SETTING_BLOCK);
   SetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                       CONTENT_SETTING_BLOCK);
-  SetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                       CONTENT_SETTING_ALLOW, GURL("https://firstParty/"));
+                       CONTENT_SETTING_ASK);
   EXPECT_EQ(controller->GetAdBlockMode(), AdBlockMode::STANDARD);
 
   /* AGGRESSIVE */
   SetContentSettingFor(ContentSettingsType::BRAVE_ADS, CONTENT_SETTING_BLOCK);
   SetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
                        CONTENT_SETTING_BLOCK);
-  SetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                       CONTENT_SETTING_BLOCK, GURL("https://firstParty/"));
   EXPECT_EQ(controller->GetAdBlockMode(), AdBlockMode::AGGRESSIVE);
 }
 
