@@ -57,7 +57,7 @@ ContentSetting GetBraveWebcompatContentSettingFromRules(
   return CONTENT_SETTING_DEFAULT;
 }
 
-ShieldsSettingCounts GetFPSettingCountFromRules(
+ShieldsSettingCounts GetSettingCountFromRules(
     const ContentSettingsForOneType& fp_rules) {
   ShieldsSettingCounts result = {};
 
