@@ -98,9 +98,14 @@ JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
     : RenderFrameObserver(render_frame),
       v8_value_converter_(content::V8ValueConverter::Create()) {
   EnsureConnected();
+  self_ = this;
 }
 
 JSSolanaProvider::~JSSolanaProvider() = default;
+
+void JSSolanaProvider::OnDestruct() {
+  self_.Clear();
+}
 
 // static
 void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
