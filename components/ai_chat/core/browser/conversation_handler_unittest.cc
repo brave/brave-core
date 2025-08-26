@@ -4019,4 +4019,319 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
 }
 
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_TriggersConversationTitle) {
+  // Test the title generation would be triggered for engines requiring
+  // title generation when submitting the first human turn.
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  // Engine requires title generation
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+
+  // Set up expectations with key sequence: assistant response → title
+  // generation
+  base::RunLoop run_loop;
+  testing::Sequence assistant_title_seq;
+
+  // API request progress callbacks
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  // Assistant response is generated first
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(assistant_title_seq)
+      .WillOnce(testing::DoAll(
+          // Mock successful assistant response
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Assistant response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // Then title generation is triggered
+  EXPECT_CALL(*engine, GenerateConversationTitle)
+      .InSequence(assistant_title_seq)
+      .WillOnce(testing::WithArg<2>(
+          [](EngineConsumer::GenerationCompletedCallback callback) {
+            // Mock successful title generation
+            std::move(callback).Run(
+                base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewConversationTitleEvent(
+                        mojom::ConversationTitleEvent::New("Generated Title")),
+                    std::nullopt)));
+          }));
+
+  // Title change notification
+  EXPECT_CALL(observer, OnConversationTitleChanged(_, StrEq("Generated Title")))
+      .Times(1);
+
+  // Submit human entry to trigger the flow
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify conversation has 2 turns (human + assistant)
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 2u);
+  EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
+  EXPECT_EQ(history[1]->character_type, mojom::CharacterType::ASSISTANT);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_NoTitleGenerationAfterFirstTurn) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Engine requires title generation
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+
+  // First, set up a complete conversation with 2 turns (human + assistant)
+  base::RunLoop first_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("First response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // Title generation should be called for first conversation (2 turns)
+  EXPECT_CALL(*engine, GenerateConversationTitle)
+      .WillOnce(testing::WithArg<2>(
+          [&first_loop](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(
+                base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewConversationTitleEvent(
+                        mojom::ConversationTitleEvent::New("First Title")),
+                    std::nullopt)));
+            first_loop.QuitWhenIdle();
+          }));
+
+  conversation_handler_->SubmitHumanConversationEntry("First question",
+                                                      std::nullopt);
+  first_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(engine);
+
+  // Now submit second human entry - this should NOT trigger title generation
+  base::RunLoop second_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Second response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&second_loop](
+                  EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                second_loop.QuitWhenIdle();
+              })));
+
+  // Title generation should NOT be called after the first turn (only on 2nd
+  // turn)
+  EXPECT_CALL(*engine, GenerateConversationTitle).Times(0);
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+
+  conversation_handler_->SubmitHumanConversationEntry("Second question",
+                                                      std::nullopt);
+  second_loop.Run();
+
+  // Verify conversation has 4 turns
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 4u);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_NoTitleWhenEngineDoesntRequire) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Engine does NOT require title generation
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(false));
+
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Assistant response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&run_loop](
+                  EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.QuitWhenIdle();
+              })));
+
+  // Title generation should NOT be called
+  EXPECT_CALL(*engine, GenerateConversationTitle).Times(0);
+
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify conversation has 2 turns but no title generation occurred
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 2u);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_TitleGenerationFailure) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  // Engine requires title generation
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Assistant response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  EXPECT_CALL(*engine, GenerateConversationTitle)
+      .WillOnce(testing::WithArg<2>(
+          [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
+            // Mock title generation failure
+            std::move(callback).Run(
+                base::unexpected(mojom::APIError::ConnectionIssue));
+            run_loop.QuitWhenIdle();
+          }));
+
+  // Title failure should be handled silently - no error should be set
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+  EXPECT_CALL(observer, OnConversationTitleChanged).Times(0);
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify conversation still completes successfully despite title failure
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 2u);
+  EXPECT_EQ(conversation_handler_->current_error(), mojom::APIError::None);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_AssistantResponseFailure) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Engine requires title generation
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
+            // Mock assistant response failure
+            std::move(callback).Run(
+                base::unexpected(mojom::APIError::ConnectionIssue));
+            run_loop.QuitWhenIdle();
+          }));
+
+  // Title generation should NOT be called when assistant response fails
+  EXPECT_CALL(*engine, GenerateConversationTitle).Times(0);
+
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify error is set and conversation has only human entry
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 1u);
+  EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
+  EXPECT_EQ(conversation_handler_->current_error(),
+            mojom::APIError::ConnectionIssue);
+}
+
 }  // namespace ai_chat

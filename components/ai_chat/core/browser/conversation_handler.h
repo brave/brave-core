@@ -352,6 +352,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnEngineCompletionDataReceived(
       EngineConsumer::GenerationResultData result);
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
+  void OnTitleGenerated(EngineConsumer::GenerationResult result);
+  void CompleteGeneration(bool success);
   void OnSuggestedQuestionsResponse(
       EngineConsumer::SuggestedQuestionResult result);
 

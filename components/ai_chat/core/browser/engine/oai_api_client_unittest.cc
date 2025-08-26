@@ -214,6 +214,103 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
   testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
 }
 
+TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  std::vector<std::string> stop_sequences = {"/title", "END"};
+  std::string expected_conversation_body = R"([
+    {"role": "user", "content": "Test message"}
+  ])";
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        auto dict = base::test::ParseJsonDict(body);
+        base::Value::List* stop_list = dict.FindList("stop");
+        EXPECT_TRUE(stop_list);
+        EXPECT_EQ(stop_list->size(), 2u);
+        EXPECT_EQ((*stop_list)[0].GetString(), "/title");
+        EXPECT_EQ((*stop_list)[1].GetString(), "END");
+
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, base::Value(), {},
+                                                      net::OK, GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_)).WillOnce([](auto) {});
+
+  auto messages = base::test::ParseJsonList(expected_conversation_body);
+  client_->PerformRequest(
+      *model_options, std::move(messages),
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)),
+      stop_sequences);
+
+  run_loop.Run();
+}
+
+TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  std::vector<std::string> empty_stop_sequences = {};
+  std::string expected_conversation_body = R"([
+    {"role": "user", "content": "Test message"}
+  ])";
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        auto dict = base::test::ParseJsonDict(body);
+        base::Value* stop_field = dict.Find("stop");
+        EXPECT_FALSE(stop_field);
+
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, base::Value(), {},
+                                                      net::OK, GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_)).WillOnce([](auto) {});
+
+  auto messages = base::test::ParseJsonList(expected_conversation_body);
+  client_->PerformRequest(
+      *model_options, std::move(messages),
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)),
+      empty_stop_sequences);
+
+  run_loop.Run();
+}
+
 class OAIAPIInvalidResponseTest
     : public OAIAPIUnitTest,
       public ::testing::WithParamInterface<std::string> {};

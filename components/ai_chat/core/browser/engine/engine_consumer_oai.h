@@ -67,9 +67,14 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       const std::string& selected_language,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) override;
+  void GenerateConversationTitle(
+      const PageContentsMap& page_contents,
+      const ConversationHistory& conversation_history,
+      GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
   bool SupportsDeltaTextResponses() const override;
+  bool RequiresClientSideTitleGeneration() const override;
   void GetSuggestedTopics(const std::vector<Tab>& tabs,
                           GetSuggestedTopicsCallback callback) override;
   void GetFocusTabs(const std::vector<Tab>& tabs,
@@ -87,6 +92,14 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
                            BuildPageContentMessages_Truncates);
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
+                           BuildPageContentMessages_MaxPerContentLength);
+  FRIEND_TEST_ALL_PREFIXES(
+      EngineConsumerOAIUnitTest,
+      BuildPageContentMessages_MaxPerContentLength_UsesRemaining);
+  FRIEND_TEST_ALL_PREFIXES(
+      EngineConsumerOAIUnitTest,
+      BuildPageContentMessages_MaxPerContentLength_NoTruncationNeeded);
+  FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
                            BuildMessages_PageContentsOrderedBeforeTurns);
   FRIEND_TEST_ALL_PREFIXES(EngineConsumerOAIUnitTest,
                            BuildMessages_PageContentsExcludedForMissingTurns);
@@ -103,10 +116,11 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       BuildMessages_MultiplePageContents_MultipleTurns_TooLong);
 
   base::Value::List BuildPageContentMessages(
-      PageContents& page_contents,
+      const PageContents& page_contents,
       uint32_t& max_associated_content_length,
       int video_message_id,
-      int page_message_id);
+      int page_message_id,
+      std::optional<uint32_t> max_per_content_length = std::nullopt);
 
   base::Value::List BuildMessages(
       const mojom::CustomModelOptions& model_options,
@@ -121,6 +135,10 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);
+
+  void OnConversationTitleGenerated(
+      GenerationCompletedCallback completion_callback,
+      GenerationResult api_result);
 
   std::unique_ptr<OAIAPIClient> api_ = nullptr;
   mojom::CustomModelOptions model_options_;

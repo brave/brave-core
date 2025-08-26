@@ -1402,28 +1402,8 @@ void ConversationHandler::OnEngineCompletionDataReceived(
 
 void ConversationHandler::OnEngineCompletionComplete(
     EngineConsumer::GenerationResult result) {
-  is_request_in_progress_ = false;
-
-  if (result.has_value()) {
-    DVLOG(2) << __func__ << ": With value";
-    // Handle success, which might mean do nothing much since all
-    // data was passed in the streaming "received" callback.
-    if (result->event && result->event->is_completion_event() &&
-        !result->event->get_completion_event()->completion.empty()) {
-      UpdateOrCreateLastAssistantEntry(std::move(*result));
-      OnConversationEntryAdded(chat_history_.back());
-    } else {
-      // This is a workaround for any occasions where the engine returns
-      // a success but there was no new entry.
-      if (needs_new_entry_) {
-        SetAPIError(mojom::APIError::ConnectionIssue);
-      } else {
-        OnConversationEntryAdded(chat_history_.back());
-      }
-    }
-    MaybePopPendingRequests();
-  } else {
-    // handle failure
+  // Handle failure
+  if (!result.has_value()) {
     if (result.error() != mojom::APIError::None) {
       DVLOG(2) << __func__ << ": With error";
       SetAPIError(std::move(result.error()));
@@ -1437,8 +1417,59 @@ void ConversationHandler::OnEngineCompletionComplete(
         SetAPIError(mojom::APIError::None);
       }
     }
+    CompleteGeneration(false);
+    return;
   }
 
+  // Handle success, which might mean do nothing much since all data was passed
+  // in the streaming "received" callback.
+  DVLOG(2) << __func__ << ": With value";
+  if (result->event && result->event->is_completion_event() &&
+      !result->event->get_completion_event()->completion.empty()) {
+    UpdateOrCreateLastAssistantEntry(std::move(*result));
+  } else {
+    // This is a workaround for any occasions where the engine returns
+    // a success but there was no new entry.
+    if (needs_new_entry_) {
+      SetAPIError(mojom::APIError::ConnectionIssue);
+      CompleteGeneration(false);
+      return;
+    }
+  }
+  OnConversationEntryAdded(chat_history_.back());
+
+  // Check if we need title generation (after assistant response is added)
+  if (engine_->RequiresClientSideTitleGeneration() &&
+      chat_history_.size() == 2) {
+    // Keep the request active and complete the generation in OnTitleGenerated.
+    engine_->GenerateConversationTitle(
+        associated_content_manager_->GetCachedContentsMap(), chat_history_,
+        base::BindOnce(&ConversationHandler::OnTitleGenerated,
+                       weak_ptr_factory_.GetWeakPtr()));
+    return;
+  }
+
+  // Complete the generation if we don't need title generation.
+  CompleteGeneration(true);
+}
+
+void ConversationHandler::OnTitleGenerated(
+    EngineConsumer::GenerationResult result) {
+  // Process successful title result and ignore title errors silently.
+  if (result.has_value() && result->event &&
+      result->event->is_conversation_title_event()) {
+    OnConversationTitleChanged(
+        result->event->get_conversation_title_event()->title);
+  }
+
+  CompleteGeneration(true);
+}
+
+void ConversationHandler::CompleteGeneration(bool success) {
+  is_request_in_progress_ = false;
+  if (success) {
+    MaybePopPendingRequests();
+  }
   MaybeRespondToNextToolUseRequest();
 }
 

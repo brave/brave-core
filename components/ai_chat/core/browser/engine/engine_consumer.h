@@ -101,6 +101,15 @@ class EngineConsumer {
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) {}
 
+  // Generate a conversation title based on the conversation history.
+  // Only called for engines that return true for
+  // RequiresClientSideTitleGeneration(). Conversation history should ONLY
+  // contain the first turn and completed assistant response.
+  virtual void GenerateConversationTitle(
+      const PageContentsMap& page_contents,
+      const ConversationHistory& conversation_history,
+      GenerationCompletedCallback completed_callback) {}
+
   // Prevent indirect prompt injections being sent to the AI model.
   // Include break-out strings contained in prompts, as well as the base
   // model command separators.
@@ -113,6 +122,10 @@ class EngineConsumer {
   // each time the callback is run (use |false|) or whether it provides a delta
   // from the previous run (use |true|).
   virtual bool SupportsDeltaTextResponses() const;
+
+  // Whether this engine requires client-side conversation title generation.
+  // Returns true for OAI engines, false for conversation API (server-side).
+  virtual bool RequiresClientSideTitleGeneration() const;
 
   virtual void UpdateModelOptions(const mojom::ModelOptions& options) = 0;
 
