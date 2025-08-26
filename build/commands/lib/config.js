@@ -393,7 +393,13 @@ Config.prototype.buildArgs = function () {
 
   let args = {
     'import("//brave/build/args/brave_defaults.gni")': null,
-    is_msan: this.is_msan != null ? this.is_msan : undefined,
+    is_asan: this.is_asan,
+    enable_full_stack_frames_for_profiling: this.is_asan,
+    v8_enable_verify_heap: this.is_asan,
+    is_ubsan: this.is_ubsan,
+    is_ubsan_vptr: this.is_ubsan,
+    is_ubsan_no_recover: this.is_ubsan,
+    is_msan: this.is_msan,
     is_component_build: is_component_build,
     is_universal_binary: this.isUniversalBinary,
     target_cpu: this.targetArch,
@@ -417,19 +423,10 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.is_asan != null) {
-    args.is_asan = this.is_asan
-    args.enable_full_stack_frames_for_profiling = this.is_asan
-    args.v8_enable_verify_heap = this.is_asan
     if (['android', 'linux', 'mac'].includes(this.targetOS)) {
       // LSAN only works with ASAN and has very low overhead.
       args.is_lsan = args.is_asan
     }
-  }
-
-  if (this.is_ubsan != null) {
-    args.is_ubsan = this.is_ubsan
-    args.is_ubsan_vptr = this.is_ubsan
-    args.is_ubsan_no_recover = this.is_ubsan
   }
 
   if (this.targetOS !== 'ios') {
