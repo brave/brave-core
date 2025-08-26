@@ -1,0 +1,25 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("ai_chat") {
+  sources = [
+    "ai_chat_side_panel_utils_views.cc",
+    "ai_chat_side_panel_web_view.cc",
+    "ai_chat_side_panel_web_view.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ai_chat",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/views/side_panel",
+    "//ui/base",
+    "//ui/views",
+    "//url",
+  ]
+}

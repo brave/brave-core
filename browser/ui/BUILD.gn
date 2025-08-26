@@ -535,7 +535,6 @@ source_set("ui") {
       "views/page_action/brave_page_action_icon_container_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
-      "views/side_panel/ai_chat/ai_chat_side_panel_utils_views.cc",
       "views/side_panel/bookmarks/brave_bookmarks_side_panel_coordinator.cc",
       "views/side_panel/bookmarks/brave_bookmarks_side_panel_coordinator.h",
       "views/side_panel/brave_bookmarks_side_panel_view.cc",

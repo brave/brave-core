@@ -104,6 +104,10 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void OnFilesSelected() override;
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
+  // TODO(https://github.com/brave/brave-browser/issues/48524): We probably
+  // want to reference the TabStripModel so that we can offer the user to
+  // attach the current active tab or start a new conversation on active tab
+  // change or navigation.
   raw_ptr<content::WebContents> owner_web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
@@ -119,6 +123,10 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;
+
+  // Conversations are not content associated either in standalone mode or in
+  // global side panel mode, to the owner_web_contents_.
+  bool conversations_are_content_associated_ = false;
 
   base::WeakPtrFactory<AIChatUIPageHandler> weak_ptr_factory_{this};
 };

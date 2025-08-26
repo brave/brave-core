@@ -88,6 +88,15 @@ bool IsAIChatAgentProfileEnabled() {
 #endif
 }
 
+BASE_FEATURE(kAIChatGlobalSidePanelEverywhere,
+             "AIChatGlobalSidePanelEverywhere",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatGlobalSidePanelEverywhereEnabled() {
+  return base::FeatureList::IsEnabled(
+      features::kAIChatGlobalSidePanelEverywhere);
+}
+
 BASE_FEATURE(kCustomSiteDistillerScripts,
              "CustomSiteDistillerScripts",
              base::FEATURE_ENABLED_BY_DEFAULT);
