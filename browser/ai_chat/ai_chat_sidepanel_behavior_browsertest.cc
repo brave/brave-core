@@ -6,7 +6,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
-#include "brave/browser/ui/views/side_panel/ai_chat_side_panel_web_view.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"

@@ -7,7 +7,7 @@
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
-#include "brave/browser/ui/views/side_panel/ai_chat_side_panel_web_view.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_
-#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_
 
 #include <memory>
 
@@ -42,4 +42,4 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
   bool should_focus_ = true;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_

@@ -5,11 +5,9 @@
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
-#include "brave/browser/ui/views/side_panel/ai_chat_side_panel_web_view.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
-#include "components/user_prefs/user_prefs.h"
 
 namespace brave {
 
