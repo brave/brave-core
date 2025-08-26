@@ -209,12 +209,8 @@ ConversationHandler* AIChatService::CreateConversation() {
   return GetConversation(conversation_uuid);
 }
 
-std::vector<base::WeakPtr<Tool>> AIChatService::GetTools() {
-  std::vector<base::WeakPtr<Tool>> tools;
-  if (memory_tool_) {
-    tools.push_back(memory_tool_->GetWeakPtr());
-  }
-  return tools;
+MemoryStorageTool* AIChatService::GetMemoryToolForTesting() {
+  return memory_tool_.get();
 }
 
 void AIChatService::OnMemoryEnabledChanged() {
@@ -1218,7 +1214,8 @@ AIChatService::CreateToolProvidersForNewConversation() {
   }
 
   // Basic set of tools that we can provide
-  tool_providers.push_back(std::make_unique<ConversationToolProvider>());
+  tool_providers.push_back(std::make_unique<ConversationToolProvider>(
+      memory_tool_ ? memory_tool_->GetWeakPtr() : nullptr));
 
   return tool_providers;
 }

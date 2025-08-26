@@ -2660,15 +2660,19 @@ TEST_F(ConversationHandlerUnitTest, GetTools_FiltersUnsupportedTools) {
   auto tool2 =
       std::make_unique<NiceMock<MockTool>>("requires_content_association", "");
   auto tool3 = std::make_unique<NiceMock<MockTool>>("supported", "");
+  auto tool4 =
+      std::make_unique<NiceMock<MockTool>>("not_supports_conversation", "");
 
   tool1->set_is_supported_by_model(false);
   tool2->set_requires_content_association(true);
+  tool4->set_supports_conversation(false);
 
   ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
     std::vector<base::WeakPtr<Tool>> tools;
     tools.push_back(tool1->GetWeakPtr());
     tools.push_back(tool2->GetWeakPtr());
     tools.push_back(tool3->GetWeakPtr());
+    tools.push_back(tool4->GetWeakPtr());
     return tools;
   });
 
@@ -2689,10 +2693,12 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
   tool1->set_requires_user_interaction_before_handling(false);
   tool2->set_requires_user_interaction_before_handling(false);
 
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  tools.push_back(std::move(tool2));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
@@ -4011,42 +4017,6 @@ TEST_F(ConversationHandlerUnitTest,
                                 ->GetAssociatedContent();
   ASSERT_EQ(1u, associated_content.size());
   EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
-}
-
-TEST_F(ConversationHandlerUnitTest,
-       GetTools_MemoryToolFilteredForTemporaryConversations) {
-  // Test that memory tools are not available in temporary conversations
-
-  // Enable memory feature so memory tool would normally be available
-  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
-
-  // Test 1: Memory tool should be available in regular (non-temporary)
-  // conversation
-  conversation_handler_->SetTemporary(false);
-  auto regular_tools = conversation_handler_->GetTools();
-
-  bool memory_tool_found_regular =
-      std::ranges::any_of(regular_tools, [](const auto& tool) {
-        return tool && tool->Name() == mojom::kMemoryStorageToolName;
-      });
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  EXPECT_FALSE(memory_tool_found_regular)
-      << "Memory tool should NOT be available on Android/iOS platforms";
-#else
-  EXPECT_TRUE(memory_tool_found_regular)
-      << "Memory tool should be available in regular conversations";
-#endif
-
-  // Test 2: Memory tool should NOT be available in temporary conversation
-  conversation_handler_->SetTemporary(true);
-  auto temp_tools = conversation_handler_->GetTools();
-
-  bool memory_tool_found_temp =
-      std::ranges::any_of(temp_tools, [](const auto& tool) {
-        return tool && tool->Name() == mojom::kMemoryStorageToolName;
-      });
-  EXPECT_FALSE(memory_tool_found_temp)
-      << "Memory tool should NOT be available in temporary conversations";
 }
 
 }  // namespace ai_chat

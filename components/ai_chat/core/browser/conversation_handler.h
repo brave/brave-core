@@ -264,6 +264,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     return *metadata_;
   }
 
+  std::vector<base::WeakPtr<Tool>> GetToolsForTesting() { return GetTools(); }
+
  protected:
   // ModelService::Observer
   void OnModelListUpdated() override;

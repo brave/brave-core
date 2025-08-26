@@ -30,7 +30,6 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
-#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -57,7 +56,6 @@ namespace ai_chat {
 class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
-class Tool;
 class MemoryStorageTool;
 
 // Main entry point for creating and consuming AI Chat conversations
@@ -124,8 +122,8 @@ class AIChatService : public KeyedService,
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
 
-  // Provides tools that can be used by conversations
-  std::vector<base::WeakPtr<Tool>> GetTools();
+  // Provides memory tool for testing
+  MemoryStorageTool* GetMemoryToolForTesting();
 
   ConversationHandler* GetConversation(std::string_view uuid);
   void GetConversation(std::string_view conversation_uuid,

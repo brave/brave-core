@@ -16,7 +16,7 @@ namespace ai_chat {
 
 class ConversationToolProvider : public ToolProvider {
  public:
-  ConversationToolProvider();
+  explicit ConversationToolProvider(base::WeakPtr<Tool> memory_storage_tool);
   ~ConversationToolProvider() override;
 
   ConversationToolProvider(const ConversationToolProvider&) = delete;
@@ -24,6 +24,14 @@ class ConversationToolProvider : public ToolProvider {
 
   // ToolProvider implementation
   std::vector<base::WeakPtr<Tool>> GetTools() override;
+
+ private:
+  // Owned by AIChatService and shared across conversations. It could be
+  // invalidated when memory preference is disabled, but it won't leave
+  // conversation hanging waiting for a response even if it is destroyed
+  // mid-loop because it doesn't have any async operations and will send a
+  // response right away in UseTool.
+  base::WeakPtr<Tool> memory_storage_tool_;
 };
 
 }  // namespace ai_chat

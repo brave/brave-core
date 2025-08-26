@@ -1450,8 +1450,7 @@ TEST_P(AIChatServiceUnitTest, InitializeTools_MemoryDisabled) {
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
   ResetService();
 
-  auto tools = ai_chat_service_->GetTools();
-  EXPECT_TRUE(tools.empty());
+  EXPECT_FALSE(ai_chat_service_->GetMemoryToolForTesting());
 }
 
 TEST_P(AIChatServiceUnitTest, InitializeTools_MemoryEnabled) {
@@ -1459,9 +1458,7 @@ TEST_P(AIChatServiceUnitTest, InitializeTools_MemoryEnabled) {
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
   ResetService();
 
-  auto tools = ai_chat_service_->GetTools();
-  EXPECT_EQ(tools.size(), 1u);
-  EXPECT_EQ(tools[0]->Name(), mojom::kMemoryStorageToolName);
+  EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
 }
 
 TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_EnabledToDisabled) {
@@ -1470,15 +1467,13 @@ TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_EnabledToDisabled) {
   ResetService();
 
   // Verify memory tool exists
-  auto tools = ai_chat_service_->GetTools();
-  EXPECT_EQ(tools.size(), 1u);
+  EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
 
   // Disable memory
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
 
   // Verify memory tool is removed
-  tools = ai_chat_service_->GetTools();
-  EXPECT_TRUE(tools.empty());
+  EXPECT_FALSE(ai_chat_service_->GetMemoryToolForTesting());
 }
 
 TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_DisabledToEnabled) {
@@ -1487,16 +1482,13 @@ TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_DisabledToEnabled) {
   ResetService();
 
   // Verify no memory tool exists
-  auto tools = ai_chat_service_->GetTools();
-  EXPECT_TRUE(tools.empty());
+  EXPECT_FALSE(ai_chat_service_->GetMemoryToolForTesting());
 
   // Enable memory
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
 
   // Verify memory tool is added
-  tools = ai_chat_service_->GetTools();
-  EXPECT_EQ(tools.size(), 1u);
-  EXPECT_EQ(tools[0]->Name(), mojom::kMemoryStorageToolName);
+  EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
 }
 
 }  // namespace ai_chat
