@@ -189,6 +189,11 @@ BraveWalletService::BraveWalletService(
         *keyring_service(), *network_manager(), url_loader_factory);
   }
 
+  if (IsPolkadotEnabled()) {
+    polkadot_wallet_service_ =
+        std::make_unique<PolkadotWalletService>(url_loader_factory);
+  }
+
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
       GetCardanoWalletService(), *keyring_service(), profile_prefs,

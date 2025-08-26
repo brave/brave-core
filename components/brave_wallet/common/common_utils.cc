@@ -77,6 +77,10 @@ bool IsZCashShieldedTransactionsEnabled() {
 #endif
 }
 
+bool IsPolkadotEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveWalletPolkadotFeature);
+}
+
 bool IsAnkrBalancesEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveWalletAnkrBalancesFeature);
