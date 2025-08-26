@@ -70,9 +70,8 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
     private ChromeSwitchPreference getSwitchPreference(MenuItemData menuItem) {
         ChromeSwitchPreference preference = new ChromeSwitchPreference(getContext());
         preference.setTitle(menuItem.title);
-        preference.setKey(String.format(
-                Locale.ENGLISH,
-                CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT, menuItem.id));
+        preference.setKey(
+                String.format(Locale.ENGLISH, CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT, menuItem.id));
         preference.setChecked(menuItem.checked);
 
         // Set icon if available

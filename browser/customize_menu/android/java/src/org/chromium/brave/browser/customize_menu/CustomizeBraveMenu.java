@@ -46,16 +46,9 @@ public class CustomizeBraveMenu {
             boolean visible = isVisible(item.model.get(AppMenuItemProperties.MENU_ITEM_ID));
             if (!visible) {
                 it.remove();
-//                item.model.set(AppMenuItemProperties.ENABLED, false);
             }
         }
     }
-
-    //    public static void openCustomizeMenuSettings(final Context context) {
-    //        SettingsNavigation settingsLauncher =
-    // SettingsNavigationFactory.createSettingsNavigation();
-    //        settingsLauncher.startSettings(context, BraveCustomizeMenuPreferenceFragment.class);
-    //    }
 
     public static void openCustomizeMenuSettings(
             final Context context, final MVCListAdapter.ModelList menuItems) {
@@ -82,9 +75,7 @@ public class CustomizeBraveMenu {
                 // drawables
             }
 
-            menuItemDataList.add(
-                    new MenuItemData(
-                            id, title.toString(), iconResId, isVisible(id)));
+            menuItemDataList.add(new MenuItemData(id, title.toString(), iconResId, isVisible(id)));
         }
 
         bundle.putParcelableArrayList("menu_items", menuItemDataList);
@@ -97,10 +88,7 @@ public class CustomizeBraveMenu {
         return ChromeSharedPreferences.getInstance()
                 .readBoolean(
                         String.format(
-                                Locale.ENGLISH,
-                                CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
-                                itemId
-                        ),
+                                Locale.ENGLISH, CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT, itemId),
                         true);
     }
 }
