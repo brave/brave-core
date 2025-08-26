@@ -6,6 +6,7 @@
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 
 #include "base/check_op.h"
+#include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -31,6 +32,8 @@ constexpr int kTipsSentBuckets[] = {0, 1, 3};
 constexpr int kPanelCountBuckets[] = {1, 2, 5, 10, 50};
 
 constexpr int kRewardsPageViewCountBuckets[] = {2, 5, 10, 50};
+
+constexpr int kOfferClicksBuckets[] = {1, 3, 5};
 
 }  // namespace
 
@@ -97,6 +100,22 @@ void RecordSearchResultAdsOptinChange(PrefService* prefs) {
 
 void RecordAdsHistoryView() {
   UMA_HISTOGRAM_BOOLEAN(kAdsHistoryViewHistogramName, true);
+}
+
+void RecordOfferEvents(PrefService* prefs, bool new_view, bool new_click) {
+  if (new_view) {
+    UMA_HISTOGRAM_BOOLEAN(kOffersViewedHistogramName, true);
+  }
+
+  WeeklyStorage storage(prefs, prefs::kP3AOfferClickCount);
+  if (new_click) {
+    storage.AddDelta(1);
+  }
+  auto sum = storage.GetWeeklySum();
+  if (sum > 0) {
+    p3a_utils::RecordToHistogramBucket(kOfferClicksHistogramName,
+                                       kOfferClicksBuckets, sum);
+  }
 }
 
 ConversionMonitor::ConversionMonitor(PrefService* prefs)

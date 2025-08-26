@@ -701,6 +701,13 @@ void RewardsPageHandler::ResetRewards(ResetRewardsCallback callback) {
   rewards_service_->CompleteReset(std::move(callback));
 }
 
+void RewardsPageHandler::RecordOfferEvent(bool new_view,
+                                          bool new_click,
+                                          RecordOfferEventCallback callback) {
+  p3a::RecordOfferEvents(prefs_, new_view, new_click);
+  std::move(callback).Run();
+}
+
 void RewardsPageHandler::OnUpdate(UpdateSource update_source) {
   if (page_) {
     page_->OnRewardsStateUpdated();

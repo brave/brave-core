@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import { UICardItem } from '../../lib/app_state'
+import { AppModelContext } from '../../lib/app_model_context'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { sanitizeURL, faviconURL, cardImageURL } from './card_urls'
 
@@ -15,20 +16,23 @@ interface Props {
 
 export function CardItemView(props: Props) {
   const { item } = props
+  const model = React.useContext(AppModelContext)
   const thumbnail = cardImageURL(item.thumbnail)
   return (
-    <NewTabLink href={sanitizeURL(item.url)}>
-      <span className='thumbnail'>
-        {
-          thumbnail
-            ? <img src={thumbnail} />
-            : <img className='favicon' src={faviconURL(item.url)} />
-        }
-      </span>
-      <span className='item-info'>
-        <span className='title'>{item.title}</span>
-        <span className='description'>{item.description}</span>
-      </span>
-    </NewTabLink>
+    <div onClick={() => model.recordOfferClick()}>
+      <NewTabLink href={sanitizeURL(item.url)}>
+        <span className='thumbnail'>
+          {
+            thumbnail
+              ? <img src={thumbnail} />
+              : <img className='favicon' src={faviconURL(item.url)} />
+          }
+        </span>
+        <span className='item-info'>
+          <span className='title'>{item.title}</span>
+          <span className='description'>{item.description}</span>
+        </span>
+      </NewTabLink>
+    </div>
   )
 }

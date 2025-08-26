@@ -204,4 +204,7 @@ interface RewardsPageHandler {
 
   // Clears all Rewards-related user state.
   ResetRewards() => (bool success);
+
+  // Records metrics for offer events (views and clicks).
+  RecordOfferEvent(bool new_view, bool new_click) => ();
 };

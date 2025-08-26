@@ -134,6 +134,9 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void OnCaptchaResult(bool success, OnCaptchaResultCallback callback) override;
   void FetchUICards(FetchUICardsCallback callback) override;
   void ResetRewards(ResetRewardsCallback callback) override;
+  void RecordOfferEvent(bool new_view,
+                        bool new_click,
+                        RecordOfferEventCallback callback) override;
 
  private:
   class UpdateObserver;
