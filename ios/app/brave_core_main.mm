@@ -280,6 +280,10 @@ static bool CustomLogHandler(int severity,
   CHECK(profileKeepAlive.profile()) << "A default profile must be loaded.";
   self.profileController = [[BraveProfileController alloc]
       initWithProfileKeepAlive:std::move(profileKeepAlive)];
+  // Desktop/Android call `StartBraveServices` during their main setup after the
+  // initial profile is created/loaded, but that setup does not exist on iOS.
+  static_cast<BraveApplicationContextImpl*>(GetApplicationContext())
+      ->StartBraveServices();
   completionHandler(self.profileController);
 }
 
