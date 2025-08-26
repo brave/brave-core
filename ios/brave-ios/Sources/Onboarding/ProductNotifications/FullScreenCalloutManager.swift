@@ -25,7 +25,7 @@ public enum FullScreenCalloutType: CaseIterable {
     switch self {
     case .p3a: return 0
     case .bottomBar: return 0
-    case .defaultBrowser: return Locale.current.isNewOnboardingRegion ? 7 : 10
+    case .defaultBrowser: return 7
     case .rewards: return 8
     case .vpnLinkReceipt: return 0
     }
@@ -55,10 +55,8 @@ public struct FullScreenCalloutManager {
   /// It determines whether we should show show the designated callout or not and sets corresponding preferences accordingly.
   /// Returns true if the callout should be shown.
   public static func shouldShowCallout(calloutType: FullScreenCalloutType) -> Bool {
-    // If region is onboarding_region check new focus onboarding is finished
-    if Locale.current.isNewOnboardingRegion,
-      !Preferences.FocusOnboarding.focusOnboardingFinished.value
-    {
+    // Check if focus onboarding is finished
+    if !Preferences.FocusOnboarding.focusOnboardingFinished.value {
       return false
     }
 
@@ -73,10 +71,7 @@ public struct FullScreenCalloutManager {
     var calloutDelayInterval = calloutType.period.days
 
     // Delay period 3 days that will be added to full screen callouts
-    // This will be the case as long as new onboarding is active for onboarding_regions
-    if Locale.current.isNewOnboardingRegion {
-      calloutDelayInterval += delayAmountJpOnboarding
-    }
+    calloutDelayInterval += delayAmountJpOnboarding
 
     let nextShowDate = appRetentionLaunchDate.addingTimeInterval(calloutDelayInterval)
 

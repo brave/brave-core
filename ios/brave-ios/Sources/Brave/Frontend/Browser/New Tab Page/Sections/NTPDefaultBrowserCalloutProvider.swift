@@ -82,7 +82,6 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
 
     let defaultBrowserDisplayCriteria =
       !Preferences.General.defaultBrowserCalloutDismissed.value
-      && !Preferences.Onboarding.basicOnboardingDefaultBrowserSelected.value
 
     guard let appRetentionLaunchDate = Preferences.DAU.appRetentionLaunchDate.value else {
       return defaultBrowserDisplayCriteria

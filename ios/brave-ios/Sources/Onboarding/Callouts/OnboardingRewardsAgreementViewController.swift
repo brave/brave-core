@@ -76,7 +76,6 @@ public class OnboardingRewardsAgreementViewController: UIViewController {
 
   @objc
   private func turnOnTapped() {
-    Preferences.Onboarding.basicOnboardingProgress.value = OnboardingProgress.rewards.rawValue
     onRewardsStatusChanged?(true)
     onOnboardingStateChanged?(self, .complete)
   }

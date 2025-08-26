@@ -650,14 +650,6 @@ extension Strings {
         value: "Open Settings",
         comment: "Button text to open app settings"
       )
-    public static let introSkipButtonText =
-      NSLocalizedString(
-        "defaultBrowserCallout.introCancelButtonText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Not Now",
-        comment: "Button text to close the default browser popup."
-      )
     public static let notificationTitle =
       NSLocalizedString(
         "defaultBrowserCallout.notificationTitle",
@@ -682,55 +674,6 @@ extension Strings {
 
 extension Strings {
   public struct Callout {
-    public static let defaultBrowserCalloutTitle =
-      NSLocalizedString(
-        "callout.defaultBrowserTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Privacy. Made Simple.",
-        comment: "Title for Default Browser Full Screen Callout"
-      )
-    public static let defaultBrowserCalloutDescription =
-      NSLocalizedString(
-        "callout.defaultBrowserCalloutDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "With Brave as default, every link you tap opens with Brave's privacy protections.",
-        comment: "Subtitle - Description for Default Browser Full Screen Callout"
-      )
-    public static let defaultBrowserCalloutButtonDescription =
-      NSLocalizedString(
-        "callout.defaultBrowserCalloutButtonDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Set Brave as Default Browser?",
-        comment:
-          "Description - Description used for main button in Default Browser Full Screen Callout"
-      )
-    public static let defaultBrowserCalloutPrimaryButtonTitle =
-      NSLocalizedString(
-        "callout.defaultBrowserCalloutPrimaryButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Set Default",
-        comment: "Title for main button in Default Browser Full Screen Callout"
-      )
-    public static let defaultBrowserCalloutSecondaryButtonTitle =
-      NSLocalizedString(
-        "callout.defaultBrowserCalloutSecondaryButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Skip This",
-        comment: "Title for secondary button in Default Browser Full Screen Callout"
-      )
-    public static let defaultBrowserCalloutSecondaryButtonDescription =
-      NSLocalizedString(
-        "callout.defaultBrowserCalloutSecondaryButtonDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Already Default?",
-        comment: "Description for secondary button in Default Browser Full Screen Callout"
-      )
     public static let privacyEverywhereCalloutTitle =
       NSLocalizedString(
         "callout.privacyEverywhereCalloutTitle",
@@ -764,49 +707,6 @@ extension Strings {
         value: "Tab Received",
         comment:
           "Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. "
-      )
-    public static let p3aCalloutTitle =
-      NSLocalizedString(
-        "callout.p3aCalloutTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Help make Brave better.",
-        comment: "Title for p3a (Privacy Preserving Analytics) Full Screen Callout"
-      )
-    public static let p3aCalloutDescription =
-      NSLocalizedString(
-        "callout.p3aCalloutDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "This helps us learn what Brave features are used most often. Change at any time in Brave Settings under ‘Brave Shields and Other Privacy Settings.",
-        comment: "Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout"
-      )
-    public static let p3aCalloutToggleTitle =
-      NSLocalizedString(
-        "callout.p3aCalloutToggleTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Share Private and Anonymous Product Insights.",
-        comment:
-          "Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout"
-      )
-    public static let p3aCalloutCloseAccessibilityLabel =
-      NSLocalizedString(
-        "p3aCalloutCloseAccessibilityLabel",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Close Privacy Preserving Product Callout",
-        comment: ""
-      )
-    public static let p3aCalloutLinkTitle =
-      NSLocalizedString(
-        "callout.p3aCalloutLinkTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Learn more about our Privacy Preserving Product Analytics (P3A).",
-        comment:
-          "Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics)"
       )
     public static let bottomBarCalloutTitle =
       NSLocalizedString(
@@ -847,14 +747,6 @@ extension Strings {
 
 extension Strings {
   public struct Onboarding {
-    public static let welcomeScreenTitle =
-      NSLocalizedString(
-        "onboarding.welcomeScreenTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Welcome to Brave",
-        comment: "Title for Welcome Screen in Onboarding"
-      )
     public static let ntpOnboardingPopOverTrackerDescription =
       NSLocalizedString(
         "onboarding.ntpOnboardingPopOverTrackerDescription",
@@ -862,57 +754,6 @@ extension Strings {
         bundle: .module,
         value: "By blocking trackers & ads, websites use less data and load way faster.",
         comment: "Description for the NTP pop-over that describes the tracking information on NTP"
-      )
-    public static let blockedAdsOnboardingInstructionsText =
-      NSLocalizedString(
-        "onboarding.blockedAdsOnboardingInstructionsText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Tap to view Brave Shields",
-        comment: "The text describing user where they should press in order to open Shield panel"
-      )
-    public static let blockedAdsOnboardingFootnoteText =
-      NSLocalizedString(
-        "onboarding.blockedAdsOnboardingFootnoteText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "See all the bad stuff Brave blocked, on every page, with Shields.",
-        comment: "The footnote indicating what Brave shields is blocking"
-      )
-    public static let blockedAdsOnboardingNoBigTechInformationText =
-      NSLocalizedString(
-        "onboarding.blockedAdsOnboardingNoBigTechInformationText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Ads & trackers blocked",
-        comment:
-          "The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation."
-      )
-    public static let blockedAdsOnboardingBigTechInformationText =
-      NSLocalizedString(
-        "onboarding.blockedAdsOnboardingBigTechInformationText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "%@ and %lld other ads & trackers blocked",
-        comment:
-          "The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked"
-      )
-    public static let navigateSettingsOnboardingScreenTitle =
-      NSLocalizedString(
-        "onboarding.navigateSettingsOnboardingScreenTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Taking you to Settings...",
-        comment: "Title for Navigate Settings Screen in Onboarding"
-      )
-    public static let navigateSettingsOnboardingScreenDescription =
-      NSLocalizedString(
-        "onboarding.navigateSettingsOnboardingScreenDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Look for 'Default Browser App'",
-        comment:
-          "Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language."
       )
     public static let omniboxOnboardingPopOverTitle =
       NSLocalizedString(
