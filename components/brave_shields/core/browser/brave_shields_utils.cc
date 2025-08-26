@@ -809,13 +809,13 @@ bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
 ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map) {
   ContentSettingsForOneType fp_rules =
       map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
-  return GetFPSettingCountFromRules(fp_rules);
+  return GetSettingCountFromRules(fp_rules);
 }
 
 ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
   ContentSettingsForOneType cosmetic_rules =
       map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-  return GetAdsSettingCountFromRules(cosmetic_rules);
+  return GetSettingCountFromRules(cosmetic_rules);
 }
 
 void SetWebcompatEnabled(HostContentSettingsMap* map,

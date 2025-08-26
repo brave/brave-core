@@ -30,10 +30,9 @@ ContentSetting GetBraveWebcompatContentSettingFromRules(
     const GURL& primary_url,
     const ContentSettingsType content_settings_type);
 
-ShieldsSettingCounts GetFPSettingCountFromRules(
+ShieldsSettingCounts GetSettingCountFromRules(
     const ContentSettingsForOneType& fp_rules);
-ShieldsSettingCounts GetAdsSettingCountFromRules(
-    const ContentSettingsForOneType& ads_rules);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_UTILS_H_
