@@ -26,7 +26,7 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
     if (!toolUseEvent?.argumentsJson) return ''
     try {
       const input = JSON.parse(toolUseEvent.argumentsJson)
-      return input?.memory || ''
+      return typeof input?.memory === 'string' ? input.memory : ''
     } catch (e) {
       return ''
     }

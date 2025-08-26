@@ -43,7 +43,7 @@ describe('MemoryToolEvent', () => {
       onMemoriesChanged: {
         addListener: jest.fn().mockImplementation((callback) => {
           listener = callback
-          return 'listener-id'
+          return 1
         })
       },
       removeListener: jest.fn(),
@@ -367,5 +367,161 @@ describe('MemoryToolEvent', () => {
 
     // Verify undo was only called once even if we try to click again
     expect(mockDeleteMemory).toHaveBeenCalledTimes(1)
+  })
+
+  describe('defensive JSON handling for memory field', () => {
+    test('should handle undefined input', () => {
+      const { container } = render(
+        <MockContext>
+          <MemoryToolEvent
+            toolUseEvent={createToolUseEvent(
+              '{}',
+              [createTextContentBlock('')]
+            )}
+          />
+        </MockContext>
+      )
+      expect(container.innerHTML).toBe('')
+    })
+
+    test('should handle null input', () => {
+      const { container } = render(
+        <MockContext>
+          <MemoryToolEvent
+            toolUseEvent={createToolUseEvent(
+              'null',
+              [createTextContentBlock('')]
+            )}
+          />
+        </MockContext>
+      )
+      expect(container.innerHTML).toBe('')
+    })
+
+    test('should handle empty object input', () => {
+      const { container } = render(
+        <MockContext>
+          <MemoryToolEvent
+            toolUseEvent={createToolUseEvent(
+              '{}',
+              [createTextContentBlock('')]
+            )}
+          />
+        </MockContext>
+      )
+      expect(container.innerHTML).toBe('')
+    })
+
+    test('should handle valid string memory', async () => {
+      const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
+      const mockUIObserver = createMockUIObserver()
+
+      render(
+        <MockContext
+          uiHandler={{
+            hasMemory: mockHasMemory
+          } as unknown as Mojom.UntrustedUIHandlerRemote}
+          uiObserver={
+            mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
+          }
+        >
+          <MemoryToolEvent
+            toolUseEvent={createToolUseEvent(
+              '{"memory": "valid string"}',
+              [createTextContentBlock('')]
+            )}
+          />
+        </MockContext>
+      )
+
+      await waitFor(() => {
+        expect(screen.getByTestId('memory-tool-event')).toBeInTheDocument()
+      })
+      expect(mockHasMemory).toHaveBeenCalledWith('valid string')
+    })
+
+    test('should handle empty string memory', () => {
+      const { container } = render(
+        <MockContext>
+          <MemoryToolEvent
+            toolUseEvent={createToolUseEvent(
+              '{"memory": ""}',
+              [createTextContentBlock('')]
+            )}
+          />
+        </MockContext>
+      )
+      expect(container.innerHTML).toBe('')
+    })
+
+    test('should reject number memory type', () => {
+      const { container } = render(
+        <MockContext>
+          <MemoryToolEvent
+            toolUseEvent={createToolUseEvent(
+              '{"memory": 123}',
+              [createTextContentBlock('')]
+            )}
+          />
+        </MockContext>
+      )
+      expect(container.innerHTML).toBe('')
+    })
+
+    test('should reject boolean memory type', () => {
+      const { container } = render(
+        <MockContext>
+          <MemoryToolEvent
+            toolUseEvent={createToolUseEvent(
+              '{"memory": true}',
+              [createTextContentBlock('')]
+            )}
+          />
+        </MockContext>
+      )
+      expect(container.innerHTML).toBe('')
+    })
+
+    test('should reject null memory value', () => {
+      const { container } = render(
+        <MockContext>
+          <MemoryToolEvent
+            toolUseEvent={createToolUseEvent(
+              '{"memory": null}',
+              [createTextContentBlock('')]
+            )}
+          />
+        </MockContext>
+      )
+      expect(container.innerHTML).toBe('')
+    })
+
+    test('should reject object memory type', () => {
+      const { container } = render(
+        <MockContext>
+          <MemoryToolEvent
+            toolUseEvent={createToolUseEvent(
+              '{"memory": {"key": "value"}}',
+              [createTextContentBlock('')]
+            )}
+          />
+        </MockContext>
+      )
+      expect(container.innerHTML).toBe('')
+    })
+
+    test('should reject array memory type', () => {
+      const { container } = render(
+        <MockContext>
+          <MemoryToolEvent
+            toolUseEvent={createToolUseEvent(
+              '{"memory": ["item1", "item2"]}',
+              [createTextContentBlock('')]
+            )}
+          />
+        </MockContext>
+      )
+      expect(container.innerHTML).toBe('')
+    })
   })
 })
