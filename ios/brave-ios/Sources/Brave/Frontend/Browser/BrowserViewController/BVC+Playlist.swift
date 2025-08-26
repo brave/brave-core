@@ -316,6 +316,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     self.userActivity = openPlaylist
     openPlaylist.becomeCurrent()
     PlaylistP3A.recordUsage()
+
+    present(playlistController, animated: true)
   }
 
   func addToPlayListActivity(info: PlaylistInfo?, itemDetected: Bool) {
