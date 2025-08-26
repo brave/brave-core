@@ -383,6 +383,18 @@ TEST(CommonUtils, IsPolkadotKeyring) {
   }
 }
 
+TEST(CommonUtils, IsPolkadotNetwork) {
+  EXPECT_TRUE(IsPolkadotNetwork(mojom::kPolkadotMainnet));
+  EXPECT_TRUE(IsPolkadotNetwork(mojom::kPolkadotTestnet));
+
+  EXPECT_FALSE(IsPolkadotNetwork(mojom::kMainnetChainId));
+  EXPECT_FALSE(IsPolkadotNetwork(mojom::kFilecoinMainnet));
+  EXPECT_FALSE(IsPolkadotNetwork(mojom::kSolanaMainnet));
+  EXPECT_FALSE(IsPolkadotNetwork(mojom::kBitcoinMainnet));
+  EXPECT_FALSE(IsPolkadotNetwork(""));
+  EXPECT_FALSE(IsPolkadotNetwork("abc"));
+}
+
 TEST(CommonUtils, GetActiveEndpointUrl) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
   EXPECT_EQ(GURL("https://url1.com"), GetActiveEndpointUrl(chain));
@@ -405,7 +417,8 @@ TEST(CommonUtils, GetEnabledCoins) {
   base::test::ScopedFeatureList disabled_feature_list;
   const std::vector<base::test::FeatureRef> coin_features = {
       features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature,
-      features::kBraveWalletCardanoFeature};
+      features::kBraveWalletCardanoFeature,
+      features::kBraveWalletPolkadotFeature};
   disabled_feature_list.InitWithFeatures({}, coin_features);
 
   uint32_t test_cases_count = (1 << coin_features.size());
@@ -439,10 +452,14 @@ TEST(CommonUtils, GetEnabledCoins) {
       EXPECT_EQ(coins[last_pos++], mojom::CoinType::ADA);
     }
 
+    if (IsPolkadotEnabled()) {
+      EXPECT_EQ(coins[last_pos++], mojom::CoinType::DOT);
+    }
+
     EXPECT_EQ(last_pos, coins.size());
   }
 
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST(CommonUtils, GetEnabledKeyrings) {
@@ -453,6 +470,7 @@ TEST(CommonUtils, GetEnabledKeyrings) {
       features::kBraveWalletBitcoinImportFeature,
       features::kBraveWalletBitcoinLedgerFeature,
       features::kBraveWalletCardanoFeature,
+      features::kBraveWalletPolkadotFeature,
   };
   disabled_feature_list.InitWithFeatures({}, coin_features);
 
@@ -501,6 +519,11 @@ TEST(CommonUtils, GetEnabledKeyrings) {
     if (IsCardanoEnabled()) {
       EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kCardanoMainnet);
       EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kCardanoTestnet);
+    }
+
+    if (IsPolkadotEnabled()) {
+      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kPolkadotMainnet);
+      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kPolkadotTestnet);
     }
 
     EXPECT_EQ(last_pos, keyrings.size());
@@ -576,7 +599,17 @@ TEST(CommonUtils, GetSupportedKeyringsForNetwork) {
                                              "any non mainnet chain"),
               ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
 
-  static_assert(AllCoinsTested<6>());
+  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::DOT,
+                                             mojom::kPolkadotMainnet),
+              ElementsAreArray({mojom::KeyringId::kPolkadotMainnet}));
+  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::DOT,
+                                             mojom::kPolkadotTestnet),
+              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet}));
+  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::DOT,
+                                             "any non mainnet chain"),
+              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet}));
+
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 }
@@ -653,7 +686,8 @@ TEST(CommonUtils, MakeAccountId) {
   EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::ADA,
                                     mojom::KeyringId::kCardanoMainnet,
                                     mojom::AccountKind::kDerived, "0xabc"));
-  static_assert(AllCoinsTested<6>());
+  // TODO(cmazakas): Polkadot Keyring Testing
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 }
@@ -725,7 +759,7 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
   EXPECT_TRUE(MakeIndexBasedAccountId(mojom::CoinType::BTC,
                                       mojom::KeyringId::kBitcoinHardwareTestnet,
                                       mojom::AccountKind::kHardware, 123));
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 }

@@ -54,6 +54,7 @@ std::array<uint8_t, SZ> HexToArray(std::string_view input) {
 inline constexpr mojom::CoinType kAllCoins[] = {
     mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL,
     mojom::CoinType::BTC, mojom::CoinType::ZEC, mojom::CoinType::ADA,
+    mojom::CoinType::DOT,
 };
 
 inline constexpr mojom::KeyringId kAllKeyrings[] = {
@@ -71,6 +72,7 @@ inline constexpr mojom::KeyringId kAllKeyrings[] = {
     mojom::KeyringId::kZCashTestnet,
     mojom::KeyringId::kCardanoMainnet,
     mojom::KeyringId::kCardanoTestnet,
+    // TODO(cmazakas): Polkadot Keyring Testing
 };
 
 // Change calling test's hardcoded value only after it has adequate testing for
