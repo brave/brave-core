@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 
 namespace brave_wallet {
 
@@ -39,15 +40,18 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }  // namespace
 
 PolkadotSubstrateRpc::PolkadotSubstrateRpc(
+    NetworkManager& network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : api_request_helper_(GetNetworkTrafficAnnotationTag(),
+    : network_manager_(network_manager),
+      api_request_helper_(GetNetworkTrafficAnnotationTag(),
                           url_loader_factory) {}
 
 PolkadotSubstrateRpc::~PolkadotSubstrateRpc() = default;
 
-void PolkadotSubstrateRpc::GetChainName(GetChainNameCallback callback) {
+void PolkadotSubstrateRpc::GetChainName(const std::string& chain_id,
+                                        GetChainNameCallback callback) {
   std::string method = "POST";
-  GURL url("https://westend-rpc.polkadot.io");
+  auto url = GetNetworkURL(chain_id);
   std::string payload =
       R"({"id":1, "jsonrpc":"2.0", "method": "system_chain", "params":[]})";
 
@@ -83,6 +87,10 @@ void PolkadotSubstrateRpc::OnGetChainName(GetChainNameCallback callback,
   }
 
   std::move(callback).Run(*chain_name, std::nullopt);
+}
+
+GURL PolkadotSubstrateRpc::GetNetworkURL(const std::string& chain_id) {
+  return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
 }
 
 }  // namespace brave_wallet

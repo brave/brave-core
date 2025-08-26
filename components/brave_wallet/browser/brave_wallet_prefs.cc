@@ -123,6 +123,10 @@ base::Value::Dict GetDefaultHiddenNetworks() {
   cardano_hidden.Append(mojom::kCardanoTestnet);
   hidden_networks.Set(kCardanoPrefKey, std::move(cardano_hidden));
 
+  base::Value::List polkadot_hidden;
+  polkadot_hidden.Append(mojom::kPolkadotTestnet);
+  hidden_networks.Set(kPolkadotPrefKey, std::move(polkadot_hidden));
+
   return hidden_networks;
 }
 

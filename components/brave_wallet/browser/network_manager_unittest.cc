@@ -67,7 +67,7 @@ TEST_F(NetworkManagerUnitTest, GetAllCustomChainsTest) {
     EXPECT_EQ(chain1, *network_manager()->GetAllCustomChains(coin)[0]);
     EXPECT_EQ(chain2, *network_manager()->GetAllCustomChains(coin)[1]);
   }
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(NetworkManagerUnitTest, KnownChainExists) {
@@ -123,7 +123,12 @@ TEST_F(NetworkManagerUnitTest, KnownChainExists) {
   EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kCardanoTestnet,
                                                   mojom::CoinType::ADA));
 
-  static_assert(AllCoinsTested<6>());
+  EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kPolkadotMainnet,
+                                                  mojom::CoinType::DOT));
+  EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kPolkadotTestnet,
+                                                  mojom::CoinType::DOT));
+
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(NetworkManagerUnitTest, CustomChainExists) {
@@ -182,7 +187,14 @@ TEST_F(NetworkManagerUnitTest, CustomChainExists) {
   EXPECT_TRUE(network_manager()->CustomChainExists(mojom::kCardanoMainnet,
                                                    mojom::CoinType::ADA));
 
-  static_assert(AllCoinsTested<6>());
+  EXPECT_FALSE(network_manager()->CustomChainExists(mojom::kPolkadotMainnet,
+                                                    mojom::CoinType::DOT));
+  network_manager()->AddCustomNetwork(
+      *network_manager()->GetAllKnownChains(mojom::CoinType::DOT)[0]);
+  EXPECT_TRUE(network_manager()->CustomChainExists(mojom::kPolkadotMainnet,
+                                                   mojom::CoinType::DOT));
+
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(NetworkManagerUnitTest, CustomChainsExist) {
@@ -216,10 +228,11 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
       {
           features::kBraveWalletZCashFeature,
           features::kBraveWalletCardanoFeature,
+          features::kBraveWalletPolkadotFeature,
       },
       {});
 
-  EXPECT_EQ(network_manager()->GetAllChains().size(), 24u);
+  EXPECT_EQ(network_manager()->GetAllChains().size(), 26u);
   for (auto& chain : network_manager()->GetAllChains()) {
     EXPECT_TRUE(chain->rpc_endpoints[0].is_valid());
     EXPECT_EQ(chain->active_rpc_endpoint_index, 0);
@@ -353,7 +366,23 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   EXPECT_THAT(cardano_chains[1]->supported_keyrings,
               ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
 
-  static_assert(AllCoinsTested<6>());
+  // Polkadot
+  auto polkadot_main_custom =
+      *network_manager()->GetAllKnownChains(mojom::CoinType::DOT)[0];
+  polkadot_main_custom.decimals = 123;
+  network_manager()->AddCustomNetwork(polkadot_main_custom);
+
+  auto polkadot_chains = get_all_chains_for_coin(mojom::CoinType::DOT);
+  ASSERT_EQ(polkadot_chains.size(), 2u);
+  EXPECT_EQ(polkadot_chains[0]->chain_id, mojom::kPolkadotMainnet);
+  EXPECT_EQ(polkadot_chains[0]->decimals, 123);
+  EXPECT_EQ(polkadot_chains[1]->chain_id, mojom::kPolkadotTestnet);
+  EXPECT_THAT(polkadot_chains[0]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kPolkadotMainnet}));
+  EXPECT_THAT(polkadot_chains[1]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet}));
+
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 }
@@ -446,7 +475,18 @@ TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
             network_manager()->GetNetworkURL(mojom::kCardanoMainnet,
                                              mojom::CoinType::ADA));
 
-  static_assert(AllCoinsTested<6>());
+  auto custom_polkadot_network = network_manager()->GetKnownChain(
+      mojom::kPolkadotMainnet, mojom::CoinType::DOT);
+  custom_polkadot_network->rpc_endpoints.emplace_back(
+      "https://test-polkadot.com");
+  custom_polkadot_network->active_rpc_endpoint_index = 1;
+  network_manager()->AddCustomNetwork(*custom_polkadot_network);
+
+  EXPECT_EQ(GURL("https://test-polkadot.com"),
+            network_manager()->GetNetworkURL(mojom::kPolkadotMainnet,
+                                             mojom::CoinType::DOT));
+
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(NetworkManagerUnitTest, GetNetworkURLForKnownChains) {
@@ -576,7 +616,18 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
       network_manager()->GetChain("cardano_mainnet", mojom::CoinType::ADA),
       cardano_mainnet.Clone());
 
-  static_assert(AllCoinsTested<6>());
+  // Polkadot
+  mojom::NetworkInfo polkadot_mainnet(
+      mojom::kPolkadotMainnet, "Polkadot Mainnet",
+      {"https://polkadot.statescan.io/"}, {}, 0,
+      {GURL("https://polkadot-mainnet.wallet.brave.com/")}, "DOT", "Polkadot",
+      10, mojom::CoinType::DOT, {mojom::KeyringId::kPolkadotMainnet});
+  EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::DOT));
+  EXPECT_EQ(
+      network_manager()->GetChain("polkadot_mainnet", mojom::CoinType::DOT),
+      polkadot_mainnet.Clone());
+
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
@@ -753,7 +804,19 @@ TEST_F(NetworkManagerUnitTest, RemoveCustomNetwork) {
         0u, network_manager()->GetAllCustomChains(mojom::CoinType::ADA).size());
   }
 
-  static_assert(AllCoinsTested<6>());
+  {
+    mojom::NetworkInfo chain_polkadot =
+        GetTestNetworkInfo1(mojom::kPolkadotMainnet, mojom::CoinType::DOT);
+    network_manager()->AddCustomNetwork(chain_polkadot);
+    ASSERT_EQ(
+        1u, network_manager()->GetAllCustomChains(mojom::CoinType::DOT).size());
+    network_manager()->RemoveCustomNetwork(mojom::kPolkadotMainnet,
+                                           mojom::CoinType::DOT);
+    ASSERT_EQ(
+        0u, network_manager()->GetAllCustomChains(mojom::CoinType::DOT).size());
+  }
+
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(NetworkManagerUnitTest, RemoveCustomNetworkRemovesEip1559) {
@@ -787,7 +850,9 @@ TEST_F(NetworkManagerUnitTest, HiddenNetworks) {
               ElementsAreArray<std::string>({mojom::kZCashTestnet}));
   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ADA),
               ElementsAreArray<std::string>({mojom::kCardanoTestnet}));
-  static_assert(AllCoinsTested<6>());
+  EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::DOT),
+              ElementsAreArray<std::string>({mojom::kPolkadotTestnet}));
+  static_assert(AllCoinsTested<7>());
 
   for (auto coin : kAllCoins) {
     for (auto& default_hidden : network_manager()->GetHiddenNetworks(coin)) {
@@ -834,13 +899,14 @@ TEST_F(NetworkManagerUnitTest, GetAndSetCurrentChainId) {
       {mojom::CoinType::FIL, mojom::kFilecoinTestnet},
   };
 
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 
   for (const auto coin_type : kAllCoins) {
     // TODO(apaymyshev): make this test working for BTC which has no localhost
     if (coin_type == mojom::CoinType::BTC ||
         coin_type == mojom::CoinType::ZEC ||
-        coin_type == mojom::CoinType::ADA) {
+        coin_type == mojom::CoinType::ADA ||
+        coin_type == mojom::CoinType::DOT) {
       continue;
     }
 

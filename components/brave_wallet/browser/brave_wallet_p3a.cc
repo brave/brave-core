@@ -251,7 +251,9 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
       histogram_name = kZecTransactionSentHistogramName;
       break;
     case mojom::CoinType::ADA:
+    case mojom::CoinType::DOT:
       // TODO(apaymyshev): Cardano P3A
+      // TODO(cmazakas): Polkadot P3A
       return;
   }
 
@@ -304,7 +306,9 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
       histogram_name = kZecActiveAccountHistogramName;
       break;
     case mojom::CoinType::ADA:
+    case mojom::CoinType::DOT:
       // TODO(apaymyshev): Cardano P3A
+      // TODO(cmazakas): Polkadot P3A
       return;
   }
 
