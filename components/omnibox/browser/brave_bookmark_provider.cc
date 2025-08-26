@@ -40,6 +40,27 @@ void BraveBookmarkProvider::Start(const AutocompleteInput& input,
       continue;
     }
 
+    // Upstream, bookmarks on the same URL with different refs will be merged
+    // into a single match.
+    // We don't want this behavior, so that users can jump to any bookmark with
+    // a different ref from the Omnibox.
+    // For example, if the user has a bookmark for
+    // https://www.brave.com/#one, and https://www.brave.com/#two, and they type
+    // "brave" in the Omnibox then only the result for
+    // https://www.brave.com/#one will be shown (as the ref is not considered
+    // when deciding if URLs are duplicates).
+    // The solution here is to care about the ref for Bookmark matches when
+    // deciding if URLs are duplicates (i.e. by adding it back).
+    if (match.destination_url.has_ref()) {
+      match.stripped_destination_url = AutocompleteMatch::GURLToStrippedGURL(
+          match.destination_url, input, nullptr, std::u16string(), false);
+      GURL::Replacements replacements;
+      auto ref = match.destination_url.ref();
+      replacements.SetRefStr(ref);
+      match.stripped_destination_url =
+          match.stripped_destination_url.ReplaceComponents(replacements);
+    }
+
     // We only allow the bookmark to be the default match if the input is an
     // exact match for the bookmark title
     auto lower_description = base::ToLowerASCII(match.description);

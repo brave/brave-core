@@ -15,6 +15,7 @@
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/test/test_bookmark_client.h"
 #include "components/omnibox/browser/autocomplete_input.h"
+#include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_test_environment.h"
@@ -129,4 +130,68 @@ TEST_F(BraveBookmarkProviderTest, TitleOnlyMatchSetsURL) {
   EXPECT_EQ(provider_->matches().size(), 1u);
   EXPECT_TRUE(provider_->matches()[0].allowed_to_be_default_match);
   EXPECT_EQ(provider_->matches()[0].contents, u"example.com");
+}
+
+TEST_F(BraveBookmarkProviderTest, BookmarkWithDifferentRefsAreNotDuplicates) {
+  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+
+  auto* node = client_.GetBookmarkModel()->other_node();
+  client_.GetBookmarkModel()->AddURL(node, 0, u"One",
+                                     GURL("https://brave.com/#one"));
+  client_.GetBookmarkModel()->AddURL(node, 0, u"Two",
+                                     GURL("https://brave.com/#two"));
+  client_.GetBookmarkModel()->AddURL(node, 0, u"Three",
+                                     GURL("https://brave.com/#three"));
+
+  provider_->Start(CreateAutocompleteInput("brave"), true);
+  EXPECT_EQ(provider_->matches().size(), 3u);
+
+  for (size_t i = 0; i < provider_->matches().size(); i++) {
+    auto first = provider_->matches()[i];
+    EXPECT_FALSE(first.stripped_destination_url.is_empty());
+
+    for (size_t j = i + 1; j < provider_->matches().size(); j++) {
+      auto second = provider_->matches()[j];
+      EXPECT_NE(first.stripped_destination_url,
+                second.stripped_destination_url);
+    }
+  }
+}
+
+TEST_F(BraveBookmarkProviderTest, BookmarksWithSameRefAreDuplicates) {
+  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+
+  auto* node = client_.GetBookmarkModel()->other_node();
+  client_.GetBookmarkModel()->AddURL(node, 0, u"One",
+                                     GURL("https://brave.com/#one"));
+  client_.GetBookmarkModel()->AddURL(node, 0, u"Two",
+                                     GURL("https://brave.com/#one"));
+  client_.GetBookmarkModel()->AddURL(node, 0, u"Three",
+                                     GURL("https://brave.com/#one"));
+
+  provider_->Start(CreateAutocompleteInput("brave"), true);
+  EXPECT_EQ(provider_->matches().size(), 3u);
+
+  for (size_t i = 0; i < provider_->matches().size(); i++) {
+    auto first = provider_->matches()[i];
+    EXPECT_FALSE(first.stripped_destination_url.is_empty());
+
+    for (size_t j = i + 1; j < provider_->matches().size(); j++) {
+      auto second = provider_->matches()[j];
+      EXPECT_EQ(first.stripped_destination_url,
+                second.stripped_destination_url);
+    }
+  }
+}
+
+TEST_F(BraveBookmarkProviderTest, StrippedDestinationURLIsNotSetWithNoRef) {
+  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+
+  auto* node = client_.GetBookmarkModel()->other_node();
+  client_.GetBookmarkModel()->AddURL(node, 0, u"One",
+                                     GURL("https://brave.com/"));
+
+  provider_->Start(CreateAutocompleteInput("brave"), true);
+  ASSERT_EQ(provider_->matches().size(), 1u);
+  EXPECT_TRUE(provider_->matches()[0].stripped_destination_url.is_empty());
 }
