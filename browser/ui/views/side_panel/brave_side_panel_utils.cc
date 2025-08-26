@@ -28,7 +28,7 @@ void RegisterContextualSidePanel(SidePanelRegistry* registry,
     registry->Register(std::make_unique<SidePanelEntry>(
         SidePanelEntry::Key(SidePanelEntry::Id::kChatUI),
         base::BindRepeating(&AIChatSidePanelWebView::CreateView,
-                            Profile::FromBrowserContext(context)->GetWeakPtr(),
+                            Profile::FromBrowserContext(context),
                             /*is_tab_associated=*/true),
         /*default_content_width_callback=*/base::NullCallback()));
   }

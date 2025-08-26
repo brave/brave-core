@@ -35,7 +35,7 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
     global_registry->Register(std::make_unique<SidePanelEntry>(
         SidePanelEntry::Key(SidePanelEntry::Id::kChatUI),
         base::BindRepeating(&AIChatSidePanelWebView::CreateView,
-                            browser->profile()->GetWeakPtr(),
+                            browser->profile(),
                             /*is_tab_associated=*/false),
         base::NullCallback()));
   }

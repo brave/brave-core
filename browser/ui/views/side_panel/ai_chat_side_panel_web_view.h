@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 
 class AIChatUI;
@@ -20,7 +19,7 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
   // Factory method to create and configure an AIChatSidePanelWebView.
   // If `is_tab_associated` is true, the side panel will be related
   // to the active tab and will change conversation when the tab navigates.
-  static std::unique_ptr<views::View> CreateView(base::WeakPtr<Profile> profile,
+  static std::unique_ptr<views::View> CreateView(Profile* profile,
                                                  bool is_tab_associated,
                                                  SidePanelEntryScope& scope);
 
@@ -38,6 +37,8 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
   // focus is set only once with `should_focus_`.
   void OnShow();
 
+  // Whether focus should be set when the side panel is shown. We only do this
+  // for the first time the side panel is shown, and not for subsequent shows.
   bool should_focus_ = true;
 };
 
