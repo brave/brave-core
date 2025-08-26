@@ -30,7 +30,7 @@ RegisterPolymerPrototypeModification({
     prototype.currentRouteChanged = function (newRoute: Route, oldRoute: Route) {
       if (newRoute === routes.BRAVE_SURVEY_PANELIST) {
         queueMicrotask(() => {
-          this.$.viewManager.setCurrentView('surveyPanelist', 'no-animation', 'no-animation');
+          this.$.viewManager.switchView('surveyPanelist', 'no-animation', 'no-animation');
         })
         return;
       }
