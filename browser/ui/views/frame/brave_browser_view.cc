@@ -53,6 +53,7 @@
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/app_mode/app_mode_utils.h"
+#include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/enterprise/watermark/watermark_view.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -305,7 +306,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   if (tabs::features::IsBraveSplitViewEnabled() && browser_->is_type_normal()) {
     split_view_ = contents_container_->parent()->AddChildView(
-        std::make_unique<SplitView>(*browser_, contents_container_,
+        std::make_unique<SplitView>(*browser_, *this, contents_container_,
                                     contents_container_view_->contents_view()));
     set_contents_view(split_view_);
   }
@@ -776,6 +777,28 @@ void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
 }
 
+void BraveBrowserView::UpdateDevTools(
+    content::WebContents* inspected_web_contents) {
+  if (!split_view_ ||
+      split_view_->secondary_contents_web_view()->web_contents() !=
+          inspected_web_contents) {
+    BrowserView::UpdateDevTools(inspected_web_contents);
+    return;
+  }
+
+  // In case of split view and `inspected_web_contents` is not the active web
+  // contents, we need to update devtools for the secondary web contents
+  // container view.
+  auto* devtools_ui_controller =
+      browser_->GetFeatures().devtools_ui_controller();
+  devtools_ui_controller->MakeSureControllerExists(
+      split_view_->secondary_contents_container_view());
+  devtools_ui_controller->UpdateDevtools(
+      split_view_->secondary_contents_container_view(), inspected_web_contents,
+      true);
+  DeprecatedLayoutImmediately();
+}
+
 bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
   CHECK(!web_contents || web_contents == GetActiveWebContents())
       << "This method is supposed to be called only for the active web "
@@ -1080,66 +1103,62 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   const auto in_split_view_mode =
       !!browser_->GetFeatures().split_view_browser_data();
 
-  // auto update_corner_radius =
-  //     [in_split_view_mode](views::WebView* contents, views::WebView*
-  //     devtools,
-  //                          ContentsContainerView::DevToolsDockedPlacement
-  //                          devtools_placement, gfx::RoundedCornersF corners)
-  //                          {
-  //       // In addition to giving the contents container rounded corners, we
-  //       also
-  //       // need to round the corners of the native view holder that displays
-  //       the
-  //       // web contents.
+  auto update_corner_radius =
+      [in_split_view_mode](
+          views::WebView* contents, views::WebView* devtools,
+          ContentsContainerView::DevToolsDockedPlacement devtools_placement,
+          gfx::RoundedCornersF corners) {
+        // In addition to giving the contents container rounded corners, we also
+        // need to round the corners of the native view holder that displays the
+        // web contents.
 
-  //       // Devtools lies underneath the contents webview. Round all four
-  //       // corners.
-  //       if (devtools && devtools->holder()) {
-  //         devtools->holder()->SetCornerRadii(corners);
-  //       }
+        // Devtools lies underneath the contents webview. Round all four
+        // corners.
+        if (devtools && devtools->holder()) {
+          devtools->holder()->SetCornerRadii(corners);
+        }
 
-  //       if (!in_split_view_mode) {
-  //         // In order to make the contents web view and devtools appear to be
-  //         // contained within a single rounded-corner view, square the
-  //         contents
-  //         // webview corners that are adjacent to devtools.
-  //         // TODO(sko) We need to override
-  //         // BrowserView::GetDevToolsDockedPlacement(). It depends on
-  //         coordinate
-  //         // of it but in split view mode, the calculation is not correct.
-  //         switch (devtools_placement) {
-  //           case ContentsContainerView::DevToolsDockedPlacement::kLeft:
-  //             corners.set_upper_left(0);
-  //             corners.set_lower_left(0);
-  //             break;
-  //           case ContentsContainerView::DevToolsDockedPlacement::kRight:
-  //             corners.set_upper_right(0);
-  //             corners.set_lower_right(0);
-  //             break;
-  //           case ContentsContainerView::DevToolsDockedPlacement::kBottom:
-  //             corners.set_lower_left(0);
-  //             corners.set_lower_right(0);
-  //             break;
-  //           case ContentsContainerView::DevToolsDockedPlacement::kNone:
-  //             break;
-  //           case ContentsContainerView::DevToolsDockedPlacement::kUnknown:
-  //             break;
-  //         }
-  //       }
+        if (!in_split_view_mode) {
+          // In order to make the contents web view and devtools appear to be
+          // contained within a single rounded-corner view, square the contents
+          // webview corners that are adjacent to devtools.
+          // TODO(sko) We need to override
+          // BrowserView::GetDevToolsDockedPlacement(). It depends on coordinate
+          // of it but in split view mode, the calculation is not correct.
+          switch (devtools_placement) {
+            case ContentsContainerView::DevToolsDockedPlacement::kLeft:
+              corners.set_upper_left(0);
+              corners.set_lower_left(0);
+              break;
+            case ContentsContainerView::DevToolsDockedPlacement::kRight:
+              corners.set_upper_right(0);
+              corners.set_lower_right(0);
+              break;
+            case ContentsContainerView::DevToolsDockedPlacement::kBottom:
+              corners.set_lower_left(0);
+              corners.set_lower_right(0);
+              break;
+            case ContentsContainerView::DevToolsDockedPlacement::kNone:
+              break;
+            case ContentsContainerView::DevToolsDockedPlacement::kUnknown:
+              break;
+          }
+        }
 
-  //       if (contents && contents->holder()) {
-  //         // Upstream uses layer for its background.
-  //         CHECK(contents->layer());
-  //         contents->layer()->SetRoundedCornerRadius(corners);
-  //         contents->holder()->SetCornerRadii(corners);
-  //       }
-  //     };
+        if (contents && contents->holder()) {
+          // Upstream uses layer for its background.
+          CHECK(contents->layer());
+          contents->layer()->SetRoundedCornerRadius(corners);
+          contents->holder()->SetCornerRadii(corners);
+        }
+      };
 
-  // if (contents_container_view_) {
-  //   update_corner_radius(contents_container_view_->GetContentsView(),
-  //                        devtools_web_view_, devtools_docked_placement(),
-  //                        corners);
-  // }
+  if (contents_container_view_) {
+    update_corner_radius(contents_container_view_->contents_view(),
+                         contents_container_view_->devtools_web_view(),
+                         contents_container_view_->devtools_docked_placement(),
+                         corners);
+  }
 
   if (in_split_view_mode) {
     split_view_->UpdateCornerRadius(corners);

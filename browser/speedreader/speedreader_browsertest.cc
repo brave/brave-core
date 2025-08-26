@@ -1121,7 +1121,9 @@ class SpeedReaderWithSplitViewBrowserTest
           ->GetInactiveContentsContainerView();
     }
 
-    return brave_browser_view()->split_view()->secondary_contents_container();
+    return brave_browser_view()
+        ->split_view()
+        ->secondary_contents_container_view_;
   }
 
   bool IsSideBySideEnabled() const { return GetParam(); }
