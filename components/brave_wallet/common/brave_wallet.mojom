@@ -371,6 +371,7 @@ interface PanelHandlerFactory {
       pending_receiver<WalletHandler> wallet_handler,
       pending_receiver<JsonRpcService> json_rpc_service,
       pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
+      pending_receiver<PolkadotWalletService> polkadot_wallet_service,
       pending_receiver<ZCashWalletService> zcash_wallet_service,
       pending_receiver<CardanoWalletService> cardano_wallet_service,
       pending_receiver<SwapService> swap_service,
@@ -396,6 +397,7 @@ interface PageHandlerFactory {
       pending_receiver<WalletHandler> wallet_handler,
       pending_receiver<JsonRpcService> json_rpc_service,
       pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
+      pending_receiver<PolkadotWalletService> polkadot_wallet_service,
       pending_receiver<ZCashWalletService> zcash_wallet_service,
       pending_receiver<CardanoWalletService> cardano_wallet_service,
       pending_receiver<SwapService> swap_service,
@@ -2288,6 +2290,10 @@ interface ZCashWalletService {
 
   GetChainTipStatus(AccountId account_id, string chain_id)
       => (ZCashChainTipStatus? status, string? error_message);
+};
+
+interface PolkadotWalletService {
+  GetNetworkName() => (string network);
 };
 
 enum TransactionStatus {
