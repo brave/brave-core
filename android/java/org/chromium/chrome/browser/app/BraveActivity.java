@@ -58,6 +58,8 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
+import org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDelegate;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -504,8 +506,14 @@ public abstract class BraveActivity extends ChromeActivity
             enableSpeedreaderMode();
         } else if (id == R.id.brave_leo_id) {
             openBraveLeo();
-        } else if (id == R.id.brave_customize_menu_id) {
-            CustomizeBraveMenu.openCustomizeMenuSettings(this);
+        } else if (id == CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID) {
+            final AppMenuPropertiesDelegate delegate = createAppMenuPropertiesDelegate();
+            assert delegate instanceof BraveTabbedAppMenuPropertiesDelegate;
+            final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
+                    (BraveTabbedAppMenuPropertiesDelegate) delegate;
+            // Get full menu items and pass them to settings.
+            CustomizeBraveMenu.openCustomizeMenuSettings(this,
+                    braveTabbedAppMenuPropertiesDelegate.buildFullMenuModelList());
         } else {
             return false;
         }

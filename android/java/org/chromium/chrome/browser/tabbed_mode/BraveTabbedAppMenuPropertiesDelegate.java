@@ -246,8 +246,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 && super.shouldShowMoveToOtherWindow();
     }
 
-    @Override
-    public MVCListAdapter.ModelList buildMenuModelList() {
+    public MVCListAdapter.ModelList buildFullMenuModelList() {
         MVCListAdapter.ModelList modelList = super.buildMenuModelList();
 
         int menuGroup = getMenuGroup();
@@ -256,9 +255,15 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
         // Apply Brave icons.
         maybeReplaceIcons(modelList);
+        return modelList;
+    }
+
+    @Override
+    public MVCListAdapter.ModelList buildMenuModelList() {
+        MVCListAdapter.ModelList modelList = buildFullMenuModelList();
 
         // Customize menu item visibility.
-        CustomizeBraveMenu.applyCustomization(modelList, R.id.brave_customize_menu_id);
+         CustomizeBraveMenu.applyCustomization(modelList);
 
         return modelList;
     }
@@ -401,7 +406,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
                 buildModelForStandardMenuItem(
-                        R.id.brave_customize_menu_id,
+                        CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID,
                         R.string.customize_menu_title,
                         shouldShowIconBeforeItem() ? R.drawable.ic_window_screwdriver : 0));
     }
