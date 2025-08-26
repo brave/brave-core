@@ -15,7 +15,7 @@ TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
   content_view()->SetCookieInfo(cookie_info);
 
   EXPECT_FALSE(third_party_cookies_container()->GetVisible());
-  EXPECT_FALSE(third_party_cookies_description_label()->GetVisible());
+  EXPECT_FALSE(third_party_cookies_description_wrapper()->GetVisible());
 }
 
 TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
@@ -27,5 +27,5 @@ TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
   cookie_info.is_incognito = true;
   content_view()->SetCookieInfo(cookie_info);
   EXPECT_FALSE(third_party_cookies_container()->GetVisible());
-  EXPECT_FALSE(third_party_cookies_description_label()->GetVisible());
+  EXPECT_FALSE(third_party_cookies_description_wrapper()->GetVisible());
 }

@@ -23,15 +23,9 @@
 void PageInfoCookiesContentView::SetCookieInfo(const CookiesInfo& cookie_info) {
   SetCookieInfo_ChromiumImpl(cookie_info);
 
-  // Remove cookies description child view
-  if (auto* parent = cookies_description_label_->parent()) {
-    parent->RemoveChildViewT(cookies_description_label_);
-  }
-
-  // Remove third-party cookies container with child view
-  if (auto* parent = third_party_cookies_container_->parent()) {
-    parent->RemoveChildViewT(third_party_cookies_container_);
-  }
+  // Hide cookies description and link to settings.
+  cookies_description_wrapper_->SetVisible(false);
+  third_party_cookies_container_->SetVisible(false);
 
   // Remove separator.
   // cookies_buttons_container_view_'s children are:
