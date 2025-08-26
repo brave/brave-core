@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -333,6 +334,8 @@ class BraveWalletService : public KeyedService,
   // Might return nullptr.
   BitcoinWalletService* GetBitcoinWalletService();
   // Might return nullptr.
+  PolkadotWalletService* GetPolkadotWalletService();
+  // Might return nullptr.
   ZCashWalletService* GetZcashWalletService();
   // Might return nullptr.
   CardanoWalletService* GetCardanoWalletService();
@@ -431,6 +434,7 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
+  std::unique_ptr<PolkadotWalletService> polkadot_wallet_service_;
   std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
   std::unique_ptr<CardanoWalletService> cardano_wallet_service_;
   std::unique_ptr<TxService> tx_service_;

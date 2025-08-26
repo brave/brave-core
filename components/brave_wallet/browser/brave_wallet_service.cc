@@ -220,6 +220,11 @@ BraveWalletService::BraveWalletService(
         *keyring_service(), *network_manager(), url_loader_factory);
   }
 
+  if (IsPolkadotEnabled()) {
+    polkadot_wallet_service_ =
+        std::make_unique<PolkadotWalletService>(url_loader_factory);
+  }
+
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
       GetCardanoWalletService(), *keyring_service(), profile_prefs,
@@ -318,6 +323,14 @@ void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::BitcoinWalletService> receiver) {
   if (GetBitcoinWalletService()) {
     GetBitcoinWalletService()->Bind(std::move(receiver));
+  }
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::PolkadotWalletService> receiver) {
+  if (GetPolkadotWalletService()) {
+    GetPolkadotWalletService()->Bind(std::move(receiver));
   }
 }
 
@@ -1164,6 +1177,10 @@ BraveWalletP3A* BraveWalletService::GetBraveWalletP3A() {
 
 BitcoinWalletService* BraveWalletService::GetBitcoinWalletService() {
   return bitcoin_wallet_service_.get();
+}
+
+PolkadotWalletService* BraveWalletService::GetPolkadotWalletService() {
+  return polkadot_wallet_service_.get();
 }
 
 ZCashWalletService* BraveWalletService::GetZcashWalletService() {
