@@ -26,7 +26,7 @@ void SpeedreaderRenderFrameObserver::DidCreateScriptContext(
     return;
   }
 
-  SpeedreaderJSHandler::Install(weak_ptr_factory_.GetWeakPtr(), context);
+  SpeedreaderJSHandler::Install(render_frame(), context);
 }
 
 void SpeedreaderRenderFrameObserver::OnDestruct() {
