@@ -14,7 +14,7 @@ namespace brave {
 // This class relaunches the browser to apply a pending update when certain
 // conditions are met:
 // - No windows are open.
-// - The system is idle (= no user input for a while).
+// - The system is idle (= no user input for a while or the screen is locked).
 // - The browser wouldn't clear any data on exit.
 // The motivation is to make pending updates take effect sooner. This is
 // especially important on macOS where closing the last browser window does not
