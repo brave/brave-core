@@ -12,6 +12,7 @@
 #define GetStarterPackEngines GetStarterPackEngines_ChromiumImpl
 
 #include <components/search_engines/template_url_starter_pack_data.cc>
+
 #undef GetStarterPackEngines
 
 namespace {
@@ -22,8 +23,25 @@ constexpr char kBraveSchema[] = "brave://";
 
 namespace template_url_starter_pack_data {
 
+namespace {
+
+const StarterPackEngine ask_brave_search = {
+    .name_message_id = IDS_SEARCH_ENGINES_STARTER_PACK_ASK_BRAVE_SEARCH_NAME,
+    .keyword_message_id =
+        IDS_SEARCH_ENGINES_STARTER_PACK_ASK_BRAVE_SEARCH_KEYWORD,
+    .favicon_url = nullptr,
+    .search_url = "https://search.brave.com/tap?q={searchTerms}",
+    .destination_url = "https://search.brave.com",
+    .id = StarterPackId::kAskBraveSearch,
+    .type = SEARCH_ENGINE_STARTER_PACK_ASK_BRAVE_SEARCH,
+};
+
+}  // namespace
+
 std::vector<std::unique_ptr<TemplateURLData>> GetStarterPackEngines() {
   auto t_urls = GetStarterPackEngines_ChromiumImpl();
+
+  t_urls.push_back(TemplateURLDataFromStarterPackEngine(ask_brave_search));
 
   // It is necessary to correct urls for the brave schema
   for (auto& t_url : t_urls) {

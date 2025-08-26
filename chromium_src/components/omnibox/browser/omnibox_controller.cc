@@ -25,7 +25,15 @@ bool IsAutocompleteEnabled(const PrefService* prefs) {
   kGemini || (turl && turl->starter_pack_id() == \
                           template_url_starter_pack_data::kAiMode)
 
+#define BRAVE_OMNIBOX_CONTROLLER_IS_SUGGESTION_HIDDEN                \
+  if (turl && turl->starter_pack_id() ==                             \
+                  template_url_starter_pack_data::kAskBraveSearch) { \
+    return true;                                                     \
+  }
+
 #include <components/omnibox/browser/omnibox_controller.cc>
+
+#undef BRAVE_OMNIBOX_CONTROLLER_IS_SUGGESTION_HIDDEN
 #undef kGemini
 #undef StartAutocomplete
 

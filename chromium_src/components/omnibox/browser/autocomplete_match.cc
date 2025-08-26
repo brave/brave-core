@@ -24,6 +24,13 @@ const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
 #define GetVectorIcon GetVectorIcon_Chromium
 #endif
 
+#define BRAVE_AUTOCOMPLETE_MATCH_GET_KEYWORD_PLACEHOLDER              \
+  if (template_url->starter_pack_id() ==                              \
+      template_url_starter_pack_data::kAskBraveSearch) {              \
+    message_id = IDS_OMNIBOX_ASK_BRAVE_SEARCH_SCOPE_PLACEHOLDER_TEXT; \
+  }
+
 #include <components/omnibox/browser/autocomplete_match.cc>  // IWYU pragma: export
 
+#undef BRAVE_AUTOCOMPLETE_MATCH_GET_KEYWORD_PLACEHOLDER
 #undef GetVectorIcon

@@ -1,0 +1,14 @@
+diff --git a/components/search_engines/template_url.h b/components/search_engines/template_url.h
+index 176918e83a4f784d819985d27e0d31da0ab94e80..9eb2897a641bdcd70d17f0e9e4de008e9c7a695e 100644
+--- a/components/search_engines/template_url.h
++++ b/components/search_engines/template_url.h
+@@ -829,7 +829,8 @@ class TemplateURL {
+   // This can be used to condition UI text or a11y strings.
+   bool is_ask_starter_pack() const {
+     return starter_pack_id() == template_url_starter_pack_data::kGemini ||
+-           starter_pack_id() == template_url_starter_pack_data::kAiMode;
++           starter_pack_id() == template_url_starter_pack_data::kAiMode ||
++           starter_pack_id() == template_url_starter_pack_data::kAskBraveSearch;
+   }
+ 
+   const std::vector<TemplateURLRef>& url_refs() const { return url_refs_; }

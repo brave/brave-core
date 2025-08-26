@@ -1,0 +1,22 @@
+diff --git a/components/search_engines/search_engine_type.h b/components/search_engines/search_engine_type.h
+index e1228cbf36a79367d10319d6c8f8661cc2978916..f28190249a8369d478df5f3471b2bb4aa2cd8b46 100644
+--- a/components/search_engines/search_engine_type.h
++++ b/components/search_engines/search_engine_type.h
+@@ -98,6 +98,8 @@ enum SearchEngineType {
+   SEARCH_ENGINE_FREESPOKE = 78,
+   SEARCH_ENGINE_KAGI = 79,
+   SEARCH_ENGINE_STARTER_PACK_AI_MODE = 80,
++  SEARCH_ENGINE_STARTER_PACK_ASK_BRAVE_SEARCH = 81,
++
+ 
+   SEARCH_ENGINE_MAX  // Bounding value needed for UMA histogram macro.
+ };
+@@ -116,7 +118,7 @@ enum BuiltinEngineType {
+   KEYWORD_MODE_STARTER_PACK_GEMINI = 5,
+   KEYWORD_MODE_STARTER_PACK_PAGE = 6,
+   KEYWORD_MODE_STARTER_PACK_AI_MODE = 7,
+-
++  KEYWORD_MODE_STARTER_PACK_ASK_BRAVE_SEARCH = 8,
+   KEYWORD_MODE_ENGINE_TYPE_MAX  // Bounding value needed for UMA histogram
+                                 // macro.
+ };

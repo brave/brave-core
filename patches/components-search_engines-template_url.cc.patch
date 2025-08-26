@@ -1,0 +1,13 @@
+diff --git a/components/search_engines/template_url.cc b/components/search_engines/template_url.cc
+index 33638c629aa01a01fd71cd7ad234f20138290861..63aada929beb8212b7095c138bbe351995323a6f 100644
+--- a/components/search_engines/template_url.cc
++++ b/components/search_engines/template_url.cc
+@@ -1859,6 +1859,8 @@ BuiltinEngineType TemplateURL::GetBuiltinEngineType() const {
+         return KEYWORD_MODE_STARTER_PACK_PAGE;
+       case template_url_starter_pack_data::kAiMode:
+         return KEYWORD_MODE_STARTER_PACK_AI_MODE;
++      case template_url_starter_pack_data::kAskBraveSearch:
++        return KEYWORD_MODE_STARTER_PACK_ASK_BRAVE_SEARCH;
+       default:
+         // In theory, this code path should never be reached.  However, it's
+         // possible that when expanding the starter pack, a new entry may
