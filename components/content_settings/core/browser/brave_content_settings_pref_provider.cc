@@ -50,6 +50,10 @@ constexpr char kObsoleteShieldCookies[] =
     "profile.content_settings.exceptions.shieldsCookies";
 constexpr char kBraveShieldsFPSettingsMigration[] =
     "brave.shields_fp_settings_migration";
+constexpr char kObsoleteCosmeticFiltering[] =
+    "profile.content_settings.exceptions.cosmeticFiltering";
+constexpr char kCosmeticFilteringMigration[] =
+    "brave.cosmetic_filtering_migration";
 
 constexpr char kExpirationPath[] = "expiration";
 constexpr char kLastModifiedPath[] = "last_modified";
@@ -118,6 +122,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
 
   MigrateShieldsSettings(off_the_record_);
   MigrateFingerprintingSetingsToOriginScoped();
+  MigrateCosmeticFilteringSettings();
 
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
 
@@ -155,6 +160,9 @@ void BravePrefProvider::RegisterProfilePrefs(
 
   registry->RegisterBooleanPref(kBraveShieldsFPSettingsMigration, false);
   registry->RegisterDictionaryPref(kObsoleteShieldCookies);
+
+  registry->RegisterDictionaryPref(kObsoleteCosmeticFiltering);
+  registry->RegisterBooleanPref(kCosmeticFilteringMigration, false);
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
@@ -528,6 +536,89 @@ void BravePrefProvider::MigrateFingerprintingSetingsToOriginScoped() {
                                 ContentSettingToValue(CONTENT_SETTING_ASK), {});
     }
   }
+}
+
+void BravePrefProvider::MigrateCosmeticFilteringSettings() {
+  if (off_the_record_ || prefs_->GetBoolean(kCosmeticFilteringMigration)) {
+    return;
+  }
+
+  const auto& cosmetic_filtering = prefs_->GetDict(kObsoleteCosmeticFiltering);
+  const auto* info = ContentSettingsRegistry::GetInstance()->Get(
+      ContentSettingsType::BRAVE_COSMETIC_FILTERING);
+  prefs_->SetDict(info->website_settings_info()->pref_name(),
+                  cosmetic_filtering.Clone());
+
+  std::vector<std::unique_ptr<Rule>> rules;
+  {
+    auto rule_iterator = PrefProvider::GetRuleIterator(
+        ContentSettingsType::BRAVE_COSMETIC_FILTERING, false,
+        content_settings::PartitionKey::WipGetDefault());
+    while (rule_iterator && rule_iterator->HasNext()) {
+      rules.push_back(rule_iterator->Next());
+    }
+  }
+
+  const auto first_party =
+      ContentSettingsPattern::FromString("https://firstParty/*");
+  const auto wildcard = ContentSettingsPattern::Wildcard();
+
+  auto merge_values = [](const Rule* fp_rule, const Rule* general_rule) {
+    // Same logic as in GetCosmeticFilteringControlType.
+    if (content_settings::ValueToContentSetting(general_rule->value) ==
+        CONTENT_SETTING_ALLOW) {
+      return CONTENT_SETTING_ALLOW;
+    }
+    if (content_settings::ValueToContentSetting(fp_rule->value) !=
+        CONTENT_SETTING_BLOCK) {
+      return CONTENT_SETTING_ASK;
+    }
+    return CONTENT_SETTING_BLOCK;
+  };
+
+  auto set_rule_value = [this](Rule* rule, ContentSetting value) {
+    if (!rule) {
+      return;
+    }
+    ContentSettingConstraints constraints;
+    if (value != CONTENT_SETTING_DEFAULT) {
+      constraints.set_session_model(rule->metadata.session_model());
+    }
+    SetWebsiteSettingInternal(rule->primary_pattern, rule->secondary_pattern,
+                              ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+                              ContentSettingToValue(value), constraints);
+  };
+
+  // BRAVE_COSMETIC_FILTERING rules are set in pairs:
+  //  {(host, https://firstparty) | (host, *)}
+  // RuleIterator returns them from more specific to more general,
+  // meaning the first-party rule precedes the wildcard one.
+  // Migrate only matched pairs; treat all other cases as invalid settings
+  // to be dropped.
+  Rule* fp_rule = nullptr;
+  for (auto& rule : rules) {
+    if (rule->secondary_pattern == first_party) {
+      if (fp_rule) {
+        // No general rule for previous first-party rule -> drop.
+        set_rule_value(fp_rule, CONTENT_SETTING_DEFAULT);
+      }
+      fp_rule = rule.get();
+    } else if (rule->secondary_pattern == wildcard) {
+      if (!fp_rule || rule->primary_pattern != fp_rule->primary_pattern) {
+        // No first-party rule or it doesn't match with general rule -> drop
+        // both.
+        set_rule_value(fp_rule, CONTENT_SETTING_DEFAULT);
+        set_rule_value(rule.get(), CONTENT_SETTING_DEFAULT);
+        fp_rule = nullptr;
+        continue;
+      }
+      // General rule matches with the first-party rule -> merge.
+      set_rule_value(rule.get(), merge_values(fp_rule, rule.get()));
+      set_rule_value(fp_rule, CONTENT_SETTING_DEFAULT);
+      fp_rule = nullptr;
+    }
+  }
+  prefs_->SetBoolean(kCosmeticFilteringMigration, true);
 }
 
 bool BravePrefProvider::SetWebsiteSetting(

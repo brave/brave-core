@@ -114,18 +114,17 @@ void ContentSettingsRegistry::BraveInit() {
       ContentSettingsInfo::INHERIT_IN_INCOGNITO,
       PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
-  Register(
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      brave_shields::kCosmeticFiltering, CONTENT_SETTING_DEFAULT,
-      WebsiteSettingsInfo::SYNCABLE, /*allowlisted_schemes=*/{},
-      /*valid_settings=*/
-      {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_DEFAULT},
-      WebsiteSettingsInfo::REQUESTING_ORIGIN_WITH_TOP_ORIGIN_EXCEPTIONS_SCOPE,
-      WebsiteSettingsRegistry::DESKTOP |
-          WebsiteSettingsRegistry::PLATFORM_ANDROID |
-          WebsiteSettingsRegistry::PLATFORM_IOS,
-      ContentSettingsInfo::INHERIT_IN_INCOGNITO,
-      PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+  Register(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+           brave_shields::kCosmeticFiltering, CONTENT_SETTING_ASK,
+           WebsiteSettingsInfo::SYNCABLE, /*allowlisted_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
+           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID |
+               WebsiteSettingsRegistry::PLATFORM_IOS,
+           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   Register(ContentSettingsType::BRAVE_FINGERPRINTING_V2,
            brave_shields::kFingerprintingV2, CONTENT_SETTING_ASK,

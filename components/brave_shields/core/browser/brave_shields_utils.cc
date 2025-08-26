@@ -46,15 +46,6 @@ void RecordShieldsSettingChanged(PrefService* local_state) {
       ::brave_shields::kChangedPerSiteShields, local_state);
 }
 
-ContentSetting GetDefaultAllowFromControlType(ControlType type) {
-  if (type == ControlType::DEFAULT) {
-    return CONTENT_SETTING_DEFAULT;
-  }
-
-  return type == ControlType::BLOCK ? CONTENT_SETTING_BLOCK
-                                    : CONTENT_SETTING_ALLOW;
-}
-
 ContentSetting GetDefaultBlockFromControlType(ControlType type) {
   if (type == ControlType::DEFAULT) {
     return CONTENT_SETTING_DEFAULT;
@@ -319,16 +310,16 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
   bool was_default =
       web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
 
-  map->SetContentSettingCustomScope(
-      primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      GetDefaultBlockFromControlType(type));
+  ContentSetting content_setting;
+  if (type == ControlType::BLOCK_THIRD_PARTY) {
+    content_setting = CONTENT_SETTING_ASK;
+  } else {
+    content_setting = GetDefaultBlockFromControlType(type);
+  }
 
   map->SetContentSettingCustomScope(
-      primary_pattern,
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      GetDefaultAllowFromControlType(type));
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_COSMETIC_FILTERING, content_setting);
 
   if (!map->IsOffTheRecord()) {
     // Only report to P3A if not a guest/incognito profile
@@ -358,16 +349,15 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
   ContentSetting setting = map->GetContentSetting(
       url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING);
 
-  ContentSetting fp_setting =
-      map->GetContentSetting(url, GURL("https://firstParty/"),
-                             ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-
-  if (setting == CONTENT_SETTING_ALLOW) {
-    return ControlType::ALLOW;
-  } else if (fp_setting != CONTENT_SETTING_BLOCK) {
-    return ControlType::BLOCK_THIRD_PARTY;
-  } else {
-    return ControlType::BLOCK;
+  switch (setting) {
+    case CONTENT_SETTING_ALLOW:
+      return ControlType::ALLOW;
+    case CONTENT_SETTING_ASK:
+      return ControlType::BLOCK_THIRD_PARTY;
+    case CONTENT_SETTING_BLOCK:
+      return ControlType::BLOCK;
+    default:
+      return ControlType::BLOCK;
   }
 }
 
