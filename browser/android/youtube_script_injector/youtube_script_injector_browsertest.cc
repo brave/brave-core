@@ -328,9 +328,13 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 }
 
+// The test is flaky on CI, but succeed on local environment including physical
+// device
+// TODO(alexeybarabash): https://github.com/brave/brave-browser/issues/48430
+// Enable if possible
 // Test that MaybeSetFullscreen() works with multiple calls.
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
-                       MultipleFullscreenCalls) {
+                       DISABLED_MultipleFullscreenCalls) {
   const GURL url = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);

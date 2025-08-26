@@ -47,8 +47,7 @@ import org.chromium.ui.util.ColorUtils;
 /** New Rewards 3.0 custom tab activity */
 public class FullScreenCustomTabActivity extends CustomTabActivity {
 
-    // Unused members, never read:
-    // - mIsEnterAnimationCompleted
+    // Exposed through bytecode patch
     @SuppressWarnings("UnusedVariable")
     private boolean mIsEnterAnimationCompleted;
 
@@ -60,7 +59,6 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
     private BrowserServicesIntentDataProvider mIntentDataProvider;
     private CustomTabActivityTabController mTabController;
     private CustomTabMinimizationManagerHolder mMinimizationManagerHolder;
-    private CustomTabFeatureOverridesManager mCustomTabFeatureOverridesManager;
 
     public static boolean sIsFullScreenCustomTabActivityClosed;
 
@@ -90,7 +88,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
         layoutParams.gravity = Gravity.TOP | Gravity.START;
         layoutParams.setMargins(CLOSE_BUTTON_MARGIN, CLOSE_BUTTON_MARGIN, 0, 0);
 
-        ViewGroup parentView = findViewById(android.R.id.content);
+        ViewGroup parentView = getContentView();
         ImageView closeImg = new ImageView(FullScreenCustomTabActivity.this);
         closeImg.setPadding(
                 CLOSE_BUTTON_PADDING,
@@ -223,13 +221,13 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         this::isInOverviewMode,
                         /* appMenuDelegate= */ this,
                         /* statusBarColorProvider= */ this,
+                        getEphemeralTabCoordinatorSupplier(),
                         getIntentRequestTracker(),
                         () -> mToolbarCoordinator,
                         () -> mIntentDataProvider,
                         mBackPressManager,
                         () -> mTabController,
                         () -> mMinimizationManagerHolder.getMinimizationManager(),
-                        () -> mCustomTabFeatureOverridesManager,
                         () -> getCustomTabActivityNavigationController().openCurrentUrlInBrowser(),
                         getEdgeToEdgeManager(),
                         getAppHeaderCoordinator(),

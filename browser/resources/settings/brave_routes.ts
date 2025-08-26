@@ -15,36 +15,57 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (pageVisibility.getStarted) {
     r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
+    r.GET_STARTED.hasMigratedToPlugin = true
+
     // Bring back people's /manageProfile (now in getStarted)
-    r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile')
+    if (!r.MANAGE_PROFILE) {
+      r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile')
+      r.MANAGE_PROFILE.hasMigratedToPlugin = true
+      r.MANAGE_PROFILE.section = 'getStarted'
+    }
     // We re-section people page into getStarted section (see people_page Brave
     // override), so we need to adjust the route accordingly in order for the
     // direct navigation to brave://settings/importData to work.
-    if (r.IMPORT_DATA) {
+    if (!r.IMPORT_DATA) {
+      r.IMPORT_DATA = r.GET_STARTED.createChild('/importData')
+      r.IMPORT_DATA.isNavigableDialog = true
+      r.IMPORT_DATA.hasMigratedToPlugin = true
       r.IMPORT_DATA.section = 'getStarted'
     }
   }
   r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
+  r.SHIELDS.hasMigratedToPlugin = true
   r.SHIELDS_ADBLOCK = r.SHIELDS.createChild('/shields/filters')
+  r.SHIELDS_ADBLOCK.hasMigratedToPlugin = true
+
   if (loadTimeData.getBoolean('areShortcutsSupported')) {
     if (r.SYSTEM) {
       r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
+      r.SHORTCUTS.hasMigratedToPlugin = true
     } else if (!isGuest) {
       console.error('[Settings] Routes: could not find SYSTEM page')
     }
   }
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
+  r.SOCIAL_BLOCKING.hasMigratedToPlugin = true
+
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
+  r.EXTENSIONS.hasMigratedToPlugin = true
   r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
+  r.EXTENSIONS_V2.hasMigratedToPlugin = true
   if (pageVisibility.braveSync) {
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
+    r.BRAVE_SYNC.hasMigratedToPlugin = true
     r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup')
+    r.BRAVE_SYNC_SETUP.hasMigratedToPlugin = true
   }
   if (pageVisibility.braveWeb3) {
     r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')
+    r.BRAVE_WEB3.hasMigratedToPlugin = true
     if (pageVisibility.braveWallet) {
       r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
-      r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')
+      r.BRAVE_WALLET_NETWORKS = r.BRAVE_WEB3.createChild('/wallet/networks')
+      r.BRAVE_WALLET_NETWORKS.hasMigratedToPlugin = true
     }
   }
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
@@ -52,20 +73,27 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (pageVisibility.leoAssistant) {
     r.BRAVE_LEO_ASSISTANT =
       r.BASIC.createSection('/leo-ai', 'leoAssistant')
+    r.BRAVE_LEO_ASSISTANT.hasMigratedToPlugin = true
+
     r.BRAVE_LEO_CUSTOMIZATION = r.BRAVE_LEO_ASSISTANT
       .createChild('/leo-ai/customization')
+    r.BRAVE_LEO_CUSTOMIZATION.hasMigratedToPlugin = true
   }
   if (pageVisibility.content) {
     r.BRAVE_CONTENT = r.BASIC.createSection('/braveContent', 'content')
+    r.BRAVE_CONTENT.hasMigratedToPlugin = true
+
     // Move fonts from APPEARANCE to BRAVE_CONTENT
     if (r.FONTS) {
         delete r.FONTS
     }
     r.FONTS = r.BRAVE_CONTENT.createChild('/fonts')
+    r.FONTS.hasMigratedToPlugin = true
   }
-  if (pageVisibility.surveyPanelist) {
+  if (pageVisibility.surveyPanelist && r.PRIVACY) {
     r.BRAVE_SURVEY_PANELIST =
-      r.BASIC.createSection('/surveyPanelist', 'surveyPanelist')
+      r.PRIVACY.createChild('/surveyPanelist', 'surveyPanelist')
+    r.BRAVE_SURVEY_PANELIST.hasMigratedToPlugin = true
   }
   if (r.SEARCH) {
     r.DEFAULT_SEARCH = r.SEARCH.createChild('defaultSearch')
@@ -138,5 +166,12 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   // Delete storage access
   if (r.SITE_SETTINGS_STORAGE_ACCESS) {
     delete r.SITE_SETTINGS_STORAGE_ACCESS
+  }
+  if (r.SYNC) {
+    delete r.SYNC
+  }
+  // Delete /syncSetup/advanced
+  if (r.SYNC_ADVANCED) {
+    delete r.SYNC_ADVANCED
   }
 }

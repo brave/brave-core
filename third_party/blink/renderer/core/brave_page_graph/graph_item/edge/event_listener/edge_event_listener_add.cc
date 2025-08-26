@@ -13,7 +13,7 @@ EdgeEventListenerAdd::EdgeEventListenerAdd(GraphItemContext* context,
                                            NodeActor* out_node,
                                            NodeHTMLElement* in_node,
                                            const FrameId& frame_id,
-                                           const String& event_type,
+                                           const blink::String& event_type,
                                            const EventListenerId listener_id,
                                            NodeActor* listener_script)
     : EdgeEventListenerAction(context,

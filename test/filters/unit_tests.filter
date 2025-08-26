@@ -49,17 +49,19 @@
 # actions the test expects to find.
 -CustomizeToolbarHandlerTest.ListActions
 
-# This test fails because the message it checks has Brave intead of Google.
+# This test fails because the message it checks has Brave intead of Google (or
+# the url it checks uses a brave: scheme when a chrome: scheme is expected).
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled 
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
--TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy/SearchEngineChoice*
+-TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy
+-TemplateURLServiceTest.RepairPrepopulatedSearchEngines
+-TemplateURLServiceTest.RepairStarterPackEngines
 
-# These tests fail because we have different than expected default number of
+# This test fails because we have different than expected default number of
 # prepopulated search engines
--TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram/SearchEngineChoiceDisabled
--TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram/SearchEngineChoiceEnabled
+-TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram
 
 # These tests crash because pinned_toolbar_actions_container_ in
 # BraveToolbarView is set to nullptr
@@ -97,6 +99,7 @@
 # nullptr.
 -AILanguageModelHackyPrototypeTest.Basic
 -AILanguageModelTest.*
+-AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/*
 -AIManagerTest.*
 -AIProofreaderTest.*
 -AIRewriterTest.*
@@ -113,6 +116,9 @@
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
+-PasswordChangeDelegateImplTest.OtpDetectionProcessedFieldNotFocusableSkip
+-PasswordChangeDelegateImplTest.PasswordChangeFlowCanceled
+-PasswordChangeDelegateImplTest.WaitingForAgreement
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportUnwarnedNotificationAsSpam
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportWarnedNotificationAsSpam
@@ -267,6 +273,9 @@
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable_NoAccount
 -EnclaveManagerTest.PrimaryUserChange
 -ExtensionInstalledBubbleModelTransportModeTest.ShowSigninPromo_NonExtensionsExplicitSignin
+-ExtensionLocalDataBatchUploaderTest.LocalDataDescriptionOnlyReturnsUploadableExtensions
+-ExtensionLocalDataBatchUploaderTest.TriggerLocalDataMigration
+-ExtensionLocalDataBatchUploaderTest.TriggerLocalDataMigrationForItems
 -ExtensionSyncServiceTransportModeTest.AccountExtensionTypeChangesWithSync
 -ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
 -ManagePasswordsUIControllerWithBrowserTestExplicitBrowserSignin.MovePasswordUponSigninWithExistingAccount
@@ -307,6 +316,9 @@
 -ClientSideDetectionHostNotificationTest.*
 -ClientSideDetectionHostScamDetectionTest.*
 -ClientSideDetectionHostTest.CSDFeaturesCacheContainsVerdictAndFullDebuggingMetadata
+-ClientSideDetectionHostTest.ClipboardCopyApiCallDoesNotProceedWithClassification
+-ClientSideDetectionHostTest.ClipboardCopyApiCallDoesNotProceedWithClassificationWithHighHCAcceptanceRate
+-ClientSideDetectionHostTest.ClipboardCopyApiCallProceedsWithClassification
 -ClientSideDetectionHostTest.NoRTLookupResponseInRedirectChainContainsForceRequest
 -ClientSideDetectionHostTest.PhishingDetectionDoneCalledTwiceShouldSucceed
 -ClientSideDetectionHostTest.PhishingDetectionDoneEnhancedProtectionShouldHaveToken
@@ -329,7 +341,7 @@
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
--NotificationTelemetryServiceTest.SendsTelemetryReport
+-NotificationTelemetryServiceTest.SendsTelemetryReport/*
 -SafeBrowsingResultTest.GetState_EnabledEnhanced
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains_EsbEnabledOnStartup
@@ -402,12 +414,15 @@
 
 # This test fails because we remove description and 3p cookies toggle from the
 # Page Info cookies view.
+-All/PageInfoBubbleViewCookiesSubpageTitleTest.DisplaysCookiesAndSiteDataTitle/*
+-All/PageInfoBubbleViewPrivacyAndSiteDataSubpageTitleTest.DisplaysPrivacyAndSiteDataTitle/*
 -All/PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -All/PageInfoCookiesContentView3pcdCookieToggleTest.*
 -CookieControlsUserBypassTest.*
 -PageInfoCookiesContentView3pcdCookieToggleTest.*
 -PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -PageInfoCookiesContentViewAlwaysBlock3pcsIncognito.DisplaysIncognitoDescriptionWhenInIncognito
+-PageInfoCookiesContentViewAlwaysBlock3pcsIncognito.DisplaysStandardDescriptionWhenInRegularMode
 -PageInfoCookiesContentViewPre3pcdTest.*
 -PageInfoCookiesContentViewTrackingProtectionBubbleTest.Displays*
 
@@ -443,10 +458,8 @@
 # These tests fail because our search engine keywords use a shorter syntax than
 # is expected (:b vs search.brave.com)
 -IconUtilsTest.GetSearchEngineGeneratedIconPath
--TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SearchEngineChoiceDisabled_SearchAggregator
--TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SearchEngineChoiceDisabled_SiteSearch
--TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SearchEngineChoiceEnabled_SearchAggregator
--TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SearchEngineChoiceEnabled_SiteSearch
+-TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SearchAggregator
+-TemplateURLServiceEnterpriseSearchTest.NonFeaturedEnterpriseSearchPolicyConflictWithDSP/SiteSearch
 
 # These tests fail on CI but pass locally, due to directory security
 # restrictions on the CI nodes
@@ -555,8 +568,10 @@
 -ChromeStructuredMetricsRecorderTest.DeviceEventsRecorded
 
 # These tests fail because we disable kPermissionPredictionsV2.
+-PredictionBasedPermissionUiSelectorTest.GetPredictionTypeToUseCpssV1
 -PredictionBasedPermissionUiSelectorTest.OnlyPromptsForCurrentTypeAreCounted
 -PredictionBasedPermissionUiSelectorTest.RequestsWithFewPromptsAreSent
+-PredictionSourceTest/PredictionBasedPermissionUiExpectedPredictionSourceTest.*
 
 # This test fails because we block installation of Probabilistic Reveal Token
 # component installation.
@@ -615,7 +630,18 @@
 
 # We disable HATS
 -HatsHandlerTest.HandleSecurityPageHatsRequestPassesArgumentsToHatsService
+-SafetyHubHatsServiceTest.GetOverallState_*
 
+
+# This test fails because CONTENT_SETTING_DEFAULT cannot be used as the default
+# setting any more. https://github.com/brave/brave-browser/issues/48374
+-HostContentSettingsMapTest.IncognitoChangesDoNotPersist
+
+# These tests fail because we enable features::kTabstripComboButton and stub
+# features::HasTabSearchToolbarButton() to return true
+-TabSearchContainerTest.AnimatesToExpanded
+-TabSearchContainerTest.ButtonsHaveFlatEdges
+-TabSearchContainerTest.OrdersButtonsCorrectly
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
@@ -717,11 +743,6 @@
 -TabTest.*
 -TCPSocketUnitTest.SocketConnectDisconnectRace
 -TemplateURLServiceSyncTest.MergeConflictingPrepopulatedEngine
--TemplateURLServiceTest.RepairPrepopulatedSearchEngines/SearchEngineChoiceDisabled
--TemplateURLServiceTest.RepairPrepopulatedSearchEngines/SearchEngineChoiceEnabled
--TemplateURLServiceTest.RepairStarterPackEngines/SearchEngineChoiceDisabled
--TemplateURLServiceTest.RepairStarterPackEngines/SearchEngineChoiceEnabled
--TestChromeColorsService.RecordDynamicColorOnLoadHistogramForGrayscale
 -ThemeLocalDataBatchUploaderTest.*
 -ThemeServiceTest.IsGrayscale
 -ThemeSyncableServiceTest.GetAllSyncDataForTesting_Extension

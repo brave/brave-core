@@ -112,9 +112,6 @@ class BraveBrowserView : public BrowserView,
   void UpdateReaderModeToolbar() override;
 #endif
   bool GetTabStripVisible() const override;
-#if BUILDFLAG(IS_WIN)
-  bool GetSupportsTitle() const override;
-#endif
   bool ShouldShowWindowTitle() const override;
   void OnThemeChanged() override;
   void OnActiveTabChanged(content::WebContents* old_contents,
@@ -155,6 +152,7 @@ class BraveBrowserView : public BrowserView,
   friend class VerticalTabStripDragAndDropBrowserTest;
   friend class SplitViewBrowserTest;
   friend class SplitViewLocationBarBrowserTest;
+  friend class BraveBrowserViewTest;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, Fullscreen);
@@ -167,6 +165,8 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest, GetMinimumWidth);
+  FRIEND_TEST_ALL_PREFIXES(BraveBrowserViewWithRoundedCornersTest,
+                           ContentsBackgroundEventHandleTest);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 

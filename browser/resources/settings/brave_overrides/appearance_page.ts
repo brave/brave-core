@@ -8,18 +8,10 @@ import '../brave_appearance_page/toolbar.js'
 
 import {
   html,
-  RegisterPolymerComponentReplacement,
   RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
 
-import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
-
-import {loadTimeData} from '../i18n_setup.js'
-import {Router} from '../router.js'
-
-import {
-  SettingsAppearancePageElement
-} from '../appearance_page/appearance_page.js'
+import { loadTimeData } from '../i18n_setup.js'
 
 
 const superReferralStringId = 'superReferralThemeName'
@@ -65,7 +57,7 @@ RegisterPolymerTemplateModifications({
       homeButtonToggle.remove()
     }
     const homeButtonOptionsTemplate = templateContent.querySelector(
-        'template[is=dom-if][if="[[prefs.browser.show_home_button.value]]"]')
+      'template[is=dom-if][if="[[prefs.browser.show_home_button.value]]"]')
     if (!homeButtonOptionsTemplate) {
       console.error(
         `[Settings] Couldn't find home button options template`)
@@ -98,13 +90,6 @@ RegisterPolymerTemplateModifications({
       console.error(`[Settings] Couldn't find customize fonts subpage trigger`)
     } else {
       customizeFontsSubpageTrigger.remove()
-    }
-    const customizeFontsTemplate = templateContent.querySelector(
-        'template[is=dom-if][route-path="/fonts"]')
-    if (!customizeFontsTemplate) {
-      console.error(`[Settings] Couldn't find customize fonts subpage template`)
-    } else {
-      customizeFontsTemplate.remove()
     }
     const pageZoom = templateContent.querySelector('.cr-row:has(#pageZoom)')
     if (!pageZoom) {
@@ -180,17 +165,17 @@ RegisterPolymerTemplateModifications({
       sidePanelPosition.parentNode.setAttribute('hidden', 'true')
     }
 
-    // Append toolbar related items to the 'Appearance'pages
-    const pages = templateContent.querySelector('#pages > div')
-    if (!pages) {
-      console.error(`[Settings] Couldn't find appearance page #pages > div`)
-    } else {
-      pages.appendChild(html`
-          <settings-brave-appearance-toolbar
-            prefs="{{prefs}}">
-          </settings-brave-appearance-toolbar>
-        `)
+    const section = templateContent.querySelector('settings-section')
+    if (!section) {
+      console.error(`[Settings] Couldn't find settings-section`)
+      return
     }
+    // Append toolbar settings to the appearance section.
+    section.appendChild(html`
+      <settings-brave-appearance-toolbar
+        prefs="{{prefs}}">
+      </settings-brave-appearance-toolbar>
+    `)
 
     // Remove a couple of items to from appearance page as we have them in
     // <settings-brave-appearance-toolbar>

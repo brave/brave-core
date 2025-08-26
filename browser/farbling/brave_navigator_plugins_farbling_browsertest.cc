@@ -33,6 +33,14 @@ namespace {
 constexpr char kPluginsLengthScript[] = "navigator.plugins.length;";
 constexpr char kNavigatorPdfViewerEnabledCrashTest[] =
     "navigator.pdfViewerEnabled == navigator.pdfViewerEnabled";
+constexpr char kGetPluginsAsStringScript[] =
+    "Array.from(navigator.plugins).map(p => p.name).join(',');";
+constexpr char kExpectedPluginsNamesOff[] =
+    "PDF Viewer,Chrome PDF Viewer,Chromium PDF Viewer,Microsoft Edge PDF "
+    "Viewer,WebKit built-in PDF";
+constexpr char kExpectedPluginsNamesBalanced[] =
+    "4cOuf2jw,Microsoft Edge PDF Viewer,Chromium PDF Viewer,PDF "
+    "Viewer,HqVxgvf,Online PDF Viewer,WebKit built-in PDF";
 
 }  // namespace
 
@@ -133,20 +141,22 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
             "tiRnTJjZMGi47lS");
   EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].description;"),
             "8Hi47dt9e2bVSJr89HqdWTw3bVKs1Dg");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].length;"), 1);
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].length;"), 2);
   EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0][0].type;"), "");
   EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0][0].description;"),
             "78e2j47laVKs9eu268e2bVSJr0iZUp7G");
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0][1].type;"), "");
   EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].name;"),
             "4cOuf2jw");
   EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].filename;"),
             "p78mTJjZUpzZrVp7");
   EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].description;"),
             "x3bNteXq8Hi4FCgYrdOm6dt1DgYz4cWT");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].length;"), 1);
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].length;"), 2);
   EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1][0].type;"), "");
   EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1][0].description;"),
             "jwgvf2bNl5kxBIjRvAfPHLkaNteXq899");
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1][1].type;"), "");
 
   // Farbling level: default, but webcompat exception enabled
   // get real length of navigator.plugins
@@ -169,19 +179,15 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int off_length =
       content::EvalJs(contents(), kPluginsLengthScript).ExtractInt();
-  EXPECT_EQ(off_length, 2);
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].name;"),
-            "Chrome PDF Plugin");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].name;"),
-            "Chrome PDF Viewer");
+  EXPECT_EQ(off_length, 5);
+  EXPECT_EQ(content::EvalJs(contents(), kGetPluginsAsStringScript),
+            kExpectedPluginsNamesOff);
 
   // Farbling level: balanced (default)
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].name;"),
-            "Online PDF Viewer");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[3].name;"),
-            "Browser com.adobe.pdf ");
+  EXPECT_EQ(content::EvalJs(contents(), kGetPluginsAsStringScript),
+            kExpectedPluginsNamesBalanced);
 }
 
 // Tests that names of built-in plugins that get farbled will reset to their
@@ -192,19 +198,15 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   // Farbling level: balanced (default)
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].name;"),
-            "Online PDF Viewer");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[3].name;"),
-            "Browser com.adobe.pdf ");
+  EXPECT_EQ(content::EvalJs(contents(), kGetPluginsAsStringScript),
+            kExpectedPluginsNamesBalanced);
 
   // Farbling level: off
   AllowFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int off_length =
       content::EvalJs(contents(), kPluginsLengthScript).ExtractInt();
-  EXPECT_EQ(off_length, 2);
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].name;"),
-            "Chrome PDF Plugin");
-  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].name;"),
-            "Chrome PDF Viewer");
+  EXPECT_EQ(off_length, 5);
+  EXPECT_EQ(content::EvalJs(contents(), kGetPluginsAsStringScript),
+            kExpectedPluginsNamesOff);
 }

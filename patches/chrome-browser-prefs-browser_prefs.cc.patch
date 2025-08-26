@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 87e90ea501499bbbf026fa5db2e4d81edbb0f2ca..bdd76fc311ea29153a9ad2f5e23934a03dd96be4 100644
+index d016286d9cb7ab38dda90bd38f0f77fb61d484df..99f193db502d84b5a3b66db316a730b2f8fc605c 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1964,6 +1964,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
-   registry->RegisterIntegerPref(prefs::kToastAlertLevel, 0);
+@@ -1883,6 +1883,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+ #endif  // !BUILDFLAG(IS_ANDROID)
  
    // This is intentionally last.
 +  brave::RegisterLocalStatePrefs(registry);
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2407,6 +2408,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2327,6 +2328,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
    registry->RegisterDictionaryPref(prefs::kReportingEndpoints);
  
    registry->RegisterBooleanPref(prefs::kViewSourceLineWrappingEnabled, false);

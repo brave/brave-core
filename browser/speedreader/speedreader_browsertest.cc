@@ -708,9 +708,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   EXPECT_EQ(speedreader::mojom::ColumnWidth::kNarrow,
             speedreader_service()->GetAppearanceSettings().columnWidth);
 
-  EXPECT_EQ(nullptr, content::EvalJs(contents, GetDataAttribute("data-theme"),
-                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                     ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+  EXPECT_EQ(base::Value(),
+            content::EvalJs(contents, GetDataAttribute("data-theme"),
+                            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                            ISOLATED_WORLD_ID_BRAVE_INTERNAL));
   speedreader_service()->SetAppearanceSettings(
       speedreader::mojom::AppearanceSettings(
           speedreader::mojom::Theme::kDark, speedreader::mojom::FontSize::k130,
@@ -768,10 +769,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
       auto eval = content::EvalJs(contents, GetDataAttribute(attr),
                                   content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                   ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-      if (!eval.value.is_string() && value.empty()) {
+      if (!eval.is_string() && value.empty()) {
         return true;
       }
-      if (eval.ExtractString() == value) {
+      if (eval.is_string() && eval.ExtractString() == value) {
         return true;
       }
     }
@@ -899,9 +900,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
   const std::string kNoStyleInjected =
       R"js(document.getElementById('brave_speedreader_style'))js";
 
-  EXPECT_EQ(nullptr, content::EvalJs(ActiveWebContents(), kNoStyleInjected,
-                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                     ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+  EXPECT_EQ(base::Value(),
+            content::EvalJs(ActiveWebContents(), kNoStyleInjected,
+                            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                            ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TTS) {
@@ -1074,8 +1076,10 @@ class SpeedReaderWithSplitViewBrowserTest
   ~SpeedReaderWithSplitViewBrowserTest() override = default;
 
   void NewSplitTab() {
-    IsSideBySideEnabled() ? chrome::NewSplitTab(browser())
-                          : brave::NewSplitViewForTab(browser());
+    IsSideBySideEnabled()
+        ? chrome::NewSplitTab(
+              browser(), split_tabs::SplitTabCreatedSource::kTabContextMenu)
+        : brave::NewSplitViewForTab(browser());
   }
 
   BraveBrowserView* brave_browser_view() {

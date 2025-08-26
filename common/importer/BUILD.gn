@@ -9,20 +9,6 @@ import("//mojo/public/tools/bindings/mojom.gni")
 mojom("interfaces") {
   sources = [ "profile_import.mojom" ]
 
-  cpp_typemaps = [
-    {
-      types = [
-        {
-          mojom = "chrome.mojom.SourceProfile"
-          cpp = "::user_data_importer::SourceProfile"
-        },
-      ]
-      traits_headers =
-          [ "//chrome/common/importer/profile_import_process_param_traits.h" ]
-      traits_public_deps = [ "//chrome/common/importer" ]
-    },
-  ]
-
   deps = [
     "//chrome/common/importer:interfaces",
     "//components/autofill/core/common/mojom:mojo_types",

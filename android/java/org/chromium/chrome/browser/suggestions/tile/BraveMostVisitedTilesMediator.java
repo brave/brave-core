@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.suggestions.tile;
 
 import android.content.res.Resources;
-import android.view.ViewStub;
 
 import androidx.annotation.Nullable;
 
@@ -21,7 +20,6 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
             Resources resources,
             UiConfig uiConfig,
             MostVisitedTilesLayout mvTilesLayout,
-            ViewStub noMvPlaceholderStub,
             TileRenderer renderer,
             PropertyModel propertyModel,
             boolean isTablet,
@@ -31,16 +29,11 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
                 resources,
                 uiConfig,
                 mvTilesLayout,
-                noMvPlaceholderStub,
                 renderer,
                 propertyModel,
                 isTablet,
                 snapshotTileGridChangedRunnable,
                 tileCountChangedRunnable);
-    }
-
-    protected void updateTilePlaceholderVisibility() {
-        // This function is kept empty to avoid placeholder implementation
     }
 
     @Override

@@ -55,7 +55,6 @@ source_set("svg") {
     "//base",
     "//skia",
     "//third_party/expat",
-    "//third_party/libpng",
     "//third_party/libwebp",
     "//third_party/libwebp:libwebp_webp",
     "//ui/gfx",

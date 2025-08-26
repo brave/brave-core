@@ -10,22 +10,22 @@ using PageInfoCookiesContentViewBaseTestClassBraveOverrides =
 
 TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
        ThirdPartyCoookiesInfoIsHidden) {
-  PageInfoCookiesContentView::CookiesNewInfo cookie_info =
+  PageInfoCookiesContentView::CookiesInfo cookie_info =
       DefaultCookieInfoForTests();
   content_view()->SetCookieInfo(cookie_info);
 
   EXPECT_FALSE(third_party_cookies_container()->GetVisible());
-  EXPECT_FALSE(third_party_cookies_description_label()->GetVisible());
+  EXPECT_FALSE(third_party_cookies_description_wrapper()->GetVisible());
 }
 
 TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
        ThirdPartyCoookiesInfoIsHiddenInIncognitoMode) {
-  PageInfoCookiesContentView::CookiesNewInfo cookie_info =
+  PageInfoCookiesContentView::CookiesInfo cookie_info =
       DefaultCookieInfoForTests();
   cookie_info.controls_state = CookieControlsState::kAllowed3pc;
   cookie_info.blocking_status = CookieBlocking3pcdStatus::kAll;
   cookie_info.is_incognito = true;
   content_view()->SetCookieInfo(cookie_info);
   EXPECT_FALSE(third_party_cookies_container()->GetVisible());
-  EXPECT_FALSE(third_party_cookies_description_label()->GetVisible());
+  EXPECT_FALSE(third_party_cookies_description_wrapper()->GetVisible());
 }

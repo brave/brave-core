@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "android_brave_referrer.h"
+#include "brave/components/brave_referrals/browser/android_brave_referrer.h"
+
+#include <utility>
 
 #include "base/android/jni_android.h"
 #include "brave/components/brave_referrals/browser/jni_headers/BraveReferrer_jni.h"
@@ -12,9 +14,7 @@ namespace android_brave_referrer {
 
 BraveReferrer::BraveReferrer() {
   JNIEnv* env = base::android::AttachCurrentThread();
-  java_obj_.Reset(
-      env,
-      Java_BraveReferrer_create(env, reinterpret_cast<intptr_t>(this)).obj());
+  java_obj_ = Java_BraveReferrer_create(env, reinterpret_cast<intptr_t>(this));
 }
 
 BraveReferrer::~BraveReferrer() {

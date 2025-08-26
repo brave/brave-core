@@ -29,6 +29,11 @@ RegisterPolymerComponentBehaviors({
 
 RegisterPolymerTemplateModifications({
   'settings-system-page': (templateContent) => {
+    let settingsSection = templateContent.querySelector('settings-section')
+    if (!settingsSection) {
+      throw new Error('[Settings] Missing settings-section on system page')
+    }
+
     if (loadTimeData.getBoolean('areShortcutsSupported')) {
       // Chromium's system section only has a root section but we want to add a
       // subpage for shortcuts.
@@ -36,10 +41,10 @@ RegisterPolymerTemplateModifications({
       // default route, rather than always showing, otherwise when we navigate,
       // we'll get all the toggles showing up.
       const nonStyleChildren = (
-        Array.from(templateContent.children)
+        Array.from(settingsSection.children)
       ).filter((t: any) => t.tagName !== 'STYLE')
 
-      templateContent.appendChild(html`
+      settingsSection.appendChild(html`
         <settings-animated-pages id="pages" section="system">
           <div route-path="default">
             <cr-link-row
@@ -60,7 +65,7 @@ RegisterPolymerTemplateModifications({
             </settings-subpage>
           </template>
         </settings-animated-pages>`)
-      const defaultRoute = templateContent.querySelector(
+      const defaultRoute = settingsSection.querySelector(
         '#pages div[route-path=default]'
       )
 
@@ -69,10 +74,10 @@ RegisterPolymerTemplateModifications({
       }
 
       // changes should happen inside the default route.
-      templateContent = defaultRoute
+      settingsSection = defaultRoute
     }
 
-    templateContent.appendChild(
+    settingsSection.appendChild(
       html`
         <settings-toggle-button
           class="cr-row"
@@ -83,7 +88,7 @@ RegisterPolymerTemplateModifications({
       `
     )
 
-    templateContent.appendChild(
+    settingsSection.appendChild(
       html`
         <settings-toggle-button
           class="cr-row hr"
@@ -94,7 +99,7 @@ RegisterPolymerTemplateModifications({
     )
 
     // <if expr="is_macosx">
-    templateContent.appendChild(
+    settingsSection.appendChild(
       html`
         <settings-toggle-button
           class="cr-row hr"
@@ -105,7 +110,7 @@ RegisterPolymerTemplateModifications({
     )
     // </if>
 
-    templateContent.appendChild(
+    settingsSection.appendChild(
       html`
         <settings-toggle-button
           class="cr-row"
@@ -123,7 +128,7 @@ RegisterPolymerTemplateModifications({
                   loadTimeData.getBoolean('isBraveVPNWireguardEnabledOnMac')
     // </if>
     if (showVpnPage) {
-      templateContent.appendChild(
+      settingsSection.appendChild(
         html`
           <settings-brave-vpn-page prefs="{{prefs}}">
           </settings-brave-vpn-page>
@@ -132,7 +137,7 @@ RegisterPolymerTemplateModifications({
     }
     // </if>
 
-    templateContent.appendChild(
+    settingsSection.appendChild(
       html`
         <settings-brave-performance-page prefs="{{prefs}}">
         </settings-brave-performance-page>

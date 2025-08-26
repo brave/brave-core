@@ -20,9 +20,9 @@ class EdgeTextChange : public GraphEdge {
   EdgeTextChange(GraphItemContext* context,
                  NodeScript* out_node,
                  NodeHTMLText* in_node,
-                 const String& text);
+                 const blink::String& text);
 
-  const String& GetText() const { return text_; }
+  const blink::String& GetText() const { return text_; }
 
   ItemName GetItemName() const override;
   ItemName GetItemDesc() const override;
@@ -33,7 +33,7 @@ class EdgeTextChange : public GraphEdge {
   bool IsEdgeTextChange() const override;
 
  private:
-  const String text_;
+  const blink::String text_;
 };
 
 }  // namespace brave_page_graph

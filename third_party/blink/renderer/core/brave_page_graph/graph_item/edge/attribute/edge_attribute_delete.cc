@@ -13,7 +13,7 @@ EdgeAttributeDelete::EdgeAttributeDelete(GraphItemContext* context,
                                          NodeActor* out_node,
                                          NodeHTMLElement* in_node,
                                          const FrameId& frame_id,
-                                         const String& name,
+                                         const blink::String& name,
                                          const bool is_style)
     : EdgeAttribute(context, out_node, in_node, frame_id, name, is_style) {}
 

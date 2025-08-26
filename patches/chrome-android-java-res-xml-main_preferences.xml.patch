@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/res/xml/main_preferences.xml b/chrome/android/java/res/xml/main_preferences.xml
+index 335434465ae3242cf23a0e6fa37785e45c004598..4e334a85db5846e8552d0ed1287b043570d6d61e 100644
+--- a/chrome/android/java/res/xml/main_preferences.xml
++++ b/chrome/android/java/res/xml/main_preferences.xml
+@@ -69,7 +69,7 @@ for the previous order (main_preferences_legacy). -->
+         android:key="autofill_section"
+         android:order="11"
+         android:title="@string/prefs_section_autofill"/>
+-    <org.chromium.chrome.browser.password_manager.settings.PasswordsPreference
++    <org.chromium.chrome.browser.password_manager.settings.BravePasswordsPreference
+         android:key="passwords"
+         android:order="12"
+         android:title="@string/password_manager_settings_title"/>

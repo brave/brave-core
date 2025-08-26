@@ -195,7 +195,8 @@ void SplitViewLocationBar::WebContentsDestroyed() {
 }
 
 void SplitViewLocationBar::OnViewVisibilityChanged(views::View* observed_view,
-                                                   views::View* starting_view) {
+                                                   views::View* starting_view,
+                                                   bool visible) {
   UpdateVisibility();
 }
 

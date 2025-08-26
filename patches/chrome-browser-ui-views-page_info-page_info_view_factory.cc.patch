@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_info/page_info_view_factory.cc b/chrome/browser/ui/views/page_info/page_info_view_factory.cc
-index 24a77539fb127b377ef60685e260116a4cb01d88..fd2c182e5558094b27ba16b3a97679a94d4052ba 100644
+index 1eff44ce39bd4afd7cbe8f2395310133d02201b4..18e2c02b9da46535ebe05c3429771c1393bb751e 100644
 --- a/chrome/browser/ui/views/page_info/page_info_view_factory.cc
 +++ b/chrome/browser/ui/views/page_info/page_info_view_factory.cc
-@@ -483,6 +483,7 @@ const ui::ImageModel PageInfoViewFactory::GetPermissionIcon(
+@@ -481,6 +481,7 @@ const ui::ImageModel PageInfoViewFactory::GetPermissionIcon(
  
    icon = &gfx::VectorIcon::EmptyIcon();
    switch (info.type) {

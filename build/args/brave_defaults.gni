@@ -1,0 +1,17 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This file contains strict overrides for gn values in Chromium which we always
+# override in Brave builds.
+
+# Please provide a reason if you are adding new overrides to this file.
+
+disable_fieldtrial_testing_config = true
+root_extra_deps = [ "//brave" ]
+generate_about_credits = true
+
+# This has been disabled after some discussion deciding it is not relevant for
+# our use case since it was introduced in M140, and caused build problems.
+translate_genders = false

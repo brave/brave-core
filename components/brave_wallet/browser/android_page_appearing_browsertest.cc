@@ -39,6 +39,7 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_controller_factory.h"
 #include "content/public/browser/web_ui_controller_interface_binder.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -335,13 +336,11 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
         << "Expected URL " << expected_url << " but observed "
         << web_contents->GetLastCommittedURL();
 
-    auto result = content::EvalJs(
+    EXPECT_TRUE(content::ExecJs(
         web_contents,
         base::ReplaceStringPlaceholders(kPrintConsoleMarkerScript,
                                         {kConsoleMarker}, nullptr),
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1);
-    EXPECT_TRUE(result.error.empty())
-        << "Could not execute script: " << result.error;
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, 1));
 
     EXPECT_TRUE(console_observer.Wait());
     VerifyConsoleOutputNoErrors(console_observer,

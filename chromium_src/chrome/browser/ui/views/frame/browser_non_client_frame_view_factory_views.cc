@@ -27,19 +27,19 @@
 
 #include <chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc>
 
-#if BUILDFLAG(IS_LINUX)
-#undef BrowserFrameViewLinuxNative
-#endif  // BUILDFLAG(IS_LINUX)
-
 #undef OpaqueBrowserFrameView
 
+#if BUILDFLAG(IS_LINUX)
+#undef BrowserFrameViewLinuxNative
+
 // A sanity check for our macro
-static_assert(
-    std::is_same_v<std::unique_ptr<BraveOpaqueBrowserFrameView>,
-                   decltype(std::function{
-                       chrome::CreateOpaqueBrowserFrameView})::result_type>,
-    "CreateOpaqueBrowserFrameView is not returning "
-    "BraveOpaqueBrowserFrameView");
+static_assert(std::is_same_v<
+                  std::unique_ptr<BraveOpaqueBrowserFrameView>,
+                  decltype(std::function{
+                      chrome::CreateOpaqueBrowserFrameViewLinux})::result_type>,
+              "CreateOpaqueBrowserFrameViewLinux is not returning "
+              "BraveOpaqueBrowserFrameView");
+#endif  // BUILDFLAG(IS_LINUX)
 
 #if BUILDFLAG(IS_WIN)
 #undef BrowserFrameViewWin

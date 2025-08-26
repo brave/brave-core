@@ -94,8 +94,14 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
         render_frame_host,
         content::JsReplace(kFetchBlobViaWorkerScript,
                            content::JsReplace(kWorkerScript, url.spec())));
-    EXPECT_EQ(fetch_result.value, fetch_via_webworker_result.value);
-    EXPECT_EQ(fetch_result.error, fetch_via_webworker_result.error);
+    if (fetch_via_webworker_result.is_ok()) {
+      EXPECT_EQ(fetch_result,
+                std::move(fetch_via_webworker_result).TakeValue());
+    } else {
+      EXPECT_THAT(fetch_result,
+                  content::EvalJsResult::ErrorIs(
+                      testing::Eq(fetch_via_webworker_result.ExtractError())));
+    }
     return fetch_result;
   }
 

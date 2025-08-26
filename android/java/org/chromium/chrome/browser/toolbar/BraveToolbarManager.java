@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.ntp_customization.edge_to_edge.TopInsetCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -85,7 +86,6 @@ import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
-import org.chromium.chrome.browser.ui.extensions.ExtensionService;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -172,7 +172,6 @@ public class BraveToolbarManager extends ToolbarManager
             ActivityTabProvider tabProvider,
             ScrimManager scrimManager,
             ToolbarActionModeCallback toolbarActionModeCallback,
-            @Nullable ExtensionService extensionService,
             FindToolbarManager findToolbarManager,
             ObservableSupplier<Profile> profileSupplier,
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
@@ -199,13 +198,13 @@ public class BraveToolbarManager extends ToolbarManager
             Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             boolean initializeWithIncognitoColors,
             @Nullable BackPressManager backPressManager,
-            @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             @Nullable MultiInstanceManager multiInstanceManager,
             @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
             @Nullable MenuButtonCoordinator.VisibilityDelegate menuButtonVisibilityDelegate,
             TopControlsStacker topControlsStacker,
+            ObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
             @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
                 activity,
@@ -223,7 +222,6 @@ public class BraveToolbarManager extends ToolbarManager
                 tabProvider,
                 scrimManager,
                 toolbarActionModeCallback,
-                extensionService,
                 findToolbarManager,
                 profileSupplier,
                 bookmarkModelSupplier,
@@ -248,13 +246,13 @@ public class BraveToolbarManager extends ToolbarManager
                 ephemeralTabCoordinatorSupplier,
                 initializeWithIncognitoColors,
                 backPressManager,
-                overviewColorSupplier,
                 readAloudControllerSupplier,
                 desktopWindowStateManager,
                 multiInstanceManager,
                 tabBookmarkerSupplier,
                 menuButtonVisibilityDelegate,
                 topControlsStacker,
+                topInsetCoordinatorSupplier,
                 xrSpaceModeObservableSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;

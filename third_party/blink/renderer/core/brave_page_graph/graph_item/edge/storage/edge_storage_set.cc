@@ -17,7 +17,7 @@ EdgeStorageSet::EdgeStorageSet(GraphItemContext* context,
                                NodeActor* out_node,
                                NodeStorage* in_node,
                                const FrameId& frame_id,
-                               const String& key,
+                               const blink::String& key,
                                const blink::PageGraphValue& value)
     : EdgeStorage(context, out_node, in_node, frame_id, key),
       value_(blink::PageGraphValueToString(value)) {
@@ -31,7 +31,7 @@ ItemName EdgeStorageSet::GetItemName() const {
 }
 
 ItemDesc EdgeStorageSet::GetItemDesc() const {
-  StringBuilder ts;
+  blink::StringBuilder ts;
   ts << EdgeStorage::GetItemDesc() << " [value: " << value_ << "]";
   return ts.ReleaseString();
 }

@@ -21,7 +21,7 @@ transpile_web_ui("resources") {
     "//brave/components/brave_rewards/core/mojom:webui_js",
     "//brave/components/brave_vpn/common/mojom:mojom_js",
     "//brave/components/ntp_background_images/browser/mojom:mojom_js",
-    "//ui/webui/resources/cr_components/searchbox:mojo_bindings_js",
+    "//components/omnibox/browser:mojo_bindings_js",
   ]
 }
 

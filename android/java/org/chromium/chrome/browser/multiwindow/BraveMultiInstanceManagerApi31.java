@@ -58,8 +58,8 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
     }
 
     @Override
-    public void moveTabAction(InstanceInfo info, Tab tab, int tabAtIndex) {
-        super.moveTabAction(info, tab, tabAtIndex);
+    public void moveTabToWindow(InstanceInfo info, Tab tab, int tabAtIndex) {
+        super.moveTabToWindow(info, tab, tabAtIndex);
         if (mIsMoveTabsFromSettings) {
             mIsMoveTabsFromSettings = false;
             TabModelSelector selector =

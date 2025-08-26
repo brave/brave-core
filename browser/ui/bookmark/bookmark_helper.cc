@@ -17,8 +17,9 @@ BookmarkBarState GetBookmarkBarState(PrefService* prefs) {
     return BookmarkBarState::kAlways;
   // kShowBookmarkBar is false, kAlwaysShowBookmarkBarOnNTP is true
   // -> the bookmark bar is shown only for NTP.
-  if (prefs->GetBoolean(kAlwaysShowBookmarkBarOnNTP))
+  if (prefs->GetBoolean(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP)) {
     return BookmarkBarState::kNtp;
+  }
   // NEVER show the bookmark bar.
   return BookmarkBarState::kNever;
 }
@@ -26,13 +27,13 @@ BookmarkBarState GetBookmarkBarState(PrefService* prefs) {
 void SetBookmarkState(BookmarkBarState state, PrefService* prefs) {
   if (state == BookmarkBarState::kAlways) {
     prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, true);
-    prefs->SetBoolean(kAlwaysShowBookmarkBarOnNTP, false);
+    prefs->SetBoolean(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP, false);
   } else if (state == BookmarkBarState::kNtp) {
     prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, false);
-    prefs->SetBoolean(kAlwaysShowBookmarkBarOnNTP, true);
+    prefs->SetBoolean(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP, true);
   } else {
     prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, false);
-    prefs->SetBoolean(kAlwaysShowBookmarkBarOnNTP, false);
+    prefs->SetBoolean(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP, false);
   }
 }
 
