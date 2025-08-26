@@ -67,6 +67,13 @@ void LeoProvider::Start(const AutocompleteInput& input, bool minimal_changes) {
     return;
   }
 
+  // Don't show the Leo suggestion if the user has only typed "@", indicating
+  // that they may want to enter keyword mode.
+  if (input.GetFeaturedKeywordMode() ==
+      AutocompleteInput::FeaturedKeywordMode::kExact) {
+    return;
+  }
+
   // The default score is an approximate number used for keyword search. The
   // |SearchProvider| could add or take away score a little bit, but we don't
   // need that for now.
