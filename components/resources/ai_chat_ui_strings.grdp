@@ -117,6 +117,15 @@
   <message name="IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that an AI Chat model is a premium model" formatter_data="webui=AiChat">
     Premium
   </message>
+  <message name="IDS_CHAT_UI_MODEL_LOCAL_LABEL" desc="Label identifying that an AI Chat model is a local model" formatter_data="webui=AiChat">
+    Local
+  </message>
+  <message name="IDS_CHAT_UI_RECOMMENDED_MODELS_BUTTON" desc="Button label to show recommended models" formatter_data="webui=AiChat">
+    Recommended models
+  </message>
+  <message name="IDS_CHAT_UI_SHOW_ALL_MODELS_BUTTON" desc="Button label to show all models" formatter_data="webui=AiChat">
+    Show all models
+  </message>
   <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat" formatter_data="webui=AiChat">
     Chat
   </message>

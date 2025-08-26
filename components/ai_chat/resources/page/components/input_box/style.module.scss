@@ -168,3 +168,13 @@
   // Same is applied to the icon in the .streamingButton class.
   --leo-icon-color: var(--leo-color-icon-interactive);
 }
+
+.modelSelectorAndSendButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--leo-spacing-m);
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0 0 0 var(--leo-spacing-m);
+}

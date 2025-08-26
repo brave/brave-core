@@ -15,6 +15,7 @@ import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
 import { AttachmentUploadItems, AttachmentSpinnerItem, AttachmentPageItem } from '../attachment_item'
+import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
 import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
@@ -313,7 +314,8 @@ function InputBox(props: InputBoxProps) {
             </div>
           )}
         </div>
-        <div>
+        <div className={styles.modelSelectorAndSendButton}>
+          <ModelSelector />
           {props.context.isGenerating ? (
             <Button
               fab

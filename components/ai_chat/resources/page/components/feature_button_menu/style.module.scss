@@ -3,19 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-.menuSectionTitle {
-  background-color: var(--leo-color-page-background);
-  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-  color: var(--leo-color-text-tertiary);
-  font: var(--leo-font-components-label);
-}
-
-.menuSectionCustomModel {
-  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-  color: var(--leo-color-text-tertiary);
-  font: var(--leo-font-components-label);
-}
-
 .buttonMenu {
   line-height: 0;
   leo-menu-item {
@@ -25,7 +12,10 @@
     margin-bottom: 0;
     gap: var(--leo-spacing-m);
   }
-  leo-menu-item:last-of-type{
+  leo-menu-item:first-of-type {
+    margin-top: var(--leo-spacing-s);
+  }
+  leo-menu-item:last-of-type {
     margin-bottom: var(--leo-spacing-s);
   }
 }
@@ -35,7 +25,6 @@
   padding: 0;
   height: 1px;
   background-color: var(--leo-color-divider-subtle);
-  margin-top: var(--leo-spacing-s);
 }
 
 .menuItemWithIcon {
@@ -53,31 +42,6 @@
   }
 }
 
-.modelIcon {
-  --leo-icon-size: 18px;
-  --leo-icon-color: var(--leo-color-icon-default);
-
-  border-radius: var(--leo-radius-m);
-  border: 1px solid var(--leo-color-divider-subtle);
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  width: 32px;
-  height: 32px;
-
-  &[data-key="chat-automatic"] {
-    --leo-icon-color: white;
-
-    background: var(--leo-gradient-icons-active);
-    border: none;
-  }
-}
-
 .menuItemMainItem {
   margin-left: -6px;
   margin-right: -6px;
@@ -90,17 +54,6 @@
 
 leo-toggle{
   margin-right:var(--leo-spacing-m);
-}
-
-.modelSubtitle {
-  font: var(--leo-font-small-regular);
-  color: var(--leo-color-text-tertiary);
-  padding: 0;
-  margin: 0;
-}
-
-.modelLabel {
-  align-self: flex-start;
 }
 
 .lockOpen {
