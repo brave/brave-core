@@ -56,7 +56,7 @@ ContentSetting GetBraveWebcompatContentSettingFromRules(
   return CONTENT_SETTING_DEFAULT;
 }
 
-ShieldsSettingCounts GetFPSettingCountFromRules(
+ShieldsSettingCounts GetSettingCountFromRules(
     const ContentSettingsForOneType& fp_rules) {
   ShieldsSettingCounts result = {};
 
@@ -75,40 +75,4 @@ ShieldsSettingCounts GetFPSettingCountFromRules(
 
   return result;
 }
-
-ShieldsSettingCounts GetAdsSettingCountFromRules(
-    const ContentSettingsForOneType& ads_rules) {
-  ShieldsSettingCounts result = {};
-
-  std::set<std::string> block_set;
-  // Look at primary rules
-  for (const auto& rule : ads_rules) {
-    if (rule.primary_pattern.MatchesAllHosts() ||
-        !rule.secondary_pattern.MatchesAllHosts()) {
-      continue;
-    }
-    if (rule.GetContentSetting() == CONTENT_SETTING_ALLOW) {
-      result.allow++;
-    } else {
-      block_set.insert(rule.primary_pattern.ToString());
-    }
-  }
-
-  // And then look at "first party" rules
-  for (const auto& rule : ads_rules) {
-    if (rule.primary_pattern.MatchesAllHosts() ||
-        rule.secondary_pattern.MatchesAllHosts() ||
-        block_set.find(rule.primary_pattern.ToString()) == block_set.end()) {
-      continue;
-    }
-    if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK) {
-      result.aggressive++;
-    } else {
-      result.standard++;
-    }
-  }
-
-  return result;
-}
-
 }  // namespace brave_shields
