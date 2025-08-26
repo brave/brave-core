@@ -70,10 +70,12 @@ std::optional<std::string> Ss58Address::Encode() {
     return std::nullopt;
   }
 
+  constexpr size_t kMaxSize = 2 + kSs58PublicKeySize + kSs58HashChecksumSize;
+  std::array<uint8_t, kMaxSize> storage = {};
+
   size_t offset = prefix < 64 ? 1 : 2;
-  std::vector<uint8_t> buff(offset + kSs58PublicKeySize +
-                            kSs58HashChecksumSize);
-  auto output_span_writer = base::SpanWriter(base::span(buff));
+  base::span<uint8_t, kMaxSize> buff = storage;
+  auto output_span_writer = base::SpanWriter(buff);
 
   if (offset == 1) {
     output_span_writer.WriteU8BigEndian(prefix);
@@ -84,7 +86,7 @@ std::optional<std::string> Ss58Address::Encode() {
   }
 
   output_span_writer.Write(public_key);
-  DCHECK_EQ(output_span_writer.remaining(), kSs58HashChecksumSize);
+  DCHECK_GE(output_span_writer.remaining(), kSs58HashChecksumSize);
 
   auto hash_prefix = base::byte_span_from_cstring(kSs58HashPrefix);
   auto hash = Blake2bHash<64>(
@@ -92,7 +94,7 @@ std::optional<std::string> Ss58Address::Encode() {
 
   output_span_writer.Write(base::span(hash).first(kSs58HashChecksumSize));
 
-  return Base58Encode(buff);
+  return Base58Encode(buff.first(output_span_writer.num_written()));
 }
 
 // Reference implementation
