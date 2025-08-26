@@ -22,7 +22,7 @@ BASE_DECLARE_FEATURE(kNewTabPageAdFeature);
 inline constexpr base::FeatureParam<bool>
     kShouldSupportNewTabPageAdConfirmationsForNonRewards{
         &kNewTabPageAdFeature, "should_support_confirmations_for_non_rewards",
-        false};
+        true};
 
 // Set to `true` to support frequency capping; otherwise, no capping.
 inline constexpr base::FeatureParam<bool>
