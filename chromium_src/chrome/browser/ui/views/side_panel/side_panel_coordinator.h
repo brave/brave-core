@@ -31,11 +31,8 @@
 #define NotifyPinnedContainerOfActiveStateChange \
   virtual NotifyPinnedContainerOfActiveStateChange
 
-#define PopulateSidePanel virtual PopulateSidePanel
-
 #include <chrome/browser/ui/views/side_panel/side_panel_coordinator.h>  // IWYU pragma: export
 
-#undef PopulateSidePanel
 #undef NotifyPinnedContainerOfActiveStateChange
 #undef CreateHeader
 
