@@ -260,16 +260,13 @@ void EmailAliasesService::MaybeRequestSessionAgain() {
             IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED));
     return;
   }
+  // Session request timer should not be running at this point.
+  DCHECK(!session_request_timer_.IsRunning());
   // Schedule the next request after a short interval.
-  if (!session_request_timer_.IsRunning()) {
-    session_request_timer_.Start(
-        FROM_HERE, kSessionPollInterval,
-        base::BindOnce(&EmailAliasesService::RequestSession,
+  session_request_timer_.Start(
+      FROM_HERE, kSessionPollInterval,
+      base::BindOnce(&EmailAliasesService::RequestSession,
                        weak_factory_.GetWeakPtr()));
-  } else {
-    // If already running, let the existing timer fire; we don't reschedule to
-    // avoid churn.
-  }
 }
 
 void EmailAliasesService::CancelAuthenticationOrLogout(
