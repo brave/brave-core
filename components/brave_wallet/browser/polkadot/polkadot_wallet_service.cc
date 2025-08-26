@@ -5,11 +5,20 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+
 namespace brave_wallet {
 
 PolkadotWalletService::PolkadotWalletService(
+    KeyringService& keyring_service,
+    NetworkManager& network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : polkadot_substrate_rpc_(std::move(url_loader_factory)) {}
+    : keyring_service_(keyring_service),
+      polkadot_substrate_rpc_(network_manager, std::move(url_loader_factory)) {
+  keyring_service_->AddObserver(
+      keyring_service_observer_receiver_.BindNewPipeAndPassRemote());
+}
 
 PolkadotWalletService::~PolkadotWalletService() = default;
 
@@ -22,8 +31,11 @@ void PolkadotWalletService::Reset() {
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
-void PolkadotWalletService::GetNetworkName(GetNetworkNameCallback callback) {
-  polkadot_substrate_rpc_.GetChainName(std::move(callback));
+void PolkadotWalletService::GetNetworkName(mojom::AccountIdPtr account_id,
+                                           GetNetworkNameCallback callback) {
+  std::string chain_id = GetNetworkForPolkadotAccount(account_id);
+  polkadot_substrate_rpc_.GetChainName(std::move(chain_id),
+                                       std::move(callback));
 }
 
 }  // namespace brave_wallet
