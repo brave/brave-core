@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/whats_new/BUILD.gn b/chrome/browser/ui/android/whats_new/BUILD.gn
-index 7d91e92166b7847e86a36d47dd51812b3d8a51ad..ed2fbd5ec0403bf2b2af49da1367516424f1f0f8 100644
+index c286d540a702acaf54ed306f6758896b08fbfe36..78c9481f96eb77ae800e2f370b6a514e89e1a959 100644
 --- a/chrome/browser/ui/android/whats_new/BUILD.gn
 +++ b/chrome/browser/ui/android/whats_new/BUILD.gn
 @@ -15,8 +15,7 @@ android_library("feature_list_java") {
