@@ -91,7 +91,6 @@ repack("resources") {
     deps += [
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_news/browser/resources:generated_resources",
-      "//brave/components/brave_news/browser/resources:generated_resources",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_welcome_ui:generated_resources",
