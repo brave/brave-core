@@ -132,6 +132,29 @@ class EmailAliasesServiceTest : public ::testing::Test {
     EXPECT_TRUE(observer_->WaitFor(expected_status));
   }
 
+  // Helper: enqueue init success with |token|, start auth for |email|, wait
+  // for callback and transition to kAuthenticating.
+  void StartAuthWithInitToken(const std::string& email,
+                              const std::string& token) {
+    const std::string body =
+        std::string("{\"verificationToken\":\"") + token + "\"}";
+    auto error = RequestAuthenticationWithResponse(email, body);
+    EXPECT_FALSE(error.has_value());
+    EXPECT_TRUE(observer_->WaitFor(AuthenticationStatus::kAuthenticating));
+  }
+
+  // Helper: enqueue a successful verify/result response with |token|, then
+  // wait until Authenticated and assert the stored auth token matches.
+  void CompleteResultWithSuccess(const std::string& token) {
+    const std::string body =
+        std::string("{\"authToken\":\"") + token +
+        "\", \"verified\":true, \"service\":\"email-aliases\"}";
+    test_url_loader_factory_.AddResponse(
+        EmailAliasesService::GetAccountsServiceVerifyResultURL().spec(), body);
+    EXPECT_TRUE(observer_->WaitFor(AuthenticationStatus::kAuthenticated));
+    EXPECT_EQ(service_->GetAuthTokenForTesting(), token);
+  }
+
   base::test::ScopedFeatureList feature_list_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
@@ -163,6 +186,23 @@ TEST_F(EmailAliasesServiceTest, RequestAuthentication_Success) {
   CallRequestAuthenticationAndCheck("test@example.com",
                                     "{\"verificationToken\":\"token123\"}",
                                     AuthenticationStatus::kAuthenticating);
+}
+
+TEST_F(EmailAliasesServiceTest,
+       RequestAuthentication_ServerErrorObject_NoVerificationToken) {
+  CallRequestAuthenticationAndCheck(
+      "test@example.com",
+      "{\"error\":\"server_error\",\"code\":400,\"status\":400}",
+      AuthenticationStatus::kUnauthenticated,
+      l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN));
+}
+
+TEST_F(EmailAliasesServiceTest, RequestAuthentication_VerificationTokenEmpty) {
+  // Empty verificationToken should be treated as missing token.
+  CallRequestAuthenticationAndCheck(
+      "test@example.com", "{\"verificationToken\":\"\"}",
+      AuthenticationStatus::kUnauthenticated,
+      l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN));
 }
 
 TEST_F(EmailAliasesServiceTest, RequestSession_Success) {
@@ -199,6 +239,55 @@ TEST_F(EmailAliasesServiceTest, RequestSession_StopsOnVerificationFailed) {
 }
 
 TEST_F(EmailAliasesServiceTest,
+       RequestSession_ParseableWrongShape_RetriesAuthenticating) {
+  // JSON parses but doesn't match expected schema; treated as retry.
+  RunRequestSessionTest({"{}"}, AuthenticationStatus::kAuthenticating);
+}
+
+TEST_F(EmailAliasesServiceTest,
+       RequestSession_VerifiedTrueMissingAuthToken_Retries) {
+  // Verified true but no authToken provided; treated as retry.
+  RunRequestSessionTest({"{\"verified\":true, \"service\":\"email-aliases\"}"},
+                        AuthenticationStatus::kAuthenticating);
+}
+
+TEST_F(EmailAliasesServiceTest,
+       RequestSession_NoResponseBody_RetriesAuthenticating) {
+  // Start auth and simulate the first verify/result response having no body.
+  const GURL result_url =
+      EmailAliasesService::GetAccountsServiceVerifyResultURL();
+  int result_request_count = 0;
+  test_url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        if (request.url == result_url) {
+          ++result_request_count;
+        }
+      }));
+
+  // Queue init success and first result failure (no body via network error).
+  test_url_loader_factory_.AddResponse(
+      EmailAliasesService::GetAccountsServiceVerifyInitURL().spec(),
+      "{\"verificationToken\":\"token123\"}");
+  network::URLLoaderCompletionStatus status(net::ERR_FAILED);
+  test_url_loader_factory_.AddResponse(result_url,
+                                       network::mojom::URLResponseHead::New(),
+                                       std::string(), status);
+
+  // Start authentication and assert we are Authenticating.
+  CallRequestAuthenticationAndCheck("test@example.com",
+                                    "{\"verificationToken\":\"token123\"}",
+                                    AuthenticationStatus::kAuthenticating);
+
+  // Wait until the first result request has occurred and completed.
+  EXPECT_TRUE(
+      base::test::RunUntil([&]() { return result_request_count >= 1; }));
+
+  // We should still be authenticating and have no auth token.
+  EXPECT_EQ(observer_->last_state, AuthenticationStatus::kAuthenticating);
+  EXPECT_EQ(service_->GetAuthTokenForTesting(), "");
+}
+
+TEST_F(EmailAliasesServiceTest,
        CancelAuthenticationOrLogout_ClearsStateAndNotifies) {
   // Authenticate
   RunRequestSessionTest(
@@ -223,6 +312,116 @@ TEST_F(EmailAliasesServiceTest,
   CancelAuthenticationOrLogout();
 
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "");
+}
+
+TEST_F(EmailAliasesServiceTest, Cancel_IgnoresLateCallback) {
+  // Begin auth which immediately posts a verify/result request.
+  StartAuthWithInitToken("cancel@example.com", "tokenCancel");
+
+  // Cancel before any result response is delivered.
+  CancelAuthenticationOrLogout();
+
+  // Deliver a late success result; it should be ignored as the loader was
+  // reset.
+  test_url_loader_factory_.AddResponse(
+      EmailAliasesService::GetAccountsServiceVerifyResultURL().spec(),
+      "{\"authToken\":\"should_not_apply\",\"verified\":true,\"service\":"
+      "\"email-aliases\"}");
+
+  // State remains unauthenticated and no token is stored.
+  EXPECT_EQ(observer_->last_state, AuthenticationStatus::kUnauthenticated);
+  EXPECT_EQ(service_->GetAuthTokenForTesting(), "");
+}
+
+TEST_F(EmailAliasesServiceTest,
+       AddObserver_InitialUnauthenticatedStateDelivered) {
+  auto second_observer = std::make_unique<TestObserver>();
+  mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver> remote;
+  second_observer->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
+  service_->AddObserver(std::move(remote));
+  EXPECT_TRUE(second_observer->WaitFor(AuthenticationStatus::kUnauthenticated));
+}
+
+TEST_F(EmailAliasesServiceTest, Reauth_CancelsInFlightInit) {
+  // First auth is in-flight (no init response yet); second auth proceeds.
+  bool called1 = false;
+  service_->RequestAuthentication(
+      "first@example.com",
+      base::BindOnce([](bool* called,
+                        const std::optional<std::string>&) { *called = true; },
+                     &called1));
+
+  // Issue second auth first, then enqueue its init response so the response
+  // is consumed by the second (active) request and not the first.
+  bool called2 = false;
+  service_->RequestAuthentication(
+      "second@example.com",
+      base::BindOnce([](bool* called,
+                        const std::optional<std::string>&) { *called = true; },
+                     &called2));
+  test_url_loader_factory_.AddResponse(
+      EmailAliasesService::GetAccountsServiceVerifyInitURL().spec(),
+      "{\"verificationToken\":\"token2\"}");
+  EXPECT_TRUE(base::test::RunUntil([&]() { return called2; }));
+  EXPECT_TRUE(observer_->WaitFor(AuthenticationStatus::kAuthenticating));
+  CompleteResultWithSuccess("auth456");
+}
+
+TEST_F(EmailAliasesServiceTest, ReauthDuringPolling_CancelsOldFlow) {
+  // First flow reaches Authenticating and makes a pending result request.
+  std::vector<std::string> auth_headers;
+  const GURL result_url =
+      EmailAliasesService::GetAccountsServiceVerifyResultURL();
+  test_url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        if (request.url != result_url) {
+          return;
+        }
+        if (auto header = request.headers.GetHeader("Authorization")) {
+          auth_headers.push_back(*header);
+        }
+      }));
+  StartAuthWithInitToken("a@example.com", "tokenA");
+  test_url_loader_factory_.AddResponse(
+      EmailAliasesService::GetAccountsServiceVerifyResultURL().spec(),
+      "{\"authToken\":null, \"verified\":false, "
+      "\"service\":\"email-aliases\"}");
+
+  // Now re-auth; old timer and loader should be cancelled.
+  StartAuthWithInitToken("b@example.com", "tokenB");
+
+  // Complete with success; subsequent poll must use tokenB.
+  CompleteResultWithSuccess("auth789");
+  ASSERT_FALSE(auth_headers.empty());
+  EXPECT_EQ(auth_headers.back(), "Bearer tokenB");
+}
+
+TEST_F(EmailAliasesServiceTest, Reauth_DoubleClick_CancelsEarlierFlow) {
+  bool called1 = false;
+  service_->RequestAuthentication(
+      "x@example.com",
+      base::BindOnce([](bool* called,
+                        const std::optional<std::string>&) { *called = true; },
+                     &called1));
+
+  StartAuthWithInitToken("x@example.com", "tokenX");
+
+  CompleteResultWithSuccess("authX");
+  EXPECT_EQ(service_->GetAuthTokenForTesting(), "authX");
+  EXPECT_FALSE(called1);
+}
+
+TEST_F(EmailAliasesServiceTest, Reauth_NewTokenUsedForSubsequentPolls) {
+  // Start first flow and return pending result.
+  StartAuthWithInitToken("z1@example.com", "t1");
+  test_url_loader_factory_.AddResponse(
+      EmailAliasesService::GetAccountsServiceVerifyResultURL().spec(),
+      "{\"authToken\":null, \"verified\":false, "
+      "\"service\":\"email-aliases\"}");
+
+  // Reauth with a new token and complete successfully.
+  StartAuthWithInitToken("z2@example.com", "t2");
+  CompleteResultWithSuccess("auth2");
 }
 
 // Timing-specific tests use a separate fixture with MOCK_TIME to validate
@@ -331,8 +530,5 @@ TEST_F(EmailAliasesServiceTimingTest, VerifyResult_StopsAfterMaxDuration) {
   EXPECT_EQ(observer_->last_state,
             email_aliases::mojom::AuthenticationStatus::kUnauthenticated);
 }
-
-// TODO(https://github.com/brave/brave-browser/issues/48696): Add tests for
-// checking cancellation of polling, etc.
 
 }  // namespace email_aliases
