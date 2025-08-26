@@ -88,9 +88,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     r.FONTS = r.BRAVE_CONTENT.createChild('/fonts')
     r.FONTS.hasMigratedToPlugin = true
   }
-  if (pageVisibility.surveyPanelist) {
+  if (pageVisibility.surveyPanelist && r.PRIVACY) {
     r.BRAVE_SURVEY_PANELIST =
-      r.BASIC.createSection('/surveyPanelist', 'surveyPanelist')
+      r.PRIVACY.createChild('/surveyPanelist', 'surveyPanelist')
     r.BRAVE_SURVEY_PANELIST.hasMigratedToPlugin = true
   }
   if (r.SEARCH) {
