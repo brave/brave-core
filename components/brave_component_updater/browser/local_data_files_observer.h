@@ -14,10 +14,6 @@
 #include "base/scoped_observation.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 
-namespace localhost_permission {
-class LocalhostPermissionComponent;
-}
-
 namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
 }
@@ -61,7 +57,6 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) LocalDataFilesObserver {
 
  private:
   friend class brave::URLSanitizerComponentInstaller;
-  friend class localhost_permission::LocalhostPermissionComponent;
   friend class https_upgrade_exceptions::HttpsUpgradeExceptionsService;
   friend class debounce::DebounceComponentInstaller;
   friend class request_otr::RequestOTRComponentInstallerPolicy;
