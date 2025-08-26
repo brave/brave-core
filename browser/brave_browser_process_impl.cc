@@ -41,7 +41,6 @@
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
-#include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -260,11 +259,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   }
 
   if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission)) {
-    localhost_permission_component();
-  }
-
-  if (base::FeatureList::IsEnabled(
           webcompat::features::kBraveWebcompatExceptionsService)) {
     webcompat::WebcompatExceptionsService::CreateInstance(
         local_data_files_service());
@@ -320,21 +314,6 @@ BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
             local_data_files_service());
   }
   return https_upgrade_exceptions_service_.get();
-}
-
-localhost_permission::LocalhostPermissionComponent*
-BraveBrowserProcessImpl::localhost_permission_component() {
-  if (!base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission)) {
-    return nullptr;
-  }
-
-  if (!localhost_permission_component_) {
-    localhost_permission_component_ =
-        std::make_unique<localhost_permission::LocalhostPermissionComponent>(
-            local_data_files_service());
-  }
-  return localhost_permission_component_.get();
 }
 
 debounce::DebounceComponentInstaller*
