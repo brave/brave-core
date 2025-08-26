@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_browser_main_parts_mac.h"
 
+#include "base/feature_list.h"
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
