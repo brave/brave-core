@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"
+
 #include <optional>
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
-#include "chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"
 
 namespace browser_sync {
 namespace {
@@ -61,7 +62,7 @@ const auto& BraveSyncablePreferences() {
             kProfileContentSettingsExceptionsBraveSpeedreader,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
         sync_preferences::MergeBehavior::kMergeableDict}},
-      {"profile.content_settings.exceptions.cosmeticFiltering",
+      {"profile.content_settings.exceptions.cosmeticFilteringV2",
        {brave_syncable_prefs_ids::
             kProfileContentSettingsExceptionsCosmeticFiltering,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
@@ -108,7 +109,7 @@ const auto& BraveSyncablePreferences() {
             kProfileDefaultContentSettingValuesBraveSpeedreader,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
         sync_preferences::MergeBehavior::kNone}},
-      {"profile.default_content_setting_values.cosmeticFiltering",
+      {"profile.default_content_setting_values.cosmeticFilteringV2",
        {brave_syncable_prefs_ids::
             kProfileDefaultContentSettingValuesCosmeticFiltering,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
@@ -155,7 +156,7 @@ const auto& BraveSyncablePreferences() {
             kProfileContentSettingsPartitionedExceptionsBraveSpeedreader,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
         sync_preferences::MergeBehavior::kMergeableDict}},
-      {"profile.content_settings.partitioned_exceptions.cosmeticFiltering",
+      {"profile.content_settings.partitioned_exceptions.cosmeticFilteringV2",
        {brave_syncable_prefs_ids::
             kProfileContentSettingsPartitionedExceptionsCosmeticFiltering,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
