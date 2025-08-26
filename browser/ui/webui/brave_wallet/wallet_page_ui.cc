@@ -67,6 +67,11 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
                               IDR_WALLET_PAGE_HTML);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameAncestors,
+      "frame-ancestors chrome://wallet chrome://wallet-panel.top-chrome;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'self';");
+  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' data: chrome://resources chrome://erc-token-images "
       "chrome://image;");

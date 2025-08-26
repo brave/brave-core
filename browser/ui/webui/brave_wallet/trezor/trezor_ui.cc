@@ -29,6 +29,12 @@ UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameAncestors,
+      "frame-ancestors chrome://wallet chrome://wallet-panel.top-chrome;");
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ConnectSrc,
+      "connect-src 'self' https://connect.trezor.io;");
+  untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       std::string("script-src chrome://resources/js/ 'self' ") +
           kTrezorConnectURL + ";");
