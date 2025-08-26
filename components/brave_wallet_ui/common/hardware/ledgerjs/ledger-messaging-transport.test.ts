@@ -9,6 +9,7 @@ import {
   LedgerBridgeErrorCodes,
   UnlockCommand,
 } from './ledger-messages'
+import { TrustedOrigins } from '../untrusted_shared_types'
 
 // We must read and write to protected class attributes in the tests.
 // That yields a typescript error unless we use bracket notation, e.g.
@@ -35,7 +36,7 @@ const createTransport = (
     targetWindow,
     targetWindow.origin,
   )
-  transport['senderWindow'] = window // Shorthand for testing
+  ;(transport as any)['senderWindow'] = window
   return transport
 }
 
@@ -51,7 +52,7 @@ test('sendCommand configures handler for the response message ', async () => {
   const transport = createTransport()
   const sendEvent: UnlockCommand = {
     id: LedgerCommand.Unlock,
-    origin: transport['senderWindow']['origin'],
+    origin: (transport as any)['senderWindow']['origin'],
     command: LedgerCommand.Unlock,
   }
   const initialHandlersCount = transport['handlers'].size
@@ -66,7 +67,7 @@ test('sendCommand returns CommandInProgress if response handler already exists',
   const transport = createTransport()
   const sendEvent: UnlockCommand = {
     id: LedgerCommand.Unlock,
-    origin: transport['senderWindow'].origin,
+    origin: (transport as any)['senderWindow'].origin,
     command: LedgerCommand.Unlock,
   }
 
@@ -84,7 +85,7 @@ test('sendCommand removes command handler for the response when its resolved', a
   const transport = createTransport()
   const sendEvent: UnlockCommand = {
     id: LedgerCommand.Unlock,
-    origin: transport['senderWindow']['origin'],
+    origin: (transport as any)['senderWindow']['origin'],
     command: LedgerCommand.Unlock,
   }
 
@@ -94,7 +95,7 @@ test('sendCommand removes command handler for the response when its resolved', a
       origin: transport['targetWindow'].origin,
       source: transport['targetWindow'],
     })
-    transport['senderWindow'].dispatchEvent(replyEvent)
+    ;(transport as any)['senderWindow'].dispatchEvent(replyEvent)
   }
 
   await transport.sendCommand(sendEvent)
@@ -115,11 +116,11 @@ test('onMessageReceived ignores messages not from the targetUrl', () => {
   // Events nott from the targetUrl should not be handled
   const invalidEvent: MessageEvent = new MessageEvent('message', {
     data: eventData,
-    origin: transport['senderWindow']['origin'],
-    source: transport['senderWindow'],
+    origin: (transport as any)['senderWindow']['origin'],
+    source: (transport as any)['senderWindow'],
   })
   transport['addCommandHandler'](testId, () => (callbackCalled = true))
-  transport['senderWindow'].dispatchEvent(invalidEvent)
+  ;(transport as any)['senderWindow'].dispatchEvent(invalidEvent)
   expect(callbackCalled).toEqual(false)
 
   // Events from the targetUrl should be handled
@@ -128,7 +129,7 @@ test('onMessageReceived ignores messages not from the targetUrl', () => {
     origin: transport['targetWindow'].origin,
     source: transport['targetWindow'],
   })
-  transport['senderWindow'].dispatchEvent(validEvent)
+  ;(transport as any)['senderWindow'].dispatchEvent(validEvent)
   expect(callbackCalled).toEqual(true)
 })
 
@@ -155,7 +156,7 @@ test('onMessageReceived invokes handler and replies with response', () => {
   transport['targetWindow'].postMessage = (event) => {
     expect(event).toEqual(expectedResponse)
   }
-  transport['senderWindow'].dispatchEvent(event)
+  ;(transport as any)['senderWindow'].dispatchEvent(event)
 })
 
 test('onMessageReceived does not reply with response if the receiving message is already response', () => {
@@ -169,12 +170,233 @@ test('onMessageReceived does not reply with response if the receiving message is
   let callbackCalled = false
   const event: MessageEvent = new MessageEvent('message', {
     data: eventData,
-    origin: transport['senderWindow']['origin'], // event.origin !== event.data.origin when it is a reponse to a sendCommand
+    origin: (transport as any)['senderWindow']['origin'], // event.origin !== event.data.origin when it is a reponse to a sendCommand
     source: transport['targetWindow'],
   })
   transport['addCommandHandler'](testId, () => {
     callbackCalled = true
   })
-  transport['senderWindow'].dispatchEvent(event)
+  ;(transport as any)['senderWindow'].dispatchEvent(event)
   expect(callbackCalled).toEqual(false)
+})
+
+test('should accept messages from trusted origins', () => {
+  const transport = createTransport()
+  const testId = 'test'
+  const eventData = {
+    id: testId,
+    command: testId,
+  }
+
+  let callbackCalled = false
+  transport['addCommandHandler'](testId, () => (callbackCalled = true))
+
+  // Test all trusted origins
+  TrustedOrigins.forEach((trustedOrigin) => {
+    const validEvent: MessageEvent = new MessageEvent('message', {
+      data: eventData,
+      origin: trustedOrigin,
+      source: transport['targetWindow'],
+    })
+
+    // Reset callback state
+    callbackCalled = false
+    ;(transport as any)['senderWindow'].dispatchEvent(validEvent)
+
+    // Should accept messages from trusted origins
+    expect(callbackCalled).toEqual(true)
+  })
+})
+
+test('should reject messages from untrusted origins', () => {
+  const transport = createTransport()
+  const testId = 'test'
+  const eventData = {
+    id: testId,
+    command: testId,
+  }
+
+  let callbackCalled = false
+  transport['addCommandHandler'](testId, () => (callbackCalled = true))
+
+  // Test various untrusted origins
+  const untrustedOrigins = [
+    'https://evil.com',
+    'http://malicious-site.com',
+    'chrome://other-page',
+    'chrome-untrusted://other-bridge',
+    'file:///tmp/malicious.html',
+    'data:text/html,<script>alert("xss")</script>',
+    'javascript:alert("xss")',
+    'chrome-extension://malicious-extension',
+    'moz-extension://malicious-extension',
+    'about:blank',
+    'about:srcdoc',
+  ]
+
+  untrustedOrigins.forEach((untrustedOrigin) => {
+    const invalidEvent: MessageEvent = new MessageEvent('message', {
+      data: eventData,
+      origin: untrustedOrigin,
+      source: transport['targetWindow'],
+    })
+
+    // Reset callback state
+    callbackCalled = false
+    ;(transport as any)['senderWindow'].dispatchEvent(invalidEvent)
+
+    // Should reject messages from untrusted origins
+    expect(callbackCalled).toEqual(false)
+  })
+})
+
+test('should reject messages with null or undefined origin', () => {
+  const transport = createTransport()
+  const testId = 'test'
+  const eventData = {
+    id: testId,
+    command: testId,
+  }
+
+  let callbackCalled = false
+  transport['addCommandHandler'](testId, () => (callbackCalled = true))
+
+  // Test null and undefined origins
+  const invalidOrigins = [null, undefined, '']
+
+  invalidOrigins.forEach((invalidOrigin) => {
+    const invalidEvent: MessageEvent = new MessageEvent('message', {
+      data: eventData,
+      origin: invalidOrigin as any,
+      source: transport['targetWindow'],
+    })
+
+    // Reset callback state
+    callbackCalled = false
+    ;(transport as any)['senderWindow'].dispatchEvent(invalidEvent)
+
+    // Should reject messages with invalid origins
+    expect(callbackCalled).toEqual(false)
+  })
+})
+
+test('should reject messages without source', () => {
+  const transport = createTransport()
+  const testId = 'test'
+  const eventData = {
+    id: testId,
+    command: testId,
+  }
+
+  let callbackCalled = false
+  transport['addCommandHandler'](testId, () => (callbackCalled = true))
+
+  // Test message without source
+  const invalidEvent: MessageEvent = new MessageEvent('message', {
+    data: eventData,
+    origin: TrustedOrigins[0], // Use trusted origin
+    source: null, // No source
+  })
+
+  ;(transport as any)['senderWindow'].dispatchEvent(invalidEvent)
+
+  // Should reject messages without source
+  expect(callbackCalled).toEqual(false)
+})
+
+test('should reject non-message events', () => {
+  const transport = createTransport()
+  const testId = 'test'
+  const eventData = {
+    id: testId,
+    command: testId,
+  }
+
+  let callbackCalled = false
+  transport['addCommandHandler'](testId, () => (callbackCalled = true))
+
+  // Test non-message events
+  const nonMessageEvents = ['load', 'error', 'focus', 'blur']
+
+  nonMessageEvents.forEach((eventType) => {
+    const invalidEvent: MessageEvent = new MessageEvent(eventType as any, {
+      data: eventData,
+      origin: TrustedOrigins[0], // Use trusted origin
+      source: transport['targetWindow'],
+    })
+
+    // Reset callback state
+    callbackCalled = false
+    ;(transport as any)['senderWindow'].dispatchEvent(invalidEvent)
+
+    // Should reject non-message events
+    expect(callbackCalled).toEqual(false)
+  })
+})
+
+test('should handle edge case with malformed event data', () => {
+  const transport = createTransport()
+  const testId = 'test'
+
+  let callbackCalled = false
+  transport['addCommandHandler'](testId, () => (callbackCalled = true))
+
+  // Test with malformed event data
+  const malformedEvents = [
+    null,
+    undefined,
+    {},
+    { id: 'test' }, // Missing command
+    { command: 'test' }, // Missing id
+  ]
+
+  malformedEvents.forEach((malformedData) => {
+    const invalidEvent: MessageEvent = new MessageEvent('message', {
+      data: malformedData,
+      origin: TrustedOrigins[0], // Use trusted origin
+      source: transport['targetWindow'],
+    })
+
+    // Reset callback state
+    callbackCalled = false
+    ;(transport as any)['senderWindow'].dispatchEvent(invalidEvent)
+
+    // Should handle malformed data gracefully
+    expect(callbackCalled).toEqual(false)
+  })
+})
+
+test('should handle case sensitivity in origin validation', () => {
+  const transport = createTransport()
+  const testId = 'test'
+  const eventData = {
+    id: testId,
+    command: testId,
+  }
+
+  let callbackCalled = false
+  transport['addCommandHandler'](testId, () => (callbackCalled = true))
+
+  // Test case variations of trusted origins
+  const caseVariations = [
+    'CHROME-UNTRUSTED://LEDGER-BRIDGE',
+    'Chrome-Untrusted://Ledger-Bridge',
+    'chrome://WALLET',
+    'Chrome://Wallet',
+  ]
+
+  caseVariations.forEach((caseVariation) => {
+    const invalidEvent: MessageEvent = new MessageEvent('message', {
+      data: eventData,
+      origin: caseVariation,
+      source: transport['targetWindow'],
+    })
+
+    // Reset callback state
+    callbackCalled = false
+    ;(transport as any)['senderWindow'].dispatchEvent(invalidEvent)
+
+    // Should reject case variations (origin validation is case-sensitive)
+    expect(callbackCalled).toEqual(false)
+  })
 })

@@ -9,6 +9,7 @@ import {
   TrezorErrorsCodes,
   TrezorFrameCommand,
 } from './trezor-messages'
+import { TrustedOrigins } from '../untrusted_shared_types'
 
 // Handles sending messages to the Trezor library, creates untrusted iframe,
 // loads library and allows to send commands to the library and subscribe
@@ -59,6 +60,7 @@ export class TrezorBridgeTransport extends MessagingTransport {
     if (
       event.origin !== this.getTrezorBridgeOrigin()
       || event.type !== 'message'
+      || !TrustedOrigins.includes(event.origin)
       || !this.handlers.size
     ) {
       return

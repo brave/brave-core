@@ -9,6 +9,7 @@ import {
   LedgerFrameResponse,
   LedgerCommandHandlerUnion,
 } from './ledger-messages'
+import { TrustedOrigins } from '../untrusted_shared_types'
 
 // LedgerMessagingTransport is a generic bi-directional messaging utility for
 // Window objects. It supports supports both (1) the sending of messages via
@@ -81,18 +82,20 @@ export class LedgerMessagingTransport {
   protected onMessageReceived = async (
     event: MessageEvent<LedgerFrameCommand>,
   ) => {
+    const message = event.data
     if (
       event.type !== 'message'
-      || event.origin !== this.targetUrl
+      || !TrustedOrigins.includes(event.origin)
       || !event.source
+      || !message
+      || !message.id
+      || !message.command
+      || !message.origin
+      || !this.handlers.has(message.command)
     ) {
       return
     }
 
-    const message = event.data
-    if (!message || !this.handlers.has(message.command)) {
-      return
-    }
     const callback = this.handlers.get(message.command)
     if (!(typeof callback === 'function')) {
       return
