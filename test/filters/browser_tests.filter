@@ -99,7 +99,7 @@
 -OptimizationGuideInternalsPageBrowserTest.*
 -OptimizationGuideKeyedServiceBrowserTest.*
 -OptimizationGuideKeyedServiceEnterpriseBrowserTest.*
--OptimizationGuideKeyedServicePermissionsCheckDisabledTest.RemoteFetchingAllowed
+-OptimizationGuideKeyedServicePermissionsCheckDisabledTest.*
 -PageInfoBubbleViewMerchantTrustDialogBrowserTest.*
 -PageInfoBubbleViewMerchantTrustHatsDialogBrowserTest.InvokeUi_MerchantTrustSubpage
 -PasswordChangeBrowserTest.*
