@@ -1,3 +1,7 @@
 include_rules = [
+  "+absl/strings/str_format.h",
   "+components/keyed_service/core",
+  "+components/grit/brave_components_strings.h",
+  "+services/network/public/cpp",
+  "+services/network/test",
 ]

@@ -141,4 +141,19 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN_BUTTON" desc="The label for the auth try again button">
     Start over
   </message>
+  <message name="IDS_EMAIL_ALIASES_ERROR_NO_EMAIL_PROVIDED">
+    No email provided
+  </message>
+  <message name="IDS_EMAIL_ALIASES_ERROR_INVALID_RESPONSE_BODY">
+    Invalid response from Brave Accounts service
+  </message>
+  <message name="IDS_EMAIL_ALIASES_ERROR_NO_VERIFICATION_TOKEN">
+    No verification token received from Brave Accounts service
+  </message>
+  <message name="IDS_EMAIL_ALIASES_ERROR_NO_RESPONSE_BODY">
+    No response from Brave Accounts service
+  </message>
+  <message name="IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED">
+    Email verification failed
+  </message>
 </grit-part>

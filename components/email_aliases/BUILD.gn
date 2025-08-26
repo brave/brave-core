@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
 
 mojom_component("mojom") {
   output_prefix = "email_aliases_mojom"
@@ -15,6 +16,11 @@ mojom_component("mojom") {
   sources = [ "email_aliases.mojom" ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
+}
+
+generated_types("email_aliases_api_types") {
+  sources = [ "email_aliases_api.idl" ]
+  root_namespace = "email_aliases"
 }
 
 static_library("features") {
@@ -32,10 +38,31 @@ static_library("service") {
     "email_aliases_service.h",
   ]
   deps = [
+    ":email_aliases_api_types",
     ":mojom",
     "//base",
+    "//brave/brave_domains",
     "//brave/components/email_aliases:features",
+    "//brave/components/resources:strings_grit",
     "//components/keyed_service/core",
     "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network/public/cpp",
+    "//ui/base",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "email_aliases_service_unittest.cc" ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/email_aliases:features",
+    "//brave/components/email_aliases:service",
+    "//brave/components/resources:strings_grit",
+    "//components/prefs:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//ui/base",
   ]
 }
