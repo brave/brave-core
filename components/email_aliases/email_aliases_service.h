@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/weak_ptr.h"
 #include "base/timer/elapsed_timer.h"
 #include "base/timer/timer.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
@@ -18,6 +17,7 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -83,8 +83,8 @@ class EmailAliasesService : public KeyedService,
   std::string GetAuthTokenForTesting() const;
 
   // Build the fully-qualified Brave Accounts verification URLs.
-  static std::string GetAccountsServiceVerifyInitURL();
-  static std::string GetAccountsServiceVerifyResultURL();
+  static GURL GetAccountsServiceVerifyInitURL();
+  static GURL GetAccountsServiceVerifyResultURL();
 
  private:
   // Handles the response to the verify/init request. Parses a verification
@@ -141,10 +141,10 @@ class EmailAliasesService : public KeyedService,
 
   // Cached URLs computed once per service lifetime
   // Cached fully-qualified verify/init URLs.
-  std::string verify_init_url_;
+  const GURL verify_init_url_;
 
   // Cached fully-qualified verify/result URL.
-  std::string verify_result_url_;
+  const GURL verify_result_url_;
 
   // One-shot timer used to delay subsequent verify/result polls so that they
   // are not issued more frequently than the minimum interval.

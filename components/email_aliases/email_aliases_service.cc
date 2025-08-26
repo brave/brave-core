@@ -16,7 +16,6 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
-#include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -57,16 +56,16 @@ constexpr int kMaxResponseLength = 32768;
 }  // namespace
 
 // static
-std::string EmailAliasesService::GetAccountsServiceVerifyInitURL() {
-  return absl::StrFormat(kAccountServiceEndpoint,
-                         brave_domains::GetServicesDomain("accounts.bsg"),
-                         kAccountsServiceVerifyInitPath);
+GURL EmailAliasesService::GetAccountsServiceVerifyInitURL() {
+  return GURL(absl::StrFormat(kAccountServiceEndpoint,
+                              brave_domains::GetServicesDomain("accounts.bsg"),
+                              kAccountsServiceVerifyInitPath));
 }
 
-std::string EmailAliasesService::GetAccountsServiceVerifyResultURL() {
-  return absl::StrFormat(kAccountServiceEndpoint,
-                         brave_domains::GetServicesDomain("accounts.bsg"),
-                         kAccountsServiceVerifyResultPath);
+GURL EmailAliasesService::GetAccountsServiceVerifyResultURL() {
+  return GURL(absl::StrFormat(kAccountServiceEndpoint,
+                              brave_domains::GetServicesDomain("accounts.bsg"),
+                              kAccountsServiceVerifyResultPath));
 }
 
 EmailAliasesService::EmailAliasesService(
@@ -122,7 +121,7 @@ void EmailAliasesService::RequestAuthentication(
   std::optional<std::string> body = base::WriteJson(auth_request.ToValue());
   CHECK(body);
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(verify_init_url_);
+  resource_request->url = verify_init_url_;
   resource_request->method = net::HttpRequestHeaders::kPostMethod;
   verification_simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
@@ -187,7 +186,7 @@ void EmailAliasesService::RequestSession() {
   std::optional<std::string> body = base::WriteJson(session_request.ToValue());
   CHECK(body);
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(verify_result_url_);
+  resource_request->url = verify_result_url_;
   resource_request->method = net::HttpRequestHeaders::kPostMethod;
   resource_request->headers.SetHeader(
       "Authorization", std::string("Bearer ") + verification_token_);
