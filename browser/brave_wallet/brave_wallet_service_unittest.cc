@@ -1792,7 +1792,17 @@ TEST_F(BraveWalletServiceUnitTest, AddCustomNetwork) {
               *network_manager_->GetAllCustomChains(mojom::CoinType::ADA)[0]);
   }
 
-  static_assert(AllCoinsTested<6>());
+  {
+    mojom::NetworkInfo chain_dot =
+        GetTestNetworkInfo1(mojom::kPolkadotMainnet, mojom::CoinType::DOT);
+    json_rpc_service_->AddChain(chain_dot.Clone(), base::DoNothing());
+    ASSERT_EQ(
+        1u, network_manager_->GetAllCustomChains(mojom::CoinType::DOT).size());
+    EXPECT_EQ(chain_dot,
+              *network_manager_->GetAllCustomChains(mojom::CoinType::DOT)[0]);
+  }
+
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {
