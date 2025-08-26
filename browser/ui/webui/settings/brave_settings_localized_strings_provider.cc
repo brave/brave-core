@@ -1243,7 +1243,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
                           TorProfileServiceFactory::IsTorDisabled(profile));
 #endif
 
-
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
     const webui::LocalizedString kSessionOnlyToEphemeralStrings[] = {

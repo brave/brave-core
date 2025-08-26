@@ -14,6 +14,7 @@
 #include "base/types/pass_key.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
@@ -21,6 +22,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/view.h"
+#include "ui/views/view_observer.h"
 #include "ui/views/widget/widget_observer.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -64,6 +66,7 @@ class SplitView : public views::View,
   static constexpr int kBorderThickness = 2;
 
   SplitView(Browser& browser,
+            BrowserView& browser_view,
             views::View* contents_container,
             ContentsWebView* contents_web_view);
 
@@ -95,17 +98,17 @@ class SplitView : public views::View,
   // Update dev tools
   void UpdateSecondaryDevtoolsLayoutAndVisibility();
 
-  views::View* secondary_contents_container() {
-    return secondary_contents_container_;
+  ContentsWebView* secondary_contents_web_view() {
+    return secondary_contents_container_view_->contents_view();
   }
 
-  ContentsWebView* secondary_contents_web_view() {
-    return secondary_contents_web_view_;
+  ContentsContainerView* secondary_contents_container_view() {
+    return secondary_contents_container_view_;
   }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   ReaderModeToolbarView* secondary_reader_mode_toolbar() {
-    return secondary_reader_mode_toolbar_;
+    return secondary_contents_container_view_->reader_mode_toolbar();
   }
   void OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) override;
   void UpdateSecondaryReaderModeToolbarVisibility();
@@ -142,6 +145,22 @@ class SplitView : public views::View,
   friend class SpeedReaderWithSplitViewBrowserTest;
   friend class sidebar::SidebarBrowserWithSplitViewTest;
 
+  class ContentsWebViewObserver : public views::ViewObserver {
+   public:
+    explicit ContentsWebViewObserver(ContentsWebView* contents_web_view);
+    ~ContentsWebViewObserver() override;
+
+    // ViewObserver:
+    void OnViewFocused(views::View* observed_view) override;
+    void OnViewIsDeleting(views::View* observed_view) override;
+
+   private:
+    raw_ptr<ContentsWebView> contents_web_view_;
+
+    base::ScopedObservation<views::View, views::ViewObserver>
+        contents_web_view_observation_{this};
+  };
+
   tabs::TabHandle GetActiveTabHandle() const;
   bool IsActiveWebContentsTiled(const TabTile& tile) const;
   bool IsWebContentsTiled(content::WebContents* contents) const;
@@ -157,19 +176,16 @@ class SplitView : public views::View,
 
   raw_ref<Browser> browser_;
 
+  // Wrapper of contents area in BraveBrowserView
   raw_ptr<views::View> contents_container_ = nullptr;
+
+  // The web view for main contents, which has focus.
   raw_ptr<views::WebView> contents_web_view_ = nullptr;
 
-  raw_ptr<views::View> secondary_contents_container_ = nullptr;
-  raw_ptr<views::WebView> secondary_devtools_web_view_ = nullptr;
-  raw_ptr<ScrimView> secondary_devtools_scrim_view_ = nullptr;
-  raw_ptr<ContentsWebView> secondary_contents_web_view_ = nullptr;
-  raw_ptr<ScrimView> secondary_contents_scrim_view_ = nullptr;
-  raw_ptr<views::View> secondary_lens_overlay_view_ = nullptr;
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  raw_ptr<ReaderModeToolbarView> secondary_reader_mode_toolbar_ = nullptr;
-#endif
+  // Wrapper of secondary ContentsWebView and other subviews, such as Devtools
+  // web view.
+  raw_ptr<BraveContentsContainerView> secondary_contents_container_view_ =
+      nullptr;
 
   raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
 
@@ -182,6 +198,8 @@ class SplitView : public views::View,
       widget_observation_{this};
   base::ScopedObservation<FullscreenController, FullscreenObserver>
       fullscreen_observation_{this};
+
+  std::unique_ptr<ContentsWebViewObserver> contents_view_observer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_
