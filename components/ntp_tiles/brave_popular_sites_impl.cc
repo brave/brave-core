@@ -8,7 +8,12 @@
 namespace {
 
 // static global variable is used because |sections()| returns const ref value.
-std::map<ntp_tiles::SectionType, ntp_tiles::PopularSites::SitesVector>
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] std::map<ntp_tiles::SectionType,
+                               ntp_tiles::PopularSites::SitesVector>
     g_filtered_sections;
 
 bool ShouldHideSiteFromPopularSites(const ntp_tiles::PopularSites::Site& site) {

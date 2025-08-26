@@ -22,13 +22,18 @@ bool operator==(const PasswordFinalize::Response& lhs,
 
 using PasswordFinalizeTestCase = EndpointTestCase<PasswordFinalize>;
 
-const PasswordFinalizeTestCase kSuccess{.test_name = "success",
-                                        .http_status_code = net::HTTP_OK,
-                                        .raw_reply = R"({ "authToken": null,
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const PasswordFinalizeTestCase kSuccess{
+    .test_name = "success",
+    .http_status_code = net::HTTP_OK,
+    .raw_reply = R"({ "authToken": null,
                                                           "requiresEmailVerification": true,
                                                           "requiresTwoFA": false,
                                                           "sessionsInvalidated": false })",
-                                        .reply = PasswordFinalize::Response()};
+    .reply = PasswordFinalize::Response()};
 
 // clang-format off
 // application/json errors:
@@ -44,7 +49,11 @@ const PasswordFinalizeTestCase kSuccess{.test_name = "success",
 // - HTTP 5XX:
 //   - { "code": 0, "error": "Internal Server Error", "status": <5xx> }
 // clang-format on
-const PasswordFinalizeTestCase kApplicationJsonError{
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const PasswordFinalizeTestCase kApplicationJsonError{
     .test_name = "application_json_error",
     .http_status_code = net::HTTP_BAD_REQUEST,
     .raw_reply =
@@ -62,7 +71,11 @@ const PasswordFinalizeTestCase kApplicationJsonError{
 // non-application/json errors:
 // - HTTP 5XX:
 //   - plain text errors returned by AWS/load balancer
-const PasswordFinalizeTestCase kNonApplicationJsonError{
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const PasswordFinalizeTestCase kNonApplicationJsonError{
     .test_name = "non_application_json_error",
     .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
     .raw_reply = "non-application/json error",

@@ -60,7 +60,11 @@ namespace {
 BraveReferralsService::ReferralInitializedCallback*
     g_testing_referral_initialized_callback = nullptr;
 
-base::FilePath g_promo_file_path;
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] base::FilePath g_promo_file_path;
 
 void DeletePromoCodeFile(const base::FilePath& promo_code_file) {
   if (!base::DeleteFile(promo_code_file)) {

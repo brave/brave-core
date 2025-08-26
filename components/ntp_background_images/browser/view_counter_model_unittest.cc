@@ -17,7 +17,12 @@ namespace ntp_background_images {
 namespace {
 
 const size_t kTestImageCount = 3;
-const std::vector<size_t> kTestCampaignsTotalImageCount = {3, 2, 3};
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const std::vector<size_t> kTestCampaignsTotalImageCount =
+    {3, 2, 3};
 
 }  // namespace
 
