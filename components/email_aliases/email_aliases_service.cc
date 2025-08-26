@@ -177,7 +177,7 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
 }
 
 void EmailAliasesService::RequestSession() {
-  DCHECK(!verification_simple_url_loader_.get());
+  CHECK(!verification_simple_url_loader_.get());
   if (verification_token_.empty()) {
     // No verification token; polling has been cancelled.
     return;
@@ -264,7 +264,7 @@ void EmailAliasesService::MaybeRequestSessionAgain() {
     return;
   }
   // Session request timer should not be running at this point.
-  DCHECK(!session_request_timer_.IsRunning());
+  CHECK(!session_request_timer_.IsRunning());
   // Schedule the next request after a short interval.
   session_request_timer_.Start(
       FROM_HERE, kSessionPollInterval,
