@@ -134,6 +134,10 @@ void SplitViewLocationBar::SetParentWebView(views::View* parent_web_view) {
   }
 
   view_observation_.Reset();
+  if (!parent_web_view) {
+    return;
+  }
+
   view_observation_.Observe(parent_web_view);
 
   if (GetWidget()) {
