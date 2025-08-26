@@ -28,7 +28,11 @@ class PostCreateTransaction : public RequestBuilder {
   std::string ContentType() const override;
 
  protected:
-  inline static const std::string kFeeMessage =
+  // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+  // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+  // added in the meantime to fix the build error. Remove this attribute and
+  // provide a proper fix.
+  [[clang::no_destroy]] inline static const std::string kFeeMessage =
       "5% transaction fee collected by Brave Software International";
 
   std::string token_;
