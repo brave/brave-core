@@ -39,6 +39,7 @@ source_set("common_impl") {
   visibility = [
     ":unit_tests",
     "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/ios/browser",
     "//brave/components/ai_chat/renderer",
   ]
   sources = [

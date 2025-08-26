@@ -6,5 +6,5 @@
 import("//build/config/features.gni")
 
 declare_args() {
-  enable_brave_ai_chat_agent_profile = !is_android
+  enable_brave_ai_chat_agent_profile = !is_android && !is_ios
 }
