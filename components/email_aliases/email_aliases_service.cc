@@ -269,7 +269,7 @@ void EmailAliasesService::MaybeRequestSessionAgain() {
   session_request_timer_.Start(
       FROM_HERE, kSessionPollInterval,
       base::BindOnce(&EmailAliasesService::RequestSession,
-                       weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void EmailAliasesService::CancelAuthenticationOrLogout(

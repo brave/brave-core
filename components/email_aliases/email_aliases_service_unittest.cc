@@ -331,4 +331,7 @@ TEST_F(EmailAliasesServiceTimingTest, VerifyResult_StopsAfterMaxDuration) {
             email_aliases::mojom::AuthenticationStatus::kUnauthenticated);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/48696): Add tests for
+// checking cancellation of polling, etc.
+
 }  // namespace email_aliases
