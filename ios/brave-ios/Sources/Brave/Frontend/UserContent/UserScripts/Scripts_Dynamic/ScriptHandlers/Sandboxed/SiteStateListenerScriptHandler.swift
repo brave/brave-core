@@ -106,7 +106,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
           )
 
           try await tab.evaluateJavaScript(
-            functionName: script.source,
+            functionName: "",
             frame: message.frameInfo,
             contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
             asFunction: false
