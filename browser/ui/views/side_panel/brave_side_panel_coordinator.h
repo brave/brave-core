@@ -19,9 +19,9 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
   ~BraveSidePanelCoordinator() override;
 
   // SidePanelCoodinator overrides:
-  void Show(SidePanelEntry::Key entry_key,
-            std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger =
-                std::nullopt) override;
+  void Show(const UniqueKey& entry,
+            std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger,
+            bool suppress_animations) override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
