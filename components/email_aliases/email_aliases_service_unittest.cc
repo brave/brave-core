@@ -73,7 +73,7 @@ class EmailAliasesServiceTest : public ::testing::Test {
       const std::string& email,
       const std::string& response_body) {
     test_url_loader_factory_.AddResponse(
-        service_->GetAccountsServiceVerifyInitURL(), response_body);
+        service_->GetAccountsServiceVerifyInitURL().spec(), response_body);
     bool called = false;
     std::optional<std::string> error;
     service_->RequestAuthentication(
@@ -127,7 +127,7 @@ class EmailAliasesServiceTest : public ::testing::Test {
     }
     for (const auto& body : responses) {
       test_url_loader_factory_.AddResponse(
-          service_->GetAccountsServiceVerifyResultURL(), body);
+          service_->GetAccountsServiceVerifyResultURL().spec(), body);
     }
     EXPECT_TRUE(observer_->WaitFor(expected_status));
   }
@@ -249,11 +249,11 @@ class EmailAliasesServiceTimingTest : public ::testing::Test {
   void StartAuthAndCaptureRequests(const std::string& init_body,
                                    const std::string& result_body) {
     // Intercept verify/result requests and record timestamps.
-    const std::string verify_result_url =
+    const GURL verify_result_url =
         EmailAliasesService::GetAccountsServiceVerifyResultURL();
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
-          if (request.url.spec() == verify_result_url) {
+          if (request.url == verify_result_url) {
             verify_result_request_times_.push_back(
                 task_environment_.NowTicks());
           }
@@ -261,8 +261,9 @@ class EmailAliasesServiceTimingTest : public ::testing::Test {
 
     // Provide canned responses for init and result endpoints.
     url_loader_factory_.AddResponse(
-        EmailAliasesService::GetAccountsServiceVerifyInitURL(), init_body);
-    url_loader_factory_.AddResponse(verify_result_url, result_body);
+        EmailAliasesService::GetAccountsServiceVerifyInitURL().spec(),
+        init_body);
+    url_loader_factory_.AddResponse(verify_result_url.spec(), result_body);
 
     // Kick off authentication.
     bool called = false;
