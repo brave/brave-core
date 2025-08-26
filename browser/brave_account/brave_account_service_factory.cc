@@ -20,7 +20,7 @@ BraveAccountServiceFactory* BraveAccountServiceFactory::GetInstance() {
 }
 
 // static
-BraveAccountService* BraveAccountServiceFactory::GetForBrowserContext(
+BraveAccountService* BraveAccountServiceFactory::GetFor(
     content::BrowserContext* context) {
   CHECK(context);
   return static_cast<BraveAccountService*>(
