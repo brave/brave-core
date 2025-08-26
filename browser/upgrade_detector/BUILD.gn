@@ -1,0 +1,20 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("upgrade_when_idle") {
+  sources = [
+    "upgrade_when_idle.cc",
+    "upgrade_when_idle.h",
+  ]
+  deps = [
+    "//base",
+    # We also depend on several sources from //chrome/browser but can't list it
+    # here because it would create a dependency cycle.
+    "//chrome/browser:browser_process",
+    "//chrome/browser/ui:browser_list_impl",
+    "//chrome/common:non_code_constants",
+    "//ui/base/idle",
+  ]
+}
