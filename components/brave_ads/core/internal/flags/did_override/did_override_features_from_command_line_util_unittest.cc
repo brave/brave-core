@@ -54,7 +54,13 @@ namespace {
 struct ParamInfo final {
   test::CommandLineSwitchInfo command_line_switch;
   bool did_override_from_command_line;
-} const kTests[] = {
+};
+
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const ParamInfo kTests[] = {
     {.command_line_switch = {"foobar", ""},
      .did_override_from_command_line = false},
 
