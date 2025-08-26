@@ -142,6 +142,7 @@ void EmailAliasesService::RequestAuthentication(
 void EmailAliasesService::OnRequestAuthenticationResponse(
     RequestAuthenticationCallback callback,
     std::optional<std::string> response_body) {
+  verification_simple_url_loader_.reset();
   if (!response_body) {
     std::move(callback).Run(
         l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_RESPONSE_BODY));
@@ -176,6 +177,7 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
 }
 
 void EmailAliasesService::RequestSession() {
+  DCHECK(!verification_simple_url_loader_.get());
   if (verification_token_.empty()) {
     // No verification token; polling has been cancelled.
     return;
@@ -202,6 +204,7 @@ void EmailAliasesService::RequestSession() {
 
 void EmailAliasesService::OnRequestSessionResponse(
     std::optional<std::string> response_body) {
+  verification_simple_url_loader_.reset();
   if (!response_body) {
     // No response body, log it and re-request.
     LOG(ERROR) << "Email Aliases service error: No response body";
