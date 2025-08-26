@@ -90,7 +90,7 @@ std::wstring GetBraveVpnHelperServiceDisplayName() {
 
 std::wstring GetBraveVpnHelperServiceName() {
   std::wstring name = GetBraveVpnHelperServiceDisplayName();
-  name.erase(std::remove_if(name.begin(), name.end(), isspace), name.end());
+  std::erase_if(name, isspace);
   return name;
 }
 
