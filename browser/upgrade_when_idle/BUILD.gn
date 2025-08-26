@@ -10,6 +10,7 @@ source_set("upgrade_when_idle") {
   ]
   deps = [
     "//base",
+
     # We also depend on several sources from //chrome/browser but can't list it
     # here because it would create a dependency cycle.
     "//chrome/browser:browser_process",

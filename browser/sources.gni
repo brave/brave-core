@@ -378,9 +378,8 @@ if (is_mac) {
     "//chrome/app:generated_resources",
     "//chrome/common:non_code_constants",
   ]
-  brave_chrome_browser_allow_circular_includes_from += [
-    "//brave/browser/upgrade_when_idle",
-  ]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/upgrade_when_idle" ]
   brave_chrome_framework_contents = []
 }
 
