@@ -58,8 +58,6 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
-import org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDelegate;
-import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -185,6 +183,7 @@ import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.TabSelectionType;
+import org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
@@ -193,6 +192,7 @@ import org.chromium.chrome.browser.toolbar.BraveToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
@@ -512,8 +512,8 @@ public abstract class BraveActivity extends ChromeActivity
             final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
                     (BraveTabbedAppMenuPropertiesDelegate) delegate;
             // Get full menu items and pass them to settings.
-            CustomizeBraveMenu.openCustomizeMenuSettings(this,
-                    braveTabbedAppMenuPropertiesDelegate.buildFullMenuModelList());
+            CustomizeBraveMenu.openCustomizeMenuSettings(
+                    this, braveTabbedAppMenuPropertiesDelegate.buildFullMenuModelList());
         } else {
             return false;
         }

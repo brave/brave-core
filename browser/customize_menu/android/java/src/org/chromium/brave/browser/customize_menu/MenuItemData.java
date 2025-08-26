@@ -15,8 +15,8 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 
 /**
- * Parcelable data class representing a menu item for customization.
- * This can be passed between activities via Intent extras.
+ * Parcelable data class representing a menu item for customization. This can be passed between
+ * activities via Intent extras.
  */
 @NullMarked
 public class MenuItemData implements Parcelable {
@@ -25,7 +25,8 @@ public class MenuItemData implements Parcelable {
     public final @DrawableRes int iconResId;
     public final boolean checked;
 
-    public MenuItemData(@IdRes int id, @Nullable String title, @DrawableRes int iconResId, boolean checked) {
+    public MenuItemData(
+            @IdRes int id, @Nullable String title, @DrawableRes int iconResId, boolean checked) {
         this.id = id;
         this.title = title;
         this.iconResId = iconResId;
@@ -52,15 +53,16 @@ public class MenuItemData implements Parcelable {
         return 0;
     }
 
-    public static final Creator<MenuItemData> CREATOR = new Creator<MenuItemData>() {
-        @Override
-        public MenuItemData createFromParcel(Parcel in) {
-            return new MenuItemData(in);
-        }
+    public static final Creator<MenuItemData> CREATOR =
+            new Creator<MenuItemData>() {
+                @Override
+                public MenuItemData createFromParcel(Parcel in) {
+                    return new MenuItemData(in);
+                }
 
-        @Override
-        public MenuItemData[] newArray(int size) {
-            return new MenuItemData[size];
-        }
-    };
+                @Override
+                public MenuItemData[] newArray(int size) {
+                    return new MenuItemData[size];
+                }
+            };
 }

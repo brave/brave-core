@@ -263,7 +263,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         MVCListAdapter.ModelList modelList = buildFullMenuModelList();
 
         // Customize menu item visibility.
-         CustomizeBraveMenu.applyCustomization(modelList);
+        CustomizeBraveMenu.applyCustomization(modelList);
 
         return modelList;
     }
