@@ -25,7 +25,7 @@ declare_args() {
   chrome_version_string = ""
   target_android_base = ""
   target_android_output_format = ""
-  brave_android_keystore_path = "."
+  brave_android_keystore_path = ""
   brave_android_keystore_name = ""
   brave_android_keystore_password = ""
   brave_android_key_password = ""
@@ -41,6 +41,17 @@ declare_args() {
   # Enables brave/tools/redirect_cc target, replaces brave/chromium_src
   # overrides with empty ones to make //base buildable for redirect_cc.
   android_aab_to_apk = false
+}
+
+if (is_component_build || is_ios ||
+      (is_android && brave_android_keystore_path == "") ||
+      (is_mac && mac_signing_identifier == "")) {
+  skip_signing = true
+}
+
+if (brave_android_keystore_path == "") {
+  # set a default path so rebase_path doesn't fail
+  brave_android_keystore_path = "."
 }
 
 if (target_os == "win") {
