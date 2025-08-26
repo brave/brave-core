@@ -58,6 +58,8 @@ class WalletPanelUI : public TopChromeWebUIController,
           json_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
           bitcoin_rpc_service,
+      mojo::PendingReceiver<brave_wallet::mojom::PolkadotWalletService>
+          polkadot_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
           zcash_service,
       mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService>

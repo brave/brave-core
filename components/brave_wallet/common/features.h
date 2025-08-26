@@ -23,6 +23,8 @@ BASE_DECLARE_FEATURE(kBraveWalletZCashFeature);
 // Adds shielded operations support for Z Cash
 extern const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled;
 
+BASE_DECLARE_FEATURE(kBraveWalletPolkadotFeature);
+
 BASE_DECLARE_FEATURE(kBraveWalletCardanoFeature);
 extern const base::FeatureParam<int> kCardanoRpcThrottle;
 extern const base::FeatureParam<bool> kCardanoDAppSupport;
