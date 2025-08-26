@@ -38,8 +38,12 @@ import {
 } from './components/connection_section/connection_section'
 
 // Styled Components
-import { FavIcon } from './connections.style'
-import { Column, Text } from '../../shared/style'
+import {
+  FavIcon,
+  DomainText,
+  DomainTextContainer, //
+} from './connections.style'
+import { Column } from '../../shared/style'
 import { VerifiedLabel } from '../../shared/verified_label/verified_label'
 
 const CONNECTABLE_COIN_TYPES = [
@@ -80,18 +84,19 @@ export const Connections = () => {
             activeOrigin.originSpec,
           )}`}
         />
-        <Column
+        <DomainTextContainer
           gap='4px'
           margin='0px 0px 24px 0px'
+          padding='0px 24px'
         >
-          <Text
+          <DomainText
             textSize='16px'
             isBold={true}
             textColor='primary'
           >
             {activeOrigin.eTldPlusOne}
-          </Text>
-          <Text
+          </DomainText>
+          <DomainText
             textSize='14px'
             isBold={false}
             textColor='tertiary'
@@ -100,9 +105,9 @@ export const Connections = () => {
               originSpec={activeOrigin.originSpec}
               eTldPlusOne={activeOrigin.eTldPlusOne}
             />
-          </Text>
+          </DomainText>
           {isDAppVerified && <VerifiedLabel />}
-        </Column>
+        </DomainTextContainer>
         <Column
           gap='16px'
           width='100%'
