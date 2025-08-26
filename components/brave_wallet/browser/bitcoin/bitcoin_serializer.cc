@@ -32,7 +32,11 @@ uint32_t WeightUnitsToVBytes(uint32_t wu) {
 }
 
 const std::vector<uint8_t>& DummySignature() {
-  static std::vector<uint8_t> dummy_signature = []() {
+  // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+  // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+  // added in the meantime to fix the build error. Remove this attribute and
+  // provide a proper fix.
+  [[clang::no_destroy]] static std::vector<uint8_t> dummy_signature = []() {
     constexpr size_t kRLength = 32;
     constexpr size_t kSLength = 32;
     std::vector<uint8_t> result;
@@ -52,7 +56,11 @@ const std::vector<uint8_t>& DummySignature() {
 }
 
 const std::vector<uint8_t>& DummyPubkey() {
-  static std::vector<uint8_t> dummy_pubkey = []() {
+  // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+  // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+  // added in the meantime to fix the build error. Remove this attribute and
+  // provide a proper fix.
+  [[clang::no_destroy]] static std::vector<uint8_t> dummy_pubkey = []() {
     constexpr size_t kLength = 33;
     std::vector<uint8_t> result(kLength, 0);
     return result;
@@ -61,7 +69,11 @@ const std::vector<uint8_t>& DummyPubkey() {
 }
 
 const std::vector<uint8_t>& DummyWitness() {
-  static std::vector<uint8_t> dummy_witness = []() {
+  // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+  // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+  // added in the meantime to fix the build error. Remove this attribute and
+  // provide a proper fix.
+  [[clang::no_destroy]] static std::vector<uint8_t> dummy_witness = []() {
     return BitcoinSerializer::SerializeWitness(DummySignature(), DummyPubkey());
   }();
   return dummy_witness;

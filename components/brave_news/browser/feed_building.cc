@@ -44,7 +44,11 @@ using mojom::CardType;
 // This controls the order to display "card" and content types on every
 // platform. Each "page" of content is a repeat of
 // `page_content_order + random_content_order`
-std::vector<CardType> g_page_content_order = {
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] std::vector<CardType> g_page_content_order = {
     CardType::HEADLINE,        CardType::HEADLINE,
     CardType::HEADLINE_PAIRED, CardType::PROMOTED_ARTICLE,
     CardType::CATEGORY_GROUP,  CardType::HEADLINE,
@@ -54,8 +58,12 @@ std::vector<CardType> g_page_content_order = {
     CardType::PUBLISHER_GROUP, CardType::HEADLINE_PAIRED,
     CardType::HEADLINE,        CardType::DEALS};
 
-std::vector<CardType> g_random_content_order = {CardType::HEADLINE,
-                                                CardType::HEADLINE_PAIRED};
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] std::vector<CardType> g_random_content_order = {
+    CardType::HEADLINE, CardType::HEADLINE_PAIRED};
 
 mojom::FeedItemPtr FromArticle(mojom::ArticlePtr article) {
   return mojom::FeedItem::NewArticle(std::move(article));
