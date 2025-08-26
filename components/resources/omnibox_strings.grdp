@@ -17,4 +17,13 @@
   <message name="IDS_OMNIBOX_SELECT_ASK_LEO_HINT" desc="The hint displayed in the omnibox for selecting the Ask Leo match">
     Press ↑ to highlight
   </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_ASK_BRAVE_SEARCH_NAME" desc="The name of the Ask Brave Search engine as it appears on chrome://settings/searchEngines.">
+    Brave
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_ASK_BRAVE_SEARCH_KEYWORD" desc="The keyword required to trigger Ask Brave Search in keyword mode. This will be prepended with an '@'.">
+    Ask
+  </message>
+  <message name="IDS_OMNIBOX_ASK_BRAVE_SEARCH_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @ask scope.">
+    Ask anything
+  </message>
 </grit-part>

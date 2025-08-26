@@ -1115,6 +1115,8 @@ source_set("ui") {
       "views/location_bar/brave_search_conversion/promotion_button_controller.h",
       "views/location_bar/brave_search_conversion/promotion_button_view.cc",
       "views/location_bar/brave_search_conversion/promotion_button_view.h",
+      "views/location_bar/brave_selected_keyword_view_util.cc",
+      "views/location_bar/brave_selected_keyword_view_util.h",
       "views/location_bar/brave_star_view.cc",
       "views/location_bar/brave_star_view.h",
       "views/profiles/brave_avatar_toolbar_button.cc",
