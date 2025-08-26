@@ -1,0 +1,12 @@
+diff --git a/components/search_engines/template_url_starter_pack_data.h b/components/search_engines/template_url_starter_pack_data.h
+index 86fbd587b65b194fdc528b6dbd51f020168eb50e..07aa67626cd9369bc637eee9a8b3bc38245dcf35 100644
+--- a/components/search_engines/template_url_starter_pack_data.h
++++ b/components/search_engines/template_url_starter_pack_data.h
+@@ -28,6 +28,7 @@ typedef enum {
+   kGemini = 4,
+   kPage = 5,
+   kAiMode = 6,
++  kAskBraveSearch = 7,
+ 
+   kMaxStarterPackId
+ } StarterPackId;

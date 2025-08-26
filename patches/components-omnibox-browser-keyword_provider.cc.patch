@@ -1,0 +1,12 @@
+diff --git a/components/omnibox/browser/keyword_provider.cc b/components/omnibox/browser/keyword_provider.cc
+index e192946f2632ad2c8449d84f4575b1db8a1db497..f22d12266cd701591a2fccdbaab7cc9b439e11fd 100644
+--- a/components/omnibox/browser/keyword_provider.cc
++++ b/components/omnibox/browser/keyword_provider.cc
+@@ -417,6 +417,7 @@ void KeywordProvider::FillInUrlAndContents(
+   DCHECK(!turl->short_name().empty());
+   const TemplateURLRef& turl_ref = turl->url_ref();
+   DCHECK(turl_ref.IsValid(GetTemplateURLService()->search_terms_data()));
++  BRAVE_KEYWORD_PROVIDER_FILL_IN_URL_AND_CONTENTS
+   if (remaining_input.empty()) {
+     // Null match; e.g. "<Type search term>".
+     if (turl->starter_pack_id() == template_url_starter_pack_data::kAiMode) {

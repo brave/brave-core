@@ -1,0 +1,12 @@
+diff --git a/components/omnibox/browser/omnibox_controller.cc b/components/omnibox/browser/omnibox_controller.cc
+index eeb1d6ea66171fd514127f0b06e7c7378d973dfe..459e2315dee726ddcdf79d8340ddd893d0f0cfcf 100644
+--- a/components/omnibox/browser/omnibox_controller.cc
++++ b/components/omnibox/browser/omnibox_controller.cc
+@@ -173,6 +173,7 @@ bool OmniboxController::IsSuggestionHidden(
+         turl->starter_pack_id() == template_url_starter_pack_data::kGemini) {
+       return true;
+     }
++    BRAVE_OMNIBOX_CONTROLLER_IS_SUGGESTION_HIDDEN
+   }
+   return false;
+ }

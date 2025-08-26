@@ -1,0 +1,12 @@
+diff --git a/components/omnibox/browser/autocomplete_match.cc b/components/omnibox/browser/autocomplete_match.cc
+index 5750f28aa23674724ef8bf3eca021cf60f26c970..0543d6ffae50ed3a8db6f923b08b6bb045f4dfb6 100644
+--- a/components/omnibox/browser/autocomplete_match.cc
++++ b/components/omnibox/browser/autocomplete_match.cc
+@@ -1346,6 +1346,7 @@ std::u16string AutocompleteMatch::GetKeywordPlaceholder(
+     case template_url_starter_pack_data::kAiMode:
+       message_id = IDS_OMNIBOX_AI_MODE_SCOPE_PLACEHOLDER_TEXT;
+       break;
++    BRAVE_AUTOCOMPLETE_MATCH_GET_KEYWORD_PLACEHOLDER
+     default:
+       return u"";
+   }

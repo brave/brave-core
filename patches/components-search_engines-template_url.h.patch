@@ -1,0 +1,12 @@
+diff --git a/components/search_engines/template_url.h b/components/search_engines/template_url.h
+index 176918e83a4f784d819985d27e0d31da0ab94e80..011709fa6df7345d2854f7d170c88e29cb5f46c7 100644
+--- a/components/search_engines/template_url.h
++++ b/components/search_engines/template_url.h
+@@ -828,6 +828,7 @@ class TemplateURL {
+   // Some starter packs are considered 'ask a question' kind of starter packs.
+   // This can be used to condition UI text or a11y strings.
+   bool is_ask_starter_pack() const {
++    BRAVE_TEMPLATE_URL_IS_ASK_STARTER_PACK
+     return starter_pack_id() == template_url_starter_pack_data::kGemini ||
+            starter_pack_id() == template_url_starter_pack_data::kAiMode;
+   }
