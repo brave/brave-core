@@ -111,6 +111,8 @@ program
     }
 
     config.update(options)
+    // ignore use_no_gn_gen when updating the symlink
+    delete config.use_no_gn_gen
     const currentLink = options.symlink_dir
     if (
       !path.isAbsolute(currentLink)
