@@ -10,3 +10,6 @@
 
 NSString* const kBraveTalkDisabledByPolicyPrefName =
     base::SysUTF8ToNSString(kBraveTalkDisabledByPolicy);
+
+NSString* const kStatsReportingEnabledPrefName =
+    base::SysUTF8ToNSString(kStatsReportingEnabled);

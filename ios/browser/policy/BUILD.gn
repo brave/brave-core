@@ -17,6 +17,7 @@ source_set("policy") {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common:pref_names",
     "//brave/components/constants",
+    "//brave/components/p3a",
     "//components/policy/core/browser",
     "//ios/chrome/browser/policy/model",
   ]

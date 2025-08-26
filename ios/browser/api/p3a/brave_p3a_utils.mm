@@ -65,6 +65,10 @@ NSString* const P3ACreativeMetricPrefix =
   _localState->CommitPendingWrite();
 }
 
+- (bool)isP3APreferenceManaged {
+  return _localState->IsManagedPreference(p3a::kP3AEnabled);
+}
+
 - (bool)isNoticeAcknowledged {
   return _localState->GetBoolean(p3a::kP3ANoticeAcknowledged);
 }

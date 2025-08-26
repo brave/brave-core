@@ -65,7 +65,11 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               p3aUtils: p3aUtilities,
               attributionManager: attributionManager
             )
-            let controller = OnboardingController(environment: env)
+            var steps: [any OnboardingStep] = [.defaultBrowsing, .blockInterruptions]
+            if !p3aUtilities.isP3APreferenceManaged {
+              steps.append(.p3aOptIn)
+            }
+            let controller = OnboardingController(environment: env, steps: steps)
             present(controller, animated: false)
           },
           cellClass: MultilineButtonCell.self

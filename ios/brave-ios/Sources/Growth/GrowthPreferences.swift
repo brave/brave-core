@@ -24,7 +24,6 @@ extension Preferences {
       key: "dau.app-retention-launch-date",
       default: nil
     )
-    public static let sendUsagePing = Option<Bool>(key: "dau.send-usage-ping", default: true)
   }
 
   public final class P3A {

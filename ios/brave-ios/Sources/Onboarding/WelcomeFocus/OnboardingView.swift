@@ -44,7 +44,7 @@ extension EnvironmentValues {
 public class OnboardingController: UIHostingController<OnboardingRootView> {
   public init(
     environment: OnboardingEnvironment,
-    steps: [any OnboardingStep] = .allSteps,
+    steps: [any OnboardingStep],
     showSplashScreen: Bool = true,
     showDismissButton: Bool = false,
     onCompletion: @escaping () -> Void = {}

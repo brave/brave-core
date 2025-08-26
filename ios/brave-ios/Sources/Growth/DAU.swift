@@ -83,7 +83,7 @@ public class DAU {
       UmaHistogramBoolean("Brave.Core.UsageDaily", true)
     }
 
-    guard Preferences.DAU.sendUsagePing.value else {
+    guard let stats = braveCoreStats, stats.isStatsReportingEnabled else {
       Logger.module.debug("DAU ping disabled by the user.")
       return false
     }

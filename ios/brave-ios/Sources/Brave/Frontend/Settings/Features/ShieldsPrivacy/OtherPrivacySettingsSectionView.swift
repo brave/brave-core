@@ -159,16 +159,20 @@ struct OtherPrivacySettingsSectionView: View {
           option: Preferences.Privacy.screenTimeEnabled
         )
       }
-      ToggleView(
-        title: Strings.P3A.settingTitle,
-        subtitle: Strings.P3A.settingSubtitle,
-        toggle: $settings.isP3AEnabled
-      )
-      OptionToggleView(
-        title: Strings.Settings.sendUsagePingTitle,
-        subtitle: Strings.Settings.sendUsagePingDescription,
-        option: Preferences.DAU.sendUsagePing
-      )
+      if !settings.isP3AManaged {
+        ToggleView(
+          title: Strings.P3A.settingTitle,
+          subtitle: Strings.P3A.settingSubtitle,
+          toggle: $settings.isP3AEnabled
+        )
+      }
+      if !settings.isStatsReportingManaged {
+        ToggleView(
+          title: Strings.Settings.sendUsagePingTitle,
+          subtitle: Strings.Settings.sendUsagePingDescription,
+          toggle: $settings.isStatsReportingEnabled
+        )
+      }
       if FeatureList.kBraveNTPBrandedWallpaperSurveyPanelist.enabled {
         ToggleView(
           title: Strings.Settings.surveyPanelistTitle,
