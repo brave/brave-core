@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_MAC_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_MAC_H_
 
-#include "brave/browser/upgrade_detector/upgrade_when_idle.h"
+#include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
 #include "chrome/browser/chrome_browser_main_mac.h"
 
 namespace brave {

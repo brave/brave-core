@@ -373,13 +373,13 @@ if (is_mac) {
     "//brave/app:command_ids",
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/updater:buildflags",
-    "//brave/browser/upgrade_detector:upgrade_when_idle",
+    "//brave/browser/upgrade_when_idle",
     "//chrome:strings",
     "//chrome/app:generated_resources",
     "//chrome/common:non_code_constants",
   ]
   brave_chrome_browser_allow_circular_includes_from += [
-    "//brave/browser/upgrade_detector:upgrade_when_idle",
+    "//brave/browser/upgrade_when_idle",
   ]
   brave_chrome_framework_contents = []
 }

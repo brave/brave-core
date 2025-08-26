@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UPGRADE_DETECTOR_UPGRADE_WHEN_IDLE_H_
-#define BRAVE_BROWSER_UPGRADE_DETECTOR_UPGRADE_WHEN_IDLE_H_
+#ifndef BRAVE_BROWSER_UPGRADE_WHEN_IDLE_UPGRADE_WHEN_IDLE_H_
+#define BRAVE_BROWSER_UPGRADE_WHEN_IDLE_UPGRADE_WHEN_IDLE_H_
 
 #include "base/timer/timer.h"
 #include "chrome/browser/upgrade_detector/upgrade_observer.h"
@@ -40,4 +40,4 @@ class UpgradeWhenIdle : public UpgradeObserver {
 
 }  // namespace brave
 
-#endif  // BRAVE_BROWSER_UPGRADE_DETECTOR_UPGRADE_WHEN_IDLE_H_
+#endif  // BRAVE_BROWSER_UPGRADE_WHEN_IDLE_UPGRADE_WHEN_IDLE_H_

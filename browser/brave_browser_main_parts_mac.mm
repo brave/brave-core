@@ -7,7 +7,7 @@
 
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
-#include "brave/browser/upgrade_detector/upgrade_when_idle.h"
+#include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/channel.h"
 
