@@ -91,10 +91,9 @@ function SponsoredRichMediaBackground(
   const sponsoredRichMediaBaseUrl =
     useBackgroundState((s) => s.sponsoredRichMediaBaseUrl)
   const widgetLayoutReady = useWidgetLayoutReady()
-  const frameHandleRef = React.useRef<IframeBackgroundHandle>()
+  const [frameHandle, setFrameHandle] = React.useState<IframeBackgroundHandle>()
 
   React.useEffect(() => {
-    const frameHandle = frameHandleRef.current
     if (!widgetLayoutReady || !frameHandle) {
       return
     }
@@ -107,13 +106,13 @@ function SponsoredRichMediaBackground(
         value: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
       })
     }
-  }, [widgetLayoutReady])
+  }, [widgetLayoutReady, frameHandle])
 
   return (
     <IframeBackground
       url={props.background.imageUrl}
       expectedOrigin={new URL(sponsoredRichMediaBaseUrl).origin}
-      onReady={(handle) => frameHandleRef.current = handle}
+      onReady={setFrameHandle}
       onMessage={(data) => {
         const eventType = getRichMediaEventType(data)
         if (eventType) {
@@ -152,7 +151,7 @@ interface IframeBackgroundHandle {
 interface IframeBackgroundProps {
   url: string
   expectedOrigin: string
-  onReady?: (handle: IframeBackgroundHandle) => void
+  onReady: (handle: IframeBackgroundHandle) => void
   onMessage: (data: unknown) => void
 }
 
@@ -176,7 +175,7 @@ function IframeBackground(props: IframeBackgroundProps) {
   }, [props.expectedOrigin, props.onMessage])
 
   React.useEffect(() => {
-    if (!props.onReady) {
+    if (!props.onReady || !contentLoaded) {
       return
     }
     props.onReady({
@@ -185,7 +184,7 @@ function IframeBackground(props: IframeBackgroundProps) {
         window?.postMessage(data, props.expectedOrigin)
       }
     })
-  }, [props.onReady, props.expectedOrigin])
+  }, [props.onReady, props.expectedOrigin, contentLoaded])
 
   return (
     <iframe
