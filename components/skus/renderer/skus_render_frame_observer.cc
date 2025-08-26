@@ -34,7 +34,11 @@ void SkusRenderFrameObserver::DidClearWindowObject() {
   if (!IsAllowed())
     return;
 
-  SkusJSHandler::Install(render_frame());
+  SkusJSHandler::Install(this);
+}
+
+content::RenderFrame* SkusRenderFrameObserver::GetRenderFrame() {
+  return render_frame();
 }
 
 bool SkusRenderFrameObserver::IsAllowed() {

@@ -10,10 +10,10 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "content/public/renderer/render_frame.h"
-#include "content/public/renderer/render_frame_observer.h"
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "v8/include/v8.h"
@@ -23,6 +23,15 @@
 #endif
 
 namespace skus {
+
+// Delegate interface to provide controlled access to RenderFrame functionality
+class SkusJSHandlerDelegate {
+ public:
+  virtual ~SkusJSHandlerDelegate() = default;
+  
+  // Returns the RenderFrame, or nullptr if it's no longer valid
+  virtual content::RenderFrame* GetRenderFrame() = 0;
+};
 
 // If present, this will inject a few methods (used by SKU SDK)
 // into window.chrome.braveSkus.*
@@ -36,10 +45,9 @@ namespace skus {
 // will be able to purchase VPN from account.brave.com and the browser can
 // detect the purchase and use those credentials during authentication when
 // establishing a connection to our partner providing the VPN service.
-class SkusJSHandler : public content::RenderFrameObserver,
-                      public gin::Wrappable<SkusJSHandler> {
+class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
  public:
-  explicit SkusJSHandler(content::RenderFrame* render_frame);
+  explicit SkusJSHandler(SkusJSHandlerDelegate* delegate);
   SkusJSHandler(const SkusJSHandler&) = delete;
   SkusJSHandler& operator=(const SkusJSHandler&) = delete;
   ~SkusJSHandler() override;
@@ -47,10 +55,7 @@ class SkusJSHandler : public content::RenderFrameObserver,
   static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
                                                     gin::kSkusBindings};
 
-  static void Install(content::RenderFrame* render_frame);
-
-  // content::RenderFrameObserver:
-  void OnDestruct() override;
+  static void Install(SkusJSHandlerDelegate* delegate);
 
  private:
   bool EnsureConnected();
@@ -96,6 +101,7 @@ class SkusJSHandler : public content::RenderFrameObserver,
                            v8::Global<v8::Context> context_old,
                            skus::mojom::SkusResultPtr response);
 
+  raw_ptr<SkusJSHandlerDelegate> delegate_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;

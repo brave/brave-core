@@ -21,7 +21,8 @@ namespace skus {
 // (non-private / non-guest / non-Tor) context.
 //
 // See `browser/brave_content_browser_client.cc` for more information.
-class SkusRenderFrameObserver : public content::RenderFrameObserver {
+class SkusRenderFrameObserver : public content::RenderFrameObserver,
+                                public SkusJSHandlerDelegate {
  public:
   static SkusRenderFrameObserver* Create(content::RenderFrame* render_frame);
   SkusRenderFrameObserver(const SkusRenderFrameObserver&) = delete;
@@ -29,6 +30,9 @@ class SkusRenderFrameObserver : public content::RenderFrameObserver {
 
   // RenderFrameObserver implementation.
   void DidClearWindowObject() override;
+
+  // SkusJSHandlerDelegate implementation.
+  content::RenderFrame* GetRenderFrame() override;
 
  private:
   explicit SkusRenderFrameObserver(content::RenderFrame* render_frame);
