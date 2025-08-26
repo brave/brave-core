@@ -34,6 +34,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/ios/browser/associated_content_driver_ios.h"
+#include "brave/components/ai_chat/ios/browser/page_content_extractor.h"
 #include "brave/components/ai_chat/ios/browser/page_content_fetcher.h"
 #include "components/strings/grit/components_strings.h"
 #include "ios/web/public/browser_state.h"
@@ -54,6 +55,8 @@ AIChatTabHelper::AIChatTabHelper(web::WebState* web_state)
   previous_page_title_ = web_state->GetTitle();
 
   web_state->AddObserver(this);
+
+  new PageContentExtractor(web_state);
 }
 
 AIChatTabHelper::~AIChatTabHelper() {

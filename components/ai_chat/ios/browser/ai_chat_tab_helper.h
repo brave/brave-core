@@ -34,22 +34,8 @@ class AIChatTabHelper : public web::WebStateObserver,
                         public web::WebStateUserData<AIChatTabHelper>,
                         public AssociatedContentDriverIOS {
  public:
-  AIChatTabHelper(const AIChatTabHelper&) = delete;
-  AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
-  ~AIChatTabHelper() override;
-
-  web::WebState* web_state() const { return web_state_; }
-
-  void GetOpenAIChatButtonNonce(
-      mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback);
-
   class PageContentFetcherDelegate {
    public:
-    using FetchPageContentCallback =
-        base::OnceCallback<void(std::string page_content,
-                                bool is_video,
-                                std::string invalidation_token)>;
-
     virtual ~PageContentFetcherDelegate() = default;
 
     // Gets text of the page content, making an attempt
@@ -67,6 +53,15 @@ class AIChatTabHelper : public web::WebStateObserver,
         mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback
             callback) = 0;
   };
+
+  AIChatTabHelper(const AIChatTabHelper&) = delete;
+  AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
+  ~AIChatTabHelper() override;
+
+  web::WebState* web_state() const { return web_state_; }
+
+  void GetOpenAIChatButtonNonce(
+      mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback);
 
  private:
   friend class web::WebStateUserData<AIChatTabHelper>;

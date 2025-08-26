@@ -52,13 +52,7 @@ bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);
 }
 
-BASE_FEATURE(kAIChatHistory,
-             "AIChatHistory",
-#if BUILDFLAG(IS_IOS)
-             base::FEATURE_DISABLED_BY_DEFAULT);
-#else
-             base::FEATURE_ENABLED_BY_DEFAULT);
-#endif
+BASE_FEATURE(kAIChatHistory, "AIChatHistory", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAIChatHistoryEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatHistory);
