@@ -692,6 +692,70 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationV2toV4) {
   provider.ShutdownOnUIThread();
 }
 
+class DirectAccessContentSettings {
+ public:
+  explicit DirectAccessContentSettings(PrefService* prefs,
+                                       ContentSettingsType content_type,
+                                       const std::string& pref_name = {})
+      : prefs_(prefs),
+        content_type_(content_type),
+        pref_name_(pref_name),
+        info_(ContentSettingsRegistry::GetInstance()->Get(content_type_)) {
+    Refresh();
+  }
+
+  void Refresh() { prefs_value_ = prefs_->GetDict(GetPrefName()).Clone(); }
+
+  void AddRule(const ContentSettingsPattern& primary,
+               const ContentSettingsPattern& secondary,
+               ContentSetting setting) {
+    AddRule(primary.ToString(), secondary.ToString(), setting);
+  }
+
+  void AddRule(const std::string& primary,
+               const std::string& secondary,
+               ContentSetting setting) {
+    base::Value::Dict value;
+    value.Set("setting", setting);
+
+    prefs_value_.Set(primary + "," + secondary, std::move(value));
+  }
+
+  void Write() { prefs_->SetDict(GetPrefName(), prefs_value_.Clone()); }
+
+  size_t GetRulesCount() const { return prefs_value_.size(); }
+
+  ContentSetting GetContentSettingDirectly(
+      const std::string& primary_pattern,
+      const std::string& secondary_pattern = "*") {
+    const auto* v =
+        prefs_value_.Find(primary_pattern + "," + secondary_pattern);
+    if (!v) {
+      return CONTENT_SETTING_DEFAULT;
+    }
+    return ValueToContentSetting(*v->GetDict().Find("setting"));
+  }
+
+  ContentSetting GetContentSetting(
+      const ProviderInterface* provider,
+      const GURL& primary_url,
+      const GURL& secondary_url = GURL::EmptyGURL()) {
+    return TestUtils::GetContentSetting(provider, primary_url, secondary_url,
+                                        content_type_, false);
+  }
+
+ private:
+  const std::string& GetPrefName() const {
+    return pref_name_.empty() ? info_->website_settings_info()->pref_name()
+                              : pref_name_;
+  }
+  const raw_ptr<PrefService> prefs_ = nullptr;
+  const ContentSettingsType content_type_;
+  const std::string pref_name_;
+  const raw_ptr<const ContentSettingsInfo> info_ = nullptr;
+  base::Value::Dict prefs_value_;
+};
+
 TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
   BravePrefProvider provider(
       testing_profile()->GetPrefs(), false /* incognito */,
@@ -712,20 +776,83 @@ TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
   shields_enabled_settings.CheckSettingsAreDefault(example_url);
 
   // Simulate sync updates pref directly.
-  base::Value::Dict value;
-  value.Set("expiration", "0");
-  value.Set("last_modified", "13304670271801570");
-  value.Set("model", 0);
-  value.Set("setting", 2);
+  DirectAccessContentSettings update(testing_profile()->GetPrefs(),
+                                     ContentSettingsType::BRAVE_SHIELDS);
 
-  base::Value::Dict update;
-  update.Set("*,*", std::move(value));
+  update.AddRule(ContentSettingsPattern::Wildcard(),
+                 ContentSettingsPattern::Wildcard(), CONTENT_SETTING_BLOCK);
+  update.Write();
 
-  testing_profile()->GetPrefs()->SetDict(
-      "profile.content_settings.exceptions.braveShields", std::move(update));
   base::RunLoop().RunUntilIdle();
   // Verify global has reset
   shields_enabled_settings.CheckSettingsAreDefault(example_url);
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, CosmeticFilteringMigration) {
+  constexpr char kFirstParty[] = "https://firstparty";
+
+  DirectAccessContentSettings cosmetic_filtering_v1(
+      testing_profile()->GetPrefs(),
+      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+      "profile.content_settings.exceptions.cosmeticFiltering");
+
+  // BLOCK_THIRD_PARTY
+  cosmetic_filtering_v1.AddRule("brave.b3p", "*", CONTENT_SETTING_BLOCK);
+  cosmetic_filtering_v1.AddRule("brave.b3p", kFirstParty,
+                                CONTENT_SETTING_ALLOW);
+
+  // ALLOW
+  cosmetic_filtering_v1.AddRule("brave.allow", "*", CONTENT_SETTING_ALLOW);
+  cosmetic_filtering_v1.AddRule("brave.allow", kFirstParty,
+                                CONTENT_SETTING_ALLOW);
+
+  // BLOCK
+  cosmetic_filtering_v1.AddRule("brave.block", "*", CONTENT_SETTING_BLOCK);
+  cosmetic_filtering_v1.AddRule("brave.block", kFirstParty,
+                                CONTENT_SETTING_BLOCK);
+
+  EXPECT_EQ(6u, cosmetic_filtering_v1.GetRulesCount());
+  cosmetic_filtering_v1.Write();
+
+  testing_profile()->GetPrefs()->ClearPref(
+      "brave.cosmetic_filtering_migration");
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+
+  DirectAccessContentSettings cosmetic_filtering_v2(
+      testing_profile()->GetPrefs(),
+      ContentSettingsType::BRAVE_COSMETIC_FILTERING);
+
+  EXPECT_EQ(3u, cosmetic_filtering_v2.GetRulesCount());
+
+  EXPECT_EQ(CONTENT_SETTING_DEFAULT,
+            cosmetic_filtering_v2.GetContentSettingDirectly("brave.b3p",
+                                                            kFirstParty));
+  EXPECT_EQ(CONTENT_SETTING_ASK,
+            cosmetic_filtering_v2.GetContentSettingDirectly("brave.b3p", "*"));
+  EXPECT_EQ(CONTENT_SETTING_ASK, cosmetic_filtering_v2.GetContentSetting(
+                                     &provider, GURL("https://brave.b3p")));
+
+  EXPECT_EQ(CONTENT_SETTING_DEFAULT,
+            cosmetic_filtering_v2.GetContentSettingDirectly("brave.allow",
+                                                            kFirstParty));
+  EXPECT_EQ(
+      CONTENT_SETTING_ALLOW,
+      cosmetic_filtering_v2.GetContentSettingDirectly("brave.allow", "*"));
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, cosmetic_filtering_v2.GetContentSetting(
+                                       &provider, GURL("https://brave.allow")));
+
+  EXPECT_EQ(CONTENT_SETTING_DEFAULT,
+            cosmetic_filtering_v2.GetContentSettingDirectly("brave.block",
+                                                            kFirstParty));
+  EXPECT_EQ(
+      CONTENT_SETTING_BLOCK,
+      cosmetic_filtering_v2.GetContentSettingDirectly("brave.block", "*"));
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, cosmetic_filtering_v2.GetContentSetting(
+                                       &provider, GURL("https://brave.block")));
+
   provider.ShutdownOnUIThread();
 }
 
