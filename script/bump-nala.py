@@ -18,7 +18,8 @@ import tempfile
 import json
 import re
 
-NALA_REPO = 'https://github.com/brave/leo.git'
+REPO_ID = 'brave/leo'
+NALA_REPO = f'https://github.com/{REPO_ID}'
 nala_clone_dir = tempfile.mkdtemp()
 
 
@@ -35,9 +36,8 @@ class Commit:
         self.message = parts[1]
 
     def __str__(self):
-        # Update the PR links to point to brave/leo
-        return re.sub(r'\((#(\d+))\)$',
-                      r'([\1](https://github.com/brave/leo/pull/\2))',
+        # Update the PR links to point to the repo
+        return re.sub(r'\((#(\d+))\)$', rf'([\1]({NALA_REPO}/pull/\2))',
                       self.message)
 
     def __repr__(self):
@@ -59,7 +59,11 @@ def parse_args():
 
 def clone_nala():
     """Clones the Nala repository to a temporary directory."""
-    subprocess.run(['git', 'clone', NALA_REPO, nala_clone_dir], check=True)
+    subprocess.run([
+        'git', 'clone', NALA_REPO + '.git', nala_clone_dir, '--filter',
+        'blob:none'
+    ],
+                   check=True)
 
 
 def get_full_sha(target):
@@ -120,10 +124,10 @@ def bump_nala(target):
     changes_text = "\n".join(map(lambda x: f'- {x}', changes))
     commit_message = f"""[Nala]: Bump version to {target}
 
-Changes https://github.com/brave/leo/compare/{old_sha}...{new_sha}
+Changes {NALA_REPO}/compare/{old_sha}...{new_sha}
 {changes_text}"""
 
-    subprocess.run(['npm', 'install', f'github:brave/leo#{new_sha}'],
+    subprocess.run(['npm', 'install', f'github:{REPO_ID}#{new_sha}'],
                    check=True)
     subprocess.run([
         'git', 'commit', 'package.json', 'package-lock.json', '-m',
