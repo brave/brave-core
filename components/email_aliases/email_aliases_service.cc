@@ -135,7 +135,7 @@ void EmailAliasesService::RequestAuthentication(
   verification_simple_url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&EmailAliasesService::OnRequestAuthenticationResponse,
-                     weak_factory_.GetWeakPtr(), std::move(callback)),
+                     base::Unretained(this), std::move(callback)),
       kMaxResponseLength);
 }
 
@@ -198,7 +198,7 @@ void EmailAliasesService::RequestSession() {
   verification_simple_url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&EmailAliasesService::OnRequestSessionResponse,
-                     weak_factory_.GetWeakPtr()),
+                     base::Unretained(this)),
       kMaxResponseLength);
 }
 
@@ -269,7 +269,7 @@ void EmailAliasesService::MaybeRequestSessionAgain() {
   session_request_timer_.Start(
       FROM_HERE, kSessionPollInterval,
       base::BindOnce(&EmailAliasesService::RequestSession,
-                     weak_factory_.GetWeakPtr()));
+                     base::Unretained(this)));
 }
 
 void EmailAliasesService::CancelAuthenticationOrLogout(

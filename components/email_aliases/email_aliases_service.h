@@ -153,9 +153,6 @@ class EmailAliasesService : public KeyedService,
   // Elapsed timer for the current verification polling window. Used to
   // enforce a maximum total polling duration.
   std::optional<base::ElapsedTimer> session_poll_elapsed_timer_;
-
-  // WeakPtrFactory to safely bind callbacks that may outlive this instance.
-  base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
 
 }  // namespace email_aliases
