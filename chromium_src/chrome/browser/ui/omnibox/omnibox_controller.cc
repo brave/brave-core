@@ -7,7 +7,6 @@
 
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/template_url_starter_pack_data.h"
 
 namespace {
 
@@ -19,14 +18,8 @@ bool IsAutocompleteEnabled(const PrefService* prefs) {
 
 #define StartAutocomplete StartAutocomplete_ChromiumImpl
 
-// We disable starter pack expansion to hide @gemini search keyword. Piggy back
-// on it to also disable @aimode.
-#define kGemini                                  \
-  kGemini || (turl && turl->starter_pack_id() == \
-                          template_url_starter_pack_data::kAiMode)
-
 #include <chrome/browser/ui/omnibox/omnibox_controller.cc>
-#undef kGemini
+
 #undef StartAutocomplete
 
 void OmniboxController::StartAutocomplete(
