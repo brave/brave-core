@@ -15,8 +15,18 @@
 
 namespace {
 
-base::OnceCallback<void()> g_new_setup_needed_callback_for_testing;
-base::OnceCallback<void()> g_account_creation_callback_for_testing;
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] base::OnceCallback<void()>
+    g_new_setup_needed_callback_for_testing;
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] base::OnceCallback<void()>
+    g_account_creation_callback_for_testing;
 
 }  // namespace
 
