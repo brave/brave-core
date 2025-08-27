@@ -41,6 +41,7 @@ import org.chromium.brave.browser.customize_menu.R;
 @NullMarked
 public class CustomizeBraveMenu {
 
+    public static final String KEY_MENU_ITEM_LIST = "org.chromium.brave.browser.customize_menu.KEY_MENU_ITEM_LIST";
     @IdRes public static final int BRAVE_CUSTOMIZE_ITEM_ID = R.id.brave_customize_menu_id;
     private static final int PREFERENCE_MENU_ICON_SIZE_DP = 24;
 
@@ -97,7 +98,7 @@ public class CustomizeBraveMenu {
             menuItemDataList.add(new MenuItemData(id, title.toString(), icon, colorResId, isVisible(id)));
         }
 
-        bundle.putParcelableArrayList("menu_items", menuItemDataList);
+        bundle.putParcelableArrayList(KEY_MENU_ITEM_LIST, menuItemDataList);
 
         SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
         settingsLauncher.startSettings(context, BraveCustomizeMenuPreferenceFragment.class, bundle);
