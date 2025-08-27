@@ -41,15 +41,17 @@ class UpgradeWhenIdleTest : public testing::Test {
   }
 
  protected:
-  void RunImplementation() {
+  void RunImplementation(ui::IdleState state, bool expect_upgrade) {
     base::RunLoop run_loop;
     upgrade_when_idle_->SetCheckIdleCallbackForTesting(run_loop.QuitClosure());
+    if (expect_upgrade) {
+      EXPECT_CALL(mock_relaunch_callback_, Run);
+    }
+    ui::ScopedSetIdleState scoped_set_idle_state(state);
     upgrade_when_idle_->OnUpgradeRecommended();
     task_environment_.FastForwardBy(base::Minutes(3));
     run_loop.Run();
   }
-
-  void ExpectUpgrade() { EXPECT_CALL(mock_relaunch_callback_, Run); }
 
   std::unique_ptr<Browser> CreateTestBrowser() {
     Browser::CreateParams params(profile_.get(), true);
@@ -69,31 +71,24 @@ class UpgradeWhenIdleTest : public testing::Test {
 };
 
 TEST_F(UpgradeWhenIdleTest, UpgradeWhenIdle) {
-  ui::ScopedSetIdleState idle(ui::IDLE_STATE_IDLE);
-  ExpectUpgrade();
-  RunImplementation();
+  RunImplementation(ui::IDLE_STATE_IDLE, true);
 }
 
 TEST_F(UpgradeWhenIdleTest, UpgradeWhenLocked) {
-  ui::ScopedSetIdleState locked(ui::IDLE_STATE_LOCKED);
-  ExpectUpgrade();
-  RunImplementation();
+  RunImplementation(ui::IDLE_STATE_LOCKED, true);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenActive) {
-  ui::ScopedSetIdleState active(ui::IDLE_STATE_ACTIVE);
-  RunImplementation();
+  RunImplementation(ui::IDLE_STATE_ACTIVE, false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenStateUnknown) {
-  ui::ScopedSetIdleState unknown(ui::IDLE_STATE_UNKNOWN);
-  RunImplementation();
+  RunImplementation(ui::IDLE_STATE_UNKNOWN, false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenOpenWindows) {
-  ui::ScopedSetIdleState idle(ui::IDLE_STATE_IDLE);
   std::unique_ptr<Browser> test_browser = CreateTestBrowser();
-  RunImplementation();
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
 }
 
 }  // namespace brave
