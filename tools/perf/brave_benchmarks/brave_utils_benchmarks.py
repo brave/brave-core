@@ -51,7 +51,7 @@ class BraveUtilsOnlineBenchmark(BraveUtilsBenchmark):
     parser.add_argument('--delay', type=int, help='Override the default delay')
 
   @classmethod
-  def ProcessCommandLineArgs(cls, parser, args):
+  def ProcessCommandLineArgs(cls, _parser, args):
     if args.delay:
       cls._delay = args.delay
 
