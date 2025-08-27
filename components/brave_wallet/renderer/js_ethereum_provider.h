@@ -21,6 +21,7 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "v8/include/cppgc/persistent.h"
 #include "v8/include/v8.h"
 
 namespace brave_wallet {
@@ -79,7 +80,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   };
 
   // content::RenderFrameObserver
-  void OnDestruct() override {}
+  void OnDestruct() override;
   void WillReleaseScriptContext(v8::Local<v8::Context>,
                                 int32_t world_id) override;
   void DidDispatchDOMContentLoadedEvent() override;
@@ -134,6 +135,11 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   std::string first_allowed_account_;
   std::string uuid_;
   std::optional<std::string> brave_wallet_image_;
+
+  // Persistent self-reference to prevent GC from freeing this object while
+  // it's still needed for JavaScript bindings. Cleared in OnDestruct().
+  cppgc::Persistent<JSEthereumProvider> self_;
+
   base::WeakPtrFactory<JSEthereumProvider> weak_ptr_factory_{this};
 };
 
