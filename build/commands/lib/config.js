@@ -346,7 +346,7 @@ Config.prototype.isDebug = function () {
   return this.buildConfig === 'Debug'
 }
 
-Config.prototype.isEnableCDMHostVerification = function (OrUndefined) {
+Config.prototype.enableCDMHostVerificationOrUndefined = function () {
   const enable =
     this.buildConfig === 'Release'
     && process.platform !== 'linux'
@@ -409,7 +409,7 @@ Config.prototype.buildArgs = function () {
     brave_version_minor: versionParts[1],
     brave_version_build: versionParts[2],
     chrome_version_string: this.chromeVersion,
-    enable_cdm_host_verification: this.isEnableCDMHostVerificationOrUndefined(),
+    enable_cdm_host_verification: this.enableCDMHostVerificationOrUndefined(),
     skip_signing: this.skipSigningOrUndefined(),
     use_remoteexec: this.useRemoteExec,
     use_reclient: this.useRemoteExec,
