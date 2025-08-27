@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/side_panel/BUILD.gn b/chrome/browser/ui/views/side_panel/BUILD.gn
+index 10c1094e0c3b9ff4ecf676b5f3171420bc8db9ef..5d68e63b9a3c2125603ba401ee34f2db3d4f1fd5 100644
+--- a/chrome/browser/ui/views/side_panel/BUILD.gn
++++ b/chrome/browser/ui/views/side_panel/BUILD.gn
+@@ -94,7 +94,6 @@ source_set("side_panel") {
+     "side_panel_web_ui_view.cc",
+     "side_panel_web_ui_view.h",
+   ]
+-  defines = [ "CHROME_VIEWS_IMPLEMENTATION" ]
+   public_deps = [
+     "//base",
+     "//chrome/browser:browser_public_dependencies",
