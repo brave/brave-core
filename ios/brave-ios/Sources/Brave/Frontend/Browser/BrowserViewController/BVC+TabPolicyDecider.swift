@@ -579,8 +579,8 @@ extension BrowserViewController {
     // (i.e. appropriate settings are enabled for that redirect rule)
     if let debounceService = DebounceServiceFactory.get(privateMode: tab.isPrivate),
       debounceService.isEnabled,
-      let currentURL = tab.visibleURL,
-      currentURL.baseDomain != requestURL.baseDomain
+      let lastCommittedURL = tab.lastCommittedURL,
+      lastCommittedURL.baseDomain != requestURL.baseDomain
     {
       if let redirectURL = debounceService.debounce(requestURL) {
         // For now we only allow the `Referer`. The browser will add other headers during navigation.
