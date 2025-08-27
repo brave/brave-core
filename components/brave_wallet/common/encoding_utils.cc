@@ -74,7 +74,8 @@ std::optional<std::string> Ss58Address::Encode() {
   std::array<uint8_t, kMaxSize> storage = {};
 
   size_t offset = prefix < 64 ? 1 : 2;
-  base::span<uint8_t, kMaxSize> buff = storage;
+  base::span<uint8_t> buff = base::span(storage).first(
+      offset + kSs58PublicKeySize + kSs58HashChecksumSize);
   auto output_span_writer = base::SpanWriter(buff);
 
   if (offset == 1) {
@@ -94,7 +95,7 @@ std::optional<std::string> Ss58Address::Encode() {
 
   output_span_writer.Write(base::span(hash).first(kSs58HashChecksumSize));
 
-  return Base58Encode(buff.first(output_span_writer.num_written()));
+  return Base58Encode(buff);
 }
 
 // Reference implementation
