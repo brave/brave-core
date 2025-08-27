@@ -17,6 +17,7 @@ import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
 import org.chromium.brave.browser.customize_menu.R;
 import org.chromium.build.annotations.NullMarked;
@@ -59,7 +60,7 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
             // Get menu items from bundle passed by calling activity.
             final Bundle bundle = getArguments();
             if (bundle != null) {
-                List<MenuItemData> menuItems = bundle.getParcelableArrayList("menu_items");
+                List<MenuItemData> menuItems = bundle.getParcelableArrayList(CustomizeBraveMenu.KEY_MENU_ITEM_LIST);
                 if (menuItems != null) {
                     for (MenuItemData menuItem : menuItems) {
                         if (menuItem.id == R.id.brave_customize_menu_id) {
