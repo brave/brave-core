@@ -128,7 +128,9 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver)
     : owner_web_state_(owner_web_state),
       profile_(profile),
-      receiver_(this, std::move(receiver)) {
+      receiver_(this, std::move(receiver)),
+      conversations_are_content_associated_(
+          !features::IsAIChatGlobalSidePanelEverywhereEnabled()) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_state is nullptr in that case
   const bool is_standalone = chat_context_web_state == nullptr;
@@ -330,7 +332,7 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
 void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  if (!active_chat_tab_helper_) {
+  if (!active_chat_tab_helper_ || !conversations_are_content_associated_) {
     ConversationHandler* conversation =
         AIChatServiceFactory::GetForProfile(profile_)->CreateConversation();
     conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
@@ -382,7 +384,7 @@ void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   ConversationHandler* conversation;
-  if (active_chat_tab_helper_) {
+  if (active_chat_tab_helper_ && conversations_are_content_associated_) {
     conversation = AIChatServiceFactory::GetForProfile(profile_)
                        ->CreateConversationHandlerForContent(
                            active_chat_tab_helper_->content_id(),
