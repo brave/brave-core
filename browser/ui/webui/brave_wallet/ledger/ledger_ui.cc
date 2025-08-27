@@ -26,7 +26,10 @@ UntrustedLedgerUI::UntrustedLedgerUI(content::WebUI* web_ui)
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameAncestors,
-      "frame-ancestors chrome://wallet chrome://wallet-panel.top-chrome;");
+      "frame-ancestors " +
+          base::JoinString({kBraveUIWalletPageURL, kBraveUIWalletPanelURL},
+                           " ") +
+          ";");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'self';");
   untrusted_source->OverrideContentSecurityPolicy(
