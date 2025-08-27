@@ -6,6 +6,7 @@
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 
 #include "brave/components/vector_icons/vector_icons.h"
+#include "chrome/browser/ui/tabs/split_tab_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
@@ -49,4 +50,17 @@ ui::ImageModel BraveSplitTabMenuModel::GetIconForCommandId(
   }
 
   return SplitTabMenuModel::GetIconForCommandId(command_id);
+}
+
+const gfx::VectorIcon& BraveSplitTabMenuModel::GetReversePositionIcon(
+    split_tabs::SplitTabActiveLocation active_split_tab_location) const {
+  switch (active_split_tab_location) {
+    case split_tabs::SplitTabActiveLocation::kStart:
+      [[fallthrough]];
+    case split_tabs::SplitTabActiveLocation::kEnd:
+      return kLeoSwapHorizontalIcon;
+    default:
+      return SplitTabMenuModel::GetReversePositionIcon(
+          active_split_tab_location);
+  }
 }

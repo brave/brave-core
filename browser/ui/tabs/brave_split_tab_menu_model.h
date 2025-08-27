@@ -19,6 +19,9 @@ class BraveSplitTabMenuModel : public SplitTabMenuModel {
   std::u16string GetLabelForCommandId(int command_id) const override;
   ui::ImageModel GetIconForCommandId(int command_id) const override;
   bool IsItemForCommandIdDynamic(int command_id) const override;
+  const gfx::VectorIcon& GetReversePositionIcon(
+      split_tabs::SplitTabActiveLocation active_split_tab_location)
+      const override;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_SPLIT_TAB_MENU_MODEL_H_

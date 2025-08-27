@@ -65,6 +65,7 @@ source_set("tab_model_impl") {
     ":tab_model",
     "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
+    "//chrome/browser/ui/tabs",
     "//ui/base",
   ]
 }

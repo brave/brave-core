@@ -15,8 +15,15 @@
   static CommandId GetCommandIdEnum(int command_id);              \
   static int GetCommandIdInt(CommandId command_id)
 
+#define GetReversePositionIcon(...) \
+  GetReversePosition_UnUsed() {     \
+    NOTREACHED();                   \
+  }                                 \
+  virtual const gfx::VectorIcon& GetReversePositionIcon(__VA_ARGS__)
+
 #include <chrome/browser/ui/tabs/split_tab_menu_model.h>  // IWYU pragma: export
 
+#undef GetReversePositionIcon
 #undef CloseTabAtIndex
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_SPLIT_TAB_MENU_MODEL_H_
