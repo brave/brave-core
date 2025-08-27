@@ -7,11 +7,10 @@
 #define BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_RSA_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 
 #include "base/containers/span.h"
-#include "crypto/rsa_private_key.h"
+#include "crypto/keypair.h"
 
 namespace web_discovery {
 
@@ -29,22 +28,23 @@ struct EncodedRSAKeyPair {
 // a private key for signing future Web Discovery requests, and the base64
 // encoded public key to be shared with the Web Discovery server.
 struct ImportedRSAKey {
-  ImportedRSAKey();
+  ImportedRSAKey(crypto::keypair::PrivateKey private_key,
+                 std::string public_key_b64);
   ~ImportedRSAKey();
-  std::unique_ptr<crypto::RSAPrivateKey> private_key;
+  crypto::keypair::PrivateKey private_key;
   std::string public_key_b64;
 };
 
-std::unique_ptr<crypto::RSAPrivateKey> GenerateRSAKey();
+crypto::keypair::PrivateKey GenerateRSAKey();
 
 std::unique_ptr<EncodedRSAKeyPair> ExportRSAKey(
-    const crypto::RSAPrivateKey& private_key);
+    const crypto::keypair::PrivateKey& private_key);
 
 std::unique_ptr<ImportedRSAKey> ImportRSAKey(
     const std::string& private_key_b64);
 
-std::optional<std::string> RSASign(crypto::RSAPrivateKey* key,
-                                   base::span<uint8_t> message);
+std::string RSASign(const crypto::keypair::PrivateKey& key,
+                    base::span<uint8_t> message);
 
 }  // namespace web_discovery
 

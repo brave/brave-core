@@ -20,7 +20,7 @@
 #include "components/crx_file/crx_verifier.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
-#include "crypto/rsa_private_key.h"
+#include "crypto/keypair.h"
 #include "crypto/sha2.h"
 #include "extensions/browser/crx_file_info.h"
 #include "extensions/browser/extension_creator.h"
@@ -42,13 +42,12 @@ std::vector<uint8_t> GetPublicKeyHash(const base::FilePath& pem_path) {
   if (!Extension::ParsePEMKeyBytes(private_key_contents, &private_key_bytes))
     return {};
 
-  auto private_key = crypto::RSAPrivateKey::CreateFromPrivateKeyInfo(
-      std::vector<uint8_t>(private_key_bytes.begin(), private_key_bytes.end()));
+  auto private_key = crypto::keypair::PrivateKey::FromPrivateKeyInfo(
+      base::as_byte_span(private_key_bytes));
   if (!private_key)
     return {};
 
-  std::vector<uint8_t> public_key;
-  private_key->ExportPublicKey(&public_key);
+  auto public_key = private_key->ToSubjectPublicKeyInfo();
 
   return base::ToVector(crypto::SHA256Hash(public_key));
 }

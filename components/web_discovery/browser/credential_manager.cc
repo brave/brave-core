@@ -93,7 +93,6 @@ bool CredentialManager::LoadRSAKey() {
     return false;
   }
 
-  CHECK(key->private_key);
   rsa_public_key_b64_ = std::move(key->public_key_b64);
   background_credential_helper_
       .AsyncCall(&BackgroundCredentialHelper::SetRSAKey)
@@ -102,18 +101,8 @@ bool CredentialManager::LoadRSAKey() {
   return true;
 }
 
-void CredentialManager::OnNewRSAKey(
-    std::unique_ptr<crypto::RSAPrivateKey> key) {
-  if (!key) {
-    // This most likely failure for key generation is invalid generation
-    // inputs i.e. invalid key size, or invalid inputs provided by the
-    // underlying crypto::RSAPrivateKey implementation. This is considered
-    // highly unlikely.
-    DVLOG(1) << "RSA key generation failed";
-    return;
-  }
-
-  auto encoded_key_pair = ExportRSAKey(*key);
+void CredentialManager::OnNewRSAKey(crypto::keypair::PrivateKey key) {
+  auto encoded_key_pair = ExportRSAKey(key);
   if (!encoded_key_pair) {
     DVLOG(1) << "RSA key export failed";
     return;
@@ -176,16 +165,13 @@ void CredentialManager::StartJoinGroup(
 void CredentialManager::OnJoinRequestReady(
     std::string date,
     std::vector<uint8_t> group_pub_key,
-    std::optional<StartJoinInitialization> generate_join_result) {
-  if (!generate_join_result) {
-    return;
-  }
+    StartJoinInitialization generate_join_result) {
   base::Value::Dict body_fields;
 
   body_fields.Set(kJoinDateField, date);
-  body_fields.Set(kJoinMessageField, generate_join_result->request_b64);
+  body_fields.Set(kJoinMessageField, generate_join_result.request_b64);
   body_fields.Set(kJoinRSAPublicKeyField, *rsa_public_key_b64_);
-  body_fields.Set(kJoinRSASignatureField, generate_join_result->signature);
+  body_fields.Set(kJoinRSASignatureField, generate_join_result.signature);
 
   std::string json_body;
   if (!base::JSONWriter::Write(body_fields, &json_body)) {
@@ -207,7 +193,7 @@ void CredentialManager::OnJoinRequestReady(
   url_loader->DownloadToString(
       shared_url_loader_factory_.get(),
       base::BindOnce(&CredentialManager::OnJoinResponse, base::Unretained(this),
-                     date, group_pub_key, generate_join_result->gsk),
+                     date, group_pub_key, generate_join_result.gsk),
       kMaxResponseSize);
 }
 

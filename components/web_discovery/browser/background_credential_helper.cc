@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/span_rust.h"
+#include "base/containers/to_vector.h"
 #include "base/logging.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/web_discovery/browser/anonymous_credentials/lib.rs.h"
@@ -49,20 +50,16 @@ class BackgroundCredentialHelperImpl : public BackgroundCredentialHelper {
         new_anonymous_credentials_with_fixed_seed();
   }
 
-  std::unique_ptr<crypto::RSAPrivateKey> GenerateAndSetRSAKey() override {
+  crypto::keypair::PrivateKey GenerateAndSetRSAKey() override {
     rsa_private_key_ = web_discovery::GenerateRSAKey();
-    if (!rsa_private_key_) {
-      return nullptr;
-    }
-    return rsa_private_key_->Copy();
+    return *rsa_private_key_;
   }
 
-  void SetRSAKey(
-      std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key) override {
+  void SetRSAKey(crypto::keypair::PrivateKey rsa_private_key) override {
     rsa_private_key_ = std::move(rsa_private_key);
   }
 
-  std::optional<StartJoinInitialization> GenerateJoinRequest(
+  StartJoinInitialization GenerateJoinRequest(
       std::string pre_challenge) override {
     base::AssertLongCPUWorkAllowed();
     CHECK(rsa_private_key_);
@@ -71,17 +68,11 @@ class BackgroundCredentialHelperImpl : public BackgroundCredentialHelper {
     auto join_result = anonymous_credentials_manager_->start_join(
         base::SpanToRustSlice(challenge));
 
-    auto signature = RSASign(rsa_private_key_.get(), join_result.join_request);
+    auto signature = RSASign(*rsa_private_key_, join_result.join_request);
 
-    if (!signature) {
-      VLOG(1) << "RSA signature failed";
-      return std::nullopt;
-    }
-
-    return StartJoinInitialization(
-        base::Base64Encode(join_result.join_request),
-        std::vector<uint8_t>(join_result.gsk.begin(), join_result.gsk.end()),
-        *signature);
+    return StartJoinInitialization(base::Base64Encode(join_result.join_request),
+                                   base::ToVector(join_result.gsk),
+                                   std::move(signature));
   }
 
   std::optional<std::string> FinishJoin(
@@ -143,12 +134,12 @@ class BackgroundCredentialHelperImpl : public BackgroundCredentialHelper {
       return std::nullopt;
     }
     auto sig_data = sig_res->unwrap();
-    return std::vector<uint8_t>(sig_data.begin(), sig_data.end());
+    return base::ToVector(sig_data);
   }
 
  private:
   rust::Box<AnonymousCredentialsManager> anonymous_credentials_manager_;
-  std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key_;
+  std::optional<crypto::keypair::PrivateKey> rsa_private_key_;
 };
 
 std::unique_ptr<BackgroundCredentialHelper>
