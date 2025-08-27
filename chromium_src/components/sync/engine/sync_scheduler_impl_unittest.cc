@@ -33,9 +33,9 @@ TEST_F(SyncSchedulerImplTest, BraveNoBackoffOnNigoriError) {
 
   SyncShareTimes times;
   EXPECT_CALL(*syncer(), PollSyncShare)
-      .WillOnce(DoAll(Invoke(SimulatePollFailedNigoryNotReady),
+      .WillOnce(DoAll(SimulatePollFailedNigoryNotReady,
                       RecordSyncShare(&times, false)))
-      .WillOnce(DoAll(Invoke(SimulatePollFailedRegularTransientError),
+      .WillOnce(DoAll(SimulatePollFailedRegularTransientError,
                       RecordSyncShare(&times, false)));
 
   StartSyncScheduler(base::Time());
