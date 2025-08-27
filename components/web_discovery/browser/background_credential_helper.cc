@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/span_rust.h"
+#include "base/containers/to_vector.h"
 #include "base/logging.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/web_discovery/browser/anonymous_credentials/lib.rs.h"
@@ -50,9 +51,8 @@ class BackgroundCredentialHelperImpl : public BackgroundCredentialHelper {
   }
 
   crypto::keypair::PrivateKey GenerateAndSetRSAKey() override {
-    auto key = web_discovery::GenerateRSAKey();
-    rsa_private_key_ = key;
-    return key;
+    rsa_private_key_ = web_discovery::GenerateRSAKey();
+    return *rsa_private_key_;
   }
 
   void SetRSAKey(crypto::keypair::PrivateKey rsa_private_key) override {
@@ -70,10 +70,9 @@ class BackgroundCredentialHelperImpl : public BackgroundCredentialHelper {
 
     auto signature = RSASign(*rsa_private_key_, join_result.join_request);
 
-    return StartJoinInitialization(
-        base::Base64Encode(join_result.join_request),
-        std::vector<uint8_t>(join_result.gsk.begin(), join_result.gsk.end()),
-        signature);
+    return StartJoinInitialization(base::Base64Encode(join_result.join_request),
+                                   base::ToVector(join_result.gsk),
+                                   std::move(signature));
   }
 
   std::optional<std::string> FinishJoin(
@@ -135,7 +134,7 @@ class BackgroundCredentialHelperImpl : public BackgroundCredentialHelper {
       return std::nullopt;
     }
     auto sig_data = sig_res->unwrap();
-    return std::vector<uint8_t>(sig_data.begin(), sig_data.end());
+    return base::ToVector(sig_data);
   }
 
  private:

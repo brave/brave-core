@@ -43,7 +43,7 @@ std::vector<uint8_t> GetPublicKeyHash(const base::FilePath& pem_path) {
     return {};
 
   auto private_key = crypto::keypair::PrivateKey::FromPrivateKeyInfo(
-      std::vector<uint8_t>(private_key_bytes.begin(), private_key_bytes.end()));
+      base::as_byte_span(private_key_bytes));
   if (!private_key)
     return {};
 
