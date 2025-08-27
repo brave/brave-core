@@ -763,9 +763,8 @@ class SidebarBrowserWithWebPanelTest
  public:
   SidebarBrowserWithWebPanelTest() {
     if (IsWebPanelEnabled()) {
-      scoped_features_.InitWithFeatures(
-          /*enabled_features*/ {sidebar::features::kSidebarWebPanel},
-          /*disabled_features*/ {});
+      scoped_features_.InitAndEnableFeature(
+          sidebar::features::kSidebarWebPanel);
     }
   }
   ~SidebarBrowserWithWebPanelTest() override = default;
