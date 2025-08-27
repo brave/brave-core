@@ -19,3 +19,19 @@ source_set("upgrade_when_idle") {
     "//ui/base/idle",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "upgrade_when_idle_unittest.cc" ]
+
+  deps = [
+    ":upgrade_when_idle",
+    "//base/test:test_support",
+    "//chrome/browser/ui:browser_list_impl",
+    "//chrome/test:test_support_ui",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/base/idle:test_support",
+  ]
+}

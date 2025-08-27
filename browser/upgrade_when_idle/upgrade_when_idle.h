@@ -24,10 +24,10 @@ class UpgradeWhenIdle : public UpgradeObserver {
   UpgradeWhenIdle();
   ~UpgradeWhenIdle() override;
 
- private:
   // UpgradeObserver:
   void OnUpgradeRecommended() override;
 
+ private:
   void CheckIdle();
   bool CanRelaunch();
   bool AttemptRelaunch();
