@@ -56,7 +56,7 @@ class TreeTabNode : public tabs::TabCollection {
 
   // Could be nullptr on closing the tab. Should be nulled out in order to avoid
   // dangling pointer issues.
-  raw_ptr<tabs::TabInterface> current_tab_ = nullptr;
+  raw_ptr<tabs::TabInterface> current_tab_;
 
   base::CallbackListSubscription will_detach_tab_subscription_;
 };
