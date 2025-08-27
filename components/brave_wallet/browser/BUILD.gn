@@ -629,6 +629,18 @@ generated_types("meld_integration_responses") {
   ]
 }
 
+source_set("codelab") {
+  testonly = true
+  sources = [ "url_request_codelab_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//net",
+    "//testing/gtest",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
@@ -763,6 +775,7 @@ source_set("unit_tests") {
 
   deps = [
     ":browser",
+    ":codelab",
     ":constants",
     ":generated_json_rpc_responses",
     ":generated_swap_responses",
