@@ -486,6 +486,101 @@ class DefaultBrowserHelperTests: XCTestCase {
     // HTTP override with FALSE cached result should return .likely
     XCTAssertEqual(helper.status, .likely)
   }
+
+  // MARK: - Record App Launched With Web URL Tests
+
+  func testRecordAppLaunchedWithWebURL_SetsCurrentDate() {
+    let date = Date()
+    let helper = DefaultBrowserHelper(
+      isDefaultAppChecker: .available(isDefault: false)
+    )
+    helper.now = { date }
+
+    // Ensure no previous HTTP date is set
+    XCTAssertNil(Preferences.General.lastHTTPURLOpenedDate.value)
+
+    helper.recordAppLaunchedWithWebURL()
+
+    XCTAssertEqual(Preferences.General.lastHTTPURLOpenedDate.value, date)
+  }
+
+  func testRecordAppLaunchedWithWebURL_UpdatesExistingDate() {
+    let oldDate = Date().addingTimeInterval(-5.days)
+    let newDate = Date()
+
+    Preferences.General.lastHTTPURLOpenedDate.value = oldDate
+
+    let helper = DefaultBrowserHelper(
+      isDefaultAppChecker: .available(isDefault: false)
+    )
+    helper.now = { newDate }
+
+    helper.recordAppLaunchedWithWebURL()
+
+    XCTAssertEqual(Preferences.General.lastHTTPURLOpenedDate.value, newDate)
+    XCTAssertNotEqual(Preferences.General.lastHTTPURLOpenedDate.value, oldDate)
+  }
+
+  func testRecordAppLaunchedWithWebURL_TriggersStatusUpdate() {
+    let date = Date()
+    // Set up cached API result that indicates not default
+    Preferences.General.isDefaultAPILastResult.value = false
+    Preferences.General.isDefaultAPILastCheckDate.value =
+      date.addingTimeInterval(-3.days)
+
+    let helper = DefaultBrowserHelper(
+      isDefaultAppChecker: .available(isDefault: false)
+    )
+    helper.now = { date }
+
+    // Initial status should be notDefaulted based on cached API result
+    XCTAssertEqual(helper.status, .notDefaulted)
+
+    // Record app launched with web URL
+    helper.recordAppLaunchedWithWebURL()
+
+    // Status should now be likely due to recent HTTP activity overriding
+    // cached API result
+    XCTAssertEqual(helper.status, .likely)
+  }
+
+  func testRecordAppLaunchedWithWebURL_WithAPIUnavailable_UpdatesStatus() {
+    let date = Date()
+    let helper = DefaultBrowserHelper(
+      isDefaultAppChecker: .unavailable
+    )
+    helper.now = { date }
+
+    // Initial status should be unknown (no HTTP activity)
+    XCTAssertEqual(helper.status, .unknown)
+
+    helper.recordAppLaunchedWithWebURL()
+
+    // Status should now be likely due to recent HTTP activity
+    XCTAssertEqual(helper.status, .likely)
+  }
+
+  func testRecordAppLaunchedWithWebURL_WithCachedTrue_StatusBecomesDefaulted() {
+    let date = Date()
+    // Set up cached API result that indicates IS default
+    Preferences.General.isDefaultAPILastResult.value = true
+    Preferences.General.isDefaultAPILastCheckDate.value =
+      date.addingTimeInterval(-5.days)
+
+    let helper = DefaultBrowserHelper(
+      isDefaultAppChecker: .available(isDefault: false)
+    )
+    helper.now = { date }
+
+    // Initial status should be defaulted based on cached API result
+    XCTAssertEqual(helper.status, .defaulted)
+
+    // Record app launched with web URL (more recent than cache)
+    helper.recordAppLaunchedWithWebURL()
+
+    // Status should remain defaulted (HTTP override with true cache = defaulted)
+    XCTAssertEqual(helper.status, .defaulted)
+  }
 }
 
 // MARK: - Test Helpers

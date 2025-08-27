@@ -77,6 +77,11 @@ class DefaultBrowserHelper {
     updateStatus()
   }
 
+  func recordAppLaunchedWithWebURL() {
+    Preferences.General.lastHTTPURLOpenedDate.value = now()
+    updateStatus()
+  }
+
   /// Updates the default browser status based on the last accurate check and the last time a user
   /// opened the app using an http url
   func updateStatus() {
