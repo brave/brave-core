@@ -6,10 +6,22 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
+// Styled Styles
+import { Text, Column } from '../../shared/style'
+
 export const FavIcon = styled.img`
   width: 64px;
   height: 64px;
   border-radius: 5px;
   border: 1px solid ${leo.color.divider.subtle};
   margin-bottom: 12px;
+`
+
+export const DomainTextContainer = styled(Column)`
+  overflow: hidden;
+  box-sizing: border-box;
+`
+
+export const DomainText = styled(Text)`
+  word-break: break-all;
 `
