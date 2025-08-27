@@ -11,6 +11,7 @@ import { useAppState, AppModelContext } from '../../lib/app_model_context'
 import { useBreakpoint } from '../../lib/breakpoint'
 import { UICard } from '../../lib/app_state'
 import { CardView, sortCards, splitCardsIntoColumns } from './card_view'
+import { useOnVisibleCallback } from '../../../../../common/useVisible'
 
 import { style } from './explore_view.style'
 
@@ -18,32 +19,12 @@ export function ExploreView() {
   const { getString } = useLocaleContext()
   const viewType = useBreakpoint()
   const model = React.useContext(AppModelContext)
-  const hasRecordedView = React.useRef(false)
-  const exploreRef = React.useRef<HTMLDivElement>(null)
   let cards = useAppState((state) => state.cards)
 
   // Record offer view when the explore section becomes visible
-  React.useEffect(() => {
-    if (!exploreRef.current || hasRecordedView.current || !cards || cards.length === 0) {
-      return
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
-            model.recordOfferView()
-            hasRecordedView.current = true
-            observer.disconnect()
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
-
-    observer.observe(exploreRef.current)
-    return () => observer.disconnect()
-  }, [model, cards])
+  const { setElementRef } = useOnVisibleCallback(() => {
+    model.recordOfferView()
+  }, {})
 
   if (!cards) {
     return (
@@ -60,7 +41,7 @@ export function ExploreView() {
   if (viewType === 'double') {
     const [left, right] = splitCardsIntoColumns(cards)
     return (
-      <div ref={exploreRef} data-css-scope={style.scope}>
+      <div ref={setElementRef} data-css-scope={style.scope}>
         <h3>{getString('navigationExploreLabel')}</h3>
         <div className='columns'>
           <div>
@@ -75,7 +56,7 @@ export function ExploreView() {
   }
 
   return (
-    <div ref={exploreRef} data-css-scope={style.scope}>
+    <div ref={setElementRef} data-css-scope={style.scope}>
       <h3>{getString('navigationExploreLabel')}</h3>
       {cards.map((card) => <CardView key={card.name} card={card} />)}
     </div>
