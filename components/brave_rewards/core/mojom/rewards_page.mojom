@@ -207,7 +207,7 @@ interface RewardsPageHandler {
 
   // Records metric for offer view events.
   RecordOfferView() => ();
-  
+
   // Records metric for offer click events.
   RecordOfferClick() => ();
 };

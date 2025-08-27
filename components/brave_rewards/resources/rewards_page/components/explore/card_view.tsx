@@ -41,8 +41,8 @@ export function CardView(props: Props) {
       <h4>{cardTitle()}</h4>
       {
         card.banner &&
-          <NewTabLink 
-            className='banner' 
+          <NewTabLink
+            className='banner'
             href={sanitizeURL(card.banner.url)}
             onClick={() => model.recordOfferClick()}
           >

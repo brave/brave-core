@@ -19,7 +19,7 @@ export function CardItemView(props: Props) {
   const model = React.useContext(AppModelContext)
   const thumbnail = cardImageURL(item.thumbnail)
   return (
-    <NewTabLink 
+    <NewTabLink
       href={sanitizeURL(item.url)}
       onClick={() => model.recordOfferClick()}
     >

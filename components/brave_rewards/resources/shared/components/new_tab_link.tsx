@@ -36,7 +36,7 @@ export function NewTabLink (props: Props) {
     if (event.defaultPrevented) {
       return
     }
-    
+
     // If a tab opener has been specified for this component tree, then use it
     // to open the new tab. This will allow links to be opened from contexts
     // where normal links do not work (e.g. a bubble).
