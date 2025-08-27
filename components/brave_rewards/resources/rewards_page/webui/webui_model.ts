@@ -558,11 +558,11 @@ export function createModel(): AppModel {
     },
 
     async recordOfferClick() {
-      await pageHandler.recordOfferEvent(false, true)
+      await pageHandler.recordOfferClick()
     },
 
     async recordOfferView() {
-      await pageHandler.recordOfferEvent(true, false)
+      await pageHandler.recordOfferView()
     }
   }
 }

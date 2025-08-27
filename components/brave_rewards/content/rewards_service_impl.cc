@@ -1748,7 +1748,7 @@ void RewardsServiceImpl::RecordBackendP3AStats(bool delay_report) {
   }
 
   p3a::RecordRewardsPageViews(prefs_, false);
-  p3a::RecordOfferEvents(prefs_, false, false);
+  p3a::RecordOfferClicks(prefs_, false);
 
   GetExternalWallet(
       base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AExternalWallet,

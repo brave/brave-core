@@ -19,20 +19,21 @@ export function CardItemView(props: Props) {
   const model = React.useContext(AppModelContext)
   const thumbnail = cardImageURL(item.thumbnail)
   return (
-    <div onClick={() => model.recordOfferClick()}>
-      <NewTabLink href={sanitizeURL(item.url)}>
-        <span className='thumbnail'>
-          {
-            thumbnail
-              ? <img src={thumbnail} />
-              : <img className='favicon' src={faviconURL(item.url)} />
-          }
-        </span>
-        <span className='item-info'>
-          <span className='title'>{item.title}</span>
-          <span className='description'>{item.description}</span>
-        </span>
-      </NewTabLink>
-    </div>
+    <NewTabLink 
+      href={sanitizeURL(item.url)}
+      onClick={() => model.recordOfferClick()}
+    >
+      <span className='thumbnail'>
+        {
+          thumbnail
+            ? <img src={thumbnail} />
+            : <img className='favicon' src={faviconURL(item.url)} />
+        }
+      </span>
+      <span className='item-info'>
+        <span className='title'>{item.title}</span>
+        <span className='description'>{item.description}</span>
+      </span>
+    </NewTabLink>
   )
 }

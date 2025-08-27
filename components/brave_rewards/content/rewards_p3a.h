@@ -78,7 +78,8 @@ void RecordSearchResultAdsOptinChange(PrefService* prefs);
 
 void RecordAdsHistoryView();
 
-void RecordOfferEvents(PrefService* prefs, bool new_view, bool new_click);
+void RecordOfferView(PrefService* prefs);
+void RecordOfferClicks(PrefService* prefs, bool new_click);
 
 class ConversionMonitor {
  public:

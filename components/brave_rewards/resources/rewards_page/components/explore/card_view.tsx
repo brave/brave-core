@@ -41,11 +41,13 @@ export function CardView(props: Props) {
       <h4>{cardTitle()}</h4>
       {
         card.banner &&
-          <div onClick={() => model.recordOfferClick()}>
-            <NewTabLink className='banner' href={sanitizeURL(card.banner.url)}>
-              <img src={cardImageURL(card.banner.image)} />
-            </NewTabLink>
-          </div>
+          <NewTabLink 
+            className='banner' 
+            href={sanitizeURL(card.banner.url)}
+            onClick={() => model.recordOfferClick()}
+          >
+            <img src={cardImageURL(card.banner.image)} />
+          </NewTabLink>
       }
       <section>
         {card.items.map((item, i) => <CardItemView key={i} item={item} />)}

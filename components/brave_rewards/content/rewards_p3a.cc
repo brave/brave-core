@@ -102,11 +102,11 @@ void RecordAdsHistoryView() {
   UMA_HISTOGRAM_BOOLEAN(kAdsHistoryViewHistogramName, true);
 }
 
-void RecordOfferEvents(PrefService* prefs, bool new_view, bool new_click) {
-  if (new_view) {
-    UMA_HISTOGRAM_BOOLEAN(kOffersViewedHistogramName, true);
-  }
+void RecordOfferView(PrefService* prefs) {
+  UMA_HISTOGRAM_BOOLEAN(kOffersViewedHistogramName, true);
+}
 
+void RecordOfferClicks(PrefService* prefs, bool new_click) {
   WeeklyStorage storage(prefs, prefs::kP3AOfferClickCount);
   if (new_click) {
     storage.AddDelta(1);
