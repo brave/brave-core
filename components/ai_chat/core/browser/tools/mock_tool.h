@@ -42,7 +42,8 @@ class MockTool : public Tool {
   bool RequiresUserInteractionBeforeHandling() const override;
   bool IsSupportedByModel(const mojom::Model& model) const override;
   bool IsContentAssociationRequired() const override;
-  bool SupportsConversation(bool is_temporary) const override;
+  bool SupportsConversation(bool is_temporary,
+                            bool has_untrusted_content) const override;
 
   void set_requires_user_interaction_before_handling(
       bool requires_user_interaction_before_handling) {

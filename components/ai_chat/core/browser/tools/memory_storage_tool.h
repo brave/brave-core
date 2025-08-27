@@ -41,7 +41,8 @@ class MemoryStorageTool : public Tool {
   std::optional<base::Value::Dict> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
   bool RequiresUserInteractionBeforeHandling() const override;
-  bool SupportsConversation(bool is_temporary) const override;
+  bool SupportsConversation(bool is_temporary,
+                            bool has_untrusted_content) const override;
   void UseTool(const std::string& input_json,
                UseToolCallback callback) override;
 

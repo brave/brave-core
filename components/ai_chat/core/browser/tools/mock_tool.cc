@@ -69,7 +69,8 @@ bool MockTool::IsContentAssociationRequired() const {
   return requires_content_association_;
 }
 
-bool MockTool::SupportsConversation(bool is_temporary) const {
+bool MockTool::SupportsConversation(bool is_temporary,
+                                    bool has_untrusted_content) const {
   return supports_conversation_;
 }
 

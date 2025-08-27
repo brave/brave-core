@@ -75,11 +75,12 @@ bool MemoryStorageTool::RequiresUserInteractionBeforeHandling() const {
   return false;
 }
 
-bool MemoryStorageTool::SupportsConversation(bool is_temporary) const {
+bool MemoryStorageTool::SupportsConversation(bool is_temporary,
+                                             bool has_untrusted_content) const {
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   return false;
 #else
-  return !is_temporary;
+  return !is_temporary && !has_untrusted_content;
 #endif
 }
 

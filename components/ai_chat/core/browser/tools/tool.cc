@@ -41,7 +41,8 @@ bool Tool::RequiresUserInteractionBeforeHandling() const {
   return false;
 }
 
-bool Tool::SupportsConversation(bool is_temporary) const {
+bool Tool::SupportsConversation(bool is_temporary,
+                                bool has_untrusted_content) const {
   return true;
 }
 

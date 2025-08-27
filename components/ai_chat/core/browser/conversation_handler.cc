@@ -1706,7 +1706,9 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
           tools.begin(), tools.end(),
           [&](auto& tool) {
             return (!tool->IsSupportedByModel(model) ||
-                    !tool->SupportsConversation(GetIsTemporary()) ||
+                    !tool->SupportsConversation(
+                        GetIsTemporary(),
+                        associated_content_manager_->HasAssociatedContent()) ||
                     (tool->IsContentAssociationRequired() &&
                      !associated_content_manager_->HasAssociatedContent()));
           }),
