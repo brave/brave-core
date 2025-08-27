@@ -46,11 +46,13 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -1441,6 +1443,52 @@ TEST_P(AIChatServiceUnitTest,
   handler->SubmitHumanConversationEntry("Human message", {});
 
   EXPECT_EQ(handler->GetMetadataForTesting().associated_content.size(), 1u);
+}
+
+TEST_P(AIChatServiceUnitTest, InitializeTools_MemoryDisabled) {
+  // Test that no memory tool is created when memory is disabled
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+  ResetService();
+
+  EXPECT_FALSE(ai_chat_service_->GetMemoryToolForTesting());
+}
+
+TEST_P(AIChatServiceUnitTest, InitializeTools_MemoryEnabled) {
+  // Test that memory tool is created when memory is enabled
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  ResetService();
+
+  EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
+}
+
+TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_EnabledToDisabled) {
+  // Start with memory enabled
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  ResetService();
+
+  // Verify memory tool exists
+  EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
+
+  // Disable memory
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+  // Verify memory tool is removed
+  EXPECT_FALSE(ai_chat_service_->GetMemoryToolForTesting());
+}
+
+TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_DisabledToEnabled) {
+  // Start with memory disabled
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+  ResetService();
+
+  // Verify no memory tool exists
+  EXPECT_FALSE(ai_chat_service_->GetMemoryToolForTesting());
+
+  // Enable memory
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+
+  // Verify memory tool is added
+  EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
 }
 
 }  // namespace ai_chat

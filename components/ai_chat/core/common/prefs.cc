@@ -82,6 +82,17 @@ void DeleteMemoryFromPrefs(const std::string& memory, PrefService& prefs) {
   update->EraseValue(base::Value(memory));
 }
 
+bool HasMemoryFromPrefs(const std::string& memory, const PrefService& prefs) {
+  const base::Value::List& memories_list =
+      prefs.GetList(prefs::kBraveAIChatUserMemories);
+  for (const auto& item : memories_list) {
+    if (item.is_string() && item.GetString() == memory) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void DeleteAllMemoriesFromPrefs(PrefService& prefs) {
   prefs.ClearPref(prefs::kBraveAIChatUserMemories);
 }

@@ -12,6 +12,7 @@ import { useUntrustedConversationContext } from '../../untrusted_conversation_co
 import MarkdownRenderer from '../markdown_renderer'
 import ToolEvent from './tool_event'
 import WebSourcesEvent from './web_sources_event'
+import MemoryToolEvent from './memory_tool_event'
 import styles from './style.module.scss'
 import {
   removeReasoning,
@@ -103,6 +104,9 @@ function AssistantEvent(props: BaseProps & {
     )
   }
   if (props.event.toolUseEvent) {
+    if (props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME) {
+      return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
+    }
     return <ToolEvent toolUseEvent={props.event.toolUseEvent} isEntryActive={props.isEntryInteractivityAllowed} />
   }
 
@@ -154,5 +158,6 @@ export default function AssistantResponse(props: AssistantResponseProps) {
       }
     </>
   }
+
   </>)
 }

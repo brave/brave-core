@@ -56,6 +56,7 @@ namespace ai_chat {
 class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
+class MemoryStorageTool;
 
 // Main entry point for creating and consuming AI Chat conversations
 class AIChatService : public KeyedService,
@@ -120,6 +121,9 @@ class AIChatService : public KeyedService,
 
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
+
+  // Provides memory tool for testing
+  MemoryStorageTool* GetMemoryToolForTesting();
 
   ConversationHandler* GetConversation(std::string_view uuid);
   void GetConversation(std::string_view conversation_uuid,
@@ -295,6 +299,8 @@ class AIChatService : public KeyedService,
   void OnDataDeletedForDisabledStorage(bool success);
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
+  void OnMemoryEnabledChanged();
+  void InitializeTools();
 
   void GetEngineForTabOrganization(base::OnceClosure callback);
   void ContinueGetEngineForTabOrganization(base::OnceClosure callback,
@@ -331,6 +337,9 @@ class AIChatService : public KeyedService,
 
   // Engine for tab organization, created on demand and owned by AIChatService.
   std::unique_ptr<ai_chat::EngineConsumer> tab_organization_engine_;
+
+  // Memory tool that is available and shared across all conversations.
+  std::unique_ptr<MemoryStorageTool> memory_tool_;
 
   base::FilePath profile_path_;
 

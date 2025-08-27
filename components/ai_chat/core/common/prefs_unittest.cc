@@ -373,4 +373,22 @@ TEST_F(AIChatPrefsTest, GetUserMemoryDictFromPrefs_EmptyMemories) {
   EXPECT_FALSE(result.has_value());
 }
 
+TEST_F(AIChatPrefsTest, HasMemoryFromPrefs) {
+  // Test with empty prefs
+  EXPECT_FALSE(HasMemoryFromPrefs("Any memory", pref_service_));
+
+  // Set up test data
+  auto list = base::Value::List();
+  list.Append("I work as a software engineer");
+  list.Append("I live in San Francisco");
+  list.Append("I use Brave browser");
+  pref_service_.SetList(kBraveAIChatUserMemories, std::move(list));
+
+  // Test existing memory
+  EXPECT_TRUE(HasMemoryFromPrefs("I live in San Francisco", pref_service_));
+
+  // Test non-existing memory
+  EXPECT_FALSE(HasMemoryFromPrefs("I work in New York", pref_service_));
+}
+
 }  // namespace ai_chat::prefs

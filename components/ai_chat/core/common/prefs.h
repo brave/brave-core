@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/component_export.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom-forward.h"
 
@@ -46,6 +47,10 @@ bool UpdateMemoryInPrefs(const std::string& old_memory,
 // memory is not found.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void DeleteMemoryFromPrefs(const std::string& memory, PrefService& prefs);
+// Checks if a specific memory exists in the memories list in the pref.
+// Returns false if memory feature is disabled.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+bool HasMemoryFromPrefs(const std::string& memory, const PrefService& prefs);
 // Resets the memories list in the pref.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void DeleteAllMemoriesFromPrefs(PrefService& prefs);

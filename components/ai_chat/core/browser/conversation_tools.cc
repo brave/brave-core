@@ -66,19 +66,22 @@ const std::vector<Tool*>& AllTools() {
 
 }  // namespace
 
-ConversationToolProvider::ConversationToolProvider() = default;
+ConversationToolProvider::ConversationToolProvider(
+    base::WeakPtr<Tool> memory_storage_tool)
+    : memory_storage_tool_(memory_storage_tool) {}
 
 ConversationToolProvider::~ConversationToolProvider() = default;
 
 std::vector<base::WeakPtr<Tool>> ConversationToolProvider::GetTools() {
   std::vector<base::WeakPtr<Tool>> tools;
-  if (!features::IsToolsEnabled()) {
-    return tools;
-  }
-
   for (Tool* tool : AllTools()) {
     tools.push_back(tool->GetWeakPtr());
   }
+
+  if (memory_storage_tool_) {
+    tools.push_back(memory_storage_tool_);
+  }
+
   return tools;
 }
 

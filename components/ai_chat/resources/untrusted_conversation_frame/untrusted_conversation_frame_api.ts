@@ -69,8 +69,11 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
   public parentUIFrame: Mojom.ParentUIFrameRemote
     = new Mojom.ParentUIFrameRemote()
 
-  private conversationObserver: Mojom.UntrustedConversationUICallbackRouter
+  public conversationObserver: Mojom.UntrustedConversationUICallbackRouter
     = new Mojom.UntrustedConversationUICallbackRouter
+
+  public uiObserver: Mojom.UntrustedUICallbackRouter
+    = new Mojom.UntrustedUICallbackRouter
 
   constructor() {
     super(defaultConversationEntriesUIState)
@@ -78,6 +81,11 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
   }
 
   async initialize() {
+    // Bind UntrustedUI for memory notifications
+    this.uiHandler.bindUntrustedUI(
+      this.uiObserver.$.bindNewPipeAndPassRemote()
+    )
+
     const [
       { conversationEntriesState },
       { conversationHistory }
@@ -125,6 +133,7 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
     this.conversationObserver.associatedContentChanged.addListener((content: Mojom.AssociatedContent[]) => {
       this.setPartialState({ associatedContent: content })
     })
+
 
     // Set up communication with the parent frame
     this.uiHandler.bindParentPage(this.parentUIFrame.$.bindNewPipeAndPassReceiver())

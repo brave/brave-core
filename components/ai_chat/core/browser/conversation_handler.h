@@ -298,6 +298,9 @@ class ConversationHandler : public mojom::ConversationHandler,
                            OnAutoScreenshotsTaken_NoLimitWhenUnderMax);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            OnAutoScreenshotsTaken_SamePercentageNoUIUpdate);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      GetTools_MemoryToolFilteredForTemporaryConversations);
 
   struct Suggestion {
     std::string title;

@@ -42,6 +42,8 @@ class MockTool : public Tool {
   bool RequiresUserInteractionBeforeHandling() const override;
   bool IsSupportedByModel(const mojom::Model& model) const override;
   bool IsContentAssociationRequired() const override;
+  bool SupportsConversation(bool is_temporary,
+                            bool has_untrusted_content) const override;
 
   void set_requires_user_interaction_before_handling(
       bool requires_user_interaction_before_handling) {
@@ -55,6 +57,10 @@ class MockTool : public Tool {
 
   void set_requires_content_association(bool requires_content_association) {
     requires_content_association_ = requires_content_association;
+  }
+
+  void set_supports_conversation(bool supports_conversation) {
+    supports_conversation_ = supports_conversation;
   }
 
   MOCK_METHOD(void,
@@ -72,6 +78,7 @@ class MockTool : public Tool {
   bool requires_user_interaction_before_handling_;
   bool is_supported_by_model_ = true;
   bool requires_content_association_ = false;
+  bool supports_conversation_ = true;
 };
 
 }  // namespace ai_chat

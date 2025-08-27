@@ -136,6 +136,137 @@ const toolEvents: Mojom.ToolUseEvent[] = [
   }
 ]
 
+const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
+  {
+    uuid: 'user-1',
+    text: 'Remember that I work as a software engineer.',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    modelKey: '1'
+  },
+  {
+    uuid: 'assistant-1',
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001100000') },
+    events: [
+      {
+        ...eventTemplate,
+        toolUseEvent: {
+          id: 'memory-1',
+          toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+          argumentsJson: '{"memory": "works as a software engineer"}',
+          output: [{
+            textContentBlock: { text: '' },
+            imageContentBlock: undefined
+          }]
+        }
+      },
+      getCompletionEvent("I'll remember that you work as a software engineer.")
+    ],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    modelKey: '1'
+  },
+  {
+    uuid: 'user-2',
+    text: 'Remember I like cats.',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001200000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    modelKey: '1'
+  },
+  {
+    uuid: 'assistant-2',
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001300000') },
+    events: [
+      {
+        ...eventTemplate,
+        toolUseEvent: {
+          id: 'memory-2',
+          toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+          argumentsJson: '{"memory": "Likes cats"}',
+          output: [{
+            textContentBlock: { text: '' },
+            imageContentBlock: undefined
+          }]
+        }
+      },
+      getCompletionEvent("I've noted you like cats.")
+    ],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    modelKey: '1'
+  },
+  {
+    uuid: 'user-3',
+    text: 'Remember my favorite hobby is hiking.',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001400000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    modelKey: '1'
+  },
+  {
+    uuid: 'assistant-3',
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001500000') },
+    events: [
+      {
+        ...eventTemplate,
+        toolUseEvent: {
+          id: 'memory-3',
+          toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+          argumentsJson: '{"memory": "favorite hobby is hiking"}',
+          output: [{
+            textContentBlock: { text: 'Memory storage failed' },
+            imageContentBlock: undefined
+          }]
+        }
+      },
+      getCompletionEvent(
+        "I encountered an error while trying to store that information."
+      )
+    ],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    modelKey: '1'
+  }
+]
+
 const HISTORY: Mojom.ConversationTurn[] = [
   {
     uuid: 'turn-uuid',
@@ -663,6 +794,7 @@ type CustomArgs = {
   isTemporaryChat: boolean
   isDragActive: boolean
   isDragOver: boolean
+  useMemoryHistory: boolean
 }
 
 const args: CustomArgs = {
@@ -703,7 +835,8 @@ const args: CustomArgs = {
   ratingTurnUuid: undefined,
   isTemporaryChat: false,
   isDragActive: false,
-  isDragOver: false
+  isDragOver: false,
+  useMemoryHistory: false
 }
 
 const meta: Meta<CustomArgs> = {
@@ -863,7 +996,9 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     conversationUuid: options.args.isNewConversation
       ? 'new-conversation'
       : CONVERSATIONS[1].uuid,
-    conversationHistory: options.args.hasConversation ? HISTORY : [],
+    conversationHistory: options.args.hasConversation
+      ? (options.args.useMemoryHistory ? MEMORY_HISTORY : HISTORY)
+      : [],
     associatedContentInfo: [associatedContent],
     allModels: MODELS,
     currentModel,
@@ -940,6 +1075,16 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     allModels: MODELS,
     currentModelKey: currentModel?.key ?? '',
     associatedContent: [associatedContent],
+    uiHandler: {
+      hasMemory: (memory: string) => {
+        // Return false for the "undone" example to show undone state
+        if (memory === 'Likes cats') {
+          return Promise.resolve({ exists: false })
+        }
+        // Return true for others to show success state
+        return Promise.resolve({ exists: true })
+      }
+    } as unknown as Mojom.UntrustedUIHandlerRemote
   }
 
   return (
@@ -1056,10 +1201,27 @@ export const _ToolUse = {
   render: () => {
     return (
       <div className={styles.container}>
-        {toolEvents.map((event) => (
+        {toolEvents
+          .filter(event => event.toolName !== Mojom.MEMORY_STORAGE_TOOL_NAME)
+          .map((event) => (
           <ToolEvent key={event.id} toolUseEvent={event} isEntryActive></ToolEvent>
         ))}
       </div>
     )
+  }
+}
+
+export const _MemoryEvents: Story = {
+  render: (args) => {
+    return (
+      <div className={styles.container}>
+        <Main />
+      </div>
+    )
+  },
+  args: {
+    ...args,
+    hasConversation: true,
+    useMemoryHistory: true
   }
 }

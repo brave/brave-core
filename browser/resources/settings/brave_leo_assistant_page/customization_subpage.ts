@@ -14,9 +14,11 @@ import { RouteObserverMixin, RouteObserverMixinInterface } from '../router.js'
 import { SettingsViewMixin } from '../settings_page/settings_view_mixin.js'
 import {
   Customizations,
-  CustomizationOperationError,
-  MAX_RECORD_LENGTH
+  CustomizationOperationError
 } from '../customization_settings.mojom-webui.js'
+import {
+  MAX_MEMORY_RECORD_LENGTH
+} from '../ai_chat.mojom-webui.js'
 import {
   BraveLeoAssistantBrowserProxy,
   BraveLeoAssistantBrowserProxyImpl
@@ -154,7 +156,7 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
   }
 
   private isTooLong(text: string): boolean {
-    return text.trim().length > MAX_RECORD_LENGTH
+    return text.trim().length > MAX_MEMORY_RECORD_LENGTH
   }
 
   handleSaveButtonState_() {
