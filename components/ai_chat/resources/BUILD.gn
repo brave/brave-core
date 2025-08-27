@@ -18,7 +18,10 @@ transpile_web_ui("ai_chat_ui") {
           "untrusted_conversation_frame/untrusted_conversation_frame.tsx"),
     ],
   ]
-  deps = [ "//brave/components/ai_chat/core/common/mojom:mojom_js" ]
+  deps = [
+    "//brave/components/ai_chat/core/common/mojom:mojom_js",
+    "//brave/components/resources:strings",
+  ]
 }
 
 pack_web_resources("resources") {

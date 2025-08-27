@@ -16,6 +16,7 @@ transpile_web_ui("brave_new_tab_ui") {
     ":mojom_js",
     "//brave/components/brave_news/common:mojom_js",
     "//brave/components/brave_vpn/common/mojom:mojom_js",
+    "//brave/components/resources:strings",
   ]
   if (!is_android && !is_ios) {
     public_deps += [
