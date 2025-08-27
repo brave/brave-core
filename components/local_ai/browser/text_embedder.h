@@ -66,6 +66,7 @@ class TextEmbedder {
   struct TabInfo {
     std::u16string title;
     GURL url;
+    std::string tab_content;
   };
 
   // Structure to represent a candidate tab with index and tab info

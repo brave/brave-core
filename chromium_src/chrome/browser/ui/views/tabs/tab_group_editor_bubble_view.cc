@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
@@ -26,6 +27,7 @@
 #include "chrome/browser/ui/views/bubble_menu_item_factory.h"
 #include "chrome/browser/ui/views/data_sharing/data_sharing_bubble_controller.h"
 #include "chrome/browser/user_education/user_education_service.h"
+#include "components/content_extraction/content/browser/inner_text.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
@@ -42,6 +44,15 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "url/gurl.h"
+
+// Helper struct for collecting tab data before getting inner text
+struct TabData {
+  int index;
+  std::u16string title;
+  GURL url;
+  bool is_in_group;
+  raw_ptr<content::WebContents> web_contents;
+};
 
 namespace {
 
@@ -362,9 +373,10 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
     return;
   }
 
-  // Collect tabs in the current group and candidate tabs
-  std::vector<local_ai::TextEmbedder::TabInfo> group_tabs;
-  std::vector<local_ai::TextEmbedder::CandidateTab> candidate_tabs;
+  // Collect tab information first (without content)
+  std::vector<TabData> all_tabs;
+  int group_tab_count = 0;
+  int candidate_tab_count = 0;
 
   for (int i = 0; i < tab_strip_model->count(); ++i) {
     content::WebContents* web_contents = tab_strip_model->GetWebContentsAt(i);
@@ -372,33 +384,87 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
       continue;
     }
 
-    // Get tab title and URL
     std::u16string title = web_contents->GetTitle();
     GURL url = web_contents->GetVisibleURL();
-    local_ai::TextEmbedder::TabInfo tab_info = {title, url};
-
-    // Check if this tab is in any group
     std::optional<tab_groups::TabGroupId> tab_group =
         tab_strip_model->GetTabGroupForTab(i);
 
-    if (tab_group.has_value() && tab_group.value() == group_) {
+    bool is_in_current_group =
+        tab_group.has_value() && tab_group.value() == group_;
+    bool is_candidate = !tab_group.has_value();
+
+    if (is_in_current_group) {
+      group_tab_count++;
+    } else if (is_candidate) {
+      candidate_tab_count++;
+    }
+
+    all_tabs.push_back({i, title, url, is_in_current_group, web_contents});
+  }
+
+  // If there are no candidate tabs or no group tabs, just close
+  if (candidate_tab_count == 0 || group_tab_count == 0) {
+    CleanupAndClose();
+    return;
+  }
+
+  // Create a copy for the barrier callback to avoid moving the vector we need
+  // to iterate over
+  auto all_tabs_copy = all_tabs;
+  auto barrier_callback = base::BarrierCallback<std::pair<int, std::string>>(
+      all_tabs.size(),
+      base::BindOnce(&TabGroupEditorBubbleView::OnAllTabContentsCollected,
+                     base::Unretained(this), std::move(all_tabs_copy)));
+
+  for (const auto& tab_data : all_tabs) {
+    content_extraction::GetInnerText(
+        *tab_data.web_contents->GetPrimaryMainFrame(), std::nullopt,
+        base::BindOnce(
+            [](base::RepeatingCallback<void(std::pair<int, std::string>)>
+                   callback,
+               int tab_index,
+               std::unique_ptr<content_extraction::InnerTextResult> result) {
+              std::string content = result && !result->inner_text.empty()
+                                        ? result->inner_text
+                                        : "";
+              callback.Run(std::make_pair(tab_index, content));
+            },
+            barrier_callback, tab_data.index));
+  }
+}
+
+void TabGroupEditorBubbleView::OnAllTabContentsCollected(
+    std::vector<TabData> all_tabs,
+    std::vector<std::pair<int, std::string>> content_results) {
+  // Create a map of tab_index -> content for quick lookup
+  std::map<int, std::string> content_map;
+  for (const auto& result : content_results) {
+    content_map[result.first] = result.second;
+  }
+
+  // Now build the final TabInfo structures with content
+  std::vector<local_ai::TextEmbedder::TabInfo> group_tabs;
+  std::vector<local_ai::TextEmbedder::CandidateTab> candidate_tabs;
+
+  for (const auto& tab_data : all_tabs) {
+    std::string content = content_map[tab_data.index];
+
+    local_ai::TextEmbedder::TabInfo tab_info = {tab_data.title, tab_data.url,
+                                                content};
+
+    if (tab_data.is_in_group) {
       // Tab is in the current group
       group_tabs.push_back(tab_info);
-    } else if (!tab_group.has_value()) {
+    } else {
       // Tab is not in any group - candidate for addition
       local_ai::TextEmbedder::CandidateTab candidate;
-      candidate.index = i;
+      candidate.index = tab_data.index;
       candidate.tab_info = tab_info;
       candidate_tabs.push_back(candidate);
     }
   }
 
-  // If there are no candidate tabs or no group tabs, just close
-  if (candidate_tabs.empty() || group_tabs.empty()) {
-    CleanupAndClose();
-    return;
-  }
-
+  // Now call SuggestTabsForGroup with populated content
   text_embedder_->SuggestTabsForGroup(
       std::move(group_tabs), std::move(candidate_tabs),
       base::BindOnce(&TabGroupEditorBubbleView::OnTabSuggestionResult,
@@ -408,12 +474,12 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
 void TabGroupEditorBubbleView::OnTabSuggestionResult(
     absl::StatusOr<std::vector<int>> result) {
   if (!result.ok()) {
-    // Error occurred
     CleanupAndClose();
     return;
   }
 
   std::vector<int> suggested_tab_indices = result.value();
+
   if (suggested_tab_indices.empty()) {
     CleanupAndClose();
     return;

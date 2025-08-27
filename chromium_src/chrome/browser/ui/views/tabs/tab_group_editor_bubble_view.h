@@ -11,6 +11,9 @@
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/local_ai/browser/text_embedder.h"
 
+// Forward declaration for TabData
+struct TabData;
+
 // Inject our new member methods into the upstream class
 #define RebuildMenuContents                                             \
   RebuildMenuContentsUnsed();                                           \
@@ -24,6 +27,9 @@
   /* AI-powered tab suggestion functionality */                         \
   void OnTextEmbedderInitialized(bool initialized);                     \
   void ProcessTabSuggestion();                                          \
+  void OnAllTabContentsCollected(                                       \
+      std::vector<TabData> all_tabs,                                    \
+      std::vector<std::pair<int, std::string>> content_results);        \
   void OnTabSuggestionResult(absl::StatusOr<std::vector<int>> result);  \
   void ShowSuggestionDialog(std::vector<int> suggested_tab_indices);    \
   void CleanupTextEmbedder();                                           \

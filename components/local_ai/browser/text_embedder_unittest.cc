@@ -246,27 +246,31 @@ TEST_F(TextEmbedderUnitTest, InspectEmbedding) {
 TEST_F(TextEmbedderUnitTest, VerifySuggestTabsForGroup) {
   // Create group tabs (travel-related content)
   std::vector<local_ai::TextEmbedder::TabInfo> group_tabs = {
-      {u"Top 10 places to visit in Italy", GURL("https://travelblog.com")},
-      {u"Flight comparison: Rome vs Venice", GURL("https://skyscanner.com")},
-      {u"Train travel tips across Europe", GURL("https://eurotripadvisor.net")},
+      {u"Top 10 places to visit in Italy", GURL("https://travelblog.com"), ""},
+      {u"Flight comparison: Rome vs Venice", GURL("https://skyscanner.com"),
+       ""},
+      {u"Train travel tips across Europe", GURL("https://eurotripadvisor.net"),
+       ""},
       {u"Travel insurance for international trips",
-       GURL("https://safetravel.com")},
+       GURL("https://safetravel.com"), ""},
       {u"Visa requirements for Schengen countries",
-       GURL("https://visaguide.world")}};
+       GURL("https://visaguide.world"), ""}};
 
   // Create candidate tabs (mix of travel and non-travel content)
   std::vector<local_ai::TextEmbedder::CandidateTab> candidate_tabs = {
       {0,
        {u"Compare savings accounts interest rates",
-        GURL("https://bankrate.com")}},
-      {10, {u"Tips to improve credit score", GURL("https://nerdwallet.com")}},
-      {2, {u"Live coverage of Formula 1 race", GURL("https://formula1.com")}},
+        GURL("https://bankrate.com"), ""}},
+      {10,
+       {u"Tips to improve credit score", GURL("https://nerdwallet.com"), ""}},
+      {2,
+       {u"Live coverage of Formula 1 race", GURL("https://formula1.com"), ""}},
       {5,
        {u"Visiting Italy in October: all you need to know",
-        GURL("https://mamalovesitaly.com")}},  // Travel-related
+        GURL("https://mamalovesitaly.com"), ""}},  // Travel-related
       {9,
-       {u"Review of hotels in Venice",
-        GURL("https://booking.com")}}  // Travel-related
+       {u"Review of hotels in Venice", GURL("https://booking.com"),
+        ""}}  // Travel-related
   };
 
   // Keep a copy of candidate indices for validation
@@ -316,25 +320,28 @@ TEST_F(TextEmbedderUnitTest, VerifySuggestGroupForTab) {
 
   // Travel group
   group_tabs[travel_group_id] = {
-      {u"Top 10 places to visit in Italy", GURL("https://travelblog.com")},
-      {u"Flight comparison: Rome vs Venice", GURL("https://skyscanner.com")},
-      {u"Train travel tips across Europe", GURL("https://eurotripadvisor.net")},
+      {u"Top 10 places to visit in Italy", GURL("https://travelblog.com"), ""},
+      {u"Flight comparison: Rome vs Venice", GURL("https://skyscanner.com"),
+       ""},
+      {u"Train travel tips across Europe", GURL("https://eurotripadvisor.net"),
+       ""},
       {u"Travel insurance for international trips",
-       GURL("https://safetravel.com")},
+       GURL("https://safetravel.com"), ""},
       {u"Visa requirements for Schengen countries",
-       GURL("https://visaguide.world")}};
+       GURL("https://visaguide.world"), ""}};
 
   // Weather group
   group_tabs[weather_group_id] = {
       {u"Woking, Surrey, United Kingdom Current Weather | AccuWeather",
-       GURL("https://accuweather.com")},
-      {u"London - BBC Weather", GURL("https://bbc.co.uk")}};
+       GURL("https://accuweather.com"), ""},
+      {u"London - BBC Weather", GURL("https://bbc.co.uk"), ""}};
 
   // Finance group - this should be the best match
   group_tabs[finance_group_id] = {
-      {u"Personal Savings Allowance", GURL("https://moneysavingexpert.com")},
+      {u"Personal Savings Allowance", GURL("https://moneysavingexpert.com"),
+       ""},
       {u"What is the Personal Savings Allowance? | Barclays",
-       GURL("https://barclays.co.uk")}};
+       GURL("https://barclays.co.uk"), ""}};
 
   // Sports group
   group_tabs[sports_group_id] = {
@@ -449,11 +456,13 @@ TEST_F(TextEmbedderUnitTest, InitializationWorkflow) {
   // Now the methods should work with properly designed test data
   base::test::TestFuture<absl::StatusOr<std::vector<int>>> tabs_future2;
   std::vector<local_ai::TextEmbedder::TabInfo> group_tabs2 = {
-      {u"Best travel destinations in Europe", GURL("https://travelblog.com")},
-      {u"Top places to visit in Italy", GURL("https://lonelyplanet.com")}};
+      {u"Best travel destinations in Europe", GURL("https://travelblog.com"),
+       ""},
+      {u"Top places to visit in Italy", GURL("https://lonelyplanet.com"), ""}};
   std::vector<local_ai::TextEmbedder::CandidateTab> candidate_tabs2 = {
       {0,
-       {u"Amazing travel spots in France", GURL("https://travelguide.com")}}};
+       {u"Amazing travel spots in France", GURL("https://travelguide.com"),
+        ""}}};
   embedder->SuggestTabsForGroup(std::move(group_tabs2),
                                 std::move(candidate_tabs2),
                                 tabs_future2.GetCallback());
@@ -468,8 +477,9 @@ TEST_F(TextEmbedderUnitTest, InitializationWorkflow) {
   std::map<tab_groups::TabGroupId, std::vector<local_ai::TextEmbedder::TabInfo>>
       groups2;
   groups2[CreateMockTabGroupId()] = {
-      {u"Best travel destinations in Europe", GURL("https://travelblog.com")},
-      {u"Top places to visit in Italy", GURL("https://lonelyplanet.com")}};
+      {u"Best travel destinations in Europe", GURL("https://travelblog.com"),
+       ""},
+      {u"Top places to visit in Italy", GURL("https://lonelyplanet.com"), ""}};
   embedder->SuggestGroupForTab(std::move(candidate2), std::move(groups2),
                                group_future2.GetCallback());
   auto group_result2 = group_future2.Get();
@@ -484,18 +494,19 @@ TEST_F(TextEmbedderUnitTest, InitializationWorkflow) {
 TEST_F(TextEmbedderUnitTest, HostExtractionTest) {
   // Test with valid HTTPS URL - should extract host
   local_ai::TextEmbedder::TabInfo tab1 = {
-      u"Test Page", GURL("https://example.com/path?query=1")};
+      u"Test Page", GURL("https://example.com/path?query=1"), ""};
 
   // Test with subdomain - should extract full host
   local_ai::TextEmbedder::TabInfo tab2 = {
-      u"News Article", GURL("https://news.google.com/article/123")};
+      u"News Article", GURL("https://news.google.com/article/123"), ""};
 
   // Test with invalid URL - should use "unknown"
-  local_ai::TextEmbedder::TabInfo tab3 = {u"Invalid URL", GURL("not-a-url")};
+  local_ai::TextEmbedder::TabInfo tab3 = {u"Invalid URL", GURL("not-a-url"),
+                                          ""};
 
   // Test with file URL (no host) - should use full spec
-  local_ai::TextEmbedder::TabInfo tab4 = {u"Local File",
-                                          GURL("file:///path/to/file.html")};
+  local_ai::TextEmbedder::TabInfo tab4 = {
+      u"Local File", GURL("file:///path/to/file.html"), ""};
 
   // Test SerializeTabInfo directly using the helper method
   EXPECT_EQ(CallSerializeTabInfo(tab1), "Test Page | example.com");
@@ -503,6 +514,13 @@ TEST_F(TextEmbedderUnitTest, HostExtractionTest) {
   EXPECT_EQ(CallSerializeTabInfo(tab3), "Invalid URL | unknown");
   EXPECT_EQ(CallSerializeTabInfo(tab4),
             "Local File | file:///path/to/file.html");
+
+  // Test with tab_content field present but not included in serialization
+  local_ai::TextEmbedder::TabInfo tab_with_content = {
+      u"Article Title", GURL("https://example.com/article"),
+      "This is the main article content about travel tips and destinations."};
+  EXPECT_EQ(CallSerializeTabInfo(tab_with_content),
+            "Article Title | example.com");
 }
 
 }  // namespace local_ai
