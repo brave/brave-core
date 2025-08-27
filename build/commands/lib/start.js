@@ -75,6 +75,11 @@ const start = (
     }
   }
 
+  const index = passthroughArgs.indexOf('-C');
+  if (index > -1) {
+    passthroughArgs.splice(index, 2)  // remove -C and path if present
+  }
+
   braveArgs = braveArgs.concat(passthroughArgs)
 
   let userDataDir
