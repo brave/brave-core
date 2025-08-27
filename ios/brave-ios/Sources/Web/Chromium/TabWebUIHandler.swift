@@ -35,7 +35,7 @@ class TabWebUIHandler: NSObject, BraveWalletCommunicationProtocol {
     guard let tab = tab else { return }
     delegate?.unlockWallet(tab)
   }
-  
+
   func webUIShowOnboarding(_ isNewAccount: Bool) {
     guard let tab = tab else { return }
     delegate?.showWalletOnboarding(tab, isNewAccount: isNewAccount)
