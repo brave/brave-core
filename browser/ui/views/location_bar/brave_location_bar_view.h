@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/types/pass_key.h"
 #include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/view_shadow.h"
@@ -19,6 +20,7 @@
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
+class BraveToolbarView;
 class PromotionButtonController;
 class PromotionButtonView;
 class PlaylistActionIconView;
@@ -75,6 +77,7 @@ class BraveLocationBarView : public LocationBarView {
   views::View* GetSearchPromotionButton() const override;
   void RefreshBackground() override;
   void OnOmniboxBlurred() override;
+  void Layout(PassKey) override;
 
   // views::View:
   gfx::Size CalculatePreferredSize(
@@ -94,6 +97,10 @@ class BraveLocationBarView : public LocationBarView {
   void ShowPlaylistBubble(
       playlist::PlaylistBubblesController::BubbleType type =
           playlist::PlaylistBubblesController::BubbleType::kInfer);
+
+  void set_ignore_layout(base::PassKey<BraveToolbarView>, bool ignore) {
+    ignore_layout_ = ignore;
+  }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, AddItemsToList);
@@ -115,6 +122,7 @@ class BraveLocationBarView : public LocationBarView {
   PlaylistActionIconView* GetPlaylistActionIconView();
   void SetupShadow();
 
+  bool ignore_layout_ = false;
   std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
   raw_ptr<BraveNewsActionIconView> brave_news_action_icon_view_ = nullptr;

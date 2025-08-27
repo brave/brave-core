@@ -16,6 +16,7 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/ai_chat_button.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -438,6 +439,15 @@ void BraveToolbarView::ViewHierarchyChanged(
 }
 
 void BraveToolbarView::Layout(PassKey) {
+  // Prevent setting location bar twice in this method.
+  // Base class's Layout sets its rect but it's re-written
+  // by ResetLocationBarBounds() for narrow location bar option.
+  if (display_mode_ == DisplayMode::NORMAL && brave_initialized_ &&
+      !location_bar_is_wide_.GetValue()) {
+    static_cast<BraveLocationBarView*>(location_bar_)
+        ->set_ignore_layout({}, true);
+  }
+
   LayoutSuperclass<ToolbarView>(this);
 
   if (!brave_initialized_) {
@@ -451,6 +461,8 @@ void BraveToolbarView::Layout(PassKey) {
   }
 
   if (!location_bar_is_wide_.GetValue()) {
+    static_cast<BraveLocationBarView*>(location_bar_)
+        ->set_ignore_layout({}, false);
     ResetLocationBarBounds();
     ResetBookmarkButtonBounds();
   }
