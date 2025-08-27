@@ -76,6 +76,7 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
         preference.setKey(
                 String.format(Locale.ENGLISH, CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT, menuItem.id));
         preference.setChecked(menuItem.checked);
+        preference.setIconSpaceReserved(true);
 
         // Set icon if available
         if (menuItem.icon != null) {
