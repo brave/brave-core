@@ -30,8 +30,8 @@ test("brave_components_unittests") {
     "//brave/components/brave_wallet/common:unit_tests",
     "//brave/components/email_aliases:unit_tests",
     "//brave/components/json:unit_tests",
-    "//brave/components/static_redirect_helper:unit_tests",
     "//brave/components/local_ai/browser:unit_tests",
+    "//brave/components/static_redirect_helper:unit_tests",
     "//components/test:run_all_unittests",
   ]
 

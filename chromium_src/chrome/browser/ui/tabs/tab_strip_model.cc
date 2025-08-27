@@ -18,6 +18,7 @@
 #include "brave/components/local_ai/browser/text_embedder.h"
 #include "brave/components/local_ai/common/features.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
+#include "components/content_extraction/content/browser/inner_text.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
@@ -117,117 +118,186 @@ void TabStripModel::HandleAddTabToSuggestedGroupCommand(int context_index) {
     return;
   }
 
-  // Collect existing groups first (shared across all tab processing)
-  std::map<tab_groups::TabGroupId, std::vector<local_ai::TextEmbedder::TabInfo>>
-      group_tabs;
+  // Collect all tabs that need content extraction (both group tabs and
+  // candidate tabs)
+  std::vector<BraveTabStripTabData> all_tabs_needing_content;
 
+  // Collect all group tabs
   for (int i = 0; i < count(); ++i) {
     auto group_id = GetTabGroupForTab(i);
     if (group_id.has_value()) {
-      // Initialize the group if we haven't seen it yet
-      if (group_tabs.find(group_id.value()) == group_tabs.end()) {
-        group_tabs[group_id.value()] =
-            std::vector<local_ai::TextEmbedder::TabInfo>();
-      }
-
-      content::WebContents* group_web_contents = GetWebContentsAt(i);
-      if (group_web_contents) {
-        std::u16string group_title = group_web_contents->GetTitle();
-        GURL group_url = group_web_contents->GetVisibleURL();
-        group_tabs[group_id.value()].push_back({group_title, group_url});
+      content::WebContents* web_contents = GetWebContentsAt(i);
+      if (web_contents) {
+        std::u16string title = web_contents->GetTitle();
+        GURL url = web_contents->GetVisibleURL();
+        all_tabs_needing_content.push_back(
+            {i, title, url, group_id, web_contents});
       }
     }
   }
 
-  if (group_tabs.empty()) {
-    return;  // No existing groups
+  // Add ungrouped candidate tabs (use empty group_id for these)
+  for (int index : ungrouped_indices) {
+    content::WebContents* web_contents = GetWebContentsAt(index);
+    if (web_contents) {
+      std::u16string title = web_contents->GetTitle();
+      GURL url = web_contents->GetVisibleURL();
+      all_tabs_needing_content.push_back(
+          {index, title, url, std::nullopt, web_contents});
+    }
   }
 
-  // Initialize the TextEmbedder first
+  if (all_tabs_needing_content.empty()) {
+    return;
+  }
+
+  // Initialize TextEmbedder first
   text_embedder->Initialize(base::BindOnce(
-      [](base::WeakPtr<TabStripModel> model,
-         std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter>
-             embedder,
-         std::map<tab_groups::TabGroupId,
-                  std::vector<local_ai::TextEmbedder::TabInfo>> group_tabs,
-         std::vector<int> ungrouped_indices, int context_index, bool success) {
-        if (!model || !success) {
-          return;
-        }
-
-        // Use barrier callback to wait for all tab suggestions to complete
-        struct TabSuggestionResult {
-          int tab_index;
-          absl::StatusOr<tab_groups::TabGroupId> suggested_group;
-        };
-
-        auto barrier_callback = base::BarrierCallback<TabSuggestionResult>(
-            ungrouped_indices.size(),
-            base::BindOnce(
-                [](base::WeakPtr<TabStripModel> model, int context_index,
-                   std::vector<TabSuggestionResult> results) {
-                  if (!model) {
-                    return;
-                  }
-
-                  // Group tabs by their suggested group and add them
-                  std::map<tab_groups::TabGroupId, std::vector<int>>
-                      tabs_by_group;
-                  for (const auto& result : results) {
-                    if (result.suggested_group.ok()) {
-                      tab_groups::TabGroupId group_id =
-                          result.suggested_group.value();
-                      tabs_by_group[group_id].push_back(result.tab_index);
-                      VLOG(1) << "Tab " << result.tab_index << " -> Group "
-                              << group_id;
-                    } else {
-                      VLOG(1)
-                          << "No suggestion for tab " << result.tab_index
-                          << ": " << result.suggested_group.status().message();
-                    }
-                  }
-
-                  // Add tabs to their suggested groups
-                  for (const auto& [group_id, tab_indices] : tabs_by_group) {
-                    model->OnSuggestGroupForTabResult(
-                        tab_indices, context_index,
-                        absl::StatusOr<tab_groups::TabGroupId>(group_id));
-                  }
-                },
-                model, context_index));
-
-        // Process each tab individually
-        for (size_t i = 0; i < ungrouped_indices.size(); ++i) {
-          int tab_index = ungrouped_indices[i];
-          content::WebContents* web_contents =
-              model->GetWebContentsAt(tab_index);
-          if (!web_contents) {
-            barrier_callback.Run(
-                {tab_index, absl::FailedPreconditionError("No web contents")});
-            continue;
-          }
-
-          std::u16string title = web_contents->GetTitle();
-          GURL url = web_contents->GetVisibleURL();
-
-          local_ai::TextEmbedder::CandidateTab candidate_tab;
-          candidate_tab.index = tab_index;
-          candidate_tab.tab_info = {title, url};
-
-          embedder->SuggestGroupForTab(
-              candidate_tab, group_tabs,
-              base::BindOnce(
-                  [](base::RepeatingCallback<void(TabSuggestionResult)>
-                         callback,
-                     int tab_index,
-                     absl::StatusOr<tab_groups::TabGroupId> result) {
-                    callback.Run({tab_index, result});
-                  },
-                  barrier_callback, tab_index));
-        }
-      },
+      &TabStripModel::OnTextEmbedderInitializedForGroupCommand,
       weak_factory_.GetWeakPtr(), std::move(text_embedder),
-      std::move(group_tabs), ungrouped_indices, context_index));
+      std::move(all_tabs_needing_content), ungrouped_indices, context_index));
+}
+
+void TabStripModel::OnTextEmbedderInitializedForGroupCommand(
+    std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter>
+        text_embedder,
+    std::vector<BraveTabStripTabData> all_tabs_needing_content,
+    std::vector<int> ungrouped_indices,
+    int context_index,
+    bool success) {
+  if (!success) {
+    return;
+  }
+
+  // Now collect inner text for all tabs using barrier callback
+
+  auto barrier_callback = base::BarrierCallback<std::pair<int, std::string>>(
+      all_tabs_needing_content.size(),
+      base::BindOnce(&TabStripModel::OnAllTabContentCollectedForGroupCommand,
+                     weak_factory_.GetWeakPtr(), std::move(text_embedder),
+                     all_tabs_needing_content, ungrouped_indices,
+                     context_index));
+
+  for (const auto& tab_data : all_tabs_needing_content) {
+    content_extraction::GetInnerText(
+        *tab_data.web_contents->GetPrimaryMainFrame(), std::nullopt,
+        base::BindOnce(
+            [](base::RepeatingCallback<void(std::pair<int, std::string>)>
+                   callback,
+               int tab_index,
+               std::unique_ptr<content_extraction::InnerTextResult> result) {
+              std::string content = result && !result->inner_text.empty()
+                                        ? result->inner_text
+                                        : "";
+              callback.Run(std::make_pair(tab_index, content));
+            },
+            barrier_callback, tab_data.index));
+  }
+}
+
+void TabStripModel::OnAllTabContentCollectedForGroupCommand(
+    std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter>
+        text_embedder,
+    std::vector<BraveTabStripTabData> all_tabs_needing_content,
+    std::vector<int> ungrouped_indices,
+    int context_index,
+    std::vector<std::pair<int, std::string>> content_results) {
+  // Create a map of tab_index -> content for quick lookup
+  std::map<int, std::string> content_map;
+  for (const auto& result : content_results) {
+    content_map[result.first] = result.second;
+  }
+
+  // Build the group_tabs map with content
+  std::map<tab_groups::TabGroupId, std::vector<local_ai::TextEmbedder::TabInfo>>
+      group_tabs;
+
+  for (const auto& tab_data : all_tabs_needing_content) {
+    // Skip ungrouped tabs (they are candidates, not group tabs)
+    if (!tab_data.group_id.has_value()) {
+      continue;
+    }
+
+    std::string content = content_map[tab_data.index];
+
+    // Initialize the group if we haven't seen it yet
+    if (group_tabs.find(tab_data.group_id.value()) == group_tabs.end()) {
+      group_tabs[tab_data.group_id.value()] =
+          std::vector<local_ai::TextEmbedder::TabInfo>();
+    }
+
+    group_tabs[tab_data.group_id.value()].push_back(
+        {tab_data.title, tab_data.url, content});
+  }
+
+  if (group_tabs.empty()) {
+    return;
+  }
+
+  // Process each ungrouped tab individually
+  struct TabSuggestionResult {
+    int tab_index;
+    absl::StatusOr<tab_groups::TabGroupId> suggested_group;
+  };
+
+  auto barrier_callback = base::BarrierCallback<TabSuggestionResult>(
+      ungrouped_indices.size(),
+      base::BindOnce(
+          [](base::WeakPtr<TabStripModel> model, int context_index,
+             std::vector<TabSuggestionResult> results) {
+            if (!model) {
+              return;
+            }
+
+            // Group tabs by their suggested group and add them
+            std::map<tab_groups::TabGroupId, std::vector<int>> tabs_by_group;
+            for (const auto& result : results) {
+              if (result.suggested_group.ok()) {
+                tab_groups::TabGroupId group_id =
+                    result.suggested_group.value();
+                tabs_by_group[group_id].push_back(result.tab_index);
+              } else {
+              }
+            }
+
+            // Add tabs to their suggested groups
+            for (const auto& [group_id, tab_indices] : tabs_by_group) {
+              model->OnSuggestGroupForTabResult(
+                  tab_indices, context_index,
+                  absl::StatusOr<tab_groups::TabGroupId>(group_id));
+            }
+          },
+          weak_factory_.GetWeakPtr(), context_index));
+
+  // Process each ungrouped tab
+  for (int tab_index : ungrouped_indices) {
+    auto it = std::find_if(all_tabs_needing_content.begin(),
+                           all_tabs_needing_content.end(),
+                           [tab_index](const BraveTabStripTabData& data) {
+                             return data.index == tab_index;
+                           });
+
+    if (it == all_tabs_needing_content.end()) {
+      barrier_callback.Run(
+          {tab_index, absl::FailedPreconditionError("Tab data not found")});
+      continue;
+    }
+
+    std::string content = content_map[tab_index];
+
+    local_ai::TextEmbedder::CandidateTab candidate_tab;
+    candidate_tab.index = tab_index;
+    candidate_tab.tab_info = {it->title, it->url, content};
+
+    text_embedder->SuggestGroupForTab(
+        candidate_tab, group_tabs,
+        base::BindOnce(
+            [](base::RepeatingCallback<void(TabSuggestionResult)> callback,
+               int tab_index, absl::StatusOr<tab_groups::TabGroupId> result) {
+              callback.Run({tab_index, result});
+            },
+            barrier_callback, tab_index));
+  }
 }
 
 void TabStripModel::OnSuggestGroupForTabResult(
