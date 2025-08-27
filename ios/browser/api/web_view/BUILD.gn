@@ -28,6 +28,7 @@ source_set("web_view") {
     "//brave/ios/browser/ui/web_view:features",
     "//brave/ios/web_view",
     "//components/application_locale_storage",
+    "//ios/chrome/browser/affiliations/model",
     "//ios/chrome/browser/autofill/model",
     "//ios/chrome/browser/passwords/model",
     "//ios/chrome/browser/shared/model/application_context",
