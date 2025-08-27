@@ -1,0 +1,15 @@
+diff --git a/components/history/core/browser/sync/delete_directive_handler_unittest.cc b/components/history/core/browser/sync/delete_directive_handler_unittest.cc
+index b25d4d4fe0a819bbaf3d42beb5a1de8b5d17621f..4334515db7dc94ba4c59a1f184c7a71ed2920dcc 100644
+--- a/components/history/core/browser/sync/delete_directive_handler_unittest.cc
++++ b/components/history/core/browser/sync/delete_directive_handler_unittest.cc
+@@ -29,8 +29,8 @@
+ 
+ namespace history {
+ 
+-const std::string kTestAppId1 = "org.chromium.dino.Pteranodon";
+-const std::string kTestAppId2 = "org.chromium.dino.Trext";
++constexpr char kTestAppId1[] = "org.chromium.dino.Pteranodon";
++constexpr char kTestAppId2[] = "org.chromium.dino.Trext";
+ 
+ namespace {
+ 
