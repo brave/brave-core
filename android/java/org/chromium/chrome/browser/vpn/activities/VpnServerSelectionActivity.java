@@ -57,6 +57,7 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
 
     private void initVpnService() {
         if (mServiceHandler != null) {
+            mServiceHandler.close();
             mServiceHandler = null;
         }
         mServiceHandler =
@@ -218,4 +219,13 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
 
     @Override
     public void updateProfileView() {}
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mServiceHandler != null) {
+            mServiceHandler.close();
+            mServiceHandler = null;
+        }
+    }
 }

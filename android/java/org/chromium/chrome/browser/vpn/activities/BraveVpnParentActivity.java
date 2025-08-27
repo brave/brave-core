@@ -20,6 +20,7 @@ import com.wireguard.android.backend.GoBackend;
 import com.wireguard.crypto.KeyPair;
 
 import org.chromium.base.Log;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
@@ -39,8 +40,10 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 
-public abstract class BraveVpnParentActivity
-        extends AsyncInitializationActivity implements BraveVpnObserver {
+import java.util.concurrent.CompletableFuture;
+
+public abstract class BraveVpnParentActivity extends AsyncInitializationActivity
+        implements BraveVpnObserver {
     private static final String TAG = "BraveVPN";
     public boolean mIsVerification;
     protected BraveVpnPrefModel mBraveVpnPrefModel;
@@ -265,8 +268,16 @@ public abstract class BraveVpnParentActivity
                             braveVpnWireguardProfileCredentials.getClientId());
                     mBraveVpnPrefModel.setApiAuthToken(
                             braveVpnWireguardProfileCredentials.getApiAuthToken());
-                    BraveVpnPrefUtils.setPrefModel(mBraveVpnPrefModel);
-
+                    CompletableFuture<Void> awaitPrefDone = new CompletableFuture<Void>();
+                    ThreadUtils.postOnUiThread(
+                            () -> {
+                                try {
+                                    BraveVpnPrefUtils.setPrefModel(mBraveVpnPrefModel);
+                                } finally {
+                                    awaitPrefDone.complete(null);
+                                }
+                            });
+                    awaitPrefDone.get();
                     BraveVpnUtils.dismissProgressDialog();
                     Intent intent = GoBackend.VpnService.prepare(BraveVpnParentActivity.this);
                     if (intent != null) {
