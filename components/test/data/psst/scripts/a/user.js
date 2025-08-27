@@ -7,14 +7,12 @@
   const getUserId = () => {
     return "user1"
   }
-  return new Promise((resolve) => {
-    document.title = 'a_user-';
-    resolve({
+  document.title = 'a_user-';
+  return {
       "user": getUserId(),
-      "requests": [
+      "tasks": [
         {"name": "privacy setting #1"},
         {"name": "privacy setting #2"},
       ]
-    })
-  })
+  }
 })();

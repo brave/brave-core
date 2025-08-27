@@ -8,6 +8,9 @@
 #include <memory>
 #include <utility>
 
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
+#include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
@@ -21,7 +24,10 @@
 
 namespace psst {
 
+namespace {
+
 const char kShouldProcessKey[] = "should_process_key";
+const char kSignedUserId[] = "user";
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
  public:
@@ -29,6 +35,35 @@ struct PsstNavigationData : public base::SupportsUserData::Data {
 
   int id;
 };
+
+// Adds the dictionary of parameters returned by the user.js script to the
+// policy.js script, before it is executed. In case when parameters dictionary
+// cannot be serialized to JSON, means that script should be executed without
+// any parameters. In case of success, the function returns:
+// const params = {
+//    "tasks": [ {
+//       "description": "Ads Preferences",
+//       "url": "https://a.test/settings/ads_preferences"
+//    } ]
+// };
+// <policy script, which uses parameters to apply PSST settings selected by the
+// user>;
+std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
+                                   base::Value::Dict params_dict) {
+  std::optional<std::string> params_json = base::WriteJsonWithOptions(
+      params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
+  if (!params_json) {
+    SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
+    SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
+    base::debug::DumpWithoutCrashing();
+    return rule->policy_script();
+  }
+
+  return base::StrCat(
+      {"const params = ", *params_json, ";\n", rule->policy_script()});
+}
+
+}  // namespace
 
 // static
 std::unique_ptr<PsstTabWebContentsObserver>
@@ -118,22 +153,35 @@ void PsstTabWebContentsObserver::InsertUserScript(
     return;
   }
 
+  const std::string user_script = rule->user_script();
   inject_script_callback_.Run(
-      rule->user_script(),
+      user_script,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
-                     weak_factory_.GetWeakPtr(), id, rule->policy_script()));
+                     weak_factory_.GetWeakPtr(), id, std::move(rule)));
 }
 
 void PsstTabWebContentsObserver::OnUserScriptResult(
     int id,
-    const std::string& policy_script,
+    std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result) {
-  if (!ShouldInsertScriptForPage(id) || policy_script.empty() ||
-      !user_script_result.is_dict()) {
+  // We should break the flow in case of policy script is not available or user
+  // script result is not a dictionary
+  if (!rule || !ShouldInsertScriptForPage(id) ||
+      rule->policy_script().empty() || !user_script_result.is_dict()) {
     return;
   }
 
-  inject_script_callback_.Run(policy_script, base::DoNothing());
+  // We should break the flow in case of signed-in user ID is not available
+  if (const auto* user_id =
+          user_script_result.GetDict().FindString(kSignedUserId);
+      !user_id || user_id->empty()) {
+    return;
+  }
+
+  inject_script_callback_.Run(
+      MaybeAddParamsToScript(std::move(rule),
+                             std::move(user_script_result).TakeDict()),
+      base::DoNothing());
 }
 
 }  // namespace psst

@@ -51,7 +51,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);
 
   void OnUserScriptResult(int id,
-                          const std::string& policy_script,
+                          std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
 
   // content::WebContentsObserver overrides
