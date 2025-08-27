@@ -193,7 +193,10 @@ void BraveTabStripModel::BuildTreeTabs() {
 
 void BraveTabStripModel::FlattenTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
-  CHECK(in_tree_mode_);
+
+  if (!in_tree_mode_) {
+    return;
+  }
 
   auto* unpinned_collection = contents_data_->unpinned_collection();
   CHECK(unpinned_collection);
