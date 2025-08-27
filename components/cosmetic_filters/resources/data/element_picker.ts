@@ -619,7 +619,7 @@ const launchElementPicker = (root: ShadowRoot) => {
   }
 
   if (isAndroid) {
-    const minimizeButton = root.getElementById('drag-header')!
+    const minimizeButton = root.getElementById('card-header')!
     minimizeButton.addEventListener('click', () => {
       setMinimizeState(true)
     })
