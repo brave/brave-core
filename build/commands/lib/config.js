@@ -200,7 +200,6 @@ const Config = function () {
   this.mac_signing_keychain = getEnvConfig(['mac_signing_keychain']) || 'login'
   this.notary_user = getEnvConfig(['notary_user'])
   this.notary_password = getEnvConfig(['notary_password'])
-  this.channel = 'development'
   this.git_cache_path = getEnvConfig(['git_cache_path'])
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
@@ -584,7 +583,6 @@ Config.prototype.buildArgs = function () {
   if (this.targetOS === 'android') {
     args.android_channel = this.channel
     if (!this.isReleaseBuild()) {
-      args.android_channel = 'default'
       args.chrome_public_manifest_package = 'com.brave.browser_default'
     } else if (this.channel === '') {
       args.android_channel = 'stable'
