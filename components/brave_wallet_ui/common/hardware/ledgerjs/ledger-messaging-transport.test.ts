@@ -170,7 +170,9 @@ test('onMessageReceived does not reply with response if the receiving message is
   let callbackCalled = false
   const event: MessageEvent = new MessageEvent('message', {
     data: eventData,
-    origin: (transport as any)['senderWindow']['origin'], // event.origin !== event.data.origin when it is a reponse to a sendCommand
+    // event.origin !== event.data.origin when it
+    // is a reponse to a sendCommand
+    origin: (transport as any)['senderWindow']['origin'],
     source: transport['targetWindow'],
   })
   transport['addCommandHandler'](testId, () => {

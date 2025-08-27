@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+/* eslint-disable @typescript-eslint/dot-notation */
+
 import {
   TrezorBridgeTransport,
   sendTrezorCommand,
@@ -109,12 +111,12 @@ describe('TrezorBridgeTransport', () => {
   describe('hasBridgeCreated', () => {
     it('should return false when bridge is not created', () => {
       mockGetElementById.mockReturnValue(null)
-      expect(transport['hasBridgeCreated']()).toBe(false)
+      expect(transport.hasBridgeCreated()).toBe(false)
     })
 
     it('should return true when bridge is created', () => {
       mockGetElementById.mockReturnValue(mockIframe)
-      expect(transport['hasBridgeCreated']()).toBe(true)
+      expect(transport.hasBridgeCreated()).toBe(true)
     })
   })
 
@@ -129,7 +131,7 @@ describe('TrezorBridgeTransport', () => {
 
       mockCreateElement.mockReturnValue(createdIframe)
 
-      const promise = transport['createBridge']()
+      const promise = transport.createBridge()
 
       // Simulate iframe load
       createdIframe.onload!()
@@ -146,7 +148,7 @@ describe('TrezorBridgeTransport', () => {
 
   describe('closeBridge', () => {
     it('should do nothing when bridge is not created', () => {
-      transport['bridge'] = undefined
+      transport.bridge = undefined
       mockGetElementById.mockReturnValue(null)
 
       transport.closeBridge()
@@ -160,7 +162,7 @@ describe('TrezorBridgeTransport', () => {
       }
       const mockElement = mockIframe
 
-      transport['bridge'] = mockIframe
+      transport.bridge = mockIframe
       mockGetElementById.mockReturnValue(mockElement)
       mockElement.parentNode = mockParent as any
 
@@ -178,12 +180,12 @@ describe('TrezorBridgeTransport', () => {
     }
 
     beforeEach(() => {
-      transport['bridge'] = mockIframe
+      transport.bridge = mockIframe
       mockIframe.contentWindow = mockContentWindow
     })
 
     it('should create bridge if not exists and send command', async () => {
-      transport['bridge'] = undefined
+      transport.bridge = undefined
       mockGetElementById.mockReturnValue(null)
 
       const createdIframe = { ...mockIframe, contentWindow: mockContentWindow }
@@ -204,7 +206,7 @@ describe('TrezorBridgeTransport', () => {
     })
 
     it('should return BridgeNotReady when bridge creation fails', async () => {
-      transport['bridge'] = undefined
+      transport.bridge = undefined
       mockGetElementById.mockReturnValue(null)
       mockCreateElement.mockReturnValue(null)
 
@@ -214,7 +216,7 @@ describe('TrezorBridgeTransport', () => {
     })
 
     it('should return BridgeNotReady when bridge has no contentWindow', async () => {
-      transport['bridge'] = mockIframe
+      transport.bridge = mockIframe
       mockIframe.contentWindow = null
 
       const result = await transport.sendCommandToTrezorFrame(mockCommand)
@@ -224,7 +226,7 @@ describe('TrezorBridgeTransport', () => {
 
     it('should return CommandInProgress when command handler already exists', async () => {
       // Add a handler for the same command ID
-      transport['addCommandHandler'](mockCommand.id, jest.fn())
+      transport.addCommandHandler(mockCommand.id, jest.fn())
 
       const result = await transport.sendCommandToTrezorFrame(mockCommand)
 
@@ -236,7 +238,7 @@ describe('TrezorBridgeTransport', () => {
 
       // Simulate response
       setTimeout(() => {
-        transport['onMessageReceived']({
+        transport.onMessageReceived({
           type: 'message',
           origin: 'chrome-untrusted://trezor-bridge',
           data: {
@@ -269,14 +271,14 @@ describe('TrezorBridgeTransport', () => {
 
     beforeEach(() => {
       // Add a handler for testing
-      transport['addCommandHandler'](mockCommand.id, jest.fn())
+      transport.addCommandHandler(mockCommand.id, jest.fn())
     })
 
     it('should ignore messages from untrusted origins', () => {
       const mockHandler = jest.fn()
-      transport['handlers'].set(mockCommand.id, mockHandler)
+      transport.handlers.set(mockCommand.id, mockHandler)
 
-      transport['onMessageReceived']({
+      transport.onMessageReceived({
         type: 'message',
         origin: 'https://malicious-site.com',
         data: mockCommand,
@@ -287,9 +289,9 @@ describe('TrezorBridgeTransport', () => {
 
     it('should ignore messages with wrong type', () => {
       const mockHandler = jest.fn()
-      transport['handlers'].set(mockCommand.id, mockHandler)
+      transport.handlers.set(mockCommand.id, mockHandler)
 
-      transport['onMessageReceived']({
+      transport.onMessageReceived({
         type: 'error',
         origin: 'chrome-untrusted://trezor-bridge',
         data: mockCommand,
@@ -299,9 +301,9 @@ describe('TrezorBridgeTransport', () => {
     })
 
     it('should ignore messages when no handlers exist', () => {
-      transport['handlers'].clear()
+      transport.handlers.clear()
 
-      transport['onMessageReceived']({
+      transport.onMessageReceived({
         type: 'message',
         origin: 'chrome-untrusted://trezor-bridge',
         data: mockCommand,
@@ -312,9 +314,9 @@ describe('TrezorBridgeTransport', () => {
 
     it('should ignore messages with no data', () => {
       const mockHandler = jest.fn()
-      transport['handlers'].set(mockCommand.id, mockHandler)
+      transport.handlers.set(mockCommand.id, mockHandler)
 
-      transport['onMessageReceived']({
+      transport.onMessageReceived({
         type: 'message',
         origin: 'chrome-untrusted://trezor-bridge',
         data: null,
@@ -325,9 +327,9 @@ describe('TrezorBridgeTransport', () => {
 
     it('should ignore messages with unknown command ID', () => {
       const mockHandler = jest.fn()
-      transport['handlers'].set(mockCommand.id, mockHandler)
+      transport.handlers.set(mockCommand.id, mockHandler)
 
-      transport['onMessageReceived']({
+      transport.onMessageReceived({
         type: 'message',
         origin: 'chrome-untrusted://trezor-bridge',
         data: { ...mockCommand, id: 'unknown-id' },
@@ -338,25 +340,25 @@ describe('TrezorBridgeTransport', () => {
 
     it('should process valid messages from trusted origin', () => {
       const mockHandler = jest.fn()
-      transport['handlers'].set(mockCommand.id, mockHandler)
+      transport.handlers.set(mockCommand.id, mockHandler)
 
-      transport['onMessageReceived']({
+      transport.onMessageReceived({
         type: 'message',
         origin: 'chrome-untrusted://trezor-bridge',
         data: mockCommand,
       } as MessageEvent)
 
       expect(mockHandler).toHaveBeenCalledWith(mockCommand)
-      expect(transport['handlers'].has(mockCommand.id)).toBe(false)
+      expect(transport.handlers.has(mockCommand.id)).toBe(false)
     })
 
     it('should accept messages from all trusted origins', () => {
       const mockHandler = jest.fn()
-      transport['handlers'].set(mockCommand.id, mockHandler)
+      transport.handlers.set(mockCommand.id, mockHandler)
 
       // Test each trusted origin
       TrustedOrigins.forEach((origin) => {
-        transport['onMessageReceived']({
+        transport.onMessageReceived({
           type: 'message',
           origin,
           data: { ...mockCommand, id: `${mockCommand.id}-${origin}` },
