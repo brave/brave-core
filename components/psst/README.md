@@ -1,6 +1,6 @@
 # Privacy Settings Selection for Sites Tool (PSST)
 
-The feature helps users apply the best practices for selecting privacy settings.
+The feature helps tweak privacy settings on popular websites.
 
 ## Spec
 https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/edit?tab=t.0
@@ -9,7 +9,7 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
 # PSST CRX Component
 
 Contains set of rules and scripts for small number of very popular sites (Google, Facebook, Twitter, Twitch, etc.). 
-Each rule set would be managed in open source (in or similar to https://github.com/brave/adblock-lists), and shipped daily to users with a separate component.
+Each rule set would be managed in open source (similar to https://github.com/brave/adblock-lists), and shipped daily to users.
 
 Component ID: `lhhcaamjbmbijmjbnnodjaknblkiagon`
 Component version: `1`
@@ -63,15 +63,15 @@ Example:
 
 #### user.js
 
-JS script which helps to detect that the user is signed in on the current website, which means we are ready to apply privacy settings.
-The result of user script execution is JSON, which contains the next fields:
-`user` - contains the identifier of the signed user for the current website.
-`tasks` - list of objects ( url and description pairs ) where url is the address of the psst settings we propose to change and its description
+Script which helps to find the user identifier for the currently-logged-in user on the current website. We need this in order to apply PSST.
+The output of user script execution is JSON, which contains the following fields:
+`user` - contains the identifier of the logged-in user for the current website.
+`tasks` - list of objects (url and description pairs) where `url` is the URL of the settings page for the website that we propose to change and its description.
 
 Example:
 ```
  {
-  "user": <signed user identifier>,
+  "user": <logged-in user identifier>,
   "tasks": {
       {
         url:<setting url, MUST BE UNIQUE>,
@@ -82,9 +82,9 @@ Example:
  }
 ```
 
-#### privacy.js
+#### policy.js
 
-Privacy script takes as parameters the tasks list from the user script output and saves it to the local storage. When the policy script is executed and local storage already contains the tasks list it takes one task and processes it.
+The policy script takes as parameter the list of tasks from the user script output and saves it to the local storage. When the policy script is executed and local storage already contains the tasks list it takes one task and processes it.
 To pass parameter to the policy script we should prepend the script with the definition of the params variable, which contains tasks, returned by user script: 
 
 ##### Policy script parameters:
