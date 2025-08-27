@@ -1043,7 +1043,9 @@ Config.prototype.updateInternal = function (options) {
         return
       }
       opts.push(`-${key}`)
-      opts.push(value)
+      if (value) {
+        opts.push(value)
+      }
     })
   }
 
