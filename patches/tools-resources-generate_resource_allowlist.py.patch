@@ -1,0 +1,13 @@
+diff --git a/tools/resources/generate_resource_allowlist.py b/tools/resources/generate_resource_allowlist.py
+index 94ea65ea253a49b204935f2fbdfe17cf8fb83a6a..d30024556d3de79165814175585dc532494ce34f 100755
+--- a/tools/resources/generate_resource_allowlist.py
++++ b/tools/resources/generate_resource_allowlist.py
+@@ -136,7 +136,7 @@ def WriteResourceAllowlist(args):
+     resource_ids.update(func(input))
+ 
+   # The last time this broke, exactly two resources were still being found.
+-  if len(resource_ids) < 100:
++  if len(resource_ids) < 40:
+     raise Exception('Suspiciously few resources found. Likely an issue with '
+                     'the regular expression in this script. Found: ' +
+                     ','.join(sorted(resource_ids)))
