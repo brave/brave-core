@@ -126,7 +126,10 @@ extension BrowserViewController {
     let status = defaultBrowserHelper.status
     let isLikelyDefault = status == .defaulted || status == .likely
     let answer: Answer = {
-      if !openedHTTPLink, isInstalledInThePastWeek {
+      if !defaultBrowserHelper.isAccurateDefaultCheckAvailable || status == .unknown,
+        !openedHTTPLink,
+        isInstalledInThePastWeek
+      {
         // Hasn't been at least 7 days
         return .notEnoughInfo
       }
