@@ -87,7 +87,7 @@ std::optional<std::string> Ss58Address::Encode() {
   }
 
   output_span_writer.Write(public_key);
-  DCHECK_GE(output_span_writer.remaining(), kSs58HashChecksumSize);
+  DCHECK_EQ(output_span_writer.remaining(), kSs58HashChecksumSize);
 
   auto hash_prefix = base::byte_span_from_cstring(kSs58HashPrefix);
   auto hash = Blake2bHash<64>(
