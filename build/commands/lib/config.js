@@ -202,7 +202,6 @@ const Config = function () {
   this.notary_password = getEnvConfig(['notary_password'])
   this.channel = 'development'
   this.git_cache_path = getEnvConfig(['git_cache_path'])
-  this.sccache = getEnvConfig(['sccache'])
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
@@ -349,7 +348,7 @@ Config.prototype.isDebug = function () {
   return this.buildConfig === 'Debug'
 }
 
-Config.prototype.maybeEnableCDMHostVerification = function () {
+Config.prototype.isEnableCDMHostVerification = function (OrUndefined) {
   const enable =
     this.buildConfig === 'Release'
     && process.platform !== 'linux'
@@ -388,8 +387,8 @@ Config.prototype.buildArgs = function () {
   let versionParts = version.split('+')[0]
   versionParts = versionParts.split('.')
 
-  const is_component_build = this.isComponentBuild() ? true : undefined
-  const is_official_build = this.isOfficialBuild() ? true : undefined
+  const isComponentBuildOrUndefined = this.isComponentBuild() ? true : undefined
+  const isOfficialBuildOrUndefined = this.isOfficialBuild() ? true : undefined
 
   let args = {
     'import("//brave/build/args/brave_defaults.gni")': null,
@@ -400,26 +399,25 @@ Config.prototype.buildArgs = function () {
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
     is_msan: this.is_msan,
-    is_component_build: is_component_build,
+    is_component_build: isComponentBuildOrUndefined,
     is_universal_binary: this.isUniversalBinary,
     target_cpu: this.targetArch,
-    is_official_build: is_official_build,
+    is_official_build: isOfficialBuildOrUndefined,
     is_debug: this.isDebug() ? true : undefined,
-    dcheck_always_on:
-      getEnvConfig(['dcheck_always_on']) || is_component_build,
+    dcheck_always_on: getEnvConfig(['dcheck_always_on']) || isComponentBuildOrUndefined,
     brave_channel: this.channel,
     brave_version_major: versionParts[0],
     brave_version_minor: versionParts[1],
     brave_version_build: versionParts[2],
     chrome_version_string: this.chromeVersion,
-    enable_cdm_host_verification: this.maybeEnableCDMHostVerification(),
-    skip_signing: this.maybeSkipSigning(),
+    enable_cdm_host_verification: this.isEnableCDMHostVerificationOrUndefined(),
+    skip_signing: this.skipSigningOrUndefined(),
     use_remoteexec: this.useRemoteExec,
     use_reclient: this.useRemoteExec,
     use_siso: this.useSiso,
     use_libfuzzer: this.use_libfuzzer,
-    enable_update_notifications: is_official_build,
-    enable_updater: is_official_build,
+    enable_update_notifications: isOfficialBuildOrUndefined,
+    enable_updater: isOfficialBuildOrUndefined,
   }
 
   if (this.is_asan != null) {
@@ -513,14 +511,6 @@ Config.prototype.buildArgs = function () {
     && this.targetOS !== 'android'
   ) {
     args.enable_profiling = true
-  }
-
-  if (this.sccache) {
-    if (process.platform === 'win32') {
-      args.clang_use_chrome_plugins = false
-      args.use_thin_lto = true
-    }
-    args.enable_precompiled_headers = false
   }
 
   if (!this.useSiso) {
@@ -743,14 +733,13 @@ Config.prototype.buildArgs = function () {
     delete args.zebpay_sandbox_oauth_url
     delete args.service_key_stt
     delete args.v8_enable_verify_heap
-    delete args.service_key_stt
   }
 
   args = Object.assign(args, this.extraGnArgs)
   return args
 }
 
-Config.prototype.maybeSkipSigning = function () {
+Config.prototype.skipSigningOrUndefined = function () {
   if (this.skip_signing != null) {
     return this.skip_signing
   }
@@ -1148,26 +1137,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     if (this.getCachePath()) {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
-    }
-
-    if (!this.useRemoteExec && this.sccache) {
-      env.CC_WRAPPER = this.sccache
-      console.log('using cc wrapper ' + path.basename(this.sccache))
-      if (path.basename(this.sccache) === 'ccache') {
-        env.CCACHE_CPP2 = 'yes'
-        env.CCACHE_SLOPPINESS = 'pch_defines,time_macros,include_file_mtime'
-        env.CCACHE_BASEDIR = this.srcDir
-        env = this.addPathToEnv(
-          env,
-          path.join(
-            this.srcDir,
-            'third_party',
-            'llvm-build',
-            'Release+Asserts',
-            'bin',
-          ),
-        )
-      }
     }
 
     if (this.rbeService) {
