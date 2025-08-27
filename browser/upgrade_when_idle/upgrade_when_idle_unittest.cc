@@ -5,12 +5,17 @@
 
 #include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
 #include "chrome/browser/first_run/scoped_relaunch_chrome_browser_override.h"
 #include "chrome/browser/first_run/upgrade_util.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/test_browser_window.h"
+#include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/testing_profile.h"
+#include "chrome/test/base/testing_profile_manager.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/idle/scoped_set_idle_state.h"
@@ -19,16 +24,20 @@ namespace brave {
 
 class UpgradeWhenIdleTest : public testing::Test {
  public:
-  UpgradeWhenIdleTest() {
-    mock_relaunch_callback_ = std::make_unique<::testing::StrictMock<
-        base::MockCallback<upgrade_util::RelaunchChromeBrowserCallback>>>();
-    relaunch_chrome_override_ =
-        std::make_unique<upgrade_util::ScopedRelaunchChromeBrowserOverride>(
-            mock_relaunch_callback_->Get());
-  }
+  UpgradeWhenIdleTest()
+      : mock_relaunch_callback_(),
+        relaunch_chrome_override_(mock_relaunch_callback_.Get()),
+        profile_manager_(TestingBrowserProcess::GetGlobal()) {}
 
   void SetUp() override {
+    ASSERT_TRUE(profile_manager_.SetUp());
+    profile_ = profile_manager_.CreateTestingProfile("TestProfile");
     upgrade_when_idle_ = std::make_unique<UpgradeWhenIdle>();
+  }
+
+  void TearDown() override {
+    upgrade_when_idle_.reset();
+    profile_ = nullptr;
   }
 
  protected:
@@ -40,16 +49,23 @@ class UpgradeWhenIdleTest : public testing::Test {
     run_loop.Run();
   }
 
-  void ExpectUpgrade() { EXPECT_CALL(*mock_relaunch_callback_, Run); }
+  void ExpectUpgrade() { EXPECT_CALL(mock_relaunch_callback_, Run); }
 
+  std::unique_ptr<Browser> CreateTestBrowser() {
+    Browser::CreateParams params(profile_.get(), true);
+    return CreateBrowserWithTestWindowForParams(params);
+  }
+
+ private:
   std::unique_ptr<UpgradeWhenIdle> upgrade_when_idle_;
-  base::test::TaskEnvironment task_environment_{
-      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
-  std::unique_ptr<::testing::StrictMock<
-      base::MockCallback<upgrade_util::RelaunchChromeBrowserCallback>>>
+  content::BrowserTaskEnvironment task_environment_{
+      content::BrowserTaskEnvironment::TimeSource::MOCK_TIME};
+  ::testing::StrictMock<
+      base::MockCallback<upgrade_util::RelaunchChromeBrowserCallback>>
       mock_relaunch_callback_;
-  std::unique_ptr<upgrade_util::ScopedRelaunchChromeBrowserOverride>
-      relaunch_chrome_override_;
+  upgrade_util::ScopedRelaunchChromeBrowserOverride relaunch_chrome_override_;
+  TestingProfileManager profile_manager_;
+  raw_ptr<TestingProfile> profile_;
 };
 
 TEST_F(UpgradeWhenIdleTest, UpgradeWhenIdle) {
@@ -71,6 +87,12 @@ TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenActive) {
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenStateUnknown) {
   ui::ScopedSetIdleState unknown(ui::IDLE_STATE_UNKNOWN);
+  RunImplementation();
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenOpenWindows) {
+  ui::ScopedSetIdleState idle(ui::IDLE_STATE_IDLE);
+  std::unique_ptr<Browser> test_browser = CreateTestBrowser();
   RunImplementation();
 }
 

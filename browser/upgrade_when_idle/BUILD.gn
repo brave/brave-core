@@ -27,9 +27,13 @@ source_set("unit_tests") {
 
   deps = [
     ":upgrade_when_idle",
+    "//base",
     "//base/test:test_support",
     "//chrome/browser/ui:browser_list_impl",
+    "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
+    "//chrome/browser/ui",
+    "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
     "//ui/base/idle:test_support",
