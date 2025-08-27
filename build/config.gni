@@ -24,7 +24,7 @@ declare_args() {
   brave_version_minor = ""
   brave_version_build = ""
   chrome_version_string = ""
-  target_android_base = ""
+  target_android_base = "mono"
   target_android_output_format = ""
   brave_android_keystore_path = ""
   brave_android_keystore_name = ""
@@ -42,6 +42,14 @@ declare_args() {
   # Enables brave/tools/redirect_cc target, replaces brave/chromium_src
   # overrides with empty ones to make //base buildable for redirect_cc.
   android_aab_to_apk = false
+}
+
+if (target_android_output_format == "") {
+  if (is_official_build) {
+    target_android_output_format = "aab"
+  } else {
+    target_android_output_format = "apk"
+  }
 }
 
 if (is_component_build || is_ios ||

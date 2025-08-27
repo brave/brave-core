@@ -185,7 +185,6 @@ const Config = function () {
   this.targetOS = getEnvConfig(['target_os'])
   this.targetEnvironment = getEnvConfig(['target_environment'])
   this.gypTargetArch = 'x64'
-  this.targetAndroidBase = 'mono'
   this.ignorePatchVersionNumber =
     !this.isBraveReleaseBuild()
     && getEnvConfig(['ignore_patch_version_number'], !this.isCI)
@@ -599,9 +598,7 @@ Config.prototype.buildArgs = function () {
     // Android build
 
     args.target_android_base = this.targetAndroidBase
-    args.target_android_output_format =
-      this.targetAndroidOutputFormat
-      || (this.buildConfig === 'Release' ? 'aab' : 'apk')
+    args.target_android_output_format = this.targetAndroidOutputFormat
     args.android_override_version_name = this.androidOverrideVersionName
 
     args.brave_android_developer_options_code =
