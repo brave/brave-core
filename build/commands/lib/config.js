@@ -404,7 +404,8 @@ Config.prototype.buildArgs = function () {
     target_cpu: this.targetArch,
     is_official_build: isOfficialBuildOrUndefined,
     is_debug: this.isDebug() ? true : undefined,
-    dcheck_always_on: getEnvConfig(['dcheck_always_on']) || isComponentBuildOrUndefined,
+    dcheck_always_on:
+      getEnvConfig(['dcheck_always_on']) || isComponentBuildOrUndefined,
     brave_channel: this.channel,
     brave_version_major: versionParts[0],
     brave_version_minor: versionParts[1],
@@ -459,24 +460,24 @@ Config.prototype.buildArgs = function () {
     args.use_dummy_lastchange = getEnvConfig(['use_dummy_lastchange'], true)
   }
 
-    if (this.targetOS === 'mac') {
-      args.mac_signing_identifier = this.mac_signing_identifier
-      args.mac_installer_signing_identifier =
-        this.mac_installer_signing_identifier
-      args.mac_signing_keychain = this.mac_signing_keychain
-      if (this.notarize) {
-        args.notarize = true
-        args.notary_user = this.notary_user
-        args.notary_password = this.notary_password
-      }
-    } else if (this.targetOS === 'android') {
-      args.brave_android_keystore_path = this.braveAndroidKeystorePath
-      args.brave_android_keystore_name = this.braveAndroidKeystoreName
-      args.brave_android_keystore_password = this.braveAndroidKeystorePassword
-      args.brave_android_key_password = this.braveAndroidKeyPassword
-      if (this.braveAndroidPkcs11Provider && this.braveAndroidPkcs11Alias) {
-        args.brave_android_pkcs11_provider = this.braveAndroidPkcs11Provider
-        args.brave_android_pkcs11_alias = this.braveAndroidPkcs11Alias
+  if (this.targetOS === 'mac') {
+    args.mac_signing_identifier = this.mac_signing_identifier
+    args.mac_installer_signing_identifier =
+      this.mac_installer_signing_identifier
+    args.mac_signing_keychain = this.mac_signing_keychain
+    if (this.notarize) {
+      args.notarize = true
+      args.notary_user = this.notary_user
+      args.notary_password = this.notary_password
+    }
+  } else if (this.targetOS === 'android') {
+    args.brave_android_keystore_path = this.braveAndroidKeystorePath
+    args.brave_android_keystore_name = this.braveAndroidKeystoreName
+    args.brave_android_keystore_password = this.braveAndroidKeystorePassword
+    args.brave_android_key_password = this.braveAndroidKeyPassword
+    if (this.braveAndroidPkcs11Provider && this.braveAndroidPkcs11Alias) {
+      args.brave_android_pkcs11_provider = this.braveAndroidPkcs11Provider
+      args.brave_android_pkcs11_alias = this.braveAndroidPkcs11Alias
     }
   }
 

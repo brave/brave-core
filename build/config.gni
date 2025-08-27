@@ -45,8 +45,8 @@ declare_args() {
 }
 
 if (is_component_build || is_ios ||
-      (is_android && brave_android_keystore_path == "") ||
-      (is_mac && mac_signing_identifier == "")) {
+    (is_android && brave_android_keystore_path == "") ||
+    (is_mac && mac_signing_identifier == "")) {
   skip_signing = true
 }
 
