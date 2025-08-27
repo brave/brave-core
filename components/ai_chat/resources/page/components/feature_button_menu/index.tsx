@@ -7,14 +7,11 @@ import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import Label from '@brave/leo/react/label'
 import Toggle from '@brave/leo/react/toggle'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
-import * as Mojom from '../../../common/mojom'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
-import { getModelIcon } from '../../../common/constants'
 import styles from './style.module.scss'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 
@@ -35,13 +32,6 @@ export default function FeatureMenu(props: Props) {
   const hasConversationStarted =
     useHasConversationStarted(conversationContext.conversationUuid)
 
-  const customModels = conversationContext.allModels.filter(
-    (model) => model.options.customModelOptions
-  )
-  const leoModels = conversationContext.allModels.filter(
-    (model) => model.options.leoModelOptions
-  )
-
   const handleTemporaryChatToggle = (detail: { checked: boolean }) => {
     conversationContext.setTemporary(detail.checked)
   }
@@ -56,72 +46,6 @@ export default function FeatureMenu(props: Props) {
       >
         <Icon name='more-vertical' />
       </Button>
-      <div className={styles.menuSectionTitle}>
-        {getLocale(S.CHAT_UI_MENU_TITLE_MODELS)}
-      </div>
-      {leoModels.map((model) => {
-        return (
-          <leo-menu-item
-            key={model.key}
-            aria-selected={
-              model.key === conversationContext.currentModel?.key || null
-            }
-            onClick={() => conversationContext.setCurrentModel(model)}
-          >
-            <div className={styles.menuItemWithIcon}>
-              <div className={styles.modelIcon} data-key={model.key}>
-                <Icon name={getModelIcon(model.key)} />
-              </div>
-              <div className={styles.menuText}>
-                <div>{model.displayName}</div>
-                <p className={styles.modelSubtitle}>
-                  {getLocale(`CHAT_UI_${model.key.toUpperCase().replaceAll('-', '_')}_SUBTITLE`)}
-                </p>
-              </div>
-              {model.options.leoModelOptions?.access ===
-                Mojom.ModelAccess.PREMIUM &&
-                !aiChatContext.isPremiumUser && (
-                  <Label
-                    className={styles.modelLabel}
-                    mode={'outline'}
-                    color='blue'
-                  >
-                    {getLocale(S.CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM)}
-                  </Label>
-                )}
-            </div>
-          </leo-menu-item>
-        )
-      })}
-      {customModels.length > 0 && (
-        <>
-          <div className={styles.menuSeparator} />
-          <div className={styles.menuSectionCustomModel}>
-            {getLocale(S.AI_CHAT_MENU_TITLE_CUSTOM_MODELS)}
-          </div>
-        </>
-      )}
-      {customModels.map((model) => {
-        return (
-          <leo-menu-item
-            key={model.key}
-            aria-selected={
-              model.key === conversationContext.currentModel?.key || null
-            }
-            onClick={() => conversationContext.setCurrentModel(model)}
-          >
-            <div className={styles.menuItemWithIcon}>
-              <div className={styles.menuText}>
-                <div>{model.displayName}</div>
-                <p className={styles.modelSubtitle}>
-                  {model.options.customModelOptions?.modelRequestName}
-                </p>
-              </div>
-            </div>
-          </leo-menu-item>
-        )
-      })}
-      <div className={styles.menuSeparator} />
 
       {!hasConversationStarted && (
         <leo-menu-item
