@@ -478,7 +478,7 @@ class TabManager: NSObject {
     return tab
   }
 
-  @MainActor func addTabsForURLs(_ urls: [URL], zombie: Bool, isPrivate: Bool = false) {
+  @MainActor func addTabsForURLs(_ urls: [URL], isPrivate: Bool = false) {
     assert(Thread.isMainThread)
 
     if urls.isEmpty {
@@ -507,18 +507,6 @@ class TabManager: NSObject {
         }
       }
       tabs.append(tab)
-    }
-
-    // Load at most X of the most recent tabs
-    // IE: Load the last X tabs, lazy load all the rest
-    let amountOfTabsToRestoreImmediately = 5
-    Array(tabs.suffix(amountOfTabsToRestoreImmediately)).reversed().forEach {
-      guard let url = $0.visibleURL else { return }
-      let request =
-        InternalURL.isValid(url: url)
-        ? PrivilegedRequest(url: url) as URLRequest : URLRequest(url: url)
-      $0.createWebView()
-      $0.loadRequest(request)
     }
 
     // Select the most recent.

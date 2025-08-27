@@ -1860,7 +1860,7 @@ public class BrowserViewController: UIViewController {
 
     let isPrivate = tab.isPrivate
     tabManager.removeTab(tab)
-    browser.tabManager.addTabsForURLs([url], zombie: false, isPrivate: isPrivate)
+    browser.tabManager.addTabsForURLs([url], isPrivate: isPrivate)
   }
 
   public func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool, isPrivileged: Bool) {
@@ -2301,14 +2301,14 @@ extension BrowserViewController: SettingsDelegate {
 
   func settingsOpenURLs(_ urls: [URL], loadImmediately: Bool) {
     let tabIsPrivate = tabManager.selectedTab?.isPrivate ?? false
-    self.tabManager.addTabsForURLs(urls, zombie: !loadImmediately, isPrivate: tabIsPrivate)
+    self.tabManager.addTabsForURLs(urls, isPrivate: tabIsPrivate)
   }
 
   // QA Stuff
   func settingsCreateFakeTabs() {
     let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=\($0)")! }
     let tabIsPrivate = tabManager.selectedTab?.isPrivate ?? false
-    self.tabManager.addTabsForURLs(urls, zombie: true, isPrivate: tabIsPrivate)
+    self.tabManager.addTabsForURLs(urls, isPrivate: tabIsPrivate)
   }
 
   func settingsCreateFakeBookmarks() {
@@ -2653,7 +2653,7 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
 
   func batchOpen(_ urls: [URL]) {
     let tabIsPrivate = tabManager.selectedTab?.isPrivate ?? false
-    self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
+    self.tabManager.addTabsForURLs(urls, isPrivate: tabIsPrivate)
   }
 
   func select(url: URL, isUserDefinedURLNavigation: Bool) {
