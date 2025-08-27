@@ -75,9 +75,11 @@ const start = (
     }
   }
 
-  const index = passthroughArgs.indexOf('-C');
+  // Remove -C and path if present because it is just specifying the location
+  // of the Brave executable and is not a Brave command line option
+  const index = passthroughArgs.indexOf('-C')
   if (index > -1) {
-    passthroughArgs.splice(index, 2)  // remove -C and path if present
+    passthroughArgs.splice(index, 2)
   }
 
   braveArgs = braveArgs.concat(passthroughArgs)
