@@ -16,6 +16,7 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "v8/include/cppgc/persistent.h"
 #include "v8/include/v8.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -36,8 +37,8 @@ namespace skus {
 // will be able to purchase VPN from account.brave.com and the browser can
 // detect the purchase and use those credentials during authentication when
 // establishing a connection to our partner providing the VPN service.
-class SkusJSHandler : public content::RenderFrameObserver,
-                      public gin::Wrappable<SkusJSHandler> {
+class SkusJSHandler final : public gin::Wrappable<SkusJSHandler>,
+                            public content::RenderFrameObserver {
  public:
   explicit SkusJSHandler(content::RenderFrame* render_frame);
   SkusJSHandler(const SkusJSHandler&) = delete;
@@ -100,6 +101,10 @@ class SkusJSHandler : public content::RenderFrameObserver,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;
 #endif
+
+  // Persistent self-reference to prevent GC from freeing this object while
+  // it's still needed for JavaScript bindings. Cleared in OnDestruct().
+  cppgc::Persistent<SkusJSHandler> self_;
 };
 
 }  // namespace skus
