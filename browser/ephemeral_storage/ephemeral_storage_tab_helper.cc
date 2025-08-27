@@ -132,6 +132,11 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
 
 void EphemeralStorageTabHelper::CreateProvisionalTLDEphemeralLifetime(
     NavigationHandle* navigation_handle) {
+  if (!base::FeatureList::IsEnabled(
+          net::features::kBraveProvisionalTLDEphemeralLifetime)) {
+    return;
+  }
+
   const GURL& url = navigation_handle->GetURL();
   if (!url.SchemeIsHTTPOrHTTPS()) {
     return;
