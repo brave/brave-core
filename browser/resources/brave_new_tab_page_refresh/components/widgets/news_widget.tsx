@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
 import * as mojom from 'gen/brave/components/brave_news/common/brave_news.mojom.m.js'
 import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
@@ -12,6 +13,7 @@ import { getTranslatedChannelName } from '../../../../../components/brave_news/b
 import { channelIcons } from '../../../../../components/brave_news/browser/resources/shared/Icons'
 
 import { getString } from '../../lib/strings'
+import { WidgetMenu } from './widget_menu'
 import { SafeImage } from '../common/safe_image'
 import { Link } from '../common/link'
 
@@ -21,6 +23,17 @@ export function NewsWidget() {
   const braveNews = useBraveNews()
   return (
     <div data-css-scope={style.scope}>
+      <WidgetMenu>
+        {
+          braveNews.isOptInPrefEnabled &&
+            <leo-menu-item onClick={() => braveNews.setCustomizePage('news')}>
+              <Icon name='tune' /> {getString('newsCustomizeButtonLabel')}
+            </leo-menu-item>
+        }
+        <leo-menu-item onClick={() => braveNews.toggleBraveNewsOnNTP(false)}>
+          <Icon name='disable-outline' /> {getString('newsDisableButtonLabel')}
+        </leo-menu-item>
+      </WidgetMenu>
       <div className='title'>
         {getString('newsWidgetTitle')}
       </div>
