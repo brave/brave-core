@@ -61,20 +61,6 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
         Row(
           text: "Start Onboarding",
           selection: { [unowned self] in
-            let onboardingController = WelcomeViewController(
-              state: .loading,
-              p3aUtilities: p3aUtilities,
-              attributionManager: attributionManager
-            )
-            onboardingController.modalPresentationStyle = .fullScreen
-
-            present(onboardingController, animated: false)
-          },
-          cellClass: MultilineButtonCell.self
-        ),
-        Row(
-          text: "Start Day 0 JP Onboarding",
-          selection: { [unowned self] in
             let env = OnboardingEnvironment(
               p3aUtils: p3aUtilities,
               attributionManager: attributionManager
@@ -83,7 +69,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
             present(controller, animated: false)
           },
           cellClass: MultilineButtonCell.self
-        ),
+        )
       ]
     )
 
