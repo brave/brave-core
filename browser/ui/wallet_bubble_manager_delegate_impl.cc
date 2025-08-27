@@ -82,16 +82,19 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     // WalletWebUIBubbleDialogView.
     auto bubble_view_to_close =
         WebUIBubbleManagerImpl::CreateWebUIBubbleDialog(anchor, arrow);
-    auto* widget = bubble_view_to_close->GetWidget();
-    if (widget) {
-      widget->CloseNow();
+    auto* widget_to_close = bubble_view_to_close->GetWidget();
+    if (widget_to_close) {
+      widget_to_close->CloseNow();
     }
     auto* contents_wrapper = cached_contents_wrapper();
     CHECK(contents_wrapper);
     auto bubble_view = std::make_unique<WalletWebUIBubbleDialogView>(
         anchor_view_, contents_wrapper, anchor, arrow);
     bubble_view_ = bubble_view->GetWeakPtr();
-    views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
+    auto* widget =
+        views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
+    CHECK(widget);
+    widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
 
     brave_observer_ =
         WalletBubbleFocusObserver::CreateForView(bubble_view_.get(), browser_);
