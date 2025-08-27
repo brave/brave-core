@@ -31,7 +31,7 @@ setIconBasePath(`${scheme}resources/brave-icons`)
 
 // In Chromium UI Nala variables haven't necessarily been included. We
 // make sure the variables are imported so the controls look correct.
-const variablesUrl = `//resources/brave/leo/css/variables.css`
+const variablesUrl = `//resources/brave/css/nala.css`
 const variablesLink = document.querySelector(`link[rel=stylesheet][href$="${variablesUrl}"]`)
 if (!variablesLink) {
   const link = document.createElement('link')

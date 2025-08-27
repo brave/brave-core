@@ -37,6 +37,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
@@ -76,6 +77,9 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                         base::StrCat({kUntrustedMarketURL, ";"})},
                        " "));
   source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::StyleSrc,
+      "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
+  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       base::JoinString(
           {"img-src", "'self'", "chrome://resources",
@@ -92,6 +96,7 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
   active_web_contents_ = brave_wallet::GetActiveWebContents();
 }
