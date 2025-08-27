@@ -6,10 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_MENU_MODEL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_MENU_MODEL_H_
 
-#define BuildForWebApp(...)       \
-  UnUsed() {}                     \
-  friend class BraveTabMenuModel; \
-  void BuildForWebApp(__VA_ARGS__)
+#define BuildForWebApp(...)    \
+  BuildForWebApp(__VA_ARGS__); \
+  friend class BraveTabMenuModel
 
 #include <chrome/browser/ui/tabs/tab_menu_model.h>  // IWYU pragma: export
 
