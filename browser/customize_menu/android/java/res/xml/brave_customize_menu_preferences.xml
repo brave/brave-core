@@ -9,6 +9,13 @@
         android:title="@string/customize_main_menu_section_title"
         android:key="main_menu_section"
         android:order="1">
-
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/customize_page_actions_section_title"
+        android:key="page_actions_section"
+        android:order="2">
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="page_actions_summary"
+            android:summary="@string/customize_page_actions_section_summary" />
     </PreferenceCategory>
 </PreferenceScreen>
