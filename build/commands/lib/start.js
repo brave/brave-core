@@ -75,6 +75,13 @@ const start = (
     }
   }
 
+  // Remove -C and path if present because it is just specifying the location
+  // of the Brave executable and is not a Brave command line option
+  const index = passthroughArgs.indexOf('-C')
+  if (index > -1) {
+    passthroughArgs.splice(index, 2)
+  }
+
   braveArgs = braveArgs.concat(passthroughArgs)
 
   let userDataDir
