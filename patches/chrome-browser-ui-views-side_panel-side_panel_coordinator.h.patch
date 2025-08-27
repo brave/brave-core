@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel_coordinator.h b/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
-index 7af52841ab4778ca5c5a01a6046953a717310a00..b0c8649dc444ffe502f9b378f99425fbac50a3cf 100644
+index fdd5da5959cdff9b83346e101fd32c2303d21f3f..48104430cfbd9904e9e073a48a20b99a49300d8c 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
 +++ b/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
 @@ -52,7 +52,7 @@ class View;
@@ -11,3 +11,23 @@ index 7af52841ab4778ca5c5a01a6046953a717310a00..b0c8649dc444ffe502f9b378f99425fb
                                     public views::ViewObserver,
                                     public PinnedToolbarActionsModel::Observer,
                                     public ToolbarActionsModel::Observer {
+@@ -71,11 +71,6 @@ class SidePanelCoordinator final : public SidePanelUIBase,
+               SidePanelUtil::SidePanelOpenTrigger open_trigger) override;
+   void OpenInNewTab() override;
+   void UpdatePinState() override;
+-  std::optional<SidePanelEntry::Id> GetCurrentEntryId() const override;
+-  int GetCurrentEntryDefaultContentWidth() const override;
+-  bool IsSidePanelShowing() const override;
+-  bool IsSidePanelEntryShowing(
+-      const SidePanelEntry::Key& entry_key) const override;
+   void SetNoDelaysForTesting(bool no_delays_for_testing) override;
+
+   // Returns the web contents in a side panel if one exists.
+@@ -103,7 +98,6 @@ class SidePanelCoordinator final : public SidePanelUIBase,
+   SidePanelEntry* GetLoadingEntryForTesting() const;
+
+   // SidePanelUIBase:
+-  using SidePanelUIBase::IsSidePanelEntryShowing;
+   using SidePanelUIBase::Show;
+   void Close(bool suppress_animations) override;
+   void Show(const UniqueKey& entry,
