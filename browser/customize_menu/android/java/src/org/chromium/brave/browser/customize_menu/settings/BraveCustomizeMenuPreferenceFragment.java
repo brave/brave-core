@@ -37,6 +37,9 @@ import java.util.Locale;
 public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFragment
         implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "CustomizeMenuPreferenceFragment";
+    private static final String MAIN_MENU_SECTION = "main_menu_section";
+    private static final String PAGE_ACTIONS_SECTION = "page_actions_section";
+
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -51,7 +54,7 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_customize_menu_preferences);
 
-        PreferenceCategory mainMenuSection = findPreference("main_menu_section");
+        PreferenceCategory mainMenuSection = findPreference(MAIN_MENU_SECTION);
         if (mainMenuSection != null) {
             // Get menu items from bundle passed by calling activity.
             final Bundle bundle = getArguments();
