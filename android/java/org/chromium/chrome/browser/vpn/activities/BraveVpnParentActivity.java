@@ -29,7 +29,6 @@ import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.LiveDataUtil;
-import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
@@ -285,7 +284,6 @@ public abstract class BraveVpnParentActivity extends AsyncInitializationActivity
                         return;
                     }
                     BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
-                    TabUtils.bringChromeTabbedActivityToTheTop(BraveVpnParentActivity.this);
                 } catch (Exception e) {
                     BraveVpnUtils.dismissProgressDialog();
                     Log.e(TAG, e.getMessage());

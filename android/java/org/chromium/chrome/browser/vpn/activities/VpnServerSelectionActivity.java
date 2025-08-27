@@ -70,6 +70,10 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
         void onServerRegionClick(Region region);
     }
 
+    public interface OnQuickServerSelection {
+        void onQuickServerSelect(Region region);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -168,6 +172,24 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
                                             BraveVpnUtils.selectedRegion = region;
                                             BraveVpnUtils.openVpnServerActivity(
                                                     VpnServerSelectionActivity.this, region);
+                                        }
+                                    });
+                            mBraveVpnServerSelectionAdapter.setOnQuickServerSelection(
+                                    new OnQuickServerSelection() {
+                                        @Override
+                                        public void onQuickServerSelect(Region region) {
+                                            BraveVpnUtils.selectedRegion = region;
+                                            BraveVpnUtils.selectedServerRegion =
+                                                    new BraveVpnServerRegion(
+                                                            false,
+                                                            region.country,
+                                                            region.continent,
+                                                            region.countryIsoCode,
+                                                            region.name,
+                                                            region.namePretty,
+                                                            BraveVpnConstants
+                                                                    .REGION_PRECISION_COUNTRY);
+                                            changeServerRegion();
                                         }
                                     });
                             mServerRegionList.setAdapter(mBraveVpnServerSelectionAdapter);
