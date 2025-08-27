@@ -71,8 +71,10 @@ constexpr auto kLinuxCountries = base::MakeFixedFlatSet<std::string_view>(
      "IT", "AU", "MX", "CH", "RU", "ZA", "SE", "BE", "JP", "AT"});
 
 constexpr auto kNotableCountries = base::MakeFixedFlatSet<std::string_view>(
-    {"US", "FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES",
-     "NL", "MX", "AU", "RU", "JP", "PL", "ID", "KR", "AR", "AT"});
+    {"US", "FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES", "NL",
+     "MX", "AU", "RU", "JP", "PL", "ID", "KR", "AR", "AT", "BD", "CH",
+     "CL", "CO", "DZ", "EC", "EG", "IE", "MA", "MY", "NP", "PE", "PK",
+     "PT", "RO", "SA", "TH", "TR", "TW", "VN", "ZA"});
 
 constexpr base::TimeDelta kDateOmissionThreshold = base::Days(31);
 
