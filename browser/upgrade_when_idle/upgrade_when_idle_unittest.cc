@@ -15,6 +15,8 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
+#include "components/browsing_data/core/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -58,6 +60,10 @@ class UpgradeWhenIdleTest : public testing::Test {
     return CreateBrowserWithTestWindowForParams(params);
   }
 
+  void SetPref(const std::string& pref_name) {
+    profile_->GetPrefs()->SetBoolean(pref_name, true);
+  }
+
  private:
   std::unique_ptr<UpgradeWhenIdle> upgrade_when_idle_;
   content::BrowserTaskEnvironment task_environment_{
@@ -88,6 +94,51 @@ TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenStateUnknown) {
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenOpenWindows) {
   std::unique_ptr<Browser> test_browser = CreateTestBrowser();
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteBrowsingHistoryOnExit) {
+  SetPref(browsing_data::prefs::kDeleteBrowsingHistoryOnExit);
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteDownloadHistoryOnExit) {
+  SetPref(browsing_data::prefs::kDeleteDownloadHistoryOnExit);
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteCacheOnExit) {
+  SetPref(browsing_data::prefs::kDeleteCacheOnExit);
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteCookiesOnExit) {
+  SetPref(browsing_data::prefs::kDeleteCookiesOnExit);
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeletePasswordsOnExit) {
+  SetPref(browsing_data::prefs::kDeletePasswordsOnExit);
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteFormDataOnExit) {
+  SetPref(browsing_data::prefs::kDeleteFormDataOnExit);
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteHostedAppsDataOnExit) {
+  SetPref(browsing_data::prefs::kDeleteHostedAppsDataOnExit);
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteSiteSettingsOnExit) {
+  SetPref(browsing_data::prefs::kDeleteSiteSettingsOnExit);
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteBraveLeoHistoryOnExit) {
+  SetPref(browsing_data::prefs::kDeleteBraveLeoHistoryOnExit);
   RunImplementation(ui::IDLE_STATE_IDLE, false);
 }
 
