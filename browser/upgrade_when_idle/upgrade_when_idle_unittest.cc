@@ -5,6 +5,7 @@
 
 #include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
 
+#include "base/run_loop.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "chrome/browser/first_run/scoped_relaunch_chrome_browser_override.h"
@@ -32,9 +33,11 @@ class UpgradeWhenIdleTest : public testing::Test {
 
  protected:
   void RunImplementation() {
+    base::RunLoop run_loop;
+    upgrade_when_idle_->SetCheckIdleCallbackForTesting(run_loop.QuitClosure());
     upgrade_when_idle_->OnUpgradeRecommended();
     task_environment_.FastForwardBy(base::Minutes(3));
-    task_environment_.RunUntilIdle();
+    run_loop.Run();
   }
 
   void ExpectUpgrade() { EXPECT_CALL(*mock_relaunch_callback_, Run); }

@@ -5,6 +5,8 @@
 
 #include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
 
+#include <utility>
+
 #include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/time/time.h"
@@ -76,6 +78,10 @@ void UpgradeWhenIdle::OnUpgradeRecommended() {
 
 void UpgradeWhenIdle::CheckIdle() {
   // This function was inspired by UpgradeDetector::CheckIdle.
+
+  if (check_idle_callback_for_testing_) {
+    std::move(check_idle_callback_for_testing_).Run();
+  }
 
   if (!CanRelaunch()) {
     return;

@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UPGRADE_WHEN_IDLE_UPGRADE_WHEN_IDLE_H_
 #define BRAVE_BROWSER_UPGRADE_WHEN_IDLE_UPGRADE_WHEN_IDLE_H_
 
+#include <utility>
+
+#include "base/functional/callback_forward.h"
 #include "base/timer/timer.h"
 #include "chrome/browser/upgrade_detector/upgrade_observer.h"
 
@@ -27,6 +30,10 @@ class UpgradeWhenIdle : public UpgradeObserver {
   // UpgradeObserver:
   void OnUpgradeRecommended() override;
 
+  void SetCheckIdleCallbackForTesting(base::OnceClosure callback) {
+    check_idle_callback_for_testing_ = std::move(callback);
+  }
+
  private:
   void CheckIdle();
   bool CanRelaunch();
@@ -36,6 +43,8 @@ class UpgradeWhenIdle : public UpgradeObserver {
   base::RepeatingTimer idle_check_timer_;
 
   bool is_relaunching_ = false;
+
+  base::OnceClosure check_idle_callback_for_testing_;
 };
 
 }  // namespace brave
