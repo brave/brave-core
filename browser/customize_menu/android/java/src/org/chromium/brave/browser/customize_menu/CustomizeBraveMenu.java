@@ -8,10 +8,18 @@ package org.chromium.brave.browser.customize_menu;
 import static org.chromium.base.BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.IdRes;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment;
 import org.chromium.build.annotations.NullMarked;
@@ -25,6 +33,8 @@ import org.chromium.ui.modelutil.MVCListAdapter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
+
+import org.chromium.brave.browser.customize_menu.R;
 
 /**
  * A Brave menu to handle customization logic for all those items that can be hidden from Settings >
@@ -64,18 +74,30 @@ public class CustomizeBraveMenu {
             }
             int id = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
             CharSequence title = item.model.get(AppMenuItemProperties.TITLE);
-            Drawable icon = item.model.get(AppMenuItemProperties.ICON);
+            Drawable iconDrawable = item.model.get(AppMenuItemProperties.ICON);
 
-            // Convert drawable to resource ID (this is a limitation - we can only pass resource
-            // IDs)
-            int iconResId = 0;
-            if (icon != null && icon instanceof android.graphics.drawable.BitmapDrawable) {
-                // For now, we'll pass 0 for non-resource drawables
-                // In a full implementation, you'd need a way to identify resource IDs from
-                // drawables
+            Icon icon = null;
+            if (iconDrawable != null) {
+                if (iconDrawable instanceof BitmapDrawable bitmapDrawable && bitmapDrawable.getBitmap() != null) {
+                    icon = Icon.createWithBitmap(bitmapDrawable.getBitmap());
+                } else {
+                    final int width = Math.max(1, iconDrawable.getIntrinsicWidth());
+                    final int height = Math.max(1, iconDrawable.getIntrinsicHeight());
+
+                    Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(bitmap);
+                    iconDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                    iconDrawable.draw(canvas);
+                    icon = Icon.createWithBitmap(bitmap);
+                }
             }
 
-            menuItemDataList.add(new MenuItemData(id, title.toString(), iconResId, isVisible(id)));
+            @ColorRes int colorResId = item.model.get(AppMenuItemProperties.ICON_COLOR_RES);
+            if (colorResId == 0) {
+                colorResId = R.color.default_icon_color_secondary_tint_list;
+            }
+
+            menuItemDataList.add(new MenuItemData(id, title.toString(), icon, colorResId, isVisible(id)));
         }
 
         bundle.putParcelableArrayList("menu_items", menuItemDataList);

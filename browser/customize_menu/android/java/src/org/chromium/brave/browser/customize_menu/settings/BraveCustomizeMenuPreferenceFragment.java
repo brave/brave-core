@@ -7,8 +7,11 @@ package org.chromium.brave.browser.customize_menu.settings;
 
 import static org.chromium.base.BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT;
 
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
@@ -75,8 +78,14 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
         preference.setChecked(menuItem.checked);
 
         // Set icon if available
-        if (menuItem.iconResId != 0) {
-            preference.setIcon(menuItem.iconResId);
+        if (menuItem.icon != null) {
+            final Drawable drawable = menuItem.icon.loadDrawable(requireContext());
+            if (drawable != null) {
+                final ColorStateList tintList =
+                        AppCompatResources.getColorStateList(requireContext(), menuItem.colorResId);
+                drawable.setTintList(tintList);
+                preference.setIcon(drawable);
+            }
         }
 
         preference.setOnPreferenceChangeListener(this);
