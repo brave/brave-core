@@ -15,3 +15,23 @@ source_set("unit_tests") {
     "//ui/color",
   ]
 }
+
+if (!is_android) {
+  source_set("browser_tests") {
+    testonly = true
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "darker_theme_browsertest.cc" ]
+
+    deps = [
+      ":color",
+      "//base",
+      "//base/test:test_support",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
+}

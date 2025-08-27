@@ -31,6 +31,7 @@ class BraveBrowserFrame : public BrowserFrame {
       const override;
   views::internal::RootView* CreateRootView() override;
   void SetTabDragKind(TabDragKind kind) override;
+  ui::ColorProviderKey GetColorProviderKey() const override;
 
  private:
   raw_ptr<BrowserView> view_ = nullptr;
