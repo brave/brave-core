@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index a8a3e3d67ef0d1d23d80068eca352fbd1dfa7c85..61d6f8aafe69c77ac6f5587193612b8577edf98d 100644
+index c5f6bf0cb79bb0ce671e0365617320b646566ef0..06df5d55db728da95e5ae6c86e007e069b263fc1 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 @@ -2335,6 +2335,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
@@ -10,7 +10,7 @@ index a8a3e3d67ef0d1d23d80068eca352fbd1dfa7c85..61d6f8aafe69c77ac6f5587193612b85
  
    std::u16string printable_selection_text = PrintableSelectionText();
    EscapeAmpersands(&printable_selection_text);
-@@ -4860,29 +4861,32 @@ void RenderViewContextMenu::OpenLinkInSplitView() {
+@@ -4872,29 +4873,32 @@ void RenderViewContextMenu::OpenLinkInSplitView() {
        if (tab != source_tab) {
          // Navigate the tab that wasn't the source of the context menu to the
          // URL
