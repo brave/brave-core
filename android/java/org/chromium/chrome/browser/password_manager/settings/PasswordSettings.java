@@ -112,7 +112,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         mExportFlow.onCreate(
                 savedInstanceState,
-                new ExportFlow.Delegate() {
+                new ExportFlowInterface.Delegate() {
                     @Override
                     public Activity getActivity() {
                         return PasswordSettings.this.getActivity();
