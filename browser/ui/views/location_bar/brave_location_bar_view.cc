@@ -205,6 +205,14 @@ void BraveLocationBarView::Layout(PassKey) {
   LayoutSuperclass<LocationBarView>(this);
 }
 
+void BraveLocationBarView::OnVisibleBoundsChanged() {
+  if (ignore_layout_) {
+    return;
+  }
+
+  LocationBarView::OnVisibleBoundsChanged();
+}
+
 void BraveLocationBarView::OnChanged() {
   auto hide_page_actions = ShouldHidePageActionIcons();
   if (brave_actions_) {

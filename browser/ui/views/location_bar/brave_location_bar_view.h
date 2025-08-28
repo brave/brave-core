@@ -78,6 +78,7 @@ class BraveLocationBarView : public LocationBarView {
   void RefreshBackground() override;
   void OnOmniboxBlurred() override;
   void Layout(PassKey) override;
+  void OnVisibleBoundsChanged() override;
 
   // views::View:
   gfx::Size CalculatePreferredSize(
