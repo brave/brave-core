@@ -54,7 +54,7 @@ void TreeTabNode::FlattenTreeTabs(TabCollection& root) {
 
     // * We're going to remove tab tree nodes and insert all children of it to
     // where the tree node is.
-    std::list<std::variant<tabs::TabInterface*, TabCollection*>> children =
+    std::vector<std::variant<tabs::TabInterface*, TabCollection*>> children =
         tree_node->GetChildren();
     auto* parent_collection = tree_node->GetParentCollection();
     CHECK(parent_collection)
@@ -124,9 +124,9 @@ void TreeTabNode::CollectTreeNodesRecursively(
   }
 }
 
-std::list<std::variant<tabs::TabInterface*, tabs::TabCollection*>>
+std::vector<std::variant<tabs::TabInterface*, tabs::TabCollection*>>
 TreeTabNode::GetChildren() {
-  std::list<std::variant<tabs::TabInterface*, TabCollection*>> children;
+  std::vector<std::variant<tabs::TabInterface*, TabCollection*>> children;
 
   // Transforms unique_ptrs to raw pointers for the children.
   std::ranges::transform(
