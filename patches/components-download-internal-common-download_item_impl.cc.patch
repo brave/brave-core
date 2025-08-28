@@ -1,5 +1,5 @@
 diff --git a/components/download/internal/common/download_item_impl.cc b/components/download/internal/common/download_item_impl.cc
-index f0248e7c544714ff716c9b91e1937d33758c4e9b..dc799c5b71b2852345e718ece7419bebb33cee87 100644
+index 325ec842d39712279e8228ee318c8073a11585c9..4bdf1c505e0c94fdb6de54640bb9ddd37ca2ca65 100644
 --- a/components/download/internal/common/download_item_impl.cc
 +++ b/components/download/internal/common/download_item_impl.cc
 @@ -1987,8 +1987,8 @@ void DownloadItemImpl::OnDownloadCompleting() {

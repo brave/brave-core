@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/xml/adaptive_toolbar_preference.xml b/chrome/browser/ui/android/toolbar/java/res/xml/adaptive_toolbar_preference.xml
-index 8ed68462c8a8a3ed79aa9768ac6691d7aee92029..7c5bf8f6e6fed9b949213129b9eee2d64922b6ca 100644
+index b9f7ada321d81c935787c4db75e5c2addcdbdd52..9417e14b9fa1dbe578f969aa11351fffe22bface 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/xml/adaptive_toolbar_preference.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/xml/adaptive_toolbar_preference.xml
 @@ -17,7 +17,7 @@ found in the LICENSE file.

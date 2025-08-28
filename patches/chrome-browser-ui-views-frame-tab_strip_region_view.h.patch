@@ -3,11 +3,11 @@ index 8895630a4074c131a66ca288800bcebb694782a1..9f86031dca570fe8c0d400dee2ca6c93
 --- a/chrome/browser/ui/views/frame/tab_strip_region_view.h
 +++ b/chrome/browser/ui/views/frame/tab_strip_region_view.h
 @@ -26,7 +26,7 @@ class TabSearchPositionMetricsLogger;
-
+ 
  // Container for the tabstrip and the other views sharing space with it -
  // with the exception of the caption buttons.
 -class TabStripRegionView final : public TabStripViewInterface {
 +class TabStripRegionView : public TabStripViewInterface {
    METADATA_HEADER(TabStripRegionView, views::AccessiblePaneView)
-
+ 
   public:

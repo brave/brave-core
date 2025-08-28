@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index 710f77f6600caec0286445320296404966635eac..ce4168e901c6db43271bbd1c371d8d8ce230232c 100644
+index c6c382a59d9cccdd249754f2687dc69614c74535..26f3ee28b0f9e1563aff846ce5c1f24fb781c389 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
 @@ -184,6 +184,7 @@ bool IsConstraintPersistent(const ContentSettingConstraints& constraints) {

@@ -1,8 +1,8 @@
 diff --git a/ui/base/BUILD.gn b/ui/base/BUILD.gn
-index 20361d421d3e29fda6f1b50beccc44bbf0bfbb37..1414ac14b089115547f71589dda77fd109476b00 100644
+index 1428a0aa8d233062990e825050e71d3e3b6dd6f0..0c08a248679d94faf51cd5757fa7f68fa8b0491d 100644
 --- a/ui/base/BUILD.gn
 +++ b/ui/base/BUILD.gn
-@@ -515,6 +515,7 @@ component("base") {
+@@ -502,6 +502,7 @@ component("base") {
      "//ui/webui/resources:resources_grit",
      "//url",
    ]
