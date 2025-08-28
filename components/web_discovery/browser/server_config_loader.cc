@@ -23,6 +23,7 @@
 #include "base/values.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/util.h"
+#include "brave/components/web_discovery/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -77,6 +78,7 @@ constexpr char kCollectorConfigPathWithFields[] =
     "/config?fields=minVersion,groupPubKeys,pubKeys,sourceMap";
 constexpr char kQuorumConfigPath[] = "/config";
 constexpr char kPatternsFilename[] = "wdp_patterns.json";
+constexpr char kV2PatternsFilename[] = "wdp_patterns_v2.json";
 
 constexpr char kOmittedLocationValue[] = "--";
 constexpr auto kAllowedReportLocations =
@@ -126,35 +128,69 @@ ParseSourceMapActionConfigs(const base::Value::Dict& configs_dict) {
   return map;
 }
 
-std::unique_ptr<PatternsGroup> ParseAndWritePatternsFile(
-    base::FilePath patterns_path,
-    std::string gzipped_contents) {
+ParsedPatternsVariant NullPatternsVariant() {
+  if (features::ShouldUseV2Patterns()) {
+    return ParsedPatternsVariant(std::unique_ptr<V2PatternsGroup>{});
+  } else {
+    return ParsedPatternsVariant(std::unique_ptr<PatternsGroup>{});
+  }
+}
+
+ParsedPatternsVariant ParsePatternsContent(const std::string& content) {
+  if (features::ShouldUseV2Patterns()) {
+    auto v2_patterns = ParseV2Patterns(content);
+    if (!v2_patterns) {
+      return NullPatternsVariant();
+    }
+    return std::move(v2_patterns);
+  } else {
+    auto v1_patterns = ParsePatterns(content);
+    if (!v1_patterns) {
+      return NullPatternsVariant();
+    }
+    return std::move(v1_patterns);
+  }
+}
+
+ParsedPatternsVariant ParseAndWritePatternsFile(base::FilePath patterns_path,
+                                                std::string gzipped_contents) {
   std::string uncompressed_contents;
   if (!compression::GzipUncompress(gzipped_contents, &uncompressed_contents)) {
     VLOG(1) << "Failed to uncompress patterns";
-    return nullptr;
+    return NullPatternsVariant();
   }
-  auto patterns = ParsePatterns(uncompressed_contents);
-  if (!patterns) {
-    return nullptr;
+
+  // Parse first to validate the content
+  ParsedPatternsVariant result = ParsePatternsContent(uncompressed_contents);
+
+  // Check if parsing failed (helper function returns null variant on failure)
+  if (features::ShouldUseV2Patterns()) {
+    if (!std::get<std::unique_ptr<V2PatternsGroup>>(result)) {
+      return result;  // Already contains null variant from helper
+    }
+  } else {
+    if (!std::get<std::unique_ptr<PatternsGroup>>(result)) {
+      return result;  // Already contains null variant from helper
+    }
   }
 
   if (!base::WriteFile(patterns_path, uncompressed_contents)) {
     VLOG(1) << "Failed to write patterns file";
-    return nullptr;
+    return NullPatternsVariant();
   }
-  return patterns;
+
+  return result;
 }
 
-std::unique_ptr<PatternsGroup> ReadAndParsePatternsFile(
-    base::FilePath patterns_path) {
+ParsedPatternsVariant ReadAndParsePatternsFile(base::FilePath patterns_path) {
   std::string contents;
   if (!base::ReadFileToStringWithMaxSize(patterns_path, &contents,
                                          kPatternsMaxFileSize)) {
     VLOG(1) << "Failed to read local patterns file";
-    return nullptr;
+    return NullPatternsVariant();
   }
-  return ParsePatterns(contents);
+
+  return ParsePatternsContent(contents);
 }
 
 std::unique_ptr<ServerConfig> ProcessConfigResponses(
@@ -257,7 +293,11 @@ ServerConfigLoader::ServerConfigLoader(
   quorum_config_url_ = GURL(GetQuorumHost() + kQuorumConfigPath);
   patterns_url_ = GetPatternsEndpoint();
 
-  patterns_path_ = user_data_dir.AppendASCII(kPatternsFilename);
+  if (features::ShouldUseV2Patterns()) {
+    patterns_path_ = user_data_dir.AppendASCII(kV2PatternsFilename);
+  } else {
+    patterns_path_ = user_data_dir.AppendASCII(kPatternsFilename);
+  }
 }
 
 ServerConfigLoader::~ServerConfigLoader() = default;
@@ -270,6 +310,11 @@ const ServerConfig& ServerConfigLoader::GetLastServerConfig() const {
 const PatternsGroup& ServerConfigLoader::GetLastPatterns() const {
   CHECK(last_loaded_patterns_);
   return *last_loaded_patterns_;
+}
+
+const V2PatternsGroup& ServerConfigLoader::GetLastV2Patterns() const {
+  CHECK(last_loaded_v2_patterns_);
+  return *last_loaded_v2_patterns_;
 }
 
 void ServerConfigLoader::SetLastServerConfigForTesting(
@@ -384,8 +429,8 @@ void ServerConfigLoader::OnConfigResponsesProcessed(
 void ServerConfigLoader::LoadStoredPatterns() {
   background_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&ReadAndParsePatternsFile, patterns_path_),
-      base::BindOnce(&ServerConfigLoader::OnStoredPatternsParsed,
-                     weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&ServerConfigLoader::OnPatternsParsed,
+                     weak_ptr_factory_.GetWeakPtr(), true));
 }
 
 void ServerConfigLoader::SchedulePatternsRequest() {
@@ -453,30 +498,37 @@ void ServerConfigLoader::OnPatternsResponse(
       FROM_HERE,
       base::BindOnce(&ParseAndWritePatternsFile, patterns_path_,
                      std::move(*response_body)),
-      base::BindOnce(&ServerConfigLoader::OnNewPatternsParsed,
-                     weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&ServerConfigLoader::OnPatternsParsed,
+                     weak_ptr_factory_.GetWeakPtr(), false));
 }
 
-void ServerConfigLoader::OnStoredPatternsParsed(
-    std::unique_ptr<PatternsGroup> parsed_patterns) {
-  if (!parsed_patterns) {
-    local_state_->ClearPref(kPatternsRetrievalTime);
-    SchedulePatternsRequest();
-    return;
+void ServerConfigLoader::OnPatternsParsed(bool is_stored,
+                                          ParsedPatternsVariant patterns) {
+  // Move the patterns immediately based on feature flag
+  if (features::ShouldUseV2Patterns()) {
+    last_loaded_v2_patterns_ =
+        std::move(std::get<std::unique_ptr<V2PatternsGroup>>(patterns));
+  } else {
+    last_loaded_patterns_ =
+        std::move(std::get<std::unique_ptr<PatternsGroup>>(patterns));
   }
-  last_loaded_patterns_ = std::move(parsed_patterns);
-  patterns_callback_.Run();
-}
 
-void ServerConfigLoader::OnNewPatternsParsed(
-    std::unique_ptr<PatternsGroup> parsed_patterns) {
-  if (!parsed_patterns) {
-    HandlePatternsStatus(false);
+  // Check if patterns were successfully loaded
+  if (!last_loaded_patterns_ && !last_loaded_v2_patterns_) {
+    if (is_stored) {
+      local_state_->ClearPref(kPatternsRetrievalTime);
+      SchedulePatternsRequest();
+    } else {
+      HandlePatternsStatus(false);
+    }
     return;
   }
-  local_state_->SetTime(kPatternsRetrievalTime, base::Time::Now());
-  HandlePatternsStatus(true);
-  last_loaded_patterns_ = std::move(parsed_patterns);
+
+  if (!is_stored) {
+    local_state_->SetTime(kPatternsRetrievalTime, base::Time::Now());
+    HandlePatternsStatus(true);
+  }
+
   patterns_callback_.Run();
 }
 
