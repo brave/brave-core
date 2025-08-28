@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
@@ -154,7 +155,6 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     }
 
     private boolean isToolbarBottomAnchored() {
-        return !ContextUtils.getAppSharedPreferences()
-                .getBoolean(BravePreferenceKeys.BRAVE_TOOLBAR_TOP_ANCHORED, true);
+        return !AddressBarPreference.isToolbarConfiguredToShowOnTop();
     }
 }

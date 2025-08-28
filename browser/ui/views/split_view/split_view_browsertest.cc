@@ -150,14 +150,15 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
   chrome::PinTab(browser());
 
-  tab_strip()->StopAnimating(/* layout= */ true);
+  tab_strip()->StopAnimating();
   auto* widget_delegate_view =
       brave_browser_view()->vertical_tab_strip_widget_delegate_view();
   ASSERT_TRUE(widget_delegate_view);
 
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
 
   auto check_split_tabs_has_same_y_position = [&]() {
     auto* model = browser()->tab_strip_model();
@@ -924,19 +925,20 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
         BrowserView::GetBrowserViewForBrowser(browser()));
   }
 
-  views::View& secondary_contents_container() {
-    return *browser_view().split_view_->secondary_contents_container_;
-  }
-
-  ScrimView& secondary_contents_scrim_view() {
-    return *browser_view().split_view_->secondary_contents_scrim_view_;
+  ContentsContainerView& secondary_contents_container() {
+    return *browser_view().split_view_->secondary_contents_container_view_;
   }
 
   views::WebView& secondary_contents_view() {
-    return *browser_view().split_view_->secondary_contents_web_view_;
+    return *browser_view().split_view_->secondary_contents_web_view();
   }
+
+  ScrimView& secondary_contents_scrim_view() {
+    return *secondary_contents_container().contents_scrim_view();
+  }
+
   views::WebView& secondary_dev_tools() {
-    return *browser_view().split_view_->secondary_devtools_web_view_;
+    return *secondary_contents_container().devtools_web_view();
   }
 
   SplitView& split_view() { return *browser_view().split_view_; }

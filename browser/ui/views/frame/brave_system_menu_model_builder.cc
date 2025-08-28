@@ -21,7 +21,7 @@ void BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(
 
     if (bookmark_all_tabs_index.has_value()) {
       model->InsertCheckItemWithStringIdAt(bookmark_all_tabs_index.value() + 1,
-                                           IDC_TOGGLE_VERTICAL_TABS,
+                                           IDC_BRAVE_TOGGLE_VERTICAL_TABS,
                                            IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
     }
   }

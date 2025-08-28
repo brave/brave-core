@@ -12,7 +12,7 @@
   Unused_IsPositionInWindowCaption() {                              \
     return false;                                                   \
   }                                                                 \
-  friend class VerticalTabStripRegionView;                          \
+  friend class BraveVerticalTabStripRegionView;                     \
   friend class BraveTabStrip;                                       \
   friend class BraveTabStripRegionView;                             \
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, MinHeight); \

@@ -297,9 +297,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 
-  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
-  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE, true);
-  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_EXPANDED, true);
+  UpdateCommandEnabled(IDC_BRAVE_TOGGLE_VERTICAL_TABS, true);
+  UpdateCommandEnabled(IDC_BRAVE_TOGGLE_VERTICAL_TABS_WINDOW_TITLE, true);
+  UpdateCommandEnabled(IDC_BRAVE_TOGGLE_VERTICAL_TABS_EXPANDED, true);
 
   UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
                        !browser_->profile()->IsOffTheRecord() &&
@@ -612,13 +612,13 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_TOGGLE_TAB_MUTE:
       brave::ToggleActiveTabAudioMute(&*browser_);
       break;
-    case IDC_TOGGLE_VERTICAL_TABS:
+    case IDC_BRAVE_TOGGLE_VERTICAL_TABS:
       brave::ToggleVerticalTabStrip(&*browser_);
       break;
-    case IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE:
+    case IDC_BRAVE_TOGGLE_VERTICAL_TABS_WINDOW_TITLE:
       brave::ToggleWindowTitleVisibilityForVerticalTabs(&*browser_);
       break;
-    case IDC_TOGGLE_VERTICAL_TABS_EXPANDED:
+    case IDC_BRAVE_TOGGLE_VERTICAL_TABS_EXPANDED:
       brave::ToggleVerticalTabStripExpanded(&*browser_);
       break;
     case IDC_CONFIGURE_BRAVE_NEWS:

@@ -189,7 +189,7 @@
       <message name="IDS_SAVE" desc="Label for a button to save a change. Used in multiple contexts. [CHAR_LIMIT=20]">
         Save
       </message>
-      <message name="IDS_DETAILS_LINK" desc="In 1) Settings &gt; Clean up computer (desktop), a link to open details of incompatible applications. In 2) Settings &gt; Lite mode (mobile), static title for data usage breakdown." meaning="Short for 'view details'. Link; static title.">
+      <message name="IDS_DETAILS_LINK" desc="Settings &gt; Lite mode (mobile), static title for data usage breakdown." meaning="Short for 'view details'. Link; static title.">
         Details
       </message>
      <message name="IDS_DONE" desc="Label for a button to save a change or finish editing data. Used in multiple contexts. [CHAR_LIMIT=20]">
@@ -729,7 +729,10 @@
       <message name="IDS_BLUETOOTH_NOTIFICATION_CONTENT_TEXT_INCOGNITO" desc="The notification will display this text for the user to return to the Private tab which has created the notification.">
         Tap to return to the site
       </message>
-
+      <!-- Bookmarks -->
+      <message name="IDS_BOOKMARKS_BAR_EMPTY_MESSAGE" desc="Message shown in a popup menu when a bookmarks bar folder is opened and contains no bookmarks." translateable="false">
+        No bookmarks
+      </message>
       <!-- USB -->
       <message name="IDS_CONNECTED_TO_USB_DEVICE_NOTIFICATION_TITLE" desc="Text to be shown as a notification when a website is connected to a USB device.">
         Connected to a USB device
@@ -1002,6 +1005,27 @@
       <message name="IDS_FONT_SIZE_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to change font size.">
         Text scaling set to <ph name="TEXT_SCALING">%1$s<ex>100%</ex></ph>
       </message>
+      <message name="IDS_FONT_FAMILY_SANS_SERIF_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to change font family to sans serif.">
+        Font Sans Serif
+      </message>
+      <message name="IDS_FONT_FAMILY_SERIF_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to change font family to serif.">
+        Font Serif
+      </message>
+      <message name="IDS_FONT_FAMILY_MONOSPACE_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to change font family to monospace.">
+        Font Mono
+      </message>
+      <message name="IDS_FONT_SIZE_SLIDER_ACCESSIBILITY_LABEL" desc="Accessibility label for slider to allow user to change font size.">
+        Font size slider
+      </message>
+      <message name="IDS_LIGHT_THEME_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to change to light theme.">
+        Theme color light
+      </message>
+      <message name="IDS_SEPIA_THEME_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to change to sepia theme.">
+        Theme color sepia
+      </message>
+      <message name="IDS_DARK_THEME_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to change to dark theme.">
+        Theme color dark
+      </message>
       <message name="IDS_FORCE_ENABLE_ZOOM_TITLE" desc="Title of preference that allows the user to zoom in on any webpage, even if the page tries to disable zooming.">
         Force enable zoom
       </message>
@@ -1028,7 +1052,6 @@
       </message>
 
       <!-- Text Size Contrast -->
-      <!-- TODO(crbug.com/40064612): Add descriptions and make the strings translateable. -->
       <message name="IDS_TEXT_SIZE_CONTRAST_TITLE" translateable="false" desc="Title of the preference that allows the user to update the accessibility smart zoom feature that applies to the web contents.">
         Text size contrast
       </message>
@@ -1336,6 +1359,9 @@
       <message name="IDS_NTP_CUSTOMIZATION_THEME_BOTTOM_SHEET_OPENED_FULL" desc="Accessibility string that describes the new tab page appearance bottom sheet is fully opened.">
         New tab page appearance bottom sheet opened at full height
       </message>
+      <message name="IDS_NTP_CUSTOMIZATION_CHROME_COLORS_BOTTOM_SHEET_OPENED_FULL" desc="Accessibility string that describes the new tab page appearance bottom sheet is fully opened.">
+        Brave colors bottom sheet opened at full height
+      </message>
       <message name="IDS_NTP_CUSTOMIZATION_MAIN_BOTTOM_SHEET_CLOSED" desc="Accessibility string that describes a new tab page customization bottom sheet is closed">
         Customize your new tab page bottom sheet closed
       </message>
@@ -1392,6 +1418,15 @@
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_THEME_COLLECTIONS_DAILY_UPDATE" desc="Title of the toggle switch for updating theme collection background daily">
         Refresh daily
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_CHROME_COLORS_TITLE" desc="Title for the Brave Colors bottom sheet in NTP customization.">
+        Brave Colors
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_CHROME_COLORS_BOTTOM_SHEET" desc="Accessibility string to announce the currently displaying bottom sheet is the Brave Colors bottom sheet." is_accessibility_with_no_ui="true">
+        Brave Colors bottom sheet
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_THEME_IMAGE_PREVIEW_PINCH_TO_RESIZE" desc="Text explaining the image could be resized by pinching it.">
+        Pinch to resize
       </message>
 
       <!-- Time Last Accessed strings -->

@@ -22,6 +22,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/navigation_throttle.h"
@@ -120,7 +121,11 @@ void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
     return;
   }
 
-  static const auto kAllowedReferrerUrls{[] {
+  // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+  // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+  // added in the meantime to fix the build error. Remove this attribute and
+  // provide a proper fix.
+  [[clang::no_destroy]] static const auto kAllowedReferrerUrls{[] {
     std::map<std::string, std::vector<GURL>> allowed_urls{
         {"bitflyer",
          {GURL(BUILDFLAG(BITFLYER_PRODUCTION_URL)),

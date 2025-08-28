@@ -14,5 +14,8 @@
     </if>
   <if expr="not reven">
     </if>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_WEB_STORE" desc="Text for Web Store installation source">
+    Web Store
+  </message>
   </if>
 </grit-part>

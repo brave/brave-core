@@ -62,7 +62,7 @@ NSString* keyCombinationForMenuItem(NSMenuItem* item) {
 
 }  // namespace
 
-std::u16string VerticalTabStripRegionView::GetShortcutTextForNewTabButton(
+std::u16string BraveVerticalTabStripRegionView::GetShortcutTextForNewTabButton(
     BrowserView* browser_view) {
   // On Mac, users can configure accelerators for items in main menu. But
   // Chromium doesn't track them accurately.

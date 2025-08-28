@@ -1,0 +1,17 @@
+diff --git a/content/browser/devtools/devtools_frontend_host_impl.cc b/content/browser/devtools/devtools_frontend_host_impl.cc
+index 43f8dbf09e3081b0a556445f32e9329009a6d7fe..8b793d4deec6ff709beb9fc597f9c6fb88b6291f 100644
+--- a/content/browser/devtools/devtools_frontend_host_impl.cc
++++ b/content/browser/devtools/devtools_frontend_host_impl.cc
+@@ -88,6 +88,12 @@ scoped_refptr<base::RefCountedMemory>
+ DevToolsFrontendHost::GetFrontendResourceBytes(const std::string& path) {
+   for (const auto& [resource_path, id, filepath] : kDevtoolsResources) {
+     if (path == resource_path) {
++      LOG(ERROR) << "\n🚨🚨🚨🚨🚨🚨🚨🚨🚨"
++                 << "\nDevToolsFrontendHost::GetFrontendResourceBytes:"
++                 << "\nresource_path = " << resource_path
++                 << "\nid = " << id
++                 << "\nfilepath = " << filepath.value_or("")
++                 << "\n🚨🚨🚨🚨🚨🚨🚨🚨🚨";
+       return GetContentClient()->GetDataResourceBytes(id);
+     }
+   }

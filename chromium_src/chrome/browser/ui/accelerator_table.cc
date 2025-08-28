@@ -1,9 +1,9 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/accelerator_table.h"
+#include "chrome/browser/ui/accelerator_table.h"
 
 #include "base/containers/extend.h"
 #include "brave/app/brave_command_ids.h"
@@ -11,7 +11,7 @@
 #include "build/build_config.h"
 
 #define GetAcceleratorList GetAcceleratorList_ChromiumImpl
-#include <chrome/browser/ui/views/accelerator_table.cc>
+#include <chrome/browser/ui/accelerator_table.cc>
 #undef GetAcceleratorList
 
 namespace {

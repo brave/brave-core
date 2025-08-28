@@ -956,9 +956,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
 
     content::WebContentsConsoleObserver console_observer(ActiveWebContents());
     console_observer.SetPattern(
-        "Refused to load the image 'https://a.test/should_fail.png' because it "
-        "violates the following Content Security Policy directive: \"img-src "
-        "'none'\".*");
+        "Loading the image 'https://a.test/should_fail.png' violates the "
+        "following Content Security Policy directive: \"img-src 'none'\". The "
+        "action has been blocked.");
 
     NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
 
@@ -990,9 +990,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspOrder) {
   {
     content::WebContentsConsoleObserver console_observer(ActiveWebContents());
     console_observer.SetPattern(
-        "Refused to set the document's base URI to 'https://a.test/' because "
-        "it violates the following Content Security Policy directive: "
-        "\"base-uri 'none'\".*");
+        "Setting the document's base URI to 'https://a.test/' violates the "
+        "following Content Security Policy directive: \"base-uri 'none'\". The "
+        "action has been blocked.");
     NavigateToPageSynchronously(kTestCSPOrderPage2,
                                 WindowOpenDisposition::CURRENT_TAB);
     EXPECT_TRUE(console_observer.Wait());
@@ -1122,7 +1122,9 @@ class SpeedReaderWithSplitViewBrowserTest
           ->GetInactiveContentsContainerView();
     }
 
-    return brave_browser_view()->split_view()->secondary_contents_container();
+    return brave_browser_view()
+        ->split_view()
+        ->secondary_contents_container_view_;
   }
 
   bool IsSideBySideEnabled() const { return GetParam(); }
