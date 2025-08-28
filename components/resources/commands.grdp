@@ -385,10 +385,10 @@
   <message name="IDS_IDC_TOGGLE_SIDEBAR">
     Toggle sidebar
   </message>
-  <message name="IDS_IDC_TOGGLE_VERTICAL_TABS">
+  <message name="IDS_IDC_BRAVE_TOGGLE_VERTICAL_TABS">
     Toggle vertical tabs
   </message>
-  <message name="IDS_IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE">
+  <message name="IDS_IDC_BRAVE_TOGGLE_VERTICAL_TABS_WINDOW_TITLE">
     Toggle vertical tabs window title
   </message>
   <message name="IDS_IDC_CONFIGURE_BRAVE_NEWS">
@@ -430,7 +430,7 @@
   <message name="IDS_IDC_MOVE_GROUP_TO_NEW_WINDOW">
     Move group to new window
   </message>
-  <message name="IDS_IDC_TOGGLE_VERTICAL_TABS_EXPANDED">
+  <message name="IDS_IDC_BRAVE_TOGGLE_VERTICAL_TABS_EXPANDED">
     Toggle vertical tabs expanded
   </message>
   <message name="IDS_IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP">
