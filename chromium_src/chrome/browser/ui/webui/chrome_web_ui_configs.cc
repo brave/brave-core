@@ -7,6 +7,7 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
@@ -81,6 +82,7 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<CookieListOptInUIConfig>());
   map.AddWebUIConfig(std::make_unique<ShieldsPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());
+  map.AddWebUIConfig(std::make_unique<WalletPageUIConfig>());
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
   map.AddWebUIConfig(
       std::make_unique<webcompat_reporter::WebcompatReporterUIConfig>());
