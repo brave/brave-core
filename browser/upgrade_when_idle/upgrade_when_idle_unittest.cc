@@ -40,9 +40,7 @@ class UpgradeWhenIdleTest : public testing::Test {
     profile_ = profile_manager_.CreateTestingProfile("TestProfile");
   }
 
-  void TearDown() override {
-    profile_ = nullptr;
-  }
+  void TearDown() override { profile_ = nullptr; }
 
  protected:
   void RunImplementation(ui::IdleState state, bool expect_upgrade) {
