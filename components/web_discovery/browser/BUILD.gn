@@ -40,6 +40,8 @@ source_set("internal") {
     "hash_detection.cc",
     "hash_detection.h",
     "hash_detection_matrix.h",
+    "legacy_refine_functions.cc",
+    "legacy_refine_functions.h",
     "patterns.cc",
     "patterns.h",
     "patterns_v2.cc",
