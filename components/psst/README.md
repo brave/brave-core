@@ -78,7 +78,7 @@ Example:
         description:<setting description>,
       },
        .... 
-   }
+   ]
  }
 ```
 
