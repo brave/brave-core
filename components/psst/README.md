@@ -73,7 +73,7 @@ Example:
  {
   "user": <logged-in user identifier>,
   "tasks": {
-      {
+      [
         url:<setting url, MUST BE UNIQUE>,
         description:<setting description>,
       },
