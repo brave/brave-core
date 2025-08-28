@@ -13,6 +13,7 @@
 #include "base/types/pass_key.h"
 #include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -20,7 +21,6 @@
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
-class BraveToolbarView;
 class PromotionButtonController;
 class PromotionButtonView;
 class PlaylistActionIconView;
@@ -99,7 +99,8 @@ class BraveLocationBarView : public LocationBarView {
       playlist::PlaylistBubblesController::BubbleType type =
           playlist::PlaylistBubblesController::BubbleType::kInfer);
 
-  void set_ignore_layout(base::PassKey<BraveToolbarView>, bool ignore) {
+  void set_ignore_layout(base::PassKey<BraveToolbarView::LayoutGuard>,
+                         bool ignore) {
     ignore_layout_ = ignore;
   }
 
@@ -124,7 +125,7 @@ class BraveLocationBarView : public LocationBarView {
   void SetupShadow();
 
   // Prevent layout with invalid rect.
-  // It could make omnibox poup have wrong postion.
+  // It also could make omnibox popup have wrong postion.
   // See the comments of BraveToolbarView::Layout().
   bool ignore_layout_ = false;
   std::unique_ptr<ViewShadow> shadow_;

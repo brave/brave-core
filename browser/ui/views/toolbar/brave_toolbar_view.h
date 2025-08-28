@@ -29,6 +29,8 @@ class BraveToolbarView : public ToolbarView,
                          public ProfileAttributesStorage::Observer {
   METADATA_HEADER(BraveToolbarView, ToolbarView)
  public:
+  class LayoutGuard;
+
   explicit BraveToolbarView(Browser* browser, BrowserView* browser_view);
   ~BraveToolbarView() override;
 

@@ -126,6 +126,20 @@ bool IsAvatarButtonHideable(Profile* profile) {
 
 }  // namespace
 
+class BraveToolbarView::LayoutGuard {
+ public:
+  explicit LayoutGuard(BraveLocationBarView* b) : bar(b) {}
+  ~LayoutGuard() { set_ignore_layout(false); }
+
+  LayoutGuard(const LayoutGuard&) = delete;
+  LayoutGuard& operator=(const LayoutGuard&) = delete;
+
+  void set_ignore_layout(bool ignore) { bar->set_ignore_layout({}, ignore); }
+
+ private:
+  raw_ptr<BraveLocationBarView> bar = nullptr;
+};
+
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
     : ToolbarView(browser, browser_view) {}
 
@@ -439,6 +453,11 @@ void BraveToolbarView::ViewHierarchyChanged(
 }
 
 void BraveToolbarView::Layout(PassKey) {
+  if (!brave_initialized_ || display_mode_ != DisplayMode::NORMAL) {
+    LayoutSuperclass<ToolbarView>(this);
+    return;
+  }
+
   // In this Layout, location bar's rect is set twice.
   // First one is by upstream's flext layout.
   // That rect fits for wide address bar.
@@ -448,27 +467,15 @@ void BraveToolbarView::Layout(PassKey) {
   // omnibox popup's position because that popup is anchored to
   // location bar. So, need to prevent layout with first rect
   // if wide address bar option is off.
-  if (display_mode_ == DisplayMode::NORMAL && brave_initialized_ &&
-      !location_bar_is_wide_.GetValue()) {
-    static_cast<BraveLocationBarView*>(location_bar_)
-        ->set_ignore_layout({}, true);
+  LayoutGuard guard(static_cast<BraveLocationBarView*>(location_bar_));
+  if (!location_bar_is_wide_.GetValue()) {
+    guard.set_ignore_layout(true);
   }
 
   LayoutSuperclass<ToolbarView>(this);
 
-  if (!brave_initialized_) {
-    return;
-  }
-
-  // ToolbarView::Layout() handles below modes. So just return.
-  if (display_mode_ == DisplayMode::CUSTOM_TAB ||
-      display_mode_ == DisplayMode::LOCATION) {
-    return;
-  }
-
   if (!location_bar_is_wide_.GetValue()) {
-    static_cast<BraveLocationBarView*>(location_bar_)
-        ->set_ignore_layout({}, false);
+    guard.set_ignore_layout(false);
     ResetLocationBarBounds();
     ResetBookmarkButtonBounds();
   }
