@@ -15,6 +15,7 @@ source_set("upgrade_when_idle") {
     "//base",
     "//chrome/browser:browser_process",
     "//chrome/browser/ui:browser_list_impl",
+    "//chrome/browser/upgrade_detector",
     "//chrome/common:non_code_constants",
     "//components/browsing_data/core",
     "//components/prefs",
