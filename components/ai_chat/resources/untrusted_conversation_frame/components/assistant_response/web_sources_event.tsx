@@ -34,7 +34,7 @@ function WebSource (props: {
   return (
     <li>
       <a href={source.url.url} title={source.title} onClick={(e) => handleOpenSource(e, source)}>
-        <img src={faviconSrc} />
+        <span><img src={faviconSrc} /></span>
         {props.citationNumber} - {host}
       </a>
     </li>

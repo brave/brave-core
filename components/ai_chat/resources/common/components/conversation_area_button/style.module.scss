@@ -5,7 +5,7 @@
 
 .suggestion {
   --leo-button-padding: 3px;
-  --leo-button-radius: var(--leo-radius-m);
+  --leo-button-radius: 20px;
   --leo-progressring-color: var(--leo-color-neutral-40);
   --leo-progressring-size: 15px;
 
@@ -34,7 +34,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--leo-radius-s);
+  border-radius: var(--leo-radius-xl);
   flex-shrink: 0;
 }
 
