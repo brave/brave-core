@@ -19,32 +19,31 @@ BASE_FEATURE(kVariationsTestFeature,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 // The seed is signed with the private key of the Brave variations server.
-const SignedSeedData& GetBraveSignedSeedData() {
+SignedSeedData GetBraveSignedSeedData() {
   static const char* study_names[] = {"VariationsTestStudy"};
 
-  constexpr char kBase64UncompressedData[] =
+  static constexpr char kBase64UncompressedData[] =
       "CiA5NDIyMDlmNWEwYzRkOTFiYThiZDk4N2ZlOGU5NTcxMBJMChNWYXJpYXRpb25zVGVzdFN0"
       "dWR5OAFKJAoHRW5hYmxlZBBkYhcKFVZhcmlhdGlvbnNUZXN0RmVhdHVyZUoLCgdEZWZhdWx0"
       "EABgASIaQnJhdmUgdmFyaWF0aW9ucyB0ZXN0IHNlZWQ=";
 
-  constexpr char kBase64CompressedData[] =
+  static constexpr char kBase64CompressedData[] =
       "H4sIAAAAAAAAA+"
       "NSsDQxMjKwTDNNNEg2SbE0TEq0SEqxtDBPS7VItTQ1NzQQ8uESDkssykwsyczPKw5JLS4JLi"
       "lNqbRg9FLhYnfNS0zKSU0RSEkS5xJFVeWWmlhSWpTqxc3F7pKalliaUyLAkMCoJOVUlFiWql"
       "AGV6tQAlSsUJyamgIARXSxvIwAAAA=";
 
-  constexpr char kBase64Signature[] =
+  static constexpr char kBase64Signature[] =
       "MEUCIQDfayOr/"
       "xmQaBThr1i8ARQ1rKEinHluXeR7ve5fqy7L4AIgNym2PbtlL+9142+"
       "T8gUjjEsoT28J3HqE4IEa1eFvKLw=";
 
-  static const SignedSeedData kBraveTestSeedData{study_names,
-                                                 kBase64UncompressedData,
-                                                 kBase64CompressedData,
-                                                 kBase64Signature,
-                                                 /*in_compressed_data=*/{},
-                                                 /*in_compressed_data_size=*/0};
-  return kBraveTestSeedData;
+  return {study_names,
+          kBase64UncompressedData,
+          kBase64CompressedData,
+          kBase64Signature,
+          /*in_compressed_data=*/{},
+          /*in_compressed_data_size=*/0};
 }
 
 }  // namespace
