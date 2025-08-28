@@ -321,6 +321,7 @@ source_set("ui") {
       "//brave/components/sidebar/common",
       "//brave/components/speedreader/common/buildflags",
       "//chrome/app:generated_resources",
+      "//chrome/browser/app_mode",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/favicon",
       "//chrome/browser/importer",
