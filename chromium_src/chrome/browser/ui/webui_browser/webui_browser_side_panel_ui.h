@@ -17,7 +17,7 @@
   Toggle() override; \
   void Toggle
 
-#include <chrome/browser/ui/webui_browser/webui_browser_side_panel_ui.h>
+#include <chrome/browser/ui/webui_browser/webui_browser_side_panel_ui.h>  // IWYU pragma: export
 
 #undef Toggle
 
