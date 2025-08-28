@@ -27,6 +27,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.chrome.browser.base.SplitCompatService;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -36,7 +37,7 @@ import org.chromium.playlist.mojom.PlaylistService;
 
 import java.util.Queue;
 
-public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHandler {
+public class HlsServiceImpl extends SplitCompatService.Impl implements ConnectionErrorHandler {
     private static final String TAG = "Playlist/HlsServiceImpl";
     private final IBinder mBinder = new LocalBinder();
     private final Context mContext = ContextUtils.getApplicationContext();

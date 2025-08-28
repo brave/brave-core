@@ -29,6 +29,7 @@ import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.base.SplitCompatService;
 import org.chromium.chrome.browser.vpn.DisconnectVpnBroadcastReceiver;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
@@ -36,8 +37,8 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class WireguardServiceImpl
-        extends WireguardService.Impl implements TunnelModel.TunnelStateUpdateListener {
+public class WireguardServiceImpl extends SplitCompatService.Impl
+        implements TunnelModel.TunnelStateUpdateListener {
     private Backend mBackend;
     private TunnelModel mTunnelModel;
     private final IBinder mBinder = new LocalBinder();
