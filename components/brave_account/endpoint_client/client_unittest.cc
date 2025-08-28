@@ -74,11 +74,26 @@ struct TestRequest {
 using TestResponse = Reply<kResponseKey>;
 using TestError = Reply<kErrorKey>;
 
+// Requests look like this:
+// POST https://example.com/api/query
+// {
+//   "request": "what the client wants"
+// }
+
+// Responses look like this:
+// {
+//   "response": "the answer is 42"
+// }
+
+// Errors look like this:
+// {
+//   "error": "insert a quarter to continue"
+// }
 struct TestEndpoint {
   using Request = TestRequest;
   using Response = TestResponse;
   using Error = TestError;
-  static GURL URL() { return GURL("https://example.com"); }
+  static GURL URL() { return GURL("https://example.com/api/query"); }
   static std::string_view Method() { return "POST"; }
 };
 
@@ -116,7 +131,7 @@ TEST_P(ClientTest, Send) {
         // Method
         EXPECT_EQ(resource_request.method, "POST");
         // URL
-        EXPECT_EQ(resource_request.url, GURL("https://example.com"));
+        EXPECT_EQ(resource_request.url, GURL("https://example.com/api/query"));
         // Request body
         if (!resource_request.request_body) {
           return ADD_FAILURE() << "resource_request.request_body is nullptr!";
