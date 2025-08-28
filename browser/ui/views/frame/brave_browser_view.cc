@@ -48,6 +48,7 @@
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/sidebar/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -352,6 +353,11 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 
   sidebar_container_view_->SetSidebarOnLeft(on_left);
 
+  if (multi_contents_view_ &&
+      base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
+    GetBraveMultiContentsView()->SetWebPanelOnLeft(on_left);
+  }
+
   DeprecatedLayoutImmediately();
 }
 
@@ -377,7 +383,17 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   // Start Sidebar UI initialization.
   DCHECK(sidebar_container_view_);
   sidebar_container_view_->Init();
+
+  // Ask BraveMultiContentsView for preparing web panel feature.
+  if (multi_contents_view_ &&
+      base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
+    GetBraveMultiContentsView()->SetWebPanelWidth(
+        sidebar_container_view_->side_panel()->GetPreferredSize().width());
+    GetBraveMultiContentsView()->UseContentsContainerViewForWebPanel();
+  }
+
   UpdateSideBarHorizontalAlignment();
+
   return sidebar_container_view_;
 }
 
