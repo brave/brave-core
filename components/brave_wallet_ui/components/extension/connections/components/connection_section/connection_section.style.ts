@@ -91,10 +91,11 @@ export const StatusText = styled(Text)`
   color: var(--connection-text-color);
 `
 
-export const SelectButton = styled(WalletButton)<{
-  disablePointer?: boolean
-}>`
-  cursor: ${(p) => (p.disablePointer ? 'default' : 'pointer')};
+export const SelectButton = styled(WalletButton)`
+  cursor: pointer;
+  &:disabled {
+    cursor: default;
+  }
   width: 100%;
   border: none;
   background: none;
