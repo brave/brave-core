@@ -637,7 +637,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   // Check expanded state is toggled via command.
   auto* command_controller = browser()->command_controller();
   command_controller->ExecuteCommandWithDisposition(
-      IDC_TOGGLE_VERTICAL_TABS_EXPANDED, WindowOpenDisposition::CURRENT_TAB);
+      IDC_BRAVE_TOGGLE_VERTICAL_TABS_EXPANDED,
+      WindowOpenDisposition::CURRENT_TAB);
   EXPECT_EQ(State::kCollapsed, region_view_1->state());
 
   // And new browser should follow the preference.

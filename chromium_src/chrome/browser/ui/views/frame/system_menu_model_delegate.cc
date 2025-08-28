@@ -13,7 +13,7 @@
 #undef IsCommandIdChecked
 
 bool SystemMenuModelDelegate::IsCommandIdChecked(int command_id) const {
-  if (command_id == IDC_TOGGLE_VERTICAL_TABS) {
+  if (command_id == IDC_BRAVE_TOGGLE_VERTICAL_TABS) {
     return tabs::utils::ShouldShowVerticalTabs(browser_);
   }
   return IsCommandIdChecked_ChromiumImpl(command_id);
