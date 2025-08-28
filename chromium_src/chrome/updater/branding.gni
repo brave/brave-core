@@ -55,6 +55,7 @@ brave_updater_branding = {
   IProcessLauncherGUID = "70E5ECF5-2CA7-4019-9B23-916789A13C2C"
   IProcessLauncher2GUID = "D5627FC9-E2F0-484B-89A4-5DACFE7FAAD3"
   if (is_mac) {
+    # Mirror upstream:
     legacy_google_update_appid = keystone_bundle_identifier
   } else {
     legacy_google_update_appid = "{B131C935-9BE6-41DA-9599-1F776BEB8019}"
