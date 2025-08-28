@@ -12,6 +12,8 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/patterns_v2.h"
+#include "brave/components/web_discovery/browser/relevant_site.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -28,7 +30,9 @@ class WebDiscoveryPayloadGeneratorTest : public testing::Test {
   void SetUp() override {
     server_config_ = std::make_unique<ServerConfig>();
     server_config_->location = "us";
+  }
 
+  void InitPatterns() {
     url_details_ = std::make_unique<PatternsURLDetails>();
 
     url_details_->payload_rule_groups = std::vector<PayloadRuleGroup>(2);
@@ -57,17 +61,104 @@ class WebDiscoveryPayloadGeneratorTest : public testing::Test {
     qurl_rule.is_join = false;
   }
 
+  void InitPatternsV2() {
+    // Create V2 patterns group
+    v2_patterns_group_ = std::make_unique<V2PatternsGroup>();
+
+    // Create a test V2 site pattern
+    V2SitePattern site_pattern;
+
+    // Create input group for search results
+    V2InputGroup results_input_group;
+    results_input_group.select_all = true;
+
+    // Create extraction rules for URL and text
+    V2ExtractionRule url_rule;
+    url_rule.sub_selector = "a";
+    url_rule.attribute = "href";
+
+    V2ExtractionRule text_rule;
+    text_rule.sub_selector = "a";
+    text_rule.attribute = "textContent";
+
+    // Add rules to input group
+    results_input_group.extraction_rules["url"].push_back(std::move(url_rule));
+    results_input_group.extraction_rules["text"].push_back(
+        std::move(text_rule));
+
+    // Add input group to site pattern
+    site_pattern.input_groups["#results"] = std::move(results_input_group);
+
+    // Create output group
+    V2OutputGroup output_group;
+    output_group.action = "query";
+
+    V2OutputField result_field;
+    result_field.key = "r";
+    result_field.source_selector = "#results";
+    result_field.required_keys = {"url", "text"};
+
+    V2OutputField ctry_field;
+    ctry_field.key = "ctry";
+    // ctry field doesn't need a source_selector as it comes from server config
+
+    output_group.fields.push_back(std::move(result_field));
+    output_group.fields.push_back(std::move(ctry_field));
+
+    site_pattern.output_groups.push_back(std::move(output_group));
+
+    // Create second output group for query0 action
+    V2OutputGroup query0_output_group;
+    query0_output_group.action = "query0";
+
+    V2OutputField qurl_field;
+    qurl_field.key = "qurl";
+    // qurl field doesn't need a source_selector - comes from URL
+
+    V2OutputField q_field;
+    q_field.key = "q";
+    // q field doesn't need a source_selector - comes from query extraction
+
+    V2OutputField ctry_field2;
+    ctry_field2.key = "ctry";
+    // ctry field doesn't need a source_selector as it comes from server config
+
+    query0_output_group.fields.push_back(std::move(qurl_field));
+    query0_output_group.fields.push_back(std::move(q_field));
+    query0_output_group.fields.push_back(std::move(ctry_field2));
+
+    site_pattern.output_groups.push_back(std::move(query0_output_group));
+
+    // Add site pattern to V2 patterns group
+    v2_patterns_group_->site_patterns[RelevantSite::kBing] =
+        std::move(site_pattern);
+  }
+
  protected:
   std::vector<base::Value::Dict> GenerateQueryPayloadsHelper(
       std::unique_ptr<PageScrapeResult> scrape_result) {
+    if (!url_details_) {
+      InitPatterns();
+    }
     return GenerateQueryPayloads(*server_config_.get(), url_details_.get(),
                                  std::move(scrape_result));
+  }
+
+  std::vector<base::Value::Dict> GenerateQueryPayloadsHelperV2(
+      std::unique_ptr<PageScrapeResult> scrape_result) {
+    if (!v2_patterns_group_) {
+      InitPatternsV2();
+    }
+    return GenerateQueryPayloadsV2(*server_config_.get(),
+                                   *v2_patterns_group_.get(),
+                                   std::move(scrape_result));
   }
 
   std::unique_ptr<ServerConfig> server_config_;
 
  private:
   std::unique_ptr<PatternsURLDetails> url_details_;
+  std::unique_ptr<V2PatternsGroup> v2_patterns_group_;
 };
 
 TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateQueryPayloads) {
@@ -238,6 +329,59 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, ContentMissing) {
 
   auto payloads = GenerateQueryPayloadsHelper(std::move(scrape_result));
   ASSERT_EQ(payloads.size(), 0u);
+}
+
+TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateQueryPayloadsV2) {
+  // Create test scrape result with V2 data structure
+  GURL test_url("https://www.bing.com/search?q=apple%20types");
+  auto scrape_result = std::make_unique<PageScrapeResult>(
+      test_url, std::string(*RelevantSiteToID(RelevantSite::kBing)));
+  scrape_result->query = "apple types";
+
+  // Add scraped results data and build expected dict in one loop
+  std::vector<base::Value::Dict> results_data;
+  base::Value::Dict expected_r_dict;
+
+  for (int i = 0; i < 8; ++i) {
+    auto result_dict =
+        base::Value::Dict()
+            .Set("url", "https://example.com/result" + base::NumberToString(i))
+            .Set("text", "Result " + base::NumberToString(i));
+
+    results_data.push_back(result_dict.Clone());
+    expected_r_dict.Set(base::NumberToString(i), std::move(result_dict));
+  }
+
+  scrape_result->fields["#results"] = std::move(results_data);
+
+  // Generate V2 payloads using helper with lazy initialization
+  auto payloads = GenerateQueryPayloadsHelperV2(std::move(scrape_result));
+
+  // Verify generated payloads - should have both query and query0 actions
+  ASSERT_EQ(payloads.size(), 2u);
+
+  // Verify first payload (query action)
+  EXPECT_THAT(
+      payloads[0],
+      IsSupersetOfValue(base::Value::Dict()
+                            .Set(kActionKey, "query")
+                            .Set(kInnerPayloadKey,
+                                 base::Value::Dict()
+                                     .Set("ctry", "us")
+                                     .Set("r", std::move(expected_r_dict)))));
+
+  // Verify second payload (query0 action)
+  EXPECT_THAT(
+      payloads[1],
+      IsSupersetOfValue(
+          base::Value::Dict()
+              .Set(kActionKey, "query0")
+              .Set(kInnerPayloadKey,
+                   base::Value::Dict()
+                       .Set("ctry", "us")
+                       .Set("qurl",
+                            "https://www.bing.com/search?q=apple%20types")
+                       .Set("q", "apple types"))));
 }
 
 }  // namespace web_discovery
