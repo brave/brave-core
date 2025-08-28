@@ -8,10 +8,6 @@
 <translation id="6406506848690869874">Sinxronlash</translation>
 <translation id="1544192797660353713">Hamyon</translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="9092796350041759828">{0, plural,
-          =1 {Mehmon oynasini yopish}
-          other {Mehmon oynasini yopish}
-        }</translation>
 <translation id="1990886731975529483">Google Widevine oʻrnatish va ishga tushirish</translation>
 <translation id="4900351245762303149">Google Widevine oʻrnatish</translation>
 <translation id="8342816622062204340"><ph name="URL"/> himoyalangan Google Widevine kontentini ijro etmoqchi. Buning uchun Android tizimining Widevine dastaklash ruxsatini berishingiz kerak. Siz ruxsat berish orqali Google foydalanish shartlari uchun rozilik berasiz.</translation>
@@ -70,6 +66,7 @@
 <translation id="9071187015476020102">Kengaytmalar yoki boshqa sozlamalarni import qilish uchun avval import qilayotgan brauzeringizni yoping.</translation>
 <translation id="5840822070878669614">Web Store'ni ochish</translation>
 <translation id="8076492880354921740">Varaqlar</translation>
+<translation id="5327248766486351172">Nomi</translation>
 <translation id="3987546108749866209">Vertikal varaqlardan foydalanish</translation>
 <translation id="5977931179408079967">Joylashuv</translation>
 <translation id="4109670531935487117">Manzil qatorida avtomatik kiritish tavsiyalarini chiqarish</translation>
@@ -87,7 +84,6 @@
 <translation id="7740996059027112821">Standart</translation>
 <translation id="4516904298421534459">Filtr roʻyxatlari</translation>
 <translation id="5524306331330789642">Yangi skriptcha qoʻshish</translation>
-<translation id="5327248766486351172">Nomi</translation>
 <translation id="8168435359814927499">Kontent</translation>
 <translation id="5317780077021120954">Saqlash</translation>
 <translation id="8823559166155093873">Cookie fayllarni bloklash</translation>
@@ -108,9 +104,9 @@
 <translation id="2653659639078652383">Yuborish</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">Suhbatlar tarixini saqlash</translation>
-<translation id="6106701981952170121">Barcha Leo AI suhbat maʼlumotlarini oʻchirish</translation>
 <translation id="614530507403667291">Yangi suhbatlar uchun odatiy model</translation>
 <translation id="1907126221851170941">Model qoʻshish</translation>
+<translation id="6532106788206463496">Oʻzgarishlarni saqlash</translation>
 <translation id="5985516785067818307">Soʻrovnoma ishtirokchisi</translation>
 <translation id="8347743943525229984">Brave soʻrovnomalariga ruxsat bering</translation>
 <translation id="3204080538332044581">Brave'ga yangi varaq sahifasida shaxsiy soʻrovnomalarga havolalarni koʻrsatishga ruxsat beradi. Soʻrovnomalar bizga yangi funksiyalarni yaxshilash va brauzer orqali amalga oshiriladigan reklama kampaniyalarining samaradorligini baholashga yordam beradi. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>

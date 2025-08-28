@@ -148,7 +148,7 @@
 <translation id="2701204441419443612">لا يزال الاتصال قائمًا...</translation>
 <translation id="8813986611396294203">هناك بعض البطء في شبكة Tor</translation>
 <translation id="2795840524629682765">فشل اتصال Tor</translation>
-<translation id="1149108864689950951">جارٍ توصيل برنامج Tor... [[percentage]]%</translation>
+<translation id="9102894004288640876">Tor في طور الاتصال... <ph name="PERCENTAGE"/>%</translation>
 <translation id="3651192084771403430">هل تواجه مشكلات في الاتصال؟ جرب <ph name="BEGIN_LINK"/>إيقاف تشغيل<ph name="END_LINK"/> النافذة الخاصة ذات برنامج Tor وشغلها مرة أخرى في الإعدادات.</translation>
 <translation id="8834376622642889380">افتح <ph name="BEGIN_LINK"/>إعدادات Brave<ph name="END_LINK"/>، وقم بتعطيل نافذة التصفح المتخفٍ في متصفح Tor، ثم أعد تمكينها.</translation>
 <translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>لا تزال تواجه مشكلة؟<ph name="END_BOLD"/>حاول استخدام<ph name="BEGIN_BRIDGES_LINK"/>جسور<ph name="END_BRIDGES_LINK"/>أو<ph name="BEGIN_SUPPORT_LINK"/>تواصل مع الدعم<ph name="END_SUPPORT_LINK"/>.</translation>
@@ -170,19 +170,33 @@
 <translation id="5334844597069022743">عرض المصدر</translation>
 <translation id="4720556299488643018">إلغاء الاشتراك</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
-<translation id="8510478288840333677">إخطار مطوري Brave بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:</translation>
+<translation id="2961941250324390287">إخطار مطوري Brave بأن هذا الموقع لا يعمل كما هو متوقع:</translation>
 <translation id="3110968385867124099">يتعذر الإبلاغ عن هذه الصفحة لأنه لم يتم عرضها عبر HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">هذه الصفحة هي صفحة ويب محلية وليست مؤهلة لإعداد التقارير.</translation>
 <translation id="8740275226259417070">هذه صفحة خطأ. ولا يمكن الإبلاغ عنها باعتبارها موقعًا مُعطلًا.</translation>
 <translation id="6367576083705149078">إذا قدمت معلومات الاتصال، فسيتم تخزينها للتقارير المستقبلية.</translation>
 <translation id="6806248680442980382">نشكرك على تقديم المساعدة في أن يصبح Brave أفضل للجميع. لن يحتوي هذا التقرير إلا على المعلومات اللازمة لنا لإصلاح هذا الموقع.</translation>
-<translation id="6476216365964140603">التفاصيل الإضافية (اختياري):</translation>
+<translation id="8731661215617360873">حدد خيارًا واحدًا</translation>
+<translation id="2805770823691782631">تفاصيل إضافية</translation>
+<translation id="8447940165862889275">(اختياري)</translation>
 <translation id="6145852496180774737">تواصل معي على: (اختياري)</translation>
 <translation id="7616645803364270729">البريد الإلكتروني، تويتر، إلخ.</translation>
 <translation id="721949491455392748">تضمين لقطة شاشة للصفحة الحالية</translation>
 <translation id="8459191579769999214">عرض لقطة شاشة</translation>
 <translation id="5299848999918506028">شكراً لك!</translation>
 <translation id="76550953340008122">شكراً لإخطارك مطوري Brave بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!</translation>
+<translation id="3037432377946455872">ما هي المشكلة الرئيسية التي تواجهها؟</translation>
+<translation id="9133645617402992550">الإعلانات لا زالت مرئية</translation>
+<translation id="4784626332068555349">صفحة فارغة أو محتوى ناقص</translation>
+<translation id="8278217275444967104">لا يمكن التمرير</translation>
+<translation id="786980556536893096">لا يمكن إدخال نص في النموذج</translation>
+<translation id="7744162007310978225">إشعار الموافقة على ملفات تعريف الارتباط مرئي</translation>
+<translation id="5578433701455313672">يوجد إجراء مضاد لأداة حظر الإعلانات</translation>
+<translation id="6831478554298438308">برمجة التعقب/التحليلات غير محظورة</translation>
+<translation id="7279636930553631442">نشرة إخبارية منبثقة</translation>
+<translation id="6136090320163235283">عنصر التواصل الاجتماعي</translation>
+<translation id="6657720240983439091">عنصر الدردشة</translation>
+<translation id="7138678301420049075">غير ذلك</translation>
 <translation id="4046860372562593546">إدارة Brave Ads</translation>
 <translation id="5136973036012418831">تحكم في أنواع Brave Ads التي تراها وعدد مرات مشاهدتها.</translation>
 <translation id="4759608598194750161">كلما شاهدت المزيد، تمكنت من ربح المزيد من المال.</translation>
@@ -422,7 +436,6 @@
 <translation id="8327818101454798856">لذا فإذا كنت تنوي دعم مواقعك المفضلة فانتقل إلى هناك فضلاً عن ذلك.</translation>
 <translation id="412480955826088549">جاري تحميل المكون ...</translation>
 <translation id="4894106830958548828">أفهم</translation>
-<translation id="326118736933420687">إنك الآن تقوم بعرض صفحة WebTorrent</translation>
 <translation id="2729085694451916573">سلسلة اختبار لـ <ph name="PART_ONE"/>العناصر النائبة<ph name="PART_ONE_END"/><ph name="PART_TWO"/>معرفة المزيد<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">النطاقات التي لا يمكن إيقافها</translation>
 <translation id="4492298165410552103">هل تريد تمكين دعم النطاقات التي لا يمكن إيقافها في Brave؟</translation>
@@ -471,6 +484,7 @@
 <translation id="5770656036486891920">تريد <ph name="URL"/> استخدام ملفات تعريف ارتباط الجهات الخارجية لتسجيل الدخول القديم إلى Google</translation>
 <translation id="6053826678715267477">السماح بالوصول إلى موارد Localhost</translation>
 <translation id="2973562729984406132">يرغب <ph name="URL"/> في الوصول إلى موارد Localhost</translation>
+<translation id="2104347391516032700">خدمة Bat Rewards</translation>
 <translation id="5939518447894949180">إعادة الضبط</translation>
 <translation id="3349204812119681938">إعادة تعيين Brave Rewards</translation>
 <translation id="4915997950539925115">عند إعادة التعيين، سيُحذف ملفك الشخصي الحالي على Brave Rewards، ولن يتم تمكين Brave Rewards بعد الآن. إذا قمت بتمكين Brave Rewards مرة أخرى لاحقًا، فستبدأ بملف تعريف جديد. اقرأ مقالة الدعم <ph name="LINK_BEGIN"/> حول إعادة تعيين <ph name="LINK_END"/> للحصول على مزيد من التفاصيل.</translation>
@@ -512,7 +526,6 @@
     }</translation>
 <translation id="6067959437127691361">يساعد استخدام Brave Rewards في دعم منشئي المحتوى ويتيح لك ربح BAT.</translation>
 <translation id="2359808026110333948">متابعة</translation>
-<translation id="885805571521218129">يمثل هذا نطاق أرباحك المقدرة للإعلانات التابعة لموقع Brave لهذا الشهر.</translation>
 <translation id="3863981251715594911">كيف يعمل؟</translation>
 <translation id="7931127789630755251">اكسب الرموز المميزة من خلال مشاهدة الإعلانات الخاصة في موقع Brave.</translation>
 <translation id="2278423362884506724">قم بدعم صانعي المحتوى واستخدم الرموز المميزة الخاصة بك لشراء بطاقات هدايا، ومبادلتها بعملات أخرى، ومزايا أخرى أيضًا.</translation>
@@ -587,8 +600,10 @@
 <translation id="5802986777701714573">لقد أضفنا طريقة جديدة لك لتلقي مكافآتك الشهرية من BAT. اربط حساب لدى أحد شركائنا أو استخدم خيار الحماية الذاتية الجديد لبدء الربح الآن.</translation>
 <translation id="3251885322612056119">شروط الخدمة المحدثة</translation>
 <translation id="7454675823870922788">قمنا بتحديث شروط الخدمة الخاصة بـ Brave Rewards. وأجرينا هذه التحديثات لتوضيح شروطنا والتأكد من أنها تغطي الميزات الجديدة. إذا واصلت استخدام برنامج Brave Rewards، فإنك توافق على شروط الخدمة المُحدّثة. إذا لم توافق على ذلك، فيمكنك <ph name="LINK_BEGIN"/> إعادة تعيين<ph name="LINK_END"/> Brave Rewards، مما سيؤدي إلى تعطيل الميزة.</translation>
+<translation id="56057964000416013">لقد قمنا بتحديث شروط الخدمة الخاصة بنا. للاستمرار في استخدام Brave Rewards، يُرجى مراجعة الشروط المحدّثة والموافقة عليها.</translation>
 <translation id="5192526308598085294">راجع شروط خدمة <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">موافق</translation>
+<translation id="343114360276812078">مراجعة الشروط</translation>
 <translation id="86107454835395919">تعيين كمساهمة شهرية</translation>
 <translation id="6621880242105464352">يجمع Brave <ph name="FEE_PCT"/> من المبلغ المرسل كرسوم معالجة.</translation>
 <translation id="1420756770787071946">دعم هذا المنشئ</translation>
@@ -640,8 +655,8 @@
 <translation id="756341217015623253">تسجيل الدخول أو الاشتراك</translation>
 <translation id="2653844658857826081">جديد</translation>
 <translation id="1165039591588034296">خطأ</translation>
-<translation id="5826530373788377342">لقد وصلت إلى الحد الأقصى لعدد الأجهزة لهذا <ph name="PROVIDER"/> الحساب.</translation>
-<translation id="6700131426769360592">تم الوصول إلى حد الجهاز</translation>
+<translation id="8673410329158754690">لقد ربطت اتصال الحد الأقصى لعدد الحسابات الشخصية لمكافآت Brave بهذا <ph name="PROVIDER"/> الحساب.</translation>
+<translation id="8385898883512695376">لقد بلغت الحد الأقصى في حساب الدفع</translation>
 <translation id="6895088073061692390">للأسف، تم وضع علامة على ملفك الشخصي على Brave Rewards نظرًا لأن عمليات الفحص التلقائية لدينا وجدت بعض أنشطة Brave Ads غير المتوقعة.</translation>
 <translation id="4229056297802204697">أثناء وضع علامة على ملفك الشخصي، قد تستمر في رؤية الإعلانات، ولكنك لن تكون مؤهلاً لتلقي الأرباح. ولن تتمكن أيضًا من ربط الحساب المستضاف بـ Brave Rewards.</translation>
 <translation id="5124846913141379164">يمكن أن يتم وضع علامة على ملفك الشخصي بطريق الخطأ، ولا يلزم اتخاذ أي إجراء فوري من جانبك. قد تتم إزالة العلامة الموجودة على ملفك الشخصي في المستقبل.</translation>
@@ -676,6 +691,7 @@
 <translation id="96989662637180657">تظهر إعلانات Brave Search على <ph name="LINK_BEGIN"/>Brave Search<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">إعدادات الإعلانات</translation>
 <translation id="2446517297521536638">يمكنك التحكم في أنواع إعلانات Brave التي تشاهدها وعدد مرات ظهورها. حيث كلما زاد عدد الإعلانات التي تشاهدها، زادت أرباحك.</translation>
+<translation id="3479272537858623647">يعرض هذا عدد إعلانات Brave التي شاهدتها هذا الشهر والمؤهلة لكسب BAT.</translation>
 <translation id="5860033963881614850">إيقاف</translation>
 <translation id="5916664084637901428">تشغيل</translation>
 <translation id="3977723631999461201"><ph name="NUM"/> إعلانات مستلمة هذا الشهر</translation>
@@ -703,7 +719,6 @@
 <translation id="7550470870580166294">الرصيد لا يكفي</translation>
 <translation id="7020972866926315918">يبدو أنك سجلت الخروج من <ph name="PROVIDER"/> الخاص بـ Brave Rewards. ولذا، سجِّل الدخول مرة أخرى للمتابعة.</translation>
 <translation id="1166682575529520472">شهريًا</translation>
-<translation id="7138678301420049075">غير ذلك</translation>
 <translation id="2134931506717037391">أرسِل BAT إلى <ph name="AMOUNT"/></translation>
 <translation id="4791565605790056151">إرسال مشاركة</translation>
 <translation id="8251969358165471584">محفظة Web3</translation>
@@ -1069,7 +1084,8 @@
 <translation id="7131971375297699539">رمز العملة</translation>
 <translation id="4693057234255364395">عنوان URL الخاص بمستكشف الحظر</translation>
 <translation id="7982789257301363584">الشبكة</translation>
-<translation id="1060221736464994328">هل تسمح لهذا الموقع بتبديل الشبكة؟</translation>
+<translation id="2512821599885971349">إضافة شبكة</translation>
+<translation id="200073220891881812">هل تسمح لهذا الموقع بتبديل الشبكات؟</translation>
 <translation id="2478788592457735063">سيؤدي هذا إلى تحويل الشبكة إلى شبكة مضافة مسبقًا.</translation>
 <translation id="8756686998207163764">قم بتبديل الشبكة</translation>
 <translation id="3948067511324628726">رسوم الغاز</translation>
@@ -1825,6 +1841,8 @@
 <translation id="2244921323472112851">لا يمكننا العثور على الصفحة التي تبحث عنها الآن.</translation>
 <translation id="6277237872689140644">قد تكون قد انتقلت إلى مكان مختلف أو ربما يحتوي عنوان URL على خطأ مطبعي.</translation>
 <translation id="2737084171727561244">اذهب إلى المحفظة</translation>
+<translation id="3499452861061048987">إضافة رمز</translation>
+<translation id="5046066249040287308">خدمة الأداة المساعدة لمحفظة Brave</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
@@ -2045,6 +2063,11 @@
 <translation id="684629111155788563">إضافة كل علامات التبويب إلى مجموعة جديدة</translation>
 <translation id="9106013521852824634">الإرسال إلى نفسك</translation>
 <translation id="6973516366678963184">عرض النافذة الصغيرة الخاصة بخدمة Wayback Machine</translation>
+<translation id="4765321711834219282">إغلاق مجموعة علامات التبويب</translation>
+<translation id="4095483462103784441">إنشاء مجموعة علامات تبويب جديدة</translation>
+<translation id="4292565651642921086">تخصيص مجموعة علامات التبويب التالية</translation>
+<translation id="874783686573493196">تخصيص مجموعة علامات تبويب السابقة</translation>
+<translation id="9169594135889675189">إضافة علامة تبويب جديدة إلى مجموعة علامات التبويب</translation>
 <translation id="1926106318101432555">فتح شريط الإشارات</translation>
 <translation id="6118819645013156507">الانتقال إلى نافذة...</translation>
 <translation id="1623204575967809688">دمج النافذة الحالية في...</translation>
@@ -2076,7 +2099,7 @@
 <translation id="9089090017461255038">تشغيل قارئ السرعة</translation>
 <translation id="3929926885379607283">استخدم دائمًا قارئ السرعة لهذا الموقع</translation>
 <translation id="4186588885948504942">التبديل لتشغيل/إيقاف تشغيل قارئ السرعة لهذا الموقع.</translation>
-<translation id="1873585723672836337">استخدم قارئ السرعة دائمًا لكل المواقع</translation>
+<translation id="6568851043090579206">استخدم قارئ السرعة دائمًا لكل المواقع</translation>
 <translation id="3138587343887871192">التبديل لتشغيل/إيقاف تشغيل قارئ السرعة لكل المواقع.</translation>
 <translation id="5153147025131874069">لا توفر كل المواقع إمكانيات قارئ السرعة.</translation>
 <translation id="1013121820689882118">قارئ السرعة</translation>
@@ -2105,9 +2128,9 @@
 <translation id="8637805148029768813">تتاح ميزة الملخص في الوقت الراهن لمقالات مختارة وصفحات ويب طويلة أخرى فقط.</translation>
 <translation id="1223498995510244364">تلخيص</translation>
 <translation id="7491773233732232424">نبذة عن Leo</translation>
-<translation id="4885527781814382758">Brave Leo هو مساعد ذكي خاص يعمل بالذكاء الاصطناعي ويعمل على تحسين استخدامك للإنترنت. تستطيع استخدام Leo مجانًا مع إمكانيات وصول محدودة. يقدم Brave Leo Premium المزيد من النماذج وحدود أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. يتغير النموذج الافتراضي من حين لآخر. راجع <ph name="LINK_BEFORE"/> مركز مساعدة Brave<ph name="LINK_AFTER"/> لمزيد من التفاصيل.</translation>
-<translation id="7189603330209995455">افتراضيًا، عندما تطرح على Leo سؤالاً، فإنه قد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تبرزه في الصفحة إلى Brave Leo لتقديم إجابة. دقة الردود غير مضمونة، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. يستخدم Leo بيانات من Brave Search لتحسين جودة الاستجابة. لا ترسل معلومات حساسة أو خاصة، وتوخي الحذر مع أي إجابات تتعلق بالصحة أو الماليات أو السلامة الشخصية أو ما شابه ذلك. يمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات &gt; Leo.</translation>
-<translation id="3038772045018370764">لا يجمع Leo المعرفات مثل عنوان IP الخاص بك الذي يمكن ربطه بك. لا تستخدم أي بيانات لتدريب نماذج الذكاء الاصطناعي ولا تحتفظ نماذج الذكاء الاصطناعي بأي بيانات شخصية (باستثناء Anthropic الذي يحتفظ بالبيانات لمدة 30 يومًا قبل حذفها). راجع <ph name="LINK_BEFORE"/>سياسة الخصوصية<ph name="LINK_AFTER"/> لمزيد من المعلومات.</translation>
+<translation id="4611072979071082355">Brave Leo هو مساعد ذكي خاص يعمل بالذكاء الاصطناعي ويعمل على تحسين استخدامك للإنترنت. تستطيع استخدام Leo مجانًا مع إمكانيات وصول محدودة. يقدم Brave Leo Premium المزيد من النماذج وحدود أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. يتغير النموذج الافتراضي من حين لآخر. راجع <ph name="LINK_BEFORE"/> مركز مساعدة Brave<ph name="LINK_AFTER"/> لمزيد من التفاصيل.</translation>
+<translation id="7297056998057521697">افتراضيًا، عندما تطرح على Leo سؤالاً بشأن موقع أو صفحة تتشاهدها، فإنه قد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تبرزه في الصفحة بالإضافة إلى استعلام البحث الخاص بك إلى خوادم Brave ليقدم Leo إجابة. في بعض الأحيان، قد يرسل Leo استعلامات انطلاقًا من مدخلاتك على Brave Search ويستخدم نتائج البحث لتوفير ردود أفضل على أسئلتك. لا يضمن Brave دقة الردود ، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. يستخدم Leo بيانات من Brave Search لتحسين جودة الاستجابة. لا ترسل معلومات حساسة أو خاصة إلى Brave Leo، وتوخي الحذر مع أي إجابات تتعلق بالصحة أو الماليات أو السلامة الشخصية أو ما شابه ذلك. يمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات &gt; Leo.</translation>
+<translation id="6644545214304085600">لا يجمع Leo المعرفات مثل عنوان IP الخاص بك الذي يمكن ربطه بك. لا نُدرب نماذجنا بناء على بياناتك، بما في ذلك استعلامات البحث الخاصة بك أو ردود Brave Leo. لا يتم تخزين أي بيانات شخصية على خوادمنا ولا الاحتفاظ بها من طرف Brave. راجع <ph name="LINK_BEFORE"/>سياسة الخصوصية<ph name="LINK_AFTER"/> لمزيد من المعلومات.</translation>
 <translation id="4348006373172097089">{PAGE_COUNT, plural,
       =1 {اطرح سؤالًا يخص محتوى هذه الصفحة}
       other {اطرح سؤالًا يخص محتوى هذه الصفحات}
@@ -2133,11 +2156,11 @@
 <translation id="999273441077650169">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3282183392203936979">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي مستضاف بالكامل من Brave. أنا مدعوم بواسطة Llama 3.1 8B، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي مستضاف بالكامل من Brave. أنا مدعوم بواسطة Qwen 14B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="5594884291408453470">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي مستضاف بالكامل من Brave. أنا مدعوم بواسطة Gemma 3 12B وهو نموذج تم إنشاؤه من طرف Google DeepMind ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Gemma من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8706248250250832190">مرحبًا، أنا Leo. مساعد ذكاء اصطناعي مستضاف بالكامل بواسطة Brave. أنا مدعوم بـ DeepSeek R1، وهو نموذج تم إنشاؤه بواسطة DeepSeek للتعامل مع المهام المتقدمة.<ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">مرحبًا، أنا Leo. أنا موكل بواسطة Brave، ومدعوم من Claude Instant، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Instant من خلال البنية التحتية الآمنة الخاصة بـ Brave. <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">مرحبًا، أنا Leo. أنا موكل بواسطة Brave، ومدعوم من Claude Haiku، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Haiku من خلال البنية التحتية الآمنة الخاصة بـ Brave. <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">مرحبًا، أنا Leo. أنا موكل بواسطة Brave، ومدعوم من Claude Sonnet، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Sonnet من خلال البنية التحتية الآمنة الخاصة بـ Brave. <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="1774712391633741125">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي مستضاف بالكامل من Brave. أنا مدعوم بواسطة Llama Vision، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">الدردشة</translation>
 <translation id="4685048769603134644">فتح الصفحة كاملة</translation>
@@ -2219,6 +2242,8 @@
 <translation id="1352836459737874921">إرفاق محتوى من علامات تبويب أخرى</translation>
 <translation id="3028258613451571431">إرسال محتوى الصفحة من علامات تبويب المتصفح لإعطاء Leo المزيد من السياق للمحادثة</translation>
 <translation id="4300920590112551536">علامة تبويب متصفح جديدة</translation>
+<translation id="1446346932629101482">إضافة محتوايت علامة التبويب للسياق. سيتم إرسال المحتويات إلى Leo إلى جانب رسائلك.</translation>
+<translation id="7193316103691252734">لا توجد علامات تبويب مطابقة</translation>
 <translation id="2315654674554095762">سيتذكر Leo الآن محادثاتك حتى تتمكن من العودة إليها. يتم تخزينها مشفرة على جهازك، ويمكنك حذفها في أي وقت.</translation>
 <translation id="7821251979960635244">سيظهر سجل المحادثة الخاص بك هنا بمجرد بدء محادثة.</translation>
 <translation id="887511360213807449">تم تعطيل السجل</translation>
@@ -2228,7 +2253,7 @@
 <translation id="7979673624064378842">دردشة بسرعة البرق</translation>
 <translation id="2836330653441111204">سرعة وذكاء متوازنان</translation>
 <translation id="6695329447007213917">الدردشة العامة و البرمجة و المزيد</translation>
-<translation id="5051668914970329839">أغراض عامة حول vision</translation>
+<translation id="7168072214482631597">فهم النص والصورة للأغراض العامة</translation>
 <translation id="7226508434216060960">نموذج التعليل</translation>
 <translation id="8782867266498869301">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة</translation>
 <translation id="3965507912994218570">إعدادات Leo</translation>
@@ -2285,6 +2310,8 @@
 <translation id="5355776323718420036">إخفاء أفضل المواقع</translation>
 <translation id="9173319813356700250">الأخبار</translation>
 <translation id="6543799171249004861">الصورة بعدسة <ph name="AUTHOR"/></translation>
+<translation id="466214682712474574">سجّل الدخول إلى حسابك <ph name="PROVIDER"/> لمعرفة رصيدك</translation>
+<translation id="8332875111286275890">سجّل الدخول لمعرفة رصيدك</translation>
 <translation id="5430001801813715388">المكافآت</translation>
 <translation id="5966055668402779222">اسأل Brave Search</translation>
 <translation id="167018310108390163">تخصيص صفحة تبويب جديدة</translation>
@@ -2301,6 +2328,8 @@
 <translation id="4290791698375397492">تمت إزالة أفضل موقع</translation>
 <translation id="1436784010935106834">تمت الإزالة</translation>
 <translation id="9030215177866748410">يتم اقتراح أفضل المواقع بناءً على المواقع التي تزورها بشكل متكرر.</translation>
+<translation id="1849266032237224734">عرض عدد أقل من العناصر</translation>
+<translation id="9125416311275819193">عرض المزيد من العناصر</translation>
 <translation id="8425213833346101688">تغيير</translation>
 <translation id="755045397420611731">الخصوصية والأمان الإضافيان عبر الإنترنت</translation>
 <translation id="4520128772974831415">إخفاء عنوان IP الخاص بك وتغيير موقعك</translation>
@@ -2401,6 +2430,7 @@
 <translation id="5222676887888702881">تسجيل الخروج</translation>
 <translation id="8090292425230843109">تسجيل الخروج من عناوين البريد المستعارة</translation>
 <translation id="8471990782451394141">جارِ الاتصال بحساب Brave...</translation>
+<translation id="71316462802471551">المعرفات البديلة للبريد الإلكتروني</translation>
 <translation id="5713644099811900409">حساب Brave</translation>
 <translation id="6002159997868894136">اضغط لنسخ الاسم المستعار</translation>
 <translation id="8105770564756958406">يُستعمل بواسطة <ph name="DOMAINS"/></translation>
@@ -2435,6 +2465,13 @@
 <translation id="619122420105901711">لا ترى البريد الإلكتروني؟ تحقق من مجلد البريد غير المرغوب فيه الخاص بك أو حاول مرة أخرى.</translation>
 <translation id="3397336197747843396">حدث خطأ خلال المصادقة مع حساب Brave، يرجى المحاولة مرة أخرى.</translation>
 <translation id="1340795582009113055">البدء من جديد</translation>
+<translation id="2422927186524098759">الشريط الجانبي</translation>
+<translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="8000020256436988724">شريط الأدوات</translation>
+<translation id="6225572914528673855">شريط العناوين</translation>
+<translation id="8293206222192510085">إضافة إشارة مرجعية</translation>
+<translation id="7758460733045216901">لوحة الإشارات المرجعية</translation>
 <translation id="958268166261124668">Brave VPN: متصل</translation>
 <translation id="6021669293402055982">Brave VPN: غير متصل</translation>
 <translation id="3541307549916475335">واجهة مستخدم لوحة Brave VPN</translation>
@@ -2449,6 +2486,9 @@
 <translation id="7805768142964895445">الحالة</translation>
 <translation id="5747552184818312860">تاريخ انتهاء الصلاحية</translation>
 <translation id="8421945428836418371">إعادة الاتصال تلقائيًا</translation>
+<translation id="1775187768313123375">توجيه البروكسي الذكي</translation>
+<translation id="1729266073247927443">توجيه البروكسي الذكي متوفر</translation>
+<translation id="8416695199565594645">يضمن توجيه حركة المرور من خلال خوادم بروكسي مخصصة للسماح بالوصول إلى المحتوى/المواقع المحظورة عادةً أو خدمات الجهات الخارجية.</translation>
 <translation id="434523916398030617">اتصل بالدعم الفني</translation>
 <translation id="1116694919640316211">حول</translation>
 <translation id="2044418816479192294">مئات من الخوادم حول العالم</translation>

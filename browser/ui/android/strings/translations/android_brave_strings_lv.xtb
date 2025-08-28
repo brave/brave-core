@@ -421,8 +421,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8748471354357836070">Uzzināt vairāk/izvēles atteikties</translation>
 <translation id="3171669670217312786">Fona attēli</translation>
 <translation id="8522669544471808198">Rādīt fona attēlus</translation>
-<translation id="3870475560794762985">Rādīt sponsorētos attēlus</translation>
-<translation id="6937724381960478525">Uzziniet vairāk par Sponsorētajiem attēliem</translation>
+<translation id="6258554626602400736">Rādīt reklāmas Jaunas cilnes lapā</translation>
+<translation id="9001530744369687550">Uzzināt vairāk par reklāmām Jaunās cilnes lapā</translation>
 <translation id="8793108040181436796">Logrīki</translation>
 <translation id="8643377320501056697">Rādīt populāras vietnes</translation>
 <translation id="7275773481201277457">Rādīt Brave statistiku</translation>
@@ -500,6 +500,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7616645803364270729">E-pasts, Twitter utt.</translation>
 <translation id="5299848999918506028">Paldies!</translation>
 <translation id="76550953340008122">Paldies, ka paziņojāt Brave izstrādātājiem par problēmām ar šo vietni. Pacentīsimies to salabot!</translation>
+<translation id="3037432377946455872">Kāda ir galvenā problēma, ar kuru saskaraties?</translation>
+<translation id="8731661215617360873">Izvēlieties vienu variantu</translation>
 <translation id="650318023204990401">Papildu vadīklas</translation>
 <translation id="7205939464631857223">Notīrīt visus bloķētos elementus</translation>
 <translation id="5370478469168390143">Saglabāt datus tiešsaistē</translation>
@@ -797,6 +799,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1426320910664514906">Gas robežvērtība</translation>
 <translation id="6389441740143786465">Atspējot koplietošanas centrmezglu</translation>
 <translation id="9065203028668620118">Labot</translation>
+<translation id="473775607612524610">Atjaunināt</translation>
 <translation id="479795390141144417">Konta atjaunināšana neizdevās.</translation>
 <translation id="8084782383392198011">Konta nosaukums nedrīkst būt tukšs.</translation>
 <translation id="5045550434625856497">Nepareiza parole</translation>
@@ -1224,4 +1227,41 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="2735247450315842119">Atļaut ekrānuzņēmumu veikšanu inkognito cilnēs</translation>
 <translation id="8420414929552321089">Šī funkcija nodrošina, ka privātās cilnes ir redzamas pat tad, ja ir atvērtas vairākas citas lietotnes.</translation>
 <translation id="7956713633345437162">Mobilo ierīču grāmatzīmes</translation>
+<translation id="1943432128510653496">Paroļu saglabāšana</translation>
+<translation id="2100273922101894616">Automātiski pierakstīties</translation>
+<translation id="363596933471559332">Automātiski pierakstīties vietnēs, izmantojot saglabātos akreditācijas datus. Ja funkcija ir izslēgta, verifikācija būs jāveic ikreiz, kad pierakstīsieties vietnē.</translation>
+<translation id="8562452229998620586">Šeit tiks parādītas saglabātās paroles.</translation>
+<translation id="1303339473099049190">Nevar atrast meklēto paroli. Pārbaudiet pareizrakstību un mēģiniet vēlreiz.</translation>
+<translation id="2259659629660284697">Paroļu eksportēšana…</translation>
+<translation id="133012818630824069">Eksportēt pārlūkā Brave saglabātās paroles</translation>
+<translation id="2321086116217818302">Notiek paroļu sagatavošana…</translation>
+<translation id="5139940364318403933">Uzzināt, kā izmantot Brave disku</translation>
+<translation id="729975465115245577">Ierīcē nav lietotnes, kurā uzglabāt paroļu failu.</translation>
+<translation id="1129510026454351943">Informācija: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Atbloķējiet, lai eksportētu paroles.</translation>
+<translation id="5245792669563792664">paroles</translation>
+<translation id="10614374240317010">Netiek saglabātas</translation>
+<translation id="1571304935088121812">Kopēt lietotājvārdu</translation>
+<translation id="5005498671520578047">Paroles kopēšana</translation>
+<translation id="2435457462613246316">Rādīt paroli</translation>
+<translation id="1513858653616922153">Dzēst paroli</translation>
+<translation id="543338862236136125">Rediģēt paroli</translation>
+<translation id="4565377596337484307">Slēpt paroli</translation>
+<translation id="8523928698583292556">Dzēst saglabāto paroli</translation>
+<translation id="5433691172869980887">Lietotājvārds ir nokopēts.</translation>
+<translation id="2625189173221582860">Parole ir nokopēta.</translation>
+<translation id="8084114998886531721">Saglabātā parole</translation>
+<translation id="6590680911007613645">Parolei, kuru vēlaties saglabāt, ir jāatbilst vietnē <ph name="SITE"/> izmantotajai parolei</translation>
+<translation id="1492417797159476138">Jūs jau saglabājāt šo lietotājvārdu šai vietnei</translation>
+<translation id="5454166040603940656">izmantojot <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Vai dzēst paroli?</translation>
+<translation id="7808889146555843082">Izdzēšot šo paroli, netiks dzēsts jūsu konts vietnē <ph name="SITE"/>. Nomainiet savu paroli vai dzēsiet savu kontu vietnē <ph name="SITE"/>, lai aizsargātu to no citām personām.</translation>
+<translation id="2870560284913253234">Vietne</translation>
+<translation id="8503813439785031346">Lietotājvārds</translation>
+<translation id="2278052315791335171">Izdzēšot šo paroli, netiks dzēsts jūsu konts vietnē <ph name="SITE"/>.</translation>
+<translation id="6891726759199484455">Atbloķējiet, lai kopētu paroli</translation>
+<translation id="5515439363601853141">Atbloķējiet, lai skatītu paroli</translation>
+<translation id="1724977129262658800">Atbloķējiet, lai rediģētu paroli</translation>
+<translation id="5780792035410621042">Lai kopētu paroles, vispirms iestatiet ekrāna bloķēšanu savā ierīcē.</translation>
+<translation id="7986497153528221272">Lai skatītu paroles, vispirms iestatiet ierīcei ekrāna bloķēšanu</translation>
 </translationbundle>

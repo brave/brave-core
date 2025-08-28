@@ -421,8 +421,8 @@
 <translation id="8748471354357836070">詳細 / オプトアウトの選択</translation>
 <translation id="3171669670217312786">背景画像</translation>
 <translation id="8522669544471808198">背景画像を表示</translation>
-<translation id="3870475560794762985">スポンサー付き画像を表示</translation>
-<translation id="6937724381960478525">スポンサーイメージについて詳しく知る</translation>
+<translation id="6258554626602400736">新しいタブページの広告を表示</translation>
+<translation id="9001530744369687550">新しいタブページ広告の詳細</translation>
 <translation id="8793108040181436796">ウィジェット</translation>
 <translation id="8643377320501056697">トップサイトを表示</translation>
 <translation id="7275773481201277457">Braveのデータを表示</translation>
@@ -500,6 +500,8 @@
 <translation id="7616645803364270729">メールアドレス、Twitterなど</translation>
 <translation id="5299848999918506028">ありがとうございます！</translation>
 <translation id="76550953340008122">このサイトの問題をBraveの開発者にお知らせいただき、ありがとうございます。最善を尽くしてその修正を行います！</translation>
+<translation id="3037432377946455872">あなたが経験している主な問題は何ですか？</translation>
+<translation id="8731661215617360873">カテゴリを1つ選択</translation>
 <translation id="650318023204990401">詳細設定</translation>
 <translation id="7205939464631857223">ブロックされた要素をすべて消去</translation>
 <translation id="5370478469168390143">データをオンラインで保存する</translation>
@@ -796,6 +798,7 @@
 <translation id="1426320910664514906">Gasリミット</translation>
 <translation id="6389441740143786465">共有ハブを無効にする</translation>
 <translation id="9065203028668620118">編集</translation>
+<translation id="473775607612524610">更新</translation>
 <translation id="479795390141144417">アカウントの更新に失敗しました。</translation>
 <translation id="8084782383392198011">アカウント名を空にすることはできません。</translation>
 <translation id="5045550434625856497">パスワードが正しくありません</translation>
@@ -1224,4 +1227,41 @@
 <translation id="2735247450315842119">プライベートタブでスクリーンショットを許可</translation>
 <translation id="8420414929552321089">許可すると、複数のアプリを開いている時にもプライベートタブが表示されます。</translation>
 <translation id="7956713633345437162">モバイルブックマーク</translation>
+<translation id="1943432128510653496">パスワードの保存</translation>
+<translation id="2100273922101894616">自動ログイン</translation>
+<translation id="363596933471559332">保存されている認証情報を使用してウェブサイトに自動的にログインします。この機能がオフの場合は、ウェブサイトにログインするときに毎回確認を求められます。</translation>
+<translation id="8562452229998620586">保存したパスワードはこちらに表示されます。</translation>
+<translation id="1303339473099049190">お探しのパスワードが見つかりません。誤字や脱字がないかご確認のうえ、もう一度お試しください。</translation>
+<translation id="2259659629660284697">パスワードをエクスポート…</translation>
+<translation id="133012818630824069">Brave に保存されたパスワードをエクスポートします</translation>
+<translation id="2321086116217818302">パスワードを準備しています…</translation>
+<translation id="5139940364318403933">Brave ドライブの使い方を見る</translation>
+<translation id="729975465115245577">お使いのデバイスにはパスワード ファイルを保存するためのアプリがインストールされていません。</translation>
+<translation id="1129510026454351943">詳細: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">ロックを解除してパスワードをエクスポート</translation>
+<translation id="5245792669563792664">パスワード</translation>
+<translation id="10614374240317010">常に保存しない</translation>
+<translation id="1571304935088121812">ユーザー名をコピー</translation>
+<translation id="5005498671520578047">パスワードのコピー</translation>
+<translation id="2435457462613246316">パスワードを表示</translation>
+<translation id="1513858653616922153">パスワードを削除</translation>
+<translation id="543338862236136125">パスワードを編集</translation>
+<translation id="4565377596337484307">パスワードを表示しない</translation>
+<translation id="8523928698583292556">保存したパスワードを削除</translation>
+<translation id="5433691172869980887">ユーザー名がコピーされました</translation>
+<translation id="2625189173221582860">パスワードがコピーされました</translation>
+<translation id="8084114998886531721">保存したパスワード</translation>
+<translation id="6590680911007613645">保存するパスワードが <ph name="SITE"/> のパスワードと一致していることを確認してください</translation>
+<translation id="1492417797159476138">このユーザー名はこのサイトですでに保存されています</translation>
+<translation id="5454166040603940656">- <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">パスワードを削除しますか？</translation>
+<translation id="7808889146555843082">このパスワードを削除しても、<ph name="SITE"/> のアカウントは削除されません。セキュリティを確保するため、パスワードを変更するか、<ph name="SITE"/> のアカウントを削除してください。</translation>
+<translation id="2870560284913253234">サイト</translation>
+<translation id="8503813439785031346">ユーザー名</translation>
+<translation id="2278052315791335171">このパスワードを削除しても、<ph name="SITE"/> のアカウントは削除されません</translation>
+<translation id="6891726759199484455">パスワードをコピーするにはロックを解除してください</translation>
+<translation id="5515439363601853141">パスワードを表示するにはロックを解除してください</translation>
+<translation id="1724977129262658800">パスワードを編集するにはロックを解除してください</translation>
+<translation id="5780792035410621042">パスワードをコピーするには、まずデバイスで画面ロックを設定してください</translation>
+<translation id="7986497153528221272">パスワードを表示するには、まずデバイスで画面ロックを設定してください</translation>
 </translationbundle>

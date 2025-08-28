@@ -1,15 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ro">
-<translation id="1036348656032585052">Dezactivează</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Creat acum <ph name="NUM_WEEKS_ONE"/> săptămână}few{Creat acum <ph name="NUM_WEEKS_MANY"/> săptămâni}other{Creat acum <ph name="NUM_WEEKS_MANY"/> de săptămâni}}</translation>
 <translation id="1063300264396686489">Deschide automat grupuri de file de pe alte dispozitive</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> dintre file nu au fost folosite în ultima vreme. Vrei să le închizi?</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Creat acum <ph name="NUM_YEARS_ONE"/> an}few{Creat acum <ph name="NUM_YEARS_MANY"/> ani}other{Creat acum <ph name="NUM_YEARS_MANY"/> de ani}}</translation>
+<translation id="1137385688780024041">{DAY_COUNT,plural, =1{Filele și grupurile inactive vor fi închise după o lună}few{Filele și grupurile inactive se vor închide după <ph name="MONTH_COUNT_MANY"/> luni}other{Filele și grupurile inactive vor fi închise după <ph name="MONTH_COUNT_MANY"/> de luni}}</translation>
 <translation id="1173894706177603556">Redenumește</translation>
 <translation id="1197088940767939838">Portocaliu</translation>
 <translation id="1245862538775272968">{TAB_COUNT,plural, =1{Deschide <ph name="TITLE_OF_GROUP"/> cu <ph name="TAB_COUNT2"/> filă}few{Deschide <ph name="TITLE_OF_GROUP"/> cu <ph name="TAB_COUNT2"/> file}other{Deschide <ph name="TITLE_OF_GROUP"/> cu <ph name="TAB_COUNT2"/> de file}}</translation>
 <translation id="1273910660700874265">Opțiuni pentru grupul de file <ph name="TITLE_OF_GROUP"/></translation>
+<translation id="1300188005269437765">Alege momentul în care filele și grupurile de file sunt mutate automat în secțiunea filelor inactive.</translation>
+<translation id="1321004960118052490">Elementele inactive nu se vor acumula</translation>
 <translation id="1329584516321524826">Actualizată chiar acum</translation>
 <translation id="1340839264183302272">Ieși din grup</translation>
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{Extinde grupul de file comun <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_ONE"/> filă de culoare <ph name="COLOR_NAME"/>, cu eticheta <ph name="CARD_LABEL"/>.}few{Extinde grupul de file comun <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_MANY"/> file de culoare <ph name="COLOR_NAME"/>, cu eticheta <ph name="CARD_LABEL"/>.}other{Extinde grupul de file comun <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_MANY"/> de file de culoare <ph name="COLOR_NAME"/>, cu eticheta <ph name="CARD_LABEL"/>.}}</translation>
@@ -28,6 +30,7 @@
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> filă grupată</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> filă}few{<ph name="TABS_COUNT_MANY"/> file}other{<ph name="TABS_COUNT_MANY"/> de file}}</translation>
 <translation id="1909810060368225529">Notificare: modificările aduse acestui grup de file comun sunt vizibile pentru toată lumea. Oricine poate să facă modificări în grupurile de file comune</translation>
+<translation id="1982637982196732906">Mută în secțiunea inactivă</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Marchează <ph name="TABS_COUNT_ONE"/> filă selectată}few{Marchează <ph name="TABS_COUNT_MANY"/> file selectate}other{Marchează <ph name="TABS_COUNT_MANY"/> de file selectate}}</translation>
 <translation id="2055057176188061528">Selectează un grup de file sau creează unul nou</translation>
 <translation id="2118649612461486615">Informații magazin</translation>
@@ -37,14 +40,15 @@
 <translation id="2277224997687551299">Editează numele grupului</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{Fila Marcaj}few{Filele Marcaj}other{Filele Marcaj}}</translation>
 <translation id="2359808026110333948">Continuă</translation>
+<translation id="2371084566192454134">File și grupuri de file</translation>
 <translation id="2375257132547014176">{TABS_COUNT,plural, =1{Restrânge grupul de file <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_ONE"/> filă.}few{Restrânge grupul de file <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_MANY"/> file.}other{Restrânge grupul de file <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_MANY"/> de file.}}</translation>
 <translation id="2498435670446402865">Redenumește grupul de file</translation>
 <translation id="2536366509642644298">Grupurile de file <ph name="TAB_GROUP_NAME_1"/> și <ph name="TAB_GROUP_NAME_2"/> nu mai sunt disponibile</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{Restrânge <ph name="TABS_COUNT_ONE"/> filă.}few{Restrânge grupul de file cu <ph name="TABS_COUNT_MANY"/> file.}other{Restrânge grupul de file cu <ph name="TABS_COUNT_MANY"/> de file.}}</translation>
 <translation id="2569352796411618312">Sugestie: <ph name="NUMBER_OF_TABS"/> dintre file nu au fost folosite în ultima vreme. Vrei să le închizi?</translation>
 <translation id="257674075312929031">Grupează</translation>
+<translation id="2660792762186871190">{NUMBER_OF_TABS,plural, =1{Restabilește și deschide grupul de file cu <ph name="TABS_COUNT_ONE"/> filă, culoarea <ph name="COLOR_NAME"/>.}few{Restabilește și deschide grupul de file cu <ph name="TABS_COUNT_MANY"/> de file, culoarea <ph name="COLOR_NAME"/>.}other{Restabilește și deschide grupul de file cu <ph name="TABS_COUNT_MANY"/> de file, culoarea <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="2662028055331606429">Evaluare: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
-<translation id="120364858946132793">{AUTO_DELETE_DELAY,plural, =1{Brave închide automat elementele din secțiunea inactivă pe care nu le-ai folosit timp de <ph name="AUTO_DELETE_DELAY_ONE"/> zi. Poți dezactiva această opțiune acum sau oricând din Setări.}few{Brave închide automat elementele din secțiunea inactivă pe care nu le-ai folosit timp de <ph name="AUTO_DELETE_DELAY_MANY"/> zile. Poți dezactiva această opțiune acum sau oricând din Setări.}other{Brave închide automat elementele din secțiunea inactivă pe care nu le-ai folosit timp de <ph name="AUTO_DELETE_DELAY_MANY"/> de zile. Poți dezactiva această opțiune acum sau oricând din Setări.}}</translation>
 <translation id="266935134738038806">Accesează site-ul</translation>
 <translation id="2671423594960767771">Trimite grupul</translation>
 <translation id="2734252994837336591">{NUM_WEEKS,plural, =1{S-a actualizat acum <ph name="NUM_WEEKS_ONE"/> săptămână}few{S-a actualizat acum <ph name="NUM_WEEKS_MANY"/> săptămâni}other{S-a actualizat acum <ph name="NUM_WEEKS_MANY"/> de săptămâni}}</translation>
@@ -54,8 +58,8 @@
 <translation id="2801787514987684416">Vrei să vezi informații despre magazin?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> filă închisă}few{<ph name="MANY_CLOSED"/> file închise}other{<ph name="MANY_CLOSED"/> de file închise}}</translation>
 <translation id="2894757982205307093">Filă nouă în grup</translation>
+<translation id="2918484639460781603">Accesați setările</translation>
 <translation id="4691798003247738043">Brave | Despre acest magazin</translation>
-<translation id="29919168204617356">Filele inactive se vor închide automat. Le poți găsi oricând în Istoric.</translation>
 <translation id="3008554597174452548">Nu mai urmări produsul</translation>
 <translation id="3026391124054406831">Creează grupuri pentru a organiza filele.</translation>
 <translation id="3051031624272448591">Le poți restabili oricând din istoric</translation>
@@ -65,6 +69,7 @@
 <translation id="3194464645767632461">evaluare</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{Adaugă <ph name="TABS_COUNT_ONE"/> filă în grup}few{Adaugă <ph name="TABS_COUNT_MANY"/> file în grup}other{Adaugă <ph name="TABS_COUNT_MANY"/> de file în grup}}</translation>
 <translation id="3328308545011660196">Sugestie: <ph name="NUMBER_OF_TABS"/> file par similare. Vrei să le grupezi?</translation>
+<translation id="3330595302841061275">{DAY_COUNT,plural, =1{După o zi de inactivitate}few{După <ph name="DAY_COUNT_MANY"/> zile de inactivitate}other{După <ph name="DAY_COUNT_MANY"/> de zile de inactivitate}}</translation>
 <translation id="358453129938375749">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> filă nouă}few{<ph name="MANY_ADDED"/> file noi}other{<ph name="MANY_ADDED"/> de file noi}}</translation>
 <translation id="3613492231657284463">Dialogul Ascunde filele inactive</translation>
 <translation id="3619255692378312441">Gestionează accesul</translation>
@@ -78,6 +83,7 @@
 <translation id="4009732926939031387">{NUM_DAYS,plural, =1{Creat acum <ph name="NUM_DAYS_ONE"/> zi}few{Creat acum <ph name="NUM_DAYS_MANY"/> zile}other{Creat acum <ph name="NUM_DAYS_MANY"/> de zile}}</translation>
 <translation id="4076226664360336092">Lista de grupuri de file, deschisă la înălțimea completă</translation>
 <translation id="4133493477912226187"><ph name="NUMBER_OF_TABS"/> file par similare. Vrei să le grupezi?</translation>
+<translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{Închide grupul <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_ONE"/> filă, culoarea <ph name="COLOR_NAME"/>.}few{Închide grupul <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_MANY"/> file, culoarea <ph name="COLOR_NAME"/>.}other{Închide grupul <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_MANY"/> de file, culoarea <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="4159784952369912983">Mov</translation>
 <translation id="4203448675570432781">Notificarea privind modificările aduse ștergerii automate a filelor închisă.</translation>
 <translation id="427987768447457592">Grup de file nou</translation>
@@ -85,7 +91,6 @@
 <translation id="4429658455677831355">{TAB_COUNT,plural, =1{Restabilește elementul}few{Restabilește elementele}other{Restabilește elementele}}</translation>
 <translation id="4453940245650019914">{NUM_DAYS,plural, =1{S-a actualizat acum <ph name="NUM_DAYS_ONE"/> zi}few{S-a actualizat acum <ph name="NUM_DAYS_MANY"/> zile}other{S-a actualizat acum <ph name="NUM_DAYS_MANY"/> de zile}}</translation>
 <translation id="4686942373615810936">Creat chiar acum</translation>
-<translation id="47070857600201406">{DAY_COUNT,plural, =1{Închide după 1 zi}few{Închide după <ph name="DAY_COUNT_MANY"/> zile}other{Închide după <ph name="DAY_COUNT_MANY"/> de zile}}</translation>
 <translation id="4783638485675352219">Permite accesul sistemului de operare la titlurile și adresele URL ale filelor deschise de pe acest dispozitiv</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> recenzie)}few{(<ph name="REVIEWS_COUNT_MANY"/> recenzii)}other{(<ph name="REVIEWS_COUNT_MANY"/> de recenzii)}}</translation>
 <translation id="4850886885716139402">Afișează</translation>
@@ -94,25 +99,30 @@
 <translation id="4861953997778766866">Oricine poate să facă modificări în grupurile de file la care se permite accesul</translation>
 <translation id="4870911314065352661">Închizi toate filele?</translation>
 <translation id="4871719318659334896">Închide grupul</translation>
+<translation id="4876860795942196286">{NUMBER_OF_TABS,plural, =1{Restabilește și deschide grupul de file <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_ONE"/> filă, culoarea <ph name="COLOR_NAME"/>.}few{Restabilește și deschide grupul de file <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_MANY"/> file, culoarea <ph name="COLOR_NAME"/>.}other{Restabilește și deschide grupul de file <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_MANY"/> de file, culoarea <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="4881695831933465202">Deschide</translation>
 <translation id="4895402777090717310">{TABS_COUNT,plural, =1{Închide fila}few{Închide filele}other{Închide filele}}</translation>
 <translation id="4908147833782857886"><ph name="USER_EMAIL"/> grupuri salvate (filele vor fi închise și grupurile vor fi șterse)</translation>
 <translation id="492284538114688557">S-a detectat o scădere de preț</translation>
 <translation id="4937582754153367435">{NUMBER_OF_TABS,plural, =1{Extinde grupul de file comun cu <ph name="TABS_COUNT_ONE"/> filă de culoare <ph name="COLOR_NAME"/>, cu eticheta <ph name="CARD_LABEL"/>.}few{Extinde grupul de file comun cu <ph name="TABS_COUNT_MANY"/> file de culoare <ph name="COLOR_NAME"/>, cu eticheta <ph name="CARD_LABEL"/>.}other{Extinde grupul de file comun cu <ph name="TABS_COUNT_MANY"/> de file de culoare <ph name="COLOR_NAME"/>, cu eticheta <ph name="CARD_LABEL"/>.}}</translation>
 <translation id="5007392906805964215">Examinează</translation>
+<translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Mută filele într-o fereastră nouă}few{Mută filele în altă fereastră}other{Mută filele în altă fereastră}}</translation>
 <translation id="5073204694187207510">Ascunde grila pe ecran complet</translation>
 <translation id="5076161749301278626">Vezi recenziile magazinului?</translation>
 <translation id="5161254044473106830">Titlul este obligatoriu</translation>
+<translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave închide automat filele și grupurile de file inactive după <ph name="AUTO_DELETE_DELAY_ONE"/> lună. Poți modifica această opțiune din setări.}few{Brave închide automat filele și grupurile de file inactive după <ph name="AUTO_DELETE_DELAY_MANY"/> luni. Poți modifica această opțiune din setări.}other{Brave închide automat filele și grupurile de file inactive după <ph name="AUTO_DELETE_DELAY_MANY"/> de luni. Poți modifica această opțiune din setări.}}</translation>
 <translation id="5339733443032484186">Ultima filă</translation>
 <translation id="5380159289133845234">Arhivează filele dublură</translation>
 <translation id="5400836586163650660">Gri</translation>
 <translation id="5446043142172831860">Elimină fila și părăsește grupul</translation>
 <translation id="5490235265819901748">Grup de file extins</translation>
 <translation id="5494920125229734069">Selectează-le pe toate</translation>
+<translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Închide grupul de file cu <ph name="TABS_COUNT_ONE"/> filă, culoarea <ph name="COLOR_NAME"/>.}few{Închide grupul de file cu <ph name="TABS_COUNT_MANY"/> file, culoarea <ph name="COLOR_NAME"/>.}other{Închide grupul de file cu <ph name="TABS_COUNT_MANY"/> de file, culoarea <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="5556417849629758491">Vezi informații despre magazin, opțiune disponibilă în partea de sus a ecranului</translation>
 <translation id="5627941783489838464">Fără actualizări ale filelor</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link din Brave}few{<ph name="TABS_COUNT_MANY"/> linkuri din Brave}other{<ph name="TABS_COUNT_MANY"/> de linkuri din Brave}}</translation>
 <translation id="5746204836956568669">Grupezi <ph name="NUMBER_OF_TABS"/> file pentru a lucra mai rapid?</translation>
+<translation id="5773295109010386583">Închide automat elementele inactive</translation>
 <translation id="58326064309361797">Trage filele pentru a le grupa</translation>
 <translation id="5901630391730855834">Galben</translation>
 <translation id="5972844218283131174">Deselectează tot</translation>
@@ -123,17 +133,13 @@
 <translation id="6109251075362363230">Toate filele dublură vor fi acum arhivate, cu excepția copiei folosite cel mai recent.</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{Închide <ph name="TABS_COUNT_ONE"/> element selectat}few{Închide <ph name="TABS_COUNT_MANY"/> elemente selectate}other{Închide <ph name="TABS_COUNT_MANY"/> de elemente selectate}}</translation>
 <translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Mută grupul într-o fereastră nouă}few{Mută grupul în altă fereastră}other{Mută grupul în altă fereastră}}</translation>
-<translation id="6193448654517602979">Selectează file</translation>
-<translation id="6220820548421939212">Da. Accept</translation>
 <translation id="6228793724645064692">(evaluare a magazinului)</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Adaugă fila într-un grup nou}few{Adaugă filele într-un grup nou}other{Adaugă filele într-un grup nou}}</translation>
 <translation id="6333260925957816943">Informații despre magazin</translation>
 <translation id="6381032505162537930">Aici vei vedea grupurile de file</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{Anulează <ph name="TABS_COUNT_ONE"/> filă selectată}few{Anulează <ph name="TABS_COUNT_MANY"/> file selectate}other{Anulează <ph name="TABS_COUNT_MANY"/> de file selectate}}</translation>
-<translation id="6422650314852876533">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> filă}few{<ph name="TABS_COUNT_MANY"/> file}other{<ph name="TABS_COUNT_MANY"/> de file}}</translation>
 <translation id="6499296376514955580">Notificare privind modificările grupului de file comun, închisă</translation>
 <translation id="6527303717912515753">Trimite</translation>
-<translation id="6542289363124393690">{DAY_COUNT,plural, =1{După o zi}few{După <ph name="DAY_COUNT_MANY"/> zile}other{După <ph name="DAY_COUNT_MANY"/> de zile}}</translation>
 <translation id="6549021453810473782">Vezi informații despre magazin</translation>
 <translation id="6557858706263317126">+<ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">Mută fila spre stânga</translation>
@@ -150,6 +156,7 @@
 <translation id="709473454666962555">Selectează un grup de file</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Trimite fila}few{Trimite filele}other{Trimite filele}}</translation>
 <translation id="7129458170538955174">Informațiile despre magazin deschise la jumătate din înălțime</translation>
+<translation id="7151209024774799310">Elimină file din grup</translation>
 <translation id="7204204600596740190">Modul de selectare multiplă</translation>
 <translation id="7211038039686180558">Grupurile de file se salvează și se actualizează automat pe toate dispozitivele conectate</translation>
 <translation id="731648547091221002">S-a selectat <ph name="COLOR_NAME"/></translation>
@@ -158,6 +165,7 @@
 <translation id="7369451074646620503">Grupul de file <ph name="TAB_GROUP_NAME"/> nu mai este disponibil</translation>
 <translation id="7452985128687107478">Grupurile de file se salvează și se actualizează automat pe toate dispozitivele</translation>
 <translation id="747459581954555080">Restabilește-le pe toate</translation>
+<translation id="7501728912575021674">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> element}few{<ph name="TABS_COUNT_MANY"/> elemente}other{<ph name="TABS_COUNT_MANY"/> de elemente}}</translation>
 <translation id="7507010952168401940">{TABS_COUNT,plural, =1{Restabilește <ph name="TABS_COUNT_ONE"/> element selectat}few{Restabilește <ph name="TABS_COUNT_MANY"/> elemente selectate}other{Restabilește <ph name="TABS_COUNT_MANY"/> de elemente selectate}}</translation>
 <translation id="753732157349120914">Comutator de file</translation>
 <translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> recenzie de pe Brave}few{<ph name="REVIEWS_COUNT_MANY"/> recenzii de pe Brave}other{<ph name="REVIEWS_COUNT_MANY"/> de recenzii de pe Brave}}</translation>
@@ -167,6 +175,7 @@
 <translation id="7699041944097291312">{TABS_COUNT,plural, =1{Trimite <ph name="TABS_COUNT_ONE"/> filă selectată}few{Trimite <ph name="TABS_COUNT_MANY"/> file selectate}other{Trimite <ph name="TABS_COUNT_MANY"/> de file selectate}}</translation>
 <translation id="775668479044571025">{NUM_MONTHS,plural, =1{S-a actualizat acum <ph name="NUM_YEARS_ONE"/> an}few{S-a actualizat acum <ph name="NUM_YEARS_MANY"/> ani}other{S-a actualizat acum <ph name="NUM_YEARS_MANY"/> de ani}}</translation>
 <translation id="7773714564112603605">Elimină fila și șterge grupul</translation>
+<translation id="7774428938729954687">Restabilește și deschide fila <ph name="TAB_TITLE"/></translation>
 <translation id="7792771145871471484">Examinează sugestiile.</translation>
 <translation id="7792860826279960128">Notificare privind modificările aduse grupului de file comun, la jumătate din înălțime</translation>
 <translation id="7825973332242257878">Grupuri de file</translation>
@@ -174,7 +183,6 @@
 <translation id="7853202427316060426">Activitate</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Evaluare: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> recenzie}few{Evaluare: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> recenzii}other{Evaluare: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> de recenzii}}</translation>
 <translation id="7885132941432959125">Mută fila spre dreapta</translation>
-<translation id="788914896430720926">Dorești să păstrezi secțiunea inactivă ordonată?</translation>
 <translation id="7939917283308035850">Nu s-a selectat <ph name="COLOR_NAME"/></translation>
 <translation id="7942349550061667556">Roșu</translation>
 <translation id="7961015016161918242">Niciodată</translation>
@@ -184,7 +192,6 @@
 <translation id="8029301326595421733">Informațiile despre magazin deschise la înălțimea completă</translation>
 <translation id="8053770993984522566">Lista de grupuri de file, deschisă la jumătate din înălțime</translation>
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{Adaugă fila în grup}few{Adaugă filele în grup}other{Adaugă filele în grup}}</translation>
-<translation id="8076492880354921740">File</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{Extinde grupul de file <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_ONE"/> filă, culoarea <ph name="COLOR_NAME"/>.}few{Extinde grupul de file <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_MANY"/> file, culoarea <ph name="COLOR_NAME"/>.}other{Extinde grupul de file <ph name="TITLE_OF_GROUP"/> cu <ph name="TABS_COUNT_MANY"/> de file, culoarea <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="8205266828577616993">Mută fila mai sus</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{S-a actualizat acum <ph name="NUM_MINS_ONE"/> minut}few{S-a actualizat acum <ph name="NUM_MINS_MANY"/> minute}other{S-a actualizat acum <ph name="NUM_MINS_MANY"/> de minute}}</translation>

@@ -12,6 +12,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="1882093842020941518">Hãy chia sẻ lý do bạn cho phép cookie của bên thứ ba để giúp chúng tôi cải thiện Brave. <ph name="BEGIN_LINK"/>Gửi phản hồi<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Bạn có thể yêu cầu xem phiên bản trang web dành cho máy tính</translation>
 <translation id="9183227624343766158">Sử dụng Brave theo mặc định</translation>
+<translation id="1178015372320901893">Bảng các lối tắt của tôi ở dưới cùng</translation>
 <translation id="1178581264944972037">Tạm dừng</translation>
 <translation id="1181037720776840403">Xoá</translation>
 <translation id="1192844206376121885">Thao tác này sẽ xoá toàn bộ dữ liệu và cookie do <ph name="ORIGIN"/> lưu trữ.</translation>
@@ -60,6 +61,8 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="1703666494654169921">Không cho phép trang web sử dụng dữ liệu hoặc thiết bị thực tế ảo của bạn</translation>
 <translation id="1704230497453185209">Không cho phép trang web phát âm thanh</translation>
 <translation id="1717218214683051432">Cảm biến chuyển động</translation>
+<translation id="1717996979683942279">Khi bạn bật chế độ này, các trang web có thể yêu cầu quản lý các cửa sổ trên tất cả màn hình của bạn. Khi bạn tắt chế độ này, các trang web không thể quản lý các cửa sổ trên tất cả màn hình của bạn.</translation>
+<translation id="1738912554587725807">Bảng bộ sưu tập giao diện trang thẻ mới ở dưới cùng</translation>
 <translation id="1743802530341753419">Hỏi trước khi cho phép trang web kết nối với một thiết bị (khuyên dùng)</translation>
 <translation id="1777815584158991902">Bảng nguồn cấp dữ liệu Khám phá ở dưới cùng</translation>
 <translation id="1779089405699405702">Bộ giải mã hình ảnh</translation>
@@ -68,11 +71,13 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="7401204338724669842">Mẹo dùng Brave</translation>
 <translation id="6704867734300244173">Khi bạn bật công cụ này, Brave sẽ hoạt động nhanh hơn và các tính năng sử dụng JavaScript sẽ hoạt động như dự kiến. Khi bạn tắt công cụ này, hiệu suất sẽ giảm nhưng V8 có thể chống lại các cuộc tấn công tốt hơn.</translation>
 <translation id="1818308510395330587">Để cho phép <ph name="APP_NAME"/> sử dụng công nghệ thực tế tăng cường (AR), hãy bật cả máy ảnh trong phần <ph name="BEGIN_LINK"/>Cài đặt Android<ph name="END_LINK"/>.</translation>
+<translation id="1881806992065048905">Bảng giao diện trang thẻ mới ở dưới cùng</translation>
 <translation id="1887786770086287077">Đã tắt quyền truy cập vị trí đối với thiết bị này. Hãy bật trong <ph name="BEGIN_LINK"/>Cài đặt Android<ph name="END_LINK"/>.</translation>
 <translation id="1906181697255754968">Các trang web thường truy cập vào tệp và thư mục trên thiết bị của bạn để áp dụng những tính năng như tự động lưu công việc</translation>
 <translation id="1915307458270490472">Kết thúc</translation>
 <translation id="1919950603503897840">Chọn mục liên hệ</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/<ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="1939059826036755332">Chế độ hình trong hình tự động</translation>
 <translation id="1954597385941141174">Các trang web có thể yêu cầu kết nối với thiết bị USB</translation>
 <translation id="1979673356880165407">Tăng hoặc giảm kích thước văn bản và hình ảnh cho tất cả trang web bạn truy cập</translation>
 <translation id="1984937141057606926">Được cho phép, ngoại trừ cookie của bên thứ ba</translation>
@@ -116,6 +121,8 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{Đã cho phép <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> và <ph name="NUM_MORE"/> quyền khác}other{Đã cho phép <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> và <ph name="NUM_MORE"/> quyền khác}}</translation>
 <translation id="2410940059315936967">Trang web bạn truy cập có thể nhúng nội dung từ các trang web khác, chẳng hạn như hình ảnh, quảng cáo và văn bản. Cookie do các trang web khác đặt được gọi là cookie của bên thứ ba.</translation>
+<translation id="2411116727035790889">Bật lối tắt</translation>
+<translation id="2433507940547922241">Hình thức</translation>
 <translation id="2434158240863470628">Quá trình tải xuống hoàn tất <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="2438120137003069591">Bạn đã tạm thời cho phép trang web này sử dụng cookie của bên thứ ba. Điều này sẽ làm giảm khả năng bảo vệ khi duyệt web nhưng sẽ tăng khả năng các tính năng của trang web hoạt động như dự kiến. <ph name="BEGIN_LINK"/>Gửi phản hồi<ph name="END_LINK"/></translation>
 <translation id="2442870161001914531">Luôn yêu cầu trang web dành cho máy tính</translation>
@@ -151,6 +158,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="2789132527330338807">Các trang web có thể yêu cầu tạo bản đồ 3D của các khu vực xung quanh bạn hoặc theo dõi thông tin vị trí của camera</translation>
 <translation id="2790501146643349491">Khi bạn bật tuỳ chọn này, các trang web đã đóng gần đây có thể hoàn tất quá trình gửi và nhận dữ liệu. Khi bạn tắt tuỳ chọn này, các trang web đã đóng gần đây không thể hoàn tất quá trình gửi hoặc nhận dữ liệu.</translation>
 <translation id="2795716239552913152">Các trang web thường sử dụng thông tin vị trí của bạn cho các tính năng hoặc thông tin liên quan, như tin tức địa phương hoặc cửa hàng lân cận</translation>
+<translation id="2800760947029405028">Tải ảnh lên</translation>
 <translation id="2802908157808345702">Không cho phép các trang web gửi cửa sổ bật lên và dùng lệnh chuyển hướng</translation>
 <translation id="5801312978029568377">Giờ đây, Brave sẽ hiển thị các thẻ gần đây trong danh sách ứng dụng và kết quả tìm kiếm trên thiết bị. Bạn có thể tắt tính năng này bất cứ lúc nào trong phần cài đặt của Brave.</translation>
 <translation id="2822354292072154809">Bạn có chắc muốn đặt lại tất cả các quyền của trang web cho <ph name="CHOSEN_OBJECT_NAME"/> không?</translation>
@@ -166,6 +174,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="2968755619301702150">Trình xem chứng chỉ</translation>
 <translation id="2979365474350987274">Cookie của bên thứ ba bị hạn chế</translation>
 <translation id="2990583317361835189">Không cho phép trang web sử dụng cảm biến chuyển động</translation>
+<translation id="3004438526346162184">Các trang web có thể dùng tính năng này để quản lý các cửa sổ trên tất cả màn hình của bạn</translation>
 <translation id="3008272652534848354">Đặt lại quyền</translation>
 <translation id="301521992641321250">Tự động bị chặn</translation>
 <translation id="3064871050034234884">Các trang web có thể phát âm thanh</translation>
@@ -178,6 +187,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="3114012059975132928">Trình phát video</translation>
 <translation id="3115898365077584848">Hiển thị thông tin</translation>
 <translation id="3123473560110926937">Đã chặn trên một số trang web</translation>
+<translation id="3132996321662585180">Làm mới hằng ngày</translation>
 <translation id="3143754809889689516">Phát từ đầu</translation>
 <translation id="3162899666601560689">Các trang web có thể dùng cookie để cải thiện trải nghiệm duyệt web của bạn, chẳng hạn như để duy trì trạng thái đăng nhập hoặc ghi nhớ các mặt hàng có trong giỏ hàng</translation>
 <translation id="3165022941318558018">Cho phép một trang web dùng cookie của bên thứ ba</translation>
@@ -215,6 +225,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="3600792891314830896">Tắt tiếng trên các trang web phát âm thanh</translation>
 <translation id="3602290021589620013">Xem trước</translation>
 <translation id="3611658447322220736">Các trang web đã đóng gần đây có thể hoàn tất thao tác gửi và nhận dữ liệu</translation>
+<translation id="3619294456800709762">Các trang web có thể tự động chuyển sang chế độ hình trong hình</translation>
 <translation id="3628308229821498208">Cụm từ tìm kiếm đề xuất</translation>
 <translation id="3641456520301071208">Các trang web có thể yêu cầu thông tin vị trí của bạn</translation>
 <translation id="3658847490588580244">Bảng dưới cùng của trình duyệt mặc định</translation>
@@ -234,6 +245,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="3779154269823594982">Đổi mật khẩu</translation>
 <translation id="3797520601150691162">Không áp dụng giao diện tối cho một trang web cụ thể</translation>
 <translation id="3803367742635802571">Các trang web bạn truy cập có thể không còn hoạt động như dự kiến</translation>
+<translation id="8338457030135232378">Màu Brave</translation>
 <translation id="381841723434055211">Số điện thoại</translation>
 <translation id="3826050100957962900">Đăng nhập qua bên thứ ba</translation>
 <translation id="3835233591525155343">Hoạt động dùng thiết bị của bạn</translation>
@@ -261,6 +273,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="4031179711345676612">Cho phép micrô</translation>
 <translation id="4046123991198612571">Bản nhạc tiếp theo</translation>
 <translation id="4077310749977440510">Các trang web thường đọc bảng nhớ tạm để áp dụng những tính năng như giữ nguyên định dạng của văn bản mà bạn đã sao chép</translation>
+<translation id="4082080074595021446">Không cho phép các trường hợp ngoại lệ đối với một số trang web cụ thể vì thiết bị Android không có đủ RAM.</translation>
 <translation id="4149890623864272035">Bạn có chắc chắn muốn xoá toàn bộ dữ liệu cục bộ, kể cả cookie, và đặt lại mọi quyền cho trang web này không?</translation>
 <translation id="4149994727733219643">Chế độ xem đơn giản cho trang web</translation>
 <translation id="4151930093518524179">Thu phóng mặc định</translation>
@@ -317,6 +330,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="4882919381756638075">Các trang web thường sử dụng micrô cho các tính năng giao tiếp như trò chuyện video</translation>
 <translation id="4883854917563148705">Bạn không thể đặt lại các tùy chọn cài đặt được quản lý</translation>
 <translation id="4887024562049524730">Hỏi ý bạn trước khi cho phép các trang web sử dụng dữ liệu và thiết bị thực tế ảo của bạn (khuyên dùng)</translation>
+<translation id="4934780484581617878">Quản lý cửa sổ</translation>
 <translation id="4936863036653376783">Bạn sẽ thấy các nhóm trong mục nhóm thẻ trên tất cả các thiết bị của bạn</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> không được sử dụng thông tin của bạn</translation>
 <translation id="4953688446973710931">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu tự động tải nhiều tệp xuống. Khi bạn tắt tuỳ chọn này, các trang web không thể tự động tải nhiều tệp xuống.</translation>
@@ -340,6 +354,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="5099358668261120049">Thao tác này sẽ xoá toàn bộ dữ liệu và cookie do <ph name="ORIGIN"/> hoặc ứng dụng liên quan trên Màn hình chính lưu trữ.</translation>
 <translation id="5100237604440890931">Đã thu gọn - nhấp để mở rộng.</translation>
 <translation id="7143053178237996319">Bạn có thể dùng Brave bất cứ khi nào nhấn vào các đường liên kết trong thư/tin nhắn, tài liệu và các ứng dụng khác</translation>
+<translation id="512938610812707830">Bảng bộ sưu tập giao diện trang thẻ mới ở dưới cùng đã mở toàn bộ</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Ưu đãi giảm giá trên các thẻ đang mở}other{Ưu đãi giảm giá trên các thẻ đang mở}}</translation>
 <translation id="5186036860380548585">Tùy chọn này ở gần đầu màn hình</translation>
 <translation id="5197729504361054390">Những người liên hệ bạn chọn sẽ được chia sẻ với <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
@@ -393,6 +408,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="5750869797196646528">Theo dõi cử chỉ tay</translation>
 <translation id="5753570386948603678">Xoá khỏi nhật ký</translation>
 <translation id="5771720122942595109">Đã chặn: <ph name="PERMISSION_1"/></translation>
+<translation id="5801457289562671820">Do tổ chức của bạn đề xuất</translation>
 <translation id="5804241973901381774">Quyền</translation>
 <translation id="5822675474983796325">Bảng tuỳ chỉnh trang thẻ mới của bạn ở dưới cùng đã mở trên toàn màn hình</translation>
 <translation id="5833899990800318936">Không cho phép các trang web sử dụng JavaScript</translation>
@@ -418,13 +434,16 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="5975083100439434680">Thu nhỏ</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> – <ph name="WARNING_MESSAGE"/></translation>
 <translation id="5998071268779572583">Bật nguồn cấp dữ liệu khám phá</translation>
+<translation id="6012967556075291653">Lối tắt đã ghim</translation>
 <translation id="6015775454662021376">Kiểm soát quyền truy cập của trang web này vào thiết bị của bạn</translation>
 <translation id="6040143037577758943">Đóng</translation>
 <translation id="6042308850641462728">Xem thêm</translation>
 <translation id="6064125863973209585">Đã hoàn tất quá trình tải xuống</translation>
 <translation id="6071501408666570960">Bạn có thể bị đăng xuất khỏi trang web này</translation>
 <translation id="6085954183010297841">Xoá quyền chỉnh sửa tệp? <ph name="FILE"/></translation>
+<translation id="6104860901391833523">Khi bạn bật lựa chọn này, các trang web có thể tự động chuyển sang chế độ hình trong hình. Khi bạn tắt lựa chọn này, các trang web không thể tự động chuyển sang chế độ hình trong hình.</translation>
 <translation id="6120483543004435978">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu được biết khi nào bạn đang sử dụng thiết bị. Khi bạn tắt tuỳ chọn này, các trang web sẽ không được biết khi nào bạn đang sử dụng thiết bị.</translation>
+<translation id="615886654739818377">Không cho phép các trang web quản lý các cửa sổ trên tất cả màn hình của bạn</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="6171020522141473435">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu sử dụng thiết bị Bluetooth. Khi bạn tắt tuỳ chọn này, các trang web không thể sử dụng thiết bị Bluetooth.</translation>
 <translation id="6177128806592000436">Kết nối của bạn tới trang web này không an toàn</translation>
@@ -440,12 +459,14 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="6262191102408817757">Dựa trên thẻ gần đây nhất của bạn</translation>
 <translation id="6262279340360821358">Đã chặn <ph name="PERMISSION_1"/> và <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Các trang web có thể xin phép gửi thông báo</translation>
+<translation id="6278428485366576908">Chủ đề</translation>
 <translation id="6295158916970320988">Tất cả các trang web</translation>
 <translation id="6320088164292336938">Rung</translation>
 <translation id="6367753977865761591">Cho phép đăng nhập qua bên thứ ba cho một trang web cụ thể.</translation>
 <translation id="6398765197997659313">Thoát khỏi chế độ toàn màn hình</translation>
 <translation id="640163077447496506">Hết hạn hôm nay</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
+<translation id="6413980879783180524">Bộ sưu tập chủ đề</translation>
 <translation id="6439114592976064011">Không cho các trang web sử dụng dữ liệu và thiết bị thực tế ảo của bạn</translation>
 <translation id="6447842834002726250">Cookie</translation>
 <translation id="6452138246455930388">Có ưu đãi giảm giá trên một thẻ đang mở, từ <ph name="OLD_PRICE"/> xuống còn <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -457,6 +478,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="6545864417968258051">Quét tìm Bluetooth</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{Đã chặn <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> và <ph name="NUM_MORE"/> quyền khác}other{Đã chặn <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> và <ph name="NUM_MORE"/> quyền khác}}</translation>
 <translation id="6554732001434021288">Lần truy cập gần đây nhất: <ph name="NUM_DAYS"/> ngày trước</translation>
+<translation id="6557290421156335491">Các lối tắt của tôi</translation>
 <translation id="656065428026159829">Xem thêm</translation>
 <translation id="6561560012278703671">Dùng thông báo nhẹ nhàng hơn (chặn thông báo bật lên làm phiền bạn)</translation>
 <translation id="6565144332292237355">Các trang web có thể sử dụng tính năng này để tìm và kết nối với thiết bị bất kỳ trên mạng cục bộ của bạn</translation>
@@ -543,11 +565,13 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="7681597159868843240">Các trang web thường sử dụng cảm biến chuyển động của thiết bị cho các tính năng như thực tế ảo hoặc theo dõi hoạt động thể dục</translation>
 <translation id="5455732060086060613">Ẩn thẻ mẹo dùng Brave</translation>
 <translation id="7719367874908701697">Thu phóng trang</translation>
+<translation id="775043444390799886">Thu hồi quyền</translation>
 <translation id="7759147511335618829">Lập trình lại và điều khiển thiết bị MIDI</translation>
 <translation id="7781829728241885113">Hôm qua</translation>
 <translation id="7791543448312431591">Thêm</translation>
 <translation id="780301667611848630">Không, cảm ơn</translation>
 <translation id="7804248752222191302">Một trang web đang sử dụng máy ảnh của bạn</translation>
+<translation id="7805832099057502789">Bảng giao diện trang thẻ mới ở dưới cùng đã mở toàn bộ</translation>
 <translation id="6720480757902085971">Do Brave cung cấp</translation>
 <translation id="7815680994978050279">Tải xuống nguy hiểm đã chặn</translation>
 <translation id="7835852323729233924">Phát nội dung nghe nhìn</translation>
@@ -566,9 +590,11 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="802154636333426148">Tải xuống không thành công</translation>
 <translation id="8042586301629853791">Sắp xếp theo:</translation>
 <translation id="8051193500142930381">Các tính năng cần sử dụng máy ảnh sẽ không hoạt động</translation>
+<translation id="2495032782748793764">Brave mặc định</translation>
 <translation id="8067883171444229417">Phát video</translation>
 <translation id="8068648041423924542">Không thể chọn chứng chỉ.</translation>
 <translation id="8077120325605624147">Mọi trang web bạn truy cập đều có thể hiện quảng cáo cho bạn</translation>
+<translation id="80798452873915119">Các trang web có thể yêu cầu quản lý các cửa sổ trên tất cả màn hình của bạn</translation>
 <translation id="6405300764336705484">Nội dung này đến từ <ph name="DOMAIN_NAME"/>, do Brave phân phối.</translation>
 <translation id="8088603949666785339">Xem thêm lựa chọn khác trong <ph name="BANNER_TITLE"/></translation>
 <translation id="8112925981674547014">Xem các thẻ trong danh sách ứng dụng</translation>
@@ -577,12 +603,12 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="8117244575099414087">Khi bạn bật tuỳ chọn này, các trang web có thể sử dụng cảm biến trên thiết bị của bạn. Khi bạn tắt tuỳ chọn này, các trang web không thể sử dụng cảm biến.</translation>
 <translation id="813082847718468539">Xem thông tin trang web</translation>
 <translation id="8131740175452115882">Xác nhận</translation>
+<translation id="8163152278172770963">Không cho phép các trang web tự động chuyển sang chế độ hình trong hình</translation>
 <translation id="8168435359814927499">Nội dung</translation>
 <translation id="818487310457576362">Kéo từ bên cạnh màn hình để thoát khỏi chế độ toàn màn hình.</translation>
 <translation id="8186479265534291036">Trang web không hoạt động? Bạn đã chặn cookie của bên thứ ba</translation>
 <translation id="8197286292360124385">Đã cho phép <ph name="PERMISSION_1"/></translation>
 <translation id="8200772114523450471">Tiếp tục</translation>
-<translation id="8206354486702514201">Cài đặt này được quản trị viên của bạn thực thi.</translation>
 <translation id="8211406090763984747">Kết nối này an toàn</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8249310407154411074">Chuyển lên trên cùng</translation>
@@ -593,6 +619,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="8324158725704657629">Không hỏi lại</translation>
 <translation id="8362795839483915693">Bạn có thể phóng to hoặc thu nhỏ các trang web mà bạn truy cập</translation>
 <translation id="8372893542064058268">Cho phép Đồng bộ hóa dưới nền cho trang web cụ thể.</translation>
+<translation id="8378714024927312812">Do tổ chức của bạn quản lý</translation>
 <translation id="83792324527827022">Một trang web đang sử dụng máy ảnh và micrô của bạn</translation>
 <translation id="8380167699614421159">Trang web này hiển thị quảng cáo xâm nhập hoặc quảng cáo gây hiểu nhầm</translation>
 <translation id="8394832520002899662">Nhấn để quay lại trang web</translation>
@@ -618,6 +645,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="8549127125482561383">Cách hiển thị yêu cầu</translation>
 <translation id="4273503381657013953">Giờ bạn có thể dùng Brave mỗi khi duyệt web hoặc nhấn vào liên kết trong thư/tin nhắn, tài liệu, v.v.</translation>
 <translation id="857943718398505171">Được phép (nên dùng)</translation>
+<translation id="8580511488901768832">Bảng các lối tắt của tôi ở dưới cùng đã mở toàn bộ</translation>
 <translation id="8593422116412089302">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu sử dụng thông tin mà trang web đã lưu về bạn. Khi bạn tắt tuỳ chọn này, các trang web không thể yêu cầu sử dụng thông tin mà trang web đã lưu về bạn.</translation>
 <translation id="8609465669617005112">Di chuyển lên</translation>
 <translation id="8617611086246832542">Khi bạn bật tuỳ chọn này, các trang web sẽ hiển thị ở chế độ xem trên máy tính để bàn. Khi bạn tắt tuỳ chọn này, các trang web sẽ hiển thị ở chế độ xem trên thiết bị di động.</translation>
@@ -667,6 +695,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="913657688200966289">Bật quyền cho <ph name="APP_NAME"/> trong phần <ph name="BEGIN_LINK"/>Cài đặt Android<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Cho phép thông báo</translation>
 <translation id="9138217887606523162">Mức thu phóng hiện tại là <ph name="ZOOM_LEVEL"/> %%</translation>
+<translation id="915112772806845021">Các trang web dùng tính năng này để tự động chuyển sang dạng xem hình trong hình. Nhờ đó, bạn vừa có thể xem tiếp video, vừa thoải mái dùng màn hình để thực hiện các tác vụ khác.</translation>
 <translation id="7359422048569205930">Cho phép Brave hiển thị các thẻ gần đây trong danh sách ứng dụng và kết quả tìm kiếm trên thiết bị. Bạn có thể tắt tính năng này bất cứ lúc nào trong phần cài đặt của Brave.</translation>
 <translation id="9162462602695099906">Đây là trang nguy hiểm</translation>
 <translation id="9182556968660520230">Không cho phép trang web phát nội dung được bảo vệ</translation>

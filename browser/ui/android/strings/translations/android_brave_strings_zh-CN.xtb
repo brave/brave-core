@@ -421,8 +421,8 @@
 <translation id="8748471354357836070">了解更多 / 退出选择</translation>
 <translation id="3171669670217312786">背景圖片</translation>
 <translation id="8522669544471808198">显示背景图片</translation>
-<translation id="3870475560794762985">显示赞助图片</translation>
-<translation id="6937724381960478525">进一步了解赞助图片</translation>
+<translation id="6258554626602400736">显示新标签页广告</translation>
+<translation id="9001530744369687550">详细了解新标签页广告</translation>
 <translation id="8793108040181436796">小工具</translation>
 <translation id="8643377320501056697">显示热门网站</translation>
 <translation id="7275773481201277457">显示 Brave 统计信息</translation>
@@ -500,6 +500,8 @@
 <translation id="7616645803364270729">电子邮箱、Twitter 等</translation>
 <translation id="5299848999918506028">谢谢！</translation>
 <translation id="76550953340008122">感谢您让 Brave 的开发人员知道此站点出了问题。我们会尽力解决问题！</translation>
+<translation id="3037432377946455872">您遇到的主要问题是什么？</translation>
+<translation id="8731661215617360873">选择一个选项</translation>
 <translation id="650318023204990401">高级控制</translation>
 <translation id="7205939464631857223">清除所有已屏蔽的元素</translation>
 <translation id="5370478469168390143">在线保存数据</translation>
@@ -796,6 +798,7 @@
 <translation id="1426320910664514906">Gas Limit</translation>
 <translation id="6389441740143786465">禁用分享库</translation>
 <translation id="9065203028668620118">编辑</translation>
+<translation id="473775607612524610">更新</translation>
 <translation id="479795390141144417">账户更新失败。</translation>
 <translation id="8084782383392198011">账户名不能为空。</translation>
 <translation id="5045550434625856497">密码不正确</translation>
@@ -1226,4 +1229,41 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="2735247450315842119">允许在无痕标签页中截图</translation>
 <translation id="8420414929552321089">如果允许，在打开多个应用程序时，无痕标签页也将可见。</translation>
 <translation id="7956713633345437162">移动书签</translation>
+<translation id="1943432128510653496">保存密码</translation>
+<translation id="2100273922101894616">自动登录</translation>
+<translation id="363596933471559332">使用存储的凭据自动登录网站。当该功能处于停用状态时，您每次都要通过验证才能登录网站。</translation>
+<translation id="8562452229998620586">已保存的密码将显示在这里。</translation>
+<translation id="1303339473099049190">找不到该密码。请检查拼写，然后重试。</translation>
+<translation id="2259659629660284697">导出密码…</translation>
+<translation id="133012818630824069">导出存储在 Brave 中的密码</translation>
+<translation id="2321086116217818302">正在准备密码…</translation>
+<translation id="5139940364318403933">了解如何使用 Brave 云端硬盘</translation>
+<translation id="729975465115245577">您的设备上没有可以存储密码文件的应用。</translation>
+<translation id="1129510026454351943">错误详情：<ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">需解锁才能导出您的密码</translation>
+<translation id="5245792669563792664">密码</translation>
+<translation id="10614374240317010">一律不保存</translation>
+<translation id="1571304935088121812">复制用户名</translation>
+<translation id="5005498671520578047">复制密码</translation>
+<translation id="2435457462613246316">显示密码</translation>
+<translation id="1513858653616922153">删除密码</translation>
+<translation id="543338862236136125">修改密码</translation>
+<translation id="4565377596337484307">隐藏密码</translation>
+<translation id="8523928698583292556">删除存储的密码</translation>
+<translation id="5433691172869980887">已复制用户名</translation>
+<translation id="2625189173221582860">已复制密码</translation>
+<translation id="8084114998886531721">保存的密码</translation>
+<translation id="6590680911007613645">请确保您要保存的密码与您用来登录 <ph name="SITE"/> 的密码相符</translation>
+<translation id="1492417797159476138">您已为此网站保存该用户名</translation>
+<translation id="5454166040603940656">提供方：<ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">删除密码？</translation>
+<translation id="7808889146555843082">删除此密码不会删除您在 <ph name="SITE"/> 上的账号。如需保护您在 <ph name="SITE"/> 上的账号免遭他人盗用，请更改您的密码或删除该账号。</translation>
+<translation id="2870560284913253234">网站</translation>
+<translation id="8503813439785031346">用户名</translation>
+<translation id="2278052315791335171">删除此密码不会删除您在 <ph name="SITE"/> 上的账号</translation>
+<translation id="6891726759199484455">需解锁才能复制您的密码</translation>
+<translation id="5515439363601853141">需解锁才能查看您的密码</translation>
+<translation id="1724977129262658800">解锁屏幕后才能修改您的密码</translation>
+<translation id="5780792035410621042">若要复制密码，请先在设备上设置屏幕锁定</translation>
+<translation id="7986497153528221272">若要查看密码，请先在设备上设置屏幕锁定</translation>
 </translationbundle>

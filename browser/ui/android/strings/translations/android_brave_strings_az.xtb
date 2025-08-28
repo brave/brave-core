@@ -11,6 +11,12 @@
 <translation id="7335142069363686805">İndi qiymətləndir</translation>
 <translation id="6681362094306959654">Brave-i sevdiniz?</translation>
 <translation id="5488843227043643519">Play Store-da qiymətləndirmək istəyirsiniz?</translation>
+<translation id="2233004324252915283">YouTube-un tövsiyə etdiyi məzmunu blokla</translation>
+<translation id="1005372663692637999">youtube.com saytında növbəti və yekun kart elementlərini bloklayır.</translation>
+<translation id="5152595963250646670">YouTube-da diqqət yayındıran elementləri blokla</translation>
+<translation id="2998960761270772157">youtube.com saytında "daxil ol", menyu, şərhlər və video məlumatları elementlərini bloklayır.</translation>
+<translation id="8531835121131500698">YouTube Shorts-u blokla</translation>
+<translation id="2167271714269158912">Ana səhifədən, önə çıxanlar səhifəsindən və youtube.com saytındakı axtarış nəticələrindən Shorts-u bloklayır.</translation>
 <translation id="8617525558807213034">Məxfi tabulyasiyaları avtomatik doldurun</translation>
 <translation id="8685431198160039193">Yaddaşda saxlanmış məlumatlar məxfi tabulyasiyalarda avtomatik doldurula bilər</translation>
 <translation id="6583902294974160967">Dəstək</translation>
@@ -23,15 +29,20 @@
 <translation id="7823038307453615214">Brave Xəbərləri göstər</translation>
 <translation id="1654539412343893324">Verilənləriniz haqqında ətraflı məlumat</translation>
 <translation id="2448893613530489637">İzləyicilərin &amp; reklamların yüklənməsinin və veb-səhifələrdə göstərilməsinin qarşısını alır</translation>
+<translation id="4174337572777167894">Veb Kəşfetmə Layihəsi</translation>
+<translation id="8659271182272561965">Brave Axtarışdan daha təkmil formada istifadə etmək üçün internetdə anonim axtarış &amp; verilənlərinizlə buna dəstək olun.</translation>
 <translation id="933652931229970927">Diaqnostika hesabatlarının avtomatik göndərilməsi</translation>
 <translation id="7977176350719484850">Qənaət edilmiş\ntəxmini verilənlər</translation>
 <translation id="9008534313521214777">Qənaət edilmiş\ntəxmini vaxt</translation>
 <translation id="8347743943525229984">Brave sorğularına icazə ver</translation>
 <translation id="6022939994702081659">Brave-ə keçidləri yeni tab-vərəqə səhifəsində məxfi sorğulara göstərməyə icazə verir. Sorğular daha yaxşı xüsusiyyətlər yaratmağımıza və brauzer əsaslı reklam kampaniyalarının effektivliyini ölçməyimizə kömək edir.</translation>
 <translation id="7746496306508543965">Brave sorğuları haqqında ətraflı məlumat</translation>
+<translation id="1690924763769415936">Arxa fonda aç</translation>
 <translation id="6332924730165919598">Bütün tabulyasiyalar bağlandıqda Brave də bağlanır</translation>
+<translation id="8308305244351876417">Brave-də və ya digər bir tətbiqdə yeni bir tab-vərəqəyə keçdikdə, yaxud da cihaz ekranı sönülü olduqda audionun açıq qalmasını təmin edir.</translation>
 <translation id="4150201353443180367">Göstər</translation>
 <translation id="4275663329226226506">Media</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
 <translation id="2433507940547922241">Görünüş</translation>
 <translation id="4117451092682672487">Məxfilik. Sadə və asan.</translation>
 <translation id="7909375417585209817">Brave standart olaraq təyin edildikdə, toxunduğunuz hər keçid Brave-in məxfiliyin qorunması funksiyası ilə açılır.</translation>
@@ -39,6 +50,10 @@
 <translation id="5148943178722443958">Brave-i təkmilləşdirməyə kömək edin.</translation>
 <translation id="6718362830686703942">Sistem qəzası və ya donmasına məruz qaldıqda diaqnostika hesabatları göndərin.</translation>
 <translation id="8616157231067364693">Brave istifadəçilərinin hansı funksiyalardan istifadə etdiyi ilə əlaqəli məxfi və anonim məhsul məlumatları paylaşın.</translation>
+<translation id="7044431516245362795">İndeksi artırmağa və axtarış nəticələrini təkmilləşdirməyə kömək etmək üçün Veb Kəşfetmə Layihəsində iştirak edin. <ph name="LEARN_MORE_START"/>Ətraflı məlumat.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">Əlbəttə, kömək edərəm</translation>
+<translation id="3545804467215833536">Brave Təhlükəsizlik Qalxanlarına baxmaq üçün toxunun</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklamlar &amp; izləyicilər bloklandı</translation>
 <translation id="6165508094623778733">Ətraflı məlumat</translation>
 <translation id="5806601733251372221">Brave Qalxanları</translation>
 <translation id="3333887201479867589">Brave Mükafatları</translation>
@@ -47,6 +62,9 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave Xəbərlər</translation>
 <translation id="8428213095426709021">Parametrlər</translation>
+<translation id="348794064910142198">Brave Sinx müxtəlif cihazlarınızda Brave Brauzerləri arasında əlfəcin verilənlərini məxfi şəkildə sinxronlaşdırmaq imkanı verir.\n\nBunun üçün sadəcə sinxronizasiya zəncirində yaratdığınız kodu başqa bir cihazda skan etməyiniz kifayətdir. Həmçinin, yeni sinxronizasiya zənciri də yarada bilərsiniz.</translation>
+<translation id="7745082336226088126">Sinxronizasiya kodunu skanlayın və ya daxil edin</translation>
+<translation id="1602067095281698985">Yeni bir sinxronizasiya zənciri yaradın</translation>
 <translation id="2149973817440762519">Əlfəcini redaktə et</translation>
 <translation id="1426410128494586442">Bəli</translation>
 <translation id="6336451774241870485">Yeni məxfi tabulyasiya</translation>
@@ -115,7 +133,9 @@
 <translation id="6053992191006521518">PULSUZ versiyanı sınaqdan keçir</translation>
 <translation id="5903391101107992067">7 günlük pulsuz versiyanı sınaqdan keçirin</translation>
 <translation id="8681480718817027245">Abunəlik</translation>
+<translation id="2304783958703511257">Təkmil parametrlər</translation>
 <translation id="9065203028668620118">Redaktə et</translation>
+<translation id="473775607612524610">Güncəlləşdirin</translation>
 <translation id="1450735350187803276">Bu ay görülən reklamlar</translation>
 <translation id="5233638681132016545">Yeni tabulyasiya</translation>
 <translation id="5039804452771397117">İcazə ver</translation>
@@ -129,7 +149,9 @@
 <translation id="6278643716658443228">Mükafat parametrləri</translation>
 <translation id="4272136334824111854">Bu ay siz, Brave Mükafatlar tərəfindən dəstəklənən <ph name="CREATOR_COUNT"/> yaradıcı saytına baş çəkmisiniz</translation>
 <translation id="1179407411385015942">Leo brauzerin içində yaradılmış Sİ dəstəkli ağıllı köməkçidir</translation>
+<translation id="5781842473834867765">Söhbət tarixçəmi yaddaşda saxla</translation>
 <translation id="4109670531935487117">Ünvan panelində avtomatik tamamlama təkliflərini göstər</translation>
+<translation id="6106701981952170121">Leo Sİ ilə olan bütün söhbət verilənlərini sil</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Bir il</translation>
 <translation id="2985392169397572983">ƏN YAXŞI DƏYƏR</translation>
@@ -148,4 +170,40 @@
 <translation id="4071849832011229600">Standart model</translation>
 <translation id="7557539689487606886">Premiuma keç</translation>
 <translation id="3488199663160411179">ad</translation>
+<translation id="1943432128510653496">Parolları yadda saxlayın</translation>
+<translation id="2100273922101894616">Hesaba avtomatik giriş</translation>
+<translation id="363596933471559332">Saxlanmış kredensialları istifadə edərək vebsaytlara avtomatik daxil olun. Funksiya deaktiv olanda sayta hər dəfə girdiyinizdə doğrulama tələb olunacaq.</translation>
+<translation id="8562452229998620586">Saxlanmış parollar burada görünəcək.</translation>
+<translation id="1303339473099049190">Həmin parolu tapmaq olmur. Yazılışı yoxlayıb, yenidən cəhd edin.</translation>
+<translation id="2259659629660284697">Parolları eksport edin...</translation>
+<translation id="133012818630824069">Brave'da saxlanılan parolları eksport edin</translation>
+<translation id="2321086116217818302">Parollar hazırlanır...</translation>
+<translation id="5139940364318403933">Brave Diskdən istifadə etməyi öyrənin</translation>
+<translation id="729975465115245577">Cihazda parollar faylını saxlamaq üçün tətbiq yoxdur.</translation>
+<translation id="1129510026454351943">Detallar: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Parolları eksport etmək üçün kiliddən çıxarın</translation>
+<translation id="10614374240317010">Heç vaxt saxlanılmır</translation>
+<translation id="1571304935088121812">İstifadəçi adını kopyalayın</translation>
+<translation id="5005498671520578047">Parolu kopyalayın</translation>
+<translation id="2435457462613246316">Parol görünsün</translation>
+<translation id="1513858653616922153">Parolu silin</translation>
+<translation id="543338862236136125">Parolu redaktə edin</translation>
+<translation id="4565377596337484307">Parolu gizlədin</translation>
+<translation id="8523928698583292556">Yadda saxlanmış parolu silin</translation>
+<translation id="5433691172869980887">İstifadəçi adı kopyalandı</translation>
+<translation id="2625189173221582860">Parol kopyalandı</translation>
+<translation id="8084114998886531721">Yadda saxlanmış parol</translation>
+<translation id="6590680911007613645">Yadda saxlanılan parolun <ph name="SITE"/> paroluna uyğun olduğuna əmin olun</translation>
+<translation id="1492417797159476138">Hazırda bu istifadəçi adını bu sayt üçün yadda saxlamısınız</translation>
+<translation id="5454166040603940656"><ph name="PROVIDER"/> ilə</translation>
+<translation id="686366188661646310">Parol silinsin?</translation>
+<translation id="7808889146555843082">Bu parolu sildikdə <ph name="SITE"/> saytında hesabınız silinməyəcək. Hesabınızı digərlərindən qorumaq üçün parolunuzu dəyişin, ya da onu <ph name="SITE"/> saytından silin.</translation>
+<translation id="2870560284913253234">Sayt</translation>
+<translation id="8503813439785031346">İstifadəçi adı</translation>
+<translation id="2278052315791335171">Bu parolu sildikdə <ph name="SITE"/> saytında hesabınız silinməyəcək</translation>
+<translation id="6891726759199484455">Parolu kopyalamaq üçün kiliddən çıxarın</translation>
+<translation id="5515439363601853141">Parola baxmaq üçün kiliddən çıxarın</translation>
+<translation id="1724977129262658800">Parolunuzu redaktə etmək üçün kiliddən çıxarın</translation>
+<translation id="5780792035410621042">Parolları kopyalamaq üçün öncə cihazınızda ekran kilidi ayarlayın</translation>
+<translation id="7986497153528221272">Parollara baxmaq üçün öncə cihazınızda ekran kilidi ayarlayın</translation>
 </translationbundle>
