@@ -14,12 +14,17 @@ import { BraveWallet } from '../../constants/types'
 import { useSafeWalletSelector } from './use-safe-selector'
 import { WalletSelectors } from '../selectors'
 
+// Utils
+import { isComponentInStorybook } from '../../utils/string-utils'
+
 // Hooks
 import {
   useGetIsSyncInProgressQuery,
   useClearChainTipStatusCacheMutation,
   useClearZCashBalanceCacheMutation,
 } from '../slices/api.slice'
+
+const isStorybook = isComponentInStorybook()
 
 export const useIsAccountSyncing = (accountId?: BraveWallet.AccountId) => {
   // State
@@ -44,6 +49,10 @@ export const useIsAccountSyncing = (accountId?: BraveWallet.AccountId) => {
 
   // Effects
   React.useEffect(() => {
+    // Unable to mock mojom for storybook
+    if (isStorybook) {
+      return
+    }
     const zcashWalletServiceObserver =
       new BraveWallet.ZCashWalletServiceObserverReceiver({
         onSyncStart: (id: BraveWallet.AccountId) => {

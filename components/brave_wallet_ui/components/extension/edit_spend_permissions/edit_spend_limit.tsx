@@ -134,7 +134,7 @@ export const EditSpendLimit = (props: Props) => {
             </LabelText>
             <Input
               ref={customAllowanceInputRef}
-              placeholder={proposedAllowance}
+              placeholder='0'
               type='number'
               value={customAllowance}
               onChange={onChangeCustomAllowance}

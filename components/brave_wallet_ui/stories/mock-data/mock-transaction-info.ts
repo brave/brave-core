@@ -12,7 +12,11 @@ import {
   StorybookTransactionTypes,
 } from '../../constants/types'
 import { deserializeTransaction } from '../../utils/model-serialization-utils'
-import { FileCoinTransactionInfo } from '../../utils/tx-utils'
+import {
+  FileCoinTransactionInfo,
+  ParsedTransaction,
+  parseTransactionWithPrices,
+} from '../../utils/tx-utils'
 
 // Mocks
 import {
@@ -21,12 +25,18 @@ import {
   mockFilecoinAccount,
   mockSolanaAccount,
   mockSolanaAccountInfo,
+  mockSpotPriceRegistry,
   mockZecAccount,
 } from '../../common/constants/mocks'
-import { mockOriginInfo } from './mock-origin-info'
+import { mockOriginInfo, mockUniswapOriginInfo } from './mock-origin-info'
 import { mockEthAccount } from './mock-wallet-accounts'
-import { mockBasicAttentionToken, mockUSDCoin } from './mock-asset-options'
+import {
+  mockBasicAttentionToken,
+  mockErc20TokensList,
+  mockUSDCoin,
+} from './mock-asset-options'
 import { LiFiExchangeProxy } from '../../common/constants/registry'
+import { mockEthMainnet } from './mock-networks'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
   fromAccountId: mockAccount.accountId,
@@ -39,7 +49,7 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
         nonce: '0x1',
         gasPrice: '100000000',
         gasLimit: '122665', // wei
-        to: '2',
+        to: mockBasicAttentionToken.contractAddress,
         value: '0x15ddf09c97b0000',
         data: Array.from(new Uint8Array(24)),
         signOnly: false,
@@ -64,7 +74,7 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
   createdTime: { microseconds: 0 },
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
-  originInfo: mockOriginInfo,
+  originInfo: mockUniswapOriginInfo,
   effectiveRecipient: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
   isRetriable: false,
   swapInfo: undefined,
@@ -833,3 +843,17 @@ export const mockSuggestedMaxPriorityFeeOptions: MaxPriorityFeeOptionType[] = [
     duration: '1 min',
   },
 ]
+
+export const mockParsedERC20ApprovalTransaction: ParsedTransaction =
+  parseTransactionWithPrices({
+    tx: mockedErc20ApprovalTransaction,
+    accounts: {
+      ids: [mockEthAccount.accountId.uniqueKey],
+      entities: { [mockEthAccount.accountId.uniqueKey]: mockEthAccount },
+    },
+    gasFee: '100',
+    spotPriceRegistry: mockSpotPriceRegistry,
+    tokensList: mockErc20TokensList,
+    transactionAccount: mockAccount,
+    transactionNetwork: mockEthMainnet,
+  })

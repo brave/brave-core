@@ -5,11 +5,17 @@
 
 import * as React from 'react'
 
+// Images
+import BraveIcon from '../../../assets/svg-icons/brave-icon.svg'
+
 // Types
 import { BraveWallet } from '../../../constants/types'
 
 // Utils
-import { isComponentInStorybook } from '../../../utils/string-utils'
+import {
+  getIsBraveWalletOrigin,
+  isComponentInStorybook,
+} from '../../../utils/string-utils'
 
 // Hooks
 import { useIsDAppVerified } from '../../../common/hooks/use_is_dapp_verified'
@@ -40,6 +46,8 @@ export const OriginInfoCard = (props: Props) => {
   const { isDAppVerified, dapp } = useIsDAppVerified(origin)
 
   // Computed
+  const isBraveWallet = getIsBraveWalletOrigin(origin)
+
   const dappIcon = dapp
     ? isStorybook
       ? dapp.logo
@@ -57,7 +65,7 @@ export const OriginInfoCard = (props: Props) => {
       gap='16px'
       justifyContent='flex-start'
     >
-      <FavIcon src={iconSrc} />
+      <FavIcon src={isBraveWallet ? BraveIcon : iconSrc} />
       <Column alignItems='flex-start'>
         <OriginName textColor='primary'>
           {dapp ? dapp.name : origin.eTldPlusOne}

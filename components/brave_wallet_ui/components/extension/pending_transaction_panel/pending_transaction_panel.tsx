@@ -148,7 +148,11 @@ export const PendingTransactionPanel: React.FC<Props> = ({
       || isFetchingSolanaTxSimulation
       || isLoadingSolanaTxSimulation)
   ) {
-    return <LoadingSimulation />
+    return (
+      <LongWrapper padding='0px'>
+        <LoadingSimulation />
+      </LongWrapper>
+    )
   }
 
   // Simulated EVM Transaction
@@ -207,22 +211,21 @@ export const PendingTransactionPanel: React.FC<Props> = ({
 
   // Defaults
   return (
-    <LongWrapper data-testid='confirm-tx-panel'>
-      <ConfirmTransactionPanel
-        showSimulationNotSupportedMessage={
-          isSimulationPermitted && !networkHasTxSimulationSupport
-        }
-        retrySimulation={
-          isSimulationPermitted && networkHasTxSimulationSupport
-            ? selectedPendingTxCoinType === CoinTypes.SOL
-              && hasSolanaSimulationError
-              ? retrySolanaSimulation
-              : hasEvmSimulationError
-                ? retryEvmSimulation
-                : undefined
-            : undefined
-        }
-      />
-    </LongWrapper>
+    <ConfirmTransactionPanel
+      data-testid='confirm-tx-panel'
+      showSimulationNotSupportedMessage={
+        isSimulationPermitted && !networkHasTxSimulationSupport
+      }
+      retrySimulation={
+        isSimulationPermitted && networkHasTxSimulationSupport
+          ? selectedPendingTxCoinType === CoinTypes.SOL
+            && hasSolanaSimulationError
+            ? retrySolanaSimulation
+            : hasEvmSimulationError
+              ? retryEvmSimulation
+              : undefined
+          : undefined
+      }
+    />
   )
 }

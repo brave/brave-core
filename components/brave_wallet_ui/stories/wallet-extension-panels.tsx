@@ -28,10 +28,7 @@ import {
 import { StyledExtensionWrapperLonger, StyledWelcomPanel } from './style'
 
 // mocks
-import {
-  mockTransactionInfo,
-  mockedErc20ApprovalTransaction,
-} from './mock-data/mock-transaction-info'
+import { mockTransactionInfo } from './mock-data/mock-transaction-info'
 import { mockAccounts } from './mock-data/mock-wallet-accounts'
 import { mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
@@ -392,33 +389,6 @@ export const _ConfirmTransaction = {
           <ConfirmTransactionPanel />
         </StyledExtensionWrapperLonger>
       </Provider>
-    )
-  },
-}
-
-export const _ConfirmErcApproveTransaction = {
-  render: () => {
-    return (
-      <StyledExtensionWrapperLonger>
-        <Provider
-          store={createMockStore(
-            {
-              uiStateOverride: {
-                selectedPendingTransactionId: mockedErc20ApprovalTransaction.id,
-              },
-            },
-            {
-              ...mockApiData,
-              transactionInfos: [
-                deserializeTransaction(mockedErc20ApprovalTransaction),
-                ...(mockApiData?.transactionInfos ?? []),
-              ],
-            },
-          )}
-        >
-          <ConfirmTransactionPanel />
-        </Provider>
-      </StyledExtensionWrapperLonger>
     )
   },
 }

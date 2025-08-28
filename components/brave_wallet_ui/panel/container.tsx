@@ -300,11 +300,9 @@ function Container() {
         width={390}
         height={650}
       >
-        <LongWrapper padding='0px'>
-          <PendingTransactionPanel
-            selectedPendingTransaction={selectedPendingTransaction}
-          />
-        </LongWrapper>
+        <PendingTransactionPanel
+          selectedPendingTransaction={selectedPendingTransaction}
+        />
       </PanelWrapper>
     )
   }
