@@ -128,16 +128,16 @@ bool IsAvatarButtonHideable(Profile* profile) {
 
 class BraveToolbarView::LayoutGuard {
  public:
-  explicit LayoutGuard(BraveLocationBarView* b) : bar(b) {}
+  explicit LayoutGuard(BraveLocationBarView* b) : bar_(b) {}
   ~LayoutGuard() { set_ignore_layout(false); }
 
   LayoutGuard(const LayoutGuard&) = delete;
   LayoutGuard& operator=(const LayoutGuard&) = delete;
 
-  void set_ignore_layout(bool ignore) { bar->set_ignore_layout({}, ignore); }
+  void set_ignore_layout(bool ignore) { bar_->set_ignore_layout({}, ignore); }
 
  private:
-  raw_ptr<BraveLocationBarView> bar = nullptr;
+  raw_ptr<BraveLocationBarView> bar_ = nullptr;
 };
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
@@ -459,7 +459,7 @@ void BraveToolbarView::Layout(PassKey) {
   }
 
   // In this Layout, location bar's rect is set twice.
-  // First one is by upstream's flext layout.
+  // First one is by upstream's flex layout.
   // That rect fits for wide address bar.
   // If wide address bar option is off, narrow rect
   // is set again by ResetLocationBarBounds().
@@ -467,6 +467,8 @@ void BraveToolbarView::Layout(PassKey) {
   // omnibox popup's position because that popup is anchored to
   // location bar. So, need to prevent layout with first rect
   // if wide address bar option is off.
+  // TODO(https://github.com/brave/brave-browser/issues/48810): Refactor to do
+  // layout once.
   LayoutGuard guard(static_cast<BraveLocationBarView*>(location_bar_));
   if (!location_bar_is_wide_.GetValue()) {
     guard.set_ignore_layout(true);

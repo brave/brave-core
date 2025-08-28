@@ -125,7 +125,7 @@ class BraveLocationBarView : public LocationBarView {
   void SetupShadow();
 
   // Prevent layout with invalid rect.
-  // It also could make omnibox popup have wrong postion.
+  // It also could make omnibox popup have wrong position.
   // See the comments of BraveToolbarView::Layout().
   bool ignore_layout_ = false;
   std::unique_ptr<ViewShadow> shadow_;
