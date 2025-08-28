@@ -18,6 +18,8 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/upgrade_detector/upgrade_detector.h"
 #include "chrome/common/chrome_switches.h"
+#include "components/browsing_data/core/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/idle/idle.h"
 
 namespace {
@@ -48,6 +50,11 @@ bool AreAnyClearDataOnExitSettingsEnabled() {
   }
   for (Profile* profile : profile_manager->GetLoadedProfiles()) {
     if (content::BraveClearBrowsingData::WillClearOnExit(profile)) {
+      return true;
+    }
+    const base::Value::List& clear_on_exit_list = profile->GetPrefs()->GetList(
+        browsing_data::prefs::kClearBrowsingDataOnExitList);
+    if (!clear_on_exit_list.empty()) {
       return true;
     }
   }

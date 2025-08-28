@@ -16,6 +16,8 @@ source_set("upgrade_when_idle") {
     "//chrome/browser:browser_process",
     "//chrome/browser/ui:browser_list_impl",
     "//chrome/common:non_code_constants",
+    "//components/browsing_data/core",
+    "//components/prefs",
     "//ui/base/idle",
   ]
 }

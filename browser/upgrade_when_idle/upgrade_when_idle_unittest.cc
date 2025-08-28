@@ -5,9 +5,12 @@
 
 #include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
 
+#include <initializer_list>
+
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/mock_callback.h"
+#include "base/values.h"
 #include "chrome/browser/first_run/scoped_relaunch_chrome_browser_override.h"
 #include "chrome/browser/first_run/upgrade_util.h"
 #include "chrome/browser/ui/browser.h"
@@ -62,6 +65,16 @@ class UpgradeWhenIdleTest : public testing::Test {
 
   void SetPref(const std::string& pref_name) {
     profile_->GetPrefs()->SetBoolean(pref_name, true);
+  }
+
+  void SetClearBrowsingDataOnExitList(
+      std::initializer_list<const char*> data_types) {
+    base::Value::List list;
+    for (const char* data_type : data_types) {
+      list.Append(data_type);
+    }
+    profile_->GetPrefs()->SetList(
+        browsing_data::prefs::kClearBrowsingDataOnExitList, std::move(list));
   }
 
  private:
@@ -139,6 +152,12 @@ TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteSiteSettingsOnExit) {
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteBraveLeoHistoryOnExit) {
   SetPref(browsing_data::prefs::kDeleteBraveLeoHistoryOnExit);
+  RunImplementation(ui::IDLE_STATE_IDLE, false);
+}
+
+TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenClearBrowsingDataOnExitList) {
+  SetClearBrowsingDataOnExitList(
+      {"browsing_history", "cached_images_and_files"});
   RunImplementation(ui::IDLE_STATE_IDLE, false);
 }
 
