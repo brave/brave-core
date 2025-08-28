@@ -1068,7 +1068,7 @@ test("brave_browser_tests") {
   }
 
   if (enable_speedreader) {
-    if (toolkit_views) {
+    if (!is_android) {
       deps += [ "//brave/browser/speedreader:browser_tests" ]
     }
 
