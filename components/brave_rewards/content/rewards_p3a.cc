@@ -32,6 +32,8 @@ constexpr int kPanelCountBuckets[] = {1, 2, 5, 10, 50};
 
 constexpr int kRewardsPageViewCountBuckets[] = {2, 5, 10, 50};
 
+constexpr int kOfferClicksBuckets[] = {1, 3, 5};
+
 }  // namespace
 
 void RecordAutoContributionsState(bool ac_enabled) {
@@ -97,6 +99,22 @@ void RecordSearchResultAdsOptinChange(PrefService* prefs) {
 
 void RecordAdsHistoryView() {
   UMA_HISTOGRAM_BOOLEAN(kAdsHistoryViewHistogramName, true);
+}
+
+void RecordOfferView(PrefService* prefs) {
+  UMA_HISTOGRAM_BOOLEAN(kOffersViewedHistogramName, true);
+}
+
+void RecordOfferClicks(PrefService* prefs, bool new_click) {
+  WeeklyStorage storage(prefs, prefs::kP3AOfferClickCount);
+  if (new_click) {
+    storage.AddDelta(1);
+  }
+  auto sum = storage.GetWeeklySum();
+  if (sum > 0) {
+    p3a_utils::RecordToHistogramBucket(kOfferClicksHistogramName,
+                                       kOfferClicksBuckets, sum);
+  }
 }
 
 ConversionMonitor::ConversionMonitor(PrefService* prefs)

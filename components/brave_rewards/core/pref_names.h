@@ -60,6 +60,8 @@ inline constexpr char kSelfCustodyInviteDismissed[] =
     "brave.rewards.self_custody_invite_dismissed";
 inline constexpr char kP3APanelTriggerCount[] =
     "brave.rewards.p3a_panel_trigger_count";
+inline constexpr char kP3AOfferClickCount[] =
+    "brave.rewards.p3a_offer_click_count";
 inline constexpr char kPromotionLastFetchStamp[] =
     "brave.rewards.promotion_last_fetch_stamp";  // DEPRECATED
 inline constexpr char kPromotionCorruptedMigrated[] =

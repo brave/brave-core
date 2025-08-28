@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import { useLocaleContext } from '../../lib/locale_strings'
 import { UICard } from '../../lib/app_state'
+import { AppModelContext } from '../../lib/app_model_context'
 import { CardItemView } from './card_item_view'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { sanitizeURL, cardImageURL } from './card_urls'
@@ -20,6 +21,7 @@ export interface Props {
 export function CardView(props: Props) {
   const { getString } = useLocaleContext()
   const { card } = props
+  const model = React.useContext(AppModelContext)
 
   function cardTitle() {
     if (card.title) {
@@ -39,7 +41,11 @@ export function CardView(props: Props) {
       <h4>{cardTitle()}</h4>
       {
         card.banner &&
-          <NewTabLink className='banner' href={sanitizeURL(card.banner.url)}>
+          <NewTabLink
+            className='banner'
+            href={sanitizeURL(card.banner.url)}
+            onClick={() => model.recordOfferClick()}
+          >
             <img src={cardImageURL(card.banner.image)} />
           </NewTabLink>
       }
