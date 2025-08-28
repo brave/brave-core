@@ -5,15 +5,24 @@
 
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
+import { useNewTabActions } from '../../context/new_tab_context'
+import { WidgetMenu } from './widget_menu'
 import { getString } from '../../lib/strings'
 import { openLink } from '../common/link'
 
 import { style } from './talk_widget.style'
 
 export function TalkWidget() {
+  const actions = useNewTabActions()
   return (
     <div data-css-scope={style.scope}>
+      <WidgetMenu>
+        <leo-menu-item onClick={() => actions.setShowTalkWidget(false)}>
+          <Icon name='eye-off' /> {getString('hideTalkWidgetLabel')}
+        </leo-menu-item>
+      </WidgetMenu>
       <div className='title'>
         {getString('talkWidgetTitle')}
       </div>
