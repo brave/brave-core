@@ -35,7 +35,7 @@ source_set("speedreader") {
   ]
 }
 
-if (toolkit_views) {
+if (!is_android) {
   source_set("browser_tests") {
     testonly = true
 
