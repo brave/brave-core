@@ -13,7 +13,7 @@ class BraveSidePanelCoordinator;
   friend class BraveSidePanelCoordinator; \
   void set_current_key
 
-#include <chrome/browser/ui/views/side_panel/side_panel_ui_base.h>
+#include <chrome/browser/ui/views/side_panel/side_panel_ui_base.h>  // IWYU pragma: export
 
 #undef set_current_key
 
