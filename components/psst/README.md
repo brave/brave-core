@@ -72,7 +72,7 @@ Example:
 ```
  {
   "user": <logged-in user identifier>,
-  "tasks": {
+  "tasks": [
       [
         url:<setting url, MUST BE UNIQUE>,
         description:<setting description>,
