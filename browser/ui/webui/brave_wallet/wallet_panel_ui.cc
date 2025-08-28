@@ -30,6 +30,7 @@
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -202,7 +203,8 @@ WalletPanelUIConfig::WalletPanelUIConfig()
 
 bool WalletPanelUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return brave_wallet::IsAllowedForContext(browser_context);
+  return brave_wallet::IsNativeWalletEnabled() &&
+         brave_wallet::IsAllowedForContext(browser_context);
 }
 
 bool WalletPanelUIConfig::ShouldAutoResizeHost() {

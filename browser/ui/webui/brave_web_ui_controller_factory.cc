@@ -23,7 +23,6 @@
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -99,13 +98,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
         *profile->GetPrefs());
   } else if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
-#if !BUILDFLAG(IS_ANDROID)
-  } else if (host == kWalletPageHost &&
-             brave_wallet::IsAllowedForContext(profile)) {
-    if (brave_wallet::IsNativeWalletEnabled()) {
-      return new WalletPageUI(web_ui);
-    }
-#endif  // !BUILDFLAG(OS_ANDROID)
   } else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because
              // we want private windows to redirect to the regular profile.
@@ -193,8 +185,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&
        url.host_piece() == kBraveNewsInternalsHost) ||
-      (url.host_piece() == kWalletPageHost &&
-       brave_wallet::IsAllowedForContext(profile)) ||
       // On Android New Tab is a native page implemented in Java, so no need
       // in WebUI.
       url.host_piece() == chrome::kChromeUINewTabHost ||
