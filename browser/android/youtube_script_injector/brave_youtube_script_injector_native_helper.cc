@@ -6,8 +6,8 @@
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
 
 #include "base/android/jni_android.h"
-#include "brave/browser/android/youtube_script_injector/jni_headers/BraveYouTubeScriptInjectorNativeHelper_jni.h"
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
+#include "chrome/android/chrome_jni_headers/BraveYouTubeScriptInjectorNativeHelper_jni.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
