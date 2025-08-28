@@ -178,13 +178,13 @@ extension BrowserViewController: BraveWalletDelegate {
       self.dismiss(animated: true)
     }
     if let url = tabManager.selectedTab?.visibleURL {
-      if url.isWalletWebUIURL, url.schemelessAbsoluteString == "wallet/crypto/onboarding/complete" {
+      if url.isWalletWebUIURL, destinationURL.isWalletWebUIURL {
         tabManager.selectedTab?.loadRequest(URLRequest(url: destinationURL))
       } else if InternalURL.isValid(url: url) {
         select(url: destinationURL, isUserDefinedURLNavigation: false)
+      } else {
+        switchToTabForURLOrOpen(destinationURL, isPrivate: false, isPrivileged: false)
       }
-    } else if destinationURL.isWalletWebUIURL {
-      switchToTabForURLOrOpen(destinationURL, isPrivate: false, isPrivileged: false)
     } else {
       _ = tabManager.addTabAndSelect(
         URLRequest(url: destinationURL),
