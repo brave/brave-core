@@ -26,7 +26,9 @@
 #include "base/test/test_future.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/local_ai/browser/local_models_updater.h"
+#include "brave/components/local_ai/browser/yake_keyword_extractor.h"
 #include "build/build_config.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace local_ai {
@@ -509,18 +511,105 @@ TEST_F(TextEmbedderUnitTest, HostExtractionTest) {
       u"Local File", GURL("file:///path/to/file.html"), ""};
 
   // Test SerializeTabInfo directly using the helper method
-  EXPECT_EQ(CallSerializeTabInfo(tab1), "Test Page | example.com");
-  EXPECT_EQ(CallSerializeTabInfo(tab2), "News Article | news.google.com");
-  EXPECT_EQ(CallSerializeTabInfo(tab3), "Invalid URL | unknown");
-  EXPECT_EQ(CallSerializeTabInfo(tab4),
-            "Local File | file:///path/to/file.html");
+  EXPECT_THAT(CallSerializeTabInfo(tab1), testing::HasSubstr("Test Page"));
+  EXPECT_THAT(CallSerializeTabInfo(tab1), testing::HasSubstr("example.com"));
 
-  // Test with tab_content field present but not included in serialization
+  EXPECT_THAT(CallSerializeTabInfo(tab2), testing::HasSubstr("News Article"));
+  EXPECT_THAT(CallSerializeTabInfo(tab2),
+              testing::HasSubstr("news.google.com"));
+
+  EXPECT_THAT(CallSerializeTabInfo(tab3), testing::HasSubstr("Invalid URL"));
+  EXPECT_THAT(CallSerializeTabInfo(tab3), testing::HasSubstr("unknown"));
+
+  EXPECT_THAT(CallSerializeTabInfo(tab4), testing::HasSubstr("Local File"));
+  EXPECT_THAT(CallSerializeTabInfo(tab4),
+              testing::HasSubstr("file:///path/to/file.html"));
+
+  // Test with tab_content field present - should include content keywords
   local_ai::TextEmbedder::TabInfo tab_with_content = {
       u"Article Title", GURL("https://example.com/article"),
       "This is the main article content about travel tips and destinations."};
-  EXPECT_EQ(CallSerializeTabInfo(tab_with_content),
-            "Article Title | example.com");
+  std::string result = CallSerializeTabInfo(tab_with_content);
+  EXPECT_THAT(result, testing::HasSubstr("Article Title"));
+  EXPECT_THAT(result, testing::HasSubstr("example.com"));
+  EXPECT_THAT(result, testing::HasSubstr("[keywords:"));
+}
+
+// Test YAKE keyword extraction functionality
+TEST_F(TextEmbedderUnitTest, YakeKeywordExtraction) {
+  YakeKeywordExtractor extractor;
+
+  // Test basic keyword extraction
+  std::string text =
+      "Machine learning and artificial intelligence are transforming "
+      "technology industry";
+  auto keywords = extractor.ExtractKeywords(text, 5, 2);
+
+  EXPECT_FALSE(keywords.empty());
+  EXPECT_LE(keywords.size(), 5u);
+
+  // Check that extracted keywords are from the original text
+  for (const auto& keyword : keywords) {
+    EXPECT_FALSE(keyword.keyword.empty());
+    EXPECT_GT(keyword.score, 0.0);
+  }
+
+  // Test with travel content similar to our tab examples
+  std::string travel_text =
+      "Best travel destinations in Europe include Italy, France, and Spain. "
+      "Visit Rome, Paris, and Barcelona for amazing cultural experiences.";
+  auto travel_keywords = extractor.ExtractKeywords(travel_text, 6, 2);
+
+  EXPECT_FALSE(travel_keywords.empty());
+  EXPECT_LE(travel_keywords.size(), 6u);
+
+  // Test with empty text
+  auto empty_keywords = extractor.ExtractKeywords("", 5, 2);
+  EXPECT_TRUE(empty_keywords.empty());
+
+  // Test with single word
+  auto single_keywords = extractor.ExtractKeywords("technology", 3, 2);
+  EXPECT_FALSE(single_keywords.empty());
+  EXPECT_EQ(single_keywords[0].keyword, "technology");
+}
+
+// Test SerializeTabInfo with keyword extraction integration
+TEST_F(TextEmbedderUnitTest, SerializeTabInfoWithKeywords) {
+  // Test with rich content that should produce meaningful keywords
+  local_ai::TextEmbedder::TabInfo tab_with_rich_content = {
+      u"Best Travel Destinations in Europe",
+      GURL("https://travelblog.com/europe-guide"),
+      "Europe offers amazing travel destinations including Italy with its "
+      "beautiful cities like Rome and Venice. "
+      "France provides cultural experiences in Paris and Lyon. Spain features "
+      "Barcelona and Madrid. "
+      "These destinations offer rich history, excellent cuisine, and "
+      "unforgettable experiences for travelers."};
+
+  std::string serialized = CallSerializeTabInfo(tab_with_rich_content);
+
+  // Should contain the title
+  EXPECT_THAT(serialized,
+              testing::HasSubstr("Best Travel Destinations in Europe"));
+
+  // Should contain the host
+  EXPECT_THAT(serialized, testing::HasSubstr("travelblog.com"));
+
+  // Should contain keyword section (from content)
+  EXPECT_THAT(serialized, testing::HasSubstr("[keywords:"));
+
+  // Test with title-only content (no tab_content)
+  local_ai::TextEmbedder::TabInfo tab_title_only = {
+      u"Machine Learning Tutorial for Beginners",
+      GURL("https://ai-tutorial.com/ml-basics"), ""};
+
+  std::string title_only_result = CallSerializeTabInfo(tab_title_only);
+  EXPECT_THAT(title_only_result,
+              testing::HasSubstr("Machine Learning Tutorial for Beginners"));
+  EXPECT_THAT(title_only_result, testing::HasSubstr("ai-tutorial.com"));
+  // Should NOT contain keywords section since tab_content is empty
+  EXPECT_THAT(title_only_result,
+              testing::Not(testing::HasSubstr("[keywords:")));
 }
 
 }  // namespace local_ai

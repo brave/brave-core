@@ -28,6 +28,10 @@
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/text_embedder.h"
 #include "url/gurl.h"
 
+namespace local_ai {
+class YakeKeywordExtractor;
+}
+
 namespace tflite {
 namespace task {
 namespace text {
@@ -112,6 +116,9 @@ class TextEmbedder {
   // Helper method to serialize TabInfo to string for embedding
   std::string SerializeTabInfo(const TabInfo& tab_info);
 
+  // Helper method to extract keywords from text using YAKE algorithm
+  std::string ExtractKeywords(const std::string& text, size_t max_keywords = 5);
+
   void SuggestTabsForGroupImpl(std::vector<TabInfo> group_tabs,
                                std::vector<CandidateTab> candidate_tabs,
                                SuggestTabsForGroupCallback callback);
@@ -143,6 +150,8 @@ class TextEmbedder {
   const base::FilePath model_path_;
   scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
   scoped_refptr<base::SequencedTaskRunner> embedder_task_runner_;
+
+  std::unique_ptr<YakeKeywordExtractor> keyword_extractor_;
 
   base::WeakPtrFactory<TextEmbedder> weak_ptr_factory_{this};
 };
