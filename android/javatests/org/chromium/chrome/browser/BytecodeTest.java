@@ -1419,6 +1419,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator", // presubmit: ignore-long-line
+                        Activity.class,
                         OneshotSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         WindowAndroid.class,
@@ -1427,6 +1428,7 @@ public class BytecodeTest {
                         boolean.class,
                         Supplier.class,
                         ThemeColorProvider.class,
+                        IncognitoStateProvider.class,
                         Supplier.class,
                         Runnable.class,
                         int.class,
