@@ -104,7 +104,7 @@ public class BraveSigninManager implements SigninManager {
     @Override
     public void revokeSyncConsent(
             @SignoutReason int signoutSource,
-            SignOutCallback signOutCallback,
+            @Nullable SignOutCallback signOutCallback,
             boolean forceWipeUserData) {}
 
     @Override
