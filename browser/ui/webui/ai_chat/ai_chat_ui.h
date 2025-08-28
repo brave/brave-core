@@ -42,6 +42,8 @@ class AIChatUI : public ui::MojoWebUIController {
 
   void BindInterface(
       mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver);
+  void BindInterface(
+      mojo::PendingReceiver<ai_chat::mojom::BookmarksService> receiver);
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::Service> receiver);
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
                          parent_ui_frame_receiver);

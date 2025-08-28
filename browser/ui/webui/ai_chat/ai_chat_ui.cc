@@ -164,6 +164,12 @@ void AIChatUI::BindInterface(
 }
 
 void AIChatUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::BookmarksService> receiver) {
+  CHECK(page_handler_);
+  page_handler_->BindBookmarksService(std::move(receiver));
+}
+
+void AIChatUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::Service> receiver) {
   ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_)->Bind(
       std::move(receiver));

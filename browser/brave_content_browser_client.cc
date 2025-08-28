@@ -587,6 +587,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>()
         .Add<ai_chat::mojom::AIChatUIHandler>()
+        .Add<ai_chat::mojom::BookmarksService>()
         .Add<ai_chat::mojom::Service>()
         .Add<ai_chat::mojom::TabTrackerService>();
     registry.ForWebUI<AIChatUntrustedConversationUI>()

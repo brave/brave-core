@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #include <algorithm>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
@@ -15,6 +16,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -27,11 +29,14 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/bookmarks/bookmark_merged_surface_service_factory.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "components/bookmarks/browser/bookmark_model.h"
+#include "components/bookmarks/browser/bookmark_node.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/tabs/public/tab_interface.h"
@@ -70,6 +75,16 @@ constexpr char kURLManagePremium[] = "https://account.brave.com/";
 namespace ai_chat {
 
 namespace {
+
+mojom::BookmarkPtr ToMojoBookmark(const bookmarks::BookmarkNode* node) {
+  CHECK(!node->is_folder()) << "Folders are not supported!";
+
+  return mojom::Bookmark::New(
+      node->id(), base::UTF16ToUTF8(node->GetTitle()),
+      node->GetTitledUrlNodeUrl(),
+      node->date_added().InSecondsFSinceUnixEpoch(),
+      node->date_last_used().InSecondsFSinceUnixEpoch());
+}
 
 // Invokes a callback when the WebContents has finished loading. Note: If the
 // WebContents is destroyed before loading is completed, the callback will not
@@ -186,9 +201,21 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
   }
+
+  auto* bookmark_merged_surface_service =
+      BookmarkMergedSurfaceServiceFactory::GetForProfile(profile_);
+  if (bookmark_merged_surface_service) {
+    bookmark_merged_surface_service_observation_.Observe(
+        bookmark_merged_surface_service);
+  }
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
+
+void AIChatUIPageHandler::BindBookmarksService(
+    mojo::PendingReceiver<ai_chat::mojom::BookmarksService> receiver) {
+  bookmarks_service_receiver_.Bind(std::move(receiver));
+}
 
 void AIChatUIPageHandler::HandleVoiceRecognition(
     const std::string& conversation_uuid) {
@@ -443,6 +470,104 @@ void AIChatUIPageHandler::NewConversation(
 void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(
     mojo::PendingReceiver<mojom::ParentUIFrame> receiver) {
   chat_ui_->OnChildFrameBound(std::move(receiver));
+}
+
+void AIChatUIPageHandler::AddListener(
+    mojo::PendingRemote<mojom::BookmarksListener> pending_listener) {
+  auto id = bookmark_listeners_.Add(std::move(pending_listener));
+  auto* listener = bookmark_listeners_.Get(id);
+  if (listener) {
+    listener->OnChange(GetAllBookmarks());
+  }
+}
+
+void AIChatUIPageHandler::BookmarkMergedSurfaceServiceLoaded() {
+  auto change = GetAllBookmarks();
+  for (const auto& listener : bookmark_listeners_) {
+    listener->OnChange(change->Clone());
+  }
+}
+
+void AIChatUIPageHandler::BookmarkNodeAdded(const BookmarkParentFolder& parent,
+                                            size_t index) {
+  auto* service = BookmarkMergedSurfaceServiceFactory::GetForProfile(profile_);
+  if (!service) {
+    return;
+  }
+
+  auto* node = service->GetNodeAtIndex(parent, index);
+  if (!node || node->is_folder()) {
+    return;
+  }
+
+  auto change = mojom::BookmarksChange::New();
+  change->addedOrUpdated[node->id()] = ToMojoBookmark(node);
+
+  for (const auto& listener : bookmark_listeners_) {
+    listener->OnChange(std::move(change));
+  }
+}
+
+void AIChatUIPageHandler::BookmarkNodesRemoved(
+    const BookmarkParentFolder& parent,
+    const base::flat_set<const bookmarks::BookmarkNode*>& nodes) {
+  auto change = mojom::BookmarksChange::New();
+  for (const auto* node : nodes) {
+    if (node->is_folder()) {
+      continue;
+    }
+
+    change->removed.push_back(node->id());
+  }
+
+  for (const auto& listener : bookmark_listeners_) {
+    listener->OnChange(std::move(change));
+  }
+}
+
+void AIChatUIPageHandler::BookmarkNodeChanged(
+    const bookmarks::BookmarkNode* node) {
+  if (node->is_folder()) {
+    return;
+  }
+  auto change = mojom::BookmarksChange::New();
+  change->addedOrUpdated[node->id()] = ToMojoBookmark(node);
+
+  for (const auto& listener : bookmark_listeners_) {
+    listener->OnChange(std::move(change));
+  }
+}
+
+mojom::BookmarksChangePtr AIChatUIPageHandler::GetAllBookmarks() {
+  auto change = mojom::BookmarksChange::New();
+  auto* bookmark_merged_surface_service =
+      BookmarkMergedSurfaceServiceFactory::GetForProfile(profile_);
+  if (!bookmark_merged_surface_service) {
+    return change;
+  }
+
+  auto* model = bookmark_merged_surface_service->bookmark_model();
+
+  // Do a depth-first traversal of the bookmark tree extracting all non-folder
+  // nodes.
+  std::vector<const bookmarks::BookmarkNode*> frontier;
+  frontier.push_back(model->root_node());
+
+  while (!frontier.empty()) {
+    auto* node = frontier.back();
+    frontier.pop_back();
+
+    if (node->is_folder()) {
+      auto& children = node->children();
+      std::ranges::transform(children.begin(), children.end(),
+                             std::back_inserter(frontier),
+                             [](const auto& c) { return c.get(); });
+    } else {
+      change->addedOrUpdated[node->id()] = ToMojoBookmark(node);
+    }
+  }
+
+  return change;
 }
 
 }  // namespace ai_chat

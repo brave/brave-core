@@ -17,11 +17,15 @@
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
+#include "chrome/browser/bookmarks/bookmark_merged_surface_service.h"
+#include "chrome/browser/bookmarks/bookmark_merged_surface_service_observer.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace content {
 class WebContents;
@@ -34,7 +38,9 @@ class FaviconService;
 namespace ai_chat {
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                             public AssociatedContentDelegate::Observer,
-                            public UploadFileHelper::Observer {
+                            public UploadFileHelper::Observer,
+                            public mojom::BookmarksService,
+                            public BookmarkMergedSurfaceServiceObserver {
  public:
   AIChatUIPageHandler(
       content::WebContents* owner_web_contents,
@@ -46,6 +52,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   AIChatUIPageHandler& operator=(const AIChatUIPageHandler&) = delete;
 
   ~AIChatUIPageHandler() override;
+
+  void BindBookmarksService(
+      mojo::PendingReceiver<ai_chat::mojom::BookmarksService> receiver);
 
   // mojom::AIChatUIHandler
   void OpenAIChatSettings() override;
@@ -82,6 +91,28 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void BindParentUIFrameFromChildFrame(
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver);
 
+  // mojom::BookmarksService
+  void AddListener(
+      mojo::PendingRemote<mojom::BookmarksListener> listener) override;
+
+  // BookmarkMergedSurfaceServiceObserver:
+  void BookmarkMergedSurfaceServiceLoaded() override;
+  void BookmarkNodeAdded(const BookmarkParentFolder& parent,
+                         size_t index) override;
+  void BookmarkNodesRemoved(
+      const BookmarkParentFolder& parent,
+      const base::flat_set<const bookmarks::BookmarkNode*>& nodes) override;
+  void BookmarkNodeMoved(const BookmarkParentFolder& old_parent,
+                         size_t old_index,
+                         const BookmarkParentFolder& new_parent,
+                         size_t new_index) override {}
+  void BookmarkNodeChanged(const bookmarks::BookmarkNode* node) override;
+  void BookmarkNodeFaviconChanged(
+      const bookmarks::BookmarkNode* node) override {}
+  void BookmarkParentFolderChildrenReordered(
+      const BookmarkParentFolder& folder) override {}
+  void BookmarkAllUserNodesRemoved() override {}
+
  private:
   class ChatContextObserver : public content::WebContentsObserver {
    public:
@@ -96,6 +127,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   };
 
   void HandleWebContentsDestroyed();
+  mojom::BookmarksChangePtr GetAllBookmarks();
 
   // AssociatedContentDelegate::Observer
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
@@ -115,6 +147,10 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   base::ScopedObservation<AssociatedContentDelegate,
                           AssociatedContentDelegate::Observer>
       associated_content_delegate_observation_{this};
+  base::ScopedObservation<BookmarkMergedSurfaceService,
+                          BookmarkMergedSurfaceServiceObserver>
+      bookmark_merged_surface_service_observation_{this};
+
   std::unique_ptr<ChatContextObserver> chat_context_observer_;
 
   std::unique_ptr<UploadFileHelper> upload_file_helper_;
@@ -123,6 +159,10 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;
+
+  mojo::Receiver<ai_chat::mojom::BookmarksService> bookmarks_service_receiver_{
+      this};
+  mojo::RemoteSet<mojom::BookmarksListener> bookmark_listeners_;
 
   // Conversations are not content associated either in standalone mode or in
   // global side panel mode, to the owner_web_contents_.

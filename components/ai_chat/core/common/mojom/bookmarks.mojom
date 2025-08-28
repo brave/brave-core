@@ -1,0 +1,30 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "url/mojom/url.mojom";
+
+struct Bookmark {
+  int64 id;
+  string title;
+  url.mojom.Url url;
+
+  double date_added;
+  double date_last_used;
+};
+
+struct BookmarksChange {
+  map<int64, Bookmark> addedOrUpdated;
+  array<int64> removed;
+};
+
+interface BookmarksListener {
+  OnChange(BookmarksChange change);
+};
+
+interface BookmarksService {
+  AddListener(pending_remote<BookmarksListener> listener);
+};
