@@ -1,5 +1,31 @@
-Total size 28758K
+Total size 79474K
 
-GROUP large_files [18724K total]
-  1869K Safe Browsing/ChromeExtMalware.store.32_13398106750261602
- 16854K Safe Browsing/UrlSoceng.store.4_13398107473403178
+GROUP chromium [54684K total]
+     2K Amount Extraction Heuristic Regexes 3 [AmountExtractionHeuristicRegexes]
+   217K chromeAutofillStatesData 2025.6.13.84507 [AutofillStates]
+   604K crl-set-4627991743140898834.data 9994 [CertificateRevocation]
+    31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
+     3K Cookie Readiness List 2024.11.26.0 [CookieReadinessList]
+   137K Crowd Deny 2025.8.25.781 [Crowd Deny]
+     9K fileTypePolicies 67 [FileTypePolicies]
+    13K First Party Sets 2025.7.24.0 [FirstPartySetsPreloaded]
+     7K history_search_strings_farmhashed.binarypb 6.7431.9692 [HistorySearch]
+    10K MEI Preload 1.0.7.1744928549 [MEIPreload]
+  7739K OnDeviceHeadSuggestENUS500000 20250804.789100898.14 [OnDeviceHeadSuggestModel]
+  1079K Open Cookie Database 2024.10.17.0 [OpenCookieDatabase]
+   368K Optimization Hints 533 [OptimizationHints]
+     1K Origin Trials Updates 1.0.0.17 [OriginTrials]
+   371K pkiMetadata 1411 [PKIMetadata]
+     3K Probabilistic Reveal Tokens 2025.8.19.0 [ProbabilisticRevealTokenRegistry]
+     4K sslErrorAssistant 7 [SSLErrorAssistant]
+   177K safetyTips 3080 [SafetyTips]
+   238K Subresource Filtering Rules 9.58.0 [Subresource Filter]
+    34K Third-Party Cookie Deprecation Metadata 2025.8.26.1 [TpcdMetadata]
+    10K trustToken 2025.8.25.1 [TrustTokenKeyCommitments]
+ 24385K WASM TTS Engine 20250826.1 [WasmTtsEngine]
+ 17587K WidevineCdm 4.10.2891.0 [WidevineCdm]
+  1642K zxcvbnData 3 [ZxcvbnData]
+
+GROUP large_files [18869K total]
+  1865K Safe Browsing/ChromeExtMalware.store.32_13400798376847004
+ 17004K Safe Browsing/UrlSoceng.store.4_13400798376701107

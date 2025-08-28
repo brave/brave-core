@@ -316,13 +316,25 @@ def _RunUpdateProfileForConfig(config: perf_config.PerfConfig,
       arg for arg in runner.extra_browser_args
       if arg != '--disable-component-update'
   ]
+
+  def make_benchmark_config(delay: int):
+    return perf_config.BenchmarkConfig({
+        'name':
+        'brave_utils.online',
+        'pageset-repeat':
+        1,
+        'stories': ['UpdateProfile'],
+        'stories_exclude': [],
+        'extra-benchmark-args': [f'--delay={delay}'],
+    })
+
   config.benchmarks = [
-      perf_config.BenchmarkConfig({
-          'name': 'brave_utils.online',
-          'pageset-repeat': 2,
-          'stories': ['UpdateProfile'],
-          'stories_exclude': [],
-      })
+      # 15 minutes to update everything
+      make_benchmark_config(15 * 60),
+
+      # two short runs to drop old files
+      make_benchmark_config(30),
+      make_benchmark_config(30),
   ]
 
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
