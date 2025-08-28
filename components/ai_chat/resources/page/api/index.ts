@@ -6,6 +6,7 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import API from '../../common/api'
 import * as Mojom from '../../common/mojom'
+import { BookmarkCachingWrapper } from './bookmarkCache'
 
 // State that is owned by this class because it is global to the UI
 // (loadTimeData / Service / UIHandler).
@@ -22,6 +23,7 @@ export type State = Mojom.ServiceState & {
   isAIChatAgentProfile: boolean
   actionList: Mojom.ActionGroup[]
   tabs: Mojom.TabData[]
+  bookmarks: Mojom.Bookmark[]
 
   // This is the content of the tab that this conversation is shown next to (if
   // any). If the user creates a new conversation this will be used as the
@@ -44,7 +46,8 @@ export const defaultUIState: State = {
   isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean('isAIChatAgentProfileFeatureEnabled'),
   isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
   actionList: [],
-  tabs: []
+  tabs: [],
+  bookmarks: []
 }
 
 // Owns connections to the browser via mojom as well as global state
@@ -68,6 +71,8 @@ class PageAPI extends API<State> {
 
   public tabObserver: Mojom.TabDataObserverCallbackRouter
     = new Mojom.TabDataObserverCallbackRouter()
+
+  private bookmarksCache = new BookmarkCachingWrapper()
 
   constructor() {
     super(defaultUIState)
@@ -146,6 +151,12 @@ class PageAPI extends API<State> {
       if (document.visibilityState === 'visible') {
         this.updateCurrentPremiumStatus()
       }
+    })
+
+    this.bookmarksCache.addListener((bookmarks) => {
+      this.setPartialState({
+        bookmarks: Object.values(bookmarks)
+      })
     })
   }
 

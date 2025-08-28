@@ -477,14 +477,14 @@ void AIChatUIPageHandler::AddListener(
   auto id = bookmark_listeners_.Add(std::move(pending_listener));
   auto* listener = bookmark_listeners_.Get(id);
   if (listener) {
-    listener->OnChange(GetAllBookmarks());
+    listener->Changed(GetAllBookmarks());
   }
 }
 
 void AIChatUIPageHandler::BookmarkMergedSurfaceServiceLoaded() {
   auto change = GetAllBookmarks();
   for (const auto& listener : bookmark_listeners_) {
-    listener->OnChange(change->Clone());
+    listener->Changed(change->Clone());
   }
 }
 
@@ -501,10 +501,11 @@ void AIChatUIPageHandler::BookmarkNodeAdded(const BookmarkParentFolder& parent,
   }
 
   auto change = mojom::BookmarksChange::New();
-  change->addedOrUpdated[node->id()] = ToMojoBookmark(node);
+  change->addedOrUpdated[base::NumberToString(node->id())] =
+      ToMojoBookmark(node);
 
   for (const auto& listener : bookmark_listeners_) {
-    listener->OnChange(std::move(change));
+    listener->Changed(std::move(change));
   }
 }
 
@@ -517,11 +518,11 @@ void AIChatUIPageHandler::BookmarkNodesRemoved(
       continue;
     }
 
-    change->removed.push_back(node->id());
+    change->removed.push_back(base::NumberToString(node->id()));
   }
 
   for (const auto& listener : bookmark_listeners_) {
-    listener->OnChange(std::move(change));
+    listener->Changed(std::move(change));
   }
 }
 
@@ -531,10 +532,11 @@ void AIChatUIPageHandler::BookmarkNodeChanged(
     return;
   }
   auto change = mojom::BookmarksChange::New();
-  change->addedOrUpdated[node->id()] = ToMojoBookmark(node);
+  change->addedOrUpdated[base::NumberToString(node->id())] =
+      ToMojoBookmark(node);
 
   for (const auto& listener : bookmark_listeners_) {
-    listener->OnChange(std::move(change));
+    listener->Changed(std::move(change));
   }
 }
 
@@ -563,7 +565,8 @@ mojom::BookmarksChangePtr AIChatUIPageHandler::GetAllBookmarks() {
                              std::back_inserter(frontier),
                              [](const auto& c) { return c.get(); });
     } else {
-      change->addedOrUpdated[node->id()] = ToMojoBookmark(node);
+      change->addedOrUpdated[base::NumberToString(node->id())] =
+          ToMojoBookmark(node);
     }
   }
 

@@ -17,12 +17,12 @@ struct Bookmark {
 };
 
 struct BookmarksChange {
-  map<int64, Bookmark> addedOrUpdated;
-  array<int64> removed;
+  map<string, Bookmark> addedOrUpdated;
+  array<string> removed;
 };
 
 interface BookmarksListener {
-  OnChange(BookmarksChange change);
+  Changed(BookmarksChange change);
 };
 
 interface BookmarksService {

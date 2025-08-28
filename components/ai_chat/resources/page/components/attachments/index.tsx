@@ -10,7 +10,7 @@ import Icon from '@brave/leo/react/icon'
 import Input from '@brave/leo/react/input'
 import Flex from '$web-common/Flex'
 import { useAIChat } from '../../state/ai_chat_context'
-import { TabData } from 'components/ai_chat/resources/common/mojom'
+import { Bookmark, TabData } from 'components/ai_chat/resources/common/mojom'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 
@@ -21,7 +21,7 @@ function TabItem({ tab }: { tab: TabData }) {
     return <Checkbox className={styles.tabItem} checked={!!content} onChange={(e) => {
         if (e.checked) {
             aiChat.uiHandler?.associateTab(tab, conversationUuid!)
-        } else if (content){
+        } else if (content) {
             aiChat.uiHandler?.disassociateContent(content, conversationUuid!)
         }
     }}>
@@ -30,15 +30,30 @@ function TabItem({ tab }: { tab: TabData }) {
     </Checkbox>
 }
 
+function BookmarkItem({ bookmark }: { bookmark: Bookmark }) {
+    return <Checkbox className={styles.tabItem} checked={false} onChange={() => { }}>
+        <span className={styles.title}>{bookmark.title}</span>
+        <img key={bookmark.id} className={styles.icon} src={`chrome://favicon2/?size=20&pageUrl=${encodeURIComponent(bookmark.url.url)}`} />
+    </Checkbox>
+}
+
 export default function Attachments() {
     const conversation = useConversation()
+    const { bookmarks } = useAIChat()
     const [search, setSearch] = React.useState('')
 
     const tabs = React.useMemo(() => {
         const searchLower = search.toLowerCase()
         return conversation.unassociatedTabs
-          .filter(t => t.title.toLowerCase().includes(searchLower))
+            .filter(t => t.title.toLowerCase().includes(searchLower))
     }, [conversation.unassociatedTabs, search])
+
+    const filteredBookmarks = React.useMemo(() => {
+        const searchLower = search.toLowerCase()
+        return bookmarks
+            .filter(b => b.title.toLowerCase().includes(searchLower))
+    }, [bookmarks, search])
+
     return <div className={styles.root}>
         <div className={styles.header}>
             <Flex direction='row' justify='space-between' align='center'>
@@ -58,6 +73,14 @@ export default function Attachments() {
             </Input>
             <div className={styles.tabList}>
                 {tabs.map(t => <TabItem key={t.id} tab={t} />)}
+            </div>
+        </div>
+        <div className={styles.tabSearchContainer}>
+            <Flex direction='row' justify='space-between' align='center'>
+                <h5>Bookmarks</h5>
+            </Flex>
+            <div className={styles.tabList}>
+                {filteredBookmarks.map(b => <BookmarkItem key={b.id} bookmark={b} />)}
             </div>
         </div>
     </div>
