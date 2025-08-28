@@ -49,10 +49,11 @@ using GURLSourcePair = std::pair<GURL, ContentSettingsType>;
 
 ContentSettingsPattern SecondaryUrlToPattern(const GURL& gurl) {
   CHECK(gurl == GURL() || gurl == GURL("https://firstParty/*"));
-  if (gurl == GURL())
+  if (gurl == GURL()) {
     return ContentSettingsPattern::Wildcard();
-  else
+  } else {
     return ContentSettingsPattern::FromString("https://firstParty/*");
+  }
 }
 
 base::Value::Dict* InitializeCommonSettingsAndGetPerResourceDictionary(
@@ -827,6 +828,7 @@ TEST_F(BravePrefProviderTest, CosmeticFilteringMigration) {
 
   EXPECT_EQ(3u, cosmetic_filtering_v2.GetRulesCount());
 
+  // Check there is no first-party rule anymore.
   EXPECT_EQ(CONTENT_SETTING_DEFAULT,
             cosmetic_filtering_v2.GetContentSettingDirectly("brave.b3p",
                                                             kFirstParty));
@@ -835,6 +837,7 @@ TEST_F(BravePrefProviderTest, CosmeticFilteringMigration) {
   EXPECT_EQ(CONTENT_SETTING_ASK, cosmetic_filtering_v2.GetContentSetting(
                                      &provider, GURL("https://brave.b3p")));
 
+  // Check there is no first-party rule anymore.
   EXPECT_EQ(CONTENT_SETTING_DEFAULT,
             cosmetic_filtering_v2.GetContentSettingDirectly("brave.allow",
                                                             kFirstParty));
@@ -844,6 +847,7 @@ TEST_F(BravePrefProviderTest, CosmeticFilteringMigration) {
   EXPECT_EQ(CONTENT_SETTING_ALLOW, cosmetic_filtering_v2.GetContentSetting(
                                        &provider, GURL("https://brave.allow")));
 
+  // Check there is no first-party rule anymore.
   EXPECT_EQ(CONTENT_SETTING_DEFAULT,
             cosmetic_filtering_v2.GetContentSettingDirectly("brave.block",
                                                             kFirstParty));
