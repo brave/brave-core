@@ -412,8 +412,7 @@ PageGraph::PageGraph(LocalFrame& local_frame)
     : Supplement<LocalFrame>(local_frame),
       frame_id_(GetFrameId(local_frame)),
       script_tracker_(this),
-      request_tracker_(this),
-      start_(base::TimeTicks::Now()) {
+      request_tracker_(this) {
   CHECK(local_frame.IsLocalRoot());
   blink::Page* page = local_frame.GetPage();
   CHECK(page);
@@ -1037,7 +1036,7 @@ void PageGraph::RegisterV8JSBuiltinCall(
 }
 
 base::TimeTicks PageGraph::GetGraphStartTime() const {
-  return start_;
+  return elapsed_timer_.start_time();
 }
 
 GraphItemId PageGraph::GetNextGraphItemId() {
@@ -1174,7 +1173,7 @@ String PageGraph::ToGraphML() const {
   xmlNewTextChild(time_container_node, nullptr, BAD_CAST "start",
                   BAD_CAST base::NumberToString(0).c_str());
 
-  const base::TimeDelta end_time = base::TimeTicks::Now() - start_;
+  const auto end_time = elapsed_timer_.Elapsed();
   xmlNewTextChild(
       time_container_node, nullptr, BAD_CAST "end",
       BAD_CAST base::NumberToString(end_time.InMilliseconds()).c_str());
@@ -1675,7 +1674,7 @@ void PageGraph::RegisterRequestStartForDocument(blink::DocumentLoader* loader,
   CHECK(frame);
   bool is_main_frame = frame->IsMainFrame();
   const FrameId frame_id = GetFrameId(*frame);
-  const base::TimeDelta timestamp = base::TimeTicks::Now() - start_;
+  const auto timestamp = elapsed_timer_.Elapsed();
 
   VLOG(1) << "RegisterRequestStartForDocument) frame id: " << frame_id
           << ", request id: " << request_id << ", url: " << url
@@ -1714,7 +1713,7 @@ void PageGraph::RegisterRequestCompleteForDocument(
           << ", frame id: " << frame_id
           << ", encoded_data_length: " << encoded_data_length;
 
-  const base::TimeDelta timestamp = base::TimeTicks::Now() - start_;
+  const auto timestamp = elapsed_timer_.Elapsed();
   request_tracker_.RegisterDocumentRequestComplete(
       request_id, frame_id, encoded_data_length, timestamp);
 }

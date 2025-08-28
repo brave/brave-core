@@ -14,6 +14,7 @@
 
 #include "base/containers/span_or_size.h"
 #include "base/time/time.h"
+#include "base/timer/elapsed_timer.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/requests/request_tracker.h"
@@ -461,8 +462,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   // Data structure for keeping track of all the in-air requests that
   // have been made, but have not completed.
   RequestTracker request_tracker_;
-  // Page Graph start time stamp.
-  base::TimeTicks start_;
+  // Page Graph elapsed time timer.
+  base::ElapsedTimer elapsed_timer_;
   // Monotonically increasing counter, used so that we can replay the
   // the graph's construction if needed.
   GraphItemId id_counter_ = 0;
