@@ -328,7 +328,7 @@ const Config = function () {
     'zebpay_sandbox_oauth_url',
     'use_clang_coverage',
     'coverage_instrumentation_input_file',
-    'use_clang_profiling_inside_sandbox'
+    'use_clang_profiling_inside_sandbox',
   ]
 }
 
@@ -573,10 +573,9 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.isCoverage()) {
+    args.symbol_level = 1
     args.use_clang_coverage = true
     args.use_clang_profiling_inside_sandbox = true
-    args.symbol_level = 1
-
     args.coverage_instrumentation_input_file = '//out/files-to-instrument.txt'
   }
 

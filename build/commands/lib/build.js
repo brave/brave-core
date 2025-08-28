@@ -37,10 +37,10 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.update(options)
   checkVersionsMatch()
 
-
   if (config.isCoverage()) {
-    await util.generateInstrumentationFile();
+    await util.generateInstrumentationFile()
   }
+
   util.touchOverriddenFiles()
   branding.update()
   await util.buildNativeRedirectCC()
