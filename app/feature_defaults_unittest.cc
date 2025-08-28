@@ -83,7 +83,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &aggregation_service::kAggregationServiceMultipleCloudProviders,
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillAiServerModel,
-      &autofill::features::kAutofillEnableAmountExtractionDesktop,
+      &autofill::features::kAutofillEnableAmountExtraction,
       &autofill::features::kAutofillEnableBuyNowPayLater,
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,
