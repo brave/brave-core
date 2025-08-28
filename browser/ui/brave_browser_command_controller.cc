@@ -85,6 +85,7 @@ bool IsBraveOverrideCommands(int id) {
   static constexpr auto kOverrideCommands = base::MakeFixedFlatSet<int>({
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
+      IDC_TOGGLE_VERTICAL_TABS,
   });
   return kOverrideCommands.contains(id);
 }
