@@ -28,6 +28,8 @@ source_set("text_embedder") {
   sources = [
     "text_embedder.cc",
     "text_embedder.h",
+    "yake_keyword_extractor.cc",
+    "yake_keyword_extractor.h",
   ]
 
   deps = [ "//base" ]
@@ -46,6 +48,7 @@ if (!is_ios) {
     sources = [
       "local_models_updater_unittest.cc",
       "text_embedder_unittest.cc",
+      "yake_keyword_extractor_unittest.cc",
     ]
 
     deps = [

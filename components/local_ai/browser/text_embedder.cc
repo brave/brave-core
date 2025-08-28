@@ -26,9 +26,11 @@
 #include "base/metrics/histogram_functions_internal_overloads.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/bind_post_task.h"
 #include "base/timer/elapsed_timer.h"
+#include "brave/components/local_ai/browser/yake_keyword_extractor.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/port/statusor.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/core/proto/base_options.pb.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/core/proto/external_file.pb.h"
@@ -61,7 +63,8 @@ TextEmbedder::TextEmbedder(
     scoped_refptr<base::SequencedTaskRunner> embedder_task_runner)
     : model_path_(model_path),
       owner_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
-      embedder_task_runner_(embedder_task_runner) {
+      embedder_task_runner_(embedder_task_runner),
+      keyword_extractor_(std::make_unique<YakeKeywordExtractor>()) {
   DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
 }
 
@@ -125,7 +128,45 @@ std::string TextEmbedder::SerializeTabInfo(const TabInfo& tab_info) {
     url_part = "unknown";
   }
 
-  return base::StrCat({base::UTF16ToUTF8(tab_info.title), " | ", url_part});
+  std::string title_str = base::UTF16ToUTF8(tab_info.title);
+
+  // Extract keywords from tab content only
+  std::string content_keywords;
+  if (!tab_info.tab_content.empty()) {
+    content_keywords = ExtractKeywords(tab_info.tab_content, 5);
+  }
+
+  // Build serialized string with keywords
+  std::string result = title_str;
+  if (!content_keywords.empty()) {
+    result += " [keywords: " + content_keywords + "]";
+  }
+  result += " | " + url_part;
+
+  // Temporary debugging output
+  LOG(ERROR) << "SerializeTabInfo result: " << result;
+
+  return result;
+}
+
+std::string TextEmbedder::ExtractKeywords(const std::string& text,
+                                          size_t max_keywords) {
+  DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
+
+  if (text.empty() || !keyword_extractor_) {
+    return "";
+  }
+
+  auto keyword_scores =
+      keyword_extractor_->ExtractKeywords(text, max_keywords, 2);
+
+  std::vector<std::string> keywords;
+  keywords.reserve(keyword_scores.size());
+  for (const auto& score : keyword_scores) {
+    keywords.push_back(score.keyword);
+  }
+
+  return base::JoinString(keywords, ", ");
 }
 
 absl::Status TextEmbedder::EmbedText(
