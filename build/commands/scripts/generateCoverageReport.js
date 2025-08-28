@@ -17,7 +17,7 @@ module.exports = (program) =>
     .option('--target_arch [target_arch]', 'target architecture')
     .option('--target_os <target_os>', 'target OS')
     .option('--name [name]', 'name of the test report [defaults to coverage]')
-    .option('--clean', 'delete recordins and reports')
+    .option('--clean', 'delete recordings and reports. Either all or those that match --tests [testSuites]')
     .option('--tests [testSuites]', 'comma seperated list of testsuites to consider. By default it parses all recordings')
     .arguments('[build_config]')
     .action(async (buildConfig, args) => {
@@ -70,7 +70,6 @@ module.exports = (program) =>
         return;
       }
 
-
       process.env.CWD = config.outputDir
       process.env.PATH = `${process.env.PATH}:${config.srcDir}/third_party/llvm-build/Release+Asserts/bin`
       // fetch coverage tools if not available
@@ -93,7 +92,7 @@ module.exports = (program) =>
         "--summary-only",
         ...testSuites
       ], {stdio: 'pipe'});
-
+      
       try {
         const summary = JSON.parse(output);
         await writeJSON(`${distPath}/coverage.json`, summary);
