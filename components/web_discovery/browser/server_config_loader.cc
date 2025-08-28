@@ -327,6 +327,11 @@ void ServerConfigLoader::SetLastPatternsForTesting(
   last_loaded_patterns_ = std::move(patterns);
 }
 
+void ServerConfigLoader::SetLastV2PatternsForTesting(
+    std::unique_ptr<V2PatternsGroup> v2_patterns) {
+  last_loaded_v2_patterns_ = std::move(v2_patterns);
+}
+
 void ServerConfigLoader::LoadConfigs() {
   if (collector_config_url_loader_ || quorum_config_url_loader_) {
     // Another request is in progress

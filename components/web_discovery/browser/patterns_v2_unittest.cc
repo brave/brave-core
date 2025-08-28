@@ -27,8 +27,7 @@ class WebDiscoveryPatternsV2Test : public testing::Test {
 
     std::string patterns_json;
     bool read_result = base::ReadFileToString(
-        data_path.AppendASCII(
-            "brave/components/test/data/web_discovery/patterns-v2.json"),
+        data_path.AppendASCII("brave/test/data/web_discovery/patterns-v2.json"),
         &patterns_json);
     ASSERT_TRUE(read_result);
 
