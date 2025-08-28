@@ -25,11 +25,7 @@
       "channel": "stable",
       "contexts": ["webui"],
       "matches": [
-        "chrome://newtab/*",
-        "chrome://rewards-panel.top-chrome/*",
-        "chrome://settings/*",
-        "chrome://wallet-panel.top-chrome/*",
-        "chrome://wallet/*"
+        "chrome://newtab/*"
       ]
     }
   ],

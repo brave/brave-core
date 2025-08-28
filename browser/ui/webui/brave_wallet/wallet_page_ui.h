@@ -10,6 +10,7 @@
 
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/page_handler/wallet_page_handler.h"
+#include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/web_ui_controller.h"
@@ -31,6 +32,9 @@ class WalletPageUI : public ui::MojoWebUIController,
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver);
+
+  void BindInterface(
+      mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
 
  private:
   // brave_wallet::mojom::PageHandlerFactory:
@@ -72,6 +76,7 @@ class WalletPageUI : public ui::MojoWebUIController,
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
+  std::unique_ptr<brave_rewards::mojom::RewardsPageHandler> rewards_handler_;
 
   mojo::Receiver<brave_wallet::mojom::PageHandlerFactory>
       page_factory_receiver_{this};

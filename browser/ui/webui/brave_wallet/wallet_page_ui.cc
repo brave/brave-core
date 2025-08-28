@@ -11,12 +11,16 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -86,6 +90,8 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
+  source->AddBoolean("rewardsFeatureEnabled",
+                     brave_rewards::IsSupportedForProfile(profile));
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
@@ -99,6 +105,18 @@ void WalletPageUI::BindInterface(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver) {
   page_factory_receiver_.reset();
   page_factory_receiver_.Bind(std::move(receiver));
+}
+
+void WalletPageUI::BindInterface(
+    mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  CHECK(profile);
+
+  rewards_handler_ = std::make_unique<brave_rewards::RewardsPageHandler>(
+      std::move(receiver), nullptr,
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile),
+      brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr,
+      profile->GetPrefs());
 }
 
 void WalletPageUI::CreatePageHandler(
