@@ -439,25 +439,25 @@
     Enable
   </message>
   <message name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model" formatter_data="webui=AiChat">
-    General purpose chat
+    Fast • Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE" desc="A description for claude-instant-v1 model" formatter_data="webui=AiChat">
     Conversation and text generation
   </message>
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE" desc="A description for claude-3-haiku model" formatter_data="webui=AiChat">
-    Lightning fast chat
+    Fast • Search • Tools
   </message>
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE" desc="A description for claude-3-sonnet model" formatter_data="webui=AiChat">
-    Balanced speed and intelligence
+    Search • Vision • Tools
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_SUBTITLE" desc="A description for qwen model" formatter_data="webui=AiChat">
-      General purpose chat, coding, and more
+    Fast • Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE" desc="A description for gemma model" formatter_data="webui=AiChat">
-    General purpose text and image understanding
+    Search • Vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE" desc="A description for deepseek-r1 model" formatter_data="webui=AiChat">
-    Reasoning model
+    Search • Thinking
   </message>
   <message name="IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE" desc="A description for automatic model" formatter_data="webui=AiChat">
     Model changes dynamically to use the best one for the task
