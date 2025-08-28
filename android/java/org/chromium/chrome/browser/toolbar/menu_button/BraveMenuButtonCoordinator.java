@@ -18,6 +18,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
@@ -30,6 +31,7 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
     private final Activity mActivity;
 
     public BraveMenuButtonCoordinator(
+            Activity activity,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate,
             WindowAndroid windowAndroid,
@@ -38,11 +40,13 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
             boolean canShowAppUpdateBadge,
             Supplier<Boolean> isInOverviewModeSupplier,
             ThemeColorProvider themeColorProvider,
+            IncognitoStateProvider incognitoStateProvider,
             Supplier<MenuButtonState> menuButtonStateSupplier,
             Runnable onMenuButtonClicked,
             @IdRes int menuButtonId,
             @Nullable VisibilityDelegate visibilityDelegate) {
         super(
+                activity,
                 appMenuCoordinatorSupplier,
                 controlsVisibilityDelegate,
                 windowAndroid,
@@ -51,6 +55,7 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
                 canShowAppUpdateBadge,
                 isInOverviewModeSupplier,
                 themeColorProvider,
+                incognitoStateProvider,
                 menuButtonStateSupplier,
                 onMenuButtonClicked,
                 menuButtonId,
