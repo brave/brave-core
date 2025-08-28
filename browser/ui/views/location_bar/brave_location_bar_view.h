@@ -123,6 +123,9 @@ class BraveLocationBarView : public LocationBarView {
   PlaylistActionIconView* GetPlaylistActionIconView();
   void SetupShadow();
 
+  // Prevent layout with invalid rect.
+  // It could make omnibox poup have wrong postion.
+  // See the comments of BraveToolbarView::Layout().
   bool ignore_layout_ = false;
   std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;

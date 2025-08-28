@@ -439,9 +439,15 @@ void BraveToolbarView::ViewHierarchyChanged(
 }
 
 void BraveToolbarView::Layout(PassKey) {
-  // Prevent setting location bar twice in this method.
-  // Base class's Layout sets its rect but it's re-written
-  // by ResetLocationBarBounds() for narrow location bar option.
+  // In this Layout, location bar's rect is set twice.
+  // First one is by upstream's flext layout.
+  // That rect fits for wide address bar.
+  // If wide address bar option is off, narrow rect
+  // is set again by ResetLocationBarBounds().
+  // Whenever location bar's rect is updated, it could change
+  // omnibox popup's position because that popup is anchored to
+  // location bar. So, need to prevent layout with first rect
+  // if wide address bar option is off.
   if (display_mode_ == DisplayMode::NORMAL && brave_initialized_ &&
       !location_bar_is_wide_.GetValue()) {
     static_cast<BraveLocationBarView*>(location_bar_)
