@@ -3319,6 +3319,9 @@ TEST_F(BraveWalletServiceUnitTest, HasPermissionSync) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetNetworkForAccountOnActiveOrigin) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletCardanoFeature};
+
   SetupWallet();
 
   auto eth_account_id =
