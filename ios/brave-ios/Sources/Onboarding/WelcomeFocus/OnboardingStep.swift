@@ -40,6 +40,10 @@ extension [any OnboardingStep] {
   public static var allSteps: [any OnboardingStep] {
     [.defaultBrowsing, .blockInterruptions, .p3aOptIn]
   }
+  /// A subset of steps if the user is already the default browser on first launch
+  public static var alreadyDefaultBrowserSteps: [any OnboardingStep] {
+    [.blockInterruptions, .p3aOptIn]
+  }
 }
 
 /// A view modifier to animate the primary "Continue" button between pages
