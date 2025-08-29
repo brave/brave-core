@@ -21,7 +21,7 @@ module.exports = (program) =>
     .option('--build_type [build_type]', 'build with coverage information ')
     .option('--target_arch [target_arch]', 'target architecture')
     .option('--target_os <target_os>', 'target OS')
-    .option('--name [name]', 'name of the test report [defaults to coverage]')
+    .option('--name [name]', 'name of the test report [defaults to coverage]', 'all')
     .option(
       '--clean',
       'delete recordings and reports. Either all or those that match --tests [testSuites]',
@@ -36,11 +36,11 @@ module.exports = (program) =>
       config.update(args)
       const dirsGlob = args.tests ? `{${args.tests}}/**` : '**'
 
-      const name = args.name || 'coverage'
       const out = `${config.outputDir}/coverage`
-      const reportPath = `${out}/report/${name}`
+      const reportPath = `${out}/report/${args.name}`
       const profDataPath = `${reportPath}/coverage.profdata`
       const distPath = `${reportPath}/dist`
+
 
       const recordings = await Array.fromAsync(
         glob(`${out}/${dirsGlob}/*.profraw`),
