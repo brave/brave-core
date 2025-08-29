@@ -393,7 +393,10 @@ if (enable_omaha4) {
 }
 
 if (enable_speedreader) {
-  brave_chrome_browser_deps += [ "//brave/browser/speedreader" ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/speedreader",
+    "//brave/browser/ui/speedreader",
+  ]
 }
 
 if (enable_request_otr) {

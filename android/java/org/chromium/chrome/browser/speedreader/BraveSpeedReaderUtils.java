@@ -18,11 +18,11 @@ public class BraveSpeedReaderUtils {
     }
 
     public static boolean tabStateIsDistilled(Tab tab) {
-        return BraveSpeedReaderUtilsJni.get().tabStateIsDistilled(tab);
+        return BraveSpeedReaderUtilsJni.get().tabStateIsDistilled(tab.getWebContents());
     }
 
     public static boolean tabSupportsDistillation(Tab tab) {
-        return BraveSpeedReaderUtilsJni.get().tabSupportsDistillation(tab);
+        return BraveSpeedReaderUtilsJni.get().tabSupportsDistillation(tab.getWebContents());
     }
 
     public static void singleShotSpeedreaderForWebContent(WebContents webContents) {
@@ -30,7 +30,7 @@ public class BraveSpeedReaderUtils {
     }
 
     public static boolean tabProbablyReadable(Tab tab) {
-        return BraveSpeedReaderUtilsJni.get().tabProbablyReadable(tab);
+        return BraveSpeedReaderUtilsJni.get().tabProbablyReadable(tab.getWebContents());
     }
 
     public static void enableSpeedreaderMode(Tab tab) {
@@ -53,9 +53,13 @@ public class BraveSpeedReaderUtils {
     @NativeMethods
     interface Natives {
         void singleShotSpeedreaderForWebContent(WebContents webContents);
+
         void toggleEnabledForWebContent(WebContents webContents, boolean enabled);
-        boolean tabProbablyReadable(Tab tab);
-        boolean tabStateIsDistilled(Tab tab);
-        boolean tabSupportsDistillation(Tab tab);
+
+        boolean tabProbablyReadable(WebContents webContents);
+
+        boolean tabStateIsDistilled(WebContents webContents);
+
+        boolean tabSupportsDistillation(WebContents webContents);
     }
 }
