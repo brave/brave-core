@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.app;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -307,6 +308,7 @@ public abstract class BraveActivity extends ChromeActivity
     private static final List<String> sYandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
+    private static final int PIP_UPDATE_DELAY_MS = 500;
     private boolean mIsVerification;
     public boolean mIsDeepLink;
     private BraveWalletService mBraveWalletService;
@@ -540,6 +542,20 @@ public abstract class BraveActivity extends ChromeActivity
             if (mediaSession != null) {
                 mediaSession.resume();
             }
+            // Adopting the same workaround adopted upstream, to check the full implementation
+            // see FullscreenVideoPictureInPictureController class.
+            // Post a delayed handler to update the Pip status, once things have had some
+            // time to settle. When switching into fullscreen mode sometimes the transition is
+            // called before relayout has happened, causing the source rectangle for the Pip
+            // transition to be wrong. This causes the Pip window to look like it moves to the
+            // wrong part of the screen and partially clipped before snapping to its normal place.
+            PostTask.postDelayedTask(
+                    TaskTraits.UI_BEST_EFFORT,
+                    (Runnable)
+                            () ->
+                                    setPictureInPictureParams(
+                                            new PictureInPictureParams.Builder().build()),
+                    PIP_UPDATE_DELAY_MS);
         }
         if (!inPicture
                 && getCurrentWebContents() != null

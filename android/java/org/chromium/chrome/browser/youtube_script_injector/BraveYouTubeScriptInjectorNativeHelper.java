@@ -48,7 +48,12 @@ public class BraveYouTubeScriptInjectorNativeHelper {
         final WindowAndroid windowAndroid = webContents.getTopLevelNativeWindow();
         if (windowAndroid != null) {
             final Activity activity = windowAndroid.getActivity().get();
-            if (activity instanceof BraveActivity braveActivity) {
+            // Don't PiP if the activity is going to be restarted,
+            // or if the activity is finishing.
+            if (activity == null || activity.isChangingConfigurations() || activity.isFinishing()) {
+                return;
+            }
+            if (activity instanceof final BraveActivity braveActivity) {
                 // Resume the media session when the transition completes.
                 braveActivity.resumeMediaSession(true);
                 try {
