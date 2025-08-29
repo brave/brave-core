@@ -47,6 +47,7 @@ if (!is_android) {
       ":speedreader",
       "//brave/app:generate_command_metadata",
       "//brave/browser/speedreader",
+      "//brave/browser/ui/speedreader",
       "//brave/browser/ui/views/frame/split_view",
       "//brave/browser/ui/views/split_view",
       "//brave/components/ai_chat/core/common",

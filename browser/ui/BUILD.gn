@@ -1003,7 +1003,7 @@ source_set("ui") {
   }
 
   if (enable_speedreader) {
-    public_deps += [ "//brave/browser/ui/speedreader" ]
+    deps += [ "//brave/browser/ui/speedreader" ]
 
     if (toolkit_views) {
       deps += [ "//brave/browser/ui/views/speedreader" ]
