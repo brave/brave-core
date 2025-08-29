@@ -435,14 +435,12 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanShare) {
   // navigator.share is disabled on Linux.
   constexpr bool kDefaultValue = !BUILDFLAG(IS_LINUX);
 
-  // navigator.share API is disabled for Tor windows on Mac.
-  constexpr bool kShouldBeDisabledInTor = !kDefaultValue || BUILDFLAG(IS_MAC);
-
-  EXPECT_EQ((kShouldBeDisabledInTor ? false : true),
-            content::EvalJs(tor_contents, kCheckNavigatorShare));
+  // Disable in Tor windows.
+  EXPECT_EQ(false, content::EvalJs(tor_contents, kCheckNavigatorShare));
 
   auto* regular_contents =
       ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab"));
+  // Enabled in regular windows (except Linux, where it is not implemented).
   EXPECT_EQ(kDefaultValue,
             content::EvalJs(regular_contents, kCheckNavigatorShare));
 
