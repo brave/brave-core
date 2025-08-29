@@ -46,6 +46,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #else
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
@@ -102,7 +103,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       "script-src 'self' chrome://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      "style-src 'self' 'unsafe-inline' chrome://resources;");
+      "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' blob: chrome://resources chrome://favicon2;");
@@ -119,6 +120,10 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(
                     profile_, chrome::FaviconUrlFormat::kFavicon2));
+#if !BUILDFLAG(IS_ANDROID)
+  content::URLDataSource::Add(profile_,
+                              std::make_unique<ThemeSource>(profile_));
+#endif
 }
 
 AIChatUI::~AIChatUI() = default;

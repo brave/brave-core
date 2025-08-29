@@ -32,6 +32,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/webui/settings/privacy_sandbox_handler.h"
 #include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/branded_strings.h"
 #include "components/country_codes/country_codes.h"
@@ -42,6 +43,7 @@
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/gpu_data_manager.h"
 #include "content/public/browser/page_navigator.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -181,6 +183,9 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       brave::welcome_ui::prefs::kHasSeenBraveWelcomePage, true);
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
+
+  content::URLDataSource::Add(profile,
+                              std::make_unique<ThemeSource>(profile, true));
 }
 
 BraveWelcomeUI::~BraveWelcomeUI() = default;
