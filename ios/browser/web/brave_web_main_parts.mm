@@ -65,7 +65,4 @@ void BraveWebMainParts::PreMainMessageLoopRun() {
               "disable-component-update"),
           &cus->GetOnDemandUpdater());
   RegisterComponentsForUpdate(cus);
-
-  static_cast<BraveApplicationContextImpl*>(application_context_.get())
-      ->StartBraveServices();
 }
