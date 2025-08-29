@@ -42,6 +42,7 @@ export const style = scoped.css`
     color: ${color.text.primary};
 
     leo-tooltip {
+      display: none;
       position: absolute;
       inset-inline-start: calc(100% + 6px);
       inset-block-start: 4px;
