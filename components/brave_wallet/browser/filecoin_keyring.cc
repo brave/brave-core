@@ -12,6 +12,7 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/contains.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span_rust.h"
 #include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
@@ -155,9 +156,8 @@ std::optional<std::string> FilecoinKeyring::GetDiscoveryAddress(
 
 std::optional<std::string> FilecoinKeyring::EncodePrivateKeyForExport(
     const std::string& address) {
-  if (auto it = imported_bls_accounts_.find(address);
-      it != imported_bls_accounts_.end()) {
-    return GetExportEncodedJSON(*it->second, address);
+  if (auto* private_key = base::FindOrNull(imported_bls_accounts_, address)) {
+    return GetExportEncodedJSON(**private_key, address);
   }
 
   HDKey* key = GetHDKeyFromAddress(address);
@@ -246,10 +246,9 @@ std::optional<std::string> FilecoinKeyring::SignTransaction(
     return std::nullopt;
   }
 
-  if (auto it = imported_bls_accounts_.find(address);
-      it != imported_bls_accounts_.end()) {
+  if (auto* private_key = base::FindOrNull(imported_bls_accounts_, address)) {
     auto signature = base::ToVector(bls_sign_message(
-        base::SpanToRustSlice(*it->second), base::SpanToRustSlice(*cid)));
+        base::SpanToRustSlice(**private_key), base::SpanToRustSlice(*cid)));
     if (signature.empty()) {
       return std::nullopt;
     }

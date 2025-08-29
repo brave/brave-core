@@ -7,6 +7,7 @@
 
 #include <iostream>
 
+#include "base/containers/map_util.h"
 #include "base/logging.h"
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
@@ -121,17 +122,19 @@ double BandwidthSavingsPredictor::PredictSavingsBytes() const {
       !main_frame_url_.SchemeIsHTTPOrHTTPS()) {
     return 0;
   }
-  const auto total_size = feature_map_.find("transfer.total.size");
-  if (total_size != feature_map_.end() && total_size->second > 0) {
-    VLOG(2) << main_frame_url_ << " total download size " << total_size->second
+  const auto* total_size =
+      base::FindOrNull(feature_map_, "transfer.total.size");
+  if (total_size && *total_size > 0) {
+    VLOG(2) << main_frame_url_ << " total download size " << *total_size
             << " bytes";
   } else {
     return 0;
   }
 
   // Short-circuit if nothing got blocked
-  const auto adblock_requests = feature_map_.find("adblockRequests");
-  if (adblock_requests == feature_map_.end() || adblock_requests->second < 1) {
+  const auto* adblock_requests =
+      base::FindOrNull(feature_map_, "adblockRequests");
+  if (!adblock_requests || *adblock_requests < 1) {
     return 0;
   }
   if (VLOG_IS_ON(3)) {
@@ -144,7 +147,7 @@ double BandwidthSavingsPredictor::PredictSavingsBytes() const {
   VLOG(2) << main_frame_url_ << " estimated saving " << prediction << " bytes";
   // Sanity check for predicted saving
   if (prediction > kSavingsAbsoluteOutlier &&
-      (prediction / kOutlierThreshold) > total_size->second) {
+      (prediction / kOutlierThreshold) > *total_size) {
     return 0;
   }
   return prediction;

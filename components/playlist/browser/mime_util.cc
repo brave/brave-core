@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/files/file_path.h"
 
 namespace playlist {
@@ -89,10 +90,9 @@ namespace mime_util {
 
 std::optional<base::FilePath::StringType> GetFileExtensionForMimetype(
     std::string_view mime_type) {
-  if (decltype(kMimeToExtensionMap)::const_iterator iter =
-          kMimeToExtensionMap.find(mime_type);
-      iter != kMimeToExtensionMap.end()) {
-    return base::FilePath::StringType(iter->second);
+  if (const auto* extension =
+          base::FindOrNull(kMimeToExtensionMap, mime_type)) {
+    return base::FilePath::StringType(*extension);
   }
 
   return std::nullopt;
@@ -100,10 +100,9 @@ std::optional<base::FilePath::StringType> GetFileExtensionForMimetype(
 
 std::optional<std::string> GetMimeTypeForFileExtension(
     base::FilePath::StringViewType file_extension) {
-  if (decltype(kExtensionToMimeMap)::const_iterator iter =
-          kExtensionToMimeMap.find(file_extension);
-      iter != kExtensionToMimeMap.end()) {
-    return std::string(iter->second);
+  if (const auto* mime_type =
+          base::FindOrNull(kExtensionToMimeMap, file_extension)) {
+    return std::string(*mime_type);
   }
 
   return std::nullopt;
