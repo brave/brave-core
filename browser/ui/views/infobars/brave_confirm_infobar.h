@@ -37,8 +37,6 @@ class BraveConfirmInfoBar : public InfoBarView {
 
   // InfoBarView:
   void Layout(PassKey) override;
-  void ViewHierarchyChanged(
-      const views::ViewHierarchyChangedDetails& details) override;
 
   BraveConfirmInfoBarDelegate* GetDelegate() const;
 

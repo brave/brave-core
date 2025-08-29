@@ -9,7 +9,6 @@
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/views/view.h"
-#include "ui/views/widget/widget.h"
 
 using BraveConfirmInfoBarTest = ChromeViewsTestBase;
 
@@ -34,15 +33,9 @@ class TestInfoBarDelegate : public BraveConfirmInfoBarDelegate {
 
 // Check close button is always the last children.
 TEST_F(BraveConfirmInfoBarTest, CloseButtonOrderTest) {
-  std::unique_ptr<views::Widget> widget =
-      CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
   auto infobar = std::make_unique<BraveConfirmInfoBar>(
       (std::make_unique<TestInfoBarDelegate>()));
-
-  // Added to widget to get ViewHierarchyChanged().
-  widget->SetContentsView(infobar.get());
   auto* close_button = infobar->close_button_for_testing();
   ASSERT_TRUE(close_button);
   EXPECT_EQ(close_button, infobar->children().back());
-  infobar->DeprecatedLayoutImmediately();
 }
