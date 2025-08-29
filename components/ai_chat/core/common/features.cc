@@ -75,11 +75,7 @@ bool IsAIChatFirstEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatFirst);
 }
 
-BASE_FEATURE(kAIChatTools, base::FEATURE_DISABLED_BY_DEFAULT);
-
-bool IsToolsEnabled() {
-  return base::FeatureList::IsEnabled(features::kAIChatTools);
-}
+BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAIChatAgentProfile,
              base::FEATURE_DISABLED_BY_DEFAULT);
