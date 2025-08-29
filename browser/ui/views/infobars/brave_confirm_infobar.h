@@ -8,10 +8,12 @@
 
 #include <memory>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 #include "chrome/browser/ui/views/infobars/infobar_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/views/controls/button/image_button.h"
 
 namespace views {
 class Checkbox;
@@ -35,10 +37,14 @@ class BraveConfirmInfoBar : public InfoBarView {
 
   // InfoBarView:
   void Layout(PassKey) override;
+  void ViewHierarchyChanged(
+      const views::ViewHierarchyChangedDetails& details) override;
 
   BraveConfirmInfoBarDelegate* GetDelegate() const;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveConfirmInfoBarTest, CloseButtonOrderTest);
+
   // InfoBarView:
   int GetContentMinimumWidth() const override;
 
@@ -55,6 +61,8 @@ class BraveConfirmInfoBar : public InfoBarView {
   // Returns the width of all content other than the label and link.  Layout()
   // uses this to determine how much space the label and link can take.
   int NonLabelWidth() const;
+
+  views::View* close_button_for_testing() const { return close_button_.get(); }
 
   raw_ptr<views::Label> label_ = nullptr;
   raw_ptr<views::MdTextButton> ok_button_ = nullptr;
