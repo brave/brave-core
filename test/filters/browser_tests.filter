@@ -2374,6 +2374,12 @@
 -LanguageDetectionModelServiceBrowserTest.*
 -PreloadingModelKeyedServiceTest.Score
 
+# These tests fail because we disable blink::features::kPermissionElement
+-All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkDefault
+-All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkDisabled
+-All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkEnabled
+-All/PermissionElementOriginTrialBrowserTest.WithoutOriginTrialToken/BaseDefault_BlinkEnabled
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
