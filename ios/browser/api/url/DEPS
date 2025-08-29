@@ -1,4 +1,5 @@
 include_rules = [
   "+extensions/common/url_pattern.h",
-  "+ios/web/util"
+  "+ios/web/util",
+  "+brave/components/content_settings/core/common",
 ]
