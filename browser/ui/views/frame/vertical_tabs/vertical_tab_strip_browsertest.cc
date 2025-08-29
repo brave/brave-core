@@ -48,6 +48,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "ui/base/test/ui_controls.h"
+#include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
 
@@ -1161,4 +1162,32 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   // The minimum width of the region view should be 4px, which is narrower than
   // it used to be.
   EXPECT_EQ(4, region_view->GetMinimumSize().width());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInVisible) {
+  ToggleVerticalTabStrip();
+
+  const gfx::AnimationTestApi::RenderModeResetter render_mode_resetter =
+      gfx::AnimationTestApi::SetRichAnimationRenderMode(
+          gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+
+  region_view->ToggleState();
+  ASSERT_EQ(VerticalTabStripRegionView::State::kCollapsed,
+            region_view->state());
+
+  // When collapsed, it should be inivisible.
+  EXPECT_FALSE(region_view->GetVisible());
+
+  region_view->ToggleState();
+  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+
+  // When expanded, it should get visible again.
+  EXPECT_TRUE(region_view->GetVisible());
 }
