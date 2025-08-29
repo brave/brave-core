@@ -64,18 +64,16 @@ export default function App () {
         path={'/playlist/:playlistId'}
         children={({ match }) => {
           const playlistId = match?.params.playlistId
+          const isPlayerVisible = 
+                    !!lastPlayerState?.currentItem &&
+                    editMode !== PlaylistEditMode.BULK_EDIT
+          const isMiniPlayer = lastPlayerState?.currentList?.id !== playlistId
           return (
             <AppContainer isPlaylistPlayerPage={!!playlistId}>
               <StickyArea position='top'>
                 <StyledHeader playlistId={playlistId} />
                 <AlertCenter />
-                <VideoFrame
-                  visible={
-                    !!lastPlayerState?.currentItem &&
-                    editMode !== PlaylistEditMode.BULK_EDIT
-                  }
-                  isMiniPlayer={lastPlayerState?.currentList?.id !== playlistId}
-                />
+                <VideoFrame visible={isPlayerVisible} isMiniPlayer={isMiniPlayer} />
               </StickyArea>
               <section>
                 <Switch>
@@ -89,7 +87,7 @@ export default function App () {
                   ></Route>
                 </Switch>
               </section>
-              {shouldShowAddMediaFromPage ? (
+              {shouldShowAddMediaFromPage && !(isPlayerVisible && isMiniPlayer) ? (
                 <StickyArea position='bottom'>
                   <Footer>
                     <AddMediaFromPageButton />
