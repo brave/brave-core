@@ -276,6 +276,8 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String OPEN_URL = "open_url";
     public static final String BRAVE_WEBCOMPAT_INFO_WIKI_URL =
             "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
+    private static final String KEY_RESUME_MEDIA_SESSION =
+            "org.chromium.chrome.browser.app.KEY_RESUME_MEDIA_SESSION";
 
     private static final int DAYS_4 = 4;
     private static final int DAYS_7 = 7;
@@ -348,6 +350,21 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public BraveActivity() {}
+
+    @Override
+    protected void onPostCreate() {
+        super.onPostCreate();
+        final Bundle savedInstanceState = getSavedInstanceState();
+        if (savedInstanceState != null) {
+            mResumeMediaSession = savedInstanceState.getBoolean(KEY_RESUME_MEDIA_SESSION, false);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_RESUME_MEDIA_SESSION, mResumeMediaSession);
+    }
 
     @Override
     public void onResumeWithNative() {
