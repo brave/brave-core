@@ -15,6 +15,9 @@
 
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
+-All/AppMenuModelSigninPromoTest.SignedIn/*
+-All/CanOfferSigninWithSigninToSyncFeatureTest.*
+-CanOfferSigninTest.ProfileConnected
 -ChromeAutofillAiClientTest.EligibilityOf*
 -TabOrganizationServiceTest.*
 
@@ -113,6 +116,9 @@
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
 -DigitalIdentityLowRiskOriginsTest.*
+-LoginStateCheckerTest.ExceedsMaxLoginChecksAndFails
+-LoginStateCheckerTest.UserIsLoggedInOnFirstAttempt
+-LoginStateCheckerTest.UserIsLoggedInOnSecondAttempt
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
@@ -229,6 +235,9 @@
 # features::kEarlyHintsPreloadForNavigation
 -PreconnectManagerTest.*
 
+# This test fails because we disable kBookmarkTriggerForPrerender2KillSwitch
+-BookmarkBarPreloadPipelineManagerTest.DisallowSearchUrlBookmarkBar
+
 # This test is disabled because the Brave NTP doesn't support this feature
 -NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
 
@@ -341,7 +350,10 @@
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
+-NotificationTelemetryServiceTest.EmptyDbFoundOverTime/*
+-NotificationTelemetryServiceTest.NonEmptyTelemetryStoreAtConstruction/*
 -NotificationTelemetryServiceTest.SendsTelemetryReport/*
+-NotificationTelemetryServiceTest.ServiceWorkerSubscriptionRecordsServiceWorkerBehavior/*
 -SafeBrowsingResultTest.GetState_EnabledEnhanced
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains_EsbEnabledOnStartup
@@ -398,6 +410,7 @@
 -WhatsNewUtilTests.ShouldShowForStateUsesChromeVersionForRefresh
 
 # This test fails because we disable page_image_service::kImageService feature.
+-NewTabPageModulesTest.MakeModuleIdDetails_*
 -NewTabPageModulesTest.MakeModuleIdNames
 
 # These tests fail because we disable
@@ -419,6 +432,7 @@
 -All/PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -All/PageInfoCookiesContentView3pcdCookieToggleTest.*
 -CookieControlsUserBypassTest.*
+-PageInfoCookiesContentViewTest.*
 -PageInfoCookiesContentView3pcdCookieToggleTest.*
 -PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -PageInfoCookiesContentViewAlwaysBlock3pcsIncognito.DisplaysIncognitoDescriptionWhenInIncognito
@@ -640,6 +654,7 @@
 # This test fails because CONTENT_SETTING_DEFAULT cannot be used as the default
 # setting any more. https://github.com/brave/brave-browser/issues/48374
 -HostContentSettingsMapTest.IncognitoChangesDoNotPersist
+-HostContentSettingsMapTest.SetOneTimeGeolocationSetting
 
 # These tests fail because we enable features::kTabstripComboButton and stub
 # features::HasTabSearchToolbarButton() to return true

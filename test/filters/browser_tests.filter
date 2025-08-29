@@ -73,6 +73,10 @@
 -ThreatDOMDetailsTest.CheckTagAndAttributeListIsSorted
 
 # Optimization Guide is disabled
+-All/NewTabPageUtilBrowserTest.*
+-All/NewTabPageUtilDisableFlagBrowserTest.*
+-All/NewTabPageUtilDriveHistorySyncBrowserTest.*
+-All/NewTabPageUtilEnableFlagBrowserTest.*
 -All/NewTabPageUtilSignInRequirementBrowserTest.DriveWithSignInRequirement/*
 -All/NewTabPageUtilSignInRequirementBrowserTest.GoogleCalendarWithSignInRequirement/*
 -ChromeRenderFrameObserverTest.OptGuideGetsText
