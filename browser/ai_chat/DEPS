@@ -8,6 +8,7 @@ specific_include_rules = {
     "+brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h",
  ],
  "full_screenshotter_unittest\.cc" : [
+    "+components/paint_preview/common/mock_paint_preview_recorder.h",
     "+components/paint_preview/common/mojom",
     "+content/test",
  ]
