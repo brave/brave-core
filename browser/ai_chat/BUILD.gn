@@ -171,6 +171,7 @@ source_set("unit_tests") {
     "//brave/components/constants",
     "//chrome/common",
     "//chrome/test:test_support",
+    "//components/paint_preview/common:test_utils",
     "//components/paint_preview/common/mojom",
     "//components/services/paint_preview_compositor/public/mojom",
     "//content/public/browser",
