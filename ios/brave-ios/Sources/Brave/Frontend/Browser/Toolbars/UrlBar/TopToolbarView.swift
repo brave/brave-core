@@ -945,6 +945,7 @@ extension TopToolbarView: PreferencesObserver {
 extension TopToolbarView: TabLocationViewDelegate {
   func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView) {
     guard
+      !inOverlayMode,
       let (locationText, isSearchQuery) = delegate?.topToolbarDisplayTextForURL(
         locationView.url as URL?
       )
