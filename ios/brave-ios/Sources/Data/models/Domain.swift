@@ -488,4 +488,15 @@ extension Domain {
       }
     }
   }
+
+  @MainActor public class func allDomainsWithExlicitShieldSettings() -> [Domain] {
+    let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [
+      NSPredicate(format: "shield_allOff != nil"),
+      NSPredicate(format: "shield_adblockAndTp != nil"),
+      NSPredicate(format: "shield_noScript != nil"),
+      NSPredicate(format: "shield_fpProtection != nil"),
+      NSPredicate(format: "shield_shredLevel != nil"),
+    ])
+    return Domain.all(where: predicate) ?? []
+  }
 }
