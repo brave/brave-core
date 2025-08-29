@@ -53,19 +53,16 @@ if (!is_android) {
 }
 
 source_set("tab_model") {
-  sources = [ "brave_split_tab_menu_model.h" ]
-
-  public_deps = [ "//chrome/browser/ui/tabs:tab_model" ]
-}
-
-source_set("tab_model_impl") {
-  sources = [ "brave_split_tab_menu_model.cc" ]
+  sources = [
+    "brave_split_tab_menu_model.cc",
+    "brave_split_tab_menu_model.h",
+  ]
 
   deps = [
-    ":tab_model",
     "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
     "//chrome/browser/ui/tabs",
+    "//chrome/browser/ui/tabs:tab_model",
     "//ui/base",
   ]
 }

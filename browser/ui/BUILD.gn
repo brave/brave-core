@@ -312,7 +312,6 @@ source_set("ui") {
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/tabs:split_view",
       "//brave/browser/ui/tabs:tab_model",
-      "//brave/browser/ui/tabs:tab_model_impl",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/common",
       "//brave/components/brave_account:features",
