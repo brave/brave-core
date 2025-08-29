@@ -93,7 +93,9 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
 
   CleanUpOrphanedPlaylistItemDirs();
 
-  delegate_->UpdateSidebarState(*enabled_pref_);
+  if (delegate_) {
+    delegate_->UpdateSidebarState(*enabled_pref_);
+  }
 }
 
 PlaylistService::~PlaylistService() = default;

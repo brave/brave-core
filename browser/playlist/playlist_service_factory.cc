@@ -271,7 +271,9 @@ PlaylistServiceFactory::PlaylistServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "PlaylistService",
           BrowserContextDependencyManager::GetInstance()) {
+#if !BUILDFLAG(IS_ANDROID)
   DependsOn(sidebar::SidebarServiceFactory::GetInstance());
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 PlaylistServiceFactory::~PlaylistServiceFactory() = default;
