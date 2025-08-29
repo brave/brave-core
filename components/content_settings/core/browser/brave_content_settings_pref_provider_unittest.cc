@@ -283,6 +283,70 @@ class ShieldsScriptSetting : public ShieldsSetting {
   }
 };
 
+class DirectAccessContentSettings {
+ public:
+  explicit DirectAccessContentSettings(PrefService* prefs,
+                                       ContentSettingsType content_type,
+                                       const std::string& pref_name = {})
+      : prefs_(prefs),
+        content_type_(content_type),
+        pref_name_(pref_name),
+        info_(ContentSettingsRegistry::GetInstance()->Get(content_type_)) {
+    Refresh();
+  }
+
+  void Refresh() { prefs_value_ = prefs_->GetDict(GetPrefName()).Clone(); }
+
+  void AddRule(const ContentSettingsPattern& primary,
+               const ContentSettingsPattern& secondary,
+               ContentSetting setting) {
+    AddRule(primary.ToString(), secondary.ToString(), setting);
+  }
+
+  void AddRule(const std::string& primary,
+               const std::string& secondary,
+               ContentSetting setting) {
+    base::Value::Dict value;
+    value.Set("setting", setting);
+
+    prefs_value_.Set(primary + "," + secondary, std::move(value));
+  }
+
+  void Write() { prefs_->SetDict(GetPrefName(), prefs_value_.Clone()); }
+
+  size_t GetRulesCount() const { return prefs_value_.size(); }
+
+  ContentSetting GetContentSettingDirectly(
+      const std::string& primary_pattern,
+      const std::string& secondary_pattern = "*") {
+    const auto* v =
+        prefs_value_.Find(primary_pattern + "," + secondary_pattern);
+    if (!v) {
+      return CONTENT_SETTING_DEFAULT;
+    }
+    return ValueToContentSetting(*v->GetDict().Find("setting"));
+  }
+
+  ContentSetting GetContentSetting(
+      const ProviderInterface* provider,
+      const GURL& primary_url,
+      const GURL& secondary_url = GURL::EmptyGURL()) {
+    return TestUtils::GetContentSetting(provider, primary_url, secondary_url,
+                                        content_type_, false);
+  }
+
+ private:
+  const std::string& GetPrefName() const {
+    return pref_name_.empty() ? info_->website_settings_info()->pref_name()
+                              : pref_name_;
+  }
+  const raw_ptr<PrefService> prefs_ = nullptr;
+  const ContentSettingsType content_type_;
+  const std::string pref_name_;
+  const raw_ptr<const ContentSettingsInfo> info_ = nullptr;
+  base::Value::Dict prefs_value_;
+};
+
 }  // namespace
 
 class BravePrefProviderTest : public testing::Test {
@@ -692,70 +756,6 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationV2toV4) {
 
   provider.ShutdownOnUIThread();
 }
-
-class DirectAccessContentSettings {
- public:
-  explicit DirectAccessContentSettings(PrefService* prefs,
-                                       ContentSettingsType content_type,
-                                       const std::string& pref_name = {})
-      : prefs_(prefs),
-        content_type_(content_type),
-        pref_name_(pref_name),
-        info_(ContentSettingsRegistry::GetInstance()->Get(content_type_)) {
-    Refresh();
-  }
-
-  void Refresh() { prefs_value_ = prefs_->GetDict(GetPrefName()).Clone(); }
-
-  void AddRule(const ContentSettingsPattern& primary,
-               const ContentSettingsPattern& secondary,
-               ContentSetting setting) {
-    AddRule(primary.ToString(), secondary.ToString(), setting);
-  }
-
-  void AddRule(const std::string& primary,
-               const std::string& secondary,
-               ContentSetting setting) {
-    base::Value::Dict value;
-    value.Set("setting", setting);
-
-    prefs_value_.Set(primary + "," + secondary, std::move(value));
-  }
-
-  void Write() { prefs_->SetDict(GetPrefName(), prefs_value_.Clone()); }
-
-  size_t GetRulesCount() const { return prefs_value_.size(); }
-
-  ContentSetting GetContentSettingDirectly(
-      const std::string& primary_pattern,
-      const std::string& secondary_pattern = "*") {
-    const auto* v =
-        prefs_value_.Find(primary_pattern + "," + secondary_pattern);
-    if (!v) {
-      return CONTENT_SETTING_DEFAULT;
-    }
-    return ValueToContentSetting(*v->GetDict().Find("setting"));
-  }
-
-  ContentSetting GetContentSetting(
-      const ProviderInterface* provider,
-      const GURL& primary_url,
-      const GURL& secondary_url = GURL::EmptyGURL()) {
-    return TestUtils::GetContentSetting(provider, primary_url, secondary_url,
-                                        content_type_, false);
-  }
-
- private:
-  const std::string& GetPrefName() const {
-    return pref_name_.empty() ? info_->website_settings_info()->pref_name()
-                              : pref_name_;
-  }
-  const raw_ptr<PrefService> prefs_ = nullptr;
-  const ContentSettingsType content_type_;
-  const std::string pref_name_;
-  const raw_ptr<const ContentSettingsInfo> info_ = nullptr;
-  base::Value::Dict prefs_value_;
-};
 
 TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
   BravePrefProvider provider(
