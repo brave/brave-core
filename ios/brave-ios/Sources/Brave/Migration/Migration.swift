@@ -25,6 +25,9 @@ public class BraveProfileMigrations {
     migrateDefaultUserAgentPreferences()
     migrateBlockPopupsPreferences()
     migrateSyncPasswordsDefault()
+    Task {
+      await migrateShieldsToContentSettings()
+    }
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -55,6 +58,21 @@ public class BraveProfileMigrations {
     let debounceService = DebounceServiceFactory.get(privateMode: false)
     debounceService?.isEnabled = isDebounceEnabled
     Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
+  }
+
+  @MainActor public func migrateShieldsToContentSettings() {
+    guard !Preferences.Migration.shieldsCoreDataToContentSettingsCompleted.value else {
+      return
+    }
+    defer { Preferences.Migration.shieldsCoreDataToContentSettingsCompleted.value = true }
+    let domainsToMigrate = Domain.allDomainsWithExlicitShieldSettings()
+    let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(
+      profile: profileController.profile
+    )
+    // migrate global / default settings
+    braveShieldsSettings?.migrateGlobalSettings()
+    // migrate site-specific settings
+    braveShieldsSettings?.migrateShieldsToContentSettings(for: domainsToMigrate)
   }
 
   /// Migrate sync passwords default value to enabled.
@@ -309,6 +327,13 @@ extension Preferences {
     /// instead of a simple on/off `Bool` on the domain level
     static let domainAdBlockAndTrackingProtectionShieldLevelCompleted = Option<Bool>(
       key: "migration.domain-ad-block-and-tracking-protection-shield-level-completed",
+      default: false
+    )
+
+    /// If shields have been migrated from Domain CoreData object to chromium
+    /// content settings.
+    static let shieldsCoreDataToContentSettingsCompleted = Option<Bool>(
+      key: "migration.shields-coredata-to-content-settings-completed",
       default: false
     )
 

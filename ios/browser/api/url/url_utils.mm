@@ -11,6 +11,8 @@
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 #include "url/url_util.h"
+// #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "brave/components/content_settings/core/common/content_settings_util.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -60,6 +62,24 @@ std::string GetRegistry(const GURL& url) {
 
 - (bool)brave_isHostIPAddress {
   return net::GURLWithNSURL(self).HostIsIPAddress();
+}
+
+- (NSString*)brave_hostPatternString {
+  GURL gurl = net::GURLWithNSURL(self);
+  const auto pattern = content_settings::CreateHostPattern(gurl);
+  if (!pattern.IsValid()) {
+    return @"";
+  }
+  return base::SysUTF8ToNSString(pattern.GetHost());
+}
+
+- (NSString*)brave_domainPatternString {
+  GURL gurl = net::GURLWithNSURL(self);
+  const auto pattern = content_settings::CreateDomainPattern(gurl);
+  if (!pattern.IsValid()) {
+    return @"";
+  }
+  return base::SysUTF8ToNSString(pattern.GetHost());
 }
 
 - (NSString*)brave_spec {
