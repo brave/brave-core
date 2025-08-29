@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_controller.h"
@@ -35,6 +36,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/views/view_observer.h"
 
 class BraveLocationBarViewBrowserTest : public InProcessBrowserTest {
  public:
@@ -45,6 +47,11 @@ class BraveLocationBarViewBrowserTest : public InProcessBrowserTest {
 
     features_.InitAndEnableFeature(
         brave_search_conversion::features::kOmniboxPromotionButton);
+  }
+
+  BraveToolbarView* toolbar() {
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+    return static_cast<BraveToolbarView*>(browser_view->toolbar());
   }
 
   BraveLocationBarView* location_bar() {
@@ -179,4 +186,30 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   // Check dismissed bit is set after user clicks button.
   EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
       brave_search_conversion::prefs::kDismissed));
+}
+
+class OmniboxViewObserver : public views::ViewObserver {
+ public:
+  OmniboxViewObserver() = default;
+  ~OmniboxViewObserver() override = default;
+
+  void OnViewBoundsChanged(views::View* observed_view) override {
+    bounds_changed_count_++;
+  }
+
+  int bounds_changed_count_ = 0;
+};
+
+// Check location bar's layout is called only once when toolbar's size changed.
+IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
+                       OmniboxViewBoundsChangedTest) {
+  OmniboxViewObserver observer;
+  base::ScopedObservation<OmniboxViewViews, views::ViewObserver> observation(
+      &observer);
+  observation.Observe(omnibox_view());
+  auto toolbar_bounds = toolbar()->bounds();
+  toolbar_bounds.Inset(gfx::Insets::VH(0, 10));
+  toolbar()->SetBoundsRect(toolbar_bounds);
+
+  EXPECT_EQ(1, observer.bounds_changed_count_);
 }
