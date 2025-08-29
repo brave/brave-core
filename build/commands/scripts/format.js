@@ -188,13 +188,11 @@ const runMojomFormatForFile = async (file, dryRun) => {
     return
   }
   // Mojom formatting is experimental. Only these files are formatted by now.
-  const mojomFormatAllowList = [
-    'components/brave_wallet/common/brave_wallet.mojom',
-    'components/services/brave_wallet/public/mojom/brave_wallet_utils_service.mojom',
-    'components/services/brave_wallet/public/mojom/zcash_decoder.mojom',
-  ]
+  const mojomFormatAllowList = ['**/brave_wallet/**/*.mojom']
 
-  if (!mojomFormatAllowList.includes(file)) {
+  if (
+    !mojomFormatAllowList.some((pattern) => path.matchesGlob(file, pattern))
+  ) {
     return
   }
 
