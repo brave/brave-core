@@ -24,6 +24,7 @@ OBJC_EXPORT
 OBJC_EXPORT
 @interface BraveP3AUtils : NSObject
 @property(nonatomic) bool isP3AEnabled;
+@property(readonly) bool isP3APreferenceManaged;
 @property(nonatomic) bool isNoticeAcknowledged;
 - (nullable P3ACallbackRegistration*)registerRotationCallback:
     (void (^)(P3AMetricLogType logType))callback;

@@ -43,6 +43,17 @@ import os
       )
     }
   }
+  var isP3AManaged: Bool {
+    p3aUtilities.isP3APreferenceManaged
+  }
+  var isStatsReportingManaged: Bool {
+    braveStats.isStatsReportingManaged
+  }
+  @Published var isStatsReportingEnabled: Bool {
+    didSet {
+      braveStats.isStatsReportingEnabled = isStatsReportingEnabled
+    }
+  }
   @Published var isP3AEnabled: Bool {
     didSet {
       p3aUtilities.isP3AEnabled = isP3AEnabled
@@ -137,6 +148,7 @@ import os
   private let braveShieldsSettings: any BraveShieldsSettings
   private let rewards: BraveRewards?
   private let clearDataCallback: ClearDataCallback
+  private let braveStats: BraveStats
   private let webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?
   let tabManager: TabManager
 
@@ -149,6 +161,7 @@ import os
     braveCore: BraveProfileController,
     p3aUtils: BraveP3AUtils,
     rewards: BraveRewards?,
+    braveStats: BraveStats,
     webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?,
     clearDataCallback: @escaping ClearDataCallback
   ) {
@@ -158,8 +171,10 @@ import os
     self.braveShieldsSettings = braveShieldsSettings
     self.tabManager = tabManager
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
+    self.isStatsReportingEnabled = braveStats.isStatsReportingEnabled
     self.rewards = rewards
     self.clearDataCallback = clearDataCallback
+    self.braveStats = braveStats
     if FeatureList.kBraveShieldsContentSettings.enabled {
       self.adBlockAndTrackingPreventionLevel = braveShieldsSettings.defaultAdBlockMode.shieldLevel
       self.isBlockScriptsEnabled = braveShieldsSettings.isBlockScriptsEnabledByDefault

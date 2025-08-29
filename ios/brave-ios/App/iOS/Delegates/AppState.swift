@@ -34,6 +34,7 @@ public class AppState {
 
   public let braveCore: BraveCoreMain
   public let migration: Migration
+  public let localStateMigration: BraveLocalStateMigration
   public let profile: LegacyBrowserProfile
   public let newsFeedDataSource: FeedDataSource
   public let uptimeMonitor = UptimeMonitor()
@@ -98,9 +99,11 @@ public class AppState {
 
     // Setup Migrations
     migration = Migration()
+    localStateMigration = BraveLocalStateMigration(localState: braveCore.localState)
 
     // Perform Migrations
     migration.launchMigrations(keyPrefix: "profile")
+    localStateMigration.launchMigrations()
 
     newsFeedDataSource = FeedDataSource()
 

@@ -11,6 +11,7 @@ source_set("brave_stats") {
   deps = [
     "//base",
     "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/constants",
     "//components/prefs",
   ]
 }

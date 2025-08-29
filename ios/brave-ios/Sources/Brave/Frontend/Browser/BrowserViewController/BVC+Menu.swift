@@ -59,6 +59,7 @@ extension BrowserViewController {
       windowProtection: self.windowProtection,
       p3aUtils: self.braveCore.p3aUtils,
       braveCore: self.profileController,
+      localState: self.braveCore.localState,
       attributionManager: attributionManager,
       keyringStore: keyringStore,
       cryptoStore: cryptoStore

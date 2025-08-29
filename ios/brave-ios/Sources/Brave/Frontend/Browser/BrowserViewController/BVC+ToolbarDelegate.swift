@@ -524,6 +524,7 @@ extension BrowserViewController: TopToolbarDelegate {
           braveCore: profileController,
           p3aUtils: braveCore.p3aUtils,
           rewards: rewards,
+          braveStats: profileController.braveStats,
           webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(privateMode: false),
           clearDataCallback: { [weak self] isLoading, isHistoryCleared in
             guard let self else { return }

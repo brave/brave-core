@@ -68,6 +68,7 @@ class SettingsViewController: TableViewController {
   private let syncProfileServices: BraveSyncProfileServiceIOS
   private let p3aUtilities: BraveP3AUtils
   private let deAmpPrefs: DeAmpPrefs
+  private let localState: any PrefService
   private let attributionManager: AttributionManager
   private let keyringStore: KeyringStore?
   private let cryptoStore: CryptoStore?
@@ -91,6 +92,7 @@ class SettingsViewController: TableViewController {
     windowProtection: WindowProtection?,
     p3aUtils: BraveP3AUtils,
     braveCore: BraveProfileController,
+    localState: any PrefService,
     attributionManager: AttributionManager,
     keyringStore: KeyringStore? = nil,
     cryptoStore: CryptoStore? = nil
@@ -101,6 +103,7 @@ class SettingsViewController: TableViewController {
     self.rewards = rewards
     self.windowProtection = windowProtection
     self.braveCore = braveCore
+    self.localState = localState
     self.historyAPI = braveCore.historyAPI
     self.passwordAPI = braveCore.passwordAPI
     self.syncAPI = braveCore.syncAPI
@@ -374,6 +377,7 @@ class SettingsViewController: TableViewController {
                   braveCore: braveCore,
                   p3aUtils: p3aUtilities,
                   rewards: rewards,
+                  braveStats: braveCore.braveStats,
                   webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(
                     privateMode: false
                   ),
