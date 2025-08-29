@@ -310,8 +310,10 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(
-        features::kBraveWalletBitcoinFeature);
+    scoped_feature_list_.InitWithFeatures(
+        {features::kBraveWalletBitcoinFeature,
+         features::kBraveWalletCardanoFeature},
+        {});
 
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
@@ -3319,9 +3321,6 @@ TEST_F(BraveWalletServiceUnitTest, HasPermissionSync) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetNetworkForAccountOnActiveOrigin) {
-  base::test::ScopedFeatureList feature_list{
-      features::kBraveWalletCardanoFeature};
-
   SetupWallet();
 
   auto eth_account_id =
