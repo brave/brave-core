@@ -17,7 +17,6 @@
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
 #include "base/android/scoped_java_ref.h"
-#include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/affiliations/core/browser/affiliation_utils.h"
@@ -42,10 +41,10 @@ std::unique_ptr<CredentialEditBridge> CredentialEditBridge::MaybeCreate(
   if (!java_bridge) {
     return nullptr;
   }
-  return base::WrapUnique(new CredentialEditBridge(
+  return std::make_unique<CredentialEditBridge>(
       std::move(credential), is_insecure_credential,
       std::move(existing_usernames), saved_passwords_presenter,
-      std::move(dismissal_callback), context, std::move(java_bridge)));
+      std::move(dismissal_callback), context, std::move(java_bridge));
 }
 
 CredentialEditBridge::CredentialEditBridge(
