@@ -268,10 +268,6 @@ GetMockEventsAndExpectedEventsBody() {
   return std::make_pair(std::move(events), expected_events_body);
 }
 
-}  // namespace
-
-using ConversationEvent = ConversationAPIClient::ConversationEvent;
-
 class MockCallbacks {
  public:
   MOCK_METHOD(void, OnDataReceived, (EngineConsumer::GenerationResultData));
@@ -282,6 +278,7 @@ class MockCallbacks {
 class MockAIChatCredentialManager : public AIChatCredentialManager {
  public:
   using AIChatCredentialManager::AIChatCredentialManager;
+  ~MockAIChatCredentialManager() override = default;
   MOCK_METHOD(void,
               FetchPremiumCredential,
               (base::OnceCallback<void(std::optional<CredentialCacheEntry>)>),
@@ -292,6 +289,7 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
 class MockAPIRequestHelper : public api_request_helper::APIRequestHelper {
  public:
   using api_request_helper::APIRequestHelper::APIRequestHelper;
+  ~MockAPIRequestHelper() override = default;
   MOCK_METHOD(Ticket,
               RequestSSE,
               (const std::string&,
@@ -336,6 +334,10 @@ class TestConversationAPIClient : public ConversationAPIClient {
     return static_cast<MockAPIRequestHelper*>(GetAPIRequestHelperForTesting());
   }
 };
+
+}  // namespace
+
+using ConversationEvent = ConversationAPIClient::ConversationEvent;
 
 class ConversationAPIUnitTest : public testing::Test {
  public:
