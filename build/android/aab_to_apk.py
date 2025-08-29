@@ -14,17 +14,39 @@ import sign_apk
 
 def main():
     argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument('bundletool')
-    argument_parser.add_argument('target_aab_path')
-    argument_parser.add_argument('output_apk_path')
-    argument_parser.add_argument('output_path')
-    argument_parser.add_argument('key_path')
-    argument_parser.add_argument('key_passwd')
-    argument_parser.add_argument('prvt_key_passwd')
-    argument_parser.add_argument('key_name')
-    argument_parser.add_argument('zipalign_path')
-    argument_parser.add_argument('apksigner_path')
-    argument_parser.add_argument('jarsigner_path')
+    argument_parser.add_argument('--bundletool',
+                                 required=True,
+                                 help='Path to bundletool JAR file')
+    argument_parser.add_argument('--target-aab-path',
+                                 required=True,
+                                 help='Path to the target AAB file')
+    argument_parser.add_argument('--output-apk-path',
+                                 required=True,
+                                 help='Path for the output APK file')
+    argument_parser.add_argument('--output-path',
+                                 required=True,
+                                 help='Output directory path')
+    argument_parser.add_argument('--key-path',
+                                 required=True,
+                                 help='Path to keystore file')
+    argument_parser.add_argument('--key-passwd',
+                                 required=True,
+                                 help='Keystore password')
+    argument_parser.add_argument('--prvt-key-passwd',
+                                 required=True,
+                                 help='Private key password')
+    argument_parser.add_argument('--key-name',
+                                 required=True,
+                                 help='Key alias name')
+    argument_parser.add_argument('--zipalign-path',
+                                 required=True,
+                                 help='Path to zipalign tool')
+    argument_parser.add_argument('--apksigner-path',
+                                 required=True,
+                                 help='Path to apksigner tool')
+    argument_parser.add_argument('--jarsigner-path',
+                                 required=True,
+                                 help='Path to jarsigner tool')
     args = argument_parser.parse_args()
 
     apks_name = os.path.splitext(args.output_apk_path)[0] + ".apks"
@@ -56,9 +78,14 @@ def main():
     if os.path.isfile(apks_name):
         os.remove(apks_name)
 
-    sign_apk.sign(args.zipalign_path, args.apksigner_path, \
-        args.jarsigner_path, [ args.output_apk_path ], args.key_path, \
-        args.key_passwd, args.prvt_key_passwd, args.key_name)
+    sign_apk.sign(zipalign_path=args.zipalign_path,
+                  apksigner_path=args.apksigner_path,
+                  jarsigner_path=args.jarsigner_path,
+                  unsigned_apk_paths=[args.output_apk_path],
+                  key_path=args.key_path,
+                  key_passwd=args.key_passwd,
+                  prvt_key_passwd=args.prvt_key_passwd,
+                  key_name=args.key_name)
 
 
 if __name__ == '__main__':
