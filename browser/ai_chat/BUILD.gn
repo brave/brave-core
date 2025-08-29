@@ -172,6 +172,7 @@ source_set("unit_tests") {
     "//chrome/common",
     "//chrome/test:test_support",
     "//components/paint_preview/common/mojom",
+    "//components/paint_preview/common:test_utils",
     "//components/services/paint_preview_compositor/public/mojom",
     "//content/public/browser",
     "//content/test:test_support",
