@@ -9,8 +9,9 @@ import Icon from '@brave/leo/react/icon'
 import Tooltip from '@brave/leo/react/tooltip'
 
 import { getString } from '../../lib/strings'
-import { useRewardsState } from '../../context/rewards_context'
+import { useRewardsState, useRewardsActions } from '../../context/rewards_context'
 import { usePluralString } from '../../lib/plural_string'
+import { WidgetMenu } from './widget_menu'
 import { Link, openLink } from '../common/link'
 import { WalletProviderIcon } from '../../../../../components/brave_rewards/resources/shared/components/icons/wallet_provider_icon'
 import { getExternalWalletProviderName } from '../../../../../components/brave_rewards/resources/shared/lib/external_wallet'
@@ -55,7 +56,7 @@ export function RewardsWidget() {
 
   function renderOnboarding() {
     return (
-      <div data-css-scope={style.scope} className='onboarding'>
+      <RewardsWidgetContainer className='onboarding'>
         <div className='title'>
           <Icon name='product-bat-color' /> {getString('rewardsWidgetTitle')}
         </div>
@@ -82,13 +83,13 @@ export function RewardsWidget() {
             </Link>
           </div>
         </div>
-      </div>
+      </RewardsWidgetContainer>
     )
   }
 
   function renderUnconnected() {
     return (
-      <div data-css-scope={style.scope} className='unconnected'>
+      <RewardsWidgetContainer className='unconnected'>
         <div className='title'>
           {getString('rewardsWidgetTitle')}
         </div>
@@ -111,7 +112,7 @@ export function RewardsWidget() {
             </Button>
           </div>
         </div>
-      </div>
+      </RewardsWidgetContainer>
     )
   }
 
@@ -120,7 +121,7 @@ export function RewardsWidget() {
       return null
     }
     return (
-      <div data-css-scope={style.scope} className='login'>
+      <RewardsWidgetContainer className='login'>
         <div className='title'>
           {getString('rewardsWidgetTitle')}
         </div>
@@ -150,13 +151,13 @@ export function RewardsWidget() {
             </Button>
           </div>
         </div>
-      </div>
+      </RewardsWidgetContainer>
     )
   }
 
   function renderTosUpdateNotice() {
     return (
-      <div data-css-scope={style.scope} className='login'>
+      <RewardsWidgetContainer className='login'>
         <div className='title'>
           {getString('rewardsWidgetTitle')}
         </div>
@@ -178,7 +179,7 @@ export function RewardsWidget() {
             </Button>
           </div>
         </div>
-      </div>
+      </RewardsWidgetContainer>
     )
   }
 
@@ -260,7 +261,7 @@ export function RewardsWidget() {
   }
 
   return (
-    <div data-css-scope={style.scope} className='connected'>
+    <RewardsWidgetContainer className='connected'>
       <div className='title'>
         {getString('rewardsWidgetTitle')}
       </div>
@@ -291,6 +292,25 @@ export function RewardsWidget() {
           {renderPayoutStatus() || renderAdsViewed()}
         </div>
       </div>
+    </RewardsWidgetContainer>
+  )
+}
+
+interface ContainerProps {
+  className: string
+  children: React.ReactNode
+}
+
+function RewardsWidgetContainer(props: ContainerProps) {
+  const actions = useRewardsActions()
+  return (
+    <div data-css-scope={style.scope} className={props.className}>
+      <WidgetMenu>
+        <leo-menu-item onClick={() => actions.setShowRewardsWidget(false)}>
+          <Icon name='eye-off' /> {getString('hideRewardsWidgetLabel')}
+        </leo-menu-item>
+      </WidgetMenu>
+      {props.children}
     </div>
   )
 }

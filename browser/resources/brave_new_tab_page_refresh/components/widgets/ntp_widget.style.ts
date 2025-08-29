@@ -8,6 +8,7 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
+    position: relative;
     color: ${color.text.primary};
     border-radius: 16px;
     background: ${color.material.thin};

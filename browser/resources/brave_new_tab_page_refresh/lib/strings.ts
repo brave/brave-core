@@ -24,7 +24,13 @@ export type StringKey =
   'enabledSearchEnginesLabel' |
   'gradientBackgroundLabel' |
   'gradientBackgroundTitle' |
+  'hideRewardsWidgetLabel' |
+  'hideStatsWidgetLabel' |
+  'hideTalkWidgetLabel' |
   'hideTopSitesLabel' |
+  'hideVpnWidgetLabel' |
+  'newsCustomizeButtonLabel' |
+  'newsDisableButtonLabel' |
   'newsEnableButtonLabel' |
   'newsEnableText' |
   'newsSettingsTitle' |

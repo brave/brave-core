@@ -11,6 +11,7 @@ import Toggle from '@brave/leo/react/toggle'
 import { getString } from '../../lib/strings'
 import { ConnectionState } from '../../state/vpn_state'
 import { useVpnState, useVpnActions } from '../../context/vpn_context'
+import { WidgetMenu } from './widget_menu'
 import classNames from '$web-common/classnames'
 
 import { style } from './vpn_widget.style'
@@ -28,7 +29,7 @@ export function VpnWidget() {
 
   function renderPromo() {
     return (
-      <div data-css-scope={style.scope}>
+      <VpnWidgetContainer>
         <div className='title'>
           <span>
             <Icon name='product-vpn' />
@@ -68,7 +69,7 @@ export function VpnWidget() {
             </button>
           </div>
         </div>
-      </div>
+      </VpnWidgetContainer>
     )
   }
 
@@ -125,7 +126,7 @@ export function VpnWidget() {
   }
 
   return (
-    <div data-css-scope={style.scope}>
+    <VpnWidgetContainer>
       <div className='title'>{getString('vpnWidgetTitle')}</div>
       <div
         className={classNames({
@@ -149,6 +150,20 @@ export function VpnWidget() {
           />
         </div>
       </div>
+    </VpnWidgetContainer>
+  )
+}
+
+function VpnWidgetContainer(props: React.PropsWithChildren) {
+  const actions = useVpnActions()
+  return (
+    <div data-css-scope={style.scope}>
+      <WidgetMenu>
+        <leo-menu-item onClick={() => actions.setShowVpnWidget(false)}>
+          <Icon name='eye-off' /> {getString('hideVpnWidgetLabel')}
+        </leo-menu-item>
+      </WidgetMenu>
+      {props.children}
     </div>
   )
 }
