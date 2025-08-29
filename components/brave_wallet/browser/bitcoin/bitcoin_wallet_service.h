@@ -176,10 +176,10 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
                           GetUtxosCallback callback,
                           base::expected<UtxoMap, std::string> result);
 
-  void OnGetBalanceTaskDone(GetBalanceTask* task,
-                            GetBalanceCallback callback,
-                            mojom::BitcoinBalancePtr balance,
-                            const std::optional<std::string>& error);
+  void OnGetBalanceTaskDone(
+      GetBalanceTask* task,
+      GetBalanceCallback callback,
+      base::expected<mojom::BitcoinBalancePtr, std::string> balance);
 
   bool SignTransactionInternal(BitcoinTransaction& tx,
                                const mojom::AccountIdPtr& account_id);
