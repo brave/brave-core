@@ -16,7 +16,11 @@ pub fn get_pubkey() -> String {
 
     let mini_key = schnorrkel::MiniSecretKey::from_bytes(&seed).unwrap();
     let keypair = mini_key.expand_to_keypair(schnorrkel::ExpansionMode::Ed25519);
-    let bytes = keypair.public.to_bytes();
+    let _bytes = keypair.public.to_bytes();
 
-    bytes.iter().map(|byte| format!("{byte:02X}")).collect::<String>()
+    let message = "hello, world!";
+    const SIGNING_CTX: &'static [u8] = b"substrate";
+
+    let signature_bytes = keypair.sign_simple(SIGNING_CTX, message.as_bytes()).to_bytes();
+    signature_bytes.iter().map(|byte| format!("{byte:02X}")).collect::<String>()
 }
