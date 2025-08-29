@@ -17,10 +17,8 @@ import {
   useAcknowledgeSwitchChainRequestMutation,
   useGetNetworkForAccountOnActiveOriginQuery,
   useGetNetworkQuery,
+  useGetSelectedDappAccountsQuery,
 } from '../../../common/slices/api.slice'
-import {
-  useSelectedETHAccountQuery, //
-} from '../../../common/slices/api.slice.extra'
 
 // Components
 import { CreateNetworkIcon } from '../../shared/create-network-icon'
@@ -75,9 +73,9 @@ export function AllowAddChangeNetworkPanel(props: Props) {
   const [showNetworkDetails, setShowNetworkDetails] = React.useState(false)
 
   // queries
-  const { data: selectedETHAccount } = useSelectedETHAccountQuery()
+  const { data: dappsAccounts } = useGetSelectedDappAccountsQuery()
   const { data: selectedNetwork } = useGetNetworkForAccountOnActiveOriginQuery({
-    accountId: selectedETHAccount?.accountId,
+    accountId: dappsAccounts?.ethAccountId,
   })
 
   const { data: switchChainRequestNetwork } = useGetNetworkQuery(

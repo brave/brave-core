@@ -9,7 +9,10 @@ import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
 
 // Queries
-import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
+import {
+  useGetActiveOriginQuery,
+  useGetSelectedDappAccountsQuery,
+} from '../../../common/slices/api.slice'
 
 // Hooks
 import {
@@ -46,16 +49,11 @@ import {
 import { Column } from '../../shared/style'
 import { VerifiedLabel } from '../../shared/verified_label/verified_label'
 
-const CONNECTABLE_COIN_TYPES = [
-  BraveWallet.CoinType.ETH,
-  BraveWallet.CoinType.SOL,
-  BraveWallet.CoinType.ADA,
-]
-
 export const Connections = () => {
   // Queries
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
     useGetActiveOriginQuery()
+  const { data: dappsAccounts } = useGetSelectedDappAccountsQuery()
 
   // Redux
   const isCardanoDappSupportEnabled = useSafeWalletSelector(
@@ -112,15 +110,20 @@ export const Connections = () => {
           gap='16px'
           width='100%'
         >
-          {CONNECTABLE_COIN_TYPES.filter(
-            (coin) =>
-              coin !== BraveWallet.CoinType.ADA || isCardanoDappSupportEnabled,
-          ).map((coin) => (
+          <ConnectionSection
+            coin={BraveWallet.CoinType.ETH}
+            selectedAccountId={dappsAccounts?.ethAccountId}
+          />
+          <ConnectionSection
+            coin={BraveWallet.CoinType.SOL}
+            selectedAccountId={dappsAccounts?.solAccountId}
+          />
+          {isCardanoDappSupportEnabled && (
             <ConnectionSection
-              key={coin}
-              coin={coin}
+              coin={BraveWallet.CoinType.ADA}
+              selectedAccountId={dappsAccounts?.adaAccountId}
             />
-          ))}
+          )}
         </Column>
       </Column>
     </WalletPageWrapper>
