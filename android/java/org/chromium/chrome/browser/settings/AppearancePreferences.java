@@ -32,6 +32,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.ToolbarPositionController;
+import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarFeatures;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -53,6 +54,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
     public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
     public static final String PREF_ADDRESS_BAR = "address_bar";
+    public static final String PREF_TOOLBAR_SHORTCUT = "toolbar_shortcut";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
@@ -88,6 +90,10 @@ public class AppearancePreferences extends BravePreferenceFragment
 
         if (!ToolbarPositionController.isToolbarPositionCustomizationEnabled(getContext(), false)) {
             removePreferenceIfPresent(PREF_ADDRESS_BAR);
+        }
+
+        if (!AdaptiveToolbarFeatures.isCustomizationEnabled()) {
+            removePreferenceIfPresent(PREF_TOOLBAR_SHORTCUT);
         }
     }
 
@@ -234,6 +240,11 @@ public class AppearancePreferences extends BravePreferenceFragment
             }
             ((ChromeSwitchPreference) enableBottomToolbar)
                     .setEnabled(BottomToolbarConfiguration.isToolbarTopAnchored());
+        }
+
+        if (AdaptiveToolbarFeatures.isCustomizationEnabled()) {
+            updatePreferenceIcon(
+                    PREF_TOOLBAR_SHORTCUT, R.drawable.ic_browser_customizable_shortcut);
         }
     }
 
