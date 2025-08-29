@@ -3,8 +3,6 @@
     "browser-type": "brave",
     "profile": "brave-typical-mac",
     "extra-browser-args": [
-      "--disable-component-update",
-      "--allow-brave-component-update",
       "--disable-backgrounding-occluded-windows",
     ],
     "field-trials": "no-trials",
