@@ -21,12 +21,22 @@ interface Props {
   href: string
   className?: string
   children: React.ReactNode
+  onClick?: (event: React.UIEvent) => void
 }
 
 export function NewTabLink (props: Props) {
   const tabOpener = React.useContext(TabOpenerContext)
 
   const onClick = (event: React.UIEvent) => {
+    // Call the custom onClick handler if provided
+    if (props.onClick) {
+      props.onClick(event)
+    }
+
+    if (event.defaultPrevented) {
+      return
+    }
+
     // If a tab opener has been specified for this component tree, then use it
     // to open the new tab. This will allow links to be opened from contexts
     // where normal links do not work (e.g. a bubble).

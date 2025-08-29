@@ -99,6 +99,8 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Rewards.EnabledSource", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.MobileConversion", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.MobilePanelCount.2", MetricConfig{.ephemeral = true}},
+    {"Brave.Rewards.OfferClicks", MetricConfig{.ephemeral = true}},
+    {"Brave.Rewards.OffersViewed", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.SearchResultAdsOptin", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.TipsState.2", {}},
     {"Brave.Rewards.ToolbarButtonTrigger", MetricConfig{.ephemeral = true}},
