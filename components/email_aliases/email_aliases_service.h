@@ -82,6 +82,9 @@ class EmailAliasesService : public KeyedService,
   // Returns the current auth token for tests. Empty when unauthenticated.
   std::string GetAuthTokenForTesting() const;
 
+  // Returns true if the service is currently polling for a session.
+  bool IsPollingSessionForTesting() const;
+
   // Build the fully-qualified Brave Accounts verification URLs.
   static GURL GetAccountsServiceVerifyInitURL();
   static GURL GetAccountsServiceVerifyResultURL();

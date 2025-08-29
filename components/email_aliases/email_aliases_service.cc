@@ -314,4 +314,8 @@ std::string EmailAliasesService::GetAuthTokenForTesting() const {
   return auth_token_;
 }
 
+bool EmailAliasesService::IsPollingSessionForTesting() const {
+  return session_poll_elapsed_timer_.has_value();
+}
+
 }  // namespace email_aliases

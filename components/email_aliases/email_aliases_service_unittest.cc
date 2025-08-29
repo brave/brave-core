@@ -210,10 +210,15 @@ TEST_F(EmailAliasesServiceTest, RequestSession_Success) {
                          "\"service\":\"email-aliases\"}"},
                         AuthenticationStatus::kAuthenticated);
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "auth456");
+  EXPECT_FALSE(service_->IsPollingSessionForTesting());
 }
 
 TEST_F(EmailAliasesServiceTest, RequestSession_InvalidJson) {
-  RunRequestSessionTest({"not a json"}, AuthenticationStatus::kAuthenticating);
+  RunRequestSessionTest({"not a json",
+                         "{\"authToken\":\"auth456\", \"verified\":true, "
+                         "\"service\":\"email-aliases\"}"},
+                        AuthenticationStatus::kAuthenticated);
+  EXPECT_FALSE(service_->IsPollingSessionForTesting());
 }
 
 TEST_F(EmailAliasesServiceTest, RequestSession_RetryOnMissingAuthToken) {
@@ -229,6 +234,7 @@ TEST_F(EmailAliasesServiceTest, RequestSession_RetryOnMissingAuthToken) {
   // unauthenticated, authenticating, authenticated
   EXPECT_EQ(observer_->last_state,
             email_aliases::mojom::AuthenticationStatus::kAuthenticated);
+  EXPECT_FALSE(service_->IsPollingSessionForTesting());
 }
 
 TEST_F(EmailAliasesServiceTest, RequestSession_StopsOnVerificationFailed) {
@@ -236,19 +242,27 @@ TEST_F(EmailAliasesServiceTest, RequestSession_StopsOnVerificationFailed) {
       {"{\"error\":\"verification_failed\", \"code\":400, \"status\":400}"},
       email_aliases::mojom::AuthenticationStatus::kUnauthenticated);
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "");
+  EXPECT_FALSE(service_->IsPollingSessionForTesting());
 }
 
 TEST_F(EmailAliasesServiceTest,
        RequestSession_ParseableWrongShape_RetriesAuthenticating) {
   // JSON parses but doesn't match expected schema; treated as retry.
-  RunRequestSessionTest({"{}"}, AuthenticationStatus::kAuthenticating);
+  RunRequestSessionTest({"{}",
+                         "{\"authToken\":\"auth456\", \"verified\":true, "
+                         "\"service\":\"email-aliases\"}"},
+                        AuthenticationStatus::kAuthenticated);
+  EXPECT_FALSE(service_->IsPollingSessionForTesting());
 }
 
 TEST_F(EmailAliasesServiceTest,
        RequestSession_VerifiedTrueMissingAuthToken_Retries) {
   // Verified true but no authToken provided; treated as retry.
-  RunRequestSessionTest({"{\"verified\":true, \"service\":\"email-aliases\"}"},
-                        AuthenticationStatus::kAuthenticating);
+  RunRequestSessionTest({"{\"verified\":true, \"service\":\"email-aliases\"}",
+                         "{\"authToken\":\"auth456\", \"verified\":true, "
+                         "\"service\":\"email-aliases\"}"},
+                        AuthenticationStatus::kAuthenticated);
+  EXPECT_FALSE(service_->IsPollingSessionForTesting());
 }
 
 TEST_F(EmailAliasesServiceTest,
@@ -285,6 +299,7 @@ TEST_F(EmailAliasesServiceTest,
   // We should still be authenticating and have no auth token.
   EXPECT_EQ(observer_->last_state, AuthenticationStatus::kAuthenticating);
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "");
+  EXPECT_TRUE(service_->IsPollingSessionForTesting());
 }
 
 TEST_F(EmailAliasesServiceTest,
@@ -301,6 +316,7 @@ TEST_F(EmailAliasesServiceTest,
 
   // Auth token should be cleared
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "");
+  EXPECT_FALSE(service_->IsPollingSessionForTesting());
 }
 
 TEST_F(EmailAliasesServiceTest,
@@ -312,6 +328,7 @@ TEST_F(EmailAliasesServiceTest,
   CancelAuthenticationOrLogout();
 
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "");
+  EXPECT_FALSE(service_->IsPollingSessionForTesting());
 }
 
 TEST_F(EmailAliasesServiceTest, Cancel_IgnoresLateCallback) {
@@ -331,6 +348,7 @@ TEST_F(EmailAliasesServiceTest, Cancel_IgnoresLateCallback) {
   // State remains unauthenticated and no token is stored.
   EXPECT_EQ(observer_->last_state, AuthenticationStatus::kUnauthenticated);
   EXPECT_EQ(service_->GetAuthTokenForTesting(), "");
+  EXPECT_FALSE(service_->IsPollingSessionForTesting());
 }
 
 TEST_F(EmailAliasesServiceTest,
