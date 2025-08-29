@@ -19,6 +19,7 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity.OnQuickServerSelection;
 import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity.OnServerRegionSelection;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -31,6 +32,8 @@ public class BraveVpnServerSelectionAdapter
     private final Context mContext;
     private List<Region> mRegions = new ArrayList<>();
     private OnServerRegionSelection mOnServerRegionSelection;
+    private OnQuickServerSelection mOnQuickServerSelection;
+    private Region mActiveRegion;
 
     public BraveVpnServerSelectionAdapter(Context context) {
         this.mContext = context;
@@ -43,6 +46,28 @@ public class BraveVpnServerSelectionAdapter
         View listItem = layoutInflater.inflate(
                 R.layout.brave_vpn_server_selection_item_layout, parent, false);
         return new ViewHolder(listItem);
+    }
+
+    private static enum CheckedState {
+        SET_CHECKED,
+        SET_UNCHECKED,
+    }
+
+    @Override
+    public void onBindViewHolder(
+            @NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position);
+            return;
+        }
+        Object isCheckedObj = payloads.get(0);
+        if (isCheckedObj instanceof CheckedState) {
+            boolean isChecked = ((CheckedState) isCheckedObj) == CheckedState.SET_CHECKED;
+            holder.serverRadioButton.setChecked(isChecked);
+            if (isChecked) {
+                mActiveRegion = mRegions.get(position);
+            }
+        }
     }
 
     @Override
@@ -62,8 +87,28 @@ public class BraveVpnServerSelectionAdapter
                             .getQuantityString(
                                     R.plurals.server_text, region.serverCount, region.serverCount);
             holder.cityServerText.setText(cityText.concat(serverText));
-            holder.serverRadioButton.setChecked(
-                    BraveVpnPrefUtils.getRegionIsoCode().equals(region.countryIsoCode));
+            boolean isChecked = BraveVpnPrefUtils.getRegionIsoCode().equals(region.countryIsoCode);
+            holder.serverRadioButton.setChecked(isChecked);
+            if (isChecked) {
+                mActiveRegion = region;
+            }
+            holder.serverRadioButton.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (region == mActiveRegion) {
+                                return;
+                            }
+                            mOnQuickServerSelection.onQuickServerSelect(region);
+                            if (mActiveRegion != null) {
+                                notifyItemChanged(
+                                        mRegions.indexOf(mActiveRegion),
+                                        CheckedState.SET_UNCHECKED);
+                            }
+                            notifyItemChanged(
+                                    holder.getBindingAdapterPosition(), CheckedState.SET_CHECKED);
+                        }
+                    });
             holder.serverSelectionItemLayout.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
@@ -85,6 +130,10 @@ public class BraveVpnServerSelectionAdapter
 
     public void setOnServerRegionSelection(OnServerRegionSelection onServerRegionSelection) {
         this.mOnServerRegionSelection = onServerRegionSelection;
+    }
+
+    public void setOnQuickServerSelection(OnQuickServerSelection onQuickServerSelection) {
+        this.mOnQuickServerSelection = onQuickServerSelection;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
