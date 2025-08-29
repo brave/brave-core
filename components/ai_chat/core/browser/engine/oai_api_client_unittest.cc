@@ -55,7 +55,6 @@ base::Value ParseOrStringValue(const std::string& json) {
   }
   return std::move(maybe_json.value());
 }
-}  // namespace
 
 class MockCallbacks {
  public:
@@ -66,6 +65,7 @@ class MockCallbacks {
 class MockAPIRequestHelper : public api_request_helper::APIRequestHelper {
  public:
   using api_request_helper::APIRequestHelper::APIRequestHelper;
+  ~MockAPIRequestHelper() override = default;
   MOCK_METHOD(Ticket,
               RequestSSE,
               (const std::string&,
@@ -94,6 +94,8 @@ class TestOAIAPIClient : public OAIAPIClient {
     return static_cast<MockAPIRequestHelper*>(GetAPIRequestHelperForTesting());
   }
 };
+
+}  // namespace
 
 class OAIAPIUnitTest : public testing::Test {
  public:
@@ -149,15 +151,17 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
   base::RunLoop run_loop;
 
   // Intercept API Request Helper call and verify the request is as expected
+  GURL expected_url = model_options->endpoint;
   EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
-      .WillOnce([&](const std::string& method, const GURL& url,
+      .WillOnce([&, expected_url](
+                    const std::string& method, const GURL& url,
                     const std::string& body, const std::string& content_type,
                     DataReceivedCallback data_received_callback,
                     ResultCallback result_callback,
                     const base::flat_map<std::string, std::string>& headers,
                     const api_request_helper::APIRequestOptions& options) {
         EXPECT_TRUE(url.is_valid());
-        EXPECT_EQ(url, model_options->endpoint);
+        EXPECT_EQ(url, expected_url);
         EXPECT_EQ(headers.contains("Authorization"), true);
         EXPECT_EQ(method, net::HttpRequestHeaders::kPostMethod);
         EXPECT_EQ(GetMessagesJson(body),
