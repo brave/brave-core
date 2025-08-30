@@ -118,7 +118,7 @@ extension BrowserViewController: TabDelegate {
           image: UIImage(braveSystemNamed: "leo.broom"),
           handler: UIAction.deferredActionHandler { _ in
             let service = URLSanitizerServiceFactory.get(privateMode: currentTab.isPrivate)
-            let cleanedURL = service?.sanitizeURL(url) ?? url
+            let cleanedURL = service?.sanitize(url: url) ?? url
             UIPasteboard.general.url = cleanedURL
           }
         )
