@@ -16,7 +16,7 @@ import Input from "@brave/leo/react/input"
 import ProgressRing from "@brave/leo/react/progressRing"
 import Row from "./styles/Row"
 import styled from "styled-components"
-import { Alias, EmailAliasesServiceInterface, GenerateAliasResult, MAX_ALIASES }
+import { Alias, EmailAliasesServiceInterface, MAX_ALIASES}
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 const ModalCol = styled(Col)`
@@ -140,14 +140,14 @@ export const DeleteAliasModal = ({
 }) => {
   const [deleting, setDeleting] = React.useState<boolean>(false)
   const [deleteErrorMessage, setDeleteErrorMessage] =
-    React.useState<string | null>(null)
+    React.useState<string | undefined>(undefined)
   const onDeleteAlias = async () => {
-    setDeleteErrorMessage(null)
+    setDeleteErrorMessage(undefined)
     setDeleting(true)
-    const { errorMessage } = await emailAliasesService.deleteAlias(alias.email)
+    const { result } = await emailAliasesService.deleteAlias(alias.email)
     setDeleting(false)
-    if (errorMessage) {
-      setDeleteErrorMessage(errorMessage)
+    if (result.failure) {
+      setDeleteErrorMessage(result.failure)
     } else {
       onReturnToMain()
     }
@@ -198,20 +198,20 @@ export const EmailAliasModal = (
   const [awaitingProposedAlias, setAwaitingProposedAlias] =
     React.useState<boolean>(true)
   const [generateAliasResult, setGenerateAliasResult] =
-    React.useState<GenerateAliasResult>({
-      aliasEmail: editAlias?.email ?? '',
-      errorMessage: undefined
+    React.useState<{ success?: string, failure?: string }>({
+      success: editAlias?.email ?? '',
+      failure: undefined
     })
   const [updateErrorMessage, setUpdateErrorMessage] =
-    React.useState<string | null>(null)
+    React.useState<string | undefined>(undefined)
   const createOrSave = async () => {
-    if (generateAliasResult.aliasEmail) {
+    if (generateAliasResult.success) {
       // Clear any existing error message
-      setUpdateErrorMessage(null)
-      const { errorMessage } = await emailAliasesService.updateAlias(
-        generateAliasResult.aliasEmail, proposedNote)
-      if (errorMessage) {
-        setUpdateErrorMessage(errorMessage)
+      setUpdateErrorMessage(undefined)
+      const { result } = await emailAliasesService.updateAlias(
+        generateAliasResult.success, proposedNote)
+      if (result.failure) {
+        setUpdateErrorMessage(result.failure)
       } else {
         onReturnToMain()
       }
@@ -219,7 +219,7 @@ export const EmailAliasModal = (
   }
   const regenerateAlias = async () => {
     setAwaitingProposedAlias(true)
-    setGenerateAliasResult({ aliasEmail: '', errorMessage: undefined})
+    setGenerateAliasResult({ success: '', failure: undefined})
     const { result } = await emailAliasesService.generateAlias()
     setGenerateAliasResult(result)
     setAwaitingProposedAlias(false)
@@ -249,16 +249,16 @@ export const EmailAliasModal = (
               <ModalLabel>{getLocale('emailAliasesAliasLabel')}</ModalLabel>
               <GeneratedEmailContainer>
                 <div data-testid='generated-email'>
-                  {generateAliasResult.aliasEmail}
+                  {generateAliasResult.success}
                 </div>
                 {!editing &&
                  <RefreshButton data-testid='regenerate-button'
                                 onClick={regenerateAlias}
                                 waiting={awaitingProposedAlias} />}
               </GeneratedEmailContainer>
-              {generateAliasResult.errorMessage &&
+              {generateAliasResult.failure &&
                 <Alert>
-                  {generateAliasResult.errorMessage}
+                  {generateAliasResult.failure}
                 </Alert>}
               <ModalDetails>
                 {formatLocale('emailAliasesEmailsWillBeForwardedTo',
@@ -292,7 +292,7 @@ export const EmailAliasModal = (
             kind='filled'
             isDisabled={!editing
                          && (limitReached || awaitingProposedAlias ||
-                             !generateAliasResult?.aliasEmail)}
+                             !generateAliasResult?.success)}
             onClick={createOrSave}>
             {!editing
               ? getLocale('emailAliasesCreateAliasButton')

@@ -9,8 +9,10 @@ import { EmailAliasModal, DeleteAliasModal }
   from '../content/email_aliases_modal'
 
 import { clickLeoButton } from './test_utils'
-import { Alias, EmailAliasesServiceInterface, GenerateAliasResult }
+import { Alias, EmailAliasesServiceInterface }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
+
+const emptyResultPromise = Promise.resolve({ result: { } })
 
 // Mock the email aliases service
 const mockEmailAliasesService: EmailAliasesServiceInterface = {
@@ -34,16 +36,16 @@ describe('EmailAliasModal', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockEmailAliasesService.updateAlias = jest.fn().mockResolvedValue(
-      Promise.resolve({ errorMessage: null }))
+      emptyResultPromise)
     mockEmailAliasesService.deleteAlias = jest.fn().mockImplementation(
       async () => {
         await new Promise(resolve => setTimeout(resolve, 0))
-        return { errorMessage: null }
+        return emptyResultPromise
       })
     mockEmailAliasesService.generateAlias = jest.fn()
       .mockResolvedValue({
         result: {
-          errorMessage: null, aliasEmail: 'generated@brave.com'
+          success: 'generated@brave.com'
         }
       })
   })
@@ -223,8 +225,8 @@ describe('EmailAliasModal', () => {
   it('shows loading state while generating alias', async () => {
     const aliasEmail = 'new@brave.com'
     mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
-      () => Promise.resolve<{ result: GenerateAliasResult }>({
-        result: { aliasEmail, errorMessage: undefined } }))
+      () => Promise.resolve(
+        { result: { success: aliasEmail, failure: undefined } }))
 
     render(
       <EmailAliasModal
@@ -258,10 +260,10 @@ describe('EmailAliasModal', () => {
 
   it("shows error message when generating alias fails", async () => {
     mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
-      () => Promise.resolve<{ result: GenerateAliasResult }>({
+      () => Promise.resolve({
         result: {
-          errorMessage: 'emailAliasesGenerateError',
-          aliasEmail: undefined
+          failure: 'emailAliasesGenerateError',
+          success: undefined
         }
       }))
 
@@ -348,7 +350,9 @@ describe('EmailAliasModal', () => {
   for (const alias of aliases) {
     it('shows error message when creating or editing alias fails', async () => {
       mockEmailAliasesService.updateAlias = jest.fn().mockImplementation(
-        () => Promise.resolve({ errorMessage: 'emailAliasesUpdateAliasError' }))
+        () => Promise.resolve(
+          { result: { success: undefined,
+                      failure: 'emailAliasesUpdateAliasError' } }))
 
       render(
         <EmailAliasModal
@@ -384,7 +388,9 @@ describe('EmailAliasModal', () => {
 
   it('shows error message when deleting alias fails', async () => {
     mockEmailAliasesService.deleteAlias = jest.fn().mockImplementation(
-      () => Promise.resolve({ errorMessage: 'emailAliasesDeleteAliasError' }))
+      () => Promise.resolve(
+        { result: { success: undefined,
+                    failure: 'emailAliasesDeleteAliasError' } }))
 
     render(
       <DeleteAliasModal
