@@ -48,7 +48,7 @@ def run_xpy():
         target_triple = build_rust.RustTargetTriple()
 
     args = [
-        'python3', 'build_rust.py', '--run-xpy', 'build', '--build',
+        'python3', 'build_rust.py', '--run-xpy', '--', 'build', '--build',
         target_triple, '--target', f'{target_triple},wasm32-unknown-unknown',
         '--stage', '1'
     ]
