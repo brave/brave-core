@@ -108,7 +108,6 @@ async function RunCommand() {
   depotTools.optOutOfBuildTelemetry()
 
   await util.applyPatches()
-
   if (!program.nohooks) {
     if (!(await syncUtil.checkInternalDepsEndpoint())) {
       Log.warn(
