@@ -166,7 +166,6 @@ private struct ProviderView: View {
         }
         .padding(.vertical, 10)
       }
-      .modifier(WalletButtonStyleModifier())
       if isExpanded {
         VStack {
           Group {

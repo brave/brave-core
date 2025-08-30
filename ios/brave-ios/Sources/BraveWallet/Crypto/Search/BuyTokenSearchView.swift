@@ -81,7 +81,6 @@ struct BuyTokenSearchView: View {
       } label: {
         MeldCryptoView(token: token)
       }
-      .modifier(WalletButtonStyleModifier())
     }
     .navigationTitle(Strings.Wallet.searchTitle.capitalized)
     .toolbar {

@@ -48,6 +48,7 @@ struct PortfolioView: View {
         contentDrawer
       }
     }
+    .enableButtonScrollViewDragWorkaround()
     .onAppear {
       portfolioStore.update()
     }

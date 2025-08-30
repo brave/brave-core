@@ -73,7 +73,6 @@ struct FungibleAssetButton: View {
         btcBalances: asset.btcBalances
       )
     }
-    .modifier(WalletButtonStyleModifier())
   }
 }
 

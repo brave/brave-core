@@ -35,6 +35,7 @@ struct AssetsListView: View {
       }
       .padding(.vertical)
     }
+    .enableButtonScrollViewDragWorkaround()
     .background(Color(braveSystemName: .containerBackground))
     .sheet(
       isPresented: Binding(

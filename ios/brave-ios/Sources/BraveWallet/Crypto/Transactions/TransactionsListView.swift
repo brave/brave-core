@@ -101,7 +101,6 @@ struct TransactionsListView: View {
                             parsedTransaction: parsedTransaction
                           )
                         }
-                        .modifier(WalletButtonStyleModifier())
                         .contextMenu(menuItems: {
                           if parsedTransaction.transaction.isRetriable {
                             Button {
@@ -158,6 +157,7 @@ struct TransactionsListView: View {
         )
       }
     }
+    .enableButtonScrollViewDragWorkaround()
     .background(Color(braveSystemName: .containerBackground))
     .errorAlert(errorMessage: $errorMessage)
   }
