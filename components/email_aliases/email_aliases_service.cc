@@ -20,6 +20,7 @@
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/email_aliases_api_key.h"
 #include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/clone_traits.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -37,13 +38,7 @@ constexpr char kAccountServiceEndpoint[] = "https://%s/v2/%s";
 constexpr char kAccountsServiceVerifyInitPath[] = "verify/init";
 constexpr char kAccountsServiceVerifyResultPath[] = "verify/result";
 
-const char* GetEmailAliasesServiceBaseURL() {
-#if defined(EMAIL_ALIASES_API_ENDPOINT)
-  return EMAIL_ALIASES_API_ENDPOINT;
-#else
-  return "https://aliases.bravesoftware.com";
-#endif
-}
+constexpr char kEmailAliasesServiceBaseURL[] = "https://aliases.bravesoftware.com";
 constexpr char kEmailAliasesServiceManagePath[] = "/manage";
 
 // Minimum interval between verify/result polls
@@ -82,11 +77,24 @@ GURL EmailAliasesService::GetAccountsServiceVerifyResultURL() {
                               kAccountsServiceVerifyResultPath));
 }
 
+// static
+GURL EmailAliasesService::GetEmailAliasesServiceBaseURL() {
+  return GURL(absl::StrFormat("%s%s",
+    kEmailAliasesServiceBaseURL, kEmailAliasesServiceManagePath));
+}
+
+// static
+std::string EmailAliasesService::GetEmailAliasesServiceAPIKey() {
+  return BUILDFLAG(EMAIL_ALIASES_API_KEY);
+}
+
 EmailAliasesService::EmailAliasesService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory),
       verify_init_url_(GetAccountsServiceVerifyInitURL()),
-      verify_result_url_(GetAccountsServiceVerifyResultURL()) {
+      verify_result_url_(GetAccountsServiceVerifyResultURL()),
+      email_aliases_service_base_url_(GetEmailAliasesServiceBaseURL()),
+      email_aliases_api_key_(GetEmailAliasesServiceAPIKey()) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
 }
 
@@ -296,10 +304,8 @@ void EmailAliasesService::CancelAuthenticationOrLogout(
 }
 
 void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
-  std::string url = std::string(GetEmailAliasesServiceBaseURL()) +
-                    kEmailAliasesServiceManagePath;
   base::Value::Dict body_value;  // empty JSON object
-  ApiFetch(GURL(url), net::HttpRequestHeaders::kPostMethod, body_value,
+  ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kPostMethod, body_value,
            base::BindOnce(&EmailAliasesService::OnGenerateAliasResponse,
                           weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -307,25 +313,21 @@ void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
 void EmailAliasesService::UpdateAlias(const std::string& alias_email,
                                       const std::optional<std::string>& note,
                                       UpdateAliasCallback callback) {
-  std::string url = std::string(GetEmailAliasesServiceBaseURL()) +
-                    kEmailAliasesServiceManagePath;
   base::Value::Dict body_value;
   body_value.Set("alias", alias_email);
   if (note) {
     body_value.Set("note", *note);
   }
-  ApiFetch(GURL(url), net::HttpRequestHeaders::kPutMethod, body_value,
+  ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kPutMethod, body_value,
            base::BindOnce(&EmailAliasesService::OnUpdateAliasResponse,
                           weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void EmailAliasesService::DeleteAlias(const std::string& alias_email,
                                       DeleteAliasCallback callback) {
-  std::string url = std::string(GetEmailAliasesServiceBaseURL()) +
-                    kEmailAliasesServiceManagePath;
   base::Value::Dict body_value;
   body_value.Set("alias", alias_email);
-  ApiFetch(GURL(url), net::HttpRequestHeaders::kDeleteMethod, body_value,
+  ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kDeleteMethod, body_value,
            base::BindOnce(&EmailAliasesService::OnDeleteAliasResponse,
                           weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -356,7 +358,7 @@ void EmailAliasesService::ApiFetch(
   resource_request->method = method;
   resource_request->headers.SetHeader("Authorization",
                                       std::string("Bearer ") + auth_token_);
-  resource_request->headers.SetHeader("X-API-key", std::string());
+  resource_request->headers.SetHeader("X-API-key", email_aliases_api_key_);
   auto simple_url_loader = network::SimpleURLLoader::Create(
       std::move(resource_request), kTrafficAnnotation);
   // For non-GET/HEAD methods attach a JSON body. Backend expects text/plain.
@@ -435,10 +437,7 @@ void EmailAliasesService::OnDeleteAliasResponse(
 }
 
 void EmailAliasesService::RefreshAliases() {
-  std::string url = std::string(GetEmailAliasesServiceBaseURL()) +
-                    kEmailAliasesServiceManagePath;
-  url += "?status=active";
-  ApiFetch(GURL(url), net::HttpRequestHeaders::kGetMethod, base::Value::Dict(),
+  ApiFetch(email_aliases_service_base_url_.Resolve("?status=active"), net::HttpRequestHeaders::kGetMethod, base::Value::Dict(),
            base::BindOnce(&EmailAliasesService::OnRefreshAliasesResponse,
                           weak_factory_.GetWeakPtr()));
 }
