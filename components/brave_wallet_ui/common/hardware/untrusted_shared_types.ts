@@ -26,3 +26,10 @@ export namespace Untrusted {
     bytes: Buffer
   }
 }
+
+export const TrustedOrigins = [
+  'chrome-untrusted://ledger-bridge',
+  'chrome-untrusted://trezor-bridge',
+  'chrome://wallet',
+  'chrome://wallet-panel.top-chrome',
+]
