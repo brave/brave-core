@@ -29,12 +29,21 @@ window.__firefox__.includeOnce("BraveTalkScript", function($) {
     });
   });
 
-  const postRoom = $((event) => {
-    if (event.target.tagName !== undefined && event.target.tagName.toLowerCase() == "iframe") {
-      launchNativeBraveTalk(event.target.src);
-      window.removeEventListener("DOMNodeInserted", postRoom)
-    }
+  const observer = new MutationObserver($((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE && node.tagName &&
+            node.tagName.toLowerCase() === "iframe") {
+          launchNativeBraveTalk(node.src);
+          observer.disconnect();
+        }
+      });
+    });
+  }));
+
+  observer.observe(document, {
+    childList: true,
+    subtree: true
   });
-  window.addEventListener("DOMNodeInserted", postRoom);
 });
 
