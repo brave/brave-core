@@ -7,10 +7,14 @@
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
+#include "base/functional/callback.h"
+#include "base/memory/weak_ptr.h"
 #include "base/timer/elapsed_timer.h"
 #include "base/timer/timer.h"
+#include "base/values.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -57,15 +61,15 @@ class EmailAliasesService : public KeyedService,
   void CancelAuthenticationOrLogout(
       CancelAuthenticationOrLogoutCallback callback) override;
 
-  // Not implemented yet.
+  // Requests generation of a new alias and returns the result via |callback|.
   void GenerateAlias(GenerateAliasCallback callback) override;
 
-  // Not implemented yet.
+  // Creates or updates an alias identified by |alias_email| with optional note.
   void UpdateAlias(const std::string& alias_email,
                    const std::optional<std::string>& note,
                    UpdateAliasCallback callback) override;
 
-  // Not implemented yet.
+  // Deletes the alias identified by |alias_email|.
   void DeleteAlias(const std::string& alias_email,
                    DeleteAliasCallback callback) override;
 
@@ -87,6 +91,10 @@ class EmailAliasesService : public KeyedService,
   static GURL GetAccountsServiceVerifyResultURL();
 
  private:
+  // Callback that receives the response body as an optional string.
+  using BodyAsStringCallback =
+      base::OnceCallback<void(std::optional<std::string> response_body)>;
+
   // Handles the response to the verify/init request. Parses a verification
   // token and, if present, proceeds to poll the session endpoint. Invokes
   // |callback| with an optional error message.
@@ -116,6 +124,37 @@ class EmailAliasesService : public KeyedService,
   // Cancels in-flight verification requests and clears verification/auth
   // tokens to reset the authentication flow to a clean state.
   void ResetVerificationFlow();
+
+  // Fetch helper for Email Aliases backend. Optionally attaches |bearer_token|
+  // as an Authorization header and uploads |body_value| for non-GET/HEAD.
+  void ApiFetch(const GURL& url,
+                const char* method,
+                const base::Value::Dict& body_value,
+                BodyAsStringCallback download_to_string_callback);
+
+  // Handles completion of ApiFetch and forwards the response to |callback|.
+  void OnApiFetchDownloadToStringComplete(
+      BodyAsStringCallback callback,
+      std::unique_ptr<network::SimpleURLLoader> owned_loader,
+      std::unique_ptr<std::string> response_body);
+
+  // Refreshes the aliases list from the server and notifies observers.
+  void RefreshAliases();
+
+  // Parses and applies the aliases list received from the backend.
+  void OnRefreshAliasesResponse(std::optional<std::string> response_body);
+
+  // Processes the server response for a generate-alias request.
+  void OnGenerateAliasResponse(GenerateAliasCallback user_callback,
+                               std::optional<std::string> response_body);
+
+  // Processes the server response for an update-alias request.
+  void OnUpdateAliasResponse(UpdateAliasCallback user_callback,
+                             std::optional<std::string> response_body);
+
+  // Processes the server response for a delete-alias request.
+  void OnDeleteAliasResponse(DeleteAliasCallback user_callback,
+                             std::optional<std::string> response_body);
 
   // Bound Mojo receivers for the EmailAliasesService interface.
   mojo::ReceiverSet<mojom::EmailAliasesService> receivers_;
@@ -153,6 +192,9 @@ class EmailAliasesService : public KeyedService,
   // Elapsed timer for the current verification polling window. Used to
   // enforce a maximum total polling duration.
   std::optional<base::ElapsedTimer> session_poll_elapsed_timer_;
+
+  // WeakPtrFactory to safely bind callbacks across async network operations.
+  base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
 
 }  // namespace email_aliases
