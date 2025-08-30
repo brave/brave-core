@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
-#define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
+#ifndef BRAVE_BROWSER_UI_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
+#define BRAVE_BROWSER_UI_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 
 #include <memory>
 #include <string>
@@ -24,7 +24,6 @@
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 
 namespace content {
-class NavigationEntry;
 class NavigationHandle;
 class WebContents;
 }  // namespace content
@@ -210,4 +209,4 @@ class SpeedreaderTabHelper
 
 }  // namespace speedreader
 
-#endif  // BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
+#endif  // BRAVE_BROWSER_UI_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_

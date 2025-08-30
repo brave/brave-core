@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
 source_set("split_view") {
   sources = [
     "brave_contents_container_view.cc",
@@ -21,4 +23,8 @@ source_set("split_view") {
     "//ui/compositor",
     "//ui/views",
   ]
+
+  if (enable_speedreader) {
+    deps += [ "//brave/browser/ui/views/speedreader" ]
+  }
 }

@@ -85,4 +85,6 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  data = [ "//brave/test/data/speedreader/rewriter" ]
 }

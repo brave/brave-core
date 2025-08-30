@@ -574,10 +574,6 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (enable_speedreader) {
-    deps += [ "//brave/components/speedreader:unit_tests" ]
-  }
-
   if (enable_containers) {
     deps += [
       "//brave/browser/ui/containers:unit_tests",
@@ -880,6 +876,7 @@ test("brave_browser_tests") {
     "//brave/browser/web_discovery:browser_tests",
     "//brave/common",
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/renderer:browser_tests",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
@@ -1070,16 +1067,15 @@ test("brave_browser_tests") {
     deps += [ "//brave/components/brave_wayback_machine" ]
   }
 
-  if (enable_speedreader && toolkit_views) {
-    sources += [ "//brave/browser/speedreader/speedreader_browsertest.cc" ]
+  if (enable_speedreader) {
+    if (!is_android) {
+      deps += [ "//brave/browser/speedreader:browser_tests" ]
+    }
+
     deps += [
-      "//brave/browser/ui/views/frame/split_view/",
-      "//brave/browser/ui/views/split_view/",
-      "//brave/components/ai_chat/core/common",
+      # Required for brave_perf_features_processor_browsertest.cc & ad_block_service_browsertest.cc
+      "//brave/browser/speedreader",
       "//brave/components/speedreader",
-      "//brave/components/speedreader/common:mojom",
-      "//chrome/browser/ui/browser_window",
-      "//components/language/core/browser",
     ]
   }
 

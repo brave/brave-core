@@ -11,8 +11,6 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/constants/brave_paths.h"
-#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -21,8 +19,10 @@ namespace speedreader {
 class SpeedreaderRewriterTestBase : public ::testing::Test {
  public:
   SpeedreaderRewriterTestBase() {
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
-    test_data_dir_ = test_data_dir_.AppendASCII("speedreader/rewriter");
+    test_data_dir_ =
+        base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
+    test_data_dir_ =
+        test_data_dir_.AppendASCII("brave/test/data/speedreader/rewriter");
     set_current_process_dir(test_data_dir_);
   }
 

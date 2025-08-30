@@ -1,0 +1,37 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+
+assert(enable_speedreader)
+assert(toolkit_views)
+
+source_set("speedreader") {
+  sources = [
+    "reader_mode_bubble.cc",
+    "reader_mode_bubble.h",
+    "reader_mode_toolbar_view.cc",
+    "reader_mode_toolbar_view.h",
+    "speedreader_icon_view.cc",
+    "speedreader_icon_view.h",
+  ]
+
+  deps = [
+    "//brave/app:command_ids",
+    "//brave/browser/speedreader",
+    "//brave/browser/ui/speedreader",
+    "//brave/components/constants",
+    "//brave/components/resources:strings",
+    "//brave/components/vector_icons",
+    "//chrome/app:command_ids",
+    "//chrome/app:generated_resources",
+    "//chrome/browser/ui/color:color_headers",
+    "//chrome/browser/ui/color:mixers",
+    "//ui/base",
+    "//ui/views",
+    "//ui/views/controls/webview",
+  ]
+}

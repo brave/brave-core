@@ -6,11 +6,10 @@
 #include "base/android/jni_android.h"
 #include "base/logging.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/android/chrome_jni_headers/BraveSpeedReaderUtils_jni.h"
-#include "chrome/browser/android/tab_android.h"
 #include "content/public/browser/web_contents.h"
 
 namespace speedreader {
@@ -33,9 +32,9 @@ static void JNI_BraveSpeedReaderUtils_ToggleEnabledForWebContent(
 
 static jboolean JNI_BraveSpeedReaderUtils_TabProbablyReadable(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& tab) {
-  TabAndroid* tab_android = TabAndroid::GetNativeTab(env, tab);
-  content::WebContents* web_contents = tab_android->web_contents();
+    const base::android::JavaParamRef<jobject>& jweb_contents) {
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
   if (!web_contents) {
     return false;
   }
@@ -57,9 +56,9 @@ static jboolean JNI_BraveSpeedReaderUtils_TabProbablyReadable(
 
 static jboolean JNI_BraveSpeedReaderUtils_TabStateIsDistilled(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& tab) {
-  TabAndroid* tab_android = TabAndroid::GetNativeTab(env, tab);
-  content::WebContents* web_contents = tab_android->web_contents();
+    const base::android::JavaParamRef<jobject>& jweb_contents) {
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
   if (!web_contents) {
     return false;
   }
@@ -74,9 +73,9 @@ static jboolean JNI_BraveSpeedReaderUtils_TabStateIsDistilled(
 
 static jboolean JNI_BraveSpeedReaderUtils_TabSupportsDistillation(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& tab) {
-  TabAndroid* tab_android = TabAndroid::GetNativeTab(env, tab);
-  content::WebContents* web_contents = tab_android->web_contents();
+    const base::android::JavaParamRef<jobject>& jweb_contents) {
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
   if (!web_contents) {
     return false;
   }

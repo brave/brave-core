@@ -1002,18 +1002,12 @@ source_set("ui") {
     }
   }
 
-  if (enable_speedreader && !is_android) {
-    deps += [ "//brave/components/speedreader" ]
+  if (enable_speedreader) {
+    deps += [ "//brave/browser/ui/speedreader" ]
 
-    sources += [
-      "speedreader/speedreader_bubble_view.h",
-      "views/speedreader/reader_mode_bubble.cc",
-      "views/speedreader/reader_mode_bubble.h",
-      "views/speedreader/reader_mode_toolbar_view.cc",
-      "views/speedreader/reader_mode_toolbar_view.h",
-      "views/speedreader/speedreader_icon_view.cc",
-      "views/speedreader/speedreader_icon_view.h",
-    ]
+    if (toolkit_views) {
+      deps += [ "//brave/browser/ui/views/speedreader" ]
+    }
   }
 
   if (enable_request_otr) {
