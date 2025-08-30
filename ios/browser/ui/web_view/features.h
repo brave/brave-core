@@ -11,7 +11,8 @@
 namespace brave::features {
 
 BASE_DECLARE_FEATURE(kUseChromiumWebViews);
+BASE_DECLARE_FEATURE(kUseChromiumWebViewsAutofill);
 
-}
+}  // namespace brave::features
 
 #endif  // BRAVE_IOS_BROWSER_UI_WEB_VIEW_FEATURES_H_
