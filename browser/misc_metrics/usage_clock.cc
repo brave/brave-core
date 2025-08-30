@@ -30,7 +30,7 @@ UsageClock::~UsageClock() {
 }
 
 base::TimeDelta UsageClock::GetTotalUsageTime() const {
-  auto elapsed_time_in_session = usage_time_in_completed_sessions_;
+  base::TimeDelta elapsed_time_in_session = usage_time_in_completed_sessions_;
   if (current_session_elapsed_timer_) {
     elapsed_time_in_session += current_session_elapsed_timer_->Elapsed();
   }
