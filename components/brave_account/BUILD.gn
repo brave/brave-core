@@ -8,10 +8,14 @@ source_set("brave_account") {
     "brave_account_service.cc",
     "brave_account_service.h",
     "brave_account_ui_base.h",
+    "endpoints/password/init.cc",
+    "endpoints/password/init.h",
   ]
 
   deps = [
     "//base",
+    "//brave/brave_domains",
+    "//brave/components/api_request_helper",
     "//brave/components/brave_account:features",
     "//brave/components/brave_account/resources",
     "//brave/components/constants",
@@ -22,9 +26,11 @@ source_set("brave_account") {
     "//components/keyed_service/core",
     "//components/prefs",
     "//mojo/public/cpp/bindings",
+    "//net/traffic_annotation",
     "//services/network/public/cpp",
     "//services/network/public/mojom:mojom_content_security_policy",
     "//ui/base",
+    "//url",
   ]
 }
 
@@ -35,4 +41,23 @@ source_set("features") {
   ]
 
   deps = [ "//base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "endpoints/password/init_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_account",
+    "//net",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
 }
