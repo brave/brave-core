@@ -1,0 +1,104 @@
+diff --git a/content/browser/renderer_host/render_process_host_unittest.cc b/content/browser/renderer_host/render_process_host_unittest.cc
+index ba3801dc192b90118c77cb261bdf842936b7e84c..41e5d1898c38c817528eca9c85856c47de166d20 100644
+--- a/content/browser/renderer_host/render_process_host_unittest.cc
++++ b/content/browser/renderer_host/render_process_host_unittest.cc
+@@ -34,6 +34,7 @@
+ #include "content/test/test_web_contents.h"
+ #include "testing/gmock/include/gmock/gmock.h"
+ #include "third_party/blink/public/common/frame/frame_policy.h"
++#include "third_party/blink/public/common/switches.h"
+ #include "third_party/blink/public/common/tokens/tokens.h"
+ #include "third_party/blink/public/mojom/frame/frame_owner_properties.mojom.h"
+ #include "ui/webui/untrusted_web_ui_browsertest_util.h"
+@@ -1610,4 +1611,91 @@ TEST_F(SpareRenderProcessHostUnitTest, AtProcessLimit) {
+             contents2->GetPrimaryMainFrame()->GetProcess());
+ }
+ 
++// Tests for JavaScript flags handling using the extracted BuildJavaScriptFlags helper function
++class RenderProcessHostJavaScriptFlagsTest : public RenderProcessHostUnitTest {
++ public:
++  void SetUp() override {
++    RenderProcessHostUnitTest::SetUp();
++  }
++
++  void TestJavaScriptFlagsHandling(bool jit_disabled,
++                                   bool v8_optimizations_disabled,
++                                   const std::string& existing_flags,
++                                   const std::string& expected_flags) {
++    // Call the extracted static helper function directly
++    std::string result = RenderProcessHostImpl::BuildJavaScriptFlags(
++        jit_disabled, v8_optimizations_disabled, existing_flags);
++    
++    // Verify the result
++    EXPECT_EQ(expected_flags, result);
++  }
++};
++
++TEST_F(RenderProcessHostJavaScriptFlagsTest, JitDisabledWithNoExistingFlags) {
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/true, /*v8_optimizations_disabled=*/false,
++      /*existing_flags=*/"", /*expected_flags=*/"--jitless");
++}
++
++TEST_F(RenderProcessHostJavaScriptFlagsTest, V8OptimizationsDisabledWithNoExistingFlags) {
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/false, /*v8_optimizations_disabled=*/true,
++      /*existing_flags=*/"", /*expected_flags=*/"--disable-optimizing-compilers");
++}
++
++TEST_F(RenderProcessHostJavaScriptFlagsTest, JitDisabledWithExistingFlags) {
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/true, /*v8_optimizations_disabled=*/false,
++      /*existing_flags=*/"--existing-flag", 
++      /*expected_flags=*/"--jitless,--existing-flag");
++}
++
++TEST_F(RenderProcessHostJavaScriptFlagsTest, V8OptimizationsDisabledWithExistingFlags) {
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/false, /*v8_optimizations_disabled=*/true,
++      /*existing_flags=*/"--existing-flag", 
++      /*expected_flags=*/"--disable-optimizing-compilers,--existing-flag");
++}
++
++TEST_F(RenderProcessHostJavaScriptFlagsTest, BothFlagsDisabledPrefersJitless) {
++  // When both JIT and V8 optimizations are disabled, JIT disabled takes precedence
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/true, /*v8_optimizations_disabled=*/true,
++      /*existing_flags=*/"", /*expected_flags=*/"--jitless");
++}
++
++TEST_F(RenderProcessHostJavaScriptFlagsTest, BothFlagsDisabledWithExistingFlags) {
++  // When both JIT and V8 optimizations are disabled, JIT disabled takes precedence
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/true, /*v8_optimizations_disabled=*/true,
++      /*existing_flags=*/"--existing-flag", 
++      /*expected_flags=*/"--jitless,--existing-flag");
++}
++
++TEST_F(RenderProcessHostJavaScriptFlagsTest, NoFlagsDisabledWithNoExistingFlags) {
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/false, /*v8_optimizations_disabled=*/false,
++      /*existing_flags=*/"", /*expected_flags=*/"");
++}
++
++TEST_F(RenderProcessHostJavaScriptFlagsTest, NoFlagsDisabledWithExistingFlags) {
++  // When no special flags are disabled, existing flags should remain unchanged
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/false, /*v8_optimizations_disabled=*/false,
++      /*existing_flags=*/"--existing-flag", /*expected_flags=*/"--existing-flag");
++}
++
++TEST_F(RenderProcessHostJavaScriptFlagsTest, MultipleExistingFlags) {
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/true, /*v8_optimizations_disabled=*/false,
++      /*existing_flags=*/"--flag1 --flag2", 
++      /*expected_flags=*/"--jitless,--flag1 --flag2");
++}
++
++TEST_F(RenderProcessHostJavaScriptFlagsTest, EmptyExistingFlagsString) {
++  // Test with empty string as existing flags (edge case)
++  TestJavaScriptFlagsHandling(
++      /*jit_disabled=*/true, /*v8_optimizations_disabled=*/false,
++      /*existing_flags=*/"", /*expected_flags=*/"--jitless");
++}
+ }  // namespace content

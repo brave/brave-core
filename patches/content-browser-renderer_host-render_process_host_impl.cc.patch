@@ -1,0 +1,51 @@
+diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
+index 2e5e7c71a529f3d9708c7f6c53cc89f03bdb842e..d7489e81441124ad69a2bf84a6011324461a0738 100644
+--- a/content/browser/renderer_host/render_process_host_impl.cc
++++ b/content/browser/renderer_host/render_process_host_impl.cc
+@@ -3338,6 +3338,25 @@ static void AppendCompositorCommandLineFlags(base::CommandLine* command_line) {
+     command_line->AppendSwitch(switches::kEnableMainFrameBeforeActivation);
+ }
+ 
++// static
++std::string RenderProcessHostImpl::BuildJavaScriptFlags(
++    bool jit_disabled, 
++    bool v8_optimizations_disabled, 
++    const std::string& existing_flags) {
++  // Determine the primary flag based on priority (JIT disabled takes precedence)
++  std::string primary_flag = jit_disabled ? "--jitless" 
++                           : v8_optimizations_disabled ? "--disable-optimizing-compilers" 
++                           : "";
++  
++  // If no special flags are needed, return existing flags unchanged
++  if (primary_flag.empty()) {
++    return existing_flags;
++  }
++  
++  // Combine primary flag with existing flags
++  return existing_flags.empty() ? primary_flag 
++                                : base::StrCat({primary_flag, ",", existing_flags});
++}
+ void RenderProcessHostImpl::AppendRendererCommandLine(
+     base::CommandLine* command_line) {
+   // Pass the process type first, so it shows first in process listings.
+@@ -3379,12 +3398,14 @@ void RenderProcessHostImpl::AppendRendererCommandLine(
+     command_line->AppendSwitch(switches::kNoZygote);
+   }
+ 
+-  if (IsJitDisabled()) {
+-    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
+-                                    "--jitless");
+-  } else if (AreV8OptimizationsDisabled()) {
+-    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
+-                                    "--disable-optimizing-compilers");
++  std::string existing_js_flags;
++  if (command_line->HasSwitch(blink::switches::kJavaScriptFlags)) {
++    existing_js_flags = command_line->GetSwitchValueASCII(blink::switches::kJavaScriptFlags);
++  }
++  
++  std::string js_flags = BuildJavaScriptFlags(IsJitDisabled(), AreV8OptimizationsDisabled(), existing_js_flags);
++  if (!js_flags.empty()) {
++    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags, js_flags);
+   }
+ 
+   if (DisallowV8FeatureFlagOverrides()) {
