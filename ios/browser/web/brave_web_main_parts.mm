@@ -62,7 +62,4 @@ void BraveWebMainParts::PreMainMessageLoopRun() {
   brave_component_updater::BraveOnDemandUpdater::GetInstance()
       ->RegisterOnDemandUpdater(&cus->GetOnDemandUpdater());
   RegisterComponentsForUpdate(cus);
-
-  static_cast<BraveApplicationContextImpl*>(application_context_.get())
-      ->StartBraveServices();
 }
