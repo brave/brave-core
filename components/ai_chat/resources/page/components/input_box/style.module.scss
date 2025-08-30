@@ -50,7 +50,7 @@
 
   textarea,
   &::after {
-    padding: 12px var(--leo-spacing-xl) 8px var(--leo-spacing-xl);
+    padding: var(--leo-spacing-xl);
     grid-area: 1 / 1 / 2 / 2;
   }
 
@@ -108,11 +108,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   padding: 0 var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-xl);
 }
 
 .tools {
   display: flex;
+  align-items: center;
   gap: var(--leo-spacing-xl);
 }
 
