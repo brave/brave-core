@@ -181,6 +181,10 @@ class VerticalTabStripRegionView : public views::View,
 
   views::LabelButton& GetToggleButtonForTesting();
 
+  // Callback that is called when collapse animation ends. We update visibility
+  // of this view if it's needed
+  void OnCollapseAnimationEnded();
+
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
 
