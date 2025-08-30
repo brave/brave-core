@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -46,10 +45,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.Callbacks;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -72,10 +73,12 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.ui.base.Clipboard;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.widget.Toast;
 
@@ -143,22 +146,27 @@ public class Utils {
      * @param context Context used to retrieve the clipboard service.
      * @param textToCopy Text that will be copied to clipboard.
      * @param textToShow String resource ID to display in the toast, or -1 to disable the toast.
-     * @param scheduleClear {@code true} to clear the clipboard after {@link
+     * @param treatAsPasword {@code true} copy to the clipboard with
+     *     ClipDescription.EXTRA_IS_SENSITIVE flag and then clear the clipboard after {@link
      *     #CLEAR_CLIPBOARD_INTERVAL}.
      */
     public static void saveTextToClipboard(
             final Context context,
             final String textToCopy,
             @StringRes final int textToShow,
-            final boolean scheduleClear) {
-        ClipboardManager clipboard =
-                (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("", textToCopy);
-        clipboard.setPrimaryClip(clip);
-        if (textToShow != -1) {
+            final boolean treatAsPasword) {
+        if (treatAsPasword) {
+            Clipboard.getInstance().setPassword(textToCopy);
+        } else {
+            Clipboard.getInstance().setText("" /* label */, textToCopy, false);
+        }
+
+        // Similar to ClipboardImpl.showToastIfNeeded
+        // Conditionally show a toast to avoid duplicate notifications in Android 13+
+        if (textToShow != -1 && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
             Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
         }
-        if (!scheduleClear) {
+        if (!treatAsPasword) {
             return;
         }
 
@@ -188,20 +196,18 @@ public class Utils {
     public static void clearClipboard(final String textToCompare) {
         String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
         if (textToCompare.equals(clipboardText)) {
-            saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
+            BraveReflectionUtil.invokeMethod(Clipboard.class, Clipboard.getInstance(), "clear");
         }
     }
 
     public static boolean shouldShowCryptoOnboarding() {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        return mSharedPreferences.getBoolean(PREF_CRYPTO_ONBOARDING, true);
+        SharedPreferencesManager preferencesManager = ChromeSharedPreferences.getInstance();
+        return preferencesManager.readBoolean(PREF_CRYPTO_ONBOARDING, true);
     }
 
     public static void setCryptoOnboarding(boolean enabled) {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_CRYPTO_ONBOARDING, enabled);
-        sharedPreferencesEditor.apply();
+        SharedPreferencesManager preferencesManager = ChromeSharedPreferences.getInstance();
+        preferencesManager.writeBoolean(PREF_CRYPTO_ONBOARDING, enabled);
     }
 
     /**
@@ -662,6 +668,8 @@ public class Utils {
                 });
     }
 
+    // Class Paint does not have setTextAppearance method
+    @SuppressWarnings("checkstyle:SetTextColorAndSetTextSizeCheck")
     public static Bitmap drawTextToBitmap(
             Bitmap bitmap, String text, float scale, float scaleDown) {
         Canvas canvas = new Canvas(bitmap);

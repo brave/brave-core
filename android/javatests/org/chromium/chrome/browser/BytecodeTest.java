@@ -1167,6 +1167,12 @@ public class BytecodeTest {
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/ui/base/Clipboard",
+                        "clear",
+                        MethodModifier.REGULAR,
+                        void.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController", // presubmit: ignore-long-line
                         "dismissActivityIfNeeded",
                         MethodModifier.REGULAR,

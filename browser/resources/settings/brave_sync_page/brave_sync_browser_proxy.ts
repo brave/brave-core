@@ -38,6 +38,10 @@ export class BraveSyncBrowserProxy {
     return sendWithPromise('SyncGetQRCode', syncCode);
   }
 
+  copySyncCodeToClipboard(syncCode: string): Promise<boolean> {
+    return sendWithPromise('SyncCopySyncCodeToClipboard', syncCode);
+  }
+
   getDeviceList(): Promise<BraveDeviceInfo[]> {
     return sendWithPromise('SyncGetDeviceList');
   }
