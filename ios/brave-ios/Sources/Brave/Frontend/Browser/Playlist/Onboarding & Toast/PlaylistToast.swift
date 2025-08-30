@@ -88,10 +88,7 @@ class PlaylistToast: Toast {
 
     addSubview(createView(item, state))
 
-    toastView.snp.makeConstraints {
-      $0.leading.trailing.height.equalTo(self)
-      self.animationConstraint = $0.top.equalTo(self.snp.bottom).constraint
-    }
+    setupInitialToastConstraints()
 
     self.snp.makeConstraints {
       $0.height.equalTo(ButtonToastUX.toastHeight)
