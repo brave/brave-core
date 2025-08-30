@@ -13,6 +13,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -39,6 +40,10 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/browser/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
@@ -75,6 +80,10 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveStatsPingEnabled, kStatsReportingEnabled,
      base::Value::Type::BOOLEAN},
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    {policy::key::kBravePlaylistEnabled, playlist::kPlaylistEnabledPref,
+     base::Value::Type::BOOLEAN},
+#endif
     {policy::key::kBraveWebDiscoveryEnabled, kWebDiscoveryEnabled,
      base::Value::Type::BOOLEAN},
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
