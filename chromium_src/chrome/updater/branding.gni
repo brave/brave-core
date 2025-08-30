@@ -11,6 +11,7 @@
 # So we define our values in a scope here, then use forward_variables_from(...)
 # in upstream's .gni file to apply the changes from this scope.
 
+import("//build/config/chrome_build.gni")
 import("//build/util/branding.gni")
 
 brave_updater_branding = {
@@ -53,7 +54,12 @@ brave_updater_branding = {
   IPolicyStatusValueGUID = "931E73FD-D487-4458-AA08-1FF41413377B"
   IProcessLauncherGUID = "70E5ECF5-2CA7-4019-9B23-916789A13C2C"
   IProcessLauncher2GUID = "D5627FC9-E2F0-484B-89A4-5DACFE7FAAD3"
-  legacy_google_update_appid = "{B131C935-9BE6-41DA-9599-1F776BEB8019}"
+  if (is_mac) {
+    # Mirror upstream:
+    legacy_google_update_appid = keystone_bundle_identifier
+  } else {
+    legacy_google_update_appid = "{B131C935-9BE6-41DA-9599-1F776BEB8019}"
+  }
 
   # These constants are defined upstream, but not in Omaha 3. Their values
   # were randomly generated to make sure our GUIDs do not clash with upstream:
