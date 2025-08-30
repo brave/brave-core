@@ -133,9 +133,11 @@
     <file path="resources/brave_generated_resources_iw.xtb" lang="he" />
     <file path="resources/brave_generated_resources_ja.xtb" lang="ja" />
     <file path="resources/brave_generated_resources_ka.xtb" lang="ka" />
+    <file path="resources/brave_generated_resources_kk.xtb" lang="kk" />
     <file path="resources/brave_generated_resources_km.xtb" lang="km" />
     <file path="resources/brave_generated_resources_kn.xtb" lang="kn" />
     <file path="resources/brave_generated_resources_ko.xtb" lang="ko" />
+    <file path="resources/brave_generated_resources_lo.xtb" lang="lo" />
     <file path="resources/brave_generated_resources_lt.xtb" lang="lt" />
     <file path="resources/brave_generated_resources_lv.xtb" lang="lv" />
     <file path="resources/brave_generated_resources_mk.xtb" lang="mk" />

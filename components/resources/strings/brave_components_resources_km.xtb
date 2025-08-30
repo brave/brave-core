@@ -52,6 +52,7 @@
 <translation id="4720556299488643018">ឈប់ជាវ</translation>
 <translation id="1209739344687072997">រាយការណ៍ពីគេហទំព័រដែលមិនដំណើរការ</translation>
 <translation id="5299848999918506028">អរគុណអ្នក!</translation>
+<translation id="7138678301420049075">ផ្សេងទៀត</translation>
 <translation id="6112368337882254910">ការបរិច្ចាគស្វ័យប្រវត្តិ</translation>
 <translation id="7701040980221191251">គ្មាន</translation>
 <translation id="8446884382197647889">ស្វែងយល់បន្ថែម</translation>
@@ -162,7 +163,6 @@
 <translation id="4319632089378796037">ប្រើ Web3 Wallet</translation>
 <translation id="4379244534135194459">អ្នកក៏អាចផ្ញើការរួមចំណែកគ្រីបតូទៅកាន់អ្នកបង្កើតនេះដោយប្រើកាបូប Web3 របស់អ្នក។</translation>
 <translation id="1166682575529520472">ប្រចាំខែ</translation>
-<translation id="7138678301420049075">ផ្សេងទៀត</translation>
 <translation id="7504352885209484360">ការ​រួម​ចំណែក​ដដែលៗ</translation>
 <translation id="7063168612616047608">អរគុណសម្រាប់ការគាំទ្រអ្នកបង្កើតដែលអ្នកចូលចិត្ត</translation>
 <translation id="5379685283876547860">បានផ្ញើការរួមចំណែក!</translation>
@@ -465,6 +465,8 @@
 <translation id="619122420105901711">មិនឃើញអ៊ីមែលនេះទេ? ពិនិត្យមើលថតសារឥតបានការ ឬ ព្យាយាមម្តងទៀត។</translation>
 <translation id="3397336197747843396">មានបញ្ហាក្នុងការផ្ទៀងផ្ទាត់ជាមួយគណនី Brave។ សូមព្យាយាមម្តងទៀត។</translation>
 <translation id="1340795582009113055">ចាប់ផ្តើមឡើងវិញ</translation>
+<translation id="2422927186524098759">របារចំហៀង</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="5753795690521538679">ចាប់ផ្តើមការសាកល្បងឥតគិតថ្លៃរយៈពេល 7 ថ្ងៃ</translation>
 <translation id="3357036723290257445">បានទិញ Brave VPN រួចហើយ?</translation>
 <translation id="7805768142964895445">ស្ថានភាព</translation>

@@ -121,9 +121,11 @@
     <file path="translations/android_quick_search_engines_strings_iw.xtb" lang="iw" />
     <file path="translations/android_quick_search_engines_strings_ja.xtb" lang="ja" />
     <file path="translations/android_quick_search_engines_strings_ka.xtb" lang="ka" />
+    <file path="translations/android_quick_search_engines_strings_kk.xtb" lang="kk" />
     <file path="translations/android_quick_search_engines_strings_km.xtb" lang="km" />
     <file path="translations/android_quick_search_engines_strings_kn.xtb" lang="kn" />
     <file path="translations/android_quick_search_engines_strings_ko.xtb" lang="ko" />
+    <file path="translations/android_quick_search_engines_strings_lo.xtb" lang="lo" />
     <file path="translations/android_quick_search_engines_strings_lt.xtb" lang="lt" />
     <file path="translations/android_quick_search_engines_strings_lv.xtb" lang="lv" />
     <file path="translations/android_quick_search_engines_strings_mk.xtb" lang="mk" />

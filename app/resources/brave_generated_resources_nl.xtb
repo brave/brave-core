@@ -18,10 +18,6 @@
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Meer</translation>
-<translation id="9092796350041759828">{0, plural,
-          one {}=1 {Gastmodus sluiten}
-          other {Gastmodus sluiten}
-        }</translation>
 <translation id="1990886731975529483">Google Widevine installeren en uitvoeren</translation>
 <translation id="8926389886865778422">Niet meer vragen</translation>
 <translation id="4900351245762303149">Google Widevine installeren</translation>
@@ -140,7 +136,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="6020553119523541665">Dit tabblad is actief in een ander venster</translation>
 <translation id="4987392683074136770">Als je op dit tabblad klikt, verschijnt de inhoud in dit venster</translation>
 <translation id="8355523213948477234">Knop voor menu in gesplitste weergave</translation>
-<translation id="2104347391516032700">Bat Beloningen-service</translation>
 <translation id="6040143037577758943">Sluit</translation>
 <translation id="6665472986740899785">Brave-meldingenadvertentie</translation>
 <translation id="5582087890067572966">🎉 U bent nu beloningen aan het verdienen!</translation>
@@ -194,7 +189,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="2604698253988679506">Deze privéantwoorden helpen Brave om het algehele gebruik van bepaalde functies in te schatten en voor u te verbeteren.</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3-domeinen</translation>
-<translation id="5046066249040287308">Brave Wallet-hulpprogramma</translation>
 <translation id="4552520379838695057">Sorry, deze pagina bestaat niet.</translation>
 <translation id="7299769530898469069">Kan opgeslagen versie niet laden</translation>
 <translation id="2609895996619941644">Wil je bekijken of er een opgeslagen versie beschikbaar is op de Wayback Machine?</translation>
@@ -366,6 +360,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="8000020256436988724">Werkbalk</translation>
 <translation id="8076492880354921740">Tabbladen</translation>
 <translation id="8168435359814927499">Content</translation>
+<translation id="5327248766486351172">Naam</translation>
 <translation id="5860254591544742609">Titelbalk weergeven</translation>
 <translation id="5371926069408837914">Samengevouwen paneel met verticale tabbladen uitvouwen wanneer dit met muis wordt aangewezen</translation>
 <translation id="3367129510799209147">Tabblad zweefmodus</translation>
@@ -393,8 +388,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="7158817046543187970">De bladwijzerbalk is verborgen op alle pagina's</translation>
 <translation id="3416468988018290825">Altijd volledige URL's weergeven</translation>
 <translation id="5529693968082667490">Knop voor het zoeken van tabbladen tonen</translation>
-<translation id="1013121820689882118">Speedreader</translation>
-<translation id="2025435450953474282">Artikels worden automatisch in lezermodus geladen, waardoor je tijd kunt besparen</translation>
 <translation id="7984721311211272523">De functie Dempen in het luidsprekerpictogram op tabbladen uitschakelen</translation>
 <translation id="832432428796481785">Knop Zijbalk weergeven</translation>
 <translation id="5581036754486769849">Automatisch invullen inschakelen voor privévensters</translation>
@@ -473,7 +466,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="9202707370720720635">Aangepaste scriptlets</translation>
 <translation id="5524306331330789642">Nieuw scriptlet</translation>
 <translation id="3865146371459790194">Scriptlet bewerken</translation>
-<translation id="5327248766486351172">Naam</translation>
 <translation id="5584409054843451563">Weet je zeker dat je dit scriptlet wilt verwijderen? Als dit scriptlet in een aangepast filter wordt gebruikt, zal het niet meer werken.</translation>
 <translation id="4545850500562727184">Scriptlet bestaat al.</translation>
 <translation id="4877521822848390663">Ongeldige naam voor scriptlet.</translation>
@@ -753,11 +745,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="8172263161008556851">Voorgestelde prompts in het gesprek weergeven</translation>
 <translation id="5781842473834867765">Mijn gespreksgeschiedenis opslaan</translation>
 <translation id="1082960401708055995">Als je je gesprekken niet meer opslaat, worden alle eerder opgeslagen gesprekken ook definitief gewist. Deze actie kan niet ongedaan worden gemaakt.</translation>
-<translation id="6106701981952170121">Alle Leo AI-gespreksgegevens verwijderen</translation>
-<translation id="1335414530428321716">Als je Leo AI reset, moet je je weer aanmelden om Brave Leo AI
-later te gebruiken en wordt ook je chatgeschiedenis gewist.
-Door je chatgeschiedenis te wissen, verwijder je al je eerdere
-gesprekken met Brave Leo AI. Deze actie kun je niet ongedaan maken.</translation>
+<translation id="1014480593522400586">Leo-gegevens wissen</translation>
 <translation id="5574059574002819179">Suggesties voor automatisch aanvullen aanpassen</translation>
 <translation id="7942415993090181327">Chatgeschiedenis</translation>
 <translation id="5084498230659987096">Brave Leo biedt privacygerichte AI-chat en andere AI-functies direct in je browser. Leo leert nooit van jouw data en gebruikt die niet voor de training van modellen. Alle verzoeken gaan via een anonieme server.</translation>

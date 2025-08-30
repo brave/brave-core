@@ -42,6 +42,7 @@
 <translation id="5334844597069022743">Эх үүсвэрийг харах</translation>
 <translation id="4720556299488643018">Захиалгыг цуцлах</translation>
 <translation id="1209739344687072997">Эвдрэлтэй сайтыг мэдээлэх</translation>
+<translation id="7138678301420049075">Бусад</translation>
 <translation id="4394049700291259645">Идэвхгүй болгох</translation>
 <translation id="4176463684765177261">Идэвхгүй болсон</translation>
 <translation id="3082557070674409251">Дарагдсан</translation>
@@ -210,7 +211,6 @@
 <translation id="1736419249208073774">Судлах</translation>
 <translation id="1178581264944972037">Түр зогсоох</translation>
 <translation id="8030852056903932865">Батлах</translation>
-<translation id="7138678301420049075">Бусад</translation>
 <translation id="2244921323472112851">Таны хайж байгаа хуудсыг одоогоор олоогүй байна.</translation>
 <translation id="6277237872689140644">Энэ өөр газар руу шилжсэн эсвэл энэ URL-д үсгийн алдаа байж магадгүй.</translation>
 <translation id="2737084171727561244">Хөрөнгө оруулагчдад</translation>
@@ -360,6 +360,8 @@
 <translation id="8124939971041602970">Нэвтрэх цахим шуудан <ph name="MAIN_EMAIL"/> руу илгээгдэж байна</translation>
 <translation id="8140361186431963982">Мэйлээр илгээсэн хамгаалалттай линк дээр дараад бүртгэл рүүгээ нэвтэрнэ.</translation>
 <translation id="619122420105901711">Мэйл харагдахгүй байна уу? Спам хавтсаа шалгаарай эсвэл дахин шалгах.</translation>
+<translation id="2422927186524098759">Хажуугийн самбар</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="5753795690521538679">7-хоногийн үнэгүй туршилт эхлүүлэх</translation>
 <translation id="3357036723290257445">Brave VPN-н худалдан авалтаа хийчихсэн үү?</translation>
 <translation id="5747552184818312860">Дуусах</translation>

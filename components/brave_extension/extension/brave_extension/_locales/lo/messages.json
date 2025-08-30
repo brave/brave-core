@@ -28,7 +28,7 @@
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Report a broken site",
+    "message": "ລາຍງານເວັບໄຊທ໌ທີ່ມີບັນຫາ",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
@@ -56,7 +56,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked",
+    "message": "ບລັອກຕົວຕິດຕາມ ແລະ ໂຄສະນາແລ້ວ",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
@@ -68,7 +68,7 @@
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Allow all trackers & ads",
+    "message": "ອະນຸຍາດຕົວຕິດຕາມ ແລະ ໂຄສະນາທັງໝົດ",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -140,7 +140,7 @@
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
-    "message": "Allow",
+    "message": "ອະນຸຍາດ",
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
@@ -200,11 +200,11 @@
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
-    "message": "Got it",
+    "message": "ເຂົ້າໃຈແລ້ວ",
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Learn more",
+    "message": "ຮຽນຮູ້ເພີ່ມເຕີມ",
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {

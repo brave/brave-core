@@ -148,7 +148,7 @@
 <translation id="2701204441419443612">正在连接……</translation>
 <translation id="8813986611396294203">Tor 网络有点慢</translation>
 <translation id="2795840524629682765">Tor 连接失败</translation>
-<translation id="1149108864689950951">Tor 正在连接... [[percentage]]%</translation>
+<translation id="9102894004288640876">Tor 正在连接... <ph name="PERCENTAGE"/>%</translation>
 <translation id="3651192084771403430">无法连接？尝试<ph name="BEGIN_LINK"/>关闭<ph name="END_LINK"/>带 Tor 的无痕窗口并回到设置。</translation>
 <translation id="8834376622642889380">打开 <ph name="BEGIN_LINK"/>Brave 设置<ph name="END_LINK"/>，使用 Tor 禁用私密窗口，然后重新启用。</translation>
 <translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>还是有问题？请<ph name="END_BOLD"/>尝试使用 <ph name="BEGIN_BRIDGES_LINK"/>网桥<ph name="END_BRIDGES_LINK"/> 或<ph name="BEGIN_SUPPORT_LINK"/>联系支持团队<ph name="END_SUPPORT_LINK"/>。</translation>
@@ -170,19 +170,33 @@
 <translation id="5334844597069022743">查看源</translation>
 <translation id="4720556299488643018">退订</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
-<translation id="8510478288840333677">让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：</translation>
+<translation id="2961941250324390287">让 Brave 开发人员知道此网站无法正常工作：</translation>
 <translation id="3110968385867124099">无法报告此页面，因为此页面不是通过 HTTP/HTTPS 提供的。</translation>
 <translation id="7907023135990310743">本页面为本地网页，不符合报告条件。</translation>
 <translation id="8740275226259417070">这是一个错误页面。不能作为网站故障报告。</translation>
 <translation id="6367576083705149078">如果您提供联系信息，这些信息将会被储存起来，在日后的报告中使用。</translation>
 <translation id="6806248680442980382">感谢您帮助我们改善 Brave。本报告仅包含我们修复网站所需的信息。</translation>
-<translation id="6476216365964140603">其他详细信息（可选）</translation>
+<translation id="8731661215617360873">选择一个选项</translation>
+<translation id="2805770823691782631">其他详细信息</translation>
+<translation id="8447940165862889275">(选填)</translation>
 <translation id="6145852496180774737">联系方式：（可选）</translation>
 <translation id="7616645803364270729">电子邮箱、Twitter 等</translation>
 <translation id="721949491455392748">包括当前页面的截图</translation>
 <translation id="8459191579769999214">查看截图</translation>
 <translation id="5299848999918506028">谢谢！</translation>
 <translation id="76550953340008122">感谢您让 Brave 的开发人员知道此站点出了问题。我们会尽力解决问题！</translation>
+<translation id="3037432377946455872">您遇到的主要问题是什么？</translation>
+<translation id="9133645617402992550">广告仍然可见</translation>
+<translation id="4784626332068555349">空白页面或缺失内容</translation>
+<translation id="8278217275444967104">无法滚动</translation>
+<translation id="786980556536893096">无法在表单中输入文本</translation>
+<translation id="7744162007310978225">cookie 同意通知可见</translation>
+<translation id="5578433701455313672">没有反广告拦截措施</translation>
+<translation id="6831478554298438308">跟踪/分析脚本未拦截</translation>
+<translation id="7279636930553631442">新闻通讯弹出窗口</translation>
+<translation id="6136090320163235283">社交小工具</translation>
+<translation id="6657720240983439091">聊天小工具</translation>
+<translation id="7138678301420049075">其他</translation>
 <translation id="4046860372562593546">管理 Brava 广告</translation>
 <translation id="5136973036012418831">控制您看到的 Brave 广告类型和频率。</translation>
 <translation id="4759608598194750161">看得越多，赚得越多。</translation>
@@ -422,7 +436,6 @@
 <translation id="8327818101454798856">所以如果您想支持你最喜欢的网站，那就去那里吧。</translation>
 <translation id="412480955826088549">正在下载组件...</translation>
 <translation id="4894106830958548828">我理解</translation>
-<translation id="326118736933420687">您正在查看 WebTorrent 网页</translation>
 <translation id="2729085694451916573"><ph name="PART_ONE"/>预留位置<ph name="PART_ONE_END"/>的测试字串。 <ph name="PART_TWO"/>了解更多<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">不可阻挡的域名</translation>
 <translation id="4492298165410552103">是否在 Brave 中启用对不可阻挡域的支持？</translation>
@@ -471,6 +484,7 @@
 <translation id="5770656036486891920"><ph name="URL"/>希望使用第三方 cookie 进行传统 Google 登录</translation>
 <translation id="6053826678715267477">允许访问本地主机资源</translation>
 <translation id="2973562729984406132"><ph name="URL"/>希望访问本地主机资源</translation>
+<translation id="2104347391516032700">Bat 奖励服务</translation>
 <translation id="5939518447894949180">重置</translation>
 <translation id="3349204812119681938">重设 Brave 奖励</translation>
 <translation id="4915997950539925115">重置后，您当前的 Brave 奖励资料将被删除，Brave 奖励也将不再启用。如果稍后再次启用 Brave 奖励，将从一个新的配置文件开始。请阅读我们关于重置 <ph name="LINK_END"/>的<ph name="LINK_BEGIN"/>支持文档，了解更多详情。</translation>
@@ -512,7 +526,6 @@
     }</translation>
 <translation id="6067959437127691361">使用 Brave 奖励有助于支持内容创作者，并帮您赚取 BAT。</translation>
 <translation id="2359808026110333948">继续</translation>
-<translation id="885805571521218129">这反映了您对本月Brave 广告的预期收益范围。</translation>
 <translation id="3863981251715594911">如何运作？</translation>
 <translation id="7931127789630755251">为您在 Brave 中看到的私人广告赚取代币</translation>
 <translation id="2278423362884506724">支持内容创作者，用代币购买礼品卡、兑换其他货币等。</translation>
@@ -587,8 +600,10 @@
 <translation id="5802986777701714573">我们新增了一种方式，以便您收取每月的 BAT 奖励。关联任一合作伙伴账户，或使用全新自行保管选项，即刻开始盈利。</translation>
 <translation id="3251885322612056119">更新的服务条款</translation>
 <translation id="7454675823870922788">我们更新了 Brave Rewards 的服务条款。这些更新旨在澄清我们的条款，并确保其涵盖新的功能。如果您继续使用 Brave Rewards，即表示您同意更新后的服务条款。您可以<ph name="LINK_BEGIN"/>重置<ph name="LINK_END"/>Brave Rewards，这将禁用该功能。</translation>
+<translation id="56057964000416013">我们更新了服务条款。如要继续使用 Brave 奖励，请查阅并同意更新后的条款。</translation>
 <translation id="5192526308598085294">查看<ph name="LINK_BEGIN"/>Brave Rewards 服务条款<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">我同意</translation>
+<translation id="343114360276812078">查阅条款</translation>
 <translation id="86107454835395919">设置为每月捐款</translation>
 <translation id="6621880242105464352">Brave 将收取捐款金额的 <ph name="FEE_PCT"/> 作为手续费。</translation>
 <translation id="1420756770787071946">支持此创作者</translation>
@@ -640,8 +655,8 @@
 <translation id="756341217015623253">登录或注册</translation>
 <translation id="2653844658857826081">新</translation>
 <translation id="1165039591588034296">错误</translation>
-<translation id="5826530373788377342">您已达到此<ph name="PROVIDER"/>帐户的最大限制</translation>
-<translation id="6700131426769360592">已达到设备上限</translation>
+<translation id="8673410329158754690">您已将最大数量的 Brave 奖励资料连接到此<ph name="PROVIDER"/>账户。</translation>
+<translation id="8385898883512695376">已达到支付账户限制</translation>
 <translation id="6895088073061692390">很遗憾，您的 Brave 奖励资料已被标记，由于我们的自动检查发现了一些意外的 Brave 广告活动。</translation>
 <translation id="4229056297802204697">如果您的个人资料被标记，您可以继续看到广告，但没有资格获得报酬。您也无法将托管账户连接到 Brave 奖励。</translation>
 <translation id="5124846913141379164">您的个人资料可能被错误标记，您无需立即采取行动。您个人资料上的标志将来可能会被移除。</translation>
@@ -676,6 +691,7 @@
 <translation id="96989662637180657">Brave 搜索广告显示在<ph name="LINK_BEGIN"/>Brave 搜索<ph name="LINK_END"/>。</translation>
 <translation id="3138160233953903250">广告设置</translation>
 <translation id="2446517297521536638">控制您看到的 Brave 广告类型和频率。观看次数越多，收益越多。</translation>
+<translation id="3479272537858623647">这显示了您本月看到的符合赚取 BAT 的 Brave 广告数量。</translation>
 <translation id="5860033963881614850">关闭</translation>
 <translation id="5916664084637901428">开启</translation>
 <translation id="3977723631999461201">本月收到的<ph name="NUM"/>广告</translation>
@@ -703,7 +719,6 @@
 <translation id="7550470870580166294">资金不足</translation>
 <translation id="7020972866926315918">您似乎已退出 <ph name="PROVIDER"/> Brave 奖励。请重新登录以继续。</translation>
 <translation id="1166682575529520472">每月</translation>
-<translation id="7138678301420049075">其他</translation>
 <translation id="2134931506717037391">发送<ph name="AMOUNT"/>BAT</translation>
 <translation id="4791565605790056151">发送捐款</translation>
 <translation id="8251969358165471584">Web3 钱包</translation>
@@ -1069,7 +1084,8 @@
 <translation id="7131971375297699539">货币符号</translation>
 <translation id="4693057234255364395">区块探索者 URL</translation>
 <translation id="7982789257301363584">网络</translation>
-<translation id="1060221736464994328">允许此站点切换网络？</translation>
+<translation id="2512821599885971349">添加网络</translation>
+<translation id="200073220891881812">允许该网站切换网络吗？</translation>
 <translation id="2478788592457735063">这将把网络切换到先前添加的网络。</translation>
 <translation id="8756686998207163764">切换网络</translation>
 <translation id="3948067511324628726">Gas 费用</translation>
@@ -1824,6 +1840,8 @@
 <translation id="2244921323472112851">我们无法找到您正在寻找的页面。</translation>
 <translation id="6277237872689140644">它可能已移动到其他地方或 URL 可能包含输入错误。</translation>
 <translation id="2737084171727561244">前往投资组合</translation>
+<translation id="3499452861061048987">添加代币</translation>
+<translation id="5046066249040287308">Brave 钱包实用程序服务</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -2044,6 +2062,11 @@ other {# 个来源}
 <translation id="684629111155788563">添加所有标签页至群组</translation>
 <translation id="9106013521852824634">发送标签页给自己</translation>
 <translation id="6973516366678963184">显示 Wayback Machine 泡泡</translation>
+<translation id="4765321711834219282">关闭标签页组</translation>
+<translation id="4095483462103784441">创建新的标签页组</translation>
+<translation id="4292565651642921086">聚合下一个标签页组</translation>
+<translation id="874783686573493196">聚合前一个标签页组</translation>
+<translation id="9169594135889675189">将新标签页添加到组中</translation>
 <translation id="1926106318101432555">打开书签……</translation>
 <translation id="6118819645013156507">切换到窗口……</translation>
 <translation id="1623204575967809688">将当前窗口合并到……</translation>
@@ -2075,7 +2098,7 @@ other {# 个来源}
 <translation id="9089090017461255038">开启 Speedreader</translation>
 <translation id="3929926885379607283">该网站始终使用 Speedreader</translation>
 <translation id="4186588885948504942">切换以打开/关闭该网站的 Speedreader。</translation>
-<translation id="1873585723672836337">所有网站始终使用 Speedreader</translation>
+<translation id="6568851043090579206">所有网站始终使用 Speedreader</translation>
 <translation id="3138587343887871192">切换打开/关闭所有网站的 Speedreader。</translation>
 <translation id="5153147025131874069">并非所有网站都提供 Speedreader 功能。</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -2104,9 +2127,9 @@ other {# 个来源}
 <translation id="8637805148029768813">摘要器功能目前仅适用于选定的文章和其他长篇网页。</translation>
 <translation id="1223498995510244364">总结</translation>
 <translation id="7491773233732232424">关于 Leo</translation>
-<translation id="4885527781814382758">Brave Leo 是一款私密的人工智能助手，可以提升您的互联网使用体验。Leo 基础版可以免费使用，但功能有限。Brave Leo 高级版提供更多模型、限制更少，并且订阅用户可以提前使用新功能。默认模型会不时更改。如需更多详细信息，请参阅 <ph name="LINK_BEFORE"/>Brave 帮助中心<ph name="LINK_AFTER"/>。</translation>
-<translation id="7189603330209995455">默认情况下，当您向 Leo 提问时，它可能会向 Brave Leo 发送并使用您当前浏览的网页内容或您在页面上突出显示的任何文本，以获取回应。回答的准确性不能保证，可能包含不准确、误导或虚假的信息。Leo 使用来自 Brave Search 的数据来提高回答的质量。请不要提交敏感或私人信息，并谨慎对待与健康、财务、个人安全或类似问题相关的任何答案。您可以随时在设定中调整 Leo 的选项。前往设定&gt; Leo。</translation>
-<translation id="3038772045018370764">Leo 不会收集与您相关联的标识符，例如您的 IP 地址。没有数据被用于训练 AI 模型，AI 模型也不会保留个人数据（除了 Anthropic 在删除之前会保留 30 天的数据）。请查看<ph name="LINK_BEFORE"/>隐私政策<ph name="LINK_AFTER"/>以获取更多信息。</translation>
+<translation id="4611072979071082355">Brave Leo 是一款私密的人工智能助手，可以提升您的网络使用体验。Leo 基础版可以免费使用，但功能有限。Brave Leo 高级版提供更多模型、限制更少，并且订阅用户可以提前使用新功能。默认模型会不时更改。如需了解更多详细信息，请参阅 <ph name="LINK_BEFORE"/>Brave 帮助中心<ph name="LINK_AFTER"/>。</translation>
+<translation id="7297056998057521697">在默认情况下，当您针对正在浏览的网站或网页向 Leo 提出问题时，您正在浏览的网页内容、您在页面中高亮的任何文本以及您的搜索查询将会发送给 Brave 服务器，以便 Leo 提供答复。在某些情况下，Leo 会将从您的输入中得出的查询发送给 Brave 搜索，然后使用搜索结果来更好地回答您的问题。Brave 不保证答复的准确性，Leo 的答复可能会包含不准确、误导性或虚假信息。请勿向 Brave Leo 提交敏感或私密信息，并谨慎看待与健康、资金、人身安全或类似问题相关的答案。您可以随时在设置中调整 Leo 的选项。前往设置&gt; Leo。</translation>
+<translation id="6644545214304085600">Leo 不会收集可以指向您的身份的个人识别信息，如您的 IP  地址。我们不会根据您的数据训练模型，包括您的搜索查询或 Brave Leo 的答复。任何个人数据都不会储存在我们的服务器中，或由 Brave 保留。如需了解更多信息，请查阅我们的<ph name="LINK_BEFORE"/>隐私政策<ph name="LINK_AFTER"/>。</translation>
 <translation id="4348006373172097089">{PAGE_COUNT, plural,
       =1 {就本页内容提问}
       other {就这些网页内容提问}
@@ -2132,11 +2155,11 @@ other {# 个来源}
 <translation id="999273441077650169">模型会动态变化以使用最适合任务的模型。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3282183392203936979">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Llama 3.1 8B 提供支持，这是一个由 Meta 创建的模型，性能卓越，适用于多种用例。Llama 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 14B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="5594884291408453470">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Gemma 3 12B 提供支持，这是一个由 Google DeepMind 创建的模型，性能卓越，适用于多种用例。Gemma 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8706248250250832190">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 DeepSeek R1 提供技术支持，这是由 DeepSeek 创建的模型，适用于处理深度推理任务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">嗨，我是 Leo。我由 Brave 代理，并由 Claude Instant 提供支持。Claude Instant 是 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Instant 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">嗨，我是 Leo。我由 Brave 代理，并由 Claude Haiku 提供支持。Claude Haiku 是 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Haiku 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">嗨，我是 Leo。我由 Brave 代理，并由 Claude Sonnet 提供支持。Claude Sonnet 是 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Sonnet 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="1774712391633741125">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Llama Vision 提供支持，这是一个由 Meta 创建的模型，性能卓越，适用于多种用例。Llama Vision 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">高级</translation>
 <translation id="6187065185557150870">会话</translation>
 <translation id="4685048769603134644">打开整页</translation>
@@ -2218,6 +2241,8 @@ other {# 个来源}
 <translation id="1352836459737874921">附加其他标签页的内容</translation>
 <translation id="3028258613451571431">从您的浏览器标签页发送页面内容，为 Leo 提供更多对话上下文</translation>
 <translation id="4300920590112551536">浏览器标签页</translation>
+<translation id="1446346932629101482">添加标签页内容以提供上下文信息。这些内容将会与您的消息一起发送给 Leo。</translation>
+<translation id="7193316103691252734">没有匹配的标签页</translation>
 <translation id="2315654674554095762">现在 Leo 会记住您的对话，以便您回头查看。它们会加密存储在您的设备上，您可以随时删除它们。</translation>
 <translation id="7821251979960635244">对话开始后，您的对话记录将会显示在这里。</translation>
 <translation id="887511360213807449">对话记录已禁用</translation>
@@ -2227,7 +2252,7 @@ other {# 个来源}
 <translation id="7979673624064378842">快速流畅的聊天</translation>
 <translation id="2836330653441111204">兼顾速度与智慧</translation>
 <translation id="6695329447007213917">普通聊天、编码等更多功能</translation>
-<translation id="5051668914970329839">通用视觉</translation>
+<translation id="7168072214482631597">通用文本和图像理解</translation>
 <translation id="7226508434216060960">推理模型</translation>
 <translation id="8782867266498869301">模型会动态变化以使用最适合任务的模型</translation>
 <translation id="3965507912994218570">Leo 设置</translation>
@@ -2284,6 +2309,8 @@ other {# 个来源}
 <translation id="5355776323718420036">隐藏常用网站</translation>
 <translation id="9173319813356700250">新闻</translation>
 <translation id="6543799171249004861">照片提供者：<ph name="AUTHOR"/></translation>
+<translation id="466214682712474574">登录您的<ph name="PROVIDER"/>账户查看余额</translation>
+<translation id="8332875111286275890">登录查看余额</translation>
 <translation id="5430001801813715388">奖励</translation>
 <translation id="5966055668402779222">询问 Brave 搜索</translation>
 <translation id="167018310108390163">自定义新标签页</translation>
@@ -2300,6 +2327,8 @@ other {# 个来源}
 <translation id="4290791698375397492">已移除常用网站</translation>
 <translation id="1436784010935106834">已移除</translation>
 <translation id="9030215177866748410">根据您经常访问的网站推荐常用网站。</translation>
+<translation id="1849266032237224734">显示更少项目</translation>
+<translation id="9125416311275819193">显示更多项目</translation>
 <translation id="8425213833346101688">更改</translation>
 <translation id="755045397420611731">额外的在线隐私和安全</translation>
 <translation id="4520128772974831415">隐藏您的 IP 并变更您的位置</translation>
@@ -2401,6 +2430,7 @@ other {# 个来源}
 <translation id="5222676887888702881">退出</translation>
 <translation id="8090292425230843109">退出电子邮件别名</translation>
 <translation id="8471990782451394141">正在连接到 Brave 账户……</translation>
+<translation id="71316462802471551">电子邮件别名</translation>
 <translation id="5713644099811900409">Brave 账户</translation>
 <translation id="6002159997868894136">点击复制别名</translation>
 <translation id="8105770564756958406">使用于 <ph name="DOMAINS"/></translation>
@@ -2435,6 +2465,13 @@ other {# 个来源}
 <translation id="619122420105901711">没有看到电子邮件？检查您的垃圾邮件文件夹或 重试。</translation>
 <translation id="3397336197747843396">使用 Brave 账户进行身份验证时出错。请重试。</translation>
 <translation id="1340795582009113055">重新开始</translation>
+<translation id="2422927186524098759">侧边栏</translation>
+<translation id="2361906291514218784">Leo 人工智能</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="8000020256436988724">工具栏</translation>
+<translation id="6225572914528673855">地址栏</translation>
+<translation id="8293206222192510085">添加书签</translation>
+<translation id="7758460733045216901">书签面板</translation>
 <translation id="958268166261124668">Brave VPN：已连接</translation>
 <translation id="6021669293402055982">Brave VPN：已断开连接</translation>
 <translation id="3541307549916475335">Brave VPN 面板 UI</translation>
@@ -2449,6 +2486,9 @@ other {# 个来源}
 <translation id="7805768142964895445">状态</translation>
 <translation id="5747552184818312860">到期时间</translation>
 <translation id="8421945428836418371">自动恢复连接</translation>
+<translation id="1775187768313123375">智能代理路由</translation>
+<translation id="1729266073247927443">智能代理路由可用</translation>
+<translation id="8416695199565594645">确保流量通过专用代理服务器进行路由，以允许访问通常受限的内容/网站或第三方服务。</translation>
 <translation id="434523916398030617">联系技术支持</translation>
 <translation id="1116694919640316211">关于</translation>
 <translation id="2044418816479192294">数百台服务器遍布全球</translation>

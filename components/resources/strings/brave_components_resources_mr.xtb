@@ -52,6 +52,7 @@
 <translation id="5334844597069022743">स्रोत पाहा</translation>
 <translation id="4720556299488643018">अनसबस्क्राइब</translation>
 <translation id="1209739344687072997">बिघडलेल्या साइटची माहिती द्या</translation>
+<translation id="7138678301420049075">इतर</translation>
 <translation id="7701040980221191251">काहीही नाही</translation>
 <translation id="8446884382197647889">अधिक जाणून घ्या</translation>
 <translation id="4394049700291259645">अक्षम करा</translation>
@@ -156,7 +157,6 @@
 <translation id="4319632089378796037">वेब3 वॉलेट वापरा</translation>
 <translation id="4379244534135194459">तुमच्या वेब3 वॉलेटचा उपयोग करून तुम्ही या निर्मात्याला क्रिप्टो योगदानेही पाठवू शकता.</translation>
 <translation id="1166682575529520472">मासिक</translation>
-<translation id="7138678301420049075">इतर</translation>
 <translation id="7504352885209484360">पुनरावृत्त योगदान</translation>
 <translation id="7063168612616047608">तुमच्या आवडत्या निर्मात्यांना समर्थन दिल्याबद्दल धन्यवाद</translation>
 <translation id="5379685283876547860">योगदान पाठवले!</translation>
@@ -471,6 +471,8 @@
 <translation id="619122420105901711">ईमेल दिसत नाही? तुमचा स्पॅम फोल्डर तपासा किंवा पुन्हा प्रयत्न करा.</translation>
 <translation id="3397336197747843396">Brave खात्याने अधिस्वीकृती देताना त्रुटी आली. कृपया पुन्हा प्रयत्न करा.</translation>
 <translation id="1340795582009113055">पुन्हा सुरुवात करा</translation>
+<translation id="2422927186524098759">साइडबार</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="5753795690521538679">7 दिवसांचे विनामूल्य ट्रायल सुरु करा</translation>
 <translation id="3357036723290257445">Brave VPN आधीच खरेदी केला आहे?</translation>
 <translation id="7805768142964895445">स्थिती</translation>

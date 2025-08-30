@@ -42,6 +42,7 @@
 <translation id="5334844597069022743">Прегледај извор</translation>
 <translation id="4720556299488643018">Отстрани претплата</translation>
 <translation id="1209739344687072997">Пријави нефункционална страница</translation>
+<translation id="7138678301420049075">Друго</translation>
 <translation id="4394049700291259645">Оневозможи</translation>
 <translation id="4176463684765177261">Оневозможено</translation>
 <translation id="3082557070674409251">Кликнато</translation>
@@ -216,7 +217,6 @@
 <translation id="3382275793825152362">Заштити ги средствата</translation>
 <translation id="8631765320256788981">Испраќате средства од вашата транспарентна сметка на вашата заштитена сметка.</translation>
 <translation id="8030852056903932865">Одобри</translation>
-<translation id="7138678301420049075">Друго</translation>
 <translation id="2244921323472112851">Не можеме да ја најдеме страницата што ја барате во моментот.</translation>
 <translation id="6277237872689140644">Можеби е преместена на друго место или веб-адресата содржи печатна грешка.</translation>
 <translation id="2737084171727561244">Оди на Портфолио</translation>
@@ -390,6 +390,8 @@
 <translation id="619122420105901711">Не ја гледате е-пораката? Проверете го вашето сандаче за несакана пошта или обидете се повторно.</translation>
 <translation id="3397336197747843396">Грешка при автентикацијата со Brave сметка. Обидете се повторно.</translation>
 <translation id="1340795582009113055">Започни одново</translation>
+<translation id="2422927186524098759">Странична лента</translation>
+<translation id="2361906291514218784">Лео ВИ</translation>
 <translation id="5753795690521538679">Започни 7-дневна бесплатна проба</translation>
 <translation id="3357036723290257445">Веќе купивте Brave VPN?</translation>
 <translation id="5747552184818312860">Истекува</translation>
