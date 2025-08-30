@@ -11,15 +11,18 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sessions/core/tab_restore_service.h"
@@ -106,6 +109,21 @@ std::u16string BraveTabMenuModel::GetLabelAt(size_t index) const {
   return TabMenuModel::GetLabelAt(index);
 }
 
+bool BraveTabMenuModel::IsNewFeatureAt(size_t index) const {
+  if (base::FeatureList::IsEnabled(features::kSideBySide)) {
+    const auto id = GetCommandIdAt(index);
+
+    // Don't show new badge for split view commands.
+    if (id == TabStripModel::CommandSwapWithActiveSplit ||
+        id == TabStripModel::CommandAddToSplit ||
+        id == TabStripModel::CommandArrangeSplit) {
+      return false;
+    }
+  }
+
+  return TabMenuModel::IsNewFeatureAt(index);
+}
+
 void BraveTabMenuModel::Build(Browser* browser,
                               TabStripModel* tab_strip_model,
                               int selected_index,
@@ -151,6 +169,24 @@ void BraveTabMenuModel::Build(Browser* browser,
 
   if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
     BuildItemForCustomization(tab_strip_model, selected_index);
+  }
+
+  // Replace SplitTabMenuModel with BraveSplitTabMenuModel.
+  if (arrange_split_view_submenu_) {
+    auto arrange_submenu_index =
+        GetIndexOfCommandId(TabStripModel::CommandArrangeSplit);
+    CHECK(arrange_submenu_index);
+    RemoveItemAt(*arrange_submenu_index);
+    arrange_split_view_submenu_ = std::make_unique<BraveSplitTabMenuModel>(
+        tab_strip_model, SplitTabMenuModel::MenuSource::kTabContextMenu,
+        selected_index);
+    InsertSubMenuWithStringIdAt(
+        *arrange_submenu_index, TabStripModel::CommandArrangeSplit,
+        IDS_TAB_CXMENU_ARRANGE_SPLIT, arrange_split_view_submenu_.get());
+    SetIcon(*arrange_submenu_index,
+            ui::ImageModel::FromVectorIcon(kSplitSceneIcon, ui::kColorMenuIcon,
+                                           16));
+    SetElementIdentifierAt(*arrange_submenu_index, kArrangeSplitTabsMenuItem);
   }
 }
 
