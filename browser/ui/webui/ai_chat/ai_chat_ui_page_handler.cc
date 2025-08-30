@@ -218,6 +218,27 @@ void AIChatUIPageHandler::UploadFile(bool use_media_capture,
       std::move(callback));
 }
 
+void AIChatUIPageHandler::ProcessImageFile(
+    const std::vector<uint8_t>& file_data,
+    const std::string& filename,
+    ProcessImageFileCallback callback) {
+  UploadFileHelper::ProcessImageData(
+      file_data,
+      base::BindOnce(
+          [](const std::string& filename, ProcessImageFileCallback callback,
+             std::optional<std::vector<uint8_t>> processed_data) {
+            if (!processed_data) {
+              std::move(callback).Run(nullptr);
+              return;
+            }
+            auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+                filename, processed_data->size(), *processed_data,
+                ai_chat::mojom::UploadedFileType::kImage);
+            std::move(callback).Run(std::move(uploaded_file));
+          },
+          filename, std::move(callback)));
+}
+
 void AIChatUIPageHandler::GetPluralString(const std::string& key,
                                           int32_t count,
                                           GetPluralStringCallback callback) {
