@@ -27,13 +27,11 @@ class DarkerThemeBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, DarkerModeDefaultOff) {
-  // By default, the darker theme should be off.
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      color::prefs::kBraveDarkerMode));
-}
-
 IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
+  // By default, the darker theme should be off.
+  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      color::prefs::kBraveDarkerMode));
+
   auto* browser_view = static_cast<BrowserView*>(browser()->window());
   auto* browser_frame = static_cast<BraveBrowserFrame*>(browser_view->frame());
   auto* theme_service =
