@@ -95,11 +95,6 @@ TestingBraveBrowserProcess::https_upgrade_exceptions_service() {
   return nullptr;
 }
 
-localhost_permission::LocalhostPermissionComponent*
-TestingBraveBrowserProcess::localhost_permission_component() {
-  return nullptr;
-}
-
 brave_component_updater::LocalDataFilesService*
 TestingBraveBrowserProcess::local_data_files_service() {
   return nullptr;
@@ -115,7 +110,6 @@ TestingBraveBrowserProcess::tor_pluggable_transport_updater() {
   return nullptr;
 }
 #endif
-
 
 p3a::P3AService* TestingBraveBrowserProcess::p3a_service() {
   return nullptr;
