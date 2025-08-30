@@ -20,7 +20,8 @@ protocol TabCollectionViewDelegate: AnyObject {
   func didSelectTab(_ tab: any TabState, source: TabCollectionViewSelectSource)
   func didRemoveTab(_ tab: any TabState)
   func didMoveTab(_ tabIDs: [TabState.ID], to index: Int)
-  func selectedTabListChanged(_ tabs: [TabState.ID])
+  func selectedTabListChanged(_ tabs: Set<TabState.ID>)
+  func contextMenuForTabs(_ tabs: [any TabState]) -> UIMenu?
 }
 
 /// A view that can display tabs in a grid formation
@@ -266,12 +267,30 @@ extension TabGridContainerView: UICollectionViewDelegate {
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let selectedIndexPaths = collectionView.indexPathsForSelectedItems ?? []
-    delegate?.selectedTabListChanged(selectedIndexPaths.compactMap(dataSource.itemIdentifier(for:)))
+    delegate?.selectedTabListChanged(
+      Set(selectedIndexPaths.compactMap(dataSource.itemIdentifier(for:)))
+    )
   }
 
   func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
     let selectedIndexPaths = collectionView.indexPathsForSelectedItems ?? []
-    delegate?.selectedTabListChanged(selectedIndexPaths.compactMap(dataSource.itemIdentifier(for:)))
+    delegate?.selectedTabListChanged(
+      Set(selectedIndexPaths.compactMap(dataSource.itemIdentifier(for:)))
+    )
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
+    point: CGPoint
+  ) -> UIContextMenuConfiguration? {
+    let tabs = indexPaths.compactMap({ self.tabs[safe: $0.item] })
+    if tabs.isEmpty {
+      return nil
+    }
+    return .init(actionProvider: { _ in
+      return self.delegate?.contextMenuForTabs(tabs)
+    })
   }
 
   func collectionView(
@@ -405,7 +424,8 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
   var tabs: [any TabState]
   var isPrivateBrowsing: Bool
   var insets: EdgeInsets
-  @Binding var selectedTabList: [TabState.ID]
+  var contextMenuForTabs: ([any TabState]) -> UIMenu?
+  @Binding var selectedTabList: Set<TabState.ID>
 
   func makeUIView(context: Context) -> TabGridContainerView {
     let view =
@@ -415,11 +435,23 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
   }
 
   func updateUIView(_ uiView: TabGridContainerView, context: Context) {
+    let isEditing = context.environment.editMode?.wrappedValue == .active
     context.coordinator.dismissAction = context.environment.dismiss
     context.coordinator.containerView = uiView
     uiView.isPrivateBrowsing = isPrivateBrowsing
-    uiView.isEditing = context.environment.editMode?.wrappedValue == .active
+    uiView.isEditing = isEditing
     uiView.updateTabs(tabs, transaction: context.transaction)
+    if isEditing {
+      let indexPaths = selectedTabList.compactMap { uiView.dataSource.indexPath(for: $0) }
+      let indexPathsToDeselect = Set(uiView.collectionView.indexPathsForSelectedItems ?? [])
+        .subtracting(indexPaths)
+      for indexPath in indexPaths {
+        uiView.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+      }
+      for indexPath in indexPathsToDeselect {
+        uiView.collectionView.deselectItem(at: indexPath, animated: false)
+      }
+    }
     uiView.maskInsets = .init(
       top: insets.top,
       left: 0,
@@ -429,7 +461,11 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
   }
 
   func makeCoordinator() -> Coordinator {
-    .init(viewModel: viewModel, selectedTabList: $selectedTabList)
+    .init(
+      viewModel: viewModel,
+      contextMenu: contextMenuForTabs,
+      selectedTabList: $selectedTabList
+    )
   }
 
   @MainActor
@@ -437,10 +473,16 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
     var viewModel: TabGridViewModel
     var dismissAction: DismissAction?
     var containerView: TabGridContainerView?
-    @Binding var selectedTabList: [TabState.ID]
+    var contextMenu: ([any TabState]) -> UIMenu?
+    @Binding var selectedTabList: Set<TabState.ID>
 
-    init(viewModel: TabGridViewModel, selectedTabList: Binding<[TabState.ID]>) {
+    init(
+      viewModel: TabGridViewModel,
+      contextMenu: @escaping ([any TabState]) -> UIMenu?,
+      selectedTabList: Binding<Set<TabState.ID>>
+    ) {
       self.viewModel = viewModel
+      self.contextMenu = contextMenu
       self._selectedTabList = selectedTabList
     }
 
@@ -467,8 +509,12 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
       containerView?.updateTabs(viewModel.tabs, transaction: .init(animation: .default))
     }
 
-    func selectedTabListChanged(_ tabs: [TabState.ID]) {
+    func selectedTabListChanged(_ tabs: Set<TabState.ID>) {
       selectedTabList = tabs
+    }
+
+    func contextMenuForTabs(_ tabs: [any TabState]) -> UIMenu? {
+      self.contextMenu(tabs)
     }
   }
 }
