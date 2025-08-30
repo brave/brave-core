@@ -56,10 +56,26 @@ SpeedreaderService::SpeedreaderService(content::BrowserContext* browser_context,
       content_rules_(content_rules),
       prefs_(user_prefs::UserPrefs::Get(browser_context_)),
       metrics_(local_state, content_rules_, IsEnabledForAllSites()) {
-  DCHECK(features::IsSpeedreaderEnabled());
+  CHECK(features::IsSpeedreaderEnabled());
+  CHECK(content_rules_);
+  pref_change_registrar_.Init(prefs_);
+  pref_change_registrar_.Add(
+      kSpeedreaderPrefEnabledForAllSites,
+      base::BindRepeating(&SpeedreaderService::OnEnabledForAllSitesPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kSpeedreaderPrefFeatureEnabled,
+      base::BindRepeating(&SpeedreaderService::OnFeatureEnabledPrefChanged,
+                          base::Unretained(this)));
+  // Setup the default value.
+  OnEnabledForAllSitesPrefChanged();
 }
 
 SpeedreaderService::~SpeedreaderService() = default;
+
+void SpeedreaderService::Shutdown() {
+  pref_change_registrar_.Reset();
+}
 
 // static
 void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
@@ -114,36 +130,12 @@ bool SpeedreaderService::IsEnabledForAllSites() {
   if (!IsFeatureEnabled()) {
     return false;
   }
-  return prefs_->GetBoolean(kSpeedreaderPrefEnabledForAllSites);
-}
-
-ContentSetting SpeedreaderService::GetEnabledForSiteSetting(const GURL& url) {
-  if (!url.is_valid()) {
-    return CONTENT_SETTING_BLOCK;
-  }
-  if (!content_rules_) {
-    return CONTENT_SETTING_BLOCK;
-  }
-  return content_rules_->GetContentSetting(
-      url, GURL::EmptyGURL(), ContentSettingsType::BRAVE_SPEEDREADER);
-}
-
-ContentSetting SpeedreaderService::GetEnabledForSiteSetting(
-    content::WebContents* contents) {
-  if (!contents) {
-    return CONTENT_SETTING_BLOCK;
-  }
-  return GetEnabledForSiteSetting(contents->GetLastCommittedURL());
+  return CONTENT_SETTING_ALLOW ==
+         GetEnabledForSiteSetting(GURL::EmptyGURL()).setting;
 }
 
 bool SpeedreaderService::IsEnabledForSite(const GURL& url) {
-  const auto setting = GetEnabledForSiteSetting(url);
-  if (setting == CONTENT_SETTING_BLOCK) {
-    return false;
-  } else if (setting == CONTENT_SETTING_ALLOW) {
-    return true;
-  }
-  return IsEnabledForAllSites();
+  return GetEnabledForSiteSetting(url).setting == CONTENT_SETTING_ALLOW;
 }
 
 bool SpeedreaderService::IsEnabledForSite(content::WebContents* contents) {
@@ -154,8 +146,12 @@ bool SpeedreaderService::IsEnabledForSite(content::WebContents* contents) {
 }
 
 bool SpeedreaderService::IsExplicitlyEnabledForSite(const GURL& url) {
+  if (!url.is_valid()) {
+    return CONTENT_SETTING_BLOCK;
+  }
+
   const auto setting = GetEnabledForSiteSetting(url);
-  return setting == CONTENT_SETTING_ALLOW;
+  return !setting.is_default && setting.setting == CONTENT_SETTING_ALLOW;
 }
 
 bool SpeedreaderService::IsExplicitlyEnabledForSite(
@@ -167,8 +163,11 @@ bool SpeedreaderService::IsExplicitlyEnabledForSite(
 }
 
 bool SpeedreaderService::IsExplicitlyDisabledForSite(const GURL& url) {
+  if (!url.is_valid()) {
+    return CONTENT_SETTING_BLOCK;
+  }
   const auto setting = GetEnabledForSiteSetting(url);
-  return setting == CONTENT_SETTING_BLOCK;
+  return !setting.is_default && setting.setting == CONTENT_SETTING_BLOCK;
 }
 
 bool SpeedreaderService::IsExplicitlyDisabledForSite(
@@ -183,6 +182,10 @@ void SpeedreaderService::EnableForAllSites(bool enabled) {
   if (IsEnabledForAllSites() == enabled) {
     return;
   }
+  content_rules_->SetDefaultContentSetting(
+      ContentSettingsType::BRAVE_SPEEDREADER,
+      enabled ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
+
   prefs_->SetBoolean(kSpeedreaderPrefEnabledForAllSites, enabled);
 
   for (auto& o : observers_) {
@@ -198,12 +201,11 @@ void SpeedreaderService::EnableForSite(const GURL& url, bool enabled) {
   }
   const ContentSetting setting =
       enabled ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
-  if (GetEnabledForSiteSetting(url) == setting) {
+  const auto state = GetEnabledForSiteSetting(url);
+  if (!state.is_default && state.setting == setting) {
     return;
   }
-  if (!content_rules_) {
-    return;
-  }
+
   // Rule covers all protocols and pages.
   const auto pattern =
       ContentSettingsPattern::FromString("*://" + url.host() + "/*");
@@ -323,6 +325,26 @@ std::string SpeedreaderService::GetColumnWidth() const {
       return "wide";
   }
   return "narrow";
+}
+
+SpeedreaderService::Setting SpeedreaderService::GetEnabledForSiteSetting(
+    const GURL& url) {
+  content_settings::SettingInfo info;
+  const ContentSetting setting = content_rules_->GetContentSetting(
+      url, GURL::EmptyGURL(), ContentSettingsType::BRAVE_SPEEDREADER, &info);
+  return {.is_default = info.primary_pattern.MatchesAllHosts(),
+          .setting = setting};
+}
+
+void SpeedreaderService::OnEnabledForAllSitesPrefChanged() {
+  EnableForAllSites(prefs_->GetBoolean(kSpeedreaderPrefEnabledForAllSites));
+}
+
+void SpeedreaderService::OnFeatureEnabledPrefChanged() {
+  const bool feature_enabled = IsFeatureEnabled();
+  for (auto& observer : observers_) {
+    observer.OnFeatureStateChanged(feature_enabled);
+  }
 }
 
 }  // namespace speedreader

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 
 #include <initializer_list>
 #include <string>
@@ -36,7 +36,6 @@
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -166,6 +165,14 @@ void SpeedreaderTabHelper::ProcessIconClick() {
   }
 }
 
+DistillState SpeedreaderTabHelper::PageDistillState() const {
+  auto* speedreader_service = GetSpeedreaderService();
+  if (!speedreader_service || !speedreader_service->IsFeatureEnabled()) {
+    return {};
+  }
+  return distill_state_;
+}
+
 SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {
   return speedreader_bubble_;
 }
@@ -217,12 +224,10 @@ void SpeedreaderTabHelper::RemoveObserver(Observer* observer) {
 void SpeedreaderTabHelper::ShowSpeedreaderBubble(
     SpeedreaderBubbleLocation location) {
 #if !BUILDFLAG(IS_ANDROID)
-  auto* contents = web_contents();
-  Browser* browser = chrome::FindBrowserWithTab(contents);
-  DCHECK(browser);
-
-  speedreader_bubble_ = BraveBrowserWindow::From(browser->window())
-                            ->ShowSpeedreaderBubble(this, location);
+  if (auto* browser_window = BraveBrowserWindow::From(
+          BrowserWindow::FindBrowserWindowWithWebContents(web_contents()))) {
+    speedreader_bubble_ = browser_window->ShowSpeedreaderBubble(this, location);
+  }
 #endif
 }
 
@@ -335,7 +340,7 @@ void SpeedreaderTabHelper::ProcessNavigation(
     // site.
     const bool explicit_enabled_for_size =
         !homepage && kSpeedreaderExplicitPref.Get() &&
-        GetSpeedreaderService()->GetEnabledForSiteSetting(
+        GetSpeedreaderService()->IsExplicitlyEnabledForSite(
             navigation_handle->GetURL());
     if (url_looks_readable || explicit_enabled_for_size) {
       // Speedreader enabled for this page.
@@ -359,10 +364,9 @@ void SpeedreaderTabHelper::UpdateUI() {
     return;
   }
 #if !BUILDFLAG(IS_ANDROID)
-  if (const auto* browser = chrome::FindBrowserWithTab(web_contents())) {
-    BraveBrowserWindow::From(browser->window())->UpdateReaderModeToolbar();
-    browser->window()->UpdatePageActionIcon(
-        brave::kSpeedreaderPageActionIconType);
+  if (auto* browser_window = BraveBrowserWindow::From(
+          BrowserWindow::FindBrowserWindowWithWebContents(web_contents()))) {
+    browser_window->UpdatePageActionIcon(brave::kSpeedreaderPageActionIconType);
   }
 #endif
 }
@@ -529,6 +533,10 @@ void SpeedreaderTabHelper::OnReadingProgress(content::WebContents* web_contents,
       script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
+void SpeedreaderTabHelper::OnFeatureStateChanged(bool enabled) {
+  UpdateUI();
+}
+
 void SpeedreaderTabHelper::OnSiteEnableSettingChanged(
     content::WebContents* site,
     bool enabled_on_site) {
@@ -547,7 +555,9 @@ void SpeedreaderTabHelper::OnSiteEnableSettingChanged(
 
 void SpeedreaderTabHelper::OnAllSitesEnableSettingChanged(
     bool enabled_on_all_sites) {
-  if (!is_visible_ || !GetSpeedreaderService()) {
+  if (!is_visible_ || !GetSpeedreaderService() ||
+      !rewriter_service_->URLLooksReadable(
+          web_contents()->GetLastCommittedURL())) {
     return;
   }
   OnSiteEnableSettingChanged(
@@ -621,7 +631,7 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
       DistillStates::Distilling(DistillStates::Distilling::Reason::kManual));
 }
 
-SpeedreaderService* SpeedreaderTabHelper::GetSpeedreaderService() {
+SpeedreaderService* SpeedreaderTabHelper::GetSpeedreaderService() const {
   return SpeedreaderServiceFactory::GetForBrowserContext(
       web_contents()->GetBrowserContext());
 }
