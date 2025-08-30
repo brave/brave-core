@@ -30,15 +30,15 @@ class Bookmarkv2: WebsitePresentable {
   }
 
   public var title: String? {
-    return bookmarkNode.titleUrlNodeTitle
+    return bookmarkNode.title
   }
 
   public var url: String? {
-    bookmarkNode.titleUrlNodeUrl?.absoluteString
+    bookmarkNode.url?.absoluteString
   }
 
   public var domain: Domain? {
-    if let url = bookmarkNode.titleUrlNodeUrl {
+    if let url = bookmarkNode.url {
       return Domain.getOrCreate(forUrl: url, persistent: true)
     }
     return nil
@@ -70,7 +70,7 @@ class Bookmarkv2: WebsitePresentable {
   }
 
   public func update(customTitle: String?, url: URL?) {
-    bookmarkNode.setTitle(customTitle ?? "")
+    bookmarkNode.title = customTitle ?? ""
     bookmarkNode.url = url
   }
 
