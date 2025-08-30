@@ -9,5 +9,5 @@ declare_args() {
   # "dev" for dev channel release.
   # "nightly" for nightly channel release.
   # "" for stable channel release.
-  brave_channel = ""
+  brave_channel = "development"
 }
