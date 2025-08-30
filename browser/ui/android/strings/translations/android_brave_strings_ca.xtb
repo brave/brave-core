@@ -421,8 +421,8 @@ Segur que vols continuar?</translation>
 <translation id="8748471354357836070">Més informació / opcions de renúncia</translation>
 <translation id="3171669670217312786">Imatges de fons</translation>
 <translation id="8522669544471808198">Mostra imatges de fons</translation>
-<translation id="3870475560794762985">Mostra imatges patrocinades</translation>
-<translation id="6937724381960478525">Més informació sobre les imatges patrocinades</translation>
+<translation id="6258554626602400736">Mostrar publicitat a la pàgina de nova pestanya</translation>
+<translation id="9001530744369687550">Més informació sobre els anuncis a la pàgina de nova pestanya</translation>
 <translation id="8793108040181436796">Ginys</translation>
 <translation id="8643377320501056697">Mostra llocs destacats</translation>
 <translation id="7275773481201277457">Mostra estadístiques de Brave</translation>
@@ -500,6 +500,8 @@ Segur que vols continuar?</translation>
 <translation id="7616645803364270729">Correu electrònic, Twitter, etc.</translation>
 <translation id="5299848999918506028">Gràcies!</translation>
 <translation id="76550953340008122">Gràcies per fer saber als desenvolupadors de Brave que hi ha un problema amb aquesta web. Farem tot el que puguem per arreglar-lo!</translation>
+<translation id="3037432377946455872">Quin és el principal problema que veus?</translation>
+<translation id="8731661215617360873">Selecciona una opció</translation>
 <translation id="650318023204990401">Controls avançats</translation>
 <translation id="7205939464631857223">Esborrar tots els elements bloquejats</translation>
 <translation id="5370478469168390143">Guarda les dades en línia</translation>
@@ -796,6 +798,7 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="1426320910664514906">Límit de gas</translation>
 <translation id="6389441740143786465">Desactiva el Sharing Hub</translation>
 <translation id="9065203028668620118">Edita</translation>
+<translation id="473775607612524610">Actualitza</translation>
 <translation id="479795390141144417">S'ha produït un error en actualitzar el compte.</translation>
 <translation id="8084782383392198011">Nom del compte no pot estar buit.</translation>
 <translation id="5045550434625856497">Contrasenya incorrecta</translation>
@@ -1223,4 +1226,41 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="2735247450315842119">Permetre les captures de pantalla a les pestanyes d'incògnit</translation>
 <translation id="8420414929552321089">Si s'activa aquesta opció, les pestanyes d'incògnit també seran visibles quan hi hagi diverses aplicacions obertes.</translation>
 <translation id="7956713633345437162">Adreces d'interès mòbils</translation>
+<translation id="1943432128510653496">Desa les contrasenyes</translation>
+<translation id="2100273922101894616">Inici de sessió automàtic</translation>
+<translation id="363596933471559332">Inicia la sessió automàticament als llocs web amb les credencials emmagatzemades. Si la funció està desactivada, se us demana sempre que les verifiqueu per iniciar la sessió en un lloc web.</translation>
+<translation id="8562452229998620586">Les contrasenyes desades apareixeran aquí.</translation>
+<translation id="1303339473099049190">No es troba aquesta contrasenya. Comprova que estigui ben escrita i torna-ho a provar.</translation>
+<translation id="2259659629660284697">Exporta les contrasenyes…</translation>
+<translation id="133012818630824069">Exporta les contrasenyes emmagatzemades a Brave</translation>
+<translation id="2321086116217818302">S'estan preparant les contrasenyes…</translation>
+<translation id="5139940364318403933">Obtén informació sobre com pots utilitzar Brave Drive</translation>
+<translation id="729975465115245577">El dispositiu no té cap aplicació per emmagatzemar el fitxer de contrasenyes.</translation>
+<translation id="1129510026454351943">Detalls: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Desbloqueja per exportar les contrasenyes</translation>
+<translation id="5245792669563792664">contrasenyes</translation>
+<translation id="10614374240317010">Contrasenyes que no es desen mai</translation>
+<translation id="1571304935088121812">Copia el nom d'usuari</translation>
+<translation id="5005498671520578047">Copia la contrasenya</translation>
+<translation id="2435457462613246316">Mostra la contrasenya</translation>
+<translation id="1513858653616922153">Suprimeix la contrasenya</translation>
+<translation id="543338862236136125">Edita la contrasenya</translation>
+<translation id="4565377596337484307">Oculta la contrasenya</translation>
+<translation id="8523928698583292556">Suprimeix la contrasenya emmagatzemada</translation>
+<translation id="5433691172869980887">S'ha copiat el nom d'usuari</translation>
+<translation id="2625189173221582860">S'ha copiat la contrasenya</translation>
+<translation id="8084114998886531721">Contrasenya desada</translation>
+<translation id="6590680911007613645">Assegura't que la contrasenya que estàs desant coincideixi amb la contrasenya per a <ph name="SITE"/></translation>
+<translation id="1492417797159476138">Ja has desat aquest nom d'usuari per a aquest lloc web</translation>
+<translation id="5454166040603940656">amb <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Vols suprimir la contrasenya?</translation>
+<translation id="7808889146555843082">Encara que suprimeixis aquesta contrasenya, no se suprimirà el teu compte de <ph name="SITE"/>. Canvia la contrasenya o suprimeix el teu compte de <ph name="SITE"/> per protegir-lo dels altres.</translation>
+<translation id="2870560284913253234">Lloc</translation>
+<translation id="8503813439785031346">Nom d'usuari</translation>
+<translation id="2278052315791335171">Encara que suprimeixis aquesta contrasenya, no se suprimirà el teu compte a <ph name="SITE"/></translation>
+<translation id="6891726759199484455">Desbloqueja la pantalla per copiar la contrasenya</translation>
+<translation id="5515439363601853141">Desbloqueja la pantalla per veure la contrasenya</translation>
+<translation id="1724977129262658800">Desbloqueja per editar la contrasenya</translation>
+<translation id="5780792035410621042">Per copiar les contrasenyes, primer has d'establir un bloqueig de pantalla al dispositiu</translation>
+<translation id="7986497153528221272">Per veure les contrasenyes, primer has d'establir un bloqueig de pantalla al dispositiu</translation>
 </translationbundle>

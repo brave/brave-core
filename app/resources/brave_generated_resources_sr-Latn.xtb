@@ -18,10 +18,6 @@
 <translation id="1544192797660353713">Novčanik</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Više…</translation>
-<translation id="9092796350041759828">{0, plural,
-          =1 {Zatvori prozor posetioca}
-          other {Zatvori prozore posetioca}
-}</translation>
 <translation id="1990886731975529483">Instaliraj i pokreni Google Widevine</translation>
 <translation id="8926389886865778422">Ne pitaj me ponovo</translation>
 <translation id="4900351245762303149">Instaliraj Google Widevine</translation>
@@ -140,7 +136,6 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="6020553119523541665">Ova kartica je aktivna u drugom prozoru</translation>
 <translation id="4987392683074136770">Ako kliknete na ovu karticu, njen sadržaj će se pojaviti u ovom prozoru</translation>
 <translation id="8355523213948477234">Dugme menija za razdelu prikaza</translation>
-<translation id="2104347391516032700">Usluga Bat nagrađivanja</translation>
 <translation id="6040143037577758943">Zatvori</translation>
 <translation id="6665472986740899785">Brave oglas u obavešenju</translation>
 <translation id="5582087890067572966">🎉 Sada zarađujete!</translation>
@@ -194,7 +189,6 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="2604698253988679506">Ovi privatni odgovori omogućavaju Brave-u da proceni ukupno korišćenje određenih funkcija i da ih učini boljim za vas.</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Domeni Web3</translation>
-<translation id="5046066249040287308">Pomoćna usluga Brave novačanika</translation>
 <translation id="4552520379838695057">Nažalost, ta stranica nedostaje.</translation>
 <translation id="7299769530898469069">Nismo uspeli da učitamo sačuvanu verziju</translation>
 <translation id="2609895996619941644">Želite li da proverite da li je sačuvana verzija dostupna u arhivi Wayback Machine?</translation>
@@ -366,6 +360,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="8000020256436988724">Traka sa alatkama</translation>
 <translation id="8076492880354921740">Kartice</translation>
 <translation id="8168435359814927499">Sadržaj</translation>
+<translation id="5327248766486351172">Naziv</translation>
 <translation id="5860254591544742609">Prikaži naslovnu traku</translation>
 <translation id="5371926069408837914">Proširi vertikalni panel sa karticama kada se preko skupljenog panela pređe mišem</translation>
 <translation id="3367129510799209147">Režim prelaska mišem preko kartice</translation>
@@ -393,8 +388,6 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="7158817046543187970">Traka sa obeleživačima je skrivena na svim stranicama</translation>
 <translation id="3416468988018290825">Uvek prikazuj kompletan URL</translation>
 <translation id="5529693968082667490">Prikaži dugme za pretragu kartica</translation>
-<translation id="1013121820689882118">Brzo čitanje</translation>
-<translation id="2025435450953474282">Članci se automatski učitavaju u režimu za brzo čitanje, što vam štedi vreme</translation>
 <translation id="7984721311211272523">Deaktiviraj opciju isključivanja zvuka na ikoni zvučnika na kartici</translation>
 <translation id="832432428796481785">Prikaži dugme za bočnu traku</translation>
 <translation id="5581036754486769849">Aktiviraj automatski unos u privatnim prozorima</translation>
@@ -473,7 +466,6 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="9202707370720720635">Prilagođeni skriptleti</translation>
 <translation id="5524306331330789642">Dodaj novi skriptlet</translation>
 <translation id="3865146371459790194">Izmena skriptleta</translation>
-<translation id="5327248766486351172">Naziv</translation>
 <translation id="5584409054843451563">Želite li sigurno da izbrišete ovaj skriptlet? Ako se ovaj skriptlet koristi u nekom prilagođenom filteru, više neće funkcionisati.</translation>
 <translation id="4545850500562727184">Skriptlet već postoji.</translation>
 <translation id="4877521822848390663">Naziv skriptleta je nevažeći.</translation>
@@ -752,8 +744,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="8172263161008556851">Prikaži predložene upite u razgovoru</translation>
 <translation id="5781842473834867765">Sačuvaj moju istoriju razgovora</translation>
 <translation id="1082960401708055995">Ako isključite čuvanje razgovora, trajno će se izbrisati svi prethodno sačuvani razgovori. Ova radnja se ne može opozvati.</translation>
-<translation id="6106701981952170121">Izbriši sve podatke o razgovorima sa asistentom Leo AI</translation>
-<translation id="1335414530428321716">Za resetovanje asistenta Leo AI biće potrebno da aktivirate korišćenje asistenta Brave Leo AI u budućnosti i takođe će se izbrisati istorija ćaskanja. Brisanjem istorije ćaskanja izbrisaćete sve svoje prethodne razgovore sa asistentom Brave Leo AI. Ova radnja se ne može opozvati.</translation>
+<translation id="1014480593522400586">Izbriši podatke iz asistenta Leo</translation>
 <translation id="5574059574002819179">Prilagodite predloge za automatsko popunjavanje</translation>
 <translation id="7942415993090181327">Istorija ćaskanja</translation>
 <translation id="5084498230659987096">Brave Leo pruža ćaskanje zasnovano na veštačkoj inteligenciji kojem je prioritet privatnost, kao i druge interfejse zasnovane na veštačkoj inteligenciji u pregledaču. Leo nikada ne uči iz vaših podataka niti ih koristi za obuku modela. Svi zahtevi se šalju preko anonimizujućeg servera.</translation>
@@ -794,6 +785,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> token(a)</translation>
 <translation id="5985516785067818307">Anketni panelista</translation>
 <translation id="8347743943525229984">Aktiviraj Brave ankete</translation>
+<translation id="3204080538332044581">Omogućava Brave-u da prikazuje linkove za privatne ankete na novoj kartici. Ankete nam pomažu da kreiramo bolje funkcije i merimo efikasnost oglasnih kampanja zasnovanih na pretraživaču. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Uključi plejlistu</translation>
 <translation id="7903608716704052878">Automatski dodaj fajlove radi oflajn gledanja</translation>
 <translation id="4193768184502613558">Ova opcija će automatski keširati medijske fajlove tako da možete da ih pustite bez veze sa internetom.</translation>
@@ -835,4 +827,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="154702742922788359">Način otvaranja</translation>
+<translation id="2249111429176737533">Otvori kao prozor u kartici</translation>
+<translation id="7022756207310403729">Otvori u pregledaču</translation>
 </translationbundle>

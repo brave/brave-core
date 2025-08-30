@@ -91,7 +91,6 @@
 <translation id="4712050378540986986">Tor நிலைமை</translation>
 <translation id="1939334281379458295">Tor இணைப்பு வெற்றி</translation>
 <translation id="8030169304546394654">துண்டிக்கப்பட்டது</translation>
-<translation id="1149108864689950951">Tor இணைகிறது... [[percentage]]%</translation>
 <translation id="8388043004918289671">ஆதரவைத் தொடர்புகொள்.</translation>
 <translation id="4272382368346338917">கூடுதல் வடிகட்டிகள்</translation>
 <translation id="4673764878177947707">தனிப்பயன் வடிகட்டிகள்</translation>
@@ -106,10 +105,10 @@
 <translation id="5334844597069022743">மூலத்தைப் பார்</translation>
 <translation id="4720556299488643018">குழுவிலகு</translation>
 <translation id="1209739344687072997">உடைந்த தளத்தைப் புகாரளி</translation>
-<translation id="6476216365964140603">கூடுதல் விவரம் (விரும்பினால்)</translation>
 <translation id="6145852496180774737">என்னை இதில் தொடர்புகொள்: (விரும்பினால்)</translation>
 <translation id="7616645803364270729">மின்னஞ்சல், டுவிட்டர், போன்றவை.</translation>
 <translation id="5299848999918506028">நன்றி!</translation>
+<translation id="7138678301420049075">மற்றவை</translation>
 <translation id="6112368337882254910">தானாக-பங்களி</translation>
 <translation id="2539279826042558064">பிரேவ் வெகுமதிகள் மற்றும் விளம்பரங்கள் உம் சாதனத்தில் இந்நேரத்தில் கிடைக்கவில்லை.</translation>
 <translation id="5736977383725358876">அறிவிப்பு விளம்பர நிகழ்வெண்</translation>
@@ -272,7 +271,6 @@
 <translation id="4319632089378796037">Web3 வாலட்டைப் பயன்படுத்தவும்</translation>
 <translation id="4379244534135194459">உங்கள் Web3 வாலட்டைப் பயன்படுத்தி இந்தப் படைப்பாளருக்கு கிரிப்டோ பங்களிப்புகளை நீங்கள் அனுப்ப முடியும்</translation>
 <translation id="1166682575529520472">மாதாந்திர</translation>
-<translation id="7138678301420049075">மற்றவை</translation>
 <translation id="7504352885209484360">தொடர் பங்களிப்பு</translation>
 <translation id="7063168612616047608">உங்களுக்குப் பிடித்தமான படைப்பாளர்களை ஆதரித்ததற்கு நன்றி</translation>
 <translation id="5379685283876547860">பங்களிப்பு அனுப்பப்பட்டது!</translation>
@@ -593,6 +591,8 @@
 <translation id="619122420105901711">மின்னஞ்சலைப் பார்க்க முடியவில்லையா? உங்கள் ஸ்பாம் கோப்புறையைச் சோதிக்கவும் மீண்டும் முயற்சிக்கவும்.</translation>
 <translation id="3397336197747843396">Brave கணக்கை அங்கீகரிப்பதில் பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் முயற்சிக்கவும்.</translation>
 <translation id="1340795582009113055">மீண்டும் தொடங்கவும்</translation>
+<translation id="2422927186524098759">பக்கப்பட்டை</translation>
+<translation id="2361906291514218784">லியோ AI</translation>
 <translation id="5753795690521538679">7-நாள் இலவச வெள்ளோட்ட முயற்சியைத் தொடங்கவும்</translation>
 <translation id="3357036723290257445">ஏற்கனவே Brave VPN-ஐ வாங்கிவிட்டீர்களா?</translation>
 <translation id="7805768142964895445">நிலை</translation>

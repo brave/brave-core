@@ -388,7 +388,6 @@
 <translation id="7781069478569868053">የአዲስ ትር ገጽ</translation>
 <translation id="3171669670217312786">የጓላ ምስሎች</translation>
 <translation id="8522669544471808198">የዳራ ምስሎችን አሳይ</translation>
-<translation id="3870475560794762985">ስፖንሰር የተደረጉ ምስሎችን አሳይ</translation>
 <translation id="8793108040181436796">ምግብሮች</translation>
 <translation id="8643377320501056697">ከፍተኛ ጣቢያዎችን አሳይ</translation>
 <translation id="7275773481201277457">የ Brave ስታቲስቲክስ አሳይ</translation>
@@ -708,6 +707,7 @@
 <translation id="1426320910664514906">የነዳጅ ገደብ</translation>
 <translation id="6389441740143786465">የማጋሪያ ማዕከልን ያሰናክሉ</translation>
 <translation id="9065203028668620118">አርትዕ</translation>
+<translation id="473775607612524610">አዘምን</translation>
 <translation id="479795390141144417">የመለያ ዝማኔ አልተሳካም።</translation>
 <translation id="8084782383392198011">የመለያ ስም ባዶ ሊሆን አይችልም።</translation>
 <translation id="5045550434625856497">ትክክል ያልሆነ የይለፍ ቃል</translation>
@@ -1096,4 +1096,41 @@
 <translation id="3251885322612056119">የዘመኑ የአገልግሎት ውሎች</translation>
 <translation id="4049035689681585146">ለBrave ሽልማቶች የአገልግሎት ውሎችን አዘምነናል። ውሎቻችንን ግልጽ ለማድረግ እና አዳዲስ ባህርያትን እንደሸፈኑ ለማረጋገጥ፣ እነዚህን ዝማኔዎች አድርገናል። የBrave ሽልማቶችን ለመጠቀም ከቀጠሉ፣ ለዘመኑ የአገልግሎት ውሎች እየተስማሙ ነው። ካልተስማሙ፣ የBrave ሽልማቶችን<ph name="RESET_START"/>ዳግም ማስጀመር<ph name="RESET_END"/> ይችላሉ፣ ይህም ባህሪውን ያሰናክላል።</translation>
 <translation id="2165953574528546737">የ <ph name="TOS_START"/>Brave ሽልማቶች የአገልግሎት ውሎች<ph name="TOS_END"/> የሚለውን ይመልከቱ</translation>
+<translation id="1943432128510653496">የይለፍ ቃላትን አስቀምጥ</translation>
+<translation id="2100273922101894616">በራስ-ግባ</translation>
+<translation id="363596933471559332">የተከማቹ ምስክርነቶችን በመጠቀም በራስ-ሰር ወደ የድር ጣቢያዎች መለያ ይግቡ። ባህሪው ሲጠፋ ወደ አንድ ድር ጣቢያ ከመግባትዎ በፊት ማረጋገጫ ይጠየቃሉ።</translation>
+<translation id="8562452229998620586">የተቀመጡ ይለፍ ቃላት እዚህ ይመጣሉ።</translation>
+<translation id="1303339473099049190">ይህንን ይለፍ ቃል ማግኘት አይቻልም። የፊደል አጻጻፍዎን ይፈትሹና እንደገና ይሞክሩ።</translation>
+<translation id="2259659629660284697">የይለፍ ቃላትን ወደ ውጭ ላክ...</translation>
+<translation id="133012818630824069">ከBrave ጋር የተከማቹ የይለፍ ቃሎችን ወደ ውጭ ላክ</translation>
+<translation id="2321086116217818302">የይለፍ ቃላትን በማዘጋጀት ላይ…</translation>
+<translation id="5139940364318403933">እንዴት Google Driveን መጠቀም እንደሚችሉ ይወቁ</translation>
+<translation id="729975465115245577">የእርስዎ መሣሪያ የይለፍ ቃላት ፋይሉን የሚያከማችበት መተግበሪያ የለውም።</translation>
+<translation id="1129510026454351943">ዝርዝሮች፦ <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">የይለፍ ቃላትዎን ወደ ውጭ ለመላክ ይክፈቱ</translation>
+<translation id="5245792669563792664">የይለፍ ቃላት</translation>
+<translation id="10614374240317010">በጭራሽ አልተቀመጠም</translation>
+<translation id="1571304935088121812">የተጠቃሚ ስምን ቅዳ</translation>
+<translation id="5005498671520578047">የይለፍ ቃል ቅዳ</translation>
+<translation id="2435457462613246316">የይለፍ ቃል አሳይ</translation>
+<translation id="1513858653616922153">የይለፍ ቃል ሰርዝ</translation>
+<translation id="543338862236136125">የይለፍ ቃል አርትዕ</translation>
+<translation id="4565377596337484307">የይለፍ ቃል ደብቅ</translation>
+<translation id="8523928698583292556">የተከማቸ የይለፍ ቃል ሰርዝ</translation>
+<translation id="5433691172869980887">የተጠቃሚ ስም ተቀድቷል</translation>
+<translation id="2625189173221582860">የይለፍ ቃል ተቀድቷል።</translation>
+<translation id="8084114998886531721">የተቀመጠ ይለፍ ቃል</translation>
+<translation id="6590680911007613645">እያስቀመጡት ያለው የይለፍ ቃል ከ<ph name="SITE"/> ይለፍ ቃል ጋር የሚዛመድ መሆኑን ያረጋግጡ</translation>
+<translation id="1492417797159476138">ይህንን የተጠቃሚ ስም ለዚህ ጣቢያ ቀድሞውኑ አስቀምጠዋል</translation>
+<translation id="5454166040603940656">ከ<ph name="PROVIDER"/> ጋር</translation>
+<translation id="686366188661646310">የይለፍ ቃል ይሰረዝ?</translation>
+<translation id="7808889146555843082">ይህን የይለፍ ቃል መሰረዝ <ph name="SITE"/> ላይ መለያዎን አይሰርዘውም። መለያዎን ከሌሎች ለመጠበቅ የይለፍ ቃልዎን ይቀይሩት ወይም <ph name="SITE"/> ላይ መለያዎን ይሰርዙት።</translation>
+<translation id="2870560284913253234">ጣቢያ</translation>
+<translation id="8503813439785031346">የተጣቃሚ ስም</translation>
+<translation id="2278052315791335171">ይህን የይለፍ ቃል መሰረዝ <ph name="SITE"/> ላይ መለያዎን አይሰርዘውም</translation>
+<translation id="6891726759199484455">የይለፍ ቃልዎን ለመቅዳት ይክፈቱ</translation>
+<translation id="5515439363601853141">የይለፍ ቃልዎን ለመመልከት ይክፈቱ</translation>
+<translation id="1724977129262658800">የይለፍ ቃልዎን ለማርትዕ ይክፈቱ</translation>
+<translation id="5780792035410621042">የይለፍ ቃላትን ለመቅዳት መጀመሪያ በመሣሪያዎ ላይ የማያ ገፅ መቆለፊያን ያቀናብሩ</translation>
+<translation id="7986497153528221272">የይለፍ ቃላትን ለማየት መጀመሪያ በመሣሪያዎ ላይ የማያ ገፅ መቆለፊያ ያቀናብሩ</translation>
 </translationbundle>

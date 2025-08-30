@@ -10,10 +10,6 @@
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="9092796350041759828">{0, plural,
-          =1 {जवळचा पाहुणा}
-          other {जवळचा पाहुणा}
-        }</translation>
 <translation id="1990886731975529483">गूगल वाइडवाइन इन्स्टॉल करा आणि चालू करा</translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
 <translation id="4900351245762303149">Google Widevine इन्स्टॉल करा</translation>
@@ -112,6 +108,7 @@
 <translation id="5840822070878669614">Brave वेब स्टोअर उघडा</translation>
 <translation id="8076492880354921740">टॅब</translation>
 <translation id="8168435359814927499">आशय</translation>
+<translation id="5327248766486351172">नाव</translation>
 <translation id="3987546108749866209">उभे टॅब्स वापरा</translation>
 <translation id="5977931179408079967">स्थिती</translation>
 <translation id="4109670531935487117">ॲड्रेस बारमध्ये ऑटोकम्प्लीट शिफारसी दाखवा</translation>
@@ -137,7 +134,6 @@
 <translation id="4516904298421534459">फिल्टर लिस्ट्स</translation>
 <translation id="6655190889273724601">विकसक मोड</translation>
 <translation id="5524306331330789642">नवीन स्क्रिप्टलेट जोडा</translation>
-<translation id="5327248766486351172">नाव</translation>
 <translation id="863171915776379000">फेसबुक लॉगिन आणि अंतःस्थापित पोस्टना अनुमती द्या</translation>
 <translation id="958971637207126733">लिंक्डइन एम्बेड केलेल्या पोस्टना परवानगी द्या</translation>
 <translation id="8823559166155093873">कुकीज् ब्लॉक करा</translation>
@@ -178,9 +174,9 @@
 <translation id="8488282162676695335">ब्रेव्ह वॉलेट</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">माझा संभाषण इतिहास जतन करा</translation>
-<translation id="6106701981952170121">सर्व Leo AI संभाषण डेटा काढून टाका</translation>
 <translation id="614530507403667291">नवीन संभाषणांसाठीचे डीफॉल्ट मॉडेल</translation>
 <translation id="1907126221851170941">मॉडेल जोडा</translation>
+<translation id="6532106788206463496">बदल जतन करा</translation>
 <translation id="5985516785067818307">सर्वेक्षण पॅनेलिस्ट</translation>
 <translation id="8347743943525229984">Brave सर्वेक्षणांना अनुमती द्या</translation>
 <translation id="3204080538332044581">यामुळे Braveला नव्या टॅबच्या पानावर गोपनीय सर्वेक्षणांच्या लिंक्स दाखवता येतात. सर्वेक्षणांमधून आम्हाला जास्त चांगली वैशिष्ट्ये उभारण्यास आणि ब्राऊझर वर आधारित जाहिरात मोहिमांचा प्रभावीपणा मोजण्यास मदत होते. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>

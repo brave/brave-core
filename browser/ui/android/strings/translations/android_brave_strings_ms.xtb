@@ -421,8 +421,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="8748471354357836070">Ketahui lebih lanjut / pilihan untuk keluar</translation>
 <translation id="3171669670217312786">Imej Latar belakang</translation>
 <translation id="8522669544471808198">Papar Imej Latar Belakang</translation>
-<translation id="3870475560794762985">Papar Imej Yang Ditaja</translation>
-<translation id="6937724381960478525">Ketahui lebih lanjut tentang Imej yang Ditaja</translation>
+<translation id="9001530744369687550">Ketahui lebih lanjut tentang iklan tab baharu</translation>
 <translation id="8793108040181436796">Widget</translation>
 <translation id="8643377320501056697">Tunjukkan Tapak Teratas</translation>
 <translation id="7275773481201277457">Tunjukkan Statistik Brave</translation>
@@ -500,6 +499,8 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="7616645803364270729">E-mel, Twitter, dll.</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih kerana memberitahu pembangun Brave bahawa terdapat sesuatu yang tidak kena dengan laman ini. Kami akan melakukan yang terbaik untuk memperbaikinya!</translation>
+<translation id="3037432377946455872">Apakah isu utama yang anda hadapi?</translation>
+<translation id="8731661215617360873">Buat satu pilihan</translation>
 <translation id="650318023204990401">Kawalan lanjutan</translation>
 <translation id="7205939464631857223">Kosongkan semua elemen yang disekat</translation>
 <translation id="5370478469168390143">Simpan Data Dalam Talian</translation>
@@ -796,6 +797,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1426320910664514906">Had Gas</translation>
 <translation id="6389441740143786465">Nyahdayakan Hab Pengongsian</translation>
 <translation id="9065203028668620118">Edit</translation>
+<translation id="473775607612524610">Kemas kini</translation>
 <translation id="479795390141144417">Kemas kini akaun gagal.</translation>
 <translation id="8084782383392198011">Nama akaun tidak boleh kosong.</translation>
 <translation id="5045550434625856497">Kata laluan tidak sah</translation>
@@ -1223,4 +1225,41 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2735247450315842119">Benarkan tangkapan skrin dalam tab peribadi</translation>
 <translation id="8420414929552321089">Jika dibenarkan, tab privet juga akan kelihatan apabila berbilang aplikasi dibuka.</translation>
 <translation id="7956713633345437162">Penanda Halaman Mudah Alih</translation>
+<translation id="1943432128510653496">Simpan kata laluan</translation>
+<translation id="2100273922101894616">Auto Log masuk</translation>
+<translation id="363596933471559332">Log masuk secara automatik ke laman web menggunakan bukti kelayakan yang disimpan. Apabila ciri ini dimatikan, anda akan diminta memberikan pengesahan setiap kali sebelum log masuk ke laman web.</translation>
+<translation id="8562452229998620586">Kata laluan yang disimpan akan kelihatan di sini.</translation>
+<translation id="1303339473099049190">Tidak menemukan kata laluan itu. Semak ejaan anda dan cuba lagi.</translation>
+<translation id="2259659629660284697">Eksport kata laluan…</translation>
+<translation id="133012818630824069">Eksport kata laluan yang disimpan dengan menggunakan Brave</translation>
+<translation id="2321086116217818302">Menyediakan kata laluan…</translation>
+<translation id="5139940364318403933">Ketahui cara menggunakan Google Drive</translation>
+<translation id="729975465115245577">Peranti anda tiada apl untuk menyimpan fail kata laluan.</translation>
+<translation id="1129510026454351943">Butiran: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Buka kunci untuk mengeksport kata laluan anda</translation>
+<translation id="5245792669563792664">kata laluan</translation>
+<translation id="10614374240317010">Tidak pernah disimpan</translation>
+<translation id="1571304935088121812">Salin nama pengguna</translation>
+<translation id="5005498671520578047">Salin kata laluan</translation>
+<translation id="2435457462613246316">Paparkan kata laluan</translation>
+<translation id="1513858653616922153">Padam kata laluan</translation>
+<translation id="543338862236136125">Edit kata laluan</translation>
+<translation id="4565377596337484307">Sembunyikan kata laluan</translation>
+<translation id="8523928698583292556">Padam kata laluan yang disimpan</translation>
+<translation id="5433691172869980887">Nama pengguna disalin</translation>
+<translation id="2625189173221582860">Kata laluan disalin</translation>
+<translation id="8084114998886531721">Kata laluan disimpan</translation>
+<translation id="6590680911007613645">Pastikan kata laluan yang anda simpan sepadan dengan kata laluan anda untuk <ph name="SITE"/></translation>
+<translation id="1492417797159476138">Anda telah pun menyimpan nama pengguna ini untuk tapak ini</translation>
+<translation id="5454166040603940656">dengan <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Padamkan kata laluan?</translation>
+<translation id="7808889146555843082">Pemadaman kata laluan ini tidak akan memadamkan akaun anda pada <ph name="SITE"/>. Tukar kata laluan anda atau padamkan akaun anda pada <ph name="SITE"/> untuk melindungi kata laluan itu daripada orang lain.</translation>
+<translation id="2870560284913253234">Tapak</translation>
+<translation id="8503813439785031346">Nama pengguna</translation>
+<translation id="2278052315791335171">Pemadaman kata laluan ini tidak akan memadamkan akaun anda pada <ph name="SITE"/></translation>
+<translation id="6891726759199484455">Buka kunci untuk menyalin kata laluan anda</translation>
+<translation id="5515439363601853141">Buka kunci untuk melihat kata laluan anda</translation>
+<translation id="1724977129262658800">Buka kunci untuk mengedit kata laluan anda</translation>
+<translation id="5780792035410621042">Untuk menyalin kata laluan, pertama sekali, tetapkan kunci skrin pada peranti anda</translation>
+<translation id="7986497153528221272">Untuk melihat kata laluan, pertama sekali, tetapkan kunci skrin pada peranti anda</translation>
 </translationbundle>

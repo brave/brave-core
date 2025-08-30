@@ -146,7 +146,6 @@
 <translation id="2701204441419443612">සම්බන්ධ වෙමින්...</translation>
 <translation id="8813986611396294203">ටෝර් ජාලය තරමක් මන්දගාමීය</translation>
 <translation id="2795840524629682765">ටෝර් සම්බන්ධතාව නතර විය</translation>
-<translation id="1149108864689950951">ටෝර් සම්බන්ධ වෙමින්... [[percentage]]%</translation>
 <translation id="3651192084771403430">සබැඳීමේ ගැටළු තිබේද? ටෝර් සහිත පෞද්ගලික කවුළුව <ph name="BEGIN_LINK"/>අක්‍රිය කර<ph name="END_LINK"/> නැවත සැකසුම් හරහා උත්සාහ කරන්න.</translation>
 <translation id="8834376622642889380"><ph name="BEGIN_LINK"/>බ්‍රේව් සැකසුම්<ph name="END_LINK"/> අරින්න. ටෝර් සහිත පෞද්ගලික කවුළුව අබල කර නැවත සබල කරන්න.</translation>
 <translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>තවමත් ගැටළු තිබේද?<ph name="END_BOLD"/> <ph name="BEGIN_BRIDGES_LINK"/>පාලම්<ph name="END_BRIDGES_LINK"/> භාවිතා කර බලන්න හෝ <ph name="BEGIN_SUPPORT_LINK"/>සහාය අමතන්න<ph name="END_SUPPORT_LINK"/>.</translation>
@@ -168,19 +167,18 @@
 <translation id="5334844597069022743">මූලාශ්‍රය බලන්න</translation>
 <translation id="4720556299488643018">දායක නොවන්න</translation>
 <translation id="1209739344687072997">කැඩුණු අඩවියක් වාර්තා කරන්න</translation>
-<translation id="8510478288840333677">මෙම අඩවිය පලිහ සමඟ නිවැරදිව ක්‍රියා නොකරන බව බ්‍රේව් සංවර්ධකයින්ට දන්වන්න:</translation>
 <translation id="3110968385867124099">මෙම පිටුව HTTP/HTTPS හරහා ලබා නොදෙන නිසා වාර්තා කිරීමට නොහැකිය.</translation>
 <translation id="7907023135990310743">මෙය ස්ථානීය පිටුවක් නිසා වාර්තා කිරීමට සුදුසු නොවේ.</translation>
 <translation id="8740275226259417070">මෙය දෝෂ පිටුවකි. එය කැඩුණු අඩවියක් ලෙස වාර්තා කළ නොහැක.</translation>
 <translation id="6367576083705149078">ඔබ සබඳතා තොරතුරු සපයන්නේ නම්, එය අනාගත වාර්තා සඳහා ගබඩා කෙරේ.</translation>
 <translation id="6806248680442980382">සැමට Brave යහපත් කිරීමට දක්වන සහායට ස්තූතියි. මෙම වාර්තාවේ අඩංගු වන්නේ මෙම අඩවිය නිවැරදි කිරීමට අපට වුවමනා තොරතුරු පමණි.</translation>
-<translation id="6476216365964140603">අතිරේක විස්තර (විකල්පයකි)</translation>
 <translation id="6145852496180774737">අමතන්න: (විකල්පයකි)</translation>
 <translation id="7616645803364270729">වි-තැපැල්, ට්විටර්, ආදිය.</translation>
 <translation id="721949491455392748">වත්මන් පිටුවේ තිරසේයාවක් ඇතුළත් කරන්න</translation>
 <translation id="8459191579769999214">තිරසේයාව බලන්න</translation>
 <translation id="5299848999918506028">ඔබට ස්තූතියි!</translation>
 <translation id="76550953340008122">මෙම වෙබ් අඩවියේ යම් දෝෂයක් ඇති බව Brave හි සංවර්ධකයින්ට දැනුම් දීම ගැන ස්තුතියි. එය නිවැරදි කිරීමට අපි අපේ උපරිමය කරමු!</translation>
+<translation id="7138678301420049075">වෙනත්</translation>
 <translation id="4046860372562593546">Brave දැන්වීම් කළමනාකරණය</translation>
 <translation id="5136973036012418831">ඔබ දකින්නේ කුමන අන්දමේ බ්‍රේව් දැන්වීම් සහ කෙතරම් වාරයක් දැයි පාලනය කරන්න.</translation>
 <translation id="4759608598194750161">ඔබ දකින තරමට, ඔබට වැඩි වැඩියෙන් උපයා ගත හැකිය.</translation>
@@ -420,7 +418,6 @@
 <translation id="8327818101454798856">ඔබ ඔබේ ප්‍රියතම වෙබ් අඩවි වලට සහය වීමට බලාපොරොත්තු වන්නේ නම්, ඒ වෙනුවට එය යන්න.</translation>
 <translation id="412480955826088549">සංරචකය බාගැනෙමින්...</translation>
 <translation id="4894106830958548828">මට තේරෙනවා</translation>
-<translation id="326118736933420687">ඔබ WebTorrent පිටුවක් නරඹමින් සිටී</translation>
 <translation id="2729085694451916573"><ph name="PART_ONE"/>ස්ථාන දරන්නන්<ph name="PART_ONE_END"/>සඳහා පරීක්ෂණ තන්තුව. <ph name="PART_TWO"/>තව දැනගන්න<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">නතර කළ නොහැකි වසම්</translation>
 <translation id="4492298165410552103">බ්‍රේව් හි නොනවතින වසම් සඳහා සහාය සබල කරන්නද?</translation>
@@ -469,6 +466,7 @@
 <translation id="5770656036486891920"><ph name="URL"/> හට Google පුරාණයේ උරුමය සඳහා තෙවන පාර්ශ්ව කුකීස් භාවිතා කිරීම අවශ්‍ය වේ</translation>
 <translation id="6053826678715267477">ස්ථානීය සත්කාරක සම්පත් වෙත ප්‍රවේශයට ඉඩ දෙන්න</translation>
 <translation id="2973562729984406132"><ph name="URL"/> සඳහා ස්ථානීය සත්කාරක සම්පත් වෙත ප්‍රවේශය වුවමනාය</translation>
+<translation id="2104347391516032700">බැට් පාරිතෝෂික සේවාව</translation>
 <translation id="5939518447894949180">යළි සකසන්න</translation>
 <translation id="3349204812119681938">Brave පාරිතෝෂික යළි සකසන්න</translation>
 <translation id="4915997950539925115">By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our <ph name="LINK_BEGIN"/>support article about resetting<ph name="LINK_END"/> for more details.</translation>
@@ -510,7 +508,6 @@
     }</translation>
 <translation id="6067959437127691361">බ්‍රේව් පාරිතෝෂික භාවිතයෙන් අන්තර්ගත නිර්මාණකරුවන්ට සහායට සහ ඔබට බැට් ඉපැයීමට ඉඩ සලසයි.</translation>
 <translation id="2359808026110333948">ඉදිරියට</translation>
-<translation id="885805571521218129">මෙම මස බ්‍රේව් දැන්වීම් සඳහා ඔබගේ තක්සේරු ඉපැයීම් පරාසය පිළිබිඹු කරයි.</translation>
 <translation id="3863981251715594911">එය වැඩ කරන්නේ කෙසේද?</translation>
 <translation id="7931127789630755251">Brave හි ඔබ දකින පෞද්ගලික දැන්වීම් සඳහා නිමිති උපයන්න</translation>
 <translation id="2278423362884506724">ඔබගේ නිර්මාපකයින්ට සහය වන්න සහ ඔබගේ මුදල් ලබා ගැනීමට මිලදී ගැනීමට, වෙනත් සඳහා හුවමාරු කිරීම සහ තවත් දේ සඳහා ඔබේ ටෝකන භාවිතා කරන්න.</translation>
@@ -638,8 +635,6 @@
 <translation id="756341217015623253">පිවිසෙන්න හෝ ලියාපදිංචිය</translation>
 <translation id="2653844658857826081">නව</translation>
 <translation id="1165039591588034296">දෝෂයකි</translation>
-<translation id="5826530373788377342">මෙම <ph name="PROVIDER"/> ගිණුම සඳහා ඔබ උපරිම උපාංග සීමාවට ළඟා වී ඇත.</translation>
-<translation id="6700131426769360592">උපාංග සීමාවට ළඟා විය</translation>
 <translation id="6895088073061692390">කණගාටුයි, අපගේ ස්වයංක්‍රීය පරීක්‍ෂාව අනපේක්‍ෂිත බ්‍රේව් දැන්වීම් ක්‍රියාකාරකම් සොයා ගත් නිසා ඔබගේ බ්‍රේව් පාරිතෝෂික පැතිකඩ අත්හිටුවා ඇත.</translation>
 <translation id="4229056297802204697">ඔබගේ පැතිකඩ සලකුණු කර ඇති අතර, ඔබට දිගටම දැන්වීම් දැකිය හැක, නමුත් ගෙවීම් ලැබීමට සුදුසුකම් නොලබයි. ඔබට භාරකාර ගිණුමක් Brave Rewards වෙත සම්බන්ධ කිරීමට ද නොහැකි වනු ඇත.</translation>
 <translation id="5124846913141379164">ඔබගේ පැතිකඩ දෝෂයකින් සලකුණු කර ඇති අතර, ඔබගේ පැත්තෙන් ක්ෂණික ක්‍රියාමාර්ගයක් අවශ්‍ය නොවේ. ඔබගේ පැතිකඩෙහි ඇති කොඩිය අනාගතයේදී ඉවත් කළ හැක.</translation>
@@ -701,7 +696,6 @@
 <translation id="7550470870580166294">ශේෂය ප්‍රමාණවත් නොවේ</translation>
 <translation id="7020972866926315918">බ්‍රේව් පාරිතෝෂික <ph name="PROVIDER"/> වෙතින් ඔබ නික්ම ගොස් ඇති බව පෙනෙයි. ඉදිරියට යාමට නැවත පිවිසෙන්න.</translation>
 <translation id="1166682575529520472">මාසික</translation>
-<translation id="7138678301420049075">වෙනත්</translation>
 <translation id="2134931506717037391">BAT <ph name="AMOUNT"/> ක් යවන්න</translation>
 <translation id="4791565605790056151">දායකත්‍වය යැවෙමින්</translation>
 <translation id="8251969358165471584">වෙබ්3 පසුම්බිය</translation>
@@ -1067,7 +1061,7 @@
 <translation id="7131971375297699539">මුදල් සංකේතය</translation>
 <translation id="4693057234255364395">ගවේෂක URL අවහිර කරන්න</translation>
 <translation id="7982789257301363584">ජාලය</translation>
-<translation id="1060221736464994328">ජාලය මාරු කිරීමට මෙම අඩවියට ඉඩ දෙන්නද?</translation>
+<translation id="2512821599885971349">ජාලය එක් කරන්න</translation>
 <translation id="2478788592457735063">මෙය ජාලය කලින් එකතු කළ ජාලයකට මාරු කරනු ඇත.</translation>
 <translation id="8756686998207163764">ජාලය මාරු කරන්න</translation>
 <translation id="3948067511324628726">ලැබුණු ගාස්තුව</translation>
@@ -1814,6 +1808,7 @@
 <translation id="2244921323472112851">ඔබ සෙවූ පිටුව සොයාගත නොහැක.</translation>
 <translation id="6277237872689140644">එය වෙනස් වූ විටැවට මාරු කර ඇති හෝ URL එකේ ශුද්ධියක් ඇත.</translation>
 <translation id="2737084171727561244">පිවිසුම්පත් වෙත යන්න</translation>
+<translation id="5046066249040287308">Brave පසුම්බි උපයෝගිතා සේවාව</translation>
 <translation id="3155170474926428993">ටෝර් දියත්කරණය</translation>
 <translation id="3745016858329272300">සාමාන්‍ය තොරතුරු</translation>
 <translation id="4045404575593562245">ටෝර් පාලන සිදුවීම්</translation>
@@ -2064,7 +2059,7 @@
 <translation id="9089090017461255038">වේගවත් කියවනය සක්‍රිය කරන්න</translation>
 <translation id="3929926885379607283">මෙම අඩවියට වේගවත් කියවනය සැමවිට භාවිතා කරන්න</translation>
 <translation id="4186588885948504942">මෙම අඩවියට වේගවත් කියවනය සක්‍රිය/අක්‍රිය කරන්න.</translation>
-<translation id="1873585723672836337">සියලු අඩවි සඳහා වේගවත් කියවනය සැමවිට භාවිතා කරන්න</translation>
+<translation id="6568851043090579206">සියලු අඩවි සඳහා වේගවත් කියවනය සැමවිට භාවිතා කරන්න</translation>
 <translation id="3138587343887871192">සියලු අඩවි සඳහා වේගවත් කියවනය සක්‍රිය/අක්‍රිය කරන්න.</translation>
 <translation id="5153147025131874069">ඇතැම් අඩවි වේගවත් කියවනය සඳහා සහාය නොදක්වයි.</translation>
 <translation id="1013121820689882118">වේගවත් කියවනය</translation>
@@ -2093,9 +2088,6 @@
 <translation id="8637805148029768813">සාර විශේෂාංගයන් දැනට ලබා ගත හැකි වෙබ් ලිපි සහ අනෙකුත් දිගු ආකෘති පිටු සඳහා පමණි.</translation>
 <translation id="1223498995510244364">සාරාංශ කරන්න</translation>
 <translation id="7491773233732232424">Leo ගැන</translation>
-<translation id="4885527781814382758">Brave Leo යනු ඔබගේ අන්තර්ජාල භාවිතය වැඩි දියුණු කරන පුද්ගලික AI ස්මාර්ට් සහායකයෙකි. සීමිත ප්‍රවේශයක් සහිතව Leo භාවිතා කිරීමට නිදහස ඇත. Brave Leo Premium වැඩි මාදිලි, ඉහළ සීමාවන් ලබා දෙන අතර ග්‍රාහකයින්ට නව විශේෂාංග සඳහා මුල් ප්‍රවේශය ලබා දෙයි. පෙරනිමි ආකෘතිය වරින් වර වෙනස් වේ. වැඩි විස්තර සඳහා <ph name="LINK_BEFORE"/>Brave උපකාරක මධ්‍යස්ථානය<ph name="LINK_AFTER"/> බලන්න.</translation>
-<translation id="7189603330209995455">පෙරනිමි පරිදි ඔබ ලියෝගෙන් ප්‍රශ්නයක් ඇසූ විට බ්‍රේව් ඔබ බලන පිටුවේ අන්තර්ගතය හෝ ඔබ පිටුවක උද්දීපනය කරන ඕනෑම පෙළක් ප්‍රතිචාරයක් සැපයීම සඳහා ලියෝ වෙත යැවිය හැකිය. ප්‍රතිචාර වල නිරවද්‍යතාවය සහතික නොකරන අතර සාවද්‍ය, නොමඟ යවන හෝ අසත්‍ය තොරතුරු ඇතුළත් විය හැකිය. ලියෝ ප්‍රතිචාරයේ ගුණත්‍වය දියුණුවට බ්‍රේව් සෙවුමෙන් දත්ත භාවිතා කරයි. සංවේදී හෝ පෞද්ගලික තොරතුරු යොමු නොකරන්න. සෞඛ්‍ය, මූල්‍ය, පුද්ගලික ආරක්‍ෂාව හෝ ඒ ආශ්‍රිත පිළිතුරු ගැන ප්‍රවේශම් වන්න. ඔබට ඕනෑම වේලාවක සැකසුම් තුළ ලියෝගේ විකල්ප සීරුමාරුවට හැකිය. සැකසුම් &gt; ලියෝ වෙත යන්න.</translation>
-<translation id="3038772045018370764">ලියෝ ඔබට සම්බන්ධ කළ හැකි ඔබේ IP ලිපිනය වැනි හඳුනාගැනීම් එකතු නොකරයි. AI ආකෘති පුහුණු කිරීමට දත්ත භාවිතා නොකරන අතර AI ආකෘති මගින් පුද්ගලික දත්ත කිසිවක් රඳවා නොගනී (මැකීමට පෙර දින 30ක් දත්ත රඳවා තබා ගන්නා Anthropic සඳහා හැර). <ph name="LINK_BEFORE"/>පෞද්ගලිකත්ව ප්‍රතිපත්තිය<ph name="LINK_AFTER"/> බලන්න වැඩි විස්තර සඳහා.</translation>
 <translation id="6961721183181597848">අද මම ඔබට උදව් කරන්නේ කෙසේද?</translation>
 <translation id="2966135729673253768">පසු විපරමක් ඉල්ලන්න</translation>
 <translation id="4524675003624341892">ප්‍රශ්න යෝජනා කරන්න…</translation>
@@ -2116,7 +2108,6 @@
 <translation id="2575216739207798060">හායි, මම ලියෝ. මම Brave විසින් ප්‍රොක්සි කර ඇති අතර සංවාද සහ පෙළ සැකසුම් කාර්යයන් බල ගැන්වීම සඳහා Anthropic විසින් නිර්මාණය කරන ලද ආකෘතියක් වන Claude Instant විසින් බලගන්වනු ලැබේ. Claude Instant අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">හායි, මම ලියෝ. මම Brave විසින් ප්‍රොක්සි කර ඇති අතර සංවාද සහ පෙළ සැකසුම් කාර්යයන් බල ගැන්වීම සඳහා Anthropic විසින් නිර්මාණය කරන ලද ආකෘතියක් වන Claude Haiku විසින් බලගන්වනු ලැබේ. Claude Haiku අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">හායි, මම ලියෝ. මම Brave විසින් ප්‍රොක්සි කර ඇති අතර සංවාද සහ පෙළ සැකසුම් කාර්යයන් බල ගැන්වීම සඳහා Anthropic විසින් නිර්මාණය කරන ලද ආකෘතියක් වන Claude Sonnet විසින් බලගන්වනු ලැබේ. Claude Sonnet අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave විසින් සත්කාරකත්වය සපයනු ලැබේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
-<translation id="1774712391633741125">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Llama Vision මගින් බලගන්වා ඇති අතර, එය බොහෝ භාවිත අවස්ථාවන්ට ක්‍රියාකාරී වීමට සහ අදාළ වීමට Meta විසින් නිර්මාණය කරන ලද ආකෘතියකි. Llama Vision අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">ආධික්‍ය</translation>
 <translation id="6187065185557150870">කතාබහ</translation>
 <translation id="4685048769603134644">පූර්ණ පිටුව අරින්න</translation>
@@ -2200,7 +2191,6 @@
 <translation id="7979673624064378842">ඉක්මන් කතාබහ</translation>
 <translation id="2836330653441111204">වේගය සහ බුද්ධිය සමබරව</translation>
 <translation id="6695329447007213917">පොදු අරමුණු කතාබස්, කේතනය සහ තවත් දේ</translation>
-<translation id="5051668914970329839">පොදු අරමුණු දැක්ම</translation>
 <translation id="8782867266498869301">කාර්යය සඳහා හොඳම එක අවශ්ය තැනක තමා අත් විකාශනය කරන්න</translation>
 <translation id="3965507912994218570">ලියෝ සැකසුම්</translation>
 <translation id="1037324977127422019">ආයුබෝවන්, මම ලියෝ!</translation>
@@ -2380,6 +2370,11 @@
 <translation id="3699624789011381381">ඊ-මේල් ලිපිනය</translation>
 <translation id="8124939971041602970">කාත්තලීයා හැරුණා සේ Brave බොහොමයක් භාවිතා කරයි <ph name="MAIN_EMAIL"/> කෝඩය ලබාගැනීමේදී, සබැඳිය කූඩයේ ක්ලික් කරන්න.</translation>
 <translation id="8140361186431963982">ඔබගේ ගිණුමට ප්‍රවේශ සඳහා ආරක්ෂිත පිවිසීමේ සබැඳිය ක්ලික් කරන්න.</translation>
+<translation id="2422927186524098759">පැති තීරුව</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="8000020256436988724">මෙවලම් තීරුව</translation>
+<translation id="8293206222192510085">පොත්යොමුවක් තබන්න</translation>
 <translation id="958268166261124668">Brave VPN - සම්බන්‍ධයි</translation>
 <translation id="6021669293402055982">Brave VPN - විසන්‍ධි විය</translation>
 <translation id="3541307549916475335">බ්‍රේව් VPN මඬලේ UI</translation>

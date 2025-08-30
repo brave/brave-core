@@ -421,8 +421,8 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8748471354357836070">Ďalšie informácie / možnosti odhlásenia</translation>
 <translation id="3171669670217312786">Obrázky na pozadí</translation>
 <translation id="8522669544471808198">Zobraziť obrázky na pozadí</translation>
-<translation id="3870475560794762985">Zobraziť sponzorované obrázky</translation>
-<translation id="6937724381960478525">Ďalšie informácie o sponzorovaných obrázkoch</translation>
+<translation id="6258554626602400736">Zobrazovať reklamy na stránke novej karty</translation>
+<translation id="9001530744369687550">Ďalšie informácie o reklamách na stránke novej karty</translation>
 <translation id="8793108040181436796">Miniaplikácie</translation>
 <translation id="8643377320501056697">Zobraziť top stránky</translation>
 <translation id="7275773481201277457">Zobraziť štatistiky Brave</translation>
@@ -500,6 +500,8 @@ Naozaj chcete pokračovať?</translation>
 <translation id="7616645803364270729">E-mail, Twitter atď.</translation>
 <translation id="5299848999918506028">Ďakujeme!</translation>
 <translation id="76550953340008122">Ďakujeme, že ste vývojárom Brave oznámili, že na tejto stránke je niečo chybné. Urobíme všetko pre to, aby sme to napravili!</translation>
+<translation id="3037432377946455872">Aký je hlavný problém, ktorý vidíte?</translation>
+<translation id="8731661215617360873">Vyberte jednu možnosť</translation>
 <translation id="650318023204990401">Pokročilé ovládanie</translation>
 <translation id="7205939464631857223">Vymazať všetky blokované prvky</translation>
 <translation id="5370478469168390143">Uložiť dáta online</translation>
@@ -796,6 +798,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="1426320910664514906">Limit paliva</translation>
 <translation id="6389441740143786465">Zakázať centrum zdieľania</translation>
 <translation id="9065203028668620118">Upraviť</translation>
+<translation id="473775607612524610">Aktualizovať</translation>
 <translation id="479795390141144417">Aktualizácia účtu zlyhala.</translation>
 <translation id="8084782383392198011">Názov účtu nesmie byť prázdny.</translation>
 <translation id="5045550434625856497">Nesprávne heslo</translation>
@@ -1226,4 +1229,41 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="2735247450315842119">Povoliť snímky obrazovky v súkromných kartách</translation>
 <translation id="8420414929552321089">Ak je táto možnosť povolená, súkromné karty budú viditeľné aj pri viacerých otvorených aplikáciách.</translation>
 <translation id="7956713633345437162">Mobilné záložky</translation>
+<translation id="1943432128510653496">Ukladať heslá</translation>
+<translation id="2100273922101894616">Automaticky prihlasovať</translation>
+<translation id="363596933471559332">Povolí automatické prihlasovanie na webové stránky pomocou uložených poverení. Keď je funkcia vypnutá, zobrazí sa výzva na overenie vždy pred prihlásením na web.</translation>
+<translation id="8562452229998620586">Tu sa zobrazia uložené heslá.</translation>
+<translation id="1303339473099049190">Dané heslo sa nepodarilo nájsť. Skontrolujte pravopis a skúste to znova.</translation>
+<translation id="2259659629660284697">Exportovať heslá…</translation>
+<translation id="133012818630824069">Exportovať heslá uložené v Brave</translation>
+<translation id="2321086116217818302">Pripravujú sa heslá…</translation>
+<translation id="5139940364318403933">Ako používať Disk Brave</translation>
+<translation id="729975465115245577">Vaše zariadenie nemá aplikáciu na uloženie súboru s heslami.</translation>
+<translation id="1129510026454351943">Podrobnosti: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Heslá budete môcť exportovať po odomknutí</translation>
+<translation id="5245792669563792664">heslá</translation>
+<translation id="10614374240317010">Nikdy neukladať</translation>
+<translation id="1571304935088121812">Kopírovať používateľské meno</translation>
+<translation id="5005498671520578047">Kopírovanie hesla</translation>
+<translation id="2435457462613246316">Zobraziť heslo</translation>
+<translation id="1513858653616922153">Odstrániť heslo</translation>
+<translation id="543338862236136125">Upraviť heslo</translation>
+<translation id="4565377596337484307">Skryť heslo</translation>
+<translation id="8523928698583292556">Odstrániť uložené heslo</translation>
+<translation id="5433691172869980887">Používateľské meno bolo skopírované</translation>
+<translation id="2625189173221582860">Heslo bolo skopírované.</translation>
+<translation id="8084114998886531721">Uložené heslo</translation>
+<translation id="6590680911007613645">Ukladané heslo sa musí zhodovať s tým, ktoré používate pre <ph name="SITE"/></translation>
+<translation id="1492417797159476138">Toto používateľské meno ste pre tento web už uložili</translation>
+<translation id="5454166040603940656">s poskytovateľom <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Chcete heslo odstrániť?</translation>
+<translation id="7808889146555843082">Odstránením tohto hesla nevymažete svoj účet na webe <ph name="SITE"/>. Ak chcete svoj účet chrániť pred ostatnými, odstráňte ho na webe <ph name="SITE"/> alebo zmeňte svoje heslo.</translation>
+<translation id="2870560284913253234">Web</translation>
+<translation id="8503813439785031346">Meno používateľa</translation>
+<translation id="2278052315791335171">Odstránením tohto hesla nevymažete svoj účet na webe <ph name="SITE"/></translation>
+<translation id="6891726759199484455">Heslo môžete kopírovať po odomknutí</translation>
+<translation id="5515439363601853141">Heslo sa zobrazí po odomknutí</translation>
+<translation id="1724977129262658800">Ak chcete upraviť heslo, odomknite</translation>
+<translation id="5780792035410621042">Ak chcete kopírovať heslá, najprv v zariadení nastavte zámku obrazovky</translation>
+<translation id="7986497153528221272">Ak si chcete zobraziť heslá, najprv v zariadení nastavte zámku obrazovky</translation>
 </translationbundle>
