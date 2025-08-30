@@ -326,6 +326,9 @@ const Config = function () {
     'zebpay_sandbox_client_id',
     'zebpay_sandbox_client_secret',
     'zebpay_sandbox_oauth_url',
+    'use_clang_coverage',
+    'coverage_instrumentation_input_file',
+    'use_clang_profiling_inside_sandbox',
   ]
 }
 
@@ -375,6 +378,10 @@ Config.prototype.isAsan = function () {
     return true
   }
   return false
+}
+
+Config.prototype.isCoverage = function () {
+  return this.is_coverage
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -563,6 +570,13 @@ Config.prototype.buildArgs = function () {
         && !this.isReleaseBuild()))
   ) {
     args.symbol_level = 1
+  }
+
+  if (this.isCoverage()) {
+    args.symbol_level = 1
+    args.use_clang_coverage = true
+    args.use_clang_profiling_inside_sandbox = true
+    args.coverage_instrumentation_input_file = '//out/files-to-instrument.txt'
   }
 
   // For Linux Release builds, upstream doesn't want to use symbol_level = 2
@@ -927,6 +941,8 @@ Config.prototype.updateInternal = function (options) {
   } else {
     this.is_asan = false
   }
+
+  this.is_coverage = !!options.is_coverage
 
   if (options.is_ubsan) {
     this.is_ubsan = true

@@ -52,7 +52,8 @@
     "ios_bootstrap": "node ./build/commands/scripts/iosCommands.js ios_bootstrap",
     "update_brave_tools_crates": "node ./build/commands/scripts/updateBraveToolsCrates.js",
     "build_rust_toolchain_aux": "node ./build/commands/scripts/buildRustToolchainAux.js",
-    "update_wasm_resources": "node ./build/commands/scripts/updateWasmResources.js"
+    "update_wasm_resources": "node ./build/commands/scripts/updateWasmResources.js",
+    "coverage_report": "node ./build/commands/scripts/commands.js coverage_report"
   },
   "repository": {
     "type": "git",
