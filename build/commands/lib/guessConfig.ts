@@ -31,9 +31,9 @@ let outputPath = config.outputDir
 
 function getBuildOutputPathList() {
   return buildConfigs.flatMap((config) => [
-    path.resolve(__dirname, `../../out/${config}`),
+    path.resolve(__dirname, `../../../../out/${config}`),
     ...extraArchitectures.map((arch) =>
-      path.resolve(__dirname, `../../out/${config}_${arch}`),
+      path.resolve(__dirname, `../../../../out/${config}_${arch}`),
     ),
   ])
 }
