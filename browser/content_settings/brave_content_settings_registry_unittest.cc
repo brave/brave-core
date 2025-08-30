@@ -59,7 +59,9 @@ TEST_F(BraveContentSettingsRegistryTest, Properties) {
             website_settings_info->pref_name());
   EXPECT_EQ("profile.default_content_setting_values.shieldsCookiesV3",
             website_settings_info->default_value_pref_name());
-  ASSERT_TRUE(website_settings_info->initial_default_value().is_none());
+  ASSERT_TRUE(website_settings_info->initial_default_value().is_int());
+  EXPECT_EQ(CONTENT_SETTING_ALLOW,
+            website_settings_info->initial_default_value().GetInt());
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   EXPECT_EQ(PrefRegistry::NO_REGISTRATION_FLAGS,
             website_settings_info->GetPrefRegistrationFlags());
@@ -118,8 +120,9 @@ TEST_F(BraveContentSettingsRegistryTest, Inheritance) {
     SCOPED_TRACE("Content setting: " + info->website_settings_info()->name());
 
     if (info->website_settings_info()->type() <
-        ContentSettingsType::BRAVE_START)
+        ContentSettingsType::BRAVE_START) {
       continue;
+    }
 
     if (info->incognito_behavior() ==
         ContentSettingsInfo::INHERIT_IN_INCOGNITO) {

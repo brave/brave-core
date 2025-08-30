@@ -539,6 +539,9 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   auto cookies = CookieSettingsFactory::GetForProfile(profile());
 
+  EXPECT_EQ(CONTENT_SETTING_ALLOW,
+            map->GetContentSetting(GURL::EmptyGURL(), GURL::EmptyGURL(),
+                                   ContentSettingsType::BRAVE_COOKIES));
   auto setting =
       brave_shields::GetCookieControlType(map, cookies.get(), GURL());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
@@ -572,6 +575,10 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_Default) {
   setting = brave_shields::GetCookieControlType(map, cookies.get(),
                                                 GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
+
+  // Setting CONTENT_SETTING_DEFAULT doesn't produce any CHECKS or crashes.
+  map->SetDefaultContentSetting(ContentSettingsType::BRAVE_COOKIES,
+                                CONTENT_SETTING_DEFAULT);
 }
 
 TEST_F(BraveShieldsUtilTest, GetCookieControlType_WithUserSettings) {
