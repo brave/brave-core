@@ -156,8 +156,9 @@ std::optional<std::string> FilecoinKeyring::GetDiscoveryAddress(
 
 std::optional<std::string> FilecoinKeyring::EncodePrivateKeyForExport(
     const std::string& address) {
-  if (auto* private_key = base::FindOrNull(imported_bls_accounts_, address)) {
-    return GetExportEncodedJSON(**private_key, address);
+  if (auto* private_key =
+          base::FindPtrOrNull(imported_bls_accounts_, address)) {
+    return GetExportEncodedJSON(*private_key, address);
   }
 
   HDKey* key = GetHDKeyFromAddress(address);
@@ -246,9 +247,10 @@ std::optional<std::string> FilecoinKeyring::SignTransaction(
     return std::nullopt;
   }
 
-  if (auto* private_key = base::FindOrNull(imported_bls_accounts_, address)) {
+  if (auto* private_key =
+          base::FindPtrOrNull(imported_bls_accounts_, address)) {
     auto signature = base::ToVector(bls_sign_message(
-        base::SpanToRustSlice(**private_key), base::SpanToRustSlice(*cid)));
+        base::SpanToRustSlice(*private_key), base::SpanToRustSlice(*cid)));
     if (signature.empty()) {
       return std::nullopt;
     }

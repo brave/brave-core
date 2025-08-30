@@ -67,12 +67,12 @@ std::vector<mojom::Signal*> GetSignals(
     result.push_back(signal->get());
   }
 
-  auto* publisher = base::FindOrNull(publishers, article->publisher_id);
+  auto* publisher = base::FindPtrOrNull(publishers, article->publisher_id);
   if (!publisher) {
     return result;
   }
 
-  for (const auto& locale_info : (*publisher)->locales) {
+  for (const auto& locale_info : publisher->locales) {
     if (locale_info->locale != locale) {
       continue;
     }

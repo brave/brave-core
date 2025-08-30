@@ -220,7 +220,7 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
 
     for (const auto& info : *similarity_info) {
       const auto* similar_publisher =
-          base::FindOrNull(publishers, info.publisher_id);
+          base::FindPtrOrNull(publishers, info.publisher_id);
       if (!similar_publisher) {
         LOG(ERROR) << "Encountered suggestion for missing publisher: "
                    << info.publisher_id
@@ -230,7 +230,7 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
 
       // Don't suggest similar publishers which are already enabled,
       // or which are explicitly disabled.
-      if ((*similar_publisher)->user_enabled_status !=
+      if (similar_publisher->user_enabled_status !=
           mojom::UserEnabled::NOT_MODIFIED) {
         continue;
       }

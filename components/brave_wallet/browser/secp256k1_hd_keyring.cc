@@ -87,9 +87,9 @@ std::optional<std::string> Secp256k1HDKeyring::ImportAccount(
 }
 
 HDKey* Secp256k1HDKeyring::GetHDKeyFromAddress(const std::string& address) {
-  auto* imported_account = base::FindOrNull(imported_accounts_, address);
+  auto* imported_account = base::FindPtrOrNull(imported_accounts_, address);
   if (imported_account) {
-    return imported_account->get();
+    return imported_account;
   }
   for (auto& acc : accounts_) {
     if (GetAddressInternal(*acc) == address) {

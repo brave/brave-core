@@ -26,11 +26,11 @@ void BlockTracker::Stop() {
 }
 
 bool BlockTracker::IsRunning(const std::string& chain_id) const {
-  auto* timer = base::FindOrNull(timers_, chain_id);
+  auto* timer = base::FindPtrOrNull(timers_, chain_id);
   if (!timer) {
     return false;
   }
-  return (*timer)->IsRunning();
+  return timer->IsRunning();
 }
 
 }  // namespace brave_wallet

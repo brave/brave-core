@@ -515,9 +515,9 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
   UpdateSubscriptionPrefs(sub_url, *info);
 
   auto* subscription_filters_provider =
-      base::FindOrNull(subscription_filters_providers_, sub_url);
+      base::FindPtrOrNull(subscription_filters_providers_, sub_url);
   if (subscription_filters_provider) {
-    (*subscription_filters_provider)->OnListAvailable();
+    subscription_filters_provider->OnListAvailable();
   }
 
   NotifyObserversOfServiceEvent();

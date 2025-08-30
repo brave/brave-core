@@ -70,13 +70,13 @@ void SignalCalculator::OnGotHistory(
   // certain areas.
   base::flat_map<std::string, uint32_t> article_counts;
   for (const auto& article : articles) {
-    auto* publisher = base::FindOrNull(publishers, article->publisher_id);
+    auto* publisher = base::FindPtrOrNull(publishers, article->publisher_id);
     if (!publisher) {
       continue;
     }
 
     article_counts[article->publisher_id]++;
-    for (const auto& locale_info : (*publisher)->locales) {
+    for (const auto& locale_info : publisher->locales) {
       if (locale_info->locale != locale) {
         continue;
       }

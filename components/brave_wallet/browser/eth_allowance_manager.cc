@@ -265,14 +265,14 @@ void EthAllowanceManager::OnGetAllowances(const int& task_id,
                                           base::Value rawlogs,
                                           mojom::ProviderError error,
                                           const std::string& error_message) {
-  auto* task = base::FindOrNull(allowance_discovery_tasks_, task_id);
+  auto* task = base::FindPtrOrNull(allowance_discovery_tasks_, task_id);
   if (!task) {
     MaybeMergeAllResultsAndCallBack();
     return;
   }
 
   if (error != mojom::ProviderError::kSuccess) {
-    (*task)->MarkComplete();
+    task->MarkComplete();
     MaybeMergeAllResultsAndCallBack();
     return;
   }
@@ -287,8 +287,7 @@ void EthAllowanceManager::OnGetAllowances(const int& task_id,
   // Collection of the latest allowances per contract & spender & approver.
   std::map<std::string, mojom::AllowanceInfoPtr> allowance_map;
   // Put cached data into the map first if available.
-  LoadCachedAllowances((*task)->chain_id_, (*task)->account_address_,
-                       allowance_map);
+  LoadCachedAllowances(task->chain_id_, task->account_address_, allowance_map);
   for (const auto& log_item : logs_tmp) {
     // Skip pending logs.
     if (log_item.block_number == 0) {
@@ -310,7 +309,7 @@ void EthAllowanceManager::OnGetAllowances(const int& task_id,
       // Replace if same key exists by the fresh allowance data.
       allowance_map.insert_or_assign(
           current_map_key,
-          mojom::AllowanceInfo::New((*task)->chain_id_, log_item.address,
+          mojom::AllowanceInfo::New(task->chain_id_, log_item.address,
                                     log_item.topics[1], log_item.topics[2],
                                     log_item.data));
     } else if (allowance_map.contains(current_map_key)) {
@@ -321,7 +320,7 @@ void EthAllowanceManager::OnGetAllowances(const int& task_id,
   for (const auto& [allowance_map_key, allowance] : allowance_map) {
     allowances_found.push_back(allowance.Clone());
   }
-  (*task)->SetResults(std::move(allowances_found));
+  task->SetResults(std::move(allowances_found));
   MaybeMergeAllResultsAndCallBack();
 }
 

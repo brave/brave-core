@@ -674,7 +674,7 @@ void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
                 continue;
               }
 
-              auto* publisher = base::FindOrNull(
+              auto* publisher = base::FindPtrOrNull(
                   info.publishers(), item->get_article()->data->publisher_id);
               if (!publisher) {
                 continue;
@@ -683,10 +683,10 @@ void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
               const auto& locale = info.locale();
 
               auto locale_info_it = std::ranges::find_if(
-                  (*publisher)->locales, [&locale](const auto& locale_info) {
+                  publisher->locales, [&locale](const auto& locale_info) {
                     return locale == locale_info->locale;
                   });
-              if (locale_info_it == (*publisher)->locales.end()) {
+              if (locale_info_it == publisher->locales.end()) {
                 continue;
               }
 
