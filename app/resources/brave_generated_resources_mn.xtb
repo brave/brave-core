@@ -59,6 +59,7 @@
 <translation id="9071187015476020102">Өргөтгөлүүд болон бусад тохиргоог импортлохын тулд эхлээд импорт хийх гэж байгаа хөтчөө хаана уу.</translation>
 <translation id="5840822070878669614">Вэб Дэлгүүр Нээх</translation>
 <translation id="8076492880354921740">Табууд</translation>
+<translation id="5327248766486351172">Нэр</translation>
 <translation id="3987546108749866209">Босоо табуудыг ашиглах</translation>
 <translation id="5977931179408079967">Байрлал</translation>
 <translation id="4109670531935487117">Хаяг оруулах хэсэгт автоматаар утга санал болгох</translation>
@@ -76,7 +77,6 @@
 <translation id="7740996059027112821">Стандарт</translation>
 <translation id="4516904298421534459">Шүүлтүүрийн жагсаалтууд</translation>
 <translation id="5524306331330789642">Шинэ скриптлет нэмэх</translation>
-<translation id="5327248766486351172">Нэр</translation>
 <translation id="8168435359814927499">Агуулга</translation>
 <translation id="5317780077021120954">Хадгалах</translation>
 <translation id="8823559166155093873">Күүки блоклох</translation>
@@ -94,9 +94,9 @@
 <translation id="2653659639078652383">Илгээх</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">Миний харилцан ярианы түүхийг хадгал</translation>
-<translation id="6106701981952170121">Бүх Leo хиймэл оюуны ярианы өгөгдлийг устгах</translation>
 <translation id="614530507403667291">Шинэ харилцан ярианы үндсэн загвар</translation>
 <translation id="1907126221851170941">Загвар нэмэх</translation>
+<translation id="6532106788206463496">Өөрчлөлтүүдийг хадгалах</translation>
 <translation id="154702742922788359">Нээх горим</translation>
 <translation id="2249111429176737533">Табтай цонх болгон нээх</translation>
 <translation id="7022756207310403729">Хөтөч дээр нээх</translation>

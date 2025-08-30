@@ -18,10 +18,6 @@
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Mere…</translation>
-<translation id="9092796350041759828">{0, plural,
-          =1 {Luk gæst}
-          other {Luk gæst}
-        }</translation>
 <translation id="1990886731975529483">Installér og kør Google Widevine</translation>
 <translation id="8926389886865778422">Spørg ikke igen</translation>
 <translation id="4900351245762303149">Installér Google Widevine</translation>
@@ -141,7 +137,6 @@ vindue med Tor</translation>
 <translation id="6020553119523541665">Denne fane er aktiv i et andet vindue</translation>
 <translation id="4987392683074136770">Klik på denne fane bringer dens indhold til dette vindue</translation>
 <translation id="8355523213948477234">Del vis menu-knap</translation>
-<translation id="2104347391516032700">Bat Rewards-service</translation>
 <translation id="6040143037577758943">Luk</translation>
 <translation id="6665472986740899785">Brave-notifikationsannonce</translation>
 <translation id="5582087890067572966">🎉 Du tjener nu penge!</translation>
@@ -195,7 +190,6 @@ vindue med Tor</translation>
 <translation id="2604698253988679506">Disse private svar hjælper kun Brave med at anslå det generelle forbrug af visse funktioner og gøre servicen endnu bedre.</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3-domæner</translation>
-<translation id="5046066249040287308">Værktøjstjeneste til Brave Wallet</translation>
 <translation id="4552520379838695057">Beklager, den side mangler.</translation>
 <translation id="7299769530898469069">Den gemte version kunne ikke indlæses</translation>
 <translation id="2609895996619941644">Ønsker du at tjekke om en gemt version er tilgængelig på Wayback Machine?</translation>
@@ -211,6 +205,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="3228962656492373217">Luk tabs nedenfor</translation>
 <translation id="8030501904366631501">Flytter alle faner til dette vindue</translation>
 <translation id="253980346046488815">Luk duplikerede faner</translation>
+<translation id="8670218546624422041">Åbn i beholder</translation>
+<translation id="8638526693050780542">Administrer beholdere</translation>
 <translation id="2336228925368920074">Tilføj alle faner som bogmærker...</translation>
 <translation id="2523967823495420116">Brug lodrette faner</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Slå fanens lyd fra}one{Slå fanens lyd fra}other{Slå fanernes lyd fra}}</translation>
@@ -219,6 +215,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="5611474372949142946">Luk tabs nedenfor</translation>
 <translation id="573844928911967687">Flytter alle faner til dette vindue</translation>
 <translation id="2703180365855369896">Luk duplikerede faner</translation>
+<translation id="1987871867023021397">Åbn i beholder</translation>
+<translation id="6745991613881384719">Administrer beholdere</translation>
 <translation id="3704707436873245822">Kopiér tekst fra billede</translation>
 <translation id="5268098808165185458">Kopierer tekst fra billede ...</translation>
 <translation id="4046485130884276245">Tekst kopieret fra billede</translation>
@@ -343,6 +341,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="1035309871698658326">Når den åbnes, sender den automatisk titlerne og oprindelsen på alle ikke-private faner til Leo for at klassificere dem.</translation>
 <translation id="3435896845095436175">Aktivér</translation>
 <translation id="1940221956626514677">Tilpas værktøjslinjen</translation>
+<translation id="6501807887341963552">Tema og farver</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -367,6 +366,19 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="8000020256436988724">Værktøjslinje</translation>
 <translation id="8076492880354921740">Faner</translation>
 <translation id="8168435359814927499">Indhold</translation>
+<translation id="6017560037265964523">Beholdere</translation>
+<translation id="934893482320683588">Organiser din browsing med beholdere. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
+<translation id="7773735778926921278">Tilføj ny beholder</translation>
+<translation id="8900907990448657776">Rediger beholder</translation>
+<translation id="7900511996284443779">Slet beholder</translation>
+<translation id="2738687336989232152">Er du sikker på, at du vil slette beholderen <ph name="CONTAINER_NAME"/>? Det vil fjerne alle de data, der er knyttet til den.</translation>
+<translation id="5327248766486351172">Navn</translation>
+<translation id="104766043551382253">Ikon</translation>
+<translation id="5431318178759467895">Farve</translation>
+<translation id="4328541188421002379">Giv din beholder et navn som Arbejde eller Privat</translation>
+<translation id="4976989127264491396">Fejl: <ph name="ERROR_MESSAGE"/></translation>
+<translation id="5436069931267876389">Beholderen blev ikke fundet</translation>
+<translation id="2263346047290834619">Brug faner i træstil</translation>
 <translation id="5860254591544742609">Vis titelpanel</translation>
 <translation id="5371926069408837914">Udvid det lodrette fanepanel når musen føres hen over, mens det er kollapset</translation>
 <translation id="3367129510799209147">Fanehovedtilstand</translation>
@@ -394,8 +406,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="7158817046543187970">Borgmærker er skjult på alle sider</translation>
 <translation id="3416468988018290825">Vis altid hele URL</translation>
 <translation id="5529693968082667490">Vis fane-søgeknap</translation>
-<translation id="1013121820689882118">Speedreader</translation>
-<translation id="2025435450953474282">Artikler indlæses automatisk i læsetilstand, så du sparer tid</translation>
 <translation id="7984721311211272523">Slå stum funktion fra i fanen Højtalerikoner</translation>
 <translation id="832432428796481785">Vis sidepanel-knap</translation>
 <translation id="5581036754486769849">Tillad automatisk udfyldning af vinduer i privattilstand.</translation>
@@ -474,7 +484,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="9202707370720720635">Brugerdefinerede scriptlets</translation>
 <translation id="5524306331330789642">Tilføj ny scriptlet</translation>
 <translation id="3865146371459790194">Rediger scriptlet</translation>
-<translation id="5327248766486351172">Navn</translation>
 <translation id="5584409054843451563">Er du sikker på, at du vil slette denne scriptlet? Hvis denne scriptlet bruges i et brugerdefineret filter, vil det ikke længere fungere.</translation>
 <translation id="4545850500562727184">Scriptlet findes allerede.</translation>
 <translation id="4877521822848390663">Ugyldigt scriptlet-navn.</translation>
@@ -541,6 +550,9 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">Spørg om liv, når en webside vil oprette adgang til Solana-leverandørens API.</translation>
 <translation id="2777102601740875941">Blokér websider, så de ikke opretter adgang til Solana-leverandørens API.</translation>
+<translation id="6420374098612710803">Cardano</translation>
+<translation id="2791323819881188032">Spørg, når et websted vil have adgang til Cardano-udbyderens API</translation>
+<translation id="2354424632502836676">Bloker websteder fra at få adgang til Cardano-udbyderens API</translation>
 <translation id="4206299587103092719">Login in med din Google-konto</translation>
 <translation id="9110294136812584522">Sider kan anmode om at bruge det gamle Google-login via cookies fra tredjepart</translation>
 <translation id="2903783737778379345">Giv ikke tilladelse til Google-login via cookies fra tredjepart</translation>
@@ -679,6 +691,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="7013485839273047434">Hent flere extensions</translation>
 <translation id="4954512758656527938">Standard Ethereum-wallet</translation>
 <translation id="7701023802820268122">Standard Solana-wallet</translation>
+<translation id="3991455933137809014">Standard Cardano-wallet</translation>
 <translation id="8488282162676695335">Brave-wallet</translation>
 <translation id="6942354363301686374">Udvidelser (ingen backup)</translation>
 <translation id="702381242110464396">Udvidelser (tilbagefald af Brave-tegnebog)</translation>
@@ -754,14 +767,15 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="8172263161008556851">Vis anbefalede forespørgsler i samtalen</translation>
 <translation id="5781842473834867765">Gem min samtalehistorik</translation>
 <translation id="1082960401708055995">Hvis du deaktiverer lagring af samtaler, slettes alle tidligere gemte samtaler permanent. Denne handling kan ikke fortrydes.</translation>
-<translation id="6106701981952170121">Slet alle samtaledata fra Leo AI</translation>
-<translation id="1335414530428321716">Nulstilling af Leo AI kræver, at du vælger at bruge Brave
-Leo AI fremover, og denne handling sletter også din chathistorik. Hvis du sletter din chathistorik, slettes alle dine tidligere samtaler med Brave Leo AI. Denne handling kan ikke fortrydes.</translation>
+<translation id="1014480593522400586">Ryd Leo-data</translation>
+<translation id="5256236967791936135">Nulstilling af Leo AI kræver, at du vælger at bruge Brave Leo AI fremover, og denne handling sletter også din chathistorik, tilpasninger og minder. Hvis du sletter din chathistorik, slettes alle dine tidligere samtaler med Brave Leo AI. Denne handling kan ikke fortrydes.</translation>
 <translation id="5574059574002819179">Justér automatiske forslag</translation>
 <translation id="7942415993090181327">Chathistorik</translation>
 <translation id="5084498230659987096">Brave Leo leverer en AI-chat og andre AI-drevne grænseflader i browseren, der prioriterer privatlivets fred. Leo lærer aldrig af dine data eller bruger dem til modeltræning. Alle anmodninger sendes gennem en anonymiserende server.</translation>
 <translation id="6458721693611638005">Læs mere om, hvordan Brave beskytter din brug af AI i Leos privatlivspolitik. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Standardmodel for nye samtaler</translation>
+<translation id="6340526405444716530">Tilpasning</translation>
+<translation id="5077965667729100040">Tilpas Leos svar og minder</translation>
 <translation id="8826914609353373601">Administrer premium-abonnement</translation>
 <translation id="235457946228076038">Medbring din egen model</translation>
 <translation id="8631951653187535788">Er du sikker på, at du vil slette denne model? Hvis denne model bruges i en aktiv samtale, vil den samtale skifte til at bruge Leos standardmodel.</translation>
@@ -795,6 +809,33 @@ Leo AI fremover, og denne handling sletter også din chathistorik. Hvis du slett
 <translation id="6304169450064541679">System-prompt</translation>
 <translation id="3081947790648024460">Brugerdefinerede instruktioner og/eller kontekst, der gives til modellen for at lede dens svar i en bestemt retning eller stil. Brug %datetime%, hvor du gerne vil have indsat den aktuelle dato og det aktuelle klokkeslæt.</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokens</translation>
+<translation id="6911466383346197271">Tilpas Leo</translation>
+<translation id="5702085383070170010">Om dig</translation>
+<translation id="2493241731563937877">Fortæl Leo om dig selv for at få mere personlige svar. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
+<translation id="8536280915366791221">Aktivér Leo-tilpasning</translation>
+<translation id="698972836993887081">Aktivér brugerminder</translation>
+<translation id="4256342809997283108">Hvad skal Leo kalde dig?</translation>
+<translation id="1362393385416256849">Indtast dit foretrukne navn, som Leo bør kalde dig</translation>
+<translation id="7841672648317556034">Hvad laver du?</translation>
+<translation id="1228535384519357095">Fortæl Leo lidt om, hvad du laver</translation>
+<translation id="1300619108689988155">Hvordan skal Leo svare på dine spørgsmål?</translation>
+<translation id="5071940952740278148">Beskriv den tone og de træk, du gerne vil have, at Leo bruger, når den svarer</translation>
+<translation id="5647284470247510206">Er der andet, Leo bør vide om dig?</translation>
+<translation id="7228073810237286235">Fortæl Leo om eventuelle præferencer, du ønsker, den skal huske på, når den svarer</translation>
+<translation id="683188035663069399">Ændringer gemt</translation>
+<translation id="6708571471662618310">Input er for langt</translation>
+<translation id="8213464188712611711">Minder</translation>
+<translation id="736384197563279828">Alle de ting, Leo har lært om dig og ikke vil glemme. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
+<translation id="4664222465181795837">Der er endnu ingen minder</translation>
+<translation id="8914960762169062277">Tilføj et minde, så Leo kan lære dig bedre at kende.</translation>
+<translation id="4358891361699697299">Tilføj nyt minde</translation>
+<translation id="6028732745612718012">Rediger dette minde</translation>
+<translation id="3970015815965490773">Opret et nyt minde</translation>
+<translation id="1206639071829035972">Hvad vil du have, at Leo skal huske?</translation>
+<translation id="2076082422799949288">Slet dette minde</translation>
+<translation id="1721787502053471881">Er du sikker på, at du vil slette dette minde? Denne handling kan ikke fortrydes.</translation>
+<translation id="5239685926753073108">Slet alle minder</translation>
+<translation id="2600803466586623124">Er du sikker på, at du vil slette alle minder? Denne handling kan ikke fortrydes.</translation>
 <translation id="5985516785067818307">Paneldeltager i undersøgelsen</translation>
 <translation id="8347743943525229984">Tillad Brave-undersøgelser</translation>
 <translation id="3204080538332044581">Giver Brave mulighed for at vise links til private undersøgelser i den nye fane. Undersøgelser hjælper os med at udvikle bedre funktioner og måle effektiviteten af browserbaserede annoncekampagner. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>

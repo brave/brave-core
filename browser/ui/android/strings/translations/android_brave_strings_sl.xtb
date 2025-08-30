@@ -423,8 +423,8 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8748471354357836070">Več informacij/možnosti odjave</translation>
 <translation id="3171669670217312786">Slike ozadja</translation>
 <translation id="8522669544471808198">Prikaži slike ozadja</translation>
-<translation id="3870475560794762985">Prikaži sponzorirane slike</translation>
-<translation id="6937724381960478525">Preberite več o sponzoriranih slikah</translation>
+<translation id="6258554626602400736">Prikaži oglase na strani novega zavihka</translation>
+<translation id="9001530744369687550">Več o oglasih na strani novega zavihka</translation>
 <translation id="8793108040181436796">Pripomočki</translation>
 <translation id="8643377320501056697">Prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="7275773481201277457">Pokaži Braveove statistike</translation>
@@ -505,6 +505,8 @@ je v teku.
 <translation id="7616645803364270729">E-pošta, Twitter itd.</translation>
 <translation id="5299848999918506028">Hvala!</translation>
 <translation id="76550953340008122">Hvala, ker ste obvestili razvijalce Brave, da je s to spletno stranjo nekaj narobe. Potrudili se bomo, da to popravimo!</translation>
+<translation id="3037432377946455872">Kaj je glavna težava, ki jo opažate?</translation>
+<translation id="8731661215617360873">Izberite eno možnost</translation>
 <translation id="650318023204990401">Napredne nastavitve</translation>
 <translation id="7205939464631857223">Počisti vse blokirane elemente</translation>
 <translation id="5370478469168390143">Podatke shrani na spletu</translation>
@@ -803,6 +805,7 @@ je v teku.
 <translation id="1426320910664514906">Gas Limit</translation>
 <translation id="6389441740143786465">Onemogoči Središče za skupno rabo</translation>
 <translation id="9065203028668620118">Uredi</translation>
+<translation id="473775607612524610">Posodobi</translation>
 <translation id="479795390141144417">Posodobitev računa ni uspela.</translation>
 <translation id="8084782383392198011">Ime računa ne sme biti prazno.</translation>
 <translation id="5045550434625856497">Nepravilno geslo</translation>
@@ -1230,4 +1233,41 @@ je v teku.
 <translation id="2735247450315842119">Omogočite posnetke zaslona v zasebnih zavihkih</translation>
 <translation id="8420414929552321089">Če je omogočeno, bodo zasebni zavihki vidni tudi, ko je odprtih več aplikacij.</translation>
 <translation id="7956713633345437162">Mobilni zaznamki</translation>
+<translation id="1943432128510653496">Shranjevanje gesel</translation>
+<translation id="2100273922101894616">Samodejna prijava</translation>
+<translation id="363596933471559332">Samodejna prijava v spletna mesta s shranjenimi poverilnicami. Ko je ta funkcija izklopljena, bo pri vsaki prijavi v spletno mesto potrebno preverjanje.</translation>
+<translation id="8562452229998620586">Shranjena gesla bodo prikazana tukaj.</translation>
+<translation id="1303339473099049190">Tega gesla ni mogoče najti. Preverite črkovanje in poskusite znova.</translation>
+<translation id="2259659629660284697">Izvozi gesla …</translation>
+<translation id="133012818630824069">Izvoz gesel, shranjenih v Chromu</translation>
+<translation id="2321086116217818302">Pripravljanje gesel …</translation>
+<translation id="5139940364318403933">Naučite se uporabljati Google Drive</translation>
+<translation id="729975465115245577">V napravi ni aplikacije za shranjevanje datoteke z gesli.</translation>
+<translation id="1129510026454351943">Podrobnosti: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Odklenite, če želite izvoziti gesla</translation>
+<translation id="5245792669563792664">gesla</translation>
+<translation id="10614374240317010">Nikoli shranjeno</translation>
+<translation id="1571304935088121812">Kopiranje uporabniškega imena</translation>
+<translation id="5005498671520578047">Kopiranje gesla</translation>
+<translation id="2435457462613246316">Pokaži geslo</translation>
+<translation id="1513858653616922153">Izbris gesla</translation>
+<translation id="543338862236136125">Uredi geslo</translation>
+<translation id="4565377596337484307">Skrij geslo</translation>
+<translation id="8523928698583292556">Izbris shranjenega gesla</translation>
+<translation id="5433691172869980887">Uporabniško ime kopirano</translation>
+<translation id="2625189173221582860">Geslo kopirano</translation>
+<translation id="8084114998886531721">Shranjeno geslo</translation>
+<translation id="6590680911007613645">Geslo, ki ga želite shraniti, se mora ujemati z geslom za <ph name="SITE"/></translation>
+<translation id="1492417797159476138">Za to spletno mesto ste že shranili to uporabniško ime.</translation>
+<translation id="5454166040603940656">pri ponudniku <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Želite izbrisati geslo?</translation>
+<translation id="7808889146555843082">Če izbrišete to geslo, ne izbrišete računa na <ph name="SITE"/>. Če želite račun zaščititi pred drugimi, spremenite geslo ali izbrišite račun na <ph name="SITE"/>.</translation>
+<translation id="2870560284913253234">Spletno mesto</translation>
+<translation id="8503813439785031346">Uporabniško ime</translation>
+<translation id="2278052315791335171">Če izbrišete to geslo, ne izbrišete računa na <ph name="SITE"/>.</translation>
+<translation id="6891726759199484455">Odklenite, če želite kopirati geslo</translation>
+<translation id="5515439363601853141">Odklenite, če si želite ogledati geslo</translation>
+<translation id="1724977129262658800">Odklenite, če želite urediti geslo.</translation>
+<translation id="5780792035410621042">Če želite kopirati gesla, najprej v napravi nastavite zaklepanje zaslona.</translation>
+<translation id="7986497153528221272">Če si želite ogledati gesla, najprej v napravi nastavite zaklepanje zaslona</translation>
 </translationbundle>

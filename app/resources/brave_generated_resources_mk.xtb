@@ -8,10 +8,6 @@
 <translation id="6406506848690869874">Синхронизирај</translation>
 <translation id="1544192797660353713">Паричник</translation>
 <translation id="2361906291514218784">Лео ВИ</translation>
-<translation id="9092796350041759828">{0, plural,
-          one {}=1 {Затвори прозорец за гости}
-          other {Затвори прозорци за гости}
-        }</translation>
 <translation id="1990886731975529483">Инсталирај и стартувај Google Widevine</translation>
 <translation id="4900351245762303149">Инсталирај Google Widevine</translation>
 <translation id="8342816622062204340"><ph name="URL"/> сака да репродуцира заштитена содржина на Google Widevine, за што е потребно да дозволите системска поддршка за Widevine на Android. Ако дозволите, се согласувате со условите за користење на Google.</translation>
@@ -69,6 +65,7 @@
 <translation id="9071187015476020102">За да увезете екстензии или други поставки, прво затворете го прелистувачот од кој увезувате.</translation>
 <translation id="5840822070878669614">Отвори веб-продавница</translation>
 <translation id="8076492880354921740">Картички</translation>
+<translation id="5327248766486351172">Име</translation>
 <translation id="3987546108749866209">Користи вертикални картички</translation>
 <translation id="5977931179408079967">Позиција</translation>
 <translation id="4109670531935487117">Прикажувај предлози за автоматско пополнување во лентата за адреси</translation>
@@ -86,7 +83,6 @@
 <translation id="7740996059027112821">Стандардно</translation>
 <translation id="4516904298421534459">Листи на филтри</translation>
 <translation id="5524306331330789642">Додај нов скриптлет</translation>
-<translation id="5327248766486351172">Име</translation>
 <translation id="8168435359814927499">Содржина</translation>
 <translation id="5317780077021120954">Зачувај</translation>
 <translation id="8823559166155093873">Блокирај колачиња</translation>
@@ -107,9 +103,9 @@
 <translation id="2653659639078652383">Поднеси</translation>
 <translation id="6129027151000961048">Лео</translation>
 <translation id="5781842473834867765">Складирај ја мојата историја на разговори</translation>
-<translation id="6106701981952170121">Избриши ги сите податоци за разговори на Лео ВИ</translation>
 <translation id="614530507403667291">Стандарден модел за нови разговори</translation>
 <translation id="1907126221851170941">Додај модел</translation>
+<translation id="6532106788206463496">Зачувај промени</translation>
 <translation id="5985516785067818307">Учество во анкети</translation>
 <translation id="8347743943525229984">Дозволи анкети на Brave</translation>
 <translation id="3204080538332044581">Дозволува Brave да прикажува врски до приватни анкети на страница на нова картичка. Анкетите ни помагаат да создаваме подобри функции и да ја мериме ефикасноста на рекламните кампањи базирани на прегледувач. <ph name="BEGIN_LINK"/>Дознајте повеќе<ph name="END_LINK"/></translation>

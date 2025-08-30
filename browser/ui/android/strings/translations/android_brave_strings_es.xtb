@@ -280,7 +280,7 @@
 <translation id="745974920645827035">Búsqueda independiente con mayor privacidad</translation>
 <translation id="2773167297815493692">Búsqueda de Brave no elabora perfiles de preferencias.</translation>
 <translation id="5240031343741051161">Probar la búsqueda de Brave</translation>
-<translation id="5234764350956374838">Dismiss</translation>
+<translation id="5234764350956374838">Descartar</translation>
 <translation id="6639570430554986719">ENERO</translation>
 <translation id="1807352595146144483">FEBRERO</translation>
 <translation id="2021828608097804771">MARZO</translation>
@@ -421,8 +421,8 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="8748471354357836070">Más información / Opciones de exclusión</translation>
 <translation id="3171669670217312786">Imágenes de fondo</translation>
 <translation id="8522669544471808198">Mostrar imágenes de fondo</translation>
-<translation id="3870475560794762985">Mostrar imágenes patrocinadas</translation>
-<translation id="6937724381960478525">Más información sobre las imágenes patrocinadas</translation>
+<translation id="6258554626602400736">Mostrar anuncios en la página de nueva pestaña</translation>
+<translation id="9001530744369687550">Más información sobre los anuncios en la página de nueva pestaña</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Mostrar páginas principales</translation>
 <translation id="7275773481201277457">Mostrar Estadísticas de Brave</translation>
@@ -500,6 +500,8 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="7616645803364270729">Correo electrónico, Twitter, etc.</translation>
 <translation id="5299848999918506028">¡Gracias!</translation>
 <translation id="76550953340008122">Gracias por informar a los desarrolladores de Brave sobre posibles errores en este sitio. ¡Haremos todo lo posible para arreglarlo!</translation>
+<translation id="3037432377946455872">¿Qué problema te has encontrado?</translation>
+<translation id="8731661215617360873">Selecciona una opción</translation>
 <translation id="650318023204990401">Controles avanzados</translation>
 <translation id="7205939464631857223">Borrar todos los elementos bloqueados</translation>
 <translation id="5370478469168390143">Guardar datos en línea</translation>
@@ -796,6 +798,7 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="1426320910664514906">Límite de gas</translation>
 <translation id="6389441740143786465">Desactivar el centro de difusión</translation>
 <translation id="9065203028668620118">Editar</translation>
+<translation id="473775607612524610">Actualizar</translation>
 <translation id="479795390141144417">No se ha podido hacer la actualización.</translation>
 <translation id="8084782383392198011">El nombre de la cuenta no puede dejarse vacío.</translation>
 <translation id="5045550434625856497">Contraseña incorrecta</translation>
@@ -1142,7 +1145,7 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="3803384303807438047">Eliminar datos sin conexión del elementno</translation>
 <translation id="4195643157523330669">Abrir en una pestaña nueva</translation>
 <translation id="4243710787042215766">Abrir en una pestaña privada</translation>
-<translation id="8261506727792406068">Delete</translation>
+<translation id="8261506727792406068">Eliminar</translation>
 <translation id="377872456482681602">Primero selecciona los elementos</translation>
 <translation id="286472539388773794">Introduce un nombre de lista de reproducción válido</translation>
 <translation id="2824489375399072491">Compartir con:</translation>
@@ -1223,4 +1226,41 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="2735247450315842119">Permitir capturas de pantalla en pestañas privadas</translation>
 <translation id="8420414929552321089">Si se permite, las pestañas privadas también serán visibles cuando varias aplicaciones estén abiertas.</translation>
 <translation id="7956713633345437162">Marcadores móviles</translation>
+<translation id="1943432128510653496">Guardar contraseñas</translation>
+<translation id="2100273922101894616">Iniciar sesión automáticamente</translation>
+<translation id="363596933471559332">Permite iniciar sesión automáticamente en sitios web con credenciales almacenadas. Si esta función está desactivada, se solicitará la verificación cada vez que se intente iniciar sesión en un sitio web.</translation>
+<translation id="8562452229998620586">Las contraseñas guardadas aparecerán aquí.</translation>
+<translation id="1303339473099049190">No se ha podido encontrar la contraseña. Comprueba que esté bien escrita y vuelve a intentarlo.</translation>
+<translation id="2259659629660284697">Exportar contraseñas…</translation>
+<translation id="133012818630824069">Exportar contraseñas almacenadas en Brave</translation>
+<translation id="2321086116217818302">Preparando contraseñas…</translation>
+<translation id="5139940364318403933">Más información sobre cómo usar Google Drive</translation>
+<translation id="729975465115245577">Tu dispositivo no tiene ninguna aplicación para almacenar el archivo de contraseñas.</translation>
+<translation id="1129510026454351943">Detalles: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Desbloquea el dispositivo para exportar las contraseñas</translation>
+<translation id="5245792669563792664">contraseñas</translation>
+<translation id="10614374240317010">Contraseñas que nunca se guardan</translation>
+<translation id="1571304935088121812">Copiar nombre de usuario</translation>
+<translation id="5005498671520578047">Copiar contraseña</translation>
+<translation id="2435457462613246316">Mostrar contraseña</translation>
+<translation id="1513858653616922153">Eliminar contraseña</translation>
+<translation id="543338862236136125">Cambiar contraseña</translation>
+<translation id="4565377596337484307">Ocultar contraseña</translation>
+<translation id="8523928698583292556">Eliminar contraseña guardada</translation>
+<translation id="5433691172869980887">Se ha copiado el nombre de usuario</translation>
+<translation id="2625189173221582860">Se ha copiado la contraseña</translation>
+<translation id="8084114998886531721">Contraseña guardada</translation>
+<translation id="6590680911007613645">La contraseña que guardes debe coincidir con tu contraseña de <ph name="SITE"/></translation>
+<translation id="1492417797159476138">Ya has guardado ese nombre de usuario en este sitio web</translation>
+<translation id="5454166040603940656">con <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">¿Eliminar contraseña?</translation>
+<translation id="7808889146555843082">Aunque quites esta contraseña, no se eliminará tu cuenta de <ph name="SITE"/>. Cambia la contraseña o elimina tu cuenta de <ph name="SITE"/> para protegerla de otros.</translation>
+<translation id="2870560284913253234">Sitio</translation>
+<translation id="8503813439785031346">Nombre de usuario</translation>
+<translation id="2278052315791335171">Al eliminar esta contraseña, no se eliminará tu cuenta de <ph name="SITE"/></translation>
+<translation id="6891726759199484455">Desbloquea la pantalla para copiar tu contraseña</translation>
+<translation id="5515439363601853141">Desbloquea la pantalla para ver tu contraseña</translation>
+<translation id="1724977129262658800">Desbloquea para cambiar tu contraseña</translation>
+<translation id="5780792035410621042">Para copiar contraseñas, primero debes establecer un bloqueo de pantalla en el dispositivo</translation>
+<translation id="7986497153528221272">Para ver las contraseñas, primero debes establecer un bloqueo de pantalla en tu dispositivo</translation>
 </translationbundle>

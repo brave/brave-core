@@ -13,6 +13,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="1882093842020941518">Para axudarnos a mellorar Brave, cóntanos por que permitiches as cookies de terceiros. <ph name="BEGIN_LINK"/>Enviar comentarios<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Podes solicitar que se mostre a versión para ordenadores dos sitios</translation>
 <translation id="9183227624343766158">Utilizar Brave de forma predeterminada</translation>
+<translation id="1178015372320901893">Panel inferior dos meus atallos</translation>
 <translation id="1178581264944972037">Pausar</translation>
 <translation id="1181037720776840403">Eliminar</translation>
 <translation id="1192844206376121885">Ao realizar esta acción, eliminaranse todos os datos e as cookies que almacenase <ph name="ORIGIN"/>.</translation>
@@ -61,6 +62,8 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="1703666494654169921">Non permitir que os sitios utilicen datos nin dispositivos de realidade virtual</translation>
 <translation id="1704230497453185209">Non permitir que os sitios reproduzan son</translation>
 <translation id="1717218214683051432">Sensores de movemento</translation>
+<translation id="1717996979683942279">Cando esta opción está activada, os sitios poden pedir permiso para xestionar as ventás en todas as pantallas. Cando está desactivada, non poden xestionalas.</translation>
+<translation id="1738912554587725807">Panel inferior de coleccións de temas de aparencia da páxina Nova pestana</translation>
 <translation id="1743802530341753419">Preguntar antes de permitir que os sitios se conecten a un dispositivo (recomendado)</translation>
 <translation id="1777815584158991902">Panel inferior do feed de Discover</translation>
 <translation id="1779089405699405702">Descodificador de imaxes</translation>
@@ -69,11 +72,13 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="7401204338724669842">Consellos de Brave</translation>
 <translation id="6704867734300244173">Cando esta opción está activada, Brave execútase máis rápido e as funcións que usen JavaScript deberían funcionar tal como se deseñaron. Se está desactivada, redúcese o rendemento, pero o motor V8 é máis resistente os ataques.</translation>
 <translation id="1818308510395330587">Para permitir que <ph name="APP_NAME"/> utilice a realidade aumentada, tamén debes activar a cámara en <ph name="BEGIN_LINK"/>Configuración de Android<ph name="END_LINK"/>.</translation>
+<translation id="1881806992065048905">Panel inferior do aspecto da páxina Nova pestana</translation>
 <translation id="1887786770086287077">O acceso á localización está desactivado neste dispositivo. Actívao na <ph name="BEGIN_LINK"/>configuración de Android<ph name="END_LINK"/>.</translation>
 <translation id="1906181697255754968">Os sitios adoitan acceder aos ficheiros e aos cartafoles do dispositivo para ofrecerche determinadas funcións (por exemplo, gardar automaticamente o teu traballo)</translation>
 <translation id="1915307458270490472">Deter</translation>
 <translation id="1919950603503897840">Seleccionar contactos</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/<ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="1939059826036755332">Pantalla superposta automática</translation>
 <translation id="1954597385941141174">Os sitios poden pedirche permiso para conectarse aos dispositivos USB</translation>
 <translation id="1979673356880165407">Aumenta ou diminúe o tamaño do texto e as imaxes dos sitios que visitas</translation>
 <translation id="1984937141057606926">Cookies permitidas, salvo as de terceiros</translation>
@@ -117,6 +122,8 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e <ph name="NUM_MORE"/> máis (permitidos)}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e <ph name="NUM_MORE"/> máis (permitidos)}}</translation>
 <translation id="2410940059315936967">Os sitios que visitas poden inserir contido doutros sitios web (por exemplo, imaxes, anuncios ou texto). As cookies definidas por estes outros sitios denomínanse cookies de terceiros.</translation>
+<translation id="2411116727035790889">Activar os atallos</translation>
+<translation id="2433507940547922241">Aparencia</translation>
 <translation id="2434158240863470628">Completouse a descarga <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="2438120137003069591">Permitiches de maneira temporal que este sitio use cookies de terceiros. Terás menos protección durante a navegación, pero é máis probable que as funcións do sitio marchen segundo o previsto. <ph name="BEGIN_LINK"/>Enviar comentarios<ph name="END_LINK"/></translation>
 <translation id="2442870161001914531">Solicitar sempre o sitio para ordenadores</translation>
@@ -152,6 +159,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="2789132527330338807">Os sitios poden solicitar permiso para crear un mapa 3D do que te rodea e facer o seguimento da posición da cámara</translation>
 <translation id="2790501146643349491">Cando esta opción está activada, os sitios pechados recentemente poden terminar de enviar e recibir datos. Cando esta opción está desactivada, os sitios pechados recentemente non poden terminar de enviar nin de recibir datos.</translation>
 <translation id="2795716239552913152">Os sitios adoitan usar a túa localización para ofrecerche funcións ou información relevantes (por exemplo, noticias locais ou tendas próximas)</translation>
+<translation id="2800760947029405028">Subir unha imaxe</translation>
 <translation id="2802908157808345702">Non permitir que os sitios mostren ventás emerxentes nin usen redireccións</translation>
 <translation id="5801312978029568377">Brave xa mostra as pestanas recentes na lista de aplicacións e nos resultados de busca do teu dispositivo. Desactiva esta opción cando queiras na configuración de Brave.</translation>
 <translation id="2822354292072154809">Seguro que queres restablecer todos os permisos do sitio <ph name="CHOSEN_OBJECT_NAME"/>?</translation>
@@ -167,6 +175,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="2968755619301702150">Visor de certificados</translation>
 <translation id="2979365474350987274">As cookies de terceiros están limitadas</translation>
 <translation id="2990583317361835189">Non permitir que os sitios utilicen sensores de movemento</translation>
+<translation id="3004438526346162184">Os sitios poden usar esta función para xestionar as ventás en todas as pantallas</translation>
 <translation id="3008272652534848354">Restablecer permisos</translation>
 <translation id="301521992641321250">Bloqueado automaticamente</translation>
 <translation id="3064871050034234884">Os sitios poden reproducir sons</translation>
@@ -179,6 +188,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="3114012059975132928">Reprodutor de vídeo</translation>
 <translation id="3115898365077584848">Mostrar información</translation>
 <translation id="3123473560110926937">Anuncios bloqueados nalgúns sitios</translation>
+<translation id="3132996321662585180">Actualizar diariamente</translation>
 <translation id="3143754809889689516">Reproducir desde o principio</translation>
 <translation id="3162899666601560689">Os sitios poden utilizar cookies para mellorar a túa experiencia de navegación a través de funcións como manter a sesión iniciada ou lembrar artigos da túa cesta da compra</translation>
 <translation id="3165022941318558018">Permite que un sitio use cookies de terceiros</translation>
@@ -216,6 +226,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="3600792891314830896">Silencia sitios que reproducen son</translation>
 <translation id="3602290021589620013">Previsualizar</translation>
 <translation id="3611658447322220736">Os sitios pechados recentemente poden rematar de enviar e recibir datos</translation>
+<translation id="3619294456800709762">Os sitios poden acceder ao modo de pantalla superposta automaticamente</translation>
 <translation id="3628308229821498208">Buscas suxeridas</translation>
 <translation id="3641456520301071208">Os sitios poden pedirche permiso para acceder á localización</translation>
 <translation id="3658847490588580244">Panel inferior do navegador predeterminado</translation>
@@ -235,6 +246,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="3779154269823594982">Cambiar contrasinais</translation>
 <translation id="3797520601150691162">Non se lle aplica o tema escuro a un sitio concreto</translation>
 <translation id="3803367742635802571">É posible que os sitios que visites deixen de funcionar segundo o previsto</translation>
+<translation id="8338457030135232378">Cores de Brave</translation>
 <translation id="381841723434055211">Números de teléfono</translation>
 <translation id="3826050100957962900">Inicio de sesión de terceiros</translation>
 <translation id="3835233591525155343">Uso do dispositivo</translation>
@@ -262,6 +274,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="4031179711345676612">Permítese o micrófono</translation>
 <translation id="4046123991198612571">Pista seguinte</translation>
 <translation id="4077310749977440510">Os sitios adoitan acceder ao portapapeis para ofrecerche determinadas funcións (por exemplo, conservar o formato do texto copiado)</translation>
+<translation id="4082080074595021446">Non se permiten excepcións para sitios web específicos porque o dispositivo Android non ten suficiente RAM.</translation>
 <translation id="4149890623864272035">Seguro que queres eliminar todos os datos locais, incluídas as cookies, e restablecer todos os permisos deste sitio web?</translation>
 <translation id="4149994727733219643">Vista simplificada de páxinas web</translation>
 <translation id="4151930093518524179">Zoom predeterminado</translation>
@@ -298,7 +311,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="4534723447064627427">Para permitir que <ph name="APP_NAME"/> acceda ao micrófono, actívao tamén en <ph name="BEGIN_LINK"/>Configuración de Android<ph name="END_LINK"/>.</translation>
 <translation id="4566417217121906555">Silenciar micrófono</translation>
 <translation id="4570913071927164677">Detalles</translation>
-<translation id="4578289292431526768">Comezar</translation>
+<translation id="4578289292431526768">Vamos aló</translation>
 <translation id="461356340001513807">Permíteche iniciar sesión en sitios web coa conta que teñas cun servizo de identidade</translation>
 <translation id="4635969503923889910">Non permitir que os sitios usen dispositivos NFC</translation>
 <translation id="4644713492825682049">Eliminar e restablecer</translation>
@@ -318,6 +331,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="4882919381756638075">Os sitios adoitan usar o micrófono para ofrecerche determinadas funcións relacionadas coa comunicación (por exemplo, chat de vídeo)</translation>
 <translation id="4883854917563148705">Non se pode restablecer a configuración xestionada</translation>
 <translation id="4887024562049524730">Pregunta antes de permitir que os sitios utilicen os teus datos e dispositivos de realidade virtual (recomendado)</translation>
+<translation id="4934780484581617878">Xestión de ventás</translation>
 <translation id="4936863036653376783">Atoparás os teus grupos na sección Grupos de pestanas que hai en todos os teus dispositivos</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> non ten permitido usar a túa información en</translation>
 <translation id="4953688446973710931">Cando esta opción está activada, os sitios poden pedirche permiso para descargar automaticamente varios ficheiros. Cando esta opción está desactivada, os sitios non poden descargar automaticamente varios ficheiros.</translation>
@@ -341,6 +355,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="5099358668261120049">Ao realizar esta acción, eliminaranse os datos e as cookies que almacenase <ph name="ORIGIN"/> ou a súa aplicación na túa pantalla de inicio.</translation>
 <translation id="5100237604440890931">Vista contraída (fai clic para ampliala).</translation>
 <translation id="7143053178237996319">Podes utilizar Brave cando toques as ligazóns en mensaxes, en documentos e noutras aplicacións</translation>
+<translation id="512938610812707830">Panel inferior de coleccións de temas de aparencia da páxina Nova pestana aberto a altura completa</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Baixada de prezo nas pestanas que teñas abertas}other{Baixadas de prezo nas pestanas que teñas abertas}}</translation>
 <translation id="5186036860380548585">Opción dispoñible preto da parte superior da pantalla</translation>
 <translation id="5197729504361054390">Os contactos que selecciones compartiranse con <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
@@ -394,6 +409,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="5750869797196646528">Seguimento das mans</translation>
 <translation id="5753570386948603678">Eliminar do historial</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> (bloqueado)</translation>
+<translation id="5801457289562671820">Recomendación da túa organización</translation>
 <translation id="5804241973901381774">Permisos</translation>
 <translation id="5822675474983796325">Panel inferior de Personaliza a páxina Nova pestana aberto a altura completa</translation>
 <translation id="5833899990800318936">Non permitir que os sitios utilicen JavaScript</translation>
@@ -419,13 +435,16 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="5975083100439434680">Afastar</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/>: <ph name="WARNING_MESSAGE"/></translation>
 <translation id="5998071268779572583">Activar o feed de Discover</translation>
+<translation id="6012967556075291653">Atallo fixado</translation>
 <translation id="6015775454662021376">Controla o acceso deste sitio ao dispositivo</translation>
 <translation id="6040143037577758943">Pechar</translation>
 <translation id="6042308850641462728">Máis</translation>
 <translation id="6064125863973209585">Descargas completadas</translation>
 <translation id="6071501408666570960">É posible que se che peche a sesión neste sitio</translation>
 <translation id="6085954183010297841">Queres eliminar a autorización para editar ficheiros? <ph name="FILE"/></translation>
+<translation id="6104860901391833523">Cando esta opción está activada, os sitios poden acceder ao modo de pantalla superposta automaticamente. Cando está desactivada, non poden acceder a ese modo automaticamente.</translation>
 <translation id="6120483543004435978">Cando esta opción está activada, os sitios poden pedirche permiso para saber se estás utilizando o dispositivo de maneira activa. Cando esta opción está desactivada, os sitios non poden saber se estás utilizando o dispositivo de maneira activa.</translation>
+<translation id="615886654739818377">Non permitir que os sitios xestionen ventás en todas as pantallas</translation>
 <translation id="6165508094623778733">Máis información</translation>
 <translation id="6171020522141473435">Cando esta opción está activada, os sitios poden pedirche permiso para utilizar dispositivos Bluetooth. Cando esta opción está desactivada, os sitios non poden utilizar dispositivos Bluetooth.</translation>
 <translation id="6177128806592000436">A túa conexión a este sitio non é segura</translation>
@@ -441,12 +460,14 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="6262191102408817757">Segundo a túa última pestana</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> e <ph name="PERMISSION_2"/> (bloqueados)</translation>
 <translation id="6270391203985052864">Os sitios poden pedir permiso para enviar notificacións</translation>
+<translation id="6278428485366576908">Tema</translation>
 <translation id="6295158916970320988">Todos os sitios</translation>
 <translation id="6320088164292336938">Vibrar</translation>
 <translation id="6367753977865761591">Bloquea o inicio de sesión de terceiros para un sitio específico.</translation>
 <translation id="6398765197997659313">Saír do modo de pantalla completa</translation>
 <translation id="640163077447496506">Caduca hoxe</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
+<translation id="6413980879783180524">Coleccións de temas</translation>
 <translation id="6439114592976064011">Impide que os sitios utilicen os teus datos e dispositivos de realidade virtual</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Baixada de prezo na pestana aberta, de <ph name="OLD_PRICE"/> a <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -458,6 +479,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="6545864417968258051">Busca de dispositivos Bluetooth</translation>
 <translation id="6552800053856095716">{PERMISSIONS_SUMMARY_BLOCKED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e <ph name="NUM_MORE"/> máis (bloqueados)}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e <ph name="NUM_MORE"/> máis (bloqueados)}}</translation>
 <translation id="6554732001434021288">Visitouse hai <ph name="NUM_DAYS"/> días por última vez</translation>
+<translation id="6557290421156335491">Os meus atallos</translation>
 <translation id="656065428026159829">Ver máis</translation>
 <translation id="6561560012278703671">Utilizar mensaxaría máis silenciosa (impide que as notificacións te interrompan)</translation>
 <translation id="6565144332292237355">Os sitios poden usar esta función para buscar calquera dispositivo da túa rede local ou conectarse a el</translation>
@@ -544,11 +566,13 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="7681597159868843240">Os sitios adoitan usar os sensores de movemento do dispositivo para ofrecerche determinadas funcións (por exemplo, as relacionadas coa realidade virtual ou co seguimento da forma física)</translation>
 <translation id="5455732060086060613">Ocultar tarxeta de consellos de Brave</translation>
 <translation id="7719367874908701697">Zoom na páxina</translation>
+<translation id="775043444390799886">Revogar permiso</translation>
 <translation id="7759147511335618829">Controlar/Reprogramar disp. MIDI</translation>
 <translation id="7781829728241885113">Onte</translation>
 <translation id="7791543448312431591">Engadir</translation>
 <translation id="780301667611848630">Non, grazas</translation>
 <translation id="7804248752222191302">Un sitio está utilizando a cámara</translation>
+<translation id="7805832099057502789">Panel inferior do aspecto da páxina Nova pestana aberto a altura completa</translation>
 <translation id="6720480757902085971">Ofrecido por Brave</translation>
 <translation id="7815680994978050279">Bloqueouse unha descarga perigosa</translation>
 <translation id="7835852323729233924">Reproducindo contido multimedia</translation>
@@ -567,9 +591,11 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="802154636333426148">Produciuse un erro na descarga</translation>
 <translation id="8042586301629853791">Ordenar por:</translation>
 <translation id="8051193500142930381">As funcións que requiran unha cámara non estarán dispoñibles</translation>
+<translation id="2495032782748793764">Brave predeterminado</translation>
 <translation id="8067883171444229417">Reproducir vídeo</translation>
 <translation id="8068648041423924542">Non se pode seleccionar o certificado.</translation>
 <translation id="8077120325605624147">Calquera sitio que visites pode mostrarche anuncios</translation>
+<translation id="80798452873915119">Os sitios poden pedir permiso para xestionar ventás en todas as pantallas</translation>
 <translation id="6405300764336705484">Este contido procede de <ph name="DOMAIN_NAME"/>, ofrecido por Brave.</translation>
 <translation id="8088603949666785339">Máis opcións en <ph name="BANNER_TITLE"/></translation>
 <translation id="8112925981674547014">Ver pestanas na túa lista de aplicacións</translation>
@@ -578,12 +604,12 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="8117244575099414087">Cando esta opción está activada, os sitios poden utilizar os sensores do dispositivo. Cando esta opción está desactivada, os sitios non poden utilizar os sensores do dispositivo.</translation>
 <translation id="813082847718468539">Consulta a información do sitio</translation>
 <translation id="8131740175452115882">Confirmar</translation>
+<translation id="8163152278172770963">Os sitios non poden acceder ao modo de pantalla superposta automaticamente</translation>
 <translation id="8168435359814927499">Contido</translation>
 <translation id="818487310457576362">Arrastra desde o lateral da pantalla para saír da pantalla completa.</translation>
 <translation id="8186479265534291036">O sitio non funciona? As cookies de terceiros están bloqueadas</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> (permitido)</translation>
 <translation id="8200772114523450471">Retomar</translation>
-<translation id="8206354486702514201">O administrador aplica esta configuración.</translation>
 <translation id="8211406090763984747">A conexión é segura</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8249310407154411074">Mover á parte superior</translation>
@@ -594,6 +620,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="8324158725704657629">Non preguntar de novo</translation>
 <translation id="8362795839483915693">Podes achegar ou afastar o zoom nos sitios que visitas</translation>
 <translation id="8372893542064058268">Permite a sincronización en segundo plano nun sitio específico.</translation>
+<translation id="8378714024927312812">Xestionado pola túa organización</translation>
 <translation id="83792324527827022">Un sitio está utilizando a cámara e o micrófono</translation>
 <translation id="8380167699614421159">Este sitio mostra anuncios intrusivos ou enganosos</translation>
 <translation id="8394832520002899662">Toca para volver ao sitio</translation>
@@ -619,6 +646,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="8549127125482561383">Como mostrar solicitudes</translation>
 <translation id="4273503381657013953">Agora podes usar Brave sempre que explores contido ou toques ligazóns en mensaxes, documentos e outras aplicacións.</translation>
 <translation id="857943718398505171">Permitido (recomendado)</translation>
+<translation id="8580511488901768832">panel inferior dos meus atallos aberto a altura completa</translation>
 <translation id="8593422116412089302">Cando esta opción está activada, os sitios poden pedirche permiso para utilizar a información que gardasen sobre ti. Cando esta opción está desactivada, os sitios non poden pedirche permiso para utilizar a información que garden sobre ti.</translation>
 <translation id="8609465669617005112">Mover cara arriba</translation>
 <translation id="8617611086246832542">Cando esta opción está activada, móstrase a vista para ordenadores dos sitios web. Cando esta opción está desactivada, móstrase a vista para dispositivos móbiles dos sitios web.</translation>
@@ -668,6 +696,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="913657688200966289">Activa os permisos para <ph name="APP_NAME"/> en <ph name="BEGIN_LINK"/>Configuración de Android<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">O acceso ás notificacións está permitido</translation>
 <translation id="9138217887606523162">Zoom actual: <ph name="ZOOM_LEVEL"/> %%</translation>
+<translation id="915112772806845021">Os sitios usan esta función para acceder automaticamente ao modo de pantalla superposta. Isto permíteche seguir vendo un vídeo mentres fas outras tarefas na pantalla.</translation>
 <translation id="7359422048569205930">Permite que Brave mostre as pestanas recentes na lista de aplicacións e nos resultados de busca do teu dispositivo. Desactiva esta opción cando queiras na configuración de Brave.</translation>
 <translation id="9162462602695099906">Esta páxina é perigosa</translation>
 <translation id="9182556968660520230">Non permitir que os sitios reproduzan contido protexido</translation>
