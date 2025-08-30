@@ -32,10 +32,6 @@ namespace p3a {
 
 namespace {
 
-inline constexpr char kCurrentPKPrefKey[] = "current_pk";
-inline constexpr char kCurrentEpochPrefKey[] = "current_epoch";
-inline constexpr char kNextEpochTimePrefKey[] = "next_epoch_time";
-
 // A generous arbitrary limit, 128KB
 constexpr std::size_t kMaxInfoResponseSize = 128 * 1024;
 constexpr int kRndInfoRetryInitialBackoffSeconds = 5;
