@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/command_line_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daily_cap_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
@@ -68,6 +69,8 @@ ExclusionRulesBase::ExclusionRulesBase(
 
   exclusion_rules_.push_back(
       std::make_unique<MarkedAsInappropriateExclusionRule>());
+
+  exclusion_rules_.push_back(std::make_unique<CommandLineExclusionRule>());
 }
 
 ExclusionRulesBase::~ExclusionRulesBase() = default;
