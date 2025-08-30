@@ -11,6 +11,7 @@
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
@@ -106,6 +107,10 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   ctx->allow_brave_shields =
       map ? brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin) : true;
+  ctx->shields_ad_block_only_mode_enabled =
+      profile ? brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+                    profile->GetPrefs())
+              : false;
   ctx->allow_ads =
       map ? brave_shields::GetAdControlType(map, ctx->tab_origin) ==
                 brave_shields::ControlType::ALLOW

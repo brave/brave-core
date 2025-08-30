@@ -18,6 +18,7 @@ struct ShieldsSettings {
   mojo_base.mojom.Token farbling_token;
   array<string> origins_to_allow_scripts;
   bool reduce_language;
+  bool ad_block_only_mode;
 };
 
 enum AdBlockMode {

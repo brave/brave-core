@@ -14,6 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -77,6 +78,7 @@ BraveShieldsActionView::BraveShieldsActionView(
                                       base::Unretained(this),
                                       browser_window_interface),
                   std::u16string()),
+      browser_window_interface_(browser_window_interface),
       profile_(CHECK_DEREF(browser_window_interface->GetProfile())),
       tab_strip_model_(
           CHECK_DEREF(browser_window_interface->GetTabStripModel())) {
@@ -167,6 +169,11 @@ BraveShieldsActionView::GetImageSource() {
       badge_text = count > 99 ? "99+" : base::NumberToString(count);
     }
 
+    // Shield enabled & ad block only mode enabled-> lion is orange
+    // Shield enabled & ad block only mode disabled-> lion is orange
+    // Shield disabled & ad block only mode enabled-> lion is grey
+    // Shield disabled & ad block only mode disabled-> lion is grey
+
     is_enabled = shields_data_controller->GetBraveShieldsEnabled() &&
                  !IsPageInReaderMode(web_contents);
 
@@ -213,17 +220,14 @@ void BraveShieldsActionView::ButtonPressed(
     return;
   }
 
-  if (!webui_bubble_manager_) {
-    webui_bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
-        this, browser_window_interface, GURL(kShieldsPanelURL),
-        IDS_BRAVE_SHIELDS);
-  }
-
-  if (webui_bubble_manager_->GetBubbleWidget()) {
+  if (webui_bubble_manager_ && webui_bubble_manager_->GetBubbleWidget()) {
     webui_bubble_manager_->CloseBubble();
+    webui_bubble_manager_.reset();
     return;
   }
-
+  webui_bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
+      this, browser_window_interface, GURL(kShieldsPanelURL),
+      IDS_BRAVE_SHIELDS);
   webui_bubble_manager_->ShowBubble();
 }
 
@@ -320,6 +324,32 @@ void BraveShieldsActionView::OnResourcesChanged() {
 
 void BraveShieldsActionView::OnShieldsEnabledChanged() {
   UpdateIconState();
+}
+
+void BraveShieldsActionView::OnShieldsAdBlockOnlyModeEnabledChanged() {
+  UpdateIconState();
+}
+
+void BraveShieldsActionView::OnAfterRepeatedReloads() {
+  auto* web_content = tab_strip_model_->GetActiveWebContents();
+  if (!ShouldShowBubble(web_content)) {
+    return;
+  }
+
+  if (profile_->GetPrefs()->GetBoolean(
+          brave_shields::prefs::kAdblockAdBlockOnlyModePromptDismissed)) {
+    return;
+  }
+
+  if (webui_bubble_manager_ && webui_bubble_manager_->GetBubbleWidget()) {
+    webui_bubble_manager_->CloseBubble();
+    webui_bubble_manager_.reset();
+  }
+  const GURL url =
+      GURL(std::string(kShieldsPanelURL) + "?mode=afterRepeatedReloads");
+  webui_bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
+      this, browser_window_interface_, GURL(url), IDS_BRAVE_SHIELDS);
+  webui_bubble_manager_->ShowBubble();
 }
 
 void BraveShieldsActionView::OnTabStripModelChanged(

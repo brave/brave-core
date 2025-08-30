@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "components/user_prefs/user_prefs.h"
@@ -26,7 +27,11 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
 
   const GURL& top_frame_url = top_frame_rfh->GetLastCommittedURL();
 
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
   content::BrowserContext* browser_context = rfh->GetBrowserContext();
+  PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
+
   const brave_shields::mojom::FarblingLevel farbling_level =
       brave_shields::GetFarblingLevel(
           HostContentSettingsMapFactory::GetForProfile(browser_context),
@@ -38,11 +43,11 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
                 top_frame_url)
           : base::Token();
 
-  PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
-
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
+      brave_shields::IsReduceLanguageEnabledForProfile(
+          host_content_settings_map, top_frame_url, pref_service),
+      brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(pref_service));
 }
 
 }  // namespace

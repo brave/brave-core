@@ -14,8 +14,11 @@
 #include "base/json/values_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/test/base/testing_profile.h"
@@ -154,6 +157,15 @@ class ShieldsSetting {
     CheckSettings(url, CONTENT_SETTING_ASK);
   }
 
+  void CheckIncognitoSettings(const GURL& url, ContentSetting setting) const {
+    for (const auto& url_source : urls_) {
+      EXPECT_EQ(setting,
+                TestUtils::GetContentSetting(provider_, url, url_source.first,
+                                             url_source.second,
+                                             /*include_incognito=*/true));
+    }
+  }
+
  protected:
   virtual void CheckSettings(const GURL& url, ContentSetting setting) const {
     for (const auto& url_source : urls_) {
@@ -245,6 +257,13 @@ class ShieldsHTTPSESetting : public ShieldsSetting {
       : ShieldsSetting(
             provider,
             {{GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES}}) {}
+};
+
+class ShieldsHttpsUpgradeSetting : public ShieldsSetting {
+ public:
+  explicit ShieldsHttpsUpgradeSetting(BravePrefProvider* provider)
+      : ShieldsSetting(provider,
+                       {{GURL(), ContentSettingsType::BRAVE_HTTPS_UPGRADE}}) {}
 };
 
 class ShieldsAdsSetting : public ShieldsSetting {
@@ -726,6 +745,244 @@ TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
   base::RunLoop().RunUntilIdle();
   // Verify global has reset
   shields_enabled_settings.CheckSettingsAreDefault(example_url);
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, AdblockOnlyModeContentSettingsDefaultValues) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
+
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+  GURL url("https://brave.com/");
+
+  ShieldsCookieSetting shields_cookie_settings(&provider,
+                                               testing_profile()->GetPrefs());
+  CookieSettings cookie_settings(&provider);
+  ShieldsFingerprintingSetting fp_settings(&provider);
+  ShieldsScriptSetting script_settings(&provider);
+  ShieldsHttpsUpgradeSetting https_upgrade_settings(&provider);
+
+  // Verify that the settings are default values.
+  shields_cookie_settings.CheckSettingsAreDefault(url);
+  cookie_settings.CheckSettingsAreDefault(url);
+  fp_settings.CheckSettingsAreDefault(url);
+  script_settings.CheckSettingsAreDefault(url);
+  https_upgrade_settings.CheckSettingsAreDefault(url);
+
+  testing_profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+
+  // Verify that adblock only mode overrides settings.
+  shields_cookie_settings.CheckSettingsWouldAllow(url);
+  cookie_settings.CheckSettingsWouldAllow(url);
+  fp_settings.CheckSettingsWouldAllow(url);
+  script_settings.CheckSettingsWouldAllow(url);
+  https_upgrade_settings.CheckSettingsWouldAsk(url);
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, AdblockOnlyModeContentSettingsFeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(brave_shields::features::kAdblockOnlyMode);
+
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+  GURL url("https://brave.com/");
+
+  ShieldsCookieSetting shields_cookie_settings(&provider,
+                                               testing_profile()->GetPrefs());
+  CookieSettings cookie_settings(&provider);
+  ShieldsFingerprintingSetting fp_settings(&provider);
+  ShieldsScriptSetting script_settings(&provider);
+  ShieldsHttpsUpgradeSetting https_upgrade_settings(&provider);
+
+  // Verify that the settings are default values.
+  shields_cookie_settings.CheckSettingsAreDefault(url);
+  cookie_settings.CheckSettingsAreDefault(url);
+  fp_settings.CheckSettingsAreDefault(url);
+  script_settings.CheckSettingsAreDefault(url);
+  https_upgrade_settings.CheckSettingsAreDefault(url);
+
+  testing_profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+
+  // Verify that adblock only mode doesn't override settings.
+  shields_cookie_settings.CheckSettingsAreDefault(url);
+  cookie_settings.CheckSettingsAreDefault(url);
+  fp_settings.CheckSettingsAreDefault(url);
+  script_settings.CheckSettingsAreDefault(url);
+  https_upgrade_settings.CheckSettingsAreDefault(url);
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, NonAdblockOnlyModeContentSettingsDefaultValues) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
+
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+  GURL url("https://brave.com/");
+
+  ShieldsEnabledSetting enabled_settings(&provider);
+  ShieldsHTTPSESetting httpse_settings(&provider);
+
+  // Verify that the settings are default values.
+  enabled_settings.CheckSettingsAreDefault(url);
+  httpse_settings.CheckSettingsAreDefault(url);
+
+  // Verify that adblock only mode doesn't override settings.
+  testing_profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+  enabled_settings.CheckSettingsAreDefault(url);
+  httpse_settings.CheckSettingsAreDefault(url);
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, AdblockOnlyModeContentSettingsUserDefinedValues) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
+
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+  GURL url("https://brave.com/");
+
+  ShieldsCookieSetting shields_cookie_settings(&provider,
+                                               testing_profile()->GetPrefs());
+  CookieSettings cookie_settings(&provider);
+  ShieldsFingerprintingSetting fp_settings(&provider);
+  ShieldsScriptSetting script_settings(&provider);
+  ShieldsHttpsUpgradeSetting https_upgrade_settings(&provider);
+
+  shields_cookie_settings.SetPreMigrationSettings(
+      ContentSettingsPattern::FromURL(url), CONTENT_SETTING_BLOCK);
+  cookie_settings.SetPreMigrationSettings(ContentSettingsPattern::FromURL(url),
+                                          CONTENT_SETTING_BLOCK);
+  fp_settings.SetPreMigrationSettings(ContentSettingsPattern::FromURL(url),
+                                      CONTENT_SETTING_BLOCK);
+  script_settings.SetPreMigrationSettings(ContentSettingsPattern::FromURL(url),
+                                          CONTENT_SETTING_BLOCK);
+  https_upgrade_settings.SetPreMigrationSettings(
+      ContentSettingsPattern::FromURL(url), CONTENT_SETTING_BLOCK);
+
+  testing_profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+
+  // Verify that adblock only mode overrides settings.
+  shields_cookie_settings.CheckSettingsWouldAllow(url);
+  cookie_settings.CheckSettingsWouldAllow(url);
+  fp_settings.CheckSettingsWouldAllow(url);
+  script_settings.CheckSettingsWouldAllow(url);
+  https_upgrade_settings.CheckSettingsWouldAsk(url);
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest,
+       OffTheRecordAdblockOnlyModeContentSettingsDefaultValues) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
+
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), true /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+  GURL url("https://brave.com/");
+
+  ShieldsCookieSetting shields_cookie_settings(&provider,
+                                               testing_profile()->GetPrefs());
+  CookieSettings cookie_settings(&provider);
+  ShieldsFingerprintingSetting fp_settings(&provider);
+  ShieldsScriptSetting script_settings(&provider);
+
+  // Verify that the settings are default values.
+  shields_cookie_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
+  cookie_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
+  fp_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
+  script_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
+
+  testing_profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+
+  // Verify that adblock only mode overrides settings.
+  shields_cookie_settings.CheckIncognitoSettings(url, CONTENT_SETTING_ALLOW);
+  cookie_settings.CheckIncognitoSettings(url, CONTENT_SETTING_ALLOW);
+  fp_settings.CheckIncognitoSettings(url, CONTENT_SETTING_ALLOW);
+  script_settings.CheckIncognitoSettings(url, CONTENT_SETTING_ALLOW);
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest,
+       OffTheRecordNonAdblockOnlyModeContentSettingsDefaultValues) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
+
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), true /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+  GURL url("https://brave.com/");
+
+  ShieldsEnabledSetting enabled_settings(&provider);
+  ShieldsHTTPSESetting httpse_settings(&provider);
+
+  // Verify that the settings are default values.
+  enabled_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
+  httpse_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
+
+  // Verify that adblock only mode doesn't override settings.
+  testing_profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+  enabled_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
+  httpse_settings.CheckIncognitoSettings(url, CONTENT_SETTING_DEFAULT);
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest,
+       OffTheRecordAdblockOnlyModeContentSettingsUserDefinedValues) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(brave_shields::features::kAdblockOnlyMode);
+
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), true /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+  GURL url("https://brave.com/");
+
+  ShieldsCookieSetting shields_cookie_settings(&provider,
+                                               testing_profile()->GetPrefs());
+  CookieSettings cookie_settings(&provider);
+  ShieldsFingerprintingSetting fp_settings(&provider);
+  ShieldsScriptSetting script_settings(&provider);
+  ShieldsHttpsUpgradeSetting https_upgrade_settings(&provider);
+
+  shields_cookie_settings.SetPreMigrationSettings(
+      ContentSettingsPattern::FromURL(url), CONTENT_SETTING_BLOCK);
+  cookie_settings.SetPreMigrationSettings(ContentSettingsPattern::FromURL(url),
+                                          CONTENT_SETTING_BLOCK);
+  fp_settings.SetPreMigrationSettings(ContentSettingsPattern::FromURL(url),
+                                      CONTENT_SETTING_BLOCK);
+  script_settings.SetPreMigrationSettings(ContentSettingsPattern::FromURL(url),
+                                          CONTENT_SETTING_BLOCK);
+  https_upgrade_settings.SetPreMigrationSettings(
+      ContentSettingsPattern::FromURL(url), CONTENT_SETTING_BLOCK);
+
+  testing_profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled, true);
+
+  // Verify that adblock only mode overrides settings.
+  shields_cookie_settings.CheckIncognitoSettings(url, CONTENT_SETTING_ALLOW);
+  cookie_settings.CheckIncognitoSettings(url, CONTENT_SETTING_ALLOW);
+  fp_settings.CheckIncognitoSettings(url, CONTENT_SETTING_ALLOW);
+  script_settings.CheckIncognitoSettings(url, CONTENT_SETTING_ALLOW);
+  https_upgrade_settings.CheckIncognitoSettings(url, CONTENT_SETTING_BLOCK);
+
   provider.ShutdownOnUIThread();
 }
 
