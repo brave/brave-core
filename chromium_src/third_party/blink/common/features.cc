@@ -28,6 +28,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kFledgeConsiderKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeEnforceKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
     {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPermissionElement, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivateAggregationApi, base::FEATURE_DISABLED_BY_DEFAULT},
     // This feature uses shared memory to reduce IPCs to access cookies, but

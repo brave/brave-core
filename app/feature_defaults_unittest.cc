@@ -106,6 +106,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kFledgeConsiderKAnonymity,
       &blink::features::kFledgeEnforceKAnonymity,
       &blink::features::kParakeet,
+      &blink::features::kPermissionElement,
       &blink::features::kPrerender2,
       &blink::features::kPrivateAggregationApi,
 #if BUILDFLAG(IS_ANDROID)
