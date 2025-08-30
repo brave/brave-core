@@ -16,6 +16,7 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/ai_chat_button.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -124,6 +125,20 @@ bool IsAvatarButtonHideable(Profile* profile) {
 }
 
 }  // namespace
+
+class BraveToolbarView::LayoutGuard {
+ public:
+  explicit LayoutGuard(BraveLocationBarView* b) : bar_(b) {}
+  ~LayoutGuard() { set_ignore_layout(false); }
+
+  LayoutGuard(const LayoutGuard&) = delete;
+  LayoutGuard& operator=(const LayoutGuard&) = delete;
+
+  void set_ignore_layout(bool ignore) { bar_->set_ignore_layout({}, ignore); }
+
+ private:
+  raw_ptr<BraveLocationBarView> bar_ = nullptr;
+};
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
     : ToolbarView(browser, browser_view) {}
@@ -438,19 +453,31 @@ void BraveToolbarView::ViewHierarchyChanged(
 }
 
 void BraveToolbarView::Layout(PassKey) {
+  if (!brave_initialized_ || display_mode_ != DisplayMode::NORMAL) {
+    LayoutSuperclass<ToolbarView>(this);
+    return;
+  }
+
+  // In this Layout, location bar's rect is set twice.
+  // First one is by upstream's flex layout.
+  // That rect fits for wide address bar.
+  // If wide address bar option is off, narrow rect
+  // is set again by ResetLocationBarBounds().
+  // Whenever location bar's rect is updated, it could change
+  // omnibox popup's position because that popup is anchored to
+  // location bar. So, need to prevent layout with first rect
+  // if wide address bar option is off.
+  // TODO(https://github.com/brave/brave-browser/issues/48810): Refactor to do
+  // layout once.
+  LayoutGuard guard(static_cast<BraveLocationBarView*>(location_bar_));
+  if (!location_bar_is_wide_.GetValue()) {
+    guard.set_ignore_layout(true);
+  }
+
   LayoutSuperclass<ToolbarView>(this);
 
-  if (!brave_initialized_) {
-    return;
-  }
-
-  // ToolbarView::Layout() handles below modes. So just return.
-  if (display_mode_ == DisplayMode::CUSTOM_TAB ||
-      display_mode_ == DisplayMode::LOCATION) {
-    return;
-  }
-
   if (!location_bar_is_wide_.GetValue()) {
+    guard.set_ignore_layout(false);
     ResetLocationBarBounds();
     ResetBookmarkButtonBounds();
   }

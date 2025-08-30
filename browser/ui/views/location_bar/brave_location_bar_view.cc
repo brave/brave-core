@@ -197,6 +197,22 @@ void BraveLocationBarView::OnOmniboxBlurred() {
   LocationBarView::OnOmniboxBlurred();
 }
 
+void BraveLocationBarView::Layout(PassKey) {
+  if (ignore_layout_) {
+    return;
+  }
+
+  LayoutSuperclass<LocationBarView>(this);
+}
+
+void BraveLocationBarView::OnVisibleBoundsChanged() {
+  if (ignore_layout_) {
+    return;
+  }
+
+  LocationBarView::OnVisibleBoundsChanged();
+}
+
 void BraveLocationBarView::OnChanged() {
   auto hide_page_actions = ShouldHidePageActionIcons();
   if (brave_actions_) {
