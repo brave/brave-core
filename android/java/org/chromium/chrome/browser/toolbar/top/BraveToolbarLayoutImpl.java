@@ -81,7 +81,6 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
-import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
@@ -109,7 +108,6 @@ import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
-import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.components.embedder_support.util.UrlUtilities;
@@ -120,7 +118,6 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.UiUtils;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.interpolators.Interpolators;
 import org.chromium.ui.util.ColorUtils;
@@ -178,7 +175,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
-    private BraveRewardsPanel mRewardsPopup;
     private DAppsWalletController mDAppsWalletController;
     private BraveShieldsContentSettings mBraveShieldsContentSettings;
     private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
@@ -578,18 +574,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             mBraveRewardsNativeWorker.onNotifyFrontTabUrlChanged(
                                     tab.getId(), tab.getUrl().getSpec());
                         }
-                        if (!BraveRewardsHelper.shouldShowNewRewardsUI()
-                                && PackageUtils.isFirstInstall(getContext())
-                                && tab.getUrl().getSpec() != null
-                                && tab.getUrl()
-                                        .getSpec()
-                                        .equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL)
-                                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
-                                && mBraveRewardsNativeWorker != null
-                                && !mBraveRewardsNativeWorker.isRewardsEnabled()
-                                && mBraveRewardsNativeWorker.isSupported()) {
-                            showOnBoarding();
-                        }
                         hidePlaylistButton();
                     }
 
@@ -659,19 +643,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
         mYouTubePipLayout.setVisibility(View.GONE);
-    }
-
-    private void showOnBoarding() {
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            int deviceWidth = ConfigurationUtils.getDisplayMetricsWidth(activity);
-            boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(activity);
-            deviceWidth = (int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
-            RewardsOnboarding panel = new RewardsOnboarding(mBraveRewardsButton, deviceWidth);
-            panel.showLikePopDownMenu();
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "RewardsOnboarding failed " + e);
-        }
     }
 
     private boolean isPlaylistEnabledByPrefsAndFlags() {
@@ -1133,17 +1104,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mBraveShieldsButton == v && mBraveShieldsButton != null) {
             showShieldsMenu(mBraveShieldsButton);
         } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
-            if (null != mRewardsPopup) {
-                return;
-            }
             hideRewardsOnboardingIcon();
             OnboardingPrefManager.getInstance().setOnboardingShown(true);
-            if (BraveRewardsHelper.shouldShowNewRewardsUI()) {
-                showRewardsPage();
-            } else {
-                mRewardsPopup = new BraveRewardsPanel(v);
-                mRewardsPopup.showLikePopDownMenu();
-            }
+            showRewardsPage();
 
             if (mBraveRewardsNotificationsCount.isShown()) {
                 ChromeSharedPreferences.getInstance()
@@ -1377,22 +1340,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         return false;
     }
 
-    public void dismissRewardsPanel() {
-        if (mRewardsPopup != null) {
-            mRewardsPopup.dismiss();
-            mRewardsPopup = null;
-        }
-    }
-
     public void dismissWalletPanelOrDialog() {
         if (mDAppsWalletController != null) {
             mDAppsWalletController.dismiss();
             mDAppsWalletController = null;
         }
-    }
-
-    public void onRewardsPanelDismiss() {
-        mRewardsPopup = null;
     }
 
     public void openRewardsPanel() {
@@ -1410,9 +1362,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void onCompleteReset(boolean success) {
         if (success) {
             BraveRewardsHelper.resetRewards();
-            if (!BraveRewardsHelper.shouldShowNewRewardsUI()) {
-                showOrHideRewardsBadge(false);
-            }
         }
     }
 
