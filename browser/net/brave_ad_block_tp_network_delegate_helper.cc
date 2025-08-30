@@ -17,6 +17,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
+#include "base/timer/elapsed_timer.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -76,7 +77,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
  private:
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
   base::OnceCallback<void(std::optional<std::string>)> cb_;
-  base::TimeTicks start_time_;
+  base::ElapsedTimer elapsed_timer_;
 
  public:
   AdblockCnameResolveHostClient(
@@ -104,7 +105,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     if (secure_dns_config.mode() == net::SecureDnsMode::kSecure)
       optional_parameters->source = net::HostResolverSource::DNS;
 
-    start_time_ = base::TimeTicks::Now();
+    elapsed_timer_ = {};
 
     if (g_testing_host_resolver) {
       g_testing_host_resolver->ResolveHost(
@@ -116,7 +117,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       auto* web_contents =
           content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
       if (!web_contents) {
-        start_time_ = base::TimeTicks::Now();
+        elapsed_timer_ = {};
         this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(),
                          net::AddressList(),
                          net::HostResolverEndpointResults());
@@ -147,7 +148,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       const net::AddressList& resolved_addresses,
       const net::HostResolverEndpointResults& alternative_endpoints) override {
     UMA_HISTOGRAM_TIMES("Brave.ShieldsCNAMEBlocking.TotalResolutionTime",
-                        base::TimeTicks::Now() - start_time_);
+                        elapsed_timer_.Elapsed());
     if (result == net::OK) {
       DCHECK(!resolved_addresses.empty());
       std::move(cb_).Run(std::optional<std::string>(
