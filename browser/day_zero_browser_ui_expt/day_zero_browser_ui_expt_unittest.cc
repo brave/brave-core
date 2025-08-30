@@ -31,8 +31,8 @@ class DayZeroBrowserUIExptTest : public testing::Test,
 
     if (IsDayZeroEnabled()) {
       // base::WrapUnique for using private ctor.
-      manager_ = base::WrapUnique(new DayZeroBrowserUIExptManager(
-          g_browser_process->profile_manager(), &testing_local_state_));
+      manager_ = std::make_unique<DayZeroBrowserUIExptManager>(
+          g_browser_process->profile_manager(), &testing_local_state_);
     }
   }
 
