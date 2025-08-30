@@ -89,7 +89,8 @@ void SetCookieControlType(HostContentSettingsMap* map,
 ControlType GetCookieControlType(
     HostContentSettingsMap* map,
     content_settings::CookieSettings* cookie_settings,
-    const GURL& url);
+    const GURL& url,
+    PrefService* pref_service);
 
 void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   ControlType type,

@@ -218,7 +218,8 @@ void DefaultBraveShieldsHandler::GetCookieControlType(
 
   const ControlType setting = brave_shields::GetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
+      CookieSettingsFactory::GetForProfile(profile_).get(), GURL(),
+      profile_->GetPrefs());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(ControlTypeToString(setting)));
@@ -230,7 +231,8 @@ void DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag(
   CHECK(profile_);
   const ControlType setting = brave_shields::GetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
+      CookieSettingsFactory::GetForProfile(profile_).get(), GURL(),
+      profile_->GetPrefs());
 
   const bool block_all_cookies_feature_enabled = base::FeatureList::IsEnabled(
       brave_shields::features::kBlockAllCookiesToggle);

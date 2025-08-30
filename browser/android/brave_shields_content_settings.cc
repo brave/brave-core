@@ -181,12 +181,15 @@ base::android::ScopedJavaLocalRef<jstring>
     JNI_BraveShieldsContentSettings_GetCookieControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
+  Profile* profile = Profile::FromJavaObject(j_profile);
+  CHECK(profile);
   brave_shields::ControlType control_type = brave_shields::GetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
       CookieSettingsFactory::GetForProfile(Profile::FromJavaObject(j_profile))
           .get(),
-      GURL(base::android::ConvertJavaStringToUTF8(env, url)));
+      GURL(base::android::ConvertJavaStringToUTF8(env, url)),
+      profile->GetPrefs());
 
   return base::android::ConvertUTF8ToJavaString(env,
       brave_shields::ControlTypeToString(control_type));
