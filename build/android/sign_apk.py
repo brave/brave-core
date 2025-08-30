@@ -12,14 +12,31 @@ import tempfile
 
 def main():
     argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument('zipalign_path')
-    argument_parser.add_argument('apksigner_path')
-    argument_parser.add_argument('jarsigner_path')
-    argument_parser.add_argument('unsigned_apk_paths', nargs='+')
-    argument_parser.add_argument('key_path')
-    argument_parser.add_argument('key_passwd')
-    argument_parser.add_argument('prvt_key_passwd')
-    argument_parser.add_argument('key_name')
+    argument_parser.add_argument('--zipalign-path',
+                                 required=True,
+                                 help='Path to zipalign tool')
+    argument_parser.add_argument('--apksigner-path',
+                                 required=True,
+                                 help='Path to apksigner tool')
+    argument_parser.add_argument('--jarsigner-path',
+                                 required=True,
+                                 help='Path to jarsigner tool')
+    argument_parser.add_argument('--unsigned-apk-paths',
+                                 required=True,
+                                 nargs='+',
+                                 help='Paths to unsigned APK files')
+    argument_parser.add_argument('--key-path',
+                                 required=True,
+                                 help='Path to keystore file')
+    argument_parser.add_argument('--key-passwd',
+                                 required=True,
+                                 help='Keystore password')
+    argument_parser.add_argument('--prvt-key-passwd',
+                                 required=True,
+                                 help='Private key password')
+    argument_parser.add_argument('--key-name',
+                                 required=True,
+                                 help='Key alias name')
     argument_parser.add_argument(
         '--pkcs11-provider', help='PKCS11 provider configuration file path')
     argument_parser.add_argument('--pkcs11-alias', help='PKCS11 key alias')

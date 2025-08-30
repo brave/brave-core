@@ -27,17 +27,17 @@ action("sign_app_convert_aab_to_apk") {
   outputs = [ output_apk_path ]
 
   args = [
-    rebase_path(bundletool, root_out_dir),
-    rebase_path(target_aab_path, root_out_dir),
-    rebase_path(output_apk_path, root_out_dir),
-    rebase_path(output_path, root_out_dir),
-    rebase_path("$brave_android_keystore_path", root_out_dir),
-    "$brave_android_keystore_password",
-    "$brave_android_key_password",
-    "$brave_android_keystore_name",
-    rebase_path(_zipalign, root_out_dir),
-    rebase_path(_apksigner, root_out_dir),
-    rebase_path(_jarsigner, root_out_dir),
+    "--bundletool=" + rebase_path(bundletool, root_out_dir),
+    "--target-aab-path=" + rebase_path(target_aab_path, root_out_dir),
+    "--output-apk-path=" + rebase_path(output_apk_path, root_out_dir),
+    "--output-path=" + rebase_path(output_path, root_out_dir),
+    "--key-path=" + rebase_path("$brave_android_keystore_path", root_out_dir),
+    "--key-passwd=$brave_android_keystore_password",
+    "--prvt-key-passwd=$brave_android_key_password",
+    "--key-name=$brave_android_keystore_name",
+    "--zipalign-path=" + rebase_path(_zipalign, root_out_dir),
+    "--apksigner-path=" + rebase_path(_apksigner, root_out_dir),
+    "--jarsigner-path=" + rebase_path(_jarsigner, root_out_dir),
   ]
 }
 
@@ -78,20 +78,19 @@ action("sign_app") {
 
   outputs = [ "$brave_android_output-sign-result" ]
   args = [
-    rebase_path(_zipalign, root_out_dir),
-    rebase_path(_apksigner, root_out_dir),
-    rebase_path(_jarsigner, root_out_dir),
-  ]
-  args += [
+    "--zipalign-path=" + rebase_path(_zipalign, root_out_dir),
+    "--apksigner-path=" + rebase_path(_apksigner, root_out_dir),
+    "--jarsigner-path=" + rebase_path(_jarsigner, root_out_dir),
+    "--unsigned-apk-paths",
     rebase_path(target_sign_app_path, root_out_dir),
 
     # Sign the final output file as well as there is no garantee that copy will happen after the sign.
     # Ideally we should combine `brave`, `sign_app` and `sign_app_convert_aab_to_apk` into one action and do what we need in the script depending on the flags.
     rebase_path(brave_android_output, root_out_dir),
-    "$brave_android_keystore_path",
-    "$brave_android_keystore_password",
-    "$brave_android_key_password",
-    "$brave_android_keystore_name",
+    "--key-path=$brave_android_keystore_path",
+    "--key-passwd=$brave_android_keystore_password",
+    "--prvt-key-passwd=$brave_android_key_password",
+    "--key-name=$brave_android_keystore_name",
   ]
 
   # Add PKCS11 arguments if both provider and alias are defined
