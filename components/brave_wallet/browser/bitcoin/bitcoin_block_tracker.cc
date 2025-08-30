@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 
@@ -39,11 +40,11 @@ void BitcoinBlockTracker::GetBlockHeight(const std::string& chain_id) {
 
 std::optional<uint32_t> BitcoinBlockTracker::GetLatestHeight(
     const std::string& chain_id) const {
-  auto it = latest_height_map_.find(chain_id);
-  if (it == latest_height_map_.end()) {
+  const auto* height = base::FindOrNull(latest_height_map_, chain_id);
+  if (!height) {
     return std::nullopt;
   }
-  return it->second;
+  return *height;
 }
 
 void BitcoinBlockTracker::OnGetBlockHeight(

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/block_tracker.h"
 
+#include "base/containers/map_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 namespace brave_wallet {
@@ -25,11 +26,11 @@ void BlockTracker::Stop() {
 }
 
 bool BlockTracker::IsRunning(const std::string& chain_id) const {
-  auto timer = timers_.find(chain_id);
-  if (timer == timers_.end()) {
+  auto* timer = base::FindPtrOrNull(timers_, chain_id);
+  if (!timer) {
     return false;
   }
-  return timer->second->IsRunning();
+  return timer->IsRunning();
 }
 
 }  // namespace brave_wallet

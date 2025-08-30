@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "components/search_engines/search_engines_pref_names.h"
 
@@ -83,9 +84,10 @@ namespace sync_preferences {
 std::optional<SyncablePrefMetadata>
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata(
     std::string_view pref_name) const {
-  const auto it = kBraveCommonSyncablePrefsAllowlist.find(pref_name);
-  if (it != kBraveCommonSyncablePrefsAllowlist.end()) {
-    return it->second;
+  const auto* metadata =
+      base::FindOrNull(kBraveCommonSyncablePrefsAllowlist, pref_name);
+  if (metadata) {
+    return *metadata;
   }
   return GetSyncablePrefMetadata_ChromiumOriginalImpl(pref_name);
 }

@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
@@ -142,16 +143,17 @@ std::optional<std::string> NamedThirdPartyRegistry::GetThirdParty(
     return std::nullopt;
 
   if (url.has_host()) {
-    auto domain_entry = entity_by_domain_.find(url.host());
-    if (domain_entry != entity_by_domain_.end())
-      return domain_entry->second;
+    if (const auto* entity = base::FindOrNull(entity_by_domain_, url.host())) {
+      return *entity;
+    }
 
     auto root_domain = net::registry_controlled_domains::GetDomainAndRegistry(
         url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
-    auto root_domain_entry = entity_by_root_domain_.find(root_domain);
-    if (root_domain_entry != entity_by_root_domain_.end())
-      return root_domain_entry->second;
+    if (const auto* entity =
+            base::FindOrNull(entity_by_root_domain_, root_domain)) {
+      return *entity;
+    }
   }
 
   return std::nullopt;

@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -40,11 +41,11 @@ void EthBlockTracker::RemoveObserver(EthBlockTracker::Observer* observer) {
 }
 
 uint256_t EthBlockTracker::GetCurrentBlock(const std::string& chain_id) const {
-  auto it = current_block_map_.find(chain_id);
-  if (it == current_block_map_.end()) {
+  auto* block = base::FindOrNull(current_block_map_, chain_id);
+  if (!block) {
     return 0;
   }
-  return it->second;
+  return *block;
 }
 
 void EthBlockTracker::CheckForLatestBlock(

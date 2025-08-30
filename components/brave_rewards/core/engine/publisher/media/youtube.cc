@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/map_util.h"
 #include "base/json/json_reader.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
@@ -54,13 +55,11 @@ YouTube::~YouTube() = default;
 // static
 std::string YouTube::GetMediaIdFromParts(
     const base::flat_map<std::string, std::string>& parts) {
-  std::string result;
-  auto iter = parts.find("docid");
-  if (iter != parts.end()) {
-    result = iter->second;
+  auto* docid = base::FindOrNull(parts, "docid");
+  if (docid) {
+    return *docid;
   }
-
-  return result;
+  return "";
 }
 
 // static
@@ -68,13 +67,13 @@ uint64_t YouTube::GetMediaDurationFromParts(
     const base::flat_map<std::string, std::string>& data,
     const std::string& media_key) {
   uint64_t duration = 0;
-  auto iter_st = data.find("st");
-  auto iter_et = data.find("et");
-  if (iter_st != data.end() && iter_et != data.end()) {
+  auto* start_time_str = base::FindOrNull(data, "st");
+  auto* end_time_str = base::FindOrNull(data, "et");
+  if (start_time_str && end_time_str) {
     const auto start_time = base::SplitString(
-        iter_st->second, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+        *start_time_str, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
     const auto end_time = base::SplitString(
-        iter_et->second, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+        *end_time_str, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
     if (start_time.size() != end_time.size()) {
       return 0;
     }

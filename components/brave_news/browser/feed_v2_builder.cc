@@ -17,6 +17,7 @@
 #include "base/compiler_specific.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -673,20 +674,19 @@ void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
                 continue;
               }
 
-              auto publisher_it = info.publishers().find(
-                  item->get_article()->data->publisher_id);
-              if (publisher_it == info.publishers().end()) {
+              auto* publisher = base::FindPtrOrNull(
+                  info.publishers(), item->get_article()->data->publisher_id);
+              if (!publisher) {
                 continue;
               }
 
               const auto& locale = info.locale();
 
-              auto locale_info_it =
-                  std::ranges::find_if(publisher_it->second->locales,
-                                       [&locale](const auto& locale_info) {
-                                         return locale == locale_info->locale;
-                                       });
-              if (locale_info_it == publisher_it->second->locales.end()) {
+              auto locale_info_it = std::ranges::find_if(
+                  publisher->locales, [&locale](const auto& locale_info) {
+                    return locale == locale_info->locale;
+                  });
+              if (locale_info_it == publisher->locales.end()) {
                 continue;
               }
 

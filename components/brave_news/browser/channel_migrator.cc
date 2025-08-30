@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -49,8 +50,8 @@ void MigrateChannels(PrefService& prefs) {
 }
 
 std::string GetMigratedChannel(const std::string& channel) {
-  const auto it = kMigrateChannels.find(channel);
-  return it == kMigrateChannels.end() ? channel : std::string{it->second};
+  const auto* migrated_channel = base::FindOrNull(kMigrateChannels, channel);
+  return migrated_channel ? std::string{*migrated_channel} : channel;
 }
 
 }  // namespace brave_news

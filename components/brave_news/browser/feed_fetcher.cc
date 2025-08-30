@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/location.h"
@@ -267,9 +268,9 @@ void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 
   for (const auto& locale : locales) {
-    auto it = etags.find(locale);
+    auto* etag = base::FindOrNull(etags, locale);
     // If we haven't fetched this feed yet, we need to update it.
-    if (it == etags.end()) {
+    if (!etag) {
       check_completed_callback.Run(true);
       continue;
     }
@@ -278,7 +279,7 @@ void FeedFetcher::OnIsUpdateAvailableFetchedPublishers(
     api_request_helper_.Request(
         "HEAD", GetFeedUrl(locale), "", "",
         base::BindOnce(&FeedFetcher::OnIsUpdateAvailableFetchedHead,
-                       weak_ptr_factory_.GetWeakPtr(), it->second,
+                       weak_ptr_factory_.GetWeakPtr(), *etag,
                        check_completed_callback),
         brave::private_cdn_headers, {.auto_retry_on_network_change = true});
   }

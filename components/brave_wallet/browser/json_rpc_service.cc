@@ -317,9 +317,9 @@ bool HasDuplicateNftIds(
 
 std::optional<std::string_view> GetEthBalanceScannerContractAddressForChain(
     const std::string_view& chain_id) {
-  if (auto it = kEthBalanceScannerContractAddresses.find(chain_id);
-      it != kEthBalanceScannerContractAddresses.end()) {
-    return it->second;
+  if (auto* address =
+          base::FindOrNull(kEthBalanceScannerContractAddresses, chain_id)) {
+    return *address;
   }
   return std::nullopt;
 }

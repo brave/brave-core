@@ -6,6 +6,7 @@
 #include "brave/components/p3a/metric_config.h"
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
 
 namespace p3a {
 
@@ -36,11 +37,11 @@ bool GetMetricAttribute(const base::Value* value,
   }
 
   const auto& str = value->GetString();
-  auto it = kMetricAttributeMap.find(str);
-  if (it == kMetricAttributeMap.end()) {
+  const auto* attribute = base::FindOrNull(kMetricAttributeMap, str);
+  if (!attribute) {
     return false;
   }
-  *field = it->second;
+  *field = *attribute;
   return true;
 }
 

@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
 
 #define GetDeletionPreferenceFromDataType \
   GetDeletionPreferenceFromDataType_ChromiumImpl
@@ -49,9 +50,9 @@ std::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
            BrowsingDataType::BRAVE_AI_CHAT},
       });
 
-  const auto iter = kPreferenceToDataType.find(pref_name);
-  if (iter != kPreferenceToDataType.end()) {
-    return iter->second;
+  if (const auto* data_type =
+          base::FindOrNull(kPreferenceToDataType, pref_name)) {
+    return *data_type;
   }
   return GetDataTypeFromDeletionPreference_ChromiumImpl(pref_name);
 }

@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/map_util.h"
 #include "base/location.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
@@ -281,9 +282,9 @@ std::string TorProxyMap::Get(const std::string& username) {
   ClearExpiredEntries();
 
   // Check for an entry for this username.
-  auto found = map_.find(username);
-  if (found != map_.end())
-    return found->second.first;
+  if (const auto* found = base::FindOrNull(map_, username)) {
+    return found->first;
+  }
 
   // No entry yet.  Check our watch and create one.
   const base::Time now = base::Time::Now();
@@ -316,9 +317,10 @@ void TorProxyMap::Erase(const std::string& username) {
 
 void TorProxyMap::MaybeExpire(const std::string& username,
                               const base::Time& timestamp) {
-  auto found = map_.find(username);
-  if (found != map_.end() && timestamp >= found->second.second) {
-    Erase(username);
+  if (const auto* found = base::FindOrNull(map_, username)) {
+    if (timestamp >= found->second) {
+      Erase(username);
+    }
   }
 }
 
@@ -334,14 +336,13 @@ void TorProxyMap::ClearExpiredEntries() {
     // Remove the corresponding entry in the map if there is one and
     // if its timestamp is not newer.
     const std::string& username = entry->second;
-    auto found = map_.find(username);
-    if (found != map_.end()) {
+    if (const auto* found = base::FindOrNull(map_, username)) {
       // If the timestamp on the map entry is the same as the
       // timestamp on the queue entry, then delete the map entry.
       // Otherwise, we assume the map entry was created by an explicit
       // request for a new identity, which will have its own entry in
       // the queue in order to last the full ten minutes.
-      const base::Time map_timestamp = found->second.second;
+      const base::Time map_timestamp = found->second;
       if (map_timestamp == timestamp) {
         map_.erase(username);
       }

@@ -13,6 +13,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
@@ -76,23 +77,23 @@ double GetVisitWeighting(
     const mojom::PublisherPtr& publisher,
     const base::flat_map<std::string, double>& visit_weightings) {
   const auto host_name = publisher->site_url.host();
-  auto it = visit_weightings.find(host_name);
-  if (it == visit_weightings.end()) {
+  auto* weight = base::FindOrNull(visit_weightings, host_name);
+  if (!weight) {
     // The |site_urls| we receive from Brave News aren't terribly accurate, and
     // many of them are missing bits and pieces. This is a simple middle ground
     // while we wait for them to be fixed.
     // Relevant issues: https://github.com/brave/news-aggregator/issues/58 and
     // https://github.com/brave/brave-browser/issues/26092
     if (!host_name.starts_with("www.")) {
-      it = visit_weightings.find("www." + host_name);
+      weight = base::FindOrNull(visit_weightings, "www." + host_name);
     }
 
-    if (it == visit_weightings.end()) {
+    if (!weight) {
       return 0;
     }
   }
 
-  return ProjectToRange(it->second, kVisitedMin, kVisitedMax);
+  return ProjectToRange(*weight, kVisitedMin, kVisitedMax);
 }
 
 SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
@@ -212,21 +213,21 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     }
 
     // If there are no similar publishers, we have nothing more to do here.
-    const auto& similarity_info_it = similarities_.find(publisher_id);
-    if (similarity_info_it == similarities_.end()) {
+    const auto* similarity_info = base::FindOrNull(similarities_, publisher_id);
+    if (!similarity_info) {
       continue;
     }
 
-    for (const auto& info : similarity_info_it->second) {
-      const auto& similar_publisher_it = publishers.find(info.publisher_id);
-      if (similar_publisher_it == publishers.end()) {
+    for (const auto& info : *similarity_info) {
+      const auto* similar_publisher =
+          base::FindPtrOrNull(publishers, info.publisher_id);
+      if (!similar_publisher) {
         LOG(ERROR) << "Encountered suggestion for missing publisher: "
                    << info.publisher_id
                    << " which implies the suggestion data needs to be updated.";
         continue;
       }
 
-      const auto& similar_publisher = similar_publisher_it->second;
       // Don't suggest similar publishers which are already enabled,
       // or which are explicitly disabled.
       if (similar_publisher->user_enabled_status !=
