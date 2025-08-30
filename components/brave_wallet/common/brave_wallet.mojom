@@ -196,8 +196,8 @@ interface EthereumProvider {
 };
 
 struct CardanoProviderPagination {
-  uint32 page;
-  uint32 limit;
+  int32 page;
+  int32 limit;
 };
 
 struct CardanoProviderPaginationErrorPayload {
