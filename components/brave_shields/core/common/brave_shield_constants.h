@@ -11,7 +11,7 @@
 namespace brave_shields {
 
 inline constexpr char kAds[] = "shieldsAds";
-inline constexpr char kCosmeticFiltering[] = "cosmeticFiltering";
+inline constexpr char kCosmeticFiltering[] = "cosmeticFilteringV2";
 inline constexpr char kTrackers[] = "trackers";
 inline constexpr char kHTTPUpgradableResources[] = "httpUpgradableResources";
 inline constexpr char kHTTPSUpgrades[] = "httpsUpgrades";
