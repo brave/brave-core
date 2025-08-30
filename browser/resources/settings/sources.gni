@@ -112,6 +112,7 @@ brave_settings_ts_files = [
   "brave_overrides/safety_check_passwords_child.ts",
   "brave_overrides/safety_hub_page.ts",
   "brave_overrides/search_page.ts",
+  "brave_overrides/search_page_index.ts",
   "brave_overrides/security_page.ts",
   "brave_overrides/settings_basic_page.ts",
   "brave_overrides/settings_manage_profile.ts",
