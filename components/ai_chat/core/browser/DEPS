@@ -11,6 +11,7 @@ include_rules = [
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+crypto",
+  "+net",
   "+services/data_decoder/public",
   "+services/network/public",
   "+services/network/test",

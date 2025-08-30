@@ -9,6 +9,7 @@ include_rules = [
   "+content/public/browser",
   "+content/public/common",
   "+crypto",
+  "+net",
   "+services/network/public/cpp",
   "+services/preferences/public/cpp",
   "+third_party/blink/public/common",
