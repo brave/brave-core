@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
@@ -40,6 +41,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/ui_base_types.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/button/checkbox.h"
@@ -438,11 +440,41 @@ void AddFootnoteViewIfNeeded(
 // appears above other UI elements even they are floating on top.For example,
 // Picture-in-Picture window is on top of other widgets, but permission prompt
 // bubble should still be on top of it.
-#define SetZOrderSublevel(...)    \
-  SetZOrderSublevel(__VA_ARGS__); \
+#define SetZOrderSublevel(...)                                      \
+  SetZOrderSublevel(__VA_ARGS__);                                   \
+  auto* parent_widget = widget->parent();                           \
+  CHECK(parent_widget);                                             \
+  parent_widget_z_order_level_ = parent_widget->GetZOrderLevel();   \
+  parent_widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface); \
   widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
+
+// Override SetCloseCallback() in order to wrap the provided callback with
+// our RestoreParentWidgetZOrderLevel.
+// Note that we're wrapping the original callback(__VA_ARGS__) with a lambda
+// so that we can handle case where __VA_ARGS__ is base::DoNothing().
+// Also it's safe to pass base::Unretained(this) here as SetCloseCallback() is
+// registering a callback to the base class.
+#define SetCloseCallback(...)                                              \
+  SetCloseCallback(                                                        \
+      base::BindOnce(                                                      \
+          &PermissionPromptBubbleBaseView::RestoreParentWidgetZOrderLevel, \
+          base::Unretained(this))                                          \
+          .Then(base::BindOnce(                                            \
+              [](base::OnceCallback<void()> callback) {                    \
+                std::move(callback).Run();                                 \
+              },                                                           \
+              __VA_ARGS__)));
 
 #include <chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc>
 
+#undef SetCloseCallback
 #undef SetZOrderSublevel
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW
+
+void PermissionPromptBubbleBaseView::RestoreParentWidgetZOrderLevel() {
+  auto* widget = GetWidget();
+  CHECK(widget);
+  auto* parent_widget = widget->parent();
+  CHECK(parent_widget);
+  parent_widget->SetZOrderLevel(parent_widget_z_order_level_);
+}
