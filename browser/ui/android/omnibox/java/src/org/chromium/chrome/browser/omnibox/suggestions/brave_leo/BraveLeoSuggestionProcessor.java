@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.omnibox.suggestions.brave_leo;
 
 import androidx.annotation.NonNull;
 
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.omnibox.R;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.styles.OmniboxDrawableState;
@@ -21,6 +20,8 @@ import org.chromium.chrome.browser.omnibox.suggestions.basic.SuggestionViewPrope
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.ui.modelutil.PropertyModel;
+
+import java.util.function.Supplier;
 
 /** A class that handles model and view creation for the Brave Leo suggestion. */
 public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {

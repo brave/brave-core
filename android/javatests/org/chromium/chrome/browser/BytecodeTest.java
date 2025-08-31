@@ -49,7 +49,6 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
@@ -213,6 +212,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Tests to check whether classes, methods and fields exist for bytecode manipulation. See classes

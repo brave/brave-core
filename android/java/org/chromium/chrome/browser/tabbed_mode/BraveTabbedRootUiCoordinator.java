@@ -16,7 +16,6 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -62,6 +61,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
     private final AppCompatActivity mBraveActivity;

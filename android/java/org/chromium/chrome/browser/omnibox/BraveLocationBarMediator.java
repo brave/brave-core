@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.NullUnmarked;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
@@ -31,6 +30,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.permissions.PermissionCallback;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 @NullUnmarked // Waiting for upstream parent class to be NullMarked
 public class BraveLocationBarMediator extends LocationBarMediator {
@@ -117,7 +117,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
 
     @Override
     public void onResumeWithNative() {
-        if (mTemplateUrlServiceSupplier.hasValue()
+        if (mTemplateUrlServiceSupplier.get() != null
                 && !mTemplateUrlServiceSupplier.get().isLoaded()) {
             mTemplateUrlServiceSupplier
                     .get()

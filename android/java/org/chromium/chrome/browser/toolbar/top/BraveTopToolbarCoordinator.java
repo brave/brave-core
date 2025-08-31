@@ -14,7 +14,6 @@ import androidx.annotation.ColorInt;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
@@ -42,6 +41,7 @@ import org.chromium.ui.resources.ResourceManager;
 import org.chromium.ui.util.ColorUtils;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     // To delete in bytecode. Variables from the parent class will be used instead.

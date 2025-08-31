@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
@@ -21,6 +20,8 @@ import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonControl
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
 import org.chromium.chrome.browser.toolbar.adaptive.BraveBookmarksButtonController;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+
+import java.util.function.Supplier;
 
 /**
  * Brave-specific coordinator for adaptive toolbar UI components. Extends the base
