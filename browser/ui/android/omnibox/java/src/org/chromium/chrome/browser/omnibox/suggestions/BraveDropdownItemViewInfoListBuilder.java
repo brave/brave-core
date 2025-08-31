@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
@@ -34,6 +33,7 @@ import org.chromium.ui.modelutil.PropertyModel;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuilder {
     private @Nullable BraveSearchBannerProcessor mBraveSearchBannerProcessor;
