@@ -19,8 +19,8 @@ namespace autofill {
 // methods would still be marked as final they need to be virtual in a base
 // class - which is what we are providing here.
 struct BraveContentAutofillClientUnused {
-  virtual AutofillOptimizationGuide* GetAutofillOptimizationGuide_Unused()
-      const;
+  virtual AutofillOptimizationGuideDecider*
+  GetAutofillOptimizationGuideDecider_Unused() const;
   virtual bool IsAutofillEnabled_Unused() const;
   virtual bool IsAutocompleteEnabled_Unused() const;
 };

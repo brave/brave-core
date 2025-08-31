@@ -40,9 +40,10 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
  public:
   using ChromeAutofillClient::ChromeAutofillClient;
 
-  AutofillOptimizationGuide* GetAutofillOptimizationGuide() const override {
+  AutofillOptimizationGuideDecider* GetAutofillOptimizationGuideDecider()
+      const override {
     if (optimization_guide::features::IsOptimizationHintsEnabled()) {
-      return ChromeAutofillClient::GetAutofillOptimizationGuide();
+      return ChromeAutofillClient::GetAutofillOptimizationGuideDecider();
     }
     return nullptr;
   }
@@ -77,8 +78,8 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
 
 namespace autofill {
 
-AutofillOptimizationGuide*
-ChromeAutofillClient::GetAutofillOptimizationGuide_Unused() const {
+AutofillOptimizationGuideDecider*
+ChromeAutofillClient::GetAutofillOptimizationGuideDecider_Unused() const {
   return nullptr;
 }
 
