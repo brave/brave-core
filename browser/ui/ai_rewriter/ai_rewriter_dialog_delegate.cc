@@ -293,7 +293,8 @@ void AIRewriterDialogDelegate::ShowDialog() {
   auto* manager = web_modal::WebContentsModalDialogManager::FromWebContents(
       target_contents_.get());
   CHECK(manager);
-  auto* dialog_host = manager->delegate()->GetWebContentsModalDialogHost();
+  auto* dialog_host = manager->delegate()->GetWebContentsModalDialogHost(
+      GetDialogWebContents());
   CHECK(dialog_host);
   positioner_ = std::make_unique<DialogPositioner>(target_contents_.get(),
                                                    dialog_host, widget);
