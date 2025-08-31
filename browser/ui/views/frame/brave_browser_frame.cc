@@ -82,8 +82,7 @@ ui::ColorProviderKey BraveBrowserFrame::GetColorProviderKey() const {
   auto key = BrowserFrame::GetColorProviderKey();
 
   if (base::FeatureList::IsEnabled(color::features::kBraveDarkerTheme)) {
-    if (!key.scheme_variant &&
-        key.color_mode == ui::ColorProviderKey::ColorMode::kDark &&
+    if (key.color_mode == ui::ColorProviderKey::ColorMode::kDark &&
         browser_view_->browser()->profile()->GetPrefs()->GetBoolean(
             color::prefs::kBraveDarkerMode)) {
       key.scheme_variant = ui::ColorProviderKey::SchemeVariant::kDarker;
