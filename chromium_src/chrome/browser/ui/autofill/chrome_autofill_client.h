@@ -12,9 +12,9 @@
 // override for components/autofill/content/browser/content_autofill_client.h
 // declares them specifically for this purpose.
 
-#define GetAutofillOptimizationGuide             \
-  GetAutofillOptimizationGuide() const override; \
-  AutofillOptimizationGuide* GetAutofillOptimizationGuide_Unused
+#define GetAutofillOptimizationGuideDecider             \
+  GetAutofillOptimizationGuideDecider() const override; \
+  AutofillOptimizationGuideDecider* GetAutofillOptimizationGuideDecider_Unused
 
 #define IsAutofillEnabled             \
   IsAutofillEnabled() const override; \
@@ -27,6 +27,6 @@
 #include <chrome/browser/ui/autofill/chrome_autofill_client.h>  // IWYU pragma: export
 #undef IsAutocompleteEnabled
 #undef IsAutofillEnabled
-#undef GetAutofillOptimizationGuide
+#undef GetAutofillOptimizationGuideDecider
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_AUTOFILL_CHROME_AUTOFILL_CLIENT_H_
