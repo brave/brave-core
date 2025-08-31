@@ -19,6 +19,7 @@ source_set("endpoints") {
     "//base",
     "//brave/brave_domains",
     "//brave/components/brave_account/endpoint_client",
+    "//net",
     "//url",
   ]
 

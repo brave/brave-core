@@ -12,6 +12,7 @@ source_set("endpoint_client") {
   deps = [
     "//base",
     "//brave/components/api_request_helper",
+    "//net",
     "//url",
   ]
 }
