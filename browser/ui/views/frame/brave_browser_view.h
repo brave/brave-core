@@ -122,6 +122,7 @@ class BraveBrowserView : public BrowserView,
   views::View* GetContentsContainerForLayoutManager() override;
   void ReadyToListenFullscreenChanges() override;
   bool PreHandleMouseEvent(const blink::WebMouseEvent& event) override;
+  void OnMouseMoved(const ui::MouseEvent& event) override;
 
 #if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
