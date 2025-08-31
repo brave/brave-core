@@ -66,9 +66,6 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool show_scrim) {
   ContentsContainerView::UpdateBorderAndOverlay(is_in_split, is_active,
                                                 show_scrim);
-  // We don't show scrim view always.
-  inactive_split_scrim_view()->SetVisible(false);
-
   gfx::RoundedCornersF contents_corner_radius(GetCornerRadius(false));
   auto* contents_web_view = contents_view();
   contents_web_view->layer()->SetRoundedCornerRadius(contents_corner_radius);
