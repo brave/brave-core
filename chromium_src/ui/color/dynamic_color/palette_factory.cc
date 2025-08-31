@@ -5,12 +5,11 @@
 
 #include "ui/color/color_provider_key.h"
 
-// Add switch-case handling for kDarker case.
-#define kExpressive \
-  kDarker:          \
-  break;            \
-  case SchemeVariant::kExpressive
+// Add switch-case handling for kDarker case. Use the same Config of kTonalSpot.
+#define kTonalSpot \
+  kDarker:         \
+  case SchemeVariant::kTonalSpot
 
 #include <ui/color/dynamic_color/palette_factory.cc>
 
-#undef kExpressive
+#undef kTonalSpot
