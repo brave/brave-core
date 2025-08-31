@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.UserData;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -31,10 +30,9 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.url.GURL;
 
-/**
- * Manages UI effects for speedreader including hiding and showing the
- * message UI.
- */
+import java.util.function.Supplier;
+
+/** Manages UI effects for speedreader including hiding and showing the message UI. */
 public class BraveSpeedReaderManager extends EmptyTabObserver implements UserData {
     /** The key to access this object from a {@Tab}. */
     public static final Class<BraveSpeedReaderManager> USER_DATA_KEY =
