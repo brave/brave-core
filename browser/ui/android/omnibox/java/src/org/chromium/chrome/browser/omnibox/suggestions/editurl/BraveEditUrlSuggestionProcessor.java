@@ -7,11 +7,12 @@ package org.chromium.chrome.browser.omnibox.suggestions.editurl;
 
 import androidx.annotation.NonNull;
 
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.OmniboxSuggestionType;
+
+import java.util.function.Supplier;
 
 public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor {
     private final @NonNull Supplier<Tab> mTabSupplier;

@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
@@ -24,6 +23,7 @@ import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.tab_ui.R;
 
 import java.util.function.DoubleConsumer;
+import java.util.function.Supplier;
 
 public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
 
