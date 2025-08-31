@@ -9,7 +9,6 @@ import android.content.Context;
 import android.os.Handler;
 
 import org.chromium.base.Callback;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
@@ -35,6 +34,7 @@ import org.chromium.ui.modelutil.PropertyModel;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 @NullMarked
 class BraveAutocompleteMediator extends AutocompleteMediator

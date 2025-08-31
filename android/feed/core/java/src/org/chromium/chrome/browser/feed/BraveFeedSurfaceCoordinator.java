@@ -16,7 +16,6 @@ import androidx.annotation.Px;
 
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
@@ -28,6 +27,8 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.WindowAndroid;
+
+import java.util.function.Supplier;
 
 public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     // To delete in bytecode, members from parent class will be used instead.
