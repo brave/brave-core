@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.customtabs.features.partialcustomtab;
 
 import android.app.Activity;
 
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -16,6 +15,8 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.widget.TouchEventProvider;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.url.GURL;
+
+import java.util.function.Supplier;
 
 public class BravePartialCustomTabBottomSheetStrategy extends PartialCustomTabBottomSheetStrategy {
 
@@ -51,7 +52,7 @@ public class BravePartialCustomTabBottomSheetStrategy extends PartialCustomTabBo
     @Override
     public void onDragStart(int y) {
         super.onDragStart(y);
-        if (!mTab.hasValue()) {
+        if (mTab.get() == null) {
             return;
         }
         GURL url = mTab.get().getUrl();

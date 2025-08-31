@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.share;
 import android.content.Context;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
@@ -18,6 +17,8 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+
+import java.util.function.Supplier;
 
 @NullMarked
 public class BraveShareDelegateImpl extends ShareDelegateImpl {
