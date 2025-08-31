@@ -36,7 +36,8 @@ TopSitesMessageHandler::TopSitesMessageHandler(Profile* profile)
   // most_visited_sites_ can be nullptr if profile is OTR.
   if (most_visited_sites_) {
     most_visited_sites_->EnableTileTypes(
-        /*enable_custom_links=*/IsCustomLinksEnabled());
+        ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_custom_links(
+            IsCustomLinksEnabled()));
     most_visited_sites_->SetShortcutsVisible(IsShortcutsVisible());
     most_visited_sites_->AddMostVisitedURLsObserver(
         this, ntp_tiles::kMaxNumMostVisited);
@@ -286,7 +287,8 @@ void TopSitesMessageHandler::HandleSetMostVisitedSettings(
     profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles,
                                      !custom_links_enabled);
     most_visited_sites_->EnableTileTypes(
-        /*enable_custom_links=*/IsCustomLinksEnabled());
+        ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_custom_links(
+            IsCustomLinksEnabled()));
   }
 }
 
@@ -317,7 +319,8 @@ void TopSitesMessageHandler::HandleEditTopSite(const base::Value::List& args) {
   if (!most_visited_sites_->IsCustomLinksEnabled()) {
     profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles, false);
     most_visited_sites_->EnableTileTypes(
-        /*enable_custom_links=*/IsCustomLinksEnabled());
+        ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_custom_links(
+            IsCustomLinksEnabled()));
   }
 
   GURL gurl(url);
@@ -356,7 +359,8 @@ void TopSitesMessageHandler::HandleAddNewTopSite(
   if (!most_visited_sites_->IsCustomLinksEnabled()) {
     profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles, false);
     most_visited_sites_->EnableTileTypes(
-        /*enable_custom_links=*/IsCustomLinksEnabled());
+        ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_custom_links(
+            IsCustomLinksEnabled()));
   }
 
   most_visited_sites_->AddCustomLink(GURL(url), base::UTF8ToUTF16(title));
