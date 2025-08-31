@@ -5,10 +5,13 @@
 
 #include "brave/browser/ui/color/brave_color_mixer.h"
 
+#include "base/debug/stack_trace.h"
+#include "base/logging.h"
 #include "base/numerics/safe_conversions.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
+#include "brave/browser/ui/color/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -21,6 +24,7 @@
 #include "chrome/browser/ui/color/material_omnibox_color_mixer.h"
 #include "chrome/browser/ui/color/material_side_panel_color_mixer.h"
 #include "chrome/browser/ui/color/material_tab_strip_color_mixer.h"
+#include "include/core/SkColor.h"
 #include "ui/base/ui_base_features.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
@@ -517,6 +521,26 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetA(SK_ColorBLACK, 0.25 * 255)};
 
   mixer[kColorBraveAppMenuAccentColor] = {SkColorSetRGB(0x37, 0x2C, 0xBF)};
+
+  LOG(ERROR) << __FUNCTION__ << " has scheme variant?"
+             << key.scheme_variant.has_value();
+  base::debug::StackTrace(20).Print();
+  if (key.scheme_variant.has_value()) {
+    LOG(ERROR) << "scheme variant: "
+               << static_cast<int>(key.scheme_variant.value());
+  }
+
+  if (!base::FeatureList::IsEnabled(color::features::kBraveDarkerTheme) ||
+      key.scheme_variant != ui::ColorProviderKey::SchemeVariant::kDarker) {
+    return;
+  }
+
+  LOG(ERROR) << "Postprocessing mixer";
+
+  // Add PostprocessingMixer so that we can make adjustments to the colors for
+  // darker theme.
+  auto& postprocessing_mixer = provider->AddPostprocessingMixer();
+  postprocessing_mixer[ui::kColorFrameActive] = {SK_ColorRED};
 }
 
 // Handling dark or light theme on normal profile.
