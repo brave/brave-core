@@ -108,5 +108,15 @@ IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
       browser(), mock_delegate.GetWeakPtr());
   EXPECT_EQ(permission_prompt->GetWidget()->GetZOrderLevel(),
             ui::ZOrderLevel::kSecuritySurface);
-  permission_prompt->GetWidget()->CloseNow();
+
+  // Also parent widget should have the same z-order level.
+  auto* parent_widget = permission_prompt->GetWidget()->parent();
+  ASSERT_TRUE(parent_widget);
+  EXPECT_EQ(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
+
+  permission_prompt->Close();
+
+  // After closing the prompt widget, the parent widget should have the original
+  // z-order level.
+  EXPECT_NE(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
 }
