@@ -21,7 +21,6 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
                          WebAppFrameToolbarView* web_app_frame_toolbar,
                          views::Label* web_app_window_title,
                          TabStripRegionView* tab_strip_region_view,
-                         TabStrip* tab_strip,
                          views::View* vertical_tab_strip_container,
                          views::View* toolbar,
                          InfoBarContainerView* infobar_container,
