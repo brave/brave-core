@@ -23,27 +23,24 @@ gfx::Rect GetDisplayScreenWorkArea(gfx::Rect* bounds,
   CHECK(bounds);
 
   gfx::Rect work_area =
-      display::Screen::GetScreen()->GetDisplayMatching(*bounds).work_area();
+      display::Screen::Get()->GetDisplayMatching(*bounds).work_area();
 
   if (work_area.IsEmpty()) {
     // There is no matching display for these bounds so we should move the ad
     // notification to the nearest display
-    work_area = display::Screen::GetScreen()
-                    ->GetDisplayNearestView(native_view)
-                    .work_area();
+    work_area =
+        display::Screen::Get()->GetDisplayNearestView(native_view).work_area();
   }
 
   return work_area;
 }
 
 gfx::Rect GetPrimaryDisplayScreenWorkArea() {
-  return display::Screen::GetScreen()->GetPrimaryDisplay().work_area();
+  return display::Screen::Get()->GetPrimaryDisplay().work_area();
 }
 
 gfx::Rect GetNearestDisplayScreenWorkArea(gfx::NativeView native_view) {
-  return display::Screen::GetScreen()
-      ->GetDisplayNearestView(native_view)
-      .work_area();
+  return display::Screen::Get()->GetDisplayNearestView(native_view).work_area();
 }
 
 void AdjustBoundsToFitWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
