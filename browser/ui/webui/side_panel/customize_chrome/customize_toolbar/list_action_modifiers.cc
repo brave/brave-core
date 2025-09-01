@@ -119,7 +119,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   const auto& cp = web_contents.GetColorProvider();
 
   float scale_factor = 1.0f;
-  if (auto* screen = display::Screen::GetScreen()) {
+  if (auto* screen = display::Screen::Get()) {
     scale_factor =
         screen->GetDisplayNearestWindow(web_contents.GetTopLevelNativeWindow())
             .device_scale_factor();
