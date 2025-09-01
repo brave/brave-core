@@ -1005,10 +1005,10 @@ source_set("ui") {
   }
 
   if (enable_speedreader) {
-    deps += [
-      "//brave/browser/ui/speedreader",
-      "//chrome/browser/ui/views/page_action",
-    ]
+    deps += [ "//brave/browser/ui/speedreader" ]
+    if (!is_android) {
+      deps += [ "//chrome/browser/ui/views/page_action" ]
+    }
 
     if (toolkit_views) {
       deps += [ "//brave/browser/ui/views/speedreader" ]
