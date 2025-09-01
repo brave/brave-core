@@ -17,6 +17,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -25,6 +26,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
@@ -67,7 +69,6 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "third_party/blink/public/common/input/synthetic_web_input_event_builders.h"
 #include "ui/base/ui_base_features.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
@@ -604,22 +605,38 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemDragIndicatorCalcTest) {
 
 class SidebarBrowserWithSplitViewTest
     : public SidebarBrowserTest,
-      public testing::WithParamInterface<bool> {
+      public testing::WithParamInterface<std::tuple<bool, bool, bool>> {
  public:
   SidebarBrowserWithSplitViewTest() {
-    if (!IsSideBySideEnabled()) {
-      scoped_features_.InitWithFeatures(
-          /*enabled_features*/ {tabs::features::kBraveSplitView},
-          /*disabled_features*/ {::features::kSideBySide});
+    // Use all three false as a default state.
+    // Don't touch any feature state.
+    if (!std::get<0>(GetParam()) && !std::get<1>(GetParam()) &&
+        !std::get<2>(GetParam())) {
+      scoped_features_.Init();
+      return;
     }
+
+    scoped_features_.InitWithFeatureStates(
+        {{::features::kBraveWebViewRoundedCorners, std::get<0>(GetParam())},
+         {tabs::features::kBraveSplitView, std::get<1>(GetParam())},
+         {::features::kSideBySide, std::get<2>(GetParam())}});
   }
+
   ~SidebarBrowserWithSplitViewTest() override = default;
 
   void NewSplitTab() {
-    IsSideBySideEnabled()
-        ? chrome::NewSplitTab(
-              browser(), split_tabs::SplitTabCreatedSource::kTabContextMenu)
-        : brave::NewSplitViewForTab(browser());
+    if (IsSideBySideEnabled()) {
+      chrome::NewSplitTab(browser(),
+                          split_tabs::SplitTabCreatedSource::kTabContextMenu);
+      return;
+    }
+
+    if (IsBraveSplitViewEnabled()) {
+      brave::NewSplitViewForTab(browser());
+      return;
+    }
+
+    NOTREACHED();
   }
 
   // Use this when left split view is active.
@@ -630,7 +647,11 @@ class SidebarBrowserWithSplitViewTest
           ->GetActiveContentsContainerView();
     }
 
-    return browser_view()->split_view()->contents_container_;
+    if (IsBraveSplitViewEnabled()) {
+      return browser_view()->split_view()->contents_container_;
+    }
+
+    NOTREACHED();
   }
 
   // Use this when left split view is active.
@@ -641,7 +662,11 @@ class SidebarBrowserWithSplitViewTest
           ->GetInactiveContentsContainerView();
     }
 
-    return browser_view()->split_view()->secondary_contents_container();
+    if (IsBraveSplitViewEnabled()) {
+      return browser_view()->split_view()->secondary_contents_container();
+    }
+
+    NOTREACHED();
   }
 
   BraveBrowserView* browser_view() {
@@ -649,7 +674,12 @@ class SidebarBrowserWithSplitViewTest
         BrowserView::GetBrowserViewForBrowser(browser()));
   }
 
-  bool IsSideBySideEnabled() const { return GetParam(); }
+  bool IsBraveSplitViewEnabled() const {
+    return base::FeatureList::IsEnabled(tabs::features::kBraveSplitView);
+  }
+  bool IsSideBySideEnabled() const {
+    return base::FeatureList::IsEnabled(::features::kSideBySide);
+  }
 
  private:
   base::test::ScopedFeatureList scoped_features_;
@@ -671,18 +701,13 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !sidebar_container->IsSidebarVisible(); }));
 
-  blink::WebMouseEvent move_event = blink::SyntheticWebMouseEventBuilder::Build(
-      blink::WebInputEvent::Type::kMouseMove, 0, 0,
-      blink::WebInputEvent::kNoModifiers);
-
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on right side.
   auto contents_container_rect = contents_container->GetBoundsInScreen();
   gfx::Point mouse_position = contents_container_rect.top_right();
   mouse_position.Offset(-2, 2);
-  move_event.SetPositionInScreen(gfx::PointF(mouse_position));
-
-  EXPECT_TRUE(sidebar_container->PreHandleMouseEvent(move_event));
+  EXPECT_TRUE(
+      sidebar_container->PreHandleMouseEvent(gfx::PointF(mouse_position)));
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
   // Check when sidebar on left.
@@ -698,9 +723,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on left side.
   mouse_position.Offset(2, 2);
-  move_event.SetPositionInScreen(gfx::PointF(mouse_position));
-
-  EXPECT_TRUE(sidebar_container->PreHandleMouseEvent(move_event));
+  EXPECT_TRUE(
+      sidebar_container->PreHandleMouseEvent(gfx::PointF(mouse_position)));
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
   // Hide sidebar.
@@ -714,9 +738,25 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // Set mouse position outside of the mouse hover area to check sidebar UI is
   // not shown with that mouse position when sidebar is on left side.
   mouse_position.Offset(10, 10);
-  move_event.SetPositionInScreen(gfx::PointF(mouse_position));
+  EXPECT_FALSE(
+      sidebar_container->PreHandleMouseEvent(gfx::PointF(mouse_position)));
 
-  EXPECT_FALSE(sidebar_container->PreHandleMouseEvent(move_event));
+  contents_container_rect = contents_container->GetBoundsInScreen();
+  contents_container_rect.Outset(
+      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
+
+  // Check with the space between window border and contents.
+  // We have that space with rounded corners.
+  // When mouse moves into that space, sidebar should be visible.
+  mouse_position = contents_container_rect.origin();
+  EXPECT_TRUE(
+      sidebar_container->PreHandleMouseEvent(gfx::PointF(mouse_position)));
+  EXPECT_TRUE(sidebar_container->IsSidebarVisible());
+
+  // Hide sidebar.
+  HideSidebar(true);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !sidebar_container->IsSidebarVisible(); }));
 
   // Test with split view.
   // With sidebar on left, only left split view contents' left side hot
@@ -742,20 +782,26 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // Check left split view's left hot corner handles.
   mouse_position = left_split_view->GetBoundsInScreen().origin();
   mouse_position.Offset(2, 2);
-  move_event.SetPositionInScreen(gfx::PointF(mouse_position));
-  EXPECT_TRUE(sidebar_container->PreHandleMouseEvent(move_event));
+  EXPECT_TRUE(
+      sidebar_container->PreHandleMouseEvent(gfx::PointF(mouse_position)));
 
   // Check right split view's left hot corner doesn't handle.
   mouse_position = right_split_view->GetBoundsInScreen().origin();
   mouse_position.Offset(2, 2);
-  move_event.SetPositionInScreen(gfx::PointF(mouse_position));
-  EXPECT_FALSE(sidebar_container->PreHandleMouseEvent(move_event));
+  EXPECT_FALSE(
+      sidebar_container->PreHandleMouseEvent(gfx::PointF(mouse_position)));
 }
 
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SidebarBrowserWithSplitViewTest,
-    ::testing::Bool());
+    testing::Values(std::make_tuple(/*rounded*/ false,
+                                    /*brave split*/ true,
+                                    /*sidebyside*/ false),
+                    std::make_tuple(false, false, true),
+                    std::make_tuple(true, true, false),
+                    std::make_tuple(true, false, true),
+                    std::make_tuple(false, false, false)));
 
 class SidebarBrowserWithWebPanelTest
     : public SidebarBrowserTest,

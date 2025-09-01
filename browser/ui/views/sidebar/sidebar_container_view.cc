@@ -177,13 +177,12 @@ bool SidebarContainerView::IsSidebarVisible() const {
 }
 
 bool SidebarContainerView::PreHandleMouseEvent(
-    const blink::WebMouseEvent& event) {
+    const gfx::PointF& point_in_screen) {
   if (IsSidebarVisible()) {
     return false;
   }
 
-  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver ||
-      event.GetTypeAsUiEventType() != ui::EventType::kMouseMoved) {
+  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
     return false;
   }
 
@@ -191,15 +190,20 @@ bool SidebarContainerView::PreHandleMouseEvent(
   gfx::RectF mouse_event_detect_bounds(
       browser_view->GetContentsContainerForLayoutManager()
           ->GetBoundsInScreen());
-  constexpr int kHotCorenerWidth = 7;
+
+  // Detect bounds should include rounded corners margin to make sidebar
+  // visible from that padding also.
+  mouse_event_detect_bounds.Outset(
+      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
+  constexpr int kHotCornerWidth = 7;
+  const int inset = mouse_event_detect_bounds.width() - kHotCornerWidth;
   if (sidebar_on_left_) {
-    mouse_event_detect_bounds.set_width(kHotCorenerWidth);
+    mouse_event_detect_bounds.Inset(gfx::InsetsF::TLBR(0, 0, 0, inset));
   } else {
-    mouse_event_detect_bounds.set_x(mouse_event_detect_bounds.right() -
-                                    kHotCorenerWidth);
+    mouse_event_detect_bounds.Inset(gfx::InsetsF::TLBR(0, inset, 0, 0));
   }
 
-  if (mouse_event_detect_bounds.Contains(event.PositionInScreen())) {
+  if (mouse_event_detect_bounds.Contains(point_in_screen)) {
     ShowSidebarControlView();
     return true;
   }
