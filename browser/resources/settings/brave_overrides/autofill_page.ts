@@ -23,7 +23,7 @@ RegisterPolymerComponentReplacement(
 
 RegisterPolymerPrototypeModification({
   'settings-autofill-page-index': (prototype) => {
-    const original = prototype.currentRouteChanged
+    const originalCurrentRouteChanged = prototype.currentRouteChanged
     prototype.currentRouteChanged =
       function (newRoute: Route, oldRoute?: Route) {
       if (newRoute === routes.EMAIL_ALIASES) {
@@ -31,7 +31,14 @@ RegisterPolymerPrototypeModification({
                                       'no-animation')
         return
       }
-      original.call(this, newRoute, oldRoute)
+      originalCurrentRouteChanged.call(this, newRoute, oldRoute)
+    }
+    const originalGetAssociated = prototype.getAssociatedControlFor
+    prototype.getAssociatedControlFor = function (childViewId: string) {
+      if (childViewId === 'email-aliases') {
+        return this.shadowRoot!.querySelector('settings-subpage#email-aliases')
+      }
+      return originalGetAssociated.call(this, childViewId)
     }
   }
 })
