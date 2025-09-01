@@ -10,6 +10,10 @@
   virtual SelectRelativeTab(__VA_ARGS__); \
   friend class BraveTabStripModel
 
+#define CloseSelectedTabs(...)    \
+  CloseSelectedTabs(__VA_ARGS__); \
+  virtual void CloseSelectedTabsFromBrowserCommands()
+
 #define DraggingTabsSession DraggingTabsSessionChromium
 #define IsReadLaterSupportedForAny virtual IsReadLaterSupportedForAny
 #define UpdateWebContentsStateAt virtual UpdateWebContentsStateAt
@@ -19,6 +23,7 @@
 #undef UpdateWebContentsStateAt
 #undef IsReadLaterSupportedForAny
 #undef DraggingTabsSession
+#undef CloseSelectedTabs
 #undef SelectRelativeTab
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
