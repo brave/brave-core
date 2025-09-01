@@ -737,6 +737,14 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
 
   for (size_t i = 0; i < associated_content.size(); ++i) {
     auto& content = associated_content[i];
+
+    // Don't persist content that is not associated with a conversation turn.
+    // This can happen if content is attached to a conversation while the server
+    // is responding.
+    if (!content->conversation_turn_uuid) {
+      continue;
+    }
+
     auto content_text = contents.empty() ? "" : std::move(contents[i]);
 
     sql::Statement insert_or_update_statement;
@@ -781,8 +789,6 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
                                  content_text);
     insert_or_update_statement.BindInt(index++,
                                        content->content_used_percentage);
-    CHECK(content->conversation_turn_uuid)
-        << "Associated content must be associated with a conversation turn";
     insert_or_update_statement.BindString(
         index++, content->conversation_turn_uuid.value());
     insert_or_update_statement.BindString(index++, content->uuid);
