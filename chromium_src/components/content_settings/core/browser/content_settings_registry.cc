@@ -9,6 +9,7 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
 #include "net/base/features.h"
@@ -113,18 +114,6 @@ void ContentSettingsRegistry::BraveInit() {
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
       ContentSettingsInfo::INHERIT_IN_INCOGNITO,
       PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
-
-  Register(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-           brave_shields::kCosmeticFiltering, CONTENT_SETTING_ASK,
-           WebsiteSettingsInfo::SYNCABLE, /*allowlisted_schemes=*/{},
-           /*valid_settings=*/
-           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
-           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
-           WebsiteSettingsRegistry::DESKTOP |
-               WebsiteSettingsRegistry::PLATFORM_ANDROID |
-               WebsiteSettingsRegistry::PLATFORM_IOS,
-           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
-           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   Register(ContentSettingsType::BRAVE_FINGERPRINTING_V2,
            brave_shields::kFingerprintingV2, CONTENT_SETTING_ASK,
@@ -393,6 +382,17 @@ void ContentSettingsRegistry::BraveInit() {
       WebsiteSettingsRegistry::DESKTOP |
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
       WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
+
+  website_settings_registry_->Register(
+      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+      brave_shields::kCosmeticFiltering,
+      brave_shields::CosmeticFilteringSetting::DefaultValue(),
+      WebsiteSettingsInfo::SYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID |
+          WebsiteSettingsRegistry::PLATFORM_IOS,
+      WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
 }
 
 }  // namespace content_settings

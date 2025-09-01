@@ -16,11 +16,13 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
+#include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -81,7 +83,8 @@ void InitializeAllShieldSettingsInDictionary(
                                                           last_modified_time);
   per_resource_dict->Set(brave_shields::kAds, value);
   per_resource_dict->Set(brave_shields::kCookies, value);
-  per_resource_dict->Set(brave_shields::kCosmeticFiltering, value);
+  // The old name for such an old profile.
+  per_resource_dict->Set(brave_shields::kObsoleteCosmeticFiltering, value);
   per_resource_dict->Set(brave_shields::kFingerprintingV2, value);
   per_resource_dict->Set(brave_shields::kHTTPUpgradableResources, value);
   per_resource_dict->Set(brave_shields::kReferrers, value);
@@ -291,7 +294,7 @@ class DirectAccessContentSettings {
       : prefs_(prefs),
         content_type_(content_type),
         pref_name_(pref_name),
-        info_(ContentSettingsRegistry::GetInstance()->Get(content_type_)) {
+        info_(WebsiteSettingsRegistry::GetInstance()->Get(content_type_)) {
     Refresh();
   }
 
@@ -316,34 +319,31 @@ class DirectAccessContentSettings {
 
   size_t GetRulesCount() const { return prefs_value_.size(); }
 
-  ContentSetting GetContentSettingDirectly(
-      const std::string& primary_pattern,
-      const std::string& secondary_pattern = "*") {
+  base::Value GetSettingDirectly(const std::string& primary_pattern,
+                                 const std::string& secondary_pattern = "*") {
     const auto* v =
         prefs_value_.Find(primary_pattern + "," + secondary_pattern);
     if (!v) {
-      return CONTENT_SETTING_DEFAULT;
+      return base::Value();
     }
-    return ValueToContentSetting(*v->GetDict().Find("setting"));
+    return v->GetDict().Find("setting")->Clone();
   }
 
-  ContentSetting GetContentSetting(
-      const ProviderInterface* provider,
-      const GURL& primary_url,
-      const GURL& secondary_url = GURL::EmptyGURL()) {
-    return TestUtils::GetContentSetting(provider, primary_url, secondary_url,
-                                        content_type_, false);
+  base::Value GetContentSetting(const ProviderInterface* provider,
+                                const GURL& primary_url,
+                                const GURL& secondary_url = GURL::EmptyGURL()) {
+    return TestUtils::GetContentSettingValue(
+        provider, primary_url, secondary_url, content_type_, false);
   }
 
  private:
   const std::string& GetPrefName() const {
-    return pref_name_.empty() ? info_->website_settings_info()->pref_name()
-                              : pref_name_;
+    return pref_name_.empty() ? info_->pref_name() : pref_name_;
   }
   const raw_ptr<PrefService> prefs_ = nullptr;
   const ContentSettingsType content_type_;
   const std::string pref_name_;
-  const raw_ptr<const ContentSettingsInfo> info_ = nullptr;
+  const raw_ptr<const WebsiteSettingsInfo> info_ = nullptr;
   base::Value::Dict prefs_value_;
 };
 
@@ -636,9 +636,14 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
 
   // Check migration for all the settings has been properly done.
   for (auto content_type : GetShieldsContentSettingsTypes()) {
-    const auto& brave_shields_dict =
-        pref_service->GetDict(GetShieldsSettingUserPrefsPath(
-            GetShieldsContentTypeName(content_type)));
+    auto content_type_name = GetShieldsContentTypeName(content_type);
+    if (content_type_name == brave_shields::kCosmeticFiltering) {
+      // CosmeticFiltering migrated to the obsolete pref for the futher
+      // migration.
+      content_type_name = brave_shields::kObsoleteCosmeticFiltering;
+    }
+    const auto& brave_shields_dict = pref_service->GetDict(
+        GetShieldsSettingUserPrefsPath(content_type_name));
 
     if (content_type == ContentSettingsType::BRAVE_SHIELDS) {
       // We only changed the value of BRAVE_SHIELDS in www.brave.com.
@@ -795,7 +800,7 @@ TEST_F(BravePrefProviderTest, CosmeticFilteringMigration) {
 
   DirectAccessContentSettings cosmetic_filtering_v1(
       testing_profile()->GetPrefs(),
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+      brave_shields::CosmeticFilteringSetting::kContentSettingsType,
       "profile.content_settings.exceptions.cosmeticFiltering");
 
   // BLOCK_THIRD_PARTY
@@ -824,38 +829,40 @@ TEST_F(BravePrefProviderTest, CosmeticFilteringMigration) {
 
   DirectAccessContentSettings cosmetic_filtering_v2(
       testing_profile()->GetPrefs(),
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING);
+      brave_shields::CosmeticFilteringSetting::kContentSettingsType);
 
   EXPECT_EQ(3u, cosmetic_filtering_v2.GetRulesCount());
 
-  // Check there is no first-party rule anymore.
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT,
-            cosmetic_filtering_v2.GetContentSettingDirectly("brave.b3p",
-                                                            kFirstParty));
-  EXPECT_EQ(CONTENT_SETTING_ASK,
-            cosmetic_filtering_v2.GetContentSettingDirectly("brave.b3p", "*"));
-  EXPECT_EQ(CONTENT_SETTING_ASK, cosmetic_filtering_v2.GetContentSetting(
-                                     &provider, GURL("https://brave.b3p")));
+  const auto block3p = brave_shields::CosmeticFilteringSetting::ToValue(
+      brave_shields::ControlType::BLOCK_THIRD_PARTY);
+  const auto allow = brave_shields::CosmeticFilteringSetting::ToValue(
+      brave_shields::ControlType::ALLOW);
+  const auto block = brave_shields::CosmeticFilteringSetting::ToValue(
+      brave_shields::ControlType::BLOCK);
 
   // Check there is no first-party rule anymore.
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT,
-            cosmetic_filtering_v2.GetContentSettingDirectly("brave.allow",
-                                                            kFirstParty));
-  EXPECT_EQ(
-      CONTENT_SETTING_ALLOW,
-      cosmetic_filtering_v2.GetContentSettingDirectly("brave.allow", "*"));
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, cosmetic_filtering_v2.GetContentSetting(
-                                       &provider, GURL("https://brave.allow")));
+  EXPECT_EQ(base::Value(),
+            cosmetic_filtering_v2.GetSettingDirectly("brave.b3p", kFirstParty));
+  EXPECT_EQ(block3p,
+            cosmetic_filtering_v2.GetSettingDirectly("brave.b3p", "*"));
+  EXPECT_EQ(block3p, cosmetic_filtering_v2.GetContentSetting(
+                         &provider, GURL("https://brave.b3p")));
 
   // Check there is no first-party rule anymore.
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT,
-            cosmetic_filtering_v2.GetContentSettingDirectly("brave.block",
-                                                            kFirstParty));
-  EXPECT_EQ(
-      CONTENT_SETTING_BLOCK,
-      cosmetic_filtering_v2.GetContentSettingDirectly("brave.block", "*"));
-  EXPECT_EQ(CONTENT_SETTING_BLOCK, cosmetic_filtering_v2.GetContentSetting(
-                                       &provider, GURL("https://brave.block")));
+  EXPECT_EQ(base::Value(), cosmetic_filtering_v2.GetSettingDirectly(
+                               "brave.allow", kFirstParty));
+  EXPECT_EQ(allow,
+            cosmetic_filtering_v2.GetSettingDirectly("brave.allow", "*"));
+  EXPECT_EQ(allow, cosmetic_filtering_v2.GetContentSetting(
+                       &provider, GURL("https://brave.allow")));
+
+  // Check there is no first-party rule anymore.
+  EXPECT_EQ(base::Value(), cosmetic_filtering_v2.GetSettingDirectly(
+                               "brave.block", kFirstParty));
+  EXPECT_EQ(block,
+            cosmetic_filtering_v2.GetSettingDirectly("brave.block", "*"));
+  EXPECT_EQ(block, cosmetic_filtering_v2.GetContentSetting(
+                       &provider, GURL("https://brave.block")));
 
   provider.ShutdownOnUIThread();
 }

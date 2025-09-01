@@ -33,6 +33,9 @@ ContentSetting GetBraveWebcompatContentSettingFromRules(
 ShieldsSettingCounts GetSettingCountFromRules(
     const ContentSettingsForOneType& fp_rules);
 
+ShieldsSettingCounts GetSettingCountFromCosmeticFilteringRules(
+    const ContentSettingsForOneType& fp_rules);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_UTILS_H_

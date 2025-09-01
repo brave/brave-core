@@ -10,7 +10,6 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/hash/hash.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -305,21 +304,15 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
   ControlType prev_setting = GetCosmeticFilteringControlType(map, url);
   content_settings::SettingInfo setting_info;
   base::Value web_setting = map->GetWebsiteSetting(
-      url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+      url, GURL(), CosmeticFilteringSetting::kContentSettingsType,
       &setting_info);
   bool was_default =
       web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
 
-  ContentSetting content_setting;
-  if (type == ControlType::BLOCK_THIRD_PARTY) {
-    content_setting = CONTENT_SETTING_ASK;
-  } else {
-    content_setting = GetDefaultBlockFromControlType(type);
-  }
-
-  map->SetContentSettingCustomScope(
+  map->SetWebsiteSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING, content_setting);
+      CosmeticFilteringSetting::kContentSettingsType,
+      CosmeticFilteringSetting::ToValue(type));
 
   if (!map->IsOffTheRecord()) {
     // Only report to P3A if not a guest/incognito profile
@@ -346,19 +339,10 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
       url.SchemeIs(kChromeExtensionScheme)) {
     return ControlType::BLOCK;
   }
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-
-  switch (setting) {
-    case CONTENT_SETTING_ALLOW:
-      return ControlType::ALLOW;
-    case CONTENT_SETTING_ASK:
-      return ControlType::BLOCK_THIRD_PARTY;
-    case CONTENT_SETTING_BLOCK:
-      return ControlType::BLOCK;
-    default:
-      return ControlType::BLOCK;
-  }
+  const auto setting =
+      CosmeticFilteringSetting::FromValue(map->GetWebsiteSetting(
+          url, GURL(), CosmeticFilteringSetting::kContentSettingsType));
+  return setting;
 }
 
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
@@ -815,7 +799,7 @@ ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map) {
 ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
   ContentSettingsForOneType cosmetic_rules =
       map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-  return GetSettingCountFromRules(cosmetic_rules);
+  return GetSettingCountFromCosmeticFilteringRules(cosmetic_rules);
 }
 
 void SetWebcompatEnabled(HostContentSettingsMap* map,

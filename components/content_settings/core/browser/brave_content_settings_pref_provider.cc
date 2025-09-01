@@ -12,16 +12,15 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/check_op.h"
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
 #include "base/logging.h"
-#include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
@@ -38,8 +37,6 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace content_settings {
@@ -50,8 +47,6 @@ constexpr char kObsoleteShieldCookies[] =
     "profile.content_settings.exceptions.shieldsCookies";
 constexpr char kBraveShieldsFPSettingsMigration[] =
     "brave.shields_fp_settings_migration";
-constexpr char kObsoleteCosmeticFiltering[] =
-    "profile.content_settings.exceptions.cosmeticFiltering";
 constexpr char kCosmeticFilteringMigration[] =
     "brave.cosmetic_filtering_migration";
 
@@ -161,7 +156,8 @@ void BravePrefProvider::RegisterProfilePrefs(
   registry->RegisterBooleanPref(kBraveShieldsFPSettingsMigration, false);
   registry->RegisterDictionaryPref(kObsoleteShieldCookies);
 
-  registry->RegisterDictionaryPref(kObsoleteCosmeticFiltering);
+  registry->RegisterDictionaryPref(GetShieldsSettingUserPrefsPath(
+      brave_shields::kObsoleteCosmeticFiltering));
   registry->RegisterBooleanPref(kCosmeticFilteringMigration, false);
 }
 
@@ -266,12 +262,24 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
           shields_preference_name = brave_shields::kAds;
         } else if (resource_identifier == brave_shields::kObsoleteCookies) {
           shields_preference_name = brave_shields::kObsoleteShieldsCookies;
+        }
+        if (resource_identifier == brave_shields::kObsoleteCosmeticFiltering) {
+          shields_preference_name = resource_identifier;
+          // Setup empty value to pass CHECK(HasPrefPath) in
+          // MigrateShieldsSettingsFromResourceIdsForOneType.
+          const auto pref_path =
+              GetShieldsSettingUserPrefsPath(shields_preference_name);
+          if (!prefs_->HasPrefPath(pref_path)) {
+            prefs_->SetDict(pref_path, base::Value::Dict());
+          }
         } else {
           shields_preference_name = resource_identifier;
         }
 
         // Protect against non registered paths (unlikely, but possible).
-        if (!IsShieldsContentSettingsTypeName(shields_preference_name)) {
+        if (!IsShieldsContentSettingsTypeName(shields_preference_name) &&
+            shields_preference_name !=
+                brave_shields::kObsoleteCosmeticFiltering) {
           continue;
         }
 
@@ -543,11 +551,21 @@ void BravePrefProvider::MigrateCosmeticFilteringSettings() {
     return;
   }
 
-  const auto& cosmetic_filtering = prefs_->GetDict(kObsoleteCosmeticFiltering);
-  const auto* info = ContentSettingsRegistry::GetInstance()->Get(
+  const auto& cosmetic_filtering =
+      prefs_->GetDict(GetShieldsSettingUserPrefsPath(
+          brave_shields::kObsoleteCosmeticFiltering));
+  const auto* info = WebsiteSettingsRegistry::GetInstance()->Get(
       ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-  prefs_->SetDict(info->website_settings_info()->pref_name(),
-                  cosmetic_filtering.Clone());
+
+  base::Value::Dict clone;
+  for (const auto rule : cosmetic_filtering) {
+    // Premigrate values to be consistent with base::Value::Dict() default
+    // value.
+    clone.Set(rule.first,
+              base::Value::Dict().Set("setting", rule.second.Clone()));
+  }
+
+  prefs_->SetDict(info->pref_name(), std::move(clone));
 
   std::vector<std::unique_ptr<Rule>> rules;
   {
@@ -565,28 +583,32 @@ void BravePrefProvider::MigrateCosmeticFilteringSettings() {
 
   auto merge_values = [](const Rule* fp_rule, const Rule* general_rule) {
     // Same logic as in GetCosmeticFilteringControlType.
-    if (content_settings::ValueToContentSetting(general_rule->value) ==
+    if (content_settings::ValueToContentSetting(
+            *general_rule->value.GetDict().Find("setting")) ==
         CONTENT_SETTING_ALLOW) {
-      return CONTENT_SETTING_ALLOW;
+      return brave_shields::CosmeticFilteringSetting::ToValue(
+          brave_shields::ControlType::ALLOW);
     }
-    if (content_settings::ValueToContentSetting(fp_rule->value) !=
-        CONTENT_SETTING_BLOCK) {
-      return CONTENT_SETTING_ASK;
+    if (content_settings::ValueToContentSetting(*fp_rule->value.GetDict().Find(
+            "setting")) != CONTENT_SETTING_BLOCK) {
+      return brave_shields::CosmeticFilteringSetting::ToValue(
+          brave_shields::ControlType::BLOCK_THIRD_PARTY);
     }
-    return CONTENT_SETTING_BLOCK;
+    return brave_shields::CosmeticFilteringSetting::ToValue(
+        brave_shields::ControlType::BLOCK);
   };
 
-  auto set_rule_value = [this](Rule* rule, ContentSetting value) {
+  auto set_rule_value = [this](Rule* rule, base::Value value) {
     if (!rule) {
       return;
     }
     ContentSettingConstraints constraints;
-    if (value != CONTENT_SETTING_DEFAULT) {
+    if (!value.is_none()) {
       constraints.set_session_model(rule->metadata.session_model());
     }
     SetWebsiteSettingInternal(rule->primary_pattern, rule->secondary_pattern,
                               ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-                              ContentSettingToValue(value), constraints);
+                              std::move(value), constraints);
   };
 
   // BRAVE_COSMETIC_FILTERING rules are set in pairs:
@@ -600,21 +622,21 @@ void BravePrefProvider::MigrateCosmeticFilteringSettings() {
     if (rule->secondary_pattern == first_party) {
       if (fp_rule) {
         // No general rule for previous first-party rule -> drop.
-        set_rule_value(fp_rule, CONTENT_SETTING_DEFAULT);
+        set_rule_value(fp_rule, base::Value());
       }
       fp_rule = rule.get();
     } else if (rule->secondary_pattern == wildcard) {
       if (!fp_rule || rule->primary_pattern != fp_rule->primary_pattern) {
         // No first-party rule or it doesn't match with general rule -> drop
         // both.
-        set_rule_value(fp_rule, CONTENT_SETTING_DEFAULT);
-        set_rule_value(rule.get(), CONTENT_SETTING_DEFAULT);
+        set_rule_value(fp_rule, base::Value());
+        set_rule_value(rule.get(), base::Value());
         fp_rule = nullptr;
         continue;
       }
       // General rule matches with the first-party rule -> merge.
       set_rule_value(rule.get(), merge_values(fp_rule, rule.get()));
-      set_rule_value(fp_rule, CONTENT_SETTING_DEFAULT);
+      set_rule_value(fp_rule, base::Value());
       fp_rule = nullptr;
     }
   }
