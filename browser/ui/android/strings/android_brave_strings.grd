@@ -167,6 +167,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SELECT_YOUR_COUNTRY_DESCRIPTION"  desc="Text for Select your country so we can show you the right options and ads for your region.">
         Select your country so we can show you the right options and ads for your region.
       </message>
+      <message name="IDS_PASSWORD_SETTINGS_IMPORT_ACTION_TITLE" desc="Title for the password import action in Android settings">
+        Import passwords
+      </message>
+      <message name="IDS_PASSWORD_SETTINGS_IMPORT_ACTION_DESCRIPTION" desc="Description for the password import action in Android settings">
+        Select a .csv file that contains your passwords to import them to Brave's password manager.
+      </message>
       <message name="IDS_REWARDS_ONBOARDING_ALL_SET_DESCRIPTION"  desc="Text for Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!">
         Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!
       </message>

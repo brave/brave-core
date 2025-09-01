@@ -77,13 +77,13 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
     public static final String PREF_SAVE_PASSWORDS_SWITCH = "save_passwords_switch";
     public static final String PREF_AUTOSIGNIN_SWITCH = "autosignin_switch";
+    public static final String PREF_IMPORT_PASSWORDS = "import_passwords";
+    public static final String PREF_EXPORT_PASSWORDS = "export_passwords";
 
     private static final String PREF_KEY_CATEGORY_SAVED_PASSWORDS = "saved_passwords";
     private static final String PREF_KEY_CATEGORY_EXCEPTIONS = "exceptions";
     private static final String PREF_KEY_SAVED_PASSWORDS_NO_TEXT = "saved_passwords_no_text";
 
-    private static final int ORDER_SWITCH = 0;
-    private static final int ORDER_AUTO_SIGNIN_CHECKBOX = 1;
     private static final int ORDER_SAVED_PASSWORDS = 6;
     private static final int ORDER_SAVED_PASSWORDS_NO_TEXT = 7;
     private static final int ORDER_EXCEPTIONS = 8;
@@ -100,6 +100,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private @Nullable String mSearchQuery;
     private @Nullable Preference mLinkPref;
     private /*@Nullable*/ Menu mMenu;
+    private @Nullable Preference mExportPasswordsPreference;
 
     private @ManagePasswordsReferrer int mManagePasswordsReferrer;
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
@@ -211,6 +212,22 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             noPasswordsMessage.setDividerAllowedAbove(false);
             noPasswordsMessage.setDividerAllowedBelow(false);
         }
+
+        // Set up import passwords preference
+        Preference importPasswordsPreference = findPreference(PREF_IMPORT_PASSWORDS);
+        if (importPasswordsPreference != null) {
+            importPasswordsPreference.setOnPreferenceClickListener(this);
+        }
+
+        // Set up export passwords preference
+        mExportPasswordsPreference = findPreference(PREF_EXPORT_PASSWORDS);
+        if (mExportPasswordsPreference != null) {
+            mExportPasswordsPreference.setOnPreferenceClickListener(this);
+            // Set initial enabled state - only show if export is supported
+            mExportPasswordsPreference.setVisible(ExportFlow.providesPasswordExport());
+            mExportPasswordsPreference.setEnabled(
+                    false); // Will be enabled when passwords are available
+        }
     }
 
     @Override
@@ -259,8 +276,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         menu.clear();
         mMenu = menu;
         inflater.inflate(R.menu.save_password_preferences_action_bar_menu, menu);
-        menu.findItem(R.id.export_passwords).setVisible(ExportFlow.providesPasswordExport());
-        menu.findItem(R.id.export_passwords).setEnabled(false);
+        // Hide the export passwords menu item since we now have it as a preference
+        menu.findItem(R.id.export_passwords).setVisible(false);
         mSearchItem = menu.findItem(R.id.menu_id_search);
         mSearchItem.setVisible(true);
         mHelpItem = menu.findItem(R.id.menu_id_targeted_help);
@@ -270,21 +287,13 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.export_passwords).setEnabled(!mNoPasswords && !mExportFlow.isActive());
+        // Export passwords menu item is now hidden, no need to enable/disable it
         super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.export_passwords) {
-            RecordHistogram.recordEnumeratedHistogram(
-                    mExportFlow.getExportEventHistogramName(),
-                    ExportFlow.PasswordExportEvent.EXPORT_OPTION_SELECTED,
-                    ExportFlow.PasswordExportEvent.COUNT);
-            mExportFlow.startExporting();
-            return true;
-        }
         if (SearchUtils.handleSearchNavigation(item, mSearchItem, mSearchQuery, getActivity())) {
             filterPasswords(null);
             return true;
@@ -361,6 +370,12 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         return !DeviceInfo.isAutomotive();
     }
 
+    private void updateExportPasswordsPreferenceState() {
+        if (mExportPasswordsPreference != null) {
+            mExportPasswordsPreference.setEnabled(!mNoPasswords && !mExportFlow.isActive());
+        }
+    }
+
     private void clearPasswordLists() {
         // Clear saved passwords category
         PreferenceCategory savedPasswordsCategory =
@@ -399,16 +414,15 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     }
 
     /**
-     * Removes the UI displaying the list of saved passwords or exceptions.
+     * Clears the contents of the saved passwords or exceptions category.
      *
-     * @param preferenceCategoryKey The key string identifying the PreferenceCategory to be removed.
+     * @param preferenceCategoryKey The key string identifying the PreferenceCategory to be cleared.
      */
     private void resetList(String preferenceCategoryKey) {
         PreferenceCategory profileCategory =
                 (PreferenceCategory) getPreferenceScreen().findPreference(preferenceCategoryKey);
         if (profileCategory != null) {
             profileCategory.removeAll();
-            getPreferenceScreen().removePreference(profileCategory);
         }
     }
 
@@ -428,16 +442,24 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         mNoPasswords = count == 0;
         if (mNoPasswords) {
             if (mNoPasswordExceptions) displayEmptyScreenMessage();
+            // Update export preference state when no passwords
+            updateExportPasswordsPreferenceState();
             return;
         }
 
         PreferenceGroup passwordParent;
         if (mSearchQuery == null) {
-            PreferenceCategory profileCategory = new PreferenceCategory(getStyledContext());
-            profileCategory.setKey(PREF_KEY_CATEGORY_SAVED_PASSWORDS);
-            profileCategory.setTitle(R.string.password_list_title);
-            profileCategory.setOrder(ORDER_SAVED_PASSWORDS);
-            getPreferenceScreen().addPreference(profileCategory);
+            // Use the existing category from XML instead of creating a new one
+            PreferenceCategory profileCategory =
+                    (PreferenceCategory) findPreference(PREF_KEY_CATEGORY_SAVED_PASSWORDS);
+            if (profileCategory == null) {
+                // Fallback: create new category if XML one doesn't exist (shouldn't happen)
+                profileCategory = new PreferenceCategory(getStyledContext());
+                profileCategory.setKey(PREF_KEY_CATEGORY_SAVED_PASSWORDS);
+                profileCategory.setTitle(R.string.password_list_title);
+                profileCategory.setOrder(ORDER_SAVED_PASSWORDS);
+                getPreferenceScreen().addPreference(profileCategory);
+            }
             passwordParent = profileCategory;
         } else {
             passwordParent = getPreferenceScreen();
@@ -466,17 +488,13 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             passwordParent.addPreference(preference);
         }
         mNoPasswords = passwordParent.getPreferenceCount() == 0;
-        if (mMenu != null) {
-            MenuItem menuItem = mMenu.findItem(R.id.export_passwords);
-            if (menuItem != null) {
-                menuItem.setEnabled(!mNoPasswords && !mExportFlow.isActive());
-            }
-        }
+        // Update export passwords preference enabled state
+        updateExportPasswordsPreferenceState();
         if (mNoPasswords) {
             if (count == 0) displayEmptyScreenMessage(); // Show if the list was already empty.
             if (mSearchQuery == null) {
-                // If not searching, the category needs to be removed again.
-                getPreferenceScreen().removePreference(passwordParent);
+                // Keep the XML-defined category visible even when empty
+                // Don't remove it: getPreferenceScreen().removePreference(passwordParent);
             } else {
                 displayPasswordNoResultScreenMessage();
             }
@@ -512,11 +530,17 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             return;
         }
 
-        PreferenceCategory profileCategory = new PreferenceCategory(getStyledContext());
-        profileCategory.setKey(PREF_KEY_CATEGORY_EXCEPTIONS);
-        profileCategory.setTitle(R.string.section_saved_passwords_exceptions);
-        profileCategory.setOrder(ORDER_EXCEPTIONS);
-        getPreferenceScreen().addPreference(profileCategory);
+        // Use the existing category from XML instead of creating a new one
+        PreferenceCategory profileCategory =
+                (PreferenceCategory) findPreference(PREF_KEY_CATEGORY_EXCEPTIONS);
+        if (profileCategory == null) {
+            // Fallback: create new category if XML one doesn't exist (shouldn't happen)
+            profileCategory = new PreferenceCategory(getStyledContext());
+            profileCategory.setKey(PREF_KEY_CATEGORY_EXCEPTIONS);
+            profileCategory.setTitle(R.string.section_saved_passwords_exceptions);
+            profileCategory.setOrder(ORDER_EXCEPTIONS);
+            getPreferenceScreen().addPreference(profileCategory);
+        }
         PasswordManagerHandlerProvider passwordManagerHandlerProvider =
                 assertNonNull(PasswordManagerHandlerProvider.getForProfile(getProfile()));
         PasswordManagerHandler passwordManagerHandler =
@@ -543,6 +567,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     public void onResume() {
         super.onResume();
         mExportFlow.onResume();
+        // Update export preference state in case export flow state changed
+        updateExportPasswordsPreferenceState();
     }
 
     @Override
@@ -584,7 +610,20 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
      */
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if (preference == mLinkPref) {
+        String key = preference.getKey();
+
+        if (PREF_IMPORT_PASSWORDS.equals(key)) {
+            // TODO: Implement password import functionality
+            return true;
+        } else if (PREF_EXPORT_PASSWORDS.equals(key)) {
+            // Moved from menu item - export passwords functionality
+            RecordHistogram.recordEnumeratedHistogram(
+                    mExportFlow.getExportEventHistogramName(),
+                    ExportFlow.PasswordExportEvent.EXPORT_OPTION_SELECTED,
+                    ExportFlow.PasswordExportEvent.COUNT);
+            mExportFlow.startExporting();
+            return true;
+        } else if (preference == mLinkPref) {
             Intent intent =
                     new Intent(
                             Intent.ACTION_VIEW, Uri.parse(PasswordUiView.getAccountDashboardURL()));
