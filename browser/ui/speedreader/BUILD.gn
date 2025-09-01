@@ -26,10 +26,10 @@ source_set("speedreader") {
   ]
 
   if (is_android) {
-    sources += [ "//brave/browser/ui/android/speedreader/speedreader_utils.cc" ]
+    sources += [ "android/speedreader_utils.cc" ]
 
     deps += [
-      "//chrome/android:chrome_jni_headers__action",
+      "//chrome/android:chrome_jni_headers",
       "//ui/android",
     ]
   }
