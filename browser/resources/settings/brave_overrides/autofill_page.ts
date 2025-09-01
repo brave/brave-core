@@ -13,9 +13,9 @@ import {
   BraveSettingsAutofillPageElement
 } from '../brave_autofill_page/brave_autofill_page.js'
 import { loadTimeData } from '../i18n_setup.js'
-import '../email_aliases_page/email_aliases_section.js'
 import { routes } from '../route.js'
 import type { Route } from '../router.js'
+import '../email_aliases_page/email_aliases_page.js'
 
 RegisterPolymerComponentReplacement(
   'settings-autofill-page', BraveSettingsAutofillPageElement
@@ -66,11 +66,10 @@ RegisterPolymerTemplateModifications({
         '[Settings] Unable to find cr-view-manager on autofill-page')
     }
     viewManager.append(html`
-      <settings-email-aliases-section slot="view"
-        id="email-aliases"
-        data-parent-view-id="parent"
-        prefs="{{prefs}}">
-      </settings-email-aliases-section>
+      <settings-subpage page-title="Email Aliases" slot="view"
+         id="email-aliases" data-parent-view-id="parent" prefs="{{prefs}}">
+        <settings-email-aliases-page></settings-email-aliases-page>
+      </settings-subpage>
     `)
   }
 })
