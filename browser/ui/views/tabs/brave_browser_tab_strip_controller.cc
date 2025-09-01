@@ -68,7 +68,7 @@ void BraveBrowserTabStripController::ExecuteCommandForTab(
   }
 
   if (command_id == TabStripModel::CommandCloseTab) {
-    model_->CloseSelectedTabsFromBrowserCommands();
+    model_->CloseSelectedTabsWithSplitView();
     return;
   }
 

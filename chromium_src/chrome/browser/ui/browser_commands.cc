@@ -54,7 +54,7 @@ void MakeActiveTabReloadOnlyForSplitTab(
 #define ReloadBypassingCache ReloadBypassingCache_ChromiumImpl
 #define GetReadingListModel GetReadingListModel_ChromiumImpl
 #define kChromeUISplitViewNewTabPageURL kChromeUINewTabURL
-#define CloseSelectedTabs CloseSelectedTabsFromBrowserCommands
+#define CloseSelectedTabs CloseSelectedTabsWithSplitView
 
 // Need to patch to adjust |selected_tabs| in the middle of ReloadInternal().
 #define BRAVE_RELOAD_INTERNAL                                    \

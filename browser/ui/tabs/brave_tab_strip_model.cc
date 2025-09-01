@@ -133,7 +133,7 @@ void BraveTabStripModel::SetCustomTitleForTab(
   NotifyTabChanged(tab_interface, TabChangeType::kAll);
 }
 
-void BraveTabStripModel::CloseSelectedTabsFromBrowserCommands() {
+void BraveTabStripModel::CloseSelectedTabsWithSplitView() {
   auto selected_indices = selection_model().selected_indices();
   if (selected_indices.size() != 2) {
     return CloseSelectedTabs();

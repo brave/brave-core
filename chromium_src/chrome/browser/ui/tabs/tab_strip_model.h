@@ -10,9 +10,11 @@
   virtual SelectRelativeTab(__VA_ARGS__); \
   friend class BraveTabStripModel
 
+// Added another closing selected tabs method to handle close activ tab
+// in split tab. We only want to close active tab from split tab.
 #define CloseSelectedTabs(...)    \
   CloseSelectedTabs(__VA_ARGS__); \
-  virtual void CloseSelectedTabsFromBrowserCommands()
+  virtual void CloseSelectedTabsWithSplitView()
 
 #define DraggingTabsSession DraggingTabsSessionChromium
 #define IsReadLaterSupportedForAny virtual IsReadLaterSupportedForAny
