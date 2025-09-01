@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { loadTimeData } from "chrome://resources/js/load_time_data.js"
+import '../settings_page/settings_subpage.js'
 
 // Unfortunately, our current WebPack build does not support ESModule output and
 // it expects loadTimeData to be on the globalThis. The settings page has been
@@ -13,10 +14,16 @@ import { loadTimeData } from "chrome://resources/js/load_time_data.js"
 
 class EmailAliasesPage extends HTMLElement {
   connectedCallback() {
-    this.attachShadow({ mode: 'open' })
+    const subpage = document.createElement('settings-subpage')
+    this.appendChild(subpage)
+    const title = loadTimeData.getString('emailAliasesLabel')
+    subpage.setAttribute('page-title', title)
+    const reactHost = document.createElement('div')
+    subpage.appendChild(reactHost)
+    const reactShadowRoot = reactHost.attachShadow({ mode: 'open' })
     import('/email_aliases.bundle.js' as any)
       .then(() => {
-        (window as any).mountEmailAliases(this.shadowRoot)
+        ;(window as any).mountEmailAliases(reactShadowRoot)
       })
   }
 }

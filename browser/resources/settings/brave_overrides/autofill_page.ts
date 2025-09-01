@@ -71,10 +71,9 @@ RegisterPolymerTemplateModifications({
         '[Settings] Unable to find cr-view-manager on autofill-page')
     }
     viewManager.append(html`
-      <settings-subpage page-title="Email Aliases" slot="view"
+      <settings-email-aliases-page page-title="Email Aliases" slot="view"
          id="email-aliases" data-parent-view-id="parent" prefs="{{prefs}}">
-        <settings-email-aliases-page></settings-email-aliases-page>
-      </settings-subpage>
+      </settings-email-aliases-page>
     `)
   }
 })
