@@ -7,12 +7,12 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_SPLIT_TAB_MENU_MODEL_H_
 
 // Export GetCommandIdXXX() functions from cc to call it in subclass and test.
-#define CloseTabAtIndex(...)                                      \
-  CloseTabAtIndex(__VA_ARGS__);                                   \
-  friend class BraveSplitTabMenuModel;                            \
-  FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuWithSideBySideTest, \
-                           SplitViewMenuCustomizationTest);       \
-  static CommandId GetCommandIdEnum(int command_id);              \
+#define CloseTabAtIndex(...)                                \
+  CloseTabAtIndex(__VA_ARGS__);                             \
+  friend class BraveSplitTabMenuModel;                      \
+  FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuContentsTest, \
+                           SplitViewMenuCustomizationTest); \
+  static CommandId GetCommandIdEnum(int command_id);        \
   static int GetCommandIdInt(CommandId command_id)
 
 #define GetReversePositionIcon(...) \

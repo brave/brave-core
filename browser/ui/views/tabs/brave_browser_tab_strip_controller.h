@@ -39,6 +39,8 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   void ShowContextMenuForTab(Tab* tab,
                              const gfx::Point& p,
                              ui::mojom::MenuSourceType source_type) override;
+  void ExecuteCommandForTab(TabStripModel::ContextMenuCommand command_id,
+                            const Tab* tab) override;
 
  private:
   // If non-NULL it means we're showing a menu for the tab.

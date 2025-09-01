@@ -58,3 +58,19 @@ void BraveBrowserTabStripController::ShowContextMenuForTab(
       std::make_unique<BraveTabContextMenuContents>(tab, this, *tab_index);
   context_menu_contents_->RunMenuAt(p, source_type);
 }
+
+void BraveBrowserTabStripController::ExecuteCommandForTab(
+    TabStripModel::ContextMenuCommand command_id,
+    const Tab* tab) {
+  const std::optional<int> model_index = tabstrip_->GetModelIndexOf(tab);
+  if (!model_index.has_value()) {
+    return;
+  }
+
+  if (command_id == TabStripModel::CommandCloseTab) {
+    model_->CloseSelectedTabsFromBrowserCommands();
+    return;
+  }
+
+  model_->ExecuteContextMenuCommand(model_index.value(), command_id);
+}

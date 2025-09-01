@@ -73,7 +73,7 @@ class BraveTabMenuModel : public TabMenuModel {
   bool IsNewFeatureAt(size_t index) const override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuWithSideBySideTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuContentsTest,
                            SplitViewMenuCustomizationTest);
 
   void Build(Browser* browser,
