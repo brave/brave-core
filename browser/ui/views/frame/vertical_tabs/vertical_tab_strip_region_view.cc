@@ -1038,8 +1038,7 @@ void BraveVerticalTabStripRegionView::OnResize(int resize_amount,
   gfx::Rect bounds_in_screen = GetLocalBounds();
   views::View::ConvertRectToScreen(this, &bounds_in_screen);
 
-  auto cursor_position =
-      display::Screen::GetScreen()->GetCursorScreenPoint().x();
+  auto cursor_position = display::Screen::Get()->GetCursorScreenPoint().x();
   if (!resize_offset_.has_value()) {
     resize_offset_ =
         (*vertical_tab_on_right_ ? bounds_in_screen.x() - cursor_position
