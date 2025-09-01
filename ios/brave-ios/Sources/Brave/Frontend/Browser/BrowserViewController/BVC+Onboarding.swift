@@ -286,11 +286,17 @@ extension BrowserViewController {
       return
     }
 
+    var steps: [any OnboardingStep] = [.defaultBrowsing, .blockInterruptions]
+    if !braveCore.p3aUtils.isP3APreferenceManaged {
+      steps.append(.p3aOptIn)
+    }
+
     let controller = OnboardingController(
       environment: .init(
         p3aUtils: braveCore.p3aUtils,
         attributionManager: attributionManager
       ),
+      steps: steps,
       onCompletion: {
         Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
         Preferences.AppState.shouldDeferPromotedPurchase.value = false

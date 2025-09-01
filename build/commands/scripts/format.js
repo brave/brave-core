@@ -109,13 +109,34 @@ const runFormat = async (options = {}) => {
     skipLogging,
   )
 
-  formatIssues = formatIssues.concat(
-    await runPrettier(changedFiles, options.dryRun),
-  )
+  formatIssues = [
+    ...formatIssues,
+    ...(await runPrettier(changedFiles, options.dryRun)),
+    ...(await runMojomFormat(changedFiles, options.dryRun)),
+  ]
 
   if (options.dryRun && formatIssues.length > 0) {
     console.error(formatIssues.join('\n'))
     process.exit(2)
+  }
+}
+
+const handleDifference = async (file, dryRun, formatted) => {
+  if (!dryRun) {
+    await fs.writeFile(file, formatted)
+    return
+  }
+
+  // Use `echo <formatted> | git diff --no-index <file> -` to show diff
+  const diffResult = spawnSync('git', ['diff', '--no-index', file, '-'], {
+    stdio: 'pipe',
+    input: formatted,
+  })
+  if (diffResult.status === 1) {
+    // Differences were found
+    return convertDiff(diffResult.stdout.toString(), file)
+  } else {
+    return `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`
   }
 }
 
@@ -126,7 +147,7 @@ const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
   })
 
   if (fileInfo.ignored || !fileInfo.inferredParser) {
-    return null
+    return
   }
 
   const content = await fs.readFile(file, { encoding: 'utf-8' })
@@ -136,24 +157,10 @@ const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
     parser: fileInfo.inferredParser,
   })
   if (content !== formatted) {
-    if (dryRun) {
-      // Use `echo <formatted> | git diff --no-index <file> -` to show diff
-      const diffResult = spawnSync('git', ['diff', '--no-index', file, '-'], {
-        stdio: 'pipe',
-        input: formatted,
-      })
-      if (diffResult.status === 1) {
-        // Differences were found
-        return convertDiff(diffResult.stdout.toString(), file)
-      } else {
-        return `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`
-      }
-    } else {
-      await fs.writeFile(file, formatted)
-    }
+    return await handleDifference(file, dryRun, formatted)
   }
-  return null
 }
+
 const runPrettier = async (files, dryRun) => {
   const options = require(path.join(config.braveCoreDir, '.prettierrc'))
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
@@ -174,6 +181,61 @@ const runPrettier = async (files, dryRun) => {
   }
 
   return prettierIssues
+}
+
+const runMojomFormatForFile = async (file, dryRun) => {
+  if (!file.endsWith('.mojom')) {
+    return
+  }
+  // Mojom formatting is experimental. Only these files are formatted by now.
+  const mojomFormatAllowList = ['**/brave_wallet/**/*.mojom']
+
+  if (
+    !mojomFormatAllowList.some((pattern) => path.matchesGlob(file, pattern))
+  ) {
+    return
+  }
+
+  const content = await fs.readFile(file, { encoding: 'utf-8' })
+  if (!content) {
+    return
+  }
+
+  const mojomFormatArgs = [
+    path.join(
+      config.srcDir,
+      'mojo',
+      'public',
+      'tools',
+      'mojom',
+      'mojom_format.py',
+    ),
+  ]
+  const formatResult = util.run('python3', mojomFormatArgs, { input: content })
+  const formatted = formatResult.stdout.toString().split(/\r?\n/).join('\n')
+  if (!formatted) {
+    return `Can't format ${file}:\n`
+  }
+
+  if (content !== formatted) {
+    return await handleDifference(file, dryRun, formatted)
+  }
+}
+
+const runMojomFormat = async (files, dryRun) => {
+  const mojomFormatIssues = []
+  for (const file of files) {
+    try {
+      const issue = await runMojomFormatForFile(file, dryRun)
+      if (issue) {
+        mojomFormatIssues.push(issue)
+      }
+    } catch (e) {
+      mojomFormatIssues.push(`Can't format ${file}:\n ${e}`)
+    }
+  }
+
+  return mojomFormatIssues
 }
 
 runFormat(program.opts())

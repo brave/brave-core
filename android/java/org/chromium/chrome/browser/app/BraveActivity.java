@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.app;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -98,7 +99,6 @@ import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveSyncWorker;
-import org.chromium.chrome.browser.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
 import org.chromium.chrome.browser.IntentHandler;
@@ -211,6 +211,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo.SearchWidgetPromoPanel;
+import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.util.motion.MotionEventInfo;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -276,6 +277,8 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String OPEN_URL = "open_url";
     public static final String BRAVE_WEBCOMPAT_INFO_WIKI_URL =
             "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
+    private static final String KEY_RESUME_MEDIA_SESSION =
+            "org.chromium.chrome.browser.app.KEY_RESUME_MEDIA_SESSION";
 
     private static final int DAYS_4 = 4;
     private static final int DAYS_7 = 7;
@@ -305,6 +308,7 @@ public abstract class BraveActivity extends ChromeActivity
     private static final List<String> sYandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
+    private static final int PIP_UPDATE_DELAY_MS = 500;
     private boolean mIsVerification;
     public boolean mIsDeepLink;
     private BraveWalletService mBraveWalletService;
@@ -332,6 +336,9 @@ public abstract class BraveActivity extends ChromeActivity
     private AppUpdateManager mAppUpdateManager;
     private boolean mWalletBadgeVisible;
     private boolean mSpoofCustomTab;
+    // Boolean flag that indicates if the media session must be resumed
+    // when switching in picture-in-picture mode.
+    private boolean mResumeMediaSession;
 
     private View mQuickSearchEnginesView;
 
@@ -345,6 +352,21 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public BraveActivity() {}
+
+    @Override
+    protected void onPostCreate() {
+        super.onPostCreate();
+        final Bundle savedInstanceState = getSavedInstanceState();
+        if (savedInstanceState != null) {
+            mResumeMediaSession = savedInstanceState.getBoolean(KEY_RESUME_MEDIA_SESSION, false);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_RESUME_MEDIA_SESSION, mResumeMediaSession);
+    }
 
     @Override
     public void onResumeWithNative() {
@@ -514,7 +536,27 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void onPictureInPictureModeChanged(boolean inPicture, Configuration newConfig) {
         super.onPictureInPictureModeChanged(inPicture, newConfig);
-
+        if (mResumeMediaSession) {
+            mResumeMediaSession = false;
+            MediaSession mediaSession = MediaSession.fromWebContents(getCurrentWebContents());
+            if (mediaSession != null) {
+                mediaSession.resume();
+            }
+            // Adopting the same workaround adopted upstream, to check the full implementation
+            // see FullscreenVideoPictureInPictureController class.
+            // Post a delayed handler to update the Pip status, once things have had some
+            // time to settle. When switching into fullscreen mode sometimes the transition is
+            // called before relayout has happened, causing the source rectangle for the Pip
+            // transition to be wrong. This causes the Pip window to look like it moves to the
+            // wrong part of the screen and partially clipped before snapping to its normal place.
+            PostTask.postDelayedTask(
+                    TaskTraits.UI_BEST_EFFORT,
+                    (Runnable)
+                            () ->
+                                    setPictureInPictureParams(
+                                            new PictureInPictureParams.Builder().build()),
+                    PIP_UPDATE_DELAY_MS);
+        }
         if (!inPicture
                 && getCurrentWebContents() != null
                 && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
@@ -2097,6 +2139,14 @@ public abstract class BraveActivity extends ChromeActivity
         } else {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         }
+    }
+
+    /**
+     * Sets a flag to resume the currently active media session when entering picture-in-picture
+     * mode, so the user won't have to manually resume the video after the transition.
+     */
+    public void resumeMediaSession(final boolean resume) {
+        mResumeMediaSession = resume;
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {

@@ -62,6 +62,7 @@ void AdsImpl::SetFlags(mojom::FlagsPtr mojom_flags) {
   flags.did_override_from_command_line =
       mojom_flags->did_override_from_command_line;
   flags.environment_type = mojom_flags->environment_type;
+  flags.ads_uuids = mojom_flags->ads_uuids;
 }
 
 void AdsImpl::SetContentSettings(

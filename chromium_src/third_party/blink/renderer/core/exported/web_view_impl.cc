@@ -15,10 +15,8 @@
   {                                                        \
     RuntimeEnabledFeatures::SetBraveIsInTorContextEnabled( \
         prefs.is_tor_window);                              \
-    if constexpr (BUILDFLAG(IS_MAC)) {                     \
-      if (prefs.is_tor_window) {                           \
-        RuntimeEnabledFeatures::SetWebShareEnabled(false); \
-      }                                                    \
+    if (prefs.is_tor_window) {                             \
+      RuntimeEnabledFeatures::SetWebShareEnabled(false);   \
     }                                                      \
   }
 

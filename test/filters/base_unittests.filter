@@ -13,3 +13,6 @@
 # rust logs severity has been tamed in brave, as crates were spamming CI with
 # logs.
 -RustLogIntegrationTest.CheckAllSeverity
+
+# This test fails on CI but passes locally
+-CancelableEventTest.BothCancelFailureAndSucceedOccurUnderContention

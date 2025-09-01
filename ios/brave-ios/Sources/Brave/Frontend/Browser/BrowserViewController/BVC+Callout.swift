@@ -56,6 +56,10 @@ extension BrowserViewController {
   // MARK: Conditional Callout Methods
 
   private func presentP3AScreenCallout() {
+    if braveCore.p3aUtils.isP3APreferenceManaged {
+      return
+    }
+
     let controller = OnboardingController(
       environment: .init(
         p3aUtils: braveCore.p3aUtils,

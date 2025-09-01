@@ -12,6 +12,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_stats/browser/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/webcompat_reporter/buildflags/buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -36,6 +37,18 @@ NSString* const kWebcompatReportEndpoint =
     _localPrefs = GetApplicationContext()->GetLocalState();
   }
   return self;
+}
+
+- (BOOL)isStatsReportingManaged {
+  return _localPrefs->IsManagedPreference(kStatsReportingEnabled);
+}
+
+- (BOOL)isStatsReportingEnabled {
+  return _localPrefs->GetBoolean(kStatsReportingEnabled);
+}
+
+- (void)setStatsReportingEnabled:(BOOL)statsReportingEnabled {
+  _localPrefs->SetBoolean(kStatsReportingEnabled, statsReportingEnabled);
 }
 
 - (NSDictionary<NSString*, NSString*>*)walletParams {

@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
@@ -26,53 +27,47 @@ namespace {
 
 struct ParamInfo final {
   test::CommandLineSwitchList command_line_switches;
-  bool should_debug;
-  bool did_override_command_line_switches;
-  mojom::EnvironmentType environment_type;
+  bool should_debug = false;
+  bool did_override_command_line_switches = false;
+  mojom::EnvironmentType environment_type = kDefaultEnvironmentType;
+  base::flat_map<std::string, bool> ads_uuids;
 } const kTests[] = {
     // Should debug.
     {.command_line_switches = {{"rewards", "debug=true"}},
-     .should_debug = true,
-     .did_override_command_line_switches = false,
-     .environment_type = kDefaultEnvironmentType},
+     .should_debug = true},
 
     // Should not debug.
     {.command_line_switches = {{"rewards", "debug=false"}},
-     .should_debug = false,
-     .did_override_command_line_switches = false,
-     .environment_type = kDefaultEnvironmentType},
+     .should_debug = false},
 
     // Override variations command-line switches.
     {.command_line_switches = {{variations::switches::kFakeVariationsChannel,
                                 "foobar"}},
-     .should_debug = false,
-     .did_override_command_line_switches = true,
-     .environment_type = kDefaultEnvironmentType},
+     .did_override_command_line_switches = true},
 
     // Do not override variations command-line switches.
     {.command_line_switches = {{variations::switches::kFakeVariationsChannel,
                                 ""}},
-     .should_debug = false,
-     .did_override_command_line_switches = false,
-     .environment_type = kDefaultEnvironmentType},
+     .did_override_command_line_switches = false},
 
     // Force staging environment from command-line switch.
     {.command_line_switches = {{"rewards", "staging=true"}},
-     .should_debug = false,
-     .did_override_command_line_switches = false,
      .environment_type = mojom::EnvironmentType::kStaging},
 
     // Force production environment from command-line switch.
     {.command_line_switches = {{"rewards", "staging=false"}},
-     .should_debug = false,
-     .did_override_command_line_switches = false,
      .environment_type = mojom::EnvironmentType::kProduction},
 
     // Use default environment.
-    {.command_line_switches = {},
-     .should_debug = false,
-     .did_override_command_line_switches = false,
-     .environment_type = kDefaultEnvironmentType}};
+    {.command_line_switches = {}, .environment_type = kDefaultEnvironmentType},
+
+    // Ads UUIDs
+    {.command_line_switches =
+         {{"ads",
+           R"(uuids=fd955b44-5b46-4359-a074-3bc700cb86bf,7bc35504-c891-4b80-afac-20c655a5566e)"}},
+     .ads_uuids = {{"fd955b44-5b46-4359-a074-3bc700cb86bf", true},
+                   {"7bc35504-c891-4b80-afac-20c655a5566e", true}}},
+};
 
 }  // namespace
 
@@ -93,6 +88,7 @@ TEST_P(BraveAdsFlagsUtilTest, BuildFlags) {
   EXPECT_EQ(GetParam().did_override_command_line_switches,
             mojom_flags->did_override_from_command_line);
   EXPECT_EQ(GetParam().environment_type, mojom_flags->environment_type);
+  EXPECT_EQ(GetParam().ads_uuids, mojom_flags->ads_uuids);
 }
 
 std::string TestParamToString(

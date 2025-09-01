@@ -93,6 +93,9 @@ export const StatusText = styled(Text)`
 
 export const SelectButton = styled(WalletButton)`
   cursor: pointer;
+  &:disabled {
+    cursor: default;
+  }
   width: 100%;
   border: none;
   background: none;

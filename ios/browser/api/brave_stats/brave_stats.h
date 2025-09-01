@@ -16,6 +16,9 @@ OBJC_EXPORT NSString* const kWebcompatReportEndpoint;
 
 OBJC_EXPORT
 @interface BraveStats : NSObject
+@property(readonly) BOOL isStatsReportingManaged;
+@property(nonatomic, getter=isStatsReportingEnabled)
+    BOOL statsReportingEnabled NS_SWIFT_NAME(isStatsReportingEnabled);
 /// Any additional wallet parameters to send with the DAU ping
 @property(readonly) NSDictionary<NSString*, NSString*>* walletParams;
 @property(readonly, getter=isNotificationAdsEnabled)

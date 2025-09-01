@@ -80,11 +80,13 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
+#include "third_party/blink/public/common/input/web_mouse_event.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/accelerators/accelerator_manager.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
+#include "ui/events/event.h"
 #include "ui/events/event_observer.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/border.h"
@@ -993,14 +995,33 @@ bool BraveBrowserView::PreHandleMouseEvent(const blink::WebMouseEvent& event) {
     return true;
   }
 
-  if (sidebar_container_view_ &&
-      sidebar_container_view_->PreHandleMouseEvent(event)) {
+  if (event.GetTypeAsUiEventType() == ui::EventType::kMouseMoved &&
+      sidebar_container_view_ &&
+      sidebar_container_view_->PreHandleMouseEvent(event.PositionInScreen())) {
     // If the sidebar container handles the event, we don't need to handle it
     // further.
     return true;
   }
 
   return false;
+}
+
+void BraveBrowserView::OnMouseMoved(const ui::MouseEvent& event) {
+  BrowserView::OnMouseMoved(event);
+
+  // To make sidebar UI visible when mouse moved to space between window border
+  // & contents. This space exists when rounded corners feature is enabled. As
+  // BraveBrowserView::PreHandleMouseEvent() is only called from web contents,
+  // we need to handle move event from browser view.
+  // This handling is useful when it's in fullscreen. If move the mouse point to
+  // window edge quickly BraveBrowserView::PreHandleMouseEvent() is not called.
+  if (sidebar_container_view_ && event.type() == ui::EventType::kMouseMoved &&
+      BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
+    gfx::Point position_in_screen = event.location();
+    views::View::ConvertPointToScreen(this, &position_in_screen);
+    sidebar_container_view_->PreHandleMouseEvent(
+        gfx::PointF(position_in_screen));
+  }
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {

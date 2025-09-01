@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 
+#include "brave/components/brave_ads/core/internal/flags/ads_uuids/ads_uuids_command_line_switch_parser_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_command_line_switch_parser_util.h"
 #include "brave/components/brave_ads/core/internal/flags/did_override/did_override_command_line_switch_values_util.h"
 #include "brave/components/brave_ads/core/internal/flags/did_override/did_override_command_line_switches_util.h"
@@ -33,6 +34,8 @@ mojom::FlagsPtr BuildFlags() {
       DidOverrideCommandLineSwitchValues() || DidOverrideCommandLineSwitches();
 
   mojom_flags->environment_type = ChooseEnvironmentType();
+
+  mojom_flags->ads_uuids = ParseAdsUuidsCommandLineSwitch();
 
   return mojom_flags;
 }

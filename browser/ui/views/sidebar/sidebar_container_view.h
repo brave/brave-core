@@ -33,10 +33,6 @@ namespace sidebar {
 class SidebarBrowserTest;
 }  // namespace sidebar
 
-namespace blink {
-class WebMouseEvent;
-}  // namespace blink
-
 class BraveBrowser;
 class SidePanelEntry;
 
@@ -75,7 +71,7 @@ class SidebarContainerView
   bool IsSidebarVisible() const;
 
   // Return false if this mouse event can't make sidebar UI visible.
-  bool PreHandleMouseEvent(const blink::WebMouseEvent& event);
+  bool PreHandleMouseEvent(const gfx::PointF& point_in_screen);
 
   BraveSidePanel* side_panel() { return side_panel_; }
 

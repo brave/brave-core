@@ -57,6 +57,23 @@ public class BraveProfileMigrations {
   }
 }
 
+public class BraveLocalStateMigration {
+  let localState: any PrefService
+  public init(localState: any PrefService) {
+    self.localState = localState
+  }
+
+  public func launchMigrations() {
+    migrateDAUPingPreference()
+  }
+
+  private func migrateDAUPingPreference() {
+    Preferences.DeprecatedPreferences.sendUsagePing.migrate { value in
+      localState.set(value, forPath: kStatsReportingEnabledPrefName)
+    }
+  }
+}
+
 public class Migration {
 
   public init() {}
@@ -192,6 +209,8 @@ extension Migration {
 
 extension Preferences {
   fileprivate final class DeprecatedPreferences {
+    static let sendUsagePing = Option<Bool>(key: "dau.send-usage-ping", default: true)
+
     static let blockAdsAndTracking = Option<Bool>(
       key: "shields.block-ads-and-tracking",
       default: true

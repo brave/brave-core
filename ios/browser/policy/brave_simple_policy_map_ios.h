@@ -12,6 +12,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/p3a/pref_names.h"
 #include "build/build_config.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
@@ -55,6 +56,16 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
         base::Value::Type::BOOLEAN,
     },
 #endif
+    {
+        policy::key::kBraveP3AEnabled,
+        p3a::kP3AEnabled,
+        base::Value::Type::BOOLEAN,
+    },
+    {
+        policy::key::kBraveStatsPingEnabled,
+        kStatsReportingEnabled,
+        base::Value::Type::BOOLEAN,
+    },
 };
 
 }  // namespace policy
