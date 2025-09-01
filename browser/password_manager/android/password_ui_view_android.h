@@ -86,6 +86,11 @@ class PasswordUiViewAndroid
       JNIEnv* env,
       const base::android::JavaParamRef<jobject>& context,
       int index);
+  void HandleImportPasswordsFromCsv(
+      JNIEnv* env,
+      const std::string& csv_content,
+      const base::android::JavaRef<jobject>& success_callback,
+      const base::android::JavaRef<jobject>& error_callback);
   jboolean IsWaitingForPasswordStore(JNIEnv* env);
   // Destroy the native implementation.
   void Destroy(JNIEnv*);
