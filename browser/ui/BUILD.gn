@@ -327,6 +327,7 @@ source_set("ui") {
       "//chrome/browser/importer",
       "//chrome/browser/profiles",
       "//chrome/browser/search",
+      "//chrome/browser/send_tab_to_self",
       "//chrome/browser/sync",
       "//chrome/browser/themes",
       "//chrome/browser/ui:layout_constants",
