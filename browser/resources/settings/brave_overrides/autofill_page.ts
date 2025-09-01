@@ -33,13 +33,6 @@ RegisterPolymerPrototypeModification({
       }
       originalCurrentRouteChanged.call(this, newRoute, oldRoute)
     }
-    const originalGetAssociated = prototype.getAssociatedControlFor
-    prototype.getAssociatedControlFor = function (childViewId: string) {
-      if (childViewId === 'email-aliases') {
-        return this.shadowRoot!.querySelector('settings-subpage#email-aliases')
-      }
-      return originalGetAssociated.call(this, childViewId)
-    }
   }
 })
 
@@ -72,7 +65,7 @@ RegisterPolymerTemplateModifications({
     }
     viewManager.append(html`
       <settings-email-aliases-page page-title="Email Aliases" slot="view"
-         id="email-aliases" data-parent-view-id="parent" prefs="{{prefs}}">
+         id="email-aliases" data-parent-view-id="parent">
       </settings-email-aliases-page>
     `)
   }
