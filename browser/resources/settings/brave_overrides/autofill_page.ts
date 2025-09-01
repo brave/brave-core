@@ -26,14 +26,12 @@ RegisterPolymerPrototypeModification({
     const original = prototype.currentRouteChanged
     prototype.currentRouteChanged =
       function (newRoute: Route, oldRoute?: Route) {
-      if (typeof original === 'function') {
-        original.call(this, newRoute, oldRoute)
-      }
-
       if (newRoute === routes.EMAIL_ALIASES) {
         this.$.viewManager.switchView('email-aliases', 'no-animation',
                                       'no-animation')
+        return
       }
+      original.call(this, newRoute, oldRoute)
     }
   }
 })
