@@ -70,14 +70,6 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                               IDR_WALLET_PANEL_HTML);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameAncestors,
-      base::JoinString(
-          {"frame-ancestors", kBraveUIWalletPageURL, kBraveUIWalletPanelURL},
-          " ") +
-          ";");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'self';");
-  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
                         kUntrustedLineChartURL, kUntrustedNftURL,
