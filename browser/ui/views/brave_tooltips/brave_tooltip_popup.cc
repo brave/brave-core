@@ -70,7 +70,7 @@ BraveTooltipPopup::BraveTooltipPopup(std::unique_ptr<BraveTooltip> tooltip)
   GetViewAccessibility().SetRoleDescription(l10n_util::GetStringUTF8(
       IDS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_ACCESSIBLE_NAME));
 
-  display::Screen* screen = display::Screen::GetScreen();
+  display::Screen* screen = display::Screen::Get();
   if (screen) {
     screen->AddObserver(this);
   }
@@ -81,7 +81,7 @@ BraveTooltipPopup::~BraveTooltipPopup() {
   // This will fire OnWidgetDestroyed() notification.
   widget_.reset();
 
-  display::Screen* screen = display::Screen::GetScreen();
+  display::Screen* screen = display::Screen::Get();
   if (screen) {
     screen->RemoveObserver(this);
   }
@@ -245,10 +245,10 @@ void BraveTooltipPopup::CreatePopup() {
 
 gfx::Point BraveTooltipPopup::GetDefaultOriginForSize(const gfx::Size& size) {
   const gfx::Rect display_bounds =
-      display::Screen::GetScreen()->GetPrimaryDisplay().bounds();
+      display::Screen::Get()->GetPrimaryDisplay().bounds();
 
   const gfx::Rect display_work_area =
-      display::Screen::GetScreen()->GetPrimaryDisplay().work_area();
+      display::Screen::Get()->GetPrimaryDisplay().work_area();
 
   // Calculate position
   const double width = static_cast<double>(display_bounds.width());
