@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SearchUtils;
 import org.chromium.components.browser_ui.settings.SettingsFragment.AnimationType;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -59,7 +60,9 @@ import java.util.Locale;
  */
 @NullMarked
 public class PasswordSettings extends ChromeBaseSettingsFragment
-        implements PasswordListObserver, Preference.OnPreferenceClickListener {
+        implements PasswordListObserver,
+                Preference.OnPreferenceChangeListener,
+                Preference.OnPreferenceClickListener {
 
     // Keys for name/password dictionaries.
     public static final String PASSWORD_LIST_URL = "url";
@@ -82,8 +85,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private static final int ORDER_SWITCH = 0;
     private static final int ORDER_AUTO_SIGNIN_CHECKBOX = 1;
     private static final int ORDER_SAVED_PASSWORDS = 6;
-    private static final int ORDER_EXCEPTIONS = 7;
-    private static final int ORDER_SAVED_PASSWORDS_NO_TEXT = 8;
+    private static final int ORDER_SAVED_PASSWORDS_NO_TEXT = 7;
+    private static final int ORDER_EXCEPTIONS = 8;
 
     // Unique request code for the password exporting activity.
     private static final int PASSWORD_EXPORT_INTENT_REQUEST_CODE = 3485764;
@@ -140,18 +143,87 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                 },
                 PASSWORD_SETTINGS_EXPORT_METRICS_ID);
         mPageTitle.set(getString(R.string.password_manager_settings_title));
-        setPreferenceScreen(getPreferenceManager().createPreferenceScreen(getStyledContext()));
-        PasswordManagerHandlerProvider.getForProfile(getProfile()).addObserver(this);
 
+        // Load preferences from XML instead of creating programmatically
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_password_settings_preferences);
+
+        PasswordManagerHandlerProvider.getForProfile(getProfile()).addObserver(this);
         setHasOptionsMenu(true); // Password Export might be optional but Search is always present.
 
         mManagePasswordsReferrer = getReferrerFromInstanceStateOrLaunchBundle(savedInstanceState);
+
+        // Set up preference change listeners
+        setupPreferenceListeners();
 
         if (savedInstanceState == null) return;
 
         if (savedInstanceState.containsKey(SAVED_STATE_SEARCH_QUERY)) {
             mSearchQuery = savedInstanceState.getString(SAVED_STATE_SEARCH_QUERY);
         }
+    }
+
+    private void setupPreferenceListeners() {
+        // Set up save passwords switch
+        ChromeSwitchPreference savePasswordsSwitch =
+                (ChromeSwitchPreference) findPreference(PREF_SAVE_PASSWORDS_SWITCH);
+        if (savePasswordsSwitch != null) {
+            savePasswordsSwitch.setOnPreferenceChangeListener(this);
+            savePasswordsSwitch.setManagedPreferenceDelegate(
+                    new ChromeManagedPreferenceDelegate(getProfile()) {
+                        @Override
+                        public boolean isPreferenceControlledByPolicy(Preference preference) {
+                            return getPrefService()
+                                    .isManagedPreference(Pref.CREDENTIALS_ENABLE_SERVICE);
+                        }
+                    });
+            // Set initial state
+            savePasswordsSwitch.setChecked(
+                    getPrefService().getBoolean(Pref.CREDENTIALS_ENABLE_SERVICE));
+        }
+
+        // Set up auto sign-in switch
+        ChromeSwitchPreference autoSignInSwitch =
+                (ChromeSwitchPreference) findPreference(PREF_AUTOSIGNIN_SWITCH);
+        if (autoSignInSwitch != null) {
+            if (shouldShowAutoSigninOption()) {
+                autoSignInSwitch.setOnPreferenceChangeListener(this);
+                autoSignInSwitch.setManagedPreferenceDelegate(
+                        new ChromeManagedPreferenceDelegate(getProfile()) {
+                            @Override
+                            public boolean isPreferenceControlledByPolicy(Preference preference) {
+                                return getPrefService()
+                                        .isManagedPreference(Pref.CREDENTIALS_ENABLE_AUTOSIGNIN);
+                            }
+                        });
+                // Set initial state
+                autoSignInSwitch.setChecked(
+                        getPrefService().getBoolean(Pref.CREDENTIALS_ENABLE_AUTOSIGNIN));
+            } else {
+                // Hide the auto sign-in switch if not needed
+                getPreferenceScreen().removePreference(autoSignInSwitch);
+            }
+        }
+
+        // Set up no passwords message divider settings
+        TextMessagePreference noPasswordsMessage =
+                (TextMessagePreference) findPreference(PREF_KEY_SAVED_PASSWORDS_NO_TEXT);
+        if (noPasswordsMessage != null) {
+            noPasswordsMessage.setDividerAllowedAbove(false);
+            noPasswordsMessage.setDividerAllowedBelow(false);
+        }
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        String key = preference.getKey();
+        if (PREF_SAVE_PASSWORDS_SWITCH.equals(key)) {
+            getPrefService().setBoolean(Pref.CREDENTIALS_ENABLE_SERVICE, (boolean) newValue);
+            return true;
+        } else if (PREF_AUTOSIGNIN_SWITCH.equals(key)) {
+            getPrefService().setBoolean(Pref.CREDENTIALS_ENABLE_AUTOSIGNIN, (boolean) newValue);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -262,7 +334,9 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     void rebuildPasswordLists() {
         mNoPasswords = false;
         mNoPasswordExceptions = false;
-        getPreferenceScreen().removeAll();
+
+        // Clear existing password and exception preferences
+        clearPasswordLists();
 
         PasswordManagerHandlerProvider passwordManagerHandlerProvider =
                 assertNonNull(PasswordManagerHandlerProvider.getForProfile(getProfile()));
@@ -278,16 +352,50 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             return;
         }
 
-        createSavePasswordsSwitch();
-        if (shouldShowAutoSigninOption()) {
-            createAutoSignInCheckbox();
-        }
-
+        // Update preference states
+        updatePreferenceStates();
         passwordManagerHandler.updatePasswordLists();
     }
 
     private boolean shouldShowAutoSigninOption() {
         return !DeviceInfo.isAutomotive();
+    }
+
+    private void clearPasswordLists() {
+        // Clear saved passwords category
+        PreferenceCategory savedPasswordsCategory =
+                (PreferenceCategory) findPreference(PREF_KEY_CATEGORY_SAVED_PASSWORDS);
+        if (savedPasswordsCategory != null) {
+            savedPasswordsCategory.removeAll();
+        }
+
+        // Clear exceptions category
+        PreferenceCategory exceptionsCategory =
+                (PreferenceCategory) findPreference(PREF_KEY_CATEGORY_EXCEPTIONS);
+        if (exceptionsCategory != null) {
+            exceptionsCategory.removeAll();
+        }
+
+        // Remove no entries message
+        resetNoEntriesTextMessage();
+    }
+
+    private void updatePreferenceStates() {
+        // Update save passwords switch state
+        ChromeSwitchPreference savePasswordsSwitch =
+                (ChromeSwitchPreference) findPreference(PREF_SAVE_PASSWORDS_SWITCH);
+        if (savePasswordsSwitch != null) {
+            savePasswordsSwitch.setChecked(
+                    getPrefService().getBoolean(Pref.CREDENTIALS_ENABLE_SERVICE));
+        }
+
+        // Update auto sign-in switch state
+        ChromeSwitchPreference autoSignInSwitch =
+                (ChromeSwitchPreference) findPreference(PREF_AUTOSIGNIN_SWITCH);
+        if (autoSignInSwitch != null) {
+            autoSignInSwitch.setChecked(
+                    getPrefService().getBoolean(Pref.CREDENTIALS_ENABLE_AUTOSIGNIN));
+        }
     }
 
     /**
@@ -496,65 +604,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                     isBlockedCredential);
         }
         return true;
-    }
-
-    private void createSavePasswordsSwitch() {
-        ChromeSwitchPreference savePasswordsSwitch =
-                new ChromeSwitchPreference(getStyledContext(), null);
-        savePasswordsSwitch.setKey(PREF_SAVE_PASSWORDS_SWITCH);
-        savePasswordsSwitch.setTitle(R.string.password_settings_save_passwords);
-        savePasswordsSwitch.setOrder(ORDER_SWITCH);
-        savePasswordsSwitch.setSummaryOn(R.string.text_on);
-        savePasswordsSwitch.setSummaryOff(R.string.text_off);
-        savePasswordsSwitch.setOnPreferenceChangeListener(
-                (preference, newValue) -> {
-                    getPrefService()
-                            .setBoolean(Pref.CREDENTIALS_ENABLE_SERVICE, (boolean) newValue);
-                    return true;
-                });
-        savePasswordsSwitch.setManagedPreferenceDelegate(
-                new ChromeManagedPreferenceDelegate(getProfile()) {
-                    @Override
-                    public boolean isPreferenceControlledByPolicy(Preference preference) {
-                        return getPrefService()
-                                .isManagedPreference(Pref.CREDENTIALS_ENABLE_SERVICE);
-                    }
-                });
-
-        getPreferenceScreen().addPreference(savePasswordsSwitch);
-
-        // Note: setting the switch state before the preference is added to the screen results in
-        // some odd behavior where the switch state doesn't always match the internal enabled state
-        // (e.g. the switch will say "On" when save passwords is really turned off), so
-        // .setChecked() should be called after .addPreference()
-        savePasswordsSwitch.setChecked(
-                getPrefService().getBoolean(Pref.CREDENTIALS_ENABLE_SERVICE));
-    }
-
-    private void createAutoSignInCheckbox() {
-        ChromeSwitchPreference autoSignInSwitch =
-                new ChromeSwitchPreference(getStyledContext(), null);
-        autoSignInSwitch.setKey(PREF_AUTOSIGNIN_SWITCH);
-        autoSignInSwitch.setTitle(R.string.passwords_auto_signin_title);
-        autoSignInSwitch.setOrder(ORDER_AUTO_SIGNIN_CHECKBOX);
-        autoSignInSwitch.setSummary(R.string.passwords_auto_signin_description);
-        autoSignInSwitch.setOnPreferenceChangeListener(
-                (preference, newValue) -> {
-                    getPrefService()
-                            .setBoolean(Pref.CREDENTIALS_ENABLE_AUTOSIGNIN, (boolean) newValue);
-                    return true;
-                });
-        autoSignInSwitch.setManagedPreferenceDelegate(
-                new ChromeManagedPreferenceDelegate(getProfile()) {
-                    @Override
-                    public boolean isPreferenceControlledByPolicy(Preference preference) {
-                        return getPrefService()
-                                .isManagedPreference(Pref.CREDENTIALS_ENABLE_AUTOSIGNIN);
-                    }
-                });
-        getPreferenceScreen().addPreference(autoSignInSwitch);
-        autoSignInSwitch.setChecked(
-                getPrefService().getBoolean(Pref.CREDENTIALS_ENABLE_AUTOSIGNIN));
     }
 
     private Context getStyledContext() {
