@@ -299,6 +299,8 @@ brave_java_resources = [
   "java/res/drawable/default_indicator.xml",
   "java/res/drawable/ellipse_217.xml",
   "java/res/drawable/exchange_shape.xml",
+  "java/res/drawable/file_download.xml",
+  "java/res/drawable/file_upload.xml",
   "java/res/drawable/fingerprint_unlock_layer_list.xml",
   "java/res/drawable/ic_ac_onboarding.xml",
   "java/res/drawable/ic_accessibility.xml",

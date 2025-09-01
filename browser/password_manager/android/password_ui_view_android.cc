@@ -37,11 +37,13 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/password_manager/core/browser/export/password_csv_writer.h"
 #include "components/password_manager/core/browser/form_parsing/form_data_parser.h"
+#include "components/password_manager/core/browser/import/password_importer.h"
 #include "components/password_manager/core/browser/leak_detection/leak_detection_check_impl.h"
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_ui_utils.h"
 #include "components/password_manager/core/browser/ui/credential_provider_interface.h"
 #include "components/password_manager/core/browser/ui/credential_ui_entry.h"
+#include "components/password_manager/core/common/password_manager_constants.h"
 #include "content/public/browser/browser_thread.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
@@ -303,6 +305,49 @@ std::string JNI_PasswordUiView_GetTrustedVaultLearnMoreURL(JNIEnv* env) {
 
 jboolean PasswordUiViewAndroid::IsWaitingForPasswordStore(JNIEnv* env) {
   return saved_passwords_presenter_.IsWaitingForPasswordStore();
+}
+
+void PasswordUiViewAndroid::HandleImportPasswordsFromCsv(
+    JNIEnv* env,
+    const std::string& csv_content,
+    const JavaRef<jobject>& success_callback,
+    const JavaRef<jobject>& error_callback) {
+  // Create a PasswordImporter instance
+  auto importer = std::make_unique<password_manager::PasswordImporter>(
+      &saved_passwords_presenter_);
+
+  // Capture the importer as a raw pointer before moving it into the callback
+  password_manager::PasswordImporter* importer_ptr = importer.get();
+
+  // Create callbacks that will be called when import completes
+  auto results_callback = base::BindOnce(
+      [](const base::android::JavaRef<jobject>& success_callback,
+         const base::android::JavaRef<jobject>& error_callback,
+         std::unique_ptr<password_manager::PasswordImporter> importer,
+         const password_manager::ImportResults& results) {
+        if (results.status ==
+            password_manager::ImportResults::Status::SUCCESS) {
+          // Success - call success callback with number of imported passwords
+          base::android::RunIntCallbackAndroid(success_callback,
+                                               results.number_imported);
+        } else {
+          // Error - call error callback with error message
+          base::android::RunIntCallbackAndroid(
+              error_callback, static_cast<int32_t>(results.status));
+        }
+      },
+      base::android::ScopedJavaGlobalRef<jobject>(env, success_callback),
+      base::android::ScopedJavaGlobalRef<jobject>(env, error_callback),
+      std::move(importer));
+
+  // Start the import with the CSV content
+  importer_ptr->Import(csv_content,
+                       password_manager::PasswordForm::Store::kProfileStore,
+                       std::move(results_callback));
+}
+
+jint JNI_PasswordUiView_GetMaxPasswordsPerCsvFile(JNIEnv* env) {
+  return password_manager::constants::kMaxPasswordsPerCSVFile;
 }
 
 // static

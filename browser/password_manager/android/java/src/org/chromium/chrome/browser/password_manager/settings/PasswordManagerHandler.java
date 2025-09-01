@@ -85,4 +85,23 @@ public interface PasswordManagerHandler {
      * @return Returns true if the request to fetch the passwords is still pending.
      */
     boolean isWaitingForPasswordStore();
+
+    /**
+     * Trigger importing passwords from CSV content in the background.
+     *
+     * @param csvContent is the CSV content containing passwords to import.
+     * @param successCallback is called on successful completion, with the count of imported
+     *     passwords and a success message as arguments.
+     * @param errorCallback is called on failure, with the error message as argument.
+     */
+    void importPasswordsFromCsv(
+            String csvContent, Callback<Integer> successCallback, Callback<Integer> errorCallback);
+
+    /**
+     * Used to obtain the compile-time constant of the max number of passwords that can be imported
+     * from a CSV
+     *
+     * @return Returns the constant value defined in C++
+     */
+    int getMaxPasswordsPerCsvFile();
 }

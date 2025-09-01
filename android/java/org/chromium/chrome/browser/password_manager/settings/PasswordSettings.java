@@ -90,6 +90,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
     // Unique request code for the password exporting activity.
     private static final int PASSWORD_EXPORT_INTENT_REQUEST_CODE = 3485764;
+    // Unique request code for the password importing activity.
+    private static final int PASSWORD_IMPORT_INTENT_REQUEST_CODE = 3485765;
 
     private boolean mNoPasswords;
     private boolean mNoPasswordExceptions;
@@ -107,6 +109,9 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
     /** For controlling the UX flow of exporting passwords. */
     private final ExportFlow mExportFlow = new ExportFlow();
+
+    /** For controlling the UX flow of importing passwords. */
+    private final ImportFlow mImportFlow = new ImportFlow();
 
     public ExportFlow getExportFlowForTesting() {
         return mExportFlow;
@@ -143,6 +148,30 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                     }
                 },
                 PASSWORD_SETTINGS_EXPORT_METRICS_ID);
+
+        mImportFlow.onCreate(
+                savedInstanceState,
+                new ImportFlow.Delegate() {
+                    @Override
+                    public Activity getActivity() {
+                        return PasswordSettings.this.getActivity();
+                    }
+
+                    @Override
+                    public FragmentManager getFragmentManager() {
+                        return assertNonNull(PasswordSettings.this.getFragmentManager());
+                    }
+
+                    @Override
+                    public Profile getProfile() {
+                        return PasswordSettings.this.getProfile();
+                    }
+
+                    @Override
+                    public void runCreateFilePickerIntent(Intent intent) {
+                        startActivityForResult(intent, PASSWORD_IMPORT_INTENT_REQUEST_CODE);
+                    }
+                });
         mPageTitle.set(getString(R.string.password_manager_settings_title));
 
         // Load preferences from XML instead of creating programmatically
@@ -574,17 +603,23 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode != PASSWORD_EXPORT_INTENT_REQUEST_CODE) return;
-        if (resultCode != Activity.RESULT_OK) return;
-        if (intent == null || intent.getData() == null) return;
 
-        mExportFlow.savePasswordsToDownloads(intent.getData());
+        if (resultCode != Activity.RESULT_OK || intent == null || intent.getData() == null) {
+            return;
+        }
+
+        if (requestCode == PASSWORD_EXPORT_INTENT_REQUEST_CODE) {
+            mExportFlow.savePasswordsToDownloads(intent.getData());
+        } else if (requestCode == PASSWORD_IMPORT_INTENT_REQUEST_CODE) {
+            mImportFlow.processImportFile(intent);
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mExportFlow.onSaveInstanceState(outState);
+        mImportFlow.onSaveInstanceState(outState);
         if (mSearchQuery != null) {
             outState.putString(SAVED_STATE_SEARCH_QUERY, mSearchQuery);
         }
@@ -613,7 +648,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         String key = preference.getKey();
 
         if (PREF_IMPORT_PASSWORDS.equals(key)) {
-            // TODO: Implement password import functionality
+            // Start the password import flow
+            mImportFlow.startImporting();
             return true;
         } else if (PREF_EXPORT_PASSWORDS.equals(key)) {
             // Moved from menu item - export passwords functionality

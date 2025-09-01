@@ -142,6 +142,19 @@ public final class PasswordUiView implements PasswordManagerHandler {
         return PasswordUiViewJni.get().isWaitingForPasswordStore(mNativePasswordUiViewAndroid);
     }
 
+    @Override
+    public void importPasswordsFromCsv(
+            String csvContent, Callback<Integer> successCallback, Callback<Integer> errorCallback) {
+        PasswordUiViewJni.get()
+                .handleImportPasswordsFromCsv(
+                        mNativePasswordUiViewAndroid, csvContent, successCallback, errorCallback);
+    }
+
+    @Override
+    public int getMaxPasswordsPerCsvFile() {
+        return PasswordUiViewJni.get().getMaxPasswordsPerCsvFile();
+    }
+
     /** Destroy the native object. */
     public void destroy() {
         if (mNativePasswordUiViewAndroid != 0) {
@@ -192,5 +205,13 @@ public final class PasswordUiView implements PasswordManagerHandler {
 
         void handleShowBlockedCredentialView(
                 long nativePasswordUiViewAndroid, Context context, int index);
+
+        void handleImportPasswordsFromCsv(
+                long nativePasswordUiViewAndroid,
+                @JniType("std::string") String csvContent,
+                Callback<Integer> successCallback,
+                Callback<Integer> errorCallback);
+
+        int getMaxPasswordsPerCsvFile();
     }
 }
