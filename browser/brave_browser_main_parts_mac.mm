@@ -26,7 +26,7 @@ void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
     return;
   }
 #endif
-  // It would be a no-op if udpates are disabled.
+  // It would be a no-op if updates are disabled.
   [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
 #endif  // BUILDFLAG(ENABLE_SPARKLE)
 }
