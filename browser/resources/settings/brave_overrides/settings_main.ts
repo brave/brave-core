@@ -137,7 +137,8 @@ RegisterPolymerTemplateModifications({
       html`
         <template is="dom-if" if="[[showPage_(pageVisibility_.braveSync)]]">
           <div slot="view" id="braveSync">
-            <template is="dom-if" if="true">
+            <template is="dom-if" if="[[renderPlugin_(
+              routes_.BRAVE_SYNC, lastRoute_, inSearchMode_)]]">
               <settings-brave-sync-page-index
                 prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">

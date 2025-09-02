@@ -1,24 +1,22 @@
 <style include="cr-shared-style settings-shared">
-  #sync-separator
-  {
+  #sync-separator {
     border-bottom: var(--cr-separator-line);
   }
 
-  #disabled-by-admin-icon
-  {
+  #disabled-by-admin-icon {
     text-align: center;
     width: 40px;
   }
-  #sync-page-loading
-  {
+
+  #sync-page-loading {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 18px;
     font-weight: 700;
   }
-  #sync-section
-  {
+
+  #sync-section {
     display: block;
     padding-block-end: 0;
     padding-block-start: 0;
@@ -27,55 +25,58 @@
     padding: var(--leo-spacing-2xl);
   }
 </style>
-<!-- Disabled content -->
-<div class="cr-row first" hidden="[[!syncDisabledByAdmin_]]">
-  <iron-icon id="disabled-by-admin-icon" icon="cr20:domain"></iron-icon>
-  <div class="flex cr-padded-text">
-    $i18n{syncDisabledByAdministrator}
-  </div>
-</div>
 
-<!-- Sync words decryption error, safe storage locked-->
-<div class="cr-row first" hidden="[[!hasLockedSafeStorage_]]">
-  <div class="flex cr-padded-text">
-    $i18nRaw{braveSyncPassphraseDecryptionErrorMessage}
-  </div>
-</div>
-
-<!-- Sync words decryption error, safe storage unlocked-->
-<div class="cr-row first" hidden="[[!hasUnlockedSafeStorageCannotDecryptSeed_]]">
-  <div class="flex cr-padded-text">
-    <p>$i18nRaw{braveSyncPassphraseDecryptionErrorUnlockedSsMessage}</p>
-    <div class="actions">
-      <cr-button class="action-button"
-        on-click="onRejoin_"
-      >
-        $i18n{braveSyncLeaveAndRejoinTheChainButton}
-      </cr-button>
+<settings-subpage
+  page-title="[[syncLabel_]]">
+  <!-- Disabled content -->
+  <div class="cr-row first" hidden="[[!syncDisabledByAdmin_]]">
+    <iron-icon id="disabled-by-admin-icon" icon="cr20:domain"></iron-icon>
+    <div class="flex cr-padded-text">
+      $i18n{syncDisabledByAdministrator}
     </div>
   </div>
-</div>
 
-<!-- Page ends here if sync is disabled -->
-<div id="sync-separator" hidden="[[!syncSectionDisabled_]]"></div>
+  <!-- Sync words decryption error, safe storage locked-->
+  <div class="cr-row first" hidden="[[!hasLockedSafeStorage_]]">
+    <div class="flex cr-padded-text">
+      $i18nRaw{braveSyncPassphraseDecryptionErrorMessage}
+    </div>
+  </div>
 
-<!-- Non-disabled content (setup or configure) -->
-<template is="dom-if" if="[[!syncSectionDisabled_]]">
-  <div id="sync-section">
-    <div id="sync-page-loading"
+  <!-- Sync words decryption error, safe storage unlocked-->
+  <div class="cr-row first" hidden="[[!hasUnlockedSafeStorageCannotDecryptSeed_]]">
+    <div class="flex cr-padded-text">
+      <p>$i18nRaw{braveSyncPassphraseDecryptionErrorUnlockedSsMessage}</p>
+      <div class="actions">
+        <cr-button class="action-button"
+          on-click="onRejoin_">
+          $i18n{braveSyncLeaveAndRejoinTheChainButton}
+        </cr-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page ends here if sync is disabled -->
+  <div id="sync-separator" hidden="[[!syncSectionDisabled_]]"></div>
+
+  <!-- Non-disabled content (setup or configure) -->
+  <template is="dom-if" if="[[!syncSectionDisabled_]]">
+    <div id="sync-section">
+      <div id="sync-page-loading"
         hidden$="[[!isStatus_('spinner', pageStatus_)]]">
-      $i18n{syncLoading}
+        $i18n{syncLoading}
+      </div>
+
+      <template is="dom-if" if="[[isStatus_('configure', pageStatus_)]]">
+        <settings-brave-sync-configure syncStatus="[[syncStatus]]">
+        </settings-brave-sync-configure>
+      </template>
+
+      <template is="dom-if" if="[[isStatus_('setup', pageStatus_)]]">
+        <settings-brave-sync-setup on-setup-success="onSetupSuccess_"
+          sync-code-dialog-type="{{syncCodeDialogType}}">
+        </settings-brave-sync-setup>
+      </template>
     </div>
-
-    <template is="dom-if" if="[[isStatus_('configure', pageStatus_)]]">
-      <settings-brave-sync-configure syncStatus="[[syncStatus]]">
-      </settings-brave-sync-configure>
-    </template>
-
-    <template is="dom-if" if="[[isStatus_('setup', pageStatus_)]]">
-      <settings-brave-sync-setup on-setup-success="onSetupSuccess_"
-        sync-code-dialog-type="{{syncCodeDialogType}}">
-      </settings-brave-sync-setup>
-    </template>
-  </div>
-</template>
+  </template>
+</settings-subpage>
