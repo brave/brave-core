@@ -164,4 +164,36 @@ TEST(NTPSponsoredImagesDataTest, ParseSponsoredRichMediaCampaign) {
   EXPECT_THAT(creative.logo.image_url, testing::IsEmpty());
 }
 
+TEST(NTPSponsoredImagesDataTest,
+     GetCreativeByInstanceIdFromSponsoredImagesCampaign) {
+  base::Value::Dict dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
+  NTPSponsoredImagesData data(dict, installed_dir);
+  EXPECT_THAT(data.IsValid(), testing::IsTrue());
+
+  EXPECT_EQ(
+      data.GetCreativeByInstanceId("30244a36-561a-48f0-8d7a-780e9035c57a"),
+      &data.campaigns[0].creatives[0]);
+  EXPECT_EQ(
+      data.GetCreativeByInstanceId("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+      nullptr);
+}
+
+TEST(NTPSponsoredImagesDataTest,
+     GetCreativeByInstanceIdFromSponsoredRichMediaCampaign) {
+  base::Value::Dict dict =
+      base::test::ParseJsonDict(kTestSponsoredRichMediaCampaign);
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
+  NTPSponsoredImagesData data(dict, installed_dir);
+  EXPECT_THAT(data.IsValid(), testing::IsTrue());
+
+  EXPECT_EQ(
+      data.GetCreativeByInstanceId("39d78863-327d-4b64-9952-cd0e5e330eb6"),
+      &data.campaigns[0].creatives[0]);
+  EXPECT_EQ(
+      data.GetCreativeByInstanceId("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+      nullptr);
+}
+
 }  // namespace ntp_background_images

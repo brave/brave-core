@@ -151,6 +151,9 @@ struct NTPSponsoredImagesData {
 
   bool IsSuperReferral() const;
 
+  const Creative* GetCreativeByInstanceId(
+      const std::string& creative_instance_id) const;
+
   std::string url_prefix;
 
   std::optional<base::TimeDelta> grace_period;
