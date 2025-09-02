@@ -82,8 +82,7 @@ module.exports = (program) =>
         : allTestSuites
 
       if (!recordings.length) {
-        console.error(
-          `glob ${out}/${dirsGlob}/*.profraw yield any recordings!\n make sure you've built with --is_coverage and ran the appropiate tests`,
+          `glob ${out}/${dirsGlob}/*.profraw didn't yield any recordings!\n make sure you've built with --is_coverage and ran the appropriate tests`,
         )
         return
       }
