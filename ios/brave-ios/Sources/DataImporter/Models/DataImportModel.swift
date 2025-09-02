@@ -104,12 +104,19 @@ class DataImportModel: ObservableObject {
 
   @MainActor
   func importData(from profile: [String: URL]) async {
+    defer {
+      if self.importState == .success {
+        recordP3A(answer: .importedFromSafari)
+      } else if self.importState == .failure {
+        recordP3A(answer: .didNotImport)
+      }
+    }
+
     do {
       self.importState = .importing
       try await importProfile(profile)
       self.importError = nil
       self.importState = .success
-      recordP3A(answer: .importedFromSafari)
     } catch let error as DataImportError {
       self.importError = error
 
@@ -118,13 +125,11 @@ class DataImportModel: ObservableObject {
         self.importState = .dataConflict
       } else {
         self.importState = .failure
-        recordP3A(answer: .didNotImport)
       }
     } catch {
       Logger.module.error("[DataImporter] - Error: \(error)")
       self.importError = .unknown
       self.importState = .failure
-      recordP3A(answer: .didNotImport)
     }
   }
 
@@ -219,10 +224,17 @@ class DataImportModel: ObservableObject {
 
   @MainActor
   func keepPasswords(option: DataImportPasswordConflictOption) async {
+    defer {
+      if self.importState == .success {
+        recordP3A(answer: .importedFromSafari)
+      } else if self.importState == .failure {
+        recordP3A(answer: .didNotImport)
+      }
+    }
+
     if option == .abortImport {
       self.importError = nil
       self.importState = .none
-      recordP3A(answer: .didNotImport)
       return
     }
 
@@ -237,7 +249,6 @@ class DataImportModel: ObservableObject {
         case .none, .success:
           self.importError = nil
           self.importState = .success
-          recordP3A(answer: .importedFromSafari)
           return
 
         case .unknownError, .ioError, .badFormat, .dismissed, .maxFileSize, .importAlreadyActive,
@@ -260,13 +271,11 @@ class DataImportModel: ObservableObject {
         self.importState = .dataConflict
       } else {
         self.importState = .failure
-        recordP3A(answer: .didNotImport)
       }
     } catch {
       Logger.module.error("[DataImporter] - Error: \(error)")
       self.importError = .failedToImportPasswords
       self.importState = .failure
-      recordP3A(answer: .didNotImport)
     }
   }
 
@@ -415,6 +424,7 @@ class DataImportModel: ObservableObject {
     return result
   }
 
+  // MARK: - P3A
   private enum Answer: Int, CaseIterable {
     case didNotImport = 1
     case importedFromBrave = 2
