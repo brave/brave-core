@@ -82,6 +82,7 @@ brave_settings_ts_files = [
   "brave_new_tab_page/brave_new_tab_browser_proxy.ts",
   "brave_leo_assistant_page/brave_leo_assistant_browser_proxy.ts",
   "brave_overrides/a11y_page.ts",
+  "brave_overrides/a11y_page_index.ts",
   "brave_overrides/all_sites.ts",
   "brave_overrides/about_page.ts",
   "brave_overrides/autofill_page.ts",
