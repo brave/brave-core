@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, font } from '@brave/leo/tokens/css/variables'
+import { color, effect, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../lib/scoped_css'
 
 export const narrowBreakpoint = '900px'
@@ -41,29 +41,40 @@ export const style = scoped.css`
 
   .top-controls {
     position: absolute;
-    inset-block-start: 4px;
-    inset-inline-end: 4px;
+    inset-block-start: 24px;
+    inset-inline-end: 24px;
     min-height: 24px;
     display: flex;
-    gap: 8px;
-    align-items: center;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-end;
     z-index: 2;
+
+    @container (width < ${narrowBreakpoint}) {
+      inset-block-start: 12px;
+      inset-inline-end: 12px;
+    }
   }
 
   .settings {
-    --leo-icon-size: 20px;
+    --leo-icon-size: 18px;
 
-    opacity: 0.5;
+    padding: 8px;
+    opacity: 0.8;
+    border-radius: 50%;
     color: #fff;
-    filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.60));
+    filter: drop-shadow(${effect.elevation['01']});
 
     &:hover {
-      opacity: 0.7;
+      background: rgba(255, 255, 255, .3);
+      box-shadow: ${effect.elevation['01']};
+      opacity: .9;
       cursor: pointer;
     }
   }
 
   .clock {
+    margin-inline-end: 8px;
     font: ${font.large.semibold};
     text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.20);
     color: #fff;
