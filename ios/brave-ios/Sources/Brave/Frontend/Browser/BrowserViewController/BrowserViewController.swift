@@ -267,6 +267,8 @@ public class BrowserViewController: UIViewController {
 
   private let prefsChangeRegistrar: PrefChangeRegistrar
 
+  let defaultBrowserHelper: DefaultBrowserHelper = .init()
+
   public init(
     windowId: UUID,
     profile: LegacyBrowserProfile,
@@ -3003,7 +3005,7 @@ extension BrowserViewController {
     // in case an external url is triggered
     if case .url(let navigatedURL, _) = path {
       if navigatedURL?.isWebPage(includeDataURIs: false) == true {
-        Preferences.General.lastHTTPURLOpenedDate.value = .now
+        defaultBrowserHelper.recordAppLaunchedWithWebURL()
         recordDefaultBrowserLikelyhoodP3A(openedHTTPLink: true)
 
         Preferences.General.defaultBrowserCalloutDismissed.value = true

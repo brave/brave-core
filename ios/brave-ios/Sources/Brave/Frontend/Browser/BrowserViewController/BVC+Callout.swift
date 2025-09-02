@@ -110,9 +110,10 @@ extension BrowserViewController {
 
   func presentDefaultBrowserScreenCallout(skipSafeGuards: Bool = false) {
     if !skipSafeGuards {
-      let isLikelyDefault = DefaultBrowserHelper.isBraveLikelyDefaultBrowser()
-
-      guard !isLikelyDefault else {
+      defaultBrowserHelper.performAccurateDefaultCheckIfNeeded()
+      let isLikelyDefault =
+        defaultBrowserHelper.status == .defaulted || defaultBrowserHelper.status == .likely
+      if isLikelyDefault {
         return
       }
     }
@@ -208,6 +209,11 @@ extension BrowserViewController {
       || topToolbar.inOverlayMode
     {
       return false
+    }
+
+    if calloutType == .defaultBrowser, defaultBrowserHelper.isAccurateDefaultCheckAvailable {
+      // Use DefaultBrowserHelper's logic when more accurate API is available
+      return defaultBrowserHelper.shouldPerformAccurateDefaultCheck
     }
 
     if presentedViewController != nil
