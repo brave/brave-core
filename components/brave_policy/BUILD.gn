@@ -1,0 +1,33 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("brave_policy") {
+  sources = [
+    "brave_browser_policy_provider.cc",
+    "brave_browser_policy_provider.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/policy/core/browser",
+    "//components/policy/core/common",
+    "//components/prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_browser_policy_provider_unittest.cc" ]
+
+  deps = [
+    ":brave_policy",
+    "//base",
+    "//base/test:test_support",
+    "//components/policy/core/common",
+    "//components/policy/core/common:test_support",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+  ]
+}
