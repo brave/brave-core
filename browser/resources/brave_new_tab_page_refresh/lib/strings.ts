@@ -31,8 +31,8 @@ export type StringKey =
   'hideVpnWidgetLabel' |
   'newsCustomizeButtonLabel' |
   'newsDisableButtonLabel' |
-  'newsEnableButtonLabel' |
-  'newsEnableText' |
+  'newsPreviewText' |
+  'newsPreviewTitle' |
   'newsSettingsTitle' |
   'newsWidgetTitle' |
   'photoCreditsText' |
