@@ -12,7 +12,7 @@ PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 
 void PsstUiDelegateImpl::SetAppliedItems(
     long progress,
-    const std::vector<psst_script_responses::PsstTask>& applied_tasks) {
+    const std::vector<PsstTask>& applied_tasks) {
   // Implementation for setting the current progress.
 }
 

@@ -38,7 +38,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
     // Actualize the UI state based on the applied tasks and progress.
     virtual void SetAppliedItems(
         long progress,
-        const std::vector<psst_script_responses::PsstTask>& applied_tasks) = 0;
+        const std::vector<PsstTask>& applied_tasks) = 0;
     // Sets the consent dialog to complete state.
     virtual void SetComplete() = 0;
   };

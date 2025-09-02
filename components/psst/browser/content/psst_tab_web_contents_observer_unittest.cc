@@ -99,12 +99,10 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
   MockUiDelegate() = default;
   ~MockUiDelegate() override = default;
 
-  MOCK_METHOD(
-      void,
-      SetAppliedItems,
-      (long progress,
-       const std::vector<psst_script_responses::PsstTask>& applied_tasks),
-      (override));
+  MOCK_METHOD(void,
+              SetAppliedItems,
+              (long progress, const std::vector<PsstTask>& applied_tasks),
+              (override));
   MOCK_METHOD(void, SetComplete, (), (override));
 };
 
@@ -628,8 +626,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // SetAppliedItems must be called as policy script returns valid result with
   // STARTED status
   EXPECT_CALL(ui_delegate(), SetAppliedItems(progress, _))
-      .WillOnce([&progress_loop](
-                    long, const std::vector<psst_script_responses::PsstTask>&) {
+      .WillOnce([&progress_loop](long, const std::vector<PsstTask>&) {
         progress_loop.Quit();
       });
   // SetComplete must not be called as policy script returns STARTED status
@@ -693,8 +690,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // SetAppliedItems must be called as policy script returns valid result with
   // STARTED status
   EXPECT_CALL(ui_delegate(), SetAppliedItems(progress, _))
-      .WillOnce([&progress_loop](
-                    long, const std::vector<psst_script_responses::PsstTask>&) {
+      .WillOnce([&progress_loop](long, const std::vector<PsstTask>&) {
         progress_loop.Quit();
       });
   // SetComplete must not be called as policy script returns STARTED status

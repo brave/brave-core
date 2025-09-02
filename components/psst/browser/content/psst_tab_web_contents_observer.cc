@@ -194,7 +194,7 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
     int nav_entry_id,
     base::Value script_result) {
   const auto script_result_parsed =
-      psst_script_responses::PolicyScriptResult::FromValue(script_result);
+      PolicyScriptResult::FromValue(script_result);
   if (!script_result_parsed || !ShouldInsertScriptForPage(nav_entry_id)) {
     return;
   }
@@ -202,8 +202,7 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
   ui_delegate_->SetAppliedItems(script_result_parsed->progress,
                                 script_result_parsed->applied_tasks);
 
-  if (script_result_parsed->status ==
-      psst_script_responses::PolicyScriptStatus::kCompleted) {
+  if (script_result_parsed->status == PolicyScriptStatus::kCompleted) {
     ui_delegate_->SetComplete();
   }
 }

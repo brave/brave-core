@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // Schema for Brave PSST script responses.
-namespace psst_script_responses {
+namespace psst {
     enum PolicyScriptStatus {
         STARTED,
         COMPLETED

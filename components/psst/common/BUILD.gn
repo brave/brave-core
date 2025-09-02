@@ -24,7 +24,7 @@ static_library("common") {
 
 generated_types("psst_script_responses") {
   sources = [ "psst_script_responses.idl" ]
-  root_namespace = "psst::%(namespace)s"
+  root_namespace = "psst"
   deps = [ "//base" ]
   visibility = [ ":common" ]
 }
