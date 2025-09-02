@@ -13,7 +13,7 @@ import androidx.preference.Preference;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
-import org.chromium.components.content_settings.ContentSettingValues;
+import org.chromium.components.content_settings.ContentSetting;
 import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.content_public.browser.BrowserContextHandle;
 
@@ -74,8 +74,8 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
             currentValue =
                     WebsitePreferenceBridge.isCategoryEnabled(
                                     browserContextHandle, ContentSettingsType.AUTOPLAY)
-                            ? ContentSettingValues.ALLOW
-                            : ContentSettingValues.BLOCK;
+                            ? ContentSetting.ALLOW
+                            : ContentSetting.BLOCK;
         }
         // Not possible to embargo AUTOPLAY.
         BraveReflectionUtil.invokeMethod(
@@ -105,8 +105,8 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
             currentValue =
                     WebsitePreferenceBridge.isCategoryEnabled(
                                     browserContextHandle, ContentSettingsType.BRAVE_GOOGLE_SIGN_IN)
-                            ? ContentSettingValues.ASK
-                            : ContentSettingValues.BLOCK;
+                            ? ContentSetting.ASK
+                            : ContentSetting.BLOCK;
         }
         BraveReflectionUtil.invokeMethod(
                 SingleWebsiteSettings.class,
@@ -136,8 +136,8 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                     WebsitePreferenceBridge.isCategoryEnabled(
                                     browserContextHandle,
                                     ContentSettingsType.BRAVE_LOCALHOST_ACCESS)
-                            ? ContentSettingValues.ASK
-                            : ContentSettingValues.BLOCK;
+                            ? ContentSetting.ASK
+                            : ContentSetting.BLOCK;
         }
         BraveReflectionUtil.invokeMethod(
                 SingleWebsiteSettings.class,
