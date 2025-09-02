@@ -7,18 +7,28 @@
 
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/updater/buildflags.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #import "brave/browser/mac/sparkle_glue.h"
+#endif
+
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/updater/features.h"
 #endif
 
 void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
   ChromeBrowserMainPartsMac::PreCreateMainMessageLoop();
 
 #if BUILDFLAG(ENABLE_SPARKLE)
-  // It would be no-op if udpate is disabled.
-  [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
+#if BUILDFLAG(ENABLE_OMAHA4)
+  if (brave_updater::ShouldUseOmaha4()) {
+    return;
+  }
 #endif
+  // It would be a no-op if udpates are disabled.
+  [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
+#endif  // BUILDFLAG(ENABLE_SPARKLE)
 }
 
 void BraveBrowserMainPartsMac::PostProfileInit(Profile* profile,
