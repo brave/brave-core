@@ -1008,18 +1008,6 @@ source_set("ui") {
     if (toolkit_views) {
       deps += [ "//brave/browser/ui/views/speedreader" ]
     }
-
-    if (!is_android) {
-      sources += [
-        "speedreader/speedreader_bubble_view.h",
-        "views/speedreader/reader_mode_bubble.cc",
-        "views/speedreader/reader_mode_bubble.h",
-        "views/speedreader/reader_mode_toolbar_view.cc",
-        "views/speedreader/reader_mode_toolbar_view.h",
-        "views/speedreader/speedreader_icon_view.cc",
-        "views/speedreader/speedreader_icon_view.h",
-      ]
-    }
   }
 
   if (enable_request_otr) {
