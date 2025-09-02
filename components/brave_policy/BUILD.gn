@@ -7,6 +7,8 @@ static_library("brave_policy") {
   sources = [
     "brave_browser_policy_provider.cc",
     "brave_browser_policy_provider.h",
+    "brave_profile_policy_provider.cc",
+    "brave_profile_policy_provider.h",
   ]
 
   deps = [
@@ -19,7 +21,10 @@ static_library("brave_policy") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_browser_policy_provider_unittest.cc" ]
+  sources = [
+    "brave_browser_policy_provider_unittest.cc",
+    "brave_profile_policy_provider_unittest.cc",
+  ]
 
   deps = [
     ":brave_policy",

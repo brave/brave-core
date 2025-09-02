@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_policy/brave_browser_policy_provider.h"
+#include "brave/components/brave_policy/brave_profile_policy_provider.h"
 
 #include <utility>
 
@@ -12,16 +12,18 @@
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
+#include "components/policy/core/common/policy_service.h"
 #include "components/policy/core/common/policy_types.h"
+#include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_policy {
 
-BraveBrowserPolicyProvider::BraveBrowserPolicyProvider() = default;
+BraveProfilePolicyProvider::BraveProfilePolicyProvider() = default;
+BraveProfilePolicyProvider::~BraveProfilePolicyProvider() = default;
 
-BraveBrowserPolicyProvider::~BraveBrowserPolicyProvider() {}
-
-void BraveBrowserPolicyProvider::Init(policy::SchemaRegistry* registry) {
+void BraveProfilePolicyProvider::Init(policy::SchemaRegistry* registry) {
   // Call base class Init first
   policy::ConfigurationPolicyProvider::Init(registry);
 
@@ -31,7 +33,7 @@ void BraveBrowserPolicyProvider::Init(policy::SchemaRegistry* registry) {
   RefreshPolicies(policy::PolicyFetchReason::kBrowserStart);
 }
 
-void BraveBrowserPolicyProvider::RefreshPolicies(
+void BraveProfilePolicyProvider::RefreshPolicies(
     policy::PolicyFetchReason reason) {
   policy::PolicyBundle bundle = LoadPolicies();
 
@@ -41,22 +43,22 @@ void BraveBrowserPolicyProvider::RefreshPolicies(
   UpdatePolicy(std::move(bundle));
 }
 
-bool BraveBrowserPolicyProvider::IsFirstPolicyLoadComplete(
+bool BraveProfilePolicyProvider::IsFirstPolicyLoadComplete(
     policy::PolicyDomain domain) const {
   return first_policies_loaded_;
 }
 
-policy::PolicyBundle BraveBrowserPolicyProvider::LoadPolicies() {
+policy::PolicyBundle BraveProfilePolicyProvider::LoadPolicies() {
   policy::PolicyBundle bundle;
 
-  // Future work will add policies here
+  // Future work will add Brave Origin profile policies here
 
   return bundle;
 }
 
 std::unique_ptr<policy::ConfigurationPolicyProvider>
-CreateBraveBrowserPolicyProvider() {
-  return std::make_unique<BraveBrowserPolicyProvider>();
+CreateBraveProfilePolicyProvider() {
+  return std::make_unique<BraveProfilePolicyProvider>();
 }
 
 }  // namespace brave_policy
