@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/notimplemented.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -49,6 +50,8 @@
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#else
+#include "chrome/browser/ui/chrome_pages.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
@@ -243,6 +246,15 @@ void AIChatUIPageHandler::OpenAIChatSettings() {
   }
 #else
   ai_chat::ShowBraveLeoSettings(contents_to_navigate);
+#endif
+}
+
+void AIChatUIPageHandler::OpenMemorySettings() {
+#if !BUILDFLAG(IS_ANDROID)
+  chrome::ShowSettingsSubPageForProfile(
+      profile_, ai_chat::kBraveAIChatCustomizationSubPage);
+#else
+  NOTIMPLEMENTED();
 #endif
 }
 

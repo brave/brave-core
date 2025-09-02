@@ -144,6 +144,22 @@ export default function FeatureMenu(props: Props) {
           </leo-menu-item>
         </>
       )}
+      {!aiChatContext.isMobile && (
+        <leo-menu-item
+          onClick={() => aiChatContext.uiHandler?.openMemorySettings()}>
+          <div
+            className={classnames(
+              styles.menuItemWithIcon,
+              styles.menuItemMainItem
+            )}
+          >
+            <Icon name='database' />
+            <span className={styles.menuText}>
+              {getLocale(S.CHAT_UI_MENU_MANAGE_MEMORIES)}
+            </span>
+          </div>
+        </leo-menu-item>
+      )}
       <leo-menu-item onClick={handleSettingsClick}>
         <div
           className={classnames(

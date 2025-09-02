@@ -147,6 +147,9 @@
   <message name="IDS_CHAT_UI_MENU_CONVERSATION_HISTORY" desc="Menu item for opening the list of conversations" formatter_data="webui=AiChat">
     Conversation history
   </message>
+  <message name="IDS_CHAT_UI_MENU_MANAGE_MEMORIES" desc="Menu item for managing AI Chat memories" formatter_data="webui=AiChat">
+    Manage memories
+  </message>
   <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings" formatter_data="webui=AiChat">
     Advanced Settings
   </message>
