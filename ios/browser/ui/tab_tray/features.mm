@@ -9,5 +9,5 @@ namespace brave::features {
 
 BASE_FEATURE(kModernTabTrayEnabled,
              "ModernTabTrayEnabled",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 }
