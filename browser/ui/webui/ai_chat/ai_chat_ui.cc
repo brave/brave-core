@@ -16,6 +16,7 @@
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/ai_chat/content/browser/bookmarks_service.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
@@ -27,6 +28,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -161,6 +163,16 @@ void AIChatUI::BindInterface(
   }
   page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
       web_ui()->GetWebContents(), web_contents, profile_, std::move(receiver));
+}
+
+void AIChatUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::BookmarksService> receiver) {
+  if (bookmarks_service_) {
+    bookmarks_service_ = nullptr;
+  }
+  bookmarks_service_ = std::make_unique<ai_chat::BookmarksService>(
+      BookmarkModelFactory::GetForBrowserContext(profile_),
+      std::move(receiver));
 }
 
 void AIChatUI::BindInterface(

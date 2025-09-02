@@ -14,6 +14,10 @@ static_library("browser") {
     "ai_chat_tab_helper.h",
     "ai_chat_throttle.cc",
     "ai_chat_throttle.h",
+    "associated_link_content.cc",
+    "associated_link_content.h",
+    "bookmarks_service.cc",
+    "bookmarks_service.h",
     "full_screenshotter.cc",
     "full_screenshotter.h",
     "model_service_factory.cc",
@@ -35,6 +39,7 @@ static_library("browser") {
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//brave/components/text_recognition/common/buildflags",
+    "//components/bookmarks/browser",
     "//components/favicon/content",
     "//components/favicon/core",
     "//components/keyed_service/content",
@@ -45,6 +50,8 @@ static_library("browser") {
     "//components/strings:components_strings_grit",
     "//components/user_prefs",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//net",
     "//net/traffic_annotation",
     "//pdf:buildflags",
     "//services/data_decoder/public/cpp",
@@ -65,7 +72,10 @@ static_library("browser") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "page_content_fetcher_unittest.cc" ]
+  sources = [
+    "bookmarks_service_unittest.cc",
+    "page_content_fetcher_unittest.cc",
+  ]
 
   deps = [
     "//base",
@@ -75,6 +85,9 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/api_request_helper",
+    "//components/bookmarks/browser",
+    "//components/bookmarks/browser:test_support",
+    "//components/bookmarks/test",
     "//content/public/browser",
     "//content/test:test_support",
     "//mojo/public/cpp/bindings",
@@ -86,5 +99,6 @@ source_set("unit_tests") {
     "//services/service_manager/public/cpp",
     "//testing/gmock",
     "//testing/gtest",
+    "//url",
   ]
 }

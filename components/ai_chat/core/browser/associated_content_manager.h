@@ -55,6 +55,8 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   void AddContent(AssociatedContentDelegate* delegate,
                   bool notify_updated = true,
                   bool detach_existing_content = false);
+  void AddOwnedContent(std::unique_ptr<AssociatedContentDelegate> delegate,
+                       bool notify_updated = true);
 
   // Removes a content delegate from the list of content delegates.
   void RemoveContent(AssociatedContentDelegate* delegate,
@@ -91,7 +93,7 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   PageContentsMap GetCachedContentsMap() const;
 
   bool HasOpenAIChatPermission() const;
-  bool HasNonArchiveContent() const;
+  bool HasLiveContent() const;
   bool HasAssociatedContent() const;
 
   // Determines if the content for this conversation is a single video.
@@ -120,7 +122,10 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
 
   // Used for ownership - still stored in the above array.
-  std::vector<std::unique_ptr<AssociatedArchiveContent>> archive_content_;
+  // This includes:
+  // - Archived content
+  // - Link content
+  std::vector<std::unique_ptr<AssociatedContentDelegate>> owned_content_;
 
   base::ScopedMultiSourceObservation<AssociatedContentDelegate,
                                      AssociatedContentDelegate::Observer>

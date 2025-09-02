@@ -208,6 +208,7 @@ source_set("browser_tests") {
       "ai_chat_render_view_context_menu_browsertest.cc",
       "ai_chat_sidepanel_behavior_browsertest.cc",
       "ai_chat_ui_browsertest.cc",
+      "associated_link_content_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
     ]
     deps = [
@@ -245,6 +246,7 @@ source_set("browser_tests") {
     }
 
     data = [
+      "//brave/test/data/ai_chat/basic.html",
       "//brave/test/data/ai_chat/initial.xml",
       "//brave/test/data/ai_chat/navigated.xml",
       "//brave/test/data/ai_chat/youtube.html",

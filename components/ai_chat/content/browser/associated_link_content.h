@@ -1,0 +1,67 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_LINK_CONTENT_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_LINK_CONTENT_H_
+
+#include <memory>
+#include <string>
+
+#include "base/memory/weak_ptr.h"
+#include "base/one_shot_event.h"
+#include "base/timer/timer.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "content/public/browser/web_contents_observer.h"
+#include "url/gurl.h"
+
+namespace content {
+class BrowserContext;
+class WebContents;
+class NavigationHandle;
+}  // namespace content
+
+namespace ai_chat {
+
+class PageContentFetcher;
+
+// Represents a link that has been attached to a conversation.
+// The link will be loaded asynchronously in a background WebContents when
+// |GetContent| is called.
+class AssociatedLinkContent : public AssociatedContentDelegate,
+                              public content::WebContentsObserver {
+ public:
+  AssociatedLinkContent(GURL url,
+                        std::u16string title,
+                        content::BrowserContext* browser_context);
+  ~AssociatedLinkContent() override;
+  AssociatedLinkContent(const AssociatedLinkContent&) = delete;
+  AssociatedLinkContent& operator=(const AssociatedLinkContent&) = delete;
+
+  // AssociatedContentDelegate
+  void GetContent(GetPageContentCallback callback) override;
+
+ private:
+  void OnTimeout();
+  void OnContentExtractionComplete(std::string content,
+                                   bool is_video,
+                                   std::string invalidation_token);
+  void CompleteWithError(const std::string& error);
+
+  // content::WebContentsObserver:
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
+  void DocumentOnLoadCompletedInPrimaryMainFrame() override;
+
+  std::unique_ptr<content::WebContents> web_contents_;
+  std::unique_ptr<PageContentFetcher> content_fetcher_;
+  base::OneShotTimer timeout_timer_;
+  std::unique_ptr<base::OneShotEvent> content_loaded_event_;
+
+  base::WeakPtrFactory<AssociatedLinkContent> weak_ptr_factory_{this};
+};
+
+}  // namespace ai_chat
+
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_LINK_CONTENT_H_

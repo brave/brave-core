@@ -15,16 +15,19 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/components/ai_chat/content/browser/associated_link_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
@@ -419,6 +422,16 @@ void AIChatUIPageHandler::DisassociateContent(
     const std::string& conversation_uuid) {
   auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
   service->DisassociateContent(content, conversation_uuid);
+}
+
+void AIChatUIPageHandler::AttachBookmark(ai_chat::mojom::BookmarkPtr bookmark,
+                                         const std::string& conversation_uuid) {
+  auto bookmark_content = std::make_unique<ai_chat::AssociatedLinkContent>(
+      bookmark->url, base::UTF8ToUTF16(bookmark->title), profile_);
+
+  auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
+  service->MaybeAssociateContent(std::move(bookmark_content),
+                                 conversation_uuid);
 }
 
 void AIChatUIPageHandler::NewConversation(

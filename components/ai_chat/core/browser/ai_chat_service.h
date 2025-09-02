@@ -159,6 +159,8 @@ class AIChatService : public KeyedService,
 
   void MaybeAssociateContent(AssociatedContentDelegate* content,
                              const std::string& conversation_uuid);
+  void MaybeAssociateContent(std::unique_ptr<AssociatedContentDelegate> content,
+                             const std::string& conversation_uuid);
   void DisassociateContent(const mojom::AssociatedContentPtr& content,
                            const std::string& conversation_uuid);
 
